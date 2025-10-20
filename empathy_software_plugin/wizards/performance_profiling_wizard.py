@@ -32,13 +32,18 @@ class PerformanceProfilingWizard(BaseWizard):
     - Cross-language performance patterns
     """
 
-    def __init__(self):
-        super().__init__(
-            name="Performance Profiling Wizard",
-            description="Performance analysis and bottleneck prediction",
-            level=4
-        )
+    @property
+    def name(self) -> str:
+        return "Performance Profiling Wizard"
 
+    @property
+    def level(self) -> int:
+        return 4
+
+    def __init__(self):
+        super().__init__()
+
+        self.profiler_parser = None  # Set dynamically based on profiler type
         self.bottleneck_detector = BottleneckDetector()
         self.trajectory_analyzer = PerformanceTrajectoryAnalyzer()
 
