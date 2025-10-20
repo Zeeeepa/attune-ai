@@ -289,32 +289,32 @@ export default function Home() {
               {/* Business Tier */}
               <div className="bg-[var(--background)] p-8 rounded-lg border-2 border-[var(--border)]">
                 <h3 className="text-2xl font-bold mb-2">Business</h3>
-                <p className="text-4xl font-bold mb-4">$249<span className="text-lg text-[var(--muted)]">/year</span></p>
-                <p className="text-sm text-[var(--muted)] mb-6">Per 3 seats</p>
+                <p className="text-4xl font-bold mb-4">Custom</p>
+                <p className="text-sm text-[var(--muted)] mb-6">Team licensing & partnerships</p>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-start gap-2">
                     <span className="text-[var(--success)]">✓</span>
-                    <span className="text-sm">Everything in Pro × 3 seats</span>
+                    <span className="text-sm">Volume licensing (5+ seats)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[var(--success)]">✓</span>
-                    <span className="text-sm">Email support (48h SLA)</span>
+                    <span className="text-sm">Invoice billing & PO support</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[var(--success)]">✓</span>
-                    <span className="text-sm">Team dashboard</span>
+                    <span className="text-sm">White-label partnership options</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[var(--success)]">✓</span>
-                    <span className="text-sm">Shared knowledge base</span>
+                    <span className="text-sm">Enterprise licensing agreements</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[var(--success)]">✓</span>
-                    <span className="text-sm">Bring your own LLM option</span>
+                    <span className="text-sm">Custom integrations available</span>
                   </li>
                 </ul>
                 <Link href="/book" className="btn btn-secondary w-full">
-                  Contact Sales
+                  Contact for Quote
                 </Link>
               </div>
             </div>
