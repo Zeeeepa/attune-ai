@@ -31,12 +31,16 @@ class SecurityAnalysisWizard(BaseWizard):
     - Experience-based recommendations
     """
 
+    @property
+    def name(self) -> str:
+        return "Security Analysis Wizard"
+
+    @property
+    def level(self) -> int:
+        return 4
+
     def __init__(self):
-        super().__init__(
-            name="Security Analysis Wizard",
-            description="Security vulnerability analysis and exploit prediction",
-            level=4
-        )
+        super().__init__()
 
         self.pattern_detector = OWASPPatternDetector()
         self.exploit_analyzer = ExploitAnalyzer()

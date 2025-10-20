@@ -30,12 +30,16 @@ class EnhancedTestingWizard(BaseWizard):
     - Smart test suggestions based on risk
     """
 
+    @property
+    def name(self) -> str:
+        return "Enhanced Testing Wizard"
+
+    @property
+    def level(self) -> int:
+        return 4
+
     def __init__(self):
-        super().__init__(
-            name="Enhanced Testing Wizard",
-            description="Test quality analysis and bug-risk prediction",
-            level=4
-        )
+        super().__init__()
 
         # High-risk code patterns that need tests
         self.high_risk_patterns = {
