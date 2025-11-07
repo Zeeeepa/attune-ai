@@ -1,0 +1,63 @@
+# Coverage.py configuration for Empathy Framework
+
+[run]
+source =
+    src/empathy_os
+    empathy_llm_toolkit
+    coach_wizards
+    empathy_software_plugin
+    empathy_healthcare_plugin
+
+omit =
+    */tests/*
+    */test_*.py
+    */__pycache__/*
+    */site-packages/*
+    */distutils/*
+    */backend/*
+    */wizards/*
+    setup.py
+
+branch = True
+parallel = True
+
+[report]
+# Target: 80%+ coverage for commercial launch
+precision = 2
+show_missing = True
+skip_covered = False
+skip_empty = True
+
+exclude_lines =
+    # Standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code
+    def __repr__
+
+    # Don't complain if tests don't hit defensive assertion code
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+
+    # Don't complain about abstract methods
+    @abstractmethod
+    @abc.abstractmethod
+
+    # Don't complain about ellipsis in stubs
+    \.\.\.
+    pass
+
+[html]
+directory = htmlcov
+title = Empathy Framework Coverage Report
+
+[xml]
+output = coverage.xml
+
+[json]
+output = coverage.json
+pretty_print = True
