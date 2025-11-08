@@ -1,14 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: GitHub Discussions
-    url: https://github.com/Deep-Study-AI/Empathy/discussions
+    url: https://github.com/Smart-AI-Memory/empathy/discussions
     about: Ask questions, share ideas, and discuss the Empathy Framework
   - name: Documentation
-    url: https://github.com/Deep-Study-AI/Empathy/tree/main/docs
+    url: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
     about: Read the framework documentation and guides
   - name: Security Vulnerability
-    url: https://github.com/Deep-Study-AI/Empathy/security/policy
+    url: https://github.com/Smart-AI-Memory/empathy/security/policy
     about: Report security vulnerabilities privately (DO NOT use public issues)
-  - name: Email Support
-    url: mailto:patrick.roebuck@deepstudyai.com
-    about: Contact us directly for commercial support inquiries

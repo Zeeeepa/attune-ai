@@ -1,21 +1,24 @@
 # Support Empathy Framework Development
 
-The Empathy Framework is **open source** (Apache 2.0) and **free to use** for everyone. We're committed to keeping the core framework open and accessible.
+The Empathy Framework is **source available** (Fair Source 0.9) and **free for students, educators, and small teams (≤5 employees)**. We're committed to making the framework accessible while ensuring sustainable development.
 
 ## 🎯 Commercial Support & Services
 
 If you're using Empathy Framework professionally, consider supporting development through our commercial offerings:
 
-### Priority Support - $99/developer/year
+### Commercial License - $99/developer/year
 
-✅ **Direct access** to the core development team
+**Required for organizations with 6+ employees**
+
+✅ **Full framework access** - Use in production environments
+✅ **All environments covered** - Development, staging, production, CI/CD
 ✅ **Priority bug fixes** and feature requests
 ✅ **Security advisories** and early vulnerability notifications
-✅ **Email/Slack support** with guaranteed response times
-✅ **Upgrade assistance** and migration help
+✅ **Email support** with guaranteed response times
+✅ **Updates and upgrades** for the license period
 ✅ **Contribute to sustainable development**
 
-[Purchase Support Plan →](https://deepstudyai.com/empathy/support)
+**To purchase:** Email [sales@deepstudyai.com](mailto:sales@deepstudyai.com?subject=Empathy%20Framework%20Commercial%20License)
 
 ---
 

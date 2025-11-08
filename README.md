@@ -4,8 +4,8 @@
 
 [![License](https://img.shields.io/badge/License-Fair%20Source%200.9-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-476%20passing-success)](https://github.com/Smart-AI-Memory/empathy)
-[![Coverage](https://img.shields.io/badge/coverage-45.4%25-yellow)](https://github.com/Smart-AI-Memory/empathy)
+[![Tests](https://img.shields.io/badge/tests-494%20passing-success)](https://github.com/Smart-AI-Memory/empathy)
+[![Coverage](https://img.shields.io/badge/coverage-14.7%25-orange)](https://github.com/Smart-AI-Memory/empathy)
 [![Security](https://img.shields.io/badge/security-0%20vulnerabilities-success)](https://github.com/Smart-AI-Memory/empathy)
 [![Quality](https://img.shields.io/badge/commercial%20ready-10%2F10-brightgreen)](https://github.com/Smart-AI-Memory/empathy)
 
@@ -14,7 +14,10 @@
 ## Quick Start
 
 ```bash
-pip install empathy-framework
+# Clone and install from source (PyPI package coming soon)
+git clone https://github.com/Smart-AI-Memory/empathy.git
+cd empathy
+pip install -r requirements.txt
 ```
 
 ```python
@@ -634,7 +637,7 @@ The Fair Source License balances:
 - **Sustainable development** - Commercial licensing funds ongoing development and support
 - **Future open source** - Automatically converts to Apache 2.0 after 4 years
 
-[Purchase Commercial License →](https://deepstudyai.com/empathy-framework/pricing) | [Licensing FAQ →](LICENSE)
+**Commercial licensing:** Email [sales@deepstudyai.com](mailto:sales@deepstudyai.com) | [Licensing FAQ →](LICENSE)
 
 ---
 
