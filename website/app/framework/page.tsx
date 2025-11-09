@@ -41,7 +41,7 @@ export default function FrameworkPage() {
               </Link>
             </div>
             <p className="mt-6 text-sm text-[var(--muted)]">
-              Apache 2.0 License • Free Forever • Community Driven
+              Fair Source License 0.9 • Free for Students & Small Teams • Community Driven
             </p>
           </div>
         </div>

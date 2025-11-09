@@ -478,7 +478,7 @@ export default function Home() {
               </a>
             </div>
             <p className="mt-6 text-sm opacity-75">
-              Open source core (Apache 2.0) • Commercial plugins available • Multi-LLM support
+              Fair Source License 0.9 • Free for students & small teams • Commercial for 6+ employees
             </p>
           </div>
         </div>
