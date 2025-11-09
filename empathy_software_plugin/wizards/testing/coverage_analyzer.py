@@ -151,16 +151,16 @@ class CoverageAnalyzer:
                 # Get branch statistics
                 branches_file = [line for line in lines if line.attrib.get("branch") == "true"]
                 branches_total_file = len(branches_file) * 2  # Each branch point has 2 paths
-                branches_covered_file = sum(
-                    int(
-                        line.attrib.get("condition-coverage", "0")
-                        .split("/")[0]
-                        .strip("()%")
-                        .split()[0]
-                    )
-                    for line in branches_file
-                    if "condition-coverage" in line.attrib
-                )
+                branches_covered_file = 0
+                for line in branches_file:
+                    if "condition-coverage" in line.attrib:
+                        # Format: "50% (1/2)" or "0% (0/2)"
+                        cov_str = line.attrib.get("condition-coverage", "0% (0/2)")
+                        # Extract the fraction part: (1/2)
+                        if "(" in cov_str:
+                            fraction = cov_str.split("(")[1].split(")")[0]  # "1/2"
+                            covered = int(fraction.split("/")[0])  # 1
+                            branches_covered_file += covered
                 branches_missing = [
                     (int(line.attrib.get("number", 0)), i)
                     for line in branches_file
