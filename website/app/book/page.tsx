@@ -28,7 +28,7 @@ export default function BookPage() {
               Transforming Software Development with Anticipatory AI
             </p>
             <p className="text-lg opacity-75">
-              Early Access Edition - Available Now
+              Coming December 2025
             </p>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function BookPage() {
               <div className="w-full max-w-md bg-[var(--border)] bg-opacity-30 rounded-lg p-8">
                 <div className="text-center mb-6">
                   <div className="text-5xl font-bold text-[var(--primary)] mb-2">$49</div>
-                  <p className="text-[var(--muted)] text-sm">Early Access Price</p>
+                  <p className="text-[var(--muted)] text-sm">Pre-order Price</p>
                 </div>
 
                 <div className="space-y-4 mb-6">
@@ -62,32 +62,32 @@ export default function BookPage() {
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">1 Developer License</span>
+                    <span className="text-sm">First year developer license ($49.99 vs $99.99/year)</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">Access to Software Development Plugin</span>
+                    <span className="text-sm">Software Development Plugin access</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">Access to Healthcare Plugin</span>
+                    <span className="text-sm">Healthcare Plugin access</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">Free updates to this edition</span>
+                    <span className="text-sm">Permanent access to book (all editions)</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">Lifetime access to purchased version</span>
+                    <span className="text-sm">Renew license at $99.99/year after first year</span>
                   </div>
                 </div>
 
-                <button className="btn btn-primary w-full text-lg mb-4">
-                  Purchase Early Access
+                <button className="btn btn-primary w-full text-lg mb-4" disabled>
+                  Pre-order for December 2025
                 </button>
 
                 <p className="text-xs text-center text-[var(--muted)]">
-                  Need team licenses? Purchase additional copies for more developer licenses.
+                  Available December 2025. Pre-orders opening soon.
                 </p>
               </div>
             </div>
@@ -188,31 +188,31 @@ export default function BookPage() {
         </div>
       </section>
 
-      {/* Early Access Benefits */}
+      {/* Pre-order Benefits */}
       <section className="py-20 bg-[var(--border)] bg-opacity-30">
         <div className="container">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Early Access Benefits</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Pre-order Benefits</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="text-4xl mb-4">💰</div>
                 <h3 className="text-xl font-bold mb-3">Best Price</h3>
                 <p className="text-[var(--text-secondary)]">
-                  Get the lowest price available. Price will increase as content is completed.
+                  Lock in the pre-order price of $49. Price will increase after December 2025 launch.
                 </p>
               </div>
               <div className="text-center">
                 <div className="text-4xl mb-4">📚</div>
-                <h3 className="text-xl font-bold mb-3">Free Updates</h3>
+                <h3 className="text-xl font-bold mb-3">Complete Edition</h3>
                 <p className="text-[var(--text-secondary)]">
-                  Receive all updates and additional chapters as they're written at no extra cost.
+                  Get the full book plus Software and Healthcare plugins when released in December 2025.
                 </p>
               </div>
               <div className="text-center">
                 <div className="text-4xl mb-4">🚀</div>
-                <h3 className="text-xl font-bold mb-3">Start Now</h3>
+                <h3 className="text-xl font-bold mb-3">December 2025</h3>
                 <p className="text-[var(--text-secondary)]">
-                  Begin learning immediately with available chapters and working plugins.
+                  Immediate access to the complete book, plugins, and licenses upon release.
                 </p>
               </div>
             </div>
@@ -227,28 +227,30 @@ export default function BookPage() {
             <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
             <div className="space-y-6">
               <div className="border-b border-[var(--border)] pb-6">
-                <h3 className="text-xl font-bold mb-3">What's included with early access?</h3>
+                <h3 className="text-xl font-bold mb-3">What's included with the book?</h3>
                 <p className="text-[var(--text-secondary)]">
-                  You get immediate access to available chapters (theory and first implementation examples),
-                  plus working Software and Healthcare plugins with 1 developer license. You'll receive all
-                  future updates to this edition automatically.
+                  When released in December 2025, you'll get the complete book (theory and implementation examples),
+                  plus working Software and Healthcare plugins with 1 developer license. All updates to this
+                  edition are included.
                 </p>
               </div>
 
               <div className="border-b border-[var(--border)] pb-6">
                 <h3 className="text-xl font-bold mb-3">How does the developer license work?</h3>
                 <p className="text-[var(--text-secondary)]">
-                  Each book purchase includes one perpetual developer license. The license is tied to one
-                  developer and covers the purchased version plus all minor updates. Need more licenses for
-                  your team? Purchase additional copies of the book.
+                  Each book purchase includes a 1-year developer license at the special price of $49.99 (50% off
+                  the regular $99.99/year). After the first year, you can renew at $99.99/year. The license covers
+                  one developer across all their development environments. Need more licenses for your team? Each
+                  team member needs their own book purchase and license.
                 </p>
               </div>
 
               <div className="border-b border-[var(--border)] pb-6">
                 <h3 className="text-xl font-bold mb-3">Is the Core Framework free?</h3>
                 <p className="text-[var(--text-secondary)]">
-                  Yes! The Empathy Framework Core is Apache 2.0 licensed and completely free. The commercial
-                  plugins (Software Development and Healthcare) require a license, which comes with the book.
+                  The Empathy Framework uses Fair Source License 0.9. It's free for students, educators, and
+                  companies with 5 or fewer employees. Commercial licensing is required for companies with 6+ employees.
+                  The book includes your first year of commercial licensing at 50% off ($49.99 vs $99.99/year).
                 </p>
               </div>
 
@@ -261,11 +263,10 @@ export default function BookPage() {
               </div>
 
               <div className="pb-6">
-                <h3 className="text-xl font-bold mb-3">When will the book be complete?</h3>
+                <h3 className="text-xl font-bold mb-3">When will the book be available?</h3>
                 <p className="text-[var(--text-secondary)]">
-                  We're releasing chapters progressively. The theory section and first implementation examples
-                  are available now. All core content will be completed by Q2 2026. You'll get all updates
-                  automatically as they're released.
+                  The complete book, including all theory, implementation examples, and commercial plugins,
+                  will be released in December 2025. Pre-orders will be available soon to lock in the $49 price.
                 </p>
               </div>
             </div>
@@ -277,12 +278,12 @@ export default function BookPage() {
       <section className="py-20 gradient-primary text-white">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">Ready to Start?</h2>
+            <h2 className="text-4xl font-bold mb-6">Coming December 2025</h2>
             <p className="text-xl mb-8 opacity-90">
-              Join the early access program and start building anticipatory AI systems today.
+              The complete guide to building Level 4 Anticipatory AI systems with working commercial plugins.
             </p>
-            <button className="btn bg-white text-[var(--primary)] hover:bg-gray-100 text-lg px-8 py-4">
-              Purchase for $49
+            <button className="btn bg-white text-[var(--primary)] hover:bg-gray-100 text-lg px-8 py-4" disabled>
+              Pre-orders Opening Soon
             </button>
           </div>
         </div>
