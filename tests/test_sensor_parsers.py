@@ -272,6 +272,72 @@ class TestFHIRObservationParser:
         # Timestamp should be set to current time
         assert isinstance(readings[0].timestamp, datetime)
 
+    def test_parse_fhir_diastolic_bp(self):
+        """Test parsing FHIR diastolic BP observation"""
+        fhir_data = {
+            "resourceType": "Observation",
+            "code": {"coding": [{"system": "http://loinc.org", "code": "8462-4"}]},
+            "valueQuantity": {"value": 80, "unit": "mmHg"},
+            "effectiveDateTime": "2024-01-20T14:30:00Z",
+            "subject": {"reference": "Patient/67890"},
+        }
+
+        parser = FHIRObservationParser()
+        readings = parser.parse(json.dumps(fhir_data))
+
+        assert len(readings) == 1
+        assert readings[0].vital_type == VitalSignType.BLOOD_PRESSURE
+        assert readings[0].value == 80
+        assert readings[0].unit == "mmHg"
+        assert readings[0].metadata["loinc_code"] == "8462-4"
+
+    def test_parse_fhir_missing_value_quantity(self):
+        """Test parsing FHIR without valueQuantity"""
+        fhir_data = {
+            "resourceType": "Observation",
+            "code": {"coding": [{"system": "http://loinc.org", "code": "8867-4"}]},
+            "effectiveDateTime": "2024-01-20T14:30:00Z",
+            "subject": {"reference": "Patient/12345"},
+        }
+
+        parser = FHIRObservationParser()
+        readings = parser.parse(json.dumps(fhir_data))
+
+        # Should still parse but with None value
+        assert len(readings) == 1
+        assert readings[0].value is None
+
+    def test_parse_fhir_empty_coding_array(self):
+        """Test parsing FHIR with empty coding array"""
+        fhir_data = {
+            "resourceType": "Observation",
+            "code": {"coding": []},
+            "valueQuantity": {"value": 75},
+            "effectiveDateTime": "2024-01-20T14:30:00Z",
+            "subject": {"reference": "Patient/12345"},
+        }
+
+        parser = FHIRObservationParser()
+        readings = parser.parse(json.dumps(fhir_data))
+
+        assert readings == []
+
+    def test_parse_fhir_missing_subject(self):
+        """Test parsing FHIR without subject reference"""
+        fhir_data = {
+            "resourceType": "Observation",
+            "code": {"coding": [{"system": "http://loinc.org", "code": "8867-4"}]},
+            "valueQuantity": {"value": 75, "unit": "bpm"},
+            "effectiveDateTime": "2024-01-20T14:30:00Z",
+        }
+
+        parser = FHIRObservationParser()
+        readings = parser.parse(json.dumps(fhir_data))
+
+        # Should still parse but with empty patient_id
+        assert len(readings) == 1
+        assert readings[0].patient_id == ""
+
 
 class TestSimpleJSONParser:
     """Test Simple JSON parser"""
@@ -434,6 +500,37 @@ class TestSimpleJSONParser:
         readings = parser.parse(json.dumps(data))
 
         assert readings == []
+
+    def test_parse_simple_json_missing_vitals_key(self):
+        """Test parsing without vitals key"""
+        data = {"patient_id": "12345", "timestamp": "2024-01-20T14:30:00Z"}
+
+        parser = SimpleJSONParser()
+        readings = parser.parse(json.dumps(data))
+
+        assert readings == []
+
+    def test_parse_simple_json_all_vital_mappings(self):
+        """Test parsing all possible vital mapping keys"""
+        data = {
+            "patient_id": "12345",
+            "timestamp": "2024-01-20T14:30:00Z",
+            "vitals": {
+                "bp": 120,  # Generic BP
+                "temperature": 98.6,  # Generic temperature (defaults to F)
+            },
+        }
+
+        parser = SimpleJSONParser()
+        readings = parser.parse(json.dumps(data))
+
+        assert len(readings) == 2
+        bp_reading = next(r for r in readings if r.vital_type == VitalSignType.BLOOD_PRESSURE)
+        assert bp_reading.value == 120
+
+        temp_reading = next(r for r in readings if r.vital_type == VitalSignType.TEMPERATURE)
+        assert temp_reading.value == 98.6
+        assert temp_reading.unit == "°F"
 
 
 class TestSensorParserFactory:
@@ -663,6 +760,119 @@ class TestNormalizeVitals:
         normalized = normalize_vitals([])
 
         assert normalized == {}
+
+    def test_normalize_temperature_unknown_unit(self):
+        """Test normalizing temperature with unknown unit is skipped"""
+        reading = VitalSignReading(
+            vital_type=VitalSignType.TEMPERATURE,
+            value=310.15,
+            unit="K",  # Kelvin - not mapped in normalize_vitals
+            timestamp=datetime.now(),
+            source="thermometer",
+            patient_id="12345",
+        )
+
+        normalized = normalize_vitals([reading])
+
+        # Should not include temp_f or temp_c
+        assert "temp_f" not in normalized
+        assert "temp_c" not in normalized
+
+    def test_normalize_blood_pressure_edge_value(self):
+        """Test normalizing blood pressure at edge value (60)"""
+        # Test value exactly at 60 - should be treated as diastolic
+        reading = VitalSignReading(
+            vital_type=VitalSignType.BLOOD_PRESSURE,
+            value=60,
+            unit="mmHg",
+            timestamp=datetime.now(),
+            source="monitor",
+            patient_id="12345",
+        )
+
+        normalized = normalize_vitals([reading])
+
+        # At value=60, it should be diastolic (not > 60)
+        assert "diastolic_bp" in normalized
+        assert normalized["diastolic_bp"] == 60
+
+    def test_normalize_blood_pressure_above_threshold(self):
+        """Test normalizing blood pressure just above threshold"""
+        reading = VitalSignReading(
+            vital_type=VitalSignType.BLOOD_PRESSURE,
+            value=61,
+            unit="mmHg",
+            timestamp=datetime.now(),
+            source="monitor",
+            patient_id="12345",
+        )
+
+        normalized = normalize_vitals([reading])
+
+        # At value=61 (>60), it should be systolic
+        assert "systolic_bp" in normalized
+        assert normalized["systolic_bp"] == 61
+
+    def test_normalize_vitals_comprehensive(self):
+        """Test normalizing all vital types in a single call"""
+        readings = [
+            VitalSignReading(
+                VitalSignType.HEART_RATE, 85, "bpm", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.BLOOD_PRESSURE, 120, "mmHg", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.BLOOD_PRESSURE, 60, "mmHg", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.RESPIRATORY_RATE, 16, "/min", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.TEMPERATURE, 98.6, "°F", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.TEMPERATURE, 37.0, "°C", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.OXYGEN_SATURATION, 98, "%", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.MENTAL_STATUS, "alert", "text", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.PAIN_SCORE, 2, "0-10", datetime.now(), "monitor", "12345"
+            ),
+        ]
+
+        normalized = normalize_vitals(readings)
+
+        # Verify all vitals are present
+        assert normalized["hr"] == 85
+        assert normalized["systolic_bp"] == 120
+        assert normalized["diastolic_bp"] == 60
+        assert normalized["respiratory_rate"] == 16
+        assert normalized["temp_f"] == 98.6
+        assert normalized["temp_c"] == 37.0
+        assert normalized["o2_sat"] == 98
+        assert normalized["mental_status"] == "alert"
+        assert normalized["pain_score"] == 2
+
+    def test_normalize_vitals_ending_with_non_pain(self):
+        """Test normalizing vitals ending with non-pain reading"""
+        readings = [
+            VitalSignReading(
+                VitalSignType.PAIN_SCORE, 2, "0-10", datetime.now(), "monitor", "12345"
+            ),
+            VitalSignReading(
+                VitalSignType.HEART_RATE, 85, "bpm", datetime.now(), "monitor", "12345"
+            ),
+        ]
+
+        normalized = normalize_vitals(readings)
+
+        assert normalized["pain_score"] == 2
+        assert normalized["hr"] == 85
 
 
 class TestBaseSensorParser:
