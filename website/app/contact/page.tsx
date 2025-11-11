@@ -311,8 +311,8 @@ export default function ContactPage() {
               <div className="text-center p-6 bg-[var(--border)] bg-opacity-30 rounded-lg">
                 <div className="text-3xl mb-3">📧</div>
                 <h3 className="font-bold mb-2">Email</h3>
-                <a href="mailto:contact@smartaimemory.com" className="text-sm text-[var(--accent)] hover:underline">
-                  contact@smartaimemory.com
+                <a href="mailto:patrick.roebuck@pm.me" className="text-sm text-[var(--accent)] hover:underline">
+                  patrick.roebuck@pm.me
                 </a>
               </div>
 

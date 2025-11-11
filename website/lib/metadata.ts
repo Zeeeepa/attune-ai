@@ -138,7 +138,7 @@ export function generateStructuredData(type: 'organization' | 'product' | 'artic
         ],
         contactPoint: {
           '@type': 'ContactPoint',
-          email: 'contact@smartaimemory.com',
+          email: 'patrick.roebuck@pm.me',
           contactType: 'Customer Service',
         },
       };
