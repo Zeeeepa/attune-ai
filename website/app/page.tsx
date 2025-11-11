@@ -256,7 +256,7 @@ export default function Home() {
                 key={item.level}
                 className={`p-6 rounded-lg border-2 ${
                   item.highlight
-                    ? 'border-[var(--accent)] bg-[var(--accent)] bg-opacity-5'
+                    ? 'border-[var(--accent)] bg-[var(--accent)] text-white'
                     : 'border-[var(--border)]'
                 }`}
               >
@@ -264,18 +264,18 @@ export default function Home() {
                   <div
                     className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl ${
                       item.highlight
-                        ? 'bg-[var(--accent)] text-white'
+                        ? 'bg-white text-[var(--accent)]'
                         : 'bg-[var(--border)] text-[var(--muted)]'
                     }`}
                   >
                     {item.level}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">
+                    <h3 className={`text-xl font-bold mb-2 ${item.highlight ? 'text-white' : ''}`}>
                       Level {item.level}: {item.name}
                     </h3>
-                    <p className="text-[var(--text-secondary)] mb-2">{item.description}</p>
-                    <p className="text-sm text-[var(--muted)]">
+                    <p className={`mb-2 ${item.highlight ? 'text-white opacity-90' : 'text-[var(--text-secondary)]'}`}>{item.description}</p>
+                    <p className={`text-sm ${item.highlight ? 'text-white opacity-75' : 'text-[var(--muted)]'}`}>
                       <strong>Example:</strong> {item.example}
                     </p>
                   </div>
