@@ -95,7 +95,7 @@ Sent from smartaimemory.com contact form
   `;
 
   return sendEmail({
-    to: process.env.CONTACT_EMAIL || 'contact@smartaimemory.com',
+    to: process.env.CONTACT_EMAIL || 'patrick.roebuck@pm.me',
     subject: `Contact Form: ${topic} - ${name}`,
     text,
     html,

@@ -133,7 +133,7 @@ export default function PrivacyPage() {
                 <li><strong>Opt-Out:</strong> Unsubscribe from marketing communications</li>
                 <li><strong>Data Portability:</strong> Request your data in a machine-readable format</li>
               </ul>
-              <p>Contact us at contact@smartaimemory.com to exercise these rights.</p>
+              <p>Contact us at patrick.roebuck@pm.me to exercise these rights.</p>
 
               <h2>9. Security</h2>
               <p>
@@ -165,7 +165,7 @@ export default function PrivacyPage() {
               <h2>13. Contact Us</h2>
               <p>If you have questions about this Privacy Policy, contact us at:</p>
               <ul>
-                <li><strong>Email:</strong> contact@smartaimemory.com</li>
+                <li><strong>Email:</strong> patrick.roebuck@pm.me</li>
                 <li><strong>Website:</strong> smartaimemory.com/contact</li>
                 <li><strong>Company:</strong> Deep Study AI, LLC</li>
               </ul>

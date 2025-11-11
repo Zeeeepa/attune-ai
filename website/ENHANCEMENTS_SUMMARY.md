@@ -31,8 +31,8 @@ Successfully completed **all 7 next steps** for enhancing the Smart AI Memory we
 #### Configuration Required:
 ```bash
 SENDGRID_API_KEY=your_key
-SENDGRID_FROM_EMAIL=noreply@smartaimemory.com
-CONTACT_EMAIL=contact@smartaimemory.com
+SENDGRID_FROM_EMAIL=patrick.roebuck@pm.me
+CONTACT_EMAIL=patrick.roebuck@pm.me
 ```
 
 ---
@@ -302,8 +302,8 @@ All pages now have proper Open Graph tags including:
 ```bash
 # Email (SendGrid)
 SENDGRID_API_KEY=your_sendgrid_api_key
-SENDGRID_FROM_EMAIL=noreply@smartaimemory.com
-CONTACT_EMAIL=contact@smartaimemory.com
+SENDGRID_FROM_EMAIL=patrick.roebuck@pm.me
+CONTACT_EMAIL=patrick.roebuck@pm.me
 
 # Analytics (Plausible)
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN=smartaimemory.com
@@ -434,7 +434,7 @@ All documentation is included:
 If you need help with any of these features:
 - Check `DEPLOYMENT.md` for deployment help
 - Check `.env.example` for configuration
-- Contact: contact@smartaimemory.com
+- Contact: patrick.roebuck@pm.me
 - GitHub: https://github.com/Smart-AI-Memory/empathy
 
 ---

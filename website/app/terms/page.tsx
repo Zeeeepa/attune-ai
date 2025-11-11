@@ -215,7 +215,7 @@ export default function TermsPage() {
               <h2>15. Contact</h2>
               <p>Questions about these Terms? Contact us at:</p>
               <ul>
-                <li><strong>Email:</strong> contact@smartaimemory.com</li>
+                <li><strong>Email:</strong> patrick.roebuck@pm.me</li>
                 <li><strong>Website:</strong> smartaimemory.com/contact</li>
                 <li><strong>Company:</strong> Deep Study AI, LLC</li>
               </ul>

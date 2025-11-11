@@ -17,8 +17,8 @@ Create a `.env.local` file with the following variables:
 ```bash
 # Required for SendGrid email integration
 SENDGRID_API_KEY=your_sendgrid_api_key
-SENDGRID_FROM_EMAIL=noreply@smartaimemory.com
-CONTACT_EMAIL=contact@smartaimemory.com
+SENDGRID_FROM_EMAIL=patrick.roebuck@pm.me
+CONTACT_EMAIL=patrick.roebuck@pm.me
 
 # Required for Plausible Analytics
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN=smartaimemory.com
@@ -344,5 +344,5 @@ pm2 logs
 
 For deployment issues:
 - GitHub Issues: https://github.com/Smart-AI-Memory/empathy/issues
-- Email: contact@smartaimemory.com
+- Email: patrick.roebuck@pm.me
 - Documentation: smartaimemory.com/docs
