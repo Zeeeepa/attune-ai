@@ -206,17 +206,6 @@ export default function Home() {
                   Together, they create <strong>Level 5 Transformative Intelligence</strong> that learns and evolves with your projects.
                 </p>
               </div>
-
-              <div className="pt-6 border-t border-[var(--border)]">
-                <p className="text-sm text-[var(--muted)] italic text-center">
-                  "The framework transformed our AI development workflow. Instead of discovering
-                  issues weeks later during debugging, the wizards alerted us to emerging problems
-                  immediately. We shipped higher quality code, many times faster."
-                </p>
-                <p className="text-xs text-[var(--muted)] text-center mt-2">
-                  — Development team using Empathy Framework in production
-                </p>
-              </div>
             </div>
           </div>
         </div>
