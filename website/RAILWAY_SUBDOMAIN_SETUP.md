@@ -4,6 +4,14 @@ Quick guide to deploy your two subdomains on Railway tonight:
 - **wizards.smartaimemory.com** - Software & AI wizard examples
 - **healthcare.smartaimemory.com** - AI Nurse Florence dashboard
 
+## Important Note
+
+**Both subdomains are deployed from SEPARATE projects**, not from the main smartaimemory.com website.
+
+- The main website remains at `smartaimemory.com`
+- Wizard examples will be deployed from your separate wizards project
+- Healthcare dashboard will be deployed from your separate AI Nurse Florence project
+
 ## Step 1: Install Railway CLI
 
 ```bash
@@ -22,10 +30,11 @@ This will open a browser window for authentication.
 
 ### 3.1 Navigate to your wizards app directory
 
+**Important:** This should be your separate wizard examples project, NOT the main website.
+
 ```bash
-cd /path/to/wizards-showcase
-# Or if using the main website directory:
-cd /Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/website
+cd /path/to/your-wizards-project
+# Example: cd ~/projects/empathy-wizards-showcase
 ```
 
 ### 3.2 Initialize Railway project
@@ -74,8 +83,11 @@ CNAME: wizards → your-project.up.railway.app
 
 ### 4.1 Navigate to healthcare dashboard directory
 
+**Important:** This should be your separate healthcare project (AI Nurse Florence), NOT the main website.
+
 ```bash
-cd /path/to/healthcare-dashboard
+cd /path/to/your-healthcare-project
+# Example: cd ~/projects/ai-nurse-florence-dashboard
 ```
 
 ### 4.2 Initialize Railway project
