@@ -4,6 +4,14 @@ This guide will help you set up two subdomains for Smart AI Memory:
 1. **wizards.smartaimemory.com** - Software and AI wizard examples
 2. **healthcare.smartaimemory.com** - AI Nurse Florence dashboard
 
+## Important Note
+
+**Both subdomains are deployed from SEPARATE projects**, not from the main smartaimemory.com website.
+
+- The main website remains at `smartaimemory.com`
+- Wizard examples will be deployed from a separate wizards project
+- Healthcare dashboard will be deployed from a separate AI Nurse Florence project
+
 ## Prerequisites
 
 - Access to your domain registrar or DNS provider (where smartaimemory.com is registered)

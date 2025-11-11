@@ -2,6 +2,14 @@
 
 Quick guide for adding CNAME records in whois.com for your Railway deployments.
 
+## Important Note
+
+**Both subdomains are deployed from SEPARATE projects**, not from the main smartaimemory.com website.
+
+- The main website remains at `smartaimemory.com`
+- Wizard examples will be deployed from your separate wizards project to `wizards.smartaimemory.com`
+- Healthcare dashboard will be deployed from your separate AI Nurse Florence project to `healthcare.smartaimemory.com`
+
 ## Step-by-Step: Adding CNAME Records in Whois.com
 
 ### 1. Log in to Whois.com
@@ -198,9 +206,11 @@ If you can't find DNS settings:
 
 ## Complete Workflow for Tonight
 
+**Important:** Deploy from your SEPARATE project directories, not the main website.
+
 ```bash
-# 1. Deploy wizards app
-cd /Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/website
+# 1. Deploy wizards app from your separate wizards project
+cd /path/to/your-wizards-project
 railway login
 railway init
 railway variables set NEXT_PUBLIC_SITE_URL=https://wizards.smartaimemory.com
@@ -213,8 +223,8 @@ railway up
 #    Host: wizards
 #    Value: [paste Railway CNAME]
 
-# 4. Deploy healthcare app
-cd /path/to/healthcare-dashboard
+# 4. Deploy healthcare app from your separate healthcare project
+cd /path/to/your-healthcare-project
 railway init
 railway variables set NEXT_PUBLIC_SITE_URL=https://healthcare.smartaimemory.com
 railway up
