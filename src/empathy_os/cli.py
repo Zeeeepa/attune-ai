@@ -29,10 +29,10 @@ def cmd_version(args):
         version = get_version("empathy")
     except Exception:
         version = "unknown"
-    print(f"Empathy v{version}")
-    print("Copyright 2025 Smart-AI-Memory")
-    print("Licensed under Fair Source License 0.9")
-    print("\n✨ Built with Claude Code + MemDocs + VS Code transformative stack")
+    logger.info(f"Empathy v{version}")
+    logger.info("Copyright 2025 Smart-AI-Memory")
+    logger.info("Licensed under Fair Source License 0.9")
+    logger.info("\n✨ Built with Claude Code + MemDocs + VS Code transformative stack")
 
 
 def cmd_init(args):
@@ -49,15 +49,15 @@ def cmd_init(args):
     if config_format == "yaml":
         config.to_yaml(output_path)
         logger.info(f"Created YAML configuration file: {output_path}")
-        print(f"✓ Created YAML configuration: {output_path}")
+        logger.info(f"✓ Created YAML configuration: {output_path}")
     elif config_format == "json":
         config.to_json(output_path)
         logger.info(f"Created JSON configuration file: {output_path}")
-        print(f"✓ Created JSON configuration: {output_path}")
+        logger.info(f"✓ Created JSON configuration: {output_path}")
 
-    print("\nNext steps:")
-    print(f"  1. Edit {output_path} to customize settings")
-    print("  2. Use 'empathy run' to start using the framework")
+    logger.info("\nNext steps:")
+    logger.info(f"  1. Edit {output_path} to customize settings")
+    logger.info("  2. Use 'empathy run' to start using the framework")
 
 
 def cmd_validate(args):
@@ -69,15 +69,15 @@ def cmd_validate(args):
         config = load_config(filepath=filepath, use_env=False)
         config.validate()
         logger.info(f"Configuration validation successful: {filepath}")
-        print(f"✓ Configuration valid: {filepath}")
-        print(f"\n  User ID: {config.user_id}")
-        print(f"  Target Level: {config.target_level}")
-        print(f"  Confidence Threshold: {config.confidence_threshold}")
-        print(f"  Persistence Backend: {config.persistence_backend}")
-        print(f"  Metrics Enabled: {config.metrics_enabled}")
+        logger.info(f"✓ Configuration valid: {filepath}")
+        logger.info(f"\n  User ID: {config.user_id}")
+        logger.info(f"  Target Level: {config.target_level}")
+        logger.info(f"  Confidence Threshold: {config.confidence_threshold}")
+        logger.info(f"  Persistence Backend: {config.persistence_backend}")
+        logger.info(f"  Metrics Enabled: {config.metrics_enabled}")
     except Exception as e:
         logger.error(f"Configuration validation failed: {e}")
-        print(f"✗ Configuration invalid: {e}")
+        logger.error(f"✗ Configuration invalid: {e}")
         sys.exit(1)
 
 
@@ -93,22 +93,22 @@ def cmd_info(args):
         logger.debug("Loading default configuration")
         config = load_config()
 
-    print("=== Empathy Framework Info ===\n")
-    print("Configuration:")
-    print(f"  User ID: {config.user_id}")
-    print(f"  Target Level: {config.target_level}")
-    print(f"  Confidence Threshold: {config.confidence_threshold}")
-    print("\nPersistence:")
-    print(f"  Backend: {config.persistence_backend}")
-    print(f"  Path: {config.persistence_path}")
-    print(f"  Enabled: {config.persistence_enabled}")
-    print("\nMetrics:")
-    print(f"  Enabled: {config.metrics_enabled}")
-    print(f"  Path: {config.metrics_path}")
-    print("\nPattern Library:")
-    print(f"  Enabled: {config.pattern_library_enabled}")
-    print(f"  Pattern Sharing: {config.pattern_sharing}")
-    print(f"  Confidence Threshold: {config.pattern_confidence_threshold}")
+    logger.info("=== Empathy Framework Info ===\n")
+    logger.info("Configuration:")
+    logger.info(f"  User ID: {config.user_id}")
+    logger.info(f"  Target Level: {config.target_level}")
+    logger.info(f"  Confidence Threshold: {config.confidence_threshold}")
+    logger.info("\nPersistence:")
+    logger.info(f"  Backend: {config.persistence_backend}")
+    logger.info(f"  Path: {config.persistence_path}")
+    logger.info(f"  Enabled: {config.persistence_enabled}")
+    logger.info("\nMetrics:")
+    logger.info(f"  Enabled: {config.metrics_enabled}")
+    logger.info(f"  Path: {config.metrics_path}")
+    logger.info("\nPattern Library:")
+    logger.info(f"  Enabled: {config.pattern_library_enabled}")
+    logger.info(f"  Pattern Sharing: {config.pattern_sharing}")
+    logger.info(f"  Confidence Threshold: {config.pattern_confidence_threshold}")
 
 
 def cmd_patterns_list(args):
@@ -124,26 +124,26 @@ def cmd_patterns_list(args):
             library = PatternPersistence.load_from_sqlite(filepath)
         else:
             logger.error(f"Unknown pattern library format: {format_type}")
-            print(f"✗ Unknown format: {format_type}")
+            logger.error(f"✗ Unknown format: {format_type}")
             sys.exit(1)
 
         logger.info(f"Loaded {len(library.patterns)} patterns from {filepath}")
-        print(f"=== Pattern Library: {filepath} ===\n")
-        print(f"Total patterns: {len(library.patterns)}")
-        print(f"Total agents: {len(library.agent_contributions)}")
+        logger.info(f"=== Pattern Library: {filepath} ===\n")
+        logger.info(f"Total patterns: {len(library.patterns)}")
+        logger.info(f"Total agents: {len(library.agent_contributions)}")
 
         if library.patterns:
-            print("\nPatterns:")
+            logger.info("\nPatterns:")
             for pattern_id, pattern in library.patterns.items():
-                print(f"\n  [{pattern_id}] {pattern.name}")
-                print(f"    Agent: {pattern.agent_id}")
-                print(f"    Type: {pattern.pattern_type}")
-                print(f"    Confidence: {pattern.confidence:.2f}")
-                print(f"    Usage: {pattern.usage_count}")
-                print(f"    Success Rate: {pattern.success_rate:.2f}")
+                logger.info(f"\n  [{pattern_id}] {pattern.name}")
+                logger.info(f"    Agent: {pattern.agent_id}")
+                logger.info(f"    Type: {pattern.pattern_type}")
+                logger.info(f"    Confidence: {pattern.confidence:.2f}")
+                logger.info(f"    Usage: {pattern.usage_count}")
+                logger.info(f"    Success Rate: {pattern.success_rate:.2f}")
     except FileNotFoundError:
         logger.error(f"Pattern library not found: {filepath}")
-        print(f"✗ Pattern library not found: {filepath}")
+        logger.error(f"✗ Pattern library not found: {filepath}")
         sys.exit(1)
 
 
@@ -164,14 +164,14 @@ def cmd_patterns_export(args):
             library = PatternPersistence.load_from_sqlite(input_file)
         else:
             logger.error(f"Unknown input format: {input_format}")
-            print(f"✗ Unknown input format: {input_format}")
+            logger.error(f"✗ Unknown input format: {input_format}")
             sys.exit(1)
 
         logger.info(f"Loaded {len(library.patterns)} patterns from {input_file}")
-        print(f"✓ Loaded {len(library.patterns)} patterns from {input_file}")
+        logger.info(f"✓ Loaded {len(library.patterns)} patterns from {input_file}")
     except Exception as e:
         logger.error(f"Failed to load patterns: {e}")
-        print(f"✗ Failed to load patterns: {e}")
+        logger.error(f"✗ Failed to load patterns: {e}")
         sys.exit(1)
 
     # Save to output format
@@ -182,10 +182,10 @@ def cmd_patterns_export(args):
             PatternPersistence.save_to_sqlite(library, output_file)
 
         logger.info(f"Saved {len(library.patterns)} patterns to {output_file}")
-        print(f"✓ Saved {len(library.patterns)} patterns to {output_file}")
+        logger.info(f"✓ Saved {len(library.patterns)} patterns to {output_file}")
     except Exception as e:
         logger.error(f"Failed to save patterns: {e}")
-        print(f"✗ Failed to save patterns: {e}")
+        logger.error(f"✗ Failed to save patterns: {e}")
         sys.exit(1)
 
 
@@ -202,22 +202,22 @@ def cmd_metrics_show(args):
         stats = collector.get_user_stats(user_id)
 
         logger.info(f"Successfully retrieved metrics for user: {user_id}")
-        print(f"=== Metrics for User: {user_id} ===\n")
-        print(f"Total Operations: {stats['total_operations']}")
-        print(f"Success Rate: {stats['success_rate']:.1%}")
-        print(f"Average Response Time: {stats.get('avg_response_time_ms', 0):.0f} ms")
-        print(f"\nFirst Use: {stats['first_use']}")
-        print(f"Last Use: {stats['last_use']}")
+        logger.info(f"=== Metrics for User: {user_id} ===\n")
+        logger.info(f"Total Operations: {stats['total_operations']}")
+        logger.info(f"Success Rate: {stats['success_rate']:.1%}")
+        logger.info(f"Average Response Time: {stats.get('avg_response_time_ms', 0):.0f} ms")
+        logger.info(f"\nFirst Use: {stats['first_use']}")
+        logger.info(f"Last Use: {stats['last_use']}")
 
-        print("\nEmpathy Level Usage:")
-        print(f"  Level 1: {stats.get('level_1_count', 0)} uses")
-        print(f"  Level 2: {stats.get('level_2_count', 0)} uses")
-        print(f"  Level 3: {stats.get('level_3_count', 0)} uses")
-        print(f"  Level 4: {stats.get('level_4_count', 0)} uses")
-        print(f"  Level 5: {stats.get('level_5_count', 0)} uses")
+        logger.info("\nEmpathy Level Usage:")
+        logger.info(f"  Level 1: {stats.get('level_1_count', 0)} uses")
+        logger.info(f"  Level 2: {stats.get('level_2_count', 0)} uses")
+        logger.info(f"  Level 3: {stats.get('level_3_count', 0)} uses")
+        logger.info(f"  Level 4: {stats.get('level_4_count', 0)} uses")
+        logger.info(f"  Level 5: {stats.get('level_5_count', 0)} uses")
     except Exception as e:
         logger.error(f"Failed to retrieve metrics for user {user_id}: {e}")
-        print(f"✗ Failed to retrieve metrics: {e}")
+        logger.error(f"✗ Failed to retrieve metrics: {e}")
         sys.exit(1)
 
 
@@ -231,13 +231,13 @@ def cmd_state_list(args):
     users = manager.list_users()
 
     logger.info(f"Found {len(users)} saved user states")
-    print(f"=== Saved User States: {state_dir} ===\n")
-    print(f"Total users: {len(users)}")
+    logger.info(f"=== Saved User States: {state_dir} ===\n")
+    logger.info(f"Total users: {len(users)}")
 
     if users:
-        print("\nUsers:")
+        logger.info("\nUsers:")
         for user_id in users:
-            print(f"  - {user_id}")
+            logger.info(f"  - {user_id}")
 
 
 def main():

@@ -361,7 +361,7 @@ class AgentOrchestrationWizard(BaseWizard):
                         for kw in ["StateGraph", "AgentState", "shared_state", "TypedDict"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -374,7 +374,7 @@ class AgentOrchestrationWizard(BaseWizard):
                     # Look for error handling patterns
                     if "try:" in content and "agent" in content.lower():
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -421,7 +421,7 @@ class AgentOrchestrationWizard(BaseWizard):
                         for kw in ["asyncio.gather", "ThreadPool", "parallel", "concurrent"]
                     ):
                         return False
-            except:
+            except OSError:
                 pass
         return True
 
@@ -442,6 +442,6 @@ class AgentOrchestrationWizard(BaseWizard):
                         kw in content for kw in ["logger", "trace", "span", "metrics", "telemetry"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False

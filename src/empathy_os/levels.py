@@ -54,13 +54,42 @@ class EmpathyLevel(ABC):
     @abstractmethod
     def respond(self, context: dict[str, Any]) -> dict[str, Any]:
         """
-        Respond to a situation at this empathy level
+        Respond to a situation at this empathy level.
+
+        This abstract method defines the core behavior for each empathy level.
+        Subclasses must implement level-specific response logic that corresponds
+        to their empathy sophistication.
 
         Args:
-            context: Situation context
+            context: dict[str, Any]
+                Dictionary containing situation-specific context. The structure
+                varies by level but typically includes fields like 'request',
+                'observed_need', 'current_state', 'trajectory', or 'problem_class'.
 
         Returns:
-            Response appropriate to this level
+            dict[str, Any]
+                A response dictionary containing:
+                - 'level': int - The empathy level (1-5)
+                - 'level_name': str - Human-readable level name
+                - 'action': str - Type of action taken
+                - 'description': str - Description of the response
+                - 'initiative': str - Initiative level ('none', 'guided', 'proactive', 'anticipatory', 'systems_thinking')
+                - 'reasoning': str - Explanation of why this level's approach was used
+                - Additional fields specific to the level implementation
+
+        Raises:
+            KeyError: If required context keys are missing
+            ValueError: If context values are invalid or insufficient
+
+        Note:
+            - Level 1 (Reactive): Only provide what was explicitly requested
+            - Level 2 (Guided): Ask clarifying questions and suggest options
+            - Level 3 (Proactive): Identify and offer help for observed needs
+            - Level 4 (Anticipatory): Predict future needs and prepare solutions
+            - Level 5 (Systems): Design solutions that help at scale
+
+            Implementations should record actions via self.record_action() and
+            maintain consistency in the response format across levels.
         """
         pass
 

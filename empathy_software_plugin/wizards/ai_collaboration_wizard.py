@@ -445,7 +445,7 @@ class AICollaborationWizard(BaseWizard):
                     if "ai.generate" in content or "openai." in content or "anthropic." in content:
                         if "context" not in content.lower() and "history" not in content.lower():
                             reactive_count += 1
-            except:
+            except OSError:
                 pass
         return reactive_count
 
@@ -494,6 +494,6 @@ class AICollaborationWizard(BaseWizard):
                     content = f.read()
                     if any(kw in content for kw in keywords):
                         return True
-            except:
+            except OSError:
                 pass
         return False

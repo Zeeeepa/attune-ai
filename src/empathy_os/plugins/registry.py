@@ -8,7 +8,6 @@ Licensed under the Apache License, Version 2.0
 """
 
 import logging
-import sys
 from importlib.metadata import entry_points
 
 from .base import BasePlugin, BaseWizard, PluginValidationError
@@ -47,11 +46,8 @@ class PluginRegistry:
 
         self.logger.info("Auto-discovering plugins...")
 
-        # Different API for Python 3.9 vs 3.10+
-        if sys.version_info >= (3, 10):
-            discovered = entry_points(group="empathy_framework.plugins")
-        else:
-            discovered = entry_points().get("empathy_framework.plugins", [])
+        # Python 3.10+ has modern entry_points API with group parameter
+        discovered = entry_points(group="empathy_framework.plugins")
 
         for ep in discovered:
             try:

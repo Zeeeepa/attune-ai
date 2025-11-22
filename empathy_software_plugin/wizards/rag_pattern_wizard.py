@@ -387,7 +387,7 @@ class RAGPatternWizard(BaseWizard):
                         kw in content.lower() for kw in ["rerank", "cross-encoder", "cohere.rerank"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -399,7 +399,7 @@ class RAGPatternWizard(BaseWizard):
                     content = f.read()
                     if any(kw in content.lower() for kw in ["hybrid", "bm25", "keyword", "fusion"]):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -414,7 +414,7 @@ class RAGPatternWizard(BaseWizard):
                         for kw in ["query_rewrite", "query_expansion", "decompose", "intent"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -429,7 +429,7 @@ class RAGPatternWizard(BaseWizard):
                         for kw in ["evaluate", "metrics", "ground_truth", "precision", "recall"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -444,6 +444,6 @@ class RAGPatternWizard(BaseWizard):
                         for kw in ["prune", "summarize", "deduplicate", "context_budget"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False

@@ -388,7 +388,7 @@ class MultiModelWizard(BaseWizard):
                         for kw in ["ModelRouter", "ModelRegistry", "AbstractModel", "UnifiedAPI"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -400,7 +400,7 @@ class MultiModelWizard(BaseWizard):
                     content = f.read()
                     if "fallback" in content.lower() or "retry" in content.lower():
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -419,7 +419,7 @@ class MultiModelWizard(BaseWizard):
                         "track" in content.lower() or "log" in content.lower()
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -434,7 +434,7 @@ class MultiModelWizard(BaseWizard):
                         for kw in ["latency", "metrics", "monitoring", "telemetry"]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -446,7 +446,7 @@ class MultiModelWizard(BaseWizard):
                     content = f.read()
                     if "cache" in content.lower() or "budget" in content.lower():
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -458,7 +458,7 @@ class MultiModelWizard(BaseWizard):
                     content = f.read()
                     if any(kw in content for kw in ["Pydantic", "validate", "schema", "BaseModel"]):
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -471,7 +471,7 @@ class MultiModelWizard(BaseWizard):
                     # Look for specific version strings
                     if "gpt-4-" in content or "claude-3" in content or "version" in content.lower():
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -492,6 +492,6 @@ class MultiModelWizard(BaseWizard):
                         ]
                     ):
                         return True
-            except:
+            except OSError:
                 pass
         return False
