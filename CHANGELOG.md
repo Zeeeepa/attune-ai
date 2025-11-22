@@ -5,6 +5,24 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2025-11-22
+
+### Changed
+
+**Project Synchronization**
+- Updated all Coach IDE extension examples to v1.7.1
+  - VSCode Extension Complete: synchronized version
+  - JetBrains Plugin (Basic): synchronized version and change notes
+  - JetBrains Plugin Complete: synchronized version and change notes
+- Resolved merge conflict in JetBrains Plugin plugin.xml
+- Standardized version numbers across all example projects
+- Updated all change notes to reflect Production/Stable status
+
+**Quality Improvements**
+- Ensured consistent version alignment with core framework
+- Improved IDE extension documentation and metadata
+- Enhanced change notes with test coverage (90.71%) and Level 4 predictions
+
 ## [1.7.0] - 2025-11-21
 
 ### Added - Phase 1: Foundation Hardening
