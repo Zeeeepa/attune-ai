@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.deepstudyai"
-version = "1.7.0"
+version = "1.7.1"
 
 repositories {
     mavenCentral()
@@ -45,15 +45,15 @@ tasks {
         untilBuild.set("243.*")
 
         changeNotes.set("""
-            <h2>1.7.0 - Production/Stable Release</h2>
+            <h2>1.7.1 - Maintenance Release</h2>
             <ul>
+                <li>Version synchronization with core framework</li>
+                <li>Updated metadata and documentation</li>
                 <li>Production-ready stable release</li>
                 <li>16 specialized wizards for software development</li>
                 <li>Level 4 Anticipatory predictions (30-90 days)</li>
                 <li>Multi-wizard collaboration</li>
-                <li>Full IntelliJ Platform integration</li>
                 <li>90.71% test coverage</li>
-                <li>Real-time code analysis</li>
             </ul>
         """.trimIndent())
     }
