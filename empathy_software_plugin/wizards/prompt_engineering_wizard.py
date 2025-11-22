@@ -414,7 +414,7 @@ class PromptEngineeringWizard(BaseWizard):
             with open(filepath) as f:
                 content = f.read()
                 return bool(re.search(r"v\d+\.\d+\.\d+|version:", content, re.IGNORECASE))
-        except:
+        except OSError:
             return False
 
     def _estimate_token_count(self, filepath: str) -> int:
@@ -422,5 +422,5 @@ class PromptEngineeringWizard(BaseWizard):
         try:
             with open(filepath) as f:
                 return len(f.read()) // 4
-        except:
+        except OSError:
             return 0

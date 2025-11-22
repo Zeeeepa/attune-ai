@@ -99,7 +99,7 @@ class AIDocumentationWizard(BaseWizard):
             try:
                 with open(doc_file) as f:
                     content = f.read()
-            except:
+            except OSError:
                 continue
 
             # AI needs explicit architecture context
@@ -161,7 +161,7 @@ class AIDocumentationWizard(BaseWizard):
             try:
                 with open(code_file) as f:
                     content = f.read()
-            except:
+            except OSError:
                 continue
 
             # Check for missing type hints (AI relies on these)
@@ -453,7 +453,7 @@ class AIDocumentationWizard(BaseWizard):
                 with open(filepath) as f:
                     if "convention" in f.read().lower():
                         return True
-            except:
+            except OSError:
                 pass
         return False
 
@@ -473,7 +473,7 @@ class AIDocumentationWizard(BaseWizard):
                     why_sections += content.lower().count("rationale")
                     why_sections += content.lower().count("decision")
                     why_chars += why_sections * 100  # Estimate
-            except:
+            except OSError:
                 pass
 
         if total_chars == 0:

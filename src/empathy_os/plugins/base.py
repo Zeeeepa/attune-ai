@@ -67,17 +67,40 @@ class BaseWizard(ABC):
 
         This is the main entry point for all wizards. The context structure
         is domain-specific but the return format should follow a standard pattern.
+        Subclasses must implement domain-specific analysis logic that aligns with
+        the wizard's empathy level.
 
         Args:
-            context: Domain-specific context (code, patient data, financial records, etc.)
+            context: dict[str, Any]
+                Domain-specific context dictionary. Must contain all fields returned
+                by get_required_context(). Examples:
+                - Software: {'code': str, 'file_path': str, 'language': str}
+                - Healthcare: {'patient_id': str, 'vitals': dict, 'medications': list}
+                - Finance: {'transactions': list, 'account': dict, 'period': str}
 
         Returns:
-            Dictionary containing:
-                - issues: List of current issues found (Levels 1-3)
-                - predictions: List of future issues (Level 4)
-                - recommendations: Actionable next steps
-                - patterns: Patterns detected (for pattern library)
-                - confidence: Confidence score (0.0 to 1.0)
+            dict[str, Any]
+                Analysis results dictionary containing:
+                - 'issues': list[dict] - Current issues found (Levels 1-3 analysis)
+                - 'predictions': list[dict] - Future issues predicted (Level 4 analysis)
+                - 'recommendations': list[dict] - Actionable next steps
+                - 'patterns': list[str] - Patterns detected for the pattern library
+                - 'confidence': float - Confidence score between 0.0 and 1.0
+                - 'wizard': str - Name of the wizard that performed analysis
+                - 'empathy_level': int - Empathy level of this analysis (1-5)
+                - 'timestamp': str - ISO format timestamp of analysis
+
+        Raises:
+            ValueError: If context is invalid or missing required fields
+            RuntimeError: If analysis fails due to domain-specific errors
+            TimeoutError: If analysis takes too long to complete
+
+        Note:
+            - Validate context using self.validate_context() at the beginning
+            - Each issue/prediction should include 'severity', 'description', 'affected_component'
+            - Use self.contribute_patterns() to extract learnings for the pattern library
+            - Confidence scores should reflect uncertainty in the analysis
+            - This method is async to support long-running analyses
         """
         pass
 
@@ -86,12 +109,27 @@ class BaseWizard(ABC):
         """
         Declare what context fields this wizard needs.
 
-        Returns:
-            List of required context keys
+        This method defines the contract between the caller and the wizard.
+        The caller must provide all declared fields before calling analyze().
+        This enables validation via validate_context() and helps with introspection.
 
-        Example:
-            ['code', 'file_path', 'language'] for software wizard
-            ['patient_id', 'vitals', 'medications'] for healthcare wizard
+        Returns:
+            list[str]
+                List of required context field names (keys). Each string should be
+                a simple identifier that matches the keys in context dictionaries
+                passed to analyze().
+
+        Examples:
+            Software wizard returns: ['code', 'file_path', 'language']
+            Healthcare wizard returns: ['patient_id', 'vitals', 'medications']
+            Finance wizard returns: ['transactions', 'account_id', 'period']
+
+        Note:
+            - Must return at least one field (even if minimal)
+            - Field names should match exactly what analyze() expects in context
+            - Order is not significant but consistency helps with documentation
+            - Consider validation requirements when declaring fields
+            - Used by validate_context() to check required fields before analyze()
         """
         pass
 
@@ -160,8 +198,29 @@ class BasePlugin(ABC):
         """
         Return metadata about this plugin.
 
+        This method provides essential information about the plugin that the
+        framework uses for loading, validation, and discovery. It must return
+        consistent metadata across multiple calls.
+
         Returns:
-            PluginMetadata instance
+            PluginMetadata
+                A PluginMetadata instance containing:
+                - name: str - Human-readable plugin name (e.g., 'Software Plugin')
+                - version: str - Semantic version string (e.g., '1.0.0')
+                - domain: str - Domain this plugin serves (e.g., 'software', 'healthcare', 'finance')
+                - description: str - Brief description of plugin functionality
+                - author: str - Plugin author or organization name
+                - license: str - License identifier (e.g., 'Apache-2.0', 'MIT')
+                - requires_core_version: str - Minimum core framework version (e.g., '1.0.0')
+                - dependencies: list[str] - Optional list of required packages
+
+        Note:
+            - Called during plugin initialization to validate compatibility
+            - Used for plugin discovery and listing
+            - Should be immutable (return same values each call)
+            - Version should follow semantic versioning
+            - Domain names should be lowercase and consistent across plugins
+            - Core version requirement ensures framework compatibility
         """
         pass
 
@@ -170,14 +229,41 @@ class BasePlugin(ABC):
         """
         Register all wizards provided by this plugin.
 
+        This method defines all analysis wizards available in this plugin.
+        Wizards are lazy-instantiated by get_wizard() when first requested.
+        This method is called during plugin initialization.
+
         Returns:
-            Dictionary mapping wizard_id -> Wizard class
+            dict[str, type[BaseWizard]]
+                Dictionary mapping wizard identifiers to Wizard classes (not instances).
+                Keys should be lowercase, snake_case identifiers. Values should be
+                uninstantiated class references.
+
+        Returns:
+            dict[str, type[BaseWizard]]
+                Mapping structure:
+                {
+                    'wizard_id': WizardClass,
+                    'another_wizard': AnotherWizardClass,
+                    ...
+                }
 
         Example:
+            Software plugin might return:
             {
                 'security': SecurityWizard,
                 'performance': PerformanceWizard,
+                'maintainability': MaintainabilityWizard,
+                'accessibility': AccessibilityWizard,
             }
+
+        Note:
+            - Return only the class, not instances (instantiation is lazy)
+            - Use consistent, descriptive wizard IDs
+            - All returned classes must be subclasses of BaseWizard
+            - Can return empty dict {} if plugin provides no wizards initially
+            - Called once during initialization via initialize()
+            - Framework caches results in self._wizards
         """
         pass
 
