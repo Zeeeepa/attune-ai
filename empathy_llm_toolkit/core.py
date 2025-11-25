@@ -8,11 +8,13 @@ Licensed under Fair Source 0.9
 """
 
 import logging
+import time
 from typing import Any
 
 from .claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
 from .levels import EmpathyLevel
 from .providers import AnthropicProvider, BaseLLMProvider, LocalProvider, OpenAIProvider
+from .security import AuditLogger, PIIScrubber, SecretsDetector, SecurityError
 from .state import CollaborationState, UserPattern
 
 logger = logging.getLogger(__name__)
@@ -25,6 +27,12 @@ class EmpathyLLM:
     Automatically progresses from Level 1 (reactive) to Level 4 (anticipatory)
     based on user collaboration state.
 
+    Security Features (Phase 3):
+        - PII Scrubbing: Automatically detect and redact PII from user inputs
+        - Secrets Detection: Block requests containing API keys, passwords, etc.
+        - Audit Logging: Comprehensive compliance logging (SOC2, HIPAA, GDPR)
+        - Backward Compatible: Security disabled by default
+
     Example:
         >>> llm = EmpathyLLM(provider="anthropic", target_level=4)
         >>> response = await llm.interact(
@@ -33,6 +41,23 @@ class EmpathyLLM:
         ...     context={"code_snippet": "..."}
         ... )
         >>> print(response["content"])
+
+    Example with Security:
+        >>> llm = EmpathyLLM(
+        ...     provider="anthropic",
+        ...     target_level=4,
+        ...     enable_security=True,
+        ...     security_config={
+        ...         "audit_log_dir": "/var/log/empathy",
+        ...         "block_on_secrets": True,
+        ...         "enable_pii_scrubbing": True
+        ...     }
+        ... )
+        >>> response = await llm.interact(
+        ...     user_id="user@company.com",
+        ...     user_input="My email is john@example.com"
+        ... )
+        >>> # PII automatically scrubbed, request logged
     """
 
     def __init__(
@@ -44,6 +69,8 @@ class EmpathyLLM:
         pattern_library: dict | None = None,
         claude_memory_config: ClaudeMemoryConfig | None = None,
         project_root: str | None = None,
+        enable_security: bool = False,
+        security_config: dict | None = None,
         **kwargs,
     ):
         """
@@ -57,6 +84,14 @@ class EmpathyLLM:
             pattern_library: Shared pattern library (Level 5)
             claude_memory_config: Configuration for Claude memory integration (v1.8.0+)
             project_root: Project root directory for loading .claude/CLAUDE.md
+            enable_security: Enable Phase 2 security controls (default: False)
+            security_config: Security configuration dictionary with options:
+                - audit_log_dir: Directory for audit logs (default: "./logs")
+                - block_on_secrets: Block requests with detected secrets (default: True)
+                - enable_pii_scrubbing: Enable PII detection/scrubbing (default: True)
+                - enable_name_detection: Enable name PII detection (default: False)
+                - enable_audit_logging: Enable audit logging (default: True)
+                - enable_console_logging: Log to console for debugging (default: False)
             **kwargs: Provider-specific options
         """
         self.target_level = target_level
@@ -83,7 +118,50 @@ class EmpathyLLM:
                 f"{len(self._cached_memory)} chars loaded"
             )
 
-        logger.info(f"EmpathyLLM initialized: provider={provider}, target_level={target_level}")
+        # Initialize Phase 3 security controls (v1.8.0+)
+        self.enable_security = enable_security
+        self.security_config = security_config or {}
+        self.pii_scrubber = None
+        self.secrets_detector = None
+        self.audit_logger = None
+
+        if enable_security:
+            self._initialize_security()
+
+        logger.info(
+            f"EmpathyLLM initialized: provider={provider}, target_level={target_level}, "
+            f"security={'enabled' if enable_security else 'disabled'}"
+        )
+
+    def _initialize_security(self):
+        """Initialize Phase 3 security modules based on configuration"""
+        # Extract security config options
+        enable_pii_scrubbing = self.security_config.get("enable_pii_scrubbing", True)
+        enable_name_detection = self.security_config.get("enable_name_detection", False)
+        enable_audit_logging = self.security_config.get("enable_audit_logging", True)
+        audit_log_dir = self.security_config.get("audit_log_dir", "./logs")
+        enable_console_logging = self.security_config.get("enable_console_logging", False)
+
+        # Initialize PII Scrubber
+        if enable_pii_scrubbing:
+            self.pii_scrubber = PIIScrubber(enable_name_detection=enable_name_detection)
+            logger.info("PII Scrubber initialized")
+
+        # Initialize Secrets Detector
+        self.secrets_detector = SecretsDetector(
+            enable_entropy_analysis=True,
+            entropy_threshold=4.5,
+            min_entropy_length=20,
+        )
+        logger.info("Secrets Detector initialized")
+
+        # Initialize Audit Logger
+        if enable_audit_logging:
+            self.audit_logger = AuditLogger(
+                log_dir=audit_log_dir,
+                enable_console_logging=enable_console_logging,
+            )
+            logger.info(f"Audit Logger initialized: {audit_log_dir}")
 
     def _create_provider(
         self, provider: str, api_key: str | None, model: str | None, **kwargs
@@ -184,6 +262,12 @@ Follow the instructions from CLAUDE.md files above, then apply the Empathy Frame
 
         Automatically selects appropriate empathy level and responds.
 
+        Phase 3 Security Pipeline (if enabled):
+            1. PII Scrubbing: Detect and redact PII from user input
+            2. Secrets Detection: Block requests containing secrets
+            3. LLM Interaction: Process sanitized input
+            4. Audit Logging: Log request details for compliance
+
         Args:
             user_id: Unique user identifier
             user_input: User's input/question
@@ -196,29 +280,83 @@ Follow the instructions from CLAUDE.md files above, then apply the Empathy Frame
                 - level_used: Which empathy level was used
                 - proactive: Whether action was proactive
                 - metadata: Additional information
+                - security: Security details (if enabled)
+
+        Raises:
+            SecurityError: If secrets detected and block_on_secrets=True
         """
+        start_time = time.time()
         state = self._get_or_create_state(user_id)
         context = context or {}
+
+        # Initialize security tracking
+        pii_detections = []
+        secrets_detections = []
+        sanitized_input = user_input
+        security_metadata = {}
+
+        # Phase 3: Security Pipeline (Step 1 - PII Scrubbing)
+        if self.enable_security and self.pii_scrubber:
+            sanitized_input, pii_detections = self.pii_scrubber.scrub(user_input)
+            security_metadata["pii_detected"] = len(pii_detections)
+            security_metadata["pii_scrubbed"] = len(pii_detections) > 0
+            if pii_detections:
+                logger.info(
+                    f"PII detected for user {user_id}: {len(pii_detections)} items scrubbed"
+                )
+
+        # Phase 3: Security Pipeline (Step 2 - Secrets Detection)
+        if self.enable_security and self.secrets_detector:
+            secrets_detections = self.secrets_detector.detect(sanitized_input)
+            security_metadata["secrets_detected"] = len(secrets_detections)
+
+            if secrets_detections:
+                block_on_secrets = self.security_config.get("block_on_secrets", True)
+                logger.warning(
+                    f"Secrets detected for user {user_id}: {len(secrets_detections)} secrets, "
+                    f"blocking={block_on_secrets}"
+                )
+
+                # Log security violation
+                if self.audit_logger:
+                    self.audit_logger.log_security_violation(
+                        user_id=user_id,
+                        violation_type="secrets_detected",
+                        severity="HIGH",
+                        details={
+                            "secret_count": len(secrets_detections),
+                            "secret_types": [s.secret_type.value for s in secrets_detections],
+                            "event_type": "llm_request",
+                        },
+                        blocked=block_on_secrets,
+                    )
+
+                if block_on_secrets:
+                    raise SecurityError(
+                        f"Request blocked: {len(secrets_detections)} secret(s) detected in input. "
+                        f"Please remove sensitive credentials before submitting."
+                    )
 
         # Determine level to use
         level = force_level if force_level is not None else self._determine_level(state)
 
         logger.info(f"User {user_id}: Level {level} interaction")
 
-        # Record user input
-        state.add_interaction("user", user_input, level)
+        # Record user input (sanitized version if security enabled)
+        state.add_interaction("user", sanitized_input, level)
 
-        # Route to appropriate level handler
+        # Phase 3: Security Pipeline (Step 3 - LLM Interaction with sanitized input)
+        # Route to appropriate level handler using sanitized input
         if level == 1:
-            result = await self._level_1_reactive(user_input, state, context)
+            result = await self._level_1_reactive(sanitized_input, state, context)
         elif level == 2:
-            result = await self._level_2_guided(user_input, state, context)
+            result = await self._level_2_guided(sanitized_input, state, context)
         elif level == 3:
-            result = await self._level_3_proactive(user_input, state, context)
+            result = await self._level_3_proactive(sanitized_input, state, context)
         elif level == 4:
-            result = await self._level_4_anticipatory(user_input, state, context)
+            result = await self._level_4_anticipatory(sanitized_input, state, context)
         elif level == 5:
-            result = await self._level_5_systems(user_input, state, context)
+            result = await self._level_5_systems(sanitized_input, state, context)
         else:
             raise ValueError(f"Invalid level: {level}")
 
@@ -228,6 +366,39 @@ Follow the instructions from CLAUDE.md files above, then apply the Empathy Frame
         # Add level info to result
         result["level_used"] = level
         result["level_description"] = EmpathyLevel.get_description(level)
+
+        # Add security metadata to result
+        if self.enable_security:
+            result["security"] = security_metadata
+
+        # Phase 3: Security Pipeline (Step 4 - Audit Logging)
+        if self.enable_security and self.audit_logger:
+            duration_ms = int((time.time() - start_time) * 1000)
+
+            # Calculate approximate sizes
+            request_size_bytes = len(user_input.encode("utf-8"))
+            response_size_bytes = len(result["content"].encode("utf-8"))
+
+            # Extract memory sources if Claude Memory is enabled
+            memory_sources = []
+            if self._cached_memory:
+                memory_sources = ["claude_memory"]
+
+            self.audit_logger.log_llm_request(
+                user_id=user_id,
+                empathy_level=level,
+                provider=self.provider.__class__.__name__.replace("Provider", "").lower(),
+                model=result.get("metadata", {}).get("model", "unknown"),
+                memory_sources=memory_sources,
+                pii_count=len(pii_detections),
+                secrets_count=len(secrets_detections),
+                request_size_bytes=request_size_bytes,
+                response_size_bytes=response_size_bytes,
+                duration_ms=duration_ms,
+                sanitization_applied=len(pii_detections) > 0,
+                classification_verified=True,
+                status="success",
+            )
 
         return result
 

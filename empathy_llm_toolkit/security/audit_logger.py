@@ -417,6 +417,8 @@ class AuditLogger:
                     "hipaa_compliant": classification == "SENSITIVE"
                     and encrypted
                     or classification != "SENSITIVE",
+                    "soc2_compliant": secrets_detected == 0
+                    and classification in ["PUBLIC", "INTERNAL", "SENSITIVE"],
                     "classification_verified": classification
                     in ["PUBLIC", "INTERNAL", "SENSITIVE"],
                 },
@@ -580,6 +582,11 @@ class AuditLogger:
                     "user_notified": violation.user_notified,
                     "manager_notified": violation.manager_notified,
                     "security_team_notified": violation.security_team_notified,
+                },
+                "compliance": {
+                    "gdpr_compliant": blocked,
+                    "hipaa_compliant": blocked,
+                    "soc2_compliant": blocked,
                 },
                 **kwargs,
             },

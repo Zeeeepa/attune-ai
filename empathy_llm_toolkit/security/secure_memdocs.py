@@ -303,6 +303,9 @@ class MemDocsStorage:
         try:
             pattern_file = self.storage_dir / f"{pattern_id}.json"
 
+            # Ensure parent directory exists
+            pattern_file.parent.mkdir(parents=True, exist_ok=True)
+
             pattern_data = {"pattern_id": pattern_id, "content": content, "metadata": metadata}
 
             with open(pattern_file, "w", encoding="utf-8") as f:
@@ -561,6 +564,10 @@ class SecureMemDocsIntegration:
         )
 
         try:
+            # Validate content
+            if not content or not content.strip():
+                raise ValueError("Content cannot be empty")
+
             # Step 1: PII Scrubbing (GDPR, HIPAA)
             sanitized_content, pii_detections = self.pii_scrubber.scrub(content)
             pii_count = len(pii_detections)

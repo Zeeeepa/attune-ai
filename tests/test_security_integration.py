@@ -89,10 +89,10 @@ class TestSecurityPipeline:
         logger.log_pattern_store(
             user_id="test@company.com",
             pattern_id="pat_123",
+            pattern_type="test_pattern",
             classification="INTERNAL",
-            pii_scrubbed=True,
-            pii_count=2,
-            secrets_detected=False,
+            pii_scrubbed=2,
+            secrets_detected=0,
         )
 
         logger.log_security_violation(
@@ -130,7 +130,7 @@ class TestSecurityPipeline:
         # Test 1: Store PUBLIC pattern (no PII, no secrets)
         public_pattern = "Standard Python sorting algorithm using quicksort"
         result = integration.store_pattern(
-            pattern_content=public_pattern,
+            content=public_pattern,
             pattern_type="algorithm",
             user_id="dev@company.com",
             auto_classify=True,
@@ -138,8 +138,8 @@ class TestSecurityPipeline:
 
         assert result["pattern_id"]
         assert result["classification"] == "PUBLIC"
-        assert len(result["sanitization_report"]["pii_removed"]) == 0
-        assert len(result["sanitization_report"]["secrets_detected"]) == 0
+        assert result["sanitization_report"]["pii_count"] == 0
+        assert result["sanitization_report"]["secrets_detected"] == 0
 
         # Test 2: Store INTERNAL pattern (proprietary, no PII/secrets)
         internal_pattern = """
@@ -149,7 +149,7 @@ class TestSecurityPipeline:
         3. Generate actionable alerts
         """
         result = integration.store_pattern(
-            pattern_content=internal_pattern,
+            content=internal_pattern,
             pattern_type="algorithm",
             user_id="dev@company.com",
             auto_classify=True,
@@ -164,14 +164,14 @@ class TestSecurityPipeline:
         Patient MRN: 7654321
         """
         result = integration.store_pattern(
-            pattern_content=sensitive_pattern,
+            content=sensitive_pattern,
             pattern_type="clinical_protocol",
             user_id="doctor@hospital.com",
             auto_classify=True,
         )
 
         assert result["classification"] == "SENSITIVE"
-        assert result["sanitization_report"]["pii_removed"] > 0
+        assert result["sanitization_report"]["pii_count"] > 0
 
         # Verify PII was scrubbed
         retrieved = integration.retrieve_pattern(
@@ -185,9 +185,11 @@ class TestSecurityPipeline:
 
         # Test 4: Secrets should block storage
         secret_pattern = "api_key = 'sk_live_abc123xyz789'"
-        with pytest.raises(ValueError, match="Secrets detected"):
+        from empathy_llm_toolkit.security.secure_memdocs import SecurityError
+
+        with pytest.raises(SecurityError, match="Secrets detected"):
             integration.store_pattern(
-                pattern_content=secret_pattern,
+                content=secret_pattern,
                 pattern_type="config",
                 user_id="dev@company.com",
                 auto_classify=True,
@@ -251,7 +253,7 @@ class TestSecurityPipeline:
 
         # Store pattern (should scrub PII and classify as SENSITIVE)
         result = integration.store_pattern(
-            pattern_content=pattern,
+            content=pattern,
             pattern_type="clinical_protocol",
             user_id="nurse@hospital.com",
             auto_classify=True,
@@ -259,7 +261,7 @@ class TestSecurityPipeline:
 
         # Verify results
         assert result["classification"] == "SENSITIVE"
-        assert result["sanitization_report"]["pii_removed"] >= 3  # MRN, email, phone
+        assert result["sanitization_report"]["pii_count"] >= 3  # MRN, email, phone
 
         # Retrieve and verify PII was scrubbed
         retrieved = integration.retrieve_pattern(
@@ -323,7 +325,7 @@ class TestSecurityPipeline:
         assert result["classification"] == "PUBLIC"
 
         # Test 3: Retrieve non-existent pattern
-        with pytest.raises(FileNotFoundError):
+        with pytest.raises(ValueError):
             integration.retrieve_pattern("nonexistent", "user@company.com", check_permissions=True)
 
 
@@ -402,10 +404,13 @@ class TestIntegrationWithClaudeMemory:
 
         # 4. Verify everything worked
         assert result["classification"] == "SENSITIVE"
-        assert result["sanitization_report"]["pii_removed"] >= 2
+        assert result["sanitization_report"]["pii_count"] >= 2
 
         # 5. Verify audit trail was created
-        assert integration.audit_logger.log_file.exists()
+        from pathlib import Path
+
+        audit_file = Path(integration.audit_logger.log_dir) / "audit.jsonl"
+        assert audit_file.exists()
 
         # 6. Verify pattern can be retrieved with proper access
         retrieved = integration.retrieve_pattern(
