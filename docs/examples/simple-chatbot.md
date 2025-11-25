@@ -448,9 +448,9 @@ if __name__ == "__main__":
 5. **Advanced features**: Multi-agent coordination, adaptive learning
 
 **Related examples**:
-- [Code Review Assistant](code-review-assistant.md) - Level 3-4 for PR reviews
-- [Clinical Protocol Monitor](clinical-protocol-monitor.md) - Healthcare SBAR
-- [Patient Handoff Predictor](patient-handoff-predictor.md) - Level 4 healthcare
+- [SBAR Clinical Handoff](sbar-clinical-handoff.md) - Healthcare Level 4 ($2M+ ROI)
+- [Multi-Agent Coordination](multi-agent-team-coordination.md) - Team collaboration (80% faster)
+- [Adaptive Learning](adaptive-learning-system.md) - Self-improving AI (+28% acceptance)
 
 ---
 
@@ -473,4 +473,4 @@ if __name__ == "__main__":
 
 ---
 
-**Need help?** See the [full documentation](https://empathy-framework.readthedocs.io) or [open an issue](https://github.com/Smart-AI-Memory/empathy-framework/issues).
+**Need help?** See the [API Reference](../api-reference/index.md) or [open an issue](https://github.com/Smart-AI-Memory/empathy-framework/issues).
