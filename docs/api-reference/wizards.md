@@ -4,7 +4,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 ## Overview
 
-**Empathy Framework includes 16 industry-specific wizards** that provide:
+**Empathy Framework includes industry-specific wizards** that provide:
 
 - :material-shield-check: **Built-in Security** - PII scrubbing, secrets detection, audit logging
 - :material-file-document: **Domain Knowledge** - Industry-specific prompts and workflows
@@ -20,9 +20,9 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 === ":fontawesome-solid-hospital: Healthcare"
 
-    ## Healthcare Wizard
+    ## Healthcare Wizards
 
-    **HIPAA-compliant AI assistant** for medical applications with enhanced PHI protection.
+    **20+ HIPAA-compliant AI assistants** for medical applications with enhanced PHI protection.
 
     ### Key Features
 
