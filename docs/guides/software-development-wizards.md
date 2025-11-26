@@ -418,20 +418,6 @@ async def parallel_analysis(codebase_path):
 
 ---
 
-## Performance Metrics
-
-Teams using Software Development Wizards report:
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| **Production bugs** | 12/month | 3/month | -75% |
-| **Security incidents** | 2/quarter | 0/quarter | -100% |
-| **Performance issues** | 5/month | 1/month | -80% |
-| **Time debugging** | 8 hours/week | 2 hours/week | -75% |
-| **Test coverage** | 65% | 85% | +31% |
-
----
-
 ## Example: Complete Development Workflow
 
 ```python

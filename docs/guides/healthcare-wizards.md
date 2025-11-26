@@ -9,10 +9,9 @@ Complete guide to HIPAA-compliant Level 4 Anticipatory wizards for healthcare ap
 The **Healthcare Wizards** provide specialized AI assistants for medical applications with built-in PHI protection, HIPAA compliance, and clinical decision support.
 
 **Key Benefits**:
-- :material-hospital-box: **Improve patient outcomes** - Catch deterioration 30-90 minutes earlier
+- :material-hospital-box: **Improve patient outcomes** - Earlier detection of clinical deterioration
 - :material-shield-check: **HIPAA compliant by default** - Automatic PHI scrubbing and encryption
-- :material-clock-fast: **Save nursing time** - Reduce documentation from 45 min to 5 min per patient
-- :material-currency-usd: **$2M+ annual ROI** - For typical 100-bed hospital
+- :material-clock-fast: **Save nursing time** - Streamlined documentation and handoff processes
 
 !!! warning "Legal Disclaimer"
     These wizards provide clinical decision support but do not replace clinical judgment. All recommendations must be reviewed by qualified healthcare professionals. Consult legal counsel for HIPAA compliance in your specific implementation.
@@ -610,23 +609,6 @@ Every PHI access is logged:
   "success": true
 }
 ```
-
----
-
-## ROI Calculator
-
-For a typical **100-bed hospital**:
-
-| Benefit | Annual Value |
-|---------|--------------|
-| **Nursing time saved** (5 min/patient/day) | $650,000 |
-| **Earlier sepsis detection** (improved outcomes) | $1,200,000 |
-| **Reduced medication errors** | $400,000 |
-| **Prevented falls** | $350,000 |
-| **Better documentation** (fewer denials) | $200,000 |
-| **Total Benefits** | **$2,800,000** |
-| **Implementation Cost** | ($300,000) |
-| **Net ROI** | **$2.5M/year** |
 
 ---
 
