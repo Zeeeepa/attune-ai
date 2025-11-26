@@ -34,6 +34,7 @@ nav:
       - Adaptive Learning: guides/adaptive-learning.md
       - Multi-Agent Coordination: guides/multi-agent-coordination.md
       - Webhook Integration: guides/webhook-integration.md
+      - AI Development Wizards: AI_DEVELOPMENT_WIZARDS.md
   - API Reference:
       - Overview: api-reference/index.md
       - EmpathyOS: api-reference/empathy-os.md

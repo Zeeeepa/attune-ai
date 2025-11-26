@@ -339,6 +339,83 @@ for issue in result['security_issues']:
 
 ---
 
+## AI Development Wizards
+
+**Level 4 Anticipatory wizards** specifically designed for developers working with AI systems.
+
+These wizards help developers avoid common pitfalls when building AI-powered applications by detecting issues **before** they become critical.
+
+### The Four AI Development Wizards
+
+#### 1. Prompt Engineering Quality Wizard
+**Alerts developers to prompt quality degradation before it impacts AI performance**
+
+- Detects prompt-code drift (code evolving faster than prompts)
+- Identifies context bloat and inefficiencies
+- Predicts maintenance burden from prompt sprawl
+- Warns about missing versioning and examples
+
+#### 2. AI Context Window Management Wizard
+**Predicts context window issues before hitting limits**
+
+- Monitors context usage growth trajectories
+- Detects unbounded dynamic context sources
+- Alerts about conversation memory accumulation
+- Identifies missing chunking strategies
+
+#### 3. AI Collaboration Pattern Wizard
+**Analyzes HOW developers work with AI and predicts effectiveness limits**
+
+- Assesses current collaboration maturity level (1-5)
+- Detects reactive-only AI usage patterns
+- Identifies missing feedback loops
+- Recommends growth path to higher empathy levels
+
+#### 4. AI-First Documentation Wizard
+**Ensures documentation serves both AI and humans effectively**
+
+- Detects implicit conventions that confuse AI
+- Identifies missing "why" context in documentation
+- Warns about documentation drift
+- Recommends AI collaboration guides
+
+### Key Benefits
+
+- **Avoid mistakes we made** - Learn from experience building the Empathy Framework
+- **Proactive improvement** - Fix issues before they become costly
+- **Faster AI adoption** - Skip the trial-and-error phase
+- **Better AI output** - Higher quality AI suggestions
+
+### Quick Example
+
+```python
+from empathy_os.plugins import get_global_registry
+
+# Get software plugin
+registry = get_global_registry()
+software = registry.get_plugin('software')
+
+# Analyze prompt engineering quality
+PromptWizard = software.get_wizard('prompt_engineering')
+wizard = PromptWizard()
+
+result = await wizard.analyze({
+    'prompt_files': ['prompts/code_review.txt'],
+    'project_path': '/path/to/project',
+    'version_history': git_commits
+})
+
+# View anticipatory alerts
+for prediction in result['predictions']:
+    if prediction['impact'] == 'high':
+        print(f"[ALERT] {prediction['alert']}")
+        print(f"Prevention: {prediction['prevention_steps']}")
+```
+
+**See Also:** [Complete AI Development Wizards Guide](../AI_DEVELOPMENT_WIZARDS.md) - Detailed documentation with examples and patterns
+
+---
+
 ## Additional Wizards
 
 ### Accounting Wizard

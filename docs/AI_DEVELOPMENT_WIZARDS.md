@@ -303,14 +303,18 @@ They prove the framework works by **using it on itself** - helping developers bu
 
 ---
 
-## Files Created
+## Implementation Status
 
-1. [`prompt_engineering_wizard.py`](../empathy_software_plugin/wizards/prompt_engineering_wizard.py) - Prompt quality analysis
-2. [`ai_context_wizard.py`](../empathy_software_plugin/wizards/ai_context_wizard.py) - Context window management
-3. [`ai_collaboration_wizard.py`](../empathy_software_plugin/wizards/ai_collaboration_wizard.py) - Collaboration pattern analysis
-4. [`ai_documentation_wizard.py`](../empathy_software_plugin/wizards/ai_documentation_wizard.py) - AI-first documentation
+These wizards are currently in planning/development phase as part of the Software Plugin:
 
-All four implement `BaseWizard` interface and operate at **Level 4 (Anticipatory) Empathy**.
+1. **Prompt Engineering Wizard** (`prompt_engineering_wizard.py`) - Prompt quality analysis
+2. **AI Context Window Wizard** (`ai_context_wizard.py`) - Context window management
+3. **AI Collaboration Pattern Wizard** (`ai_collaboration_wizard.py`) - Collaboration pattern analysis
+4. **AI-First Documentation Wizard** (`ai_documentation_wizard.py`) - AI-first documentation
+
+All four will implement `BaseWizard` interface and operate at **Level 4 (Anticipatory) Empathy**.
+
+**Want to contribute?** These wizards are excellent candidates for community contribution. See [Contributing](contributing.md) to get started.
 
 ---
 
