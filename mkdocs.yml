@@ -31,6 +31,8 @@ nav:
   - Guides:
       - Security Architecture: guides/security-architecture.md
       - HIPAA Compliance: guides/hipaa-compliance.md
+      - Healthcare Wizards: guides/healthcare-wizards.md
+      - Software Development Wizards: guides/software-development-wizards.md
       - Adaptive Learning: guides/adaptive-learning.md
       - Multi-Agent Coordination: guides/multi-agent-coordination.md
       - Webhook Integration: guides/webhook-integration.md
