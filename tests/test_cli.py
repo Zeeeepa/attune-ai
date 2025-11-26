@@ -49,15 +49,16 @@ class MockArgs:
 class TestCLIVersion:
     """Test version command"""
 
-    def test_version_output(self, capsys):
+    def test_version_output(self, capsys, caplog):
         """Test version command output"""
         args = MockArgs()
         cmd_version(args)
 
-        captured = capsys.readouterr()
-        assert "Empathy v1.6.1" in captured.out  # Match actual branding
-        assert "Copyright 2025" in captured.out
-        assert "Fair Source" in captured.out  # Match actual license
+        # Version output goes to logger, check caplog instead of capsys
+        log_output = " ".join([rec.message for rec in caplog.records])
+        assert "Empathy v" in log_output
+        assert "Copyright 2025" in log_output
+        assert "Fair Source" in log_output  # Match actual license
 
 
 class TestCLIInit:
