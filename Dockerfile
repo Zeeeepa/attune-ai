@@ -3,14 +3,14 @@ FROM node:20-slim
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json* ./
+# Copy package files from website directory
+COPY website/package.json website/package-lock.json* ./
 
 # Install dependencies
 RUN npm ci --legacy-peer-deps
 
-# Copy application files
-COPY . .
+# Copy website files
+COPY website/ ./
 
 # Build the Next.js application (using Railway-specific build)
 RUN npm run build:railway
