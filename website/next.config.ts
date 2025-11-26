@@ -7,15 +7,6 @@ const nextConfig: NextConfig = {
     // Ignore ESLint errors during production builds
     ignoreDuringBuilds: true,
   },
-  async redirects() {
-    return [
-      {
-        source: '/framework-docs',
-        destination: '/framework-docs/',
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;
