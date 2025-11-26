@@ -68,10 +68,10 @@ export default function Home() {
                 <div className="text-4xl">🧠</div>
                 <h3 className="text-2xl font-bold">Empathy Framework</h3>
               </div>
-              <p className="text-sm text-[var(--muted)] mb-4">v1.8.0-alpha with Claude Memory Integration</p>
+              <p className="text-sm text-[var(--muted)] mb-4">v1.8.0-beta with Claude Memory Integration</p>
               <p className="text-[var(--text-secondary)] mb-6">
                 A 5-level maturity model for AI-human collaboration, progressing from reactive
-                responses to Level 4 Anticipatory Intelligence. Includes 16+ specialized wizards
+                responses to Level 4 Anticipatory Intelligence. Includes 45+ specialized wizards
                 with comprehensive guides for healthcare, software development, and AI collaboration.
               </p>
               <div className="space-y-3 mb-6">
@@ -165,7 +165,7 @@ export default function Home() {
               <div className="text-3xl mb-4">🏥</div>
               <h3 className="text-xl font-bold mb-3">Healthcare Wizards</h3>
               <p className="text-[var(--text-secondary)] mb-4 text-sm">
-                8 HIPAA-compliant wizards for clinical protocols, SBAR handoffs, medication safety, and patient monitoring.
+                18 HIPAA-compliant wizards for clinical protocols, SBAR handoffs, medication safety, and patient monitoring.
               </p>
               <Link href="/docs#healthcare-wizards" className="text-[var(--primary)] text-sm font-medium hover:underline">
                 View Healthcare Guide →
@@ -176,7 +176,7 @@ export default function Home() {
               <div className="text-3xl mb-4">💻</div>
               <h3 className="text-xl font-bold mb-3">Software Development</h3>
               <p className="text-[var(--text-secondary)] mb-4 text-sm">
-                8 wizards for debugging, testing, performance, security, and AI development patterns.
+                12 wizards for debugging, testing, performance, security, and AI development patterns.
               </p>
               <Link href="/docs#software-development-wizards" className="text-[var(--secondary)] text-sm font-medium hover:underline">
                 View Software Guide →

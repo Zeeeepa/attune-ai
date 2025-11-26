@@ -23,7 +23,6 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 - :material-key: **Mandatory Encryption** - AES-256-GCM for all PHI
 - :material-file-document-check: **90-Day Retention** - HIPAA §164.528 compliance
 - :material-clipboard-list: **Comprehensive Audit Trail** - HIPAA §164.312(b) compliant
-- :material-star: **$2M+ Annual ROI** - For 100-bed hospitals
 
 ### Quick Example
 
