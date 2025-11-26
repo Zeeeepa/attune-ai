@@ -13,475 +13,414 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 ---
 
-## Healthcare Wizards
+## Quick Start
 
-**20+ HIPAA-compliant AI assistants** for medical applications with enhanced PHI protection.
+!!! tip "Choose Your Industry"
+    Click the tab for your industry to see the specialized wizard documentation.
 
-### Key Features
+=== ":fontawesome-solid-hospital: Healthcare"
 
-- :material-shield-lock: **Enhanced PHI Protection** - 10+ medical patterns (MRN, Patient ID, DOB, etc.)
-- :material-key: **Mandatory Encryption** - AES-256-GCM for all PHI
-- :material-file-document-check: **90-Day Retention** - HIPAA §164.528 compliance
-- :material-clipboard-list: **Comprehensive Audit Trail** - HIPAA §164.312(b) compliant
+    ## Healthcare Wizards
 
-### Quick Example
+    **20+ HIPAA-compliant AI assistants** for medical applications with enhanced PHI protection.
 
-```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import HealthcareWizard
+    ### Key Features
 
-# Initialize with security enabled
-llm = EmpathyLLM(
-    provider="anthropic",
-    api_key=os.getenv("ANTHROPIC_API_KEY"),
-    enable_security=True
-)
+    - :material-shield-lock: **Enhanced PHI Protection** - 10+ medical patterns (MRN, Patient ID, DOB, etc.)
+    - :material-key: **Mandatory Encryption** - AES-256-GCM for all PHI
+    - :material-file-document-check: **90-Day Retention** - HIPAA §164.528 compliance
+    - :material-clipboard-list: **Comprehensive Audit Trail** - HIPAA §164.312(b) compliant
+    - :material-star: **$2M+ Annual ROI** - For 100-bed hospitals
 
-# Create HIPAA-compliant wizard
-wizard = HealthcareWizard(llm)
-
-# Process patient information (PHI is automatically scrubbed)
-result = await wizard.process(
-    user_input="Patient John Doe (MRN 123456) needs follow-up for diabetes",
-    user_id="doctor@hospital.com"
-)
-
-# PHI was removed before sending to LLM
-print(result['security_report']['phi_removed'])  # ['mrn', 'name']
-```
-
-??? info "What PHI Patterns Are Detected?"
-
-    **Standard PII:**
-    - Email addresses
-    - Phone numbers
-    - SSN
-    - Physical addresses
-    - Credit card numbers
-    - IP addresses
-
-    **Healthcare-Specific PHI:**
-    - **MRN** - Medical Record Numbers
-    - **Patient IDs** - Patient identifiers
-    - **DOB** - Dates of birth
-    - **Insurance IDs** - Insurance/policy numbers
-    - **Provider NPI** - National Provider Identifiers
-    - **CPT Codes** - Medical procedure codes
-    - **ICD Codes** - Diagnosis codes
-    - **Medications** - Drug names (optional, configurable)
-
-??? example "Clinical Handoff (SBAR Protocol)"
+    ### Quick Example
 
     ```python
+    from empathy_llm_toolkit import EmpathyLLM
+    from empathy_llm_toolkit.wizards import HealthcareWizard
+
+    # Initialize with security enabled
+    llm = EmpathyLLM(
+        provider="anthropic",
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+        enable_security=True
+    )
+
+    # Create HIPAA-compliant wizard
     wizard = HealthcareWizard(llm)
 
-    # Generate SBAR handoff report
-    result = await wizard.generate_handoff(
-        patient_id="PT123456",
-        protocol="SBAR",  # Situation, Background, Assessment, Recommendation
-        handoff_type="shift_change"
+    # Process patient information (PHI is automatically scrubbed)
+    result = await wizard.process(
+        user_input="Patient John Doe (MRN 123456) needs follow-up for diabetes",
+        user_id="doctor@hospital.com"
     )
 
-    print(result['sbar_report'])
-    # Output:
-    # **Situation:** 65yo male, chest pain x2h, vitals stable
-    # **Background:** Hx of MI 2018, on aspirin, metoprolol
-    # **Assessment:** Possible STEMI, EKG shows ST elevation
-    # **Recommendation:** Activate cath lab, continue monitoring
+    # PHI was removed before sending to LLM
+    print(result['security_report']['phi_removed'])  # ['mrn', 'name']
     ```
 
-!!! warning "HIPAA Compliance Requirements"
-    To maintain HIPAA compliance:
+    ??? info "What PHI Patterns Are Detected?"
 
-    1. ✅ Enable security: `EmpathyLLM(enable_security=True)`
-    2. ✅ Use encryption at rest for stored data
-    3. ✅ Review audit logs daily
-    4. ✅ Implement access controls
-    5. ✅ Sign Business Associate Agreement with LLM provider
+        **Standard PII:**
+        - Email addresses
+        - Phone numbers
+        - SSN
+        - Physical addresses
+        - Credit card numbers
+        - IP addresses
 
-**See Also:** [SBAR Clinical Handoff Example](../examples/sbar-clinical-handoff.md)
+        **Healthcare-Specific PHI:**
+        - **MRN** - Medical Record Numbers
+        - **Patient IDs** - Patient identifiers
+        - **DOB** - Dates of birth
+        - **Insurance IDs** - Insurance/policy numbers
+        - **Provider NPI** - National Provider Identifiers
+        - **CPT Codes** - Medical procedure codes
+        - **ICD Codes** - Diagnosis codes
+        - **Medications** - Drug names (optional, configurable)
 
----
+    ??? example "Clinical Handoff (SBAR Protocol)"
 
-## Finance Wizard
+        ```python
+        wizard = HealthcareWizard(llm)
 
-**SOC2-compliant AI assistant** for financial services with enhanced PII/PCI protection.
+        # Generate SBAR handoff report
+        result = await wizard.generate_handoff(
+            patient_id="PT123456",
+            protocol="SBAR",  # Situation, Background, Assessment, Recommendation
+            handoff_type="shift_change"
+        )
 
-### Key Features
+        print(result['sbar_report'])
+        # Output:
+        # **Situation:** 65yo male, chest pain x2h, vitals stable
+        # **Background:** Hx of MI 2018, on aspirin, metoprolol
+        # **Assessment:** Possible STEMI, EKG shows ST elevation
+        # **Recommendation:** Activate cath lab, continue monitoring
+        ```
 
-- :material-credit-card: **PCI DSS Compliance** - Credit card detection and masking
-- :material-bank: **Financial PII** - Account numbers, routing numbers, SSN
-- :material-chart-line: **Risk Analysis** - AML, fraud detection, compliance checks
-- :material-file-document: **Audit Trail** - SOC2 Type II compliant logging
+    !!! warning "HIPAA Compliance Requirements"
+        To maintain HIPAA compliance:
 
-### Quick Example
+        1. ✅ Enable security: `EmpathyLLM(enable_security=True)`
+        2. ✅ Use encryption at rest for stored data
+        3. ✅ Review audit logs daily
+        4. ✅ Implement access controls
+        5. ✅ Sign Business Associate Agreement with LLM provider
 
-```python
-from empathy_llm_toolkit.wizards import FinanceWizard
+    **See Also:** [SBAR Clinical Handoff Example](../examples/sbar-clinical-handoff.md)
 
-wizard = FinanceWizard(llm)
+=== ":fontawesome-solid-building-columns: Finance"
 
-# Analyze transaction for compliance
-result = await wizard.analyze_transaction(
-    transaction_data={
-        "amount": 15000,
-        "source_account": "****1234",
-        "destination_account": "****5678",
-        "country": "US"
-    },
-    check_aml=True,
-    check_fraud=True
-)
+    ## Finance Wizard
 
-if result['flags']:
-    print(f"⚠️  Compliance flags: {result['flags']}")
-```
+    **SOC2-compliant AI assistant** for financial services with enhanced PII/PCI protection.
 
-??? info "What Financial PII Is Protected?"
+    ### Key Features
 
-    - **Credit Card Numbers** - Full card number detection and masking
-    - **Account Numbers** - Bank account numbers
-    - **Routing Numbers** - ABA routing numbers
-    - **SSN** - Social Security Numbers
-    - **ITIN** - Individual Taxpayer Identification Numbers
-    - **EIN** - Employer Identification Numbers
-    - **Investment Account IDs** - Brokerage account numbers
+    - :material-credit-card: **PCI DSS Compliance** - Credit card detection and masking
+    - :material-bank: **Financial PII** - Account numbers, routing numbers, SSN
+    - :material-chart-line: **Risk Analysis** - AML, fraud detection, compliance checks
+    - :material-file-document: **Audit Trail** - SOC2 Type II compliant logging
 
-!!! tip "Risk Analysis Features"
-    The Finance Wizard includes built-in risk analysis:
-
-    - **AML (Anti-Money Laundering)** - Flags suspicious transactions
-    - **Fraud Detection** - Pattern-based fraud indicators
-    - **Sanctions Screening** - OFAC compliance checks
-    - **KYC Validation** - Know Your Customer verification
-
----
-
-## Legal Wizard
-
-**AI assistant** for legal practices with document classification and privilege protection.
-
-### Key Features
-
-- :material-gavel: **Attorney-Client Privilege** - Automatic privilege detection
-- :material-file-document-multiple: **Document Classification** - Contract, brief, discovery types
-- :material-text-search: **Legal Citation** - Find relevant case law
-- :material-shield-lock: **Confidentiality** - Work product protection
-
-### Quick Example
-
-```python
-from empathy_llm_toolkit.wizards import LegalWizard
-
-wizard = LegalWizard(llm)
-
-# Analyze legal document
-result = await wizard.analyze_document(
-    document_text="...",
-    document_type="contract",
-    jurisdiction="CA"
-)
-
-print(result['risk_factors'])
-print(result['suggested_clauses'])
-```
-
-??? example "Contract Review"
+    ### Quick Example
 
     ```python
-    # Review contract for risks
-    result = await wizard.review_contract(
-        contract_text="...",
-        contract_type="employment",
-        jurisdiction="CA",
-        check_for=[
-            "non_compete",
-            "indemnification",
-            "termination",
-            "ip_assignment"
-        ]
+    from empathy_llm_toolkit.wizards import FinanceWizard
+
+    wizard = FinanceWizard(llm)
+
+    # Analyze transaction for compliance
+    result = await wizard.analyze_transaction(
+        transaction_data={
+            "amount": 15000,
+            "source_account": "****1234",
+            "destination_account": "****5678",
+            "country": "US"
+        },
+        check_aml=True,
+        check_fraud=True
     )
 
-    # Get risk assessment
-    for risk in result['risks']:
-        print(f"{risk['severity']}: {risk['description']}")
-        print(f"Suggested fix: {risk['remediation']}")
+    if result['flags']:
+        print(f"⚠️  Compliance flags: {result['flags']}")
     ```
 
----
+    ??? info "What Financial PII Is Protected?"
 
-## Retail Wizard
+        - **Credit Card Numbers** - Full card number detection and masking
+        - **Account Numbers** - Bank account numbers
+        - **Routing Numbers** - ABA routing numbers
+        - **SSN** - Social Security Numbers
+        - **ITIN** - Individual Taxpayer Identification Numbers
+        - **EIN** - Employer Identification Numbers
+        - **Investment Account IDs** - Brokerage account numbers
 
-**AI assistant** for e-commerce and retail operations.
+    !!! tip "Risk Analysis Features"
+        The Finance Wizard includes built-in risk analysis:
 
-### Key Features
+        - **AML (Anti-Money Laundering)** - Flags suspicious transactions
+        - **Fraud Detection** - Pattern-based fraud indicators
+        - **Sanctions Screening** - OFAC compliance checks
+        - **KYC Validation** - Know Your Customer verification
 
-- :material-cart: **Inventory Management** - Stock optimization suggestions
-- :material-tag: **Pricing Strategy** - Dynamic pricing recommendations
-- :material-account-group: **Customer Service** - Support automation
-- :material-chart-box: **Sales Analytics** - Trend analysis
+=== ":fontawesome-solid-scale-balanced: Legal"
 
-### Quick Example
+    ## Legal Wizard
 
-```python
-from empathy_llm_toolkit.wizards import RetailWizard
+    **AI assistant** for legal practices with document classification and privilege protection.
 
-wizard = RetailWizard(llm)
+    ### Key Features
 
-# Optimize inventory
-result = await wizard.optimize_inventory(
-    product_data={
-        "sku": "PROD123",
-        "current_stock": 50,
-        "sales_last_30d": 120,
-        "season": "winter"
-    }
-)
+    - :material-gavel: **Attorney-Client Privilege** - Automatic privilege detection
+    - :material-file-document-multiple: **Document Classification** - Contract, brief, discovery types
+    - :material-text-search: **Legal Citation** - Find relevant case law
+    - :material-shield-lock: **Confidentiality** - Work product protection
 
-print(result['reorder_quantity'])
-print(result['optimal_price'])
-```
+    ### Quick Example
 
----
+    ```python
+    from empathy_llm_toolkit.wizards import LegalWizard
 
-## Education Wizard
+    wizard = LegalWizard(llm)
 
-**FERPA-compliant AI assistant** for educational institutions.
+    # Analyze legal document
+    result = await wizard.analyze_document(
+        document_text="...",
+        document_type="contract",
+        jurisdiction="CA"
+    )
 
-### Key Features
+    print(result['risk_factors'])
+    print(result['suggested_clauses'])
+    ```
 
-- :material-school: **Student Privacy** - FERPA compliance (20 U.S.C. § 1232g)
-- :material-account-student: **Student PII Protection** - Student IDs, grades, records
-- :material-calendar-check: **Assignment Grading** - Automated assessment assistance
-- :material-book-open: **Curriculum Support** - Lesson plan generation
+    ??? example "Contract Review"
 
-### Quick Example
+        ```python
+        # Review contract for risks
+        result = await wizard.review_contract(
+            contract_text="...",
+            contract_type="employment",
+            jurisdiction="CA",
+            check_for=[
+                "non_compete",
+                "indemnification",
+                "termination",
+                "ip_assignment"
+            ]
+        )
 
-```python
-from empathy_llm_toolkit.wizards import EducationWizard
+        # Get risk assessment
+        for risk in result['risks']:
+            print(f"{risk['severity']}: {risk['description']}")
+            print(f"Suggested fix: {risk['remediation']}")
+        ```
 
-wizard = EducationWizard(llm)
+=== ":fontawesome-solid-cart-shopping: Retail"
 
-# Generate lesson plan (no student PII exposed)
-result = await wizard.generate_lesson_plan(
-    subject="Mathematics",
-    grade_level=8,
-    topic="Linear Equations",
-    duration_minutes=45
-)
+    ## Retail Wizard
 
-print(result['lesson_plan'])
-print(result['assessment_questions'])
-```
+    **AI assistant** for e-commerce and retail operations.
 
----
+    ### Key Features
 
-## HR Wizard
+    - :material-cart: **Inventory Management** - Stock optimization suggestions
+    - :material-tag: **Pricing Strategy** - Dynamic pricing recommendations
+    - :material-account-group: **Customer Service** - Support automation
+    - :material-chart-box: **Sales Analytics** - Trend analysis
 
-**AI assistant** for human resources with employee PII protection.
+    ### Quick Example
 
-### Key Features
+    ```python
+    from empathy_llm_toolkit.wizards import RetailWizard
 
-- :material-account-box: **Employee PII Protection** - SSN, DOB, salary, benefits
-- :material-clipboard-text: **Job Descriptions** - Generate JD from requirements
-- :material-account-search: **Resume Screening** - Bias-free candidate evaluation
-- :material-shield-account: **Compliance** - EEOC, ADA, FLSA guidance
+    wizard = RetailWizard(llm)
 
-### Quick Example
+    # Optimize inventory
+    result = await wizard.optimize_inventory(
+        product_data={
+            "sku": "PROD123",
+            "current_stock": 50,
+            "sales_last_30d": 120,
+            "season": "winter"
+        }
+    )
 
-```python
-from empathy_llm_toolkit.wizards import HRWizard
+    print(result['reorder_quantity'])
+    print(result['optimal_price'])
+    ```
 
-wizard = HRWizard(llm)
+=== ":fontawesome-solid-graduation-cap: Education"
 
-# Generate job description
-result = await wizard.generate_job_description(
-    title="Senior Software Engineer",
-    department="Engineering",
-    level="Senior",
-    requirements=["Python", "AWS", "5+ years experience"]
-)
+    ## Education Wizard
 
-print(result['job_description'])
-```
+    **FERPA-compliant AI assistant** for educational institutions.
 
----
+    ### Key Features
 
-## Technology Wizard
+    - :material-school: **Student Privacy** - FERPA compliance (20 U.S.C. § 1232g)
+    - :material-account-student: **Student PII Protection** - Student IDs, grades, records
+    - :material-calendar-check: **Assignment Grading** - Automated assessment assistance
+    - :material-book-open: **Curriculum Support** - Lesson plan generation
 
-**AI assistant** for software development and IT operations.
+    ### Quick Example
 
-### Key Features
+    ```python
+    from empathy_llm_toolkit.wizards import EducationWizard
 
-- :material-bug: **Bug Analysis** - Root cause identification
-- :material-code-tags: **Code Review** - Security and quality checks
-- :material-cloud: **Cloud Architecture** - AWS/Azure/GCP design patterns
-- :material-security: **Security Scanning** - Vulnerability detection
+    wizard = EducationWizard(llm)
 
-### Quick Example
+    # Generate lesson plan (no student PII exposed)
+    result = await wizard.generate_lesson_plan(
+        subject="Mathematics",
+        grade_level=8,
+        topic="Linear Equations",
+        duration_minutes=45
+    )
 
-```python
-from empathy_llm_toolkit.wizards import TechnologyWizard
+    print(result['lesson_plan'])
+    print(result['assessment_questions'])
+    ```
 
-wizard = TechnologyWizard(llm)
+=== ":fontawesome-solid-users: HR"
 
-# Analyze code for security issues
-result = await wizard.review_code(
-    code=code_snippet,
-    language="python",
-    check_for=["sql_injection", "xss", "secrets"]
-)
+    ## HR Wizard
 
-for issue in result['security_issues']:
-    print(f"{issue['severity']}: {issue['description']}")
-```
+    **AI assistant** for human resources with employee PII protection.
 
----
+    ### Key Features
 
-## AI Development Wizards
+    - :material-account-box: **Employee PII Protection** - SSN, DOB, salary, benefits
+    - :material-clipboard-text: **Job Descriptions** - Generate JD from requirements
+    - :material-account-search: **Resume Screening** - Bias-free candidate evaluation
+    - :material-shield-account: **Compliance** - EEOC, ADA, FLSA guidance
 
-**Level 4 Anticipatory wizards** specifically designed for developers working with AI systems.
+    ### Quick Example
 
-These wizards help developers avoid common pitfalls when building AI-powered applications by detecting issues **before** they become critical.
+    ```python
+    from empathy_llm_toolkit.wizards import HRWizard
 
-### The Four AI Development Wizards
+    wizard = HRWizard(llm)
 
-#### 1. Prompt Engineering Quality Wizard
-**Alerts developers to prompt quality degradation before it impacts AI performance**
+    # Generate job description
+    result = await wizard.generate_job_description(
+        title="Senior Software Engineer",
+        department="Engineering",
+        level="Senior",
+        requirements=["Python", "AWS", "5+ years experience"]
+    )
 
-- Detects prompt-code drift (code evolving faster than prompts)
-- Identifies context bloat and inefficiencies
-- Predicts maintenance burden from prompt sprawl
-- Warns about missing versioning and examples
+    print(result['job_description'])
+    ```
 
-#### 2. AI Context Window Management Wizard
-**Predicts context window issues before hitting limits**
+=== ":fontawesome-solid-microchip: Technology"
 
-- Monitors context usage growth trajectories
-- Detects unbounded dynamic context sources
-- Alerts about conversation memory accumulation
-- Identifies missing chunking strategies
+    ## Technology Wizard
 
-#### 3. AI Collaboration Pattern Wizard
-**Analyzes HOW developers work with AI and predicts effectiveness limits**
+    **AI assistant** for software development and IT operations.
 
-- Assesses current collaboration maturity level (1-5)
-- Detects reactive-only AI usage patterns
-- Identifies missing feedback loops
-- Recommends growth path to higher empathy levels
+    ### Key Features
 
-#### 4. AI-First Documentation Wizard
-**Ensures documentation serves both AI and humans effectively**
+    - :material-bug: **Bug Analysis** - Root cause identification
+    - :material-code-tags: **Code Review** - Security and quality checks
+    - :material-cloud: **Cloud Architecture** - AWS/Azure/GCP design patterns
+    - :material-security: **Security Scanning** - Vulnerability detection
 
-- Detects implicit conventions that confuse AI
-- Identifies missing "why" context in documentation
-- Warns about documentation drift
-- Recommends AI collaboration guides
+    ### Quick Example
 
-### Key Benefits
+    ```python
+    from empathy_llm_toolkit.wizards import TechnologyWizard
 
-- **Avoid mistakes we made** - Learn from experience building the Empathy Framework
-- **Proactive improvement** - Fix issues before they become costly
-- **Faster AI adoption** - Skip the trial-and-error phase
-- **Better AI output** - Higher quality AI suggestions
+    wizard = TechnologyWizard(llm)
 
-### Quick Example
+    # Analyze code for security issues
+    result = await wizard.review_code(
+        code=code_snippet,
+        language="python",
+        check_for=["sql_injection", "xss", "secrets"]
+    )
 
-```python
-from empathy_os.plugins import get_global_registry
+    for issue in result['security_issues']:
+        print(f"{issue['severity']}: {issue['description']}")
+    ```
 
-# Get software plugin
-registry = get_global_registry()
-software = registry.get_plugin('software')
+=== ":fontawesome-solid-briefcase: More Industries"
 
-# Analyze prompt engineering quality
-PromptWizard = software.get_wizard('prompt_engineering')
-wizard = PromptWizard()
+    ## Additional Wizards
 
-result = await wizard.analyze({
-    'prompt_files': ['prompts/code_review.txt'],
-    'project_path': '/path/to/project',
-    'version_history': git_commits
-})
+    ### Accounting Wizard
+    **AI assistant for accounting and bookkeeping**
+    - GAAP/IFRS compliance
+    - Financial statement analysis
+    - Tax preparation assistance
 
-# View anticipatory alerts
-for prediction in result['predictions']:
-    if prediction['impact'] == 'high':
-        print(f"[ALERT] {prediction['alert']}")
-        print(f"Prevention: {prediction['prevention_steps']}")
-```
+    ### Customer Support Wizard
+    **AI assistant for customer service operations**
+    - Ticket classification
+    - Response templates
+    - Sentiment analysis
 
-**See Also:** [Complete AI Development Wizards Guide](../AI_DEVELOPMENT_WIZARDS.md) - Detailed documentation with examples and patterns
+    ### Government Wizard
+    **AI assistant for government agencies**
+    - FOIA compliance
+    - Public records management
+    - Citizen service automation
 
----
+    ### Insurance Wizard
+    **AI assistant for insurance operations**
+    - Claims processing
+    - Underwriting assistance
+    - Risk assessment
 
-## Additional Wizards
+    ### Logistics Wizard
+    **AI assistant for supply chain and logistics**
+    - Route optimization
+    - Inventory forecasting
+    - Shipment tracking
 
-### Accounting Wizard
-**AI assistant for accounting and bookkeeping**
-- GAAP/IFRS compliance
-- Financial statement analysis
-- Tax preparation assistance
+    ### Manufacturing Wizard
+    **AI assistant for manufacturing operations**
+    - Production scheduling
+    - Quality control
+    - Equipment maintenance
 
-### Customer Support Wizard
-**AI assistant for customer service operations**
-- Ticket classification
-- Response templates
-- Sentiment analysis
+    ### Real Estate Wizard
+    **AI assistant for real estate professionals**
+    - Property valuation
+    - Lease generation
+    - Market analysis
 
-### Government Wizard
-**AI assistant for government agencies**
-- FOIA compliance
-- Public records management
-- Citizen service automation
+    ### Research Wizard
+    **AI assistant for academic and scientific research**
+    - Literature review
+    - Citation management
+    - Data analysis
 
-### Insurance Wizard
-**AI assistant for insurance operations**
-- Claims processing
-- Underwriting assistance
-- Risk assessment
-
-### Logistics Wizard
-**AI assistant for supply chain and logistics**
-- Route optimization
-- Inventory forecasting
-- Shipment tracking
-
-### Manufacturing Wizard
-**AI assistant for manufacturing operations**
-- Production scheduling
-- Quality control
-- Equipment maintenance
-
-### Real Estate Wizard
-**AI assistant for real estate professionals**
-- Property valuation
-- Lease generation
-- Market analysis
-
-### Research Wizard
-**AI assistant for academic and scientific research**
-- Literature review
-- Citation management
-- Data analysis
-
-### Sales Wizard
-**AI assistant for sales teams**
-- Lead qualification
-- Proposal generation
-- CRM integration
+    ### Sales Wizard
+    **AI assistant for sales teams**
+    - Lead qualification
+    - Proposal generation
+    - CRM integration
 
 ---
 
 ## Base Wizard API
 
-All wizards extend the `BaseWizard` class with common functionality.
+All wizards extend the `BaseWizard` class with common functionality:
 
-**Note**: Full API documentation coming soon as wizards module is being finalized.
+::: empathy_llm_toolkit.wizards.BaseWizard
+    options:
+      show_root_heading: false
+      show_source: false
+      heading_level: 3
 
 ### WizardConfig
 
-Configuration class for customizing wizard behavior.
+::: empathy_llm_toolkit.wizards.WizardConfig
+    options:
+      show_root_heading: false
+      show_source: true
+      heading_level: 4
 
 **Configuration options:**
 

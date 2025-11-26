@@ -5,7 +5,7 @@
 site_name: Empathy Framework
 site_description: Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration
 site_author: Patrick Roebuck
-site_url: https://smartaimemory.com/framework-docs/
+site_url: https://empathy-framework.readthedocs.io
 
 # Repository
 repo_name: Smart-AI-Memory/empathy-framework
@@ -28,15 +28,6 @@ nav:
       - Multi-Agent Coordination: examples/multi-agent-team-coordination.md
       - Adaptive Learning: examples/adaptive-learning-system.md
       - Webhook Integration: examples/webhook-event-integration.md
-  - Guides:
-      - Security Architecture: guides/security-architecture.md
-      - HIPAA Compliance: guides/hipaa-compliance.md
-      - Healthcare Wizards: guides/healthcare-wizards.md
-      - Software Development Wizards: guides/software-development-wizards.md
-      - Adaptive Learning: guides/adaptive-learning.md
-      - Multi-Agent Coordination: guides/multi-agent-coordination.md
-      - Webhook Integration: guides/webhook-integration.md
-      - AI Development Wizards: AI_DEVELOPMENT_WIZARDS.md
   - API Reference:
       - Overview: api-reference/index.md
       - EmpathyOS: api-reference/empathy-os.md
@@ -47,9 +38,6 @@ nav:
       - LLM Toolkit: api-reference/llm-toolkit.md
       - Industry Wizards: api-reference/wizards.md
   - Contributing: contributing.md
-
-# Build configuration
-use_directory_urls: false
 
 # Theme Configuration (Material)
 theme:
@@ -118,17 +106,12 @@ markdown_extensions:
   - admonition
   - tables
   - toc:
-      permalink: "🔗"
-      permalink_title: "Permanent link to this section"
+      permalink: true
   - attr_list
   - md_in_html
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-
-# Extra CSS for custom styling
-extra_css:
-  - stylesheets/extra.css
 
 # Extra
 extra:

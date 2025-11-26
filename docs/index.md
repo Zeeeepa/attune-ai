@@ -65,7 +65,7 @@ print(response.response)
 Predict problems 30-90 days in advance with Level 4 capabilities.
 
 ### 🏥 Healthcare Ready
-HIPAA-compliant with 18 specialized wizards for clinical protocols (SBAR, SOAP, medication safety, patient monitoring).
+HIPAA-compliant with clinical protocols (SBAR, TIME, ABCDE). **$2M+ annual value** for 100-bed hospitals.
 
 ### 🤝 Multi-Agent Coordination
 Specialized agents work together through shared pattern libraries. **80% faster feature delivery**.
@@ -202,9 +202,9 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 
     ---
 
-    18 HIPAA-compliant wizards
+    HIPAA-compliant, $2M+ ROI
 
-    [:octicons-arrow-right-24: Healthcare Guide](guides/healthcare-wizards.md)
+    [:octicons-arrow-right-24: SBAR Example](examples/sbar-clinical-handoff.md)
 
 -   :material-book-open-variant:{ .lg .middle } **API Reference**
 
