@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2297,17 +2299,17 @@
   
 
 
-<h1 id="testing-strategy-for-empathy-framework">Testing Strategy for Empathy Framework<a class="headerlink" href="#testing-strategy-for-empathy-framework" title="Permanent link">&para;</a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h1 id="testing-strategy-for-empathy-framework">Testing Strategy for Empathy Framework<a class="headerlink" href="#testing-strategy-for-empathy-framework" title="Permanent link to this section">🔗</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The Empathy Framework maintains a high standard of test coverage with an overall coverage rate of <strong>90.71%</strong>. This document outlines our testing approach, goals, types, and best practices.</p>
-<h2 id="coverage-goals">Coverage Goals<a class="headerlink" href="#coverage-goals" title="Permanent link">&para;</a></h2>
+<h2 id="coverage-goals">Coverage Goals<a class="headerlink" href="#coverage-goals" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><strong>Current Coverage</strong>: 90.71%</li>
 <li><strong>Target Coverage</strong>: 90%+ (ACHIEVED)</li>
 <li><strong>Stretch Goal</strong>: 95%</li>
 <li><strong>Minimum Coverage</strong>: 14% (configured threshold, far exceeded)</li>
 </ul>
-<h3 id="coverage-status-by-module">Coverage Status by Module<a class="headerlink" href="#coverage-status-by-module" title="Permanent link">&para;</a></h3>
+<h3 id="coverage-status-by-module">Coverage Status by Module<a class="headerlink" href="#coverage-status-by-module" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -2344,37 +2346,37 @@
 </tr>
 </tbody>
 </table>
-<h2 id="testing-approach">Testing Approach<a class="headerlink" href="#testing-approach" title="Permanent link">&para;</a></h2>
-<h3 id="1-test-driven-development-tdd">1. Test-Driven Development (TDD)<a class="headerlink" href="#1-test-driven-development-tdd" title="Permanent link">&para;</a></h3>
+<h2 id="testing-approach">Testing Approach<a class="headerlink" href="#testing-approach" title="Permanent link to this section">🔗</a></h2>
+<h3 id="1-test-driven-development-tdd">1. Test-Driven Development (TDD)<a class="headerlink" href="#1-test-driven-development-tdd" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Write tests before implementation for new features</li>
 <li>Use tests to define expected behavior</li>
 <li>Refactor with confidence knowing tests will catch regressions</li>
 </ul>
-<h3 id="2-multi-level-testing">2. Multi-Level Testing<a class="headerlink" href="#2-multi-level-testing" title="Permanent link">&para;</a></h3>
+<h3 id="2-multi-level-testing">2. Multi-Level Testing<a class="headerlink" href="#2-multi-level-testing" title="Permanent link to this section">🔗</a></h3>
 <p>Our testing strategy employs multiple levels:</p>
-<h4 id="unit-tests">Unit Tests<a class="headerlink" href="#unit-tests" title="Permanent link">&para;</a></h4>
+<h4 id="unit-tests">Unit Tests<a class="headerlink" href="#unit-tests" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li>Test individual functions and classes in isolation</li>
 <li>Mock external dependencies (LLM calls, file I/O, network)</li>
 <li>Fast execution (majority of test suite)</li>
 <li>Located in <code>tests/test_*.py</code> files</li>
 </ul>
-<h4 id="integration-tests">Integration Tests<a class="headerlink" href="#integration-tests" title="Permanent link">&para;</a></h4>
+<h4 id="integration-tests">Integration Tests<a class="headerlink" href="#integration-tests" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li>Test interaction between components</li>
 <li>Test plugin registration and lifecycle</li>
 <li>Test end-to-end workflows</li>
 <li>Marked with <code>@pytest.mark.integration</code></li>
 </ul>
-<h4 id="llm-based-tests">LLM-Based Tests<a class="headerlink" href="#llm-based-tests" title="Permanent link">&para;</a></h4>
+<h4 id="llm-based-tests">LLM-Based Tests<a class="headerlink" href="#llm-based-tests" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li>Tests that interact with actual LLM providers</li>
 <li>Marked with <code>@pytest.mark.llm</code></li>
 <li>Should be skipped in CI unless explicitly enabled</li>
 <li>Require API keys and may incur costs</li>
 </ul>
-<h3 id="3-coverage-measurement">3. Coverage Measurement<a class="headerlink" href="#3-coverage-measurement" title="Permanent link">&para;</a></h3>
+<h3 id="3-coverage-measurement">3. Coverage Measurement<a class="headerlink" href="#3-coverage-measurement" title="Permanent link to this section">🔗</a></h3>
 <p>We use <code>pytest-cov</code> to track code coverage across all modules:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pytest<span class="w"> </span>--cov<span class="o">=</span>empathy_os<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">       </span>--cov<span class="o">=</span>empathy_llm_toolkit<span class="w"> </span><span class="se">\</span>
@@ -2385,8 +2387,8 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">       </span>--cov-report<span class="o">=</span>term-missing<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">       </span>--cov-report<span class="o">=</span>xml
 </code></pre></div>
-<h2 id="types-of-tests">Types of Tests<a class="headerlink" href="#types-of-tests" title="Permanent link">&para;</a></h2>
-<h3 id="1-unit-tests">1. Unit Tests<a class="headerlink" href="#1-unit-tests" title="Permanent link">&para;</a></h3>
+<h2 id="types-of-tests">Types of Tests<a class="headerlink" href="#types-of-tests" title="Permanent link to this section">🔗</a></h2>
+<h3 id="1-unit-tests">1. Unit Tests<a class="headerlink" href="#1-unit-tests" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Purpose</strong>: Verify individual components work correctly</p>
 <p><strong>Example</strong>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_wizard_issue_creation</span><span class="p">():</span>
@@ -2403,21 +2405,21 @@
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="k">assert</span> <span class="n">issue</span><span class="o">.</span><span class="n">severity</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span>
 <a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="k">assert</span> <span class="n">issue</span><span class="o">.</span><span class="n">line_number</span> <span class="o">==</span> <span class="mi">42</span>
 </code></pre></div></p>
-<h3 id="2-wizard-tests">2. Wizard Tests<a class="headerlink" href="#2-wizard-tests" title="Permanent link">&para;</a></h3>
+<h3 id="2-wizard-tests">2. Wizard Tests<a class="headerlink" href="#2-wizard-tests" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Purpose</strong>: Ensure wizards (code analysis tools) function correctly</p>
 <p><strong>Pattern</strong>:
 - Test initialization
 - Test code analysis
 - Test future issue prediction
 - Test fix suggestions</p>
-<h3 id="3-plugin-tests">3. Plugin Tests<a class="headerlink" href="#3-plugin-tests" title="Permanent link">&para;</a></h3>
+<h3 id="3-plugin-tests">3. Plugin Tests<a class="headerlink" href="#3-plugin-tests" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Purpose</strong>: Verify plugin system works correctly</p>
 <p><strong>Coverage</strong>:
 - Plugin loading and registration
 - Plugin lifecycle (initialization, execution, cleanup)
 - Plugin configuration
 - Plugin interactions</p>
-<h3 id="4-healthcare-monitoring-tests">4. Healthcare Monitoring Tests<a class="headerlink" href="#4-healthcare-monitoring-tests" title="Permanent link">&para;</a></h3>
+<h3 id="4-healthcare-monitoring-tests">4. Healthcare Monitoring Tests<a class="headerlink" href="#4-healthcare-monitoring-tests" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Purpose</strong>: Ensure medical protocol monitoring is accurate and safe</p>
 <p><strong>Critical Areas</strong>:
 - Protocol compliance checking
@@ -2425,7 +2427,7 @@
 - Trajectory analysis
 - Alert generation
 - Safety-critical paths</p>
-<h3 id="5-llm-integration-tests">5. LLM Integration Tests<a class="headerlink" href="#5-llm-integration-tests" title="Permanent link">&para;</a></h3>
+<h3 id="5-llm-integration-tests">5. LLM Integration Tests<a class="headerlink" href="#5-llm-integration-tests" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Purpose</strong>: Test LLM provider integrations</p>
 <p><strong>Approach</strong>:
 - Mock LLM responses for unit tests
@@ -2433,23 +2435,23 @@
 - Test prompt engineering
 - Test response parsing
 - Test error handling</p>
-<h2 id="how-to-run-tests">How to Run Tests<a class="headerlink" href="#how-to-run-tests" title="Permanent link">&para;</a></h2>
-<h3 id="run-all-tests">Run All Tests<a class="headerlink" href="#run-all-tests" title="Permanent link">&para;</a></h3>
+<h2 id="how-to-run-tests">How to Run Tests<a class="headerlink" href="#how-to-run-tests" title="Permanent link to this section">🔗</a></h2>
+<h3 id="run-all-tests">Run All Tests<a class="headerlink" href="#run-all-tests" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pytest
 </code></pre></div>
-<h3 id="run-with-coverage-report">Run with Coverage Report<a class="headerlink" href="#run-with-coverage-report" title="Permanent link">&para;</a></h3>
+<h3 id="run-with-coverage-report">Run with Coverage Report<a class="headerlink" href="#run-with-coverage-report" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pytest<span class="w"> </span>--cov<span class="w"> </span>--cov-report<span class="o">=</span>html
 </code></pre></div>
-<h3 id="run-specific-test-file">Run Specific Test File<a class="headerlink" href="#run-specific-test-file" title="Permanent link">&para;</a></h3>
+<h3 id="run-specific-test-file">Run Specific Test File<a class="headerlink" href="#run-specific-test-file" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>pytest<span class="w"> </span>tests/test_base_wizard.py
 </code></pre></div>
-<h3 id="run-specific-test-class">Run Specific Test Class<a class="headerlink" href="#run-specific-test-class" title="Permanent link">&para;</a></h3>
+<h3 id="run-specific-test-class">Run Specific Test Class<a class="headerlink" href="#run-specific-test-class" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>pytest<span class="w"> </span>tests/test_base_wizard.py::TestWizardDataclasses
 </code></pre></div>
-<h3 id="run-specific-test">Run Specific Test<a class="headerlink" href="#run-specific-test" title="Permanent link">&para;</a></h3>
+<h3 id="run-specific-test">Run Specific Test<a class="headerlink" href="#run-specific-test" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pytest<span class="w"> </span>tests/test_base_wizard.py::TestWizardDataclasses::test_wizard_issue_creation
 </code></pre></div>
-<h3 id="run-tests-by-marker">Run Tests by Marker<a class="headerlink" href="#run-tests-by-marker" title="Permanent link">&para;</a></h3>
+<h3 id="run-tests-by-marker">Run Tests by Marker<a class="headerlink" href="#run-tests-by-marker" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Run only unit tests</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>pytest<span class="w"> </span>-m<span class="w"> </span>unit
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
@@ -2462,17 +2464,17 @@
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># Run LLM tests (requires API keys)</span>
 <a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>pytest<span class="w"> </span>-m<span class="w"> </span>llm
 </code></pre></div>
-<h3 id="run-tests-in-parallel">Run Tests in Parallel<a class="headerlink" href="#run-tests-in-parallel" title="Permanent link">&para;</a></h3>
+<h3 id="run-tests-in-parallel">Run Tests in Parallel<a class="headerlink" href="#run-tests-in-parallel" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pytest<span class="w"> </span>-n<span class="w"> </span>auto<span class="w">  </span><span class="c1"># Uses all available CPU cores</span>
 </code></pre></div>
-<h3 id="run-with-verbose-output">Run with Verbose Output<a class="headerlink" href="#run-with-verbose-output" title="Permanent link">&para;</a></h3>
+<h3 id="run-with-verbose-output">Run with Verbose Output<a class="headerlink" href="#run-with-verbose-output" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pytest<span class="w"> </span>-v
 </code></pre></div>
-<h3 id="run-with-debug-output">Run with Debug Output<a class="headerlink" href="#run-with-debug-output" title="Permanent link">&para;</a></h3>
+<h3 id="run-with-debug-output">Run with Debug Output<a class="headerlink" href="#run-with-debug-output" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>pytest<span class="w"> </span>-vv<span class="w"> </span>--tb<span class="o">=</span>long
 </code></pre></div>
-<h2 id="how-to-write-new-tests">How to Write New Tests<a class="headerlink" href="#how-to-write-new-tests" title="Permanent link">&para;</a></h2>
-<h3 id="test-file-structure">Test File Structure<a class="headerlink" href="#test-file-structure" title="Permanent link">&para;</a></h3>
+<h2 id="how-to-write-new-tests">How to Write New Tests<a class="headerlink" href="#how-to-write-new-tests" title="Permanent link to this section">🔗</a></h2>
+<h3 id="test-file-structure">Test File Structure<a class="headerlink" href="#test-file-structure" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="sd">Brief description of what this test file covers</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
@@ -2516,14 +2518,14 @@
 <a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>        <span class="n">obj</span> <span class="o">=</span> <span class="n">ClassToTest</span><span class="p">()</span>
 <a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>        <span class="k">assert</span> <span class="n">obj</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
 </code></pre></div>
-<h3 id="test-naming-conventions">Test Naming Conventions<a class="headerlink" href="#test-naming-conventions" title="Permanent link">&para;</a></h3>
+<h3 id="test-naming-conventions">Test Naming Conventions<a class="headerlink" href="#test-naming-conventions" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Test files: <code>test_&lt;module_name&gt;.py</code></li>
 <li>Test classes: <code>Test&lt;FeatureName&gt;</code></li>
 <li>Test methods: <code>test_&lt;what_it_tests&gt;</code></li>
 <li>Be descriptive: <code>test_analyze_code_with_empty_string</code> not <code>test_1</code></li>
 </ul>
-<h3 id="arrange-act-assert-pattern">Arrange-Act-Assert Pattern<a class="headerlink" href="#arrange-act-assert-pattern" title="Permanent link">&para;</a></h3>
+<h3 id="arrange-act-assert-pattern">Arrange-Act-Assert Pattern<a class="headerlink" href="#arrange-act-assert-pattern" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_feature</span><span class="p">():</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="c1"># Arrange: Set up test data and conditions</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">wizard</span> <span class="o">=</span> <span class="n">MyWizard</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{})</span>
@@ -2536,14 +2538,14 @@
 <a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
 <a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </code></pre></div>
-<h2 id="testing-best-practices">Testing Best Practices<a class="headerlink" href="#testing-best-practices" title="Permanent link">&para;</a></h2>
-<h3 id="1-test-independence">1. Test Independence<a class="headerlink" href="#1-test-independence" title="Permanent link">&para;</a></h3>
+<h2 id="testing-best-practices">Testing Best Practices<a class="headerlink" href="#testing-best-practices" title="Permanent link to this section">🔗</a></h2>
+<h3 id="1-test-independence">1. Test Independence<a class="headerlink" href="#1-test-independence" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Each test should run independently</li>
 <li>Don't rely on test execution order</li>
 <li>Clean up after tests (use fixtures or teardown)</li>
 </ul>
-<h3 id="2-use-fixtures-for-common-setup">2. Use Fixtures for Common Setup<a class="headerlink" href="#2-use-fixtures-for-common-setup" title="Permanent link">&para;</a></h3>
+<h3 id="2-use-fixtures-for-common-setup">2. Use Fixtures for Common Setup<a class="headerlink" href="#2-use-fixtures-for-common-setup" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">wizard</span><span class="p">():</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide a wizard instance for tests&quot;&quot;&quot;</span>
@@ -2553,7 +2555,7 @@
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">wizard</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">)</span>
 <a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </code></pre></div>
-<h3 id="3-mock-external-dependencies">3. Mock External Dependencies<a class="headerlink" href="#3-mock-external-dependencies" title="Permanent link">&para;</a></h3>
+<h3 id="3-mock-external-dependencies">3. Mock External Dependencies<a class="headerlink" href="#3-mock-external-dependencies" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mock</span><span class="p">,</span> <span class="n">patch</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nd">@patch</span><span class="p">(</span><span class="s1">&#39;module.llm_provider.call&#39;</span><span class="p">)</span>
@@ -2561,7 +2563,7 @@
 <a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">mock_call</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s2">&quot;mocked response&quot;</span>
 <a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="c1"># Test code that calls LLM</span>
 </code></pre></div>
-<h3 id="4-test-edge-cases">4. Test Edge Cases<a class="headerlink" href="#4-test-edge-cases" title="Permanent link">&para;</a></h3>
+<h3 id="4-test-edge-cases">4. Test Edge Cases<a class="headerlink" href="#4-test-edge-cases" title="Permanent link to this section">🔗</a></h3>
 <p>Always test:
 - Empty inputs (<code>""</code>, <code>[]</code>, <code>{}</code>, <code>None</code>)
 - Large inputs
@@ -2570,7 +2572,7 @@
 - Error conditions
 - Unicode/special characters
 - Concurrent operations</p>
-<h3 id="5-async-testing">5. Async Testing<a class="headerlink" href="#5-async-testing" title="Permanent link">&para;</a></h3>
+<h3 id="5-async-testing">5. Async Testing<a class="headerlink" href="#5-async-testing" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
@@ -2578,13 +2580,13 @@
 <a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_function</span><span class="p">()</span>
 <a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </code></pre></div>
-<h3 id="6-test-data">6. Test Data<a class="headerlink" href="#6-test-data" title="Permanent link">&para;</a></h3>
+<h3 id="6-test-data">6. Test Data<a class="headerlink" href="#6-test-data" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Keep test data small and focused</li>
 <li>Use realistic but simplified examples</li>
 <li>Consider using factories or builders for complex objects</li>
 </ul>
-<h3 id="7-assertions">7. Assertions<a class="headerlink" href="#7-assertions" title="Permanent link">&para;</a></h3>
+<h3 id="7-assertions">7. Assertions<a class="headerlink" href="#7-assertions" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Use specific assertions: <code>assert x == y</code> not <code>assert x</code></li>
 <li>Test one concept per test</li>
@@ -2592,8 +2594,8 @@
   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">expected</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="n">expected</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div></li>
 </ul>
-<h2 id="mocking-strategies">Mocking Strategies<a class="headerlink" href="#mocking-strategies" title="Permanent link">&para;</a></h2>
-<h3 id="mocking-llm-calls">Mocking LLM Calls<a class="headerlink" href="#mocking-llm-calls" title="Permanent link">&para;</a></h3>
+<h2 id="mocking-strategies">Mocking Strategies<a class="headerlink" href="#mocking-strategies" title="Permanent link to this section">🔗</a></h2>
+<h3 id="mocking-llm-calls">Mocking LLM Calls<a class="headerlink" href="#mocking-llm-calls" title="Permanent link to this section">🔗</a></h3>
 <p>Since LLM calls are expensive and non-deterministic, we mock them in tests:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span><span class="p">,</span> <span class="n">Mock</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
@@ -2612,13 +2614,13 @@
 <a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="n">mock_llm_call</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
 <a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="k">assert</span> <span class="s2">&quot;analysis&quot;</span> <span class="ow">in</span> <span class="n">result</span>
 </code></pre></div>
-<h3 id="mocking-file-io">Mocking File I/O<a class="headerlink" href="#mocking-file-io" title="Permanent link">&para;</a></h3>
+<h3 id="mocking-file-io">Mocking File I/O<a class="headerlink" href="#mocking-file-io" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nd">@patch</span><span class="p">(</span><span class="s1">&#39;builtins.open&#39;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_file_reading</span><span class="p">(</span><span class="n">mock_open</span><span class="p">):</span>
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">mock_open</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="fm">__enter__</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s2">&quot;file contents&quot;</span>
 <a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="c1"># Test code that reads files</span>
 </code></pre></div>
-<h3 id="mocking-time">Mocking Time<a class="headerlink" href="#mocking-time" title="Permanent link">&para;</a></h3>
+<h3 id="mocking-time">Mocking Time<a class="headerlink" href="#mocking-time" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
@@ -2627,8 +2629,8 @@
 <a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">mock_datetime</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="c1"># Test code that uses current time</span>
 </code></pre></div>
-<h2 id="how-to-test-async-code">How to Test Async Code<a class="headerlink" href="#how-to-test-async-code" title="Permanent link">&para;</a></h2>
-<h3 id="basic-async-test">Basic Async Test<a class="headerlink" href="#basic-async-test" title="Permanent link">&para;</a></h3>
+<h2 id="how-to-test-async-code">How to Test Async Code<a class="headerlink" href="#how-to-test-async-code" title="Permanent link to this section">🔗</a></h2>
+<h3 id="basic-async-test">Basic Async Test<a class="headerlink" href="#basic-async-test" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
@@ -2636,7 +2638,7 @@
 <a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">my_async_function</span><span class="p">()</span>
 <a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </code></pre></div>
-<h3 id="async-with-fixtures">Async with Fixtures<a class="headerlink" href="#async-with-fixtures" title="Permanent link">&para;</a></h3>
+<h3 id="async-with-fixtures">Async with Fixtures<a class="headerlink" href="#async-with-fixtures" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">async_resource</span><span class="p">():</span>
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">resource</span> <span class="o">=</span> <span class="k">await</span> <span class="n">setup_resource</span><span class="p">()</span>
@@ -2648,20 +2650,20 @@
 <a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_resource</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
 <a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>    <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </code></pre></div>
-<h2 id="coverage-requirements-for-pull-requests">Coverage Requirements for Pull Requests<a class="headerlink" href="#coverage-requirements-for-pull-requests" title="Permanent link">&para;</a></h2>
-<h3 id="minimum-standards">Minimum Standards<a class="headerlink" href="#minimum-standards" title="Permanent link">&para;</a></h3>
+<h2 id="coverage-requirements-for-pull-requests">Coverage Requirements for Pull Requests<a class="headerlink" href="#coverage-requirements-for-pull-requests" title="Permanent link to this section">🔗</a></h2>
+<h3 id="minimum-standards">Minimum Standards<a class="headerlink" href="#minimum-standards" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>New code must have at least 80% coverage</li>
 <li>Critical paths (healthcare, security) require 95%+ coverage</li>
 <li>PRs that decrease overall coverage below 90% will be rejected</li>
 </ul>
-<h3 id="coverage-report-in-prs">Coverage Report in PRs<a class="headerlink" href="#coverage-report-in-prs" title="Permanent link">&para;</a></h3>
+<h3 id="coverage-report-in-prs">Coverage Report in PRs<a class="headerlink" href="#coverage-report-in-prs" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Coverage report is automatically generated in CI</li>
 <li>Review missing lines in the coverage report</li>
 <li>Add tests for uncovered code before merging</li>
 </ul>
-<h3 id="exemptions">Exemptions<a class="headerlink" href="#exemptions" title="Permanent link">&para;</a></h3>
+<h3 id="exemptions">Exemptions<a class="headerlink" href="#exemptions" title="Permanent link to this section">🔗</a></h3>
 <p>Some code may be excluded from coverage requirements:
 - Debug/development utilities
 - Example scripts
@@ -2672,27 +2674,27 @@
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;This is only for development debugging&quot;&quot;&quot;</span>
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="k">pass</span>
 </code></pre></div></p>
-<h2 id="cicd-testing-integration">CI/CD Testing Integration<a class="headerlink" href="#cicd-testing-integration" title="Permanent link">&para;</a></h2>
-<h3 id="github-actions-workflow">GitHub Actions Workflow<a class="headerlink" href="#github-actions-workflow" title="Permanent link">&para;</a></h3>
+<h2 id="cicd-testing-integration">CI/CD Testing Integration<a class="headerlink" href="#cicd-testing-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="github-actions-workflow">GitHub Actions Workflow<a class="headerlink" href="#github-actions-workflow" title="Permanent link to this section">🔗</a></h3>
 <p>Our CI runs tests on:
 - Every push to main
 - Every pull request
 - Multiple Python versions (3.9, 3.10, 3.11)</p>
-<h3 id="test-stages">Test Stages<a class="headerlink" href="#test-stages" title="Permanent link">&para;</a></h3>
+<h3 id="test-stages">Test Stages<a class="headerlink" href="#test-stages" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Lint and Format</strong>: Runs black, flake8, mypy</li>
 <li><strong>Unit Tests</strong>: Fast tests without external dependencies</li>
 <li><strong>Integration Tests</strong>: Tests with mocked external services</li>
 <li><strong>Coverage Report</strong>: Generates and uploads coverage data</li>
 </ol>
-<h3 id="required-checks">Required Checks<a class="headerlink" href="#required-checks" title="Permanent link">&para;</a></h3>
+<h3 id="required-checks">Required Checks<a class="headerlink" href="#required-checks" title="Permanent link to this section">🔗</a></h3>
 <p>PRs must pass:
 - All tests (100% pass rate required)
 - Minimum coverage threshold (90%)
 - Linting and formatting checks
 - Type checking (mypy)</p>
-<h2 id="testing-tools-and-dependencies">Testing Tools and Dependencies<a class="headerlink" href="#testing-tools-and-dependencies" title="Permanent link">&para;</a></h2>
-<h3 id="core-testing-tools">Core Testing Tools<a class="headerlink" href="#core-testing-tools" title="Permanent link">&para;</a></h3>
+<h2 id="testing-tools-and-dependencies">Testing Tools and Dependencies<a class="headerlink" href="#testing-tools-and-dependencies" title="Permanent link to this section">🔗</a></h2>
+<h3 id="core-testing-tools">Core Testing Tools<a class="headerlink" href="#core-testing-tools" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>pytest</strong>: Test framework</li>
 <li><strong>pytest-cov</strong>: Coverage measurement</li>
@@ -2700,19 +2702,19 @@
 <li><strong>pytest-xdist</strong>: Parallel test execution</li>
 <li><strong>pytest-timeout</strong>: Timeout handling</li>
 </ul>
-<h3 id="mocking-and-fixtures">Mocking and Fixtures<a class="headerlink" href="#mocking-and-fixtures" title="Permanent link">&para;</a></h3>
+<h3 id="mocking-and-fixtures">Mocking and Fixtures<a class="headerlink" href="#mocking-and-fixtures" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>unittest.mock</strong>: Python standard mocking</li>
 <li><strong>pytest fixtures</strong>: Reusable test components</li>
 </ul>
-<h3 id="coverage-reporting">Coverage Reporting<a class="headerlink" href="#coverage-reporting" title="Permanent link">&para;</a></h3>
+<h3 id="coverage-reporting">Coverage Reporting<a class="headerlink" href="#coverage-reporting" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>coverage.py</strong>: Coverage measurement engine</li>
 <li><strong>coverage-badge</strong>: Generate coverage badges</li>
 <li>HTML, XML, and JSON output formats</li>
 </ul>
-<h2 id="common-testing-patterns">Common Testing Patterns<a class="headerlink" href="#common-testing-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="pattern-1-testing-wizards">Pattern 1: Testing Wizards<a class="headerlink" href="#pattern-1-testing-wizards" title="Permanent link">&para;</a></h3>
+<h2 id="common-testing-patterns">Common Testing Patterns<a class="headerlink" href="#common-testing-patterns" title="Permanent link to this section">🔗</a></h2>
+<h3 id="pattern-1-testing-wizards">Pattern 1: Testing Wizards<a class="headerlink" href="#pattern-1-testing-wizards" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">TestMyWizard</span><span class="p">:</span>
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">test_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>        <span class="n">wizard</span> <span class="o">=</span> <span class="n">MyWizard</span><span class="p">()</span>
@@ -2731,7 +2733,7 @@
 <a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
 <a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a>            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">WizardPrediction</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="pattern-2-testing-plugins">Pattern 2: Testing Plugins<a class="headerlink" href="#pattern-2-testing-plugins" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-2-testing-plugins">Pattern 2: Testing Plugins<a class="headerlink" href="#pattern-2-testing-plugins" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_plugin_registration</span><span class="p">():</span>
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">registry</span> <span class="o">=</span> <span class="n">PluginRegistry</span><span class="p">()</span>
 <a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">plugin</span> <span class="o">=</span> <span class="n">MyPlugin</span><span class="p">()</span>
@@ -2741,64 +2743,64 @@
 <a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>    <span class="k">assert</span> <span class="n">plugin</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_plugins</span><span class="p">()</span>
 <a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="k">assert</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="n">plugin</span>
 </code></pre></div>
-<h3 id="pattern-3-testing-error-conditions">Pattern 3: Testing Error Conditions<a class="headerlink" href="#pattern-3-testing-error-conditions" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-3-testing-error-conditions">Pattern 3: Testing Error Conditions<a class="headerlink" href="#pattern-3-testing-error-conditions" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_invalid_input_raises_error</span><span class="p">():</span>
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="n">wizard</span> <span class="o">=</span> <span class="n">MyWizard</span><span class="p">()</span>
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
 <a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;Invalid code&quot;</span><span class="p">):</span>
 <a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>        <span class="n">wizard</span><span class="o">.</span><span class="n">analyze_code</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;test.py&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="troubleshooting-tests">Troubleshooting Tests<a class="headerlink" href="#troubleshooting-tests" title="Permanent link">&para;</a></h2>
-<h3 id="tests-fail-intermittently">Tests Fail Intermittently<a class="headerlink" href="#tests-fail-intermittently" title="Permanent link">&para;</a></h3>
+<h2 id="troubleshooting-tests">Troubleshooting Tests<a class="headerlink" href="#troubleshooting-tests" title="Permanent link to this section">🔗</a></h2>
+<h3 id="tests-fail-intermittently">Tests Fail Intermittently<a class="headerlink" href="#tests-fail-intermittently" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Check for race conditions in async code</li>
 <li>Look for shared state between tests</li>
 <li>Verify test independence</li>
 <li>Check for time-dependent assertions</li>
 </ul>
-<h3 id="tests-are-slow">Tests Are Slow<a class="headerlink" href="#tests-are-slow" title="Permanent link">&para;</a></h3>
+<h3 id="tests-are-slow">Tests Are Slow<a class="headerlink" href="#tests-are-slow" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Profile test execution: <code>pytest --durations=10</code></li>
 <li>Mock expensive operations (LLM calls, file I/O)</li>
 <li>Use pytest-xdist for parallel execution</li>
 <li>Mark slow tests: <code>@pytest.mark.slow</code></li>
 </ul>
-<h3 id="coverage-lower-than-expected">Coverage Lower Than Expected<a class="headerlink" href="#coverage-lower-than-expected" title="Permanent link">&para;</a></h3>
+<h3 id="coverage-lower-than-expected">Coverage Lower Than Expected<a class="headerlink" href="#coverage-lower-than-expected" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Run with <code>--cov-report=html</code> to see uncovered lines</li>
 <li>Check for unreachable code</li>
 <li>Add tests for edge cases</li>
 <li>Review conditional branches</li>
 </ul>
-<h3 id="import-errors-in-tests">Import Errors in Tests<a class="headerlink" href="#import-errors-in-tests" title="Permanent link">&para;</a></h3>
+<h3 id="import-errors-in-tests">Import Errors in Tests<a class="headerlink" href="#import-errors-in-tests" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Ensure package is installed: <code>pip install -e .</code></li>
 <li>Check PYTHONPATH</li>
 <li>Verify test discovery patterns in pytest.ini</li>
 </ul>
-<h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
-<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link to this section">🔗</a></h2>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><a href="https://docs.pytest.org/">pytest documentation</a></li>
 <li><a href="https://pytest-cov.readthedocs.io/">pytest-cov documentation</a></li>
 <li><a href="https://docs.python.org/3/library/unittest.mock.html">Python unittest.mock</a></li>
 </ul>
-<h3 id="internal-resources">Internal Resources<a class="headerlink" href="#internal-resources" title="Permanent link">&para;</a></h3>
+<h3 id="internal-resources">Internal Resources<a class="headerlink" href="#internal-resources" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>See <code>docs/CONTRIBUTING_TESTS.md</code> for contributor guide</li>
 <li>See <code>pytest.ini</code> for project configuration</li>
 <li>See <code>.coveragerc</code> for coverage configuration</li>
 <li>See test files in <code>tests/</code> for examples</li>
 </ul>
-<h2 id="continuous-improvement">Continuous Improvement<a class="headerlink" href="#continuous-improvement" title="Permanent link">&para;</a></h2>
-<h3 id="regular-review">Regular Review<a class="headerlink" href="#regular-review" title="Permanent link">&para;</a></h3>
+<h2 id="continuous-improvement">Continuous Improvement<a class="headerlink" href="#continuous-improvement" title="Permanent link to this section">🔗</a></h2>
+<h3 id="regular-review">Regular Review<a class="headerlink" href="#regular-review" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Review coverage reports weekly</li>
 <li>Identify and address coverage gaps</li>
 <li>Update tests as code evolves</li>
 <li>Refactor tests for clarity and maintainability</li>
 </ul>
-<h3 id="metrics-to-track">Metrics to Track<a class="headerlink" href="#metrics-to-track" title="Permanent link">&para;</a></h3>
+<h3 id="metrics-to-track">Metrics to Track<a class="headerlink" href="#metrics-to-track" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Overall coverage percentage</li>
 <li>Coverage by module</li>
@@ -2806,7 +2808,7 @@
 <li>Test flakiness rate</li>
 <li>Number of tests</li>
 </ul>
-<h3 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h3>
+<h3 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Maintain &gt;90% overall coverage</li>
 <li>Keep test execution under 5 minutes</li>

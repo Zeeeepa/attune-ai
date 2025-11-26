@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2056,13 +2058,13 @@
   
 
 
-<h1 id="example-multi-agent-team-coordination">Example: Multi-Agent Team Coordination<a class="headerlink" href="#example-multi-agent-team-coordination" title="Permanent link">&para;</a></h1>
+<h1 id="example-multi-agent-team-coordination">Example: Multi-Agent Team Coordination<a class="headerlink" href="#example-multi-agent-team-coordination" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Difficulty</strong>: Advanced
 <strong>Time</strong>: 30 minutes
 <strong>Empathy Level</strong>: 4 (Anticipatory)
 <strong>Domain</strong>: Software Development</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>This example demonstrates how multiple AI agents can coordinate through shared pattern libraries, detect conflicts, and learn from each other's successes.</p>
 <p><strong>Use Case</strong>: A development team with specialized AI agents (Frontend, Backend, DevOps) that need to coordinate on a microservices project.</p>
 <p><strong>What you'll learn</strong>:
@@ -2072,12 +2074,12 @@
 - Collective learning (agents learn from each other)
 - Team metrics dashboard</p>
 <hr />
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework
 </code></pre></div>
 <hr />
-<h2 id="part-1-basic-multi-agent-setup">Part 1: Basic Multi-Agent Setup<a class="headerlink" href="#part-1-basic-multi-agent-setup" title="Permanent link">&para;</a></h2>
-<h3 id="create-team-of-agents">Create Team of Agents<a class="headerlink" href="#create-team-of-agents" title="Permanent link">&para;</a></h3>
+<h2 id="part-1-basic-multi-agent-setup">Part 1: Basic Multi-Agent Setup<a class="headerlink" href="#part-1-basic-multi-agent-setup" title="Permanent link to this section">🔗</a></h2>
+<h3 id="create-team-of-agents">Create Team of Agents<a class="headerlink" href="#create-team-of-agents" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoordinationManager</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
@@ -2120,8 +2122,8 @@
 <a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shared pattern library: team_patterns.db&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-2-shared-pattern-learning">Part 2: Shared Pattern Learning<a class="headerlink" href="#part-2-shared-pattern-learning" title="Permanent link">&para;</a></h2>
-<h3 id="agent-learns-pattern-others-benefit">Agent Learns Pattern, Others Benefit<a class="headerlink" href="#agent-learns-pattern-others-benefit" title="Permanent link">&para;</a></h3>
+<h2 id="part-2-shared-pattern-learning">Part 2: Shared Pattern Learning<a class="headerlink" href="#part-2-shared-pattern-learning" title="Permanent link to this section">🔗</a></h2>
+<h3 id="agent-learns-pattern-others-benefit">Agent Learns Pattern, Others Benefit<a class="headerlink" href="#agent-learns-pattern-others-benefit" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Frontend agent learns a React optimization pattern</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">response</span> <span class="o">=</span> <span class="n">frontend_agent</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;agent_frontend&quot;</span><span class="p">,</span>
@@ -2182,8 +2184,8 @@
 <a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="c1"># Output: agent_frontend (transferred)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-3-conflict-detection">Part 3: Conflict Detection<a class="headerlink" href="#part-3-conflict-detection" title="Permanent link">&para;</a></h2>
-<h3 id="detect-when-agents-are-working-on-same-resource">Detect When Agents are Working on Same Resource<a class="headerlink" href="#detect-when-agents-are-working-on-same-resource" title="Permanent link">&para;</a></h3>
+<h2 id="part-3-conflict-detection">Part 3: Conflict Detection<a class="headerlink" href="#part-3-conflict-detection" title="Permanent link to this section">🔗</a></h2>
+<h3 id="detect-when-agents-are-working-on-same-resource">Detect When Agents are Working on Same Resource<a class="headerlink" href="#detect-when-agents-are-working-on-same-resource" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConflictDetector</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Create conflict detector</span>
@@ -2238,8 +2240,8 @@
 <a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-4-coordination-protocols">Part 4: Coordination Protocols<a class="headerlink" href="#part-4-coordination-protocols" title="Permanent link">&para;</a></h2>
-<h3 id="handoff-protocol">Handoff Protocol<a class="headerlink" href="#handoff-protocol" title="Permanent link">&para;</a></h3>
+<h2 id="part-4-coordination-protocols">Part 4: Coordination Protocols<a class="headerlink" href="#part-4-coordination-protocols" title="Permanent link to this section">🔗</a></h2>
+<h3 id="handoff-protocol">Handoff Protocol<a class="headerlink" href="#handoff-protocol" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">HandoffProtocol</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Frontend completes UI, hands off to backend for API integration</span>
@@ -2299,7 +2301,7 @@
 <a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a><span class="c1">#</span>
 <a id="__codelineno-4-58" name="__codelineno-4-58" href="#__codelineno-4-58"></a><span class="c1">#  Estimated completion: 2 hours&quot;</span>
 </code></pre></div>
-<h3 id="broadcast-protocol">Broadcast Protocol<a class="headerlink" href="#broadcast-protocol" title="Permanent link">&para;</a></h3>
+<h3 id="broadcast-protocol">Broadcast Protocol<a class="headerlink" href="#broadcast-protocol" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">BroadcastProtocol</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># DevOps agent discovers infrastructure change affecting all agents</span>
@@ -2350,8 +2352,8 @@
 <a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="c1">#   Estimated work: 3 hours. Can complete by 2025-11-28.</span>
 </code></pre></div>
 <hr />
-<h2 id="part-5-collective-learning">Part 5: Collective Learning<a class="headerlink" href="#part-5-collective-learning" title="Permanent link">&para;</a></h2>
-<h3 id="agents-learn-from-each-others-successes">Agents Learn from Each Other's Successes<a class="headerlink" href="#agents-learn-from-each-others-successes" title="Permanent link">&para;</a></h3>
+<h2 id="part-5-collective-learning">Part 5: Collective Learning<a class="headerlink" href="#part-5-collective-learning" title="Permanent link to this section">🔗</a></h2>
+<h3 id="agents-learn-from-each-others-successes">Agents Learn from Each Other's Successes<a class="headerlink" href="#agents-learn-from-each-others-successes" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">CollectiveLearning</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Track success rates across agents</span>
@@ -2415,8 +2417,8 @@
 <a id="__codelineno-6-61" name="__codelineno-6-61" href="#__codelineno-6-61"></a><span class="c1">#   Most successful agent: agent_backend (22 patterns created)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-6-team-metrics-dashboard">Part 6: Team Metrics Dashboard<a class="headerlink" href="#part-6-team-metrics-dashboard" title="Permanent link">&para;</a></h2>
-<h3 id="monitor-team-performance">Monitor Team Performance<a class="headerlink" href="#monitor-team-performance" title="Permanent link">&para;</a></h3>
+<h2 id="part-6-team-metrics-dashboard">Part 6: Team Metrics Dashboard<a class="headerlink" href="#part-6-team-metrics-dashboard" title="Permanent link to this section">🔗</a></h2>
+<h3 id="monitor-team-performance">Monitor Team Performance<a class="headerlink" href="#monitor-team-performance" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">TeamDashboard</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># Create team dashboard</span>
@@ -2469,8 +2471,8 @@
 <a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>   → Consider cross-training: Share DevOps patterns with dev agents
 </code></pre></div></p>
 <hr />
-<h2 id="part-7-real-world-scenario">Part 7: Real-World Scenario<a class="headerlink" href="#part-7-real-world-scenario" title="Permanent link">&para;</a></h2>
-<h3 id="complete-development-workflow">Complete Development Workflow<a class="headerlink" href="#complete-development-workflow" title="Permanent link">&para;</a></h3>
+<h2 id="part-7-real-world-scenario">Part 7: Real-World Scenario<a class="headerlink" href="#part-7-real-world-scenario" title="Permanent link to this section">🔗</a></h2>
+<h3 id="complete-development-workflow">Complete Development Workflow<a class="headerlink" href="#complete-development-workflow" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoordinationManager</span><span class="p">,</span> <span class="n">WorkflowOrchestrator</span>
@@ -2604,8 +2606,8 @@
 <a id="__codelineno-9-131" name="__codelineno-9-131" href="#__codelineno-9-131"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Team learned </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;patterns_learned&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> new patterns&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-8-advanced-coordination-features">Part 8: Advanced Coordination Features<a class="headerlink" href="#part-8-advanced-coordination-features" title="Permanent link">&para;</a></h2>
-<h3 id="dependency-graph">Dependency Graph<a class="headerlink" href="#dependency-graph" title="Permanent link">&para;</a></h3>
+<h2 id="part-8-advanced-coordination-features">Part 8: Advanced Coordination Features<a class="headerlink" href="#part-8-advanced-coordination-features" title="Permanent link to this section">🔗</a></h2>
+<h3 id="dependency-graph">Dependency Graph<a class="headerlink" href="#dependency-graph" title="Permanent link to this section">🔗</a></h3>
 <p>Track task dependencies across agents.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.coordination</span><span class="w"> </span><span class="kn">import</span> <span class="n">DependencyGraph</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
@@ -2627,7 +2629,7 @@
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    B --&gt; D[devops_deploy&lt;br/&gt;agent_devops]
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    C --&gt; D
 </code></pre></div></p>
-<h3 id="auto-execute-in-dependency-order">Auto-Execute in Dependency Order<a class="headerlink" href="#auto-execute-in-dependency-order" title="Permanent link">&para;</a></h3>
+<h3 id="auto-execute-in-dependency-order">Auto-Execute in Dependency Order<a class="headerlink" href="#auto-execute-in-dependency-order" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Execute tasks in correct order</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">graph</span><span class="o">.</span><span class="n">execute_all</span><span class="p">()</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
@@ -2641,7 +2643,7 @@
 <a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="c1"># ✅ devops_deploy: completed (90s)</span>
 </code></pre></div>
 <hr />
-<h2 id="performance-impact">Performance Impact<a class="headerlink" href="#performance-impact" title="Permanent link">&para;</a></h2>
+<h2 id="performance-impact">Performance Impact<a class="headerlink" href="#performance-impact" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Before Multi-Agent Coordination</strong>:
 - Each developer works in silo
 - Frequent conflicts discovered late (during code review)
@@ -2656,7 +2658,7 @@
 - Average feature completion: 4-5 days</p>
 <p><strong>Productivity Gain</strong>: <strong>~80% faster feature delivery</strong></p>
 <hr />
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Enhance team coordination</strong>:
 1. <strong>Add more agents</strong>: QA agent, Security agent, Design agent
 2. <strong>Cross-team coordination</strong>: Multiple teams sharing global pattern library
@@ -2668,7 +2670,7 @@
 - <a href="webhook-integration.md">Webhook Integration</a> - External system integration
 - <a href="code-review-assistant.md">Code Review Assistant</a> - Level 4 code reviews</p>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
 <p><strong>"Shared library conflict"</strong>
 - Use write-ahead logging: <code>persistence_backend="sqlite_wal"</code>
 - Enable locking: <code>shared_library_locking=True</code></p>

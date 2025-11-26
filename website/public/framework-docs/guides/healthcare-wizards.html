@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2478,10 +2480,10 @@
   
 
 
-<h1 id="healthcare-wizards">Healthcare Wizards<a class="headerlink" href="#healthcare-wizards" title="Permanent link">&para;</a></h1>
+<h1 id="healthcare-wizards">Healthcare Wizards<a class="headerlink" href="#healthcare-wizards" title="Permanent link to this section">🔗</a></h1>
 <p>Complete guide to HIPAA-compliant Level 4 Anticipatory wizards for healthcare applications.</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The <strong>Healthcare Wizards</strong> provide specialized AI assistants for medical applications with built-in PHI protection, HIPAA compliance, and clinical decision support.</p>
 <p><strong>Key Benefits</strong>:
 - <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 14h-4v4h-4v-4H6v-4h4V6h4v4h4m1-7H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg></span> <strong>Improve patient outcomes</strong> - Catch deterioration 30-90 minutes earlier
@@ -2493,11 +2495,11 @@
 <p>These wizards provide clinical decision support but do not replace clinical judgment. All recommendations must be reviewed by qualified healthcare professionals. Consult legal counsel for HIPAA compliance in your specific implementation.</p>
 </div>
 <hr />
-<h2 id="the-healthcare-wizard-suite">The Healthcare Wizard Suite<a class="headerlink" href="#the-healthcare-wizard-suite" title="Permanent link">&para;</a></h2>
-<h3 id="1-clinical-protocol-monitor">1. Clinical Protocol Monitor<a class="headerlink" href="#1-clinical-protocol-monitor" title="Permanent link">&para;</a></h3>
+<h2 id="the-healthcare-wizard-suite">The Healthcare Wizard Suite<a class="headerlink" href="#the-healthcare-wizard-suite" title="Permanent link to this section">🔗</a></h2>
+<h3 id="1-clinical-protocol-monitor">1. Clinical Protocol Monitor<a class="headerlink" href="#1-clinical-protocol-monitor" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Continuously monitors patient data against evidence-based clinical protocols</strong></p>
 <p>Like a "linting system" for patient care - compares real-time patient data against standardized protocols and alerts when deviations occur.</p>
-<h4 id="clinical-protocols-supported">Clinical Protocols Supported<a class="headerlink" href="#clinical-protocols-supported" title="Permanent link">&para;</a></h4>
+<h4 id="clinical-protocols-supported">Clinical Protocols Supported<a class="headerlink" href="#clinical-protocols-supported" title="Permanent link to this section">🔗</a></h4>
 <table>
 <thead>
 <tr>
@@ -2540,7 +2542,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<h4 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────┐
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  Real-Time Patient Data (Every 5-15 seconds)            │
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  ├─ Heart Rate: 110 bpm                                 │
@@ -2569,7 +2571,7 @@
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│  R - Recommendation: Initiate sepsis bundle             │
 <a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>└─────────────────────────────────────────────────────────┘
 </code></pre></div>
-<h4 id="example-sepsis-protocol">Example: Sepsis Protocol<a class="headerlink" href="#example-sepsis-protocol" title="Permanent link">&para;</a></h4>
+<h4 id="example-sepsis-protocol">Example: Sepsis Protocol<a class="headerlink" href="#example-sepsis-protocol" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClinicalProtocolMonitor</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Initialize with sepsis protocol</span>
@@ -2614,7 +2616,7 @@
 <a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="c1">#   • Administer 30 mL/kg crystalloid if lactate ≥ 2 mmol/L</span>
 <a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="c1">#   • Notify physician immediately</span>
 </code></pre></div>
-<h4 id="sepsis-protocol-json">Sepsis Protocol JSON<a class="headerlink" href="#sepsis-protocol-json" title="Permanent link">&para;</a></h4>
+<h4 id="sepsis-protocol-json">Sepsis Protocol JSON<a class="headerlink" href="#sepsis-protocol-json" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;protocol_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sepsis_screening_and_management&quot;</span><span class="p">,</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024.1&quot;</span><span class="p">,</span>
@@ -2687,17 +2689,17 @@
 <a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h3 id="2-sbar-clinical-handoff-generator">2. SBAR Clinical Handoff Generator<a class="headerlink" href="#2-sbar-clinical-handoff-generator" title="Permanent link">&para;</a></h3>
+<h3 id="2-sbar-clinical-handoff-generator">2. SBAR Clinical Handoff Generator<a class="headerlink" href="#2-sbar-clinical-handoff-generator" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Automatically generates structured SBAR handoffs from patient data</strong></p>
 <p>Reduces handoff time from 45 minutes to 5 minutes while improving completeness and reducing errors.</p>
-<h4 id="sbar-format">SBAR Format<a class="headerlink" href="#sbar-format" title="Permanent link">&para;</a></h4>
+<h4 id="sbar-format">SBAR Format<a class="headerlink" href="#sbar-format" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li><strong>S</strong>ituation - What's happening now?</li>
 <li><strong>B</strong>ackground - What's the clinical context?</li>
 <li><strong>A</strong>ssessment - What do you think is going on?</li>
 <li><strong>R</strong>ecommendation - What should be done?</li>
 </ul>
-<h4 id="quick-example">Quick Example<a class="headerlink" href="#quick-example" title="Permanent link">&para;</a></h4>
+<h4 id="quick-example">Quick Example<a class="headerlink" href="#quick-example" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">SBARHandoffWizard</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">SBARHandoffWizard</span><span class="p">(</span>
@@ -2714,7 +2716,7 @@
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">handoff</span><span class="p">[</span><span class="s1">&#39;sbar_report&#39;</span><span class="p">])</span>
 </code></pre></div>
-<h4 id="example-output">Example Output<a class="headerlink" href="#example-output" title="Permanent link">&para;</a></h4>
+<h4 id="example-output">Example Output<a class="headerlink" href="#example-output" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SBAR HANDOFF - Bed 312A
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>SITUATION:
@@ -2743,7 +2745,7 @@
 <a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>4. Recheck lactate within 2 hours
 <a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>5. Consider transfer to step-down if deteriorates
 </code></pre></div>
-<h4 id="compliance-features">Compliance Features<a class="headerlink" href="#compliance-features" title="Permanent link">&para;</a></h4>
+<h4 id="compliance-features">Compliance Features<a class="headerlink" href="#compliance-features" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li><strong>PHI Scrubbing</strong>: Automatic removal of names, MRNs, DOBs before LLM processing</li>
 <li><strong>Audit Trail</strong>: Logs all handoff generations with user ID and timestamp</li>
@@ -2751,10 +2753,10 @@
 <li><strong>Access Control</strong>: Role-based permissions (RN, MD, PA levels)</li>
 </ul>
 <hr />
-<h3 id="3-medication-safety-wizard">3. Medication Safety Wizard<a class="headerlink" href="#3-medication-safety-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="3-medication-safety-wizard">3. Medication Safety Wizard<a class="headerlink" href="#3-medication-safety-wizard" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Prevents medication errors before administration</strong></p>
 <p>Checks for drug interactions, allergies, dosing errors, and contraindications.</p>
-<h4 id="safety-checks">Safety Checks<a class="headerlink" href="#safety-checks" title="Permanent link">&para;</a></h4>
+<h4 id="safety-checks">Safety Checks<a class="headerlink" href="#safety-checks" title="Permanent link to this section">🔗</a></h4>
 <table>
 <thead>
 <tr>
@@ -2796,7 +2798,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="example-drug-interaction-check">Example: Drug Interaction Check<a class="headerlink" href="#example-drug-interaction-check" title="Permanent link">&para;</a></h4>
+<h4 id="example-drug-interaction-check">Example: Drug Interaction Check<a class="headerlink" href="#example-drug-interaction-check" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">MedicationSafetyWizard</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">MedicationSafetyWizard</span><span class="p">(</span><span class="n">enable_security</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -2831,10 +2833,10 @@
 <a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="c1">#                    monitor INR closely and consider GI prophylaxis</span>
 </code></pre></div>
 <hr />
-<h3 id="4-post-operative-monitoring-wizard">4. Post-Operative Monitoring Wizard<a class="headerlink" href="#4-post-operative-monitoring-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="4-post-operative-monitoring-wizard">4. Post-Operative Monitoring Wizard<a class="headerlink" href="#4-post-operative-monitoring-wizard" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Monitors surgical patients for complications</strong></p>
 <p>Tracks Enhanced Recovery After Surgery (ERAS) protocols and early warning scores.</p>
-<h4 id="monitored-complications">Monitored Complications<a class="headerlink" href="#monitored-complications" title="Permanent link">&para;</a></h4>
+<h4 id="monitored-complications">Monitored Complications<a class="headerlink" href="#monitored-complications" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li><strong>Surgical site infection</strong> - Temperature, WBC trends</li>
 <li><strong>Anastomotic leak</strong> - Abdominal distention, fever, tachycardia</li>
@@ -2842,7 +2844,7 @@
 <li><strong>Cardiovascular events</strong> - MI, DVT, stroke</li>
 <li><strong>Renal impairment</strong> - Creatinine trends, urine output</li>
 </ul>
-<h4 id="example-post-op-day-2-assessment">Example: Post-Op Day 2 Assessment<a class="headerlink" href="#example-post-op-day-2-assessment" title="Permanent link">&para;</a></h4>
+<h4 id="example-post-op-day-2-assessment">Example: Post-Op Day 2 Assessment<a class="headerlink" href="#example-post-op-day-2-assessment" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">PostOperativeMonitoringWizard</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">PostOperativeMonitoringWizard</span><span class="p">(</span>
@@ -2893,10 +2895,10 @@
 <a id="__codelineno-6-48" name="__codelineno-6-48" href="#__codelineno-6-48"></a><span class="c1">#     Action: Continue clear liquids, assess for ileus</span>
 </code></pre></div>
 <hr />
-<h3 id="5-fall-risk-assessment-wizard">5. Fall Risk Assessment Wizard<a class="headerlink" href="#5-fall-risk-assessment-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="5-fall-risk-assessment-wizard">5. Fall Risk Assessment Wizard<a class="headerlink" href="#5-fall-risk-assessment-wizard" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Predicts and prevents patient falls</strong></p>
 <p>Uses Morse Fall Scale and trajectory analysis to identify high-risk patients before falls occur.</p>
-<h4 id="risk-factors-analyzed">Risk Factors Analyzed<a class="headerlink" href="#risk-factors-analyzed" title="Permanent link">&para;</a></h4>
+<h4 id="risk-factors-analyzed">Risk Factors Analyzed<a class="headerlink" href="#risk-factors-analyzed" title="Permanent link to this section">🔗</a></h4>
 <table>
 <thead>
 <tr>
@@ -2938,7 +2940,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="example-implementation">Example Implementation<a class="headerlink" href="#example-implementation" title="Permanent link">&para;</a></h4>
+<h4 id="example-implementation">Example Implementation<a class="headerlink" href="#example-implementation" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">FallRiskWizard</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">FallRiskWizard</span><span class="p">(</span><span class="n">enable_security</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -2975,10 +2977,10 @@
 <a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="c1">#   [MEDIUM] Physical therapy consult</span>
 </code></pre></div>
 <hr />
-<h3 id="6-pressure-injury-prevention-wizard">6. Pressure Injury Prevention Wizard<a class="headerlink" href="#6-pressure-injury-prevention-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="6-pressure-injury-prevention-wizard">6. Pressure Injury Prevention Wizard<a class="headerlink" href="#6-pressure-injury-prevention-wizard" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Prevents pressure ulcers through proactive risk assessment</strong></p>
 <p>Uses Braden Scale and turning protocol compliance to reduce pressure injuries.</p>
-<h4 id="quick-example_1">Quick Example<a class="headerlink" href="#quick-example_1" title="Permanent link">&para;</a></h4>
+<h4 id="quick-example_1">Quick Example<a class="headerlink" href="#quick-example_1" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">PressureInjuryWizard</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">PressureInjuryWizard</span><span class="p">(</span><span class="n">enable_security</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3007,10 +3009,10 @@
 <a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ⚠️  </span><span class="si">{</span><span class="n">gap</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h3 id="7-cardiac-monitoring-wizard">7. Cardiac Monitoring Wizard<a class="headerlink" href="#7-cardiac-monitoring-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="7-cardiac-monitoring-wizard">7. Cardiac Monitoring Wizard<a class="headerlink" href="#7-cardiac-monitoring-wizard" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Real-time cardiac rhythm analysis and alert generation</strong></p>
 <p>Detects arrhythmias, ST-segment changes, and ischemia from telemetry data.</p>
-<h4 id="monitored-events">Monitored Events<a class="headerlink" href="#monitored-events" title="Permanent link">&para;</a></h4>
+<h4 id="monitored-events">Monitored Events<a class="headerlink" href="#monitored-events" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li><strong>Life-threatening arrhythmias</strong> - VT, VF, complete heart block</li>
 <li><strong>Significant bradycardia/tachycardia</strong> - HR &lt; 40 or &gt; 140</li>
@@ -3019,10 +3021,10 @@
 <li><strong>Atrial fibrillation with RVR</strong> - A-fib &gt; 120 bpm</li>
 </ul>
 <hr />
-<h3 id="8-glucose-management-wizard">8. Glucose Management Wizard<a class="headerlink" href="#8-glucose-management-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="8-glucose-management-wizard">8. Glucose Management Wizard<a class="headerlink" href="#8-glucose-management-wizard" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Insulin dosing and hypoglycemia prevention</strong></p>
 <p>Helps manage diabetic patients with safe insulin dosing and trend analysis.</p>
-<h4 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h4>
+<h4 id="features">Features<a class="headerlink" href="#features" title="Permanent link to this section">🔗</a></h4>
 <ul>
 <li><strong>Sliding scale recommendations</strong> - Based on current glucose and insulin sensitivity</li>
 <li><strong>Hypoglycemia prediction</strong> - Alerts when trending toward low glucose</li>
@@ -3030,8 +3032,8 @@
 <li><strong>Insulin pump integration</strong> - Validates pump settings</li>
 </ul>
 <hr />
-<h2 id="integration-with-emr-systems">Integration with EMR Systems<a class="headerlink" href="#integration-with-emr-systems" title="Permanent link">&para;</a></h2>
-<h3 id="hl7-fhir-integration">HL7 FHIR Integration<a class="headerlink" href="#hl7-fhir-integration" title="Permanent link">&para;</a></h3>
+<h2 id="integration-with-emr-systems">Integration with EMR Systems<a class="headerlink" href="#integration-with-emr-systems" title="Permanent link to this section">🔗</a></h2>
+<h3 id="hl7-fhir-integration">HL7 FHIR Integration<a class="headerlink" href="#hl7-fhir-integration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthcareWizard</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">FHIRIntegration</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
@@ -3053,7 +3055,7 @@
 <a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="n">monitor</span> <span class="o">=</span> <span class="n">ClinicalProtocolMonitor</span><span class="p">(</span><span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;sepsis_screening&quot;</span><span class="p">)</span>
 <a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">monitor</span><span class="o">.</span><span class="n">evaluate_fhir</span><span class="p">(</span><span class="n">patient</span><span class="p">,</span> <span class="n">vitals</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="epic-integration">Epic Integration<a class="headerlink" href="#epic-integration" title="Permanent link">&para;</a></h3>
+<h3 id="epic-integration">Epic Integration<a class="headerlink" href="#epic-integration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">EpicIntegration</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">epic</span> <span class="o">=</span> <span class="n">EpicIntegration</span><span class="p">(</span>
@@ -3068,8 +3070,8 @@
 <a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="k">await</span> <span class="n">epic</span><span class="o">.</span><span class="n">post_note</span><span class="p">(</span><span class="n">admission</span><span class="o">.</span><span class="n">patient_id</span><span class="p">,</span> <span class="n">handoff</span><span class="p">[</span><span class="s1">&#39;sbar_report&#39;</span><span class="p">])</span>
 </code></pre></div>
 <hr />
-<h2 id="hipaa-compliance">HIPAA Compliance<a class="headerlink" href="#hipaa-compliance" title="Permanent link">&para;</a></h2>
-<h3 id="phi-scrubbing">PHI Scrubbing<a class="headerlink" href="#phi-scrubbing" title="Permanent link">&para;</a></h3>
+<h2 id="hipaa-compliance">HIPAA Compliance<a class="headerlink" href="#hipaa-compliance" title="Permanent link to this section">🔗</a></h2>
+<h3 id="phi-scrubbing">PHI Scrubbing<a class="headerlink" href="#phi-scrubbing" title="Permanent link to this section">🔗</a></h3>
 <p>All healthcare wizards automatically scrub 18 HIPAA identifiers:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Before sending to LLM</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">input_text</span> <span class="o">=</span> <span class="s2">&quot;Patient John Doe (MRN 987654, DOB 01/15/1980) from 555-123-4567&quot;</span>
@@ -3079,7 +3081,7 @@
 <a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
 <a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># LLM never sees actual PHI</span>
 </code></pre></div>
-<h3 id="encryption">Encryption<a class="headerlink" href="#encryption" title="Permanent link">&para;</a></h3>
+<h3 id="encryption">Encryption<a class="headerlink" href="#encryption" title="Permanent link to this section">🔗</a></h3>
 <p>All PHI is encrypted at rest using AES-256-GCM:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">HealthcareWizard</span><span class="p">(</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">enable_security</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -3087,7 +3089,7 @@
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">classification</span><span class="o">=</span><span class="s2">&quot;SENSITIVE&quot;</span>
 <a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="audit-logging">Audit Logging<a class="headerlink" href="#audit-logging" title="Permanent link">&para;</a></h3>
+<h3 id="audit-logging">Audit Logging<a class="headerlink" href="#audit-logging" title="Permanent link to this section">🔗</a></h3>
 <p>Every PHI access is logged:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-11-25T14:30:00Z&quot;</span><span class="p">,</span>
@@ -3100,7 +3102,7 @@
 <a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="roi-calculator">ROI Calculator<a class="headerlink" href="#roi-calculator" title="Permanent link">&para;</a></h2>
+<h2 id="roi-calculator">ROI Calculator<a class="headerlink" href="#roi-calculator" title="Permanent link to this section">🔗</a></h2>
 <p>For a typical <strong>100-bed hospital</strong>:</p>
 <table>
 <thead>
@@ -3145,22 +3147,22 @@
 </tbody>
 </table>
 <hr />
-<h2 id="implementation-guide">Implementation Guide<a class="headerlink" href="#implementation-guide" title="Permanent link">&para;</a></h2>
-<h3 id="phase-1-pilot-2-4-weeks">Phase 1: Pilot (2-4 weeks)<a class="headerlink" href="#phase-1-pilot-2-4-weeks" title="Permanent link">&para;</a></h3>
+<h2 id="implementation-guide">Implementation Guide<a class="headerlink" href="#implementation-guide" title="Permanent link to this section">🔗</a></h2>
+<h3 id="phase-1-pilot-2-4-weeks">Phase 1: Pilot (2-4 weeks)<a class="headerlink" href="#phase-1-pilot-2-4-weeks" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Select pilot unit</strong> - ICU or step-down unit (10-20 beds)</li>
 <li><strong>Configure protocols</strong> - Start with sepsis + fall risk</li>
 <li><strong>Train staff</strong> - 30-minute training per nurse</li>
 <li><strong>Monitor usage</strong> - Track alerts, response times, outcomes</li>
 </ol>
-<h3 id="phase-2-expansion-4-8-weeks">Phase 2: Expansion (4-8 weeks)<a class="headerlink" href="#phase-2-expansion-4-8-weeks" title="Permanent link">&para;</a></h3>
+<h3 id="phase-2-expansion-4-8-weeks">Phase 2: Expansion (4-8 weeks)<a class="headerlink" href="#phase-2-expansion-4-8-weeks" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Add protocols</strong> - Post-op monitoring, medication safety</li>
 <li><strong>Expand to more units</strong> - Medical-surgical floors</li>
 <li><strong>Integrate with EMR</strong> - HL7 FHIR or vendor API</li>
 <li><strong>Optimize alerts</strong> - Reduce false positives</li>
 </ol>
-<h3 id="phase-3-enterprise-3-6-months">Phase 3: Enterprise (3-6 months)<a class="headerlink" href="#phase-3-enterprise-3-6-months" title="Permanent link">&para;</a></h3>
+<h3 id="phase-3-enterprise-3-6-months">Phase 3: Enterprise (3-6 months)<a class="headerlink" href="#phase-3-enterprise-3-6-months" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Hospital-wide deployment</strong> - All inpatient units</li>
 <li><strong>Advanced features</strong> - Predictive analytics, ML models</li>
@@ -3168,7 +3170,7 @@
 <li><strong>Continuous improvement</strong> - Regular protocol updates</li>
 </ol>
 <hr />
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="../examples/sbar-clinical-handoff.html">SBAR Clinical Handoff Example</a> - Complete implementation</li>
 <li><a href="hipaa-compliance.html">HIPAA Compliance Guide</a> - Compliance requirements</li>

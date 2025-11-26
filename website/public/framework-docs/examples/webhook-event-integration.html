@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2168,13 +2170,13 @@
   
 
 
-<h1 id="example-webhook-event-integration">Example: Webhook &amp; Event Integration<a class="headerlink" href="#example-webhook-event-integration" title="Permanent link">&para;</a></h1>
+<h1 id="example-webhook-event-integration">Example: Webhook &amp; Event Integration<a class="headerlink" href="#example-webhook-event-integration" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Difficulty</strong>: Intermediate
 <strong>Time</strong>: 25 minutes
 <strong>Features</strong>: Event bus, webhooks, external integrations
 <strong>Integrations</strong>: Slack, GitHub, JIRA, custom webhooks</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>This example shows how to integrate the Empathy Framework with external systems using:
 - <strong>Event bus</strong>: Internal pub/sub system for framework events
 - <strong>Webhooks</strong>: HTTP callbacks to external services
@@ -2187,12 +2189,12 @@
 - Send metrics to Datadog/NewRelic
 - Custom integrations with your tools</p>
 <hr />
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">[</span>webhooks<span class="o">]</span>
 </code></pre></div>
 <hr />
-<h2 id="part-1-event-bus-basics">Part 1: Event Bus Basics<a class="headerlink" href="#part-1-event-bus-basics" title="Permanent link">&para;</a></h2>
-<h3 id="subscribe-to-framework-events">Subscribe to Framework Events<a class="headerlink" href="#subscribe-to-framework-events" title="Permanent link">&para;</a></h3>
+<h2 id="part-1-event-bus-basics">Part 1: Event Bus Basics<a class="headerlink" href="#part-1-event-bus-basics" title="Permanent link to this section">🔗</a></h2>
+<h3 id="subscribe-to-framework-events">Subscribe to Framework Events<a class="headerlink" href="#subscribe-to-framework-events" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.events</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventBus</span><span class="p">,</span> <span class="n">Event</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
@@ -2243,8 +2245,8 @@
 <a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="c1">#    User: user_123</span>
 </code></pre></div>
 <hr />
-<h2 id="part-2-webhook-notifications">Part 2: Webhook Notifications<a class="headerlink" href="#part-2-webhook-notifications" title="Permanent link">&para;</a></h2>
-<h3 id="send-events-to-external-services">Send Events to External Services<a class="headerlink" href="#send-events-to-external-services" title="Permanent link">&para;</a></h3>
+<h2 id="part-2-webhook-notifications">Part 2: Webhook Notifications<a class="headerlink" href="#part-2-webhook-notifications" title="Permanent link to this section">🔗</a></h2>
+<h3 id="send-events-to-external-services">Send Events to External Services<a class="headerlink" href="#send-events-to-external-services" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebhookManager</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.events</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventBus</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
@@ -2294,8 +2296,8 @@
 <a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a><span class="c1"># User: user_123</span>
 </code></pre></div>
 <hr />
-<h2 id="part-3-multiple-webhook-integrations">Part 3: Multiple Webhook Integrations<a class="headerlink" href="#part-3-multiple-webhook-integrations" title="Permanent link">&para;</a></h2>
-<h3 id="notify-multiple-services">Notify Multiple Services<a class="headerlink" href="#notify-multiple-services" title="Permanent link">&para;</a></h3>
+<h2 id="part-3-multiple-webhook-integrations">Part 3: Multiple Webhook Integrations<a class="headerlink" href="#part-3-multiple-webhook-integrations" title="Permanent link to this section">🔗</a></h2>
+<h3 id="notify-multiple-services">Notify Multiple Services<a class="headerlink" href="#notify-multiple-services" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebhookManager</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.events</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventBus</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -2365,8 +2367,8 @@
 <a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a><span class="c1"># ✅ Internal API: Custom processing triggered</span>
 </code></pre></div>
 <hr />
-<h2 id="part-4-conditional-webhooks">Part 4: Conditional Webhooks<a class="headerlink" href="#part-4-conditional-webhooks" title="Permanent link">&para;</a></h2>
-<h3 id="fire-webhooks-based-on-conditions">Fire Webhooks Based on Conditions<a class="headerlink" href="#fire-webhooks-based-on-conditions" title="Permanent link">&para;</a></h3>
+<h2 id="part-4-conditional-webhooks">Part 4: Conditional Webhooks<a class="headerlink" href="#part-4-conditional-webhooks" title="Permanent link to this section">🔗</a></h2>
+<h3 id="fire-webhooks-based-on-conditions">Fire Webhooks Based on Conditions<a class="headerlink" href="#fire-webhooks-based-on-conditions" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConditionalWebhook</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Only notify for HIGH confidence predictions (&gt;85%)</span>
@@ -2405,8 +2407,8 @@
 <a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-5-github-integration">Part 5: GitHub Integration<a class="headerlink" href="#part-5-github-integration" title="Permanent link">&para;</a></h2>
-<h3 id="create-issues-from-predictions">Create Issues from Predictions<a class="headerlink" href="#create-issues-from-predictions" title="Permanent link">&para;</a></h3>
+<h2 id="part-5-github-integration">Part 5: GitHub Integration<a class="headerlink" href="#part-5-github-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="create-issues-from-predictions">Create Issues from Predictions<a class="headerlink" href="#create-issues-from-predictions" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">GitHubIntegration</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.events</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventBus</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
@@ -2466,8 +2468,8 @@
 <a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a><span class="c1"># ✅ Created GitHub issue #789</span>
 </code></pre></div>
 <hr />
-<h2 id="part-6-bidirectional-integration">Part 6: Bidirectional Integration<a class="headerlink" href="#part-6-bidirectional-integration" title="Permanent link">&para;</a></h2>
-<h3 id="trigger-empathy-from-external-events">Trigger Empathy from External Events<a class="headerlink" href="#trigger-empathy-from-external-events" title="Permanent link">&para;</a></h3>
+<h2 id="part-6-bidirectional-integration">Part 6: Bidirectional Integration<a class="headerlink" href="#part-6-bidirectional-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="trigger-empathy-from-external-events">Trigger Empathy from External Events<a class="headerlink" href="#trigger-empathy-from-external-events" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">GitHubIntegration</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
@@ -2535,8 +2537,8 @@
 <a id="__codelineno-6-65" name="__codelineno-6-65" href="#__codelineno-6-65"></a><span class="c1"># Fully automated code review with Level 4 anticipatory intelligence!</span>
 </code></pre></div>
 <hr />
-<h2 id="part-7-slack-integration">Part 7: Slack Integration<a class="headerlink" href="#part-7-slack-integration" title="Permanent link">&para;</a></h2>
-<h3 id="slash-commands">Slash Commands<a class="headerlink" href="#slash-commands" title="Permanent link">&para;</a></h3>
+<h2 id="part-7-slack-integration">Part 7: Slack Integration<a class="headerlink" href="#part-7-slack-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="slash-commands">Slash Commands<a class="headerlink" href="#slash-commands" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">SlackIntegration</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
@@ -2607,7 +2609,7 @@
 <a id="__codelineno-7-68" name="__codelineno-7-68" href="#__codelineno-7-68"></a><span class="c1"># /empathy How do I fix this SQL injection?</span>
 <a id="__codelineno-7-69" name="__codelineno-7-69" href="#__codelineno-7-69"></a><span class="c1"># → Bot responds with Level 4 anticipatory analysis</span>
 </code></pre></div>
-<h3 id="proactive-slack-notifications">Proactive Slack Notifications<a class="headerlink" href="#proactive-slack-notifications" title="Permanent link">&para;</a></h3>
+<h3 id="proactive-slack-notifications">Proactive Slack Notifications<a class="headerlink" href="#proactive-slack-notifications" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">SlackIntegration</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
@@ -2652,8 +2654,8 @@
 <a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>    <span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-8-jira-integration">Part 8: JIRA Integration<a class="headerlink" href="#part-8-jira-integration" title="Permanent link">&para;</a></h2>
-<h3 id="auto-create-tickets-from-predictions">Auto-Create Tickets from Predictions<a class="headerlink" href="#auto-create-tickets-from-predictions" title="Permanent link">&para;</a></h3>
+<h2 id="part-8-jira-integration">Part 8: JIRA Integration<a class="headerlink" href="#part-8-jira-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="auto-create-tickets-from-predictions">Auto-Create Tickets from Predictions<a class="headerlink" href="#auto-create-tickets-from-predictions" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">JIRAIntegration</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">jira</span> <span class="o">=</span> <span class="n">JIRAIntegration</span><span class="p">(</span>
@@ -2703,8 +2705,8 @@
 <a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a><span class="c1"># Prediction → JIRA ticket created automatically</span>
 </code></pre></div>
 <hr />
-<h2 id="part-9-custom-webhook-server">Part 9: Custom Webhook Server<a class="headerlink" href="#part-9-custom-webhook-server" title="Permanent link">&para;</a></h2>
-<h3 id="receive-webhooks-from-empathy">Receive Webhooks from Empathy<a class="headerlink" href="#receive-webhooks-from-empathy" title="Permanent link">&para;</a></h3>
+<h2 id="part-9-custom-webhook-server">Part 9: Custom Webhook Server<a class="headerlink" href="#part-9-custom-webhook-server" title="Permanent link to this section">🔗</a></h2>
+<h3 id="receive-webhooks-from-empathy">Receive Webhooks from Empathy<a class="headerlink" href="#receive-webhooks-from-empathy" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
@@ -2771,8 +2773,8 @@
 <a id="__codelineno-10-64" name="__codelineno-10-64" href="#__codelineno-10-64"></a>    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-10-event-types-reference">Part 10: Event Types Reference<a class="headerlink" href="#part-10-event-types-reference" title="Permanent link">&para;</a></h2>
-<h3 id="all-available-events">All Available Events<a class="headerlink" href="#all-available-events" title="Permanent link">&para;</a></h3>
+<h2 id="part-10-event-types-reference">Part 10: Event Types Reference<a class="headerlink" href="#part-10-event-types-reference" title="Permanent link to this section">🔗</a></h2>
+<h3 id="all-available-events">All Available Events<a class="headerlink" href="#all-available-events" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Complete list of Empathy Framework events</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">EVENT_TYPES</span> <span class="o">=</span> <span class="p">{</span>
@@ -2861,7 +2863,7 @@
 <a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="performance-best-practices">Performance &amp; Best Practices<a class="headerlink" href="#performance-best-practices" title="Permanent link">&para;</a></h2>
+<h2 id="performance-best-practices">Performance &amp; Best Practices<a class="headerlink" href="#performance-best-practices" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Webhook Performance</strong>:
 - Average latency: ~50-100ms (HTTP POST)
 - Retry logic: 3 attempts with exponential backoff
@@ -2874,7 +2876,7 @@
 4. <strong>Secure endpoints</strong>: Use HTTPS + API tokens
 5. <strong>Idempotency</strong>: Make webhook handlers idempotent (handle duplicates)</p>
 <hr />
-<h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
+<h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Webhook Security</strong>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecureWebhook</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
@@ -2905,7 +2907,7 @@
 <a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>    <span class="k">return</span> <span class="n">hmac</span><span class="o">.</span><span class="n">compare_digest</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">expected_sig</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Enhance integrations</strong>:
 1. <strong>Add more services</strong>: Microsoft Teams, Discord, PagerDuty
 2. <strong>Custom event types</strong>: Define domain-specific events
@@ -2917,7 +2919,7 @@
 - <a href="adaptive-learning-system.html">Adaptive Learning</a> - Adaptation events
 - <a href="sbar-clinical-handoff.html">SBAR Clinical Handoff</a> - Healthcare events</p>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
 <p><strong>"Webhook delivery failed"</strong>
 - Check URL is reachable: <code>curl https://webhook-url</code>
 - Verify SSL certificate if HTTPS

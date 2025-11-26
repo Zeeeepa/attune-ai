@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2403,13 +2405,13 @@
   
 
 
-<h1 id="empathy-framework-user-guide">Empathy Framework User Guide<a class="headerlink" href="#empathy-framework-user-guide" title="Permanent link">&para;</a></h1>
+<h1 id="empathy-framework-user-guide">Empathy Framework User Guide<a class="headerlink" href="#empathy-framework-user-guide" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Transform your development workflow with Level 4 Anticipatory AI collaboration</strong></p>
 <p><strong>Version:</strong> 1.0.0
 <strong>License:</strong> Fair Source 0.9
 <strong>Copyright:</strong> 2025 Deep Study AI, LLC</p>
 <hr />
-<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link to this section">🔗</a></h2>
 <ol>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#architecture-overview">Architecture Overview</a></li>
@@ -2423,17 +2425,17 @@
 <li><a href="#advanced-topics">Advanced Topics</a></li>
 </ol>
 <hr />
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
-<h3 id="what-is-the-empathy-framework">What is the Empathy Framework?<a class="headerlink" href="#what-is-the-empathy-framework" title="Permanent link">&para;</a></h3>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-is-the-empathy-framework">What is the Empathy Framework?<a class="headerlink" href="#what-is-the-empathy-framework" title="Permanent link to this section">🔗</a></h3>
 <p>The Empathy Framework is a systematic approach to building AI systems that progress from reactive responses (Level 1) to anticipatory problem prevention (Level 4) and systems-level design (Level 5). It transforms AI from a simple question-answering tool into a collaborative partner that learns your patterns, predicts future needs, and prevents problems before they occur.</p>
-<h3 id="why-empathy">Why "Empathy"?<a class="headerlink" href="#why-empathy" title="Permanent link">&para;</a></h3>
+<h3 id="why-empathy">Why "Empathy"?<a class="headerlink" href="#why-empathy" title="Permanent link to this section">🔗</a></h3>
 <p>In this context, empathy is not about feelings - it's about:</p>
 <ul>
 <li><strong>Alignment</strong>: Understanding your goals, context, and constraints</li>
 <li><strong>Prediction</strong>: Anticipating future needs based on trajectory analysis</li>
 <li><strong>Timely Action</strong>: Intervening at the right moment with the right support</li>
 </ul>
-<h3 id="key-benefits">Key Benefits<a class="headerlink" href="#key-benefits" title="Permanent link">&para;</a></h3>
+<h3 id="key-benefits">Key Benefits<a class="headerlink" href="#key-benefits" title="Permanent link to this section">🔗</a></h3>
 <p><strong>For Individual Developers:</strong>
 - 4-6x faster development speed
 - Catch issues at development time, not production
@@ -2449,7 +2451,7 @@
 - Faster time to market
 - Higher code quality and security
 - Reduced operational costs</p>
-<h3 id="what-makes-it-different">What Makes It Different?<a class="headerlink" href="#what-makes-it-different" title="Permanent link">&para;</a></h3>
+<h3 id="what-makes-it-different">What Makes It Different?<a class="headerlink" href="#what-makes-it-different" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -2481,8 +2483,8 @@
 </tbody>
 </table>
 <hr />
-<h2 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link">&para;</a></h2>
-<h3 id="system-components">System Components<a class="headerlink" href="#system-components" title="Permanent link">&para;</a></h3>
+<h2 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link to this section">🔗</a></h2>
+<h3 id="system-components">System Components<a class="headerlink" href="#system-components" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────┐
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                    Empathy Framework                         │
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────────────────────────────────────────────────────────────┤
@@ -2528,7 +2530,7 @@
 <a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>│                                                               │
 <a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>└─────────────────────────────────────────────────────────────┘
 </code></pre></div>
-<h3 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="Permanent link">&para;</a></h3>
+<h3 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>User Input</strong> → EmpathyLLM core</li>
 <li><strong>State Retrieval</strong> → Load collaboration state for user</li>
@@ -2539,7 +2541,7 @@
 <li><strong>State Update</strong> → Record interaction, update trust, detect patterns</li>
 <li><strong>Response Delivery</strong> → Return enriched response to user</li>
 </ol>
-<h3 id="key-design-principles">Key Design Principles<a class="headerlink" href="#key-design-principles" title="Permanent link">&para;</a></h3>
+<h3 id="key-design-principles">Key Design Principles<a class="headerlink" href="#key-design-principles" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Progressive Enhancement</strong>: Start simple (Level 1), earn advanced features (Levels 2-5)</li>
 <li><strong>Trust-Based Progression</strong>: Higher levels require building trust through successful interactions</li>
@@ -2549,8 +2551,8 @@
 <li><strong>Cost Optimized</strong>: Prompt caching, smart token management</li>
 </ol>
 <hr />
-<h2 id="the-five-levels-explained">The Five Levels Explained<a class="headerlink" href="#the-five-levels-explained" title="Permanent link">&para;</a></h2>
-<h3 id="level-1-reactive">Level 1: Reactive<a class="headerlink" href="#level-1-reactive" title="Permanent link">&para;</a></h3>
+<h2 id="the-five-levels-explained">The Five Levels Explained<a class="headerlink" href="#the-five-levels-explained" title="Permanent link to this section">🔗</a></h2>
+<h3 id="level-1-reactive">Level 1: Reactive<a class="headerlink" href="#level-1-reactive" title="Permanent link to this section">🔗</a></h3>
 <p><strong>What it does:</strong>
 - Simple question-and-answer
 - No memory of previous interactions
@@ -2579,7 +2581,7 @@
 </code></pre></div>
 <p><strong>Trust Requirements:</strong> None (always available)</p>
 <hr />
-<h3 id="level-2-guided">Level 2: Guided<a class="headerlink" href="#level-2-guided" title="Permanent link">&para;</a></h3>
+<h3 id="level-2-guided">Level 2: Guided<a class="headerlink" href="#level-2-guided" title="Permanent link to this section">🔗</a></h3>
 <p><strong>What it does:</strong>
 - Uses conversation history for context
 - Asks clarifying questions
@@ -2630,7 +2632,7 @@
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;level_used&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">2</span>
 </code></pre></div>
 <hr />
-<h3 id="level-3-proactive">Level 3: Proactive<a class="headerlink" href="#level-3-proactive" title="Permanent link">&para;</a></h3>
+<h3 id="level-3-proactive">Level 3: Proactive<a class="headerlink" href="#level-3-proactive" title="Permanent link to this section">🔗</a></h3>
 <p><strong>What it does:</strong>
 - Detects user patterns
 - Acts proactively based on patterns
@@ -2719,7 +2721,7 @@
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="n">llm</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s2">&quot;dev_team&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h3 id="level-4-anticipatory">Level 4: Anticipatory<a class="headerlink" href="#level-4-anticipatory" title="Permanent link">&para;</a></h3>
+<h3 id="level-4-anticipatory">Level 4: Anticipatory<a class="headerlink" href="#level-4-anticipatory" title="Permanent link to this section">🔗</a></h3>
 <p><strong>What it does:</strong>
 - Analyzes trajectory (where are you headed?)
 - Predicts future bottlenecks and issues
@@ -2831,7 +2833,7 @@
 - Similar codebases in training data
 - Clear growth/usage patterns</p>
 <hr />
-<h3 id="level-5-systems">Level 5: Systems<a class="headerlink" href="#level-5-systems" title="Permanent link">&para;</a></h3>
+<h3 id="level-5-systems">Level 5: Systems<a class="headerlink" href="#level-5-systems" title="Permanent link to this section">🔗</a></h3>
 <p><strong>What it does:</strong>
 - Learns patterns across domains
 - Applies principles from one domain to another
@@ -2939,21 +2941,21 @@
 <li><strong>Paradigms</strong>: Shift from reactive to anticipatory thinking</li>
 </ol>
 <hr />
-<h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link to this section">🔗</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>Python 3.10+</strong></li>
 <li><strong>API Key</strong> for Anthropic (Claude) or OpenAI (GPT)</li>
 <li><strong>pip</strong> package manager</li>
 <li><strong>Git</strong> (optional, for source installation)</li>
 </ul>
-<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h3>
 <p>See <a href="QUICKSTART_GUIDE.html">QUICKSTART_GUIDE.md</a> for detailed installation instructions.</p>
 <p><strong>Quick Install:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="w"> </span>anthropic
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span>sk-ant-your-key-here
 </code></pre></div>
-<h3 id="first-steps">First Steps<a class="headerlink" href="#first-steps" title="Permanent link">&para;</a></h3>
+<h3 id="first-steps">First Steps<a class="headerlink" href="#first-steps" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Install the framework</strong> (2 minutes)</li>
 <li><strong>Set up API key</strong> (1 minute)</li>
@@ -2963,10 +2965,10 @@
 </ol>
 <p><strong>Total time: 13 minutes from zero to analyzing code</strong></p>
 <hr />
-<h2 id="wizard-catalog">Wizard Catalog<a class="headerlink" href="#wizard-catalog" title="Permanent link">&para;</a></h2>
+<h2 id="wizard-catalog">Wizard Catalog<a class="headerlink" href="#wizard-catalog" title="Permanent link to this section">🔗</a></h2>
 <p>The Empathy Framework includes 16+ specialized Coach wizards for software development. Each wizard implements Level 4 Anticipatory Empathy.</p>
-<h3 id="security-compliance">Security &amp; Compliance<a class="headerlink" href="#security-compliance" title="Permanent link">&para;</a></h3>
-<h4 id="securitywizard">SecurityWizard<a class="headerlink" href="#securitywizard" title="Permanent link">&para;</a></h4>
+<h3 id="security-compliance">Security &amp; Compliance<a class="headerlink" href="#security-compliance" title="Permanent link to this section">🔗</a></h3>
+<h4 id="securitywizard">SecurityWizard<a class="headerlink" href="#securitywizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Detect security vulnerabilities and predict future attack vectors.</p>
 <p><strong>Detects:</strong>
 - SQL injection vulnerabilities
@@ -3034,7 +3036,7 @@
 <p><strong>Supported Languages:</strong>
 Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <hr />
-<h4 id="compliancewizard">ComplianceWizard<a class="headerlink" href="#compliancewizard" title="Permanent link">&para;</a></h4>
+<h4 id="compliancewizard">ComplianceWizard<a class="headerlink" href="#compliancewizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Ensure regulatory compliance (GDPR, SOC 2, HIPAA, PCI-DSS).</p>
 <p><strong>Checks:</strong>
 - PII handling and encryption
@@ -3064,8 +3066,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h3 id="performance-scalability">Performance &amp; Scalability<a class="headerlink" href="#performance-scalability" title="Permanent link">&para;</a></h3>
-<h4 id="performancewizard">PerformanceWizard<a class="headerlink" href="#performancewizard" title="Permanent link">&para;</a></h4>
+<h3 id="performance-scalability">Performance &amp; Scalability<a class="headerlink" href="#performance-scalability" title="Permanent link to this section">🔗</a></h3>
+<h4 id="performancewizard">PerformanceWizard<a class="headerlink" href="#performancewizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Detect performance issues and predict scalability bottlenecks.</p>
 <p><strong>Detects:</strong>
 - N+1 query problems
@@ -3112,7 +3114,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a><span class="c1"># Shows current N+1 query and predicts when it becomes critical</span>
 </code></pre></div>
 <hr />
-<h4 id="databasewizard">DatabaseWizard<a class="headerlink" href="#databasewizard" title="Permanent link">&para;</a></h4>
+<h4 id="databasewizard">DatabaseWizard<a class="headerlink" href="#databasewizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Optimize database queries and schema design.</p>
 <p><strong>Detects:</strong>
 - Missing indexes
@@ -3125,7 +3127,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Query timeout risks
 - Connection pool exhaustion</p>
 <hr />
-<h4 id="scalingwizard">ScalingWizard<a class="headerlink" href="#scalingwizard" title="Permanent link">&para;</a></h4>
+<h4 id="scalingwizard">ScalingWizard<a class="headerlink" href="#scalingwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Analyze scalability and architecture limits.</p>
 <p><strong>Detects:</strong>
 - Single points of failure
@@ -3137,8 +3139,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Infrastructure capacity limits
 - Cost escalation trajectory</p>
 <hr />
-<h3 id="code-quality">Code Quality<a class="headerlink" href="#code-quality" title="Permanent link">&para;</a></h3>
-<h4 id="refactoringwizard">RefactoringWizard<a class="headerlink" href="#refactoringwizard" title="Permanent link">&para;</a></h4>
+<h3 id="code-quality">Code Quality<a class="headerlink" href="#code-quality" title="Permanent link to this section">🔗</a></h3>
+<h4 id="refactoringwizard">RefactoringWizard<a class="headerlink" href="#refactoringwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Identify code smells and suggest improvements.</p>
 <p><strong>Detects:</strong>
 - Long methods
@@ -3148,7 +3150,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Dead code
 - Poor naming</p>
 <hr />
-<h4 id="testingwizard">TestingWizard<a class="headerlink" href="#testingwizard" title="Permanent link">&para;</a></h4>
+<h4 id="testingwizard">TestingWizard<a class="headerlink" href="#testingwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Analyze test quality and coverage.</p>
 <p><strong>Detects:</strong>
 - Missing test coverage
@@ -3161,7 +3163,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Testing bottlenecks
 - Test maintenance burden</p>
 <hr />
-<h4 id="debuggingwizard">DebuggingWizard<a class="headerlink" href="#debuggingwizard" title="Permanent link">&para;</a></h4>
+<h4 id="debuggingwizard">DebuggingWizard<a class="headerlink" href="#debuggingwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Find potential bugs before they manifest.</p>
 <p><strong>Detects:</strong>
 - Null pointer risks
@@ -3170,8 +3172,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Resource leaks
 - Exception handling issues</p>
 <hr />
-<h3 id="api-integration">API &amp; Integration<a class="headerlink" href="#api-integration" title="Permanent link">&para;</a></h3>
-<h4 id="apiwizard">APIWizard<a class="headerlink" href="#apiwizard" title="Permanent link">&para;</a></h4>
+<h3 id="api-integration">API &amp; Integration<a class="headerlink" href="#api-integration" title="Permanent link to this section">🔗</a></h3>
+<h4 id="apiwizard">APIWizard<a class="headerlink" href="#apiwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Ensure API design consistency and quality.</p>
 <p><strong>Detects:</strong>
 - Inconsistent naming
@@ -3180,7 +3182,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Breaking changes
 - Missing documentation</p>
 <hr />
-<h4 id="migrationwizard">MigrationWizard<a class="headerlink" href="#migrationwizard" title="Permanent link">&para;</a></h4>
+<h4 id="migrationwizard">MigrationWizard<a class="headerlink" href="#migrationwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Handle code migrations and deprecations.</p>
 <p><strong>Detects:</strong>
 - Deprecated API usage
@@ -3188,8 +3190,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Migration risks
 - Backward compatibility breaks</p>
 <hr />
-<h3 id="devops-operations">DevOps &amp; Operations<a class="headerlink" href="#devops-operations" title="Permanent link">&para;</a></h3>
-<h4 id="cicdwizard">CICDWizard<a class="headerlink" href="#cicdwizard" title="Permanent link">&para;</a></h4>
+<h3 id="devops-operations">DevOps &amp; Operations<a class="headerlink" href="#devops-operations" title="Permanent link to this section">🔗</a></h3>
+<h4 id="cicdwizard">CICDWizard<a class="headerlink" href="#cicdwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Optimize CI/CD pipelines.</p>
 <p><strong>Detects:</strong>
 - Slow pipeline steps
@@ -3197,7 +3199,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Deployment risks
 - Rollback issues</p>
 <hr />
-<h4 id="observabilitywizard">ObservabilityWizard<a class="headerlink" href="#observabilitywizard" title="Permanent link">&para;</a></h4>
+<h4 id="observabilitywizard">ObservabilityWizard<a class="headerlink" href="#observabilitywizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Ensure proper logging and metrics.</p>
 <p><strong>Detects:</strong>
 - Missing logs
@@ -3205,7 +3207,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - No distributed tracing
 - Poor error context</p>
 <hr />
-<h4 id="monitoringwizard">MonitoringWizard<a class="headerlink" href="#monitoringwizard" title="Permanent link">&para;</a></h4>
+<h4 id="monitoringwizard">MonitoringWizard<a class="headerlink" href="#monitoringwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Verify monitoring coverage.</p>
 <p><strong>Detects:</strong>
 - Missing alerts
@@ -3213,8 +3215,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Monitoring blind spots
 - Alert fatigue risks</p>
 <hr />
-<h3 id="user-experience">User Experience<a class="headerlink" href="#user-experience" title="Permanent link">&para;</a></h3>
-<h4 id="accessibilitywizard">AccessibilityWizard<a class="headerlink" href="#accessibilitywizard" title="Permanent link">&para;</a></h4>
+<h3 id="user-experience">User Experience<a class="headerlink" href="#user-experience" title="Permanent link to this section">🔗</a></h3>
+<h4 id="accessibilitywizard">AccessibilityWizard<a class="headerlink" href="#accessibilitywizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Ensure WCAG compliance.</p>
 <p><strong>Detects:</strong>
 - Missing alt text
@@ -3223,7 +3225,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Keyboard navigation issues
 - Screen reader incompatibility</p>
 <hr />
-<h4 id="localizationwizard">LocalizationWizard<a class="headerlink" href="#localizationwizard" title="Permanent link">&para;</a></h4>
+<h4 id="localizationwizard">LocalizationWizard<a class="headerlink" href="#localizationwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Internationalization and localization.</p>
 <p><strong>Detects:</strong>
 - Hardcoded strings
@@ -3231,8 +3233,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Currency handling
 - RTL support missing</p>
 <hr />
-<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
-<h4 id="documentationwizard">DocumentationWizard<a class="headerlink" href="#documentationwizard" title="Permanent link">&para;</a></h4>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link to this section">🔗</a></h3>
+<h4 id="documentationwizard">DocumentationWizard<a class="headerlink" href="#documentationwizard" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Purpose:</strong> Ensure documentation quality.</p>
 <p><strong>Detects:</strong>
 - Missing docstrings
@@ -3240,15 +3242,15 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - Unclear examples
 - Poor API documentation</p>
 <hr />
-<h2 id="configuration-guide">Configuration Guide<a class="headerlink" href="#configuration-guide" title="Permanent link">&para;</a></h2>
-<h3 id="configuration-methods">Configuration Methods<a class="headerlink" href="#configuration-methods" title="Permanent link">&para;</a></h3>
+<h2 id="configuration-guide">Configuration Guide<a class="headerlink" href="#configuration-guide" title="Permanent link to this section">🔗</a></h2>
+<h3 id="configuration-methods">Configuration Methods<a class="headerlink" href="#configuration-methods" title="Permanent link to this section">🔗</a></h3>
 <p>The framework supports three configuration methods with precedence:</p>
 <ol>
 <li><strong>Environment Variables</strong> (highest priority)</li>
 <li><strong>Configuration Files</strong> (YAML or JSON)</li>
 <li><strong>Programmatic</strong> (in code)</li>
 </ol>
-<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
+<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Core settings</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_USER_ID</span><span class="o">=</span>alice
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_TARGET_LEVEL</span><span class="o">=</span><span class="m">4</span>
@@ -3284,7 +3286,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_ASYNC_ENABLED</span><span class="o">=</span><span class="nb">true</span>
 <a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_FEEDBACK_LOOP_MONITORING</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
-<h3 id="yaml-configuration">YAML Configuration<a class="headerlink" href="#yaml-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="yaml-configuration">YAML Configuration<a class="headerlink" href="#yaml-configuration" title="Permanent link to this section">🔗</a></h3>
 <p><strong>File:</strong> <code>empathy.config.yml</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Core settings</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">user_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;alice&quot;</span>
@@ -3338,7 +3340,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">target_level</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">target_level</span>
 <a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="json-configuration">JSON Configuration<a class="headerlink" href="#json-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="json-configuration">JSON Configuration<a class="headerlink" href="#json-configuration" title="Permanent link to this section">🔗</a></h3>
 <p><strong>File:</strong> <code>empathy.config.json</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;alice&quot;</span><span class="p">,</span>
@@ -3352,7 +3354,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">  </span><span class="nt">&quot;structured_logging&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="programmatic-configuration">Programmatic Configuration<a class="headerlink" href="#programmatic-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="programmatic-configuration">Programmatic Configuration<a class="headerlink" href="#programmatic-configuration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyConfig</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span>
@@ -3370,7 +3372,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="c1"># Save for future use</span>
 <a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="n">config</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="s2">&quot;my_config.yml&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="configuration-precedence">Configuration Precedence<a class="headerlink" href="#configuration-precedence" title="Permanent link">&para;</a></h3>
+<h3 id="configuration-precedence">Configuration Precedence<a class="headerlink" href="#configuration-precedence" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_config</span>
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="c1"># Loads in this order (highest to lowest priority):</span>
@@ -3380,7 +3382,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>
 <a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">use_env</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="configuration-options-reference">Configuration Options Reference<a class="headerlink" href="#configuration-options-reference" title="Permanent link">&para;</a></h3>
+<h3 id="configuration-options-reference">Configuration Options Reference<a class="headerlink" href="#configuration-options-reference" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -3496,8 +3498,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 </tbody>
 </table>
 <hr />
-<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<h3 id="when-to-use-which-level">When to Use Which Level<a class="headerlink" href="#when-to-use-which-level" title="Permanent link">&para;</a></h3>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link to this section">🔗</a></h2>
+<h3 id="when-to-use-which-level">When to Use Which Level<a class="headerlink" href="#when-to-use-which-level" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Level 1 (Reactive):</strong>
 - ✅ First-time users
 - ✅ One-off questions
@@ -3533,7 +3535,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 - ✅ Framework design
 - ❌ Individual projects
 - ❌ Small teams</p>
-<h3 id="trust-building-strategies">Trust Building Strategies<a class="headerlink" href="#trust-building-strategies" title="Permanent link">&para;</a></h3>
+<h3 id="trust-building-strategies">Trust Building Strategies<a class="headerlink" href="#trust-building-strategies" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Build trust faster:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Explicit positive feedback</span>
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">llm</span><span class="o">.</span><span class="n">update_trust</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">outcome</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
@@ -3564,7 +3566,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="n">llm</span><span class="o">.</span><span class="n">update_trust</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">outcome</span><span class="o">=</span><span class="s2">&quot;failure&quot;</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="pattern-design">Pattern Design<a class="headerlink" href="#pattern-design" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-design">Pattern Design<a class="headerlink" href="#pattern-design" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Good patterns:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Specific and actionable</span>
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">pattern</span> <span class="o">=</span> <span class="n">UserPattern</span><span class="p">(</span>
@@ -3599,7 +3601,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>    <span class="n">confidence</span><span class="o">=</span><span class="mf">0.2</span>  <span class="c1"># Too low!</span>
 <a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="wizard-usage-patterns">Wizard Usage Patterns<a class="headerlink" href="#wizard-usage-patterns" title="Permanent link">&para;</a></h3>
+<h3 id="wizard-usage-patterns">Wizard Usage Patterns<a class="headerlink" href="#wizard-usage-patterns" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Pre-commit Hooks:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="ch">#!/usr/bin/env python</span>
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="c1"># .git/hooks/pre-commit</span>
@@ -3671,7 +3673,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-28-29" name="__codelineno-28-29" href="#__codelineno-28-29"></a><span class="w">          </span><span class="no">done</span>
 <a id="__codelineno-28-30" name="__codelineno-28-30" href="#__codelineno-28-30"></a><span class="w">          </span><span class="no">&quot;</span>
 </code></pre></div>
-<h3 id="cost-optimization">Cost Optimization<a class="headerlink" href="#cost-optimization" title="Permanent link">&para;</a></h3>
+<h3 id="cost-optimization">Cost Optimization<a class="headerlink" href="#cost-optimization" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Use Prompt Caching (Claude):</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnthropicProvider</span>
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>
@@ -3729,8 +3731,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="integration-examples">Integration Examples<a class="headerlink" href="#integration-examples" title="Permanent link">&para;</a></h2>
-<h3 id="ide-integration-vs-code-extension">IDE Integration (VS Code Extension)<a class="headerlink" href="#ide-integration-vs-code-extension" title="Permanent link">&para;</a></h3>
+<h2 id="integration-examples">Integration Examples<a class="headerlink" href="#integration-examples" title="Permanent link to this section">🔗</a></h2>
+<h3 id="ide-integration-vs-code-extension">IDE Integration (VS Code Extension)<a class="headerlink" href="#ide-integration-vs-code-extension" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1">// extension.ts</span>
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">vscode</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;vscode&#39;</span><span class="p">;</span>
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">exec</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;child_process&#39;</span><span class="p">;</span>
@@ -3777,7 +3779,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-32-44" name="__codelineno-32-44" href="#__codelineno-32-44"></a><span class="w">    </span><span class="p">});</span>
 <a id="__codelineno-32-45" name="__codelineno-32-45" href="#__codelineno-32-45"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="fastapi-integration">FastAPI Integration<a class="headerlink" href="#fastapi-integration" title="Permanent link">&para;</a></h3>
+<h3 id="fastapi-integration">FastAPI Integration<a class="headerlink" href="#fastapi-integration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 <a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
@@ -3862,7 +3864,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-33-82" name="__codelineno-33-82" href="#__codelineno-33-82"></a>    <span class="n">stats</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">get_statistics</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
 <a id="__codelineno-33-83" name="__codelineno-33-83" href="#__codelineno-33-83"></a>    <span class="k">return</span> <span class="n">stats</span>
 </code></pre></div>
-<h3 id="slack-bot-integration">Slack Bot Integration<a class="headerlink" href="#slack-bot-integration" title="Permanent link">&para;</a></h3>
+<h3 id="slack-bot-integration">Slack Bot Integration<a class="headerlink" href="#slack-bot-integration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">slack_bolt</span><span class="w"> </span><span class="kn">import</span> <span class="n">App</span>
 <a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -3918,9 +3920,9 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-34-53" name="__codelineno-34-53" href="#__codelineno-34-53"></a>    <span class="n">app</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PORT&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)))</span>
 </code></pre></div>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
-<h4 id="api-key-not-found">"API key not found"<a class="headerlink" href="#api-key-not-found" title="Permanent link">&para;</a></h4>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
+<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link to this section">🔗</a></h3>
+<h4 id="api-key-not-found">"API key not found"<a class="headerlink" href="#api-key-not-found" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Problem:</strong> Framework can't find your API key.</p>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># Check if set</span>
@@ -3942,7 +3944,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-35-17" name="__codelineno-35-17" href="#__codelineno-35-17"></a>from<span class="w"> </span>dotenv<span class="w"> </span>import<span class="w"> </span>load_dotenv
 <a id="__codelineno-35-18" name="__codelineno-35-18" href="#__codelineno-35-18"></a>load_dotenv<span class="o">()</span>
 </code></pre></div>
-<h4 id="trust-level-too-low-for-level-x">"Trust level too low for Level X"<a class="headerlink" href="#trust-level-too-low-for-level-x" title="Permanent link">&para;</a></h4>
+<h4 id="trust-level-too-low-for-level-x">"Trust level too low for Level X"<a class="headerlink" href="#trust-level-too-low-for-level-x" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Problem:</strong> Trying to use higher level before building trust.</p>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># Force level for testing</span>
@@ -3961,7 +3963,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a><span class="n">stats</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">get_statistics</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
 <a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trust: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;trust_level&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Should be &gt; 0.8 for Level 4</span>
 </code></pre></div>
-<h4 id="module-not-found-coach_wizards">"Module not found: coach_wizards"<a class="headerlink" href="#module-not-found-coach_wizards" title="Permanent link">&para;</a></h4>
+<h4 id="module-not-found-coach_wizards">"Module not found: coach_wizards"<a class="headerlink" href="#module-not-found-coach_wizards" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Problem:</strong> Wizards not in Python path.</p>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1"># Install in development mode</span>
@@ -3974,7 +3976,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="c1"># Verify</span>
 <a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from coach_wizards import SecurityWizard; print(&#39;Success!&#39;)&quot;</span>
 </code></pre></div>
-<h4 id="slow-response-times">Slow Response Times<a class="headerlink" href="#slow-response-times" title="Permanent link">&para;</a></h4>
+<h4 id="slow-response-times">Slow Response Times<a class="headerlink" href="#slow-response-times" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Problem:</strong> LLM calls are slow.</p>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1"># Use faster model</span>
@@ -3998,7 +4000,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-38-19" name="__codelineno-38-19" href="#__codelineno-38-19"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;llama2&quot;</span>
 <a id="__codelineno-38-20" name="__codelineno-38-20" href="#__codelineno-38-20"></a><span class="p">)</span>
 </code></pre></div>
-<h4 id="high-llm-costs">High LLM Costs<a class="headerlink" href="#high-llm-costs" title="Permanent link">&para;</a></h4>
+<h4 id="high-llm-costs">High LLM Costs<a class="headerlink" href="#high-llm-costs" title="Permanent link to this section">🔗</a></h4>
 <p><strong>Problem:</strong> API costs are too high.</p>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="c1"># 1. Enable prompt caching (90% cost reduction)</span>
@@ -4024,7 +4026,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-39-21" name="__codelineno-39-21" href="#__codelineno-39-21"></a>    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">512</span>  <span class="c1"># Limit response length</span>
 <a id="__codelineno-39-22" name="__codelineno-39-22" href="#__codelineno-39-22"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="debugging">Debugging<a class="headerlink" href="#debugging" title="Permanent link">&para;</a></h3>
+<h3 id="debugging">Debugging<a class="headerlink" href="#debugging" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Enable debug logging:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>
@@ -4061,8 +4063,8 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">issue</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="advanced-topics">Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permanent link">&para;</a></h2>
-<h3 id="custom-wizard-development">Custom Wizard Development<a class="headerlink" href="#custom-wizard-development" title="Permanent link">&para;</a></h3>
+<h2 id="advanced-topics">Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permanent link to this section">🔗</a></h2>
+<h3 id="custom-wizard-development">Custom Wizard Development<a class="headerlink" href="#custom-wizard-development" title="Permanent link to this section">🔗</a></h3>
 <p>Build domain-specific wizards:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">coach_wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCoachWizard</span><span class="p">,</span> <span class="n">WizardIssue</span><span class="p">,</span> <span class="n">WizardPrediction</span>
 <a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
@@ -4120,7 +4122,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-43-54" name="__codelineno-43-54" href="#__codelineno-43-54"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">CustomWizard</span><span class="p">()</span>
 <a id="__codelineno-43-55" name="__codelineno-43-55" href="#__codelineno-43-55"></a><span class="n">result</span> <span class="o">=</span> <span class="n">wizard</span><span class="o">.</span><span class="n">run_full_analysis</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="plugin-development">Plugin Development<a class="headerlink" href="#plugin-development" title="Permanent link">&para;</a></h3>
+<h3 id="plugin-development">Plugin Development<a class="headerlink" href="#plugin-development" title="Permanent link to this section">🔗</a></h3>
 <p>Create plugins for new domains:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePlugin</span><span class="p">,</span> <span class="n">PluginMetadata</span>
 <a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>
@@ -4155,7 +4157,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-44-31" name="__codelineno-44-31" href="#__codelineno-44-31"></a>            <span class="p">}</span>
 <a id="__codelineno-44-32" name="__codelineno-44-32" href="#__codelineno-44-32"></a>        <span class="p">}</span>
 </code></pre></div>
-<h3 id="multi-tenant-usage">Multi-Tenant Usage<a class="headerlink" href="#multi-tenant-usage" title="Permanent link">&para;</a></h3>
+<h3 id="multi-tenant-usage">Multi-Tenant Usage<a class="headerlink" href="#multi-tenant-usage" title="Permanent link to this section">🔗</a></h3>
 <p>Support multiple teams/users:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>
@@ -4187,7 +4189,7 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-45-28" name="__codelineno-45-28" href="#__codelineno-45-28"></a><span class="n">result_a</span> <span class="o">=</span> <span class="k">await</span> <span class="n">multi</span><span class="o">.</span><span class="n">interact_for_team</span><span class="p">(</span><span class="s2">&quot;team_a&quot;</span><span class="p">,</span> <span class="s2">&quot;alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Question&quot;</span><span class="p">)</span>
 <a id="__codelineno-45-29" name="__codelineno-45-29" href="#__codelineno-45-29"></a><span class="n">result_b</span> <span class="o">=</span> <span class="k">await</span> <span class="n">multi</span><span class="o">.</span><span class="n">interact_for_team</span><span class="p">(</span><span class="s2">&quot;team_b&quot;</span><span class="p">,</span> <span class="s2">&quot;bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Question&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="performance-monitoring">Performance Monitoring<a class="headerlink" href="#performance-monitoring" title="Permanent link">&para;</a></h3>
+<h3 id="performance-monitoring">Performance Monitoring<a class="headerlink" href="#performance-monitoring" title="Permanent link to this section">🔗</a></h3>
 <p>Track framework performance:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
@@ -4224,21 +4226,21 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <a id="__codelineno-46-33" name="__codelineno-46-33" href="#__codelineno-46-33"></a><span class="nb">print</span><span class="p">(</span><span class="n">llm</span><span class="o">.</span><span class="n">get_metrics_summary</span><span class="p">())</span>
 </code></pre></div>
 <hr />
-<h2 id="support-resources">Support &amp; Resources<a class="headerlink" href="#support-resources" title="Permanent link">&para;</a></h2>
-<h3 id="documentation_1">Documentation<a class="headerlink" href="#documentation_1" title="Permanent link">&para;</a></h3>
+<h2 id="support-resources">Support &amp; Resources<a class="headerlink" href="#support-resources" title="Permanent link to this section">🔗</a></h2>
+<h3 id="documentation_1">Documentation<a class="headerlink" href="#documentation_1" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>Quick Start Guide:</strong> <a href="QUICKSTART_GUIDE.html">QUICKSTART_GUIDE.md</a></li>
 <li><strong>API Reference:</strong> <a href="API_REFERENCE.html">API_REFERENCE.md</a></li>
 <li><strong>User Guide:</strong> This document</li>
 <li><strong>CLI Guide:</strong> <a href="CLI_GUIDE.html">CLI_GUIDE.md</a></li>
 </ul>
-<h3 id="community">Community<a class="headerlink" href="#community" title="Permanent link">&para;</a></h3>
+<h3 id="community">Community<a class="headerlink" href="#community" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>GitHub:</strong> https://github.com/Deep-Study-AI/Empathy</li>
 <li><strong>Discussions:</strong> https://github.com/Deep-Study-AI/Empathy/discussions</li>
 <li><strong>Issues:</strong> https://github.com/Deep-Study-AI/Empathy/issues</li>
 </ul>
-<h3 id="commercial-support">Commercial Support<a class="headerlink" href="#commercial-support" title="Permanent link">&para;</a></h3>
+<h3 id="commercial-support">Commercial Support<a class="headerlink" href="#commercial-support" title="Permanent link to this section">🔗</a></h3>
 <p><strong>$99/developer/year</strong></p>
 <ul>
 <li>Priority bug fixes and feature requests</li>
@@ -4248,12 +4250,12 @@ Python, JavaScript, TypeScript, Java, Go, Rust</p>
 <li>Upgrade assistance</li>
 </ul>
 <p><strong>Learn more:</strong> <a href="../SPONSORSHIP.md">SPONSORSHIP.md</a></p>
-<h3 id="contact">Contact<a class="headerlink" href="#contact" title="Permanent link">&para;</a></h3>
+<h3 id="contact">Contact<a class="headerlink" href="#contact" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Developer:</strong> Patrick Roebuck
 <strong>Email:</strong> patrick.roebuck@deepstudyai.com
 <strong>Organization:</strong> Deep Study AI, LLC</p>
 <hr />
-<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link to this section">🔗</a></h2>
 <p>The Empathy Framework transforms AI from a simple tool into a collaborative partner that learns, predicts, and prevents problems before they occur. With Level 4 Anticipatory Empathy, you can:</p>
 <ul>
 <li><strong>Catch bugs before they manifest</strong></li>

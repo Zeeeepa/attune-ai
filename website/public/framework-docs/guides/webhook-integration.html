@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2412,10 +2414,10 @@
   
 
 
-<h1 id="webhook-integration">Webhook Integration<a class="headerlink" href="#webhook-integration" title="Permanent link">&para;</a></h1>
+<h1 id="webhook-integration">Webhook Integration<a class="headerlink" href="#webhook-integration" title="Permanent link to this section">🔗</a></h1>
 <p>Connect Empathy Framework to external services via webhooks for real-time notifications and automated workflows.</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Webhooks</strong> enable Empathy Framework to:</p>
 <ul>
 <li>🔔 Send notifications to Slack, Teams, Discord</li>
@@ -2426,7 +2428,7 @@
 <li>🎯 Custom integrations with any HTTP endpoint</li>
 </ul>
 <hr />
-<h2 id="supported-integrations">Supported Integrations<a class="headerlink" href="#supported-integrations" title="Permanent link">&para;</a></h2>
+<h2 id="supported-integrations">Supported Integrations<a class="headerlink" href="#supported-integrations" title="Permanent link to this section">🔗</a></h2>
 <table>
 <thead>
 <tr>
@@ -2479,8 +2481,8 @@
 </tbody>
 </table>
 <hr />
-<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<h3 id="basic-webhook">Basic Webhook<a class="headerlink" href="#basic-webhook" title="Permanent link">&para;</a></h3>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link to this section">🔗</a></h2>
+<h3 id="basic-webhook">Basic Webhook<a class="headerlink" href="#basic-webhook" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebhookConfig</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2510,15 +2512,15 @@
 <a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="c1"># &quot;🔮 Prediction: Auth deployment may conflict with user-service v2.1&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="slack-integration">Slack Integration<a class="headerlink" href="#slack-integration" title="Permanent link">&para;</a></h2>
-<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h3>
+<h2 id="slack-integration">Slack Integration<a class="headerlink" href="#slack-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li>Create Slack App: https://api.slack.com/apps</li>
 <li>Enable Incoming Webhooks</li>
 <li>Add webhook to workspace</li>
 <li>Copy webhook URL</li>
 </ol>
-<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">SlackWebhook</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">slack</span> <span class="o">=</span> <span class="n">SlackWebhook</span><span class="p">(</span>
@@ -2534,7 +2536,7 @@
 <a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">webhooks</span><span class="o">=</span><span class="p">[</span><span class="n">slack</span><span class="p">]</span>
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="message-formats">Message Formats<a class="headerlink" href="#message-formats" title="Permanent link">&para;</a></h3>
+<h3 id="message-formats">Message Formats<a class="headerlink" href="#message-formats" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Prediction Alert</strong>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;channel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#ai-alerts&quot;</span><span class="p">,</span>
@@ -2568,8 +2570,8 @@
 <a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="p">}</span>
 </code></pre></div></p>
 <hr />
-<h2 id="jira-integration">JIRA Integration<a class="headerlink" href="#jira-integration" title="Permanent link">&para;</a></h2>
-<h3 id="auto-create-issues">Auto-Create Issues<a class="headerlink" href="#auto-create-issues" title="Permanent link">&para;</a></h3>
+<h2 id="jira-integration">JIRA Integration<a class="headerlink" href="#jira-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="auto-create-issues">Auto-Create Issues<a class="headerlink" href="#auto-create-issues" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">JiraWebhook</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">jira</span> <span class="o">=</span> <span class="n">JiraWebhook</span><span class="p">(</span>
@@ -2598,7 +2600,7 @@
 <a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="c1"># Priority: High</span>
 <a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="c1"># Assignee: file owner</span>
 </code></pre></div>
-<h3 id="jira-ticket-format">JIRA Ticket Format<a class="headerlink" href="#jira-ticket-format" title="Permanent link">&para;</a></h3>
+<h3 id="jira-ticket-format">JIRA Ticket Format<a class="headerlink" href="#jira-ticket-format" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">&quot;project&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EMP&quot;</span><span class="p">},</span>
@@ -2627,8 +2629,8 @@
 <a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="datadog-integration">Datadog Integration<a class="headerlink" href="#datadog-integration" title="Permanent link">&para;</a></h2>
-<h3 id="metrics-events">Metrics &amp; Events<a class="headerlink" href="#metrics-events" title="Permanent link">&para;</a></h3>
+<h2 id="datadog-integration">Datadog Integration<a class="headerlink" href="#datadog-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="metrics-events">Metrics &amp; Events<a class="headerlink" href="#metrics-events" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatadogWebhook</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">datadog</span> <span class="o">=</span> <span class="n">DatadogWebhook</span><span class="p">(</span>
@@ -2654,7 +2656,7 @@
 <a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c1"># Metrics: avg_response_time, p95_response_time, error_rate</span>
 <a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="c1"># Tags: service:api, endpoint:/api/users, severity:warning</span>
 </code></pre></div>
-<h3 id="custom-metrics">Custom Metrics<a class="headerlink" href="#custom-metrics" title="Permanent link">&para;</a></h3>
+<h3 id="custom-metrics">Custom Metrics<a class="headerlink" href="#custom-metrics" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Send custom metrics to Datadog</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">datadog</span><span class="o">.</span><span class="n">send_metric</span><span class="p">(</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;empathy.prediction.confidence&quot;</span><span class="p">,</span>
@@ -2669,8 +2671,8 @@
 <a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="github-integration">GitHub Integration<a class="headerlink" href="#github-integration" title="Permanent link">&para;</a></h2>
-<h3 id="pr-comments">PR Comments<a class="headerlink" href="#pr-comments" title="Permanent link">&para;</a></h3>
+<h2 id="github-integration">GitHub Integration<a class="headerlink" href="#github-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="pr-comments">PR Comments<a class="headerlink" href="#pr-comments" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">GitHubWebhook</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">github</span> <span class="o">=</span> <span class="n">GitHubWebhook</span><span class="p">(</span>
@@ -2710,8 +2712,8 @@
 <a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a><span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="custom-webhooks">Custom Webhooks<a class="headerlink" href="#custom-webhooks" title="Permanent link">&para;</a></h2>
-<h3 id="define-custom-endpoint">Define Custom Endpoint<a class="headerlink" href="#define-custom-endpoint" title="Permanent link">&para;</a></h3>
+<h2 id="custom-webhooks">Custom Webhooks<a class="headerlink" href="#custom-webhooks" title="Permanent link to this section">🔗</a></h2>
+<h3 id="define-custom-endpoint">Define Custom Endpoint<a class="headerlink" href="#define-custom-endpoint" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomWebhook</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">custom</span> <span class="o">=</span> <span class="n">CustomWebhook</span><span class="p">(</span>
@@ -2734,7 +2736,7 @@
 <a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>    <span class="n">webhooks</span><span class="o">=</span><span class="p">[</span><span class="n">custom</span><span class="p">]</span>
 <a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="webhook-payload">Webhook Payload<a class="headerlink" href="#webhook-payload" title="Permanent link">&para;</a></h3>
+<h3 id="webhook-payload">Webhook Payload<a class="headerlink" href="#webhook-payload" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;event_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">&quot;event_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;evt_abc123&quot;</span><span class="p">,</span>
@@ -2757,7 +2759,7 @@
 <a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="event-types">Event Types<a class="headerlink" href="#event-types" title="Permanent link">&para;</a></h2>
+<h2 id="event-types">Event Types<a class="headerlink" href="#event-types" title="Permanent link to this section">🔗</a></h2>
 <table>
 <thead>
 <tr>
@@ -2820,8 +2822,8 @@
 </tbody>
 </table>
 <hr />
-<h2 id="filtering-routing">Filtering &amp; Routing<a class="headerlink" href="#filtering-routing" title="Permanent link">&para;</a></h2>
-<h3 id="event-filters">Event Filters<a class="headerlink" href="#event-filters" title="Permanent link">&para;</a></h3>
+<h2 id="filtering-routing">Filtering &amp; Routing<a class="headerlink" href="#filtering-routing" title="Permanent link to this section">🔗</a></h2>
+<h3 id="event-filters">Event Filters<a class="headerlink" href="#event-filters" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Only send high-severity events to PagerDuty</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">pagerduty</span> <span class="o">=</span> <span class="n">PagerDutyWebhook</span><span class="p">(</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PAGERDUTY_API_KEY&quot;</span><span class="p">),</span>
@@ -2848,8 +2850,8 @@
 <a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
-<h3 id="retry-logic">Retry Logic<a class="headerlink" href="#retry-logic" title="Permanent link">&para;</a></h3>
+<h2 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link to this section">🔗</a></h2>
+<h3 id="retry-logic">Retry Logic<a class="headerlink" href="#retry-logic" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">webhook</span> <span class="o">=</span> <span class="n">CustomWebhook</span><span class="p">(</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://unreliable-service.com/webhook&quot;</span><span class="p">,</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">retry_policy</span><span class="o">=</span><span class="p">{</span>
@@ -2860,7 +2862,7 @@
 <a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="p">}</span>
 <a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="failure-callbacks">Failure Callbacks<a class="headerlink" href="#failure-callbacks" title="Permanent link">&para;</a></h3>
+<h3 id="failure-callbacks">Failure Callbacks<a class="headerlink" href="#failure-callbacks" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">on_webhook_failure</span><span class="p">(</span><span class="n">webhook</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Webhook failed: </span><span class="si">{</span><span class="n">webhook</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Event: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">event_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2875,8 +2877,8 @@
 <a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
-<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link to this section">🔗</a></h2>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Bearer token</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">webhook</span> <span class="o">=</span> <span class="n">CustomWebhook</span><span class="p">(</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://service.com/webhook&quot;</span><span class="p">,</span>
@@ -2896,7 +2898,7 @@
 <a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>    <span class="n">sign_payload</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Adds X-Signature header</span>
 <a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="verify-signatures-receiving-webhooks">Verify Signatures (Receiving Webhooks)<a class="headerlink" href="#verify-signatures-receiving-webhooks" title="Permanent link">&para;</a></h3>
+<h3 id="verify-signatures-receiving-webhooks">Verify Signatures (Receiving Webhooks)<a class="headerlink" href="#verify-signatures-receiving-webhooks" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">hmac</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
@@ -2925,8 +2927,8 @@
 <a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
-<h3 id="webhook-throttling">Webhook Throttling<a class="headerlink" href="#webhook-throttling" title="Permanent link">&para;</a></h3>
+<h2 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permanent link to this section">🔗</a></h2>
+<h3 id="webhook-throttling">Webhook Throttling<a class="headerlink" href="#webhook-throttling" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">webhook</span> <span class="o">=</span> <span class="n">CustomWebhook</span><span class="p">(</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://service.com/webhook&quot;</span><span class="p">,</span>
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">rate_limit</span><span class="o">=</span><span class="p">{</span>
@@ -2939,8 +2941,8 @@
 <a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># If rate limit exceeded, events queued and sent later</span>
 </code></pre></div>
 <hr />
-<h2 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link">&para;</a></h2>
-<h3 id="webhook-performance">Webhook Performance<a class="headerlink" href="#webhook-performance" title="Permanent link">&para;</a></h3>
+<h2 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link to this section">🔗</a></h2>
+<h3 id="webhook-performance">Webhook Performance<a class="headerlink" href="#webhook-performance" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.webhooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebhookMonitor</span>
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">monitor</span> <span class="o">=</span> <span class="n">WebhookMonitor</span><span class="p">()</span>
@@ -2953,8 +2955,8 @@
 <a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed deliveries: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;failed_count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<h3 id="do">✅ Do<a class="headerlink" href="#do" title="Permanent link">&para;</a></h3>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link to this section">🔗</a></h2>
+<h3 id="do">✅ Do<a class="headerlink" href="#do" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Use environment variables</strong> for secrets/tokens</li>
 <li><strong>Implement retry logic</strong> for reliability</li>
@@ -2963,7 +2965,7 @@
 <li><strong>Monitor webhook performance</strong></li>
 <li><strong>Set appropriate timeouts</strong> (30s max)</li>
 </ol>
-<h3 id="dont">❌ Don't<a class="headerlink" href="#dont" title="Permanent link">&para;</a></h3>
+<h3 id="dont">❌ Don't<a class="headerlink" href="#dont" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Don't hardcode secrets</strong> in code</li>
 <li><strong>Don't send sensitive data</strong> without encryption</li>
@@ -2972,7 +2974,7 @@
 <li><strong>Don't send all events</strong> to all webhooks</li>
 </ol>
 <hr />
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link to this section">🔗</a></h2>
 <p>See the complete <a href="../examples/webhook-event-integration.html">Webhook Event Integration Example</a> for implementations with:</p>
 <ul>
 <li>Slack notifications</li>
@@ -2982,7 +2984,7 @@
 <li>Custom webhooks</li>
 </ul>
 <hr />
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="../examples/webhook-event-integration.html">Webhook Example</a> - Full implementation</li>
 <li><a href="security-architecture.html">Security Architecture</a> - Webhook security</li>

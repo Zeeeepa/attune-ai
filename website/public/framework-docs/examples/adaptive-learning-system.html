@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2022,13 +2024,13 @@
   
 
 
-<h1 id="example-adaptive-learning-system">Example: Adaptive Learning System<a class="headerlink" href="#example-adaptive-learning-system" title="Permanent link">&para;</a></h1>
+<h1 id="example-adaptive-learning-system">Example: Adaptive Learning System<a class="headerlink" href="#example-adaptive-learning-system" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Difficulty</strong>: Advanced
 <strong>Time</strong>: 25 minutes
 <strong>Empathy Level</strong>: 3-4 (Self-improving)
 <strong>Features</strong>: Dynamic thresholds, pattern decay, transfer learning</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>This example shows how the Empathy Framework adapts and learns over time:
 - <strong>Dynamic confidence thresholds</strong> that adjust based on user feedback
 - <strong>Pattern decay</strong> for stale patterns that haven't been used
@@ -2036,12 +2038,12 @@
 - <strong>User preference learning</strong> for personalized AI behavior</p>
 <p><strong>Key Insight</strong>: Instead of fixed rules, the system learns what works for each user.</p>
 <hr />
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework
 </code></pre></div>
 <hr />
-<h2 id="part-1-dynamic-confidence-thresholds">Part 1: Dynamic Confidence Thresholds<a class="headerlink" href="#part-1-dynamic-confidence-thresholds" title="Permanent link">&para;</a></h2>
-<h3 id="problem-fixed-thresholds-dont-work-for-everyone">Problem: Fixed Thresholds Don't Work for Everyone<a class="headerlink" href="#problem-fixed-thresholds-dont-work-for-everyone" title="Permanent link">&para;</a></h3>
+<h2 id="part-1-dynamic-confidence-thresholds">Part 1: Dynamic Confidence Thresholds<a class="headerlink" href="#part-1-dynamic-confidence-thresholds" title="Permanent link to this section">🔗</a></h2>
+<h3 id="problem-fixed-thresholds-dont-work-for-everyone">Problem: Fixed Thresholds Don't Work for Everyone<a class="headerlink" href="#problem-fixed-thresholds-dont-work-for-everyone" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Traditional approach: Fixed threshold</span>
@@ -2058,7 +2060,7 @@
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># - User A is happy (only sees high-confidence predictions)</span>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># - User B is frustrated (misses many useful predictions at 70-75%)</span>
 </code></pre></div>
-<h3 id="solution-adaptive-thresholds">Solution: Adaptive Thresholds<a class="headerlink" href="#solution-adaptive-thresholds" title="Permanent link">&para;</a></h3>
+<h3 id="solution-adaptive-thresholds">Solution: Adaptive Thresholds<a class="headerlink" href="#solution-adaptive-thresholds" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">AdaptiveLearning</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Create adaptive system</span>
@@ -2121,8 +2123,8 @@
 <a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="c1"># (Lower than default 0.75 because user accepts lower-confidence predictions)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-2-per-pattern-thresholds">Part 2: Per-Pattern Thresholds<a class="headerlink" href="#part-2-per-pattern-thresholds" title="Permanent link">&para;</a></h2>
-<h3 id="different-patterns-need-different-confidence-levels">Different Patterns Need Different Confidence Levels<a class="headerlink" href="#different-patterns-need-different-confidence-levels" title="Permanent link">&para;</a></h3>
+<h2 id="part-2-per-pattern-thresholds">Part 2: Per-Pattern Thresholds<a class="headerlink" href="#part-2-per-pattern-thresholds" title="Permanent link to this section">🔗</a></h2>
+<h3 id="different-patterns-need-different-confidence-levels">Different Patterns Need Different Confidence Levels<a class="headerlink" href="#different-patterns-need-different-confidence-levels" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternThresholds</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">adaptive</span> <span class="o">=</span> <span class="n">AdaptiveLearning</span><span class="p">(</span><span class="n">empathy</span><span class="p">)</span>
@@ -2163,8 +2165,8 @@
 <a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="c1">#   default: 0.75 (baseline for unknown patterns)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-3-pattern-decay">Part 3: Pattern Decay<a class="headerlink" href="#part-3-pattern-decay" title="Permanent link">&para;</a></h2>
-<h3 id="stale-patterns-lose-confidence-over-time">Stale Patterns Lose Confidence Over Time<a class="headerlink" href="#stale-patterns-lose-confidence-over-time" title="Permanent link">&para;</a></h3>
+<h2 id="part-3-pattern-decay">Part 3: Pattern Decay<a class="headerlink" href="#part-3-pattern-decay" title="Permanent link to this section">🔗</a></h2>
+<h3 id="stale-patterns-lose-confidence-over-time">Stale Patterns Lose Confidence Over Time<a class="headerlink" href="#stale-patterns-lose-confidence-over-time" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternDecay</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
@@ -2203,7 +2205,7 @@
 <a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   Recommendation: Refresh with current best practices&quot;</span><span class="p">)</span>
 <a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   Reason: React has moved to hooks-based patterns since 2024&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="auto-refresh-stale-patterns">Auto-Refresh Stale Patterns<a class="headerlink" href="#auto-refresh-stale-patterns" title="Permanent link">&para;</a></h3>
+<h3 id="auto-refresh-stale-patterns">Auto-Refresh Stale Patterns<a class="headerlink" href="#auto-refresh-stale-patterns" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternRefresh</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">refresh</span> <span class="o">=</span> <span class="n">PatternRefresh</span><span class="p">(</span><span class="n">empathy</span><span class="p">)</span>
@@ -2249,8 +2251,8 @@
 <a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="c1">#    Confidence: 0.85 (high confidence in modern approach)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-4-transfer-learning-across-domains">Part 4: Transfer Learning Across Domains<a class="headerlink" href="#part-4-transfer-learning-across-domains" title="Permanent link">&para;</a></h2>
-<h3 id="adapt-patterns-from-one-domain-to-another">Adapt Patterns from One Domain to Another<a class="headerlink" href="#adapt-patterns-from-one-domain-to-another" title="Permanent link">&para;</a></h3>
+<h2 id="part-4-transfer-learning-across-domains">Part 4: Transfer Learning Across Domains<a class="headerlink" href="#part-4-transfer-learning-across-domains" title="Permanent link to this section">🔗</a></h2>
+<h3 id="adapt-patterns-from-one-domain-to-another">Adapt Patterns from One Domain to Another<a class="headerlink" href="#adapt-patterns-from-one-domain-to-another" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransferLearning</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">transfer</span> <span class="o">=</span> <span class="n">TransferLearning</span><span class="p">(</span><span class="n">empathy</span><span class="p">)</span>
@@ -2312,7 +2314,7 @@
 <a id="__codelineno-6-59" name="__codelineno-6-59" href="#__codelineno-6-59"></a><span class="c1">#   Source pattern success rate: 91%</span>
 <a id="__codelineno-6-60" name="__codelineno-6-60" href="#__codelineno-6-60"></a><span class="c1">#   Expected success rate: 71% (lower due to domain shift)</span>
 </code></pre></div>
-<h3 id="domain-embeddings-for-better-transfer">Domain Embeddings for Better Transfer<a class="headerlink" href="#domain-embeddings-for-better-transfer" title="Permanent link">&para;</a></h3>
+<h3 id="domain-embeddings-for-better-transfer">Domain Embeddings for Better Transfer<a class="headerlink" href="#domain-embeddings-for-better-transfer" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">DomainEmbeddings</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">embeddings</span> <span class="o">=</span> <span class="n">DomainEmbeddings</span><span class="p">()</span>
@@ -2352,8 +2354,8 @@
 <a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a><span class="n">transfer_confidence_finance</span> <span class="o">=</span> <span class="mf">0.88</span>     <span class="c1"># Higher confidence (58% similarity)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-5-user-preference-learning">Part 5: User Preference Learning<a class="headerlink" href="#part-5-user-preference-learning" title="Permanent link">&para;</a></h2>
-<h3 id="learn-users-working-style">Learn User's Working Style<a class="headerlink" href="#learn-users-working-style" title="Permanent link">&para;</a></h3>
+<h2 id="part-5-user-preference-learning">Part 5: User Preference Learning<a class="headerlink" href="#part-5-user-preference-learning" title="Permanent link to this section">🔗</a></h2>
+<h3 id="learn-users-working-style">Learn User's Working Style<a class="headerlink" href="#learn-users-working-style" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">PreferenceLearning</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">preferences</span> <span class="o">=</span> <span class="n">PreferenceLearning</span><span class="p">(</span><span class="n">empathy</span><span class="p">)</span>
@@ -2433,8 +2435,8 @@
 <a id="__codelineno-8-77" name="__codelineno-8-77" href="#__codelineno-8-77"></a><span class="c1"># &quot;&quot;&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="part-6-continuous-improvement-metrics">Part 6: Continuous Improvement Metrics<a class="headerlink" href="#part-6-continuous-improvement-metrics" title="Permanent link">&para;</a></h2>
-<h3 id="track-adaptation-performance">Track Adaptation Performance<a class="headerlink" href="#track-adaptation-performance" title="Permanent link">&para;</a></h3>
+<h2 id="part-6-continuous-improvement-metrics">Part 6: Continuous Improvement Metrics<a class="headerlink" href="#part-6-continuous-improvement-metrics" title="Permanent link to this section">🔗</a></h2>
+<h3 id="track-adaptation-performance">Track Adaptation Performance<a class="headerlink" href="#track-adaptation-performance" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">AdaptationMetrics</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">metrics</span> <span class="o">=</span> <span class="n">AdaptationMetrics</span><span class="p">(</span><span class="n">empathy</span><span class="p">)</span>
@@ -2500,8 +2502,8 @@
 <a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a>   → Adjust <span class="sb">`target_level=3`</span> for better alignment
 </code></pre></div></p>
 <hr />
-<h2 id="part-7-real-world-scenario">Part 7: Real-World Scenario<a class="headerlink" href="#part-7-real-world-scenario" title="Permanent link">&para;</a></h2>
-<h3 id="complete-adaptive-learning-flow">Complete Adaptive Learning Flow<a class="headerlink" href="#complete-adaptive-learning-flow" title="Permanent link">&para;</a></h3>
+<h2 id="part-7-real-world-scenario">Part 7: Real-World Scenario<a class="headerlink" href="#part-7-real-world-scenario" title="Permanent link to this section">🔗</a></h2>
+<h3 id="complete-adaptive-learning-flow">Complete Adaptive Learning Flow<a class="headerlink" href="#complete-adaptive-learning-flow" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.adaptive</span><span class="w"> </span><span class="kn">import</span> <span class="n">AdaptiveLearning</span><span class="p">,</span> <span class="n">PreferenceLearning</span><span class="p">,</span> <span class="n">TransferLearning</span>
@@ -2606,7 +2608,7 @@
 <a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">adaptive_learning_demo</span><span class="p">())</span>
 </code></pre></div>
 <hr />
-<h2 id="performance-impact">Performance Impact<a class="headerlink" href="#performance-impact" title="Permanent link">&para;</a></h2>
+<h2 id="performance-impact">Performance Impact<a class="headerlink" href="#performance-impact" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Without Adaptive Learning</strong>:
 - Fixed threshold (0.75) for all users
 - ~68% acceptance rate (many useful predictions rejected)
@@ -2617,7 +2619,7 @@
 - Full personalization (7+ preference types learned)</p>
 <p><strong>Value</strong>: <strong>28% more useful AI interactions</strong> without overwhelming users</p>
 <hr />
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Enhance adaptive learning</strong>:
 1. <strong>Multi-dimensional adaptation</strong>: Adapt based on time of day, task type, stress level
 2. <strong>Team-wide learning</strong>: Share preferences across team members with similar roles
@@ -2629,7 +2631,7 @@
 - <a href="webhook-integration.md">Webhook Integration</a> - Event-driven adaptation
 - <a href="simple-chatbot.html">Simple Chatbot</a> - Trust building basics</p>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
 <p><strong>"Threshold not adapting"</strong>
 - Check: <code>adaptive_learning=True</code> in config
 - Verify: Calling <code>adaptive.record_outcome()</code> after interactions

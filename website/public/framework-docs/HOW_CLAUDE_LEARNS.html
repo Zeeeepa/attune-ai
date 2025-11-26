@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1620,7 +1622,7 @@
   
 
 
-<h1 id="how-claude-learns-and-retains-information">How Claude Learns and Retains Information<a class="headerlink" href="#how-claude-learns-and-retains-information" title="Permanent link">&para;</a></h1>
+<h1 id="how-claude-learns-and-retains-information">How Claude Learns and Retains Information<a class="headerlink" href="#how-claude-learns-and-retains-information" title="Permanent link to this section">🔗</a></h1>
 <hr />
 <p><strong>License</strong>: Apache License 2.0
 <strong>Copyright</strong>: © 2025 Deep Study AI, LLC
@@ -1629,7 +1631,7 @@
 <hr />
 <p><em>A comprehensive guide to understanding AI learning mechanics for developers</em></p>
 <hr />
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link to this section">🔗</a></h2>
 <p>Understanding how AI assistants like Claude learn and retain information is crucial for effective collaboration. This guide explains the mechanics of AI learning, context management, and how to structure information for optimal AI assistance in software development projects.</p>
 <!-- PATRICK NOTE: What made you realize you needed to understand this deeply?
      Was there a moment where Claude "forgot" something and you thought "Wait, how does this actually work?"
@@ -1637,10 +1639,10 @@
      That "aha moment" story would hook readers right from the start. -->
 
 <hr />
-<h2 id="1-project-knowledge-how-ai-accesses-your-documents">1. Project Knowledge: How AI Accesses Your Documents<a class="headerlink" href="#1-project-knowledge-how-ai-accesses-your-documents" title="Permanent link">&para;</a></h2>
-<h3 id="what-happens-when-you-save-files-to-a-project">What Happens When You Save Files to a Project<a class="headerlink" href="#what-happens-when-you-save-files-to-a-project" title="Permanent link">&para;</a></h3>
+<h2 id="1-project-knowledge-how-ai-accesses-your-documents">1. Project Knowledge: How AI Accesses Your Documents<a class="headerlink" href="#1-project-knowledge-how-ai-accesses-your-documents" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-happens-when-you-save-files-to-a-project">What Happens When You Save Files to a Project<a class="headerlink" href="#what-happens-when-you-save-files-to-a-project" title="Permanent link to this section">🔗</a></h3>
 <p>When you save documents (CSV, JSON, markdown, Python files, etc.) to an AI project, they become part of the AI's <strong>working context</strong>. Here's how it works:</p>
-<h3 id="similarities-to-traditional-chatbot-training">Similarities to Traditional Chatbot Training<a class="headerlink" href="#similarities-to-traditional-chatbot-training" title="Permanent link">&para;</a></h3>
+<h3 id="similarities-to-traditional-chatbot-training">Similarities to Traditional Chatbot Training<a class="headerlink" href="#similarities-to-traditional-chatbot-training" title="Permanent link to this section">🔗</a></h3>
 <p><strong>CSV Training Approach (Traditional):</strong>
 - ✅ <strong>Structured Reference</strong>: Fixed Q&amp;A pairs the bot memorizes
 - ✅ <strong>Contextual Access</strong>: Bot retrieves matching answers
@@ -1650,14 +1652,14 @@
 - ✅ <strong>Semantic Understanding</strong>: AI comprehends context and relationships
 - ✅ <strong>Cross-File Intelligence</strong>: AI connects information across multiple sources
 - ❌ <strong>NOT Permanent Training</strong>: AI doesn't internalize data into its base model</p>
-<h3 id="key-differences">Key Differences<a class="headerlink" href="#key-differences" title="Permanent link">&para;</a></h3>
+<h3 id="key-differences">Key Differences<a class="headerlink" href="#key-differences" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Dynamic Access</strong>: AI reads files in real-time during conversations, not as pre-training</li>
 <li><strong>Flexible Formats</strong>: AI can work with any text-based format (not just CSV)</li>
 <li><strong>Semantic Understanding</strong>: AI understands context and relationships, not just pattern matching</li>
 <li><strong>File Relationships</strong>: AI can connect information across multiple files</li>
 </ol>
-<h3 id="visual-comparison">Visual Comparison<a class="headerlink" href="#visual-comparison" title="Permanent link">&para;</a></h3>
+<h3 id="visual-comparison">Visual Comparison<a class="headerlink" href="#visual-comparison" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Traditional CSV Training:           Modern AI Project Access:
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>┌──────────────────────┐           ┌──────────────────────────┐
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│ Q: What is SBAR?     │           │ Read: docs/SBAR_GUIDE.md │
@@ -1667,9 +1669,9 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                                   └──────────────────────────┘
 </code></pre></div>
 <hr />
-<h2 id="2-memory-context-three-types-of-ai-knowledge">2. Memory &amp; Context: Three Types of AI Knowledge<a class="headerlink" href="#2-memory-context-three-types-of-ai-knowledge" title="Permanent link">&para;</a></h2>
+<h2 id="2-memory-context-three-types-of-ai-knowledge">2. Memory &amp; Context: Three Types of AI Knowledge<a class="headerlink" href="#2-memory-context-three-types-of-ai-knowledge" title="Permanent link to this section">🔗</a></h2>
 <p>Modern AI assistants work with <strong>three distinct layers</strong> of knowledge:</p>
-<h3 id="layer-1-base-training-knowledge">Layer 1: Base Training Knowledge<a class="headerlink" href="#layer-1-base-training-knowledge" title="Permanent link">&para;</a></h3>
+<h3 id="layer-1-base-training-knowledge">Layer 1: Base Training Knowledge<a class="headerlink" href="#layer-1-base-training-knowledge" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>What it is</strong>: General knowledge, programming concepts, domain expertise</li>
 <li><strong>Persistence</strong>: Permanent, always available</li>
@@ -1677,7 +1679,7 @@
 <li><strong>Limitation</strong>: No knowledge of your specific codebase or preferences</li>
 <li><strong>Training Cutoff</strong>: Fixed date (e.g., October 2023 for Claude)</li>
 </ul>
-<h3 id="layer-2-project-document-knowledge">Layer 2: Project Document Knowledge<a class="headerlink" href="#layer-2-project-document-knowledge" title="Permanent link">&para;</a></h3>
+<h3 id="layer-2-project-document-knowledge">Layer 2: Project Document Knowledge<a class="headerlink" href="#layer-2-project-document-knowledge" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>What it is</strong>: Information in files saved to the project</li>
 <li><strong>Persistence</strong>: Available as long as files exist in project</li>
@@ -1685,14 +1687,14 @@
 <li><strong>Example</strong>: Your architecture docs, code files, database schemas</li>
 <li><strong>Key Point</strong>: AI re-reads these each session - they're references, not memories</li>
 </ul>
-<h3 id="layer-3-conversation-knowledge">Layer 3: Conversation Knowledge<a class="headerlink" href="#layer-3-conversation-knowledge" title="Permanent link">&para;</a></h3>
+<h3 id="layer-3-conversation-knowledge">Layer 3: Conversation Knowledge<a class="headerlink" href="#layer-3-conversation-knowledge" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>What it is</strong>: Information shared during the current conversation</li>
 <li><strong>Persistence</strong>: Current session only (with summaries for continuity)</li>
 <li><strong>Example</strong>: "I prefer blue color scheme", "Focus on Epic integration today"</li>
 <li><strong>Limitation</strong>: Resets between major context boundaries</li>
 </ul>
-<h3 id="visual-representation">Visual Representation<a class="headerlink" href="#visual-representation" title="Permanent link">&para;</a></h3>
+<h3 id="visual-representation">Visual Representation<a class="headerlink" href="#visual-representation" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌─────────────────────────────────────────────────┐
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│ Layer 1: Base Knowledge (Permanent)             │
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│ • Python, Frameworks, General Domain Knowledge  │
@@ -1711,18 +1713,18 @@
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>└─────────────────────────────────────────────────┘
 </code></pre></div>
 <hr />
-<h2 id="3-persistence-what-ai-remembers-across-sessions">3. Persistence: What AI Remembers Across Sessions<a class="headerlink" href="#3-persistence-what-ai-remembers-across-sessions" title="Permanent link">&para;</a></h2>
-<h3 id="what-persists-between-sessions">What Persists Between Sessions<a class="headerlink" href="#what-persists-between-sessions" title="Permanent link">&para;</a></h3>
+<h2 id="3-persistence-what-ai-remembers-across-sessions">3. Persistence: What AI Remembers Across Sessions<a class="headerlink" href="#3-persistence-what-ai-remembers-across-sessions" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-persists-between-sessions">What Persists Between Sessions<a class="headerlink" href="#what-persists-between-sessions" title="Permanent link to this section">🔗</a></h3>
 <p>✅ <strong>Project Files</strong>: All documents you save remain available
 ✅ <strong>Conversation Summaries</strong>: Continuations get summaries of previous work
 ✅ <strong>Codebase State</strong>: Files that were read/edited are still there
 ✅ <strong>Encoded Preferences</strong>: Patterns visible in code and documentation</p>
-<h3 id="what-doesnt-persist">What Doesn't Persist<a class="headerlink" href="#what-doesnt-persist" title="Permanent link">&para;</a></h3>
+<h3 id="what-doesnt-persist">What Doesn't Persist<a class="headerlink" href="#what-doesnt-persist" title="Permanent link to this section">🔗</a></h3>
 <p>❌ <strong>Ephemeral Preferences</strong>: "Use blue for this feature" (unless documented)
 ❌ <strong>Temporary Context</strong>: "We're focusing on Epic integration today"
 ❌ <strong>In-conversation Learning</strong>: Insights not saved to files
 ❌ <strong>Undocumented Decisions</strong>: Choices made but not written down</p>
-<h3 id="example-scenario-how-preferences-persist">Example Scenario: How Preferences Persist<a class="headerlink" href="#example-scenario-how-preferences-persist" title="Permanent link">&para;</a></h3>
+<h3 id="example-scenario-how-preferences-persist">Example Scenario: How Preferences Persist<a class="headerlink" href="#example-scenario-how-preferences-persist" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Session 1:
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Developer: &quot;I prefer blue colors (blue-600) for our branding&quot;
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>AI: *Uses blue throughout Epic integration*
@@ -1738,8 +1740,8 @@
 <a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>color values), not just mentioned in conversation.
 </code></pre></div>
 <hr />
-<h2 id="4-how-to-optimize-information-structure-for-ai">4. How to Optimize Information Structure for AI<a class="headerlink" href="#4-how-to-optimize-information-structure-for-ai" title="Permanent link">&para;</a></h2>
-<h3 id="best-practices-for-long-term-knowledge">Best Practices for Long-term Knowledge<a class="headerlink" href="#best-practices-for-long-term-knowledge" title="Permanent link">&para;</a></h3>
+<h2 id="4-how-to-optimize-information-structure-for-ai">4. How to Optimize Information Structure for AI<a class="headerlink" href="#4-how-to-optimize-information-structure-for-ai" title="Permanent link to this section">🔗</a></h2>
+<h3 id="best-practices-for-long-term-knowledge">Best Practices for Long-term Knowledge<a class="headerlink" href="#best-practices-for-long-term-knowledge" title="Permanent link to this section">🔗</a></h3>
 <p><strong>DO:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>✅ Create docs/DEVELOPMENT_PHILOSOPHY.md
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>✅ Document coding standards in accessible files
@@ -1754,7 +1756,7 @@
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>❌ Leave important decisions undocumented
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>❌ Use vague file names (utils.py, misc.py)
 </code></pre></div></p>
-<h3 id="for-reusable-patterns">For Reusable Patterns<a class="headerlink" href="#for-reusable-patterns" title="Permanent link">&para;</a></h3>
+<h3 id="for-reusable-patterns">For Reusable Patterns<a class="headerlink" href="#for-reusable-patterns" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Good Example - Documented in Code:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ServiceBase</span><span class="p">:</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1777,12 +1779,12 @@
     self.logger = logger
 </code></pre></div>
 <p><code>**Bad Example - Only Mentioned Once:**</code>python</p>
-<h1 id="ai-was-told-i-like-to-use-this-pattern-in-conversation">AI was told "I like to use this pattern" in conversation<a class="headerlink" href="#ai-was-told-i-like-to-use-this-pattern-in-conversation" title="Permanent link">&para;</a></h1>
-<h1 id="but-its-not-documented-anywhere">but it's not documented anywhere<a class="headerlink" href="#but-its-not-documented-anywhere" title="Permanent link">&para;</a></h1>
+<h1 id="ai-was-told-i-like-to-use-this-pattern-in-conversation">AI was told "I like to use this pattern" in conversation<a class="headerlink" href="#ai-was-told-i-like-to-use-this-pattern-in-conversation" title="Permanent link to this section">🔗</a></h1>
+<h1 id="but-its-not-documented-anywhere">but it's not documented anywhere<a class="headerlink" href="#but-its-not-documented-anywhere" title="Permanent link to this section">🔗</a></h1>
 <p>class Service:
     pass  # AI won't remember the pattern next session
 ```</p>
-<h3 id="for-project-specific-knowledge">For Project-Specific Knowledge<a class="headerlink" href="#for-project-specific-knowledge" title="Permanent link">&para;</a></h3>
+<h3 id="for-project-specific-knowledge">For Project-Specific Knowledge<a class="headerlink" href="#for-project-specific-knowledge" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Recommended File Structure:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docs/
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>├── ARCHITECTURE.md        # System design and patterns
@@ -1811,8 +1813,8 @@
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>❌ Bad:  service.py
 </code></pre></div></p>
 <hr />
-<h2 id="5-the-critical-insight-pattern-matching-vs-understanding">5. The Critical Insight: Pattern Matching vs. Understanding<a class="headerlink" href="#5-the-critical-insight-pattern-matching-vs-understanding" title="Permanent link">&para;</a></h2>
-<h3 id="traditional-csv-training-pattern-matching">Traditional CSV Training = Pattern Matching<a class="headerlink" href="#traditional-csv-training-pattern-matching" title="Permanent link">&para;</a></h3>
+<h2 id="5-the-critical-insight-pattern-matching-vs-understanding">5. The Critical Insight: Pattern Matching vs. Understanding<a class="headerlink" href="#5-the-critical-insight-pattern-matching-vs-understanding" title="Permanent link to this section">🔗</a></h2>
+<h3 id="traditional-csv-training-pattern-matching">Traditional CSV Training = Pattern Matching<a class="headerlink" href="#traditional-csv-training-pattern-matching" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Characteristics:</strong>
 - Fixed Q&amp;A pairs
 - Exact matches only
@@ -1824,7 +1826,7 @@
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>&quot;How do I create a router?&quot;,&quot;1. Create file in src/routers/ 2. Define router = APIRouter() 3. Add routes...&quot;
 </code></pre></div>
 If you ask "How do I add a new endpoint?" it won't match.</p>
-<h3 id="modern-ai-contextual-understanding">Modern AI = Contextual Understanding<a class="headerlink" href="#modern-ai-contextual-understanding" title="Permanent link">&para;</a></h3>
+<h3 id="modern-ai-contextual-understanding">Modern AI = Contextual Understanding<a class="headerlink" href="#modern-ai-contextual-understanding" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Characteristics:</strong>
 - Reads and comprehends documentation
 - Understands relationships between files
@@ -1843,8 +1845,8 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 <a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>6. Apply all of this to create new router YOUR way
 </code></pre></div></p>
 <hr />
-<h2 id="6-practical-recommendations">6. Practical Recommendations<a class="headerlink" href="#6-practical-recommendations" title="Permanent link">&para;</a></h2>
-<h3 id="immediate-actions-for-your-project">Immediate Actions for Your Project<a class="headerlink" href="#immediate-actions-for-your-project" title="Permanent link">&para;</a></h3>
+<h2 id="6-practical-recommendations">6. Practical Recommendations<a class="headerlink" href="#6-practical-recommendations" title="Permanent link to this section">🔗</a></h2>
+<h3 id="immediate-actions-for-your-project">Immediate Actions for Your Project<a class="headerlink" href="#immediate-actions-for-your-project" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li>
 <p><strong>Create Core Documentation:</strong>
@@ -1878,7 +1880,7 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 </code></pre></div></p>
 </li>
 </ol>
-<h3 id="for-building-intelligent-applications">For Building Intelligent Applications<a class="headerlink" href="#for-building-intelligent-applications" title="Permanent link">&para;</a></h3>
+<h3 id="for-building-intelligent-applications">For Building Intelligent Applications<a class="headerlink" href="#for-building-intelligent-applications" title="Permanent link to this section">🔗</a></h3>
 <p>The same principles apply when building AI-powered applications like AI Nurse Florence:</p>
 <p><strong>An intelligent app needs:</strong></p>
 <ol>
@@ -1912,8 +1914,8 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 <li>Pattern recognition over time</li>
 </ol>
 <hr />
-<h2 id="7-key-takeaways-for-developers">7. Key Takeaways for Developers<a class="headerlink" href="#7-key-takeaways-for-developers" title="Permanent link">&para;</a></h2>
-<h3 id="understanding-ai-limitations">Understanding AI Limitations<a class="headerlink" href="#understanding-ai-limitations" title="Permanent link">&para;</a></h3>
+<h2 id="7-key-takeaways-for-developers">7. Key Takeaways for Developers<a class="headerlink" href="#7-key-takeaways-for-developers" title="Permanent link to this section">🔗</a></h2>
+<h3 id="understanding-ai-limitations">Understanding AI Limitations<a class="headerlink" href="#understanding-ai-limitations" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>AI doesn't "remember" in the human sense</strong></li>
 <li>It references documentation</li>
@@ -1937,7 +1939,7 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 <li>Clear documentation → AI applies it correctly</li>
 <li>Cross-referenced files → AI connects concepts</li>
 </ol>
-<h3 id="building-effective-ai-collaboration">Building Effective AI Collaboration<a class="headerlink" href="#building-effective-ai-collaboration" title="Permanent link">&para;</a></h3>
+<h3 id="building-effective-ai-collaboration">Building Effective AI Collaboration<a class="headerlink" href="#building-effective-ai-collaboration" title="Permanent link to this section">🔗</a></h3>
 <p><strong>The Formula:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Effective AI Assistance =
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    (Clear Documentation)
@@ -1954,8 +1956,8 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 <a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;bg-blue-600 hover:bg-blue-700&quot;</span><span class="o">&gt;</span>
 </code></pre></div></p>
 <hr />
-<h2 id="8-application-to-ai-nurse-florence">8. Application to AI Nurse Florence<a class="headerlink" href="#8-application-to-ai-nurse-florence" title="Permanent link">&para;</a></h2>
-<h3 id="how-these-principles-apply">How These Principles Apply<a class="headerlink" href="#how-these-principles-apply" title="Permanent link">&para;</a></h3>
+<h2 id="8-application-to-ai-nurse-florence">8. Application to AI Nurse Florence<a class="headerlink" href="#8-application-to-ai-nurse-florence" title="Permanent link to this section">🔗</a></h2>
+<h3 id="how-these-principles-apply">How These Principles Apply<a class="headerlink" href="#how-these-principles-apply" title="Permanent link to this section">🔗</a></h3>
 <p>When building an intelligent nursing application:</p>
 <p><strong>Knowledge Organization:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Clinical Knowledge (Permanent)
@@ -1982,7 +1984,7 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 <a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>    <span class="n">base_reasoning</span><span class="o">=</span><span class="n">clinical_ai_model</span>
 <a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="the-parallel">The Parallel<a class="headerlink" href="#the-parallel" title="Permanent link">&para;</a></h3>
+<h3 id="the-parallel">The Parallel<a class="headerlink" href="#the-parallel" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -2014,7 +2016,7 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 </tbody>
 </table>
 <hr />
-<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link to this section">🔗</a></h2>
 <p>Understanding how AI learns and retains information transforms how you collaborate with AI assistants and how you architect intelligent applications. The key principles:</p>
 <ol>
 <li><strong>Documentation is permanent, conversations are temporary</strong></li>
@@ -2024,7 +2026,7 @@ If you ask "How do I add a new endpoint?" it won't match.</p>
 </ol>
 <p>Whether you're working with Claude on your codebase or building AI Nurse Florence for clinical decision support, these principles create the foundation for effective AI collaboration and intelligent system design.</p>
 <hr />
-<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><strong>AI_LEARNING_PROMPTS.md</strong> - Structured prompts for AI knowledge transfer</li>
 <li><strong>DEVELOPMENT_PHILOSOPHY.md</strong> - Your coding standards and preferences (to be created)</li>

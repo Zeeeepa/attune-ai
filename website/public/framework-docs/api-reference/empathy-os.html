@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2128,9 +2130,9 @@
   
 
 
-<h1 id="empathyos">EmpathyOS<a class="headerlink" href="#empathyos" title="Permanent link">&para;</a></h1>
+<h1 id="empathyos">EmpathyOS<a class="headerlink" href="#empathyos" title="Permanent link to this section">🔗</a></h1>
 <p>The main entry point for the Empathy Framework. <code>EmpathyOS</code> orchestrates empathy level progression, trust management, and interaction handling.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p><code>EmpathyOS</code> is the primary class you'll interact with when building empathy-aware AI systems. It handles:</p>
 <ul>
 <li><strong>Level Progression</strong>: Automatically advances through empathy levels 1-5 based on trust</li>
@@ -2139,7 +2141,7 @@
 <li><strong>Pattern Learning</strong>: Discovers and applies patterns for improved responses</li>
 <li><strong>State Persistence</strong>: Saves and restores user collaboration states</li>
 </ul>
-<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
+<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Initialize with Level 4 target</span>
@@ -2161,7 +2163,7 @@
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>     <span class="c1"># Current empathy level</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>  <span class="c1"># Confidence score</span>
 </code></pre></div>
-<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link">&para;</a></h2>
+<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link to this section">🔗</a></h2>
 
 
 <div class="doc doc-object doc-class">
@@ -2226,7 +2228,7 @@ print(result["bottlenecks_predicted"])</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_os.core.EmpathyOS.__aenter__" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.__aenter__" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2271,7 +2273,7 @@ print(result["bottlenecks_predicted"])</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_os.core.EmpathyOS.__aexit__" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.__aexit__" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2375,7 +2377,7 @@ print(result["bottlenecks_predicted"])</p>
 <h3 id="empathy_os.core.EmpathyOS.__init__" class="doc doc-heading">
             <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">target_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">confidence_threshold</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-<a href="#empathy_os.core.EmpathyOS.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.__init__" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2472,7 +2474,7 @@ print(result["bottlenecks_predicted"])</p>
 <h3 id="empathy_os.core.EmpathyOS.get_collaboration_state" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">get_collaboration_state</span><span class="p">()</span></code>
 
-<a href="#empathy_os.core.EmpathyOS.get_collaboration_state" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.get_collaboration_state" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2494,7 +2496,7 @@ print(result["bottlenecks_predicted"])</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_os.core.EmpathyOS.level_1_reactive" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.level_1_reactive" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2595,7 +2597,7 @@ No anticipation, no proactive action.</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_os.core.EmpathyOS.level_2_guided" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.level_2_guided" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2696,7 +2698,7 @@ Collaborative exploration to uncover hidden needs.</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_os.core.EmpathyOS.level_3_proactive" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.level_3_proactive" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2797,7 +2799,7 @@ Take initiative without being asked.</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_os.core.EmpathyOS.level_4_anticipatory" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.level_4_anticipatory" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2901,7 +2903,7 @@ Take initiative without being asked.</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_os.core.EmpathyOS.level_5_systems" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.level_5_systems" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3002,7 +3004,7 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 <h3 id="empathy_os.core.EmpathyOS.monitor_feedback_loops" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">monitor_feedback_loops</span><span class="p">(</span><span class="n">session_history</span><span class="p">)</span></code>
 
-<a href="#empathy_os.core.EmpathyOS.monitor_feedback_loops" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.monitor_feedback_loops" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3020,7 +3022,7 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 <h3 id="empathy_os.core.EmpathyOS.reset_collaboration_state" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">reset_collaboration_state</span><span class="p">()</span></code>
 
-<a href="#empathy_os.core.EmpathyOS.reset_collaboration_state" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.core.EmpathyOS.reset_collaboration_state" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3038,8 +3040,8 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 
     </div>
 
-</div><h2 id="key-methods">Key Methods<a class="headerlink" href="#key-methods" title="Permanent link">&para;</a></h2>
-<h3 id="__init__"><code>__init__()</code><a class="headerlink" href="#__init__" title="Permanent link">&para;</a></h3>
+</div><h2 id="key-methods">Key Methods<a class="headerlink" href="#key-methods" title="Permanent link to this section">🔗</a></h2>
+<h3 id="__init__"><code>__init__()</code><a class="headerlink" href="#__init__" title="Permanent link to this section">🔗</a></h3>
 <p>Initialize a new EmpathyOS instance with configuration.</p>
 <p><strong>Parameters:</strong>
 - <code>user_id</code> (str): Unique identifier for the user
@@ -3048,7 +3050,7 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 - <code>persistence_enabled</code> (bool): Enable state/pattern persistence (default: True)
 - <code>trust_building_rate</code> (float): Rate of trust increase on success (default: 0.05)
 - <code>trust_erosion_rate</code> (float): Rate of trust decrease on failure (default: 0.10)</p>
-<h3 id="interact"><code>interact()</code><a class="headerlink" href="#interact" title="Permanent link">&para;</a></h3>
+<h3 id="interact"><code>interact()</code><a class="headerlink" href="#interact" title="Permanent link to this section">🔗</a></h3>
 <p>Process a user interaction and return an empathy-aware response.</p>
 <p><strong>Parameters:</strong>
 - <code>user_id</code> (str): User identifier
@@ -3068,7 +3070,7 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">predictions</span><span class="p">:</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • </span><span class="si">{</span><span class="n">prediction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="record_success-record_failure"><code>record_success()</code> / <code>record_failure()</code><a class="headerlink" href="#record_success-record_failure" title="Permanent link">&para;</a></h3>
+<h3 id="record_success-record_failure"><code>record_success()</code> / <code>record_failure()</code><a class="headerlink" href="#record_success-record_failure" title="Permanent link to this section">🔗</a></h3>
 <p>Provide feedback to improve trust tracking and pattern learning.</p>
 <p><strong>Parameters:</strong>
 - <code>success</code> (bool): Whether the interaction was successful</p>
@@ -3079,7 +3081,7 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">empathy</span><span class="o">.</span><span class="n">record_success</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trust level: </span><span class="si">{</span><span class="n">empathy</span><span class="o">.</span><span class="n">get_trust_level</span><span class="p">()</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="save_state-load_state"><code>save_state()</code> / <code>load_state()</code><a class="headerlink" href="#save_state-load_state" title="Permanent link">&para;</a></h3>
+<h3 id="save_state-load_state"><code>save_state()</code> / <code>load_state()</code><a class="headerlink" href="#save_state-load_state" title="Permanent link to this section">🔗</a></h3>
 <p>Persist and restore user collaboration state.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Save state after session</span>
@@ -3088,29 +3090,29 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Restore state in next session</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">empathy</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;.empathy/user_123.json&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h2 id="empathy-levels">Empathy Levels<a class="headerlink" href="#empathy-levels" title="Permanent link">&para;</a></h2>
-<h3 id="level-1-reactive">Level 1: Reactive<a class="headerlink" href="#level-1-reactive" title="Permanent link">&para;</a></h3>
+<h2 id="empathy-levels">Empathy Levels<a class="headerlink" href="#empathy-levels" title="Permanent link to this section">🔗</a></h2>
+<h3 id="level-1-reactive">Level 1: Reactive<a class="headerlink" href="#level-1-reactive" title="Permanent link to this section">🔗</a></h3>
 <p>Basic Q&amp;A responses without proactivity.</p>
 <p><strong>Trust Required:</strong> 0% - 20%</p>
 <p><strong>Characteristics:</strong>
 - Answers direct questions only
 - No suggestions or predictions
 - Minimal context awareness</p>
-<h3 id="level-2-guided">Level 2: Guided<a class="headerlink" href="#level-2-guided" title="Permanent link">&para;</a></h3>
+<h3 id="level-2-guided">Level 2: Guided<a class="headerlink" href="#level-2-guided" title="Permanent link to this section">🔗</a></h3>
 <p>Asks clarifying questions to understand intent.</p>
 <p><strong>Trust Required:</strong> 20% - 40%</p>
 <p><strong>Characteristics:</strong>
 - Clarifying questions
 - Better context understanding
 - More thorough responses</p>
-<h3 id="level-3-proactive">Level 3: Proactive<a class="headerlink" href="#level-3-proactive" title="Permanent link">&para;</a></h3>
+<h3 id="level-3-proactive">Level 3: Proactive<a class="headerlink" href="#level-3-proactive" title="Permanent link to this section">🔗</a></h3>
 <p>Suggests improvements and best practices.</p>
 <p><strong>Trust Required:</strong> 40% - 60%</p>
 <p><strong>Characteristics:</strong>
 - Proactive suggestions
 - Best practice recommendations
 - Code improvements</p>
-<h3 id="level-4-anticipatory">Level 4: Anticipatory 🎯<a class="headerlink" href="#level-4-anticipatory" title="Permanent link">&para;</a></h3>
+<h3 id="level-4-anticipatory">Level 4: Anticipatory 🎯<a class="headerlink" href="#level-4-anticipatory" title="Permanent link to this section">🔗</a></h3>
 <p>Predicts problems before they occur (30-90 day horizon).</p>
 <p><strong>Trust Required:</strong> 60% - 80%</p>
 <p><strong>Characteristics:</strong>
@@ -3132,7 +3134,7 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="c1">#  &quot;Consider rate limiting for this endpoint&quot;,</span>
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="c1">#  &quot;Mobile app may need updates&quot;]</span>
 </code></pre></div></p>
-<h3 id="level-5-transformative">Level 5: Transformative 🚀<a class="headerlink" href="#level-5-transformative" title="Permanent link">&para;</a></h3>
+<h3 id="level-5-transformative">Level 5: Transformative 🚀<a class="headerlink" href="#level-5-transformative" title="Permanent link to this section">🔗</a></h3>
 <p>Reshapes workflows and system architecture (90+ day horizon).</p>
 <p><strong>Trust Required:</strong> 80% - 100%</p>
 <p><strong>Characteristics:</strong>
@@ -3140,7 +3142,7 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 - Architectural recommendations
 - Long-term strategic guidance
 - Cross-system optimization</p>
-<h2 id="trust-management">Trust Management<a class="headerlink" href="#trust-management" title="Permanent link">&para;</a></h2>
+<h2 id="trust-management">Trust Management<a class="headerlink" href="#trust-management" title="Permanent link to this section">🔗</a></h2>
 <p>Trust level affects which empathy level is active:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">empathy</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span><span class="p">,</span> <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
@@ -3160,9 +3162,9 @@ Design leverage points, frameworks, self-sustaining systems.</p>
 - Increases on <code>record_success(True)</code> by <code>trust_building_rate</code> (default: +5%)
 - Decreases on <code>record_failure()</code> by <code>trust_erosion_rate</code> (default: -10%)
 - Capped at 100%</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link to this section">🔗</a></h2>
 <p>See <a href="config.html">Configuration API</a> for detailed configuration options.</p>
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="config.html">Configuration Reference</a></li>
 <li><a href="core.html">Core Data Structures</a></li>

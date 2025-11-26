@@ -118,12 +118,17 @@ markdown_extensions:
   - admonition
   - tables
   - toc:
-      permalink: true
+      permalink: "🔗"
+      permalink_title: "Permanent link to this section"
   - attr_list
   - md_in_html
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Extra CSS for custom styling
+extra_css:
+  - stylesheets/extra.css
 
 # Extra
 extra:

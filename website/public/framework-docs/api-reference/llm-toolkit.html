@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2276,9 +2278,9 @@
   
 
 
-<h1 id="llm-toolkit">LLM Toolkit<a class="headerlink" href="#llm-toolkit" title="Permanent link">&para;</a></h1>
+<h1 id="llm-toolkit">LLM Toolkit<a class="headerlink" href="#llm-toolkit" title="Permanent link to this section">🔗</a></h1>
 <p>Enterprise-grade LLM integration with security controls and compliance features.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The LLM Toolkit provides:</p>
 <ul>
 <li><strong>Unified LLM Interface</strong>: Single API for multiple providers (Anthropic, OpenAI, Ollama)</li>
@@ -2287,8 +2289,8 @@
 <li><strong>Claude Memory Integration</strong>: CLAUDE.md support with MemDocs pattern storage</li>
 <li><strong>Healthcare Wizards</strong>: FHIR, HL7, clinical protocol support</li>
 </ul>
-<h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h2>
-<h3 id="multi-provider-support">Multi-Provider Support<a class="headerlink" href="#multi-provider-support" title="Permanent link">&para;</a></h3>
+<h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link to this section">🔗</a></h2>
+<h3 id="multi-provider-support">Multi-Provider Support<a class="headerlink" href="#multi-provider-support" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Anthropic Claude (recommended)</span>
@@ -2311,14 +2313,14 @@
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;llama2&quot;</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="automatic-security-controls">Automatic Security Controls<a class="headerlink" href="#automatic-security-controls" title="Permanent link">&para;</a></h3>
+<h3 id="automatic-security-controls">Automatic Security Controls<a class="headerlink" href="#automatic-security-controls" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>PII Scrubbing</strong>: Removes SSN, credit cards, phone numbers, addresses</li>
 <li><strong>Secrets Detection</strong>: Flags API keys, tokens, passwords</li>
 <li><strong>Audit Logging</strong>: JSONL audit trail for compliance</li>
 </ul>
-<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link">&para;</a></h2>
-<h3 id="empathyllm">EmpathyLLM<a class="headerlink" href="#empathyllm" title="Permanent link">&para;</a></h3>
+<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link to this section">🔗</a></h2>
+<h3 id="empathyllm">EmpathyLLM<a class="headerlink" href="#empathyllm" title="Permanent link to this section">🔗</a></h3>
 
 
 <div class="doc doc-object doc-class">
@@ -2378,7 +2380,7 @@ print(response["content"])</p>
 <h4 id="empathy_llm_toolkit.core.EmpathyLLM.__init__" class="doc doc-heading">
             <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">provider</span><span class="o">=</span><span class="s1">&#39;anthropic&#39;</span><span class="p">,</span> <span class="n">target_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pattern_library</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#empathy_llm_toolkit.core.EmpathyLLM.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_llm_toolkit.core.EmpathyLLM.__init__" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2506,7 +2508,7 @@ print(response["content"])</p>
 <h4 id="empathy_llm_toolkit.core.EmpathyLLM.add_pattern" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">add_pattern</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span></code>
 
-<a href="#empathy_llm_toolkit.core.EmpathyLLM.add_pattern" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_llm_toolkit.core.EmpathyLLM.add_pattern" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2571,7 +2573,7 @@ print(response["content"])</p>
 <h4 id="empathy_llm_toolkit.core.EmpathyLLM.get_statistics" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">get_statistics</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span></code>
 
-<a href="#empathy_llm_toolkit.core.EmpathyLLM.get_statistics" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_llm_toolkit.core.EmpathyLLM.get_statistics" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2647,7 +2649,7 @@ print(response["content"])</p>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#empathy_llm_toolkit.core.EmpathyLLM.interact" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_llm_toolkit.core.EmpathyLLM.interact" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2772,7 +2774,7 @@ print(response["content"])</p>
 <h4 id="empathy_llm_toolkit.core.EmpathyLLM.reset_state" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">reset_state</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span></code>
 
-<a href="#empathy_llm_toolkit.core.EmpathyLLM.reset_state" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_llm_toolkit.core.EmpathyLLM.reset_state" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2790,7 +2792,7 @@ print(response["content"])</p>
 <h4 id="empathy_llm_toolkit.core.EmpathyLLM.update_trust" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">update_trust</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">outcome</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span></code>
 
-<a href="#empathy_llm_toolkit.core.EmpathyLLM.update_trust" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_llm_toolkit.core.EmpathyLLM.update_trust" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2899,7 +2901,7 @@ print(response["content"])</p>
 <a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="n">context</span><span class="o">=</span><span class="p">{}</span>
 <a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="piiscrubber">PIIScrubber<a class="headerlink" href="#piiscrubber" title="Permanent link">&para;</a></h3>
+<h3 id="piiscrubber">PIIScrubber<a class="headerlink" href="#piiscrubber" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Note</strong>: Security features are being implemented. Full documentation coming soon.</p>
 <p>Detect and scrub personally identifiable information.</p>
 <p><strong>Detects:</strong>
@@ -2935,7 +2937,7 @@ print(response["content"])</p>
 <a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
 <a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="secretsdetector">SecretsDetector<a class="headerlink" href="#secretsdetector" title="Permanent link">&para;</a></h3>
+<h3 id="secretsdetector">SecretsDetector<a class="headerlink" href="#secretsdetector" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Note</strong>: Security features are being implemented. Full documentation coming soon.</p>
 <p>Detect API keys, tokens, and credentials.</p>
 <p><strong>Detects:</strong>
@@ -2967,7 +2969,7 @@ print(response["content"])</p>
 <a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✓ No secrets detected&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="auditlogger">AuditLogger<a class="headerlink" href="#auditlogger" title="Permanent link">&para;</a></h3>
+<h3 id="auditlogger">AuditLogger<a class="headerlink" href="#auditlogger" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Note</strong>: Security features are being implemented. Full documentation coming soon.</p>
 <p>Compliance audit logging (HIPAA, GDPR, SOC2).</p>
 <p><strong>Logs:</strong>
@@ -3007,8 +3009,8 @@ print(response["content"])</p>
 <a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    <span class="n">success</span><span class="o">=</span><span class="kc">True</span>
 <a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="p">)</span>
 </code></pre></div></p>
-<h2 id="security-features">Security Features<a class="headerlink" href="#security-features" title="Permanent link">&para;</a></h2>
-<h3 id="pii-scrubbing-patterns">PII Scrubbing Patterns<a class="headerlink" href="#pii-scrubbing-patterns" title="Permanent link">&para;</a></h3>
+<h2 id="security-features">Security Features<a class="headerlink" href="#security-features" title="Permanent link to this section">🔗</a></h2>
+<h3 id="pii-scrubbing-patterns">PII Scrubbing Patterns<a class="headerlink" href="#pii-scrubbing-patterns" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">PIIScrubber</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Default patterns</span>
@@ -3033,7 +3035,7 @@ print(response["content"])</p>
 <a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">scrubbed</span><span class="p">)</span>
 <a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c1"># Output: Employee [EMP_ID_REDACTED] accessed [MRN_REDACTED]</span>
 </code></pre></div>
-<h3 id="secrets-detection-configuration">Secrets Detection Configuration<a class="headerlink" href="#secrets-detection-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="secrets-detection-configuration">Secrets Detection Configuration<a class="headerlink" href="#secrets-detection-configuration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecretsDetector</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">detector</span> <span class="o">=</span> <span class="n">SecretsDetector</span><span class="p">(</span>
@@ -3059,7 +3061,7 @@ print(response["content"])</p>
 <a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Line </span><span class="si">{</span><span class="n">secret</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">secret</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="audit-logging-format">Audit Logging Format<a class="headerlink" href="#audit-logging-format" title="Permanent link">&para;</a></h3>
+<h3 id="audit-logging-format">Audit Logging Format<a class="headerlink" href="#audit-logging-format" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-20T15:30:00Z&quot;</span><span class="p">,</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;event_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;evt_abc123&quot;</span><span class="p">,</span>
@@ -3092,8 +3094,8 @@ print(response["content"])</p>
 <a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="claude-memory-integration">Claude Memory Integration<a class="headerlink" href="#claude-memory-integration" title="Permanent link">&para;</a></h2>
-<h3 id="claudemd-support">CLAUDE.md Support<a class="headerlink" href="#claudemd-support" title="Permanent link">&para;</a></h3>
+<h2 id="claude-memory-integration">Claude Memory Integration<a class="headerlink" href="#claude-memory-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="claudemd-support">CLAUDE.md Support<a class="headerlink" href="#claudemd-support" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.claude_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClaudeMemoryConfig</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
@@ -3121,7 +3123,7 @@ print(response["content"])</p>
 <a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>
 <a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="c1"># Memory instructions from CLAUDE.md are automatically followed</span>
 </code></pre></div>
-<h3 id="memdocs-pattern-storage">MemDocs Pattern Storage<a class="headerlink" href="#memdocs-pattern-storage" title="Permanent link">&para;</a></h3>
+<h3 id="memdocs-pattern-storage">MemDocs Pattern Storage<a class="headerlink" href="#memdocs-pattern-storage" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.secure_memdocs</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecureMemDocsIntegration</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Initialize with classification</span>
@@ -3151,8 +3153,8 @@ print(response["content"])</p>
 <a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Classification: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;classification&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="c1"># Output: Classification: PUBLIC</span>
 </code></pre></div>
-<h2 id="healthcare-wizards">Healthcare Wizards<a class="headerlink" href="#healthcare-wizards" title="Permanent link">&para;</a></h2>
-<h3 id="clinical-protocol-monitor">Clinical Protocol Monitor<a class="headerlink" href="#clinical-protocol-monitor" title="Permanent link">&para;</a></h3>
+<h2 id="healthcare-wizards">Healthcare Wizards<a class="headerlink" href="#healthcare-wizards" title="Permanent link to this section">🔗</a></h2>
+<h3 id="clinical-protocol-monitor">Clinical Protocol Monitor<a class="headerlink" href="#clinical-protocol-monitor" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClinicalProtocolMonitor</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># Monitor clinical handoffs</span>
@@ -3183,7 +3185,7 @@ print(response["content"])</p>
 <a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>    <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">safety_flags</span><span class="p">:</span>
 <a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="healthcare-compliance-wizard">Healthcare Compliance Wizard<a class="headerlink" href="#healthcare-compliance-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="healthcare-compliance-wizard">Healthcare Compliance Wizard<a class="headerlink" href="#healthcare-compliance-wizard" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthcareComplianceWizard</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">HealthcareComplianceWizard</span><span class="p">(</span>
@@ -3210,8 +3212,8 @@ print(response["content"])</p>
 <a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Severity: </span><span class="si">{</span><span class="n">violation</span><span class="o">.</span><span class="n">severity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Remediation: </span><span class="si">{</span><span class="n">violation</span><span class="o">.</span><span class="n">remediation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="usage-patterns">Usage Patterns<a class="headerlink" href="#usage-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="complete-security-setup">Complete Security Setup<a class="headerlink" href="#complete-security-setup" title="Permanent link">&para;</a></h3>
+<h2 id="usage-patterns">Usage Patterns<a class="headerlink" href="#usage-patterns" title="Permanent link to this section">🔗</a></h2>
+<h3 id="complete-security-setup">Complete Security Setup<a class="headerlink" href="#complete-security-setup" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.security</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">PIIScrubber</span><span class="p">,</span>
@@ -3245,7 +3247,7 @@ print(response["content"])</p>
 <a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>
 <a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="c1"># Security audit trail is automatically created</span>
 </code></pre></div>
-<h3 id="multi-provider-fallback">Multi-Provider Fallback<a class="headerlink" href="#multi-provider-fallback" title="Permanent link">&para;</a></h3>
+<h3 id="multi-provider-fallback">Multi-Provider Fallback<a class="headerlink" href="#multi-provider-fallback" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">providers</span> <span class="o">=</span> <span class="p">[</span>
@@ -3270,8 +3272,8 @@ print(response["content"])</p>
 <a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>
 <a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;All providers failed&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<h3 id="hipaa-compliant-setup">HIPAA-Compliant Setup<a class="headerlink" href="#hipaa-compliant-setup" title="Permanent link">&para;</a></h3>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link to this section">🔗</a></h2>
+<h3 id="hipaa-compliant-setup">HIPAA-Compliant Setup<a class="headerlink" href="#hipaa-compliant-setup" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Healthcare application with HIPAA compliance</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
@@ -3294,7 +3296,7 @@ print(response["content"])</p>
 <a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>    <span class="p">}</span>
 <a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="production-security-checklist">Production Security Checklist<a class="headerlink" href="#production-security-checklist" title="Permanent link">&para;</a></h3>
+<h3 id="production-security-checklist">Production Security Checklist<a class="headerlink" href="#production-security-checklist" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>[ ] Enable PII scrubbing</li>
 <li>[ ] Enable secrets detection</li>
@@ -3306,7 +3308,7 @@ print(response["content"])</p>
 <li>[ ] Test security controls monthly</li>
 <li>[ ] Review access patterns weekly</li>
 </ul>
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="empathy-os.html">EmpathyOS API</a></li>
 <li><a href="config.html">Configuration API</a></li>

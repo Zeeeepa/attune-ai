@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2388,36 +2390,36 @@
   
 
 
-<h1 id="hipaa-compliance-guide">HIPAA Compliance Guide<a class="headerlink" href="#hipaa-compliance-guide" title="Permanent link">&para;</a></h1>
+<h1 id="hipaa-compliance-guide">HIPAA Compliance Guide<a class="headerlink" href="#hipaa-compliance-guide" title="Permanent link to this section">🔗</a></h1>
 <p>Complete guide to achieving HIPAA compliance when using Empathy Framework for healthcare applications.</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The <strong>Health Insurance Portability and Accountability Act (HIPAA)</strong> requires specific protections for Protected Health Information (PHI). This guide covers how to configure Empathy Framework for HIPAA compliance.</p>
 <div class="admonition warning">
 <p class="admonition-title">Legal Disclaimer</p>
 <p>This guide provides technical implementation guidance. Consult with legal counsel and HIPAA compliance experts for your specific use case. Empathy Framework provides tools to help achieve compliance but does not guarantee compliance on its own.</p>
 </div>
 <hr />
-<h2 id="hipaa-requirements">HIPAA Requirements<a class="headerlink" href="#hipaa-requirements" title="Permanent link">&para;</a></h2>
-<h3 id="privacy-rule-45-cfr-part-160-part-164-subparts-a-e">Privacy Rule (45 CFR Part 160, Part 164 Subparts A &amp; E)<a class="headerlink" href="#privacy-rule-45-cfr-part-160-part-164-subparts-a-e" title="Permanent link">&para;</a></h3>
+<h2 id="hipaa-requirements">HIPAA Requirements<a class="headerlink" href="#hipaa-requirements" title="Permanent link to this section">🔗</a></h2>
+<h3 id="privacy-rule-45-cfr-part-160-part-164-subparts-a-e">Privacy Rule (45 CFR Part 160, Part 164 Subparts A &amp; E)<a class="headerlink" href="#privacy-rule-45-cfr-part-160-part-164-subparts-a-e" title="Permanent link to this section">🔗</a></h3>
 <p>Protects individually identifiable health information:</p>
 <ul>
 <li><strong>Who</strong>: Covered entities (healthcare providers, health plans, clearinghouses)</li>
 <li><strong>What</strong>: PHI in any form (electronic, paper, oral)</li>
 <li><strong>How</strong>: Minimum necessary access, patient consent</li>
 </ul>
-<h3 id="security-rule-45-cfr-part-164-subparts-a-c">Security Rule (45 CFR Part 164 Subparts A &amp; C)<a class="headerlink" href="#security-rule-45-cfr-part-164-subparts-a-c" title="Permanent link">&para;</a></h3>
+<h3 id="security-rule-45-cfr-part-164-subparts-a-c">Security Rule (45 CFR Part 164 Subparts A &amp; C)<a class="headerlink" href="#security-rule-45-cfr-part-164-subparts-a-c" title="Permanent link to this section">🔗</a></h3>
 <p>Requires safeguards for electronic PHI (ePHI):</p>
 <ol>
 <li><strong>Administrative Safeguards</strong> - Policies, procedures, training</li>
 <li><strong>Physical Safeguards</strong> - Facility access controls, workstation security</li>
 <li><strong>Technical Safeguards</strong> - Access controls, audit logs, encryption</li>
 </ol>
-<h3 id="breach-notification-rule-45-cfr-part-164-subpart-d">Breach Notification Rule (45 CFR Part 164 Subpart D)<a class="headerlink" href="#breach-notification-rule-45-cfr-part-164-subpart-d" title="Permanent link">&para;</a></h3>
+<h3 id="breach-notification-rule-45-cfr-part-164-subpart-d">Breach Notification Rule (45 CFR Part 164 Subpart D)<a class="headerlink" href="#breach-notification-rule-45-cfr-part-164-subpart-d" title="Permanent link to this section">🔗</a></h3>
 <p>Requires notification within <strong>60 days</strong> of discovering a breach affecting 500+ individuals.</p>
 <hr />
-<h2 id="phi-vs-pii">PHI vs PII<a class="headerlink" href="#phi-vs-pii" title="Permanent link">&para;</a></h2>
-<h3 id="protected-health-information-phi">Protected Health Information (PHI)<a class="headerlink" href="#protected-health-information-phi" title="Permanent link">&para;</a></h3>
+<h2 id="phi-vs-pii">PHI vs PII<a class="headerlink" href="#phi-vs-pii" title="Permanent link to this section">🔗</a></h2>
+<h3 id="protected-health-information-phi">Protected Health Information (PHI)<a class="headerlink" href="#protected-health-information-phi" title="Permanent link to this section">🔗</a></h3>
 <p>Any of the 18 HIPAA identifiers when combined with health information:</p>
 <table>
 <thead>
@@ -2511,8 +2513,8 @@
 </tbody>
 </table>
 <hr />
-<h2 id="configuration-for-hipaa-compliance">Configuration for HIPAA Compliance<a class="headerlink" href="#configuration-for-hipaa-compliance" title="Permanent link">&para;</a></h2>
-<h3 id="1-enable-healthcare-mode">1. Enable Healthcare Mode<a class="headerlink" href="#1-enable-healthcare-mode" title="Permanent link">&para;</a></h3>
+<h2 id="configuration-for-hipaa-compliance">Configuration for HIPAA Compliance<a class="headerlink" href="#configuration-for-hipaa-compliance" title="Permanent link to this section">🔗</a></h2>
+<h3 id="1-enable-healthcare-mode">1. Enable Healthcare Mode<a class="headerlink" href="#1-enable-healthcare-mode" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthcareWizard</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2530,7 +2532,7 @@
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># Use Healthcare Wizard for enhanced PHI protection</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">wizard</span> <span class="o">=</span> <span class="n">HealthcareWizard</span><span class="p">(</span><span class="n">llm</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="2-enhanced-phi-patterns">2. Enhanced PHI Patterns<a class="headerlink" href="#2-enhanced-phi-patterns" title="Permanent link">&para;</a></h3>
+<h3 id="2-enhanced-phi-patterns">2. Enhanced PHI Patterns<a class="headerlink" href="#2-enhanced-phi-patterns" title="Permanent link to this section">🔗</a></h3>
 <p>Healthcare Wizards include 10+ additional PHI patterns:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">HEALTHCARE_PII_PATTERNS</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="s2">&quot;mrn&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;\bMRN:?\s*\d{6,10}\b&#39;</span><span class="p">,</span>
@@ -2545,7 +2547,7 @@
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="s2">&quot;medication&quot;</span><span class="p">:</span> <span class="n">MEDICATION_LIST</span>  <span class="c1"># Optional: configurable</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="3-mandatory-encryption">3. Mandatory Encryption<a class="headerlink" href="#3-mandatory-encryption" title="Permanent link">&para;</a></h3>
+<h3 id="3-mandatory-encryption">3. Mandatory Encryption<a class="headerlink" href="#3-mandatory-encryption" title="Permanent link to this section">🔗</a></h3>
 <p>All PHI must be encrypted at rest:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">encrypt_phi</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
@@ -2564,8 +2566,8 @@
 <a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="n">database</span><span class="o">.</span><span class="n">store_encrypted</span><span class="p">(</span><span class="n">encrypted_record</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="business-associate-agreement-baa">Business Associate Agreement (BAA)<a class="headerlink" href="#business-associate-agreement-baa" title="Permanent link">&para;</a></h2>
-<h3 id="llm-provider-baas">LLM Provider BAAs<a class="headerlink" href="#llm-provider-baas" title="Permanent link">&para;</a></h3>
+<h2 id="business-associate-agreement-baa">Business Associate Agreement (BAA)<a class="headerlink" href="#business-associate-agreement-baa" title="Permanent link to this section">🔗</a></h2>
+<h3 id="llm-provider-baas">LLM Provider BAAs<a class="headerlink" href="#llm-provider-baas" title="Permanent link to this section">🔗</a></h3>
 <p>You <strong>must</strong> sign a Business Associate Agreement with your LLM provider:</p>
 <table>
 <thead>
@@ -2607,7 +2609,7 @@
 <p class="admonition-title">Critical Requirement</p>
 <p><strong>DO NOT</strong> send PHI to LLM providers without a signed BAA. Doing so violates HIPAA and can result in fines up to <strong>$1.5 million per year</strong> per violation category.</p>
 </div>
-<h3 id="baa-checklist">BAA Checklist<a class="headerlink" href="#baa-checklist" title="Permanent link">&para;</a></h3>
+<h3 id="baa-checklist">BAA Checklist<a class="headerlink" href="#baa-checklist" title="Permanent link to this section">🔗</a></h3>
 <p>Before using Empathy Framework in production:</p>
 <ul>
 <li>[ ] Sign BAA with LLM provider</li>
@@ -2621,8 +2623,8 @@
 <li>[ ] Test PHI scrubbing before go-live</li>
 </ul>
 <hr />
-<h2 id="audit-logging-requirements">Audit Logging Requirements<a class="headerlink" href="#audit-logging-requirements" title="Permanent link">&para;</a></h2>
-<h3 id="hipaa-164312b-audit-controls">HIPAA §164.312(b) - Audit Controls<a class="headerlink" href="#hipaa-164312b-audit-controls" title="Permanent link">&para;</a></h3>
+<h2 id="audit-logging-requirements">Audit Logging Requirements<a class="headerlink" href="#audit-logging-requirements" title="Permanent link to this section">🔗</a></h2>
+<h3 id="hipaa-164312b-audit-controls">HIPAA §164.312(b) - Audit Controls<a class="headerlink" href="#hipaa-164312b-audit-controls" title="Permanent link to this section">🔗</a></h3>
 <p>All access to ePHI must be logged:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuditLogger</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
@@ -2641,7 +2643,7 @@
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1"># - Success/failure</span>
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="c1"># - Source IP address</span>
 </code></pre></div>
-<h3 id="audit-log-format">Audit Log Format<a class="headerlink" href="#audit-log-format" title="Permanent link">&para;</a></h3>
+<h3 id="audit-log-format">Audit Log Format<a class="headerlink" href="#audit-log-format" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-11-25T14:30:00Z&quot;</span><span class="p">,</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;event_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;evt_hipaa_123&quot;</span><span class="p">,</span>
@@ -2666,7 +2668,7 @@
 <a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="audit-log-review">Audit Log Review<a class="headerlink" href="#audit-log-review" title="Permanent link">&para;</a></h3>
+<h3 id="audit-log-review">Audit Log Review<a class="headerlink" href="#audit-log-review" title="Permanent link to this section">🔗</a></h3>
 <p>Review logs <strong>at least weekly</strong> for:</p>
 <ul>
 <li>❌ Unauthorized access attempts</li>
@@ -2678,8 +2680,8 @@
 <li>✅ Authorized research access</li>
 </ul>
 <hr />
-<h2 id="minimum-necessary-standard">Minimum Necessary Standard<a class="headerlink" href="#minimum-necessary-standard" title="Permanent link">&para;</a></h2>
-<h3 id="hipaa-164502b">HIPAA §164.502(b)<a class="headerlink" href="#hipaa-164502b" title="Permanent link">&para;</a></h3>
+<h2 id="minimum-necessary-standard">Minimum Necessary Standard<a class="headerlink" href="#minimum-necessary-standard" title="Permanent link to this section">🔗</a></h2>
+<h3 id="hipaa-164502b">HIPAA §164.502(b)<a class="headerlink" href="#hipaa-164502b" title="Permanent link to this section">🔗</a></h3>
 <p>Only access the <strong>minimum necessary</strong> PHI to accomplish the task:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthcareWizard</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
@@ -2696,8 +2698,8 @@
 <a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># result = await wizard.get_full_patient_record(&quot;PT123456&quot;)  # ❌ Not minimum necessary</span>
 </code></pre></div>
 <hr />
-<h2 id="patient-rights">Patient Rights<a class="headerlink" href="#patient-rights" title="Permanent link">&para;</a></h2>
-<h3 id="right-to-access-hipaa-164524">Right to Access (HIPAA §164.524)<a class="headerlink" href="#right-to-access-hipaa-164524" title="Permanent link">&para;</a></h3>
+<h2 id="patient-rights">Patient Rights<a class="headerlink" href="#patient-rights" title="Permanent link to this section">🔗</a></h2>
+<h3 id="right-to-access-hipaa-164524">Right to Access (HIPAA §164.524)<a class="headerlink" href="#right-to-access-hipaa-164524" title="Permanent link to this section">🔗</a></h3>
 <p>Patients can request access to their records within <strong>30 days</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Generate patient-accessible summary (de-identified clinician notes)</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">summary</span> <span class="o">=</span> <span class="k">await</span> <span class="n">wizard</span><span class="o">.</span><span class="n">generate_patient_summary</span><span class="p">(</span>
@@ -2706,7 +2708,7 @@
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">include_phi</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Patient has right to their own PHI</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="right-to-amend-hipaa-164526">Right to Amend (HIPAA §164.526)<a class="headerlink" href="#right-to-amend-hipaa-164526" title="Permanent link">&para;</a></h3>
+<h3 id="right-to-amend-hipaa-164526">Right to Amend (HIPAA §164.526)<a class="headerlink" href="#right-to-amend-hipaa-164526" title="Permanent link to this section">🔗</a></h3>
 <p>Patients can request amendments:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Log amendment request</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">logger</span><span class="o">.</span><span class="n">log_amendment</span><span class="p">(</span>
@@ -2718,7 +2720,7 @@
 <a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">status</span><span class="o">=</span><span class="s2">&quot;pending_physician_review&quot;</span>
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="right-to-accounting-of-disclosures-hipaa-164528">Right to Accounting of Disclosures (HIPAA §164.528)<a class="headerlink" href="#right-to-accounting-of-disclosures-hipaa-164528" title="Permanent link">&para;</a></h3>
+<h3 id="right-to-accounting-of-disclosures-hipaa-164528">Right to Accounting of Disclosures (HIPAA §164.528)<a class="headerlink" href="#right-to-accounting-of-disclosures-hipaa-164528" title="Permanent link to this section">🔗</a></h3>
 <p>Patients can request 6-year history of PHI disclosures:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Query all PHI disclosures</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">disclosures</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">query_disclosures</span><span class="p">(</span>
@@ -2731,10 +2733,10 @@
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="n">report</span> <span class="o">=</span> <span class="n">generate_disclosure_report</span><span class="p">(</span><span class="n">disclosures</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="breach-notification">Breach Notification<a class="headerlink" href="#breach-notification" title="Permanent link">&para;</a></h2>
-<h3 id="what-constitutes-a-breach">What Constitutes a Breach?<a class="headerlink" href="#what-constitutes-a-breach" title="Permanent link">&para;</a></h3>
+<h2 id="breach-notification">Breach Notification<a class="headerlink" href="#breach-notification" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-constitutes-a-breach">What Constitutes a Breach?<a class="headerlink" href="#what-constitutes-a-breach" title="Permanent link to this section">🔗</a></h3>
 <p>Unauthorized acquisition, access, use, or disclosure of PHI that compromises security or privacy.</p>
-<h3 id="response-plan">Response Plan<a class="headerlink" href="#response-plan" title="Permanent link">&para;</a></h3>
+<h3 id="response-plan">Response Plan<a class="headerlink" href="#response-plan" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">BreachDetector</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">detector</span> <span class="o">=</span> <span class="n">BreachDetector</span><span class="p">()</span>
@@ -2763,8 +2765,8 @@
 <a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">log_breach</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="testing-hipaa-compliance">Testing HIPAA Compliance<a class="headerlink" href="#testing-hipaa-compliance" title="Permanent link">&para;</a></h2>
-<h3 id="phi-scrubbing-test">PHI Scrubbing Test<a class="headerlink" href="#phi-scrubbing-test" title="Permanent link">&para;</a></h3>
+<h2 id="testing-hipaa-compliance">Testing HIPAA Compliance<a class="headerlink" href="#testing-hipaa-compliance" title="Permanent link to this section">🔗</a></h2>
+<h3 id="phi-scrubbing-test">PHI Scrubbing Test<a class="headerlink" href="#phi-scrubbing-test" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_phi_scrubbing_comprehensive</span><span class="p">():</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthcareWizard</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
@@ -2797,7 +2799,7 @@
 <a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>    <span class="c1"># Verify audit log</span>
 <a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;security_report&#39;</span><span class="p">][</span><span class="s1">&#39;phi_removed&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">8</span>
 </code></pre></div>
-<h3 id="encryption-test">Encryption Test<a class="headerlink" href="#encryption-test" title="Permanent link">&para;</a></h3>
+<h3 id="encryption-test">Encryption Test<a class="headerlink" href="#encryption-test" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_encryption_aes_256_gcm</span><span class="p">():</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">encrypt_phi</span><span class="p">,</span> <span class="n">decrypt_phi</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
@@ -2816,8 +2818,8 @@
 <a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>    <span class="k">assert</span> <span class="n">decrypted</span> <span class="o">==</span> <span class="n">phi_data</span>
 </code></pre></div>
 <hr />
-<h2 id="compliance-checklist">Compliance Checklist<a class="headerlink" href="#compliance-checklist" title="Permanent link">&para;</a></h2>
-<h3 id="before-production">Before Production<a class="headerlink" href="#before-production" title="Permanent link">&para;</a></h3>
+<h2 id="compliance-checklist">Compliance Checklist<a class="headerlink" href="#compliance-checklist" title="Permanent link to this section">🔗</a></h2>
+<h3 id="before-production">Before Production<a class="headerlink" href="#before-production" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>[ ] <strong>BAA signed</strong> with LLM provider</li>
 <li>[ ] <strong>Security enabled</strong>: <code>enable_security=True</code></li>
@@ -2830,7 +2832,7 @@
 <li>[ ] <strong>Risk assessment</strong>: Completed and documented</li>
 <li>[ ] <strong>Incident response plan</strong>: Tested and ready</li>
 </ul>
-<h3 id="ongoing-compliance">Ongoing Compliance<a class="headerlink" href="#ongoing-compliance" title="Permanent link">&para;</a></h3>
+<h3 id="ongoing-compliance">Ongoing Compliance<a class="headerlink" href="#ongoing-compliance" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>[ ] <strong>Weekly audit log review</strong></li>
 <li>[ ] <strong>Quarterly security assessments</strong></li>
@@ -2841,7 +2843,7 @@
 <li>[ ] <strong>Software updates</strong> for security patches</li>
 </ul>
 <hr />
-<h2 id="common-violations-how-to-avoid">Common Violations &amp; How to Avoid<a class="headerlink" href="#common-violations-how-to-avoid" title="Permanent link">&para;</a></h2>
+<h2 id="common-violations-how-to-avoid">Common Violations &amp; How to Avoid<a class="headerlink" href="#common-violations-how-to-avoid" title="Permanent link to this section">🔗</a></h2>
 <table>
 <thead>
 <tr>
@@ -2885,7 +2887,7 @@
 </table>
 <p><strong>Maximum penalty</strong>: $1.5 million per year per violation category</p>
 <hr />
-<h2 id="roi-of-hipaa-compliance">ROI of HIPAA Compliance<a class="headerlink" href="#roi-of-hipaa-compliance" title="Permanent link">&para;</a></h2>
+<h2 id="roi-of-hipaa-compliance">ROI of HIPAA Compliance<a class="headerlink" href="#roi-of-hipaa-compliance" title="Permanent link to this section">🔗</a></h2>
 <p>For a <strong>100-bed hospital</strong>:</p>
 <table>
 <thead>
@@ -2915,7 +2917,7 @@
 - ✅ Enable AI innovation with confidence
 - ✅ Reduce documentation time by 60%</p>
 <hr />
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="security-architecture.html">Security Architecture</a> - Technical implementation details</li>
 <li><a href="../api-reference/wizards.html">Healthcare Wizards</a> - PHI-aware AI assistants</li>
@@ -2923,7 +2925,7 @@
 <li><a href="../api-reference/llm-toolkit.html">LLM Toolkit</a> - Security API reference</li>
 </ul>
 <hr />
-<h2 id="external-resources">External Resources<a class="headerlink" href="#external-resources" title="Permanent link">&para;</a></h2>
+<h2 id="external-resources">External Resources<a class="headerlink" href="#external-resources" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="https://www.hhs.gov/hipaa/index.html">HHS HIPAA Portal</a></li>
 <li><a href="https://www.hhs.gov/hipaa/for-professionals/security/index.html">HIPAA Security Rule</a></li>

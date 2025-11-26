@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1919,12 +1921,12 @@
   
 
 
-<h1 id="using-the-empathy-framework-with-llms">Using the Empathy Framework with LLMs<a class="headerlink" href="#using-the-empathy-framework-with-llms" title="Permanent link">&para;</a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h1 id="using-the-empathy-framework-with-llms">Using the Empathy Framework with LLMs<a class="headerlink" href="#using-the-empathy-framework-with-llms" title="Permanent link to this section">🔗</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>This guide shows you how to implement the 5 empathy levels using Large Language Models (OpenAI, Anthropic, etc.). Whether you're building software tools, healthcare applications, or any AI-assisted system, these patterns will help you progress from reactive to anticipatory AI collaboration.</p>
 <p><strong>Key Insight</strong>: Most LLM applications operate at Level 1 (reactive). This guide shows you how to build Level 3-4 systems that transform productivity.</p>
 <hr />
-<h2 id="the-5-levels-with-llms">The 5 Levels with LLMs<a class="headerlink" href="#the-5-levels-with-llms" title="Permanent link">&para;</a></h2>
+<h2 id="the-5-levels-with-llms">The 5 Levels with LLMs<a class="headerlink" href="#the-5-levels-with-llms" title="Permanent link to this section">🔗</a></h2>
 <table>
 <thead>
 <tr>
@@ -1968,10 +1970,10 @@
 </tbody>
 </table>
 <hr />
-<h2 id="level-1-reactive-the-default">Level 1: Reactive (The Default)<a class="headerlink" href="#level-1-reactive-the-default" title="Permanent link">&para;</a></h2>
-<h3 id="what-it-is">What It Is<a class="headerlink" href="#what-it-is" title="Permanent link">&para;</a></h3>
+<h2 id="level-1-reactive-the-default">Level 1: Reactive (The Default)<a class="headerlink" href="#level-1-reactive-the-default" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-it-is">What It Is<a class="headerlink" href="#what-it-is" title="Permanent link to this section">🔗</a></h3>
 <p>User asks question → LLM responds → Done. No memory, no context, transactional.</p>
-<h3 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h3>
+<h3 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your-key&quot;</span><span class="p">)</span>
@@ -1992,14 +1994,14 @@
 <a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
 </code></pre></div>
-<h3 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h3>
+<h3 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>One-off questions</li>
 <li>No context needed</li>
 <li>User must maintain full control</li>
 <li>Compliance/audit scenarios</li>
 </ul>
-<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>No learning from history</li>
 <li>Can't detect patterns</li>
@@ -2007,15 +2009,15 @@
 <li>User does all the work</li>
 </ul>
 <hr />
-<h2 id="level-2-guided-collaborative-exploration">Level 2: Guided (Collaborative Exploration)<a class="headerlink" href="#level-2-guided-collaborative-exploration" title="Permanent link">&para;</a></h2>
-<h3 id="what-it-is_1">What It Is<a class="headerlink" href="#what-it-is_1" title="Permanent link">&para;</a></h3>
+<h2 id="level-2-guided-collaborative-exploration">Level 2: Guided (Collaborative Exploration)<a class="headerlink" href="#level-2-guided-collaborative-exploration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-it-is_1">What It Is<a class="headerlink" href="#what-it-is_1" title="Permanent link to this section">🔗</a></h3>
 <p>LLM uses <strong>calibrated questions</strong> (Chris Voss) to understand user's actual need before responding.</p>
-<h3 id="the-calibrated-question-pattern">The Calibrated Question Pattern<a class="headerlink" href="#the-calibrated-question-pattern" title="Permanent link">&para;</a></h3>
+<h3 id="the-calibrated-question-pattern">The Calibrated Question Pattern<a class="headerlink" href="#the-calibrated-question-pattern" title="Permanent link to this section">🔗</a></h3>
 <p>Instead of assuming, ask:
 - "What are you hoping to accomplish?"
 - "How does this fit into your workflow?"
 - "What would make this most helpful?"</p>
-<h3 id="implementation_1">Implementation<a class="headerlink" href="#implementation_1" title="Permanent link">&para;</a></h3>
+<h3 id="implementation_1">Implementation<a class="headerlink" href="#implementation_1" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">Level2GuidedLLM</span><span class="p">:</span>
@@ -2083,7 +2085,7 @@
 <a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>        <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">new_prompt</span><span class="p">})</span>
 <a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>        <span class="k">return</span> <span class="n">messages</span>
 </code></pre></div>
-<h3 id="example-interaction">Example Interaction<a class="headerlink" href="#example-interaction" title="Permanent link">&para;</a></h3>
+<h3 id="example-interaction">Example Interaction<a class="headerlink" href="#example-interaction" title="Permanent link to this section">🔗</a></h3>
 <p><strong>User</strong>: "Help me write a REST API"</p>
 <p><strong>Level 1 (Reactive)</strong>: Returns generic REST API code</p>
 <p><strong>Level 2 (Guided)</strong>:
@@ -2097,7 +2099,7 @@
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>LLM: [Provides Flask + JWT + production-ready user management API]
 </code></pre></div></p>
-<h3 id="when-to-use_1">When to Use<a class="headerlink" href="#when-to-use_1" title="Permanent link">&para;</a></h3>
+<h3 id="when-to-use_1">When to Use<a class="headerlink" href="#when-to-use_1" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Ambiguous requests</li>
 <li>Multiple valid approaches</li>
@@ -2105,15 +2107,15 @@
 <li>High-stakes decisions</li>
 </ul>
 <hr />
-<h2 id="level-3-proactive-pattern-detection">Level 3: Proactive (Pattern Detection)<a class="headerlink" href="#level-3-proactive-pattern-detection" title="Permanent link">&para;</a></h2>
-<h3 id="what-it-is_2">What It Is<a class="headerlink" href="#what-it-is_2" title="Permanent link">&para;</a></h3>
+<h2 id="level-3-proactive-pattern-detection">Level 3: Proactive (Pattern Detection)<a class="headerlink" href="#level-3-proactive-pattern-detection" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-it-is_2">What It Is<a class="headerlink" href="#what-it-is_2" title="Permanent link to this section">🔗</a></h3>
 <p>LLM learns patterns from user behavior and <strong>acts before being asked</strong>.</p>
-<h3 id="the-pattern-detection-approach">The Pattern Detection Approach<a class="headerlink" href="#the-pattern-detection-approach" title="Permanent link">&para;</a></h3>
+<h3 id="the-pattern-detection-approach">The Pattern Detection Approach<a class="headerlink" href="#the-pattern-detection-approach" title="Permanent link to this section">🔗</a></h3>
 <p>Track:
 1. <strong>Sequential patterns</strong>: "User always does X before Y"
 2. <strong>Temporal patterns</strong>: "User checks logs every morning"
 3. <strong>Conditional patterns</strong>: "When tests fail, user checks dependencies"</p>
-<h3 id="implementation_2">Implementation<a class="headerlink" href="#implementation_2" title="Permanent link">&para;</a></h3>
+<h3 id="implementation_2">Implementation<a class="headerlink" href="#implementation_2" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
@@ -2293,7 +2295,7 @@
 <a id="__codelineno-3-177" name="__codelineno-3-177" href="#__codelineno-3-177"></a>
 <a id="__codelineno-3-178" name="__codelineno-3-178" href="#__codelineno-3-178"></a>        <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
-<h3 id="example-proactive-behavior">Example Proactive Behavior<a class="headerlink" href="#example-proactive-behavior" title="Permanent link">&para;</a></h3>
+<h3 id="example-proactive-behavior">Example Proactive Behavior<a class="headerlink" href="#example-proactive-behavior" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Pattern Detected</strong>: User always runs <code>pytest</code> after making code changes</p>
 <p><strong>User</strong>: "I just updated the auth module"</p>
 <p><strong>Level 3 Proactive Response</strong>:
@@ -2305,7 +2307,7 @@
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>The token_refresh test is failing. Would you like me to analyze the failure?
 </code></pre></div></p>
-<h3 id="when-to-use_2">When to Use<a class="headerlink" href="#when-to-use_2" title="Permanent link">&para;</a></h3>
+<h3 id="when-to-use_2">When to Use<a class="headerlink" href="#when-to-use_2" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Established user patterns exist</li>
 <li>Time-sensitive workflows</li>
@@ -2313,14 +2315,14 @@
 <li>Trust level high (&gt;60%)</li>
 </ul>
 <hr />
-<h2 id="level-4-anticipatory-our-wizards">Level 4: Anticipatory (Our Wizards!)<a class="headerlink" href="#level-4-anticipatory-our-wizards" title="Permanent link">&para;</a></h2>
-<h3 id="what-it-is_3">What It Is<a class="headerlink" href="#what-it-is_3" title="Permanent link">&para;</a></h3>
+<h2 id="level-4-anticipatory-our-wizards">Level 4: Anticipatory (Our Wizards!)<a class="headerlink" href="#level-4-anticipatory-our-wizards" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-it-is_3">What It Is<a class="headerlink" href="#what-it-is_3" title="Permanent link to this section">🔗</a></h3>
 <p>LLM analyzes <strong>system trajectory</strong> and predicts future bottlenecks BEFORE they occur.</p>
-<h3 id="the-anticipatory-formula">The Anticipatory Formula<a class="headerlink" href="#the-anticipatory-formula" title="Permanent link">&para;</a></h3>
+<h3 id="the-anticipatory-formula">The Anticipatory Formula<a class="headerlink" href="#the-anticipatory-formula" title="Permanent link to this section">🔗</a></h3>
 <blockquote>
 <p><strong>Current State + Growth Rate + Domain Knowledge = Future Bottleneck</strong></p>
 </blockquote>
-<h3 id="implementation-simplified">Implementation (Simplified)<a class="headerlink" href="#implementation-simplified" title="Permanent link">&para;</a></h3>
+<h3 id="implementation-simplified">Implementation (Simplified)<a class="headerlink" href="#implementation-simplified" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">Level4AnticipatorLLM</span><span class="p">:</span>
@@ -2410,7 +2412,7 @@
 <a id="__codelineno-5-87" name="__codelineno-5-87" href="#__codelineno-5-87"></a>
 <a id="__codelineno-5-88" name="__codelineno-5-88" href="#__codelineno-5-88"></a>        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
 </code></pre></div>
-<h3 id="example-our-prompt-engineering-wizard">Example: Our Prompt Engineering Wizard<a class="headerlink" href="#example-our-prompt-engineering-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="example-our-prompt-engineering-wizard">Example: Our Prompt Engineering Wizard<a class="headerlink" href="#example-our-prompt-engineering-wizard" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">prompt_wizard_with_llm</span><span class="p">(</span><span class="n">prompt_files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="sd">    Use LLM to analyze prompts and predict drift</span>
@@ -2450,7 +2452,7 @@
 <a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a>        <span class="n">domain_knowledge</span><span class="o">=</span><span class="n">analysis_prompt</span>
 <a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a>    <span class="p">)</span>
 </code></pre></div>
-<h3 id="when-to-use_3">When to Use<a class="headerlink" href="#when-to-use_3" title="Permanent link">&para;</a></h3>
+<h3 id="when-to-use_3">When to Use<a class="headerlink" href="#when-to-use_3" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Predictable future events (audits, deadlines, thresholds)</li>
 <li>Clear trajectory with data</li>
@@ -2458,10 +2460,10 @@
 <li>High confidence (&gt;75%)</li>
 </ul>
 <hr />
-<h2 id="level-5-systems-cross-domain-learning">Level 5: Systems (Cross-Domain Learning)<a class="headerlink" href="#level-5-systems-cross-domain-learning" title="Permanent link">&para;</a></h2>
-<h3 id="what-it-is_4">What It Is<a class="headerlink" href="#what-it-is_4" title="Permanent link">&para;</a></h3>
+<h2 id="level-5-systems-cross-domain-learning">Level 5: Systems (Cross-Domain Learning)<a class="headerlink" href="#level-5-systems-cross-domain-learning" title="Permanent link to this section">🔗</a></h2>
+<h3 id="what-it-is_4">What It Is<a class="headerlink" href="#what-it-is_4" title="Permanent link to this section">🔗</a></h3>
 <p>Patterns discovered in one domain apply to others via shared <strong>pattern library</strong>.</p>
-<h3 id="implementation_3">Implementation<a class="headerlink" href="#implementation_3" title="Permanent link">&para;</a></h3>
+<h3 id="implementation_3">Implementation<a class="headerlink" href="#implementation_3" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Level5SystemsLLM</span><span class="p">:</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="sd">    Level 5: Cross-domain pattern learning</span>
@@ -2537,7 +2539,7 @@
 <a id="__codelineno-7-73" name="__codelineno-7-73" href="#__codelineno-7-73"></a>
 <a id="__codelineno-7-74" name="__codelineno-7-74" href="#__codelineno-7-74"></a>        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_llm</span><span class="p">(</span><span class="n">adaptation_prompt</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="example-cross-domain-pattern">Example: Cross-Domain Pattern<a class="headerlink" href="#example-cross-domain-pattern" title="Permanent link">&para;</a></h3>
+<h3 id="example-cross-domain-pattern">Example: Cross-Domain Pattern<a class="headerlink" href="#example-cross-domain-pattern" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Pattern</strong>: "Artifact-Code Drift"</p>
 <p><strong>Discovered in</strong>: Software (prompts evolving slower than code)</p>
 <p><strong>Generalizes to</strong>:
@@ -2563,8 +2565,8 @@
 <a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="c1">#  drift creates audit issues.&quot;</span>
 </code></pre></div></p>
 <hr />
-<h2 id="practical-recommendations">Practical Recommendations<a class="headerlink" href="#practical-recommendations" title="Permanent link">&para;</a></h2>
-<h3 id="start-simple-progress-deliberately">Start Simple, Progress Deliberately<a class="headerlink" href="#start-simple-progress-deliberately" title="Permanent link">&para;</a></h3>
+<h2 id="practical-recommendations">Practical Recommendations<a class="headerlink" href="#practical-recommendations" title="Permanent link to this section">🔗</a></h2>
+<h3 id="start-simple-progress-deliberately">Start Simple, Progress Deliberately<a class="headerlink" href="#start-simple-progress-deliberately" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Build Level 1 first</strong>: Get basic LLM integration working</li>
 <li><strong>Add Level 2</strong>: Implement calibrated questions</li>
@@ -2573,11 +2575,11 @@
 <li><strong>Add anticipation</strong>: Level 4 requires domain knowledge</li>
 <li><strong>Share patterns</strong>: Level 5 emerges from multiple domains</li>
 </ol>
-<h3 id="dont-skip-levels">Don't Skip Levels<a class="headerlink" href="#dont-skip-levels" title="Permanent link">&para;</a></h3>
+<h3 id="dont-skip-levels">Don't Skip Levels<a class="headerlink" href="#dont-skip-levels" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Temptation</strong>: Jump straight to Level 4</p>
 <p><strong>Problem</strong>: Without Level 2-3 foundation (questions, patterns, state), you have no data for anticipation</p>
 <p><strong>Solution</strong>: Build progression deliberately</p>
-<h3 id="use-system-prompts-effectively">Use System Prompts Effectively<a class="headerlink" href="#use-system-prompts-effectively" title="Permanent link">&para;</a></h3>
+<h3 id="use-system-prompts-effectively">Use System Prompts Effectively<a class="headerlink" href="#use-system-prompts-effectively" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Bad: No level guidance</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">system_prompt</span> <span class="o">=</span> <span class="s2">&quot;You are a helpful assistant&quot;</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
@@ -2591,7 +2593,7 @@
 <a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="s2">Provide escape hatch if wrong.</span>
 <a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="s2">&quot;&quot;&quot;</span>
 </code></pre></div>
-<h3 id="track-trust-over-time">Track Trust Over Time<a class="headerlink" href="#track-trust-over-time" title="Permanent link">&para;</a></h3>
+<h3 id="track-trust-over-time">Track Trust Over Time<a class="headerlink" href="#track-trust-over-time" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Trust determines how proactive LLM should be</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">trust_level</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">:</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="c1"># Level 4: Act anticipatorily</span>
@@ -2604,8 +2606,8 @@
 <a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="k">await</span> <span class="n">ask_calibrated_questions</span><span class="p">()</span>
 </code></pre></div>
 <hr />
-<h2 id="healthcare-example">Healthcare Example<a class="headerlink" href="#healthcare-example" title="Permanent link">&para;</a></h2>
-<h3 id="use-case-clinical-note-documentation">Use Case: Clinical Note Documentation<a class="headerlink" href="#use-case-clinical-note-documentation" title="Permanent link">&para;</a></h3>
+<h2 id="healthcare-example">Healthcare Example<a class="headerlink" href="#healthcare-example" title="Permanent link to this section">🔗</a></h2>
+<h3 id="use-case-clinical-note-documentation">Use Case: Clinical Note Documentation<a class="headerlink" href="#use-case-clinical-note-documentation" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Level 1 (Reactive)</strong>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Clinician: &quot;Generate SOAP note&quot;
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>LLM: [Generic SOAP template]
@@ -2638,26 +2640,26 @@
 <a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>I&#39;ve prepared compliant templates and flagged at-risk notes for review.&quot;
 </code></pre></div></p>
 <hr />
-<h2 id="cost-considerations">Cost Considerations<a class="headerlink" href="#cost-considerations" title="Permanent link">&para;</a></h2>
-<h3 id="level-1-2-minimal-cost-increase">Level 1-2: Minimal Cost Increase<a class="headerlink" href="#level-1-2-minimal-cost-increase" title="Permanent link">&para;</a></h3>
+<h2 id="cost-considerations">Cost Considerations<a class="headerlink" href="#cost-considerations" title="Permanent link to this section">🔗</a></h2>
+<h3 id="level-1-2-minimal-cost-increase">Level 1-2: Minimal Cost Increase<a class="headerlink" href="#level-1-2-minimal-cost-increase" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Single LLM call per interaction</li>
 <li>Standard token usage</li>
 </ul>
-<h3 id="level-3-moderate-cost-increase">Level 3: Moderate Cost Increase<a class="headerlink" href="#level-3-moderate-cost-increase" title="Permanent link">&para;</a></h3>
+<h3 id="level-3-moderate-cost-increase">Level 3: Moderate Cost Increase<a class="headerlink" href="#level-3-moderate-cost-increase" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Pattern detection requires periodic analysis</li>
 <li>Conversation history adds context tokens</li>
 <li><strong>Mitigation</strong>: Cache system prompts, compress history</li>
 </ul>
-<h3 id="level-4-higher-cost-but-worth-it">Level 4: Higher Cost (But Worth It)<a class="headerlink" href="#level-4-higher-cost-but-worth-it" title="Permanent link">&para;</a></h3>
+<h3 id="level-4-higher-cost-but-worth-it">Level 4: Higher Cost (But Worth It)<a class="headerlink" href="#level-4-higher-cost-but-worth-it" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Trajectory analysis requires more tokens</li>
 <li>Domain knowledge in prompts</li>
 <li>Multiple analysis passes</li>
 <li><strong>Mitigation</strong>: Run periodically (not every request), use cheaper models for detection, expensive models for prediction</li>
 </ul>
-<h3 id="optimization-strategies">Optimization Strategies<a class="headerlink" href="#optimization-strategies" title="Permanent link">&para;</a></h3>
+<h3 id="optimization-strategies">Optimization Strategies<a class="headerlink" href="#optimization-strategies" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Use tiered models</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">DETECTION_MODEL</span> <span class="o">=</span> <span class="s2">&quot;claude-3-haiku&quot;</span>     <span class="c1"># Fast, cheap</span>
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">ANALYSIS_MODEL</span> <span class="o">=</span> <span class="s2">&quot;claude-3-5-sonnet&quot;</span>   <span class="c1"># Smart, moderate</span>
@@ -2674,7 +2676,7 @@
 <a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    <span class="n">refined</span> <span class="o">=</span> <span class="k">await</span> <span class="n">refine_analysis</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">CRITICAL_MODEL</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link to this section">🔗</a></h2>
 <ol>
 <li><strong>Start with Level 2</strong>: Implement calibrated questions in your current LLM integration</li>
 <li><strong>Add CollaborationState</strong>: Track user interactions and build trust</li>
@@ -2682,7 +2684,7 @@
 <li><strong>Build your first anticipatory feature</strong>: Pick one bottleneck to predict</li>
 </ol>
 <hr />
-<h2 id="related-resources">Related Resources<a class="headerlink" href="#related-resources" title="Permanent link">&para;</a></h2>
+<h2 id="related-resources">Related Resources<a class="headerlink" href="#related-resources" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><strong><a href="../docs/CHAPTER_EMPATHY_FRAMEWORK.md">Empathy Framework Core</a></strong> - Complete framework documentation</li>
 <li><strong><a href="AI_DEVELOPMENT_WIZARDS.html">AI Development Wizards</a></strong> - 7 Level 4 examples</li>

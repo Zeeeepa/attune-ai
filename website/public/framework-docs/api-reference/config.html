@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2608,9 +2610,9 @@
   
 
 
-<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
+<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link to this section">🔗</a></h1>
 <p>Configuration management for the Empathy Framework. Configure via direct instantiation, YAML/JSON files, or environment variables.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The configuration system provides flexible options for customizing Empathy Framework behavior:</p>
 <ul>
 <li><strong>Direct instantiation</strong>: Pass parameters to <code>EmpathyConfig()</code> or <code>EmpathyOS()</code></li>
@@ -2618,8 +2620,8 @@
 <li><strong>Environment variables</strong>: Use <code>EMPATHY_*</code> prefixed variables</li>
 <li><strong>Validation</strong>: Automatic validation on load with helpful error messages</li>
 </ul>
-<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<h3 id="direct-configuration">Direct Configuration<a class="headerlink" href="#direct-configuration" title="Permanent link">&para;</a></h3>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link to this section">🔗</a></h2>
+<h3 id="direct-configuration">Direct Configuration<a class="headerlink" href="#direct-configuration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyConfig</span><span class="p">,</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Option 1: Configure EmpathyOS directly</span>
@@ -2638,7 +2640,7 @@
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">)</span>
 <a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="n">empathy</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="yaml-configuration">YAML Configuration<a class="headerlink" href="#yaml-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="yaml-configuration">YAML Configuration<a class="headerlink" href="#yaml-configuration" title="Permanent link to this section">🔗</a></h3>
 <p>Create <code>empathy.config.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">user_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;user_123&quot;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">target_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
@@ -2654,7 +2656,7 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;empathy.config.yml&quot;</span><span class="p">)</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">empathy</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
+<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_USER_ID</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_TARGET_LEVEL</span><span class="o">=</span><span class="m">4</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_CONFIDENCE_THRESHOLD</span><span class="o">=</span><span class="m">0</span>.75
@@ -2664,7 +2666,7 @@
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Automatically loads from environment</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">use_env</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link">&para;</a></h2>
+<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link to this section">🔗</a></h2>
 
 
 <div class="doc doc-object doc-class">
@@ -2710,7 +2712,7 @@
 <h3 id="empathy_os.config.EmpathyConfig.__repr__" class="doc doc-heading">
             <code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
 
-<a href="#empathy_os.config.EmpathyConfig.__repr__" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.__repr__" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2732,7 +2734,7 @@
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-<a href="#empathy_os.config.EmpathyConfig.from_env" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.from_env" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2830,7 +2832,7 @@ print(config.user_id)  # "alice"</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-<a href="#empathy_os.config.EmpathyConfig.from_file" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.from_file" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2926,7 +2928,7 @@ config = EmpathyConfig.from_file("my-config.yml")</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-<a href="#empathy_os.config.EmpathyConfig.from_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.from_json" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3014,7 +3016,7 @@ empathy = EmpathyOS(config=config)</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-<a href="#empathy_os.config.EmpathyConfig.from_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.from_yaml" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3131,7 +3133,7 @@ empathy = EmpathyOS(config=config)</p>
 <h3 id="empathy_os.config.EmpathyConfig.merge" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">merge</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
 
-<a href="#empathy_os.config.EmpathyConfig.merge" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.merge" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3216,7 +3218,7 @@ merged = base.merge(override)</p>
 <h3 id="empathy_os.config.EmpathyConfig.to_dict" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
 
-<a href="#empathy_os.config.EmpathyConfig.to_dict" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.to_dict" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3234,7 +3236,7 @@ merged = base.merge(override)</p>
 <h3 id="empathy_os.config.EmpathyConfig.to_json" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">to_json</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></code>
 
-<a href="#empathy_os.config.EmpathyConfig.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.to_json" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3311,7 +3313,7 @@ config.to_json("my-config.json")</p>
 <h3 id="empathy_os.config.EmpathyConfig.to_yaml" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">to_yaml</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></code>
 
-<a href="#empathy_os.config.EmpathyConfig.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.to_yaml" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3372,7 +3374,7 @@ config.to_yaml("my-config.yml")</p>
 <h3 id="empathy_os.config.EmpathyConfig.update" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#empathy_os.config.EmpathyConfig.update" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.update" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3432,7 +3434,7 @@ config.update(user_id="bob", target_level=5)</p>
 <h3 id="empathy_os.config.EmpathyConfig.validate" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">validate</span><span class="p">()</span></code>
 
-<a href="#empathy_os.config.EmpathyConfig.validate" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#empathy_os.config.EmpathyConfig.validate" class="headerlink" title="Permanent link to this section">🔗</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -3496,14 +3498,14 @@ config.update(user_id="bob", target_level=5)</p>
 
     </div>
 
-</div><h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h2>
-<h3 id="core-settings">Core Settings<a class="headerlink" href="#core-settings" title="Permanent link">&para;</a></h3>
-<h4 id="user_id-str-required"><code>user_id</code> (str, required)<a class="headerlink" href="#user_id-str-required" title="Permanent link">&para;</a></h4>
+</div><h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link to this section">🔗</a></h2>
+<h3 id="core-settings">Core Settings<a class="headerlink" href="#core-settings" title="Permanent link to this section">🔗</a></h3>
+<h4 id="user_id-str-required"><code>user_id</code> (str, required)<a class="headerlink" href="#user_id-str-required" title="Permanent link to this section">🔗</a></h4>
 <p>Unique identifier for the user or system.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="target_level-int-default-4"><code>target_level</code> (int, default: 4)<a class="headerlink" href="#target_level-int-default-4" title="Permanent link">&para;</a></h4>
+<h4 id="target_level-int-default-4"><code>target_level</code> (int, default: 4)<a class="headerlink" href="#target_level-int-default-4" title="Permanent link to this section">🔗</a></h4>
 <p>Target empathy level (1-5). System will progress toward this level as trust builds.</p>
 <ul>
 <li><strong>1</strong>: Reactive (basic Q&amp;A)</li>
@@ -3515,7 +3517,7 @@ config.update(user_id="bob", target_level=5)</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Aim for Level 4</span>
 </code></pre></div></p>
-<h4 id="confidence_threshold-float-default-075"><code>confidence_threshold</code> (float, default: 0.75)<a class="headerlink" href="#confidence_threshold-float-default-075" title="Permanent link">&para;</a></h4>
+<h4 id="confidence_threshold-float-default-075"><code>confidence_threshold</code> (float, default: 0.75)<a class="headerlink" href="#confidence_threshold-float-default-075" title="Permanent link to this section">🔗</a></h4>
 <p>Minimum confidence score (0.0-1.0) required for predictions and suggestions.</p>
 <p><strong>Higher values</strong> = More conservative (fewer, higher-quality predictions)
 <strong>Lower values</strong> = More aggressive (more predictions, potentially lower quality)</p>
@@ -3526,8 +3528,8 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Aggressive: More predictions, accept lower confidence</span>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">confidence_threshold</span><span class="o">=</span><span class="mf">0.60</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="trust-settings">Trust Settings<a class="headerlink" href="#trust-settings" title="Permanent link">&para;</a></h3>
-<h4 id="trust_building_rate-float-default-005"><code>trust_building_rate</code> (float, default: 0.05)<a class="headerlink" href="#trust_building_rate-float-default-005" title="Permanent link">&para;</a></h4>
+<h3 id="trust-settings">Trust Settings<a class="headerlink" href="#trust-settings" title="Permanent link to this section">🔗</a></h3>
+<h4 id="trust_building_rate-float-default-005"><code>trust_building_rate</code> (float, default: 0.05)<a class="headerlink" href="#trust_building_rate-float-default-005" title="Permanent link to this section">🔗</a></h4>
 <p>How much trust increases on successful interactions (0.0-1.0).</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Fast trust building (+10% per success)</span>
@@ -3536,7 +3538,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Slow trust building (+2% per success)</span>
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">trust_building_rate</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="trust_erosion_rate-float-default-010"><code>trust_erosion_rate</code> (float, default: 0.10)<a class="headerlink" href="#trust_erosion_rate-float-default-010" title="Permanent link">&para;</a></h4>
+<h4 id="trust_erosion_rate-float-default-010"><code>trust_erosion_rate</code> (float, default: 0.10)<a class="headerlink" href="#trust_erosion_rate-float-default-010" title="Permanent link to this section">🔗</a></h4>
 <p>How much trust decreases on failed interactions (0.0-1.0).</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Forgiving: Small trust loss on failure</span>
@@ -3545,8 +3547,8 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Strict: Large trust loss on failure</span>
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">trust_erosion_rate</span><span class="o">=</span><span class="mf">0.20</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="persistence-settings">Persistence Settings<a class="headerlink" href="#persistence-settings" title="Permanent link">&para;</a></h3>
-<h4 id="persistence_enabled-bool-default-true"><code>persistence_enabled</code> (bool, default: True)<a class="headerlink" href="#persistence_enabled-bool-default-true" title="Permanent link">&para;</a></h4>
+<h3 id="persistence-settings">Persistence Settings<a class="headerlink" href="#persistence-settings" title="Permanent link to this section">🔗</a></h3>
+<h4 id="persistence_enabled-bool-default-true"><code>persistence_enabled</code> (bool, default: True)<a class="headerlink" href="#persistence_enabled-bool-default-true" title="Permanent link to this section">🔗</a></h4>
 <p>Enable saving patterns, metrics, and state to disk.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Production: Enable persistence</span>
@@ -3555,7 +3557,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Testing: Disable persistence</span>
 <a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">persistence_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="persistence_backend-str-default-sqlite"><code>persistence_backend</code> (str, default: "sqlite")<a class="headerlink" href="#persistence_backend-str-default-sqlite" title="Permanent link">&para;</a></h4>
+<h4 id="persistence_backend-str-default-sqlite"><code>persistence_backend</code> (str, default: "sqlite")<a class="headerlink" href="#persistence_backend-str-default-sqlite" title="Permanent link to this section">🔗</a></h4>
 <p>Storage backend for persistence.</p>
 <p><strong>Options:</strong>
 - <code>"sqlite"</code> - SQLite database (local development)
@@ -3571,7 +3573,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">persistence_path</span><span class="o">=</span><span class="s2">&quot;postgresql://user:pass@localhost/empathy&quot;</span>
 <a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="persistence_path-str-default-empathy"><code>persistence_path</code> (str, default: ".empathy")<a class="headerlink" href="#persistence_path-str-default-empathy" title="Permanent link">&para;</a></h4>
+<h4 id="persistence_path-str-default-empathy"><code>persistence_path</code> (str, default: ".empathy")<a class="headerlink" href="#persistence_path-str-default-empathy" title="Permanent link to this section">🔗</a></h4>
 <p>Path for storing persistence data.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Default location</span>
@@ -3580,25 +3582,25 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Custom location</span>
 <a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">persistence_path</span><span class="o">=</span><span class="s2">&quot;/var/lib/empathy&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="metrics-settings">Metrics Settings<a class="headerlink" href="#metrics-settings" title="Permanent link">&para;</a></h3>
-<h4 id="metrics_enabled-bool-default-true"><code>metrics_enabled</code> (bool, default: True)<a class="headerlink" href="#metrics_enabled-bool-default-true" title="Permanent link">&para;</a></h4>
+<h3 id="metrics-settings">Metrics Settings<a class="headerlink" href="#metrics-settings" title="Permanent link to this section">🔗</a></h3>
+<h4 id="metrics_enabled-bool-default-true"><code>metrics_enabled</code> (bool, default: True)<a class="headerlink" href="#metrics_enabled-bool-default-true" title="Permanent link to this section">🔗</a></h4>
 <p>Enable metrics collection for monitoring and analytics.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">metrics_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="metrics_path-str-default-empathymetricsdb"><code>metrics_path</code> (str, default: ".empathy/metrics.db")<a class="headerlink" href="#metrics_path-str-default-empathymetricsdb" title="Permanent link">&para;</a></h4>
+<h4 id="metrics_path-str-default-empathymetricsdb"><code>metrics_path</code> (str, default: ".empathy/metrics.db")<a class="headerlink" href="#metrics_path-str-default-empathymetricsdb" title="Permanent link to this section">🔗</a></h4>
 <p>Path for storing metrics data.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">metrics_path</span><span class="o">=</span><span class="s2">&quot;/var/lib/empathy/metrics.db&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="pattern-library-settings">Pattern Library Settings<a class="headerlink" href="#pattern-library-settings" title="Permanent link">&para;</a></h3>
-<h4 id="pattern_library_enabled-bool-default-true"><code>pattern_library_enabled</code> (bool, default: True)<a class="headerlink" href="#pattern_library_enabled-bool-default-true" title="Permanent link">&para;</a></h4>
+<h3 id="pattern-library-settings">Pattern Library Settings<a class="headerlink" href="#pattern-library-settings" title="Permanent link to this section">🔗</a></h3>
+<h4 id="pattern_library_enabled-bool-default-true"><code>pattern_library_enabled</code> (bool, default: True)<a class="headerlink" href="#pattern_library_enabled-bool-default-true" title="Permanent link to this section">🔗</a></h4>
 <p>Enable pattern discovery and learning.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Disable for simple use cases</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">pattern_library_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="pattern_sharing-bool-default-false"><code>pattern_sharing</code> (bool, default: False)<a class="headerlink" href="#pattern_sharing-bool-default-false" title="Permanent link">&para;</a></h4>
+<h4 id="pattern_sharing-bool-default-false"><code>pattern_sharing</code> (bool, default: False)<a class="headerlink" href="#pattern_sharing-bool-default-false" title="Permanent link to this section">🔗</a></h4>
 <p>Enable pattern sharing across multiple agents (multi-agent coordination).</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Enable for multi-agent teams</span>
@@ -3607,13 +3609,13 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">pattern_library_path</span><span class="o">=</span><span class="s2">&quot;shared_patterns.db&quot;</span>
 <a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="pattern_confidence_threshold-float-default-070"><code>pattern_confidence_threshold</code> (float, default: 0.70)<a class="headerlink" href="#pattern_confidence_threshold-float-default-070" title="Permanent link">&para;</a></h4>
+<h4 id="pattern_confidence_threshold-float-default-070"><code>pattern_confidence_threshold</code> (float, default: 0.70)<a class="headerlink" href="#pattern_confidence_threshold-float-default-070" title="Permanent link to this section">🔗</a></h4>
 <p>Minimum confidence for applying learned patterns.</p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">pattern_confidence_threshold</span><span class="o">=</span><span class="mf">0.80</span><span class="p">)</span>
 </code></pre></div></p>
-<h2 id="configuration-methods">Configuration Methods<a class="headerlink" href="#configuration-methods" title="Permanent link">&para;</a></h2>
-<h3 id="load_config"><code>load_config()</code><a class="headerlink" href="#load_config" title="Permanent link">&para;</a></h3>
+<h2 id="configuration-methods">Configuration Methods<a class="headerlink" href="#configuration-methods" title="Permanent link to this section">🔗</a></h2>
+<h3 id="load_config"><code>load_config()</code><a class="headerlink" href="#load_config" title="Permanent link to this section">🔗</a></h3>
 <p>Load configuration from file or environment.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_config</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
@@ -3629,7 +3631,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="c1"># Load from file with environment overrides</span>
 <a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;empathy.config.yml&quot;</span><span class="p">,</span> <span class="n">use_env</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="to_yaml-to_json"><code>to_yaml()</code> / <code>to_json()</code><a class="headerlink" href="#to_yaml-to_json" title="Permanent link">&para;</a></h3>
+<h3 id="to_yaml-to_json"><code>to_yaml()</code> / <code>to_json()</code><a class="headerlink" href="#to_yaml-to_json" title="Permanent link to this section">🔗</a></h3>
 <p>Save configuration to file.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span><span class="p">,</span> <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
@@ -3639,7 +3641,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># Save as JSON</span>
 <a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">config</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s2">&quot;empathy.config.json&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="validate"><code>validate()</code><a class="headerlink" href="#validate" title="Permanent link">&para;</a></h3>
+<h3 id="validate"><code>validate()</code><a class="headerlink" href="#validate" title="Permanent link to this section">🔗</a></h3>
 <p>Validate configuration values.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span><span class="p">,</span> <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
@@ -3649,8 +3651,8 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✗ Configuration invalid: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="configuration-patterns">Configuration Patterns<a class="headerlink" href="#configuration-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="development-configuration">Development Configuration<a class="headerlink" href="#development-configuration" title="Permanent link">&para;</a></h3>
+<h2 id="configuration-patterns">Configuration Patterns<a class="headerlink" href="#configuration-patterns" title="Permanent link to this section">🔗</a></h2>
+<h3 id="development-configuration">Development Configuration<a class="headerlink" href="#development-configuration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># empathy.dev.yml</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nt">user_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dev_user&quot;</span>
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nt">target_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
@@ -3660,7 +3662,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="nt">persistence_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;.empathy&quot;</span>
 <a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nt">metrics_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<h3 id="production-configuration">Production Configuration<a class="headerlink" href="#production-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="production-configuration">Production Configuration<a class="headerlink" href="#production-configuration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># empathy.prod.yml</span>
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nt">user_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod_system&quot;</span>
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="nt">target_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
@@ -3675,7 +3677,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="nt">trust_erosion_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.15</span><span class="w">  </span><span class="c1"># Stricter trust management</span>
 <a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="nt">pattern_confidence_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.85</span><span class="w">  </span><span class="c1"># Higher quality patterns</span>
 </code></pre></div>
-<h3 id="testing-configuration">Testing Configuration<a class="headerlink" href="#testing-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="testing-configuration">Testing Configuration<a class="headerlink" href="#testing-configuration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># For unit tests</span>
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="p">(</span>
 <a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;test_user&quot;</span><span class="p">,</span>
@@ -3684,7 +3686,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>    <span class="n">metrics_enabled</span><span class="o">=</span><span class="kc">False</span>       <span class="c1"># Don&#39;t collect metrics during tests</span>
 <a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="p">)</span>
 </code></pre></div>
-<h2 id="environment-variable-reference">Environment Variable Reference<a class="headerlink" href="#environment-variable-reference" title="Permanent link">&para;</a></h2>
+<h2 id="environment-variable-reference">Environment Variable Reference<a class="headerlink" href="#environment-variable-reference" title="Permanent link to this section">🔗</a></h2>
 <p>All configuration options can be set via environment variables with the <code>EMPATHY_</code> prefix:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Core settings</span>
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_USER_ID</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span>
@@ -3709,7 +3711,7 @@ config.update(user_id="bob", target_level=5)</p>
 <a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_PATTERN_SHARING</span><span class="o">=</span><span class="nb">false</span>
 <a id="__codelineno-24-22" name="__codelineno-24-22" href="#__codelineno-24-22"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_PATTERN_CONFIDENCE_THRESHOLD</span><span class="o">=</span><span class="m">0</span>.70
 </code></pre></div>
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="empathy-os.html">EmpathyOS API</a></li>
 <li><a href="../getting-started/quickstart.html">Quick Start Guide</a></li>

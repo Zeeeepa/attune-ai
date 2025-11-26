@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2354,9 +2356,9 @@
   
 
 
-<h1 id="persistence">Persistence<a class="headerlink" href="#persistence" title="Permanent link">&para;</a></h1>
+<h1 id="persistence">Persistence<a class="headerlink" href="#persistence" title="Permanent link to this section">🔗</a></h1>
 <p>Data persistence for patterns, metrics, and collaboration state.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The persistence layer provides storage and retrieval for:</p>
 <ul>
 <li><strong>Pattern Libraries</strong>: Save/load pattern collections (JSON, SQLite)</li>
@@ -2364,19 +2366,19 @@
 <li><strong>Metrics</strong>: Track usage, performance, and success rates</li>
 <li><strong>State Management</strong>: Save/restore complete system state</li>
 </ul>
-<h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link">&para;</a></h2>
-<h3 id="local-development">Local Development<a class="headerlink" href="#local-development" title="Permanent link">&para;</a></h3>
+<h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link to this section">🔗</a></h2>
+<h3 id="local-development">Local Development<a class="headerlink" href="#local-development" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>SQLite</strong>: File-based database for local development</li>
 <li><strong>JSON</strong>: Human-readable format for backups and exports</li>
 </ul>
-<h3 id="production">Production<a class="headerlink" href="#production" title="Permanent link">&para;</a></h3>
+<h3 id="production">Production<a class="headerlink" href="#production" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>PostgreSQL</strong>: Production-grade database with full ACID support</li>
 <li><strong>Cloud Storage</strong>: S3, Azure Blob, GCS for pattern library backups</li>
 </ul>
-<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link">&para;</a></h2>
-<h3 id="patternpersistence">PatternPersistence<a class="headerlink" href="#patternpersistence" title="Permanent link">&para;</a></h3>
+<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link to this section">🔗</a></h2>
+<h3 id="patternpersistence">PatternPersistence<a class="headerlink" href="#patternpersistence" title="Permanent link to this section">🔗</a></h3>
 
 
 <div class="doc doc-object doc-class">
@@ -2424,7 +2426,7 @@
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
 
-<a href="#empathy_os.persistence.PatternPersistence.load_from_json" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.PatternPersistence.load_from_json" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2544,7 +2546,7 @@
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
 
-<a href="#empathy_os.persistence.PatternPersistence.load_from_sqlite" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.PatternPersistence.load_from_sqlite" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2631,7 +2633,7 @@
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
 
-<a href="#empathy_os.persistence.PatternPersistence.save_to_json" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.PatternPersistence.save_to_json" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2712,7 +2714,7 @@ PatternPersistence.save_to_json(library, "patterns.json")</p>
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
 
-<a href="#empathy_os.persistence.PatternPersistence.save_to_sqlite" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.PatternPersistence.save_to_sqlite" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2824,7 +2826,7 @@ PatternPersistence.save_to_sqlite(library, "patterns.db")</p>
 <a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">json_library</span><span class="o">.</span><span class="n">patterns</span><span class="p">)</span><span class="si">}</span><span class="s2"> patterns from JSON&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sqlite_library</span><span class="o">.</span><span class="n">patterns</span><span class="p">)</span><span class="si">}</span><span class="s2"> patterns from SQLite&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="statemanager">StateManager<a class="headerlink" href="#statemanager" title="Permanent link">&para;</a></h3>
+<h3 id="statemanager">StateManager<a class="headerlink" href="#statemanager" title="Permanent link to this section">🔗</a></h3>
 
 
 <div class="doc doc-object doc-class">
@@ -2869,7 +2871,7 @@ PatternPersistence.save_to_sqlite(library, "patterns.db")</p>
 <h4 id="empathy_os.persistence.StateManager.delete_state" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">delete_state</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span></code>
 
-<a href="#empathy_os.persistence.StateManager.delete_state" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.StateManager.delete_state" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2953,7 +2955,7 @@ deleted = manager.delete_state("user123")</p>
 <h4 id="empathy_os.persistence.StateManager.list_users" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">list_users</span><span class="p">()</span></code>
 
-<a href="#empathy_os.persistence.StateManager.list_users" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.StateManager.list_users" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -3007,7 +3009,7 @@ print(f"Found {len(users)} users")</p>
 <h4 id="empathy_os.persistence.StateManager.load_state" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">load_state</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span></code>
 
-<a href="#empathy_os.persistence.StateManager.load_state" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.StateManager.load_state" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -3094,7 +3096,7 @@ if state:
 <h4 id="empathy_os.persistence.StateManager.save_state" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">save_state</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></code>
 
-<a href="#empathy_os.persistence.StateManager.save_state" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.StateManager.save_state" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -3201,7 +3203,7 @@ manager.save_state("user123", empathy.collaboration_state)</p>
 <a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="n">users</span> <span class="o">=</span> <span class="n">state_manager</span><span class="o">.</span><span class="n">list_users</span><span class="p">()</span>
 <a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Users with saved states: </span><span class="si">{</span><span class="n">users</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="metricscollector">MetricsCollector<a class="headerlink" href="#metricscollector" title="Permanent link">&para;</a></h3>
+<h3 id="metricscollector">MetricsCollector<a class="headerlink" href="#metricscollector" title="Permanent link to this section">🔗</a></h3>
 
 
 <div class="doc doc-object doc-class">
@@ -3247,7 +3249,7 @@ manager.save_state("user123", empathy.collaboration_state)</p>
 <h4 id="empathy_os.persistence.MetricsCollector.get_user_stats" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">get_user_stats</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span></code>
 
-<a href="#empathy_os.persistence.MetricsCollector.get_user_stats" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.MetricsCollector.get_user_stats" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -3332,7 +3334,7 @@ print(f"Success rate: {stats['success_rate']:.1%}")</p>
 <h4 id="empathy_os.persistence.MetricsCollector.record_metric" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">record_metric</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">empathy_level</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">response_time_ms</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-<a href="#empathy_os.persistence.MetricsCollector.record_metric" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.persistence.MetricsCollector.record_metric" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -3503,8 +3505,8 @@ collector.record_metric(
 <a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total users: </span><span class="si">{</span><span class="n">global_stats</span><span class="p">[</span><span class="s1">&#39;total_users&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total interactions: </span><span class="si">{</span><span class="n">global_stats</span><span class="p">[</span><span class="s1">&#39;total_interactions&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h2 id="usage-patterns">Usage Patterns<a class="headerlink" href="#usage-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="complete-persistence-setup">Complete Persistence Setup<a class="headerlink" href="#complete-persistence-setup" title="Permanent link">&para;</a></h3>
+<h2 id="usage-patterns">Usage Patterns<a class="headerlink" href="#usage-patterns" title="Permanent link to this section">🔗</a></h2>
+<h3 id="complete-persistence-setup">Complete Persistence Setup<a class="headerlink" href="#complete-persistence-setup" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span><span class="p">,</span> <span class="n">EmpathyConfig</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.pattern_library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternLibrary</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.persistence</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -3570,7 +3572,7 @@ collector.record_metric(
 <a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>
 <a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All data persisted successfully&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="json-pattern-exportimport">JSON Pattern Export/Import<a class="headerlink" href="#json-pattern-exportimport" title="Permanent link">&para;</a></h3>
+<h3 id="json-pattern-exportimport">JSON Pattern Export/Import<a class="headerlink" href="#json-pattern-exportimport" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.persistence</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternPersistence</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Export for backup or sharing</span>
@@ -3583,7 +3585,7 @@ collector.record_metric(
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Migrated </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">imported</span><span class="o">.</span><span class="n">patterns</span><span class="p">)</span><span class="si">}</span><span class="s2"> patterns&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="metrics-dashboard">Metrics Dashboard<a class="headerlink" href="#metrics-dashboard" title="Permanent link">&para;</a></h3>
+<h3 id="metrics-dashboard">Metrics Dashboard<a class="headerlink" href="#metrics-dashboard" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.persistence</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetricsCollector</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">collector</span> <span class="o">=</span> <span class="n">MetricsCollector</span><span class="p">(</span><span class="n">db_path</span><span class="o">=</span><span class="s2">&quot;metrics.db&quot;</span><span class="p">)</span>
@@ -3618,7 +3620,7 @@ collector.record_metric(
 <a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Total interactions: </span><span class="si">{</span><span class="n">global_stats</span><span class="p">[</span><span class="s1">&#39;total_interactions&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Overall success rate: </span><span class="si">{</span><span class="n">global_stats</span><span class="p">[</span><span class="s1">&#39;success_rate&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="state-migration">State Migration<a class="headerlink" href="#state-migration" title="Permanent link">&para;</a></h3>
+<h3 id="state-migration">State Migration<a class="headerlink" href="#state-migration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.persistence</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateManager</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Migrate states between systems</span>
@@ -3635,8 +3637,8 @@ collector.record_metric(
 <a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
 <a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Migration complete!&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="database-schema">Database Schema<a class="headerlink" href="#database-schema" title="Permanent link">&para;</a></h2>
-<h3 id="sqlite-pattern-schema">SQLite Pattern Schema<a class="headerlink" href="#sqlite-pattern-schema" title="Permanent link">&para;</a></h3>
+<h2 id="database-schema">Database Schema<a class="headerlink" href="#database-schema" title="Permanent link to this section">🔗</a></h2>
+<h3 id="sqlite-pattern-schema">SQLite Pattern Schema<a class="headerlink" href="#sqlite-pattern-schema" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">patterns</span><span class="w"> </span><span class="p">(</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="n">agent_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
@@ -3668,7 +3670,7 @@ collector.record_metric(
 <a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_patterns_type</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patterns</span><span class="p">(</span><span class="n">pattern_type</span><span class="p">);</span>
 <a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_patterns_confidence</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patterns</span><span class="p">(</span><span class="n">confidence</span><span class="p">);</span>
 </code></pre></div>
-<h3 id="sqlite-metrics-schema">SQLite Metrics Schema<a class="headerlink" href="#sqlite-metrics-schema" title="Permanent link">&para;</a></h3>
+<h3 id="sqlite-metrics-schema">SQLite Metrics Schema<a class="headerlink" href="#sqlite-metrics-schema" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">interactions</span><span class="w"> </span><span class="p">(</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTOINCREMENT</span><span class="p">,</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">user_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
@@ -3681,8 +3683,8 @@ collector.record_metric(
 <a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_interactions_user</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">interactions</span><span class="p">(</span><span class="n">user_id</span><span class="p">);</span>
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_interactions_timestamp</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">interactions</span><span class="p">(</span><span class="k">timestamp</span><span class="p">);</span>
 </code></pre></div>
-<h2 id="json-format">JSON Format<a class="headerlink" href="#json-format" title="Permanent link">&para;</a></h2>
-<h3 id="pattern-library-json">Pattern Library JSON<a class="headerlink" href="#pattern-library-json" title="Permanent link">&para;</a></h3>
+<h2 id="json-format">JSON Format<a class="headerlink" href="#json-format" title="Permanent link to this section">🔗</a></h2>
+<h3 id="pattern-library-json">Pattern Library JSON<a class="headerlink" href="#pattern-library-json" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;patterns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="p">{</span>
@@ -3712,7 +3714,7 @@ collector.record_metric(
 <a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="collaboration-state-json">Collaboration State JSON<a class="headerlink" href="#collaboration-state-json" title="Permanent link">&para;</a></h3>
+<h3 id="collaboration-state-json">Collaboration State JSON<a class="headerlink" href="#collaboration-state-json" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user_123&quot;</span><span class="p">,</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;trust_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.65</span><span class="p">,</span>
@@ -3725,8 +3727,8 @@ collector.record_metric(
 <a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-01T00:00:00&quot;</span>
 <a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<h3 id="backup-strategy">Backup Strategy<a class="headerlink" href="#backup-strategy" title="Permanent link">&para;</a></h3>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link to this section">🔗</a></h2>
+<h3 id="backup-strategy">Backup Strategy<a class="headerlink" href="#backup-strategy" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">schedule</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.persistence</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternPersistence</span>
@@ -3745,7 +3747,7 @@ collector.record_metric(
 <a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="c1"># Schedule daily backups</span>
 <a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="n">schedule</span><span class="o">.</span><span class="n">every</span><span class="p">()</span><span class="o">.</span><span class="n">day</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">&quot;02:00&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="n">backup_patterns</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">&para;</a></h3>
+<h3 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Use connection pooling for SQLite</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
@@ -3772,7 +3774,7 @@ collector.record_metric(
 <a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
 <a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="pattern-library.html">Pattern Library API</a></li>
 <li><a href="empathy-os.html">EmpathyOS API</a></li>

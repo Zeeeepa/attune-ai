@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1586,15 +1588,15 @@
   
 
 
-<h1 id="publishing-to-pypi">Publishing to PyPI<a class="headerlink" href="#publishing-to-pypi" title="Permanent link">&para;</a></h1>
+<h1 id="publishing-to-pypi">Publishing to PyPI<a class="headerlink" href="#publishing-to-pypi" title="Permanent link to this section">🔗</a></h1>
 <p>This guide explains how to publish the Empathy framework to PyPI.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link to this section">🔗</a></h2>
 <ol>
 <li>PyPI account at https://pypi.org/</li>
 <li>PyPI API token (create at https://pypi.org/manage/account/token/)</li>
 <li>Add token to GitHub Secrets as <code>PYPI_API_TOKEN</code></li>
 </ol>
-<h2 id="automated-publishing-recommended">Automated Publishing (Recommended)<a class="headerlink" href="#automated-publishing-recommended" title="Permanent link">&para;</a></h2>
+<h2 id="automated-publishing-recommended">Automated Publishing (Recommended)<a class="headerlink" href="#automated-publishing-recommended" title="Permanent link to this section">🔗</a></h2>
 <p>The framework uses GitHub Actions for automated publishing:</p>
 <ol>
 <li>
@@ -1619,32 +1621,32 @@
 <li>Create a GitHub release</li>
 <li>Publish to PyPI (if token is configured)</li>
 </ol>
-<h2 id="manual-publishing">Manual Publishing<a class="headerlink" href="#manual-publishing" title="Permanent link">&para;</a></h2>
+<h2 id="manual-publishing">Manual Publishing<a class="headerlink" href="#manual-publishing" title="Permanent link to this section">🔗</a></h2>
 <p>If you need to publish manually:</p>
-<h3 id="1-clean-previous-builds">1. Clean previous builds<a class="headerlink" href="#1-clean-previous-builds" title="Permanent link">&para;</a></h3>
+<h3 id="1-clean-previous-builds">1. Clean previous builds<a class="headerlink" href="#1-clean-previous-builds" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>rm<span class="w"> </span>-rf<span class="w"> </span>dist/<span class="w"> </span>build/<span class="w"> </span>*.egg-info
 </code></pre></div>
-<h3 id="2-build-the-package">2. Build the package<a class="headerlink" href="#2-build-the-package" title="Permanent link">&para;</a></h3>
+<h3 id="2-build-the-package">2. Build the package<a class="headerlink" href="#2-build-the-package" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>build<span class="w"> </span>twine
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>-m<span class="w"> </span>build
 </code></pre></div>
 <p>This creates two files in <code>dist/</code>:
 - <code>empathy-1.6.0.tar.gz</code> (source distribution)
 - <code>empathy-1.6.0-py3-none-any.whl</code> (wheel distribution)</p>
-<h3 id="3-check-the-package">3. Check the package<a class="headerlink" href="#3-check-the-package" title="Permanent link">&para;</a></h3>
+<h3 id="3-check-the-package">3. Check the package<a class="headerlink" href="#3-check-the-package" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>twine<span class="w"> </span>check<span class="w"> </span>dist/*
 </code></pre></div>
-<h3 id="4-test-upload-to-testpypi-optional">4. Test upload to TestPyPI (optional)<a class="headerlink" href="#4-test-upload-to-testpypi-optional" title="Permanent link">&para;</a></h3>
+<h3 id="4-test-upload-to-testpypi-optional">4. Test upload to TestPyPI (optional)<a class="headerlink" href="#4-test-upload-to-testpypi-optional" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>twine<span class="w"> </span>upload<span class="w"> </span>--repository<span class="w"> </span>testpypi<span class="w"> </span>dist/*
 </code></pre></div>
 <p>Install from TestPyPI to verify:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--index-url<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>empathy
 </code></pre></div></p>
-<h3 id="5-upload-to-pypi">5. Upload to PyPI<a class="headerlink" href="#5-upload-to-pypi" title="Permanent link">&para;</a></h3>
+<h3 id="5-upload-to-pypi">5. Upload to PyPI<a class="headerlink" href="#5-upload-to-pypi" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>twine<span class="w"> </span>upload<span class="w"> </span>dist/*
 </code></pre></div>
 <p>You'll be prompted for your PyPI username and password/token.</p>
-<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link to this section">🔗</a></h2>
 <p>After publishing, verify the package:</p>
 <ol>
 <li><strong>Check PyPI page</strong>: https://pypi.org/project/empathy/</li>
@@ -1653,7 +1655,7 @@
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from empathy_os import EmpathyOS; print(&#39;Success!&#39;)&quot;</span>
 </code></pre></div></li>
 </ol>
-<h2 id="version-numbering">Version Numbering<a class="headerlink" href="#version-numbering" title="Permanent link">&para;</a></h2>
+<h2 id="version-numbering">Version Numbering<a class="headerlink" href="#version-numbering" title="Permanent link to this section">🔗</a></h2>
 <p>Follow <a href="https://semver.org/">Semantic Versioning</a>:</p>
 <ul>
 <li><strong>Major</strong> (1.x.x): Breaking changes</li>
@@ -1664,14 +1666,14 @@
 - <code>1.6.0</code> → <code>1.6.1</code>: Bug fix
 - <code>1.6.0</code> → <code>1.7.0</code>: New features
 - <code>1.6.0</code> → <code>2.0.0</code>: Breaking changes</p>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<h3 id="package-already-exists">"Package already exists"<a class="headerlink" href="#package-already-exists" title="Permanent link">&para;</a></h3>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
+<h3 id="package-already-exists">"Package already exists"<a class="headerlink" href="#package-already-exists" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Version already published to PyPI</li>
 <li>Update version in <code>pyproject.toml</code></li>
 <li>You cannot overwrite or delete PyPI versions</li>
 </ul>
-<h3 id="invalid-distribution">"Invalid distribution"<a class="headerlink" href="#invalid-distribution" title="Permanent link">&para;</a></h3>
+<h3 id="invalid-distribution">"Invalid distribution"<a class="headerlink" href="#invalid-distribution" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Run <code>twine check dist/*</code> to see errors</li>
 <li>Common issues:</li>
@@ -1679,13 +1681,13 @@
 <li>Invalid pyproject.toml</li>
 <li>Missing required files in MANIFEST.in</li>
 </ul>
-<h3 id="authentication-failed">"Authentication failed"<a class="headerlink" href="#authentication-failed" title="Permanent link">&para;</a></h3>
+<h3 id="authentication-failed">"Authentication failed"<a class="headerlink" href="#authentication-failed" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Check your PyPI token/password</li>
 <li>Tokens must start with <code>pypi-</code></li>
 <li>Use username <code>__token__</code> with API tokens</li>
 </ul>
-<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link to this section">🔗</a></h2>
 <ol>
 <li><strong>Always test locally</strong> before publishing</li>
 <li><strong>Run full test suite</strong>: <code>pytest</code></li>
@@ -1694,7 +1696,7 @@
 <li><strong>Tag releases</strong> in git for traceability</li>
 <li><strong>Never publish</strong> with failing tests</li>
 </ol>
-<h2 id="package-contents">Package Contents<a class="headerlink" href="#package-contents" title="Permanent link">&para;</a></h2>
+<h2 id="package-contents">Package Contents<a class="headerlink" href="#package-contents" title="Permanent link to this section">🔗</a></h2>
 <p>The published package includes:
 - Core framework code (<code>empathy_os/</code>, <code>empathy_llm_toolkit/</code>)
 - All wizards (<code>wizards/</code>, <code>coach_wizards/</code>)

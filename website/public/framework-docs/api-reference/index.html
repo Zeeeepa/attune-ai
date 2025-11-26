@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1730,9 +1732,9 @@
   
 
 
-<h1 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h1>
+<h1 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link to this section">🔗</a></h1>
 <p>Complete API documentation for the Empathy Framework.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The Empathy Framework provides a comprehensive Python API for building AI systems with five levels of empathy:</p>
 <ul>
 <li><strong>Level 1</strong>: Reactive (basic Q&amp;A)</li>
@@ -1741,48 +1743,48 @@
 <li><strong>Level 4</strong>: Anticipatory (predicts problems)</li>
 <li><strong>Level 5</strong>: Transformative (reshapes workflows)</li>
 </ul>
-<h2 id="core-modules">Core Modules<a class="headerlink" href="#core-modules" title="Permanent link">&para;</a></h2>
-<h3 id="empathyos"><a href="empathy-os.html">EmpathyOS</a><a class="headerlink" href="#empathyos" title="Permanent link">&para;</a></h3>
+<h2 id="core-modules">Core Modules<a class="headerlink" href="#core-modules" title="Permanent link to this section">🔗</a></h2>
+<h3 id="empathyos"><a href="empathy-os.html">EmpathyOS</a><a class="headerlink" href="#empathyos" title="Permanent link to this section">🔗</a></h3>
 <p>Main entry point for the framework. Handles interaction logic, level progression, and trust management.</p>
 <p><strong>Key Classes:</strong>
 - <code>EmpathyOS</code> - Primary interface for empathy interactions</p>
-<h3 id="configuration"><a href="config.html">Configuration</a><a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<h3 id="configuration"><a href="config.html">Configuration</a><a class="headerlink" href="#configuration" title="Permanent link to this section">🔗</a></h3>
 <p>Configuration management for the framework.</p>
 <p><strong>Key Classes:</strong>
 - <code>EmpathyConfig</code> - Configuration container with validation
 - <code>load_config()</code> - Load configuration from files or environment</p>
-<h3 id="core"><a href="core.html">Core</a><a class="headerlink" href="#core" title="Permanent link">&para;</a></h3>
+<h3 id="core"><a href="core.html">Core</a><a class="headerlink" href="#core" title="Permanent link to this section">🔗</a></h3>
 <p>Core data structures and state management.</p>
 <p><strong>Key Classes:</strong>
 - <code>CollaborationState</code> - Tracks trust, level, and interaction history
 - <code>EmpathyResponse</code> - Response container with metadata
 - <code>EmpathyLevel</code> - Enumeration of empathy levels</p>
-<h3 id="pattern-library"><a href="pattern-library.html">Pattern Library</a><a class="headerlink" href="#pattern-library" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-library"><a href="pattern-library.html">Pattern Library</a><a class="headerlink" href="#pattern-library" title="Permanent link to this section">🔗</a></h3>
 <p>Pattern recognition and learning system for multi-agent coordination.</p>
 <p><strong>Key Classes:</strong>
 - <code>PatternLibrary</code> - Manages pattern discovery and sharing
 - <code>Pattern</code> - Individual pattern with confidence tracking
 - <code>PatternMatch</code> - Pattern matching results</p>
-<h3 id="persistence"><a href="persistence.html">Persistence</a><a class="headerlink" href="#persistence" title="Permanent link">&para;</a></h3>
+<h3 id="persistence"><a href="persistence.html">Persistence</a><a class="headerlink" href="#persistence" title="Permanent link to this section">🔗</a></h3>
 <p>Data persistence for patterns, metrics, and state.</p>
 <p><strong>Key Classes:</strong>
 - <code>PatternPersistence</code> - Save/load pattern libraries (JSON, SQLite)
 - <code>StateManager</code> - Manage user collaboration states
 - <code>MetricsCollector</code> - Track usage metrics and performance</p>
-<h3 id="llm-toolkit"><a href="llm-toolkit.html">LLM Toolkit</a><a class="headerlink" href="#llm-toolkit" title="Permanent link">&para;</a></h3>
+<h3 id="llm-toolkit"><a href="llm-toolkit.html">LLM Toolkit</a><a class="headerlink" href="#llm-toolkit" title="Permanent link to this section">🔗</a></h3>
 <p>LLM provider integration with security controls.</p>
 <p><strong>Key Classes:</strong>
 - <code>EmpathyLLM</code> - Unified LLM interface with empathy integration
 - <code>PIIScrubber</code> - PII detection and scrubbing
 - <code>SecretsDetector</code> - API key and credential detection
 - <code>AuditLogger</code> - Compliance and security audit logging</p>
-<h2 id="quick-links">Quick Links<a class="headerlink" href="#quick-links" title="Permanent link">&para;</a></h2>
+<h2 id="quick-links">Quick Links<a class="headerlink" href="#quick-links" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="../getting-started/quickstart.html">Getting Started Guide</a></li>
 <li><a href="../getting-started/configuration.html">Configuration Options</a></li>
 <li><a href="../examples/simple-chatbot.html">Examples</a></li>
 </ul>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework
 </code></pre></div>
 <p>For LLM support:
@@ -1791,7 +1793,7 @@
 <p>For healthcare applications:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">[</span>healthcare<span class="o">]</span>
 </code></pre></div></p>
-<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
+<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Create Level 4 (Anticipatory) system</span>
@@ -1812,7 +1814,7 @@
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Level: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">level</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predictions: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">predictions</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link to this section">🔗</a></h2>
 <p>Fair Source License 0.9 - Free for teams up to 5, commercial license required for 6+ employees.</p>
 
 

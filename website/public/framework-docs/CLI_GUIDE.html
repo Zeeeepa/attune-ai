@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1676,9 +1678,9 @@
   
 
 
-<h1 id="empathy-framework-cli-guide">Empathy Framework CLI Guide<a class="headerlink" href="#empathy-framework-cli-guide" title="Permanent link">&para;</a></h1>
+<h1 id="empathy-framework-cli-guide">Empathy Framework CLI Guide<a class="headerlink" href="#empathy-framework-cli-guide" title="Permanent link to this section">🔗</a></h1>
 <p>The Empathy Framework includes a command-line tool for managing configurations, pattern libraries, metrics, and state.</p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework
 </code></pre></div>
 <p>Or for development:</p>
@@ -1686,8 +1688,8 @@
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>Empathy
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </code></pre></div>
-<h2 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h2>
-<h3 id="version">Version<a class="headerlink" href="#version" title="Permanent link">&para;</a></h3>
+<h2 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link to this section">🔗</a></h2>
+<h3 id="version">Version<a class="headerlink" href="#version" title="Permanent link to this section">🔗</a></h3>
 <p>Display version information:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>empathy-framework<span class="w"> </span>version
 </code></pre></div>
@@ -1697,7 +1699,7 @@
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Licensed under Fair Source 0.9
 </code></pre></div></p>
 <hr />
-<h3 id="init">Init<a class="headerlink" href="#init" title="Permanent link">&para;</a></h3>
+<h3 id="init">Init<a class="headerlink" href="#init" title="Permanent link to this section">🔗</a></h3>
 <p>Initialize a new project with a configuration file:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Create YAML config (default)</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>empathy-framework<span class="w"> </span>init
@@ -1710,7 +1712,7 @@
 </code></pre></div>
 <p>This creates a configuration file with default settings that you can customize.</p>
 <hr />
-<h3 id="validate">Validate<a class="headerlink" href="#validate" title="Permanent link">&para;</a></h3>
+<h3 id="validate">Validate<a class="headerlink" href="#validate" title="Permanent link to this section">🔗</a></h3>
 <p>Validate a configuration file:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>empathy-framework<span class="w"> </span>validate<span class="w"> </span>empathy.config.yml
 </code></pre></div>
@@ -1724,7 +1726,7 @@
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  Metrics Enabled: True
 </code></pre></div></p>
 <hr />
-<h3 id="info">Info<a class="headerlink" href="#info" title="Permanent link">&para;</a></h3>
+<h3 id="info">Info<a class="headerlink" href="#info" title="Permanent link to this section">🔗</a></h3>
 <p>Display framework information:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># With default config</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>empathy-framework<span class="w"> </span>info
@@ -1755,8 +1757,8 @@
 <a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>  Confidence Threshold: 0.3
 </code></pre></div></p>
 <hr />
-<h3 id="pattern-library-commands">Pattern Library Commands<a class="headerlink" href="#pattern-library-commands" title="Permanent link">&para;</a></h3>
-<h4 id="list-patterns">List Patterns<a class="headerlink" href="#list-patterns" title="Permanent link">&para;</a></h4>
+<h3 id="pattern-library-commands">Pattern Library Commands<a class="headerlink" href="#pattern-library-commands" title="Permanent link to this section">🔗</a></h3>
+<h4 id="list-patterns">List Patterns<a class="headerlink" href="#list-patterns" title="Permanent link to this section">🔗</a></h4>
 <p>List patterns in a pattern library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># List patterns from JSON file</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>empathy-framework<span class="w"> </span>patterns<span class="w"> </span>list<span class="w"> </span>patterns.json
@@ -1786,7 +1788,7 @@
 <a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>    Usage: 8
 <a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    Success Rate: 1.00
 </code></pre></div></p>
-<h4 id="export-patterns">Export Patterns<a class="headerlink" href="#export-patterns" title="Permanent link">&para;</a></h4>
+<h4 id="export-patterns">Export Patterns<a class="headerlink" href="#export-patterns" title="Permanent link to this section">🔗</a></h4>
 <p>Export patterns from one format to another:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># JSON to SQLite</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>empathy-framework<span class="w"> </span>patterns<span class="w"> </span><span class="nb">export</span><span class="w"> </span>patterns.json<span class="w"> </span>patterns.db<span class="w"> </span><span class="se">\</span>
@@ -1801,8 +1803,8 @@
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>✓ Saved 3 patterns to patterns.db
 </code></pre></div></p>
 <hr />
-<h3 id="metrics-commands">Metrics Commands<a class="headerlink" href="#metrics-commands" title="Permanent link">&para;</a></h3>
-<h4 id="show-metrics">Show Metrics<a class="headerlink" href="#show-metrics" title="Permanent link">&para;</a></h4>
+<h3 id="metrics-commands">Metrics Commands<a class="headerlink" href="#metrics-commands" title="Permanent link to this section">🔗</a></h3>
+<h4 id="show-metrics">Show Metrics<a class="headerlink" href="#show-metrics" title="Permanent link to this section">🔗</a></h4>
 <p>Display metrics for a specific user:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Default metrics.db location</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>empathy-framework<span class="w"> </span>metrics<span class="w"> </span>show<span class="w"> </span>alice
@@ -1828,8 +1830,8 @@
 <a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>  Level 5: 2 uses
 </code></pre></div></p>
 <hr />
-<h3 id="state-management-commands">State Management Commands<a class="headerlink" href="#state-management-commands" title="Permanent link">&para;</a></h3>
-<h4 id="list-saved-states">List Saved States<a class="headerlink" href="#list-saved-states" title="Permanent link">&para;</a></h4>
+<h3 id="state-management-commands">State Management Commands<a class="headerlink" href="#state-management-commands" title="Permanent link to this section">🔗</a></h3>
+<h4 id="list-saved-states">List Saved States<a class="headerlink" href="#list-saved-states" title="Permanent link to this section">🔗</a></h4>
 <p>List all saved user states:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Default state directory</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>empathy-framework<span class="w"> </span>state<span class="w"> </span>list
@@ -1848,8 +1850,8 @@
 <a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>  - charlie
 </code></pre></div></p>
 <hr />
-<h2 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h2>
-<h3 id="development-workflow">Development Workflow<a class="headerlink" href="#development-workflow" title="Permanent link">&para;</a></h3>
+<h2 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link to this section">🔗</a></h2>
+<h3 id="development-workflow">Development Workflow<a class="headerlink" href="#development-workflow" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># 1. Initialize project</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>empathy-framework<span class="w"> </span>init<span class="w"> </span>--format<span class="w"> </span>yaml<span class="w"> </span>--output<span class="w"> </span>dev-config.yml
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
@@ -1871,7 +1873,7 @@
 <a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="c1"># 7. List saved states</span>
 <a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>empathy-framework<span class="w"> </span>state<span class="w"> </span>list
 </code></pre></div>
-<h3 id="production-deployment">Production Deployment<a class="headerlink" href="#production-deployment" title="Permanent link">&para;</a></h3>
+<h3 id="production-deployment">Production Deployment<a class="headerlink" href="#production-deployment" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># 1. Create production config</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>empathy-framework<span class="w"> </span>init<span class="w"> </span>--format<span class="w"> </span>yaml<span class="w"> </span>--output<span class="w"> </span>prod-config.yml
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
@@ -1887,7 +1889,7 @@
 <a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="c1"># 4. Deploy application with config</span>
 <a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>python<span class="w"> </span>-m<span class="w"> </span>my_app<span class="w"> </span>--config<span class="w"> </span>prod-config.yml
 </code></pre></div>
-<h3 id="pattern-library-management">Pattern Library Management<a class="headerlink" href="#pattern-library-management" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-library-management">Pattern Library Management<a class="headerlink" href="#pattern-library-management" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># 1. Export patterns from development to JSON (for version control)</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>empathy-framework<span class="w"> </span>patterns<span class="w"> </span><span class="nb">export</span><span class="w"> </span>dev_patterns.db<span class="w"> </span>dev_patterns.json<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span>--input-format<span class="w"> </span>sqlite<span class="w"> </span>--output-format<span class="w"> </span>json
@@ -1904,8 +1906,8 @@
 <a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>empathy-framework<span class="w"> </span>patterns<span class="w"> </span>list<span class="w"> </span>prod_patterns.db<span class="w"> </span>--format<span class="w"> </span>sqlite
 </code></pre></div>
 <hr />
-<h2 id="configuration-file-reference">Configuration File Reference<a class="headerlink" href="#configuration-file-reference" title="Permanent link">&para;</a></h2>
-<h3 id="yaml-example">YAML Example<a class="headerlink" href="#yaml-example" title="Permanent link">&para;</a></h3>
+<h2 id="configuration-file-reference">Configuration File Reference<a class="headerlink" href="#configuration-file-reference" title="Permanent link to this section">🔗</a></h2>
+<h3 id="yaml-example">YAML Example<a class="headerlink" href="#yaml-example" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Core settings</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nt">user_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;alice&quot;</span>
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nt">target_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
@@ -1943,7 +1945,7 @@
 <a id="__codelineno-20-35" name="__codelineno-20-35" href="#__codelineno-20-35"></a><span class="nt">feedback_loop_monitoring</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <a id="__codelineno-20-36" name="__codelineno-20-36" href="#__codelineno-20-36"></a><span class="nt">leverage_point_analysis</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<h3 id="json-example">JSON Example<a class="headerlink" href="#json-example" title="Permanent link">&para;</a></h3>
+<h3 id="json-example">JSON Example<a class="headerlink" href="#json-example" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;alice&quot;</span><span class="p">,</span>
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">&quot;target_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
@@ -1954,7 +1956,7 @@
 <a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="nt">&quot;pattern_library_enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
+<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link to this section">🔗</a></h3>
 <p>All configuration fields can be set via environment variables with the <code>EMPATHY_</code> prefix:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_USER_ID</span><span class="o">=</span>alice
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EMPATHY_TARGET_LEVEL</span><span class="o">=</span><span class="m">4</span>
@@ -1965,7 +1967,7 @@
 </code></pre></div>
 <p>Boolean values can be: <code>true</code>, <code>false</code>, <code>1</code>, <code>0</code>, <code>yes</code>, <code>no</code></p>
 <hr />
-<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link to this section">🔗</a></h2>
 <p>For more information on any command:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>empathy-framework<span class="w"> </span>--help
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>empathy-framework<span class="w"> </span>patterns<span class="w"> </span>--help

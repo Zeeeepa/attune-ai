@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2087,11 +2089,11 @@
   
 
 
-<h1 id="readme-gif-guide-animated-demo-for-repository">README GIF Guide: Animated Demo for Repository<a class="headerlink" href="#readme-gif-guide-animated-demo-for-repository" title="Permanent link">&para;</a></h1>
+<h1 id="readme-gif-guide-animated-demo-for-repository">README GIF Guide: Animated Demo for Repository<a class="headerlink" href="#readme-gif-guide-animated-demo-for-repository" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Purpose:</strong> Create a compelling, professional animated GIF for the README that shows the Level 5 demo in action.</p>
 <p><strong>Target:</strong> 10-15 seconds, &lt; 5MB, 800x600px, embedded at top of README</p>
 <hr />
-<h2 id="why-an-animated-gif">Why an Animated GIF?<a class="headerlink" href="#why-an-animated-gif" title="Permanent link">&para;</a></h2>
+<h2 id="why-an-animated-gif">Why an Animated GIF?<a class="headerlink" href="#why-an-animated-gif" title="Permanent link to this section">🔗</a></h2>
 <p>An animated GIF in your README:
 - Shows the framework in action immediately
 - Reduces barrier to understanding
@@ -2101,8 +2103,8 @@
 - Autoplays on scroll</p>
 <p><strong>Best Practice:</strong> Place GIF in README right after the Quick Start section, before detailed documentation.</p>
 <hr />
-<h2 id="option-1-using-asciinema-agg-recommended">Option 1: Using asciinema + agg (Recommended)<a class="headerlink" href="#option-1-using-asciinema-agg-recommended" title="Permanent link">&para;</a></h2>
-<h3 id="tools-required">Tools Required<a class="headerlink" href="#tools-required" title="Permanent link">&para;</a></h3>
+<h2 id="option-1-using-asciinema-agg-recommended">Option 1: Using asciinema + agg (Recommended)<a class="headerlink" href="#option-1-using-asciinema-agg-recommended" title="Permanent link to this section">🔗</a></h2>
+<h3 id="tools-required">Tools Required<a class="headerlink" href="#tools-required" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install asciinema for terminal recording</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>brew<span class="w"> </span>install<span class="w"> </span>asciinema<span class="w">  </span><span class="c1"># macOS</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># or</span>
@@ -2112,8 +2114,8 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>cargo<span class="w"> </span>install<span class="w"> </span>--git<span class="w"> </span>https://github.com/asciinema/agg
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># or download binary from https://github.com/asciinema/agg/releases</span>
 </code></pre></div>
-<h3 id="recording-process">Recording Process<a class="headerlink" href="#recording-process" title="Permanent link">&para;</a></h3>
-<h4 id="step-1-configure-terminal">Step 1: Configure Terminal<a class="headerlink" href="#step-1-configure-terminal" title="Permanent link">&para;</a></h4>
+<h3 id="recording-process">Recording Process<a class="headerlink" href="#recording-process" title="Permanent link to this section">🔗</a></h3>
+<h4 id="step-1-configure-terminal">Step 1: Configure Terminal<a class="headerlink" href="#step-1-configure-terminal" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Set optimal terminal size for GIF</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># 80 columns x 24 rows is perfect for README</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">COLUMNS</span><span class="o">=</span><span class="m">80</span>
@@ -2128,7 +2130,7 @@
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Set font size (adjust in terminal preferences)</span>
 <a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># Recommended: 14-16pt for readability</span>
 </code></pre></div>
-<h4 id="step-2-record-the-demo">Step 2: Record the Demo<a class="headerlink" href="#step-2-record-the-demo" title="Permanent link">&para;</a></h4>
+<h4 id="step-2-record-the-demo">Step 2: Record the Demo<a class="headerlink" href="#step-2-record-the-demo" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Record asciinema session</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>asciinema<span class="w"> </span>rec<span class="w"> </span>empathy_demo.cast
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
@@ -2144,7 +2146,7 @@
 <a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1"># Stop recording</span>
 <a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1"># Press Ctrl+D or type &#39;exit&#39;</span>
 </code></pre></div>
-<h4 id="step-3-trim-and-edit-optional">Step 3: Trim and Edit (Optional)<a class="headerlink" href="#step-3-trim-and-edit-optional" title="Permanent link">&para;</a></h4>
+<h4 id="step-3-trim-and-edit-optional">Step 3: Trim and Edit (Optional)<a class="headerlink" href="#step-3-trim-and-edit-optional" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># If you need to edit timing or remove parts</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Use asciinema&#39;s built-in editing</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
@@ -2157,7 +2159,7 @@
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Adjust speed (make it 1.5x faster)</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># Edit the .cast file header, change &quot;speed&quot;: 1.0 to &quot;speed&quot;: 1.5</span>
 </code></pre></div>
-<h4 id="step-4-convert-to-gif">Step 4: Convert to GIF<a class="headerlink" href="#step-4-convert-to-gif" title="Permanent link">&para;</a></h4>
+<h4 id="step-4-convert-to-gif">Step 4: Convert to GIF<a class="headerlink" href="#step-4-convert-to-gif" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Convert to GIF with optimal settings</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>agg<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>--font-family<span class="w"> </span><span class="s2">&quot;Monaco, Menlo, monospace&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -2179,7 +2181,7 @@
 <a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1"># --speed 1.5: Speed up for brevity</span>
 <a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="c1"># --cols/rows: Fixed dimensions</span>
 </code></pre></div>
-<h4 id="step-5-optimize-file-size">Step 5: Optimize File Size<a class="headerlink" href="#step-5-optimize-file-size" title="Permanent link">&para;</a></h4>
+<h4 id="step-5-optimize-file-size">Step 5: Optimize File Size<a class="headerlink" href="#step-5-optimize-file-size" title="Permanent link to this section">🔗</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Check file size</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>ls<span class="w"> </span>-lh<span class="w"> </span>empathy_demo.gif
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
@@ -2197,15 +2199,15 @@
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>ls<span class="w"> </span>-lh<span class="w"> </span>empathy_demo*.gif
 </code></pre></div>
 <hr />
-<h2 id="option-2-using-terminalizer">Option 2: Using Terminalizer<a class="headerlink" href="#option-2-using-terminalizer" title="Permanent link">&para;</a></h2>
-<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<h2 id="option-2-using-terminalizer">Option 2: Using Terminalizer<a class="headerlink" href="#option-2-using-terminalizer" title="Permanent link to this section">🔗</a></h2>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Install via npm</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>terminalizer
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Verify installation</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>terminalizer<span class="w"> </span>--version
 </code></pre></div>
-<h3 id="recording-process_1">Recording Process<a class="headerlink" href="#recording-process_1" title="Permanent link">&para;</a></h3>
+<h3 id="recording-process_1">Recording Process<a class="headerlink" href="#recording-process_1" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Initialize config</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>terminalizer<span class="w"> </span>init
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
@@ -2235,8 +2237,8 @@
 <a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">  </span>--output<span class="w"> </span>empathy_demo.gif
 </code></pre></div>
 <hr />
-<h2 id="option-3-screen-recording-conversion">Option 3: Screen Recording + Conversion<a class="headerlink" href="#option-3-screen-recording-conversion" title="Permanent link">&para;</a></h2>
-<h3 id="for-macos">For macOS<a class="headerlink" href="#for-macos" title="Permanent link">&para;</a></h3>
+<h2 id="option-3-screen-recording-conversion">Option 3: Screen Recording + Conversion<a class="headerlink" href="#option-3-screen-recording-conversion" title="Permanent link to this section">🔗</a></h2>
+<h3 id="for-macos">For macOS<a class="headerlink" href="#for-macos" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Use built-in screen recording</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># QuickTime Player → File → New Screen Recording</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># Or use CMD+Shift+5 (macOS Mojave+)</span>
@@ -2256,7 +2258,7 @@
 <a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="c1"># Optimize</span>
 <a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>gifsicle<span class="w"> </span>-O3<span class="w"> </span>--colors<span class="w"> </span><span class="m">256</span><span class="w"> </span>--lossy<span class="o">=</span><span class="m">80</span><span class="w"> </span>empathy_demo.gif<span class="w"> </span>-o<span class="w"> </span>empathy_demo_final.gif
 </code></pre></div>
-<h3 id="for-linux">For Linux<a class="headerlink" href="#for-linux" title="Permanent link">&para;</a></h3>
+<h3 id="for-linux">For Linux<a class="headerlink" href="#for-linux" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Use Peek (GIF screen recorder)</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>peek
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
@@ -2268,7 +2270,7 @@
 <a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
 <a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># Convert with ffmpeg (same command as macOS)</span>
 </code></pre></div>
-<h3 id="for-windows">For Windows<a class="headerlink" href="#for-windows" title="Permanent link">&para;</a></h3>
+<h3 id="for-windows">For Windows<a class="headerlink" href="#for-windows" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Use ScreenToGif</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># Download from: https://www.screentogif.com/</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
@@ -2279,8 +2281,8 @@
 <a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># Convert with ffmpeg</span>
 </code></pre></div>
 <hr />
-<h2 id="recommended-commands-to-record">Recommended Commands to Record<a class="headerlink" href="#recommended-commands-to-record" title="Permanent link">&para;</a></h2>
-<h3 id="quick-demo-10-15-seconds">Quick Demo (10-15 seconds)<a class="headerlink" href="#quick-demo-10-15-seconds" title="Permanent link">&para;</a></h3>
+<h2 id="recommended-commands-to-record">Recommended Commands to Record<a class="headerlink" href="#recommended-commands-to-record" title="Permanent link to this section">🔗</a></h2>
+<h3 id="quick-demo-10-15-seconds">Quick Demo (10-15 seconds)<a class="headerlink" href="#quick-demo-10-15-seconds" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Clear terminal</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>clear
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
@@ -2297,7 +2299,7 @@
 <a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="c1"># - Prediction output (2-3 seconds)</span>
 <a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="c1"># - Summary (2 seconds)</span>
 </code></pre></div>
-<h3 id="what-to-show">What to Show<a class="headerlink" href="#what-to-show" title="Permanent link">&para;</a></h3>
+<h3 id="what-to-show">What to Show<a class="headerlink" href="#what-to-show" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Focus on these key moments:</strong></p>
 <ol>
 <li>
@@ -2328,8 +2330,8 @@
 </li>
 </ol>
 <hr />
-<h2 id="terminal-configuration-for-best-results">Terminal Configuration for Best Results<a class="headerlink" href="#terminal-configuration-for-best-results" title="Permanent link">&para;</a></h2>
-<h3 id="colors-and-theme">Colors and Theme<a class="headerlink" href="#colors-and-theme" title="Permanent link">&para;</a></h3>
+<h2 id="terminal-configuration-for-best-results">Terminal Configuration for Best Results<a class="headerlink" href="#terminal-configuration-for-best-results" title="Permanent link to this section">🔗</a></h2>
+<h3 id="colors-and-theme">Colors and Theme<a class="headerlink" href="#colors-and-theme" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Use a professional terminal theme</span>
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># Recommended themes:</span>
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># - Monokai</span>
@@ -2342,7 +2344,7 @@
 <a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="c1"># - Text: Light (#d4d4d4 or similar)</span>
 <a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="c1"># - Accent colors: Vibrant but readable</span>
 </code></pre></div>
-<h3 id="font-settings">Font Settings<a class="headerlink" href="#font-settings" title="Permanent link">&para;</a></h3>
+<h3 id="font-settings">Font Settings<a class="headerlink" href="#font-settings" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Recommended fonts:</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># - Fira Code (with ligatures)</span>
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># - JetBrains Mono</span>
@@ -2353,7 +2355,7 @@
 <a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="c1"># Font size: 14-16pt</span>
 <a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="c1"># Line height: 1.3-1.5</span>
 </code></pre></div>
-<h3 id="window-size">Window Size<a class="headerlink" href="#window-size" title="Permanent link">&para;</a></h3>
+<h3 id="window-size">Window Size<a class="headerlink" href="#window-size" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Optimal dimensions for README GIF</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># Width: 800-1000px</span>
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># Height: 500-650px</span>
@@ -2364,8 +2366,8 @@
 <a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="c1"># 24-30 rows</span>
 </code></pre></div>
 <hr />
-<h2 id="editing-and-trimming">Editing and Trimming<a class="headerlink" href="#editing-and-trimming" title="Permanent link">&para;</a></h2>
-<h3 id="using-asciinema-play">Using asciinema play<a class="headerlink" href="#using-asciinema-play" title="Permanent link">&para;</a></h3>
+<h2 id="editing-and-trimming">Editing and Trimming<a class="headerlink" href="#editing-and-trimming" title="Permanent link to this section">🔗</a></h2>
+<h3 id="using-asciinema-play">Using asciinema play<a class="headerlink" href="#using-asciinema-play" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Play recording to find timestamps</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>asciinema<span class="w"> </span>play<span class="w"> </span>empathy_demo.cast
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
@@ -2377,7 +2379,7 @@
 <a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="c1"># 0:08-0:13 - Prediction</span>
 <a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="c1"># 0:13-0:15 - Summary</span>
 </code></pre></div>
-<h3 id="cutting-segments">Cutting Segments<a class="headerlink" href="#cutting-segments" title="Permanent link">&para;</a></h3>
+<h3 id="cutting-segments">Cutting Segments<a class="headerlink" href="#cutting-segments" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Extract specific time range</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># This requires asciinema-edit (not built-in)</span>
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># Or edit the .cast JSON file directly</span>
@@ -2400,8 +2402,8 @@
 <a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="c1"># Each event: [timestamp, type, data]</span>
 </code></pre></div>
 <hr />
-<h2 id="export-settings">Export Settings<a class="headerlink" href="#export-settings" title="Permanent link">&para;</a></h2>
-<h3 id="target-specifications">Target Specifications<a class="headerlink" href="#target-specifications" title="Permanent link">&para;</a></h3>
+<h2 id="export-settings">Export Settings<a class="headerlink" href="#export-settings" title="Permanent link to this section">🔗</a></h2>
+<h3 id="target-specifications">Target Specifications<a class="headerlink" href="#target-specifications" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Format: GIF
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Size: &lt; 5MB (ideally 2-3MB)
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>Dimensions: 800x600px or 1000x650px
@@ -2410,7 +2412,7 @@
 <a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>Loop: Infinite (0)
 <a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>Duration: 10-15 seconds
 </code></pre></div>
-<h3 id="quality-vs-size-trade-offs">Quality vs. Size Trade-offs<a class="headerlink" href="#quality-vs-size-trade-offs" title="Permanent link">&para;</a></h3>
+<h3 id="quality-vs-size-trade-offs">Quality vs. Size Trade-offs<a class="headerlink" href="#quality-vs-size-trade-offs" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -2441,7 +2443,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="optimization-command-reference">Optimization Command Reference<a class="headerlink" href="#optimization-command-reference" title="Permanent link">&para;</a></h3>
+<h3 id="optimization-command-reference">Optimization Command Reference<a class="headerlink" href="#optimization-command-reference" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Light optimization (preserve quality)</span>
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>gifsicle<span class="w"> </span>-O3<span class="w"> </span>--colors<span class="w"> </span><span class="m">256</span><span class="w"> </span>input.gif<span class="w"> </span>-o<span class="w"> </span>output.gif
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
@@ -2455,8 +2457,8 @@
 <a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>ls<span class="w"> </span>-lh<span class="w"> </span>input.gif<span class="w"> </span>output.gif
 </code></pre></div>
 <hr />
-<h2 id="embedding-in-readme">Embedding in README<a class="headerlink" href="#embedding-in-readme" title="Permanent link">&para;</a></h2>
-<h3 id="placement">Placement<a class="headerlink" href="#placement" title="Permanent link">&para;</a></h3>
+<h2 id="embedding-in-readme">Embedding in README<a class="headerlink" href="#embedding-in-readme" title="Permanent link to this section">🔗</a></h2>
+<h3 id="placement">Placement<a class="headerlink" href="#placement" title="Permanent link to this section">🔗</a></h3>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="gh"># Empathy Framework</span>
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
 <a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="gs">**A five-level maturity model for AI-human collaboration**</span>
@@ -2505,8 +2507,8 @@
 <a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a>*[Watch full demo video →](https://youtu.be/your-video-id)*
 </code></pre></div></p>
 <hr />
-<h2 id="hosting-options">Hosting Options<a class="headerlink" href="#hosting-options" title="Permanent link">&para;</a></h2>
-<h3 id="option-1-in-repository-recommended">Option 1: In Repository (Recommended)<a class="headerlink" href="#option-1-in-repository-recommended" title="Permanent link">&para;</a></h3>
+<h2 id="hosting-options">Hosting Options<a class="headerlink" href="#hosting-options" title="Permanent link to this section">🔗</a></h2>
+<h3 id="option-1-in-repository-recommended">Option 1: In Repository (Recommended)<a class="headerlink" href="#option-1-in-repository-recommended" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Store in docs/marketing/assets/</span>
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>docs/marketing/assets
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>cp<span class="w"> </span>empathy_demo.gif<span class="w"> </span>docs/marketing/assets/
@@ -2517,7 +2519,7 @@
 <a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="c1"># Pros: Version controlled, always available</span>
 <a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="c1"># Cons: Increases repo size (use Git LFS if &gt; 10MB)</span>
 </code></pre></div>
-<h3 id="option-2-github-releases">Option 2: GitHub Releases<a class="headerlink" href="#option-2-github-releases" title="Permanent link">&para;</a></h3>
+<h3 id="option-2-github-releases">Option 2: GitHub Releases<a class="headerlink" href="#option-2-github-releases" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># Upload to GitHub Release</span>
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="c1"># Then reference via URL</span>
 <a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>!<span class="o">[</span>Demo<span class="o">](</span>https://github.com/Smart-AI-Memory/empathy-framework/releases/download/v1.0/empathy_demo.gif<span class="o">)</span>
@@ -2525,7 +2527,7 @@
 <a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="c1"># Pros: Doesn&#39;t bloat repo</span>
 <a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="c1"># Cons: Requires release management</span>
 </code></pre></div>
-<h3 id="option-3-external-cdn">Option 3: External CDN<a class="headerlink" href="#option-3-external-cdn" title="Permanent link">&para;</a></h3>
+<h3 id="option-3-external-cdn">Option 3: External CDN<a class="headerlink" href="#option-3-external-cdn" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># Upload to imgur, giphy, or CDN</span>
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="c1"># Reference via URL</span>
 <a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>!<span class="o">[</span>Demo<span class="o">](</span>https://i.imgur.com/abc123.gif<span class="o">)</span>
@@ -2533,7 +2535,7 @@
 <a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="c1"># Pros: Fast loading, no repo impact</span>
 <a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="c1"># Cons: Dependency on external service</span>
 </code></pre></div>
-<h3 id="option-4-git-lfs-large-files">Option 4: Git LFS (Large Files)<a class="headerlink" href="#option-4-git-lfs-large-files" title="Permanent link">&para;</a></h3>
+<h3 id="option-4-git-lfs-large-files">Option 4: Git LFS (Large Files)<a class="headerlink" href="#option-4-git-lfs-large-files" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># If GIF &gt; 10MB, use Git LFS</span>
 <a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>git<span class="w"> </span>lfs<span class="w"> </span>install
 <a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>git<span class="w"> </span>lfs<span class="w"> </span>track<span class="w"> </span><span class="s2">&quot;*.gif&quot;</span>
@@ -2545,7 +2547,7 @@
 <a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="c1"># Cons: Requires Git LFS setup</span>
 </code></pre></div>
 <hr />
-<h2 id="quality-checklist">Quality Checklist<a class="headerlink" href="#quality-checklist" title="Permanent link">&para;</a></h2>
+<h2 id="quality-checklist">Quality Checklist<a class="headerlink" href="#quality-checklist" title="Permanent link to this section">🔗</a></h2>
 <p>Before publishing your GIF, verify:</p>
 <ul>
 <li>[ ] File size &lt; 5MB (preferably 2-3MB)</li>
@@ -2565,15 +2567,15 @@
 <li>[ ] On-brand: Matches project aesthetic</li>
 </ul>
 <hr />
-<h2 id="advanced-tips">Advanced Tips<a class="headerlink" href="#advanced-tips" title="Permanent link">&para;</a></h2>
-<h3 id="creating-a-seamless-loop">Creating a Seamless Loop<a class="headerlink" href="#creating-a-seamless-loop" title="Permanent link">&para;</a></h3>
+<h2 id="advanced-tips">Advanced Tips<a class="headerlink" href="#advanced-tips" title="Permanent link to this section">🔗</a></h2>
+<h3 id="creating-a-seamless-loop">Creating a Seamless Loop<a class="headerlink" href="#creating-a-seamless-loop" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Record demo that ends in similar state to beginning</span>
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="c1"># For example, end with cleared screen or same prompt</span>
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
 <a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># Or use gifsicle to create loop points</span>
 <a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>gifsicle<span class="w"> </span>--loopcount<span class="o">=</span><span class="m">0</span><span class="w"> </span>empathy_demo.gif<span class="w"> </span>-o<span class="w"> </span>empathy_demo_loop.gif
 </code></pre></div>
-<h3 id="adding-text-overlays">Adding Text Overlays<a class="headerlink" href="#adding-text-overlays" title="Permanent link">&para;</a></h3>
+<h3 id="adding-text-overlays">Adding Text Overlays<a class="headerlink" href="#adding-text-overlays" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Use ImageMagick to add annotations</span>
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>brew<span class="w"> </span>install<span class="w"> </span>imagemagick
 <a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
@@ -2584,7 +2586,7 @@
 <a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">  </span>-layers<span class="w"> </span>optimize<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">  </span>empathy_demo_titled.gif
 </code></pre></div>
-<h3 id="multi-speed-versions">Multi-Speed Versions<a class="headerlink" href="#multi-speed-versions" title="Permanent link">&para;</a></h3>
+<h3 id="multi-speed-versions">Multi-Speed Versions<a class="headerlink" href="#multi-speed-versions" title="Permanent link to this section">🔗</a></h3>
 <p>Create multiple versions for different use cases:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># Fast version (10s, README hero)</span>
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>agg<span class="w"> </span>--speed<span class="w"> </span><span class="m">2</span>.0<span class="w"> </span>demo.cast<span class="w"> </span>demo_fast.gif
@@ -2595,7 +2597,7 @@
 <a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="c1"># Detailed version (30s, tutorial)</span>
 <a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>agg<span class="w"> </span>--speed<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>demo.cast<span class="w"> </span>demo_detailed.gif
 </code></pre></div>
-<h3 id="platform-specific-optimization">Platform-Specific Optimization<a class="headerlink" href="#platform-specific-optimization" title="Permanent link">&para;</a></h3>
+<h3 id="platform-specific-optimization">Platform-Specific Optimization<a class="headerlink" href="#platform-specific-optimization" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># GitHub-optimized (prioritize compatibility)</span>
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>gifsicle<span class="w"> </span>-O3<span class="w"> </span>--colors<span class="w"> </span><span class="m">256</span><span class="w"> </span>--lossy<span class="o">=</span><span class="m">50</span><span class="w"> </span>demo.gif<span class="w"> </span>-o<span class="w"> </span>demo_github.gif
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
@@ -2606,8 +2608,8 @@
 <a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>gifsicle<span class="w"> </span>-O3<span class="w"> </span>--colors<span class="w"> </span><span class="m">128</span><span class="w"> </span>--lossy<span class="o">=</span><span class="m">100</span><span class="w"> </span>--crop<span class="w"> </span><span class="m">0</span>,50+800x800<span class="w"> </span>demo.gif<span class="w"> </span>-o<span class="w"> </span>demo_linkedin.gif
 </code></pre></div>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<h3 id="gif-too-large">GIF Too Large<a class="headerlink" href="#gif-too-large" title="Permanent link">&para;</a></h3>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
+<h3 id="gif-too-large">GIF Too Large<a class="headerlink" href="#gif-too-large" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Problem:</strong> GIF &gt; 5MB after optimization</p>
 <p><strong>Solutions:</strong>
 1. Reduce dimensions: <code>--scale 0.8</code>
@@ -2616,7 +2618,7 @@
 4. Increase lossy compression: <code>--lossy=100</code>
 5. Shorten duration: Edit .cast file
 6. Use fewer frames: Record at lower FPS</p>
-<h3 id="text-unreadable">Text Unreadable<a class="headerlink" href="#text-unreadable" title="Permanent link">&para;</a></h3>
+<h3 id="text-unreadable">Text Unreadable<a class="headerlink" href="#text-unreadable" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Problem:</strong> Terminal text too small or blurry</p>
 <p><strong>Solutions:</strong>
 1. Increase font size in terminal (16-18pt)
@@ -2625,7 +2627,7 @@
 4. Fewer terminal rows (better zoom)
 5. Bold font weight
 6. Less text on screen (trim output)</p>
-<h3 id="colors-look-bad">Colors Look Bad<a class="headerlink" href="#colors-look-bad" title="Permanent link">&para;</a></h3>
+<h3 id="colors-look-bad">Colors Look Bad<a class="headerlink" href="#colors-look-bad" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Problem:</strong> Dithering or color banding</p>
 <p><strong>Solutions:</strong>
 1. Use 256 colors instead of 128
@@ -2633,7 +2635,7 @@
 3. Better source terminal theme
 4. True-color terminal emulator
 5. Match GIF palette to terminal theme</p>
-<h3 id="slow-loading">Slow Loading<a class="headerlink" href="#slow-loading" title="Permanent link">&para;</a></h3>
+<h3 id="slow-loading">Slow Loading<a class="headerlink" href="#slow-loading" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Problem:</strong> GIF takes too long to load</p>
 <p><strong>Solutions:</strong>
 1. Reduce file size (see "GIF Too Large")
@@ -2642,8 +2644,8 @@
 4. Host on fast CDN
 5. Offer video alternative</p>
 <hr />
-<h2 id="examples-and-inspiration">Examples and Inspiration<a class="headerlink" href="#examples-and-inspiration" title="Permanent link">&para;</a></h2>
-<h3 id="great-readme-gifs-to-study">Great README GIFs to Study<a class="headerlink" href="#great-readme-gifs-to-study" title="Permanent link">&para;</a></h3>
+<h2 id="examples-and-inspiration">Examples and Inspiration<a class="headerlink" href="#examples-and-inspiration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="great-readme-gifs-to-study">Great README GIFs to Study<a class="headerlink" href="#great-readme-gifs-to-study" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>asciinema/asciinema</strong> - Clean terminal recording</li>
 <li><strong>junegunn/fzf</strong> - Fast, focused functionality demo</li>
@@ -2651,7 +2653,7 @@
 <li><strong>jesseduffield/lazygit</strong> - Multi-step workflow</li>
 <li><strong>koalaman/shellcheck</strong> - Before/after comparison</li>
 </ol>
-<h3 id="analysis-what-makes-them-work">Analysis: What Makes Them Work<a class="headerlink" href="#analysis-what-makes-them-work" title="Permanent link">&para;</a></h3>
+<h3 id="analysis-what-makes-them-work">Analysis: What Makes Them Work<a class="headerlink" href="#analysis-what-makes-them-work" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>Focus:</strong> One clear feature or workflow</li>
 <li><strong>Brevity:</strong> 10-15 seconds maximum</li>
@@ -2662,8 +2664,8 @@
 <li><strong>Relevance:</strong> Shows the "wow" factor immediately</li>
 </ul>
 <hr />
-<h2 id="maintenance">Maintenance<a class="headerlink" href="#maintenance" title="Permanent link">&para;</a></h2>
-<h3 id="updating-the-gif">Updating the GIF<a class="headerlink" href="#updating-the-gif" title="Permanent link">&para;</a></h3>
+<h2 id="maintenance">Maintenance<a class="headerlink" href="#maintenance" title="Permanent link to this section">🔗</a></h2>
+<h3 id="updating-the-gif">Updating the GIF<a class="headerlink" href="#updating-the-gif" title="Permanent link to this section">🔗</a></h3>
 <p>When to update:
 - Major UI changes
 - Significant new features
@@ -2676,7 +2678,7 @@
 <a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="c1"># Create new version</span>
 <a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="c1"># Update README reference</span>
 </code></pre></div></p>
-<h3 id="tracking-performance">Tracking Performance<a class="headerlink" href="#tracking-performance" title="Permanent link">&para;</a></h3>
+<h3 id="tracking-performance">Tracking Performance<a class="headerlink" href="#tracking-performance" title="Permanent link to this section">🔗</a></h3>
 <p>Monitor README engagement:
 - GitHub traffic analytics
 - Time on page (via external analytics)
@@ -2688,7 +2690,7 @@
 - Try different key moments
 - Experiment with speed</p>
 <hr />
-<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link to this section">🔗</a></h2>
 <p>A well-crafted animated GIF can significantly boost README engagement and project adoption. Invest time in creating a polished, professional demo that showcases your framework's unique value proposition.</p>
 <p><strong>Key Takeaways:</strong>
 - Keep it short (10-15s)

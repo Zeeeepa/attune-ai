@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1718,12 +1720,12 @@
   
 
 
-<h1 id="example-simple-chatbot-with-empathy-levels">Example: Simple Chatbot with Empathy Levels<a class="headerlink" href="#example-simple-chatbot-with-empathy-levels" title="Permanent link">&para;</a></h1>
+<h1 id="example-simple-chatbot-with-empathy-levels">Example: Simple Chatbot with Empathy Levels<a class="headerlink" href="#example-simple-chatbot-with-empathy-levels" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Difficulty</strong>: Beginner
 <strong>Time</strong>: 10 minutes
 <strong>Empathy Levels</strong>: 1-4</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>This example shows how to build a simple chatbot that progressively gains empathy, moving from basic reactive responses (Level 1) to anticipatory intelligence (Level 4).</p>
 <p><strong>What you'll learn</strong>:
 - Basic EmpathyOS setup
@@ -1731,11 +1733,11 @@
 - Trust building through interactions
 - Pattern recognition across conversations</p>
 <hr />
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework
 </code></pre></div>
 <hr />
-<h2 id="level-1-reactive-chatbot">Level 1: Reactive Chatbot<a class="headerlink" href="#level-1-reactive-chatbot" title="Permanent link">&para;</a></h2>
+<h2 id="level-1-reactive-chatbot">Level 1: Reactive Chatbot<a class="headerlink" href="#level-1-reactive-chatbot" title="Permanent link to this section">🔗</a></h2>
 <p>The simplest chatbot - only responds when asked, no context awareness.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
@@ -1763,7 +1765,7 @@
 - ❌ No pattern recognition
 - ❌ No proactive suggestions</p>
 <hr />
-<h2 id="level-2-guided-chatbot">Level 2: Guided Chatbot<a class="headerlink" href="#level-2-guided-chatbot" title="Permanent link">&para;</a></h2>
+<h2 id="level-2-guided-chatbot">Level 2: Guided Chatbot<a class="headerlink" href="#level-2-guided-chatbot" title="Permanent link to this section">🔗</a></h2>
 <p>Asks clarifying questions to understand context better.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
@@ -1793,7 +1795,7 @@
 - ❌ No pattern recognition
 - ❌ No proactive suggestions</p>
 <hr />
-<h2 id="level-3-proactive-chatbot">Level 3: Proactive Chatbot<a class="headerlink" href="#level-3-proactive-chatbot" title="Permanent link">&para;</a></h2>
+<h2 id="level-3-proactive-chatbot">Level 3: Proactive Chatbot<a class="headerlink" href="#level-3-proactive-chatbot" title="Permanent link to this section">🔗</a></h2>
 <p>Notices patterns and offers improvements without being asked.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
@@ -1832,7 +1834,7 @@
 - ✅ Builds context over time
 - ❌ No future predictions</p>
 <hr />
-<h2 id="level-4-anticipatory-chatbot">Level 4: Anticipatory Chatbot<a class="headerlink" href="#level-4-anticipatory-chatbot" title="Permanent link">&para;</a></h2>
+<h2 id="level-4-anticipatory-chatbot">Level 4: Anticipatory Chatbot<a class="headerlink" href="#level-4-anticipatory-chatbot" title="Permanent link to this section">🔗</a></h2>
 <p>Predicts problems before they happen and offers preventative solutions.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
@@ -1897,7 +1899,7 @@
 - ✅ Learns from multi-day patterns
 - ✅ Anticipates needs before user asks</p>
 <hr />
-<h2 id="trust-building">Trust Building<a class="headerlink" href="#trust-building" title="Permanent link">&para;</a></h2>
+<h2 id="trust-building">Trust Building<a class="headerlink" href="#trust-building" title="Permanent link to this section">🔗</a></h2>
 <p>As the chatbot provides helpful responses, trust increases, enabling higher empathy levels.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
@@ -1946,7 +1948,7 @@
 <a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="c1">#     Recommendation: Deploy API changes behind feature flag first.&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="pattern-library">Pattern Library<a class="headerlink" href="#pattern-library" title="Permanent link">&para;</a></h2>
+<h2 id="pattern-library">Pattern Library<a class="headerlink" href="#pattern-library" title="Permanent link to this section">🔗</a></h2>
 <p>The chatbot learns and reuses patterns across conversations.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.persistence</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternPersistence</span>
@@ -1995,7 +1997,7 @@
 <a id="__codelineno-6-45" name="__codelineno-6-45" href="#__codelineno-6-45"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Last used: </span><span class="si">{</span><span class="n">pattern</span><span class="o">.</span><span class="n">last_used</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h2>
+<h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link to this section">🔗</a></h2>
 <p>Customize chatbot behavior with configuration files.</p>
 <p><strong>empathy.config.yml</strong>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Core settings</span>
@@ -2030,7 +2032,7 @@
 <a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">chatbot</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<h2 id="complete-example-multi-session-chatbot">Complete Example: Multi-Session Chatbot<a class="headerlink" href="#complete-example-multi-session-chatbot" title="Permanent link">&para;</a></h2>
+<h2 id="complete-example-multi-session-chatbot">Complete Example: Multi-Session Chatbot<a class="headerlink" href="#complete-example-multi-session-chatbot" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="ch">#!/usr/bin/env python3</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="sd">Complete chatbot example showing progression from Level 1 to Level 4</span>
@@ -2102,7 +2104,7 @@
 <a id="__codelineno-9-69" name="__codelineno-9-69" href="#__codelineno-9-69"></a>    <span class="n">run_chatbot</span><span class="p">()</span>
 </code></pre></div>
 <hr />
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Enhance your chatbot</strong>:
 1. <strong>Add domain knowledge</strong>: Integrate with your codebase, documentation, or APIs
 2. <strong>Multi-user</strong>: Support team collaboration with shared pattern library
@@ -2114,7 +2116,7 @@
 - <a href="multi-agent-team-coordination.html">Multi-Agent Coordination</a> - Team collaboration (80% faster)
 - <a href="adaptive-learning-system.html">Adaptive Learning</a> - Self-improving AI (+28% acceptance)</p>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
 <p><strong>"ModuleNotFoundError: No module named 'empathy_os'"</strong>
 - Run: <code>pip install empathy-framework</code></p>
 <p><strong>Chatbot stuck at Level 1</strong>

@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1819,11 +1821,11 @@
   
 
 
-<h1 id="empathy-framework-quick-start-guide">Empathy Framework Quick Start Guide<a class="headerlink" href="#empathy-framework-quick-start-guide" title="Permanent link">&para;</a></h1>
+<h1 id="empathy-framework-quick-start-guide">Empathy Framework Quick Start Guide<a class="headerlink" href="#empathy-framework-quick-start-guide" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Get from zero to production in 5 minutes</strong></p>
 <p>Welcome to the Empathy Framework! This guide will get you up and running with Level 4 Anticipatory AI collaboration in minutes.</p>
 <hr />
-<h2 id="what-youll-build">What You'll Build<a class="headerlink" href="#what-youll-build" title="Permanent link">&para;</a></h2>
+<h2 id="what-youll-build">What You'll Build<a class="headerlink" href="#what-youll-build" title="Permanent link to this section">🔗</a></h2>
 <p>By the end of this 5-minute guide, you'll have:</p>
 <ol>
 <li>A working Empathy Framework installation</li>
@@ -1834,11 +1836,11 @@
 <p><strong>Time Investment:</strong> 5 minutes
 <strong>Prerequisites:</strong> Python 3.10+, API key for Anthropic or OpenAI</p>
 <hr />
-<h2 id="step-1-installation-30-seconds">Step 1: Installation (30 seconds)<a class="headerlink" href="#step-1-installation-30-seconds" title="Permanent link">&para;</a></h2>
-<h3 id="option-a-install-via-pip-recommended">Option A: Install via pip (Recommended)<a class="headerlink" href="#option-a-install-via-pip-recommended" title="Permanent link">&para;</a></h3>
+<h2 id="step-1-installation-30-seconds">Step 1: Installation (30 seconds)<a class="headerlink" href="#step-1-installation-30-seconds" title="Permanent link to this section">🔗</a></h2>
+<h3 id="option-a-install-via-pip-recommended">Option A: Install via pip (Recommended)<a class="headerlink" href="#option-a-install-via-pip-recommended" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="w"> </span>anthropic
 </code></pre></div>
-<h3 id="option-b-install-from-source">Option B: Install from source<a class="headerlink" href="#option-b-install-from-source" title="Permanent link">&para;</a></h3>
+<h3 id="option-b-install-from-source">Option B: Install from source<a class="headerlink" href="#option-b-install-from-source" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Deep-Study-AI/Empathy.git
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>Empathy
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
@@ -1847,12 +1849,12 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from empathy_llm_toolkit import EmpathyLLM; print(&#39;Success!&#39;)&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="step-2-set-up-api-key-30-seconds">Step 2: Set Up API Key (30 seconds)<a class="headerlink" href="#step-2-set-up-api-key-30-seconds" title="Permanent link">&para;</a></h2>
+<h2 id="step-2-set-up-api-key-30-seconds">Step 2: Set Up API Key (30 seconds)<a class="headerlink" href="#step-2-set-up-api-key-30-seconds" title="Permanent link to this section">🔗</a></h2>
 <p>Choose your preferred LLM provider and set the API key:</p>
-<h3 id="for-anthropic-claude-recommended">For Anthropic (Claude) - Recommended<a class="headerlink" href="#for-anthropic-claude-recommended" title="Permanent link">&para;</a></h3>
+<h3 id="for-anthropic-claude-recommended">For Anthropic (Claude) - Recommended<a class="headerlink" href="#for-anthropic-claude-recommended" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span>sk-ant-your-key-here
 </code></pre></div>
-<h3 id="for-openai-gpt-4">For OpenAI (GPT-4)<a class="headerlink" href="#for-openai-gpt-4" title="Permanent link">&para;</a></h3>
+<h3 id="for-openai-gpt-4">For OpenAI (GPT-4)<a class="headerlink" href="#for-openai-gpt-4" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>sk-your-key-here
 </code></pre></div>
 <p><strong>Make it permanent</strong> (add to <code>~/.bashrc</code> or <code>~/.zshrc</code>):</p>
@@ -1860,7 +1862,7 @@
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc
 </code></pre></div>
 <hr />
-<h2 id="step-3-your-first-interaction-1-minute">Step 3: Your First Interaction (1 minute)<a class="headerlink" href="#step-3-your-first-interaction-1-minute" title="Permanent link">&para;</a></h2>
+<h2 id="step-3-your-first-interaction-1-minute">Step 3: Your First Interaction (1 minute)<a class="headerlink" href="#step-3-your-first-interaction-1-minute" title="Permanent link to this section">🔗</a></h2>
 <p>Create a file called <code>hello_empathy.py</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -1910,7 +1912,7 @@
 </code></pre></div>
 <p>Notice how the framework automatically progressed from Level 1 to Level 2 based on trust!</p>
 <hr />
-<h2 id="step-4-use-a-coach-wizard-2-minutes">Step 4: Use a Coach Wizard (2 minutes)<a class="headerlink" href="#step-4-use-a-coach-wizard-2-minutes" title="Permanent link">&para;</a></h2>
+<h2 id="step-4-use-a-coach-wizard-2-minutes">Step 4: Use a Coach Wizard (2 minutes)<a class="headerlink" href="#step-4-use-a-coach-wizard-2-minutes" title="Permanent link to this section">🔗</a></h2>
 <p>Now let's use a security wizard to analyze code. Create <code>analyze_code.py</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">coach_wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecurityWizard</span>
@@ -2030,7 +2032,7 @@
 </code></pre></div>
 <p>Notice the <strong>Level 4 Anticipatory predictions</strong>! The framework doesn't just find current bugs - it predicts future problems based on your code trajectory.</p>
 <hr />
-<h2 id="step-5-configuration-1-minute">Step 5: Configuration (1 minute)<a class="headerlink" href="#step-5-configuration-1-minute" title="Permanent link">&para;</a></h2>
+<h2 id="step-5-configuration-1-minute">Step 5: Configuration (1 minute)<a class="headerlink" href="#step-5-configuration-1-minute" title="Permanent link to this section">🔗</a></h2>
 <p>Create a configuration file for persistent settings:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Generate default config</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>empathy.config.yml<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
@@ -2072,7 +2074,7 @@
 <a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="understanding-the-5-levels">Understanding the 5 Levels<a class="headerlink" href="#understanding-the-5-levels" title="Permanent link">&para;</a></h2>
+<h2 id="understanding-the-5-levels">Understanding the 5 Levels<a class="headerlink" href="#understanding-the-5-levels" title="Permanent link to this section">🔗</a></h2>
 <p>As you use the framework, it automatically progresses through levels based on trust:</p>
 <table>
 <thead>
@@ -2125,8 +2127,8 @@
 - No interaction for extended periods
 - Inconsistent usage patterns</p>
 <hr />
-<h2 id="common-patterns">Common Patterns<a class="headerlink" href="#common-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="pattern-1-code-review-workflow">Pattern 1: Code Review Workflow<a class="headerlink" href="#pattern-1-code-review-workflow" title="Permanent link">&para;</a></h3>
+<h2 id="common-patterns">Common Patterns<a class="headerlink" href="#common-patterns" title="Permanent link to this section">🔗</a></h2>
+<h3 id="pattern-1-code-review-workflow">Pattern 1: Code Review Workflow<a class="headerlink" href="#pattern-1-code-review-workflow" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">coach_wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecurityWizard</span><span class="p">,</span> <span class="n">PerformanceWizard</span><span class="p">,</span> <span class="n">TestingWizard</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># Initialize wizards</span>
@@ -2149,7 +2151,7 @@
 <a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total issues: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_issues</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total predictions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_predictions</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="pattern-2-conversational-code-improvement">Pattern 2: Conversational Code Improvement<a class="headerlink" href="#pattern-2-conversational-code-improvement" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-2-conversational-code-improvement">Pattern 2: Conversational Code Improvement<a class="headerlink" href="#pattern-2-conversational-code-improvement" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
@@ -2183,7 +2185,7 @@
 <a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>
 <a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">improve_code_interactively</span><span class="p">())</span>
 </code></pre></div>
-<h3 id="pattern-3-cicd-integration">Pattern 3: CI/CD Integration<a class="headerlink" href="#pattern-3-cicd-integration" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-3-cicd-integration">Pattern 3: CI/CD Integration<a class="headerlink" href="#pattern-3-cicd-integration" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">coach_wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecurityWizard</span><span class="p">,</span> <span class="n">PerformanceWizard</span>
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
@@ -2222,7 +2224,7 @@
 <a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install empathy-framework</span>
 <a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python ci_check.py src/app.py</span>
 </code></pre></div>
-<h3 id="pattern-4-multi-model-usage">Pattern 4: Multi-Model Usage<a class="headerlink" href="#pattern-4-multi-model-usage" title="Permanent link">&para;</a></h3>
+<h3 id="pattern-4-multi-model-usage">Pattern 4: Multi-Model Usage<a class="headerlink" href="#pattern-4-multi-model-usage" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># Use Claude for complex reasoning (Level 4)</span>
@@ -2257,8 +2259,8 @@
 <a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a>        <span class="k">return</span> <span class="k">await</span> <span class="n">local</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<h3 id="issue-importerror-for-empathy_llm_toolkit">Issue: ImportError for empathy_llm_toolkit<a class="headerlink" href="#issue-importerror-for-empathy_llm_toolkit" title="Permanent link">&para;</a></h3>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-importerror-for-empathy_llm_toolkit">Issue: ImportError for empathy_llm_toolkit<a class="headerlink" href="#issue-importerror-for-empathy_llm_toolkit" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Install from requirements.txt</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
@@ -2266,7 +2268,7 @@
 <a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># Or install individually</span>
 <a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>pip<span class="w"> </span>install<span class="w"> </span>langchain<span class="w"> </span>anthropic<span class="w"> </span>openai<span class="w"> </span>python-dotenv
 </code></pre></div>
-<h3 id="issue-api-key-not-found">Issue: API key not found<a class="headerlink" href="#issue-api-key-not-found" title="Permanent link">&para;</a></h3>
+<h3 id="issue-api-key-not-found">Issue: API key not found<a class="headerlink" href="#issue-api-key-not-found" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Check if environment variable is set</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$ANTHROPIC_API_KEY</span>
@@ -2278,7 +2280,7 @@
 <a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export ANTHROPIC_API_KEY=sk-ant-your-key-here&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 <a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc
 </code></pre></div>
-<h3 id="issue-module-coach_wizards-not-found">Issue: Module 'coach_wizards' not found<a class="headerlink" href="#issue-module-coach_wizards-not-found" title="Permanent link">&para;</a></h3>
+<h3 id="issue-module-coach_wizards-not-found">Issue: Module 'coach_wizards' not found<a class="headerlink" href="#issue-module-coach_wizards-not-found" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Ensure you&#39;re in the Empathy directory</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nb">cd</span><span class="w"> </span>/path/to/Empathy
@@ -2289,7 +2291,7 @@
 <a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="c1"># Or add to Python path</span>
 <a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PYTHONPATH</span><span class="si">}</span><span class="s2">:/path/to/Empathy&quot;</span>
 </code></pre></div>
-<h3 id="issue-target-level-not-reached">Issue: "Target level not reached"<a class="headerlink" href="#issue-target-level-not-reached" title="Permanent link">&para;</a></h3>
+<h3 id="issue-target-level-not-reached">Issue: "Target level not reached"<a class="headerlink" href="#issue-target-level-not-reached" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Explanation:</strong> The framework requires building trust before progressing to higher levels.</p>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Force a specific level for testing</span>
@@ -2304,7 +2306,7 @@
 <a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>    <span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Test </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>    <span class="n">llm</span><span class="o">.</span><span class="n">update_trust</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">outcome</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="issue-slow-response-times">Issue: Slow response times<a class="headerlink" href="#issue-slow-response-times" title="Permanent link">&para;</a></h3>
+<h3 id="issue-slow-response-times">Issue: Slow response times<a class="headerlink" href="#issue-slow-response-times" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Use faster model</span>
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span>
@@ -2321,7 +2323,7 @@
 <a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-3-5-sonnet-20241022&quot;</span>
 <a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="issue-out-of-memory-analyzing-large-codebases">Issue: Out of memory analyzing large codebases<a class="headerlink" href="#issue-out-of-memory-analyzing-large-codebases" title="Permanent link">&para;</a></h3>
+<h3 id="issue-out-of-memory-analyzing-large-codebases">Issue: Out of memory analyzing large codebases<a class="headerlink" href="#issue-out-of-memory-analyzing-large-codebases" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solution:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Use Claude&#39;s 200K context window for large codebases</span>
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnthropicProvider</span>
@@ -2343,9 +2345,9 @@
 <a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link to this section">🔗</a></h2>
 <p>Congratulations! You now have a working Empathy Framework installation. Here's what to explore next:</p>
-<h3 id="1-read-the-user-guide">1. Read the User Guide<a class="headerlink" href="#1-read-the-user-guide" title="Permanent link">&para;</a></h3>
+<h3 id="1-read-the-user-guide">1. Read the User Guide<a class="headerlink" href="#1-read-the-user-guide" title="Permanent link to this section">🔗</a></h3>
 <p>Comprehensive guide covering:
 - Architecture and design patterns
 - All 16+ Coach wizards in detail
@@ -2353,14 +2355,14 @@
 - Integration examples
 - Best practices</p>
 <p><strong>Location:</strong> <a href="USER_GUIDE.html">docs/USER_GUIDE.md</a></p>
-<h3 id="2-explore-the-api-reference">2. Explore the API Reference<a class="headerlink" href="#2-explore-the-api-reference" title="Permanent link">&para;</a></h3>
+<h3 id="2-explore-the-api-reference">2. Explore the API Reference<a class="headerlink" href="#2-explore-the-api-reference" title="Permanent link to this section">🔗</a></h3>
 <p>Complete API documentation:
 - All classes and methods
 - Parameter specifications
 - Return types
 - Code examples</p>
 <p><strong>Location:</strong> <a href="API_REFERENCE.html">docs/API_REFERENCE.md</a></p>
-<h3 id="3-try-more-wizards">3. Try More Wizards<a class="headerlink" href="#3-try-more-wizards" title="Permanent link">&para;</a></h3>
+<h3 id="3-try-more-wizards">3. Try More Wizards<a class="headerlink" href="#3-try-more-wizards" title="Permanent link to this section">🔗</a></h3>
 <p>Explore all available wizards:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">coach_wizards</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="n">SecurityWizard</span><span class="p">,</span>
@@ -2374,7 +2376,7 @@
 <a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="c1"># ... 8+ more</span>
 <a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="4-build-your-own-wizard">4. Build Your Own Wizard<a class="headerlink" href="#4-build-your-own-wizard" title="Permanent link">&para;</a></h3>
+<h3 id="4-build-your-own-wizard">4. Build Your Own Wizard<a class="headerlink" href="#4-build-your-own-wizard" title="Permanent link to this section">🔗</a></h3>
 <p>Extend the framework with domain-specific wizards:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">coach_wizards</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCoachWizard</span><span class="p">,</span> <span class="n">WizardIssue</span><span class="p">,</span> <span class="n">WizardPrediction</span>
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
@@ -2402,14 +2404,14 @@
 <a id="__codelineno-26-24" name="__codelineno-26-24" href="#__codelineno-26-24"></a>        <span class="c1"># Implement fix suggestions</span>
 <a id="__codelineno-26-25" name="__codelineno-26-25" href="#__codelineno-26-25"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Fix for </span><span class="si">{</span><span class="n">issue</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
-<h3 id="5-join-the-community">5. Join the Community<a class="headerlink" href="#5-join-the-community" title="Permanent link">&para;</a></h3>
+<h3 id="5-join-the-community">5. Join the Community<a class="headerlink" href="#5-join-the-community" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>GitHub:</strong> https://github.com/Deep-Study-AI/Empathy</li>
 <li><strong>Discussions:</strong> https://github.com/Deep-Study-AI/Empathy/discussions</li>
 <li><strong>Issues:</strong> https://github.com/Deep-Study-AI/Empathy/issues</li>
 <li><strong>Email:</strong> patrick.roebuck@deepstudyai.com</li>
 </ul>
-<h3 id="6-consider-commercial-support">6. Consider Commercial Support<a class="headerlink" href="#6-consider-commercial-support" title="Permanent link">&para;</a></h3>
+<h3 id="6-consider-commercial-support">6. Consider Commercial Support<a class="headerlink" href="#6-consider-commercial-support" title="Permanent link to this section">🔗</a></h3>
 <p>Get priority support for production deployments:
 - Priority bug fixes and feature requests
 - Direct access to core development team
@@ -2418,8 +2420,8 @@
 <p><strong>Price:</strong> $99/developer/year</p>
 <p>Learn more: <a href="../SPONSORSHIP.md">SPONSORSHIP.md</a></p>
 <hr />
-<h2 id="quick-reference-card">Quick Reference Card<a class="headerlink" href="#quick-reference-card" title="Permanent link">&para;</a></h2>
-<h3 id="essential-commands">Essential Commands<a class="headerlink" href="#essential-commands" title="Permanent link">&para;</a></h3>
+<h2 id="quick-reference-card">Quick Reference Card<a class="headerlink" href="#quick-reference-card" title="Permanent link to this section">🔗</a></h2>
+<h3 id="essential-commands">Essential Commands<a class="headerlink" href="#essential-commands" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># Install</span>
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="w"> </span>anthropic
 <a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>
@@ -2432,7 +2434,7 @@
 <a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="c1"># Analyze code</span>
 <a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>python<span class="w"> </span>analyze_code.py
 </code></pre></div>
-<h3 id="essential-code">Essential Code<a class="headerlink" href="#essential-code" title="Permanent link">&para;</a></h3>
+<h3 id="essential-code">Essential Code<a class="headerlink" href="#essential-code" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># Initialize</span>
 <a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 <a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span><span class="n">provider</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span><span class="p">,</span> <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -2448,7 +2450,7 @@
 <a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="c1"># Build trust</span>
 <a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="n">llm</span><span class="o">.</span><span class="n">update_trust</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">outcome</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="essential-files">Essential Files<a class="headerlink" href="#essential-files" title="Permanent link">&para;</a></h3>
+<h3 id="essential-files">Essential Files<a class="headerlink" href="#essential-files" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>Configuration:</strong> <code>empathy.config.yml</code></li>
 <li><strong>API Reference:</strong> <code>docs/API_REFERENCE.md</code></li>
@@ -2456,7 +2458,7 @@
 <li><strong>Examples:</strong> <code>examples/</code></li>
 </ul>
 <hr />
-<h2 id="success">Success!<a class="headerlink" href="#success" title="Permanent link">&para;</a></h2>
+<h2 id="success">Success!<a class="headerlink" href="#success" title="Permanent link to this section">🔗</a></h2>
 <p>You've completed the Quick Start Guide! You now have:</p>
 <ul>
 <li>A working Empathy Framework installation</li>

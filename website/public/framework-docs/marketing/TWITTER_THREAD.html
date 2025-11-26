@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1586,36 +1588,36 @@
   
 
 
-<h1 id="twitterx-thread-empathy-framework-launch">Twitter/X Thread: Empathy Framework Launch<a class="headerlink" href="#twitterx-thread-empathy-framework-launch" title="Permanent link">&para;</a></h1>
-<h2 id="thread-structure-10-tweets">Thread Structure (10 tweets)<a class="headerlink" href="#thread-structure-10-tweets" title="Permanent link">&para;</a></h2>
-<h3 id="tweet-1-hook">Tweet 1: Hook<a class="headerlink" href="#tweet-1-hook" title="Permanent link">&para;</a></h3>
+<h1 id="twitterx-thread-empathy-framework-launch">Twitter/X Thread: Empathy Framework Launch<a class="headerlink" href="#twitterx-thread-empathy-framework-launch" title="Permanent link to this section">🔗</a></h1>
+<h2 id="thread-structure-10-tweets">Thread Structure (10 tweets)<a class="headerlink" href="#thread-structure-10-tweets" title="Permanent link to this section">🔗</a></h2>
+<h3 id="tweet-1-hook">Tweet 1: Hook<a class="headerlink" href="#tweet-1-hook" title="Permanent link to this section">🔗</a></h3>
 <p>AI that learns deployment safety from hospital protocols.</p>
 <p>No other framework can do this.</p>
 <p>Here's how cross-domain pattern transfer just predicted a deployment failure with 87% confidence:</p>
 <p>🧵👇</p>
-<h3 id="tweet-2-the-problem">Tweet 2: The Problem<a class="headerlink" href="#tweet-2-the-problem" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-2-the-problem">Tweet 2: The Problem<a class="headerlink" href="#tweet-2-the-problem" title="Permanent link to this section">🔗</a></h3>
 <p>Deployment failures often trace back to handoff issues:
 • Missing env variable "someone thought was set"
 • Database migration "we assumed was tested"
 • Feature flag the on-call team didn't know about</p>
 <p>Critical info lost during staging→production transitions.</p>
-<h3 id="tweet-3-healthcare-parallel">Tweet 3: Healthcare Parallel<a class="headerlink" href="#tweet-3-healthcare-parallel" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-3-healthcare-parallel">Tweet 3: Healthcare Parallel<a class="headerlink" href="#tweet-3-healthcare-parallel" title="Permanent link to this section">🔗</a></h3>
 <p>The Joint Commission found 80% of serious medical errors involve miscommunication during patient handoffs.</p>
 <p>When nurses change shifts or patients transfer between units, the same thing happens.</p>
 <p>23% failure rate without standardized checklists.</p>
-<h3 id="tweet-4-same-root-causes">Tweet 4: Same Root Causes<a class="headerlink" href="#tweet-4-same-root-causes" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-4-same-root-causes">Tweet 4: Same Root Causes<a class="headerlink" href="#tweet-4-same-root-causes" title="Permanent link to this section">🔗</a></h3>
 <p>Both hospital handoffs and deployment handoffs fail for identical reasons:
 • No explicit verification steps
 • Assumptions about what receiving party knows
 • Time pressure → shortcuts
 • Verbal-only communication
 • Critical information loss during transitions</p>
-<h3 id="tweet-5-the-solution">Tweet 5: The Solution<a class="headerlink" href="#tweet-5-the-solution" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-5-the-solution">Tweet 5: The Solution<a class="headerlink" href="#tweet-5-the-solution" title="Permanent link to this section">🔗</a></h3>
 <p>Healthcare solved this with checklists and read-back verification.</p>
 <p>Failure rates dropped from 23% to under 5%.</p>
 <p>I built an AI that learns this pattern from healthcare code, then applies it to predict software deployment failures.</p>
 <p>Level 5 cross-domain pattern transfer.</p>
-<h3 id="tweet-6-how-it-works">Tweet 6: How It Works<a class="headerlink" href="#tweet-6-how-it-works" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-6-how-it-works">Tweet 6: How It Works<a class="headerlink" href="#tweet-6-how-it-works" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li>Analyze healthcare handoff code (find 23% failure pattern)</li>
 <li>Store pattern in long-term memory (MemDocs)</li>
@@ -1624,12 +1626,12 @@
 <li>Predict failure 30-45 days ahead (87% confidence)</li>
 <li>Recommend prevention steps from healthcare</li>
 </ol>
-<h3 id="tweet-7-what-makes-this-unique">Tweet 7: What Makes This Unique<a class="headerlink" href="#tweet-7-what-makes-this-unique" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-7-what-makes-this-unique">Tweet 7: What Makes This Unique<a class="headerlink" href="#tweet-7-what-makes-this-unique" title="Permanent link to this section">🔗</a></h3>
 <p>No other AI framework can do this.</p>
 <p>Traditional tools analyze code in isolation.</p>
 <p>This demonstrates Level 5 Systems Empathy—learning safety patterns from one domain (healthcare) and applying them to prevent failures in another (software).</p>
 <p>Cross-domain AI is the future.</p>
-<h3 id="tweet-8-try-it-yourself">Tweet 8: Try It Yourself<a class="headerlink" href="#tweet-8-try-it-yourself" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-8-try-it-yourself">Tweet 8: Try It Yourself<a class="headerlink" href="#tweet-8-try-it-yourself" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">[</span>full<span class="o">]</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>examples/level_5_transformative/run_full_demo.py
 </code></pre></div>
@@ -1637,7 +1639,7 @@
 ✅ Free for teams ≤5 employees
 ✅ $99/dev/year commercial
 ✅ Becomes Apache 2.0 in 2029</p>
-<h3 id="tweet-9-the-bigger-picture">Tweet 9: The Bigger Picture<a class="headerlink" href="#tweet-9-the-bigger-picture" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-9-the-bigger-picture">Tweet 9: The Bigger Picture<a class="headerlink" href="#tweet-9-the-bigger-picture" title="Permanent link to this section">🔗</a></h3>
 <p>Every industry has decades of safety research:
 • Aviation → Pre-flight checklists
 • Finance → Audit trails
@@ -1645,42 +1647,42 @@
 • Emergency services → Response protocols</p>
 <p>Software can learn from ALL of them simultaneously.</p>
 <p>Demo: github.com/Smart-AI-Memory/empathy-framework</p>
-<h3 id="tweet-10-call-to-action">Tweet 10: Call to Action<a class="headerlink" href="#tweet-10-call-to-action" title="Permanent link">&para;</a></h3>
+<h3 id="tweet-10-call-to-action">Tweet 10: Call to Action<a class="headerlink" href="#tweet-10-call-to-action" title="Permanent link to this section">🔗</a></h3>
 <p>A pattern learned from hospital handoffs just prevented a deployment failure.</p>
 <p>That's not incremental improvement. That's transformative intelligence.</p>
 <p>⭐ Star on GitHub: github.com/Smart-AI-Memory/empathy-framework
 📖 Docs: empathy-framework.readthedocs.io</p>
 <p>What cross-domain patterns would help your team?</p>
 <hr />
-<h2 id="alternative-tweet-formats">Alternative Tweet Formats<a class="headerlink" href="#alternative-tweet-formats" title="Permanent link">&para;</a></h2>
-<h3 id="option-a-more-technical">Option A: More Technical<a class="headerlink" href="#option-a-more-technical" title="Permanent link">&para;</a></h3>
+<h2 id="alternative-tweet-formats">Alternative Tweet Formats<a class="headerlink" href="#alternative-tweet-formats" title="Permanent link to this section">🔗</a></h2>
+<h3 id="option-a-more-technical">Option A: More Technical<a class="headerlink" href="#option-a-more-technical" title="Permanent link to this section">🔗</a></h3>
 <p>For developer-focused threads, emphasize the technical architecture:
 - MemDocs long-term memory integration
 - ComplianceWizard + CICDWizard collaboration
 - Pattern extraction and matching algorithms
 - 87% prediction confidence methodology</p>
-<h3 id="option-b-more-visual">Option B: More Visual<a class="headerlink" href="#option-b-more-visual" title="Permanent link">&para;</a></h3>
+<h3 id="option-b-more-visual">Option B: More Visual<a class="headerlink" href="#option-b-more-visual" title="Permanent link to this section">🔗</a></h3>
 <p>For engagement-focused threads, suggest adding:
 - Screenshots of the demo output
 - Diagram showing healthcare → software pattern transfer
 - Code snippets from the analysis
 - Before/after failure rate graphs</p>
-<h3 id="option-c-more-conversational">Option C: More Conversational<a class="headerlink" href="#option-c-more-conversational" title="Permanent link">&para;</a></h3>
+<h3 id="option-c-more-conversational">Option C: More Conversational<a class="headerlink" href="#option-c-more-conversational" title="Permanent link to this section">🔗</a></h3>
 <p>For community-building threads:
 - Ask questions in each tweet
 - Invite others to share their deployment failures
 - Request feedback on cross-domain ideas
 - Create polls about which industries to add next</p>
 <hr />
-<h2 id="hashtag-strategy">Hashtag Strategy<a class="headerlink" href="#hashtag-strategy" title="Permanent link">&para;</a></h2>
+<h2 id="hashtag-strategy">Hashtag Strategy<a class="headerlink" href="#hashtag-strategy" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Primary hashtags</strong> (use in most tweets):</p>
-<h1 id="ai-devops-machinelearning">AI #DevOps #MachineLearning<a class="headerlink" href="#ai-devops-machinelearning" title="Permanent link">&para;</a></h1>
+<h1 id="ai-devops-machinelearning">AI #DevOps #MachineLearning<a class="headerlink" href="#ai-devops-machinelearning" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Secondary hashtags</strong> (rotate based on content):</p>
-<h1 id="codequality-healthtech-deploymentsafety-systemsthinking-levelfiveai">CodeQuality #HealthTech #DeploymentSafety #SystemsThinking #LevelFiveAI<a class="headerlink" href="#codequality-healthtech-deploymentsafety-systemsthinking-levelfiveai" title="Permanent link">&para;</a></h1>
+<h1 id="codequality-healthtech-deploymentsafety-systemsthinking-levelfiveai">CodeQuality #HealthTech #DeploymentSafety #SystemsThinking #LevelFiveAI<a class="headerlink" href="#codequality-healthtech-deploymentsafety-systemsthinking-levelfiveai" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Engagement hashtags</strong> (for viral potential):</p>
-<h1 id="techtwitter-100daysofcode-buildinpublic">TechTwitter #100DaysOfCode #BuildInPublic<a class="headerlink" href="#techtwitter-100daysofcode-buildinpublic" title="Permanent link">&para;</a></h1>
+<h1 id="techtwitter-100daysofcode-buildinpublic">TechTwitter #100DaysOfCode #BuildInPublic<a class="headerlink" href="#techtwitter-100daysofcode-buildinpublic" title="Permanent link to this section">🔗</a></h1>
 <hr />
-<h2 id="posting-schedule-recommendations">Posting Schedule Recommendations<a class="headerlink" href="#posting-schedule-recommendations" title="Permanent link">&para;</a></h2>
+<h2 id="posting-schedule-recommendations">Posting Schedule Recommendations<a class="headerlink" href="#posting-schedule-recommendations" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Option 1: Rapid Thread</strong> (All at once)
 - Post entire thread in one session
 - Best for initial announcement
@@ -1696,7 +1698,7 @@
 - Tuesday-Thursday, 1-3 PM PST
 - Avoid weekends for launch announcements</p>
 <hr />
-<h2 id="engagement-plan">Engagement Plan<a class="headerlink" href="#engagement-plan" title="Permanent link">&para;</a></h2>
+<h2 id="engagement-plan">Engagement Plan<a class="headerlink" href="#engagement-plan" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Reply Strategy:</strong>
 - Respond to all questions within 2 hours
 - Share additional technical details when asked

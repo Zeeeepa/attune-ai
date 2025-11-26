@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1580,21 +1582,21 @@
   
 
 
-<h1 id="reddit-rprogramming-post-empathy-framework">Reddit r/programming Post: Empathy Framework<a class="headerlink" href="#reddit-rprogramming-post-empathy-framework" title="Permanent link">&para;</a></h1>
+<h1 id="reddit-rprogramming-post-empathy-framework">Reddit r/programming Post: Empathy Framework<a class="headerlink" href="#reddit-rprogramming-post-empathy-framework" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Title:</strong> [Open Source] AI that learns deployment safety from hospital handoffs - Cross-domain pattern transfer with 87% prediction confidence</p>
 <p><strong>Subreddit:</strong> r/programming</p>
 <hr />
-<h2 id="post-content">Post Content<a class="headerlink" href="#post-content" title="Permanent link">&para;</a></h2>
+<h2 id="post-content">Post Content<a class="headerlink" href="#post-content" title="Permanent link to this section">🔗</a></h2>
 <p>I built an AI framework that does something I haven't seen before: it learns safety patterns from healthcare code and applies them to predict deployment failures in software with 87% confidence.</p>
 <p>This is what I'm calling <strong>Level 5 cross-domain pattern transfer</strong>, and I think it opens up some interesting possibilities for how we think about AI-assisted development.</p>
-<h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h3>
+<h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link to this section">🔗</a></h3>
 <p>We've all been there. Deployment fails. Root cause analysis reveals:
 - Missing environment variable that "someone thought was set"
 - Database migration that "we assumed was tested in staging"
 - Feature flag that the on-call team didn't know about
 - Rollback procedure that wasn't clearly communicated</p>
 <p>These are <strong>handoff failures</strong>—critical information getting lost during transitions.</p>
-<h3 id="the-healthcare-connection">The Healthcare Connection<a class="headerlink" href="#the-healthcare-connection" title="Permanent link">&para;</a></h3>
+<h3 id="the-healthcare-connection">The Healthcare Connection<a class="headerlink" href="#the-healthcare-connection" title="Permanent link to this section">🔗</a></h3>
 <p>The Joint Commission (healthcare accreditation body) found that <strong>80% of serious medical errors</strong> involve miscommunication during patient handoffs. When a nurse hands off to another nurse during shift changes, or when a patient transfers from the ER to the ICU, the same pattern emerges:</p>
 <ul>
 <li>No explicit verification steps</li>
@@ -1603,7 +1605,7 @@
 <li>Assumptions about what the receiving party knows</li>
 </ul>
 <p>Healthcare's solution: <strong>Standardized handoff checklists with read-back verification</strong>. When implemented, handoff failure rates dropped from 23% to less than 5%.</p>
-<h3 id="the-technical-implementation">The Technical Implementation<a class="headerlink" href="#the-technical-implementation" title="Permanent link">&para;</a></h3>
+<h3 id="the-technical-implementation">The Technical Implementation<a class="headerlink" href="#the-technical-implementation" title="Permanent link to this section">🔗</a></h3>
 <p>I wondered: could an AI system learn this pattern from healthcare code and apply it to predict deployment failures?</p>
 <p>Here's the architecture:</p>
 <p><strong>1. Domain-Specific Analysis (Healthcare)</strong>
@@ -1669,7 +1671,7 @@
 <a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="p">]</span>
 <a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="p">}</span>
 </code></pre></div></p>
-<h3 id="the-architecture">The Architecture<a class="headerlink" href="#the-architecture" title="Permanent link">&para;</a></h3>
+<h3 id="the-architecture">The Architecture<a class="headerlink" href="#the-architecture" title="Permanent link to this section">🔗</a></h3>
 <p>The system has three main components:</p>
 <p><strong>Coach Wizards</strong> - Specialized AI agents for different domains:
 - <code>ComplianceWizard</code> - Analyzes healthcare/regulatory code
@@ -1688,7 +1690,7 @@
 3. <strong>Level 3 Pragmatic</strong> - Know why code was written this way (intent)
 4. <strong>Level 4 Anticipatory</strong> - Predict what will go wrong (trajectory analysis)
 5. <strong>Level 5 Transformative</strong> - Learn patterns across domains (this demo)</p>
-<h3 id="running-the-demo">Running the Demo<a class="headerlink" href="#running-the-demo" title="Permanent link">&para;</a></h3>
+<h3 id="running-the-demo">Running the Demo<a class="headerlink" href="#running-the-demo" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Install with MemDocs integration</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">[</span>full<span class="o">]</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
@@ -1763,14 +1765,14 @@
 <a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a>  4. Add read-back confirmation for critical environment variables
 <a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a>  5. Document rollback procedure as part of handoff
 </code></pre></div></p>
-<h3 id="why-this-matters">Why This Matters<a class="headerlink" href="#why-this-matters" title="Permanent link">&para;</a></h3>
+<h3 id="why-this-matters">Why This Matters<a class="headerlink" href="#why-this-matters" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Traditional code analysis tools work in isolation.</strong> They can find SQL injection vulnerabilities or performance bottlenecks within your codebase. But they can't recognize that hospital shift-change protocols have relevance to Kubernetes deployments.</p>
 <p>This requires:
 - <strong>Long-term memory</strong> (MemDocs) to store patterns across sessions
 - <strong>Cross-domain reasoning</strong> to recognize similar failure modes
 - <strong>Anticipatory prediction</strong> to forecast failures 30-90 days ahead
 - <strong>Transformative insight</strong> to apply lessons from one field to another</p>
-<h3 id="broader-applications">Broader Applications<a class="headerlink" href="#broader-applications" title="Permanent link">&para;</a></h3>
+<h3 id="broader-applications">Broader Applications<a class="headerlink" href="#broader-applications" title="Permanent link to this section">🔗</a></h3>
 <p>The pattern transfer works in multiple directions:</p>
 <p><strong>Healthcare → Software:</strong>
 - Handoff protocols → Deployment checklists
@@ -1784,7 +1786,7 @@
 <p><strong>Manufacturing → DevOps:</strong>
 - Quality gates → CI/CD gates
 - Six Sigma → Performance optimization</p>
-<h3 id="technical-details">Technical Details<a class="headerlink" href="#technical-details" title="Permanent link">&para;</a></h3>
+<h3 id="technical-details">Technical Details<a class="headerlink" href="#technical-details" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Pattern Extraction:</strong>
 The system uses Claude Sonnet 4.5 with extended thinking to:
 1. Analyze code for failure patterns
@@ -1809,7 +1811,7 @@ Calculated from:
 - Team velocity patterns
 - Deployment frequency
 - Complexity indicators</p>
-<h3 id="limitations-and-future-work">Limitations and Future Work<a class="headerlink" href="#limitations-and-future-work" title="Permanent link">&para;</a></h3>
+<h3 id="limitations-and-future-work">Limitations and Future Work<a class="headerlink" href="#limitations-and-future-work" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Current Limitations:</strong>
 1. Requires high-quality source patterns (healthcare research is well-documented)
 2. Cross-domain matching is still experimental
@@ -1821,14 +1823,14 @@ Calculated from:
 3. Add automated pattern extraction from incident reports
 4. Build community-contributed pattern database
 5. Validate predictions against real-world deployment data</p>
-<h3 id="licensing-and-availability">Licensing and Availability<a class="headerlink" href="#licensing-and-availability" title="Permanent link">&para;</a></h3>
+<h3 id="licensing-and-availability">Licensing and Availability<a class="headerlink" href="#licensing-and-availability" title="Permanent link to this section">🔗</a></h3>
 <p>The Empathy Framework uses <strong>Fair Source 0.9</strong> licensing:</p>
 <p>✅ <strong>Free forever for students, educators, and small teams (≤5 employees)</strong>
 ✅ <strong>Full source code access</strong> for security review and compliance
 ✅ <strong>Commercial license: $99/developer/year</strong> for organizations with 6+ employees
 ✅ <strong>Auto-converts to Apache 2.0</strong> on January 1, 2029</p>
 <p>I believe in balancing free access for small teams with sustainable development funding.</p>
-<h3 id="repository-structure">Repository Structure<a class="headerlink" href="#repository-structure" title="Permanent link">&para;</a></h3>
+<h3 id="repository-structure">Repository Structure<a class="headerlink" href="#repository-structure" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>empathy-framework/
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── coach_wizards/          # 16 software development wizards
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>├── wizards/                # 18 healthcare documentation wizards
@@ -1845,14 +1847,14 @@ Calculated from:
 - Software plugin: 95.71% coverage
 - Healthcare wizards: 85%+ coverage
 - 1,247 comprehensive tests passing</p>
-<h3 id="links">Links<a class="headerlink" href="#links" title="Permanent link">&para;</a></h3>
+<h3 id="links">Links<a class="headerlink" href="#links" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>GitHub:</strong> https://github.com/Smart-AI-Memory/empathy-framework</li>
 <li><strong>Docs:</strong> https://empathy-framework.readthedocs.io</li>
 <li><strong>Demo:</strong> https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/level_5_transformative</li>
 <li><strong>PyPI:</strong> https://pypi.org/project/empathy-framework/</li>
 </ul>
-<h3 id="discussion-questions">Discussion Questions<a class="headerlink" href="#discussion-questions" title="Permanent link">&para;</a></h3>
+<h3 id="discussion-questions">Discussion Questions<a class="headerlink" href="#discussion-questions" title="Permanent link to this section">🔗</a></h3>
 <p>I'd love to hear from the community:</p>
 <ol>
 <li>
@@ -1871,7 +1873,7 @@ Calculated from:
 <p><strong>Pattern contribution model?</strong> How should the community contribute patterns from their industries?</p>
 </li>
 </ol>
-<h3 id="why-i-built-this">Why I Built This<a class="headerlink" href="#why-i-built-this" title="Permanent link">&para;</a></h3>
+<h3 id="why-i-built-this">Why I Built This<a class="headerlink" href="#why-i-built-this" title="Permanent link to this section">🔗</a></h3>
 <p>I've been working with healthcare AI (AI Nurse Florence project) and noticed that healthcare has spent <strong>decades and billions of dollars</strong> learning lessons through patient safety incidents and research.</p>
 <p>Software makes the same mistakes. Why not learn from healthcare's investment?</p>
 <p>This is the first implementation of what I'm calling <strong>Level 5 Systems Empathy</strong>—AI that can learn structural patterns from one domain and apply them transformatively to another.</p>
@@ -1880,7 +1882,7 @@ Calculated from:
 <p><strong>TL;DR:</strong> Built an AI framework that learns safety patterns from healthcare (23% handoff failure rate) and applies them to predict software deployment failures (87% confidence). Open source, Fair Source 0.9 licensed. First implementation of cross-domain pattern transfer for code analysis.</p>
 <p><strong>Try it:</strong> <code>pip install empathy-framework[full]</code></p>
 <hr />
-<h2 id="posting-guidelines-for-rprogramming">Posting Guidelines for r/programming<a class="headerlink" href="#posting-guidelines-for-rprogramming" title="Permanent link">&para;</a></h2>
+<h2 id="posting-guidelines-for-rprogramming">Posting Guidelines for r/programming<a class="headerlink" href="#posting-guidelines-for-rprogramming" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Title Tips:</strong>
 - Lead with [Open Source] tag for better reception
 - Include specific numbers (87% confidence)

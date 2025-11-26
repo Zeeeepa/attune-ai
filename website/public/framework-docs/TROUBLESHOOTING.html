@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1915,12 +1917,12 @@
   
 
 
-<h1 id="empathy-framework-troubleshooting-guide">Empathy Framework - Troubleshooting Guide<a class="headerlink" href="#empathy-framework-troubleshooting-guide" title="Permanent link">&para;</a></h1>
+<h1 id="empathy-framework-troubleshooting-guide">Empathy Framework - Troubleshooting Guide<a class="headerlink" href="#empathy-framework-troubleshooting-guide" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Last Updated:</strong> November 2025
 <strong>Version:</strong> 1.0.0</p>
 <p>This guide covers common issues, error messages, and solutions for the Empathy Framework.</p>
 <hr />
-<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="#installation-issues">Installation Issues</a></li>
 <li><a href="#import-and-module-errors">Import and Module Errors</a></li>
@@ -1934,8 +1936,8 @@
 <li><a href="#platform-specific-issues">Platform-Specific Issues</a></li>
 </ul>
 <hr />
-<h2 id="installation-issues">Installation Issues<a class="headerlink" href="#installation-issues" title="Permanent link">&para;</a></h2>
-<h3 id="issue-pip-install-empathy-framework-fails">Issue: <code>pip install empathy-framework</code> fails<a class="headerlink" href="#issue-pip-install-empathy-framework-fails" title="Permanent link">&para;</a></h3>
+<h2 id="installation-issues">Installation Issues<a class="headerlink" href="#installation-issues" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-pip-install-empathy-framework-fails">Issue: <code>pip install empathy-framework</code> fails<a class="headerlink" href="#issue-pip-install-empathy-framework-fails" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Messages:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ERROR: Could not find a version that satisfies the requirement empathy-framework
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ERROR: No matching distribution found for empathy-framework
@@ -1962,7 +1964,7 @@
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </code></pre></div></p>
-<h3 id="issue-dependency-conflicts">Issue: Dependency conflicts<a class="headerlink" href="#issue-dependency-conflicts" title="Permanent link">&para;</a></h3>
+<h3 id="issue-dependency-conflicts">Issue: Dependency conflicts<a class="headerlink" href="#issue-dependency-conflicts" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ERROR: pip&#39;s dependency resolver does not currently take into account all the packages
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>that are installed. This behaviour is the source of the following dependency conflicts.
@@ -1990,7 +1992,7 @@
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">openai</span><span class="o">==</span><span class="m">1</span>.6.0
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework
 </code></pre></div></p>
-<h3 id="issue-permission-denied-during-installation">Issue: Permission denied during installation<a class="headerlink" href="#issue-permission-denied-during-installation" title="Permanent link">&para;</a></h3>
+<h3 id="issue-permission-denied-during-installation">Issue: Permission denied during installation<a class="headerlink" href="#issue-permission-denied-during-installation" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>PermissionError: [Errno 13] Permission denied: &#39;/usr/local/lib/python3.11/site-packages/&#39;
 </code></pre></div></p>
@@ -2009,8 +2011,8 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>empathy-framework
 </code></pre></div></p>
 <hr />
-<h2 id="import-and-module-errors">Import and Module Errors<a class="headerlink" href="#import-and-module-errors" title="Permanent link">&para;</a></h2>
-<h3 id="issue-modulenotfounderror-no-module-named-empathy_llm_toolkit">Issue: <code>ModuleNotFoundError: No module named 'empathy_llm_toolkit'</code><a class="headerlink" href="#issue-modulenotfounderror-no-module-named-empathy_llm_toolkit" title="Permanent link">&para;</a></h3>
+<h2 id="import-and-module-errors">Import and Module Errors<a class="headerlink" href="#import-and-module-errors" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-modulenotfounderror-no-module-named-empathy_llm_toolkit">Issue: <code>ModuleNotFoundError: No module named 'empathy_llm_toolkit'</code><a class="headerlink" href="#issue-modulenotfounderror-no-module-named-empathy_llm_toolkit" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="ne">ModuleNotFoundError</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="s1">&#39;empathy_llm_toolkit&#39;</span>
 </code></pre></div></p>
@@ -2033,7 +2035,7 @@
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>which<span class="w"> </span>pip
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1"># Should point to same environment</span>
 </code></pre></div></p>
-<h3 id="issue-modulenotfounderror-no-module-named-coach_wizards">Issue: <code>ModuleNotFoundError: No module named 'coach_wizards'</code><a class="headerlink" href="#issue-modulenotfounderror-no-module-named-coach_wizards" title="Permanent link">&para;</a></h3>
+<h3 id="issue-modulenotfounderror-no-module-named-coach_wizards">Issue: <code>ModuleNotFoundError: No module named 'coach_wizards'</code><a class="headerlink" href="#issue-modulenotfounderror-no-module-named-coach_wizards" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solutions:</strong></p>
 <p><strong>1. Ensure you're in the project directory:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nb">cd</span><span class="w"> </span>/path/to/Empathy-framework
@@ -2045,7 +2047,7 @@
 <p><strong>3. Verify the module exists:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from coach_wizards import SecurityWizard; print(&#39;Success!&#39;)&quot;</span>
 </code></pre></div></p>
-<h3 id="issue-importerror-cannot-import-name-x-from-y">Issue: <code>ImportError: cannot import name 'X' from 'Y'</code><a class="headerlink" href="#issue-importerror-cannot-import-name-x-from-y" title="Permanent link">&para;</a></h3>
+<h3 id="issue-importerror-cannot-import-name-x-from-y">Issue: <code>ImportError: cannot import name 'X' from 'Y'</code><a class="headerlink" href="#issue-importerror-cannot-import-name-x-from-y" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Cause:</strong> API changes between versions</p>
 <p><strong>Solutions:</strong></p>
 <p><strong>1. Check version compatibility:</strong>
@@ -2063,8 +2065,8 @@
 <a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_llm_toolkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyLLM</span>
 </code></pre></div></p>
 <hr />
-<h2 id="api-key-configuration">API Key Configuration<a class="headerlink" href="#api-key-configuration" title="Permanent link">&para;</a></h2>
-<h3 id="issue-api-key-not-found-or-authentication-failed">Issue: "API key not found" or "Authentication failed"<a class="headerlink" href="#issue-api-key-not-found-or-authentication-failed" title="Permanent link">&para;</a></h3>
+<h2 id="api-key-configuration">API Key Configuration<a class="headerlink" href="#api-key-configuration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-api-key-not-found-or-authentication-failed">Issue: "API key not found" or "Authentication failed"<a class="headerlink" href="#issue-api-key-not-found-or-authentication-failed" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Messages:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ValueError: ANTHROPIC_API_KEY not found in environment
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>AuthenticationError: Invalid API key
@@ -2117,7 +2119,7 @@
 <a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>
 <a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="c1"># Should return a response, not an error</span>
 </code></pre></div></p>
-<h3 id="issue-api-key-works-in-terminal-but-not-in-application">Issue: API key works in terminal but not in application<a class="headerlink" href="#issue-api-key-works-in-terminal-but-not-in-application" title="Permanent link">&para;</a></h3>
+<h3 id="issue-api-key-works-in-terminal-but-not-in-application">Issue: API key works in terminal but not in application<a class="headerlink" href="#issue-api-key-works-in-terminal-but-not-in-application" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Cause:</strong> Environment variables not passed to application</p>
 <p><strong>Solutions:</strong></p>
 <p><strong>1. Load dotenv in application:</strong>
@@ -2140,8 +2142,8 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--env-file<span class="w"> </span>.env<span class="w"> </span>myapp
 </code></pre></div></p>
 <hr />
-<h2 id="runtime-errors">Runtime Errors<a class="headerlink" href="#runtime-errors" title="Permanent link">&para;</a></h2>
-<h3 id="issue-target-level-not-reached-or-trust-level-too-low">Issue: "Target level not reached" or "Trust level too low"<a class="headerlink" href="#issue-target-level-not-reached-or-trust-level-too-low" title="Permanent link">&para;</a></h3>
+<h2 id="runtime-errors">Runtime Errors<a class="headerlink" href="#runtime-errors" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-target-level-not-reached-or-trust-level-too-low">Issue: "Target level not reached" or "Trust level too low"<a class="headerlink" href="#issue-target-level-not-reached-or-trust-level-too-low" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>RuntimeError: Target level 4 not reached. Current trust level: 0.35 (requires 0.8+)
 </code></pre></div></p>
@@ -2175,7 +2177,7 @@
 <a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="nt">trust_building_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.10</span><span class="w">  </span><span class="c1"># Default: 0.05 (higher = faster trust)</span>
 <a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="nt">trust_erosion_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span><span class="w">   </span><span class="c1"># Default: 0.10 (lower = trust decays slower)</span>
 </code></pre></div></p>
-<h3 id="issue-async-runtime-error-or-event-loop-is-closed">Issue: "Async runtime error" or "Event loop is closed"<a class="headerlink" href="#issue-async-runtime-error-or-event-loop-is-closed" title="Permanent link">&para;</a></h3>
+<h3 id="issue-async-runtime-error-or-event-loop-is-closed">Issue: "Async runtime error" or "Event loop is closed"<a class="headerlink" href="#issue-async-runtime-error-or-event-loop-is-closed" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>RuntimeError: Event loop is closed
 <a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>RuntimeError: This event loop is already running
@@ -2224,8 +2226,8 @@
 <a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a>    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div></p>
 <hr />
-<h2 id="performance-issues">Performance Issues<a class="headerlink" href="#performance-issues" title="Permanent link">&para;</a></h2>
-<h3 id="issue-slow-response-times">Issue: Slow response times<a class="headerlink" href="#issue-slow-response-times" title="Permanent link">&para;</a></h3>
+<h2 id="performance-issues">Performance Issues<a class="headerlink" href="#performance-issues" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-slow-response-times">Issue: Slow response times<a class="headerlink" href="#issue-slow-response-times" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Symptoms:</strong> Each LLM call takes 5-30+ seconds</p>
 <p><strong>Solutions:</strong></p>
 <p><strong>1. Use faster model:</strong>
@@ -2279,7 +2281,7 @@
 <a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a>    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span>
 <a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a>    <span class="k">return</span> <span class="n">results</span>
 </code></pre></div></p>
-<h3 id="issue-high-llm-api-costs">Issue: High LLM API costs<a class="headerlink" href="#issue-high-llm-api-costs" title="Permanent link">&para;</a></h3>
+<h3 id="issue-high-llm-api-costs">Issue: High LLM API costs<a class="headerlink" href="#issue-high-llm-api-costs" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Symptoms:</strong> Monthly bills of $100+ for development</p>
 <p><strong>Solutions:</strong></p>
 <p><strong>1. Enable prompt caching (90% cost reduction):</strong>
@@ -2334,7 +2336,7 @@
 <a id="__codelineno-48-13" name="__codelineno-48-13" href="#__codelineno-48-13"></a><span class="n">code_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 <a id="__codelineno-48-14" name="__codelineno-48-14" href="#__codelineno-48-14"></a><span class="n">result</span> <span class="o">=</span> <span class="n">cached_analysis</span><span class="p">(</span><span class="n">code_hash</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="issue-memory-errors-with-large-codebases">Issue: Memory errors with large codebases<a class="headerlink" href="#issue-memory-errors-with-large-codebases" title="Permanent link">&para;</a></h3>
+<h3 id="issue-memory-errors-with-large-codebases">Issue: Memory errors with large codebases<a class="headerlink" href="#issue-memory-errors-with-large-codebases" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>MemoryError: Unable to allocate array
 <a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>OutOfMemoryError
@@ -2379,8 +2381,8 @@
 <a id="__codelineno-52-8" name="__codelineno-52-8" href="#__codelineno-52-8"></a>docker<span class="w"> </span>run<span class="w"> </span>-m<span class="w"> </span>8g<span class="w"> </span>myapp
 </code></pre></div></p>
 <hr />
-<h2 id="test-failures">Test Failures<a class="headerlink" href="#test-failures" title="Permanent link">&para;</a></h2>
-<h3 id="issue-tests-fail-with-api-key-not-found">Issue: Tests fail with "API key not found"<a class="headerlink" href="#issue-tests-fail-with-api-key-not-found" title="Permanent link">&para;</a></h3>
+<h2 id="test-failures">Test Failures<a class="headerlink" href="#test-failures" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-tests-fail-with-api-key-not-found">Issue: Tests fail with "API key not found"<a class="headerlink" href="#issue-tests-fail-with-api-key-not-found" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solutions:</strong></p>
 <p><strong>1. Set environment variables before running tests:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span>sk-ant-your-key
@@ -2405,7 +2407,7 @@
 <a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
 <a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="n">load_dotenv</span><span class="p">(</span><span class="s2">&quot;.env.test&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="issue-tests-are-slow-1-minute">Issue: Tests are slow (&gt;1 minute)<a class="headerlink" href="#issue-tests-are-slow-1-minute" title="Permanent link">&para;</a></h3>
+<h3 id="issue-tests-are-slow-1-minute">Issue: Tests are slow (&gt;1 minute)<a class="headerlink" href="#issue-tests-are-slow-1-minute" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Solutions:</strong></p>
 <p><strong>1. Mock LLM calls:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
@@ -2451,8 +2453,8 @@
 <a id="__codelineno-60-10" name="__codelineno-60-10" href="#__codelineno-60-10"></a>                <span class="n">item</span><span class="o">.</span><span class="n">add_marker</span><span class="p">(</span><span class="n">skip_slow</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="llm-provider-issues">LLM Provider Issues<a class="headerlink" href="#llm-provider-issues" title="Permanent link">&para;</a></h2>
-<h3 id="issue-anthropic-api-rate-limit-errors">Issue: Anthropic API rate limit errors<a class="headerlink" href="#issue-anthropic-api-rate-limit-errors" title="Permanent link">&para;</a></h3>
+<h2 id="llm-provider-issues">LLM Provider Issues<a class="headerlink" href="#llm-provider-issues" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-anthropic-api-rate-limit-errors">Issue: Anthropic API rate limit errors<a class="headerlink" href="#issue-anthropic-api-rate-limit-errors" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>RateLimitError: rate_limit_error: You have been rate limited
 </code></pre></div></p>
@@ -2488,7 +2490,7 @@
 <a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="n">batch_input</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;Analyze </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">])</span>
 <a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">batch_input</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="issue-openai-context-length-exceeded">Issue: OpenAI context length exceeded<a class="headerlink" href="#issue-openai-context-length-exceeded" title="Permanent link">&para;</a></h3>
+<h3 id="issue-openai-context-length-exceeded">Issue: OpenAI context length exceeded<a class="headerlink" href="#issue-openai-context-length-exceeded" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>InvalidRequestError: This model&#39;s maximum context length is 8192 tokens
 </code></pre></div></p>
@@ -2514,7 +2516,7 @@
 <a id="__codelineno-68-4" name="__codelineno-68-4" href="#__codelineno-68-4"></a>    <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span>
 <a id="__codelineno-68-5" name="__codelineno-68-5" href="#__codelineno-68-5"></a><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="issue-local-model-ollama-connection-refused">Issue: Local model (Ollama) connection refused<a class="headerlink" href="#issue-local-model-ollama-connection-refused" title="Permanent link">&para;</a></h3>
+<h3 id="issue-local-model-ollama-connection-refused">Issue: Local model (Ollama) connection refused<a class="headerlink" href="#issue-local-model-ollama-connection-refused" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>ConnectionRefusedError: [Errno 61] Connection refused
 </code></pre></div></p>
@@ -2542,8 +2544,8 @@
 <a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a>ollama<span class="w"> </span>list<span class="w">  </span><span class="c1"># Verify it&#39;s downloaded</span>
 </code></pre></div></p>
 <hr />
-<h2 id="configuration-issues">Configuration Issues<a class="headerlink" href="#configuration-issues" title="Permanent link">&para;</a></h2>
-<h3 id="issue-configuration-file-not-found">Issue: Configuration file not found<a class="headerlink" href="#issue-configuration-file-not-found" title="Permanent link">&para;</a></h3>
+<h2 id="configuration-issues">Configuration Issues<a class="headerlink" href="#configuration-issues" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-configuration-file-not-found">Issue: Configuration file not found<a class="headerlink" href="#issue-configuration-file-not-found" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>FileNotFoundError: [Errno 2] No such file or directory: &#39;empathy.config.yml&#39;
 </code></pre></div></p>
@@ -2565,7 +2567,7 @@
 <a id="__codelineno-78-2" name="__codelineno-78-2" href="#__codelineno-78-2"></a>
 <a id="__codelineno-78-3" name="__codelineno-78-3" href="#__codelineno-78-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">EmpathyConfig</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
 </code></pre></div>
-<h3 id="issue-invalid-configuration-values">Issue: Invalid configuration values<a class="headerlink" href="#issue-invalid-configuration-values" title="Permanent link">&para;</a></h3>
+<h3 id="issue-invalid-configuration-values">Issue: Invalid configuration values<a class="headerlink" href="#issue-invalid-configuration-values" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a>ValueError: target_level must be between 1 and 5, got 10
 <a id="__codelineno-79-2" name="__codelineno-79-2" href="#__codelineno-79-2"></a>ValueError: confidence_threshold must be between 0.0 and 1.0, got 1.5
@@ -2602,8 +2604,8 @@
 <a id="__codelineno-81-13" name="__codelineno-81-13" href="#__codelineno-81-13"></a><span class="nt">confidence_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">75</span><span class="w">  </span><span class="c1"># Must be 0.0-1.0, not percentage</span>
 </code></pre></div></p>
 <hr />
-<h2 id="memory-and-resource-issues">Memory and Resource Issues<a class="headerlink" href="#memory-and-resource-issues" title="Permanent link">&para;</a></h2>
-<h3 id="issue-database-is-locked-error-sqlite">Issue: "Database is locked" error (SQLite)<a class="headerlink" href="#issue-database-is-locked-error-sqlite" title="Permanent link">&para;</a></h3>
+<h2 id="memory-and-resource-issues">Memory and Resource Issues<a class="headerlink" href="#memory-and-resource-issues" title="Permanent link to this section">🔗</a></h2>
+<h3 id="issue-database-is-locked-error-sqlite">Issue: "Database is locked" error (SQLite)<a class="headerlink" href="#issue-database-is-locked-error-sqlite" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a>sqlite3.OperationalError: database is locked
 </code></pre></div></p>
@@ -2623,7 +2625,7 @@
 <a id="__codelineno-85-2" name="__codelineno-85-2" href="#__codelineno-85-2"></a><span class="nt">persistence_backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
 <a id="__codelineno-85-3" name="__codelineno-85-3" href="#__codelineno-85-3"></a><span class="nt">persistence_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://user:pass@localhost/empathy</span>
 </code></pre></div></p>
-<h3 id="issue-disk-space-full">Issue: Disk space full<a class="headerlink" href="#issue-disk-space-full" title="Permanent link">&para;</a></h3>
+<h3 id="issue-disk-space-full">Issue: Disk space full<a class="headerlink" href="#issue-disk-space-full" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a>OSError: [Errno 28] No space left on device
 </code></pre></div></p>
@@ -2651,8 +2653,8 @@
 <a id="__codelineno-89-9" name="__codelineno-89-9" href="#__codelineno-89-9"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">handlers</span><span class="o">=</span><span class="p">[</span><span class="n">handler</span><span class="p">])</span>
 </code></pre></div></p>
 <hr />
-<h2 id="platform-specific-issues">Platform-Specific Issues<a class="headerlink" href="#platform-specific-issues" title="Permanent link">&para;</a></h2>
-<h3 id="macos-operation-not-permitted-error">macOS: "Operation not permitted" error<a class="headerlink" href="#macos-operation-not-permitted-error" title="Permanent link">&para;</a></h3>
+<h2 id="platform-specific-issues">Platform-Specific Issues<a class="headerlink" href="#platform-specific-issues" title="Permanent link to this section">🔗</a></h2>
+<h3 id="macos-operation-not-permitted-error">macOS: "Operation not permitted" error<a class="headerlink" href="#macos-operation-not-permitted-error" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-90-1" name="__codelineno-90-1" href="#__codelineno-90-1"></a>PermissionError: [Errno 1] Operation not permitted
 </code></pre></div></p>
@@ -2665,7 +2667,7 @@
 <a id="__codelineno-91-2" name="__codelineno-91-2" href="#__codelineno-91-2"></a><span class="nt">persistence_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/empathy_data</span><span class="w">  </span><span class="c1"># Not /usr/local/</span>
 <a id="__codelineno-91-3" name="__codelineno-91-3" href="#__codelineno-91-3"></a><span class="nt">state_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/empathy_state</span>
 </code></pre></div></p>
-<h3 id="windows-access-is-denied-or-path-issues">Windows: "Access is denied" or path issues<a class="headerlink" href="#windows-access-is-denied-or-path-issues" title="Permanent link">&para;</a></h3>
+<h3 id="windows-access-is-denied-or-path-issues">Windows: "Access is denied" or path issues<a class="headerlink" href="#windows-access-is-denied-or-path-issues" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-92-1" name="__codelineno-92-1" href="#__codelineno-92-1"></a>PermissionError: [WinError 5] Access is denied
 <a id="__codelineno-92-2" name="__codelineno-92-2" href="#__codelineno-92-2"></a>FileNotFoundError: [WinError 3] The system cannot find the path specified
@@ -2691,7 +2693,7 @@
 <a id="__codelineno-94-5" name="__codelineno-94-5" href="#__codelineno-94-5"></a><span class="n">home</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span>
 <a id="__codelineno-94-6" name="__codelineno-94-6" href="#__codelineno-94-6"></a><span class="n">config_path</span> <span class="o">=</span> <span class="n">home</span> <span class="o">/</span> <span class="s2">&quot;empathy.config.yml&quot;</span>
 </code></pre></div></p>
-<h3 id="linux-selinux-permission-denied">Linux: SELinux permission denied<a class="headerlink" href="#linux-selinux-permission-denied" title="Permanent link">&para;</a></h3>
+<h3 id="linux-selinux-permission-denied">Linux: SELinux permission denied<a class="headerlink" href="#linux-selinux-permission-denied" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Error Message:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-95-1" name="__codelineno-95-1" href="#__codelineno-95-1"></a>PermissionError: [Errno 13] Permission denied
 </code></pre></div></p>
@@ -2708,8 +2710,8 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a>sudo<span class="w"> </span>setenforce<span class="w"> </span><span class="m">0</span><span class="w">  </span><span class="c1"># Temporary</span>
 </code></pre></div></p>
 <hr />
-<h2 id="getting-more-help">Getting More Help<a class="headerlink" href="#getting-more-help" title="Permanent link">&para;</a></h2>
-<h3 id="enable-debug-logging">Enable Debug Logging<a class="headerlink" href="#enable-debug-logging" title="Permanent link">&para;</a></h3>
+<h2 id="getting-more-help">Getting More Help<a class="headerlink" href="#getting-more-help" title="Permanent link to this section">🔗</a></h2>
+<h3 id="enable-debug-logging">Enable Debug Logging<a class="headerlink" href="#enable-debug-logging" title="Permanent link to this section">🔗</a></h3>
 <p>Get detailed logs for troubleshooting:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-99-1" name="__codelineno-99-1" href="#__codelineno-99-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <a id="__codelineno-99-2" name="__codelineno-99-2" href="#__codelineno-99-2"></a>
@@ -2724,7 +2726,7 @@
 <a id="__codelineno-99-11" name="__codelineno-99-11" href="#__codelineno-99-11"></a>
 <a id="__codelineno-99-12" name="__codelineno-99-12" href="#__codelineno-99-12"></a><span class="c1"># Now run your code - detailed logs will be saved</span>
 </code></pre></div>
-<h3 id="collect-system-information">Collect System Information<a class="headerlink" href="#collect-system-information" title="Permanent link">&para;</a></h3>
+<h3 id="collect-system-information">Collect System Information<a class="headerlink" href="#collect-system-information" title="Permanent link to this section">🔗</a></h3>
 <p>When reporting issues, include:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-100-1" name="__codelineno-100-1" href="#__codelineno-100-1"></a><span class="c1"># System info</span>
 <a id="__codelineno-100-2" name="__codelineno-100-2" href="#__codelineno-100-2"></a>uname<span class="w"> </span>-a
@@ -2739,7 +2741,7 @@
 <a id="__codelineno-100-11" name="__codelineno-100-11" href="#__codelineno-100-11"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from empathy_llm_toolkit import EmpathyLLM; print(&#39;Core: OK&#39;)&quot;</span>
 <a id="__codelineno-100-12" name="__codelineno-100-12" href="#__codelineno-100-12"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from coach_wizards import SecurityWizard; print(&#39;Wizards: OK&#39;)&quot;</span>
 </code></pre></div>
-<h3 id="report-bugs">Report Bugs<a class="headerlink" href="#report-bugs" title="Permanent link">&para;</a></h3>
+<h3 id="report-bugs">Report Bugs<a class="headerlink" href="#report-bugs" title="Permanent link to this section">🔗</a></h3>
 <p><strong>GitHub Issues:</strong> https://github.com/Deep-Study-AI/Empathy/issues</p>
 <p><strong>Include:</strong>
 1. Full error message and traceback
@@ -2749,7 +2751,7 @@
 5. Minimal code to reproduce
 6. Steps to reproduce
 7. Expected vs actual behavior</p>
-<h3 id="get-commercial-support">Get Commercial Support<a class="headerlink" href="#get-commercial-support" title="Permanent link">&para;</a></h3>
+<h3 id="get-commercial-support">Get Commercial Support<a class="headerlink" href="#get-commercial-support" title="Permanent link to this section">🔗</a></h3>
 <p>For priority support with guaranteed response times:</p>
 <p><strong>Commercial Support:</strong> $99/developer/year
 - 24-48 hour response time

@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1753,7 +1755,7 @@
   
 
 
-<h1 id="foreword-how-to-read-this-book">Foreword: How to Read This Book<a class="headerlink" href="#foreword-how-to-read-this-book" title="Permanent link">&para;</a></h1>
+<h1 id="foreword-how-to-read-this-book">Foreword: How to Read This Book<a class="headerlink" href="#foreword-how-to-read-this-book" title="Permanent link to this section">🔗</a></h1>
 <hr />
 <p><strong>License</strong>: Apache License 2.0
 <strong>Copyright</strong>: © 2025 Deep Study AI, LLC
@@ -1763,23 +1765,23 @@
 <p><strong>About This Book</strong></p>
 <p>This book documents the development philosophy, technical decisions, and practical patterns behind <strong>AI Nurse Florence</strong>, a production healthcare AI assistant. More importantly, it teaches you how to collaborate effectively with AI assistants like Claude to build better software faster.</p>
 <hr />
-<h2 id="who-this-book-is-for">Who This Book Is For<a class="headerlink" href="#who-this-book-is-for" title="Permanent link">&para;</a></h2>
+<h2 id="who-this-book-is-for">Who This Book Is For<a class="headerlink" href="#who-this-book-is-for" title="Permanent link to this section">🔗</a></h2>
 <p>This book serves three distinct audiences. Find yourself below and jump to the sections that match your needs:</p>
-<h3 id="students-newcomers">🎓 <strong>Students &amp; Newcomers</strong><a class="headerlink" href="#students-newcomers" title="Permanent link">&para;</a></h3>
+<h3 id="students-newcomers">🎓 <strong>Students &amp; Newcomers</strong><a class="headerlink" href="#students-newcomers" title="Permanent link to this section">🔗</a></h3>
 <p>You're learning software development, AI collaboration, or healthcare technology. You need fundamentals explained clearly.</p>
 <p><strong>Start here</strong>:
 - <a href="HOW_CLAUDE_LEARNS.html">How Claude Learns</a> — Understand how AI assistants retain and use information
 - <a href="TEACHING_AI_YOUR_PHILOSOPHY.html">Teaching AI Your Philosophy</a> — Learn to document your thinking for AI collaboration
 - Tutorials throughout the book (marked with 🎓)</p>
 <p><strong>What you'll get</strong>: Plain-language explanations of concepts, step-by-step guidance, no assumed knowledge.</p>
-<h3 id="practitioners">👨‍💻 <strong>Practitioners</strong><a class="headerlink" href="#practitioners" title="Permanent link">&para;</a></h3>
+<h3 id="practitioners">👨‍💻 <strong>Practitioners</strong><a class="headerlink" href="#practitioners" title="Permanent link to this section">🔗</a></h3>
 <p>You're an experienced developer who wants practical patterns you can use tomorrow. You don't need theory—you need working code.</p>
 <p><strong>Start here</strong>:
 - <a href="../PATTERNS.md">Code Patterns</a> — Copy-paste templates for services, routers, and integrations
 - <a href="../CODING_STANDARDS.md">Coding Standards</a> — FastAPI, async, testing, and healthcare-specific standards
 - How-To Guides throughout the book (marked with 🔧)</p>
 <p><strong>What you'll get</strong>: Just-in-time solutions, working examples from production code, task-oriented guidance.</p>
-<h3 id="maintainers-architects">🏗️ <strong>Maintainers &amp; Architects</strong><a class="headerlink" href="#maintainers-architects" title="Permanent link">&para;</a></h3>
+<h3 id="maintainers-architects">🏗️ <strong>Maintainers &amp; Architects</strong><a class="headerlink" href="#maintainers-architects" title="Permanent link to this section">🔗</a></h3>
 <p>You're making technical decisions for a team or maintaining a complex system. You need to understand trade-offs and architectural reasoning.</p>
 <p><strong>Start here</strong>:
 - <a href="../DEVELOPMENT_PHILOSOPHY.md">Development Philosophy</a> — Core principles behind every decision
@@ -1787,8 +1789,8 @@
 - Explanation chapters throughout the book (marked with 📚)</p>
 <p><strong>What you'll get</strong>: Deep conceptual understanding, trade-off analysis, alternatives we considered.</p>
 <hr />
-<h2 id="how-this-book-is-structured">How This Book Is Structured<a class="headerlink" href="#how-this-book-is-structured" title="Permanent link">&para;</a></h2>
-<h3 id="the-diataxis-framework">The Diátaxis Framework<a class="headerlink" href="#the-diataxis-framework" title="Permanent link">&para;</a></h3>
+<h2 id="how-this-book-is-structured">How This Book Is Structured<a class="headerlink" href="#how-this-book-is-structured" title="Permanent link to this section">🔗</a></h2>
+<h3 id="the-diataxis-framework">The Diátaxis Framework<a class="headerlink" href="#the-diataxis-framework" title="Permanent link to this section">🔗</a></h3>
 <p>This book uses plain language and role-based navigation:</p>
 <ul>
 <li><strong>New readers</strong> get simple explanations of purpose and reasoning</li>
@@ -1797,21 +1799,21 @@
 </ul>
 <p>This structure keeps learning efficient and filters out unrelated detail.</p>
 <p>Every chapter fits into one of four categories:</p>
-<h4 id="tutorials-learn-by-doing">🎓 <strong>Tutorials</strong> — Learn by Doing<a class="headerlink" href="#tutorials-learn-by-doing" title="Permanent link">&para;</a></h4>
+<h4 id="tutorials-learn-by-doing">🎓 <strong>Tutorials</strong> — Learn by Doing<a class="headerlink" href="#tutorials-learn-by-doing" title="Permanent link to this section">🔗</a></h4>
 <p>Step-by-step lessons that teach through hands-on experience. Start here if you're new to a topic.</p>
 <p><em>Example</em>: "Your First Epic FHIR Integration in 30 Minutes"</p>
-<h4 id="how-to-guides-solve-specific-problems">🔧 <strong>How-To Guides</strong> — Solve Specific Problems<a class="headerlink" href="#how-to-guides-solve-specific-problems" title="Permanent link">&para;</a></h4>
+<h4 id="how-to-guides-solve-specific-problems">🔧 <strong>How-To Guides</strong> — Solve Specific Problems<a class="headerlink" href="#how-to-guides-solve-specific-problems" title="Permanent link to this section">🔗</a></h4>
 <p>Task-oriented recipes for practitioners. Use these when you know what you want to do but need the exact steps.</p>
 <p><em>Example</em>: "How to Add a New EHR Integration"</p>
-<h4 id="reference-look-up-details">📖 <strong>Reference</strong> — Look Up Details<a class="headerlink" href="#reference-look-up-details" title="Permanent link">&para;</a></h4>
+<h4 id="reference-look-up-details">📖 <strong>Reference</strong> — Look Up Details<a class="headerlink" href="#reference-look-up-details" title="Permanent link to this section">🔗</a></h4>
 <p>Precise technical information for all readers. Use these when you need exact API signatures, configuration options, or command syntax.</p>
 <p><em>Example</em>: "PatientService API Reference"</p>
-<h4 id="explanations-understand-the-why">📚 <strong>Explanations</strong> — Understand the Why<a class="headerlink" href="#explanations-understand-the-why" title="Permanent link">&para;</a></h4>
+<h4 id="explanations-understand-the-why">📚 <strong>Explanations</strong> — Understand the Why<a class="headerlink" href="#explanations-understand-the-why" title="Permanent link to this section">🔗</a></h4>
 <p>Conceptual deep dives into architecture, design decisions, and trade-offs. Read these to understand the reasoning behind the code.</p>
 <p><em>Example</em>: "Why We Use Service Layer Pattern"</p>
 <hr />
-<h2 id="navigation-tips">Navigation Tips<a class="headerlink" href="#navigation-tips" title="Permanent link">&para;</a></h2>
-<h3 id="icons-and-markers">Icons and Markers<a class="headerlink" href="#icons-and-markers" title="Permanent link">&para;</a></h3>
+<h2 id="navigation-tips">Navigation Tips<a class="headerlink" href="#navigation-tips" title="Permanent link to this section">🔗</a></h2>
+<h3 id="icons-and-markers">Icons and Markers<a class="headerlink" href="#icons-and-markers" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>🎓 <strong>Tutorial</strong>: Learn by doing</li>
 <li>🔧 <strong>How-To</strong>: Solve a specific task</li>
@@ -1821,14 +1823,14 @@
 <li>💡 <strong>Tip</strong>: Helpful insight</li>
 <li>🏥 <strong>Clinical Context</strong>: Healthcare-specific information</li>
 </ul>
-<h3 id="signposts">Signposts<a class="headerlink" href="#signposts" title="Permanent link">&para;</a></h3>
+<h3 id="signposts">Signposts<a class="headerlink" href="#signposts" title="Permanent link to this section">🔗</a></h3>
 <p>Throughout the book, you'll see clear navigation aids:</p>
 <blockquote>
 <p><strong>New to this topic?</strong> Start with the tutorial: <a href="../tutorials/first-patient-lookup.md">Your First Patient Lookup</a></p>
 <p><strong>Already familiar with FastAPI?</strong> Skip to <a href="../patterns/advanced-fastapi.md">Advanced Patterns</a></p>
 <p><strong>Prerequisites</strong>: Understanding of Python async/await, FastAPI basics</p>
 </blockquote>
-<h3 id="layered-learning">Layered Learning<a class="headerlink" href="#layered-learning" title="Permanent link">&para;</a></h3>
+<h3 id="layered-learning">Layered Learning<a class="headerlink" href="#layered-learning" title="Permanent link to this section">🔗</a></h3>
 <p>Content is organized in layers:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Layer 1: Philosophy (Why we do things)
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    ↓
@@ -1840,34 +1842,34 @@
 </code></pre></div>
 <p>You can enter at any layer depending on your needs. Students start at Layer 1; practitioners often jump to Layer 3.</p>
 <hr />
-<h2 id="what-makes-this-book-different">What Makes This Book Different<a class="headerlink" href="#what-makes-this-book-different" title="Permanent link">&para;</a></h2>
-<h3 id="1-plain-language-first">1. <strong>Plain Language First</strong><a class="headerlink" href="#1-plain-language-first" title="Permanent link">&para;</a></h3>
+<h2 id="what-makes-this-book-different">What Makes This Book Different<a class="headerlink" href="#what-makes-this-book-different" title="Permanent link to this section">🔗</a></h2>
+<h3 id="1-plain-language-first">1. <strong>Plain Language First</strong><a class="headerlink" href="#1-plain-language-first" title="Permanent link to this section">🔗</a></h3>
 <p>Technical precision matters, but clarity comes first. Every concept is explained as if you're learning it for the first time, with jargon defined upfront.</p>
-<h3 id="2-production-tested">2. <strong>Production-Tested</strong><a class="headerlink" href="#2-production-tested" title="Permanent link">&para;</a></h3>
+<h3 id="2-production-tested">2. <strong>Production-Tested</strong><a class="headerlink" href="#2-production-tested" title="Permanent link to this section">🔗</a></h3>
 <p>Every pattern, every principle, every example comes from building and maintaining a real healthcare AI system in production. This isn't theory—it's battle-tested practice.</p>
-<h3 id="3-ai-collaboration">3. <strong>AI Collaboration</strong><a class="headerlink" href="#3-ai-collaboration" title="Permanent link">&para;</a></h3>
+<h3 id="3-ai-collaboration">3. <strong>AI Collaboration</strong><a class="headerlink" href="#3-ai-collaboration" title="Permanent link to this section">🔗</a></h3>
 <p>This book was written <em>with</em> AI, and it teaches you how to collaborate with AI effectively. The documentation system itself is designed to teach AI assistants your development philosophy.</p>
-<h3 id="4-healthcare-context">4. <strong>Healthcare Context</strong><a class="headerlink" href="#4-healthcare-context" title="Permanent link">&para;</a></h3>
+<h3 id="4-healthcare-context">4. <strong>Healthcare Context</strong><a class="headerlink" href="#4-healthcare-context" title="Permanent link to this section">🔗</a></h3>
 <p>Software in healthcare has unique constraints: patient safety, HIPAA compliance, clinical workflows. This book shows how to build production healthcare software responsibly.</p>
-<h3 id="5-role-based-navigation">5. <strong>Role-Based Navigation</strong><a class="headerlink" href="#5-role-based-navigation" title="Permanent link">&para;</a></h3>
+<h3 id="5-role-based-navigation">5. <strong>Role-Based Navigation</strong><a class="headerlink" href="#5-role-based-navigation" title="Permanent link to this section">🔗</a></h3>
 <p>Unlike traditional technical books that assume one reader type, this book explicitly serves students, practitioners, and maintainers—with clear paths for each.</p>
 <hr />
-<h2 id="how-to-use-this-book">How to Use This Book<a class="headerlink" href="#how-to-use-this-book" title="Permanent link">&para;</a></h2>
-<h3 id="if-youre-reading-cover-to-cover">If You're Reading Cover-to-Cover<a class="headerlink" href="#if-youre-reading-cover-to-cover" title="Permanent link">&para;</a></h3>
+<h2 id="how-to-use-this-book">How to Use This Book<a class="headerlink" href="#how-to-use-this-book" title="Permanent link to this section">🔗</a></h2>
+<h3 id="if-youre-reading-cover-to-cover">If You're Reading Cover-to-Cover<a class="headerlink" href="#if-youre-reading-cover-to-cover" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li>Start with <a href="../DEVELOPMENT_PHILOSOPHY.md">Development Philosophy</a> to understand core principles</li>
 <li>Read <a href="HOW_CLAUDE_LEARNS.html">How Claude Learns</a> to grasp AI collaboration fundamentals</li>
 <li>Follow the tutorials in order for hands-on experience</li>
 <li>Reference patterns and standards as needed while coding</li>
 </ol>
-<h3 id="if-youre-using-this-as-a-reference">If You're Using This as a Reference<a class="headerlink" href="#if-youre-using-this-as-a-reference" title="Permanent link">&para;</a></h3>
+<h3 id="if-youre-using-this-as-a-reference">If You're Using This as a Reference<a class="headerlink" href="#if-youre-using-this-as-a-reference" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li>Use the Table of Contents or index to find your topic</li>
 <li>Check if it's a tutorial, how-to, reference, or explanation</li>
 <li>Follow the "Related" links to dive deeper</li>
 <li>Bookmark patterns you use frequently</li>
 </ol>
-<h3 id="if-youre-teaching-a-team">If You're Teaching a Team<a class="headerlink" href="#if-youre-teaching-a-team" title="Permanent link">&para;</a></h3>
+<h3 id="if-youre-teaching-a-team">If You're Teaching a Team<a class="headerlink" href="#if-youre-teaching-a-team" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li>Share <a href="../DOCUMENTATION_POLICY.md">Documentation Policy</a> for writing standards</li>
 <li>Use tutorials for onboarding new developers</li>
@@ -1875,7 +1877,7 @@
 <li>Reference ADRs when explaining architectural decisions</li>
 </ol>
 <hr />
-<h2 id="philosophy-of-this-book">Philosophy of This Book<a class="headerlink" href="#philosophy-of-this-book" title="Permanent link">&para;</a></h2>
+<h2 id="philosophy-of-this-book">Philosophy of This Book<a class="headerlink" href="#philosophy-of-this-book" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Clarity first.</strong> Newcomers get plain-language explanations of the "why." Every reader gets only what they need—tutorials, how-tos, reference, or explanations—so learning sticks and dead-ends shrink.</p>
 <p>This book prioritizes:
 - <strong>Retention over comprehensiveness</strong>: Better to deeply understand core concepts than superficially know everything
@@ -1883,7 +1885,7 @@
 - <strong>Why before how</strong>: Understand the reasoning before memorizing the steps
 - <strong>Audience respect</strong>: Students deserve clear explanations; experts deserve direct solutions</p>
 <hr />
-<h2 id="a-note-on-healthcare">A Note on Healthcare<a class="headerlink" href="#a-note-on-healthcare" title="Permanent link">&para;</a></h2>
+<h2 id="a-note-on-healthcare">A Note on Healthcare<a class="headerlink" href="#a-note-on-healthcare" title="Permanent link to this section">🔗</a></h2>
 <p>AI Nurse Florence operates in a healthcare context where mistakes can harm patients. Throughout this book, you'll see an emphasis on:</p>
 <ul>
 <li><strong>Clinical safety</strong>: Every feature is designed fail-safe</li>
@@ -1893,7 +1895,7 @@
 </ul>
 <p>If you're building healthcare software, these principles are non-negotiable. If you're building other critical systems, the same careful approach applies.</p>
 <hr />
-<h2 id="how-this-book-evolved">How This Book Evolved<a class="headerlink" href="#how-this-book-evolved" title="Permanent link">&para;</a></h2>
+<h2 id="how-this-book-evolved">How This Book Evolved<a class="headerlink" href="#how-this-book-evolved" title="Permanent link to this section">🔗</a></h2>
 <p>This documentation emerged from a simple need: <strong>How do we teach AI assistants our development philosophy so they write code the way we would?</strong></p>
 <p>The answer became a four-layer system:
 1. High-level philosophy (this book)
@@ -1902,7 +1904,7 @@
 4. In-code documentation (linking to the layers above)</p>
 <p>What started as notes to help Claude Code became a comprehensive development philosophy—one that works equally well for human developers and AI assistants.</p>
 <hr />
-<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><strong>General Questions</strong>: See the <a href="FAQ.html">FAQ</a></li>
 <li><strong>Technical Issues</strong>: Check <a href="../technical/troubleshooting.md">Troubleshooting Guide</a></li>
@@ -1910,7 +1912,7 @@
 <li><strong>Contributing</strong>: Read <a href="../../CONTRIBUTING.md">Contributing Guide</a></li>
 </ul>
 <hr />
-<h2 id="lets-begin">Let's Begin<a class="headerlink" href="#lets-begin" title="Permanent link">&para;</a></h2>
+<h2 id="lets-begin">Let's Begin<a class="headerlink" href="#lets-begin" title="Permanent link to this section">🔗</a></h2>
 <p>Choose your path:</p>
 <ul>
 <li>🎓 <strong>New to this?</strong> → Start with <a href="HOW_CLAUDE_LEARNS.html">How Claude Learns</a></li>

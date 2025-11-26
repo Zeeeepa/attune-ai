@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1732,12 +1734,12 @@
   
 
 
-<h1 id="powered-by-claude-tier-structure">Powered by Claude - Tier Structure<a class="headerlink" href="#powered-by-claude-tier-structure" title="Permanent link">&para;</a></h1>
+<h1 id="powered-by-claude-tier-structure">Powered by Claude - Tier Structure<a class="headerlink" href="#powered-by-claude-tier-structure" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Multi-LLM Support with Claude-First Approach</strong></p>
 <p>The Empathy Framework supports multiple LLM providers while showcasing Claude's unique advantages for anticipatory AI.</p>
 <hr />
-<h2 id="llm-provider-strategy">LLM Provider Strategy<a class="headerlink" href="#llm-provider-strategy" title="Permanent link">&para;</a></h2>
-<h3 id="supported-providers">Supported Providers:<a class="headerlink" href="#supported-providers" title="Permanent link">&para;</a></h3>
+<h2 id="llm-provider-strategy">LLM Provider Strategy<a class="headerlink" href="#llm-provider-strategy" title="Permanent link to this section">🔗</a></h2>
+<h3 id="supported-providers">Supported Providers:<a class="headerlink" href="#supported-providers" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -1776,8 +1778,8 @@
 </table>
 <p><strong>Default provider:</strong> Claude 3.5 Sonnet (optimal balance of performance, cost, and capabilities)</p>
 <hr />
-<h2 id="tier-structure">Tier Structure<a class="headerlink" href="#tier-structure" title="Permanent link">&para;</a></h2>
-<h3 id="free-tier-open-source">Free Tier (Open Source)<a class="headerlink" href="#free-tier-open-source" title="Permanent link">&para;</a></h3>
+<h2 id="tier-structure">Tier Structure<a class="headerlink" href="#tier-structure" title="Permanent link to this section">🔗</a></h2>
+<h3 id="free-tier-open-source">Free Tier (Open Source)<a class="headerlink" href="#free-tier-open-source" title="Permanent link to this section">🔗</a></h3>
 <p><strong>LLM Choice:</strong> User brings their own API key for any provider</p>
 <p><strong>Features:</strong>
 - Complete Empathy Framework (Fair Source 0.9)
@@ -1791,7 +1793,7 @@
 - Recommended as "best experience" provider</p>
 <p><strong>Cost:</strong> $0</p>
 <hr />
-<h3 id="pro-tier-99year-final-pricing">Pro Tier ($99/year - Final Pricing)<a class="headerlink" href="#pro-tier-99year-final-pricing" title="Permanent link">&para;</a></h3>
+<h3 id="pro-tier-99year-final-pricing">Pro Tier ($99/year - Final Pricing)<a class="headerlink" href="#pro-tier-99year-final-pricing" title="Permanent link to this section">🔗</a></h3>
 <p><strong>LLM Choice:</strong> Powered by Claude (API credits included)</p>
 <p><strong>Features:</strong>
 - Everything in Free tier
@@ -1818,7 +1820,7 @@
 - Link to Anthropic in attribution</p>
 <p><strong>Cost:</strong> $99/year (early release pricing may be $129)</p>
 <hr />
-<h3 id="business-tier-249year-per-3-seats">Business Tier ($249/year per 3 seats)<a class="headerlink" href="#business-tier-249year-per-3-seats" title="Permanent link">&para;</a></h3>
+<h3 id="business-tier-249year-per-3-seats">Business Tier ($249/year per 3 seats)<a class="headerlink" href="#business-tier-249year-per-3-seats" title="Permanent link to this section">🔗</a></h3>
 <p><strong>LLM Choice:</strong> Powered by Claude OR bring your own (enterprise flexibility)</p>
 <p><strong>Features:</strong>
 - Everything in Pro tier × 3 seats
@@ -1852,8 +1854,8 @@
 - Transparent, predictable pricing</p>
 <p><strong>Cost:</strong> $249/year per 3-seat bundle</p>
 <hr />
-<h2 id="claude-integration-features-all-tiers">Claude Integration Features (All Tiers)<a class="headerlink" href="#claude-integration-features-all-tiers" title="Permanent link">&para;</a></h2>
-<h3 id="1-extended-context-analysis">1. Extended Context Analysis<a class="headerlink" href="#1-extended-context-analysis" title="Permanent link">&para;</a></h3>
+<h2 id="claude-integration-features-all-tiers">Claude Integration Features (All Tiers)<a class="headerlink" href="#claude-integration-features-all-tiers" title="Permanent link to this section">🔗</a></h2>
+<h3 id="1-extended-context-analysis">1. Extended Context Analysis<a class="headerlink" href="#1-extended-context-analysis" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Available in:</strong> Pro, Business (requires Claude)</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Analyze entire repository in one call</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">claude</span><span class="o">.</span><span class="n">analyze_large_codebase</span><span class="p">(</span>
@@ -1864,7 +1866,7 @@
 <p><strong>Unique to Claude:</strong> 200K context window
 - <strong>Competitor limits:</strong> GPT-4 (128K), Gemini (32K)
 - <strong>Empathy Framework use case:</strong> Whole-repo analysis without chunking</p>
-<h3 id="2-prompt-caching-90-cost-reduction">2. Prompt Caching (90% Cost Reduction)<a class="headerlink" href="#2-prompt-caching-90-cost-reduction" title="Permanent link">&para;</a></h3>
+<h3 id="2-prompt-caching-90-cost-reduction">2. Prompt Caching (90% Cost Reduction)<a class="headerlink" href="#2-prompt-caching-90-cost-reduction" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Available in:</strong> Pro, Business (Claude-specific feature)</p>
 <p><strong>How it works:</strong>
 - System prompts cached for 5 minutes
@@ -1877,7 +1879,7 @@
 - Pre-commit hooks trigger multiple scans
 - Same codebase context cached across scans
 - Typical user: 10-50 scans/day become affordable</p>
-<h3 id="3-thinking-mode-complex-reasoning">3. Thinking Mode (Complex Reasoning)<a class="headerlink" href="#3-thinking-mode-complex-reasoning" title="Permanent link">&para;</a></h3>
+<h3 id="3-thinking-mode-complex-reasoning">3. Thinking Mode (Complex Reasoning)<a class="headerlink" href="#3-thinking-mode-complex-reasoning" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Available in:</strong> Pro, Business (Claude 3.5+)</p>
 <p><strong>Use case:</strong> Level 4 Anticipatory predictions</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Enable thinking mode for trajectory analysis</span>
@@ -1896,7 +1898,7 @@
 - Transparency: See how Claude predicts future bugs
 - Accuracy: Extended reasoning improves predictions
 - Trust: Developers understand AI recommendations</p>
-<h3 id="4-multi-turn-wizard-conversations">4. Multi-Turn Wizard Conversations<a class="headerlink" href="#4-multi-turn-wizard-conversations" title="Permanent link">&para;</a></h3>
+<h3 id="4-multi-turn-wizard-conversations">4. Multi-Turn Wizard Conversations<a class="headerlink" href="#4-multi-turn-wizard-conversations" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Available in:</strong> All tiers (works better with Claude)</p>
 <p><strong>Empathy Framework pattern:</strong>
 - Wizard asks clarifying questions
@@ -1907,8 +1909,8 @@
 - More nuanced follow-up questions
 - Maintains coherence in long sessions</p>
 <hr />
-<h2 id="competitive-positioning">Competitive Positioning<a class="headerlink" href="#competitive-positioning" title="Permanent link">&para;</a></h2>
-<h3 id="why-claude-messaging">"Why Claude?" Messaging:<a class="headerlink" href="#why-claude-messaging" title="Permanent link">&para;</a></h3>
+<h2 id="competitive-positioning">Competitive Positioning<a class="headerlink" href="#competitive-positioning" title="Permanent link to this section">🔗</a></h2>
+<h3 id="why-claude-messaging">"Why Claude?" Messaging:<a class="headerlink" href="#why-claude-messaging" title="Permanent link to this section">🔗</a></h3>
 <p><strong>For individual developers (Pro tier):</strong></p>
 <blockquote>
 <p>"Claude's 200K context means your entire codebase fits in one analysis. No chunking, no missed connections, no context loss. Just upload your project and get comprehensive security, performance, and prediction analysis in seconds."</p>
@@ -1922,8 +1924,8 @@
 <p>"Choose Claude for best-in-class anticipatory analysis, or bring your own LLM provider. Empathy Framework's multi-provider architecture means you're never locked in, but Claude's extended context and reasoning capabilities make it the optimal choice for production use."</p>
 </blockquote>
 <hr />
-<h2 id="provider-comparison-in-framework">Provider Comparison in Framework<a class="headerlink" href="#provider-comparison-in-framework" title="Permanent link">&para;</a></h2>
-<h3 id="feature-matrix">Feature Matrix:<a class="headerlink" href="#feature-matrix" title="Permanent link">&para;</a></h3>
+<h2 id="provider-comparison-in-framework">Provider Comparison in Framework<a class="headerlink" href="#provider-comparison-in-framework" title="Permanent link to this section">🔗</a></h2>
+<h3 id="feature-matrix">Feature Matrix:<a class="headerlink" href="#feature-matrix" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -1991,8 +1993,8 @@
 <p>"For the best Empathy Framework experience, we recommend Claude 3.5 Sonnet. It's optimized for our Level 4 Anticipatory features and offers the best balance of performance, cost (with prompt caching), and reasoning quality."</p>
 </blockquote>
 <hr />
-<h2 id="revenue-sharing-with-anthropic-optional">Revenue Sharing with Anthropic (Optional)<a class="headerlink" href="#revenue-sharing-with-anthropic-optional" title="Permanent link">&para;</a></h2>
-<h3 id="proposed-model-if-partnership-includes-licensing">Proposed Model (If Partnership Includes Licensing):<a class="headerlink" href="#proposed-model-if-partnership-includes-licensing" title="Permanent link">&para;</a></h3>
+<h2 id="revenue-sharing-with-anthropic-optional">Revenue Sharing with Anthropic (Optional)<a class="headerlink" href="#revenue-sharing-with-anthropic-optional" title="Permanent link to this section">🔗</a></h2>
+<h3 id="proposed-model-if-partnership-includes-licensing">Proposed Model (If Partnership Includes Licensing):<a class="headerlink" href="#proposed-model-if-partnership-includes-licensing" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Pro Tier ($99/year):</strong>
 - Deep Study AI revenue: $99
 - Includes $300/year Claude API credits
@@ -2013,29 +2015,29 @@
 - Anthropic benefits from increased Claude adoption
 - Deep Study AI benefits from featured placement</p>
 <hr />
-<h2 id="implementation-roadmap">Implementation Roadmap<a class="headerlink" href="#implementation-roadmap" title="Permanent link">&para;</a></h2>
-<h3 id="phase-1-enhanced-claude-provider-done">Phase 1: Enhanced Claude Provider (✅ DONE)<a class="headerlink" href="#phase-1-enhanced-claude-provider-done" title="Permanent link">&para;</a></h3>
+<h2 id="implementation-roadmap">Implementation Roadmap<a class="headerlink" href="#implementation-roadmap" title="Permanent link to this section">🔗</a></h2>
+<h3 id="phase-1-enhanced-claude-provider-done">Phase 1: Enhanced Claude Provider (✅ DONE)<a class="headerlink" href="#phase-1-enhanced-claude-provider-done" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Prompt caching support</li>
 <li>Extended context (200K)</li>
 <li>Thinking mode integration</li>
 <li>Large codebase analysis method</li>
 </ul>
-<h3 id="phase-2-pro-tier-launch-month-1-2">Phase 2: Pro Tier Launch (Month 1-2)<a class="headerlink" href="#phase-2-pro-tier-launch-month-1-2" title="Permanent link">&para;</a></h3>
+<h3 id="phase-2-pro-tier-launch-month-1-2">Phase 2: Pro Tier Launch (Month 1-2)<a class="headerlink" href="#phase-2-pro-tier-launch-month-1-2" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Stripe integration for payments</li>
 <li>Claude API credit provisioning</li>
 <li>Usage tracking dashboard</li>
 <li>"Powered by Claude" branding</li>
 </ul>
-<h3 id="phase-3-business-tier-month-2-3">Phase 3: Business Tier (Month 2-3)<a class="headerlink" href="#phase-3-business-tier-month-2-3" title="Permanent link">&para;</a></h3>
+<h3 id="phase-3-business-tier-month-2-3">Phase 3: Business Tier (Month 2-3)<a class="headerlink" href="#phase-3-business-tier-month-2-3" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Multi-seat management</li>
 <li>Team dashboard</li>
 <li>Enterprise billing</li>
 <li>Optional: Bring-your-own-LLM support</li>
 </ul>
-<h3 id="phase-4-anthropic-partnership-month-3-6">Phase 4: Anthropic Partnership (Month 3-6)<a class="headerlink" href="#phase-4-anthropic-partnership-month-3-6" title="Permanent link">&para;</a></h3>
+<h3 id="phase-4-anthropic-partnership-month-3-6">Phase 4: Anthropic Partnership (Month 3-6)<a class="headerlink" href="#phase-4-anthropic-partnership-month-3-6" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Featured in Claude ecosystem</li>
 <li>Joint marketing campaigns</li>
@@ -2043,7 +2045,7 @@
 <li>Optional: Investment or licensing terms</li>
 </ul>
 <hr />
-<h2 id="faq-multi-provider-strategy">FAQ: Multi-Provider Strategy<a class="headerlink" href="#faq-multi-provider-strategy" title="Permanent link">&para;</a></h2>
+<h2 id="faq-multi-provider-strategy">FAQ: Multi-Provider Strategy<a class="headerlink" href="#faq-multi-provider-strategy" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Q: Why not exclusively use Claude?</strong>
 A: While Claude is our default and recommended provider, multi-provider support ensures:
 - Enterprise customers can use existing LLM contracts
@@ -2065,8 +2067,8 @@ A: Framework gracefully degrades:
 - Thinking mode → Standard generation (hidden reasoning)
 - Large codebase analysis → Batched analysis with multiple calls</p>
 <hr />
-<h2 id="branding-guidelines">Branding Guidelines<a class="headerlink" href="#branding-guidelines" title="Permanent link">&para;</a></h2>
-<h3 id="powered-by-claude-badge-usage">"Powered by Claude" Badge Usage:<a class="headerlink" href="#powered-by-claude-badge-usage" title="Permanent link">&para;</a></h3>
+<h2 id="branding-guidelines">Branding Guidelines<a class="headerlink" href="#branding-guidelines" title="Permanent link to this section">🔗</a></h2>
+<h3 id="powered-by-claude-badge-usage">"Powered by Claude" Badge Usage:<a class="headerlink" href="#powered-by-claude-badge-usage" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Pro Tier:</strong>
 - Display in IDE extension status bar
 - Include in analysis results: "Analysis by Claude 3.5 Sonnet"
@@ -2083,7 +2085,7 @@ A: Framework gracefully degrades:
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Learn more: https://anthropic.com
 </code></pre></div></p>
 <hr />
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Multi-LLM Strategy with Claude-First Approach:</strong></p>
 <ol>
 <li><strong>Open Source (Free):</strong> Support all providers, recommend Claude</li>

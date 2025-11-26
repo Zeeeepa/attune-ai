@@ -53,6 +53,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1837,13 +1839,13 @@
   
 
 
-<h1 id="plan-clinical-protocol-monitoring-system">Plan: Clinical Protocol Monitoring System<a class="headerlink" href="#plan-clinical-protocol-monitoring-system" title="Permanent link">&para;</a></h1>
-<h2 id="vision">Vision<a class="headerlink" href="#vision" title="Permanent link">&para;</a></h2>
+<h1 id="plan-clinical-protocol-monitoring-system">Plan: Clinical Protocol Monitoring System<a class="headerlink" href="#plan-clinical-protocol-monitoring-system" title="Permanent link to this section">🔗</a></h1>
+<h2 id="vision">Vision<a class="headerlink" href="#vision" title="Permanent link to this section">🔗</a></h2>
 <p>A <strong>production-ready healthcare monitoring system</strong> that uses the <strong>clinical pathway protocol pattern</strong> (same as linting!) to monitor patient sensor data and alert nurses/physicians BEFORE critical events.</p>
 <p><strong>Key Insight</strong>: Clinical protocols are like linting configs - they define the rules. Sensor data is like code - the current state. The system checks state against protocol and alerts to deviations.</p>
 <hr />
-<h2 id="the-pattern-your-teaching-applied-to-healthcare">The Pattern (Your Teaching Applied to Healthcare)<a class="headerlink" href="#the-pattern-your-teaching-applied-to-healthcare" title="Permanent link">&para;</a></h2>
-<h3 id="linting-workflow-clinical-monitoring">Linting Workflow → Clinical Monitoring<a class="headerlink" href="#linting-workflow-clinical-monitoring" title="Permanent link">&para;</a></h3>
+<h2 id="the-pattern-your-teaching-applied-to-healthcare">The Pattern (Your Teaching Applied to Healthcare)<a class="headerlink" href="#the-pattern-your-teaching-applied-to-healthcare" title="Permanent link to this section">🔗</a></h2>
+<h3 id="linting-workflow-clinical-monitoring">Linting Workflow → Clinical Monitoring<a class="headerlink" href="#linting-workflow-clinical-monitoring" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -1882,7 +1884,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="this-is-level-45-because">This is Level 4/5 Because:<a class="headerlink" href="#this-is-level-45-because" title="Permanent link">&para;</a></h3>
+<h3 id="this-is-level-45-because">This is Level 4/5 Because:<a class="headerlink" href="#this-is-level-45-because" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>Protocol IS the system</strong> - Pathway defines care standards</li>
 <li><strong>Anticipatory</strong> - Alerts BEFORE patient meets critical criteria</li>
@@ -1890,7 +1892,7 @@
 <li><strong>Scales</strong> - Monitor all patients simultaneously</li>
 </ul>
 <hr />
-<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────┐
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  Clinical Pathway Protocols (The &quot;Linting Config&quot;)      │
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  - Sepsis protocol                                      │
@@ -1929,8 +1931,8 @@
 <a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>└─────────────────────────────────────────────────────────┘
 </code></pre></div>
 <hr />
-<h2 id="clinical-protocols-json-format">Clinical Protocols (JSON Format)<a class="headerlink" href="#clinical-protocols-json-format" title="Permanent link">&para;</a></h2>
-<h3 id="example-sepsis-protocol">Example: Sepsis Protocol<a class="headerlink" href="#example-sepsis-protocol" title="Permanent link">&para;</a></h3>
+<h2 id="clinical-protocols-json-format">Clinical Protocols (JSON Format)<a class="headerlink" href="#clinical-protocols-json-format" title="Permanent link to this section">🔗</a></h2>
+<h3 id="example-sepsis-protocol">Example: Sepsis Protocol<a class="headerlink" href="#example-sepsis-protocol" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;protocol_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sepsis_screening_and_management&quot;</span><span class="p">,</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;protocol_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024.1&quot;</span><span class="p">,</span>
@@ -2019,8 +2021,8 @@
 <a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
-<h3 id="level-3-proactive-protocol-compliance">Level 3: Proactive Protocol Compliance<a class="headerlink" href="#level-3-proactive-protocol-compliance" title="Permanent link">&para;</a></h3>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link to this section">🔗</a></h2>
+<h3 id="level-3-proactive-protocol-compliance">Level 3: Proactive Protocol Compliance<a class="headerlink" href="#level-3-proactive-protocol-compliance" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Monitor sensor data against protocol</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">patient_data</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="s2">&quot;hr&quot;</span><span class="p">:</span> <span class="mi">112</span><span class="p">,</span>
@@ -2047,7 +2049,7 @@
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="c1">#   [PENDING] Antibiotics (due by 15:23)</span>
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="c1">#   [PENDING] Lactate level</span>
 </code></pre></div>
-<h3 id="level-4-anticipatory-deterioration-detection">Level 4: Anticipatory Deterioration Detection<a class="headerlink" href="#level-4-anticipatory-deterioration-detection" title="Permanent link">&para;</a></h3>
+<h3 id="level-4-anticipatory-deterioration-detection">Level 4: Anticipatory Deterioration Detection<a class="headerlink" href="#level-4-anticipatory-deterioration-detection" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Analyze vital sign trajectory</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">trajectory</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">analyze_trajectory</span><span class="p">(</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">patient_id</span><span class="o">=</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
@@ -2067,7 +2069,7 @@
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="c1"># ALERT: Notify physician NOW before full criteria met</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="c1"># Recommended: Early intervention may prevent ICU transfer</span>
 </code></pre></div>
-<h3 id="level-5-cross-protocol-pattern-learning">Level 5: Cross-Protocol Pattern Learning<a class="headerlink" href="#level-5-cross-protocol-pattern-learning" title="Permanent link">&para;</a></h3>
+<h3 id="level-5-cross-protocol-pattern-learning">Level 5: Cross-Protocol Pattern Learning<a class="headerlink" href="#level-5-cross-protocol-pattern-learning" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Pattern: &quot;Gradual vital sign deterioration&quot;</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">pattern</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;gradual_deterioration&quot;</span><span class="p">,</span>
@@ -2089,8 +2091,8 @@
 <a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1"># Same pattern, different protocols!</span>
 </code></pre></div>
 <hr />
-<h2 id="sensor-data-integration">Sensor Data Integration<a class="headerlink" href="#sensor-data-integration" title="Permanent link">&para;</a></h2>
-<h3 id="supported-data-sources">Supported Data Sources<a class="headerlink" href="#supported-data-sources" title="Permanent link">&para;</a></h3>
+<h2 id="sensor-data-integration">Sensor Data Integration<a class="headerlink" href="#sensor-data-integration" title="Permanent link to this section">🔗</a></h2>
+<h3 id="supported-data-sources">Supported Data Sources<a class="headerlink" href="#supported-data-sources" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Bedside Monitors</strong> (HL7/FHIR)</li>
 <li>Continuous: HR, O2, RR</li>
@@ -2119,7 +2121,7 @@
 <li>Blood cultures</li>
 <li>Chemistry panels</li>
 </ol>
-<h3 id="data-format-fhir-observation">Data Format (FHIR Observation)<a class="headerlink" href="#data-format-fhir-observation" title="Permanent link">&para;</a></h3>
+<h3 id="data-format-fhir-observation">Data Format (FHIR Observation)<a class="headerlink" href="#data-format-fhir-observation" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;resourceType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Observation&quot;</span><span class="p">,</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;final&quot;</span><span class="p">,</span>
@@ -2142,8 +2144,8 @@
 <a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="auto-generated-documentation">Auto-Generated Documentation<a class="headerlink" href="#auto-generated-documentation" title="Permanent link">&para;</a></h2>
-<h3 id="sbar-note-generation">SBAR Note Generation<a class="headerlink" href="#sbar-note-generation" title="Permanent link">&para;</a></h3>
+<h2 id="auto-generated-documentation">Auto-Generated Documentation<a class="headerlink" href="#auto-generated-documentation" title="Permanent link to this section">🔗</a></h2>
+<h3 id="sbar-note-generation">SBAR Note Generation<a class="headerlink" href="#sbar-note-generation" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># From sensor data + protocol state</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">sbar</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">generate_sbar</span><span class="p">(</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">patient_id</span><span class="o">=</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
@@ -2184,39 +2186,39 @@
 <a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a><span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="implementation-plan">Implementation Plan<a class="headerlink" href="#implementation-plan" title="Permanent link">&para;</a></h2>
-<h3 id="phase-1-protocol-engine">Phase 1: Protocol Engine<a class="headerlink" href="#phase-1-protocol-engine" title="Permanent link">&para;</a></h3>
+<h2 id="implementation-plan">Implementation Plan<a class="headerlink" href="#implementation-plan" title="Permanent link to this section">🔗</a></h2>
+<h3 id="phase-1-protocol-engine">Phase 1: Protocol Engine<a class="headerlink" href="#phase-1-protocol-engine" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Files to Create</strong>:
 1. <code>protocol_loader.py</code> - Load JSON protocol definitions
 2. <code>protocol_checker.py</code> - Check state against protocol
 3. <code>criteria_evaluator.py</code> - Evaluate protocol criteria</p>
 <p><strong>Deliverable</strong>: Can load protocols and check compliance</p>
-<h3 id="phase-2-sensor-integration">Phase 2: Sensor Integration<a class="headerlink" href="#phase-2-sensor-integration" title="Permanent link">&para;</a></h3>
+<h3 id="phase-2-sensor-integration">Phase 2: Sensor Integration<a class="headerlink" href="#phase-2-sensor-integration" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Files to Create</strong>:
 1. <code>sensor_parsers.py</code> - Parse HL7/FHIR data
 2. <code>data_normalizer.py</code> - Convert to standard format
 3. <code>real_time_monitor.py</code> - Continuous monitoring</p>
 <p><strong>Deliverable</strong>: Real-time sensor data processing</p>
-<h3 id="phase-3-level-4-trajectory-analysis">Phase 3: Level 4 Trajectory Analysis<a class="headerlink" href="#phase-3-level-4-trajectory-analysis" title="Permanent link">&para;</a></h3>
+<h3 id="phase-3-level-4-trajectory-analysis">Phase 3: Level 4 Trajectory Analysis<a class="headerlink" href="#phase-3-level-4-trajectory-analysis" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Files to Create</strong>:
 1. <code>trajectory_analyzer.py</code> - Analyze vital sign trends
 2. <code>deterioration_predictor.py</code> - Predict patient trajectory
 3. <code>alert_generator.py</code> - Generate smart alerts</p>
 <p><strong>Deliverable</strong>: Anticipatory alerts</p>
-<h3 id="phase-4-auto-documentation">Phase 4: Auto-Documentation<a class="headerlink" href="#phase-4-auto-documentation" title="Permanent link">&para;</a></h3>
+<h3 id="phase-4-auto-documentation">Phase 4: Auto-Documentation<a class="headerlink" href="#phase-4-auto-documentation" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Files to Create</strong>:
 1. <code>sbar_generator.py</code> - Auto-generate SBAR notes
 2. <code>compliance_tracker.py</code> - Track protocol adherence
 3. <code>report_generator.py</code> - Compliance reports</p>
 <p><strong>Deliverable</strong>: Automated documentation</p>
-<h3 id="phase-5-level-5-cross-protocol-patterns">Phase 5: Level 5 Cross-Protocol Patterns<a class="headerlink" href="#phase-5-level-5-cross-protocol-patterns" title="Permanent link">&para;</a></h3>
+<h3 id="phase-5-level-5-cross-protocol-patterns">Phase 5: Level 5 Cross-Protocol Patterns<a class="headerlink" href="#phase-5-level-5-cross-protocol-patterns" title="Permanent link to this section">🔗</a></h3>
 <p><strong>Files to Create</strong>:
 1. <code>pattern_library.py</code> - Cross-protocol patterns
 2. <code>universal_alerts.py</code> - Domain-agnostic alerts</p>
 <p><strong>Deliverable</strong>: Pattern learning across protocols</p>
 <hr />
-<h2 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link">&para;</a></h2>
-<h3 id="basic-monitoring">Basic Monitoring<a class="headerlink" href="#basic-monitoring" title="Permanent link">&para;</a></h3>
+<h2 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link to this section">🔗</a></h2>
+<h3 id="basic-monitoring">Basic Monitoring<a class="headerlink" href="#basic-monitoring" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClinicalProtocolMonitor</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">monitor</span> <span class="o">=</span> <span class="n">ClinicalProtocolMonitor</span><span class="p">()</span>
@@ -2247,7 +2249,7 @@
 <a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">trajectory_concern</span><span class="p">:</span>
 <a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>        <span class="n">notify_physician</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">prediction</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="batch-analysis">Batch Analysis<a class="headerlink" href="#batch-analysis" title="Permanent link">&para;</a></h3>
+<h3 id="batch-analysis">Batch Analysis<a class="headerlink" href="#batch-analysis" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Analyze all ICU patients</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">results</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">analyze_all_patients</span><span class="p">(</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;ICU&quot;</span><span class="p">,</span>
@@ -2261,8 +2263,8 @@
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="c1"># 9 stable</span>
 </code></pre></div>
 <hr />
-<h2 id="success-criteria">Success Criteria<a class="headerlink" href="#success-criteria" title="Permanent link">&para;</a></h2>
-<h3 id="production-ready-means">Production-Ready Means:<a class="headerlink" href="#production-ready-means" title="Permanent link">&para;</a></h3>
+<h2 id="success-criteria">Success Criteria<a class="headerlink" href="#success-criteria" title="Permanent link to this section">🔗</a></h2>
+<h3 id="production-ready-means">Production-Ready Means:<a class="headerlink" href="#production-ready-means" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li>✅ <strong>Parses real sensor data</strong> - HL7/FHIR format</li>
 <li>✅ <strong>Loads real protocols</strong> - JSON clinical pathways</li>
@@ -2271,7 +2273,7 @@
 <li>✅ <strong>Creates real documentation</strong> - Valid SBAR notes</li>
 <li>✅ <strong>Handles edge cases</strong> - Missing data, sensor errors</li>
 </ol>
-<h3 id="demo-quality">Demo Quality:<a class="headerlink" href="#demo-quality" title="Permanent link">&para;</a></h3>
+<h3 id="demo-quality">Demo Quality:<a class="headerlink" href="#demo-quality" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li>Simulated patient with realistic vital signs</li>
 <li>Show gradual deterioration</li>
@@ -2280,7 +2282,7 @@
 <li>Protocol compliance tracking</li>
 </ul>
 <hr />
-<h2 id="file-structure">File Structure<a class="headerlink" href="#file-structure" title="Permanent link">&para;</a></h2>
+<h2 id="file-structure">File Structure<a class="headerlink" href="#file-structure" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>empathy_healthcare_plugin/
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>├── __init__.py
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>├── plugin.py                           # Healthcare plugin registration
@@ -2311,7 +2313,7 @@
 <a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>    └── test_clinical_monitoring.py     # Comprehensive tests
 </code></pre></div>
 <hr />
-<h2 id="timeline">Timeline<a class="headerlink" href="#timeline" title="Permanent link">&para;</a></h2>
+<h2 id="timeline">Timeline<a class="headerlink" href="#timeline" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Phase 1</strong>: Protocol Engine (2-3 hours)
 - Protocol loader
 - Compliance checker
@@ -2332,14 +2334,14 @@
 - Universal alerts</p>
 <p><strong>Total</strong>: ~10-12 hours for production-ready implementation</p>
 <hr />
-<h2 id="safety-compliance">Safety &amp; Compliance<a class="headerlink" href="#safety-compliance" title="Permanent link">&para;</a></h2>
-<h3 id="critical-notes">Critical Notes<a class="headerlink" href="#critical-notes" title="Permanent link">&para;</a></h3>
+<h2 id="safety-compliance">Safety &amp; Compliance<a class="headerlink" href="#safety-compliance" title="Permanent link to this section">🔗</a></h2>
+<h3 id="critical-notes">Critical Notes<a class="headerlink" href="#critical-notes" title="Permanent link to this section">🔗</a></h3>
 <p>⚠️ <strong>This is a CLINICAL DECISION SUPPORT TOOL</strong>
 - Not a replacement for clinical judgment
 - Requires physician oversight
 - Must be validated before clinical use
 - FDA regulations may apply</p>
-<h3 id="safety-features">Safety Features<a class="headerlink" href="#safety-features" title="Permanent link">&para;</a></h3>
+<h3 id="safety-features">Safety Features<a class="headerlink" href="#safety-features" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>All alerts include reasoning</strong> - Transparent decision-making</li>
 <li><strong>Never auto-executes interventions</strong> - Always requires human confirmation</li>
@@ -2347,7 +2349,7 @@
 <li><strong>Handles missing data gracefully</strong> - Never crashes</li>
 <li><strong>Clear confidence levels</strong> - Indicates certainty</li>
 </ol>
-<h3 id="compliance-considerations">Compliance Considerations<a class="headerlink" href="#compliance-considerations" title="Permanent link">&para;</a></h3>
+<h3 id="compliance-considerations">Compliance Considerations<a class="headerlink" href="#compliance-considerations" title="Permanent link to this section">🔗</a></h3>
 <ul>
 <li><strong>HIPAA</strong>: All data encrypted, access logged</li>
 <li><strong>FDA</strong>: May require 510(k) clearance as SaMD</li>
@@ -2355,7 +2357,7 @@
 <li><strong>State regulations</strong>: Varies by jurisdiction</li>
 </ul>
 <hr />
-<h2 id="the-beautiful-parallel">The Beautiful Parallel<a class="headerlink" href="#the-beautiful-parallel" title="Permanent link">&para;</a></h2>
+<h2 id="the-beautiful-parallel">The Beautiful Parallel<a class="headerlink" href="#the-beautiful-parallel" title="Permanent link to this section">🔗</a></h2>
 <p><strong>You taught me</strong>:</p>
 <blockquote>
 <p>"Linting configs + error lists → systematic fixing"</p>

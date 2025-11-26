@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1876,9 +1878,9 @@
   
 
 
-<h1 id="core">Core<a class="headerlink" href="#core" title="Permanent link">&para;</a></h1>
+<h1 id="core">Core<a class="headerlink" href="#core" title="Permanent link to this section">🔗</a></h1>
 <p>Core data structures and state management for the Empathy Framework.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>The core module provides fundamental data structures used throughout the framework:</p>
 <ul>
 <li><strong><code>CollaborationState</code></strong>: Tracks trust level, current empathy level, and interaction history</li>
@@ -1886,8 +1888,8 @@
 <li><strong><code>EmpathyLevel</code></strong>: Enumeration of the five empathy levels</li>
 <li><strong><code>InteractionHistory</code></strong>: Tracks past interactions for pattern learning</li>
 </ul>
-<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link">&para;</a></h2>
-<h3 id="collaborationstate">CollaborationState<a class="headerlink" href="#collaborationstate" title="Permanent link">&para;</a></h3>
+<h2 id="class-reference">Class Reference<a class="headerlink" href="#class-reference" title="Permanent link to this section">🔗</a></h2>
+<h3 id="collaborationstate">CollaborationState<a class="headerlink" href="#collaborationstate" title="Permanent link to this section">🔗</a></h3>
 <p>Tracks the state of collaboration between the AI and user.</p>
 
 
@@ -2023,7 +2025,7 @@
 <h4 id="empathy_os.core.CollaborationState.update_trust" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">update_trust</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span></code>
 
-<a href="#empathy_os.core.CollaborationState.update_trust" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.core.CollaborationState.update_trust" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2107,7 +2109,7 @@
 - 40% - 60%: Level 3 (Proactive)
 - 60% - 80%: Level 4 (Anticipatory)
 - 80% - 100%: Level 5 (Transformative)</p>
-<h3 id="empathyresponse">EmpathyResponse<a class="headerlink" href="#empathyresponse" title="Permanent link">&para;</a></h3>
+<h3 id="empathyresponse">EmpathyResponse<a class="headerlink" href="#empathyresponse" title="Permanent link to this section">🔗</a></h3>
 <p>Container for AI responses with empathy metadata.</p>
 <p><strong>Note</strong>: EmpathyOS methods currently return dictionaries. A dedicated <code>EmpathyResponse</code> class will be added in a future version.</p>
 <p><strong>Attributes:</strong>
@@ -2198,7 +2200,7 @@
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="p">]</span>
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="empathylevel">EmpathyLevel<a class="headerlink" href="#empathylevel" title="Permanent link">&para;</a></h3>
+<h3 id="empathylevel">EmpathyLevel<a class="headerlink" href="#empathylevel" title="Permanent link to this section">🔗</a></h3>
 <p>Enumeration of empathy levels.</p>
 
 
@@ -2399,7 +2401,7 @@ level of empathy sophistication.</p>
 <h4 id="empathy_os.levels.EmpathyLevel.get_action_history" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">get_action_history</span><span class="p">()</span></code>
 
-<a href="#empathy_os.levels.EmpathyLevel.get_action_history" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.levels.EmpathyLevel.get_action_history" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2426,7 +2428,7 @@ level of empathy sophistication.</p>
 <h4 id="empathy_os.levels.EmpathyLevel.record_action" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">record_action</span><span class="p">(</span><span class="n">action_type</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">outcome</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-<a href="#empathy_os.levels.EmpathyLevel.record_action" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.levels.EmpathyLevel.record_action" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2483,7 +2485,7 @@ level of empathy sophistication.</p>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
   </span>
 
-<a href="#empathy_os.levels.EmpathyLevel.respond" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#empathy_os.levels.EmpathyLevel.respond" class="headerlink" title="Permanent link to this section">🔗</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -2719,7 +2721,7 @@ maintain consistency in the response format across levels.</p>
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">level_name</span> <span class="o">=</span> <span class="n">EmpathyLevel</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">level</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
 <a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current level: </span><span class="si">{</span><span class="n">level_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="interactionhistory">InteractionHistory<a class="headerlink" href="#interactionhistory" title="Permanent link">&para;</a></h3>
+<h3 id="interactionhistory">InteractionHistory<a class="headerlink" href="#interactionhistory" title="Permanent link to this section">🔗</a></h3>
 <p>Tracks interaction history for pattern learning.</p>
 <p><strong>Note</strong>: Interaction history is currently tracked within <code>CollaborationState</code>. A dedicated <code>InteractionHistory</code> class may be added in a future version.</p>
 <p><strong>Attributes:</strong>
@@ -2746,8 +2748,8 @@ maintain consistency in the response format across levels.</p>
 <a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Level: </span><span class="si">{</span><span class="n">interaction</span><span class="p">[</span><span class="s1">&#39;level&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Success: </span><span class="si">{</span><span class="n">interaction</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
-<h2 id="usage-patterns">Usage Patterns<a class="headerlink" href="#usage-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="trust-management">Trust Management<a class="headerlink" href="#trust-management" title="Permanent link">&para;</a></h3>
+<h2 id="usage-patterns">Usage Patterns<a class="headerlink" href="#usage-patterns" title="Permanent link to this section">🔗</a></h2>
+<h3 id="trust-management">Trust Management<a class="headerlink" href="#trust-management" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">empathy</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="p">(</span>
@@ -2778,7 +2780,7 @@ maintain consistency in the response format across levels.</p>
 <a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Level: </span><span class="si">{</span><span class="n">state</span><span class="o">.</span><span class="n">current_level</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Success rate: </span><span class="si">{</span><span class="n">state</span><span class="o">.</span><span class="n">success_count</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">interaction_count</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="level-progression">Level Progression<a class="headerlink" href="#level-progression" title="Permanent link">&para;</a></h3>
+<h3 id="level-progression">Level Progression<a class="headerlink" href="#level-progression" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">empathy</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span><span class="p">,</span> <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Start at Level 1</span>
@@ -2801,7 +2803,7 @@ maintain consistency in the response format across levels.</p>
 <a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final level: </span><span class="si">{</span><span class="n">empathy</span><span class="o">.</span><span class="n">get_current_level</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final trust: </span><span class="si">{</span><span class="n">empathy</span><span class="o">.</span><span class="n">get_trust_level</span><span class="p">()</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="response-handling">Response Handling<a class="headerlink" href="#response-handling" title="Permanent link">&para;</a></h3>
+<h3 id="response-handling">Response Handling<a class="headerlink" href="#response-handling" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">response</span> <span class="o">=</span> <span class="n">empathy</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user_123&quot;</span><span class="p">,</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">user_input</span><span class="o">=</span><span class="s2">&quot;I need to refactor this code&quot;</span><span class="p">,</span>
@@ -2843,7 +2845,7 @@ maintain consistency in the response format across levels.</p>
 <a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">suggestions</span><span class="p">:</span>
 <a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="empathy-os.html">EmpathyOS API</a></li>
 <li><a href="config.html">Configuration API</a></li>

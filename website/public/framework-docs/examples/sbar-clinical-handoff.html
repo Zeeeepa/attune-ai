@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2000,13 +2002,13 @@
   
 
 
-<h1 id="example-sbar-clinical-handoff-report-healthcare">Example: SBAR Clinical Handoff Report (Healthcare)<a class="headerlink" href="#example-sbar-clinical-handoff-report-healthcare" title="Permanent link">&para;</a></h1>
+<h1 id="example-sbar-clinical-handoff-report-healthcare">Example: SBAR Clinical Handoff Report (Healthcare)<a class="headerlink" href="#example-sbar-clinical-handoff-report-healthcare" title="Permanent link to this section">🔗</a></h1>
 <p><strong>Difficulty</strong>: Intermediate
 <strong>Time</strong>: 20 minutes
 <strong>Empathy Level</strong>: 4 (Anticipatory)
 <strong>Domain</strong>: Healthcare - Nursing</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p>This example demonstrates how the Empathy Framework can anticipate when nurses need to create SBAR (Situation, Background, Assessment, Recommendation) handoff reports and proactively generate them.</p>
 <p><strong>SBAR</strong> is a standardized communication format used in healthcare for patient handoffs:
 - <strong>S</strong>ituation: Current patient status
@@ -2021,7 +2023,7 @@
 - Monitor for patient safety issues</p>
 <p><strong>Healthcare Impact</strong>: 60% reduction in documentation time (48 min → 13 min per shift)</p>
 <hr />
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install with healthcare support</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">[</span>healthcare<span class="o">]</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2029,8 +2031,8 @@
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>pip<span class="w"> </span>install<span class="w"> </span>fhirclient&gt;<span class="o">=</span><span class="m">4</span>.0.0
 </code></pre></div>
 <hr />
-<h2 id="part-1-basic-sbar-generation">Part 1: Basic SBAR Generation<a class="headerlink" href="#part-1-basic-sbar-generation" title="Permanent link">&para;</a></h2>
-<h3 id="load-clinical-protocol">Load Clinical Protocol<a class="headerlink" href="#load-clinical-protocol" title="Permanent link">&para;</a></h3>
+<h2 id="part-1-basic-sbar-generation">Part 1: Basic SBAR Generation<a class="headerlink" href="#part-1-basic-sbar-generation" title="Permanent link to this section">🔗</a></h2>
+<h3 id="load-clinical-protocol">Load Clinical Protocol<a class="headerlink" href="#load-clinical-protocol" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClinicalProtocol</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
@@ -2048,7 +2050,7 @@
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded protocol: </span><span class="si">{</span><span class="n">sbar_protocol</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Protocol steps: </span><span class="si">{</span><span class="n">sbar_protocol</span><span class="o">.</span><span class="n">steps</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="generate-sbar-report">Generate SBAR Report<a class="headerlink" href="#generate-sbar-report" title="Permanent link">&para;</a></h3>
+<h3 id="generate-sbar-report">Generate SBAR Report<a class="headerlink" href="#generate-sbar-report" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Patient data (typically from EHR)</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">patient_data</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="s2">&quot;patient_id&quot;</span><span class="p">:</span> <span class="s2">&quot;PT123456&quot;</span><span class="p">,</span>
@@ -2174,8 +2176,8 @@
 <a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>  • Coordinate with cardiology for discharge orders
 </code></pre></div></p>
 <hr />
-<h2 id="part-2-anticipatory-sbar-generation">Part 2: Anticipatory SBAR Generation<a class="headerlink" href="#part-2-anticipatory-sbar-generation" title="Permanent link">&para;</a></h2>
-<h3 id="predict-when-sbar-is-needed">Predict When SBAR is Needed<a class="headerlink" href="#predict-when-sbar-is-needed" title="Permanent link">&para;</a></h3>
+<h2 id="part-2-anticipatory-sbar-generation">Part 2: Anticipatory SBAR Generation<a class="headerlink" href="#part-2-anticipatory-sbar-generation" title="Permanent link to this section">🔗</a></h2>
+<h3 id="predict-when-sbar-is-needed">Predict When SBAR is Needed<a class="headerlink" href="#predict-when-sbar-is-needed" title="Permanent link to this section">🔗</a></h3>
 <p>Instead of nurse manually requesting SBAR, the system anticipates based on shift patterns.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClinicalProtocol</span><span class="p">,</span> <span class="n">ShiftMonitor</span>
@@ -2239,8 +2241,8 @@
 <a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a><span class="c1"># Time saved: 45 minutes (vs manual SBAR creation)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-3-hipaa-compliant-implementation">Part 3: HIPAA-Compliant Implementation<a class="headerlink" href="#part-3-hipaa-compliant-implementation" title="Permanent link">&para;</a></h2>
-<h3 id="enable-audit-logging">Enable Audit Logging<a class="headerlink" href="#enable-audit-logging" title="Permanent link">&para;</a></h3>
+<h2 id="part-3-hipaa-compliant-implementation">Part 3: HIPAA-Compliant Implementation<a class="headerlink" href="#part-3-hipaa-compliant-implementation" title="Permanent link to this section">🔗</a></h2>
+<h3 id="enable-audit-logging">Enable Audit Logging<a class="headerlink" href="#enable-audit-logging" title="Permanent link to this section">🔗</a></h3>
 <p>All patient data interactions must be audited for HIPAA compliance.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">HIPAACompliantEmpathy</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -2298,8 +2300,8 @@
 <a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a><span class="c1"># }</span>
 </code></pre></div>
 <hr />
-<h2 id="part-4-ehr-integration-epic-fhir">Part 4: EHR Integration (Epic FHIR)<a class="headerlink" href="#part-4-ehr-integration-epic-fhir" title="Permanent link">&para;</a></h2>
-<h3 id="fetch-patient-data-from-epic">Fetch Patient Data from Epic<a class="headerlink" href="#fetch-patient-data-from-epic" title="Permanent link">&para;</a></h3>
+<h2 id="part-4-ehr-integration-epic-fhir">Part 4: EHR Integration (Epic FHIR)<a class="headerlink" href="#part-4-ehr-integration-epic-fhir" title="Permanent link to this section">🔗</a></h2>
+<h3 id="fetch-patient-data-from-epic">Fetch Patient Data from Epic<a class="headerlink" href="#fetch-patient-data-from-epic" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">EpicIntegration</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClinicalProtocol</span>
@@ -2358,8 +2360,8 @@
 <a id="__codelineno-6-56" name="__codelineno-6-56" href="#__codelineno-6-56"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ SBAR saved to Epic: </span><span class="si">{</span><span class="n">sbar_document</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-5-safety-monitoring">Part 5: Safety Monitoring<a class="headerlink" href="#part-5-safety-monitoring" title="Permanent link">&para;</a></h2>
-<h3 id="detect-critical-situations">Detect Critical Situations<a class="headerlink" href="#detect-critical-situations" title="Permanent link">&para;</a></h3>
+<h2 id="part-5-safety-monitoring">Part 5: Safety Monitoring<a class="headerlink" href="#part-5-safety-monitoring" title="Permanent link to this section">🔗</a></h2>
+<h3 id="detect-critical-situations">Detect Critical Situations<a class="headerlink" href="#detect-critical-situations" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">SafetyMonitor</span><span class="p">,</span> <span class="n">ClinicalProtocol</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
@@ -2434,8 +2436,8 @@
 <a id="__codelineno-7-72" name="__codelineno-7-72" href="#__codelineno-7-72"></a><span class="c1"># [Standard SBAR report follows...]</span>
 </code></pre></div>
 <hr />
-<h2 id="part-6-multi-patient-dashboard">Part 6: Multi-Patient Dashboard<a class="headerlink" href="#part-6-multi-patient-dashboard" title="Permanent link">&para;</a></h2>
-<h3 id="monitor-multiple-patients">Monitor Multiple Patients<a class="headerlink" href="#monitor-multiple-patients" title="Permanent link">&para;</a></h3>
+<h2 id="part-6-multi-patient-dashboard">Part 6: Multi-Patient Dashboard<a class="headerlink" href="#part-6-multi-patient-dashboard" title="Permanent link to this section">🔗</a></h2>
+<h3 id="monitor-multiple-patients">Monitor Multiple Patients<a class="headerlink" href="#monitor-multiple-patients" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatientDashboard</span><span class="p">,</span> <span class="n">ClinicalProtocol</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
@@ -2482,8 +2484,8 @@
 <a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✅ Priority SBAR ready: </span><span class="si">{</span><span class="n">priority</span><span class="o">.</span><span class="n">patient_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="part-7-pattern-learning">Part 7: Pattern Learning<a class="headerlink" href="#part-7-pattern-learning" title="Permanent link">&para;</a></h2>
-<h3 id="learn-hospital-specific-patterns">Learn Hospital-Specific Patterns<a class="headerlink" href="#learn-hospital-specific-patterns" title="Permanent link">&para;</a></h3>
+<h2 id="part-7-pattern-learning">Part 7: Pattern Learning<a class="headerlink" href="#part-7-pattern-learning" title="Permanent link to this section">🔗</a></h2>
+<h3 id="learn-hospital-specific-patterns">Learn Hospital-Specific Patterns<a class="headerlink" href="#learn-hospital-specific-patterns" title="Permanent link to this section">🔗</a></h3>
 <p>Over time, the system learns patterns specific to your hospital unit.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.healthcare</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClinicalProtocol</span>
@@ -2517,7 +2519,7 @@
 <a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="c1">#  Including these in SBAR based on unit-specific data...&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="performance-impact">Performance Impact<a class="headerlink" href="#performance-impact" title="Permanent link">&para;</a></h2>
+<h2 id="performance-impact">Performance Impact<a class="headerlink" href="#performance-impact" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Before Empathy Framework</strong>:
 - Manual SBAR creation: 12 minutes per patient
 - 4 patients per shift: 48 minutes total
@@ -2531,7 +2533,7 @@
 - 50 nurses × 36 min/day × 365 days = 1,095,000 minutes saved
 - = <strong>18,250 hours</strong> = <strong>$1.8M in labor costs</strong> (at $100/hour)</p>
 <hr />
-<h2 id="safety-compliance">Safety &amp; Compliance<a class="headerlink" href="#safety-compliance" title="Permanent link">&para;</a></h2>
+<h2 id="safety-compliance">Safety &amp; Compliance<a class="headerlink" href="#safety-compliance" title="Permanent link to this section">🔗</a></h2>
 <p><strong>HIPAA Requirements Met</strong>:
 - ✅ Audit logging (all PHI access tracked)
 - ✅ Encryption at rest (patient-specific patterns)
@@ -2544,7 +2546,7 @@
 - ✅ Human-in-the-loop (nurse reviews before submission)
 - ✅ Audit trail (all decisions documented)</p>
 <hr />
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Enhance SBAR workflow</strong>:
 1. <strong>Integrate with nurse call system</strong>: Auto-generate SBAR when patient deteriorates
 2. <strong>Voice input</strong>: Generate SBAR via voice dictation
@@ -2556,7 +2558,7 @@
 - <a href="patient-handoff-predictor.md">Patient Handoff Predictor</a> - Predict handoff timing
 - <a href="safety-alert-system.md">Safety Alert System</a> - Real-time safety monitoring</p>
 <hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link to this section">🔗</a></h2>
 <p><strong>"Epic FHIR authentication failed"</strong>
 - Verify <code>EPIC_CLIENT_ID</code> and <code>EPIC_CLIENT_SECRET</code> environment variables
 - Check Epic sandbox credentials at https://fhir.epic.com</p>

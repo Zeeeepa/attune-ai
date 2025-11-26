@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2188,10 +2190,10 @@
   
 
 
-<h1 id="multi-agent-coordination">Multi-Agent Coordination<a class="headerlink" href="#multi-agent-coordination" title="Permanent link">&para;</a></h1>
+<h1 id="multi-agent-coordination">Multi-Agent Coordination<a class="headerlink" href="#multi-agent-coordination" title="Permanent link to this section">🔗</a></h1>
 <p>Enable multiple AI agents to work together on complex tasks through shared pattern libraries and coordinated workflows.</p>
 <hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link to this section">🔗</a></h2>
 <p><strong>Multi-agent systems</strong> allow specialized AI agents to collaborate:</p>
 <ul>
 <li><strong>Code Review Agent</strong> - Reviews PRs for bugs and style</li>
@@ -2202,7 +2204,7 @@
 </ul>
 <p><strong>Result</strong>: <strong>80% faster feature delivery</strong> through parallel work and shared learnings.</p>
 <hr />
-<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link to this section">🔗</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌──────────────────────────────────────────────────────────────┐
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                    Shared Pattern Library                     │
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  ┌────────────────────────────────────────────────────────┐  │
@@ -2230,8 +2232,8 @@
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>            └──────────────────────┘
 </code></pre></div>
 <hr />
-<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<h3 id="create-agent-team">Create Agent Team<a class="headerlink" href="#create-agent-team" title="Permanent link">&para;</a></h3>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link to this section">🔗</a></h2>
+<h3 id="create-agent-team">Create Agent Team<a class="headerlink" href="#create-agent-team" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmpathyOS</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.pattern_library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatternLibrary</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
@@ -2257,7 +2259,7 @@
 <a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="n">shared_library</span><span class="o">=</span><span class="n">shared_library</span>
 <a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="run-coordinated-workflow">Run Coordinated Workflow<a class="headerlink" href="#run-coordinated-workflow" title="Permanent link">&para;</a></h3>
+<h3 id="run-coordinated-workflow">Run Coordinated Workflow<a class="headerlink" href="#run-coordinated-workflow" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_pull_request</span><span class="p">(</span><span class="n">pr_number</span><span class="p">):</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="c1"># 1. Code review (parallel)</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">review_task</span> <span class="o">=</span> <span class="n">code_reviewer</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span>
@@ -2294,8 +2296,8 @@
 <a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>    <span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="pattern-sharing">Pattern Sharing<a class="headerlink" href="#pattern-sharing" title="Permanent link">&para;</a></h2>
-<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<h2 id="pattern-sharing">Pattern Sharing<a class="headerlink" href="#pattern-sharing" title="Permanent link to this section">🔗</a></h2>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Agent A</strong> discovers a useful pattern</li>
 <li>Pattern added to <strong>shared library</strong> with confidence score</li>
@@ -2303,7 +2305,7 @@
 <li>Pattern suggested if confidence &gt; threshold</li>
 <li>Success/failure feedback updates pattern confidence</li>
 </ol>
-<h3 id="example-code-pattern">Example: Code Pattern<a class="headerlink" href="#example-code-pattern" title="Permanent link">&para;</a></h3>
+<h3 id="example-code-pattern">Example: Code Pattern<a class="headerlink" href="#example-code-pattern" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.pattern_library</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pattern</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Code Review Agent discovers pattern</span>
@@ -2346,8 +2348,8 @@
 <a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="agent-specialization">Agent Specialization<a class="headerlink" href="#agent-specialization" title="Permanent link">&para;</a></h2>
-<h3 id="code-review-agent">Code Review Agent<a class="headerlink" href="#code-review-agent" title="Permanent link">&para;</a></h3>
+<h2 id="agent-specialization">Agent Specialization<a class="headerlink" href="#agent-specialization" title="Permanent link to this section">🔗</a></h2>
+<h3 id="code-review-agent">Code Review Agent<a class="headerlink" href="#code-review-agent" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">code_reviewer</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="p">(</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;code_reviewer&quot;</span><span class="p">,</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
@@ -2390,7 +2392,7 @@
 <a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="c1">#   }</span>
 <a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="c1"># ]</span>
 </code></pre></div>
-<h3 id="test-generation-agent">Test Generation Agent<a class="headerlink" href="#test-generation-agent" title="Permanent link">&para;</a></h3>
+<h3 id="test-generation-agent">Test Generation Agent<a class="headerlink" href="#test-generation-agent" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">test_generator</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="p">(</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;test_generator&quot;</span><span class="p">,</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">target_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -2413,7 +2415,7 @@
 <a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">tests</span><span class="p">[</span><span class="s1">&#39;generated_tests&#39;</span><span class="p">])</span>
 <a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># Output: Complete pytest tests with fixtures, edge cases, mocks</span>
 </code></pre></div>
-<h3 id="security-agent">Security Agent<a class="headerlink" href="#security-agent" title="Permanent link">&para;</a></h3>
+<h3 id="security-agent">Security Agent<a class="headerlink" href="#security-agent" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">security_agent</span> <span class="o">=</span> <span class="n">EmpathyOS</span><span class="p">(</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;security_agent&quot;</span><span class="p">,</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">target_level</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="c1"># Anticipatory - predict vulnerabilities</span>
@@ -2438,8 +2440,8 @@
 <a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Fix: </span><span class="si">{</span><span class="n">vuln</span><span class="p">[</span><span class="s1">&#39;remediation&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="coordination-patterns">Coordination Patterns<a class="headerlink" href="#coordination-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="sequential-workflow">Sequential Workflow<a class="headerlink" href="#sequential-workflow" title="Permanent link">&para;</a></h3>
+<h2 id="coordination-patterns">Coordination Patterns<a class="headerlink" href="#coordination-patterns" title="Permanent link to this section">🔗</a></h2>
+<h3 id="sequential-workflow">Sequential Workflow<a class="headerlink" href="#sequential-workflow" title="Permanent link to this section">🔗</a></h3>
 <p>Agents work in sequence, each building on previous results:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">sequential_workflow</span><span class="p">(</span><span class="n">code_changes</span><span class="p">):</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="c1"># 1. Security scan first</span>
@@ -2473,7 +2475,7 @@
 <a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>        <span class="s2">&quot;review&quot;</span><span class="p">:</span> <span class="n">review</span>
 <a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>    <span class="p">}</span>
 </code></pre></div>
-<h3 id="parallel-workflow">Parallel Workflow<a class="headerlink" href="#parallel-workflow" title="Permanent link">&para;</a></h3>
+<h3 id="parallel-workflow">Parallel Workflow<a class="headerlink" href="#parallel-workflow" title="Permanent link to this section">🔗</a></h3>
 <p>Agents work simultaneously for speed:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">parallel_workflow</span><span class="p">(</span><span class="n">code_changes</span><span class="p">):</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="c1"># All agents work in parallel</span>
@@ -2493,7 +2495,7 @@
 <a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>        <span class="s2">&quot;documentation&quot;</span><span class="p">:</span> <span class="n">docs</span>
 <a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>    <span class="p">}</span>
 </code></pre></div>
-<h3 id="hierarchical-workflow">Hierarchical Workflow<a class="headerlink" href="#hierarchical-workflow" title="Permanent link">&para;</a></h3>
+<h3 id="hierarchical-workflow">Hierarchical Workflow<a class="headerlink" href="#hierarchical-workflow" title="Permanent link to this section">🔗</a></h3>
 <p>Coordinator agent manages sub-agents:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hierarchical_workflow</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="c1"># Coordinator decides which agents to use</span>
@@ -2529,8 +2531,8 @@
 <a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>    <span class="k">return</span> <span class="n">final</span>
 </code></pre></div>
 <hr />
-<h2 id="performance-benefits">Performance Benefits<a class="headerlink" href="#performance-benefits" title="Permanent link">&para;</a></h2>
-<h3 id="before-multi-agent-single-developer">Before Multi-Agent (Single Developer)<a class="headerlink" href="#before-multi-agent-single-developer" title="Permanent link">&para;</a></h3>
+<h2 id="performance-benefits">Performance Benefits<a class="headerlink" href="#performance-benefits" title="Permanent link to this section">🔗</a></h2>
+<h3 id="before-multi-agent-single-developer">Before Multi-Agent (Single Developer)<a class="headerlink" href="#before-multi-agent-single-developer" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -2567,7 +2569,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="after-multi-agent-parallel-execution">After Multi-Agent (Parallel Execution)<a class="headerlink" href="#after-multi-agent-parallel-execution" title="Permanent link">&para;</a></h3>
+<h3 id="after-multi-agent-parallel-execution">After Multi-Agent (Parallel Execution)<a class="headerlink" href="#after-multi-agent-parallel-execution" title="Permanent link to this section">🔗</a></h3>
 <table>
 <thead>
 <tr>
@@ -2622,8 +2624,8 @@
 - ✅ Immediate security feedback
 - ✅ 100% test coverage</p>
 <hr />
-<h2 id="conflict-resolution">Conflict Resolution<a class="headerlink" href="#conflict-resolution" title="Permanent link">&para;</a></h2>
-<h3 id="pattern-conflicts">Pattern Conflicts<a class="headerlink" href="#pattern-conflicts" title="Permanent link">&para;</a></h3>
+<h2 id="conflict-resolution">Conflict Resolution<a class="headerlink" href="#conflict-resolution" title="Permanent link to this section">🔗</a></h2>
+<h3 id="pattern-conflicts">Pattern Conflicts<a class="headerlink" href="#pattern-conflicts" title="Permanent link to this section">🔗</a></h3>
 <p>When agents disagree:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Code Review Agent suggests one approach</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">review_pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span>
@@ -2649,8 +2651,8 @@
 <a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="c1"># Result: Choose style_pattern (higher team priority match)</span>
 </code></pre></div>
 <hr />
-<h2 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link">&para;</a></h2>
-<h3 id="agent-performance">Agent Performance<a class="headerlink" href="#agent-performance" title="Permanent link">&para;</a></h3>
+<h2 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link to this section">🔗</a></h2>
+<h3 id="agent-performance">Agent Performance<a class="headerlink" href="#agent-performance" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">empathy_os.monitoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">AgentMonitor</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">monitor</span> <span class="o">=</span> <span class="n">AgentMonitor</span><span class="p">()</span>
@@ -2663,7 +2665,7 @@
 <a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patterns discovered: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;patterns_discovered&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Success rate: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;success_rate&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="team-metrics">Team Metrics<a class="headerlink" href="#team-metrics" title="Permanent link">&para;</a></h3>
+<h3 id="team-metrics">Team Metrics<a class="headerlink" href="#team-metrics" title="Permanent link to this section">🔗</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">team_stats</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">get_team_stats</span><span class="p">()</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Active agents: </span><span class="si">{</span><span class="n">team_stats</span><span class="p">[</span><span class="s1">&#39;active_agents&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2672,8 +2674,8 @@
 <a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collaboration efficiency: </span><span class="si">{</span><span class="n">team_stats</span><span class="p">[</span><span class="s1">&#39;collaboration_efficiency&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<h3 id="do">✅ Do<a class="headerlink" href="#do" title="Permanent link">&para;</a></h3>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link to this section">🔗</a></h2>
+<h3 id="do">✅ Do<a class="headerlink" href="#do" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Specialize agents</strong> - Each agent focuses on one area</li>
 <li><strong>Share patterns</strong> - Use shared pattern library</li>
@@ -2681,7 +2683,7 @@
 <li><strong>Monitor performance</strong> - Track agent effectiveness</li>
 <li><strong>Resolve conflicts</strong> - Handle pattern disagreements</li>
 </ol>
-<h3 id="dont">❌ Don't<a class="headerlink" href="#dont" title="Permanent link">&para;</a></h3>
+<h3 id="dont">❌ Don't<a class="headerlink" href="#dont" title="Permanent link to this section">🔗</a></h3>
 <ol>
 <li><strong>Don't duplicate work</strong> - Check pattern library first</li>
 <li><strong>Don't ignore low-confidence patterns</strong> - Provide feedback</li>
@@ -2689,7 +2691,7 @@
 <li><strong>Don't skip coordination</strong> - Agents need orchestration</li>
 </ol>
 <hr />
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link to this section">🔗</a></h2>
 <p>See the complete <a href="../examples/multi-agent-team-coordination.html">Multi-Agent Team Coordination Example</a> for a full implementation with:</p>
 <ul>
 <li>PR review automation</li>
@@ -2699,7 +2701,7 @@
 <li>Performance optimization</li>
 </ul>
 <hr />
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link to this section">🔗</a></h2>
 <ul>
 <li><a href="adaptive-learning.html">Adaptive Learning</a> - How agents learn</li>
 <li><a href="../api-reference/pattern-library.html">Pattern Library API</a> - Pattern management</li>
