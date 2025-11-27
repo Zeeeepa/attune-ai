@@ -2,12 +2,14 @@
 
 **A five-level maturity model for AI-human collaboration**
 
-![Coverage](https://img.shields.io/badge/coverage-90.66%25-brightgreen)
+[![PyPI version](https://img.shields.io/pypi/v/empathy-framework.svg)](https://pypi.org/project/empathy-framework/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/empathy-framework.svg)](https://pypistats.org/packages/empathy-framework)
+[![Python 3.10+](https://img.shields.io/pypi/pyversions/empathy-framework.svg)](https://pypi.org/project/empathy-framework/)
 [![License](https://img.shields.io/badge/License-Fair%20Source%200.9-blue.svg)](LICENSE)
-[![PyPI Package](https://img.shields.io/badge/PyPI-empathy--framework-blue)](https://pypi.org/project/empathy-framework/)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+![Coverage](https://img.shields.io/badge/coverage-90.66%25-brightgreen)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![GitHub stars](https://img.shields.io/github/stars/Smart-AI-Memory/empathy-framework.svg?style=social&label=Star)](https://github.com/Smart-AI-Memory/empathy-framework)
 
 ---
 
