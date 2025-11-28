@@ -5,6 +5,22 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.2] - 2025-01-28
+
+### Fixed
+
+**Documentation Links**
+- Fixed all broken relative links in README.md for PyPI compatibility
+  - Updated Quick Start Guide, API Reference, and User Guide links (line 45)
+  - Fixed all framework documentation links (CHAPTER_EMPATHY_FRAMEWORK.md, etc.)
+  - Updated all source file links (agents, coach_wizards, empathy_llm_toolkit, services)
+  - Fixed examples and resources directory links
+  - Updated LICENSE and SPONSORSHIP.md links
+  - All relative paths now use full GitHub URLs (e.g., `https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/...`)
+- All documentation links now work correctly when viewed on PyPI package page
+
+**Impact**: Users viewing the package on PyPI can now access all documentation links without encountering 404 errors.
+
 ## [1.8.0-alpha] - 2025-11-24
 
 ### Added - Claude Memory Integration

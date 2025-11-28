@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import WizardPlayground from '@/components/WizardPlayground';
+import SBARWizard from '@/components/SBARWizard';
 
 export default function MedicalDashboard() {
   return (
@@ -8,7 +8,7 @@ export default function MedicalDashboard() {
       <nav className="border-b border-[var(--border)] py-4 bg-[var(--background)]">
         <div className="container flex justify-between items-center">
           <Link href="/" className="text-xl font-bold text-gradient">
-            Smart AI Memory
+            SmartAI Memory
           </Link>
           <div className="flex gap-6 items-center">
             <Link href="/" className="text-sm hover:text-[var(--primary)]">Home</Link>
@@ -71,15 +71,15 @@ export default function MedicalDashboard() {
         </div>
       </section>
 
-      {/* Interactive Wizard Playground */}
+      {/* Interactive SBAR Wizard */}
       <section className="py-12 bg-[var(--border)] bg-opacity-20">
         <div className="container">
-          <h2 className="text-3xl font-bold text-center mb-4">Try Healthcare Wizards</h2>
+          <h2 className="text-3xl font-bold text-center mb-4">SBAR Clinical Handoff Wizard</h2>
           <p className="text-center text-[var(--text-secondary)] mb-12 max-w-3xl mx-auto">
-            Select a wizard below and provide patient data or clinical information to see
-            Level 4 Anticipatory Intelligence in action.
+            Guided step-by-step workflow for creating structured clinical handoff reports.
+            Level 4 Anticipatory Intelligence guides you through each SBAR component.
           </p>
-          <WizardPlayground category="healthcare" />
+          <SBARWizard />
         </div>
       </section>
 

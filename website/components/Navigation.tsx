@@ -37,9 +37,9 @@ export default function Navigation() {
           <Link
             href="/"
             className="text-xl font-bold text-gradient hover:opacity-80 transition-opacity"
-            aria-label="Smart AI Memory Home"
+            aria-label="SmartAI Memory Home"
           >
-            Smart AI Memory
+            SmartAI Memory
           </Link>
 
           {/* Desktop Navigation */}
@@ -67,6 +67,18 @@ export default function Navigation() {
               className="text-sm font-medium hover:text-[var(--primary)] transition-colors"
             >
               Docs
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-sm font-medium hover:text-[var(--primary)] transition-colors"
+            >
+              Healthcare Wizards
+            </Link>
+            <Link
+              href="/dev-dashboard"
+              className="text-sm font-medium hover:text-[var(--primary)] transition-colors"
+            >
+              Dev Wizards
             </Link>
             <Link
               href="/plugins"
@@ -237,6 +249,20 @@ export default function Navigation() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Docs
+              </Link>
+              <Link
+                href="/dashboard"
+                className="text-sm font-medium hover:text-[var(--primary)] transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Healthcare Wizards
+              </Link>
+              <Link
+                href="/dev-dashboard"
+                className="text-sm font-medium hover:text-[var(--primary)] transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Dev Wizards
               </Link>
               <Link
                 href="/plugins"

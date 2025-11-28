@@ -6,6 +6,8 @@
 
 📚 **Book Status**: Preview chapter available now | Full book launching Q1 2026
 
+**Created with Claude Code**: This framework and book were created in consultation with Claude Sonnet 4.5 using Claude Code (Anthropic's official developer tool), demonstrating the Level 4-5 AI collaboration principles described within.
+
 ---
 
 ## About This Book
@@ -119,19 +121,26 @@ Apply the framework to any domain: healthcare, customer service, education, fina
 
 ### The Numbers
 ```
-Before Framework:
-• 120 hours per wizard
+Without Framework:
+• Days to weeks per wizard
 • Manual documentation (3-4 hours each)
 • 15-20% bug rate
 • High context switching
+• No reusable patterns
 
-After Framework:
-• 40 hours per wizard (66% reduction)
+With Framework + Patterns:
+• Few hours to 1 day+ per wizard (varies by complexity and compliance)
+• Healthcare wizards take longer: Enterprise security, HIPAA compliance,
+  PHI protection, audit trails, encryption (full enterprise quality)
+• General wizards faster: Simpler requirements, established patterns
 • 0 minutes documentation (auto-generated)
 • <5% bug rate (framework handles edge cases)
-• Low context switching (self-service patterns)
+• Much faster with refined prototypes (pattern reuse)
 
-Cumulative 3-Year Savings: 5,680 hours
+Real Results: 53+ wizards built
+• 23 healthcare wizards (HIPAA-compliant, enterprise security)
+• 30+ general wizards (faster with established patterns)
+First few wizards establish patterns → subsequent wizards built in hours
 ```
 
 ---
