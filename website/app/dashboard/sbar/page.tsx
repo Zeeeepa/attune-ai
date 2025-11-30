@@ -54,7 +54,6 @@ export default function SBARWizardPage() {
   });
 
   const [finalReport, setFinalReport] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const updateField = (field: keyof WizardState['data'], value: string) => {
     setState(prev => ({
@@ -133,8 +132,6 @@ export default function SBARWizardPage() {
   };
 
   const generateReport = async () => {
-    setIsGenerating(true);
-
     // Build the report
     const { data } = state;
     const now = new Date();
@@ -208,7 +205,6 @@ export default function SBARWizardPage() {
     // Simulate generation delay
     await new Promise(resolve => setTimeout(resolve, 500));
     setFinalReport(report);
-    setIsGenerating(false);
   };
 
   const copyReport = () => {
@@ -358,7 +354,7 @@ export default function SBARWizardPage() {
                     <span className="text-indigo-600">🩺</span>
                     Current Situation
                   </h3>
-                  <p className="text-sm text-gray-600 mb-4">Describe the patient's current condition and what brought them to your attention</p>
+                  <p className="text-sm text-gray-600 mb-4">Describe the patient&apos;s current condition and what brought them to your attention</p>
 
                   {/* Patient ID */}
                   <div className="mb-4">
@@ -414,7 +410,7 @@ export default function SBARWizardPage() {
                       value={state.data.chiefComplaint}
                       onChange={(e) => updateField('chiefComplaint', e.target.value)}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="What is the patient's current condition? What brought them to your attention?"
+                      placeholder="What is the patient&apos;s current condition? What brought them to your attention?"
                     />
                   </div>
 
