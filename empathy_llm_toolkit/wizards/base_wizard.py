@@ -4,7 +4,7 @@ Base Wizard - Foundation for all EmpathyLLM wizards
 Provides common functionality for security-aware AI assistants with domain-specific
 configurations and integrated privacy controls.
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

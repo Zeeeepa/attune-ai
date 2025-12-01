@@ -24,7 +24,7 @@ Reference:
 - SECURE_MEMORY_ARCHITECTURE.md: MemDocs Integration Patterns
 - ENTERPRISE_PRIVACY_INTEGRATION.md: Phase 2 Implementation
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

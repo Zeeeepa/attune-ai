@@ -4,7 +4,7 @@ Comprehensive Test Suite for All 16 Wizards
 Tests configuration, security integration, compliance verification,
 and PII pattern detection for all domain-specific wizards.
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

@@ -3,7 +3,7 @@ Tests for Claude Memory Integration (v1.8.0)
 
 Tests the ClaudeMemoryLoader and integration with EmpathyLLM.
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

@@ -696,7 +696,7 @@ If you use the Empathy in your research or product, please cite:
   author = {Roebuck, Patrick},
   title = {Empathy: A Five-Level Maturity Model for AI-Human Collaboration},
   year = {2025},
-  publisher = {Deep Study AI, LLC},
+  publisher = {Smart AI Memory, LLC},
   url = {https://github.com/Smart-AI-Memory/empathy-framework},
   license = {Fair-Source-0.9}
 }

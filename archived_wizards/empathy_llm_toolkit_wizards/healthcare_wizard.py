@@ -18,7 +18,7 @@ Reference:
 - HIPAA Privacy Rule (45 CFR §164.514)
 - HITECH Act requirements
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

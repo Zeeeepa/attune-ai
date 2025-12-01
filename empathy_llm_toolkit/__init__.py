@@ -6,7 +6,7 @@ Wraps LLM providers (OpenAI, Anthropic, local models) with Empathy Framework lev
 Enables progression from Level 1 (reactive) to Level 4 (anticipatory) AI collaboration
 with any LLM backend.
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

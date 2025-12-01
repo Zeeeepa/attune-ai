@@ -22,7 +22,7 @@ Available Wizards (16 total):
 15. LogisticsWizard - Shipment data privacy compliant
 16. TechnologyWizard - IT security compliant operations
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

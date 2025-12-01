@@ -19,7 +19,7 @@ Or try the live dashboards:
 - Healthcare: https://healthcare.smartaimemory.com/static/dashboard.html
 - Tech & AI: https://wizards.smartaimemory.com/
 
-Copyright 2025 Deep Study AI, LLC
+Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 

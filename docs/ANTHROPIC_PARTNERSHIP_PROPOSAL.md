@@ -1,8 +1,8 @@
 # Anthropic Partnership Proposal
 ## Empathy Framework x Claude
 
-**Date:** January 2025
-**From:** Patrick Roebuck, Founder - Deep Study AI, LLC
+**Date:** December 2025
+**From:** Patrick Roebuck, Founder - Smart AI Memory, LLC
 **To:** Anthropic Partnership Team
 **Status:** Non-Exclusive Partnership Proposal
 
@@ -263,7 +263,7 @@ We seek a **technical partnership with promotional benefits**, NOT exclusivity:
 3. **Better product** - Competition with OpenAI, Google keeps us honest
 4. **Enterprise credibility** - "Works with your existing LLM investments" message
 
-### Benefits to Deep Study AI:
+### Benefits to Smart AI Memory:
 1. **Technical flexibility** - Can adopt new Anthropic features quickly
 2. **Business resilience** - Not dependent on one vendor
 3. **Better leverage** - Future partnerships with JetBrains, Microsoft, etc.
@@ -384,10 +384,10 @@ result = await claude.analyze_large_codebase(
 ### Contact Information:
 
 **Patrick Roebuck**
-Founder, Deep Study AI, LLC
-Email: patrick.roebuck@deepstudyai.com
-GitHub: https://github.com/Deep-Study-AI/empathy-framework
-Website: https://empathy-framework-production.up.railway.app
+Founder, Smart AI Memory, LLC
+Email: patrick.roebuck@smartaimemory.com
+GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+Website: https://smartaimemory.com
 
 ---
 
@@ -429,4 +429,4 @@ All without requiring exclusivity or limiting either party's strategic flexibili
 
 ---
 
-*This proposal is confidential and intended solely for Anthropic's review. Please direct all inquiries to patrick.roebuck@deepstudyai.com*
+*This proposal is confidential and intended solely for Anthropic's review. Please direct all inquiries to patrick.roebuck@smartaimemory.com*
