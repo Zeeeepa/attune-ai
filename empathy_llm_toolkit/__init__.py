@@ -15,7 +15,7 @@ from .levels import EmpathyLevel
 from .providers import AnthropicProvider, LocalProvider, OpenAIProvider
 from .state import CollaborationState, UserPattern
 
-__version__ = "1.9.4"
+__version__ = "1.9.5"
 
 __all__ = [
     "EmpathyLLM",
