@@ -85,5 +85,14 @@ pitch_deck_assets/
 pitch_deck_exports/
 convert_pitch_deck.sh
 
+# Logs
+logs/
+
+# MCP Registry tokens (credentials)
+.mcpregistry_*
+
+# Server configuration (may contain secrets)
+server.json
+
 # Embedded git repositories
 10_9_2025_ai_nurse_florence/
