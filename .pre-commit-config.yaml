@@ -2,6 +2,18 @@
 # Run: pre-commit install
 # Manual run: pre-commit run --all-files
 
+# Exclude generated and third-party directories
+exclude: |
+  (?x)^(
+    site/|
+    website/public/|
+    examples/wizard-dashboard/node_modules/|
+    \.venv/|
+    build/|
+    dist/|
+    .*\.egg-info/
+  )
+
 repos:
   # Black - Code formatter
   - repo: https://github.com/psf/black
