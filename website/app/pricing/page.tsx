@@ -5,8 +5,8 @@ import Footer from '@/components/Footer';
 import { generateMetadata } from '@/lib/metadata';
 import CheckoutButton from '@/components/CheckoutButton';
 
-// Price ID from Stripe Dashboard - update after creating product
-const LICENSE_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_LICENSE || 'price_license_placeholder';
+// Price ID from Stripe Dashboard - hardcoded fallback for build-time reliability
+const LICENSE_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_LICENSE || 'price_1SbfCjAbABKRT84gSh7BoLAl';
 
 export const metadata: Metadata = generateMetadata({
   title: 'Pricing',

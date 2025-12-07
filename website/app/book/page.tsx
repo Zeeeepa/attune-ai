@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import CheckoutButton from '@/components/CheckoutButton';
 
-// Price ID from Stripe Dashboard - update after creating product
-const BOOK_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_BOOK || 'price_book_placeholder';
+// Price ID from Stripe Dashboard - hardcoded fallback for build-time reliability
+const BOOK_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_BOOK || 'price_1Sbf3xAbABKRT84gGn7yaivw';
 
 export default function BookPage() {
   return (

@@ -14,12 +14,20 @@ function getStripe(): Stripe {
   return stripe;
 }
 
+// Fallback site URL in case env var is not set
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://smartaimemory.com';
+
 export async function POST(req: NextRequest) {
   try {
     const { priceId, mode, customerEmail, successUrl, cancelUrl } = await req.json();
 
     if (!priceId) {
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
+    }
+
+    // Validate priceId is not a placeholder
+    if (priceId.includes('placeholder')) {
+      return NextResponse.json({ error: 'Product not configured. Please contact support.' }, { status: 400 });
     }
 
     const session = await getStripe().checkout.sessions.create({
@@ -31,8 +39,8 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: successUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/pricing`,
+      success_url: successUrl || `${SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: cancelUrl || `${SITE_URL}/pricing`,
       customer_email: customerEmail || undefined,
       allow_promotion_codes: true,
       billing_address_collection: 'required',
