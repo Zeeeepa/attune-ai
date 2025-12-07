@@ -18,7 +18,7 @@ If you're using Empathy professionally, consider supporting development through 
 ✅ **Updates and upgrades** for the license period
 ✅ **Contribute to sustainable development**
 
-**To purchase:** Email [support@smartaimemory.com](mailto:support@smartaimemory.com?subject=Empathy%20Framework%20Commercial%20License)
+**To purchase:** Email [admin@smartaimemory.com](mailto:admin@smartaimemory.com?subject=Empathy%20Framework%20Commercial%20License)
 
 ---
 
@@ -34,7 +34,7 @@ Need domain-specific wizards for your industry?
 - **Architecture review** and best practices
 - **Team training** and onboarding
 
-[Request Consultation →](mailto:support@smartaimemory.com)
+[Request Consultation →](mailto:admin@smartaimemory.com)
 
 ---
 
@@ -148,9 +148,9 @@ A: We love that! GitHub Sponsors starting at $5/month helps a lot and is greatly
 ## 📧 Contact
 
 - **General inquiries**: hello@smartaimemory.com
-- **Commercial licensing**: support@smartaimemory.com
+- **Commercial licensing**: admin@smartaimemory.com
 - **Enterprise**: enterprise@smartaimemory.com
-- **Custom development**: support@smartaimemory.com
+- **Custom development**: admin@smartaimemory.com
 - **Training**: training@smartaimemory.com
 - **Open source projects**: opensource@smartaimemory.com
 

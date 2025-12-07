@@ -211,7 +211,7 @@ AI that learns deployment safety from hospital handoffs
 
 **Content questions:** patrick.roebuck1955@gmail.com
 **Technical support:** GitHub Issues
-**Business inquiries:** support@smartaimemory.com
+**Business inquiries:** admin@smartaimemory.com
 
 ---
 

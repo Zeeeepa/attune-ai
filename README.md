@@ -654,7 +654,7 @@ The Empathy is **source available** (Fair Source 0.9) - free for students, educa
 - **Training & Workshops** - Get your team productive in one day
 - **Enterprise Solutions** - Hosted service, custom SLA, dedicated support
 
-[Learn More →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SPONSORSHIP.md) | [Contact Sales →](mailto:support@smartaimemory.com)
+[Learn More →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SPONSORSHIP.md) | [Contact Sales →](mailto:admin@smartaimemory.com)
 
 ### GitHub Sponsors
 
@@ -682,7 +682,7 @@ The Fair Source License balances:
 - **Sustainable development** - Commercial licensing funds ongoing development and support
 - **Future open source** - Automatically converts to Apache 2.0 after 4 years
 
-**Commercial licensing:** Email [support@smartaimemory.com](mailto:support@smartaimemory.com) | [Licensing FAQ →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE)
+**Commercial licensing:** Email [admin@smartaimemory.com](mailto:admin@smartaimemory.com) | [Licensing FAQ →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE)
 
 ---
 

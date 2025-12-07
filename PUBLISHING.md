@@ -255,4 +255,4 @@ When publishing, ensure the Fair Source License 0.9 is properly included in the 
 
 ---
 
-**Need help?** Contact [support@smartaimemory.com](mailto:support@smartaimemory.com)
+**Need help?** Contact [admin@smartaimemory.com](mailto:admin@smartaimemory.com)

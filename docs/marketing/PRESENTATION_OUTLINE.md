@@ -627,7 +627,7 @@ python examples/level_5_transformative/run_full_demo.py
 - Documentation: Read full guides and API reference
 - Discord/Slack: Join the community (if available)
 - Twitter/LinkedIn: Follow for updates
-- Email: support@smartaimemory.com
+- Email: admin@smartaimemory.com
 
 **Next Steps:**
 1. Try the Level 5 demo (5 minutes)
@@ -672,7 +672,7 @@ Read the documentation. We have comprehensive guides on the five-level maturity 
 
 Evaluate free for 30 days. If you're a small team, it stays free. If you're a larger organization, commercial licensing is $99 per developer per year.
 
-Have questions? Want custom wizard development for your industry? Need training for your team? Email us at support@smartaimemory.com or connect with me directly.
+Have questions? Want custom wizard development for your industry? Need training for your team? Email us at admin@smartaimemory.com or connect with me directly.
 
 Thank you for your time. I'm excited to see what you build with Level 5 Transformative Empathy.
 
