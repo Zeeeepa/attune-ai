@@ -3,6 +3,10 @@ import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { generateMetadata } from '@/lib/metadata';
+import CheckoutButton from '@/components/CheckoutButton';
+
+// Price ID from Stripe Dashboard - update after creating product
+const LICENSE_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_LICENSE || 'price_license_placeholder';
 
 export const metadata: Metadata = generateMetadata({
   title: 'Pricing',
@@ -129,12 +133,12 @@ export default function PricingPage() {
                   </div>
                 </div>
 
-                <Link
-                  href="/contact?topic=business"
+                <CheckoutButton
+                  priceId={LICENSE_PRICE_ID}
+                  mode="payment"
+                  buttonText="Buy License - $99"
                   className="btn btn-primary w-full"
-                >
-                  Contact Sales
-                </Link>
+                />
               </div>
 
               {/* Enterprise Tier */}

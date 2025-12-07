@@ -1,4 +1,8 @@
 import Link from 'next/link';
+import CheckoutButton from '@/components/CheckoutButton';
+
+// Price ID from Stripe Dashboard - update after creating product
+const BOOK_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_BOOK || 'price_book_placeholder';
 
 export default function BookPage() {
   return (
@@ -82,12 +86,15 @@ export default function BookPage() {
                   </div>
                 </div>
 
-                <button className="btn btn-primary w-full text-lg mb-4" disabled>
-                  Pre-order for December 2025
-                </button>
+                <CheckoutButton
+                  priceId={BOOK_PRICE_ID}
+                  mode="payment"
+                  buttonText="Pre-order Now - $49"
+                  className="btn btn-primary w-full text-lg mb-4"
+                />
 
                 <p className="text-xs text-center text-[var(--muted)]">
-                  Available December 2025. Pre-orders opening soon.
+                  Secure checkout powered by Stripe. Available December 2025.
                 </p>
               </div>
             </div>
@@ -282,9 +289,12 @@ export default function BookPage() {
             <p className="text-xl mb-8 opacity-90">
               The complete guide to building Level 4 Anticipatory AI systems with working commercial plugins.
             </p>
-            <button className="btn bg-white text-[var(--primary)] hover:bg-gray-100 text-lg px-8 py-4" disabled>
-              Pre-orders Opening Soon
-            </button>
+            <CheckoutButton
+              priceId={BOOK_PRICE_ID}
+              mode="payment"
+              buttonText="Pre-order Now - $49"
+              className="btn bg-white text-[var(--primary)] hover:bg-gray-100 text-lg px-8 py-4"
+            />
           </div>
         </div>
       </section>
