@@ -44,3 +44,7 @@ ignore:
   - "examples/"
   - "backend/"
   - "website/"
+  # Build/generator utilities (not production code)
+  - "coach_wizards/generate_wizards.py"
+  # CLI entry points (argument parsing, tested via integration)
+  - "empathy_software_plugin/cli.py"
