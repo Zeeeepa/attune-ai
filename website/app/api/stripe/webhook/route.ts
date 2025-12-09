@@ -3,9 +3,10 @@ import Stripe from 'stripe';
 import {
   initializeDatabase,
   findOrCreateCustomer,
-  createPurchase,
+  findOrCreatePurchase,
   createLicense,
   createDownloadToken,
+  findLicenseByPurchaseId,
 } from '@/lib/db';
 import {
   generateLicenseKey,
@@ -125,8 +126,8 @@ export async function POST(req: NextRequest) {
           session.customer_details?.name || undefined
         );
 
-        // Create purchase record
-        const purchase = await createPurchase({
+        // Find or create purchase record (idempotent for webhook retries)
+        const { purchase, created: purchaseCreated } = await findOrCreatePurchase({
           customerId: customer.id,
           stripeSessionId: session.id,
           stripePaymentIntent: session.payment_intent as string,
@@ -140,7 +141,18 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        console.log('Purchase recorded:', purchase.id);
+        if (purchaseCreated) {
+          console.log('Purchase recorded:', purchase.id);
+        } else {
+          console.log('Purchase already exists:', purchase.id, '- checking fulfillment');
+        }
+
+        // Check if license already exists for this purchase
+        const existingLicense = await findLicenseByPurchaseId(purchase.id);
+        if (existingLicense) {
+          console.log('License already exists for purchase, skipping fulfillment');
+          break;
+        }
 
         // Handle fulfillment based on product type
         if (productInfo.type === 'book') {

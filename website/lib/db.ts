@@ -130,13 +130,36 @@ export async function findOrCreateCustomer(
   );
 
   if (existing.rows.length > 0) {
-    // Update with any new info
+    // Update with any new/missing info
     const customer = existing.rows[0];
+    const updates: string[] = [];
+    const values: unknown[] = [];
+    let paramIndex = 1;
+
+    // Update email if it was null (fix for earlier bug)
+    if (email && !customer.email) {
+      updates.push(`email = $${paramIndex++}`);
+      values.push(email);
+    }
+    // Update stripe_customer_id if missing
     if (stripeCustomerId && !customer.stripe_customer_id) {
-      await query(
-        'UPDATE customers SET stripe_customer_id = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
-        [stripeCustomerId, customer.id]
+      updates.push(`stripe_customer_id = $${paramIndex++}`);
+      values.push(stripeCustomerId);
+    }
+    // Update name if missing
+    if (name && !customer.name) {
+      updates.push(`name = $${paramIndex++}`);
+      values.push(name);
+    }
+
+    if (updates.length > 0) {
+      updates.push(`updated_at = CURRENT_TIMESTAMP`);
+      values.push(customer.id);
+      const result = await query<Customer>(
+        `UPDATE customers SET ${updates.join(', ')} WHERE id = $${paramIndex} RETURNING *`,
+        values
       );
+      return result.rows[0];
     }
     return customer;
   }
@@ -163,6 +186,51 @@ export interface Purchase {
   status: string;
   metadata: Record<string, unknown> | null;
   purchased_at: Date;
+}
+
+export async function findPurchaseBySessionId(sessionId: string): Promise<Purchase | null> {
+  const result = await query<Purchase>(
+    'SELECT * FROM purchases WHERE stripe_session_id = $1',
+    [sessionId]
+  );
+  return result.rows[0] || null;
+}
+
+export async function findOrCreatePurchase(data: {
+  customerId: number;
+  stripeSessionId: string;
+  stripePaymentIntent?: string;
+  productType: string;
+  productName?: string;
+  amountCents: number;
+  currency?: string;
+  metadata?: Record<string, unknown>;
+}): Promise<{ purchase: Purchase; created: boolean }> {
+  // Check if purchase already exists (idempotency for webhook retries)
+  const existing = await findPurchaseBySessionId(data.stripeSessionId);
+  if (existing) {
+    return { purchase: existing, created: false };
+  }
+
+  // Create new purchase
+  const result = await query<Purchase>(
+    `INSERT INTO purchases
+     (customer_id, stripe_session_id, stripe_payment_intent, product_type, product_name, amount_cents, currency, metadata)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+     RETURNING *`,
+    [
+      data.customerId,
+      data.stripeSessionId,
+      data.stripePaymentIntent,
+      data.productType,
+      data.productName,
+      data.amountCents,
+      data.currency || 'usd',
+      data.metadata ? JSON.stringify(data.metadata) : null,
+    ]
+  );
+
+  return { purchase: result.rows[0], created: true };
 }
 
 export async function createPurchase(data: {
@@ -232,6 +300,14 @@ export async function findLicenseByKey(licenseKey: string): Promise<License | nu
   const result = await query<License>(
     'SELECT * FROM licenses WHERE license_key = $1',
     [licenseKey]
+  );
+  return result.rows[0] || null;
+}
+
+export async function findLicenseByPurchaseId(purchaseId: number): Promise<License | null> {
+  const result = await query<License>(
+    'SELECT * FROM licenses WHERE purchase_id = $1',
+    [purchaseId]
   );
   return result.rows[0] || null;
 }
