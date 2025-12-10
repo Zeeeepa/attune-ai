@@ -8,14 +8,20 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+from __future__ import annotations
+
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from .emergence import EmergenceDetector
 from .exceptions import ValidationError
 from .feedback_loops import FeedbackLoopDetector
 from .leverage_points import LeveragePoint, LeveragePointAnalyzer
+
+if TYPE_CHECKING:
+    from .pattern_library import PatternLibrary
 
 
 @dataclass
@@ -88,6 +94,7 @@ class EmpathyOS:
         target_level: int = 3,
         confidence_threshold: float = 0.75,
         logger: logging.Logger | None = None,
+        shared_library: PatternLibrary | None = None,
     ):
         """
         Initialize EmpathyOS
@@ -97,11 +104,15 @@ class EmpathyOS:
             target_level: Target empathy level (1-5), default 3 (Proactive)
             confidence_threshold: Minimum confidence for anticipatory actions (0.0-1.0)
             logger: Optional logger instance for structured logging
+            shared_library: Optional shared PatternLibrary for multi-agent collaboration.
+                           When provided, enables agents to share discovered patterns,
+                           supporting Level 5 (Systems Empathy) distributed memory networks.
         """
         self.user_id = user_id
         self.target_level = target_level
         self.confidence_threshold = confidence_threshold
         self.logger = logger or logging.getLogger(__name__)
+        self.shared_library = shared_library
 
         # Collaboration state tracking
         self.collaboration_state = CollaborationState()
@@ -161,6 +172,80 @@ class EmpathyOS:
         # Future: Send final metrics
         # Future: Close async connections
         pass
+
+    # =========================================================================
+    # SHARED PATTERN LIBRARY (Multi-Agent Collaboration)
+    # =========================================================================
+
+    def contribute_pattern(self, pattern) -> None:
+        """
+        Contribute a discovered pattern to the shared library.
+
+        Enables Level 5 Systems Empathy: patterns discovered by this agent
+        become available to all other agents sharing the same library.
+
+        Args:
+            pattern: Pattern object to contribute
+
+        Raises:
+            RuntimeError: If no shared library is configured
+
+        Example:
+            >>> from empathy_os import Pattern, PatternLibrary
+            >>> library = PatternLibrary()
+            >>> agent = EmpathyOS(user_id="code_reviewer", shared_library=library)
+            >>> pattern = Pattern(
+            ...     id="pat_001",
+            ...     agent_id="code_reviewer",
+            ...     pattern_type="best_practice",
+            ...     name="Test pattern",
+            ...     description="A discovered pattern",
+            ... )
+            >>> agent.contribute_pattern(pattern)
+        """
+        if self.shared_library is None:
+            raise RuntimeError(
+                "No shared library configured. Pass shared_library to __init__ "
+                "to enable multi-agent pattern sharing."
+            )
+        self.shared_library.contribute_pattern(self.user_id, pattern)
+
+    def query_patterns(self, context: dict, **kwargs):
+        """
+        Query the shared library for patterns relevant to the current context.
+
+        Enables agents to benefit from patterns discovered by other agents
+        in the distributed memory network.
+
+        Args:
+            context: Dictionary describing the current context
+            **kwargs: Additional arguments passed to PatternLibrary.query_patterns()
+                     (e.g., pattern_type, min_confidence, limit)
+
+        Returns:
+            List of PatternMatch objects sorted by relevance
+
+        Raises:
+            RuntimeError: If no shared library is configured
+
+        Example:
+            >>> matches = agent.query_patterns(
+            ...     context={"language": "python", "task": "code_review"},
+            ...     min_confidence=0.7
+            ... )
+            >>> for match in matches:
+            ...     print(f"{match.pattern.name}: {match.relevance_score:.0%}")
+        """
+        if self.shared_library is None:
+            raise RuntimeError(
+                "No shared library configured. Pass shared_library to __init__ "
+                "to enable multi-agent pattern sharing."
+            )
+        return self.shared_library.query_patterns(self.user_id, context, **kwargs)
+
+    def has_shared_library(self) -> bool:
+        """Check if this agent has a shared pattern library configured."""
+        return self.shared_library is not None
 
     # =========================================================================
     # LEVEL 1: REACTIVE EMPATHY

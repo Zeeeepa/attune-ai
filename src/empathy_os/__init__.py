@@ -13,6 +13,7 @@ __author__ = "Patrick Roebuck"
 __email__ = "hello@deepstudy.ai"
 
 from .config import EmpathyConfig, load_config
+from .coordination import ConflictResolver, ResolutionResult, ResolutionStrategy, TeamPriorities
 from .core import EmpathyOS
 from .emergence import EmergenceDetector
 from .exceptions import (
@@ -30,7 +31,8 @@ from .feedback_loops import FeedbackLoopDetector
 from .levels import Level1Reactive, Level2Guided, Level3Proactive, Level4Anticipatory, Level5Systems
 from .leverage_points import LeveragePointAnalyzer
 from .logging_config import LoggingConfig, get_logger
-from .pattern_library import Pattern, PatternLibrary
+from .monitoring import AgentMetrics, AgentMonitor, TeamMetrics
+from .pattern_library import Pattern, PatternLibrary, PatternMatch
 from .persistence import MetricsCollector, PatternPersistence, StateManager
 from .trust_building import TrustBuildingBehaviors
 
@@ -44,8 +46,20 @@ __all__ = [
     "FeedbackLoopDetector",
     "LeveragePointAnalyzer",
     "EmergenceDetector",
+    # Pattern Library
     "PatternLibrary",
     "Pattern",
+    "PatternMatch",
+    # Coordination (Multi-Agent)
+    "ConflictResolver",
+    "ResolutionResult",
+    "ResolutionStrategy",
+    "TeamPriorities",
+    # Monitoring (Multi-Agent)
+    "AgentMonitor",
+    "AgentMetrics",
+    "TeamMetrics",
+    # Trust
     "TrustBuildingBehaviors",
     # Persistence
     "PatternPersistence",

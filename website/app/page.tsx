@@ -231,14 +231,12 @@ export default function Home() {
                   <Link href="/demo/distributed-memory" className="btn btn-primary w-full text-sm">
                     Try Demo
                   </Link>
-                  <a
-                    href="https://smart-ai-memory.github.io/memdocs-empathy-book/chapters/part-6/23-distributed-memory.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/chapter-23"
                     className="block text-center text-xs text-[var(--primary)] hover:underline"
                   >
                     Read Chapter 23 Free →
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

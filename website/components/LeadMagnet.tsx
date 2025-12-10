@@ -84,9 +84,7 @@ export default function LeadMagnet() {
           <p className="mt-6 text-sm">
             Or{' '}
             <Link
-              href="https://smart-ai-memory.github.io/memdocs-empathy-book/chapters/part-6/23-distributed-memory.html"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/chapter-23"
               className="underline font-semibold hover:text-yellow-200"
               style={{ color: '#FEF08A' }}
             >

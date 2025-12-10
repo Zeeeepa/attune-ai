@@ -234,14 +234,12 @@ export default function BookPage() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://smart-ai-memory.github.io/memdocs-empathy-book/chapters/part-6/23-distributed-memory.html"
+              <Link
+                href="/chapter-23"
                 className="btn btn-primary"
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 Read Chapter 23 Free
-              </a>
+              </Link>
               <Link href="/demo/distributed-memory" className="btn btn-outline">
                 Try Interactive Demo
               </Link>

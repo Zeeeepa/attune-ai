@@ -419,15 +419,9 @@ print(f"Collaboration efficiency: {stats['collaboration_efficiency']:.0%}")`}
               Dive deeper into Distributed Memory Networks in Chapter 23 of the book
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://smart-ai-memory.github.io/memdocs-empathy-book/chapters/part-6/23-distributed-memory.html"
-                className="btn btn-primary"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'white' }}
-              >
+              <Link href="/chapter-23" className="btn btn-primary">
                 Read Chapter 23
-              </a>
+              </Link>
               <Link href="/book" className="btn btn-outline">
                 Pre-order the Book
               </Link>
@@ -441,7 +435,7 @@ print(f"Collaboration efficiency: {stats['collaboration_efficiency']:.0%}")`}
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-sm text-[var(--muted)]">
-              &copy; 2025 Deep Study AI, LLC. All rights reserved.
+              &copy; 2025 SmartAI Memory. All rights reserved.
             </div>
             <div className="flex gap-6">
               <Link href="/" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
