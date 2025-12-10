@@ -6,10 +6,17 @@ Interactive demo of all Redis memory features for the Empathy Framework.
 Run this to explore and gain confidence in the Redis implementation.
 
 Usage:
-    python examples/redis_exploration.py [--mock]
+    python examples/redis_exploration.py [--mock] [--url REDIS_URL]
 
 Options:
-    --mock    Use in-memory mock instead of real Redis (for testing without Redis)
+    --mock         Use in-memory mock instead of real Redis
+    --url URL      Explicit Redis URL (overrides REDIS_URL env var)
+
+Environment Variables:
+    REDIS_URL      Redis connection URL (auto-detected from Railway)
+    REDIS_HOST     Redis host (default: localhost)
+    REDIS_PORT     Redis port (default: 6379)
+    REDIS_PASSWORD Redis password (optional)
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -27,6 +34,8 @@ from empathy_os import (
     AgentCredentials,
     RedisShortTermMemory,
     StagedPattern,
+    check_redis_connection,
+    get_redis_memory,
 )
 
 
@@ -369,24 +378,32 @@ def demo_permission_tiers(memory: RedisShortTermMemory):
         print(f"    {name:13} |  {read} |  {stage}  |    {validate}   |  {admin}")
 
 
-def run_all_demos(use_mock: bool = False):
+def run_all_demos(use_mock: bool = False, url: str | None = None):
     """Run all demonstration scenarios"""
     print("\n" + "#" * 60)
     print("#  EMPATHY REDIS SHORT-TERM MEMORY EXPLORATION")
     print("#" * 60)
 
+    # Check connection status
+    status = check_redis_connection()
+
     if use_mock:
         print("\n  Mode: MOCK (in-memory, no Redis required)")
+        memory = get_redis_memory(use_mock=True)
+    elif url:
+        print("\n  Mode: REDIS (explicit URL)")
+        memory = get_redis_memory(url=url)
     else:
-        print("\n  Mode: REDIS (connecting to localhost:6379)")
-
-    # Initialize memory
-    memory = RedisShortTermMemory(use_mock=use_mock)
+        print(f"\n  Mode: REDIS (config source: {status['config_source']})")
+        if status["host"]:
+            print(f"  Host: {status['host']}:{status['port']}")
+        memory = get_redis_memory()
 
     # Run demos
     if not demo_connection(memory):
         if not use_mock:
             print("\n  TIP: Run with --mock flag to use in-memory mode")
+            print("  Or set REDIS_URL environment variable")
             return
 
     demo_working_memory(memory)
@@ -416,6 +433,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Use in-memory mock instead of real Redis",
     )
+    parser.add_argument(
+        "--url",
+        type=str,
+        help="Explicit Redis URL (e.g., redis://localhost:6379)",
+    )
     args = parser.parse_args()
 
-    run_all_demos(use_mock=args.mock)
+    run_all_demos(use_mock=args.mock, url=args.url)

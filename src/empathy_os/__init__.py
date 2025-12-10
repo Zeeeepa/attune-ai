@@ -34,6 +34,12 @@ from .logging_config import LoggingConfig, get_logger
 from .monitoring import AgentMetrics, AgentMonitor, TeamMetrics
 from .pattern_library import Pattern, PatternLibrary, PatternMatch
 from .persistence import MetricsCollector, PatternPersistence, StateManager
+from .redis_config import (
+    check_redis_connection,
+    get_railway_redis,
+    get_redis_config,
+    get_redis_memory,
+)
 from .redis_memory import (
     AccessTier,
     AgentCredentials,
@@ -74,6 +80,11 @@ __all__ = [
     "StagedPattern",
     "ConflictContext",
     "TTLStrategy",
+    # Redis Configuration
+    "get_redis_memory",
+    "get_redis_config",
+    "get_railway_redis",
+    "check_redis_connection",
     # Trust
     "TrustBuildingBehaviors",
     # Persistence
