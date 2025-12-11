@@ -22,6 +22,14 @@ nav:
       - Installation: getting-started/installation.md
       - Quick Start: getting-started/quickstart.md
       - Configuration: getting-started/configuration.md
+  - Guides:
+      - Preface - Why Empathy Exists: guides/preface.md
+      - Foreword by Claude: guides/foreword.md
+      - Philosophy of Multi-Agent Coordination: guides/multi-agent-philosophy.md
+      - Unified Memory System: guides/unified-memory-system.md
+      - Implementing Short-Term Memory: guides/short-term-memory-implementation.md
+      - Practical Patterns: guides/practical-patterns.md
+      - Short-Term Memory Reference: SHORT_TERM_MEMORY.md
   - Examples:
       - Simple Chatbot: examples/simple-chatbot.md
       - SBAR Clinical Handoff: examples/sbar-clinical-handoff.md
@@ -34,9 +42,11 @@ nav:
       - Configuration: api-reference/config.md
       - Core: api-reference/core.md
       - Pattern Library: api-reference/pattern-library.md
+      - Multi-Agent Coordination: api-reference/multi-agent.md
       - Persistence: api-reference/persistence.md
       - LLM Toolkit: api-reference/llm-toolkit.md
       - Industry Wizards: api-reference/wizards.md
+  - Philosophy: EMPATHY_PHILOSOPHY.md
   - Contributing: contributing.md
 
 # Theme Configuration (Material)
