@@ -1,4 +1,5 @@
 # Funding options for Empathy
 # See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-supporter-button-in-your-repository
 
+github: [patrickroebuck]
 custom: ["https://smartaimemory.com", "mailto:admin@smartaimemory.com?subject=Empathy%20Framework%20Support"]
