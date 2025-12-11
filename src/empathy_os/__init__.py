@@ -13,7 +13,15 @@ __author__ = "Patrick Roebuck"
 __email__ = "hello@deepstudy.ai"
 
 from .config import EmpathyConfig, load_config
-from .coordination import ConflictResolver, ResolutionResult, ResolutionStrategy, TeamPriorities
+from .coordination import (
+    AgentCoordinator,
+    AgentTask,
+    ConflictResolver,
+    ResolutionResult,
+    ResolutionStrategy,
+    TeamPriorities,
+    TeamSession,
+)
 from .core import EmpathyOS
 from .emergence import EmergenceDetector
 from .exceptions import (
@@ -31,27 +39,64 @@ from .feedback_loops import FeedbackLoopDetector
 from .levels import Level1Reactive, Level2Guided, Level3Proactive, Level4Anticipatory, Level5Systems
 from .leverage_points import LeveragePointAnalyzer
 from .logging_config import LoggingConfig, get_logger
-from .monitoring import AgentMetrics, AgentMonitor, TeamMetrics
-from .pattern_library import Pattern, PatternLibrary, PatternMatch
-from .persistence import MetricsCollector, PatternPersistence, StateManager
-from .redis_config import (
+
+# Memory module (unified short-term + long-term + security)
+from .memory import (
+    # Short-term (Redis)
+    AccessTier,
+    AgentCredentials,
+    AuditEvent,
+    # Security - Audit
+    AuditLogger,
+    Classification,
+    ClassificationRules,
+    # Claude Memory
+    ClaudeMemoryConfig,
+    ClaudeMemoryLoader,
+    ConflictContext,
+    EncryptionManager,
+    Environment,
+    MemDocsStorage,
+    MemoryConfig,
+    MemoryPermissionError,
+    PatternMetadata,
+    PIIDetection,
+    PIIPattern,
+    # Security - PII
+    PIIScrubber,
+    RedisShortTermMemory,
+    SecretDetection,
+    # Security - Secrets
+    SecretsDetector,
+    SecretType,
+    # Long-term (Persistent)
+    SecureMemDocsIntegration,
+    SecurePattern,
+    SecurityError,
+    SecurityViolation,
+    Severity,
+    StagedPattern,
+    TTLStrategy,
+    # Unified Memory Interface (recommended)
+    UnifiedMemory,
+    # Configuration
     check_redis_connection,
+    detect_secrets,
     get_railway_redis,
     get_redis_config,
     get_redis_memory,
 )
-from .redis_memory import (
-    AccessTier,
-    AgentCredentials,
-    ConflictContext,
-    RedisShortTermMemory,
-    StagedPattern,
-    TTLStrategy,
-)
+from .monitoring import AgentMetrics, AgentMonitor, TeamMetrics
+from .pattern_library import Pattern, PatternLibrary, PatternMatch
+from .persistence import MetricsCollector, PatternPersistence, StateManager
 from .trust_building import TrustBuildingBehaviors
 
 __all__ = [
     "EmpathyOS",
+    # Unified Memory Interface
+    "UnifiedMemory",
+    "MemoryConfig",
+    "Environment",
     "Level1Reactive",
     "Level2Guided",
     "Level3Proactive",
@@ -69,6 +114,9 @@ __all__ = [
     "ResolutionResult",
     "ResolutionStrategy",
     "TeamPriorities",
+    "AgentCoordinator",
+    "AgentTask",
+    "TeamSession",
     # Monitoring (Multi-Agent)
     "AgentMonitor",
     "AgentMetrics",
@@ -107,4 +155,31 @@ __all__ = [
     "LeveragePointError",
     "FeedbackLoopError",
     "CollaborationStateError",
+    # Long-term Memory
+    "SecureMemDocsIntegration",
+    "Classification",
+    "ClassificationRules",
+    "PatternMetadata",
+    "SecurePattern",
+    "MemDocsStorage",
+    "EncryptionManager",
+    "SecurityError",
+    "MemoryPermissionError",
+    # Claude Memory
+    "ClaudeMemoryConfig",
+    "ClaudeMemoryLoader",
+    # Security - PII
+    "PIIScrubber",
+    "PIIDetection",
+    "PIIPattern",
+    # Security - Secrets
+    "SecretsDetector",
+    "SecretDetection",
+    "SecretType",
+    "Severity",
+    "detect_secrets",
+    # Security - Audit
+    "AuditLogger",
+    "AuditEvent",
+    "SecurityViolation",
 ]

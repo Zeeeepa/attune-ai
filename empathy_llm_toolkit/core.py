@@ -11,10 +11,18 @@ import logging
 import time
 from typing import Any
 
-from .claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
+# Import from consolidated memory module
+from empathy_os.memory import (
+    AuditLogger,
+    ClaudeMemoryConfig,
+    ClaudeMemoryLoader,
+    PIIScrubber,
+    SecretsDetector,
+    SecurityError,
+)
+
 from .levels import EmpathyLevel
 from .providers import AnthropicProvider, BaseLLMProvider, LocalProvider, OpenAIProvider
-from .security import AuditLogger, PIIScrubber, SecretsDetector, SecurityError
 from .state import CollaborationState, UserPattern
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,9 @@
 """
 Security Module for Empathy Framework
 
+DEPRECATED: This module re-exports from empathy_os.memory.security
+Use `from empathy_os.memory.security import ...` instead.
+
 Provides enterprise-grade security controls including:
 - PII scrubbing (GDPR, HIPAA, SOC2 compliant)
 - Secrets detection (API keys, passwords, private keys)
@@ -8,20 +11,31 @@ Provides enterprise-grade security controls including:
 - Secure MemDocs integration with encryption
 
 Author: Empathy Framework Team
-Version: 1.8.0-beta
+Version: 2.0.0 (consolidated into empathy_os.memory)
 License: Fair Source 0.9
 """
 
-from .audit_logger import AuditEvent, AuditLogger, SecurityViolation
-from .pii_scrubber import PIIDetection, PIIPattern, PIIScrubber
-from .secrets_detector import SecretDetection, SecretsDetector, SecretType, Severity, detect_secrets
-from .secure_memdocs import (
+# Re-export from consolidated memory module for backwards compatibility
+from empathy_os.memory.long_term import (
     Classification,
     ClassificationRules,
     EncryptionManager,
     PatternMetadata,
     SecureMemDocsIntegration,
     SecurityError,
+)
+from empathy_os.memory.security import (
+    AuditEvent,
+    AuditLogger,
+    PIIDetection,
+    PIIPattern,
+    PIIScrubber,
+    SecretDetection,
+    SecretsDetector,
+    SecretType,
+    SecurityViolation,
+    Severity,
+    detect_secrets,
 )
 
 __all__ = [

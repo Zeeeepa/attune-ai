@@ -19,6 +19,13 @@ from .emergence import EmergenceDetector
 from .exceptions import ValidationError
 from .feedback_loops import FeedbackLoopDetector
 from .leverage_points import LeveragePoint, LeveragePointAnalyzer
+from .memory import Classification, UnifiedMemory
+from .redis_memory import (
+    AccessTier,
+    AgentCredentials,
+    RedisShortTermMemory,
+    StagedPattern,
+)
 
 if TYPE_CHECKING:
     from .pattern_library import PatternLibrary
@@ -95,6 +102,8 @@ class EmpathyOS:
         confidence_threshold: float = 0.75,
         logger: logging.Logger | None = None,
         shared_library: PatternLibrary | None = None,
+        short_term_memory: RedisShortTermMemory | None = None,
+        access_tier: AccessTier = AccessTier.CONTRIBUTOR,
     ):
         """
         Initialize EmpathyOS
@@ -107,12 +116,21 @@ class EmpathyOS:
             shared_library: Optional shared PatternLibrary for multi-agent collaboration.
                            When provided, enables agents to share discovered patterns,
                            supporting Level 5 (Systems Empathy) distributed memory networks.
+            short_term_memory: Optional RedisShortTermMemory for fast, TTL-based working
+                              memory. Enables real-time multi-agent coordination, pattern
+                              staging, and conflict resolution.
+            access_tier: Access tier for this agent (Observer, Contributor, Validator, Steward).
+                        Determines what operations the agent can perform on shared memory.
         """
         self.user_id = user_id
         self.target_level = target_level
         self.confidence_threshold = confidence_threshold
         self.logger = logger or logging.getLogger(__name__)
         self.shared_library = shared_library
+
+        # Short-term memory for multi-agent coordination
+        self.short_term_memory = short_term_memory
+        self.credentials = AgentCredentials(agent_id=user_id, tier=access_tier)
 
         # Collaboration state tracking
         self.collaboration_state = CollaborationState()
@@ -128,6 +146,129 @@ class EmpathyOS:
 
         # Current empathy level
         self.current_empathy_level = 1
+
+        # Session ID for tracking (generated on first use)
+        self._session_id: str | None = None
+
+        # Unified memory (lazily initialized)
+        self._unified_memory: UnifiedMemory | None = None
+
+    @property
+    def memory(self) -> UnifiedMemory:
+        """
+        Unified memory interface for both short-term and long-term storage.
+
+        Lazily initializes on first access with environment auto-detection.
+
+        Usage:
+            empathy = EmpathyOS(user_id="agent_1")
+
+            # Store working data (short-term)
+            empathy.memory.stash("analysis", {"results": [...]})
+
+            # Persist pattern (long-term)
+            result = empathy.memory.persist_pattern(
+                content="Algorithm for X",
+                pattern_type="algorithm",
+            )
+
+            # Retrieve pattern
+            pattern = empathy.memory.recall_pattern(result["pattern_id"])
+        """
+        if self._unified_memory is None:
+            self._unified_memory = UnifiedMemory(
+                user_id=self.user_id,
+                access_tier=self.credentials.tier,
+            )
+        return self._unified_memory
+
+    # =========================================================================
+    # UNIFIED MEMORY CONVENIENCE METHODS
+    # =========================================================================
+
+    def persist_pattern(
+        self,
+        content: str,
+        pattern_type: str,
+        classification: Classification | str | None = None,
+        auto_classify: bool = True,
+    ) -> dict | None:
+        """
+        Store a pattern in long-term memory with security controls.
+
+        This is a convenience method that delegates to memory.persist_pattern().
+
+        Args:
+            content: Pattern content
+            pattern_type: Type (algorithm, protocol, config, etc.)
+            classification: Security classification (or auto-detect)
+            auto_classify: Auto-detect classification from content
+
+        Returns:
+            Storage result with pattern_id and classification
+
+        Example:
+            >>> empathy = EmpathyOS(user_id="dev@company.com")
+            >>> result = empathy.persist_pattern(
+            ...     content="Our proprietary algorithm for...",
+            ...     pattern_type="algorithm",
+            ... )
+            >>> print(result["classification"])  # "INTERNAL"
+        """
+        return self.memory.persist_pattern(
+            content=content,
+            pattern_type=pattern_type,
+            classification=classification,
+            auto_classify=auto_classify,
+        )
+
+    def recall_pattern(self, pattern_id: str) -> dict | None:
+        """
+        Retrieve a pattern from long-term memory.
+
+        This is a convenience method that delegates to memory.recall_pattern().
+
+        Args:
+            pattern_id: ID of pattern to retrieve
+
+        Returns:
+            Pattern data with content and metadata
+
+        Example:
+            >>> pattern = empathy.recall_pattern("pat_123")
+            >>> print(pattern["content"])
+        """
+        return self.memory.recall_pattern(pattern_id)
+
+    def stash(self, key: str, value: any, ttl_seconds: int = 3600) -> bool:
+        """
+        Store data in short-term memory with TTL.
+
+        This is a convenience method that delegates to memory.stash().
+
+        Args:
+            key: Storage key
+            value: Data to store
+            ttl_seconds: Time-to-live (default 1 hour)
+
+        Returns:
+            True if stored successfully
+        """
+        return self.memory.stash(key, value, ttl_seconds)
+
+    def retrieve(self, key: str) -> any:
+        """
+        Retrieve data from short-term memory.
+
+        This is a convenience method that delegates to memory.retrieve().
+
+        Args:
+            key: Storage key
+
+        Returns:
+            Stored data or None
+        """
+        return self.memory.retrieve(key)
 
     async def __aenter__(self):
         """
@@ -1102,3 +1243,249 @@ class EmpathyOS:
     def reset_collaboration_state(self):
         """Reset collaboration state (new session)"""
         self.collaboration_state = CollaborationState()
+
+    # =========================================================================
+    # SHORT-TERM MEMORY (Redis-backed Multi-Agent Coordination)
+    # =========================================================================
+
+    def has_short_term_memory(self) -> bool:
+        """Check if this agent has short-term memory configured."""
+        return self.short_term_memory is not None
+
+    @property
+    def session_id(self) -> str:
+        """Get or generate a unique session ID for this agent instance."""
+        if self._session_id is None:
+            import uuid
+
+            self._session_id = f"{self.user_id}_{uuid.uuid4().hex[:8]}"
+        return self._session_id
+
+    def stage_pattern(self, pattern: StagedPattern) -> bool:
+        """
+        Stage a discovered pattern for validation.
+
+        Patterns are held in a staging area until a Validator promotes them
+        to the active pattern library. This implements the trust-but-verify
+        approach to multi-agent knowledge building.
+
+        Args:
+            pattern: StagedPattern with discovery details
+
+        Returns:
+            True if staged successfully
+
+        Raises:
+            RuntimeError: If no short-term memory configured
+            PermissionError: If agent lacks Contributor+ access
+
+        Example:
+            >>> from empathy_os import StagedPattern
+            >>> pattern = StagedPattern(
+            ...     pattern_id="pat_auth_001",
+            ...     agent_id=empathy.user_id,
+            ...     pattern_type="security",
+            ...     name="JWT Token Refresh Pattern",
+            ...     description="Refresh tokens before expiry to prevent auth failures",
+            ...     confidence=0.85,
+            ... )
+            >>> empathy.stage_pattern(pattern)
+        """
+        if self.short_term_memory is None:
+            raise RuntimeError(
+                "No short-term memory configured. Pass short_term_memory to __init__ "
+                "to enable pattern staging."
+            )
+        return self.short_term_memory.stage_pattern(pattern, self.credentials)
+
+    def get_staged_patterns(self) -> list[StagedPattern]:
+        """
+        Get all patterns currently in staging.
+
+        Returns patterns staged by any agent that are awaiting validation.
+        Validators use this to review and promote/reject patterns.
+
+        Returns:
+            List of StagedPattern objects
+
+        Raises:
+            RuntimeError: If no short-term memory configured
+        """
+        if self.short_term_memory is None:
+            raise RuntimeError(
+                "No short-term memory configured. Pass short_term_memory to __init__ "
+                "to enable pattern staging."
+            )
+        return self.short_term_memory.list_staged_patterns(self.credentials)
+
+    def send_signal(
+        self,
+        signal_type: str,
+        data: dict,
+        target_agent: str | None = None,
+    ) -> bool:
+        """
+        Send a coordination signal to other agents.
+
+        Use signals for real-time coordination:
+        - Notify completion of tasks
+        - Request assistance
+        - Broadcast status updates
+
+        Args:
+            signal_type: Type of signal (e.g., "task_complete", "need_review")
+            data: Signal payload
+            target_agent: Specific agent to target, or None for broadcast
+
+        Returns:
+            True if sent successfully
+
+        Raises:
+            RuntimeError: If no short-term memory configured
+
+        Example:
+            >>> # Notify specific agent
+            >>> empathy.send_signal(
+            ...     "analysis_complete",
+            ...     {"files": 10, "issues_found": 3},
+            ...     target_agent="lead_reviewer"
+            ... )
+            >>> # Broadcast to all
+            >>> empathy.send_signal("status_update", {"phase": "testing"})
+        """
+        if self.short_term_memory is None:
+            raise RuntimeError(
+                "No short-term memory configured. Pass short_term_memory to __init__ "
+                "to enable coordination signals."
+            )
+        return self.short_term_memory.send_signal(
+            signal_type=signal_type,
+            data=data,
+            credentials=self.credentials,
+            target_agent=target_agent,
+        )
+
+    def receive_signals(self, signal_type: str | None = None) -> list[dict]:
+        """
+        Receive coordination signals from other agents.
+
+        Returns signals targeted at this agent or broadcast signals.
+        Signals expire after 5 minutes (TTL).
+
+        Args:
+            signal_type: Filter by signal type, or None for all
+
+        Returns:
+            List of signal dicts with sender, type, data, timestamp
+
+        Raises:
+            RuntimeError: If no short-term memory configured
+
+        Example:
+            >>> signals = empathy.receive_signals("analysis_complete")
+            >>> for sig in signals:
+            ...     print(f"From {sig['sender']}: {sig['data']}")
+        """
+        if self.short_term_memory is None:
+            raise RuntimeError(
+                "No short-term memory configured. Pass short_term_memory to __init__ "
+                "to enable coordination signals."
+            )
+        return self.short_term_memory.receive_signals(self.credentials, signal_type=signal_type)
+
+    def persist_collaboration_state(self) -> bool:
+        """
+        Persist current collaboration state to short-term memory.
+
+        Call periodically to save state that can be recovered if the agent
+        restarts. State expires after 30 minutes by default.
+
+        Returns:
+            True if persisted successfully
+
+        Raises:
+            RuntimeError: If no short-term memory configured
+        """
+        if self.short_term_memory is None:
+            raise RuntimeError(
+                "No short-term memory configured. Pass short_term_memory to __init__ "
+                "to enable state persistence."
+            )
+
+        state_data = {
+            "trust_level": self.collaboration_state.trust_level,
+            "successful_interventions": self.collaboration_state.successful_interventions,
+            "failed_interventions": self.collaboration_state.failed_interventions,
+            "total_interactions": self.collaboration_state.total_interactions,
+            "current_empathy_level": self.current_empathy_level,
+            "session_start": self.collaboration_state.session_start.isoformat(),
+            "trust_trajectory": self.collaboration_state.trust_trajectory[-100:],  # Last 100
+        }
+        return self.short_term_memory.stash(
+            f"collaboration_state_{self.session_id}",
+            state_data,
+            self.credentials,
+        )
+
+    def restore_collaboration_state(self, session_id: str | None = None) -> bool:
+        """
+        Restore collaboration state from short-term memory.
+
+        Use to recover state after agent restart or to continue a previous
+        session.
+
+        Args:
+            session_id: Session to restore, or None for current session
+
+        Returns:
+            True if state was found and restored
+
+        Raises:
+            RuntimeError: If no short-term memory configured
+        """
+        if self.short_term_memory is None:
+            raise RuntimeError(
+                "No short-term memory configured. Pass short_term_memory to __init__ "
+                "to enable state persistence."
+            )
+
+        sid = session_id or self.session_id
+        state_data = self.short_term_memory.retrieve(
+            f"collaboration_state_{sid}",
+            self.credentials,
+        )
+
+        if state_data is None:
+            return False
+
+        # Restore state
+        self.collaboration_state.trust_level = state_data.get("trust_level", 0.5)
+        self.collaboration_state.successful_interventions = state_data.get(
+            "successful_interventions", 0
+        )
+        self.collaboration_state.failed_interventions = state_data.get("failed_interventions", 0)
+        self.collaboration_state.total_interactions = state_data.get("total_interactions", 0)
+        self.current_empathy_level = state_data.get("current_empathy_level", 1)
+        self.collaboration_state.trust_trajectory = state_data.get("trust_trajectory", [])
+
+        self.logger.info(
+            f"Restored collaboration state from session {sid}",
+            extra={
+                "user_id": self.user_id,
+                "restored_trust_level": self.collaboration_state.trust_level,
+                "restored_interactions": self.collaboration_state.total_interactions,
+            },
+        )
+
+        return True
+
+    def get_memory_stats(self) -> dict | None:
+        """
+        Get statistics about the short-term memory system.
+
+        Returns:
+            Dict with memory usage, key counts, mode, or None if not configured
+        """
+        if self.short_term_memory is None:
+            return None
+        return self.short_term_memory.get_stats()

@@ -14,12 +14,14 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
-from empathy_llm_toolkit.security import (
+# Use new consolidated memory module
+from empathy_os.memory import (
     AuditLogger,
+    ClaudeMemoryConfig,
     PIIScrubber,
     SecretsDetector,
     SecureMemDocsIntegration,
+    SecurityError,
 )
 
 
@@ -185,7 +187,6 @@ class TestSecurityPipeline:
 
         # Test 4: Secrets should block storage
         secret_pattern = "api_key = 'sk_live_abc123xyz789'"
-        from empathy_llm_toolkit.security.secure_memdocs import SecurityError
 
         with pytest.raises(SecurityError, match="Secrets detected"):
             integration.store_pattern(
