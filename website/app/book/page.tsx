@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import CheckoutButton from '@/components/CheckoutButton';
 
-// Price ID from Stripe Dashboard - hardcoded fallback for build-time reliability
-const BOOK_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_BOOK || 'price_1Sbf3xAbABKRT84gGn7yaivw';
+// Gumroad product URL for pay-what-you-want book
+const GUMROAD_BOOK_URL = 'https://smartaimemory.gumroad.com/l/empathy-book';
 
 export default function BookPage() {
   return (
@@ -55,14 +54,14 @@ export default function BookPage() {
 
               <div className="w-full max-w-md bg-[var(--border)] bg-opacity-30 rounded-lg p-8">
                 <div className="text-center mb-6">
-                  <div className="text-5xl font-bold text-[var(--primary)] mb-2">$60</div>
-                  <p className="text-[var(--muted)] text-sm">Complete Book</p>
+                  <div className="text-4xl font-bold text-[var(--primary)] mb-2">Name Your Price</div>
+                  <p className="text-[var(--muted)] text-sm">Free or pay what you want</p>
                 </div>
 
                 <div className="space-y-4 mb-6">
                   <div className="flex items-start gap-3">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">Digital book (PDF, ePub, Mobi)</span>
+                    <span className="text-sm">Digital book (PDF)</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-[var(--success)] mt-1">✓</span>
@@ -82,15 +81,17 @@ export default function BookPage() {
                   </div>
                 </div>
 
-                <CheckoutButton
-                  priceId={BOOK_PRICE_ID}
-                  mode="payment"
-                  buttonText="Buy Now - $60"
-                  className="btn btn-primary w-full text-lg mb-4"
-                />
+                <a
+                  href={GUMROAD_BOOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary w-full text-lg mb-4 block text-center"
+                >
+                  Get the Book
+                </a>
 
                 <p className="text-xs text-center text-[var(--muted)]">
-                  Secure checkout powered by Stripe. Instant digital delivery.
+                  Your support helps development. Even $0 downloads help us track interest.
                 </p>
 
                 <div className="mt-6 pt-6 border-t border-[var(--border)]">
@@ -353,12 +354,14 @@ export default function BookPage() {
             <p className="text-xl mb-8 opacity-90">
               The complete guide to building Level 4 Anticipatory AI systems with multi-agent coordination.
             </p>
-            <CheckoutButton
-              priceId={BOOK_PRICE_ID}
-              mode="payment"
-              buttonText="Buy the Book - $60"
-              className="btn bg-white text-[var(--primary)] hover:bg-gray-100 text-lg px-8 py-4"
-            />
+            <a
+              href={GUMROAD_BOOK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn bg-white text-[var(--primary)] hover:bg-gray-100 text-lg px-8 py-4 inline-block"
+            >
+              Get the Book Free
+            </a>
           </div>
         </div>
       </section>
