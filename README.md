@@ -4,7 +4,7 @@
 
 [![codecov](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
 [![License](https://img.shields.io/badge/License-Fair%20Source%200.9-blue.svg)](LICENSE)
-[![PyPI Package](https://img.shields.io/badge/PyPI-empathy--framework-blue)](https://pypi.org/project/empathy-framework/)
+[![PyPI Package](https://img.shields.io/badge/PyPI-empathy-blue)](https://pypi.org/project/empathy/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -16,16 +16,15 @@
 ## Quick Start
 
 ```bash
-# Install core framework
-pip install empathy-framework
+# Install from PyPI
+pip install empathy
 
-# Install full framework with all features (recommended)
-# Built with Claude Code - created in consultation with Claude Sonnet 4.5
-pip install empathy-framework[full]
+# Install with all features (recommended)
+pip install empathy[full]
 
 # Or install specific components:
-pip install empathy-framework[llm]      # LLM providers (Anthropic, OpenAI)
-pip install empathy-framework[all]      # Everything including dev tools
+pip install empathy[llm]      # LLM providers (Anthropic, OpenAI)
+pip install empathy[all]      # Everything including dev tools
 ```
 
 **Development installation:**
@@ -577,7 +576,7 @@ Traditional AI tools analyze code in isolation within a single domain. The Empat
 
 ```bash
 # Install with MemDocs integration
-pip install empathy-framework[full]
+pip install empathy[full]
 
 # Run the Level 5 demo
 python examples/level_5_transformative/run_full_demo.py
