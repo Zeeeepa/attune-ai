@@ -31,11 +31,17 @@ Licensed under Fair Source 0.9
 
 import argparse
 import json
+import logging
+import signal
 import sys
+import time
+import warnings
 from dataclasses import asdict, dataclass
 from datetime import datetime
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlparse
 
 import structlog
 
@@ -48,6 +54,12 @@ from .redis_bootstrap import (
     stop_redis,
 )
 from .short_term import AccessTier, AgentCredentials, RedisShortTermMemory
+
+# Suppress noisy warnings in CLI mode
+warnings.filterwarnings("ignore", category=RuntimeWarning, module="runpy")
+
+# Version
+__version__ = "2.1.1"
 
 logger = structlog.get_logger(__name__)
 
@@ -71,6 +83,11 @@ class MemoryStats:
     patterns_internal: int = 0
     patterns_sensitive: int = 0
     patterns_encrypted: int = 0
+
+    # Performance stats
+    redis_ping_ms: float = 0.0
+    storage_bytes: int = 0
+    collection_time_ms: float = 0.0
 
     # Timestamps
     collected_at: str = ""
@@ -183,6 +200,7 @@ class MemoryControlPanel:
         Returns:
             MemoryStats with all metrics
         """
+        start_time = time.perf_counter()
         stats = MemoryStats(collected_at=datetime.utcnow().isoformat() + "Z")
 
         # Redis stats
@@ -192,7 +210,12 @@ class MemoryControlPanel:
         if redis_running:
             try:
                 memory = self._get_short_term()
+
+                # Measure Redis ping latency
+                ping_start = time.perf_counter()
                 redis_stats = memory.get_stats()
+                stats.redis_ping_ms = (time.perf_counter() - ping_start) * 1000
+
                 stats.redis_method = redis_stats.get("mode", "redis")
                 stats.redis_keys_total = redis_stats.get("total_keys", 0)
                 stats.redis_keys_working = redis_stats.get("working_keys", 0)
@@ -205,6 +228,15 @@ class MemoryControlPanel:
         storage_path = Path(self.config.storage_dir)
         if storage_path.exists():
             stats.long_term_available = True
+
+            # Calculate storage size
+            try:
+                stats.storage_bytes = sum(
+                    f.stat().st_size for f in storage_path.glob("**/*") if f.is_file()
+                )
+            except Exception:
+                pass
+
             try:
                 long_term = self._get_long_term()
                 lt_stats = long_term.get_statistics()
@@ -215,6 +247,9 @@ class MemoryControlPanel:
                 stats.patterns_encrypted = lt_stats.get("encrypted_count", 0)
             except Exception as e:
                 logger.warning("long_term_stats_failed", error=str(e))
+
+        # Total collection time
+        stats.collection_time_ms = (time.perf_counter() - start_time) * 1000
 
         return stats
 
@@ -459,6 +494,15 @@ def print_stats(panel: MemoryControlPanel):
     print(f"  └─ SENSITIVE: {stats.patterns_sensitive}")
     print(f"  Encrypted: {stats.patterns_encrypted}")
 
+    # Performance stats
+    print("\nPerformance:")
+    if stats.redis_ping_ms > 0:
+        print(f"  Redis latency: {stats.redis_ping_ms:.2f}ms")
+    if stats.storage_bytes > 0:
+        size_kb = stats.storage_bytes / 1024
+        print(f"  Storage size: {size_kb:.1f} KB")
+    print(f"  Stats collected in: {stats.collection_time_ms:.2f}ms")
+
     print()
 
 
@@ -490,10 +534,187 @@ def print_health(panel: MemoryControlPanel):
     print()
 
 
+class MemoryAPIHandler(BaseHTTPRequestHandler):
+    """HTTP request handler for Memory Control Panel API."""
+
+    panel: MemoryControlPanel = None  # Set by server
+
+    def log_message(self, format, *args):
+        """Override to use structlog instead of stderr."""
+        logger.debug("api_request", message=format % args)
+
+    def _send_json(self, data: Any, status: int = 200):
+        """Send JSON response."""
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode())
+
+    def _send_error(self, message: str, status: int = 400):
+        """Send error response."""
+        self._send_json({"error": message, "status_code": status}, status)
+
+    def do_OPTIONS(self):
+        """Handle CORS preflight."""
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+
+    def do_GET(self):
+        """Handle GET requests."""
+        parsed = urlparse(self.path)
+        path = parsed.path
+        query = parse_qs(parsed.query)
+
+        if path == "/api/ping":
+            self._send_json({"status": "ok", "service": "empathy-memory"})
+
+        elif path == "/api/status":
+            self._send_json(self.panel.status())
+
+        elif path == "/api/stats":
+            stats = self.panel.get_statistics()
+            self._send_json(asdict(stats))
+
+        elif path == "/api/health":
+            self._send_json(self.panel.health_check())
+
+        elif path == "/api/patterns":
+            classification = query.get("classification", [None])[0]
+            limit = int(query.get("limit", [100])[0])
+            patterns = self.panel.list_patterns(classification=classification, limit=limit)
+            self._send_json(patterns)
+
+        elif path == "/api/patterns/export":
+            classification = query.get("classification", [None])[0]
+            patterns = self.panel.list_patterns(classification=classification)
+            export_data = {
+                "exported_at": datetime.utcnow().isoformat() + "Z",
+                "classification_filter": classification,
+                "patterns": patterns,
+            }
+            self._send_json({"pattern_count": len(patterns), "export_data": export_data})
+
+        elif path.startswith("/api/patterns/"):
+            pattern_id = path.split("/")[-1]
+            patterns = self.panel.list_patterns()
+            pattern = next((p for p in patterns if p.get("pattern_id") == pattern_id), None)
+            if pattern:
+                self._send_json(pattern)
+            else:
+                self._send_error("Pattern not found", 404)
+
+        else:
+            self._send_error("Not found", 404)
+
+    def do_POST(self):
+        """Handle POST requests."""
+        parsed = urlparse(self.path)
+        path = parsed.path
+
+        # Read body if present
+        content_length = int(self.headers.get("Content-Length", 0))
+        body = {}
+        if content_length > 0:
+            body = json.loads(self.rfile.read(content_length).decode())
+
+        if path == "/api/redis/start":
+            status = self.panel.start_redis(verbose=False)
+            self._send_json(
+                {
+                    "success": status.available,
+                    "message": f"Redis {'started' if status.available else 'failed'} via {status.method.value}",
+                }
+            )
+
+        elif path == "/api/redis/stop":
+            stopped = self.panel.stop_redis()
+            self._send_json(
+                {
+                    "success": stopped,
+                    "message": "Redis stopped" if stopped else "Could not stop Redis",
+                }
+            )
+
+        elif path == "/api/memory/clear":
+            agent_id = body.get("agent_id", "admin")
+            deleted = self.panel.clear_short_term(agent_id)
+            self._send_json({"keys_deleted": deleted})
+
+        else:
+            self._send_error("Not found", 404)
+
+    def do_DELETE(self):
+        """Handle DELETE requests."""
+        parsed = urlparse(self.path)
+        path = parsed.path
+
+        if path.startswith("/api/patterns/"):
+            pattern_id = path.split("/")[-1]
+            deleted = self.panel.delete_pattern(pattern_id)
+            self._send_json({"success": deleted})
+        else:
+            self._send_error("Not found", 404)
+
+
+def run_api_server(panel: MemoryControlPanel, host: str = "localhost", port: int = 8765):
+    """Run the Memory API server."""
+    MemoryAPIHandler.panel = panel
+
+    server = HTTPServer((host, port), MemoryAPIHandler)
+
+    # Graceful shutdown handler
+    def shutdown_handler(signum, frame):
+        print("\n\nReceived shutdown signal...")
+        print("Stopping API server...")
+        server.shutdown()
+        # Stop Redis if we started it
+        if panel.stop_redis():
+            print("Stopped Redis")
+        print("Shutdown complete.")
+        sys.exit(0)
+
+    # Register signal handlers
+    signal.signal(signal.SIGINT, shutdown_handler)
+    signal.signal(signal.SIGTERM, shutdown_handler)
+
+    print(f"\n{'='*50}")
+    print("EMPATHY MEMORY API SERVER")
+    print(f"{'='*50}")
+    print(f"\nServer running at http://{host}:{port}")
+    print("\nEndpoints:")
+    print("  GET  /api/ping           Health check")
+    print("  GET  /api/status         Memory system status")
+    print("  GET  /api/stats          Detailed statistics")
+    print("  GET  /api/health         Health check with recommendations")
+    print("  GET  /api/patterns       List patterns")
+    print("  GET  /api/patterns/export Export patterns")
+    print("  POST /api/redis/start    Start Redis")
+    print("  POST /api/redis/stop     Stop Redis")
+    print("  POST /api/memory/clear   Clear short-term memory")
+    print("\nPress Ctrl+C to stop\n")
+
+    server.serve_forever()
+
+
+def _configure_logging(verbose: bool = False):
+    """Configure logging for CLI mode."""
+    level = logging.DEBUG if verbose else logging.WARNING
+    logging.basicConfig(level=level, format="%(message)s")
+    structlog.configure(
+        wrapper_class=structlog.make_filtering_bound_logger(level),
+    )
+
+
 def main():
     """CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Empathy Memory Control Panel",
+        description="Empathy Memory Control Panel - Manage Redis and pattern storage",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -504,16 +725,45 @@ Examples:
   %(prog)s health              Run health check
   %(prog)s patterns            List stored patterns
   %(prog)s export patterns.json  Export patterns to file
+  %(prog)s api --api-port 8765 Start REST API server only
+  %(prog)s serve               Start Redis + API server (recommended)
+
+Quick Start:
+  1. pip install empathy-framework
+  2. empathy-memory serve
+  3. Open http://localhost:8765/api/status in browser
         """,
     )
 
     parser.add_argument(
         "command",
-        choices=["status", "start", "stop", "stats", "health", "patterns", "export"],
+        choices=[
+            "status",
+            "start",
+            "stop",
+            "stats",
+            "health",
+            "patterns",
+            "export",
+            "api",
+            "serve",
+        ],
         help="Command to execute",
+        nargs="?",
     )
-    parser.add_argument("--host", default="localhost", help="Redis host")
+    parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version=f"empathy-memory {__version__}",
+    )
+    parser.add_argument(
+        "--host", default="localhost", help="Redis host (or API host for 'api' command)"
+    )
     parser.add_argument("--port", type=int, default=6379, help="Redis port")
+    parser.add_argument(
+        "--api-port", type=int, default=8765, help="API server port (for 'api' command)"
+    )
     parser.add_argument(
         "--storage", default="./memdocs_storage", help="Long-term storage directory"
     )
@@ -522,8 +772,17 @@ Examples:
     )
     parser.add_argument("--output", "-o", help="Output file for export")
     parser.add_argument("--json", action="store_true", help="Output in JSON format")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show debug output")
 
     args = parser.parse_args()
+
+    # Configure logging (quiet by default)
+    _configure_logging(verbose=args.verbose)
+
+    # If no command specified, show help
+    if args.command is None:
+        parser.print_help()
+        sys.exit(0)
 
     config = ControlPanelConfig(
         redis_host=args.host,
@@ -579,6 +838,26 @@ Examples:
         output = args.output or "patterns_export.json"
         count = panel.export_patterns(output, classification=args.classification)
         print(f"✓ Exported {count} patterns to {output}")
+
+    elif args.command == "api":
+        run_api_server(panel, host=args.host, port=args.api_port)
+
+    elif args.command == "serve":
+        # Start Redis first
+        print("\n" + "=" * 50)
+        print("EMPATHY MEMORY - STARTING SERVICES")
+        print("=" * 50)
+
+        print("\n[1/2] Starting Redis...")
+        redis_status = panel.start_redis(verbose=False)
+        if redis_status.available:
+            print(f"  ✓ Redis running via {redis_status.method.value}")
+        else:
+            print(f"  ⚠ Redis not available: {redis_status.message}")
+            print("      (Continuing with mock memory)")
+
+        print("\n[2/2] Starting API server...")
+        run_api_server(panel, host=args.host, port=args.api_port)
 
 
 if __name__ == "__main__":

@@ -412,11 +412,12 @@ export class MemoryPanelProvider implements vscode.WebviewViewProvider {
         let html = '';
         try {
             html = fs.readFileSync(htmlPath.fsPath, 'utf8');
-            // Replace CSS placeholder
+            // Replace placeholders
             html = html.replace('{{cssUri}}', cssUri.toString());
+            html = html.replace('{{cspSource}}', webview.cspSource);
         } catch (error) {
             // Fallback HTML if template not found
-            html = this._getFallbackHtml(cssUri.toString());
+            html = this._getFallbackHtml(cssUri.toString(), webview.cspSource);
         }
 
         return html;
@@ -425,12 +426,13 @@ export class MemoryPanelProvider implements vscode.WebviewViewProvider {
     /**
      * Get fallback HTML (inline)
      */
-    private _getFallbackHtml(cssUri: string): string {
+    private _getFallbackHtml(cssUri: string, cspSource: string): string {
         return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource} 'unsafe-inline'; script-src 'unsafe-inline';">
     <link href="${cssUri}" rel="stylesheet">
     <title>Empathy Memory Panel</title>
 </head>

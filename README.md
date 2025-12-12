@@ -2,7 +2,7 @@
 
 **AI that predicts problems before they happen.**
 
-[![PyPI](https://img.shields.io/pypi/v/empathy)](https://pypi.org/project/empathy/)
+[![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://img.shields.io/badge/tests-2%2C040%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy/actions)
 [![Coverage](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
@@ -12,7 +12,7 @@
 Most AI tools are **reactive** - they wait for you to ask, then respond. Empathy is **anticipatory** - it predicts what you'll need and warns you before problems happen.
 
 ```bash
-pip install empathy
+pip install empathy-framework
 ```
 
 ## What It Does
@@ -78,10 +78,10 @@ print(result.prevention_steps)    # How to prevent it
 
 ```bash
 # Basic
-pip install empathy
+pip install empathy-framework
 
 # With all features (recommended)
-pip install empathy[full]
+pip install empathy-framework[full]
 
 # Development
 git clone https://github.com/Smart-AI-Memory/empathy.git
@@ -94,6 +94,32 @@ cd empathy && pip install -e .[dev]
 - **Healthcare Suite** - SBAR, SOAP notes, clinical protocols (HIPAA compliant)
 - **IDE Plugins** - VS Code and JetBrains extensions (examples/)
 - **Enterprise Security** - PII scrubbing, secrets detection, audit logging
+- **Memory Control Panel** - CLI and API for managing Redis + pattern storage
+
+## Memory Control Panel
+
+Manage AI memory with a simple CLI:
+
+```bash
+# Start everything (Redis + API server)
+empathy-memory serve
+
+# Check system status
+empathy-memory status
+
+# View statistics
+empathy-memory stats
+
+# Run health check
+empathy-memory health
+
+# List stored patterns
+empathy-memory patterns
+```
+
+The API server runs at `http://localhost:8765` with endpoints for status, stats, patterns, and Redis control.
+
+**VS Code Extension:** A visual panel for monitoring memory is available in `vscode-memory-panel/`.
 
 ## License
 
