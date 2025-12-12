@@ -401,7 +401,7 @@ Patrick Roebuck
 patrick.roebuck1955@gmail.com
 
 **Technical questions:**
-GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
+GitHub Issues: https://github.com/Smart-AI-Memory/empathy/issues
 
 **Business inquiries:**
 admin@smartaimemory.com

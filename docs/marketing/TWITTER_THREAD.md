@@ -80,14 +80,14 @@ Every industry has decades of safety research:
 
 Software can learn from ALL of them simultaneously.
 
-Demo: github.com/Smart-AI-Memory/empathy-framework
+Demo: github.com/Smart-AI-Memory/empathy
 
 ### Tweet 10: Call to Action
 A pattern learned from hospital handoffs just prevented a deployment failure.
 
 That's not incremental improvement. That's transformative intelligence.
 
-⭐ Star on GitHub: github.com/Smart-AI-Memory/empathy-framework
+⭐ Star on GitHub: github.com/Smart-AI-Memory/empathy
 📖 Docs: empathy-framework.readthedocs.io
 
 What cross-domain patterns would help your team?

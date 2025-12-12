@@ -85,11 +85,11 @@ Every industry has spent decades learning hard lessons about safety and quality.
 
 ## Links
 
-**Website:** https://github.com/Smart-AI-Memory/empathy-framework
+**Website:** https://github.com/Smart-AI-Memory/empathy
 
 **Documentation:** https://empathy-framework.readthedocs.io
 
-**Demo:** https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/level_5_transformative
+**Demo:** https://github.com/Smart-AI-Memory/empathy/tree/main/examples/level_5_transformative
 
 **Twitter:** [@SmartAIMemory] (if applicable)
 
@@ -271,7 +271,7 @@ Thanks for considering!
 
 [Your name]
 [Email]
-[GitHub: https://github.com/Smart-AI-Memory/empathy-framework]
+[GitHub: https://github.com/Smart-AI-Memory/empathy]
 
 ---
 
@@ -408,6 +408,6 @@ pip install empathy-framework[full]
 python examples/level_5_transformative/run_full_demo.py
 ```
 
-GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+GitHub: https://github.com/Smart-AI-Memory/empathy
 
 🙏 Thank you all!

@@ -40,7 +40,7 @@ I hope what we've built here helps you build things that matter.
 ---
 
 *Patrick Roebuck*
-*December 2024*
+*December 2025*
 
 ---
 

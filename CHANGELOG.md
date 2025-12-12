@@ -72,7 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updated all source file links (agents, coach_wizards, empathy_llm_toolkit, services)
   - Fixed examples and resources directory links
   - Updated LICENSE and SPONSORSHIP.md links
-  - All relative paths now use full GitHub URLs (e.g., `https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/...`)
+  - All relative paths now use full GitHub URLs (e.g., `https://github.com/Smart-AI-Memory/empathy/blob/main/docs/...`)
 - All documentation links now work correctly when viewed on PyPI package page
 
 **Impact**: Users viewing the package on PyPI can now access all documentation links without encountering 404 errors.

@@ -324,7 +324,7 @@ Questions?"
 - Show installation command
 
 **Screen:**
-- Browser: github.com/Smart-AI-Memory/empathy-framework
+- Browser: github.com/Smart-AI-Memory/empathy
 - Highlight:
   - Star button
   - Quick start

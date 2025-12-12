@@ -501,7 +501,7 @@ cp empathy_demo.gif docs/marketing/assets/
 ```bash
 # Upload to GitHub Release
 # Then reference via URL
-![Demo](https://github.com/Smart-AI-Memory/empathy-framework/releases/download/v1.0/empathy_demo.gif)
+![Demo](https://github.com/Smart-AI-Memory/empathy/releases/download/v1.0/empathy_demo.gif)
 
 # Pros: Doesn't bloat repo
 # Cons: Requires release management

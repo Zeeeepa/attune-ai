@@ -254,7 +254,7 @@ export async function sendContributionEmail(data: {
 
       <p>Follow our progress:</p>
       <ul>
-        <li><a href="https://github.com/Smart-AI-Memory/empathy-framework">GitHub Repository</a></li>
+        <li><a href="https://github.com/Smart-AI-Memory/empathy">GitHub Repository</a></li>
         <li><a href="https://smartaimemory.com/docs">Documentation</a></li>
       </ul>
 

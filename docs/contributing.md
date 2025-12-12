@@ -17,7 +17,7 @@ Thank you for your interest in contributing to the Empathy Framework!
 
 ```bash
 # Clone repository
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
+git clone https://github.com/Smart-AI-Memory/empathy.git
 cd empathy-framework
 
 # Install in development mode
@@ -74,4 +74,4 @@ Update documentation for any user-facing changes:
 
 ## Questions?
 
-Open an issue or ask in [Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)!
+Open an issue or ask in [Discussions](https://github.com/Smart-AI-Memory/empathy/discussions)!

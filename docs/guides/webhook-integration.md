@@ -260,7 +260,7 @@ from empathy_os.webhooks import GitHubWebhook
 
 github = GitHubWebhook(
     token=os.getenv("GITHUB_TOKEN"),
-    repository="Smart-AI-Memory/empathy-framework",
+    repository="Smart-AI-Memory/empathy",
     events=["code_review_complete"]
 )
 

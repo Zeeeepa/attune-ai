@@ -122,8 +122,8 @@ site_author: Patrick Roebuck
 site_url: https://empathy-framework.readthedocs.io
 
 # Repository
-repo_name: Smart-AI-Memory/empathy-framework
-repo_url: https://github.com/Smart-AI-Memory/empathy-framework
+repo_name: Smart-AI-Memory/empathy
+repo_url: https://github.com/Smart-AI-Memory/empathy
 
 # Navigation
 nav:
@@ -159,8 +159,8 @@ site_author: Patrick Roebuck
 site_url: https://empathy-framework.readthedocs.io
 
 # Repository
-repo_name: Smart-AI-Memory/empathy-framework
-repo_url: https://github.com/Smart-AI-Memory/empathy-framework
+repo_name: Smart-AI-Memory/empathy
+repo_url: https://github.com/Smart-AI-Memory/empathy
 edit_uri: edit/main/docs/
 
 # Copyright
@@ -276,7 +276,7 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Smart-AI-Memory/empathy-framework
+      link: https://github.com/Smart-AI-Memory/empathy
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/empathy-framework/
 
@@ -336,8 +336,8 @@ docs/
 **Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration**
 
 [![PyPI version](https://badge.fury.io/py/empathy-framework.svg)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://github.com/Smart-AI-Memory/empathy-framework/workflows/tests/badge.svg)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
-[![Coverage](https://codecov.io/gh/Smart-AI-Memory/empathy-framework/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy-framework)
+[![Tests](https://github.com/Smart-AI-Memory/empathy/workflows/tests/badge.svg)](https://github.com/Smart-AI-Memory/empathy/actions)
+[![Coverage](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
 
 ---
 
@@ -574,7 +574,7 @@ Includes everything: LLM providers, healthcare, webhooks.
 
 ```bash
 # Clone repository
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
+git clone https://github.com/Smart-AI-Memory/empathy.git
 cd empathy-framework
 
 # Install in editable mode with dev dependencies
@@ -805,7 +805,7 @@ mkdocstrings[python]>=0.24.0
 1. Go to https://readthedocs.org
 2. Sign in with GitHub
 3. Click "Import a Project"
-4. Select `Smart-AI-Memory/empathy-framework`
+4. Select `Smart-AI-Memory/empathy`
 5. Click "Build"
 
 **Done!** Your docs will auto-deploy on every commit to `main`.

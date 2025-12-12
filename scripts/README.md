@@ -162,7 +162,7 @@ Continue with release v1.7.0? (y/N): y
 ⏱️  Should complete in ~30 seconds
 
 View progress: gh run watch --workflow=release.yml
-View release: https://github.com/Smart-AI-Memory/empathy-framework/releases/tag/v1.7.0
+View release: https://github.com/Smart-AI-Memory/empathy/releases/tag/v1.7.0
 ```
 
 ## Manual Changelog (Advanced)

@@ -617,7 +617,7 @@ python examples/level_5_transformative/run_full_demo.py
 ```
 
 **GitHub Repository:**
-- github.com/Smart-AI-Memory/empathy-framework
+- github.com/Smart-AI-Memory/empathy
 - ⭐ Star the repo if you're impressed
 - 📖 Read the documentation
 - 🐛 Report issues or request features
@@ -653,7 +653,7 @@ python examples/level_5_transformative/run_full_demo.py
 
 First, take out your phone and scan this QR code. It goes straight to our GitHub repository.
 
-Or, if you're at your laptop, go to github.com/Smart-AI-Memory/empathy-framework.
+Or, if you're at your laptop, go to github.com/Smart-AI-Memory/empathy.
 
 Click that star button if you're impressed by what you've seen. Stars help us grow the community.
 

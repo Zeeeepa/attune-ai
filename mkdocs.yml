@@ -2,14 +2,14 @@
 # MkDocs configuration file
 
 # Site Information
-site_name: Empathy Framework
+site_name: Empathy
 site_description: Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration
 site_author: Patrick Roebuck
 site_url: https://empathy-framework.readthedocs.io
 
 # Repository
-repo_name: Smart-AI-Memory/empathy-framework
-repo_url: https://github.com/Smart-AI-Memory/empathy-framework
+repo_name: Smart-AI-Memory/empathy
+repo_url: https://github.com/Smart-AI-Memory/empathy
 edit_uri: edit/main/docs/
 
 # Copyright
@@ -18,23 +18,28 @@ copyright: Copyright &copy; 2025 Smart-AI-Memory
 # Navigation Structure
 nav:
   - Home: index.md
+  - Get the Book: get-the-book.md
+  - The Book:
+      - Cover: book-cover.md
+      - How to Read This Book: guides/how-to-read-this-book.md
+      - Preface: guides/preface.md
+      - Foreword by Claude: guides/foreword.md
   - Getting Started:
       - Installation: getting-started/installation.md
       - Prerequisites: guides/prerequisites.md
       - Quick Start: getting-started/quickstart.md
       - Configuration: getting-started/configuration.md
-  - Guides:
-      - How to Read This Book: guides/how-to-read-this-book.md
-      - Preface - Why Empathy Exists: guides/preface.md
-      - Foreword by Claude: guides/foreword.md
-      - Philosophy of Multi-Agent Coordination: guides/multi-agent-philosophy.md
+  - Philosophy:
+      - Multi-Agent Coordination: guides/multi-agent-philosophy.md
+      - The Empathy Philosophy: EMPATHY_PHILOSOPHY.md
+  - Implementation:
       - Unified Memory System: guides/unified-memory-system.md
-      - Implementing Short-Term Memory: guides/short-term-memory-implementation.md
+      - Short-Term Memory: guides/short-term-memory-implementation.md
       - Practical Patterns: guides/practical-patterns.md
       - Short-Term Memory Reference: SHORT_TERM_MEMORY.md
       - Glossary: guides/glossary.md
   - Examples:
-      - Simple Chatbot: examples/simple-chatbot.md
+      - Code Review Assistant: examples/simple-chatbot.md
       - SBAR Clinical Handoff: examples/sbar-clinical-handoff.md
       - Multi-Agent Coordination: examples/multi-agent-team-coordination.md
       - Adaptive Learning: examples/adaptive-learning-system.md
@@ -49,7 +54,6 @@ nav:
       - Persistence: api-reference/persistence.md
       - LLM Toolkit: api-reference/llm-toolkit.md
       - Industry Wizards: api-reference/wizards.md
-  - Philosophy: EMPATHY_PHILOSOPHY.md
   - Contributing: contributing.md
 
 # Theme Configuration (Material)
@@ -88,9 +92,9 @@ theme:
     - search.highlight
     - content.code.copy
 
-  # Logo
-  icon:
-    logo: material/brain
+  # Logo and favicon
+  logo: assets/images/empathy-brain-logo.png
+  favicon: assets/images/empathy-brain-logo.png
 
   # Font
   font:
@@ -130,6 +134,6 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Smart-AI-Memory/empathy-framework
+      link: https://github.com/Smart-AI-Memory/empathy
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/empathy-framework/

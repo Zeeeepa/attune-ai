@@ -2,7 +2,7 @@
 
 **Title:** AI that learns deployment safety from hospital handoffs (cross-domain pattern transfer)
 
-**URL:** https://github.com/Smart-AI-Memory/empathy-framework
+**URL:** https://github.com/Smart-AI-Memory/empathy
 
 ---
 
@@ -38,7 +38,7 @@ Built with the Empathy Framework—an open-source AI system with 5 levels of cod
 
 Every industry has spent decades learning hard lessons about safety and quality. With cross-domain AI, software development can learn from all of them simultaneously.
 
-**Live demo:** https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/level_5_transformative
+**Live demo:** https://github.com/Smart-AI-Memory/empathy/tree/main/examples/level_5_transformative
 
 **Docs:** https://empathy-framework.readthedocs.io
 

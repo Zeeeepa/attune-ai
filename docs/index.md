@@ -176,7 +176,7 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 - 💰 $99/developer/year for teams 6+ employees
 - 🔄 Auto-converts to Apache 2.0 on January 1, 2029
 
-[Read full license](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE)
+[Read full license](https://github.com/Smart-AI-Memory/empathy/blob/main/LICENSE)
 
 ---
 
@@ -222,10 +222,10 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 
 ## Community
 
-- **GitHub**: [Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework)
+- **GitHub**: [Smart-AI-Memory/empathy](https://github.com/Smart-AI-Memory/empathy)
 - **PyPI**: [empathy-framework](https://pypi.org/project/empathy-framework/)
-- **Issues**: [Report bugs or request features](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- **Discussions**: [Ask questions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- **Issues**: [Report bugs or request features](https://github.com/Smart-AI-Memory/empathy/issues)
+- **Discussions**: [Ask questions](https://github.com/Smart-AI-Memory/empathy/discussions)
 
 ---
 

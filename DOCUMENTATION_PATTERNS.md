@@ -834,7 +834,7 @@ You can't skip floors. You earn your way up.
 
     **Development setup**:
     ```bash
-    git clone https://github.com/Smart-AI-Memory/empathy-framework.git
+    git clone https://github.com/Smart-AI-Memory/empathy.git
     cd empathy-framework
     pip install -e .[dev]
     pre-commit install

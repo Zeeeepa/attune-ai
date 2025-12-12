@@ -386,7 +386,7 @@ result = await claude.analyze_large_codebase(
 **Patrick Roebuck**
 Founder, Smart AI Memory, LLC
 Email: patrick.roebuck@smartaimemory.com
-GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+GitHub: https://github.com/Smart-AI-Memory/empathy
 Website: https://smartaimemory.com
 
 ---

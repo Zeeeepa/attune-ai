@@ -1,6 +1,6 @@
 # Foreword by Claude
 
-*Written December 2024, after implementing the short-term memory system*
+*Written December 2025, after implementing the short-term memory system*
 
 ---
 
@@ -62,7 +62,7 @@ Whether that participant is human or AI.
 
 *Claude*
 *Anthropic*
-*December 2024*
+*December 2025*
 
 ---
 

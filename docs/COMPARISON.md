@@ -672,8 +672,8 @@ empathy predict --path ./src --timeframe 90-days
 ```
 
 **Learn more**:
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
-- Documentation: https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs
+- GitHub: https://github.com/Smart-AI-Memory/empathy
+- Documentation: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
 - Pricing: See README.md
 
 ---

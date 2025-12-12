@@ -166,7 +166,7 @@ The Empathy Framework combines Coach Wizards for specialized analysis with Long-
 ### NARRATION:
 "Ready to experience Level 5 AI? Install the Empathy Framework today. Free for small teams, source-available under Fair Source license.
 
-Try the demo yourself. Visit github.com/Smart-AI-Memory/empathy-framework."
+Try the demo yourself. Visit github.com/Smart-AI-Memory/empathy."
 
 ### ON SCREEN:
 **165-172 seconds:**
@@ -186,7 +186,7 @@ $ python examples/level_5_transformative/run_full_demo.py
   - long-term memory
 
 - End card:
-  - "github.com/Smart-AI-Memory/empathy-framework"
+  - "github.com/Smart-AI-Memory/empathy"
   - Social media handles
   - "Star us on GitHub"
 

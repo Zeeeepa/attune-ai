@@ -630,8 +630,8 @@ class SecureEmpathyFramework:
 - [Contributing Guide](../../CONTRIBUTING.md)
 
 ### Community
-- GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
-- Discussions: https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- GitHub Issues: https://github.com/Smart-AI-Memory/empathy/issues
+- Discussions: https://github.com/Smart-AI-Memory/empathy/discussions
 - Email: empathy-framework@smartaimemory.com
 
 ### Security

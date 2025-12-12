@@ -96,6 +96,15 @@ windows = [
     "colorama>=0.4.6,<1.0.0",  # ANSI color support for Windows CMD
 ]
 
+# Documentation dependencies
+docs = [
+    "mkdocs>=1.5.0,<2.0.0",
+    "mkdocs-material>=9.4.0,<10.0.0",
+    "mkdocstrings[python]>=0.24.0,<1.0.0",
+    "mkdocs-with-pdf>=0.9.3,<1.0.0",  # PDF/ePub generation
+    "pymdown-extensions>=10.0,<11.0",
+]
+
 # Development dependencies
 dev = [
     "pytest>=7.0,<9.0",
@@ -147,6 +156,12 @@ all = [
     "lsprotocol>=2023.0.0,<2024.0.0",
     # Windows
     "colorama>=0.4.6,<1.0.0",
+    # Documentation
+    "mkdocs>=1.5.0,<2.0.0",
+    "mkdocs-material>=9.4.0,<10.0.0",
+    "mkdocstrings[python]>=0.24.0,<1.0.0",
+    "mkdocs-with-pdf>=0.9.3,<1.0.0",
+    "pymdown-extensions>=10.0,<11.0",
     # Dev tools
     "pytest>=7.0,<9.0",
     "pytest-asyncio>=0.21,<1.0",
@@ -165,11 +180,11 @@ empathy-scan = "empathy_software_plugin.cli:scan_command"
 
 [project.urls]
 Homepage = "https://smartaimemory.com"
-Documentation = "https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs"
-Repository = "https://github.com/Smart-AI-Memory/empathy-framework"
-Issues = "https://github.com/Smart-AI-Memory/empathy-framework/issues"
-Discussions = "https://github.com/Smart-AI-Memory/empathy-framework/discussions"
-Changelog = "https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/Smart-AI-Memory/empathy/tree/main/docs"
+Repository = "https://github.com/Smart-AI-Memory/empathy"
+Issues = "https://github.com/Smart-AI-Memory/empathy/issues"
+Discussions = "https://github.com/Smart-AI-Memory/empathy/discussions"
+Changelog = "https://github.com/Smart-AI-Memory/empathy/blob/main/CHANGELOG.md"
 Funding = "https://smartaimemory.com"
 
 [tool.setuptools]

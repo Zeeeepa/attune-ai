@@ -78,7 +78,7 @@ export default function PricingPage() {
                 </div>
 
                 <a
-                  href="https://github.com/Smart-AI-Memory/empathy-framework"
+                  href="https://github.com/Smart-AI-Memory/empathy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline w-full"
@@ -292,7 +292,7 @@ export default function PricingPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://github.com/Smart-AI-Memory/empathy-framework"
+                  href="https://github.com/Smart-AI-Memory/empathy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary text-lg px-8 py-4"

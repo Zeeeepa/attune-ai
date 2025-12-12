@@ -187,9 +187,9 @@ AI that learns deployment safety from hospital handoffs
 
 ## 🔗 All Links Ready
 
-- **GitHub:** https://github.com/Smart-AI-Memory/empathy-framework
+- **GitHub:** https://github.com/Smart-AI-Memory/empathy
 - **Docs:** https://empathy-framework.readthedocs.io
-- **Demo:** https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/level_5_transformative
+- **Demo:** https://github.com/Smart-AI-Memory/empathy/tree/main/examples/level_5_transformative
 - **PyPI:** https://pypi.org/project/empathy-framework/
 
 ---

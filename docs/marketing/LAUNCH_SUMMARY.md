@@ -194,9 +194,9 @@ All content includes clear next steps:
 ### Link Placeholders Ready ✅
 
 All links are production-ready:
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- GitHub: https://github.com/Smart-AI-Memory/empathy
 - Docs: https://empathy-framework.readthedocs.io
-- Demo: https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/level_5_transformative
+- Demo: https://github.com/Smart-AI-Memory/empathy/tree/main/examples/level_5_transformative
 - PyPI: https://pypi.org/project/empathy-framework/
 
 ---
@@ -503,7 +503,7 @@ Patrick Roebuck
 patrick.roebuck1955@gmail.com
 
 **Technical Support:**
-GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
+GitHub Issues: https://github.com/Smart-AI-Memory/empathy/issues
 
 **Business Inquiries:**
 admin@smartaimemory.com

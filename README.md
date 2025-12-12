@@ -2,14 +2,14 @@
 
 **A five-level maturity model for AI-human collaboration**
 
-[![codecov](https://codecov.io/gh/Smart-AI-Memory/empathy-framework/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy-framework)
+[![codecov](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
 [![License](https://img.shields.io/badge/License-Fair%20Source%200.9-blue.svg)](LICENSE)
 [![PyPI Package](https://img.shields.io/badge/PyPI-empathy--framework-blue)](https://pypi.org/project/empathy-framework/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Built with Claude Code](https://img.shields.io/badge/Built_with-Claude_Code-5865F2?logo=anthropic&logoColor=white)](https://claude.ai/claude-code)
-[![GitHub stars](https://img.shields.io/github/stars/Smart-AI-Memory/empathy-framework.svg?style=social&label=Star)](https://github.com/Smart-AI-Memory/empathy-framework)
+[![GitHub stars](https://img.shields.io/github/stars/Smart-AI-Memory/empathy.svg?style=social&label=Star)](https://github.com/Smart-AI-Memory/empathy)
 
 ---
 
@@ -30,8 +30,8 @@ pip install empathy-framework[all]      # Everything including dev tools
 
 **Development installation:**
 ```bash
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
-cd empathy-framework
+git clone https://github.com/Smart-AI-Memory/empathy.git
+cd empathy
 pip install -e .[dev]
 ```
 
@@ -42,7 +42,7 @@ os = EmpathyOS()
 result = await os.collaborate("Build a secure API endpoint")
 ```
 
-📖 **[Full Quick Start Guide](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/QUICKSTART_GUIDE.md)** | **[API Reference](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/API_REFERENCE.md)** | **[User Guide](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/USER_GUIDE.md)**
+📖 **[Full Quick Start Guide](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/QUICKSTART_GUIDE.md)** | **[API Reference](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/API_REFERENCE.md)** | **[User Guide](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/USER_GUIDE.md)**
 
 ---
 
@@ -56,7 +56,7 @@ The **Empathy** is a systematic approach to building AI systems that progress fr
 
 > **"Transformation occurs when structure meets collaboration."**
 >
-> *From [The Empathy Framework book chapter](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/CHAPTER_EMPATHY_FRAMEWORK.md) - Well-defined roles, clear processes, and explicit frameworks enable any system to transcend linear growth.*
+> *From [The Empathy Framework book chapter](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/CHAPTER_EMPATHY_FRAMEWORK.md) - Well-defined roles, clear processes, and explicit frameworks enable any system to transcend linear growth.*
 
 **This framework was created in consultation with Claude Sonnet 4.5 using [Claude Code](https://claude.ai/claude-code)** (Anthropic's official developer tool - CLI and VS Code extension) combined with **MemDocs** and the **Empathy Framework** itself, demonstrating the **200-400% productivity gains** possible with Level 4 Anticipatory AI:
 
@@ -210,8 +210,8 @@ secrets = detector.detect(code_content)
 
 ```bash
 # Clone and install
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
-cd empathy-framework
+git clone https://github.com/Smart-AI-Memory/empathy.git
+cd empathy
 pip install -r requirements.txt
 
 # Set up API key
@@ -225,7 +225,7 @@ pytest -m "not llm"
 pytest
 ```
 
-Share your experience in [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions).
+Share your experience in [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy/discussions).
 
 ---
 
@@ -301,8 +301,8 @@ pre-commit install
 
 ```bash
 # Clone the repository
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
-cd empathy-framework
+git clone https://github.com/Smart-AI-Memory/empathy.git
+cd empathy
 
 # Install dependencies
 pip install -r requirements.txt
@@ -418,18 +418,18 @@ Empathy/
 
 ### 1. Anticipatory Agents
 
-**Compliance Anticipation Agent** ([compliance_anticipation_agent.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/agents/compliance_anticipation_agent.py))
+**Compliance Anticipation Agent** ([compliance_anticipation_agent.py](https://github.com/Smart-AI-Memory/empathy/blob/main/agents/compliance_anticipation_agent.py))
 - Predicts regulatory audits 90+ days in advance
 - Identifies compliance gaps automatically
 - Generates proactive documentation
 - Provides stakeholder notifications
 
-**Trust Building Behaviors** ([trust_building_behaviors.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/agents/trust_building_behaviors.py))
+**Trust Building Behaviors** ([trust_building_behaviors.py](https://github.com/Smart-AI-Memory/empathy/blob/main/agents/trust_building_behaviors.py))
 - Implements tactical empathy patterns
 - Builds human-AI trust through transparent communication
 - Uses calibrated questions to uncover hidden needs
 
-**EPIC Integration Wizard** ([epic_integration_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/agents/epic_integration_wizard.py))
+**EPIC Integration Wizard** ([epic_integration_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/agents/epic_integration_wizard.py))
 - Healthcare-specific implementation
 - Integrates with EPIC EHR systems
 - Level 4 anticipatory empathy for clinical workflows
@@ -439,34 +439,34 @@ Empathy/
 **16 specialized wizards** for software development with Level 4 Anticipatory Empathy:
 
 **Security & Compliance:**
-- **Security Wizard** ([security_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/security_wizard.py)) - SQL injection, XSS, CSRF, secrets detection
-- **Compliance Wizard** ([compliance_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/compliance_wizard.py)) - GDPR, SOC 2, PII handling
+- **Security Wizard** ([security_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/security_wizard.py)) - SQL injection, XSS, CSRF, secrets detection
+- **Compliance Wizard** ([compliance_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/compliance_wizard.py)) - GDPR, SOC 2, PII handling
 
 **Performance & Scalability:**
-- **Performance Wizard** ([performance_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/performance_wizard.py)) - N+1 queries, memory leaks, bottlenecks
-- **Database Wizard** ([database_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/database_wizard.py)) - Missing indexes, query optimization
-- **Scaling Wizard** ([scaling_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/scaling_wizard.py)) - Architecture limitations, load handling
+- **Performance Wizard** ([performance_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/performance_wizard.py)) - N+1 queries, memory leaks, bottlenecks
+- **Database Wizard** ([database_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/database_wizard.py)) - Missing indexes, query optimization
+- **Scaling Wizard** ([scaling_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/scaling_wizard.py)) - Architecture limitations, load handling
 
 **Code Quality:**
-- **Refactoring Wizard** ([refactoring_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/refactoring_wizard.py)) - Code smells, complexity, duplication
-- **Testing Wizard** ([testing_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/testing_wizard.py)) - Coverage analysis, flaky tests
-- **Debugging Wizard** ([debugging_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/debugging_wizard.py)) - Null references, race conditions
+- **Refactoring Wizard** ([refactoring_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/refactoring_wizard.py)) - Code smells, complexity, duplication
+- **Testing Wizard** ([testing_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/testing_wizard.py)) - Coverage analysis, flaky tests
+- **Debugging Wizard** ([debugging_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/debugging_wizard.py)) - Null references, race conditions
 
 **API & Integration:**
-- **API Wizard** ([api_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/api_wizard.py)) - Design consistency, versioning
-- **Migration Wizard** ([migration_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/migration_wizard.py)) - Deprecated APIs, compatibility
+- **API Wizard** ([api_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/api_wizard.py)) - Design consistency, versioning
+- **Migration Wizard** ([migration_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/migration_wizard.py)) - Deprecated APIs, compatibility
 
 **DevOps & Operations:**
-- **CI/CD Wizard** ([cicd_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/cicd_wizard.py)) - Pipeline optimization, deployment risks
-- **Observability Wizard** ([observability_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/observability_wizard.py)) - Logging, metrics, tracing
-- **Monitoring Wizard** ([monitoring_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/monitoring_wizard.py)) - Alerts, SLOs, blind spots
+- **CI/CD Wizard** ([cicd_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/cicd_wizard.py)) - Pipeline optimization, deployment risks
+- **Observability Wizard** ([observability_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/observability_wizard.py)) - Logging, metrics, tracing
+- **Monitoring Wizard** ([monitoring_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/monitoring_wizard.py)) - Alerts, SLOs, blind spots
 
 **User Experience:**
-- **Accessibility Wizard** ([accessibility_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/accessibility_wizard.py)) - WCAG compliance, alt text, ARIA
-- **Localization Wizard** ([localization_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/localization_wizard.py)) - i18n, translations, RTL
+- **Accessibility Wizard** ([accessibility_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/accessibility_wizard.py)) - WCAG compliance, alt text, ARIA
+- **Localization Wizard** ([localization_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/localization_wizard.py)) - i18n, translations, RTL
 
 **Documentation:**
-- **Documentation Wizard** ([documentation_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/coach_wizards/documentation_wizard.py)) - Docstrings, examples, clarity
+- **Documentation Wizard** ([documentation_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/coach_wizards/documentation_wizard.py)) - Docstrings, examples, clarity
 
 Each wizard implements:
 - **Current Analysis**: Detect issues in code now
@@ -479,9 +479,9 @@ Each wizard implements:
 **3 domain examples** demonstrating the framework's capabilities:
 
 **Included in Core Framework:**
-- **Healthcare Wizard** ([healthcare_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/empathy_llm_toolkit/wizards/healthcare_wizard.py)) - HIPAA-compliant medical assistant
-- **Customer Support Wizard** ([customer_support_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/empathy_llm_toolkit/wizards/customer_support_wizard.py)) - Customer service and help desk
-- **Technology Wizard** ([technology_wizard.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/empathy_llm_toolkit/wizards/technology_wizard.py)) - IT and software development operations
+- **Healthcare Wizard** ([healthcare_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/empathy_llm_toolkit/wizards/healthcare_wizard.py)) - HIPAA-compliant medical assistant
+- **Customer Support Wizard** ([customer_support_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/empathy_llm_toolkit/wizards/customer_support_wizard.py)) - Customer service and help desk
+- **Technology Wizard** ([technology_wizard.py](https://github.com/Smart-AI-Memory/empathy/blob/main/empathy_llm_toolkit/wizards/technology_wizard.py)) - IT and software development operations
 
 **Additional Specialized Wizards:**
 
@@ -492,7 +492,7 @@ For comprehensive domain-specific wizards, visit:
 
 ### 4. Core Services
 
-**Wizard AI Service** ([wizard_ai_service.py](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/services/wizard_ai_service.py))
+**Wizard AI Service** ([wizard_ai_service.py](https://github.com/Smart-AI-Memory/empathy/blob/main/services/wizard_ai_service.py))
 - Orchestrates wizard implementations
 - Manages AI model selection and fallback
 - Handles prompt templates and context
@@ -500,18 +500,18 @@ For comprehensive domain-specific wizards, visit:
 
 ### 5. Framework Documentation
 
-**Technical Guide** ([CHAPTER_EMPATHY_FRAMEWORK.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/CHAPTER_EMPATHY_FRAMEWORK.md))
+**Technical Guide** ([CHAPTER_EMPATHY_FRAMEWORK.md](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/CHAPTER_EMPATHY_FRAMEWORK.md))
 - Complete theoretical foundation
 - Implementation patterns
 - Code examples for each level
 - Systems thinking integration
 
-**Non-Technical Guide** ([EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md))
+**Non-Technical Guide** ([EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md))
 - Accessible explanation for stakeholders
 - Business value and ROI
 - Real-world use cases
 
-**Teaching AI Your Philosophy** ([TEACHING_AI_YOUR_PHILOSOPHY.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/TEACHING_AI_YOUR_PHILOSOPHY.md))
+**Teaching AI Your Philosophy** ([TEACHING_AI_YOUR_PHILOSOPHY.md](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/TEACHING_AI_YOUR_PHILOSOPHY.md))
 - How to align AI systems with your values
 - Collaborative prompt engineering
 - Building long-term AI partnerships
@@ -524,7 +524,7 @@ The **Coach** project demonstrates practical implementation of Level 4 Anticipat
 - **VS Code Extension**: Full-featured extension with real-time analysis
 - **LSP Server**: Language Server Protocol implementation for cross-IDE support
 
-See [examples/coach/](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/coach) for complete implementations.
+See [examples/coach/](https://github.com/Smart-AI-Memory/empathy/tree/main/examples/coach) for complete implementations.
 
 ---
 
@@ -541,7 +541,7 @@ See [examples/coach/](https://github.com/Smart-AI-Memory/empathy-framework/tree/
 - **Security**: Identifies vulnerabilities in development phase
 - **Performance**: Detects N+1 queries and scalability issues early
 - **16 Specialized Wizards**: Security, Performance, Accessibility, Testing, etc.
-- **Examples**: See [examples/coach/](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/coach)
+- **Examples**: See [examples/coach/](https://github.com/Smart-AI-Memory/empathy/tree/main/examples/coach)
 
 ---
 
@@ -616,7 +616,7 @@ PREVENTION STEPS:
 
 By learning from healthcare's decades of research, we can **prevent software failures before they happen**.
 
-📖 **[Full Level 5 Documentation](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/examples/level_5_transformative/README.md)** | **[Blog Post](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/examples/level_5_transformative/BLOG_POST.md)**
+📖 **[Full Level 5 Documentation](https://github.com/Smart-AI-Memory/empathy/blob/main/examples/level_5_transformative/README.md)** | **[Blog Post](https://github.com/Smart-AI-Memory/empathy/blob/main/examples/level_5_transformative/BLOG_POST.md)**
 
 ---
 
@@ -649,16 +649,16 @@ The Empathy integrates Donella Meadows' leverage points:
 
 ## Documentation
 
-- 📚 **[Framework Guide](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/CHAPTER_EMPATHY_FRAMEWORK.md)** - Complete technical documentation
-- 🎓 **[Non-Technical Guide](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md)** - Accessible introduction
-- 🧑‍🏫 **[Teaching AI](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/TEACHING_AI_YOUR_PHILOSOPHY.md)** - Alignment and collaboration patterns
-- 💻 **[Coach Examples](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/coach)** - Production-ready IDE integrations
+- 📚 **[Framework Guide](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/CHAPTER_EMPATHY_FRAMEWORK.md)** - Complete technical documentation
+- 🎓 **[Non-Technical Guide](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md)** - Accessible introduction
+- 🧑‍🏫 **[Teaching AI](https://github.com/Smart-AI-Memory/empathy/blob/main/docs/TEACHING_AI_YOUR_PHILOSOPHY.md)** - Alignment and collaboration patterns
+- 💻 **[Coach Examples](https://github.com/Smart-AI-Memory/empathy/tree/main/examples/coach)** - Production-ready IDE integrations
 
 ---
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/examples/coach/CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guidelines](https://github.com/Smart-AI-Memory/empathy/blob/main/examples/coach/CONTRIBUTING.md) for details.
 
 **Ways to contribute:**
 - Implement new agents for different domains
@@ -681,7 +681,7 @@ The Empathy is **source available** (Fair Source 0.9) - free for students, educa
 - ✅ **Guaranteed response times**
 - ✅ **Upgrade assistance** and migration help
 
-[Get Support →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SPONSORSHIP.md)
+[Get Support →](https://github.com/Smart-AI-Memory/empathy/blob/main/SPONSORSHIP.md)
 
 ### Professional Services
 
@@ -689,7 +689,7 @@ The Empathy is **source available** (Fair Source 0.9) - free for students, educa
 - **Training & Workshops** - Get your team productive in one day
 - **Enterprise Solutions** - Hosted service, custom SLA, dedicated support
 
-[Learn More →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SPONSORSHIP.md) | [Contact Sales →](mailto:admin@smartaimemory.com)
+[Learn More →](https://github.com/Smart-AI-Memory/empathy/blob/main/SPONSORSHIP.md) | [Contact Sales →](mailto:admin@smartaimemory.com)
 
 ### GitHub Sponsors
 
@@ -699,7 +699,7 @@ Support development directly: [Sponsor on GitHub →](https://github.com/sponsor
 
 ## License
 
-This project is licensed under the **Fair Source License, version 0.9** - see the [LICENSE](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE) file for details.
+This project is licensed under the **Fair Source License, version 0.9** - see the [LICENSE](https://github.com/Smart-AI-Memory/empathy/blob/main/LICENSE) file for details.
 
 ### License Terms
 
@@ -717,7 +717,7 @@ The Fair Source License balances:
 - **Sustainable development** - Commercial licensing funds ongoing development and support
 - **Future open source** - Automatically converts to Apache 2.0 after 4 years
 
-**Commercial licensing:** Email [admin@smartaimemory.com](mailto:admin@smartaimemory.com) | [Licensing FAQ →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE)
+**Commercial licensing:** Email [admin@smartaimemory.com](mailto:admin@smartaimemory.com) | [Licensing FAQ →](https://github.com/Smart-AI-Memory/empathy/blob/main/LICENSE)
 
 ---
 
@@ -731,7 +731,7 @@ If you use the Empathy in your research or product, please cite:
   title = {Empathy: A Five-Level Maturity Model for AI-Human Collaboration},
   year = {2025},
   publisher = {Smart AI Memory, LLC},
-  url = {https://github.com/Smart-AI-Memory/empathy-framework},
+  url = {https://github.com/Smart-AI-Memory/empathy},
   license = {Fair-Source-0.9}
 }
 ```
@@ -746,10 +746,10 @@ If you use the Empathy in your research or product, please cite:
 **GitHub:** https://github.com/Smart-AI-Memory
 
 **Resources:**
-- Documentation: [docs/](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs)
-- Examples: [examples/](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples)
-- Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
-- Discussions: https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- Documentation: [docs/](https://github.com/Smart-AI-Memory/empathy/tree/main/docs)
+- Examples: [examples/](https://github.com/Smart-AI-Memory/empathy/tree/main/examples)
+- Issues: https://github.com/Smart-AI-Memory/empathy/issues
+- Discussions: https://github.com/Smart-AI-Memory/empathy/discussions
 
 ---
 
@@ -792,7 +792,7 @@ The Empathy uses Fair Source licensing. Commercial support and services availabl
 - Guaranteed response times
 - Upgrade assistance
 
-[Get Support →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SPONSORSHIP.md)
+[Get Support →](https://github.com/Smart-AI-Memory/empathy/blob/main/SPONSORSHIP.md)
 
 ### Professional Services
 
@@ -800,7 +800,7 @@ The Empathy uses Fair Source licensing. Commercial support and services availabl
 - **Training & Workshops** - Get your team productive quickly
 - **Enterprise Solutions** - Hosted service, dedicated support, custom SLA
 
-[Learn More →](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SPONSORSHIP.md)
+[Learn More →](https://github.com/Smart-AI-Memory/empathy/blob/main/SPONSORSHIP.md)
 
 ### IDE Extensions (Coming Soon)
 

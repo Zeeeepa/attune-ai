@@ -650,4 +650,4 @@ TOTAL                                                3322    308    91%
 **Next Review**: December 2025 (monthly updates)
 
 **Contact**: patrick.roebuck1955@gmail.com
-**Repository**: https://github.com/Smart-AI-Memory/empathy-framework
+**Repository**: https://github.com/Smart-AI-Memory/empathy

@@ -723,8 +723,8 @@ Companies that will benefit most from Empathy Framework:
 
 ### About Empathy Framework
 
-**Website**: https://github.com/Smart-AI-Memory/empathy-framework
-**Documentation**: https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs
+**Website**: https://github.com/Smart-AI-Memory/empathy
+**Documentation**: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
 **Get Started**: `pip install empathy-framework`
 **Pricing**: Free for ≤5 employees, $99/dev/year commercial
 **Contact**: patrick.roebuck1955@gmail.com

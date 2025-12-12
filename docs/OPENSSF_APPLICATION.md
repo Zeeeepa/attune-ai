@@ -28,12 +28,12 @@ Empathy Framework
 
 **Q: What is the project homepage URL?**
 ```
-https://github.com/Smart-AI-Memory/empathy-framework
+https://github.com/Smart-AI-Memory/empathy
 ```
 
 **Q: What is the URL for the project repository?**
 ```
-https://github.com/Smart-AI-Memory/empathy-framework
+https://github.com/Smart-AI-Memory/empathy
 ```
 
 **Q: What programming language(s) are used to implement the project?**
@@ -71,7 +71,7 @@ anticipatory AI collaboration.
 Met: Yes
 
 The project uses Git version control hosted on GitHub:
-https://github.com/Smart-AI-Memory/empathy-framework
+https://github.com/Smart-AI-Memory/empathy
 
 Full commit history available since project inception (January 2025).
 All contributions tracked with detailed commit messages.
@@ -88,7 +88,7 @@ Git is used for all version control. GitHub provides:
 - Pull request workflow
 - Code review requirements
 
-Repository: https://github.com/Smart-AI-Memory/empathy-framework
+Repository: https://github.com/Smart-AI-Memory/empathy
 ```
 
 **Q: How do users/developers get the version they want?**
@@ -101,11 +101,11 @@ Users can obtain specific versions through:
    pip install empathy-framework==1.6.8
 
 2. Git tags:
-   git clone https://github.com/Smart-AI-Memory/empathy-framework
+   git clone https://github.com/Smart-AI-Memory/empathy
    git checkout v1.6.8
 
 3. GitHub Releases:
-   https://github.com/Smart-AI-Memory/empathy-framework/releases
+   https://github.com/Smart-AI-Memory/empathy/releases
 
 Current version: 1.7.0
 Versioning follows SemVer 2.0.0 specification.
@@ -120,7 +120,7 @@ Met: Yes
 Bug reports accepted through multiple channels:
 
 1. GitHub Issues (primary):
-   https://github.com/Smart-AI-Memory/empathy-framework/issues
+   https://github.com/Smart-AI-Memory/empathy/issues
    - Issue templates provided
    - Bug report template includes: description, steps to reproduce, expected vs actual behavior
    - Security vulnerabilities: See SECURITY.md for private reporting
@@ -129,7 +129,7 @@ Bug reports accepted through multiple channels:
    patrick.roebuck1955@gmail.com
 
 3. GitHub Discussions (for questions):
-   https://github.com/Smart-AI-Memory/empathy-framework/discussions
+   https://github.com/Smart-AI-Memory/empathy/discussions
 
 Documentation: README.md and CONTRIBUTING.md
 ```
@@ -432,7 +432,7 @@ Reporting methods:
 
 2. GitHub Security Advisories:
    - Private reporting via GitHub UI
-   - https://github.com/Smart-AI-Memory/empathy-framework/security/advisories
+   - https://github.com/Smart-AI-Memory/empathy/security/advisories
 
 Response timeline:
 - Acknowledgment: Within 48 hours
@@ -458,7 +458,7 @@ Supported versions:
 - Major versions: 12 months support
 
 Documentation: SECURITY.md
-URL: https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SECURITY.md
+URL: https://github.com/Smart-AI-Memory/empathy/blob/main/SECURITY.md
 ```
 
 **Q: Do you have a documented process for responding to vulnerability reports?**
@@ -704,7 +704,7 @@ Comprehensive user documentation:
    - Inline comments for complex logic
 
 All documentation in repository:
-https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs
+https://github.com/Smart-AI-Memory/empathy/tree/main/docs
 ```
 
 **Q: Is there documentation on how to build/install the project?**
@@ -722,7 +722,7 @@ Installation documented in multiple places:
    pip install empathy-framework[full]
 
    # Development installation
-   git clone https://github.com/Smart-AI-Memory/empathy-framework.git
+   git clone https://github.com/Smart-AI-Memory/empathy.git
    cd empathy-framework
    pip install -e .[dev]
    ```
@@ -843,7 +843,7 @@ Additional resources:
 - CODE_OF_CONDUCT.md - Behavior expectations
 - docs/GOVERNANCE.md - Decision-making process
 
-URL: https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CONTRIBUTING.md
+URL: https://github.com/Smart-AI-Memory/empathy/blob/main/CONTRIBUTING.md
 ```
 
 ---
@@ -885,7 +885,7 @@ model and future open source conversion over pure OSS classification.
 All source code includes license headers (201 files).
 
 URLs:
-- https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE
+- https://github.com/Smart-AI-Memory/empathy/blob/main/LICENSE
 - https://fair.io/ (Fair Source information)
 ```
 
@@ -929,7 +929,7 @@ Amendment process:
 - Consensus preferred, majority vote if needed
 
 Documentation: docs/GOVERNANCE.md
-URL: https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/GOVERNANCE.md
+URL: https://github.com/Smart-AI-Memory/empathy/blob/main/docs/GOVERNANCE.md
 ```
 
 **Q: Is there a documented code of conduct?**
@@ -964,7 +964,7 @@ Attribution:
 - https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
 
 Documentation: CODE_OF_CONDUCT.md
-URL: https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CODE_OF_CONDUCT.md
+URL: https://github.com/Smart-AI-Memory/empathy/blob/main/CODE_OF_CONDUCT.md
 ```
 
 **Q: Do you have a documented roadmap?**
@@ -1166,7 +1166,7 @@ Current status:
 - Template prepared
 
 Documentation: SECURITY.md
-Location: https://github.com/Smart-AI-Memory/empathy-framework/security/advisories
+Location: https://github.com/Smart-AI-Memory/empathy/security/advisories
 ```
 
 ---
@@ -1248,7 +1248,7 @@ Reproduce any metric with these commands:
 
 ```bash
 # Clone repository
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
+git clone https://github.com/Smart-AI-Memory/empathy.git
 cd empathy-framework
 
 # Install dependencies
@@ -1287,8 +1287,8 @@ pre-commit run --all-files
 
 ### C. References
 
-- Repository: https://github.com/Smart-AI-Memory/empathy-framework
-- Documentation: https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs
+- Repository: https://github.com/Smart-AI-Memory/empathy
+- Documentation: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
 - PyPI Package: https://pypi.org/project/empathy-framework/
 - Security Policy: SECURITY.md
 - Contributing Guide: CONTRIBUTING.md

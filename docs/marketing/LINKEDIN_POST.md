@@ -133,9 +133,9 @@ python examples/level_5_transformative/run_full_demo.py
 ```
 
 **Resources:**
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- GitHub: https://github.com/Smart-AI-Memory/empathy
 - Documentation: https://empathy-framework.readthedocs.io
-- Live Demo: https://github.com/Smart-AI-Memory/empathy-framework/tree/main/examples/level_5_transformative
+- Live Demo: https://github.com/Smart-AI-Memory/empathy/tree/main/examples/level_5_transformative
 - Star on GitHub to follow development
 
 ### What's Next?

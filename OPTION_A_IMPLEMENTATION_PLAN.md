@@ -592,7 +592,7 @@ bus.emit(Event(
 ```python
 from empathy_os.integrations import GitHubIntegration
 
-gh = GitHubIntegration(repo="Smart-AI-Memory/empathy-framework")
+gh = GitHubIntegration(repo="Smart-AI-Memory/empathy")
 
 # Trigger empathy analysis on PR
 @gh.on("pull_request_opened")
@@ -847,8 +847,8 @@ empathy-framework = "empathy_os.cli:main"
 [project.urls]
 Homepage = "https://empathy-framework.readthedocs.io"
 Documentation = "https://empathy-framework.readthedocs.io"
-Repository = "https://github.com/Smart-AI-Memory/empathy-framework"
-Changelog = "https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md"
+Repository = "https://github.com/Smart-AI-Memory/empathy"
+Changelog = "https://github.com/Smart-AI-Memory/empathy/blob/main/CHANGELOG.md"
 ```
 
 #### 2. Comprehensive README.md (2 hours)
@@ -898,7 +898,7 @@ Include:
 - Security controls (PII scrubbing, secrets detection)
 - 90.71% test coverage (1,489 tests)
 
-[Full changelog](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md)
+[Full changelog](https://github.com/Smart-AI-Memory/empathy/blob/main/CHANGELOG.md)
 ```
 
 #### 4. GitHub Release Workflow (1 hour)
@@ -946,7 +946,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Empathy Framework ${{ github.ref }}
           body: |
-            See [CHANGELOG.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md) for details.
+            See [CHANGELOG.md](https://github.com/Smart-AI-Memory/empathy/blob/main/CHANGELOG.md) for details.
           draft: false
           prerelease: false
 ```

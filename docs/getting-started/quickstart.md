@@ -24,7 +24,7 @@ pip install empathy-framework
 
 ```bash
 # Download the quickstart
-curl -O https://raw.githubusercontent.com/Smart-AI-Memory/empathy-framework/main/examples/smart_team_quickstart.py
+curl -O https://raw.githubusercontent.com/Smart-AI-Memory/empathy/main/examples/smart_team_quickstart.py
 
 # Run it
 python smart_team_quickstart.py
