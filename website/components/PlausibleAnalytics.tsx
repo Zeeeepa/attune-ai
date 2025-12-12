@@ -2,28 +2,25 @@
 
 import Script from 'next/script';
 
-interface PlausibleAnalyticsProps {
-  domain?: string;
-  apiHost?: string;
-}
-
-export default function PlausibleAnalytics({
-  domain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN,
-  apiHost = process.env.NEXT_PUBLIC_PLAUSIBLE_API_HOST || 'https://plausible.io',
-}: PlausibleAnalyticsProps) {
-  if (!domain) {
-    console.warn('Plausible Analytics: NEXT_PUBLIC_PLAUSIBLE_DOMAIN is not set');
-    return null;
-  }
-
+export default function PlausibleAnalytics() {
   return (
-    <Script
-      defer
-      data-domain={domain}
-      data-api={`${apiHost}/api/event`}
-      src={`${apiHost}/js/script.js`}
-      strategy="afterInteractive"
-    />
+    <>
+      <Script
+        async
+        src="https://plausible.io/js/pa-5FMhEzOX6RnEF6ncz16Tr.js"
+        strategy="afterInteractive"
+      />
+      <Script
+        id="plausible-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+            plausible.init()
+          `,
+        }}
+      />
+    </>
   );
 }
 
