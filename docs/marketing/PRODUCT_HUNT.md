@@ -35,7 +35,7 @@ The AI collaboration framework that predicts problems before they happen. Persis
 Today's AI tools are brilliant but broken for enterprise use. They forget everything between sessions. Your data leaves your infrastructure. They can't coordinate with other agents. They wait for problems instead of preventing them. And every query costs the same regardless of complexity.
 
 ### Paragraph 2: The Solution
-Empathy Framework solves all five. Dual-layer memory (Redis short-term + pattern storage long-term) means AI that learns across sessions. Local-first architecture keeps your data on your infrastructure. Built-in multi-agent orchestration through Empathy OS. Anticipatory intelligence predicts issues 30-90 days ahead. Smart cost routing reduces LLM costs 40-60%.
+Empathy Framework solves all five. Dual-layer memory — git-based pattern storage for long-term knowledge (zero infrastructure required) plus optional Redis for real-time coordination — means AI that learns across sessions. Local-first architecture keeps your data on your infrastructure. Built-in multi-agent orchestration through Empathy OS. Anticipatory intelligence predicts issues 30-90 days ahead. Smart cost routing plus persistent memory means no more wasting tokens re-explaining context.
 
 ### Paragraph 3: What's Included
 30+ production wizards for security, performance, testing, documentation, accessibility, and compliance. Agent toolkit to build custom agents that inherit memory, trust, and anticipation. Healthcare suite with HIPAA-compliant patterns. Works with Claude, GPT-4, Ollama, or your own models.
@@ -47,7 +47,7 @@ Two commands to get started: `pip install empathy-framework` and `empathy-memory
 
 ## Key Features (7 bullets)
 
-1. **Persistent Memory** — Dual-layer architecture: Redis for millisecond short-term ops, pattern storage for long-term knowledge that persists across sessions
+1. **Persistent Memory** — Dual-layer architecture: git-based pattern storage (zero infrastructure, version-controlled), optional Redis for real-time coordination
 
 2. **Local-First** — Your data stays on your infrastructure. Nothing leaves your control. Built-in compliance patterns for HIPAA, GDPR, SOC2
 
@@ -57,7 +57,7 @@ Two commands to get started: `pip install empathy-framework` and `empathy-memory
 
 5. **30+ Production Wizards** — Security, performance, testing, documentation, accessibility, compliance—use or extend
 
-6. **Smart Cost Routing** — Detection models triage, capable models decide. 40-60% LLM cost reduction
+6. **Real Cost Savings** — Smart routing (cheap models triage, capable models decide) plus persistent memory eliminates repeated context
 
 7. **Fair Source Licensed** — Free for teams ≤5 employees, $99/dev/year commercial, auto-converts to Apache 2.0 in 2029
 
@@ -131,8 +131,8 @@ So I built Empathy Framework to fix that.
 4. **Reactive** — AI waits for problems
    → Anticipatory intelligence predicts 30-90 days ahead
 
-5. **Expensive** — Every query costs the same
-   → Smart routing: 40-60% cost reduction
+5. **Expensive** — Every query costs the same, tokens wasted re-explaining context
+   → Smart routing + persistent memory: no more re-teaching your AI
 
 **Try it now:**
 

@@ -24,9 +24,10 @@ Today's AI tools are **brilliant but broken** for enterprise use:
 
 | Feature | Benefit |
 |---------|---------|
-| **Dual-layer architecture** | Redis for millisecond ops, patterns for long-term knowledge |
+| **Git-based pattern storage** | Patterns live in your repo—version-controlled, portable, no infrastructure required |
+| **Redis short-term (optional)** | Add real-time multi-agent coordination when you need it |
 | **Cross-session learning** | Patterns discovered today inform decisions tomorrow |
-| **Team knowledge sharing** | What one agent learns, all agents can use |
+| **Works anywhere** | Students & individuals: just git. Teams: add Redis. Enterprise: full stack |
 
 ### Enterprise-Ready
 
@@ -79,7 +80,8 @@ empathy-memory serve
 | Capability | Empathy | SonarQube | GitHub Copilot |
 |------------|---------|-----------|----------------|
 | Predicts future issues | **30-90 days ahead** | No | No |
-| Persistent memory | **Redis + patterns** | No | No |
+| Persistent memory | **Git-based (+ optional Redis)** | No | No |
+| No infrastructure required | **Yes (git-based)** | Requires server | Cloud-only |
 | Multi-agent orchestration | **Built-in** | No | No |
 | Data stays local | **Your infrastructure** | Cloud | Cloud |
 | Source available | **Fair Source 0.9** | Proprietary | Proprietary |

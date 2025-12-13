@@ -17,10 +17,10 @@ I built something to fix all five.
 First problem: AI amnesia.
 
 Empathy has dual-layer memory:
-- Redis for millisecond short-term ops
-- Pattern storage for long-term knowledge
+- Git-based pattern storage (zero infrastructure)
+- Optional Redis for real-time coordination
 
-What you learn today informs decisions tomorrow. Across sessions. Across teams.
+Students: just git. Teams: add Redis. What you learn today informs tomorrow.
 
 ### Tweet 3: Enterprise-Ready
 Second problem: Your code leaves your infrastructure.
@@ -48,14 +48,14 @@ Empathy predicts issues 30-90 days ahead:
 
 Prevention, not reaction.
 
-### Tweet 6: Smart Cost Routing
-Fifth problem: Every query costs the same.
+### Tweet 6: Real Cost Savings
+Fifth problem: Every query costs the same AND you waste tokens re-explaining context.
 
-Empathy routes intelligently:
-- Detection models triage
-- Capable models decide
+Empathy:
+- Routes smartly (cheap models triage, capable models decide)
+- Eliminates repeated context (memory persists)
 
-40-60% LLM cost reduction. Works with Claude, GPT-4, Ollama.
+No more re-teaching your AI what it already knows. Works with Claude, GPT-4, Ollama.
 
 ### Tweet 7: For Builders
 30+ production wizards included:
@@ -74,9 +74,9 @@ pip install empathy-framework
 empathy-memory serve
 ```
 
-Redis starts, API server runs, memory system ready.
+Long-term patterns stored in git. Redis auto-starts for real-time features.
 
-That's it.
+Zero infrastructure for students. Full stack for enterprise.
 
 ### Tweet 9: Licensing
 Fair Source 0.9:

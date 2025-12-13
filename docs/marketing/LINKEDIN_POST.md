@@ -17,7 +17,7 @@ I built the Empathy Framework to solve all five.
 ### What Makes Empathy Different
 
 **Memory That Persists**
-Dual-layer architecture: Redis for millisecond operations, pattern storage for long-term knowledge. What one agent learns today informs decisions tomorrow. Cross-session, cross-team knowledge sharing.
+Dual-layer architecture: git-based pattern storage for long-term knowledge (version-controlled, no infrastructure required), optional Redis for real-time multi-agent coordination. What one agent learns today informs decisions tomorrow. Works anywhere — students use just git, enterprises add Redis for team coordination.
 
 **Enterprise-Ready**
 Your data stays local. Nothing leaves your infrastructure. Built-in compliance patterns for HIPAA, GDPR, and SOC2. Full audit trail — every action logged, exportable, searchable.
@@ -29,7 +29,7 @@ Predicts issues 30-90 days ahead. Security vulnerabilities, performance degradat
 Empathy OS manages human↔AI and AI↔AI collaboration. Specialized agents working in concert with trust management, feedback loops, and conflict resolution when agents disagree.
 
 **Performance & Cost**
-Smart model routing: detection models triage, capable models decide. 40-60% LLM cost reduction. Sub-millisecond coordination between agents.
+Smart model routing: detection models triage, capable models decide. Plus persistent memory eliminates repeated context — no more wasting tokens re-explaining what your AI should already know. Sub-millisecond coordination between agents.
 
 ---
 
@@ -50,7 +50,7 @@ pip install empathy-framework
 empathy-memory serve
 ```
 
-Two commands. Redis starts, API server runs, memory system ready.
+Two commands. For full features, Redis auto-starts. Long-term pattern storage requires zero infrastructure — it's git-based and lives in your repo.
 
 ---
 

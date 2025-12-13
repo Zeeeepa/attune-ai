@@ -185,7 +185,7 @@ All links are production-ready:
 - Anticipatory Intelligence (predicts 30-90 days ahead)
 - Build Better Agents (30+ wizards, agent toolkit)
 - Human↔AI & AI↔AI Orchestration (Empathy OS)
-- Performance & Cost (40-60% LLM cost reduction)
+- Performance & Cost (smart routing + no repeated context)
 
 ### 3. Enterprise Proof Point
 **AI Nurse Florence**

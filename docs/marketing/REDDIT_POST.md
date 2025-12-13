@@ -25,8 +25,10 @@ So I built the Empathy Framework to fix five problems with current AI tools:
 **1. Persistent Memory**
 
 Dual-layer architecture:
-- Redis for millisecond short-term operations
-- Pattern storage for long-term knowledge
+- Git-based pattern storage for long-term knowledge (version-controlled, zero infrastructure required)
+- Optional Redis for real-time multi-agent coordination
+
+Students and individuals: just git. Teams: add Redis for sub-millisecond coordination.
 
 ```python
 from empathy_os import EmpathyOS

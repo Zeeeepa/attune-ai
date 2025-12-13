@@ -12,15 +12,15 @@ So I built the Empathy Framework.
 
 **The five problems it solves:**
 
-1. **Stateless** — AI forgets everything between sessions. Empathy has dual-layer memory: Redis for millisecond ops, pattern storage for long-term knowledge.
+1. **Stateless** — AI forgets everything between sessions. Empathy has dual-layer memory: git-based pattern storage for long-term knowledge (no infrastructure required), optional Redis for real-time coordination.
 
-2. **Cloud-dependent** — Your code goes to someone else's servers. Empathy runs entirely local-first. Nothing leaves your infrastructure.
+2. **Cloud-dependent** — Your code goes to someone else's servers. Empathy runs entirely local-first. Memory lives in your repo, version-controlled like code.
 
 3. **Isolated** — AI tools can't coordinate. Empathy has built-in multi-agent orchestration (Empathy OS) for human↔AI and AI↔AI collaboration.
 
 4. **Reactive** — AI waits for you to find problems. Empathy predicts issues 30-90 days ahead using pattern analysis.
 
-5. **Expensive** — Every query costs the same. Empathy routes: cheap models detect, capable models decide. 40-60% cost reduction.
+5. **Expensive** — Every query costs the same, and you waste tokens re-explaining context. Empathy routes smartly (cheap models detect, capable models decide) AND eliminates repeated context — no more re-teaching your AI what it should already know.
 
 **What's included:**
 
@@ -37,7 +37,7 @@ pip install empathy-framework
 empathy-memory serve
 ```
 
-That's it. Redis starts, API server runs, memory system ready.
+That's it. Redis auto-starts for real-time features, but long-term pattern storage works with just git — no infrastructure needed for students and individual developers.
 
 **Example:**
 
@@ -62,7 +62,7 @@ Fair Source 0.9 — Free for students, educators, and teams ≤5 employees. Comm
 
 **What I'm looking for:**
 
-- Feedback on the memory architecture (Redis + patterns approach)
+- Feedback on the memory architecture (git-based patterns + optional Redis)
 - Ideas for cross-domain pattern transfer (healthcare insights → software)
 - Integration suggestions (CI/CD, IDE, pre-commit hooks?)
 

@@ -23,12 +23,12 @@ All content uses the unified **5 Problems / 6 Solutions** framework:
 > "Empathy solves all five."
 
 **6 Solutions:**
-1. Memory That Persists (Redis + patterns)
+1. Memory That Persists (git-based patterns + optional Redis)
 2. Enterprise-Ready (local-first, compliance)
 3. Anticipatory Intelligence (30-90 day predictions)
 4. Build Better Agents (30+ wizards, toolkit)
 5. Human↔AI & AI↔AI Orchestration
-6. Performance & Cost (40-60% reduction)
+6. Performance & Cost (smart routing + no repeated context)
 
 ### Quick Start
 ```bash
