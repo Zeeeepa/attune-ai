@@ -206,7 +206,7 @@ export default function BookPage() {
         <div className="container">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <span className="text-xs px-3 py-1 bg-[var(--primary)] bg-opacity-20 text-[var(--primary)] rounded-full">
+              <span className="text-xs px-3 py-1 bg-[var(--primary)] text-white rounded-full font-medium">
                 FREE PREVIEW
               </span>
             </div>
