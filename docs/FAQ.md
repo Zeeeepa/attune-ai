@@ -8,6 +8,7 @@
 ## Table of Contents
 
 - [General Questions](#general-questions)
+- [Wizards](#wizards)
 - [Technical Questions](#technical-questions)
 - [Licensing and Pricing](#licensing-and-pricing)
 - [Integration and Usage](#integration-and-usage)
@@ -62,7 +63,7 @@ We chose Fair Source 0.9 because we want maximum adoption and community contribu
 
 Yes! The Empathy Framework is production-ready and includes:
 
-- Comprehensive test suite with 90%+ coverage
+- Comprehensive test suite with 80%+ coverage (2,200+ tests)
 - Battle-tested on real codebases
 - Used in production by multiple teams
 - Enterprise support available ($99/developer/year)
@@ -73,6 +74,125 @@ That said, like any software, you should:
 - Start with non-critical systems
 - Monitor performance and accuracy
 - Provide feedback to improve the framework
+
+---
+
+## Wizards
+
+### What are Empathy Wizards?
+
+Wizards are specialized AI assistants for specific domains and tasks. Unlike generic chatbots, each wizard has:
+
+- **Domain expertise** - Deep knowledge of industry patterns and regulations
+- **Built-in security** - PII scrubbing, secrets detection, audit logging
+- **Level 4 predictions** - Anticipates problems before they happen
+- **Structured outputs** - Consistent, actionable results
+
+### What wizards are available?
+
+**44 wizards across 3 categories:**
+
+| Category | Count | Examples |
+|----------|-------|----------|
+| **Domain Wizards** | 16 | Healthcare, Finance, Legal, Education, HR, Retail |
+| **Software Wizards** | 16 | Debugging, Security, Performance, API, Testing, Database |
+| **AI Wizards** | 12 | Agent Orchestration, RAG Pattern, Prompt Engineering |
+
+### How do I choose the right wizard?
+
+**Ask yourself:**
+
+1. **What domain am I working in?** → Use a Domain Wizard (Healthcare, Finance, etc.)
+2. **What code task am I doing?** → Use a Software Wizard (Debugging, Security, etc.)
+3. **Am I building an AI system?** → Use an AI Wizard (Agent Orchestration, RAG, etc.)
+
+### What inputs do wizards need?
+
+All wizards accept a consistent input structure:
+
+```python
+result = await wizard.process(
+    user_input="Your question or content",  # Required
+    user_id="your_id",                       # Required
+    context={}                               # Optional context
+)
+```
+
+**Domain Wizards:** Text content to analyze (documents, emails, records)
+
+**Software Wizards:** Code to analyze (with file_path and language)
+
+**AI Wizards:** System description or architecture questions
+
+### What outputs do wizards return?
+
+All wizards return structured results:
+
+```python
+{
+    "success": True,
+    "output": "Human-readable summary",
+    "analysis": {
+        "issues": [...],         # Current problems found
+        "predictions": [...],    # Future problems predicted
+        "recommendations": [...] # Suggested actions
+    }
+}
+```
+
+### Can I use wizards without an API key?
+
+**Software Wizards:** Yes - rule-based analysis runs locally without LLM
+
+**Domain & AI Wizards:** Require LLM API key (Anthropic or OpenAI)
+
+**Local Models:** All wizards work with Ollama for completely offline use
+
+### How do I test wizards?
+
+```bash
+# Run the wizard test suite
+python tests/test_wizard_outputs.py
+
+# Output saved to tests/wizard_outputs/
+# - Individual JSON files per wizard
+# - Summary report in markdown
+```
+
+### Which wizards are most reliable?
+
+**Most tested (high confidence):**
+- Healthcare Wizard - Extensively validated for HIPAA compliance
+- Security Wizard - Validated against OWASP patterns
+- Debugging Wizard - Tested with common bug patterns
+
+**Newer (improving):**
+- Agent Orchestration Wizard
+- AI Performance Wizard
+- RAG Pattern Wizard
+
+All wizards undergo continuous testing. Check the [test report](../tests/wizard_outputs/test_report.md) for current status.
+
+### How do I create a custom wizard?
+
+```python
+from empathy_llm_toolkit.wizards import BaseWizard, WizardConfig
+
+class MyWizard(BaseWizard):
+    def __init__(self, llm):
+        config = WizardConfig(
+            name="my_industry",
+            domain="custom",
+            enable_security=True
+        )
+        super().__init__(llm, config)
+
+    async def process(self, user_input: str, user_id: str):
+        # Your custom logic here
+        return await self.llm.interact(user_id, user_input)
+```
+
+See [Creating Custom Wizards](api-reference/wizards.md#creating-custom-wizards) for full documentation.
 
 ---
 
