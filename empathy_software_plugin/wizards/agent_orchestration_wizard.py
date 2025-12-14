@@ -40,12 +40,63 @@ class AgentOrchestrationWizard(BaseWizard):
         )
 
     def get_required_context(self) -> list[str]:
-        """Required context for analysis"""
+        """Required context for analysis (optional in demo mode)"""
         return [
             "agent_definitions",  # Agent classes/configs
             "orchestration_code",  # Code that coordinates agents
             "project_path",  # Project root
         ]
+
+    def _parse_agents_from_text(self, text: str) -> list[dict]:
+        """Parse agent definitions from natural language text input."""
+        import re
+
+        agents = []
+
+        # Look for patterns like "5 agents", "agents: X, Y, Z", numbered lists
+        # Pattern 1: "N agents" or "N specialized agents"
+        count_match = re.search(r"(\d+)\s+(?:specialized\s+)?agents?", text.lower())
+        if count_match:
+            count = int(count_match.group(1))
+            # Try to extract agent names from the text
+            # Look for colon-separated list: "agents: ingestion, validation, ..."
+            list_match = re.search(r":\s*([^.]+)", text)
+            if list_match:
+                names = [n.strip() for n in list_match.group(1).split(",")]
+                for name in names[:count]:
+                    agents.append({"name": name, "type": "specialized"})
+            else:
+                # Generate generic agent names
+                for i in range(count):
+                    agents.append({"name": f"Agent_{i+1}", "type": "specialized"})
+
+        # Pattern 2: Look for specific agent-like words
+        agent_keywords = [
+            "ingestion",
+            "validation",
+            "transformation",
+            "analysis",
+            "reporting",
+            "extraction",
+            "processing",
+            "routing",
+            "aggregation",
+            "monitoring",
+            "scheduler",
+            "executor",
+            "coordinator",
+            "supervisor",
+            "worker",
+        ]
+        for kw in agent_keywords:
+            if kw in text.lower() and not any(a["name"].lower() == kw for a in agents):
+                agents.append({"name": kw.title(), "type": "specialized"})
+
+        # Ensure at least 1 agent for demo
+        if not agents:
+            agents = [{"name": "DefaultAgent", "type": "generic"}]
+
+        return agents
 
     async def analyze(self, context: dict[str, Any]) -> dict[str, Any]:
         """
@@ -53,11 +104,22 @@ class AgentOrchestrationWizard(BaseWizard):
 
         In our experience: Multi-agent complexity sneaks up fast.
         By agent #7-10, you need formal orchestration or face refactoring.
-        """
-        self.validate_context(context)
 
-        agents = context["agent_definitions"]
-        orchestration = context["orchestration_code"]
+        Supports two modes:
+        - Structured: Pass agent_definitions, orchestration_code, project_path
+        - Demo/Text: Pass user_input with natural language description
+        """
+        # Support text input mode (from web demo) or structured mode
+        user_input = context.get("user_input", "")
+
+        if "agent_definitions" not in context:
+            # Parse agents from text input for demo mode
+            agents = self._parse_agents_from_text(user_input)
+            orchestration = []  # No file analysis in demo mode
+        else:
+            self.validate_context(context)
+            agents = context["agent_definitions"]
+            orchestration = context["orchestration_code"]
 
         # Current issues
         issues = await self._analyze_orchestration_patterns(agents, orchestration)
