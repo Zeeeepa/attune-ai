@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   eslint: {
     // Only run ESLint on these directories during production builds
     dirs: ['app'],
