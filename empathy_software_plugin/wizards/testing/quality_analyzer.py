@@ -12,6 +12,7 @@ import re
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
+from typing import Any
 
 
 class TestQualityIssue(Enum):
@@ -37,8 +38,8 @@ class TestFunction:
     assertions_count: int
     execution_time: float | None = None
     is_async: bool = False
-    uses_fixtures: list[str] = None
-    issues: list[TestQualityIssue] = None
+    uses_fixtures: list[str] | None = None
+    issues: list[TestQualityIssue] | None = None
 
     def __post_init__(self):
         if self.uses_fixtures is None:
@@ -305,7 +306,7 @@ class TestQualityAnalyzer:
 
         return fixtures
 
-    def analyze_test_execution(self, test_results: list[dict[str, any]]) -> list[TestFunction]:
+    def analyze_test_execution(self, test_results: list[dict[str, Any]]) -> list[TestFunction]:
         """
         Analyze test execution results (from pytest JSON report)
 
@@ -323,7 +324,7 @@ class TestQualityAnalyzer:
 
         for result in test_results:
             # Parse nodeid (e.g., "tests/test_core.py::test_function_name")
-            nodeid = result.get("nodeid", "")
+            nodeid = str(result.get("nodeid", ""))
             parts = nodeid.split("::")
 
             if len(parts) < 2:
@@ -354,7 +355,7 @@ class TestQualityAnalyzer:
 
         return test_functions
 
-    def detect_flaky_tests(self, historical_results: list[list[dict[str, any]]]) -> list[str]:
+    def detect_flaky_tests(self, historical_results: list[list[dict[str, Any]]]) -> list[str]:
         """
         Detect flaky tests from historical test runs
 

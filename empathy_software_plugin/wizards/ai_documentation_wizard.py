@@ -92,7 +92,7 @@ class AIDocumentationWizard(BaseWizard):
 
         Checks what AI needs to give good recommendations.
         """
-        issues = []
+        issues: list[dict[str, Any]] = []
 
         # Check for missing context that AI needs
         for doc_file in doc_files:

@@ -202,7 +202,7 @@ class PatternExtractionWizard(BaseWizard):
 
         # Parse diff to get changed files and added lines
         current_file = ""
-        added_lines = []
+        added_lines: list[str] = []
 
         for line in diff.split("\n"):
             if line.startswith("diff --git"):
@@ -277,7 +277,7 @@ class PatternExtractionWizard(BaseWizard):
                         "date": datetime.now().isoformat(),
                         "file_path": file_path,
                         "error_type": pattern_type,
-                        "error_message": f"Detected {config['description'].lower()}",
+                        "error_message": f"Detected {str(config['description']).lower()}",
                         "root_cause": "",  # User fills in
                         "fix_applied": config["description"],
                         "fix_code": matches[0] if matches else "",
@@ -297,7 +297,7 @@ class PatternExtractionWizard(BaseWizard):
 
     def _generate_predictions(self, patterns: list[dict]) -> list[dict]:
         """Generate Level 3 predictions about patterns."""
-        predictions = []
+        predictions: list[dict] = []
 
         if not patterns:
             return predictions
@@ -364,7 +364,7 @@ class PatternExtractionWizard(BaseWizard):
         if len(patterns) >= 2:
             avg_conf = min(avg_conf + 0.1, 1.0)
 
-        return round(avg_conf, 2)
+        return float(round(avg_conf, 2))
 
     async def save_pattern(self, pattern: dict) -> bool:
         """

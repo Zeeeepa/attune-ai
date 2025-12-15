@@ -115,11 +115,12 @@ class BaseWizard(ABC):
         Returns:
             Cached result dict, or None if not cached
         """
-        if not self.has_memory():
+        if self.short_term_memory is None:
             return None
 
         key = self._cache_key(context)
-        return self.short_term_memory.retrieve(key, self._credentials)
+        result = self.short_term_memory.retrieve(key, self._credentials)
+        return dict(result) if result else None
 
     def cache_result(self, context: dict[str, Any], result: dict[str, Any]) -> bool:
         """
@@ -132,11 +133,11 @@ class BaseWizard(ABC):
         Returns:
             True if cached successfully
         """
-        if not self.has_memory():
+        if self.short_term_memory is None:
             return False
 
         key = self._cache_key(context)
-        return self.short_term_memory.stash(key, result, self._credentials)
+        return bool(self.short_term_memory.stash(key, result, self._credentials))
 
     async def analyze_with_cache(self, context: dict[str, Any]) -> dict[str, Any]:
         """
@@ -183,7 +184,7 @@ class BaseWizard(ABC):
         Returns:
             True if shared successfully
         """
-        if not self.has_memory():
+        if self.short_term_memory is None:
             return False
 
         # Use global credentials for shared context (accessible to all wizards)
@@ -191,10 +192,12 @@ class BaseWizard(ABC):
             agent_id="wizard_shared",
             tier=AccessTier.CONTRIBUTOR,
         )
-        return self.short_term_memory.stash(
-            f"shared:{key}",
-            data,
-            global_creds,
+        return bool(
+            self.short_term_memory.stash(
+                f"shared:{key}",
+                data,
+                global_creds,
+            )
         )
 
     def get_shared_context(self, key: str, from_wizard: str | None = None) -> Any | None:
@@ -212,7 +215,7 @@ class BaseWizard(ABC):
         Returns:
             The shared data, or None if not found
         """
-        if not self.has_memory():
+        if self.short_term_memory is None:
             return None
 
         # Use global shared namespace by default, or specific wizard if requested
@@ -249,7 +252,7 @@ class BaseWizard(ABC):
         Returns:
             True if staged successfully
         """
-        if not self.has_memory():
+        if self.short_term_memory is None:
             return False
 
         pattern = StagedPattern(
@@ -263,7 +266,7 @@ class BaseWizard(ABC):
             context={"wizard": self.name, "level": self.level},
         )
 
-        return self.short_term_memory.stage_pattern(pattern, self._credentials)
+        return bool(self.short_term_memory.stage_pattern(pattern, self._credentials))
 
     def send_signal(self, signal_type: str, data: dict) -> bool:
         """
@@ -278,11 +281,13 @@ class BaseWizard(ABC):
         Returns:
             True if sent successfully
         """
-        if not self.has_memory():
+        if self.short_term_memory is None:
             return False
 
-        return self.short_term_memory.send_signal(
-            signal_type=signal_type,
-            data={"wizard": self.name, **data},
-            credentials=self._credentials,
+        return bool(
+            self.short_term_memory.send_signal(
+                signal_type=signal_type,
+                data={"wizard": self.name, **data},
+                credentials=self._credentials,
+            )
         )

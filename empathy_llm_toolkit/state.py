@@ -170,7 +170,7 @@ class CollaborationState:
 
     def get_conversation_history(
         self, max_turns: int = 10, include_metadata: bool = False
-    ) -> list[dict[str, str]]:
+    ) -> list[dict[str, Any]]:
         """
         Get recent conversation history in LLM format.
 

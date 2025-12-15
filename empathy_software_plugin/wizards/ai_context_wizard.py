@@ -321,7 +321,7 @@ class AIContextWindowWizard(BaseWizard):
         # Prioritize high-impact predictions
         high_impact = sorted(
             predictions,
-            key=lambda p: {"high": 3, "medium": 2, "low": 1}.get(p.get("impact"), 0),
+            key=lambda p: {"high": 3, "medium": 2, "low": 1}.get(str(p.get("impact", "")), 0),
             reverse=True,
         )
 
@@ -385,9 +385,9 @@ class AIContextWindowWizard(BaseWizard):
     def _estimate_context_tokens(self, call: dict, context_sources: list[dict]) -> int:
         """Estimate tokens for an AI call"""
         # Simplified: ~4 chars per token
-        base_prompt = call.get("prompt_size", 1000)
+        base_prompt = int(call.get("prompt_size", 1000))
         dynamic_context = sum(
-            source.get("estimated_size", 0)
+            int(source.get("estimated_size", 0))
             for source in context_sources
             if source.get("call_id") == call.get("id")
         )

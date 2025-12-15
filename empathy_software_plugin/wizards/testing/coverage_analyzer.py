@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
+from typing import Any
 
 
 class CoverageFormat(Enum):
@@ -313,7 +314,7 @@ class CoverageAnalyzer:
 
     def suggest_priority_files(
         self, report: CoverageReport, top_n: int = 10
-    ) -> list[dict[str, any]]:
+    ) -> list[dict[str, Any]]:
         """
         Suggest which files to test next for maximum impact
 

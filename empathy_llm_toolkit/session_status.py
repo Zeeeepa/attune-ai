@@ -528,7 +528,8 @@ class SessionStatusCollector:
             if snapshot_file.stem != today:
                 try:
                     with open(snapshot_file, encoding="utf-8") as f:
-                        return json.load(f)
+                        data = json.load(f)
+                        return dict(data) if isinstance(data, dict) else None
                 except (json.JSONDecodeError, OSError):
                     continue
 

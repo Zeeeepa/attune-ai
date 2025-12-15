@@ -161,7 +161,7 @@ class AnthropicProvider(BaseLLMProvider):
         api_kwargs.update(kwargs)
 
         # Call Anthropic API
-        response = self.client.messages.create(**api_kwargs)
+        response = self.client.messages.create(**api_kwargs)  # type: ignore[call-overload]
 
         # Extract thinking content if present
         thinking_content = None
@@ -329,21 +329,23 @@ class OpenAIProvider(BaseLLMProvider):
         # Call OpenAI API
         response = await self.client.chat.completions.create(
             model=self.model,
-            messages=messages,
+            messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
             max_tokens=max_tokens,
             **kwargs,
         )
 
         # Convert to standardized format
+        content = response.choices[0].message.content or ""
+        usage = response.usage
         return LLMResponse(
-            content=response.choices[0].message.content,
+            content=content,
             model=response.model,
-            tokens_used=response.usage.total_tokens,
+            tokens_used=usage.total_tokens if usage else 0,
             finish_reason=response.choices[0].finish_reason,
             metadata={
-                "input_tokens": response.usage.prompt_tokens,
-                "output_tokens": response.usage.completion_tokens,
+                "input_tokens": usage.prompt_tokens if usage else 0,
+                "output_tokens": usage.completion_tokens if usage else 0,
                 "provider": "openai",
             },
         )

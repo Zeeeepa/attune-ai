@@ -315,7 +315,7 @@ class HealthCheckRunner:
         """Run a check handler asynchronously."""
         start_time = datetime.now()
         try:
-            result = await asyncio.to_thread(handler, config)
+            result: CheckResult = await asyncio.to_thread(handler, config)
             result.duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
             return result
         except Exception as e:

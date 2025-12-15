@@ -310,7 +310,7 @@ class PatternRetrieverWizard(BaseWizard):
         if patterns and patterns[0].get("_relevance_score", 0) > 0.7:
             avg_relevance += 0.2
 
-        return min(avg_relevance + 0.3, 1.0)
+        return float(min(avg_relevance + 0.3, 1.0))
 
     def _generate_predictions(self, patterns: list[dict], context: dict) -> list[dict]:
         """Generate Level 3 predictions about pattern utility."""

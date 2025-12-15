@@ -298,10 +298,10 @@ Follow the instructions from CLAUDE.md files above, then apply the Empathy Frame
         context = context or {}
 
         # Initialize security tracking
-        pii_detections = []
-        secrets_detections = []
+        pii_detections: list[dict] = []
+        secrets_detections: list[dict] = []
         sanitized_input = user_input
-        security_metadata = {}
+        security_metadata: dict[str, Any] = {}
 
         # Phase 3: Security Pipeline (Step 1 - PII Scrubbing)
         if self.enable_security and self.pii_scrubber:

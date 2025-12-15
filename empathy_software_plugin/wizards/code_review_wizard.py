@@ -283,7 +283,7 @@ class CodeReviewWizard(BaseWizard):
 
     def _extract_safe_patterns(self, fix_code: str) -> list[str]:
         """Extract regex patterns from fix code that indicate safety."""
-        patterns = []
+        patterns: list[str] = []
         if not fix_code:
             return patterns
 
@@ -303,7 +303,7 @@ class CodeReviewWizard(BaseWizard):
 
     def _review_file(self, file_path: str) -> list[ReviewFinding]:
         """Review a single file for anti-patterns."""
-        findings = []
+        findings: list[ReviewFinding] = []
 
         try:
             path = Path(file_path)
@@ -465,9 +465,9 @@ class CodeReviewWizard(BaseWizard):
         avg_conf = sum(f.confidence for f in findings) / len(findings)
         return round(avg_conf, 2)
 
-    def _generate_predictions(self, findings: list[ReviewFinding]) -> list[dict]:
+    def _generate_predictions(self, findings: list[ReviewFinding]) -> list[dict[str, Any]]:
         """Generate Level 4 predictions."""
-        predictions = []
+        predictions: list[dict[str, Any]] = []
 
         if not findings:
             predictions.append(
