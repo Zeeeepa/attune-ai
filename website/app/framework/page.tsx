@@ -49,7 +49,7 @@ export default function FrameworkPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="https://github.com/Smart-AI-Memory/empathy"
+                href="https://github.com/Smart-AI-Memory/empathy-framework"
                 className="btn btn-primary"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -129,6 +129,16 @@ export default function FrameworkPage() {
               <h3 className="text-xl font-bold mb-3">Enterprise Security</h3>
               <p className="text-[var(--text-secondary)]">
                 Built-in PII scrubbing, audit logging, and compliance controls.
+              </p>
+            </div>
+
+            <div className="bg-[var(--background)] p-6 rounded-lg border-2 border-[var(--primary)] border-opacity-50">
+              <div className="mb-4">
+                <Image src="/images/icons/file-terminal.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Code Health Assistant <span className="text-xs font-normal text-[var(--primary)] ml-2">NEW</span></h3>
+              <p className="text-[var(--text-secondary)]">
+                Automated code quality checks, auto-fix capabilities, and health trend tracking via CLI.
               </p>
             </div>
           </div>
@@ -266,7 +276,7 @@ result = await wizard.analyze({"data": your_data})`}
 
             <div className="grid md:grid-cols-3 gap-6">
               <a
-                href="https://github.com/Smart-AI-Memory/empathy"
+                href="https://github.com/Smart-AI-Memory/empathy-framework"
                 className="p-6 border-2 border-[var(--border)] rounded-lg hover:border-[var(--primary)] transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -281,7 +291,7 @@ result = await wizard.analyze({"data": your_data})`}
               </a>
 
               <a
-                href="https://github.com/Smart-AI-Memory/empathy/discussions"
+                href="https://github.com/Smart-AI-Memory/empathy-framework/discussions"
                 className="p-6 border-2 border-[var(--border)] rounded-lg hover:border-[var(--primary)] transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"

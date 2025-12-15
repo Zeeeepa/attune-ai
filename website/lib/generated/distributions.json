@@ -1,0 +1,47 @@
+{
+  "generated_at": "2025-12-12T21:05:59.260216",
+  "distributions": {
+    "open_source": {
+      "name": "Open Source",
+      "description": "Core software development wizards",
+      "wizard_count": 30,
+      "redis": "optional",
+      "compliance": [],
+      "categories": [
+        "software",
+        "coach"
+      ],
+      "install_command": "pip install empathy-framework"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "Full suite including domain-specific wizards",
+      "wizard_count": 53,
+      "redis": "recommended",
+      "compliance": [],
+      "categories": [
+        "healthcare",
+        "software",
+        "domain",
+        "coach"
+      ],
+      "install_command": "pip install empathy-framework[enterprise]"
+    },
+    "healthcare": {
+      "name": "Healthcare",
+      "description": "Clinical and healthcare-focused wizards",
+      "wizard_count": 37,
+      "redis": "required",
+      "compliance": [
+        "HIPAA",
+        "HITECH"
+      ],
+      "categories": [
+        "healthcare",
+        "software",
+        "coach"
+      ],
+      "install_command": "pip install empathy-framework[healthcare]"
+    }
+  }
+}

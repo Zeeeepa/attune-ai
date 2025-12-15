@@ -1,0 +1,66 @@
+{
+  "generated_at": "2025-12-12T21:05:59.260025",
+  "total_demos": 4,
+  "demos": [
+    {
+      "id": "memory_enhanced_debugging_wizard",
+      "name": "Memory-Enhanced Debugging",
+      "description": "Bug correlation with historical patterns",
+      "category": "software",
+      "level": 4,
+      "features": [
+        "Historical bug matching",
+        "Similarity scoring",
+        "Fix recommendations",
+        "Resolution time estimation"
+      ],
+      "example_code": "from wizards_consolidated.software import MemoryEnhancedDebuggingWizard\n\nwizard = MemoryEnhancedDebuggingWizard(pattern_storage_path=\"./patterns/debugging\")\n\nresult = await wizard.analyze({\n    \"error_message\": \"TypeError: Cannot read property 'map' of undefined\",\n    \"file_path\": \"src/components/UserList.tsx\",\n    \"correlate_with_history\": True,\n})\n\nprint(f\"Matches found: {result['matches_found']}\")\nif result['historical_matches']:\n    match = result['historical_matches'][0]\n    print(f\"Best match: {match['similarity_score']:.0%}\")\n    print(f\"Fix: {match['fix_applied']}\")\n",
+      "expected_output": "Matches found: 2\nBest match: 100%\nFix: Added default empty array fallback: data?.items ?? []"
+    },
+    {
+      "id": "tech_debt_wizard",
+      "name": "Tech Debt Trajectory",
+      "description": "Track debt over time, predict critical thresholds",
+      "category": "software",
+      "level": 4,
+      "features": [
+        "Trajectory analysis",
+        "Growth rate calculation",
+        "90-day projections",
+        "Hotspot identification"
+      ],
+      "example_code": "from wizards_consolidated.software import TechDebtWizard\n\nwizard = TechDebtWizard(pattern_storage_path=\"./patterns/tech_debt\")\n\nresult = await wizard.analyze({\n    \"project_path\": \".\",\n    \"track_history\": True,\n})\n\nprint(f\"Total items: {result['current_debt']['total_items']}\")\nprint(f\"Trend: {result['trajectory']['trend']}\")\nprint(f\"30-day projection: {result['trajectory']['projection_30_days']}\")\n",
+      "expected_output": "Total items: 343\nTrend: INCREASING\n30-day projection: 386"
+    },
+    {
+      "id": "security_learning_wizard",
+      "name": "Security Learning",
+      "description": "Learn from team security decisions",
+      "category": "software",
+      "level": 4,
+      "features": [
+        "False positive learning",
+        "Team decision storage",
+        "Noise reduction",
+        "Audit trail"
+      ],
+      "example_code": "from wizards_consolidated.software import SecurityLearningWizard\n\nwizard = SecurityLearningWizard(pattern_storage_path=\"./patterns/security\")\n\nresult = await wizard.analyze({\n    \"project_path\": \".\",\n    \"apply_learned_patterns\": True,\n})\n\nprint(f\"Raw findings: {result['raw_findings_count']}\")\nprint(f\"After learning: {result['summary']['total_after_learning']}\")\nprint(f\"Noise reduction: {result['learning_applied']['noise_reduction_percent']}%\")\n",
+      "expected_output": "Raw findings: 108\nAfter learning: 23\nNoise reduction: 78.7%"
+    },
+    {
+      "id": "sbar_wizard",
+      "name": "SBAR Clinical Handoff",
+      "description": "Situation-Background-Assessment-Recommendation",
+      "category": "healthcare",
+      "level": 4,
+      "features": [
+        "Structured handoff",
+        "Priority scoring",
+        "Medication integration",
+        "Dictation support"
+      ],
+      "example_code": "from wizards_consolidated.healthcare import SBARWizard\n\nwizard = SBARWizard(pattern_storage_path=\"./patterns/clinical\")\n\nresult = await wizard.generate({\n    \"patient_id\": \"PT-12345\",\n    \"situation\": \"72-year-old male with acute chest pain\",\n    \"background\": \"History of CAD, previous MI 2019\",\n    \"assessment\": \"Suspected unstable angina\",\n    \"recommendation\": \"Cardiology consult, serial troponins\",\n})\n\nprint(f\"SBAR generated: {result['document_id']}\")\nprint(f\"Priority: {result['priority']}\")\n",
+      "expected_output": "SBAR generated: sbar_20251212_abc123\nPriority: HIGH"
+    }
+  ]
+}
