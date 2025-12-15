@@ -165,21 +165,22 @@ relevant = library.query(
               {/* Performance */}
               <h2 style={{ color: '#0F172A' }}>Performance Impact</h2>
               <p>
-                The numbers speak for themselves:
+                For highly parallelizable tasks, multi-agent coordination shows measurable improvements:
               </p>
               <div className="grid grid-cols-2 gap-4 my-8">
                 <div className="p-4 bg-[var(--border)] bg-opacity-30 rounded-lg text-center">
-                  <div className="text-3xl font-bold" style={{ color: '#10B981' }}>50%</div>
+                  <div className="text-3xl font-bold" style={{ color: '#10B981' }}>Up to 50%</div>
                   <div className="text-sm" style={{ color: '#64748B' }}>Time Reduction</div>
                 </div>
                 <div className="p-4 bg-[var(--border)] bg-opacity-30 rounded-lg text-center">
-                  <div className="text-3xl font-bold" style={{ color: '#2563EB' }}>8→4 hrs</div>
-                  <div className="text-sm" style={{ color: '#64748B' }}>Typical Task</div>
+                  <div className="text-3xl font-bold" style={{ color: '#2563EB' }}>8→4-6 hrs</div>
+                  <div className="text-sm" style={{ color: '#64748B' }}>Parallelizable Tasks</div>
                 </div>
               </div>
               <p>
-                A typical development task that takes 8 hours sequentially can complete in
-                approximately 4 hours with parallel agent execution.
+                Tasks with independent components (like simultaneous code review, security scanning,
+                and test generation) can see 40-50% time reduction with parallel agent execution.
+                Sequential dependencies and coordination overhead mean actual gains vary by task complexity.
               </p>
 
               {/* Conflict Resolution */}
