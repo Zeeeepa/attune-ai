@@ -870,13 +870,13 @@ class TestEdgeCases:
     def test_various_confidence_levels(self, scrubber, confidence):
         """Test patterns with various confidence levels"""
         scrubber.add_custom_pattern(
-            name=f"conf_{int(confidence*100)}",
-            pattern=rf"CONF{int(confidence*100)}-\d+",
-            replacement=f"[CONF{int(confidence*100)}]",
+            name=f"conf_{int(confidence * 100)}",
+            pattern=rf"CONF{int(confidence * 100)}-\d+",
+            replacement=f"[CONF{int(confidence * 100)}]",
             confidence=confidence,
         )
 
-        info = scrubber.get_pattern_info(f"conf_{int(confidence*100)}")
+        info = scrubber.get_pattern_info(f"conf_{int(confidence * 100)}")
         assert info["confidence"] == confidence
 
 

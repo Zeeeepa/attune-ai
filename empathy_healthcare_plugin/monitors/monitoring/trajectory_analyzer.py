@@ -312,8 +312,7 @@ class TrajectoryAnalyzer:
         if trajectory_state == "critical":
             trends_desc = ", ".join(f"{t.parameter} {t.direction}" for t in concerning[:3])
             return (
-                f"CRITICAL trajectory detected: {trends_desc}. "
-                "Immediate intervention recommended."
+                f"CRITICAL trajectory detected: {trends_desc}. Immediate intervention recommended."
             )
 
         if trajectory_state == "concerning":

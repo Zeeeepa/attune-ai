@@ -31,6 +31,15 @@ Empathy OS manages human↔AI and AI↔AI collaboration. Specialized agents work
 **Performance & Cost**
 Smart model routing: detection models triage, capable models decide. Plus persistent memory eliminates repeated context — no more wasting tokens re-explaining what your AI should already know. Sub-millisecond coordination between agents.
 
+**Code Health Assistant** *(New in v2.2)*
+One command runs lint, format, type checks, tests, security, and dependency audits. Auto-fix safe issues. Track health scores over time. Find hotspots before they become problems.
+
+```bash
+empathy health              # Quick check
+empathy health --deep       # Full analysis
+empathy health --fix        # Auto-fix issues
+```
+
 ---
 
 ### For Builders

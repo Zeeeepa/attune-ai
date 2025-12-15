@@ -245,8 +245,8 @@ class AIDocumentationWizard(BaseWizard):
                 {
                     "type": "missing_why_context",
                     "alert": (
-                        f"Documentation is {(1-total_why_ratio)*100:.0f}% 'what/how', "
-                        f"only {total_why_ratio*100:.0f}% 'why'. "
+                        f"Documentation is {(1 - total_why_ratio) * 100:.0f}% 'what/how', "
+                        f"only {total_why_ratio * 100:.0f}% 'why'. "
                         "In our experience, AI needs 'why' context to make good design decisions. "
                         "Alert: Without 'why', AI suggests technically correct but strategically wrong solutions."
                     ),

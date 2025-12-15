@@ -603,17 +603,17 @@ def generate_markdown_report(data: dict) -> str:
 
     report = f"""# Wizard Test Report - All 44 Wizards
 
-**Generated:** {data['timestamp']}
-**API URL:** {data['api_url']}
-**Total Tested:** {data['total_tested']}
+**Generated:** {data["timestamp"]}
+**API URL:** {data["api_url"]}
+**Total Tested:** {data["total_tested"]}
 
 ## Summary
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| ✓ Successful | {summary['success']} | {summary['success']*100//data['total_tested']}% |
-| ✗ Failed | {summary['failed']} | {summary['failed']*100//data['total_tested']}% |
-| ⊘ Not Loaded | {summary['not_loaded']} | {summary['not_loaded']*100//data['total_tested']}% |
+| ✓ Successful | {summary["success"]} | {summary["success"] * 100 // data["total_tested"]}% |
+| ✗ Failed | {summary["failed"]} | {summary["failed"] * 100 // data["total_tested"]}% |
+| ⊘ Not Loaded | {summary["not_loaded"]} | {summary["not_loaded"] * 100 // data["total_tested"]}% |
 
 ## Results by Category
 

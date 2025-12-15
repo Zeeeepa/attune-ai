@@ -295,7 +295,7 @@ class BasePlugin(ABC):
         self._wizards = self.register_wizards()
 
         self.logger.info(
-            f"Plugin '{self.get_metadata().name}' initialized with " f"{len(self._wizards)} wizards"
+            f"Plugin '{self.get_metadata().name}' initialized with {len(self._wizards)} wizards"
         )
 
         self._initialized = True

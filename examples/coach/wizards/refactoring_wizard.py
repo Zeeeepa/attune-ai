@@ -353,7 +353,7 @@ class RefactoringWizard(BaseWizard):
             plan.append(f"**Impact**: {smell['impact']}")
             plan.append("\n**Recommended Refactorings**:")
             for j, refactoring in enumerate(smell["refactorings"], 1):
-                plan.append(f"  {chr(96+j)}. {refactoring}")
+                plan.append(f"  {chr(96 + j)}. {refactoring}")
 
             # Add safety steps
             plan.append("\n**Safety Steps**:")
@@ -363,7 +363,7 @@ class RefactoringWizard(BaseWizard):
             plan.append("  - Commit immediately if tests pass")
 
         # Add validation step
-        plan.append(f"\n### Step {len(sorted_smells)+1}: Validation")
+        plan.append(f"\n### Step {len(sorted_smells) + 1}: Validation")
         plan.append("  - Run full test suite (unit + integration)")
         plan.append("  - Check code coverage hasn't decreased")
         plan.append("  - Run static analysis (linters, type checkers)")

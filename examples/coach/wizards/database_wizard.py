@@ -586,7 +586,7 @@ class DatabaseWizard(BaseWizard):
             from_table = rel["from_table"].upper()
             to_table = rel["to_table"].upper()
             if rel["type"] == "many-to-one":
-                diagram += f"    {from_table} }}o--|| {to_table} : \"{rel['foreign_key']}\"\n"
+                diagram += f'    {from_table} }}o--|| {to_table} : "{rel["foreign_key"]}"\n'
             elif rel["type"] == "one-to-many":
                 diagram += f'    {from_table} ||--o{{ {to_table} : "has"\n'
             elif rel["type"] == "many-to-many":

@@ -371,16 +371,16 @@ async def step_6_review_confirm(state: WizardState) -> WizardState:
 **Epic Integration Configuration Summary**
 
 **Connection:**
-- FHIR Endpoint: {state['epic_fhir_base_url']}
-- Sandbox Mode: {'Yes' if state['epic_sandbox_mode'] else 'No'}
-- Connection Test: {'✅ Passed' if state['connection_test_passed'] else '❌ Failed'}
+- FHIR Endpoint: {state["epic_fhir_base_url"]}
+- Sandbox Mode: {"Yes" if state["epic_sandbox_mode"] else "No"}
+- Connection Test: {"✅ Passed" if state["connection_test_passed"] else "❌ Failed"}
 
 **Resources Enabled:**
-{chr(10).join(f'- {resource}' for resource in state['selected_resources'])}
+{chr(10).join(f"- {resource}" for resource in state["selected_resources"])}
 
 **Test Results:**
-- Patient Lookup: {'✅ Passed' if state['patient_data_retrieved'] else '❌ Failed'}
-- Test Patient: {state.get('retrieved_patient_name', 'N/A')}
+- Patient Lookup: {"✅ Passed" if state["patient_data_retrieved"] else "❌ Failed"}
+- Test Patient: {state.get("retrieved_patient_name", "N/A")}
 
 Please confirm to activate integration.
         """
@@ -429,9 +429,9 @@ async def step_7_complete(state: WizardState) -> WizardState:
 
 Your AI Nurse Florence instance is now connected to Epic EHR.
 
-**Activated at:** {state['activation_timestamp']}
-**Endpoint:** {state['epic_fhir_base_url']}
-**Resources:** {', '.join(state['selected_resources'])}
+**Activated at:** {state["activation_timestamp"]}
+**Endpoint:** {state["epic_fhir_base_url"]}
+**Resources:** {", ".join(state["selected_resources"])}
 
 You can now:
 - Scan patient MRN barcodes

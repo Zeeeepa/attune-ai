@@ -281,7 +281,6 @@ class PatternConfidenceTracker:
         This adds a confidence section to the generated summary.
         """
         try:
-
             # Get top patterns
             top_patterns = self.get_top_patterns(5)
             if not top_patterns:

@@ -178,7 +178,7 @@ class AIContextWindowWizard(BaseWizard):
                     {
                         "type": "context_capacity_limit",
                         "alert": (
-                            f"Context usage growing at {(growth_rate-1)*100:.0f}% rate. "
+                            f"Context usage growing at {(growth_rate - 1) * 100:.0f}% rate. "
                             f"Current average: {current_avg:.0f} tokens. "
                             "In our experience, this trajectory leads to context window "
                             "limits. Alert: Implement chunking strategy before you hit the wall."

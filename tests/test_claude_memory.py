@@ -188,7 +188,7 @@ def test_import_depth_limit(temp_project_dir):
     for i in range(10):
         file = claude_dir / f"file{i}.md"
         if i < 9:
-            file.write_text(f"# File {i}\n@./file{i+1}.md")
+            file.write_text(f"# File {i}\n@./file{i + 1}.md")
         else:
             file.write_text(f"# File {i}\nEnd of chain")
 

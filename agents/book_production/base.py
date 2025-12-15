@@ -179,7 +179,7 @@ class BaseAgent(ABC):
         temperature = temperature or self.config.temperature
 
         self.logger.info(
-            f"Generating with {self.config.model} " f"(max_tokens={max_tokens}, temp={temperature})"
+            f"Generating with {self.config.model} (max_tokens={max_tokens}, temp={temperature})"
         )
 
         # If we have an injected provider, use it

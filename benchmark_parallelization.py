@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     if avg_time < baseline_avg:
         print(f"   ✅ Improvement: {improvement:.1f}% faster")
-        print(f"   ⚡ Speed gain: {baseline_avg/avg_time:.2f}x")
+        print(f"   ⚡ Speed gain: {baseline_avg / avg_time:.2f}x")
     else:
         print(f"   ⚠️  Performance: {-improvement:.1f}% slower (overhead from threading)")
 

@@ -100,7 +100,9 @@ class PerformanceTrajectoryAnalyzer:
         }
 
     def analyze_trajectory(
-        self, current_metrics, historical_metrics=None  # Can be dict or list  # Can be dict or list
+        self,
+        current_metrics,
+        historical_metrics=None,  # Can be dict or list  # Can be dict or list
     ) -> TrajectoryPrediction:
         """
         Analyze performance trajectory.
@@ -348,8 +350,7 @@ class PerformanceTrajectoryAnalyzer:
         if trajectory_state == "critical":
             trends_desc = ", ".join(f"{t.metric_name} {t.direction}" for t in concerning[:3])
             return (
-                f"CRITICAL performance trajectory: {trends_desc}. "
-                "Immediate investigation required."
+                f"CRITICAL performance trajectory: {trends_desc}. Immediate investigation required."
             )
 
         if trajectory_state == "degrading":

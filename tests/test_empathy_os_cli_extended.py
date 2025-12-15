@@ -1050,7 +1050,10 @@ class TestDefaultPaths:
         manager.save_state("test_user", CollaborationState(trust_level=0.5))
 
         args = MockArgs(
-            type="state", user_id=None, db=None, state_dir=None  # Uses default .empathy/state
+            type="state",
+            user_id=None,
+            db=None,
+            state_dir=None,  # Uses default .empathy/state
         )
 
         cmd_inspect(args)
@@ -1070,7 +1073,10 @@ class TestDefaultPaths:
         output_file = Path(temp_dir) / "output.json"
 
         args = MockArgs(
-            output=str(output_file), user_id=None, db=None, format="json"  # Uses default
+            output=str(output_file),
+            user_id=None,
+            db=None,
+            format="json",  # Uses default
         )
 
         cmd_export(args)

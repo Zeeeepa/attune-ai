@@ -118,7 +118,8 @@ class TestUnifiedMemoryInit:
         """Test initialization with default config"""
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(
-                storage_dir=tmpdir, redis_mock=True  # Use mock to avoid Redis dependency
+                storage_dir=tmpdir,
+                redis_mock=True,  # Use mock to avoid Redis dependency
             )
             memory = UnifiedMemory(user_id="test_user", config=config)
 

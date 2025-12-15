@@ -24,6 +24,8 @@ So I built the Empathy Framework.
 
 **What's included:**
 
+- **Code Health Assistant** (`empathy health`) — lint, format, types, tests, security in one command with auto-fix
+- **Pattern-based code review** (`empathy review`) — catches bugs before they happen based on your team's history
 - Memory Control Panel CLI (`empathy-memory serve`) and REST API
 - 30+ production wizards (security, performance, testing, docs, accessibility)
 - Agent toolkit to build custom agents that inherit memory and prediction
@@ -34,7 +36,9 @@ So I built the Empathy Framework.
 
 ```bash
 pip install empathy-framework
-empathy-memory serve
+empathy health              # Check code health
+empathy health --fix        # Auto-fix safe issues
+empathy-memory serve        # Start memory server
 ```
 
 That's it. Redis auto-starts for real-time features, but long-term pattern storage works with just git — no infrastructure needed for students and individual developers.

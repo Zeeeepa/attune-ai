@@ -472,14 +472,16 @@ def compose_clarification_request(instruction: str, ambiguity_signals: dict) -> 
     """Compose user-friendly clarification request"""
 
     ambiguities_text = "\n".join(f"• {amb}" for amb in ambiguity_signals["ambiguities"])
-    questions_text = "\n".join(f"{i+1}. {q}" for i, q in enumerate(ambiguity_signals["questions"]))
+    questions_text = "\n".join(
+        f"{i + 1}. {q}" for i, q in enumerate(ambiguity_signals["questions"])
+    )
 
     return f"""
 🤔 **Clarification Needed (to prevent wasted effort)**
 
 Your instruction: "{instruction}"
 
-I want to make sure I understand correctly. I detected {len(ambiguity_signals['ambiguities'])} potential ambiguities:
+I want to make sure I understand correctly. I detected {len(ambiguity_signals["ambiguities"])} potential ambiguities:
 
 {ambiguities_text}
 
@@ -487,7 +489,7 @@ I want to make sure I understand correctly. I detected {len(ambiguity_signals['a
 {questions_text}
 
 **My best guess:**
-{ambiguity_signals['best_guess']}
+{ambiguity_signals["best_guess"]}
 
 Is this what you meant? If so, I'll proceed. If not, please clarify and I'll adjust.
 
@@ -672,7 +674,7 @@ def compose_structure_offer(stress_level: float, interventions: list[dict]) -> s
     """Compose offer of structural help"""
 
     intervention_text = "\n".join(
-        f"{i+1}. **{interv['intervention_type'].replace('_', ' ').title()}**\n"
+        f"{i + 1}. **{interv['intervention_type'].replace('_', ' ').title()}**\n"
         f"   → Benefit: {interv['benefit']}\n"
         f"   → {interv['not_this']}"
         for i, interv in enumerate(interventions)
@@ -795,7 +797,7 @@ def compose_help_offer(tasks: list[dict], bandwidth: float, struggle: dict) -> s
     indicators_text = "\n".join(f"• {ind}" for ind in struggle["indicators"])
 
     tasks_text = "\n".join(
-        f"{i+1}. {task['description']}\n"
+        f"{i + 1}. {task['description']}\n"
         f"   → Why I can help: {task['why_i_can_help']}\n"
         f"   → Impact: {task['impact_on_teammate']}\n"
         f"   → Time: {task['estimated_time']}"
@@ -807,7 +809,7 @@ def compose_help_offer(tasks: list[dict], bandwidth: float, struggle: dict) -> s
     return f"""
 🤝 **I've Got Bandwidth—Want Me to Take a Slice?**
 
-I noticed you have {len(struggle['indicators'])} stress indicators:
+I noticed you have {len(struggle["indicators"])} stress indicators:
 {indicators_text}
 
 I have {bandwidth:.0%} bandwidth available and could take these {len(tasks)} tasks off your plate:

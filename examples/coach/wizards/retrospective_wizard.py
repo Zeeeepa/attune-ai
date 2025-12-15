@@ -473,18 +473,18 @@ Recognize individual contributions.
         """Assess overall team health"""
         return f"""# Team Health Dashboard
 
-## Overall Status: {team_context['morale'].upper()}
+## Overall Status: {team_context["morale"].upper()}
 
 ## Metrics
 
 ### Team Size
-{team_context['team_size']}
+{team_context["team_size"]}
 
 ### Morale
-{team_context['morale']}
+{team_context["morale"]}
 
 ### Identified Issues
-{chr(10).join(f"- {issue.replace('_', ' ').title()}" for issue in team_context['issues']) if team_context['issues'] else "- No major issues identified"}
+{chr(10).join(f"- {issue.replace('_', ' ').title()}" for issue in team_context["issues"]) if team_context["issues"] else "- No major issues identified"}
 
 ## Recommendations
 1. Continue regular retrospectives (every 2 weeks)

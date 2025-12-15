@@ -45,7 +45,7 @@ Two commands to get started: `pip install empathy-framework` and `empathy-memory
 
 ---
 
-## Key Features (7 bullets)
+## Key Features (8 bullets)
 
 1. **Persistent Memory** — Dual-layer architecture: git-based pattern storage (zero infrastructure, version-controlled), optional Redis for real-time coordination
 
@@ -55,11 +55,13 @@ Two commands to get started: `pip install empathy-framework` and `empathy-memory
 
 4. **Anticipatory Intelligence** — Predicts security vulnerabilities, performance degradation, and compliance gaps 30-90 days ahead
 
-5. **30+ Production Wizards** — Security, performance, testing, documentation, accessibility, compliance—use or extend
+5. **Code Health Assistant** — One command (`empathy health`) runs lint, format, types, tests, security. Auto-fix safe issues. Track health scores over time with trend analysis.
 
-6. **Real Cost Savings** — Smart routing (cheap models triage, capable models decide) plus persistent memory eliminates repeated context
+6. **30+ Production Wizards** — Security, performance, testing, documentation, accessibility, compliance—use or extend
 
-7. **Fair Source Licensed** — Free for teams ≤5 employees, $99/dev/year commercial, auto-converts to Apache 2.0 in 2029
+7. **Real Cost Savings** — Smart routing (cheap models triage, capable models decide) plus persistent memory eliminates repeated context
+
+8. **Fair Source Licensed** — Free for teams ≤5 employees, $99/dev/year commercial, auto-converts to Apache 2.0 in 2029
 
 ---
 
@@ -88,20 +90,20 @@ Two commands to get started: `pip install empathy-framework` and `empathy-memory
 
 ## Gallery Images
 
-### Image 1: Memory Architecture
+### Image 1: Code Health Assistant
+**Caption:** One command to check lint, types, tests, security—with auto-fix
+
+### Image 2: Memory Architecture
 **Caption:** Dual-layer memory: Redis for real-time, patterns for long-term knowledge
 
-### Image 2: Quick Start
+### Image 3: Quick Start
 **Caption:** Two commands to persistent AI memory
 
-### Image 3: Empathy OS
+### Image 4: Empathy OS
 **Caption:** Multi-agent orchestration for human↔AI and AI↔AI collaboration
 
-### Image 4: Wizard Library
+### Image 5: Wizard Library
 **Caption:** 30+ production wizards for security, performance, testing, docs
-
-### Image 5: Comparison Table
-**Caption:** What sets Empathy apart from other AI tools
 
 ---
 
@@ -144,6 +146,8 @@ empathy-memory serve
 Two commands. Redis starts, API server runs, memory system ready.
 
 **What's included:**
+- Code Health Assistant with auto-fix (`empathy health --fix`)
+- Pattern-based code review (`empathy review`)
 - 30+ production wizards (security, performance, testing, docs)
 - Agent toolkit to build your own
 - Healthcare suite with HIPAA compliance

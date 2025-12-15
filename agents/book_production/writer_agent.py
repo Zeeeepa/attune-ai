@@ -272,18 +272,18 @@ Your goal: Readers finish the chapter excited to implement what they learned."""
         concepts = state.get("key_concepts_extracted", [])[:10]
         code_count = state.get("code_examples_found", 0)
 
-        prompt = f"""Create a detailed outline for Chapter {state['chapter_number']}: {state['chapter_title']}
+        prompt = f"""Create a detailed outline for Chapter {state["chapter_number"]}: {state["chapter_title"]}
 
 ## Research Summary
-{state.get('research_summary', 'No research summary available')}
+{state.get("research_summary", "No research summary available")}
 
 ## Key Concepts to Cover
-{chr(10).join(f'- {c}' for c in concepts)}
+{chr(10).join(f"- {c}" for c in concepts)}
 
 ## Available Code Examples: {code_count}
 
 ## Book Context
-{state.get('book_context', 'Part of a book about AI memory systems')}
+{state.get("book_context", "Part of a book about AI memory systems")}
 
 Create an outline following this structure:
 1. Opening Quote (suggest a relevant quote)
@@ -323,19 +323,19 @@ Output the outline in Markdown format."""
                 # Include first 2000 chars
                 source_content += source["content"][:2000]
 
-        prompt = f"""Write Chapter {state['chapter_number']}: {state['chapter_title']}
+        prompt = f"""Write Chapter {state["chapter_number"]}: {state["chapter_title"]}
 
 ## Outline
 {outline}
 
 ## Key Concepts to Explain
-{chr(10).join(f'- **{c}**' for c in concepts[:10])}
+{chr(10).join(f"- **{c}**" for c in concepts[:10])}
 
 ## Source Material for Reference
-{source_content if source_content else 'No source content available - use your knowledge'}
+{source_content if source_content else "No source content available - use your knowledge"}
 
 ## Requirements
-- Target word count: {state.get('target_word_count', 4000)} words
+- Target word count: {state.get("target_word_count", 4000)} words
 - Include 5-8 code examples
 - Follow the chapter structure exactly
 - Apply voice patterns: authority, practicality, progression
@@ -343,10 +343,10 @@ Output the outline in Markdown format."""
 - Add foreshadowing for upcoming chapters
 
 ## Book Context
-{state.get('book_context', '')}
+{state.get("book_context", "")}
 
-Previous chapter summary: {state.get('previous_chapter_summary', 'Not provided')}
-Next chapter hint: {state.get('next_chapter_hint', 'To be determined')}
+Previous chapter summary: {state.get("previous_chapter_summary", "Not provided")}
+Next chapter hint: {state.get("next_chapter_hint", "To be determined")}
 
 Write the complete chapter now. Start with the opening quote and work through
 each section of the outline. Make it engaging, technically accurate, and actionable."""

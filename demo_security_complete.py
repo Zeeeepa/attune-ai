@@ -605,7 +605,7 @@ def scenario_6_performance():
     elapsed = (time.time() - start) * 1000
 
     throughput = (len(test_content) * iterations) / (elapsed / 1000) / 1024  # KB/s
-    print_metric("  Avg Time per Scrub", f"{elapsed/iterations:.2f}ms")
+    print_metric("  Avg Time per Scrub", f"{elapsed / iterations:.2f}ms")
     print_metric("  Throughput", f"{throughput:.0f} KB/s")
     print_metric("  Detections per Run", len(detections))
 
@@ -620,7 +620,7 @@ def scenario_6_performance():
     elapsed = (time.time() - start) * 1000
 
     throughput = (len(code_sample) * iterations) / (elapsed / 1000) / 1024  # KB/s
-    print_metric("  Avg Time per Scan", f"{elapsed/iterations:.2f}ms")
+    print_metric("  Avg Time per Scan", f"{elapsed / iterations:.2f}ms")
     print_metric("  Throughput", f"{throughput:.0f} KB/s")
 
     # End-to-end pipeline
@@ -713,7 +713,7 @@ def main():
         passed = sum(1 for r in results.values() if r["status"] == "success")
 
         print_metric("Total Scenarios", total)
-        print_metric("Passed", f"{passed} ({passed/total*100:.0f}%)")
+        print_metric("Passed", f"{passed} ({passed / total * 100:.0f}%)")
         print_metric("Failed", total - passed)
 
         if passed == total:

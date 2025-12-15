@@ -55,9 +55,9 @@ def main():
     )
 
     # Display current issues
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"CURRENT ISSUES FOUND: {len(result.issues)}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     for i, issue in enumerate(result.issues, 1):
         print(f"\n[{i}] {issue.severity.upper()}: {issue.message}")
@@ -68,9 +68,9 @@ def main():
             print(f"    Fix: {issue.fix_suggestion}")
 
     # Display Level 4 Anticipatory predictions
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"LEVEL 4 PREDICTIONS (Next 90 days): {len(result.predictions)}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     for i, pred in enumerate(result.predictions, 1):
         days_ahead = (pred.predicted_date - datetime.now()).days
@@ -85,14 +85,14 @@ def main():
             print(f"      - {step}")
 
     # Summary
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("SUMMARY")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"✓ Found {len(result.issues)} current security issues")
     print(f"✓ Predicted {len(result.predictions)} future issues")
     print("✓ Time saved: Prevented issues before they became incidents")
     print("\nThis is Level 4 Anticipatory Empathy in action!")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
 
 if __name__ == "__main__":

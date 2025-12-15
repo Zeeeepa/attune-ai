@@ -131,14 +131,14 @@ async def demo_level_progression():
     stats = llm.get_statistics(user_id)
     print(
         f"""
-User: {stats['user_id']}
-Session Duration: {stats['session_duration']:.0f}s
-Total Interactions: {stats['total_interactions']}
-Trust Level: {stats['trust_level']:.0%}
-Success Rate: {stats['success_rate']:.0%}
-Patterns Detected: {stats['patterns_detected']}
-Current Level: {stats['current_level']}
-Average Level: {stats['average_level']:.1f}
+User: {stats["user_id"]}
+Session Duration: {stats["session_duration"]:.0f}s
+Total Interactions: {stats["total_interactions"]}
+Trust Level: {stats["trust_level"]:.0%}
+Success Rate: {stats["success_rate"]:.0%}
+Patterns Detected: {stats["patterns_detected"]}
+Current Level: {stats["current_level"]}
+Average Level: {stats["average_level"]:.1f}
     """
     )
 

@@ -683,9 +683,9 @@ def run_api_server(panel: MemoryControlPanel, host: str = "localhost", port: int
     signal.signal(signal.SIGINT, shutdown_handler)
     signal.signal(signal.SIGTERM, shutdown_handler)
 
-    print(f"\n{'='*50}")
+    print(f"\n{'=' * 50}")
     print("EMPATHY MEMORY API SERVER")
-    print(f"{'='*50}")
+    print(f"{'=' * 50}")
     print(f"\nServer running at http://{host}:{port}")
     print("\nEndpoints:")
     print("  GET  /api/ping           Health check")

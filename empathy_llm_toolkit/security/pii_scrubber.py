@@ -465,7 +465,7 @@ class PIIScrubber:
         if name not in self.custom_patterns:
             if name in self.patterns:
                 raise ValueError(
-                    f"Cannot remove default pattern '{name}'. " f"Use disable_pattern() instead."
+                    f"Cannot remove default pattern '{name}'. Use disable_pattern() instead."
                 )
             raise ValueError(f"Pattern '{name}' not found")
 

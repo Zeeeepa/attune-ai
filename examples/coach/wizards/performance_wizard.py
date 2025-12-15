@@ -276,12 +276,12 @@ class PerformanceWizard(BaseWizard):
                 f"{i}. **Fix {bottleneck['type']} issue** (Severity: {bottleneck['severity']})"
             )
             for j, solution in enumerate(bottleneck["solutions"][:2], 1):  # Top 2 solutions
-                plan.append(f"   {chr(96+j)}. {solution}")
+                plan.append(f"   {chr(96 + j)}. {solution}")
 
         # Add validation steps
-        plan.append(f"{len(bottlenecks)+1}. **Benchmark before/after** to measure improvement")
-        plan.append(f"{len(bottlenecks)+2}. **Load test** under realistic traffic patterns")
-        plan.append(f"{len(bottlenecks)+3}. **Deploy with monitoring** to track impact")
+        plan.append(f"{len(bottlenecks) + 1}. **Benchmark before/after** to measure improvement")
+        plan.append(f"{len(bottlenecks) + 2}. **Load test** under realistic traffic patterns")
+        plan.append(f"{len(bottlenecks) + 3}. **Deploy with monitoring** to track impact")
 
         return plan
 

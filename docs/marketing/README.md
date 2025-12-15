@@ -5,6 +5,21 @@
 
 ---
 
+## 📋 Daily Marketing Checklist
+
+**👉 [MARKETING_TODO_30_DAYS.md](MARKETING_TODO_30_DAYS.md)** — Check this daily!
+
+Sprint: Dec 15, 2025 → Jan 14, 2026
+
+| Week | Focus | Status |
+|------|-------|--------|
+| 1 (Dec 15-21) | Launch Prep & Redis Warm-Up | 🔄 In Progress |
+| 2 (Dec 22-28) | Soft Launch (HN, Reddit) | ⏳ Upcoming |
+| 3 (Dec 29-Jan 4) | Product Hunt Launch | ⏳ Upcoming |
+| 4 (Jan 5-14) | Partnership & Growth | ⏳ Upcoming |
+
+---
+
 ## Key Messaging
 
 All content uses the unified **5 Problems / 6 Solutions** framework:
@@ -22,13 +37,14 @@ All content uses the unified **5 Problems / 6 Solutions** framework:
 ### The Solution
 > "Empathy solves all five."
 
-**6 Solutions:**
+**7 Solutions:**
 1. Memory That Persists (git-based patterns + optional Redis)
 2. Enterprise-Ready (local-first, compliance)
 3. Anticipatory Intelligence (30-90 day predictions)
 4. Build Better Agents (30+ wizards, toolkit)
 5. Human↔AI & AI↔AI Orchestration
 6. Performance & Cost (smart routing + no repeated context)
+7. **NEW:** Code Health Assistant (automated checks + auto-fix)
 
 ### Quick Start
 ```bash
@@ -53,6 +69,22 @@ empathy-memory serve
 | [THREE_THINGS_NOT_POSSIBLE_BEFORE.md](THREE_THINGS_NOT_POSSIBLE_BEFORE.md) | Demo | 3 capabilities enabled by memory |
 | [NEW_POSSIBILITIES_ANALYSIS.md](NEW_POSSIBILITIES_ANALYSIS.md) | Internal | Feature brainstorm & roadmap |
 
+### New in v2.2 - Code Health Assistant
+
+**One command to check everything:**
+
+```bash
+empathy health           # Quick check (lint, format, types)
+empathy health --deep    # Full check (+ tests, security, deps)
+empathy health --fix     # Auto-fix safe issues
+```
+
+**Features:**
+- Weighted health score (0-100)
+- Auto-fix for lint and format issues
+- Trend tracking over time
+- Hotspot detection
+
 ### Demo Script
 
 **Interactive showcase of memory-enhanced capabilities:**
@@ -65,6 +97,7 @@ Demonstrates:
 1. Bug Pattern Correlation - "This bug looks like one we fixed 3 months ago"
 2. Tech Debt Trajectory - "At current trajectory, debt doubles in 90 days"
 3. Security False Positive Learning - "Suppressing 8 warnings you marked as acceptable"
+4. **NEW:** Code Health Check - "87/100 health score, 3 auto-fixable issues"
 
 ### Archive
 Old v1 content (narrow hospital→deployment focus) preserved in [archive/](archive/).
@@ -129,6 +162,27 @@ See [VISUAL_ASSET_SPECS.md](VISUAL_ASSET_SPECS.md) for full specifications.
 
 ---
 
+## Partnership Outreach
+
+### Redis Partnership (In Progress)
+
+We're pursuing a partnership with Redis since our framework uses Redis for real-time AI coordination.
+
+| File | Purpose |
+|------|---------|
+| [REDIS_PARTNERSHIP_PLAN.md](REDIS_PARTNERSHIP_PLAN.md) | Full strategy, timeline, email templates |
+| [REDIS_SOCIAL_POSTS.md](REDIS_SOCIAL_POSTS.md) | Twitter, LinkedIn, Reddit posts |
+| [../blog/06-building-ai-memory-with-redis.md](../blog/06-building-ai-memory-with-redis.md) | Technical blog (warm-up content) |
+
+**Status:**
+- [x] Partnership plan created
+- [x] Technical blog post written
+- [x] Social media posts drafted
+- [ ] Blog published & shared (Week 1)
+- [ ] Partner application submitted (Week 2)
+
+---
+
 ## Contact
 
 **Content:** patrick.roebuck@smartaimemory.com
@@ -137,4 +191,4 @@ See [VISUAL_ASSET_SPECS.md](VISUAL_ASSET_SPECS.md) for full specifications.
 
 ---
 
-**Last Updated:** December 12, 2025
+**Last Updated:** December 15, 2025 (v2.2.4)

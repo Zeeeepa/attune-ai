@@ -315,7 +315,7 @@ class AccessibilityWizard(BaseWizard):
             for j, step in enumerate(issue["remediation"], 1):
                 plan.append(f"  {j}. {step}")
 
-        plan.append(f"\n### Step {len(sorted_issues)+1}: Validation")
+        plan.append(f"\n### Step {len(sorted_issues) + 1}: Validation")
         plan.append("  1. Run automated accessibility tests (axe-core, Lighthouse)")
         plan.append("  2. Manual keyboard navigation testing")
         plan.append("  3. Screen reader testing (NVDA, VoiceOver)")

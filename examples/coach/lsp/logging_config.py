@@ -52,7 +52,9 @@ def setup_logging(
             log_file = log_dir / f"lsp_{datetime.now().strftime('%Y%m%d')}.log"
 
         file_handler = RotatingFileHandler(
-            log_file, maxBytes=10 * 1024 * 1024, backupCount=5  # 10 MB
+            log_file,
+            maxBytes=10 * 1024 * 1024,
+            backupCount=5,  # 10 MB
         )
         file_handler.setLevel(logging.DEBUG)  # File gets all logs
         file_handler.setFormatter(formatter)

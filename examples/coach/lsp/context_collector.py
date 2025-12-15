@@ -43,9 +43,9 @@ File: {file_path}
 Language: {self._detect_language(file_path)}
 
 === Git Information ===
-Branch: {git_info['branch']}
-Status: {git_info['status']}
-Recent commits: {git_info['recent_commits']}
+Branch: {git_info["branch"]}
+Status: {git_info["status"]}
+Recent commits: {git_info["recent_commits"]}
 
 === Project Structure ===
 {project_structure}

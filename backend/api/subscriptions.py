@@ -75,7 +75,7 @@ async def purchase_subscription(
         "product": request.product,
         "quantity": request.quantity,
         "total_amount": 49.00 * request.quantity,
-        "license_keys": [f"LICENSE-KEY-{i+1}" for i in range(request.quantity)],
+        "license_keys": [f"LICENSE-KEY-{i + 1}" for i in range(request.quantity)],
         "message": "Purchase successful! Check your email for license keys.",
     }
 

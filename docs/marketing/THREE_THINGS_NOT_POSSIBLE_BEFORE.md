@@ -117,11 +117,39 @@ SUPPRESSIONS:
 
 ---
 
+## Bonus: Code Health Assistant (New in v2.2)
+
+**Before:** Run ruff. Run black. Run mypy. Run pytest. Run bandit. Check each output separately.
+
+**After:** One command does it all—with auto-fix.
+
+```bash
+empathy health              # Quick check
+empathy health --deep       # Full analysis (+ tests, security, deps)
+empathy health --fix        # Auto-fix safe issues
+```
+
+Output:
+```
+📊 Code Health: Good (87/100)
+
+🟢 Tests: 142 passed, 0 failed
+🟡 Lint: 3 warnings (auto-fixable)
+🟢 Types: No errors
+
+[1] Fix 3 auto-fixable issues  [2] See details
+```
+
+**Why it matters:** Health scores you can track over time. Hotspot detection. One command instead of five.
+
+---
+
 ## Try It Now
 
 ```bash
 pip install empathy-framework
-empathy-memory serve
+empathy health              # Check your code health
+empathy-memory serve        # Start memory server
 ```
 
 **Run the showcase:**
@@ -157,13 +185,15 @@ python examples/persistent_memory_showcase.py
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Three New Wizards
+### Key Wizards & Tools
 
-| Wizard | Level | Capability |
-|--------|-------|------------|
+| Wizard/Tool | Level | Capability |
+|-------------|-------|------------|
 | **MemoryEnhancedDebuggingWizard** | 4+ | Bug correlation, historical fixes |
 | **TechDebtWizard** | 4 | Trajectory tracking, predictions |
 | **SecurityLearningWizard** | 4 | False positive learning |
+| **CodeHealthAssistant** | - | Unified health checks, auto-fix |
+| **CodeReviewWizard** | 4 | Pattern-based code review |
 
 ---
 

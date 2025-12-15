@@ -105,7 +105,7 @@ class ProtocolLoader:
 
         if not protocol_file.exists():
             raise FileNotFoundError(
-                f"Protocol not found: {protocol_name}\n" f"Looked in: {self.protocol_dir}"
+                f"Protocol not found: {protocol_name}\nLooked in: {self.protocol_dir}"
             )
 
         with open(protocol_file) as f:

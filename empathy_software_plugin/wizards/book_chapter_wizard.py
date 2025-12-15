@@ -390,7 +390,7 @@ class BookChapterWizard(BaseWizard):
         # Add sections from source headings
         for _i, h in enumerate(elements["headings"][:7], 1):
             if h["level"] <= 2:
-                outline += f"""## {h['text']}
+                outline += f"""## {h["text"]}
 
 [Transform content from source]
 [Add code example]

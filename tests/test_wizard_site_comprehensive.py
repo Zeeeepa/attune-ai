@@ -20,7 +20,6 @@ Test Coverage:
 Run with: pytest tests/test_wizard_site_comprehensive.py -v
 """
 
-
 import pytest
 
 # ============================================================================

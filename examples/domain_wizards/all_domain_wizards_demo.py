@@ -46,11 +46,11 @@ from empathy_llm_toolkit.wizards import (
 
 def print_section(title: str, subtitle: str = ""):
     """Print formatted section header"""
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print(f"{title:^80}")
     if subtitle:
         print(f"{subtitle:^80}")
-    print(f"{'='*80}\n")
+    print(f"{'=' * 80}\n")
 
 
 def print_wizard_info(wizard, result):

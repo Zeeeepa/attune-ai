@@ -72,16 +72,39 @@ Detection models triage, capable models decide. Works with Claude, GPT-4, Ollama
 
 ### What's Included
 
+- **Code Health Assistant** — One command to check lint, format, types, tests, security, deps. Auto-fix safe issues.
+- **Pattern-based code review** — Review code against historical bug patterns (`empathy review`)
 - **30+ production wizards** — Security, performance, testing, documentation, accessibility, compliance
 - **Agent toolkit** — Build custom agents that inherit memory, trust, and anticipation
 - **Healthcare suite** — HIPAA-compliant patterns (SBAR, SOAP notes)
 - **Memory Control Panel** — CLI (`empathy-memory`) and REST API
 
+### Code Health Assistant (New in v2.2)
+
+```bash
+empathy health              # Quick check (lint, format, types)
+empathy health --deep       # Full check (+ tests, security, deps)
+empathy health --fix        # Auto-fix safe issues
+empathy health --trends 30  # See health trends over time
+```
+
+Output:
+```
+📊 Code Health: Good (87/100)
+
+🟢 Tests: 142 passed, 0 failed
+🟡 Lint: 3 warnings (auto-fixable)
+🟢 Types: No errors
+
+[1] Fix 3 auto-fixable issues  [2] See details
+```
+
 ### Quick Start
 
 ```bash
 pip install empathy-framework
-empathy-memory serve
+empathy health              # Check your code health
+empathy-memory serve        # Start memory server
 ```
 
 That's it. Redis starts, API server runs, memory system ready.

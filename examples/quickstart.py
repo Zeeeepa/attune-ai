@@ -196,7 +196,7 @@ def main():
         # Successful interactions
         for i in range(3):
             empathy.collaboration_state.update_trust("success")
-            print(f"  After success {i+1}: {empathy.collaboration_state.trust_level:.2f}")
+            print(f"  After success {i + 1}: {empathy.collaboration_state.trust_level:.2f}")
 
         print(f"\n  Final trust level: {empathy.collaboration_state.trust_level:.2f}")
         print(f"  Successful interventions: {empathy.collaboration_state.successful_interventions}")

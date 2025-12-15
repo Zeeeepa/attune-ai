@@ -22,7 +22,7 @@ from .base_wizard import (
 )
 
 
-class TestingWizard(BaseWizard):  # noqa: pytest - Not a test class
+class TestingWizard(BaseWizard):  # Not a test class despite the name
     """
     Wizard for test planning and quality assurance
 
@@ -300,19 +300,19 @@ class TestingWizard(BaseWizard):  # noqa: pytest - Not a test class
 - Ensure code quality
 
 ## Test Types
-{analysis['test_types']}
+{analysis["test_types"]}
 
 ## Current Status
-Coverage: {analysis['coverage_status']}
-Focus Areas: {', '.join(analysis['focus_areas'])}
+Coverage: {analysis["coverage_status"]}
+Focus Areas: {", ".join(analysis["focus_areas"])}
 
 ## Test Scenarios
 
-### High Priority ({len([t for t in missing if t['priority'] == 'high'])} tests)
-{chr(10).join(f"- {t['scenario']} ({t['type']} test)" for t in missing if t['priority'] == 'high')}
+### High Priority ({len([t for t in missing if t["priority"] == "high"])} tests)
+{chr(10).join(f"- {t['scenario']} ({t['type']} test)" for t in missing if t["priority"] == "high")}
 
-### Medium Priority ({len([t for t in missing if t['priority'] == 'medium'])} tests)
-{chr(10).join(f"- {t['scenario']} ({t['type']} test)" for t in missing if t['priority'] == 'medium')}
+### Medium Priority ({len([t for t in missing if t["priority"] == "medium"])} tests)
+{chr(10).join(f"- {t['scenario']} ({t['type']} test)" for t in missing if t["priority"] == "medium")}
 
 ## Test Environment
 - Development: Local test runner
@@ -347,11 +347,11 @@ Focus Areas: {', '.join(analysis['focus_areas'])}
 
         return f"""# Test Examples
 
-## Example 1: {first_test['scenario']}
+## Example 1: {first_test["scenario"]}
 
 ```python
-def test_{first_test['scenario'].lower().replace(' ', '_')}():
-    \"\"\"Test: {first_test['scenario']}\"\"\"
+def test_{first_test["scenario"].lower().replace(" ", "_")}():
+    \"\"\"Test: {first_test["scenario"]}\"\"\"
     # Arrange: Set up test data and dependencies
     test_user = {{
         "email": "test@example.com",
@@ -509,8 +509,8 @@ def db_session():
 - [ ] No hard-coded values (use fixtures/constants)
 - [ ] External dependencies mocked
 
-## Specific Areas ({', '.join(analysis['focus_areas'])})
-{chr(10).join(f"- [ ] {area.replace('_', ' ').title()} tested" for area in analysis['focus_areas'])}
+## Specific Areas ({", ".join(analysis["focus_areas"])})
+{chr(10).join(f"- [ ] {area.replace('_', ' ').title()} tested" for area in analysis["focus_areas"])}
 
 ## CI/CD
 - [ ] Tests run on every commit
@@ -533,21 +533,21 @@ def db_session():
         return f"""# Coverage Analysis
 
 ## Current Status
-Coverage Level: {analysis['coverage_status']}
+Coverage Level: {analysis["coverage_status"]}
 
 ## Identified Gaps
 Total Missing Test Scenarios: {len(missing)}
 
 ### By Priority
-- High: {len([t for t in missing if t['priority'] == 'high'])}
-- Medium: {len([t for t in missing if t['priority'] == 'medium'])}
-- Low: {len([t for t in missing if t.get('priority') == 'low'])}
+- High: {len([t for t in missing if t["priority"] == "high"])}
+- Medium: {len([t for t in missing if t["priority"] == "medium"])}
+- Low: {len([t for t in missing if t.get("priority") == "low"])}
 
 ### By Type
-- Unit: {len([t for t in missing if t['type'] == 'unit'])}
-- Integration: {len([t for t in missing if t['type'] == 'integration'])}
-- E2E: {len([t for t in missing if t['type'] == 'e2e'])}
-- Security: {len([t for t in missing if t['type'] == 'security'])}
+- Unit: {len([t for t in missing if t["type"] == "unit"])}
+- Integration: {len([t for t in missing if t["type"] == "integration"])}
+- E2E: {len([t for t in missing if t["type"] == "e2e"])}
+- Security: {len([t for t in missing if t["type"] == "security"])}
 
 ## Recommendations
 1. Start with high-priority unit tests

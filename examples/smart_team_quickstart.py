@@ -487,12 +487,12 @@ def analyze_project(description: str, verbose: bool = True) -> ProjectAnalysis:
         mode = "mock (Redis not needed for demo)"
 
     if verbose:
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("SMART TEAM PROJECT ANALYZER")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
         print(f"Memory: {mode}")
         print(f"\nAnalyzing: {description[:100]}{'...' if len(description) > 100 else ''}")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
 
     # Create team session
     session = TeamSession(
@@ -575,9 +575,9 @@ def analyze_project(description: str, verbose: bool = True) -> ProjectAnalysis:
 
 def print_analysis(analysis: ProjectAnalysis):
     """Pretty print the analysis results."""
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("ANALYSIS RESULTS")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     # Components
     print(f"\n{'COMPONENTS':-^60}")
@@ -606,7 +606,7 @@ def print_analysis(analysis: ProjectAnalysis):
     for agent, insight in analysis.agent_insights.items():
         print(f"  {agent.capitalize()}: {insight}")
 
-    print(f"\n{'='*60}\n")
+    print(f"\n{'=' * 60}\n")
 
 
 def main():

@@ -211,7 +211,7 @@ class CoachWizardEngine:
             "wizards": wizards,
             "results": results,
             "collaboration": collaboration,
-            "summary": f'Analyzed with {len(wizards)} wizards. Found issues in {sum(1 for r in results if r["severity"] != "INFO")} areas.',
+            "summary": f"Analyzed with {len(wizards)} wizards. Found issues in {sum(1 for r in results if r['severity'] != 'INFO')} areas.",
         }
 
     def predict_future_issues(

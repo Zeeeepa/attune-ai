@@ -274,7 +274,7 @@ class ComplianceWizard(BaseWizard):
             for j, step in enumerate(gap["remediation"], 1):
                 plan.append(f"  {j}. {step}")
 
-        plan.append(f"\n### Step {len(sorted_gaps)+1}: Pre-Audit Validation")
+        plan.append(f"\n### Step {len(sorted_gaps) + 1}: Pre-Audit Validation")
         plan.append("  1. Self-assessment against all controls")
         plan.append("  2. Collect audit evidence (screenshots, logs, policies)")
         plan.append("  3. Conduct internal mock audit")

@@ -753,7 +753,7 @@ class TestEdgeCases:
         for i in range(6):
             file = claude_dir / f"level{i}.md"
             if i < 5:
-                file.write_text(f"# Level {i}\n@./level{i+1}.md")
+                file.write_text(f"# Level {i}\n@./level{i + 1}.md")
             else:
                 file.write_text(f"# Level {i} (should not load)")
 

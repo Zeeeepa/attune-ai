@@ -6,7 +6,7 @@ Technical deep-dives into memory-enhanced AI development.
 
 ## Memory-Enhanced Development Series
 
-A 4-part series exploring what becomes possible when AI can remember and learn.
+A 5-part series exploring what becomes possible when AI can remember and learn.
 
 | Part | Title | Key Result |
 |------|-------|------------|
@@ -14,6 +14,7 @@ A 4-part series exploring what becomes possible when AI can remember and learn.
 | 2 | [Bug Correlation Deep Dive](02-bug-correlation-deep-dive.md) | 4 historical matches with proven fixes |
 | 3 | [Tech Debt Trajectory Deep Dive](03-tech-debt-trajectory-deep-dive.md) | Projections showing 472 items in 90 days |
 | 4 | [Security Learning Deep Dive](04-security-learning-deep-dive.md) | 85 findings suppressed via team decisions |
+| 5 | [Code Health Assistant Deep Dive](05-code-health-assistant-deep-dive.md) | One command, one score, auto-fix **(NEW)** |
 
 ---
 
@@ -38,6 +39,10 @@ With persistent memory:
 ```bash
 pip install empathy-framework
 
+# Check your code health (new in v2.2)
+empathy health
+empathy health --fix        # Auto-fix safe issues
+
 # Run the full repo test (validates all features)
 python examples/full_repo_test.py
 
@@ -46,6 +51,14 @@ python examples/website_examples/01_bug_correlation.py
 python examples/website_examples/02_tech_debt_trajectory.py
 python examples/website_examples/03_security_learning.py
 ```
+
+---
+
+## Technical Deep Dives
+
+| Post | Topic | Key Takeaway |
+|------|-------|--------------|
+| [Building AI Memory with Redis](06-building-ai-memory-with-redis.md) | Infrastructure | Sub-millisecond coordination, dual-layer architecture |
 
 ---
 

@@ -431,7 +431,7 @@ def {test_name}():
     # Test case 1: {edge_cases[0]}
     # TODO: Implement test
 
-    # Test case 2: {edge_cases[1] if len(edge_cases) > 1 else 'Add more'}
+    # Test case 2: {edge_cases[1] if len(edge_cases) > 1 else "Add more"}
     # TODO: Implement test
 """
         return template.strip()

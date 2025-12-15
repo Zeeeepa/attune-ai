@@ -135,7 +135,8 @@ class ClinicalProtocolMonitor:
 
         # Phase 2: Analyze trajectory (Level 4)
         trajectory_prediction = self.trajectory_analyzer.analyze_trajectory(
-            normalized_data, self.patient_history[patient_id][:-1]  # Exclude current reading
+            normalized_data,
+            self.patient_history[patient_id][:-1],  # Exclude current reading
         )
 
         # Phase 3: Generate alerts

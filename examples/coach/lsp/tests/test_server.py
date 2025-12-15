@@ -205,7 +205,8 @@ class TestErrorHandling:
         """Test handling of invalid parameters"""
         with pytest.raises((IndexError, TypeError, ValueError)):
             await server.command_handlers["coach/runWizard"](
-                server, ["PerformanceWizard"]  # Missing task dict
+                server,
+                ["PerformanceWizard"],  # Missing task dict
             )
 
     @pytest.mark.asyncio

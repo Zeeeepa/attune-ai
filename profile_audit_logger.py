@@ -121,7 +121,7 @@ def profile_audit_logging():
             lines = result["stats"].split("\n")
             for i, line in enumerate(lines[5:8]):  # Skip header, show top 3
                 if line.strip():
-                    print(f"    {i+1}. {line.strip()[:80]}")
+                    print(f"    {i + 1}. {line.strip()[:80]}")
 
         # Check log file size
         audit_file = Path(tmpdir) / "audit.jsonl"

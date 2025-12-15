@@ -68,7 +68,7 @@ class AgentOrchestrationWizard(BaseWizard):
             else:
                 # Generate generic agent names
                 for i in range(count):
-                    agents.append({"name": f"Agent_{i+1}", "type": "specialized"})
+                    agents.append({"name": f"Agent_{i + 1}", "type": "specialized"})
 
         # Pattern 2: Look for specific agent-like words
         agent_keywords = [
@@ -299,7 +299,7 @@ class AgentOrchestrationWizard(BaseWizard):
                         "Create agent isolation (agents don't need to know about all others)",
                     ],
                     "reasoning": (
-                        f"Full mesh communication: {agent_count}² = {agent_count ** 2} channels. "
+                        f"Full mesh communication: {agent_count}² = {agent_count**2} channels. "
                         "Selective communication dramatically reduces overhead."
                     ),
                 }

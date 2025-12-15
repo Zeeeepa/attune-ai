@@ -586,10 +586,10 @@ class SecurityWizard(BaseWizard):
         return f"""# Security Recommendations
 
 ## Immediate Actions (Critical)
-{chr(10).join(f"1. {vuln['name']}: {vuln['remediation']}" for vuln in vulnerabilities if vuln['severity'] == 'critical')}
+{chr(10).join(f"1. {vuln['name']}: {vuln['remediation']}" for vuln in vulnerabilities if vuln["severity"] == "critical")}
 
 ## Short-term (Within 1 Month)
-{chr(10).join(f"- {vuln['name']}: {vuln['remediation']}" for vuln in vulnerabilities if vuln['severity'] == 'high')}
+{chr(10).join(f"- {vuln['name']}: {vuln['remediation']}" for vuln in vulnerabilities if vuln["severity"] == "high")}
 
 ## Long-term (Ongoing)
 - Implement security training for development team

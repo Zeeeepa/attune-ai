@@ -450,8 +450,7 @@ class LinterParserFactory:
 
         if not parser_class:
             raise ValueError(
-                f"Unsupported linter: {linter_name}. "
-                f"Supported: {', '.join(cls._parsers.keys())}"
+                f"Unsupported linter: {linter_name}. Supported: {', '.join(cls._parsers.keys())}"
             )
 
         return parser_class()

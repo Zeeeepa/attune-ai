@@ -83,11 +83,11 @@ def profile_complete_pipeline():
         results = {}
 
         for scenario_name, scenario in test_scenarios.items():
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print(f"Scenario: {scenario_name}")
             print(f"Content size: {len(scenario['content'])} bytes")
             print(f"Iterations: {scenario['iterations']}")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
 
             # Warm-up run
             integration.store_pattern(
@@ -150,7 +150,7 @@ def profile_complete_pipeline():
             lines = s.getvalue().split("\n")
             for i, line in enumerate(lines[5:10]):
                 if line.strip():
-                    print(f"  {i+1}. {line.strip()[:80]}")
+                    print(f"  {i + 1}. {line.strip()[:80]}")
 
         # Generate comprehensive summary
         print("\n" + "=" * 60)

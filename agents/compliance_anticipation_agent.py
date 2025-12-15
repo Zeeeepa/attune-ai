@@ -1261,16 +1261,16 @@ def compose_notification(state: ComplianceAgentState, action_items: list[dict]) 
         "urgency": "high" if days_until < 60 else "medium",
         "title": f"{state['audit_type'].replace('_', ' ').title()} Audit Preparation",
         "summary": f"""
-📋 **{state['audit_type'].replace('_', ' ').upper()} AUDIT PREPARATION**
+📋 **{state["audit_type"].replace("_", " ").upper()} AUDIT PREPARATION**
 
-**Audit Date:** {datetime.fromisoformat(state['next_audit_date']).strftime('%B %d, %Y')}
+**Audit Date:** {datetime.fromisoformat(state["next_audit_date"]).strftime("%B %d, %Y")}
 **Days Remaining:** {days_until} days
 **Audit Readiness Score:** {readiness_score:.1f}/100
 
 ---
 
 ✅ **COMPLIANCE STATUS**
-- Overall: {compliance_pct:.1f}% ({state['compliant_items']}/{state['total_compliance_items']} items)
+- Overall: {compliance_pct:.1f}% ({state["compliant_items"]}/{state["total_compliance_items"]} items)
 - Target: 95%+ for audit success
 
 **Category Breakdown:**
@@ -1291,7 +1291,7 @@ def compose_notification(state: ComplianceAgentState, action_items: list[dict]) 
 🎯 **ACTION ITEMS ({len(action_items)} tasks)**
 """
         + "\n".join(
-            f"{i+1}. [{item['severity'].upper()}] {item['description']}\n"
+            f"{i + 1}. [{item['severity'].upper()}] {item['description']}\n"
             f"   → Assignee: {item['assignee']}\n"
             f"   → Deadline: {datetime.fromisoformat(item['deadline']).strftime('%Y-%m-%d')}\n"
             f"   → Time: {item['estimated_time']}"
@@ -1304,7 +1304,7 @@ def compose_notification(state: ComplianceAgentState, action_items: list[dict]) 
 
 📂 **DOCUMENTATION PACKAGE**
 Pre-prepared documentation available at:
-{state['documentation_url']}
+{state["documentation_url"]}
 
 Files included:
 """

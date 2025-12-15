@@ -334,8 +334,7 @@ class ConflictResolver:
             )[:2]
             factor_desc = ", ".join(f"{k}: {v:.0%}" for k, v in top_factors)
             reasons.append(
-                f"Selected '{winner.name}' based on weighted scoring "
-                f"(top factors: {factor_desc})"
+                f"Selected '{winner.name}' based on weighted scoring (top factors: {factor_desc})"
             )
 
         # Add comparison to losers

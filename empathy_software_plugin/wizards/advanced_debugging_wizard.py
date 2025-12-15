@@ -364,8 +364,7 @@ class AdvancedDebuggingWizard(BaseWizard):
 
         if alert_level in ["CRITICAL", "HIGH"]:
             recommendations.append(
-                f"⚠️  Address {risk_summary['by_risk_level']['high']} "
-                "high-risk issues before merge"
+                f"⚠️  Address {risk_summary['by_risk_level']['high']} high-risk issues before merge"
             )
 
         # Based on fixability
@@ -373,7 +372,7 @@ class AdvancedDebuggingWizard(BaseWizard):
 
         if total_auto_fixable > 0:
             recommendations.append(
-                f"✅ {total_auto_fixable} issues can be auto-fixed. " "Run with auto_fix=True"
+                f"✅ {total_auto_fixable} issues can be auto-fixed. Run with auto_fix=True"
             )
 
         # Based on trajectory

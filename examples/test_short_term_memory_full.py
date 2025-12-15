@@ -120,9 +120,9 @@ class SecurityWizard(BaseWizard):
 
 
 def print_header(title: str):
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  {title}")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
 
 def print_result(name: str, success: bool, details: str = ""):

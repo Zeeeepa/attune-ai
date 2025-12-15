@@ -233,15 +233,15 @@ class DesignReviewWizard(BaseWizard):
 {chr(10).join(f"- {g}: {'Well addressed' if any(g.lower() in p.lower() for p in patterns + concerns) else 'Needs attention'}" for g in goals)}
 
 ## Architecture Assessment
-Based on the context, this appears to be a {''.join(patterns[:1]) if patterns else 'standard'} architecture.
+Based on the context, this appears to be a {"".join(patterns[:1]) if patterns else "standard"} architecture.
 
 ### Strengths
 - Addresses core functional requirements
-- {'Scalable architecture chosen' if 'microservice' in context_lower or 'serverless' in context_lower else 'Clear architecture boundaries'}
+- {"Scalable architecture chosen" if "microservice" in context_lower or "serverless" in context_lower else "Clear architecture boundaries"}
 
 ### Areas for Improvement
-- {'Consider service boundaries' if 'monolith' in context_lower else 'Monitor service complexity'}
-- {'Add caching layer' if 'cache' not in context_lower and 'performance' in str(goals).lower() else 'Optimize caching strategy'}
+- {"Consider service boundaries" if "monolith" in context_lower else "Monitor service complexity"}
+- {"Add caching layer" if "cache" not in context_lower and "performance" in str(goals).lower() else "Optimize caching strategy"}
 - Document key design decisions
 """
 
@@ -425,10 +425,10 @@ Adopt {main_pattern} architecture to address requirements.
 ### Positive
 - Addresses core functional requirements
 - Aligns with team capabilities
-- {tradeoffs[0]['benefit'] if tradeoffs else 'Meets immediate needs'}
+- {tradeoffs[0]["benefit"] if tradeoffs else "Meets immediate needs"}
 
 ### Negative
-- {tradeoffs[0]['cost'] if tradeoffs else 'Requires ongoing maintenance'}
+- {tradeoffs[0]["cost"] if tradeoffs else "Requires ongoing maintenance"}
 - Requires team training and documentation
 - May need refactoring as requirements evolve
 

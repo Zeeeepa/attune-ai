@@ -98,7 +98,7 @@ class EmpathyConfig:
         """
         if not YAML_AVAILABLE:
             raise ImportError(
-                "PyYAML is required for YAML configuration. " "Install with: pip install pyyaml"
+                "PyYAML is required for YAML configuration. Install with: pip install pyyaml"
             )
 
         with open(filepath) as f:
@@ -242,7 +242,7 @@ class EmpathyConfig:
         """
         if not YAML_AVAILABLE:
             raise ImportError(
-                "PyYAML is required for YAML export. " "Install with: pip install pyyaml"
+                "PyYAML is required for YAML export. Install with: pip install pyyaml"
             )
 
         data = asdict(self)

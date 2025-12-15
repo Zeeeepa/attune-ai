@@ -87,8 +87,7 @@ class PluginRegistry:
         # Register
         self._plugins[name] = plugin
         self.logger.info(
-            f"Registered plugin '{name}' (domain: {metadata.domain}, "
-            f"version: {metadata.version})"
+            f"Registered plugin '{name}' (domain: {metadata.domain}, version: {metadata.version})"
         )
 
     def get_plugin(self, name: str) -> BasePlugin | None:

@@ -1,6 +1,6 @@
 # Twitter/X Thread: Empathy Framework
 
-## Thread (10 tweets)
+## Thread (11 tweets)
 
 ### Tweet 1: Hook
 Today's AI tools are brilliant but broken for enterprise:
@@ -57,7 +57,18 @@ Empathy:
 
 No more re-teaching your AI what it already knows. Works with Claude, GPT-4, Ollama.
 
-### Tweet 7: For Builders
+### Tweet 7: Code Health Assistant (NEW)
+New in v2.2: One command to check your entire codebase.
+
+```
+empathy health           # lint, format, types
+empathy health --deep    # + tests, security, deps
+empathy health --fix     # auto-fix safe issues
+```
+
+Health score. Trend tracking. Hotspot detection.
+
+### Tweet 8: For Builders
 30+ production wizards included:
 - Security, Performance, Testing
 - Documentation, Accessibility, Compliance
@@ -66,7 +77,7 @@ Build custom agents that inherit memory, trust, and anticipation.
 
 5-level progression built in. Your agents evolve automatically.
 
-### Tweet 8: Quick Start
+### Tweet 9: Quick Start
 Get started in 2 commands:
 
 ```
@@ -78,7 +89,7 @@ Long-term patterns stored in git. Redis auto-starts for real-time features.
 
 Zero infrastructure for students. Full stack for enterprise.
 
-### Tweet 9: Licensing
+### Tweet 10: Licensing
 Fair Source 0.9:
 
 - Free for students, educators, teams ≤5
@@ -87,7 +98,7 @@ Fair Source 0.9:
 
 Full source code. Your infrastructure. Your control.
 
-### Tweet 10: Call to Action
+### Tweet 11: Call to Action
 The framework I wish existed when I started building AI tools.
 
 GitHub: github.com/Smart-AI-Memory/empathy

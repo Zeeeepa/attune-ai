@@ -464,7 +464,8 @@ class SecureMemDocsIntegration:
         self.pii_scrubber = PIIScrubber()
         self.secrets_detector = SecretsDetector()
         self.audit_logger = AuditLogger(
-            log_dir=audit_log_dir, enable_console_logging=True  # Development mode
+            log_dir=audit_log_dir,
+            enable_console_logging=True,  # Development mode
         )
 
         # Initialize encryption

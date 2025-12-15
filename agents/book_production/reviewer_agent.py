@@ -438,7 +438,7 @@ Recommendation: "approve" if overall >= 0.80, else "revise"."""
             self.logger.warning(f"LLM review parsing failed: {e}")
             # Return neutral scores
             return {
-                "scores": {dim: 0.75 for dim in self.QUALITY_DIMENSIONS},
+                "scores": dict.fromkeys(self.QUALITY_DIMENSIONS, 0.75),
                 "feedback": ["LLM review unavailable - using automated checks only"],
                 "recommendation": "revise",
             }

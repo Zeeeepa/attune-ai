@@ -23,9 +23,9 @@ from empathy_llm_toolkit.wizards import HealthcareWizard
 
 def print_section(title: str):
     """Print a formatted section header"""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print(f"{title:^70}")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
 
 
 async def example_1_basic_clinical_query():
@@ -246,9 +246,9 @@ async def example_5_clinical_documentation():
 
 async def main():
     """Run all examples"""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print(f"{'Healthcare Wizard - HIPAA Compliance Demo':^70}")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
 
     # Check for API key
     if not os.getenv("ANTHROPIC_API_KEY"):
