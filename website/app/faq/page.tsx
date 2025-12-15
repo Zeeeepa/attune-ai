@@ -51,7 +51,7 @@ const faqData = [
       },
       {
         question: 'How is the framework tested?',
-        answer: 'Empathy has 553 tests with 83.13% overall coverage and 95%+ coverage on core modules. It includes comprehensive unit tests, integration tests, and cross-platform compatibility testing.',
+        answer: 'Empathy has 2,321 comprehensive tests covering unit tests, integration tests, and cross-platform compatibility. Core modules maintain high coverage with rigorous testing of security, memory systems, and wizard functionality.',
       },
       {
         question: 'What platforms are supported?',
@@ -72,7 +72,7 @@ const faqData = [
       },
       {
         question: 'Is the framework production-ready?',
-        answer: 'Yes! The framework is v1.7.0 Production/Stable with 1,489 tests (90.71% coverage), comprehensive documentation, and is being used in production applications including medical wizards dashboards and software development tools.',
+        answer: 'Yes! The framework is v2.2.4 Production/Stable with 2,321 comprehensive tests, extensive documentation, and is being used in production applications including medical wizards dashboards and software development tools.',
       },
     ],
   },

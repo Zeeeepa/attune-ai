@@ -30,8 +30,8 @@ We evaluated several options for real-time AI memory:
 |--------|---------|------------|---------|---------|
 | PostgreSQL | ~10ms | Medium | No | Too slow for real-time |
 | MongoDB | ~5ms | Medium | Change streams | Possible, but complex |
-| SQLite | &lt;1ms | High | No | No coordination |
-| **Redis** | **&lt;1ms** | **High** | **Yes** | **Perfect fit** |
+| SQLite | <1ms | High | No | No coordination |
+| **Redis** | **<1ms** | **High** | **Yes** | **Perfect fit** |
 
 Redis won because:
 
@@ -70,7 +70,7 @@ redis_client.hset(
 redis_client.expire(f"session:{session_id}", 3600)  # 1 hour
 ```
 
-Why Redis? We need instant access (&lt;1ms) and automatic expiration. Sessions are ephemeral—they shouldn't clutter persistent storage.
+Why Redis? We need instant access (<1ms) and automatic expiration. Sessions are ephemeral—they shouldn't clutter persistent storage.
 
 ### 2. Multi-Agent Coordination
 
@@ -146,7 +146,7 @@ context = [json.loads(m) for m in recent]
 ```
 
 This provides:
-- **Fast retrieval** — Context ready in &lt;1ms
+- **Fast retrieval** — Context ready in <1ms
 - **Automatic pruning** — Old messages fall off
 - **Per-user isolation** — Each user has their own memory
 
@@ -161,7 +161,7 @@ We benchmarked our Redis integration:
 | Pub/sub message | 0.1ms | 50,000/sec |
 | Memory context retrieval | 0.5ms | 6,000/sec |
 
-**Key insight:** Redis is fast enough that memory lookups don't impact AI response latency. The LLM call (100-2000ms) dominates; Redis adds &lt;1ms overhead.
+**Key insight:** Redis is fast enough that memory lookups don't impact AI response latency. The LLM call (100-2000ms) dominates; Redis adds <1ms overhead.
 
 ## Lessons Learned
 
