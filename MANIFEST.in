@@ -46,6 +46,13 @@ exclude COMMERCIAL_READINESS.md
 exclude QUALITY_REVIEW.md
 exclude COMMERCIAL_ROADMAP.md
 
+# Exclude node_modules and frontend build artifacts
+prune examples/wizard-dashboard/node_modules
+prune examples/wizard-dashboard/dist
+prune examples/wizard-dashboard/.next
+global-exclude node_modules
+recursive-exclude examples/wizard-dashboard/node_modules *
+
 # Exclude unnecessary files
 global-exclude *.pyc
 global-exclude *.pyo
