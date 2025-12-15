@@ -1,7 +1,10 @@
 # Empathy Framework - Production Security Configuration
 # Location: ./.claude/CLAUDE.md
-# Project: empathy-framework v1.9.4
+# Project: empathy-framework v2.1.2
 # Classification: INTERNAL
+
+# Import pattern library summary (auto-generated)
+@patterns_summary.md
 
 ## Project Context
 
