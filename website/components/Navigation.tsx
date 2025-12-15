@@ -6,9 +6,31 @@ import { useTheme } from '@/lib/theme-provider';
 
 const navItems = [
   { label: 'Framework', href: '/framework' },
-  { label: 'Docs', href: '/framework-docs/' },
   { label: 'Book', href: '/book' },
   { label: 'Pricing', href: '/pricing' },
+];
+
+const docsItems = [
+  {
+    label: 'Framework Docs',
+    href: '/framework-docs/',
+    description: 'API reference and guides',
+  },
+  {
+    label: 'Blog',
+    href: '/blog',
+    description: 'Technical articles and updates',
+  },
+  {
+    label: 'Getting Started',
+    href: '/framework-docs/getting-started/quickstart/',
+    description: 'Quick start guide',
+  },
+  {
+    label: 'FAQ',
+    href: '/faq',
+    description: 'Frequently asked questions',
+  },
 ];
 
 const demoItems = [
@@ -36,8 +58,10 @@ export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDemosOpen, setIsDemosOpen] = useState(false);
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
   const demosRef = useRef<HTMLDivElement>(null);
+  const docsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,11 +71,14 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close demos dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (demosRef.current && !demosRef.current.contains(event.target as Node)) {
         setIsDemosOpen(false);
+      }
+      if (docsRef.current && !docsRef.current.contains(event.target as Node)) {
+        setIsDocsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -94,6 +121,50 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Docs Dropdown */}
+            <div className="relative" ref={docsRef}>
+              <button
+                type="button"
+                onClick={() => setIsDocsOpen(!isDocsOpen)}
+                className="flex items-center gap-1 text-sm font-medium hover:text-[var(--primary)] transition-colors"
+                aria-expanded={isDocsOpen ? 'true' : 'false'}
+                aria-haspopup="true"
+              >
+                Docs
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`transition-transform ${isDocsOpen ? 'rotate-180' : ''}`}
+                  aria-hidden="true"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              {isDocsOpen && (
+                <div className="absolute top-full right-0 mt-2 w-64 bg-[var(--background)] border border-[var(--border)] rounded-lg shadow-lg py-2 animate-fade-in">
+                  {docsItems.map((doc) => (
+                    <Link
+                      key={doc.label}
+                      href={doc.href}
+                      className="block px-4 py-2 hover:bg-[var(--border)] hover:bg-opacity-50 transition-colors"
+                      onClick={() => setIsDocsOpen(false)}
+                    >
+                      <span className="font-medium text-sm">{doc.label}</span>
+                      <p className="text-xs text-[var(--muted)] mt-0.5">{doc.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Demos Dropdown */}
             <div className="relative" ref={demosRef}>
@@ -297,6 +368,23 @@ export default function Navigation() {
                   {item.label}
                 </Link>
               ))}
+
+              {/* Mobile Docs Section */}
+              <div className="pt-2 border-t border-[var(--border)]">
+                <p className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide mb-2">
+                  Docs
+                </p>
+                {docsItems.map((doc) => (
+                  <Link
+                    key={doc.label}
+                    href={doc.href}
+                    className="block py-2 text-sm font-medium hover:text-[var(--primary)] transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {doc.label}
+                  </Link>
+                ))}
+              </div>
 
               {/* Mobile Demos Section */}
               <div className="pt-2 border-t border-[var(--border)]">
