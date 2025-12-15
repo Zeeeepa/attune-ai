@@ -2150,8 +2150,6 @@ jobs:
       - run: npm run lint
       - name: Security scan
         run: npm audit
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
 
   deploy-staging:
     needs: test

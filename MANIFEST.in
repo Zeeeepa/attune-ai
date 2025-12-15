@@ -12,7 +12,6 @@ include pyproject.toml
 include setup.py
 include requirements.txt
 include .bandit
-include codecov.yml
 
 # Include all YAML/JSON configs
 recursive-include src *.yml *.yaml *.json

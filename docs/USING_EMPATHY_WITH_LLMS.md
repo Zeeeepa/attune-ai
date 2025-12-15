@@ -812,7 +812,7 @@ if prediction.impact == "critical":
 
 - **[Empathy Framework Philosophy](guides/multi-agent-philosophy.md)** - Complete framework documentation
 - **[AI Development Wizards](AI_DEVELOPMENT_WIZARDS.md)** - 7 Level 4 examples
-- **[Plugin System](../PLUGIN_SYSTEM_README.md)** - Build your own domain plugins
+- **[API Reference](api-reference/index.md)** - Full API documentation
 
 ---
 

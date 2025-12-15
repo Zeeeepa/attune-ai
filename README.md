@@ -4,7 +4,6 @@
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://img.shields.io/badge/tests-2%2C040%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy/actions)
-[![Coverage](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 [![GitHub stars](https://img.shields.io/github/stars/Smart-AI-Memory/empathy?style=social)](https://github.com/Smart-AI-Memory/empathy)

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function FrameworkPage() {
   return (
@@ -18,9 +19,28 @@ export default function FrameworkPage() {
       </nav>
 
       {/* Hero */}
-      <section className="py-20">
-        <div className="container">
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0" aria-hidden="true">
+          <Image
+            src="/images/AdobeStock_1773561909.jpeg"
+            alt=""
+            fill
+            className="object-cover opacity-10"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-transparent to-[var(--background)]" />
+        </div>
+        <div className="container relative">
           <div className="max-w-4xl mx-auto text-center">
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/images/icons/square-terminal.svg"
+                alt=""
+                width={56}
+                height={56}
+                className="opacity-70"
+              />
+            </div>
             <h1 className="text-5xl font-bold mb-6">
               Empathy <span className="text-gradient">Core</span>
             </h1>
@@ -53,7 +73,9 @@ export default function FrameworkPage() {
           <h2 className="text-4xl font-bold text-center mb-12">Core Features</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className="bg-[var(--background)] p-6 rounded-lg">
-              <div className="text-3xl mb-4">🧠</div>
+              <div className="mb-4">
+                <Image src="/images/icons/heart-handshake.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
               <h3 className="text-xl font-bold mb-3">5-Level Empathy System</h3>
               <p className="text-[var(--text-secondary)]">
                 Built-in framework for creating AI that progresses from reactive to anticipatory intelligence.
@@ -61,7 +83,9 @@ export default function FrameworkPage() {
             </div>
 
             <div className="bg-[var(--background)] p-6 rounded-lg">
-              <div className="text-3xl mb-4">🔌</div>
+              <div className="mb-4">
+                <Image src="/images/icons/square-terminal.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
               <h3 className="text-xl font-bold mb-3">Plugin Architecture</h3>
               <p className="text-[var(--text-secondary)]">
                 Extensible system for building domain-specific wizards and tools.
@@ -69,7 +93,9 @@ export default function FrameworkPage() {
             </div>
 
             <div className="bg-[var(--background)] p-6 rounded-lg">
-              <div className="text-3xl mb-4">📊</div>
+              <div className="mb-4">
+                <Image src="/images/icons/file-terminal.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
               <h3 className="text-xl font-bold mb-3">Pattern Recognition</h3>
               <p className="text-[var(--text-secondary)]">
                 Advanced pattern matching and analysis for identifying trends and trajectories.
@@ -77,7 +103,9 @@ export default function FrameworkPage() {
             </div>
 
             <div className="bg-[var(--background)] p-6 rounded-lg">
-              <div className="text-3xl mb-4">🔮</div>
+              <div className="mb-4">
+                <Image src="/images/icons/briefcase.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
               <h3 className="text-xl font-bold mb-3">Trajectory Prediction</h3>
               <p className="text-[var(--text-secondary)]">
                 Core algorithms for predicting future states based on current trajectories.
@@ -85,18 +113,22 @@ export default function FrameworkPage() {
             </div>
 
             <div className="bg-[var(--background)] p-6 rounded-lg">
-              <div className="text-3xl mb-4">⚡</div>
-              <h3 className="text-xl font-bold mb-3">Async-First Design</h3>
+              <div className="mb-4">
+                <Image src="/images/icons/stethoscope.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Healthcare Ready</h3>
               <p className="text-[var(--text-secondary)]">
-                Built for modern Python with async/await support throughout.
+                HIPAA-compliant wizards for clinical workflows and healthcare applications.
               </p>
             </div>
 
             <div className="bg-[var(--background)] p-6 rounded-lg">
-              <div className="text-3xl mb-4">🧪</div>
-              <h3 className="text-xl font-bold mb-3">Fully Tested</h3>
+              <div className="mb-4">
+                <Image src="/images/icons/briefcase-medical.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Enterprise Security</h3>
               <p className="text-[var(--text-secondary)]">
-                Comprehensive test coverage with pytest and type hints throughout.
+                Built-in PII scrubbing, audit logging, and compliance controls.
               </p>
             </div>
           </div>
@@ -239,7 +271,9 @@ result = await wizard.analyze({"data": your_data})`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <div className="text-3xl mb-3">💻</div>
+                <div className="mb-3">
+                  <Image src="/images/icons/file-terminal.svg" alt="" width={32} height={32} className="opacity-70" />
+                </div>
                 <h3 className="text-lg font-bold mb-2">Contribute on GitHub</h3>
                 <p className="text-sm text-[var(--text-secondary)]">
                   Submit PRs, report issues, or help improve the docs
@@ -252,7 +286,9 @@ result = await wizard.analyze({"data": your_data})`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <div className="text-3xl mb-3">💬</div>
+                <div className="mb-3">
+                  <Image src="/images/icons/heart-handshake.svg" alt="" width={32} height={32} className="opacity-70" />
+                </div>
                 <h3 className="text-lg font-bold mb-2">Join Discussions</h3>
                 <p className="text-sm text-[var(--text-secondary)]">
                   Ask questions and share your wizards
@@ -263,7 +299,9 @@ result = await wizard.analyze({"data": your_data})`}
                 href="/book"
                 className="p-6 border-2 border-[var(--border)] rounded-lg hover:border-[var(--primary)] transition-colors"
               >
-                <div className="text-3xl mb-3">📚</div>
+                <div className="mb-3">
+                  <Image src="/images/icons/briefcase.svg" alt="" width={32} height={32} className="opacity-70" />
+                </div>
                 <h3 className="text-lg font-bold mb-2">Get the Book</h3>
                 <p className="text-sm text-[var(--text-secondary)]">
                   Learn to build commercial-grade plugins

@@ -805,7 +805,7 @@ The **Claude Code + MemDocs + Empathy Framework** stack represents a fundamental
 - **Empathy Framework**: [https://github.com/Smart-AI-Memory/empathy](https://github.com/Smart-AI-Memory/empathy)
 - **MemDocs**: [https://github.com/Smart-AI-Memory/memdocs](https://github.com/Smart-AI-Memory/memdocs)
 - **Claude Code**: [https://claude.ai/claude-code](https://claude.ai/claude-code)
-- **Book Chapter**: [The Empathy Framework for AI-Human Collaboration](CHAPTER_EMPATHY_FRAMEWORK.md)
+- **Book**: [Get the Book](get-the-book.md)
 - **Coverage Analysis**: [COVERAGE_ANALYSIS.md](COVERAGE_ANALYSIS.md)
 - **OpenSSF Preparation**: [OPENSSF_BADGE_PREPARATION.md](OPENSSF_BADGE_PREPARATION.md)
 

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { generateMetadata } from '@/lib/metadata';
@@ -20,9 +21,27 @@ export default function PricingPage() {
       <Navigation />
       <main className="min-h-screen pt-16">
         {/* Hero Section */}
-        <section className="py-20 gradient-primary text-white">
-          <div className="container">
+        <section className="py-20 gradient-primary text-white relative overflow-hidden">
+          <div className="absolute inset-0" aria-hidden="true">
+            <Image
+              src="/images/AdobeStock_1773561909.jpeg"
+              alt=""
+              fill
+              className="object-cover opacity-30 mix-blend-overlay"
+              priority
+            />
+          </div>
+          <div className="container relative">
             <div className="max-w-3xl mx-auto text-center">
+              <div className="flex justify-center mb-6">
+                <Image
+                  src="/images/icons/briefcase.svg"
+                  alt=""
+                  width={56}
+                  height={56}
+                  className="invert opacity-90"
+                />
+              </div>
               <h1 className="text-5xl font-bold mb-6">
                 Simple, Fair Pricing
               </h1>

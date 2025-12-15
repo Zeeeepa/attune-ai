@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Gumroad product URL for pay-what-you-want book
 const GUMROAD_BOOK_URL = 'https://roebucksmith.gumroad.com/l/empathy-book';
@@ -21,9 +22,27 @@ export default function BookPage() {
       </nav>
 
       {/* Hero */}
-      <section className="py-20 gradient-primary text-white">
-        <div className="container">
+      <section className="py-20 gradient-primary text-white relative overflow-hidden">
+        <div className="absolute inset-0" aria-hidden="true">
+          <Image
+            src="/images/AdobeStock_1773561909.jpeg"
+            alt=""
+            fill
+            className="object-cover opacity-30 mix-blend-overlay"
+            priority
+          />
+        </div>
+        <div className="container relative">
           <div className="max-w-3xl mx-auto text-center">
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/images/icons/heart-handshake.svg"
+                alt=""
+                width={64}
+                height={64}
+                className="invert opacity-90"
+              />
+            </div>
             <h1 className="text-5xl font-bold mb-6">
               Empathy
             </h1>
@@ -261,21 +280,45 @@ export default function BookPage() {
             <h2 className="text-3xl font-bold text-center mb-12">What's Inside</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="text-4xl mb-4">🧠</div>
+                <div className="flex justify-center mb-4">
+                  <Image
+                    src="/images/icons/heart-handshake.svg"
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="opacity-80"
+                  />
+                </div>
                 <h3 className="text-xl font-bold mb-3">Philosophy</h3>
                 <p className="text-[var(--text-secondary)]">
                   Data sovereignty, trust as earned, and the six foundational principles of multi-agent coordination.
                 </p>
               </div>
               <div className="text-center">
-                <div className="text-4xl mb-4">⚙️</div>
+                <div className="flex justify-center mb-4">
+                  <Image
+                    src="/images/icons/file-terminal.svg"
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="opacity-80"
+                  />
+                </div>
                 <h3 className="text-xl font-bold mb-3">Implementation</h3>
                 <p className="text-[var(--text-secondary)]">
                   Step-by-step guides to building short-term memory, agent coordination, and pattern staging.
                 </p>
               </div>
               <div className="text-center">
-                <div className="text-4xl mb-4">📊</div>
+                <div className="flex justify-center mb-4">
+                  <Image
+                    src="/images/icons/briefcase.svg"
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="opacity-80"
+                  />
+                </div>
                 <h3 className="text-xl font-bold mb-3">Practical Patterns</h3>
                 <p className="text-[var(--text-secondary)]">
                   5 production-ready patterns with measurable benefits: 3x faster reviews, 68% auto-resolution.

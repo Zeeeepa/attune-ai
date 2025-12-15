@@ -50,7 +50,16 @@ export default function Home() {
       <main className="min-h-screen pt-16">
         {/* Hero Section */}
         <section className="relative overflow-hidden py-20 sm:py-28" aria-label="Hero">
-          <div className="absolute inset-0 gradient-primary opacity-5" aria-hidden="true"></div>
+          <div className="absolute inset-0" aria-hidden="true">
+            <Image
+              src="/images/AdobeStock_1773561909.jpeg"
+              alt=""
+              fill
+              className="object-cover opacity-20"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-transparent to-[var(--background)]" />
+          </div>
           <div className="container relative">
             <div className="max-w-4xl mx-auto text-center animate-fade-in">
               {/* Credibility Badges */}
@@ -269,7 +278,13 @@ export default function Home() {
                 </div>
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">🏥</span>
+                    <Image
+                      src="/images/icons/stethoscope.svg"
+                      alt=""
+                      width={24}
+                      height={24}
+                      className="text-[var(--primary)]"
+                    />
                     <h3 className="text-lg font-bold group-hover:text-[var(--primary)] transition-colors">
                       Healthcare Wizards
                     </h3>
@@ -300,7 +315,12 @@ export default function Home() {
                 </div>
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">💻</span>
+                    <Image
+                      src="/images/icons/file-terminal.svg"
+                      alt=""
+                      width={24}
+                      height={24}
+                    />
                     <h3 className="text-lg font-bold group-hover:text-[var(--secondary)] transition-colors">
                       Developer Wizards
                     </h3>

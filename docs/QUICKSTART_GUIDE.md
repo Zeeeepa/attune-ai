@@ -691,7 +691,7 @@ Get priority support for production deployments:
 
 **Price:** $99/developer/year
 
-Learn more: [SPONSORSHIP.md](../SPONSORSHIP.md)
+Learn more: [Pricing](/pricing)
 
 ---
 

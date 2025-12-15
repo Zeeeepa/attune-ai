@@ -2043,7 +2043,7 @@ print(llm.get_metrics_summary())
 - Security advisories
 - Upgrade assistance
 
-**Learn more:** [SPONSORSHIP.md](../SPONSORSHIP.md)
+**Learn more:** [Pricing](/pricing)
 
 ### Contact
 

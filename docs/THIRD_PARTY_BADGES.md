@@ -132,22 +132,6 @@ jobs:
 
 ---
 
-## 📊 Coverage Badges (Codecov)
-
-**Automatic coverage tracking** - Already configured!
-
-**Badge** (already in README):
-```markdown
-[![codecov](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
-```
-
-**Shows**:
-- Line coverage percentage
-- Trend over time
-- Coverage diff on PRs
-
----
-
 ## 🎯 PyPI Development Status
 
 **Current**: `Development Status :: 5 - Production/Stable`
@@ -200,7 +184,6 @@ For a **professional, credible** README:
 
 <!-- Quality -->
 [![Tests](https://github.com/Smart-AI-Memory/empathy/actions/workflows/tests.yml/badge.svg)](https://github.com/Smart-AI-Memory/empathy/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 

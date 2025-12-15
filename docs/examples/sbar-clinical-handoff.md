@@ -620,9 +620,9 @@ response = empathy.interact(
 5. **Team coordination**: Share SBAR across care team (physicians, PT, OT, pharmacy)
 
 **Related examples**:
-- [Clinical Protocol Monitor](clinical-protocol-monitor.md) - Continuous monitoring
-- [Patient Handoff Predictor](patient-handoff-predictor.md) - Predict handoff timing
-- [Safety Alert System](safety-alert-system.md) - Real-time safety monitoring
+- [Multi-Agent Coordination](multi-agent-team-coordination.md) - Team-based collaboration
+- [Adaptive Learning](adaptive-learning-system.md) - Dynamic pattern learning
+- [Webhook Integration](webhook-event-integration.md) - Real-time event handling
 
 ---
 

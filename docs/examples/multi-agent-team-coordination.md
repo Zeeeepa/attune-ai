@@ -677,8 +677,8 @@ for task_name, result in results.items():
 
 **Related examples**:
 - [Adaptive Learning System](adaptive-learning-system.md) - Dynamic thresholds
-- [Webhook Integration](webhook-integration.md) - External system integration
-- [Code Review Assistant](code-review-assistant.md) - Level 4 code reviews
+- [Webhook Integration](webhook-event-integration.md) - External system integration
+- [Code Review Assistant](simple-chatbot.md) - Level 4 code reviews
 
 ---
 

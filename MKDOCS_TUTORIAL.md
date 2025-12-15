@@ -337,7 +337,6 @@ docs/
 
 [![PyPI version](https://badge.fury.io/py/empathy-framework.svg)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://github.com/Smart-AI-Memory/empathy/workflows/tests/badge.svg)](https://github.com/Smart-AI-Memory/empathy/actions)
-[![Coverage](https://codecov.io/gh/Smart-AI-Memory/empathy/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy)
 
 ---
 

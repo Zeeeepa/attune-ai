@@ -171,7 +171,7 @@ python tests/test_wizard_outputs.py
 - AI Performance Wizard
 - RAG Pattern Wizard
 
-All wizards undergo continuous testing. Check the [test report](../tests/wizard_outputs/test_report.md) for current status.
+All wizards undergo continuous testing. Run `pytest tests/` to see current status.
 
 ### How do I create a custom wizard?
 
@@ -410,7 +410,7 @@ Yes! We welcome contributions:
 - Performance optimizations
 - Example code and tutorials
 
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for detailed guidelines.
+See [Contributing](contributing.md) for detailed guidelines.
 
 ---
 
@@ -473,7 +473,7 @@ Yes! We provide integrations:
 
 **Language Server Protocol (LSP):**
 - Works with any LSP-compatible editor (Vim, Emacs, Sublime Text, etc.)
-- See [examples/coach/lsp/](../examples/coach/lsp/) for setup
+- Check the `examples/` directory in the GitHub repository for setup instructions
 
 ### How do I use this with Docker?
 

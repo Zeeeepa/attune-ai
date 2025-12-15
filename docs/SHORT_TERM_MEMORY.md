@@ -368,9 +368,8 @@ print(f"Received {len(signals)} reviews")
 
 See the full API documentation:
 - [EmpathyOS](./api-reference/empathy-os.md)
-- [RedisShortTermMemory](./api-reference/redis-memory.md)
-- [AgentCoordinator](./api-reference/coordination.md)
-- [TeamSession](./api-reference/coordination.md#teamsession)
+- [Multi-Agent Coordination](./api-reference/multi-agent.md)
+- [Persistence](./api-reference/persistence.md)
 
 ---
 
