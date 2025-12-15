@@ -5,6 +5,30 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.3] - 2025-12-15
+
+### Added
+
+**Pattern Integration for Claude Code Sessions**
+- PatternSummaryGenerator for auto-generating pattern summaries
+- PatternRetrieverWizard (Level 3) for dynamic pattern queries
+- @import directive in CLAUDE.md loads pattern context at session start
+- Patterns from debugging, security, and tech debt now available to AI assistants
+
+### Fixed
+
+**Memory System**
+- Fixed control_panel.py KeyError when listing patterns with missing fields
+- Fixed unified.py promote_pattern to correctly retrieve content from context
+- Fixed promote_pattern method name typo (promote_staged_pattern -> promote_pattern)
+
+**Tests**
+- Fixed test_redis_bootstrap fallback test missing mock for _start_via_direct
+- Fixed test_unified_memory fallback test to allow mock instance on retry
+
+**Test Coverage**
+- All 2,208 core tests pass
+
 ## [2.1.2] - 2025-12-14
 
 ### Fixed
