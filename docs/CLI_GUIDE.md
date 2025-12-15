@@ -236,6 +236,74 @@ Users:
 
 ---
 
+### Pattern Enhancement Commands (New in v2.1.4)
+
+#### Resolve Investigating Patterns
+
+Mark investigating bug patterns as resolved with root cause and fix:
+
+```bash
+# List all investigating bugs
+empathy patterns resolve
+
+# Resolve a specific bug
+empathy patterns resolve bug_20251212_3c5b9951 \
+  --root-cause "Missing null check on API response" \
+  --fix "Added optional chaining operator" \
+  --fix-code "data?.items ?? []" \
+  --time 15 \
+  --resolved-by "@developer"
+```
+
+Output:
+```
+✓ Resolved: bug_20251212_3c5b9951
+✓ Regenerated patterns_summary.md
+```
+
+---
+
+#### Pattern-Based Code Review
+
+Review code against historical bug patterns:
+
+```bash
+# Review recent changes
+empathy review
+
+# Review staged changes only
+empathy review --staged
+
+# Review specific files
+empathy review src/api.py src/utils.py
+
+# Set minimum severity threshold
+empathy review --severity warning
+
+# Output as JSON
+empathy review --json
+```
+
+Output:
+```
+Code Review Results
+========================================
+
+⚠️  src/api.py:47
+    Pattern: null_reference (bug_20250915_abc123)
+    Risk: API response accessed without null check
+    Historical: "API returned null instead of empty array"
+    Suggestion: Add fallback - data?.items ?? []
+    Confidence: 85%
+
+Summary: 1 findings in 1 file(s)
+
+Recommendations:
+  • Fix 1 null_reference issue(s): Add null check
+```
+
+---
+
 ## Usage Examples
 
 ### Development Workflow

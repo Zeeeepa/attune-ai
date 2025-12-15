@@ -5,6 +5,60 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.4] - 2025-12-15
+
+### Added
+
+**Pattern Enhancement System (7 Phases)**
+
+Phase 1: Auto-Regeneration
+- Pre-commit hook automatically regenerates patterns_summary.md when pattern files change
+- Ensures CLAUDE.md imports always have current pattern data
+
+Phase 2: Pattern Resolution CLI
+- New `empathy patterns resolve` command to mark investigating bugs as resolved
+- Updates bug patterns with root cause, fix description, and resolution time
+- Auto-regenerates summary after resolution
+
+Phase 3: Contextual Pattern Injection
+- ContextualPatternInjector filters patterns by current context
+- Supports file type, error type, and git change-based filtering
+- Reduces cognitive load by showing only relevant patterns
+
+Phase 4: Auto-Pattern Extraction Wizard
+- PatternExtractionWizard (Level 3) detects bug fixes in git diffs
+- Analyzes commits for null checks, error handling, async fixes
+- Suggests pre-filled pattern entries for storage
+
+Phase 5: Pattern Confidence Scoring
+- PatternConfidenceTracker records pattern usage and success rates
+- Calculates confidence scores based on application success
+- Identifies stale and high-value patterns
+
+Phase 6: Git Hook Integration
+- GitPatternExtractor auto-creates patterns from fix commits
+- Post-commit hook script for automatic pattern capture
+- Detects fix patterns from commit messages and code changes
+
+Phase 7: Pattern-Based Code Review (Capstone)
+- CodeReviewWizard (Level 4) reviews code against historical bugs
+- Generates anti-pattern rules from resolved bug patterns
+- New `empathy review` CLI command for pre-commit code review
+- Pre-commit hook integration for optional automatic review
+
+**New Modules**
+- empathy_llm_toolkit/pattern_resolver.py - Resolution workflow
+- empathy_llm_toolkit/contextual_patterns.py - Context-aware filtering
+- empathy_llm_toolkit/pattern_confidence.py - Confidence tracking
+- empathy_llm_toolkit/git_pattern_extractor.py - Git integration
+- empathy_software_plugin/wizards/pattern_extraction_wizard.py
+- empathy_software_plugin/wizards/code_review_wizard.py
+
+**CLI Commands**
+- `empathy patterns resolve <bug_id>` - Resolve investigating patterns
+- `empathy review [files]` - Pattern-based code review
+- `empathy review --staged` - Review staged changes
+
 ## [2.1.3] - 2025-12-15
 
 ### Added

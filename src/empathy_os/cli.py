@@ -192,6 +192,97 @@ def cmd_patterns_export(args):
         sys.exit(1)
 
 
+def cmd_patterns_resolve(args):
+    """Resolve investigating bug patterns with root cause and fix."""
+    from empathy_llm_toolkit.pattern_resolver import PatternResolver
+
+    resolver = PatternResolver(args.patterns_dir)
+
+    # If no bug_id, list investigating bugs
+    if not args.bug_id:
+        investigating = resolver.list_investigating()
+        if not investigating:
+            print("No bugs with 'investigating' status found.")
+            return
+
+        print(f"\nBugs needing resolution ({len(investigating)}):\n")
+        for bug in investigating:
+            print(f"  {bug.get('bug_id', 'unknown')}")
+            print(f"    Type: {bug.get('error_type', 'unknown')}")
+            print(f"    File: {bug.get('file_path', 'unknown')}")
+            msg = bug.get("error_message", "N/A")
+            print(f"    Message: {msg[:60]}..." if len(msg) > 60 else f"    Message: {msg}")
+            print()
+        return
+
+    # Validate required args
+    if not args.root_cause or not args.fix:
+        print("✗ --root-cause and --fix are required when resolving a bug")
+        print(
+            "  Example: empathy patterns resolve bug_123 --root-cause 'Null check' --fix 'Added ?.'"
+        )
+        sys.exit(1)
+
+    # Resolve the specified bug
+    success = resolver.resolve_bug(
+        bug_id=args.bug_id,
+        root_cause=args.root_cause,
+        fix_applied=args.fix,
+        fix_code=args.fix_code,
+        resolution_time_minutes=args.time or 0,
+        resolved_by=args.resolved_by or "@developer",
+    )
+
+    if success:
+        print(f"✓ Resolved: {args.bug_id}")
+
+        # Regenerate summary if requested
+        if not args.no_regenerate:
+            if resolver.regenerate_summary():
+                print("✓ Regenerated patterns_summary.md")
+            else:
+                print("⚠ Failed to regenerate summary")
+    else:
+        print(f"✗ Failed to resolve: {args.bug_id}")
+        print("  Use 'empathy patterns resolve' (no args) to list investigating bugs")
+        sys.exit(1)
+
+
+def cmd_review(args):
+    """Pattern-based code review against historical bugs."""
+    import asyncio
+
+    from empathy_software_plugin.wizards.code_review_wizard import CodeReviewWizard
+
+    wizard = CodeReviewWizard(patterns_dir=args.patterns_dir)
+
+    # Run the async analysis
+    result = asyncio.run(
+        wizard.analyze(
+            {
+                "files": args.files,
+                "staged_only": args.staged,
+                "severity_threshold": args.severity,
+            }
+        )
+    )
+
+    # Output results
+    if args.json:
+        import json
+
+        print(json.dumps(result, indent=2, default=str))
+    else:
+        print(wizard.format_terminal_output(result))
+
+        # Show recommendations
+        recommendations = result.get("recommendations", [])
+        if recommendations and result.get("findings"):
+            print("\nRecommendations:")
+            for rec in recommendations:
+                print(f"  • {rec}")
+
+
 def cmd_metrics_show(args):
     """Display metrics for a user"""
     db_path = args.db
@@ -725,6 +816,28 @@ def main():
     )
     parser_patterns_export.set_defaults(func=cmd_patterns_export)
 
+    # Patterns resolve - mark investigating bugs as resolved
+    parser_patterns_resolve = patterns_subparsers.add_parser(
+        "resolve", help="Resolve investigating bug patterns"
+    )
+    parser_patterns_resolve.add_argument(
+        "bug_id", nargs="?", help="Bug ID to resolve (omit to list investigating)"
+    )
+    parser_patterns_resolve.add_argument("--root-cause", help="Description of the root cause")
+    parser_patterns_resolve.add_argument("--fix", help="Description of the fix applied")
+    parser_patterns_resolve.add_argument("--fix-code", help="Code snippet of the fix")
+    parser_patterns_resolve.add_argument("--time", type=int, help="Resolution time in minutes")
+    parser_patterns_resolve.add_argument(
+        "--resolved-by", default="@developer", help="Who resolved it"
+    )
+    parser_patterns_resolve.add_argument(
+        "--patterns-dir", default="./patterns", help="Path to patterns directory"
+    )
+    parser_patterns_resolve.add_argument(
+        "--no-regenerate", action="store_true", help="Skip regenerating summary"
+    )
+    parser_patterns_resolve.set_defaults(func=cmd_patterns_resolve)
+
     # Metrics commands
     parser_metrics = subparsers.add_parser("metrics", help="Metrics commands")
     metrics_subparsers = parser_metrics.add_subparsers(dest="metrics_command")
@@ -794,6 +907,22 @@ def main():
         "wizard", help="Interactive setup wizard for creating configuration"
     )
     parser_wizard.set_defaults(func=cmd_wizard)
+
+    # Review command (Pattern-based code review)
+    parser_review = subparsers.add_parser(
+        "review", help="Pattern-based code review against historical bugs"
+    )
+    parser_review.add_argument("files", nargs="*", help="Files to review (default: recent changes)")
+    parser_review.add_argument("--staged", action="store_true", help="Review staged changes only")
+    parser_review.add_argument(
+        "--severity",
+        choices=["info", "warning", "error"],
+        default="info",
+        help="Minimum severity to report (default: info)",
+    )
+    parser_review.add_argument("--patterns-dir", default="./patterns", help="Patterns directory")
+    parser_review.add_argument("--json", action="store_true", help="Output as JSON")
+    parser_review.set_defaults(func=cmd_review)
 
     # Parse arguments
     args = parser.parse_args()

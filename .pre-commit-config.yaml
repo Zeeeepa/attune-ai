@@ -68,3 +68,25 @@ repos:
 
   # Note: Import sorting handled by ruff's "I" rules (isort plugin)
   # Removed standalone isort to avoid conflicts with ruff
+
+  # Pattern summary auto-regeneration
+  # Regenerates patterns_summary.md when pattern JSON files change
+  - repo: local
+    hooks:
+      - id: regenerate-patterns
+        name: Regenerate Pattern Summary
+        entry: python -m empathy_llm_toolkit.pattern_summary
+        language: python
+        pass_filenames: false
+        files: ^patterns/.*\.json$
+        stages: [commit]
+
+      # Pattern-based code review (optional - enable with 'stages: [commit]')
+      # Reviews staged code against historical bug patterns
+      - id: pattern-review
+        name: Pattern-Based Code Review
+        entry: python -m empathy_os.cli review --staged --severity warning
+        language: python
+        pass_filenames: false
+        stages: [manual]  # Run manually with: pre-commit run pattern-review
+        # Change to 'stages: [commit]' to run automatically on every commit

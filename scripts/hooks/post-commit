@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# Empathy Framework Post-Commit Hook
+#
+# Automatically detects bug fix patterns from commits and creates
+# draft pattern entries for later review.
+#
+# Installation:
+#   cp scripts/hooks/post-commit .git/hooks/post-commit
+#   chmod +x .git/hooks/post-commit
+#
+# Or use the setup script:
+#   python -m empathy_llm_toolkit.git_pattern_extractor --install-hook
+
+# Exit early if not in a git repo
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    exit 0
+fi
+
+# Check if empathy pattern extraction is available
+if ! python -c "from empathy_llm_toolkit.git_pattern_extractor import GitPatternExtractor" 2>/dev/null; then
+    # Silently skip if module not available
+    exit 0
+fi
+
+# Run pattern extraction in quiet mode (saves patterns automatically)
+python -m empathy_llm_toolkit.git_pattern_extractor --commits 1 --save --quiet
+
+# Exit successfully (don't block commit)
+exit 0

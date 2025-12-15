@@ -9,6 +9,8 @@ Memory-Enhanced Wizards (Level 4+):
 
 Utility Wizards:
 - PatternRetrieverWizard: Pattern search and retrieval (Level 3)
+- PatternExtractionWizard: Auto-detect fixes and suggest patterns (Level 3)
+- CodeReviewWizard: Pattern-based code review (Level 4)
 
 Core Wizards:
 - SecurityAnalysisWizard: OWASP vulnerability detection
@@ -22,14 +24,18 @@ Licensed under Fair Source 0.9
 """
 
 from .base_wizard import BaseWizard
+from .code_review_wizard import CodeReviewWizard
 from .memory_enhanced_debugging_wizard import MemoryEnhancedDebuggingWizard
+from .pattern_extraction_wizard import PatternExtractionWizard
 from .pattern_retriever_wizard import PatternRetrieverWizard
 from .security_learning_wizard import SecurityLearningWizard
 from .tech_debt_wizard import TechDebtWizard
 
 __all__ = [
     "BaseWizard",
+    "CodeReviewWizard",
     "MemoryEnhancedDebuggingWizard",
+    "PatternExtractionWizard",
     "PatternRetrieverWizard",
     "TechDebtWizard",
     "SecurityLearningWizard",

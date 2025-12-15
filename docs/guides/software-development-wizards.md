@@ -336,6 +336,81 @@ See the complete [AI Development Wizards Guide](../AI_DEVELOPMENT_WIZARDS.md) fo
 
 ---
 
+### 9. Pattern Enhancement Wizards (New in v2.1.4)
+
+**Wizards that learn from your bug fix history**
+
+These wizards turn your debugging history into preventive intelligence:
+
+#### PatternRetrieverWizard (Level 3)
+
+Searches stored bug patterns to find similar issues and their solutions.
+
+```python
+from empathy_software_plugin.wizards import PatternRetrieverWizard
+
+wizard = PatternRetrieverWizard()
+result = await wizard.analyze({
+    "query": "null reference error",
+    "limit": 5
+})
+
+for pattern in result['matching_patterns']:
+    print(f"Found: {pattern['id']} - {pattern['summary']}")
+    print(f"  Fix: {pattern['data'].get('fix_applied', 'N/A')}")
+```
+
+#### PatternExtractionWizard (Level 3)
+
+Automatically detects bug fixes in git diffs and suggests pattern storage.
+
+```python
+from empathy_software_plugin.wizards import PatternExtractionWizard
+
+wizard = PatternExtractionWizard()
+result = await wizard.analyze({"commits": 5})
+
+for pattern in result['suggested_patterns']:
+    print(f"Detected: {pattern['type']} in {pattern['file']}")
+    print(f"  Confidence: {pattern['confidence']:.0%}")
+    # Saves pre-filled pattern for later resolution
+```
+
+#### CodeReviewWizard (Level 4)
+
+Reviews code against historical bug patterns - the capstone of pattern learning.
+
+```python
+from empathy_software_plugin.wizards import CodeReviewWizard
+
+wizard = CodeReviewWizard()
+result = await wizard.analyze({
+    "files": ["src/api.py", "src/utils.py"],
+    "severity_threshold": "warning"
+})
+
+for finding in result['findings']:
+    print(f"⚠️  {finding['file']}:{finding['line']}")
+    print(f"   Pattern: {finding['pattern_type']}")
+    print(f"   Historical: {finding['historical_cause']}")
+    print(f"   Suggestion: {finding['suggestion']}")
+```
+
+**CLI Integration**:
+
+```bash
+# Review recent changes
+empathy review
+
+# Review staged changes
+empathy review --staged
+
+# Review specific files
+empathy review src/api.py src/utils.py --severity warning
+```
+
+---
+
 ## Integration Patterns
 
 ### Sequential Workflow
