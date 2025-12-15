@@ -248,6 +248,49 @@ def cmd_patterns_resolve(args):
         sys.exit(1)
 
 
+def cmd_status(args):
+    """Session status assistant - prioritized project status report."""
+    from empathy_llm_toolkit.session_status import SessionStatusCollector
+
+    config = {"inactivity_minutes": args.inactivity}
+    collector = SessionStatusCollector(
+        patterns_dir=args.patterns_dir,
+        project_root=args.project_root,
+        config=config,
+    )
+
+    # Check if should show (unless forced)
+    if not args.force and not collector.should_show():
+        print("No status update needed (recent activity detected).")
+        print("Use --force to show status anyway.")
+        return
+
+    # Collect status
+    status = collector.collect()
+
+    # Handle selection
+    if args.select:
+        prompt = collector.get_action_prompt(status, args.select)
+        if prompt:
+            print(f"\nAction prompt for selection {args.select}:\n")
+            print(prompt)
+        else:
+            print(f"Invalid selection: {args.select}")
+        return
+
+    # Output
+    if args.json:
+        print(collector.format_json(status))
+    else:
+        max_items = None if args.full else 5
+        print()
+        print(collector.format_output(status, max_items=max_items))
+        print()
+
+    # Record interaction
+    collector.record_interaction()
+
+
 def cmd_review(args):
     """Pattern-based code review against historical bugs."""
     import asyncio
@@ -907,6 +950,28 @@ def main():
         "wizard", help="Interactive setup wizard for creating configuration"
     )
     parser_wizard.set_defaults(func=cmd_wizard)
+
+    # Status command (Session status assistant)
+    parser_status = subparsers.add_parser(
+        "status", help="Session status - prioritized project status report"
+    )
+    parser_status.add_argument(
+        "--patterns-dir", default="./patterns", help="Path to patterns directory"
+    )
+    parser_status.add_argument("--project-root", default=".", help="Project root directory")
+    parser_status.add_argument(
+        "--force", action="store_true", help="Force show status regardless of inactivity"
+    )
+    parser_status.add_argument("--full", action="store_true", help="Show all items (no limit)")
+    parser_status.add_argument("--json", action="store_true", help="Output as JSON")
+    parser_status.add_argument("--select", type=int, help="Select an item to get its action prompt")
+    parser_status.add_argument(
+        "--inactivity",
+        type=int,
+        default=60,
+        help="Inactivity threshold in minutes (default: 60)",
+    )
+    parser_status.set_defaults(func=cmd_status)
 
     # Review command (Pattern-based code review)
     parser_review = subparsers.add_parser(

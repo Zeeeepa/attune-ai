@@ -304,6 +304,88 @@ Recommendations:
 
 ---
 
+### Session Status Assistant (New in v2.1.5)
+
+#### Check Project Status
+
+Get a prioritized status report of your project when you return after a break:
+
+```bash
+# Show status (only if enough time has passed since last interaction)
+empathy status
+
+# Force show status regardless of inactivity
+empathy status --force
+
+# Show all items (no limit)
+empathy status --full
+
+# Output as JSON
+empathy status --json
+
+# Select an item to get its action prompt
+empathy status --select 1
+```
+
+Output:
+```
+📊 Project Status (6 items need attention)
+
+🎉 Wins since last session:
+   • 3 bugs resolved since last session
+
+🔴 Security: 2 decisions pending review
+   → Review XSS finding in auth.ts
+
+🟡 Bugs: 3 investigating, 1 high-severity
+   → Resolve null_reference in OrderList.tsx
+
+🟢 Tech Debt: Stable (343 items, +0 this week)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[1] Fix high-severity bug  [2] Review security  [3] See full status
+```
+
+#### Priority System
+
+Items are prioritized by severity:
+
+| Priority | Category | Weight | Icon |
+|----------|----------|--------|------|
+| P0 | Security pending | 100 | 🔴 |
+| P1 | Bugs high-severity | 80 | 🔴 |
+| P2 | Bugs investigating | 60 | 🟡 |
+| P3 | Tech debt increasing | 40 | 🟡 |
+| P4 | Roadmap unchecked | 30 | 🔵 |
+| P5 | Commits WIP/TODO | 20 | ⚪ |
+
+#### Interactive Selection
+
+Select an item number to get its full action prompt:
+
+```bash
+empathy status --force --select 1
+```
+
+Output:
+```
+Action prompt for selection 1:
+
+Continue investigating bug bug_20251212_97c0f72f:
+TypeError: Cannot read property 'map' of undefined.
+Use: empathy patterns resolve bug_20251212_97c0f72f --root-cause '<cause>' --fix '<fix>'
+```
+
+#### Configuration
+
+Set inactivity threshold (default: 60 minutes):
+
+```bash
+empathy status --inactivity 30  # Show after 30 min of inactivity
+```
+
+---
+
 ## Usage Examples
 
 ### Development Workflow
