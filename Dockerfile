@@ -10,13 +10,19 @@ RUN npm ci
 # Copy website source
 COPY website/ ./
 
-# Build the app
+# Build the app (creates .next/standalone)
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build:railway
+
+# Copy static assets to standalone (required for standalone mode)
+RUN cp -r .next/static .next/standalone/.next/static
+RUN cp -r public .next/standalone/public
 
 # Runtime
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 EXPOSE 3000
 
-CMD ["npm", "start"]
+WORKDIR /app/.next/standalone
+CMD ["node", "server.js"]
