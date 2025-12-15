@@ -70,9 +70,9 @@ We'd really appreciate if you could:
 
 Prefer to read in your browser? The entire book is available online:
 
-- [Start Reading](book-cover.md) - Begin with the cover
-- [Quick Start](getting-started/quickstart.md) - Jump straight to code
-- [Examples](examples/simple-chatbot.md) - See it in action
+- [Start Reading](book-cover/) - Begin with the cover
+- [Quick Start](getting-started/quickstart/) - Jump straight to code
+- [Examples](examples/simple-chatbot/) - See it in action
 
 ---
 
