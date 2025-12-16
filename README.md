@@ -3,10 +3,10 @@
 **The AI collaboration framework that predicts problems before they happen.**
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-2%2C040%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy/actions)
+[![Tests](https://img.shields.io/badge/tests-2%2C040%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
-[![GitHub stars](https://img.shields.io/github/stars/Smart-AI-Memory/empathy?style=social)](https://github.com/Smart-AI-Memory/empathy)
+[![GitHub stars](https://img.shields.io/github/stars/Smart-AI-Memory/empathy-framework?style=social)](https://github.com/Smart-AI-Memory/empathy-framework)
 
 ```bash
 pip install empathy-framework
@@ -90,9 +90,9 @@ print(result.prevention_steps)    # How to prevent it
 
 ## Get Involved
 
-**⭐ [Star this repo](https://github.com/Smart-AI-Memory/empathy)** if you find it useful
+**⭐ [Star this repo](https://github.com/Smart-AI-Memory/empathy-framework)** if you find it useful
 
-**💬 [Join Discussions](https://github.com/Smart-AI-Memory/empathy/discussions)** - Questions, ideas, show what you built
+**💬 [Join Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)** - Questions, ideas, show what you built
 
 **📖 [Read the Book](https://smartaimemory.com/book)** - Deep dive into the philosophy and implementation
 
