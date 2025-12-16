@@ -122,7 +122,7 @@ pip install empathy-framework
 **Resources:**
 - [GitHub](https://github.com/Smart-AI-Memory/empathy-framework) - 500+ downloads day 1
 - [Documentation](https://www.smartaimemory.com/docs)
-- [Live Demo](https://www.smartaimemory.com/tools/debug-wizard) (coming soon)
+- [Live Demo](https://www.smartaimemory.com/tools/debug-wizard)
 
 ---
 
