@@ -1,4 +1,5 @@
 # Next.js Production Dockerfile for Railway
+# Build: 2025-12-16-v2
 FROM node:20-alpine
 
 WORKDIR /app
