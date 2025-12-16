@@ -105,3 +105,27 @@ ebook-site/
 
 # MkDocs build output
 site/
+
+# Book production files (large binaries - InDesign, PDFs, DOCX)
+book-indesign/
+book-indesign alias*
+
+# Local runtime data (Empathy session state)
+.empathy/
+
+# Pattern storage (generated runtime data)
+patterns/debugging_demo/
+patterns/repo_test/
+patterns/security/
+patterns/security_demo/
+patterns/tech_debt/
+patterns/tech_debt_demo/
+
+# Word temp files
+~$*
+
+# Node modules lock duplicates
+**/node_modules/.package-lock.json
+
+# Consolidated wizards (working directory)
+wizards_consolidated/
