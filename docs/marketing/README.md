@@ -191,4 +191,4 @@ We're pursuing a partnership with Redis since our framework uses Redis for real-
 
 ---
 
-**Last Updated:** December 15, 2025 (v2.2.4)
+**Last Updated:** December 15, 2025 (v2.2.7)

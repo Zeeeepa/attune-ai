@@ -162,4 +162,4 @@ Good morning! (Report generated 8 hours ago)
 
 ---
 
-*Part of Empathy Framework v2.2.5*
+*Part of Empathy Framework v2.2.7*
