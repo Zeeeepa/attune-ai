@@ -97,6 +97,7 @@ server.json
 
 # Embedded git repositories
 10_9_2025_ai_nurse_florence/
+anthropic-cookbook/
 
 # Generated book files
 dist/empathy-book.*
