@@ -135,6 +135,59 @@ export default function DebugWizard() {
     setState((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleFileUpload = async (files: File[]) => {
+    const maxFiles = limits.maxFiles ?? 100;
+    const maxSizeMB = limits.maxFileSizeMB ?? 1;
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+
+    // Check file count limit
+    const totalFiles = state.files.length + files.length;
+    if (totalFiles > maxFiles) {
+      setError(`Maximum ${maxFiles} files allowed. You have ${state.files.length} and tried to add ${files.length}.`);
+      return;
+    }
+
+    const newFiles: FileInput[] = [];
+
+    for (const file of files) {
+      // Check file size
+      if (file.size > maxSizeBytes) {
+        setError(`File "${file.name}" exceeds the ${maxSizeMB}MB limit.`);
+        continue;
+      }
+
+      // Read file content
+      try {
+        const content = await file.text();
+        newFiles.push({
+          path: file.name,
+          content: content,
+          size_bytes: file.size,
+        });
+      } catch (err) {
+        console.error('Error reading file:', err);
+        setError(`Could not read file "${file.name}".`);
+      }
+    }
+
+    if (newFiles.length > 0) {
+      setState((prev) => ({
+        ...prev,
+        files: [...prev.files, ...newFiles],
+        // Auto-fill file path from first file if not set
+        file_path: prev.file_path || newFiles[0].path,
+      }));
+      setError(null);
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setState((prev) => ({
+      ...prev,
+      files: prev.files.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleAnalyze = async () => {
     setError(null);
 
@@ -305,10 +358,115 @@ logger = structlog.get_logger()`,
               />
             </div>
 
-            {/* File Path and Line Number */}
+            {/* File Upload Section */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Upload Files (optional)
+                <span className="text-gray-500 font-normal ml-2">
+                  Max {limits.maxFiles === null ? 'unlimited' : limits.maxFiles} file{limits.maxFiles !== 1 ? 's' : ''}, {limits.maxFileSizeMB ? `${limits.maxFileSizeMB}MB each` : 'no size limit'}
+                </span>
+              </label>
+              <div
+                className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                  state.files.length > 0 ? 'border-purple-400 bg-purple-50' : 'border-gray-300 hover:border-purple-400'
+                }`}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.classList.add('border-purple-500', 'bg-purple-50');
+                }}
+                onDragLeave={(e) => {
+                  e.currentTarget.classList.remove('border-purple-500', 'bg-purple-50');
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.classList.remove('border-purple-500', 'bg-purple-50');
+                  const droppedFiles = Array.from(e.dataTransfer.files);
+                  handleFileUpload(droppedFiles);
+                }}
+              >
+                {state.files.length === 0 ? (
+                  <>
+                    <div className="text-4xl mb-2">📁</div>
+                    <p className="text-gray-600 mb-2">Drag & drop source files here</p>
+                    <p className="text-sm text-gray-500 mb-3">or</p>
+                    <label className="px-4 py-2 bg-purple-600 text-white rounded-lg cursor-pointer hover:bg-purple-700 inline-block">
+                      Browse Files
+                      <input
+                        type="file"
+                        multiple
+                        accept=".ts,.tsx,.js,.jsx,.py,.java,.go,.rs,.rb,.php,.c,.cpp,.h,.hpp,.cs,.swift,.kt,.scala,.vue,.svelte,.json,.yaml,.yml,.md,.txt"
+                        className="hidden"
+                        onChange={(e) => {
+                          if (e.target.files) {
+                            handleFileUpload(Array.from(e.target.files));
+                          }
+                        }}
+                      />
+                    </label>
+                    <p className="text-xs text-gray-400 mt-3">
+                      Supports: .ts, .tsx, .js, .jsx, .py, .java, .go, .rs, .rb, .php, .c, .cpp, .cs, .swift, .kt, .scala, .vue, .svelte, .json, .yaml
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-left">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="font-medium text-purple-700">
+                        {state.files.length} file{state.files.length !== 1 ? 's' : ''} selected
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setState(prev => ({ ...prev, files: [] }))}
+                        className="text-sm text-red-600 hover:text-red-800"
+                      >
+                        Clear all
+                      </button>
+                    </div>
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {state.files.map((file, idx) => (
+                        <div key={idx} className="flex items-center justify-between bg-white rounded p-2 border border-purple-200">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-lg">📄</span>
+                            <span className="text-sm font-mono truncate">{file.path}</span>
+                            <span className="text-xs text-gray-400">
+                              ({Math.round(file.content.length / 1024 * 10) / 10}KB)
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeFile(idx)}
+                            className="text-red-500 hover:text-red-700 ml-2"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <label className="mt-3 text-sm text-purple-600 hover:text-purple-800 cursor-pointer inline-block">
+                      + Add more files
+                      <input
+                        type="file"
+                        multiple
+                        accept=".ts,.tsx,.js,.jsx,.py,.java,.go,.rs,.rb,.php,.c,.cpp,.h,.hpp,.cs,.swift,.kt,.scala,.vue,.svelte,.json,.yaml,.yml,.md,.txt"
+                        className="hidden"
+                        onChange={(e) => {
+                          if (e.target.files) {
+                            handleFileUpload(Array.from(e.target.files));
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* File Path and Line Number (manual entry fallback) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">File Path</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  File Path
+                  <span className="text-gray-500 font-normal ml-2">(or enter manually if not uploading)</span>
+                </label>
                 <input
                   type="text"
                   value={state.file_path}
