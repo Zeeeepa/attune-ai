@@ -369,8 +369,8 @@ export default function DevDashboard() {
               <div>
                 <h3 className="text-xl font-bold mb-2">Continuous Learning</h3>
                 <p className="text-[var(--text-secondary)]">
-                  Long-term memory enables the system to learn from your project's history,
-                  improving predictions and adapting to your team's coding patterns over time.
+                  Long-term memory enables the system to learn from your project&apos;s history,
+                  improving predictions and adapting to your team&apos;s coding patterns over time.
                 </p>
               </div>
             </div>

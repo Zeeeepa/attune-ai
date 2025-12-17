@@ -23,7 +23,6 @@ import {
 } from '@/lib/debug-wizard/types';
 
 import {
-  AccessTier,
   DEFAULT_TIER,
   getTierLimits,
   validateFilesForTier,

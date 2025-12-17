@@ -155,7 +155,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-2xl mb-8 opacity-90">
-              Questions about the framework? Looking to partner? We'd love to hear from you.
+              Questions about the framework? Looking to partner? We&apos;d love to hear from you.
             </p>
           </div>
         </div>
@@ -278,7 +278,7 @@ export default function ContactPage() {
                     placeholder="Tell us about your question, project, or partnership opportunity. You can type or use the dictation button above to speak your message."
                   />
                   <p className="mt-2 text-xs text-[var(--muted)]">
-                    💡 Tip: Click "Start Dictation" to use voice input. Works in Chrome and Edge browsers.
+                    💡 Tip: Click &quot;Start Dictation&quot; to use voice input. Works in Chrome and Edge browsers.
                   </p>
                 </div>
 
@@ -299,7 +299,7 @@ export default function ContactPage() {
                 {submitStatus === 'success' && (
                   <div className="bg-[var(--success)] bg-opacity-10 border-2 border-[var(--success)] rounded-lg p-4 text-center">
                     <p className="text-[var(--success)] font-bold">
-                      Thank you! We'll get back to you within 24-48 hours.
+                      Thank you! We&apos;ll get back to you within 24-48 hours.
                     </p>
                   </div>
                 )}

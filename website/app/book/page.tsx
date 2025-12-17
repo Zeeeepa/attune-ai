@@ -126,7 +126,7 @@ export default function BookPage() {
 
             {/* Right Column - Description */}
             <div>
-              <h2 className="text-3xl font-bold mb-6">What You'll Learn</h2>
+              <h2 className="text-3xl font-bold mb-6">What You&apos;ll Learn</h2>
 
               <div className="space-y-6 mb-8">
                 <div>
@@ -277,7 +277,7 @@ export default function BookPage() {
       <section className="py-20">
         <div className="container">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">What's Inside</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">What&apos;s Inside</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="flex justify-center mb-4">
@@ -336,7 +336,7 @@ export default function BookPage() {
             <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
             <div className="space-y-6">
               <div className="border-b border-[var(--border)] pb-6">
-                <h3 className="text-xl font-bold mb-3">What's included with the book?</h3>
+                <h3 className="text-xl font-bold mb-3">What&apos;s included with the book?</h3>
                 <p className="text-[var(--text-secondary)]">
                   The complete book covering multi-agent coordination philosophy, implementation guides, and
                   production-ready patterns. Digital formats (PDF, ePub, Mobi) with lifetime access to updates.
@@ -347,7 +347,7 @@ export default function BookPage() {
                 <h3 className="text-xl font-bold mb-3">Do I need the book to use the framework?</h3>
                 <p className="text-[var(--text-secondary)]">
                   No. Empathy is open source and documented online. The book provides deeper
-                  coverage of the philosophy, implementation details, and patterns that aren't in the docs.
+                  coverage of the philosophy, implementation details, and patterns that aren&apos;t in the docs.
                 </p>
               </div>
 
@@ -371,7 +371,7 @@ export default function BookPage() {
               <div className="border-b border-[var(--border)] pb-6">
                 <h3 className="text-xl font-bold mb-3">Is the Core Framework free?</h3>
                 <p className="text-[var(--text-secondary)]">
-                  Empathy uses Fair Source License 0.9. It's free for students, educators, and
+                  Empathy uses Fair Source License 0.9. It&apos;s free for students, educators, and
                   companies with 5 or fewer employees. Commercial licensing ($99/year per developer) is required
                   for companies with 6+ employees.
                 </p>

@@ -42,7 +42,7 @@ export default function BlogPage() {
                   Coming Soon
                 </h2>
                 <p className="text-xl text-[var(--text-secondary)] mb-8">
-                  We're working on exciting content about AI development, anticipatory intelligence,
+                  We&apos;re working on exciting content about AI development, anticipatory intelligence,
                   and real-world case studies. Check back soon!
                 </p>
                 <Link href="/#newsletter" className="btn btn-primary">

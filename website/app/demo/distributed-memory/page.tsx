@@ -42,7 +42,7 @@ export default function DistributedMemoryDemo() {
     // Simulate resolution logic
     let winner: typeof DEMO_PATTERNS[0];
     let reasoning: string;
-    let scores: Record<string, number> = {};
+    const scores: Record<string, number> = {};
 
     if (selectedStrategy === 'highest_confidence') {
       winner = patterns.reduce((a, b) => a.confidence > b.confidence ? a : b);
