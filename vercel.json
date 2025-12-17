@@ -1,6 +1,9 @@
 {
-  "buildCommand": "cd website && npm install && npm run build:railway",
-  "outputDirectory": "website/.next",
-  "installCommand": "cd website && npm install",
-  "framework": "nextjs"
+  "version": 2,
+  "builds": [
+    {
+      "src": "website/package.json",
+      "use": "@vercel/next"
+    }
+  ]
 }
