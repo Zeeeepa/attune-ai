@@ -1,18 +1,25 @@
 import { NextResponse } from 'next/server';
+import { storeWizardSession, type WizardSession } from '@/lib/redis';
 
 export async function POST() {
   try {
     const wizardId = `wizard_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour expiry
 
-    const sessionData = {
+    const sessionData: WizardSession = {
       wizard_id: wizardId,
       wizard_type: 'sbar',
       current_step: 1,
       total_steps: 4,
       collected_data: {},
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      created_at: now.toISOString(),
+      updated_at: now.toISOString(),
+      expires_at: expiresAt.toISOString(),
     };
+
+    // Store session in Redis (falls back to in-memory if unavailable)
+    await storeWizardSession(sessionData);
 
     return NextResponse.json({
       success: true,

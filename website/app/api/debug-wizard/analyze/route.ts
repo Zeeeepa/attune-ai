@@ -28,6 +28,12 @@ import {
   validateFilesForTier,
 } from '@/lib/debug-wizard/tiers';
 
+import {
+  findSimilarPatterns,
+  isRedisAvailable,
+  type StoredBugPattern,
+} from '@/lib/redis';
+
 // ============================================================================
 // Error Pattern Classifiers (mirrors Python wizard)
 // ============================================================================
@@ -220,16 +226,69 @@ function getFileExtension(filePath: string): string {
 }
 
 /**
- * Find matching historical patterns based on error
+ * Convert stored Redis pattern to HistoricalMatch format
  */
-function findHistoricalMatches(
+function convertToHistoricalMatch(
+  pattern: StoredBugPattern,
+  errorType: ErrorType,
+  fileExt: string
+): HistoricalMatch {
+  const matchingFactors: string[] = [];
+  let similarityScore = 0.5; // Base score
+
+  // Boost for same error type
+  if (pattern.error_type === errorType) {
+    similarityScore += 0.3;
+    matchingFactors.push(`Same error type: ${pattern.error_type}`);
+  }
+
+  // Boost for same file type
+  if (pattern.file_type === fileExt) {
+    similarityScore += 0.15;
+    matchingFactors.push(`Same file type: ${fileExt}`);
+  }
+
+  return {
+    date: pattern.date,
+    file: pattern.file_path,
+    error_type: pattern.error_type as ErrorType,
+    root_cause: pattern.root_cause,
+    fix_applied: pattern.fix_applied,
+    fix_code: pattern.fix_code,
+    resolution_time_minutes: pattern.resolution_time_minutes,
+    similarity_score: Math.min(similarityScore, 1.0),
+    matching_factors: matchingFactors,
+  };
+}
+
+/**
+ * Find matching historical patterns based on error
+ * Uses Redis when available, falls back to demo patterns
+ */
+async function findHistoricalMatches(
   errorType: ErrorType,
   filePath: string,
   maxMatches: number
-): HistoricalMatch[] {
+): Promise<HistoricalMatch[]> {
   const fileExt = getFileExtension(filePath);
 
-  // Filter and adjust similarity scores based on current error
+  // Try Redis first
+  if (isRedisAvailable()) {
+    try {
+      const redisPatterns = await findSimilarPatterns(errorType, fileExt, maxMatches);
+
+      if (redisPatterns.length > 0) {
+        return redisPatterns
+          .map(p => convertToHistoricalMatch(p, errorType, fileExt))
+          .sort((a, b) => b.similarity_score - a.similarity_score)
+          .slice(0, maxMatches);
+      }
+    } catch (error) {
+      console.error('Redis pattern lookup failed, using demo patterns:', error);
+    }
+  }
+
+  // Fall back to demo patterns
   const matches = DEMO_HISTORICAL_PATTERNS
     .map((pattern) => {
       let adjustedScore = pattern.similarity_score;
@@ -502,7 +561,7 @@ export async function POST(request: Request): Promise<Response> {
     let recommendedFix: RecommendedFix | null = null;
 
     if (correlate_with_history && limits.historicalCorrelationEnabled) {
-      historicalMatches = findHistoricalMatches(
+      historicalMatches = await findHistoricalMatches(
         errorType,
         file_path || '',
         limits.maxHistoricalMatches
