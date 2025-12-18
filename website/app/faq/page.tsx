@@ -1,9 +1,22 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
+import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { generateMetadata, generateStructuredData } from '@/lib/metadata';
 
-const faqData = [
+interface FAQItem {
+  question: string;
+  answer: string | ReactNode;
+  answerText?: string; // Plain text version for structured data
+}
+
+interface FAQCategory {
+  category: string;
+  questions: FAQItem[];
+}
+
+const faqData: FAQCategory[] = [
   {
     category: 'General',
     questions: [
@@ -85,7 +98,16 @@ const faqData = [
       },
       {
         question: 'How do I report bugs?',
-        answer: 'Report bugs via GitHub Issues at https://github.com/Smart-AI-Memory/empathy-framework/issues. Include your environment details, steps to reproduce, and expected vs actual behavior.',
+        answer: (
+          <>
+            Report bugs via{' '}
+            <Link href="https://github.com/Smart-AI-Memory/empathy-framework/issues" className="text-[var(--primary)] hover:underline" target="_blank" rel="noopener noreferrer">
+              GitHub Issues
+            </Link>
+            . Include your environment details, steps to reproduce, and expected vs actual behavior.
+          </>
+        ),
+        answerText: 'Report bugs via GitHub Issues at https://github.com/Smart-AI-Memory/empathy-framework/issues. Include your environment details, steps to reproduce, and expected vs actual behavior.',
       },
       {
         question: 'Can I contribute to the project?',
@@ -106,7 +128,7 @@ export default function FAQPage() {
     questions: faqData.flatMap(category =>
       category.questions.map(q => ({
         question: q.question,
-        answer: q.answer,
+        answer: q.answerText ?? (typeof q.answer === 'string' ? q.answer : ''),
       }))
     ),
   });
