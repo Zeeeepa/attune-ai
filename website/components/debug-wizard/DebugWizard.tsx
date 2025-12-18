@@ -41,6 +41,60 @@ interface WizardState {
   code_snippet: string;
   correlate_with_history: boolean;
   files: FileInput[];
+  inputMode: 'files' | 'folder' | 'paste';
+}
+
+// Files/folders to exclude from uploads
+const EXCLUDED_PATTERNS = [
+  'node_modules',
+  '.git',
+  '.next',
+  '__pycache__',
+  '.pytest_cache',
+  'dist',
+  'build',
+  '.venv',
+  'venv',
+  '.env',
+  '.DS_Store',
+  'package-lock.json',
+  'yarn.lock',
+  'pnpm-lock.yaml',
+  '.ico',
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.gif',
+  '.svg',
+  '.woff',
+  '.woff2',
+  '.ttf',
+  '.eot',
+];
+
+// Check if a file path should be excluded
+function shouldExcludeFile(path: string): boolean {
+  const normalizedPath = path.toLowerCase();
+  return EXCLUDED_PATTERNS.some(pattern =>
+    normalizedPath.includes(pattern.toLowerCase())
+  );
+}
+
+// Group files by directory for tree view
+function groupFilesByDirectory(files: FileInput[]): Map<string, FileInput[]> {
+  const groups = new Map<string, FileInput[]>();
+
+  for (const file of files) {
+    const parts = file.path.split('/');
+    const dir = parts.length > 1 ? parts.slice(0, -1).join('/') : '(root)';
+
+    if (!groups.has(dir)) {
+      groups.set(dir, []);
+    }
+    groups.get(dir)!.push(file);
+  }
+
+  return groups;
 }
 
 // ============================================================================
@@ -118,10 +172,13 @@ export default function DebugWizard() {
     code_snippet: '',
     correlate_with_history: true,
     files: [],
+    inputMode: 'files',
   });
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [collapsedDirs, setCollapsedDirs] = useState<Set<string>>(new Set());
+  const [uploadStats, setUploadStats] = useState<{ total: number; excluded: number } | null>(null);
 
   const limits = getTierLimits(tier);
   const tierDisplay = getTierDisplay(tier);
@@ -135,24 +192,39 @@ export default function DebugWizard() {
     setState((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleFileUpload = async (files: File[]) => {
+  const handleFileUpload = async (files: File[], preservePaths = false) => {
     const maxFiles = limits.maxFiles ?? 100;
     const maxSizeMB = limits.maxFileSizeMB ?? 1;
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
-    // Check file count limit
-    const totalFiles = state.files.length + files.length;
-    if (totalFiles > maxFiles) {
-      setError(`Maximum ${maxFiles} files allowed. You have ${state.files.length} and tried to add ${files.length}.`);
-      return;
-    }
-
     const newFiles: FileInput[] = [];
+    let excludedCount = 0;
 
     for (const file of files) {
+      // Get the file path - use webkitRelativePath for folder uploads, otherwise just the name
+      const filePath = preservePaths && file.webkitRelativePath
+        ? file.webkitRelativePath
+        : file.name;
+
+      // Skip excluded files/folders
+      if (shouldExcludeFile(filePath)) {
+        excludedCount++;
+        continue;
+      }
+
       // Check file size
       if (file.size > maxSizeBytes) {
-        setError(`File "${file.name}" exceeds the ${maxSizeMB}MB limit.`);
+        // Skip silently for folder uploads, show error for single files
+        if (!preservePaths) {
+          setError(`File "${file.name}" exceeds the ${maxSizeMB}MB limit.`);
+        }
+        excludedCount++;
+        continue;
+      }
+
+      // Skip empty files
+      if (file.size === 0) {
+        excludedCount++;
         continue;
       }
 
@@ -160,14 +232,21 @@ export default function DebugWizard() {
       try {
         const content = await file.text();
         newFiles.push({
-          path: file.name,
+          path: filePath,
           content: content,
           size_bytes: file.size,
         });
       } catch (err) {
         console.error('Error reading file:', err);
-        setError(`Could not read file "${file.name}".`);
+        excludedCount++;
       }
+    }
+
+    // Check file count limit after filtering
+    const totalFiles = state.files.length + newFiles.length;
+    if (totalFiles > maxFiles) {
+      setError(`Maximum ${maxFiles} files allowed. You have ${state.files.length} and tried to add ${newFiles.length} (after filtering).`);
+      return;
     }
 
     if (newFiles.length > 0) {
@@ -178,7 +257,22 @@ export default function DebugWizard() {
         file_path: prev.file_path || newFiles[0].path,
       }));
       setError(null);
+      setUploadStats({ total: files.length, excluded: excludedCount });
+    } else if (files.length > 0) {
+      setError('No valid files found after filtering. All files were excluded or too large.');
     }
+  };
+
+  const toggleDirCollapse = (dir: string) => {
+    setCollapsedDirs(prev => {
+      const next = new Set(prev);
+      if (next.has(dir)) {
+        next.delete(dir);
+      } else {
+        next.add(dir);
+      }
+      return next;
+    });
   };
 
   const removeFile = (index: number) => {
@@ -250,9 +344,12 @@ export default function DebugWizard() {
       code_snippet: '',
       correlate_with_history: true,
       files: [],
+      inputMode: 'files',
     });
     setResult(null);
     setError(null);
+    setCollapsedDirs(new Set());
+    setUploadStats(null);
   };
 
   const handleCopyFix = (text: string) => {
@@ -361,36 +458,225 @@ logger = structlog.get_logger()`,
             {/* File Upload Section */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Upload Files (optional)
+                Source Code (optional)
                 <span className="text-gray-500 font-normal ml-2">
                   Max {limits.maxFiles === null ? 'unlimited' : limits.maxFiles} file{limits.maxFiles !== 1 ? 's' : ''}, {limits.maxFileSizeMB ? `${limits.maxFileSizeMB}MB each` : 'no size limit'}
                 </span>
               </label>
-              <div
-                className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                  state.files.length > 0 ? 'border-purple-400 bg-purple-50' : 'border-gray-300 hover:border-purple-400'
-                }`}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  e.currentTarget.classList.add('border-purple-500', 'bg-purple-50');
-                }}
-                onDragLeave={(e) => {
-                  e.currentTarget.classList.remove('border-purple-500', 'bg-purple-50');
-                }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  e.currentTarget.classList.remove('border-purple-500', 'bg-purple-50');
-                  const droppedFiles = Array.from(e.dataTransfer.files);
-                  handleFileUpload(droppedFiles);
-                }}
-              >
-                {state.files.length === 0 ? (
-                  <>
-                    <div className="text-4xl mb-2">📁</div>
-                    <p className="text-gray-600 mb-2">Drag & drop source files here</p>
-                    <p className="text-sm text-gray-500 mb-3">or</p>
-                    <label className="px-4 py-2 bg-purple-600 text-white rounded-lg cursor-pointer hover:bg-purple-700 inline-block">
-                      Browse Files
+
+              {/* Input Mode Tabs */}
+              <div className="flex border-b border-gray-200 mb-4">
+                <button
+                  type="button"
+                  onClick={() => setState(prev => ({ ...prev, inputMode: 'files' }))}
+                  className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                    state.inputMode === 'files'
+                      ? 'border-purple-600 text-purple-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  📄 Individual Files
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setState(prev => ({ ...prev, inputMode: 'folder' }))}
+                  className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                    state.inputMode === 'folder'
+                      ? 'border-purple-600 text-purple-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  📁 Select Folder
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setState(prev => ({ ...prev, inputMode: 'paste' }))}
+                  className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                    state.inputMode === 'paste'
+                      ? 'border-purple-600 text-purple-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  📋 Paste Code
+                </button>
+              </div>
+
+              {/* Files Mode */}
+              {state.inputMode === 'files' && (
+                <div
+                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                    state.files.length > 0 ? 'border-purple-400 bg-purple-50' : 'border-gray-300 hover:border-purple-400'
+                  }`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.add('border-purple-500', 'bg-purple-50');
+                  }}
+                  onDragLeave={(e) => {
+                    e.currentTarget.classList.remove('border-purple-500', 'bg-purple-50');
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.remove('border-purple-500', 'bg-purple-50');
+                    const droppedFiles = Array.from(e.dataTransfer.files);
+                    handleFileUpload(droppedFiles, false);
+                  }}
+                >
+                  {state.files.length === 0 ? (
+                    <>
+                      <div className="text-4xl mb-2">📄</div>
+                      <p className="text-gray-600 mb-2">Drag & drop source files here</p>
+                      <p className="text-sm text-gray-500 mb-3">or</p>
+                      <label className="px-4 py-2 bg-purple-600 text-white rounded-lg cursor-pointer hover:bg-purple-700 inline-block">
+                        Browse Files
+                        <input
+                          type="file"
+                          multiple
+                          accept=".ts,.tsx,.js,.jsx,.py,.java,.go,.rs,.rb,.php,.c,.cpp,.h,.hpp,.cs,.swift,.kt,.scala,.vue,.svelte,.json,.yaml,.yml,.md,.txt"
+                          className="hidden"
+                          onChange={(e) => {
+                            if (e.target.files) {
+                              handleFileUpload(Array.from(e.target.files), false);
+                            }
+                          }}
+                        />
+                      </label>
+                      <p className="text-xs text-gray-400 mt-3">
+                        Supports: .ts, .tsx, .js, .jsx, .py, .java, .go, .rs, .rb, .php, .c, .cpp, .cs, .swift, .kt, .scala, .vue, .svelte
+                      </p>
+                    </>
+                  ) : null}
+                </div>
+              )}
+
+              {/* Folder Mode */}
+              {state.inputMode === 'folder' && state.files.length === 0 && (
+                <div className="border-2 border-dashed rounded-lg p-6 text-center border-gray-300 hover:border-purple-400 transition-colors">
+                  <div className="text-4xl mb-2">📁</div>
+                  <p className="text-gray-600 mb-2">Select an entire folder to analyze</p>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Automatically excludes: node_modules, .git, build, dist, images
+                  </p>
+                  <label className="px-4 py-2 bg-purple-600 text-white rounded-lg cursor-pointer hover:bg-purple-700 inline-block">
+                    Select Folder
+                    <input
+                      type="file"
+                      // @ts-expect-error webkitdirectory is non-standard but widely supported
+                      webkitdirectory=""
+                      directory=""
+                      multiple
+                      className="hidden"
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          handleFileUpload(Array.from(e.target.files), true);
+                        }
+                      }}
+                    />
+                  </label>
+                  <p className="text-xs text-gray-400 mt-3">
+                    Works in Chrome, Edge, and Safari. Firefox users: use individual files.
+                  </p>
+                </div>
+              )}
+
+              {/* Paste Mode */}
+              {state.inputMode === 'paste' && state.files.length === 0 && (
+                <div className="space-y-3">
+                  <textarea
+                    rows={8}
+                    value={state.code_snippet}
+                    onChange={(e) => handleInputChange('code_snippet', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
+                    placeholder="Paste your code here..."
+                  />
+                  <p className="text-xs text-gray-500">
+                    Tip: Include the file path in the &quot;File Path&quot; field below for better analysis.
+                  </p>
+                </div>
+              )}
+
+              {/* Selected Files Display - Tree View */}
+              {state.files.length > 0 && (
+                <div className="border-2 border-purple-400 bg-purple-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <span className="font-medium text-purple-700">
+                        {state.files.length} file{state.files.length !== 1 ? 's' : ''} selected
+                      </span>
+                      {uploadStats && uploadStats.excluded > 0 && (
+                        <span className="text-sm text-gray-500 ml-2">
+                          ({uploadStats.excluded} excluded)
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setState(prev => ({ ...prev, files: [] }));
+                        setUploadStats(null);
+                        setCollapsedDirs(new Set());
+                      }}
+                      className="text-sm text-red-600 hover:text-red-800"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+
+                  {/* Tree View */}
+                  <div className="space-y-1 max-h-60 overflow-y-auto bg-white rounded border border-purple-200 p-2">
+                    {Array.from(groupFilesByDirectory(state.files)).map(([dir, dirFiles]) => (
+                      <div key={dir}>
+                        {/* Directory Header */}
+                        <button
+                          type="button"
+                          onClick={() => toggleDirCollapse(dir)}
+                          className="flex items-center gap-2 w-full text-left py-1 px-2 hover:bg-gray-100 rounded text-sm"
+                        >
+                          <span className="text-gray-400">
+                            {collapsedDirs.has(dir) ? '▶' : '▼'}
+                          </span>
+                          <span className="text-yellow-600">📁</span>
+                          <span className="font-medium text-gray-700">{dir}</span>
+                          <span className="text-xs text-gray-400">({dirFiles.length})</span>
+                        </button>
+
+                        {/* Files in Directory */}
+                        {!collapsedDirs.has(dir) && (
+                          <div className="ml-6 space-y-0.5">
+                            {dirFiles.map((file) => {
+                              const fileName = file.path.split('/').pop() || file.path;
+                              const fileIndex = state.files.findIndex(f => f.path === file.path);
+                              return (
+                                <div
+                                  key={file.path}
+                                  className="flex items-center justify-between py-1 px-2 hover:bg-gray-50 rounded group"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="text-blue-500">📄</span>
+                                    <span className="text-sm font-mono truncate">{fileName}</span>
+                                    <span className="text-xs text-gray-400">
+                                      ({Math.round(file.content.length / 1024 * 10) / 10}KB)
+                                    </span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => removeFile(fileIndex)}
+                                    className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add More Files */}
+                  <div className="mt-3 flex gap-3">
+                    <label className="text-sm text-purple-600 hover:text-purple-800 cursor-pointer">
+                      + Add files
                       <input
                         type="file"
                         multiple
@@ -398,66 +684,30 @@ logger = structlog.get_logger()`,
                         className="hidden"
                         onChange={(e) => {
                           if (e.target.files) {
-                            handleFileUpload(Array.from(e.target.files));
+                            handleFileUpload(Array.from(e.target.files), false);
                           }
                         }}
                       />
                     </label>
-                    <p className="text-xs text-gray-400 mt-3">
-                      Supports: .ts, .tsx, .js, .jsx, .py, .java, .go, .rs, .rb, .php, .c, .cpp, .cs, .swift, .kt, .scala, .vue, .svelte, .json, .yaml
-                    </p>
-                  </>
-                ) : (
-                  <div className="text-left">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="font-medium text-purple-700">
-                        {state.files.length} file{state.files.length !== 1 ? 's' : ''} selected
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setState(prev => ({ ...prev, files: [] }))}
-                        className="text-sm text-red-600 hover:text-red-800"
-                      >
-                        Clear all
-                      </button>
-                    </div>
-                    <div className="space-y-2 max-h-40 overflow-y-auto">
-                      {state.files.map((file, idx) => (
-                        <div key={idx} className="flex items-center justify-between bg-white rounded p-2 border border-purple-200">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="text-lg">📄</span>
-                            <span className="text-sm font-mono truncate">{file.path}</span>
-                            <span className="text-xs text-gray-400">
-                              ({Math.round(file.content.length / 1024 * 10) / 10}KB)
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeFile(idx)}
-                            className="text-red-500 hover:text-red-700 ml-2"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                    <label className="mt-3 text-sm text-purple-600 hover:text-purple-800 cursor-pointer inline-block">
-                      + Add more files
+                    <label className="text-sm text-purple-600 hover:text-purple-800 cursor-pointer">
+                      + Add folder
                       <input
                         type="file"
+                        // @ts-expect-error webkitdirectory is non-standard but widely supported
+                        webkitdirectory=""
+                        directory=""
                         multiple
-                        accept=".ts,.tsx,.js,.jsx,.py,.java,.go,.rs,.rb,.php,.c,.cpp,.h,.hpp,.cs,.swift,.kt,.scala,.vue,.svelte,.json,.yaml,.yml,.md,.txt"
                         className="hidden"
                         onChange={(e) => {
                           if (e.target.files) {
-                            handleFileUpload(Array.from(e.target.files));
+                            handleFileUpload(Array.from(e.target.files), true);
                           }
                         }}
                       />
                     </label>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* File Path and Line Number (manual entry fallback) */}
