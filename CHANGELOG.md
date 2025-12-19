@@ -5,6 +5,43 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2025-12-19
+
+### Added
+
+**Smart Model Routing for Cost Optimization**
+- **ModelRouter** - Automatically routes tasks to appropriate model tiers:
+  - **CHEAP tier** (Haiku/GPT-4o-mini): summarize, classify, triage, match_pattern
+  - **CAPABLE tier** (Sonnet/GPT-4o): generate_code, fix_bug, review_security, write_tests
+  - **PREMIUM tier** (Opus/o1): coordinate, synthesize_results, architectural_decision
+- 80-96% cost savings for appropriate task routing
+- Provider-agnostic: works with Anthropic, OpenAI, and Ollama
+- Usage: `EmpathyLLM(enable_model_routing=True)` + `task_type` parameter
+
+**Claude Code Integration**
+- **`empathy sync-claude`** - Sync learned patterns to `.claude/rules/empathy/` directory
+  - `empathy sync-claude --watch` - Auto-sync on pattern changes
+  - `empathy sync-claude --dry-run` - Preview without writing
+- Outputs: bug-patterns.md, security-decisions.md, tech-debt-hotspots.md, coding-patterns.md
+- Native Claude Code rules integration for persistent context
+
+**Memory-Enhanced Debugging Wizard**
+- Web GUI at wizards.smartaimemory.com
+- Folder selection with expandable file tree
+- Drag-and-drop file upload
+- Pattern storage for bug signatures
+- Memory-enhanced analysis that learns from past fixes
+
+### Changed
+- EmpathyLLM now accepts `task_type` parameter for model routing
+- Improved provider abstraction for dynamic model selection
+- All 5 empathy level handlers support model override
+
+### Fixed
+- httpx import for test compatibility with pytest.importorskip
+
+---
+
 ## [2.2.10] - 2025-12-18
 
 ### Added

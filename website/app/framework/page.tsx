@@ -92,6 +92,16 @@ export default function FrameworkPage() {
               </p>
             </div>
 
+            <div className="bg-[var(--background)] p-6 rounded-lg border-2 border-[var(--primary)] border-opacity-50">
+              <div className="mb-4">
+                <Image src="/images/icons/briefcase.svg" alt="" width={32} height={32} className="opacity-70" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Smart Model Routing <span className="text-xs font-normal text-[var(--primary)] ml-2">NEW</span></h3>
+              <p className="text-[var(--text-secondary)]">
+                80-96% cost reduction with intelligent routing: Haiku for simple tasks, Sonnet for code, Opus for architecture.
+              </p>
+            </div>
+
             <div className="bg-[var(--background)] p-6 rounded-lg">
               <div className="mb-4">
                 <Image src="/images/icons/square-terminal.svg" alt="" width={32} height={32} className="opacity-70" />

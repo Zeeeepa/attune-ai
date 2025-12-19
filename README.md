@@ -42,7 +42,7 @@ empathy-memory serve
 - **Conflict resolution** — Principled negotiation when agents disagree
 
 ### Performance & Cost
-- **40-60% LLM cost reduction** — Smart routing: cheap models detect, best models decide
+- **80-96% LLM cost reduction** — Smart routing: cheap models detect, best models decide
 - **Sub-millisecond coordination** — Redis-backed real-time signaling between agents
 - **Works with any LLM** — Claude, GPT-4, Ollama, or your own
 
@@ -63,6 +63,29 @@ result = await os.collaborate(
 print(result.current_issues)      # What's wrong now
 print(result.predicted_issues)    # What will break in 30-90 days
 print(result.prevention_steps)    # How to prevent it
+```
+
+## Cost Optimization with ModelRouter
+
+Save 80-96% on API costs by routing tasks to appropriate model tiers:
+
+```python
+from empathy_llm_toolkit import EmpathyLLM
+
+# Enable smart model routing
+llm = EmpathyLLM(
+    provider="anthropic",
+    enable_model_routing=True
+)
+
+# Summarization → Haiku ($0.25/M tokens)
+await llm.interact(user_id="dev", user_input="Summarize this", task_type="summarize")
+
+# Bug fixing → Sonnet ($3/M tokens)
+await llm.interact(user_id="dev", user_input="Fix this bug", task_type="fix_bug")
+
+# Architecture → Opus ($15/M tokens)
+await llm.interact(user_id="dev", user_input="Design the system", task_type="architectural_decision")
 ```
 
 ## The 5 Levels of AI Empathy
