@@ -798,7 +798,7 @@ logger = structlog.get_logger()`,
               <span className="text-3xl">D</span>
               <div>
                 <h2 className="text-2xl font-bold">Memory-Enhanced Debugging Wizard</h2>
-                <p className="text-purple-200 text-sm">
+                <p className="text-white/80 text-sm">
                   AI that remembers past bugs and their fixes
                 </p>
               </div>
@@ -807,7 +807,7 @@ logger = structlog.get_logger()`,
               <span className="px-2 py-1 bg-purple-500 rounded text-xs">
                 {tierDisplay.name}
               </span>
-              <span className="text-purple-200 text-xs">
+              <span className="text-white/80 text-xs">
                 {limits.maxFiles === null ? 'Unlimited files' : `Up to ${limits.maxFiles} files`}
               </span>
             </div>

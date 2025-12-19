@@ -35,15 +35,15 @@ export default function DebugWizardPage() {
                 <span className="text-2xl">D</span>
                 <div>
                   <h1 className="text-xl font-bold">Empathy Framework</h1>
-                  <p className="text-purple-200 text-sm">Memory-Enhanced Debugging</p>
+                  <p className="text-white/80 text-sm">Memory-Enhanced Debugging</p>
                 </div>
               </Link>
             </div>
             <nav className="flex items-center gap-6">
-              <Link href="/docs" className="text-purple-200 hover:text-white text-sm">
+              <Link href="/docs" className="text-white/80 hover:text-white text-sm">
                 Docs
               </Link>
-              <Link href="/pricing" className="text-purple-200 hover:text-white text-sm">
+              <Link href="/pricing" className="text-white/80 hover:text-white text-sm">
                 Pricing
               </Link>
               <Link
