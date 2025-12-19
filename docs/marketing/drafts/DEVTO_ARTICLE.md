@@ -10,7 +10,7 @@ cover_image:
 
 Every conversation with Claude starts from scratch. Tell it you prefer concise code examples, and next session? It's forgotten.
 
-Here's how to fix that.
+Here's how to fix that—plus save 80% on API costs.
 
 ## The Problem
 
@@ -113,6 +113,31 @@ On a real codebase (364 debt items, 81 security findings):
 - **Security noise reduction**: 84% (81 → 13 findings after learning)
 - **Tech debt tracking**: Trajectory predicts 2x growth in 170 days
 
+## NEW in v2.3: Smart Model Routing (80% Cost Savings)
+
+Why pay Opus prices for simple tasks? The new ModelRouter automatically picks the right model:
+
+```python
+llm = EmpathyLLM(
+    provider="anthropic",
+    enable_model_routing=True  # NEW!
+)
+
+# Summarization → Haiku ($0.25/M tokens)
+await llm.interact(user_id="dev", user_input="Summarize this", task_type="summarize")
+
+# Code generation → Sonnet ($3/M tokens)
+await llm.interact(user_id="dev", user_input="Write a function", task_type="generate_code")
+
+# Architecture → Opus ($15/M tokens)
+await llm.interact(user_id="dev", user_input="Design the system", task_type="architectural_decision")
+```
+
+**Cost comparison on real workload:**
+- Without routing (all Opus): $4.05/complex task
+- With routing (tiered): $0.83/complex task
+- **Savings: 80%**
+
 ## Get Started
 
 ```bash
@@ -120,10 +145,10 @@ pip install empathy-framework
 ```
 
 **Resources:**
-- [GitHub](https://github.com/Smart-AI-Memory/empathy-framework) - 500+ downloads day 1
+- [GitHub](https://github.com/Smart-AI-Memory/empathy-framework)
 - [Documentation](https://www.smartaimemory.com/docs)
 - [Live Demo](https://www.smartaimemory.com/tools/debug-wizard)
 
 ---
 
-*What would you build with an AI that remembers? Drop a comment below.*
+*What would you build with an AI that remembers—and costs 80% less? Drop a comment below.*

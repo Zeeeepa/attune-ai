@@ -4,10 +4,10 @@ Copy each numbered item as a separate tweet.
 
 ---
 
-**1/7**
-What if Claude remembered your preferences across sessions?
+**1/8**
+What if Claude remembered your preferences across sessions—and cost 80% less?
 
-I built @empathy_framework to give LLMs persistent memory.
+Just shipped empathy-framework v2.3 with smart model routing.
 
 pip install empathy-framework
 
@@ -15,17 +15,17 @@ pip install empathy-framework
 
 ---
 
-**2/7**
+**2/8**
 The problem: Every Claude conversation starts fresh.
 
 Tell it you prefer concise code? Forgotten next session.
 
-Working on a project? Context lost.
+And you're paying Opus prices for simple tasks.
 
 ---
 
-**3/7**
-The fix:
+**3/8**
+The fix - persistent memory:
 
 ```python
 from empathy_llm_toolkit import EmpathyLLM
@@ -45,7 +45,25 @@ That preference now survives.
 
 ---
 
-**4/7**
+**4/8**
+NEW in v2.3 - ModelRouter:
+
+```python
+llm = EmpathyLLM(
+    provider="anthropic",
+    enable_model_routing=True
+)
+
+# Summarize → Haiku ($0.25/M)
+# Code gen → Sonnet ($3/M)
+# Architecture → Opus ($15/M)
+```
+
+Real savings: $4.05 → $0.83 per task (80%)
+
+---
+
+**5/8**
 It tracks:
 → User preferences
 → Project context
@@ -55,7 +73,7 @@ Each user gets isolated memory. Privacy controls built in.
 
 ---
 
-**5/7**
+**6/8**
 Five empathy levels:
 
 1. Reactive (standard)
@@ -66,7 +84,7 @@ Five empathy levels:
 
 ---
 
-**6/7**
+**7/8**
 Now on PyPI:
 
 pip install empathy-framework
@@ -77,19 +95,17 @@ Docs: smartaimemory.com/docs
 
 ---
 
-**7/7**
-Working on getting this into the @AnthropicAI cookbook.
-
-What would you build with an AI that remembers you?
+**8/8**
+What would you build with an AI that remembers you—and costs 80% less?
 
 ---
 
 # Alt: Shorter 4-tweet version
 
 **1/4**
-What if Claude remembered you across sessions?
+What if Claude remembered you across sessions—and cost 80% less?
 
-Built empathy-framework to add persistent memory to LLMs.
+Just shipped empathy-framework v2.3 with smart model routing.
 
 pip install empathy-framework
 
@@ -97,15 +113,14 @@ pip install empathy-framework
 
 **2/4**
 ```python
-llm = EmpathyLLM(provider="anthropic", memory_enabled=True)
-
-await llm.interact(
-    user_id="you",
-    user_input="I prefer concise answers"
+llm = EmpathyLLM(
+    provider="anthropic",
+    memory_enabled=True,
+    enable_model_routing=True  # NEW!
 )
 ```
 
-Next session? Still remembered.
+Memory persists. Costs drop 80%.
 
 ---
 
@@ -115,10 +130,11 @@ Features:
 → Per-user isolation
 → Privacy controls
 → Five "empathy levels"
+→ NEW: Smart model routing (Haiku/Sonnet/Opus auto-selection)
 
 ---
 
 **4/4**
 GitHub: github.com/Smart-AI-Memory/empathy-framework
 
-What would you build with an AI that remembers?
+What would you build with an AI that remembers—and costs 80% less?

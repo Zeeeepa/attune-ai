@@ -4,7 +4,7 @@
 
 ## r/ClaudeAI
 
-**Title:** I built a persistent memory layer for Claude - open source
+**Title:** I built a persistent memory layer for Claude + smart model routing (80% cost savings)
 
 **Body:**
 
@@ -26,49 +26,60 @@ await llm.interact(
 
 Next session, Claude remembers.
 
+**v2.3 just shipped with ModelRouter** - automatically picks Haiku/Sonnet/Opus based on task complexity. Real savings: $4.05 → $0.83 per complex task (80% reduction).
+
+```python
+llm = EmpathyLLM(provider="anthropic", enable_model_routing=True)
+await llm.interact(user_id="dev", user_input="Summarize this", task_type="summarize")  # → Haiku
+```
+
 **Features:**
 - Cross-session memory persistence
 - Per-user isolation
 - Privacy controls (clear/forget)
 - Five "empathy levels" from reactive to anticipatory
+- **NEW:** Smart model routing (80% cost savings)
 
-Just hit PyPI: `pip install empathy-framework`
+On PyPI: `pip install empathy-framework`
 
-Working on getting it into the Anthropic Cookbook. Happy to answer questions.
+Happy to answer questions.
 
 ---
 
 ## r/Python
 
-**Title:** empathy-framework: Add persistent memory to LLMs in Python
+**Title:** empathy-framework v2.3: Persistent LLM memory + smart model routing (80% cost savings)
 
 **Body:**
 
-Released v2.2.7 of [empathy-framework](https://pypi.org/project/empathy-framework/) - a Python library that adds persistent, cross-session memory to LLM interactions.
+Just released v2.3 of [empathy-framework](https://pypi.org/project/empathy-framework/) - a Python library that adds persistent memory to LLM interactions, plus automatic model routing for cost optimization.
 
 ```python
 from empathy_llm_toolkit import EmpathyLLM
 
-llm = EmpathyLLM(provider="anthropic", memory_enabled=True)
+llm = EmpathyLLM(
+    provider="anthropic",
+    memory_enabled=True,
+    enable_model_routing=True  # NEW in v2.3
+)
 
 # Memory survives across sessions
 await llm.interact(user_id="user123", user_input="Remember I prefer async/await")
+
+# Automatic model selection based on task
+await llm.interact(user_id="user123", user_input="Summarize this", task_type="summarize")  # → Haiku
 ```
 
-**Why I built it:**
+**What's new in v2.3:**
+- **ModelRouter**: Auto-picks Haiku/Sonnet/Opus based on task complexity
+- Real cost savings: $4.05 → $0.83 per complex task (80% reduction)
 
-Most LLM APIs are stateless. Great for simple queries, but if you're building:
-- Dev assistants that learn your style
-- Customer support with history
-- Personal tools that adapt
-
-...you need persistent context.
-
-**Features:**
+**Core features:**
 - Works with Claude, OpenAI, local models
 - Per-user memory isolation
 - Privacy controls built in
 - Async-first design
+- Five "empathy levels" from reactive to anticipatory
 
 GitHub: https://github.com/Smart-AI-Memory/empathy-framework
 
