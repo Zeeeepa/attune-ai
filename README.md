@@ -12,27 +12,32 @@
 pip install empathy-framework[full]
 ```
 
-## What's New in v3.1.0
+## What's New in v3.2.x
 
-### Agent Intelligence System
-- **Smart Router** — Natural language wizard dispatch: "Fix security in auth.py" → routes to SecurityWizard
-- **Memory Graph** — Cross-wizard knowledge sharing: bugs, fixes, and patterns connected across sessions
-- **Auto-Chaining** — Wizards automatically trigger related wizards based on findings
-- **Prompt Engineering Wizard** — Analyze, generate, and optimize prompts with token cost savings
+### Unified CLI & Developer Experience
 
-### Resilience Patterns
-- **Retry with Backoff** — Automatic retries with exponential backoff and jitter
-- **Circuit Breaker** — Prevent cascading failures (CLOSED → OPEN → HALF_OPEN states)
-- **Timeout & Fallback** — Graceful degradation with configurable fallbacks
-- **Health Checks** — Monitor system components with configurable thresholds
+- **Unified Typer CLI** — One `empathy` command with Rich output, subcommand groups, and cheatsheet
+- **Dev Container Support** — One-click VS Code dev environment with Docker Compose
+- **Python 3.13 Support** — Test matrix now covers 3.10-3.13 across macOS, Linux, Windows
+
+### Documentation Overhaul
+
+- **Diátaxis Framework** — Restructured docs into Tutorials, How-to, Explanation, Reference
+- **Improved Navigation** — Clearer paths from learning to mastery
+- **Fixed Asset Loading** — CSS now loads correctly on all documentation pages
+
+### Previous (v3.1.x)
+
+- **Smart Router** — Natural language wizard dispatch: "Fix security in auth.py" → SecurityWizard
+- **Memory Graph** — Cross-wizard knowledge sharing across sessions
+- **Auto-Chaining** — Wizards automatically trigger related wizards
+- **Resilience Patterns** — Retry, Circuit Breaker, Timeout, Health Checks
 
 ### Previous (v3.0.x)
-- **XML-Enhanced Prompts** — Structured prompts for consistent, parseable LLM responses
-- **Multi-Model Provider System** — Choose Anthropic, OpenAI, Ollama, or Hybrid mode
+
+- **Multi-Model Provider System** — Anthropic, OpenAI, Ollama, or Hybrid mode
 - **80-96% Cost Savings** — Smart tier routing: cheap models detect, best models decide
 - **VSCode Dashboard** — 10 integrated workflows with input history persistence
-- **Security Hardening** — Fixed command injection vulnerabilities in VSCode extension
-- **Provider Auto-Detection** — Automatically configures based on your API keys
 
 ---
 
