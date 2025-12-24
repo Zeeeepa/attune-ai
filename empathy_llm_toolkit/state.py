@@ -95,6 +95,14 @@ class CollaborationState:
     # Context that persists across interactions
     shared_context: dict[str, Any] = field(default_factory=dict)
 
+    @property
+    def success_rate(self) -> float:
+        """Calculate success rate from successful and failed actions."""
+        total = self.successful_actions + self.failed_actions
+        if total == 0:
+            return 1.0  # Default to 100% if no actions yet
+        return self.successful_actions / total
+
     def add_interaction(
         self, role: str, content: str, empathy_level: int, metadata: dict | None = None
     ):
