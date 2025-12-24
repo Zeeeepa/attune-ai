@@ -4,31 +4,12 @@ import path from "path";
 const nextConfig: NextConfig = {
   output: 'standalone',
   outputFileTracingRoot: path.join(__dirname, './'),
-  trailingSlash: true,  // Ensure trailing slashes for correct relative path resolution
+  skipTrailingSlashRedirect: true,  // Don't auto-redirect trailing slashes - let middleware handle it
   eslint: {
     // Only run ESLint on these directories during production builds
     dirs: ['app'],
     // Ignore ESLint errors during production builds
     ignoreDuringBuilds: true,
-  },
-  async redirects() {
-    return [
-      // Redirect framework-docs paths without trailing slash to include trailing slash
-      {
-        source: '/framework-docs/:path((?!.*\\.).+)',
-        destination: '/framework-docs/:path/',
-        permanent: true,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      // Serve index.html for framework-docs directory requests
-      {
-        source: '/framework-docs/:path*/',
-        destination: '/framework-docs/:path*/index.html',
-      },
-    ];
   },
 };
 
