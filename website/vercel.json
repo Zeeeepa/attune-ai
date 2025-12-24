@@ -1,9 +1,15 @@
 {
-  "redirects": [
+  "trailingSlash": true,
+  "cleanUrls": false,
+  "headers": [
     {
-      "source": "/framework-docs/:path((?!.*\\.).+)",
-      "destination": "/framework-docs/:path/",
-      "permanent": true
+      "source": "/framework-docs/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ]
 }
