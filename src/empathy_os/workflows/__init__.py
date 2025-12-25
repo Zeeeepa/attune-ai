@@ -58,16 +58,9 @@ from .security_audit import SecurityAuditWorkflow
 from .step_config import WorkflowStepConfig, steps_from_tier_map, validate_step_config
 from .test_gen import TestGenerationWorkflow
 
-# Re-export CLI commands from the workflows.py module
-# This handles the package shadowing the .py file
+# Re-export CLI commands from workflow_commands.py
 _parent_dir = os.path.dirname(os.path.dirname(__file__))
-_workflows_module_path = os.path.join(_parent_dir, "empathy_os", "workflows.py")
-
-# Try the parent-level path first
-if not os.path.exists(_workflows_module_path):
-    _workflows_module_path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)), "workflows.py"
-    )
+_workflows_module_path = os.path.join(_parent_dir, "workflow_commands.py")
 
 # Initialize to None for type checking
 cmd_morning = None
@@ -204,7 +197,7 @@ __all__ = [
     "list_workflows",
     # Stats for dashboard
     "get_workflow_stats",
-    # CLI commands (re-exported from workflows.py)
+    # CLI commands (re-exported from workflow_commands.py)
     "cmd_morning",
     "cmd_ship",
     "cmd_fix_all",
