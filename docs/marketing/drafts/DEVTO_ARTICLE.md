@@ -1,35 +1,34 @@
 ---
-title: Give Claude Persistent Memory in 10 Lines of Python (Now with 80% Cost Savings)
+title: Give Your AI Persistent Memory (and Cut Costs 80%)
 published: false
-description: How to make Claude remember your preferences across sessions using the Empathy Framework v3.0.1
-tags: python, ai, claude, anthropic, openai
+description: How to make Claude/GPT remember your preferences across sessions using the Empathy Framework v3.2.5
+tags: python, ai, claude, openai, llm
 cover_image:
 ---
 
-# Give Claude Persistent Memory in 10 Lines of Python
+# Give Your AI Persistent Memory (and Cut Costs 80%)
 
-Every conversation with Claude starts from scratch. Tell it you prefer concise code examples, and next session? It's forgotten.
+Every conversation with Claude starts from scratch. Tell it you prefer concise code examples, and next session? Forgotten.
 
-Here's how to fix that—plus save 80% on API costs with v3.0.0's multi-provider system.
+Here's how to fix that—and save 80% on API costs while you're at it.
 
 ## The Problem
 
-Claude's API is stateless. Each request is independent. For simple Q&A, that's fine. But for:
+LLM APIs are stateless. Each request is independent. For simple Q&A, that's fine. But for:
 
 - Development assistants that learn your coding style
-- Customer support that remembers history
+- Support bots that remember customer history
 - Personal tools that adapt to preferences
 
 ...you need memory that persists.
 
-## The Solution
+## The Solution: 10 Lines of Python
 
 ```python
 from empathy_llm_toolkit import EmpathyLLM
 
 llm = EmpathyLLM(
     provider="anthropic",  # or "openai", "ollama", "hybrid"
-    api_key="your-key",
     memory_enabled=True
 )
 
@@ -40,158 +39,115 @@ response = await llm.interact(
 )
 ```
 
-That's it. Next time this user connects—even days later—Claude remembers.
+That's it. Next time this user connects—even days later—the AI remembers.
 
-## New in v3.0.1: Multi-Provider Support + XML-Enhanced Prompts
+## Why This Actually Matters
 
-Choose your provider—or mix them:
+### 1. Cost Savings (80%)
 
-```bash
-# Check available providers (auto-detects API keys)
-python -m empathy_os.models.cli provider status
+Smart routing automatically picks the right model for each task:
 
-# Switch providers
-python -m empathy_os.models.cli provider set openai
+| Task | Model | Cost |
+|------|-------|------|
+| Summarize text | Haiku/GPT-4o-mini | $0.25/M tokens |
+| Fix bugs | Sonnet/GPT-4o | $3/M tokens |
+| Design architecture | Opus/o1 | $15/M tokens |
 
-# Enable hybrid mode (best model from each provider)
-python -m empathy_os.models.cli provider set hybrid
-```
-
-Supported providers:
-- **Anthropic** — Claude (Haiku/Sonnet/Opus)
-- **OpenAI** — GPT (GPT-4o-mini/GPT-4o/o1)
-- **Ollama** — Local models (Llama 3.2)
-- **Hybrid** — Best of each provider per tier
-
-## Real-World Example: Debugging Wizard
-
-Here's what persistent memory enables. I built a debugging wizard that correlates current bugs with historical patterns:
+**Real numbers:**
+- Without routing (all Opus): $4.05/complex task
+- With routing (tiered): $0.83/complex task
+- **Savings: 80%**
 
 ```python
-from empathy_software_plugin.wizards import MemoryEnhancedDebuggingWizard
+llm = EmpathyLLM(provider="anthropic", enable_model_routing=True)
 
-wizard = MemoryEnhancedDebuggingWizard()
+# Automatically routes to Haiku
+await llm.interact(user_id="dev", user_input="Summarize this", task_type="summarize")
 
+# Automatically routes to Opus
+await llm.interact(user_id="dev", user_input="Design the system", task_type="coordinate")
+```
+
+### 2. Bug Memory
+
+My debugging wizard remembers every fix:
+
+```python
 result = await wizard.analyze({
     "error_message": "TypeError: Cannot read property 'map' of undefined",
     "file_path": "src/components/UserList.tsx"
 })
 
 print(result["historical_matches"])
-# Shows: "This looks like bug #247 from 3 months ago"
-# Suggests: "Add null check: data?.items ?? []"
-# Time saved: ~12 minutes
+# "This looks like bug #247 from 3 months ago"
+# "Suggested fix: data?.items ?? []"
 ```
 
-Without persistent memory, every bug starts from zero. With it, your AI assistant **remembers every fix** and suggests proven solutions.
+Without memory, every bug starts from zero. With it, your AI assistant **remembers every fix** and suggests proven solutions.
 
-## How It Works
+### 3. Provider Freedom
 
-The [Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework) stores user context in a memory layer that:
-
-1. **Persists across sessions** - Preferences survive restarts
-2. **Scopes by user** - Each user has isolated memory
-3. **Supports projects** - Different contexts for different work
-4. **Includes privacy controls** - Clear memory, forget specific info
-
-## Five Levels of Empathy
-
-The framework implements five collaboration levels:
-
-| Level | Behavior | Example |
-|-------|----------|---------|
-| 1 - Reactive | Standard request-response | Basic Q&A |
-| 2 - Informed | Uses stored preferences | Remembers coding style |
-| 3 - Proactive | Offers help when stuck | Detects struggle patterns |
-| 4 - Anticipatory | Predicts needs | "This will break in 3 days" |
-| 5 - Collaborative | Full partnership | Cross-domain learning |
-
-```python
-# Level 4: Claude predicts and warns
-response = await llm.interact(
-    user_id="dev_123",
-    user_input="Starting a new FastAPI project",
-    empathy_level=4
-)
-# Might warn: "You had async issues last time—here's a pattern that worked"
-```
-
-## Privacy Built In
-
-```python
-# Clear all memory
-await llm.clear_memory(user_id="dev_123")
-
-# Forget specific information
-await llm.forget(user_id="dev_123", pattern="email")
-```
-
-## Results
-
-On a real codebase (364 debt items, 81 security findings):
-
-- **Bug correlation**: 100% similarity matching with proven fixes
-- **Security noise reduction**: 84% (81 → 13 findings after learning)
-- **Tech debt tracking**: Trajectory predicts 2x growth in 170 days
-
-## v3.0.1: Smart Model Routing (80% Cost Savings)
-
-Why pay Opus prices for simple tasks? The ModelRouter automatically picks the right model across any provider.
-
-*API users save money. Subscription users (Max/Pro) preserve their premium model quota for complex tasks.*
-
-```python
-llm = EmpathyLLM(
-    provider="anthropic",  # or "openai", "ollama", "hybrid"
-    enable_model_routing=True
-)
-
-# Summarization → Haiku/GPT-4o-mini ($0.25/M tokens)
-await llm.interact(user_id="dev", user_input="Summarize this", task_type="summarize")
-
-# Code generation → Sonnet/GPT-4o ($3/M tokens)
-await llm.interact(user_id="dev", user_input="Write a function", task_type="generate_code")
-
-# Architecture → Opus/o1 ($15/M tokens)
-await llm.interact(user_id="dev", user_input="Design the system", task_type="architectural_decision")
-```
-
-**Cost comparison on real workload:**
-- Without routing (all Opus): $4.05/complex task
-- With routing (tiered): $0.83/complex task
-- **Savings: 80%**
-
-## v3.0.1: VSCode Dashboard + XML-Enhanced Prompts
-
-The biggest additions in v3.0.1 include a complete VSCode Dashboard with **10 integrated workflows** and **XML-Enhanced Prompts** for structured, parseable LLM responses:
-
-1. **Research Synthesis** — Deep dive research with citations
-2. **Code Review** — Comprehensive PR analysis
-3. **Debug Assistant** — Smart error diagnosis
-4. **Refactor Advisor** — Code improvement suggestions
-5. **Test Generator** — Automated test creation
-6. **Documentation Writer** — Auto-generate docs
-7. **Security Scanner** — Vulnerability detection
-8. **Performance Analyzer** — Bottleneck identification
-9. **Explain Code** — Code explanation for onboarding
-10. **Morning Briefing** — Daily project status report
-
-Plus **6 Quick Action commands** for common tasks.
-
-All with real-time cost tracking showing your savings.
-
-## Get Started
+Not locked into one provider. Switch anytime:
 
 ```bash
-pip install empathy-framework
+empathy provider set anthropic  # Use Claude
+empathy provider set openai     # Use GPT
+empathy provider set ollama     # Use local models
+empathy provider set hybrid     # Best of each
 ```
 
-**Resources:**
-- **PyPI:** 3,400+ monthly downloads
+Use Ollama for sensitive code, Claude for complex reasoning, GPT for specific tasks.
+
+## Smart Router
+
+Natural language routing—no need to know which tool to use:
+
+```python
+from empathy_os.routing import SmartRouter
+
+router = SmartRouter()
+
+# Natural language → right wizard
+decision = router.route_sync("Fix the security vulnerability in auth.py")
+print(f"Primary: {decision.primary_wizard}")  # → security-audit
+print(f"Confidence: {decision.confidence}")   # → 0.92
+```
+
+Examples:
+- "Fix security in auth.py" → SecurityWizard
+- "Review this PR" → CodeReviewWizard
+- "Why is this slow?" → PerformanceWizard
+
+## Quick Start
+
+```bash
+# Install
+pip install empathy-framework
+
+# Check available providers (auto-detects API keys)
+empathy provider status
+
+# Set your provider
+empathy provider set anthropic
+
+# See all commands
+empathy cheatsheet
+```
+
+## What's in v3.2.5
+
+- **Unified CLI** — One `empathy` command with Rich output
+- **Dev Container** — Clone → Open in VS Code → Start coding
+- **Python 3.10-3.13** — Full test matrix across all versions
+- **Smart Router** — Natural language wizard dispatch
+- **Memory Graph** — Cross-wizard knowledge sharing
+
+## Resources
+
 - [GitHub](https://github.com/Smart-AI-Memory/empathy-framework)
-- [Documentation](https://www.smartaimemory.com/docs)
-- [Live Demo](https://www.smartaimemory.com/tools/debug-wizard)
+- [Documentation](https://smartaimemory.com/framework-docs/)
+- [PyPI](https://pypi.org/project/empathy-framework/)
 
 ---
 
-*What would you build with an AI that remembers—and costs 80% less? Drop a comment below.*
+*What would you build with an AI that remembers—and costs 80% less?*

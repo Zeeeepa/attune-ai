@@ -36,6 +36,7 @@ wheels/
 .pytest_cache/
 .coverage
 htmlcov/
+htmlcov_logging/
 
 # Healthcare Wizards (top-level only - keep plugin wizards)
 /wizards/
@@ -94,6 +95,9 @@ convert_pitch_deck.sh
 
 # Logs
 logs/
+
+# Redis dump
+dump.rdb
 
 # MCP Registry tokens (credentials)
 .mcpregistry_*
