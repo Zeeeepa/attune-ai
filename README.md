@@ -12,7 +12,7 @@
 pip install empathy-framework[full]
 ```
 
-## What's New in v3.2.x
+## What's New in v3.3.x
 
 ### Enterprise-Ready Workflows
 
