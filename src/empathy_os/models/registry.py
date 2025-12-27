@@ -201,6 +201,11 @@ MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
     },
     # -------------------------------------------------------------------------
     # Ollama (Local) Models - Zero cost
+    # Model recommendations by tier:
+    #   cheap: Small, fast models (3B params) - llama3.2:3b
+    #   capable: Mid-size models (8B params) - llama3.1:8b
+    #   premium: Large models (70B params) - llama3.1:70b
+    # Users need to pull models: ollama pull llama3.2:3b llama3.1:8b llama3.1:70b
     # -------------------------------------------------------------------------
     "ollama": {
         "cheap": ModelInfo(
@@ -214,22 +219,22 @@ MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
             supports_tools=True,
         ),
         "capable": ModelInfo(
-            id="llama3.2:latest",
+            id="llama3.1:8b",
             provider="ollama",
             tier="capable",
             input_cost_per_million=0.0,
             output_cost_per_million=0.0,
-            max_tokens=4096,
+            max_tokens=8192,
             supports_vision=False,
             supports_tools=True,
         ),
         "premium": ModelInfo(
-            id="llama3.2:latest",
+            id="llama3.1:70b",
             provider="ollama",
             tier="premium",
             input_cost_per_million=0.0,
             output_cost_per_million=0.0,
-            max_tokens=4096,
+            max_tokens=8192,
             supports_vision=False,
             supports_tools=True,
         ),

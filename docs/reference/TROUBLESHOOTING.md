@@ -261,7 +261,7 @@ load_dotenv()
 ```python
 llm = EmpathyLLM(
     provider="anthropic",
-    api_key="sk-ant-your-key-here"  # Hardcoded (not recommended)
+    api_key="sk-ant-your-key-here"  # pragma: allowlist secret
 )
 ```
 
@@ -529,8 +529,10 @@ else:
 # Install Ollama
 curl -fsSL https://ollama.com/install.sh | sh
 
-# Download model
-ollama pull llama2
+# Download models for each tier
+ollama pull llama3.2:3b    # cheap tier (~2GB)
+ollama pull llama3.1:8b    # capable tier (~5GB)
+ollama pull llama3.1:70b   # premium tier (~40GB, optional)
 
 # Use in framework (free!)
 llm = EmpathyLLM(
@@ -634,7 +636,7 @@ import os
 
 @pytest.fixture(autouse=True)
 def set_env():
-    os.environ["ANTHROPIC_API_KEY"] = "sk-ant-test-key"
+    os.environ["ANTHROPIC_API_KEY"] = "sk-ant-test-key"  # pragma: allowlist secret
     yield
     del os.environ["ANTHROPIC_API_KEY"]
 ```
@@ -822,14 +824,18 @@ curl http://localhost:11434/api/version
 llm = EmpathyLLM(
     provider="local",
     endpoint="http://localhost:11434",  # Default Ollama port
-    model="llama2"
+    model="llama3.2:3b"  # or llama3.1:8b, llama3.1:70b
 )
 ```
 
 **4. Download model if missing:**
 ```bash
-ollama pull llama2
-ollama list  # Verify it's downloaded
+# Pull the recommended models
+ollama pull llama3.2:3b    # cheap tier - fast, small
+ollama pull llama3.1:8b    # capable tier - balanced
+ollama pull llama3.1:70b   # premium tier - best quality (requires ~40GB RAM)
+
+ollama list  # Verify downloaded models
 ```
 
 ---
@@ -945,7 +951,7 @@ conn = sqlite3.connect("empathy_data/state.db", timeout=30.0)
 ```yaml
 # empathy.config.yml
 persistence_backend: postgresql
-persistence_path: postgresql://user:pass@localhost/empathy
+persistence_path: postgresql://user:pass@localhost/empathy  # pragma: allowlist secret
 ```
 
 ### Issue: Disk space full

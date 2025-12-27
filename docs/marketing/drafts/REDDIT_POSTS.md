@@ -1,43 +1,58 @@
-# Reddit Posts - Ready to Copy/Paste (v3.2.5)
+# Reddit Posts - Ready to Copy/Paste (v3.3.0)
 
 ---
 
 ## r/ClaudeAI
 
-**Title:** I built persistent memory for Claude that survives across sessions (+ 80% cost savings)
+**Title:** v3.3.0: Enterprise-ready workflows with formatted reports + persistent memory
 
 **Body:**
 
-Every Claude conversation starts fresh. I wanted my dev assistant to remember my preferences, so I built [Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework).
+Just shipped [Empathy Framework v3.3.0](https://github.com/Smart-AI-Memory/empathy-framework) with features I've wanted for production Claude apps:
 
-**The core idea:**
+**Formatted reports for all workflows:**
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
+from empathy_os.workflows import SecurityAuditWorkflow
 
-llm = EmpathyLLM(provider="anthropic", memory_enabled=True)
+workflow = SecurityAuditWorkflow()
+result = await workflow.execute(code=your_code)
 
-# This preference persists forever
-await llm.interact(user_id="me", user_input="I prefer concise Python with type hints")
+print(result.final_output["formatted_report"])
 ```
 
-Next session—even days later—Claude remembers.
+Output is clean, consistent, and shareable:
 
-**Why I actually use it:**
+```
+============================================================
+SECURITY AUDIT REPORT
+============================================================
+Status: NEEDS_ATTENTION
+Risk Score: 7.2/10
+Vulnerabilities Found: 3
+------------------------------------------------------------
+CRITICAL FINDINGS
+- SQL injection in user_query() at line 42
+- Hardcoded credentials in config.py
+============================================================
+```
 
-1. **80% cost savings** - Smart routing sends simple tasks to Haiku, complex ones to Opus
-   - Before: $4.05/task (all Opus)
-   - After: $0.83/task (tiered)
+**Enterprise doc-gen with cost guardrails:**
 
-2. **Bug memory** - My debugging wizard remembers every fix. "This looks like bug #247 from 3 months ago—here's what worked."
+```python
+workflow = DocumentGenerationWorkflow(
+    export_path="docs/generated",  # Auto-save to disk
+    max_cost=5.0,                  # Stop at $5 (no surprises)
+    chunked_generation=True,       # Handle large codebases
+)
+```
 
-3. **Provider freedom** - Works with Claude, GPT, Ollama, or hybrid. Switch with one command.
+**Still saving 80% on costs** with smart routing (Haiku for simple, Sonnet for code review, Opus for architecture).
 
-**Quick start:**
+**Persistent memory** across sessions - Claude remembers your preferences.
 
 ```bash
-pip install empathy-framework
-empathy provider set anthropic
+pip install empathy-framework==3.3.0
 ```
 
 Happy to answer questions about the implementation.
@@ -46,100 +61,141 @@ Happy to answer questions about the implementation.
 
 ## r/Python
 
-**Title:** empathy-framework: Persistent LLM memory + smart routing (80% cost savings)
+**Title:** empathy-framework v3.3.0: Enterprise-ready AI workflows with formatted reports
 
 **Body:**
 
-Just released v3.2.5 of [empathy-framework](https://pypi.org/project/empathy-framework/) - adds persistent memory to LLM interactions with smart cost optimization.
+Just released v3.3.0 of [empathy-framework](https://pypi.org/project/empathy-framework/) - major update focused on production readiness.
 
-**What it does:**
+**What's new:**
+
+1. **Formatted reports for all 10 workflows** - Consistent, readable output you can share with stakeholders
+
+2. **Enterprise doc-gen** - Auto-scaling tokens, chunked generation, cost guardrails, file export
+
+3. **Output chunking** - Large reports split automatically (no more terminal truncation)
+
+**Example - Security Audit:**
+
+```python
+from empathy_os.workflows import SecurityAuditWorkflow
+
+workflow = SecurityAuditWorkflow()
+result = await workflow.execute(code=your_code)
+
+# Clean, formatted output
+print(result.final_output["formatted_report"])
+```
+
+**Example - Doc-Gen with guardrails:**
+
+```python
+from empathy_os.workflows import DocumentGenerationWorkflow
+
+workflow = DocumentGenerationWorkflow(
+    export_path="docs/generated",  # Auto-save
+    max_cost=5.0,                  # Cost limit
+    chunked_generation=True,       # Handle large projects
+    graceful_degradation=True,     # Partial results on errors
+)
+```
+
+**Cost optimization (80% savings):**
 
 ```python
 from empathy_llm_toolkit import EmpathyLLM
 
-llm = EmpathyLLM(
-    provider="anthropic",  # or "openai", "ollama", "hybrid"
-    memory_enabled=True,
-    enable_model_routing=True
-)
+llm = EmpathyLLM(provider="hybrid", enable_model_routing=True)
 
-# Memory survives across sessions
-await llm.interact(user_id="user123", user_input="I prefer async/await patterns")
-
-# Smart routing picks the right model
-await llm.interact(user_id="user123", user_input="Summarize this", task_type="summarize")  # → Haiku
-await llm.interact(user_id="user123", user_input="Design the architecture", task_type="coordinate")  # → Opus
+# Routes to appropriate tier automatically
+await llm.interact(user_id="dev", task_type="summarize")     # → Haiku
+await llm.interact(user_id="dev", task_type="architecture")  # → Opus
 ```
 
-**Why I built it:**
-
-1. **Cost** - Was spending too much on Opus for simple tasks. Smart routing cut costs 80%.
-2. **Context** - Tired of re-explaining my preferences every session.
-3. **Flexibility** - Didn't want to be locked into one provider.
-
-**New in v3.2:**
-
-- Unified CLI: `empathy` command with Rich output
-- Dev Container: Clone → Open in VS Code → Start coding
-- Python 3.10-3.13 support
-
-**CLI:**
+**Quick start:**
 
 ```bash
-empathy provider status        # See available providers
-empathy provider set hybrid    # Use best of each
-empathy cheatsheet            # Quick reference
+pip install empathy-framework==3.3.0
+python -m empathy_os.models.cli provider --set anthropic
 ```
 
 GitHub: https://github.com/Smart-AI-Memory/empathy-framework
 
-What use cases would you want persistent memory for?
+What workflows would be most useful for your projects?
 
 ---
 
 ## r/LocalLLaMA
 
-**Title:** Cross-session memory for local LLMs - native Ollama support (v3.2.5)
+**Title:** Enterprise doc-gen for local LLMs - auto-scaling, cost guardrails (v3.3.0)
 
 **Body:**
 
-Built [Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework) to give LLMs persistent memory. v3.2.5 has native Ollama support.
+Built [Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework) for LLM workflows with persistent memory. v3.3.0 adds enterprise features that work great with local models.
 
-**Quick example:**
+**New in v3.3.0:**
+
+1. **Formatted reports** - All 10 workflows return clean, consistent output
+2. **Enterprise doc-gen** - Chunked generation, auto-scaling, file export
+3. **Cost tracking** - Even for local models (helps estimate cloud migration)
+
+**Ollama setup:**
+
+```bash
+# Install Ollama (if not already)
+# macOS: brew install ollama
+# Linux: curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull the models for each tier
+ollama pull llama3.2:3b    # cheap tier - fast
+ollama pull llama3.1:8b    # capable tier - balanced
+ollama pull llama3.1:70b   # premium tier - best quality (requires ~40GB RAM)
+
+# Start Ollama
+ollama serve
+```
+
+**Ollama integration:**
 
 ```python
 from empathy_llm_toolkit import EmpathyLLM
 
 llm = EmpathyLLM(provider="ollama", memory_enabled=True)
 
-# Preferences persist across sessions
-await llm.interact(user_id="user", user_input="I use vim keybindings")
+# Memory persists across sessions
+await llm.interact(user_id="dev", user_input="Generate docs for this module")
 ```
 
-**Multi-provider architecture:**
-
-- **Ollama** — Llama 3.2/3.1 (local)
-- **Anthropic** — Claude (Haiku/Sonnet/Opus)
-- **OpenAI** — GPT (4o-mini/4o/o1)
-- **Hybrid** — Best of each provider per tier
-
-Auto-detects running Ollama instance and available API keys.
-
-**CLI:**
+**Hybrid mode:**
 
 ```bash
-empathy provider status       # Shows what's available
-empathy provider set ollama   # Use local only
-empathy provider set hybrid   # Mix local + cloud
+empathy provider set hybrid
 ```
+
+- Local (Ollama) for sensitive code and quick tasks
+- Claude for complex architecture decisions
+- Automatic fallback if local model unavailable
 
 **Smart tier routing for local:**
 
-- Cheap tier: Llama 3.2 (3B)
-- Capable tier: Llama 3.1 (8B)
-- Premium tier: Llama 3.1 (70B)
+- Cheap: `llama3.2:3b` (3B params, ~2GB)
+- Capable: `llama3.1:8b` (8B params, ~5GB)
+- Premium: `llama3.1:70b` (70B params, ~40GB)
 
-Use case: I use Ollama for sensitive code, fall back to Claude for complex architecture decisions.
+**Enterprise doc-gen works great locally:**
+
+```python
+workflow = DocumentGenerationWorkflow(
+    export_path="docs/generated",
+    chunked_generation=True,  # Handles context limits
+)
+```
+
+Chunks large docs into sections your local model can handle.
+
+```bash
+pip install empathy-framework==3.3.0
+```
 
 Feedback welcome from the local LLM community.
 
@@ -147,29 +203,31 @@ Feedback welcome from the local LLM community.
 
 ## r/MachineLearning (if appropriate)
 
-**Title:** [P] Empathy Framework - Persistent memory layer for LLMs with smart model routing
+**Title:** [P] Empathy Framework v3.3.0 - Enterprise-ready LLM workflows with formatted reports
 
 **Body:**
 
-Open source Python framework that adds persistent memory to LLM interactions.
+Open source Python framework for production LLM applications. v3.3.0 adds enterprise features.
 
-**Problem:** LLM APIs are stateless. Each request starts fresh.
+**Problem:** LLM workflows return raw JSON. Hard to audit, share, or display large outputs.
 
-**Solution:** Memory layer that persists user context across sessions, with smart routing to optimize costs.
+**Solution:** Formatted reports with consistent structure across all workflows, plus enterprise doc-gen with cost guardrails.
 
-**Key features:**
+**Key features in v3.3.0:**
 
-1. **Cross-session memory** - Preferences, patterns, and context survive restarts
-2. **Smart routing** - Automatically picks Haiku/Sonnet/Opus based on task complexity (80% cost reduction)
-3. **Provider-agnostic** - Works with Anthropic, OpenAI, Ollama, or hybrid
+1. **Formatted reports** - Every workflow returns `formatted_report` with consistent structure
+2. **Enterprise doc-gen** - Auto-scaling tokens, chunked generation, $5 cost guardrail, file export
+3. **Output chunking** - Large reports split for display (no more 50k char truncation)
+4. **Smart routing** - 80% cost savings (Haiku/Sonnet/Opus based on task)
+5. **Persistent memory** - Cross-session context that survives restarts
 
 **Architecture:**
 
-- Memory stored per-user with isolation
-- Pattern detection for proactive suggestions
-- Natural language routing ("Fix security in auth.py" → SecurityWizard)
+- 10 cost-optimized workflows (security-audit, code-review, doc-gen, etc.)
+- Provider-agnostic (Anthropic, OpenAI, Ollama, hybrid)
+- Redis-based memory with pattern detection
 
 GitHub: https://github.com/Smart-AI-Memory/empathy-framework
-PyPI: `pip install empathy-framework`
+PyPI: `pip install empathy-framework==3.3.0`
 
-Looking for feedback on the memory architecture approach.
+Looking for feedback on the workflow architecture.

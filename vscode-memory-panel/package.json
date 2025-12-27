@@ -3,11 +3,11 @@
   "displayName": "Empathy Memory Panel",
   "description": "Enterprise memory system control panel for Empathy Framework with Redis monitoring and pattern management",
   "version": "1.0.0",
-  "publisher": "deepstudyai",
+  "publisher": "smart-ai-memory",
   "icon": "media/memory-icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/empathy-framework"
+    "url": "https://github.com/Smart-AI-Memory/empathy-framework"
   },
   "engines": {
     "vscode": "^1.85.0"

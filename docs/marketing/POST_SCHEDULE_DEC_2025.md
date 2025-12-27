@@ -1,7 +1,16 @@
 # Marketing Post Schedule - December 2025
 
 **Start Date:** December 26, 2025
-**Version:** v3.2.5
+**Version:** v3.3.0 (Enterprise-Ready Workflows)
+
+---
+
+## v3.3.0 Key Messages
+
+1. **Formatted Reports for All Workflows** - Professional, consistent output across all 10 workflows
+2. **Enterprise Doc-Gen** - Auto-scaling, chunked generation, $5 cost guardrails, file export
+3. **Output Chunking** - Large reports split automatically for display
+4. **80-96% Cost Savings** - Smart tier routing (cheap/capable/premium)
 
 ---
 
@@ -9,33 +18,33 @@
 
 ### Thursday, Dec 26
 
-- [ ] **Dev.to Article** (Morning)
+- [ ] **Dev.to Article** (Morning - 9am EST)
   - Draft: `docs/marketing/drafts/DEVTO_ARTICLE.md`
-  - Title: "Give Your AI Persistent Memory (and Cut Costs 80%)"
+  - Title: "Enterprise-Ready AI Workflows: Formatted Reports + 80% Cost Savings"
+  - Highlight: v3.3.0 formatted reports, doc-gen enterprise features
   - Set `published: true` when ready
-  - Add cover image (code screenshot or dashboard)
 
-- [ ] **r/ClaudeAI Post** (Afternoon)
+- [ ] **r/ClaudeAI Post** (Afternoon - 1pm EST)
   - Draft: `docs/marketing/drafts/REDDIT_POSTS.md` (first section)
-  - Title: "I built persistent memory for Claude that survives across sessions (+ 80% cost savings)"
+  - Title: "v3.3.0: Enterprise-ready workflows with formatted reports + persistent memory"
   - Best time: 10am-2pm EST
 
 ### Friday, Dec 27
 
-- [ ] **Twitter/X Thread** (Morning)
+- [ ] **Twitter/X Thread** (Morning - 9am EST)
   - Draft: `docs/marketing/drafts/TWITTER_THREAD.md`
-  - Post 5-tweet thread
-  - Include code screenshot for tweet 2
+  - Post 5-tweet thread focusing on enterprise features
+  - Include screenshot of formatted report output
 
-- [ ] **r/Python Post** (Afternoon)
+- [ ] **r/Python Post** (Afternoon - 1pm EST)
   - Draft: `docs/marketing/drafts/REDDIT_POSTS.md` (second section)
-  - Title: "empathy-framework: Persistent LLM memory + smart routing (80% cost savings)"
+  - Title: "empathy-framework v3.3.0: Enterprise-ready AI workflows with formatted reports"
 
 ### Saturday, Dec 28
 
 - [ ] **r/LocalLLaMA Post**
   - Draft: `docs/marketing/drafts/REDDIT_POSTS.md` (third section)
-  - Title: "Cross-session memory for local LLMs - native Ollama support (v3.2.5)"
+  - Title: "Enterprise doc-gen for local LLMs - auto-scaling, cost guardrails (v3.3.0)"
 
 ---
 
@@ -44,14 +53,14 @@
 ### Monday, Dec 30
 
 - [ ] **LinkedIn Post**
-  - Adapt Dev.to article for LinkedIn
-  - Focus on cost savings for enterprise angle
+  - Focus on enterprise features: formatted reports, cost guardrails
+  - Target: Engineering managers, CTOs
 
 ### Tuesday, Dec 31
 
 - [ ] **Hashnode Article**
   - Draft: `docs/marketing/drafts/HASHNODE_ARTICLE.md`
-  - Cross-post from Dev.to with modifications
+  - Cross-post from Dev.to with v3.3.0 updates
 
 ### Wednesday, Jan 1 (Optional - Low traffic)
 
@@ -61,13 +70,13 @@
 
 - [ ] **Indie Hackers Post**
   - Draft: `docs/marketing/drafts/INDIE_HACKERS_POST.md`
-  - Focus on building in public angle
+  - Focus: "Built enterprise features based on user feedback"
 
 ### Friday, Jan 3
 
 - [ ] **Medium Article**
   - Draft: `docs/marketing/drafts/MEDIUM_ARTICLE.md`
-  - SEO-focused, evergreen content
+  - SEO-focused, evergreen content on AI workflows
 
 ---
 
@@ -76,7 +85,7 @@
 ### Tuesday, Jan 7 or Wednesday, Jan 8
 
 - [ ] **Hacker News - Show HN**
-  - Title: "Show HN: Empathy Framework – Persistent memory for LLMs (80% cost savings)"
+  - Title: "Show HN: Empathy Framework v3.3.0 - Enterprise AI workflows with 80% cost savings"
   - Best time: 9-11am EST, Tuesday or Wednesday
   - Be ready to engage in comments for first 2 hours
 
@@ -103,14 +112,14 @@ After each post, note:
 
 ## Quick Reference
 
-| Platform | Draft Location | Best Time |
-|----------|---------------|-----------|
-| Dev.to | `DEVTO_ARTICLE.md` | Morning |
-| Twitter | `TWITTER_THREAD.md` | 9-11am EST |
-| r/ClaudeAI | `REDDIT_POSTS.md` | 10am-2pm EST |
-| r/Python | `REDDIT_POSTS.md` | 10am-2pm EST |
-| r/LocalLLaMA | `REDDIT_POSTS.md` | Anytime |
-| HN | Custom title | Tue/Wed 9-11am EST |
+| Platform | Draft Location | Best Time | Status |
+|----------|---------------|-----------|--------|
+| Dev.to | `DEVTO_ARTICLE.md` | 9am EST | Ready |
+| Twitter | `TWITTER_THREAD.md` | 9am EST | Ready |
+| r/ClaudeAI | `REDDIT_POSTS.md` | 1pm EST | Ready |
+| r/Python | `REDDIT_POSTS.md` | 1pm EST | Ready |
+| r/LocalLLaMA | `REDDIT_POSTS.md` | Anytime | Ready |
+| HN | Custom title | Tue/Wed 9-11am EST | Week 3 |
 
 ---
 

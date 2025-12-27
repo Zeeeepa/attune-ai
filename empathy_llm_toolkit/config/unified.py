@@ -151,9 +151,9 @@ class UnifiedAgentConfig(BaseModel):
                 ModelTier.PREMIUM: "gpt-4o",
             },
             Provider.LOCAL: {
-                ModelTier.CHEAP: "llama-3.2-3b",
-                ModelTier.CAPABLE: "llama-3.2-70b",
-                ModelTier.PREMIUM: "llama-3.2-70b",
+                ModelTier.CHEAP: "llama3.2:3b",
+                ModelTier.CAPABLE: "llama3.1:8b",
+                ModelTier.PREMIUM: "llama3.1:70b",
             },
         }
 

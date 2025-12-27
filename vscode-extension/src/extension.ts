@@ -18,6 +18,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { PowerPanel } from './panels/PowerPanel';
 import { EmpathyDashboardProvider } from './panels/EmpathyDashboardPanel';
+import { MemoryPanelProvider } from './panels/MemoryPanelProvider';
 
 // Status bar item
 let statusBarItem: vscode.StatusBarItem;
@@ -70,6 +71,20 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );
 
+    // Register memory panel webview provider
+    const memoryProvider = new MemoryPanelProvider(context.extensionUri, context);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            MemoryPanelProvider.viewType,
+            memoryProvider,
+            {
+                webviewOptions: {
+                    retainContextWhenHidden: true
+                }
+            }
+        )
+    );
+
     // Register commands - existing
     const commands = [
         { name: 'empathy.morning', handler: cmdMorning },
@@ -90,6 +105,14 @@ export function activate(context: vscode.ExtensionContext) {
         { name: 'empathy.openFile', handler: cmdOpenFile },
         { name: 'empathy.ignoreIssue', handler: cmdIgnoreIssue },
         { name: 'empathy.openWebDashboard', handler: cmdOpenWebDashboard },
+        // Memory commands
+        { name: 'empathy.memory.showPanel', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
+        { name: 'empathy.memory.refreshStatus', handler: () => { memoryProvider.refresh(); vscode.window.showInformationMessage('Memory status refreshed'); } },
+        { name: 'empathy.memory.startRedis', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
+        { name: 'empathy.memory.stopRedis', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
+        { name: 'empathy.memory.viewPatterns', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
+        { name: 'empathy.memory.exportPatterns', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
+        { name: 'empathy.memory.healthCheck', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
     ];
 
     for (const cmd of commands) {

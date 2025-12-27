@@ -2,7 +2,7 @@
   "name": "empathy-framework",
   "displayName": "Empathy Framework",
   "description": "AI-powered code health, pattern learning, and cost optimization for VS Code. Learn bug patterns from git history, track API costs, sync to Claude Code.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "publisher": "smart-ai-memory",
   "license": "SEE LICENSE IN LICENSE",
   "icon": "images/icon.png",
@@ -123,6 +123,41 @@
         "command": "empathy.openPowerPanel",
         "title": "Empathy: Power Panel",
         "icon": "$(zap)"
+      },
+      {
+        "command": "empathy.memory.showPanel",
+        "title": "Empathy: Memory Panel",
+        "icon": "$(database)"
+      },
+      {
+        "command": "empathy.memory.startRedis",
+        "title": "Empathy: Start Redis",
+        "icon": "$(play)"
+      },
+      {
+        "command": "empathy.memory.stopRedis",
+        "title": "Empathy: Stop Redis",
+        "icon": "$(stop)"
+      },
+      {
+        "command": "empathy.memory.refreshStatus",
+        "title": "Empathy: Refresh Memory Status",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "empathy.memory.viewPatterns",
+        "title": "Empathy: View Patterns",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "empathy.memory.exportPatterns",
+        "title": "Empathy: Export Patterns",
+        "icon": "$(export)"
+      },
+      {
+        "command": "empathy.memory.healthCheck",
+        "title": "Empathy: Memory Health Check",
+        "icon": "$(heart)"
       }
     ],
     "keybindings": [
@@ -147,6 +182,11 @@
           "type": "webview",
           "id": "empathy-dashboard",
           "name": "Dashboard"
+        },
+        {
+          "type": "webview",
+          "id": "empathy-memory",
+          "name": "Memory"
         }
       ]
     },
@@ -218,6 +258,28 @@
           "type": "number",
           "default": 2000,
           "description": "Debounce time in milliseconds for auto-scan on save"
+        },
+        "empathy.memory.apiHost": {
+          "type": "string",
+          "default": "localhost",
+          "description": "Memory API host"
+        },
+        "empathy.memory.apiPort": {
+          "type": "number",
+          "default": 8765,
+          "description": "Memory API port"
+        },
+        "empathy.memory.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh memory status"
+        },
+        "empathy.memory.autoRefreshInterval": {
+          "type": "number",
+          "default": 30,
+          "description": "Auto-refresh interval in seconds",
+          "minimum": 5,
+          "maximum": 300
         }
       }
     }

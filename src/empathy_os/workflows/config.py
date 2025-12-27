@@ -362,7 +362,7 @@ def create_example_config() -> str:
 #
 # - anthropic: All Claude models (Haiku → Sonnet → Opus 4.5)
 # - openai:    All OpenAI models (GPT-4o-mini → GPT-4o → GPT-5.2)
-# - ollama:    Local models (llama3.2:3b → llama3.2:latest)
+# - ollama:    Local models (llama3.2:3b → llama3.1:8b → llama3.1:70b)
 # - hybrid:    Mix of best models from different providers:
 #              cheap: gpt-4o-mini (cheapest)
 #              capable: claude-sonnet-4 (best reasoning)
@@ -394,8 +394,8 @@ custom_models:
     premium: gpt-5.2
   ollama:
     cheap: llama3.2:3b
-    capable: llama3.2:latest
-    premium: mixtral:latest
+    capable: llama3.1:8b
+    premium: llama3.1:70b
   # Create your own hybrid mix:
   hybrid:
     cheap: gpt-4o-mini           # OpenAI - cheapest per token
