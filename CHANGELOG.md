@@ -5,6 +5,57 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+**Windows Compatibility**
+- New `platform_utils` module for cross-platform support
+  - Platform detection functions (`is_windows()`, `is_macos()`, `is_linux()`)
+  - Platform-appropriate directory functions for logs, data, config, and cache
+  - Asyncio Windows event loop policy handling (`setup_asyncio_policy()`)
+  - UTF-8 encoding utilities for text files
+  - Path normalization helpers
+- Cross-platform compatibility checker script (`scripts/check_platform_compat.py`)
+  - Detects hardcoded Unix paths, missing encoding, asyncio issues
+  - JSON output mode for CI integration
+  - `--fix` mode with suggested corrections
+- CI integration for platform compatibility checks in GitHub Actions
+- Pre-commit hook for platform compatibility (manual stage)
+- Pytest integration test for platform compatibility (`test_platform_compat_ci.py`)
+
+### Fixed
+
+- Hardcoded Unix paths in `audit_logger.py` now use platform-appropriate defaults
+- Added `setup_asyncio_policy()` call in CLI entry point for Windows compatibility
+
+### Changed
+
+- Updated `.claude/python-standards.md` with cross-platform coding guidelines
+
+---
+
+## [3.3.1] - 2025-12-27
+
+### Fixed
+
+- Updated Anthropic capable tier from Sonnet 4 to Sonnet 4.5 (`claude-sonnet-4-5-20250514`)
+- Fixed model references in token_estimator and executor
+- Fixed Setup button not opening Initialize Wizard (added `force` parameter)
+- Fixed Cost Simulator layout for narrow panels (single-column layout)
+- Fixed cost display inconsistency between workflow report and CLI footer
+- Unified timing display to use milliseconds across all workflow reports
+- Removed redundant CLI footer (workflow reports now contain complete timing/cost info)
+- Fixed all mypy type errors across empathy_os and empathy_llm_toolkit
+- Fixed ruff linting warnings (unused variables in dependency_check.py, document_gen.py)
+
+### Changed
+
+- All workflow reports now display duration in milliseconds (e.g., `Review completed in 15041ms`)
+- Consistent footer format: `{Workflow} completed in {ms}ms | Cost: ${cost:.4f}`
+
+---
+
 ## [3.2.3] - 2025-12-24
 
 ### Fixed

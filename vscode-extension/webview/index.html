@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src {{cspSource}} 'unsafe-inline'; script-src 'unsafe-inline';">
+    <link href="{{cssUri}}" rel="stylesheet">
+    <title>Empathy Memory Panel</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--vscode-font-family);
+            background: var(--vscode-sideBar-background);
+            color: var(--vscode-sideBar-foreground);
+            padding: 12px;
+            font-size: 12px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        h1 { font-size: 14px; font-weight: 600; }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        .status-badge.connected {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--vscode-testing-iconPassed);
+        }
+        .status-badge.disconnected {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--vscode-testing-iconFailed);
+        }
+        .card {
+            background: var(--vscode-input-background);
+            border: 1px solid var(--vscode-panel-border);
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .metric {
+            text-align: center;
+            padding: 8px;
+            background: var(--vscode-editor-background);
+            border-radius: 4px;
+        }
+        .metric-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .metric-value.success { color: var(--vscode-testing-iconPassed); }
+        .metric-label {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+        .btn {
+            padding: 6px 12px;
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            width: 100%;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn.secondary {
+            background: var(--vscode-button-secondaryBackground);
+            color: var(--vscode-button-secondaryForeground);
+        }
+        .btn-row { display: flex; gap: 8px; margin-top: 8px; }
+        .btn-row .btn { flex: 1; }
+        .error-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--vscode-inputValidation-errorBorder);
+            border-radius: 4px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .error-banner .icon { font-size: 24px; margin-bottom: 8px; }
+        .health-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--vscode-panel-border);
+        }
+        .health-item:last-child { border-bottom: none; }
+        .health-status { font-size: 10px; padding: 2px 6px; border-radius: 8px; }
+        .health-status.healthy { background: rgba(16, 185, 129, 0.2); color: var(--vscode-testing-iconPassed); }
+        .health-status.degraded { background: rgba(245, 158, 11, 0.2); color: var(--vscode-editorWarning-foreground); }
+        .health-status.unhealthy { background: rgba(239, 68, 68, 0.2); color: var(--vscode-testing-iconFailed); }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Memory Control</h1>
+        <span class="status-badge disconnected" id="connection-status">Disconnected</span>
+    </div>
+
+    <div id="error-view" class="error-banner hidden">
+        <div class="icon">⚠️</div>
+        <div>Cannot connect to Memory API</div>
+        <div style="font-size: 10px; opacity: 0.7; margin-top: 4px;">Make sure the backend is running on port 8765</div>
+        <button class="btn" style="margin-top: 12px;" onclick="refresh()">Retry Connection</button>
+    </div>
+
+    <div id="connected-view">
+        <div class="card">
+            <div class="card-title">Redis Status</div>
+            <div class="metrics-grid">
+                <div class="metric">
+                    <div class="metric-value" id="redis-status">--</div>
+                    <div class="metric-label">Status</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="memory-used">--</div>
+                    <div class="metric-label">Memory</div>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="btn secondary" onclick="startRedis()" id="start-btn">Start Redis</button>
+                <button class="btn secondary" onclick="stopRedis()" id="stop-btn">Stop Redis</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Pattern Statistics</div>
+            <div class="metrics-grid">
+                <div class="metric">
+                    <div class="metric-value success" id="total-patterns">--</div>
+                    <div class="metric-label">Total Patterns</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="short-term-keys">--</div>
+                    <div class="metric-label">Short-term Keys</div>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="btn" onclick="listPatterns()">View Patterns</button>
+                <button class="btn secondary" onclick="exportPatterns()">Export</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">System Health</div>
+            <div id="health-details">
+                <div class="health-item">
+                    <span>Redis</span>
+                    <span class="health-status" id="health-redis">--</span>
+                </div>
+                <div class="health-item">
+                    <span>API</span>
+                    <span class="health-status" id="health-api">--</span>
+                </div>
+                <div class="health-item">
+                    <span>Storage</span>
+                    <span class="health-status" id="health-storage">--</span>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="btn secondary" onclick="healthCheck()">Run Health Check</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Actions</div>
+            <div class="btn-row">
+                <button class="btn secondary" onclick="clearShortTerm()">Clear Short-term</button>
+                <button class="btn" onclick="refresh()">Refresh</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const vscode = acquireVsCodeApi();
+
+        // Notify extension we're ready
+        vscode.postMessage({ type: 'ready' });
+
+        // Handle messages from extension
+        window.addEventListener('message', event => {
+            const message = event.data;
+            switch (message.type) {
+                case 'statusUpdate':
+                    updateStatus(message.status, message.stats);
+                    break;
+                case 'connectionError':
+                    showConnectionError(message.message);
+                    break;
+                case 'patternsUpdate':
+                    showPatterns(message.patterns);
+                    break;
+                case 'healthUpdate':
+                    updateHealth(message.health);
+                    break;
+            }
+        });
+
+        function updateStatus(status, stats) {
+            document.getElementById('error-view').classList.add('hidden');
+            document.getElementById('connected-view').classList.remove('hidden');
+
+            const badge = document.getElementById('connection-status');
+            badge.textContent = 'Connected';
+            badge.className = 'status-badge connected';
+
+            if (status) {
+                document.getElementById('redis-status').textContent = status.redis_running ? 'Running' : 'Stopped';
+                document.getElementById('memory-used').textContent = status.memory_used || '--';
+            }
+
+            if (stats) {
+                document.getElementById('total-patterns').textContent = stats.total_patterns || 0;
+                document.getElementById('short-term-keys').textContent = stats.short_term_keys || 0;
+            }
+        }
+
+        function showConnectionError(message) {
+            document.getElementById('error-view').classList.remove('hidden');
+            document.getElementById('connected-view').classList.add('hidden');
+
+            const badge = document.getElementById('connection-status');
+            badge.textContent = 'Disconnected';
+            badge.className = 'status-badge disconnected';
+        }
+
+        function updateHealth(health) {
+            if (!health) return;
+
+            const statusClass = {
+                'healthy': 'healthy',
+                'degraded': 'degraded',
+                'unhealthy': 'unhealthy'
+            };
+
+            if (health.components) {
+                if (health.components.redis) {
+                    const el = document.getElementById('health-redis');
+                    el.textContent = health.components.redis.status || '--';
+                    el.className = 'health-status ' + (statusClass[health.components.redis.status] || '');
+                }
+                if (health.components.api) {
+                    const el = document.getElementById('health-api');
+                    el.textContent = health.components.api.status || '--';
+                    el.className = 'health-status ' + (statusClass[health.components.api.status] || '');
+                }
+                if (health.components.storage) {
+                    const el = document.getElementById('health-storage');
+                    el.textContent = health.components.storage.status || '--';
+                    el.className = 'health-status ' + (statusClass[health.components.storage.status] || '');
+                }
+            }
+        }
+
+        function showPatterns(patterns) {
+            // For now, just show count - could expand to pattern viewer
+            if (patterns && patterns.length >= 0) {
+                document.getElementById('total-patterns').textContent = patterns.length;
+            }
+        }
+
+        function refresh() { vscode.postMessage({ type: 'refresh' }); }
+        function startRedis() { vscode.postMessage({ type: 'startRedis' }); }
+        function stopRedis() { vscode.postMessage({ type: 'stopRedis' }); }
+        function listPatterns() { vscode.postMessage({ type: 'listPatterns' }); }
+        function exportPatterns() { vscode.postMessage({ type: 'exportPatterns' }); }
+        function healthCheck() { vscode.postMessage({ type: 'healthCheck' }); }
+        function clearShortTerm() { vscode.postMessage({ type: 'clearShortTerm' }); }
+    </script>
+</body>
+</html>

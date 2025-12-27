@@ -316,7 +316,8 @@ class CodeReviewPipeline:
             if isinstance(crew_report_obj, Exception):
                 logger.warning(f"Crew review failed: {crew_report_obj}")
             elif crew_report_obj:
-                crew_report = crew_report_to_workflow_format(crew_report_obj)
+                # crew_report_obj is CodeReviewReport after isinstance check above
+                crew_report = crew_report_to_workflow_format(crew_report_obj)  # type: ignore[arg-type]
 
             # Handle workflow result
             if isinstance(workflow_result, Exception):
@@ -408,12 +409,12 @@ class CodeReviewPipeline:
         findings: list[dict],
     ) -> float:
         """Calculate combined quality score."""
-        scores = []
-        weights = []
+        scores: list[float] = []
+        weights: list[float] = []
 
         # Crew quality score (if available)
         if crew_report:
-            crew_score = crew_report.get("quality_score", 100)
+            crew_score: float = float(crew_report.get("quality_score", 100))
             scores.append(crew_score)
             weights.append(1.5)  # Crew gets higher weight
 
@@ -538,7 +539,7 @@ def main():
         print(f"Mode: {result.mode}")
         print(f"Verdict: {result.verdict.upper()}")
         print(f"Quality Score: {result.quality_score:.1f}/100")
-        print(f"Duration: {result.duration_seconds:.2f}s")
+        print(f"Duration: {result.duration_seconds * 1000:.0f}ms")
         print(f"Cost: ${result.cost:.4f}")
 
         if result.agents_used:
@@ -700,7 +701,8 @@ def format_code_review_pipeline_report(result: CodeReviewPipelineResult) -> str:
 
     # Footer
     lines.append("=" * 60)
-    lines.append(f"Review completed in {result.duration_seconds:.1f}s | Cost: ${result.cost:.4f}")
+    duration_ms = result.duration_seconds * 1000
+    lines.append(f"Review completed in {duration_ms:.0f}ms | Cost: ${result.cost:.4f}")
     lines.append("=" * 60)
 
     return "\n".join(lines)

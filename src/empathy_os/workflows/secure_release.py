@@ -566,9 +566,8 @@ def format_secure_release_report(result: SecureReleaseResult) -> str:
     lines.append("-" * 60)
     lines.append("EXECUTION DETAILS")
     lines.append("-" * 60)
-    duration_sec = result.total_duration_ms / 1000
     lines.append(f"Total Cost: ${result.total_cost:.4f}")
-    lines.append(f"Duration: {duration_sec:.1f}s")
+    lines.append(f"Duration: {result.total_duration_ms:.0f}ms")
     lines.append("")
 
     # Footer

@@ -3,7 +3,7 @@
 **The AI collaboration framework that predicts problems before they happen.**
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-2%2C365%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
+[![Tests](https://img.shields.io/badge/tests-3%2C564%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
 [![Coverage](https://img.shields.io/badge/coverage-55%25-yellow)](https://github.com/Smart-AI-Memory/empathy-framework)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
@@ -100,17 +100,21 @@ print(result.prevention_steps)    # How to prevent it
 ## Become a Power User
 
 ### Level 1: Basic Usage
+
 ```bash
 pip install empathy-framework
 ```
+
 - Works out of the box with sensible defaults
 - Auto-detects your API keys
 
 ### Level 2: Cost Optimization
+
 ```bash
 # Enable hybrid mode for 80-96% cost savings
 python -m empathy_os.models.cli provider --set hybrid
 ```
+
 | Tier | Model | Use Case | Cost |
 |------|-------|----------|------|
 | Cheap | GPT-4o-mini / Haiku | Summarization, simple tasks | $0.15-0.25/M |
@@ -118,6 +122,7 @@ python -m empathy_os.models.cli provider --set hybrid
 | Premium | o1 / Opus | Architecture, complex decisions | $15/M |
 
 ### Level 3: Multi-Model Workflows
+
 ```python
 from empathy_llm_toolkit import EmpathyLLM
 
@@ -130,13 +135,16 @@ await llm.interact(user_id="dev", user_input="Design system", task_type="coordin
 ```
 
 ### Level 4: VSCode Integration
+
 Install the Empathy VSCode extension for:
+
 - **Real-time Dashboard** — Health score, costs, patterns
 - **One-Click Workflows** — Research, code review, debugging
 - **Visual Cost Tracking** — See savings in real-time
-    - See also: `docs/dashboard-costs-by-tier.md` for interpreting the **By tier (7 days)** cost breakdown.
+  - See also: `docs/dashboard-costs-by-tier.md` for interpreting the **By tier (7 days)** cost breakdown.
 
 ### Level 5: Custom Agents
+
 ```python
 from empathy_os.agents import AgentFactory
 
@@ -153,6 +161,7 @@ security_agent = AgentFactory.create(
 ## CLI Reference
 
 ### Provider Configuration
+
 ```bash
 python -m empathy_os.models.cli provider                    # Show current config
 python -m empathy_os.models.cli provider --set anthropic    # Single provider
@@ -162,6 +171,7 @@ python -m empathy_os.models.cli provider -f json            # JSON output
 ```
 
 ### Model Registry
+
 ```bash
 python -m empathy_os.models.cli registry                    # Show all models
 python -m empathy_os.models.cli registry --provider openai  # Filter by provider
@@ -169,6 +179,7 @@ python -m empathy_os.models.cli costs --input-tokens 50000  # Estimate costs
 ```
 
 ### Telemetry & Analytics
+
 ```bash
 python -m empathy_os.models.cli telemetry                   # Summary
 python -m empathy_os.models.cli telemetry --costs           # Cost savings report
@@ -177,6 +188,7 @@ python -m empathy_os.models.cli telemetry --fallbacks       # Fallback stats
 ```
 
 ### Memory Control
+
 ```bash
 empathy-memory serve    # Start Redis + API server
 empathy-memory status   # Check system status
@@ -185,6 +197,7 @@ empathy-memory patterns # List stored patterns
 ```
 
 ### Code Inspection
+
 ```bash
 empathy-inspect .                     # Run full inspection
 empathy-inspect . --format sarif      # GitHub Actions format
@@ -458,8 +471,8 @@ cd empathy-framework && pip install -e .[dev]
 
 ```bash
 # Required: At least one provider
-export ANTHROPIC_API_KEY="sk-ant-..."   # For Claude models
-export OPENAI_API_KEY="sk-..."          # For GPT models
+export ANTHROPIC_API_KEY="sk-ant-..."   # For Claude models  # pragma: allowlist secret
+export OPENAI_API_KEY="sk-..."          # For GPT models  # pragma: allowlist secret
 
 # Optional: Redis for memory
 export REDIS_URL="redis://localhost:6379"

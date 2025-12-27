@@ -343,12 +343,14 @@ class EmpathyConfig:
             )
 
         if not 0.0 <= self.pattern_confidence_threshold <= 1.0:
-            val = self.pattern_confidence_threshold
-            raise ValueError(f"pattern_confidence_threshold must be 0.0-1.0, got {val}")
+            threshold_val = self.pattern_confidence_threshold
+            raise ValueError(f"pattern_confidence_threshold must be 0.0-1.0, got {threshold_val}")
 
         if self.persistence_backend not in ("sqlite", "json", "none"):
-            val = self.persistence_backend
-            raise ValueError(f"persistence_backend must be 'sqlite', 'json', or 'none', got {val}")
+            backend_val = self.persistence_backend
+            raise ValueError(
+                f"persistence_backend must be 'sqlite', 'json', or 'none', got {backend_val}"
+            )
 
         return True
 

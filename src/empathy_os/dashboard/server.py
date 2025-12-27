@@ -39,8 +39,8 @@ try:
 
     HAS_WORKFLOWS = True
 except ImportError:
-    get_workflow_stats = None  # type: ignore[misc, assignment]
-    list_workflows = None  # type: ignore[misc, assignment]
+    get_workflow_stats = None  # type: ignore[assignment]
+    list_workflows = None  # type: ignore[assignment]
     HAS_WORKFLOWS = False
 
 

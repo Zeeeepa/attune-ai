@@ -441,7 +441,7 @@ class SecureMemDocsIntegration:
         self,
         claude_memory_config=None,
         storage_dir: str = "./memdocs_storage",
-        audit_log_dir: str = "/var/log/empathy",
+        audit_log_dir: str | None = None,  # Uses platform-appropriate default if None
         classification_rules: dict[Classification, ClassificationRules] | None = None,
         enable_encryption: bool = True,
         master_key: bytes | None = None,

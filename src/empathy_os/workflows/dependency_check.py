@@ -544,7 +544,6 @@ def format_dependency_check_report(result: dict, input_data: dict) -> str:
 
     # Header with risk level
     risk_score = result.get("risk_score", 0)
-    risk_level = result.get("risk_level", "unknown").upper()
 
     if risk_score >= 75:
         risk_icon = "🔴"

@@ -144,7 +144,7 @@ MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
             supports_tools=True,
         ),
         "capable": ModelInfo(
-            id="claude-sonnet-4-20250514",
+            id="claude-sonnet-4-5-20250514",
             provider="anthropic",
             tier="capable",
             input_cost_per_million=3.00,
@@ -254,7 +254,7 @@ MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
             supports_tools=True,
         ),
         "capable": ModelInfo(
-            id="claude-sonnet-4-20250514",  # Anthropic - best reasoning
+            id="claude-sonnet-4-5-20250514",  # Anthropic - best reasoning
             provider="anthropic",
             tier="capable",
             input_cost_per_million=3.00,

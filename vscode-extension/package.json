@@ -126,38 +126,18 @@
       },
       {
         "command": "empathy.memory.showPanel",
-        "title": "Empathy: Memory Panel",
+        "title": "Empathy: Memory Panel (Beta)",
         "icon": "$(database)"
       },
       {
-        "command": "empathy.memory.startRedis",
-        "title": "Empathy: Start Redis",
-        "icon": "$(play)"
-      },
-      {
-        "command": "empathy.memory.stopRedis",
-        "title": "Empathy: Stop Redis",
-        "icon": "$(stop)"
-      },
-      {
         "command": "empathy.memory.refreshStatus",
-        "title": "Empathy: Refresh Memory Status",
+        "title": "Empathy: Refresh Memory Status (Beta)",
         "icon": "$(refresh)"
       },
       {
-        "command": "empathy.memory.viewPatterns",
-        "title": "Empathy: View Patterns",
-        "icon": "$(list-tree)"
-      },
-      {
-        "command": "empathy.memory.exportPatterns",
-        "title": "Empathy: Export Patterns",
-        "icon": "$(export)"
-      },
-      {
-        "command": "empathy.memory.healthCheck",
-        "title": "Empathy: Memory Health Check",
-        "icon": "$(heart)"
+        "command": "empathy.initializeProject",
+        "title": "Empathy: Initialize Project",
+        "icon": "$(rocket)"
       }
     ],
     "keybindings": [
@@ -186,7 +166,7 @@
         {
           "type": "webview",
           "id": "empathy-memory",
-          "name": "Memory"
+          "name": "Memory (Beta)"
         }
       ]
     },
@@ -262,24 +242,12 @@
         "empathy.memory.apiHost": {
           "type": "string",
           "default": "localhost",
-          "description": "Memory API host"
+          "description": "(Beta) Memory API host for Redis-backed memory"
         },
         "empathy.memory.apiPort": {
           "type": "number",
           "default": 8765,
-          "description": "Memory API port"
-        },
-        "empathy.memory.autoRefresh": {
-          "type": "boolean",
-          "default": true,
-          "description": "Automatically refresh memory status"
-        },
-        "empathy.memory.autoRefreshInterval": {
-          "type": "number",
-          "default": 30,
-          "description": "Auto-refresh interval in seconds",
-          "minimum": 5,
-          "maximum": 300
+          "description": "(Beta) Memory API port for Redis-backed memory"
         }
       }
     }
@@ -289,15 +257,21 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
     "lint": "eslint src --ext ts",
     "package": "vsce package"
   },
   "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.0",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
+    "@vscode/test-electron": "^2.3.8",
     "eslint": "^8.55.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0",
     "typescript": "^5.3.0",
     "@vscode/vsce": "^2.22.0"
   }

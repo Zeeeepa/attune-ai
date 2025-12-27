@@ -151,7 +151,172 @@
         "CHANGELOG.md"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251225_1b928aec",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Resolve import conflict between workflows.py and workflows/ package",
+      "fix": "See commit 1b928aec",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-25",
+      "files_affected": [
+        "src/empathy_os/workflows/__init__.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_32d3adcf",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "ci: Add workflow_dispatch to PyPI publish workflow",
+      "fix": "See commit 32d3adcf",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        ".github/workflows/publish-pypi.yml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_2ae52706",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Convert MkDocs relative asset paths to absolute for CSS loading",
+      "fix": "See commit 2ae52706",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "scripts/fix_mkdocs_paths.py",
+        ".../framework-docs/FOREWORD_BY_CLAUDE/index.html",
+        ".../framework-docs/about-the-author/index.html"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_4e9157ce",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Force trailing slashes at all levels for MkDocs CSS compatibility",
+      "fix": "See commit 4e9157ce",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/middleware.ts",
+        "website/next.config.ts",
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_55265287",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Use skipTrailingSlashRedirect to stop Next.js from stripping trailing slashes",
+      "fix": "See commit 55265287",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/next.config.ts",
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_47662816",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add Next.js middleware to enforce trailing slash for framework-docs",
+      "fix": "See commit 47662816",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/middleware.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_994d5ad5",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add Vercel trailingSlash config for framework-docs CSS",
+      "fix": "See commit 994d5ad5",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_0c56cfb1",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add vercel.json redirect for framework-docs trailing slash",
+      "fix": "See commit 0c56cfb1",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_3ba1de27",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add redirect to ensure trailing slash for framework-docs CSS paths",
+      "fix": "See commit 3ba1de27",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/next.config.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_7832acb7",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add trailingSlash to fix CSS loading in framework-docs",
+      "fix": "See commit 7832acb7",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/next.config.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_9cd1aaa1",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove archived TSX files causing Next.js build failure",
+      "fix": "See commit 9cd1aaa1",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "site/404.html",
+        "site/AI_DEVELOPMENT_WIZARDS/index.html",
+        "site/ANTHROPIC_PARTNERSHIP_PROPOSAL/index.html"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_4f330ef2",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "docs: Update framework-docs with Di\u00e1taxis structure and fix PyPI URLs (v3.2.3)",
+      "fix": "See commit 4f330ef2",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "CHANGELOG.md",
+        "pyproject.toml",
+        "website/public/framework-docs/404.html"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2025-12-22T21:24:19.681593"
+  "last_updated": "2025-12-26T23:17:25.943582"
 }

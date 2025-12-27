@@ -573,7 +573,8 @@ def format_health_check_report(result: HealthCheckResult) -> str:
 
     # Footer
     lines.append("=" * 60)
-    lines.append(f"Duration: {result.duration_seconds:.1f}s | Cost: ${result.cost:.4f}")
+    duration_ms = result.duration_seconds * 1000
+    lines.append(f"Health check completed in {duration_ms:.0f}ms | Cost: ${result.cost:.4f}")
     lines.append("=" * 60)
 
     return "\n".join(lines)
@@ -603,7 +604,7 @@ def main():
                 )
 
         print(f"\nChecks Run: {list(result.checks_run.keys())}")
-        print(f"Duration: {result.duration_seconds:.1f}s")
+        print(f"Duration: {result.duration_seconds * 1000:.0f}ms")
 
     asyncio.run(run())
 

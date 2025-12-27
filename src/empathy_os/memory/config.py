@@ -5,7 +5,7 @@ Handles connection to Redis from environment variables.
 Supports Railway, redis.com, local Docker, or mock mode.
 
 Environment Variables:
-    REDIS_URL: Full Redis URL (redis://user:pass@host:port)
+    REDIS_URL: Full Redis URL (redis://user:pass@host:port)  # pragma: allowlist secret
     REDIS_HOST: Redis host (default: localhost)
     REDIS_PORT: Redis port (default: 6379)
     REDIS_PASSWORD: Redis password (optional)
@@ -39,7 +39,7 @@ def parse_redis_url(url: str) -> dict:
     Parse Redis URL into connection parameters.
 
     Args:
-        url: Redis URL (redis://user:pass@host:port/db)
+        url: Redis URL (redis://user:pass@host:port/db)  # pragma: allowlist secret
 
     Returns:
         Dict with host, port, password, db
@@ -71,7 +71,10 @@ def get_redis_config() -> dict:
         return {"use_mock": True}
 
     # Check for full URL (Railway, Heroku, etc.)
-    redis_url = os.getenv("REDIS_URL") or os.getenv("REDIS_PRIVATE_URL")
+    # Priority: REDIS_URL > REDIS_PUBLIC_URL > REDIS_PRIVATE_URL
+    redis_url = (
+        os.getenv("REDIS_URL") or os.getenv("REDIS_PUBLIC_URL") or os.getenv("REDIS_PRIVATE_URL")
+    )
     if redis_url:
         config = parse_redis_url(redis_url)
         config["use_mock"] = False
@@ -169,6 +172,8 @@ def check_redis_connection() -> dict:
     # Determine config source
     if os.getenv("REDIS_URL"):
         result["config_source"] = "REDIS_URL"
+    elif os.getenv("REDIS_PUBLIC_URL"):
+        result["config_source"] = "REDIS_PUBLIC_URL (Railway)"
     elif os.getenv("REDIS_PRIVATE_URL"):
         result["config_source"] = "REDIS_PRIVATE_URL"
     elif os.getenv("REDIS_HOST"):
@@ -198,19 +203,23 @@ def get_railway_redis() -> RedisShortTermMemory:
     Get Redis configured for Railway deployment.
 
     Railway automatically sets REDIS_URL when you add a Redis service.
+    For external access (like from VSCode extension), use REDIS_PUBLIC_URL.
 
     Returns:
         RedisShortTermMemory configured for Railway
 
     Raises:
-        EnvironmentError: If REDIS_URL is not set
+        EnvironmentError: If no Redis URL is set
     """
-    redis_url = os.getenv("REDIS_URL") or os.getenv("REDIS_PRIVATE_URL")
+    redis_url = (
+        os.getenv("REDIS_URL") or os.getenv("REDIS_PUBLIC_URL") or os.getenv("REDIS_PRIVATE_URL")
+    )
 
     if not redis_url:
         raise OSError(
             "REDIS_URL not found. Make sure Redis is added to your Railway project.\n"
-            "Run: railway add --database redis"
+            "Run: railway add --database redis\n"
+            "For external access, use REDIS_PUBLIC_URL"
         )
 
     return get_redis_memory(url=redis_url)

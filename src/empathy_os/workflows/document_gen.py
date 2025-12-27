@@ -439,7 +439,7 @@ Content to document:
             stripped = line.strip()
             match = top_level_pattern.match(stripped)
             if match:
-                section_num = match.group(1)
+                # section_num = match.group(1) - not needed, only extracting title
                 title = match.group(2).strip()
                 # Remove any trailing description after " - "
                 if " - " in title:

@@ -550,7 +550,7 @@ def format_refactor_plan_report(result: dict, input_data: dict) -> str:
     lines.append("")
 
     # Scan summary
-    by_marker = input_data.get("by_marker", {})
+    by_marker: dict[str, int] = input_data.get("by_marker", {})
     files_scanned = input_data.get("files_scanned", 0)
 
     lines.append("-" * 60)
@@ -560,7 +560,8 @@ def format_refactor_plan_report(result: dict, input_data: dict) -> str:
     if by_marker:
         lines.append("By Marker Type:")
         for marker, count in sorted(by_marker.items(), key=lambda x: -x[1]):
-            severity = DEBT_MARKERS.get(marker, {}).get("severity", "low")
+            marker_info = DEBT_MARKERS.get(marker, {"severity": "low", "weight": 1})
+            severity = str(marker_info.get("severity", "low"))
             sev_icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(severity, "⚪")
             lines.append(f"  {sev_icon} {marker}: {count}")
     lines.append("")

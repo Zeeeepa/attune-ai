@@ -15,7 +15,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any
+from typing import Any, cast
 
 from .registry import get_model
 
@@ -523,7 +523,8 @@ class ResilientExecutor:
     def get_model_for_task(self, task_type: str) -> str:
         """Delegate to inner executor."""
         if self._executor and hasattr(self._executor, "get_model_for_task"):
-            return self._executor.get_model_for_task(task_type)
+            result: str = cast(str, self._executor.get_model_for_task(task_type))
+            return result
         return ""
 
     def estimate_cost(
@@ -534,7 +535,10 @@ class ResilientExecutor:
     ) -> float:
         """Delegate to inner executor."""
         if self._executor and hasattr(self._executor, "estimate_cost"):
-            return self._executor.estimate_cost(task_type, input_tokens, output_tokens)
+            result: float = cast(
+                float, self._executor.estimate_cost(task_type, input_tokens, output_tokens)
+            )
+            return result
         return 0.0
 
     async def execute_with_fallback(

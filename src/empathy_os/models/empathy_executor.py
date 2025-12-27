@@ -17,7 +17,7 @@ from typing import Any
 from .executor import ExecutionContext, LLMResponse
 from .registry import get_model
 from .tasks import get_tier_for_task
-from .telemetry import LLMCallRecord, TelemetryStore
+from .telemetry import LLMCallRecord, TelemetryBackend, TelemetryStore
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ class EmpathyLLMExecutor:
         empathy_llm: Any | None = None,
         provider: str = "anthropic",
         api_key: str | None = None,
-        telemetry_store: TelemetryStore | None = None,
+        telemetry_store: TelemetryBackend | TelemetryStore | None = None,
         **llm_kwargs: Any,
     ):
         """

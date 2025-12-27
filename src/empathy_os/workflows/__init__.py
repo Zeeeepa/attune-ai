@@ -94,7 +94,8 @@ if os.path.exists(_workflows_module_path):
         cmd_learn = _workflows_cli.cmd_learn
 
 # Default workflow registry (statically defined for backwards compatibility)
-_DEFAULT_WORKFLOWS: dict[str, type[BaseWorkflow]] = {
+# Note: Some entries are composite pipelines, not direct BaseWorkflow subclasses
+_DEFAULT_WORKFLOWS: dict[str, type] = {
     # Core workflows
     "code-review": CodeReviewWorkflow,
     "doc-gen": DocumentGenerationWorkflow,

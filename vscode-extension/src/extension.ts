@@ -19,6 +19,8 @@ import * as fs from 'fs';
 import { PowerPanel } from './panels/PowerPanel';
 import { EmpathyDashboardProvider } from './panels/EmpathyDashboardPanel';
 import { MemoryPanelProvider } from './panels/MemoryPanelProvider';
+import { InitializeWizardPanel } from './panels/InitializeWizardPanel';
+import { initializeProject, showWelcomeIfNeeded as showInitializeWelcome } from './commands/initializeProject';
 
 // Status bar item
 let statusBarItem: vscode.StatusBarItem;
@@ -71,7 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );
 
-    // Register memory panel webview provider
+    // Memory panel (Beta) - requires backend server for full functionality
     const memoryProvider = new MemoryPanelProvider(context.extensionUri, context);
     context.subscriptions.push(
         vscode.window.registerWebviewViewProvider(
@@ -105,14 +107,11 @@ export function activate(context: vscode.ExtensionContext) {
         { name: 'empathy.openFile', handler: cmdOpenFile },
         { name: 'empathy.ignoreIssue', handler: cmdIgnoreIssue },
         { name: 'empathy.openWebDashboard', handler: cmdOpenWebDashboard },
-        // Memory commands
+        // Memory commands (Beta)
         { name: 'empathy.memory.showPanel', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
         { name: 'empathy.memory.refreshStatus', handler: () => { memoryProvider.refresh(); vscode.window.showInformationMessage('Memory status refreshed'); } },
-        { name: 'empathy.memory.startRedis', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
-        { name: 'empathy.memory.stopRedis', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
-        { name: 'empathy.memory.viewPatterns', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
-        { name: 'empathy.memory.exportPatterns', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
-        { name: 'empathy.memory.healthCheck', handler: () => vscode.commands.executeCommand('empathy-memory.focus') },
+        // Initialize wizard (accepts optional { force: true } to skip "already initialized" check)
+        { name: 'empathy.initializeProject', handler: (options?: { force?: boolean }) => initializeProject(context, options) },
     ];
 
     for (const cmd of commands) {
@@ -1045,21 +1044,38 @@ class HealthItem extends vscode.TreeItem {
 
 function showWelcomeIfNeeded(context: vscode.ExtensionContext): void {
     const hasShownWelcome = context.globalState.get<boolean>('hasShownWelcome');
+    const isInitialized = context.globalState.get<boolean>('empathy.initialized');
+
     if (!hasShownWelcome) {
-        vscode.window
-            .showInformationMessage(
-                'Empathy Framework extension activated! Run "empathy morning" to get started.',
-                'Open Command Palette',
-                'Dismiss'
-            )
-            .then((selection) => {
-                if (selection === 'Open Command Palette') {
-                    vscode.commands.executeCommand(
-                        'workbench.action.showCommands',
-                        'Empathy'
-                    );
-                }
-            });
+        // First-time users get the initialize option prominently
+        if (!isInitialized) {
+            vscode.window
+                .showInformationMessage(
+                    'Welcome to Empathy Framework! Set up your project to get started.',
+                    'Initialize Project',
+                    'Later'
+                )
+                .then((selection) => {
+                    if (selection === 'Initialize Project') {
+                        initializeProject(context);
+                    }
+                });
+        } else {
+            vscode.window
+                .showInformationMessage(
+                    'Empathy Framework extension activated! Run "empathy morning" to get started.',
+                    'Open Command Palette',
+                    'Dismiss'
+                )
+                .then((selection) => {
+                    if (selection === 'Open Command Palette') {
+                        vscode.commands.executeCommand(
+                            'workbench.action.showCommands',
+                            'Empathy'
+                        );
+                    }
+                });
+        }
         context.globalState.update('hasShownWelcome', true);
     }
 }

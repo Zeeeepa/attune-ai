@@ -44,6 +44,7 @@ class PRReviewResult:
     summary: str
     agents_used: list[str]
     duration_seconds: float
+    cost: float = 0.0  # Total cost from code review and security audit crews
     metadata: dict = field(default_factory=dict)
 
 
@@ -147,26 +148,26 @@ class PRReviewWorkflow:
 
             try:
                 # Get diff of staged and unstaged changes
-                result = subprocess.run(
+                git_result = subprocess.run(
                     ["git", "diff", "HEAD"],
                     cwd=target_path,
                     capture_output=True,
                     text=True,
                     timeout=30,
                 )
-                diff = result.stdout or ""
+                diff = git_result.stdout or ""
                 if not diff:
                     # Try getting diff against main/master
                     for branch in ["main", "master"]:
-                        result = subprocess.run(
+                        git_result = subprocess.run(
                             ["git", "diff", branch],
                             cwd=target_path,
                             capture_output=True,
                             text=True,
                             timeout=30,
                         )
-                        if result.stdout:
-                            diff = result.stdout
+                        if git_result.stdout:
+                            diff = git_result.stdout
                             break
                 if not diff:
                     diff = "(No diff available - no changes detected)"
@@ -196,21 +197,26 @@ class PRReviewWorkflow:
                 if self.use_security_crew:
                     security_audit = await self._run_security_audit(target_path)
 
-            # Collect findings from code review
+            # Collect findings and costs from code review
+            total_cost = 0.0
             if code_review:
                 code_findings = code_review.get("findings", [])
                 agents_used.extend(code_review.get("agents_used", []))
                 for f in code_findings:
                     if f.get("suggestion"):
                         recommendations.append(f["suggestion"])
+                # Accumulate cost from code review (if tracked by crew)
+                total_cost += code_review.get("cost", 0.0)
 
-            # Collect findings from security audit
+            # Collect findings and costs from security audit
             if security_audit:
                 security_findings = security_audit.get("findings", [])
                 agents_used.extend(security_audit.get("agents_used", []))
                 for f in security_findings:
                     if f.get("remediation"):
                         recommendations.append(f["remediation"])
+                # Accumulate cost from security audit (if tracked by crew)
+                total_cost += security_audit.get("cost", 0.0)
 
             # Combine all findings
             all_findings = self._merge_findings(code_findings, security_findings)
@@ -270,6 +276,7 @@ class PRReviewWorkflow:
                 summary=summary,
                 agents_used=list(set(agents_used)),  # Deduplicate
                 duration_seconds=duration,
+                cost=total_cost,
                 metadata={
                     "files_changed": len(files_changed),
                     "total_findings": len(all_findings),
@@ -305,6 +312,7 @@ class PRReviewWorkflow:
                 summary=f"PR review failed with error: {str(e)}",
                 agents_used=[],
                 duration_seconds=duration,
+                cost=0.0,
                 metadata={"error": str(e)},
             )
 
@@ -553,7 +561,7 @@ def main():
         print("=" * 60)
         print(f"\nVerdict: {result.verdict.upper()}")
         print(f"\n{result.summary}")
-        print(f"\nDuration: {result.duration_seconds:.2f}s")
+        print(f"\nDuration: {result.duration_seconds * 1000:.0f}ms")
 
         if result.agents_used:
             print(f"\nAgents Used: {', '.join(result.agents_used)}")
@@ -724,7 +732,8 @@ def format_pr_review_report(result: PRReviewResult) -> str:
 
     # Footer
     lines.append("=" * 60)
-    lines.append(f"Review completed in {result.duration_seconds:.1f}s")
+    duration_ms = result.duration_seconds * 1000
+    lines.append(f"Review completed in {duration_ms:.0f}ms | Cost: ${result.cost:.4f}")
     lines.append("=" * 60)
 
     return "\n".join(lines)

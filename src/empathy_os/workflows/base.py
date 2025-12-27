@@ -48,6 +48,9 @@ from empathy_os.models import (
 from empathy_os.models import ModelProvider as UnifiedModelProvider
 from empathy_os.models import ModelTier as UnifiedModelTier
 
+# Import progress tracking
+from .progress import ProgressCallback, ProgressTracker
+
 if TYPE_CHECKING:
     from .config import WorkflowConfig
     from .step_config import WorkflowStepConfig
@@ -357,6 +360,7 @@ class BaseWorkflow(ABC):
         config: WorkflowConfig | None = None,
         executor: LLMExecutor | None = None,
         telemetry_backend: TelemetryBackend | None = None,
+        progress_callback: ProgressCallback | None = None,
     ):
         """
         Initialize workflow with optional cost tracker, provider, and config.
@@ -371,11 +375,17 @@ class BaseWorkflow(ABC):
                      If provided, enables unified execution with telemetry.
             telemetry_backend: TelemetryBackend for storing telemetry records.
                      Defaults to TelemetryStore (JSONL file backend).
+            progress_callback: Callback for real-time progress updates.
+                     If provided, enables live progress tracking during execution.
         """
         from .config import WorkflowConfig
 
         self.cost_tracker = cost_tracker or CostTracker()
         self._stages_run: list[WorkflowStage] = []
+
+        # Progress tracking
+        self._progress_callback = progress_callback
+        self._progress_tracker: ProgressTracker | None = None
 
         # New: LLMExecutor support
         self._executor = executor
@@ -516,6 +526,16 @@ class BaseWorkflow(ABC):
         current_data = kwargs
         error = None
 
+        # Initialize progress tracker if callback provided
+        if self._progress_callback:
+            self._progress_tracker = ProgressTracker(
+                workflow_name=self.name,
+                workflow_id=self._run_id,
+                stage_names=self.stages,
+            )
+            self._progress_tracker.add_callback(self._progress_callback)
+            self._progress_tracker.start_workflow()
+
         try:
             for stage_name in self.stages:
                 tier = self.get_tier_for_stage(stage_name)
@@ -533,7 +553,17 @@ class BaseWorkflow(ABC):
                         skip_reason=skip_reason,
                     )
                     self._stages_run.append(stage)
+
+                    # Report skip to progress tracker
+                    if self._progress_tracker:
+                        self._progress_tracker.skip_stage(stage_name, skip_reason or "")
+
                     continue
+
+                # Report stage start to progress tracker
+                model_id = self.get_model_for_tier(tier)
+                if self._progress_tracker:
+                    self._progress_tracker.start_stage(stage_name, tier.value, model_id)
 
                 # Run the stage
                 output, input_tokens, output_tokens = await self.run_stage(
@@ -556,9 +586,18 @@ class BaseWorkflow(ABC):
                 )
                 self._stages_run.append(stage)
 
+                # Report stage completion to progress tracker
+                if self._progress_tracker:
+                    self._progress_tracker.complete_stage(
+                        stage_name,
+                        cost=cost,
+                        tokens_in=input_tokens,
+                        tokens_out=output_tokens,
+                    )
+
                 # Log to cost tracker
                 self.cost_tracker.log_request(
-                    model=self.get_model_for_tier(tier),
+                    model=model_id,
                     input_tokens=input_tokens,
                     output_tokens=output_tokens,
                     task_type=f"workflow:{self.name}:{stage_name}",
@@ -569,6 +608,9 @@ class BaseWorkflow(ABC):
 
         except Exception as e:
             error = str(e)
+            # Report failure to progress tracker
+            if self._progress_tracker:
+                self._progress_tracker.fail_workflow(error)
 
         completed_at = datetime.now()
         total_duration_ms = int((completed_at - started_at).total_seconds() * 1000)
@@ -592,6 +634,10 @@ class BaseWorkflow(ABC):
             provider=provider_str,
             error=error,
         )
+
+        # Report workflow completion to progress tracker
+        if self._progress_tracker and error is None:
+            self._progress_tracker.complete_workflow()
 
         # Save to workflow history for dashboard
         try:

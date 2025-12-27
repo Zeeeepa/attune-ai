@@ -245,15 +245,15 @@ class LangChainAdapter(BaseAdapter):
             raise ImportError("LangChain not installed")
 
         # Import from langchain or langgraph depending on version
+        AgentExecutor: Any = None
+        create_tool_calling_agent: Any = None
         try:
             from langchain.agents import AgentExecutor, create_tool_calling_agent
         except (ImportError, AttributeError):
             # Newer versions may have different import paths
-            from langgraph.prebuilt import (
-                create_react_agent as create_tool_calling_agent,
-            )  # type: ignore[assignment]; noqa: F401
+            from langgraph.prebuilt import create_react_agent  # noqa: F401
 
-            AgentExecutor = None  # type: ignore[misc, assignment]
+            create_tool_calling_agent = create_react_agent
         from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
         llm = self._get_llm(config)

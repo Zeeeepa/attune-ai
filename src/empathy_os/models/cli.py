@@ -56,7 +56,7 @@ def print_registry(provider: str | None = None, format: str = "table") -> None:
 
     if format == "json":
         # Convert to JSON-serializable format
-        output = {}
+        output: dict[str, dict[str, dict[str, object]]] = {}
         for prov, tiers in registry.items():
             output[prov] = {}
             for tier, info in tiers.items():
@@ -152,7 +152,7 @@ def print_costs(
         providers = list(registry.keys())
 
     if format == "json":
-        output = {}
+        output: dict[str, dict[str, dict[str, object]]] = {}
         for prov in providers:
             output[prov] = {}
             for tier in ["cheap", "capable", "premium"]:
@@ -244,10 +244,10 @@ def print_effective_config(provider: str = "anthropic") -> None:
     print("\n[Task Routing Examples]")
     example_tasks = ["summarize", "fix_bug", "coordinate"]
     for task in example_tasks:
-        tier = get_tier_for_task(task)
-        model = registry[provider].get(tier.value)
+        task_tier = get_tier_for_task(task)
+        model = registry[provider].get(task_tier.value)
         model_id = model.id if model else "N/A"
-        print(f"  {task} → {tier.value} → {model_id}")
+        print(f"  {task} → {task_tier.value} → {model_id}")
 
     # Default timeouts
     print("\n[Default Timeouts]")

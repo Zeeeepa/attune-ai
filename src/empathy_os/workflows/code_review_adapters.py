@@ -142,6 +142,8 @@ def crew_report_to_workflow_format(report: "CodeReviewReport") -> dict:
         "memory_graph_hits": report.memory_graph_hits,
         "review_duration_seconds": report.review_duration_seconds,
         "metadata": report.metadata,
+        # Pass through cost if tracked by crew (future enhancement)
+        "cost": report.metadata.get("cost", 0.0),
     }
 
 
@@ -293,7 +295,7 @@ def _map_type_to_category(vuln_type: str) -> str:
         "xss": "security",
         "command_injection": "security",
         "path_traversal": "security",
-        "hardcoded_secret": "security",
+        "hardcoded_secret": "security",  # pragma: allowlist secret
         "insecure_random": "security",
         "code_smell": "quality",
         "complexity": "quality",

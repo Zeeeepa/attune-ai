@@ -52,6 +52,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                         // Special handling for run-tests (runs pytest directly)
                         if (message.command === 'run-tests') {
                             await this._runTests();
+                        } else if (message.command === 'initialize') {
+                            // Launch the Initialize Wizard (force open, bypass "already initialized" check)
+                            await vscode.commands.executeCommand('empathy.initializeProject', { force: true });
                         } else {
                             const cmdName = `empathy.${message.command}`;
                             // Check if command exists before executing
@@ -109,6 +112,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     break;
                 case 'askClaude':
                     await this._askClaude(message.content);
+                    break;
+                case 'estimateCost':
+                    await this._estimateCost(message.workflow, message.input);
                     break;
             }
         });
@@ -556,14 +562,14 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
 
-        // Default model configuration
+        // Default model configuration (using current model names)
         let modelConfig = {
             provider: 'anthropic',
             mode: 'single',
             models: {
-                cheap: 'claude-3-haiku',
-                capable: 'claude-3-5-sonnet',
-                premium: 'claude-3-opus'
+                cheap: 'claude-3-5-haiku',
+                capable: 'claude-sonnet-4-5',
+                premium: 'claude-opus-4-5'
             }
         };
 
@@ -583,8 +589,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                         modelConfig.mode = 'hybrid';
                         modelConfig.models = {
                             cheap: 'gpt-4o-mini',
-                            capable: 'claude-3-5-sonnet',
-                            premium: 'claude-3-opus'
+                            capable: 'claude-sonnet-4-5',
+                            premium: 'claude-opus-4-5'
                         };
                     } else if (hasOpenAI && !hasAnthropic) {
                         modelConfig.provider = 'OpenAI';
@@ -884,6 +890,70 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         // Copy report to clipboard
         await vscode.env.clipboard.writeText(content);
         vscode.window.showInformationMessage('Report copied! Paste into Claude Code input.');
+    }
+
+    /**
+     * Estimate cost for a workflow before running it.
+     * Uses the token_estimator module for accurate predictions.
+     */
+    private async _estimateCost(workflowName: string, input: string) {
+        if (!this._view) {
+            return;
+        }
+
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            this._view.webview.postMessage({
+                type: 'costEstimate',
+                data: { workflow: workflowName, error: 'No workspace folder' }
+            });
+            return;
+        }
+
+        const config = vscode.workspace.getConfiguration('empathy');
+        const pythonPath = config.get<string>('pythonPath', 'python');
+
+        // Build arguments for token_estimator
+        // CLI uses positional workflow arg and -i for input
+        const args = [
+            '-m', 'empathy_os.models.token_estimator',
+            workflowName,
+            '-i', input || '.'
+        ];
+
+        try {
+            const result = await new Promise<string>((resolve, reject) => {
+                const proc = cp.execFile(pythonPath, args, {
+                    cwd: workspaceFolder,
+                    maxBuffer: 1024 * 1024,
+                    timeout: 10000
+                }, (error, stdout, stderr) => {
+                    if (error) {
+                        reject(new Error(stderr || error.message));
+                    } else {
+                        resolve(stdout);
+                    }
+                });
+            });
+
+            const estimate = JSON.parse(result.trim());
+            this._view.webview.postMessage({
+                type: 'costEstimate',
+                data: {
+                    workflow: workflowName,
+                    estimate: estimate
+                }
+            });
+        } catch (error) {
+            // Send error but don't block - estimation is optional
+            this._view.webview.postMessage({
+                type: 'costEstimate',
+                data: {
+                    workflow: workflowName,
+                    error: `Estimation unavailable: ${error}`
+                }
+            });
+        }
     }
 
     private _sendActiveFile(workflow: string) {
@@ -1317,6 +1387,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span class="action-icon">&#x1F9EA;</span>
                     <span>Run Tests</span>
                 </button>
+                <button class="action-btn" data-cmd="initialize" data-title="Setup Wizard">
+                    <span class="action-icon">&#x2699;</span>
+                    <span>Setup</span>
+                </button>
             </div>
         </div>
 
@@ -1414,7 +1488,26 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 <div id="workflow-dropdown-input" style="display: none; text-align: center; padding: 10px;">
                     <button id="workflow-select-btn" class="btn" style="width: 100%;">&#x25BC; Select Option</button>
                 </div>
+                <!-- Cost Estimate Display -->
+                <div id="workflow-cost-estimate" style="display: none; margin-top: 8px; padding: 8px; background: var(--vscode-editor-background); border: 1px solid var(--border); border-radius: 4px; font-size: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="opacity: 0.7;">Estimated Cost:</span>
+                        <span id="cost-estimate-value" style="font-weight: 600; color: var(--vscode-charts-blue);">--</span>
+                    </div>
+                    <div id="cost-estimate-details" style="margin-top: 4px; opacity: 0.6; font-size: 9px;"></div>
+                </div>
                 <button id="workflow-run-btn" class="btn" style="margin-top: 8px; width: 100%;">&#x25B6; Run Workflow</button>
+            </div>
+            <!-- Real-time Progress Display -->
+            <div id="workflow-progress" style="display: none; margin-bottom: 8px; padding: 10px; background: var(--vscode-editor-background); border: 1px solid var(--border); border-radius: 4px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span id="progress-stage" style="font-size: 11px; font-weight: 500;">Stage 1/3</span>
+                    <span id="progress-cost" style="font-size: 10px; opacity: 0.7;">$0.0000</span>
+                </div>
+                <div class="progress-bar" style="height: 8px; margin-bottom: 4px;">
+                    <div id="progress-fill" class="progress-fill success" style="width: 0%; transition: width 0.3s;"></div>
+                </div>
+                <div id="progress-message" style="font-size: 10px; opacity: 0.7;">Starting...</div>
             </div>
             <div id="workflow-results-status" style="margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; font-size: 11px; display: none;">
                 Running...
@@ -1619,7 +1712,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             </div>
             <div style="font-size: 10px; opacity: 0.7; margin-bottom: 8px;">Drag sliders to see real-time cost estimates</div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
                 <!-- Controls -->
                 <div>
                     <div style="margin-bottom: 8px;">
@@ -2038,6 +2131,34 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         // Track selected dropdown value
         let selectedDropdownValue = '';
 
+        // Debounce helper for cost estimation
+        let costEstimateTimeout = null;
+        function requestCostEstimate(inputValue) {
+            if (costEstimateTimeout) {
+                clearTimeout(costEstimateTimeout);
+            }
+            costEstimateTimeout = setTimeout(function() {
+                if (currentWorkflow && inputValue) {
+                    vscode.postMessage({ type: 'estimateCost', workflow: currentWorkflow, input: inputValue });
+                }
+            }, 500);
+        }
+
+        // Add input listeners for cost estimation
+        const workflowTextInput = document.getElementById('workflow-input');
+        if (workflowTextInput) {
+            workflowTextInput.addEventListener('input', function() {
+                requestCostEstimate(this.value);
+            });
+        }
+
+        const workflowPathInput = document.getElementById('workflow-path');
+        if (workflowPathInput) {
+            workflowPathInput.addEventListener('input', function() {
+                requestCostEstimate(this.value);
+            });
+        }
+
         // Run workflow button handler
         const workflowRunBtn = document.getElementById('workflow-run-btn');
         if (workflowRunBtn) {
@@ -2095,8 +2216,25 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 const inputSection = document.getElementById('workflow-input-section');
                 const resultsStatus = document.getElementById('workflow-results-status');
                 const resultsContent = document.getElementById('workflow-results-content');
+                const costEstimate = document.getElementById('workflow-cost-estimate');
+                const progressPanel = document.getElementById('workflow-progress');
 
                 inputSection.style.display = 'none';
+                if (costEstimate) costEstimate.style.display = 'none';
+
+                // Show progress panel for real-time updates
+                if (progressPanel) {
+                    progressPanel.style.display = 'block';
+                    const progressStage = document.getElementById('progress-stage');
+                    const progressFill = document.getElementById('progress-fill');
+                    const progressMessage = document.getElementById('progress-message');
+                    const progressCost = document.getElementById('progress-cost');
+                    if (progressStage) progressStage.textContent = 'Starting...';
+                    if (progressFill) { progressFill.style.width = '0%'; progressFill.className = 'progress-fill success'; }
+                    if (progressMessage) progressMessage.textContent = 'Initializing workflow...';
+                    if (progressCost) progressCost.textContent = '$0.0000';
+                }
+
                 resultsStatus.style.display = 'block';
                 resultsStatus.style.background = 'rgba(99, 102, 241, 0.2)';
                 resultsStatus.style.color = '#6366f1';
@@ -2227,8 +2365,110 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                         }
                     }
                 }
+            } else if (message.type === 'costEstimate') {
+                // Display cost estimate for workflow
+                updateCostEstimate(message.data);
+            } else if (message.type === 'workflowProgress') {
+                // Real-time progress update from WebSocket
+                updateWorkflowProgress(message.data);
             }
         });
+
+        // Update cost estimate display
+        function updateCostEstimate(data) {
+            const estimatePanel = document.getElementById('workflow-cost-estimate');
+            const estimateValue = document.getElementById('cost-estimate-value');
+            const estimateDetails = document.getElementById('cost-estimate-details');
+
+            if (!estimatePanel || !estimateValue || !estimateDetails) return;
+
+            if (data.error) {
+                // Hide on error - estimation is optional
+                estimatePanel.style.display = 'none';
+                return;
+            }
+
+            if (data.estimate) {
+                const est = data.estimate;
+                estimatePanel.style.display = 'block';
+
+                // Show cost range
+                if (est.total_min !== undefined && est.total_max !== undefined) {
+                    const minCost = est.total_min.toFixed(4);
+                    const maxCost = est.total_max.toFixed(4);
+                    estimateValue.textContent = minCost === maxCost ? '$' + minCost : '$' + minCost + ' - $' + maxCost;
+                } else if (est.display) {
+                    estimateValue.textContent = est.display;
+                }
+
+                // Show stage details
+                if (est.stages && est.stages.length > 0) {
+                    const stageInfo = est.stages.map(function(s) {
+                        return s.name + ' (' + s.tier + '): ~' + s.tokens_estimate + ' tokens';
+                    }).join(' | ');
+                    estimateDetails.textContent = stageInfo;
+                } else if (est.input_tokens) {
+                    estimateDetails.textContent = 'Input: ~' + est.input_tokens + ' tokens | Provider: ' + (est.provider || 'default');
+                }
+
+                // Color by risk level
+                if (est.risk === 'high') {
+                    estimateValue.style.color = 'var(--vscode-charts-orange)';
+                } else if (est.risk === 'medium') {
+                    estimateValue.style.color = 'var(--vscode-charts-yellow)';
+                } else {
+                    estimateValue.style.color = 'var(--vscode-charts-green)';
+                }
+            }
+        }
+
+        // Update real-time progress display
+        function updateWorkflowProgress(data) {
+            const progressPanel = document.getElementById('workflow-progress');
+            const progressStage = document.getElementById('progress-stage');
+            const progressCost = document.getElementById('progress-cost');
+            const progressFill = document.getElementById('progress-fill');
+            const progressMessage = document.getElementById('progress-message');
+
+            if (!progressPanel) return;
+
+            if (data.status === 'running' || data.status === 'retrying' || data.status === 'fallback') {
+                progressPanel.style.display = 'block';
+
+                if (progressStage) {
+                    progressStage.textContent = 'Stage ' + (data.stage_index + 1) + '/' + data.total_stages;
+                }
+                if (progressCost && data.cost_so_far !== undefined) {
+                    progressCost.textContent = '$' + data.cost_so_far.toFixed(4);
+                }
+                if (progressFill && data.percent_complete !== undefined) {
+                    progressFill.style.width = data.percent_complete + '%';
+                }
+                if (progressMessage) {
+                    progressMessage.textContent = data.message || data.current_stage || 'Processing...';
+                }
+
+                // Update fill color based on status
+                if (progressFill) {
+                    if (data.status === 'fallback') {
+                        progressFill.className = 'progress-fill warning';
+                    } else if (data.status === 'retrying') {
+                        progressFill.className = 'progress-fill warning';
+                    } else {
+                        progressFill.className = 'progress-fill success';
+                    }
+                }
+            } else if (data.status === 'completed') {
+                progressPanel.style.display = 'none';
+            } else if (data.status === 'failed') {
+                if (progressFill) {
+                    progressFill.className = 'progress-fill error';
+                }
+                if (progressMessage) {
+                    progressMessage.textContent = data.error || 'Failed';
+                }
+            }
+        }
 
         function updateWorkflowResults(data) {
             const resultsPanel = document.getElementById('workflow-results');
@@ -2236,6 +2476,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             const resultsStatus = document.getElementById('workflow-results-status');
             const resultsContent = document.getElementById('workflow-results-content');
             const actionsPanel = document.getElementById('workflow-actions');
+            const progressPanel = document.getElementById('workflow-progress');
+
+            // Hide progress panel on completion
+            if (data.status !== 'running' && progressPanel) {
+                progressPanel.style.display = 'none';
+            }
 
             // Restore button state only on complete/error
             if (data.status !== 'running') {
@@ -2558,13 +2804,27 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 return;
             }
 
+            // If only "unknown" provider, show message instead
+            const keys = Object.keys(byProvider);
+            if (keys.length === 1 && keys[0] === 'unknown') {
+                container.innerHTML = '<div style="text-align: center; opacity: 0.5; padding: 8px;">Provider data not recorded in telemetry</div>';
+                return;
+            }
+
             const providerColors = {
                 anthropic: '#d97706',
                 openai: '#22c55e',
-                ollama: '#6366f1'
+                ollama: '#6366f1',
+                hybrid: '#8b5cf6'
             };
 
-            const entries = Object.entries(byProvider);
+            // Filter out "unknown" if there are other providers
+            const entries = Object.entries(byProvider).filter(([p, _]) => p !== 'unknown');
+            if (entries.length === 0) {
+                container.innerHTML = '<div style="text-align: center; opacity: 0.5; padding: 8px;">No provider data</div>';
+                return;
+            }
+
             const maxCost = Math.max(...entries.map(([_, v]) => v.cost), 0.01);
 
             container.innerHTML = entries.map(([provider, data]) => {

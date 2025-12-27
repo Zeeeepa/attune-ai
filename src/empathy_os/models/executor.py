@@ -29,7 +29,7 @@ class LLMResponse:
 
     Attributes:
         content: The LLM response text
-        model_id: Model identifier (e.g., "claude-sonnet-4-20250514")
+        model_id: Model identifier (e.g., "claude-sonnet-4-5-20250514")
         provider: Provider name (e.g., "anthropic", "openai")
         tier: Model tier ("cheap", "capable", "premium")
         tokens_input: Number of input tokens used
