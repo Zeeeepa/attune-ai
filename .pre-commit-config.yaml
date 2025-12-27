@@ -106,3 +106,13 @@ repos:
         pass_filenames: false
         stages: [manual]  # Run manually with: pre-commit run pattern-review
         # Change to 'stages: [commit]' to run automatically on every commit
+
+      # Cross-platform compatibility check
+      # Detects hardcoded paths, missing encoding, asyncio issues
+      - id: platform-compat
+        name: Cross-Platform Compatibility Check
+        entry: python scripts/check_platform_compat.py src/ empathy_llm_toolkit/ empathy_software_plugin/ coach_wizards/
+        language: python
+        pass_filenames: false
+        stages: [manual]  # Run manually with: pre-commit run platform-compat
+        # Change to 'stages: [commit]' to run automatically on every commit

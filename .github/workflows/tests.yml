@@ -76,6 +76,36 @@ jobs:
     - name: Security scan with Bandit
       run: bandit -c .bandit -r src/ empathy_llm_toolkit/ coach_wizards/ empathy_software_plugin/ --severity-level medium --confidence-level medium
 
+  platform-compat:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Check cross-platform compatibility
+      id: compat
+      run: |
+        python scripts/check_platform_compat.py src/ --json > compat-report.json
+        python scripts/check_platform_compat.py src/ --fix
+
+    - name: Upload compatibility report
+      uses: actions/upload-artifact@v4
+      with:
+        name: platform-compat-report
+        path: compat-report.json
+
+    - name: Fail on errors (non-blocking for now)
+      run: |
+        ERRORS=$(python -c "import json; r=json.load(open('compat-report.json')); print(r['summary']['errors'])")
+        if [ "$ERRORS" -gt 0 ]; then
+          echo "::warning::Found $ERRORS cross-platform compatibility errors"
+        fi
+      continue-on-error: true
+
   code-quality:
     runs-on: ubuntu-latest
     steps:
