@@ -316,7 +316,37 @@
         "website/public/framework-docs/404.html"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251228_0e046591",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Release v3.3.3 - Reliability Improvements & Config Fixes",
+      "fix": "See commit 0e046591",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-28",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        "CHANGELOG.md",
+        "backend/api/wizard_api.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251227_7d7a4e7e",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "test: Add tests for bug_predict, secure_release, and code_review_pipeline (139 tests)",
+      "fix": "See commit 7d7a4e7e",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-27",
+      "files_affected": [
+        "tests/test_bug_predict_workflow.py",
+        "tests/test_code_review_pipeline_workflow.py",
+        "tests/test_secure_release_workflow.py"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2025-12-26T23:17:25.943582"
+  "last_updated": "2025-12-28T12:56:51.147741"
 }

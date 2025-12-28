@@ -20,6 +20,7 @@ import { PowerPanel } from './panels/PowerPanel';
 import { EmpathyDashboardProvider } from './panels/EmpathyDashboardPanel';
 import { MemoryPanelProvider } from './panels/MemoryPanelProvider';
 import { RefactorAdvisorPanel } from './panels/RefactorAdvisorPanel';
+import { ResearchSynthesisPanel } from './panels/ResearchSynthesisPanel';
 import { InitializeWizardPanel } from './panels/InitializeWizardPanel';
 import { initializeProject, showWelcomeIfNeeded as showInitializeWelcome } from './commands/initializeProject';
 
@@ -94,6 +95,20 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.registerWebviewViewProvider(
             RefactorAdvisorPanel.viewType,
             refactorAdvisorProvider,
+            {
+                webviewOptions: {
+                    retainContextWhenHidden: true
+                }
+            }
+        )
+    );
+
+    // Research Synthesis panel - Multi-document research and synthesis
+    const researchSynthesisProvider = new ResearchSynthesisPanel(context.extensionUri, context);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            ResearchSynthesisPanel.viewType,
+            researchSynthesisProvider,
             {
                 webviewOptions: {
                     retainContextWhenHidden: true

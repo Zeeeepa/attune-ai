@@ -172,6 +172,11 @@
           "type": "webview",
           "id": "refactor-advisor",
           "name": "Refactor Advisor"
+        },
+        {
+          "type": "webview",
+          "id": "research-synthesis",
+          "name": "Research Synthesis"
         }
       ]
     },

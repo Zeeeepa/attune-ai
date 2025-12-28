@@ -55,11 +55,14 @@ SYNTHESIZE_STEP_CAPABLE = WorkflowStepConfig(
 
 class ResearchSynthesisWorkflow(BaseWorkflow):
     """
-    Multi-tier research synthesis workflow.
+    Multi-tier research synthesis workflow for comparing multiple documents.
 
     Uses cheap models for initial summarization, capable models for
     pattern analysis, and optionally premium models for final synthesis
     when the analysis reveals high complexity.
+
+    IMPORTANT: This workflow requires at least 2 source documents.
+    For single research questions without sources, use a direct LLM call instead.
 
     Usage (legacy - direct API calls):
         workflow = ResearchSynthesisWorkflow()
@@ -83,10 +86,14 @@ class ResearchSynthesisWorkflow(BaseWorkflow):
     - Automatic telemetry emission (LLMCallRecord per call)
     - Automatic workflow telemetry (WorkflowRunRecord at end)
     - Fallback and retry policies applied automatically
+
+    Raises:
+        ValueError: If fewer than 2 sources are provided
     """
 
     name = "research"
-    description = "Cost-optimized research synthesis pipeline"
+    description = "Cost-optimized research synthesis for multi-document analysis"
+    MIN_SOURCES = 2  # Minimum required sources
     stages = ["summarize", "analyze", "synthesize"]
     tier_map = {
         "summarize": ModelTier.CHEAP,
@@ -119,10 +126,29 @@ class ResearchSynthesisWorkflow(BaseWorkflow):
                 pass
         return self._client
 
+    # Fallback models by tier (used if PROVIDER_MODELS lookup fails)
+    FALLBACK_MODELS: dict[str, str] = {
+        "cheap": "claude-3-5-haiku-20241022",
+        "capable": "claude-sonnet-4-20250514",
+        "premium": "claude-opus-4-5-20251101",
+    }
+
     def _get_model_for_tier(self, tier: ModelTier) -> str:
-        """Get the model name for a given tier."""
+        """
+        Get the model name for a given tier with fallback logic.
+
+        Attempts to get model from PROVIDER_MODELS registry first.
+        Falls back to known-good model IDs if registry lookup fails.
+        """
         provider = ModelProvider.ANTHROPIC
-        return PROVIDER_MODELS.get(provider, {}).get(tier, "claude-sonnet-4-20250514")
+        model = PROVIDER_MODELS.get(provider, {}).get(tier)
+
+        if model:
+            return model
+
+        # Fallback: use known-good model IDs
+        tier_str = tier.value if hasattr(tier, "value") else str(tier)
+        return self.FALLBACK_MODELS.get(tier_str, "claude-sonnet-4-20250514")
 
     async def _call_llm(
         self, tier: ModelTier, system: str, user_message: str, max_tokens: int = 4096
@@ -202,6 +228,41 @@ class ResearchSynthesisWorkflow(BaseWorkflow):
                 tier, system, user_message, max_tokens=step.max_tokens or 4096
             )
 
+    def validate_sources(self, sources: list) -> None:
+        """
+        Validate that sufficient sources are provided.
+
+        Args:
+            sources: List of source documents/content
+
+        Raises:
+            ValueError: If fewer than MIN_SOURCES are provided
+        """
+        if not sources or len(sources) < self.MIN_SOURCES:
+            raise ValueError(
+                f"ResearchSynthesisWorkflow requires at least {self.MIN_SOURCES} source documents. "
+                f"Got {len(sources) if sources else 0}. "
+                "For single research questions without sources, use a direct LLM call instead."
+            )
+
+    async def execute(self, **kwargs: Any) -> Any:
+        """
+        Execute the research synthesis workflow.
+
+        Args:
+            sources: List of source documents (required, minimum 2)
+            question: Research question to answer
+
+        Returns:
+            WorkflowResult with synthesis output
+
+        Raises:
+            ValueError: If fewer than 2 sources are provided
+        """
+        sources = kwargs.get("sources", [])
+        self.validate_sources(sources)
+        return await super().execute(**kwargs)
+
     def should_skip_stage(self, stage_name: str, input_data: Any) -> tuple[bool, str | None]:
         """Skip premium synthesis if complexity is low."""
         if stage_name == "synthesize" and self._detected_complexity < self.complexity_threshold:
@@ -235,35 +296,15 @@ class ResearchSynthesisWorkflow(BaseWorkflow):
 
     async def _summarize(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
         """
-        Summarize each source document or research the question.
+        Summarize each source document.
+
+        Note: Sources are validated in execute() before this method is called.
         """
         sources = input_data.get("sources", [])
         question = input_data.get("question", "Summarize the content")
 
         total_input = 0
         total_output = 0
-
-        # If no sources provided, treat this as a research question
-        if not sources:
-            system = """You are a research assistant. Provide a comprehensive summary
-of the topic, breaking it into key points and insights. Be thorough but concise."""
-
-            user_message = f"Research and summarize: {question}"
-
-            response, inp_tokens, out_tokens = await self._call_llm(
-                tier, system, user_message, max_tokens=2048
-            )
-
-            return (
-                {
-                    "summaries": [{"source": "research", "summary": response, "key_points": []}],
-                    "question": question,
-                    "source_count": 0,
-                    "research_mode": True,
-                },
-                inp_tokens,
-                out_tokens,
-            )
 
         # Process each source
         summaries = []
@@ -300,26 +341,10 @@ extracting key points relevant to the research question. Be thorough but concise
 
     async def _analyze(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
         """
-        Analyze patterns across summaries.
+        Analyze patterns across summaries from multiple sources.
         """
         summaries = input_data.get("summaries", [])
         question = input_data.get("question", "")
-        research_mode = input_data.get("research_mode", False)
-
-        # For research mode, pass through the summary
-        if research_mode and summaries:
-            self._detected_complexity = 0.8  # Assume high complexity for research
-            return (
-                {
-                    "patterns": [],
-                    "complexity": self._detected_complexity,
-                    "question": question,
-                    "summary_count": len(summaries),
-                    "research_summary": summaries[0].get("summary", ""),
-                },
-                0,
-                0,
-            )
 
         # Combine summaries for analysis
         combined = "\n\n".join(
@@ -357,7 +382,7 @@ Provide a structured analysis."""
 
     async def _synthesize(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
         """
-        Synthesize final insights from patterns.
+        Synthesize final insights from multi-source analysis.
 
         Supports XML-enhanced prompts when enabled in workflow config.
         """
@@ -365,11 +390,6 @@ Provide a structured analysis."""
         complexity = input_data.get("complexity", 0.5)
         question = input_data.get("question", "")
         analysis = input_data.get("analysis", "")
-        research_summary = input_data.get("research_summary", "")
-
-        # Use research summary if available (research mode)
-        if research_summary:
-            analysis = research_summary
 
         # Build input payload
         input_payload = f"""Research question: {question}

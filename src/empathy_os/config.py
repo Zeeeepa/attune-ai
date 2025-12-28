@@ -24,6 +24,8 @@ try:
 except ImportError:
     YAML_AVAILABLE = False
 
+from empathy_os.workflows.config import ModelConfig
+
 
 @dataclass
 class EmpathyConfig:
@@ -77,6 +79,18 @@ class EmpathyConfig:
     # Custom metadata
     metadata: dict[str, Any] = field(default_factory=dict)
 
+    # Model settings
+    models: list[ModelConfig] = field(default_factory=list)
+    default_model: str | None = None
+    log_path: str | None = None
+    max_threads: int = 4
+    model_router: dict[str, Any] | None = None
+
+    def __post_init__(self):
+        """Post-initialization validation."""
+        if self.default_model and not any(m.name == self.default_model for m in self.models):
+            raise ValueError(f"Default model '{self.default_model}' not in models.")
+
     @classmethod
     def from_yaml(cls, filepath: str) -> "EmpathyConfig":
         """
@@ -116,6 +130,18 @@ class EmpathyConfig:
 
         valid_fields = {f.name for f in dataclass_fields(cls)}
         filtered_data = {k: v for k, v in data.items() if k in valid_fields}
+
+        return cls.from_dict(filtered_data)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "EmpathyConfig":
+        """Create an EmpathyConfig from a dictionary, ignoring unknown fields."""
+        known_fields = {f.name for f in cls.__dataclass_fields__.values()}
+        filtered_data = {k: v for k, v in data.items() if k in known_fields}
+
+        # Handle nested ModelConfig objects
+        if "models" in filtered_data and filtered_data["models"]:
+            filtered_data["models"] = [ModelConfig(**m) for m in filtered_data["models"]]
 
         return cls(**filtered_data)
 
