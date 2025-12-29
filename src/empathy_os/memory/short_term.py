@@ -1425,8 +1425,7 @@ class RedisShortTermMemory:
         """
         if not credentials.can_stage():
             raise PermissionError(
-                f"Agent {credentials.agent_id} cannot publish. "
-                "Requires CONTRIBUTOR tier or higher."
+                f"Agent {credentials.agent_id} cannot publish. Requires CONTRIBUTOR tier or higher."
             )
 
         start_time = time.perf_counter()

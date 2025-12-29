@@ -1018,7 +1018,7 @@ class Test{name}:
         # Prepare the context for the LLM by formatting the generated test code
         test_context = "<generated_tests>\n"
         for test_item in generated_tests:
-            test_context += f"  <file path=\"{test_item['source_file']}\">\n"
+            test_context += f'  <file path="{test_item["source_file"]}">\n'
             for test in test_item["tests"]:
                 # Extract test name from code for the report
                 test_name = "unnamed"
@@ -1028,7 +1028,7 @@ class Test{name}:
                         test_name = match.group(1)
                 except Exception:
                     pass
-                test_context += f"    <test name=\"{test_name}\" target=\"{test['target']}\" />\n"
+                test_context += f'    <test name="{test_name}" target="{test["target"]}" />\n'
             test_context += "  </file>\n"
         test_context += "</generated_tests>\n"
 

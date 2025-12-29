@@ -22,12 +22,8 @@ from empathy_software_plugin.wizards.performance.bottleneck_detector import (
     BottleneckType,
 )
 from empathy_software_plugin.wizards.performance.profiler_parsers import FunctionProfile
-from empathy_software_plugin.wizards.performance.trajectory_analyzer import (
-    TrajectoryPrediction,
-)
-from empathy_software_plugin.wizards.performance_profiling_wizard import (
-    PerformanceProfilingWizard,
-)
+from empathy_software_plugin.wizards.performance.trajectory_analyzer import TrajectoryPrediction
+from empathy_software_plugin.wizards.performance_profiling_wizard import PerformanceProfilingWizard
 
 
 class TestPerformanceProfilingWizardInitialization:

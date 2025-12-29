@@ -12,10 +12,7 @@ import pytest
 
 # Try to import the module - skip tests if dependencies unavailable
 try:
-    from wizards_consolidated.healthcare.sbar_wizard import (
-        SBAR_STEPS,
-        router,
-    )
+    from wizards_consolidated.healthcare.sbar_wizard import SBAR_STEPS, router
 
     SBAR_AVAILABLE = True
 except ImportError:

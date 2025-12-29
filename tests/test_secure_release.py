@@ -12,10 +12,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-from src.empathy_os.workflows.secure_release import (
-    SecureReleasePipeline,
-    SecureReleaseResult,
-)
+from src.empathy_os.workflows.secure_release import SecureReleasePipeline, SecureReleaseResult
 
 
 class TestSecureReleaseResult:

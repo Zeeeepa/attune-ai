@@ -10,11 +10,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.resilience.timeout import (
-    TimeoutError,
-    timeout,
-    with_timeout,
-)
+from empathy_os.resilience.timeout import TimeoutError, timeout, with_timeout
 
 
 class TestTimeoutError:

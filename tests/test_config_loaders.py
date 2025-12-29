@@ -336,8 +336,7 @@ class TestESLintConfigLoader:
         # Note: The loader's regex extracts JSON from module.exports = {...}
         # It requires strict JSON format (double quotes, no trailing commas)
         js_content = (
-            'module.exports = {"rules": {"no-console": "warn"}, '
-            '"extends": ["eslint:recommended"]};'
+            'module.exports = {"rules": {"no-console": "warn"}, "extends": ["eslint:recommended"]};'
         )
         config_path = Path(temp_dir) / ".eslintrc.js"
         with open(config_path, "w") as f:

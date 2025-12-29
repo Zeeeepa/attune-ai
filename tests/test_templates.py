@@ -13,12 +13,7 @@ Tests cover:
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from empathy_os.templates import (
-    TEMPLATES,
-    cmd_new,
-    list_templates,
-    scaffold_project,
-)
+from empathy_os.templates import TEMPLATES, cmd_new, list_templates, scaffold_project
 
 
 class TestTemplateDefinitions:

@@ -12,12 +12,7 @@ Tests the unified model registry including:
 
 import pytest
 
-from empathy_os.models.registry import (
-    MODEL_REGISTRY,
-    ModelInfo,
-    ModelProvider,
-    ModelTier,
-)
+from empathy_os.models.registry import MODEL_REGISTRY, ModelInfo, ModelProvider, ModelTier
 
 
 class TestModelTierEnum:

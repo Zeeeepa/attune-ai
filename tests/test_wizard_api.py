@@ -226,7 +226,8 @@ class TestWizardAPIErrorHandling:
     def test_422_wrong_type_for_input(self, client):
         """Test 422 response when input is wrong type."""
         response = client.post(
-            "/api/wizard/test_domain/process", json={"input": 12345}  # Should be string
+            "/api/wizard/test_domain/process",
+            json={"input": 12345},  # Should be string
         )
         assert response.status_code == 422
 

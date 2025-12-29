@@ -109,10 +109,9 @@ class TestGoldenScenarioValidation:
         primary = expected["primary_category"]
 
         valid_categories = [c.value for c in RefactoringCategory]
-        assert primary in valid_categories, (
-            f"Invalid primary_category '{primary}' in {scenario}. "
-            f"Valid options: {valid_categories}"
-        )
+        assert (
+            primary in valid_categories
+        ), f"Invalid primary_category '{primary}' in {scenario}. Valid options: {valid_categories}"
 
 
 class TestRefactoringCrewGoldenAnalysis:
@@ -125,10 +124,7 @@ class TestRefactoringCrewGoldenAnalysis:
     @pytest.mark.parametrize("scenario", get_golden_scenarios())
     def test_scenario_analysis_structure(self, scenario: str):
         """Test that analysis produces expected structure for each scenario."""
-        from empathy_llm_toolkit.agent_factory.crews import (
-            RefactoringConfig,
-            RefactoringCrew,
-        )
+        from empathy_llm_toolkit.agent_factory.crews import RefactoringConfig, RefactoringCrew
 
         input_code, expected = load_golden_scenario(scenario)
 

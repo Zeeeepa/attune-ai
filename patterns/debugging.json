@@ -346,7 +346,211 @@
         "tests/test_secure_release_workflow.py"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_83fd3eb4",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add Windows-specific skipif decorators for CI reliability",
+      "fix": "See commit 83fd3eb4",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        "tests/test_book_chapter_wizard.py",
+        "tests/test_book_production_agents.py",
+        "tests/test_config_loaders.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_f833ac09",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Skip tests when dependencies unavailable in CI",
+      "fix": "See commit f833ac09",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        "tests/test_intelligence_integration.py",
+        "tests/test_long_term.py",
+        "tests/test_redis_bootstrap.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_cb2563ab",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Pre-commit YAML check and pattern regeneration",
+      "fix": "See commit cb2563ab",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_dfeced89",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude profile_*.py from detect-secrets",
+      "fix": "See commit dfeced89",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_4a0a4c6e",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude all source directories from detect-secrets",
+      "fix": "See commit 4a0a4c6e",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_ea47a8b1",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude audit files from detect-secrets",
+      "fix": "See commit ea47a8b1",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_5177fccd",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude website/ from detect-secrets",
+      "fix": "See commit 5177fccd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_bfcb827f",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Extend detect-secrets exclusions for remaining files",
+      "fix": "See commit bfcb827f",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_a46a32dd",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Exclude .md files and security module from detect-secrets",
+      "fix": "See commit a46a32dd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_dee59163",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude docs/ and examples/ from detect-secrets",
+      "fix": "See commit dee59163",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_c6858e6d",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude demo_security_complete.py from detect-secrets",
+      "fix": "See commit c6858e6d",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_GeneAI_a9e9ad7a",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Use X ",
+      "fix": "See commit a9e9ad7a",
+      "resolved_by": "@y",
+      "resolved_at": "GeneAI",
+      "files_affected": [
+        "src/empathy_os/workflows/test_gen.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_GeneAI_3c1d5e65",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Use X ",
+      "fix": "See commit 3c1d5e65",
+      "resolved_by": "@y",
+      "resolved_at": "GeneAI",
+      "files_affected": [
+        "src/empathy_os/memory/short_term.py",
+        "src/empathy_os/project_index/scanner.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_b5c5b7bd",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Resolve CI lint and import errors",
+      "fix": "See commit b5c5b7bd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        "tests/test_registry.py",
+        "tests/test_sbar_wizard.py",
+        "tests/test_tech_debt_wizard.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_e44c6c14",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Improve CI test reliability and fix coverage threshold",
+      "fix": "See commit e44c6c14",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".github/workflows/tests.yml",
+        "pyproject.toml",
+        "pytest.ini"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2025-12-28T12:56:51.147741"
+  "last_updated": "2025-12-29T17:23:49.800773"
 }

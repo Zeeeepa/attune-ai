@@ -489,9 +489,7 @@ class RefactoringCrew:
 
         # Check if CrewAI is available
         try:
-            from empathy_llm_toolkit.agent_factory.adapters.crewai_adapter import (
-                _check_crewai,
-            )
+            from empathy_llm_toolkit.agent_factory.adapters.crewai_adapter import _check_crewai
 
             use_crewai = _check_crewai()
         except ImportError:

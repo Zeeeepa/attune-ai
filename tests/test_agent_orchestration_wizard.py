@@ -18,9 +18,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_software_plugin.wizards.agent_orchestration_wizard import (
-    AgentOrchestrationWizard,
-)
+from empathy_software_plugin.wizards.agent_orchestration_wizard import AgentOrchestrationWizard
 
 
 class TestAgentOrchestrationWizardInit:

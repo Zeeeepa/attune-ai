@@ -21,12 +21,7 @@ from typing import Any
 
 from ..project_index import ProjectIndex
 from ..project_index.reports import ReportGenerator
-from .test_maintenance import (
-    TestAction,
-    TestMaintenanceWorkflow,
-    TestPlanItem,
-    TestPriority,
-)
+from .test_maintenance import TestAction, TestMaintenanceWorkflow, TestPlanItem, TestPriority
 
 logger = logging.getLogger(__name__)
 
@@ -361,8 +356,8 @@ class Test{class_name}:
     def test_placeholder(self):
         """Placeholder test - implement actual tests."""
         # TODO: Implement actual tests
-        # Source file has {metadata.get('lines_of_code', 'unknown')} lines
-        # Complexity score: {metadata.get('complexity', 'unknown')}
+        # Source file has {metadata.get("lines_of_code", "unknown")} lines
+        # Complexity score: {metadata.get("complexity", "unknown")}
         assert True  # Replace with actual assertions
 
 
@@ -617,7 +612,7 @@ class TestReporterAgent:
         # Staleness recommendations
         if summary.stale_file_count > 10:
             recommendations.append(
-                f"{summary.stale_file_count} files have stale tests. " "Run test update workflow."
+                f"{summary.stale_file_count} files have stale tests. Run test update workflow."
             )
         elif summary.stale_file_count > 0:
             recommendations.append(f"{summary.stale_file_count} files have stale tests.")

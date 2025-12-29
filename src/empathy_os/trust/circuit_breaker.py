@@ -368,8 +368,7 @@ class TrustCircuitBreaker:
         elif self._state == TrustState.SUPERVISED:
             self._supervised_successes = max(0, self._supervised_successes - 2)
             logger.info(
-                f"Trust damage in supervised mode, successes reset to "
-                f"{self._supervised_successes}"
+                f"Trust damage in supervised mode, successes reset to {self._supervised_successes}"
             )
 
         return self._state
@@ -429,8 +428,7 @@ class TrustCircuitBreaker:
         self._supervised_successes = 0
 
         logger.warning(
-            f"Trust circuit opened for user {self.user_id}: "
-            f"{old_state.value} → {self._state.value}"
+            f"Trust circuit opened for user {self.user_id}: {old_state.value} → {self._state.value}"
         )
 
         if self._on_state_change:
@@ -462,8 +460,7 @@ class TrustCircuitBreaker:
         self._damage_events = [e for e in self._damage_events if e.timestamp > cutoff]
 
         logger.info(
-            f"Trust circuit closed for user {self.user_id}: "
-            f"{old_state.value} → {self._state.value}"
+            f"Trust circuit closed for user {self.user_id}: {old_state.value} → {self._state.value}"
         )
 
         if self._on_state_change:

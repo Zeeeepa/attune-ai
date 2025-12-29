@@ -14,12 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.memory.edges import (
-    REVERSE_EDGE_TYPES,
-    WIZARD_EDGE_PATTERNS,
-    Edge,
-    EdgeType,
-)
+from empathy_os.memory.edges import REVERSE_EDGE_TYPES, WIZARD_EDGE_PATTERNS, Edge, EdgeType
 from empathy_os.memory.graph import MemoryGraph
 from empathy_os.memory.nodes import (
     BugNode,

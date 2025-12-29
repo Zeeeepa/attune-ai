@@ -424,7 +424,7 @@ class TestSecurityLearningWizardIntegration:
         """Test full analysis workflow."""
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create file with potential vulnerabilities
-            (Path(tmpdir) / "auth.py").write_text("password = 'secret123'\n" "x = Math.random()\n")
+            (Path(tmpdir) / "auth.py").write_text("password = 'secret123'\nx = Math.random()\n")
 
             wizard = SecurityLearningWizard(pattern_storage_path=tmpdir)
             result = await wizard.analyze({"project_path": tmpdir})
@@ -437,7 +437,7 @@ class TestSecurityLearningWizardIntegration:
         """Test analysis on secure project."""
         with tempfile.TemporaryDirectory() as tmpdir:
             (Path(tmpdir) / "secure.py").write_text(
-                "import os\n" "secret = os.environ.get('SECRET')\n"
+                "import os\nsecret = os.environ.get('SECRET')\n"
             )
 
             wizard = SecurityLearningWizard(pattern_storage_path=tmpdir)
