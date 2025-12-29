@@ -45,7 +45,7 @@ pip install empathy-framework[full]
 
 ### Previous (v3.0.x)
 
-- **Multi-Model Provider System** — Anthropic, OpenAI, Ollama, or Hybrid mode
+- **Multi-Model Provider System** — Anthropic, OpenAI, Google Gemini, Ollama, or Hybrid mode
 - **80-96% Cost Savings** — Smart tier routing: cheap models detect, best models decide
 - **VSCode Dashboard** — 10 integrated workflows with input history persistence
 
@@ -94,7 +94,7 @@ print(result.prevention_steps)    # How to prevent it
 |---------|---------|-----------|----------------|
 | **Predicts future issues** | 30-90 days ahead | No | No |
 | **Persistent memory** | Redis + patterns | No | No |
-| **Multi-provider support** | Claude, GPT-4, Ollama | N/A | GPT only |
+| **Multi-provider support** | Claude, GPT-4, Gemini, Ollama | N/A | GPT only |
 | **Cost optimization** | 80-96% savings | N/A | No |
 | **Your data stays local** | Yes | Cloud | Cloud |
 | **Free for small teams** | ≤5 employees | No | No |
@@ -488,6 +488,7 @@ cd empathy-framework && pip install -e .[dev]
 # Required: At least one provider
 export ANTHROPIC_API_KEY="sk-ant-..."   # For Claude models  # pragma: allowlist secret
 export OPENAI_API_KEY="sk-..."          # For GPT models  # pragma: allowlist secret
+export GOOGLE_API_KEY="..."             # For Gemini models  # pragma: allowlist secret
 
 # Optional: Redis for memory
 export REDIS_URL="redis://localhost:6379"
