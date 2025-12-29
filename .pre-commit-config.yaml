@@ -60,10 +60,14 @@ repos:
           (?x)^(
             \.env\.example$|
             .*\.md$|
-            tests/test_secrets_detector\.py$|
-            tests/test_secure_memdocs\.py$|
+            .*\.json$|
+            tests/|
+            dashboard/|
+            empathy_software_plugin/wizards/security/|
             empathy_llm_toolkit/security/|
+            memdocs_storage/|
             demo_security_complete\.py$|
+            test_memory_integration\.py$|
             docs/|
             examples/|
             anthropic-cookbook/
