@@ -12,25 +12,29 @@
 pip install empathy-framework[full]
 ```
 
-## What's New in v3.3.x
+## What's New in v3.5.x
 
-### Enterprise-Ready Workflows
+### Memory API Security Hardening (v3.5.0)
 
-- **Formatted Reports for All Workflows** — Every workflow now includes `formatted_report` with consistent structure, status icons, and actionable summaries
-- **Enterprise-Safe Doc-Gen** — Auto-scaling tokens, chunked generation, cost guardrails ($5 default limit), graceful degradation, and file export
-- **Output Chunking** — Large reports automatically split into displayable sections to avoid truncation
+- **Input Validation** — Pattern IDs, agent IDs, and classifications validated to prevent path traversal and injection attacks
+- **API Key Authentication** — Bearer token and X-API-Key header support with SHA-256 hash comparison
+- **Rate Limiting** — Per-IP sliding window rate limiting (100 req/min default)
+- **HTTPS/TLS Support** — Optional SSL certificate configuration for encrypted connections
+- **CORS Restrictions** — Configurable allowed origins (localhost-only by default)
+- **Request Size Limits** — 1MB body limit to prevent DoS attacks
 
-### Unified CLI & Developer Experience
+### Previous (v3.4.x)
 
-- **Unified Typer CLI** — One `empathy` command with Rich output, subcommand groups, and cheatsheet
-- **Dev Container Support** — One-click VS Code dev environment with Docker Compose
-- **Python 3.13 Support** — Test matrix now covers 3.10-3.13 across macOS, Linux, Windows
+- **Trust Circuit Breaker** — Automatic degradation when model reliability drops
+- **Pattern Catalog System** — Searchable pattern library with similarity matching
+- **Memory Control Panel** — VSCode sidebar for Redis and pattern management
 
-### Documentation Overhaul
+### Previous (v3.3.x)
 
-- **Diátaxis Framework** — Restructured docs into Tutorials, How-to, Explanation, Reference
-- **Improved Navigation** — Clearer paths from learning to mastery
-- **Fixed Asset Loading** — CSS now loads correctly on all documentation pages
+- **Formatted Reports** — Every workflow includes `formatted_report` with consistent structure
+- **Enterprise-Safe Doc-Gen** — Auto-scaling tokens, cost guardrails, file export
+- **Unified Typer CLI** — One `empathy` command with Rich output
+- **Python 3.13 Support** — Test matrix covers 3.10-3.13 across all platforms
 
 ### Previous (v3.1.x)
 
@@ -142,6 +146,17 @@ Install the Empathy VSCode extension for:
 - **One-Click Workflows** — Research, code review, debugging
 - **Visual Cost Tracking** — See savings in real-time
   - See also: `docs/dashboard-costs-by-tier.md` for interpreting the **By tier (7 days)** cost breakdown.
+- **Memory Control Panel (Beta)** — Manage Redis and pattern storage
+  - View Redis status and memory usage
+  - Browse and export stored patterns
+  - Run system health checks
+  - Configure auto-start in `empathy.config.yml`
+
+```yaml
+memory:
+  enabled: true
+  auto_start_redis: true
+```
 
 ### Level 5: Custom Agents
 
