@@ -12,9 +12,6 @@ Tests cover:
 - Input validation bypass attempts
 """
 
-import pytest
-from unittest.mock import MagicMock, patch
-
 
 class TestSQLInjectionPrevention:
     """Test SQL injection attack prevention."""
@@ -34,7 +31,7 @@ class TestSQLInjectionPrevention:
         for payload in malicious_inputs:
             # Input should be sanitized or detected
             # Verify the payload contains SQL keywords
-            sql_keywords = ['DROP', 'SELECT', 'UNION', 'OR', 'AND', 'EXEC', '--']
+            sql_keywords = ["DROP", "SELECT", "UNION", "OR", "AND", "EXEC", "--"]
             has_sql_pattern = any(kw in payload.upper() for kw in sql_keywords)
             assert has_sql_pattern, f"Test payload should contain SQL pattern: {payload}"
 
@@ -52,8 +49,8 @@ class TestSQLInjectionPrevention:
 
     def test_parameterized_query_safety(self):
         """Test that parameterized queries are used (not string concat)."""
-        # Safe pattern: parameterized
-        safe_query = "SELECT * FROM users WHERE id = ?"
+        # Safe pattern: parameterized (example for documentation)
+        _safe_query = "SELECT * FROM users WHERE id = ?"
         user_input = "1; DROP TABLE users"
 
         # Unsafe pattern: string concatenation
@@ -82,7 +79,7 @@ class TestXSSPrevention:
 
         for payload in xss_payloads:
             # Verify these are detectable XSS patterns
-            xss_indicators = ['<script', 'onerror=', 'onload=', 'javascript:', 'onmouseover=']
+            xss_indicators = ["<script", "onerror=", "onload=", "javascript:", "onmouseover="]
             has_xss = any(ind.lower() in payload.lower() for ind in xss_indicators)
             assert has_xss, f"Should detect XSS pattern: {payload}"
 
@@ -95,6 +92,7 @@ class TestXSSPrevention:
 
         # JSON encoding should escape these
         import json
+
         encoded = json.dumps(malicious_data)
 
         # Verify script tags are present but as strings
@@ -128,7 +126,7 @@ class TestCommandInjectionPrevention:
 
         for path in malicious_paths:
             # Verify command injection patterns are detectable
-            injection_patterns = [';', '&&', '|', '$(', '`', '\n']
+            injection_patterns = [";", "&&", "|", "$(", "`", "\n"]
             has_injection = any(p in path for p in injection_patterns)
             assert has_injection, f"Should detect command injection: {path}"
 
@@ -143,7 +141,7 @@ class TestCommandInjectionPrevention:
 
         for input_str in malicious_inputs:
             # Verify redirection operators are present
-            redirects = ['>', '<', '>>']
+            redirects = [">", "<", ">>"]
             has_redirect = any(r in input_str for r in redirects)
             assert has_redirect
 
@@ -163,7 +161,7 @@ class TestPathTraversalPrevention:
 
         for path in traversal_paths:
             # Verify traversal patterns - check for various indicators
-            traversal_indicators = ['../', '..\\', '%2e', '..../', '..%']
+            traversal_indicators = ["../", "..\\", "%2e", "..../", "..%"]
             has_traversal = any(ind in path for ind in traversal_indicators)
             assert has_traversal, f"Should detect path traversal: {path}"
 
@@ -176,7 +174,7 @@ class TestPathTraversalPrevention:
 
         for path in null_byte_paths:
             # Verify null byte patterns
-            assert '%00' in path or '\x00' in path
+            assert "%00" in path or "\x00" in path
 
     def test_absolute_path_injection(self):
         """Test absolute path injection attempts."""
@@ -188,7 +186,7 @@ class TestPathTraversalPrevention:
 
         for path in absolute_paths:
             # Verify absolute path patterns
-            is_absolute = path.startswith('/') or path.startswith('C:') or path.startswith('file:')
+            is_absolute = path.startswith("/") or path.startswith("C:") or path.startswith("file:")
             assert is_absolute
 
 
@@ -205,7 +203,7 @@ class TestPrivilegeEscalationPrevention:
 
         for attempt in escalation_attempts:
             # Verify privileged identifiers are present
-            privileged_ids = ['admin', 'root', '0', 'superuser']
+            privileged_ids = ["admin", "root", "0", "superuser"]
             has_privilege = any(str(v) in privileged_ids for v in attempt.values())
             assert has_privilege
 
@@ -228,14 +226,14 @@ class TestPrivilegeEscalationPrevention:
         """Test JWT/token manipulation attempts."""
         manipulated_tokens = [
             # Algorithm confusion attack
-            "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJyb2xlIjoiYWRtaW4ifQ.",
+            "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJyb2xlIjoiYWRtaW4ifQ.",  # pragma: allowlist secret
             # Modified payload
-            "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYWRtaW4iLCJpc19hZG1pbiI6dHJ1ZX0.INVALID",
+            "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYWRtaW4iLCJpc19hZG1pbiI6dHJ1ZX0.INVALID",  # pragma: allowlist secret
         ]
 
         for token in manipulated_tokens:
             # Tokens have 3 parts separated by dots
-            parts = token.split('.')
+            parts = token.split(".")
             assert len(parts) >= 2, "Should be JWT-like format"
 
 
@@ -251,7 +249,8 @@ class TestPIILeakPrevention:
         ]
 
         import re
-        ssn_regex = r'\b\d{3}[-\s]?\d{2}[-\s]?\d{4}\b'
+
+        ssn_regex = r"\b\d{3}[-\s]?\d{2}[-\s]?\d{4}\b"
 
         for text in ssn_patterns:
             match = re.search(ssn_regex, text)
@@ -266,12 +265,14 @@ class TestPIILeakPrevention:
         ]
 
         import re
-        cc_regex = r'\b(?:\d{4}[-\s]?){3}\d{4}\b|\b\d{15,16}\b'
+
+        # Example CC regex (simplified version used in loop below)
+        _cc_regex = r"\b(?:\d{4}[-\s]?){3}\d{4}\b|\b\d{15,16}\b"
 
         for text in cc_patterns:
             # Remove dashes/spaces for matching
-            cleaned = re.sub(r'[-\s]', '', text)
-            assert re.search(r'\d{15,16}', cleaned), f"Should detect CC in: {text}"
+            cleaned = re.sub(r"[-\s]", "", text)
+            assert re.search(r"\d{15,16}", cleaned), f"Should detect CC in: {text}"
 
     def test_email_detection(self):
         """Test email addresses are detected."""
@@ -281,7 +282,8 @@ class TestPIILeakPrevention:
         ]
 
         import re
-        email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+
+        email_regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
 
         for text in email_patterns:
             match = re.search(email_regex, text)
@@ -296,7 +298,8 @@ class TestPIILeakPrevention:
         ]
 
         import re
-        phone_regex = r'[\+]?[(]?\d{1,3}[)]?[-\s\.]?\d{3}[-\s\.]?\d{4}'
+
+        phone_regex = r"[\+]?[(]?\d{1,3}[)]?[-\s\.]?\d{3}[-\s\.]?\d{4}"
 
         for text in phone_patterns:
             match = re.search(phone_regex, text)
@@ -309,36 +312,36 @@ class TestSecretExposurePrevention:
     def test_api_key_detection(self):
         """Test API key patterns are detected."""
         api_key_patterns = [
-            "ANTHROPIC_API_KEY=sk-ant-api03-xxxxx",
-            "OPENAI_API_KEY='sk-xxxxx'",
-            "api_key: AIzaSyXXXXX",  # Google
-            "aws_secret_access_key = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+            "ANTHROPIC_API_KEY=sk-ant-api03-xxxxx",  # pragma: allowlist secret
+            "OPENAI_API_KEY='sk-xxxxx'",  # pragma: allowlist secret
+            "api_key: AIzaSyXXXXX",  # Google  # pragma: allowlist secret
+            "aws_secret_access_key = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",  # pragma: allowlist secret
         ]
 
         for text in api_key_patterns:
             # Verify key patterns are present
-            key_indicators = ['api_key', 'sk-', 'AIza', 'secret']
+            key_indicators = ["api_key", "sk-", "AIza", "secret"]
             has_key = any(ind.lower() in text.lower() for ind in key_indicators)
             assert has_key, f"Should detect API key pattern in: {text}"
 
     def test_password_in_url_detection(self):
         """Test passwords in URLs are detected."""
         url_patterns = [
-            "https://user:password123@example.com/api",
-            "postgres://admin:secretpass@localhost:5432/db",
-            "mongodb://root:p@ssw0rd@mongo:27017",
+            "https://user:password123@example.com/api",  # pragma: allowlist secret
+            "postgres://admin:secretpass@localhost:5432/db",  # pragma: allowlist secret
+            "mongodb://root:p@ssw0rd@mongo:27017",  # pragma: allowlist secret
         ]
 
         for url in url_patterns:
             # Verify credential pattern in URL
-            assert ':' in url and '@' in url
+            assert ":" in url and "@" in url
 
     def test_private_key_detection(self):
         """Test private key patterns are detected."""
         key_patterns = [
-            "-----BEGIN RSA PRIVATE KEY-----",
-            "-----BEGIN OPENSSH PRIVATE KEY-----",
-            "-----BEGIN EC PRIVATE KEY-----",
+            "-----BEGIN RSA PRIVATE KEY-----",  # pragma: allowlist secret
+            "-----BEGIN OPENSSH PRIVATE KEY-----",  # pragma: allowlist secret
+            "-----BEGIN EC PRIVATE KEY-----",  # pragma: allowlist secret
         ]
 
         for pattern in key_patterns:
@@ -369,7 +372,7 @@ class TestInputValidationBypass:
         ]
 
         for injection in null_injections:
-            assert '\x00' in injection or '%00' in injection
+            assert "\x00" in injection or "%00" in injection
 
     def test_double_encoding_bypass(self):
         """Test double encoding bypass attempts."""
@@ -380,7 +383,7 @@ class TestInputValidationBypass:
 
         for encoded in double_encoded:
             # Verify double encoding pattern
-            assert '%25' in encoded  # %25 = encoded %
+            assert "%25" in encoded  # %25 = encoded %
 
     def test_case_sensitivity_bypass(self):
         """Test case sensitivity bypass attempts."""

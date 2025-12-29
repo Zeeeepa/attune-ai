@@ -11,18 +11,15 @@ Tests cover:
 """
 
 import json
-import pytest
 from datetime import datetime, timedelta
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 from empathy_os.discovery import (
+    DISCOVERY_TIPS,
     DiscoveryEngine,
+    _days_since_sync,
+    format_tips_for_cli,
     get_engine,
     show_tip_if_available,
-    format_tips_for_cli,
-    DISCOVERY_TIPS,
-    _days_since_sync,
 )
 
 
@@ -32,7 +29,7 @@ class TestDiscoveryEngineInit:
     def test_creates_storage_directory(self, tmp_path):
         """Test that storage directory is created."""
         storage_dir = tmp_path / "new_dir"
-        engine = DiscoveryEngine(storage_dir=str(storage_dir))
+        _engine = DiscoveryEngine(storage_dir=str(storage_dir))
         assert storage_dir.exists()
 
     def test_loads_existing_state(self, tmp_path):
@@ -136,7 +133,7 @@ class TestTipTriggering:
         engine = DiscoveryEngine(storage_dir=str(tmp_path / ".empathy"))
 
         # after_10_inspects requires 10 uses
-        for i in range(9):
+        for _ in range(9):
             engine.record_command("inspect")
 
         tips = engine.get_pending_tips(trigger="inspect")
@@ -163,7 +160,7 @@ class TestTipTriggering:
         engine = DiscoveryEngine(storage_dir=str(tmp_path / ".empathy"))
 
         # Need > 5 commands but 0 patterns
-        for i in range(6):
+        for _ in range(6):
             engine.record_command("test")
 
         tips = engine.get_pending_tips()
@@ -176,7 +173,7 @@ class TestTipTriggering:
 
         # Set up conditions for multiple tips
         engine.set_tech_debt_trend("increasing")
-        for i in range(6):
+        for _ in range(6):
             engine.record_command("test")
 
         tips = engine.get_pending_tips(max_tips=1)
@@ -348,7 +345,7 @@ class TestShowTipIfAvailable:
         # This should trigger after_first_inspect
         show_tip_if_available("inspect", quiet=False)
 
-        captured = capsys.readouterr()
+        _captured = capsys.readouterr()
         # May or may not have tips depending on state
         # Just verify it doesn't crash
 

@@ -12,19 +12,19 @@ Tests cover:
 """
 
 import json
-import pytest
 from datetime import datetime, timedelta
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 from empathy_os.cost_tracker import (
+    BASELINE_MODEL,
+    MODEL_PRICING,
     CostTracker,
+    _build_model_pricing,
+    cmd_costs,
     get_tracker,
     log_request,
-    cmd_costs,
-    MODEL_PRICING,
-    BASELINE_MODEL,
-    _build_model_pricing,
 )
 
 
@@ -388,7 +388,7 @@ class TestModelPricing:
         assert len(pricing) > 0
 
         # Each entry should have input and output costs
-        for model, costs in pricing.items():
+        for _model, costs in pricing.items():
             assert "input" in costs
             assert "output" in costs
             assert costs["input"] >= 0

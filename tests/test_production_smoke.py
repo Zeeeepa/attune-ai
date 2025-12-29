@@ -6,12 +6,18 @@ Run manually:
 
 Run with custom URL:
     PRODUCTION_URL=https://empathy-framework.vercel.app python -m pytest tests/test_production_smoke.py -v
+
+Note: These tests are marked as 'network' and will be skipped in CI by default.
+Run with `-m network` to include them.
 """
 
 import os
 
 import httpx
 import pytest
+
+# Mark all tests in this module as requiring network access
+pytestmark = pytest.mark.network
 
 # Production URL - can be overridden via environment variable
 PRODUCTION_URL = os.getenv("PRODUCTION_URL", "https://empathy-framework.vercel.app")
