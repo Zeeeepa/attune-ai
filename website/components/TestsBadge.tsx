@@ -4,7 +4,7 @@ interface TestsBadgeProps {
 }
 
 export default function TestsBadge({
-  tests = 2365,
+  tests = 3660,
   coverage = 60
 }: TestsBadgeProps) {
   return (
