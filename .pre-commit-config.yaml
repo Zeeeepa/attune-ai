@@ -63,6 +63,7 @@ repos:
             .*\.json$|
             tests/|
             dashboard/|
+            website/|
             empathy_software_plugin/wizards/security/|
             empathy_llm_toolkit/security/|
             memdocs_storage/|
