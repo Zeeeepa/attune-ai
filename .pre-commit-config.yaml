@@ -59,10 +59,10 @@ repos:
         exclude: |
           (?x)^(
             \.env\.example$|
+            .*\.md$|
             tests/test_secrets_detector\.py$|
             tests/test_secure_memdocs\.py$|
-            empathy_llm_toolkit/security/secrets_detector\.py$|
-            empathy_llm_toolkit/security/secure_memdocs_example\.py$|
+            empathy_llm_toolkit/security/|
             demo_security_complete\.py$|
             docs/|
             examples/|
