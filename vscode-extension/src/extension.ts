@@ -22,6 +22,7 @@ import { MemoryPanelProvider } from './panels/MemoryPanelProvider';
 import { RefactorAdvisorPanel } from './panels/RefactorAdvisorPanel';
 import { ResearchSynthesisPanel } from './panels/ResearchSynthesisPanel';
 import { InitializeWizardPanel } from './panels/InitializeWizardPanel';
+import { TestGeneratorPanel } from './panels/TestGeneratorPanel';
 import { initializeProject, showWelcomeIfNeeded as showInitializeWelcome } from './commands/initializeProject';
 
 // Status bar item
@@ -39,8 +40,14 @@ let refreshTimer: NodeJS.Timeout | undefined;
 // Diagnostics collection for Problem Panel (Feature F)
 let diagnosticCollection: vscode.DiagnosticCollection;
 
+// Security diagnostics collection (separate from lint issues)
+let securityDiagnosticCollection: vscode.DiagnosticCollection;
+
 // File watcher for auto-scan (Feature E)
 let fileWatcher: vscode.FileSystemWatcher | undefined;
+
+// File watcher for security findings
+let securityFindingsWatcher: vscode.FileSystemWatcher | undefined;
 
 /**
  * Extension activation
@@ -63,8 +70,12 @@ export function activate(context: vscode.ExtensionContext) {
     diagnosticCollection = vscode.languages.createDiagnosticCollection('empathy');
     context.subscriptions.push(diagnosticCollection);
 
+    // Create security diagnostics collection (separate from lint issues)
+    securityDiagnosticCollection = vscode.languages.createDiagnosticCollection('empathy-security');
+    context.subscriptions.push(securityDiagnosticCollection);
+
     // Create health provider (for diagnostics support)
-    healthProvider = new HealthTreeProvider(diagnosticCollection);
+    healthProvider = new HealthTreeProvider(diagnosticCollection, securityDiagnosticCollection);
 
     // Register dashboard webview provider (with context for persistence)
     const dashboardProvider = new EmpathyDashboardProvider(context.extensionUri, context);
@@ -117,6 +128,20 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );
 
+    // Test Generator panel - Interactive test generation wizard
+    const testGeneratorProvider = new TestGeneratorPanel(context.extensionUri, context);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            TestGeneratorPanel.viewType,
+            testGeneratorProvider,
+            {
+                webviewOptions: {
+                    retainContextWhenHidden: true
+                }
+            }
+        )
+    );
+
     // Register commands - existing
     const commands = [
         { name: 'empathy.morning', handler: cmdMorning },
@@ -130,6 +155,7 @@ export function activate(context: vscode.ExtensionContext) {
         // New commands for Health view actions (Features A, B, C, D)
         { name: 'empathy.refreshHealth', handler: cmdRefreshHealth },
         { name: 'empathy.runScan', handler: cmdRunScan },
+        { name: 'empathy.runSecurityScan', handler: cmdRunSecurityScan },
         { name: 'empathy.fixLint', handler: cmdFixLint },
         { name: 'empathy.fixFormat', handler: cmdFixFormat },
         { name: 'empathy.runTests', handler: cmdRunTests },
@@ -142,6 +168,8 @@ export function activate(context: vscode.ExtensionContext) {
         { name: 'empathy.memory.refreshStatus', handler: () => { memoryProvider.refresh(); vscode.window.showInformationMessage('Memory status refreshed'); } },
         // Initialize wizard (accepts optional { force: true } to skip "already initialized" check)
         { name: 'empathy.initializeProject', handler: (options?: { force?: boolean }) => initializeProject(context, options) },
+        // Test Generator wizard
+        { name: 'empathy.testGenerator.show', handler: () => vscode.commands.executeCommand('test-generator.focus') },
     ];
 
     for (const cmd of commands) {
@@ -157,16 +185,75 @@ export function activate(context: vscode.ExtensionContext) {
         })
     );
 
+    // Register URI handler for "Run in Empathy" buttons from documentation
+    // Example URI: vscode://Smart-AI-Memory.empathy-framework/runCommand?command=empathy%20init
+    context.subscriptions.push(
+        vscode.window.registerUriHandler({
+            handleUri(uri: vscode.Uri) {
+                console.log('Empathy URI Handler received:', uri.toString());
+
+                if (uri.path === '/runCommand') {
+                    const params = new URLSearchParams(uri.query);
+                    const commandToRun = params.get('command');
+
+                    if (commandToRun) {
+                        // Security: Only allow empathy commands
+                        if (!commandToRun.startsWith('empathy')) {
+                            vscode.window.showErrorMessage(
+                                'Only Empathy Framework commands are allowed via URI handler.'
+                            );
+                            return;
+                        }
+
+                        // Find or create a terminal and run the command
+                        let terminal = vscode.window.terminals.find(t => t.name === 'Empathy Docs');
+                        if (!terminal) {
+                            terminal = vscode.window.createTerminal('Empathy Docs');
+                        }
+                        terminal.show();
+                        terminal.sendText(commandToRun);
+
+                        vscode.window.showInformationMessage(
+                            `Running: ${commandToRun}`
+                        );
+                    } else {
+                        vscode.window.showWarningMessage(
+                            'No command specified in URI. Use ?command=empathy%20...'
+                        );
+                    }
+                } else if (uri.path === '/openWorkflow') {
+                    // Alternative: Open a specific workflow in the dashboard
+                    const params = new URLSearchParams(uri.query);
+                    const workflow = params.get('workflow');
+
+                    if (workflow) {
+                        // Focus the dashboard and trigger the workflow
+                        vscode.commands.executeCommand('empathy-dashboard.focus');
+                        vscode.window.showInformationMessage(
+                            `Opening workflow: ${workflow}`
+                        );
+                    }
+                } else {
+                    vscode.window.showWarningMessage(
+                        `Unknown Empathy URI path: ${uri.path}. Use /runCommand or /openWorkflow.`
+                    );
+                }
+            }
+        })
+    );
+
     // Initialize
     updateStatusBar();
     startAutoRefresh(context);
     setupAutoScanOnSave(context); // Feature E
+    setupSecurityFindingsWatcher(context); // Security diagnostics
 
     // Show welcome message on first activation
     showWelcomeIfNeeded(context);
 
     // Load initial diagnostics (Feature F)
     healthProvider.updateDiagnostics();
+    healthProvider.updateSecurityDiagnostics(); // Load persisted security findings
 }
 
 /**
@@ -179,8 +266,14 @@ export function deactivate() {
     if (fileWatcher) {
         fileWatcher.dispose();
     }
+    if (securityFindingsWatcher) {
+        securityFindingsWatcher.dispose();
+    }
     if (diagnosticCollection) {
         diagnosticCollection.dispose();
+    }
+    if (securityDiagnosticCollection) {
+        securityDiagnosticCollection.dispose();
     }
 }
 
@@ -314,6 +407,91 @@ async function cmdRunScan() {
                         resolve();
                     }
                 );
+            });
+        }
+    );
+}
+
+// Security Scan with diagnostics integration
+async function cmdRunSecurityScan() {
+    const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+    if (!workspaceFolder) {
+        vscode.window.showErrorMessage('No workspace folder open');
+        return;
+    }
+
+    await vscode.window.withProgress(
+        {
+            location: vscode.ProgressLocation.Notification,
+            title: 'Empathy: Running security scan...',
+            cancellable: false,
+        },
+        async () => {
+            const config = vscode.workspace.getConfiguration('empathy');
+            const pythonPath = config.get<string>('pythonPath', 'python');
+            const empathyDir = path.join(workspaceFolder, config.get<string>('empathyDir', '.empathy'));
+
+            // Ensure .empathy directory exists
+            if (!fs.existsSync(empathyDir)) {
+                fs.mkdirSync(empathyDir, { recursive: true });
+            }
+
+            return new Promise<void>((resolve) => {
+                // Run security-audit workflow with JSON output
+                const args = [
+                    '-m', 'empathy_os.cli', 'workflow', 'run', 'security-audit',
+                    '--input', JSON.stringify({ target: workspaceFolder }),
+                    '--json'
+                ];
+
+                cp.execFile(pythonPath, args, {
+                    cwd: workspaceFolder,
+                    maxBuffer: 1024 * 1024 * 5, // 5MB buffer for large outputs
+                    timeout: 120000 // 2 minute timeout
+                }, (error, stdout, stderr) => {
+                    try {
+                        // Try to parse JSON output
+                        const output = stdout || stderr || '';
+                        const result = JSON.parse(output);
+
+                        // Save findings to file
+                        const findingsPath = path.join(empathyDir, 'security_findings.json');
+                        fs.writeFileSync(findingsPath, JSON.stringify(result, null, 2));
+
+                        // Update diagnostics
+                        healthProvider.updateSecurityDiagnostics();
+
+                        // Show summary notification
+                        const assessment = result.assessment || {};
+                        const breakdown = assessment.severity_breakdown || {};
+                        const critical = breakdown.critical || 0;
+                        const high = breakdown.high || 0;
+                        const medium = breakdown.medium || 0;
+                        const low = breakdown.low || 0;
+                        const total = critical + high + medium + low;
+
+                        if (critical > 0 || high > 0) {
+                            vscode.window.showWarningMessage(
+                                `Security scan: ${critical} critical, ${high} high, ${medium} medium, ${low} low findings. Check Problems panel.`
+                            );
+                        } else if (total > 0) {
+                            vscode.window.showInformationMessage(
+                                `Security scan complete: ${medium} medium, ${low} low findings`
+                            );
+                        } else {
+                            vscode.window.showInformationMessage('Security scan complete - no issues found!');
+                        }
+                    } catch (parseErr) {
+                        // JSON parse failed - maybe text output or error
+                        if (error) {
+                            vscode.window.showWarningMessage(`Security scan completed with errors: ${error.message}`);
+                        } else {
+                            vscode.window.showInformationMessage('Security scan complete');
+                        }
+                        console.error('Failed to parse security scan output:', parseErr);
+                    }
+                    resolve();
+                });
             });
         }
     );
@@ -611,6 +789,30 @@ function setupAutoScanOnSave(context: vscode.ExtensionContext): void {
     context.subscriptions.push(fileWatcher);
 }
 
+/**
+ * Set up file watcher for security findings
+ * Refreshes diagnostics when security_findings.json changes
+ */
+function setupSecurityFindingsWatcher(context: vscode.ExtensionContext): void {
+    // Watch for changes to security_findings.json
+    securityFindingsWatcher = vscode.workspace.createFileSystemWatcher('**/.empathy/security_findings.json');
+
+    securityFindingsWatcher.onDidChange(() => {
+        healthProvider.updateSecurityDiagnostics();
+    });
+
+    securityFindingsWatcher.onDidCreate(() => {
+        healthProvider.updateSecurityDiagnostics();
+    });
+
+    securityFindingsWatcher.onDidDelete(() => {
+        // Clear security diagnostics when file is deleted
+        securityDiagnosticCollection.clear();
+    });
+
+    context.subscriptions.push(securityFindingsWatcher);
+}
+
 // ============================================================================
 // Status Bar
 // ============================================================================
@@ -715,9 +917,11 @@ class HealthTreeProvider implements vscode.TreeDataProvider<HealthItem> {
     readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
     private cachedHealth: HealthData | null = null;
     private diagnosticCollection: vscode.DiagnosticCollection;
+    private securityDiagnosticCollection: vscode.DiagnosticCollection;
 
-    constructor(diagnosticCollection: vscode.DiagnosticCollection) {
+    constructor(diagnosticCollection: vscode.DiagnosticCollection, securityDiagnosticCollection: vscode.DiagnosticCollection) {
         this.diagnosticCollection = diagnosticCollection;
+        this.securityDiagnosticCollection = securityDiagnosticCollection;
     }
 
     refresh(): void {
@@ -933,6 +1137,85 @@ class HealthTreeProvider implements vscode.TreeDataProvider<HealthItem> {
                 return vscode.DiagnosticSeverity.Information;
             default:
                 return vscode.DiagnosticSeverity.Hint;
+        }
+    }
+
+    /**
+     * Update security diagnostics from security_findings.json
+     * Shows security scan findings as squiggles in the editor
+     */
+    async updateSecurityDiagnostics(): Promise<void> {
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            return;
+        }
+
+        this.securityDiagnosticCollection.clear();
+
+        const config = vscode.workspace.getConfiguration('empathy');
+        const empathyDir = path.join(
+            workspaceFolder,
+            config.get<string>('empathyDir', '.empathy')
+        );
+
+        try {
+            const findingsFile = path.join(empathyDir, 'security_findings.json');
+            if (!fs.existsSync(findingsFile)) {
+                return;
+            }
+
+            const data = JSON.parse(fs.readFileSync(findingsFile, 'utf8'));
+            const diagnosticsMap = new Map<string, vscode.Diagnostic[]>();
+
+            // Only process needs_review findings (excludes false positives and accepted risks)
+            const findings = data.needs_review || [];
+
+            for (const finding of findings) {
+                const filePath = finding.file || '';
+                const line = (finding.line || 1) - 1;
+                const severity = this.getSeverity(finding.severity || 'warning');
+
+                // Rich message with OWASP category and analysis
+                const owasp = finding.owasp || 'Security Issue';
+                const findingType = finding.type || 'unknown';
+                const analysis = finding.analysis || `Potential ${findingType} vulnerability`;
+                const message = `[${owasp}] ${findingType}: ${analysis}`;
+
+                const range = new vscode.Range(line, 0, line, 1000);
+                const diagnostic = new vscode.Diagnostic(range, message, severity);
+                diagnostic.source = 'Empathy Security';
+                diagnostic.code = findingType;
+
+                // Add code snippet as related information if available
+                if (finding.match) {
+                    diagnostic.relatedInformation = [
+                        new vscode.DiagnosticRelatedInformation(
+                            new vscode.Location(
+                                vscode.Uri.file(filePath),
+                                range
+                            ),
+                            `Match: ${finding.match.substring(0, 80)}${finding.match.length > 80 ? '...' : ''}`
+                        )
+                    ];
+                }
+
+                const fullPath = path.isAbsolute(filePath)
+                    ? filePath
+                    : path.join(workspaceFolder, filePath);
+
+                if (!diagnosticsMap.has(fullPath)) {
+                    diagnosticsMap.set(fullPath, []);
+                }
+                diagnosticsMap.get(fullPath)!.push(diagnostic);
+            }
+
+            // Apply diagnostics
+            for (const [file, diagnostics] of diagnosticsMap) {
+                const uri = vscode.Uri.file(file);
+                this.securityDiagnosticCollection.set(uri, diagnostics);
+            }
+        } catch (err) {
+            console.error('Failed to load security findings:', err);
         }
     }
 

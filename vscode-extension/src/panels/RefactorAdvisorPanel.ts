@@ -15,6 +15,12 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as cp from 'child_process';
+import {
+    getFilePickerService,
+    createFilePickerMessageHandler,
+    FilePickerService,
+    FilePickerResponse
+} from '../services/FilePickerService';
 
 // =============================================================================
 // Types
@@ -101,6 +107,8 @@ export class RefactorAdvisorPanel implements vscode.WebviewViewProvider {
     private _session: RefactorSession | null = null;
     private _disposables: vscode.Disposable[] = [];
     private _activeProcess: cp.ChildProcess | null = null;
+    private _filePickerService: FilePickerService;
+    private _handleFilePicker: ((message: any) => Promise<boolean>) | null = null;
     private _backendHealth: BackendHealth = {
         status: 'unknown',
         lastSuccessTime: null,
@@ -111,6 +119,7 @@ export class RefactorAdvisorPanel implements vscode.WebviewViewProvider {
 
     constructor(extensionUri: vscode.Uri, _context: vscode.ExtensionContext) {
         this._extensionUri = extensionUri;
+        this._filePickerService = getFilePickerService();
     }
 
     public dispose() {
@@ -136,9 +145,33 @@ export class RefactorAdvisorPanel implements vscode.WebviewViewProvider {
 
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
+        // Set up file picker message handler
+        this._handleFilePicker = createFilePickerMessageHandler(
+            this._filePickerService,
+            (msg: FilePickerResponse) => {
+                // Convert filePicker:result to fileSelected for compatibility
+                if (msg.type === 'filePicker:result' && msg.success && msg.result) {
+                    const result = Array.isArray(msg.result) ? msg.result[0] : msg.result;
+                    webviewView.webview.postMessage({
+                        type: 'fileSelected',
+                        path: result.path
+                    });
+                } else if (!msg.success && msg.error) {
+                    this._sendError(msg.error);
+                }
+            }
+        );
+
         // Handle messages from webview
         const messageDisposable = webviewView.webview.onDidReceiveMessage(async (message) => {
             if (DEBUG) console.log('[RefactorAdvisor] Received message:', message.type, message);
+
+            // Route file picker messages through the service
+            if (message.type?.startsWith('filePicker:')) {
+                await this._handleFilePicker?.(message);
+                return;
+            }
+
             switch (message.type) {
                 case 'startAnalysis':
                     if (DEBUG) console.log('[RefactorAdvisor] Starting analysis for:', message.filePath);
@@ -161,12 +194,6 @@ export class RefactorAdvisorPanel implements vscode.WebviewViewProvider {
                     break;
                 case 'rollbackAll':
                     await this._rollbackAll();
-                    break;
-                case 'showFilePicker':
-                    await this._showFilePicker();
-                    break;
-                case 'useActiveFile':
-                    await this._useActiveFile();
                     break;
                 case 'getSessionState':
                     this._sendSessionState();
@@ -697,52 +724,6 @@ crew.record_decision(finding, ${accepted ? 'True' : 'False'})
     }
 
     // =========================================================================
-    // File Selection Methods
-    // =========================================================================
-
-    private async _showFilePicker() {
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri;
-
-        const result = await vscode.window.showOpenDialog({
-            canSelectFiles: true,
-            canSelectFolders: false,
-            canSelectMany: false,
-            defaultUri: workspaceFolder,
-            title: 'Select file to analyze',
-            openLabel: 'Analyze',
-            filters: {
-                'Python': ['py'],
-                'TypeScript': ['ts', 'tsx'],
-                'JavaScript': ['js', 'jsx'],
-                'All Files': ['*']
-            }
-        });
-
-        if (result && result[0]) {
-            const relativePath = vscode.workspace.asRelativePath(result[0]);
-            this._view?.webview.postMessage({
-                type: 'fileSelected',
-                path: relativePath,
-            });
-        }
-    }
-
-
-    private async _useActiveFile() {
-        const activeEditor = vscode.window.activeTextEditor;
-        if (!activeEditor) {
-            this._sendError('No active file');
-            return;
-        }
-
-        const relativePath = vscode.workspace.asRelativePath(activeEditor.document.uri);
-        this._view?.webview.postMessage({
-            type: 'fileSelected',
-            path: relativePath,
-        });
-    }
-
-    // =========================================================================
     // Helper Methods
     // =========================================================================
 
@@ -1067,8 +1048,12 @@ crew.record_decision(finding, ${accepted ? 'True' : 'False'})
                 <input type="text" id="file-path" class="input" placeholder="Path to file..." readonly>
             </div>
             <div class="button-row">
-                <button class="button button-secondary" id="btn-browse">Browse...</button>
-                <button class="button button-secondary" id="btn-active">Active File</button>
+                <button class="button button-secondary" id="btn-browse">File</button>
+                <button class="button button-secondary" id="btn-folder">Folder</button>
+                <button class="button button-secondary" id="btn-active">Active</button>
+                <button class="button button-secondary" id="btn-project">Project</button>
+            </div>
+            <div class="button-row" style="margin-top: 8px;">
                 <button class="button" id="btn-analyze" disabled>Analyze</button>
             </div>
         </div>
@@ -1178,7 +1163,9 @@ crew.record_decision(finding, ${accepted ? 'True' : 'False'})
         // DOM Elements
         const filePathInput = document.getElementById('file-path');
         const btnBrowse = document.getElementById('btn-browse');
+        const btnFolder = document.getElementById('btn-folder');
         const btnActive = document.getElementById('btn-active');
+        const btnProject = document.getElementById('btn-project');
         const btnAnalyze = document.getElementById('btn-analyze');
         const fileSelectionSection = document.getElementById('file-selection');
         const analyzingStatus = document.getElementById('analyzing-status');
@@ -1188,13 +1175,35 @@ crew.record_decision(finding, ${accepted ? 'True' : 'False'})
         const findingDetail = document.getElementById('finding-detail');
         const rollbackRow = document.getElementById('rollback-row');
 
-        // Event Listeners
+        // Event Listeners - using standardized filePicker:* message types
         btnBrowse.addEventListener('click', () => {
-            vscode.postMessage({ type: 'showFilePicker' });
+            vscode.postMessage({
+                type: 'filePicker:selectFile',
+                options: {
+                    filters: {
+                        'Python': ['py'],
+                        'TypeScript': ['ts', 'tsx'],
+                        'JavaScript': ['js', 'jsx'],
+                        'All Files': ['*']
+                    },
+                    title: 'Select file to analyze'
+                }
+            });
+        });
+
+        btnFolder.addEventListener('click', () => {
+            vscode.postMessage({
+                type: 'filePicker:selectFolder',
+                options: { title: 'Select folder to analyze' }
+            });
         });
 
         btnActive.addEventListener('click', () => {
-            vscode.postMessage({ type: 'useActiveFile' });
+            vscode.postMessage({ type: 'filePicker:useActiveFile' });
+        });
+
+        btnProject.addEventListener('click', () => {
+            vscode.postMessage({ type: 'filePicker:useProjectRoot' });
         });
 
         btnAnalyze.addEventListener('click', () => {

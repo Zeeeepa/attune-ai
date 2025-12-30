@@ -11,6 +11,13 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
+import {
+    getFilePickerService,
+    createFilePickerMessageHandler,
+    FilePickerService,
+    FilePickerResponse,
+    FILE_FILTERS
+} from '../services/FilePickerService';
 
 // =============================================================================
 // Types
@@ -73,6 +80,7 @@ export class ResearchSynthesisPanel implements vscode.WebviewViewProvider {
     };
     private _disposables: vscode.Disposable[] = [];
     private _activeProcess: cp.ChildProcess | null = null;
+    private _filePickerService: FilePickerService;
     private _backendHealth: BackendHealth = {
         status: 'unknown',
         lastSuccessTime: null,
@@ -82,6 +90,7 @@ export class ResearchSynthesisPanel implements vscode.WebviewViewProvider {
 
     constructor(extensionUri: vscode.Uri, _context: vscode.ExtensionContext) {
         this._extensionUri = extensionUri;
+        this._filePickerService = getFilePickerService();
     }
 
     public dispose() {
@@ -108,13 +117,13 @@ export class ResearchSynthesisPanel implements vscode.WebviewViewProvider {
         webviewView.webview.html = this._getHtmlContent();
 
         webviewView.webview.onDidReceiveMessage(async (message) => {
+            // Route filePicker messages through the service
+            if (message.type?.startsWith('filePicker:')) {
+                await this._handleFilePickerMessage(message);
+                return;
+            }
+
             switch (message.type) {
-                case 'addFiles':
-                    await this._showFilePicker();
-                    break;
-                case 'addFolder':
-                    await this._showFolderPicker();
-                    break;
                 case 'removeSource':
                     this._removeSource(message.id);
                     break;
@@ -149,39 +158,55 @@ export class ResearchSynthesisPanel implements vscode.WebviewViewProvider {
     // Source Management
     // =========================================================================
 
-    private async _showFilePicker() {
-        const files = await vscode.window.showOpenDialog({
-            canSelectMany: true,
-            canSelectFiles: true,
-            canSelectFolders: false,
-            filters: {
-                'Documents': ['md', 'txt', 'json', 'yaml', 'yml'],
-                'Code': ['py', 'ts', 'js', 'tsx', 'jsx'],
-                'All Files': ['*'],
-            },
-        });
-
-        if (files && files.length > 0) {
-            for (const file of files) {
-                await this._addSource(file.fsPath);
+    private async _handleFilePickerMessage(message: any): Promise<void> {
+        switch (message.type) {
+            case 'filePicker:selectFiles': {
+                const results = await this._filePickerService.showFilePicker({
+                    allowMultiple: true,
+                    filters: FILE_FILTERS.DOCUMENTS,
+                    title: 'Select source documents'
+                });
+                if (results) {
+                    for (const result of results) {
+                        await this._addSource(result.absolutePath);
+                    }
+                }
+                break;
             }
-        }
-    }
-
-    private async _showFolderPicker() {
-        const folders = await vscode.window.showOpenDialog({
-            canSelectMany: false,
-            canSelectFiles: false,
-            canSelectFolders: true,
-        });
-
-        if (folders && folders.length > 0) {
-            const folderPath = folders[0].fsPath;
-            const pattern = new vscode.RelativePattern(folderPath, '**/*.{md,txt,py,ts,js}');
-            const files = await vscode.workspace.findFiles(pattern, '**/node_modules/**', 20);
-
-            for (const file of files) {
-                await this._addSource(file.fsPath);
+            case 'filePicker:selectFolder': {
+                const result = await this._filePickerService.showFolderPicker({
+                    title: 'Select folder to scan'
+                });
+                if (result) {
+                    const pattern = new vscode.RelativePattern(result.absolutePath, '**/*.{md,txt,py,ts,js}');
+                    const files = await vscode.workspace.findFiles(pattern, '**/node_modules/**', 20);
+                    for (const file of files) {
+                        await this._addSource(file.fsPath);
+                    }
+                }
+                break;
+            }
+            case 'filePicker:useActiveFile': {
+                const result = this._filePickerService.getActiveFile();
+                if (result) {
+                    await this._addSource(result.absolutePath);
+                } else {
+                    vscode.window.showWarningMessage('No active file to add');
+                }
+                break;
+            }
+            case 'filePicker:useProjectRoot': {
+                const result = this._filePickerService.getProjectRoot();
+                if (result) {
+                    const pattern = new vscode.RelativePattern(result.absolutePath, '**/*.{md,txt,py,ts,js}');
+                    const files = await vscode.workspace.findFiles(pattern, '**/node_modules/**', 20);
+                    for (const file of files) {
+                        await this._addSource(file.fsPath);
+                    }
+                } else {
+                    vscode.window.showWarningMessage('No workspace folder open');
+                }
+                break;
             }
         }
     }
@@ -476,6 +501,13 @@ ${this._session.result.answer}
             color: var(--fg);
         }
 
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
         .input {
             width: 100%;
             padding: 8px;
@@ -653,9 +685,11 @@ ${this._session.result.answer}
                 <span id="min-warning" class="min-warning hidden">(minimum ${MIN_SOURCES} required)</span>
             </div>
             <div id="source-list" class="source-list"></div>
-            <div>
-                <button class="btn btn-secondary" onclick="addFiles()">+ Add Files</button>
-                <button class="btn btn-secondary" onclick="addFolder()">+ Add Folder</button>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="addFiles()">Files</button>
+                <button class="btn btn-secondary" onclick="addFolder()">Folder</button>
+                <button class="btn btn-secondary" onclick="addActive()">Active</button>
+                <button class="btn btn-secondary" onclick="addProject()">Project</button>
             </div>
         </div>
 
@@ -826,13 +860,21 @@ ${this._session.result.answer}
             }
         }
 
-        // Actions
+        // Actions - using standardized filePicker:* message types
         function addFiles() {
-            vscode.postMessage({ type: 'addFiles' });
+            vscode.postMessage({ type: 'filePicker:selectFiles' });
         }
 
         function addFolder() {
-            vscode.postMessage({ type: 'addFolder' });
+            vscode.postMessage({ type: 'filePicker:selectFolder' });
+        }
+
+        function addActive() {
+            vscode.postMessage({ type: 'filePicker:useActiveFile' });
+        }
+
+        function addProject() {
+            vscode.postMessage({ type: 'filePicker:useProjectRoot' });
         }
 
         function removeSource(id) {
