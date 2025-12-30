@@ -12,6 +12,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as cp from 'child_process';
+import { getFilePickerService, FilePickerService } from '../services/FilePickerService';
 
 export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'empathy-dashboard';
@@ -21,10 +22,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     private _context: vscode.ExtensionContext;
     private _fileWatcher?: vscode.FileSystemWatcher;
     private _workflowHistory: Map<string, string> = new Map();
+    private _filePickerService: FilePickerService;
 
     constructor(extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
         this._extensionUri = extensionUri;
         this._context = context;
+        this._filePickerService = getFilePickerService();
         // Load workflow history from globalState
         const saved = context.globalState.get<Record<string, string>>('workflowHistory', {});
         this._workflowHistory = new Map(Object.entries(saved));
@@ -115,6 +118,16 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     break;
                 case 'estimateCost':
                     await this._estimateCost(message.workflow, message.input);
+                    break;
+                case 'openWorkflowWizard':
+                    vscode.commands.executeCommand('workflow-wizard.focus');
+                    break;
+                case 'openDocAnalysis':
+                    vscode.commands.executeCommand('empathy.openDocAnalysis');
+                    break;
+                case 'runWorkflowInEditor':
+                    console.log('[EmpathyDashboard] Received runWorkflowInEditor:', message.workflow);
+                    await this._runWorkflowInEditor(message.workflow, message.input);
                     break;
             }
         });
@@ -765,6 +778,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _runWorkflow(workflowName: string, input?: string) {
+        // Special handling for doc-orchestrator: open the Documentation Analysis panel
+        if (workflowName === 'doc-orchestrator') {
+            vscode.commands.executeCommand('empathy.openDocAnalysis');
+            return;
+        }
+
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         if (!workspaceFolder) {
             vscode.window.showErrorMessage('No workspace folder open');
@@ -785,7 +804,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         // Execute workflow and capture output - pass input as JSON with workflow-specific key
         const inputKeys: Record<string, string> = {
             'code-review': 'target',
-            'doc-gen': 'target',
+            'doc-orchestrator': 'path',
             'bug-predict': 'target',
             'security-audit': 'target',
             'perf-audit': 'target',
@@ -805,40 +824,597 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             args.push('--input', inputJson);
         }
 
+        // Add --json flag for security-audit to get structured output
+        if (workflowName === 'security-audit') {
+            args.push('--json');
+        }
+
+        // Workflows that use file/folder pickers for scope should open reports in editor
+        // These are the workflows where users select a target file/folder to analyze
+        const filePickerWorkflows = [
+            'code-review',      // file picker - select file to review
+            'bug-predict',      // folder picker - select folder to analyze
+            'security-audit',   // folder picker - select folder to audit
+            'perf-audit',       // folder picker - select folder to profile
+            'refactor-plan',    // folder picker - select folder to plan refactoring
+            'health-check',     // folder picker - select folder to check health
+            'pr-review',        // folder picker - select folder with PR changes
+            'pro-review',       // hybrid - file/text for code review
+        ];
+        const opensInEditor = filePickerWorkflows.includes(workflowName);
+        console.log(`[EmpathyDashboard] Workflow: ${workflowName}, opensInEditor: ${opensInEditor}`);
+
+        // Get configured python path
+        const config = vscode.workspace.getConfiguration('empathy');
+        const pythonPath = config.get<string>('pythonPath', 'python');
+
         // Use execFile with array arguments to prevent command injection
-        cp.execFile('python', args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
+        cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
             const output = stdout || stderr || (error ? error.message : 'No output');
             const success = !error;
+
+            // Special handling for security-audit: save findings and update diagnostics
+            if (workflowName === 'security-audit' && stdout) {
+                this._saveSecurityFindings(workspaceFolder, stdout);
+            }
+
+            // For report workflows, open output in editor instead of panel
+            let openedInEditor = false;
+            // DEBUG: Show what's happening
+            vscode.window.showInformationMessage(`DEBUG: workflow=${workflowName}, success=${success}, opensInEditor=${opensInEditor}`);
+
+            if (success && opensInEditor && output.trim()) {
+                try {
+                    await vscode.commands.executeCommand('empathy.openReportInEditor', {
+                        workflowName,
+                        output,
+                        input
+                    });
+                    openedInEditor = true;
+                    vscode.window.showInformationMessage(`${workflowName} report opened in editor`);
+                } catch (openErr) {
+                    vscode.window.showErrorMessage(`Failed to open report: ${openErr}`);
+                }
+            }
 
             this._view?.webview.postMessage({
                 type: 'workflowStatus',
                 data: {
                     workflow: workflowName,
                     status: success ? 'complete' : 'error',
-                    output: output,
-                    error: error ? error.message : null
+                    output: openedInEditor ? '(Report opened in editor)' : output,
+                    error: error ? error.message : null,
+                    openedInEditor: openedInEditor
                 }
             });
         });
     }
 
-    private async _showFilePicker(workflow: string) {
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri;
+    /**
+     * Run a workflow and open the result directly in the editor.
+     * Called when user clicks a report workflow button in the Power tab.
+     * Shows a file/folder picker first, then runs the workflow.
+     */
+    private async _runWorkflowInEditor(workflowName: string, _defaultInput: string): Promise<void> {
+        console.log('[EmpathyDashboard] _runWorkflowInEditor called:', workflowName);
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            vscode.window.showErrorMessage('No workspace folder open');
+            return;
+        }
 
-        const result = await vscode.window.showOpenDialog({
-            canSelectFiles: true,
-            canSelectFolders: false,
-            canSelectMany: false,
-            defaultUri: workspaceFolder,
+        // Determine if this workflow needs a file or folder picker
+        const folderWorkflows = ['bug-predict', 'security-audit', 'perf-audit', 'refactor-plan', 'health-check', 'pr-review'];
+        const fileWorkflows = ['code-review', 'pro-review'];
+
+        let selectedPath: string | undefined;
+
+        if (folderWorkflows.includes(workflowName)) {
+            // Show folder picker with ignoreFocusOut to prevent focus issues from webview
+            const result = await vscode.window.showQuickPick([
+                { label: '$(folder) Entire Project', description: 'Analyze the whole project', path: '.' },
+                { label: '$(folder-opened) Select Folder...', description: 'Choose a specific folder', path: '__browse__' }
+            ], {
+                placeHolder: `Select scope for ${workflowName}`,
+                ignoreFocusOut: true
+            });
+
+            if (!result) {
+                return; // User cancelled
+            }
+
+            if (result.path === '__browse__') {
+                const folderUri = await vscode.window.showOpenDialog({
+                    canSelectFiles: false,
+                    canSelectFolders: true,
+                    canSelectMany: false,
+                    defaultUri: vscode.Uri.file(workspaceFolder),
+                    title: `Select folder for ${workflowName}`
+                });
+                if (!folderUri || folderUri.length === 0) {
+                    return; // User cancelled
+                }
+                selectedPath = folderUri[0].fsPath;
+            } else {
+                selectedPath = result.path;
+            }
+        } else if (fileWorkflows.includes(workflowName)) {
+            // Show file picker with ignoreFocusOut to prevent focus issues from webview
+            const result = await vscode.window.showQuickPick([
+                { label: '$(file) Current File', description: 'Analyze the active editor file', path: '__active__' },
+                { label: '$(folder) Entire Project', description: 'Analyze the whole project', path: '.' },
+                { label: '$(file-add) Select File...', description: 'Choose a specific file', path: '__browse__' }
+            ], {
+                placeHolder: `Select scope for ${workflowName}`,
+                ignoreFocusOut: true
+            });
+
+            if (!result) {
+                return; // User cancelled
+            }
+
+            if (result.path === '__active__') {
+                const activeEditor = vscode.window.activeTextEditor;
+                if (activeEditor) {
+                    selectedPath = activeEditor.document.uri.fsPath;
+                } else {
+                    vscode.window.showWarningMessage('No active file. Using project root.');
+                    selectedPath = '.';
+                }
+            } else if (result.path === '__browse__') {
+                const fileUri = await vscode.window.showOpenDialog({
+                    canSelectFiles: true,
+                    canSelectFolders: false,
+                    canSelectMany: false,
+                    defaultUri: vscode.Uri.file(workspaceFolder),
+                    title: `Select file for ${workflowName}`
+                });
+                if (!fileUri || fileUri.length === 0) {
+                    return; // User cancelled
+                }
+                selectedPath = fileUri[0].fsPath;
+            } else {
+                selectedPath = result.path;
+            }
+        } else {
+            selectedPath = '.';
+        }
+
+        // Display names for workflows
+        const workflowDisplayNames: Record<string, string> = {
+            'code-review': 'Code Review',
+            'bug-predict': 'Bug Prediction',
+            'security-audit': 'Security Audit',
+            'perf-audit': 'Performance Audit',
+            'refactor-plan': 'Refactoring Plan',
+            'health-check': 'Health Check',
+            'pr-review': 'PR Review',
+            'pro-review': 'Code Analysis',
+        };
+        const displayName = workflowDisplayNames[workflowName] || workflowName;
+
+        // Create WebView panel with spinner for loading state
+        const panel = vscode.window.createWebviewPanel(
+            'empathyReport',
+            `${displayName} Report`,
+            vscode.ViewColumn.One,
+            { enableScripts: true }
+        );
+
+        // Show loading spinner
+        panel.webview.html = this._getLoadingHtml(displayName, selectedPath);
+
+        // Build arguments
+        const inputKeys: Record<string, string> = {
+            'code-review': 'target',
+            'bug-predict': 'target',
+            'security-audit': 'target',
+            'perf-audit': 'target',
+            'refactor-plan': 'target',
+            'health-check': 'path',
+            'pr-review': 'target_path',
+            'pro-review': 'diff'
+        };
+        const inputKey = inputKeys[workflowName] || 'target';
+        const args = ['-m', 'empathy_os.cli', 'workflow', 'run', workflowName];
+        const inputJson = JSON.stringify({ [inputKey]: selectedPath });
+        args.push('--input', inputJson);
+
+        const config = vscode.workspace.getConfiguration('empathy');
+        const pythonPath = config.get<string>('pythonPath', 'python');
+
+        // Run workflow and update WebView when done
+        cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
+            const output = stdout || stderr || (error ? error.message : 'No output');
+            const timestamp = new Date().toLocaleString();
+
+            // Update WebView with final report
+            panel.webview.html = this._getReportHtml(displayName, selectedPath, timestamp, output, error ? error.message : null);
+        });
+    }
+
+    /**
+     * Generate HTML for the loading spinner view.
+     */
+    private _getLoadingHtml(displayName: string, targetPath: string): string {
+        return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${displayName} Report</title>
+    <style>
+        body {
+            font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+            background: var(--vscode-editor-background, #1e1e1e);
+            color: var(--vscode-editor-foreground, #d4d4d4);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+        .container {
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: var(--vscode-foreground, #fff);
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+        .target {
+            color: var(--vscode-descriptionForeground, #888);
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+        .spinner-container {
+            margin: 40px 0;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--vscode-input-border, #3c3c3c);
+            border-top-color: var(--vscode-button-background, #0e639c);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .status {
+            margin-top: 24px;
+            font-size: 16px;
+            color: var(--vscode-foreground, #d4d4d4);
+        }
+        .dots {
+            display: inline-block;
+        }
+        .dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+            100% { content: ''; }
+        }
+        .hint {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--vscode-descriptionForeground, #666);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>${displayName} Report</h1>
+        <div class="target">Target: ${this._escapeHtml(targetPath)}</div>
+        <div class="spinner-container">
+            <div class="spinner"></div>
+        </div>
+        <div class="status">Generating report<span class="dots"></span></div>
+        <div class="hint">This may take a moment depending on the size of the target.</div>
+    </div>
+</body>
+</html>`;
+    }
+
+    /**
+     * Generate HTML for the final report view.
+     */
+    private _getReportHtml(displayName: string, targetPath: string, timestamp: string, output: string, errorMessage: string | null): string {
+        const isError = errorMessage !== null;
+        const statusColor = isError ? 'var(--vscode-errorForeground, #f14c4c)' : 'var(--vscode-testing-iconPassed, #73c991)';
+        const statusText = isError ? 'Error' : 'Complete';
+        const statusIcon = isError ? '✗' : '✓';
+
+        return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${displayName} Report</title>
+    <style>
+        body {
+            font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+            background: var(--vscode-editor-background, #1e1e1e);
+            color: var(--vscode-editor-foreground, #d4d4d4);
+            margin: 0;
+            padding: 24px;
+            line-height: 1.6;
+        }
+        .header {
+            border-bottom: 1px solid var(--vscode-input-border, #3c3c3c);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            color: var(--vscode-foreground, #fff);
+            margin: 0 0 12px 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            background: ${isError ? 'rgba(241, 76, 76, 0.15)' : 'rgba(115, 201, 145, 0.15)'};
+            color: ${statusColor};
+        }
+        .meta {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+            color: var(--vscode-descriptionForeground, #888);
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .content {
+            white-space: pre-wrap;
+            font-family: var(--vscode-editor-font-family, 'Consolas', 'Monaco', monospace);
+            font-size: 13px;
+            background: var(--vscode-textCodeBlock-background, #2d2d2d);
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .error-box {
+            background: rgba(241, 76, 76, 0.1);
+            border: 1px solid var(--vscode-errorForeground, #f14c4c);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .error-title {
+            color: var(--vscode-errorForeground, #f14c4c);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--vscode-input-border, #3c3c3c);
+            font-size: 12px;
+            color: var(--vscode-descriptionForeground, #666);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            ${displayName} Report
+            <span class="status-badge">${statusIcon} ${statusText}</span>
+        </h1>
+        <div class="meta">
+            <div class="meta-item">📁 ${this._escapeHtml(targetPath)}</div>
+            <div class="meta-item">🕐 ${timestamp}</div>
+        </div>
+    </div>
+    ${isError ? `
+    <div class="error-box">
+        <div class="error-title">Error Details</div>
+        <div>${this._escapeHtml(errorMessage)}</div>
+    </div>
+    ` : ''}
+    <div class="content">${this._escapeHtml(output)}</div>
+    <div class="footer">Generated by Empathy Framework</div>
+</body>
+</html>`;
+    }
+
+    /**
+     * Escape HTML special characters to prevent XSS.
+     */
+    private _escapeHtml(text: string): string {
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /**
+     * Open workflow report output in a new editor document.
+     * Formats the output as markdown for better readability.
+     * Only called for workflows that use file/folder pickers for scope.
+     */
+    private async _openReportInEditor(workflowName: string, output: string, input?: string): Promise<void> {
+        // Display names for file picker workflows
+        const workflowNames: Record<string, string> = {
+            'code-review': 'Code Review',
+            'bug-predict': 'Bug Prediction',
+            'security-audit': 'Security Audit',
+            'perf-audit': 'Performance Audit',
+            'refactor-plan': 'Refactoring Plan',
+            'health-check': 'Health Check',
+            'pr-review': 'PR Review',
+            'pro-review': 'Code Analysis',
+        };
+
+        const displayName = workflowNames[workflowName] || workflowName;
+        const timestamp = new Date().toLocaleString();
+
+        // Format the report as markdown
+        let content = `# ${displayName} Report\n\n`;
+        content += `**Generated:** ${timestamp}\n`;
+        if (input) {
+            content += `**Target:** ${input}\n`;
+        }
+        content += `\n---\n\n`;
+
+        // Try to parse as JSON for structured formatting, otherwise use raw output
+        try {
+            const parsed = JSON.parse(output);
+            content += this._formatJsonReport(parsed);
+        } catch {
+            // Not JSON, use the raw output
+            content += output;
+        }
+
+        content += `\n\n---\n*Generated by Empathy Framework*`;
+
+        // Create and show the document in the main editor area
+        console.log(`[EmpathyDashboard] Creating report document for ${workflowName}, content length: ${content.length}`);
+        const doc = await vscode.workspace.openTextDocument({
+            content,
+            language: 'markdown',
+        });
+        console.log(`[EmpathyDashboard] Document created, showing in editor...`);
+        // Force open in editor column 1 (main editor area), not preview
+        await vscode.window.showTextDocument(doc, {
+            viewColumn: vscode.ViewColumn.One,
+            preview: false,
+            preserveFocus: false
+        });
+        console.log(`[EmpathyDashboard] Document shown in editor`);
+    }
+
+    /**
+     * Format a JSON report object as readable markdown.
+     */
+    private _formatJsonReport(data: any): string {
+        let content = '';
+
+        // Handle common report structures
+        if (data.summary) {
+            content += `## Summary\n\n${data.summary}\n\n`;
+        }
+
+        if (data.findings && Array.isArray(data.findings)) {
+            content += `## Findings\n\n`;
+            for (const finding of data.findings) {
+                const severity = finding.severity || finding.level || 'info';
+                const title = finding.title || finding.message || finding.description || 'Finding';
+                content += `### ${severity.toUpperCase()}: ${title}\n\n`;
+                if (finding.description && finding.description !== title) {
+                    content += `${finding.description}\n\n`;
+                }
+                if (finding.file || finding.location) {
+                    content += `**Location:** ${finding.file || finding.location}`;
+                    if (finding.line) {
+                        content += `:${finding.line}`;
+                    }
+                    content += `\n\n`;
+                }
+                if (finding.recommendation || finding.fix) {
+                    content += `**Recommendation:** ${finding.recommendation || finding.fix}\n\n`;
+                }
+            }
+        }
+
+        if (data.recommendations && Array.isArray(data.recommendations)) {
+            content += `## Recommendations\n\n`;
+            for (const rec of data.recommendations) {
+                if (typeof rec === 'string') {
+                    content += `- ${rec}\n`;
+                } else {
+                    content += `- ${rec.title || rec.description || JSON.stringify(rec)}\n`;
+                }
+            }
+            content += `\n`;
+        }
+
+        if (data.metrics) {
+            content += `## Metrics\n\n`;
+            content += `| Metric | Value |\n`;
+            content += `|--------|-------|\n`;
+            for (const [key, value] of Object.entries(data.metrics)) {
+                content += `| ${key} | ${value} |\n`;
+            }
+            content += `\n`;
+        }
+
+        if (data.checklist && Array.isArray(data.checklist)) {
+            content += `## Checklist\n\n`;
+            for (const item of data.checklist) {
+                const checked = item.passed || item.checked ? 'x' : ' ';
+                const label = item.label || item.name || item.description || item;
+                content += `- [${checked}] ${label}\n`;
+            }
+            content += `\n`;
+        }
+
+        // If nothing was formatted, dump the raw JSON
+        if (!content) {
+            content = '```json\n' + JSON.stringify(data, null, 2) + '\n```\n';
+        }
+
+        return content;
+    }
+
+    /**
+     * Save security audit findings to file and trigger diagnostics refresh
+     */
+    private _saveSecurityFindings(workspaceFolder: string, output: string): void {
+        try {
+            // Try to parse as JSON
+            const result = JSON.parse(output);
+            const empathyDir = path.join(workspaceFolder, '.empathy');
+
+            // Ensure .empathy directory exists
+            if (!fs.existsSync(empathyDir)) {
+                fs.mkdirSync(empathyDir, { recursive: true });
+            }
+
+            // Save findings to file
+            const findingsPath = path.join(empathyDir, 'security_findings.json');
+            fs.writeFileSync(findingsPath, JSON.stringify(result, null, 2));
+
+            // The file watcher in extension.ts will automatically trigger updateSecurityDiagnostics()
+            console.log('Security findings saved to:', findingsPath);
+        } catch (parseErr) {
+            // Not JSON output - might be text format, ignore
+            console.log('Security output not JSON, skipping findings save');
+        }
+    }
+
+    private async _showFilePicker(workflow: string) {
+        const result = await this._filePickerService.showFilePicker({
             title: `Select file for ${workflow}`,
             openLabel: 'Select'
         });
 
         if (result && result[0]) {
-            const relativePath = vscode.workspace.asRelativePath(result[0]);
             this._view?.webview.postMessage({
                 type: 'pickerResult',
-                data: { workflow, path: relativePath, cancelled: false }
+                data: { workflow, path: result[0].path, cancelled: false }
             });
         } else {
             this._view?.webview.postMessage({
@@ -849,22 +1425,15 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _showFolderPicker(workflow: string) {
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri;
-
-        const result = await vscode.window.showOpenDialog({
-            canSelectFiles: false,
-            canSelectFolders: true,
-            canSelectMany: false,
-            defaultUri: workspaceFolder,
+        const result = await this._filePickerService.showFolderPicker({
             title: `Select folder for ${workflow}`,
             openLabel: 'Select Folder'
         });
 
-        if (result && result[0]) {
-            const relativePath = vscode.workspace.asRelativePath(result[0]);
+        if (result) {
             this._view?.webview.postMessage({
                 type: 'pickerResult',
-                data: { workflow, path: relativePath, cancelled: false }
+                data: { workflow, path: result.path, cancelled: false }
             });
         } else {
             this._view?.webview.postMessage({
@@ -957,16 +1526,11 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private _sendActiveFile(workflow: string) {
-        const activeEditor = vscode.window.activeTextEditor;
-        let activePath = '';
-
-        if (activeEditor) {
-            activePath = vscode.workspace.asRelativePath(activeEditor.document.uri);
-        }
+        const result = this._filePickerService.getActiveFile();
 
         this._view?.webview.postMessage({
             type: 'activeFile',
-            data: { workflow, path: activePath }
+            data: { workflow, path: result?.path || '' }
         });
     }
 
@@ -1351,6 +1915,25 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             margin-bottom: 0;
             font-size: 16px;
         }
+
+        .new-workflow-btn {
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+        }
+        .new-workflow-btn:hover {
+            background: var(--vscode-button-hoverBackground);
+        }
+        .new-workflow-btn-large {
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .new-workflow-btn-large:hover {
+            background: var(--vscode-button-hoverBackground);
+        }
     </style>
 </head>
 <body>
@@ -1423,9 +2006,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span class="action-icon">&#x2B50;</span>
                     <span>Run Analysis</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="doc-gen">
+                <button class="action-btn workflow-btn" data-workflow="doc-orchestrator">
                     <span class="action-icon">&#x1F4DA;</span>
-                    <span>Generate Docs</span>
+                    <span>Manage Docs</span>
                 </button>
                 <button class="action-btn workflow-btn" data-workflow="bug-predict">
                     <span class="action-icon">&#x1F41B;</span>
@@ -1458,6 +2041,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 <button class="action-btn workflow-btn" data-workflow="pr-review">
                     <span class="action-icon">&#x1F50D;</span>
                     <span>Review PR</span>
+                </button>
+                <button class="action-btn workflow-btn new-workflow-btn" id="btn-new-workflow" title="Create a new workflow from template">
+                    <span class="action-icon">&#x2795;</span>
+                    <span>New Workflow</span>
                 </button>
             </div>
         </div>
@@ -1531,7 +2118,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     <div id="tab-health" class="tab-content">
         <div class="score-container" style="padding: 12px;">
             <div class="score-circle good" id="health-score">--</div>
-            <div style="opacity: 0.7; font-size: 11px;">Health Score</div>
+            <div style="opacity: 0.7; font-size: 11px;">Health Score (v2)</div>
         </div>
 
         <div class="health-tree">
@@ -1801,6 +2388,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
 
     <!-- Workflows Tab -->
     <div id="tab-workflows" class="tab-content">
+        <!-- New Workflow Button -->
+        <button class="btn new-workflow-btn-large" id="btn-new-workflow-tab" title="Create a new workflow from template" style="width: 100%; margin-bottom: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 16px;">&#x2795;</span>
+            <span>Create New Workflow</span>
+        </button>
+
         <div class="metrics-grid">
             <div class="metric">
                 <div class="metric-value" id="wf-runs">0</div>
@@ -1849,6 +2442,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     </div>
 
     <script nonce="${nonce}">
+        console.log('[EmpathyDashboard] WEBVIEW SCRIPT LOADED - VERSION 2');
         const vscode = acquireVsCodeApi();
         const PROJECT_PATH = '${projectPath}';
 
@@ -1938,10 +2532,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 placeholder: 'Click Browse or type path...',
                 allowText: true  // hybrid - allows manual path entry too
             },
-            'doc-gen': {
-                type: 'file',
-                label: 'Select file/module to document',
-                placeholder: 'Click Browse or describe what to document...',
+            'doc-orchestrator': {
+                type: 'folder',
+                label: 'Select folder to analyze for documentation',
+                placeholder: 'Click Browse or leave empty for project root...',
                 allowText: true
             },
             'bug-predict': {
@@ -2052,7 +2646,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         }
 
         // Workflow button click handlers - show input panel first
-        document.querySelectorAll('.action-btn[data-workflow]').forEach(btn => {
+        const workflowBtns = document.querySelectorAll('.action-btn[data-workflow]');
+        console.log('[EmpathyDashboard] Found workflow buttons:', workflowBtns.length);
+        workflowBtns.forEach(btn => {
             const workflow = btn.dataset.workflow;
             const iconSpan = btn.querySelector('.action-icon');
             const textSpan = btn.querySelector('span:not(.action-icon)');
@@ -2064,9 +2660,28 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
 
             btn.addEventListener('click', function() {
                 const wf = this.dataset.workflow;
+                console.log('[EmpathyDashboard] Workflow button clicked:', wf);
                 currentWorkflow = wf;
 
-                // Show input panel
+                // Special case: doc-orchestrator opens the Documentation Analysis panel directly
+                if (wf === 'doc-orchestrator') {
+                    vscode.postMessage({ type: 'openDocAnalysis' });
+                    return;
+                }
+
+                // Report workflows: run immediately with project root and open in editor
+                const reportWorkflows = [
+                    'code-review', 'bug-predict', 'security-audit', 'perf-audit',
+                    'refactor-plan', 'health-check', 'pr-review', 'pro-review'
+                ];
+                if (reportWorkflows.includes(wf)) {
+                    // Run workflow immediately with project root as input
+                    console.log('[EmpathyDashboard] Running report workflow in editor:', wf);
+                    vscode.postMessage({ type: 'runWorkflowInEditor', workflow: wf, input: '.' });
+                    return;
+                }
+
+                // Show input panel for other workflows
                 const resultsPanel = document.getElementById('workflow-results');
                 const resultsTitle = document.getElementById('workflow-results-title');
                 const inputSection = document.getElementById('workflow-input-section');
@@ -2088,6 +2703,20 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 showInputType(config.type, config);
             });
         });
+
+        // New Workflow buttons - opens the Workflow Wizard panel
+        const newWorkflowBtn = document.getElementById('btn-new-workflow');
+        if (newWorkflowBtn) {
+            newWorkflowBtn.addEventListener('click', function() {
+                vscode.postMessage({ type: 'openWorkflowWizard' });
+            });
+        }
+        const newWorkflowBtnTab = document.getElementById('btn-new-workflow-tab');
+        if (newWorkflowBtnTab) {
+            newWorkflowBtnTab.addEventListener('click', function() {
+                vscode.postMessage({ type: 'openWorkflowWizard' });
+            });
+        }
 
         // Browse button click handler
         const browseBtn = document.getElementById('workflow-browse-btn');
@@ -2510,6 +3139,13 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 // Hide actions while running
                 if (actionsPanel) actionsPanel.style.display = 'none';
             } else if (data.status === 'complete') {
+                // If report was opened in editor, hide panel and show notification instead
+                if (data.openedInEditor) {
+                    resultsPanel.style.display = 'none';
+                    currentWorkflow = null;
+                    return;
+                }
+
                 resultsStatus.style.display = 'block';
                 resultsStatus.style.background = 'rgba(16, 185, 129, 0.2)';
                 resultsStatus.style.color = 'var(--vscode-testing-iconPassed)';
@@ -3036,7 +3672,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 'bug-predict': '#f59e0b',
                 'perf-audit': '#8b5cf6',
                 'test-gen': '#22c55e',
-                'doc-gen': '#06b6d4',
+                'doc-orchestrator': '#06b6d4',
                 'refactor-plan': '#ec4899',
                 'release-prep': '#6366f1'
             };
