@@ -1386,6 +1386,11 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             'health-check': 'Health Check',
             'pr-review': 'PR Review',
             'pro-review': 'Code Analysis',
+            // Quick Actions
+            'morning': 'Morning Briefing',
+            'ship': 'Pre-Ship Check',
+            'learn': 'Learn Patterns',
+            'sync-claude': 'Sync to Claude Code',
         };
 
         const displayName = workflowNames[workflowName] || workflowName;

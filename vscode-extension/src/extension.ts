@@ -506,10 +506,12 @@ async function cmdSyncClaude() {
         },
         async () => {
             const output = await runEmpathyCommandSilent('sync-claude');
-            // Extract pattern count from output
-            const match = output.match(/Total: (\d+) patterns synced/);
-            const count = match ? match[1] : 'patterns';
-            vscode.window.showInformationMessage(`✓ ${count} patterns synced to .claude/rules/empathy`);
+            // Open in webview report panel for full visibility
+            await vscode.commands.executeCommand('empathy.openReportInEditor', {
+                workflowName: 'sync-claude',
+                output,
+                input: 'Sync Patterns to Claude Code'
+            });
         }
     );
 }
