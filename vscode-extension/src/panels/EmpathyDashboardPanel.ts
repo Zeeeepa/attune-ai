@@ -811,14 +811,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
                         const output = stdout || stderr || (error ? error.message : 'No output');
 
-                        // Open in webview report panel
+                        // Open in webview report panel with action buttons
                         try {
-                            await vscode.commands.executeCommand('empathy.openReportInEditor', {
-                                workflowName: command.split(/\s+/)[0], // Use first word as workflow name
-                                output,
-                                input: title
-                            });
-                            vscode.window.showInformationMessage(`${title} report opened`);
+                            const cmdBase = command.split(/\s+/)[0];
+                            await this._openReportWebview(cmdBase, title, output);
                         } catch (openErr) {
                             vscode.window.showErrorMessage(`Failed to open report: ${openErr}`);
                         }
@@ -1592,6 +1588,172 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         content += `<details>\n<summary>📋 Raw Output</summary>\n\n\`\`\`\n${output}\n\`\`\`\n</details>\n`;
 
         return content;
+    }
+
+    /**
+     * Open a report in a webview panel with action buttons.
+     */
+    private async _openReportWebview(cmdBase: string, title: string, output: string): Promise<void> {
+        const panel = vscode.window.createWebviewPanel(
+            'empathyReport',
+            `Empathy: ${title}`,
+            vscode.ViewColumn.One,
+            { enableScripts: true }
+        );
+
+        // Define action buttons based on report type
+        const actionButtons: Array<{ label: string; icon: string; command: string }> = [];
+
+        // Common actions for most reports
+        if (cmdBase !== 'fix-all') {
+            actionButtons.push({ label: 'Fix All Issues', icon: '🔧', command: 'fix-all' });
+        }
+
+        // Report-specific actions
+        if (cmdBase === 'morning' || cmdBase === 'ship') {
+            actionButtons.push({ label: 'Run Tests', icon: '🧪', command: 'run-tests' });
+            actionButtons.push({ label: 'Security Scan', icon: '🔒', command: 'securityScan' });
+        }
+        if (cmdBase === 'ship' || cmdBase === 'security') {
+            actionButtons.push({ label: 'Learn Patterns', icon: '📚', command: 'learn' });
+        }
+        if (cmdBase === 'learn' || cmdBase === 'morning') {
+            actionButtons.push({ label: 'Sync to Claude', icon: '🔄', command: 'sync-claude' });
+        }
+
+        // Generate action buttons HTML
+        const buttonsHtml = actionButtons.map(btn =>
+            `<button class="action-btn" data-cmd="${btn.command}">${btn.icon} ${btn.label}</button>`
+        ).join('\n                ');
+
+        // Convert output to HTML (preserve formatting)
+        const outputHtml = this._formatOutputAsHtml(output);
+
+        panel.webview.html = `<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, sans-serif);
+            padding: 20px;
+            color: var(--vscode-foreground, #ccc);
+            background: var(--vscode-editor-background, #1e1e1e);
+            line-height: 1.6;
+        }
+        h1 {
+            border-bottom: 1px solid var(--vscode-panel-border, #444);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .timestamp {
+            color: var(--vscode-descriptionForeground, #888);
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--vscode-input-background, #2d2d2d);
+            border-radius: 6px;
+        }
+        .action-btn {
+            padding: 8px 16px;
+            background: var(--vscode-button-background, #0e639c);
+            color: var(--vscode-button-foreground, #fff);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .action-btn:hover {
+            background: var(--vscode-button-hoverBackground, #1177bb);
+        }
+        .output {
+            background: var(--vscode-input-background, #2d2d2d);
+            padding: 15px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            font-family: var(--vscode-editor-font-family, monospace);
+            font-size: 13px;
+            overflow-x: auto;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--vscode-foreground, #ccc);
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 ${title}</h1>
+    <div class="timestamp">Generated: ${new Date().toLocaleString()}</div>
+
+    <div class="section-title">⚡ Quick Actions</div>
+    <div class="actions">
+                ${buttonsHtml}
+    </div>
+
+    <div class="section-title">📋 Report Output</div>
+    <div class="output">${outputHtml}</div>
+
+    <script>
+        const vscode = acquireVsCodeApi();
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                vscode.postMessage({ type: 'runCommand', command: btn.dataset.cmd });
+            });
+        });
+    </script>
+</body>
+</html>`;
+
+        // Handle messages from webview
+        panel.webview.onDidReceiveMessage(async (message) => {
+            if (message.type === 'runCommand') {
+                // Close the report panel first
+                panel.dispose();
+                // Run the command
+                const webviewCommands: Record<string, { cmd: string; title: string }> = {
+                    'fix-all': { cmd: 'fix-all', title: 'Auto Fix' },
+                    'run-tests': { cmd: 'ship --tests-only', title: 'Test Results' },
+                    'securityScan': { cmd: 'ship --security-only', title: 'Security Scan' },
+                    'learn': { cmd: 'learn --analyze 20', title: 'Learn Patterns' },
+                    'sync-claude': { cmd: 'sync-claude', title: 'Sync to Claude Code' },
+                };
+                const cmdConfig = webviewCommands[message.command];
+                if (cmdConfig) {
+                    await this._runQuickAction(cmdConfig.cmd, cmdConfig.title);
+                }
+            }
+        });
+    }
+
+    /**
+     * Format raw output as HTML with proper escaping and formatting.
+     */
+    private _formatOutputAsHtml(output: string): string {
+        // Escape HTML entities
+        let html = output
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        // Highlight checkmarks and X marks
+        html = html.replace(/✓/g, '<span style="color: #4ec9b0;">✓</span>');
+        html = html.replace(/✗|✘|❌/g, '<span style="color: #f14c4c;">❌</span>');
+        html = html.replace(/⚠/g, '<span style="color: #cca700;">⚠</span>');
+
+        // Highlight section headers (lines with === or ---)
+        html = html.replace(/^(={3,}|─{3,})$/gm, '<span style="color: #569cd6;">$1</span>');
+
+        return html;
     }
 
     /**
