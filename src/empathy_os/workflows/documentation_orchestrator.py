@@ -699,7 +699,7 @@ class DocumentationOrchestrator:
                 print(f"  [!] Cost limit ${self.max_cost:.2f} reached. Skipping remaining items.")
                 break
 
-            print(f"  [{i+1}/{len(items)}] {item.issue_type}: {item.file_path}")
+            print(f"  [{i + 1}/{len(items)}] {item.issue_type}: {item.file_path}")
 
             try:
                 # Read source file content
@@ -799,7 +799,7 @@ class DocumentationOrchestrator:
                 ]
             )
             for i, item in enumerate(items[:10]):
-                lines.append(f"  {i+1}. [{item.severity.upper()}] {item.file_path}")
+                lines.append(f"  {i + 1}. [{item.severity.upper()}] {item.file_path}")
                 lines.append(f"     Type: {item.issue_type}")
                 if item.days_stale:
                     lines.append(f"     Days stale: {item.days_stale}")
@@ -936,7 +936,7 @@ class DocumentationOrchestrator:
         print("\nTop priority items:")
         for i, item in enumerate(priority_items):
             status = "STALE" if item.issue_type == "stale_doc" else "MISSING"
-            print(f"  {i+1}. [{status}] {item.file_path}")
+            print(f"  {i + 1}. [{status}] {item.file_path}")
 
         # Check for dry run
         if self.dry_run:

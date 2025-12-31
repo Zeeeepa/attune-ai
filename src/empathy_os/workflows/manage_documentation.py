@@ -281,7 +281,7 @@ class ManageDocumentationCrew:
         mock_findings = {
             "Documentation Analyst": f"""[Mock Analysis - {reason}]
 
-Based on scanning the path: {context.get('path', '.')}
+Based on scanning the path: {context.get("path", ".")}
 
 Findings:
 1. {{
@@ -469,7 +469,7 @@ Note: This is a mock response. Configure ANTHROPIC_API_KEY for real analysis."""
         all_responses = []
 
         for i, task in enumerate(tasks):
-            print(f"  [{i+1}/{len(tasks)}] {task.agent.role}: {task.description[:50]}...")
+            print(f"  [{i + 1}/{len(tasks)}] {task.agent.role}: {task.description[:50]}...")
 
             # Add previous task output to context
             if all_responses:

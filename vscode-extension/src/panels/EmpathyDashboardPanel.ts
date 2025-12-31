@@ -52,9 +52,17 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             switch (message.type) {
                 case 'runCommand':
                     try {
-                        // Special handling for run-tests (runs pytest directly)
-                        if (message.command === 'run-tests') {
-                            await this._runTests();
+                        // Quick Actions that should open in webview instead of terminal
+                        const webviewCommands: Record<string, { cmd: string; title: string }> = {
+                            'morning': { cmd: 'morning', title: 'Morning Briefing' },
+                            'ship': { cmd: 'ship', title: 'Pre-Ship Check' },
+                            'learn': { cmd: 'learn --analyze 20', title: 'Learn Patterns' },
+                            'run-tests': { cmd: 'ship --tests-only', title: 'Test Results' }
+                        };
+
+                        if (webviewCommands[message.command]) {
+                            const { cmd, title } = webviewCommands[message.command];
+                            await this._runQuickAction(cmd, title);
                         } else if (message.command === 'initialize') {
                             // Launch the Initialize Wizard (force open, bypass "already initialized" check)
                             await vscode.commands.executeCommand('empathy.initializeProject', { force: true });
@@ -766,20 +774,53 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         return this._workflowHistory.get(workflowId);
     }
 
-    private async _runTests() {
+    /**
+     * Run a Quick Action command and display output in webview report panel.
+     * Replaces terminal output with rich webview display.
+     */
+    private async _runQuickAction(command: string, title: string): Promise<void> {
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         if (!workspaceFolder) {
             vscode.window.showErrorMessage('No workspace folder open');
             return;
         }
 
-        // Create terminal for test output
-        const terminal = vscode.window.createTerminal({
-            name: 'Empathy Tests',
-            cwd: workspaceFolder
-        });
-        terminal.show();
-        terminal.sendText('python -m pytest tests/ --no-cov -v');
+        // Get configured python path
+        const config = vscode.workspace.getConfiguration('empathy');
+        const pythonPath = config.get<string>('pythonPath', 'python');
+
+        // Build arguments as array for safe execution
+        const args = ['-m', 'empathy_os.cli', ...command.split(/\s+/)];
+
+        // Show progress notification
+        vscode.window.withProgress(
+            {
+                location: vscode.ProgressLocation.Notification,
+                title: `Empathy: Running ${title}...`,
+                cancellable: false
+            },
+            async () => {
+                return new Promise<void>((resolve) => {
+                    cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
+                        const output = stdout || stderr || (error ? error.message : 'No output');
+
+                        // Open in webview report panel
+                        try {
+                            await vscode.commands.executeCommand('empathy.openReportInEditor', {
+                                workflowName: command.split(/\s+/)[0], // Use first word as workflow name
+                                output,
+                                input: title
+                            });
+                            vscode.window.showInformationMessage(`${title} report opened`);
+                        } catch (openErr) {
+                            vscode.window.showErrorMessage(`Failed to open report: ${openErr}`);
+                        }
+
+                        resolve();
+                    });
+                });
+            }
+        );
     }
 
     private async _runWorkflow(workflowName: string, input?: string) {
