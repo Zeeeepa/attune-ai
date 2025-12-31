@@ -1,7 +1,7 @@
 # Project Memory
 
 ## Framework
-This is the Empathy Framework v1.8.0-alpha
+This is the Empathy Framework v3.5.6
 
 @./python-standards.md
 
