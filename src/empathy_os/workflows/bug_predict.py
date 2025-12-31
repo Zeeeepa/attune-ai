@@ -15,11 +15,94 @@ Licensed under Fair Source License 0.9
 """
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 from .base import BaseWorkflow, ModelTier
 from .step_config import WorkflowStepConfig
+
+
+def _is_dangerous_eval_usage(content: str, file_path: str) -> bool:
+    """
+    Check if file contains dangerous eval/exec usage, filtering false positives.
+
+    Excludes:
+    - String literals used for detection (e.g., 'if "eval(" in content')
+    - Comments mentioning eval/exec (e.g., '# SECURITY FIX: Use json.loads() instead of eval()')
+    - JavaScript's safe regex.exec() method
+    - Pattern definitions for security scanners
+
+    Returns:
+        True if dangerous eval/exec usage is found, False otherwise.
+    """
+    # Check if file even contains eval or exec
+    if "eval(" not in content and "exec(" not in content:
+        return False
+
+    # For JavaScript/TypeScript files, check for regex.exec() which is safe
+    if file_path.endswith((".js", ".ts", ".tsx", ".jsx")):
+        # Remove all regex.exec() calls (these are safe)
+        content_without_regex_exec = re.sub(r"\.\s*exec\s*\(", ".SAFE_EXEC(", content)
+        # If no eval/exec remains, it was all regex.exec()
+        if "eval(" not in content_without_regex_exec and "exec(" not in content_without_regex_exec:
+            return False
+
+    # Check each line for real dangerous usage
+    lines = content.splitlines()
+    for line in lines:
+        # Skip comment lines
+        stripped = line.strip()
+        if stripped.startswith("#") or stripped.startswith("//") or stripped.startswith("*"):
+            continue
+
+        # Check for eval( or exec( in this line
+        if "eval(" not in line and "exec(" not in line:
+            continue
+
+        # Skip if it's inside a string literal for detection purposes
+        # e.g., 'if "eval(" in content' or "pattern = r'eval\('"
+        detection_patterns = [
+            r'["\'].*eval\(.*["\']',  # "eval(" or 'eval(' in a string
+            r'["\'].*exec\(.*["\']',  # "exec(" or 'exec(' in a string
+            r"in\s+\w+",  # Pattern like 'in content'
+            r'r["\'].*eval',  # Raw string regex pattern
+            r'r["\'].*exec',  # Raw string regex pattern
+        ]
+
+        is_detection_code = False
+        for pattern in detection_patterns:
+            if re.search(pattern, line):
+                # Check if it's really detection code
+                if " in " in line and (
+                    "content" in line or "text" in line or "code" in line or "source" in line
+                ):
+                    is_detection_code = True
+                    break
+                # Check if it's a string literal being defined (eval or exec)
+                if re.search(r'["\'][^"\']*eval\([^"\']*["\']', line):
+                    is_detection_code = True
+                    break
+                if re.search(r'["\'][^"\']*exec\([^"\']*["\']', line):
+                    is_detection_code = True
+                    break
+                # Check for raw string regex patterns containing eval/exec
+                if re.search(r"r['\"][^'\"]*(?:eval|exec)[^'\"]*['\"]", line):
+                    is_detection_code = True
+                    break
+
+        if is_detection_code:
+            continue
+
+        # Skip JavaScript regex.exec() - pattern.exec(text)
+        if re.search(r"\w+\.exec\s*\(", line):
+            continue
+
+        # This looks like real dangerous usage
+        return True
+
+    return False
+
 
 # Define step configurations for executor-based execution
 BUG_PREDICT_STEPS = {
@@ -193,7 +276,8 @@ class BugPredictionWorkflow(BaseWorkflow):
                                     "severity": "low",
                                 }
                             )
-                        if "eval(" in content or "exec(" in content:
+                        # Use smart detection to filter false positives
+                        if _is_dangerous_eval_usage(content, str(file_path)):
                             patterns_found.append(
                                 {
                                     "file": str(file_path),
