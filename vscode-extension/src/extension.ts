@@ -498,7 +498,20 @@ async function cmdDashboard() {
 }
 
 async function cmdSyncClaude() {
-    runEmpathyCommand('sync-claude', 'Sync to Claude Code');
+    await vscode.window.withProgress(
+        {
+            location: vscode.ProgressLocation.Notification,
+            title: 'Empathy: Syncing patterns to Claude Code...',
+            cancellable: false
+        },
+        async () => {
+            const output = await runEmpathyCommandSilent('sync-claude');
+            // Extract pattern count from output
+            const match = output.match(/Total: (\d+) patterns synced/);
+            const count = match ? match[1] : 'patterns';
+            vscode.window.showInformationMessage(`✓ ${count} patterns synced to .claude/rules/empathy`);
+        }
+    );
 }
 
 async function cmdStatus() {

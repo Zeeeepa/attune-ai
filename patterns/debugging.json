@@ -550,7 +550,50 @@
         "pytest.ini"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251231_a5d697eb",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "style: Auto-fix formatting with ruff/black (19 files)",
+      "fix": "See commit a5d697eb",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-31",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        "patterns/debugging/bug_20251231_02d986b6.json",
+        "patterns/debugging/bug_20251231_29c10759.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251231_d0b81efc",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Bug scanner tuning, VSCode cleanup, and PR review fix",
+      "fix": "See commit d0b81efc",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-31",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        ".claude/python-standards.md",
+        ".claude/rules/empathy/debugging.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251230_657f4e5c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(bug-predict): Reduce false positives in dangerous_eval detection",
+      "fix": "See commit 657f4e5c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-30",
+      "files_affected": [
+        "src/empathy_os/workflows/bug_predict.py"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2025-12-29T17:23:49.800773"
+  "last_updated": "2025-12-31T14:04:23.220934"
 }
