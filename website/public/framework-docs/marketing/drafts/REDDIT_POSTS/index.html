@@ -20,19 +20,19 @@
         
       
       
-      <link rel="icon" href="/framework-docs/assets/images/empathy-brain-logo.png">
+      <link rel="icon" href="../../../assets/images/empathy-brain-logo.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
     
     
       
-        <title>Reddit Posts - Ready to Copy/Paste - Empathy Framework</title>
+        <title>Reddit Posts - Ready to Copy/Paste (v3.3.0) - Empathy Framework</title>
       
     
     
-      <link rel="stylesheet" href="/framework-docs/assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
       
         
-        <link rel="stylesheet" href="/framework-docs/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +51,7 @@
       
     
     
-      <link rel="stylesheet" href="/framework-docs/assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -81,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#reddit-posts-ready-to-copypaste" class="md-skip">
+        <a href="#reddit-posts-ready-to-copypaste-v330" class="md-skip">
           Skip to content
         </a>
       
@@ -97,7 +97,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../.." title="Empathy Framework" class="md-header__button md-logo" aria-label="Empathy Framework" data-md-component="logo">
       
-  <img src="/framework-docs/assets/images/empathy-brain-logo.png" alt="logo">
+  <img src="../../../assets/images/empathy-brain-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Reddit Posts - Ready to Copy/Paste
+              Reddit Posts - Ready to Copy/Paste (v3.3.0)
             
           </span>
         </div>
@@ -383,7 +383,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../../.." title="Empathy Framework" class="md-nav__button md-logo" aria-label="Empathy Framework" data-md-component="logo">
       
-  <img src="/framework-docs/assets/images/empathy-brain-logo.png" alt="logo">
+  <img src="../../../assets/images/empathy-brain-logo.png" alt="logo">
 
     </a>
     Empathy Framework
@@ -3133,6 +3133,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#rmachinelearning-if-appropriate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        r/MachineLearning (if appropriate)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3153,117 +3164,176 @@
   
 
 
-<h1 id="reddit-posts-ready-to-copypaste">Reddit Posts - Ready to Copy/Paste<a class="headerlink" href="#reddit-posts-ready-to-copypaste" title="Permanent link">&para;</a></h1>
+<h1 id="reddit-posts-ready-to-copypaste-v330">Reddit Posts - Ready to Copy/Paste (v3.3.0)<a class="headerlink" href="#reddit-posts-ready-to-copypaste-v330" title="Permanent link">&para;</a></h1>
 <hr />
 <h2 id="rclaudeai">r/ClaudeAI<a class="headerlink" href="#rclaudeai" title="Permanent link">&para;</a></h2>
-<p><strong>Title:</strong> I built a persistent memory layer for Claude + XML-Enhanced Prompts for structured responses (v3.0.1)</p>
+<p><strong>Title:</strong> v3.3.0: Enterprise-ready workflows with formatted reports + persistent memory</p>
 <p><strong>Body:</strong></p>
-<p>Every Claude conversation starts fresh. I wanted my dev assistant to remember my preferences across sessions, so I built <a href="https://github.com/Smart-AI-Memory/empathy-framework">Empathy Framework</a>.</p>
-<p>Quick example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">empathy_llm_toolkit</span> <span class="kn">import</span> <span class="n">EmpathyLLM</span>
+<p>Just shipped <a href="https://github.com/Smart-AI-Memory/empathy-framework">Empathy Framework v3.3.0</a> with features I've wanted for production Claude apps:</p>
+<p><strong>Formatted reports for all workflows:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">empathy_os.workflows</span> <span class="kn">import</span> <span class="n">SecurityAuditWorkflow</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span><span class="n">provider</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span><span class="p">,</span> <span class="n">memory_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># This preference persists across sessions</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;me&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">user_input</span><span class="o">=</span><span class="s2">&quot;I prefer concise Python with type hints&quot;</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">workflow</span> <span class="o">=</span> <span class="n">SecurityAuditWorkflow</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">your_code</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">final_output</span><span class="p">[</span><span class="s2">&quot;formatted_report&quot;</span><span class="p">])</span>
 </code></pre></div>
-<p>Next session, Claude remembers.</p>
-<p><strong>v3.0.1 just shipped with Multi-Provider System + XML-Enhanced Prompts</strong> - now supports Anthropic, OpenAI, Ollama, and hybrid mode. Auto-detects your API keys and picks the right model for each task. New XML prompts return structured, parseable responses for dashboards and automation.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span><span class="n">provider</span><span class="o">=</span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span> <span class="n">enable_model_routing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="o">=</span><span class="s2">&quot;Summarize this&quot;</span><span class="p">,</span> <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;summarize&quot;</span><span class="p">)</span>  <span class="c1"># → Cheapest model</span>
+<p>Output is clean, consistent, and shareable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>============================================================
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>SECURITY AUDIT REPORT
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>============================================================
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Status: NEEDS_ATTENTION
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Risk Score: 7.2/10
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Vulnerabilities Found: 3
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>------------------------------------------------------------
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>CRITICAL FINDINGS
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>- SQL injection in user_query() at line 42
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>- Hardcoded credentials in config.py
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>============================================================
 </code></pre></div>
-<p><strong>Cost savings: $4.05 → $0.83 per task (80%)</strong></p>
-<ul>
-<li>API users: Direct cost savings</li>
-<li>Max/Pro subscribers: Preserves your Opus quota for complex tasks</li>
-</ul>
-<p><strong>What's new in v3.0.1:</strong>
-- Multi-provider support (Anthropic, OpenAI, Ollama, Hybrid)
-- XML-Enhanced Prompts for structured LLM responses
-- Auto-detection of API keys from environment/.env files
-- VSCode Dashboard with 10 integrated workflows + 6 quick actions
-- Real-time cost tracking showing your savings</p>
-<p><strong>Core features:</strong>
-- Cross-session memory persistence
-- Per-user isolation
-- Privacy controls (clear/forget)</p>
-<p>On PyPI: <code>pip install empathy-framework</code> (3,400+ monthly downloads)</p>
-<p>Happy to answer questions.</p>
+<p><strong>Enterprise doc-gen with cost guardrails:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">workflow</span> <span class="o">=</span> <span class="n">DocumentGenerationWorkflow</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">export_path</span><span class="o">=</span><span class="s2">&quot;docs/generated&quot;</span><span class="p">,</span>  <span class="c1"># Auto-save to disk</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">max_cost</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>                  <span class="c1"># Stop at $5 (no surprises)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">chunked_generation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Handle large codebases</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">)</span>
+</code></pre></div>
+<p><strong>Still saving 80% on costs</strong> with smart routing (Haiku for simple, Sonnet for code review, Opus for architecture).</p>
+<p><strong>Persistent memory</strong> across sessions - Claude remembers your preferences.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">==</span><span class="m">3</span>.3.0
+</code></pre></div>
+<p>Happy to answer questions about the implementation.</p>
 <hr />
 <h2 id="rpython">r/Python<a class="headerlink" href="#rpython" title="Permanent link">&para;</a></h2>
-<p><strong>Title:</strong> empathy-framework v3.0.1: Multi-provider LLM memory + XML-Enhanced Prompts + VSCode Dashboard</p>
+<p><strong>Title:</strong> empathy-framework v3.3.0: Enterprise-ready AI workflows with formatted reports</p>
 <p><strong>Body:</strong></p>
-<p>Just released v3.0.1 of <a href="https://pypi.org/project/empathy-framework/">empathy-framework</a> - a Python library that adds persistent memory to LLM interactions, plus multi-provider smart routing and XML-Enhanced Prompts for structured responses.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">empathy_llm_toolkit</span> <span class="kn">import</span> <span class="n">EmpathyLLM</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>  <span class="c1"># or &quot;openai&quot;, &quot;ollama&quot;, &quot;hybrid&quot;</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">memory_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">enable_model_routing</span><span class="o">=</span><span class="kc">True</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># Memory survives across sessions</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user123&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="o">=</span><span class="s2">&quot;Remember I prefer async/await&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1"># Automatic model selection based on task</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user123&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="o">=</span><span class="s2">&quot;Summarize this&quot;</span><span class="p">,</span> <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;summarize&quot;</span><span class="p">)</span>  <span class="c1"># → Haiku/GPT-4o-mini</span>
+<p>Just released v3.3.0 of <a href="https://pypi.org/project/empathy-framework/">empathy-framework</a> - major update focused on production readiness.</p>
+<p><strong>What's new:</strong></p>
+<ol>
+<li>
+<p><strong>Formatted reports for all 10 workflows</strong> - Consistent, readable output you can share with stakeholders</p>
+</li>
+<li>
+<p><strong>Enterprise doc-gen</strong> - Auto-scaling tokens, chunked generation, cost guardrails, file export</p>
+</li>
+<li>
+<p><strong>Output chunking</strong> - Large reports split automatically (no more terminal truncation)</p>
+</li>
+</ol>
+<p><strong>Example - Security Audit:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">empathy_os.workflows</span> <span class="kn">import</span> <span class="n">SecurityAuditWorkflow</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">workflow</span> <span class="o">=</span> <span class="n">SecurityAuditWorkflow</span><span class="p">()</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">your_code</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Clean, formatted output</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">final_output</span><span class="p">[</span><span class="s2">&quot;formatted_report&quot;</span><span class="p">])</span>
 </code></pre></div>
-<p><strong>What's new in v3.0.1:</strong>
-- <strong>Multi-Provider System</strong>: Anthropic, OpenAI, Ollama, Hybrid mode
-- <strong>XML-Enhanced Prompts</strong>: Structured, parseable LLM responses for automation
-- <strong>Auto-detection</strong>: Finds API keys from environment and .env files
-- <strong>Smart Routing</strong>: Auto-picks Haiku/Sonnet/Opus (or GPT equivalents) based on task
-- <strong>VSCode Dashboard</strong>: 10 integrated workflows + 6 quick action commands
-- <strong>Real-time cost tracking</strong>: See your savings as you work</p>
-<p><strong>Cost comparison:</strong>
-- Without routing (all Opus): $4.05/task
-- With routing (tiered): $0.83/task
-- <strong>Savings: 80%</strong></p>
-<p><em>API users save money. Subscription users (Max/Pro) preserve premium model quota.</em></p>
-<p><strong>CLI for provider management:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>empathy_os.models.cli<span class="w"> </span>provider<span class="w"> </span>status
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>-m<span class="w"> </span>empathy_os.models.cli<span class="w"> </span>provider<span class="w"> </span><span class="nb">set</span><span class="w"> </span>hybrid
-</code></pre></div></p>
-<p><strong>Core features:</strong>
-- Works with Claude, OpenAI, local models
-- Per-user memory isolation
-- Privacy controls built in
-- Async-first design</p>
-<p><strong>Stats:</strong> 3,400+ monthly PyPI downloads | 34 versions published</p>
+<p><strong>Example - Doc-Gen with guardrails:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">empathy_os.workflows</span> <span class="kn">import</span> <span class="n">DocumentGenerationWorkflow</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">workflow</span> <span class="o">=</span> <span class="n">DocumentGenerationWorkflow</span><span class="p">(</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">export_path</span><span class="o">=</span><span class="s2">&quot;docs/generated&quot;</span><span class="p">,</span>  <span class="c1"># Auto-save</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">max_cost</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>                  <span class="c1"># Cost limit</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">chunked_generation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Handle large projects</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">graceful_degradation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>     <span class="c1"># Partial results on errors</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">)</span>
+</code></pre></div>
+<p><strong>Cost optimization (80% savings):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">empathy_llm_toolkit</span> <span class="kn">import</span> <span class="n">EmpathyLLM</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span><span class="n">provider</span><span class="o">=</span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span> <span class="n">enable_model_routing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># Routes to appropriate tier automatically</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;summarize&quot;</span><span class="p">)</span>     <span class="c1"># → Haiku</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;architecture&quot;</span><span class="p">)</span>  <span class="c1"># → Opus</span>
+</code></pre></div>
+<p><strong>Quick start:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">==</span><span class="m">3</span>.3.0
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>python<span class="w"> </span>-m<span class="w"> </span>empathy_os.models.cli<span class="w"> </span>provider<span class="w"> </span>--set<span class="w"> </span>anthropic
+</code></pre></div>
 <p>GitHub: https://github.com/Smart-AI-Memory/empathy-framework</p>
-<p>Feedback welcome. What use cases would you want memory for?</p>
+<p>What workflows would be most useful for your projects?</p>
 <hr />
 <h2 id="rlocalllama">r/LocalLLaMA<a class="headerlink" href="#rlocalllama" title="Permanent link">&para;</a></h2>
-<p><strong>Title:</strong> Cross-session memory layer for LLMs - now with native Ollama support (v3.0.1)</p>
+<p><strong>Title:</strong> Enterprise doc-gen for local LLMs - auto-scaling, cost guardrails (v3.3.0)</p>
 <p><strong>Body:</strong></p>
-<p>Built <a href="https://github.com/Smart-AI-Memory/empathy-framework">Empathy Framework</a> to give LLMs persistent memory across sessions.</p>
-<p><strong>v3.0.1 adds native Ollama support + XML-Enhanced Prompts!</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">empathy_llm_toolkit</span> <span class="kn">import</span> <span class="n">EmpathyLLM</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span><span class="n">provider</span><span class="o">=</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span> <span class="n">memory_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># Preferences persist across sessions</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="o">=</span><span class="s2">&quot;I use vim keybindings&quot;</span><span class="p">)</span>
+<p>Built <a href="https://github.com/Smart-AI-Memory/empathy-framework">Empathy Framework</a> for LLM workflows with persistent memory. v3.3.0 adds enterprise features that work great with local models.</p>
+<p><strong>New in v3.3.0:</strong></p>
+<ol>
+<li><strong>Formatted reports</strong> - All 10 workflows return clean, consistent output</li>
+<li><strong>Enterprise doc-gen</strong> - Chunked generation, auto-scaling, file export</li>
+<li><strong>Cost tracking</strong> - Even for local models (helps estimate cloud migration)</li>
+</ol>
+<p><strong>Ollama setup:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Install Ollama (if not already)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># macOS: brew install ollama</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># Linux: curl -fsSL https://ollama.com/install.sh | sh</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># Pull the models for each tier</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>ollama<span class="w"> </span>pull<span class="w"> </span>llama3.2:3b<span class="w">    </span><span class="c1"># cheap tier - fast</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>ollama<span class="w"> </span>pull<span class="w"> </span>llama3.1:8b<span class="w">    </span><span class="c1"># capable tier - balanced</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>ollama<span class="w"> </span>pull<span class="w"> </span>llama3.1:70b<span class="w">   </span><span class="c1"># premium tier - best quality (requires ~40GB RAM)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="c1"># Start Ollama</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>ollama<span class="w"> </span>serve
 </code></pre></div>
-<p><strong>Multi-provider architecture:</strong>
-- <strong>Anthropic</strong> — Claude (Haiku/Sonnet/Opus)
-- <strong>OpenAI</strong> — GPT (GPT-4o-mini/GPT-4o/o1)
-- <strong>Ollama</strong> — Local models (Llama 3.2/3.1)
-- <strong>Hybrid</strong> — Best of each provider per tier</p>
-<p>The system auto-detects which providers you have available (checks for running Ollama instance, API keys in environment).</p>
-<p><strong>CLI commands:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>-m<span class="w"> </span>empathy_os.models.cli<span class="w"> </span>provider<span class="w"> </span>status<span class="w">  </span><span class="c1"># Shows available providers</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>python<span class="w"> </span>-m<span class="w"> </span>empathy_os.models.cli<span class="w"> </span>provider<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ollama<span class="w">  </span><span class="c1"># Use Ollama exclusively</span>
-</code></pre></div></p>
-<p><strong>Smart tier routing for local models:</strong>
-- Cheap tier: Llama 3.2 (3B)
-- Capable tier: Llama 3.1 (8B)
-- Premium tier: Llama 3.1 (70B)</p>
-<p>Currently on PyPI: <code>pip install empathy-framework</code> (3,400+ monthly downloads)</p>
-<p>Would love feedback from the local LLM community!</p>
+<p><strong>Ollama integration:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">empathy_llm_toolkit</span> <span class="kn">import</span> <span class="n">EmpathyLLM</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">EmpathyLLM</span><span class="p">(</span><span class="n">provider</span><span class="o">=</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span> <span class="n">memory_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Memory persists across sessions</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="o">=</span><span class="s2">&quot;Generate docs for this module&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Hybrid mode:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>empathy<span class="w"> </span>provider<span class="w"> </span><span class="nb">set</span><span class="w"> </span>hybrid
+</code></pre></div>
+<ul>
+<li>Local (Ollama) for sensitive code and quick tasks</li>
+<li>Claude for complex architecture decisions</li>
+<li>Automatic fallback if local model unavailable</li>
+</ul>
+<p><strong>Smart tier routing for local:</strong></p>
+<ul>
+<li>Cheap: <code>llama3.2:3b</code> (3B params, ~2GB)</li>
+<li>Capable: <code>llama3.1:8b</code> (8B params, ~5GB)</li>
+<li>Premium: <code>llama3.1:70b</code> (70B params, ~40GB)</li>
+</ul>
+<p><strong>Enterprise doc-gen works great locally:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">workflow</span> <span class="o">=</span> <span class="n">DocumentGenerationWorkflow</span><span class="p">(</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">export_path</span><span class="o">=</span><span class="s2">&quot;docs/generated&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">chunked_generation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Handles context limits</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">)</span>
+</code></pre></div>
+<p>Chunks large docs into sections your local model can handle.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pip<span class="w"> </span>install<span class="w"> </span>empathy-framework<span class="o">==</span><span class="m">3</span>.3.0
+</code></pre></div>
+<p>Feedback welcome from the local LLM community.</p>
+<hr />
+<h2 id="rmachinelearning-if-appropriate">r/MachineLearning (if appropriate)<a class="headerlink" href="#rmachinelearning-if-appropriate" title="Permanent link">&para;</a></h2>
+<p><strong>Title:</strong> [P] Empathy Framework v3.3.0 - Enterprise-ready LLM workflows with formatted reports</p>
+<p><strong>Body:</strong></p>
+<p>Open source Python framework for production LLM applications. v3.3.0 adds enterprise features.</p>
+<p><strong>Problem:</strong> LLM workflows return raw JSON. Hard to audit, share, or display large outputs.</p>
+<p><strong>Solution:</strong> Formatted reports with consistent structure across all workflows, plus enterprise doc-gen with cost guardrails.</p>
+<p><strong>Key features in v3.3.0:</strong></p>
+<ol>
+<li><strong>Formatted reports</strong> - Every workflow returns <code>formatted_report</code> with consistent structure</li>
+<li><strong>Enterprise doc-gen</strong> - Auto-scaling tokens, chunked generation, $5 cost guardrail, file export</li>
+<li><strong>Output chunking</strong> - Large reports split for display (no more 50k char truncation)</li>
+<li><strong>Smart routing</strong> - 80% cost savings (Haiku/Sonnet/Opus based on task)</li>
+<li><strong>Persistent memory</strong> - Cross-session context that survives restarts</li>
+</ol>
+<p><strong>Architecture:</strong></p>
+<ul>
+<li>10 cost-optimized workflows (security-audit, code-review, doc-gen, etc.)</li>
+<li>Provider-agnostic (Anthropic, OpenAI, Ollama, hybrid)</li>
+<li>Redis-based memory with pattern detection</li>
+</ul>
+<p>GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+PyPI: <code>pip install empathy-framework==3.3.0</code></p>
+<p>Looking for feedback on the workflow architecture.</p>
 
 
 
@@ -3353,7 +3423,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/framework-docs/assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
       
     
   </body>

@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="/framework-docs/assets/images/empathy-brain-logo.png">
+      <link rel="icon" href="../../assets/images/empathy-brain-logo.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
     
     
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="/framework-docs/assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
       
         
-        <link rel="stylesheet" href="/framework-docs/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,7 +55,7 @@
       
     
     
-      <link rel="stylesheet" href="/framework-docs/assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -101,7 +101,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Empathy Framework" class="md-header__button md-logo" aria-label="Empathy Framework" data-md-component="logo">
       
-  <img src="/framework-docs/assets/images/empathy-brain-logo.png" alt="logo">
+  <img src="../../assets/images/empathy-brain-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -389,7 +389,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Empathy Framework" class="md-nav__button md-logo" aria-label="Empathy Framework" data-md-component="logo">
       
-  <img src="/framework-docs/assets/images/empathy-brain-logo.png" alt="logo">
+  <img src="../../assets/images/empathy-brain-logo.png" alt="logo">
 
     </a>
     Empathy Framework
@@ -2509,10 +2509,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#empathy_os.config.EmpathyConfig.__post_init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __post_init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#empathy_os.config.EmpathyConfig.__repr__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __repr__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empathy_os.config.EmpathyConfig.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from_dict
       
     </span>
   </a>
@@ -3830,10 +3852,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#empathy_os.config.EmpathyConfig.__post_init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __post_init__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#empathy_os.config.EmpathyConfig.__repr__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __repr__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empathy_os.config.EmpathyConfig.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from_dict
       
     </span>
   </a>
@@ -4441,6 +4485,24 @@
 <div class="doc doc-object doc-function">
 
 
+<h3 id="empathy_os.config.EmpathyConfig.__post_init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">__post_init__</span><span class="p">()</span></code>
+
+<a href="#empathy_os.config.EmpathyConfig.__post_init__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Post-initialization validation.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="empathy_os.config.EmpathyConfig.__repr__" class="doc doc-heading">
             <code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
 
@@ -4450,6 +4512,28 @@
     <div class="doc doc-contents ">
 
         <p>String representation</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="empathy_os.config.EmpathyConfig.from_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#empathy_os.config.EmpathyConfig.from_dict" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create an EmpathyConfig from a dictionary, ignoring unknown fields.</p>
 
 
     </div>
@@ -4734,6 +4818,11 @@ empathy = EmpathyOS(config=config)</p>
 </blockquote>
 </details>
 
+<details class="note" open>
+  <summary>Note</summary>
+  <p>Unknown fields in the JSON file are silently ignored.</p>
+</details>
+
     </div>
 
 </div>
@@ -4853,6 +4942,14 @@ empathy = EmpathyOS(config=config)</p>
 </blockquote>
 </blockquote>
 </blockquote>
+</details>
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>Unknown fields in the YAML file are silently ignored.
+This allows config files to contain settings for other
+components (e.g., model_preferences, workflows) without
+breaking EmpathyConfig loading.</p>
 </details>
 
     </div>
@@ -5538,7 +5635,7 @@ config.update(user_id="bob", target_level=5)</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/framework-docs/assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
       
     
   </body>

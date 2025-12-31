@@ -384,7 +384,7 @@ precision = 2
 show_missing = true
 skip_covered = false
 # Coverage threshold - increase as tests improve (target: 75%)
-fail_under = 40
+fail_under = 53
 exclude_lines = [
     "pragma: no cover",
     "def __repr__",

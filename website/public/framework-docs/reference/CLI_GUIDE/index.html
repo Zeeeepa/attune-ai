@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="/framework-docs/assets/images/empathy-brain-logo.png">
+      <link rel="icon" href="../../assets/images/empathy-brain-logo.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
     
     
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="/framework-docs/assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
       
         
-        <link rel="stylesheet" href="/framework-docs/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,7 +55,7 @@
       
     
     
-      <link rel="stylesheet" href="/framework-docs/assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -101,7 +101,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Empathy Framework" class="md-header__button md-logo" aria-label="Empathy Framework" data-md-component="logo">
       
-  <img src="/framework-docs/assets/images/empathy-brain-logo.png" alt="logo">
+  <img src="../../assets/images/empathy-brain-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -389,7 +389,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Empathy Framework" class="md-nav__button md-logo" aria-label="Empathy Framework" data-md-component="logo">
       
-  <img src="/framework-docs/assets/images/empathy-brain-logo.png" alt="logo">
+  <img src="../../assets/images/empathy-brain-logo.png" alt="logo">
 
     </a>
     Empathy Framework
@@ -2775,6 +2775,67 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#bug-prediction-workflow-new-in-v355" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Prediction Workflow (New in v3.5.5)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bug Prediction Workflow (New in v3.5.5)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-scanner-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding Scanner Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smart-false-positive-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Smart False Positive Filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Scores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizing-scanner-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customizing Scanner Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#claude-code-integration-new-in-v230" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4434,6 +4495,67 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#bug-prediction-workflow-new-in-v355" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Prediction Workflow (New in v3.5.5)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bug Prediction Workflow (New in v3.5.5)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-scanner-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding Scanner Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smart-false-positive-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Smart False Positive Filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Scores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizing-scanner-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customizing Scanner Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#claude-code-integration-new-in-v230" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4574,17 +4696,24 @@
 </code></pre></div></p>
 <hr />
 <h3 id="init">Init<a class="headerlink" href="#init" title="Permanent link">&para;</a></h3>
-<p>Initialize a new project with a configuration file:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Create YAML config (default)</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>empathy-framework<span class="w"> </span>init
+<p>Initialize a new project with an interactive configuration wizard:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Interactive setup wizard (recommended)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>empathy<span class="w"> </span>init
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Create JSON config</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>empathy-framework<span class="w"> </span>init<span class="w"> </span>--format<span class="w"> </span>json
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Non-interactive with defaults</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>empathy<span class="w"> </span>init<span class="w"> </span>--non-interactive
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Specify output path</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>empathy-framework<span class="w"> </span>init<span class="w"> </span>--format<span class="w"> </span>yaml<span class="w"> </span>--output<span class="w"> </span>my-config.yml
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Overwrite existing config</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>empathy<span class="w"> </span>init<span class="w"> </span>--force
 </code></pre></div>
-<p>This creates a configuration file with default settings that you can customize.</p>
+<p>The wizard guides you through:</p>
+<ul>
+<li><strong>Provider selection</strong> - Anthropic, OpenAI, Google, Ollama, or Hybrid</li>
+<li><strong>API key configuration</strong> - Environment variable or direct input</li>
+<li><strong>Model tier preferences</strong> - Cheap, Capable, Premium model mapping</li>
+<li><strong>Compliance mode</strong> - Standard or HIPAA</li>
+</ul>
+<p>This creates <code>empathy.config.yml</code> with your settings.</p>
 <hr />
 <h3 id="validate">Validate<a class="headerlink" href="#validate" title="Permanent link">&para;</a></h3>
 <p>Validate a configuration file:</p>
@@ -5332,109 +5461,204 @@
 </tbody>
 </table>
 <hr />
+<h3 id="bug-prediction-workflow-new-in-v355">Bug Prediction Workflow (New in v3.5.5)<a class="headerlink" href="#bug-prediction-workflow-new-in-v355" title="Permanent link">&para;</a></h3>
+<p>Predict bugs by analyzing code against learned patterns:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="c1"># Scan current directory</span>
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>empathy<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>bug-predict
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="c1"># Scan specific path</span>
+<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>empathy<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>bug-predict<span class="w"> </span>--input<span class="w"> </span><span class="s1">&#39;{&quot;path&quot;:&quot;./src&quot;}&#39;</span>
+<a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a>
+<a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="c1"># JSON output for CI/CD</span>
+<a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a>empathy<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>bug-predict<span class="w"> </span>--json
+</code></pre></div>
+<h4 id="understanding-scanner-results">Understanding Scanner Results<a class="headerlink" href="#understanding-scanner-results" title="Permanent link">&para;</a></h4>
+<p>The bug prediction scanner detects patterns that historically correlate with bugs:</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Severity</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dangerous_eval</code></td>
+<td>High</td>
+<td>Use of <code>eval()</code> or <code>exec()</code> on untrusted input</td>
+</tr>
+<tr>
+<td><code>broad_exception</code></td>
+<td>Medium</td>
+<td>Bare <code>except:</code> or <code>except Exception:</code> that may mask errors</td>
+</tr>
+<tr>
+<td><code>incomplete_code</code></td>
+<td>Low</td>
+<td>TODO/FIXME comments indicating unfinished work</td>
+</tr>
+</tbody>
+</table>
+<h4 id="smart-false-positive-filtering">Smart False Positive Filtering<a class="headerlink" href="#smart-false-positive-filtering" title="Permanent link">&para;</a></h4>
+<p>The scanner automatically filters acceptable patterns:</p>
+<p><strong>Acceptable <code>broad_exception</code> uses (not flagged):</strong>
+- Version detection with fallback: <code>except: return "dev"</code>
+- Config loading with defaults: <code>except: pass  # Fall back to default</code>
+- Optional feature detection: <code>try: import optional_lib</code>
+- Cleanup/teardown code: <code>__del__</code>, <code>__exit__</code>, <code>close()</code>
+- Logging with re-raise: <code>except: log.error(...); raise</code></p>
+<p><strong>Acceptable <code>dangerous_eval</code> uses (not flagged):</strong>
+- Test fixtures: Code inside <code>write_text()</code> for testing
+- Scanner test files: <code>test_bug_predict*</code>, <code>test_scanner*</code>
+- Detection code: <code>if "eval(" in content</code></p>
+<h4 id="risk-scores">Risk Scores<a class="headerlink" href="#risk-scores" title="Permanent link">&para;</a></h4>
+<p>Files are scored 0-100% based on pattern severity and historical correlation:</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Risk Level</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>80-100%</td>
+<td>🔴 HIGH</td>
+<td>Immediate attention required</td>
+</tr>
+<tr>
+<td>50-79%</td>
+<td>🟠 MODERATE</td>
+<td>Review before release</td>
+</tr>
+<tr>
+<td>30-49%</td>
+<td>🟡 LOW</td>
+<td>Address when convenient</td>
+</tr>
+<tr>
+<td>0-29%</td>
+<td>🟢 MINIMAL</td>
+<td>No action needed</td>
+</tr>
+</tbody>
+</table>
+<h4 id="customizing-scanner-behavior">Customizing Scanner Behavior<a class="headerlink" href="#customizing-scanner-behavior" title="Permanent link">&para;</a></h4>
+<p>See <code>empathy.config.yml</code> for customizable exclusions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="nt">bug_predict</span><span class="p">:</span>
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="w">  </span><span class="nt">exclude_files</span><span class="p">:</span>
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;**/test_*.py&quot;</span>
+<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;**/fixtures/**&quot;</span>
+<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="w">  </span><span class="nt">acceptable_exception_contexts</span><span class="p">:</span>
+<a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">version</span>
+<a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config</span>
+<a id="__codelineno-58-8" name="__codelineno-58-8" href="#__codelineno-58-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cleanup</span>
+</code></pre></div>
 <hr />
 <h3 id="claude-code-integration-new-in-v230">Claude Code Integration (New in v2.3.0)<a class="headerlink" href="#claude-code-integration-new-in-v230" title="Permanent link">&para;</a></h3>
 <p>Sync learned patterns to Claude Code's native rules directory:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="c1"># One-time sync</span>
-<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>empathy-sync-claude
-<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>
-<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="c1"># Watch for changes and auto-sync</span>
-<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>empathy-sync-claude<span class="w"> </span>--watch
-<a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a>
-<a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="c1"># Preview without writing</span>
-<a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a>empathy-sync-claude<span class="w"> </span>--dry-run
-<a id="__codelineno-57-9" name="__codelineno-57-9" href="#__codelineno-57-9"></a>
-<a id="__codelineno-57-10" name="__codelineno-57-10" href="#__codelineno-57-10"></a><span class="c1"># Verbose output</span>
-<a id="__codelineno-57-11" name="__codelineno-57-11" href="#__codelineno-57-11"></a>empathy-sync-claude<span class="w"> </span>--verbose
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="c1"># One-time sync</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>empathy-sync-claude
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>
+<a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="c1"># Watch for changes and auto-sync</span>
+<a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a>empathy-sync-claude<span class="w"> </span>--watch
+<a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a>
+<a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a><span class="c1"># Preview without writing</span>
+<a id="__codelineno-59-8" name="__codelineno-59-8" href="#__codelineno-59-8"></a>empathy-sync-claude<span class="w"> </span>--dry-run
+<a id="__codelineno-59-9" name="__codelineno-59-9" href="#__codelineno-59-9"></a>
+<a id="__codelineno-59-10" name="__codelineno-59-10" href="#__codelineno-59-10"></a><span class="c1"># Verbose output</span>
+<a id="__codelineno-59-11" name="__codelineno-59-11" href="#__codelineno-59-11"></a>empathy-sync-claude<span class="w"> </span>--verbose
 </code></pre></div>
 <p><strong>Output structure:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>.claude/rules/empathy/
-<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>├── bug-patterns.md          # From patterns/debugging/
-<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>├── security-decisions.md    # From patterns/security/
-<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a>├── tech-debt-hotspots.md    # From patterns/tech_debt/
-<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a>└── coding-patterns.md       # From patterns/inspection/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>.claude/rules/empathy/
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>├── bug-patterns.md          # From patterns/debugging/
+<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>├── security-decisions.md    # From patterns/security/
+<a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a>├── tech-debt-hotspots.md    # From patterns/tech_debt/
+<a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a>└── coding-patterns.md       # From patterns/inspection/
 </code></pre></div>
 <p>Claude Code automatically loads these rules at session start, giving it access to your team's bug history, security decisions, and coding patterns.</p>
 <hr />
 <h2 id="quick-reference-cheatsheet">Quick Reference (Cheatsheet)<a class="headerlink" href="#quick-reference-cheatsheet" title="Permanent link">&para;</a></h2>
 <h3 id="core-commands">Core Commands<a class="headerlink" href="#core-commands" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="c1"># Code Health</span>
-<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>empathy<span class="w"> </span>health<span class="w">                    </span><span class="c1"># Quick health check</span>
-<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>empathy<span class="w"> </span>health<span class="w"> </span>--deep<span class="w">             </span><span class="c1"># Comprehensive analysis</span>
-<a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a>empathy<span class="w"> </span>health<span class="w"> </span>--fix<span class="w">              </span><span class="c1"># Auto-fix safe issues</span>
-<a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a>empathy<span class="w"> </span>health<span class="w"> </span>--check<span class="w"> </span>lint<span class="w">       </span><span class="c1"># Run specific check</span>
-<a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a>
-<a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a><span class="c1"># Code Review</span>
-<a id="__codelineno-59-8" name="__codelineno-59-8" href="#__codelineno-59-8"></a>empathy<span class="w"> </span>review<span class="w">                    </span><span class="c1"># Review recent changes</span>
-<a id="__codelineno-59-9" name="__codelineno-59-9" href="#__codelineno-59-9"></a>empathy<span class="w"> </span>review<span class="w"> </span>--staged<span class="w">           </span><span class="c1"># Staged changes only</span>
-<a id="__codelineno-59-10" name="__codelineno-59-10" href="#__codelineno-59-10"></a>
-<a id="__codelineno-59-11" name="__codelineno-59-11" href="#__codelineno-59-11"></a><span class="c1"># Code Inspection</span>
-<a id="__codelineno-59-12" name="__codelineno-59-12" href="#__codelineno-59-12"></a>empathy-inspect<span class="w"> </span>.<span class="w">                 </span><span class="c1"># Inspect current directory</span>
-<a id="__codelineno-59-13" name="__codelineno-59-13" href="#__codelineno-59-13"></a>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--fix<span class="w">           </span><span class="c1"># Auto-fix formatting/imports</span>
-<a id="__codelineno-59-14" name="__codelineno-59-14" href="#__codelineno-59-14"></a>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--format<span class="w"> </span>sarif<span class="w">  </span><span class="c1"># SARIF for GitHub Actions</span>
-<a id="__codelineno-59-15" name="__codelineno-59-15" href="#__codelineno-59-15"></a>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--format<span class="w"> </span>html<span class="w">   </span><span class="c1"># HTML dashboard</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="c1"># Code Health</span>
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>empathy<span class="w"> </span>health<span class="w">                    </span><span class="c1"># Quick health check</span>
+<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>empathy<span class="w"> </span>health<span class="w"> </span>--deep<span class="w">             </span><span class="c1"># Comprehensive analysis</span>
+<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a>empathy<span class="w"> </span>health<span class="w"> </span>--fix<span class="w">              </span><span class="c1"># Auto-fix safe issues</span>
+<a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a>empathy<span class="w"> </span>health<span class="w"> </span>--check<span class="w"> </span>lint<span class="w">       </span><span class="c1"># Run specific check</span>
+<a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a>
+<a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="c1"># Code Review</span>
+<a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a>empathy<span class="w"> </span>review<span class="w">                    </span><span class="c1"># Review recent changes</span>
+<a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a>empathy<span class="w"> </span>review<span class="w"> </span>--staged<span class="w">           </span><span class="c1"># Staged changes only</span>
+<a id="__codelineno-61-10" name="__codelineno-61-10" href="#__codelineno-61-10"></a>
+<a id="__codelineno-61-11" name="__codelineno-61-11" href="#__codelineno-61-11"></a><span class="c1"># Code Inspection</span>
+<a id="__codelineno-61-12" name="__codelineno-61-12" href="#__codelineno-61-12"></a>empathy-inspect<span class="w"> </span>.<span class="w">                 </span><span class="c1"># Inspect current directory</span>
+<a id="__codelineno-61-13" name="__codelineno-61-13" href="#__codelineno-61-13"></a>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--fix<span class="w">           </span><span class="c1"># Auto-fix formatting/imports</span>
+<a id="__codelineno-61-14" name="__codelineno-61-14" href="#__codelineno-61-14"></a>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--format<span class="w"> </span>sarif<span class="w">  </span><span class="c1"># SARIF for GitHub Actions</span>
+<a id="__codelineno-61-15" name="__codelineno-61-15" href="#__codelineno-61-15"></a>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--format<span class="w"> </span>html<span class="w">   </span><span class="c1"># HTML dashboard</span>
 </code></pre></div>
 <h3 id="memory-patterns">Memory &amp; Patterns<a class="headerlink" href="#memory-patterns" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="c1"># Memory Control Panel</span>
-<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>empathy-memory<span class="w"> </span>serve<span class="w">              </span><span class="c1"># Start Redis + API (recommended)</span>
-<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>empathy-memory<span class="w"> </span>status<span class="w">             </span><span class="c1"># Show memory status</span>
-<a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a>empathy-memory<span class="w"> </span>patterns<span class="w">           </span><span class="c1"># List stored patterns</span>
-<a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a>
-<a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a><span class="c1"># Pattern Management</span>
-<a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a>empathy<span class="w"> </span>patterns<span class="w"> </span>list<span class="w">             </span><span class="c1"># List patterns</span>
-<a id="__codelineno-60-8" name="__codelineno-60-8" href="#__codelineno-60-8"></a>empathy<span class="w"> </span>patterns<span class="w"> </span>resolve<span class="w"> </span>&lt;id&gt;<span class="w">     </span><span class="c1"># Mark bug as resolved</span>
-<a id="__codelineno-60-9" name="__codelineno-60-9" href="#__codelineno-60-9"></a>
-<a id="__codelineno-60-10" name="__codelineno-60-10" href="#__codelineno-60-10"></a><span class="c1"># Claude Code Sync</span>
-<a id="__codelineno-60-11" name="__codelineno-60-11" href="#__codelineno-60-11"></a>empathy-sync-claude<span class="w">               </span><span class="c1"># Sync to .claude/rules/empathy/</span>
-<a id="__codelineno-60-12" name="__codelineno-60-12" href="#__codelineno-60-12"></a>empathy-sync-claude<span class="w"> </span>--watch<span class="w">       </span><span class="c1"># Auto-sync on changes</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="c1"># Memory Control Panel</span>
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>empathy-memory<span class="w"> </span>serve<span class="w">              </span><span class="c1"># Start Redis + API (recommended)</span>
+<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>empathy-memory<span class="w"> </span>status<span class="w">             </span><span class="c1"># Show memory status</span>
+<a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a>empathy-memory<span class="w"> </span>patterns<span class="w">           </span><span class="c1"># List stored patterns</span>
+<a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a>
+<a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a><span class="c1"># Pattern Management</span>
+<a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a>empathy<span class="w"> </span>patterns<span class="w"> </span>list<span class="w">             </span><span class="c1"># List patterns</span>
+<a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a>empathy<span class="w"> </span>patterns<span class="w"> </span>resolve<span class="w"> </span>&lt;id&gt;<span class="w">     </span><span class="c1"># Mark bug as resolved</span>
+<a id="__codelineno-62-9" name="__codelineno-62-9" href="#__codelineno-62-9"></a>
+<a id="__codelineno-62-10" name="__codelineno-62-10" href="#__codelineno-62-10"></a><span class="c1"># Claude Code Sync</span>
+<a id="__codelineno-62-11" name="__codelineno-62-11" href="#__codelineno-62-11"></a>empathy-sync-claude<span class="w">               </span><span class="c1"># Sync to .claude/rules/empathy/</span>
+<a id="__codelineno-62-12" name="__codelineno-62-12" href="#__codelineno-62-12"></a>empathy-sync-claude<span class="w"> </span>--watch<span class="w">       </span><span class="c1"># Auto-sync on changes</span>
 </code></pre></div>
 <h3 id="quick-workflows">Quick Workflows<a class="headerlink" href="#quick-workflows" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="c1"># Morning check</span>
-<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>empathy<span class="w"> </span>health<span class="w"> </span>--deep<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>empathy<span class="w"> </span>status
-<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>
-<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="c1"># Before commit</span>
-<a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a>empathy<span class="w"> </span>review<span class="w"> </span>--staged<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--staged<span class="w"> </span>--quick
-<a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a>
-<a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="c1"># Fix everything</span>
-<a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a>empathy<span class="w"> </span>health<span class="w"> </span>--fix<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--fix
-<a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a>
-<a id="__codelineno-61-10" name="__codelineno-61-10" href="#__codelineno-61-10"></a><span class="c1"># Sync to Claude Code</span>
-<a id="__codelineno-61-11" name="__codelineno-61-11" href="#__codelineno-61-11"></a>empathy-sync-claude<span class="w"> </span>--verbose
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="c1"># Morning check</span>
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>empathy<span class="w"> </span>health<span class="w"> </span>--deep<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>empathy<span class="w"> </span>status
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="c1"># Before commit</span>
+<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a>empathy<span class="w"> </span>review<span class="w"> </span>--staged<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--staged<span class="w"> </span>--quick
+<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a>
+<a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a><span class="c1"># Fix everything</span>
+<a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a>empathy<span class="w"> </span>health<span class="w"> </span>--fix<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>empathy-inspect<span class="w"> </span>.<span class="w"> </span>--fix
+<a id="__codelineno-63-9" name="__codelineno-63-9" href="#__codelineno-63-9"></a>
+<a id="__codelineno-63-10" name="__codelineno-63-10" href="#__codelineno-63-10"></a><span class="c1"># Sync to Claude Code</span>
+<a id="__codelineno-63-11" name="__codelineno-63-11" href="#__codelineno-63-11"></a>empathy-sync-claude<span class="w"> </span>--verbose
 </code></pre></div>
 <h3 id="cicd-integration">CI/CD Integration<a class="headerlink" href="#cicd-integration" title="Permanent link">&para;</a></h3>
 <p><strong>GitHub Actions (SARIF):</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run Empathy Inspect</span>
-<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">empathy-inspect . --format sarif -o results.sarif</span>
-<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>
-<a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload SARIF</span>
-<a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a><span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github/codeql-action/upload-sarif@v2</span>
-<a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a><span class="w">    </span><span class="nt">sarif_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">results.sarif</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run Empathy Inspect</span>
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">empathy-inspect . --format sarif -o results.sarif</span>
+<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a>
+<a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload SARIF</span>
+<a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a><span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github/codeql-action/upload-sarif@v2</span>
+<a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a><span class="w">    </span><span class="nt">sarif_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">results.sarif</span>
 </code></pre></div></p>
 <p><strong>Pre-commit Hook:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="nt">repos</span><span class="p">:</span>
-<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
-<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">empathy-review</span>
-<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pattern-based review</span>
-<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a><span class="w">        </span><span class="nt">entry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">empathy review --staged --severity error</span>
-<a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a><span class="w">        </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system</span>
-<a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a><span class="w">        </span><span class="nt">pass_filenames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="nt">repos</span><span class="p">:</span>
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">empathy-review</span>
+<a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pattern-based review</span>
+<a id="__codelineno-65-6" name="__codelineno-65-6" href="#__codelineno-65-6"></a><span class="w">        </span><span class="nt">entry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">empathy review --staged --severity error</span>
+<a id="__codelineno-65-7" name="__codelineno-65-7" href="#__codelineno-65-7"></a><span class="w">        </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system</span>
+<a id="__codelineno-65-8" name="__codelineno-65-8" href="#__codelineno-65-8"></a><span class="w">        </span><span class="nt">pass_filenames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div></p>
 <h3 id="environment-variables_1">Environment Variables<a class="headerlink" href="#environment-variables_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span>sk-...<span class="w">          </span><span class="c1"># Claude API key</span>
-<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="nv">EMPATHY_CONFIG</span><span class="o">=</span>./config.yaml<span class="w">      </span><span class="c1"># Custom config path</span>
-<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="nv">EMPATHY_LOG_LEVEL</span><span class="o">=</span>DEBUG<span class="w">           </span><span class="c1"># Logging level</span>
-<a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a><span class="nv">REDIS_URL</span><span class="o">=</span>redis://localhost:6379<span class="w">  </span><span class="c1"># Redis connection</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span>sk-...<span class="w">          </span><span class="c1"># Claude API key</span>
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a><span class="nv">EMPATHY_CONFIG</span><span class="o">=</span>./config.yaml<span class="w">      </span><span class="c1"># Custom config path</span>
+<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a><span class="nv">EMPATHY_LOG_LEVEL</span><span class="o">=</span>DEBUG<span class="w">           </span><span class="c1"># Logging level</span>
+<a id="__codelineno-66-4" name="__codelineno-66-4" href="#__codelineno-66-4"></a><span class="nv">REDIS_URL</span><span class="o">=</span>redis://localhost:6379<span class="w">  </span><span class="c1"># Redis connection</span>
 </code></pre></div>
 <hr />
 <h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
 <p>For more information on any command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>empathy<span class="w"> </span>--help
-<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>empathy<span class="w"> </span>&lt;command&gt;<span class="w"> </span>--help
-<a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a>empathy-inspect<span class="w"> </span>--help
-<a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a>empathy-memory<span class="w"> </span>--help
-<a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a>empathy-sync-claude<span class="w"> </span>--help
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>empathy<span class="w"> </span>--help
+<a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a>empathy<span class="w"> </span>&lt;command&gt;<span class="w"> </span>--help
+<a id="__codelineno-67-3" name="__codelineno-67-3" href="#__codelineno-67-3"></a>empathy-inspect<span class="w"> </span>--help
+<a id="__codelineno-67-4" name="__codelineno-67-4" href="#__codelineno-67-4"></a>empathy-memory<span class="w"> </span>--help
+<a id="__codelineno-67-5" name="__codelineno-67-5" href="#__codelineno-67-5"></a>empathy-sync-claude<span class="w"> </span>--help
 </code></pre></div>
 <p>For bugs and feature requests, visit:
 https://github.com/Smart-AI-Memory/empathy-framework/issues</p>
@@ -5527,7 +5751,7 @@ https://github.com/Smart-AI-Memory/empathy-framework/issues</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/framework-docs/assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
       
     
   </body>
