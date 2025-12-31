@@ -1610,6 +1610,11 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         }
 
         // Report-specific actions
+        if (cmdBase === 'fix-all') {
+            // After fix-all, offer to verify with tests
+            actionButtons.push({ label: 'Run Tests to Verify', icon: '✅', command: 'run-tests' });
+            actionButtons.push({ label: 'Security Scan', icon: '🔒', command: 'securityScan' });
+        }
         if (cmdBase === 'morning' || cmdBase === 'ship') {
             actionButtons.push({ label: 'Run Tests', icon: '🧪', command: 'run-tests' });
             actionButtons.push({ label: 'Security Scan', icon: '🔒', command: 'securityScan' });
@@ -1701,14 +1706,30 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     </div>
 
     <div class="section-title">📋 Report Output</div>
-    <div class="output">${outputHtml}</div>
+    <div class="output" id="report-output">${outputHtml}</div>
+
+    <div class="section-title">📤 Export</div>
+    <div class="actions">
+        <button class="action-btn export-btn" id="btn-copy">📋 Copy to Clipboard</button>
+        <button class="action-btn export-btn" id="btn-save">💾 Save as File</button>
+    </div>
 
     <script>
         const vscode = acquireVsCodeApi();
-        document.querySelectorAll('.action-btn').forEach(btn => {
+        const rawOutput = ${JSON.stringify(output)};
+
+        document.querySelectorAll('.action-btn:not(.export-btn)').forEach(btn => {
             btn.addEventListener('click', () => {
                 vscode.postMessage({ type: 'runCommand', command: btn.dataset.cmd });
             });
+        });
+
+        document.getElementById('btn-copy').addEventListener('click', () => {
+            vscode.postMessage({ type: 'copyToClipboard', content: rawOutput });
+        });
+
+        document.getElementById('btn-save').addEventListener('click', () => {
+            vscode.postMessage({ type: 'saveToFile', content: rawOutput, title: '${title}' });
         });
     </script>
 </body>
@@ -1730,6 +1751,29 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 const cmdConfig = webviewCommands[message.command];
                 if (cmdConfig) {
                     await this._runQuickAction(cmdConfig.cmd, cmdConfig.title);
+                }
+            } else if (message.type === 'copyToClipboard') {
+                await vscode.env.clipboard.writeText(message.content);
+                vscode.window.showInformationMessage('Report copied to clipboard');
+            } else if (message.type === 'saveToFile') {
+                const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+                if (workspaceFolder) {
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                    const fileName = `${message.title.replace(/\s+/g, '_')}_${timestamp}.txt`;
+                    const filePath = path.join(workspaceFolder, '.empathy', 'reports', fileName);
+
+                    // Ensure reports directory exists
+                    const reportsDir = path.join(workspaceFolder, '.empathy', 'reports');
+                    if (!fs.existsSync(reportsDir)) {
+                        fs.mkdirSync(reportsDir, { recursive: true });
+                    }
+
+                    fs.writeFileSync(filePath, message.content);
+                    vscode.window.showInformationMessage(`Report saved to ${fileName}`);
+
+                    // Open the saved file
+                    const doc = await vscode.workspace.openTextDocument(filePath);
+                    await vscode.window.showTextDocument(doc, { preview: false });
                 }
             }
         });
