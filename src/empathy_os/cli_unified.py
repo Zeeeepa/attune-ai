@@ -283,9 +283,20 @@ def morning():
 
 
 @app.command("ship")
-def ship():
+def ship(
+    tests_only: bool = typer.Option(False, "--tests-only", help="Run tests only"),
+    security_only: bool = typer.Option(False, "--security-only", help="Run security checks only"),
+    skip_sync: bool = typer.Option(False, "--skip-sync", help="Skip Claude sync"),
+):
     """Pre-commit validation (lint, format, tests, security)."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "ship"])
+    args = [sys.executable, "-m", "empathy_os.cli", "ship"]
+    if tests_only:
+        args.append("--tests-only")
+    if security_only:
+        args.append("--security-only")
+    if skip_sync:
+        args.append("--skip-sync")
+    subprocess.run(args)
 
 
 @app.command("health")

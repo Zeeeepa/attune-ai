@@ -41,73 +41,108 @@
     "commands": [
       {
         "command": "empathy.morning",
-        "title": "Empathy: Morning Briefing",
+        "title": "Empathy: Quick → Morning Briefing",
         "icon": "$(calendar)"
       },
       {
         "command": "empathy.ship",
-        "title": "Empathy: Pre-Ship Check",
+        "title": "Empathy: Quick → Pre-Ship Check",
         "icon": "$(rocket)"
       },
       {
         "command": "empathy.fixAll",
-        "title": "Empathy: Fix All Issues",
+        "title": "Empathy: Quick → Fix All Issues",
         "icon": "$(tools)"
       },
       {
         "command": "empathy.learn",
-        "title": "Empathy: Learn Patterns",
+        "title": "Empathy: Quick → Learn Patterns",
         "icon": "$(mortar-board)"
       },
       {
-        "command": "empathy.costs",
-        "title": "Empathy: View API Costs",
-        "icon": "$(graph)"
-      },
-      {
-        "command": "empathy.dashboard",
-        "title": "Empathy: Open Dashboard",
-        "icon": "$(dashboard)"
-      },
-      {
-        "command": "empathy.syncClaude",
-        "title": "Empathy: Sync to Claude Code",
-        "icon": "$(sync)"
-      },
-      {
-        "command": "empathy.status",
-        "title": "Empathy: Show Status",
-        "icon": "$(info)"
-      },
-      {
-        "command": "empathy.refreshHealth",
-        "title": "Empathy: Refresh Health",
-        "icon": "$(refresh)"
+        "command": "empathy.runWorkflowQuick",
+        "title": "Empathy: Workflow → Run Workflow",
+        "icon": "$(play)"
       },
       {
         "command": "empathy.runScan",
-        "title": "Empathy: Run Health Scan",
+        "title": "Empathy: Workflow → Health Scan",
         "icon": "$(search)"
       },
       {
         "command": "empathy.runSecurityScan",
-        "title": "Empathy: Run Security Scan",
+        "title": "Empathy: Workflow → Security Scan",
         "icon": "$(shield)"
       },
       {
+        "command": "empathy.runTests",
+        "title": "Empathy: Workflow → Run Tests",
+        "icon": "$(beaker)"
+      },
+      {
         "command": "empathy.fixLint",
-        "title": "Empathy: Fix Lint Issues",
+        "title": "Empathy: Tools → Fix Lint Issues",
         "icon": "$(lightbulb)"
       },
       {
         "command": "empathy.fixFormat",
-        "title": "Empathy: Fix Format Issues",
+        "title": "Empathy: Tools → Fix Format Issues",
         "icon": "$(edit)"
       },
       {
-        "command": "empathy.runTests",
-        "title": "Empathy: Run Tests",
+        "command": "empathy.dashboard",
+        "title": "Empathy: View → Web Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "empathy.focusDashboard",
+        "title": "Empathy: View → Sidebar Dashboard",
+        "icon": "$(question)"
+      },
+      {
+        "command": "empathy.openPowerPanel",
+        "title": "Empathy: View → Power Panel",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "empathy.openDocAnalysis",
+        "title": "Empathy: View → Documentation Analysis",
+        "icon": "$(book)"
+      },
+      {
+        "command": "empathy.costs",
+        "title": "Empathy: View → API Costs",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "empathy.status",
+        "title": "Empathy: View → Show Status",
+        "icon": "$(info)"
+      },
+      {
+        "command": "empathy.syncClaude",
+        "title": "Empathy: Setup → Sync to Claude Code",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "empathy.initializeProject",
+        "title": "Empathy: Setup → Initialize Project",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "empathy.refreshHealth",
+        "title": "Empathy: Setup → Refresh Health",
+        "icon": "$(refresh)"
+      },
+            {
+        "command": "empathy.testGenerator.show",
+        "title": "Empathy: Wizard → Test Generator",
         "icon": "$(beaker)"
+      },
+      {
+        "command": "empathy.workflowWizard.show",
+        "title": "Empathy: Wizard → Workflow Wizard",
+        "icon": "$(symbol-function)"
       },
       {
         "command": "empathy.viewDetails",
@@ -125,44 +160,59 @@
         "icon": "$(eye-closed)"
       },
       {
-        "command": "empathy.openPowerPanel",
-        "title": "Empathy: Power Panel",
-        "icon": "$(zap)"
+        "command": "empathy.reviewFile",
+        "title": "Empathy: Review This File",
+        "icon": "$(eye)"
       },
       {
-        "command": "empathy.openDocAnalysis",
-        "title": "Empathy: Analyze Documentation",
-        "icon": "$(book)"
+        "command": "empathy.scanFolder",
+        "title": "Empathy: Scan for Bugs",
+        "icon": "$(bug)"
       },
       {
-        "command": "empathy.runWorkflowQuick",
-        "title": "Empathy: Run Workflow",
-        "icon": "$(play)"
-      },
-      {
-        "command": "empathy.memory.showPanel",
-        "title": "Empathy: Memory Panel (Beta)",
-        "icon": "$(database)"
-      },
-      {
-        "command": "empathy.memory.refreshStatus",
-        "title": "Empathy: Refresh Memory Status (Beta)",
-        "icon": "$(refresh)"
-      },
-      {
-        "command": "empathy.initializeProject",
-        "title": "Empathy: Initialize Project",
-        "icon": "$(rocket)"
-      },
-      {
-        "command": "empathy.testGenerator.show",
-        "title": "Empathy: Test Generator Wizard",
+        "command": "empathy.generateTests",
+        "title": "Empathy: Generate Tests",
         "icon": "$(beaker)"
       },
       {
-        "command": "empathy.workflowWizard.show",
-        "title": "Empathy: Workflow Wizard",
-        "icon": "$(symbol-function)"
+        "command": "empathy.securityAudit",
+        "title": "Empathy: Security Audit",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "empathy.recentWorkflows",
+        "title": "Empathy: Quick → Recent Workflows",
+        "icon": "$(history)"
+      },
+      {
+        "command": "empathy.applyKeyboardLayout",
+        "title": "Empathy: Setup → Apply Keyboard Layout",
+        "icon": "$(keyboard)"
+      },
+      {
+        "command": "empathy.redetectKeyboardLayout",
+        "title": "Empathy: Setup → Re-detect Keyboard Layout",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "empathy.togglePowerMode",
+        "title": "Empathy: Toggle Power Mode",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "empathy.openGuidedPanel",
+        "title": "Empathy: Open Guide Assistant",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "empathy.openPlanMode",
+        "title": "Empathy: Open Plan Mode",
+        "icon": "$(tasklist)"
+      },
+      {
+        "command": "empathy.openLearnMode",
+        "title": "Empathy: Open Learn Mode",
+        "icon": "$(mortar-board)"
       }
     ],
     "keybindings": [
@@ -170,6 +220,91 @@
         "command": "empathy.openPowerPanel",
         "key": "ctrl+shift+e p",
         "mac": "cmd+shift+e p"
+      },
+      {
+        "command": "empathy.morning",
+        "key": "ctrl+shift+e m",
+        "mac": "cmd+shift+e m"
+      },
+      {
+        "command": "empathy.ship",
+        "key": "ctrl+shift+e s",
+        "mac": "cmd+shift+e s"
+      },
+      {
+        "command": "empathy.fixAll",
+        "key": "ctrl+shift+e f",
+        "mac": "cmd+shift+e f"
+      },
+      {
+        "command": "empathy.runWorkflowQuick",
+        "key": "ctrl+shift+e w",
+        "mac": "cmd+shift+e w"
+      },
+      {
+        "command": "empathy.focusDashboard",
+        "key": "ctrl+shift+e d",
+        "mac": "cmd+shift+e d"
+      },
+      {
+        "command": "empathy.costs",
+        "key": "ctrl+shift+e c",
+        "mac": "cmd+shift+e c"
+      },
+      {
+        "command": "empathy.runTests",
+        "key": "ctrl+shift+e t",
+        "mac": "cmd+shift+e t"
+      },
+      {
+        "command": "empathy.reviewFile",
+        "key": "ctrl+shift+e r",
+        "mac": "cmd+shift+e r"
+      },
+      {
+        "command": "empathy.runScan",
+        "key": "ctrl+shift+e h",
+        "mac": "cmd+shift+e h"
+      },
+      {
+        "command": "empathy.securityAudit",
+        "key": "ctrl+shift+e a",
+        "mac": "cmd+shift+e a"
+      },
+      {
+        "command": "empathy.scanFolder",
+        "key": "ctrl+shift+e b",
+        "mac": "cmd+shift+e b"
+      },
+      {
+        "command": "empathy.generateTests",
+        "key": "ctrl+shift+e g",
+        "mac": "cmd+shift+e g"
+      },
+      {
+        "command": "empathy.learn",
+        "key": "ctrl+shift+e l",
+        "mac": "cmd+shift+e l"
+      },
+      {
+        "command": "empathy.status",
+        "key": "ctrl+shift+e v",
+        "mac": "cmd+shift+e v"
+      },
+      {
+        "command": "empathy.recentWorkflows",
+        "key": "ctrl+shift+e z",
+        "mac": "cmd+shift+e z"
+      },
+      {
+        "command": "empathy.openGuidedPanel",
+        "key": "ctrl+shift+e i",
+        "mac": "cmd+shift+e i"
+      },
+      {
+        "command": "empathy.openLearnMode",
+        "key": "ctrl+shift+e o",
+        "mac": "cmd+shift+e o"
       }
     ],
     "viewsContainers": {
@@ -188,12 +323,7 @@
           "id": "empathy-dashboard",
           "name": "Dashboard"
         },
-        {
-          "type": "webview",
-          "id": "empathy-memory",
-          "name": "Memory (Beta)"
-        },
-        {
+          {
           "type": "webview",
           "id": "research-synthesis",
           "name": "Research Synthesis"
@@ -225,14 +355,92 @@
         {
           "command": "empathy.ignoreIssue",
           "when": "false"
+        },
+        {
+          "command": "empathy.reviewFile",
+          "when": "false"
+        },
+        {
+          "command": "empathy.scanFolder",
+          "when": "false"
+        },
+        {
+          "command": "empathy.generateTests",
+          "when": "false"
+        },
+        {
+          "command": "empathy.securityAudit",
+          "when": "false"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "empathy.reviewFile",
+          "group": "empathy@1",
+          "when": "editorFocus && resourceLangId =~ /python|typescript|javascript|java|go|rust/"
+        }
+      ],
+      "explorer/context": [
+        {
+          "submenu": "empathy.explorerSubmenu",
+          "group": "empathy@1",
+          "when": "explorerResourceIsFolder || resourceLangId =~ /python|typescript|javascript|java|go|rust/"
+        }
+      ],
+      "empathy.explorerSubmenu": [
+        {
+          "command": "empathy.scanFolder",
+          "group": "1_scan@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "empathy.securityAudit",
+          "group": "1_scan@2",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "empathy.generateTests",
+          "group": "2_generate@1"
+        },
+        {
+          "command": "empathy.reviewFile",
+          "group": "3_review@1",
+          "when": "!explorerResourceIsFolder"
         }
       ],
       "view/title": [],
       "view/item/context": []
     },
+    "submenus": [
+      {
+        "id": "empathy.explorerSubmenu",
+        "label": "Empathy"
+      }
+    ],
     "configuration": {
       "title": "Empathy Framework",
       "properties": {
+        "empathy.keyboardLayout": {
+          "type": "string",
+          "enum": ["qwerty", "dvorak", "colemak"],
+          "default": "qwerty",
+          "description": "Keyboard layout for optimized shortcuts. Run 'Empathy: Apply Keyboard Layout' after changing.",
+          "enumDescriptions": [
+            "QWERTY layout (default) - M-S-F-D home row",
+            "Dvorak layout - A-O-E-U home row optimized",
+            "Colemak layout - A-R-S-T home row optimized"
+          ]
+        },
+        "empathy.feedbackMode": {
+          "type": "string",
+          "enum": ["guided", "power"],
+          "default": "guided",
+          "description": "Feedback mode for commands. 'guided' shows modal dialogs (new users), 'power' uses quick inline indicators (experienced users).",
+          "enumDescriptions": [
+            "Guided mode - Modal dialogs with explanations for new users",
+            "Power mode - Brief inline badges for fast keyboard riffs"
+          ]
+        },
         "empathy.patternsDir": {
           "type": "string",
           "default": "./patterns",
@@ -273,34 +481,7 @@
           "default": 2000,
           "description": "Debounce time in milliseconds for auto-scan on save"
         },
-        "empathy.memory.apiHost": {
-          "type": "string",
-          "default": "localhost",
-          "description": "(Beta) Memory API host for Redis-backed memory"
-        },
-        "empathy.memory.apiPort": {
-          "type": "number",
-          "default": 8765,
-          "description": "(Beta) Memory API port for Redis-backed memory"
-        },
-        "empathy.memory.autoRefresh": {
-          "type": "boolean",
-          "default": true,
-          "description": "(Beta) Auto-refresh memory status every 30 seconds"
-        },
-        "empathy.memory.autoRefreshInterval": {
-          "type": "number",
-          "default": 30,
-          "minimum": 5,
-          "maximum": 300,
-          "description": "(Beta) Auto-refresh interval in seconds"
-        },
-        "empathy.memory.showNotifications": {
-          "type": "boolean",
-          "default": true,
-          "description": "(Beta) Show notifications for memory operations"
-        },
-        "empathy.testGen.maxFilesToScan": {
+                "empathy.testGen.maxFilesToScan": {
           "type": "number",
           "default": 1000,
           "minimum": 10,
@@ -367,6 +548,11 @@
           "type": "boolean",
           "default": false,
           "description": "Include files with low priority (tested or small files) in scan results"
+        },
+        "empathy.showBetaFeatures": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show experimental beta features (Memory Control Panel, etc.). Enable at your own risk."
         }
       }
     }

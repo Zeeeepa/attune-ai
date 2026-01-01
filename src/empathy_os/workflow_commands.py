@@ -258,10 +258,92 @@ def morning_workflow(
     return 0
 
 
+def _run_tests_only(project_root: str = ".", verbose: bool = False) -> int:
+    """Run tests only (used by ship --tests-only)."""
+    print("\n" + "=" * 60)
+    print("  TEST RESULTS")
+    print("=" * 60 + "\n")
+
+    # Try pytest first
+    success, output = _run_command(["python", "-m", "pytest", project_root, "-v", "--tb=short"])
+
+    if success:
+        print("All tests passed!")
+        print("\n" + "=" * 60 + "\n")
+        return 0
+    else:
+        print("Test Results:")
+        print("-" * 40)
+        print(output)
+        print("\n" + "=" * 60 + "\n")
+        return 1
+
+
+def _run_security_only(project_root: str = ".", verbose: bool = False) -> int:
+    """Run security checks only (used by ship --security-only)."""
+    print("\n" + "=" * 60)
+    print("  SECURITY SCAN")
+    print("=" * 60 + "\n")
+
+    issues = []
+
+    # Try bandit (Python security scanner)
+    print("1. Running Bandit security scan...")
+    success, output = _run_command(["bandit", "-r", project_root, "-ll", "-q"])
+    if success:
+        print("   PASS - No high/medium security issues")
+    else:
+        if "bandit" in output.lower() and "not found" in output.lower():
+            print("   SKIP - Bandit not installed (pip install bandit)")
+        else:
+            issue_count = output.count(">> Issue:")
+            issues.append(f"Bandit: {issue_count} security issues")
+            print(f"   WARN - {issue_count} issues found")
+            if verbose:
+                print(output)
+
+    # Check for secrets in code
+    print("2. Checking for hardcoded secrets...")
+    success, output = _run_command(
+        ["grep", "-rn", "--include=*.py", "password.*=.*['\"]", project_root]
+    )
+    if not success or not output.strip():
+        print("   PASS - No obvious hardcoded secrets")
+    else:
+        lines = len([line for line in output.split("\n") if line.strip()])
+        issues.append(f"Secrets: {lines} potential hardcoded secrets")
+        print(f"   WARN - {lines} potential hardcoded values found")
+
+    # Check for .env files that might be committed
+    print("3. Checking for sensitive files...")
+    success, output = _run_command(["git", "ls-files", ".env", "*.pem", "*.key"])
+    if not output.strip():
+        print("   PASS - No sensitive files tracked")
+    else:
+        files = len([line for line in output.split("\n") if line.strip()])
+        issues.append(f"Files: {files} sensitive files in git")
+        print(f"   WARN - {files} sensitive files tracked in git")
+
+    # Summary
+    print("\n" + "-" * 60)
+    if issues:
+        print("\nSECURITY ISSUES FOUND:")
+        for issue in issues:
+            print(f"  - {issue}")
+        print("\n" + "=" * 60 + "\n")
+        return 1
+
+    print("\nNo security issues found!")
+    print("\n" + "=" * 60 + "\n")
+    return 0
+
+
 def ship_workflow(
     patterns_dir: str = "./patterns",
     project_root: str = ".",
     skip_sync: bool = False,
+    tests_only: bool = False,
+    security_only: bool = False,
     verbose: bool = False,
 ) -> int:
     """
@@ -273,8 +355,22 @@ def ship_workflow(
     3. empathy sync-claude (pattern sync)
     4. Summary
 
+    Args:
+        patterns_dir: Path to patterns directory
+        project_root: Project root directory
+        skip_sync: Skip syncing patterns to Claude
+        tests_only: Run tests only (skip lint/format checks)
+        security_only: Run security checks only
+        verbose: Show detailed output
+
     Returns exit code (0 = ready to ship, non-zero = issues found).
     """
+    if tests_only:
+        return _run_tests_only(project_root, verbose)
+
+    if security_only:
+        return _run_security_only(project_root, verbose)
+
     print("\n" + "=" * 60)
     print("  PRE-SHIP CHECKLIST")
     print("=" * 60 + "\n")
@@ -346,15 +442,14 @@ def ship_workflow(
         print("5. Syncing patterns to Claude Code...")
         # Import here to avoid circular imports
         try:
-            from empathy_llm_toolkit.cli.sync_claude import (
-                sync_patterns_to_claude,
-            )  # type: ignore[attr-defined]
+            from pathlib import Path
 
-            result = sync_patterns_to_claude(
-                patterns_dir=patterns_dir, output_dir=".claude/rules/empathy"
-            )
-            if result.get("success"):
-                print(f"   PASS - {result.get('patterns_synced', 0)} patterns synced")
+            from empathy_llm_toolkit.cli.sync_claude import sync_patterns
+
+            result = sync_patterns(project_root=Path("."), verbose=False)
+            synced_count = len(result.get("synced", []))
+            if synced_count > 0:
+                print(f"   PASS - {synced_count} patterns synced")
             else:
                 print("   SKIP - No patterns to sync")
         except ImportError:
@@ -660,6 +755,8 @@ def cmd_ship(args):
         patterns_dir=getattr(args, "patterns_dir", "./patterns"),
         project_root=getattr(args, "project_root", "."),
         skip_sync=getattr(args, "skip_sync", False),
+        tests_only=getattr(args, "tests_only", False),
+        security_only=getattr(args, "security_only", False),
         verbose=getattr(args, "verbose", False),
     )
 

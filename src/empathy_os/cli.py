@@ -2386,6 +2386,12 @@ def main():
     parser_ship.add_argument(
         "--skip-sync", action="store_true", help="Skip syncing patterns to Claude"
     )
+    parser_ship.add_argument(
+        "--tests-only", action="store_true", help="Run tests only (skip lint/format checks)"
+    )
+    parser_ship.add_argument(
+        "--security-only", action="store_true", help="Run security checks only"
+    )
     parser_ship.add_argument("--verbose", "-v", action="store_true", help="Show detailed output")
     parser_ship.set_defaults(func=cmd_ship)
 

@@ -95,10 +95,127 @@ class CodeReviewWorkflow(BaseWorkflow):
             }
 
     def should_skip_stage(self, stage_name: str, input_data: Any) -> tuple[bool, str | None]:
-        """Skip architectural review if change is simple."""
+        """Skip stages when appropriate."""
+        # Skip all stages after classify if there was an input error
+        if isinstance(input_data, dict) and input_data.get("error"):
+            if stage_name != "classify":
+                return True, "Skipped due to input validation error"
+
+        # Skip architectural review if change is simple
         if stage_name == "architect_review" and not self._needs_architect_review:
             return True, "Simple change - architectural review not needed"
         return False, None
+
+    def _gather_project_context(self) -> str:
+        """
+        Gather project context for project-level reviews.
+
+        Reads project metadata and key files to provide context to the LLM.
+        Returns formatted project context string, or empty string if no context found.
+        """
+        import os
+        from pathlib import Path
+
+        context_parts = []
+        cwd = Path.cwd()
+
+        # Get project name from directory or config files
+        project_name = cwd.name
+        context_parts.append(f"# Project: {project_name}")
+        context_parts.append(f"# Path: {cwd}")
+        context_parts.append("")
+
+        # Check for pyproject.toml
+        pyproject = cwd / "pyproject.toml"
+        if pyproject.exists():
+            try:
+                content = pyproject.read_text()[:2000]
+                context_parts.append("## pyproject.toml")
+                context_parts.append("```toml")
+                context_parts.append(content)
+                context_parts.append("```")
+                context_parts.append("")
+            except OSError:
+                pass
+
+        # Check for package.json
+        package_json = cwd / "package.json"
+        if package_json.exists():
+            try:
+                content = package_json.read_text()[:2000]
+                context_parts.append("## package.json")
+                context_parts.append("```json")
+                context_parts.append(content)
+                context_parts.append("```")
+                context_parts.append("")
+            except OSError:
+                pass
+
+        # Check for README
+        for readme_name in ["README.md", "README.rst", "README.txt", "README"]:
+            readme = cwd / readme_name
+            if readme.exists():
+                try:
+                    content = readme.read_text()[:3000]
+                    context_parts.append(f"## {readme_name}")
+                    context_parts.append(content)
+                    context_parts.append("")
+                    break
+                except OSError:
+                    pass
+
+        # Get directory structure (top 2 levels)
+        context_parts.append("## Project Structure")
+        context_parts.append("```")
+        try:
+            for root, dirs, files in os.walk(cwd):
+                # Skip hidden and common ignored directories
+                dirs[:] = [
+                    d
+                    for d in dirs
+                    if not d.startswith(".")
+                    and d
+                    not in (
+                        "node_modules",
+                        "__pycache__",
+                        "venv",
+                        ".venv",
+                        "dist",
+                        "build",
+                        ".git",
+                        ".tox",
+                        ".pytest_cache",
+                        ".mypy_cache",
+                        "htmlcov",
+                    )
+                ]
+                level = root.replace(str(cwd), "").count(os.sep)
+                if level < 2:
+                    indent = "  " * level
+                    folder_name = os.path.basename(root) or project_name
+                    context_parts.append(f"{indent}{folder_name}/")
+                    # Show key files at this level
+                    key_files = [
+                        f
+                        for f in files
+                        if f.endswith(
+                            (".py", ".ts", ".js", ".json", ".yaml", ".yml", ".toml", ".md")
+                        )
+                        and not f.startswith(".")
+                    ][:10]
+                    for f in key_files:
+                        context_parts.append(f"{indent}  {f}")
+                if level >= 2:
+                    break
+        except OSError:
+            context_parts.append("(Unable to read directory structure)")
+        context_parts.append("```")
+
+        # Return empty if we only have the header
+        if len(context_parts) <= 3:
+            return ""
+
+        return "\n".join(context_parts)
 
     async def run_stage(
         self, stage_name: str, tier: ModelTier, input_data: Any
@@ -123,6 +240,37 @@ class CodeReviewWorkflow(BaseWorkflow):
 
         # If target provided instead of diff, use it as the code to review
         code_to_review = diff or target
+
+        # Handle project-level review when target is "." or empty
+        if not code_to_review or code_to_review.strip() in (".", "", "./"):
+            # Gather project context for project-level review
+            project_context = self._gather_project_context()
+            if not project_context:
+                # Return early with helpful error message if no context found
+                return (
+                    {
+                        "classification": "ERROR: No code provided for review",
+                        "error": True,
+                        "error_message": (
+                            "No code was provided for review. Please ensure you:\n"
+                            "1. Have a file open in the editor, OR\n"
+                            "2. Select a specific file to review, OR\n"
+                            '3. Provide code content directly via --input \'{"diff": "..."}\'\n\n'
+                            "Tip: Use 'Select File...' option in the workflow picker."
+                        ),
+                        "change_type": "none",
+                        "files_changed": [],
+                        "file_count": 0,
+                        "needs_architect_review": False,
+                        "is_core_module": False,
+                        "code_to_review": "",
+                    },
+                    0,
+                    0,
+                )
+            code_to_review = project_context
+            # Mark as project-level review
+            input_data["is_project_review"] = True
 
         system = """You are a code review classifier. Analyze the code and classify:
 1. Change type: bug_fix, feature, refactor, docs, test, config, or security
@@ -588,6 +736,17 @@ def format_code_review_report(result: dict, input_data: dict) -> str:
         Formatted report string
     """
     lines = []
+
+    # Check for input validation error
+    if input_data.get("error"):
+        lines.append("=" * 60)
+        lines.append("CODE REVIEW - INPUT ERROR")
+        lines.append("=" * 60)
+        lines.append("")
+        lines.append(input_data.get("error_message", "No code provided for review."))
+        lines.append("")
+        lines.append("=" * 60)
+        return "\n".join(lines)
 
     # Header
     verdict = result.get("verdict", "unknown").upper().replace("_", " ")

@@ -5,11 +5,38 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.5.4] - 2025-12-29
+## [3.5.5] - 2026-01-01
 
 ### Added
 
-#### Comprehensive Test Suite Expansion
+#### VSCode Dashboard Improvements
+
+- **Memory Tab**: Added new Memory tab to Dashboard with Redis status, pattern count, and controls
+- **Redis Control**: Start/Stop Redis directly from the Dashboard
+- **Pattern Export**: Export patterns to JSON from Dashboard
+
+#### CLI Enhancements
+
+- **Ship Command Options**: Added `--tests-only` and `--security-only` flags to `empathy ship`
+  - `empathy ship --tests-only` - Run only test suite
+  - `empathy ship --security-only` - Run only security checks (bandit, secrets, sensitive files)
+
+#### XML-Enhanced Prompts
+
+- **SocraticFormService**: Enhanced all form prompts with structured XML format
+  - Includes role, goal, instructions, constraints, and output format
+  - Better structured prompts for plan-refinement, workflow-customization, and learning-mode
+
+### Fixed
+
+- **Code Review Workflow**: Now gathers project context (pyproject.toml, README, directory structure) when run with "." as target instead of showing confusing error
+- **Lint Warnings**: Fixed ambiguous variable names `l` → `line` in workflow_commands.py
+
+---
+
+## [3.5.4] - 2025-12-29
+
+### Added - Test Suite Expansion
 
 - Added 30+ new test files with comprehensive coverage
 - New test modules:

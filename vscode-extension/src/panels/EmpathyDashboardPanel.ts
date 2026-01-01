@@ -4414,6 +4414,74 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             banner.style.display = 'block';
         }
 
+        // =============================================
+        // Memory Tab Handlers
+        // =============================================
+        const memoryRefreshBtn = document.getElementById('memory-refresh');
+        if (memoryRefreshBtn) {
+            memoryRefreshBtn.addEventListener('click', function() {
+                vscode.postMessage({ type: 'memoryRefresh' });
+            });
+        }
+
+        const memoryStartRedisBtn = document.getElementById('memory-start-redis');
+        if (memoryStartRedisBtn) {
+            memoryStartRedisBtn.addEventListener('click', function() {
+                this.disabled = true;
+                this.querySelector('span:not(.action-icon)').textContent = 'Starting...';
+                vscode.postMessage({ type: 'memoryStartRedis' });
+            });
+        }
+
+        const memoryStopRedisBtn = document.getElementById('memory-stop-redis');
+        if (memoryStopRedisBtn) {
+            memoryStopRedisBtn.addEventListener('click', function() {
+                this.disabled = true;
+                this.querySelector('span:not(.action-icon)').textContent = 'Stopping...';
+                vscode.postMessage({ type: 'memoryStopRedis' });
+            });
+        }
+
+        const memoryExportBtn = document.getElementById('memory-export');
+        if (memoryExportBtn) {
+            memoryExportBtn.addEventListener('click', function() {
+                vscode.postMessage({ type: 'memoryExport' });
+            });
+        }
+
+        const memoryOpenPanelBtn = document.getElementById('memory-open-panel');
+        if (memoryOpenPanelBtn) {
+            memoryOpenPanelBtn.addEventListener('click', function() {
+                vscode.postMessage({ type: 'memoryOpenPanel' });
+            });
+        }
+
+        function updateMemoryStatus(data) {
+            const redisStatus = document.getElementById('memory-redis-status');
+            const patternsCount = document.getElementById('memory-patterns-count');
+
+            if (redisStatus && data.redis) {
+                redisStatus.textContent = data.redis.status === 'running' ? '●' : '○';
+                redisStatus.className = 'metric-value ' + (data.redis.status === 'running' ? 'success' : 'warning');
+            }
+
+            if (patternsCount && data.long_term) {
+                patternsCount.textContent = data.long_term.pattern_count || 0;
+            }
+
+            // Reset button states
+            const startBtn = document.getElementById('memory-start-redis');
+            const stopBtn = document.getElementById('memory-stop-redis');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.querySelector('span:not(.action-icon)').textContent = 'Start Redis';
+            }
+            if (stopBtn) {
+                stopBtn.disabled = false;
+                stopBtn.querySelector('span:not(.action-icon)').textContent = 'Stop Redis';
+            }
+        }
+
         // Request initial data
         vscode.postMessage({ type: 'refresh' });
     </script>
