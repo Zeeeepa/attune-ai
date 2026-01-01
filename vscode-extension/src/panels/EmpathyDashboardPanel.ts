@@ -934,6 +934,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             }
 
             // Special handling for code-review: send findings to CodeReviewPanel
+            let openedInPanel = false;
             if (workflowName === 'code-review' && success && stdout) {
                 try {
                     // Parse JSON output from CLI (uses --json flag)
@@ -964,6 +965,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
 
                         // Show the panel
                         await vscode.commands.executeCommand('empathy-code-review.focus');
+                        openedInPanel = true;
 
                         // Notify user
                         const findingCount = result.findings.length;
@@ -1009,9 +1011,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 data: {
                     workflow: workflowName,
                     status: success ? 'complete' : 'error',
-                    output: openedInEditor ? '(Report opened in editor)' : output,
+                    output: openedInEditor ? '(Report opened in editor)' : openedInPanel ? '(Results shown in Code Review panel)' : output,
                     error: error ? error.message : null,
-                    openedInEditor: openedInEditor
+                    openedInEditor: openedInEditor,
+                    openedInPanel: openedInPanel
                 }
             });
         });
@@ -2461,27 +2464,27 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         <div class="card">
             <div class="card-title">Quick Actions</div>
             <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-cmd="morning" data-title="Morning Briefing">
+                <button class="action-btn workflow-btn" data-cmd="morning" data-title="Morning Briefing" title="Daily project status summary with priorities and blockers">
                     <span class="action-icon">&#x2600;</span>
                     <span>Get Briefing</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="ship" data-title="Pre-Ship Check">
+                <button class="action-btn workflow-btn" data-cmd="ship" data-title="Pre-Ship Check" title="Pre-release quality gate: health, security, and changelog checks">
                     <span class="action-icon">&#x1F680;</span>
                     <span>Run Ship</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="fix-all" data-title="Fix All Issues">
+                <button class="action-btn workflow-btn" data-cmd="fix-all" data-title="Fix All Issues" title="Auto-fix linting, formatting, and safe code issues">
                     <span class="action-icon">&#x1F527;</span>
                     <span>Fix Issues</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="learn" data-title="Learn Patterns">
+                <button class="action-btn workflow-btn" data-cmd="learn" data-title="Learn Patterns" title="Analyze recent commits to learn debugging and refactoring patterns">
                     <span class="action-icon">&#x1F4DA;</span>
                     <span>Learn Patterns</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="run-tests" data-title="Run Tests">
+                <button class="action-btn workflow-btn" data-cmd="run-tests" data-title="Run Tests" title="Execute test suite and display results">
                     <span class="action-icon">&#x1F9EA;</span>
                     <span>Run Tests</span>
                 </button>
-                <button class="action-btn" data-cmd="initialize" data-title="Setup Wizard">
+                <button class="action-btn" data-cmd="initialize" data-title="Setup Wizard" title="First-time setup wizard for API keys and project config">
                     <span class="action-icon">&#x2699;</span>
                     <span>Setup</span>
                 </button>
@@ -2513,63 +2516,79 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         <div class="card" style="margin-top: 12px">
             <div class="card-title">Workflows <span style="font-size: 10px; opacity: 0.6;">(Beta)</span></div>
             <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-workflow="code-review">
+                <!-- Row 1: Code Review & Analysis -->
+                <button class="action-btn workflow-btn" data-workflow="code-review" title="Tiered code analysis with security, quality, and architecture review">
                     <span class="action-icon">&#x1F50D;</span>
                     <span>Review File</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="pro-review">
+                <button class="action-btn workflow-btn" data-workflow="pro-review" title="Advanced code analysis for diffs and pull requests">
                     <span class="action-icon">&#x2B50;</span>
                     <span>Run Analysis</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="doc-orchestrator">
-                    <span class="action-icon">&#x1F4DA;</span>
-                    <span>Manage Docs</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="bug-predict">
-                    <span class="action-icon">&#x1F41B;</span>
-                    <span>Predict Bugs</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="security-audit">
-                    <span class="action-icon">&#x1F512;</span>
-                    <span>Security Audit</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="perf-audit">
-                    <span class="action-icon">&#x26A1;</span>
-                    <span>Perf Audit</span>
-                </button>
-                <button class="action-btn workflow-btn" id="btn-test-gen-direct" data-workflow="test-gen">
-                    <span class="action-icon">&#x1F9EA;</span>
-                    <span>Generate Tests</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="refactor-plan">
-                    <span class="action-icon">&#x1F3D7;</span>
-                    <span>Refactor Plan</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="dependency-check">
-                    <span class="action-icon">&#x1F4E6;</span>
-                    <span>Check Deps</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="health-check" title="Run HealthCheckCrew for comprehensive 5-agent project health analysis">
-                    <span class="action-icon">&#x1FA7A;</span>
-                    <span>Check Health</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="pr-review">
+
+                <!-- Row 2: Pull Request Review -->
+                <button class="action-btn workflow-btn" data-workflow="pr-review" title="Comprehensive pull request review with diff analysis">
                     <span class="action-icon">&#x1F50D;</span>
                     <span>Review PR</span>
                 </button>
-                <!-- Hidden for v3.5.5 release - TODO: enable after workflow wizard is complete -->
-                <button class="action-btn workflow-btn" data-workflow="doc-gen">
+                <!-- TODO: Add second PR-related workflow here -->
+
+                <!-- Row 3: Documentation -->
+                <button class="action-btn workflow-btn" data-workflow="doc-orchestrator" title="End-to-end documentation management: scout gaps, prioritize, generate">
+                    <span class="action-icon">&#x1F4DA;</span>
+                    <span>Manage Docs</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="doc-gen" title="Cost-optimized documentation generation: outline → write → polish">
                     <span class="action-icon">&#x1F4C4;</span>
                     <span>Generate Docs</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="release-prep">
+
+                <!-- Row 4: Code Quality -->
+                <button class="action-btn workflow-btn" id="btn-test-gen-direct" data-workflow="test-gen" title="Generate tests targeting areas with historical bugs and low coverage">
+                    <span class="action-icon">&#x1F9EA;</span>
+                    <span>Generate Tests</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="refactor-plan" title="Prioritize tech debt based on code trajectory and maintenance impact">
+                    <span class="action-icon">&#x1F3D7;</span>
+                    <span>Refactor Plan</span>
+                </button>
+
+                <!-- Row 5: Security -->
+                <button class="action-btn workflow-btn" data-workflow="security-audit" title="OWASP-focused security scan with vulnerability assessment and remediation">
+                    <span class="action-icon">&#x1F512;</span>
+                    <span>Security Audit</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="secure-release" title="Full security pipeline: audit crew + OWASP scan + code review + release prep (always comprehensive)">
+                    <span class="action-icon">&#x1F510;</span>
+                    <span>Secure Release</span>
+                </button>
+
+                <!-- Row 6: Performance & Health -->
+                <button class="action-btn workflow-btn" data-workflow="perf-audit" title="Identify performance bottlenecks and optimization opportunities">
+                    <span class="action-icon">&#x26A1;</span>
+                    <span>Perf Audit</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="health-check" title="Project health diagnosis and fixing with 5-agent crew">
+                    <span class="action-icon">&#x1FA7A;</span>
+                    <span>Check Health</span>
+                </button>
+
+                <!-- Row 7: Prediction & Dependencies -->
+                <button class="action-btn workflow-btn" data-workflow="bug-predict" title="Predict bugs by analyzing code against learned patterns and history">
+                    <span class="action-icon">&#x1F41B;</span>
+                    <span>Predict Bugs</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="dependency-check" title="Audit dependencies for security vulnerabilities and available updates">
+                    <span class="action-icon">&#x1F4E6;</span>
+                    <span>Check Deps</span>
+                </button>
+
+                <!-- Row 8: Release -->
+                <button class="action-btn workflow-btn" data-workflow="release-prep" title="Pre-release quality gate with health, security, and changelog validation">
                     <span class="action-icon">&#x1F680;</span>
                     <span>Release Prep</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="secure-release">
-                    <span class="action-icon">&#x1F510;</span>
-                    <span>Secure Release</span>
-                </button>                <button class="action-btn workflow-btn new-workflow-btn" id="btn-new-workflow" title="Create a new workflow from template" style="display: none;">
+                <!-- TODO: Add second release-related workflow here -->                <button class="action-btn workflow-btn new-workflow-btn" id="btn-new-workflow" title="Create a new workflow from template" style="display: none;">
                     <span class="action-icon">&#x2795;</span>
                     <span>New Workflow</span>
                 </button>

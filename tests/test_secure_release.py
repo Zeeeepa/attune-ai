@@ -4,13 +4,15 @@ Tests for src/empathy_os/workflows/secure_release.py
 Tests the SecureReleasePipeline including:
 - SecureReleaseResult dataclass
 - SecureReleasePipeline initialization
-- Execution modes (full, standard, quick)
+- Execution modes (full, standard)
 - Go/No-Go decision logic
 - Report formatting
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
+
+import pytest
 
 from src.empathy_os.workflows.secure_release import SecureReleasePipeline, SecureReleaseResult
 
@@ -164,14 +166,14 @@ class TestSecureReleaseResult:
         )
         assert result.mode == "standard"
 
-    def test_mode_quick(self):
-        """Test quick mode."""
+    def test_mode_invalid(self):
+        """Test result can store any mode string (for backwards compat)."""
         result = SecureReleaseResult(
             success=True,
             go_no_go="GO",
-            mode="quick",
+            mode="custom",
         )
-        assert result.mode == "quick"
+        assert result.mode == "custom"
 
 
 class TestSecureReleasePipelineInit:
@@ -192,15 +194,15 @@ class TestSecureReleasePipelineInit:
         pipeline = SecureReleasePipeline(mode="standard")
         assert pipeline.mode == "standard"
 
-    def test_mode_quick(self):
-        """Test initialization with quick mode."""
-        pipeline = SecureReleasePipeline(mode="quick")
-        assert pipeline.mode == "quick"
+    def test_invalid_mode(self):
+        """Test initialization with invalid mode raises ValueError."""
+        with pytest.raises(ValueError, match="Invalid mode 'quick'"):
+            SecureReleasePipeline(mode="quick")
 
     def test_with_kwargs(self):
         """Test initialization with additional kwargs."""
-        pipeline = SecureReleasePipeline(mode="quick", provider="openai")
-        assert pipeline.mode == "quick"
+        pipeline = SecureReleasePipeline(mode="standard", provider="openai")
+        assert pipeline.mode == "standard"
         assert pipeline.kwargs.get("provider") == "openai"
 
 
@@ -209,14 +211,14 @@ class TestSecureReleasePipelineExecution:
 
     def test_execute_method_exists(self):
         """Test execute method exists."""
-        pipeline = SecureReleasePipeline(mode="quick")
+        pipeline = SecureReleasePipeline(mode="standard")
         assert hasattr(pipeline, "execute")
         assert callable(pipeline.execute)
 
     def test_pipeline_attributes(self):
         """Test pipeline has expected attributes."""
-        pipeline = SecureReleasePipeline(mode="quick")
-        assert pipeline.mode == "quick"
+        pipeline = SecureReleasePipeline(mode="standard")
+        assert pipeline.mode == "standard"
         assert hasattr(pipeline, "use_crew")
         assert hasattr(pipeline, "parallel_crew")
 
@@ -331,7 +333,7 @@ class TestSecureReleasePipelineIntegration:
 
     def test_pipeline_can_be_instantiated(self):
         """Test pipeline can be instantiated in all modes."""
-        for mode in ["full", "standard", "quick"]:
+        for mode in ["full", "standard"]:
             pipeline = SecureReleasePipeline(mode=mode)
             assert pipeline is not None
             assert pipeline.mode == mode

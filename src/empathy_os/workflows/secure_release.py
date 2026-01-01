@@ -89,9 +89,11 @@ class SecureReleasePipeline:
     maximum coverage before release approval.
 
     Execution modes:
-    - "full": Run all workflows (SecurityAuditCrew + all workflows)
-    - "standard": Skip crew, run all workflows
-    - "quick": Only SecurityAuditWorkflow + ReleasePreparation
+    - "full": Run all workflows (SecurityAuditCrew + all workflows) [DEFAULT]
+    - "standard": Skip crew, run all workflows (fallback when crew unavailable)
+
+    Note: For quick release checks without full security audit, use the
+    ReleasePreparationWorkflow directly instead.
 
     Usage:
         pipeline = SecureReleasePipeline(mode="full")
@@ -113,7 +115,7 @@ class SecureReleasePipeline:
 
     def __init__(
         self,
-        mode: str = "full",  # "full", "standard", "quick"
+        mode: str = "full",  # "full" or "standard"
         use_crew: bool | None = None,  # Override mode's crew setting
         parallel_crew: bool = True,  # Run crew in parallel with first workflow
         crew_config: dict | None = None,
@@ -123,12 +125,16 @@ class SecureReleasePipeline:
         Initialize secure release pipeline.
 
         Args:
-            mode: Execution mode ("full", "standard", "quick")
-            use_crew: Override crew setting (None uses mode default)
+            mode: Execution mode - "full" (with crew, DEFAULT) or "standard" (skip crew)
+            use_crew: Override crew setting (None uses mode default: full=True, standard=False)
             parallel_crew: Run SecurityAuditCrew in parallel with first workflow
             crew_config: Configuration for SecurityAuditCrew
             **kwargs: Additional arguments passed to child workflows
         """
+        # Validate mode
+        if mode not in ("full", "standard"):
+            raise ValueError(f"Invalid mode '{mode}'. Must be 'full' or 'standard'.")
+
         self.mode = mode
         self.use_crew = use_crew if use_crew is not None else (mode == "full")
         self.parallel_crew = parallel_crew
@@ -206,8 +212,8 @@ class SecureReleasePipeline:
                     logger.warning("SecurityAuditCrew timed out")
                     warnings.append("SecurityAuditCrew timed out - results not included")
 
-            # Step 3: CodeReviewWorkflow (if not quick mode and diff provided)
-            if self.mode != "quick" and diff:
+            # Step 3: CodeReviewWorkflow (if diff provided)
+            if diff:
                 from .code_review import CodeReviewWorkflow
 
                 code_workflow = CodeReviewWorkflow(**self.kwargs)
@@ -436,14 +442,6 @@ class SecureReleasePipeline:
         return cls(
             mode="full",
             crew_config={"scan_depth": "thorough"},
-        )
-
-    @classmethod
-    def for_quick_check(cls) -> "SecureReleasePipeline":
-        """Create pipeline for quick security check."""
-        return cls(
-            mode="quick",
-            use_crew=False,
         )
 
 
