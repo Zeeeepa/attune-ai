@@ -494,7 +494,7 @@ class TestGenerationWorkflow(BaseWorkflow):
         existing_test_files = 0
 
         # Track scan summary for debugging/visibility
-        scan_summary = {
+        scan_summary: dict[str, int | str | None] = {
             "files_scanned": 0,
             "files_too_large": 0,
             "files_read_error": 0,
