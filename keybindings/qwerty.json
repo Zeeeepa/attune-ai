@@ -138,40 +138,34 @@
     "// mnemonic": "B = New Wizard File"
   },
   {
-    "key": "ctrl+shift+e x",
-    "mac": "cmd+shift+e x",
-    "command": "empathy.fixLint",
-    "// mnemonic": "X = Fix Lint Issues"
-  },
-  {
     "key": "ctrl+shift+e k",
     "mac": "cmd+shift+e k",
-    "command": "empathy.fixFormat",
-    "// mnemonic": "K = Fix Format Issues"
+    "command": "empathy.morning",
+    "// mnemonic": "K = Morning Briefing"
   },
   {
     "key": "ctrl+shift+e q",
     "mac": "cmd+shift+e q",
-    "command": "empathy.openPowerPanel",
-    "// mnemonic": "Q = Power Panel"
+    "command": "empathy.ship",
+    "// mnemonic": "Q = Pre-Ship Check"
   },
   {
-    "key": "ctrl+shift+e o",
-    "mac": "cmd+shift+e o",
-    "command": "empathy.openDocAnalysis",
-    "// mnemonic": "O = Documentation Analysis"
+    "key": "ctrl+shift+e x",
+    "mac": "cmd+shift+e x",
+    "command": "empathy.fixAll",
+    "// mnemonic": "X = Fix All Issues"
+  },
+  {
+    "key": "ctrl+shift+e l",
+    "mac": "cmd+shift+e l",
+    "command": "empathy.learn",
+    "// mnemonic": "L = Learn Patterns"
   },
   {
     "key": "ctrl+shift+e c",
     "mac": "cmd+shift+e c",
     "command": "empathy.costs",
-    "// mnemonic": "C = API Costs"
-  },
-  {
-    "key": "ctrl+shift+e s",
-    "mac": "cmd+shift+e s",
-    "command": "empathy.status",
-    "// mnemonic": "S = Show Status"
+    "// mnemonic": "C = View API Costs"
   },
   {
     "key": "ctrl+shift+e s",
@@ -180,10 +174,10 @@
     "// mnemonic": "S = Sync to Claude Code"
   },
   {
-    "key": "ctrl+shift+e i",
-    "mac": "cmd+shift+e i",
-    "command": "empathy.initializeProject",
-    "// mnemonic": "I = Initialize Project"
+    "key": "ctrl+shift+e s",
+    "mac": "cmd+shift+e s",
+    "command": "empathy.status",
+    "// mnemonic": "S = Show Status"
   },
   {
     "key": "ctrl+shift+e r",
@@ -192,28 +186,16 @@
     "// mnemonic": "R = Refresh Health"
   },
   {
-    "key": "ctrl+shift+e s",
-    "mac": "cmd+shift+e s",
-    "command": "empathyMemory.showPanel",
-    "// mnemonic": "S = Panel (Beta)"
+    "key": "ctrl+shift+e f",
+    "mac": "cmd+shift+e f",
+    "command": "empathy.fixLint",
+    "// mnemonic": "F = Fix Lint Issues"
   },
   {
-    "key": "ctrl+shift+e r",
-    "mac": "cmd+shift+e r",
-    "command": "empathyMemory.refreshStatus",
-    "// mnemonic": "R = Refresh Status (Beta)"
-  },
-  {
-    "key": "ctrl+shift+e s",
-    "mac": "cmd+shift+e s",
-    "command": "empathy.testGenerator.show",
-    "// mnemonic": "S = Test Generator"
-  },
-  {
-    "key": "ctrl+shift+e s",
-    "mac": "cmd+shift+e s",
-    "command": "empathy.testGenerator.show",
-    "// mnemonic": "S = Workflow Wizard"
+    "key": "ctrl+shift+e f",
+    "mac": "cmd+shift+e f",
+    "command": "empathy.fixFormat",
+    "// mnemonic": "F = Fix Format Issues"
   },
   {
     "key": "ctrl+shift+e o",
@@ -228,22 +210,46 @@
     "// mnemonic": "I = Ignore Issue"
   },
   {
+    "key": "ctrl+shift+e o",
+    "mac": "cmd+shift+e o",
+    "command": "empathy.openPowerPanel",
+    "// mnemonic": "O = Power Panel"
+  },
+  {
+    "key": "ctrl+shift+e o",
+    "mac": "cmd+shift+e o",
+    "command": "empathy.openDocAnalysis",
+    "// mnemonic": "O = Analyze Documentation"
+  },
+  {
     "key": "ctrl+shift+e s",
     "mac": "cmd+shift+e s",
-    "command": "empathy.scanFolder",
-    "// mnemonic": "S = Scan for Bugs"
+    "command": "empathyMemory.showPanel",
+    "// mnemonic": "S = Memory Panel (Beta)"
   },
   {
-    "key": "ctrl+shift+e g",
-    "mac": "cmd+shift+e g",
-    "command": "coach.generateTests",
-    "// mnemonic": "G = Generate Tests"
+    "key": "ctrl+shift+e r",
+    "mac": "cmd+shift+e r",
+    "command": "empathyMemory.refreshStatus",
+    "// mnemonic": "R = Refresh Memory Status (Beta)"
   },
   {
-    "key": "ctrl+shift+e a",
-    "mac": "cmd+shift+e a",
-    "command": "empathy.applyKeyboardLayout",
-    "// mnemonic": "A = Apply Keyboard Layout"
+    "key": "ctrl+shift+e i",
+    "mac": "cmd+shift+e i",
+    "command": "empathy.initializeProject",
+    "// mnemonic": "I = Initialize Project"
+  },
+  {
+    "key": "ctrl+shift+e s",
+    "mac": "cmd+shift+e s",
+    "command": "empathy.testGenerator.show",
+    "// mnemonic": "S = Test Generator Wizard"
+  },
+  {
+    "key": "ctrl+shift+e s",
+    "mac": "cmd+shift+e s",
+    "command": "empathy.testGenerator.show",
+    "// mnemonic": "S = Workflow Wizard"
   },
   {
     "key": "ctrl+shift+e e",
@@ -315,19 +321,13 @@
     "key": "ctrl+shift+e d",
     "mac": "cmd+shift+e d",
     "command": "empathy.dashboard",
-    "// mnemonic": "D = Dashboard"
+    "// mnemonic": "D = Open Dashboard"
   },
   {
     "key": "ctrl+shift+e v",
     "mac": "cmd+shift+e v",
     "command": "empathy.viewDetails",
     "// mnemonic": "V = View Details"
-  },
-  {
-    "key": "ctrl+shift+e r",
-    "mac": "cmd+shift+e r",
-    "command": "empathy.reviewFile",
-    "// mnemonic": "R = Review This File"
   },
   {
     "key": "ctrl+shift+e e",
@@ -360,58 +360,16 @@
     "// mnemonic": "S = Security Audit"
   },
   {
-    "key": "ctrl+shift+e s",
-    "mac": "cmd+shift+e s",
-    "command": "coach.securityAudit",
-    "// mnemonic": "S = Security Audit"
-  },
-  {
-    "key": "ctrl+shift+e m",
-    "mac": "cmd+shift+e m",
-    "command": "empathy.morning",
-    "// mnemonic": "M = Morning Briefing"
-  },
-  {
-    "key": "ctrl+shift+e s",
-    "mac": "cmd+shift+e s",
-    "command": "empathy.ship",
-    "// mnemonic": "S = Pre-Ship Check"
-  },
-  {
-    "key": "ctrl+shift+e f",
-    "mac": "cmd+shift+e f",
-    "command": "empathy.fixAll",
-    "// mnemonic": "F = Fix All Issues"
-  },
-  {
-    "key": "ctrl+shift+e l",
-    "mac": "cmd+shift+e l",
-    "command": "empathy.learn",
-    "// mnemonic": "L = Learn Patterns"
-  },
-  {
-    "key": "ctrl+shift+e r",
-    "mac": "cmd+shift+e r",
-    "command": "empathy.runWorkflowQuick",
-    "// mnemonic": "R = Run Workflow"
-  },
-  {
-    "key": "ctrl+shift+e r",
-    "mac": "cmd+shift+e r",
-    "command": "empathy.recentWorkflows",
-    "// mnemonic": "R = Recent Workflows"
-  },
-  {
     "key": "ctrl+shift+e r",
     "mac": "cmd+shift+e r",
     "command": "empathy.runScan",
-    "// mnemonic": "R = Health Scan"
+    "// mnemonic": "R = Run Health Scan"
   },
   {
     "key": "ctrl+shift+e r",
     "mac": "cmd+shift+e r",
     "command": "empathy.runSecurityScan",
-    "// mnemonic": "R = Security Scan"
+    "// mnemonic": "R = Run Security Scan"
   },
   {
     "key": "ctrl+shift+e r",
@@ -478,5 +436,11 @@
     "mac": "cmd+shift+e e",
     "command": "empathy_os.workflows.health_check:HealthCheckWorkflow",
     "// mnemonic": "E = Health Check"
+  },
+  {
+    "key": "ctrl+shift+e r",
+    "mac": "cmd+shift+e r",
+    "command": "empathy.runWorkflowQuick",
+    "// mnemonic": "R = Run Workflow"
   }
 ]

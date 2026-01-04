@@ -13,9 +13,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as cp from 'child_process';
 import { getFilePickerService, FilePickerService } from '../services/FilePickerService';
-import { WorkflowRefinementService } from '../services/WorkflowRefinementService';
-import { CodeReviewPanelProvider } from './CodeReviewPanelProvider';
-import { CodeReviewResult } from '../types/WorkflowContracts';
 
 export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'empathy-dashboard';
@@ -26,7 +23,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     private _fileWatcher?: vscode.FileSystemWatcher;
     private _workflowHistory: Map<string, string> = new Map();
     private _filePickerService: FilePickerService;
-    private _readyReceived: boolean = false;
 
     constructor(extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
         this._extensionUri = extensionUri;
@@ -42,42 +38,23 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         _context: vscode.WebviewViewResolveContext,
         _token: vscode.CancellationToken
     ) {
-        console.log('[Dashboard] resolveWebviewView called - initializing dashboard');
         this._view = webviewView;
-        this._readyReceived = false; // Reset ready flag for new webview
 
         webviewView.webview.options = {
             enableScripts: true,
             localResourceRoots: [this._extensionUri],
         };
 
-        console.log('[Dashboard] Setting webview HTML');
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
-        console.log('[Dashboard] HTML set, setting up message handlers');
 
         // Handle messages from webview
         webviewView.webview.onDidReceiveMessage(async (message) => {
             switch (message.type) {
                 case 'runCommand':
                     try {
-                        // Quick Actions that should open in webview instead of terminal
-                        const webviewCommands: Record<string, { cmd: string; title: string }> = {
-                            // Power tab - Quick Actions
-                            'morning': { cmd: 'morning', title: 'Morning Briefing' },
-                            'ship': { cmd: 'ship', title: 'Pre-Ship Check' },
-                            'learn': { cmd: 'learn --analyze 20', title: 'Learn Patterns' },
-                            'run-tests': { cmd: 'ship --tests-only', title: 'Test Results' },
-                            // Health tab - Health Actions
-                            'runScan': { cmd: 'workflow run health-check', title: 'Deep Scan' },
-                            'runTests': { cmd: 'ship --tests-only', title: 'Test Results' },
-                            'securityScan': { cmd: 'ship --security-only', title: 'Security Scan' },
-                            'fixAll': { cmd: 'fix-all', title: 'Auto Fix Results' },
-                            'fixLint': { cmd: 'fix-all --lint-only', title: 'Lint Fix Results' },
-                        };
-
-                        if (webviewCommands[message.command]) {
-                            const { cmd, title } = webviewCommands[message.command];
-                            await this._runQuickAction(cmd, title);
+                        // Special handling for run-tests (runs pytest directly)
+                        if (message.command === 'run-tests') {
+                            await this._runTests();
                         } else if (message.command === 'initialize') {
                             // Launch the Initialize Wizard (force open, bypass "already initialized" check)
                             await vscode.commands.executeCommand('empathy.initializeProject', { force: true });
@@ -96,12 +73,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     }
                     break;
                 case 'refresh':
-                    await this._updateData();
-                    break;
-                case 'ready':
-                    // Webview has finished loading and is ready to receive data
-                    console.log('[Dashboard] Received ready signal from webview');
-                    this._readyReceived = true;
                     await this._updateData();
                     break;
                 case 'openFile':
@@ -149,8 +120,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     await this._estimateCost(message.workflow, message.input);
                     break;
                 case 'openWorkflowWizard':
-                    // Workflow Wizard temporarily hidden in v3.5.5
-                    vscode.window.showInformationMessage('Workflow Wizard is being redesigned. Use Cmd+Shift+E W for quick workflow access.');
+                    vscode.commands.executeCommand('workflow-wizard.focus');
                     break;
                 case 'openDocAnalysis':
                     vscode.commands.executeCommand('empathy.openDocAnalysis');
@@ -170,14 +140,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         // Set up file watcher for data files
         this._setupFileWatcher();
 
-        // Fallback: If webview doesn't send ready signal within 500ms, send data anyway
-        // This handles cases where the ready message fails to send/receive
-        setTimeout(() => {
-            if (!this._readyReceived) {
-                console.log('[Dashboard] Ready signal timeout - sending data anyway');
-                this._updateData();
-            }
-        }, 500);
+        // Initial data load
+        this._updateData();
     }
 
     private _setupFileWatcher() {
@@ -211,65 +175,46 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _updateData() {
-        console.log('[Dashboard] _updateData called');
         if (!this._view) {
-            console.log('[Dashboard] No view available, skipping update');
             return;
         }
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         if (!workspaceFolder) {
-            console.log('[Dashboard] No workspace folder, skipping update');
             return;
         }
-        console.log('[Dashboard] Loading data from workspace:', workspaceFolder);
-        vscode.window.showInformationMessage('[DEBUG] Dashboard loading from: ' + workspaceFolder);
 
-        console.log('[Dashboard] Getting config...');
         const config = vscode.workspace.getConfiguration('empathy');
-        console.log('[Dashboard] Config retrieved successfully');
-        console.log('[Dashboard] Building paths...');
         const patternsDir = path.join(workspaceFolder, config.get<string>('patternsDir', './patterns'));
         const empathyDir = path.join(workspaceFolder, config.get<string>('empathyDir', '.empathy'));
-        console.log('[Dashboard] Paths:', { patternsDir, empathyDir });
 
         const errors: Record<string, string> = {};
 
         // Load patterns with error handling
-        console.log('[Dashboard] Loading patterns...');
         let patterns: PatternData[] = [];
         try {
             patterns = this._loadPatterns(patternsDir);
-            console.log('[Dashboard] Patterns loaded:', patterns.length);
         } catch (e) {
-            console.log('[Dashboard] Pattern loading error:', e);
             errors.patterns = `Failed to load patterns: ${e}`;
         }
 
         // Load health with error handling
-        console.log('[Dashboard] Loading health...');
         let health: HealthData | null = null;
         try {
             health = this._loadHealth(empathyDir, patternsDir);
-            console.log('[Dashboard] Health loaded:', health?.score);
         } catch (e) {
-            console.log('[Dashboard] Health loading error:', e);
             errors.health = `Failed to load health: ${e}`;
         }
 
         // Fetch costs with error handling
-        console.log('[Dashboard] Fetching costs...');
         let costs = this._getEmptyCostData();
         try {
             costs = await this._fetchCostsFromCLI();
-            console.log('[Dashboard] Costs loaded:', costs.totalCost);
         } catch (e) {
-            console.log('[Dashboard] Costs loading error:', e);
             errors.costs = `Failed to load costs: ${e}`;
         }
 
         // Load workflows with error handling
-        console.log('[Dashboard] Loading workflows...');
         let workflows: WorkflowData = {
             totalRuns: 0,
             successfulRuns: 0,
@@ -280,9 +225,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         };
         try {
             workflows = this._loadWorkflows(empathyDir);
-            console.log('[Dashboard] Workflows loaded:', workflows.totalRuns);
         } catch (e) {
-            console.log('[Dashboard] Workflows loading error:', e);
             errors.workflows = `Failed to load workflows: ${e}`;
         }
 
@@ -300,7 +243,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             workflowLastInputs: Object.fromEntries(this._workflowHistory),
         };
 
-        console.log('[Dashboard] Posting update to webview. Health:', health?.score, 'Patterns:', patterns.length, 'Errors:', errors);
         this._view.webview.postMessage({ type: 'update', data });
     }
 
@@ -824,49 +766,20 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         return this._workflowHistory.get(workflowId);
     }
 
-    /**
-     * Run a Quick Action command and display output in webview report panel.
-     * Replaces terminal output with rich webview display.
-     */
-    private async _runQuickAction(command: string, title: string): Promise<void> {
+    private async _runTests() {
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         if (!workspaceFolder) {
             vscode.window.showErrorMessage('No workspace folder open');
             return;
         }
 
-        // Get configured python path
-        const config = vscode.workspace.getConfiguration('empathy');
-        const pythonPath = config.get<string>('pythonPath', 'python');
-
-        // Build arguments as array for safe execution
-        const args = ['-m', 'empathy_os.cli', ...command.split(/\s+/)];
-
-        // Show progress notification
-        vscode.window.withProgress(
-            {
-                location: vscode.ProgressLocation.Notification,
-                title: `Empathy: Running ${title}...`,
-                cancellable: false
-            },
-            async () => {
-                return new Promise<void>((resolve) => {
-                    cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
-                        const output = stdout || stderr || (error ? error.message : 'No output');
-
-                        // Open in webview report panel with action buttons
-                        try {
-                            const cmdBase = command.split(/\s+/)[0];
-                            await this._openReportWebview(cmdBase, title, output);
-                        } catch (openErr) {
-                            vscode.window.showErrorMessage(`Failed to open report: ${openErr}`);
-                        }
-
-                        resolve();
-                    });
-                });
-            }
-        );
+        // Create terminal for test output
+        const terminal = vscode.window.createTerminal({
+            name: 'Empathy Tests',
+            cwd: workspaceFolder
+        });
+        terminal.show();
+        terminal.sendText('python -m pytest tests/ --no-cov -v');
     }
 
     private async _runWorkflow(workflowName: string, input?: string) {
@@ -877,23 +790,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         }
 
         // v3.5.5: test-gen now runs workflow directly (panel removed)
-
-        // Socratic Refinement: Check if we should refine this workflow before running
-        const refinementService = WorkflowRefinementService.getInstance();
-        refinementService.initialize(this._context);
-
-        const analysisResult = await refinementService.shouldRefine(workflowName, input, 'dashboard');
-        if (analysisResult.shouldRefine) {
-            console.log(`[EmpathyDashboard] Refinement triggered for ${workflowName}: ${analysisResult.reason}`);
-            const result = await refinementService.refine(workflowName, input, 'dashboard');
-            if (result.cancelled) {
-                console.log('[EmpathyDashboard] Workflow cancelled by user during refinement');
-                return;
-            }
-            // Use enhanced input from refinement
-            input = result.enhancedInput;
-            console.log(`[EmpathyDashboard] Using refined input: ${input}`);
-        }
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         if (!workspaceFolder) {
@@ -924,10 +820,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             'dependency-check': 'scope',
             'health-check': 'path',
             'pro-review': 'diff',
-            'pr-review': 'target_path',
-            'doc-gen': 'target',
-            'release-prep': 'target',
-            'secure-release': 'target'
+            'pr-review': 'target_path'
         };
         const inputKey = inputKeys[workflowName] || 'query';
 
@@ -938,8 +831,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             args.push('--input', inputJson);
         }
 
-        // Add --json flag for workflows that need structured output
-        if (workflowName === 'security-audit' || workflowName === 'code-review') {
+        // Add --json flag for security-audit to get structured output
+        if (workflowName === 'security-audit') {
             args.push('--json');
         }
 
@@ -972,62 +865,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 this._saveSecurityFindings(workspaceFolder, stdout);
             }
 
-            // Special handling for code-review: send findings to CodeReviewPanel
-            let openedInPanel = false;
-            if (workflowName === 'code-review' && success && stdout) {
-                try {
-                    // Parse JSON output from CLI (uses --json flag)
-                    const cliOutput = JSON.parse(stdout);
-
-                    // Extract final_output which contains the full workflow result
-                    const finalOutput = cliOutput.final_output;
-
-                    if (finalOutput && finalOutput.findings && finalOutput.findings.length > 0) {
-                        // Build CodeReviewResult from final_output
-                        const result: CodeReviewResult = {
-                            findings: finalOutput.findings,
-                            summary: finalOutput.summary || {
-                                total_findings: finalOutput.findings.length,
-                                by_severity: {},
-                                by_category: {},
-                                files_affected: []
-                            },
-                            verdict: finalOutput.verdict,
-                            security_score: finalOutput.security_score,
-                            formatted_report: finalOutput.scan_results || '',
-                            model_tier_used: finalOutput.model_tier_used || 'unknown'
-                        };
-
-                        // Send findings to CodeReviewPanel
-                        const reviewPanel = CodeReviewPanelProvider.getInstance();
-                        reviewPanel.updateFindings(result);
-
-                        // Show the panel
-                        await vscode.commands.executeCommand('empathy-code-review.focus');
-                        openedInPanel = true;
-
-                        // Notify user
-                        const findingCount = result.findings.length;
-                        const highSeverityCount = result.findings.filter(f =>
-                            f.severity === 'critical' || f.severity === 'high'
-                        ).length;
-
-                        const message = highSeverityCount > 0
-                            ? `Code review found ${findingCount} findings (${highSeverityCount} high severity)`
-                            : `Code review found ${findingCount} findings`;
-
-                        vscode.window.showInformationMessage(message, 'View Findings').then(selection => {
-                            if (selection === 'View Findings') {
-                                vscode.commands.executeCommand('empathy-code-review.focus');
-                            }
-                        });
-                    }
-                } catch (parseErr) {
-                    console.log('[EmpathyDashboard] Could not parse code-review JSON output:', parseErr);
-                    // Fall through to normal handling
-                }
-            }
-
             // For report workflows, open output in editor instead of panel
             let openedInEditor = false;
 
@@ -1050,10 +887,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 data: {
                     workflow: workflowName,
                     status: success ? 'complete' : 'error',
-                    output: openedInEditor ? '(Report opened in editor)' : openedInPanel ? '(Results shown in Code Review panel)' : output,
+                    output: openedInEditor ? '(Report opened in editor)' : output,
                     error: error ? error.message : null,
-                    openedInEditor: openedInEditor,
-                    openedInPanel: openedInPanel
+                    openedInEditor: openedInEditor
                 }
             });
         });
@@ -1076,7 +912,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         }
 
         // Determine if this workflow needs a file or folder picker
-        const folderWorkflows = ['bug-predict', 'security-audit', 'perf-audit', 'refactor-plan', 'health-check', 'pr-review', 'doc-gen', 'release-prep', 'secure-release'];
+        const folderWorkflows = ['bug-predict', 'security-audit', 'perf-audit', 'refactor-plan', 'health-check', 'pr-review'];
         const fileWorkflows = ['code-review', 'pro-review'];
 
         let selectedPath: string | undefined;
@@ -1162,9 +998,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             'health-check': 'Health Check',
             'pr-review': 'PR Review',
             'pro-review': 'Code Analysis',
-            'doc-gen': 'Document Generation',
-            'release-prep': 'Release Preparation',
-            'secure-release': 'Secure Release',
         };
         const displayName = workflowDisplayNames[workflowName] || workflowName;
 
@@ -1208,9 +1041,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             'refactor-plan': 'target',
             'health-check': 'path',
             'pr-review': 'target_path',
-            'doc-gen': 'target',
-            'release-prep': 'target',
-            'secure-release': 'target',
             'pro-review': 'diff'
         };
         const inputKey = inputKeys[workflowName] || 'target';
@@ -1515,22 +1345,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             'health-check': 'Health Check',
             'pr-review': 'PR Review',
             'pro-review': 'Code Analysis',
-            'doc-gen': 'Document Generation',
-            'release-prep': 'Release Preparation',
-            'secure-release': 'Secure Release',
-            // Quick Actions
-            'morning': 'Morning Briefing',
-            'ship': 'Pre-Ship Check',
-            'learn': 'Learn Patterns',
-            'sync-claude': 'Sync to Claude Code',
-            // Health Actions
-            'fix-all': 'Auto Fix',
-            'security': 'Security Scan',
         };
 
         const displayName = workflowNames[workflowName] || workflowName;
         const timestamp = new Date().toLocaleString();
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
 
         // Format the report as markdown
         let content = `# ${displayName} Report\n\n`;
@@ -1540,12 +1358,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         }
         content += `\n---\n\n`;
 
-        // Special formatting for sync-claude output
-        if (workflowName === 'sync-claude') {
-            content = this._formatSyncClaudeReport(output, timestamp, workspaceFolder);
-        }
         // Try to parse as JSON for structured formatting, otherwise use raw output
-        else try {
+        try {
             const parsed = JSON.parse(output);
             content += this._formatJsonReport(parsed);
         } catch {
@@ -1642,291 +1456,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         }
 
         return content;
-    }
-
-    /**
-     * Format sync-claude output with enhanced display:
-     * - Clickable file links
-     * - Pattern counts by category
-     * - Sample patterns preview
-     */
-    private _formatSyncClaudeReport(output: string, timestamp: string, workspaceFolder: string): string {
-        let content = `# 🔄 Sync to Claude Code\n\n`;
-        content += `**Generated:** ${timestamp}\n\n`;
-
-        // Parse categories from output (format: "✓ category: N patterns → path")
-        const categoryRegex = /✓\s+(\w+):\s+(\d+)\s+patterns\s+→\s+(.+\.md)/g;
-        const categories: Array<{ name: string; count: number; file: string }> = [];
-        let match;
-        while ((match = categoryRegex.exec(output)) !== null) {
-            categories.push({ name: match[1], count: parseInt(match[2]), file: match[3] });
-        }
-
-        // Extract total from output
-        const totalMatch = output.match(/Total:\s+(\d+)\s+patterns/);
-        const totalPatterns = totalMatch ? parseInt(totalMatch[1]) : categories.reduce((sum, c) => sum + c.count, 0);
-
-        // Summary section
-        content += `## ✅ Summary\n\n`;
-        content += `**${totalPatterns} patterns** synced to Claude Code rules.\n\n`;
-
-        // Categories table with clickable links
-        if (categories.length > 0) {
-            content += `## 📁 Pattern Categories\n\n`;
-            content += `| Category | Patterns | File |\n`;
-            content += `|----------|----------|------|\n`;
-            for (const cat of categories) {
-                const fileName = cat.file.split('/').pop() || cat.file;
-                content += `| ${cat.name} | ${cat.count} | [${fileName}](${cat.file}) |\n`;
-            }
-            content += `\n`;
-        }
-
-        // Load and show sample patterns
-        content += `## 🔍 Sample Patterns\n\n`;
-        try {
-            const debuggingPath = path.join(workspaceFolder, '.claude', 'rules', 'empathy', 'debugging.md');
-            if (fs.existsSync(debuggingPath)) {
-                const debugContent = fs.readFileSync(debuggingPath, 'utf-8');
-                // Extract first 3 patterns (look for "### " headers after "## Bug Fix Patterns")
-                const patternRegex = /###\s+(\w+)\n-\s+\*\*Root cause\*\*:\s+(.+)\n/g;
-                const patterns: string[] = [];
-                let patMatch;
-                while ((patMatch = patternRegex.exec(debugContent)) !== null && patterns.length < 3) {
-                    patterns.push(`- **${patMatch[1]}**: ${patMatch[2]}`);
-                }
-                if (patterns.length > 0) {
-                    content += `Recent debugging patterns:\n\n${patterns.join('\n')}\n\n`;
-                } else {
-                    content += `_No sample patterns available._\n\n`;
-                }
-            } else {
-                content += `_Pattern files will be available after sync._\n\n`;
-            }
-        } catch {
-            content += `_Could not load sample patterns._\n\n`;
-        }
-
-        // Quick actions section
-        content += `## ⚡ Quick Actions\n\n`;
-        content += `- 📂 [Open Rules Folder](.claude/rules/empathy/)\n`;
-        content += `- 🔄 Run \`empathy sync-claude\` to re-sync\n`;
-        content += `- 📖 Patterns are now available to Claude Code\n\n`;
-
-        // Raw output (collapsed)
-        content += `<details>\n<summary>📋 Raw Output</summary>\n\n\`\`\`\n${output}\n\`\`\`\n</details>\n`;
-
-        return content;
-    }
-
-    /**
-     * Open a report in a webview panel with action buttons.
-     */
-    private async _openReportWebview(cmdBase: string, title: string, output: string): Promise<void> {
-        const panel = vscode.window.createWebviewPanel(
-            'empathyReport',
-            `Empathy: ${title}`,
-            vscode.ViewColumn.One,
-            { enableScripts: true }
-        );
-
-        // Define action buttons based on report type
-        const actionButtons: Array<{ label: string; icon: string; command: string }> = [];
-
-        // Common actions for most reports
-        if (cmdBase !== 'fix-all') {
-            actionButtons.push({ label: 'Fix All Issues', icon: '🔧', command: 'fix-all' });
-        }
-
-        // Report-specific actions
-        if (cmdBase === 'fix-all') {
-            // After fix-all, offer to verify with tests
-            actionButtons.push({ label: 'Run Tests to Verify', icon: '✅', command: 'run-tests' });
-            actionButtons.push({ label: 'Security Scan', icon: '🔒', command: 'securityScan' });
-        }
-        if (cmdBase === 'morning' || cmdBase === 'ship') {
-            actionButtons.push({ label: 'Run Tests', icon: '🧪', command: 'run-tests' });
-            actionButtons.push({ label: 'Security Scan', icon: '🔒', command: 'securityScan' });
-        }
-        if (cmdBase === 'ship' || cmdBase === 'security') {
-            actionButtons.push({ label: 'Learn Patterns', icon: '📚', command: 'learn' });
-        }
-        if (cmdBase === 'learn' || cmdBase === 'morning') {
-            actionButtons.push({ label: 'Sync to Claude', icon: '🔄', command: 'sync-claude' });
-        }
-
-        // Generate action buttons HTML
-        const buttonsHtml = actionButtons.map(btn =>
-            `<button class="action-btn" data-cmd="${btn.command}">${btn.icon} ${btn.label}</button>`
-        ).join('\n                ');
-
-        // Convert output to HTML (preserve formatting)
-        const outputHtml = this._formatOutputAsHtml(output);
-
-        panel.webview.html = `<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body {
-            font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, sans-serif);
-            padding: 20px;
-            color: var(--vscode-foreground, #ccc);
-            background: var(--vscode-editor-background, #1e1e1e);
-            line-height: 1.6;
-        }
-        h1 {
-            border-bottom: 1px solid var(--vscode-panel-border, #444);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .timestamp {
-            color: var(--vscode-descriptionForeground, #888);
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-        .actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: var(--vscode-input-background, #2d2d2d);
-            border-radius: 6px;
-        }
-        .action-btn {
-            padding: 8px 16px;
-            background: var(--vscode-button-background, #0e639c);
-            color: var(--vscode-button-foreground, #fff);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .action-btn:hover {
-            background: var(--vscode-button-hoverBackground, #1177bb);
-        }
-        .output {
-            background: var(--vscode-input-background, #2d2d2d);
-            padding: 15px;
-            border-radius: 6px;
-            white-space: pre-wrap;
-            font-family: var(--vscode-editor-font-family, monospace);
-            font-size: 13px;
-            overflow-x: auto;
-        }
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--vscode-foreground, #ccc);
-        }
-    </style>
-</head>
-<body>
-    <h1>📊 ${title}</h1>
-    <div class="timestamp">Generated: ${new Date().toLocaleString()}</div>
-
-    <div class="section-title">⚡ Quick Actions</div>
-    <div class="actions">
-                ${buttonsHtml}
-    </div>
-
-    <div class="section-title">📋 Report Output</div>
-    <div class="output" id="report-output">${outputHtml}</div>
-
-    <div class="section-title">📤 Export</div>
-    <div class="actions">
-        <button class="action-btn export-btn" id="btn-copy">📋 Copy to Clipboard</button>
-        <button class="action-btn export-btn" id="btn-save">💾 Save as File</button>
-    </div>
-
-    <script>
-        const vscode = acquireVsCodeApi();
-        const rawOutput = ${JSON.stringify(output)};
-
-        document.querySelectorAll('.action-btn:not(.export-btn)').forEach(btn => {
-            btn.addEventListener('click', () => {
-                vscode.postMessage({ type: 'runCommand', command: btn.dataset.cmd });
-            });
-        });
-
-        document.getElementById('btn-copy').addEventListener('click', () => {
-            vscode.postMessage({ type: 'copyToClipboard', content: rawOutput });
-        });
-
-        document.getElementById('btn-save').addEventListener('click', () => {
-            vscode.postMessage({ type: 'saveToFile', content: rawOutput, title: '${title}' });
-        });
-    </script>
-</body>
-</html>`;
-
-        // Handle messages from webview
-        panel.webview.onDidReceiveMessage(async (message) => {
-            if (message.type === 'runCommand') {
-                // Close the report panel first
-                panel.dispose();
-                // Run the command
-                const webviewCommands: Record<string, { cmd: string; title: string }> = {
-                    'fix-all': { cmd: 'fix-all', title: 'Auto Fix' },
-                    'run-tests': { cmd: 'ship --tests-only', title: 'Test Results' },
-                    'securityScan': { cmd: 'ship --security-only', title: 'Security Scan' },
-                    'learn': { cmd: 'learn --analyze 20', title: 'Learn Patterns' },
-                    'sync-claude': { cmd: 'sync-claude', title: 'Sync to Claude Code' },
-                };
-                const cmdConfig = webviewCommands[message.command];
-                if (cmdConfig) {
-                    await this._runQuickAction(cmdConfig.cmd, cmdConfig.title);
-                }
-            } else if (message.type === 'copyToClipboard') {
-                await vscode.env.clipboard.writeText(message.content);
-                vscode.window.showInformationMessage('Report copied to clipboard');
-            } else if (message.type === 'saveToFile') {
-                const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-                if (workspaceFolder) {
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-                    const fileName = `${message.title.replace(/\s+/g, '_')}_${timestamp}.txt`;
-                    const filePath = path.join(workspaceFolder, '.empathy', 'reports', fileName);
-
-                    // Ensure reports directory exists
-                    const reportsDir = path.join(workspaceFolder, '.empathy', 'reports');
-                    if (!fs.existsSync(reportsDir)) {
-                        fs.mkdirSync(reportsDir, { recursive: true });
-                    }
-
-                    fs.writeFileSync(filePath, message.content);
-                    vscode.window.showInformationMessage(`Report saved to ${fileName}`);
-
-                    // Open the saved file
-                    const doc = await vscode.workspace.openTextDocument(filePath);
-                    await vscode.window.showTextDocument(doc, { preview: false });
-                }
-            }
-        });
-    }
-
-    /**
-     * Format raw output as HTML with proper escaping and formatting.
-     */
-    private _formatOutputAsHtml(output: string): string {
-        // Escape HTML entities
-        let html = output
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-
-        // Highlight checkmarks and X marks
-        html = html.replace(/✓/g, '<span style="color: #4ec9b0;">✓</span>');
-        html = html.replace(/✗|✘|❌/g, '<span style="color: #f14c4c;">❌</span>');
-        html = html.replace(/⚠/g, '<span style="color: #cca700;">⚠</span>');
-
-        // Highlight section headers (lines with === or ---)
-        html = html.replace(/^(={3,}|─{3,})$/gm, '<span style="color: #569cd6;">$1</span>');
-
-        return html;
     }
 
     /**
@@ -2093,7 +1622,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         const cacheBuster = Date.now();
 
         return `<!DOCTYPE html>
-<!-- Cache: ${cacheBuster} - Version 7 - DEBUG MODE WITH VISUAL MARKERS -->
+<!-- Cache: ${cacheBuster} - Version 4 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -2494,7 +2023,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         <button class="tab active" data-tab="power">Power</button>
         <button class="tab" data-tab="health">Health</button>
         <button class="tab" data-tab="costs">Costs</button>
-        <button class="tab" data-tab="workflows">Workflows</button>
+        <button class="tab" data-tab="workflows">Workflows <span style="font-size: 9px; opacity: 0.6; font-weight: normal;">(Beta)</span></button>
     </div>
 
     <!-- Power Tab -->
@@ -2503,27 +2032,27 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         <div class="card">
             <div class="card-title">Quick Actions</div>
             <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-cmd="morning" data-title="Morning Briefing" title="Daily project status summary with priorities and blockers">
+                <button class="action-btn workflow-btn" data-cmd="morning" title="Daily project briefing with health, costs, and recent activity summary">
                     <span class="action-icon">&#x2600;</span>
                     <span>Get Briefing</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="ship" data-title="Pre-Ship Check" title="Pre-release quality gate: health, security, and changelog checks">
+                <button class="action-btn workflow-btn" data-cmd="ship" title="Pre-release checklist: tests, linting, security, and quality checks">
                     <span class="action-icon">&#x1F680;</span>
                     <span>Run Ship</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="fix-all" data-title="Fix All Issues" title="Auto-fix linting, formatting, and safe code issues">
+                <button class="action-btn workflow-btn" data-cmd="fix-all" title="Auto-fix linting and formatting issues with ruff and black">
                     <span class="action-icon">&#x1F527;</span>
                     <span>Fix Issues</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="learn" data-title="Learn Patterns" title="Analyze recent commits to learn debugging and refactoring patterns">
+                <button class="action-btn workflow-btn" data-cmd="learn" title="Extract and save learned patterns from recent workflow executions">
                     <span class="action-icon">&#x1F4DA;</span>
                     <span>Learn Patterns</span>
                 </button>
-                <button class="action-btn workflow-btn" data-cmd="run-tests" data-title="Run Tests" title="Execute test suite and display results">
+                <button class="action-btn workflow-btn" data-cmd="run-tests" title="Run pytest test suite with coverage reporting">
                     <span class="action-icon">&#x1F9EA;</span>
                     <span>Run Tests</span>
                 </button>
-                <button class="action-btn" data-cmd="initialize" data-title="Setup Wizard" title="First-time setup wizard for API keys and project config">
+                <button class="action-btn" data-cmd="initialize" title="Interactive setup wizard for new projects">
                     <span class="action-icon">&#x2699;</span>
                     <span>Setup</span>
                 </button>
@@ -2553,83 +2082,95 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         </div>
 
         <div class="card" style="margin-top: 12px">
-            <div class="card-title">Workflows <span style="font-size: 10px; opacity: 0.6;">(Beta)</span></div>
+            <div class="card-title">Workflows</div>
+
+            <!-- Code Review & Analysis -->
+            <div style="margin-top: 8px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">CODE REVIEW & ANALYSIS</div>
             <div class="actions-grid workflow-grid">
-                <!-- Row 1: Code Review & Analysis -->
-                <button class="action-btn workflow-btn" data-workflow="code-review" title="Tiered code analysis with security, quality, and architecture review">
+                <button class="action-btn workflow-btn" data-workflow="code-review" title="Tiered code analysis with conditional premium review for complex issues">
                     <span class="action-icon">&#x1F50D;</span>
-                    <span>Review File</span>
+                    <span>Code Review</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="pro-review" title="Advanced code analysis for diffs and pull requests">
+                <button class="action-btn workflow-btn" data-workflow="pro-review" title="Advanced code analysis for diffs and pull requests with tiered LLM usage">
                     <span class="action-icon">&#x2B50;</span>
-                    <span>Run Analysis</span>
+                    <span>Pro Review</span>
                 </button>
-
-                <!-- Row 2: Pull Request Review -->
-                <button class="action-btn workflow-btn" data-workflow="pr-review" title="Comprehensive pull request review with diff analysis">
-                    <span class="action-icon">&#x1F50D;</span>
-                    <span>Review PR</span>
+                <button class="action-btn workflow-btn" data-workflow="pr-review" title="Comprehensive pull request review with diff analysis and recommendations">
+                    <span class="action-icon">&#x1F4C4;</span>
+                    <span>PR Review</span>
                 </button>
-                <!-- TODO: Add second PR-related workflow here -->
+            </div>
 
-                <!-- Row 3: Documentation -->
-                <button class="action-btn workflow-btn" data-workflow="doc-orchestrator" title="End-to-end documentation management: scout gaps, prioritize, generate">
+            <!-- Documentation -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">DOCUMENTATION</div>
+            <div class="actions-grid workflow-grid">
+                <button class="action-btn workflow-btn" data-workflow="doc-orchestrator" title="End-to-end documentation management: scout gaps, prioritize, and generate">
                     <span class="action-icon">&#x1F4DA;</span>
                     <span>Manage Docs</span>
                 </button>
                 <button class="action-btn workflow-btn" data-workflow="doc-gen" title="Cost-optimized documentation generation: outline → write → polish">
-                    <span class="action-icon">&#x1F4C4;</span>
+                    <span class="action-icon">&#x1F4DD;</span>
                     <span>Generate Docs</span>
                 </button>
+                <button class="action-btn workflow-btn" data-workflow="manage-docs" title="Ensure program files are documented and docs stay updated">
+                    <span class="action-icon">&#x1F4C1;</span>
+                    <span>Sync Docs</span>
+                </button>
+            </div>
 
-                <!-- Row 4: Code Quality -->
-                <button class="action-btn workflow-btn" id="btn-test-gen-direct" data-workflow="test-gen" title="Generate tests targeting areas with historical bugs and low coverage">
+            <!-- Quality & Testing -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">QUALITY & TESTING</div>
+            <div class="actions-grid workflow-grid">
+                <button class="action-btn workflow-btn" id="btn-test-gen-direct" data-workflow="test-gen" title="Generate comprehensive test suites with smart coverage analysis">
                     <span class="action-icon">&#x1F9EA;</span>
                     <span>Generate Tests</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="refactor-plan" title="Prioritize tech debt based on code trajectory and maintenance impact">
-                    <span class="action-icon">&#x1F3D7;</span>
-                    <span>Refactor Plan</span>
-                </button>
-
-                <!-- Row 5: Security -->
-                <button class="action-btn workflow-btn" data-workflow="security-audit" title="OWASP-focused security scan with vulnerability assessment and remediation">
-                    <span class="action-icon">&#x1F512;</span>
-                    <span>Security Audit</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="secure-release" title="Full security pipeline: audit crew + OWASP scan + code review + release prep (always comprehensive)">
-                    <span class="action-icon">&#x1F510;</span>
-                    <span>Secure Release</span>
-                </button>
-
-                <!-- Row 6: Performance & Health -->
-                <button class="action-btn workflow-btn" data-workflow="perf-audit" title="Identify performance bottlenecks and optimization opportunities">
-                    <span class="action-icon">&#x26A1;</span>
-                    <span>Perf Audit</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="health-check" title="Project health diagnosis and fixing with 5-agent crew">
-                    <span class="action-icon">&#x1FA7A;</span>
-                    <span>Check Health</span>
-                </button>
-
-                <!-- Row 7: Prediction & Dependencies -->
-                <button class="action-btn workflow-btn" data-workflow="bug-predict" title="Predict bugs by analyzing code against learned patterns and history">
+                <button class="action-btn workflow-btn" data-workflow="bug-predict" title="AI-powered bug prediction using pattern analysis and code smells">
                     <span class="action-icon">&#x1F41B;</span>
                     <span>Predict Bugs</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="dependency-check" title="Audit dependencies for security vulnerabilities and available updates">
+                <button class="action-btn workflow-btn" data-workflow="health-check" title="Run HealthCheckCrew for comprehensive 5-agent project health analysis">
+                    <span class="action-icon">&#x1FA7A;</span>
+                    <span>Health Check</span>
+                </button>
+            </div>
+
+            <!-- Security & Performance -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">SECURITY & PERFORMANCE</div>
+            <div class="actions-grid workflow-grid">
+                <button class="action-btn workflow-btn" data-workflow="security-audit" title="Comprehensive security vulnerability scan with OWASP checks">
+                    <span class="action-icon">&#x1F512;</span>
+                    <span>Security Audit</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="perf-audit" title="Performance analysis identifying bottlenecks and optimization opportunities">
+                    <span class="action-icon">&#x26A1;</span>
+                    <span>Perf Audit</span>
+                </button>
+            </div>
+
+            <!-- Maintenance -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">MAINTENANCE</div>
+            <div class="actions-grid workflow-grid">
+                <button class="action-btn workflow-btn" data-workflow="refactor-plan" title="Create detailed refactoring plans with architectural recommendations">
+                    <span class="action-icon">&#x1F3D7;</span>
+                    <span>Refactor Plan</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="dependency-check" title="Analyze dependencies for vulnerabilities, updates, and compatibility">
                     <span class="action-icon">&#x1F4E6;</span>
                     <span>Check Deps</span>
                 </button>
+            </div>
 
-                <!-- Row 8: Release -->
-                <button class="action-btn workflow-btn" data-workflow="release-prep" title="Pre-release quality gate with health, security, and changelog validation">
-                    <span class="action-icon">&#x1F680;</span>
+            <!-- Release -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">RELEASE</div>
+            <div class="actions-grid workflow-grid">
+                <button class="action-btn workflow-btn" data-workflow="release-prep" title="Pre-release quality gate: health checks, security scan, and changelog">
+                    <span class="action-icon">&#x1F4CB;</span>
                     <span>Release Prep</span>
                 </button>
-                <!-- TODO: Add second release-related workflow here -->                <button class="action-btn workflow-btn new-workflow-btn" id="btn-new-workflow" title="Create a new workflow from template" style="display: none;">
-                    <span class="action-icon">&#x2795;</span>
-                    <span>New Workflow</span>
+                <button class="action-btn workflow-btn" data-workflow="secure-release" title="Comprehensive security pipeline for production releases">
+                    <span class="action-icon">&#x1F680;</span>
+                    <span>Secure Release</span>
                 </button>
             </div>
         </div>
@@ -3027,55 +2568,25 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     </div>
 
     <script nonce="${nonce}">
-        // Visual debugging - will show red banner if script starts
-        try {
-            document.body.insertAdjacentHTML('afterbegin',
-                '<div id="debug-1" style="position:fixed;top:0;left:0;background:red;color:white;padding:5px;z-index:99999;font-size:10px;">SCRIPT STARTED</div>'
-            );
-        } catch(e) { console.error('Debug 1 failed:', e); }
-
-        console.log('[EmpathyDashboard] WEBVIEW SCRIPT LOADED - VERSION 7 - DEBUG MODE');
-
-        try {
-            const vscode = acquireVsCodeApi();
-            const PROJECT_PATH = '${projectPath}';
-
-            // Visual confirmation vscode API acquired
-            document.body.insertAdjacentHTML('afterbegin',
-                '<div id="debug-2" style="position:fixed;top:20px;left:0;background:green;color:white;padding:5px;z-index:99999;font-size:10px;">VSCODE API OK</div>'
-            );
-        } catch(e) {
-            document.body.insertAdjacentHTML('afterbegin',
-                '<div style="position:fixed;top:20px;left:0;background:orange;color:white;padding:5px;z-index:99999;font-size:10px;">VSCODE API FAILED: ' + e.message + '</div>'
-            );
-            throw e;
-        }
+        console.log('[EmpathyDashboard] WEBVIEW SCRIPT LOADED - VERSION 4 - TEST GEN FIX');
+        const vscode = acquireVsCodeApi();
+        const PROJECT_PATH = '${projectPath}';
 
         // Tab switching
-        try {
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    tab.classList.add('active');
-                    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
 
-                    // Load data when switching to Costs tab
-                    if (tab.dataset.tab === 'costs') {
-                        vscode.postMessage({ type: 'getCosts' });
-                        vscode.postMessage({ type: 'getModelConfig' });
-                    }
-                });
+                // Load data when switching to Costs tab
+                if (tab.dataset.tab === 'costs') {
+                    vscode.postMessage({ type: 'getCosts' });
+                    vscode.postMessage({ type: 'getModelConfig' });
+                }
             });
-
-            document.body.insertAdjacentHTML('afterbegin',
-                '<div id="debug-3" style="position:fixed;top:40px;left:0;background:blue;color:white;padding:5px;z-index:99999;font-size:10px;">TABS OK</div>'
-            );
-        } catch(e) {
-            document.body.insertAdjacentHTML('afterbegin',
-                '<div style="position:fixed;top:40px;left:0;background:orange;color:white;padding:5px;z-index:99999;font-size:10px;">TABS FAIL: ' + e.message + '</div>'
-            );
-        }
+        });
 
         // Track running actions to prevent duplicate clicks
         const runningActions = new Set();
@@ -3115,10 +2626,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 }, 3000);
             });
         });
-
-        document.body.insertAdjacentHTML('afterbegin',
-            '<div id="debug-4" style="position:fixed;top:60px;left:0;background:purple;color:white;padding:5px;z-index:99999;font-size:10px;">BTNS OK</div>'
-        );
 
         // Tree item click handlers
         document.querySelectorAll('.tree-item[data-cmd]').forEach(item => {
@@ -3193,22 +2700,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 placeholder: 'e.g., src/ or .'
             },
             'pro-review': {
-            },
-            'doc-gen': {
-                type: 'folder',
-                label: 'Select folder to generate documentation for',
-                placeholder: 'Click Browse to select folder...'
-            },
-            'release-prep': {
-                type: 'folder',
-                label: 'Select project folder for release preparation',
-                placeholder: 'Click Browse or use Project button...'
-            },
-            'secure-release': {
-                type: 'folder',
-                label: 'Select project folder for secure release pipeline',
-                placeholder: 'Click Browse or use Project button...'
-            }                type: 'file',
+                type: 'file',
                 label: 'Select file or paste code diff to review',
                 placeholder: 'Click Browse or paste code diff...',
                 allowText: true
@@ -3599,10 +3091,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             });
         }
 
-        document.body.insertAdjacentHTML('afterbegin',
-            '<div id="debug-5" style="position:fixed;top:80px;left:0;background:cyan;color:black;padding:5px;z-index:99999;font-size:10px;">ALL UI OK</div>'
-        );
-
         // Handle data updates
         window.addEventListener('message', event => {
             const message = event.data;
@@ -3663,10 +3151,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 updateWorkflowProgress(message.data);
             }
         });
-
-        // Signal to backend that webview is ready to receive data
-        console.log('[Webview] Sending ready signal to backend');
-        vscode.postMessage({ type: 'ready' });
 
         // Update cost estimate display
         function updateCostEstimate(data) {
@@ -4630,78 +4114,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 .join('');
             banner.style.display = 'block';
         }
-
-        // =============================================
-        // Memory Tab Handlers
-        // =============================================
-        const memoryRefreshBtn = document.getElementById('memory-refresh');
-        if (memoryRefreshBtn) {
-            memoryRefreshBtn.addEventListener('click', function() {
-                vscode.postMessage({ type: 'memoryRefresh' });
-            });
-        }
-
-        const memoryStartRedisBtn = document.getElementById('memory-start-redis');
-        if (memoryStartRedisBtn) {
-            memoryStartRedisBtn.addEventListener('click', function() {
-                this.disabled = true;
-                this.querySelector('span:not(.action-icon)').textContent = 'Starting...';
-                vscode.postMessage({ type: 'memoryStartRedis' });
-            });
-        }
-
-        const memoryStopRedisBtn = document.getElementById('memory-stop-redis');
-        if (memoryStopRedisBtn) {
-            memoryStopRedisBtn.addEventListener('click', function() {
-                this.disabled = true;
-                this.querySelector('span:not(.action-icon)').textContent = 'Stopping...';
-                vscode.postMessage({ type: 'memoryStopRedis' });
-            });
-        }
-
-        const memoryExportBtn = document.getElementById('memory-export');
-        if (memoryExportBtn) {
-            memoryExportBtn.addEventListener('click', function() {
-                vscode.postMessage({ type: 'memoryExport' });
-            });
-        }
-
-        const memoryOpenPanelBtn = document.getElementById('memory-open-panel');
-        if (memoryOpenPanelBtn) {
-            memoryOpenPanelBtn.addEventListener('click', function() {
-                vscode.postMessage({ type: 'memoryOpenPanel' });
-            });
-        }
-
-        function updateMemoryStatus(data) {
-            const redisStatus = document.getElementById('memory-redis-status');
-            const patternsCount = document.getElementById('memory-patterns-count');
-
-            if (redisStatus && data.redis) {
-                redisStatus.textContent = data.redis.status === 'running' ? '●' : '○';
-                redisStatus.className = 'metric-value ' + (data.redis.status === 'running' ? 'success' : 'warning');
-            }
-
-            if (patternsCount && data.long_term) {
-                patternsCount.textContent = data.long_term.pattern_count || 0;
-            }
-
-            // Reset button states
-            const startBtn = document.getElementById('memory-start-redis');
-            const stopBtn = document.getElementById('memory-stop-redis');
-            if (startBtn) {
-                startBtn.disabled = false;
-                startBtn.querySelector('span:not(.action-icon)').textContent = 'Start Redis';
-            }
-            if (stopBtn) {
-                stopBtn.disabled = false;
-                stopBtn.querySelector('span:not(.action-icon)').textContent = 'Stop Redis';
-            }
-        }
-
-        document.body.insertAdjacentHTML('afterbegin',
-            '<div id="debug-6" style="position:fixed;top:100px;left:0;background:lime;color:black;padding:5px;z-index:99999;font-size:10px;">SCRIPT COMPLETE</div>'
-        );
 
         // Request initial data
         vscode.postMessage({ type: 'refresh' });

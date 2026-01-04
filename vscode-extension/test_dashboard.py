@@ -1,22 +1,18 @@
 #!/usr/bin/env python3
 """
-VSCode Dashboard Integration Tests
+VSCode Dashboard Testing Script
 
-Integration tests for CLI commands and data file loading.
-These tests run the CLI as a subprocess (black-box testing).
-
+Tests the data loading and CLI integration for the Empathy Dashboard.
 Run from the Empathy-framework root directory.
 """
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 
-
-@pytest.mark.integration
 def test_cli_telemetry_costs():
     """Test the telemetry CLI command for costs data."""
     print("\n=== Test: Telemetry CLI Costs ===")
@@ -60,7 +56,6 @@ def test_cli_telemetry_costs():
         return False
 
 
-@pytest.mark.integration
 def test_costs_file_fallback():
     """Test loading costs from .empathy/costs.json file."""
     print("\n=== Test: Costs File Fallback ===")
@@ -118,7 +113,6 @@ def test_costs_file_fallback():
         return False
 
 
-@pytest.mark.integration
 def test_health_file():
     """Test loading health data from .empathy/health.json."""
     print("\n=== Test: Health File ===")
@@ -159,7 +153,6 @@ def test_health_file():
         return False
 
 
-@pytest.mark.integration
 def test_patterns_file():
     """Test loading patterns from patterns/debugging.json."""
     print("\n=== Test: Patterns File ===")
@@ -202,7 +195,6 @@ def test_patterns_file():
         return False
 
 
-@pytest.mark.integration
 def test_workflow_runs_file():
     """Test loading workflow runs from .empathy/workflow_runs.json."""
     print("\n=== Test: Workflow Runs File ===")
@@ -252,7 +244,6 @@ def test_workflow_runs_file():
         return False
 
 
-@pytest.mark.integration
 def test_dashboard_server():
     """Test if dashboard server can start."""
     print("\n=== Test: Dashboard Server ===")
@@ -280,3 +271,45 @@ def test_dashboard_server():
     except Exception as e:
         print(f"✗ Error: {e}")
         return False
+
+
+def main():
+    """Run all dashboard tests."""
+    print("=" * 60)
+    print("Empathy VSCode Dashboard Test Suite")
+    print("=" * 60)
+
+    # Change to project root
+    project_root = Path(__file__).parent.parent
+    os.chdir(project_root)
+    print(f"Working directory: {os.getcwd()}")
+
+    results = []
+
+    # Run tests
+    results.append(("Telemetry CLI Costs", test_cli_telemetry_costs()))
+    results.append(("Costs File Fallback", test_costs_file_fallback()))
+    results.append(("Health File", test_health_file()))
+    results.append(("Patterns File", test_patterns_file()))
+    results.append(("Workflow Runs File", test_workflow_runs_file()))
+    results.append(("Dashboard Server", test_dashboard_server()))
+
+    # Summary
+    print("\n" + "=" * 60)
+    print("Test Summary")
+    print("=" * 60)
+
+    passed = sum(1 for _, r in results if r)
+    total = len(results)
+
+    for name, result in results:
+        status = "✓ PASS" if result else "✗ FAIL"
+        print(f"  {status}: {name}")
+
+    print(f"\nTotal: {passed}/{total} tests passed")
+
+    return 0 if passed == total else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

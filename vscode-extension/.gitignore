@@ -2,8 +2,3 @@ out/
 node_modules/
 *.vsix
 .vscode-test/
-
-.env*
-.flaskenv*
-!.env.project
-!.env.vault
