@@ -1,0 +1,15 @@
+{
+  "patterns": [
+    {
+      "pattern_id": "bug_test_001",
+      "bug_type": "null_reference",
+      "status": "resolved",
+      "root_cause": "Missing null check",
+      "fix": "Added optional chaining",
+      "files_affected": [
+        "src/example.ts"
+      ],
+      "timestamp": "2025-12-22T10:00:00Z"
+    }
+  ]
+}

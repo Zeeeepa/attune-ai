@@ -18,6 +18,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { PowerPanel } from './panels/PowerPanel';
 import { EmpathyDashboardProvider } from './panels/EmpathyDashboardPanel';
+import { SimpleDashboardProvider } from './panels/SimpleDashboard';
 import { MemoryPanelProvider } from './panels/MemoryPanelProvider';
 // REMOVED in v3.5.5: Refactor Advisor panel - kept for future use
 // import { RefactorAdvisorPanel } from './panels/RefactorAdvisorPanel';
@@ -36,6 +37,7 @@ import { FeedbackService } from './services/FeedbackService';
 import { NextCommandHintService } from './services/NextCommandHintService';
 import { SocraticFormService } from './services/SocraticFormService';
 import { GuidedPanelProvider } from './panels/GuidedPanelProvider';
+import { WorkflowBridgeIntegration, testWorkflowBridge } from './services/WorkflowBridgeIntegration';
 
 // Status bar items
 let statusBarItem: vscode.StatusBarItem;
@@ -65,7 +67,7 @@ let securityFindingsWatcher: vscode.FileSystemWatcher | undefined;
 /**
  * Extension activation
  */
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     console.log('Empathy Framework extension activated');
 
     // Store extension path for accessing bundled scripts
@@ -87,6 +89,33 @@ export function activate(context: vscode.ExtensionContext) {
         const layout = await keyboardDetector.detect();
         console.log(`Empathy: Keyboard layout: ${layout}`);
     });
+
+    // Simple test command (debugging)
+    const simpleTestCmd = vscode.commands.registerCommand('empathy.simpleTest', () => {
+        vscode.window.showInformationMessage('✓ Simple test works!');
+    });
+    context.subscriptions.push(simpleTestCmd);
+    console.log('Empathy: Simple test registered');
+
+    // TEST: Workflow Bridge Integration
+    const testWorkflowBridgeCmd = vscode.commands.registerCommand('empathy.testWorkflowBridge', async () => {
+        await testWorkflowBridge(context);
+    });
+    context.subscriptions.push(testWorkflowBridgeCmd);
+    console.log('Empathy: Workflow bridge test command registered');
+
+    // Initialize Workflow Bridge Integration
+    console.log('Empathy: Initializing workflow bridge...');
+    const workflowBridge = new WorkflowBridgeIntegration(context);
+    try {
+        await workflowBridge.initialize();
+        console.log('Empathy: Workflow bridge initialized successfully');
+    } catch (error) {
+        console.error('Empathy: Failed to initialize workflow bridge:', error);
+        vscode.window.showWarningMessage(
+            'Empathy: Failed to initialize workflow bridge. Some features may be unavailable.'
+        );
+    }
 
     // Create status bar
     statusBarItem = vscode.window.createStatusBarItem(
@@ -133,6 +162,15 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.registerWebviewViewProvider(
             EmpathyDashboardProvider.viewType,
             dashboardProvider
+        )
+    );
+
+    // Register NEW simple dashboard (testing)
+    const simpleDashboardProvider = new SimpleDashboardProvider(context.extensionUri);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            SimpleDashboardProvider.viewType,
+            simpleDashboardProvider
         )
     );
 

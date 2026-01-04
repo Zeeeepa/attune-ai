@@ -43,6 +43,51 @@
   "contributes": {
     "commands": [
       {
+        "command": "empathy.simpleTest",
+        "title": "Empathy: Simple Test",
+        "icon": "$(check)"
+      },
+      {
+        "command": "empathy.testWorkflowBridge",
+        "title": "Empathy: Test Workflow Bridge",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "empathy.quickPick.all",
+        "title": "Empathy: Show All Workflows",
+        "icon": "$(list-unordered)"
+      },
+      {
+        "command": "empathy.quickPick.quick",
+        "title": "Empathy: Quick Workflows",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "empathy.quickPick.workflow",
+        "title": "Empathy: Run Workflow",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "empathy.quickPick.view",
+        "title": "Empathy: Open View",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "empathy.quickPick.tool",
+        "title": "Empathy: Run Tool",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "empathy.refreshWorkflows",
+        "title": "Empathy: Refresh Workflows",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "empathy.keyboardShortcutsCheatsheet",
+        "title": "Empathy: Keyboard Shortcuts Cheatsheet",
+        "icon": "$(keyboard)"
+      },
+      {
         "command": "empathy.morning",
         "title": "Empathy: Quick → Morning Briefing",
         "icon": "$(calendar)"
@@ -335,6 +380,11 @@
           "type": "webview",
           "id": "empathy-dashboard",
           "name": "Dashboard"
+        },
+        {
+          "type": "webview",
+          "id": "empathy-simple-dashboard",
+          "name": "Simple Dashboard (NEW)"
         },
         {
           "type": "webview",

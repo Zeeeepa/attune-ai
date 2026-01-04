@@ -26,6 +26,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     private _fileWatcher?: vscode.FileSystemWatcher;
     private _workflowHistory: Map<string, string> = new Map();
     private _filePickerService: FilePickerService;
+    private _readyReceived: boolean = false;
 
     constructor(extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
         this._extensionUri = extensionUri;
@@ -41,14 +42,18 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         _context: vscode.WebviewViewResolveContext,
         _token: vscode.CancellationToken
     ) {
+        console.log('[Dashboard] resolveWebviewView called - initializing dashboard');
         this._view = webviewView;
+        this._readyReceived = false; // Reset ready flag for new webview
 
         webviewView.webview.options = {
             enableScripts: true,
             localResourceRoots: [this._extensionUri],
         };
 
+        console.log('[Dashboard] Setting webview HTML');
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+        console.log('[Dashboard] HTML set, setting up message handlers');
 
         // Handle messages from webview
         webviewView.webview.onDidReceiveMessage(async (message) => {
@@ -91,6 +96,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     }
                     break;
                 case 'refresh':
+                    await this._updateData();
+                    break;
+                case 'ready':
+                    // Webview has finished loading and is ready to receive data
+                    console.log('[Dashboard] Received ready signal from webview');
+                    this._readyReceived = true;
                     await this._updateData();
                     break;
                 case 'openFile':
@@ -159,8 +170,14 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         // Set up file watcher for data files
         this._setupFileWatcher();
 
-        // Initial data load
-        this._updateData();
+        // Fallback: If webview doesn't send ready signal within 500ms, send data anyway
+        // This handles cases where the ready message fails to send/receive
+        setTimeout(() => {
+            if (!this._readyReceived) {
+                console.log('[Dashboard] Ready signal timeout - sending data anyway');
+                this._updateData();
+            }
+        }, 500);
     }
 
     private _setupFileWatcher() {
@@ -194,46 +211,65 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _updateData() {
+        console.log('[Dashboard] _updateData called');
         if (!this._view) {
+            console.log('[Dashboard] No view available, skipping update');
             return;
         }
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         if (!workspaceFolder) {
+            console.log('[Dashboard] No workspace folder, skipping update');
             return;
         }
+        console.log('[Dashboard] Loading data from workspace:', workspaceFolder);
+        vscode.window.showInformationMessage('[DEBUG] Dashboard loading from: ' + workspaceFolder);
 
+        console.log('[Dashboard] Getting config...');
         const config = vscode.workspace.getConfiguration('empathy');
+        console.log('[Dashboard] Config retrieved successfully');
+        console.log('[Dashboard] Building paths...');
         const patternsDir = path.join(workspaceFolder, config.get<string>('patternsDir', './patterns'));
         const empathyDir = path.join(workspaceFolder, config.get<string>('empathyDir', '.empathy'));
+        console.log('[Dashboard] Paths:', { patternsDir, empathyDir });
 
         const errors: Record<string, string> = {};
 
         // Load patterns with error handling
+        console.log('[Dashboard] Loading patterns...');
         let patterns: PatternData[] = [];
         try {
             patterns = this._loadPatterns(patternsDir);
+            console.log('[Dashboard] Patterns loaded:', patterns.length);
         } catch (e) {
+            console.log('[Dashboard] Pattern loading error:', e);
             errors.patterns = `Failed to load patterns: ${e}`;
         }
 
         // Load health with error handling
+        console.log('[Dashboard] Loading health...');
         let health: HealthData | null = null;
         try {
             health = this._loadHealth(empathyDir, patternsDir);
+            console.log('[Dashboard] Health loaded:', health?.score);
         } catch (e) {
+            console.log('[Dashboard] Health loading error:', e);
             errors.health = `Failed to load health: ${e}`;
         }
 
         // Fetch costs with error handling
+        console.log('[Dashboard] Fetching costs...');
         let costs = this._getEmptyCostData();
         try {
             costs = await this._fetchCostsFromCLI();
+            console.log('[Dashboard] Costs loaded:', costs.totalCost);
         } catch (e) {
+            console.log('[Dashboard] Costs loading error:', e);
             errors.costs = `Failed to load costs: ${e}`;
         }
 
         // Load workflows with error handling
+        console.log('[Dashboard] Loading workflows...');
         let workflows: WorkflowData = {
             totalRuns: 0,
             successfulRuns: 0,
@@ -244,7 +280,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         };
         try {
             workflows = this._loadWorkflows(empathyDir);
+            console.log('[Dashboard] Workflows loaded:', workflows.totalRuns);
         } catch (e) {
+            console.log('[Dashboard] Workflows loading error:', e);
             errors.workflows = `Failed to load workflows: ${e}`;
         }
 
@@ -262,6 +300,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             workflowLastInputs: Object.fromEntries(this._workflowHistory),
         };
 
+        console.log('[Dashboard] Posting update to webview. Health:', health?.score, 'Patterns:', patterns.length, 'Errors:', errors);
         this._view.webview.postMessage({ type: 'update', data });
     }
 
@@ -2054,7 +2093,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         const cacheBuster = Date.now();
 
         return `<!DOCTYPE html>
-<!-- Cache: ${cacheBuster} - Version 4 -->
+<!-- Cache: ${cacheBuster} - Version 7 - DEBUG MODE WITH VISUAL MARKERS -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -2988,25 +3027,55 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     </div>
 
     <script nonce="${nonce}">
-        console.log('[EmpathyDashboard] WEBVIEW SCRIPT LOADED - VERSION 4 - TEST GEN FIX');
-        const vscode = acquireVsCodeApi();
-        const PROJECT_PATH = '${projectPath}';
+        // Visual debugging - will show red banner if script starts
+        try {
+            document.body.insertAdjacentHTML('afterbegin',
+                '<div id="debug-1" style="position:fixed;top:0;left:0;background:red;color:white;padding:5px;z-index:99999;font-size:10px;">SCRIPT STARTED</div>'
+            );
+        } catch(e) { console.error('Debug 1 failed:', e); }
+
+        console.log('[EmpathyDashboard] WEBVIEW SCRIPT LOADED - VERSION 7 - DEBUG MODE');
+
+        try {
+            const vscode = acquireVsCodeApi();
+            const PROJECT_PATH = '${projectPath}';
+
+            // Visual confirmation vscode API acquired
+            document.body.insertAdjacentHTML('afterbegin',
+                '<div id="debug-2" style="position:fixed;top:20px;left:0;background:green;color:white;padding:5px;z-index:99999;font-size:10px;">VSCODE API OK</div>'
+            );
+        } catch(e) {
+            document.body.insertAdjacentHTML('afterbegin',
+                '<div style="position:fixed;top:20px;left:0;background:orange;color:white;padding:5px;z-index:99999;font-size:10px;">VSCODE API FAILED: ' + e.message + '</div>'
+            );
+            throw e;
+        }
 
         // Tab switching
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        try {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
 
-                // Load data when switching to Costs tab
-                if (tab.dataset.tab === 'costs') {
-                    vscode.postMessage({ type: 'getCosts' });
-                    vscode.postMessage({ type: 'getModelConfig' });
-                }
+                    // Load data when switching to Costs tab
+                    if (tab.dataset.tab === 'costs') {
+                        vscode.postMessage({ type: 'getCosts' });
+                        vscode.postMessage({ type: 'getModelConfig' });
+                    }
+                });
             });
-        });
+
+            document.body.insertAdjacentHTML('afterbegin',
+                '<div id="debug-3" style="position:fixed;top:40px;left:0;background:blue;color:white;padding:5px;z-index:99999;font-size:10px;">TABS OK</div>'
+            );
+        } catch(e) {
+            document.body.insertAdjacentHTML('afterbegin',
+                '<div style="position:fixed;top:40px;left:0;background:orange;color:white;padding:5px;z-index:99999;font-size:10px;">TABS FAIL: ' + e.message + '</div>'
+            );
+        }
 
         // Track running actions to prevent duplicate clicks
         const runningActions = new Set();
@@ -3046,6 +3115,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 }, 3000);
             });
         });
+
+        document.body.insertAdjacentHTML('afterbegin',
+            '<div id="debug-4" style="position:fixed;top:60px;left:0;background:purple;color:white;padding:5px;z-index:99999;font-size:10px;">BTNS OK</div>'
+        );
 
         // Tree item click handlers
         document.querySelectorAll('.tree-item[data-cmd]').forEach(item => {
@@ -3526,6 +3599,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             });
         }
 
+        document.body.insertAdjacentHTML('afterbegin',
+            '<div id="debug-5" style="position:fixed;top:80px;left:0;background:cyan;color:black;padding:5px;z-index:99999;font-size:10px;">ALL UI OK</div>'
+        );
+
         // Handle data updates
         window.addEventListener('message', event => {
             const message = event.data;
@@ -3586,6 +3663,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 updateWorkflowProgress(message.data);
             }
         });
+
+        // Signal to backend that webview is ready to receive data
+        console.log('[Webview] Sending ready signal to backend');
+        vscode.postMessage({ type: 'ready' });
 
         // Update cost estimate display
         function updateCostEstimate(data) {
@@ -4617,6 +4698,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 stopBtn.querySelector('span:not(.action-icon)').textContent = 'Stop Redis';
             }
         }
+
+        document.body.insertAdjacentHTML('afterbegin',
+            '<div id="debug-6" style="position:fixed;top:100px;left:0;background:lime;color:black;padding:5px;z-index:99999;font-size:10px;">SCRIPT COMPLETE</div>'
+        );
 
         // Request initial data
         vscode.postMessage({ type: 'refresh' });
