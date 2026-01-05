@@ -89,10 +89,28 @@ crewai = [
     "crewai>=0.1.0,<1.0.0",
 ]
 
-# Plugin-specific dependencies
+# Healthcare organizations - enterprise + compliance + healthcare plugins
+# NOTE: Only install this if you need HIPAA/GDPR compliance features
 healthcare = [
+    # Everything in enterprise
+    "anthropic>=0.25.0,<1.0.0",
+    "openai>=1.12.0,<2.0.0",
+    "google-generativeai>=0.3.0,<1.0.0",
+    "memdocs>=1.0.0",
+    "langchain>=1.0.0,<2.0.0",
+    "langchain-core>=1.2.5,<2.0.0",
+    "langchain-text-splitters>=0.3.9,<0.4.0",
+    "langgraph>=1.0.0,<2.0.0",
+    "langgraph-checkpoint>=3.0.0,<4.0.0",
+    "marshmallow>=4.1.2,<5.0.0",
     "python-docx>=0.8.11,<1.0.0",
     "pyyaml>=6.0,<7.0",
+    "fastapi>=0.109.1,<1.0.0",
+    "uvicorn>=0.20.0,<1.0.0",
+    "starlette>=0.40.0,<1.0.0",
+    "bcrypt>=4.0.0,<5.0.0",
+    "PyJWT[crypto]>=2.8.0",
+    # Healthcare-specific dependencies
     "redis>=5.0.0,<6.0.0",  # For session management and real-time alerts
 ]
 
@@ -146,7 +164,50 @@ dev = [
     "fastapi>=0.109.1,<1.0.0",  # For wizard API tests
 ]
 
-# Complete installation with Claude Code + MemDocs transformative stack
+# Individual developers - lightweight, software development focused
+developer = [
+    # LLM providers
+    "anthropic>=0.25.0,<1.0.0",
+    "openai>=1.12.0,<2.0.0",
+    "google-generativeai>=0.3.0,<1.0.0",
+    # MemDocs integration
+    "memdocs>=1.0.0",
+    # Agents (updated for security fixes)
+    "langchain>=1.0.0,<2.0.0",
+    "langchain-core>=1.2.5,<2.0.0",  # 1.2.5+ has security fixes
+    "langchain-text-splitters>=0.3.9,<0.4.0",
+    "langgraph>=1.0.0,<2.0.0",  # 1.0+ required for langgraph-checkpoint 3.0 (RCE fix)
+    "langgraph-checkpoint>=3.0.0,<4.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
+    "marshmallow>=4.1.2,<5.0.0",  # Security: GHSA-428g-f7cq-pgp5
+    # Software development plugins
+    "python-docx>=0.8.11,<1.0.0",
+    "pyyaml>=6.0,<7.0",
+]
+
+# Teams/enterprises - backend + authentication + compliance (excludes healthcare)
+enterprise = [
+    # Everything in developer
+    "anthropic>=0.25.0,<1.0.0",
+    "openai>=1.12.0,<2.0.0",
+    "google-generativeai>=0.3.0,<1.0.0",
+    "memdocs>=1.0.0",
+    "langchain>=1.0.0,<2.0.0",
+    "langchain-core>=1.2.5,<2.0.0",
+    "langchain-text-splitters>=0.3.9,<0.4.0",
+    "langgraph>=1.0.0,<2.0.0",
+    "langgraph-checkpoint>=3.0.0,<4.0.0",
+    "marshmallow>=4.1.2,<5.0.0",
+    "python-docx>=0.8.11,<1.0.0",
+    "pyyaml>=6.0,<7.0",
+    # Backend API server with authentication
+    "fastapi>=0.109.1,<1.0.0",
+    "uvicorn>=0.20.0,<1.0.0",
+    "starlette>=0.40.0,<1.0.0",
+    "bcrypt>=4.0.0,<5.0.0",  # Secure password hashing
+    "PyJWT[crypto]>=2.8.0",  # JWT authentication
+]
+
+# Alias for backwards compatibility (maps to developer)
 full = [
     # LLM providers
     "anthropic>=0.25.0,<1.0.0",
@@ -184,10 +245,12 @@ all = [
     # Plugins
     "python-docx>=0.8.11,<1.0.0",
     "pyyaml>=6.0,<7.0",
-    # Backend
+    # Backend with authentication
     "fastapi>=0.109.1,<1.0.0",  # CVE fix
     "uvicorn>=0.20.0,<1.0.0",
     "starlette>=0.40.0,<1.0.0",  # CVE fix
+    "bcrypt>=4.0.0,<5.0.0",  # Secure password hashing
+    "PyJWT[crypto]>=2.8.0",  # JWT authentication
     # LSP
     "pygls>=1.0.0,<2.0.0",
     "lsprotocol>=2023.0.0,<2024.0.0",

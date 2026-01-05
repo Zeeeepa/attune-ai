@@ -9,7 +9,7 @@
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 
 ```bash
-pip install empathy-framework[full]
+pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
 ## What's New in v3.6.0
@@ -123,9 +123,36 @@ See ESLintParser, PylintParser, or MyPyParser for examples.
 
 ### 1. Install
 
+**Individual Developers (Recommended):**
+
 ```bash
-pip install empathy-framework[full]
+pip install empathy-framework[developer]
 ```
+
+**Teams/Enterprises (Backend + Auth):**
+
+```bash
+pip install empathy-framework[enterprise]
+```
+
+**Healthcare Organizations (HIPAA/GDPR Compliance):**
+
+```bash
+pip install empathy-framework[healthcare]
+```
+
+<details>
+<summary><b>What's the difference?</b></summary>
+
+- **`[developer]`** - Lightweight install for individual developers. Includes CLI tools, VSCode extension, LLM providers, agents. **No backend server needed.**
+
+- **`[enterprise]`** - Everything in `[developer]` plus backend API server with authentication (bcrypt, JWT, rate limiting). For teams deploying to production.
+
+- **`[healthcare]`** - Everything in `[enterprise]` plus HIPAA/GDPR compliance database, redis, and healthcare-specific plugins. Only needed for regulated industries.
+
+**Most developers should use `[developer]`** - it's fast to install and has everything you need for software development.
+
+</details>
 
 ### 2. Configure Provider
 
