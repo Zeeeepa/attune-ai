@@ -339,7 +339,9 @@ class ProjectScanner:
             try:
                 tree = ast.parse(content)
                 metrics.update(self._analyze_python_ast(tree))
-            except SyntaxError:
+            except (SyntaxError, ValueError):
+                # SyntaxError: invalid Python syntax
+                # ValueError: null bytes in source code
                 pass
 
         except OSError:
