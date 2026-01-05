@@ -14,33 +14,65 @@ pip install empathy-framework[full]
 
 ## What's New in v3.6.0
 
-### 🔐 Backend Security & Compliance Infrastructure (v3.6.0)
+### 💡 **Finally! Error Messages That Actually Help You**
 
-#### Production-Ready Authentication System
+**No more cryptic `NotImplementedError` when extending the framework!**
+
+We completely rewrote error messages across **5 base classes**. Now when you're building plugins or extensions, you get:
+
+✅ **Exactly which method** you need to implement
+✅ **Which base class** to extend
+✅ **Real working examples** from the codebase to copy
+✅ **Clear explanations** of what each method should return
+
+**Before** (frustrating 😤):
+
+```python
+NotImplementedError
+# ...now what? Time to dig through source code for 30 minutes
+```
+
+**After** (helpful 🎯):
+
+```python
+NotImplementedError: BaseLinterParser.parse() must be implemented.
+Create a subclass of BaseLinterParser and implement the parse() method.
+See ESLintParser, PylintParser, or MyPyParser for examples.
+# Perfect! Now I know exactly what to do
+```
+
+#### Plus: 9 Integration TODOs Now Link to Working Code
+
+- **Want to add compliance tracking?** → See `ComplianceDatabase` class (agents/compliance_db.py)
+- **Need multi-channel notifications?** → See `NotificationService` class (agents/notifications.py)
+- **Wondering about MemDocs integration?** → We documented why local cache works better (with rationale)
+- **Need secure document storage?** → S3/Azure/SharePoint recommendations with HIPAA requirements
+
+**Impact**: Onboard new contributors in **minutes instead of hours**. Build your first plugin in **one sitting**.
+
+---
+
+### 🔐 Production-Grade Security & Compliance
+
+#### Secure Authentication System
 
 - **Bcrypt password hashing** with cost factor 12 (industry standard 2026)
 - **JWT tokens** with 30-minute expiration and automatic refresh
 - **Rate limiting**: 5 failed attempts = 15-minute lockout (prevents brute force)
 - **18 comprehensive security tests** covering all attack vectors
 
-#### Healthcare Compliance Database
+#### HIPAA/GDPR Compliance Database
 
-- **Append-only architecture** (HIPAA/GDPR/SOC2 compliant)
-- **Immutable audit trail** (INSERT only, no UPDATE/DELETE)
+- **Append-only architecture** (INSERT only, no UPDATE/DELETE) - satisfies regulators
+- **Immutable audit trail** for healthcare and enterprise compliance
 - **Compliance gap detection** with severity classification
 - **12 tests** ensuring regulatory compliance
 
-#### Multi-Channel Notifications
+#### Multi-Channel Notification System
 
 - **Email** (SMTP), **Slack** (webhooks), **SMS** (Twilio)
 - **Graceful fallback** when channels unavailable
-- **Compliance alerts** with multi-channel delivery
-
-#### Developer Experience Improvements
-
-- Enhanced error messages in 5 base classes (clear plugin authoring guidance)
-- Documented 9 integration TODOs with implementation references
-- Better onboarding for plugin and extension developers
+- **Smart routing**: SMS only for critical alerts (cost optimization)
 
 ---
 
