@@ -3,7 +3,7 @@
 **The AI collaboration framework that predicts problems before they happen.**
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-5%2C603%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
+[![Tests](https://img.shields.io/badge/tests-5%2C941%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
 [![Coverage](https://img.shields.io/badge/coverage-64%25-yellow)](https://github.com/Smart-AI-Memory/empathy-framework)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
@@ -12,9 +12,39 @@
 pip install empathy-framework[full]
 ```
 
-## What's New in v3.5.x
+## What's New in v3.6.0
 
-### Project Indexing & Test Suite Expansion (v3.5.4)
+### 🔐 Backend Security & Compliance Infrastructure (v3.6.0)
+
+#### Production-Ready Authentication System
+
+- **Bcrypt password hashing** with cost factor 12 (industry standard 2026)
+- **JWT tokens** with 30-minute expiration and automatic refresh
+- **Rate limiting**: 5 failed attempts = 15-minute lockout (prevents brute force)
+- **18 comprehensive security tests** covering all attack vectors
+
+#### Healthcare Compliance Database
+
+- **Append-only architecture** (HIPAA/GDPR/SOC2 compliant)
+- **Immutable audit trail** (INSERT only, no UPDATE/DELETE)
+- **Compliance gap detection** with severity classification
+- **12 tests** ensuring regulatory compliance
+
+#### Multi-Channel Notifications
+
+- **Email** (SMTP), **Slack** (webhooks), **SMS** (Twilio)
+- **Graceful fallback** when channels unavailable
+- **Compliance alerts** with multi-channel delivery
+
+#### Developer Experience Improvements
+
+- Enhanced error messages in 5 base classes (clear plugin authoring guidance)
+- Documented 9 integration TODOs with implementation references
+- Better onboarding for plugin and extension developers
+
+---
+
+### Previous: Project Indexing & Test Suite Expansion (v3.5.4)
 
 - **Project Indexing System** — JSON-based file tracking with automatic structure scanning, metadata tracking, and CrewAI integration
 - **5,603 Tests** — Comprehensive test coverage at 64% with 30+ new test modules

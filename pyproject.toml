@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empathy-framework"
-version = "3.5.6"
+version = "3.6.0"
 description = "AI collaboration framework with persistent memory, anticipatory intelligence, code inspection, and multi-agent orchestration"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
@@ -106,6 +106,7 @@ backend = [
     "fastapi>=0.109.1,<1.0.0",  # CVE fix: PYSEC-2024-38
     "uvicorn>=0.20.0,<1.0.0",
     "starlette>=0.40.0,<1.0.0",  # CVE fix: GHSA-f96h, GHSA-2c2j
+    "bcrypt>=4.0.0,<5.0.0",  # Password hashing (cost factor 12)
     "PyJWT[crypto]>=2.8.0",  # JWT auth - uses cryptography (no ecdsa CVE)
 ]
 
