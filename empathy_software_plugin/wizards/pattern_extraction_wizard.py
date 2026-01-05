@@ -9,6 +9,7 @@ Licensed under Fair Source 0.9
 
 import hashlib
 import json
+import logging
 import re
 import subprocess
 from datetime import datetime
@@ -16,6 +17,8 @@ from pathlib import Path
 from typing import Any
 
 from .base_wizard import BaseWizard
+
+logger = logging.getLogger(__name__)
 
 
 class PatternExtractionWizard(BaseWizard):
@@ -201,7 +204,9 @@ class PatternExtractionWizard(BaseWizard):
             message = msg_result.stdout if msg_result.returncode == 0 else ""
 
             return diff, message
-        except Exception:
+        except Exception as e:
+            # Optional: Git operations unavailable (not a git repo or git not installed)
+            logger.debug(f"Could not fetch git diff/message: {e}")
             return "", ""
 
     def _extract_patterns(self, diff: str, commit_message: str) -> list[dict]:

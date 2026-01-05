@@ -6,12 +6,15 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import logging
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from .linter_parsers import LintIssue
+
+logger = logging.getLogger(__name__)
 
 
 def _validate_file_path(file_path: str) -> bool:
@@ -32,7 +35,9 @@ def _validate_file_path(file_path: str) -> bool:
         if any(c in str(p) for c in shell_chars):
             return False
         return True
-    except Exception:
+    except Exception as e:
+        # Security: Reject any path that fails validation (malformed, permission denied, etc.)
+        logger.debug(f"Path validation failed for {file_path}: {e}")
         return False
 
 

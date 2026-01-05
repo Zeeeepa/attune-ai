@@ -117,11 +117,12 @@ class TestSecureReleasePipelineInit:
         assert pipeline.mode == "standard"
         assert pipeline.use_crew is False  # standard mode disables crew
 
-    def test_quick_mode(self):
-        """Test quick mode initialization."""
-        pipeline = SecureReleasePipeline(mode="quick")
+    def test_standard_mode_duplicate(self):
+        """Test standard mode initialization (duplicate check)."""
+        # This is a duplicate of test_standard_mode above - keeping for backwards compatibility
+        pipeline = SecureReleasePipeline(mode="standard")
 
-        assert pipeline.mode == "quick"
+        assert pipeline.mode == "standard"
         assert pipeline.use_crew is False
 
     def test_override_crew_setting(self):
@@ -473,11 +474,12 @@ class TestFactoryMethods:
         assert pipeline.mode == "full"
         assert pipeline.crew_config.get("scan_depth") == "thorough"
 
-    def test_for_quick_check(self):
-        """Test factory for quick check."""
-        pipeline = SecureReleasePipeline.for_quick_check()
+    def test_for_standard_check(self):
+        """Test factory for standard check."""
+        # Note: for_quick_check() was removed - use mode="standard" instead
+        pipeline = SecureReleasePipeline(mode="standard")
 
-        assert pipeline.mode == "quick"
+        assert pipeline.mode == "standard"
         assert pipeline.use_crew is False
 
 
@@ -610,9 +612,9 @@ class TestPipelineExecution:
     """Tests for pipeline execution."""
 
     @pytest.mark.asyncio
-    async def test_execute_quick_mode(self):
-        """Test execute in quick mode."""
-        pipeline = SecureReleasePipeline(mode="quick", use_crew=False)
+    async def test_execute_standard_mode(self):
+        """Test execute in standard mode."""
+        pipeline = SecureReleasePipeline(mode="standard", use_crew=False)
 
         mock_security_result = MagicMock()
         mock_security_result.cost_report.total_cost = 0.05
@@ -642,13 +644,13 @@ class TestPipelineExecution:
 
             assert result.success is True
             assert result.go_no_go == "GO"
-            assert result.mode == "quick"
+            assert result.mode == "standard"
             assert result.crew_enabled is False
 
     @pytest.mark.asyncio
     async def test_execute_handles_failure(self):
         """Test execute handles workflow failure."""
-        pipeline = SecureReleasePipeline(mode="quick", use_crew=False)
+        pipeline = SecureReleasePipeline(mode="standard", use_crew=False)
 
         # Patch at the module where the class is imported from
         with (

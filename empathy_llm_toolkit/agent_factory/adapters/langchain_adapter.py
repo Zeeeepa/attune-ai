@@ -13,6 +13,8 @@ import os
 from collections.abc import Callable
 from typing import Any
 
+from pydantic import SecretStr
+
 from empathy_llm_toolkit.agent_factory.base import (
     AgentCapability,
     AgentConfig,
@@ -221,9 +223,12 @@ class LangChainAdapter(BaseAdapter):
             from langchain_anthropic import ChatAnthropic
 
             # LangChain API varies between versions - use type: ignore for flexibility
+            # ChatAnthropic requires api_key as SecretStr (not None)
+            if not self.api_key:
+                raise ValueError("API key required for Anthropic provider")
             return ChatAnthropic(  # type: ignore[call-arg]
                 model=model_id,
-                api_key=self.api_key,
+                api_key=SecretStr(self.api_key),
                 temperature=config.temperature,
                 max_tokens_to_sample=config.max_tokens,
             )
@@ -244,15 +249,20 @@ class LangChainAdapter(BaseAdapter):
             raise ImportError("LangChain not installed")
 
         # Import from langchain or langgraph depending on version
-        AgentExecutor: Any = None
-        create_tool_calling_agent: Any = None
+        # In langchain 1.x, these moved to different locations
         try:
-            from langchain.agents import AgentExecutor, create_tool_calling_agent
+            # Try langchain 1.x imports first
+            from langchain.agents import create_tool_calling_agent  # type: ignore[attr-defined]
+            from langchain.agents.agent import AgentExecutor
         except (ImportError, AttributeError):
-            # Newer versions may have different import paths
-            from langgraph.prebuilt import create_react_agent
+            # Fall back to langgraph for newer versions
+            AgentExecutor: Any = None  # type: ignore[no-redef]
+            try:
+                from langgraph.prebuilt import create_react_agent
 
-            create_tool_calling_agent = create_react_agent
+                create_tool_calling_agent: Any = create_react_agent  # type: ignore[no-redef]
+            except ImportError:
+                create_tool_calling_agent = None
         from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
         llm = self._get_llm(config)

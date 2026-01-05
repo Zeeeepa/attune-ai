@@ -15,6 +15,7 @@ Licensed under Fair Source License 0.9
 
 import fnmatch
 import json
+import logging
 import re
 from pathlib import Path
 from typing import Any
@@ -23,6 +24,8 @@ import yaml
 
 from .base import BaseWorkflow, ModelTier
 from .step_config import WorkflowStepConfig
+
+logger = logging.getLogger(__name__)
 
 
 def _load_bug_predict_config() -> dict:
@@ -772,8 +775,9 @@ Provide detailed recommendations for preventing bugs."""
                     prompt=user_message,
                     system=system,
                 )
-            except Exception:
-                # Fall back to legacy _call_llm if executor fails
+            except Exception as e:
+                # Graceful fallback to legacy _call_llm if executor fails
+                logger.warning(f"Executor failed, falling back to legacy LLM call: {e}")
                 response, input_tokens, output_tokens = await self._call_llm(
                     tier,
                     system or "",

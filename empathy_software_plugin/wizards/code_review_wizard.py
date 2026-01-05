@@ -20,6 +20,7 @@ Licensed under Fair Source 0.9
 """
 
 import json
+import logging
 import re
 import subprocess
 from dataclasses import dataclass, field
@@ -28,6 +29,8 @@ from pathlib import Path
 from typing import Any
 
 from .base_wizard import BaseWizard
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -427,7 +430,9 @@ class CodeReviewWizard(BaseWizard):
             )
             if result.returncode == 0:
                 return [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
-        except Exception:
+        except Exception as e:
+            # Optional: Git staged files unavailable (not a git repo)
+            logger.debug(f"Could not get staged files: {e}")
             pass
         return []
 
@@ -443,7 +448,9 @@ class CodeReviewWizard(BaseWizard):
             )
             if result.returncode == 0:
                 return [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
-        except Exception:
+        except Exception as e:
+            # Optional: Git history unavailable (not a git repo)
+            logger.debug(f"Could not get recent changed files: {e}")
             pass
         return []
 

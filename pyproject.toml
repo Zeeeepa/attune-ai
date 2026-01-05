@@ -10,10 +10,10 @@ readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Patrick Roebuck", email = "patrick.roebuck@smartAImemory.com"}
+    {name = "Patrick Roebuck", email = "admin@smartaimemory.com"}
 ]
 maintainers = [
-    {name = "Smart-AI-Memory", email = "patrick.roebuck@smartAImemory.com"}
+    {name = "Smart-AI-Memory", email = "admin@smartaimemory.com"}
 ]
 keywords = [
     "ai",
@@ -323,6 +323,8 @@ known-first-party = ["services", "empathy_llm_toolkit", "empathy_software_plugin
 # MyPy type checker configuration
 [tool.mypy]
 python_version = "3.10"
+mypy_path = "src"
+explicit_package_bases = true
 exclude = [
     "10_9_2025_ai_nurse_florence/",
     "anthropic-cookbook/",
@@ -330,6 +332,8 @@ exclude = [
     "site/",
     "ebook-site/",
     "website/",
+    "agents/",  # Root-level agents dir (not part of main packages)
+    "examples/",  # Example scripts (not part of main packages)
 ]
 warn_return_any = true
 warn_unused_configs = true

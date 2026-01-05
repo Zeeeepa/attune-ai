@@ -524,7 +524,7 @@ Code to review:
         all_findings = llm_findings + security_findings
 
         # Calculate summary statistics
-        summary = {
+        summary: dict[str, Any] = {
             "total_findings": len(all_findings),
             "by_severity": {},
             "by_category": {},
@@ -540,6 +540,13 @@ Code to review:
         for finding in all_findings:
             cat = finding.get("category", "other")
             summary["by_category"][cat] = summary["by_category"].get(cat, 0) + 1
+
+        # Add helpful message if no findings
+        if len(all_findings) == 0:
+            summary["message"] = (
+                "No security or quality issues found in scan. "
+                "Code will proceed to architectural review."
+            )
 
         return (
             {
@@ -761,7 +768,11 @@ Provide actionable, specific feedback."""
             )
 
         # Add formatted report for human readability
-        result["formatted_report"] = format_code_review_report(result, input_data)
+        formatted_report = format_code_review_report(result, input_data)
+        result["formatted_report"] = formatted_report
+
+        # Also add as top-level display_output for better UX
+        result["display_output"] = formatted_report
 
         return (result, input_tokens, output_tokens)
 
@@ -885,6 +896,32 @@ def format_code_review_report(result: dict, input_data: dict) -> str:
         summary = crew_review.get("summary", "")
         if summary:
             lines.append(f"Summary: {summary[:300]}")
+        lines.append("")
+
+    # Check if we have any meaningful content to show
+    content_sections = [
+        input_data.get("classification"),
+        input_data.get("security_findings"),
+        input_data.get("scan_results"),
+        result.get("architectural_review"),
+        result.get("recommendations"),
+    ]
+    has_content = any(content_sections)
+
+    # If no content was generated, add a helpful message
+    if not has_content and len(lines) < 15:  # Just header/footer, no real content
+        lines.append("-" * 60)
+        lines.append("NO ISSUES FOUND")
+        lines.append("-" * 60)
+        lines.append("")
+        lines.append("The code review workflow completed but found no issues to report.")
+        lines.append("This could mean:")
+        lines.append("  • No code was provided for review (check input parameters)")
+        lines.append("  • The code is clean and follows best practices")
+        lines.append("  • The workflow needs configuration (check .empathy/workflows.yaml)")
+        lines.append("")
+        lines.append("Tip: Try running with a specific file or diff:")
+        lines.append('  empathy workflow run code-review --input \'{"target": "path/to/file.py"}\'')
         lines.append("")
 
     # Footer

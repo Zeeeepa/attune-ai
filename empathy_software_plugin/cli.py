@@ -232,8 +232,10 @@ async def gather_project_context(project_path: str) -> dict[str, Any]:
 
                             # Parse AI calls
                             context["ai_calls"].extend(parse_ai_calls(str(file_path), content))
-                except Exception:
-                    pass  # Skip files that can't be parsed
+                except Exception as e:
+                    # Best effort: Skip files that can't be parsed (corrupted, binary, etc.)
+                    logger.debug(f"Could not parse {file_path}: {e}")
+                    pass
 
                 # All Python/JS/TS files are code files
                 context["code_files"].append(str(file_path))
@@ -270,8 +272,10 @@ async def gather_project_context(project_path: str) -> dict[str, Any]:
         )
         if result.returncode == 0:
             context["version_history"] = parse_git_history(result.stdout)
-    except Exception:
-        pass  # Skip if git not available or fails
+    except Exception as e:
+        # Optional: Git history unavailable (not a git repo or git not installed)
+        logger.debug(f"Could not fetch git history: {e}")
+        pass
 
     return context
 

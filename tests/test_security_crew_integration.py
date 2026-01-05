@@ -424,10 +424,6 @@ class TestSecureReleasePipeline:
         assert standard.mode == "standard"
         assert standard.use_crew is False
 
-        quick = SecureReleasePipeline(mode="quick")
-        assert quick.mode == "quick"
-        assert quick.use_crew is False
-
     def test_pipeline_factory_methods(self):
         """Test factory methods."""
         from empathy_os.workflows.secure_release import SecureReleasePipeline
@@ -441,10 +437,6 @@ class TestSecureReleasePipeline:
         release = SecureReleasePipeline.for_release()
         assert release.mode == "full"
         assert release.crew_config.get("scan_depth") == "thorough"
-
-        quick = SecureReleasePipeline.for_quick_check()
-        assert quick.mode == "quick"
-        assert quick.use_crew is False
 
     def test_result_dataclass(self):
         """Test SecureReleaseResult dataclass."""
@@ -512,11 +504,11 @@ class TestSecureReleasePipeline:
         assert risk == 50.0
 
     @pytest.mark.asyncio
-    async def test_pipeline_execute_quick_mode(self):
-        """Test pipeline execution in quick mode."""
+    async def test_pipeline_execute_standard_mode(self):
+        """Test pipeline execution in standard mode."""
         from empathy_os.workflows.secure_release import SecureReleasePipeline
 
-        pipeline = SecureReleasePipeline(mode="quick")
+        pipeline = SecureReleasePipeline(mode="standard")
 
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a simple file
@@ -548,9 +540,9 @@ class TestSecureReleasePipeline:
 
                 result = await pipeline.execute(path=tmpdir)
 
-                # Quick mode should skip code review
+                # Standard mode should skip code review crew
                 assert result.code_review is None
-                assert result.mode == "quick"
+                assert result.mode == "standard"
 
 
 # ============================================================================

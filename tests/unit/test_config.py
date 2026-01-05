@@ -76,7 +76,8 @@ def test_config_api_key_security():
 
     # Common API key patterns shouldn't appear in full
     # (Looking for patterns like sk-xxxx or api_key=...)
-    assert "sk-" not in config_str or "***" in config_str, "API keys should be masked"
+    assert "sk-" not in config_str or "***" in config_str, "API keys should be masked in str()"
+    assert "sk-" not in config_repr or "***" in config_repr, "API keys should be masked in repr()"
 
 
 @pytest.mark.unit
@@ -111,4 +112,4 @@ def test_config_file_paths():
     for attr in dir(config):
         value = getattr(config, attr)
         if "path" in attr.lower() and value is not None:
-            assert isinstance(value, (str, Path)), f"{attr} should be string or Path"
+            assert isinstance(value, str | Path), f"{attr} should be string or Path"

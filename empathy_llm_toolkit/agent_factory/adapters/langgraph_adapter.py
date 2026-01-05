@@ -14,6 +14,8 @@ import os
 from collections.abc import Callable
 from typing import Any
 
+from pydantic import SecretStr
+
 from empathy_llm_toolkit.agent_factory.base import (
     AgentConfig,
     BaseAdapter,
@@ -218,9 +220,12 @@ class LangGraphAdapter(BaseAdapter):
             from langchain_anthropic import ChatAnthropic
 
             # LangChain API varies between versions - use type: ignore for flexibility
+            # ChatAnthropic requires api_key as SecretStr (not None)
+            if not self.api_key:
+                raise ValueError("API key required for Anthropic provider")
             return ChatAnthropic(  # type: ignore[call-arg]
                 model=model_id,
-                api_key=self.api_key,
+                api_key=SecretStr(self.api_key),
                 temperature=config.temperature,
                 max_tokens_to_sample=config.max_tokens,  # Anthropic uses max_tokens_to_sample
             )
