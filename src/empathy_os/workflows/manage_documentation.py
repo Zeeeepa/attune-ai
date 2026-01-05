@@ -63,6 +63,7 @@ class ManageDocumentationCrewResult:
     confidence: float = 0.0
     cost: float = 0.0
     duration_ms: int = 0
+    formatted_report: str = ""
 
     def to_dict(self) -> dict:
         return {
@@ -75,6 +76,7 @@ class ManageDocumentationCrewResult:
             "confidence": self.confidence,
             "cost": self.cost,
             "duration_ms": self.duration_ms,
+            "formatted_report": self.formatted_report,
         }
 
 
@@ -115,6 +117,100 @@ Context:
 {context_str}
 
 Expected output format: {self.expected_output}"""
+
+
+def format_manage_docs_report(result: ManageDocumentationCrewResult, path: str) -> str:
+    """Format documentation management output as a human-readable report.
+
+    Args:
+        result: The ManageDocumentationCrewResult
+        path: The path that was analyzed
+
+    Returns:
+        Formatted report string
+    """
+    lines = []
+
+    # Header with confidence
+    confidence = result.confidence
+    if confidence >= 0.8:
+        confidence_icon = "🟢"
+        confidence_text = "HIGH CONFIDENCE"
+    elif confidence >= 0.5:
+        confidence_icon = "🟡"
+        confidence_text = "MODERATE CONFIDENCE"
+    else:
+        confidence_icon = "🔴"
+        confidence_text = "LOW CONFIDENCE (Mock Mode)"
+
+    lines.append("=" * 60)
+    lines.append("DOCUMENTATION SYNC REPORT")
+    lines.append("=" * 60)
+    lines.append("")
+    lines.append(f"Path Analyzed: {path}")
+    lines.append(f"Confidence: {confidence_icon} {confidence_text} ({confidence:.0%})")
+    lines.append("")
+
+    # Summary
+    lines.append("-" * 60)
+    lines.append("SUMMARY")
+    lines.append("-" * 60)
+    lines.append(f"Files Analyzed: {result.files_analyzed}")
+    lines.append(f"Docs Needing Update: {result.docs_needing_update}")
+    lines.append(f"New Docs Needed: {result.new_docs_needed}")
+    lines.append(f"Duration: {result.duration_ms}ms ({result.duration_ms / 1000:.1f}s)")
+    lines.append(f"Cost: ${result.cost:.4f}")
+    lines.append("")
+
+    # Agent Findings
+    if result.findings:
+        lines.append("-" * 60)
+        lines.append("AGENT FINDINGS")
+        lines.append("-" * 60)
+        for i, finding in enumerate(result.findings, 1):
+            agent = finding.get("agent", f"Agent {i}")
+            response = finding.get("response", "")
+            cost = finding.get("cost", 0.0)
+
+            lines.append(f"\n{i}. {agent} (Cost: ${cost:.4f})")
+            lines.append("   " + "-" * 54)
+
+            # Show truncated response
+            if len(response) > 500:
+                lines.append(f"   {response[:500]}...")
+                lines.append(f"   [Truncated - {len(response)} chars total]")
+            else:
+                lines.append(f"   {response}")
+            lines.append("")
+
+    # Recommendations
+    if result.recommendations:
+        lines.append("-" * 60)
+        lines.append("RECOMMENDATIONS")
+        lines.append("-" * 60)
+        for i, rec in enumerate(result.recommendations, 1):
+            lines.append(f"{i}. {rec}")
+        lines.append("")
+
+    # Next Steps
+    lines.append("-" * 60)
+    lines.append("NEXT STEPS")
+    lines.append("-" * 60)
+    lines.append("1. Review agent findings above for specific files")
+    lines.append("2. Prioritize documentation updates based on impact")
+    lines.append("3. Use 'Generate Docs' workflow for auto-generation")
+    lines.append("4. Run this workflow periodically to keep docs in sync")
+    lines.append("")
+
+    # Footer
+    lines.append("=" * 60)
+    if result.success:
+        lines.append("✅ Documentation sync analysis complete")
+    else:
+        lines.append("❌ Documentation sync analysis failed")
+    lines.append("=" * 60)
+
+    return "\n".join(lines)
 
 
 class ManageDocumentationCrew:
@@ -545,7 +641,8 @@ Note: This is a mock response. Configure ANTHROPIC_API_KEY for real analysis."""
         if len(all_responses) > 2:
             recommendations.append("See synthesizer output for prioritized action plan")
 
-        return ManageDocumentationCrewResult(
+        # Create result
+        result = ManageDocumentationCrewResult(
             success=True,
             findings=all_findings,
             recommendations=recommendations,
@@ -556,6 +653,11 @@ Note: This is a mock response. Configure ANTHROPIC_API_KEY for real analysis."""
             cost=self._total_cost,
             duration_ms=duration_ms,
         )
+
+        # Generate formatted report
+        result.formatted_report = format_manage_docs_report(result, path)
+
+        return result
 
 
 # CLI entry point for testing
@@ -574,22 +676,7 @@ if __name__ == "__main__":
 
         result = await crew.execute(path=path)
 
-        print("\n" + "=" * 60)
-        print("RESULTS")
-        print("=" * 60)
-        print(f"Success: {result.success}")
-        print(f"Files Analyzed: {result.files_analyzed}")
-        print(f"Duration: {result.duration_ms}ms")
-        print(f"Cost: ${result.cost:.4f}")
-        print(f"Confidence: {result.confidence:.0%}")
-        print()
-        print("Recommendations:")
-        for rec in result.recommendations:
-            print(f"  - {rec}")
-        print()
-        print("Agent Outputs:")
-        for finding in result.findings:
-            print(f"\n[{finding['agent']}]")
-            print(finding["response"][:500])
+        # Print formatted report
+        print("\n" + result.formatted_report)
 
     asyncio.run(main())
