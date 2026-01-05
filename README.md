@@ -205,9 +205,10 @@ print(result.prevention_steps)    # How to prevent it
 ### Level 1: Basic Usage
 
 ```bash
-pip install empathy-framework
+pip install empathy-framework[developer]
 ```
 
+- Lightweight install with CLI tools, LLM providers, and agents
 - Works out of the box with sensible defaults
 - Auto-detects your API keys
 
