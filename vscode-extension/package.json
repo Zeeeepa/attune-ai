@@ -221,16 +221,6 @@
           "type": "webview",
           "id": "empathy-dashboard",
           "name": "Dashboard"
-        },
-        {
-          "type": "webview",
-          "id": "empathy-memory",
-          "name": "Memory (Beta)"
-        },
-        {
-          "type": "webview",
-          "id": "research-synthesis",
-          "name": "Research Synthesis"
         }
       ]
     },
