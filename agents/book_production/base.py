@@ -438,8 +438,12 @@ class BaseAgent(ABC):
 
         self.logger.debug(f"Searching MemDocs collection '{collection_name}' for: {query}")
 
-        # TODO: Integrate with actual MemDocs client
-        # For now, return from local pattern cache
+        # TODO: Optional integration - MemDocs client for documentation intelligence
+        # NOTE: MemDocs is designed for doc-intelligence (EmpathyAdapter, DocumentIndex),
+        #       not general pattern storage. Local pattern cache is appropriate for this use case.
+        # DECISION: Phase 1.2 - Skipped full MemDocs integration. Local cache sufficient.
+        # If doc-intelligence features needed, see empathy_llm_toolkit/memdocs/ for examples.
+        # For now, use local pattern cache (recommended approach)
         return await self._search_local_patterns(query, collection_name, limit)
 
     async def store_pattern(
@@ -469,8 +473,12 @@ class BaseAgent(ABC):
 
         self.logger.info(f"Storing pattern in MemDocs collection '{collection_name}'")
 
-        # TODO: Integrate with actual MemDocs client
-        # For now, store locally
+        # TODO: Optional integration - MemDocs client for documentation intelligence
+        # NOTE: MemDocs is designed for doc-intelligence (EmpathyAdapter, DocumentIndex),
+        #       not general pattern storage. Local pattern cache is appropriate for this use case.
+        # DECISION: Phase 1.2 - Skipped full MemDocs integration. Local cache sufficient.
+        # If doc-intelligence features needed, see empathy_llm_toolkit/memdocs/ for examples.
+        # For now, store locally (recommended approach)
         return await self._store_local_pattern(pattern, collection_name)
 
     async def _search_local_patterns(

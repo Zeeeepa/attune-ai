@@ -384,8 +384,10 @@ def predict_next_audit(state: ComplianceAgentState) -> ComplianceAgentState:
     cycle_months = audit_cycles.get(state["audit_type"], 36)
     state["audit_cycle_months"] = cycle_months
 
-    # TODO: Connect to real database to get last audit date
-    # For now, simulate with example date
+    # TODO: Integration point - Connect to real compliance database
+    # IMPLEMENTATION AVAILABLE: See agents/compliance_db.py ComplianceDatabase class
+    # Use: compliance_db.get_last_audit(audit_type=state["audit_type"])
+    # For now, this example uses simulated data to demonstrate the workflow
     # last_audit = get_last_audit_date(state["hospital_id"], state["audit_type"])
 
     # Example: Last Joint Commission audit was 2023-04-15
@@ -564,8 +566,10 @@ def assess_current_compliance(state: ComplianceAgentState) -> ComplianceAgentSta
     """
     logger.info(f"[Step 3A] Assessing compliance for {state['audit_type']}")
 
-    # TODO: Connect to real compliance data
-    # For now, simulate assessment
+    # TODO: Integration point - Connect to real compliance assessment system
+    # IMPLEMENTATION AVAILABLE: See agents/compliance_db.py for status tracking
+    # Use: compliance_db.get_current_compliance_status(compliance_framework)
+    # For now, this example simulates assessment to demonstrate the workflow
 
     # Get requirements for this audit type
     requirements = get_audit_requirements(state["audit_type"])
@@ -580,7 +584,10 @@ def assess_current_compliance(state: ComplianceAgentState) -> ComplianceAgentSta
     category_scores = {}
 
     for req in requirements:
-        # TODO: Check actual compliance
+        # TODO: Integration point - Check actual compliance against requirements
+        # IMPLEMENTATION AVAILABLE: Query from compliance_db.get_active_gaps()
+        # Filter gaps by framework and severity to determine compliance status
+        # For now, this example simulates compliance checks to demonstrate scoring logic
         # is_compliant = check_requirement_compliance(state["hospital_id"], req)
 
         # Simulated: 90% compliant
@@ -670,8 +677,10 @@ def identify_compliance_gaps(state: ComplianceAgentState) -> ComplianceAgentStat
     """
     logger.info("[Step 3B] Identifying compliance gaps")
 
-    # TODO: Connect to real gap detection system
-    # For now, simulate common gaps
+    # TODO: Integration point - Connect to real gap detection system
+    # IMPLEMENTATION AVAILABLE: See agents/compliance_db.py ComplianceDatabase.record_gap()
+    # Use: compliance_db.get_active_gaps(severity, framework) to retrieve detected gaps
+    # For now, this example simulates gap detection to demonstrate remediation planning
 
     gaps = []
     gap_id_counter = 1
@@ -846,7 +855,13 @@ def prepare_audit_documentation(state: ComplianceAgentState) -> ComplianceAgentS
     }
 
     # Simulate storing documentation
-    # TODO: Integrate with actual secure document storage (S3, SharePoint, etc.)
+    # TODO: Integration point - Secure document storage system
+    # RECOMMENDATION: Use cloud storage (AWS S3, Azure Blob, SharePoint) with:
+    #   - Encryption at rest (AES-256) and in transit (TLS 1.2+)
+    #   - HIPAA-compliant storage (BAA required)
+    #   - Audit logging for all access
+    #   - Retention policies per regulatory requirements
+    # For now, this example generates simulated URLs to demonstrate the workflow
     doc_url = f"https://secure-docs.hospital.com/compliance/{state['execution_id']}"
     doc_files = [
         "compliance_summary_report.pdf",
@@ -939,7 +954,11 @@ def send_anticipatory_notifications(
     notification = compose_notification(state, action_items)
 
     # Send notification
-    # TODO: Integrate with actual notification system (email, SMS, Slack, etc.)
+    # TODO: Integration point - Multi-channel notification delivery
+    # IMPLEMENTATION AVAILABLE: See agents/notifications.py NotificationService class
+    # Use: notification_service.send_compliance_alert(severity, title, description, recipients)
+    # Supports Email (SMTP), Slack (webhooks), and SMS (Twilio) with graceful fallback
+    # For now, this example simulates notification to demonstrate stakeholder communication
     send_notification_to_recipients(notification, recipients, state["hospital_id"])
 
     state["notification_sent"] = True
@@ -1307,11 +1326,23 @@ without stress or rushed work during audit week.
 def send_notification_to_recipients(notification: dict, recipients: list[str], hospital_id: str):
     """Send notification via configured channels
 
-    TODO: Integrate with actual notification system
-    - Email (SMTP)
-    - SMS (Twilio)
-    - Slack/Teams (webhooks)
-    - In-app notifications
+    TODO: Integration point - Multi-channel notification delivery
+    IMPLEMENTATION AVAILABLE: See agents/notifications.py NotificationService class
+
+    Supported channels (already implemented):
+    - Email (SMTP) - agents/notifications.py:send_email()
+    - SMS (Twilio) - agents/notifications.py:send_sms()
+    - Slack/Teams (webhooks) - agents/notifications.py:send_slack()
+
+    For compliance alerts, use:
+        notification_service.send_compliance_alert(
+            severity=notification["severity"],
+            title=notification["title"],
+            description=notification["summary"],
+            recipients={"email": [...], "phone": [...]},
+        )
+
+    This example simulates notifications to demonstrate the workflow.
     """
     logger.info(f"Sending notification to: {recipients}")
 
