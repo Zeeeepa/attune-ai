@@ -109,6 +109,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+#### Dependency Vulnerability Fixes
+
+- **CVE-2025-15284**: Resolved HIGH severity DoS vulnerability in `qs` package
+  - Updated `qs` from 6.14.0 → 6.14.1 across all packages (website, vscode-extension, vscode-memory-panel)
+  - Fixed arrayLimit bypass that allowed memory exhaustion attacks
+  - Updated Stripe dependency to 19.3.1 to pull in patched version
+  - All npm audits now report 0 vulnerabilities
+  - Fixes: [Dependabot alerts #12, #13, #14](https://github.com/Smart-AI-Memory/empathy-framework/security/dependabot)
+
 #### Enhanced Privacy and Compliance
 
 - **HIPAA compliance**: Healthcare wizard with automatic PHI de-identification and audit logging
