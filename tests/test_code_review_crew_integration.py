@@ -168,10 +168,10 @@ class TestCodeReviewWorkflowWithCrew:
     """Test CodeReviewWorkflow with crew mode enabled."""
 
     def test_workflow_init_with_crew_disabled(self):
-        """Test workflow initialization with crew disabled (default)."""
+        """Test workflow initialization with crew explicitly disabled."""
         from empathy_os.workflows import CodeReviewWorkflow
 
-        workflow = CodeReviewWorkflow()
+        workflow = CodeReviewWorkflow(use_crew=False)
 
         assert workflow.use_crew is False
         assert "crew_review" not in workflow.stages

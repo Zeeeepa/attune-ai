@@ -22,8 +22,8 @@ class TestCodeReviewWorkflowInit:
         assert workflow.name == "code-review"
         assert workflow.file_threshold == 10
         assert len(workflow.core_modules) > 0
-        assert workflow.use_crew is False
-        assert workflow.stages == ["classify", "scan", "architect_review"]
+        assert workflow.use_crew is True  # Default changed to True in v3.7.0
+        assert "crew_review" in workflow.stages  # Crew mode enabled by default
 
     def test_custom_file_threshold(self):
         """Test custom file threshold."""

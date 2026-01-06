@@ -285,7 +285,7 @@ def cmd_version(args):
     logger.info("Displaying version information")
     try:
         version = get_version("empathy")
-    except (ImportError, ValueError) as e:
+    except Exception as e:
         # Package metadata not available or invalid (development install)
         logger.debug(f"Version not available: {e}")
         version = "unknown"

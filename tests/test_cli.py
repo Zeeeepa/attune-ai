@@ -477,7 +477,7 @@ class TestCLIPatternsExportEdgeCases:
             cmd_patterns_export(args)
 
         log_output = " ".join([rec.message for rec in caplog.records])
-        assert "Failed to load patterns:" in log_output
+        assert "Pattern file error:" in log_output
 
     def test_patterns_export_json_to_sqlite(self, temp_dir, caplog):
         """Test exporting patterns from JSON to SQLite"""
@@ -549,7 +549,7 @@ class TestCLIPatternsExportEdgeCases:
             cmd_patterns_export(args)
 
         log_output = " ".join([rec.message for rec in caplog.records])
-        assert "Failed to save patterns:" in log_output
+        assert "Pattern file write error:" in log_output
 
 
 class TestCLIMetricsEdgeCases:
