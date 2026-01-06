@@ -340,7 +340,6 @@ class RefactorPlanWorkflow(BaseWorkflow):
         crew_enhanced = False
         crew_findings = []
         if self.use_crew_for_analysis and self._crew_available:
-            target = input_data.get("path", ".")
             try:
                 # Analyze hotspot files with the crew
                 for hotspot in list(hotspots)[:5]:  # Analyze top 5 hotspots
@@ -360,9 +359,9 @@ class RefactorPlanWorkflow(BaseWorkflow):
                                         "description": finding.description,
                                         "severity": finding.severity.value,
                                         "category": finding.category.value,
-                                        "priority_score": 15
-                                        if finding.severity.value == "high"
-                                        else 10,
+                                        "priority_score": (
+                                            15 if finding.severity.value == "high" else 10
+                                        ),
                                         "is_hotspot": True,
                                         "source": "crew",
                                     }
