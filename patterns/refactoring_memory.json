@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-01-06T01:14:09.039085",
-  "node_count": 6,
+  "updated_at": "2026-01-06T02:05:51.127160",
+  "node_count": 7,
   "edge_count": 0,
   "nodes": [
     {
@@ -98,6 +98,22 @@
       "tags": [],
       "created_at": "2026-01-06T01:14:09.038136",
       "updated_at": "2026-01-06T01:14:09.038137",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260106020551_e09ec1635e1a",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmp6mkiq57g/app.py",
+      "description": "No refactoring opportunities identified.",
+      "source_wizard": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-06T02:05:51.126084",
+      "updated_at": "2026-01-06T02:05:51.126085",
       "status": "open"
     }
   ],

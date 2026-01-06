@@ -716,7 +716,115 @@
         "README.md"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_1f6f56d2",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove unused 'target' variable in refactor_plan workflow",
+      "fix": "See commit 1f6f56d2",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "src/empathy_os/workflows/refactor_plan.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_15d0b796",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Update tests to match v3.7.0 defaults and error messages",
+      "fix": "See commit 15d0b796",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "src/empathy_os/cli.py",
+        "tests/test_cli.py",
+        "tests/test_code_review_crew_integration.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_2adf079c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "docs: Update CHANGELOG with security vulnerability fixes",
+      "fix": "See commit 2adf079c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "CHANGELOG.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_1dfc20fd",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Resolve qs DoS vulnerability in VSCode extension dev dependencies",
+      "fix": "See commit 1dfc20fd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "vscode-extension/package-lock.json",
+        "vscode-memory-panel/package-lock.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_a40d6b2c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Resolve HIGH severity qs DoS vulnerability (CVE-2025-15284)",
+      "fix": "See commit a40d6b2c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "website/package-lock.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_0598922d",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Configure lint/type checking to exclude test workflows and non-core directories",
+      "fix": "See commit 0598922d",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "pyproject.toml",
+        "src/empathy_os/workflows/health_check.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_570c40f9",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "chore: Bump version to 3.7.1 for security patch release",
+      "fix": "See commit 570c40f9",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "pyproject.toml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_68018d1d",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Add type annotation to fix mypy errors in health_check",
+      "fix": "See commit 68018d1d",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "src/empathy_os/workflows/health_check.py"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2026-01-06T01:25:37.118326"
+  "last_updated": "2026-01-06T08:19:44.795086"
 }
