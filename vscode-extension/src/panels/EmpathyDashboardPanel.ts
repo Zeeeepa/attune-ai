@@ -2420,7 +2420,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     'refactor-plan', 'health-check', 'pr-review', 'pro-review',
                     'doc-gen',  // Doc generation workflow runs immediately
                     'test-gen',  // Test generation workflow runs immediately
-                    'dependency-check'  // Dependency check workflow runs immediately
+                    'dependency-check',  // Dependency check workflow runs immediately
+                    'release-prep',  // Release prep workflow runs immediately
+                    'secure-release'  // Secure release workflow runs immediately
                 ];
                 if (reportWorkflows.includes(wf)) {
                     // Run workflow immediately with project root as input
