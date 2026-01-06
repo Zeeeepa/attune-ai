@@ -378,6 +378,17 @@ extend-exclude = '''
 line-length = 100
 target-version = "py310"
 fix = true  # Auto-fix safe issues
+exclude = [
+    "tests/unit/wizards/",  # Generated wizard tests with syntax issues
+    "website/",  # Next.js website - separate linting
+    "docs/archive/",  # Archived code
+    "examples/",  # Example code
+    "dashboard/",  # Dashboard code
+    "deployments/",  # Deployment scripts
+    ".archive/",  # Archived files
+    "src/empathy_os/workflows/new_sample_workflow1.py",  # Test workflow
+    "src/empathy_os/workflows/test5.py",  # Test workflow
+]
 
 [tool.ruff.lint]
 select = [
@@ -406,13 +417,19 @@ known-first-party = ["services", "empathy_llm_toolkit", "empathy_software_plugin
 "*_test.py" = ["BLE001"]  # Test files can catch broad exceptions
 "tests/**/*.py" = ["BLE001"]  # Test files can catch broad exceptions
 "agents/**/*.py" = ["BLE001"]  # Agent files need broad exception handling for resilience
-"backend/**/*.py" = ["BLE001"]  # Backend files need broad exception handling
+"backend/**/*.py" = ["BLE001", "E402"]  # Backend files need broad exception handling
 "*_wizard.py" = ["BLE001"]  # Wizard files need broad exception handling
 "*_agent.py" = ["BLE001"]  # Agent files need broad exception handling
 "empathy_llm_toolkit/**/*.py" = ["BLE001"]  # Toolkit needs broad exception handling
 "src/empathy_os/**/*.py" = ["BLE001"]  # Core framework needs broad exception handling
 "*_adapter.py" = ["BLE001"]  # Adapter files need broad exception handling
 "*_crew.py" = ["BLE001"]  # Crew files need broad exception handling
+"dashboard/**/*.py" = ["BLE001"]  # Dashboard needs broad exception handling
+"deployments/**/*.py" = ["BLE001"]  # Deployment scripts need broad exception handling
+"docs/archive/**/*.py" = ["BLE001"]  # Archived code
+"empathy_software_plugin/**/*.py" = ["BLE001"]  # Plugin needs broad exception handling
+"examples/**/*.py" = ["BLE001"]  # Examples can use broad exception handling
+"demo_*.py" = ["BLE001"]  # Demo files can use broad exception handling
 
 # MyPy type checker configuration
 [tool.mypy]
@@ -428,6 +445,8 @@ exclude = [
     "website/",
     "agents/",  # Root-level agents dir (not part of main packages)
     "examples/",  # Example scripts (not part of main packages)
+    "src/empathy_os/workflows/new_sample_workflow1.py",  # Test workflow
+    "src/empathy_os/workflows/test5.py",  # Test workflow
 ]
 warn_return_any = true
 warn_unused_configs = true

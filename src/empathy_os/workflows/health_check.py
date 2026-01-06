@@ -36,7 +36,7 @@ class HealthCheckResult:
     is_healthy: bool
     issues: list[dict]
     fixes: list[dict]
-    checks_run: dict
+    checks_run: dict[str, Any]
     agents_used: list[str]
     critical_count: int
     high_count: int
