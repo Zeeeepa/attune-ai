@@ -120,7 +120,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     await this._estimateCost(message.workflow, message.input);
                     break;
                 case 'openWorkflowWizard':
-                    vscode.commands.executeCommand('workflow-wizard.focus');
+                    // HIDDEN in v3.5.5: Workflow Wizard temporarily disabled
+                    vscode.window.showInformationMessage('Workflow Wizard is temporarily disabled. Use "empathy wizard create" CLI instead.');
                     break;
                 case 'openDocAnalysis':
                     vscode.commands.executeCommand('empathy.openDocAnalysis');
@@ -2428,7 +2429,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 // Report workflows: run immediately with project root and open in editor
                 const reportWorkflows = [
                     'code-review', 'bug-predict', 'security-audit', 'perf-audit',
-                    'refactor-plan', 'health-check', 'pr-review', 'pro-review'
+                    'refactor-plan', 'health-check', 'pr-review', 'pro-review',
+                    'doc-gen', 'manage-docs'  // Added: doc workflows should run immediately
                 ];
                 if (reportWorkflows.includes(wf)) {
                     // Run workflow immediately with project root as input

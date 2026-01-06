@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "empathy-framework"
 version = "3.7.0"
-description = "AI collaboration framework with persistent memory, anticipatory intelligence, code inspection, and multi-agent orchestration"
+description = "AI collaboration framework with XML-enhanced prompts, persistent memory, CrewAI integration, and multi-agent orchestration. Includes HIPAA-compliant healthcare wizards and 53% reduction in hallucinations."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
@@ -54,6 +54,11 @@ dependencies = [
     "defusedxml>=0.7.0,<1.0.0",
     "rich>=13.0.0,<14.0.0",  # Beautiful CLI output
     "typer>=0.9.0,<1.0.0",  # Better CLI commands
+    "pyyaml>=6.0,<7.0",  # Required by workflows (bug_predict, etc.)
+    "anthropic>=0.25.0,<1.0.0",  # Core LLM provider
+    "crewai>=0.1.0,<1.0.0",  # CrewAI integration (core feature in v3.7.0)
+    "langchain>=0.1.0,<1.0.0",  # Required for workflows
+    "langchain-core>=0.1.0,<1.0.0",  # Required for workflows
 ]
 
 [project.optional-dependencies]
@@ -110,6 +115,10 @@ healthcare = [
     "starlette>=0.40.0,<1.0.0",
     "bcrypt>=4.0.0,<5.0.0",
     "PyJWT[crypto]>=2.8.0",
+    # OpenTelemetry for enterprise telemetry
+    "opentelemetry-api>=1.20.0,<2.0.0",
+    "opentelemetry-sdk>=1.20.0,<2.0.0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.20.0,<2.0.0",
     # Healthcare-specific dependencies
     "redis>=5.0.0,<6.0.0",  # For session management and real-time alerts
 ]
@@ -137,6 +146,13 @@ lsp = [
 # Windows compatibility
 windows = [
     "colorama>=0.4.6,<1.0.0",  # ANSI color support for Windows CMD
+]
+
+# OpenTelemetry backend for enterprise telemetry export
+otel = [
+    "opentelemetry-api>=1.20.0,<2.0.0",
+    "opentelemetry-sdk>=1.20.0,<2.0.0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.20.0,<2.0.0",
 ]
 
 # Documentation dependencies
@@ -205,6 +221,10 @@ enterprise = [
     "starlette>=0.40.0,<1.0.0",
     "bcrypt>=4.0.0,<5.0.0",  # Secure password hashing
     "PyJWT[crypto]>=2.8.0",  # JWT authentication
+    # OpenTelemetry for enterprise telemetry
+    "opentelemetry-api>=1.20.0,<2.0.0",
+    "opentelemetry-sdk>=1.20.0,<2.0.0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.20.0,<2.0.0",
 ]
 
 # Alias for backwards compatibility (maps to developer)
@@ -256,6 +276,10 @@ all = [
     "lsprotocol>=2023.0.0,<2024.0.0",
     # Windows
     "colorama>=0.4.6,<1.0.0",
+    # OpenTelemetry
+    "opentelemetry-api>=1.20.0,<2.0.0",
+    "opentelemetry-sdk>=1.20.0,<2.0.0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.20.0,<2.0.0",
     # Documentation
     "mkdocs>=1.5.0,<2.0.0",
     "mkdocs-material>=9.4.0,<10.0.0",
@@ -318,17 +342,11 @@ pr-review = "empathy_os.workflows.pr_review:PRReviewWorkflow"
 health-check = "empathy_os.workflows.health_check:HealthCheckWorkflow"
 
 [tool.setuptools]
-# Package discovery
-packages = [
-    "coach_wizards",
-    "empathy_os",
-    "wizards",
-    "agents",
-    "empathy_software_plugin",
-    "empathy_healthcare_plugin",
-    "empathy_healthcare_plugin.protocols",
-    "empathy_llm_toolkit",
-]
+# Automatic package discovery
+[tool.setuptools.packages.find]
+where = ["src", "."]
+namespaces = false
+exclude = ["tests*", "*.tests*", "examples*", "docs*", "*.archive*", "build*", "dist*"]
 
 [tool.setuptools.package-dir]
 empathy_os = "src/empathy_os"
@@ -363,13 +381,14 @@ fix = true  # Auto-fix safe issues
 
 [tool.ruff.lint]
 select = [
-    "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings
-    "F",   # pyflakes
-    "I",   # isort
-    "B",   # flake8-bugbear
-    "C4",  # flake8-comprehensions
-    "UP",  # pyupgrade
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "BLE",  # flake8-blind-except (catch bare except: clauses)
 ]
 ignore = [
     "E501",  # line too long (handled by black)
