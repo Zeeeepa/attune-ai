@@ -209,7 +209,7 @@ class HealthCheckWorkflow(BaseWorkflow):
         import subprocess
 
         issues = []
-        checks_run = {}
+        checks_run: dict[str, dict[str, Any]] = {}
         health_score = 100.0
 
         # Lint check
