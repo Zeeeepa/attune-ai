@@ -33,6 +33,8 @@ try:
 except ImportError:
     pass  # python-dotenv not installed, rely on environment variables
 
+# Import caching infrastructure
+from empathy_os.cache import BaseCache, auto_setup_cache, create_cache
 from empathy_os.cost_tracker import MODEL_PRICING, CostTracker
 
 # Import unified types from empathy_os.models
@@ -160,6 +162,12 @@ class CostReport:
     savings_percent: float
     by_stage: dict[str, float] = field(default_factory=dict)
     by_tier: dict[str, float] = field(default_factory=dict)
+    # Cache metrics
+    cache_hits: int = 0
+    cache_misses: int = 0
+    cache_hit_rate: float = 0.0
+    estimated_cost_without_cache: float = 0.0
+    savings_from_cache: float = 0.0
 
 
 @dataclass
@@ -366,6 +374,8 @@ class BaseWorkflow(ABC):
         executor: LLMExecutor | None = None,
         telemetry_backend: TelemetryBackend | None = None,
         progress_callback: ProgressCallback | None = None,
+        cache: BaseCache | None = None,
+        enable_cache: bool = True,
     ):
         """Initialize workflow with optional cost tracker, provider, and config.
 
@@ -381,6 +391,9 @@ class BaseWorkflow(ABC):
                      Defaults to TelemetryStore (JSONL file backend).
             progress_callback: Callback for real-time progress updates.
                      If provided, enables live progress tracking during execution.
+            cache: Optional cache instance. If None and enable_cache=True,
+                   auto-creates cache with one-time setup prompt.
+            enable_cache: Whether to enable caching (default True).
 
         """
         from .config import WorkflowConfig
@@ -397,6 +410,11 @@ class BaseWorkflow(ABC):
         self._telemetry_backend = telemetry_backend or get_telemetry_store()
         self._run_id: str | None = None  # Set at start of execute()
         self._api_key: str | None = None  # For default executor creation
+
+        # Cache support
+        self._cache: BaseCache | None = cache
+        self._enable_cache = enable_cache
+        self._cache_setup_attempted = False
 
         # Load config if not provided
         self._config = config or WorkflowConfig.load()
@@ -434,23 +452,61 @@ class BaseWorkflow(ABC):
         model = get_model(provider_str, tier.value, self._config)
         return model
 
+    def _maybe_setup_cache(self) -> None:
+        """Set up cache with one-time user prompt if needed.
+
+        This is called lazily on first workflow execution to avoid
+        blocking workflow initialization.
+        """
+        if not self._enable_cache:
+            return
+
+        if self._cache_setup_attempted:
+            return
+
+        self._cache_setup_attempted = True
+
+        # If cache already provided, use it
+        if self._cache is not None:
+            return
+
+        # Otherwise, trigger auto-setup (which may prompt user)
+        try:
+            auto_setup_cache()
+            self._cache = create_cache()
+            logger.info(f"Cache initialized for workflow: {self.name}")
+        except ImportError:
+            # Hybrid cache dependencies not available, fall back to hash-only
+            logger.info(
+                "Using hash-only cache (install empathy-framework[cache] for semantic caching)"
+            )
+            self._cache = create_cache(cache_type="hash")
+        except Exception:
+            # Graceful degradation - disable cache if setup fails
+            logger.warning("Cache setup failed, continuing without cache")
+            self._enable_cache = False
+
     async def _call_llm(
         self,
         tier: ModelTier,
         system: str,
         user_message: str,
         max_tokens: int = 4096,
+        stage_name: str | None = None,
     ) -> tuple[str, int, int]:
         """Provider-agnostic LLM call using the configured provider.
 
         This method uses run_step_with_executor internally to make LLM calls
         that respect the configured provider (anthropic, openai, google, etc.).
 
+        Supports automatic caching to reduce API costs and latency.
+
         Args:
             tier: Model tier to use (CHEAP, CAPABLE, PREMIUM)
             system: System prompt
             user_message: User message/prompt
             max_tokens: Maximum tokens in response
+            stage_name: Optional stage name for cache key (defaults to tier)
 
         Returns:
             Tuple of (response_content, input_tokens, output_tokens)
@@ -458,9 +514,32 @@ class BaseWorkflow(ABC):
         """
         from .step_config import WorkflowStepConfig
 
+        # Determine stage name for cache key
+        stage = stage_name or f"llm_call_{tier.value}"
+        model = self.get_model_for_tier(tier)
+
+        # Try cache lookup if enabled
+        if self._enable_cache and self._cache is not None:
+            try:
+                # Combine system + user message for cache key
+                full_prompt = f"{system}\n\n{user_message}" if system else user_message
+                cached_response = self._cache.get(self.name, stage, full_prompt, model)
+
+                if cached_response is not None:
+                    logger.debug(f"Cache hit for {self.name}:{stage}")
+                    # Cached response is dict with content, input_tokens, output_tokens
+                    return (
+                        cached_response["content"],
+                        cached_response["input_tokens"],
+                        cached_response["output_tokens"],
+                    )
+            except Exception:
+                # Cache lookup failed - continue with LLM call
+                logger.debug("Cache lookup failed, continuing with LLM call")
+
         # Create a step config for this call
         step = WorkflowStepConfig(
-            name=f"llm_call_{tier.value}",
+            name=stage,
             task_type="general",
             tier_hint=tier.value,
             description="LLM call",
@@ -473,6 +552,22 @@ class BaseWorkflow(ABC):
                 prompt=user_message,
                 system=system,
             )
+
+            # Store in cache if enabled
+            if self._enable_cache and self._cache is not None:
+                try:
+                    full_prompt = f"{system}\n\n{user_message}" if system else user_message
+                    response_data = {
+                        "content": content,
+                        "input_tokens": in_tokens,
+                        "output_tokens": out_tokens,
+                    }
+                    self._cache.put(self.name, stage, full_prompt, model, response_data)
+                    logger.debug(f"Cached response for {self.name}:{stage}")
+                except Exception:
+                    # Cache storage failed - log but continue
+                    logger.debug("Failed to cache response")
+
             return content, in_tokens, out_tokens
         except (ValueError, TypeError, KeyError) as e:
             # Invalid input or configuration errors
@@ -523,6 +618,33 @@ class BaseWorkflow(ABC):
         savings = baseline_cost - total_cost
         savings_percent = (savings / baseline_cost * 100) if baseline_cost > 0 else 0.0
 
+        # Calculate cache metrics if cache is enabled
+        cache_hits = 0
+        cache_misses = 0
+        cache_hit_rate = 0.0
+        estimated_cost_without_cache = total_cost
+        savings_from_cache = 0.0
+
+        if self._cache is not None:
+            try:
+                stats = self._cache.get_stats()
+                cache_hits = stats.hits
+                cache_misses = stats.misses
+                cache_hit_rate = stats.hit_rate
+
+                # Estimate cost without cache (assumes cache hits would have incurred full cost)
+                # This is a conservative estimate
+                if cache_hits > 0:
+                    # Average cost per non-cached call
+                    avg_cost_per_call = total_cost / cache_misses if cache_misses > 0 else 0.0
+                    # Estimated additional cost if cache hits were actual API calls
+                    estimated_additional_cost = cache_hits * avg_cost_per_call
+                    estimated_cost_without_cache = total_cost + estimated_additional_cost
+                    savings_from_cache = estimated_additional_cost
+            except (AttributeError, TypeError):
+                # Cache doesn't support stats or error occurred
+                pass
+
         return CostReport(
             total_cost=total_cost,
             baseline_cost=baseline_cost,
@@ -530,6 +652,11 @@ class BaseWorkflow(ABC):
             savings_percent=savings_percent,
             by_stage=by_stage,
             by_tier=by_tier,
+            cache_hits=cache_hits,
+            cache_misses=cache_misses,
+            cache_hit_rate=cache_hit_rate,
+            estimated_cost_without_cache=estimated_cost_without_cache,
+            savings_from_cache=savings_from_cache,
         )
 
     @abstractmethod
@@ -576,6 +703,9 @@ class BaseWorkflow(ABC):
             WorkflowResult with stages, output, and cost report
 
         """
+        # Set up cache (one-time setup with user prompt if needed)
+        self._maybe_setup_cache()
+
         # Set run ID for telemetry correlation
         self._run_id = str(uuid.uuid4())
 
