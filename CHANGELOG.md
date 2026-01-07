@@ -5,6 +5,21 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.1] - 2026-01-07
+
+### Fixed
+
+- **Dependency constraints**: Updated `langchain-core` to allow 1.x versions (was restricted to <1.0.0)
+  - Eliminates pip dependency warnings during installation
+  - Allows langchain-core 1.2.5+ which includes important security fixes
+  - Maintains backward compatibility with 0.x versions
+  - Updated both core dependencies and optional dependency groups (agents, developer, enterprise, healthcare, full, all)
+
+### Changed
+
+- **README**: Updated "What's New" section to highlight v3.8.0 features (transparent cost claims, intelligent caching)
+- **Documentation**: Clarified that tier routing savings vary by role (34-86% range)
+
 ## [3.8.0] - 2026-01-07
 
 ### Added

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empathy-framework"
-version = "3.8.0"
+version = "3.8.1"
 description = "AI collaboration framework with intelligent caching (up to 57% cache hit rate), tier routing (34-86% cost savings depending on task complexity), XML-enhanced prompts, persistent memory, CrewAI integration, and multi-agent orchestration. Includes HIPAA-compliant healthcare wizards."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
@@ -57,8 +57,8 @@ dependencies = [
     "pyyaml>=6.0,<7.0",  # Required by workflows (bug_predict, etc.)
     "anthropic>=0.25.0,<1.0.0",  # Core LLM provider
     "crewai>=0.1.0,<1.0.0",  # CrewAI integration (core feature in v3.7.0)
-    "langchain>=0.1.0,<1.0.0",  # Required for workflows
-    "langchain-core>=0.1.0,<1.0.0",  # Required for workflows
+    "langchain>=0.1.0,<2.0.0",  # Required for workflows
+    "langchain-core>=0.1.0,<2.0.0",  # Required for workflows (1.2.5+ has security fixes)
 ]
 
 [project.optional-dependencies]

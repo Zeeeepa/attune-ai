@@ -12,9 +12,34 @@
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
-## What's New in v3.7.0
+## What's New in v3.8.0
 
-### 🚀 **XML-Enhanced Prompting: 15-35% Token Reduction + Graceful Validation**
+### 🎯 **Transparent Cost Claims: Honest Role-Based Savings (34-86%)**
+
+**Real savings depend on your work role.** Architects using 60% PREMIUM tasks see 34% savings, while junior devs see 86%. See [role-based analysis](docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for your specific case.
+
+### 🚀 **Intelligent Response Caching: Up to 57% Hit Rate (Benchmarked)**
+
+**Hash-only cache**: 100% hit rate on identical prompts, ~5μs lookups
+**Hybrid cache**: Up to 57% hit rate on semantically similar prompts (measured on security audit workflow)
+
+```python
+from empathy_os.cache import create_cache
+
+# Hash-only mode (fast, exact matches)
+cache = create_cache(cache_type="hash")
+
+# Hybrid mode (semantic similarity)
+cache = create_cache(cache_type="hybrid", similarity_threshold=0.95)
+```
+
+See [caching docs](docs/caching/) for benchmarks and configuration.
+
+---
+
+### Previous Release: v3.7.0
+
+#### 🚀 **XML-Enhanced Prompting: 15-35% Token Reduction + Graceful Validation**
 
 **Slash your API costs and eliminate response parsing errors with production-ready XML enhancements.**
 
