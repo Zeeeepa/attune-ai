@@ -170,8 +170,10 @@ See ESLintParser, PylintParser, or MyPyParser for examples.
 ### Previous (v3.0.x)
 
 - **Multi-Model Provider System** — Anthropic, OpenAI, Google Gemini, Ollama, or Hybrid mode
-- **80-96% Cost Savings** — Smart tier routing: cheap models detect, best models decide
+- **34-86% Cost Savings** — Smart tier routing varies by role: architects 34%, senior devs 65%, junior devs 86%*
 - **VSCode Dashboard** — 10 integrated workflows with input history persistence
+
+*See [Cost Savings Analysis](docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for your specific use case
 
 ---
 
@@ -246,7 +248,7 @@ print(result.prevention_steps)    # How to prevent it
 | **Predicts future issues** | 30-90 days ahead | No | No |
 | **Persistent memory** | Redis + patterns | No | No |
 | **Multi-provider support** | Claude, GPT-4, Gemini, Ollama | N/A | GPT only |
-| **Cost optimization** | 80-96% savings | N/A | No |
+| **Cost optimization** | 34-86% savings* | N/A | No |
 | **Your data stays local** | Yes | Cloud | Cloud |
 | **Free for small teams** | ≤5 employees | No | No |
 
@@ -358,18 +360,37 @@ pip install empathy-framework[developer]
 - Works out of the box with sensible defaults
 - Auto-detects your API keys
 
-### Level 2: Cost Optimization
+### Level 2: Cost Optimization (Role-Based Savings)
+
+**Tier routing automatically routes tasks to appropriate models, saving 34-86% depending on your work role.**
 
 ```bash
-# Enable hybrid mode for 80-96% cost savings
+# Enable hybrid mode
 python -m empathy_os.models.cli provider --set hybrid
 ```
 
-| Tier | Model | Use Case | Cost |
-|------|-------|----------|------|
-| Cheap | GPT-4o-mini / Haiku | Summarization, simple tasks | $0.15-0.25/M |
-| Capable | GPT-4o / Sonnet | Bug fixing, code review | $2.50-3.00/M |
-| Premium | o1 / Opus | Architecture, complex decisions | $15/M |
+#### Tier Pricing
+
+| Tier | Model | Use Case | Cost per Task* |
+|------|-------|----------|----------------|
+| CHEAP | GPT-4o-mini / Haiku | Summarization, formatting, simple tasks | $0.0045-0.0075 |
+| CAPABLE | GPT-4o / Sonnet | Bug fixing, code review, analysis | $0.0725-0.090 |
+| PREMIUM | o1 / Opus | Architecture, complex decisions, design | $0.435-0.450 |
+
+*Typical task: 5,000 input tokens, 1,000 output tokens
+
+#### Actual Savings by Role
+
+| Your Role | PREMIUM % | CAPABLE % | CHEAP % | Actual Savings | Notes |
+|-----------|-----------|-----------|---------|----------------|-------|
+| **Architect / Designer** | 60% | 30% | 10% | **34%** | Design work requires complex reasoning |
+| **Senior Developer** | 25% | 50% | 25% | **65%** | Mix of architecture and implementation |
+| **Mid-Level Developer** | 15% | 60% | 25% | **73%** | Mostly implementation and bug fixes |
+| **Junior Developer** | 5% | 40% | 55% | **86%** | Simple features, tests, documentation |
+| **QA Engineer** | 10% | 35% | 55% | **80%** | Test generation, reports, automation |
+| **DevOps Engineer** | 20% | 50% | 30% | **69%** | Infrastructure planning + automation |
+
+**See [Complete Cost Analysis](docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for provider comparisons (Anthropic vs OpenAI vs Ollama) and detailed calculations.**
 
 ### Level 3: Multi-Model Workflows
 

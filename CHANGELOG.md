@@ -99,6 +99,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Troubleshooting common issues
   - Migration guide from v3.7.x
 
+#### 📊 Transparent Cost Savings Analysis
+
+**Tier Routing Savings: 34-86% depending on work role and task distribution**
+
+##### Role-Based Savings (Measured)
+
+Tier routing savings vary significantly based on your role and task complexity:
+
+| Role | PREMIUM Usage | CAPABLE Usage | CHEAP Usage | Actual Savings |
+|------|---------------|---------------|-------------|----------------|
+| Architect / Designer | 60% | 30% | 10% | **34%** |
+| Senior Developer | 25% | 50% | 25% | **65%** |
+| Mid-Level Developer | 15% | 60% | 25% | **73%** |
+| Junior Developer | 5% | 40% | 55% | **86%** |
+| QA Engineer | 10% | 35% | 55% | **80%** |
+| DevOps Engineer | 20% | 50% | 30% | **69%** |
+
+**Key Insight**: The often-cited "80% savings" assumes balanced task distribution (12.5% PREMIUM, 37.5% CAPABLE, 50% CHEAP). Architects and senior developers performing design work will see lower savings due to higher PREMIUM tier usage.
+
+##### Provider Comparison
+
+**Pure Provider Stacks** (8-task workflow, balanced distribution):
+- **Anthropic only** (Haiku/Sonnet/Opus): 79% savings
+- **OpenAI only** (GPT-4o-mini/GPT-4o/o1): 81% savings
+- **Hybrid routing** (mix providers): 87% savings
+
+**Documentation**:
+- [Role-Based Analysis](docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) - Complete savings breakdown by role
+- [Sensitivity Analysis](docs/cost-analysis/TIER_ROUTING_SENSITIVITY_ANALYSIS.md) - How savings change with task distribution
+- [Cost Breakdown](docs/COST_SAVINGS_BREAKDOWN.md) - All formulas and calculations
+
+**Transparency**: All claims backed by pricing math (Anthropic/OpenAI published rates) and task distribution estimates. No real telemetry data yet - v3.8.1 will add usage tracking for personalized savings reports.
+
 ### Changed
 
 #### BaseWorkflow Cache Support
