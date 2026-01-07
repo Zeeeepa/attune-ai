@@ -15,11 +15,14 @@ Licensed under Fair Source License 0.9
 import hashlib
 import logging
 import time
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
 from .base import BaseCache, CacheEntry, CacheStats
+
+if TYPE_CHECKING:
+    from sentence_transformers import SentenceTransformer
 
 logger = logging.getLogger(__name__)
 
@@ -100,7 +103,7 @@ class HybridCache(BaseCache):
         self._semantic_cache: list[tuple[np.ndarray, CacheEntry]] = []
 
         # Load sentence transformer model
-        self._model = None
+        self._model: SentenceTransformer | None = None
         self._load_model()
 
         logger.info(
@@ -211,6 +214,9 @@ class HybridCache(BaseCache):
         """
         if not self._semantic_cache:
             return None
+
+        if self._model is None:
+            raise RuntimeError("Sentence transformer model not loaded")
 
         # Encode prompt
         prompt_embedding = self._model.encode(prompt, convert_to_numpy=True)

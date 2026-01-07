@@ -10,6 +10,7 @@ import logging
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 import yaml
 
@@ -226,16 +227,19 @@ class DependencyManager:
         self._save_config()
         logger.info("Cache installation prompts re-enabled")
 
-    def get_config(self) -> dict:
+    def get_config(self) -> dict[str, Any]:
         """Get cache configuration.
 
         Returns:
             Cache configuration dictionary.
 
         """
-        return self.config.get("cache", {})
+        result = self.config.get("cache", {})
+        if not isinstance(result, dict):
+            return {}
+        return result
 
-    def set_config(self, key: str, value: any) -> None:
+    def set_config(self, key: str, value: Any) -> None:
         """Set cache configuration value.
 
         Args:
