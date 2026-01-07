@@ -41,12 +41,12 @@ class SingleStagePattern(WorkflowPattern):
         return [
             CodeSection(
                 location="class_attributes",
-                code=f'''    name = "{workflow_name}"
+                code=f"""    name = "{workflow_name}"
     description = "{description}"
     stages = ["process"]
     tier_map = {{
         "process": ModelTier.{tier},
-    }}''',
+    }}""",
                 priority=1,
             ),
             CodeSection(
@@ -140,8 +140,8 @@ class MultiStagePattern(WorkflowPattern):
         stage_routing = []
         for i, stage in enumerate(stages):
             stage_routing.append(
-                f'''        if stage_name == "{stage}":
-            return await self._{stage}(input_data, tier)'''
+                f"""        if stage_name == "{stage}":
+            return await self._{stage}(input_data, tier)"""
             )
 
         stage_routing_code = "\n".join(stage_routing)
@@ -181,10 +181,10 @@ class MultiStagePattern(WorkflowPattern):
         return [
             CodeSection(
                 location="class_attributes",
-                code=f'''    name = "{workflow_name}"
+                code=f"""    name = "{workflow_name}"
     description = "{description}"
     stages = {stages}
-{tier_map_code}''',
+{tier_map_code}""",
                 priority=1,
             ),
             CodeSection(
@@ -236,13 +236,13 @@ class CrewBasedPattern(WorkflowPattern):
         return [
             CodeSection(
                 location="class_attributes",
-                code=f'''    name = "{workflow_name}"
+                code=f"""    name = "{workflow_name}"
     description = "{description}"
     stages = ["analyze", "fix"]
     tier_map = {{
         "analyze": ModelTier.CAPABLE,
         "fix": ModelTier.CAPABLE,
-    }}''',
+    }}""",
                 priority=1,
             ),
             CodeSection(

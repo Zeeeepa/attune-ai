@@ -28,6 +28,7 @@ Licensed under Fair Source 0.9
 """
 
 import base64
+import binascii
 import concurrent.futures
 import hashlib
 import json
@@ -168,7 +169,7 @@ class EncryptionManager:
         if env_key := os.getenv("EMPATHY_MASTER_KEY"):
             try:
                 return base64.b64decode(env_key)
-            except (base64.binascii.Error, ValueError) as e:
+            except (binascii.Error, ValueError) as e:
                 logger.error("invalid_master_key_in_env", error=str(e))
                 raise ValueError("Invalid EMPATHY_MASTER_KEY format") from e
 
@@ -255,7 +256,7 @@ class EncryptionManager:
 
             return plaintext_bytes.decode("utf-8")
 
-        except (ValueError, TypeError, UnicodeDecodeError, base64.binascii.Error) as e:
+        except (ValueError, TypeError, UnicodeDecodeError, binascii.Error) as e:
             logger.error("decryption_failed", error=str(e))
             raise SecurityError(f"Decryption failed: {e}") from e
 

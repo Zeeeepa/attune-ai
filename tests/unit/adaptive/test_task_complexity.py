@@ -236,9 +236,7 @@ class TestTaskComplexityScorerVeryComplexTasks:
         mock_tiktoken.get_encoding.return_value = mock_encoding
 
         scorer = TaskComplexityScorer()
-        score = scorer.score_task(
-            description="Very long description " * 100  # Long description
-        )
+        score = scorer.score_task(description="Very long description " * 100)  # Long description
 
         assert score.complexity_level == TaskComplexity.VERY_COMPLEX
         assert score.token_count >= 2000

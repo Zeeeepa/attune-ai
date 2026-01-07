@@ -4,9 +4,6 @@ Tests exact-match hash-based caching with TTL, LRU eviction, and persistence.
 """
 
 import time
-from unittest.mock import MagicMock
-
-import pytest
 
 from empathy_os.cache.hash_only import HashOnlyCache
 

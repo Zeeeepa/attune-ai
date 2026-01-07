@@ -4,7 +4,7 @@ Tests hybrid hash + semantic similarity caching with mocked sentence transformer
 """
 
 import time
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 import pytest

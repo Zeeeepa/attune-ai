@@ -38,9 +38,9 @@ from .integration import HotReloadIntegration
 from .reloader import ReloadResult, WizardReloader
 from .watcher import WizardFileWatcher
 from .websocket import (
-                        ReloadNotificationManager,
-                        create_notification_callback,
-                        get_notification_manager,
+    ReloadNotificationManager,
+    create_notification_callback,
+    get_notification_manager,
 )
 
 __all__ = [

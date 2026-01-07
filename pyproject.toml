@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empathy-framework"
-version = "3.7.1"
-description = "AI collaboration framework with XML-enhanced prompts, persistent memory, CrewAI integration, and multi-agent orchestration. Includes HIPAA-compliant healthcare wizards and 53% reduction in hallucinations."
+version = "3.8.0"
+description = "AI collaboration framework with hybrid caching (70% cost savings), XML-enhanced prompts, persistent memory, CrewAI integration, and multi-agent orchestration. Includes HIPAA-compliant healthcare wizards."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
@@ -92,6 +92,14 @@ agents = [
 # CrewAI for role-based multi-agent systems
 crewai = [
     "crewai>=0.1.0,<1.0.0",
+]
+
+# Hybrid caching for 70% cost reduction (v3.8.0+)
+# Includes semantic similarity matching with sentence-transformers
+cache = [
+    "sentence-transformers>=2.0.0,<4.0.0",
+    "torch>=2.0.0,<3.0.0",
+    "numpy>=1.24.0,<3.0.0",
 ]
 
 # Healthcare organizations - enterprise + compliance + healthcare plugins

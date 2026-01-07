@@ -573,7 +573,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
         if self.use_crew_for_assessment and self._crew_available:
             target = input_data.get("path", ".")
             try:
-                crew_report = await self._crew.audit(code=target, file_path=target)
+                crew_report = await self._crew.audit(target=target)
                 if crew_report and crew_report.findings:
                     crew_enhanced = True
                     # Convert crew findings to workflow format
