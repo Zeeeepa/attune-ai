@@ -620,11 +620,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
             "risk_level": (
                 "critical"
                 if risk_score >= 75
-                else "high"
-                if risk_score >= 50
-                else "medium"
-                if risk_score >= 25
-                else "low"
+                else "high" if risk_score >= 50 else "medium" if risk_score >= 25 else "low"
             ),
             "severity_breakdown": severity_counts,
             "by_owasp_category": {k: len(v) for k, v in by_owasp.items()},

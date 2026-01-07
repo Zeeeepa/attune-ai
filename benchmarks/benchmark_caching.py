@@ -148,7 +148,8 @@ async def benchmark_security_audit(cache) -> BenchmarkResult:
     test_dir = Path("/tmp/empathy_test_audit")
     test_dir.mkdir(exist_ok=True)
     test_file = test_dir / "app.py"
-    test_file.write_text("""
+    test_file.write_text(
+        """
 import os
 import subprocess
 
@@ -165,7 +166,8 @@ def process_data(data):
     # SQL injection risk
     query = f"SELECT * FROM users WHERE name = '{data}'"
     return execute_query(query)
-""")
+"""
+    )
 
     workflow = SecurityAuditWorkflow(cache=cache, enable_cache=True)
 
@@ -211,7 +213,8 @@ async def benchmark_bug_predict(cache) -> BenchmarkResult:
     test_dir = Path("/tmp/empathy_test_bugs")
     test_dir.mkdir(exist_ok=True)
     test_file = test_dir / "buggy.py"
-    test_file.write_text("""
+    test_file.write_text(
+        """
 def divide_numbers(a, b):
     # Missing zero check
     return a / b
@@ -231,7 +234,8 @@ def broad_exception():
     except:
         # Bare except
         pass
-""")
+"""
+    )
 
     workflow = BugPredictionWorkflow(cache=cache, enable_cache=True)
 
@@ -277,7 +281,8 @@ async def benchmark_refactor_plan(cache) -> BenchmarkResult:
     test_dir = Path("/tmp/empathy_test_refactor")
     test_dir.mkdir(exist_ok=True)
     test_file = test_dir / "messy.py"
-    test_file.write_text("""
+    test_file.write_text(
+        """
 class DataProcessor:
     def process(self, data):
         # Long method with multiple responsibilities
@@ -300,7 +305,8 @@ class DataProcessor:
                 valid_results.append(r)
 
         return valid_results
-""")
+"""
+    )
 
     workflow = RefactorPlanWorkflow(cache=cache, enable_cache=True)
 
@@ -397,6 +403,7 @@ async def benchmark_health_check(cache) -> BenchmarkResult:
     finally:
         # Cleanup
         import shutil
+
         shutil.rmtree(test_dir, ignore_errors=True)
 
     return result
@@ -410,7 +417,8 @@ async def benchmark_test_generation(cache) -> BenchmarkResult:
     test_dir = Path("/tmp/empathy_testgen_bench")
     test_dir.mkdir(exist_ok=True)
     test_file = test_dir / "calculator.py"
-    test_file.write_text("""
+    test_file.write_text(
+        """
 def add(a, b):
     return a + b
 
@@ -419,7 +427,8 @@ def subtract(a, b):
 
 def multiply(a, b):
     return a * b
-""")
+"""
+    )
 
     workflow = TestGenerationWorkflow(cache=cache, enable_cache=True)
 
@@ -452,6 +461,7 @@ def multiply(a, b):
     finally:
         # Cleanup
         import shutil
+
         shutil.rmtree(test_dir, ignore_errors=True)
 
     return result
@@ -465,7 +475,8 @@ async def benchmark_perf_audit(cache) -> BenchmarkResult:
     test_dir = Path("/tmp/empathy_perfaudit_bench")
     test_dir.mkdir(exist_ok=True)
     test_file = test_dir / "slow_code.py"
-    test_file.write_text("""
+    test_file.write_text(
+        """
 import time
 
 def slow_function():
@@ -482,7 +493,8 @@ def repeated_calls():
     for i in range(100):
         data.append(slow_function())
     return data
-""")
+"""
+    )
 
     workflow = PerformanceAuditWorkflow(cache=cache, enable_cache=True)
 
@@ -515,6 +527,7 @@ def repeated_calls():
     finally:
         # Cleanup
         import shutil
+
         shutil.rmtree(test_dir, ignore_errors=True)
 
     return result
@@ -528,12 +541,14 @@ async def benchmark_dependency_check(cache) -> BenchmarkResult:
     test_dir = Path("/tmp/empathy_depcheck_bench")
     test_dir.mkdir(exist_ok=True)
     req_file = test_dir / "requirements.txt"
-    req_file.write_text("""
+    req_file.write_text(
+        """
 requests==2.25.0
 numpy==1.19.0
 pandas==1.1.0
 flask==1.1.2
-""")
+"""
+    )
 
     workflow = DependencyCheckWorkflow(cache=cache, enable_cache=True)
 
@@ -566,6 +581,7 @@ flask==1.1.2
     finally:
         # Cleanup
         import shutil
+
         shutil.rmtree(test_dir, ignore_errors=True)
 
     return result
@@ -592,7 +608,9 @@ def calculate_fibonacci(n: int) -> int:
         # Run 1 (cold cache - should be 0% hit rate)
         print("  ▶ Run 1 (cold cache)...")
         start = time.time()
-        r1 = await workflow.execute(source_code=test_code, doc_type="api_reference", audience="developers")
+        r1 = await workflow.execute(
+            source_code=test_code, doc_type="api_reference", audience="developers"
+        )
         result.run1_time = time.time() - start
         result.run1_success = r1.success
         result.run1_cost = r1.cost_report.total_cost
@@ -602,7 +620,9 @@ def calculate_fibonacci(n: int) -> int:
         # Run 2 (warm cache - should be ~100% hit rate)
         print("  ▶ Run 2 (warm cache)...")
         start = time.time()
-        r2 = await workflow.execute(source_code=test_code, doc_type="api_reference", audience="developers")
+        r2 = await workflow.execute(
+            source_code=test_code, doc_type="api_reference", audience="developers"
+        )
         result.run2_time = time.time() - start
         result.run2_success = r2.success
         result.run2_cost = r2.cost_report.total_cost
@@ -661,6 +681,7 @@ async def benchmark_release_prep(cache) -> BenchmarkResult:
     finally:
         # Cleanup
         import shutil
+
         shutil.rmtree(test_dir, ignore_errors=True)
 
     return result
@@ -674,7 +695,7 @@ async def benchmark_research_synthesis(cache) -> BenchmarkResult:
     sources = [
         "Machine learning is a subset of AI that enables systems to learn from data.",
         "Deep learning uses neural networks with multiple layers.",
-        "Supervised learning requires labeled training data."
+        "Supervised learning requires labeled training data.",
     ]
     question = "What is the difference between ML and deep learning?"
 
@@ -720,7 +741,8 @@ async def benchmark_keyboard_shortcuts(cache) -> BenchmarkResult:
 
     # Create a simple package.json with commands
     package_json = test_dir / "package.json"
-    package_json.write_text("""{
+    package_json.write_text(
+        """{
   "name": "test-extension",
   "contributes": {
     "commands": [
@@ -730,7 +752,8 @@ async def benchmark_keyboard_shortcuts(cache) -> BenchmarkResult:
       {"command": "extension.debug", "title": "Start Debugging"}
     ]
   }
-}""")
+}"""
+    )
 
     workflow = KeyboardShortcutWorkflow(cache=cache, enable_cache=True)
 
@@ -763,12 +786,15 @@ async def benchmark_keyboard_shortcuts(cache) -> BenchmarkResult:
     finally:
         # Cleanup
         import shutil
+
         shutil.rmtree(test_dir, ignore_errors=True)
 
     return result
 
 
-def generate_report(results: list[BenchmarkResult], output_file: str = "CACHING_BENCHMARK_REPORT.md"):
+def generate_report(
+    results: list[BenchmarkResult], output_file: str = "CACHING_BENCHMARK_REPORT.md"
+):
     """Generate markdown report from benchmark results."""
     import sys
 
@@ -787,9 +813,7 @@ def generate_report(results: list[BenchmarkResult], output_file: str = "CACHING_
     )
 
     # Safe percentage calculation
-    savings_percent = (
-        (total_savings / total_run1_cost * 100) if total_run1_cost > 0 else 0.0
-    )
+    savings_percent = (total_savings / total_run1_cost * 100) if total_run1_cost > 0 else 0.0
 
     # Get Python version
     python_version = sys.version.split()[0]
@@ -865,7 +889,9 @@ def generate_report(results: list[BenchmarkResult], output_file: str = "CACHING_
     # Analyze results
     high_hit_rate = [r for r in results if r.run2_hit_rate >= 50]
     if high_hit_rate:
-        report += f"- **{len(high_hit_rate)} workflows** achieved ≥50% cache hit rate on second run\n"
+        report += (
+            f"- **{len(high_hit_rate)} workflows** achieved ≥50% cache hit rate on second run\n"
+        )
 
     if successful_results:
         max_savings = max(successful_results, key=lambda r: r.cache_savings)
@@ -971,7 +997,9 @@ async def main():
             print(f"  ❌ Error: {result.error}")
         else:
             print(f"  ✅ Run 1: ${result.run1_cost:.6f}, {result.run1_time:.2f}s")
-            print(f"  ✅ Run 2: ${result.run2_cost:.6f}, {result.run2_time:.2f}s ({result.run2_hit_rate:.1f}% hit rate)")
+            print(
+                f"  ✅ Run 2: ${result.run2_cost:.6f}, {result.run2_time:.2f}s ({result.run2_hit_rate:.1f}% hit rate)"
+            )
             print(f"  💰 Savings: ${result.cache_savings:.6f}")
         print()
 

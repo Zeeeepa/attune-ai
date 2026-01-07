@@ -81,9 +81,9 @@ async def test_hash_only_cache():
     print_cache_stats(result2, 2)
 
     # Verify expectations
-    assert result2.cost_report.cache_hits > result1.cost_report.cache_hits, (
-        "Second run should have more cache hits"
-    )
+    assert (
+        result2.cost_report.cache_hits > result1.cost_report.cache_hits
+    ), "Second run should have more cache hits"
     print("\n✅ Hash-only cache test PASSED")
     return result1, result2
 
@@ -197,9 +197,9 @@ async def test_cache_statistics():
         print(f"  Run {i}: {result.cost_report.cache_hit_rate:.1f}%")
 
     # Last run should have highest hit rate
-    assert results[-1].cost_report.cache_hit_rate >= results[0].cost_report.cache_hit_rate, (
-        "Hit rate should increase or stay same"
-    )
+    assert (
+        results[-1].cost_report.cache_hit_rate >= results[0].cost_report.cache_hit_rate
+    ), "Hit rate should increase or stay same"
 
     # Get cache stats directly
     stats = cache.get_stats()

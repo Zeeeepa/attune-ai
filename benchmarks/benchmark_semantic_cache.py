@@ -57,7 +57,7 @@ diff --git a/src/auth.py b/src/auth.py
            return False
 -       return user.check_password(password)
 +       return user.verify_password(password)
-"""
+""",
 }
 
 SECURITY_TEST_FILES = {
@@ -93,7 +93,7 @@ def run_command(user_input):
 def get_secret():
     pwd = "admin123"  # Hardcoded password
     return pwd
-"""
+""",
 }
 
 
@@ -105,15 +105,23 @@ class BenchmarkResult:
         self.cache_type = cache_type
         self.runs = []
 
-    def add_run(self, prompt_variant: str, cost: float, time: float, cache_hits: int, cache_misses: int):
-        self.runs.append({
-            "prompt": prompt_variant,
-            "cost": cost,
-            "time": time,
-            "hits": cache_hits,
-            "misses": cache_misses,
-            "hit_rate": (cache_hits / (cache_hits + cache_misses) * 100) if (cache_hits + cache_misses) > 0 else 0
-        })
+    def add_run(
+        self, prompt_variant: str, cost: float, time: float, cache_hits: int, cache_misses: int
+    ):
+        self.runs.append(
+            {
+                "prompt": prompt_variant,
+                "cost": cost,
+                "time": time,
+                "hits": cache_hits,
+                "misses": cache_misses,
+                "hit_rate": (
+                    (cache_hits / (cache_hits + cache_misses) * 100)
+                    if (cache_hits + cache_misses) > 0
+                    else 0
+                ),
+            }
+        )
 
     def get_summary(self):
         if not self.runs:
@@ -124,7 +132,7 @@ class BenchmarkResult:
             "avg_time": sum(r["time"] for r in self.runs) / len(self.runs),
             "avg_hit_rate": sum(r["hit_rate"] for r in self.runs) / len(self.runs),
             "total_hits": sum(r["hits"] for r in self.runs),
-            "total_misses": sum(r["misses"] for r in self.runs)
+            "total_misses": sum(r["misses"] for r in self.runs),
         }
 
 
@@ -155,12 +163,14 @@ async def benchmark_code_review_variants(cache, cache_type: str) -> BenchmarkRes
             r.cost_report.total_cost,
             elapsed,
             r.cost_report.cache_hits,
-            r.cost_report.cache_misses
+            r.cost_report.cache_misses,
         )
 
         print(f"    Cost: ${r.cost_report.total_cost:.6f}")
         print(f"    Time: {elapsed:.2f}s")
-        print(f"    Cache: {r.cost_report.cache_hits} hits, {r.cost_report.cache_misses} misses ({r.cost_report.cache_hit_rate:.1f}% hit rate)")
+        print(
+            f"    Cache: {r.cost_report.cache_hits} hits, {r.cost_report.cache_misses} misses ({r.cost_report.cache_hit_rate:.1f}% hit rate)"
+        )
         print()
 
     return result
@@ -202,12 +212,14 @@ async def benchmark_security_audit_variants(cache, cache_type: str) -> Benchmark
                 r.cost_report.total_cost,
                 elapsed,
                 r.cost_report.cache_hits,
-                r.cost_report.cache_misses
+                r.cost_report.cache_misses,
             )
 
             print(f"    Cost: ${r.cost_report.total_cost:.6f}")
             print(f"    Time: {elapsed:.2f}s")
-            print(f"    Cache: {r.cost_report.cache_hits} hits, {r.cost_report.cache_misses} misses ({r.cost_report.cache_hit_rate:.1f}% hit rate)")
+            print(
+                f"    Cache: {r.cost_report.cache_hits} hits, {r.cost_report.cache_misses} misses ({r.cost_report.cache_hit_rate:.1f}% hit rate)"
+            )
             print()
     finally:
         # Cleanup
@@ -303,7 +315,7 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
                 hash_summary = hash_result.get_summary()
                 hybrid_summary = hybrid_result.get_summary()
 
-                hit_rate_improvement = hybrid_summary['avg_hit_rate'] - hash_summary['avg_hit_rate']
+                hit_rate_improvement = hybrid_summary["avg_hit_rate"] - hash_summary["avg_hit_rate"]
 
                 report += f"""### {workflow_name.title()}
 
@@ -325,7 +337,9 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
     if hybrid_results:
         hybrid_summaries = [r.get_summary() for r in hybrid_results if r.get_summary()]
         if hybrid_summaries:
-            avg_hybrid_hit_rate = sum(s['avg_hit_rate'] for s in hybrid_summaries) / len(hybrid_summaries)
+            avg_hybrid_hit_rate = sum(s["avg_hit_rate"] for s in hybrid_summaries) / len(
+                hybrid_summaries
+            )
             report += f"""
 ### Semantic Matching Performance
 
@@ -361,7 +375,7 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
     # Generate honest claims based on actual data
     for result in hybrid_results:
         summary = result.get_summary()
-        if summary and summary['avg_hit_rate'] > 0:
+        if summary and summary["avg_hit_rate"] > 0:
             report += f"""✅ "{summary['avg_hit_rate']:.0f}% cache hit rate on {result.test_name} with semantic matching"
 - Source: This benchmark, {result.test_name} hybrid cache results
 - Evidence: {summary['total_hits']} hits, {summary['total_misses']} misses across {summary['total_runs']} runs

@@ -6,4 +6,3 @@
 #   source aliases.sh
 #
 # Mnemonic: First letter of each command
-

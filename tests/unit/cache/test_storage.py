@@ -19,7 +19,7 @@ class TestCacheStorage:
         """Test that cache directory is created on init."""
         with tempfile.TemporaryDirectory() as tmpdir:
             cache_dir = Path(tmpdir) / "cache"
-            storage = CacheStorage(cache_dir=cache_dir)
+            CacheStorage(cache_dir=cache_dir)
 
             assert cache_dir.exists()
             assert cache_dir.is_dir()

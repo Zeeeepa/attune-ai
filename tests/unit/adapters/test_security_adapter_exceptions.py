@@ -217,7 +217,7 @@ class TestDependencyScanning:
             return_value=mock_scanner,
         ):
             with caplog.at_level(logging.WARNING):
-                result = await adapter.analyze()
+                await adapter.analyze()
 
         # Should log warning
         assert any("Cannot access dependency files" in record.message for record in caplog.records)
@@ -410,7 +410,7 @@ class TestFailSecurePatterns:
             return_value=mock_scanner,
         ):
             with caplog.at_level(logging.ERROR):
-                result = await adapter.analyze()
+                await adapter.analyze()
 
         # Should log specific error message
         error_logs = [r for r in caplog.records if r.levelno >= logging.ERROR]

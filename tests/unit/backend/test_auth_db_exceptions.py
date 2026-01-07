@@ -93,7 +93,7 @@ class TestConnectionExceptionHandling:
         """Unexpected errors should log with full exception traceback."""
         with caplog.at_level(logging.ERROR):
             with pytest.raises(Exception):
-                with temp_db._get_connection() as conn:
+                with temp_db._get_connection():
                     # Trigger unexpected error
                     raise RuntimeError("Unexpected database operation error")
 
@@ -102,7 +102,6 @@ class TestConnectionExceptionHandling:
 
     def test_rollback_occurs_on_exception(self, temp_db):
         """Database should rollback on exception, not commit partial changes."""
-        initial_count = 0  # No users initially
 
         with pytest.raises(sqlite3.IntegrityError):
             with temp_db._get_connection() as conn:
@@ -245,12 +244,12 @@ class TestSecurityAuditTrail:
         """Complete authentication flow should have full audit trail."""
         with caplog.at_level(logging.INFO):
             # Create user
-            user_id = temp_db.create_user(
+            temp_db.create_user(
                 email="audit@example.com", password="password123", name="Audit User"
             )
 
             # Successful login
-            result = temp_db.verify_user("audit@example.com", "password123")
+            temp_db.verify_user("audit@example.com", "password123")
 
             # Record attempt
             temp_db.record_login_attempt("audit@example.com", success=True, ip_address="127.0.0.1")
@@ -319,7 +318,7 @@ class TestAuthenticationOperations:
         email = "tracker@example.com"
 
         # Record 3 failed attempts
-        for i in range(3):
+        for _i in range(3):
             temp_db.record_login_attempt(email, success=False)
 
         # Check failed attempts count

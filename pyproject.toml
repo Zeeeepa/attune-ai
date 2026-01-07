@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empathy-framework"
-version = "3.8.1"
+version = "3.8.2"
 description = "AI collaboration framework with intelligent caching (up to 57% cache hit rate), tier routing (34-86% cost savings depending on task complexity), XML-enhanced prompts, persistent memory, CrewAI integration, and multi-agent orchestration. Includes HIPAA-compliant healthcare wizards."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
@@ -396,6 +396,16 @@ exclude = [
     ".archive/",  # Archived files
     "src/empathy_os/workflows/new_sample_workflow1.py",  # Test workflow
     "src/empathy_os/workflows/test5.py",  # Test workflow
+    "benchmarks/",  # Benchmark and test scripts
+    "scaffolding/",  # Development scaffolding code
+    "hot_reload/",  # Hot reload system
+    "test_generator/",  # Test generator tools
+    "workflow_patterns/",  # Experimental workflow patterns
+    "workflow_scaffolding/",  # Workflow scaffolding tools
+    "scripts/",  # Build and release scripts
+    "services/",  # Service layer (external)
+    "vscode-extension/",  # VSCode extension code
+    "vscode-memory-panel/",  # VSCode memory panel
 ]
 
 [tool.ruff.lint]
@@ -423,7 +433,7 @@ known-first-party = ["services", "empathy_llm_toolkit", "empathy_software_plugin
 "__init__.py" = ["F401"]  # unused imports in __init__.py
 "test_*.py" = ["BLE001"]  # Test files can catch broad exceptions
 "*_test.py" = ["BLE001"]  # Test files can catch broad exceptions
-"tests/**/*.py" = ["BLE001"]  # Test files can catch broad exceptions
+"tests/**/*.py" = ["BLE001", "B017"]  # Test files can catch/assert broad exceptions
 "agents/**/*.py" = ["BLE001"]  # Agent files need broad exception handling for resilience
 "backend/**/*.py" = ["BLE001", "E402"]  # Backend files need broad exception handling
 "*_wizard.py" = ["BLE001"]  # Wizard files need broad exception handling
@@ -438,6 +448,20 @@ known-first-party = ["services", "empathy_llm_toolkit", "empathy_software_plugin
 "empathy_software_plugin/**/*.py" = ["BLE001"]  # Plugin needs broad exception handling
 "examples/**/*.py" = ["BLE001"]  # Examples can use broad exception handling
 "demo_*.py" = ["BLE001"]  # Demo files can use broad exception handling
+"benchmark_*.py" = ["BLE001"]  # Benchmark scripts need broad exception handling for error reporting
+"profile_*.py" = ["BLE001"]  # Profiling scripts need broad exception handling
+"run_*.py" = ["BLE001"]  # Manual test runner scripts
+"manual_*.py" = ["BLE001"]  # Manual test scripts
+"benchmarks/**/*.py" = ["BLE001"]  # Benchmark directory - broad exception handling for test/benchmark scripts
+"hot_reload/**/*.py" = ["BLE001"]  # Hot reload system needs broad exception handling
+"scaffolding/**/*.py" = ["BLE001"]  # Scaffolding code - development tools
+"test_generator/**/*.py" = ["BLE001"]  # Test generator - development tools
+"workflow_patterns/**/*.py" = ["BLE001"]  # Workflow patterns - development/experimental
+"workflow_scaffolding/**/*.py" = ["BLE001"]  # Workflow scaffolding - development tools
+"scripts/**/*.py" = ["BLE001"]  # Build and release scripts need broad exception handling
+"services/**/*.py" = ["BLE001"]  # Service layer needs broad exception handling
+"vscode-extension/**/*.py" = ["BLE001"]  # VSCode extension scripts
+"vscode-memory-panel/**/*.py" = ["BLE001"]  # VSCode memory panel scripts
 
 # MyPy type checker configuration
 [tool.mypy]

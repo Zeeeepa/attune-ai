@@ -112,7 +112,7 @@ class TestConnectionExceptionHandling:
         """Unexpected errors should log with full exception traceback."""
         with caplog.at_level(logging.ERROR):
             with pytest.raises(Exception):
-                with temp_db._get_connection() as conn:
+                with temp_db._get_connection():
                     # Trigger unexpected error
                     raise RuntimeError("Unexpected database operation error")
 
@@ -208,7 +208,7 @@ class TestAuditTrailLogging:
     def test_record_compliant_status_logs_info(self, temp_db, caplog):
         """Compliant status should log at INFO level."""
         with caplog.at_level(logging.INFO):
-            status_id = temp_db.record_compliance_status(
+            temp_db.record_compliance_status(
                 compliance_framework="HIPAA",
                 status="compliant",
                 effective_date=datetime(2026, 1, 5),
@@ -226,7 +226,7 @@ class TestAuditTrailLogging:
     def test_record_noncompliant_status_logs_warning(self, temp_db, caplog):
         """Non-compliant status should log at WARNING level."""
         with caplog.at_level(logging.WARNING):
-            status_id = temp_db.record_compliance_status(
+            temp_db.record_compliance_status(
                 compliance_framework="HIPAA",
                 status="non_compliant",
                 effective_date=datetime(2026, 1, 5),
@@ -244,7 +244,7 @@ class TestAuditTrailLogging:
     def test_critical_gap_audit_trail(self, temp_db, caplog):
         """Critical compliance gaps should have full audit trail."""
         with caplog.at_level(logging.WARNING):
-            gap_id = temp_db.record_gap(
+            temp_db.record_gap(
                 gap_type="data_breach_risk",
                 severity="critical",
                 description="Unencrypted PHI storage detected",

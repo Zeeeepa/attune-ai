@@ -46,12 +46,16 @@ diff --git a/src/auth.py b/src/auth.py
     t2 = time.time() - start
 
     print("\n  Results:")
-    print(f"    Run 1: ${r1.cost_report.total_cost:.6f} ({t1:.1f}s) - {r1.cost_report.cache_hit_rate:.0f}% hit rate")
+    print(
+        f"    Run 1: ${r1.cost_report.total_cost:.6f} ({t1:.1f}s) - {r1.cost_report.cache_hit_rate:.0f}% hit rate"
+    )
     print("      Tier breakdown:")
     print(f"        CHEAP:   ${r1.cost_report.by_tier.get('cheap', 0):.6f}")
     print(f"        CAPABLE: ${r1.cost_report.by_tier.get('capable', 0):.6f}")
     print(f"        PREMIUM: ${r1.cost_report.by_tier.get('premium', 0):.6f}")
-    print(f"    Run 2: ${r2.cost_report.total_cost:.6f} ({t2:.1f}s) - {r2.cost_report.cache_hit_rate:.0f}% hit rate")
+    print(
+        f"    Run 2: ${r2.cost_report.total_cost:.6f} ({t2:.1f}s) - {r2.cost_report.cache_hit_rate:.0f}% hit rate"
+    )
     print("      Tier breakdown:")
     print(f"        CHEAP:   ${r2.cost_report.by_tier.get('cheap', 0):.6f}")
     print(f"        CAPABLE: ${r2.cost_report.by_tier.get('capable', 0):.6f}")
@@ -70,7 +74,8 @@ async def benchmark_security_audit(cache):
     test_dir = Path("/tmp/empathy_security_test")
     test_dir.mkdir(exist_ok=True)
     test_file = test_dir / "app.py"
-    test_file.write_text("""
+    test_file.write_text(
+        """
 import os
 
 def run_command(user_input):
@@ -80,7 +85,8 @@ def run_command(user_input):
 def get_secret():
     password = "admin123"  # Hardcoded secret
     return password
-""")
+"""
+    )
 
     workflow = SecurityAuditWorkflow(cache=cache, enable_cache=True)
 
@@ -101,12 +107,16 @@ def get_secret():
         t2 = time.time() - start
 
         print("\n  Results:")
-        print(f"    Run 1: ${r1.cost_report.total_cost:.6f} ({t1:.1f}s) - {r1.cost_report.cache_hit_rate:.0f}% hit rate")
+        print(
+            f"    Run 1: ${r1.cost_report.total_cost:.6f} ({t1:.1f}s) - {r1.cost_report.cache_hit_rate:.0f}% hit rate"
+        )
         print("      Tier breakdown:")
         print(f"        CHEAP:   ${r1.cost_report.by_tier.get('cheap', 0):.6f}")
         print(f"        CAPABLE: ${r1.cost_report.by_tier.get('capable', 0):.6f}")
         print(f"        PREMIUM: ${r1.cost_report.by_tier.get('premium', 0):.6f}")
-        print(f"    Run 2: ${r2.cost_report.total_cost:.6f} ({t2:.1f}s) - {r2.cost_report.cache_hit_rate:.0f}% hit rate")
+        print(
+            f"    Run 2: ${r2.cost_report.total_cost:.6f} ({t2:.1f}s) - {r2.cost_report.cache_hit_rate:.0f}% hit rate"
+        )
         print("      Tier breakdown:")
         print(f"        CHEAP:   ${r2.cost_report.by_tier.get('cheap', 0):.6f}")
         print(f"        CAPABLE: ${r2.cost_report.by_tier.get('capable', 0):.6f}")

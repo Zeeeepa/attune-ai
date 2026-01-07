@@ -824,7 +824,62 @@
         "src/empathy_os/workflows/health_check.py"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260107_0f7a4e14",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Add missing binascii import for proper error handling",
+      "fix": "See commit 0f7a4e14",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-07",
+      "files_affected": [
+        "CACHING_BENCHMARK_REPORT.md",
+        "CHANGELOG.md",
+        "KEYBOARD_SHORTCUTS.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260107_1e70c287",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Replace broad exception handlers with specific types in long_term.py",
+      "fix": "See commit 1e70c287",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-07",
+      "files_affected": [
+        "src/empathy_os/memory/long_term.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260107_37afc340",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Resolve 4 critical type errors in cache module",
+      "fix": "See commit 37afc340",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-07",
+      "files_affected": [
+        "src/empathy_os/cache/dependency_manager.py",
+        "src/empathy_os/cache/hybrid.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_25c84d81",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove invalid cache_dir parameter from integration test",
+      "fix": "See commit 25c84d81",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "tests/integration/test_cache_integration.py"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2026-01-06T08:19:44.795086"
+  "last_updated": "2026-01-07T00:51:52.358772"
 }

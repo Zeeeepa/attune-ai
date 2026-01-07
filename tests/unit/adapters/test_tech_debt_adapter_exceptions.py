@@ -311,7 +311,7 @@ class TestLoggingAndErrorPropagation:
 
         with patch.object(Path, "read_text", side_effect=PermissionError("Denied")):
             with caplog.at_level(logging.WARNING):
-                result = await adapter._fallback_analyze(0.0)
+                await adapter._fallback_analyze(0.0)
 
         # Should log the error
         warning_logs = [r for r in caplog.records if r.levelno >= logging.WARNING]

@@ -67,7 +67,12 @@ class TestHashOnlyCache:
         cache.put("code-review", "scan", "test prompt", "claude-sonnet", {"model": "sonnet"})
 
         # Try to retrieve with model B (should miss)
-        result = cache.get("code-review", "scan", "test prompt", "gpt-4", )
+        result = cache.get(
+            "code-review",
+            "scan",
+            "test prompt",
+            "gpt-4",
+        )
 
         assert result is None
         assert cache.stats.misses == 1
