@@ -38,6 +38,48 @@ except ImportError:
     YAML_AVAILABLE = False
 
 
+def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
+    """Validate file path to prevent path traversal and arbitrary writes.
+
+    Args:
+        path: File path to validate
+        allowed_dir: Optional directory to restrict writes to
+
+    Returns:
+        Validated Path object
+
+    Raises:
+        ValueError: If path is invalid or unsafe
+    """
+    if not path or not isinstance(path, str):
+        raise ValueError("path must be a non-empty string")
+
+    # Check for null bytes
+    if "\x00" in path:
+        raise ValueError("path contains null bytes")
+
+    try:
+        resolved = Path(path).resolve()
+    except (OSError, RuntimeError) as e:
+        raise ValueError(f"Invalid path: {e}")
+
+    # Check if within allowed directory
+    if allowed_dir:
+        try:
+            allowed = Path(allowed_dir).resolve()
+            resolved.relative_to(allowed)
+        except ValueError:
+            raise ValueError(f"path must be within {allowed_dir}")
+
+    # Check for dangerous system paths
+    dangerous_paths = ["/etc", "/sys", "/proc", "/dev"]
+    for dangerous in dangerous_paths:
+        if str(resolved).startswith(dangerous):
+            raise ValueError(f"Cannot write to system directory: {dangerous}")
+
+    return resolved
+
+
 # Re-export for backward compatibility
 __all__ = [
     "DEFAULT_MODELS",
@@ -371,7 +413,10 @@ class WorkflowConfig:
 
     def save(self, path: str | Path) -> None:
         """Save configuration to file."""
-        path = Path(path)
+        # Validate path first (convert Path to string for validation)
+        path_str = str(path)
+        validated_path = _validate_file_path(path_str)
+
         data = {
             "default_provider": self.default_provider,
             "workflow_providers": self.workflow_providers,
@@ -387,15 +432,15 @@ class WorkflowConfig:
             "audit_level": self.audit_level,
         }
 
-        path.parent.mkdir(parents=True, exist_ok=True)
+        validated_path.parent.mkdir(parents=True, exist_ok=True)
 
-        if path.suffix in (".yaml", ".yml"):
+        if validated_path.suffix in (".yaml", ".yml"):
             if not YAML_AVAILABLE:
                 raise ImportError("PyYAML required for YAML config")
-            with open(path, "w") as f:
+            with open(validated_path, "w") as f:
                 yaml.dump(data, f, default_flow_style=False)
         else:
-            with open(path, "w") as f:
+            with open(validated_path, "w") as f:
                 json.dump(data, f, indent=2)
 
 

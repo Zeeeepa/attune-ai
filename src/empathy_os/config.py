@@ -26,6 +26,48 @@ except ImportError:
 from empathy_os.workflows.config import ModelConfig
 
 
+def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
+    """Validate file path to prevent path traversal and arbitrary writes.
+
+    Args:
+        path: File path to validate
+        allowed_dir: Optional directory to restrict writes to
+
+    Returns:
+        Validated Path object
+
+    Raises:
+        ValueError: If path is invalid or unsafe
+    """
+    if not path or not isinstance(path, str):
+        raise ValueError("path must be a non-empty string")
+
+    # Check for null bytes
+    if "\x00" in path:
+        raise ValueError("path contains null bytes")
+
+    try:
+        resolved = Path(path).resolve()
+    except (OSError, RuntimeError) as e:
+        raise ValueError(f"Invalid path: {e}")
+
+    # Check if within allowed directory
+    if allowed_dir:
+        try:
+            allowed = Path(allowed_dir).resolve()
+            resolved.relative_to(allowed)
+        except ValueError:
+            raise ValueError(f"path must be within {allowed_dir}")
+
+    # Check for dangerous system paths
+    dangerous_paths = ["/etc", "/sys", "/proc", "/dev"]
+    for dangerous in dangerous_paths:
+        if str(resolved).startswith(dangerous):
+            raise ValueError(f"Cannot write to system directory: {dangerous}")
+
+    return resolved
+
+
 @dataclass
 class EmpathyConfig:
     """Configuration for EmpathyOS instance
@@ -300,9 +342,10 @@ class EmpathyConfig:
                 "PyYAML is required for YAML export. Install with: pip install pyyaml",
             )
 
+        validated_path = _validate_file_path(filepath)
         data = asdict(self)
 
-        with open(filepath, "w") as f:
+        with open(validated_path, "w") as f:
             yaml.dump(data, f, default_flow_style=False, sort_keys=False)
 
     def to_json(self, filepath: str, indent: int = 2):
@@ -317,9 +360,10 @@ class EmpathyConfig:
             >>> config.to_json("my-config.json")
 
         """
+        validated_path = _validate_file_path(filepath)
         data = asdict(self)
 
-        with open(filepath, "w") as f:
+        with open(validated_path, "w") as f:
             json.dump(data, f, indent=indent)
 
     def to_dict(self) -> dict[str, Any]:
