@@ -168,7 +168,7 @@ class EncryptionManager:
         if env_key := os.getenv("EMPATHY_MASTER_KEY"):
             try:
                 return base64.b64decode(env_key)
-            except Exception as e:
+            except (base64.binascii.Error, ValueError) as e:
                 logger.error("invalid_master_key_in_env", error=str(e))
                 raise ValueError("Invalid EMPATHY_MASTER_KEY format") from e
 
@@ -177,7 +177,7 @@ class EncryptionManager:
         if key_file.exists():
             try:
                 return key_file.read_bytes()
-            except Exception as e:
+            except (OSError, PermissionError) as e:
                 logger.error("failed_to_load_key_file", error=str(e))
 
         # Generate ephemeral key (NOT for production)
@@ -219,7 +219,7 @@ class EncryptionManager:
             # Return base64-encoded
             return base64.b64encode(encrypted_data).decode("utf-8")
 
-        except Exception as e:
+        except (ValueError, TypeError, UnicodeEncodeError) as e:
             logger.error("encryption_failed", error=str(e))
             raise SecurityError(f"Encryption failed: {e}") from e
 
@@ -255,7 +255,7 @@ class EncryptionManager:
 
             return plaintext_bytes.decode("utf-8")
 
-        except Exception as e:
+        except (ValueError, TypeError, UnicodeDecodeError, base64.binascii.Error) as e:
             logger.error("decryption_failed", error=str(e))
             raise SecurityError(f"Decryption failed: {e}") from e
 
@@ -307,7 +307,7 @@ class MemDocsStorage:
             logger.debug("pattern_stored", pattern_id=pattern_id)
             return True
 
-        except Exception as e:
+        except (OSError, PermissionError, json.JSONDecodeError) as e:
             logger.error("pattern_storage_failed", pattern_id=pattern_id, error=str(e))
             raise
 
@@ -334,7 +334,7 @@ class MemDocsStorage:
             logger.debug("pattern_retrieved", pattern_id=pattern_id)
             return pattern_data
 
-        except Exception as e:
+        except (OSError, PermissionError, json.JSONDecodeError) as e:
             logger.error("pattern_retrieval_failed", pattern_id=pattern_id, error=str(e))
             return None
 
@@ -358,7 +358,7 @@ class MemDocsStorage:
             logger.info("pattern_deleted", pattern_id=pattern_id)
             return True
 
-        except Exception as e:
+        except (OSError, PermissionError) as e:
             logger.error("pattern_deletion_failed", pattern_id=pattern_id, error=str(e))
             return False
 
