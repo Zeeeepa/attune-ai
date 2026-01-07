@@ -5,13 +5,13 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.8.0] - 2026-01-06
+## [3.8.0] - 2026-01-07
 
 ### Added
 
 #### 🚀 Intelligent Response Caching System
 
-**Cost Reduction**: Up to 100% cache hit rate on identical prompts, 70%+ on semantically similar prompts with hybrid cache
+**Performance**: Up to 100% cache hit rate on identical prompts (hash-only), up to 57% on semantically similar prompts (hybrid cache - benchmarked)
 
 ##### Dual-Mode Caching Architecture
 
@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **HybridCache** ([empathy_os/cache/hybrid.py](src/empathy_os/cache/hybrid.py)) - Hash + semantic similarity matching
   - Falls back to semantic search when hash miss occurs
-  - 70%+ hit rate on similar prompts (e.g., "Add middleware" vs "Add logging middleware")
+  - Up to 57% hit rate on similar prompts (benchmarked on security audit workflow)
   - Uses sentence-transformers (all-MiniLM-L6-v2 model)
   - Configurable similarity threshold (default: 0.95)
   - Automatic hash cache promotion for semantic hits
@@ -83,7 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Runs each workflow twice (cold cache vs warm cache)
   - Collects cost, time, and cache hit rate metrics
   - Generates markdown report with ROI projections
-  - Expected results: ~100% hit rate on identical runs, 70%+ with hybrid cache
+  - Expected results: ~100% hit rate on identical runs, up to 57% with hybrid cache (measured)
 
 - **benchmark_caching_simple.py** - Minimal 2-workflow quick test
   - Tests code-review and security-audit only

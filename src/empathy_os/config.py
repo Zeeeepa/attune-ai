@@ -475,7 +475,8 @@ def load_config(
         try:
             env_config = EmpathyConfig.from_env()
             config = config.merge(env_config)
-        except Exception:
+        except (ValueError, TypeError):
+            # Graceful fallback: invalid env var type conversion
             pass  # Use current config if environment parsing fails
 
     # Validate final configuration

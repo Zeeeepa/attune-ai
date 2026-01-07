@@ -254,9 +254,9 @@ print(result.prevention_steps)    # How to prevent it
 
 ## What's New in v3.8.0
 
-### 🚀 **Intelligent Response Caching: 50-70% Cost Reduction**
+### 🚀 **Intelligent Response Caching: Benchmarked Performance**
 
-**Stop paying full price for repeated LLM calls. Cache automatically reduces API costs by half on production workloads.**
+**Stop paying full price for repeated LLM calls. Measured results: up to 99.8% faster, 40% cost reduction on test generation, 57% cache hit rate on security audits.**
 
 #### Hybrid Cache: Hash + Semantic Matching
 
@@ -273,10 +273,11 @@ print(f"Cache hit rate: {result.cost_report.cache_hit_rate:.1f}%")
 print(f"Savings: ${result.cost_report.savings_from_cache:.4f}")
 ```
 
-**Real Results** (v3.8.0 benchmark - 12 workflows):
-- **Without cache**: $0.856/run
-- **With cache (Run 2)**: $0.428/run
-- **Savings**: 50% on repeated workflows, 70%+ on similar prompts
+**Real Results** (v3.8.0 benchmark - see [CACHING_BENCHMARK_REPORT.md](CACHING_BENCHMARK_REPORT.md)):
+
+- **Hash-only cache**: 30.3% average hit rate across 12 workflows, up to 99.8% faster (code review: 17.8s → 0.03s)
+- **Hybrid cache**: Up to 57% hit rate on similar prompts (security audit - benchmarked)
+- **Cost reduction**: 40% on test-generation workflow (measured)
 
 #### Two Cache Strategies
 
@@ -287,7 +288,8 @@ print(f"Savings: ${result.cost_report.savings_from_cache:.4f}")
 - No ML dependencies needed
 
 **Hybrid Cache** (Semantic Matching):
-- 70-90% hit rate on similar prompts
+
+- Up to 57% hit rate on similar prompts (benchmarked)
 - Understands intent, not just text
 - Install: `pip install empathy-framework[cache]`
 - Best for development and production
@@ -298,9 +300,9 @@ Framework detects your environment and configures optimal caching:
 
 ```python
 # First run: Framework checks for sentence-transformers
-# - Found? Uses hybrid cache (semantic matching)
-# - Missing? Prompts: "Install for 70% savings? (y/n)"
-# - Declined? Falls back to hash-only (still 50% savings)
+# - Found? Uses hybrid cache (semantic matching, up to 57% hit rate)
+# - Missing? Prompts: "Install for semantic matching? (y/n)"
+# - Declined? Falls back to hash-only (100% hit rate on identical prompts)
 # - Any errors? Disables gracefully, workflow continues
 
 # Subsequent runs: Cache just works

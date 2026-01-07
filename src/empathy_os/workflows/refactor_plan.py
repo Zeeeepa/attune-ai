@@ -482,8 +482,10 @@ Create a phased approach to reduce debt sustainably."""
                     prompt=user_message,
                     system=system,
                 )
-            except Exception:
-                # Fall back to legacy _call_llm if executor fails
+            except (RuntimeError, ValueError, TypeError, KeyError, AttributeError) as e:
+                # INTENTIONAL: Graceful fallback to legacy _call_llm if executor fails
+                # Catches executor/API/parsing errors during new execution path
+                logger.warning(f"Executor failed, falling back to legacy path: {e}")
                 response, input_tokens, output_tokens = await self._call_llm(
                     tier,
                     system or "",
