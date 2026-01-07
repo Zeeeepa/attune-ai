@@ -124,8 +124,9 @@ def _validate_agent_id(agent_id: str) -> bool:
     if not agent_id or not isinstance(agent_id, str):
         return False
 
-    # Check for dangerous characters
-    if any(c in agent_id for c in [".", "/", "\\", "\x00", ";", "|", "&"]):
+    # Check for dangerous characters (path separators, null bytes, command injection)
+    # Note: "." and "@" are allowed for email-style user IDs
+    if any(c in agent_id for c in ["/", "\\", "\x00", ";", "|", "&"]):
         return False
 
     # Check length bounds
@@ -153,10 +154,70 @@ def _validate_classification(classification: str | None) -> bool:
     return classification.upper() in ("PUBLIC", "INTERNAL", "SENSITIVE")
 
 
+def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
+    """Validate file path to prevent path traversal and arbitrary writes.
+
+    Args:
+        path: Path to validate
+        allowed_dir: Optional directory that must contain the path
+
+    Returns:
+        Resolved absolute Path object
+
+    Raises:
+        ValueError: If path is invalid or outside allowed directory
+
+    """
+    if not path or not isinstance(path, str):
+        raise ValueError("path must be a non-empty string")
+
+    # Check for null bytes
+    if "\x00" in path:
+        raise ValueError("path contains null bytes")
+
+    try:
+        # Resolve to absolute path
+        resolved = Path(path).resolve()
+    except (OSError, RuntimeError) as e:
+        raise ValueError(f"Invalid path: {e}")
+
+    # Check if within allowed directory
+    if allowed_dir:
+        try:
+            allowed = Path(allowed_dir).resolve()
+            resolved.relative_to(allowed)
+        except ValueError:
+            raise ValueError(f"path must be within {allowed_dir}")
+
+    # Check for dangerous system paths
+    dangerous_paths = ["/etc", "/sys", "/proc", "/dev"]
+    for dangerous in dangerous_paths:
+        if str(resolved).startswith(dangerous):
+            raise ValueError(f"Cannot write to system directory: {dangerous}")
+
+    return resolved
+
+
 class RateLimiter:
     """Simple in-memory rate limiter by IP address."""
 
     def __init__(self, window_seconds: int = 60, max_requests: int = 100):
+        """Initialize rate limiter.
+
+        Args:
+            window_seconds: Time window in seconds
+            max_requests: Maximum requests allowed per window
+
+        Raises:
+            ValueError: If window_seconds or max_requests is invalid
+
+        """
+        if window_seconds < 1:
+            raise ValueError(f"window_seconds must be positive, got {window_seconds}")
+
+        if max_requests < 1:
+            raise ValueError(f"max_requests must be positive, got {max_requests}")
+
         self.window_seconds = window_seconds
         self.max_requests = max_requests
         self._requests: dict[str, list[float]] = defaultdict(list)
@@ -406,8 +467,9 @@ class MemoryControlPanel:
                 stats.storage_bytes = sum(
                     f.stat().st_size for f in storage_path.glob("**/*") if f.is_file()
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug("storage_size_calculation_failed", error=str(e))
+                stats.storage_bytes = 0
 
             try:
                 long_term = self._get_long_term()
@@ -439,7 +501,24 @@ class MemoryControlPanel:
         Returns:
             List of pattern summaries
 
+        Raises:
+            ValueError: If classification is invalid or limit is out of range
+
         """
+        # Validate classification
+        if not _validate_classification(classification):
+            raise ValueError(
+                f"Invalid classification '{classification}'. "
+                f"Must be PUBLIC, INTERNAL, or SENSITIVE."
+            )
+
+        # Validate limit range
+        if limit < 1:
+            raise ValueError(f"limit must be positive, got {limit}")
+
+        if limit > 10000:
+            raise ValueError(f"limit too large (max 10000), got {limit}")
+
         long_term = self._get_long_term()
 
         class_filter = None
@@ -464,13 +543,24 @@ class MemoryControlPanel:
         Returns:
             True if deleted
 
+        Raises:
+            ValueError: If pattern_id or user_id format is invalid
+
         """
+        # Validate pattern_id
+        if not _validate_pattern_id(pattern_id):
+            raise ValueError(f"Invalid pattern_id format: {pattern_id}")
+
+        # Validate user_id (reuse agent_id validation - same format)
+        if not _validate_agent_id(user_id):
+            raise ValueError(f"Invalid user_id format: {user_id}")
+
         long_term = self._get_long_term()
         try:
             return long_term.delete_pattern(pattern_id, user_id)
         except Exception as e:
             logger.error("delete_pattern_failed", pattern_id=pattern_id, error=str(e))
-            return False
+            return False  # Graceful degradation - validation errors raise, storage errors return False
 
     def clear_short_term(self, agent_id: str = "admin") -> int:
         """Clear all short-term memory for an agent.
@@ -481,7 +571,14 @@ class MemoryControlPanel:
         Returns:
             Number of keys deleted
 
+        Raises:
+            ValueError: If agent_id format is invalid
+
         """
+        # Validate agent_id
+        if not _validate_agent_id(agent_id):
+            raise ValueError(f"Invalid agent_id format: {agent_id}")
+
         memory = self._get_short_term()
         creds = AgentCredentials(agent_id=agent_id, tier=AccessTier.STEWARD)
         return memory.clear_working_memory(creds)
@@ -496,7 +593,20 @@ class MemoryControlPanel:
         Returns:
             Number of patterns exported
 
+        Raises:
+            ValueError: If output_path is invalid, classification invalid, or path is unsafe
+
         """
+        # Validate file path to prevent path traversal attacks
+        validated_path = _validate_file_path(output_path)
+
+        # Validate classification (list_patterns will also validate, but do it early)
+        if not _validate_classification(classification):
+            raise ValueError(
+                f"Invalid classification '{classification}'. "
+                f"Must be PUBLIC, INTERNAL, or SENSITIVE."
+            )
+
         patterns = self.list_patterns(classification=classification)
 
         export_data = {
@@ -506,7 +616,7 @@ class MemoryControlPanel:
             "patterns": patterns,
         }
 
-        with open(output_path, "w") as f:
+        with open(validated_path, "w") as f:
             json.dump(export_data, f, indent=2)
 
         return len(patterns)
@@ -605,11 +715,21 @@ class MemoryControlPanel:
         return self._long_term
 
     def _count_patterns(self) -> int:
-        """Count patterns in storage."""
+        """Count patterns in storage.
+
+        Returns:
+            Number of pattern files, or 0 if counting fails
+
+        """
         storage_path = Path(self.config.storage_dir)
         if not storage_path.exists():
             return 0
-        return len(list(storage_path.glob("*.json")))
+
+        try:
+            return len(list(storage_path.glob("*.json")))
+        except (OSError, PermissionError) as e:
+            logger.debug("pattern_count_failed", error=str(e))
+            return 0
 
 
 def print_status(panel: MemoryControlPanel):

@@ -10,7 +10,6 @@ Licensed under Fair Source License 0.9
 import hashlib
 import json
 import logging
-import os
 import threading
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -54,8 +53,12 @@ class UsageTracker:
         self.max_file_size_mb = max_file_size_mb
         self.usage_file = self.telemetry_dir / "usage.jsonl"
 
-        # Create directory if needed
-        self.telemetry_dir.mkdir(parents=True, exist_ok=True)
+        # Create directory if needed (gracefully handle permission errors)
+        try:
+            self.telemetry_dir.mkdir(parents=True, exist_ok=True)
+        except (OSError, PermissionError):
+            # Can't create directory - telemetry will be disabled
+            logger.debug(f"Failed to create telemetry directory: {self.telemetry_dir}")
 
     @classmethod
     def get_instance(cls, **kwargs: Any) -> "UsageTracker":
@@ -131,9 +134,9 @@ class UsageTracker:
         except OSError as e:
             # File system errors - log but don't crash
             logger.debug(f"Failed to write telemetry entry: {e}")
-        except Exception:
+        except Exception as ex:
             # INTENTIONAL: Telemetry failures should never crash the workflow
-            logger.debug("Unexpected error writing telemetry entry")
+            logger.debug(f"Unexpected error writing telemetry entry: {ex}")
 
     def _hash_user_id(self, user_id: str) -> str:
         """Hash user ID with SHA256 for privacy.
@@ -170,7 +173,7 @@ class UsageTracker:
                 # If usage.jsonl exists, we need to append
                 if self.usage_file.exists():
                     # Read temp file content
-                    with open(temp_file, "r", encoding="utf-8") as f:
+                    with open(temp_file, encoding="utf-8") as f:
                         new_line = f.read()
                     # Append to main file
                     with open(self.usage_file, "a", encoding="utf-8") as f:
@@ -261,7 +264,7 @@ class UsageTracker:
                 continue
 
             try:
-                with open(file, "r", encoding="utf-8") as f:
+                with open(file, encoding="utf-8") as f:
                     for line in f:
                         if not line.strip():
                             continue
@@ -403,8 +406,10 @@ class UsageTracker:
         actual_cost = sum(e.get("cost", 0.0) for e in entries)
 
         # Calculate baseline cost (all PREMIUM)
-        # Using rough estimate: PREMIUM tier averages $0.015 per call
-        baseline_cost = len(entries) * 0.015
+        # Get average PREMIUM cost from actual data, or use standard rate
+        premium_costs = [e.get("cost", 0.0) for e in entries if e.get("tier") == "PREMIUM"]
+        avg_premium_cost = (sum(premium_costs) / len(premium_costs)) if premium_costs else 0.05
+        baseline_cost = len(entries) * avg_premium_cost
 
         # Tier distribution
         tier_counts: dict[str, int] = {}
@@ -448,7 +453,7 @@ class UsageTracker:
             for file in self.telemetry_dir.glob("usage*.jsonl"):
                 try:
                     # Count entries before deleting
-                    with open(file, "r", encoding="utf-8") as f:
+                    with open(file, encoding="utf-8") as f:
                         count += sum(1 for line in f if line.strip())
                     file.unlink()
                 except OSError:

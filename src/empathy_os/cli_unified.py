@@ -514,6 +514,117 @@ def workflow_recommend(
 
 
 # =============================================================================
+# TIER RECOMMENDATION SUBCOMMAND GROUP
+# =============================================================================
+
+tier_app = typer.Typer(help="Intelligent tier recommendations for cascading workflows")
+app.add_typer(tier_app, name="tier")
+
+
+@tier_app.command("recommend")
+def tier_recommend(
+    description: str = typer.Argument(..., help="Description of the bug or task"),
+    files: str = typer.Option(None, "--files", "-f", help="Comma-separated list of affected files"),
+    complexity: int = typer.Option(None, "--complexity", "-c", help="Manual complexity hint 1-10"),
+):
+    """Get intelligent tier recommendation for a bug/task."""
+    from empathy_os.tier_recommender import TierRecommender
+
+    recommender = TierRecommender()
+
+    # Get recommendation
+    result = recommender.recommend(
+        bug_description=description,
+        files_affected=files.split(",") if files else None,
+        complexity_hint=complexity,
+    )
+
+    # Display results
+    console.print()
+    console.print("=" * 60)
+    console.print("  [bold]TIER RECOMMENDATION[/bold]")
+    console.print("=" * 60)
+    console.print()
+    console.print(f"  [dim]Bug/Task:[/dim] {description}")
+    console.print()
+    console.print(f"  📍 [bold]Recommended Tier:[/bold] {result.tier}")
+    console.print(f"  🎯 [bold]Confidence:[/bold] {result.confidence * 100:.1f}%")
+    console.print(f"  💰 [bold]Expected Cost:[/bold] ${result.expected_cost:.3f}")
+    console.print(f"  🔄 [bold]Expected Attempts:[/bold] {result.expected_attempts:.1f}")
+    console.print()
+    console.print(f"  📊 [bold]Reasoning:[/bold]")
+    console.print(f"     {result.reasoning}")
+    console.print()
+
+    if result.fallback_used:
+        console.print("  ⚠️  [yellow]No historical data - using conservative default[/yellow]")
+        console.print()
+        console.print("  💡 [dim]Tip: As more patterns are collected, recommendations[/dim]")
+        console.print("     [dim]will become more accurate and personalized.[/dim]")
+    else:
+        console.print(f"  ✅ Based on {result.similar_patterns_count} similar patterns")
+
+    console.print()
+    console.print("=" * 60)
+    console.print()
+
+
+@tier_app.command("stats")
+def tier_stats():
+    """Show tier pattern learning statistics."""
+    from empathy_os.tier_recommender import TierRecommender
+
+    recommender = TierRecommender()
+    stats = recommender.get_stats()
+
+    if stats.get("total_patterns") == 0:
+        console.print()
+        console.print("  [yellow]No patterns loaded yet.[/yellow]")
+        console.print()
+        console.print("  💡 [dim]Patterns are collected automatically as you use")
+        console.print("     cascading workflows. Run a few workflows first.[/dim]")
+        console.print()
+        return
+
+    # Display statistics
+    console.print()
+    console.print("=" * 60)
+    console.print("  [bold]TIER PATTERN LEARNING STATS[/bold]")
+    console.print("=" * 60)
+    console.print()
+    console.print(f"  [bold]Total Patterns:[/bold] {stats['total_patterns']}")
+    console.print(f"  [bold]Avg Savings:[/bold] {stats['avg_savings_percent']}%")
+    console.print()
+    console.print("  [bold]TIER DISTRIBUTION[/bold]")
+    console.print("  " + "-" * 40)
+
+    tier_dist = stats["patterns_by_tier"]
+    total = stats["total_patterns"]
+    max_bar_width = 20
+
+    for tier in ["CHEAP", "CAPABLE", "PREMIUM"]:
+        count = tier_dist.get(tier, 0)
+        percent = (count / total * 100) if total > 0 else 0
+        bar_width = int(percent / 100 * max_bar_width)
+        bar = "█" * bar_width
+        console.print(f"  {tier:<12} {count:>2} ({percent:>5.1f}%) {bar}")
+
+    console.print()
+    console.print("  [bold]BUG TYPE DISTRIBUTION[/bold]")
+    console.print("  " + "-" * 40)
+
+    for bug_type, count in sorted(
+        stats["bug_type_distribution"].items(), key=lambda x: x[1], reverse=True
+    ):
+        percent = (count / total * 100) if total > 0 else 0
+        console.print(f"  {bug_type:<20} {count:>2} ({percent:>5.1f}%)")
+
+    console.print()
+    console.print("=" * 60)
+    console.print()
+
+
+# =============================================================================
 # UTILITY COMMANDS
 # =============================================================================
 

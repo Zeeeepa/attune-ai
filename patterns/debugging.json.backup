@@ -1,0 +1,885 @@
+{
+  "patterns": [
+    {
+      "pattern_id": "bug_20251219_848e6c8a",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Improve text contrast in debug wizard header",
+      "fix": "See commit 848e6c8a",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-19",
+      "files_affected": [
+        "website/app/tools/debug-wizard/page.tsx",
+        "website/components/debug-wizard/DebugWizard.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251218_fa236623",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Add Redis integration with environment-aware key prefixing",
+      "fix": "See commit fa236623",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-18",
+      "files_affected": [
+        "website/app/api/debug-wizard/analyze/route.ts",
+        "website/app/api/debug-wizard/resolve/route.ts",
+        "website/app/api/debug-wizard/stats/route.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_450f5972",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Add autonomous error scanning and repair to Debug Wizard",
+      "fix": "See commit 450f5972",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "website/components/debug-wizard/DebugWizard.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_d92de34f",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Improved DebugWizard UX with card-based file selection",
+      "fix": "See commit d92de34f",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "website/components/debug-wizard/DebugWizard.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_17526090",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Enhanced DebugWizard with folder selection and tree view",
+      "fix": "See commit 17526090",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "website/components/debug-wizard/DebugWizard.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_f669fb6a",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Make GitHub Issues link clickable in FAQ page",
+      "fix": "See commit f669fb6a",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "website/app/faq/page.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_8d974c1a",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Resolve all ESLint errors and improve type safety",
+      "fix": "See commit 8d974c1a",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "site/search/search_index.json",
+        "site/sitemap.xml",
+        "site/sitemap.xml.gz"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_99335a29",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Fix ESLint errors - escape apostrophes and quotes in JSX",
+      "fix": "See commit 99335a29",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "website/app/api/debug-wizard/analyze/route.ts",
+        "website/app/api/og/route.tsx",
+        "website/app/blog/page.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_5179994c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove missing icon references from webmanifest",
+      "fix": "See commit 5179994c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "website/public/site.webmanifest"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251217_4c6069af",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Add drag-and-drop file upload to debug wizard",
+      "fix": "See commit 4c6069af",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-17",
+      "files_affected": [
+        "website/components/debug-wizard/DebugWizard.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251222_8edfb707",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Release v3.0.1 - XML-Enhanced Prompts & Security Fixes",
+      "fix": "See commit 8edfb707",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-22",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        ".gitignore",
+        "CHANGELOG.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251225_1b928aec",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Resolve import conflict between workflows.py and workflows/ package",
+      "fix": "See commit 1b928aec",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-25",
+      "files_affected": [
+        "src/empathy_os/workflows/__init__.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_32d3adcf",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "ci: Add workflow_dispatch to PyPI publish workflow",
+      "fix": "See commit 32d3adcf",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        ".github/workflows/publish-pypi.yml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_2ae52706",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Convert MkDocs relative asset paths to absolute for CSS loading",
+      "fix": "See commit 2ae52706",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "scripts/fix_mkdocs_paths.py",
+        ".../framework-docs/FOREWORD_BY_CLAUDE/index.html",
+        ".../framework-docs/about-the-author/index.html"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_4e9157ce",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Force trailing slashes at all levels for MkDocs CSS compatibility",
+      "fix": "See commit 4e9157ce",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/middleware.ts",
+        "website/next.config.ts",
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_55265287",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Use skipTrailingSlashRedirect to stop Next.js from stripping trailing slashes",
+      "fix": "See commit 55265287",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/next.config.ts",
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_47662816",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add Next.js middleware to enforce trailing slash for framework-docs",
+      "fix": "See commit 47662816",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/middleware.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_994d5ad5",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add Vercel trailingSlash config for framework-docs CSS",
+      "fix": "See commit 994d5ad5",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_0c56cfb1",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add vercel.json redirect for framework-docs trailing slash",
+      "fix": "See commit 0c56cfb1",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/vercel.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_3ba1de27",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add redirect to ensure trailing slash for framework-docs CSS paths",
+      "fix": "See commit 3ba1de27",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/next.config.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_7832acb7",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add trailingSlash to fix CSS loading in framework-docs",
+      "fix": "See commit 7832acb7",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "website/next.config.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_9cd1aaa1",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove archived TSX files causing Next.js build failure",
+      "fix": "See commit 9cd1aaa1",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "site/404.html",
+        "site/AI_DEVELOPMENT_WIZARDS/index.html",
+        "site/ANTHROPIC_PARTNERSHIP_PROPOSAL/index.html"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251224_4f330ef2",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "docs: Update framework-docs with Di\u00e1taxis structure and fix PyPI URLs (v3.2.3)",
+      "fix": "See commit 4f330ef2",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-24",
+      "files_affected": [
+        "CHANGELOG.md",
+        "pyproject.toml",
+        "website/public/framework-docs/404.html"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251228_0e046591",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Release v3.3.3 - Reliability Improvements & Config Fixes",
+      "fix": "See commit 0e046591",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-28",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        "CHANGELOG.md",
+        "backend/api/wizard_api.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251227_7d7a4e7e",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "test: Add tests for bug_predict, secure_release, and code_review_pipeline (139 tests)",
+      "fix": "See commit 7d7a4e7e",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-27",
+      "files_affected": [
+        "tests/test_bug_predict_workflow.py",
+        "tests/test_code_review_pipeline_workflow.py",
+        "tests/test_secure_release_workflow.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_83fd3eb4",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add Windows-specific skipif decorators for CI reliability",
+      "fix": "See commit 83fd3eb4",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        "tests/test_book_chapter_wizard.py",
+        "tests/test_book_production_agents.py",
+        "tests/test_config_loaders.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_f833ac09",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Skip tests when dependencies unavailable in CI",
+      "fix": "See commit f833ac09",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        "tests/test_intelligence_integration.py",
+        "tests/test_long_term.py",
+        "tests/test_redis_bootstrap.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_cb2563ab",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Pre-commit YAML check and pattern regeneration",
+      "fix": "See commit cb2563ab",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_dfeced89",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude profile_*.py from detect-secrets",
+      "fix": "See commit dfeced89",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_4a0a4c6e",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude all source directories from detect-secrets",
+      "fix": "See commit 4a0a4c6e",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_ea47a8b1",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude audit files from detect-secrets",
+      "fix": "See commit ea47a8b1",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_5177fccd",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude website/ from detect-secrets",
+      "fix": "See commit 5177fccd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_bfcb827f",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Extend detect-secrets exclusions for remaining files",
+      "fix": "See commit bfcb827f",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_a46a32dd",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Exclude .md files and security module from detect-secrets",
+      "fix": "See commit a46a32dd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_dee59163",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude docs/ and examples/ from detect-secrets",
+      "fix": "See commit dee59163",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_c6858e6d",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Exclude demo_security_complete.py from detect-secrets",
+      "fix": "See commit c6858e6d",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".pre-commit-config.yaml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_GeneAI_a9e9ad7a",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Use X ",
+      "fix": "See commit a9e9ad7a",
+      "resolved_by": "@y",
+      "resolved_at": "GeneAI",
+      "files_affected": [
+        "src/empathy_os/workflows/test_gen.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_GeneAI_3c1d5e65",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Use X ",
+      "fix": "See commit 3c1d5e65",
+      "resolved_by": "@y",
+      "resolved_at": "GeneAI",
+      "files_affected": [
+        "src/empathy_os/memory/short_term.py",
+        "src/empathy_os/project_index/scanner.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_b5c5b7bd",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Resolve CI lint and import errors",
+      "fix": "See commit b5c5b7bd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        "tests/test_registry.py",
+        "tests/test_sbar_wizard.py",
+        "tests/test_tech_debt_wizard.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251229_e44c6c14",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Improve CI test reliability and fix coverage threshold",
+      "fix": "See commit e44c6c14",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-29",
+      "files_affected": [
+        ".github/workflows/tests.yml",
+        "pyproject.toml",
+        "pytest.ini"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251231_a5d697eb",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "style: Auto-fix formatting with ruff/black (19 files)",
+      "fix": "See commit a5d697eb",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-31",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        "patterns/debugging/bug_20251231_02d986b6.json",
+        "patterns/debugging/bug_20251231_29c10759.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251231_d0b81efc",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Bug scanner tuning, VSCode cleanup, and PR review fix",
+      "fix": "See commit d0b81efc",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-31",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        ".claude/python-standards.md",
+        ".claude/rules/empathy/debugging.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251230_657f4e5c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(bug-predict): Reduce false positives in dangerous_eval detection",
+      "fix": "See commit 657f4e5c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-30",
+      "files_affected": [
+        "src/empathy_os/workflows/bug_predict.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251231_e53e94a3",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Add type annotation to scan_summary in test_gen.py",
+      "fix": "See commit e53e94a3",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-31",
+      "files_affected": [
+        "src/empathy_os/workflows/test_gen.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20251231_3af62faf",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(vscode): Show notification feedback for sync-claude command",
+      "fix": "See commit 3af62faf",
+      "resolved_by": "@geneai",
+      "resolved_at": "2025-12-31",
+      "files_affected": [
+        ".claude/rules/empathy/debugging.md",
+        "patterns/debugging.json",
+        "vscode-extension/src/extension.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_80120c05",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Release Prep and Secure Release buttons now open reports in editor",
+      "fix": "See commit 80120c05",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "vscode-extension/src/panels/EmpathyDashboardPanel.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_5cab2623",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Check Deps button now opens report in editor",
+      "fix": "See commit 5cab2623",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "vscode-extension/src/panels/EmpathyDashboardPanel.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_893e2300",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Add missing logger imports in base.py and security_audit.py",
+      "fix": "See commit 893e2300",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "src/empathy_os/workflows/base.py",
+        "src/empathy_os/workflows/security_audit.py",
+        ".../src/panels/EmpathyDashboardPanel.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_0f2acbf3",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove Sync Docs button (manage-docs workflow)",
+      "fix": "See commit 0f2acbf3",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "vscode-extension/src/panels/EmpathyDashboardPanel.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_8075c60f",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "release: Prepare v3.7.0 - XML-Enhanced Prompts & Dependency Fixes",
+      "fix": "See commit 8075c60f",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260105_0254547f",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add formatted_report to Sync Docs workflow",
+      "fix": "See commit 0254547f",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-05",
+      "files_affected": [
+        "src/empathy_os/workflows/manage_documentation.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260104_c2516490",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "docs: Fix Level 1 install command to use [developer] extra",
+      "fix": "See commit c2516490",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-04",
+      "files_affected": [
+        "README.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_1f6f56d2",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove unused 'target' variable in refactor_plan workflow",
+      "fix": "See commit 1f6f56d2",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "src/empathy_os/workflows/refactor_plan.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_15d0b796",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Update tests to match v3.7.0 defaults and error messages",
+      "fix": "See commit 15d0b796",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "src/empathy_os/cli.py",
+        "tests/test_cli.py",
+        "tests/test_code_review_crew_integration.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_2adf079c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "docs: Update CHANGELOG with security vulnerability fixes",
+      "fix": "See commit 2adf079c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "CHANGELOG.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_1dfc20fd",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Resolve qs DoS vulnerability in VSCode extension dev dependencies",
+      "fix": "See commit 1dfc20fd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "vscode-extension/package-lock.json",
+        "vscode-memory-panel/package-lock.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_a40d6b2c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Resolve HIGH severity qs DoS vulnerability (CVE-2025-15284)",
+      "fix": "See commit a40d6b2c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "website/package-lock.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_0598922d",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Configure lint/type checking to exclude test workflows and non-core directories",
+      "fix": "See commit 0598922d",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "pyproject.toml",
+        "src/empathy_os/workflows/health_check.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_570c40f9",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "chore: Bump version to 3.7.1 for security patch release",
+      "fix": "See commit 570c40f9",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "pyproject.toml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_68018d1d",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Add type annotation to fix mypy errors in health_check",
+      "fix": "See commit 68018d1d",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "src/empathy_os/workflows/health_check.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260107_0f7a4e14",
+      "bug_type": "import_error",
+      "status": "resolved",
+      "root_cause": "fix: Add missing binascii import for proper error handling",
+      "fix": "See commit 0f7a4e14",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-07",
+      "files_affected": [
+        "CACHING_BENCHMARK_REPORT.md",
+        "CHANGELOG.md",
+        "KEYBOARD_SHORTCUTS.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260107_1e70c287",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Replace broad exception handlers with specific types in long_term.py",
+      "fix": "See commit 1e70c287",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-07",
+      "files_affected": [
+        "src/empathy_os/memory/long_term.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260107_37afc340",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Resolve 4 critical type errors in cache module",
+      "fix": "See commit 37afc340",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-07",
+      "files_affected": [
+        "src/empathy_os/cache/dependency_manager.py",
+        "src/empathy_os/cache/hybrid.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260106_25c84d81",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove invalid cache_dir parameter from integration test",
+      "fix": "See commit 25c84d81",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-06",
+      "files_affected": [
+        "tests/integration/test_cache_integration.py"
+      ],
+      "source": "git_history"
+    }
+  ],
+  "last_updated": "2026-01-07T00:51:52.358772"
+}

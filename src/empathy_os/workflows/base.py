@@ -385,6 +385,7 @@ class BaseWorkflow(ABC):
         progress_callback: ProgressCallback | None = None,
         cache: BaseCache | None = None,
         enable_cache: bool = True,
+        enable_tier_tracking: bool = True,
     ):
         """Initialize workflow with optional cost tracker, provider, and config.
 
@@ -403,6 +404,7 @@ class BaseWorkflow(ABC):
             cache: Optional cache instance. If None and enable_cache=True,
                    auto-creates cache with one-time setup prompt.
             enable_cache: Whether to enable caching (default True).
+            enable_tier_tracking: Whether to enable automatic tier tracking (default True).
 
         """
         from .config import WorkflowConfig
@@ -424,6 +426,10 @@ class BaseWorkflow(ABC):
         self._cache: BaseCache | None = cache
         self._enable_cache = enable_cache
         self._cache_setup_attempted = False
+
+        # Tier tracking support
+        self._enable_tier_tracking = enable_tier_tracking
+        self._tier_tracker = None
 
         # Telemetry tracking (singleton instance)
         self._telemetry_tracker: UsageTracker | None = None
@@ -541,7 +547,6 @@ class BaseWorkflow(ABC):
         # Determine stage name for cache key
         stage = stage_name or f"llm_call_{tier.value}"
         model = self.get_model_for_tier(tier)
-        cache_hit = False
         cache_type = None
 
         # Try cache lookup if enabled
@@ -553,10 +558,11 @@ class BaseWorkflow(ABC):
 
                 if cached_response is not None:
                     logger.debug(f"Cache hit for {self.name}:{stage}")
-                    cache_hit = True
                     # Determine cache type
                     if hasattr(self._cache, "cache_type"):
-                        cache_type = self._cache.cache_type  # type: ignore
+                        ct = self._cache.cache_type  # type: ignore
+                        # Ensure it's a string (not a Mock object)
+                        cache_type = str(ct) if ct and isinstance(ct, str) else "hash"
                     else:
                         cache_type = "hash"  # Default assumption
 
@@ -819,6 +825,20 @@ class BaseWorkflow(ABC):
         # Set run ID for telemetry correlation
         self._run_id = str(uuid.uuid4())
 
+        # Auto tier recommendation
+        if self._enable_tier_tracking:
+            try:
+                from .tier_tracking import WorkflowTierTracker
+
+                self._tier_tracker = WorkflowTierTracker(self.name, self.description)
+                files_affected = kwargs.get("files_affected") or kwargs.get("path")
+                if files_affected and not isinstance(files_affected, list):
+                    files_affected = [str(files_affected)]
+                self._tier_tracker.show_recommendation(files_affected)
+            except Exception as e:
+                logger.debug(f"Tier tracking disabled: {e}")
+                self._enable_tier_tracking = False
+
         started_at = datetime.now()
         self._stages_run = []
         current_data = kwargs
@@ -901,6 +921,18 @@ class BaseWorkflow(ABC):
                     input_tokens=input_tokens,
                     output_tokens=output_tokens,
                     task_type=f"workflow:{self.name}:{stage_name}",
+                )
+
+                # Track telemetry for this stage
+                self._track_telemetry(
+                    stage=stage_name,
+                    tier=tier,
+                    model=model_id,
+                    cost=cost,
+                    tokens={"input": input_tokens, "output": output_tokens},
+                    cache_hit=False,
+                    cache_type=None,
+                    duration_ms=duration_ms,
                 )
 
                 # Pass output to next stage
@@ -990,6 +1022,32 @@ class BaseWorkflow(ABC):
 
         # Emit workflow telemetry to backend
         self._emit_workflow_telemetry(result)
+
+        # Auto-save tier progression
+        if self._enable_tier_tracking and self._tier_tracker:
+            try:
+                files_affected = kwargs.get("files_affected") or kwargs.get("path")
+                if files_affected and not isinstance(files_affected, list):
+                    files_affected = [str(files_affected)]
+
+                # Determine bug type from workflow name
+                bug_type_map = {
+                    "code-review": "code_quality",
+                    "bug-predict": "bug_prediction",
+                    "security-audit": "security_issue",
+                    "test-gen": "test_coverage",
+                    "refactor-plan": "refactoring",
+                    "health-check": "health_check",
+                }
+                bug_type = bug_type_map.get(self.name, "workflow_run")
+
+                self._tier_tracker.save_progression(
+                    workflow_result=result,
+                    files_affected=files_affected,
+                    bug_type=bug_type,
+                )
+            except Exception as e:
+                logger.debug(f"Failed to save tier progression: {e}")
 
         return result
 

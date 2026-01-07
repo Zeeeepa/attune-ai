@@ -309,8 +309,9 @@ class TestPatternLibrary:
     def test_record_pattern_outcome_nonexistent(self):
         """Test recording outcome for non-existent pattern"""
         library = PatternLibrary()
-        # Should not raise error
-        library.record_pattern_outcome("nonexistent", success=True)
+        # Should raise ValueError for non-existent pattern (improved behavior)
+        with pytest.raises(ValueError, match="not found"):
+            library.record_pattern_outcome("nonexistent", success=True)
 
     def test_get_related_patterns_depth_zero(self):
         """Test getting related patterns with depth 0"""

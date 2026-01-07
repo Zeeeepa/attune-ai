@@ -53,7 +53,14 @@ def estimate_tokens(text: str, model_id: str = "claude-sonnet-4-5-20250514") -> 
     Returns:
         Estimated token count
 
+    Raises:
+        ValueError: If model_id is empty
+
     """
+    # Pattern 1: String ID validation
+    if not model_id or not model_id.strip():
+        raise ValueError("model_id cannot be empty")
+
     if not text:
         return 0
 
@@ -99,8 +106,17 @@ def estimate_workflow_cost(
             "risk": "low" | "medium" | "high"
         }
 
+    Raises:
+        ValueError: If workflow_name or provider is empty
+
     """
     from .registry import get_model, get_supported_providers
+
+    # Pattern 1: String ID validation
+    if not workflow_name or not workflow_name.strip():
+        raise ValueError("workflow_name cannot be empty")
+    if not provider or not provider.strip():
+        raise ValueError("provider cannot be empty")
 
     # Validate provider
     if provider not in get_supported_providers():
@@ -292,9 +308,18 @@ def estimate_single_call_cost(
     Returns:
         Cost estimate dictionary
 
+    Raises:
+        ValueError: If task_type or provider is empty
+
     """
     from .registry import get_model
     from .tasks import get_tier_for_task
+
+    # Pattern 1: String ID validation
+    if not task_type or not task_type.strip():
+        raise ValueError("task_type cannot be empty")
+    if not provider or not provider.strip():
+        raise ValueError("provider cannot be empty")
 
     input_tokens = estimate_tokens(text)
 

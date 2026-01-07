@@ -16,6 +16,7 @@ import argparse
 import sys
 import time
 from importlib.metadata import version as get_version
+from pathlib import Path
 
 from empathy_os import EmpathyConfig, EmpathyOS, load_config
 from empathy_os.cost_tracker import cmd_costs
@@ -40,17 +41,66 @@ from empathy_os.workflows import list_workflows as get_workflow_list
 # Import telemetry CLI commands
 try:
     from empathy_os.telemetry.cli import (
-        cmd_telemetry_show,
-        cmd_telemetry_savings,
         cmd_telemetry_compare,
-        cmd_telemetry_reset,
         cmd_telemetry_export,
+        cmd_telemetry_reset,
+        cmd_telemetry_savings,
+        cmd_telemetry_show,
     )
     TELEMETRY_CLI_AVAILABLE = True
 except ImportError:
     TELEMETRY_CLI_AVAILABLE = False
 
 logger = get_logger(__name__)
+
+
+# =============================================================================
+# SECURITY UTILITIES
+# =============================================================================
+
+
+def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
+    """Validate file path to prevent path traversal and arbitrary writes.
+
+    Args:
+        path: Path to validate
+        allowed_dir: Optional directory that must contain the path
+
+    Returns:
+        Resolved absolute Path object
+
+    Raises:
+        ValueError: If path is invalid or outside allowed directory
+
+    """
+    if not path or not isinstance(path, str):
+        raise ValueError("path must be a non-empty string")
+
+    # Check for null bytes
+    if "\x00" in path:
+        raise ValueError("path contains null bytes")
+
+    try:
+        # Resolve to absolute path
+        resolved = Path(path).resolve()
+    except (OSError, RuntimeError) as e:
+        raise ValueError(f"Invalid path: {e}")
+
+    # Check if within allowed directory
+    if allowed_dir:
+        try:
+            allowed = Path(allowed_dir).resolve()
+            resolved.relative_to(allowed)
+        except ValueError:
+            raise ValueError(f"path must be within {allowed_dir}")
+
+    # Check for dangerous system paths
+    dangerous_paths = ["/etc", "/sys", "/proc", "/dev"]
+    for dangerous in dangerous_paths:
+        if str(resolved).startswith(dangerous):
+            raise ValueError(f"Cannot write to system directory: {dangerous}")
+
+    return resolved
 
 
 # =============================================================================
@@ -616,10 +666,113 @@ def cmd_achievements(args):
     print()
 
 
+def cmd_tier_recommend(args):
+    """Get intelligent tier recommendation for a bug/task."""
+    from empathy_os.tier_recommender import TierRecommender
+
+    recommender = TierRecommender()
+
+    # Get recommendation
+    result = recommender.recommend(
+        bug_description=args.description,
+        files_affected=args.files.split(",") if args.files else None,
+        complexity_hint=args.complexity
+    )
+
+    # Display results
+    print()
+    print("=" * 60)
+    print("  TIER RECOMMENDATION")
+    print("=" * 60)
+    print()
+    print(f"  Bug/Task: {args.description}")
+    print()
+    print(f"  📍 Recommended Tier: {result.tier}")
+    print(f"  🎯 Confidence: {result.confidence * 100:.1f}%")
+    print(f"  💰 Expected Cost: ${result.expected_cost:.3f}")
+    print(f"  🔄 Expected Attempts: {result.expected_attempts:.1f}")
+    print()
+    print(f"  📊 Reasoning:")
+    print(f"     {result.reasoning}")
+    print()
+
+    if result.similar_patterns_count > 0:
+        print(f"  ✅ Based on {result.similar_patterns_count} similar patterns")
+    else:
+        print(f"  ⚠️  No historical data - using conservative default")
+
+    if result.fallback_used:
+        print()
+        print("  💡 Tip: As more patterns are collected, recommendations")
+        print("     will become more accurate and personalized.")
+
+    print()
+    print("=" * 60)
+    print()
+
+
+def cmd_tier_stats(args):
+    """Show tier pattern learning statistics."""
+    from empathy_os.tier_recommender import TierRecommender
+
+    recommender = TierRecommender()
+    stats = recommender.get_stats()
+
+    print()
+    print("=" * 60)
+    print("  TIER PATTERN LEARNING STATS")
+    print("=" * 60)
+    print()
+
+    if stats.get("total_patterns", 0) == 0:
+        print("  No patterns collected yet.")
+        print()
+        print("  💡 Patterns are automatically collected as you use")
+        print("     cascading workflows with enhanced tracking enabled.")
+        print()
+        print("=" * 60)
+        print()
+        return
+
+    print(f"  Total Patterns: {stats['total_patterns']}")
+    print(f"  Avg Savings: {stats['avg_savings_percent']}%")
+    print()
+
+    print("  TIER DISTRIBUTION")
+    print("  " + "-" * 40)
+    for tier, count in stats["patterns_by_tier"].items():
+        percent = (count / stats["total_patterns"]) * 100
+        bar = "█" * int(percent / 5)
+        print(f"  {tier:10} {count:3} ({percent:5.1f}%) {bar}")
+    print()
+
+    print("  BUG TYPE DISTRIBUTION")
+    print("  " + "-" * 40)
+    sorted_types = sorted(
+        stats["bug_type_distribution"].items(),
+        key=lambda x: x[1],
+        reverse=True
+    )
+    for bug_type, count in sorted_types[:10]:
+        percent = (count / stats["total_patterns"]) * 100
+        print(f"  {bug_type:20} {count:3} ({percent:5.1f}%)")
+
+    print()
+    print("=" * 60)
+    print()
+
+
 def cmd_init(args):
-    """Initialize a new Empathy Framework project"""
+    """Initialize a new Empathy Framework project
+
+    Raises:
+        ValueError: If output path is invalid or unsafe
+    """
     config_format = args.format
     output_path = args.output or f"empathy.config.{config_format}"
+
+    # Validate output path to prevent path traversal attacks
+    validated_path = _validate_file_path(output_path)
 
     logger.info(f"Initializing new Empathy Framework project with format: {config_format}")
 
@@ -628,13 +781,13 @@ def cmd_init(args):
 
     # Save to file
     if config_format == "yaml":
-        config.to_yaml(output_path)
+        config.to_yaml(str(validated_path))
         logger.info(f"Created YAML configuration file: {output_path}")
         logger.info(f"✓ Created YAML configuration: {output_path}")
     elif config_format == "json":
-        config.to_json(output_path)
-        logger.info(f"Created JSON configuration file: {output_path}")
-        logger.info(f"✓ Created JSON configuration: {output_path}")
+        config.to_json(str(validated_path))
+        logger.info(f"Created JSON configuration file: {validated_path}")
+        logger.info(f"✓ Created JSON configuration: {validated_path}")
 
     logger.info("\nNext steps:")
     logger.info(f"  1. Edit {output_path} to customize settings")
@@ -740,7 +893,11 @@ def cmd_patterns_list(args):
 
 
 def cmd_patterns_export(args):
-    """Export patterns from one format to another"""
+    """Export patterns from one format to another
+
+    Raises:
+        ValueError: If output path is invalid
+    """
     input_file = args.input
     input_format = args.input_format
     output_file = args.output
@@ -777,12 +934,15 @@ def cmd_patterns_export(args):
         logger.error(f"✗ Failed to load patterns: {e}")
         sys.exit(1)
 
+    # Validate output path
+    validated_output = _validate_file_path(output_file)
+
     # Save to output format
     try:
         if output_format == "json":
-            PatternPersistence.save_to_json(library, output_file)
+            PatternPersistence.save_to_json(library, str(validated_output))
         elif output_format == "sqlite":
-            PatternPersistence.save_to_sqlite(library, output_file)
+            PatternPersistence.save_to_sqlite(library, str(validated_output))
 
         logger.info(f"Saved {len(library.patterns)} patterns to {output_file}")
         logger.info(f"✓ Saved {len(library.patterns)} patterns to {output_file}")
@@ -1362,7 +1522,11 @@ def cmd_inspect(args):
 
 
 def cmd_export(args):
-    """Export patterns to file for sharing/backup"""
+    """Export patterns to file for sharing/backup
+
+    Raises:
+        ValueError: If output path is invalid
+    """
     output_file = args.output
     user_id = args.user_id
     db_path = args.db or ".empathy/patterns.db"
@@ -1386,6 +1550,9 @@ def cmd_export(args):
 
         print(f"  Found {len(patterns)} patterns")
 
+        # Validate output path
+        validated_output = _validate_file_path(output_file)
+
         if format_type == "json":
             # Create filtered library if user_id specified
             if user_id:
@@ -1396,7 +1563,7 @@ def cmd_export(args):
                 filtered_library = library
 
             # Export as JSON
-            PatternPersistence.save_to_json(filtered_library, output_file)
+            PatternPersistence.save_to_json(filtered_library, str(validated_output))
             print(f"  ✓ Exported {len(patterns)} patterns to {output_file}")
         else:
             print(f"✗ Unsupported format: {format_type}")
@@ -1695,12 +1862,18 @@ def cmd_provider_set(args):
 
 
 def cmd_sync_claude(args):
-    """Sync patterns to Claude Code rules directory."""
+    """Sync patterns to Claude Code rules directory.
+
+    Raises:
+        ValueError: If output path is invalid
+    """
     import json as json_mod
     from pathlib import Path
 
     patterns_dir = Path(args.patterns_dir)
-    output_dir = Path(args.output_dir)
+    # Validate output directory path
+    validated_output_dir = _validate_file_path(args.output_dir)
+    output_dir = validated_output_dir
 
     print("=" * 60)
     print("  SYNC PATTERNS TO CLAUDE CODE")
@@ -1736,7 +1909,9 @@ def cmd_sync_claude(args):
 
             # Write rule file
             rule_file = output_dir / f"{category}.md"
-            with open(rule_file, "w") as f:
+            # Validate rule file path before writing
+            validated_rule_file = _validate_file_path(str(rule_file), allowed_dir=str(output_dir))
+            with open(validated_rule_file, "w") as f:
                 f.write(rule_content)
 
             print(f"  ✓ {category}: {len(patterns)} patterns → {rule_file}")
@@ -2920,6 +3095,40 @@ def main():
         help="View your usage statistics and achievements",
     )
     parser_achievements.set_defaults(func=cmd_achievements)
+
+    # Tier recommendation commands (cascading tier optimization)
+    parser_tier = subparsers.add_parser(
+        "tier",
+        help="Intelligent tier recommendations for cascading workflows",
+    )
+    tier_subparsers = parser_tier.add_subparsers(dest="tier_command")
+
+    # tier recommend
+    parser_tier_recommend = tier_subparsers.add_parser(
+        "recommend",
+        help="Get tier recommendation for a bug/task",
+    )
+    parser_tier_recommend.add_argument(
+        "description",
+        help="Description of the bug or task",
+    )
+    parser_tier_recommend.add_argument(
+        "--files",
+        help="Comma-separated list of affected files (optional)",
+    )
+    parser_tier_recommend.add_argument(
+        "--complexity",
+        type=int,
+        help="Manual complexity hint 1-10 (optional)",
+    )
+    parser_tier_recommend.set_defaults(func=cmd_tier_recommend)
+
+    # tier stats
+    parser_tier_stats = tier_subparsers.add_parser(
+        "stats",
+        help="Show tier pattern learning statistics",
+    )
+    parser_tier_stats.set_defaults(func=cmd_tier_stats)
 
     # Wizard Factory commands (create wizards 12x faster)
     add_wizard_factory_commands(subparsers)

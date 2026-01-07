@@ -540,7 +540,8 @@ class SecureMemDocsIntegration:
 
         Raises:
             SecurityError: If secrets detected or security policy violated
-            ValueError: If invalid classification specified
+            ValueError: If content/pattern_type/user_id empty or invalid classification
+            TypeError: If custom_metadata is not dict
 
         Example:
             >>> result = integration.store_pattern(
@@ -559,9 +560,17 @@ class SecureMemDocsIntegration:
         )
 
         try:
-            # Validate content
+            # Pattern 1: String ID validation
             if not content or not content.strip():
-                raise ValueError("Content cannot be empty")
+                raise ValueError("content cannot be empty")
+            if not pattern_type or not pattern_type.strip():
+                raise ValueError("pattern_type cannot be empty")
+            if not user_id or not user_id.strip():
+                raise ValueError("user_id cannot be empty")
+
+            # Pattern 5: Type validation
+            if custom_metadata is not None and not isinstance(custom_metadata, dict):
+                raise TypeError(f"custom_metadata must be dict, got {type(custom_metadata).__name__}")
 
             # Step 1 & 2: PII Scrubbing + Secrets Detection (PARALLEL for performance)
             # Run both operations in parallel since they're independent
@@ -759,7 +768,7 @@ class SecureMemDocsIntegration:
 
         Raises:
             PermissionError: If access denied
-            ValueError: If pattern not found or retention expired
+            ValueError: If pattern_id/user_id empty, pattern not found, or retention expired
             SecurityError: If decryption fails
 
         Example:
@@ -770,6 +779,12 @@ class SecureMemDocsIntegration:
             >>> print(pattern["content"])
 
         """
+        # Pattern 1: String ID validation
+        if not pattern_id or not pattern_id.strip():
+            raise ValueError("pattern_id cannot be empty")
+        if not user_id or not user_id.strip():
+            raise ValueError("user_id cannot be empty")
+
         logger.info(
             "retrieve_pattern_started",
             pattern_id=pattern_id,
@@ -1108,8 +1123,15 @@ class SecureMemDocsIntegration:
 
         Raises:
             PermissionError: If user doesn't have permission to delete
+            ValueError: If pattern_id or user_id is empty
 
         """
+        # Pattern 1: String ID validation
+        if not pattern_id or not pattern_id.strip():
+            raise ValueError("pattern_id cannot be empty")
+        if not user_id or not user_id.strip():
+            raise ValueError("user_id cannot be empty")
+
         # Retrieve pattern to check permissions
         pattern_data = self.storage.retrieve(pattern_id)
 

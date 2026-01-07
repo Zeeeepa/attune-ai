@@ -295,6 +295,26 @@ class StagedPattern:
     staged_at: datetime = field(default_factory=datetime.now)
     interests: list[str] = field(default_factory=list)  # For negotiation
 
+    def __post_init__(self):
+        """Validate fields after initialization"""
+        # Pattern 1: String ID validation
+        if not self.pattern_id or not self.pattern_id.strip():
+            raise ValueError("pattern_id cannot be empty")
+        if not self.agent_id or not self.agent_id.strip():
+            raise ValueError("agent_id cannot be empty")
+        if not self.pattern_type or not self.pattern_type.strip():
+            raise ValueError("pattern_type cannot be empty")
+
+        # Pattern 4: Range validation for confidence
+        if not 0.0 <= self.confidence <= 1.0:
+            raise ValueError(f"confidence must be between 0.0 and 1.0, got {self.confidence}")
+
+        # Pattern 5: Type validation
+        if not isinstance(self.context, dict):
+            raise TypeError(f"context must be dict, got {type(self.context).__name__}")
+        if not isinstance(self.interests, list):
+            raise TypeError(f"interests must be list, got {type(self.interests).__name__}")
+
     def to_dict(self) -> dict:
         return {
             "pattern_id": self.pattern_id,
@@ -619,10 +639,18 @@ class RedisShortTermMemory:
         Returns:
             True if successful
 
+        Raises:
+            ValueError: If key is empty or invalid
+            PermissionError: If credentials lack write access
+
         Example:
             >>> memory.stash("analysis_v1", {"findings": [...]}, creds)
 
         """
+        # Pattern 1: String ID validation
+        if not key or not key.strip():
+            raise ValueError("key cannot be empty")
+
         if not credentials.can_stage():
             raise PermissionError(
                 f"Agent {credentials.agent_id} (Tier {credentials.tier.name}) "
@@ -653,10 +681,17 @@ class RedisShortTermMemory:
         Returns:
             Retrieved data or None if not found
 
+        Raises:
+            ValueError: If key is empty or invalid
+
         Example:
             >>> data = memory.retrieve("analysis_v1", creds)
 
         """
+        # Pattern 1: String ID validation
+        if not key or not key.strip():
+            raise ValueError("key cannot be empty")
+
         owner = agent_id or credentials.agent_id
         full_key = f"{self.PREFIX_WORKING}{owner}:{key}"
         raw = self._get(full_key)
@@ -704,7 +739,15 @@ class RedisShortTermMemory:
         Returns:
             True if staged successfully
 
+        Raises:
+            TypeError: If pattern is not StagedPattern
+            PermissionError: If credentials lack staging access
+
         """
+        # Pattern 5: Type validation
+        if not isinstance(pattern, StagedPattern):
+            raise TypeError(f"pattern must be StagedPattern, got {type(pattern).__name__}")
+
         if not credentials.can_stage():
             raise PermissionError(
                 f"Agent {credentials.agent_id} cannot stage patterns. "
@@ -732,7 +775,14 @@ class RedisShortTermMemory:
         Returns:
             StagedPattern or None
 
+        Raises:
+            ValueError: If pattern_id is empty
+
         """
+        # Pattern 1: String ID validation
+        if not pattern_id or not pattern_id.strip():
+            raise ValueError("pattern_id cannot be empty")
+
         key = f"{self.PREFIX_STAGED}{pattern_id}"
         raw = self._get(key)
 
@@ -844,7 +894,22 @@ class RedisShortTermMemory:
         Returns:
             ConflictContext for resolution
 
+        Raises:
+            ValueError: If conflict_id is empty
+            TypeError: If positions or interests are not dicts
+            PermissionError: If credentials lack permission
+
         """
+        # Pattern 1: String ID validation
+        if not conflict_id or not conflict_id.strip():
+            raise ValueError("conflict_id cannot be empty")
+
+        # Pattern 5: Type validation
+        if not isinstance(positions, dict):
+            raise TypeError(f"positions must be dict, got {type(positions).__name__}")
+        if not isinstance(interests, dict):
+            raise TypeError(f"interests must be dict, got {type(interests).__name__}")
+
         if not credentials.can_stage():
             raise PermissionError(
                 f"Agent {credentials.agent_id} cannot create conflict context. "
@@ -881,7 +946,14 @@ class RedisShortTermMemory:
         Returns:
             ConflictContext or None
 
+        Raises:
+            ValueError: If conflict_id is empty
+
         """
+        # Pattern 1: String ID validation
+        if not conflict_id or not conflict_id.strip():
+            raise ValueError("conflict_id cannot be empty")
+
         key = f"{self.PREFIX_CONFLICT}{conflict_id}"
         raw = self._get(key)
 
@@ -1014,7 +1086,19 @@ class RedisShortTermMemory:
         Returns:
             True if created
 
+        Raises:
+            ValueError: If session_id is empty
+            TypeError: If metadata is not dict
+
         """
+        # Pattern 1: String ID validation
+        if not session_id or not session_id.strip():
+            raise ValueError("session_id cannot be empty")
+
+        # Pattern 5: Type validation
+        if metadata is not None and not isinstance(metadata, dict):
+            raise TypeError(f"metadata must be dict, got {type(metadata).__name__}")
+
         key = f"{self.PREFIX_SESSION}{session_id}"
         payload = {
             "session_id": session_id,
@@ -1039,7 +1123,14 @@ class RedisShortTermMemory:
         Returns:
             True if joined
 
+        Raises:
+            ValueError: If session_id is empty
+
         """
+        # Pattern 1: String ID validation
+        if not session_id or not session_id.strip():
+            raise ValueError("session_id cannot be empty")
+
         key = f"{self.PREFIX_SESSION}{session_id}"
         raw = self._get(key)
 
@@ -1164,11 +1255,19 @@ class RedisShortTermMemory:
         Returns:
             Number of items successfully stashed
 
+        Raises:
+            TypeError: If items is not a list
+            PermissionError: If credentials lack write access
+
         Example:
             >>> items = [("key1", {"a": 1}), ("key2", {"b": 2})]
             >>> count = memory.stash_batch(items, creds)
 
         """
+        # Pattern 5: Type validation
+        if not isinstance(items, list):
+            raise TypeError(f"items must be list, got {type(items).__name__}")
+
         if not credentials.can_stage():
             raise PermissionError(
                 f"Agent {credentials.agent_id} cannot write to memory. "
@@ -2042,12 +2141,23 @@ class RedisShortTermMemory:
         Returns:
             Tuple of (success, pattern, message)
 
+        Raises:
+            ValueError: If pattern_id is empty or min_confidence out of range
+
         Example:
             >>> success, pattern, msg = memory.atomic_promote_pattern("pat_123", creds, min_confidence=0.7)
             >>> if success:
             ...     library.add(pattern)
 
         """
+        # Pattern 1: String ID validation
+        if not pattern_id or not pattern_id.strip():
+            raise ValueError("pattern_id cannot be empty")
+
+        # Pattern 4: Range validation
+        if not 0.0 <= min_confidence <= 1.0:
+            raise ValueError(f"min_confidence must be between 0.0 and 1.0, got {min_confidence}")
+
         if not credentials.can_validate():
             return False, None, "Requires VALIDATOR tier or higher"
 

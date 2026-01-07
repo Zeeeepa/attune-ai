@@ -11,7 +11,7 @@ Tests the core telemetry tracking functionality including:
 
 import json
 import tempfile
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -81,7 +81,7 @@ def test_track_llm_call_json_lines_format(tracker):
     )
 
     # Read file and verify JSON Lines format
-    with open(tracker.usage_file, "r", encoding="utf-8") as f:
+    with open(tracker.usage_file, encoding="utf-8") as f:
         lines = f.readlines()
 
     assert len(lines) == 2

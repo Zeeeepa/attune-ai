@@ -126,6 +126,9 @@ class PatternLibrary:
             agent_id: ID of contributing agent
             pattern: Pattern to contribute
 
+        Raises:
+            ValueError: If agent_id is empty or pattern.id already exists
+
         Example:
             >>> pattern = Pattern(
             ...     id="pat_002",
@@ -138,6 +141,16 @@ class PatternLibrary:
             >>> library.contribute_pattern("agent_1", pattern)
 
         """
+        # Validate inputs
+        if not agent_id or not agent_id.strip():
+            raise ValueError("agent_id cannot be empty")
+
+        if pattern.id in self.patterns:
+            raise ValueError(
+                f"Pattern '{pattern.id}' already exists. "
+                f"Use a different ID or remove the existing pattern first."
+            )
+
         # Store pattern
         self.patterns[pattern.id] = pattern
 
@@ -170,6 +183,10 @@ class PatternLibrary:
         Returns:
             List of PatternMatch objects, sorted by relevance
 
+        Raises:
+            ValueError: If agent_id is empty, min_confidence out of range, or limit < 1
+            TypeError: If context is not a dictionary
+
         Example:
             >>> context = {
             ...     "user_role": "developer",
@@ -179,6 +196,19 @@ class PatternLibrary:
             >>> matches = library.query_patterns("debug_agent", context, min_confidence=0.7)
 
         """
+        # Validate inputs
+        if not agent_id or not agent_id.strip():
+            raise ValueError("agent_id cannot be empty")
+
+        if not isinstance(context, dict):
+            raise TypeError(f"context must be dict, got {type(context).__name__}")
+
+        if not 0.0 <= min_confidence <= 1.0:
+            raise ValueError(f"min_confidence must be 0-1, got {min_confidence}")
+
+        if limit < 1:
+            raise ValueError(f"limit must be positive, got {limit}")
+
         matches: list[PatternMatch] = []
 
         for pattern in self.patterns.values():
@@ -226,10 +256,16 @@ class PatternLibrary:
             pattern_id: ID of pattern that was used
             success: Whether using the pattern was successful
 
+        Raises:
+            ValueError: If pattern_id does not exist
+
         """
         pattern = self.patterns.get(pattern_id)
-        if pattern:
-            pattern.record_usage(success)
+        if not pattern:
+            raise ValueError(
+                f"Pattern '{pattern_id}' not found. Cannot record outcome."
+            )
+        pattern.record_usage(success)
 
     def link_patterns(self, pattern_id_1: str, pattern_id_2: str):
         """Create a link between related patterns
@@ -240,7 +276,21 @@ class PatternLibrary:
             pattern_id_1: First pattern ID
             pattern_id_2: Second pattern ID
 
+        Raises:
+            ValueError: If either pattern ID doesn't exist or IDs are the same
+
         """
+        # Validate patterns exist
+        if pattern_id_1 not in self.patterns:
+            raise ValueError(f"Pattern '{pattern_id_1}' does not exist")
+
+        if pattern_id_2 not in self.patterns:
+            raise ValueError(f"Pattern '{pattern_id_2}' does not exist")
+
+        if pattern_id_1 == pattern_id_2:
+            raise ValueError("Cannot link a pattern to itself")
+
+        # Create bidirectional link
         if pattern_id_1 in self.pattern_graph:
             if pattern_id_2 not in self.pattern_graph[pattern_id_1]:
                 self.pattern_graph[pattern_id_1].append(pattern_id_2)
@@ -249,27 +299,39 @@ class PatternLibrary:
             if pattern_id_1 not in self.pattern_graph[pattern_id_2]:
                 self.pattern_graph[pattern_id_2].append(pattern_id_1)
 
-    def get_related_patterns(self, pattern_id: str, depth: int = 1) -> list[Pattern]:
+    def get_related_patterns(
+        self,
+        pattern_id: str,
+        depth: int = 1,
+        _visited: set[str] | None = None
+    ) -> list[Pattern]:
         """Get patterns related to a given pattern
 
         Args:
             pattern_id: Source pattern ID
             depth: How many hops to traverse (1 = immediate neighbors)
+            _visited: Internal tracking to prevent cycles (do not use directly)
 
         Returns:
-            List of related patterns
+            List of related patterns (no duplicates, cycle-safe)
 
         """
+        # Initialize visited set on first call
+        if _visited is None:
+            _visited = {pattern_id}
+
         if depth <= 0 or pattern_id not in self.pattern_graph:
             return []
 
         related_ids = set(self.pattern_graph[pattern_id])
 
         if depth > 1:
-            # Traverse deeper
+            # Traverse deeper (avoiding cycles)
             for related_id in list(related_ids):
-                deeper = self.get_related_patterns(related_id, depth - 1)
-                related_ids.update(p.id for p in deeper)
+                if related_id not in _visited:
+                    _visited.add(related_id)
+                    deeper = self.get_related_patterns(related_id, depth - 1, _visited)
+                    related_ids.update(p.id for p in deeper)
 
         # Remove source pattern
         related_ids.discard(pattern_id)
@@ -355,8 +417,19 @@ class PatternLibrary:
     ) -> tuple[float, list[str]]:
         """Calculate how relevant a pattern is to current context
 
+        Args:
+            pattern: Pattern to evaluate
+            context: Current context to match against
+
         Returns:
-            (relevance_score, matching_factors)
+            tuple: (relevance_score, matching_factors)
+                - relevance_score (float): 0.0-1.0 relevance score
+                - matching_factors (list[str]): Human-readable reasons for match
+
+        Algorithm:
+            - 50% weight: Context key/value matches
+            - 30% weight: Tag matches
+            - 20% weight: Pattern success rate boost
 
         """
         relevance = 0.0
