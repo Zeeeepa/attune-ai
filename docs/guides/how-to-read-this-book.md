@@ -31,6 +31,7 @@ This book serves multiple audiences. Choose the path that matches your goals:
 1. [Prerequisites](./prerequisites.md) - What you need before starting (5 min)
 2. [Unified Memory System](./unified-memory-system.md) - Single API for all memory operations (15 min)
 3. [Practical Patterns](./practical-patterns.md) - Copy-paste production patterns (20 min)
+4. [Teaching AI Your Standards](./teaching-ai-your-standards.md) - Level 5 empathy in practice (20 min)
 
 **Then explore**: The API reference for complete documentation.
 
@@ -136,6 +137,7 @@ Claude's [Foreword](./foreword.md) offers a perspective you won't find in other 
 | Understand the philosophy | [Multi-Agent Philosophy](./multi-agent-philosophy.md) |
 | Start coding immediately | [Unified Memory System](./unified-memory-system.md) |
 | See production patterns | [Practical Patterns](./practical-patterns.md) |
+| See Level 5 empathy in practice | [Teaching AI Your Standards](./teaching-ai-your-standards.md) |
 | Build healthcare systems | [Healthcare Wizards](./healthcare-wizards.md) |
 | Understand security controls | [Security Architecture](./security-architecture.md) |
 | Look up a term | [Glossary](./glossary.md) |
