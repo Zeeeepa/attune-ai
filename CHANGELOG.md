@@ -5,6 +5,75 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.0] - 2026-01-08
+
+### Added
+
+#### Local Usage Telemetry System
+
+**Privacy-first, local-only tracking to measure your actual cost savings vs baseline.**
+
+- **UsageTracker** ([src/empathy_os/telemetry/usage_tracker.py](src/empathy_os/telemetry/usage_tracker.py))
+  - Thread-safe JSON Lines logging to `~/.empathy/telemetry/usage.jsonl`
+  - SHA256-hashed user IDs for privacy (no PII tracked)
+  - Automatic file rotation after 10 MB
+  - 90-day retention with automatic cleanup
+  - No prompts, responses, file paths, or sensitive data ever tracked
+
+- **CLI Commands** ([src/empathy_os/telemetry/cli.py](src/empathy_os/telemetry/cli.py))
+  - `empathy telemetry show` - View recent LLM calls with beautiful rich tables
+  - `empathy telemetry savings [--days 30]` - Calculate actual savings vs all-PREMIUM baseline
+  - `empathy telemetry compare --period1 7 --period2 30` - Compare time periods
+  - `empathy telemetry reset --confirm` - Clear all telemetry data
+  - `empathy telemetry export --format json|csv --output file` - Export for analysis
+
+- **BaseWorkflow Integration** ([src/empathy_os/workflows/base.py](src/empathy_os/workflows/base.py))
+  - Automatic tracking of every LLM call (tier, model, cost, tokens, duration)
+  - Cache hit/miss tracking
+  - Graceful degradation (workflows continue even if telemetry fails)
+  - Singleton tracker instance shared across all workflows
+
+#### Privacy Guarantees
+
+**What we track:**
+- Workflow name, stage, tier, model, provider
+- Cost, tokens (input/output), timing
+- Cache hit/miss status
+
+**What we NEVER track:**
+- Prompts or responses
+- File paths or code content
+- User email (only SHA256 hash)
+- API keys or credentials
+- Any PII or sensitive data
+
+#### Test Coverage
+
+- **23 unit tests** ([tests/unit/telemetry/test_usage_tracker.py](tests/unit/telemetry/test_usage_tracker.py))
+  - JSON Lines format validation
+  - Thread-safe atomic writes
+  - SHA256 hashing
+  - File rotation and retention
+  - Statistics and savings calculation
+
+- **8 integration tests** ([tests/integration/test_telemetry_integration.py](tests/integration/test_telemetry_integration.py))
+  - End-to-end workflow tracking
+  - Cache hit tracking
+  - Multi-tier tracking
+  - Error handling and graceful degradation
+
+### Changed
+
+- **BaseWorkflow**: Added `_enable_telemetry` flag (default: True)
+- **CLI**: Added telemetry subcommand with 5 commands
+
+### Fixed
+
+- **README.md**: Fixed broken documentation links in README
+  - Changed relative `docs/` links to absolute GitHub URLs
+  - Fixes "can't find this page" errors when viewing README on PyPI
+  - Updated 9 documentation links: cost-analysis, caching, guides, architecture
+
 ## [3.8.2] - 2026-01-07
 
 ### Fixed

@@ -16,7 +16,7 @@ pip install empathy-framework[developer]  # Lightweight for individual developer
 
 ### 🎯 **Transparent Cost Claims: Honest Role-Based Savings (34-86%)**
 
-**Real savings depend on your work role.** Architects using 60% PREMIUM tasks see 34% savings, while junior devs see 86%. See [role-based analysis](docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for your specific case.
+**Real savings depend on your work role.** Architects using 60% PREMIUM tasks see 34% savings, while junior devs see 86%. See [role-based analysis](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for your specific case.
 
 ### 🚀 **Intelligent Response Caching: Up to 57% Hit Rate (Benchmarked)**
 
@@ -33,7 +33,7 @@ cache = create_cache(cache_type="hash")
 cache = create_cache(cache_type="hybrid", similarity_threshold=0.95)
 ```
 
-See [caching docs](docs/caching/) for benchmarks and configuration.
+See [caching docs](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/caching/) for benchmarks and configuration.
 
 ---
 
@@ -198,7 +198,7 @@ See ESLintParser, PylintParser, or MyPyParser for examples.
 - **34-86% Cost Savings** — Smart tier routing varies by role: architects 34%, senior devs 65%, junior devs 86%*
 - **VSCode Dashboard** — 10 integrated workflows with input history persistence
 
-*See [Cost Savings Analysis](docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for your specific use case
+*See [Cost Savings Analysis](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for your specific use case
 
 ---
 
@@ -263,6 +263,26 @@ print(result.current_issues)      # What's wrong now
 print(result.predicted_issues)    # What will break in 30-90 days
 print(result.prevention_steps)    # How to prevent it
 ```
+
+### 4. Track Your Savings
+
+**New in v3.9.0:** Local usage telemetry tracks your actual cost savings vs baseline.
+
+```bash
+# View recent usage
+empathy telemetry show
+
+# Calculate your savings vs all-PREMIUM baseline
+empathy telemetry savings --days 30
+
+# Compare time periods
+empathy telemetry compare --period1 7 --period2 30
+
+# Export for analysis
+empathy telemetry export --format csv --output usage.csv
+```
+
+**Privacy**: All data stored locally in `~/.empathy/telemetry/`. No data sent to external servers.
 
 ---
 
@@ -354,13 +374,13 @@ Run 2: $0.13, 15 seconds - cache frees 30s for deep analysis
 
 **Result**: Cache makes workflows SMARTER, not just cheaper.
 
-See [Adaptive Workflows Documentation](docs/caching/ADAPTIVE_WORKFLOWS.md) for full explanation.
+See [Adaptive Workflows Documentation](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/caching/ADAPTIVE_WORKFLOWS.md) for full explanation.
 
 #### Complete Documentation
 
-- **[Quick Reference](docs/caching/QUICK_REFERENCE.md)** - Common scenarios, 1-page cheat sheet
-- **[Configuration Guide](docs/caching/CONFIGURATION_GUIDE.md)** - All options, when to use each
-- **[Adaptive Workflows](docs/caching/ADAPTIVE_WORKFLOWS.md)** - Why Run 2 can cost more (it's good!)
+- **[Quick Reference](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/caching/QUICK_REFERENCE.md)** - Common scenarios, 1-page cheat sheet
+- **[Configuration Guide](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/caching/CONFIGURATION_GUIDE.md)** - All options, when to use each
+- **[Adaptive Workflows](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/caching/ADAPTIVE_WORKFLOWS.md)** - Why Run 2 can cost more (it's good!)
 
 **Test it yourself**:
 ```bash
@@ -415,7 +435,7 @@ python -m empathy_os.models.cli provider --set hybrid
 | **QA Engineer** | 10% | 35% | 55% | **80%** | Test generation, reports, automation |
 | **DevOps Engineer** | 20% | 50% | 30% | **69%** | Infrastructure planning + automation |
 
-**See [Complete Cost Analysis](docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for provider comparisons (Anthropic vs OpenAI vs Ollama) and detailed calculations.**
+**See [Complete Cost Analysis](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/cost-analysis/COST_SAVINGS_BY_ROLE_AND_PROVIDER.md) for provider comparisons (Anthropic vs OpenAI vs Ollama) and detailed calculations.**
 
 ### Level 3: Multi-Model Workflows
 
@@ -805,10 +825,10 @@ echo 'ANTHROPIC_API_KEY=sk-ant-...' >> .env
 
 For those interested in the development history and architectural decisions:
 
-- **[Development Logs](docs/development-logs/)** — Execution plans, phase completions, and progress tracking
-- **[Architecture Docs](docs/architecture/)** — System design, memory architecture, and integration plans
-- **[Marketing Materials](docs/marketing/)** — Pitch decks, outreach templates, and commercial readiness
-- **[Guides](docs/guides/)** — Publishing tutorials, MkDocs setup, and distribution policies
+- **[Development Logs](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/development-logs/)** — Execution plans, phase completions, and progress tracking
+- **[Architecture Docs](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/architecture/)** — System design, memory architecture, and integration plans
+- **[Marketing Materials](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/marketing/)** — Pitch decks, outreach templates, and commercial readiness
+- **[Guides](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/guides/)** — Publishing tutorials, MkDocs setup, and distribution policies
 
 ---
 
