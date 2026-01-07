@@ -3,16 +3,17 @@
 **The AI collaboration framework that predicts problems before they happen.**
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-5%2C941%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
-[![Coverage](https://img.shields.io/badge/coverage-64%25-yellow)](https://github.com/Smart-AI-Memory/empathy-framework)
+[![Tests](https://img.shields.io/badge/tests-6%2C038%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
+[![Coverage](https://img.shields.io/badge/coverage-68%25-yellow)](https://github.com/Smart-AI-Memory/empathy-framework)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
+[![Security](https://img.shields.io/badge/security-hardened-green)](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SECURITY.md)
 
 ```bash
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
-## What's New in v3.8.0
+## What's New in v3.8.3 (Current Release)
 
 ### 🎯 **Transparent Cost Claims: Honest Role-Based Savings (34-86%)**
 
@@ -34,6 +35,26 @@ cache = create_cache(cache_type="hybrid", similarity_threshold=0.95)
 ```
 
 See [caching docs](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/caching/) for benchmarks and configuration.
+
+### 📊 **Local Usage Telemetry: Track Your Real Savings**
+
+Track your actual cost savings vs baseline without sending data to external servers.
+
+```bash
+# View recent usage
+empathy telemetry show
+
+# Calculate your savings vs all-PREMIUM baseline
+empathy telemetry savings --days 30
+
+# Compare time periods
+empathy telemetry compare --period1 7 --period2 30
+
+# Export for analysis
+empathy telemetry export --format csv --output usage.csv
+```
+
+**Privacy**: All data stored locally in `~/.empathy/telemetry/`. No data sent to external servers.
 
 ---
 
@@ -265,8 +286,6 @@ print(result.prevention_steps)    # How to prevent it
 ```
 
 ### 4. Track Your Savings
-
-**New in v3.9.0:** Local usage telemetry tracks your actual cost savings vs baseline.
 
 ```bash
 # View recent usage

@@ -57,6 +57,7 @@ from .progress import ProgressCallback, ProgressTracker
 # Import telemetry tracking
 try:
     from empathy_os.telemetry import UsageTracker
+
     TELEMETRY_AVAILABLE = True
 except ImportError:
     TELEMETRY_AVAILABLE = False
@@ -437,9 +438,13 @@ class BaseWorkflow(ABC):
         if TELEMETRY_AVAILABLE and UsageTracker is not None:
             try:
                 self._telemetry_tracker = UsageTracker.get_instance()
-            except Exception:
-                # Telemetry initialization failed - disable it
-                logger.debug("Failed to initialize telemetry tracker")
+            except (OSError, PermissionError) as e:
+                # File system errors - log but disable telemetry
+                logger.debug(f"Failed to initialize telemetry tracker (file system error): {e}")
+                self._enable_telemetry = False
+            except (AttributeError, TypeError, ValueError) as e:
+                # Configuration or initialization errors
+                logger.debug(f"Failed to initialize telemetry tracker (config error): {e}")
                 self._enable_telemetry = False
 
         # Load config if not provided
@@ -501,15 +506,19 @@ class BaseWorkflow(ABC):
             auto_setup_cache()
             self._cache = create_cache()
             logger.info(f"Cache initialized for workflow: {self.name}")
-        except ImportError:
+        except ImportError as e:
             # Hybrid cache dependencies not available, fall back to hash-only
             logger.info(
-                "Using hash-only cache (install empathy-framework[cache] for semantic caching)"
+                f"Using hash-only cache (install empathy-framework[cache] for semantic caching): {e}"
             )
             self._cache = create_cache(cache_type="hash")
-        except Exception:
-            # Graceful degradation - disable cache if setup fails
-            logger.warning("Cache setup failed, continuing without cache")
+        except (OSError, PermissionError) as e:
+            # File system errors - disable cache
+            logger.warning(f"Cache setup failed (file system error): {e}, continuing without cache")
+            self._enable_cache = False
+        except (ValueError, TypeError, AttributeError) as e:
+            # Configuration errors - disable cache
+            logger.warning(f"Cache setup failed (config error): {e}, continuing without cache")
             self._enable_cache = False
 
     async def _call_llm(
@@ -589,9 +598,14 @@ class BaseWorkflow(ABC):
                         cached_response["input_tokens"],
                         cached_response["output_tokens"],
                     )
-            except Exception:
-                # Cache lookup failed - continue with LLM call
-                logger.debug("Cache lookup failed, continuing with LLM call")
+            except (KeyError, TypeError, ValueError) as e:
+                # Malformed cache data - continue with LLM call
+                logger.debug(f"Cache lookup failed (malformed data): {e}, continuing with LLM call")
+            except (OSError, PermissionError) as e:
+                # File system errors - continue with LLM call
+                logger.debug(
+                    f"Cache lookup failed (file system error): {e}, continuing with LLM call"
+                )
 
         # Create a step config for this call
         step = WorkflowStepConfig(
@@ -635,21 +649,30 @@ class BaseWorkflow(ABC):
                     }
                     self._cache.put(self.name, stage, full_prompt, model, response_data)
                     logger.debug(f"Cached response for {self.name}:{stage}")
-                except Exception:
-                    # Cache storage failed - log but continue
-                    logger.debug("Failed to cache response")
+                except (OSError, PermissionError) as e:
+                    # File system errors - log but continue
+                    logger.debug(f"Failed to cache response (file system error): {e}")
+                except (ValueError, TypeError, KeyError) as e:
+                    # Data serialization errors - log but continue
+                    logger.debug(f"Failed to cache response (serialization error): {e}")
 
             return content, in_tokens, out_tokens
         except (ValueError, TypeError, KeyError) as e:
             # Invalid input or configuration errors
+            logger.warning(f"LLM call failed (invalid input): {e}")
             return f"Error calling LLM (invalid input): {e}", 0, 0
-        except (TimeoutError, RuntimeError) as e:
-            # Timeout or API errors
+        except (TimeoutError, RuntimeError, ConnectionError) as e:
+            # Timeout, API errors, or connection failures
+            logger.warning(f"LLM call failed (timeout/API/connection error): {e}")
             return f"Error calling LLM (timeout/API error): {e}", 0, 0
-        except Exception:
+        except (OSError, PermissionError) as e:
+            # File system or permission errors
+            logger.warning(f"LLM call failed (file system error): {e}")
+            return f"Error calling LLM (file system error): {e}", 0, 0
+        except Exception as e:
             # INTENTIONAL: Graceful degradation - return error message rather than crashing workflow
-            logger.exception("Unexpected error calling LLM")
-            return "Error calling LLM: unexpected error", 0, 0
+            logger.exception(f"Unexpected error calling LLM: {e}")
+            return f"Error calling LLM: {type(e).__name__}", 0, 0
 
     def _track_telemetry(
         self,
@@ -692,9 +715,12 @@ class BaseWorkflow(ABC):
                 cache_type=cache_type,
                 duration_ms=duration_ms,
             )
-        except Exception:
+        except (AttributeError, TypeError, ValueError) as e:
             # INTENTIONAL: Telemetry tracking failures should never crash workflows
-            logger.debug("Failed to track telemetry")
+            logger.debug(f"Failed to track telemetry (config/data error): {e}")
+        except (OSError, PermissionError) as e:
+            # File system errors - log but never crash workflow
+            logger.debug(f"Failed to track telemetry (file system error): {e}")
 
     def _calculate_cost(self, tier: ModelTier, input_tokens: int, output_tokens: int) -> float:
         """Calculate cost for a stage."""
@@ -944,16 +970,22 @@ class BaseWorkflow(ABC):
             logger.error(error)
             if self._progress_tracker:
                 self._progress_tracker.fail_workflow(error)
-        except (TimeoutError, RuntimeError) as e:
-            # Timeout or API errors
-            error = f"Workflow execution error (timeout/API): {e}"
+        except (TimeoutError, RuntimeError, ConnectionError) as e:
+            # Timeout, API errors, or connection failures
+            error = f"Workflow execution error (timeout/API/connection): {e}"
             logger.error(error)
             if self._progress_tracker:
                 self._progress_tracker.fail_workflow(error)
-        except Exception:
+        except (OSError, PermissionError) as e:
+            # File system or permission errors
+            error = f"Workflow execution error (file system): {e}"
+            logger.error(error)
+            if self._progress_tracker:
+                self._progress_tracker.fail_workflow(error)
+        except Exception as e:
             # INTENTIONAL: Workflow orchestration - catch all errors to report failure gracefully
-            logger.exception("Unexpected error in workflow execution")
-            error = "Workflow execution failed: unexpected error"
+            logger.exception(f"Unexpected error in workflow execution: {type(e).__name__}")
+            error = f"Workflow execution failed: {type(e).__name__}"
             if self._progress_tracker:
                 self._progress_tracker.fail_workflow(error)
 

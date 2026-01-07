@@ -18,9 +18,9 @@ from pathlib import Path
 from typing import Any
 
 from jinja2 import Environment, FileSystemLoader
+from test_generator import TestGenerator
 
 from patterns import get_pattern_registry
-from test_generator import TestGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +46,7 @@ class PatternCompose:
             loader=FileSystemLoader(str(template_dir)),
             trim_blocks=True,
             lstrip_blocks=True,
+            autoescape=True,  # Enable autoescape for security (code gen templates should be safe)
         )
 
     def create_wizard(

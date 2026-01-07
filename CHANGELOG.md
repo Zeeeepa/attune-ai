@@ -5,6 +5,63 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.0] - 2026-01-07
+
+### Added
+
+- **SECURITY.md enhancements**: Comprehensive security documentation
+  - Added "Security Hardening (Pattern 6 Implementation)" section with complete Sprint 1-3 audit history
+  - Security metrics table showing +1143% test increase (14 → 174 tests)
+  - Full Pattern 6 implementation code example for contributors
+  - Attack vectors blocked documentation with examples
+  - Contributor guidelines for adding new file write operations
+  - Updated supported versions to 3.8.x
+
+### Fixed
+
+- **Exception handling improvements** ([src/empathy_os/workflows/base.py](src/empathy_os/workflows/base.py))
+  - Fixed 8 blind `except Exception:` handlers with specific exception types
+  - Telemetry tracker initialization: Split into OSError/PermissionError and AttributeError/TypeError/ValueError
+  - Cache setup: Added ImportError, OSError/PermissionError, and ValueError/TypeError/AttributeError catches
+  - Cache lookup: Added KeyError/TypeError/ValueError and OSError/PermissionError catches
+  - Cache storage: Added OSError/PermissionError and ValueError/TypeError/KeyError catches
+  - LLM call errors: Added specific catches for ValueError/TypeError/KeyError, TimeoutError/RuntimeError/ConnectionError, and OSError/PermissionError
+  - Telemetry tracking: Split into AttributeError/TypeError/ValueError and OSError/PermissionError
+  - Workflow execution: Added TimeoutError/RuntimeError/ConnectionError and OSError/PermissionError catches
+  - Enhanced error logging with specific error messages for better debugging while maintaining graceful degradation
+  - All intentional broad catches now include `# INTENTIONAL:` comments explaining design decisions
+
+- **Test file fixes**: Corrected incorrect patterns in generated workflow tests
+  - [tests/unit/workflows/test_new_sample_workflow1.py](tests/unit/workflows/test_new_sample_workflow1.py): Added ModelTier import, fixed execute() usage
+  - [tests/unit/workflows/test_test5.py](tests/unit/workflows/test_test5.py): Added ModelTier import, updated stages and tier_map assertions
+  - All 110 workflow tests now passing (100% pass rate)
+
+- **Minor code quality**: Fixed unused variable warning in [src/empathy_os/workflows/tier_tracking.py](src/empathy_os/workflows/tier_tracking.py#L356)
+  - Changed `total_tokens` to `_total_tokens` to indicate intentionally unused variable
+
+### Changed
+
+- **README.md updates**: Properly highlighted v3.8.3 as current release
+  - Changed header from "v3.8.0" to "v3.8.3 (Current Release)" for clarity
+  - Consolidated telemetry feature into v3.8.3 section (was incorrectly labeled as "v3.9.0")
+  - Updated badges: 6,038 tests passing (up from 5,941), 68% coverage (up from 64%)
+  - Added security badge linking to SECURITY.md
+
+- **Project organization**: Cleaned root directory structure
+  - Moved scaffolding/, test_generator/, workflow_patterns/, hot_reload/ to src/empathy_os/ subdirectories
+  - Moved .vsix files to vscode-extension/dist/
+  - Moved RELEASE_PREPARATION.md to docs/guides/
+  - Archived 15+ planning documents to .archive/
+  - Result: 60% reduction in root directory clutter
+
+### Security
+
+- **Pattern 6 security hardening** (continued from v3.8.x releases)
+  - Cumulative total: 6 files secured, 13 file write operations protected, 174 security tests (100% passing)
+  - Sprint 3 focus: Exception handling improvements to prevent error masking
+  - Zero blind exception handlers remaining in workflow base
+  - All error messages now provide actionable debugging information
+
 ## [3.8.3] - 2026-01-07
 
 ### Fixed

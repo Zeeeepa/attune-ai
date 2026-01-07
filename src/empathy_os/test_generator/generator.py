@@ -48,6 +48,7 @@ class TestGenerator:
             loader=FileSystemLoader(str(template_dir)),
             trim_blocks=True,
             lstrip_blocks=True,
+            autoescape=True,  # Enable autoescape for security (test gen templates should be safe)
         )
 
         self.risk_analyzer = RiskAnalyzer()

@@ -3439,6 +3439,374 @@
         "started_at": "2026-01-07T06:13:25.443276",
         "completed_at": "2026-01-07T06:14:06.488406"
       }
+    },
+    {
+      "pattern_id": "workflow_20260107_c89025e5",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: new-sample-workflow1 - A team leader that has 10 years of experiance coding.",
+      "fix": "Completed via new-sample-workflow1 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "new-sample-workflow1",
+        "workflow_id": "c89025e5-4330-48b7-8734-5a8b37fbe8c2",
+        "duration_seconds": 0.01,
+        "started_at": "2026-01-07T09:08:31.058692",
+        "completed_at": "2026-01-07T09:08:31.073114"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260107_bd919cf4",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: new-sample-workflow1 - A team leader that has 10 years of experiance coding.",
+      "fix": "Completed via new-sample-workflow1 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "new-sample-workflow1",
+        "workflow_id": "bd919cf4-cfcf-43a7-ae6b-e08dabcced7f",
+        "duration_seconds": 0.01,
+        "started_at": "2026-01-07T09:08:31.913424",
+        "completed_at": "2026-01-07T09:08:31.925004"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260107_ac5b93ce",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: new-sample-workflow1 - A team leader that has 10 years of experiance coding.",
+      "fix": "Completed via new-sample-workflow1 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "new-sample-workflow1",
+        "workflow_id": "ac5b93ce-6ef1-4f83-9c05-83e0025847a6",
+        "duration_seconds": 0.01,
+        "started_at": "2026-01-07T09:09:19.920010",
+        "completed_at": "2026-01-07T09:09:19.929165"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260107_dea911a4",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: new-sample-workflow1 - A team leader that has 10 years of experiance coding.",
+      "fix": "Completed via new-sample-workflow1 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "new-sample-workflow1",
+        "workflow_id": "dea911a4-7908-4d55-9b8b-264a2e61258e",
+        "duration_seconds": 0.01,
+        "started_at": "2026-01-07T09:09:20.724662",
+        "completed_at": "2026-01-07T09:09:20.733869"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260107_fb0e0913",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: test5 - scan code for bugs or opportunities to improve the code and generate a detailed report.",
+      "fix": "Completed via test5 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.0,
+          "cost_if_always_premium": 0.0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "test5",
+        "workflow_id": "fb0e0913-b36b-4747-b646-c8af0c8bbe57",
+        "duration_seconds": 0.31,
+        "started_at": "2026-01-07T09:09:21.763989",
+        "completed_at": "2026-01-07T09:09:22.073778"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260107_48d270b4",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: new-sample-workflow1 - A team leader that has 10 years of experiance coding.",
+      "fix": "Completed via new-sample-workflow1 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "new-sample-workflow1",
+        "workflow_id": "48d270b4-e34d-4ce4-a3ea-63302813aaff",
+        "duration_seconds": 0.01,
+        "started_at": "2026-01-07T09:13:27.430816",
+        "completed_at": "2026-01-07T09:13:27.442068"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260107_dd1dec25",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: new-sample-workflow1 - A team leader that has 10 years of experiance coding.",
+      "fix": "Completed via new-sample-workflow1 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "new-sample-workflow1",
+        "workflow_id": "dd1dec25-a289-4737-84be-979543dc5962",
+        "duration_seconds": 0.01,
+        "started_at": "2026-01-07T09:13:28.249984",
+        "completed_at": "2026-01-07T09:13:28.259402"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260107_580a2495",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: test5 - scan code for bugs or opportunities to improve the code and generate a detailed report.",
+      "fix": "Completed via test5 workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-07",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.0,
+          "cost_if_always_premium": 0.0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "test5",
+        "workflow_id": "580a2495-1413-480d-9bd7-94d32f339ae0",
+        "duration_seconds": 0.27,
+        "started_at": "2026-01-07T09:13:29.039764",
+        "completed_at": "2026-01-07T09:13:29.305257"
+      }
     }
   ],
   "last_updated": "2026-01-07T00:51:52.358772",

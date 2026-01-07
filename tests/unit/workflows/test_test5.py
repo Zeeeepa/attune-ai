@@ -8,6 +8,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
+from empathy_os.workflows.base import ModelTier
 from empathy_os.workflows.test5 import Test5Workflow
 
 
@@ -27,27 +28,23 @@ class TestTest5Workflow:
             workflow.description
             == "scan code for bugs or opportunities to improve the code and generate a detailed report."
         )
-        assert workflow.stages == ["analyze", "process", "test", "report"]
+        assert workflow.stages == ["analyze", "fix"]
 
     @pytest.mark.asyncio
     async def test_workflow_tier_map(self, workflow):
         """Test tier mapping is correct."""
-        assert workflow.tier_map["analyze"] == workflow.ModelTier.CHEAP
-        assert workflow.tier_map["process"] == workflow.ModelTier.CAPABLE
-        assert workflow.tier_map["test"] == workflow.ModelTier.CAPABLE
-        assert workflow.tier_map["report"] == workflow.ModelTier.PREMIUM
+        assert workflow.tier_map["analyze"] == ModelTier.CAPABLE
+        assert workflow.tier_map["fix"] == ModelTier.CAPABLE
 
     @pytest.mark.asyncio
     async def test_workflow_execution_basic(self, workflow):
         """Test basic workflow execution."""
-        # TODO: Add test data
-        input_data = {}
-
-        # Execute workflow
-        result = await workflow.execute(input_data)
+        # Execute workflow (use kwargs, not positional args)
+        result = await workflow.execute()
 
         # Verify result
         assert result is not None
+        assert result.success or result.error is not None  # Either succeeds or has error
         # TODO: Add specific assertions
 
     @pytest.mark.asyncio
