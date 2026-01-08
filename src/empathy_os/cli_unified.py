@@ -552,7 +552,7 @@ def tier_recommend(
     console.print(f"  💰 [bold]Expected Cost:[/bold] ${result.expected_cost:.3f}")
     console.print(f"  🔄 [bold]Expected Attempts:[/bold] {result.expected_attempts:.1f}")
     console.print()
-    console.print(f"  📊 [bold]Reasoning:[/bold]")
+    console.print("  📊 [bold]Reasoning:[/bold]")
     console.print(f"     {result.reasoning}")
     console.print()
 

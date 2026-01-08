@@ -218,7 +218,7 @@ Examples:
     )
 
     # List patterns command
-    list_parser = subparsers.add_parser("list-patterns", help="List available patterns")
+    subparsers.add_parser("list-patterns", help="List available patterns")
 
     args = parser.parse_args()
 

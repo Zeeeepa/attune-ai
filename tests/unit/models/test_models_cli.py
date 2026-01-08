@@ -83,6 +83,7 @@ class TestPrintRegistry:
                     supports_vision=False,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="cheap",
                 ),
             },
         }
@@ -206,6 +207,7 @@ class TestPrintCosts:
                     supports_vision=False,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="cheap",
                 ),
             },
         }
@@ -230,6 +232,7 @@ class TestPrintCosts:
                     supports_vision=False,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="cheap",
                 ),
             },
         }
@@ -255,6 +258,7 @@ class TestPrintCosts:
                     supports_vision=False,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="capable",
                 ),
             },
         }
@@ -346,6 +350,7 @@ class TestPrintEffectiveConfig:
                     supports_vision=False,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="cheap",
                 ),
                 "capable": ModelInfo(
                     id="claude-sonnet",
@@ -355,6 +360,7 @@ class TestPrintEffectiveConfig:
                     supports_vision=True,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="capable",
                 ),
                 "premium": ModelInfo(
                     id="claude-opus",
@@ -364,6 +370,7 @@ class TestPrintEffectiveConfig:
                     supports_vision=True,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="premium",
                 ),
             },
         }
@@ -812,6 +819,7 @@ class TestCLIEdgeCases:
                     supports_vision=False,
                     supports_tools=True,
                     provider="anthropic",
+                    tier="capable",
                 ),
             },
         }

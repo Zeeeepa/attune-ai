@@ -34,7 +34,7 @@ class SingleStagePattern(WorkflowPattern):
     def generate_code_sections(self, context: dict[str, Any]) -> list[CodeSection]:
         """Generate code for single-stage workflow."""
         workflow_name = context.get("workflow_name", "MyWorkflow")
-        class_name = context.get("class_name", "MyWorkflow")
+        context.get("class_name", "MyWorkflow")
         description = context.get("description", "Single-stage workflow")
         tier = context.get("tier", "CAPABLE")
 
@@ -118,7 +118,7 @@ class MultiStagePattern(WorkflowPattern):
     def generate_code_sections(self, context: dict[str, Any]) -> list[CodeSection]:
         """Generate code for multi-stage workflow."""
         workflow_name = context.get("workflow_name", "my-workflow")
-        class_name = context.get("class_name", "MyWorkflow")
+        context.get("class_name", "MyWorkflow")
         description = context.get("description", "Multi-stage workflow")
         stages = context.get("stages", ["analyze", "process", "report"])
         tier_map = context.get(
@@ -138,7 +138,7 @@ class MultiStagePattern(WorkflowPattern):
 
         # Generate stage routing
         stage_routing = []
-        for i, stage in enumerate(stages):
+        for _i, stage in enumerate(stages):
             stage_routing.append(
                 f"""        if stage_name == "{stage}":
             return await self._{stage}(input_data, tier)"""
@@ -229,7 +229,7 @@ class CrewBasedPattern(WorkflowPattern):
     def generate_code_sections(self, context: dict[str, Any]) -> list[CodeSection]:
         """Generate code for crew-based workflow."""
         workflow_name = context.get("workflow_name", "my-crew-workflow")
-        class_name = context.get("class_name", "MyCrewWorkflow")
+        context.get("class_name", "MyCrewWorkflow")
         description = context.get("description", "Crew-based workflow")
         crew_name = context.get("crew_name", "MyCrew")
 

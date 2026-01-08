@@ -560,7 +560,9 @@ class MemoryControlPanel:
             return long_term.delete_pattern(pattern_id, user_id)
         except Exception as e:
             logger.error("delete_pattern_failed", pattern_id=pattern_id, error=str(e))
-            return False  # Graceful degradation - validation errors raise, storage errors return False
+            return (
+                False  # Graceful degradation - validation errors raise, storage errors return False
+            )
 
     def clear_short_term(self, agent_id: str = "admin") -> int:
         """Clear all short-term memory for an agent.

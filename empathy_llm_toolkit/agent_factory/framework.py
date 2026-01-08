@@ -97,7 +97,8 @@ def detect_installed_frameworks() -> list[Framework]:
         import crewai  # noqa: F401
 
         installed.append(Framework.CREWAI)
-    except ImportError:
+    except (ImportError, AttributeError, ImportWarning):
+        # INTENTIONAL: Catch import-time errors from CrewAI dependencies
         pass
 
     return installed

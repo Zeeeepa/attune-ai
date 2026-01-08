@@ -56,18 +56,20 @@ async def test_workflow_tracks_llm_calls(tracker):
 
     # Mock the LLM executor to avoid actual API calls
     mock_executor = AsyncMock()
-    mock_executor.run = AsyncMock(return_value=MagicMock(
-        content="Test response",
-        tokens_input=100,
-        tokens_output=50,
-        cost_estimate=0.01,
-        tier="CAPABLE",
-        model_id="test-model",
-    ))
+    mock_executor.run = AsyncMock(
+        return_value=MagicMock(
+            content="Test response",
+            tokens_input=100,
+            tokens_output=50,
+            cost_estimate=0.01,
+            tier="CAPABLE",
+            model_id="test-model",
+        )
+    )
     workflow._executor = mock_executor
 
     # Execute workflow
-    result = await workflow.execute(input="test")
+    _ = await workflow.execute(input="test")
 
     # Check that telemetry entries were created
     entries = tracker.get_recent_entries(limit=10)
@@ -90,11 +92,13 @@ async def test_workflow_tracks_cache_hits(tracker):
 
     # Mock cache that returns a hit
     mock_cache = MagicMock()
-    mock_cache.get = MagicMock(return_value={
-        "content": "Cached response",
-        "input_tokens": 100,
-        "output_tokens": 50,
-    })
+    mock_cache.get = MagicMock(
+        return_value={
+            "content": "Cached response",
+            "input_tokens": 100,
+            "output_tokens": 50,
+        }
+    )
     workflow._cache = mock_cache
 
     # Call _call_llm to trigger cache hit
@@ -136,7 +140,7 @@ async def test_workflow_tracks_different_tiers(tracker):
     workflow._executor = mock_executor
 
     # Execute workflow (has CHEAP and CAPABLE stages)
-    result = await workflow.execute(input="test")
+    _ = await workflow.execute(input="test")
 
     # Check that both tiers were tracked
     entries = tracker.get_recent_entries(limit=10)
@@ -153,14 +157,16 @@ async def test_telemetry_disabled(tracker, temp_telemetry_dir):
 
     # Mock executor
     mock_executor = AsyncMock()
-    mock_executor.run = AsyncMock(return_value=MagicMock(
-        content="Test response",
-        tokens_input=100,
-        tokens_output=50,
-        cost_estimate=0.01,
-        tier="CAPABLE",
-        model_id="test-model",
-    ))
+    mock_executor.run = AsyncMock(
+        return_value=MagicMock(
+            content="Test response",
+            tokens_input=100,
+            tokens_output=50,
+            cost_estimate=0.01,
+            tier="CAPABLE",
+            model_id="test-model",
+        )
+    )
     workflow._executor = mock_executor
 
     # Execute workflow
@@ -185,14 +191,16 @@ async def test_telemetry_tracking_on_error(tracker):
 
     # Mock executor
     mock_executor = AsyncMock()
-    mock_executor.run = AsyncMock(return_value=MagicMock(
-        content="Test response",
-        tokens_input=100,
-        tokens_output=50,
-        cost_estimate=0.01,
-        tier="CAPABLE",
-        model_id="test-model",
-    ))
+    mock_executor.run = AsyncMock(
+        return_value=MagicMock(
+            content="Test response",
+            tokens_input=100,
+            tokens_output=50,
+            cost_estimate=0.01,
+            tier="CAPABLE",
+            model_id="test-model",
+        )
+    )
     workflow._executor = mock_executor
 
     # Workflow should still execute successfully despite telemetry error
@@ -211,14 +219,16 @@ async def test_multiple_workflows_share_tracker(tracker):
 
     # Mock executor for both
     mock_executor = AsyncMock()
-    mock_executor.run = AsyncMock(return_value=MagicMock(
-        content="Test response",
-        tokens_input=100,
-        tokens_output=50,
-        cost_estimate=0.01,
-        tier="CAPABLE",
-        model_id="test-model",
-    ))
+    mock_executor.run = AsyncMock(
+        return_value=MagicMock(
+            content="Test response",
+            tokens_input=100,
+            tokens_output=50,
+            cost_estimate=0.01,
+            tier="CAPABLE",
+            model_id="test-model",
+        )
+    )
     workflow1._executor = mock_executor
     workflow2._executor = mock_executor
 

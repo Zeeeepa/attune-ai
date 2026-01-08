@@ -24,6 +24,7 @@ from dataclasses import dataclass
 @dataclass
 class TierRecommendation:
     """Recommendation for which tier to start with."""
+
     recommended_tier: str
     confidence: float
     reasoning: str
@@ -154,18 +155,24 @@ class TierPatternAnalyzer:
         tier, rate = recommended
 
         # Calculate average cost for this tier
-        avg_cost = sum(
-            p["tier_progression"]["cost_breakdown"]["total_cost"]
-            for p in similar
-            if p["tier_progression"]["successful_tier"] == tier
-        ) / tier_counts[tier]
+        avg_cost = (
+            sum(
+                p["tier_progression"]["cost_breakdown"]["total_cost"]
+                for p in similar
+                if p["tier_progression"]["successful_tier"] == tier
+            )
+            / tier_counts[tier]
+        )
 
         # Calculate average attempts
-        avg_attempts = sum(
-            p["tier_progression"]["total_attempts"]
-            for p in similar
-            if p["tier_progression"]["successful_tier"] == tier
-        ) / tier_counts[tier]
+        avg_attempts = (
+            sum(
+                p["tier_progression"]["total_attempts"]
+                for p in similar
+                if p["tier_progression"]["successful_tier"] == tier
+            )
+            / tier_counts[tier]
+        )
 
         return TierRecommendation(
             recommended_tier=tier,
@@ -215,14 +222,10 @@ class TierPatternAnalyzer:
                     total_failures += 1
 
         if total_failures == 0:
-            return {
-                "message": "No failures in current patterns (all succeeded on first attempt)"
-            }
+            return {"message": "No failures in current patterns (all succeeded on first attempt)"}
 
         # Sort by frequency
-        sorted_gates = sorted(
-            gate_failures.items(), key=lambda x: x[1], reverse=True
-        )
+        sorted_gates = sorted(gate_failures.items(), key=lambda x: x[1], reverse=True)
 
         return {
             "total_failures": total_failures,
@@ -243,9 +246,7 @@ class TierPatternAnalyzer:
             return {"error": "No patterns found"}
 
         xml_patterns = [
-            p
-            for p in self.patterns
-            if "xml_protocol_compliance" in p["tier_progression"]
+            p for p in self.patterns if "xml_protocol_compliance" in p["tier_progression"]
         ]
 
         if not xml_patterns:
@@ -285,9 +286,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Analyze tier progression patterns")
-    parser.add_argument(
-        "--bug-type", help="Filter by specific bug type", default=None
-    )
+    parser.add_argument("--bug-type", help="Filter by specific bug type", default=None)
     parser.add_argument(
         "--recommend", help="Get tier recommendation for bug description", default=None
     )
@@ -354,15 +353,9 @@ def main():
         print(f"Patterns analyzed: {xml_report['total_analyzed']}")
         print(f"Prompt used XML: {xml_report['prompt_used_xml_percent']}%")
         print(f"Response used XML: {xml_report['response_used_xml_percent']}%")
-        print(
-            f"All sections present: {xml_report['all_sections_present_percent']}%"
-        )
-        print(
-            f"Test evidence provided: {xml_report['test_evidence_provided_percent']}%"
-        )
-        print(
-            f"False completes avoided: {xml_report['false_complete_avoided_percent']}%"
-        )
+        print(f"All sections present: {xml_report['all_sections_present_percent']}%")
+        print(f"Test evidence provided: {xml_report['test_evidence_provided_percent']}%")
+        print(f"False completes avoided: {xml_report['false_complete_avoided_percent']}%")
 
     # 5. Tier Recommendation (if requested)
     if args.recommend:

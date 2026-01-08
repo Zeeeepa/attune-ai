@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-01-07T00:29:47.741214",
-  "node_count": 41,
+  "updated_at": "2026-01-08T16:35:43.615855",
+  "node_count": 44,
   "edge_count": 0,
   "nodes": [
     {
@@ -658,6 +658,54 @@
       "tags": [],
       "created_at": "2026-01-07T00:29:47.738267",
       "updated_at": "2026-01-07T00:29:47.738268",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260108001403_25b2dd11985d",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmp2j66bv2y/app.py",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_wizard": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-08T00:14:03.916430",
+      "updated_at": "2026-01-08T00:14:03.916430",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260108161548_8e701c1f4b04",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmpyrqkvkqg/app.py",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_wizard": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-08T16:15:48.767867",
+      "updated_at": "2026-01-08T16:15:48.767867",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260108163543_7aebb465c951",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmpb4mboxa2/app.py",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_wizard": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-08T16:35:43.614545",
+      "updated_at": "2026-01-08T16:35:43.614546",
       "status": "open"
     }
   ],

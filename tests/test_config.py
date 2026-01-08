@@ -420,8 +420,12 @@ class TestConfigErrorHandling:
         with pytest.raises(FileNotFoundError):
             EmpathyConfig.from_yaml("nonexistent.yml")
 
-    def test_from_yaml_no_pyyaml(self, monkeypatch):
+    def test_from_yaml_no_pyyaml(self, monkeypatch, tmp_path):
         """Test from_yaml raises ImportError without PyYAML"""
+        # Create a temporary YAML file so FileNotFoundError doesn't mask ImportError
+        yaml_file = tmp_path / "test.yml"
+        yaml_file.write_text("user_id: test\n")
+
         # Temporarily make YAML unavailable
         import empathy_os.config as config_module
 
@@ -431,7 +435,7 @@ class TestConfigErrorHandling:
             monkeypatch.setattr(config_module, "YAML_AVAILABLE", False)
 
             with pytest.raises(ImportError, match="PyYAML is required"):
-                EmpathyConfig.from_yaml("test.yml")
+                EmpathyConfig.from_yaml(str(yaml_file))
         finally:
             monkeypatch.setattr(config_module, "YAML_AVAILABLE", original_yaml_available)
 

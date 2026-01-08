@@ -570,7 +570,9 @@ class SecureMemDocsIntegration:
 
             # Pattern 5: Type validation
             if custom_metadata is not None and not isinstance(custom_metadata, dict):
-                raise TypeError(f"custom_metadata must be dict, got {type(custom_metadata).__name__}")
+                raise TypeError(
+                    f"custom_metadata must be dict, got {type(custom_metadata).__name__}"
+                )
 
             # Step 1 & 2: PII Scrubbing + Secrets Detection (PARALLEL for performance)
             # Run both operations in parallel since they're independent

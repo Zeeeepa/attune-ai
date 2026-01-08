@@ -25,13 +25,13 @@ from empathy_os.agent_monitoring import AgentMetrics, AgentMonitor, TeamMetrics
 
 # Import telemetry classes
 from empathy_os.models.telemetry import (
-                                         LLMCallRecord,
-                                         TelemetryAnalytics,
-                                         TelemetryStore,
-                                         WorkflowRunRecord,
-                                         get_telemetry_store,
-                                         log_llm_call,
-                                         log_workflow_run,
+    LLMCallRecord,
+    TelemetryAnalytics,
+    TelemetryStore,
+    WorkflowRunRecord,
+    get_telemetry_store,
+    log_llm_call,
+    log_workflow_run,
 )
 
 __all__ = [

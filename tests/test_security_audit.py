@@ -604,9 +604,9 @@ class TestSecurityPatternsStructure:
         """Severity values should be valid."""
         valid_severities = {"critical", "high", "medium", "low"}
         for name, info in SECURITY_PATTERNS.items():
-            assert info["severity"] in valid_severities, (
-                f"{name} has invalid severity: {info['severity']}"
-            )
+            assert (
+                info["severity"] in valid_severities
+            ), f"{name} has invalid severity: {info['severity']}"
 
     def test_owasp_format_is_valid(self):
         """OWASP references should follow expected format."""
@@ -718,7 +718,8 @@ class TestWorkflowInit:
         workflow = SecurityAuditWorkflow()
         assert workflow.patterns_dir == "./patterns"
         assert workflow.skip_remediate_if_clean is True
-        assert workflow.use_crew_for_remediation is False
+        assert workflow.use_crew_for_assessment is True
+        assert workflow.use_crew_for_remediation is True
         assert workflow.crew_config == {}
 
     def test_custom_patterns_dir(self):

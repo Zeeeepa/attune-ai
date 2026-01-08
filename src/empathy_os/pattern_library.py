@@ -262,9 +262,7 @@ class PatternLibrary:
         """
         pattern = self.patterns.get(pattern_id)
         if not pattern:
-            raise ValueError(
-                f"Pattern '{pattern_id}' not found. Cannot record outcome."
-            )
+            raise ValueError(f"Pattern '{pattern_id}' not found. Cannot record outcome.")
         pattern.record_usage(success)
 
     def link_patterns(self, pattern_id_1: str, pattern_id_2: str):
@@ -300,10 +298,7 @@ class PatternLibrary:
                 self.pattern_graph[pattern_id_2].append(pattern_id_1)
 
     def get_related_patterns(
-        self,
-        pattern_id: str,
-        depth: int = 1,
-        _visited: set[str] | None = None
+        self, pattern_id: str, depth: int = 1, _visited: set[str] | None = None
     ) -> list[Pattern]:
         """Get patterns related to a given pattern
 

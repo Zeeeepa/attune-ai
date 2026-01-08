@@ -33,7 +33,7 @@ from empathy_os.workflows.security_audit import SecurityAuditWorkflow
 class TestIsDetectionCode:
     """Educational tests for detection code identification (meta-detection)."""
 
-    def test_identifies_string_literal_detection_patterns(self):
+    def test_identifies_string_literal_detection_patterns(self, security_audit_workflow):
         """Teaching Pattern: Meta-detection fundamentals.
 
         When code contains '"eval("' as a string literal (in quotes),
@@ -42,7 +42,7 @@ class TestIsDetectionCode:
 
         Example: if "eval(" in content:  # Detection, not vulnerability
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Line of code that's DETECTING eval usage
         line = 'if "eval(" in content:'
@@ -51,7 +51,7 @@ class TestIsDetectionCode:
         result = workflow._is_detection_code(line, match)
         assert result is True  # This is detection code, not vulnerable code
 
-    def test_identifies_regex_compilation_for_detection(self):
+    def test_identifies_regex_compilation_for_detection(self, security_audit_workflow):
         r"""Teaching Pattern: Regex-based detection identification.
 
         When code compiles a regex pattern for scanning, it's building
@@ -59,7 +59,7 @@ class TestIsDetectionCode:
 
         Example: pattern = re.compile(r"eval\(")
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Line that compiles regex for detection
         line = 'pattern = re.compile(r"eval\\(")'
@@ -68,7 +68,7 @@ class TestIsDetectionCode:
         result = workflow._is_detection_code(line, match)
         assert result is True  # Regex compilation = detection tool
 
-    def test_identifies_pattern_searching(self):
+    def test_identifies_pattern_searching(self, security_audit_workflow):
         """Teaching Pattern: Pattern matching method detection.
 
         Methods like .search(), .finditer(), .match() indicate
@@ -76,7 +76,7 @@ class TestIsDetectionCode:
 
         Example: matches = pattern.search(code)
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Line using regex search for detection
         line = "matches = pattern.search(code_content)"
@@ -85,14 +85,14 @@ class TestIsDetectionCode:
         result = workflow._is_detection_code(line, match)
         assert result is True  # Search method = detection
 
-    def test_identifies_in_content_checks(self):
+    def test_identifies_in_content_checks(self, security_audit_workflow):
         """Teaching Pattern: Content checking identification.
 
         The pattern "X in content" is a common detection idiom.
 
         Example: if "dangerous_pattern" in content:
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Line checking for pattern existence
         line = 'if "subprocess.call" in content:'
@@ -101,7 +101,7 @@ class TestIsDetectionCode:
         result = workflow._is_detection_code(line, match)
         assert result is True  # "in content" = detection pattern
 
-    def test_rejects_actual_vulnerable_code(self):
+    def test_rejects_actual_vulnerable_code(self, security_audit_workflow):
         """Teaching Pattern: Distinguishing real vulnerabilities from detection.
 
         Actual calls to dangerous functions should NOT be flagged as
@@ -109,7 +109,7 @@ class TestIsDetectionCode:
 
         Example: result = eval(user_input)  # ACTUAL VULNERABILITY
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Line that actually calls eval (VULNERABLE)
         line = "result = eval(user_input)"
@@ -129,7 +129,7 @@ class TestIsDetectionCode:
 class TestIsFakeCredential:
     """Educational tests for fake credential identification."""
 
-    def test_identifies_aws_example_keys(self):
+    def test_identifies_aws_example_keys(self, security_audit_workflow):
         """Teaching Pattern: AWS official example pattern.
 
         AWS documentation uses 'EXAMPLE' in their example credentials.
@@ -137,7 +137,7 @@ class TestIsFakeCredential:
 
         Example: AKIAIOSFODNN7EXAMPLE
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Official AWS example key
         credential = 'api_key = "AKIAIOSFODNN7EXAMPLE"'
@@ -145,13 +145,13 @@ class TestIsFakeCredential:
         result = workflow._is_fake_credential(credential)
         assert result is True  # Contains 'EXAMPLE' marker
 
-    def test_identifies_test_and_mock_credentials(self):
+    def test_identifies_test_and_mock_credentials(self, security_audit_workflow):
         """Teaching Pattern: Common test credential markers.
 
         Credentials containing 'TEST', 'FAKE', 'MOCK' are clearly
         not real secrets and should be ignored.
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         test_credentials = [
             'password = "TEST_PASSWORD_123"',
@@ -163,7 +163,7 @@ class TestIsFakeCredential:
             result = workflow._is_fake_credential(cred)
             assert result is True, f"Should identify {cred} as fake"
 
-    def test_identifies_placeholder_patterns(self):
+    def test_identifies_placeholder_patterns(self, security_audit_workflow):
         """Teaching Pattern: Placeholder credential detection.
 
         Credentials with "your-X-here", "...", or generic values like
@@ -171,7 +171,7 @@ class TestIsFakeCredential:
 
         Example: api_key = "your-api-key-here"
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         placeholder_credentials = [
             'api_key = "your-api-key-here"',
@@ -184,13 +184,13 @@ class TestIsFakeCredential:
             result = workflow._is_fake_credential(cred)
             assert result is True, f"Should identify {cred} as placeholder"
 
-    def test_identifies_literal_example_values(self):
+    def test_identifies_literal_example_values(self, security_audit_workflow):
         """Teaching Pattern: Literal test values.
 
         Values like "secret123", "password", "hardcoded_secret" are
         clearly examples from documentation or tests.
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         example_values = [
             'password = "secret123"',
@@ -202,7 +202,7 @@ class TestIsFakeCredential:
             result = workflow._is_fake_credential(value)
             assert result is True, f"Should identify {value} as example"
 
-    def test_identifies_pattern_constants(self):
+    def test_identifies_pattern_constants(self, security_audit_workflow):
         r"""Teaching Pattern: Pattern definition constants.
 
         Constants ending in _PATTERN or _EXAMPLE are pattern definitions,
@@ -210,7 +210,7 @@ class TestIsFakeCredential:
 
         Example: SECRET_PATTERN = r"secret\s*="
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         pattern_constants = [
             'SECRET_PATTERN = r"api_key\\s*="',
@@ -221,7 +221,7 @@ class TestIsFakeCredential:
             result = workflow._is_fake_credential(const)
             assert result is True, f"Should identify {const} as pattern constant"
 
-    def test_rejects_real_looking_credentials(self):
+    def test_rejects_real_looking_credentials(self, security_audit_workflow):
         """Teaching Pattern: Distinguishing real secrets from fake ones.
 
         Credentials that don't match any fake patterns should be flagged
@@ -229,7 +229,7 @@ class TestIsFakeCredential:
 
         Example: api_key = "sk_live_1234567890abcdef"  # Looks real
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Real-looking credentials (not in our fake patterns)
         real_looking = [
@@ -253,7 +253,7 @@ class TestIsFakeCredential:
 class TestIsDocumentationOrString:
     """Educational tests for documentation and string literal detection."""
 
-    def test_identifies_comment_lines(self):
+    def test_identifies_comment_lines(self, security_audit_workflow):
         """Teaching Pattern: Comment detection.
 
         Lines starting with comment markers (#, //, *) are documentation,
@@ -261,7 +261,7 @@ class TestIsDocumentationOrString:
 
         Example: # This code is vulnerable: eval(user_input)
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         comment_lines = [
             "# Example of dangerous code: eval(user_input)",
@@ -273,7 +273,7 @@ class TestIsDocumentationOrString:
             result = workflow._is_documentation_or_string(line, "eval(")
             assert result is True, f"Should identify {line} as comment"
 
-    def test_identifies_docstrings(self):
+    def test_identifies_docstrings(self, security_audit_workflow):
         """Teaching Pattern: Docstring detection.
 
         Lines containing triple quotes (triple-double or triple-single)
@@ -282,7 +282,7 @@ class TestIsDocumentationOrString:
         Example: Docstrings use triple quotes to denote multi-line strings
         that document functions, often containing code examples.
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         docstring_lines = [
             '"""Example of eval() vulnerability"""',
@@ -293,7 +293,7 @@ class TestIsDocumentationOrString:
             result = workflow._is_documentation_or_string(line, "eval(")
             assert result is True, f"Should identify {line} as docstring"
 
-    def test_identifies_string_literal_assignments(self):
+    def test_identifies_string_literal_assignments(self, security_audit_workflow):
         r"""Teaching Pattern: String assignment detection.
 
         Code that assigns a string containing vulnerable patterns
@@ -301,7 +301,7 @@ class TestIsDocumentationOrString:
 
         Example: pattern = r"eval\("  # Defining a pattern
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         string_assignments = [
             'pattern = r"eval\\("',  # Raw string with pattern
@@ -313,7 +313,7 @@ class TestIsDocumentationOrString:
             result = workflow._is_documentation_or_string(line, "eval(")
             assert result is True, f"Should identify {line} as string assignment"
 
-    def test_identifies_documentation_keywords(self):
+    def test_identifies_documentation_keywords(self, security_audit_workflow):
         """Teaching Pattern: Contextual keyword detection.
 
         Lines containing keywords like "example", "vulnerable", "dangerous",
@@ -321,7 +321,7 @@ class TestIsDocumentationOrString:
 
         Example: # This is an example of vulnerable eval() usage
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         documentation_contexts = [
             "# Example of vulnerable eval() code",
@@ -335,7 +335,7 @@ class TestIsDocumentationOrString:
             result = workflow._is_documentation_or_string(line, "eval(")
             assert result is True, f"Should identify {line} as documentation"
 
-    def test_rejects_actual_executable_code(self):
+    def test_rejects_actual_executable_code(self, security_audit_workflow):
         """Teaching Pattern: Distinguishing documentation from execution.
 
         Actual function calls without documentation context should NOT
@@ -343,7 +343,7 @@ class TestIsDocumentationOrString:
 
         Example: result = eval(user_input)  # REAL VULNERABILITY
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         executable_lines = [
             "result = eval(user_input)",
@@ -376,7 +376,7 @@ class TestIsDocumentationOrString:
 class TestSecurityFilterIntegration:
     """Integration tests combining multiple security filters."""
 
-    def test_scanner_test_file_with_detection_patterns(self):
+    def test_scanner_test_file_with_detection_patterns(self, security_audit_workflow):
         """Teaching Pattern: Multi-layer filtering.
 
         A security scanner test file might contain:
@@ -386,7 +386,7 @@ class TestSecurityFilterIntegration:
 
         All of these should be filtered out, not flagged as vulnerabilities.
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Code from a security scanner test file
         test_code_lines = [
@@ -404,7 +404,7 @@ class TestSecurityFilterIntegration:
         # Line 3: Documentation
         assert workflow._is_documentation_or_string(test_code_lines[2], "eval(") is True
 
-    def test_distinguishes_real_vulnerabilities_from_false_positives(self):
+    def test_distinguishes_real_vulnerabilities_from_false_positives(self, security_audit_workflow):
         """Teaching Pattern: Precision in security scanning.
 
         A good security scanner must:
@@ -414,7 +414,7 @@ class TestSecurityFilterIntegration:
         This test validates both precision (catching real issues) and
         recall (not over-flagging).
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # REAL vulnerability - should be flagged
         real_vuln = "user_data = eval(request.GET['code'])"
@@ -440,13 +440,13 @@ class TestSecurityFilterIntegration:
 class TestSecurityFilterEdgeCases:
     """Edge case tests for security filter robustness."""
 
-    def test_handles_empty_strings(self):
+    def test_handles_empty_strings(self, security_audit_workflow):
         """Teaching Pattern: Null/empty input handling.
 
         Security filters should gracefully handle empty inputs without
         crashing or giving false results.
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Empty line content
         result = workflow._is_detection_code("", "eval(")
@@ -455,47 +455,47 @@ class TestSecurityFilterEdgeCases:
         result = workflow._is_documentation_or_string("", "eval(")
         assert result is False  # No documentation markers in empty string
 
-    def test_handles_very_long_lines(self):
+    def test_handles_very_long_lines(self, security_audit_workflow):
         """Teaching Pattern: Performance and robustness.
 
         Real-world code can have very long lines (minified JS, generated code).
         Filters should handle these without performance issues.
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Very long line with pattern at the end
         long_line = ("x = 1; " * 1000) + 'if "eval(" in content:'
         result = workflow._is_detection_code(long_line, "eval(")
         assert result is True  # Should still detect pattern
 
-    def test_handles_unicode_and_special_characters(self):
+    def test_handles_unicode_and_special_characters(self, security_audit_workflow):
         """Teaching Pattern: Character encoding robustness.
 
         Code in the wild may contain unicode, emojis, or special characters.
         Filters should handle these gracefully.
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Line with unicode characters
         unicode_line = "# 🔒 Example: Don't use eval() with user input 中文"
         result = workflow._is_documentation_or_string(unicode_line, "eval(")
         assert result is True  # Still identifies as documentation
 
-    def test_handles_nested_quotes(self):
+    def test_handles_nested_quotes(self, security_audit_workflow):
         """Teaching Pattern: Complex string parsing.
 
         Code may have nested quotes or escaped characters.
 
         Example: pattern = r'if "eval\\"(" in content:'
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Line with nested/escaped quotes
         nested_quotes = r'pattern = "if \"eval(\" in content"'
         result = workflow._is_detection_code(nested_quotes, "eval(")
         assert result is True  # Should identify as pattern definition
 
-    def test_case_insensitive_pattern_matching(self):
+    def test_case_insensitive_pattern_matching(self, security_audit_workflow):
         """Teaching Pattern: Case-insensitive detection.
 
         Some patterns (like FAKE, TEST, EXAMPLE) should be detected
@@ -503,7 +503,7 @@ class TestSecurityFilterEdgeCases:
 
         Example: "test_password" or "TEST_PASSWORD" or "Test_Password"
         """
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         # Different case variations
         case_variations = [
@@ -527,7 +527,7 @@ class TestSecurityFilterEdgeCases:
 class TestSecurityAuditWorkflowInitialization:
     """Tests for SecurityAuditWorkflow initialization."""
 
-    def test_default_initialization(self, tmp_path, monkeypatch):
+    def test_default_initialization(self, tmp_path, monkeypatch, security_audit_workflow):
         """Teaching Pattern: Testing constructor defaults.
 
         When no arguments are provided, the workflow should use
@@ -537,14 +537,14 @@ class TestSecurityAuditWorkflowInitialization:
         # Use tmp_path to avoid loading existing files
         monkeypatch.chdir(tmp_path)
 
-        workflow = SecurityAuditWorkflow()
+        workflow = security_audit_workflow
 
         assert workflow.patterns_dir == "./patterns"
         assert workflow.skip_remediate_if_clean is True
         assert workflow._has_critical is False
         assert workflow._team_decisions == {}
 
-    def test_custom_configuration(self):
+    def test_custom_configuration(self, security_audit_workflow):
         """Teaching Pattern: Testing dependency injection.
 
         The workflow should accept custom configuration through
@@ -558,7 +558,7 @@ class TestSecurityAuditWorkflowInitialization:
         assert workflow.patterns_dir == "/custom/patterns"
         assert workflow.skip_remediate_if_clean is False
 
-    def test_stage_skip_logic_when_clean(self):
+    def test_stage_skip_logic_when_clean(self, security_audit_workflow):
         """Teaching Pattern: Testing conditional premium tier usage.
 
         When no critical/high findings exist, remediation stage
@@ -571,7 +571,7 @@ class TestSecurityAuditWorkflowInitialization:
         assert should_skip is True
         assert "No high/critical findings" in reason
 
-    def test_stage_skip_logic_when_critical_found(self):
+    def test_stage_skip_logic_when_critical_found(self, security_audit_workflow):
         """Teaching Pattern: Testing positive condition (when NOT to skip).
 
         When critical/high findings exist, remediation should run

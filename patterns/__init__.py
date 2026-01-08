@@ -31,27 +31,27 @@ Licensed under Fair Source 0.9
 """
 
 from .behavior import (
-                       AIEnhancementPattern,
-                       FixApplicationPattern,
-                       PredictionPattern,
-                       RiskAssessmentPattern,
-                       RiskLevel,
+    AIEnhancementPattern,
+    FixApplicationPattern,
+    PredictionPattern,
+    RiskAssessmentPattern,
+    RiskLevel,
 )
 from .core import BasePattern, CodeGeneratorMixin, PatternCategory, ValidationMixin
 from .empathy import EducationalBannerPattern, EmpathyLevelPattern, UserGuidancePattern
 from .input import (
-                       CodeAnalysisPattern,
-                       ContextBasedPattern,
-                       FieldDefinition,
-                       StructuredFieldsPattern,
+    CodeAnalysisPattern,
+    ContextBasedPattern,
+    FieldDefinition,
+    StructuredFieldsPattern,
 )
 from .registry import PatternRegistry, get_pattern_registry, load_patterns
 from .structural import (
-                       LinearFlowPattern,
-                       PhaseConfig,
-                       PhasedProcessingPattern,
-                       SessionBasedPattern,
-                       StepConfig,
+    LinearFlowPattern,
+    PhaseConfig,
+    PhasedProcessingPattern,
+    SessionBasedPattern,
+    StepConfig,
 )
 from .validation import ApprovalPattern, ConfigValidationPattern, StepValidationPattern
 

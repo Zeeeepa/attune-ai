@@ -33,7 +33,7 @@ class ResultDataclassPattern(WorkflowPattern):
 
     def generate_code_sections(self, context: dict[str, Any]) -> list[CodeSection]:
         """Generate code for result dataclass."""
-        workflow_name = context.get("workflow_name", "my-workflow")
+        context.get("workflow_name", "my-workflow")
         class_name = context.get("class_name", "MyWorkflow")
         result_class_name = f"{class_name}Result"
 

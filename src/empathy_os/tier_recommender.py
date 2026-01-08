@@ -18,16 +18,16 @@ Usage:
     print(f"Expected cost: ${tier.expected_cost}")
 """
 
-from dataclasses import dataclass
-from pathlib import Path
-from typing import List, Optional, Dict, Tuple
 import json
 from collections import defaultdict
+from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass
 class TierRecommendationResult:
     """Result of tier recommendation."""
+
     tier: str  # CHEAP, CAPABLE, or PREMIUM
     confidence: float  # 0.0-1.0
     reasoning: str
@@ -49,11 +49,7 @@ class TierRecommender:
     - Cost optimization
     """
 
-    def __init__(
-        self,
-        patterns_dir: Optional[Path] = None,
-        confidence_threshold: float = 0.7
-    ):
+    def __init__(self, patterns_dir: Path | None = None, confidence_threshold: float = 0.7):
         """
         Initialize tier recommender.
 
@@ -67,7 +63,9 @@ class TierRecommender:
         """
         # Pattern 4: Range validation
         if not 0.0 <= confidence_threshold <= 1.0:
-            raise ValueError(f"confidence_threshold must be between 0.0 and 1.0, got {confidence_threshold}")
+            raise ValueError(
+                f"confidence_threshold must be between 0.0 and 1.0, got {confidence_threshold}"
+            )
 
         if patterns_dir is None:
             patterns_dir = Path(__file__).parent.parent.parent / "patterns" / "debugging"
@@ -79,7 +77,7 @@ class TierRecommender:
         # Build indexes for fast lookup
         self._build_indexes()
 
-    def _load_patterns(self) -> List[Dict]:
+    def _load_patterns(self) -> list[dict]:
         """Load all enhanced patterns with tier_progression data."""
         patterns = []
 
@@ -106,8 +104,8 @@ class TierRecommender:
 
     def _build_indexes(self):
         """Build indexes for fast pattern lookup."""
-        self.bug_type_index: Dict[str, List[Dict]] = defaultdict(list)
-        self.file_pattern_index: Dict[str, List[Dict]] = defaultdict(list)
+        self.bug_type_index: dict[str, list[dict]] = defaultdict(list)
+        self.file_pattern_index: dict[str, list[dict]] = defaultdict(list)
 
         for pattern in self.patterns:
             # Index by bug type
@@ -125,8 +123,8 @@ class TierRecommender:
     def recommend(
         self,
         bug_description: str,
-        files_affected: Optional[List[str]] = None,
-        complexity_hint: Optional[int] = None
+        files_affected: list[str] | None = None,
+        complexity_hint: int | None = None,
     ) -> TierRecommendationResult:
         """
         Recommend optimal starting tier for a new bug.
@@ -160,15 +158,13 @@ class TierRecommender:
 
         # Step 2: Find similar patterns
         similar_patterns = self._find_similar_patterns(
-            bug_type=bug_type,
-            files_affected=files_affected or []
+            bug_type=bug_type, files_affected=files_affected or []
         )
 
         # Step 3: If no similar patterns, use fallback logic
         if not similar_patterns:
             return self._fallback_recommendation(
-                bug_description=bug_description,
-                complexity_hint=complexity_hint
+                bug_description=bug_description, complexity_hint=complexity_hint
             )
 
         # Step 4: Analyze tier distribution in similar patterns
@@ -187,12 +183,12 @@ class TierRecommender:
                 bug_type=bug_type,
                 tier=recommended_tier,
                 confidence=confidence,
-                similar_count=len(similar_patterns)
+                similar_count=len(similar_patterns),
             ),
             expected_cost=cost_estimate["avg_cost"],
             expected_attempts=cost_estimate["avg_attempts"],
             similar_patterns_count=len(similar_patterns),
-            fallback_used=False
+            fallback_used=False,
         )
 
     def _classify_bug_type(self, description: str) -> str:
@@ -215,11 +211,7 @@ class TierRecommender:
 
         return "unknown"
 
-    def _find_similar_patterns(
-        self,
-        bug_type: str,
-        files_affected: List[str]
-    ) -> List[Dict]:
+    def _find_similar_patterns(self, bug_type: str, files_affected: list[str]) -> list[dict]:
         """Find patterns similar to current bug.
 
         Raises:
@@ -247,16 +239,11 @@ class TierRecommender:
 
         return similar
 
-    def _analyze_tier_distribution(
-        self,
-        patterns: List[Dict]
-    ) -> Dict[str, Dict]:
+    def _analyze_tier_distribution(self, patterns: list[dict]) -> dict[str, dict]:
         """Analyze tier success rates from similar patterns."""
-        tier_stats: Dict[str, Dict] = defaultdict(lambda: {
-            "count": 0,
-            "total_cost": 0.0,
-            "total_attempts": 0
-        })
+        tier_stats: dict[str, dict] = defaultdict(
+            lambda: {"count": 0, "total_cost": 0.0, "total_attempts": 0}
+        )
 
         for pattern in patterns:
             tp = pattern["tier_progression"]
@@ -268,7 +255,7 @@ class TierRecommender:
             stats["total_attempts"] += tp["total_attempts"]
 
         # Calculate averages
-        for tier, stats in tier_stats.items():
+        for _tier, stats in tier_stats.items():
             count = stats["count"]
             stats["success_rate"] = count / len(patterns)
             stats["avg_cost"] = stats["total_cost"] / count
@@ -276,19 +263,14 @@ class TierRecommender:
 
         return dict(tier_stats)
 
-    def _select_tier(
-        self,
-        tier_analysis: Dict[str, Dict]
-    ) -> Tuple[str, float]:
+    def _select_tier(self, tier_analysis: dict[str, dict]) -> tuple[str, float]:
         """Select best tier based on success rate and cost."""
         if not tier_analysis:
             return "CHEAP", 0.5
 
         # Sort by success rate
         sorted_tiers = sorted(
-            tier_analysis.items(),
-            key=lambda x: x[1]["success_rate"],
-            reverse=True
+            tier_analysis.items(), key=lambda x: x[1]["success_rate"], reverse=True
         )
 
         best_tier, stats = sorted_tiers[0]
@@ -296,16 +278,9 @@ class TierRecommender:
 
         return best_tier, confidence
 
-    def _estimate_cost(
-        self,
-        patterns: List[Dict],
-        tier: str
-    ) -> Dict[str, float]:
+    def _estimate_cost(self, patterns: list[dict], tier: str) -> dict[str, float]:
         """Estimate cost and attempts for recommended tier."""
-        matching = [
-            p for p in patterns
-            if p["tier_progression"]["successful_tier"] == tier
-        ]
+        matching = [p for p in patterns if p["tier_progression"]["successful_tier"] == tier]
 
         if not matching:
             # Default estimates by tier
@@ -316,24 +291,16 @@ class TierRecommender:
             }
             return defaults.get(tier, defaults["CHEAP"])
 
-        total_cost = sum(
-            p["tier_progression"]["cost_breakdown"]["total_cost"]
-            for p in matching
-        )
-        total_attempts = sum(
-            p["tier_progression"]["total_attempts"]
-            for p in matching
-        )
+        total_cost = sum(p["tier_progression"]["cost_breakdown"]["total_cost"] for p in matching)
+        total_attempts = sum(p["tier_progression"]["total_attempts"] for p in matching)
 
         return {
             "avg_cost": total_cost / len(matching),
-            "avg_attempts": total_attempts / len(matching)
+            "avg_attempts": total_attempts / len(matching),
         }
 
     def _fallback_recommendation(
-        self,
-        bug_description: str,
-        complexity_hint: Optional[int]
+        self, bug_description: str, complexity_hint: int | None
     ) -> TierRecommendationResult:
         """Provide fallback recommendation when no historical data available."""
 
@@ -356,7 +323,7 @@ class TierRecommender:
                 expected_cost=cost,
                 expected_attempts=2.0,
                 similar_patterns_count=0,
-                fallback_used=True
+                fallback_used=True,
             )
 
         # Default: start with CHEAP tier (conservative)
@@ -367,15 +334,11 @@ class TierRecommender:
             expected_cost=0.030,
             expected_attempts=1.5,
             similar_patterns_count=0,
-            fallback_used=True
+            fallback_used=True,
         )
 
     def _generate_reasoning(
-        self,
-        bug_type: str,
-        tier: str,
-        confidence: float,
-        similar_count: int
+        self, bug_type: str, tier: str, confidence: float, similar_count: int
     ) -> str:
         """Generate human-readable reasoning for recommendation."""
         percent = int(confidence * 100)
@@ -390,13 +353,10 @@ class TierRecommender:
                 f"resolved at {tier} tier"
             )
 
-    def get_stats(self) -> Dict:
+    def get_stats(self) -> dict:
         """Get overall statistics about pattern learning."""
         if not self.patterns:
-            return {
-                "total_patterns": 0,
-                "message": "No patterns loaded"
-            }
+            return {"total_patterns": 0, "message": "No patterns loaded"}
 
         # Calculate tier distribution
         tier_dist = defaultdict(int)
@@ -418,5 +378,5 @@ class TierRecommender:
                 "CHEAP": tier_dist.get("CHEAP", 0),
                 "CAPABLE": tier_dist.get("CAPABLE", 0),
                 "PREMIUM": tier_dist.get("PREMIUM", 0),
-            }
+            },
         }

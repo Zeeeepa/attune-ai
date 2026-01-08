@@ -11,10 +11,10 @@ Tests:
 """
 
 import json
-import pytest
-from pathlib import Path
-from unittest.mock import Mock, patch, mock_open
 import sys
+from pathlib import Path
+
+import pytest
 
 # Add scripts to path for testing
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
@@ -41,30 +41,27 @@ def sample_pattern():
                 {
                     "tier": "CHEAP",
                     "attempts": 1,
-                    "success": {
-                        "attempt": 1,
-                        "quality_gates_passed": ["tests", "lint", "types"]
-                    }
+                    "success": {"attempt": 1, "quality_gates_passed": ["tests", "lint", "types"]},
                 }
             ],
             "cost_breakdown": {
                 "total_cost": 0.030,
                 "cost_if_always_premium": 0.930,
-                "savings_percent": 96.8
+                "savings_percent": 96.8,
             },
             "quality_metrics": {
                 "tests_passed": True,
                 "health_score_before": 73,
-                "health_score_after": 73
+                "health_score_after": 73,
             },
             "xml_protocol_compliance": {
                 "prompt_used_xml": True,
                 "response_used_xml": True,
                 "all_sections_present": True,
                 "test_evidence_provided": True,
-                "false_complete_avoided": True
-            }
-        }
+                "false_complete_avoided": True,
+            },
+        },
     }
 
 
@@ -87,39 +84,34 @@ def sample_pattern_with_failures():
                     "failures": [
                         {"attempt": 1, "quality_gate_failed": "mypy"},
                         {"attempt": 2, "quality_gate_failed": "mypy"},
-                        {"attempt": 3, "quality_gate_failed": "tests"}
-                    ]
+                        {"attempt": 3, "quality_gate_failed": "tests"},
+                    ],
                 },
                 {
                     "tier": "CAPABLE",
                     "attempts": 2,
-                    "failures": [
-                        {"attempt": 1, "quality_gate_failed": "lint"}
-                    ],
-                    "success": {
-                        "attempt": 2,
-                        "quality_gates_passed": ["tests", "lint", "types"]
-                    }
-                }
+                    "failures": [{"attempt": 1, "quality_gate_failed": "lint"}],
+                    "success": {"attempt": 2, "quality_gates_passed": ["tests", "lint", "types"]},
+                },
             ],
             "cost_breakdown": {
                 "total_cost": 0.225,
                 "cost_if_always_premium": 0.450,
-                "savings_percent": 50.0
+                "savings_percent": 50.0,
             },
             "quality_metrics": {
                 "tests_passed": True,
                 "health_score_before": 49,
-                "health_score_after": 73
+                "health_score_after": 73,
             },
             "xml_protocol_compliance": {
                 "prompt_used_xml": True,
                 "response_used_xml": True,
                 "all_sections_present": True,
                 "test_evidence_provided": True,
-                "false_complete_avoided": True
-            }
-        }
+                "false_complete_avoided": True,
+            },
+        },
     }
 
 
@@ -134,7 +126,7 @@ class TestTierPatternAnalyzer:
     def test_load_patterns_with_enhanced_data(self, tmp_path, sample_pattern):
         """Test loading patterns with tier_progression data."""
         pattern_file = tmp_path / "bug_test_001.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -146,11 +138,11 @@ class TestTierPatternAnalyzer:
         legacy_pattern = {
             "pattern_id": "bug_legacy_001",
             "bug_type": "unknown",
-            "status": "resolved"
+            "status": "resolved",
         }
 
         pattern_file = tmp_path / "bug_legacy_001.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(legacy_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -159,7 +151,7 @@ class TestTierPatternAnalyzer:
     def test_analyze_by_bug_type_all(self, tmp_path, sample_pattern):
         """Test analysis across all bug types."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -174,7 +166,7 @@ class TestTierPatternAnalyzer:
     def test_analyze_by_bug_type_filtered(self, tmp_path, sample_pattern):
         """Test analysis filtered by specific bug type."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -186,7 +178,7 @@ class TestTierPatternAnalyzer:
     def test_analyze_by_bug_type_no_matches(self, tmp_path, sample_pattern):
         """Test analysis with no matching bug types."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -197,7 +189,7 @@ class TestTierPatternAnalyzer:
     def test_calculate_savings(self, tmp_path, sample_pattern):
         """Test cost savings calculation."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -213,9 +205,9 @@ class TestTierPatternAnalyzer:
         self, tmp_path, sample_pattern, sample_pattern_with_failures
     ):
         """Test savings calculation with multiple patterns."""
-        with open(tmp_path / "bug1.json", 'w') as f:
+        with open(tmp_path / "bug1.json", "w") as f:
             json.dump(sample_pattern, f)
-        with open(tmp_path / "bug2.json", 'w') as f:
+        with open(tmp_path / "bug2.json", "w") as f:
             json.dump(sample_pattern_with_failures, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -230,7 +222,7 @@ class TestTierPatternAnalyzer:
     def test_quality_gate_report_no_failures(self, tmp_path, sample_pattern):
         """Test quality gate report with no failures."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -239,12 +231,10 @@ class TestTierPatternAnalyzer:
         assert "message" in report
         assert "No failures" in report["message"]
 
-    def test_quality_gate_report_with_failures(
-        self, tmp_path, sample_pattern_with_failures
-    ):
+    def test_quality_gate_report_with_failures(self, tmp_path, sample_pattern_with_failures):
         """Test quality gate report with failures."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern_with_failures, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -254,17 +244,14 @@ class TestTierPatternAnalyzer:
         assert len(report["gate_effectiveness"]) == 3
 
         # Check mypy caught most failures
-        mypy_data = next(
-            (g for g in report["gate_effectiveness"] if g["gate"] == "mypy"),
-            None
-        )
+        mypy_data = next((g for g in report["gate_effectiveness"] if g["gate"] == "mypy"), None)
         assert mypy_data is not None
         assert mypy_data["failures_caught"] == 2
 
     def test_xml_protocol_effectiveness(self, tmp_path, sample_pattern):
         """Test XML protocol compliance tracking."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -279,7 +266,7 @@ class TestTierPatternAnalyzer:
     def test_recommend_tier_integration_error(self, tmp_path, sample_pattern):
         """Test tier recommendation for integration errors."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -290,12 +277,10 @@ class TestTierPatternAnalyzer:
         assert rec.historical_success_rate == 1.0
         assert rec.avg_cost == 0.030
 
-    def test_recommend_tier_type_mismatch(
-        self, tmp_path, sample_pattern_with_failures
-    ):
+    def test_recommend_tier_type_mismatch(self, tmp_path, sample_pattern_with_failures):
         """Test tier recommendation for type errors."""
         pattern_file = tmp_path / "bug_test.json"
-        with open(pattern_file, 'w') as f:
+        with open(pattern_file, "w") as f:
             json.dump(sample_pattern_with_failures, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -318,9 +303,9 @@ class TestTierPatternAnalyzer:
         self, tmp_path, sample_pattern, sample_pattern_with_failures
     ):
         """Test tier distribution across multiple patterns."""
-        with open(tmp_path / "bug1.json", 'w') as f:
+        with open(tmp_path / "bug1.json", "w") as f:
             json.dump(sample_pattern, f)
-        with open(tmp_path / "bug2.json", 'w') as f:
+        with open(tmp_path / "bug2.json", "w") as f:
             json.dump(sample_pattern_with_failures, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -329,13 +314,11 @@ class TestTierPatternAnalyzer:
         assert analysis["tier_distribution"]["CHEAP"] == 1
         assert analysis["tier_distribution"]["CAPABLE"] == 1
 
-    def test_avg_attempts_calculation(
-        self, tmp_path, sample_pattern, sample_pattern_with_failures
-    ):
+    def test_avg_attempts_calculation(self, tmp_path, sample_pattern, sample_pattern_with_failures):
         """Test average attempts calculation."""
-        with open(tmp_path / "bug1.json", 'w') as f:
+        with open(tmp_path / "bug1.json", "w") as f:
             json.dump(sample_pattern, f)
-        with open(tmp_path / "bug2.json", 'w') as f:
+        with open(tmp_path / "bug2.json", "w") as f:
             json.dump(sample_pattern_with_failures, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -356,7 +339,7 @@ class TestTierRecommendation:
             reasoning="85% of similar bugs resolved at CAPABLE",
             historical_success_rate=0.85,
             avg_cost=0.090,
-            avg_attempts=2.5
+            avg_attempts=2.5,
         )
 
         assert rec.recommended_tier == "CAPABLE"
@@ -369,12 +352,7 @@ class TestPatternValidation:
 
     def test_valid_enhanced_pattern(self, sample_pattern):
         """Test that sample pattern has all required fields."""
-        required_fields = [
-            "pattern_id",
-            "bug_type",
-            "status",
-            "tier_progression"
-        ]
+        required_fields = ["pattern_id", "bug_type", "status", "tier_progression"]
 
         for field in required_fields:
             assert field in sample_pattern
@@ -388,7 +366,7 @@ class TestPatternValidation:
             "tier_history",
             "cost_breakdown",
             "quality_metrics",
-            "xml_protocol_compliance"
+            "xml_protocol_compliance",
         ]
 
         for field in required_tp_fields:
@@ -412,7 +390,7 @@ class TestPatternValidation:
             "response_used_xml",
             "all_sections_present",
             "test_evidence_provided",
-            "false_complete_avoided"
+            "false_complete_avoided",
         ]
 
         for field in required_fields:
@@ -426,16 +404,12 @@ class TestBackwardCompatibility:
     def test_mixed_pattern_formats(self, tmp_path, sample_pattern):
         """Test loading mix of enhanced and legacy patterns."""
         # Enhanced pattern
-        with open(tmp_path / "enhanced.json", 'w') as f:
+        with open(tmp_path / "enhanced.json", "w") as f:
             json.dump(sample_pattern, f)
 
         # Legacy pattern
-        legacy = {
-            "pattern_id": "bug_legacy",
-            "bug_type": "unknown",
-            "status": "resolved"
-        }
-        with open(tmp_path / "legacy.json", 'w') as f:
+        legacy = {"pattern_id": "bug_legacy", "bug_type": "unknown", "status": "resolved"}
+        with open(tmp_path / "legacy.json", "w") as f:
             json.dump(legacy, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)
@@ -446,12 +420,9 @@ class TestBackwardCompatibility:
 
     def test_patterns_array_format(self, tmp_path, sample_pattern):
         """Test loading from patterns.json array format."""
-        patterns_data = {
-            "patterns": [sample_pattern],
-            "last_updated": "2026-01-07"
-        }
+        patterns_data = {"patterns": [sample_pattern], "last_updated": "2026-01-07"}
 
-        with open(tmp_path / "patterns.json", 'w') as f:
+        with open(tmp_path / "patterns.json", "w") as f:
             json.dump(patterns_data, f)
 
         analyzer = TierPatternAnalyzer(patterns_dir=tmp_path)

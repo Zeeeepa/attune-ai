@@ -9,14 +9,15 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
-from pathlib import Path
-import tempfile
 import os
+import tempfile
+from pathlib import Path
+
+import pytest
 
 from empathy_os.config import EmpathyConfig
-from empathy_os.workflows.config import WorkflowConfig
 from empathy_os.config.xml_config import EmpathyXMLConfig
+from empathy_os.workflows.config import WorkflowConfig
 
 
 class TestEmpathyConfigPathValidation:

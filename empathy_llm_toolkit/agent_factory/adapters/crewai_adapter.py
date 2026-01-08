@@ -40,7 +40,10 @@ def _check_crewai():
             import crewai  # noqa: F401
 
             _crewai_available = True
-        except ImportError:
+        except (ImportError, AttributeError):
+            # INTENTIONAL: Catch AttributeError for CrewAI 0.203.x RAG module import issues
+            # ImportError: CrewAI not installed
+            # AttributeError: CrewAI 0.203.x has RAG module attribute protection issues
             _crewai_available = False
     return _crewai_available
 

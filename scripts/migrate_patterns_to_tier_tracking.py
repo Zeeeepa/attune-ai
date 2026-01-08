@@ -80,9 +80,7 @@ class PatternMigrator:
         files_count = len(pattern.get("files_affected", []))
 
         # Determine tier and attempts
-        tier, attempts = self._determine_tier_and_attempts(
-            bug_type, root_cause, files_count
-        )
+        tier, attempts = self._determine_tier_and_attempts(bug_type, root_cause, files_count)
 
         # Build tier history
         tier_history = self._build_tier_history(tier, attempts)
@@ -348,9 +346,7 @@ def main():
                 f"   Tier: {sample['tier_progression']['successful_tier']} "
                 f"({sample['tier_progression']['total_attempts']} attempts)"
             )
-            print(
-                f"   Savings: {sample['tier_progression']['cost_breakdown']['savings_percent']}%"
-            )
+            print(f"   Savings: {sample['tier_progression']['cost_breakdown']['savings_percent']}%")
     else:
         migrator.save_migrated(args.output)
 

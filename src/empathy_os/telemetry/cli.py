@@ -18,6 +18,7 @@ try:
     from rich.panel import Panel
     from rich.table import Table
     from rich.text import Text
+
     RICH_AVAILABLE = True
 except ImportError:
     RICH_AVAILABLE = False
@@ -149,7 +150,9 @@ def cmd_telemetry_show(args: Any) -> int:
         console.print(f"\n[dim]Data location: {tracker.telemetry_dir}[/dim]")
     else:
         # Fallback to plain text
-        print(f"\n{'Time':<19} {'Workflow':<20} {'Stage':<15} {'Tier':<10} {'Cost':>10} {'Cache':<10} {'Duration':>10}")
+        print(
+            f"\n{'Time':<19} {'Workflow':<20} {'Stage':<15} {'Tier':<10} {'Cost':>10} {'Cache':<10} {'Duration':>10}"
+        )
         print("-" * 120)
         total_cost = 0.0
         for entry in entries:
@@ -162,7 +165,9 @@ def cmd_telemetry_show(args: Any) -> int:
             duration_ms = entry.get("duration_ms", 0)
 
             cache_str = "HIT" if cache.get("hit") else "MISS"
-            print(f"{ts:<19} {workflow:<20} {stage:<15} {tier:<10} ${cost:>9.4f} {cache_str:<10} {duration_ms:>9}ms")
+            print(
+                f"{ts:<19} {workflow:<20} {stage:<15} {tier:<10} ${cost:>9.4f} {cache_str:<10} {duration_ms:>9}ms"
+            )
             total_cost += cost
 
         print("-" * 120)
@@ -209,7 +214,9 @@ def cmd_telemetry_savings(args: Any) -> int:
         content_lines.append(f"  Actual (tier routing):  ${savings['actual_cost']:.2f}")
         content_lines.append("")
         savings_color = "green" if savings["savings"] > 0 else "red"
-        content_lines.append(f"[bold {savings_color}]YOUR SAVINGS: ${savings['savings']:.2f} ({savings['savings_percent']:.1f}%)[/bold {savings_color}]")
+        content_lines.append(
+            f"[bold {savings_color}]YOUR SAVINGS: ${savings['savings']:.2f} ({savings['savings_percent']:.1f}%)[/bold {savings_color}]"
+        )
         content_lines.append("")
         content_lines.append(f"Cache savings: ${savings['cache_savings']:.2f}")
         content_lines.append(f"Total calls: {savings['total_calls']}")
@@ -271,7 +278,11 @@ def cmd_telemetry_compare(args: Any) -> int:
         table.add_column("Change", justify="right", style="blue")
 
         # Total calls
-        calls_change = ((stats1["total_calls"] - stats2["total_calls"]) / stats2["total_calls"] * 100) if stats2["total_calls"] > 0 else 0
+        calls_change = (
+            ((stats1["total_calls"] - stats2["total_calls"]) / stats2["total_calls"] * 100)
+            if stats2["total_calls"] > 0
+            else 0
+        )
         table.add_row(
             "Total Calls",
             str(stats1["total_calls"]),
@@ -280,7 +291,11 @@ def cmd_telemetry_compare(args: Any) -> int:
         )
 
         # Total cost
-        cost_change = ((stats1["total_cost"] - stats2["total_cost"]) / stats2["total_cost"] * 100) if stats2["total_cost"] > 0 else 0
+        cost_change = (
+            ((stats1["total_cost"] - stats2["total_cost"]) / stats2["total_cost"] * 100)
+            if stats2["total_cost"] > 0
+            else 0
+        )
         table.add_row(
             "Total Cost",
             f"${stats1['total_cost']:.2f}",
@@ -314,14 +329,28 @@ def cmd_telemetry_compare(args: Any) -> int:
         print("\n" + "=" * 80)
         print("TELEMETRY COMPARISON")
         print("=" * 80)
-        print(f"{'Metric':<20} {'Last ' + str(period1_days) + ' days':>20} {'Last ' + str(period2_days) + ' days':>20} {'Change':>15}")
+        print(
+            f"{'Metric':<20} {'Last ' + str(period1_days) + ' days':>20} {'Last ' + str(period2_days) + ' days':>20} {'Change':>15}"
+        )
         print("-" * 80)
 
-        calls_change = ((stats1["total_calls"] - stats2["total_calls"]) / stats2["total_calls"] * 100) if stats2["total_calls"] > 0 else 0
-        print(f"{'Total Calls':<20} {stats1['total_calls']:>20} {stats2['total_calls']:>20} {calls_change:>14.1f}%")
+        calls_change = (
+            ((stats1["total_calls"] - stats2["total_calls"]) / stats2["total_calls"] * 100)
+            if stats2["total_calls"] > 0
+            else 0
+        )
+        print(
+            f"{'Total Calls':<20} {stats1['total_calls']:>20} {stats2['total_calls']:>20} {calls_change:>14.1f}%"
+        )
 
-        cost_change = ((stats1["total_cost"] - stats2["total_cost"]) / stats2["total_cost"] * 100) if stats2["total_cost"] > 0 else 0
-        print(f"{'Total Cost':<20} ${stats1['total_cost']:>19.2f} ${stats2['total_cost']:>19.2f} {cost_change:>14.1f}%")
+        cost_change = (
+            ((stats1["total_cost"] - stats2["total_cost"]) / stats2["total_cost"] * 100)
+            if stats2["total_cost"] > 0
+            else 0
+        )
+        print(
+            f"{'Total Cost':<20} ${stats1['total_cost']:>19.2f} ${stats2['total_cost']:>19.2f} {cost_change:>14.1f}%"
+        )
 
         avg1 = stats1["total_cost"] / stats1["total_calls"] if stats1["total_calls"] > 0 else 0
         avg2 = stats2["total_cost"] / stats2["total_calls"] if stats2["total_calls"] > 0 else 0
@@ -329,7 +358,9 @@ def cmd_telemetry_compare(args: Any) -> int:
         print(f"{'Avg Cost/Call':<20} ${avg1:>19.4f} ${avg2:>19.4f} {avg_change:>14.1f}%")
 
         cache_change = stats1["cache_hit_rate"] - stats2["cache_hit_rate"]
-        print(f"{'Cache Hit Rate':<20} {stats1['cache_hit_rate']:>19.1f}% {stats2['cache_hit_rate']:>19.1f}% {cache_change:>14.1f}pp")
+        print(
+            f"{'Cache Hit Rate':<20} {stats1['cache_hit_rate']:>19.1f}% {stats2['cache_hit_rate']:>19.1f}% {cache_change:>14.1f}pp"
+        )
 
         print("=" * 80)
 
@@ -398,8 +429,20 @@ def cmd_telemetry_export(args: Any) -> int:
             return 0
 
         # Get all possible fields
-        fieldnames = ["ts", "workflow", "stage", "tier", "model", "provider", "cost",
-                     "tokens_input", "tokens_output", "cache_hit", "cache_type", "duration_ms"]
+        fieldnames = [
+            "ts",
+            "workflow",
+            "stage",
+            "tier",
+            "model",
+            "provider",
+            "cost",
+            "tokens_input",
+            "tokens_output",
+            "cache_hit",
+            "cache_type",
+            "duration_ms",
+        ]
 
         if output_file:
             validated_path = _validate_file_path(output_file)

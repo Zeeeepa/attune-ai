@@ -29,7 +29,9 @@ from empathy_os.workflows.code_review import CodeReviewWorkflow
 class TestGatherProjectContextBasics:
     """Educational tests for project context gathering basics."""
 
-    def test_returns_empty_string_for_empty_directory(self, tmp_path, monkeypatch):
+    def test_returns_empty_string_for_empty_directory(
+        self, tmp_path, monkeypatch, code_review_workflow
+    ):
         """Testing the "no context available" path.
 
         Teaching Pattern: Using tmp_path fixture to create empty test environment.
@@ -43,7 +45,7 @@ class TestGatherProjectContextBasics:
         # Change to empty directory
         monkeypatch.chdir(tmp_path)
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should have minimal structure (header + empty project structure)
@@ -52,7 +54,9 @@ class TestGatherProjectContextBasics:
         assert "## package.json" not in context
         assert "## README" not in context
 
-    def test_includes_project_name_from_directory(self, tmp_path, monkeypatch):
+    def test_includes_project_name_from_directory(
+        self, tmp_path, monkeypatch, code_review_workflow
+    ):
         """Teaching Pattern: Testing extraction of metadata from environment.
         The project name comes from the directory name.
         """
@@ -64,7 +68,7 @@ class TestGatherProjectContextBasics:
         # Add at least one file so context is not empty
         (project_dir / "README.md").write_text("# My Project")
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         assert "my-awesome-project" in context
@@ -81,7 +85,7 @@ class TestGatherProjectContextBasics:
 class TestGatherProjectContextMultiFile:
     """Educational tests for gathering context from multiple project files."""
 
-    def test_reads_pyproject_toml(self, tmp_path, monkeypatch):
+    def test_reads_pyproject_toml(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing Python project file parsing.
 
         The function should detect and include pyproject.toml content.
@@ -99,7 +103,7 @@ python = "^3.10"
 """
         (tmp_path / "pyproject.toml").write_text(pyproject_content)
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should include the pyproject.toml section
@@ -107,7 +111,7 @@ python = "^3.10"
         assert "empathy-framework" in context
         assert "```toml" in context
 
-    def test_reads_package_json(self, tmp_path, monkeypatch):
+    def test_reads_package_json(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing JavaScript/TypeScript project detection.
 
         The function should detect and include package.json for Node projects.
@@ -124,7 +128,7 @@ python = "^3.10"
 }"""
         (tmp_path / "package.json").write_text(package_json_content)
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should include the package.json section
@@ -132,7 +136,7 @@ python = "^3.10"
         assert "my-app" in context
         assert "```json" in context
 
-    def test_reads_readme_files(self, tmp_path, monkeypatch):
+    def test_reads_readme_files(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing README detection with multiple formats.
 
         Should detect README.md, README.rst, README.txt, or README.
@@ -151,13 +155,13 @@ This is a test project for demonstrating context gathering.
 """
         (tmp_path / "README.md").write_text(readme_content)
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         assert "## README.md" in context
         assert "My Awesome Project" in context
 
-    def test_readme_priority_order(self, tmp_path, monkeypatch):
+    def test_readme_priority_order(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing prioritization logic.
 
         When multiple README formats exist, should prefer README.md first.
@@ -169,7 +173,7 @@ This is a test project for demonstrating context gathering.
         (tmp_path / "README.rst").write_text("ReStructuredText README")
         (tmp_path / "README.txt").write_text("Text README")
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should include README.md (first in priority list)
@@ -190,7 +194,7 @@ This is a test project for demonstrating context gathering.
 class TestGatherProjectContextErrorHandling:
     """Educational tests for graceful degradation in context gathering."""
 
-    def test_truncates_long_files(self, tmp_path, monkeypatch):
+    def test_truncates_long_files(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing content length limits.
 
         Large files should be truncated to prevent overwhelming the LLM context.
@@ -204,7 +208,7 @@ class TestGatherProjectContextErrorHandling:
         long_content = "[tool.poetry]\n" + ("dependency = 'value'\n" * 500)  # ~10KB
         (tmp_path / "pyproject.toml").write_text(long_content)
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should include pyproject section but truncated
@@ -212,7 +216,7 @@ class TestGatherProjectContextErrorHandling:
         # The full content should not be there (should be truncated at 2000 chars)
         assert len(context) < len(long_content)
 
-    def test_handles_unreadable_files_gracefully(self, tmp_path, monkeypatch):
+    def test_handles_unreadable_files_gracefully(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing OSError handling with try/except.
 
         If a file exists but can't be read (permissions, etc.), should continue
@@ -227,14 +231,14 @@ class TestGatherProjectContextErrorHandling:
         # platform-specific permission manipulation, so this test validates
         # that at least one successful file read produces non-empty context
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should still have context from the readable file
         assert context != ""
         assert "README.md" in context
 
-    def test_handles_missing_project_structure(self, tmp_path, monkeypatch):
+    def test_handles_missing_project_structure(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing behavior when directory walking fails.
 
         If the directory structure can't be read, should still return context
@@ -245,7 +249,7 @@ class TestGatherProjectContextErrorHandling:
         # Add a README so we have some context
         (tmp_path / "README.md").write_text("# Project")
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should have README even if structure section has issues
@@ -262,7 +266,7 @@ class TestGatherProjectContextErrorHandling:
 class TestGatherProjectContextStructure:
     """Educational tests for project structure detection."""
 
-    def test_includes_project_structure(self, tmp_path, monkeypatch):
+    def test_includes_project_structure(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing directory tree generation.
 
         Should include a formatted directory structure showing:
@@ -280,7 +284,7 @@ class TestGatherProjectContextStructure:
         (tmp_path / "tests" / "test_main.py").write_text("# test")
         (tmp_path / "README.md").write_text("# Project")
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should include structure section
@@ -289,7 +293,7 @@ class TestGatherProjectContextStructure:
         assert "main.py" in context
         assert "tests/" in context
 
-    def test_excludes_common_ignored_directories(self, tmp_path, monkeypatch):
+    def test_excludes_common_ignored_directories(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing directory filtering logic.
 
         Should exclude directories like:
@@ -309,7 +313,7 @@ class TestGatherProjectContextStructure:
         (tmp_path / ".git").mkdir()
         (tmp_path / "README.md").write_text("# Project")
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should include src but not ignored directories
@@ -320,7 +324,7 @@ class TestGatherProjectContextStructure:
         assert "__pycache__" not in context
         assert ".git" not in context
 
-    def test_limits_depth_to_two_levels(self, tmp_path, monkeypatch):
+    def test_limits_depth_to_two_levels(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Testing depth limiting in directory traversal.
 
         Should only show top 2 levels to prevent overwhelming output.
@@ -334,7 +338,7 @@ class TestGatherProjectContextStructure:
         (tmp_path / "src" / "level1" / "level2" / "deep.py").write_text("# deep")
         (tmp_path / "README.md").write_text("# Project")
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should show src/ and level1/ but not deeper levels
@@ -353,13 +357,13 @@ class TestGatherProjectContextStructure:
 class TestShouldSkipStage:
     """Educational tests for conditional stage skipping logic."""
 
-    def test_skips_stages_after_classify_on_input_error(self):
+    def test_skips_stages_after_classify_on_input_error(self, code_review_workflow):
         """Teaching Pattern: Testing error propagation logic.
 
         If the classify stage produces an error, all subsequent stages should
         be skipped to avoid wasting API calls.
         """
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
 
         # Simulate input data with error from classify stage
         input_data = {
@@ -376,13 +380,13 @@ class TestShouldSkipStage:
         assert should_skip is True
         assert "input validation error" in reason
 
-    def test_does_not_skip_classify_stage_on_error(self):
+    def test_does_not_skip_classify_stage_on_error(self, code_review_workflow):
         """Teaching Pattern: Testing exception to skip logic.
 
         The classify stage itself should never be skipped, even if input has errors,
         because it's responsible for detecting and reporting those errors.
         """
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
 
         input_data = {
             "error": True,
@@ -394,13 +398,13 @@ class TestShouldSkipStage:
         assert should_skip is False
         assert reason is None
 
-    def test_skips_architect_review_for_simple_changes(self):
+    def test_skips_architect_review_for_simple_changes(self, code_review_workflow):
         """Teaching Pattern: Testing conditional premium tier usage.
 
         Architect review (premium model) should be skipped for simple changes
         to save costs. This is determined by the _needs_architect_review flag.
         """
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         workflow._needs_architect_review = False  # Simple change
 
         input_data = {}  # No error
@@ -409,7 +413,7 @@ class TestShouldSkipStage:
         assert should_skip is True
         assert "Simple change" in reason or "not needed" in reason
 
-    def test_does_not_skip_architect_review_for_complex_changes(self):
+    def test_does_not_skip_architect_review_for_complex_changes(self, code_review_workflow):
         """Teaching Pattern: Testing positive condition (when NOT to skip).
 
         Architect review should run for complex changes:
@@ -417,7 +421,7 @@ class TestShouldSkipStage:
         - Core module changes
         - High complexity/risk detected
         """
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         workflow._needs_architect_review = True  # Complex change
 
         input_data = {}  # No error
@@ -437,7 +441,7 @@ class TestShouldSkipStage:
 class TestCodeReviewIntegration:
     """Integration tests combining context gathering and stage logic."""
 
-    def test_full_context_with_all_file_types(self, tmp_path, monkeypatch):
+    def test_full_context_with_all_file_types(self, tmp_path, monkeypatch, code_review_workflow):
         """Teaching Pattern: Integration test with complete project structure.
 
         This demonstrates testing the complete happy path:
@@ -471,7 +475,7 @@ A comprehensive test project.
         (tmp_path / "tests").mkdir()
         (tmp_path / "tests" / "test_main.py").write_text("# test")
 
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
         context = workflow._gather_project_context()
 
         # Should include all sections
@@ -482,7 +486,7 @@ A comprehensive test project.
         assert "test-project" in context
         assert context != ""
 
-    def test_initialization_with_custom_core_modules(self):
+    def test_initialization_with_custom_core_modules(self, code_review_workflow):
         """Teaching Pattern: Testing constructor dependency injection.
 
         The workflow accepts custom configuration for core modules that
@@ -494,13 +498,13 @@ A comprehensive test project.
         assert workflow.file_threshold == 5
         assert workflow.core_modules == custom_core
 
-    def test_stage_skipping_respects_workflow_state(self):
+    def test_stage_skipping_respects_workflow_state(self, code_review_workflow):
         """Teaching Pattern: Testing stateful behavior across stages.
 
         The workflow maintains state (_needs_architect_review) that affects
         subsequent stage decisions.
         """
-        workflow = CodeReviewWorkflow()
+        workflow = code_review_workflow
 
         # Initially, architect review may not be needed
         workflow._needs_architect_review = False

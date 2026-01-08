@@ -44,7 +44,7 @@ When debugging similar issues, consider these historical fixes:
 - **Fix**: See commit 8d974c1a
 - **Files**: site/search/search_index.json, site/sitemap.xml, site/sitemap.xml.gz
 
-### unknown
+### type_mismatch
 - **Root cause**: fix: Fix ESLint errors - escape apostrophes and quotes in JSX
 - **Fix**: See commit 99335a29
 - **Files**: website/app/api/debug-wizard/analyze/route.ts, website/app/api/og/route.tsx, website/app/blog/page.tsx
@@ -59,7 +59,7 @@ When debugging similar issues, consider these historical fixes:
 - **Fix**: See commit 4c6069af
 - **Files**: website/components/debug-wizard/DebugWizard.tsx
 
-### unknown
+### release_issue
 - **Root cause**: feat: Release v3.0.1 - XML-Enhanced Prompts & Security Fixes
 - **Fix**: See commit 8edfb707
 - **Files**: .claude/CLAUDE.md, .gitignore, CHANGELOG.md
@@ -69,7 +69,7 @@ When debugging similar issues, consider these historical fixes:
 - **Fix**: See commit 1b928aec
 - **Files**: src/empathy_os/workflows/__init__.py
 
-### unknown
+### configuration
 - **Root cause**: ci: Add workflow_dispatch to PyPI publish workflow
 - **Fix**: See commit 32d3adcf
 - **Files**: .github/workflows/publish-pypi.yml
@@ -79,7 +79,7 @@ When debugging similar issues, consider these historical fixes:
 - **Fix**: See commit 2ae52706
 - **Files**: scripts/fix_mkdocs_paths.py, .../framework-docs/FOREWORD_BY_CLAUDE/index.html, .../framework-docs/about-the-author/index.html
 
-### unknown
+### ui_issue
 - **Root cause**: fix: Force trailing slashes at all levels for MkDocs CSS compatibility
 - **Fix**: See commit 4e9157ce
 - **Files**: website/middleware.ts, website/next.config.ts, website/vercel.json
@@ -94,7 +94,7 @@ When debugging similar issues, consider these historical fixes:
 - **Fix**: See commit 47662816
 - **Files**: website/middleware.ts
 
-### unknown
+### ui_issue
 - **Root cause**: fix: Add Vercel trailingSlash config for framework-docs CSS
 - **Fix**: See commit 994d5ad5
 - **Files**: website/vercel.json
@@ -104,7 +104,7 @@ When debugging similar issues, consider these historical fixes:
 - **Fix**: See commit 0c56cfb1
 - **Files**: website/vercel.json
 
-### unknown
+### ui_issue
 - **Root cause**: fix: Add redirect to ensure trailing slash for framework-docs CSS paths
 - **Fix**: See commit 3ba1de27
 - **Files**: website/next.config.ts

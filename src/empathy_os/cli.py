@@ -47,6 +47,7 @@ try:
         cmd_telemetry_savings,
         cmd_telemetry_show,
     )
+
     TELEMETRY_CLI_AVAILABLE = True
 except ImportError:
     TELEMETRY_CLI_AVAILABLE = False
@@ -676,7 +677,7 @@ def cmd_tier_recommend(args):
     result = recommender.recommend(
         bug_description=args.description,
         files_affected=args.files.split(",") if args.files else None,
-        complexity_hint=args.complexity
+        complexity_hint=args.complexity,
     )
 
     # Display results
@@ -692,14 +693,14 @@ def cmd_tier_recommend(args):
     print(f"  💰 Expected Cost: ${result.expected_cost:.3f}")
     print(f"  🔄 Expected Attempts: {result.expected_attempts:.1f}")
     print()
-    print(f"  📊 Reasoning:")
+    print("  📊 Reasoning:")
     print(f"     {result.reasoning}")
     print()
 
     if result.similar_patterns_count > 0:
         print(f"  ✅ Based on {result.similar_patterns_count} similar patterns")
     else:
-        print(f"  ⚠️  No historical data - using conservative default")
+        print("  ⚠️  No historical data - using conservative default")
 
     if result.fallback_used:
         print()
@@ -748,11 +749,7 @@ def cmd_tier_stats(args):
 
     print("  BUG TYPE DISTRIBUTION")
     print("  " + "-" * 40)
-    sorted_types = sorted(
-        stats["bug_type_distribution"].items(),
-        key=lambda x: x[1],
-        reverse=True
-    )
+    sorted_types = sorted(stats["bug_type_distribution"].items(), key=lambda x: x[1], reverse=True)
     for bug_type, count in sorted_types[:10]:
         percent = (count / stats["total_patterns"]) * 100
         print(f"  {bug_type:20} {count:3} ({percent:5.1f}%)")

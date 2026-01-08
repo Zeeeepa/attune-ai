@@ -22,8 +22,6 @@ class TestCodeReviewerWizard:
         """Create wizard instance."""
         return CodeReviewerWizard()
 
-
-
     # =========================================================================
     # Risk Assessment Tests (Priority 2)
     # =========================================================================
@@ -34,21 +32,18 @@ class TestCodeReviewerWizard:
         Priority: 2 (High)
         Pattern: risk_assessment
         """
-        issues = [
-            {"severity": "critical", "message": "Test issue"}
-        ]
+        issues = [{"severity": "critical", "message": "Test issue"}]
 
         risk_result = wizard.assess_risk(issues)
 
         assert risk_result["alert_level"] == "CRITICAL"
         assert risk_result["by_risk_level"]["critical"] == 1
 
-
     # =========================================================================
     # Success Path Tests (Priority 4)
     # =========================================================================
 
-async def test_happy_path_success(self, wizard):
+    async def test_happy_path_success(self, wizard):
         """Test complete wizard flow succeeds.
 
         Priority: 4 (Success path)
@@ -68,6 +63,7 @@ async def test_happy_path_success(self, wizard):
         """
         # TODO: Implement validation test for alert_level
         pass
+
     def test_production_failure_risk_validated(self, wizard):
         """Test production_failure_risk is properly validated.
 
@@ -75,6 +71,7 @@ async def test_happy_path_success(self, wizard):
         """
         # TODO: Implement validation test for production_failure_risk
         pass
+
     def test_bug_density_increase_validated(self, wizard):
         """Test bug_density_increase is properly validated.
 
@@ -82,6 +79,7 @@ async def test_happy_path_success(self, wizard):
         """
         # TODO: Implement validation test for bug_density_increase
         pass
+
     def test_technical_debt_accumulation_validated(self, wizard):
         """Test technical_debt_accumulation is properly validated.
 

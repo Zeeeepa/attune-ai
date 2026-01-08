@@ -356,9 +356,7 @@ class UsageTracker:
             by_provider[provider] = by_provider.get(provider, 0.0) + cost
 
         total_calls = len(entries)
-        cache_hit_rate = (
-            (cache_hits / total_calls * 100) if total_calls > 0 else 0.0
-        )
+        cache_hit_rate = (cache_hits / total_calls * 100) if total_calls > 0 else 0.0
 
         return {
             "total_calls": total_calls,
@@ -419,8 +417,7 @@ class UsageTracker:
 
         total_calls = len(entries)
         tier_distribution = {
-            tier: round(count / total_calls * 100, 1)
-            for tier, count in tier_counts.items()
+            tier: round(count / total_calls * 100, 1) for tier, count in tier_counts.items()
         }
 
         # Cache savings estimation

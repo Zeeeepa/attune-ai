@@ -51,7 +51,7 @@ class TestLoadBugPredictConfig:
     - Testing file-not-found scenarios
     """
 
-    def test_returns_defaults_when_no_config_file_exists(self):
+    def test_returns_defaults_when_no_config_file_exists(self, bug_predict_workflow):
         """Test that defaults are returned when no config file is found.
 
         Teaching Pattern: Testing the "happy path" fallback behavior.
@@ -78,7 +78,7 @@ class TestLoadBugPredictConfig:
             finally:
                 os.chdir(original_cwd)
 
-    def test_loads_from_empathy_config_yml(self, tmp_path, monkeypatch):
+    def test_loads_from_empathy_config_yml(self, tmp_path, monkeypatch, bug_predict_workflow):
         """Test loading from primary config file: empathy.config.yml
 
         Teaching Pattern: Using tmp_path fixture to create temporary files.
@@ -110,7 +110,7 @@ bug_predict:
         assert "**/fixtures/**" in config["exclude_files"]
         assert "version" in config["acceptable_exception_contexts"]
 
-    def test_tries_multiple_config_file_paths(self, tmp_path, monkeypatch):
+    def test_tries_multiple_config_file_paths(self, tmp_path, monkeypatch, bug_predict_workflow):
         """Test that config loader tries multiple file paths in order.
 
         Teaching Pattern: Testing fallback logic with multiple paths.
@@ -132,7 +132,7 @@ bug_predict:
         # Assert: Should find the .empathy.yml file
         assert config["risk_threshold"] == 0.9
 
-    def test_handles_malformed_yaml_gracefully(self, tmp_path, monkeypatch):
+    def test_handles_malformed_yaml_gracefully(self, tmp_path, monkeypatch, bug_predict_workflow):
         """Test that malformed YAML doesn't crash, falls back to defaults.
 
         Teaching Pattern: Testing error handling and graceful degradation.
@@ -157,7 +157,7 @@ bug_predict:
         assert config["risk_threshold"] == 0.7  # Default value
         assert config["exclude_files"] == []  # Default value
 
-    def test_merges_partial_config_with_defaults(self, tmp_path, monkeypatch):
+    def test_merges_partial_config_with_defaults(self, tmp_path, monkeypatch, bug_predict_workflow):
         """Test that partial configs are merged with defaults.
 
         Teaching Pattern: Testing merge logic - some fields custom, others default.
@@ -216,18 +216,18 @@ class TestShouldExcludeFile:
             ("src/unit/test_foo.py", "tests/**", False),
         ],
     )
-    def test_pattern_matching(self, file_path, pattern, expected):
+    def test_pattern_matching(self, file_path, pattern, expected, bug_predict_workflow):
         """Test various glob pattern matching scenarios.
 
         Teaching Pattern: Parametrized testing - one test function, many cases.
         This is more maintainable than writing individual test functions.
         """
         result = _should_exclude_file(file_path, [pattern])
-        assert result == expected, (
-            f"Pattern '{pattern}' should {'match' if expected else 'not match'} '{file_path}'"
-        )
+        assert (
+            result == expected
+        ), f"Pattern '{pattern}' should {'match' if expected else 'not match'} '{file_path}'"
 
-    def test_no_exclusion_when_pattern_list_empty(self):
+    def test_no_exclusion_when_pattern_list_empty(self, bug_predict_workflow):
         """Test that empty pattern list excludes nothing.
 
         Teaching Pattern: Testing edge case - empty input.
@@ -236,7 +236,7 @@ class TestShouldExcludeFile:
         result = _should_exclude_file("any/file.py", [])
         assert result is False
 
-    def test_first_matching_pattern_wins(self):
+    def test_first_matching_pattern_wins(self, bug_predict_workflow):
         """Test that matching stops at first match.
 
         Teaching Pattern: Testing early-exit logic.
@@ -248,7 +248,7 @@ class TestShouldExcludeFile:
         result = _should_exclude_file("tests/test_foo.py", patterns)
         assert result is True
 
-    def test_multiple_patterns_any_match_excludes(self):
+    def test_multiple_patterns_any_match_excludes(self, bug_predict_workflow):
         """Test that ANY pattern matching causes exclusion.
 
         Teaching Pattern: Testing OR logic (any match is sufficient).
@@ -263,7 +263,7 @@ class TestShouldExcludeFile:
         assert _should_exclude_file("data/fixtures/test.json", patterns) is True
         assert _should_exclude_file("build/module.pyc", patterns) is True
 
-    def test_case_sensitive_matching(self):
+    def test_case_sensitive_matching(self, bug_predict_workflow):
         """Test that pattern matching is case-sensitive.
 
         Teaching Pattern: Testing case sensitivity assumptions.
@@ -289,7 +289,7 @@ class TestIsAcceptableBroadException:
     - Configurable behavior via parameters
     """
 
-    def test_accepts_version_detection_with_fallback(self):
+    def test_accepts_version_detection_with_fallback(self, bug_predict_workflow):
         """Test that version detection with fallback is acceptable.
 
         Teaching Pattern: Testing context-aware heuristics.
@@ -312,7 +312,7 @@ class TestIsAcceptableBroadException:
         # Assert: This is acceptable - version detection with graceful fallback
         assert result is True
 
-    def test_accepts_config_loading_with_defaults(self):
+    def test_accepts_config_loading_with_defaults(self, bug_predict_workflow):
         """Test that config loading with fallback to defaults is acceptable."""
         line = "except Exception:"
         context_before = [
@@ -326,7 +326,7 @@ class TestIsAcceptableBroadException:
         result = _is_acceptable_broad_exception(line, context_before, context_after)
         assert result is True
 
-    def test_accepts_optional_import_detection(self):
+    def test_accepts_optional_import_detection(self, bug_predict_workflow):
         """Test that optional import detection is acceptable."""
         line = "except Exception:"
         context_before = [
@@ -340,7 +340,7 @@ class TestIsAcceptableBroadException:
         result = _is_acceptable_broad_exception(line, context_before, context_after)
         assert result is True
 
-    def test_accepts_cleanup_code_in_del(self):
+    def test_accepts_cleanup_code_in_del(self, bug_predict_workflow):
         """Test that cleanup code in __del__ is acceptable."""
         line = "except Exception:"
         context_before = [
@@ -355,7 +355,7 @@ class TestIsAcceptableBroadException:
         result = _is_acceptable_broad_exception(line, context_before, context_after)
         assert result is True
 
-    def test_rejects_bare_exception_without_context(self):
+    def test_rejects_bare_exception_without_context(self, bug_predict_workflow):
         """Test that broad exception without justifying context is rejected.
 
         Teaching Pattern: Testing the negative case - what should be flagged.
@@ -372,7 +372,7 @@ class TestIsAcceptableBroadException:
         result = _is_acceptable_broad_exception(line, context_before, context_after)
         assert result is False
 
-    def test_accepts_intentional_comment_justification(self):
+    def test_accepts_intentional_comment_justification(self, bug_predict_workflow):
         """Test that explicit comment justifying broad catch is acceptable.
 
         Teaching Pattern: Documentation as intent - comments can indicate
@@ -391,7 +391,7 @@ class TestIsAcceptableBroadException:
         result = _is_acceptable_broad_exception(line, context_before, context_after)
         assert result is True
 
-    def test_respects_configurable_contexts(self):
+    def test_respects_configurable_contexts(self, bug_predict_workflow):
         """Test that acceptable_contexts parameter is respected.
 
         Teaching Pattern: Testing configuration-driven behavior.
@@ -440,7 +440,7 @@ class TestIsDangerousEvalUsage:
     - Context-aware security analysis
     """
 
-    def test_detects_real_eval_usage(self):
+    def test_detects_real_eval_usage(self, bug_predict_workflow):
         """Test that real dangerous eval() usage is detected.
 
         Teaching Pattern: Testing the positive case - what SHOULD be flagged.
@@ -454,7 +454,7 @@ def dangerous_function(user_input):
         result = _is_dangerous_eval_usage(content, "src/vulnerable.py")
         assert result is True
 
-    def test_ignores_eval_in_string_literal(self):
+    def test_ignores_eval_in_string_literal(self, bug_predict_workflow):
         """Test that eval() in string literals (detection code) is NOT flagged.
 
         Teaching Pattern: False positive filtering.
@@ -470,7 +470,7 @@ def check_for_vulnerabilities(code):
         result = _is_dangerous_eval_usage(content, "src/scanner.py")
         assert result is False
 
-    def test_ignores_eval_in_comments(self):
+    def test_ignores_eval_in_comments(self, bug_predict_workflow):
         """Test that eval mentioned in comments is NOT flagged."""
         content = """
 def safe_function():
@@ -481,7 +481,7 @@ def safe_function():
         result = _is_dangerous_eval_usage(content, "src/fixed.py")
         assert result is False
 
-    def test_ignores_javascript_regex_exec(self):
+    def test_ignores_javascript_regex_exec(self, bug_predict_workflow):
         """Test that JavaScript regex.exec() is NOT flagged.
 
         Teaching Pattern: Language-aware detection.
@@ -494,7 +494,7 @@ const result = pattern.exec(text);  // This is safe - regex matching
         result = _is_dangerous_eval_usage(content, "src/component.js")
         assert result is False
 
-    def test_ignores_test_fixtures_with_eval(self):
+    def test_ignores_test_fixtures_with_eval(self, bug_predict_workflow):
         """Test that test fixtures containing eval (test data) are NOT flagged.
 
         Teaching Pattern: Distinguishing between test data and production code.
@@ -514,7 +514,7 @@ def bad_function(x):
         result = _is_dangerous_eval_usage(content, "tests/test_scanner.py")
         assert result is False
 
-    def test_ignores_scanner_test_files(self):
+    def test_ignores_scanner_test_files(self, bug_predict_workflow):
         """Test that scanner test files themselves are excluded.
 
         Teaching Pattern: Meta-exclusion - test files for security scanners
@@ -529,7 +529,7 @@ def test_detect_eval():
         result = _is_dangerous_eval_usage(content, "tests/test_bug_predict.py")
         assert result is False
 
-    def test_detects_exec_in_addition_to_eval(self):
+    def test_detects_exec_in_addition_to_eval(self, bug_predict_workflow):
         """Test that exec() is also detected (not just eval)."""
         content = """
 def dangerous():
@@ -538,7 +538,7 @@ def dangerous():
         result = _is_dangerous_eval_usage(content, "src/bad.py")
         assert result is True
 
-    def test_no_false_positive_on_file_without_eval(self):
+    def test_no_false_positive_on_file_without_eval(self, bug_predict_workflow):
         """Test that files without eval/exec are not flagged.
 
         Teaching Pattern: Testing the true negative - what should NOT be flagged.
@@ -569,7 +569,7 @@ class TestHasProblematicExceptionHandlers:
     - Testing with realistic code samples
     """
 
-    def test_flags_problematic_exception_handler(self):
+    def test_flags_problematic_exception_handler(self, bug_predict_workflow):
         """Test that truly problematic exception handlers are flagged."""
         content = """
 def process_data(data):
@@ -582,7 +582,7 @@ def process_data(data):
         result = _has_problematic_exception_handlers(content, "src/bad.py")
         assert result is True
 
-    def test_allows_version_detection_pattern(self):
+    def test_allows_version_detection_pattern(self, bug_predict_workflow):
         """Test that version detection pattern is allowed."""
         content = """
 def get_version():
@@ -594,7 +594,7 @@ def get_version():
         result = _has_problematic_exception_handlers(content, "src/version.py")
         assert result is False
 
-    def test_no_flag_when_no_broad_exceptions_exist(self):
+    def test_no_flag_when_no_broad_exceptions_exist(self, bug_predict_workflow):
         """Test that files without broad exceptions are not flagged."""
         content = """
 def safe_function():
@@ -608,7 +608,7 @@ def safe_function():
         result = _has_problematic_exception_handlers(content, "src/good.py")
         assert result is False
 
-    def test_respects_configurable_contexts_parameter(self):
+    def test_respects_configurable_contexts_parameter(self, bug_predict_workflow):
         """Test that custom acceptable_contexts are respected."""
         content = """
 def custom_handler():

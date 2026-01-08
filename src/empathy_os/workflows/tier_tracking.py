@@ -12,10 +12,10 @@ Licensed under Fair Source License 0.9
 
 import json
 import uuid
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from empathy_os.logging_config import get_logger
 
@@ -29,8 +29,8 @@ class TierAttempt:
     tier: str
     attempt: int
     success: bool
-    quality_gate_failed: Optional[str] = None
-    quality_gates_passed: Optional[List[str]] = None
+    quality_gate_failed: str | None = None
+    quality_gates_passed: list[str] | None = None
 
 
 @dataclass
@@ -40,7 +40,7 @@ class WorkflowTierProgression:
     workflow_name: str
     workflow_id: str
     bug_description: str
-    files_affected: List[str]
+    files_affected: list[str]
     bug_type: str
 
     # Tier progression
@@ -48,7 +48,7 @@ class WorkflowTierProgression:
     starting_tier: str
     successful_tier: str
     total_attempts: int
-    tier_history: List[Dict[str, Any]]
+    tier_history: list[dict[str, Any]]
 
     # Costs
     total_cost: float
@@ -65,7 +65,7 @@ class WorkflowTierProgression:
     duration_seconds: float
 
     # Optional fields must come last
-    error_message: Optional[str] = None
+    error_message: str | None = None
 
 
 class WorkflowTierTracker:
@@ -89,7 +89,7 @@ class WorkflowTierTracker:
         self,
         workflow_name: str,
         workflow_description: str,
-        patterns_dir: Optional[Path] = None,
+        patterns_dir: Path | None = None,
     ):
         """
         Initialize tier tracker for a workflow.
@@ -109,13 +109,13 @@ class WorkflowTierTracker:
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
 
-        self.recommended_tier: Optional[str] = None
-        self.starting_tier: Optional[str] = None
-        self.tier_attempts: List[TierAttempt] = []
+        self.recommended_tier: str | None = None
+        self.starting_tier: str | None = None
+        self.tier_attempts: list[TierAttempt] = []
 
     def show_recommendation(
         self,
-        files_affected: Optional[List[str]] = None,
+        files_affected: list[str] | None = None,
         show_ui: bool = True,
     ) -> str:
         """
@@ -173,7 +173,9 @@ class WorkflowTierTracker:
         if result.fallback_used:
             message += "\n\n[yellow]⚠️  Using default - limited historical data[/yellow]"
         else:
-            message += f"\n\n[green]✅ Based on {result.similar_patterns_count} similar patterns[/green]"
+            message += (
+                f"\n\n[green]✅ Based on {result.similar_patterns_count} similar patterns[/green]"
+            )
 
         console.print(Panel(message, title="🎯 Auto Tier Recommendation", border_style="cyan"))
 
@@ -182,8 +184,8 @@ class WorkflowTierTracker:
         tier: str,
         attempt: int,
         success: bool,
-        quality_gate_failed: Optional[str] = None,
-        quality_gates_passed: Optional[List[str]] = None,
+        quality_gate_failed: str | None = None,
+        quality_gates_passed: list[str] | None = None,
     ):
         """Record a tier attempt during workflow execution."""
         self.tier_attempts.append(
@@ -199,9 +201,9 @@ class WorkflowTierTracker:
     def save_progression(
         self,
         workflow_result: Any,
-        files_affected: Optional[List[str]] = None,
+        files_affected: list[str] | None = None,
         bug_type: str = "workflow_run",
-    ) -> Optional[Path]:
+    ) -> Path | None:
         """
         Save tier progression data after workflow completion.
 
@@ -225,9 +227,17 @@ class WorkflowTierTracker:
             tier_history = self._build_tier_history(workflow_result)
 
             # Calculate costs
-            total_cost = workflow_result.cost_report.get("total", 0) if isinstance(workflow_result.cost_report, dict) else sum(stage.cost for stage in workflow_result.stages)
+            total_cost = (
+                workflow_result.cost_report.get("total", 0)
+                if isinstance(workflow_result.cost_report, dict)
+                else sum(stage.cost for stage in workflow_result.stages)
+            )
             cost_if_premium = self._estimate_premium_cost(workflow_result)
-            savings_percent = ((cost_if_premium - total_cost) / cost_if_premium * 100) if cost_if_premium > 0 else 0
+            savings_percent = (
+                ((cost_if_premium - total_cost) / cost_if_premium * 100)
+                if cost_if_premium > 0
+                else 0
+            )
 
             # Create progression record
             progression = {
@@ -240,7 +250,6 @@ class WorkflowTierTracker:
                 "resolved_at": completed_at.strftime("%Y-%m-%d"),
                 "files_affected": files_affected or [],
                 "source": "workflow_tracking",
-
                 "tier_progression": {
                     "methodology": "AI-ADDIE",
                     "recommended_tier": self.recommended_tier or self.starting_tier,
@@ -266,7 +275,6 @@ class WorkflowTierTracker:
                         "false_complete_avoided": workflow_result.error is None,
                     },
                 },
-
                 "workflow_metadata": {
                     "workflow_name": self.workflow_name,
                     "workflow_id": self.workflow_id,
@@ -298,8 +306,10 @@ class WorkflowTierTracker:
             return "CHEAP"
 
         # Use the highest tier that was actually used
-        tiers_used = [stage.tier.value if hasattr(stage.tier, 'value') else str(stage.tier).lower()
-                      for stage in workflow_result.stages]
+        tiers_used = [
+            stage.tier.value if hasattr(stage.tier, "value") else str(stage.tier).lower()
+            for stage in workflow_result.stages
+        ]
 
         if "premium" in tiers_used:
             return "PREMIUM"
@@ -308,13 +318,13 @@ class WorkflowTierTracker:
         else:
             return "CHEAP"
 
-    def _build_tier_history(self, workflow_result: Any) -> List[Dict[str, Any]]:
+    def _build_tier_history(self, workflow_result: Any) -> list[dict[str, Any]]:
         """Build tier history from workflow stages."""
-        tier_groups: Dict[str, List[Any]] = {}
+        tier_groups: dict[str, list[Any]] = {}
 
         # Group stages by tier
         for stage in workflow_result.stages:
-            tier = stage.tier.value if hasattr(stage.tier, 'value') else str(stage.tier).lower()
+            tier = stage.tier.value if hasattr(stage.tier, "value") else str(stage.tier).lower()
             tier_upper = tier.upper()
             if tier_upper not in tier_groups:
                 tier_groups[tier_upper] = []
@@ -328,7 +338,7 @@ class WorkflowTierTracker:
             success_stage = None
 
             for i, stage in enumerate(stages, 1):
-                if hasattr(stage, 'error') and stage.error:
+                if hasattr(stage, "error") and stage.error:
                     failures.append({"attempt": i, "quality_gate_failed": "execution"})
                 else:
                     success_stage = i
@@ -364,7 +374,7 @@ class WorkflowTierTracker:
         # Rough estimate: PREMIUM tier is ~15x more expensive than CHEAP
         return actual_cost * 5  # Conservative multiplier
 
-    def _update_consolidated_patterns(self, progression: Dict[str, Any]):
+    def _update_consolidated_patterns(self, progression: dict[str, Any]):
         """Update the consolidated patterns.json file."""
         consolidated_file = self.patterns_dir / "all_patterns.json"
 
@@ -391,7 +401,7 @@ class WorkflowTierTracker:
 def auto_recommend_tier(
     workflow_name: str,
     workflow_description: str,
-    files_affected: Optional[List[str]] = None,
+    files_affected: list[str] | None = None,
 ) -> str:
     """
     Quick helper to get tier recommendation without tracker.

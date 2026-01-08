@@ -7,15 +7,25 @@ discovered during Phase 1 (Files 1-3 refactoring).
 No external dependencies required - uses in-memory storage for real-time pattern sharing.
 """
 
-from empathy_os.pattern_library import Pattern, PatternLibrary
-from pathlib import Path
 import json
+
 import structlog
+
+from empathy_os.pattern_library import Pattern, PatternLibrary
 
 logger = structlog.get_logger()
 
 
-def make_pattern(id: str, type: str, name: str, desc: str, context: dict, tags: list, code: str, conf: float = 1.0) -> Pattern:
+def make_pattern(
+    id: str,
+    type: str,
+    name: str,
+    desc: str,
+    context: dict,
+    tags: list,
+    code: str,
+    conf: float = 1.0,
+) -> Pattern:
     """Helper to create Pattern with correct fields."""
     return Pattern(
         id=id,
@@ -26,8 +36,9 @@ def make_pattern(id: str, type: str, name: str, desc: str, context: dict, tags: 
         context=context,
         tags=tags,
         code=code.strip(),
-        confidence=conf
+        confidence=conf,
     )
+
 
 def create_phase_1_patterns() -> list[Pattern]:
     """Create 10 patterns discovered during Phase 1 refactoring."""
@@ -45,7 +56,7 @@ def create_phase_1_patterns() -> list[Pattern]:
                 "applicable_to": ["Library", "API", "CLI"],
                 "priority": "MEDIUM",
                 "discovered_in": "pattern_library.py",
-                "auto_fixable": True
+                "auto_fixable": True,
             },
             tags=["validation", "input", "string", "id"],
             code="""
@@ -53,9 +64,8 @@ def create_phase_1_patterns() -> list[Pattern]:
 if not agent_id or not agent_id.strip():
     raise ValueError("agent_id cannot be empty")
             """.strip(),
-            confidence=1.0
+            confidence=1.0,
         ),
-
         # Pattern 2: Duplicate Key Prevention
         Pattern(
             id="pattern_2_duplicate_key_prevention",
@@ -68,7 +78,7 @@ if not agent_id or not agent_id.strip():
                 "applicable_to": ["Library", "API"],
                 "priority": "MEDIUM",
                 "discovered_in": "pattern_library.py",
-                "auto_fixable": True
+                "auto_fixable": True,
             },
             tags=["dictionary", "duplicate", "data-integrity"],
             code="""
@@ -80,9 +90,8 @@ if pattern.id in self.patterns:
     )
 self.patterns[pattern.id] = pattern
             """.strip(),
-            confidence=1.0
+            confidence=1.0,
         ),
-
         # Pattern 3: Cycle-Safe Recursion
         Pattern(
             id="pattern_3_cycle_safe_recursion",
@@ -96,7 +105,7 @@ self.patterns[pattern.id] = pattern
                 "priority": "MEDIUM",
                 "discovered_in": "pattern_library.py",
                 "auto_fixable": False,  # Requires careful analysis
-                "risk": "Infinite recursion if cycles exist"
+                "risk": "Infinite recursion if cycles exist",
             },
             tags=["recursion", "graph", "cycle-detection", "algorithm"],
             code="""
@@ -125,9 +134,8 @@ def get_related_patterns(
 
     return [self.patterns[pid] for pid in related_ids if pid in self.patterns]
             """.strip(),
-            confidence=0.9
+            confidence=0.9,
         ),
-
         # Pattern 4: Range Validation
         Pattern(
             id="pattern_4_range_validation",
@@ -140,7 +148,7 @@ def get_related_patterns(
                 "applicable_to": ["Library", "API", "CLI"],
                 "priority": "MEDIUM",
                 "discovered_in": "pattern_library.py",
-                "auto_fixable": True
+                "auto_fixable": True,
             },
             tags=["validation", "range", "probability", "confidence"],
             code="""
@@ -148,9 +156,8 @@ def get_related_patterns(
 if not 0.0 <= min_confidence <= 1.0:
     raise ValueError(f"min_confidence must be 0-1, got {min_confidence}")
             """.strip(),
-            confidence=1.0
+            confidence=1.0,
         ),
-
         # Pattern 5: Type Validation
         Pattern(
             id="pattern_5_type_validation",
@@ -163,7 +170,7 @@ if not 0.0 <= min_confidence <= 1.0:
                 "applicable_to": ["Library", "API", "CLI"],
                 "priority": "LOW",
                 "discovered_in": "pattern_library.py",
-                "auto_fixable": True
+                "auto_fixable": True,
             },
             tags=["validation", "type", "isinstance"],
             code="""
@@ -171,9 +178,8 @@ if not 0.0 <= min_confidence <= 1.0:
 if not isinstance(context, dict):
     raise TypeError(f"context must be dict, got {type(context).__name__}")
             """.strip(),
-            confidence=1.0
+            confidence=1.0,
         ),
-
         # Pattern 6: File Path Validation ⭐ CRITICAL
         Pattern(
             id="pattern_6_file_path_validation",
@@ -192,8 +198,8 @@ if not isinstance(context, dict):
                     "Path traversal attacks (../../../etc/passwd)",
                     "Arbitrary file writes",
                     "System directory modifications",
-                    "Null byte injection"
-                ]
+                    "Null byte injection",
+                ],
             },
             tags=["security", "path-traversal", "file-io", "validation"],
             code="""
@@ -232,9 +238,8 @@ validated_path = _validate_file_path(args.output)
 with open(validated_path, 'w') as f:
     f.write(data)
             """.strip(),
-            confidence=1.0
+            confidence=1.0,
         ),
-
         # Pattern 7: Validation Integration
         Pattern(
             id="pattern_7_validation_integration",
@@ -247,7 +252,7 @@ with open(validated_path, 'w') as f:
                 "applicable_to": ["API", "CLI"],
                 "priority": "HIGH",
                 "discovered_in": "control_panel.py",
-                "auto_fixable": False  # Requires understanding of business logic
+                "auto_fixable": False,  # Requires understanding of business logic
             },
             tags=["validation", "architecture", "api", "defensive"],
             code="""
@@ -269,9 +274,8 @@ def delete_pattern(self, pattern_id: str, user_id: str) -> bool:
         logger.error("delete_pattern_failed", pattern_id=pattern_id, error=str(e))
         return False  # Graceful degradation
             """.strip(),
-            confidence=0.8
+            confidence=0.8,
         ),
-
         # Pattern 8: Stats Error Handling
         Pattern(
             id="pattern_8_stats_error_handling",
@@ -285,7 +289,7 @@ def delete_pattern(self, pattern_id: str, user_id: str) -> bool:
                 "priority": "MEDIUM",
                 "discovered_in": "control_panel.py",
                 "auto_fixable": True,
-                "pattern": "Log error + return default/False, don't crash"
+                "pattern": "Log error + return default/False, don't crash",
             },
             tags=["error-handling", "stats", "metrics", "graceful-degradation"],
             code="""
@@ -301,9 +305,8 @@ def get_statistics(self) -> MemoryStats | None:
         logger.error("stats_collection_failed", error=str(e))
         return None  # Best effort - don't crash
             """.strip(),
-            confidence=1.0
+            confidence=1.0,
         ),
-
         # Pattern 9: CLI Argument Validation
         Pattern(
             id="pattern_9_cli_argument_validation",
@@ -317,7 +320,7 @@ def get_statistics(self) -> MemoryStats | None:
                 "priority": "HIGH",
                 "discovered_in": "cli.py",
                 "auto_fixable": True,
-                "security_impact": "HIGH"
+                "security_impact": "HIGH",
             },
             tags=["cli", "argparse", "validation", "security"],
             code="""
@@ -341,9 +344,8 @@ def cmd_init(args):
     elif config_format == "json":
         config.to_json(str(validated_path))
             """.strip(),
-            confidence=1.0
+            confidence=1.0,
         ),
-
         # Pattern 10: Subprocess Safety Audit
         Pattern(
             id="pattern_10_subprocess_safety",
@@ -361,8 +363,8 @@ def cmd_init(args):
                 "prevents": [
                     "Command injection attacks",
                     "Shell escape attacks",
-                    "Arbitrary command execution"
-                ]
+                    "Arbitrary command execution",
+                ],
             },
             tags=["security", "subprocess", "command-injection", "shell"],
             code="""
@@ -380,7 +382,7 @@ subprocess.run(
     check=True
 )
             """.strip(),
-            confidence=0.7  # Lower confidence - requires manual review
+            confidence=0.7,  # Lower confidence - requires manual review
         ),
     ]
 
@@ -408,7 +410,7 @@ def initialize_pattern_library() -> PatternLibrary:
             "Pattern loaded",
             pattern_id=pattern.id,
             priority=pattern.context.get("priority"),
-            auto_fixable=pattern.context.get("auto_fixable")
+            auto_fixable=pattern.context.get("auto_fixable"),
         )
 
     # Get statistics
@@ -417,20 +419,21 @@ def initialize_pattern_library() -> PatternLibrary:
         "Pattern Library initialized",
         total_patterns=stats["total_patterns"],
         patterns_by_type=stats["patterns_by_type"],
-        backend="in-memory"
+        backend="in-memory",
     )
 
     return library
 
 
-def export_patterns_for_reference(library: PatternLibrary, output_path: str = "phase_1_patterns_export.json"):
+def export_patterns_for_reference(
+    library: PatternLibrary, output_path: str = "phase_1_patterns_export.json"
+):
     """Export patterns to JSON for reference/documentation.
 
     Args:
         library: PatternLibrary to export
         output_path: Output file path
     """
-    from dataclasses import asdict
 
     export_data = {
         "version": "1.0.0",
@@ -445,14 +448,14 @@ def export_patterns_for_reference(library: PatternLibrary, output_path: str = "p
                 "tags": p.tags,
                 "code": p.code,
                 "confidence": p.confidence,
-                "success_rate": p.success_rate
+                "success_rate": p.success_rate,
             }
             for p in library.patterns.values()
         ],
-        "stats": library.get_library_stats()
+        "stats": library.get_library_stats(),
     }
 
-    with open(output_path, 'w') as f:
+    with open(output_path, "w") as f:
         json.dump(export_data, f, indent=2)
 
     logger.info(f"Patterns exported to {output_path}")
@@ -465,9 +468,9 @@ if __name__ == "__main__":
     # Export for reference
     export_patterns_for_reference(library)
 
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("✅ Pattern Library Initialized Successfully")
-    print("="*80)
+    print("=" * 80)
     print(f"\nTotal Patterns: {len(library.patterns)}")
     print("\nPatterns by Priority:")
     priorities = {}
@@ -480,4 +483,4 @@ if __name__ == "__main__":
             print(f"  {priority}: {priorities[priority]}")
 
     print("\nReady for Phase 2 parallel refactoring!")
-    print("="*80)
+    print("=" * 80)

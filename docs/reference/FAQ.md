@@ -1,1155 +1,721 @@
-# Empathy Framework - Frequently Asked Questions (FAQ)
+# Frequently Asked Questions
 
-**Last Updated:** December 2025
-**Version:** 3.1.0
+**Last Updated:** January 7, 2026
+**Version:** 3.9.1
 
 ---
 
 ## Table of Contents
 
-- [General Questions](#general-questions)
-- [Wizards](#wizards)
-- [Smart Routing and Intelligence](#smart-routing-and-intelligence)
-- [Technical Questions](#technical-questions)
-- [Licensing and Pricing](#licensing-and-pricing)
-- [Integration and Usage](#integration-and-usage)
-- [Long-Term Memory](#long-term-memory)
-- [Security and Privacy](#security-and-privacy)
-- [Support and Community](#support-and-community)
+1. [Getting Started](#getting-started)
+2. [Teaching AI Your Standards](#teaching-ai-your-standards)
+3. [Tool Compatibility](#tool-compatibility)
+4. [Implementation](#implementation)
+5. [Results & ROI](#results--roi)
+6. [Common Concerns](#common-concerns)
+7. [Advanced Topics](#advanced-topics)
 
 ---
 
-## General Questions
+## Getting Started
 
 ### What is the Empathy Framework?
 
-The Empathy Framework is an open-source system for building AI applications that progress from simple reactive responses (Level 1) to anticipatory problem prevention (Level 4) and cross-domain systems thinking (Level 5). It wraps any LLM (Claude, GPT-4, local models) with progressive empathy levels that build trust over time.
+Empathy Framework is an open-source Python framework that gives AI assistants persistent memory, multi-agent coordination, and anticipatory intelligence.
 
-Unlike traditional AI tools that simply answer questions, the Empathy Framework learns your patterns, predicts future needs, and prevents problems before they occur.
+**Core capabilities:**
+- 🧠 **Persistent Memory**: Pattern library that survives sessions (git-based + optional Redis)
+- 🤝 **Multi-Agent Coordination**: AI teams that share context and validate each other
+- 🔮 **Anticipatory Intelligence**: Predicts bugs 30-90 days out based on learned patterns
+- 🛡️ **Enterprise-Ready**: Local-first, HIPAA-compliant options, comprehensive security
+- 💰 **Cost Optimization**: Smart tier routing saves 80-96% on LLM costs
 
-### What makes Level 5 Systems Empathy unique?
-
-Level 5 Systems Empathy is the world's first AI framework that can:
-
-1. **Learn patterns in one domain** (e.g., healthcare handoff protocols)
-2. **Store them in long-term memory** (built-in pattern storage)
-3. **Apply them cross-domain** (e.g., predict software deployment failures)
-4. **Prevent failures before they happen** (using trajectory analysis)
-
-No other AI framework can transfer safety patterns across domains like this. It's the difference between a tool that finds bugs and a system that prevents entire classes of failures.
-
-### How does it differ from SonarQube, CodeClimate, or similar tools?
-
-| Feature | Traditional Tools | Empathy Framework |
-|---------|------------------|-------------------|
-| **Analysis** | Static rules, same for everyone | Adaptive, learns your patterns |
-| **Prediction** | Find current bugs | Predict future issues 30-90 days ahead |
-| **Scope** | Single domain (security OR performance) | 16+ wizards across all domains |
-| **Intelligence** | Pre-defined rules | LLM-powered reasoning |
-| **Learning** | No learning capability | Learns from your codebase and feedback |
-| **Cost** | $15-500/month per seat | Free forever (Fair Source 0.9) |
-
-**Bottom line:** SonarQube finds bugs you've already written. Empathy Framework predicts bugs you're about to write and prevents them.
-
-### What's the difference between Fair Source and open source?
-
-The Empathy Framework uses **Fair Source 0.9 license** - it's fully open source, not Fair Source.
-
-- **Fair Source 0.9:** Completely free forever, no usage limits, commercial use allowed
-- **Fair Source:** Typically has usage limits or restrictions on commercial use
-
-We chose Fair Source 0.9 because we want maximum adoption and community contribution. There are no hidden fees or usage caps.
-
-### Is this production-ready?
-
-Yes! The Empathy Framework is production-ready and includes:
-
-- Comprehensive test suite with 80%+ coverage (2,200+ tests)
-- Battle-tested on real codebases
-- Used in production by multiple teams
-- Enterprise support available ($99/developer/year)
-- Regular security updates and patches
-
-That said, like any software, you should:
-- Test thoroughly in your environment
-- Start with non-critical systems
-- Monitor performance and accuracy
-- Provide feedback to improve the framework
-
----
-
-## Wizards
-
-### What are Empathy Wizards?
-
-Wizards are specialized AI assistants for specific domains and tasks. Unlike generic chatbots, each wizard has:
-
-- **Domain expertise** - Deep knowledge of industry patterns and regulations
-- **Built-in security** - PII scrubbing, secrets detection, audit logging
-- **Level 4 predictions** - Anticipates problems before they happen
-- **Structured outputs** - Consistent, actionable results
-
-### What wizards are available?
-
-**44 wizards across 3 categories:**
-
-| Category | Count | Examples |
-|----------|-------|----------|
-| **Domain Wizards** | 16 | Healthcare, Finance, Legal, Education, HR, Retail |
-| **Software Wizards** | 16 | Debugging, Security, Performance, API, Testing, Database |
-| **AI Wizards** | 12 | Agent Orchestration, RAG Pattern, Prompt Engineering |
-
-### How do I choose the right wizard?
-
-**Ask yourself:**
-
-1. **What domain am I working in?** → Use a Domain Wizard (Healthcare, Finance, etc.)
-2. **What code task am I doing?** → Use a Software Wizard (Debugging, Security, etc.)
-3. **Am I building an AI system?** → Use an AI Wizard (Agent Orchestration, RAG, etc.)
-
-### What inputs do wizards need?
-
-All wizards accept a consistent input structure:
-
-```python
-result = await wizard.process(
-    user_input="Your question or content",  # Required
-    user_id="your_id",                       # Required
-    context={}                               # Optional context
-)
-```
-
-**Domain Wizards:** Text content to analyze (documents, emails, records)
-
-**Software Wizards:** Code to analyze (with file_path and language)
-
-**AI Wizards:** System description or architecture questions
-
-### What outputs do wizards return?
-
-All wizards return structured results:
-
-```python
-{
-    "success": True,
-    "output": "Human-readable summary",
-    "analysis": {
-        "issues": [...],         # Current problems found
-        "predictions": [...],    # Future problems predicted
-        "recommendations": [...] # Suggested actions
-    }
-}
-```
-
-### Can I use wizards without an API key?
-
-**Software Wizards:** Yes - rule-based analysis runs locally without LLM
-
-**Domain & AI Wizards:** Require LLM API key (Anthropic or OpenAI)
-
-**Local Models:** All wizards work with Ollama for completely offline use
-
-### How do I test wizards?
-
+**Quick start:**
 ```bash
-# Run the wizard test suite
-python tests/test_wizard_outputs.py
-
-# Output saved to tests/wizard_outputs/
-# - Individual JSON files per wizard
-# - Summary report in markdown
+pip install empathy-framework
+empathy-memory serve
 ```
 
-### Which wizards are most reliable?
-
-**Most tested (high confidence):**
-- Healthcare Wizard - Extensively validated for HIPAA compliance
-- Security Wizard - Validated against OWASP patterns
-- Debugging Wizard - Tested with common bug patterns
-
-**Newer (improving):**
-- Agent Orchestration Wizard
-- AI Performance Wizard
-- RAG Pattern Wizard
-
-All wizards undergo continuous testing. Run `pytest tests/` to see current status.
-
-### How do I create a custom wizard?
-
-```python
-from empathy_llm_toolkit.wizards import BaseWizard, WizardConfig
-
-class MyWizard(BaseWizard):
-    def __init__(self, llm):
-        config = WizardConfig(
-            name="my_industry",
-            domain="custom",
-            enable_security=True
-        )
-        super().__init__(llm, config)
-
-    async def process(self, user_input: str, user_id: str):
-        # Your custom logic here
-        return await self.llm.interact(user_id, user_input)
-```
-
-See [Creating Custom Wizards](api-reference/wizards.md#creating-custom-wizards) for full documentation.
+**Learn more:** [Getting Started Guide](./guides/getting-started.md)
 
 ---
 
-## Smart Routing and Intelligence
+### What are the "5 Levels of Empathy"?
 
-### What is the Smart Router?
+The framework defines five levels of AI-human collaboration:
 
-The Smart Router automatically dispatches your natural language requests to the appropriate wizard(s). Instead of knowing which wizard to use, just describe what you need:
+1. **Level 1 (Reactive):** Responds only when asked
+2. **Level 2 (Guided):** Asks clarifying questions
+3. **Level 3 (Proactive):** Notices patterns, offers improvements
+4. **Level 4 (Anticipatory):** Predicts problems before they happen
+5. **Level 5 (Transformative):** Reshapes workflows to prevent problem classes
+
+**Learn more:** [Five Levels of Empathy Guide](./guides/five-levels-of-empathy.md) (15,000 words with real examples)
+
+---
+
+## Teaching AI Your Standards
+
+### How do I teach AI my coding standards?
+
+Instead of repeating standards in every session, create a project-level standards file with real code examples.
+
+**Step 1:** Create a standards reference file (`.ai/python-standards.md` or similar)
+
+**Step 2:** Document patterns with examples:
 
 ```python
-from empathy_os.routing import SmartRouter
+## Security: Never Use eval()
 
-router = SmartRouter()
-decision = router.route_sync("Fix the security issue in auth.py")
-# decision.primary_wizard = "security-audit"
-# decision.secondary_wizards = ["code-review"]
+### ❌ Prohibited
+user_input = request.get("formula")
+result = eval(user_input)  # Code injection vulnerability!
+
+### ✅ Required
+import ast
+try:
+    data = ast.literal_eval(user_input)
+except (ValueError, SyntaxError) as e:
+    raise ValueError(f"Invalid input: {e}")
+
+**Why:** eval() enables arbitrary code execution
+**Exception:** None. Always use ast.literal_eval() or json.loads()
 ```
 
-**How it works:**
-1. Uses LLM classification (Haiku tier) to understand your request
-2. Falls back to keyword matching if no API key is set
-3. Suggests secondary wizards for comprehensive analysis
-4. Provides confidence scores for routing decisions
+**Step 3:** Add to project context:
+- Claude Code: `.claude/CLAUDE.md`
+- GitHub Copilot: `.github/copilot-instructions.md`
+- Cursor: `.cursorrules`
 
-### What is the Memory Graph?
+**Learn more:** [Teaching AI Your Standards Guide](./guides/teaching-ai-your-standards.md) (11,000 words)
 
-The Memory Graph is a knowledge base that connects findings across all wizards. When one wizard finds a bug, other wizards can see related issues, past fixes, and patterns.
+---
+
+### What's the difference between prompting and project memory?
+
+**Traditional prompting:**
+- Include instructions in every prompt
+- Consumes context window
+- Need to repeat every session
+- Example: "Use type hints. Validate paths. [Your question]"
+
+**Project memory:**
+- Standards loaded once at session start
+- Available on-demand
+- Persists across all sessions
+- Zero context window cost
+- Example: Just ask your question, AI knows standards
+
+**Think of it like:**
+- Prompting = telling someone the rules every time
+- Project memory = giving them a handbook once
+
+---
+
+### Can you share an example standards file?
+
+Yes! Our production standards file is available:
+
+**Location:** [.claude/rules/empathy/coding-standards-index.md](.claude/rules/empathy/coding-standards-index.md)
+
+**Contents:**
+- Security rules (eval, path validation, SQL injection)
+- Exception handling patterns
+- File operations
+- Testing requirements
+- Pre-commit hook configurations
+- Real code examples from production
+
+**Size:** 1,170 lines with real patterns
+
+**How to use:** Adapt for your team's needs, your language, your patterns
+
+---
+
+### How much time does this save?
+
+**Our measured results (30 days):**
+
+**Before:**
+- 47% of code review comments were standards violations
+- 12 linter violations per PR average
+- ~2 hours/week explaining standards
+
+**After:**
+- 18% of code review comments are standards violations (-62%)
+- 3 linter violations per PR average (-75%)
+- ~20 min/week on standards questions (-83%)
+- 0 security issues caught in review (all prevented at source)
+
+**Time saved:** ~80 hours/month in code review
+
+**Your results will vary based on:**
+- Team size (solo: 10-20h/month, team of 5+: 100+h/month)
+- Current code review burden
+- How often you repeat standards
+
+---
+
+## Tool Compatibility
+
+### Does this work with GitHub Copilot?
+
+Yes! GitHub Copilot supports project-level instructions.
+
+**Setup:**
+1. Create `.github/copilot-instructions.md` in your repository
+2. Add your coding standards with examples
+3. Copilot reads it automatically
+
+**Example:**
+```markdown
+# Python Coding Standards
+
+Follow the patterns in .ai/python-standards.md
+
+Always:
+- Use type hints
+- Validate file paths before operations
+- Catch specific exceptions
+- Use ast.literal_eval() instead of eval()
+```
+
+**Learn more:** [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
+
+---
+
+### Does this work with Cursor?
+
+Yes! Cursor supports project rules via `.cursorrules` file.
+
+**Setup:**
+1. Create `.cursorrules` in project root
+2. Add your standards
+3. Cursor applies them automatically
+
+**Example:**
+```
+Follow Python standards in .ai/python-standards.md
+Use type hints, validate file paths, catch specific exceptions
+```
+
+**Learn more:** [Cursor Documentation](https://docs.cursor.sh)
+
+---
+
+### Does this work with Claude Code?
+
+Yes! Claude Code has native support for project memory.
+
+**Setup:**
+1. Create `.claude/CLAUDE.md` in your project
+2. Reference standards with `@./path/to/standards.md`
+3. Claude loads them at session start
+
+**Example:**
+```markdown
+# Project Context
+
+## Python Standards
+@./python-standards.md
+
+Critical rules:
+- Never use eval() or exec()
+- Validate all file paths
+- Use specific exceptions
+```
+
+**Learn more:** [Claude Code Documentation](https://docs.anthropic.com/claude/docs)
+
+---
+
+### Does this work with ChatGPT?
+
+Not yet. ChatGPT doesn't currently support persistent project-level context. You would need to include standards in each conversation.
+
+**Alternatives:**
+- Create a custom GPT with standards in instructions
+- Use a browser extension to inject standards
+- Copy/paste standards at conversation start
+
+---
+
+## Implementation
+
+### How long does setup take?
+
+**Initial setup:** 4-8 hours
+- Identify top 5-10 coding standard violations (1-2 hours)
+- Document with real code examples (2-4 hours)
+- Write actual implementation functions (1-2 hours)
+- Add to project context (30 minutes)
+
+**Maintenance:** ~1 hour/month
+- Update when standards change
+- Add new patterns as discovered
+- Keep examples current
+
+**ROI:** Pays back in first week for teams with regular code reviews
+
+---
+
+### What should I document first?
+
+Start with your **top 5 coding standard violations**:
+
+1. Look at last 10 code reviews
+2. What do you keep commenting about?
+3. Document those patterns first
+
+**Common starting points:**
+- Security: eval(), path validation, SQL injection
+- Type hints / type checking
+- Exception handling (specific vs bare)
+- File operations (context managers, validation)
+- Logging patterns
+
+**Don't try to document everything at once.** Start small, add patterns as you encounter them.
+
+---
+
+### Should I use abstract rules or real code?
+
+**Always use real code examples**, not abstract descriptions.
+
+**❌ Bad (abstract):**
+```
+Always handle errors properly
+Use best practices
+Follow team conventions
+```
+
+**✅ Good (concrete):**
+```python
+## Error Handling: Catch Specific Exceptions
+
+### ❌ Prohibited
+try:
+    risky_operation()
+except:  # Masks KeyboardInterrupt, SystemExit
+    pass
+
+### ✅ Required
+try:
+    risky_operation()
+except ValueError as e:
+    logger.error(f"Invalid value: {e}")
+    raise
+except IOError as e:
+    logger.warning(f"IO error: {e}")
+    return default_value
+
+**Why:** Bare except catches system signals, makes debugging impossible
+```
+
+**Include:**
+- ❌ What NOT to do (with code example)
+- ✅ What TO do instead (with code example)
+- **Why** it matters (security? performance? maintainability?)
+- Your actual implementation (show the function from your codebase)
+
+---
+
+### How do I adapt this for TypeScript?
+
+The pattern works for any language. Here's TypeScript example:
+
+```typescript
+// .ai/typescript-standards.md
+
+## Error Handling: Custom Error Classes
+
+### ❌ Prohibited
+if (!user) {
+  throw new Error("User not found");
+}
+
+### ✅ Required
+export class UserNotFoundError extends Error {
+  constructor(userId: string) {
+    super(`User not found: ${userId}`);
+    this.name = 'UserNotFoundError';
+  }
+}
+
+if (!user) {
+  throw new UserNotFoundError(userId);
+}
+
+// Usage in try-catch
+try {
+  const user = await getUser(id);
+} catch (error) {
+  if (error instanceof UserNotFoundError) {
+    return res.status(404).json({ error: error.message });
+  }
+  throw error; // Re-throw unexpected errors
+}
+
+**Why:** Type-safe error handling, better logging, clearer debugging
+```
+
+**Add to:** `.github/copilot-instructions.md` or `.cursorrules`
+
+---
+
+### How do I keep standards updated?
+
+**Integrate with code review process:**
+
+1. **When code review finds violation:**
+   - Fix the code
+   - Add pattern to standards file
+   - Show ❌ bad pattern (what was just fixed)
+   - Show ✅ good pattern (what to do instead)
+   - Explain why
+
+2. **Time investment:** ~10 minutes per violation
+
+3. **Result:** Pattern doesn't repeat
+
+**Example workflow:**
+```
+Code review finds: bare except:
+→ Fix it: catch ValueError specifically
+→ Add to standards file (takes 10 min)
+→ AI generates correct pattern next time
+→ Never see that violation again
+```
+
+**Pro tip:** Make updating standards part of your review checklist.
+
+---
+
+## Results & ROI
+
+### What results can I expect?
+
+**Conservative estimates (based on our data):**
+
+**Solo developer:**
+- Time saved: 10-20 hours/month
+- Code review improvements: -40% standards comments
+- Prevention: 2-3 bugs caught before writing
+
+**Team of 5:**
+- Time saved: 50-100 hours/month
+- Code review improvements: -60% standards comments
+- Prevention: 5-10 bugs caught before writing
+
+**Team of 10+:**
+- Time saved: 100-200 hours/month
+- Code review improvements: -70% standards comments
+- Prevention: 10-20 bugs caught before writing
+
+**Key factors:**
+- Current code review burden
+- How often you repeat standards
+- Team size and turnover
+- Codebase complexity
+
+---
+
+### How do I measure impact?
+
+**Track these metrics for 30 days:**
+
+**Before implementation:**
+- % of code review comments on standards
+- Linter violations per PR
+- Time spent explaining standards
+- Security issues caught in review
+
+**After implementation:**
+- Same metrics
+- Calculate reduction
+- Note patterns that stopped recurring
+
+**Example tracking:**
+```
+Week 1: 15 linter violations, 12 standards comments
+Week 2: 12 linter violations, 9 standards comments
+Week 3: 8 linter violations, 6 standards comments
+Week 4: 5 linter violations, 4 standards comments
+
+Result: -67% violations, -67% comments
+```
+
+---
+
+## Common Concerns
+
+### Isn't this overengineered?
+
+**Fair question! It depends on your situation.**
+
+**When this is overkill:**
+- Solo dev who rarely repeats standards
+- Small team with perfect code review adherence
+- Simple codebase with few patterns
+- No security requirements
+
+**When this pays off:**
+- Team of 3+ developers
+- Onboarding new developers regularly
+- Recurring standards violations in code review
+- Complex codebase with security requirements
+- High cost of bugs (security, compliance, $$$)
+
+**The lightweight version:**
+- Document top 3 violations only
+- Skip the rest
+- Still saves time, much less work
+
+**Our take:** If you find yourself repeating the same code review comment 5+ times, document it.
+
+---
+
+### Does AI replace code review?
+
+**No! This complements code review, doesn't replace it.**
+
+**What it does:**
+- Reduces noise (fewer "use type hints" comments)
+- Lets reviewers focus on logic, architecture, edge cases
+- Prevents obvious issues
+
+**What it doesn't do:**
+- Replace human judgment
+- Catch business logic bugs
+- Understand context-specific requirements
+- Make architectural decisions
+
+**Think of it like a linter on steroids:**
+- Linters catch syntax issues
+- This catches patterns linters can't detect
+- Humans focus on the hard problems
+
+**You still need code review** - just less time on repetitive standards enforcement.
+
+---
+
+### What about AI hallucinations?
+
+**Valid concern! Here's how we handle it:**
+
+**1. Reference actual implementations:**
+```python
+## File Path Validation
+
+### Our Implementation: src/utils/validation.py:15-40
+
+[Paste actual function from your codebase]
+```
+
+When AI uses `validate_file_path()`, it's using a tested, production function, not generating something new.
+
+**2. Include test patterns:**
+```python
+## Tests Required
+
+def test_validate_file_path_blocks_traversal():
+    with pytest.raises(ValueError):
+        validate_file_path("../../etc/passwd")
+```
+
+AI generates tests that match your existing test suite.
+
+**3. Code review still catches issues:**
+- AI-generated code goes through normal review
+- Standards reduce noise, but humans verify logic
+
+**4. Start with high-confidence patterns:**
+- Security rules (eval, path validation)
+- Well-established best practices
+- Patterns you've used 100+ times
+
+---
+
+### What if my team disagrees on standards?
+
+**Document the disagreement and decision:**
 
 ```python
-from empathy_os.memory import MemoryGraph, EdgeType
+## String Formatting: Use f-strings (Python 3.6+)
 
-graph = MemoryGraph()
+### ❌ Prohibited
+name = "Alice"
+message = "Hello, %s" % name  # Old style
+message = "Hello, {}".format(name)  # Verbose
 
-# Find similar bugs from past sessions
-similar = graph.find_similar({"name": "Null reference error"})
+### ✅ Required
+message = f"Hello, {name}"  # Readable, fast
 
-# Traverse relationships
-bug = graph.get_node(bug_id)
-fixes = graph.find_related(bug_id, edge_types=[EdgeType.FIXED_BY])
+**Team decision (2024-03-15):**
+- Discussed .format() vs f-strings
+- Chose f-strings for readability
+- Exception: When string is reused with different values
+- Documented in standards for new team members
 ```
 
 **Benefits:**
-- Cross-session learning - wizards get smarter over time
-- Relationship tracking - bugs linked to fixes, vulnerabilities to patches
-- Pattern recognition - find similar issues across your codebase
+- New team members see the decision
+- Context preserved ("why did we choose this?")
+- Reduces re-litigating decisions
+- Standards document becomes team memory
 
-### What is Auto-Chaining?
+---
 
-Auto-Chaining allows wizards to automatically trigger related wizards based on their findings. For example, when Security Audit finds high-severity issues, it can automatically trigger Dependency Check.
+## Advanced Topics
 
-Configure in `.empathy/wizard_chains.yaml`:
+### Can I share standards across multiple projects?
 
-```yaml
-chains:
-  security-audit:
-    triggers:
-      - condition: "high_severity_count > 0"
-        next: dependency-check
-        approval_required: false
+Yes! Use symlinks or git submodules:
+
+```
+company-standards/
+├── python-standards.md
+├── typescript-standards.md
+└── security-baseline.md
+
+project-a/
+├── .claude/CLAUDE.md
+│   # References: @../company-standards/python-standards.md
+└── src/
+
+project-b/
+├── .claude/CLAUDE.md
+│   # References: @../company-standards/python-standards.md
+└── src/
 ```
 
-**Pre-built templates:**
-- `full-security-review`: security-audit → dependency-check → code-review
-- `pre-release`: test-gen → security-audit → release-prep
-- `code-quality`: code-review → perf-audit → doc-gen
-- `bug-fix-pipeline`: bug-predict → code-review → test-gen
+**Benefits:**
+- Update once, applies everywhere
+- Consistent standards across org
+- New projects inherit standards automatically
 
-### What is the Prompt Engineering Wizard?
+---
 
-The Prompt Engineering Wizard helps you craft better prompts for any AI task. It can analyze existing prompts, generate optimized ones, and reduce token costs.
+### How do I handle language-specific vs general standards?
+
+**Structure by specificity:**
+
+```
+standards/
+├── general.md              # Applies to all projects
+│   ├── Code review process
+│   ├── Git commit format
+│   └── Documentation requirements
+├── security-baseline.md    # Applies to all code
+│   ├── Never use eval()
+│   ├── Validate all inputs
+│   └── Authentication patterns
+└── python/
+    ├── security.md         # Python-specific security
+    ├── testing.md          # Python testing patterns
+    └── style.md            # Python style guide
+```
+
+**Reference in project:**
+```markdown
+# .claude/CLAUDE.md
+
+@../standards/general.md
+@../standards/security-baseline.md
+@../standards/python/security.md
+@../standards/python/testing.md
+```
+
+---
+
+### Can I use this for data science workflows?
+
+Absolutely! Example patterns:
 
 ```python
-from coach_wizards import PromptEngineeringWizard
+## Data Validation: Check DataFrame Schema
 
-wizard = PromptEngineeringWizard()
+### ❌ Prohibited
+result = df['column_name']  # KeyError if missing
 
-# Analyze a prompt
-analysis = wizard.analyze_prompt("Fix this bug")
-# analysis.overall_score = 0.13 (poor)
-# analysis.issues = ["Missing role", "No output format"]
+### ✅ Required
+def validate_dataframe(df: pd.DataFrame, required_cols: list[str]):
+    """Validate DataFrame has required columns."""
+    missing = set(required_cols) - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing columns: {missing}")
 
-# Generate an optimized prompt
-prompt = wizard.generate_prompt(
-    task="Review code for security",
-    role="a security engineer",
-    output_format="JSON with severity"
-)
+validate_dataframe(df, ['user_id', 'timestamp', 'value'])
+result = df['column_name']
 
-# Reduce token costs
-result = wizard.optimize_tokens(verbose_prompt)
-# result.token_reduction = 0.20 (20% savings)
+**Tests:**
+- Missing column handling
+- Type validation (int vs float)
+- NaN/null handling
 ```
+
+**Other DS patterns:**
+- Data validation (schema, types, ranges)
+- Reproducibility (random seeds, versioning)
+- Performance (vectorization, avoid loops)
+- Visualization (consistent styling, labels)
 
 ---
 
-## Technical Questions
+### How do I version control standards?
 
-### What programming languages are supported?
-
-The framework core is written in Python and supports analyzing code in:
-
-**Fully Supported:**
-- Python
-- JavaScript/TypeScript
-- Java
-- Go
-- Rust
-
-**Partial Support:**
-- C/C++
-- Ruby
-- PHP
-- Swift
-- Kotlin
-
-The analysis quality depends on the specific wizard and the LLM you're using. Claude 3.5 Sonnet and GPT-4 Turbo work best for multi-language support.
-
-### Which LLM providers are supported?
-
-**Official Support:**
-- **Anthropic (Claude)** - Recommended, best results with prompt caching
-- **OpenAI (GPT-4, GPT-3.5 Turbo)** - Excellent quality, wider availability
-- **Local Models (Ollama, LM Studio)** - Privacy-first, free to run
-
-**Coming Soon:**
-- Google (Gemini)
-- Cohere
-- Together AI
-- Custom endpoints
-
-The framework is provider-agnostic - you can switch between providers without changing your code.
-
-### Do I need an API key?
-
-Yes, you need an API key for the LLM provider you choose:
-
-**Anthropic (Recommended):**
-```bash
-export ANTHROPIC_API_KEY=sk-ant-your-key-here
-```
-
-**OpenAI:**
-```bash
-export OPENAI_API_KEY=sk-your-key-here
-```
-
-**Local Models:**
-No API key needed - runs entirely on your machine using Ollama or LM Studio.
-
-### How much does it cost to run?
-
-**Framework Cost:** $0 (Fair Source 0.9 open source)
-
-**LLM API Costs (approximate):**
-
-**Anthropic Claude 3.5 Sonnet (Recommended):**
-- Input: $3 per million tokens
-- Output: $15 per million tokens
-- With prompt caching: 90% cost reduction on repeated prompts
-- **Typical usage:** $5-20/month for active development
-
-**OpenAI GPT-4 Turbo:**
-- Input: $10 per million tokens
-- Output: $30 per million tokens
-- **Typical usage:** $15-50/month for active development
-
-**Local Models (Ollama):**
-- $0 - completely free
-- Requires capable hardware (16GB+ RAM recommended)
-
-**Cost Optimization Tips:**
-1. Use prompt caching (Claude only) - 90% savings
-2. Use Haiku for simple tasks - 25x cheaper than Sonnet
-3. Use local models for development
-4. Cache wizard results to avoid repeated analysis
-
-### What are the system requirements?
-
-**Minimum:**
-- Python 3.10+
-- 4GB RAM
-- Internet connection (for cloud LLMs)
-
-**Recommended:**
-- Python 3.11+
-- 8GB+ RAM
-- SSD storage
-- Good internet connection (for optimal LLM performance)
-
-**For Local LLMs:**
-- 16GB+ RAM
-- GPU (optional but recommended)
-- 10GB+ disk space for models
-
-### How accurate are Level 4 predictions?
-
-Level 4 Anticipatory predictions are based on:
-- Code trajectory analysis
-- Project context (team size, growth rate, deployment frequency)
-- Historical patterns in similar codebases
-- Industry data on common failure modes
-
-**Accuracy Rates (based on production usage):**
-- **Security predictions:** 75-85% accuracy
-- **Performance predictions:** 70-80% accuracy
-- **Scalability predictions:** 65-75% accuracy
-
-Accuracy improves with:
-- More interaction history
-- Better project context
-- Regular feedback on prediction quality
-- Consistent usage patterns
-
-**Note:** Predictions are probabilistic, not deterministic. Always validate before taking action.
-
-### Can I use this offline?
-
-**With Local LLMs:** Yes! Use Ollama or LM Studio to run completely offline.
-
-**With Cloud LLMs:** No - requires internet for API calls.
-
-**Hybrid Approach:**
-- Use local models for development (offline)
-- Use cloud models for production (better quality)
-
----
-
-## Licensing and Pricing
-
-### How much does commercial licensing cost?
-
-**Framework:** $0 - Completely free under Fair Source 0.9 license
-
-**Commercial Support (Optional):** $99/developer/year
-
-**What's Included in Commercial Support:**
-- Priority bug fixes and feature requests
-- Direct access to core development team
-- Guaranteed response times (24-48 hours)
-- Security advisories and patches
-- Upgrade assistance
-- Architecture consultation (1 hour/quarter)
-
-### What's included in the free tier?
-
-Everything! There is no "free tier" vs "paid tier" - the entire framework is free under Fair Source 0.9.
-
-**You get:**
-- Full source code access
-- All 16+ Coach wizards
-- All empathy levels (1-5)
-- Long-term memory (pattern storage)
-- Pattern library
-- Configuration system
-- CLI tools
-- Documentation
-- Community support
-
-**What you don't get (unless you purchase support):**
-- Priority support
-- Guaranteed response times
-- Direct access to development team
-- Security advisories
-
-### Can I use this in my commercial product?
-
-Yes! Fair Source 0.9 allows commercial use without restrictions.
-
-**You can:**
-- Use it in commercial products
-- Modify the source code
-- Distribute modified versions
-- Charge for your products that use it
-- Keep your modifications private (no copyleft)
-
-**You must:**
-- Include the Fair Source 0.9 license notice
-- Include the copyright notice
-- Document significant changes (if distributing)
-
-**You cannot:**
-- Claim the framework as your own work
-- Hold Smart AI Memory liable for issues
-
-### Do I need to open source my code if I use this?
-
-No! Fair Source 0.9 is permissive, not copyleft (unlike GPL).
-
-**Your code stays private.** You're free to build proprietary products using the Empathy Framework.
-
-### Can I contribute to the project?
-
-Yes! We welcome contributions:
-
-**How to Contribute:**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-**What We Need:**
-- Bug fixes
-- New wizards for additional domains
-- Documentation improvements
-- Test coverage expansion
-- Performance optimizations
-- Example code and tutorials
-
-See [Contributing](contributing.md) for detailed guidelines.
-
----
-
-## Integration and Usage
-
-### How do I integrate this into my CI/CD pipeline?
-
-**GitHub Actions Example:**
-
-```yaml
-name: Empathy Framework Security Check
-on: [push, pull_request]
-
-jobs:
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - run: pip install empathy-framework anthropic
-      - run: |
-          python -c "
-          from coach_wizards import SecurityWizard
-          import sys
-          wizard = SecurityWizard()
-          # Check all Python files
-          # Exit 1 if critical issues found
-          "
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-```
-
-**GitLab CI Example:**
-
-```yaml
-empathy-check:
-  image: python:3.11
-  before_script:
-    - pip install empathy-framework anthropic
-  script:
-    - python security_check.py
-  variables:
-    ANTHROPIC_API_KEY: $ANTHROPIC_API_KEY
-```
-
-### Can I use this with VS Code / JetBrains / other IDEs?
-
-Yes! We provide integrations:
-
-**VS Code:**
-- Official extension: `empathy-framework` (search in VS Code marketplace)
-- Real-time analysis as you type
-- Inline suggestions and fixes
-
-**JetBrains (IntelliJ, PyCharm, etc.):**
-- Plugin: `Empathy Framework`
-- Similar features to VS Code extension
-
-**Language Server Protocol (LSP):**
-- Works with any LSP-compatible editor (Vim, Emacs, Sublime Text, etc.)
-- Check the `examples/` directory in the GitHub repository for setup instructions
-
-### How do I use this with Docker?
-
-**Dockerfile Example:**
-
-```dockerfile
-FROM python:3.11-slim
-
-# Install Empathy Framework
-RUN pip install empathy-framework anthropic
-
-# Copy your code
-COPY . /app
-WORKDIR /app
-
-# Set API key
-ENV ANTHROPIC_API_KEY=sk-ant-your-key
-
-# Run your analysis
-CMD ["python", "analyze.py"]
-```
-
-### Can I use multiple LLM providers simultaneously?
-
-Yes! Create separate instances:
-
-```python
-from empathy_llm_toolkit import EmpathyLLM
-
-# Use Claude for complex reasoning (Level 4)
-claude = EmpathyLLM(
-    provider="anthropic",
-    target_level=4,
-    model="claude-3-5-sonnet-20241022"
-)
-
-# Use GPT-4 for quick responses (Level 2)
-gpt = EmpathyLLM(
-    provider="openai",
-    target_level=2,
-    model="gpt-4-turbo-preview"
-)
-
-# Use local model for privacy-sensitive tasks
-local = EmpathyLLM(
-    provider="local",
-    target_level=2,
-    endpoint="http://localhost:11434",
-    model="llama2"
-)
-
-# Route to appropriate model based on task
-async def handle_request(user_input, priority):
-    if priority == "high":
-        return await claude.interact("user", user_input)
-    elif priority == "medium":
-        return await gpt.interact("user", user_input)
-    else:
-        return await local.interact("user", user_input)
-```
-
-### How do I test my custom wizards?
-
-Use the built-in testing utilities:
-
-```python
-import unittest
-from coach_wizards import BaseCoachWizard
-
-class TestMyWizard(unittest.TestCase):
-    def setUp(self):
-        self.wizard = MyCustomWizard()
-
-    def test_detects_vulnerability(self):
-        code = "SELECT * FROM users WHERE id='" + user_id + "'"
-        result = self.wizard.run_full_analysis(code, "test.py", "python")
-        self.assertTrue(len(result.issues) > 0)
-        self.assertIn("SQL injection", result.issues[0].message)
-
-    def test_predicts_future_issue(self):
-        code = "..."
-        context = {"growth_rate": 0.3, "user_count": 5000}
-        result = self.wizard.run_full_analysis(
-            code, "test.py", "python", context
-        )
-        self.assertTrue(len(result.predictions) > 0)
-```
-
----
-
-## Long-Term Memory
-
-### How does long-term memory work?
-
-The Empathy Framework includes built-in long-term memory for pattern storage:
-
-1. **Pattern Storage:** When a wizard finds an important pattern, it's stored in long-term memory
-2. **Cross-Domain Retrieval:** When analyzing code, the system searches for similar patterns from other domains
-3. **Level 5 Systems Empathy:** Patterns learned in healthcare can prevent failures in software
-
-**Installation:**
+**Treat standards like code:**
 
 ```bash
-pip install empathy-framework[full]  # Includes all components
+git add .claude/rules/python-standards.md
+git commit -m "docs: Add SQL injection prevention pattern"
+git push
 ```
 
-**Usage:**
+**Use CHANGELOG:**
+```markdown
+# Standards Changelog
 
-```python
-from empathy_os import EmpathyOS
+## 2026-01-07
+- Added: SQL injection prevention pattern
+- Updated: Exception handling (added cleanup pattern)
+- Removed: Deprecated string formatting rules
 
-# Initialize with built-in pattern storage
-os = EmpathyOS()
-
-# Long-term memory is enabled by default
-os.persist_pattern(
-    content="Pattern content",
-    pattern_type="coding_pattern"
-)
+## 2025-12-15
+- Added: Path validation for file operations
+- Updated: Type hints (Python 3.10 syntax)
 ```
 
-### What's stored in long-term memory?
-
-**Patterns Stored:**
-- User interaction patterns (sequential, conditional, adaptive)
-- Code patterns (vulnerabilities, performance issues, best practices)
-- Domain-specific knowledge (healthcare protocols, financial regulations)
-- Historical predictions and their outcomes
-- Cross-domain pattern mappings
-
-**What's NOT Stored:**
-- Your actual code or data (privacy-first)
-- API keys or secrets
-- Personal information
-- Proprietary business logic
-
-### Is my data secure with long-term memory?
-
-Yes! The system is privacy-first:
-
-**Local Storage:** All data stays on your machine by default
-
-**Encryption:** Database is encrypted at rest (optional, required for SENSITIVE)
-
-**No Telemetry:** Zero data collection or tracking
-
-**Data Control:** You own and control all stored data
-
-### Can I disable long-term memory?
-
-Yes! It's completely optional:
-
-```python
-from empathy_os import EmpathyOS
-
-# Disable long-term memory
-os = EmpathyOS(enable_long_term_memory=False)
-```
-
-Or via configuration:
-
-```yaml
-# empathy.config.yml
-pattern_library_enabled: false
-```
-
----
-
-## Security and Privacy
-
-### What security features does Empathy Framework include?
-
-The Empathy Framework includes enterprise-grade security controls built for GDPR, HIPAA, and SOC2 compliance:
-
-**PII Scrubbing**
-- Automatically detects and removes Personally Identifiable Information
-- Supported types: Email, SSN, phone numbers, credit cards, IP addresses, names, medical record numbers (MRN), patient IDs
-- Custom pattern support for organization-specific PII
-- Detailed audit logs for compliance reporting
-
-**Secrets Detection**
-- Detects API keys (Anthropic, OpenAI, AWS, GitHub, Slack, Stripe)
-- Detects passwords, private keys (RSA, SSH, EC, PGP, TLS)
-- Detects JWT tokens, OAuth tokens, database connection strings
-- Shannon entropy analysis for unknown secret patterns
-- Never logs or exposes actual secret values
-
-**Audit Logging**
-- Tamper-evident audit logs
-- Structured JSON logging for SIEM integration
-- Tracks all LLM requests, PII detections, secrets found
-- SOC2 CC7.2 and HIPAA §164.312(b) compliant
-
-**Secure Pattern Storage**
-- Three-tier classification: PUBLIC, INTERNAL, SENSITIVE
-- AES-256-GCM encryption for SENSITIVE patterns
-- Retention policies per classification
-- Access control based on user roles
-
-### How do I use PII scrubbing?
-
-```python
-from empathy_llm_toolkit.security import PIIScrubber
-
-# Initialize scrubber
-scrubber = PIIScrubber()
-
-# Scrub PII from content
-text = "Contact John at john.doe@email.com or 555-123-4567"
-sanitized, detections = scrubber.scrub(text)
-
-print(sanitized)
-# Output: "Contact John at [EMAIL] or [PHONE]"
-
-print(f"Found {len(detections)} PII instances")
-# Each detection includes: pii_type, position, confidence
-
-# Add custom patterns for organization-specific PII
-scrubber.add_custom_pattern(
-    name="employee_id",
-    pattern=r"EMP-\d{6}",
-    replacement="[EMPLOYEE_ID]",
-    description="Company employee identifier"
-)
-```
-
-### How do I detect secrets in code?
-
-```python
-from empathy_llm_toolkit.security import SecretsDetector, detect_secrets
-
-# Quick detection
-detections = detect_secrets(code_content)
-
-# Or with configuration
-detector = SecretsDetector(
-    enable_entropy_analysis=True,  # Detect high-entropy strings
-    entropy_threshold=4.5
-)
-
-detections = detector.detect(code_content)
-
-for detection in detections:
-    print(f"Found {detection.secret_type.value} at line {detection.line_number}")
-    print(f"Severity: {detection.severity.value}")
-    # Note: Actual secret value is NEVER exposed
-
-# Add custom patterns
-detector.add_custom_pattern(
-    name="company_api_key",
-    pattern=r"acme_[a-zA-Z0-9]{32}",
-    severity="high"
-)
-```
-
-### How does Claude Memory security work?
-
-The framework supports a hierarchical memory system with security controls:
-
-**Three-Level Hierarchy:**
-1. **Enterprise** (`/etc/claude/CLAUDE.md`) - Organization-wide security policies
-2. **User** (`~/.claude/CLAUDE.md`) - Personal preferences (cannot override enterprise)
-3. **Project** (`./.claude/CLAUDE.md`) - Team rules (cannot override enterprise or user)
-
-**Security Enforcement:**
-- Enterprise policies CANNOT be overridden by user or project memory
-- PII scrubbing patterns defined at enterprise level
-- Secrets detection enforced before any LLM call
-- Audit logging of all memory access
-
-```python
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
-
-config = ClaudeMemoryConfig(
-    enabled=True,
-    load_enterprise=True,  # Load org-wide security policies
-    load_user=True,
-    load_project=True
-)
-
-loader = ClaudeMemoryLoader(config)
-memory = loader.load_all_memory()
-# Enterprise security policies are enforced automatically
-```
-
-### Is my data secure with the Empathy Framework?
-
-**Yes!** Security is built into the core:
-
-| Feature | Implementation |
-|---------|----------------|
-| PII Protection | Automatic scrubbing before LLM calls (GDPR Article 5) |
-| Secrets Prevention | Detection blocks API calls containing secrets |
-| Encryption | AES-256-GCM for SENSITIVE patterns |
-| Audit Trail | Complete logging of all operations (SOC2, HIPAA) |
-| Local Storage | All data stays on your machine by default |
-| No Telemetry | Zero data collection or phone-home |
-
-### What compliance standards does this support?
-
-**GDPR (General Data Protection Regulation):**
-- Article 5(1)(c) - Data Minimization: PII scrubbing
-- Article 5(1)(e) - Storage Limitation: Retention policies
-- Article 25 - Data Protection by Design: Classification system
-- Article 30 - Records of Processing: Audit logging
-- Article 32 - Security of Processing: Encryption
-
-**HIPAA (Health Insurance Portability and Accountability Act):**
-- §164.312(a)(1) - Access Control: Classification-based access
-- §164.312(b) - Audit Controls: Comprehensive audit logging
-- §164.312(c)(1) - Integrity: Tamper-evident logs
-- §164.514 - De-identification: PII/PHI scrubbing
-
-**SOC2 (Service Organization Control 2):**
-- CC6.1 - Logical Access: User authentication + authorization
-- CC6.6 - Encryption: AES-256-GCM for SENSITIVE data
-- CC7.2 - System Monitoring: Audit logging with alerting
-
-### Can I run this in air-gapped environments?
-
-Yes! The framework supports air-gapped mode:
-
-```bash
-# Enable air-gapped mode
-export AIR_GAPPED_MODE=true
-```
-
-**In air-gapped mode:**
-- NO external LLM API calls
-- Use local models only (Ollama)
-- Pattern storage: local filesystem only
-- Audit logs: local filesystem only
-- Memory: local CLAUDE.md files only
-
-### How do I set up secure pattern storage?
-
-```python
-from empathy_llm_toolkit.security import SecurePatternStorage, Classification
-
-# Initialize with security policies
-storage = SecurePatternStorage(claude_memory_config)
-
-# Store a pattern with auto-classification
-result = storage.store_pattern(
-    pattern_content="Clinical protocol for patient handoffs...",
-    pattern_type="healthcare",
-    user_id="doctor@hospital.com",
-    auto_classify=True  # Auto-detects as SENSITIVE
-)
-
-# Result includes:
-# - pattern_id: Unique identifier
-# - classification: "SENSITIVE" (auto-detected from healthcare keywords)
-# - sanitization_report: PII removed, secrets checked
-# - encryption: Applied for SENSITIVE patterns
-```
-
-**Classification Rules:**
-- `PUBLIC`: General patterns, shareable, 365-day retention
-- `INTERNAL`: Proprietary patterns, team-only, 180-day retention
-- `SENSITIVE`: Healthcare/financial, encrypted, 90-day retention
-
----
-
-## Support and Community
-
-### How do I get support?
-
-**Free Community Support:**
-- GitHub Issues: https://github.com/Deep-Study-AI/Empathy/issues
-- GitHub Discussions: https://github.com/Deep-Study-AI/Empathy/discussions
-- Documentation: https://github.com/Deep-Study-AI/Empathy/tree/main/docs
-- Examples: https://github.com/Deep-Study-AI/Empathy/tree/main/examples
-
-**Paid Commercial Support ($99/developer/year):**
-- Priority bug fixes (24-48 hour response time)
-- Direct email/Slack access to core team
-- Architecture consultation
-- Security advisories
-- Upgrade assistance
-
-**Contact:** patrick.roebuck@deepstudyai.com
-
-### Where can I report bugs?
-
-**GitHub Issues:** https://github.com/Deep-Study-AI/Empathy/issues
-
-**Before Reporting:**
-1. Search existing issues
-2. Check if it's already fixed in latest version
-3. Reproduce with minimal example
-4. Include version info (`empathy-framework version`)
-
-**Include in Report:**
-- Empathy Framework version
-- Python version
-- LLM provider and model
-- Full error message and traceback
-- Minimal code to reproduce
-- Expected vs actual behavior
-
-### How can I request features?
-
-**GitHub Discussions:** https://github.com/Deep-Study-AI/Empathy/discussions
-
-**Feature Request Template:**
-1. **Problem Statement:** What problem are you trying to solve?
-2. **Proposed Solution:** How do you envision this working?
-3. **Alternatives Considered:** What other approaches did you consider?
-4. **Additional Context:** Examples, mockups, related issues
-
-### Where can I find examples and tutorials?
-
-**Official Examples:**
-- GitHub: https://github.com/Deep-Study-AI/Empathy/tree/main/examples
-- Quick Start Guide: [docs/QUICKSTART_GUIDE.md](QUICKSTART_GUIDE.md)
-- User Guide: [docs/USER_GUIDE.md](USER_GUIDE.md)
-
-**Community Examples:**
-- GitHub Discussions: Share your use cases
-- Blog posts and tutorials (community-contributed)
-
-### Is there a Slack or Discord community?
-
-Not yet, but we're considering it based on community interest.
-
-**Current Channels:**
-- GitHub Discussions (primary community forum)
-- GitHub Issues (bug reports and feature requests)
-- Email (commercial support customers)
-
-**Vote for Community Platform:**
-- Comment on [this discussion](https://github.com/Deep-Study-AI/Empathy/discussions) to vote
-
-### How often is the framework updated?
-
-**Release Schedule:**
-- **Patch releases (1.0.x):** As needed for bug fixes
-- **Minor releases (1.x.0):** Monthly with new features
-- **Major releases (x.0.0):** Annually with breaking changes
-
-**Security Updates:**
-- Critical security issues: Within 24-48 hours
-- Non-critical security issues: Next patch release
-
-**Subscribe for Updates:**
-- Watch the GitHub repository
-- Follow release notes: https://github.com/Deep-Study-AI/Empathy/releases
-
----
-
-## Troubleshooting
-
-### I'm getting "API key not found" errors
-
-See the [TROUBLESHOOTING.md](TROUBLESHOOTING.md) guide for detailed solutions.
-
-**Quick fix:**
-
-```bash
-# Check if API key is set
-echo $ANTHROPIC_API_KEY
-
-# Set it if missing
-export ANTHROPIC_API_KEY=sk-ant-your-key-here
-
-# Make permanent
-echo 'export ANTHROPIC_API_KEY=sk-ant-your-key-here' >> ~/.bashrc
-source ~/.bashrc
-```
-
-### The framework is running slow
-
-See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for performance optimization tips.
-
-**Quick fixes:**
-1. Enable prompt caching (Claude): 90% faster on repeated calls
-2. Use faster model (claude-3-haiku-20240307): 10x faster
-3. Use local model for development: No API latency
-
-### I'm not reaching higher empathy levels
-
-Higher levels require building trust:
-
-- **Level 2:** 3+ interactions, trust > 0.3
-- **Level 3:** 10+ interactions, trust > 0.7
-- **Level 4:** 20+ interactions, trust > 0.8
-- **Level 5:** 50+ interactions, trust > 0.9
-
-**Build trust faster:**
-
-```python
-# Provide positive feedback
-llm.update_trust("user", outcome="success", magnitude=1.0)
-
-# Or force level for testing
-result = await llm.interact(
-    user_id="test",
-    user_input="Test",
-    force_level=4  # Force Level 4 for demo
-)
-```
-
-### Where can I find more troubleshooting help?
-
-See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for comprehensive troubleshooting guide covering:
-- Installation issues
-- Import errors
-- API key configuration
-- Test failures
-- Performance problems
-- Memory issues
-- LLM provider errors
-- And more...
-
----
-
-## Additional Questions
-
-### How does this compare to GitHub Copilot?
-
-| Feature | GitHub Copilot | Empathy Framework |
-|---------|---------------|-------------------|
-| **Primary Use** | Code completion | Code analysis & prevention |
-| **Intelligence** | Autocomplete | Multi-level reasoning |
-| **Prediction** | Next line of code | Future bugs and bottlenecks |
-| **Learning** | Pre-trained only | Learns from your patterns |
-| **Cost** | $10-20/month per user | Free (+ LLM API costs) |
-| **Scope** | Code generation | Full development lifecycle |
-
-**Bottom Line:** Copilot helps you write code faster. Empathy Framework helps you write better code and prevents future problems.
-
-### Can I build a SaaS product using this?
-
-Yes! Fair Source 0.9 allows this. Many companies build SaaS products on top of Fair Source 0.9 projects.
-
-**You can:**
-- Offer Empathy Framework as a service
-- Charge for your SaaS product
-- Keep your modifications private
-- Add proprietary features on top
-
-**You should:**
-- Include Fair Source 0.9 license notice
-- Attribute the Empathy Framework
-- Consider contributing improvements back
-- Purchase commercial support for priority help
-
-### What's the long-term roadmap?
-
-**Near-term (Q1-Q2 2025):**
-- Additional LLM providers (Gemini, Cohere)
-- Enhanced IDE integrations
-- More domain-specific wizards
-- Improved prediction accuracy
-
-**Mid-term (Q3-Q4 2025):**
-- Multi-language support expansion
-- Team collaboration features
-- Enhanced cross-domain learning
-- Real-time code analysis
-
-**Long-term (2026+):**
-- Level 6: Autonomous problem resolution
-- Healthcare and financial domain plugins
-- Enterprise features (RBAC, audit logs)
-- Cloud-hosted option
-
-Check our GitHub repository for the latest development updates.
+**Benefits:**
+- Track what changed and when
+- See evolution of standards
+- Revert if pattern doesn't work
+- Team sees updates in pull requests
 
 ---
 
 ## Still Have Questions?
 
-**Can't find your answer?**
+### Resources
 
-1. Check the [User Guide](USER_GUIDE.md)
-2. Check the [API Reference](API_REFERENCE.md)
-3. Search [GitHub Discussions](https://github.com/Deep-Study-AI/Empathy/discussions)
-4. Ask in [GitHub Discussions](https://github.com/Deep-Study-AI/Empathy/discussions/new)
-5. Email: patrick.roebuck@deepstudyai.com
+- **Getting Started:** [Getting Started Guide](./guides/getting-started.md)
+- **Five Levels:** [Five Levels of Empathy Guide](./guides/five-levels-of-empathy.md)
+- **Teaching AI:** [Teaching AI Your Standards](./guides/teaching-ai-your-standards.md)
+- **Coding Standards:** [Our Standards Reference](.claude/rules/empathy/coding-standards-index.md)
+
+### Community
+
+- **GitHub Issues:** [Report bugs or request features](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- **GitHub Discussions:** [Ask questions, share ideas](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- **Twitter:** [@your_handle] - Follow for updates
+
+### Commercial Support
+
+- **Email:** admin@smartaimemory.com
+- **Website:** https://smartaimemory.com
 
 ---
 
-**Copyright 2025 Smart AI Memory, LLC**
-**Licensed under Fair Source 0.9**
+**Contributing:** Found an error or have a question not covered here? [Open an issue](https://github.com/Smart-AI-Memory/empathy-framework/issues) or [start a discussion](https://github.com/Smart-AI-Memory/empathy-framework/discussions).
+
+**Last Updated:** January 7, 2026

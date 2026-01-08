@@ -26,7 +26,7 @@ class TestPatientAssessmentWizard:
     # CRITICAL: User Approval Tests (Priority 1)
     # =========================================================================
 
-async def test_cannot_save_without_preview(self, wizard):
+    async def test_cannot_save_without_preview(self, wizard):
         """CRITICAL: Saving without preview should fail.
 
         Risk: Users bypassing review step could save unreviewed content
@@ -39,7 +39,7 @@ async def test_cannot_save_without_preview(self, wizard):
         # Should fail with preview requirement message
         assert "preview" in str(exc.value).lower()
 
-async def test_cannot_save_without_approval(self, wizard):
+    async def test_cannot_save_without_approval(self, wizard):
         """CRITICAL: Saving without user approval should fail.
 
         Risk: Content finalized without explicit user consent
@@ -56,7 +56,7 @@ async def test_cannot_save_without_approval(self, wizard):
         # Should fail with approval requirement
         assert "approval" in str(exc.value).lower()
 
-async def test_preview_does_not_finalize(self, wizard):
+    async def test_preview_does_not_finalize(self, wizard):
         """CRITICAL: Preview should NOT mark wizard as complete.
 
         Risk: Users locked out from editing after preview
@@ -80,7 +80,7 @@ async def test_preview_does_not_finalize(self, wizard):
     # CRITICAL: Step Validation Tests (Priority 1)
     # =========================================================================
 
-async def test_cannot_skip_steps(self, wizard):
+    async def test_cannot_skip_steps(self, wizard):
         """CRITICAL: Steps must be completed in order.
 
         Risk: Users skipping required data collection steps
@@ -96,7 +96,7 @@ async def test_cannot_skip_steps(self, wizard):
 
         assert "expected step 1" in str(exc.value).lower() or "step" in str(exc.value).lower()
 
-async def test_step_sequence_enforced(self, wizard):
+    async def test_step_sequence_enforced(self, wizard):
         """CRITICAL: Wrong step number should be rejected.
 
         Risk: Step sequence corruption
@@ -112,13 +112,11 @@ async def test_step_sequence_enforced(self, wizard):
 
         assert exc.value is not None
 
-
-
     # =========================================================================
     # Success Path Tests (Priority 4)
     # =========================================================================
 
-async def test_happy_path_success(self, wizard):
+    async def test_happy_path_success(self, wizard):
         """Test complete wizard flow succeeds.
 
         Priority: 4 (Success path)
@@ -133,8 +131,7 @@ async def test_happy_path_success(self, wizard):
         # Complete all steps
         for step in range(1, 5):
             result = await wizard.submit_step(
-                wizard_id,
-                {"step": step, "data": {"test": f"data_{step}"}}
+                wizard_id, {"step": step, "data": {"test": f"data_{step}"}}
             )
             assert result is not None
 
@@ -157,6 +154,7 @@ async def test_happy_path_success(self, wizard):
         """
         # TODO: Implement validation test for current_step
         pass
+
     def test_preview_generated_validated(self, wizard):
         """Test preview_generated is properly validated.
 
@@ -164,6 +162,7 @@ async def test_happy_path_success(self, wizard):
         """
         # TODO: Implement validation test for preview_generated
         pass
+
     def test_user_approved_validated(self, wizard):
         """Test user_approved is properly validated.
 
