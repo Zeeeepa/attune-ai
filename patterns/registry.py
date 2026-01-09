@@ -9,7 +9,7 @@ Licensed under Fair Source 0.9
 """
 
 import logging
-from typing import Any
+from typing import Any, cast
 
 from .behavior import (
     AIEnhancementPattern,
@@ -217,10 +217,12 @@ class PatternRegistry:
             )
 
         # Filter out None values and duplicates
-        recommendations = [p for p in recommendations if p is not None]
-        seen = set()
-        unique_recommendations = []
-        for pattern in recommendations:
+        filtered_recommendations = cast(
+            list[BasePattern], [p for p in recommendations if p is not None]
+        )
+        seen: set[str] = set()
+        unique_recommendations: list[BasePattern] = []
+        for pattern in filtered_recommendations:
             if pattern.id not in seen:
                 seen.add(pattern.id)
                 unique_recommendations.append(pattern)
