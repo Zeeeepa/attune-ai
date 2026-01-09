@@ -429,32 +429,22 @@ class TestConfigErrorHandling:
         # Temporarily make YAML unavailable
         import empathy_os.config as config_module
 
-        original_yaml_available = config_module.YAML_AVAILABLE
+        monkeypatch.setattr(config_module, "YAML_AVAILABLE", False)
 
-        try:
-            monkeypatch.setattr(config_module, "YAML_AVAILABLE", False)
-
-            with pytest.raises(ImportError, match="PyYAML is required"):
-                EmpathyConfig.from_yaml(str(yaml_file))
-        finally:
-            monkeypatch.setattr(config_module, "YAML_AVAILABLE", original_yaml_available)
+        with pytest.raises(ImportError, match="PyYAML is required"):
+            config_module.EmpathyConfig.from_yaml(str(yaml_file))
 
     def test_to_yaml_no_pyyaml(self, monkeypatch, temp_dir):
         """Test to_yaml raises ImportError without PyYAML"""
         import empathy_os.config as config_module
 
-        original_yaml_available = config_module.YAML_AVAILABLE
+        monkeypatch.setattr(config_module, "YAML_AVAILABLE", False)
 
-        try:
-            monkeypatch.setattr(config_module, "YAML_AVAILABLE", False)
+        config = EmpathyConfig()
+        filepath = Path(temp_dir) / "test.yml"
 
-            config = EmpathyConfig()
-            filepath = Path(temp_dir) / "test.yml"
-
-            with pytest.raises(ImportError, match="PyYAML is required"):
-                config.to_yaml(str(filepath))
-        finally:
-            monkeypatch.setattr(config_module, "YAML_AVAILABLE", original_yaml_available)
+        with pytest.raises(ImportError, match="PyYAML is required"):
+            config.to_yaml(str(filepath))
 
     def test_validate_target_level_boundary_low(self):
         """Test validation with target_level=0"""
