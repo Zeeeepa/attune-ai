@@ -149,7 +149,7 @@ def register_wizard(wizard_id: str, wizard_class: type, *args, **kwargs) -> bool
         # File system errors - missing resources, permission issues
         logger.warning(f"{wizard_class.__name__} init failed (file system error): {e}")
         return False
-    except Exception:
+    except Exception:  # noqa: BLE001
         # Catch-all for unexpected wizard initialization errors
         # INTENTIONAL: Ensures API starts even if individual wizards fail
         # Full traceback preserved for debugging
@@ -206,8 +206,9 @@ def init_wizards():
         # Missing dependencies
         logger.warning(f"EmpathyLLM not available (missing dependency): {e}")
         llm = None
-    except Exception:
+    except Exception:  # noqa: BLE001
         # Unexpected errors during LLM initialization
+        # INTENTIONAL: API should start even if LLM initialization fails
         logger.exception("EmpathyLLM initialization failed (unexpected error)")
         llm = None
 
@@ -392,7 +393,9 @@ async def process_wizard(wizard_id: str, request: WizardRequest) -> WizardRespon
             detail=f"Wizard '{wizard_id}' has unknown interface",
         )
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: API endpoint should return error response, not crash
+        # Full traceback logged for debugging
         logger.error(f"Error processing with {wizard_id}: {e}", exc_info=True)
         return WizardResponse(success=False, output="", error=str(e))
 

@@ -90,8 +90,9 @@ Recent commits: {git_info["recent_commits"]}
             if len(content) > 10000:
                 content = content[:10000] + "\n\n[... truncated ...]"
             return content
-        except Exception as e:
-            logger.error(f"Error reading file {path}: {e}")
+        except Exception as e:  # noqa: BLE001
+            # INTENTIONAL: Graceful degradation - context collection should not fail
+            logger.exception(f"Error reading file {path}: {e}")
             return f"[Error reading file: {e}]"
 
     def _get_git_info(self, file_path: Path) -> dict[str, str]:
@@ -123,7 +124,8 @@ Recent commits: {git_info["recent_commits"]}
             ).strip()
 
             return {"branch": branch, "status": status or "Clean", "recent_commits": commits}
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
+            # INTENTIONAL: Graceful degradation - git info is optional context
             logger.debug(f"Error getting git info: {e}")
             return {"branch": "N/A", "status": "Error", "recent_commits": ""}
 
@@ -161,7 +163,8 @@ Recent commits: {git_info["recent_commits"]}
                     if item.name not in [".git", "node_modules", "__pycache__", "venv", ".venv"]:
                         files.append(f"- {item.name}")
                 return f"Project root: {project_root}\n" + "\n".join(files[:20])
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
+                # INTENTIONAL: Graceful degradation - fallback to just showing root path
                 logger.debug(f"Error listing project structure: {e}")
                 return f"Project root: {project_root}"
 
@@ -198,7 +201,8 @@ Recent commits: {git_info["recent_commits"]}
                     pkg = json.load(f)
                     deps = list(pkg.get("dependencies", {}).keys())
                     return f"Node.js project: {', '.join(deps[:10])}"
-            except Exception:
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Graceful degradation - fallback to basic detection
                 return "Node.js project (package.json found)"
 
         elif (project_root / "requirements.txt").exists():
@@ -210,7 +214,8 @@ Recent commits: {git_info["recent_commits"]}
                     if line.strip() and not line.startswith("#")
                 ]
                 return "Python requirements:\n" + "\n".join(lines[:15])
-            except Exception:
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Graceful degradation - fallback to basic detection
                 return "Python project (requirements.txt found)"
 
         elif (project_root / "pyproject.toml").exists():

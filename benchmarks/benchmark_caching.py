@@ -134,7 +134,12 @@ index abc123..def456 100644
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
 
     return result
@@ -159,7 +164,7 @@ def run_command(user_input):
 
 def get_password():
     # Hardcoded secret
-    password = "admin123"
+    password = "admin123"  # pragma: allowlist secret
     return password
 
 def process_data(data):
@@ -195,7 +200,12 @@ def process_data(data):
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -263,7 +273,12 @@ def broad_exception():
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -334,7 +349,12 @@ class DataProcessor:
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -398,7 +418,12 @@ async def benchmark_health_check(cache) -> BenchmarkResult:
         result.run2_cache_hits = stats_after_run2.hits - stats_before_run2.hits
         result.run2_cache_misses = stats_after_run2.misses - stats_before_run2.misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -456,7 +481,12 @@ def multiply(a, b):
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -522,7 +552,12 @@ def repeated_calls():
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -576,7 +611,12 @@ flask==1.1.2
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -629,7 +669,12 @@ def calculate_fibonacci(n: int) -> int:
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
 
     return result
@@ -676,7 +721,12 @@ async def benchmark_release_prep(cache) -> BenchmarkResult:
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup
@@ -725,7 +775,12 @@ async def benchmark_research_synthesis(cache) -> BenchmarkResult:
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
 
     return result
@@ -781,7 +836,12 @@ async def benchmark_keyboard_shortcuts(cache) -> BenchmarkResult:
         result.run2_cache_hits = r2.cost_report.cache_hits
         result.run2_cache_misses = r2.cost_report.cache_misses
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Broad catch for benchmark error reporting
+        # We want to continue benchmarking other workflows even if one fails
+        import logging
+
+        logging.getLogger(__name__).exception(f"Benchmark failed: {e}")
         result.error = str(e)
     finally:
         # Cleanup

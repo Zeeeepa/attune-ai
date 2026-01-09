@@ -486,7 +486,8 @@ def analyze_project(description: str, verbose: bool = True) -> ProjectAnalysis:
         # Test connection immediately
         stats = memory.get_stats()
         mode = stats["mode"]
-    except Exception:
+    except Exception:  # noqa: BLE001
+        # INTENTIONAL: Graceful fallback if Redis unavailable (demo should always work)
         # Redis not available - use mock mode (works perfectly for demos)
         memory = get_redis_memory(use_mock=True)
         mode = "mock (Redis not needed for demo)"
@@ -649,7 +650,8 @@ def main():
         keys = stats.get("keys", stats.get("total_keys", 0))
         print(f"\nCoordination: {keys} shared memory items created")
         print(f"Memory mode: {stats.get('mode', 'unknown')}")
-    except Exception:
+    except Exception:  # noqa: BLE001
+        # INTENTIONAL: Graceful fallback for stats display (non-critical feature)
         print("\nCoordination complete (mock mode - no Redis needed for demo)")
         print("Tip: Install Redis for persistent multi-agent memory")
 

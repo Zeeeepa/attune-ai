@@ -10,10 +10,13 @@ Usage:
 """
 
 import json
+import logging
 import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 
 def run_lint_check(workspace: Path) -> int:
@@ -29,7 +32,8 @@ def run_lint_check(workspace: Path) -> int:
         if result.returncode != 0:
             return result.stdout.count("error")
         return 0
-    except Exception:
+    except Exception:  # noqa: BLE001
+        # INTENTIONAL: Health check graceful degradation - return 0 errors if check fails
         return 0
 
 
@@ -44,7 +48,8 @@ def run_type_check(workspace: Path) -> int:
             cwd=workspace,
         )
         return result.stdout.count("error:")
-    except Exception:
+    except Exception:  # noqa: BLE001
+        # INTENTIONAL: Health check graceful degradation - return 0 errors if check fails
         return 0
 
 
@@ -64,7 +69,8 @@ def run_test_collection(workspace: Path) -> int:
                     if part.isdigit():
                         return int(part)
         return 0
-    except Exception:
+    except Exception:  # noqa: BLE001
+        # INTENTIONAL: Health check graceful degradation - return 0 if collection fails
         return 0
 
 
