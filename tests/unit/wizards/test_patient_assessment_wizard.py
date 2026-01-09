@@ -6,11 +6,8 @@ Target Coverage: 89%
 Generated: 2026-01-05T20:15:06.683937
 """
 
-import asyncio
-from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from wizards.patient_assessment_wizard import PatientAssessmentWizard
 
 
@@ -67,7 +64,7 @@ class TestPatientAssessmentWizard:
         wizard_id = session["wizard_id"]
 
         # Generate preview
-        preview = await wizard.preview(wizard_id)
+        await wizard.preview(wizard_id)
 
         # Check wizard NOT marked complete
         session = await wizard.get_session(wizard_id)

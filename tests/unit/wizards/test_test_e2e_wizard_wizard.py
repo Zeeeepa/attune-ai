@@ -6,11 +6,8 @@ Target Coverage: 89%
 Generated: 2026-01-05T20:10:24.248597
 """
 
-import asyncio
-from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from wizards.test_e2e_wizard_wizard import TestE2eWizardWizard
 
 
@@ -67,7 +64,7 @@ class TestTestE2eWizardWizard:
         wizard_id = session["wizard_id"]
 
         # Generate preview
-        preview = await wizard.preview(wizard_id)
+        await wizard.preview(wizard_id)
 
         # Check wizard NOT marked complete
         session = await wizard.get_session(wizard_id)
