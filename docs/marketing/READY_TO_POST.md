@@ -156,6 +156,7 @@ github.com/Smart-AI-Memory/empathy-framework
 ❌ "-75% linter errors" - Not precisely measured
 ❌ "Guaranteed ROI" - Too context-dependent
 ❌ "Proven adoption" - Too early
+❌ "Works with Copilot/Cursor" - Only tested with Claude Code
 
 ---
 

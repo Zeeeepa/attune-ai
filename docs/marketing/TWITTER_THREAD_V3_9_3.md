@@ -10,7 +10,7 @@
 ## Tweet 1: Hook
 
 ```
-We just taught @AnthropicAI Claude how to never write insecure code.
+We taught @AnthropicAI Claude to generate secure code by default.
 
 The method: Put our coding standards in its project memory with real code examples.
 
@@ -146,7 +146,7 @@ To implement this pattern:
 1. Identify your top 5 coding violations
 2. Document with real code examples (not abstract rules)
 3. Show your actual implementation
-4. Add to .claude/ or .cursorrules
+4. Add to your AI tool's project context (.claude/ for Claude Code)
 
 pip install empathy-framework
 
