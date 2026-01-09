@@ -42,7 +42,7 @@ We share what we built. Users decide if it's useful.
 1. **Technical Achievement**: +1,143% increase in security test coverage
 2. **Zero Vulnerabilities**: All verified by security scans
 3. **Pattern Teaching**: Real code examples, not abstract rules
-4. **Universal Approach**: Works with Claude, Copilot, Cursor
+4. **Verified with Claude Code**: Pattern adaptable to other AI tools
 5. **Open Source**: All guides and implementation available
 
 ---
@@ -185,7 +185,7 @@ https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/guides/teach
 **Coding Standards Reference** (1,170 lines)
 https://github.com/Smart-AI-Memory/empathy-framework/blob/main/.claude/rules/empathy/coding-standards-index.md
 
-The pattern works with Claude Code, Copilot, Cursor. The key: use real code examples from your codebase, not abstract rules.
+Verified with Claude Code. Pattern should work with other AI tools that support project context. The key: use real code examples from your codebase, not abstract rules.
 
 ## Install
 
@@ -277,12 +277,14 @@ Think of it like .editorconfig but for coding standards.
 
 **Response:**
 ```
-Yes! The pattern works with any AI tool that supports project context:
+We've verified this with Claude Code.
 
-- Claude Code: .claude/CLAUDE.md
-- GitHub Copilot: .github/copilot-instructions.md
-- Cursor: .cursorrules
-- Cody: .cody/rules.md
+The pattern SHOULD work with other AI tools that support project context:
+- GitHub Copilot: .github/copilot-instructions.md (documented feature, not tested by us)
+- Cursor: .cursorrules (documented feature, not tested by us)
+- Cody: .cody/rules.md (documented feature, not tested by us)
+
+If you try it with another tool, let us know how it works!
 
 The key is using real code examples, not abstract rules.
 

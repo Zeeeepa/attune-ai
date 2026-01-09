@@ -30,16 +30,18 @@ Think: .editorconfig for coding standards
 
 ---
 
-### Q: "How is this different from Copilot/Cursor?"
+### Q: "Does this work with Copilot/Cursor?"
 
 ```
-It works with Copilot, Cursor, and Claude:
+We've verified this with Claude Code.
 
-- Claude Code: .claude/CLAUDE.md
-- GitHub Copilot: .github/copilot-instructions.md
-- Cursor: .cursorrules
+The pattern SHOULD work with other tools that support project context:
+- GitHub Copilot: .github/copilot-instructions.md (documented feature)
+- Cursor: .cursorrules (documented feature)
 
-The difference isn't the tool - it's the approach:
+Haven't tested with those tools yet - if you try it, let us know how it works.
+
+The key isn't the tool - it's the approach:
 
 ❌ Abstract rules: "Always validate input"
 ✅ Real examples: "Use _validate_file_path() from config.py:29-68"
@@ -180,9 +182,9 @@ Don't say "validate input"
 Say "use validate_input() from utils.py:42-68"
 
 **4. Add to project context**
-- Claude: .claude/CLAUDE.md
-- Copilot: .github/copilot-instructions.md
-- Cursor: .cursorrules
+- Claude Code: .claude/CLAUDE.md (verified to work)
+- GitHub Copilot: .github/copilot-instructions.md (should work, not tested)
+- Cursor: .cursorrules (should work, not tested)
 
 **Complete guide** (11,000 words):
 https://github.com/Smart-AI-Memory/empathy-framework/blob/main/docs/guides/teaching-ai-your-standards.md

@@ -129,7 +129,7 @@ We documented the entire approach:
 
 All open source.
 
-Works with Claude, Copilot, Cursor.
+Verified with Claude Code. Pattern adaptable to other tools.
 
 github.com/Smart-AI-Memory/empathy-framework
 ```
