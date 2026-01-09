@@ -13,7 +13,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.0",
+    "react-router-dom": "^6.30.3",
     "zustand": "^4.4.7",
     "@headlessui/react": "^1.7.17",
     "framer-motion": "^10.16.16",
