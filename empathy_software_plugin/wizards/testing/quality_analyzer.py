@@ -8,7 +8,7 @@ Licensed under Fair Source License 0.9
 """
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 from typing import Any
@@ -37,14 +37,8 @@ class TestFunction:
     assertions_count: int
     execution_time: float | None = None
     is_async: bool = False
-    uses_fixtures: list[str] | None = None
-    issues: list[TestQualityIssue] | None = None
-
-    def __post_init__(self):
-        if self.uses_fixtures is None:
-            self.uses_fixtures = []
-        if self.issues is None:
-            self.issues = []
+    uses_fixtures: list[str] = field(default_factory=list)
+    issues: list[TestQualityIssue] = field(default_factory=list)
 
     @property
     def quality_score(self) -> float:
