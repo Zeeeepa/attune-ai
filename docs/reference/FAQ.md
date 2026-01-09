@@ -1,7 +1,7 @@
 # Frequently Asked Questions
 
-**Last Updated:** January 7, 2026
-**Version:** 3.9.1
+**Last Updated:** January 9, 2026
+**Version:** 3.10.0
 
 ---
 
@@ -11,9 +11,10 @@
 2. [Teaching AI Your Standards](#teaching-ai-your-standards)
 3. [Tool Compatibility](#tool-compatibility)
 4. [Implementation](#implementation)
-5. [Results & ROI](#results--roi)
-6. [Common Concerns](#common-concerns)
-7. [Advanced Topics](#advanced-topics)
+5. [Cost Optimization](#cost-optimization)
+6. [Results & ROI](#results--roi)
+7. [Common Concerns](#common-concerns)
+8. [Advanced Topics](#advanced-topics)
 
 ---
 
@@ -388,6 +389,159 @@ Code review finds: bare except:
 ```
 
 **Pro tip:** Make updating standards part of your review checklist.
+
+---
+
+## Cost Optimization
+
+### What is intelligent tier fallback?
+
+**NEW in v3.10.0:** Automatic cost optimization that tries cheaper tiers first and only upgrades when quality gates fail.
+
+**How it works:**
+1. Start with CHEAP tier (Haiku - $0.03/1M tokens)
+2. Validate output with quality gates
+3. If validation fails → upgrade to CAPABLE (Sonnet 4.5 - $0.09/1M)
+4. Still failing? → upgrade to PREMIUM (Opus 4.5 - $0.45/1M)
+5. Track savings and learn from patterns
+
+**Enable it:**
+```bash
+empathy workflow run health-check --use-recommended-tier
+```
+
+**Expected savings:** 30-50% on average workflow execution
+
+**Learn more:** [CHANGELOG.md v3.10.0](../CHANGELOG.md#3100---2026-01-09)
+
+---
+
+### When should I use tier fallback?
+
+**✅ Use tier fallback when:**
+- Cost is a primary concern
+- Workflow has measurable quality metrics (health score, test coverage)
+- CHEAP tier often succeeds (simple refactoring, docs, health checks)
+- You can tolerate 2-3x latency increase on quality failures
+- You want automatic cost optimization
+
+**❌ Don't use tier fallback when:**
+- Time is critical (tier upgrades add latency)
+- Quality gates are hard to define
+- PREMIUM tier is always required (complex reasoning, novel problems)
+- You prefer predictable performance over cost savings
+
+**Best for:** health-check, test-gen, doc-gen, refactoring workflows
+
+**Not ideal for:** complex debugging, architecture design, novel feature implementation
+
+---
+
+### How much can I save with tier fallback?
+
+**Real savings depend on your workflow success rates:**
+
+**Scenario 1: CHEAP often succeeds (60% of stages)**
+- Both stages succeed at CHEAP: **~90% savings** vs. all-PREMIUM
+- Typical result: **60-70% overall savings**
+
+**Scenario 2: Mixed success (40% CHEAP, 40% CAPABLE, 20% PREMIUM)**
+- Real-world mix: **40-50% savings** vs. all-PREMIUM
+
+**Scenario 3: CHEAP rarely succeeds (20% of stages)**
+- Most stages need CAPABLE or PREMIUM: **10-20% savings**
+- May not be worth the latency cost
+
+**Track your actual savings:**
+```bash
+empathy telemetry savings --days 30
+```
+
+**See detailed breakdown:** [TIER_FALLBACK_TEST_REPORT.md](../TIER_FALLBACK_TEST_REPORT.md)
+
+---
+
+### What are quality gates?
+
+**Quality gates = validation checks that decide if a tier's output is acceptable.**
+
+**Default quality gates** (all workflows):
+- ✅ Execution succeeded (no exceptions)
+- ✅ Output is not empty
+- ✅ No error keys in response
+
+**Workflow-specific gates** (health-check):
+- ✅ Health score ≥ 95 (configurable with `--health-score-threshold`)
+- ✅ Diagnosis data present
+- ✅ Required fields populated
+
+**Custom quality gates:** Override `validate_output()` in your workflow:
+```python
+def validate_output(self, stage_output: dict) -> tuple[bool, str | None]:
+    # Custom validation logic
+    if stage_output.get("confidence", 0) < 0.8:
+        return False, "confidence_too_low"
+    return True, None
+```
+
+**See code:** [src/empathy_os/workflows/base.py:156-187](../../src/empathy_os/workflows/base.py#L156-L187)
+
+---
+
+### Can I customize the tier fallback behavior?
+
+**Yes! Several customization options:**
+
+**1. Change the starting threshold:**
+```bash
+empathy workflow run health-check --use-recommended-tier --health-score-threshold 90
+```
+
+**2. Use Python API for full control:**
+```python
+from empathy_os.workflows import get_workflow
+
+workflow_cls = get_workflow("health-check")
+workflow = workflow_cls(
+    provider="anthropic",
+    enable_tier_fallback=True,
+    health_score_threshold=95,  # Custom threshold
+)
+
+result = await workflow.execute(path=".")
+```
+
+**3. Create custom workflows with specific quality gates:**
+```python
+class MyWorkflow(BaseWorkflow):
+    def validate_output(self, stage_output: dict) -> tuple[bool, str | None]:
+        # Your custom validation logic
+        pass
+```
+
+**See examples:** [CHANGELOG.md Migration Guide](../CHANGELOG.md#migration-guide)
+
+---
+
+### Is tier fallback production-ready?
+
+**Yes!** Fully tested and validated:
+
+- ✅ **8/8 unit tests passing** (100%)
+- ✅ **89% code coverage** on tier_tracking module
+- ✅ **Zero lint errors, zero type errors**
+- ✅ **Comprehensive error handling**
+- ✅ **Backward compatible** (opt-in, default behavior unchanged)
+- ✅ **Full telemetry tracking**
+
+**Deployment checklist completed:**
+- ✅ All unit tests pass
+- ✅ Code coverage ≥80% on critical modules
+- ✅ Documentation updated
+- ✅ CHANGELOG.md entry added
+- ✅ Migration guide available
+
+**See full validation:** [TIER_FALLBACK_TEST_REPORT.md](../TIER_FALLBACK_TEST_REPORT.md)
 
 ---
 

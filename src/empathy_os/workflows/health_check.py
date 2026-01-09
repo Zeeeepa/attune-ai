@@ -87,6 +87,7 @@ class HealthCheckWorkflow(BaseWorkflow):
         check_tests: bool = True,
         check_deps: bool = True,
         xml_prompts: bool = True,
+        health_score_threshold: int = 95,
         **kwargs: Any,
     ):
         """Initialize health check workflow.
@@ -98,6 +99,8 @@ class HealthCheckWorkflow(BaseWorkflow):
             check_tests: Run test checks
             check_deps: Run dependency checks
             xml_prompts: Use XML-enhanced prompts
+            health_score_threshold: Minimum health score required (0-100, default: 95)
+                                   100 = perfect health, 95 = very strict (default), 80 = moderate
             **kwargs: Additional arguments passed to BaseWorkflow
 
         """
@@ -108,6 +111,7 @@ class HealthCheckWorkflow(BaseWorkflow):
         self.check_tests = check_tests
         self.check_deps = check_deps
         self.xml_prompts = xml_prompts
+        self.health_score_threshold = health_score_threshold
         self._crew: Any = None
         self._crew_available = False
 
@@ -152,6 +156,39 @@ class HealthCheckWorkflow(BaseWorkflow):
         if stage_name == "fix":
             return await self._fix(input_data, tier)
         raise ValueError(f"Unknown stage: {stage_name}")
+
+    def validate_output(self, stage_output: dict) -> tuple[bool, str | None]:
+        """Validate health check output quality.
+
+        For health-check workflow, we validate that:
+        1. Diagnosis data is present
+        2. Health score meets the configured threshold (default: 95 = very strict quality)
+        3. No critical execution errors occurred
+
+        Args:
+            stage_output: Output from diagnose or fix stage
+
+        Returns:
+            Tuple of (is_valid, failure_reason)
+
+        """
+        # First run parent validation (checks for empty output, errors)
+        is_valid, reason = super().validate_output(stage_output)
+        if not is_valid:
+            return False, reason
+
+        # Check diagnosis data exists
+        diagnosis = stage_output.get("diagnosis", {})
+        if not diagnosis:
+            return False, "diagnosis_missing"
+
+        # Check health score meets configured threshold
+        health_score = diagnosis.get("health_score", 0)
+        if health_score < self.health_score_threshold:
+            return False, "health_score_low"
+
+        # All validation passed
+        return True, None
 
     async def _diagnose(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
         """Run health diagnosis using HealthCheckCrew.

@@ -145,3 +145,12 @@ wizards_consolidated/
 
 # Marketing drafts (internal only)
 docs/marketing/drafts/
+
+# VS Code extension telemetry panel (separate project)
+vscode-telemetry-panel/
+
+# Test reports and analysis (generated files)
+fallback_test_report_*.json
+usage_analysis.json
+FALLBACK_TEST_REPORT.md
+TIER_FALLBACK_TEST_REPORT.md

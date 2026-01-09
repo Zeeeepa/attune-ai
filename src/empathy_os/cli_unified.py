@@ -462,11 +462,36 @@ def workflow_list():
 def workflow_run(
     name: str = typer.Argument(..., help="Workflow name"),
     path: Path = typer.Option(Path(), "--path", "-p", help="Path to run on"),
+    use_recommended_tier: bool = typer.Option(
+        False,
+        "--use-recommended-tier",
+        help="Enable intelligent tier fallback: start with CHEAP tier and automatically upgrade if quality gates fail",
+    ),
+    health_score_threshold: int = typer.Option(
+        95,
+        "--health-score-threshold",
+        help="(health-check workflow) Minimum health score required (0-100, default: 95 for very strict quality)",
+    ),
 ):
     """Run a multi-model workflow."""
-    subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "workflow", "run", name, str(path)], check=False
-    )
+    cmd = [
+        sys.executable,
+        "-m",
+        "empathy_os.cli",
+        "workflow",
+        "run",
+        name,
+        "--input",
+        f'{{"path": "{path}"}}',
+    ]
+
+    if use_recommended_tier:
+        cmd.append("--use-recommended-tier")
+
+    if health_score_threshold != 95:
+        cmd.extend(["--health-score-threshold", str(health_score_threshold)])
+
+    subprocess.run(cmd, check=False)
 
 
 @workflow_app.command("create")

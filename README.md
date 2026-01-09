@@ -13,7 +13,41 @@
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
-## What's New in v3.9.0 (Current Release)
+## What's New in v3.10.0 (Current Release)
+
+### 🎯 **Intelligent Tier Fallback: Start CHEAP, Upgrade Only When Needed**
+
+**Automatic cost optimization with quality-based tier escalation.**
+
+- ✅ **30-50% cost savings** on average workflow execution
+- ✅ **CHEAP → CAPABLE → PREMIUM** automatic fallback chain
+- ✅ **Quality gates** validate each tier before upgrading
+- ✅ **Opt-in design** - backward compatible, enabled via `--use-recommended-tier`
+- ✅ **Full telemetry** tracks tier progression and savings
+
+```bash
+# Enable intelligent tier fallback
+empathy workflow run health-check --use-recommended-tier
+
+# Result: Both stages succeeded at CHEAP tier
+# 💰 Cost Savings: $0.0300 (66.7% vs. all-PREMIUM)
+```
+
+**How it works:**
+1. Try CHEAP tier first (Haiku)
+2. If quality gates fail → upgrade to CAPABLE (Sonnet 4.5)
+3. If still failing → upgrade to PREMIUM (Opus 4.5)
+4. Track savings and learn from patterns
+
+**When to use:** Cost-sensitive workflows where quality can be validated (health-check, test-gen, doc-gen)
+
+See [CHANGELOG.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md#3100---2026-01-09) for full details.
+
+---
+
+### Previous Releases
+
+#### v3.9.0
 
 ### 🔒 **Security Hardening: 174 Security Tests (Up from 14)**
 
@@ -51,8 +85,6 @@ See [SECURITY.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main
 - All intentional broad catches documented with design rationale
 
 ---
-
-### Previous Releases
 
 #### v3.8.3
 

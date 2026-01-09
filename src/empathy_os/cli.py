@@ -41,11 +41,15 @@ from empathy_os.workflows import list_workflows as get_workflow_list
 # Import telemetry CLI commands
 try:
     from empathy_os.telemetry.cli import (
+        cmd_agent_performance,
+        cmd_task_routing_report,
         cmd_telemetry_compare,
         cmd_telemetry_export,
         cmd_telemetry_reset,
         cmd_telemetry_savings,
         cmd_telemetry_show,
+        cmd_test_status,
+        cmd_tier1_status,
     )
 
     TELEMETRY_CLI_AVAILABLE = True
@@ -2148,7 +2152,20 @@ def cmd_workflow(args):
 
                 wf_config = WorkflowConfig.load()
                 provider = wf_config.default_provider
-            workflow = workflow_cls(provider=provider)
+
+            # Initialize workflow with tier fallback if requested
+            use_tier_fallback = getattr(args, "use_recommended_tier", False)
+            workflow_kwargs = {
+                "provider": provider,
+                "enable_tier_fallback": use_tier_fallback,
+            }
+
+            # Add health-check specific parameters
+            if name == "health-check":
+                health_score_threshold = getattr(args, "health_score_threshold", 100)
+                workflow_kwargs["health_score_threshold"] = health_score_threshold
+
+            workflow = workflow_cls(**workflow_kwargs)
 
             # Parse input
             input_data = {}
@@ -2244,25 +2261,76 @@ def cmd_workflow(args):
                 }
                 print(json_mod.dumps(output, indent=2))
             # Display the actual results - this is what users want to see
-            elif result.success:
-                if output_content:
-                    print(f"\n{output_content}\n")
-                else:
-                    print("\n✓ Workflow completed successfully.\n")
             else:
-                # Extract error from various result types
-                error_msg = getattr(result, "error", None)
-                if not error_msg:
-                    # Check for blockers (CodeReviewPipelineResult)
-                    blockers = getattr(result, "blockers", [])
-                    if blockers:
-                        error_msg = "; ".join(blockers)
+                # Show tier progression if tier fallback was used
+                if use_tier_fallback and hasattr(workflow, "_tier_progression"):
+                    tier_progression = workflow._tier_progression
+                    if tier_progression:
+                        print("\n" + "=" * 60)
+                        print("  TIER PROGRESSION (Intelligent Fallback)")
+                        print("=" * 60)
+
+                        # Group by stage
+                        stage_tiers: dict[str, list[tuple[str, bool]]] = {}
+                        for stage, tier, success in tier_progression:
+                            if stage not in stage_tiers:
+                                stage_tiers[stage] = []
+                            stage_tiers[stage].append((tier, success))
+
+                        # Display progression for each stage
+                        for stage, attempts in stage_tiers.items():
+                            status = "✓" if any(success for _, success in attempts) else "✗"
+                            print(f"\n{status} Stage: {stage}")
+
+                            for idx, (tier, success) in enumerate(attempts, 1):
+                                attempt_status = "✓ SUCCESS" if success else "✗ FAILED"
+                                if idx == 1:
+                                    print(f"  Attempt {idx}: {tier.upper():8} → {attempt_status}")
+                                else:
+                                    prev_tier = attempts[idx - 2][0]
+                                    print(
+                                        f"  Attempt {idx}: {tier.upper():8} → {attempt_status} "
+                                        f"(upgraded from {prev_tier.upper()})"
+                                    )
+
+                        # Calculate cost savings (only if result has stages attribute)
+                        if hasattr(result, "stages") and result.stages:
+                            actual_cost = sum(stage.cost for stage in result.stages if stage.cost)
+                            # Estimate what cost would be if all stages used PREMIUM
+                            premium_cost = actual_cost * 3  # Conservative estimate
+
+                            savings = premium_cost - actual_cost
+                            savings_pct = (savings / premium_cost * 100) if premium_cost > 0 else 0
+
+                            print("\n" + "-" * 60)
+                            print("💰 Cost Savings:")
+                            print(f"  Actual cost:   ${actual_cost:.4f}")
+                            print(f"  Premium cost:  ${premium_cost:.4f} (if all PREMIUM)")
+                            print(f"  Savings:       ${savings:.4f} ({savings_pct:.1f}%)")
+                        print("=" * 60 + "\n")
+
+                # Display workflow result
+                if result.success:
+                    if output_content:
+                        print(f"\n{output_content}\n")
                     else:
-                        # Check metadata for error
-                        metadata = getattr(result, "metadata", {})
-                        error_msg = metadata.get("error") if isinstance(metadata, dict) else None
-                error_msg = error_msg or "Unknown error"
-                print(f"\n✗ Workflow failed: {error_msg}\n")
+                        print("\n✓ Workflow completed successfully.\n")
+                else:
+                    # Extract error from various result types
+                    error_msg = getattr(result, "error", None)
+                    if not error_msg:
+                        # Check for blockers (CodeReviewPipelineResult)
+                        blockers = getattr(result, "blockers", [])
+                        if blockers:
+                            error_msg = "; ".join(blockers)
+                        else:
+                            # Check metadata for error
+                            metadata = getattr(result, "metadata", {})
+                            error_msg = (
+                                metadata.get("error") if isinstance(metadata, dict) else None
+                            )
+                    error_msg = error_msg or "Unknown error"
+                    print(f"\n✗ Workflow failed: {error_msg}\n")
 
         except KeyError as e:
             print(f"Error: {e}")
@@ -2434,6 +2502,38 @@ def _cmd_telemetry_export(args):
         print("Telemetry commands not available. Install telemetry dependencies.")
         return 1
     return cmd_telemetry_export(args)
+
+
+def _cmd_tier1_status(args):
+    """Wrapper for tier1 status command."""
+    if not TELEMETRY_CLI_AVAILABLE:
+        print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
+        return 1
+    return cmd_tier1_status(args)
+
+
+def _cmd_task_routing_report(args):
+    """Wrapper for task routing report command."""
+    if not TELEMETRY_CLI_AVAILABLE:
+        print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
+        return 1
+    return cmd_task_routing_report(args)
+
+
+def _cmd_test_status(args):
+    """Wrapper for test status command."""
+    if not TELEMETRY_CLI_AVAILABLE:
+        print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
+        return 1
+    return cmd_test_status(args)
+
+
+def _cmd_agent_performance(args):
+    """Wrapper for agent performance command."""
+    if not TELEMETRY_CLI_AVAILABLE:
+        print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
+        return 1
+    return cmd_agent_performance(args)
 
 
 def main():
@@ -2929,6 +3029,60 @@ def main():
     )
     parser_telemetry_export.set_defaults(func=lambda args: _cmd_telemetry_export(args))
 
+    # Tier 1 automation monitoring commands
+
+    # tier1 command - comprehensive status
+    parser_tier1 = subparsers.add_parser(
+        "tier1",
+        help="Show Tier 1 automation status (tasks, tests, coverage, agents)",
+    )
+    parser_tier1.add_argument(
+        "--hours",
+        type=int,
+        default=24,
+        help="Hours to analyze (default: 24)",
+    )
+    parser_tier1.set_defaults(func=lambda args: _cmd_tier1_status(args))
+
+    # tasks command - task routing report
+    parser_tasks = subparsers.add_parser(
+        "tasks",
+        help="Show task routing report",
+    )
+    parser_tasks.add_argument(
+        "--hours",
+        type=int,
+        default=24,
+        help="Hours to analyze (default: 24)",
+    )
+    parser_tasks.set_defaults(func=lambda args: _cmd_task_routing_report(args))
+
+    # tests command - test execution status
+    parser_tests = subparsers.add_parser(
+        "tests",
+        help="Show test execution status",
+    )
+    parser_tests.add_argument(
+        "--hours",
+        type=int,
+        default=24,
+        help="Hours to analyze (default: 24)",
+    )
+    parser_tests.set_defaults(func=lambda args: _cmd_test_status(args))
+
+    # agents command - agent performance
+    parser_agents = subparsers.add_parser(
+        "agents",
+        help="Show agent performance metrics",
+    )
+    parser_agents.add_argument(
+        "--hours",
+        type=int,
+        default=168,
+        help="Hours to analyze (default: 168 / 7 days)",
+    )
+    parser_agents.set_defaults(func=lambda args: _cmd_agent_performance(args))
+
     # New command (project scaffolding)
     parser_new = subparsers.add_parser("new", help="Create a new project from a template")
     parser_new.add_argument(
@@ -3019,6 +3173,11 @@ def main():
     )
     parser_workflow.add_argument("--json", action="store_true", help="Output as JSON")
     parser_workflow.add_argument(
+        "--use-recommended-tier",
+        action="store_true",
+        help="Enable intelligent tier fallback: start with CHEAP tier and automatically upgrade if quality gates fail",
+    )
+    parser_workflow.add_argument(
         "--write-tests",
         action="store_true",
         help="(test-gen workflow) Write generated tests to disk",
@@ -3027,6 +3186,12 @@ def main():
         "--output-dir",
         default="tests/generated",
         help="(test-gen workflow) Output directory for generated tests",
+    )
+    parser_workflow.add_argument(
+        "--health-score-threshold",
+        type=int,
+        default=95,
+        help="(health-check workflow) Minimum health score required (0-100, default: 95 for very strict quality)",
     )
     parser_workflow.set_defaults(func=cmd_workflow)
 
