@@ -514,6 +514,85 @@ def workflow_recommend(
 
 
 # =============================================================================
+# TELEMETRY SUBCOMMAND GROUP
+# =============================================================================
+
+telemetry_app = typer.Typer(help="View and manage local usage telemetry")
+app.add_typer(telemetry_app, name="telemetry")
+
+
+@telemetry_app.command("show")
+def telemetry_show(
+    limit: int = typer.Option(20, "--limit", "-l", help="Number of entries to show"),
+    days: int | None = typer.Option(None, "--days", "-d", help="Only show last N days"),
+):
+    """Show recent LLM calls and usage stats."""
+    args = [sys.executable, "-m", "empathy_os.cli", "telemetry", "show", "--limit", str(limit)]
+    if days:
+        args.extend(["--days", str(days)])
+    subprocess.run(args, check=False)
+
+
+@telemetry_app.command("savings")
+def telemetry_savings(
+    days: int = typer.Option(30, "--days", "-d", help="Number of days to analyze"),
+):
+    """Calculate cost savings vs baseline (all PREMIUM)."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "telemetry", "savings", "--days", str(days)],
+        check=False,
+    )
+
+
+@telemetry_app.command("compare")
+def telemetry_compare(
+    period1: int = typer.Option(7, "--period1", "-p1", help="First period in days"),
+    period2: int = typer.Option(30, "--period2", "-p2", help="Second period in days"),
+):
+    """Compare usage across two time periods."""
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "empathy_os.cli",
+            "telemetry",
+            "compare",
+            "--period1",
+            str(period1),
+            "--period2",
+            str(period2),
+        ],
+        check=False,
+    )
+
+
+@telemetry_app.command("export")
+def telemetry_export(
+    format_type: str = typer.Option("json", "--format", "-f", help="Export format (json, csv)"),
+    output: Path | None = typer.Option(None, "--output", "-o", help="Output file path"),
+    days: int | None = typer.Option(None, "--days", "-d", help="Only export last N days"),
+):
+    """Export telemetry data to JSON or CSV."""
+    args = [sys.executable, "-m", "empathy_os.cli", "telemetry", "export", "--format", format_type]
+    if output:
+        args.extend(["--output", str(output)])
+    if days:
+        args.extend(["--days", str(days)])
+    subprocess.run(args, check=False)
+
+
+@telemetry_app.command("reset")
+def telemetry_reset(
+    confirm: bool = typer.Option(False, "--confirm", help="Confirm deletion"),
+):
+    """Clear all telemetry data (use with caution)."""
+    args = [sys.executable, "-m", "empathy_os.cli", "telemetry", "reset"]
+    if confirm:
+        args.append("--confirm")
+    subprocess.run(args, check=False)
+
+
+# =============================================================================
 # TIER RECOMMENDATION SUBCOMMAND GROUP
 # =============================================================================
 
@@ -669,7 +748,12 @@ def cheatsheet():
   empathy wizard list       Show available wizards
   empathy wizard run <name> Execute a wizard
   empathy wizard create <name> -d <domain>  Create wizard (12x faster)
-  empathy wizard list-patterns              List available patterns""",
+  empathy wizard list-patterns              List available patterns
+
+[bold]Usage Telemetry[/bold]
+  empathy telemetry show    View recent LLM calls & costs
+  empathy telemetry savings Calculate cost savings (tier routing)
+  empathy telemetry export  Export usage data (JSON/CSV)""",
             title="[bold blue]Empathy Framework Cheatsheet[/bold blue]",
         ),
     )
