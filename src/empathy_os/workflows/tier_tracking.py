@@ -369,7 +369,7 @@ class WorkflowTierTracker:
         )
 
         # Calculate actual cost from stages
-        actual_cost = sum(stage.cost for stage in workflow_result.stages)
+        actual_cost: float = sum(stage.cost for stage in workflow_result.stages)
 
         # Rough estimate: PREMIUM tier is ~15x more expensive than CHEAP
         return actual_cost * 5  # Conservative multiplier

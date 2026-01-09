@@ -7,6 +7,7 @@ Licensed under Fair Source 0.9
 """
 
 import logging
+from collections.abc import Callable
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
@@ -45,7 +46,7 @@ class HotReloadIntegration:
     def __init__(
         self,
         app: FastAPI,
-        register_callback: callable,
+        register_callback: Callable[[str, type], bool],
     ):
         """Initialize hot-reload integration.
 

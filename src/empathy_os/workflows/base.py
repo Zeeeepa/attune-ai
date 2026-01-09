@@ -26,6 +26,9 @@ from enum import Enum
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+if TYPE_CHECKING:
+    from .tier_tracking import WorkflowTierTracker
+
 # Load .env file for API keys if python-dotenv is available
 try:
     from dotenv import load_dotenv
@@ -430,7 +433,7 @@ class BaseWorkflow(ABC):
 
         # Tier tracking support
         self._enable_tier_tracking = enable_tier_tracking
-        self._tier_tracker = None
+        self._tier_tracker: WorkflowTierTracker | None = None
 
         # Telemetry tracking (singleton instance)
         self._telemetry_tracker: UsageTracker | None = None
@@ -569,7 +572,7 @@ class BaseWorkflow(ABC):
                     logger.debug(f"Cache hit for {self.name}:{stage}")
                     # Determine cache type
                     if hasattr(self._cache, "cache_type"):
-                        ct = self._cache.cache_type  # type: ignore
+                        ct = self._cache.cache_type
                         # Ensure it's a string (not a Mock object)
                         cache_type = str(ct) if ct and isinstance(ct, str) else "hash"
                     else:

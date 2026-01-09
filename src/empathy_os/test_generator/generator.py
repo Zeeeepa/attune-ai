@@ -60,7 +60,7 @@ class TestGenerator:
         pattern_ids: list[str],
         wizard_module: str | None = None,
         wizard_class: str | None = None,
-    ) -> dict[str, str]:
+    ) -> dict[str, str | None]:
         """Generate tests for a wizard.
 
         Args:

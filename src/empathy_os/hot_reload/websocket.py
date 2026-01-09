@@ -8,6 +8,7 @@ Licensed under Fair Source 0.9
 
 import asyncio
 import logging
+from collections.abc import Callable
 from typing import Any
 
 from fastapi import WebSocket
@@ -141,7 +142,7 @@ def get_notification_manager() -> ReloadNotificationManager:
     return _notification_manager
 
 
-def create_notification_callback() -> callable:
+def create_notification_callback() -> Callable[[dict[str, Any]], None]:
     """Create a callback function for the wizard reloader.
 
     Returns:

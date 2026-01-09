@@ -19,16 +19,16 @@ logger = logging.getLogger(__name__)
 class WizardFileHandler(FileSystemEventHandler):
     """Handles file system events for wizard files."""
 
-    def __init__(self, reload_callback: Callable[[str], None]):
+    def __init__(self, reload_callback: Callable[[str, str], None]):
         """Initialize handler.
 
         Args:
-            reload_callback: Function to call when wizard file changes
+            reload_callback: Function to call when wizard file changes (wizard_id, file_path)
 
         """
         super().__init__()
         self.reload_callback = reload_callback
-        self._processing = set()  # Prevent duplicate events
+        self._processing: set[str] = set()  # Prevent duplicate events
 
     def on_modified(self, event: FileSystemEvent) -> None:
         """Handle file modification events.
@@ -40,7 +40,11 @@ class WizardFileHandler(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        file_path = event.src_path
+        # Convert file_path to str if it's bytes
+        file_path_raw = event.src_path
+        file_path = (
+            file_path_raw.decode("utf-8") if isinstance(file_path_raw, bytes) else file_path_raw
+        )
 
         # Only process Python files
         if not file_path.endswith(".py"):

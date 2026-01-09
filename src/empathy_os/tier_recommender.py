@@ -79,7 +79,7 @@ class TierRecommender:
 
     def _load_patterns(self) -> list[dict]:
         """Load all enhanced patterns with tier_progression data."""
-        patterns = []
+        patterns: list[dict] = []
 
         if not self.patterns_dir.exists():
             return patterns
@@ -359,8 +359,8 @@ class TierRecommender:
             return {"total_patterns": 0, "message": "No patterns loaded"}
 
         # Calculate tier distribution
-        tier_dist = defaultdict(int)
-        bug_type_dist = defaultdict(int)
+        tier_dist: dict[str, int] = defaultdict(int)
+        bug_type_dist: dict[str, int] = defaultdict(int)
         total_savings = 0.0
 
         for pattern in self.patterns:
