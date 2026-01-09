@@ -477,8 +477,7 @@ exclude = [
     "website/",
     "agents/",  # Root-level agents dir (not part of main packages)
     "examples/",  # Example scripts (not part of main packages)
-    "src/empathy_os/workflows/new_sample_workflow1.py",  # Test workflow
-    "src/empathy_os/workflows/test5.py",  # Test workflow
+    "src/",  # Exclude src/ as top-level package (use via mypy_path instead)
 ]
 warn_return_any = true
 warn_unused_configs = true
