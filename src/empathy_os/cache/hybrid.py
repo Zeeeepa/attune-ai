@@ -15,11 +15,13 @@ Licensed under Fair Source License 0.9
 import hashlib
 import logging
 import time
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
 from .base import BaseCache, CacheEntry, CacheStats
+from .storage import CacheStorage
 
 if TYPE_CHECKING:
     from sentence_transformers import SentenceTransformer
@@ -77,6 +79,7 @@ class HybridCache(BaseCache):
         similarity_threshold: float = 0.95,
         model_name: str = "all-MiniLM-L6-v2",
         device: str = "cpu",
+        cache_dir: Path | None = None,
     ):
         """Initialize hybrid cache.
 
@@ -87,6 +90,7 @@ class HybridCache(BaseCache):
             similarity_threshold: Semantic similarity threshold (0.0-1.0, default: 0.95).
             model_name: Sentence transformer model (default: all-MiniLM-L6-v2).
             device: Device for embeddings ("cpu" or "cuda").
+            cache_dir: Directory for persistent cache storage (default: ~/.empathy/cache/).
 
         """
         super().__init__(max_size_mb, default_ttl)
@@ -106,9 +110,16 @@ class HybridCache(BaseCache):
         self._model: SentenceTransformer | None = None
         self._load_model()
 
+        # Initialize persistent storage
+        self._storage = CacheStorage(cache_dir=cache_dir, max_disk_mb=max_size_mb)
+
+        # Load existing entries from storage into memory caches
+        self._load_from_storage()
+
         logger.info(
             f"HybridCache initialized (model: {model_name}, threshold: {similarity_threshold}, "
-            f"device: {device}, max_memory: {max_memory_mb}MB)"
+            f"device: {device}, max_memory: {max_memory_mb}MB, "
+            f"loaded: {len(self._hash_cache)} entries from disk)"
         )
 
     def _load_model(self) -> None:
@@ -130,6 +141,34 @@ class HybridCache(BaseCache):
             logger.warning(f"Failed to load model {self.model_name}: {e}")
             logger.warning("Falling back to hash-only mode")
             self._model = None
+
+    def _load_from_storage(self) -> None:
+        """Load cached entries from persistent storage into memory caches."""
+        try:
+            # Get all non-expired entries from storage
+            entries = self._storage.get_all()
+
+            if not entries:
+                logger.debug("No cached entries found in storage")
+                return
+
+            # Populate hash cache
+            for entry in entries:
+                self._hash_cache[entry.key] = entry
+                self._access_times[entry.key] = entry.timestamp
+
+            logger.info(f"Loaded {len(entries)} entries from persistent storage into hash cache")
+
+            # Populate semantic cache if model available
+            if self._model is not None:
+                logger.debug("Generating embeddings for cached prompts...")
+                # Note: We don't have the original prompts, so semantic cache
+                # will be populated on-demand as cache hits occur
+                # This is acceptable since semantic matching is secondary to hash matching
+                logger.debug("Semantic cache will be populated on-demand from hash hits")
+
+        except Exception as e:
+            logger.warning(f"Failed to load cache from storage: {e}, starting with empty cache")
 
     def get(
         self,
@@ -257,7 +296,7 @@ class HybridCache(BaseCache):
         response: Any,
         ttl: int | None = None,
     ) -> None:
-        """Store response in both hash and semantic caches.
+        """Store response in both hash and semantic caches, and persist to disk.
 
         Args:
             workflow: Workflow name.
@@ -295,14 +334,26 @@ class HybridCache(BaseCache):
             prompt_embedding = self._model.encode(prompt, convert_to_numpy=True)
             self._semantic_cache.append((prompt_embedding, entry))
 
-        logger.debug(
-            f"Cache PUT (hybrid): {workflow}/{stage} "
-            f"(hash_entries: {len(self._hash_cache)}, "
-            f"semantic_entries: {len(self._semantic_cache)})"
-        )
+        # Persist to disk storage
+        try:
+            self._storage.put(entry)
+            logger.debug(
+                f"Cache PUT (hybrid): {workflow}/{stage} "
+                f"(hash_entries: {len(self._hash_cache)}, "
+                f"semantic_entries: {len(self._semantic_cache)}, "
+                f"persisted: True)"
+            )
+        except Exception as e:
+            logger.warning(f"Failed to persist cache entry to disk: {e}")
+            logger.debug(
+                f"Cache PUT (hybrid): {workflow}/{stage} "
+                f"(hash_entries: {len(self._hash_cache)}, "
+                f"semantic_entries: {len(self._semantic_cache)}, "
+                f"persisted: False)"
+            )
 
     def clear(self) -> None:
-        """Clear all cached entries."""
+        """Clear all cached entries from memory and disk."""
         hash_count = len(self._hash_cache)
         semantic_count = len(self._semantic_cache)
 
@@ -310,7 +361,16 @@ class HybridCache(BaseCache):
         self._access_times.clear()
         self._semantic_cache.clear()
 
-        logger.info(f"Cache cleared (hash: {hash_count}, semantic: {semantic_count} entries)")
+        # Clear persistent storage
+        try:
+            storage_count = self._storage.clear()
+            logger.info(
+                f"Cache cleared (hash: {hash_count}, semantic: {semantic_count}, "
+                f"storage: {storage_count} entries)"
+            )
+        except Exception as e:
+            logger.warning(f"Failed to clear persistent storage: {e}")
+            logger.info(f"Cache cleared (hash: {hash_count}, semantic: {semantic_count} entries)")
 
     def get_stats(self) -> CacheStats:
         """Get cache statistics."""

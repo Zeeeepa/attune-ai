@@ -82,7 +82,7 @@ class TestHybridCache:
         assert cache.stats.hits == 1
 
     @patch("sentence_transformers.SentenceTransformer")
-    def test_semantic_cache_miss_below_threshold(self, mock_st):
+    def test_semantic_cache_miss_below_threshold(self, mock_st, tmp_path):
         """Test semantic cache miss when similarity below threshold."""
         mock_model = Mock()
         mock_st.return_value = mock_model
@@ -100,7 +100,8 @@ class TestHybridCache:
 
         mock_model.encode.side_effect = encode_side_effect
 
-        cache = HybridCache(similarity_threshold=0.95)
+        # Use isolated cache directory
+        cache = HybridCache(similarity_threshold=0.95, cache_dir=tmp_path / "cache")
 
         # Store
         cache.put("code-review", "scan", "prompt1", "sonnet", {"id": 1})
@@ -139,7 +140,7 @@ class TestHybridCache:
         assert result is None
 
     @patch("sentence_transformers.SentenceTransformer")
-    def test_semantic_hit_adds_to_hash_cache(self, mock_st):
+    def test_semantic_hit_adds_to_hash_cache(self, mock_st, tmp_path):
         """Test that semantic hits are added to hash cache for future fast lookups."""
         mock_model = Mock()
         mock_st.return_value = mock_model
@@ -148,7 +149,8 @@ class TestHybridCache:
         embedding = np.array([1.0, 0.0, 0.0])
         mock_model.encode.return_value = embedding
 
-        cache = HybridCache(similarity_threshold=0.90)
+        # Use isolated cache directory
+        cache = HybridCache(similarity_threshold=0.90, cache_dir=tmp_path / "cache")
 
         # Store original
         cache.put("code-review", "scan", "prompt1", "sonnet", {"id": 1})
@@ -221,13 +223,14 @@ class TestHybridCache:
         assert len(cache._semantic_cache) < 200
 
     @patch("sentence_transformers.SentenceTransformer")
-    def test_size_info(self, mock_st):
+    def test_size_info(self, mock_st, tmp_path):
         """Test cache size information."""
         mock_model = Mock()
         mock_st.return_value = mock_model
         mock_model.encode.return_value = np.array([1.0, 0.0, 0.0])
 
-        cache = HybridCache(similarity_threshold=0.95)
+        # Use isolated cache directory to avoid loading existing entries
+        cache = HybridCache(similarity_threshold=0.95, cache_dir=tmp_path / "cache")
 
         # Add entries
         for i in range(10):
