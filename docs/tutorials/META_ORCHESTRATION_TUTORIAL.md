@@ -12,10 +12,21 @@
 By the end of this tutorial, you'll understand:
 
 1. **What meta-orchestration is** and why it's a paradigm shift
-2. **How to use the two built-in workflows** (Release Prep, Test Coverage Boost)
+2. **How to use the three built-in workflows** (Release Prep, Test Coverage Boost, Health Check)
 3. **How to compose custom agent teams** using Python
 4. **How the system learns** from successful compositions
 5. **How to build your own orchestrated workflows**
+
+> **📘 About This Tutorial**
+>
+> This tutorial uses **software development agents** as examples (security auditing, test coverage, code quality), since the framework is primarily used by developers. However, **meta-orchestration is domain-agnostic** and works with any type of agent.
+>
+> The Empathy Framework also includes:
+>
+> - **Healthcare-specific agents**: HIPAA compliance, patient data validation, clinical workflows
+> - **Code analysis tools**: Static analysis, SARIF reports, architectural insights
+>
+> The meta-orchestration system can compose teams from *any* domain. The principles you learn here apply universally.
 
 ---
 
@@ -196,6 +207,51 @@ empathy orchestrate test-coverage \
   🎯 SUCCESS: Coverage target achieved!
 
   Duration: 8.7 seconds
+============================================================
+```
+
+### Example 3: Health Check (2 minutes)
+
+The **Health Check** workflow provides adaptive health assessment with 3 modes:
+
+```bash
+# Quick daily check (3 agents in parallel)
+empathy orchestrate health-check --mode daily
+
+# Comprehensive weekly (5 agents)
+empathy orchestrate health-check --mode weekly
+
+# Pre-release deep dive (6 agents)
+empathy orchestrate health-check --mode release
+
+# JSON output for dashboards
+empathy orchestrate health-check --mode daily --json
+```
+
+**What happens:**
+
+- **Daily**: Security, Coverage, Quality (fast parallel check)
+- **Weekly**: Adds Performance, Documentation (comprehensive)
+- **Release**: Adds Architecture analysis (deep refinement)
+
+**Sample output:**
+
+```text
+============================================================
+  🏥 HEALTH CHECK REPORT
+============================================================
+
+  Health Score: 85/100 (Grade: B)
+  Trend: Improving (+5 from last week)
+  Duration: 1.2s
+
+  ⚠️  Issues Found (1):
+    • Documentation below 100% (92%)
+
+  💡 Recommendations:
+    1. 📚 Complete API documentation for 3 modules
+    2. ✅ Maintain current test coverage (excellent!)
+
 ============================================================
 ```
 
@@ -816,11 +872,38 @@ print(f"Usage count: {best.usage_count}")  # Should increment
 You've learned:
 
 ✅ **What meta-orchestration is** - AI agents that compose themselves
-✅ **How to use built-in workflows** - Release Prep, Test Coverage Boost
+✅ **How to use built-in workflows** - Release Prep, Test Coverage Boost, Health Check
 ✅ **The 6 composition patterns** - Sequential, Parallel, Debate, Teaching, Refinement, Adaptive
 ✅ **How to build custom workflows** - Combining agents and strategies
 ✅ **How the system learns** - Configuration store and pattern library
 ✅ **Advanced techniques** - Hybrid strategies, custom templates, conditional execution
+
+### Domain-Specific Extensions
+
+While this tutorial focused on software development workflows, the Empathy Framework includes additional domain-specific capabilities:
+
+**Healthcare & Compliance:**
+
+- HIPAA compliance validation agents
+- Patient data privacy checkers
+- Clinical workflow orchestration
+- Regulatory audit trail generation
+
+**Code Analysis & Quality:**
+
+- Static analysis with SARIF output
+- Architectural dependency mapping
+- Security vulnerability scanning
+- Technical debt quantification
+
+**Custom Domains:**
+
+The meta-orchestration system is designed to work with agents from *any* domain. You can:
+
+1. Create custom agent templates for your industry
+2. Use the same composition patterns (Sequential, Parallel, etc.)
+3. Benefit from the learning loop across all domains
+4. Mix and match agents from different domains in one workflow
 
 ### Next Steps
 
@@ -828,6 +911,7 @@ You've learned:
 2. **Build** your first custom workflow
 3. **Monitor** the learning loop (check configuration store)
 4. **Share** successful compositions with your team
+5. **Explore** domain-specific features if relevant to your work
 
 ### Additional Resources
 
@@ -835,6 +919,8 @@ You've learned:
 - [API Documentation](../ORCHESTRATION_API.md) - All classes and methods
 - [Examples](../../examples/orchestration/) - Working code samples
 - [Architecture](../META_ORCHESTRATION_ARCHITECTURE.md) - Deep dive into design
+- Healthcare Wizards - HIPAA compliance and clinical workflows (see `empathy wizard --help`)
+- Code Analysis Tools - Static analysis and SARIF reports (see `empathy inspect --help`)
 
 ---
 
