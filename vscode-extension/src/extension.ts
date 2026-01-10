@@ -22,6 +22,7 @@ import { CostsPanel } from './panels/CostsPanel';
 import { WorkflowHistoryPanel } from './panels/WorkflowHistoryPanel';
 import { TelemetryPanel } from './panels/TelemetryPanel';
 import { EmpathyDashboardProvider } from './panels/EmpathyDashboardPanel';
+import { CoveragePanel } from './panels/CoveragePanel';
 import { WorkflowFactoryPanel } from './panels/WorkflowFactoryPanel';
 import { MemoryPanelProvider } from './panels/MemoryPanelProvider';
 // REMOVED in v3.5.5: Refactor Advisor panel - kept for future use
@@ -350,6 +351,13 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('empathy.openHealthPanel', () => {
             HealthPanel.createOrShow(context.extensionUri);
+        })
+    );
+
+    // Register Coverage Panel command (v4.0 Meta-Orchestration)
+    context.subscriptions.push(
+        vscode.commands.registerCommand('empathy.openCoveragePanel', () => {
+            CoveragePanel.createOrShow(context.extensionUri);
         })
     );
 

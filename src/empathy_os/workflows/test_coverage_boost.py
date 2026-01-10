@@ -30,8 +30,10 @@ Example:
 """
 
 import asyncio
+import json
 import logging
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -226,6 +228,9 @@ class TestCoverageBoostWorkflow:
         # Step 5: Save successful patterns
         if result.success and result.quality_gates_passed and self.save_patterns:
             self._save_pattern(plan, result)
+
+        # Step 6: Save results for VS Code panel
+        self._save_coverage_json(result, context)
 
         return result
 
@@ -434,3 +439,48 @@ class TestCoverageBoostWorkflow:
             logger.info("Saved successful pattern to config store")
         except Exception as e:
             logger.exception(f"Failed to save pattern: {e}")
+
+    def _save_coverage_json(self, result: "CoverageBoostResult", context: dict[str, Any]) -> None:
+        """Save coverage data to .empathy/coverage.json for VS Code panel.
+
+        Args:
+            result: Coverage boost result
+            context: Execution context
+        """
+        try:
+            from ..config import _validate_file_path
+
+            # Create .empathy directory if it doesn't exist
+            empathy_dir = Path(".empathy")
+            empathy_dir.mkdir(parents=True, exist_ok=True)
+
+            coverage_file = empathy_dir / "coverage.json"
+
+            # Validate file path
+            validated_path = _validate_file_path(str(coverage_file))
+
+            # Build coverage data
+            coverage_data = {
+                "status": "success" if result.success else "failed",
+                "current_coverage": result.validation.final_coverage,
+                "target_coverage": self.target_coverage,
+                "coverage_improvement": result.validation.coverage_improvement,
+                "tests_generated": result.generation.tests_generated,
+                "gaps_identified": result.analysis.total_gaps,
+                "files_analyzed": len(result.analysis.coverage_gaps),
+                "timestamp": datetime.now().isoformat(),
+                "message": (
+                    f"Generated {result.generation.tests_generated} tests, "
+                    f"improved coverage by {result.validation.coverage_improvement:.1f}%"
+                    if result.success
+                    else "Coverage boost failed - see logs for details"
+                ),
+            }
+
+            # Write to file
+            with validated_path.open("w") as f:
+                json.dump(coverage_data, f, indent=2)
+
+            logger.info(f"Saved coverage data to {validated_path}")
+        except Exception as e:
+            logger.warning(f"Failed to save coverage.json: {e}")

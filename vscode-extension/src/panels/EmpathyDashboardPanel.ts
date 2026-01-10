@@ -793,51 +793,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _runOrchestratedHealthCheck() {
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        if (!workspaceFolder) {
-            vscode.window.showErrorMessage('No workspace folder open');
-            return;
-        }
-
-        // Show progress notification
-        vscode.window.withProgress({
-            location: vscode.ProgressLocation.Notification,
-            title: "Running Health Check",
-            cancellable: false
-        }, async (progress) => {
-            progress.report({ message: "Running orchestrated health check..." });
-
-            // Get configured python path
-            const config = vscode.workspace.getConfiguration('empathy');
-            const pythonPath = config.get<string>('pythonPath', 'python');
-
-            // Run orchestrated health check command
-            const args = ['-m', 'empathy_os.cli', 'orchestrate', 'health-check', '--mode', 'daily'];
-
-            return new Promise<void>((resolve) => {
-                cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
-                    if (error) {
-                        vscode.window.showErrorMessage(`Health check failed: ${error.message}`);
-                        resolve();
-                        return;
-                    }
-
-                    // Health check completed - show success and open panel
-                    vscode.window.showInformationMessage('Health check complete!', 'View Results').then(selection => {
-                        if (selection === 'View Results') {
-                            vscode.commands.executeCommand('empathy.openHealthPanel');
-                        }
-                    });
-
-                    // Also trigger health panel to open automatically
-                    setTimeout(() => {
-                        vscode.commands.executeCommand('empathy.openHealthPanel');
-                    }, 500);
-
-                    resolve();
-                });
-            });
-        });
+        // Simply open the Health Panel - it handles running the check internally
+        vscode.commands.executeCommand('empathy.openHealthPanel');
     }
 
     private async _runOrchestratedReleasePrep() {
@@ -847,7 +804,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             return;
         }
 
-        // Show progress notification
+        // Show progress notification while running
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
             title: "Running Release Prep",
@@ -874,23 +831,18 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     const output = stdout || stderr || '';
                     const isReady = output.includes('READY FOR RELEASE') || output.includes('Release Ready: true');
 
+                    // Open report in editor with syntax highlighting
+                    const doc = await vscode.workspace.openTextDocument({
+                        content: output,
+                        language: 'markdown'
+                    });
+                    await vscode.window.showTextDocument(doc, { preview: false });
+
+                    // Show appropriate notification
                     if (isReady) {
-                        vscode.window.showInformationMessage('✅ Release validation passed! Ready to ship.', 'View Report').then(selection => {
-                            if (selection === 'View Report') {
-                                // Show output in new editor
-                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
-                                    vscode.window.showTextDocument(doc);
-                                });
-                            }
-                        });
+                        vscode.window.showInformationMessage('✅ Release validation passed! Ready to ship.');
                     } else {
-                        vscode.window.showWarningMessage('⚠️ Release validation found issues. Review the report.', 'View Report').then(selection => {
-                            if (selection === 'View Report') {
-                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
-                                    vscode.window.showTextDocument(doc);
-                                });
-                            }
-                        });
+                        vscode.window.showWarningMessage('⚠️ Release validation found issues. Review the report.');
                     }
 
                     resolve();
@@ -900,81 +852,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _runOrchestratedTestCoverage() {
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        if (!workspaceFolder) {
-            vscode.window.showErrorMessage('No workspace folder open');
-            return;
-        }
-
-        // Ask for target coverage
-        const targetInput = await vscode.window.showInputBox({
-            prompt: 'Target coverage percentage',
-            value: '80',
-            placeHolder: '80',
-            validateInput: (value) => {
-                const num = parseInt(value);
-                if (isNaN(num) || num < 0 || num > 100) {
-                    return 'Please enter a number between 0 and 100';
-                }
-                return null;
-            }
-        });
-
-        if (!targetInput) {
-            return; // User cancelled
-        }
-
-        const target = parseInt(targetInput);
-
-        // Show progress notification
-        vscode.window.withProgress({
-            location: vscode.ProgressLocation.Notification,
-            title: "Running Test Coverage Boost",
-            cancellable: false
-        }, async (progress) => {
-            progress.report({ message: `Analyzing gaps and boosting coverage to ${target}%...` });
-
-            // Get configured python path
-            const config = vscode.workspace.getConfiguration('empathy');
-            const pythonPath = config.get<string>('pythonPath', 'python');
-
-            // Run orchestrated test coverage command
-            const args = ['-m', 'empathy_os.cli', 'orchestrate', 'test-coverage', '--target', target.toString()];
-
-            return new Promise<void>((resolve) => {
-                cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
-                    if (error) {
-                        vscode.window.showErrorMessage(`Test coverage boost failed: ${error.message}`);
-                        resolve();
-                        return;
-                    }
-
-                    // Parse output to check if target was achieved
-                    const output = stdout || stderr || '';
-                    const targetAchieved = output.includes('TARGET ACHIEVED') || output.includes('Coverage target achieved');
-
-                    if (targetAchieved) {
-                        vscode.window.showInformationMessage(`✅ Coverage target of ${target}% achieved!`, 'View Report').then(selection => {
-                            if (selection === 'View Report') {
-                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
-                                    vscode.window.showTextDocument(doc);
-                                });
-                            }
-                        });
-                    } else {
-                        vscode.window.showInformationMessage(`Test coverage boost complete. Check report for details.`, 'View Report').then(selection => {
-                            if (selection === 'View Report') {
-                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
-                                    vscode.window.showTextDocument(doc);
-                                });
-                            }
-                        });
-                    }
-
-                    resolve();
-                });
-            });
-        });
+        // Open the Coverage Panel - it handles running the boost and displaying results
+        vscode.commands.executeCommand('empathy.openCoveragePanel');
     }
 
     private async _runWorkflow(workflowName: string, input?: string) {
