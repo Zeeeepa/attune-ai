@@ -66,6 +66,10 @@ from .health_check import HealthCheckWorkflow
 # Keyboard Conductor (v3.6) - keyboard shortcut generation
 from .keyboard_shortcuts import KeyboardShortcutWorkflow
 from .manage_documentation import ManageDocumentationCrew, ManageDocumentationCrewResult
+
+# Meta-orchestration workflows (v4.0)
+from .orchestrated_health_check import HealthCheckReport, OrchestratedHealthCheckWorkflow
+from .orchestrated_release_prep import OrchestratedReleasePrepWorkflow, ReleaseReadinessReport
 from .perf_audit import PerformanceAuditWorkflow
 from .pr_review import PRReviewResult, PRReviewWorkflow
 from .refactor_plan import RefactorPlanWorkflow
@@ -319,6 +323,7 @@ __all__ = [
     "DocumentationOrchestrator",
     # Health check crew integration (v3.1)
     "HealthCheckWorkflow",
+    "HealthCheckReport",
     # Keyboard Conductor (v3.6)
     "KeyboardShortcutWorkflow",
     "ManageDocumentationCrew",
@@ -360,4 +365,8 @@ __all__ = [
     "refresh_workflow_registry",
     "steps_from_tier_map",
     "validate_step_config",
+    # Meta-orchestration workflows (v4.0)
+    "OrchestratedHealthCheckWorkflow",
+    "OrchestratedReleasePrepWorkflow",
+    "ReleaseReadinessReport",
 ]

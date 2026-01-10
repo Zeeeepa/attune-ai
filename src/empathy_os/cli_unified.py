@@ -539,6 +539,212 @@ def workflow_recommend(
 
 
 # =============================================================================
+# ORCHESTRATE SUBCOMMAND GROUP (Meta-Orchestration v4.0)
+# =============================================================================
+
+orchestrate_app = typer.Typer(help="Meta-orchestration workflows (v4.0)")
+app.add_typer(orchestrate_app, name="orchestrate")
+
+
+@orchestrate_app.command("health-check")
+def orchestrate_health_check(
+    mode: str = typer.Option("daily", "--mode", "-m", help="Check mode: daily, weekly, release"),
+    project_root: Path = typer.Option(Path("."), "--project-root", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Run orchestrated health check with adaptive agent teams.
+
+    Modes:
+        daily: Quick parallel check (3 agents: Security, Coverage, Quality)
+        weekly: Comprehensive parallel (5 agents: adds Performance, Docs)
+        release: Deep refinement (6 agents: adds Architecture)
+    """
+    import asyncio
+
+    from empathy_os.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
+
+    async def run_health_check():
+        workflow = OrchestratedHealthCheckWorkflow(mode=mode)
+        report = await workflow.execute(project_root=str(project_root))
+
+        if json_output:
+            import json
+
+            console.print(json.dumps(report.to_dict(), indent=2))
+        else:
+            # Beautiful console output
+            console.print("\n[bold cyan]🏥 HEALTH CHECK REPORT[/bold cyan]")
+            console.print("=" * 60)
+
+            # Health score with color coding
+            score_color = (
+                "green"
+                if report.overall_health_score >= 80
+                else "yellow" if report.overall_health_score >= 60 else "red"
+            )
+            console.print(
+                f"\n[bold {score_color}]Health Score: {report.overall_health_score}/100 (Grade: {report.grade})[/bold {score_color}]"
+            )
+            console.print(f"[dim]Trend: {report.trend}[/dim]")
+            console.print(f"[dim]Duration: {report.execution_time:.2f}s[/dim]")
+
+            # Issues
+            if report.issues:
+                console.print(f"\n[bold red]⚠️  Issues Found ({len(report.issues)}):[/bold red]")
+                for issue in report.issues[:5]:
+                    console.print(f"  • {issue}")
+
+            # Recommendations
+            if report.recommendations:
+                console.print("\n[bold yellow]💡 Recommendations:[/bold yellow]")
+                for i, rec in enumerate(report.recommendations[:5], 1):
+                    console.print(f"  {i}. {rec}")
+
+            console.print("\n" + "=" * 60)
+
+        return report
+
+    try:
+        asyncio.run(run_health_check())
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@orchestrate_app.command("release-prep")
+def orchestrate_release_prep(
+    project_root: Path = typer.Option(Path("."), "--project-root", "-p", help="Project root path"),
+    min_coverage: float = typer.Option(80.0, "--min-coverage", help="Minimum test coverage %"),
+    min_quality: float = typer.Option(7.0, "--min-quality", help="Minimum quality score (0-10)"),
+    max_critical: int = typer.Option(0, "--max-critical", help="Max critical issues allowed"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Run orchestrated release preparation with parallel validation.
+
+    Runs 4 agents in parallel:
+        - Security Auditor (vulnerability scan)
+        - Test Coverage Analyzer (gap analysis)
+        - Code Quality Reviewer (best practices)
+        - Documentation Writer (completeness check)
+    """
+    import asyncio
+
+    from empathy_os.workflows.orchestrated_release_prep import OrchestratedReleasePrepWorkflow
+
+    async def run_release_prep():
+        workflow = OrchestratedReleasePrepWorkflow(
+            quality_gates={
+                "min_coverage": min_coverage,
+                "min_quality_score": min_quality,
+                "max_critical_issues": max_critical,
+            }
+        )
+        report = await workflow.execute(path=str(project_root))
+
+        if json_output:
+            import json
+
+            console.print(json.dumps(report.to_dict(), indent=2))
+        else:
+            console.print("\n[bold cyan]📋 RELEASE PREPARATION REPORT[/bold cyan]")
+            console.print("=" * 60)
+
+            approval_color = "green" if report.approved else "red"
+            approval_emoji = "✅" if report.approved else "❌"
+            console.print(
+                f"\n[bold {approval_color}]{approval_emoji} {'APPROVED' if report.approved else 'NOT APPROVED'}[/bold {approval_color}]"
+            )
+            console.print(f"[dim]Confidence: {report.confidence}[/dim]")
+            console.print(f"[dim]Duration: {report.total_duration:.2f}s[/dim]")
+
+            # Quality gates
+            console.print("\n[bold]Quality Gates:[/bold]")
+            for gate in report.quality_gates:
+                gate_emoji = "✅" if gate.passed else "❌"
+                console.print(
+                    f"  {gate_emoji} {gate.name}: {gate.actual:.1f} (threshold: {gate.threshold:.1f})"
+                )
+
+            # Blockers
+            if report.blockers:
+                console.print("\n[bold red]🚫 Blockers:[/bold red]")
+                for blocker in report.blockers:
+                    console.print(f"  • {blocker}")
+
+            # Warnings
+            if report.warnings:
+                console.print("\n[bold yellow]⚠️  Warnings:[/bold yellow]")
+                for warning in report.warnings:
+                    console.print(f"  • {warning}")
+
+            console.print("\n" + "=" * 60)
+
+        return report
+
+    try:
+        asyncio.run(run_release_prep())
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@orchestrate_app.command("test-coverage")
+def orchestrate_test_coverage(
+    project_root: Path = typer.Option(Path("."), "--project-root", "-p", help="Project root path"),
+    target: float = typer.Option(90.0, "--target", "-t", help="Target coverage percentage"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Run orchestrated test coverage boost with sequential stages.
+
+    Runs 3 stages sequentially:
+        1. Coverage Analyzer → Identify gaps
+        2. Test Generator → Create tests
+        3. Test Validator → Verify coverage
+    """
+    import asyncio
+
+    from empathy_os.workflows.test_coverage_boost import TestCoverageBoostWorkflow
+
+    async def run_test_coverage():
+        workflow = TestCoverageBoostWorkflow(target_coverage=target)
+        report = await workflow.execute(project_root=str(project_root))
+
+        if json_output:
+            import json
+
+            console.print(json.dumps(report.to_dict(), indent=2))
+        else:
+            console.print("\n[bold cyan]🧪 TEST COVERAGE BOOST REPORT[/bold cyan]")
+            console.print("=" * 60)
+
+            success_color = "green" if report.success else "red"
+            success_emoji = "✅" if report.success else "❌"
+            console.print(
+                f"\n[bold {success_color}]{success_emoji} {'SUCCESS' if report.success else 'FAILED'}[/bold {success_color}]"
+            )
+            console.print(f"[dim]Initial: {report.initial_coverage:.1f}%[/dim]")
+            console.print(f"[dim]Final: {report.final_coverage:.1f}%[/dim]")
+            console.print(f"[dim]Improvement: +{report.improvement:.1f}%[/dim]")
+            console.print(f"[dim]Duration: {report.total_duration:.2f}s[/dim]")
+
+            # Stage results
+            console.print("\n[bold]Stage Results:[/bold]")
+            for i, stage in enumerate(report.stage_results, 1):
+                stage_emoji = "✅" if stage["success"] else "❌"
+                console.print(f"  {stage_emoji} Stage {i}: {stage.get('description', 'N/A')}")
+
+            console.print("\n" + "=" * 60)
+
+        return report
+
+    try:
+        asyncio.run(run_test_coverage())
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+# =============================================================================
 # TELEMETRY SUBCOMMAND GROUP
 # =============================================================================
 

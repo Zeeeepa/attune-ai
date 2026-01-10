@@ -773,6 +773,7 @@ def cmd_orchestrate(args):
     import asyncio
     import json
 
+    from empathy_os.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
     from empathy_os.workflows.orchestrated_release_prep import OrchestratedReleasePrepWorkflow
     from empathy_os.workflows.test_coverage_boost import TestCoverageBoostWorkflow
 
@@ -924,12 +925,66 @@ def cmd_orchestrate(args):
             logger.exception("Orchestration workflow failed")
             return 1
 
+    elif workflow_type == "health-check":
+        # Health Check workflow
+        mode = args.mode or "daily"
+        project_root = args.project_root or "."
+        focus_area = getattr(args, "focus", None)
+
+        print(f"  Mode: {mode.upper()}")
+        print(f"  Project Root: {project_root}")
+        if focus_area:
+            print(f"  Focus Area: {focus_area}")
+        print()
+
+        # Show agents for mode
+        mode_agents = {
+            "daily": ["Security", "Coverage", "Quality"],
+            "weekly": ["Security", "Coverage", "Quality", "Performance", "Documentation"],
+            "release": [
+                "Security",
+                "Coverage",
+                "Quality",
+                "Performance",
+                "Documentation",
+                "Architecture",
+            ],
+        }
+
+        print(f"  🔍 {mode.capitalize()} Check Agents:")
+        for agent in mode_agents.get(mode, []):
+            print(f"    • {agent}")
+        print()
+
+        # Create workflow
+        workflow = OrchestratedHealthCheckWorkflow(mode=mode, project_root=project_root)
+
+        try:
+            # Execute workflow
+            report = asyncio.run(workflow.execute())
+
+            # Display results
+            if hasattr(args, "json") and args.json:
+                print(json.dumps(report.to_dict(), indent=2))
+            else:
+                print(report.format_console_output())
+
+            # Return appropriate exit code (70+ is passing)
+            return 0 if report.overall_health_score >= 70 else 1
+
+        except Exception as e:
+            print(f"  ❌ Error executing health check workflow: {e}")
+            print()
+            logger.exception("Health check workflow failed")
+            return 1
+
     else:
         print(f"  ❌ Unknown workflow type: {workflow_type}")
         print()
         print("  Available workflows:")
         print("    - release-prep: Release readiness validation (parallel agents)")
         print("    - test-coverage: Boost test coverage through sequential agent composition")
+        print("    - health-check: Project health assessment (daily/weekly/release modes)")
         print()
         return 1
 
@@ -3472,11 +3527,11 @@ def main():
     # Orchestrate command (meta-orchestration workflows)
     parser_orchestrate = subparsers.add_parser(
         "orchestrate",
-        help="Run meta-orchestration workflows (test-coverage, release-prep)",
+        help="Run meta-orchestration workflows (test-coverage, release-prep, health-check)",
     )
     parser_orchestrate.add_argument(
         "workflow",
-        choices=["test-coverage", "release-prep"],
+        choices=["test-coverage", "release-prep", "health-check"],
         help="Workflow to execute",
     )
     parser_orchestrate.add_argument(
@@ -3514,6 +3569,16 @@ def main():
         "--max-critical",
         type=float,
         help="Maximum critical security issues (for release-prep, default: 0)",
+    )
+    # Health-check workflow arguments
+    parser_orchestrate.add_argument(
+        "--mode",
+        choices=["daily", "weekly", "release"],
+        help="Health check mode (for health-check, default: daily)",
+    )
+    parser_orchestrate.add_argument(
+        "--focus",
+        help="Focus area for health check (for health-check, optional)",
     )
     parser_orchestrate.add_argument(
         "--json",
