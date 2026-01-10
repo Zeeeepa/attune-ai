@@ -605,14 +605,38 @@ def orchestrate_health_check(
 
             console.print("\n" + "=" * 60)
 
-            # Show VS Code dashboard instructions
+            # Show VS Code dashboard info
             health_file = Path(project_root) / ".empathy" / "health.json"
             console.print(f"\n📁 Health data saved to: [cyan]{health_file}[/cyan]")
-            console.print("\n💡 [bold]View in VS Code:[/bold]")
-            console.print("   1. Open this project in VS Code")
-            console.print("   2. Install the Empathy VS Code extension")
-            console.print("   3. Open the Empathy Health Dashboard panel")
-            console.print("   4. See interactive charts and detailed breakdowns")
+
+            # Try to open VS Code health panel
+            console.print("\n🔄 Opening Health Panel in VS Code...")
+            try:
+                import subprocess
+
+                # Use VS Code CLI to trigger the health panel (run in background)
+                subprocess.Popen(
+                    ["code", "--command", "empathy.openHealthPanel"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                console.print(
+                    "   [dim]If VS Code is already open, the Health Panel will appear automatically.[/dim]"
+                )
+                console.print(
+                    "   [dim]If not, open VS Code and the panel will show updated data.[/dim]"
+                )
+            except FileNotFoundError:
+                console.print("\n💡 [yellow]To view in VS Code:[/yellow]")
+                console.print("   1. Open this project in VS Code")
+                console.print("   2. Install the Empathy VS Code extension")
+                console.print("   3. Run: code --command empathy.openHealthPanel")
+                console.print("   [dim]Or the panel will auto-refresh if already open[/dim]")
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Best-effort VS Code integration, don't fail if it doesn't work
+                console.print(
+                    "\n💡 [dim]View in VS Code Health Panel (auto-refreshes every 30s)[/dim]"
+                )
 
         return report
 
