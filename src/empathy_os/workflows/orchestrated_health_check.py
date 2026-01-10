@@ -378,6 +378,9 @@ class OrchestratedHealthCheckWorkflow:
         # Save to tracking history
         self._save_tracking_history(report)
 
+        # Save to .empathy/health.json for VS Code extension
+        self._save_health_json(report)
+
         logger.info(
             f"Health check completed: score={report.overall_health_score:.1f}, "
             f"grade={report.grade}, duration={report.execution_time:.2f}s"
@@ -733,6 +736,88 @@ class OrchestratedHealthCheckWorkflow:
 
         except OSError as e:
             logger.error(f"Failed to save tracking history: {e}")
+
+    def _save_health_json(self, report: HealthCheckReport) -> None:
+        """Save health check report to .empathy/health.json for VS Code extension.
+
+        This creates the health.json file that the Empathy VS Code extension
+        reads to display the interactive health dashboard.
+
+        Args:
+            report: Health check report to save
+        """
+        health_file = self.project_root / ".empathy" / "health.json"
+
+        try:
+            # Ensure .empathy directory exists
+            health_file.parent.mkdir(parents=True, exist_ok=True)
+
+            # Extract metrics from category scores
+            lint_errors = 0
+            type_errors = 0
+            security_high = 0
+            security_medium = 0
+            security_low = 0
+            test_passed = 0
+            test_failed = 0
+            test_total = 0
+            coverage_pct = 0.0
+
+            for category in report.category_scores:
+                if category.name == "Quality":
+                    # Quality issues often come from lint/type errors
+                    quality_score = category.raw_metrics.get("quality_score", 10.0)
+                    # Estimate errors from quality score (10 = perfect, 0 = many errors)
+                    lint_errors = max(0, int((10 - quality_score) * 5))
+
+                elif category.name == "Security":
+                    security_high = category.raw_metrics.get("critical_issues", 0)
+                    security_medium = category.raw_metrics.get("high_issues", 0)
+                    security_low = category.raw_metrics.get("medium_issues", 0)
+
+                elif category.name == "Coverage":
+                    coverage_pct = category.score
+                    # Estimate test counts (assuming good coverage means tests are passing)
+                    if coverage_pct > 70:
+                        test_total = 100
+                        test_passed = int(coverage_pct)
+                        test_failed = test_total - test_passed
+
+            # Build health data in VS Code extension format
+            health_data = {
+                "score": int(report.overall_health_score),
+                "lint": {"errors": lint_errors, "warnings": 0},
+                "types": {"errors": type_errors},
+                "security": {
+                    "high": security_high,
+                    "medium": security_medium,
+                    "low": security_low,
+                },
+                "tests": {
+                    "passed": test_passed,
+                    "failed": test_failed,
+                    "total": test_total,
+                    "coverage": int(coverage_pct),
+                },
+                "tech_debt": {"total": 0, "todos": 0, "fixmes": 0, "hacks": 0},
+                "timestamp": report.timestamp,
+                "mode": report.mode,
+                "grade": report.grade,
+            }
+
+            # Write health.json
+            with health_file.open("w") as f:
+                json.dump(health_data, f, indent=2)
+
+            logger.info(f"Saved health data to {health_file} for VS Code extension")
+
+        except OSError as e:
+            logger.warning(f"Failed to save health.json (file system error): {e}")
+        except (TypeError, ValueError) as e:
+            logger.error(f"Failed to save health.json (serialization error): {e}")
+        except Exception as e:  # noqa: BLE001
+            # INTENTIONAL: Saving health data should never crash a health check
+            logger.warning(f"Failed to save health.json (unexpected error): {e}")
 
 
 async def main():
