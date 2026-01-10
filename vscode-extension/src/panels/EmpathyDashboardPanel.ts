@@ -840,6 +840,143 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         });
     }
 
+    private async _runOrchestratedReleasePrep() {
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            vscode.window.showErrorMessage('No workspace folder open');
+            return;
+        }
+
+        // Show progress notification
+        vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: "Running Release Prep",
+            cancellable: false
+        }, async (progress) => {
+            progress.report({ message: "Running orchestrated release validation (4 agents)..." });
+
+            // Get configured python path
+            const config = vscode.workspace.getConfiguration('empathy');
+            const pythonPath = config.get<string>('pythonPath', 'python');
+
+            // Run orchestrated release prep command
+            const args = ['-m', 'empathy_os.cli', 'orchestrate', 'release-prep'];
+
+            return new Promise<void>((resolve) => {
+                cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
+                    if (error) {
+                        vscode.window.showErrorMessage(`Release prep failed: ${error.message}`);
+                        resolve();
+                        return;
+                    }
+
+                    // Parse output to check if release is ready
+                    const output = stdout || stderr || '';
+                    const isReady = output.includes('READY FOR RELEASE') || output.includes('Release Ready: true');
+
+                    if (isReady) {
+                        vscode.window.showInformationMessage('✅ Release validation passed! Ready to ship.', 'View Report').then(selection => {
+                            if (selection === 'View Report') {
+                                // Show output in new editor
+                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
+                                    vscode.window.showTextDocument(doc);
+                                });
+                            }
+                        });
+                    } else {
+                        vscode.window.showWarningMessage('⚠️ Release validation found issues. Review the report.', 'View Report').then(selection => {
+                            if (selection === 'View Report') {
+                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
+                                    vscode.window.showTextDocument(doc);
+                                });
+                            }
+                        });
+                    }
+
+                    resolve();
+                });
+            });
+        });
+    }
+
+    private async _runOrchestratedTestCoverage() {
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            vscode.window.showErrorMessage('No workspace folder open');
+            return;
+        }
+
+        // Ask for target coverage
+        const targetInput = await vscode.window.showInputBox({
+            prompt: 'Target coverage percentage',
+            value: '80',
+            placeHolder: '80',
+            validateInput: (value) => {
+                const num = parseInt(value);
+                if (isNaN(num) || num < 0 || num > 100) {
+                    return 'Please enter a number between 0 and 100';
+                }
+                return null;
+            }
+        });
+
+        if (!targetInput) {
+            return; // User cancelled
+        }
+
+        const target = parseInt(targetInput);
+
+        // Show progress notification
+        vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: "Running Test Coverage Boost",
+            cancellable: false
+        }, async (progress) => {
+            progress.report({ message: `Analyzing gaps and boosting coverage to ${target}%...` });
+
+            // Get configured python path
+            const config = vscode.workspace.getConfiguration('empathy');
+            const pythonPath = config.get<string>('pythonPath', 'python');
+
+            // Run orchestrated test coverage command
+            const args = ['-m', 'empathy_os.cli', 'orchestrate', 'test-coverage', '--target', target.toString()];
+
+            return new Promise<void>((resolve) => {
+                cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
+                    if (error) {
+                        vscode.window.showErrorMessage(`Test coverage boost failed: ${error.message}`);
+                        resolve();
+                        return;
+                    }
+
+                    // Parse output to check if target was achieved
+                    const output = stdout || stderr || '';
+                    const targetAchieved = output.includes('TARGET ACHIEVED') || output.includes('Coverage target achieved');
+
+                    if (targetAchieved) {
+                        vscode.window.showInformationMessage(`✅ Coverage target of ${target}% achieved!`, 'View Report').then(selection => {
+                            if (selection === 'View Report') {
+                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
+                                    vscode.window.showTextDocument(doc);
+                                });
+                            }
+                        });
+                    } else {
+                        vscode.window.showInformationMessage(`Test coverage boost complete. Check report for details.`, 'View Report').then(selection => {
+                            if (selection === 'View Report') {
+                                vscode.workspace.openTextDocument({ content: output, language: 'markdown' }).then(doc => {
+                                    vscode.window.showTextDocument(doc);
+                                });
+                            }
+                        });
+                    }
+
+                    resolve();
+                });
+            });
+        });
+    }
+
     private async _runWorkflow(workflowName: string, input?: string) {
         // Special handling for doc-orchestrator: open the Documentation Analysis panel
         if (workflowName === 'doc-orchestrator') {
@@ -847,9 +984,17 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             return;
         }
 
-        // Special handling for orchestrated health check (v4.0)
-        if (workflowName === 'health-check') {
+        // Special handling for orchestrated workflows (v4.0)
+        if (workflowName === 'orchestrated-health-check') {
             await this._runOrchestratedHealthCheck();
+            return;
+        }
+        if (workflowName === 'orchestrated-release-prep') {
+            await this._runOrchestratedReleasePrep();
+            return;
+        }
+        if (workflowName === 'orchestrated-test-coverage') {
+            await this._runOrchestratedTestCoverage();
             return;
         }
 
@@ -2133,10 +2278,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span class="action-icon">&#x1F41B;</span>
                     <span>Predict Bugs</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="health-check" title="Run orchestrated health check with adaptive agent teams (daily mode: Security, Coverage, Quality)">
-                    <span class="action-icon">&#x1FA7A;</span>
-                    <span>Health Check</span>
-                </button>
             </div>
 
             <!-- Security & Performance -->
@@ -2165,12 +2306,32 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 </button>
             </div>
 
-            <!-- Release -->
-            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">RELEASE</div>
+            <!-- Meta-Orchestration (v4.0) -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                <span>META-ORCHESTRATION</span>
+                <span style="background: linear-gradient(90deg, #8b5cf6, #ec4899); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">v4.0</span>
+            </div>
             <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-workflow="release-prep" title="Pre-release quality gate: health checks, security scan, and changelog">
+                <button class="action-btn workflow-btn" data-workflow="orchestrated-health-check" title="Adaptive health check with 3 modes (daily: 3 agents, weekly: 5 agents, release: 6 agents) - Auto-opens VS Code panel">
+                    <span class="action-icon">&#x1FA7A;</span>
+                    <span>Health Check</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="orchestrated-release-prep" title="Parallel release validation (4 agents: Security, Coverage, Quality, Docs) with quality gates">
                     <span class="action-icon">&#x1F4CB;</span>
                     <span>Release Prep</span>
+                </button>
+                <button class="action-btn workflow-btn" data-workflow="orchestrated-test-coverage" title="Intelligent test coverage boost with gap analysis and smart generation">
+                    <span class="action-icon">&#x1F3AF;</span>
+                    <span>Coverage Boost</span>
+                </button>
+            </div>
+
+            <!-- Release -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">RELEASE (Legacy)</div>
+            <div class="actions-grid workflow-grid">
+                <button class="action-btn workflow-btn" data-workflow="release-prep" title="Legacy release prep workflow - Use Meta-Orchestration version for better results">
+                    <span class="action-icon">&#x1F4CB;</span>
+                    <span>Release Prep (Old)</span>
                 </button>
                 <button class="action-btn workflow-btn" data-workflow="secure-release" title="Comprehensive security pipeline for production releases">
                     <span class="action-icon">&#x1F680;</span>
