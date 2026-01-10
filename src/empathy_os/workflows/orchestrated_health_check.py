@@ -359,6 +359,7 @@ class OrchestratedHealthCheckWorkflow:
         logger.info(f"Selected {len(agents)} agents: {[a.id for a in agents]}")
 
         # Execute agents based on mode strategy
+        strategy: ParallelStrategy | RefinementStrategy
         if self.mode == "release":
             # Release mode: deep refinement strategy
             strategy = RefinementStrategy()

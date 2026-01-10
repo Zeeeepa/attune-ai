@@ -22,7 +22,7 @@ Example:
 import asyncio
 import logging
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from .agent_templates import AgentTemplate
@@ -67,11 +67,11 @@ class StrategyResult:
     outputs: list[AgentResult]
     aggregated_output: dict[str, Any]
     total_duration: float = 0.0
-    errors: list[str] = None
+    errors: list[str] = field(default_factory=list)
 
     def __post_init__(self):
         """Initialize errors list if None."""
-        if self.errors is None:
+        if not self.errors:
             self.errors = []
 
 
@@ -271,6 +271,8 @@ class ParallelStrategy(ExecutionStrategy):
                     )
                 )
             else:
+                # Type checker doesn't know we already filtered out exceptions
+                assert isinstance(result, AgentResult)
                 processed_results.append(result)
 
         total_duration = max((r.duration_seconds for r in processed_results), default=0.0)

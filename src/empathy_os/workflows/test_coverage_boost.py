@@ -410,24 +410,27 @@ class TestCoverageBoostWorkflow:
             result: Successful result to save
         """
         try:
-            pattern_config = {
-                "pattern_name": "test_coverage_boost",
-                "strategy": plan.strategy.value,
-                "agents": [agent.id for agent in plan.agents],
-                "quality_gates": {
+            from empathy_os.orchestration.config_store import AgentConfiguration
+
+            # Create AgentConfiguration object for the config store
+            pattern_config = AgentConfiguration(
+                id=f"test_coverage_boost_{hash(frozenset(agent.id for agent in plan.agents))}",
+                task_pattern="test_coverage_boost",
+                agents=[{"id": agent.id, "role": agent.id} for agent in plan.agents],
+                strategy=plan.strategy.value,
+                quality_gates={
                     "min_coverage": self.target_coverage,
                     "all_tests_pass": True,
                     "coverage_improvement": 10.0,
                 },
-                "results": {
-                    "final_coverage": result.validation.final_coverage,
-                    "coverage_improvement": result.validation.coverage_improvement,
-                    "tests_generated": result.generation.tests_generated,
-                },
-                "execution_time": result.execution_time,
-            }
+            )
 
-            self.config_store.save("test_coverage_boost_pattern", pattern_config)
+            # Record successful outcome
+            pattern_config.record_outcome(
+                success=True, quality_score=result.validation.final_coverage
+            )
+
+            self.config_store.save(pattern_config)
             logger.info("Saved successful pattern to config store")
         except Exception as e:
             logger.exception(f"Failed to save pattern: {e}")

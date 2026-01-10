@@ -33781,6 +33781,542 @@
         "started_at": "2026-01-10T10:35:34.826139",
         "completed_at": "2026-01-10T10:38:46.371399"
       }
+    },
+    {
+      "pattern_id": "workflow_20260110_622c3e3c",
+      "bug_type": "health_check",
+      "status": "resolved",
+      "root_cause": "Workflow: health-check - Project health diagnosis and fixing with 5-agent crew",
+      "fix": "Completed via health-check workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [
+        "."
+      ],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.002,
+          "cost_if_always_premium": 0.012,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "health-check",
+        "workflow_id": "622c3e3c-9e1c-4698-b9c1-9ece6d5ffc07",
+        "duration_seconds": 28.68,
+        "started_at": "2026-01-10T14:18:51.701923",
+        "completed_at": "2026-01-10T14:19:20.381323"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260110_19442c9b",
+      "bug_type": "health_check",
+      "status": "resolved",
+      "root_cause": "Workflow: health-check - Project health diagnosis and fixing with 5-agent crew",
+      "fix": "Completed via health-check workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [
+        "."
+      ],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.002,
+          "cost_if_always_premium": 0.012,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "health-check",
+        "workflow_id": "19442c9b-2f55-48b6-820f-bcb1da34f0d0",
+        "duration_seconds": 17.45,
+        "started_at": "2026-01-10T14:20:16.613357",
+        "completed_at": "2026-01-10T14:20:34.063687"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260110_0ac9d954",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: release-prep - Pre-release quality gate with health, security, and changelog",
+      "fix": "Completed via release-prep workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "PREMIUM",
+        "successful_tier": "PREMIUM",
+        "total_attempts": 3,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "PREMIUM",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.101,
+          "cost_if_always_premium": 0.504,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "release-prep",
+        "workflow_id": "0ac9d954-66f0-45da-a951-f15f6f6b75d2",
+        "duration_seconds": 199.99,
+        "started_at": "2026-01-10T14:24:50.914156",
+        "completed_at": "2026-01-10T14:28:10.905630"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260110_4576c8fe",
+      "bug_type": "health_check",
+      "status": "resolved",
+      "root_cause": "Workflow: health-check - Project health diagnosis and fixing with 5-agent crew",
+      "fix": "Completed via health-check workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [
+        "."
+      ],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.002,
+          "cost_if_always_premium": 0.012,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "health-check",
+        "workflow_id": "4576c8fe-5d9d-4d78-a4e5-3a2c78f8b21c",
+        "duration_seconds": 25.32,
+        "started_at": "2026-01-10T14:27:51.827529",
+        "completed_at": "2026-01-10T14:28:17.146063"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260110_385bd2d5",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: release-prep - Pre-release quality gate with health, security, and changelog",
+      "fix": "Completed via release-prep workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "PREMIUM",
+        "successful_tier": "PREMIUM",
+        "total_attempts": 3,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "PREMIUM",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.101,
+          "cost_if_always_premium": 0.504,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "release-prep",
+        "workflow_id": "385bd2d5-86d9-4434-803f-c36af7f61e2d",
+        "duration_seconds": 141.79,
+        "started_at": "2026-01-10T14:28:13.325836",
+        "completed_at": "2026-01-10T14:30:35.112979"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260110_e2b4fa5a",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: release-prep - Pre-release quality gate with health, security, and changelog",
+      "fix": "Completed via release-prep workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "PREMIUM",
+        "successful_tier": "PREMIUM",
+        "total_attempts": 3,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "PREMIUM",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.101,
+          "cost_if_always_premium": 0.504,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "release-prep",
+        "workflow_id": "e2b4fa5a-c36c-43ee-9b7c-7f2621b88b6f",
+        "duration_seconds": 141.88,
+        "started_at": "2026-01-10T14:30:50.694878",
+        "completed_at": "2026-01-10T14:33:12.570399"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260110_0cc474a4",
+      "bug_type": "health_check",
+      "status": "resolved",
+      "root_cause": "Workflow: health-check - Project health diagnosis and fixing with 5-agent crew",
+      "fix": "Completed via health-check workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [
+        "."
+      ],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.002,
+          "cost_if_always_premium": 0.012,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "health-check",
+        "workflow_id": "0cc474a4-a4ae-4e82-ad02-bb52e08fe211",
+        "duration_seconds": 29.65,
+        "started_at": "2026-01-10T14:45:31.029594",
+        "completed_at": "2026-01-10T14:46:00.681017"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260110_cdcdf51a",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: release-prep - Pre-release quality gate with health, security, and changelog",
+      "fix": "Completed via release-prep workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-01-10",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "PREMIUM",
+        "successful_tier": "PREMIUM",
+        "total_attempts": 3,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "PREMIUM",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.103,
+          "cost_if_always_premium": 0.514,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "release-prep",
+        "workflow_id": "cdcdf51a-3fd3-48f6-8e98-01eba3812a1b",
+        "duration_seconds": 193.72,
+        "started_at": "2026-01-10T14:42:47.167961",
+        "completed_at": "2026-01-10T14:46:00.892449"
+      }
     }
   ],
   "last_updated": "2026-01-07T00:51:52.358772",
