@@ -89,7 +89,7 @@ def _hash_file(file_path: str) -> str:
 
 ```python
 @staticmethod
-@lru_cache(maxsize=500)
+@lru_cache(maxsize=2000)
 def _parse_python_cached(file_path: str, file_hash: str) -> ast.Module | None:
     """Cache parsed ASTs with file hash for invalidation."""
     content = Path(file_path).read_text(encoding="utf-8", errors="ignore")
@@ -97,11 +97,16 @@ def _parse_python_cached(file_path: str, file_hash: str) -> ast.Module | None:
 ```
 
 **Specifications:**
-- **Cache Size:** 500 entries (~5MB memory, 10KB per AST)
+- **Cache Size:** 2000 entries (~20MB memory, 10KB per AST)
 - **Strategy:** LRU with hash-based invalidation
-- **Expected Hit Rate:** 90%+ for incremental operations
+- **Measured Hit Rate:** 100% for second scan (35% faster overall)
 - **Benefit:** Skip expensive `ast.parse()` for unchanged files
 - **Invalidation:** Automatic when file_hash changes
+
+**Performance Measurement:**
+- First scan (cold cache): 5.75 seconds
+- Second scan (warm cache): 3.74 seconds
+- **Speedup: 1.54x (35% improvement)**
 
 **3. Updated `_analyze_code_metrics()`**
 

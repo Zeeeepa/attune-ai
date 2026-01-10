@@ -52,7 +52,7 @@ class ProjectScanner:
             return str(Path(file_path).stat().st_mtime)
 
     @staticmethod
-    @lru_cache(maxsize=500)
+    @lru_cache(maxsize=2000)
     def _parse_python_cached(file_path: str, file_hash: str) -> ast.Module | None:
         """Cache AST parsing results (expensive CPU operation).
 
@@ -64,7 +64,7 @@ class ProjectScanner:
             Parsed AST or None if parsing fails
 
         Note:
-            Uses LRU cache with 500 entries (~5MB memory).
+            Uses LRU cache with 2000 entries (~20MB memory).
             Hit rate expected: 90%+ for incremental operations.
             Cache invalidates automatically when file_hash changes.
         """
