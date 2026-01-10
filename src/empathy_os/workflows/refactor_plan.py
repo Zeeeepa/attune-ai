@@ -13,6 +13,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import heapq
 import json
 import logging
 import re
@@ -217,7 +218,7 @@ class RefactorPlanWorkflow(BaseWorkflow):
                 "debt_items": debt_items,
                 "total_debt": self._total_debt,
                 "files_scanned": files_scanned,
-                "by_file": dict(sorted(by_file.items(), key=lambda x: -x[1])[:20]),
+                "by_file": dict(heapq.nlargest(20, by_file.items(), key=lambda x: x[1])),
                 "by_marker": by_marker,
                 **input_data,
             },

@@ -8,6 +8,7 @@ Licensed under Fair Source 0.9
 
 import ast
 import fnmatch
+import heapq
 import os
 from datetime import datetime
 from pathlib import Path
@@ -484,7 +485,7 @@ class ProjectScanner:
         summary.stale_file_count = len(stale)
         if stale:
             summary.avg_staleness_days = sum(r.staleness_days for r in stale) / len(stale)
-            top_stale = sorted(stale, key=lambda r: -r.staleness_days)[:5]
+            top_stale = heapq.nlargest(5, stale, key=lambda r: r.staleness_days)
             summary.most_stale_files = [r.path for r in top_stale]
 
         # Code metrics
@@ -511,7 +512,7 @@ class ProjectScanner:
         summary.total_lint_issues = sum(r.lint_issues for r in records)
 
         # High impact files
-        high_impact = sorted(records, key=lambda r: -r.impact_score)[:10]
+        high_impact = heapq.nlargest(10, records, key=lambda r: r.impact_score)
         summary.high_impact_files = [
             r.path for r in high_impact if r.impact_score >= self.config.high_impact_threshold
         ]
@@ -525,14 +526,14 @@ class ProjectScanner:
             and r.test_requirement == TestRequirement.REQUIRED
         ]
         summary.critical_untested_files = [
-            r.path for r in sorted(critical, key=lambda r: -r.impact_score)[:10]
+            r.path for r in heapq.nlargest(10, critical, key=lambda r: r.impact_score)
         ]
 
         # Attention needed
         needing_attention = [r for r in records if r.needs_attention]
         summary.files_needing_attention = len(needing_attention)
         summary.top_attention_files = [
-            r.path for r in sorted(needing_attention, key=lambda r: -r.impact_score)[:10]
+            r.path for r in heapq.nlargest(10, needing_attention, key=lambda r: r.impact_score)
         ]
 
         return summary

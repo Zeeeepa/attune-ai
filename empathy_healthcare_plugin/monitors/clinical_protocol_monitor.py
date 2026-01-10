@@ -275,7 +275,7 @@ class ClinicalProtocolMonitor:
                 f"Follow {protocol.name} monitoring frequency: {protocol.monitoring_frequency}",
             )
 
-        return list(set(recommendations))  # Deduplicate
+        return list(dict.fromkeys(recommendations))  # Deduplicate (preserves order)
 
     def _generate_predictions(
         self,

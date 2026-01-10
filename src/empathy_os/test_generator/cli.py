@@ -9,6 +9,7 @@ Licensed under Fair Source 0.9
 """
 
 import argparse
+import heapq
 import json
 import logging
 import sys
@@ -127,7 +128,9 @@ def cmd_analyze(args):
     print(f"{'=' * 60}\n")
 
     print("Test Priorities:")
-    for test_name, priority in sorted(analysis.test_priorities.items(), key=lambda x: x[1])[:10]:
+    for test_name, priority in heapq.nsmallest(
+        10, analysis.test_priorities.items(), key=lambda x: x[1]
+    ):
         priority_label = {
             1: "CRITICAL",
             2: "HIGH",

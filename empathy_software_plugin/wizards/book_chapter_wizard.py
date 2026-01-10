@@ -195,7 +195,7 @@ class BookChapterWizard(BaseWizard):
             concept = match.group(1).strip()
             if len(concept) < 50:  # Reasonable concept length
                 concepts.append(concept)
-        return list(set(concepts))[:20]  # Dedupe, limit
+        return list(dict.fromkeys(concepts))[:20]  # Dedupe (preserves order), limit
 
     def _extract_metrics(self, content: str) -> list[str]:
         """Extract metrics and numbers (good for book credibility)."""
@@ -206,7 +206,7 @@ class BookChapterWizard(BaseWizard):
         # Look for multiplier patterns
         for match in re.finditer(r"\d+\.?\d*x\s+\w+", content):
             metrics.append(match.group(0))
-        return list(set(metrics))[:10]
+        return list(dict.fromkeys(metrics))[:10]  # Dedupe (preserves order)
 
     def _extract_examples(self, content: str) -> list[str]:
         """Extract example scenarios."""

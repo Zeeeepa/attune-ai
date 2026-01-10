@@ -280,7 +280,7 @@ class PRReviewWorkflow:
                 warnings=warnings,
                 recommendations=recommendations[:15],  # Top 15
                 summary=summary,
-                agents_used=list(set(agents_used)),  # Deduplicate
+                agents_used=list(dict.fromkeys(agents_used)),  # Deduplicate (preserves order)
                 duration_seconds=duration,
                 cost=total_cost,
                 metadata={

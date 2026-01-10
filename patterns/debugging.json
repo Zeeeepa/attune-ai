@@ -3305,9 +3305,195 @@
           "false_complete_avoided": true
         }
       }
+    },
+    {
+      "pattern_id": "bug_20260110_b6b1d0bd",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "chore: Apply automated linting and formatting fixes across codebase",
+      "fix": "See commit b6b1d0bd",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-10",
+      "files_affected": [
+        ".claude/rules/empathy/bug-patterns.md",
+        ".claude/rules/empathy/coding-patterns.md",
+        ".claude/rules/empathy/security-decisions.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_ded73555",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(ci): Fix tier pattern analysis workflow shell errors",
+      "fix": "See commit ded73555",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        ".github/workflows/tier-pattern-analysis.yml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_36bd9ec9",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "security: Fix React Router XSS vulnerability (CVE-2026-22029)",
+      "fix": "See commit 36bd9ec9",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "examples/wizard-dashboard/package-lock.json",
+        "examples/wizard-dashboard/package.json"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_69c8700a",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(lint): Document intentional broad exception handling with noqa comments",
+      "fix": "See commit 69c8700a",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "backend/api/wizard_api.py",
+        "benchmarks/benchmark_caching.py",
+        "examples/coach/lsp/context_collector.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_2e2bc58a",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Resolve remaining lint issues in benchmarks and examples",
+      "fix": "See commit 2e2bc58a",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "benchmarks/benchmark_semantic_cache.py",
+        "benchmarks/manual_test.py",
+        "examples/sonnet_opus_fallback_example.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_96a88530",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(tests): Remove unused preview variables in wizard tests",
+      "fix": "See commit 96a88530",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "tests/unit/wizards/test_patient_assessment_wizard.py",
+        "tests/unit/wizards/test_test_e2e_wizard_wizard.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_2a2f6971",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(deps): Update langchain-core minimum version to fix conflicts",
+      "fix": "See commit 2a2f6971",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "pyproject.toml"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_eacac836",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix(health): Fix lint issues to improve project health score",
+      "fix": "See commit eacac836",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "src/empathy_os/models/telemetry.py",
+        "tests/test_fallback_suite.py",
+        "tests/unit/telemetry/test_tier1_cli.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_054dfcee",
+      "bug_type": "null_reference",
+      "status": "resolved",
+      "root_cause": "fix(health): Fix undefined stage variables in workflow template",
+      "fix": "See commit 054dfcee",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "src/empathy_os/workflows/new_sample_workflow1.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_1bad1e52",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "feat: Add cache persistence and fix dashboard config",
+      "fix": "See commit 1bad1e52",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "dashboard/backend/config.py",
+        "src/empathy_os/cache/hybrid.py",
+        "tests/unit/cache/test_hybrid_cache.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_731ec86d",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Change 'never write insecure code' to 'generate secure code by default'",
+      "fix": "See commit 731ec86d",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "docs/marketing/READY_TO_POST.md",
+        "docs/marketing/TWITTER_THREAD_V3_9_3.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_f6235d53",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove untested 'works with Copilot/Cursor' claims",
+      "fix": "See commit f6235d53",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "docs/marketing/RESPONSE_TEMPLATES_ACCURATE.md",
+        "docs/marketing/TWITTER_THREAD_V3_9_3.md",
+        "docs/marketing/V3_9_3_CAMPAIGN.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260109_5f5b1784",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove all inaccurate claims from marketing materials",
+      "fix": "See commit 5f5b1784",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-09",
+      "files_affected": [
+        "docs/marketing/ACCURACY_AUDIT.md",
+        "docs/marketing/READY_TO_POST.md",
+        "docs/marketing/RESPONSE_TEMPLATES_ACCURATE.md"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2026-01-07T00:51:52.358772",
+  "last_updated": "2026-01-10T05:29:12.839595",
   "migration_metadata": {
     "migrated_at": "2026-01-07T05:51:07.939260",
     "total_patterns": 64,

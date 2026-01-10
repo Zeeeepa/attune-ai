@@ -13,6 +13,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import heapq
 import json
 import re
 from pathlib import Path
@@ -372,7 +373,7 @@ class PerformanceAuditWorkflow(BaseWorkflow):
         for f in findings:
             t = f.get("type", "unknown")
             issue_counts[t] = issue_counts.get(t, 0) + 1
-        top_issues = sorted(issue_counts.items(), key=lambda x: -x[1])[:5]
+        top_issues = heapq.nlargest(5, issue_counts.items(), key=lambda x: x[1])
 
         # Build input payload for prompt
         input_payload = f"""Target: {target or "codebase"}

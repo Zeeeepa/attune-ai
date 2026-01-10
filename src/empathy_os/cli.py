@@ -13,6 +13,7 @@ Licensed under Fair Source License 0.9
 """
 
 import argparse
+import heapq
 import sys
 import time
 from importlib.metadata import version as get_version
@@ -1444,8 +1445,8 @@ def cmd_inspect(args):
             if patterns:
                 print("\n  Top patterns:")
                 # Sort by confidence
-                sorted_patterns = sorted(patterns, key=lambda p: p.confidence, reverse=True)[:10]
-                for i, pattern in enumerate(sorted_patterns, 1):
+                top_patterns = heapq.nlargest(10, patterns, key=lambda p: p.confidence)
+                for i, pattern in enumerate(top_patterns, 1):
                     print(f"\n  {i}. {pattern.name}")
                     print(f"     Confidence: {pattern.confidence:.0%}")
                     print(f"     Used: {pattern.usage_count} times")

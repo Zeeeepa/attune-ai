@@ -6,6 +6,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import heapq
 from datetime import datetime
 from typing import Any
 
@@ -141,7 +142,7 @@ class ReportGenerator:
                     "coverage_percent": r.coverage_percent,
                     "impact_score": r.impact_score,
                 }
-                for r in sorted(low_coverage, key=lambda r: r.coverage_percent)[:20]
+                for r in heapq.nsmallest(20, low_coverage, key=lambda r: r.coverage_percent)
             ],
             "coverage_by_directory": self._coverage_by_directory(),
         }

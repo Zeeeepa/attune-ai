@@ -302,4 +302,4 @@ class PerformanceProfilingWizard(BaseWizard):
                 f"{opt_potential} optimization potential - significant performance gains possible",
             )
 
-        return list(set(recommendations))  # Deduplicate
+        return list(dict.fromkeys(recommendations))  # Deduplicate (preserves order)

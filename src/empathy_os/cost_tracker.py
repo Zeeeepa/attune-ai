@@ -15,6 +15,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import heapq
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -306,8 +307,8 @@ class CostTracker:
                     "-" * 40,
                 ],
             )
-            sorted_tasks = sorted(summary["by_task"].items(), key=lambda x: -x[1])[:5]
-            for task, count in sorted_tasks:
+            top_tasks = heapq.nlargest(5, summary["by_task"].items(), key=lambda x: x[1])
+            for task, count in top_tasks:
                 lines.append(f"  {task:20} {count:,}")
             lines.append("")
 

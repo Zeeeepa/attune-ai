@@ -17,6 +17,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import heapq
 import json
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -1235,7 +1236,7 @@ class TelemetryAnalytics:
 
         most_failing = [
             {"name": name, "failures": count}
-            for name, count in sorted(failure_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+            for name, count in heapq.nlargest(10, failure_counts.items(), key=lambda x: x[1])
         ]
 
         return {

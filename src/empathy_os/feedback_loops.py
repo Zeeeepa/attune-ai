@@ -335,12 +335,13 @@ class FeedbackLoopDetector:
             return 0.0
 
         n = len(values)
-        x = list(range(n))
-        x_mean = sum(x) / n
+        # x_mean is sum(0,1,...,n-1)/n = (n-1)/2
+        x_mean = (n - 1) / 2
         y_mean = sum(values) / n
 
-        numerator = sum((x[i] - x_mean) * (values[i] - y_mean) for i in range(n))
-        denominator = sum((x[i] - x_mean) ** 2 for i in range(n))
+        # Use i directly instead of x[i] since x would just be range(n)
+        numerator = sum((i - x_mean) * (values[i] - y_mean) for i in range(n))
+        denominator = sum((i - x_mean) ** 2 for i in range(n))
 
         if denominator == 0:
             return 0.0

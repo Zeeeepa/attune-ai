@@ -1130,7 +1130,9 @@ def test_{name}_returns_correct_type():
         return {
             "valid_args": valid_args,
             "parametrize_cases": parametrize_cases[:5],  # Limit cases
-            "edge_cases": list(set(edge_cases))[:5],  # Unique edge cases
+            "edge_cases": list(dict.fromkeys(edge_cases))[
+                :5
+            ],  # Unique edge cases (preserves order)
         }
 
     def _get_type_assertion(self, return_type: str) -> str | None:

@@ -12,6 +12,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import heapq
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -98,7 +99,7 @@ class TestAnalystAgent:
                     "impact": f.impact_score,
                     "loc": f.lines_of_code,
                 }
-                for f in sorted(high_impact, key=lambda x: -x.impact_score)[:10]
+                for f in heapq.nlargest(10, high_impact, key=lambda x: x.impact_score)
             ],
             "recommendation": self._generate_recommendation(files_needing_tests, high_impact),
         }
@@ -130,7 +131,7 @@ class TestAnalystAgent:
                     "staleness_days": f.staleness_days,
                     "test_file": f.test_file_path,
                 }
-                for f in sorted(stale_files, key=lambda x: -x.staleness_days)[:10]
+                for f in heapq.nlargest(10, stale_files, key=lambda x: x.staleness_days)
             ],
         }
 

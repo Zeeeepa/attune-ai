@@ -403,7 +403,7 @@ class PerformanceTrajectoryAnalyzer:
         if trajectory_state == "critical":
             recommendations.append("Consider scaling resources immediately")
 
-        return list(set(recommendations))  # Deduplicate
+        return list(dict.fromkeys(recommendations))  # Deduplicate (preserves order)
 
     def _calculate_confidence(
         self,
