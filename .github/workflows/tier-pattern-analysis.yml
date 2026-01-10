@@ -47,16 +47,23 @@ jobs:
         id: check
         run: |
           # Extract savings percentage from report
-          SAVINGS=$(grep "Savings percentage:" pattern_analysis_report.txt | awk '{print $3}' | tr -d '%')
-          echo "Current savings: $SAVINGS%"
-          echo "savings=$SAVINGS" >> $GITHUB_OUTPUT
+          SAVINGS=$(grep "Savings percentage:" pattern_analysis_report.txt | awk '{print $3}' | tr -d '%' | head -n1)
 
-          # Set alert if savings drop below 85%
-          if [ $(echo "$SAVINGS < 85" | bc) -eq 1 ]; then
-            echo "alert=true" >> $GITHUB_OUTPUT
+          # Validate SAVINGS is a number
+          if ! [[ "$SAVINGS" =~ ^[0-9]+\.?[0-9]*$ ]]; then
+            echo "Warning: Could not extract valid savings percentage, defaulting to 0"
+            SAVINGS="0"
+          fi
+
+          echo "Current savings: $SAVINGS%"
+          echo "savings=$SAVINGS" >> "$GITHUB_OUTPUT"
+
+          # Set alert if savings drop below 85% (using awk for floating point comparison)
+          if awk "BEGIN {exit !($SAVINGS < 85)}"; then
+            echo "alert=true" >> "$GITHUB_OUTPUT"
             echo "⚠️  Savings dropped below 85%!"
           else
-            echo "alert=false" >> $GITHUB_OUTPUT
+            echo "alert=false" >> "$GITHUB_OUTPUT"
             echo "✅ Savings healthy at $SAVINGS%"
           fi
 
