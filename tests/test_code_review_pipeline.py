@@ -11,10 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.code_review_pipeline import (
-    CodeReviewPipeline,
-    CodeReviewPipelineResult,
-)
+from empathy_os.workflows.code_review_pipeline import CodeReviewPipeline, CodeReviewPipelineResult
 
 
 class TestCodeReviewPipelineResult:

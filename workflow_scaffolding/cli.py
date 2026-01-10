@@ -11,6 +11,7 @@ from pathlib import Path
 
 from rich.console import Console
 from rich.table import Table
+
 from empathy_os.workflow_patterns import get_workflow_pattern_registry
 
 from .generator import WorkflowGenerator

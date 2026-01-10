@@ -500,7 +500,7 @@ def _parse_timestamp(timestamp_str: str) -> datetime:
         Parsed datetime object (timezone-naive UTC)
     """
     # Python 3.10's fromisoformat() doesn't handle 'Z' suffix
-    if timestamp_str.endswith('Z'):
+    if timestamp_str.endswith("Z"):
         timestamp_str = timestamp_str[:-1]
 
     dt = datetime.fromisoformat(timestamp_str)
@@ -1038,7 +1038,8 @@ class TelemetryAnalytics:
 
         # Filter for Anthropic calls (Sonnet/Opus)
         anthropic_calls = [
-            c for c in calls
+            c
+            for c in calls
             if c.provider == "anthropic"
             and c.model_id in ["claude-sonnet-4-5", "claude-opus-4-5-20251101"]
         ]
@@ -1065,7 +1066,8 @@ class TelemetryAnalytics:
 
         # Count Opus fallbacks (calls with fallback_used and ended up on Opus)
         opus_fallbacks = sum(
-            1 for c in anthropic_calls
+            1
+            for c in anthropic_calls
             if c.model_id == "claude-opus-4-5-20251101" and c.fallback_used
         )
 

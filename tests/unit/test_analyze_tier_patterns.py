@@ -19,10 +19,7 @@ import pytest
 # Add scripts to path for testing
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 
-from analyze_tier_patterns import (
-    TierPatternAnalyzer,
-    TierRecommendation,
-)
+from analyze_tier_patterns import TierPatternAnalyzer, TierRecommendation
 
 
 @pytest.fixture

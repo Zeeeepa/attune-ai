@@ -16,6 +16,7 @@ Licensed under Fair Source License 0.9
 # Load .env file first
 try:
     from dotenv import load_dotenv
+
     load_dotenv()  # Load environment variables from .env
 except ImportError:
     pass  # dotenv not installed, continue anyway
@@ -139,6 +140,7 @@ class FallbackTestSuite:
         try:
             # Get API key from environment (Option 2: explicit passing)
             import os
+
             api_key = os.getenv("ANTHROPIC_API_KEY")
 
             if not api_key:
@@ -150,7 +152,7 @@ class FallbackTestSuite:
             # Create executor with fallback (explicitly pass API key)
             base_executor = EmpathyLLMExecutor(
                 provider="anthropic",
-                api_key=api_key  # Explicitly pass the API key
+                api_key=api_key,  # Explicitly pass the API key
             )
             executor = ResilientExecutor(
                 executor=base_executor,
@@ -182,10 +184,10 @@ class FallbackTestSuite:
 
             # Check if response indicates success (handle different response formats)
             success = True
-            if hasattr(response, 'success'):
+            if hasattr(response, "success"):
                 # Check if response is successful (has content and no error)
                 success = bool(response.content and not response.metadata.get("error"))
-            elif hasattr(response, 'content'):
+            elif hasattr(response, "content"):
                 success = bool(response.content)  # Has content = success
             else:
                 success = True  # If we got a response, assume success
@@ -413,7 +415,9 @@ class FallbackTestSuite:
         total_cost = sum(r.cost for r in results)
 
         # Calculate baseline (all Opus) cost
-        baseline_opus_cost = sum(r.cost * 5 if r.actual_model == "sonnet" else r.cost for r in results)
+        baseline_opus_cost = sum(
+            r.cost * 5 if r.actual_model == "sonnet" else r.cost for r in results
+        )
 
         savings = baseline_opus_cost - total_cost
         savings_percent = (savings / baseline_opus_cost * 100) if baseline_opus_cost > 0 else 0
@@ -459,7 +463,9 @@ class FallbackTestSuite:
             return
 
         console.print("\n" + "=" * 80, style="cyan")
-        console.print("🎯 SONNET 4.5 → OPUS 4.5 FALLBACK TEST REPORT", style="bold cyan", justify="center")
+        console.print(
+            "🎯 SONNET 4.5 → OPUS 4.5 FALLBACK TEST REPORT", style="bold cyan", justify="center"
+        )
         console.print("=" * 80, style="cyan")
 
         # Test execution summary
@@ -481,11 +487,23 @@ class FallbackTestSuite:
 
         # Model usage
         usage_text = Text()
-        usage_text.append(f"Sonnet Only: {report.sonnet_only} ({(report.sonnet_only / report.total_tests * 100):.1f}%)\n", style="blue bold")
-        usage_text.append(f"Opus Fallback: {report.opus_fallback} ({report.fallback_rate:.1f}%)\n", style="magenta bold")
+        usage_text.append(
+            f"Sonnet Only: {report.sonnet_only} ({(report.sonnet_only / report.total_tests * 100):.1f}%)\n",
+            style="blue bold",
+        )
+        usage_text.append(
+            f"Opus Fallback: {report.opus_fallback} ({report.fallback_rate:.1f}%)\n",
+            style="magenta bold",
+        )
 
-        fallback_style = "green" if report.fallback_rate < 5 else ("yellow" if report.fallback_rate < 15 else "red")
-        usage_text.append(f"\nFallback Rate: {report.fallback_rate:.1f}%", style=f"{fallback_style} bold")
+        fallback_style = (
+            "green"
+            if report.fallback_rate < 5
+            else ("yellow" if report.fallback_rate < 15 else "red")
+        )
+        usage_text.append(
+            f"\nFallback Rate: {report.fallback_rate:.1f}%", style=f"{fallback_style} bold"
+        )
 
         console.print(Panel(usage_text, title="Model Usage Distribution", border_style="blue"))
 
@@ -493,7 +511,10 @@ class FallbackTestSuite:
         cost_text = Text()
         cost_text.append(f"Actual Cost: ${report.total_cost:.4f}\n")
         cost_text.append(f"Baseline (all Opus): ${report.baseline_opus_cost:.4f}\n")
-        cost_text.append(f"\nSavings: ${report.savings:.4f} ({report.savings_percent:.1f}%)\n", style="green bold")
+        cost_text.append(
+            f"\nSavings: ${report.savings:.4f} ({report.savings_percent:.1f}%)\n",
+            style="green bold",
+        )
         cost_text.append(f"Projected Annual Savings: ${report.savings * 365:.2f}", style="green")
 
         console.print(Panel(cost_text, title="Cost Savings Analysis", border_style="green"))
@@ -527,7 +548,9 @@ class FallbackTestSuite:
             rec_text = Text()
             rec_text.append("✅ Excellent Performance!\n", style="green bold")
             rec_text.append(f"Sonnet handles {100 - report.fallback_rate:.1f}% of tasks.\n")
-            rec_text.append(f"Cost savings: ${report.savings:.4f} ({report.savings_percent:.1f}%)\n")
+            rec_text.append(
+                f"Cost savings: ${report.savings:.4f} ({report.savings_percent:.1f}%)\n"
+            )
             rec_text.append("\nRecommendation: Continue current strategy.")
             console.print(Panel(rec_text, title="Assessment", border_style="green"))
         elif report.fallback_rate < 15:
@@ -558,7 +581,9 @@ class FallbackTestSuite:
         print(f"  Duration: {report.duration_seconds:.1f}s")
 
         print("\nModel Usage:")
-        print(f"  Sonnet Only: {report.sonnet_only} ({(report.sonnet_only / report.total_tests * 100):.1f}%)")
+        print(
+            f"  Sonnet Only: {report.sonnet_only} ({(report.sonnet_only / report.total_tests * 100):.1f}%)"
+        )
         print(f"  Opus Fallback: {report.opus_fallback} ({report.fallback_rate:.1f}%)")
 
         print("\nCost Analysis:")
@@ -568,7 +593,9 @@ class FallbackTestSuite:
 
         print("\n" + "=" * 80)
 
-    def save_report(self, report: TestReport, output_path: str = "fallback_test_report.json") -> None:
+    def save_report(
+        self, report: TestReport, output_path: str = "fallback_test_report.json"
+    ) -> None:
         """Save report to JSON file.
 
         Args:

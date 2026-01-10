@@ -148,17 +148,16 @@ class OTELBackend:
         Returns:
             True if opentelemetry-api and opentelemetry-sdk are installed
         """
-        try:
-            import opentelemetry.trace  # noqa: F401
-            from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
-                OTLPSpanExporter,  # noqa: F401
-            )
-            from opentelemetry.sdk.trace import TracerProvider  # noqa: F401
-            from opentelemetry.sdk.trace.export import BatchSpanProcessor  # noqa: F401
+        import importlib.util
 
-            return True
-        except ImportError:
-            return False
+        required_packages = [
+            "opentelemetry.trace",
+            "opentelemetry.exporter.otlp.proto.grpc.trace_exporter",
+            "opentelemetry.sdk.trace",
+            "opentelemetry.sdk.trace.export",
+        ]
+
+        return all(importlib.util.find_spec(pkg) is not None for pkg in required_packages)
 
     def _init_otel(self) -> None:
         """Initialize OTEL tracer and exporter."""

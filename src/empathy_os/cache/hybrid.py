@@ -205,7 +205,7 @@ class HybridCache(BaseCache):
             self._access_times[cache_key] = current_time
             self.stats.hits += 1
             logger.debug(
-                f"Cache HIT (hash): {workflow}/{stage} " f"(hit_rate: {self.stats.hit_rate:.1f}%)"
+                f"Cache HIT (hash): {workflow}/{stage} (hit_rate: {self.stats.hit_rate:.1f}%)"
             )
             return entry.response
 
@@ -228,7 +228,7 @@ class HybridCache(BaseCache):
         # Step 3: Cache miss
         self.stats.misses += 1
         logger.debug(
-            f"Cache MISS (hybrid): {workflow}/{stage} " f"(hit_rate: {self.stats.hit_rate:.1f}%)"
+            f"Cache MISS (hybrid): {workflow}/{stage} (hit_rate: {self.stats.hit_rate:.1f}%)"
         )
         return None
 

@@ -111,7 +111,7 @@ def test_empathy_llm_integration() -> None:
     # Initialize with memory (using dummy API key for testing)
     llm = EmpathyLLM(
         provider="anthropic",
-        api_key="test-key-for-memory-testing",
+        api_key="test-key-for-memory-testing",  # pragma: allowlist secret
         claude_memory_config=config,
         project_root=".",
     )
@@ -144,7 +144,7 @@ def test_memory_reloading() -> None:
 
     llm = EmpathyLLM(
         provider="anthropic",
-        api_key="test-key",
+        api_key="test-key",  # pragma: allowlist secret
         claude_memory_config=config,
         project_root=".",
     )
@@ -243,7 +243,7 @@ def test_disabled_memory() -> None:
 
     llm = EmpathyLLM(
         provider="anthropic",
-        api_key="test-key",
+        api_key="test-key",  # pragma: allowlist secret
         claude_memory_config=config,
         project_root=".",
     )

@@ -9,7 +9,6 @@ Licensed under Fair Source License 0.9
 from pathlib import Path
 
 from empathy_os.workflow_patterns import get_workflow_pattern_registry
-
 from workflow_scaffolding.generator import WorkflowGenerator
 
 

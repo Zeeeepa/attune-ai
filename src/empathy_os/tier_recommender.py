@@ -349,8 +349,7 @@ class TierRecommender:
             return f"1 similar bug ({bug_type}) resolved at {tier} tier"
         else:
             return (
-                f"{percent}% of {similar_count} similar bugs ({bug_type}) "
-                f"resolved at {tier} tier"
+                f"{percent}% of {similar_count} similar bugs ({bug_type}) resolved at {tier} tier"
             )
 
     def get_stats(self) -> dict:

@@ -674,7 +674,8 @@ def cmd_telemetry_dashboard(args: Any) -> int:
                 <div class="stat-label">Cost Savings (Tier Routing)</div>
                 <div class="stat-value">${saved:.2f}</div>
                 <div class="stat-sublabel">
-                    {savings_pct:.1f}% saved • Baseline: ${baseline_cost:.2f} • Actual: ${total_cost:.2f}
+                    {savings_pct:.1f}% saved • Baseline: ${baseline_cost:.2f} • Actual: ${
+        total_cost:.2f}
                 </div>
             </div>
 
@@ -694,7 +695,12 @@ def cmd_telemetry_dashboard(args: Any) -> int:
         <div class="stat-card">
             <div class="stat-label">Tier Distribution</div>
             <div class="tier-distribution">
-                {"".join(f'<div class="tier-bar tier-{tier.lower()}">{tier}: {pct:.1f}%</div>' for tier, pct in tier_distribution.items())}
+                {
+        "".join(
+            f'<div class="tier-bar tier-{tier.lower()}">{tier}: {pct:.1f}%</div>'
+            for tier, pct in tier_distribution.items()
+        )
+    }
             </div>
         </div>
 
@@ -713,18 +719,23 @@ def cmd_telemetry_dashboard(args: Any) -> int:
                 </tr>
             </thead>
             <tbody>
-                {"".join(f'''<tr>
+                {
+        "".join(
+            f'''<tr>
                     <td>{datetime.fromisoformat(e.get("ts", "").replace("Z", "+00:00")).strftime("%H:%M:%S")}</td>
                     <td>{e.get("workflow", "")}</td>
                     <td>{e.get("stage", "")}</td>
                     <td><span class="tier-badge badge-{e.get("tier", "").lower()}">{e.get("tier", "")}</span></td>
                     <td>${e.get("cost", 0):.4f}</td>
                     <td>{e.get("tokens", {}).get("input", 0)}/{e.get("tokens", {}).get("output", 0)}</td>
-                    <td class="cache-{'hit' if e.get('cache', {}).get('hit') else 'miss'}">
-                        {'HIT' if e.get('cache', {}).get('hit') else 'MISS'}
+                    <td class="cache-{"hit" if e.get("cache", {}).get("hit") else "miss"}">
+                        {"HIT" if e.get("cache", {}).get("hit") else "MISS"}
                     </td>
                     <td>{e.get("duration_ms", 0) / 1000:.1f}s</td>
-                </tr>''' for e in list(reversed(entries))[:20])}
+                </tr>'''
+            for e in list(reversed(entries))[:20]
+        )
+    }
             </tbody>
         </table>
     </div>
