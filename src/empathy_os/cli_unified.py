@@ -551,6 +551,7 @@ def orchestrate_health_check(
     mode: str = typer.Option("daily", "--mode", "-m", help="Check mode: daily, weekly, release"),
     project_root: Path = typer.Option(Path("."), "--project-root", "-p", help="Project root path"),
     json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+    web: bool = typer.Option(False, "--web", "-w", help="Open results in web dashboard"),
 ):
     """Run orchestrated health check with adaptive agent teams.
 
@@ -571,6 +572,32 @@ def orchestrate_health_check(
             import json
 
             console.print(json.dumps(report.to_dict(), indent=2))
+        elif web:
+            # Save report to temp file and launch dashboard
+            import json
+            import subprocess
+            from tempfile import NamedTemporaryFile
+
+            # Save report as JSON
+            with NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+                json.dump(report.to_dict(), f, indent=2)
+                report_path = f.name
+
+            console.print("\n✅ Health check complete!")
+            console.print(f"📊 Report saved to: {report_path}")
+            console.print("🌐 Opening dashboard...")
+
+            # Try to launch dashboard
+            try:
+                subprocess.Popen(
+                    [sys.executable, "-m", "empathy_os.dashboard", "--health-report", report_path],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                console.print("   Dashboard should open in your browser")
+            except Exception as e:
+                console.print(f"[yellow]   Dashboard not available: {e}[/yellow]")
+                console.print(f"   View report at: {report_path}")
         else:
             # Beautiful console output
             console.print("\n[bold cyan]🏥 HEALTH CHECK REPORT[/bold cyan]")
@@ -596,11 +623,14 @@ def orchestrate_health_check(
 
             # Recommendations
             if report.recommendations:
-                console.print("\n[bold yellow]💡 Recommendations:[/bold yellow]")
-                for i, rec in enumerate(report.recommendations[:5], 1):
-                    console.print(f"  {i}. {rec}")
+                console.print("\n[bold yellow]💡 Next Steps:[/bold yellow]")
+                for rec in report.recommendations[:10]:  # Show more recommendations
+                    console.print(f"  {rec}")
 
             console.print("\n" + "=" * 60)
+            console.print(
+                f"\n💡 Tip: Add --web flag to view in dashboard: empathy orchestrate health-check --mode {mode} --web"
+            )
 
         return report
 

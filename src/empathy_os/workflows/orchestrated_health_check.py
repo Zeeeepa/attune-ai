@@ -608,13 +608,13 @@ class OrchestratedHealthCheckWorkflow:
         return "F"
 
     def _generate_recommendations(self, category_scores: list[CategoryScore]) -> list[str]:
-        """Generate actionable recommendations based on scores.
+        """Generate actionable recommendations with specific commands.
 
         Args:
             category_scores: Category scores
 
         Returns:
-            List of recommendations
+            List of recommendations with commands to run
         """
         recommendations = []
 
@@ -624,31 +624,47 @@ class OrchestratedHealthCheckWorkflow:
         for category in sorted_categories:
             if not category.passed:
                 if category.name == "Security":
-                    recommendations.append(
-                        f"🔒 Address {len(category.issues)} security issue(s) - run security audit"
-                    )
+                    recommendations.append(f"🔒 Address {len(category.issues)} security issue(s)")
+                    recommendations.append("   → Run: empathy workflow run security-audit --path .")
                 elif category.name == "Coverage":
+                    target = max(80.0, category.score + 10)
                     recommendations.append(
                         f"🧪 Increase test coverage to 80%+ (currently {category.score:.1f}%)"
+                    )
+                    recommendations.append(
+                        f"   → Run: empathy orchestrate test-coverage --target {target:.0f}"
                     )
                 elif category.name == "Quality":
                     quality_score = category.raw_metrics.get("quality_score", 0.0)
                     recommendations.append(
                         f"✨ Improve code quality to 7+ (currently {quality_score:.1f}/10)"
                     )
+                    recommendations.append("   → Run: empathy workflow run code-review --path .")
+                    recommendations.append(
+                        "   → Or: empathy fix-all  (auto-fix lint/format issues)"
+                    )
                 elif category.name == "Performance":
                     bottlenecks = category.raw_metrics.get("bottleneck_count", 0)
                     recommendations.append(f"⚡ Optimize {bottlenecks} performance bottleneck(s)")
+                    recommendations.append("   → Run: empathy workflow run perf-audit --path .")
                 elif category.name == "Documentation":
                     recommendations.append(
                         f"📚 Complete documentation (currently {category.score:.1f}%)"
                     )
+                    recommendations.append("   → Run: empathy workflow run doc-gen --path .")
 
         # Add general recommendations
         if len(recommendations) == 0:
             recommendations.append("✅ Project health looks good! Keep up the good work.")
-        elif len(recommendations) >= 3:
-            recommendations.append("💡 Focus on top 3 priorities first for maximum impact")
+            recommendations.append(
+                "   → Run: empathy orchestrate health-check --mode weekly  (for deeper analysis)"
+            )
+        elif len(recommendations) >= 6:  # Multiple issues
+            recommendations.append("")
+            recommendations.append("💡 Tip: Focus on top priority first for maximum impact")
+            recommendations.append(
+                "   → Rerun: empathy orchestrate health-check --mode daily  (to track progress)"
+            )
 
         return recommendations
 
