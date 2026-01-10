@@ -792,10 +792,64 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         terminal.sendText('python -m pytest tests/ --no-cov -v');
     }
 
+    private async _runOrchestratedHealthCheck() {
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            vscode.window.showErrorMessage('No workspace folder open');
+            return;
+        }
+
+        // Show progress notification
+        vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: "Running Health Check",
+            cancellable: false
+        }, async (progress) => {
+            progress.report({ message: "Running orchestrated health check..." });
+
+            // Get configured python path
+            const config = vscode.workspace.getConfiguration('empathy');
+            const pythonPath = config.get<string>('pythonPath', 'python');
+
+            // Run orchestrated health check command
+            const args = ['-m', 'empathy_os.cli', 'orchestrate', 'health-check', '--mode', 'daily'];
+
+            return new Promise<void>((resolve) => {
+                cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
+                    if (error) {
+                        vscode.window.showErrorMessage(`Health check failed: ${error.message}`);
+                        resolve();
+                        return;
+                    }
+
+                    // Health check completed - show success and open panel
+                    vscode.window.showInformationMessage('Health check complete!', 'View Results').then(selection => {
+                        if (selection === 'View Results') {
+                            vscode.commands.executeCommand('empathy.openHealthPanel');
+                        }
+                    });
+
+                    // Also trigger health panel to open automatically
+                    setTimeout(() => {
+                        vscode.commands.executeCommand('empathy.openHealthPanel');
+                    }, 500);
+
+                    resolve();
+                });
+            });
+        });
+    }
+
     private async _runWorkflow(workflowName: string, input?: string) {
         // Special handling for doc-orchestrator: open the Documentation Analysis panel
         if (workflowName === 'doc-orchestrator') {
             vscode.commands.executeCommand('empathy.openDocAnalysis');
+            return;
+        }
+
+        // Special handling for orchestrated health check (v4.0)
+        if (workflowName === 'health-check') {
+            await this._runOrchestratedHealthCheck();
             return;
         }
 
@@ -2079,7 +2133,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span class="action-icon">&#x1F41B;</span>
                     <span>Predict Bugs</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="health-check" title="Run HealthCheckCrew for comprehensive 5-agent project health analysis">
+                <button class="action-btn workflow-btn" data-workflow="health-check" title="Run orchestrated health check with adaptive agent teams (daily mode: Security, Coverage, Quality)">
                     <span class="action-icon">&#x1FA7A;</span>
                     <span>Health Check</span>
                 </button>
