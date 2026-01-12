@@ -5,6 +5,26 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.1] - 2026-01-12
+
+### Fixed
+
+- **⚠️ IMPORTANT: v4.0.0 Rollback**
+  - v4.0.0 (Meta-Orchestration release) has been **yanked from PyPI** due to critical issues
+  - v4.0.1 restores the stable v3.11.0 codebase as the current release
+  - All v4.0.0 experimental work preserved in `experimental/v4.0-meta-orchestration` branch
+  - **Users on v4.0.0 should upgrade to v4.0.1 immediately**: `pip install --upgrade empathy-framework`
+
+### Deprecated
+
+- Meta-orchestration features from v4.0.0 are **not included** in this release
+- CrewAI-based workflows moved to experimental branch for further development
+- VS Code extension integration for meta-orchestration postponed
+
+### Note
+
+This release is identical to v3.11.0 (the last stable release) with updated version number to supersede the yanked v4.0.0. All v3.11.0 features and optimizations remain fully functional.
+
 ## [3.11.0] - 2026-01-10
 
 ### Added
