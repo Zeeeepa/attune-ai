@@ -346,11 +346,17 @@ perf-audit = "empathy_os.workflows.perf_audit:PerformanceAuditWorkflow"
 test-gen = "empathy_os.workflows.test_gen:TestGenerationWorkflow"
 refactor-plan = "empathy_os.workflows.refactor_plan:RefactorPlanWorkflow"
 dependency-check = "empathy_os.workflows.dependency_check:DependencyCheckWorkflow"
-release-prep = "empathy_os.workflows.release_prep:ReleasePreparationWorkflow"
+# v4.0.0 CrewAI-based multi-agent workflows (production)
+release-prep = "empathy_os.workflows.release_prep_crew:ReleasePreparationCrew"
+health-check = "empathy_os.workflows.health_check_crew:HealthCheckCrew"
+test-coverage-boost = "empathy_os.workflows.test_coverage_boost_crew:TestCoverageBoostCrew"
+# Legacy single-agent versions
+release-prep-legacy = "empathy_os.workflows.release_prep:ReleasePreparationWorkflow"
+health-check-legacy = "empathy_os.workflows.health_check:HealthCheckWorkflow"
+# Other workflows
 secure-release = "empathy_os.workflows.secure_release:SecureReleasePipeline"
 pro-review = "empathy_os.workflows.code_review_pipeline:CodeReviewPipeline"
 pr-review = "empathy_os.workflows.pr_review:PRReviewWorkflow"
-health-check = "empathy_os.workflows.health_check:HealthCheckWorkflow"
 
 [tool.setuptools]
 # Automatic package discovery

@@ -15,6 +15,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as cp from 'child_process';
 
 interface CoverageData {
     current_coverage: number;
@@ -51,7 +52,32 @@ export class CoveragePanel {
                     case 'refresh':
                         await this._updateData();
                         break;
+                    case 'requestCoverageTarget':
+                        console.log('[CoveragePanel] Received requestCoverageTarget');
+                        // Show VS Code input box to get target coverage
+                        const target = await vscode.window.showInputBox({
+                            prompt: 'Enter target coverage percentage',
+                            value: '80',
+                            validateInput: (value) => {
+                                const num = parseInt(value);
+                                if (isNaN(num) || num < 0 || num > 100) {
+                                    return 'Please enter a number between 0 and 100';
+                                }
+                                return null;
+                            }
+                        });
+                        console.log('[CoveragePanel] User entered target:', target);
+                        if (target) {
+                            // Send the target value back to the webview
+                            console.log('[CoveragePanel] Sending runBoostWithTarget to webview:', parseInt(target));
+                            this._panel.webview.postMessage({
+                                type: 'runBoostWithTarget',
+                                target: parseInt(target)
+                            });
+                        }
+                        break;
                     case 'runBoost':
+                        console.log('[CoveragePanel] Received runBoost with target:', message.target);
                         await this._runCoverageBoost(message.target);
                         break;
                     case 'openDashboard':
@@ -109,13 +135,27 @@ export class CoveragePanel {
     }
 
     private async _runCoverageBoost(target: number) {
+        console.log('[CoveragePanel] _runCoverageBoost called with target:', target);
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         if (!workspaceFolder) {
             vscode.window.showErrorMessage('No workspace folder open');
+            console.log('[CoveragePanel] Error: No workspace folder open');
             return;
         }
 
-        // Show in-progress state
+        console.log('[CoveragePanel] Workspace folder:', workspaceFolder);
+
+        // Create output channel for real-time feedback
+        const outputChannel = vscode.window.createOutputChannel('Empathy: Coverage Boost');
+        outputChannel.show(true);
+        outputChannel.appendLine('='.repeat(60));
+        outputChannel.appendLine('Starting Test Coverage Boost');
+        outputChannel.appendLine('='.repeat(60));
+        outputChannel.appendLine(`Target: ${target}%`);
+        outputChannel.appendLine(`Workspace: ${workspaceFolder}`);
+        outputChannel.appendLine('');
+
+        // Show in-progress state in panel
         this._panel.webview.postMessage({
             type: 'coverageData',
             data: {
@@ -128,25 +168,84 @@ export class CoveragePanel {
         // Get configured python path
         const config = vscode.workspace.getConfiguration('empathy');
         const pythonPath = config.get<string>('pythonPath', 'python');
+        console.log('[CoveragePanel] Python path:', pythonPath);
 
-        // Run orchestrated test coverage command
-        const cp = require('child_process');
-        const args = ['-m', 'empathy_os.cli', 'orchestrate', 'test-coverage', '--target', target.toString()];
+        // Run test-coverage-boost workflow (v4.0 CrewAI)
+        const args = ['-m', 'empathy_os.cli', 'workflow', 'run', 'test-coverage-boost', '--input', JSON.stringify({target_coverage: target})];
+        const command = `${pythonPath} ${args.join(' ')}`;
+        console.log('[CoveragePanel] Running command:', command);
+        outputChannel.appendLine(`Command: ${command}`);
+        outputChannel.appendLine('');
 
-        cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error: any, stdout: string, stderr: string) => {
-            if (error) {
-                this._panel.webview.postMessage({
-                    type: 'coverageData',
-                    data: {
-                        status: 'failed',
-                        message: `Coverage boost failed: ${error.message}`
-                    }
+        // Show progress notification
+        vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: `Running Coverage Boost (target: ${target}%)`,
+            cancellable: false
+        }, async (progress) => {
+            progress.report({ message: 'Analyzing test coverage...' });
+
+            return new Promise<void>((resolve) => {
+                const process = cp.spawn(pythonPath, args, { cwd: workspaceFolder });
+
+                // Stream stdout in real-time
+                process.stdout.on('data', (data) => {
+                    const output = data.toString();
+                    outputChannel.append(output);
                 });
-                return;
-            }
 
-            // Refresh data to show results
-            await this._updateData();
+                // Stream stderr in real-time
+                process.stderr.on('data', (data) => {
+                    const output = data.toString();
+                    outputChannel.append(output);
+                });
+
+                process.on('close', async (code) => {
+                    outputChannel.appendLine('');
+                    outputChannel.appendLine('='.repeat(60));
+
+                    if (code === 0) {
+                        outputChannel.appendLine('✅ Coverage boost completed successfully!');
+                        vscode.window.showInformationMessage(`Coverage Boost completed! Check the Coverage Panel for results.`);
+
+                        // Refresh data to show results
+                        await this._updateData();
+                    } else {
+                        outputChannel.appendLine(`❌ Coverage boost failed with exit code ${code}`);
+                        vscode.window.showErrorMessage(`Coverage Boost failed with exit code ${code}. Check the output for details.`);
+
+                        this._panel.webview.postMessage({
+                            type: 'coverageData',
+                            data: {
+                                status: 'failed',
+                                message: `Coverage boost failed with exit code ${code}`
+                            }
+                        });
+                    }
+
+                    outputChannel.appendLine('='.repeat(60));
+                    resolve();
+                });
+
+                process.on('error', (error) => {
+                    outputChannel.appendLine('');
+                    outputChannel.appendLine('='.repeat(60));
+                    outputChannel.appendLine(`❌ Error: ${error.message}`);
+                    outputChannel.appendLine('='.repeat(60));
+
+                    vscode.window.showErrorMessage(`Coverage Boost failed: ${error.message}`);
+
+                    this._panel.webview.postMessage({
+                        type: 'coverageData',
+                        data: {
+                            status: 'failed',
+                            message: `Coverage boost failed: ${error.message}`
+                        }
+                    });
+
+                    resolve();
+                });
+            });
         });
     }
 
@@ -446,11 +545,9 @@ export class CoveragePanel {
         }
 
         function runBoost() {
-            // Prompt for target coverage
-            const target = prompt('Target coverage percentage:', '80');
-            if (target) {
-                vscode.postMessage({ type: 'runBoost', target: parseInt(target) });
-            }
+            // Request coverage target from extension (which will show VS Code input box)
+            console.log('[Webview] runBoost() clicked - sending requestCoverageTarget');
+            vscode.postMessage({ type: 'requestCoverageTarget' });
         }
 
         function openDashboard() {
@@ -513,9 +610,16 @@ export class CoveragePanel {
         // Listen for messages from extension
         window.addEventListener('message', event => {
             const message = event.data;
+            console.log('[Webview] Received message:', message.type, message);
             switch (message.type) {
                 case 'coverageData':
+                    console.log('[Webview] Updating UI with coverage data');
                     updateUI(message.data);
+                    break;
+                case 'runBoostWithTarget':
+                    // Extension has provided the target coverage value, now run the boost
+                    console.log('[Webview] Received runBoostWithTarget, sending runBoost with target:', message.target);
+                    vscode.postMessage({ type: 'runBoost', target: message.target });
                     break;
             }
         });

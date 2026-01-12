@@ -62,6 +62,7 @@ from .document_gen import DocumentGenerationWorkflow
 from .document_manager import DocumentManagerWorkflow
 from .documentation_orchestrator import DocumentationOrchestrator, OrchestratorResult
 from .health_check import HealthCheckWorkflow
+from .health_check_crew import HealthCheckCrew, HealthCheckCrewResult
 
 # Keyboard Conductor (v3.6) - keyboard shortcut generation
 from .keyboard_shortcuts import KeyboardShortcutWorkflow
@@ -74,6 +75,9 @@ from .perf_audit import PerformanceAuditWorkflow
 from .pr_review import PRReviewResult, PRReviewWorkflow
 from .refactor_plan import RefactorPlanWorkflow
 from .release_prep import ReleasePreparationWorkflow
+
+# CrewAI-based crews (working replacements for broken orchestrator)
+from .release_prep_crew import ReleasePreparationCrew, ReleasePreparationCrewResult
 from .research_synthesis import ResearchSynthesisWorkflow
 
 # Security crew integration (v3.0)
@@ -81,6 +85,8 @@ from .secure_release import SecureReleasePipeline, SecureReleaseResult
 from .security_audit import SecurityAuditWorkflow
 from .step_config import WorkflowStepConfig, steps_from_tier_map, validate_step_config
 from .test5 import Test5Workflow
+from .test_coverage_boost import CoverageBoostResult, TestCoverageBoostWorkflow
+from .test_coverage_boost_crew import TestCoverageBoostCrew, TestCoverageBoostCrewResult
 from .test_gen import TestGenerationWorkflow
 
 # Re-export CLI commands from workflow_commands.py
@@ -120,14 +126,14 @@ _DEFAULT_WORKFLOWS: dict[str, type] = {
     "refactor-plan": RefactorPlanWorkflow,
     # Operational workflows
     "dependency-check": DependencyCheckWorkflow,
-    "release-prep": ReleasePreparationWorkflow,
+    "release-prep-legacy": ReleasePreparationWorkflow,  # Old single-agent version
     # Composite security pipeline (v3.0)
     "secure-release": SecureReleasePipeline,
     # Code review crew integration (v3.1)
     "pro-review": CodeReviewPipeline,
     "pr-review": PRReviewWorkflow,
     # Health check crew integration (v3.1)
-    "health-check": HealthCheckWorkflow,
+    "health-check-legacy": HealthCheckWorkflow,  # Old single-agent version
     # Documentation management (v3.5)
     "doc-orchestrator": DocumentationOrchestrator,
     "manage-docs": ManageDocumentationCrew,
@@ -136,6 +142,15 @@ _DEFAULT_WORKFLOWS: dict[str, type] = {
     # User-generated workflows
     "document-manager": DocumentManagerWorkflow,
     "test5": Test5Workflow,
+    # CrewAI-based multi-agent workflows (v4.0.0 - production ready)
+    "health-check": HealthCheckCrew,  # Multi-agent health check (3-6 agents)
+    "release-prep": ReleasePreparationCrew,  # Multi-agent release validation (4 agents)
+    "test-coverage-boost": TestCoverageBoostCrew,  # Intelligent coverage boost (3 agents)
+    # Backward compatibility aliases
+    "orchestrated-test-coverage": TestCoverageBoostCrew,  # Alias for test-coverage-boost (backward compat)
+    # Experimental: Meta-orchestration (agent selection has issues)
+    "orchestrated-health-check-experimental": OrchestratedHealthCheckWorkflow,  # EXPERIMENTAL
+    "orchestrated-release-prep-experimental": OrchestratedReleasePrepWorkflow,  # EXPERIMENTAL
 }
 
 # Opt-in workflows - not included by default, must be explicitly enabled
@@ -365,8 +380,19 @@ __all__ = [
     "refresh_workflow_registry",
     "steps_from_tier_map",
     "validate_step_config",
-    # Meta-orchestration workflows (v4.0)
+    # CrewAI-based multi-agent workflows (v4.0.0)
+    "HealthCheckCrew",
+    "HealthCheckCrewResult",
+    "ReleasePreparationCrew",
+    "ReleasePreparationCrewResult",
+    "TestCoverageBoostCrew",
+    "TestCoverageBoostCrewResult",
+    # Legacy meta-orchestration workflows (experimental)
+    "TestCoverageBoostWorkflow",
+    "CoverageBoostResult",
+    # Experimental: Meta-orchestration
     "OrchestratedHealthCheckWorkflow",
     "OrchestratedReleasePrepWorkflow",
+    "HealthCheckReport",
     "ReleaseReadinessReport",
 ]

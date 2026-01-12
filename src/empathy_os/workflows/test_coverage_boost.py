@@ -146,6 +146,7 @@ class TestCoverageBoostWorkflow:
         target_coverage: float = 80.0,
         project_root: str | None = None,
         save_patterns: bool = True,
+        **kwargs,  # Accept extra CLI arguments like 'provider'
     ):
         """Initialize test coverage boost workflow.
 
@@ -153,6 +154,7 @@ class TestCoverageBoostWorkflow:
             target_coverage: Target coverage percentage (0-100)
             project_root: Root directory to analyze (default: current directory)
             save_patterns: Whether to save successful patterns to config store
+            **kwargs: Additional arguments (ignored, for CLI compatibility)
 
         Raises:
             ValueError: If target_coverage is invalid
@@ -172,7 +174,11 @@ class TestCoverageBoostWorkflow:
             f"root={self.project_root}"
         )
 
-    async def execute(self, context: dict[str, Any] | None = None) -> CoverageBoostResult:
+    async def execute(
+        self,
+        context: dict[str, Any] | None = None,
+        **kwargs,  # Accept extra parameters from CLI
+    ) -> CoverageBoostResult:
         """Execute test coverage boost workflow.
 
         Args:
@@ -180,6 +186,7 @@ class TestCoverageBoostWorkflow:
                 - current_coverage: Current coverage percentage
                 - test_directories: Directories containing tests
                 - exclude_patterns: Patterns to exclude from coverage
+            **kwargs: Additional arguments (e.g., target_coverage passed by CLI)
 
         Returns:
             CoverageBoostResult with detailed outcomes
@@ -188,6 +195,9 @@ class TestCoverageBoostWorkflow:
             ValueError: If context is invalid
         """
         context = context or {}
+
+        # Merge kwargs into context for CLI compatibility
+        context.update(kwargs)
         logger.info("Starting test coverage boost workflow")
 
         # Step 1: Create execution plan using meta-orchestrator

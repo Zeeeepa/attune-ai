@@ -5,11 +5,15 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.0.0] - 2026-01-10 🎭 **MAJOR RELEASE: Meta-Orchestration Era**
+## [Unreleased] - 4.0.0 🎭 **Multi-Agent Workflows (CrewAI Production + Meta-Orchestration Experimental)**
 
-### 🚀 BREAKING THROUGH: Dynamic Agent Composition
+### 🚀 Production-Ready: CrewAI Multi-Agent Workflows
 
-**This is a paradigm shift** - Empathy Framework v4.0 introduces meta-orchestration, enabling the system to dynamically compose and customize agent teams based on task requirements. The framework has evolved from static workflows to intelligent, self-organizing multi-agent systems with learning capabilities.
+**CrewAI-based multi-agent workflows** are the centerpiece of v4.0.0, providing proven, production-ready multi-agent collaboration for health checks, release validation, and test coverage improvement.
+
+### ⚠️ Experimental: Meta-Orchestration System
+
+The dynamic agent composition system is **experimental** in this release. Agent selection logic has known issues (only selects 1 agent instead of multiple). Use the CrewAI-based workflows for production workloads.
 
 ### Added
 

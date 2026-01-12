@@ -109,6 +109,21 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 case 'openWebDashboard':
                     vscode.commands.executeCommand('empathy.openWebDashboard');
                     break;
+                case 'openHealthPanel':
+                    vscode.commands.executeCommand('empathy.openHealthPanel');
+                    break;
+                case 'openCoveragePanel':
+                    vscode.commands.executeCommand('empathy.openCoveragePanel');
+                    break;
+                case 'runOrchestratedHealthCheck':
+                    await this._runOrchestratedHealthCheck();
+                    break;
+                case 'runOrchestratedReleasePrep':
+                    await this._runOrchestratedReleasePrep();
+                    break;
+                case 'runOrchestratedTestCoverage':
+                    await this._runOrchestratedTestCoverage();
+                    break;
                 case 'copyToClipboard':
                     await vscode.env.clipboard.writeText(message.content);
                     vscode.window.showInformationMessage('Report copied to clipboard');
@@ -793,67 +808,18 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _runOrchestratedHealthCheck() {
-        // Simply open the Health Panel - it handles running the check internally
-        vscode.commands.executeCommand('empathy.openHealthPanel');
+        // Open dedicated WorkflowReportPanel for health-check (v4.0.0 CrewAI)
+        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'health-check');
     }
 
     private async _runOrchestratedReleasePrep() {
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        if (!workspaceFolder) {
-            vscode.window.showErrorMessage('No workspace folder open');
-            return;
-        }
-
-        // Show progress notification while running
-        vscode.window.withProgress({
-            location: vscode.ProgressLocation.Notification,
-            title: "Running Release Prep",
-            cancellable: false
-        }, async (progress) => {
-            progress.report({ message: "Running orchestrated release validation (4 agents)..." });
-
-            // Get configured python path
-            const config = vscode.workspace.getConfiguration('empathy');
-            const pythonPath = config.get<string>('pythonPath', 'python');
-
-            // Run orchestrated release prep command
-            const args = ['-m', 'empathy_os.cli', 'orchestrate', 'release-prep'];
-
-            return new Promise<void>((resolve) => {
-                cp.execFile(pythonPath, args, { cwd: workspaceFolder, maxBuffer: 1024 * 1024 * 5 }, async (error, stdout, stderr) => {
-                    if (error) {
-                        vscode.window.showErrorMessage(`Release prep failed: ${error.message}`);
-                        resolve();
-                        return;
-                    }
-
-                    // Parse output to check if release is ready
-                    const output = stdout || stderr || '';
-                    const isReady = output.includes('READY FOR RELEASE') || output.includes('Release Ready: true');
-
-                    // Open report in editor with syntax highlighting
-                    const doc = await vscode.workspace.openTextDocument({
-                        content: output,
-                        language: 'markdown'
-                    });
-                    await vscode.window.showTextDocument(doc, { preview: false });
-
-                    // Show appropriate notification
-                    if (isReady) {
-                        vscode.window.showInformationMessage('✅ Release validation passed! Ready to ship.');
-                    } else {
-                        vscode.window.showWarningMessage('⚠️ Release validation found issues. Review the report.');
-                    }
-
-                    resolve();
-                });
-            });
-        });
+        // Open dedicated WorkflowReportPanel for release-prep (v4.0.0 CrewAI)
+        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'release-prep');
     }
 
     private async _runOrchestratedTestCoverage() {
-        // Open the Coverage Panel - it handles running the boost and displaying results
-        vscode.commands.executeCommand('empathy.openCoveragePanel');
+        // Open dedicated WorkflowReportPanel for test-coverage-boost (v4.0.0 CrewAI)
+        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'test-coverage-boost');
     }
 
     private async _runWorkflow(workflowName: string, input?: string) {
@@ -863,19 +829,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             return;
         }
 
-        // Special handling for orchestrated workflows (v4.0)
-        if (workflowName === 'orchestrated-health-check') {
-            await this._runOrchestratedHealthCheck();
-            return;
-        }
-        if (workflowName === 'orchestrated-release-prep') {
-            await this._runOrchestratedReleasePrep();
-            return;
-        }
-        if (workflowName === 'orchestrated-test-coverage') {
-            await this._runOrchestratedTestCoverage();
-            return;
-        }
+        // v4.0.0: Orchestrated workflows are handled by direct message handlers now
+        // (No special routing needed - buttons send specific message types)
 
         // v3.5.5: test-gen now runs workflow directly (panel removed)
 
@@ -932,9 +887,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             'security-audit',   // folder picker - select folder to audit
             'perf-audit',       // folder picker - select folder to profile
             'refactor-plan',    // folder picker - select folder to plan refactoring
-            'health-check',     // folder picker - select folder to check health
             'pr-review',        // folder picker - select folder with PR changes
             'pro-review',       // hybrid - file/text for code review
+            // NOTE: health-check, release-prep, test-coverage-boost run on whole project and show output in dashboard
         ];
         const opensInEditor = filePickerWorkflows.includes(workflowName);
         console.log(`[EmpathyDashboard] Workflow: ${workflowName}, opensInEditor: ${opensInEditor}`);
@@ -2191,15 +2146,15 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 <span style="background: linear-gradient(90deg, #8b5cf6, #ec4899); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">v4.0</span>
             </div>
             <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-workflow="orchestrated-health-check" title="Adaptive health check with 3 modes (daily: 3 agents, weekly: 5 agents, release: 6 agents) - Auto-opens VS Code panel">
+                <button class="action-btn workflow-btn" id="btn-health-check-v4" title="Adaptive health check with 3 modes (daily: 3 agents, weekly: 5 agents, release: 6 agents) - Auto-opens VS Code panel">
                     <span class="action-icon">&#x1FA7A;</span>
                     <span>Health Check</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="orchestrated-release-prep" title="Parallel release validation (4 agents: Security, Coverage, Quality, Docs) with quality gates">
+                <button class="action-btn workflow-btn" id="btn-release-prep-v4" title="Parallel release validation (4 agents: Security, Coverage, Quality, Docs) with quality gates">
                     <span class="action-icon">&#x1F4CB;</span>
                     <span>Release Prep</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="orchestrated-test-coverage" title="Intelligent test coverage boost with gap analysis and smart generation">
+                <button class="action-btn workflow-btn" id="btn-coverage-boost-v4" title="Intelligent test coverage boost with gap analysis and smart generation">
                     <span class="action-icon">&#x1F3AF;</span>
                     <span>Coverage Boost</span>
                 </button>
@@ -2484,6 +2439,34 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             console.log('[EmpathyDashboard] WARNING: test-gen button not found!');
         }
 
+        // Meta-Orchestration v4.0 button handlers - run CrewAI workflows
+        const healthCheckBtn = document.getElementById('btn-health-check-v4');
+        if (healthCheckBtn) {
+            healthCheckBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('[EmpathyDashboard] Health Check v4 clicked - running workflow');
+                vscode.postMessage({ type: 'runOrchestratedHealthCheck' });
+            });
+        }
+
+        const releasePrepBtn = document.getElementById('btn-release-prep-v4');
+        if (releasePrepBtn) {
+            releasePrepBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('[EmpathyDashboard] Release Prep v4 clicked - running workflow');
+                vscode.postMessage({ type: 'runOrchestratedReleasePrep' });
+            });
+        }
+
+        const coverageBoostBtn = document.getElementById('btn-coverage-boost-v4');
+        if (coverageBoostBtn) {
+            coverageBoostBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('[EmpathyDashboard] Coverage Boost v4 clicked - running workflow');
+                vscode.postMessage({ type: 'runOrchestratedTestCoverage' });
+            });
+        }
+
         // Workflow button click handlers - show input panel first
         const workflowBtns = document.querySelectorAll('.action-btn[data-workflow]');
         console.log('[EmpathyDashboard] Found workflow buttons:', workflowBtns.length);
@@ -2507,6 +2490,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     vscode.postMessage({ type: 'openDocAnalysis' });
                     return;
                 }
+
+                // Meta-Orchestration v4.0: Handled by direct button click handlers above
+                // (No special routing needed here - buttons send specific message types)
 
                 // Report workflows: run immediately with project root and open in editor
                 const reportWorkflows = [
@@ -3009,7 +2995,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 resultsStatus.innerHTML = '&#x2714; Complete';
 
                 // Check if output is crew workflow result (has verdict/quality_score)
-                const crewWorkflows = ['pro-review', 'pr-review'];
+                const crewWorkflows = ['pro-review', 'pr-review', 'health-check', 'release-prep', 'test-coverage-boost'];
                 if (crewWorkflows.includes(data.workflow) || data.output.includes('"verdict"') || data.output.includes('"quality_score"')) {
                     try {
                         resultsContent.innerHTML = formatCrewOutput(data.output);
