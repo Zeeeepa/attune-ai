@@ -253,12 +253,14 @@ class OrchestratedReleasePrepWorkflow:
         self,
         quality_gates: dict[str, float] | None = None,
         agent_ids: list[str] | None = None,
+        **kwargs,  # Absorb extra CLI parameters (provider, enable_tier_fallback, etc.)
     ):
         """Initialize orchestrated release prep workflow.
 
         Args:
             quality_gates: Custom quality gate thresholds
             agent_ids: Specific agent IDs to use (defaults to domain defaults)
+            **kwargs: Extra parameters (ignored, for CLI compatibility)
 
         Raises:
             ValueError: If quality gates are invalid
@@ -275,18 +277,31 @@ class OrchestratedReleasePrepWorkflow:
                 raise ValueError(f"Quality gate '{name}' must be non-negative")
 
         self.orchestrator = MetaOrchestrator()
-        self.agent_ids = agent_ids
+        # Use default agents if none specified
+        self.agent_ids = agent_ids or [
+            "security_auditor",
+            "test_coverage_analyzer",
+            "code_reviewer",
+            "documentation_writer",
+        ]
 
-        logger.info(f"OrchestratedReleasePrepWorkflow initialized with gates: {self.quality_gates}")
+        logger.info(
+            f"OrchestratedReleasePrepWorkflow initialized with gates: {self.quality_gates}, "
+            f"agents: {self.agent_ids}"
+        )
 
     async def execute(
-        self, path: str = ".", context: dict[str, Any] | None = None
+        self,
+        path: str = ".",
+        context: dict[str, Any] | None = None,
+        **kwargs  # Absorb extra parameters from VSCode/CLI (target, etc.)
     ) -> ReleaseReadinessReport:
         """Execute release preparation workflow.
 
         Args:
             path: Path to codebase to analyze (default: ".")
             context: Additional context for agents
+            **kwargs: Extra parameters (ignored, for VSCode/CLI compatibility)
 
         Returns:
             ReleaseReadinessReport with consolidated results
@@ -294,6 +309,9 @@ class OrchestratedReleasePrepWorkflow:
         Raises:
             ValueError: If path is invalid
         """
+        # Map 'target' to 'path' for VSCode compatibility
+        if 'target' in kwargs and path == ".":
+            path = kwargs['target']
         if not path or not isinstance(path, str):
             raise ValueError("path must be a non-empty string")
 

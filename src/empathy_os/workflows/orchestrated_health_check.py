@@ -46,7 +46,6 @@ from typing import Any
 from ..orchestration.agent_templates import AgentTemplate, get_template
 from ..orchestration.execution_strategies import (
     ParallelStrategy,
-    RefinementStrategy,
     StrategyResult,
 )
 from ..orchestration.meta_orchestrator import MetaOrchestrator
@@ -285,12 +284,13 @@ class OrchestratedHealthCheckWorkflow:
         "D": 60.0,
     }
 
-    def __init__(self, mode: str = "daily", project_root: str = "."):
+    def __init__(self, mode: str = "daily", project_root: str = ".", **kwargs):
         """Initialize health check workflow.
 
         Args:
             mode: Execution mode ("daily", "weekly", "release")
             project_root: Project root directory
+            **kwargs: Extra parameters (ignored, for CLI compatibility)
 
         Raises:
             ValueError: If mode is invalid
@@ -313,13 +313,17 @@ class OrchestratedHealthCheckWorkflow:
         )
 
     async def execute(
-        self, project_root: str | None = None, context: dict[str, Any] | None = None
+        self,
+        project_root: str | None = None,
+        context: dict[str, Any] | None = None,
+        **kwargs  # Absorb extra parameters from VSCode/CLI (target, etc.)
     ) -> HealthCheckReport:
         """Execute health check workflow.
 
         Args:
             project_root: Optional project root (overrides init value)
             context: Additional context for agents
+            **kwargs: Extra parameters (ignored, for VSCode/CLI compatibility)
 
         Returns:
             HealthCheckReport with comprehensive health assessment
@@ -327,6 +331,9 @@ class OrchestratedHealthCheckWorkflow:
         Raises:
             ValueError: If project_root is invalid
         """
+        # Map 'target' to 'project_root' for VSCode compatibility
+        if 'target' in kwargs and not project_root:
+            project_root = kwargs['target']
         if project_root:
             self.project_root = Path(project_root).resolve()
 
@@ -359,13 +366,9 @@ class OrchestratedHealthCheckWorkflow:
         logger.info(f"Selected {len(agents)} agents: {[a.id for a in agents]}")
 
         # Execute agents based on mode strategy
-        strategy: ParallelStrategy | RefinementStrategy
-        if self.mode == "release":
-            # Release mode: deep refinement strategy
-            strategy = RefinementStrategy()
-        else:
-            # Daily/weekly: parallel strategy
-            strategy = ParallelStrategy()
+        # All modes use parallel strategy for reliability and speed
+        # (RefinementStrategy had issues with data passing between stages)
+        strategy = ParallelStrategy()
 
         strategy_result = await strategy.execute(agents, full_context)
 

@@ -2450,7 +2450,8 @@ def cmd_workflow(args):
             if args.json:
                 # Extract error from various result types
                 error = getattr(result, "error", None)
-                if not error and not result.success:
+                is_successful = getattr(result, "success", getattr(result, "approved", True))
+                if not error and not is_successful:
                     blockers = getattr(result, "blockers", [])
                     if blockers:
                         error = "; ".join(blockers)
@@ -2483,7 +2484,7 @@ def cmd_workflow(args):
                     final_output_serializable = None
 
                 output = {
-                    "success": result.success,
+                    "success": is_successful,
                     "output": output_content,
                     "final_output": final_output_serializable,
                     "cost": total_cost,
@@ -2542,7 +2543,9 @@ def cmd_workflow(args):
                         print("=" * 60 + "\n")
 
                 # Display workflow result
-                if result.success:
+                # Handle different result types (success, approved, etc.)
+                is_successful = getattr(result, "success", getattr(result, "approved", True))
+                if is_successful:
                     if output_content:
                         print(f"\n{output_content}\n")
                     else:

@@ -808,18 +808,19 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _runOrchestratedHealthCheck() {
-        // Open dedicated WorkflowReportPanel for health-check (v4.0.0 CrewAI)
-        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'health-check');
+        // Open dedicated WorkflowReportPanel for orchestrated-health-check (v4.0.0 Meta-Orchestration)
+        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'orchestrated-health-check');
     }
 
     private async _runOrchestratedReleasePrep() {
-        // Open dedicated WorkflowReportPanel for release-prep (v4.0.0 CrewAI)
-        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'release-prep');
+        // Open dedicated WorkflowReportPanel for orchestrated-release-prep (v4.0.0 Meta-Orchestration)
+        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'orchestrated-release-prep');
     }
 
     private async _runOrchestratedTestCoverage() {
-        // Open dedicated WorkflowReportPanel for test-coverage-boost (v4.0.0 CrewAI)
-        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'test-coverage-boost');
+        // Open dedicated CoveragePanel for test-coverage-boost (v4.0.0 CrewAI)
+        // This panel has the target input dialog
+        await vscode.commands.executeCommand('empathy.openCoveragePanel');
     }
 
     private async _runWorkflow(workflowName: string, input?: string) {

@@ -148,9 +148,12 @@ _DEFAULT_WORKFLOWS: dict[str, type] = {
     "test-coverage-boost": TestCoverageBoostCrew,  # Intelligent coverage boost (3 agents)
     # Backward compatibility aliases
     "orchestrated-test-coverage": TestCoverageBoostCrew,  # Alias for test-coverage-boost (backward compat)
-    # Experimental: Meta-orchestration (agent selection has issues)
-    "orchestrated-health-check-experimental": OrchestratedHealthCheckWorkflow,  # EXPERIMENTAL
-    "orchestrated-release-prep-experimental": OrchestratedReleasePrepWorkflow,  # EXPERIMENTAL
+    # Meta-orchestration workflows (v4.0.0 - production ready with real analysis tools)
+    "orchestrated-health-check": OrchestratedHealthCheckWorkflow,  # Real security/coverage/quality analysis
+    "orchestrated-release-prep": OrchestratedReleasePrepWorkflow,  # Real quality gate validation
+    # Experimental aliases (backward compat)
+    "orchestrated-health-check-experimental": OrchestratedHealthCheckWorkflow,  # ALIAS
+    "orchestrated-release-prep-experimental": OrchestratedReleasePrepWorkflow,  # ALIAS
 }
 
 # Opt-in workflows - not included by default, must be explicitly enabled
