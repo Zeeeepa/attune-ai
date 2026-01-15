@@ -22,6 +22,37 @@ from .risk_analyzer import RiskAnalyzer
 logger = logging.getLogger(__name__)
 
 
+def _get_default_template_dir() -> Path:
+    """Get default template directory.
+
+    Returns:
+        Path to templates directory
+
+    Note:
+        Uses multiple fallback strategies to avoid __file__ AttributeError
+        in pytest environments.
+    """
+    try:
+        # Try __file__ first (works in most cases)
+        return Path(__file__).parent / "templates"
+    except (AttributeError, NameError):
+        # Fallback: Use module __spec__ if available
+        import importlib.util
+        import sys
+
+        spec = importlib.util.find_spec("empathy_os.test_generator")
+        if spec and spec.origin:
+            return Path(spec.origin).parent / "templates"
+
+        # Last resort: Try to find from sys.modules
+        this_module = sys.modules.get(__name__)
+        if this_module and hasattr(this_module, "__file__"):
+            return Path(this_module.__file__).parent / "templates"
+
+        # Final fallback: Use current working directory
+        return Path.cwd() / "src" / "empathy_os" / "test_generator" / "templates"
+
+
 class TestGenerator:
     """Generates tests for wizards based on patterns and risk analysis.
 
@@ -41,7 +72,7 @@ class TestGenerator:
 
         """
         if template_dir is None:
-            template_dir = Path(__file__).parent / "templates"
+            template_dir = _get_default_template_dir()
 
         self.template_dir = template_dir
         self.env = Environment(

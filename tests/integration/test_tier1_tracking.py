@@ -17,7 +17,7 @@ import pytest
 
 from empathy_os.models import get_telemetry_store
 from empathy_os.models.telemetry import TelemetryAnalytics
-from empathy_os.workflows.base import BaseWorkflow, WorkflowStage
+from empathy_os.workflows.base import BaseWorkflow
 from empathy_os.workflows.test_runner import run_tests_with_tracking, track_coverage
 
 
@@ -31,6 +31,13 @@ def temp_dir():
 @pytest.fixture
 def mock_telemetry_dir(temp_dir, monkeypatch):
     """Mock the telemetry directory for testing."""
+    # Reset the global telemetry store singleton
+    import empathy_os.models.telemetry
+    from empathy_os.models.telemetry import TelemetryStore
+
+    # Create a fresh telemetry store with the temp directory
+    empathy_os.models.telemetry._telemetry_store = TelemetryStore(storage_dir=str(temp_dir))
+
     monkeypatch.setenv("EMPATHY_TELEMETRY_DIR", str(temp_dir))
     return temp_dir
 
@@ -43,16 +50,15 @@ class TestWorkflowRoutingTracking:
 
         # Create a simple workflow
         class SimpleWorkflow(BaseWorkflow):
-            def __init__(self):
-                super().__init__(
-                    name="simple-test-workflow",
-                    description="Test workflow for routing tracking",
-                    version="1.0.0",
-                )
+            name = "simple-test-workflow"
+            description = "Test workflow for routing tracking"
+            version = "1.0.0"
+            stages = ["main"]
 
-            async def _execute_impl(self, **kwargs):
-                # Simple workflow that just returns success
-                return {"result": "success", "data": kwargs.get("data", "test")}
+            async def run_stage(self, stage_name: str, tier, input_data):
+                """Execute a workflow stage."""
+                # Simple implementation for testing
+                return {"result": "success", "data": input_data.get("data", "test")}, 0, 0
 
         # Run workflow (this should track routing automatically)
         workflow = SimpleWorkflow()
@@ -72,29 +78,32 @@ class TestWorkflowRoutingTracking:
         # Should have at least one routing record
         assert len(routings) > 0
 
-        # Most recent routing should be for our workflow
-        latest_routing = routings[0]
+        # Find the routing for our workflow (there may be multiple: start + completion)
+        workflow_routings = [r for r in routings if r.task_type == "simple-test-workflow"]
+        assert len(workflow_routings) > 0
+
+        # Get the completed routing (should be the last one)
+        completed_routing = [r for r in workflow_routings if r.status == "completed"]
+        assert len(completed_routing) > 0
+
+        latest_routing = completed_routing[-1]
         assert latest_routing.task_type == "simple-test-workflow"
         assert latest_routing.assigned_agent == "simple-test-workflow"
-        assert latest_routing.status in ["completed", "running"]
+        assert latest_routing.status == "completed"
 
     def test_workflow_routing_includes_complexity(self, mock_telemetry_dir):
         """Test that routing includes complexity assessment."""
 
         class ComplexWorkflow(BaseWorkflow):
-            def __init__(self):
-                super().__init__(
-                    name="complex-workflow",
-                    description="Complex workflow with multiple stages",
-                    version="1.0.0",
-                )
+            name = "complex-workflow"
+            description = "Complex workflow with multiple stages"
+            version = "1.0.0"
+            stages = ["stage1", "stage2", "stage3"]
 
-                # Add multiple stages to increase complexity
-                self.stages = [
-                    WorkflowStage(name="stage1", description="Stage 1"),
-                    WorkflowStage(name="stage2", description="Stage 2"),
-                    WorkflowStage(name="stage3", description="Stage 3"),
-                ]
+            async def run_stage(self, stage_name: str, tier, input_data):
+                """Execute a workflow stage."""
+                # Simple implementation for testing
+                return {"result": "success", "stage": stage_name}, 0, 0
 
             async def _execute_impl(self, **kwargs):
                 return {"result": "success"}
@@ -121,15 +130,15 @@ class TestWorkflowRoutingTracking:
         """Test that routing tracks success status and actual cost."""
 
         class SuccessfulWorkflow(BaseWorkflow):
-            def __init__(self):
-                super().__init__(
-                    name="successful-workflow",
-                    description="Workflow that succeeds",
-                    version="1.0.0",
-                )
+            name = "successful-workflow"
+            description = "Workflow that succeeds"
+            version = "1.0.0"
+            stages = ["main"]
 
-            async def _execute_impl(self, **kwargs):
-                return {"result": "success"}
+            async def run_stage(self, stage_name: str, tier, input_data):
+                """Execute a workflow stage."""
+                # Simple implementation for testing
+                return {"result": "success"}, 0, 0
 
         workflow = SuccessfulWorkflow()
 
@@ -141,10 +150,18 @@ class TestWorkflowRoutingTracking:
 
         # Check routing record
         store = get_telemetry_store()
-        routings = store.get_task_routings(limit=1)
+        routings = store.get_task_routings(limit=10)
 
         assert len(routings) > 0
-        latest_routing = routings[0]
+
+        # Find the completed routing for our workflow
+        workflow_routings = [r for r in routings if r.task_type == "successful-workflow"]
+        assert len(workflow_routings) > 0
+
+        completed_routing = [r for r in workflow_routings if r.status == "completed"]
+        assert len(completed_routing) > 0
+
+        latest_routing = completed_routing[-1]
 
         # Should track success
         assert latest_routing.success is True
@@ -417,21 +434,20 @@ class TestEndToEndIntegration:
 
         # Create workflow
         class TestRunnerWorkflow(BaseWorkflow):
-            def __init__(self):
-                super().__init__(
-                    name="test-runner",
-                    description="Runs tests with tracking",
-                    version="1.0.0",
-                )
+            name = "test-runner"
+            description = "Runs tests with tracking"
+            version = "1.0.0"
+            stages = ["run_tests"]
 
-            async def _execute_impl(self, **kwargs):
-                # Run tests with tracking
+            async def run_stage(self, stage_name: str, tier, input_data):
+                """Execute a workflow stage."""
+                # Simple implementation for testing
                 test_record = run_tests_with_tracking(
                     test_suite="unit",
                     triggered_by="workflow",
                     workflow_id=self._run_id,
                 )
-                return {"test_record": test_record, "success": test_record.success}
+                return {"test_record": test_record, "success": test_record.success}, 0, 0
 
         workflow = TestRunnerWorkflow()
 
@@ -491,14 +507,13 @@ class TestEndToEndIntegration:
 
         # Create workflow that does everything
         class CompleteWorkflow(BaseWorkflow):
-            def __init__(self):
-                super().__init__(
-                    name="complete-test-workflow",
-                    description="Complete test workflow with tracking",
-                    version="1.0.0",
-                )
+            name = "complete-test-workflow"
+            description = "Complete test workflow with tracking"
+            version = "1.0.0"
+            stages = ["test_and_coverage"]
 
-            async def _execute_impl(self, **kwargs):
+            async def run_stage(self, stage_name: str, tier, input_data):
+                """Execute a workflow stage."""
                 # Run tests
                 test_record = run_tests_with_tracking(
                     test_suite="unit", triggered_by="workflow", workflow_id=self._run_id
@@ -512,7 +527,7 @@ class TestEndToEndIntegration:
                 return {
                     "test_success": test_record.success,
                     "coverage": coverage_record.overall_percentage,
-                }
+                }, 0, 0
 
         workflow = CompleteWorkflow()
 

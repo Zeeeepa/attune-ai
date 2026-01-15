@@ -15,10 +15,7 @@ Licensed under Fair Source 0.9
 
 import argparse
 import json
-import sys
-from io import StringIO
-from pathlib import Path
-from unittest.mock import MagicMock, Mock, call, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 

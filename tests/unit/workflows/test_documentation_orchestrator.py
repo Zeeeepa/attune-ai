@@ -1354,7 +1354,6 @@ class TestErrorHandlingPaths:
     async def test_generate_for_file_read_permission_error(self, tmp_path):
         """Test handling of file permission errors during read."""
         import os
-        import stat
 
         test_file = tmp_path / "test.py"
         test_file.write_text("def test(): pass")

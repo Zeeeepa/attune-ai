@@ -134,14 +134,9 @@ app.add_typer(provider_app, name="provider")
 @provider_app.callback(invoke_without_command=True)
 def provider_show(
     ctx: typer.Context,
-    set_provider: str | None = typer.Option(
-        None,
-        "--set",
-        "-s",
-        help="Set provider (anthropic, openai, google, ollama, hybrid)",
-    ),
-    interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive setup wizard"),
-    format_out: str = typer.Option("table", "--format", "-f", help="Output format (table, json)"),
+    set_provider: str | None = None,
+    interactive: bool = False,
+    format_out: str = "table",
 ):
     """Show or configure provider settings."""
     if ctx.invoked_subcommand is not None:
@@ -160,7 +155,7 @@ def provider_show(
 
 @provider_app.command("registry")
 def provider_registry(
-    provider_filter: str | None = typer.Option(None, "--provider", "-p", help="Filter by provider"),
+    provider_filter: str | None = None,
 ):
     """Show all available models in the registry."""
     args = [sys.executable, "-m", "empathy_os.models.cli", "registry"]
@@ -171,8 +166,8 @@ def provider_registry(
 
 @provider_app.command("costs")
 def provider_costs(
-    input_tokens: int = typer.Option(10000, "--input-tokens", "-i", help="Input tokens"),
-    output_tokens: int = typer.Option(2000, "--output-tokens", "-o", help="Output tokens"),
+    input_tokens: int = 10000,
+    output_tokens: int = 2000,
 ):
     """Estimate costs for token usage."""
     subprocess.run(
@@ -192,9 +187,9 @@ def provider_costs(
 
 @provider_app.command("telemetry")
 def provider_telemetry(
-    summary: bool = typer.Option(False, "--summary", help="Show summary"),
-    costs: bool = typer.Option(False, "--costs", help="Show cost breakdown"),
-    providers: bool = typer.Option(False, "--providers", help="Show provider usage"),
+    summary: bool = False,
+    costs: bool = False,
+    providers: bool = False,
 ):
     """View telemetry and analytics."""
     args = [sys.executable, "-m", "empathy_os.models.cli", "telemetry"]
@@ -214,15 +209,10 @@ def provider_telemetry(
 
 @app.command("scan")
 def scan(
-    path: Path = typer.Argument(Path(), help="Path to scan"),
-    format_out: str = typer.Option(
-        "text",
-        "--format",
-        "-f",
-        help="Output format (text, json, sarif)",
-    ),
-    fix: bool = typer.Option(False, "--fix", help="Auto-fix safe issues"),
-    staged: bool = typer.Option(False, "--staged", help="Only scan staged changes"),
+    path: Path = Path("."),
+    format_out: str = "text",
+    fix: bool = False,
+    staged: bool = False,
 ):
     """Scan codebase for issues."""
     args = ["empathy-scan", str(path)]
@@ -246,13 +236,8 @@ def scan(
 
 @app.command("inspect")
 def inspect_cmd(
-    path: Path = typer.Argument(Path(), help="Path to inspect"),
-    format_out: str = typer.Option(
-        "text",
-        "--format",
-        "-f",
-        help="Output format (text, json, sarif)",
-    ),
+    path: Path = Path("."),
+    format_out: str = "text",
 ):
     """Deep inspection with code analysis."""
     args = ["empathy-inspect", str(path)]
@@ -272,12 +257,7 @@ def inspect_cmd(
 
 @app.command("sync-claude")
 def sync_claude(
-    source: str = typer.Option(
-        "patterns",
-        "--source",
-        "-s",
-        help="Source to sync (patterns, bugs)",
-    ),
+    source: str = "patterns",
 ):
     """Sync patterns to Claude Code memory."""
     subprocess.run(["empathy-sync-claude", "--source", source], check=False)
@@ -296,9 +276,9 @@ def morning():
 
 @app.command("ship")
 def ship(
-    tests_only: bool = typer.Option(False, "--tests-only", help="Run tests only"),
-    security_only: bool = typer.Option(False, "--security-only", help="Run security checks only"),
-    skip_sync: bool = typer.Option(False, "--skip-sync", help="Skip Claude sync"),
+    tests_only: bool = False,
+    security_only: bool = False,
+    skip_sync: bool = False,
 ):
     """Pre-commit validation (lint, format, tests, security)."""
     args = [sys.executable, "-m", "empathy_os.cli", "ship"]
@@ -313,8 +293,8 @@ def ship(
 
 @app.command("health")
 def health(
-    deep: bool = typer.Option(False, "--deep", help="Comprehensive health check"),
-    fix: bool = typer.Option(False, "--fix", help="Auto-fix issues"),
+    deep: bool = False,
+    fix: bool = False,
 ):
     """Quick health check (lint, types, tests)."""
     args = [sys.executable, "-m", "empathy_os.cli", "health"]
@@ -333,7 +313,7 @@ def fix_all():
 
 @app.command("learn")
 def learn(
-    analyze: int = typer.Option(20, "--analyze", "-a", help="Number of commits to analyze"),
+    analyze: int = 20,
 ):
     """Learn patterns from commit history."""
     subprocess.run(
@@ -364,7 +344,7 @@ def wizard_list():
 @wizard_app.command("run")
 def wizard_run(
     name: str = typer.Argument(..., help="Wizard name to run"),
-    path: Path = typer.Option(Path(), "--path", "-p", help="Path to analyze"),
+    path: Path = Path("."),
 ):
     """Run a specific wizard on your codebase."""
     console.print(f"[yellow]Running wizard:[/yellow] {name} on {path}")
@@ -461,17 +441,9 @@ def workflow_list():
 @workflow_app.command("run")
 def workflow_run(
     name: str = typer.Argument(..., help="Workflow name"),
-    path: Path = typer.Option(Path(), "--path", "-p", help="Path to run on"),
-    use_recommended_tier: bool = typer.Option(
-        False,
-        "--use-recommended-tier",
-        help="Enable intelligent tier fallback: start with CHEAP tier and automatically upgrade if quality gates fail",
-    ),
-    health_score_threshold: int = typer.Option(
-        95,
-        "--health-score-threshold",
-        help="(health-check workflow) Minimum health score required (0-100, default: 95 for very strict quality)",
-    ),
+    path: Path = Path("."),
+    use_recommended_tier: bool = False,
+    health_score_threshold: int = 95,
 ):
     """Run a multi-model workflow."""
     cmd = [

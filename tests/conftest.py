@@ -40,8 +40,11 @@ def setup_test_environment(tmp_path, monkeypatch, request):
     Yields:
         Path: The current working directory with .empathy structure
     """
+    # Save original working directory to restore later
+    original_cwd = Path.cwd()
+
     # Create .empathy directory structure in current directory
-    empathy_dir = Path.cwd() / ".empathy"
+    empathy_dir = original_cwd / ".empathy"
     empathy_dir.mkdir(parents=True, exist_ok=True)
 
     # Create subdirectories that might be needed
@@ -50,7 +53,15 @@ def setup_test_environment(tmp_path, monkeypatch, request):
     (empathy_dir / "patterns").mkdir(exist_ok=True)
 
     # Create .claude directory if needed
-    claude_dir = Path.cwd() / ".claude"
+    claude_dir = original_cwd / ".claude"
     claude_dir.mkdir(parents=True, exist_ok=True)
 
-    yield Path.cwd()
+    yield original_cwd
+
+    # Restore original working directory in case test changed it
+    try:
+        import os
+        os.chdir(original_cwd)
+    except (FileNotFoundError, OSError):
+        # If original directory was deleted (e.g., by test cleanup), ignore
+        pass
