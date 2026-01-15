@@ -197,7 +197,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
         patterns_dir: str = "./patterns",
         skip_remediate_if_clean: bool = True,
         use_crew_for_assessment: bool = True,
-        use_crew_for_remediation: bool = True,
+        use_crew_for_remediation: bool = False,
         crew_config: dict | None = None,
         **kwargs: Any,
     ):

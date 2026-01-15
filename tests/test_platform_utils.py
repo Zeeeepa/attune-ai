@@ -82,8 +82,8 @@ class TestPlatformDetection:
 class TestDefaultDirectoriesWindows:
     """Tests for default directory functions on Windows."""
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=True)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=True)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch.dict("os.environ", {"APPDATA": "C:\\Users\\Test\\AppData\\Roaming"})
     def test_log_dir_windows(self, mock_macos, mock_windows):
         """Test log directory on Windows uses APPDATA."""
@@ -91,24 +91,24 @@ class TestDefaultDirectoriesWindows:
         assert "empathy" in str(log_dir)
         assert "logs" in str(log_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=True)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=True)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch.dict("os.environ", {"APPDATA": "C:\\Users\\Test\\AppData\\Roaming"})
     def test_data_dir_windows(self, mock_macos, mock_windows):
         """Test data directory on Windows uses APPDATA."""
         data_dir = get_default_data_dir()
         assert "empathy" in str(data_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=True)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=True)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch.dict("os.environ", {"APPDATA": "C:\\Users\\Test\\AppData\\Roaming"})
     def test_config_dir_windows(self, mock_macos, mock_windows):
         """Test config directory on Windows uses APPDATA."""
         config_dir = get_default_config_dir()
         assert "empathy" in str(config_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=True)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=True)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch.dict(
         "os.environ",
         {
@@ -126,8 +126,8 @@ class TestDefaultDirectoriesWindows:
 class TestDefaultDirectoriesMacOS:
     """Tests for default directory functions on macOS."""
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=True)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=True)
     def test_log_dir_macos(self, mock_macos, mock_windows):
         """Test log directory on macOS uses Library/Logs."""
         log_dir = get_default_log_dir()
@@ -135,8 +135,8 @@ class TestDefaultDirectoriesMacOS:
         assert "Logs" in str(log_dir)
         assert "empathy" in str(log_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=True)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=True)
     def test_data_dir_macos(self, mock_macos, mock_windows):
         """Test data directory on macOS uses Library/Application Support."""
         data_dir = get_default_data_dir()
@@ -144,8 +144,8 @@ class TestDefaultDirectoriesMacOS:
         assert "Application Support" in str(data_dir)
         assert "empathy" in str(data_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=True)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=True)
     def test_config_dir_macos(self, mock_macos, mock_windows):
         """Test config directory on macOS uses Library/Preferences."""
         config_dir = get_default_config_dir()
@@ -153,8 +153,8 @@ class TestDefaultDirectoriesMacOS:
         assert "Preferences" in str(config_dir)
         assert "empathy" in str(config_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=True)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=True)
     def test_cache_dir_macos(self, mock_macos, mock_windows):
         """Test cache directory on macOS uses Library/Caches."""
         cache_dir = get_default_cache_dir()
@@ -166,8 +166,8 @@ class TestDefaultDirectoriesMacOS:
 class TestDefaultDirectoriesLinux:
     """Tests for default directory functions on Linux."""
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch("os.access", return_value=False)
     @patch.object(Path, "exists", return_value=False)
     def test_log_dir_linux_fallback(self, mock_exists, mock_access, mock_macos, mock_windows):
@@ -176,24 +176,24 @@ class TestDefaultDirectoriesLinux:
         assert "empathy" in str(log_dir)
         assert "logs" in str(log_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch.dict("os.environ", {"XDG_DATA_HOME": "/home/test/.local/share"})
     def test_data_dir_linux_xdg(self, mock_macos, mock_windows):
         """Test data directory on Linux uses XDG_DATA_HOME."""
         data_dir = get_default_data_dir()
         assert "empathy" in str(data_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch.dict("os.environ", {"XDG_CONFIG_HOME": "/home/test/.config"})
     def test_config_dir_linux_xdg(self, mock_macos, mock_windows):
         """Test config directory on Linux uses XDG_CONFIG_HOME."""
         config_dir = get_default_config_dir()
         assert "empathy" in str(config_dir)
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=False)
-    @patch("src.empathy_os.platform_utils.is_macos", return_value=False)
+    @patch("empathy_os.platform_utils.is_windows", return_value=False)
+    @patch("empathy_os.platform_utils.is_macos", return_value=False)
     @patch.dict("os.environ", {"XDG_CACHE_HOME": "/home/test/.cache"})
     def test_cache_dir_linux_xdg(self, mock_macos, mock_windows):
         """Test cache directory on Linux uses XDG_CACHE_HOME."""
@@ -209,7 +209,7 @@ class TestAsyncioPolicy:
         # Should not raise on any platform
         setup_asyncio_policy()
 
-    @patch("src.empathy_os.platform_utils.is_windows", return_value=True)
+    @patch("empathy_os.platform_utils.is_windows", return_value=True)
     def test_setup_asyncio_policy_windows(self, mock_windows):
         """Test setup_asyncio_policy sets policy on Windows."""
         import asyncio

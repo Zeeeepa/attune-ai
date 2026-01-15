@@ -4,8 +4,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-import pytest
-from empathy_os.test_generator.risk_analyzer import RiskAnalyzer, RiskAnalysis
+from empathy_os.test_generator.risk_analyzer import RiskAnalysis, RiskAnalyzer
 
 
 class TestRiskAnalysisDataClass:

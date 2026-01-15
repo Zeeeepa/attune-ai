@@ -4,10 +4,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-import pytest
 from pathlib import Path
-import tempfile
-import shutil
 
 from empathy_os.test_generator.generator import TestGenerator
 from empathy_os.test_generator.risk_analyzer import RiskAnalyzer

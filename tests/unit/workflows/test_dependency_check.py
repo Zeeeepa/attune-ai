@@ -16,7 +16,6 @@ Copyright 2025 Smart AI Memory, LLC
 """
 
 import json
-from pathlib import Path
 
 import pytest
 
@@ -25,7 +24,6 @@ from empathy_os.workflows.dependency_check import (
     DependencyCheckWorkflow,
     format_dependency_check_report,
 )
-
 
 # =============================================================================
 # FIXTURES

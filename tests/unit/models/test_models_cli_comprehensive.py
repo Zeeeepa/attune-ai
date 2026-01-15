@@ -9,10 +9,7 @@ Licensed under Fair Source License 0.9
 
 import json
 import sys
-import tempfile
 from datetime import datetime, timedelta
-from io import StringIO
-from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -32,16 +29,14 @@ from empathy_os.models.cli import (
     validate_file,
 )
 from empathy_os.models.provider_config import ProviderConfig, ProviderMode
-from empathy_os.models.registry import MODEL_REGISTRY, get_all_models
+from empathy_os.models.registry import get_all_models
 from empathy_os.models.tasks import get_all_tasks, get_tier_for_task
 from empathy_os.models.telemetry import (
     LLMCallRecord,
-    TelemetryAnalytics,
     TelemetryStore,
     WorkflowRunRecord,
     WorkflowStageRecord,
 )
-from empathy_os.models.validation import ValidationResult, validate_yaml_file
 
 
 @pytest.mark.unit

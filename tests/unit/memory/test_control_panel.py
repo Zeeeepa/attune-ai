@@ -18,11 +18,9 @@ Testing Pattern:
 - Use capsys for CLI output testing
 """
 
-import json
 import time
 from dataclasses import asdict
-from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -42,8 +40,6 @@ from empathy_os.memory.control_panel import (
     print_stats,
     print_status,
 )
-from empathy_os.memory.long_term import Classification
-
 
 # =============================================================================
 # Test Security Validation Functions

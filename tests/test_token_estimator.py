@@ -94,7 +94,7 @@ def calculate_total(items: list[dict]) -> float:
         """Test heuristic fallback when tiktoken fails."""
         text = "Test text for heuristic"
 
-        with patch("src.empathy_os.models.token_estimator.TIKTOKEN_AVAILABLE", False):
+        with patch("empathy_os.models.token_estimator.TIKTOKEN_AVAILABLE", False):
             tokens = estimate_tokens(text)
             expected = max(1, int(len(text) * TOKENS_PER_CHAR_HEURISTIC))
             assert tokens == expected

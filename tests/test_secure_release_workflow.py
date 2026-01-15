@@ -626,19 +626,25 @@ class TestPipelineExecution:
         mock_release_result.cost_report.total_cost = 0.03
         mock_release_result.final_output = {"approved": True}
 
-        # Patch at the module where the classes are imported from
+        # Patch at source modules (where classes are defined)
         with (
-            patch("src.empathy_os.workflows.security_audit.SecurityAuditWorkflow") as mock_sec_cls,
+            patch("empathy_os.workflows.security_audit.SecurityAuditWorkflow") as mock_sec_cls,
             patch(
-                "src.empathy_os.workflows.release_prep.ReleasePreparationWorkflow",
+                "empathy_os.workflows.release_prep.ReleasePreparationWorkflow",
             ) as mock_rel_cls,
             patch(
-                "src.empathy_os.workflows.security_adapters._check_crew_available",
+                "empathy_os.workflows.security_adapters._check_crew_available",
                 return_value=False,
             ),
         ):
-            mock_sec_cls.return_value.execute = AsyncMock(return_value=mock_security_result)
-            mock_rel_cls.return_value.execute = AsyncMock(return_value=mock_release_result)
+            # Setup mock instances
+            mock_security = MagicMock()
+            mock_security.execute = AsyncMock(return_value=mock_security_result)
+            mock_sec_cls.return_value = mock_security
+
+            mock_release = MagicMock()
+            mock_release.execute = AsyncMock(return_value=mock_release_result)
+            mock_rel_cls.return_value = mock_release
 
             result = await pipeline.execute(path=".")
 
@@ -652,15 +658,18 @@ class TestPipelineExecution:
         """Test execute handles workflow failure."""
         pipeline = SecureReleasePipeline(mode="standard", use_crew=False)
 
-        # Patch at the module where the class is imported from
+        # Patch at source module (where class is defined)
         with (
-            patch("src.empathy_os.workflows.security_audit.SecurityAuditWorkflow") as mock_cls,
+            patch("empathy_os.workflows.security_audit.SecurityAuditWorkflow") as mock_cls,
             patch(
-                "src.empathy_os.workflows.security_adapters._check_crew_available",
+                "empathy_os.workflows.security_adapters._check_crew_available",
                 return_value=False,
             ),
         ):
-            mock_cls.return_value.execute = AsyncMock(side_effect=Exception("Workflow failed"))
+            # Setup mock instance that raises exception
+            mock_security = MagicMock()
+            mock_security.execute = AsyncMock(side_effect=Exception("Workflow failed"))
+            mock_cls.return_value = mock_security
 
             result = await pipeline.execute(path=".")
 

@@ -327,7 +327,7 @@ class TestSecurityPipeline:
         integration.storage.storage_dir = tmp_path / "memdocs"
 
         # Test 1: Empty content
-        with pytest.raises(ValueError, match="Content cannot be empty"):
+        with pytest.raises(ValueError, match="content cannot be empty"):
             integration.store_pattern("", "test", "user@company.com", auto_classify=True)
 
         # Test 2: Invalid pattern type

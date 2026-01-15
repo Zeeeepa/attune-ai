@@ -233,7 +233,7 @@ class TestSonnetOpusFallbackIntegration:
         )
 
         assert response.success
-        assert "SQL injection" in response.content.lower()
+        assert "sql injection" in response.content.lower()
 
     @pytest.mark.asyncio
     async def test_test_generation_workflow(self):
