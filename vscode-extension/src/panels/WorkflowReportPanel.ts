@@ -197,7 +197,8 @@ export class WorkflowReportPanel {
             return new Promise<void>((resolve) => {
                 cp.execFile(pythonPath, args, {
                     cwd: cwd,
-                    maxBuffer: 1024 * 1024 * 10 // 10MB buffer
+                    maxBuffer: 1024 * 1024 * 10, // 10MB buffer
+                    timeout: 300000 // 5 minute timeout
                 }, async (error, stdout, stderr) => {
                     const output = stdout || stderr || '';
 
