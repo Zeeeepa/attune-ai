@@ -780,11 +780,13 @@ def cmd_orchestrate(args):
     # Get workflow type
     workflow_type = args.workflow
 
-    print()
-    print("=" * 60)
-    print(f"  META-ORCHESTRATION: {workflow_type.upper()}")
-    print("=" * 60)
-    print()
+    # Only print header in non-JSON mode
+    if not (hasattr(args, "json") and args.json):
+        print()
+        print("=" * 60)
+        print(f"  META-ORCHESTRATION: {workflow_type.upper()}")
+        print("=" * 60)
+        print()
 
     if workflow_type == "release-prep":
         # Release Preparation workflow
@@ -799,16 +801,18 @@ def cmd_orchestrate(args):
         if hasattr(args, "max_critical") and args.max_critical is not None:
             quality_gates["max_critical_issues"] = args.max_critical
 
-        print(f"  Project Path: {path}")
-        if quality_gates:
-            print(f"  Quality Gates: {quality_gates}")
-        print()
-        print("  🔍 Parallel Validation Agents:")
-        print("    • Security Auditor (vulnerability scan)")
-        print("    • Test Coverage Analyzer (gap analysis)")
-        print("    • Code Quality Reviewer (best practices)")
-        print("    • Documentation Writer (completeness)")
-        print()
+        # Only print details in non-JSON mode
+        if not (hasattr(args, "json") and args.json):
+            print(f"  Project Path: {path}")
+            if quality_gates:
+                print(f"  Quality Gates: {quality_gates}")
+            print()
+            print("  🔍 Parallel Validation Agents:")
+            print("    • Security Auditor (vulnerability scan)")
+            print("    • Test Coverage Analyzer (gap analysis)")
+            print("    • Code Quality Reviewer (best practices)")
+            print("    • Documentation Writer (completeness)")
+            print()
 
         # Create workflow
         workflow = OrchestratedReleasePrepWorkflow(
@@ -857,30 +861,32 @@ def cmd_orchestrate(args):
         project_root = args.project_root or "."
         focus_area = getattr(args, "focus", None)
 
-        print(f"  Mode: {mode.upper()}")
-        print(f"  Project Root: {project_root}")
-        if focus_area:
-            print(f"  Focus Area: {focus_area}")
-        print()
+        # Only print details in non-JSON mode
+        if not (hasattr(args, "json") and args.json):
+            print(f"  Mode: {mode.upper()}")
+            print(f"  Project Root: {project_root}")
+            if focus_area:
+                print(f"  Focus Area: {focus_area}")
+            print()
 
-        # Show agents for mode
-        mode_agents = {
-            "daily": ["Security", "Coverage", "Quality"],
-            "weekly": ["Security", "Coverage", "Quality", "Performance", "Documentation"],
-            "release": [
-                "Security",
-                "Coverage",
-                "Quality",
-                "Performance",
-                "Documentation",
-                "Architecture",
-            ],
-        }
+            # Show agents for mode
+            mode_agents = {
+                "daily": ["Security", "Coverage", "Quality"],
+                "weekly": ["Security", "Coverage", "Quality", "Performance", "Documentation"],
+                "release": [
+                    "Security",
+                    "Coverage",
+                    "Quality",
+                    "Performance",
+                    "Documentation",
+                    "Architecture",
+                ],
+            }
 
-        print(f"  🔍 {mode.capitalize()} Check Agents:")
-        for agent in mode_agents.get(mode, []):
-            print(f"    • {agent}")
-        print()
+            print(f"  🔍 {mode.capitalize()} Check Agents:")
+            for agent in mode_agents.get(mode, []):
+                print(f"    • {agent}")
+            print()
 
         # Create workflow
         workflow = OrchestratedHealthCheckWorkflow(mode=mode, project_root=project_root)

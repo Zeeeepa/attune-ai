@@ -233,12 +233,12 @@ export class WorkflowReportPanel {
     }
 
     private _buildWorkflowArgs(workflow: string, input?: string): string[] {
-        // v4.0: Orchestrated workflows use 'orchestrate' subcommand
+        // v4.0: Orchestrated workflows use 'orchestrate' subcommand with JSON output
         if (workflow === 'orchestrated-health-check') {
-            const baseArgs = ['-m', 'empathy_os.cli', 'orchestrate', 'health-check', '--mode', 'daily'];
+            const baseArgs = ['-m', 'empathy_os.cli', 'orchestrate', 'health-check', '--mode', 'daily', '--json'];
             return baseArgs;
         } else if (workflow === 'orchestrated-release-prep') {
-            const baseArgs = ['-m', 'empathy_os.cli', 'orchestrate', 'release-prep', '--path', '.'];
+            const baseArgs = ['-m', 'empathy_os.cli', 'orchestrate', 'release-prep', '--path', '.', '--json'];
             return baseArgs;
         } else {
             // Other workflows use 'workflow run' command
@@ -256,16 +256,18 @@ export class WorkflowReportPanel {
     private _parseWorkflowOutput(output: string): any {
         // Try to extract JSON from output
         try {
-            // Look for JSON patterns in output
+            // Look for JSON patterns in output (orchestrated workflows now use --json flag)
             const jsonMatch = output.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
-                return JSON.parse(jsonMatch[0]);
+                const parsed = JSON.parse(jsonMatch[0]);
+                // Successfully parsed JSON - return it
+                return parsed;
             }
         } catch (e) {
-            // If parsing fails, return structured data from text parsing
+            // If parsing fails, fall through to text parsing
         }
 
-        // Fallback: Parse common output patterns
+        // Fallback: Parse common output patterns (for legacy workflows)
         return this._parseTextOutput(output);
     }
 
@@ -275,7 +277,8 @@ export class WorkflowReportPanel {
         };
 
         // Extract health score (multiple formats)
-        const healthScoreMatch = output.match(/(?:Overall Health|Health Score):\s*[⛔🟢🟡⚠️]*\s*(\d+\.?\d*)\s*\/\s*100/i);
+        // Match any characters (including emojis) before the score
+        const healthScoreMatch = output.match(/(?:Overall Health|Health Score):\s*[^\d]*(\d+\.?\d*)\s*\/\s*100/i);
         if (healthScoreMatch) {
             data.health_score = parseFloat(healthScoreMatch[1]);
         }
@@ -661,28 +664,86 @@ export class WorkflowReportPanel {
 
         function formatHealthCheck(report) {
             const data = report.data;
-            const healthScore = data.health_score || 0;
-            const issuesCount = data.issues_count || 0;
+            const healthScore = Math.round(data.overall_health_score || 0);
+            const grade = data.grade || 'F';
+            const categories = data.category_scores || [];
+            const issues = data.issues || [];
+            const recommendations = data.recommendations || [];
+            const executionTime = (data.execution_time || 0).toFixed(2);
+            const agentsExecuted = data.agents_executed || 0;
+
+            // Determine health score color
+            const scoreColor = healthScore >= 80 ? '#28a745' : healthScore >= 60 ? '#ffc107' : '#dc3545';
+            const gradeEmoji = healthScore >= 80 ? '✅' : healthScore >= 60 ? '⚠️' : '❌';
+
+            // Build categories HTML
+            const categoriesHtml = categories.map(cat => {
+                const catScore = Math.round(cat.score || 0);
+                const catColor = cat.passed ? '#28a745' : '#dc3545';
+                const catIcon = cat.passed ? '✅' : '❌';
+                const barWidth = Math.max(0, Math.min(100, catScore));
+
+                return \`
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="font-weight: 600; color: #e0e0e0;">\${catIcon} \${cat.name}</span>
+                            <span style="color: \${catColor}; font-weight: 600;">\${catScore}/100</span>
+                        </div>
+                        <div style="background: #2d2d2d; height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: \${catColor}; height: 100%; width: \${barWidth}%;"></div>
+                        </div>
+                        \${cat.issues && cat.issues.length > 0 ? \`
+                            <div style="margin-top: 4px; font-size: 12px; color: #bbb;">
+                                \${cat.issues.map(issue => \`• \${issue}\`).join('<br>')}
+                            </div>
+                        \` : ''}
+                    </div>
+                \`;
+            }).join('');
 
             return \`
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-label">Health Score</div>
-                        <div class="metric-value" style="color: \${healthScore >= 80 ? '#28a745' : healthScore >= 60 ? '#ffc107' : '#dc3545'}">\${healthScore}/100</div>
+                <div class="metric-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+                    <div class="metric-card" style="background: #1e1e1e; padding: 16px; border-radius: 8px; border: 1px solid #333;">
+                        <div class="metric-label" style="color: #888; font-size: 12px; margin-bottom: 8px;">Health Score</div>
+                        <div class="metric-value" style="color: \${scoreColor}; font-size: 32px; font-weight: 700;">
+                            \${gradeEmoji} \${healthScore}<span style="font-size: 18px;">/100</span>
+                        </div>
+                        <div style="color: #888; font-size: 14px; margin-top: 4px;">Grade: \${grade}</div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-label">Issues Found</div>
-                        <div class="metric-value">\${issuesCount}</div>
+                    <div class="metric-card" style="background: #1e1e1e; padding: 16px; border-radius: 8px; border: 1px solid #333;">
+                        <div class="metric-label" style="color: #888; font-size: 12px; margin-bottom: 8px;">Issues Found</div>
+                        <div class="metric-value" style="color: \${issues.length > 0 ? '#dc3545' : '#28a745'}; font-size: 32px; font-weight: 700;">
+                            \${issues.length}
+                        </div>
+                        <div style="color: #888; font-size: 14px; margin-top: 4px;">\${issues.length === 0 ? 'No issues' : 'needs attention'}</div>
+                    </div>
+                    <div class="metric-card" style="background: #1e1e1e; padding: 16px; border-radius: 8px; border: 1px solid #333;">
+                        <div class="metric-label" style="color: #888; font-size: 12px; margin-bottom: 8px;">Execution Time</div>
+                        <div class="metric-value" style="color: #007acc; font-size: 32px; font-weight: 700;">
+                            \${executionTime}<span style="font-size: 18px;">s</span>
+                        </div>
+                        <div style="color: #888; font-size: 14px; margin-top: 4px;">\${agentsExecuted} agents</div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-title">Report Output</div>
-                    <pre>\${escapeHtml(report.output)}</pre>
+                <div class="section" style="background: #1e1e1e; padding: 16px; border-radius: 8px; border: 1px solid #333; margin-bottom: 16px;">
+                    <div class="section-title" style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: #fff;">📊 Category Breakdown</div>
+                    \${categoriesHtml}
                 </div>
 
+                \${recommendations.length > 0 ? \`
+                    <div class="section" style="background: #1e1e1e; padding: 16px; border-radius: 8px; border: 1px solid #333; margin-bottom: 16px;">
+                        <div class="section-title" style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: #fff;">💡 Recommendations</div>
+                        <div style="font-size: 13px; line-height: 1.6; color: #d0d0d0;">
+                            \${recommendations.map(rec => \`<div style="margin-bottom: 8px;">\${escapeHtml(rec)}</div>\`).join('')}
+                        </div>
+                    </div>
+                \` : ''}
+
                 <div class="section">
-                    <button onclick="askClaude('How can I improve the health score?')">🤖 Ask Claude for Help</button>
+                    <button onclick="askClaude('How can I improve the health score from \${healthScore} to 90+?')" style="background: #007acc; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+                        🤖 Ask Claude for Help
+                    </button>
                 </div>
             \`;
         }

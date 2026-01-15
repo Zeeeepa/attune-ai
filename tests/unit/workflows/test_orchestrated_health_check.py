@@ -316,7 +316,7 @@ class TestOrchestratedHealthCheckWorkflow:
         workflow = OrchestratedHealthCheckWorkflow(mode="release", project_root=str(tmp_path))
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.RefinementStrategy"
+            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_results = [
                 AgentResult(
