@@ -775,7 +775,7 @@ def cmd_orchestrate(args):
 
     from empathy_os.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
     from empathy_os.workflows.orchestrated_release_prep import OrchestratedReleasePrepWorkflow
-    from empathy_os.workflows.test_coverage_boost import TestCoverageBoostWorkflow
+    # test_coverage_boost removed - feature disabled in v4.0.0 (being redesigned)
 
     # Get workflow type
     workflow_type = args.workflow
@@ -835,95 +835,21 @@ def cmd_orchestrate(args):
             return 1
 
     elif workflow_type == "test-coverage":
-        # Test Coverage Boost workflow
-        target_coverage = args.target or 80.0
-        project_root = args.project_root or "."
-
-        print(f"  Target Coverage: {target_coverage}%")
-        print(f"  Project Root: {project_root}")
+        # Test Coverage Boost workflow - DISABLED in v4.0.0
+        print("  ⚠️  FEATURE DISABLED")
+        print("  " + "-" * 56)
         print()
-        print("  🔍 Stage 1: Coverage Gap Analysis")
-        print("  🔨 Stage 2: Test Generation")
-        print("  ✅ Stage 3: Test Validation")
+        print("  The test-coverage workflow has been disabled in v4.0.0")
+        print("  due to poor quality (0% test pass rate).")
         print()
-
-        # Create workflow
-        workflow = TestCoverageBoostWorkflow(
-            target_coverage=target_coverage,
-            project_root=project_root,
-            save_patterns=True,
-        )
-
-        # Execute workflow
-        context = {
-            "current_coverage": args.current_coverage or 0.0,
-        }
-
-        try:
-            result = asyncio.run(workflow.execute(context))
-
-            # Display results
-            print()
-            print("  📊 RESULTS")
-            print("  " + "-" * 56)
-            print()
-
-            # Analysis stage
-            print("  ✓ Stage 1: Coverage Analysis")
-            print(f"    Current Coverage: {result.analysis.current_coverage:.1f}%")
-            print(f"    Gaps Identified: {len(result.analysis.gaps)}")
-            print(f"    Recommendations: {len(result.analysis.recommendations)}")
-            print()
-
-            # Generation stage
-            print("  ✓ Stage 2: Test Generation")
-            print(f"    Tests Generated: {result.generation.tests_generated}")
-            print(f"    Expected Delta: +{result.generation.coverage_delta:.1f}%")
-            print(f"    Test Files: {len(result.generation.test_files)}")
-            print()
-
-            # Validation stage
-            print("  ✓ Stage 3: Test Validation")
-            print(f"    All Tests Passed: {'✅ Yes' if result.validation.all_passed else '❌ No'}")
-            print(f"    Final Coverage: {result.validation.final_coverage:.1f}%")
-            print(f"    Improvement: +{result.validation.coverage_improvement:.1f}%")
-            print()
-
-            # Quality gates
-            print("  🎯 QUALITY GATES")
-            print("  " + "-" * 56)
-            if result.quality_gates_passed:
-                print("  ✅ All quality gates passed!")
-            else:
-                print("  ❌ Quality gates not met")
-                if result.validation.final_coverage < target_coverage:
-                    print(
-                        f"     - Coverage below target ({result.validation.final_coverage:.1f}% < {target_coverage}%)"
-                    )
-                if not result.validation.all_passed:
-                    print(f"     - {len(result.validation.failures)} tests failed")
-                if result.validation.coverage_improvement < 10.0:
-                    print(
-                        f"     - Improvement too small ({result.validation.coverage_improvement:.1f}% < 10%)"
-                    )
-            print()
-
-            # Execution time
-            print(f"  ⏱️  Execution Time: {result.execution_time:.1f}s")
-            print()
-
-            if result.success:
-                print("  ✅ Workflow completed successfully!")
-            else:
-                print("  ❌ Workflow failed")
-                if result.errors:
-                    print(f"     Errors: {', '.join(result.errors)}")
-
-        except Exception as e:
-            print(f"  ❌ Error executing workflow: {e}")
-            print()
-            logger.exception("Orchestration workflow failed")
-            return 1
+        print("  This feature is being redesigned and will return in a")
+        print("  future release with improved test generation quality.")
+        print()
+        print("  Available v4.0 workflows:")
+        print("    • health-check - Real-time codebase health analysis")
+        print("    • release-prep - Quality gate validation")
+        print()
+        return 1
 
     elif workflow_type == "health-check":
         # Health Check workflow
@@ -983,8 +909,9 @@ def cmd_orchestrate(args):
         print()
         print("  Available workflows:")
         print("    - release-prep: Release readiness validation (parallel agents)")
-        print("    - test-coverage: Boost test coverage through sequential agent composition")
         print("    - health-check: Project health assessment (daily/weekly/release modes)")
+        print()
+        print("  Note: test-coverage workflow disabled in v4.0.0 (being redesigned)")
         print()
         return 1
 
@@ -3530,22 +3457,12 @@ def main():
     # Orchestrate command (meta-orchestration workflows)
     parser_orchestrate = subparsers.add_parser(
         "orchestrate",
-        help="Run meta-orchestration workflows (test-coverage, release-prep, health-check)",
+        help="Run meta-orchestration workflows (release-prep, health-check)",
     )
     parser_orchestrate.add_argument(
         "workflow",
-        choices=["test-coverage", "release-prep", "health-check"],
-        help="Workflow to execute",
-    )
-    parser_orchestrate.add_argument(
-        "--target",
-        type=float,
-        help="Target coverage percentage (for test-coverage workflow, default: 80)",
-    )
-    parser_orchestrate.add_argument(
-        "--current-coverage",
-        type=float,
-        help="Current coverage percentage (default: 0)",
+        choices=["release-prep", "health-check"],
+        help="Workflow to execute (test-coverage disabled in v4.0.0)",
     )
     parser_orchestrate.add_argument(
         "--project-root",

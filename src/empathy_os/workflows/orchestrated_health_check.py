@@ -634,12 +634,14 @@ class OrchestratedHealthCheckWorkflow:
                     recommendations.append(f"🔒 Address {len(category.issues)} security issue(s)")
                     recommendations.append("   → Run: empathy workflow run security-audit --path .")
                 elif category.name == "Coverage":
-                    target = max(80.0, category.score + 10)
                     recommendations.append(
                         f"🧪 Increase test coverage to 80%+ (currently {category.score:.1f}%)"
                     )
                     recommendations.append(
-                        f"   → Run: empathy orchestrate test-coverage --target {target:.0f}"
+                        "   → Run: pytest --cov=src --cov-report=term-missing"
+                    )
+                    recommendations.append(
+                        "   → Or use: empathy workflow run test-gen --path <file>"
                     )
                 elif category.name == "Quality":
                     quality_score = category.raw_metrics.get("quality_score", 0.0)

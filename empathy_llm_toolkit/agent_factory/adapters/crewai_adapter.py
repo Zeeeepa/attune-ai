@@ -339,13 +339,18 @@ class CrewAIAdapter(BaseAdapter):
         try:
             from crewai.tools import BaseTool
 
+            # Capture function parameters in closure variables
+            tool_name = name
+            tool_description = description
+            tool_func = func
+
             # Create dynamic tool class
             class DynamicTool(BaseTool):
-                name: str = name
-                description: str = description
+                name: str = tool_name
+                description: str = tool_description
 
                 def _run(self, **kwargs) -> str:
-                    return str(func(**kwargs))
+                    return str(tool_func(**kwargs))
 
             return DynamicTool()
         except ImportError:

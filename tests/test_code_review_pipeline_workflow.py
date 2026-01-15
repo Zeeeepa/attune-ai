@@ -520,7 +520,7 @@ class TestPipelineExecution:
         mock_workflow_result.final_output = {"security_score": 85}
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("src.empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="def hello(): pass")
@@ -533,7 +533,7 @@ class TestPipelineExecution:
         """Test execute handles errors gracefully."""
         pipeline = CodeReviewPipeline(mode="standard")
 
-        with patch("src.empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(side_effect=Exception("Review failed"))
 
             result = await pipeline.execute(diff="def hello(): pass")
@@ -557,7 +557,7 @@ class TestPipelineExecution:
         }
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("src.empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="code here")
@@ -580,7 +580,7 @@ class TestPipelineExecution:
         }
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("src.empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="code here")
@@ -597,7 +597,7 @@ class TestPipelineExecution:
         mock_workflow_result.final_output = {"security_score": 90}
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("src.empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="code")

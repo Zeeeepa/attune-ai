@@ -177,6 +177,15 @@ export class WorkflowReportPanel {
         console.log('[WorkflowReportPanel] Running workflow:', this._currentWorkflow);
         console.log('[WorkflowReportPanel] Command args:', args);
 
+        // Determine correct working directory
+        // If we're in vscode-extension folder, use parent directory (Python project root)
+        let cwd = workspaceFolder;
+        if (workspaceFolder.endsWith('vscode-extension')) {
+            const path = require('path');
+            cwd = path.dirname(workspaceFolder);
+            console.log('[WorkflowReportPanel] Running from parent directory:', cwd);
+        }
+
         // Show progress notification
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
@@ -187,7 +196,7 @@ export class WorkflowReportPanel {
 
             return new Promise<void>((resolve) => {
                 cp.execFile(pythonPath, args, {
-                    cwd: workspaceFolder,
+                    cwd: cwd,
                     maxBuffer: 1024 * 1024 * 10 // 10MB buffer
                 }, async (error, stdout, stderr) => {
                     const output = stdout || stderr || '';
@@ -224,15 +233,24 @@ export class WorkflowReportPanel {
     }
 
     private _buildWorkflowArgs(workflow: string, input?: string): string[] {
-        // All workflows now use 'workflow run' command (v4.0 CrewAI-based)
-        const baseArgs = ['-m', 'empathy_os.cli', 'workflow', 'run', workflow];
+        // v4.0: Orchestrated workflows use 'orchestrate' subcommand
+        if (workflow === 'orchestrated-health-check') {
+            const baseArgs = ['-m', 'empathy_os.cli', 'orchestrate', 'health-check', '--mode', 'daily'];
+            return baseArgs;
+        } else if (workflow === 'orchestrated-release-prep') {
+            const baseArgs = ['-m', 'empathy_os.cli', 'orchestrate', 'release-prep', '--path', '.'];
+            return baseArgs;
+        } else {
+            // Other workflows use 'workflow run' command
+            const baseArgs = ['-m', 'empathy_os.cli', 'workflow', 'run', workflow];
 
-        // Add input if provided
-        if (input) {
-            baseArgs.push('--input', input);
+            // Add input if provided
+            if (input) {
+                baseArgs.push('--input', input);
+            }
+
+            return baseArgs;
         }
-
-        return baseArgs;
     }
 
     private _parseWorkflowOutput(output: string): any {

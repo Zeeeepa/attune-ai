@@ -61,8 +61,7 @@ from .document_gen import DocumentGenerationWorkflow
 # User-generated workflows
 from .document_manager import DocumentManagerWorkflow
 from .documentation_orchestrator import DocumentationOrchestrator, OrchestratorResult
-from .health_check import HealthCheckWorkflow
-from .health_check_crew import HealthCheckCrew, HealthCheckCrewResult
+# Removed deprecated: health_check.py, health_check_crew.py (use orchestrated_health_check instead)
 
 # Keyboard Conductor (v3.6) - keyboard shortcut generation
 from .keyboard_shortcuts import KeyboardShortcutWorkflow
@@ -85,7 +84,7 @@ from .secure_release import SecureReleasePipeline, SecureReleaseResult
 from .security_audit import SecurityAuditWorkflow
 from .step_config import WorkflowStepConfig, steps_from_tier_map, validate_step_config
 from .test5 import Test5Workflow
-from .test_coverage_boost import CoverageBoostResult, TestCoverageBoostWorkflow
+# Removed deprecated: test_coverage_boost.py (use test_coverage_boost_crew or orchestrated versions)
 from .test_coverage_boost_crew import TestCoverageBoostCrew, TestCoverageBoostCrewResult
 from .test_gen import TestGenerationWorkflow
 
@@ -132,8 +131,6 @@ _DEFAULT_WORKFLOWS: dict[str, type] = {
     # Code review crew integration (v3.1)
     "pro-review": CodeReviewPipeline,
     "pr-review": PRReviewWorkflow,
-    # Health check crew integration (v3.1)
-    "health-check-legacy": HealthCheckWorkflow,  # Old single-agent version
     # Documentation management (v3.5)
     "doc-orchestrator": DocumentationOrchestrator,
     "manage-docs": ManageDocumentationCrew,
@@ -142,15 +139,15 @@ _DEFAULT_WORKFLOWS: dict[str, type] = {
     # User-generated workflows
     "document-manager": DocumentManagerWorkflow,
     "test5": Test5Workflow,
-    # CrewAI-based multi-agent workflows (v4.0.0 - production ready)
-    "health-check": HealthCheckCrew,  # Multi-agent health check (3-6 agents)
-    "release-prep": ReleasePreparationCrew,  # Multi-agent release validation (4 agents)
-    "test-coverage-boost": TestCoverageBoostCrew,  # Intelligent coverage boost (3 agents)
+    # CrewAI-based multi-agent workflows (v3.x - deprecated, use orchestrated-* versions)
+    # Removed: "health-check" (use orchestrated-health-check instead)
+    "release-prep": ReleasePreparationCrew,  # DEPRECATED: Use orchestrated-release-prep instead
+    "test-coverage-boost": TestCoverageBoostCrew,  # DISABLED: Poor quality (0% pass rate), needs redesign
     # Backward compatibility aliases
-    "orchestrated-test-coverage": TestCoverageBoostCrew,  # Alias for test-coverage-boost (backward compat)
-    # Meta-orchestration workflows (v4.0.0 - production ready with real analysis tools)
-    "orchestrated-health-check": OrchestratedHealthCheckWorkflow,  # Real security/coverage/quality analysis
-    "orchestrated-release-prep": OrchestratedReleasePrepWorkflow,  # Real quality gate validation
+    "orchestrated-test-coverage": TestCoverageBoostCrew,  # DISABLED: Coverage boost needs redesign
+    # Meta-orchestration workflows (v4.0.0 - CANONICAL with real analysis tools)
+    "orchestrated-health-check": OrchestratedHealthCheckWorkflow,  # ✅ v4.0.0 CANONICAL: Real security/coverage/quality analysis
+    "orchestrated-release-prep": OrchestratedReleasePrepWorkflow,  # ✅ v4.0.0 CANONICAL: Real quality gate validation
     # Experimental aliases (backward compat)
     "orchestrated-health-check-experimental": OrchestratedHealthCheckWorkflow,  # ALIAS
     "orchestrated-release-prep-experimental": OrchestratedReleasePrepWorkflow,  # ALIAS
@@ -340,7 +337,7 @@ __all__ = [
     # Documentation management (v3.5)
     "DocumentationOrchestrator",
     # Health check crew integration (v3.1)
-    "HealthCheckWorkflow",
+    # Removed deprecated: "HealthCheckWorkflow" (use OrchestratedHealthCheckWorkflow)
     "HealthCheckReport",
     # Keyboard Conductor (v3.6)
     "KeyboardShortcutWorkflow",
@@ -384,15 +381,14 @@ __all__ = [
     "steps_from_tier_map",
     "validate_step_config",
     # CrewAI-based multi-agent workflows (v4.0.0)
-    "HealthCheckCrew",
-    "HealthCheckCrewResult",
+    # Removed deprecated: "HealthCheckCrew" (use OrchestratedHealthCheckWorkflow)
+    # Removed deprecated: "HealthCheckCrewResult"
     "ReleasePreparationCrew",
     "ReleasePreparationCrewResult",
     "TestCoverageBoostCrew",
     "TestCoverageBoostCrewResult",
-    # Legacy meta-orchestration workflows (experimental)
-    "TestCoverageBoostWorkflow",
-    "CoverageBoostResult",
+    # Removed deprecated: "TestCoverageBoostWorkflow" (use TestCoverageBoostCrew)
+    # Removed deprecated: "CoverageBoostResult"
     # Experimental: Meta-orchestration
     "OrchestratedHealthCheckWorkflow",
     "OrchestratedReleasePrepWorkflow",

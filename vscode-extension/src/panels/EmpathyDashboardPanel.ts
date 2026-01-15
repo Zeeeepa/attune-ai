@@ -2141,10 +2141,11 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 </button>
             </div>
 
-            <!-- Meta-Orchestration (v4.0) -->
+            <!-- Meta-Orchestration (v4.0) - Real Analysis Tools -->
             <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600; display: flex; align-items: center; gap: 6px;">
                 <span>META-ORCHESTRATION</span>
                 <span style="background: linear-gradient(90deg, #8b5cf6, #ec4899); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">v4.0</span>
+                <span style="font-size: 9px; opacity: 0.7; font-weight: 400;">Real Analysis Tools</span>
             </div>
             <div class="actions-grid workflow-grid">
                 <button class="action-btn workflow-btn" id="btn-health-check-v4" title="Adaptive health check with 3 modes (daily: 3 agents, weekly: 5 agents, release: 6 agents) - Auto-opens VS Code panel">
@@ -2155,10 +2156,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span class="action-icon">&#x1F4CB;</span>
                     <span>Release Prep</span>
                 </button>
+                <!-- Coverage Boost DISABLED (v4.0.0) - Poor quality (0% test pass rate), needs redesign
                 <button class="action-btn workflow-btn" id="btn-coverage-boost-v4" title="Intelligent test coverage boost with gap analysis and smart generation">
                     <span class="action-icon">&#x1F3AF;</span>
                     <span>Coverage Boost</span>
                 </button>
+                -->
             </div>
 
             <!-- Release -->
@@ -2459,6 +2462,8 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             });
         }
 
+        // Coverage Boost button disabled for v4.0.0 - feature needs redesign (0% test pass rate)
+        /*
         const coverageBoostBtn = document.getElementById('btn-coverage-boost-v4');
         if (coverageBoostBtn) {
             coverageBoostBtn.addEventListener('click', function(e) {
@@ -2467,6 +2472,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 vscode.postMessage({ type: 'runOrchestratedTestCoverage' });
             });
         }
+        */
 
         // Workflow button click handlers - show input panel first
         const workflowBtns = document.querySelectorAll('.action-btn[data-workflow]');
