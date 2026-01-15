@@ -23,7 +23,9 @@ omit =
     empathy_software_plugin/cli.py
 
 branch = True
-parallel = True
+# Note: parallel=True can cause issues with pytest-xdist coverage collection
+# For accurate coverage, run: pytest -n0 --cov=...
+# parallel = True
 
 [report]
 # Target: 80%+ coverage for commercial launch
