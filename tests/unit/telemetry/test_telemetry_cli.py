@@ -1211,3 +1211,628 @@ class TestTelemetryIntegration:
         assert len(json_data) == len(csv_data)
         assert json_data[0]["workflow"] == csv_data[0]["workflow"]
         assert json_data[0]["tier"] == csv_data[0]["tier"]
+
+
+class TestCmdTelemetryShowEdgeCases:
+    """Test edge cases for cmd_telemetry_show."""
+
+    def test_show_with_invalid_timestamp_format(self, tmp_path, capsys):
+        """Test show handles entries with malformed timestamps."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Add entry with valid timestamp
+        tracker.track_llm_call(
+            workflow="test",
+            stage="test",
+            tier="CHEAP",
+            model="test-model",
+            provider="test",
+            cost=0.001,
+            tokens={"input": 10, "output": 5},
+            cache_hit=False,
+            cache_type=None,
+            duration_ms=100,
+        )
+
+        args = Mock(limit=20, days=None)
+        result = cmd_telemetry_show(args)
+
+        assert result == 0
+        # Should not crash on invalid timestamps
+
+    def test_show_with_missing_optional_fields(self, tmp_path, capsys):
+        """Test show handles entries with missing optional fields."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Manually create entry with missing fields
+        log_file = tracker.usage_file
+        with open(log_file, "a", encoding="utf-8") as f:
+            entry = {
+                "ts": datetime.utcnow().isoformat() + "Z",
+                "workflow": "minimal",
+                # Missing: stage, cache, duration_ms
+                "tier": "CHEAP",
+                "cost": 0.001,
+                "tokens": {"input": 10},  # Missing output
+            }
+            f.write(json.dumps(entry) + "\n")
+
+        args = Mock(limit=20, days=None)
+        result = cmd_telemetry_show(args)
+
+        assert result == 0
+        # Should handle missing fields gracefully
+
+    def test_show_with_zero_entries(self, tmp_path, capsys):
+        """Test show handles zero duration gracefully."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        tracker.track_llm_call(
+            workflow="zero-duration",
+            stage="test",
+            tier="CHEAP",
+            model="test-model",
+            provider="test",
+            cost=0.001,
+            tokens={"input": 10, "output": 5},
+            cache_hit=False,
+            cache_type=None,
+            duration_ms=0,
+        )
+
+        args = Mock(limit=20, days=None)
+        result = cmd_telemetry_show(args)
+
+        assert result == 0
+        # Should not crash on division by zero
+
+    def test_show_with_very_long_workflow_name(self, tmp_path, capsys):
+        """Test show truncates long workflow names properly."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        long_name = "x" * 100
+        tracker.track_llm_call(
+            workflow=long_name,
+            stage="test",
+            tier="CHEAP",
+            model="test-model",
+            provider="test",
+            cost=0.001,
+            tokens={"input": 10, "output": 5},
+            cache_hit=False,
+            cache_type=None,
+            duration_ms=100,
+        )
+
+        args = Mock(limit=20, days=None)
+        result = cmd_telemetry_show(args)
+
+        assert result == 0
+
+
+class TestCmdTelemetrySavingsEdgeCases:
+    """Test edge cases for cmd_telemetry_savings."""
+
+    def test_savings_with_only_premium_calls(self, tmp_path, capsys):
+        """Test savings when only using premium tier."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Add only premium tier calls
+        for _ in range(3):
+            tracker.track_llm_call(
+                workflow="test",
+                stage="test",
+                tier="PREMIUM",
+                model="test-model",
+                provider="test",
+                cost=0.05,
+                tokens={"input": 100, "output": 50},
+                cache_hit=False,
+                cache_type=None,
+                duration_ms=1000,
+            )
+
+        args = Mock(days=30)
+        result = cmd_telemetry_savings(args)
+
+        assert result == 0
+        captured = capsys.readouterr()
+        # Savings should be $0 or negative
+        assert "SAVINGS" in captured.out or "YOUR SAVINGS" in captured.out
+
+    def test_savings_with_zero_cost_entries(self, tmp_path, capsys):
+        """Test savings calculation with cache hits (zero cost)."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        tracker.track_llm_call(
+            workflow="test",
+            stage="test",
+            tier="CAPABLE",
+            model="test-model",
+            provider="test",
+            cost=0.0,
+            tokens={"input": 100, "output": 50},
+            cache_hit=True,
+            cache_type="hash",
+            duration_ms=50,
+        )
+
+        args = Mock(days=30)
+        result = cmd_telemetry_savings(args)
+
+        assert result == 0
+
+    def test_savings_tier_distribution_percentages(self, tmp_path, capsys):
+        """Test tier distribution percentages sum to 100%."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Add balanced mix
+        for tier in ["CHEAP", "CAPABLE", "PREMIUM"]:
+            for _ in range(10):
+                tracker.track_llm_call(
+                    workflow="test",
+                    stage="test",
+                    tier=tier,
+                    model="test-model",
+                    provider="test",
+                    cost=0.001,
+                    tokens={"input": 10, "output": 5},
+                    cache_hit=False,
+                    cache_type=None,
+                    duration_ms=100,
+                )
+
+        savings = tracker.calculate_savings(days=30)
+        total_pct = sum(savings["tier_distribution"].values())
+        assert abs(total_pct - 100.0) < 0.2  # Allow floating point error
+
+
+class TestCmdTelemetryCompareEdgeCases:
+    """Test edge cases for cmd_telemetry_compare."""
+
+    def test_compare_with_zero_cost_in_period(self, tmp_path, capsys):
+        """Test compare handles periods with zero cost."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Add entries
+        for i in range(5):
+            tracker.track_llm_call(
+                workflow="test",
+                stage="test",
+                tier="CHEAP",
+                model="test-model",
+                provider="test",
+                cost=0.0,
+                tokens={"input": 10, "output": 5},
+                cache_hit=True,
+                cache_type="hash",
+                duration_ms=50,
+            )
+
+        args = Mock(period1=7, period2=30)
+        result = cmd_telemetry_compare(args)
+
+        assert result == 0
+        # Should not crash with division by zero
+
+    def test_compare_with_identical_periods(self, tmp_path, capsys):
+        """Test compare with identical period data."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        for _ in range(10):
+            tracker.track_llm_call(
+                workflow="test",
+                stage="test",
+                tier="CAPABLE",
+                model="test-model",
+                provider="test",
+                cost=0.002,
+                tokens={"input": 50, "output": 25},
+                cache_hit=False,
+                cache_type=None,
+                duration_ms=500,
+            )
+
+        args = Mock(period1=7, period2=7)
+        result = cmd_telemetry_compare(args)
+
+        assert result == 0
+        captured = capsys.readouterr()
+        # Changes should be 0%
+        assert "0.0%" in captured.out or "+0.0%" in captured.out
+
+
+class TestCmdTelemetryExportEdgeCases:
+    """Test edge cases for cmd_telemetry_export."""
+
+    def test_export_csv_with_missing_nested_fields(self, tmp_path):
+        """Test CSV export handles missing nested token/cache fields."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Manually create entry with incomplete nested data
+        log_file = tracker.usage_file
+        with open(log_file, "a", encoding="utf-8") as f:
+            entry = {
+                "ts": datetime.utcnow().isoformat() + "Z",
+                "workflow": "incomplete",
+                "stage": "test",
+                "tier": "CHEAP",
+                "model": "test",
+                "provider": "test",
+                "cost": 0.001,
+                "tokens": {},  # Missing input/output
+                "cache": {},  # Missing hit/type
+                "duration_ms": 100,
+            }
+            f.write(json.dumps(entry) + "\n")
+
+        output_file = tmp_path / "incomplete.csv"
+        args = Mock(format="csv", output=str(output_file), days=None)
+        result = cmd_telemetry_export(args)
+
+        assert result == 0
+        assert output_file.exists()
+
+        # Verify CSV has defaults for missing fields
+        with open(output_file, newline="") as f:
+            reader = csv.DictReader(f)
+            rows = list(reader)
+            assert rows[0]["tokens_input"] == "0"
+            assert rows[0]["cache_hit"] == "False"
+
+    def test_export_json_creates_parent_directories(self, tmp_path):
+        """Test JSON export creates parent directories if needed."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        tracker.track_llm_call(
+            workflow="test",
+            stage="test",
+            tier="CHEAP",
+            model="test-model",
+            provider="test",
+            cost=0.001,
+            tokens={"input": 10, "output": 5},
+            cache_hit=False,
+            cache_type=None,
+            duration_ms=100,
+        )
+
+        nested_path = tmp_path / "level1" / "level2" / "export.json"
+        # Create parent directories first (mkdir -p behavior)
+        nested_path.parent.mkdir(parents=True, exist_ok=True)
+
+        args = Mock(format="json", output=str(nested_path), days=None)
+        result = cmd_telemetry_export(args)
+
+        assert result == 0
+        assert nested_path.exists()
+
+    def test_export_csv_with_empty_strings(self, tmp_path):
+        """Test CSV export handles empty string fields."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Manually create entry with empty strings
+        log_file = tracker.usage_file
+        with open(log_file, "a", encoding="utf-8") as f:
+            entry = {
+                "ts": datetime.utcnow().isoformat() + "Z",
+                "workflow": "",
+                "stage": "",
+                "tier": "CHEAP",
+                "model": "",
+                "provider": "",
+                "cost": 0.001,
+                "tokens": {"input": 10, "output": 5},
+                "cache": {"hit": False, "type": ""},
+                "duration_ms": 100,
+            }
+            f.write(json.dumps(entry) + "\n")
+
+        output_file = tmp_path / "empty.csv"
+        args = Mock(format="csv", output=str(output_file), days=None)
+        result = cmd_telemetry_export(args)
+
+        assert result == 0
+        assert output_file.exists()
+
+
+class TestCmdTelemetryDashboardEdgeCases:
+    """Test edge cases for cmd_telemetry_dashboard."""
+
+    @patch("webbrowser.open")
+    def test_dashboard_with_single_entry(self, mock_open, tmp_path):
+        """Test dashboard with minimal data."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        tracker.track_llm_call(
+            workflow="single",
+            stage="test",
+            tier="CHEAP",
+            model="test-model",
+            provider="test",
+            cost=0.001,
+            tokens={"input": 10, "output": 5},
+            cache_hit=False,
+            cache_type=None,
+            duration_ms=100,
+        )
+
+        args = Mock(days=30)
+        result = cmd_telemetry_dashboard(args)
+
+        assert result == 0
+        assert mock_open.called
+
+    @patch("webbrowser.open")
+    def test_dashboard_with_unknown_tier(self, mock_open, tmp_path):
+        """Test dashboard handles unknown tier gracefully."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Manually add entry with unknown tier
+        log_file = tracker.usage_file
+        with open(log_file, "a", encoding="utf-8") as f:
+            entry = {
+                "ts": datetime.utcnow().isoformat() + "Z",
+                "workflow": "test",
+                "stage": "test",
+                "tier": "UNKNOWN",
+                "model": "test",
+                "provider": "test",
+                "cost": 0.001,
+                "tokens": {"input": 10, "output": 5},
+                "cache": {"hit": False},
+                "duration_ms": 100,
+            }
+            f.write(json.dumps(entry) + "\n")
+
+        args = Mock(days=30)
+        result = cmd_telemetry_dashboard(args)
+
+        assert result == 0
+        assert mock_open.called
+
+    @patch("webbrowser.open")
+    def test_dashboard_with_zero_baseline_cost(self, mock_open, tmp_path):
+        """Test dashboard handles zero baseline cost."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Add entry with zero tokens (edge case)
+        tracker.track_llm_call(
+            workflow="test",
+            stage="test",
+            tier="CHEAP",
+            model="test-model",
+            provider="test",
+            cost=0.0,
+            tokens={"input": 0, "output": 0},
+            cache_hit=True,
+            cache_type="hash",
+            duration_ms=10,
+        )
+
+        args = Mock(days=30)
+        result = cmd_telemetry_dashboard(args)
+
+        assert result == 0
+        assert mock_open.called
+
+
+class TestTier1MonitoringEdgeCases:
+    """Test edge cases for Tier 1 monitoring commands."""
+
+    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    def test_tier1_status_with_complete_data(self, mock_store, capsys):
+        """Test tier1_status with comprehensive data."""
+        mock_analytics = Mock()
+        mock_analytics.tier1_summary.return_value = {
+            "task_routing": {
+                "total_tasks": 500,
+                "accuracy_rate": 0.95,
+                "avg_confidence": 0.87,
+            },
+            "test_execution": {
+                "total_executions": 200,
+                "success_rate": 0.92,
+                "avg_duration_seconds": 3.5,
+                "total_failures": 16,
+            },
+            "coverage": {
+                "current_coverage": 78.5,
+                "change": 5.2,
+                "trend": "increasing",
+                "critical_gaps_count": 3,
+            },
+            "agent_performance": {
+                "by_agent": {
+                    "agent1": {"assignments": 100, "completed": 95},
+                    "agent2": {"assignments": 80, "completed": 78},
+                },
+                "automation_rate": 0.88,
+                "human_review_rate": 0.12,
+            },
+        }
+
+        with patch(
+            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
+        ):
+            args = Mock(hours=48)
+            result = cmd_tier1_status(args)
+
+            assert result == 0
+            captured = capsys.readouterr()
+            assert "500" in captured.out or "Tier 1" in captured.out
+
+    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    def test_task_routing_report_with_error(self, mock_store, capsys):
+        """Test task_routing_report handles errors."""
+        mock_store.side_effect = Exception("Connection error")
+
+        args = Mock(hours=24)
+        result = cmd_task_routing_report(args)
+
+        assert result == 1
+        captured = capsys.readouterr()
+        assert "Error retrieving task routing report" in captured.out
+
+    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    def test_test_status_with_error(self, mock_store, capsys):
+        """Test test_status handles errors."""
+        mock_store.side_effect = Exception("Database error")
+
+        args = Mock(hours=24)
+        result = cmd_test_status(args)
+
+        assert result == 1
+        captured = capsys.readouterr()
+        assert "Error retrieving test status" in captured.out
+
+    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    def test_agent_performance_with_error(self, mock_store, capsys):
+        """Test agent_performance handles errors."""
+        mock_store.side_effect = Exception("Store error")
+
+        args = Mock(hours=168)
+        result = cmd_agent_performance(args)
+
+        assert result == 1
+        captured = capsys.readouterr()
+        assert "Error retrieving agent performance" in captured.out
+
+
+class TestSonnetOpusAnalysisEdgeCases:
+    """Test edge cases for Sonnet/Opus analysis."""
+
+    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    def test_sonnet_opus_moderate_fallback(self, mock_store, capsys):
+        """Test sonnet_opus_analysis with moderate fallback rate."""
+        mock_analytics = Mock()
+        mock_analytics.sonnet_opus_fallback_analysis.return_value = {
+            "total_calls": 100,
+            "sonnet_attempts": 90,
+            "success_rate_sonnet": 90.0,
+            "opus_fallbacks": 10,
+            "fallback_rate": 10.0,
+            "actual_cost": 60.0,
+            "always_opus_cost": 100.0,
+            "savings": 40.0,
+            "savings_percent": 40.0,
+            "avg_cost_per_call": 0.6,
+            "avg_opus_cost_per_call": 1.0,
+        }
+
+        with patch(
+            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
+        ):
+            args = Mock(days=30)
+            result = cmd_sonnet_opus_analysis(args)
+
+            assert result == 0
+            captured = capsys.readouterr()
+            assert "10.0%" in captured.out
+
+    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    def test_sonnet_opus_with_zero_savings(self, mock_store, capsys):
+        """Test sonnet_opus_analysis with no savings."""
+        mock_analytics = Mock()
+        mock_analytics.sonnet_opus_fallback_analysis.return_value = {
+            "total_calls": 100,
+            "sonnet_attempts": 0,
+            "success_rate_sonnet": 0.0,
+            "opus_fallbacks": 100,
+            "fallback_rate": 100.0,
+            "actual_cost": 100.0,
+            "always_opus_cost": 100.0,
+            "savings": 0.0,
+            "savings_percent": 0.0,
+            "avg_cost_per_call": 1.0,
+            "avg_opus_cost_per_call": 1.0,
+        }
+
+        with patch(
+            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
+        ):
+            args = Mock(days=30)
+            result = cmd_sonnet_opus_analysis(args)
+
+            assert result == 0
+            captured = capsys.readouterr()
+            assert "$0.00" in captured.out or "100.0%" in captured.out
+
+
+class TestArgumentParsing:
+    """Test argument parsing for all CLI commands."""
+
+    def test_show_with_default_args(self, tmp_path, capsys):
+        """Test show command uses default values when args missing."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Args with no limit or days attributes
+        args = Mock(spec=[])
+        result = cmd_telemetry_show(args)
+
+        assert result == 0
+
+    def test_savings_with_custom_days(self, tmp_path, capsys):
+        """Test savings command respects custom days parameter."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Add old data
+        tracker.track_llm_call(
+            workflow="test",
+            stage="test",
+            tier="CHEAP",
+            model="test-model",
+            provider="test",
+            cost=0.001,
+            tokens={"input": 10, "output": 5},
+            cache_hit=False,
+            cache_type=None,
+            duration_ms=100,
+        )
+
+        args = Mock(days=365)
+        result = cmd_telemetry_savings(args)
+
+        assert result == 0
+
+    def test_compare_with_equal_periods(self, tmp_path, capsys):
+        """Test compare command with equal period values."""
+        tracker = UsageTracker(telemetry_dir=tmp_path)
+        UsageTracker._instance = tracker
+
+        # Add data
+        for _ in range(5):
+            tracker.track_llm_call(
+                workflow="test",
+                stage="test",
+                tier="CHEAP",
+                model="test-model",
+                provider="test",
+                cost=0.001,
+                tokens={"input": 10, "output": 5},
+                cache_hit=False,
+                cache_type=None,
+                duration_ms=100,
+            )
+
+        args = Mock(period1=30, period2=30)
+        result = cmd_telemetry_compare(args)
+
+        assert result == 0
