@@ -718,7 +718,7 @@ Note: This is a mock response. Configure ANTHROPIC_API_KEY for real analysis."""
 
         # Parse agent responses
         agent_findings = []
-        for agent, task, (response, input_tokens, output_tokens, cost) in zip(
+        for agent, _, (response, input_tokens, output_tokens, cost) in zip(
             self.agents, tasks, results, strict=False
         ):
             parsed = parse_xml_response(response)

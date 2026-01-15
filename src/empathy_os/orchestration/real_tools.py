@@ -118,7 +118,7 @@ class RealCoverageAnalyzer:
                     "--maxfail=50",  # Continue despite failures
                 ]
 
-                result = subprocess.run(
+                _result = subprocess.run(  # Result not needed, only coverage.json
                     cmd,
                     cwd=self.project_root,
                     capture_output=True,
