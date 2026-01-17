@@ -37,7 +37,7 @@ import structlog
 
 from .claude_memory import ClaudeMemoryConfig
 from .config import get_redis_memory
-from .long_term import Classification, SecureMemDocsIntegration
+from .long_term import Classification, LongTermMemory, SecureMemDocsIntegration
 from .redis_bootstrap import RedisStartMethod, RedisStatus, ensure_redis
 from .short_term import (
     AccessTier,
@@ -135,6 +135,7 @@ class UnifiedMemory:
     # Internal state
     _short_term: RedisShortTermMemory | None = field(default=None, init=False)
     _long_term: SecureMemDocsIntegration | None = field(default=None, init=False)
+    _simple_long_term: LongTermMemory | None = field(default=None, init=False)
     _redis_status: RedisStatus | None = field(default=None, init=False)
     _initialized: bool = field(default=False, init=False)
 
@@ -224,6 +225,14 @@ class UnifiedMemory:
         except Exception as e:
             logger.error("long_term_memory_failed", error=str(e))
             self._long_term = None
+
+        # Initialize simple long-term memory (for testing and simple use cases)
+        try:
+            self._simple_long_term = LongTermMemory(storage_path=self.config.storage_dir)
+            logger.debug("simple_long_term_memory_initialized")
+        except Exception as e:
+            logger.error("simple_long_term_memory_failed", error=str(e))
+            self._simple_long_term = None
 
         self._initialized = True
 
@@ -591,6 +600,40 @@ class UnifiedMemory:
             and self._redis_status.available
             and self._redis_status.method != RedisStartMethod.MOCK
         )
+
+    @property
+    def short_term(self) -> RedisShortTermMemory:
+        """Get short-term memory backend for direct access (testing).
+
+        Returns:
+            RedisShortTermMemory instance
+
+        Raises:
+            RuntimeError: If short-term memory is not initialized
+
+        """
+        if self._short_term is None:
+            raise RuntimeError("Short-term memory not initialized")
+        return self._short_term
+
+    @property
+    def long_term(self) -> LongTermMemory:
+        """Get simple long-term memory backend for direct access (testing).
+
+        Returns:
+            LongTermMemory instance
+
+        Raises:
+            RuntimeError: If long-term memory is not initialized
+
+        Note:
+            For production use with security features (PII scrubbing, encryption),
+            use persist_pattern() and recall_pattern() methods instead.
+
+        """
+        if self._simple_long_term is None:
+            raise RuntimeError("Long-term memory not initialized")
+        return self._simple_long_term
 
     def health_check(self) -> dict[str, Any]:
         """Check health of memory backends.

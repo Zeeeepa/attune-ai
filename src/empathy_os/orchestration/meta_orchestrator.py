@@ -236,6 +236,72 @@ class MetaOrchestrator:
         """Initialize meta-orchestrator."""
         logger.info("MetaOrchestrator initialized")
 
+    def analyze_task(self, task: str, context: dict[str, Any] | None = None) -> TaskRequirements:
+        """Analyze task to extract requirements (public wrapper for testing).
+
+        Args:
+            task: Task description (e.g., "Boost test coverage to 90%")
+            context: Optional context dictionary
+
+        Returns:
+            TaskRequirements with extracted information
+
+        Raises:
+            ValueError: If task is invalid
+
+        Example:
+            >>> orchestrator = MetaOrchestrator()
+            >>> requirements = orchestrator.analyze_task(
+            ...     task="Improve test coverage",
+            ...     context={"current_coverage": 75}
+            ... )
+            >>> print(requirements.domain)
+            TaskDomain.TESTING
+        """
+        if not task or not isinstance(task, str):
+            raise ValueError("task must be a non-empty string")
+
+        context = context or {}
+        return self._analyze_task(task, context)
+
+    def create_execution_plan(
+        self,
+        requirements: TaskRequirements,
+        agents: list[AgentTemplate],
+        strategy: CompositionPattern,
+    ) -> ExecutionPlan:
+        """Create execution plan from components (extracted for testing).
+
+        Args:
+            requirements: Task requirements with quality gates
+            agents: Selected agents for execution
+            strategy: Composition pattern to use
+
+        Returns:
+            ExecutionPlan with all components configured
+
+        Example:
+            >>> orchestrator = MetaOrchestrator()
+            >>> requirements = TaskRequirements(
+            ...     complexity=TaskComplexity.MODERATE,
+            ...     domain=TaskDomain.TESTING,
+            ...     capabilities_needed=["analyze_gaps"],
+            ...     quality_gates={"min_coverage": 80}
+            ... )
+            >>> agents = [get_template("test_coverage_analyzer")]
+            >>> strategy = CompositionPattern.SEQUENTIAL
+            >>> plan = orchestrator.create_execution_plan(requirements, agents, strategy)
+            >>> print(plan.strategy)
+            CompositionPattern.SEQUENTIAL
+        """
+        return ExecutionPlan(
+            agents=agents,
+            strategy=strategy,
+            quality_gates=requirements.quality_gates,
+            estimated_cost=self._estimate_cost(agents),
+            estimated_duration=self._estimate_duration(agents, strategy),
+        )
+
     def analyze_and_compose(
         self, task: str, context: dict[str, Any] | None = None
     ) -> ExecutionPlan:
@@ -282,14 +348,8 @@ class MetaOrchestrator:
         strategy = self._choose_composition_pattern(requirements, agents)
         logger.info(f"Selected strategy: {strategy.value}")
 
-        # Step 4: Create execution plan
-        plan = ExecutionPlan(
-            agents=agents,
-            strategy=strategy,
-            quality_gates=requirements.quality_gates,
-            estimated_cost=self._estimate_cost(agents),
-            estimated_duration=self._estimate_duration(agents, strategy),
-        )
+        # Step 4: Create execution plan (using extracted public method)
+        plan = self.create_execution_plan(requirements, agents, strategy)
 
         return plan
 

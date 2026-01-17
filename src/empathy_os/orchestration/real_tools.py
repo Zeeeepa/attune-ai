@@ -72,11 +72,13 @@ class RealCoverageAnalyzer:
         """
         self.project_root = Path(project_root).resolve()
 
-    def analyze(self, target_package: str = "src", use_existing: bool = True) -> CoverageReport:
-        """Run coverage analysis on package.
+    def analyze(self, use_existing: bool = True) -> CoverageReport:
+        """Run coverage analysis on all project packages.
+
+        Analyzes coverage for: empathy_os, empathy_llm_toolkit,
+        empathy_software_plugin, empathy_healthcare_plugin
 
         Args:
-            target_package: Package to analyze (default: src)
             use_existing: Use existing coverage.json if available (default: True)
 
         Returns:
@@ -85,7 +87,7 @@ class RealCoverageAnalyzer:
         Raises:
             RuntimeError: If coverage analysis fails
         """
-        logger.info(f"Running coverage analysis on {target_package}")
+        logger.info("Running coverage analysis on all packages")
 
         coverage_file = self.project_root / "coverage.json"
 
@@ -107,16 +109,28 @@ class RealCoverageAnalyzer:
             try:
                 # Run pytest with coverage on test suite
                 logger.info("Running test suite to generate coverage (may take 2-5 minutes)")
+
+                # Use actual package names (match pyproject.toml configuration)
+                cov_packages = [
+                    "empathy_os",
+                    "empathy_llm_toolkit",
+                    "empathy_software_plugin",
+                    "empathy_healthcare_plugin",
+                ]
+
                 cmd = [
                     "pytest",
                     "tests/",  # Run all tests to measure coverage
-                    f"--cov={target_package}",
                     "--cov-report=json",
                     "--cov-report=term-missing",
                     "-q",
                     "--tb=no",
                     "--maxfail=50",  # Continue despite failures
                 ]
+
+                # Add --cov for each package
+                for pkg in cov_packages:
+                    cmd.append(f"--cov={pkg}")
 
                 _result = subprocess.run(  # Result not needed, only coverage.json
                     cmd,
@@ -595,6 +609,7 @@ class RealSecurityAuditor:
                 target_path,
                 "-f",
                 "json",
+                "-q",  # Quiet mode - suppress progress bar and log messages
                 "-ll",  # Only report medium and above
             ]
 
@@ -609,9 +624,11 @@ class RealSecurityAuditor:
             # Parse JSON output
             try:
                 bandit_data = json.loads(result.stdout)
-            except json.JSONDecodeError:
-                # Bandit might not be installed
-                logger.warning("Bandit not available or returned invalid JSON")
+            except json.JSONDecodeError as e:
+                # Bandit might not be installed or JSON output malformed
+                logger.warning(f"Bandit not available or returned invalid JSON: {e}")
+                logger.debug(f"Bandit stdout: {result.stdout[:500]}")
+                logger.debug(f"Bandit stderr: {result.stderr[:500]}")
                 return SecurityReport(
                     total_issues=0,
                     critical_count=0,

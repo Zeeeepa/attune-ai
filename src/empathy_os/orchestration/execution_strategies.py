@@ -147,7 +147,7 @@ class ExecutionStrategy(ABC):
 
             elif agent.id == "test_coverage_analyzer" or "coverage" in agent.role.lower():
                 analyzer = RealCoverageAnalyzer(project_root)
-                report = analyzer.analyze(target_path)
+                report = analyzer.analyze()  # Analyzes all packages automatically
 
                 output = {
                     "agent_role": agent.role,

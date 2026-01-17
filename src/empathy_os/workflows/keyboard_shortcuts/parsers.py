@@ -125,6 +125,8 @@ class PyProjectParser(FeatureParser):
                 data = tomllib.loads(path.read_text())
             except ImportError:
                 return []
+            except (OSError, Exception):
+                return []
         except (OSError, Exception):
             return []
 

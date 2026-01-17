@@ -137,6 +137,64 @@ TASK_TIER_MAP: dict[str, ModelTier] = {
     **dict.fromkeys(PREMIUM_TASKS, ModelTier.PREMIUM),
 }
 
+# =============================================================================
+# BATCH API TASK CLASSIFICATION
+# Tasks eligible for Anthropic Batch API (50% cost savings, 24-hour processing)
+# =============================================================================
+
+# Tasks eligible for batch processing (non-interactive, non-urgent)
+BATCH_ELIGIBLE_TASKS: frozenset[str] = frozenset(
+    [
+        # Analytics & Reporting
+        "analyze_logs",
+        "generate_report",
+        "compute_metrics",
+        "aggregate_stats",
+        # Data Processing
+        "classify_bulk",
+        "extract_bulk",
+        "transform_bulk",
+        "validate_bulk",
+        # Code Analysis (bulk)
+        "analyze_codebase",
+        "detect_patterns",
+        "compute_complexity",
+        "find_vulnerabilities",
+        # Content Generation (non-urgent)
+        "generate_docs",
+        "generate_tests",
+        "generate_comments",
+        "translate_bulk",
+        # Evaluation & Testing
+        "evaluate_responses",
+        "run_test_suite",
+        "validate_outputs",
+        # Existing tasks that can be batched
+        TaskType.SUMMARIZE.value,  # Batch summarization
+        TaskType.CLASSIFY.value,  # Bulk classification
+        TaskType.DOCUMENT_CODE.value,  # Batch documentation
+    ]
+)
+
+# Tasks requiring real-time response (cannot be batched)
+REALTIME_REQUIRED_TASKS: frozenset[str] = frozenset(
+    [
+        # Interactive
+        "chat",
+        "interactive_debug",
+        "live_coding",
+        "user_query",
+        "wizard_step",
+        # Urgent Actions
+        "critical_fix",
+        "security_incident",
+        "emergency_response",
+        # Real-time Analysis
+        "stream_analysis",
+        "realtime_monitoring",
+    ]
+)
+
 
 # =============================================================================
 # HELPER FUNCTIONS

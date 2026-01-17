@@ -1,0 +1,568 @@
+# Empathy Framework - Architecture Overview
+
+**Version:** 4.0.0
+**Last Updated:** January 16, 2026
+**Status:** Living Document
+
+---
+
+## Table of Contents
+
+1. [System Overview](#system-overview)
+2. [Core Components](#core-components)
+3. [Meta-Orchestration System (v4.0)](#meta-orchestration-system-v40)
+4. [Multi-Provider LLM System](#multi-provider-llm-system)
+5. [Memory Architecture](#memory-architecture)
+6. [Workflow System](#workflow-system)
+7. [Caching Strategy](#caching-strategy)
+8. [Security Model](#security-model)
+9. [Deployment Architecture](#deployment-architecture)
+10. [Performance Characteristics](#performance-characteristics)
+
+---
+
+## System Overview
+
+Empathy Framework is a meta-orchestration system for AI agent collaboration. The framework enables:
+
+- **Dynamic agent team composition** - Automatically selects and coordinates optimal agents for tasks
+- **Multi-provider LLM routing** - Intelligent routing across Anthropic, OpenAI, Google, and Ollama
+- **Persistent memory** - Cross-session knowledge sharing via Redis and encrypted patterns
+- **Cost optimization** - 34-86% savings through intelligent tier routing
+- **Production-ready security** - Path validation, audit logging, HIPAA compliance options
+
+### Design Principles
+
+1. **Meta-orchestration over hard-coding** - Let AI analyze tasks and compose agent teams
+2. **Cost-awareness by default** - Route to cheapest model that meets quality requirements
+3. **Privacy-first** - Local telemetry, encrypted long-term memory, user data stays local
+4. **Fail gracefully** - Degrade functionality rather than crash
+5. **Learn from outcomes** - Save successful compositions and improve over time
+
+---
+
+## Core Components
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    User Interface Layer                      │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
+│  │   CLI Tool   │  │  VSCode Ext  │  │  Python API      │   │
+│  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘   │
+└─────────┼──────────────────┼──────────────────┼─────────────┘
+          │                  │                  │
+┌─────────┼──────────────────┼──────────────────┼─────────────┐
+│         ▼                  ▼                  ▼              │
+│              Meta-Orchestration Engine (v4.0)               │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │  Task Analyzer → Agent Selector → Strategy Picker   │   │
+│  │       ↓               ↓                  ↓            │   │
+│  │  Complexity       Agent Templates    6 Composition   │   │
+│  │  Assessment       (7 pre-built)      Patterns        │   │
+│  └──────────────────────────────────────────────────────┘   │
+└─────────────────────────────┬───────────────────────────────┘
+                              │
+┌─────────────────────────────┼───────────────────────────────┐
+│                             ▼                                │
+│                    Workflow Execution Layer                  │
+│  ┌───────────┐  ┌──────────────┐  ┌──────────────────────┐  │
+│  │ Sequential│  │   Parallel   │  │  Debate/Teaching/    │  │
+│  │  Pipeline │  │  Validation  │  │  Refinement/Adaptive │  │
+│  └─────┬─────┘  └──────┬───────┘  └──────────┬───────────┘  │
+└────────┼────────────────┼──────────────────────┼──────────────┘
+         │                │                      │
+┌────────┼────────────────┼──────────────────────┼──────────────┐
+│        ▼                ▼                      ▼               │
+│                  Multi-Provider LLM Router                    │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  Tier Selection (CHEAP/CAPABLE/PREMIUM)              │    │
+│  │       ↓                                                │    │
+│  │  ┌────────┐  ┌─────────┐  ┌────────┐  ┌──────────┐ │    │
+│  │  │Anthropic│ │ OpenAI │ │ Google  │ │  Ollama   │ │    │
+│  │  │(Claude) │ │ (GPT)   │ │(Gemini) │ │  (Local)  │ │    │
+│  │  └────────┘  └─────────┘  └────────┘  └──────────┘ │    │
+│  └──────────────────────────────────────────────────────┘    │
+└───────────────────────────────────────────────────────────────┘
+         │                │                      │
+┌────────┼────────────────┼──────────────────────┼──────────────┐
+│        ▼                ▼                      ▼               │
+│                   Support Services                            │
+│  ┌──────────┐  ┌──────────┐  ┌─────────┐  ┌──────────────┐  │
+│  │  Cache   │  │  Memory  │  │Telemetry│  │  Security    │  │
+│  │  (Hybrid)│  │  (Redis) │  │ (Local) │  │  (Audit Log) │  │
+│  └──────────┘  └──────────┘  └─────────┘  └──────────────┘  │
+└───────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Meta-Orchestration System (v4.0)
+
+The meta-orchestration system is the framework's breakthrough feature - it analyzes tasks and composes optimal agent teams automatically.
+
+### Architecture
+
+```python
+┌────────────────────────────────────────────────────────┐
+│              MetaOrchestrator                          │
+│                                                        │
+│  1. analyze_task(description) → TaskAnalysis          │
+│     - Complexity: SIMPLE/MODERATE/COMPLEX             │
+│     - Domain: security/testing/docs/etc.              │
+│     - Required capabilities                           │
+│                                                        │
+│  2. select_agents(analysis) → List[AgentTemplate]     │
+│     - Match capabilities to requirements              │
+│     - Apply quality gates                             │
+│     - Consider cost constraints                       │
+│                                                        │
+│  3. choose_strategy(agents, analysis) → Strategy      │
+│     - Sequential: Pipeline processing                 │
+│     - Parallel: Independent validation                │
+│     - Debate: Consensus building                      │
+│     - Teaching: Junior → Expert escalation            │
+│     - Refinement: Draft → Review → Polish             │
+│     - Adaptive: Classifier → Specialist               │
+│                                                        │
+│  4. execute(strategy, agents, task) → Result          │
+│     - Run composition pattern                         │
+│     - Enforce quality gates                           │
+│     - Collect outcomes                                │
+│                                                        │
+│  5. learn(outcome) → Store to ConfigurationStore      │
+│     - Save successful compositions                    │
+│     - Track success rates                             │
+│     - Improve future selections                       │
+└────────────────────────────────────────────────────────┘
+```
+
+### Pre-Built Agent Templates
+
+The framework includes 7 specialized agent templates:
+
+1. **Security Auditor** - Vulnerability scanning, OWASP checks, dependency audits
+2. **Test Coverage Analyzer** - Gap analysis, edge case detection, assertion suggestions
+3. **Code Quality Reviewer** - Best practices, anti-patterns, refactoring suggestions
+4. **Documentation Writer** - Completeness checks, clarity improvements, API docs
+5. **Performance Profiler** - Bottleneck detection, optimization recommendations
+6. **Dependency Checker** - CVE scanning, license compliance, update recommendations
+7. **Architecture Reviewer** - Design patterns, SOLID principles, scalability analysis
+
+### Composition Patterns
+
+**Sequential (Pipeline)**
+```
+Agent A → Agent B → Agent C → Final Result
+```
+Use when: Each agent depends on previous agent's output
+
+**Parallel (Validation)**
+```
+      ┌→ Agent A →┐
+Task ─┼→ Agent B →┼→ Synthesis → Final Result
+      └→ Agent C →┘
+```
+Use when: Independent validations, aggregate findings
+
+**Debate (Consensus)**
+```
+Agent A ⟷ Agent B ⟷ Agent C → Synthesis → Final Result
+```
+Use when: Need consensus, conflicting perspectives valuable
+
+**Teaching (Cost Optimization)**
+```
+Junior Agent → (if confidence < threshold) → Expert Agent
+```
+Use when: Optimize costs, most tasks are simple
+
+**Refinement (Iterative)**
+```
+Draft Agent → Review Agent → Polish Agent → Final Result
+```
+Use when: Quality > speed, content generation
+
+**Adaptive (Right-Sizing)**
+```
+Classifier → Route to appropriate specialist
+```
+Use when: Unknown complexity, need optimal resource allocation
+
+---
+
+## Multi-Provider LLM System
+
+### Tier-Based Routing
+
+The framework routes requests to the most cost-effective model that meets quality requirements:
+
+| Tier | Models | Cost/Task* | Use Cases |
+|------|--------|------------|-----------|
+| **CHEAP** | GPT-4o-mini, Claude Haiku | $0.005-0.008 | Summarization, formatting, simple queries |
+| **CAPABLE** | GPT-4o, Claude Sonnet | $0.073-0.090 | Bug fixing, code review, analysis |
+| **PREMIUM** | o1, Claude Opus | $0.435-0.450 | Architecture, complex reasoning, design |
+
+*Typical task: 5,000 input tokens, 1,000 output tokens
+
+### Provider Architecture
+
+```python
+┌────────────────────────────────────────────────┐
+│           ProviderManager                      │
+│  ┌──────────────────────────────────────────┐ │
+│  │  Auto-detect available API keys          │ │
+│  │  Load from environment or .env           │ │
+│  └──────────────────────────────────────────┘ │
+│                     ↓                          │
+│  ┌──────────────────────────────────────────┐ │
+│  │  Tier Selection                          │ │
+│  │  - Task complexity analysis              │ │
+│  │  - Cost constraints                      │ │
+│  │  - Quality requirements                  │ │
+│  └──────────────────────────────────────────┘ │
+│                     ↓                          │
+│  ┌──────────────────────────────────────────┐ │
+│  │  Provider Selection                      │ │
+│  │  - Prefer configured provider            │ │
+│  │  - Fall back if unavailable              │ │
+│  │  - Retry with exponential backoff        │ │
+│  └──────────────────────────────────────────┘ │
+│                     ↓                          │
+│  ┌───────┐  ┌────────┐  ┌────────┐  ┌──────┐│
+│  │Anthrop│  │ OpenAI │  │ Google │  │Ollama││
+│  │ic SDK │  │  SDK   │  │  SDK   │  │ API  ││
+│  └───────┘  └────────┘  └────────┘  └──────┘│
+└────────────────────────────────────────────────┘
+```
+
+### Fallback Strategy
+
+```python
+# Primary provider failure
+Try CAPABLE tier with Anthropic
+  ↓ (API error)
+Fall back to OpenAI CAPABLE
+  ↓ (API error)
+Fall back to Google CAPABLE
+  ↓ (All unavailable)
+Try CHEAP tier (GPT-4o-mini)
+  ↓ (Still failing)
+Raise ProviderUnavailableError
+```
+
+---
+
+## Memory Architecture
+
+The framework uses a two-tier memory system: short-term (Redis) and long-term (encrypted patterns).
+
+### Short-Term Memory (Redis)
+
+```
+┌────────────────────────────────────────────────┐
+│             Redis Instance                     │
+│  Port: 6379 (default)                         │
+│  Persistence: RDB snapshots                   │
+│                                                │
+│  Data Structures:                             │
+│  ┌──────────────────────────────────────────┐ │
+│  │  Hash: user:{user_id}:context            │ │
+│  │    - Recent interactions                 │ │
+│  │    - Session state                       │ │
+│  │    - Preference cache                    │ │
+│  └──────────────────────────────────────────┘ │
+│                                                │
+│  ┌──────────────────────────────────────────┐ │
+│  │  Sorted Set: patterns:by_score           │ │
+│  │    - Pattern ID → Usage score            │ │
+│  │    - Evict least-used patterns           │ │
+│  └──────────────────────────────────────────┘ │
+│                                                │
+│  ┌──────────────────────────────────────────┐ │
+│  │  String: cache:{hash}                    │ │
+│  │    - LLM response cache                  │ │
+│  │    - TTL: 24 hours                       │ │
+│  └──────────────────────────────────────────┘ │
+└────────────────────────────────────────────────┘
+```
+
+### Long-Term Memory (Encrypted Patterns)
+
+```
+~/.empathy/
+├── patterns/
+│   ├── security/
+│   │   ├── sql_injection_20260115.enc
+│   │   └── xss_vulnerability_20260112.enc
+│   ├── bugs/
+│   │   └── null_reference_20260110.enc
+│   └── fixes/
+│       └── add_null_check_20260110.enc
+├── graph/
+│   └── relationships.db  # SQLite graph database
+└── keys/
+    └── master.key  # AES-256-GCM encryption key
+```
+
+**Encryption**: AES-256-GCM with authenticated encryption
+**Format**: JSON serialized, then encrypted
+**Access**: Only via Memory Graph API (validates permissions)
+
+---
+
+## Workflow System
+
+### Base Workflow Architecture
+
+```python
+class BaseWorkflow:
+    """Base class for all workflows."""
+
+    def __init__(self, config: WorkflowConfig):
+        self.config = config
+        self.tier = config.tier  # CHEAP, CAPABLE, PREMIUM
+        self.cache_enabled = config.cache_enabled
+        self.quality_gates = config.quality_gates
+
+    async def execute(self, **kwargs) -> WorkflowResult:
+        """Execute workflow with quality gates."""
+        # 1. Validate inputs
+        self._validate_inputs(**kwargs)
+
+        # 2. Check cache (if enabled)
+        if self.cache_enabled:
+            cached = self._check_cache(**kwargs)
+            if cached:
+                return cached
+
+        # 3. Execute workflow logic
+        result = await self._execute_impl(**kwargs)
+
+        # 4. Apply quality gates
+        if not self._meets_quality_gates(result):
+            result = await self._refine(result)
+
+        # 5. Cache result
+        if self.cache_enabled:
+            self._cache_result(**kwargs, result=result)
+
+        return result
+```
+
+### Built-In Workflows
+
+1. **Security Audit** - OWASP top 10, CVE scanning, secret detection
+2. **Bug Prediction** - Predictive analysis, risk scoring, prevention steps
+3. **Code Review** - Best practices, anti-patterns, improvement suggestions
+4. **Test Generation** - Parametrized tests, edge cases, assertion suggestions
+5. **Documentation Generation** - API docs, README, examples
+6. **Release Preparation** - Parallel validation (security + tests + docs + quality)
+7. **Test Coverage Boost** - Sequential improvement (analyze → generate → validate)
+8. **Dependency Check** - CVE scanning, license compliance, update recommendations
+9. **Performance Audit** - Bottleneck detection, optimization suggestions
+10. **Refactoring Plan** - Design patterns, SOLID principles, incremental steps
+
+---
+
+## Caching Strategy
+
+The framework uses a hybrid caching approach: hash-only (fast, exact matches) and semantic (similar prompts).
+
+### Hash-Only Cache (Default)
+
+```python
+import hashlib
+
+def compute_cache_key(prompt: str, model: str, temperature: float) -> str:
+    """Compute deterministic hash for cache lookup."""
+    content = f"{prompt}|{model}|{temperature}"
+    return hashlib.sha256(content.encode()).hexdigest()[:16]
+```
+
+**Performance**: ~5μs lookup time
+**Hit Rate**: 100% on identical prompts (30-40% typical in development)
+
+### Hybrid Cache (Semantic Matching)
+
+```python
+from sentence_transformers import SentenceTransformer
+
+class HybridCache:
+    def __init__(self, similarity_threshold: float = 0.95):
+        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        self.threshold = similarity_threshold
+        self.hash_cache = {}  # Fast exact matches
+        self.semantic_index = {}  # Embeddings for similarity
+
+    def get(self, prompt: str) -> str | None:
+        # 1. Try hash cache (exact match)
+        hash_key = compute_cache_key(prompt, ...)
+        if hash_key in self.hash_cache:
+            return self.hash_cache[hash_key]
+
+        # 2. Try semantic similarity
+        embedding = self.model.encode(prompt)
+        for cached_embedding, cached_response in self.semantic_index.items():
+            similarity = cosine_similarity(embedding, cached_embedding)
+            if similarity >= self.threshold:
+                return cached_response
+
+        return None
+```
+
+**Performance**: ~50ms lookup time (embedding generation)
+**Hit Rate**: Up to 57% on similar prompts (benchmarked on security audit)
+
+---
+
+## Security Model
+
+### Defense in Depth
+
+1. **Input Validation** - All user inputs validated before processing
+2. **Path Validation** - `_validate_file_path()` prevents path traversal
+3. **Secret Detection** - API keys, credentials, tokens detected and redacted
+4. **Audit Logging** - All security-sensitive operations logged
+5. **Encryption** - AES-256-GCM for long-term memory
+6. **Rate Limiting** - Per-IP sliding window (100 req/min)
+7. **HTTPS/TLS** - Optional SSL for API server
+
+### HIPAA Compliance (Optional)
+
+For healthcare deployments:
+
+```python
+from empathy_llm_toolkit.wizards import HealthcareWizard
+
+wizard = HealthcareWizard()
+# Automatic PHI detection and de-identification
+# Encrypted storage with 90-day retention
+# Comprehensive audit trail (HIPAA §164.312(b))
+```
+
+---
+
+## Deployment Architecture
+
+### Single Developer (Lightweight)
+
+```
+┌────────────────────────────────────┐
+│  Developer Laptop                  │
+│  ┌──────────────────────────────┐  │
+│  │  empathy-framework[developer]│  │
+│  │  - CLI tools                 │  │
+│  │  - VSCode extension          │  │
+│  │  - Local telemetry           │  │
+│  └──────────────────────────────┘  │
+│                                    │
+│  Optional:                         │
+│  ┌──────────────────────────────┐  │
+│  │  Redis (local)               │  │
+│  │  Port: 6379                  │  │
+│  └──────────────────────────────┘  │
+└────────────────────────────────────┘
+```
+
+### Team Deployment (Backend + Auth)
+
+```
+┌────────────────────────────────────────────────┐
+│  Application Server                            │
+│  ┌──────────────────────────────────────────┐  │
+│  │  Backend API (FastAPI)                   │  │
+│  │  - JWT authentication                    │  │
+│  │  - Rate limiting                         │  │
+│  │  - HTTPS/TLS                             │  │
+│  │  Port: 8000                              │  │
+│  └──────────────────────────────────────────┘  │
+│                                                │
+│  ┌──────────────────────────────────────────┐  │
+│  │  Redis (shared)                          │  │
+│  │  - Session storage                       │  │
+│  │  - Cache                                 │  │
+│  │  Port: 6379                              │  │
+│  └──────────────────────────────────────────┘  │
+└────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│  Client Machines (N developers)     │
+│  - empathy CLI client               │
+│  - API key authentication           │
+└─────────────────────────────────────┘
+```
+
+### Healthcare/Enterprise (Full Stack)
+
+```
+┌────────────────────────────────────────────────┐
+│  Load Balancer (HTTPS)                        │
+└────────────────┬───────────────────────────────┘
+                 │
+    ┌────────────┴────────────┐
+    │                         │
+┌───▼────────────┐  ┌─────────▼──────────┐
+│  App Server 1  │  │  App Server 2      │
+│  - Backend API │  │  - Backend API     │
+│  - Redis       │  │  - Redis           │
+└────────────────┘  └────────────────────┘
+    │                         │
+    └────────────┬────────────┘
+                 │
+┌────────────────▼───────────────────────────────┐
+│  Database Layer                                │
+│  ┌──────────────┐  ┌─────────────────────────┐│
+│  │  PostgreSQL  │  │  Compliance Database    ││
+│  │  (metadata)  │  │  (append-only audit)    ││
+│  └──────────────┘  └─────────────────────────┘│
+└────────────────────────────────────────────────┘
+```
+
+---
+
+## Performance Characteristics
+
+### Benchmarks (January 2026)
+
+**Workflow Execution Times:**
+- Security Audit (1000 files): 45s → 15s (with cache, 67% faster)
+- Test Generation (100 functions): 12s → 8s (multi-tier optimization)
+- Code Review (500 LOC): 8s → 3s (CAPABLE → CHEAP tier)
+
+**Cache Performance:**
+- Hash-only lookup: ~5μs
+- Semantic similarity: ~50ms
+- Hit rate (development): 30-57%
+- Cost reduction: 40% (test generation workflow)
+
+**Memory Usage:**
+- Base framework: ~50MB
+- With Redis: ~120MB
+- With full caching: ~180MB
+- Per-workflow overhead: ~10-20MB
+
+### Scaling Characteristics
+
+| Metric | 1 User | 10 Users | 100 Users |
+|--------|--------|----------|-----------|
+| API Latency (p50) | 200ms | 250ms | 350ms |
+| API Latency (p99) | 800ms | 1200ms | 2500ms |
+| Redis Memory | 50MB | 200MB | 1.5GB |
+| Monthly Cost (CAPABLE) | $15 | $120 | $1,000 |
+| Monthly Cost (Hybrid) | $5 | $40 | $350 |
+
+---
+
+## Related Documentation
+
+- **[Security Architecture](./architecture/SECURE_MEMORY_ARCHITECTURE.md)** - Memory encryption, audit logging
+- **[Plugin System](./architecture/PLUGIN_SYSTEM_README.md)** - Building custom plugins
+- **[CrewAI Integration](./architecture/crewai-integration.md)** - Multi-agent orchestration
+- **[XML Enhancement](./architecture/xml-enhancement-summary.md)** - Structured prompting
+
+---
+
+**Last Updated:** January 16, 2026
+**Maintained By:** Engineering Team
+**License:** Fair Source 0.9

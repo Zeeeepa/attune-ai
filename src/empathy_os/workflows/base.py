@@ -1384,6 +1384,80 @@ class BaseWorkflow(ABC):
 
         return "\n".join(lines)
 
+    def _build_cached_system_prompt(
+        self,
+        role: str,
+        guidelines: list[str] | None = None,
+        documentation: str | None = None,
+        examples: list[dict[str, str]] | None = None,
+    ) -> str:
+        """Build system prompt optimized for Anthropic prompt caching.
+
+        Prompt caching works best with:
+        - Static content (guidelines, docs, coding standards)
+        - Frequent reuse (>3 requests within 5 min)
+        - Large context (>1024 tokens)
+
+        Structure: Static content goes first (cacheable), dynamic content
+        goes in user messages (not cached).
+
+        Args:
+            role: The role for the AI (e.g., "expert code reviewer")
+            guidelines: List of static guidelines/rules
+            documentation: Static documentation or reference material
+            examples: Static examples for few-shot learning
+
+        Returns:
+            System prompt with static content first for optimal caching
+
+        Example:
+            >>> prompt = workflow._build_cached_system_prompt(
+            ...     role="code reviewer",
+            ...     guidelines=[
+            ...         "Follow PEP 8 style guide",
+            ...         "Check for security vulnerabilities",
+            ...     ],
+            ...     documentation="Coding standards:\\n- Use type hints\\n- Add docstrings",
+            ... )
+            >>> # This prompt will be cached by Anthropic for 5 minutes
+            >>> # Subsequent calls with same prompt read from cache (90% cost reduction)
+        """
+        parts = []
+
+        # 1. Role definition (static)
+        parts.append(f"You are a {role}.")
+
+        # 2. Guidelines (static - most important for caching)
+        if guidelines:
+            parts.append("\n# Guidelines\n")
+            for i, guideline in enumerate(guidelines, 1):
+                parts.append(f"{i}. {guideline}")
+
+        # 3. Documentation (static - good caching candidate)
+        if documentation:
+            parts.append("\n# Reference Documentation\n")
+            parts.append(documentation)
+
+        # 4. Examples (static - excellent for few-shot learning)
+        if examples:
+            parts.append("\n# Examples\n")
+            for i, example in enumerate(examples, 1):
+                input_text = example.get("input", "")
+                output_text = example.get("output", "")
+                parts.append(f"\nExample {i}:")
+                parts.append(f"Input: {input_text}")
+                parts.append(f"Output: {output_text}")
+
+        # Dynamic content (user-specific context, current task) should go
+        # in the user message, NOT in system prompt
+        parts.append(
+            "\n# Instructions\n"
+            "The user will provide the specific task context in their message. "
+            "Apply the above guidelines and reference documentation to their request."
+        )
+
+        return "\n".join(parts)
+
     # =========================================================================
     # New infrastructure methods (Phase 4)
     # =========================================================================

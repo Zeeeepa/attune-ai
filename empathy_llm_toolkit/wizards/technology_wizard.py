@@ -1,5 +1,11 @@
 """Technology/IT Wizard - System Security Compliant AI Assistant
 
+⚠️ DEPRECATED: This wizard is a basic example and is no longer actively maintained.
+For production software development, use the specialized software plugin:
+    pip install empathy-software-wizards
+
+Or use the built-in empathy_software_plugin module for advanced features.
+
 Specialized wizard for IT and technology operations with system security,
 infrastructure data protection, and comprehensive audit logging.
 
@@ -16,12 +22,21 @@ Licensed under Fair Source 0.9
 """
 
 import logging
+import warnings
 
 from empathy_llm_toolkit import EmpathyLLM
 
 from .base_wizard import BaseWizard, WizardConfig
 
 logger = logging.getLogger(__name__)
+
+# Deprecation warning
+warnings.warn(
+    "TechnologyWizard is deprecated and will be removed in v5.0. "
+    "Use empathy_software_plugin or install: pip install empathy-software-wizards",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 # Technology/IT PII patterns

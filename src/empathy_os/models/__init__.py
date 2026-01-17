@@ -21,6 +21,7 @@ from .fallback import (
     FallbackStrategy,
     ResilientExecutor,
     RetryPolicy,
+    TierFallbackHelper,
 )
 from .provider_config import (
     ProviderConfig,
@@ -35,6 +36,7 @@ from .registry import (
     MODEL_REGISTRY,
     ModelInfo,
     ModelProvider,
+    ModelRegistry,
     ModelTier,
     get_all_models,
     get_model,
@@ -104,6 +106,7 @@ __all__ = [
     "ModelInfo",
     "ModelProvider",
     # Registry exports
+    "ModelRegistry",
     "ModelTier",
     "ProviderConfig",
     # Provider config exports
@@ -111,6 +114,7 @@ __all__ = [
     "ResilientExecutor",
     "RetryPolicy",
     "TaskInfo",
+    "TierFallbackHelper",
     # Task exports
     "TaskRoutingRecord",
     "TaskType",

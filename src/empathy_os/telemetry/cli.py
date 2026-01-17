@@ -247,6 +247,133 @@ def cmd_telemetry_savings(args: Any) -> int:
     return 0
 
 
+def cmd_telemetry_cache_stats(args: Any) -> int:
+    """Show prompt caching performance statistics.
+
+    Displays cache hit rates, cost savings, and workflow-level stats.
+
+    Args:
+        args: Parsed command-line arguments
+
+    Returns:
+        Exit code (0 for success)
+    """
+    tracker = UsageTracker.get_instance()
+    days = getattr(args, "days", 7)
+
+    stats = tracker.get_cache_stats(days=days)
+
+    if stats["total_requests"] == 0:
+        print("No telemetry data found for cache analysis.")
+        print(f"Data location: {tracker.telemetry_dir}")
+        return 0
+
+    if RICH_AVAILABLE and Console is not None:
+        console = Console()
+
+        # Main stats table
+        table = Table(
+            title=f"Prompt Caching Stats (Last {days} Days)",
+            show_header=True,
+            header_style="bold magenta",
+        )
+        table.add_column("Metric", style="cyan")
+        table.add_column("Value", style="green", justify="right")
+
+        # Cache hit rate
+        hit_rate_color = "green" if stats["hit_rate"] > 0.5 else "yellow"
+        table.add_row(
+            "Cache Hit Rate",
+            f"[{hit_rate_color}]{stats['hit_rate']:.1%}[/{hit_rate_color}]",
+        )
+
+        # Tokens
+        table.add_row("Cache Reads", f"{stats['total_reads']:,} tokens")
+        table.add_row("Cache Writes", f"{stats['total_writes']:,} tokens")
+
+        # Cost savings
+        savings_color = "green" if stats["savings"] > 0 else "dim"
+        table.add_row(
+            "Estimated Savings",
+            f"[bold {savings_color}]${stats['savings']:.2f}[/bold {savings_color}]",
+        )
+
+        # Requests
+        table.add_row("Requests with Cache Hits", f"{stats['hit_count']:,}")
+        table.add_row("Total Requests", f"{stats['total_requests']:,}")
+
+        console.print(table)
+
+        # Per-workflow breakdown
+        if stats["by_workflow"]:
+            console.print("\n")
+            wf_table = Table(
+                title="Cache Performance by Workflow",
+                show_header=True,
+                header_style="bold magenta",
+            )
+            wf_table.add_column("Workflow", style="cyan")
+            wf_table.add_column("Hit Rate", justify="right")
+            wf_table.add_column("Reads", justify="right")
+            wf_table.add_column("Writes", justify="right")
+
+            # Sort by hit rate descending
+            sorted_workflows = sorted(
+                stats["by_workflow"].items(),
+                key=lambda x: x[1].get("hit_rate", 0),
+                reverse=True,
+            )
+
+            for workflow, wf_stats in sorted_workflows[:10]:  # Top 10
+                hit_rate = wf_stats.get("hit_rate", 0.0)
+                hit_rate_color = "green" if hit_rate > 0.5 else "yellow"
+                wf_table.add_row(
+                    workflow,
+                    f"[{hit_rate_color}]{hit_rate:.1%}[/{hit_rate_color}]",
+                    f"{wf_stats['reads']:,}",
+                    f"{wf_stats['writes']:,}",
+                )
+
+            console.print(wf_table)
+
+        # Recommendations
+        if stats["hit_rate"] < 0.3:
+            console.print("\n")
+            console.print(
+                Panel(
+                    "[yellow]⚠ Cache hit rate is low (<30%)[/yellow]\n\n"
+                    "Recommendations:\n"
+                    "  • Increase reuse of system prompts across requests\n"
+                    "  • Group similar requests together (5-min cache TTL)\n"
+                    "  • Consider using workflow batching\n"
+                    "  • Structure prompts with static content first",
+                    title="Optimization Tips",
+                    border_style="yellow",
+                )
+            )
+    else:
+        # Fallback to plain text
+        print("\n" + "=" * 60)
+        print(f"PROMPT CACHING STATS (LAST {days} DAYS)")
+        print("=" * 60)
+        print(f"Cache Hit Rate: {stats['hit_rate']:.1%}")
+        print(f"Cache Reads: {stats['total_reads']:,} tokens")
+        print(f"Cache Writes: {stats['total_writes']:,} tokens")
+        print(f"Estimated Savings: ${stats['savings']:.2f}")
+        print(f"Requests with Cache Hits: {stats['hit_count']:,}")
+        print(f"Total Requests: {stats['total_requests']:,}")
+        print("=" * 60)
+
+        if stats["hit_rate"] < 0.3:
+            print("\n⚠ Cache hit rate is low (<30%)")
+            print("Recommendations:")
+            print("  • Increase reuse of system prompts across requests")
+            print("  • Group similar requests together (5-min cache TTL)")
+            print("  • Consider using workflow batching")
+
+    return 0
+
+
 def cmd_telemetry_compare(args: Any) -> int:
     """Compare telemetry across two time periods.
 

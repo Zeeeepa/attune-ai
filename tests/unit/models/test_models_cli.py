@@ -100,8 +100,24 @@ class TestPrintRegistry:
     def test_print_registry_with_provider_filter(self, mock_get_all_models, capsys):
         """Test printing registry with provider filter."""
         mock_get_all_models.return_value = {
-            "anthropic": {"cheap": MagicMock()},
-            "openai": {"cheap": MagicMock()},
+            "anthropic": {
+                "cheap": ModelInfo(
+                    id="claude-3-haiku-20240307",
+                    provider="anthropic",
+                    tier="cheap",
+                    input_cost_per_million=0.25,
+                    output_cost_per_million=1.25,
+                )
+            },
+            "openai": {
+                "cheap": ModelInfo(
+                    id="gpt-3.5-turbo",
+                    provider="openai",
+                    tier="cheap",
+                    input_cost_per_million=0.50,
+                    output_cost_per_million=1.50,
+                )
+            },
         }
 
         print_registry(provider="anthropic")
@@ -783,16 +799,14 @@ class TestMainCLI:
         assert result == 0
         mock_print_fallbacks.assert_called_once()
 
-    @patch("empathy_os.models.cli.configure_provider")
-    def test_main_provider_command(self, mock_configure):
-        """Test provider command."""
-        mock_configure.return_value = 0
-
+    @patch("empathy_os.models.cli.print_provider_config")
+    def test_main_provider_command(self, mock_print_provider):
+        """Test provider command without arguments shows current config."""
         with patch.object(sys, "argv", ["cli", "provider"]):
             result = main()
 
         assert result == 0
-        mock_configure.assert_called_once()
+        mock_print_provider.assert_called_once()
 
     def test_main_no_command(self, capsys):
         """Test main with no command."""
@@ -867,9 +881,10 @@ class TestCLIEdgeCases:
             result = main()
 
         assert result == 0
-        args = mock_print_costs.call_args[1]
-        assert args["input_tokens"] == 50000
-        assert args["output_tokens"] == 10000
+        # print_costs is called with positional arguments
+        args = mock_print_costs.call_args[0]
+        assert args[0] == 50000  # input_tokens
+        assert args[1] == 10000  # output_tokens
 
     @patch("empathy_os.models.cli.configure_provider")
     def test_main_provider_set_hybrid(self, mock_configure):
