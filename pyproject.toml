@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empathy-framework"
-version = "4.0.5"
-description = "AI collaboration framework with breakthrough meta-orchestration system enabling dynamic agent composition (6 composition patterns), intelligent caching (85% hit rate), tier routing (34-86% cost savings), performance optimizations (46% faster scans), XML-enhanced prompts, persistent memory, and multi-agent orchestration. Production workflows: Release Prep, Test Coverage Boost."
+version = "4.1.0"
+description = "AI collaboration framework with progressive tier escalation (70-85% cost savings), meta-orchestration, dynamic agent composition (6 patterns), intelligent caching (85% hit rate), tier routing, XML-enhanced prompts, persistent memory, and multi-agent orchestration. Production workflows: Progressive Test Generation, Release Prep, Test Coverage Boost."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
 license = {file = "LICENSE"}

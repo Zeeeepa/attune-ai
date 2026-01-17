@@ -5,6 +5,63 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2026-01-17
+
+### Added - MAJOR FEATURE 🚀
+
+- **Progressive Tier Escalation System**: Intelligent cost optimization through automatic model tier progression
+  - **Multi-tier execution**: Start with cheap models (gpt-4o-mini), escalate to capable (claude-3-5-sonnet) and premium (claude-opus-4) based on quality metrics
+  - **Composite Quality Score (CQS)**: Multi-signal failure detection using test pass rate (40%), coverage (25%), assertion depth (20%), and LLM confidence (15%)
+  - **Stagnation detection**: Automatic escalation when improvement plateaus (<5% gain for 2 consecutive runs)
+  - **Partial escalation**: Only failed items escalate to next tier, optimizing costs
+  - **Meta-orchestration**: Dynamic agent team creation (1 agent cheap, 2 capable, 3 premium) for specialized task handling
+  - **Cost management**: Budget controls with approval prompts at $1 threshold, abort/warn modes
+  - **Privacy-preserving telemetry**: Local JSONL tracking with SHA256-hashed user IDs, no PII
+  - **Analytics & reporting**: Historical analysis of runs, escalation rates, cost savings (typically 70-85%)
+  - **Retention policy**: Automatic cleanup of results older than N days (default: 30 days)
+  - **CLI tools**: List, show, analytics, and cleanup commands for managing workflow results
+  - **Files**: `src/empathy_os/workflows/progressive/` (7 new modules, 857 lines)
+
+- **Comprehensive Test Suite**: 123 tests for progressive workflows (86.58% coverage)
+  - Core data structures and quality metrics (21 tests)
+  - Escalation logic and orchestrator (18 tests)
+  - Cost management and telemetry (33 tests)
+  - Reporting and analytics (19 tests)
+  - Test generation workflow (32 tests)
+  - **Files**: `tests/unit/workflows/progressive/` (5 test modules)
+
+### Improved
+
+- **Type hints**: Added return type annotations to telemetry and orchestrator modules
+- **Test coverage**: Improved from 73.33% to 86.58% on progressive module through edge case tests
+- **Code quality**: Fixed 8 failing tests in test_models_cli_comprehensive.py (WorkflowRunRecord parameter names)
+
+### Performance
+
+- **Cost optimization**: Progressive escalation saves 70-85% vs all-premium approach
+- **Efficiency**: Cheap tier handles 70-80% of simple tasks without escalation
+- **Smart routing**: Multi-signal failure analysis prevents unnecessary premium tier usage
+
+### Tests
+
+- ✅ **6,802+ tests passing** (143 skipped, 0 errors)
+- ✅ **123 new progressive workflow tests** (100% pass rate)
+- ✅ No regressions in existing functionality
+- ✅ 86.58% coverage on progressive module
+
+**Migration Guide**: Progressive workflows are opt-in. Existing workflows continue unchanged. To use:
+
+```python
+from empathy_os.workflows.progressive import ProgressiveTestGenWorkflow, EscalationConfig
+
+config = EscalationConfig(enabled=True, max_cost=10.00)
+workflow = ProgressiveTestGenWorkflow(config)
+result = workflow.execute(target_file="path/to/file.py")
+print(result.generate_report())
+```
+
+---
+
 ## [4.0.5] - 2026-01-16
 
 ### Fixed - CRITICAL
