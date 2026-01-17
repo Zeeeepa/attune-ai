@@ -1289,6 +1289,11 @@ class LongTermMemory:
         if not key or not key.strip():
             raise ValueError("key cannot be empty")
 
+        # Validate key for path traversal attacks
+        if ".." in key or key.startswith("/") or "\x00" in key:
+            logger.error("path_traversal_attempt", key=key)
+            return False
+
         try:
             # Convert classification to string
             classification_str = "INTERNAL"  # Default

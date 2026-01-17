@@ -594,8 +594,10 @@ class TestProviderConfigRealData:
             prefer_local=False,
         )
 
-        with patch("empathy_os.models.provider_config.CONFIG_PATH", config_path):
-            config.save()
+        # Save config to temp path and load from there
+        config.save(config_path)
+        with patch("empathy_os.models.provider_config.ProviderConfig.load") as mock_load:
+            mock_load.return_value = config
             print_provider_config()
 
         captured = capsys.readouterr()
@@ -735,7 +737,7 @@ class TestMainCLIRealData:
     def test_main_validate_command(self, tmp_path, capsys):
         """Test validate command."""
         config_file = tmp_path / "test_config.yaml"
-        config_file.write_text("mode: single\nprimary_provider: anthropic\n")
+        config_file.write_text("name: test_config\nmode: single\nprimary_provider: anthropic\n")
 
         with patch.object(sys, "argv", ["cli", "validate", str(config_file)]):
             result = main()
