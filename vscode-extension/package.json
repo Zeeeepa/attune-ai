@@ -180,11 +180,6 @@
         "icon": "$(rocket)"
       },
       {
-        "command": "empathy.testGenerator.show",
-        "title": "Empathy: Test Generator Wizard",
-        "icon": "$(beaker)"
-      },
-      {
         "command": "empathy.workflowWizard.show",
         "title": "Empathy: Workflow Wizard",
         "icon": "$(symbol-function)"
@@ -242,7 +237,6 @@
       {"command": "empathy.runScan", "key": "ctrl+shift+e h", "mac": "cmd+shift+e h"},
       {"command": "empathy.syncClaude", "key": "ctrl+shift+e y", "mac": "cmd+shift+e y"},
       {"command": "empathy.initializeProject", "key": "ctrl+shift+e i", "mac": "cmd+shift+e i"},
-      {"command": "empathy.testGenerator.show", "key": "ctrl+shift+e w", "mac": "cmd+shift+e w"},
       {"command": "empathy.viewDetails", "key": "ctrl+shift+e v", "mac": "cmd+shift+e v"},
       {"command": "empathy.refreshHealth", "key": "ctrl+shift+e u", "mac": "cmd+shift+e u"},
       {"command": "empathy.openDocAnalysis", "key": "ctrl+shift+e o", "mac": "cmd+shift+e o"},
