@@ -848,8 +848,9 @@ def progressive_list(
     ),
 ):
     """List all saved progressive workflow results."""
-    from empathy_os.workflows.progressive.cli import cmd_list_results
     from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_list_results
 
     args = Namespace(storage_path=storage_path)
     cmd_list_results(args)
@@ -866,8 +867,9 @@ def progressive_show(
     json_output: bool = typer.Option(False, "--json", help="Output in JSON format"),
 ):
     """Show detailed report for a specific task."""
-    from empathy_os.workflows.progressive.cli import cmd_show_report
     from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_show_report
 
     args = Namespace(task_id=task_id, storage_path=storage_path, json=json_output)
     cmd_show_report(args)
@@ -883,8 +885,9 @@ def progressive_analytics(
     json_output: bool = typer.Option(False, "--json", help="Output in JSON format"),
 ):
     """Show cost optimization analytics."""
-    from empathy_os.workflows.progressive.cli import cmd_analytics
     from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_analytics
 
     args = Namespace(storage_path=storage_path, json=json_output)
     cmd_analytics(args)
@@ -907,8 +910,9 @@ def progressive_cleanup(
     ),
 ):
     """Clean up old progressive workflow results."""
-    from empathy_os.workflows.progressive.cli import cmd_cleanup
     from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_cleanup
 
     args = Namespace(
         storage_path=storage_path, retention_days=retention_days, dry_run=dry_run

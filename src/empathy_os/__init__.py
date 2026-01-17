@@ -55,7 +55,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-__version__ = "4.1.0"
+__version__ = "4.1.1"
 __author__ = "Patrick Roebuck"
 __email__ = "hello@deepstudy.ai"
 

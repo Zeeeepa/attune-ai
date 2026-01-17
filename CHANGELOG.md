@@ -5,6 +5,25 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.1] - 2026-01-17
+
+### Added
+
+- **Progressive CLI Integration**: Integrated progressive workflow commands into main empathy CLI
+  - `empathy progressive list` - List all saved progressive workflow results
+  - `empathy progressive show <task_id>` - Show detailed report for a specific task
+  - `empathy progressive analytics` - Show cost optimization analytics
+  - `empathy progressive cleanup` - Clean up old progressive workflow results
+  - Commands available in both Typer-based (`cli_unified.py`) and argparse-based (`cli.py`) CLIs
+  - Files: `src/empathy_os/cli_unified.py`, `src/empathy_os/cli.py`
+
+### Fixed
+
+- **VS Code Extension**: Removed obsolete `empathy.testGenerator.show` command that was causing "command not found" errors
+  - Command was removed in v3.5.5 but still registered in package.json
+  - Removed command declaration and keyboard shortcut (Ctrl+Shift+E W)
+  - File: `vscode-extension/package.json`
+
 ## [4.1.0] - 2026-01-17
 
 ### Added - MAJOR FEATURE 🚀
