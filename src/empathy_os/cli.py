@@ -57,6 +57,19 @@ try:
 except ImportError:
     TELEMETRY_CLI_AVAILABLE = False
 
+# Import progressive workflow CLI commands
+try:
+    from empathy_os.workflows.progressive.cli import (
+        cmd_analytics,
+        cmd_cleanup,
+        cmd_list_results,
+        cmd_show_report,
+    )
+
+    PROGRESSIVE_CLI_AVAILABLE = True
+except ImportError:
+    PROGRESSIVE_CLI_AVAILABLE = False
+
 logger = get_logger(__name__)
 
 
@@ -3196,6 +3209,83 @@ def main():
         help="Only export last N days",
     )
     parser_telemetry_export.set_defaults(func=lambda args: _cmd_telemetry_export(args))
+
+    # Progressive workflow commands (tier escalation)
+    parser_progressive = subparsers.add_parser(
+        "progressive",
+        help="Manage progressive tier escalation workflows",
+    )
+    progressive_subparsers = parser_progressive.add_subparsers(dest="progressive_command")
+
+    # Progressive list command
+    parser_progressive_list = progressive_subparsers.add_parser(
+        "list",
+        help="List all saved progressive workflow results",
+    )
+    parser_progressive_list.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_list.set_defaults(func=lambda args: cmd_list_results(args))
+
+    # Progressive show command
+    parser_progressive_show = progressive_subparsers.add_parser(
+        "show",
+        help="Show detailed report for a specific task",
+    )
+    parser_progressive_show.add_argument(
+        "task_id",
+        type=str,
+        help="Task ID to display",
+    )
+    parser_progressive_show.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_show.add_argument(
+        "--json",
+        action="store_true",
+        help="Output in JSON format",
+    )
+    parser_progressive_show.set_defaults(func=lambda args: cmd_show_report(args))
+
+    # Progressive analytics command
+    parser_progressive_analytics = progressive_subparsers.add_parser(
+        "analytics",
+        help="Show cost optimization analytics",
+    )
+    parser_progressive_analytics.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_analytics.add_argument(
+        "--json",
+        action="store_true",
+        help="Output in JSON format",
+    )
+    parser_progressive_analytics.set_defaults(func=lambda args: cmd_analytics(args))
+
+    # Progressive cleanup command
+    parser_progressive_cleanup = progressive_subparsers.add_parser(
+        "cleanup",
+        help="Clean up old progressive workflow results",
+    )
+    parser_progressive_cleanup.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_cleanup.add_argument(
+        "--retention-days",
+        type=int,
+        default=30,
+        help="Number of days to retain results (default: 30)",
+    )
+    parser_progressive_cleanup.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be deleted without actually deleting",
+    )
+    parser_progressive_cleanup.set_defaults(func=lambda args: cmd_cleanup(args))
 
     # Tier 1 automation monitoring commands
 

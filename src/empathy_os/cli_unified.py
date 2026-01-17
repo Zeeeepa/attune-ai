@@ -832,6 +832,91 @@ def telemetry_reset(
 
 
 # =============================================================================
+# PROGRESSIVE WORKFLOW SUBCOMMAND GROUP
+# =============================================================================
+
+progressive_app = typer.Typer(help="Progressive tier escalation workflows")
+app.add_typer(progressive_app, name="progressive")
+
+
+@progressive_app.command("list")
+def progressive_list(
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+):
+    """List all saved progressive workflow results."""
+    from empathy_os.workflows.progressive.cli import cmd_list_results
+    from argparse import Namespace
+
+    args = Namespace(storage_path=storage_path)
+    cmd_list_results(args)
+
+
+@progressive_app.command("show")
+def progressive_show(
+    task_id: str = typer.Argument(..., help="Task ID to display"),
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Output in JSON format"),
+):
+    """Show detailed report for a specific task."""
+    from empathy_os.workflows.progressive.cli import cmd_show_report
+    from argparse import Namespace
+
+    args = Namespace(task_id=task_id, storage_path=storage_path, json=json_output)
+    cmd_show_report(args)
+
+
+@progressive_app.command("analytics")
+def progressive_analytics(
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Output in JSON format"),
+):
+    """Show cost optimization analytics."""
+    from empathy_os.workflows.progressive.cli import cmd_analytics
+    from argparse import Namespace
+
+    args = Namespace(storage_path=storage_path, json=json_output)
+    cmd_analytics(args)
+
+
+@progressive_app.command("cleanup")
+def progressive_cleanup(
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+    retention_days: int = typer.Option(
+        30, "--retention-days", help="Number of days to retain results (default: 30)"
+    ),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help="Show what would be deleted without actually deleting",
+    ),
+):
+    """Clean up old progressive workflow results."""
+    from empathy_os.workflows.progressive.cli import cmd_cleanup
+    from argparse import Namespace
+
+    args = Namespace(
+        storage_path=storage_path, retention_days=retention_days, dry_run=dry_run
+    )
+    cmd_cleanup(args)
+
+
+# =============================================================================
 # TIER RECOMMENDATION SUBCOMMAND GROUP
 # =============================================================================
 

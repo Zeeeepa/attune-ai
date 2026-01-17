@@ -9,12 +9,10 @@ Reference: docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md Section 1.3
 Agent: a7ea2ab - Created 40 comprehensive scanner tests
 """
 
+
 import pytest
-from pathlib import Path
-from unittest.mock import Mock, patch
 
-from empathy_os.project_index.scanner import ProjectScanner, IndexConfig, FileCategory
-
+from empathy_os.project_index.scanner import FileCategory, IndexConfig, ProjectScanner
 
 # =============================================================================
 # Fixtures

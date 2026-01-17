@@ -450,11 +450,11 @@ class TestTelemetryWithRealData:
 
             workflow = WorkflowRunRecord(
                 run_id=f"run_{i}",
-                timestamp=(now - timedelta(hours=i)).isoformat(),
+                started_at=(now - timedelta(hours=i)).isoformat(),
                 workflow_name=f"test_workflow_{i}",
                 stages=stages,
                 total_cost=0.003,
-                total_latency_ms=300,
+                total_duration_ms=300,
                 success=True,
             )
             store.log_workflow(workflow)

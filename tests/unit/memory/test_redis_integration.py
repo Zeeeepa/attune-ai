@@ -11,8 +11,8 @@ Reference: docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md Section 1.1
 Agent: a2cc1e9 - Created 50 comprehensive tests
 """
 
+
 import pytest
-from unittest.mock import Mock, patch, MagicMock
 
 # Import Redis memory components
 try:
@@ -21,8 +21,14 @@ try:
 except ImportError:
     HAS_FAKEREDIS = False
 
-from empathy_os.memory.short_term import RedisShortTermMemory, TTLStrategy, PaginatedResult, AgentCredentials, AccessTier, StagedPattern
-
+from empathy_os.memory.short_term import (
+    AccessTier,
+    AgentCredentials,
+    PaginatedResult,
+    RedisShortTermMemory,
+    StagedPattern,
+    TTLStrategy,
+)
 
 # =============================================================================
 # Fixtures

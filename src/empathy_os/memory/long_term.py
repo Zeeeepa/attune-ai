@@ -49,8 +49,8 @@ logger = structlog.get_logger(__name__)
 
 # Check for cryptography library
 try:
-    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
     from cryptography.exceptions import InvalidTag
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
     HAS_ENCRYPTION = True
 except ImportError:
