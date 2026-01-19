@@ -1,6 +1,8 @@
 # Crew Integration Guide
 
-Guide for integrating existing CrewAI crews into workflows.
+> **DEPRECATED (v4.4.0):** CrewAI integration is deprecated in favor of native composition patterns. The meta-workflow system provides equivalent functionality with 6 built-in patterns (Sequential, Parallel, Debate, Teaching, Refinement, Adaptive) and requires no external dependencies. See [CREWAI_MIGRATION.md](../CREWAI_MIGRATION.md) for migration instructions.
+
+Guide for integrating existing CrewAI crews into workflows (legacy).
 
 ## Available Crews
 

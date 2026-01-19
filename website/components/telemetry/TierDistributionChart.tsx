@@ -68,7 +68,7 @@ export default function TierDistributionChart({
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={({ name, percent }) => `${name}: ${percent.toFixed(1)}%`}
+            label={({ name, percent }) => `${name}: ${(percent ?? 0).toFixed(1)}%`}
             outerRadius={80}
             fill="#8884d8"
             dataKey="value"
@@ -91,12 +91,13 @@ export default function TierDistributionChart({
               borderRadius: '4px',
               padding: '8px',
             }}
-            formatter={(value: number, name: string, props: any) => {
+            formatter={(value, name, props) => {
+              if (typeof value !== 'number') return [value, name];
               const { cost } = props.payload;
               return [
                 <>
                   <div>Calls: {value}</div>
-                  <div>Cost: ${cost.toFixed(4)}</div>
+                  <div>Cost: ${cost?.toFixed?.(4) ?? '0.0000'}</div>
                 </>,
                 name,
               ];

@@ -7,14 +7,14 @@ import TestsBadge from '@/components/TestsBadge';
 const features = [
   {
     icon: '⚡',
-    title: '10 Integrated Workflows',
-    description: 'Research topics deeply, review code for bugs and style, debug errors with context, refactor safely, generate tests, write docs, scan for vulnerabilities, optimize performance, explain complex code, and get daily briefings—all from your IDE.',
+    title: '14 Integrated Workflows',
+    description: 'Research, code review, debugging, refactoring, test generation, documentation, security scanning, performance optimization, and 4 new meta-workflows for release prep, test coverage boost, test maintenance, and documentation management.',
     link: '/workflows',
   },
   {
     icon: '🤖',
-    title: '20+ Specialized Agents',
-    description: 'Pre-built agent crews for code review, security audits, health checks, and refactoring. Built with Agent Factory for LangGraph, CrewAI, and more.',
+    title: '7 Agent Templates + 6 Composition Patterns',
+    description: 'Pre-built agents for test coverage, security audits, code quality, documentation, performance, architecture, and refactoring. Compose with Sequential, Parallel, Debate, Teaching, Refinement, or Adaptive patterns.',
     link: '/framework-docs/',
   },
   {
@@ -49,25 +49,23 @@ const features = [
   },
 ];
 
-const codeExample = `from empathy_os import EmpathyLLM
-from empathy_os.workflows import ResearchWorkflow, DebugWorkflow
+const codeExample = `from empathy_os.orchestration import MetaOrchestrator
 
-# Initialize with smart tier routing (80-96% cost savings)
-llm = EmpathyLLM(provider="anthropic")
-
-# Run a research workflow
-research = ResearchWorkflow(llm)
-result = await research.run(
-    topic="WebSocket authentication patterns",
-    depth="comprehensive"
+# Let the framework compose the right agent team automatically
+orchestrator = MetaOrchestrator()
+plan = orchestrator.analyze_and_compose(
+    task="Boost test coverage to 90%",
+    context={"current_coverage": 75, "focus": "auth module"}
 )
 
-# Or debug with full context
-debug = DebugWorkflow(llm)
-fix = await debug.analyze(error_log, project_context="React app")
+print(f"Strategy: {plan.strategy.value}")      # sequential
+print(f"Agents: {[a.role for a in plan.agents]}")  # [Analyzer, Generator, Validator]
+print(f"Estimated cost: \${plan.estimated_cost:.2f}")
 
-print(fix.root_cause)
-print(fix.suggested_fix)`;
+# Execute with progressive tier escalation (CHEAP → CAPABLE → PREMIUM)
+result = await plan.execute()
+print(f"Tests generated: {result.tests_created}")
+print(f"Actual cost: \${result.actual_cost:.2f}")`;
 
 
 export default function Home() {
@@ -88,7 +86,7 @@ export default function Home() {
                 <TestsBadge />
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--border)] text-sm font-medium">
                   <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                  v3.9.0 Stable
+                  v4.4.0 Stable
                 </span>
               </div>
 
@@ -97,8 +95,8 @@ export default function Home() {
                 <span className="text-gradient">Production Apps</span>
               </h1>
               <p className="text-xl text-[var(--text-secondary)] mb-8 max-w-3xl mx-auto">
-                10 integrated workflows, 20+ specialized agents, VSCode dashboard, and multi-provider support.
-                Agent Factory uses CrewAI and LangGraph by default—build smarter AI features in a fraction of the time.
+                14 integrated workflows, 7 agent templates, 6 composition patterns, and meta-orchestration.
+                Native patterns (Sequential, Parallel, Debate, Teaching, Refinement, Adaptive) compose agent teams automatically—no external dependencies required.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link

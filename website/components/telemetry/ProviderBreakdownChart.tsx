@@ -76,7 +76,8 @@ export default function ProviderBreakdownChart({
               borderRadius: '4px',
               padding: '8px',
             }}
-            formatter={(value: number, name: string, props: any) => {
+            formatter={(value, name, props) => {
+              if (typeof value !== 'number') return [value, name];
               const { calls, successRate } = props.payload;
               if (name === 'cost') {
                 return [

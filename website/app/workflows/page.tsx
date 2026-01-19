@@ -6,7 +6,7 @@ import { generateMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = generateMetadata({
   title: 'Workflows',
-  description: '10 integrated AI workflows for research, debugging, code review, refactoring, and more—all from your IDE.',
+  description: '14 integrated AI workflows including 4 meta-workflows with agent composition for research, debugging, code review, refactoring, release prep, and more.',
   url: 'https://smartaimemory.com/workflows',
 });
 
@@ -131,6 +131,58 @@ const workflows = [
     ],
     useCases: ['Daily standups', 'Sprint planning', 'Project status'],
   },
+  {
+    name: 'Release Prep',
+    icon: '🚀',
+    description: 'Multi-agent release readiness assessment with parallel validation.',
+    benefits: [
+      'Security audit automation',
+      'Test coverage verification',
+      'Documentation completeness check',
+      'Performance validation',
+    ],
+    useCases: ['Release candidates', 'Production deployments', 'Version launches'],
+    isMetaWorkflow: true,
+  },
+  {
+    name: 'Test Coverage Boost',
+    icon: '📈',
+    description: 'Agent team that analyzes gaps and generates tests with progressive tier escalation.',
+    benefits: [
+      'Gap analysis by module',
+      'Automated test generation',
+      'Quality gate enforcement',
+      'Cost-optimized execution',
+    ],
+    useCases: ['Coverage improvement', 'Legacy code testing', 'CI/CD gates'],
+    isMetaWorkflow: true,
+  },
+  {
+    name: 'Test Maintenance',
+    icon: '🔄',
+    description: 'Automated test lifecycle management with flaky test detection.',
+    benefits: [
+      'Flaky test identification',
+      'Test health monitoring',
+      'Outdated test cleanup',
+      'Performance regression detection',
+    ],
+    useCases: ['Test suite health', 'CI stability', 'Technical debt reduction'],
+    isMetaWorkflow: true,
+  },
+  {
+    name: 'Documentation Management',
+    icon: '📚',
+    description: 'Multi-agent documentation sync with gap detection and generation.',
+    benefits: [
+      'Doc-code sync verification',
+      'Missing documentation detection',
+      'API reference generation',
+      'Changelog automation',
+    ],
+    useCases: ['API documentation', 'README maintenance', 'Release notes'],
+    isMetaWorkflow: true,
+  },
 ];
 
 export default function WorkflowsPage() {
@@ -143,10 +195,10 @@ export default function WorkflowsPage() {
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-5xl font-bold mb-6">
-                10 Integrated Workflows
+                14 Integrated Workflows
               </h1>
               <p className="text-2xl mb-8 opacity-90">
-                Production-ready AI workflows for every stage of development—research, build, test, deploy, and maintain.
+                Production-ready AI workflows including 4 meta-workflows with automatic agent composition—research, build, test, deploy, and maintain.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
@@ -226,7 +278,7 @@ export default function WorkflowsPage() {
                 All Workflows in Your VSCode Dashboard
               </h2>
               <p className="text-xl text-[var(--text-secondary)] mb-8">
-                Access all 10 workflows from the Empathy Dashboard panel in VSCode.
+                Access all 14 workflows from the Empathy Dashboard panel in VSCode.
                 Input files, folders, or custom prompts—get results without leaving your editor.
               </p>
               <div className="grid sm:grid-cols-3 gap-6">
@@ -264,7 +316,7 @@ export default function WorkflowsPage() {
                 Ready to Supercharge Your Development?
               </h2>
               <p className="text-xl text-[var(--text-secondary)] mb-8">
-                Install the Empathy Framework and start using all 10 workflows today.
+                Install the Empathy Framework and start using all 14 workflows today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link

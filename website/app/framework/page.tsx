@@ -11,7 +11,6 @@ export default function FrameworkPage() {
             Empathy
           </Link>
           <div className="flex gap-6">
-            <Link href="/book" className="text-sm hover:text-[var(--primary)]">Book</Link>
             <Link href="/docs" className="text-sm hover:text-[var(--primary)]">Docs</Link>
             <Link href="/plugins" className="text-sm hover:text-[var(--primary)]">Plugins</Link>
           </div>
@@ -104,9 +103,9 @@ export default function FrameworkPage() {
 
             <div className="bg-[var(--background)] p-6 rounded-lg border-2 border-purple-500 border-opacity-50">
               <div className="mb-4 text-3xl">🧭</div>
-              <h3 className="text-xl font-bold mb-3">Wizard Intelligence <span className="text-xs font-normal text-purple-500 ml-2">v3.1.0</span></h3>
+              <h3 className="text-xl font-bold mb-3">Meta-Orchestration <span className="text-xs font-normal text-purple-500 ml-2">v4.4.0</span></h3>
               <p className="text-[var(--text-secondary)]">
-                Smart Router + Memory Graph + Auto-Chaining. Wizards coordinate automatically with shared learning.
+                6 composition patterns (Sequential, Parallel, Debate, Teaching, Refinement, Adaptive) + 7 agent templates. Agents compose themselves automatically.
               </p>
             </div>
 
@@ -250,7 +249,7 @@ result = await wizard.analyze({"data": your_data})`}
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold mb-4">Intelligence System <span className="text-sm font-normal text-purple-500">v3.1.0</span></h3>
+                <h3 className="text-2xl font-bold mb-4">Orchestration System <span className="text-sm font-normal text-purple-500">v4.4.0</span></h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
                     <span className="text-purple-500 font-mono text-sm mt-1">SmartRouter</span>
@@ -324,15 +323,15 @@ result = await wizard.analyze({"data": your_data})`}
               </a>
 
               <Link
-                href="/book"
+                href="/framework-docs/"
                 className="p-6 border-2 border-[var(--border)] rounded-lg hover:border-[var(--primary)] transition-colors"
               >
                 <div className="mb-3">
                   <Image src="/images/icons/briefcase.svg" alt="" width={32} height={32} className="opacity-70" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">Get the Book</h3>
+                <h3 className="text-lg font-bold mb-2">Read the Docs</h3>
                 <p className="text-sm text-[var(--text-secondary)]">
-                  Learn to build commercial-grade plugins
+                  Learn to build with Empathy Framework
                 </p>
               </Link>
             </div>
@@ -350,9 +349,6 @@ result = await wizard.analyze({"data": your_data})`}
             <div className="flex gap-6">
               <Link href="/" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
                 Home
-              </Link>
-              <Link href="/book" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Book
               </Link>
               <Link href="/docs" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
                 Docs
