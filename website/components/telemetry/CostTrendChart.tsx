@@ -74,7 +74,7 @@ export default function CostTrendChart({ data, height = 300 }: CostTrendChartPro
               borderRadius: '4px',
               padding: '8px',
             }}
-            formatter={(value: number) => `$${value.toFixed(4)}`}
+            formatter={(value) => typeof value === 'number' ? `$${value.toFixed(4)}` : value}
           />
           <Legend />
           <Line
