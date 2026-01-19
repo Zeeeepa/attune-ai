@@ -68,7 +68,7 @@ python examples/level_5_transformative/run_full_demo.py
 
 Fair Source 0.9 licensed:
 ✅ Free for teams ≤5 employees
-✅ $99/dev/year commercial
+✅ contact us for pricing commercial
 ✅ Becomes Apache 2.0 in 2029
 
 ### Tweet 9: The Bigger Picture

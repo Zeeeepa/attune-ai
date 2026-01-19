@@ -532,7 +532,7 @@ That's the architecture enabling Level 5 Transformative Empathy."
 - ✅ **Free for students and educators** - Use for educational purposes at no cost
 - ✅ **Free for small businesses** - Organizations with ≤5 employees use free forever
 - ✅ **Free for evaluation** - 30-day trial for any organization size
-- 💼 **Commercial license** - $99/developer/year for organizations with 6+ employees
+- 💼 **Commercial license** - contact us for pricing for organizations with 6+ employees
 - 🔓 **Converts to Apache 2.0** - Automatically on January 1, 2029
 
 **Why Fair Source?**
@@ -549,7 +549,7 @@ That's the architecture enabling Level 5 Transformative Empathy."
 - Pre-commit hooks
 - Regular updates
 
-**Enterprise Add-ons ($99/dev/year or custom):**
+**Enterprise Add-ons (contact us for pricing or custom):**
 - Priority support (email + Slack)
 - Custom wizard development
 - Training & workshops
@@ -559,12 +559,12 @@ That's the architecture enabling Level 5 Transformative Empathy."
 ### Visual Elements
 - **Pricing tiers in columns:**
   - Free (students, educators, ≤5 employees)
-  - Commercial ($99/dev/year, 6+ employees)
+  - Commercial (contact us for pricing, 6+ employees)
   - Enterprise (custom pricing)
 - **Timeline graphic:** "Converts to Apache 2.0 on Jan 1, 2029"
 - **Checkmarks for included features**
 - **Fair Source logo**
-- **ROI calculation:** "$99/year prevents one $10K outage = 100x ROI"
+- **ROI calculation:** "contact us for pricing prevents one $10K outage = 100x ROI"
 
 ### Speaker Notes
 
@@ -574,7 +574,7 @@ The Empathy Framework uses the Fair Source license. Here's what that means:
 
 If you're a student, educator, or small business with 5 or fewer employees, it's completely free. Forever. No restrictions.
 
-If you're a larger organization, we ask for a commercial license: $99 per developer per year. That's less than $10 a month per developer.
+If you're a larger organization, we ask for a commercial license: contact us for pricing. That's less than $10 a month per developer.
 
 Think about the ROI: if this framework prevents even one production outage—which easily costs $10,000 or more in lost revenue and engineering time—it's paid for itself 100 times over.
 
@@ -594,7 +594,7 @@ The framework is designed to be accessible, transparent, and sustainable."
 
 **Delivery Tips:**
 - Emphasize "free for small teams" strongly
-- Make $99/year feel minimal (compare to outage cost)
+- Make contact us for pricing feel minimal (compare to outage cost)
 - Highlight auto-conversion to open source
 - Build trust with transparency
 - Transition to call to action
@@ -670,7 +670,7 @@ After the demo, run the framework on your own codebase. Try the SecurityWizard, 
 
 Read the documentation. We have comprehensive guides on the five-level maturity model, how to build custom wizards, and integration options.
 
-Evaluate free for 30 days. If you're a small team, it stays free. If you're a larger organization, commercial licensing is $99 per developer per year.
+Evaluate free for 30 days. If you're a small team, it stays free. If you're a larger organization, commercial licensing is contact us for pricing.
 
 Have questions? Want custom wizard development for your industry? Need training for your team? Email us at admin@smartaimemory.com or connect with me directly.
 
@@ -715,7 +715,7 @@ Keep these in reserve for Q&A or extended presentations:
 | Level 4 predictions | ✅ Yes | ❌ No | ❌ No | ❌ No |
 | Source available | ✅ Yes | ❌ No | ❌ No | ❌ No |
 | Free for small teams | ✅ Yes | ❌ No | ❌ No | ❌ No |
-| Price (annual) | $99/dev | $3K+ | $100 | $249/dev |
+| Price (annual) | contact us for pricing | $3K+ | $100 | $249/dev |
 
 ### Bonus Slide C: Roadmap
 
@@ -843,7 +843,7 @@ Keep these in reserve for Q&A or extended presentations:
 - "Use them together! Empathy Framework complements SonarQube, Copilot, etc. We do something they can't: cross-domain learning. You get the best of both worlds."
 
 **"What's your business model?"**
-- "Fair Source licensing: free for small teams, $99/dev/year for larger organizations. Converts to Apache 2.0 in 2029. Sustainable and transparent."
+- "Fair Source licensing: free for small teams, contact us for pricing for larger organizations. Converts to Apache 2.0 in 2029. Sustainable and transparent."
 
 **"How do I get started?"**
 - "pip install empathy-framework[full], then run the demo. Takes 5 minutes. 30-day free trial. We have comprehensive documentation."

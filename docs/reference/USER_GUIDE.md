@@ -2335,7 +2335,7 @@ print(llm.get_metrics_summary())
 
 ### Commercial Support
 
-**$99/developer/year**
+**contact us for pricing**
 
 - Priority bug fixes and feature requests
 - Direct access to core development team

@@ -62,7 +62,7 @@ Every industry has spent decades learning hard lessons about safety and quality.
 
 6. **Production-Ready Framework** - 1,247 tests passing, 83% coverage, 100% coverage on core modules, fully documented
 
-7. **Fair Source Licensed** - Free for teams ≤5 employees, $99/dev/year commercial, auto-converts to Apache 2.0 in 2029
+7. **Fair Source Licensed** - Free for teams ≤5 employees, contact us for pricing commercial, auto-converts to Apache 2.0 in 2029
 
 ---
 
@@ -205,7 +205,7 @@ python examples/level_5_transformative/run_full_demo.py
 
 **Fair Source 0.9 licensed:**
 - ✅ Free forever for students, educators, and small teams (≤5 employees)
-- ✅ $99/dev/year for commercial teams
+- ✅ contact us for pricing for commercial teams
 - ✅ Full source code access
 - ✅ Auto-converts to Apache 2.0 in 2029
 
@@ -241,7 +241,7 @@ The first AI framework that learns safety patterns from healthcare and applies t
 - Novel approach: Learning from healthcare's decades of safety research to prevent software failures
 - Real predictions: 87% confidence in forecasting deployment failures 30-45 days ahead
 - Production-ready: 1,247 tests, 83% coverage, fully documented
-- Fair Source licensed: Free for small teams, $99/dev/year commercial
+- Fair Source licensed: Free for small teams, contact us for pricing commercial
 
 **Traction:**
 - 1,247 comprehensive tests passing
@@ -340,7 +340,7 @@ A: In the Level 5 demo, we show 87% confidence for deployment handoff failures b
 A: The framework is language-agnostic at the pattern level. The Coach Wizards currently have best support for Python, JavaScript/TypeScript, Go, and Java, but the cross-domain pattern matching works on any code since it's analyzing structural patterns rather than syntax. If you have specific language needs, we're happy to add support!
 
 **Q: Why Fair Source instead of fully open source?**
-A: Fair Source balances free access for small teams with sustainable development. It's free forever for students, educators, and teams ≤5 employees. Commercial teams pay $99/dev/year, which funds ongoing development and support. Plus it auto-converts to Apache 2.0 on January 1, 2029, so it will be fully open source in 4 years.
+A: Fair Source balances free access for small teams with sustainable development. It's free forever for students, educators, and teams ≤5 employees. Commercial teams pay contact us for pricing, which funds ongoing development and support. Plus it auto-converts to Apache 2.0 on January 1, 2029, so it will be fully open source in 4 years.
 
 **Q: How do I contribute patterns from my industry?**
 A: We'd love that! The pattern contribution process is: (1) Identify a well-documented failure mode in your industry with research backing, (2) Create a pattern definition with indicators and solutions, (3) Submit via PR with validation test cases. Check out the contributing guidelines in the repo for details. Currently prioritizing aviation, finance, and manufacturing patterns.

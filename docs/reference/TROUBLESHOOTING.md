@@ -1135,7 +1135,7 @@ python -c "from coach_wizards import SecurityWizard; print('Wizards: OK')"
 
 For priority support with guaranteed response times:
 
-**Commercial Support:** $99/developer/year
+**Commercial Support:** contact us for pricing
 - 24-48 hour response time
 - Direct access to core team
 - Architecture consultation

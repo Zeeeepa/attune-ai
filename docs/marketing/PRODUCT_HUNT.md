@@ -61,7 +61,7 @@ Two commands to get started: `pip install empathy-framework` and `empathy-memory
 
 7. **Real Cost Savings** — Smart routing (cheap models triage, capable models decide) plus persistent memory eliminates repeated context
 
-8. **Fair Source Licensed** — Free for teams ≤5 employees, $99/dev/year commercial, auto-converts to Apache 2.0 in 2029
+8. **Fair Source Licensed** — Free for teams ≤5 employees, contact us for pricing commercial, auto-converts to Apache 2.0 in 2029
 
 ---
 
@@ -149,7 +149,7 @@ One command → health score, prioritized findings, GitHub Actions integration v
 ### Pricing
 
 - **Free** for students, educators, teams ≤5
-- **$99/dev/year** commercial
+- **contact us for pricing** commercial
 - **Apache 2.0** auto-conversion in 2029
 
 ### I'd love feedback on:

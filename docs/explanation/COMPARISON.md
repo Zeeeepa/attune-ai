@@ -31,7 +31,7 @@ Traditional tools detect problems **after they exist**. Empathy Framework **pred
 | **LLM Integration** | ✅ Native | ❌ No | ❌ No | ✅ Native | ✅ AI-based | ❌ No |
 | **Source Available** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No | Varies |
 | **Free Tier** | ✅ ≤5 employees | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited | Varies |
-| **Price (Annual)** | $99/dev | $3,000+ | $249/dev | $100/user | $98/dev | Varies |
+| **Price (Annual)** | contact us for pricing | $3,000+ | $249/dev | $100/user | $98/dev | Varies |
 
 ### Legend
 - ✅ **Full Support** - Complete, production-ready implementation
@@ -301,7 +301,7 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Free Tier | Commercial Tier | Annual Cost (10 devs) | Source Available |
 |------|-----------|----------------|----------------------|------------------|
-| **Empathy Framework** | ≤5 employees | $99/dev/year | $990 | ✅ Yes (Fair Source) |
+| **Empathy Framework** | ≤5 employees | contact us for pricing | contact us for pricing | ✅ Yes (Fair Source) |
 | **SonarQube** | Community (limited) | Enterprise | $3,000-10,000+ | ❌ No |
 | **CodeClimate** | Open source only | Team/Business | $2,490 | ❌ No |
 | **GitHub Copilot** | Free trial | Individual/Business | $1,000 | ❌ No |
@@ -310,13 +310,13 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 **Empathy Framework Pricing Advantages**:
 1. **Free for small teams**: Organizations with ≤5 employees use FREE forever
-2. **Affordable commercial**: $99/dev/year (vs. $249-300+ for competitors)
+2. **Affordable commercial**: contact us for pricing (vs. $249-300+ for competitors)
 3. **No feature restrictions**: Free tier has ALL features (not crippled)
 4. **Source available**: Review code for security and compliance
 5. **Future open source**: Converts to Apache 2.0 on Jan 1, 2029
 
 **Total Cost Comparison (10 developers, 1 year)**:
-- Empathy Framework: $990 (if 6+ employees; $0 if ≤5)
+- Empathy Framework: contact us for pricing (if 6+ employees; $0 if ≤5)
 - SonarQube Enterprise: ~$5,000+
 - CodeClimate Business: $2,490
 - GitHub Copilot Business: $1,000 (code completion only, not analysis)
@@ -433,7 +433,7 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Software Analysis | Healthcare Support | Cost |
 |------|------------------|-------------------|------|
-| **Empathy Framework** | ✅ Full | ✅ Full | $99/dev |
+| **Empathy Framework** | ✅ Full | ✅ Full | contact us for pricing |
 | **SonarQube + Custom** | ✅ Good | ❌ None (build custom) | $250/dev + dev time |
 | **Multiple Tools** | ✅ Good | ⚠️ Separate tools | $400+ / dev |
 
@@ -467,7 +467,7 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 | **Specialized Wizards** | 16+ software + healthcare | Generic rules | **Domain experts** |
 | **Source Availability** | Full (Fair Source) | Proprietary | **Audit + customize** |
 | **Free Tier** | ≤5 employees (all features) | Crippled or none | **No feature limits** |
-| **Commercial Pricing** | $99/dev/year | $200-500/dev/year | **50-80% cost savings** |
+| **Commercial Pricing** | contact us for pricing | $200-500/dev/year | **50-80% cost savings** |
 | **Test Coverage** | 90.71% (production-ready) | Varies | **High quality** |
 
 ---
@@ -613,7 +613,7 @@ empathy analyze --path ./src --level 4  # Anticipatory mode
 ### Q: How does Fair Source licensing work?
 **A**:
 - Free for ≤5 employees (all features, no time limit)
-- $99/dev/year for 6+ employees
+- contact us for pricing for 6+ employees
 - Source code available for review
 - Converts to Apache 2.0 on Jan 1, 2029
 - See LICENSE for full details
@@ -653,7 +653,7 @@ The Empathy Framework represents a **paradigm shift** from reactive code analysi
 
 ### Best For
 - **Startups**: Free for ≤5 employees, all features unlocked
-- **Growing companies**: Affordable ($99/dev), scales with you
+- **Growing companies**: Affordable (contact us for pricing), scales with you
 - **Healthcare tech**: Only platform with native dual-domain support
 - **Security-conscious**: Source available, self-hostable, auditable
 - **AI-forward teams**: Native LLM integration, multi-model orchestration

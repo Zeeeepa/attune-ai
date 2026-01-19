@@ -293,7 +293,7 @@ The Empathy Framework uses **Fair Source 0.9** licensing:
 
 ✅ **Free forever for students, educators, and small teams (≤5 employees)**
 ✅ **Full source code access** for security review and compliance
-✅ **Commercial license: $99/developer/year** for organizations with 6+ employees
+✅ **Commercial license: contact us for pricing** for organizations with 6+ employees
 ✅ **Auto-converts to Apache 2.0** on January 1, 2029
 
 I believe in balancing free access for small teams with sustainable development funding.

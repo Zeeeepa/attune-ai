@@ -94,7 +94,7 @@ empathy-memory serve
 | Tier | Price | Includes |
 |------|-------|----------|
 | **Free** | $0 | Students, educators, teams ≤5 |
-| **Commercial** | $99/dev/year | Full framework, priority support |
+| **Commercial** | contact us for pricing | Full framework, priority support |
 | **Enterprise** | Contact us | Custom deployment, SLA, training |
 
 ---

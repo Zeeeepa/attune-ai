@@ -689,7 +689,7 @@ Get priority support for production deployments:
 - Guaranteed response times
 - Security advisories
 
-**Price:** $99/developer/year
+**Price:** contact us for pricing
 
 Learn more: [Pricing](/pricing)
 

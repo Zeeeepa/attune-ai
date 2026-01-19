@@ -655,7 +655,7 @@ Enable complex enterprise workflows with approval gates, multi-agent coordinatio
 │      • Cost tracking, progress callbacks                    │
 │      • Works great for 80% of use cases                     │
 ├─────────────────────────────────────────────────────────────┤
-│  ENTERPRISE (Licensed - $99+/dev/year)                      │
+│  ENTERPRISE (Licensed - contact us for pricing)                      │
 │  └── AdvancedOrchestrator                                   │
 │      ├── LangGraph integration                              │
 │      │   • Cycles, conditionals, checkpoints                │

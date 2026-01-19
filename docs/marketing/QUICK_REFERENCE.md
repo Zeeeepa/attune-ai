@@ -71,7 +71,7 @@ python examples/level_5_transformative/run_full_demo.py
 
 **The Licensing:**
 - Free for teams ≤5 employees
-- $99/dev/year commercial
+- contact us for pricing commercial
 - Auto-converts to Apache 2.0 in 2029
 
 ---

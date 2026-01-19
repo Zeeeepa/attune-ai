@@ -173,7 +173,7 @@ We seek a **technical partnership with promotional benefits**, NOT exclusivity:
 - Community support
 - **Cost:** $0
 
-**Pro Tier** ($99/year final pricing):
+**Pro Tier** (contact us for pricing final pricing):
 - Everything in Free
 - Extended wizard access
 - Level 4 Anticipatory predictions

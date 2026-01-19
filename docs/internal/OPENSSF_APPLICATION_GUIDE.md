@@ -295,7 +295,7 @@ Met: Yes. Multiple sources:
 ```
 Met: Dual licensing model:
 1. Fair Source License 0.9 (LICENSE): Free for ≤5 employees, students, educators
-2. Commercial License (LICENSE-COMMERCIAL.md): $99/developer/year for 6+ employees
+2. Commercial License (LICENSE-COMMERCIAL.md): contact us for pricing for 6+ employees
 
 Both licenses are clearly documented in repository root.
 

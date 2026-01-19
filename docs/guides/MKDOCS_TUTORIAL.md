@@ -462,7 +462,7 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 
 **Fair Source License 0.9**
 - ✅ Free for students, educators, teams ≤5 employees
-- 💰 $99/developer/year for teams 6+ employees
+- 💰 contact us for pricing for teams 6+ employees
 - 🔄 Auto-converts to Apache 2.0 on January 1, 2029
 
 ---

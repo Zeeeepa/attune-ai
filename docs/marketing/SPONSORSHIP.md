@@ -6,7 +6,7 @@ The Empathy is **source available** (Fair Source 0.9) and **free for students, e
 
 If you're using Empathy professionally, consider supporting development through our commercial offerings:
 
-### Commercial License - $99/developer/year
+### Commercial License - contact us for pricing
 
 **Required for organizations with 6+ employees**
 
@@ -99,7 +99,7 @@ Support development directly through GitHub Sponsors:
 
 ## 🏢 Why Companies Choose Commercial Support
 
-> "We saved 40 hours in the first month by having direct access to the team. The $99/year per developer is a no-brainer."
+> "We saved 40 hours in the first month by having direct access to the team. The contact us for pricing is a no-brainer."
 > — **Engineering Manager, Series B Startup**
 
 > "Custom compliance wizard suite (8 domain-specific wizards) would have taken weeks to build in-house. With established patterns, delivered in days."
@@ -132,10 +132,10 @@ A: Yes! Apache 2.0 means you can use it free forever, even commercially, no stri
 A: No - the framework is fully functional without it. Support is for teams that want priority access and guaranteed help.
 
 **Q: What's the difference between support and services?**
-A: **Support** ($99/year) is ongoing help with the framework. **Services** (custom pricing) are one-time projects like custom wizard development or training.
+A: **Support** (contact us for pricing) is ongoing help with the framework. **Services** (custom pricing) are one-time projects like custom wizard development or training.
 
 **Q: Can I buy support for just one developer?**
-A: Yes! $99/year covers one developer. Teams of 5+ get volume discounts.
+A: Yes! contact us for pricing covers one developer. Teams of 5+ get volume discounts.
 
 **Q: Do you offer free support for open source projects?**
 A: Yes! Email opensource@smartaimemory.com with your project details.

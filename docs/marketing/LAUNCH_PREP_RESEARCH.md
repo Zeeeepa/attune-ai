@@ -223,7 +223,7 @@ Honest answer: sustainability.
 MIT/Apache is great for adoption but makes commercial sustainability hard. Fair Source gives us:
 
 - Free for students, educators, small teams (<5 employees)
-- Affordable commercial license ($99/dev/year)
+- Affordable commercial license (contact us for pricing)
 - Auto-converts to Apache 2.0 in 2029 (4 years)
 
 You get everything MIT gives you for personal/small team use. Commercial users fund development. Everyone gets full open source in 2029.
@@ -268,7 +268,7 @@ We use this in healthcare contexts. The compliance patterns are tested.
 Fair Source 0.9 license:
 
 - Free: Students, educators, teams ≤5 employees
-- Commercial: $99/developer/year
+- Commercial: contact us for pricing
 - Enterprise: Contact for volume pricing
 
 No feature gates—everyone gets the same code. The license is the only difference.

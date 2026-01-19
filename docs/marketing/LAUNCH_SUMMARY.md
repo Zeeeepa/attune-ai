@@ -197,7 +197,7 @@ All links are production-ready:
 **Accessible Yet Sustainable**
 - Free forever for students and educators
 - Free for teams ≤5 employees
-- $99/developer/year for commercial (6+ employees)
+- contact us for pricing for commercial (6+ employees)
 - Full source code access
 - Auto-converts to Apache 2.0 on Jan 1, 2029
 

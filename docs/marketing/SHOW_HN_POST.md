@@ -76,7 +76,7 @@ llm = EmpathyLLM(
 await llm.interact(user_id="dev", user_input="Review this code")
 ```
 
-**Licensing:** Fair Source 0.9 — Free for students and teams ≤5. $99/dev/year commercial. Auto-converts to Apache 2.0 on Jan 1, 2029.
+**Licensing:** Fair Source 0.9 — Free for students and teams ≤5. contact us for pricing commercial. Auto-converts to Apache 2.0 on Jan 1, 2029.
 
 **What I'm looking for:**
 

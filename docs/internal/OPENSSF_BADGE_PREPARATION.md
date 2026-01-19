@@ -254,7 +254,7 @@ A: Yes. The examples/ directory contains real-world usage examples for both heal
 **Q: What is your license?**
 A: Dual licensing:
 1. **Fair Source 0.9** (LICENSE): Free for ≤5 employees, students, educators
-2. **Commercial License** (LICENSE-COMMERCIAL.md): $99/developer/year for 6+ employees
+2. **Commercial License** (LICENSE-COMMERCIAL.md): contact us for pricing for 6+ employees
 
 **Q: Is the license OSI-approved?**
 A: Fair Source 0.9 is not OSI-approved (it's source-available, not fully open source). However, it's a recognized ethical license for sustainable commercial open source.

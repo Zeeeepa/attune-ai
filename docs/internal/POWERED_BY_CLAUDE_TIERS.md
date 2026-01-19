@@ -42,7 +42,7 @@ The Empathy Framework supports multiple LLM providers while showcasing Claude's 
 
 ---
 
-### Pro Tier ($99/year - Final Pricing)
+### Pro Tier (contact us for pricing - Final Pricing)
 **LLM Choice:** Powered by Claude (API credits included)
 
 **Features:**
@@ -72,7 +72,7 @@ The Empathy Framework supports multiple LLM providers while showcasing Claude's 
 - Results include "Analysis by Claude 3.5 Sonnet"
 - Link to Anthropic in attribution
 
-**Cost:** $99/year (early release pricing may be $129)
+**Cost:** contact us for pricing (early release pricing may be $129)
 
 ---
 
@@ -223,8 +223,8 @@ result = await claude.generate(
 
 ### Proposed Model (If Partnership Includes Licensing):
 
-**Pro Tier ($99/year):**
-- Smart AI Memory revenue: $99
+**Pro Tier (contact us for pricing):**
+- Smart AI Memory revenue: contact us for pricing
 - Includes $300/year Claude API credits
 - Net margin: ~$40/user/year (after Claude costs)
 - **Optional license fee to Anthropic:** $10-15/user/year for "Powered by Claude" branding
@@ -334,7 +334,7 @@ Learn more: https://anthropic.com
 **Multi-LLM Strategy with Claude-First Approach:**
 
 1. **Open Source (Free):** Support all providers, recommend Claude
-2. **Pro Tier ($99):** Include Claude API credits, showcase advanced features
+2. **Pro Tier contact us for pricing:** Include Claude API credits, showcase advanced features
 3. **Business Tier ($249):** Claude included OR bring your own
 4. **Enterprise (Custom):** Full flexibility with Claude optimization
 

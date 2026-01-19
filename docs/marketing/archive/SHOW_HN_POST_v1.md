@@ -34,7 +34,7 @@ pip install empathy-framework[full]
 python examples/level_5_transformative/run_full_demo.py
 ```
 
-Built with the Empathy Framework—an open-source AI system with 5 levels of code understanding, from syntax parsing to cross-domain pattern transfer. Fair Source 0.9 licensed (free for teams ≤5 employees, $99/dev/year commercial).
+Built with the Empathy Framework—an open-source AI system with 5 levels of code understanding, from syntax parsing to cross-domain pattern transfer. Fair Source 0.9 licensed (free for teams ≤5 employees, contact us for pricing commercial).
 
 Every industry has spent decades learning hard lessons about safety and quality. With cross-domain AI, software development can learn from all of them simultaneously.
 

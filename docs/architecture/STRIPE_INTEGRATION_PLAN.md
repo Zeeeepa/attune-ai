@@ -10,7 +10,7 @@
 
 This plan covers setting up Stripe for three revenue streams:
 1. **Book Sales** - $49 pre-order (one-time payment)
-2. **Commercial License** - $99/developer/year (subscription)
+2. **Commercial License** - contact us for pricing (subscription)
 3. **Contributions/Donations** - Variable amounts (one-time or recurring)
 
 ---
@@ -47,7 +47,7 @@ Tax behavior: Inclusive or Exclusive (configure based on your preference)
 Name: Empathy Framework Commercial License
 Description: Annual developer license for organizations with 6+ employees. Covers all environments (workstation, staging, production, CI/CD).
 
-Price: $99.00 USD/year (recurring)
+Price: contact us for pricing (recurring)
 Billing period: Yearly
 Tax behavior: Exclusive (tax added at checkout)
 ```

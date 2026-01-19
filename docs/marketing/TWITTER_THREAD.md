@@ -93,7 +93,7 @@ Zero infrastructure for students. Full stack for enterprise.
 Fair Source 0.9:
 
 - Free for students, educators, teams ≤5
-- $99/dev/year commercial
+- contact us for pricing commercial
 - Auto-converts to Apache 2.0 in 2029
 
 Full source code. Your infrastructure. Your control.

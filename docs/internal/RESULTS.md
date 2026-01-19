@@ -173,7 +173,7 @@ Week 6:  90.71% (1,489 tests) - Integration & edge cases ✅
 ### License Strategy Benefits
 1. **Free for small teams**: ≤5 employees (sustainable for startups)
 2. **Source available**: Security audits and compliance verification
-3. **Commercial viability**: $99/dev/year funds development
+3. **Commercial viability**: contact us for pricing funds development
 4. **Future open source**: Apache 2.0 in 2029 (community benefit)
 
 ---

@@ -405,7 +405,7 @@ A: "Level 4 predictions range from 70-95% confidence depending on pattern streng
 
 **Q: "What's the licensing?"**
 
-A: "Fair Source 0.9. Free for students, educators, and teams with 5 or fewer employees. Commercial license is $99/developer/year for larger organizations. Converts to Apache 2.0 in 2029."
+A: "Fair Source 0.9. Free for students, educators, and teams with 5 or fewer employees. Commercial license is contact us for pricing for larger organizations. Converts to Apache 2.0 in 2029."
 
 **Q: "Can we customize wizards for our domain?"**
 

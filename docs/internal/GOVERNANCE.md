@@ -151,7 +151,7 @@ The Empathy Framework follows a **Benevolent Dictator** governance model during 
 
 **Dual Licensing**:
 - Fair Source 0.9 (LICENSE): Free for ≤5 employees, students, educators
-- Commercial License (LICENSE-COMMERCIAL.md): $99/developer/year for 6+ employees
+- Commercial License (LICENSE-COMMERCIAL.md): contact us for pricing for 6+ employees
 
 **Commercial Decision Authority**: Smart AI Memory, LLC
 

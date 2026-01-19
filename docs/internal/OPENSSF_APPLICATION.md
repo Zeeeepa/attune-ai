@@ -53,7 +53,7 @@ Key capabilities:
 - Healthcare monitoring plugin for clinical applications
 - Native LLM integration (Claude Sonnet 4.5, GPT-4, custom providers)
 - 90.71% test coverage with 1,489 comprehensive tests
-- Fair Source licensed (free for ≤5 employees, $99/dev/year commercial)
+- Fair Source licensed (free for ≤5 employees, contact us for pricing commercial)
 - Converts to Apache 2.0 on January 1, 2029
 
 Built with Claude Code, demonstrating 200-400% productivity gains through
@@ -864,7 +864,7 @@ Met: Dual licensing model
    - Converts to Apache 2.0 on January 1, 2029
 
 2. Commercial License (for 6+ employees):
-   - $99/developer/year
+   - contact us for pricing
    - Includes support and updates
    - Purchase at: https://smartaimemory.com/empathy-framework/pricing
 

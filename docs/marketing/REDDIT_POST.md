@@ -113,7 +113,7 @@ That's it. Redis starts, API server runs, memory system ready.
 
 Fair Source 0.9:
 - Free for students, educators, teams ≤5 employees
-- $99/dev/year commercial
+- contact us for pricing commercial
 - Auto-converts to Apache 2.0 on January 1, 2029
 
 Full source code. Your infrastructure. Your control.

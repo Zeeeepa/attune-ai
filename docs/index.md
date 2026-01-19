@@ -197,7 +197,7 @@ Organized using the [Diátaxis framework](https://diataxis.fr/) for better disco
 
 **Fair Source License 0.9**
 - ✅ Free for students, educators, teams ≤5 employees
-- 💰 $99/developer/year for teams 6+ employees
+- 💰 contact us for pricing for teams 6+ employees
 - 🔄 Auto-converts to Apache 2.0 on January 1, 2029
 
 [Read full license](https://github.com/Smart-AI-Memory/empathy/blob/main/LICENSE)

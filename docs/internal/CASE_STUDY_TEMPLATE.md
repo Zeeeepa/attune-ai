@@ -375,7 +375,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 **Example**:
 
 **Investment**:
-- Empathy Framework: $990 (10 devs × $99)
+- Empathy Framework: contact us for pricing (10 devs - contact us for pricing)
 - Implementation: 40 hours × $100/hr = $4,000
 - Training: 20 hours × $100/hr = $2,000
 - LLM API: $45/month × 12 = $540
@@ -726,7 +726,7 @@ Companies that will benefit most from Empathy Framework:
 **Website**: https://github.com/Smart-AI-Memory/empathy
 **Documentation**: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
 **Get Started**: `pip install empathy-framework`
-**Pricing**: Free for ≤5 employees, $99/dev/year commercial
+**Pricing**: Free for ≤5 employees, contact us for pricing commercial
 **Contact**: patrick.roebuck1955@gmail.com
 
 ---

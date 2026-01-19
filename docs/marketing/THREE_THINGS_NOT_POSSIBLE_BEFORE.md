@@ -200,7 +200,7 @@ python examples/persistent_memory_showcase.py
 ## Fair Source Licensing
 
 - **Free:** Students, educators, teams ≤5 employees
-- **Commercial:** $99/developer/year
+- **Commercial:** contact us for pricing
 - **Enterprise:** Contact us
 
 Auto-converts to Apache 2.0 on January 1, 2029.
