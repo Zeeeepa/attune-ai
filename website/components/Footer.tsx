@@ -19,7 +19,7 @@ export default function Footer() {
               SmartAI Memory
             </Link>
             <p className="mt-4 text-sm text-[var(--text-secondary)]">
-              Power tools for Claude Code. Workflows, wizards, and agent composition.
+              Power tools for Claude Code. Workflows, wizards, and dynamic agent creation.
             </p>
             <div className="flex gap-4 mt-4">
               <a
