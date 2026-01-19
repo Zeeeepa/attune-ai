@@ -5,6 +5,64 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.1] - 2026-01-18
+
+### Added - MAJOR FEATURE 🎭
+
+- **Complete Socratic Agent Generation System** (18,253 lines in 34 files)
+  - **LLM Analyzer** (`llm_analyzer.py`): Intent analysis and workflow recommendations using LLM
+  - **Semantic Search** (`embeddings.py`): TF-IDF vectorization for workflow discovery
+  - **Visual Editor** (`visual_editor.py`): React Flow-based drag-and-drop workflow designer
+  - **MCP Server** (`mcp_server.py`): Model Context Protocol integration for Claude Code
+  - **Domain Templates** (`domain_templates.py`): Pre-built templates with auto-detection
+  - **A/B Testing** (`ab_testing.py`): Workflow variation testing framework
+  - **Collaboration** (`collaboration.py`): Multi-user workflow editing
+  - **Explainer** (`explainer.py`): Workflow explanation system
+  - **Feedback** (`feedback.py`): User feedback collection
+  - **Web UI** (`web_ui.py`): Interactive web interface components
+  - **Files**: `src/empathy_os/socratic/` (19 modules)
+
+- **10 New CLI Skills** (882 lines)
+  - `/cache` - Hybrid cache diagnostics and optimization
+  - `/cost-report` - LLM API cost tracking and analysis
+  - `/crew` - CrewAI workflow management
+  - `/deps` - Dependency health, security, and update checks
+  - `/docs` - Documentation generation and maintenance
+  - `/init` - Project initialization with best practices
+  - `/memory` - Memory system analysis and debugging
+  - `/perf` - Performance profiling and optimization
+  - `/refactor` - Safe code refactoring with workflow support
+  - `/security-scan` - Comprehensive security and quality checks
+  - **Files**: `.claude/commands/*.md` (10 skill files)
+
+- **Comprehensive Documentation** (1,488 lines)
+  - `docs/META_WORKFLOWS.md` (989 lines): Complete user guide with examples
+  - `docs/WORKFLOW_TEMPLATES.md` (499 lines): Template creation guide
+
+- **Expanded Test Suite** (4,743 lines for Socratic + 2,521 lines for meta-workflows)
+  - 15 test files for Socratic system
+  - 6 test files for meta-workflows
+  - 125+ unit tests passing
+  - End-to-end integration tests
+
+### Changed
+
+- **Dependencies Updated** (from dependabot recommendations)
+  - pytest: 7.0,<9.0 → 7.0,<10.0 (allows pytest 9.x)
+  - pytest-asyncio: 0.21,<1.0 → 0.21,<2.0 (allows 1.x)
+  - pytest-cov: 4.0,<5.0 → 4.0,<8.0 (allows newer versions)
+  - pre-commit: 3.0,<4.0 → 3.0,<5.0 (allows pre-commit 4.x)
+
+### Summary
+
+**Total additions**: 31,056 lines across 74 files
+- Socratic system: 18,253 lines (source + tests)
+- Meta-workflow docs/tests: 4,009 lines
+- CLI skills: 882 lines
+- Version bump: 6 lines
+
+---
+
 ## [4.2.0] - 2026-01-17
 
 ### Added - MAJOR FEATURE 🚀
