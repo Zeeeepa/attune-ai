@@ -177,37 +177,34 @@ export default function Home() {
         </section>
 
 
-        {/* Case Study Teaser */}
-        <section className="py-20" aria-label="Case study">
+        {/* How It Works */}
+        <section className="py-20" aria-label="How it works">
           <div className="container">
             <div className="max-w-4xl mx-auto bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-2xl p-8 md:p-12 text-white">
               <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="flex-1">
-                  <p className="text-sm font-medium opacity-80 mb-2">CASE STUDY</p>
+                  <p className="text-sm font-medium opacity-80 mb-2">SOCRATIC AGENT BUILDER</p>
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                    Healthcare AI in Production
+                    Describe It. We Build It.
                   </h3>
                   <p className="opacity-90 mb-6">
-                    See how we built 14+ HIPAA-compliant clinical AI tools using Empathy Framework,
-                    including automated SBAR reports and diagnostic assistance.
+                    Tell us what you need in plain English. The framework asks clarifying questions,
+                    suggests capabilities, and generates production-ready agents and teams automatically.
                   </p>
-                  <a
-                    href="https://healthcare.smartaimemory.com/static/dashboard.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/framework-docs/tutorials/quickstart/"
                     className="inline-flex items-center gap-2 bg-white text-[var(--primary)] px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-colors"
                   >
-                    View Live Demo
+                    Try It Now
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      <polyline points="15 3 21 3 21 9" />
-                      <line x1="10" y1="14" x2="21" y2="3" />
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
                 <div className="flex-shrink-0">
                   <div className="w-32 h-32 md:w-40 md:h-40 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
-                    <span className="text-6xl md:text-7xl">🏥</span>
+                    <span className="text-6xl md:text-7xl">🎯</span>
                   </div>
                 </div>
               </div>

@@ -76,7 +76,7 @@ export default function PricingPage() {
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">30+ production wizards</span>
+                    <span className="text-sm">10 smart wizards + 14 workflows</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-[var(--success)] mt-1">✓</span>

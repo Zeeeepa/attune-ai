@@ -41,10 +41,10 @@ export default function FrameworkPage() {
               />
             </div>
             <h1 className="text-5xl font-bold mb-6">
-              Empathy <span className="text-gradient">Core</span>
+              Power Tools for <span className="text-gradient">Claude Code</span>
             </h1>
             <p className="text-2xl text-[var(--text-secondary)] mb-8">
-              Fair Source foundation for building Level 4 Anticipatory AI systems
+              Enhanced workflows, Socratic agent creation, and intelligent orchestration for VS Code power users
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -139,13 +139,11 @@ export default function FrameworkPage() {
               </p>
             </div>
 
-            <div className="bg-[var(--background)] p-6 rounded-lg">
-              <div className="mb-4">
-                <Image src="/images/icons/stethoscope.svg" alt="" width={32} height={32} className="opacity-70" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Healthcare Ready</h3>
+            <div className="bg-[var(--background)] p-6 rounded-lg border-2 border-[var(--primary)] border-opacity-50">
+              <div className="mb-4 text-3xl">🎯</div>
+              <h3 className="text-xl font-bold mb-3">Socratic Agent Builder <span className="text-xs font-normal text-[var(--primary)] ml-2">NEW</span></h3>
               <p className="text-[var(--text-secondary)]">
-                HIPAA-compliant wizards for clinical workflows and healthcare applications.
+                Create custom agents through guided questions. Describe what you need, get production-ready agents.
               </p>
             </div>
 
