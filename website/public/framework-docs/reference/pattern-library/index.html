@@ -2615,6 +2615,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#empathy_os.pattern_library.PatternLibrary.get_patterns_by_tag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_patterns_by_tag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empathy_os.pattern_library.PatternLibrary.get_patterns_by_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_patterns_by_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#empathy_os.pattern_library.PatternLibrary.get_related_patterns" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3769,6 +3791,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#empathy_os.pattern_library.PatternLibrary.get_patterns_by_tag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_patterns_by_tag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empathy_os.pattern_library.PatternLibrary.get_patterns_by_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_patterns_by_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#empathy_os.pattern_library.PatternLibrary.get_related_patterns" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4187,7 +4231,11 @@ print(f"Found {len(matches)} relevant patterns")</p>
 
     <div class="doc doc-contents ">
 
-        <p>Initialize PatternLibrary</p>
+        <p>Initialize PatternLibrary with optimized index structures.</p>
+<p>Performance optimizations:
+- patterns_by_type: O(1) lookup by pattern type
+- patterns_by_tag: O(1) lookup by tag
+- Reduces query_patterns from O(n) to O(k) where k = matching patterns</p>
 
 
     </div>
@@ -4249,6 +4297,29 @@ print(f"Found {len(matches)} relevant patterns")</p>
             </td>
             <td>
                 <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If agent_id is empty or pattern.id already exists</p>
+              </div>
             </td>
           </tr>
       </tbody>
@@ -4466,8 +4537,184 @@ library.contribute_pattern("agent_1", pattern)</p>
 <div class="doc doc-object doc-function">
 
 
+<h4 id="empathy_os.pattern_library.PatternLibrary.get_patterns_by_tag" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_patterns_by_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span></code>
+
+<a href="#empathy_os.pattern_library.PatternLibrary.get_patterns_by_tag" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get all patterns with a specific tag (O(1) lookup).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>tag</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Tag to search for</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<a class="autorefs autorefs-internal" title="empathy_os.pattern_library.Pattern" href="../../api-reference/pattern-library/#empathy_os.pattern_library.Pattern">Pattern</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of patterns with the given tag</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="performance" open>
+  <summary>Performance</summary>
+  <p>O(1) index lookup instead of O(n) linear scan.</p>
+</details>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>patterns = library.get_patterns_by_tag("debugging")</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="empathy_os.pattern_library.PatternLibrary.get_patterns_by_type" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_patterns_by_type</span><span class="p">(</span><span class="n">pattern_type</span><span class="p">)</span></code>
+
+<a href="#empathy_os.pattern_library.PatternLibrary.get_patterns_by_type" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get all patterns of a specific type (O(1) lookup).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>pattern_type</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Type of patterns to retrieve</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<a class="autorefs autorefs-internal" title="empathy_os.pattern_library.Pattern" href="../../api-reference/pattern-library/#empathy_os.pattern_library.Pattern">Pattern</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of patterns of the given type</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="performance" open>
+  <summary>Performance</summary>
+  <p>O(1) index lookup instead of O(n) linear scan.</p>
+</details>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>patterns = library.get_patterns_by_type("conditional")</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="empathy_os.pattern_library.PatternLibrary.get_related_patterns" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_related_patterns</span><span class="p">(</span><span class="n">pattern_id</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_related_patterns</span><span class="p">(</span><span class="n">pattern_id</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">_visited</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#empathy_os.pattern_library.PatternLibrary.get_related_patterns" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4520,6 +4767,22 @@ library.contribute_pattern("agent_1", pattern)</p>
                   <code>1</code>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>_visited</code>
+            </td>
+            <td>
+                  <code><span title="set">set</span>[<span title="str">str</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Internal tracking to prevent cycles (do not use directly)</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -4539,7 +4802,7 @@ library.contribute_pattern("agent_1", pattern)</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>List of related patterns</p>
+                <p>List of related patterns (no duplicates, cycle-safe)</p>
               </div>
             </td>
           </tr>
@@ -4701,6 +4964,29 @@ library.contribute_pattern("agent_1", pattern)</p>
     </table>
 
 
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If either pattern ID doesn't exist or IDs are the same</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
     </div>
 
 </div>
@@ -4837,6 +5123,39 @@ library.contribute_pattern("agent_1", pattern)</p>
     </table>
 
 
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If agent_id is empty, min_confidence out of range, or limit &lt; 1</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If context is not a dictionary</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
 <details class="example" open>
   <summary>Example</summary>
   <blockquote>
@@ -4913,6 +5232,29 @@ matches = library.query_patterns("debug_agent", context, min_confidence=0.7)</p>
             </td>
             <td>
                 <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If pattern_id does not exist</p>
+              </div>
             </td>
           </tr>
       </tbody>

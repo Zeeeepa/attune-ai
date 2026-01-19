@@ -458,7 +458,7 @@ trackEvent('search_no_results', {
 {
   "react": "^18.2.0",
   "typescript": "^5.0.0",
-  "zustand": "^4.4.0",
+  "zustand": "^4.3.0",
   "react-router-dom": "^6.20.0",
   "tailwindcss": "^3.3.0",
   "@headlessui/react": "^1.7.0",  // Accessible UI components
