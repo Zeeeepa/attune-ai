@@ -6,15 +6,21 @@ import TestsBadge from '@/components/TestsBadge';
 
 const features = [
   {
+    icon: '🎯',
+    title: 'Socratic Agent Builder',
+    description: 'Create custom agents and agent teams through guided questions. The framework asks what you need, suggests capabilities, and generates production-ready agents—no boilerplate required.',
+    link: '/framework-docs/',
+  },
+  {
     icon: '⚡',
     title: '14 Integrated Workflows',
-    description: 'Research, code review, debugging, refactoring, test generation, documentation, security scanning, performance optimization, and 4 new meta-workflows for release prep, test coverage boost, test maintenance, and documentation management.',
+    description: 'Research, code review, debugging, refactoring, test generation, documentation, security scanning, performance optimization, and 4 meta-workflows for release prep, test coverage, and docs.',
     link: '/workflows',
   },
   {
     icon: '🤖',
-    title: '7 Agent Templates + 6 Composition Patterns',
-    description: 'Pre-built agents for test coverage, security audits, code quality, documentation, performance, architecture, and refactoring. Requires Claude Code for agent creation and composition.',
+    title: '7 Agent Templates + 6 Patterns',
+    description: 'Pre-built agents for test coverage, security, code quality, docs, performance, architecture, and refactoring. Compose them with Sequential, Parallel, Debate, Teaching, Refinement, or Adaptive patterns.',
     link: '/framework-docs/',
   },
   {
@@ -95,8 +101,8 @@ export default function Home() {
                 <span className="text-gradient">Claude Code</span>
               </h1>
               <p className="text-xl text-[var(--text-secondary)] mb-8 max-w-3xl mx-auto">
-                Enhanced workflows, agent composition, and intelligent orchestration for VS Code power users.
-                14 workflows, 10 smart wizards, and dynamic agent teams that compose themselves automatically.
+                Enhanced workflows and intelligent orchestration for VS Code power users.
+                Create custom agents through guided Socratic questions—no boilerplate, just describe what you need.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link
