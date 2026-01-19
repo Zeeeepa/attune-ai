@@ -31,8 +31,8 @@ const features = [
   },
   {
     icon: '🧠',
-    title: 'Long-Term Memory',
-    description: 'Your AI remembers patterns, decisions, and context across sessions. No more repeating yourself.',
+    title: 'Persistent Memory System',
+    description: 'Short-term Redis memory for agent coordination during workflows. Long-term MemDocs storage remembers your coding patterns, past decisions, and project context across sessions.',
     link: '/framework-docs/',
   },
   {
