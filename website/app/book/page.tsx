@@ -373,8 +373,8 @@ export default function BookPage() {
                 <h3 className="text-xl font-bold mb-3">Is the Core Framework free?</h3>
                 <p className="text-[var(--text-secondary)]">
                   Empathy uses Fair Source License 0.9. It&apos;s free for students, educators, and
-                  companies with 5 or fewer employees. Commercial licensing ($99/year per developer) is required
-                  for companies with 6+ employees.
+                  companies with 5 or fewer employees. Commercial licensing is required
+                  for companies with 6+ employees—contact us for pricing.
                 </p>
               </div>
 

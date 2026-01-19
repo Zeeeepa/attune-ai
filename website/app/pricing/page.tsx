@@ -12,7 +12,7 @@ const LICENSE_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_LICENSE || 'price_
 
 export const metadata: Metadata = generateMetadata({
   title: 'Pricing',
-  description: 'Fair Source License 0.9 - Free for students & small teams. Commercial pricing for businesses with 6+ employees starting at $99/developer/year.',
+  description: 'Fair Source License 0.9 - Free for students & small teams. Commercial licensing available for businesses with 6+ employees.',
   url: 'https://smartaimemory.com/pricing',
 });
 

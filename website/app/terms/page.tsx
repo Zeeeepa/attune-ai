@@ -47,7 +47,7 @@ export default function TermsPage() {
               </p>
               <ul>
                 <li><strong>Free Tier:</strong> Free for students, educators, and organizations with ≤5 employees</li>
-                <li><strong>Commercial Tier:</strong> $99/developer/year for organizations with 6+ employees</li>
+                <li><strong>Commercial Tier:</strong> Contact us for pricing (organizations with 6+ employees)</li>
                 <li><strong>Source Available:</strong> You may read and modify the source code</li>
                 <li><strong>Redistribution:</strong> Subject to license terms</li>
               </ul>

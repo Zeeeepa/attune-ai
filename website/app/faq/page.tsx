@@ -39,7 +39,7 @@ const faqData: FAQCategory[] = [
     questions: [
       {
         question: 'How much does Empathy cost?',
-        answer: 'Empathy is free for students, educators, and teams with 5 or fewer employees under the Fair Source License 0.9. For businesses with 6+ employees, commercial licensing starts at $99/developer/year, covering all environments (workstation, staging, production, CI/CD).',
+        answer: 'Empathy is free for students, educators, and teams with 5 or fewer employees under the Fair Source License 0.9. For businesses with 6+ employees, contact us for commercial licensing options. One license covers all environments (workstation, staging, production, CI/CD).',
       },
       {
         question: 'What is the Fair Source License?',
@@ -81,7 +81,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'Can I use this for commercial projects?',
-        answer: 'Yes! If your organization has 5 or fewer employees, you can use it for free under the Fair Source License. Larger organizations need a commercial license starting at $99/developer/year.',
+        answer: 'Yes! If your organization has 5 or fewer employees, you can use it for free under the Fair Source License. Larger organizations need a commercial license—contact us for pricing.',
       },
       {
         question: 'Is the framework production-ready?',
