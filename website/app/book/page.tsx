@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Footer from '@/components/Footer';
 
 // Gumroad product URL for pay-what-you-want book
 const GUMROAD_BOOK_URL = 'https://roebucksmith.gumroad.com/l/empathy-book';
@@ -409,30 +410,7 @@ export default function BookPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-[var(--border)]">
-        <div className="container">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-sm text-[var(--muted)]">
-              © 2025 Deep Study AI, LLC. All rights reserved.
-            </div>
-            <div className="flex gap-6">
-              <Link href="/" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Home
-              </Link>
-              <Link href="/framework" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Framework
-              </Link>
-              <Link href="/docs" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Docs
-              </Link>
-              <Link href="/plugins" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Plugins
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

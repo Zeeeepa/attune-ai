@@ -18,9 +18,9 @@ const personas = [
   {
     emoji: '🎓',
     title: 'Students & Researchers',
-    description: 'Learn cutting-edge AI collaboration patterns',
-    cta: 'Read the Book',
-    href: '/book',
+    description: 'Learn cutting-edge AI collaboration patterns - free access included',
+    cta: 'Read the Docs',
+    href: '/framework-docs/',
   },
 ];
 

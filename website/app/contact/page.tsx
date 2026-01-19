@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useRef } from 'react';
+import Footer from '@/components/Footer';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -142,7 +143,6 @@ export default function ContactPage() {
           </Link>
           <div className="flex gap-6">
             <Link href="/framework" className="text-sm hover:text-[var(--primary)]">Framework</Link>
-            <Link href="/book" className="text-sm hover:text-[var(--primary)]">Book</Link>
             <Link href="/docs" className="text-sm hover:text-[var(--primary)]">Docs</Link>
             <Link href="/plugins" className="text-sm hover:text-[var(--primary)]">Plugins</Link>
           </div>
@@ -338,33 +338,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-[var(--border)]">
-        <div className="container">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-sm text-[var(--muted)]">
-              © 2025 Deep Study AI, LLC. All rights reserved.
-            </div>
-            <div className="flex gap-6">
-              <Link href="/" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Home
-              </Link>
-              <Link href="/framework" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Framework
-              </Link>
-              <Link href="/book" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Book
-              </Link>
-              <Link href="/docs" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Docs
-              </Link>
-              <Link href="/plugins" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Plugins
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

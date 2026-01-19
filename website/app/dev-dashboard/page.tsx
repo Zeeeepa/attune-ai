@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import WizardPlayground from '@/components/WizardPlayground';
 import CostSavingsCard from '@/components/CostSavingsCard';
+import Footer from '@/components/Footer';
 
 export default function DevDashboard() {
   return (
@@ -600,27 +601,7 @@ print(f"Confidence: {decision.confidence}")   # 0.92`}</code></pre>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-[var(--border)]">
-        <div className="container">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-sm text-[var(--muted)]">
-              © 2025 Deep Study AI, LLC. All rights reserved.
-            </div>
-            <div className="flex gap-6">
-              <Link href="/" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Home
-              </Link>
-              <Link href="/framework" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Framework
-              </Link>
-              <Link href="/dashboard" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Medical Dashboard
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

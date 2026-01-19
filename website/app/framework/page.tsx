@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Footer from '@/components/Footer';
 
 export default function FrameworkPage() {
   return (
@@ -85,7 +86,7 @@ export default function FrameworkPage() {
               <div className="mb-4">
                 <Image src="/images/icons/file-terminal.svg" alt="" width={32} height={32} className="opacity-70" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Code Health Assistant <span className="text-xs font-normal text-[var(--primary)] ml-2">NEW</span></h3>
+              <h3 className="text-xl font-bold mb-3">Code Health Assistant</h3>
               <p className="text-[var(--text-secondary)]">
                 Automated code quality checks, auto-fix capabilities, and health trend tracking via CLI.
               </p>
@@ -95,7 +96,7 @@ export default function FrameworkPage() {
               <div className="mb-4">
                 <Image src="/images/icons/briefcase.svg" alt="" width={32} height={32} className="opacity-70" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Smart Model Routing <span className="text-xs font-normal text-[var(--primary)] ml-2">NEW</span></h3>
+              <h3 className="text-xl font-bold mb-3">Smart Model Routing</h3>
               <p className="text-[var(--text-secondary)]">
                 80-96% cost reduction with intelligent routing: Haiku for simple tasks, Sonnet for code, Opus for architecture.
               </p>
@@ -175,33 +176,29 @@ export default function FrameworkPage() {
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold mb-4">Basic Usage</h3>
+                <h3 className="text-2xl font-bold mb-4">Socratic Agent Creation</h3>
                 <pre className="bg-[var(--foreground)] text-[var(--background)] p-6 rounded-lg overflow-x-auto text-sm">
-{`from empathy_framework import BaseWizard
+{`from empathy_os.socratic import SocraticWorkflowBuilder
 
-class MyWizard(BaseWizard):
-    @property
-    def name(self) -> str:
-        return "My Custom Wizard"
+# Describe your goal - the framework guides you through questions
+builder = SocraticWorkflowBuilder()
+session = builder.start_session("I want to automate code reviews")
 
-    @property
-    def level(self) -> int:
-        return 4  # Level 4: Anticipatory
+# Get clarifying questions
+form = builder.get_next_questions(session)
+print(form.questions[0].text)
+# "What programming languages does your team primarily use?"
 
-    async def analyze(self, context):
-        # Your anticipatory logic here
-        predictions = self.predict_future_issues(context)
-        recommendations = self.generate_recommendations(predictions)
+# Answer questions
+session = builder.submit_answers(session, {
+    "languages": ["python", "typescript"],
+    "focus_areas": ["security", "performance"]
+})
 
-        return {
-            "predictions": predictions,
-            "recommendations": recommendations,
-            "confidence": 0.85
-        }
-
-# Use your wizard
-wizard = MyWizard()
-result = await wizard.analyze({"data": your_data})`}
+# Generate optimized workflow when ready
+if builder.is_ready_to_generate(session):
+    workflow = builder.generate_workflow(session)
+    print(f"Generated {len(workflow.agents)} agents")`}
                 </pre>
               </div>
             </div>
@@ -273,6 +270,12 @@ result = await wizard.analyze({"data": your_data})`}
                       10+ wizards with domain metadata
                     </span>
                   </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-500 font-mono text-sm mt-1">SocraticWorkflowBuilder</span>
+                    <span className="text-[var(--text-secondary)] text-sm">
+                      Guided agent creation through questions
+                    </span>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -337,27 +340,7 @@ result = await wizard.analyze({"data": your_data})`}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-[var(--border)]">
-        <div className="container">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-sm text-[var(--muted)]">
-              © 2025 Deep Study AI, LLC. All rights reserved.
-            </div>
-            <div className="flex gap-6">
-              <Link href="/" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Home
-              </Link>
-              <Link href="/docs" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Docs
-              </Link>
-              <Link href="/plugins" className="text-sm text-[var(--muted)] hover:text-[var(--primary)]">
-                Plugins
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
