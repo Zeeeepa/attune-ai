@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empathy-framework"
-version = "4.2.0"
-description = "AI collaboration framework with progressive tier escalation (70-85% cost savings), meta-orchestration, dynamic agent composition (6 patterns), intelligent caching (85% hit rate), tier routing, XML-enhanced prompts, persistent memory, and multi-agent orchestration. Production workflows: Progressive Test Generation, Release Prep, Test Coverage Boost."
+version = "4.2.1"
+description = "AI collaboration framework with Socratic agent generation, progressive tier escalation (70-85% cost savings), meta-orchestration, dynamic agent composition (6 patterns), intelligent caching (85% hit rate), semantic workflow discovery, visual workflow editor, MCP integration for Claude Code, and multi-agent orchestration. Features 10 new CLI skills."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
@@ -174,9 +174,9 @@ docs = [
 
 # Development dependencies
 dev = [
-    "pytest>=7.0,<9.0",
-    "pytest-asyncio>=0.21,<1.0",
-    "pytest-cov>=4.0,<5.0",
+    "pytest>=7.0,<10.0",  # Updated upper bound for pytest 9.x
+    "pytest-asyncio>=0.21,<2.0",  # Updated for pytest-asyncio 1.x
+    "pytest-cov>=4.0,<8.0",  # Updated upper bound
     "pytest-xdist>=3.5.0,<4.0",  # Parallel test execution (4-8x faster)
     "pytest-testmon>=2.1.0,<3.0",  # Run only tests affected by changes
     "pytest-picked>=0.5.0,<1.0",  # Run tests for uncommitted changes
@@ -185,7 +185,7 @@ dev = [
     "ruff>=0.1,<1.0",
     "coverage>=7.0,<8.0",
     "bandit>=1.7,<2.0",
-    "pre-commit>=3.0,<4.0",
+    "pre-commit>=3.0,<5.0",  # Updated for pre-commit 4.x
     # Test dependencies for API and integration tests
     "httpx>=0.27.0,<1.0.0",  # For API testing
     "fastapi>=0.109.1,<1.0.0",  # For wizard API tests
