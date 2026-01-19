@@ -14,7 +14,7 @@ const features = [
   {
     icon: '🤖',
     title: '7 Agent Templates + 6 Composition Patterns',
-    description: 'Pre-built agents for test coverage, security audits, code quality, documentation, performance, architecture, and refactoring. Compose with Sequential, Parallel, Debate, Teaching, Refinement, or Adaptive patterns.',
+    description: 'Pre-built agents for test coverage, security audits, code quality, documentation, performance, architecture, and refactoring. Requires Claude Code for agent creation and composition.',
     link: '/framework-docs/',
   },
   {
@@ -32,7 +32,7 @@ const features = [
   {
     icon: '🔌',
     title: 'Multi-Provider Support',
-    description: 'Works with Anthropic, OpenAI, Gemini, and Ollama. Smart tier routing saves 80-96% on costs.',
+    description: 'Core workflows work with Anthropic, OpenAI, Gemini, and Ollama. Agent/team creation requires Claude Code.',
     link: '/framework-docs/',
   },
   {

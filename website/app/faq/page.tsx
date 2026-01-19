@@ -56,7 +56,7 @@ const faqData: FAQCategory[] = [
     questions: [
       {
         question: 'Which LLM providers are supported?',
-        answer: 'Empathy supports multiple LLM providers including Anthropic Claude, OpenAI GPT-4, Google Gemini, and local models via Ollama. The framework is designed to be provider-agnostic, allowing you to choose the best model for your use case.',
+        answer: 'Core workflows support multiple LLM providers including Anthropic Claude, OpenAI GPT-4, Google Gemini, and local models via Ollama. Note: Agent and team creation features (Socratic agent builder, dynamic composition) require Anthropic Claude Code specifically.',
       },
       {
         question: 'What are wizards?',
