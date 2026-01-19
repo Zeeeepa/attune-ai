@@ -302,7 +302,7 @@ class TestEmpathyOS:
         empathy = EmpathyOS(user_id="test_user")
 
         async def test_exit():
-            async with empathy as agent:
+            async with empathy:
                 pass  # Context should clean up on exit
             # No exceptions means cleanup succeeded
 

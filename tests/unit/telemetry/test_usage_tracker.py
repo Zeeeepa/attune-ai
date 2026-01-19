@@ -837,7 +837,7 @@ class TestStatisticsCalculation:
     def test_calculate_savings_all_premium(self, tracker):
         """Test savings when all calls use PREMIUM tier."""
         # Track only PREMIUM calls
-        for i in range(5):
+        for _i in range(5):
             tracker.track_llm_call(
                 workflow="test",
                 stage="test",
@@ -1171,7 +1171,7 @@ class TestEdgeCases:
     def test_calculate_savings_with_no_premium_calls(self, tracker):
         """Test savings calculation when there are no PREMIUM calls for baseline."""
         # Track only CHEAP calls
-        for i in range(5):
+        for _i in range(5):
             tracker.track_llm_call(
                 workflow="test",
                 stage="test",

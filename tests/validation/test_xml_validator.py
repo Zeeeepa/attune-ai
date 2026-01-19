@@ -396,11 +396,11 @@ class TestXSDValidationWithLxml:
                 xml = "<thinking>First</thinking>"
 
                 # First validation should load schema
-                result1 = validator.validate(xml, schema_name="cached")
+                validator.validate(xml, schema_name="cached")
                 cache_size_after_first = len(validator._schema_cache)
 
                 # Second validation should use cached schema
-                result2 = validator.validate(xml, schema_name="cached")
+                validator.validate(xml, schema_name="cached")
                 cache_size_after_second = len(validator._schema_cache)
 
                 # Cache should be populated after first validation

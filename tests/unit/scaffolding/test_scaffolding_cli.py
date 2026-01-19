@@ -23,7 +23,7 @@ sys.modules['test_generator'] = MagicMock()
 sys.modules['patterns'] = MagicMock()
 sys.modules['patterns.core'] = MagicMock()
 
-from empathy_os.scaffolding.cli import cmd_create, cmd_list_patterns, main
+from empathy_os.scaffolding.cli import cmd_create, cmd_list_patterns, main  # noqa: E402
 
 
 class TestCmdCreate:
