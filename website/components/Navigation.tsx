@@ -6,6 +6,7 @@ import { useTheme } from '@/lib/theme-provider';
 
 const navItems = [
   { label: 'Wizards', href: '/wizards' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Docs', href: '/framework-docs/' },
 ];
 
