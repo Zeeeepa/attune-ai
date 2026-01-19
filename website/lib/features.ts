@@ -88,8 +88,8 @@ export const FEATURES: Feature[] = [
     id: 'memory',
     name: 'Persistent Memory System',
     icon: '🧠',
-    benefitDescription: 'Your AI remembers context across sessions—coding patterns, decisions, project history.',
-    technicalDescription: 'Short-term Redis memory for agent coordination. Long-term MemDocs storage for cross-session persistence.',
+    benefitDescription: 'Short-term Redis memory for agent coordination during workflows. Long-term MemDocs storage remembers your coding patterns, past decisions, and project context across sessions.',
+    technicalDescription: 'Two-tier memory: Redis for real-time agent coordination, MemDocs for persistent cross-session storage with semantic search.',
     pricingDescription: 'Persistent memory system',
   },
   {
