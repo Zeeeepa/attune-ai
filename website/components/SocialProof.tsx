@@ -1,7 +1,7 @@
 const metrics = [
   { value: '5,675', label: 'Tests Passing' },
   { value: '81%', label: 'Code Coverage' },
-  { value: '44', label: 'Wizards Available' },
+  { value: '10', label: 'Smart Wizards' },
   { value: '5', label: 'LLMs Supported' },
 ];
 
