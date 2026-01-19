@@ -91,12 +91,12 @@ export default function Home() {
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-                AI Framework for{' '}
-                <span className="text-gradient">Production Apps</span>
+                Power Tools for{' '}
+                <span className="text-gradient">Claude Code</span>
               </h1>
               <p className="text-xl text-[var(--text-secondary)] mb-8 max-w-3xl mx-auto">
-                14 integrated workflows, 7 agent templates, 6 composition patterns, and meta-orchestration.
-                Native patterns (Sequential, Parallel, Debate, Teaching, Refinement, Adaptive) compose agent teams automatically—no external dependencies required.
+                Enhanced workflows, agent composition, and intelligent orchestration for VS Code power users.
+                14 workflows, 10 smart wizards, and dynamic agent teams that compose themselves automatically.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link
@@ -144,10 +144,10 @@ export default function Home() {
         <section className="py-20" aria-label="Features">
           <div className="container">
             <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">
-              Everything You Need for Production AI
+              Power User Features
             </h2>
             <p className="text-center text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto">
-              Stop building AI infrastructure from scratch. Focus on your product.
+              Advanced capabilities for developers who want more from Claude Code.
             </p>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -214,10 +214,10 @@ export default function Home() {
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                Ready to Build Smarter AI?
+                Ready to Level Up?
               </h2>
               <p className="text-xl text-[var(--text-secondary)] mb-8">
-                Join developers shipping production AI with Empathy Framework.
+                Join power users enhancing their Claude Code workflow.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link

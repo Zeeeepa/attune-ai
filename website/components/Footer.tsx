@@ -19,7 +19,7 @@ export default function Footer() {
               SmartAI Memory
             </Link>
             <p className="mt-4 text-sm text-[var(--text-secondary)]">
-              AI framework for production apps. 10 smart wizards, long-term memory, enterprise security.
+              Power tools for Claude Code. Workflows, wizards, and agent composition.
             </p>
             <div className="flex gap-4 mt-4">
               <a
