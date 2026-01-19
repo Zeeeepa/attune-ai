@@ -5,6 +5,68 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.0] - 2026-01-18
+
+### Added - PRODUCTION READY 🚀
+
+- **Real LLM Agent Execution** - Meta-workflow agents now execute with real LLM calls
+  - Integrated Anthropic client for Claude model execution
+  - Accurate token counting and cost tracking from actual API usage
+  - Progressive tier escalation (CHEAP → CAPABLE → PREMIUM) with real execution
+  - Graceful fallback to simulation when API key not available
+  - Full telemetry integration via UsageTracker
+  - **Files**: `src/empathy_os/meta_workflows/workflow.py`
+
+- **AskUserQuestion Tool Integration** - Form collection now supports real tool invocation
+  - Callback-based pattern for AskUserQuestion tool injection
+  - Interactive mode: Uses callback when provided (Claude Code context)
+  - Default mode: Graceful fallback to question defaults
+  - `set_callback()` method for runtime configuration
+  - Maintains full backward compatibility with existing tests
+  - **Files**: `src/empathy_os/meta_workflows/form_engine.py`
+
+### Architecture
+
+**Execution Flow (Production Ready)**:
+```text
+User Request
+    ↓
+MetaOrchestrator (analyzes task complexity + domain)
+    ↓
+SocraticFormEngine (asks questions via AskUserQuestion callback)
+    ↓
+DynamicAgentCreator (generates agent team from responses)
+    ↓
+Real LLM Execution (Anthropic client with tier escalation)
+    ↓
+UsageTracker (telemetry + cost tracking)
+    ↓
+PatternLearner (stores in files + memory)
+```
+
+### Changed
+
+- `SocraticFormEngine` now accepts `ask_user_callback` parameter for tool integration
+- `MetaWorkflow._execute_at_tier()` now uses real LLM execution by default
+- Added `_execute_llm_call()` method using Anthropic client
+- `_simulate_llm_call()` retained as fallback for testing/no-API scenarios
+
+### Migration Notes
+
+**From v4.2.1**: No breaking changes. Existing code continues to work:
+- Tests using mock execution still work
+- Form engine without callback uses defaults (backward compatible)
+- Real execution only attempted when `mock_execution=False`
+
+**To enable real execution**:
+```python
+# Set ANTHROPIC_API_KEY environment variable
+# Then use mock_execution=False
+result = workflow.execute(mock_execution=False)
+```
+
+---
+
 ## [4.2.1] - 2026-01-18
 
 ### Added - MAJOR FEATURE 🎭
