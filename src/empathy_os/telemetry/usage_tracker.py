@@ -88,8 +88,11 @@ class UsageTracker:
         cache_type: str | None,
         duration_ms: int,
         user_id: str | None = None,
+        prompt_cache_hit: bool = False,
+        prompt_cache_creation_tokens: int = 0,
+        prompt_cache_read_tokens: int = 0,
     ) -> None:
-        """Track a single LLM call.
+        """Track a single LLM call with prompt caching metrics.
 
         Args:
             workflow: Workflow name (e.g., "code-review")
@@ -99,10 +102,13 @@ class UsageTracker:
             provider: Provider name (anthropic, openai, etc.)
             cost: Cost in USD
             tokens: Dict with "input" and "output" keys
-            cache_hit: Whether this was a cache hit
+            cache_hit: Whether this was a local cache hit
             cache_type: Cache type if hit ("hash", "hybrid", etc.)
             duration_ms: Call duration in milliseconds
             user_id: Optional user identifier (will be hashed)
+            prompt_cache_hit: Whether Anthropic prompt cache was used
+            prompt_cache_creation_tokens: Tokens written to Anthropic cache
+            prompt_cache_read_tokens: Tokens read from Anthropic cache
 
         """
         # Build entry
@@ -125,6 +131,14 @@ class UsageTracker:
             entry["stage"] = stage
         if cache_hit and cache_type:
             entry["cache"]["type"] = cache_type
+
+        # Add prompt cache metrics (Anthropic-specific)
+        if prompt_cache_hit or prompt_cache_creation_tokens > 0 or prompt_cache_read_tokens > 0:
+            entry["prompt_cache"] = {
+                "hit": prompt_cache_hit,
+                "creation_tokens": prompt_cache_creation_tokens,
+                "read_tokens": prompt_cache_read_tokens,
+            }
 
         # Write entry (thread-safe, atomic)
         try:
@@ -458,6 +472,113 @@ class UsageTracker:
                     logger.debug(f"Failed to delete telemetry file: {file.name}")
 
         return count
+
+    def get_cache_stats(self, days: int = 7) -> dict[str, Any]:
+        """Get prompt caching statistics.
+
+        Analyzes Anthropic prompt cache usage including:
+        - Cache hit rate
+        - Total cache reads and writes
+        - Estimated cost savings from caching
+        - Top workflows benefiting from cache
+
+        Args:
+            days: Number of days to analyze (default: 7)
+
+        Returns:
+            Dictionary with caching statistics:
+            - hit_rate: Percentage of requests that used cache
+            - total_reads: Total tokens read from cache
+            - total_writes: Total tokens written to cache
+            - savings: Estimated USD saved by caching
+            - hit_count: Number of requests with cache hits
+            - total_requests: Total requests analyzed
+            - by_workflow: Cache stats by workflow
+
+        Example:
+            >>> tracker = UsageTracker.get_instance()
+            >>> stats = tracker.get_cache_stats(days=7)
+            >>> print(f"Cache hit rate: {stats['hit_rate']:.1%}")
+            Cache hit rate: 65.3%
+            >>> print(f"Savings: ${stats['savings']:.2f}")
+            Savings: $12.45
+
+        """
+        entries = self.get_recent_entries(limit=100000, days=days)
+
+        if not entries:
+            return {
+                "hit_rate": 0.0,
+                "total_reads": 0,
+                "total_writes": 0,
+                "savings": 0.0,
+                "hit_count": 0,
+                "total_requests": 0,
+                "by_workflow": {},
+            }
+
+        # Aggregate prompt cache stats
+        hit_count = 0
+        total_reads = 0
+        total_writes = 0
+        total_requests = len(entries)
+        by_workflow: dict[str, dict[str, Any]] = {}
+
+        for entry in entries:
+            prompt_cache = entry.get("prompt_cache", {})
+
+            # Check if entry has prompt cache data
+            if prompt_cache.get("hit"):
+                hit_count += 1
+
+            # Accumulate tokens
+            total_reads += prompt_cache.get("read_tokens", 0)
+            total_writes += prompt_cache.get("creation_tokens", 0)
+
+            # Per-workflow stats
+            workflow = entry.get("workflow", "unknown")
+            if workflow not in by_workflow:
+                by_workflow[workflow] = {
+                    "hits": 0,
+                    "reads": 0,
+                    "writes": 0,
+                    "requests": 0,
+                }
+
+            wf_stats = by_workflow[workflow]
+            wf_stats["requests"] += 1
+            if prompt_cache.get("hit"):
+                wf_stats["hits"] += 1
+            wf_stats["reads"] += prompt_cache.get("read_tokens", 0)
+            wf_stats["writes"] += prompt_cache.get("creation_tokens", 0)
+
+        # Calculate hit rate
+        hit_rate = (hit_count / total_requests) if total_requests > 0 else 0.0
+
+        # Estimate savings (cache reads cost 90% less)
+        # Assume Sonnet 4.5 pricing: $3.00/M input tokens
+        # Cache reads: $0.30/M (90% discount)
+        # Full price would be: $3.00/M
+        # Savings per token: $2.70/M
+        savings_per_token = 0.0000027  # $2.70 / 1M tokens
+        savings = total_reads * savings_per_token
+
+        # Calculate hit rates for workflows
+        for wf_stats in by_workflow.values():
+            wf_requests = wf_stats["requests"]
+            wf_stats["hit_rate"] = (
+                (wf_stats["hits"] / wf_requests) if wf_requests > 0 else 0.0
+            )
+
+        return {
+            "hit_rate": round(hit_rate, 4),
+            "total_reads": total_reads,
+            "total_writes": total_writes,
+            "savings": round(savings, 2),
+            "hit_count": hit_count,
+            "total_requests": total_requests,
+            "by_workflow": by_workflow,
+        }
 
     def export_to_dict(self, days: int | None = None) -> list[dict[str, Any]]:
         """Export all entries as list of dicts.

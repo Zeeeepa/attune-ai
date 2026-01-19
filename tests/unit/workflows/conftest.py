@@ -68,3 +68,18 @@ def bug_predict_workflow(cost_tracker):
     from empathy_os.workflows.bug_predict import BugPredictWorkflow
 
     return BugPredictWorkflow(cost_tracker=cost_tracker)
+
+
+@pytest.fixture
+def dependency_check_workflow(cost_tracker):
+    """Create DependencyCheckWorkflow with isolated storage.
+
+    Args:
+        cost_tracker: Isolated CostTracker fixture
+
+    Returns:
+        DependencyCheckWorkflow instance ready for testing
+    """
+    from empathy_os.workflows.dependency_check import DependencyCheckWorkflow
+
+    return DependencyCheckWorkflow(cost_tracker=cost_tracker)

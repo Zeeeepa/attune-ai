@@ -145,9 +145,11 @@ class PatternMatchCache:
         Returns:
             Cached or newly computed result
         """
+        from typing import cast
+
         cached = self.get(context)
         if cached is not None:
-            return cached
+            return cast(T, cached)
 
         result = compute_fn()
         self.set(context, result)

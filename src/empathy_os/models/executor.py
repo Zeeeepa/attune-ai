@@ -74,6 +74,11 @@ class LLMResponse:
         """Total tokens used (input + output)."""
         return self.tokens_input + self.tokens_output
 
+    @property
+    def success(self) -> bool:
+        """Check if the response was successful (has content)."""
+        return bool(self.content)
+
 
 @dataclass
 class ExecutionContext:

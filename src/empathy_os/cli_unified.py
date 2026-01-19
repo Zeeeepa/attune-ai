@@ -134,14 +134,9 @@ app.add_typer(provider_app, name="provider")
 @provider_app.callback(invoke_without_command=True)
 def provider_show(
     ctx: typer.Context,
-    set_provider: str | None = typer.Option(
-        None,
-        "--set",
-        "-s",
-        help="Set provider (anthropic, openai, google, ollama, hybrid)",
-    ),
-    interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive setup wizard"),
-    format_out: str = typer.Option("table", "--format", "-f", help="Output format (table, json)"),
+    set_provider: str | None = None,
+    interactive: bool = False,
+    format_out: str = "table",
 ):
     """Show or configure provider settings."""
     if ctx.invoked_subcommand is not None:
@@ -160,7 +155,7 @@ def provider_show(
 
 @provider_app.command("registry")
 def provider_registry(
-    provider_filter: str | None = typer.Option(None, "--provider", "-p", help="Filter by provider"),
+    provider_filter: str | None = None,
 ):
     """Show all available models in the registry."""
     args = [sys.executable, "-m", "empathy_os.models.cli", "registry"]
@@ -171,8 +166,8 @@ def provider_registry(
 
 @provider_app.command("costs")
 def provider_costs(
-    input_tokens: int = typer.Option(10000, "--input-tokens", "-i", help="Input tokens"),
-    output_tokens: int = typer.Option(2000, "--output-tokens", "-o", help="Output tokens"),
+    input_tokens: int = 10000,
+    output_tokens: int = 2000,
 ):
     """Estimate costs for token usage."""
     subprocess.run(
@@ -192,9 +187,9 @@ def provider_costs(
 
 @provider_app.command("telemetry")
 def provider_telemetry(
-    summary: bool = typer.Option(False, "--summary", help="Show summary"),
-    costs: bool = typer.Option(False, "--costs", help="Show cost breakdown"),
-    providers: bool = typer.Option(False, "--providers", help="Show provider usage"),
+    summary: bool = False,
+    costs: bool = False,
+    providers: bool = False,
 ):
     """View telemetry and analytics."""
     args = [sys.executable, "-m", "empathy_os.models.cli", "telemetry"]
@@ -214,15 +209,10 @@ def provider_telemetry(
 
 @app.command("scan")
 def scan(
-    path: Path = typer.Argument(Path(), help="Path to scan"),
-    format_out: str = typer.Option(
-        "text",
-        "--format",
-        "-f",
-        help="Output format (text, json, sarif)",
-    ),
-    fix: bool = typer.Option(False, "--fix", help="Auto-fix safe issues"),
-    staged: bool = typer.Option(False, "--staged", help="Only scan staged changes"),
+    path: Path = Path("."),
+    format_out: str = "text",
+    fix: bool = False,
+    staged: bool = False,
 ):
     """Scan codebase for issues."""
     args = ["empathy-scan", str(path)]
@@ -246,13 +236,8 @@ def scan(
 
 @app.command("inspect")
 def inspect_cmd(
-    path: Path = typer.Argument(Path(), help="Path to inspect"),
-    format_out: str = typer.Option(
-        "text",
-        "--format",
-        "-f",
-        help="Output format (text, json, sarif)",
-    ),
+    path: Path = Path("."),
+    format_out: str = "text",
 ):
     """Deep inspection with code analysis."""
     args = ["empathy-inspect", str(path)]
@@ -272,12 +257,7 @@ def inspect_cmd(
 
 @app.command("sync-claude")
 def sync_claude(
-    source: str = typer.Option(
-        "patterns",
-        "--source",
-        "-s",
-        help="Source to sync (patterns, bugs)",
-    ),
+    source: str = "patterns",
 ):
     """Sync patterns to Claude Code memory."""
     subprocess.run(["empathy-sync-claude", "--source", source], check=False)
@@ -296,9 +276,9 @@ def morning():
 
 @app.command("ship")
 def ship(
-    tests_only: bool = typer.Option(False, "--tests-only", help="Run tests only"),
-    security_only: bool = typer.Option(False, "--security-only", help="Run security checks only"),
-    skip_sync: bool = typer.Option(False, "--skip-sync", help="Skip Claude sync"),
+    tests_only: bool = False,
+    security_only: bool = False,
+    skip_sync: bool = False,
 ):
     """Pre-commit validation (lint, format, tests, security)."""
     args = [sys.executable, "-m", "empathy_os.cli", "ship"]
@@ -313,8 +293,8 @@ def ship(
 
 @app.command("health")
 def health(
-    deep: bool = typer.Option(False, "--deep", help="Comprehensive health check"),
-    fix: bool = typer.Option(False, "--fix", help="Auto-fix issues"),
+    deep: bool = False,
+    fix: bool = False,
 ):
     """Quick health check (lint, types, tests)."""
     args = [sys.executable, "-m", "empathy_os.cli", "health"]
@@ -333,7 +313,7 @@ def fix_all():
 
 @app.command("learn")
 def learn(
-    analyze: int = typer.Option(20, "--analyze", "-a", help="Number of commits to analyze"),
+    analyze: int = 20,
 ):
     """Learn patterns from commit history."""
     subprocess.run(
@@ -364,7 +344,7 @@ def wizard_list():
 @wizard_app.command("run")
 def wizard_run(
     name: str = typer.Argument(..., help="Wizard name to run"),
-    path: Path = typer.Option(Path(), "--path", "-p", help="Path to analyze"),
+    path: Path = Path("."),
 ):
     """Run a specific wizard on your codebase."""
     console.print(f"[yellow]Running wizard:[/yellow] {name} on {path}")
@@ -461,17 +441,9 @@ def workflow_list():
 @workflow_app.command("run")
 def workflow_run(
     name: str = typer.Argument(..., help="Workflow name"),
-    path: Path = typer.Option(Path(), "--path", "-p", help="Path to run on"),
-    use_recommended_tier: bool = typer.Option(
-        False,
-        "--use-recommended-tier",
-        help="Enable intelligent tier fallback: start with CHEAP tier and automatically upgrade if quality gates fail",
-    ),
-    health_score_threshold: int = typer.Option(
-        95,
-        "--health-score-threshold",
-        help="(health-check workflow) Minimum health score required (0-100, default: 95 for very strict quality)",
-    ),
+    path: Path = Path("."),
+    use_recommended_tier: bool = False,
+    health_score_threshold: int = 95,
 ):
     """Run a multi-model workflow."""
     cmd = [
@@ -536,6 +508,248 @@ def workflow_recommend(
     subprocess.run(
         [sys.executable, "-m", "workflow_scaffolding", "recommend", workflow_type], check=False
     )
+
+
+# =============================================================================
+# ORCHESTRATE SUBCOMMAND GROUP (Meta-Orchestration v4.0)
+# =============================================================================
+
+orchestrate_app = typer.Typer(help="Meta-orchestration workflows (v4.0)")
+app.add_typer(orchestrate_app, name="orchestrate")
+
+
+@orchestrate_app.command("health-check")
+def orchestrate_health_check(
+    mode: str = typer.Option("daily", "--mode", "-m", help="Check mode: daily, weekly, release"),
+    project_root: Path = typer.Option(Path("."), "--project-root", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Run orchestrated health check with adaptive agent teams.
+
+    Modes:
+        daily: Quick parallel check (3 agents: Security, Coverage, Quality)
+        weekly: Comprehensive parallel (5 agents: adds Performance, Docs)
+        release: Deep refinement (6 agents: adds Architecture)
+
+    The results are automatically saved to .empathy/health.json which can be
+    viewed in the Empathy VS Code extension's health dashboard.
+    """
+    import asyncio
+
+    from empathy_os.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
+
+    async def run_health_check():
+        workflow = OrchestratedHealthCheckWorkflow(mode=mode)
+        report = await workflow.execute(project_root=str(project_root))
+
+        if json_output:
+            import json
+
+            console.print(json.dumps(report.to_dict(), indent=2))
+        else:
+            # Beautiful console output
+            console.print("\n[bold cyan]🏥 HEALTH CHECK REPORT[/bold cyan]")
+            console.print("=" * 60)
+
+            # Health score with color coding
+            score_color = (
+                "green"
+                if report.overall_health_score >= 80
+                else "yellow" if report.overall_health_score >= 60 else "red"
+            )
+            console.print(
+                f"\n[bold {score_color}]Health Score: {report.overall_health_score}/100 (Grade: {report.grade})[/bold {score_color}]"
+            )
+            console.print(f"[dim]Trend: {report.trend}[/dim]")
+            console.print(f"[dim]Duration: {report.execution_time:.2f}s[/dim]")
+
+            # Issues
+            if report.issues:
+                console.print(f"\n[bold red]⚠️  Issues Found ({len(report.issues)}):[/bold red]")
+                for issue in report.issues[:5]:
+                    console.print(f"  • {issue}")
+
+            # Recommendations
+            if report.recommendations:
+                console.print("\n[bold yellow]💡 Next Steps:[/bold yellow]")
+                for rec in report.recommendations[:10]:  # Show more recommendations
+                    console.print(f"  {rec}")
+
+            console.print("\n" + "=" * 60)
+
+            # Show VS Code dashboard info
+            health_file = Path(project_root) / ".empathy" / "health.json"
+            console.print(f"\n📁 Health data saved to: [cyan]{health_file}[/cyan]")
+
+            # Try to open VS Code health panel
+            console.print("\n🔄 Opening Health Panel in VS Code...")
+            try:
+                import subprocess
+
+                # Use VS Code CLI to trigger the health panel (run in background)
+                subprocess.Popen(
+                    ["code", "--command", "empathy.openHealthPanel"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                console.print(
+                    "   [dim]If VS Code is already open, the Health Panel will appear automatically.[/dim]"
+                )
+                console.print(
+                    "   [dim]If not, open VS Code and the panel will show updated data.[/dim]"
+                )
+            except FileNotFoundError:
+                console.print("\n💡 [yellow]To view in VS Code:[/yellow]")
+                console.print("   1. Open this project in VS Code")
+                console.print("   2. Install the Empathy VS Code extension")
+                console.print("   3. Run: code --command empathy.openHealthPanel")
+                console.print("   [dim]Or the panel will auto-refresh if already open[/dim]")
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Best-effort VS Code integration, don't fail if it doesn't work
+                console.print(
+                    "\n💡 [dim]View in VS Code Health Panel (auto-refreshes every 30s)[/dim]"
+                )
+
+        return report
+
+    try:
+        asyncio.run(run_health_check())
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@orchestrate_app.command("release-prep")
+def orchestrate_release_prep(
+    project_root: Path = typer.Option(Path("."), "--project-root", "-p", help="Project root path"),
+    min_coverage: float = typer.Option(80.0, "--min-coverage", help="Minimum test coverage %"),
+    min_quality: float = typer.Option(7.0, "--min-quality", help="Minimum quality score (0-10)"),
+    max_critical: int = typer.Option(0, "--max-critical", help="Max critical issues allowed"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Run orchestrated release preparation with parallel validation.
+
+    Runs 4 agents in parallel:
+        - Security Auditor (vulnerability scan)
+        - Test Coverage Analyzer (gap analysis)
+        - Code Quality Reviewer (best practices)
+        - Documentation Writer (completeness check)
+    """
+    import asyncio
+
+    from empathy_os.workflows.orchestrated_release_prep import OrchestratedReleasePrepWorkflow
+
+    async def run_release_prep():
+        workflow = OrchestratedReleasePrepWorkflow(
+            quality_gates={
+                "min_coverage": min_coverage,
+                "min_quality_score": min_quality,
+                "max_critical_issues": max_critical,
+            }
+        )
+        report = await workflow.execute(path=str(project_root))
+
+        if json_output:
+            import json
+
+            console.print(json.dumps(report.to_dict(), indent=2))
+        else:
+            console.print("\n[bold cyan]📋 RELEASE PREPARATION REPORT[/bold cyan]")
+            console.print("=" * 60)
+
+            approval_color = "green" if report.approved else "red"
+            approval_emoji = "✅" if report.approved else "❌"
+            console.print(
+                f"\n[bold {approval_color}]{approval_emoji} {'APPROVED' if report.approved else 'NOT APPROVED'}[/bold {approval_color}]"
+            )
+            console.print(f"[dim]Confidence: {report.confidence}[/dim]")
+            console.print(f"[dim]Duration: {report.total_duration:.2f}s[/dim]")
+
+            # Quality gates
+            console.print("\n[bold]Quality Gates:[/bold]")
+            for gate in report.quality_gates:
+                gate_emoji = "✅" if gate.passed else "❌"
+                console.print(
+                    f"  {gate_emoji} {gate.name}: {gate.actual:.1f} (threshold: {gate.threshold:.1f})"
+                )
+
+            # Blockers
+            if report.blockers:
+                console.print("\n[bold red]🚫 Blockers:[/bold red]")
+                for blocker in report.blockers:
+                    console.print(f"  • {blocker}")
+
+            # Warnings
+            if report.warnings:
+                console.print("\n[bold yellow]⚠️  Warnings:[/bold yellow]")
+                for warning in report.warnings:
+                    console.print(f"  • {warning}")
+
+            console.print("\n" + "=" * 60)
+
+        return report
+
+    try:
+        asyncio.run(run_release_prep())
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@orchestrate_app.command("test-coverage")
+def orchestrate_test_coverage(
+    project_root: Path = typer.Option(Path("."), "--project-root", "-p", help="Project root path"),
+    target: float = typer.Option(90.0, "--target", "-t", help="Target coverage percentage"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Run orchestrated test coverage boost with sequential stages.
+
+    Runs 3 stages sequentially:
+        1. Coverage Analyzer → Identify gaps
+        2. Test Generator → Create tests
+        3. Test Validator → Verify coverage
+    """
+    import asyncio
+
+    from empathy_os.workflows.test_coverage_boost import TestCoverageBoostWorkflow
+
+    async def run_test_coverage():
+        workflow = TestCoverageBoostWorkflow(target_coverage=target)
+        report = await workflow.execute(project_root=str(project_root))
+
+        if json_output:
+            import json
+
+            console.print(json.dumps(report.to_dict(), indent=2))
+        else:
+            console.print("\n[bold cyan]🧪 TEST COVERAGE BOOST REPORT[/bold cyan]")
+            console.print("=" * 60)
+
+            success_color = "green" if report.success else "red"
+            success_emoji = "✅" if report.success else "❌"
+            console.print(
+                f"\n[bold {success_color}]{success_emoji} {'SUCCESS' if report.success else 'FAILED'}[/bold {success_color}]"
+            )
+            console.print(f"[dim]Initial: {report.initial_coverage:.1f}%[/dim]")
+            console.print(f"[dim]Final: {report.final_coverage:.1f}%[/dim]")
+            console.print(f"[dim]Improvement: +{report.improvement:.1f}%[/dim]")
+            console.print(f"[dim]Duration: {report.total_duration:.2f}s[/dim]")
+
+            # Stage results
+            console.print("\n[bold]Stage Results:[/bold]")
+            for i, stage in enumerate(report.stage_results, 1):
+                stage_emoji = "✅" if stage["success"] else "❌"
+                console.print(f"  {stage_emoji} Stage {i}: {stage.get('description', 'N/A')}")
+
+            console.print("\n" + "=" * 60)
+
+        return report
+
+    try:
+        asyncio.run(run_test_coverage())
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
 
 
 # =============================================================================
@@ -615,6 +829,108 @@ def telemetry_reset(
     if confirm:
         args.append("--confirm")
     subprocess.run(args, check=False)
+
+
+# =============================================================================
+# META-WORKFLOW SUBCOMMAND GROUP
+# =============================================================================
+
+try:
+    from empathy_os.meta_workflows.cli_meta_workflows import meta_workflow_app
+    app.add_typer(meta_workflow_app, name="meta-workflow")
+except ImportError as e:
+    # Meta-workflow system is optional/experimental
+    import logging
+    logging.getLogger(__name__).debug(f"Meta-workflow CLI not available: {e}")
+
+
+# =============================================================================
+# PROGRESSIVE WORKFLOW SUBCOMMAND GROUP
+# =============================================================================
+
+progressive_app = typer.Typer(help="Progressive tier escalation workflows")
+app.add_typer(progressive_app, name="progressive")
+
+
+@progressive_app.command("list")
+def progressive_list(
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+):
+    """List all saved progressive workflow results."""
+    from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_list_results
+
+    args = Namespace(storage_path=storage_path)
+    cmd_list_results(args)
+
+
+@progressive_app.command("show")
+def progressive_show(
+    task_id: str = typer.Argument(..., help="Task ID to display"),
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Output in JSON format"),
+):
+    """Show detailed report for a specific task."""
+    from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_show_report
+
+    args = Namespace(task_id=task_id, storage_path=storage_path, json=json_output)
+    cmd_show_report(args)
+
+
+@progressive_app.command("analytics")
+def progressive_analytics(
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Output in JSON format"),
+):
+    """Show cost optimization analytics."""
+    from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_analytics
+
+    args = Namespace(storage_path=storage_path, json=json_output)
+    cmd_analytics(args)
+
+
+@progressive_app.command("cleanup")
+def progressive_cleanup(
+    storage_path: str = typer.Option(
+        None,
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    ),
+    retention_days: int = typer.Option(
+        30, "--retention-days", help="Number of days to retain results (default: 30)"
+    ),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help="Show what would be deleted without actually deleting",
+    ),
+):
+    """Clean up old progressive workflow results."""
+    from argparse import Namespace
+
+    from empathy_os.workflows.progressive.cli import cmd_cleanup
+
+    args = Namespace(
+        storage_path=storage_path, retention_days=retention_days, dry_run=dry_run
+    )
+    cmd_cleanup(args)
 
 
 # =============================================================================

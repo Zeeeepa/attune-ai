@@ -1,5 +1,11 @@
 """Healthcare Wizard - HIPAA-Compliant AI Assistant
 
+⚠️ DEPRECATED: This wizard is a basic example and is no longer actively maintained.
+For production healthcare applications, use the specialized healthcare plugin:
+    pip install empathy-healthcare-wizards
+
+Or visit: https://healthcare.smartaimemory.com/
+
 Specialized wizard for healthcare applications with enhanced PHI protection,
 mandatory encryption, comprehensive audit logging, and HIPAA compliance features.
 
@@ -22,6 +28,7 @@ Licensed under Fair Source 0.9
 """
 
 import logging
+import warnings
 from typing import Any
 
 from empathy_llm_toolkit import EmpathyLLM
@@ -29,6 +36,15 @@ from empathy_llm_toolkit import EmpathyLLM
 from .base_wizard import BaseWizard, WizardConfig
 
 logger = logging.getLogger(__name__)
+
+# Deprecation warning
+warnings.warn(
+    "HealthcareWizard is deprecated and will be removed in v5.0. "
+    "Use the specialized healthcare plugin instead: "
+    "pip install empathy-healthcare-wizards",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 # Enhanced PHI patterns for healthcare (beyond standard PII)

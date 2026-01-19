@@ -315,13 +315,34 @@ class CrewAIAdapter(BaseAdapter):
         if not crewai_agents:
             return CrewAIWorkflow(config, agents)
 
-        # Create Crew
-        crew = Crew(
-            agents=crewai_agents,
-            tasks=[],  # Tasks will be added dynamically or via add_task
-            process=process,
-            verbose=False,
-        )
+        # Create Crew with manager_llm for hierarchical process
+        crew_kwargs = {
+            "agents": crewai_agents,
+            "tasks": [],  # Tasks will be added dynamically or via add_task
+            "process": process,
+            "verbose": False,
+        }
+
+        # Hierarchical process requires manager_llm
+        if config.mode == "hierarchical":
+            # Try langchain_openai first (preferred by CrewAI)
+            try:
+                from langchain_openai import ChatOpenAI
+
+                crew_kwargs["manager_llm"] = ChatOpenAI(
+                    model="gpt-4o-mini",
+                    temperature=0.7,
+                )
+            except ImportError:
+                # Fallback: Use CrewAI's native LLM class
+                from crewai import LLM
+
+                crew_kwargs["manager_llm"] = LLM(
+                    model="gpt-4o-mini",
+                    temperature=0.7,
+                )
+
+        crew = Crew(**crew_kwargs)
 
         return CrewAIWorkflow(config, agents, crew)
 
@@ -339,13 +360,18 @@ class CrewAIAdapter(BaseAdapter):
         try:
             from crewai.tools import BaseTool
 
+            # Capture function parameters in closure variables
+            tool_name = name
+            tool_description = description
+            tool_func = func
+
             # Create dynamic tool class
             class DynamicTool(BaseTool):
-                name: str = name
-                description: str = description
+                name: str = tool_name
+                description: str = tool_description
 
                 def _run(self, **kwargs) -> str:
-                    return str(func(**kwargs))
+                    return str(tool_func(**kwargs))
 
             return DynamicTool()
         except ImportError:

@@ -6,9 +6,14 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import asyncio
+import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -81,14 +86,16 @@ class AnthropicProvider(BaseLLMProvider):
         self,
         api_key: str | None = None,
         model: str = "claude-sonnet-4-5-20250929",
-        use_prompt_caching: bool = True,
+        use_prompt_caching: bool = True,  # CHANGED: Default to True for 20-30% cost savings
         use_thinking: bool = False,
+        use_batch: bool = False,
         **kwargs,
     ):
         super().__init__(api_key, **kwargs)
         self.model = model
         self.use_prompt_caching = use_prompt_caching
         self.use_thinking = use_thinking
+        self.use_batch = use_batch
 
         # Validate API key is provided
         if not api_key or not api_key.strip():
@@ -107,6 +114,12 @@ class AnthropicProvider(BaseLLMProvider):
                 "anthropic package required. Install with: pip install anthropic",
             ) from e
 
+        # Initialize batch provider if needed
+        if use_batch:
+            self.batch_provider = AnthropicBatchProvider(api_key=api_key)
+        else:
+            self.batch_provider = None
+
     async def generate(
         self,
         messages: list[dict[str, str]],
@@ -121,6 +134,10 @@ class AnthropicProvider(BaseLLMProvider):
         - Prompt caching for repeated system prompts (90% cost reduction)
         - Extended context (200K tokens) for large codebase analysis
         - Thinking mode for complex reasoning tasks
+
+        Prompt caching is enabled by default (use_prompt_caching=True).
+        This marks system prompts with cache_control for Anthropic's cache.
+        Break-even: ~3 requests with same context, 5-minute TTL.
         """
         # Build kwargs for Anthropic
         api_kwargs = {
@@ -178,8 +195,32 @@ class AnthropicProvider(BaseLLMProvider):
 
         # Add cache performance metrics if available
         if hasattr(response.usage, "cache_creation_input_tokens"):
-            metadata["cache_creation_tokens"] = response.usage.cache_creation_input_tokens
-            metadata["cache_read_tokens"] = response.usage.cache_read_input_tokens
+            cache_creation = getattr(response.usage, "cache_creation_input_tokens", 0)
+            cache_read = getattr(response.usage, "cache_read_input_tokens", 0)
+
+            # Ensure values are numeric (handle mock objects in tests)
+            if isinstance(cache_creation, int) and isinstance(cache_read, int):
+                metadata["cache_creation_tokens"] = cache_creation
+                metadata["cache_read_tokens"] = cache_read
+
+                # Log cache performance for monitoring with detailed cost savings
+                # Cache reads cost 90% less than regular input tokens
+                # Cache writes cost 25% more than regular input tokens
+                if cache_read > 0:
+                    # Sonnet 4.5 input: $3/M tokens, cache read: $0.30/M tokens (90% discount)
+                    savings_per_token = 0.003 / 1000 * 0.9  # 90% of regular cost
+                    total_savings = cache_read * savings_per_token
+                    logger.info(
+                        f"Cache HIT: {cache_read:,} tokens read from cache "
+                        f"(saved ${total_savings:.4f} vs full price)"
+                    )
+                if cache_creation > 0:
+                    # Cache write cost: $3.75/M tokens (25% markup)
+                    write_cost = cache_creation * 0.00375 / 1000
+                    logger.debug(
+                        f"Cache WRITE: {cache_creation:,} tokens written to cache "
+                        f"(cost ${write_cost:.4f})"
+                    )
 
         # Add thinking content if present
         if thinking_content:
@@ -279,6 +320,204 @@ class AnthropicProvider(BaseLLMProvider):
                 "supports_thinking": True,
             },
         )
+
+
+class AnthropicBatchProvider:
+    """Provider for Anthropic Batch API (50% cost reduction).
+
+    The Batch API processes requests asynchronously within 24 hours
+    at 50% of the standard API cost. Ideal for non-urgent, bulk tasks.
+
+    Example:
+        >>> provider = AnthropicBatchProvider(api_key="sk-ant-...")
+        >>> requests = [
+        ...     {
+        ...         "custom_id": "task_1",
+        ...         "model": "claude-sonnet-4-5",
+        ...         "messages": [{"role": "user", "content": "Analyze X"}],
+        ...         "max_tokens": 1024
+        ...     }
+        ... ]
+        >>> batch_id = provider.create_batch(requests)
+        >>> # Wait for processing (up to 24 hours)
+        >>> results = await provider.wait_for_batch(batch_id)
+    """
+
+    def __init__(self, api_key: str | None = None):
+        """Initialize batch provider.
+
+        Args:
+            api_key: Anthropic API key (defaults to ANTHROPIC_API_KEY env var)
+        """
+        if not api_key or not api_key.strip():
+            raise ValueError(
+                "API key is required for Anthropic Batch API. "
+                "Provide via api_key parameter or ANTHROPIC_API_KEY environment variable"
+            )
+
+        try:
+            import anthropic
+
+            self.client = anthropic.Anthropic(api_key=api_key)
+            self._batch_jobs: dict[str, Any] = {}
+        except ImportError as e:
+            raise ImportError(
+                "anthropic package required for Batch API. "
+                "Install with: pip install anthropic"
+            ) from e
+
+    def create_batch(
+        self, requests: list[dict[str, Any]], job_id: str | None = None
+    ) -> str:
+        """Create a batch job.
+
+        Args:
+            requests: List of request dicts with 'custom_id', 'model', 'messages', etc.
+            job_id: Optional job identifier for tracking (unused, for API compatibility)
+
+        Returns:
+            Batch job ID for polling status
+
+        Raises:
+            ValueError: If requests is empty or invalid
+            RuntimeError: If API call fails
+
+        Example:
+            >>> requests = [
+            ...     {
+            ...         "custom_id": "task_1",
+            ...         "model": "claude-sonnet-4-5",
+            ...         "messages": [{"role": "user", "content": "Test"}],
+            ...         "max_tokens": 1024
+            ...     }
+            ... ]
+            >>> batch_id = provider.create_batch(requests)
+            >>> print(f"Batch created: {batch_id}")
+            Batch created: batch_abc123
+        """
+        if not requests:
+            raise ValueError("requests cannot be empty")
+
+        try:
+            batch = self.client.batches.create(requests=requests)
+            self._batch_jobs[batch.id] = batch
+            logger.info(f"Created batch {batch.id} with {len(requests)} requests")
+            return batch.id
+        except Exception as e:
+            logger.error(f"Failed to create batch: {e}")
+            raise RuntimeError(f"Batch creation failed: {e}") from e
+
+    def get_batch_status(self, batch_id: str) -> Any:
+        """Get status of batch job.
+
+        Args:
+            batch_id: Batch job ID
+
+        Returns:
+            BatchStatus object with status field:
+            - "processing": Batch is being processed
+            - "completed": Batch processing completed
+            - "failed": Batch processing failed
+
+        Example:
+            >>> status = provider.get_batch_status("batch_abc123")
+            >>> print(status.status)
+            processing
+        """
+        try:
+            batch = self.client.batches.retrieve(batch_id)
+            self._batch_jobs[batch_id] = batch
+            return batch
+        except Exception as e:
+            logger.error(f"Failed to get batch status for {batch_id}: {e}")
+            raise RuntimeError(f"Failed to get batch status: {e}") from e
+
+    def get_batch_results(self, batch_id: str) -> list[dict[str, Any]]:
+        """Get results from completed batch.
+
+        Args:
+            batch_id: Batch job ID
+
+        Returns:
+            List of result dicts matching input order
+
+        Raises:
+            ValueError: If batch is not completed
+            RuntimeError: If API call fails
+
+        Example:
+            >>> results = provider.get_batch_results("batch_abc123")
+            >>> for result in results:
+            ...     print(f"{result['custom_id']}: {result['response']['content']}")
+        """
+        status = self.get_batch_status(batch_id)
+
+        if status.status != "completed":
+            raise ValueError(
+                f"Batch {batch_id} not completed (status: {status.status})"
+            )
+
+        try:
+            results = self.client.batches.results(batch_id)
+            return list(results)
+        except Exception as e:
+            logger.error(f"Failed to get batch results for {batch_id}: {e}")
+            raise RuntimeError(f"Failed to get batch results: {e}") from e
+
+    async def wait_for_batch(
+        self,
+        batch_id: str,
+        poll_interval: int = 60,
+        timeout: int = 86400,  # 24 hours
+    ) -> list[dict[str, Any]]:
+        """Wait for batch to complete with polling.
+
+        Args:
+            batch_id: Batch job ID
+            poll_interval: Seconds between status checks (default: 60)
+            timeout: Maximum wait time in seconds (default: 86400 = 24 hours)
+
+        Returns:
+            Batch results when completed
+
+        Raises:
+            TimeoutError: If batch doesn't complete within timeout
+            RuntimeError: If batch processing fails
+
+        Example:
+            >>> results = await provider.wait_for_batch(
+            ...     "batch_abc123",
+            ...     poll_interval=300,  # Check every 5 minutes
+            ... )
+            >>> print(f"Batch completed: {len(results)} results")
+        """
+
+        start_time = datetime.now()
+
+        while True:
+            status = self.get_batch_status(batch_id)
+
+            if status.status == "completed":
+                logger.info(f"Batch {batch_id} completed successfully")
+                return self.get_batch_results(batch_id)
+
+            if status.status == "failed":
+                error_msg = getattr(status, "error", "Unknown error")
+                logger.error(f"Batch {batch_id} failed: {error_msg}")
+                raise RuntimeError(f"Batch {batch_id} failed: {error_msg}")
+
+            # Check timeout
+            elapsed = (datetime.now() - start_time).total_seconds()
+            if elapsed > timeout:
+                raise TimeoutError(
+                    f"Batch {batch_id} did not complete within {timeout}s"
+                )
+
+            # Log progress
+            logger.debug(f"Batch {batch_id} status: {status.status} (elapsed: {elapsed:.0f}s)")
+
+            # Wait before next poll
+            await asyncio.sleep(poll_interval)
 
 
 class OpenAIProvider(BaseLLMProvider):

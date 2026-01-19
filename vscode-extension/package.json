@@ -140,6 +140,11 @@
         "icon": "$(heart)"
       },
       {
+        "command": "empathy.openCoveragePanel",
+        "title": "Empathy: Test Coverage Boost",
+        "icon": "$(target)"
+      },
+      {
         "command": "empathy.openCostsPanel",
         "title": "Empathy: Cost Metrics",
         "icon": "$(graph)"
@@ -173,11 +178,6 @@
         "command": "empathy.initializeProject",
         "title": "Empathy: Initialize Project",
         "icon": "$(rocket)"
-      },
-      {
-        "command": "empathy.testGenerator.show",
-        "title": "Empathy: Test Generator Wizard",
-        "icon": "$(beaker)"
       },
       {
         "command": "empathy.workflowWizard.show",
@@ -218,11 +218,42 @@
         "command": "empathy.workflow.recommend",
         "title": "Empathy: Recommend Workflow Patterns",
         "icon": "$(lightbulb)"
+      },
+      {
+        "command": "empathy.metaWorkflow.listTemplates",
+        "title": "Empathy: List Meta-Workflow Templates",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "empathy.metaWorkflow.inspect",
+        "title": "Empathy: Inspect Meta-Workflow Template",
+        "icon": "$(search)"
+      },
+      {
+        "command": "empathy.metaWorkflow.run",
+        "title": "Empathy: Run Meta-Workflow",
+        "icon": "$(play-circle)"
+      },
+      {
+        "command": "empathy.metaWorkflow.analytics",
+        "title": "Empathy: Meta-Workflow Analytics",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "empathy.metaWorkflow.listRuns",
+        "title": "Empathy: Meta-Workflow History",
+        "icon": "$(history)"
+      },
+      {
+        "command": "empathy.metaWorkflow.sessionStats",
+        "title": "Empathy: Meta-Workflow Session Stats",
+        "icon": "$(dashboard)"
       }
     ],
     "keybindings": [
       {"command": "empathy.openPowerPanel", "key": "ctrl+shift+e p", "mac": "cmd+shift+e p"},
       {"command": "empathy.openHealthPanel", "key": "ctrl+shift+e 1", "mac": "cmd+shift+e 1"},
+      {"command": "empathy.openCoveragePanel", "key": "ctrl+shift+e 4", "mac": "cmd+shift+e 4"},
       {"command": "empathy.openCostsPanel", "key": "ctrl+shift+e 2", "mac": "cmd+shift+e 2"},
       {"command": "empathy.openWorkflowHistory", "key": "ctrl+shift+e 3", "mac": "cmd+shift+e 3"},
       {"command": "empathy.focusSidebarDashboard", "key": "ctrl+shift+e d", "mac": "cmd+shift+e d"},
@@ -236,7 +267,6 @@
       {"command": "empathy.runScan", "key": "ctrl+shift+e h", "mac": "cmd+shift+e h"},
       {"command": "empathy.syncClaude", "key": "ctrl+shift+e y", "mac": "cmd+shift+e y"},
       {"command": "empathy.initializeProject", "key": "ctrl+shift+e i", "mac": "cmd+shift+e i"},
-      {"command": "empathy.testGenerator.show", "key": "ctrl+shift+e w", "mac": "cmd+shift+e w"},
       {"command": "empathy.viewDetails", "key": "ctrl+shift+e v", "mac": "cmd+shift+e v"},
       {"command": "empathy.refreshHealth", "key": "ctrl+shift+e u", "mac": "cmd+shift+e u"},
       {"command": "empathy.openDocAnalysis", "key": "ctrl+shift+e o", "mac": "cmd+shift+e o"},

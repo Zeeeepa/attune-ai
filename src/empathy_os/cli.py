@@ -57,6 +57,19 @@ try:
 except ImportError:
     TELEMETRY_CLI_AVAILABLE = False
 
+# Import progressive workflow CLI commands
+try:
+    from empathy_os.workflows.progressive.cli import (
+        cmd_analytics,
+        cmd_cleanup,
+        cmd_list_results,
+        cmd_show_report,
+    )
+
+    PROGRESSIVE_CLI_AVAILABLE = True
+except ImportError:
+    PROGRESSIVE_CLI_AVAILABLE = False
+
 logger = get_logger(__name__)
 
 
@@ -762,6 +775,170 @@ def cmd_tier_stats(args):
     print()
     print("=" * 60)
     print()
+
+
+def cmd_orchestrate(args):
+    """Run meta-orchestration workflows.
+
+    Orchestrates teams of agents to accomplish complex tasks through
+    intelligent composition patterns.
+    """
+    import asyncio
+    import json
+
+    from empathy_os.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
+    from empathy_os.workflows.orchestrated_release_prep import OrchestratedReleasePrepWorkflow
+    # test_coverage_boost removed - feature disabled in v4.0.0 (being redesigned)
+
+    # Get workflow type
+    workflow_type = args.workflow
+
+    # Only print header in non-JSON mode
+    if not (hasattr(args, "json") and args.json):
+        print()
+        print("=" * 60)
+        print(f"  META-ORCHESTRATION: {workflow_type.upper()}")
+        print("=" * 60)
+        print()
+
+    if workflow_type == "release-prep":
+        # Release Preparation workflow
+        path = args.path or "."
+        quality_gates = {}
+
+        # Collect custom quality gates
+        if hasattr(args, "min_coverage") and args.min_coverage is not None:
+            quality_gates["min_coverage"] = args.min_coverage
+        if hasattr(args, "min_quality") and args.min_quality is not None:
+            quality_gates["min_quality_score"] = args.min_quality
+        if hasattr(args, "max_critical") and args.max_critical is not None:
+            quality_gates["max_critical_issues"] = args.max_critical
+
+        # Only print details in non-JSON mode
+        if not (hasattr(args, "json") and args.json):
+            print(f"  Project Path: {path}")
+            if quality_gates:
+                print(f"  Quality Gates: {quality_gates}")
+            print()
+            print("  🔍 Parallel Validation Agents:")
+            print("    • Security Auditor (vulnerability scan)")
+            print("    • Test Coverage Analyzer (gap analysis)")
+            print("    • Code Quality Reviewer (best practices)")
+            print("    • Documentation Writer (completeness)")
+            print()
+
+        # Create workflow
+        workflow = OrchestratedReleasePrepWorkflow(
+            quality_gates=quality_gates if quality_gates else None
+        )
+
+        try:
+            # Execute workflow
+            report = asyncio.run(workflow.execute(path=path))
+
+            # Display results
+            if hasattr(args, "json") and args.json:
+                print(json.dumps(report.to_dict(), indent=2))
+            else:
+                print(report.format_console_output())
+
+            # Return appropriate exit code
+            return 0 if report.approved else 1
+
+        except Exception as e:
+            print(f"  ❌ Error executing release prep workflow: {e}")
+            print()
+            logger.exception("Release prep workflow failed")
+            return 1
+
+    elif workflow_type == "test-coverage":
+        # Test Coverage Boost workflow - DISABLED in v4.0.0
+        print("  ⚠️  FEATURE DISABLED")
+        print("  " + "-" * 56)
+        print()
+        print("  The test-coverage workflow has been disabled in v4.0.0")
+        print("  due to poor quality (0% test pass rate).")
+        print()
+        print("  This feature is being redesigned and will return in a")
+        print("  future release with improved test generation quality.")
+        print()
+        print("  Available v4.0 workflows:")
+        print("    • health-check - Real-time codebase health analysis")
+        print("    • release-prep - Quality gate validation")
+        print()
+        return 1
+
+    elif workflow_type == "health-check":
+        # Health Check workflow
+        mode = args.mode or "daily"
+        project_root = args.project_root or "."
+        focus_area = getattr(args, "focus", None)
+
+        # Only print details in non-JSON mode
+        if not (hasattr(args, "json") and args.json):
+            print(f"  Mode: {mode.upper()}")
+            print(f"  Project Root: {project_root}")
+            if focus_area:
+                print(f"  Focus Area: {focus_area}")
+            print()
+
+            # Show agents for mode
+            mode_agents = {
+                "daily": ["Security", "Coverage", "Quality"],
+                "weekly": ["Security", "Coverage", "Quality", "Performance", "Documentation"],
+                "release": [
+                    "Security",
+                    "Coverage",
+                    "Quality",
+                    "Performance",
+                    "Documentation",
+                    "Architecture",
+                ],
+            }
+
+            print(f"  🔍 {mode.capitalize()} Check Agents:")
+            for agent in mode_agents.get(mode, []):
+                print(f"    • {agent}")
+            print()
+
+        # Create workflow
+        workflow = OrchestratedHealthCheckWorkflow(mode=mode, project_root=project_root)
+
+        try:
+            # Execute workflow
+            report = asyncio.run(workflow.execute())
+
+            # Display results
+            if hasattr(args, "json") and args.json:
+                print(json.dumps(report.to_dict(), indent=2))
+            else:
+                print(report.format_console_output())
+
+            # Return appropriate exit code (70+ is passing)
+            return 0 if report.overall_health_score >= 70 else 1
+
+        except Exception as e:
+            print(f"  ❌ Error executing health check workflow: {e}")
+            print()
+            logger.exception("Health check workflow failed")
+            return 1
+
+    else:
+        print(f"  ❌ Unknown workflow type: {workflow_type}")
+        print()
+        print("  Available workflows:")
+        print("    - release-prep: Release readiness validation (parallel agents)")
+        print("    - health-check: Project health assessment (daily/weekly/release modes)")
+        print()
+        print("  Note: test-coverage workflow disabled in v4.0.0 (being redesigned)")
+        print()
+        return 1
+
+    print()
+    print("=" * 60)
+    print()
+
+    return 0
 
 
 def cmd_init(args):
@@ -2219,7 +2396,8 @@ def cmd_workflow(args):
             if args.json:
                 # Extract error from various result types
                 error = getattr(result, "error", None)
-                if not error and not result.success:
+                is_successful = getattr(result, "success", getattr(result, "approved", True))
+                if not error and not is_successful:
                     blockers = getattr(result, "blockers", [])
                     if blockers:
                         error = "; ".join(blockers)
@@ -2252,7 +2430,7 @@ def cmd_workflow(args):
                     final_output_serializable = None
 
                 output = {
-                    "success": result.success,
+                    "success": is_successful,
                     "output": output_content,
                     "final_output": final_output_serializable,
                     "cost": total_cost,
@@ -2311,7 +2489,9 @@ def cmd_workflow(args):
                         print("=" * 60 + "\n")
 
                 # Display workflow result
-                if result.success:
+                # Handle different result types (success, approved, etc.)
+                is_successful = getattr(result, "success", getattr(result, "approved", True))
+                if is_successful:
                     if output_content:
                         print(f"\n{output_content}\n")
                     else:
@@ -3030,6 +3210,83 @@ def main():
     )
     parser_telemetry_export.set_defaults(func=lambda args: _cmd_telemetry_export(args))
 
+    # Progressive workflow commands (tier escalation)
+    parser_progressive = subparsers.add_parser(
+        "progressive",
+        help="Manage progressive tier escalation workflows",
+    )
+    progressive_subparsers = parser_progressive.add_subparsers(dest="progressive_command")
+
+    # Progressive list command
+    parser_progressive_list = progressive_subparsers.add_parser(
+        "list",
+        help="List all saved progressive workflow results",
+    )
+    parser_progressive_list.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_list.set_defaults(func=lambda args: cmd_list_results(args))
+
+    # Progressive show command
+    parser_progressive_show = progressive_subparsers.add_parser(
+        "show",
+        help="Show detailed report for a specific task",
+    )
+    parser_progressive_show.add_argument(
+        "task_id",
+        type=str,
+        help="Task ID to display",
+    )
+    parser_progressive_show.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_show.add_argument(
+        "--json",
+        action="store_true",
+        help="Output in JSON format",
+    )
+    parser_progressive_show.set_defaults(func=lambda args: cmd_show_report(args))
+
+    # Progressive analytics command
+    parser_progressive_analytics = progressive_subparsers.add_parser(
+        "analytics",
+        help="Show cost optimization analytics",
+    )
+    parser_progressive_analytics.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_analytics.add_argument(
+        "--json",
+        action="store_true",
+        help="Output in JSON format",
+    )
+    parser_progressive_analytics.set_defaults(func=lambda args: cmd_analytics(args))
+
+    # Progressive cleanup command
+    parser_progressive_cleanup = progressive_subparsers.add_parser(
+        "cleanup",
+        help="Clean up old progressive workflow results",
+    )
+    parser_progressive_cleanup.add_argument(
+        "--storage-path",
+        help="Path to progressive workflow storage (default: .empathy/progressive_runs)",
+    )
+    parser_progressive_cleanup.add_argument(
+        "--retention-days",
+        type=int,
+        default=30,
+        help="Number of days to retain results (default: 30)",
+    )
+    parser_progressive_cleanup.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be deleted without actually deleting",
+    )
+    parser_progressive_cleanup.set_defaults(func=lambda args: cmd_cleanup(args))
+
     # Tier 1 automation monitoring commands
 
     # tier1 command - comprehensive status
@@ -3292,6 +3549,59 @@ def main():
         help="Show tier pattern learning statistics",
     )
     parser_tier_stats.set_defaults(func=cmd_tier_stats)
+
+    # Orchestrate command (meta-orchestration workflows)
+    parser_orchestrate = subparsers.add_parser(
+        "orchestrate",
+        help="Run meta-orchestration workflows (release-prep, health-check)",
+    )
+    parser_orchestrate.add_argument(
+        "workflow",
+        choices=["release-prep", "health-check"],
+        help="Workflow to execute (test-coverage disabled in v4.0.0)",
+    )
+    parser_orchestrate.add_argument(
+        "--project-root",
+        default=".",
+        help="Project root directory (default: current directory)",
+    )
+    # Release-prep workflow arguments
+    parser_orchestrate.add_argument(
+        "--path",
+        default=".",
+        help="Path to codebase to analyze (for release-prep, default: current directory)",
+    )
+    parser_orchestrate.add_argument(
+        "--min-coverage",
+        type=float,
+        help="Minimum test coverage threshold (for release-prep, default: 80.0)",
+    )
+    parser_orchestrate.add_argument(
+        "--min-quality",
+        type=float,
+        help="Minimum code quality score (for release-prep, default: 7.0)",
+    )
+    parser_orchestrate.add_argument(
+        "--max-critical",
+        type=float,
+        help="Maximum critical security issues (for release-prep, default: 0)",
+    )
+    # Health-check workflow arguments
+    parser_orchestrate.add_argument(
+        "--mode",
+        choices=["daily", "weekly", "release"],
+        help="Health check mode (for health-check, default: daily)",
+    )
+    parser_orchestrate.add_argument(
+        "--focus",
+        help="Focus area for health check (for health-check, optional)",
+    )
+    parser_orchestrate.add_argument(
+        "--json",
+        action="store_true",
+        help="Output results as JSON",
+    )
+    parser_orchestrate.set_defaults(func=cmd_orchestrate)
 
     # Wizard Factory commands (create wizards 12x faster)
     add_wizard_factory_commands(subparsers)

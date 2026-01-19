@@ -668,7 +668,8 @@ class TestWorkflowSubcommands:
             "workflow",
             "run",
             "code-review",
-            ".",
+            "--input",
+            '{"path": "."}',
         ]
         mock_run.assert_called_once_with(expected_args, check=False)
 
@@ -684,7 +685,8 @@ class TestWorkflowSubcommands:
             "workflow",
             "run",
             "bug-predict",
-            "/test/src",
+            "--input",
+            '{"path": "/test/src"}',
         ]
         mock_run.assert_called_once_with(expected_args, check=False)
 
@@ -693,15 +695,17 @@ class TestWorkflowSubcommands:
 class TestUtilityCommands:
     """Test utility commands."""
 
+    @patch("empathy_os.cli_unified.Panel")
     @patch("empathy_os.cli_unified.console")
-    def test_cheatsheet(self, mock_console):
+    def test_cheatsheet(self, mock_console, mock_panel):
         """Test cheatsheet command."""
         cheatsheet()
 
         mock_console.print.assert_called_once()
         # Check Panel.fit was called with cheatsheet content
-        call_args = mock_console.print.call_args[0][0]
-        assert "Getting Started" in str(call_args)
+        mock_panel.fit.assert_called_once()
+        call_args = mock_panel.fit.call_args[0][0]
+        assert "Getting Started" in call_args
 
     @patch("empathy_os.cli_unified.subprocess.run")
     def test_dashboard(self, mock_run):

@@ -32,9 +32,19 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        pytest --cov-report=xml -m "not network"
+        pytest --cov=src/empathy_os --cov-report=xml --cov-report=term-missing --cov-fail-under=53 -m "not network"
       env:
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+    - name: Run new Phase 1 tests
+      run: |
+        pytest tests/unit/memory/test_long_term_security.py \
+               tests/unit/cli/test_cli_commands.py \
+               tests/unit/scanner/test_file_traversal.py \
+               tests/unit/cache/test_eviction_policies.py \
+               tests/integration/test_api_endpoints.py \
+               tests/unit/workflows/test_workflow_execution.py \
+               -v --tb=short
 
     - name: Upload coverage to Codecov
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'

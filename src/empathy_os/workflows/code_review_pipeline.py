@@ -316,14 +316,14 @@ class CodeReviewPipeline:
             )
 
             # Handle crew result
-            if isinstance(crew_report_obj, Exception):
+            if isinstance(crew_report_obj, BaseException):
                 logger.warning(f"Crew review failed: {crew_report_obj}")
             elif crew_report_obj:
                 # crew_report_obj is CodeReviewReport after isinstance check above
                 crew_report = crew_report_to_workflow_format(crew_report_obj)
 
             # Handle workflow result
-            if isinstance(workflow_result, Exception):
+            if isinstance(workflow_result, BaseException):
                 logger.warning(f"Workflow failed: {workflow_result}")
                 workflow_result = None
 

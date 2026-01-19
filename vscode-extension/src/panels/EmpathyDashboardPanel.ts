@@ -109,6 +109,21 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 case 'openWebDashboard':
                     vscode.commands.executeCommand('empathy.openWebDashboard');
                     break;
+                case 'openHealthPanel':
+                    vscode.commands.executeCommand('empathy.openHealthPanel');
+                    break;
+                case 'openCoveragePanel':
+                    vscode.commands.executeCommand('empathy.openCoveragePanel');
+                    break;
+                case 'runOrchestratedHealthCheck':
+                    await this._runOrchestratedHealthCheck();
+                    break;
+                case 'runOrchestratedReleasePrep':
+                    await this._runOrchestratedReleasePrep();
+                    break;
+                case 'runOrchestratedTestCoverage':
+                    await this._runOrchestratedTestCoverage();
+                    break;
                 case 'copyToClipboard':
                     await vscode.env.clipboard.writeText(message.content);
                     vscode.window.showInformationMessage('Report copied to clipboard');
@@ -143,6 +158,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     break;
                 case 'openWorkflowHistory':
                     vscode.commands.executeCommand('empathy.openWorkflowHistory');
+                    break;
+                case 'runAgentTeam':
+                    await this._runAgentTeam(message.skill, message.template, message.label);
+                    break;
+                case 'createDynamic':
+                    await this._createDynamic(message.createType);
                     break;
             }
         });
@@ -792,12 +813,138 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         terminal.sendText('python -m pytest tests/ --no-cov -v');
     }
 
+    private async _runOrchestratedHealthCheck() {
+        // Open dedicated WorkflowReportPanel for orchestrated-health-check (v4.0.0 Meta-Orchestration)
+        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'orchestrated-health-check');
+    }
+
+    private async _runOrchestratedReleasePrep() {
+        // Open dedicated WorkflowReportPanel for orchestrated-release-prep (v4.0.0 Meta-Orchestration)
+        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'orchestrated-release-prep');
+    }
+
+    private async _runOrchestratedTestCoverage() {
+        // Open dedicated CoveragePanel for test-coverage-boost (v4.0.0 CrewAI)
+        // This panel has the target input dialog
+        await vscode.commands.executeCommand('empathy.openCoveragePanel');
+    }
+
+    private _getClaudeCodeExtension(): vscode.Extension<unknown> | undefined {
+        // Check for Claude Code VSCode extension (preferred for form-based UX)
+        // Try multiple possible extension IDs
+        const extensionIds = [
+            'anthropic.claude-code',
+            'anthropics.claude-code',
+            'claude.code'
+        ];
+        for (const id of extensionIds) {
+            const ext = vscode.extensions.getExtension(id);
+            if (ext) {
+                return ext;
+            }
+        }
+        return undefined;
+    }
+
+    private async _startClaudeCodeWithSkill(skill: string, fallbackLabel: string, fallbackCommand: string) {
+        // v4.4: Start Claude Code webview with skill command
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            vscode.window.showErrorMessage('No workspace folder open');
+            return;
+        }
+
+        const claudeExt = this._getClaudeCodeExtension();
+
+        if (claudeExt) {
+            // Claude Code extension found - use webview panel
+            vscode.window.showInformationMessage(`Starting Claude Code with ${skill}...`);
+
+            // Open Claude Code and auto-send the skill command
+            try {
+                // Start a new conversation in Claude Code
+                await vscode.commands.executeCommand('claude-vscode.newConversation');
+
+                // Wait for panel to initialize
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Focus the Claude Code input
+                await vscode.commands.executeCommand('claude-vscode.focus');
+
+                // Wait a moment for focus
+                await new Promise(resolve => setTimeout(resolve, 200));
+
+                // Copy skill to clipboard and paste it
+                await vscode.env.clipboard.writeText(skill);
+
+                // Use VSCode's paste command to paste into focused input
+                await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+
+                // Wait a moment then simulate Enter to send
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                // Try to send the message by simulating Enter key
+                await vscode.commands.executeCommand('type', { text: '\n' });
+
+                vscode.window.showInformationMessage(
+                    `Running ${skill} in Claude Code...`
+                );
+            } catch (error) {
+                // Fallback: copy to clipboard and let user paste
+                await vscode.env.clipboard.writeText(skill);
+                try {
+                    await vscode.commands.executeCommand('claude-vscode.sidebar.open');
+                } catch {
+                    // Sidebar command failed, ignore
+                }
+                vscode.window.showInformationMessage(
+                    `Skill "${skill}" copied to clipboard. Paste in Claude Code to run.`
+                );
+            }
+        } else {
+            // No Claude Code extension - fall back to terminal
+            vscode.window.showInformationMessage(
+                `Running ${fallbackLabel} in terminal (install Claude Code extension for better experience)...`
+            );
+            const terminal = vscode.window.createTerminal({
+                name: `Empathy: ${fallbackLabel}`,
+                cwd: workspaceFolder
+            });
+            terminal.show();
+            terminal.sendText(fallbackCommand);
+        }
+    }
+
+    private async _runAgentTeam(skill: string, template: string, label: string) {
+        // v4.4: Run agent team via Claude Code webview
+        await this._startClaudeCodeWithSkill(
+            skill,
+            label,
+            `empathy meta-workflow run ${template} --real --use-defaults`
+        );
+    }
+
+    private async _createDynamic(createType: string) {
+        // v4.4: Dynamic agent/team creation via Claude Code webview
+        const skill = createType === 'agent' ? '/create-agent' : '/create-team';
+        const label = createType === 'agent' ? 'Create Agent' : 'Create Team';
+
+        await this._startClaudeCodeWithSkill(
+            skill,
+            label,
+            `empathy meta-workflow ${createType === 'agent' ? 'create-agent' : 'create-team'} --interactive`
+        );
+    }
+
     private async _runWorkflow(workflowName: string, input?: string) {
         // Special handling for doc-orchestrator: open the Documentation Analysis panel
         if (workflowName === 'doc-orchestrator') {
             vscode.commands.executeCommand('empathy.openDocAnalysis');
             return;
         }
+
+        // v4.0.0: Orchestrated workflows are handled by direct message handlers now
+        // (No special routing needed - buttons send specific message types)
 
         // v3.5.5: test-gen now runs workflow directly (panel removed)
 
@@ -854,9 +1001,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             'security-audit',   // folder picker - select folder to audit
             'perf-audit',       // folder picker - select folder to profile
             'refactor-plan',    // folder picker - select folder to plan refactoring
-            'health-check',     // folder picker - select folder to check health
             'pr-review',        // folder picker - select folder with PR changes
             'pro-review',       // hybrid - file/text for code review
+            // NOTE: health-check, release-prep, test-coverage-boost run on whole project and show output in dashboard
         ];
         const opensInEditor = filePickerWorkflows.includes(workflowName);
         console.log(`[EmpathyDashboard] Workflow: ${workflowName}, opensInEditor: ${opensInEditor}`);
@@ -2079,10 +2226,6 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span class="action-icon">&#x1F41B;</span>
                     <span>Predict Bugs</span>
                 </button>
-                <button class="action-btn workflow-btn" data-workflow="health-check" title="Run HealthCheckCrew for comprehensive 5-agent project health analysis">
-                    <span class="action-icon">&#x1FA7A;</span>
-                    <span>Health Check</span>
-                </button>
             </div>
 
             <!-- Security & Performance -->
@@ -2111,12 +2254,52 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 </button>
             </div>
 
-            <!-- Release -->
-            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">RELEASE</div>
-            <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-workflow="release-prep" title="Pre-release quality gate: health checks, security scan, and changelog">
-                    <span class="action-icon">&#x1F4CB;</span>
+            <!-- AI Agent Teams (v4.4) - Multi-Agent Workflows -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                <span>AI AGENT TEAMS</span>
+                <span style="background: linear-gradient(90deg, #10b981, #3b82f6); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">v4.4</span>
+            </div>
+            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/release-prep" data-template="release-prep" title="Deploy 4 AI agents: Security Auditor, Test Coverage Analyst, Code Quality Reviewer, Documentation Specialist">
+                    <span class="action-icon">&#x1F680;</span>
                     <span>Release Prep</span>
+                </button>
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/test-coverage" data-template="test-coverage-boost" title="Deploy 3 AI agents: Gap Analyzer, Test Generator, Test Validator - Boost your test coverage">
+                    <span class="action-icon">&#x1F3AF;</span>
+                    <span>Test Coverage</span>
+                </button>
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/test-maintenance" data-template="test-maintenance" title="Deploy 4 AI agents: Test Analyst, Test Generator, Test Validator, Reporter - Maintain test health">
+                    <span class="action-icon">&#x1F527;</span>
+                    <span>Test Maintenance</span>
+                </button>
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/manage-docs" data-template="manage-docs" title="Deploy 3 AI agents: Documentation Analyst, Reviewer, Synthesizer - Keep docs in sync with code">
+                    <span class="action-icon">&#x1F4DA;</span>
+                    <span>Manage Docs</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Agent/Team Creation (v4.4) -->
+            <div style="margin-top: 8px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                <span>CREATE CUSTOM</span>
+                <span style="background: linear-gradient(90deg, #8b5cf6, #d946ef); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">DYNAMIC</span>
+            </div>
+            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <button class="action-btn workflow-btn dynamic-create-btn" data-create-type="agent" title="Create a custom AI agent with Socratic-guided questions">
+                    <span class="action-icon">&#x1F916;</span>
+                    <span>New Agent</span>
+                </button>
+                <button class="action-btn workflow-btn dynamic-create-btn" data-create-type="team" title="Create a custom AI agent team with Socratic-guided workflow">
+                    <span class="action-icon">&#x1F465;</span>
+                    <span>New Team</span>
+                </button>
+            </div>
+
+            <!-- Release -->
+            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">RELEASE (Legacy)</div>
+            <div class="actions-grid workflow-grid">
+                <button class="action-btn workflow-btn" data-workflow="release-prep" title="Legacy release prep workflow - Use Meta-Orchestration version for better results">
+                    <span class="action-icon">&#x1F4CB;</span>
+                    <span>Release Prep (Old)</span>
                 </button>
                 <button class="action-btn workflow-btn" data-workflow="secure-release" title="Comprehensive security pipeline for production releases">
                     <span class="action-icon">&#x1F680;</span>
@@ -2390,6 +2573,55 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             console.log('[EmpathyDashboard] WARNING: test-gen button not found!');
         }
 
+        // Meta-Orchestration v4.0 button handlers - run CrewAI workflows
+        const healthCheckBtn = document.getElementById('btn-health-check-v4');
+        if (healthCheckBtn) {
+            healthCheckBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('[EmpathyDashboard] Health Check v4 clicked - running workflow');
+                vscode.postMessage({ type: 'runOrchestratedHealthCheck' });
+            });
+        }
+
+        const releasePrepBtn = document.getElementById('btn-release-prep-v4');
+        if (releasePrepBtn) {
+            releasePrepBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('[EmpathyDashboard] Release Prep v4 clicked - running workflow');
+                vscode.postMessage({ type: 'runOrchestratedReleasePrep' });
+            });
+        }
+
+        // AI Agent Team button handlers (v4.4) - Copy skill and suggest Claude Code
+        document.querySelectorAll('.agent-team-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const skill = this.dataset.skill;
+                const template = this.dataset.template;
+                const label = this.querySelector('span:not(.action-icon)').textContent;
+                console.log('[EmpathyDashboard] Agent team button clicked:', template);
+                vscode.postMessage({
+                    type: 'runAgentTeam',
+                    skill: skill,
+                    template: template,
+                    label: label
+                });
+            });
+        });
+
+        // Dynamic Agent/Team creation button handlers (v4.4) - Socratic-guided creation
+        document.querySelectorAll('.dynamic-create-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const createType = this.dataset.createType;
+                console.log('[EmpathyDashboard] Dynamic create button clicked:', createType);
+                vscode.postMessage({
+                    type: 'createDynamic',
+                    createType: createType
+                });
+            });
+        });
+
         // Workflow button click handlers - show input panel first
         const workflowBtns = document.querySelectorAll('.action-btn[data-workflow]');
         console.log('[EmpathyDashboard] Found workflow buttons:', workflowBtns.length);
@@ -2413,6 +2645,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     vscode.postMessage({ type: 'openDocAnalysis' });
                     return;
                 }
+
+                // Meta-Orchestration v4.0: Handled by direct button click handlers above
+                // (No special routing needed here - buttons send specific message types)
 
                 // Report workflows: run immediately with project root and open in editor
                 const reportWorkflows = [
@@ -2915,7 +3150,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 resultsStatus.innerHTML = '&#x2714; Complete';
 
                 // Check if output is crew workflow result (has verdict/quality_score)
-                const crewWorkflows = ['pro-review', 'pr-review'];
+                const crewWorkflows = ['pro-review', 'pr-review', 'health-check', 'release-prep', 'test-coverage-boost'];
                 if (crewWorkflows.includes(data.workflow) || data.output.includes('"verdict"') || data.output.includes('"quality_score"')) {
                     try {
                         resultsContent.innerHTML = formatCrewOutput(data.output);

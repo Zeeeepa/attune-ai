@@ -318,8 +318,231 @@ MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
 
 
 # =============================================================================
-# HELPER FUNCTIONS
+# MODEL REGISTRY CLASS - OOP Interface
 # =============================================================================
+
+
+class ModelRegistry:
+    """Object-oriented interface to the model registry.
+
+    Provides efficient lookup operations with built-in tier and model ID caching
+    for O(1) performance on frequently accessed queries.
+
+    Example:
+        >>> registry = ModelRegistry()
+        >>> model = registry.get_model("anthropic", "capable")
+        >>> print(model.id)
+        claude-sonnet-4-5
+
+        >>> models = registry.get_models_by_tier("cheap")
+        >>> print(len(models))
+        5
+
+        >>> model = registry.get_model_by_id("claude-opus-4-5-20251101")
+        >>> print(model.tier)
+        premium
+
+        >>> providers = registry.list_providers()
+        >>> print(providers)
+        ['anthropic', 'openai', 'google', 'ollama', 'hybrid']
+
+    """
+
+    def __init__(self, registry: dict[str, dict[str, ModelInfo]] | None = None):
+        """Initialize the model registry.
+
+        Args:
+            registry: Optional custom registry dict. If None, uses MODEL_REGISTRY.
+
+        """
+        self._registry = registry if registry is not None else MODEL_REGISTRY
+
+        # Build performance caches
+        self._build_caches()
+
+    def _build_caches(self) -> None:
+        """Build tier and model ID caches for O(1) lookups."""
+        # Cache for get_models_by_tier (tier -> list[ModelInfo])
+        self._tier_cache: dict[str, list[ModelInfo]] = {}
+        for tier_value in [t.value for t in ModelTier]:
+            self._tier_cache[tier_value] = [
+                provider_models[tier_value]
+                for provider_models in self._registry.values()
+                if tier_value in provider_models
+            ]
+
+        # Cache for get_model_by_id (model_id -> ModelInfo)
+        self._model_id_cache: dict[str, ModelInfo] = {}
+        for provider_models in self._registry.values():
+            for model_info in provider_models.values():
+                self._model_id_cache[model_info.id] = model_info
+
+    def get_model(self, provider: str, tier: str) -> ModelInfo | None:
+        """Get model info for a provider/tier combination.
+
+        Args:
+            provider: Provider name (anthropic, openai, google, ollama, hybrid)
+            tier: Tier level (cheap, capable, premium)
+
+        Returns:
+            ModelInfo if found, None otherwise
+
+        Example:
+            >>> registry = ModelRegistry()
+            >>> model = registry.get_model("anthropic", "capable")
+            >>> print(model.id)
+            claude-sonnet-4-5
+
+            >>> model = registry.get_model("openai", "cheap")
+            >>> print(model.cost_per_1k_input)
+            0.00015
+
+        """
+        provider_models = self._registry.get(provider.lower())
+        if provider_models is None:
+            return None
+        return provider_models.get(tier.lower())
+
+    def get_model_by_id(self, model_id: str) -> ModelInfo | None:
+        """Get model info by model ID.
+
+        Uses O(1) cache lookup for fast performance.
+
+        Args:
+            model_id: Model identifier (e.g., "claude-3-5-haiku-20241022")
+
+        Returns:
+            ModelInfo if found, None otherwise
+
+        Example:
+            >>> registry = ModelRegistry()
+            >>> model = registry.get_model_by_id("claude-opus-4-5-20251101")
+            >>> print(model.provider)
+            anthropic
+            >>> print(model.tier)
+            premium
+
+            >>> model = registry.get_model_by_id("gpt-4o-mini")
+            >>> print(f"{model.provider}/{model.tier}")
+            openai/cheap
+
+        """
+        return self._model_id_cache.get(model_id)
+
+    def get_models_by_tier(self, tier: str) -> list[ModelInfo]:
+        """Get all models in a specific tier across all providers.
+
+        Uses O(1) cache lookup for fast performance.
+
+        Args:
+            tier: Tier level (cheap, capable, premium)
+
+        Returns:
+            List of ModelInfo objects in the tier (may be empty)
+
+        Example:
+            >>> registry = ModelRegistry()
+            >>> cheap_models = registry.get_models_by_tier("cheap")
+            >>> print(len(cheap_models))
+            5
+            >>> print([m.provider for m in cheap_models])
+            ['anthropic', 'openai', 'google', 'ollama', 'openai']
+
+            >>> premium_models = registry.get_models_by_tier("premium")
+            >>> for model in premium_models:
+            ...     print(f"{model.provider}: {model.id}")
+            anthropic: claude-opus-4-5-20251101
+            openai: o1
+            google: gemini-2.5-pro
+            ollama: llama3.1:70b
+            anthropic: claude-opus-4-5-20251101
+
+        """
+        return self._tier_cache.get(tier.lower(), [])
+
+    def list_providers(self) -> list[str]:
+        """Get list of all provider names.
+
+        Returns:
+            List of provider names (e.g., ['anthropic', 'openai', ...])
+
+        Example:
+            >>> registry = ModelRegistry()
+            >>> providers = registry.list_providers()
+            >>> print(providers)
+            ['anthropic', 'openai', 'google', 'ollama', 'hybrid']
+
+        """
+        return list(self._registry.keys())
+
+    def list_tiers(self) -> list[str]:
+        """Get list of all available tiers.
+
+        Returns:
+            List of tier names (e.g., ['cheap', 'capable', 'premium'])
+
+        Example:
+            >>> registry = ModelRegistry()
+            >>> tiers = registry.list_tiers()
+            >>> print(tiers)
+            ['cheap', 'capable', 'premium']
+
+        """
+        return [tier.value for tier in ModelTier]
+
+    def get_all_models(self) -> dict[str, dict[str, ModelInfo]]:
+        """Get the complete model registry.
+
+        Returns:
+            Full registry dict (provider -> tier -> ModelInfo)
+
+        Example:
+            >>> registry = ModelRegistry()
+            >>> all_models = registry.get_all_models()
+            >>> print(all_models.keys())
+            dict_keys(['anthropic', 'openai', 'google', 'ollama', 'hybrid'])
+
+        """
+        return self._registry
+
+    def get_pricing_for_model(self, model_id: str) -> dict[str, float] | None:
+        """Get pricing for a model by its ID.
+
+        Args:
+            model_id: Model identifier (e.g., "claude-3-5-haiku-20241022")
+
+        Returns:
+            Dict with 'input' and 'output' keys (per-million pricing), or None
+
+        Example:
+            >>> registry = ModelRegistry()
+            >>> pricing = registry.get_pricing_for_model("claude-sonnet-4-5")
+            >>> print(pricing)
+            {'input': 3.0, 'output': 15.0}
+
+            >>> pricing = registry.get_pricing_for_model("gpt-4o-mini")
+            >>> print(f"${pricing['input']}/M input, ${pricing['output']}/M output")
+            $0.15/M input, $0.6/M output
+
+        """
+        model = self.get_model_by_id(model_id)
+        if model is None:
+            return None
+        return model.to_cost_tracker_pricing()
+
+
+# =============================================================================
+# DEFAULT REGISTRY INSTANCE
+# =============================================================================
+# Global singleton instance for convenience
+_default_registry = ModelRegistry()
+
+
+# =============================================================================
+# HELPER FUNCTIONS - Backward Compatibility
+# =============================================================================
+# These functions wrap the default registry instance to maintain
+# backward compatibility with existing code.
 
 
 def get_model(provider: str, tier: str) -> ModelInfo | None:
@@ -332,16 +555,22 @@ def get_model(provider: str, tier: str) -> ModelInfo | None:
     Returns:
         ModelInfo if found, None otherwise
 
+    Note:
+        This is a convenience wrapper around the default ModelRegistry instance.
+        For more features, consider using ModelRegistry directly.
+
     """
-    provider_models = MODEL_REGISTRY.get(provider.lower())
-    if provider_models is None:
-        return None
-    return provider_models.get(tier.lower())
+    return _default_registry.get_model(provider, tier)
 
 
 def get_all_models() -> dict[str, dict[str, ModelInfo]]:
-    """Get the complete model registry."""
-    return MODEL_REGISTRY
+    """Get the complete model registry.
+
+    Note:
+        This is a convenience wrapper around the default ModelRegistry instance.
+
+    """
+    return _default_registry.get_all_models()
 
 
 def get_pricing_for_model(model_id: str) -> dict[str, float] | None:
@@ -353,22 +582,31 @@ def get_pricing_for_model(model_id: str) -> dict[str, float] | None:
     Returns:
         Dict with 'input' and 'output' keys (per-million pricing), or None
 
+    Note:
+        This is a convenience wrapper around the default ModelRegistry instance.
+
     """
-    for provider_models in MODEL_REGISTRY.values():
-        for model_info in provider_models.values():
-            if model_info.id == model_id:
-                return model_info.to_cost_tracker_pricing()
-    return None
+    return _default_registry.get_pricing_for_model(model_id)
 
 
 def get_supported_providers() -> list[str]:
-    """Get list of supported provider names."""
-    return list(MODEL_REGISTRY.keys())
+    """Get list of supported provider names.
+
+    Note:
+        This is a convenience wrapper around the default ModelRegistry instance.
+
+    """
+    return _default_registry.list_providers()
 
 
 def get_tiers() -> list[str]:
-    """Get list of available tiers."""
-    return [tier.value for tier in ModelTier]
+    """Get list of available tiers.
+
+    Note:
+        This is a convenience wrapper around the default ModelRegistry instance.
+
+    """
+    return _default_registry.list_tiers()
 
 
 # =============================================================================

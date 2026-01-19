@@ -199,7 +199,7 @@ class TestWorkflowRegistry:
         expected = [
             "code-review",
             "security-audit",
-            "health-check",
+            "orchestrated-health-check",  # Replaced health-check with orchestrated version
             "test-gen",
             "doc-gen",
         ]

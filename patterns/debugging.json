@@ -3491,9 +3491,111 @@
         "docs/marketing/RESPONSE_TEMPLATES_ACCURATE.md"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260115_0bc4d995",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "test: Fix 12 test failures for v4.0.1 maintenance release",
+      "fix": "See commit 0bc4d995",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-15",
+      "files_affected": [
+        ".claude/rules/empathy/debugging.md",
+        ".coverage 2",
+        ".coverage.Mac.home.local.82988.XvJUZQzx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260115_59ae1e8e",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "test: Fix 20 test failures across security, router, workflow, and integration tests",
+      "fix": "See commit 59ae1e8e",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-15",
+      "files_affected": [
+        ".../agent_factory/adapters/crewai_adapter.py",
+        "src/empathy_os/models/executor.py",
+        "src/empathy_os/workflows/security_audit.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260115_edb63946",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Resolve 2 Ruff code quality issues (F841, B007)",
+      "fix": "See commit edb63946",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-15",
+      "files_affected": [
+        "src/empathy_os/orchestration/real_tools.py",
+        "src/empathy_os/workflows/release_prep_crew.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260115_ac1dbe24",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "test: Fix test failures and add 207 new tests, boost coverage to 93.91% on workflow_commands",
+      "fix": "See commit ac1dbe24",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-15",
+      "files_affected": [
+        "tests/unit/memory/test_control_panel.py",
+        "tests/unit/telemetry/test_telemetry_cli.py",
+        "tests/unit/test_workflow_commands.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260115_f7369c9a",
+      "bug_type": "async_timing",
+      "status": "resolved",
+      "root_cause": "fix: Add 5-minute timeout to workflow execution to prevent hanging",
+      "fix": "See commit f7369c9a",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-15",
+      "files_affected": [
+        "vscode-extension/src/panels/WorkflowReportPanel.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260115_b7323e7a",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "chore: Pattern learning data, CLI JSON mode improvements, and minor fixes",
+      "fix": "See commit b7323e7a",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-15",
+      "files_affected": [
+        "patterns/debugging/all_patterns.json",
+        "patterns/refactoring_memory.json",
+        "src/empathy_os/cli.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260110_4c01a1d1",
+      "bug_type": "type_mismatch",
+      "status": "resolved",
+      "root_cause": "fix: Resolve all mypy type errors (6 errors fixed)",
+      "fix": "See commit 4c01a1d1",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-10",
+      "files_affected": [
+        "patterns/debugging/all_patterns.json",
+        "patterns/health_check_memory.json",
+        ".../orchestration/execution_strategies.py"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2026-01-10T05:29:12.839595",
+  "last_updated": "2026-01-16T02:42:28.286434",
   "migration_metadata": {
     "migrated_at": "2026-01-07T05:51:07.939260",
     "total_patterns": 64,

@@ -79,7 +79,7 @@ def test_workflow_names_match_expectations():
         "code-review",
         "bug-predict",
         "security-audit",
-        "health-check",
+        "orchestrated-health-check",
     }
 
     assert expected_workflows.issubset(

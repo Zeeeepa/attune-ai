@@ -26,18 +26,20 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import json
 import os
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 from typing import Any
 
 import structlog
 
 from .claude_memory import ClaudeMemoryConfig
 from .config import get_redis_memory
-from .long_term import Classification, SecureMemDocsIntegration
+from .long_term import Classification, LongTermMemory, SecureMemDocsIntegration
 from .redis_bootstrap import RedisStartMethod, RedisStatus, ensure_redis
 from .short_term import (
     AccessTier,
@@ -135,6 +137,7 @@ class UnifiedMemory:
     # Internal state
     _short_term: RedisShortTermMemory | None = field(default=None, init=False)
     _long_term: SecureMemDocsIntegration | None = field(default=None, init=False)
+    _simple_long_term: LongTermMemory | None = field(default=None, init=False)
     _redis_status: RedisStatus | None = field(default=None, init=False)
     _initialized: bool = field(default=False, init=False)
 
@@ -224,6 +227,14 @@ class UnifiedMemory:
         except Exception as e:
             logger.error("long_term_memory_failed", error=str(e))
             self._long_term = None
+
+        # Initialize simple long-term memory (for testing and simple use cases)
+        try:
+            self._simple_long_term = LongTermMemory(storage_path=self.config.storage_dir)
+            logger.debug("simple_long_term_memory_initialized")
+        except Exception as e:
+            logger.error("simple_long_term_memory_failed", error=str(e))
+            self._simple_long_term = None
 
         self._initialized = True
 
@@ -480,26 +491,164 @@ class UnifiedMemory:
         classification: Classification | None = None,
         limit: int = 10,
     ) -> list[dict[str, Any]]:
-        """Search patterns in long-term memory.
+        """Search patterns in long-term memory with keyword matching and relevance scoring.
+
+        Implements keyword-based search with:
+        1. Full-text search in pattern content and metadata
+        2. Filter by pattern_type and classification
+        3. Relevance scoring (exact matches rank higher)
+        4. Results sorted by relevance
 
         Args:
-            query: Text to search for in pattern content
-            pattern_type: Filter by pattern type
+            query: Text to search for in pattern content (case-insensitive)
+            pattern_type: Filter by pattern type (e.g., "meta_workflow_execution")
             classification: Filter by classification level
             limit: Maximum results to return
 
         Returns:
-            List of matching patterns
+            List of matching patterns with metadata, sorted by relevance
 
+        Example:
+            >>> patterns = memory.search_patterns(
+            ...     query="successful workflows",
+            ...     pattern_type="meta_workflow_execution",
+            ...     limit=5
+            ... )
+        """
+        if not self._long_term:
+            logger.debug("long_term_memory_unavailable")
+            return []
+
+        try:
+            # Get all patterns from storage
+            all_patterns = self._get_all_patterns()
+
+            # Filter and score patterns
+            scored_patterns = []
+            query_lower = query.lower() if query else ""
+
+            for pattern in all_patterns:
+                # Apply filters
+                if pattern_type and pattern.get("pattern_type") != pattern_type:
+                    continue
+
+                if classification:
+                    pattern_class = pattern.get("classification")
+                    if isinstance(classification, Classification):
+                        if pattern_class != classification.value:
+                            continue
+                    elif pattern_class != classification:
+                        continue
+
+                # Calculate relevance score
+                score = 0.0
+
+                if query:
+                    content = str(pattern.get("content", "")).lower()
+                    metadata_str = str(pattern.get("metadata", {})).lower()
+
+                    # Exact phrase match in content (highest score)
+                    if query_lower in content:
+                        score += 10.0
+
+                    # Keyword matching (medium score)
+                    query_words = query_lower.split()
+                    for word in query_words:
+                        if len(word) < 3:  # Skip short words
+                            continue
+                        if word in content:
+                            score += 2.0
+                        if word in metadata_str:
+                            score += 1.0
+
+                    # Skip if no matches found
+                    if score == 0.0:
+                        continue
+                else:
+                    # No query - all filtered patterns have equal score
+                    score = 1.0
+
+                scored_patterns.append((score, pattern))
+
+            # Sort by relevance (highest score first)
+            scored_patterns.sort(key=lambda x: x[0], reverse=True)
+
+            # Return top N patterns (without scores)
+            return [pattern for _, pattern in scored_patterns[:limit]]
+
+        except Exception as e:
+            logger.error("pattern_search_failed", error=str(e))
+            return []
+
+    def _get_all_patterns(self) -> list[dict[str, Any]]:
+        """Get all patterns from long-term memory storage.
+
+        Scans the storage directory for pattern files and loads them.
+        This is a helper method for search_patterns().
+
+        In production with large datasets, this should be replaced with:
+        - Database queries with indexes
+        - Full-text search engine (Elasticsearch, etc.)
+        - Vector embeddings for semantic search
+
+        Returns:
+            List of all stored patterns
+
+        Note:
+            This performs a full scan and is O(n). For large datasets,
+            use indexed storage backends.
         """
         if not self._long_term:
             return []
 
-        # Note: Full search implementation depends on storage backend
-        # For now, return patterns matching type/classification
-        patterns: list[dict[str, Any]] = []
-        # This would be implemented based on the storage backend
-        return patterns
+        try:
+            # Get storage directory from long-term memory
+            storage_dir = None
+
+            # Try different ways to access storage directory
+            if hasattr(self._long_term, 'storage_dir'):
+                storage_dir = Path(self._long_term.storage_dir)
+            elif hasattr(self._long_term, 'storage'):
+                if hasattr(self._long_term.storage, 'storage_dir'):
+                    storage_dir = Path(self._long_term.storage.storage_dir)
+            elif hasattr(self._long_term, '_storage'):
+                if hasattr(self._long_term._storage, 'storage_dir'):
+                    storage_dir = Path(self._long_term._storage.storage_dir)
+
+            if not storage_dir:
+                logger.warning("cannot_access_storage_directory")
+                return []
+
+            patterns = []
+
+            # Scan for pattern files (*.json)
+            if storage_dir.exists():
+                for pattern_file in storage_dir.rglob("*.json"):
+                    try:
+                        with pattern_file.open('r', encoding='utf-8') as f:
+                            pattern_data = json.load(f)
+                            patterns.append(pattern_data)
+                    except json.JSONDecodeError as e:
+                        logger.debug(
+                            "pattern_json_decode_failed",
+                            file=str(pattern_file),
+                            error=str(e)
+                        )
+                        continue
+                    except Exception as e:
+                        logger.debug(
+                            "pattern_load_failed",
+                            file=str(pattern_file),
+                            error=str(e)
+                        )
+                        continue
+
+            logger.debug("patterns_loaded", count=len(patterns))
+            return patterns
+
+        except Exception as e:
+            logger.error("get_all_patterns_failed", error=str(e))
+            return []
 
     # =========================================================================
     # PATTERN PROMOTION (SHORT-TERM → LONG-TERM)
@@ -591,6 +740,40 @@ class UnifiedMemory:
             and self._redis_status.available
             and self._redis_status.method != RedisStartMethod.MOCK
         )
+
+    @property
+    def short_term(self) -> RedisShortTermMemory:
+        """Get short-term memory backend for direct access (testing).
+
+        Returns:
+            RedisShortTermMemory instance
+
+        Raises:
+            RuntimeError: If short-term memory is not initialized
+
+        """
+        if self._short_term is None:
+            raise RuntimeError("Short-term memory not initialized")
+        return self._short_term
+
+    @property
+    def long_term(self) -> LongTermMemory:
+        """Get simple long-term memory backend for direct access (testing).
+
+        Returns:
+            LongTermMemory instance
+
+        Raises:
+            RuntimeError: If long-term memory is not initialized
+
+        Note:
+            For production use with security features (PII scrubbing, encryption),
+            use persist_pattern() and recall_pattern() methods instead.
+
+        """
+        if self._simple_long_term is None:
+            raise RuntimeError("Long-term memory not initialized")
+        return self._simple_long_term
 
     def health_check(self) -> dict[str, Any]:
         """Check health of memory backends.

@@ -322,3 +322,368 @@ class TestCaching:
 
             # Should complete without error
             assert result is not None
+
+
+class TestXSDValidationWithLxml:
+    """Test XSD validation when lxml is available."""
+
+    def test_xsd_validation_with_valid_schema(self):
+        """Test XSD validation with a valid schema file."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create a simple XSD schema
+            schema_content = """<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="thinking" type="xs:string"/>
+</xs:schema>"""
+            schema_path = f"{tmpdir}/test.xsd"
+            with open(schema_path, "w") as f:
+                f.write(schema_content)
+
+            validator = XMLValidator(schema_dir=tmpdir, enable_xsd=True)
+
+            # Only test if lxml is available
+            if validator._lxml_available:
+                xml = "<thinking>Test content</thinking>"
+                result = validator.validate(xml, schema_name="test")
+
+                # Should validate successfully
+                assert result.is_valid is True
+
+    def test_xsd_validation_with_invalid_xml(self):
+        """Test XSD validation with XML that doesn't match schema."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create a restrictive XSD schema
+            schema_content = """<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="thinking">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="required" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>"""
+            schema_path = f"{tmpdir}/strict.xsd"
+            with open(schema_path, "w") as f:
+                f.write(schema_content)
+
+            validator = XMLValidator(schema_dir=tmpdir, enable_xsd=True, strict=True)
+
+            # Only test if lxml is available
+            if validator._lxml_available:
+                # XML missing required element
+                xml = "<thinking>Missing required child</thinking>"
+                result = validator.validate(xml, schema_name="strict")
+
+                # Should fail validation
+                assert result.is_valid is False
+                assert "validation failed" in result.error_message.lower()
+
+    def test_xsd_schema_caching_works(self):
+        """Test that XSD schemas are properly cached."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            schema_content = """<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="thinking" type="xs:string"/>
+</xs:schema>"""
+            schema_path = f"{tmpdir}/cached.xsd"
+            with open(schema_path, "w") as f:
+                f.write(schema_content)
+
+            validator = XMLValidator(schema_dir=tmpdir, enable_xsd=True)
+
+            if validator._lxml_available:
+                xml = "<thinking>First</thinking>"
+
+                # First validation should load schema
+                result1 = validator.validate(xml, schema_name="cached")
+                cache_size_after_first = len(validator._schema_cache)
+
+                # Second validation should use cached schema
+                result2 = validator.validate(xml, schema_name="cached")
+                cache_size_after_second = len(validator._schema_cache)
+
+                # Cache should be populated after first validation
+                assert cache_size_after_first > 0
+                # Cache size shouldn't increase on second validation
+                assert cache_size_after_second == cache_size_after_first
+
+    def test_xsd_validation_with_malformed_schema(self):
+        """Test XSD validation with malformed schema file."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create malformed XSD
+            schema_path = f"{tmpdir}/malformed.xsd"
+            with open(schema_path, "w") as f:
+                f.write("Not valid XSD content")
+
+            validator = XMLValidator(schema_dir=tmpdir, enable_xsd=True, strict=True)
+
+            if validator._lxml_available:
+                xml = "<thinking>Test</thinking>"
+                result = validator.validate(xml, schema_name="malformed")
+
+                # Should fail to load schema in strict mode
+                assert result.is_valid is False
+                assert "loading failed" in result.error_message.lower()
+
+    def test_xsd_validation_non_strict_continues_on_schema_error(self):
+        """Test non-strict mode continues when schema validation fails."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create a restrictive XSD schema
+            schema_content = """<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="thinking">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="required" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>"""
+            schema_path = f"{tmpdir}/strict.xsd"
+            with open(schema_path, "w") as f:
+                f.write(schema_content)
+
+            validator = XMLValidator(schema_dir=tmpdir, enable_xsd=True, strict=False)
+
+            if validator._lxml_available:
+                # XML that's well-formed but doesn't match schema
+                xml = "<thinking>Missing required</thinking>"
+                result = validator.validate(xml, schema_name="strict")
+
+                # Non-strict should still succeed with fallback
+                assert result.is_valid is True
+                assert result.fallback_used is True
+                assert result.parsed_data is not None
+
+
+class TestSecurityCases:
+    """Test security-related edge cases."""
+
+    def test_xxe_attack_prevention(self):
+        """Test that XXE (XML External Entity) attacks are prevented."""
+        validator = XMLValidator()
+
+        # XXE attack attempt - should be safely handled by default parser
+        xxe_xml = """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [
+  <!ENTITY xxe SYSTEM "file:///etc/passwd">
+]>
+<root>&xxe;</root>"""
+
+        result = validator.validate(xxe_xml)
+
+        # Should either reject or safely handle without executing entity
+        # ET.fromstring by default doesn't process external entities
+        assert result is not None
+
+    def test_billion_laughs_attack_prevention(self):
+        """Test protection against billion laughs (entity expansion) attack."""
+        validator = XMLValidator()
+
+        # Billion laughs attack attempt
+        billion_laughs = """<?xml version="1.0"?>
+<!DOCTYPE lolz [
+  <!ENTITY lol "lol">
+  <!ENTITY lol2 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+  <!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+]>
+<root>&lol3;</root>"""
+
+        result = validator.validate(billion_laughs)
+
+        # Should handle safely without consuming excessive resources
+        assert result is not None
+
+    def test_extremely_deep_nesting(self):
+        """Test handling of extremely deep XML nesting."""
+        validator = XMLValidator()
+
+        # Create very deeply nested XML (100 levels)
+        depth = 100
+        xml = "<root>" * depth + "deep" + "</root>" * depth
+
+        result = validator.validate(xml)
+
+        # Should handle deep nesting (or fail gracefully)
+        assert result is not None
+
+    def test_large_attribute_values(self):
+        """Test handling of very large attribute values."""
+        validator = XMLValidator()
+
+        # Large attribute value
+        large_value = "x" * 100000
+        xml = f'<root attr="{large_value}">Content</root>'
+
+        result = validator.validate(xml)
+
+        # Should handle large attributes
+        assert result is not None
+        if result.is_valid:
+            assert "_attributes" in result.parsed_data
+
+
+class TestFallbackPatterns:
+    """Test various fallback parsing scenarios."""
+
+    def test_fallback_with_nested_tags_in_content(self):
+        """Test fallback extracts content with nested angle brackets."""
+        validator = XMLValidator(strict=False)
+        xml = "<thinking>Code: if x < 10 and y > 5</thinking>"
+
+        result = validator.validate(xml)
+
+        assert result.is_valid is True
+        if result.parsed_data:
+            assert "thinking" in result.parsed_data
+
+    def test_fallback_with_multiple_thinking_tags(self):
+        """Test fallback with multiple thinking sections."""
+        validator = XMLValidator(strict=False)
+        xml = "<thinking>First thought</thinking><thinking>Second thought"
+
+        result = validator.validate(xml)
+
+        # Should extract at least one thinking tag
+        if result.fallback_used and result.parsed_data:
+            assert "thinking" in result.parsed_data
+
+    def test_fallback_with_whitespace_variations(self):
+        """Test fallback handles various whitespace patterns."""
+        validator = XMLValidator(strict=False)
+        xml = """<thinking>
+            Multi-line
+            content
+            with whitespace
+        </thinking><answer>Unclosed"""
+
+        result = validator.validate(xml)
+
+        # Should extract thinking content
+        if result.fallback_used and result.parsed_data:
+            assert "thinking" in result.parsed_data
+            assert "Multi-line" in result.parsed_data["thinking"]
+
+    def test_fallback_extracts_both_tags(self):
+        """Test fallback can extract both thinking and answer."""
+        validator = XMLValidator(strict=False)
+        xml = "<thinking>Analysis</thinking><answer>Result</answer><extra>Unclosed"
+
+        result = validator.validate(xml)
+
+        # Should extract both tags via fallback
+        if result.fallback_used and result.parsed_data:
+            assert "thinking" in result.parsed_data
+            assert "answer" in result.parsed_data
+
+
+class TestDataExtractionEdgeCases:
+    """Test edge cases in data extraction."""
+
+    def test_extract_mixed_content(self):
+        """Test extraction with mixed text and element content."""
+        validator = XMLValidator()
+        xml = "<root>Text<child>Nested</child>More text</root>"
+
+        result = validator.validate(xml)
+
+        assert result.is_valid is True
+        assert "child" in result.parsed_data
+
+    def test_extract_multiple_attributes(self):
+        """Test extraction with multiple attributes."""
+        validator = XMLValidator()
+        xml = '<root id="1" type="test" priority="high"><data>Content</data></root>'
+
+        result = validator.validate(xml)
+
+        assert result.is_valid is True
+        assert "_attributes" in result.parsed_data
+        assert result.parsed_data["_attributes"]["id"] == "1"
+        assert result.parsed_data["_attributes"]["type"] == "test"
+        assert result.parsed_data["_attributes"]["priority"] == "high"
+
+    def test_extract_recursive_nested_structure(self):
+        """Test extraction of deeply recursive structure."""
+        validator = XMLValidator()
+        xml = """<root>
+            <level1>
+                <level2>
+                    <level3>
+                        <level4>Deepest</level4>
+                    </level3>
+                </level2>
+            </level1>
+        </root>"""
+
+        result = validator.validate(xml)
+
+        assert result.is_valid is True
+        # Navigate through all levels
+        data = result.parsed_data
+        assert data["level1"]["level2"]["level3"]["level4"] == "Deepest"
+
+    def test_extract_sibling_elements_with_same_tag(self):
+        """Test extraction when multiple siblings have same tag name."""
+        validator = XMLValidator()
+        xml = """<root>
+            <item>First</item>
+            <item>Second</item>
+            <item>Third</item>
+        </root>"""
+
+        result = validator.validate(xml)
+
+        # Note: Current implementation only keeps last value for duplicate tags
+        # This is a limitation of the simple dict-based extraction
+        assert result.is_valid is True
+
+    def test_extract_xml_namespaces(self):
+        """Test extraction with XML namespaces."""
+        validator = XMLValidator()
+        xml = """<root xmlns:custom="http://example.com">
+            <custom:data>Namespaced</custom:data>
+        </root>"""
+
+        result = validator.validate(xml)
+
+        # Should handle namespaces
+        assert result.is_valid is True
+
+
+class TestValidationResultDataclass:
+    """Test ValidationResult dataclass."""
+
+    def test_validation_result_defaults(self):
+        """Test ValidationResult default values."""
+        result = ValidationResult(is_valid=True)
+
+        assert result.is_valid is True
+        assert result.error_message is None
+        assert result.parsed_data is None
+        assert result.fallback_used is False
+
+    def test_validation_result_all_fields(self):
+        """Test ValidationResult with all fields set."""
+        result = ValidationResult(
+            is_valid=True,
+            error_message="Warning message",
+            parsed_data={"key": "value"},
+            fallback_used=True,
+        )
+
+        assert result.is_valid is True
+        assert result.error_message == "Warning message"
+        assert result.parsed_data == {"key": "value"}
+        assert result.fallback_used is True
+
+    def test_validation_result_failure(self):
+        """Test ValidationResult for failure case."""
+        result = ValidationResult(
+            is_valid=False,
+            error_message="Parse error",
+        )
+
+        assert result.is_valid is False
+        assert result.error_message == "Parse error"

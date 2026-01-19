@@ -170,7 +170,7 @@ class TestPluginRegistryBasics:
 class TestPluginRegistryAutoDiscovery:
     """Test auto-discovery functionality"""
 
-    @patch("src.empathy_os.plugins.registry.entry_points")
+    @patch("empathy_os.plugins.registry.entry_points")
     def test_auto_discover_no_plugins(self, mock_entry_points):
         """Test auto-discovery with no plugins"""
         mock_entry_points.return_value = []
@@ -181,7 +181,7 @@ class TestPluginRegistryAutoDiscovery:
         assert registry._auto_discovered is True
         assert len(registry._plugins) == 0
 
-    @patch("src.empathy_os.plugins.registry.entry_points")
+    @patch("empathy_os.plugins.registry.entry_points")
     def test_auto_discover_with_plugins(self, mock_entry_points):
         """Test auto-discovery successfully loads plugins"""
         # Create mock entry point
@@ -198,7 +198,7 @@ class TestPluginRegistryAutoDiscovery:
         assert len(registry._plugins) == 1
         assert "test_plugin" in registry._plugins
 
-    @patch("src.empathy_os.plugins.registry.entry_points")
+    @patch("empathy_os.plugins.registry.entry_points")
     def test_auto_discover_handles_load_failures(self, mock_entry_points):
         """Test auto-discovery gracefully handles plugin load failures"""
         # Create mock entry point that fails to load
@@ -214,7 +214,7 @@ class TestPluginRegistryAutoDiscovery:
         assert registry._auto_discovered is True
         assert len(registry._plugins) == 0  # Broken plugin not added
 
-    @patch("src.empathy_os.plugins.registry.entry_points")
+    @patch("empathy_os.plugins.registry.entry_points")
     def test_auto_discover_only_runs_once(self, mock_entry_points):
         """Test auto-discovery only runs once"""
         mock_entry_points.return_value = []
@@ -390,10 +390,10 @@ class TestGlobalRegistry:
         # Should return same instance
         assert registry1 is registry2
 
-    @patch("src.empathy_os.plugins.registry._global_registry", None)
+    @patch("empathy_os.plugins.registry._global_registry", None)
     def test_global_registry_auto_discovers(self):
         """Test global registry auto-discovers on first access"""
-        with patch("src.empathy_os.plugins.registry.entry_points") as mock_ep:
+        with patch("empathy_os.plugins.registry.entry_points") as mock_ep:
             mock_ep.return_value = []
 
             registry = get_global_registry()
@@ -416,7 +416,7 @@ class TestPluginRegistryEdgeCases:
 
     def test_list_plugins_triggers_auto_discover(self):
         """Test that list_plugins triggers auto-discovery"""
-        with patch("src.empathy_os.plugins.registry.entry_points") as mock_ep:
+        with patch("empathy_os.plugins.registry.entry_points") as mock_ep:
             mock_ep.return_value = []
 
             registry = PluginRegistry()
@@ -428,7 +428,7 @@ class TestPluginRegistryEdgeCases:
 
     def test_get_plugin_triggers_auto_discover(self):
         """Test that get_plugin triggers auto-discovery"""
-        with patch("src.empathy_os.plugins.registry.entry_points") as mock_ep:
+        with patch("empathy_os.plugins.registry.entry_points") as mock_ep:
             mock_ep.return_value = []
 
             registry = PluginRegistry()

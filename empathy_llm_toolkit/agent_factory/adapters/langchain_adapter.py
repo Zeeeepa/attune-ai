@@ -252,7 +252,7 @@ class LangChainAdapter(BaseAdapter):
         # In langchain 1.x, these moved to different locations
         try:
             # Try langchain 1.x imports first
-            from langchain.agents import create_tool_calling_agent
+            from langchain.agents import create_tool_calling_agent  # type: ignore[attr-defined]
             from langchain.agents.agent import AgentExecutor
         except (ImportError, AttributeError):
             # Fall back to langgraph for newer versions
@@ -262,7 +262,7 @@ class LangChainAdapter(BaseAdapter):
 
                 create_tool_calling_agent: Any = create_react_agent  # type: ignore[no-redef]
             except ImportError:
-                create_tool_calling_agent = None  # type: ignore[assignment]
+                create_tool_calling_agent = None
         from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
         llm = self._get_llm(config)

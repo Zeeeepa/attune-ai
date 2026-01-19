@@ -22,7 +22,9 @@ import { CostsPanel } from './panels/CostsPanel';
 import { WorkflowHistoryPanel } from './panels/WorkflowHistoryPanel';
 import { TelemetryPanel } from './panels/TelemetryPanel';
 import { EmpathyDashboardProvider } from './panels/EmpathyDashboardPanel';
+import { CoveragePanel } from './panels/CoveragePanel';
 import { WorkflowFactoryPanel } from './panels/WorkflowFactoryPanel';
+import { WorkflowReportPanel } from './panels/WorkflowReportPanel';
 import { MemoryPanelProvider } from './panels/MemoryPanelProvider';
 // REMOVED in v3.5.5: Refactor Advisor panel - kept for future use
 // import { RefactorAdvisorPanel } from './panels/RefactorAdvisorPanel';
@@ -35,6 +37,7 @@ import { MorningBriefingPanel } from './panels/MorningBriefingPanel';
 // import { WorkflowWizardPanel } from './panels/WorkflowWizardPanel';
 import { DocAnalysisPanel } from './panels/DocAnalysisPanel';
 import { initializeProject, showWelcomeIfNeeded as showInitializeWelcome } from './commands/initializeProject';
+import { registerMetaWorkflowCommands } from './commands/metaWorkflowCommands';
 
 // Status bar item
 let statusBarItem: vscode.StatusBarItem;
@@ -350,6 +353,39 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('empathy.openHealthPanel', () => {
             HealthPanel.createOrShow(context.extensionUri);
+        })
+    );
+
+    // Register Coverage Panel command (v4.0 Meta-Orchestration)
+    context.subscriptions.push(
+        vscode.commands.registerCommand('empathy.openCoveragePanel', () => {
+            CoveragePanel.createOrShow(context.extensionUri);
+        })
+    );
+
+    // Register Workflow Report Panel commands (Unified report panel for all workflows)
+    context.subscriptions.push(
+        vscode.commands.registerCommand('empathy.openWorkflowReport', (workflowName: string) => {
+            WorkflowReportPanel.createOrShow(context.extensionUri, workflowName, true);
+        })
+    );
+
+    // Specific workflow report commands (v4.0 - use CrewAI workflow names)
+    context.subscriptions.push(
+        vscode.commands.registerCommand('empathy.runHealthCheckReport', () => {
+            WorkflowReportPanel.createOrShow(context.extensionUri, 'health-check', true);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('empathy.runReleasePrepReport', () => {
+            WorkflowReportPanel.createOrShow(context.extensionUri, 'release-prep', true);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('empathy.runTestCoverageReport', () => {
+            WorkflowReportPanel.createOrShow(context.extensionUri, 'test-coverage-boost', true);
         })
     );
 
@@ -1226,6 +1262,16 @@ function setupSecurityFindingsWatcher(context: vscode.ExtensionContext): void {
     });
 
     context.subscriptions.push(securityFindingsWatcher);
+
+    // Register meta-workflow commands
+    try {
+        console.log('[Empathy] About to register meta-workflow commands...');
+        registerMetaWorkflowCommands(context);
+        console.log('[Empathy] Meta-workflow commands registered SUCCESS');
+    } catch (error) {
+        console.error('[Empathy] ERROR registering meta-workflow commands:', error);
+        vscode.window.showErrorMessage(`Failed to register meta-workflow commands: ${error}`);
+    }
 }
 
 // ============================================================================

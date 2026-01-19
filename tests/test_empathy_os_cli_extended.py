@@ -357,7 +357,8 @@ class TestCmdInspect:
             cmd_inspect(args)
 
         captured = capsys.readouterr()
-        assert "Failed to load patterns:" in captured.out
+        # JSONDecodeError is caught by ValueError handler, which shows "Invalid pattern data"
+        assert "Invalid pattern data:" in captured.out
 
     def test_inspect_metrics(self, temp_dir, capsys):
         """Test inspect metrics for a user"""

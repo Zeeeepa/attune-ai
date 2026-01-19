@@ -1,0 +1,77 @@
+{
+  "pattern_id": "workflow_20260114_8d0c69e7",
+  "bug_type": "test_coverage",
+  "status": "resolved",
+  "root_cause": "Workflow: test-gen - Generate tests targeting areas with historical bugs",
+  "fix": "Completed via test-gen workflow",
+  "resolved_by": "@empathy_framework",
+  "resolved_at": "2026-01-14",
+  "files_affected": [],
+  "source": "workflow_tracking",
+  "tier_progression": {
+    "methodology": "AI-ADDIE",
+    "recommended_tier": "CHEAP",
+    "starting_tier": "PREMIUM",
+    "successful_tier": "PREMIUM",
+    "total_attempts": 3,
+    "tier_history": [
+      {
+        "tier": "CHEAP",
+        "attempts": 1,
+        "success": {
+          "attempt": 1,
+          "quality_gates_passed": [
+            "execution",
+            "output"
+          ]
+        }
+      },
+      {
+        "tier": "CAPABLE",
+        "attempts": 2,
+        "success": {
+          "attempt": 2,
+          "quality_gates_passed": [
+            "execution",
+            "output"
+          ]
+        }
+      },
+      {
+        "tier": "PREMIUM",
+        "attempts": 1,
+        "success": {
+          "attempt": 1,
+          "quality_gates_passed": [
+            "execution",
+            "output"
+          ]
+        }
+      }
+    ],
+    "cost_breakdown": {
+      "total_cost": 0.06,
+      "cost_if_always_premium": 0.298,
+      "savings_percent": 80.0
+    },
+    "quality_metrics": {
+      "tests_passed": true,
+      "health_score_before": 73,
+      "health_score_after": 73
+    },
+    "xml_protocol_compliance": {
+      "prompt_used_xml": true,
+      "response_used_xml": true,
+      "all_sections_present": true,
+      "test_evidence_provided": true,
+      "false_complete_avoided": true
+    }
+  },
+  "workflow_metadata": {
+    "workflow_name": "test-gen",
+    "workflow_id": "8d0c69e7-b0e0-4c35-9f9f-f8a73905b2c3",
+    "duration_seconds": 12.5,
+    "started_at": "2026-01-14T13:25:25.177463",
+    "completed_at": "2026-01-14T13:25:37.677373"
+  }
+}

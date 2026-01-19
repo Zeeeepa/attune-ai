@@ -99,6 +99,8 @@ class TestValidateAgentId:
         assert _validate_agent_id("user123") is True
         assert _validate_agent_id("agent_worker_1") is True
         assert _validate_agent_id("user@example") is True
+        assert _validate_agent_id("user.name") is True  # dots allowed for email-style IDs
+        assert _validate_agent_id("first.last@example.com") is True  # full email format
 
     def test_empty_agent_id(self):
         """Empty or None agent ID should fail."""
@@ -107,7 +109,7 @@ class TestValidateAgentId:
 
     def test_dangerous_characters(self):
         """Agent IDs with dangerous characters should fail."""
-        assert _validate_agent_id("user.name") is False  # dot
+        # Note: dots (.) and at-signs (@) are allowed for email-style user IDs
         assert _validate_agent_id("user/name") is False  # forward slash
         assert _validate_agent_id("user\\name") is False  # backslash
         assert _validate_agent_id("user;rm") is False  # semicolon

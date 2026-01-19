@@ -1,5 +1,10 @@
 """Manage_Documentation - Multi-Agent Workflow
 
+.. deprecated:: 4.3.0
+    This workflow is deprecated in favor of the meta-workflow system.
+    Use ``empathy meta-workflow run manage-docs`` instead.
+    See docs/CREWAI_MIGRATION.md for migration guide.
+
 Makes sure that new program files are fully documented and existing documents
 are updated when associate program files are changed.
 
@@ -14,9 +19,9 @@ See: docs/guides/WORKFLOW_PATTERNS.md
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
-
 import asyncio
 import os
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -350,7 +355,18 @@ class ManageDocumentationCrew:
     process_type = "sequential"
 
     def __init__(self, project_root: str = ".", **kwargs: Any):
-        """Initialize the crew with configured agents."""
+        """Initialize the crew with configured agents.
+
+        .. deprecated:: 4.3.0
+            Use meta-workflow system instead: ``empathy meta-workflow run manage-docs``
+        """
+        warnings.warn(
+            "ManageDocumentationCrew is deprecated since v4.3.0. "
+            "Use meta-workflow system instead: empathy meta-workflow run manage-docs. "
+            "See docs/CREWAI_MIGRATION.md for migration guide.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.config = kwargs
         self.project_root = project_root
         self._executor = None

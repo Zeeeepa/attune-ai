@@ -874,23 +874,29 @@ Rules:
         issues = []
         passed = True
 
-        # Only scan production code directories
-        production_paths = [
-            "src/",
-            "empathy_software_plugin/",
-            "empathy_healthcare_plugin/",
-            "empathy_llm_toolkit/",
-            "patterns/",
-            "tests/",
+        # Only scan production code packages
+        production_packages = [
+            "empathy_os",
+            "empathy_software_plugin",
+            "empathy_healthcare_plugin",
+            "empathy_llm_toolkit",
+            "patterns",
         ]
 
-        # Use production paths if checking current directory
-        scan_paths = production_paths if path in [".", "./"] else [path]
+        # Use production packages if checking current directory
+        scan_args = []
+        if path in [".", "./"]:
+            # Use package notation for packages in src/
+            for pkg in production_packages:
+                scan_args.extend(["-p", pkg])
+        else:
+            # For specific paths, use file notation
+            scan_args.append(path)
 
         try:
             result = subprocess.run(
                 ["python", "-m", "mypy"]
-                + scan_paths
+                + scan_args
                 + ["--ignore-missing-imports", "--no-error-summary"],
                 check=False,
                 capture_output=True,
