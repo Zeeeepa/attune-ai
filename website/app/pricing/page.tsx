@@ -5,6 +5,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { generateMetadata } from '@/lib/metadata';
 import CheckoutButton from '@/components/CheckoutButton';
+import { getPricingSummary } from '@/lib/features';
 
 // Price ID from Stripe Dashboard - hardcoded fallback for build-time reliability
 const LICENSE_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_LICENSE || 'price_1SbfCjAbABKRT84gSh7BoLAl';
@@ -76,7 +77,7 @@ export default function PricingPage() {
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-[var(--success)] mt-1">✓</span>
-                    <span className="text-sm">10 smart wizards + 14 workflows</span>
+                    <span className="text-sm">{getPricingSummary()}</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-[var(--success)] mt-1">✓</span>

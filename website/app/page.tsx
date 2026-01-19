@@ -3,57 +3,42 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import GitHubStarsBadge from '@/components/GitHubStarsBadge';
 import TestsBadge from '@/components/TestsBadge';
+import { FEATURES, FEATURE_COUNTS } from '@/lib/features';
 
-const features = [
-  {
-    icon: '🎯',
-    title: 'Socratic Agent Builder',
-    description: 'Create custom agents and agent teams through guided questions. The framework asks what you need, suggests capabilities, and generates production-ready agents—no boilerplate required.',
-    link: '/framework-docs/',
-  },
-  {
-    icon: '⚡',
-    title: '14 Integrated Workflows',
-    description: 'Research, code review, debugging, refactoring, test generation, documentation, security scanning, performance optimization, and 4 meta-workflows for release prep, test coverage, and docs.',
-    link: '/workflows',
-  },
-  {
-    icon: '🤖',
-    title: '7 Agent Templates + 6 Patterns',
-    description: 'Pre-built agents for test coverage, security, code quality, docs, performance, architecture, and refactoring. Compose them with Sequential, Parallel, Debate, Teaching, Refinement, or Adaptive patterns.',
-    link: '/framework-docs/',
-  },
-  {
-    icon: '🎛️',
-    title: 'VSCode Dashboard',
-    description: 'Real-time health scores, cost tracking, workflow monitoring, and quick actions. See your AI collaboration at a glance.',
-    link: '/framework-docs/',
-  },
-  {
-    icon: '🧠',
-    title: 'Persistent Memory System',
-    description: 'Short-term Redis memory for agent coordination during workflows. Long-term MemDocs storage remembers your coding patterns, past decisions, and project context across sessions.',
-    link: '/framework-docs/',
-  },
-  {
-    icon: '🔌',
-    title: 'Multi-Provider Support',
-    description: 'Core workflows work with Anthropic, OpenAI, Gemini, and Ollama. Agent/team creation requires Claude Code.',
-    link: '/framework-docs/',
-  },
-  {
-    icon: '🔒',
-    title: 'Enterprise Security',
-    description: 'Built-in PII scrubbing, secrets detection, and audit logging. SOC2 and HIPAA-ready.',
-    link: '/framework-docs/',
-  },
-  {
-    icon: '🧙',
-    title: '10 Smart Wizards',
-    description: 'Security audit, code review, bug prediction, performance analysis, refactoring, test generation, documentation, dependency checks, release prep, and research.',
-    link: '/wizards',
-  },
+// Map canonical features to homepage display with links
+const featureLinks: Record<string, string> = {
+  'socratic-builder': '/framework-docs/',
+  'workflows': '/workflows',
+  'agent-templates': '/framework-docs/',
+  'wizards': '/wizards',
+  'model-routing': '/framework-docs/',
+  'memory': '/framework-docs/',
+  'dashboard': '/framework-docs/',
+  'multi-provider': '/framework-docs/',
+  'security': '/framework-docs/',
+};
+
+// Select and order features for homepage
+const homepageFeatureIds = [
+  'socratic-builder',
+  'workflows',
+  'agent-templates',
+  'dashboard',
+  'memory',
+  'multi-provider',
+  'security',
+  'wizards',
 ];
+
+const features = homepageFeatureIds
+  .map(id => FEATURES.find(f => f.id === id)!)
+  .filter(Boolean)
+  .map(f => ({
+    icon: f.icon,
+    title: f.name,
+    description: f.benefitDescription,
+    link: featureLinks[f.id] || '/framework-docs/',
+  }));
 
 const codeExample = `from empathy_os.orchestration import MetaOrchestrator
 
