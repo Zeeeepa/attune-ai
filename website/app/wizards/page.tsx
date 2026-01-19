@@ -2,172 +2,86 @@ import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 
-const wizardCategories = [
+const wizards = [
   {
-    name: 'Development',
-    description: 'Debug, refactor, and optimize your code',
-    wizards: [
-      {
-        name: 'DebugWizard',
-        description: 'Analyzes errors and suggests fixes with root cause analysis',
-        tier: 'capable',
-      },
-      {
-        name: 'CodeReviewWizard',
-        description: 'Comprehensive code review with security and performance checks',
-        tier: 'capable',
-      },
-      {
-        name: 'RefactorWizard',
-        description: 'Identifies refactoring opportunities and generates improved code',
-        tier: 'capable',
-      },
-      {
-        name: 'TestGeneratorWizard',
-        description: 'Generates unit tests, integration tests, and test fixtures',
-        tier: 'cheap',
-      },
-      {
-        name: 'PerformanceWizard',
-        description: 'Profiles code and identifies optimization opportunities',
-        tier: 'premium',
-      },
-      {
-        name: 'DependencyWizard',
-        description: 'Analyzes dependencies, finds vulnerabilities, suggests updates',
-        tier: 'cheap',
-      },
-    ],
+    name: 'security-audit',
+    displayName: 'Security Audit',
+    description: 'Analyze code for security vulnerabilities, injection risks, and compliance issues',
+    tier: 'capable',
+    domain: 'Security',
+    keywords: ['security', 'vulnerability', 'injection', 'xss', 'sql', 'owasp'],
   },
   {
-    name: 'Security',
-    description: 'Scan, audit, and secure your applications',
-    wizards: [
-      {
-        name: 'SecurityWizard',
-        description: 'OWASP Top 10 scanning, vulnerability detection, fix suggestions',
-        tier: 'capable',
-      },
-      {
-        name: 'SecretsWizard',
-        description: 'Detects hardcoded secrets, API keys, and credentials',
-        tier: 'cheap',
-      },
-      {
-        name: 'PIIScrubberWizard',
-        description: 'Identifies and redacts PII from logs, data, and code',
-        tier: 'cheap',
-      },
-      {
-        name: 'ComplianceWizard',
-        description: 'SOC2, HIPAA, GDPR compliance checking and remediation',
-        tier: 'premium',
-      },
-    ],
+    name: 'code-review',
+    displayName: 'Code Review',
+    description: 'Review code for quality, best practices, maintainability, and potential bugs',
+    tier: 'capable',
+    domain: 'Quality',
+    keywords: ['review', 'quality', 'lint', 'style', 'best practice', 'refactor'],
   },
   {
-    name: 'Documentation',
-    description: 'Generate and maintain documentation',
-    wizards: [
-      {
-        name: 'DocStringWizard',
-        description: 'Generates comprehensive docstrings for functions and classes',
-        tier: 'cheap',
-      },
-      {
-        name: 'ReadmeWizard',
-        description: 'Creates and updates README files with usage examples',
-        tier: 'cheap',
-      },
-      {
-        name: 'APIDocWizard',
-        description: 'Generates OpenAPI specs and API documentation',
-        tier: 'capable',
-      },
-      {
-        name: 'ChangelogWizard',
-        description: 'Generates changelogs from git history and PR descriptions',
-        tier: 'cheap',
-      },
-    ],
+    name: 'bug-predict',
+    displayName: 'Bug Prediction',
+    description: 'Predict potential bugs based on code patterns and historical data',
+    tier: 'capable',
+    domain: 'Debugging',
+    keywords: ['bug', 'error', 'exception', 'fail', 'fix', 'defect'],
   },
   {
-    name: 'Architecture',
-    description: 'Design and analyze system architecture',
-    wizards: [
-      {
-        name: 'ArchitectureWizard',
-        description: 'Analyzes codebase structure and suggests improvements',
-        tier: 'premium',
-      },
-      {
-        name: 'MigrationWizard',
-        description: 'Plans and executes database and framework migrations',
-        tier: 'premium',
-      },
-      {
-        name: 'APIDesignWizard',
-        description: 'Designs RESTful and GraphQL APIs following best practices',
-        tier: 'capable',
-      },
-      {
-        name: 'SchemaWizard',
-        description: 'Generates and validates database schemas',
-        tier: 'capable',
-      },
-    ],
+    name: 'perf-audit',
+    displayName: 'Performance Audit',
+    description: 'Analyze code for performance issues, bottlenecks, and optimization opportunities',
+    tier: 'capable',
+    domain: 'Performance',
+    keywords: ['performance', 'slow', 'optimize', 'bottleneck', 'memory', 'cpu'],
   },
   {
-    name: 'DevOps',
-    description: 'CI/CD, deployment, and infrastructure',
-    wizards: [
-      {
-        name: 'CIWizard',
-        description: 'Generates GitHub Actions, GitLab CI, and Jenkins pipelines',
-        tier: 'cheap',
-      },
-      {
-        name: 'DockerWizard',
-        description: 'Creates optimized Dockerfiles and compose configurations',
-        tier: 'cheap',
-      },
-      {
-        name: 'KubernetesWizard',
-        description: 'Generates K8s manifests, Helm charts, and deployment configs',
-        tier: 'capable',
-      },
-      {
-        name: 'MonitoringWizard',
-        description: 'Sets up logging, metrics, and alerting configurations',
-        tier: 'capable',
-      },
-    ],
+    name: 'refactor-plan',
+    displayName: 'Refactor Plan',
+    description: 'Plan code refactoring to improve structure and reduce complexity',
+    tier: 'capable',
+    domain: 'Architecture',
+    keywords: ['refactor', 'restructure', 'simplify', 'complexity', 'design'],
   },
   {
-    name: 'Healthcare',
-    description: 'HIPAA-compliant clinical AI tools',
-    wizards: [
-      {
-        name: 'SBARWizard',
-        description: 'Generates SBAR reports for clinical handoffs',
-        tier: 'capable',
-      },
-      {
-        name: 'ClinicalProtocolWizard',
-        description: 'Analyzes clinical protocols and suggests improvements',
-        tier: 'premium',
-      },
-      {
-        name: 'MedicalCodingWizard',
-        description: 'Assists with ICD-10, CPT, and diagnosis coding',
-        tier: 'premium',
-      },
-      {
-        name: 'PHIDetectorWizard',
-        description: 'Identifies and protects Protected Health Information',
-        tier: 'cheap',
-      },
-    ],
+    name: 'test-gen',
+    displayName: 'Test Generation',
+    description: 'Generate test cases and improve test coverage automatically',
+    tier: 'cheap',
+    domain: 'Testing',
+    keywords: ['test', 'unit', 'integration', 'coverage', 'pytest', 'mock'],
+  },
+  {
+    name: 'doc-gen',
+    displayName: 'Documentation',
+    description: 'Generate documentation from code including API docs, READMEs, and guides',
+    tier: 'cheap',
+    domain: 'Documentation',
+    keywords: ['document', 'readme', 'api', 'docstring', 'explain'],
+  },
+  {
+    name: 'dependency-check',
+    displayName: 'Dependency Check',
+    description: 'Audit dependencies for vulnerabilities, updates, and license issues',
+    tier: 'cheap',
+    domain: 'Dependencies',
+    keywords: ['dependency', 'package', 'npm', 'pip', 'vulnerability', 'update'],
+  },
+  {
+    name: 'release-prep',
+    displayName: 'Release Prep',
+    description: 'Pre-release quality gate with health checks, security scan, and changelog',
+    tier: 'capable',
+    domain: 'Release',
+    keywords: ['release', 'deploy', 'publish', 'version', 'changelog', 'production'],
+  },
+  {
+    name: 'research',
+    displayName: 'Research',
+    description: 'Research and synthesize information from multiple sources',
+    tier: 'capable',
+    domain: 'Research',
+    keywords: ['research', 'investigate', 'explore', 'analyze', 'study'],
   },
 ];
 
@@ -193,10 +107,10 @@ export default function WizardsPage() {
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-                44+ AI Wizards for Every Task
+                10 Smart Wizards
               </h1>
               <p className="text-xl text-[var(--text-secondary)] mb-8">
-                Pre-built, specialized AI assistants that understand your codebase.
+                Specialized AI agents that understand your codebase.
                 Each wizard is optimized for specific tasks with built-in best practices.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
@@ -206,14 +120,12 @@ export default function WizardsPage() {
                 >
                   Get Started
                 </Link>
-                <a
-                  href="https://wizards.smartaimemory.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/workflows"
                   className="btn btn-outline"
                 >
-                  Try Live Demo
-                </a>
+                  View Workflows
+                </Link>
               </div>
             </div>
           </div>
@@ -236,37 +148,27 @@ export default function WizardsPage() {
           </div>
         </section>
 
-        {/* Wizard Categories */}
+        {/* Wizards Grid */}
         <section className="py-16">
           <div className="container">
-            <div className="space-y-16">
-              {wizardCategories.map((category) => (
-                <div key={category.name}>
-                  <div className="mb-8">
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-                      {category.name}
-                    </h2>
-                    <p className="text-[var(--text-secondary)]">
-                      {category.description}
-                    </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {wizards.map((wizard) => (
+                <div
+                  key={wizard.name}
+                  className="bg-[var(--background)] p-6 rounded-xl border-2 border-[var(--border)] hover:border-[var(--primary)] hover:shadow-lg transition-all"
+                >
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <h3 className="font-bold text-xl">{wizard.displayName}</h3>
+                    <span className={`flex-shrink-0 px-2 py-1 text-xs font-medium rounded border ${tierColors[wizard.tier as keyof typeof tierColors]}`}>
+                      {wizard.tier}
+                    </span>
                   </div>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {category.wizards.map((wizard) => (
-                      <div
-                        key={wizard.name}
-                        className="bg-[var(--background)] p-5 rounded-xl border border-[var(--border)] hover:border-[var(--primary)] hover:shadow-md transition-all"
-                      >
-                        <div className="flex items-start justify-between gap-3 mb-3">
-                          <h3 className="font-bold text-lg">{wizard.name}</h3>
-                          <span className={`flex-shrink-0 px-2 py-0.5 text-xs font-medium rounded border ${tierColors[wizard.tier as keyof typeof tierColors]}`}>
-                            {wizard.tier}
-                          </span>
-                        </div>
-                        <p className="text-sm text-[var(--text-secondary)]">
-                          {wizard.description}
-                        </p>
-                      </div>
-                    ))}
+                  <p className="text-[var(--text-secondary)] mb-4">
+                    {wizard.description}
+                  </p>
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="text-[var(--muted)]">Domain:</span>
+                    <span className="font-medium">{wizard.domain}</span>
                   </div>
                 </div>
               ))}
@@ -279,36 +181,30 @@ export default function WizardsPage() {
           <div className="container">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
-                Using Wizards is Simple
+                Run Wizards via CLI
               </h2>
               <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-2xl">
                 <div className="flex items-center gap-2 px-4 py-3 bg-[#2d2d2d] border-b border-[#3d3d3d]">
                   <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
                   <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
                   <div className="w-3 h-3 rounded-full bg-[#27ca40]"></div>
-                  <span className="ml-2 text-sm text-gray-400">security_scan.py</span>
+                  <span className="ml-2 text-sm text-gray-400">terminal</span>
                 </div>
                 <pre className="p-6 overflow-x-auto text-sm">
-                  <code className="text-gray-300">{`from empathy_os import EmpathyLLM
-from empathy_os.wizards import SecurityWizard
+                  <code className="text-gray-300">{`# Run security audit on your codebase
+empathy workflow run security-audit --input '{"path": "./src"}'
 
-# Initialize with your preferred provider
-llm = EmpathyLLM(provider="anthropic")
+# Generate tests for a module
+empathy workflow run test-gen --input '{"path": "./src/auth"}'
 
-# Create the wizard
-wizard = SecurityWizard(llm)
+# Review code with auto-chaining
+empathy workflow run code-review --input '{"path": "./src/api.py"}'
 
-# Scan your codebase
-result = await wizard.scan(
-    path="./src",
-    checks=["owasp-top-10", "secrets", "dependencies"]
-)
+# Check dependencies for vulnerabilities
+empathy workflow run dependency-check
 
-# Get actionable results
-for vulnerability in result.vulnerabilities:
-    print(f"[{vulnerability.severity}] {vulnerability.file}:{vulnerability.line}")
-    print(f"  Issue: {vulnerability.description}")
-    print(f"  Fix: {vulnerability.suggested_fix}")
+# Pre-release quality gate
+empathy workflow run release-prep
 `}</code>
                 </pre>
               </div>
@@ -316,23 +212,31 @@ for vulnerability in result.vulnerabilities:
           </div>
         </section>
 
-        {/* CTA */}
+        {/* Workflows CTA */}
         <section className="py-20">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                Build Your Own Wizards
+                Need More Power?
               </h2>
               <p className="text-xl text-[var(--text-secondary)] mb-8">
-                Extend the framework with custom wizards tailored to your workflow.
-                Full documentation and examples included.
+                Combine wizards with our 14 integrated workflows for multi-agent orchestration,
+                progressive tier escalation, and automatic cost optimization.
               </p>
-              <Link
-                href="/framework-docs/"
-                className="btn btn-primary text-lg px-8 py-4"
-              >
-                Read the Documentation
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/workflows"
+                  className="btn btn-primary text-lg px-8 py-4"
+                >
+                  Explore Workflows
+                </Link>
+                <Link
+                  href="/framework-docs/"
+                  className="btn btn-outline text-lg px-8 py-4"
+                >
+                  Read the Docs
+                </Link>
+              </div>
             </div>
           </div>
         </section>

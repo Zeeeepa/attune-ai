@@ -43,8 +43,8 @@ const features = [
   },
   {
     icon: '🧙',
-    title: '44+ AI Wizards',
-    description: 'Pre-built, specialized AI assistants for debugging, code review, security scanning, refactoring, and more.',
+    title: '10 Smart Wizards',
+    description: 'Security audit, code review, bug prediction, performance analysis, refactoring, test generation, documentation, dependency checks, release prep, and research.',
     link: '/wizards',
   },
 ];

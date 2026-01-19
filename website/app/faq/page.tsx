@@ -22,7 +22,7 @@ const faqData: FAQCategory[] = [
     questions: [
       {
         question: 'What is Empathy?',
-        answer: 'Empathy is a production-ready 5-level maturity model for AI-human collaboration. It progresses from reactive responses (Level 1) to Level 4 Anticipatory Intelligence that predicts problems before they happen. It includes 30+ production wizards for software development and healthcare applications.',
+        answer: 'Empathy is a production-ready 5-level maturity model for AI-human collaboration. It progresses from reactive responses (Level 1) to Level 4 Anticipatory Intelligence that predicts problems before they happen. It includes 10 smart wizards and 14 integrated workflows for software development.',
       },
       {
         question: 'What are the 5 levels of AI empathy?',
@@ -60,7 +60,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'What are wizards?',
-        answer: 'Wizards are specialized AI agents in Empathy that anticipate needs and predict problems in specific domains. The framework includes 16+ software development wizards (security, testing, debugging, etc.) and 18+ healthcare wizards (patient monitoring, protocol compliance, etc.).',
+        answer: 'Wizards are specialized AI agents in Empathy that anticipate needs and predict problems in specific domains. The framework includes 10 smart wizards: security audit, code review, bug prediction, performance analysis, refactoring, test generation, documentation, dependency checks, release prep, and research.',
       },
       {
         question: 'How is the framework tested?',
@@ -85,7 +85,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'Is the framework production-ready?',
-        answer: 'Yes! The framework is v4.4.0 Production/Stable with 125+ comprehensive tests, extensive documentation, and is being used in production applications including medical wizards dashboards and software development tools.',
+        answer: 'Yes! The framework is v4.4.0 Production/Stable with 125+ comprehensive tests, extensive documentation, and is being used in production software development tools and AI workflows.',
       },
     ],
   },
