@@ -21,8 +21,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from .blueprint import WorkflowBlueprint, AgentSpec, StageSpec
-
+from .blueprint import StageSpec, WorkflowBlueprint
 
 # =============================================================================
 # DATA STRUCTURES

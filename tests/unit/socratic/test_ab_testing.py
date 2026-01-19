@@ -4,9 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
-from datetime import datetime, timedelta
-from unittest.mock import patch
 
 
 class TestExperiment:
@@ -14,7 +11,7 @@ class TestExperiment:
 
     def test_create_experiment(self):
         """Test creating an experiment."""
-        from empathy_os.socratic.ab_testing import Experiment, AllocationStrategy
+        from empathy_os.socratic.ab_testing import AllocationStrategy, Experiment
 
         experiment = Experiment(
             experiment_id="exp-001",
@@ -29,7 +26,7 @@ class TestExperiment:
 
     def test_experiment_with_custom_allocation(self):
         """Test experiment with custom allocation strategy."""
-        from empathy_os.socratic.ab_testing import Experiment, AllocationStrategy
+        from empathy_os.socratic.ab_testing import AllocationStrategy, Experiment
 
         experiment = Experiment(
             experiment_id="exp-002",
@@ -161,9 +158,9 @@ class TestExperimentManager:
     def test_allocate_variant_fixed(self, storage_path, sample_workflow_blueprint):
         """Test allocating variant with fixed strategy."""
         from empathy_os.socratic.ab_testing import (
+            AllocationStrategy,
             ExperimentManager,
             Variant,
-            AllocationStrategy,
         )
 
         manager = ExperimentManager(storage_path=storage_path / "experiments.json")

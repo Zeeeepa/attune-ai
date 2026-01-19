@@ -4,9 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
-from unittest.mock import MagicMock, patch
-from io import StringIO
 
 
 class TestConsole:
@@ -384,8 +381,9 @@ class TestCLIErrorHandling:
 
     def test_handle_storage_errors(self, tmp_path):
         """Test handling storage errors gracefully."""
-        from empathy_os.socratic.cli import SocraticCLI
         import os
+
+        from empathy_os.socratic.cli import SocraticCLI
 
         # Create read-only directory
         readonly_path = tmp_path / "readonly"

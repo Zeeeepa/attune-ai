@@ -79,6 +79,7 @@ class FormQuestion:
                 "question": self.text,
                 "type": "single_select",
                 "options": ["Yes", "No"],
+                "default": self.default,  # Preserve default for boolean questions
                 "help_text": self.help_text,
             }
 

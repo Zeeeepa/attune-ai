@@ -4,8 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
-from datetime import datetime
 
 
 class TestAgentSpec:
@@ -25,7 +23,6 @@ class TestAgentSpec:
 
     def test_agent_serialization(self, sample_agent_spec):
         """Test agent serialization."""
-        from empathy_os.socratic.blueprint import AgentSpec
 
         data = sample_agent_spec.to_dict()
 
@@ -49,7 +46,7 @@ class TestToolSpec:
 
     def test_create_tool_spec(self):
         """Test creating a ToolSpec."""
-        from empathy_os.socratic.blueprint import ToolSpec, ToolCategory
+        from empathy_os.socratic.blueprint import ToolCategory, ToolSpec
 
         tool = ToolSpec(
             tool_id="security_scan",
@@ -111,7 +108,6 @@ class TestWorkflowBlueprint:
 
     def test_workflow_serialization(self, sample_workflow_blueprint):
         """Test workflow serialization."""
-        from empathy_os.socratic.blueprint import WorkflowBlueprint
 
         data = sample_workflow_blueprint.to_dict()
 

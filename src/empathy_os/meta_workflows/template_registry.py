@@ -3,6 +3,7 @@
 Handles loading, saving, and discovering meta-workflow templates.
 
 Created: 2026-01-17
+Updated: 2026-01-18 (v4.3.0 - Added built-in templates)
 Purpose: Manage reusable workflow templates
 """
 
@@ -10,6 +11,11 @@ import importlib.util
 import logging
 from pathlib import Path
 
+from empathy_os.meta_workflows.builtin_templates import (
+    BUILTIN_TEMPLATES,
+    get_builtin_template,
+    list_builtin_templates,
+)
 from empathy_os.meta_workflows.models import MetaWorkflowTemplate
 
 logger = logging.getLogger(__name__)
@@ -61,6 +67,8 @@ class TemplateRegistry:
     def load_template(self, template_id: str) -> MetaWorkflowTemplate | None:
         """Load a template by ID.
 
+        Checks built-in templates first, then user templates.
+
         Args:
             template_id: ID of template to load
 
@@ -70,6 +78,13 @@ class TemplateRegistry:
         Raises:
             ValueError: If template file is invalid or corrupted
         """
+        # Check built-in templates first
+        builtin = get_builtin_template(template_id)
+        if builtin is not None:
+            logger.info(f"Loaded built-in template: {template_id}")
+            return builtin
+
+        # Fall back to user templates
         template_path = self.storage_dir / f"{template_id}.json"
 
         if not template_path.exists():
@@ -114,18 +129,37 @@ class TemplateRegistry:
             logger.error(f"Failed to save template {template.template_id}: {e}")
             raise
 
-    def list_templates(self) -> list[str]:
+    def list_templates(self, include_builtin: bool = True) -> list[str]:
         """List all available template IDs.
 
-        Returns:
-            List of template IDs (sorted)
-        """
-        template_files = self.storage_dir.glob("*.json")
-        template_ids = [f.stem for f in template_files]
-        template_ids.sort()
+        Args:
+            include_builtin: Whether to include built-in templates (default: True)
 
-        logger.debug(f"Found {len(template_ids)} templates")
-        return template_ids
+        Returns:
+            List of template IDs (sorted, built-in templates marked with *)
+        """
+        # User templates
+        template_files = self.storage_dir.glob("*.json")
+        template_ids = set(f.stem for f in template_files)
+
+        # Add built-in templates
+        if include_builtin:
+            template_ids.update(list_builtin_templates())
+
+        result = sorted(template_ids)
+        logger.debug(f"Found {len(result)} templates ({len(list_builtin_templates())} built-in)")
+        return result
+
+    def is_builtin(self, template_id: str) -> bool:
+        """Check if a template is built-in.
+
+        Args:
+            template_id: ID of template to check
+
+        Returns:
+            True if template is built-in
+        """
+        return template_id in BUILTIN_TEMPLATES
 
     def get_template_info(self, template_id: str) -> dict | None:
         """Get basic info about a template without loading it fully.

@@ -4,8 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
-from datetime import datetime
 
 
 class TestSocraticSession:
@@ -13,7 +11,7 @@ class TestSocraticSession:
 
     def test_create_session(self):
         """Test creating a new session."""
-        from empathy_os.socratic.session import SocraticSession, SessionState
+        from empathy_os.socratic.session import SessionState, SocraticSession
 
         session = SocraticSession()
 
@@ -32,7 +30,6 @@ class TestSocraticSession:
 
     def test_session_serialization(self, sample_session):
         """Test session serialization to dict."""
-        from empathy_os.socratic.session import SocraticSession
 
         data = sample_session.to_dict()
 

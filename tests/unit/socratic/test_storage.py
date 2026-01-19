@@ -4,9 +4,8 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+
 import pytest
-import json
-from pathlib import Path
 
 
 class TestStorageBackend:
@@ -48,8 +47,8 @@ class TestJSONFileStorage:
 
     def test_list_sessions(self, storage_path, sample_session):
         """Test listing all sessions."""
-        from empathy_os.socratic.storage import JSONFileStorage
         from empathy_os.socratic.session import SocraticSession
+        from empathy_os.socratic.storage import JSONFileStorage
 
         storage = JSONFileStorage(storage_path=storage_path / "sessions.json")
 
@@ -161,8 +160,8 @@ class TestSQLiteStorage:
 
     def test_list_sessions(self, storage_path, sample_session):
         """Test listing all sessions."""
-        from empathy_os.socratic.storage import SQLiteStorage
         from empathy_os.socratic.session import SocraticSession
+        from empathy_os.socratic.storage import SQLiteStorage
 
         storage = SQLiteStorage(db_path=storage_path / "sessions.db")
 
@@ -202,8 +201,8 @@ class TestSQLiteStorage:
 
     def test_query_sessions_by_state(self, storage_path):
         """Test querying sessions by state."""
+        from empathy_os.socratic.session import SessionState, SocraticSession
         from empathy_os.socratic.storage import SQLiteStorage
-        from empathy_os.socratic.session import SocraticSession, SessionState
 
         storage = SQLiteStorage(db_path=storage_path / "query.db")
 
@@ -337,8 +336,8 @@ class TestStorageSecurity:
 
     def test_no_sql_injection(self, storage_path):
         """Test protection against SQL injection."""
-        from empathy_os.socratic.storage import SQLiteStorage
         from empathy_os.socratic.session import SocraticSession
+        from empathy_os.socratic.storage import SQLiteStorage
 
         storage = SQLiteStorage(db_path=storage_path / "injection.db")
 
@@ -362,8 +361,8 @@ class TestStorageEdgeCases:
 
     def test_save_empty_session(self, storage_path):
         """Test saving a session with minimal data."""
-        from empathy_os.socratic.storage import JSONFileStorage
         from empathy_os.socratic.session import SocraticSession
+        from empathy_os.socratic.storage import JSONFileStorage
 
         storage = JSONFileStorage(storage_path=storage_path / "empty.json")
 
@@ -384,8 +383,8 @@ class TestStorageEdgeCases:
 
     def test_save_large_session(self, storage_path):
         """Test saving a session with large data."""
-        from empathy_os.socratic.storage import JSONFileStorage
         from empathy_os.socratic.session import SocraticSession
+        from empathy_os.socratic.storage import JSONFileStorage
 
         storage = JSONFileStorage(storage_path=storage_path / "large.json")
 
@@ -401,9 +400,10 @@ class TestStorageEdgeCases:
 
     def test_concurrent_writes(self, storage_path):
         """Test handling concurrent writes."""
-        from empathy_os.socratic.storage import JSONFileStorage
-        from empathy_os.socratic.session import SocraticSession
         import threading
+
+        from empathy_os.socratic.session import SocraticSession
+        from empathy_os.socratic.storage import JSONFileStorage
 
         storage = JSONFileStorage(storage_path=storage_path / "concurrent.json")
 

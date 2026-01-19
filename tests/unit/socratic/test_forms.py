@@ -4,7 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
 
 
 class TestFormField:
@@ -12,7 +11,7 @@ class TestFormField:
 
     def test_create_text_field(self):
         """Test creating a text field."""
-        from empathy_os.socratic.forms import FormField, FieldType
+        from empathy_os.socratic.forms import FieldType, FormField
 
         field = FormField(
             field_id="name",
@@ -27,7 +26,7 @@ class TestFormField:
 
     def test_create_select_field_with_options(self):
         """Test creating a select field with options."""
-        from empathy_os.socratic.forms import FormField, FieldType, FieldOption
+        from empathy_os.socratic.forms import FieldOption, FieldType, FormField
 
         field = FormField(
             field_id="language",
@@ -44,7 +43,7 @@ class TestFormField:
 
     def test_field_with_validation(self):
         """Test field with validation rules."""
-        from empathy_os.socratic.forms import FormField, FieldType, FieldValidation
+        from empathy_os.socratic.forms import FieldType, FieldValidation, FormField
 
         field = FormField(
             field_id="email",
@@ -62,7 +61,7 @@ class TestFormField:
 
     def test_field_with_show_when(self):
         """Test conditional field visibility."""
-        from empathy_os.socratic.forms import FormField, FieldType, ShowWhen
+        from empathy_os.socratic.forms import FieldType, FormField, ShowWhen
 
         field = FormField(
             field_id="security_level",
@@ -90,7 +89,6 @@ class TestForm:
 
     def test_form_serialization(self, sample_form):
         """Test form serialization to dict."""
-        from empathy_os.socratic.forms import Form
 
         data = sample_form.to_dict()
 

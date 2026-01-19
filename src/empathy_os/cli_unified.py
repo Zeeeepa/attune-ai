@@ -832,6 +832,19 @@ def telemetry_reset(
 
 
 # =============================================================================
+# META-WORKFLOW SUBCOMMAND GROUP
+# =============================================================================
+
+try:
+    from empathy_os.meta_workflows.cli_meta_workflows import meta_workflow_app
+    app.add_typer(meta_workflow_app, name="meta-workflow")
+except ImportError as e:
+    # Meta-workflow system is optional/experimental
+    import logging
+    logging.getLogger(__name__).debug(f"Meta-workflow CLI not available: {e}")
+
+
+# =============================================================================
 # PROGRESSIVE WORKFLOW SUBCOMMAND GROUP
 # =============================================================================
 

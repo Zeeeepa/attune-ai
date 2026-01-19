@@ -19,17 +19,14 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Any
 
-from .blueprint import WorkflowBlueprint
 from .forms import (
     FieldOption,
     FieldType,
     FieldValidation,
     Form,
     FormField,
-    FormResponse,
     create_additional_context_field,
     create_automation_level_field,
     create_goal_text_field,
@@ -38,7 +35,7 @@ from .forms import (
     create_team_size_field,
 )
 from .generator import AgentGenerator, GeneratedWorkflow
-from .session import GoalAnalysis, RequirementSet, SessionState, SocraticSession
+from .session import GoalAnalysis, SessionState, SocraticSession
 from .success import (
     MetricType,
     SuccessCriteria,
@@ -548,7 +545,7 @@ class SocraticWorkflowBuilder:
 
         # Quality focus
         if "quality_focus" in answers:
-            reqs.quality_attributes = {q: 1.0 for q in answers["quality_focus"]}
+            reqs.quality_attributes = dict.fromkeys(answers["quality_focus"], 1.0)
             # Add to must-haves
             for quality in answers["quality_focus"]:
                 req = f"Optimize for {quality}"

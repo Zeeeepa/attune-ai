@@ -34,135 +34,134 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from .engine import SocraticWorkflowBuilder
-from .forms import (
-    Form,
-    FormField,
-    FieldType,
-    FormResponse,
-    ValidationResult,
+# A/B testing
+from .ab_testing import (
+    AllocationStrategy,
+    Experiment,
+    ExperimentManager,
+    ExperimentResult,
+    Variant,
+    WorkflowABTester,
 )
 from .blueprint import (
     AgentBlueprint,
     AgentSpec,
-    WorkflowBlueprint,
     ToolSpec,
-)
-from .generator import AgentGenerator
-from .success import SuccessCriteria, SuccessMetric, MetricType
-from .session import SocraticSession, SessionState
-
-# LLM-powered analysis
-from .llm_analyzer import (
-    LLMGoalAnalyzer,
-    LLMAnalysisResult,
-    LLMQuestionResult,
-    LLMAgentRecommendation,
-    llm_questions_to_form,
-)
-
-# Persistent storage
-from .storage import (
-    StorageBackend,
-    JSONFileStorage,
-    SQLiteStorage,
-    StorageManager,
+    WorkflowBlueprint,
 )
 
 # CLI interface
-from .cli import SocraticCLI, Console
+from .cli import Console, SocraticCLI
 
-# Web UI components
-from .web_ui import (
-    ReactFormSchema,
-    ReactSessionSchema,
-    ReactBlueprintSchema,
-    render_form_html,
-    render_complete_page,
-    create_form_response,
-    create_blueprint_response,
-)
-
-# Feedback loop
-from .feedback import (
-    FeedbackLoop,
-    FeedbackCollector,
-    AdaptiveAgentGenerator,
-    AgentPerformance,
-    WorkflowPattern,
-)
-
-# MCP server
-from .mcp_server import SocraticMCPServer, SOCRATIC_TOOLS
-
-# Vector embeddings for semantic matching
-from .embeddings import (
-    VectorStore,
-    SemanticGoalMatcher,
-    EmbeddingProvider,
-    TFIDFEmbeddingProvider,
-    AnthropicEmbeddingProvider,
-    EmbeddedGoal,
-    SimilarityResult,
-)
-
-# A/B testing
-from .ab_testing import (
-    ExperimentManager,
-    WorkflowABTester,
-    Experiment,
-    Variant,
-    ExperimentResult,
-    AllocationStrategy,
+# Collaboration
+from .collaboration import (
+    Change,
+    ChangeType,
+    CollaborationManager,
+    CollaborativeSession,
+    Comment,
+    InvitationManager,
+    Participant,
+    ParticipantRole,
+    SyncAdapter,
+    Vote,
+    VoteType,
+    VotingResult,
 )
 
 # Domain templates
 from .domain_templates import (
-    DomainTemplateRegistry,
-    Domain,
     AgentTemplate,
-    WorkflowTemplate,
+    Domain,
     DomainTemplate,
+    DomainTemplateRegistry,
+    WorkflowTemplate,
     get_registry,
 )
 
-# Visual editor
-from .visual_editor import (
-    VisualWorkflowEditor,
-    ASCIIVisualizer,
-    WorkflowVisualizer,
-    EditorState,
-    EditorNode,
-    EditorEdge,
-    generate_react_flow_schema,
-    generate_editor_html,
+# Vector embeddings for semantic matching
+from .embeddings import (
+    AnthropicEmbeddingProvider,
+    EmbeddedGoal,
+    EmbeddingProvider,
+    SemanticGoalMatcher,
+    SimilarityResult,
+    TFIDFEmbeddingProvider,
+    VectorStore,
 )
+from .engine import SocraticWorkflowBuilder
 
 # Workflow explainer
 from .explainer import (
-    WorkflowExplainer,
-    LLMExplanationGenerator,
-    Explanation,
     AudienceLevel,
     DetailLevel,
+    Explanation,
+    LLMExplanationGenerator,
     OutputFormat,
+    WorkflowExplainer,
     explain_workflow,
 )
 
-# Collaboration
-from .collaboration import (
-    CollaborationManager,
-    CollaborativeSession,
-    Participant,
-    ParticipantRole,
-    Comment,
-    Vote,
-    VoteType,
-    Change,
-    ChangeType,
-    VotingResult,
-    InvitationManager,
-    SyncAdapter,
+# Feedback loop
+from .feedback import (
+    AdaptiveAgentGenerator,
+    AgentPerformance,
+    FeedbackCollector,
+    FeedbackLoop,
+    WorkflowPattern,
+)
+from .forms import (
+    FieldType,
+    Form,
+    FormField,
+    FormResponse,
+    ValidationResult,
+)
+from .generator import AgentGenerator
+
+# LLM-powered analysis
+from .llm_analyzer import (
+    LLMAgentRecommendation,
+    LLMAnalysisResult,
+    LLMGoalAnalyzer,
+    LLMQuestionResult,
+    llm_questions_to_form,
+)
+
+# MCP server
+from .mcp_server import SOCRATIC_TOOLS, SocraticMCPServer
+from .session import SessionState, SocraticSession
+
+# Persistent storage
+from .storage import (
+    JSONFileStorage,
+    SQLiteStorage,
+    StorageBackend,
+    StorageManager,
+)
+from .success import MetricType, SuccessCriteria, SuccessMetric
+
+# Visual editor
+from .visual_editor import (
+    ASCIIVisualizer,
+    EditorEdge,
+    EditorNode,
+    EditorState,
+    VisualWorkflowEditor,
+    WorkflowVisualizer,
+    generate_editor_html,
+    generate_react_flow_schema,
+)
+
+# Web UI components
+from .web_ui import (
+    ReactBlueprintSchema,
+    ReactFormSchema,
+    ReactSessionSchema,
+    create_blueprint_response,
+    create_form_response,
+    render_complete_page,
+    render_form_html,
 )
 
 __all__ = [

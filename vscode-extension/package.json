@@ -218,6 +218,36 @@
         "command": "empathy.workflow.recommend",
         "title": "Empathy: Recommend Workflow Patterns",
         "icon": "$(lightbulb)"
+      },
+      {
+        "command": "empathy.metaWorkflow.listTemplates",
+        "title": "Empathy: List Meta-Workflow Templates",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "empathy.metaWorkflow.inspect",
+        "title": "Empathy: Inspect Meta-Workflow Template",
+        "icon": "$(search)"
+      },
+      {
+        "command": "empathy.metaWorkflow.run",
+        "title": "Empathy: Run Meta-Workflow",
+        "icon": "$(play-circle)"
+      },
+      {
+        "command": "empathy.metaWorkflow.analytics",
+        "title": "Empathy: Meta-Workflow Analytics",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "empathy.metaWorkflow.listRuns",
+        "title": "Empathy: Meta-Workflow History",
+        "icon": "$(history)"
+      },
+      {
+        "command": "empathy.metaWorkflow.sessionStats",
+        "title": "Empathy: Meta-Workflow Session Stats",
+        "icon": "$(dashboard)"
       }
     ],
     "keybindings": [

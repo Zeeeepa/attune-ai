@@ -5,10 +5,11 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.3.0] - 2026-01-18
+## [4.4.0] - 2026-01-19
 
-### Added - PRODUCTION READY 🚀
+### Added - PRODUCTION-READY AGENT TEAM SYSTEM 🚀🎯
 
+#### Real LLM Agent Execution
 - **Real LLM Agent Execution** - Meta-workflow agents now execute with real LLM calls
   - Integrated Anthropic client for Claude model execution
   - Accurate token counting and cost tracking from actual API usage
@@ -24,6 +25,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `set_callback()` method for runtime configuration
   - Maintains full backward compatibility with existing tests
   - **Files**: `src/empathy_os/meta_workflows/form_engine.py`
+
+#### Enhanced Agent Team UX
+- **Skill-based invocation** for agent teams
+  - `/release-prep` - Invoke release preparation agent team
+  - `/test-coverage` - Invoke test coverage boost agent team
+  - `/test-maintenance` - Invoke test maintenance agent team
+  - `/manage-docs` - Invoke documentation management agent team
+  - Skills work directly in Claude Code as slash commands
+
+- **Natural language agent creation**
+  - `empathy meta-workflow ask "your request"` - Describe what you need
+  - Auto-suggests appropriate agent teams based on intent
+  - `--auto` flag for automatic execution of best match
+  - Intent detection with confidence scoring
+
+- **Intent detection system** (`intent_detector.py`)
+  - Analyzes natural language requests
+  - Maps to appropriate meta-workflow templates
+  - Keyword and phrase pattern matching
+  - Confidence scoring for match quality
+
+- **Integrated skills**
+  - Updated `/test` to suggest `/test-coverage` and `/test-maintenance`
+  - Updated `/security-scan` to suggest `/release-prep`
+  - Updated `/docs` to suggest `/manage-docs`
+
+#### Built-in Templates & Infrastructure
+- **Built-in meta-workflow templates** (`builtin_templates.py`)
+  - `release-prep`: Comprehensive release readiness assessment
+  - `test-coverage-boost`: Multi-agent test generation with gap analysis
+  - `test-maintenance`: Automated test lifecycle management
+  - `manage-docs`: Documentation sync and gap detection
+  - All templates use Socratic form collection and progressive tier escalation
+
+- **Enhanced TemplateRegistry**
+  - `load_template()` now checks built-in templates first
+  - `list_templates()` includes built-in templates
+  - `is_builtin()` method to identify built-in templates
+
+- **Migration documentation**
+  - `docs/CREWAI_MIGRATION.md`: Complete migration guide with examples
+  - Before/after code comparisons
+  - FAQ for common migration questions
 
 ### Architecture
 
@@ -44,12 +88,28 @@ UsageTracker (telemetry + cost tracking)
 PatternLearner (stores in files + memory)
 ```
 
-### Changed
+### Changed - DEPENDENCY OPTIMIZATION 📦
+
+- **CrewAI moved to optional dependencies**
+  - CrewAI and LangChain removed from core dependencies
+  - Reduces install size and dependency conflicts
+  - Install with `pip install empathy-framework[crewai]` if needed
+  - The "Crew" workflows never actually used CrewAI library
 
 - `SocraticFormEngine` now accepts `ask_user_callback` parameter for tool integration
 - `MetaWorkflow._execute_at_tier()` now uses real LLM execution by default
 - Added `_execute_llm_call()` method using Anthropic client
 - `_simulate_llm_call()` retained as fallback for testing/no-API scenarios
+
+### Deprecated
+
+- **Crew-based workflows deprecated** in favor of meta-workflow system:
+  - `ReleasePreparationCrew` → Use `empathy meta-workflow run release-prep`
+  - `TestCoverageBoostCrew` → Use `empathy meta-workflow run test-coverage-boost`
+  - `TestMaintenanceCrew` → Use `empathy meta-workflow run test-maintenance`
+  - `ManageDocumentationCrew` → Use `empathy meta-workflow run manage-docs`
+  - All deprecated workflows emit `DeprecationWarning` when instantiated
+  - See [docs/CREWAI_MIGRATION.md](docs/CREWAI_MIGRATION.md) for migration guide
 
 ### Migration Notes
 
@@ -57,6 +117,7 @@ PatternLearner (stores in files + memory)
 - Tests using mock execution still work
 - Form engine without callback uses defaults (backward compatible)
 - Real execution only attempted when `mock_execution=False`
+- Deprecated workflows continue to work
 
 **To enable real execution**:
 ```python
@@ -64,6 +125,22 @@ PatternLearner (stores in files + memory)
 # Then use mock_execution=False
 result = workflow.execute(mock_execution=False)
 ```
+
+**To migrate from Crew workflows**:
+```bash
+# Instead of using ReleasePreparationCrew
+empathy meta-workflow run release-prep
+
+# Instead of using TestCoverageBoostCrew
+empathy meta-workflow run test-coverage-boost
+```
+
+**Benefits of meta-workflows over Crew workflows**:
+- Smaller dependency footprint (no CrewAI/LangChain required)
+- Interactive configuration via Socratic questioning
+- Automatic cost optimization with progressive tier escalation
+- Session context for learning preferences
+- 125+ tests covering the system
 
 ---
 
@@ -135,7 +212,7 @@ result = workflow.execute(mock_execution=False)
   - **Template Registry**: Reusable workflow templates with built-in `python_package_publish` template (8 questions, 8 agent rules)
   - **Pattern Learning**: Analyzes historical executions for optimization insights with memory integration support
   - **Hybrid Storage Architecture**: Combines file-based persistence with memory-based semantic querying for intelligent recommendations
-  - **Memory Integration**: Optional UnifiedMemory integration for rich semantic queries and context-aware recommendations
+  - **Memory Integration**: Optional UnifiedMemory integration for rich semantic queries and context-aware recommendationsa
   - **CLI Interface**: 10 commands for managing meta-workflows
     - `empathy meta-workflow list-templates` - List available workflow templates
     - `empathy meta-workflow inspect <template_id>` - Inspect template details

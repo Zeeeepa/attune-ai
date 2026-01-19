@@ -4,8 +4,9 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
 import json
+
+import pytest
 
 
 class TestSocraticMCPServer:

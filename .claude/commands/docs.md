@@ -86,3 +86,18 @@ After running, provide:
 - Cost incurred
 - Links to generated docs
 - Suggestions for improvement
+
+## Need Comprehensive Documentation Audit?
+
+For automated documentation management with an AI agent team, use:
+
+- `/manage-docs` - Full documentation gap analysis and sync verification
+
+Or run directly:
+
+```bash
+empathy meta-workflow run manage-docs --real --use-defaults
+```
+
+This deploys specialized agents for Documentation Analyst, Documentation Reviewer,
+and Documentation Synthesizer to ensure docs stay in sync with code.

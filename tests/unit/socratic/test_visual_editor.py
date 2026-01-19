@@ -4,7 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
 import json
 
 
@@ -87,9 +86,9 @@ class TestEditorState:
     def test_create_state(self):
         """Test creating an editor state."""
         from empathy_os.socratic.visual_editor import (
-            EditorState,
-            EditorNode,
             EditorEdge,
+            EditorNode,
+            EditorState,
         )
 
         nodes = [
@@ -128,9 +127,8 @@ class TestEditorState:
     def test_state_to_react_flow(self):
         """Test converting state to React Flow schema."""
         from empathy_os.socratic.visual_editor import (
-            EditorState,
             EditorNode,
-            EditorEdge,
+            EditorState,
         )
 
         state = EditorState(

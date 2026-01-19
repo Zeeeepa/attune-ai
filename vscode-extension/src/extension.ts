@@ -37,6 +37,7 @@ import { MorningBriefingPanel } from './panels/MorningBriefingPanel';
 // import { WorkflowWizardPanel } from './panels/WorkflowWizardPanel';
 import { DocAnalysisPanel } from './panels/DocAnalysisPanel';
 import { initializeProject, showWelcomeIfNeeded as showInitializeWelcome } from './commands/initializeProject';
+import { registerMetaWorkflowCommands } from './commands/metaWorkflowCommands';
 
 // Status bar item
 let statusBarItem: vscode.StatusBarItem;
@@ -1261,6 +1262,16 @@ function setupSecurityFindingsWatcher(context: vscode.ExtensionContext): void {
     });
 
     context.subscriptions.push(securityFindingsWatcher);
+
+    // Register meta-workflow commands
+    try {
+        console.log('[Empathy] About to register meta-workflow commands...');
+        registerMetaWorkflowCommands(context);
+        console.log('[Empathy] Meta-workflow commands registered SUCCESS');
+    } catch (error) {
+        console.error('[Empathy] ERROR registering meta-workflow commands:', error);
+        vscode.window.showErrorMessage(`Failed to register meta-workflow commands: ${error}`);
+    }
 }
 
 // ============================================================================

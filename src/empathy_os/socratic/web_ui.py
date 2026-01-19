@@ -13,13 +13,12 @@ Licensed under Fair Source License 0.9
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from typing import Any
 
-from .forms import Form, FormField, FieldType, FieldOption
-from .session import SocraticSession, SessionState
 from .blueprint import WorkflowBlueprint
-
+from .forms import FieldType, Form, FormField
+from .session import SocraticSession
 
 # =============================================================================
 # REACT COMPONENT SCHEMAS
@@ -226,15 +225,15 @@ def render_form_html(form: Form, action_url: str = "/api/socratic/submit") -> st
     """
     html_parts = [
         f'<form id="{form.id}" action="{action_url}" method="POST" class="socratic-form">',
-        f'  <div class="form-header">',
+        '  <div class="form-header">',
         f'    <h2>{_escape_html(form.title)}</h2>',
         f'    <p class="form-description">{_escape_html(form.description)}</p>',
-        f'    <div class="progress-bar">',
+        '    <div class="progress-bar">',
         f'      <div class="progress-fill" style="width: {form.progress * 100}%"></div>',
         f'      <span class="progress-text">{form.progress:.0%}</span>',
-        f'    </div>',
-        f'  </div>',
-        f'  <div class="form-fields">',
+        '    </div>',
+        '  </div>',
+        '  <div class="form-fields">',
     ]
 
     # Group fields by category
@@ -282,7 +281,7 @@ def _render_field_html(field: FormField) -> str:
 
     # Render input based on type
     if field.field_type == FieldType.SINGLE_SELECT:
-        parts.append(f'      <div class="radio-group">')
+        parts.append('      <div class="radio-group">')
         for opt in field.options:
             rec_class = ' recommended' if opt.recommended else ''
             parts.append(f'        <label class="radio-option{rec_class}">')
@@ -290,11 +289,11 @@ def _render_field_html(field: FormField) -> str:
             parts.append(f'          <span class="option-label">{_escape_html(opt.label)}</span>')
             if opt.description:
                 parts.append(f'          <span class="option-desc">{_escape_html(opt.description)}</span>')
-            parts.append(f'        </label>')
-        parts.append(f'      </div>')
+            parts.append('        </label>')
+        parts.append('      </div>')
 
     elif field.field_type == FieldType.MULTI_SELECT:
-        parts.append(f'      <div class="checkbox-group">')
+        parts.append('      <div class="checkbox-group">')
         for opt in field.options:
             rec_class = ' recommended' if opt.recommended else ''
             parts.append(f'        <label class="checkbox-option{rec_class}">')
@@ -302,28 +301,28 @@ def _render_field_html(field: FormField) -> str:
             parts.append(f'          <span class="option-label">{_escape_html(opt.label)}</span>')
             if opt.description:
                 parts.append(f'          <span class="option-desc">{_escape_html(opt.description)}</span>')
-            parts.append(f'        </label>')
-        parts.append(f'      </div>')
+            parts.append('        </label>')
+        parts.append('      </div>')
 
     elif field.field_type == FieldType.TEXT_AREA:
         max_len = f' maxlength="{field.validation.max_length}"' if field.validation.max_length else ''
         parts.append(f'      <textarea id="{field.id}" name="{field.id}" placeholder="{_escape_html(field.placeholder)}"{max_len} {required}></textarea>')
 
     elif field.field_type == FieldType.BOOLEAN:
-        parts.append(f'      <div class="switch-container">')
-        parts.append(f'        <label class="switch">')
+        parts.append('      <div class="switch-container">')
+        parts.append('        <label class="switch">')
         parts.append(f'          <input type="checkbox" id="{field.id}" name="{field.id}" value="true">')
-        parts.append(f'          <span class="slider"></span>')
-        parts.append(f'        </label>')
-        parts.append(f'      </div>')
+        parts.append('          <span class="slider"></span>')
+        parts.append('        </label>')
+        parts.append('      </div>')
 
     elif field.field_type == FieldType.SLIDER:
         min_val = field.validation.min_value or 0
         max_val = field.validation.max_value or 100
-        parts.append(f'      <div class="slider-container">')
+        parts.append('      <div class="slider-container">')
         parts.append(f'        <input type="range" id="{field.id}" name="{field.id}" min="{min_val}" max="{max_val}">')
         parts.append(f'        <output for="{field.id}"></output>')
-        parts.append(f'      </div>')
+        parts.append('      </div>')
 
     else:  # TEXT, NUMBER
         input_type = "number" if field.field_type == FieldType.NUMBER else "text"

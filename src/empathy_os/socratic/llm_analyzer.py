@@ -15,14 +15,14 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
-from .session import GoalAnalysis, RequirementSet, SocraticSession
 from .forms import (
+    FieldOption,
+    FieldType,
+    FieldValidation,
     Form,
     FormField,
-    FieldType,
-    FieldOption,
-    FieldValidation,
 )
+from .session import SocraticSession
 
 logger = logging.getLogger(__name__)
 
@@ -470,7 +470,12 @@ class LLMGoalAnalyzer:
 
     def _fallback_analysis(self, goal: str) -> LLMAnalysisResult:
         """Fallback analysis when LLM is unavailable."""
-        from .engine import detect_domain, extract_keywords, identify_ambiguities, identify_assumptions
+        from .engine import (
+            detect_domain,
+            extract_keywords,
+            identify_ambiguities,
+            identify_assumptions,
+        )
 
         domain, confidence = detect_domain(goal)
         keywords = extract_keywords(goal)

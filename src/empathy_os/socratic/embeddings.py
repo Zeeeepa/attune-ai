@@ -22,9 +22,10 @@ import math
 import os
 import re
 from abc import ABC, abstractmethod
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -163,7 +164,7 @@ class TFIDFEmbeddingProvider(EmbeddingProvider):
 
     def _hash_to_bucket(self, term: str) -> int:
         """Hash term to fixed bucket for dimensionality reduction."""
-        h = int(hashlib.md5(term.encode()).hexdigest(), 16)
+        h = int(hashlib.md5(term.encode(), usedforsecurity=False).hexdigest(), 16)
         return h % self._dimension
 
     def embed(self, text: str) -> list[float]:
@@ -536,7 +537,7 @@ class VectorStore:
         if len(a) != len(b):
             return 0.0
 
-        dot = sum(x * y for x, y in zip(a, b))
+        dot = sum(x * y for x, y in zip(a, b, strict=False))
         norm_a = math.sqrt(sum(x * x for x in a))
         norm_b = math.sqrt(sum(x * x for x in b))
 

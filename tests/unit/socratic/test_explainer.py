@@ -4,7 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
 
 
 class TestAudienceLevel:
@@ -58,9 +57,9 @@ class TestExplanation:
     def test_create_explanation(self):
         """Test creating an explanation."""
         from empathy_os.socratic.explainer import (
-            Explanation,
             AudienceLevel,
             DetailLevel,
+            Explanation,
         )
 
         explanation = Explanation(
@@ -81,9 +80,9 @@ class TestExplanation:
     def test_explanation_to_text(self):
         """Test converting explanation to text."""
         from empathy_os.socratic.explainer import (
-            Explanation,
             AudienceLevel,
             DetailLevel,
+            Explanation,
         )
 
         explanation = Explanation(
@@ -104,9 +103,9 @@ class TestExplanation:
     def test_explanation_to_markdown(self):
         """Test converting explanation to markdown."""
         from empathy_os.socratic.explainer import (
-            Explanation,
             AudienceLevel,
             DetailLevel,
+            Explanation,
         )
 
         explanation = Explanation(
@@ -127,9 +126,9 @@ class TestExplanation:
     def test_explanation_to_html(self):
         """Test converting explanation to HTML."""
         from empathy_os.socratic.explainer import (
-            Explanation,
             AudienceLevel,
             DetailLevel,
+            Explanation,
         )
 
         explanation = Explanation(
@@ -148,9 +147,9 @@ class TestExplanation:
     def test_explanation_to_dict(self):
         """Test converting explanation to dict."""
         from empathy_os.socratic.explainer import (
-            Explanation,
             AudienceLevel,
             DetailLevel,
+            Explanation,
         )
 
         explanation = Explanation(
@@ -179,7 +178,7 @@ class TestWorkflowExplainer:
 
     def test_explain_for_technical(self, sample_workflow_blueprint):
         """Test explaining workflow for technical audience."""
-        from empathy_os.socratic.explainer import WorkflowExplainer, AudienceLevel
+        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer()
 
@@ -194,7 +193,7 @@ class TestWorkflowExplainer:
 
     def test_explain_for_business(self, sample_workflow_blueprint):
         """Test explaining workflow for business audience."""
-        from empathy_os.socratic.explainer import WorkflowExplainer, AudienceLevel
+        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer()
 
@@ -208,7 +207,7 @@ class TestWorkflowExplainer:
 
     def test_explain_for_beginner(self, sample_workflow_blueprint):
         """Test explaining workflow for beginner audience."""
-        from empathy_os.socratic.explainer import WorkflowExplainer, AudienceLevel
+        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer()
 
@@ -223,9 +222,8 @@ class TestWorkflowExplainer:
     def test_explain_with_detail_levels(self, sample_workflow_blueprint):
         """Test explaining with different detail levels."""
         from empathy_os.socratic.explainer import (
-            WorkflowExplainer,
-            AudienceLevel,
             DetailLevel,
+            WorkflowExplainer,
         )
 
         explainer = WorkflowExplainer()
@@ -281,8 +279,8 @@ class TestLLMExplanationGenerator:
     def test_generate_without_api_key(self, sample_workflow_blueprint):
         """Test generation falls back gracefully without API key."""
         from empathy_os.socratic.explainer import (
-            LLMExplanationGenerator,
             AudienceLevel,
+            LLMExplanationGenerator,
         )
 
         generator = LLMExplanationGenerator()
@@ -302,8 +300,8 @@ class TestLLMExplanationGenerator:
     ):
         """Test generation with mocked Anthropic client."""
         from empathy_os.socratic.explainer import (
-            LLMExplanationGenerator,
             AudienceLevel,
+            LLMExplanationGenerator,
         )
 
         generator = LLMExplanationGenerator(client=mock_anthropic_client)
@@ -331,7 +329,7 @@ class TestExplainWorkflowFunction:
 
     def test_explain_workflow_with_audience(self, sample_workflow_blueprint):
         """Test explain_workflow with audience parameter."""
-        from empathy_os.socratic.explainer import explain_workflow, AudienceLevel
+        from empathy_os.socratic.explainer import AudienceLevel, explain_workflow
 
         explanation = explain_workflow(
             sample_workflow_blueprint,
@@ -343,8 +341,8 @@ class TestExplainWorkflowFunction:
     def test_explain_workflow_with_format(self, sample_workflow_blueprint):
         """Test explain_workflow with output format."""
         from empathy_os.socratic.explainer import (
-            explain_workflow,
             OutputFormat,
+            explain_workflow,
         )
 
         explanation = explain_workflow(
@@ -362,9 +360,9 @@ class TestExplanationContent:
     def test_technical_includes_details(self, sample_workflow_blueprint):
         """Test technical explanation includes technical details."""
         from empathy_os.socratic.explainer import (
-            WorkflowExplainer,
             AudienceLevel,
             DetailLevel,
+            WorkflowExplainer,
         )
 
         explainer = WorkflowExplainer()
@@ -384,7 +382,7 @@ class TestExplanationContent:
 
     def test_business_avoids_jargon(self, sample_workflow_blueprint):
         """Test business explanation avoids technical jargon."""
-        from empathy_os.socratic.explainer import WorkflowExplainer, AudienceLevel
+        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer()
 
@@ -398,7 +396,7 @@ class TestExplanationContent:
 
     def test_beginner_uses_simple_language(self, sample_workflow_blueprint):
         """Test beginner explanation uses simple language."""
-        from empathy_os.socratic.explainer import WorkflowExplainer, AudienceLevel
+        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer()
 

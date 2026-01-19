@@ -16,15 +16,13 @@ from __future__ import annotations
 
 import json
 import logging
-import math
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from .blueprint import AgentBlueprint, WorkflowBlueprint, AgentRole
-from .success import SuccessEvaluation, MetricResult
-from .storage import StorageBackend, get_default_storage
+from .blueprint import AgentBlueprint, WorkflowBlueprint
+from .success import SuccessEvaluation
 
 logger = logging.getLogger(__name__)
 
@@ -171,7 +169,7 @@ class AgentPerformance:
             return 0.5  # Default neutral score
 
         # Weighted average
-        return sum(s * w for s, w in zip(scores, weights)) / sum(weights)
+        return sum(s * w for s, w in zip(scores, weights, strict=False)) / sum(weights)
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""

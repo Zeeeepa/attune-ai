@@ -4,8 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
-from datetime import datetime
 
 
 class TestParticipantRole:
@@ -306,9 +304,8 @@ class TestCollaborativeSession:
     def test_add_vote(self, sample_session):
         """Test adding a vote."""
         from empathy_os.socratic.collaboration import (
-            CollaborativeSession,
-            Change,
             ChangeType,
+            CollaborativeSession,
             VoteType,
         )
 
@@ -338,12 +335,11 @@ class TestCollaborativeSession:
     def test_get_voting_result(self, sample_session):
         """Test getting voting results."""
         from empathy_os.socratic.collaboration import (
-            CollaborativeSession,
-            Change,
             ChangeType,
-            VoteType,
+            CollaborativeSession,
             Participant,
             ParticipantRole,
+            VoteType,
         )
 
         collab = CollaborativeSession(
@@ -552,10 +548,10 @@ class TestSyncAdapter:
     def test_apply_change(self, sample_session):
         """Test applying a change."""
         from empathy_os.socratic.collaboration import (
-            SyncAdapter,
-            CollaborativeSession,
             Change,
             ChangeType,
+            CollaborativeSession,
+            SyncAdapter,
         )
 
         adapter = SyncAdapter()
@@ -580,10 +576,10 @@ class TestSyncAdapter:
     def test_merge_changes(self, sample_session):
         """Test merging concurrent changes."""
         from empathy_os.socratic.collaboration import (
-            SyncAdapter,
-            CollaborativeSession,
             Change,
             ChangeType,
+            CollaborativeSession,
+            SyncAdapter,
         )
 
         adapter = SyncAdapter()

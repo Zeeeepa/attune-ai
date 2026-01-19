@@ -15,11 +15,77 @@
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
-## What's New in v4.0.0 🎭 **PARADIGM SHIFT**
+## What's New in v4.2.0 🤖 **META-WORKFLOW SYSTEM**
 
-### **Meta-Orchestration: AI Agents That Compose Themselves**
+### **Intelligent Workflow Orchestration Through Forms + Dynamic Agents**
 
-**The breakthrough:** Instead of manually wiring agent workflows, v4.0 introduces a meta-orchestration system that analyzes tasks, selects optimal agent teams, chooses composition patterns, and learns from outcomes.
+**The breakthrough:** v4.2 introduces a meta-workflow system that combines Socratic forms (interactive questions), dynamic agent team creation, and pattern learning for self-improving workflows.
+
+**How it works:**
+
+1. 🎯 **Template Selection** - Choose from pre-built workflow templates (e.g., `python_package_publish`)
+2. 📝 **Socratic Forms** - Answer interactive questions about your workflow requirements
+3. 🤖 **Dynamic Agent Creation** - System generates optimized agent team based on your responses
+4. ⚡ **Progressive Execution** - Agents execute with tier escalation (cheap → capable → premium)
+5. 🧠 **Pattern Learning** - System learns from outcomes to optimize future workflows
+
+**Quick Start:**
+
+```bash
+# Run meta-workflow with interactive form
+empathy meta-workflow run python_package_publish
+
+# View pattern learning insights
+empathy meta-workflow analytics python_package_publish
+
+# List historical executions
+empathy meta-workflow list-runs
+```
+
+**Example workflow:**
+
+```python
+from empathy_os.meta_workflows import TemplateRegistry, MetaWorkflow, FormResponse
+
+# Load template
+registry = TemplateRegistry()
+template = registry.load_template("python_package_publish")
+
+# Create workflow
+workflow = MetaWorkflow(template=template)
+
+# Execute with form responses
+response = FormResponse(
+    template_id="python_package_publish",
+    responses={
+        "has_tests": "Yes",
+        "test_coverage_required": "90%",
+        "quality_checks": ["Linting (ruff)", "Type checking (mypy)"],
+        "version_bump": "minor",
+    },
+)
+result = workflow.execute(form_response=response, mock_execution=True)
+
+print(f"✅ Created {len(result.agents_created)} agents")
+print(f"💰 Total cost: ${result.total_cost:.2f}")
+```
+
+**Key Features:**
+
+- ✅ **Interactive forms** via `AskUserQuestion` (batched, max 4 at a time)
+- ✅ **Dynamic agent generation** from templates based on responses
+- ✅ **Hybrid storage** - files (persistent) + memory (semantic queries)
+- ✅ **Pattern learning** - analyzes historical executions for optimization
+- ✅ **7 CLI commands** - list, run, analytics, show, export, validate
+- ✅ **Security hardened** - OWASP Top 10 compliant, AST-verified
+
+---
+
+## What's in v4.0.0 🎭 **META-ORCHESTRATION**
+
+### **AI Agents That Compose Themselves**
+
+**The concept:** Instead of manually wiring agent workflows, v4.0 introduces a meta-orchestration system that analyzes tasks, selects optimal agent teams, chooses composition patterns, and learns from outcomes.
 
 **What this means:**
 

@@ -26,7 +26,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -420,9 +420,10 @@ class TrafficAllocator:
 
     def _fixed_allocation(self, user_id: str) -> Variant:
         """Deterministic allocation based on user ID hash."""
-        # Hash user ID for consistent assignment
+        # Hash user ID for consistent assignment (not for security)
         hash_val = int(hashlib.md5(
-            f"{self.experiment.experiment_id}:{user_id}".encode()
+            f"{self.experiment.experiment_id}:{user_id}".encode(),
+            usedforsecurity=False
         ).hexdigest(), 16)
         bucket = hash_val % 100
 

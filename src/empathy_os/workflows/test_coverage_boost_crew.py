@@ -1,15 +1,20 @@
 """Test Coverage Boost Crew - Multi-agent test generation workflow.
 
+.. deprecated:: 4.3.0
+    This workflow is deprecated in favor of the meta-workflow system.
+    Use ``empathy meta-workflow run test-coverage-boost`` instead.
+    See docs/CREWAI_MIGRATION.md for migration guide.
+
 This module provides a CrewAI-based workflow that uses 3 specialized agents
 to analyze coverage gaps, generate tests, and validate improvements.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
-
 import asyncio
 import json
 import re
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -197,11 +202,21 @@ class TestCoverageBoostCrew:
     ):
         """Initialize the test coverage boost crew.
 
+        .. deprecated:: 4.3.0
+            Use meta-workflow system instead: ``empathy meta-workflow run test-coverage-boost``
+
         Args:
             target_coverage: Target coverage percentage (0-100)
             project_root: Root directory of project to analyze
             **kwargs: Additional arguments (ignored, for CLI compatibility)
         """
+        warnings.warn(
+            "TestCoverageBoostCrew is deprecated since v4.3.0. "
+            "Use meta-workflow system instead: empathy meta-workflow run test-coverage-boost. "
+            "See docs/CREWAI_MIGRATION.md for migration guide.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         if not 0 <= target_coverage <= 100:
             raise ValueError("target_coverage must be between 0 and 100")
 

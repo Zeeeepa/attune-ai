@@ -27,7 +27,6 @@ import json
 import logging
 import os
 import sys
-from dataclasses import asdict
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -219,9 +218,9 @@ class SocraticMCPServer:
 
         try:
             from .engine import SocraticWorkflowBuilder
-            from .storage import JSONFileStorage, StorageManager
-            from .llm_analyzer import LLMGoalAnalyzer
             from .feedback import FeedbackLoop
+            from .llm_analyzer import LLMGoalAnalyzer
+            from .storage import JSONFileStorage, StorageManager
 
             # Initialize storage
             self._storage = JSONFileStorage()

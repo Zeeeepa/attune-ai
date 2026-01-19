@@ -54,3 +54,18 @@ If any checks fail:
 3. Suggest fixes for common problems
 
 Keep output concise but actionable.
+
+## Need Full Release Readiness Check?
+
+For comprehensive release preparation with an AI agent team, use:
+
+- `/release-prep` - Full security, testing, code quality, and documentation audit
+
+Or run directly:
+
+```bash
+empathy meta-workflow run release-prep --real --use-defaults
+```
+
+This deploys specialized agents for Security Auditor, Test Coverage Analyst,
+Code Quality Reviewer, and Documentation Specialist.

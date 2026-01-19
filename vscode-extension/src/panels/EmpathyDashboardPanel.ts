@@ -159,6 +159,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 case 'openWorkflowHistory':
                     vscode.commands.executeCommand('empathy.openWorkflowHistory');
                     break;
+                case 'runAgentTeam':
+                    await this._runAgentTeam(message.skill, message.template, message.label);
+                    break;
+                case 'createDynamic':
+                    await this._createDynamic(message.createType);
+                    break;
             }
         });
 
@@ -821,6 +827,113 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
         // Open dedicated CoveragePanel for test-coverage-boost (v4.0.0 CrewAI)
         // This panel has the target input dialog
         await vscode.commands.executeCommand('empathy.openCoveragePanel');
+    }
+
+    private _getClaudeCodeExtension(): vscode.Extension<unknown> | undefined {
+        // Check for Claude Code VSCode extension (preferred for form-based UX)
+        // Try multiple possible extension IDs
+        const extensionIds = [
+            'anthropic.claude-code',
+            'anthropics.claude-code',
+            'claude.code'
+        ];
+        for (const id of extensionIds) {
+            const ext = vscode.extensions.getExtension(id);
+            if (ext) {
+                return ext;
+            }
+        }
+        return undefined;
+    }
+
+    private async _startClaudeCodeWithSkill(skill: string, fallbackLabel: string, fallbackCommand: string) {
+        // v4.4: Start Claude Code webview with skill command
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceFolder) {
+            vscode.window.showErrorMessage('No workspace folder open');
+            return;
+        }
+
+        const claudeExt = this._getClaudeCodeExtension();
+
+        if (claudeExt) {
+            // Claude Code extension found - use webview panel
+            vscode.window.showInformationMessage(`Starting Claude Code with ${skill}...`);
+
+            // Open Claude Code and auto-send the skill command
+            try {
+                // Start a new conversation in Claude Code
+                await vscode.commands.executeCommand('claude-vscode.newConversation');
+
+                // Wait for panel to initialize
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Focus the Claude Code input
+                await vscode.commands.executeCommand('claude-vscode.focus');
+
+                // Wait a moment for focus
+                await new Promise(resolve => setTimeout(resolve, 200));
+
+                // Copy skill to clipboard and paste it
+                await vscode.env.clipboard.writeText(skill);
+
+                // Use VSCode's paste command to paste into focused input
+                await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+
+                // Wait a moment then simulate Enter to send
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                // Try to send the message by simulating Enter key
+                await vscode.commands.executeCommand('type', { text: '\n' });
+
+                vscode.window.showInformationMessage(
+                    `Running ${skill} in Claude Code...`
+                );
+            } catch (error) {
+                // Fallback: copy to clipboard and let user paste
+                await vscode.env.clipboard.writeText(skill);
+                try {
+                    await vscode.commands.executeCommand('claude-vscode.sidebar.open');
+                } catch {
+                    // Sidebar command failed, ignore
+                }
+                vscode.window.showInformationMessage(
+                    `Skill "${skill}" copied to clipboard. Paste in Claude Code to run.`
+                );
+            }
+        } else {
+            // No Claude Code extension - fall back to terminal
+            vscode.window.showInformationMessage(
+                `Running ${fallbackLabel} in terminal (install Claude Code extension for better experience)...`
+            );
+            const terminal = vscode.window.createTerminal({
+                name: `Empathy: ${fallbackLabel}`,
+                cwd: workspaceFolder
+            });
+            terminal.show();
+            terminal.sendText(fallbackCommand);
+        }
+    }
+
+    private async _runAgentTeam(skill: string, template: string, label: string) {
+        // v4.4: Run agent team via Claude Code webview
+        await this._startClaudeCodeWithSkill(
+            skill,
+            label,
+            `empathy meta-workflow run ${template} --real --use-defaults`
+        );
+    }
+
+    private async _createDynamic(createType: string) {
+        // v4.4: Dynamic agent/team creation via Claude Code webview
+        const skill = createType === 'agent' ? '/create-agent' : '/create-team';
+        const label = createType === 'agent' ? 'Create Agent' : 'Create Team';
+
+        await this._startClaudeCodeWithSkill(
+            skill,
+            label,
+            `empathy meta-workflow ${createType === 'agent' ? 'create-agent' : 'create-team'} --interactive`
+        );
     }
 
     private async _runWorkflow(workflowName: string, input?: string) {
@@ -2141,27 +2254,44 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 </button>
             </div>
 
-            <!-- Meta-Orchestration (v4.0) - Real Analysis Tools -->
+            <!-- AI Agent Teams (v4.4) - Multi-Agent Workflows -->
             <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600; display: flex; align-items: center; gap: 6px;">
-                <span>META-ORCHESTRATION</span>
-                <span style="background: linear-gradient(90deg, #8b5cf6, #ec4899); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">v4.0</span>
-                <span style="font-size: 9px; opacity: 0.7; font-weight: 400;">Real Analysis Tools</span>
+                <span>AI AGENT TEAMS</span>
+                <span style="background: linear-gradient(90deg, #10b981, #3b82f6); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">v4.4</span>
             </div>
-            <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" id="btn-health-check-v4" title="Adaptive health check with 3 modes (daily: 3 agents, weekly: 5 agents, release: 6 agents) - Auto-opens VS Code panel">
-                    <span class="action-icon">&#x1FA7A;</span>
-                    <span>Health Check</span>
-                </button>
-                <button class="action-btn workflow-btn" id="btn-release-prep-v4" title="Parallel release validation (4 agents: Security, Coverage, Quality, Docs) with quality gates">
-                    <span class="action-icon">&#x1F4CB;</span>
+            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/release-prep" data-template="release-prep" title="Deploy 4 AI agents: Security Auditor, Test Coverage Analyst, Code Quality Reviewer, Documentation Specialist">
+                    <span class="action-icon">&#x1F680;</span>
                     <span>Release Prep</span>
                 </button>
-                <!-- Coverage Boost DISABLED (v4.0.0) - Poor quality (0% test pass rate), needs redesign
-                <button class="action-btn workflow-btn" id="btn-coverage-boost-v4" title="Intelligent test coverage boost with gap analysis and smart generation">
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/test-coverage" data-template="test-coverage-boost" title="Deploy 3 AI agents: Gap Analyzer, Test Generator, Test Validator - Boost your test coverage">
                     <span class="action-icon">&#x1F3AF;</span>
-                    <span>Coverage Boost</span>
+                    <span>Test Coverage</span>
                 </button>
-                -->
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/test-maintenance" data-template="test-maintenance" title="Deploy 4 AI agents: Test Analyst, Test Generator, Test Validator, Reporter - Maintain test health">
+                    <span class="action-icon">&#x1F527;</span>
+                    <span>Test Maintenance</span>
+                </button>
+                <button class="action-btn workflow-btn agent-team-btn" data-skill="/manage-docs" data-template="manage-docs" title="Deploy 3 AI agents: Documentation Analyst, Reviewer, Synthesizer - Keep docs in sync with code">
+                    <span class="action-icon">&#x1F4DA;</span>
+                    <span>Manage Docs</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Agent/Team Creation (v4.4) -->
+            <div style="margin-top: 8px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                <span>CREATE CUSTOM</span>
+                <span style="background: linear-gradient(90deg, #8b5cf6, #d946ef); color: white; font-size: 8px; padding: 2px 6px; border-radius: 8px; font-weight: 700;">DYNAMIC</span>
+            </div>
+            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <button class="action-btn workflow-btn dynamic-create-btn" data-create-type="agent" title="Create a custom AI agent with Socratic-guided questions">
+                    <span class="action-icon">&#x1F916;</span>
+                    <span>New Agent</span>
+                </button>
+                <button class="action-btn workflow-btn dynamic-create-btn" data-create-type="team" title="Create a custom AI agent team with Socratic-guided workflow">
+                    <span class="action-icon">&#x1F465;</span>
+                    <span>New Team</span>
+                </button>
             </div>
 
             <!-- Release -->
@@ -2462,17 +2592,35 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
             });
         }
 
-        // Coverage Boost button disabled for v4.0.0 - feature needs redesign (0% test pass rate)
-        /*
-        const coverageBoostBtn = document.getElementById('btn-coverage-boost-v4');
-        if (coverageBoostBtn) {
-            coverageBoostBtn.addEventListener('click', function(e) {
+        // AI Agent Team button handlers (v4.4) - Copy skill and suggest Claude Code
+        document.querySelectorAll('.agent-team-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                console.log('[EmpathyDashboard] Coverage Boost v4 clicked - running workflow');
-                vscode.postMessage({ type: 'runOrchestratedTestCoverage' });
+                const skill = this.dataset.skill;
+                const template = this.dataset.template;
+                const label = this.querySelector('span:not(.action-icon)').textContent;
+                console.log('[EmpathyDashboard] Agent team button clicked:', template);
+                vscode.postMessage({
+                    type: 'runAgentTeam',
+                    skill: skill,
+                    template: template,
+                    label: label
+                });
             });
-        }
-        */
+        });
+
+        // Dynamic Agent/Team creation button handlers (v4.4) - Socratic-guided creation
+        document.querySelectorAll('.dynamic-create-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const createType = this.dataset.createType;
+                console.log('[EmpathyDashboard] Dynamic create button clicked:', createType);
+                vscode.postMessage({
+                    type: 'createDynamic',
+                    createType: createType
+                });
+            });
+        });
 
         // Workflow button click handlers - show input panel first
         const workflowBtns = document.querySelectorAll('.action-btn[data-workflow]');

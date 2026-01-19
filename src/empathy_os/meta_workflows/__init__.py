@@ -12,6 +12,12 @@ Version: 1.0.0 (experimental)
 
 from empathy_os.meta_workflows.agent_creator import DynamicAgentCreator
 from empathy_os.meta_workflows.form_engine import SocraticFormEngine
+from empathy_os.meta_workflows.intent_detector import (
+    IntentDetector,
+    IntentMatch,
+    auto_detect_template,
+    detect_and_suggest,
+)
 from empathy_os.meta_workflows.models import (
     AgentCompositionRule,
     AgentExecutionResult,
@@ -60,4 +66,9 @@ __all__ = [
     # Analytics
     "PatternInsight",
     "PatternLearner",
+    # Intent detection
+    "IntentDetector",
+    "IntentMatch",
+    "auto_detect_template",
+    "detect_and_suggest",
 ]

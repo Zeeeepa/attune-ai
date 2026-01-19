@@ -26,8 +26,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from .blueprint import AgentRole, ToolCategory
-
+from .blueprint import AgentRole
 
 # =============================================================================
 # DOMAIN DEFINITIONS

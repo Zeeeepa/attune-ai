@@ -32,6 +32,7 @@ from empathy_os.meta_workflows import (
     list_execution_results,
     load_execution_result,
 )
+from empathy_os.meta_workflows.intent_detector import IntentDetector
 
 # Create Typer app for meta-workflow commands
 meta_workflow_app = typer.Typer(
@@ -76,15 +77,29 @@ def list_templates(
             console.print("placing template JSON files in the templates directory.")
             return
 
-        console.print(f"\n[bold]Available Templates[/bold] ({len(template_ids)}):\n")
+        # Count built-in vs user templates
+        builtin_count = sum(1 for t in template_ids if registry.is_builtin(t))
+        user_count = len(template_ids) - builtin_count
+
+        console.print(f"\n[bold]Available Templates[/bold] ({len(template_ids)} total)")
+        console.print(f"  [cyan]📦 Built-in:[/cyan] {builtin_count}  [green]👤 User:[/green] {user_count}\n")
+
+        # Show migration hint for users coming from Crew workflows
+        if builtin_count > 0:
+            console.print("[dim]💡 Tip: Built-in templates replace deprecated Crew workflows.[/dim]")
+            console.print("[dim]   See: empathy meta-workflow migrate --help[/dim]\n")
 
         for template_id in template_ids:
             template = registry.load_template(template_id)
 
             if template:
+                # Add badge for built-in templates
+                is_builtin = registry.is_builtin(template_id)
+                badge = "[cyan]📦 BUILT-IN[/cyan]" if is_builtin else "[green]👤 USER[/green]"
+
                 # Create info panel
                 info_lines = [
-                    f"[bold]{template.name}[/bold]",
+                    f"[bold]{template.name}[/bold] {badge}",
                     f"[dim]{template.description}[/dim]",
                     "",
                     f"ID: {template.template_id}",
@@ -99,7 +114,11 @@ def list_templates(
                     f"Est. Duration: ~{template.estimated_duration_minutes} min",
                 ]
 
-                console.print(Panel("\n".join(info_lines), border_style="blue"))
+                # Add quick start command
+                info_lines.append("")
+                info_lines.append(f"[bold]Quick Start:[/bold] empathy meta-workflow run {template_id}")
+
+                console.print(Panel("\n".join(info_lines), border_style="blue" if is_builtin else "green"))
                 console.print()
 
     except Exception as e:
@@ -215,6 +234,12 @@ def run_workflow(
         "-m",
         help="Enable memory integration for enhanced analytics",
     ),
+    use_defaults: bool = typer.Option(
+        False,
+        "--use-defaults",
+        "-d",
+        help="Use default values instead of asking questions (non-interactive mode)",
+    ),
     user_id: str = typer.Option(
         "cli_user",
         "--user-id",
@@ -226,11 +251,16 @@ def run_workflow(
 
     This will:
     1. Load the template
-    2. Ask form questions interactively (via AskUserQuestion)
+    2. Ask form questions interactively (or use defaults with --use-defaults)
     3. Generate dynamic agent team
     4. Execute agents (mock or real)
     5. Save results (files + optional memory)
     6. Display summary
+
+    Examples:
+        empathy meta-workflow run release-prep
+        empathy meta-workflow run test-coverage-boost --real
+        empathy meta-workflow run manage-docs --use-defaults
     """
     try:
         # Load template
@@ -264,11 +294,13 @@ def run_workflow(
             pattern_learner=pattern_learner,
         )
 
-        # Execute (will ask questions via AskUserQuestion)
+        # Execute (will ask questions via AskUserQuestion unless --use-defaults)
         console.print("\n[bold]Executing workflow...[/bold]")
         console.print(f"Mode: {'Mock' if mock else 'Real'}")
+        if use_defaults:
+            console.print("[cyan]Using default values (non-interactive)[/cyan]")
 
-        result = workflow.execute(mock_execution=mock)
+        result = workflow.execute(mock_execution=mock, use_defaults=use_defaults)
 
         # Display summary
         console.print("\n[bold green]Execution Complete![/bold green]\n")
@@ -311,6 +343,155 @@ def run_workflow(
         console.print(f"\n[red]Error:[/red] {e}")
         import traceback
         traceback.print_exc()
+        raise typer.Exit(code=1)
+
+
+@meta_workflow_app.command("ask")
+def natural_language_run(
+    request: str = typer.Argument(..., help="Natural language description of what you need"),
+    auto_run: bool = typer.Option(
+        False,
+        "--auto",
+        "-a",
+        help="Automatically run if high confidence match (>60%)",
+    ),
+    mock: bool = typer.Option(
+        True,
+        "--mock/--real",
+        help="Use mock execution (for testing)",
+    ),
+    use_defaults: bool = typer.Option(
+        True,
+        "--use-defaults/--interactive",
+        "-d/-i",
+        help="Use default values (non-interactive)",
+    ),
+):
+    """Create agent teams using natural language.
+
+    Analyzes your request and suggests appropriate agent teams.
+    Use --auto to automatically run the best match.
+
+    Examples:
+        empathy meta-workflow ask "I need to prepare for a release"
+        empathy meta-workflow ask "improve my test coverage" --auto --real
+        empathy meta-workflow ask "check if documentation is up to date"
+    """
+    try:
+        detector = IntentDetector()
+        matches = detector.detect(request)
+
+        if not matches:
+            console.print("\n[yellow]I couldn't identify a matching agent team for your request.[/yellow]")
+            console.print("\n[bold]Available agent teams:[/bold]")
+            console.print("  • [cyan]release-prep[/cyan] - Security, testing, code quality, documentation checks")
+            console.print("  • [cyan]test-coverage-boost[/cyan] - Analyze and improve test coverage")
+            console.print("  • [cyan]test-maintenance[/cyan] - Test lifecycle management")
+            console.print("  • [cyan]manage-docs[/cyan] - Documentation sync and gap detection")
+            console.print("\n[dim]Try: empathy meta-workflow run <template-id>[/dim]\n")
+            return
+
+        # Show detected matches
+        console.print(f"\n[bold]Analyzing:[/bold] \"{request}\"\n")
+
+        best_match = matches[0]
+        confidence_pct = int(best_match.confidence * 100)
+
+        # If auto-run and high confidence, run immediately
+        if auto_run and best_match.confidence >= 0.6:
+            console.print(f"[bold green]Auto-detected:[/bold green] {best_match.template_name} ({confidence_pct}% confidence)")
+            console.print(f"[dim]{best_match.description}[/dim]\n")
+            console.print(f"[bold]Running {best_match.template_id}...[/bold]\n")
+
+            # Run the workflow
+            ctx = typer.Context(run_workflow)
+            run_workflow(
+                template_id=best_match.template_id,
+                mock=mock,
+                use_memory=False,
+                use_defaults=use_defaults,
+                user_id="cli_user",
+            )
+            return
+
+        # Show suggestions
+        console.print("[bold]Suggested Agent Teams:[/bold]\n")
+
+        for i, match in enumerate(matches[:3], 1):
+            confidence = int(match.confidence * 100)
+            style = "green" if match.confidence >= 0.6 else "yellow" if match.confidence >= 0.4 else "dim"
+
+            console.print(f"  {i}. [{style}]{match.template_name}[/{style}] ({confidence}% match)")
+            console.print(f"     [dim]{match.description}[/dim]")
+            if match.matched_keywords:
+                keywords = ", ".join(match.matched_keywords[:5])
+                console.print(f"     [dim]Matched: {keywords}[/dim]")
+            console.print(f"     Run: [cyan]empathy meta-workflow run {match.template_id}[/cyan]")
+            console.print()
+
+        # Prompt to run best match
+        if best_match.confidence >= 0.5:
+            console.print("[bold]Quick Run:[/bold] Use [cyan]--auto[/cyan] to automatically run the best match")
+            console.print(f"[dim]Example: empathy meta-workflow ask \"{request}\" --auto --real[/dim]\n")
+
+    except Exception as e:
+        console.print(f"[red]Error:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
+@meta_workflow_app.command("detect")
+def detect_intent(
+    request: str = typer.Argument(..., help="Natural language request to analyze"),
+    threshold: float = typer.Option(
+        0.3,
+        "--threshold",
+        "-t",
+        help="Minimum confidence threshold (0.0-1.0)",
+    ),
+):
+    """Detect intent from natural language without running.
+
+    Useful for testing what agent teams would be suggested for a given request.
+
+    Examples:
+        empathy meta-workflow detect "check security vulnerabilities"
+        empathy meta-workflow detect "generate more tests" --threshold 0.5
+    """
+    try:
+        detector = IntentDetector()
+        matches = detector.detect(request, threshold=threshold)
+
+        console.print(f"\n[bold]Intent Analysis:[/bold] \"{request}\"\n")
+        console.print(f"[dim]Threshold: {threshold:.0%}[/dim]\n")
+
+        if not matches:
+            console.print("[yellow]No matches above threshold.[/yellow]\n")
+            return
+
+        # Create table
+        table = Table(show_header=True)
+        table.add_column("Template", style="cyan")
+        table.add_column("Confidence", justify="right")
+        table.add_column("Matched Keywords")
+        table.add_column("Would Auto-Run?")
+
+        for match in matches:
+            confidence = f"{match.confidence:.0%}"
+            keywords = ", ".join(match.matched_keywords[:4])
+            auto_run = "✅ Yes" if match.confidence >= 0.6 else "❌ No"
+
+            table.add_row(
+                match.template_id,
+                confidence,
+                keywords or "-",
+                auto_run,
+            )
+
+        console.print(table)
+        console.print()
+
+    except Exception as e:
+        console.print(f"[red]Error:[/red] {e}")
         raise typer.Exit(code=1)
 
 
@@ -981,6 +1162,389 @@ def suggest_defaults_cmd(
     except Exception as e:
         console.print(f"[red]Error:[/red] {e}")
         raise typer.Exit(code=1)
+
+
+# =============================================================================
+# Migration Commands
+# =============================================================================
+
+
+@meta_workflow_app.command("migrate")
+def show_migration_guide(
+    crew_name: str | None = typer.Argument(
+        None,
+        help="Specific Crew workflow name (optional)",
+    ),
+):
+    """Show migration guide from deprecated Crew workflows.
+
+    Displays information about migrating from the deprecated Crew-based
+    workflows to the new meta-workflow system.
+
+    Examples:
+        empathy meta-workflow migrate
+        empathy meta-workflow migrate ReleasePreparationCrew
+    """
+    # Migration mapping
+    CREW_MIGRATION_MAP = {
+        "ReleasePreparationCrew": {
+            "template_id": "release-prep",
+            "old_import": "from empathy_os.workflows.release_prep_crew import ReleasePreparationCrew",
+            "old_usage": "crew = ReleasePreparationCrew(project_root='.')\nresult = await crew.execute()",
+            "new_usage": "empathy meta-workflow run release-prep",
+        },
+        "TestCoverageBoostCrew": {
+            "template_id": "test-coverage-boost",
+            "old_import": "from empathy_os.workflows.test_coverage_boost_crew import TestCoverageBoostCrew",
+            "old_usage": "crew = TestCoverageBoostCrew(target_coverage=85.0)\nresult = await crew.execute()",
+            "new_usage": "empathy meta-workflow run test-coverage-boost",
+        },
+        "TestMaintenanceCrew": {
+            "template_id": "test-maintenance",
+            "old_import": "from empathy_os.workflows.test_maintenance_crew import TestMaintenanceCrew",
+            "old_usage": "crew = TestMaintenanceCrew('.')\nresult = await crew.run(mode='full')",
+            "new_usage": "empathy meta-workflow run test-maintenance",
+        },
+        "ManageDocumentationCrew": {
+            "template_id": "manage-docs",
+            "old_import": "from empathy_os.workflows.manage_documentation import ManageDocumentationCrew",
+            "old_usage": "crew = ManageDocumentationCrew()\nresult = await crew.execute(path='./src')",
+            "new_usage": "empathy meta-workflow run manage-docs",
+        },
+    }
+
+    console.print("\n[bold cyan]🔄 Crew → Meta-Workflow Migration Guide[/bold cyan]\n")
+
+    if crew_name:
+        # Show specific migration
+        if crew_name not in CREW_MIGRATION_MAP:
+            console.print(f"[red]Unknown Crew workflow:[/red] {crew_name}")
+            console.print("\n[bold]Available Crew workflows:[/bold]")
+            for name in CREW_MIGRATION_MAP:
+                console.print(f"  • {name}")
+            raise typer.Exit(code=1)
+
+        info = CREW_MIGRATION_MAP[crew_name]
+        console.print(f"[bold]Migrating:[/bold] {crew_name}\n")
+
+        console.print("[bold red]DEPRECATED (Before):[/bold red]")
+        console.print(f"[dim]{info['old_import']}[/dim]")
+        console.print(f"\n[yellow]{info['old_usage']}[/yellow]\n")
+
+        console.print("[bold green]RECOMMENDED (After):[/bold green]")
+        console.print(f"[green]{info['new_usage']}[/green]\n")
+
+        console.print("[bold]Benefits:[/bold]")
+        console.print("  ✓ No CrewAI/LangChain dependency required")
+        console.print("  ✓ Interactive configuration via Socratic questions")
+        console.print("  ✓ Automatic cost optimization with tier escalation")
+        console.print("  ✓ Session context for learning preferences")
+        console.print("  ✓ Built-in analytics and pattern learning\n")
+
+        console.print(f"[dim]Try it now: empathy meta-workflow run {info['template_id']}[/dim]\n")
+
+    else:
+        # Show overview
+        console.print("[bold]Why Migrate?[/bold]")
+        console.print("  The Crew-based workflows are deprecated since v4.3.0.")
+        console.print("  The meta-workflow system provides the same functionality")
+        console.print("  with better cost optimization and no extra dependencies.\n")
+
+        # Show migration table
+        table = Table(title="Migration Map", show_header=True)
+        table.add_column("Deprecated Crew", style="yellow")
+        table.add_column("Meta-Workflow Command", style="green")
+        table.add_column("Template ID", style="cyan")
+
+        for crew_name, info in CREW_MIGRATION_MAP.items():
+            table.add_row(
+                crew_name,
+                info["new_usage"],
+                info["template_id"],
+            )
+
+        console.print(table)
+
+        console.print("\n[bold]Quick Start:[/bold]")
+        console.print("  1. List available templates: [cyan]empathy meta-workflow list-templates[/cyan]")
+        console.print("  2. Run a workflow: [cyan]empathy meta-workflow run release-prep[/cyan]")
+        console.print("  3. View results: [cyan]empathy meta-workflow list-runs[/cyan]\n")
+
+        console.print("[bold]More Details:[/bold]")
+        console.print("  • Migration guide: [dim]empathy meta-workflow migrate <CrewName>[/dim]")
+        console.print("  • Full documentation: [dim]docs/CREWAI_MIGRATION.md[/dim]\n")
+
+
+# =============================================================================
+# Dynamic Agent/Team Creation Commands (v4.4)
+# =============================================================================
+
+
+@meta_workflow_app.command("create-agent")
+def create_agent(
+    interactive: bool = typer.Option(
+        True,
+        "--interactive/--quick",
+        "-i/-q",
+        help="Use interactive Socratic-guided creation",
+    ),
+    name: str = typer.Option(
+        None,
+        "--name",
+        "-n",
+        help="Agent name (for quick mode)",
+    ),
+    role: str = typer.Option(
+        None,
+        "--role",
+        "-r",
+        help="Agent role description (for quick mode)",
+    ),
+    tier: str = typer.Option(
+        "capable",
+        "--tier",
+        "-t",
+        help="Model tier: cheap, capable, or premium",
+    ),
+    output_file: str = typer.Option(
+        None,
+        "--output",
+        "-o",
+        help="Save agent spec to file",
+    ),
+):
+    """Create a custom AI agent with Socratic-guided questions.
+
+    Interactive mode asks clarifying questions to help you define:
+    - Agent capabilities and responsibilities
+    - Model tier selection (cost vs quality tradeoff)
+    - Tools and success criteria
+
+    Quick mode creates an agent directly from provided options.
+
+    Examples:
+        empathy meta-workflow create-agent --interactive
+        empathy meta-workflow create-agent -q --name "SecurityBot" --role "Scan for vulnerabilities"
+    """
+    import json
+
+    if interactive:
+        console.print("\n[bold cyan]🤖 Create Custom Agent - Socratic Guide[/bold cyan]\n")
+        console.print("[dim]I'll ask you a few questions to help define your agent.[/dim]\n")
+
+        # Question 1: Purpose
+        console.print("[bold]1. What should this agent do?[/bold]")
+        purpose = typer.prompt("   Describe the agent's main purpose")
+
+        # Question 2: Specific tasks
+        console.print("\n[bold]2. What specific tasks will it perform?[/bold]")
+        console.print("   [dim]Examples: analyze code, generate tests, review PRs, write docs[/dim]")
+        tasks = typer.prompt("   List main tasks (comma-separated)")
+
+        # Question 3: Tier selection
+        console.print("\n[bold]3. What quality/cost balance do you need?[/bold]")
+        console.print("   [dim]cheap[/dim]    - Fast & low-cost, good for simple analysis")
+        console.print("   [dim]capable[/dim]  - Balanced, good for most development tasks")
+        console.print("   [dim]premium[/dim]  - Highest quality, for complex reasoning")
+        tier = typer.prompt("   Select tier", default="capable")
+
+        # Question 4: Tools
+        console.print("\n[bold]4. What tools should it have access to?[/bold]")
+        console.print("   [dim]Examples: file_read, file_write, web_search, code_exec[/dim]")
+        tools_input = typer.prompt("   List tools (comma-separated, or 'none')", default="none")
+        tools = [t.strip() for t in tools_input.split(",")] if tools_input != "none" else []
+
+        # Question 5: Success criteria
+        console.print("\n[bold]5. How will you measure success?[/bold]")
+        success = typer.prompt("   Describe success criteria")
+
+        # Generate name from purpose
+        name = purpose.split()[0].title() + "Agent" if not name else name
+
+        # Build agent spec
+        agent_spec = {
+            "name": name,
+            "role": purpose,
+            "tasks": [t.strip() for t in tasks.split(",")],
+            "tier": tier,
+            "tools": tools,
+            "success_criteria": success,
+            "base_template": "generic",
+        }
+
+    else:
+        # Quick mode
+        if not name or not role:
+            console.print("[red]Error:[/red] --name and --role required in quick mode")
+            console.print("[dim]Use --interactive for guided creation[/dim]")
+            raise typer.Exit(code=1)
+
+        agent_spec = {
+            "name": name,
+            "role": role,
+            "tier": tier,
+            "tools": [],
+            "success_criteria": "Task completed successfully",
+            "base_template": "generic",
+        }
+
+    # Display result
+    console.print("\n[bold green]✓ Agent Specification Created[/bold green]\n")
+
+    spec_json = json.dumps(agent_spec, indent=2)
+    console.print(Panel(spec_json, title=f"Agent: {agent_spec['name']}", border_style="green"))
+
+    # Save if requested
+    if output_file:
+        Path(output_file).write_text(spec_json)
+        console.print(f"\n[green]Saved to:[/green] {output_file}")
+
+    # Show usage
+    console.print("\n[bold]Next Steps:[/bold]")
+    console.print("  1. Use this agent in a custom team: [cyan]empathy meta-workflow create-team[/cyan]")
+    console.print("  2. Or add to an existing template manually")
+    console.print(f"\n[dim]Agent tier '{tier}' will cost approximately:")
+    costs = {"cheap": "$0.001-0.01", "capable": "$0.01-0.05", "premium": "$0.05-0.20"}
+    console.print(f"   {costs.get(tier, costs['capable'])} per execution[/dim]\n")
+
+
+@meta_workflow_app.command("create-team")
+def create_team(
+    interactive: bool = typer.Option(
+        True,
+        "--interactive/--quick",
+        "-i/-q",
+        help="Use interactive Socratic-guided creation",
+    ),
+    name: str = typer.Option(
+        None,
+        "--name",
+        "-n",
+        help="Team name (for quick mode)",
+    ),
+    goal: str = typer.Option(
+        None,
+        "--goal",
+        "-g",
+        help="Team goal description (for quick mode)",
+    ),
+    output_file: str = typer.Option(
+        None,
+        "--output",
+        "-o",
+        help="Save team template to file",
+    ),
+):
+    """Create a custom AI agent team with Socratic-guided workflow.
+
+    Interactive mode asks clarifying questions to help you define:
+    - Team composition and agent roles
+    - Collaboration pattern (sequential, parallel, mixed)
+    - Success criteria and cost estimates
+
+    Examples:
+        empathy meta-workflow create-team --interactive
+        empathy meta-workflow create-team -q --name "ReviewTeam" --goal "Code review pipeline"
+    """
+    import json
+
+    if interactive:
+        console.print("\n[bold cyan]👥 Create Custom Agent Team - Socratic Guide[/bold cyan]\n")
+        console.print("[dim]I'll help you design a team of agents that work together.[/dim]\n")
+
+        # Question 1: Goal
+        console.print("[bold]1. What is the team's overall goal?[/bold]")
+        console.print("   [dim]Example: prepare code for production release[/dim]")
+        goal = typer.prompt("   Describe the team's mission")
+
+        # Question 2: Agent count
+        console.print("\n[bold]2. How many agents should be on this team?[/bold]")
+        console.print("   [dim]Typical teams have 2-5 agents with specialized roles[/dim]")
+        agent_count = typer.prompt("   Number of agents", default="3")
+        agent_count = int(agent_count)
+
+        # Question 3: Agent roles
+        console.print(f"\n[bold]3. Define {agent_count} agent roles:[/bold]")
+        console.print("   [dim]Common roles: analyst, reviewer, generator, validator, reporter[/dim]")
+
+        agents = []
+        for i in range(agent_count):
+            console.print(f"\n   [bold]Agent {i+1}:[/bold]")
+            role = typer.prompt("     Role name")
+            purpose = typer.prompt("     What does this agent do?")
+            tier = typer.prompt("     Tier (cheap/capable/premium)", default="capable")
+
+            agents.append({
+                "role": role,
+                "purpose": purpose,
+                "tier": tier,
+                "base_template": "generic",
+            })
+
+        # Question 4: Collaboration pattern
+        console.print("\n[bold]4. How should agents collaborate?[/bold]")
+        console.print("   [dim]sequential[/dim] - Each agent waits for the previous one")
+        console.print("   [dim]parallel[/dim]   - All agents run simultaneously")
+        console.print("   [dim]mixed[/dim]      - Some parallel, then sequential synthesis")
+        pattern = typer.prompt("   Collaboration pattern", default="sequential")
+
+        # Question 5: Team name
+        console.print("\n[bold]5. What should we call this team?[/bold]")
+        name = typer.prompt("   Team name", default=goal.split()[0].title() + "Team")
+
+        # Build team template
+        team_template = {
+            "id": name.lower().replace(" ", "-"),
+            "name": name,
+            "description": goal,
+            "collaboration_pattern": pattern,
+            "agents": agents,
+            "estimated_cost_range": {
+                "min": len(agents) * 0.01,
+                "max": len(agents) * 0.15,
+            },
+        }
+
+    else:
+        # Quick mode
+        if not name or not goal:
+            console.print("[red]Error:[/red] --name and --goal required in quick mode")
+            console.print("[dim]Use --interactive for guided creation[/dim]")
+            raise typer.Exit(code=1)
+
+        # Create a default 3-agent team
+        team_template = {
+            "id": name.lower().replace(" ", "-"),
+            "name": name,
+            "description": goal,
+            "collaboration_pattern": "sequential",
+            "agents": [
+                {"role": "Analyst", "purpose": "Analyze requirements", "tier": "cheap", "base_template": "generic"},
+                {"role": "Executor", "purpose": "Perform main task", "tier": "capable", "base_template": "generic"},
+                {"role": "Validator", "purpose": "Verify results", "tier": "capable", "base_template": "generic"},
+            ],
+            "estimated_cost_range": {"min": 0.03, "max": 0.45},
+        }
+
+    # Display result
+    console.print("\n[bold green]✓ Agent Team Template Created[/bold green]\n")
+
+    spec_json = json.dumps(team_template, indent=2)
+    console.print(Panel(spec_json, title=f"Team: {team_template['name']}", border_style="green"))
+
+    # Save if requested
+    if output_file:
+        Path(output_file).write_text(spec_json)
+        console.print(f"\n[green]Saved to:[/green] {output_file}")
+
+    # Show usage
+    console.print("\n[bold]Next Steps:[/bold]")
+    console.print(f"  1. Save as template: [cyan]--output .empathy/meta_workflows/templates/{team_template['id']}.json[/cyan]")
+    console.print(f"  2. Run the team: [cyan]empathy meta-workflow run {team_template['id']}[/cyan]")
+
+    cost_min = team_template['estimated_cost_range']['min']
+    cost_max = team_template['estimated_cost_range']['max']
+    console.print(f"\n[dim]Estimated cost: ${cost_min:.2f} - ${cost_max:.2f} per execution[/dim]\n")
 
 
 if __name__ == "__main__":

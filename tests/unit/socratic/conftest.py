@@ -10,13 +10,13 @@ Licensed under Fair Source License 0.9
 import json
 import os
 import tempfile
+from collections.abc import Generator
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Generator
-from unittest.mock import AsyncMock, MagicMock, patch
+from typing import Any
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-
 
 # =============================================================================
 # PATH FIXTURES
@@ -63,7 +63,7 @@ def sample_answers() -> dict[str, Any]:
 @pytest.fixture
 def sample_session():
     """Create a sample SocraticSession for testing."""
-    from empathy_os.socratic.session import SocraticSession, SessionState
+    from empathy_os.socratic.session import SessionState, SocraticSession
 
     session = SocraticSession(session_id="test-session-001")
     session.goal = "Automate code reviews for Python"
@@ -93,7 +93,7 @@ def completed_session(sample_session):
 @pytest.fixture
 def sample_agent_spec():
     """Create a sample AgentSpec for testing."""
-    from empathy_os.socratic.blueprint import AgentSpec, AgentRole, ToolSpec, ToolCategory
+    from empathy_os.socratic.blueprint import AgentRole, AgentSpec, ToolCategory, ToolSpec
 
     return AgentSpec(
         agent_id="test-agent-001",
@@ -122,12 +122,12 @@ def sample_agent_spec():
 def sample_workflow_blueprint(sample_agent_spec):
     """Create a sample WorkflowBlueprint for testing."""
     from empathy_os.socratic.blueprint import (
-        WorkflowBlueprint,
-        StageSpec,
-        AgentSpec,
         AgentRole,
-        ToolSpec,
+        AgentSpec,
+        StageSpec,
         ToolCategory,
+        ToolSpec,
+        WorkflowBlueprint,
     )
 
     synthesizer = AgentSpec(
@@ -178,7 +178,7 @@ def sample_workflow_blueprint(sample_agent_spec):
 @pytest.fixture
 def sample_form():
     """Create a sample Form for testing."""
-    from empathy_os.socratic.forms import Form, FormField, FieldType, FieldOption
+    from empathy_os.socratic.forms import FieldOption, FieldType, Form, FormField
 
     return Form(
         form_id="test-form-001",
@@ -227,10 +227,10 @@ def sample_form():
 def sample_success_criteria():
     """Create sample SuccessCriteria for testing."""
     from empathy_os.socratic.success import (
+        MetricDirection,
+        MetricType,
         SuccessCriteria,
         SuccessMetric,
-        MetricType,
-        MetricDirection,
     )
 
     return SuccessCriteria(
@@ -364,7 +364,7 @@ def sample_embedded_goal():
 @pytest.fixture
 def vector_store(storage_path):
     """Create a VectorStore for testing."""
-    from empathy_os.socratic.embeddings import VectorStore, TFIDFEmbeddingProvider
+    from empathy_os.socratic.embeddings import TFIDFEmbeddingProvider, VectorStore
 
     return VectorStore(
         provider=TFIDFEmbeddingProvider(dimension=64),
@@ -381,8 +381,8 @@ def vector_store(storage_path):
 def sample_experiment(storage_path):
     """Create a sample Experiment for testing."""
     from empathy_os.socratic.ab_testing import (
-        ExperimentManager,
         AllocationStrategy,
+        ExperimentManager,
     )
 
     manager = ExperimentManager(storage_path=storage_path / "experiments.json")
@@ -408,7 +408,7 @@ def sample_experiment(storage_path):
 
 def create_test_session_with_goal(goal: str):
     """Helper to create a session with a specific goal."""
-    from empathy_os.socratic.session import SocraticSession, SessionState
+    from empathy_os.socratic.session import SessionState, SocraticSession
 
     session = SocraticSession()
     session.goal = goal

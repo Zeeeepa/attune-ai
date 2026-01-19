@@ -522,7 +522,7 @@ class AgentGenerator:
             generated_at=datetime.now().isoformat(),
         )
 
-    def _create_xml_agent(self, spec: AgentSpec) -> "XMLAgent":
+    def _create_xml_agent(self, spec: AgentSpec) -> XMLAgent:
         """Create an XMLAgent from a spec."""
         from ..workflows.xml_enhanced_crew import XMLAgent
 

@@ -1,5 +1,10 @@
 """Release Preparation Crew - Multi-Agent Workflow
 
+.. deprecated:: 4.3.0
+    This workflow is deprecated in favor of the meta-workflow system.
+    Use ``empathy meta-workflow run release-prep`` instead.
+    See docs/CREWAI_MIGRATION.md for migration guide.
+
 Comprehensive release readiness assessment using a multi-agent crew.
 
 Pattern: Crew
@@ -16,9 +21,9 @@ Agents:
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
-
 import asyncio
 import os
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -385,6 +390,9 @@ class ReleasePreparationCrew:
     ):
         """Initialize the crew with configured agents.
 
+        .. deprecated:: 4.3.0
+            Use meta-workflow system instead: ``empathy meta-workflow run release-prep``
+
         Args:
             project_root: Root directory of project to analyze
             quality_gates: Optional quality gate thresholds
@@ -394,6 +402,13 @@ class ReleasePreparationCrew:
                 - documentation: 100% doc coverage (default)
             **kwargs: Additional configuration
         """
+        warnings.warn(
+            "ReleasePreparationCrew is deprecated since v4.3.0. "
+            "Use meta-workflow system instead: empathy meta-workflow run release-prep. "
+            "See docs/CREWAI_MIGRATION.md for migration guide.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.config = kwargs
         self.project_root = project_root
         self._executor = None

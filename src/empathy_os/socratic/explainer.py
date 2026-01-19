@@ -21,9 +21,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from .blueprint import WorkflowBlueprint, AgentSpec, StageSpec, AgentRole
-from .success import SuccessCriteria, SuccessMetric
-
+from .blueprint import AgentRole, AgentSpec, StageSpec, WorkflowBlueprint
+from .success import SuccessCriteria
 
 # =============================================================================
 # EXPLANATION LEVELS
@@ -103,7 +102,7 @@ class Explanation:
         ]
 
         for section in self.sections:
-            html.append(f"<section>")
+            html.append("<section>")
             html.append(f"<h2>{section['heading']}</h2>")
             html.append(f"<p>{section['content']}</p>")
             html.append("</section>")

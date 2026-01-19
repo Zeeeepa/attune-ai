@@ -182,12 +182,18 @@ class SocraticFormEngine:
             questions: Questions in AskUserQuestion format
 
         Returns:
-            Dictionary mapping question header/id → default value
+            Dictionary mapping question_id → default value
         """
         defaults = {}
         for q in questions:
-            # Get question identifier (header is used as the key in AskUserQuestion)
-            key = q.get("header", q.get("question", "unknown"))
+            # Get question identifier - prefer question_id for agent rule matching
+            key = q.get("question_id", q.get("header", q.get("question", "unknown")))
+
+            # Check for explicit default value first
+            if "default" in q and q["default"]:
+                defaults[key] = q["default"]
+                logger.debug(f"Default for '{key}': {defaults[key]} (explicit)")
+                continue
 
             # Get default from options (first option is typically recommended)
             options = q.get("options", [])
@@ -201,7 +207,7 @@ class SocraticFormEngine:
             else:
                 defaults[key] = ""
 
-            logger.debug(f"Default for '{key}': {defaults[key]}")
+            logger.debug(f"Default for '{key}': {defaults[key]} (from options)")
 
         return defaults
 

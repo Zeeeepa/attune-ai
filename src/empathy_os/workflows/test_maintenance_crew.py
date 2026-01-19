@@ -1,5 +1,10 @@
 """Test Maintenance Crew - CrewAI-Based Automated Test Management
 
+.. deprecated:: 4.3.0
+    This workflow is deprecated in favor of the meta-workflow system.
+    Use ``empathy meta-workflow run test-maintenance`` instead.
+    See docs/CREWAI_MIGRATION.md for migration guide.
+
 A crew of specialized agents that collaboratively manage the test lifecycle:
 - Test Analyst: Analyzes coverage gaps and prioritizes work
 - Test Generator: Creates new tests using LLM
@@ -11,9 +16,9 @@ The crew can operate autonomously on a schedule or be triggered by events.
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
-
 import heapq
 import logging
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -643,6 +648,18 @@ class TestMaintenanceCrew:
         index: ProjectIndex | None = None,
         config: CrewConfig | None = None,
     ):
+        """Initialize the test maintenance crew.
+
+        .. deprecated:: 4.3.0
+            Use meta-workflow system instead: ``empathy meta-workflow run test-maintenance``
+        """
+        warnings.warn(
+            "TestMaintenanceCrew is deprecated since v4.3.0. "
+            "Use meta-workflow system instead: empathy meta-workflow run test-maintenance. "
+            "See docs/CREWAI_MIGRATION.md for migration guide.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.project_root = Path(project_root)
         self.index = index or ProjectIndex(str(project_root))
         self.config = config or CrewConfig()
