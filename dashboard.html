@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empathy Framework - Meta-Workflows Dashboard</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f9fafb;
+            --card-bg: #ffffff;
+            --text: #111827;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            padding: 0 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .template-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .template-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .template-header {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .template-icon {
+            font-size: 2rem;
+        }
+
+        .template-title {
+            flex: 1;
+        }
+
+        .template-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .template-id {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .template-description {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .template-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .cost-range {
+            background: linear-gradient(135deg, var(--success) 0%, var(--warning) 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .template-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 16px;
+            max-width: 900px;
+            max-height: 90vh;
+            width: 100%;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .question-group {
+            margin-bottom: 2rem;
+        }
+
+        .question-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-help {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        select, input[type="text"] {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: var(--bg);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .close-btn:hover {
+            background: var(--bg);
+        }
+
+        .agent-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .agent-card {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .agent-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .agent-meta {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .success-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🧠 Empathy Framework</h1>
+            <div class="subtitle">Meta-Workflow System v4.2.0 - Enterprise-Ready Workflow Orchestration</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Available Templates</div>
+                <div class="stat-value">5</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Questions</div>
+                <div class="stat-value">57</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Agents</div>
+                <div class="stat-value">44</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cost Range</div>
+                <div class="stat-value">$0.05-$3.50</div>
+            </div>
+        </div>
+
+        <div class="templates-grid" id="templates">
+            <!-- Templates will be rendered here -->
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title"></div>
+                <div id="modal-subtitle" class="question-help"></div>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary" onclick="showExecutionPreview()">🚀 Run Workflow</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const templates = [
+            {
+                id: 'test_creation_management_workflow',
+                name: 'Test Creation and Management Workflow',
+                description: 'Enterprise-level test creation, inspection, updating, and management with comprehensive coverage',
+                icon: '🧪',
+                questions: 12,
+                agents: 11,
+                cost_min: 0.30,
+                cost_max: 3.50,
+                details: {
+                    agents: [
+                        { name: 'test_analyzer', tier: 'capable_first', tools: ['coverage.py', 'pytest-cov', 'ast_parser'] },
+                        { name: 'unit_test_generator', tier: 'progressive', tools: ['pytest', 'unittest', 'hypothesis'] },
+                        { name: 'integration_test_creator', tier: 'capable_first', tools: ['pytest', 'docker', 'testcontainers'] },
+                        { name: 'e2e_test_designer', tier: 'capable_first', tools: ['playwright', 'selenium', 'cypress'] },
+                        { name: 'test_quality_validator', tier: 'progressive', tools: ['pytest', 'pytest-clarity', 'mutmut'] },
+                        { name: 'test_updater', tier: 'progressive', tools: ['pytest', 'ast_rewriter', 'refactoring_tools'] },
+                        { name: 'fixture_manager', tier: 'cheap_only', tools: ['pytest-fixtures', 'factory_boy', 'faker'] },
+                        { name: 'performance_test_creator', tier: 'capable_first', tools: ['pytest-benchmark', 'locust', 'k6'] },
+                        { name: 'test_report_generator', tier: 'cheap_only', tools: ['coverage', 'pytest-html', 'allure'] },
+                        { name: 'ci_integration_specialist', tier: 'cheap_only', tools: ['github-actions', 'codecov', 'coveralls'] },
+                        { name: 'test_documentation_writer', tier: 'progressive', tools: ['markdown', 'mkdocs'] },
+                    ]
+                }
+            },
+            {
+                id: 'code_refactoring_workflow',
+                name: 'Code Refactoring Workflow',
+                description: 'Safe code refactoring with validation, testing, and review',
+                icon: '🔧',
+                questions: 8,
+                agents: 8,
+                cost_min: 0.15,
+                cost_max: 2.50,
+                details: {
+                    agents: [
+                        { name: 'code_analyzer', tier: 'capable_first', tools: ['ast_parser', 'complexity_analyzer'] },
+                        { name: 'test_runner_before', tier: 'cheap_only', tools: ['pytest'] },
+                        { name: 'refactoring_planner', tier: 'capable_first', tools: ['ast_parser'] },
+                        { name: 'code_refactorer', tier: 'progressive', tools: ['rope', 'bowler'] },
+                        { name: 'style_enforcer', tier: 'cheap_only', tools: ['black', 'ruff'] },
+                        { name: 'test_runner_after', tier: 'cheap_only', tools: ['pytest'] },
+                        { name: 'diff_reviewer', tier: 'capable_first', tools: ['git'] },
+                        { name: 'validation_reporter', tier: 'cheap_only', tools: ['markdown'] },
+                    ]
+                }
+            },
+            {
+                id: 'security_audit_workflow',
+                name: 'Security Audit Workflow',
+                description: 'Comprehensive security audit with vulnerability scanning, dependency checking, and compliance validation',
+                icon: '🔒',
+                questions: 9,
+                agents: 8,
+                cost_min: 0.25,
+                cost_max: 3.00,
+                details: {
+                    agents: [
+                        { name: 'vulnerability_scanner', tier: 'capable_first', tools: ['bandit', 'semgrep'] },
+                        { name: 'dependency_checker', tier: 'cheap_only', tools: ['safety', 'snyk'] },
+                        { name: 'secret_detector', tier: 'cheap_only', tools: ['detect-secrets', 'truffleHog'] },
+                        { name: 'owasp_validator', tier: 'capable_first', tools: ['owasp-zap'] },
+                        { name: 'config_auditor', tier: 'progressive', tools: ['checkov'] },
+                        { name: 'compliance_validator', tier: 'capable_first', tools: ['compliance-checker'] },
+                        { name: 'report_generator', tier: 'cheap_only', tools: ['markdown', 'json'] },
+                        { name: 'issue_creator', tier: 'cheap_only', tools: ['gh', 'jira'] },
+                    ]
+                }
+            },
+            {
+                id: 'documentation_generation_workflow',
+                name: 'Documentation Generation Workflow',
+                description: 'Automated documentation generation from code with examples, API references, and user guides',
+                icon: '📚',
+                questions: 10,
+                agents: 9,
+                cost_min: 0.20,
+                cost_max: 2.80,
+                details: {
+                    agents: [
+                        { name: 'code_analyzer', tier: 'capable_first', tools: ['ast_parser'] },
+                        { name: 'api_doc_generator', tier: 'progressive', tools: ['sphinx', 'mkdocs'] },
+                        { name: 'example_generator', tier: 'capable_first', tools: ['ast_parser'] },
+                        { name: 'user_guide_writer', tier: 'capable_first', tools: ['markdown'] },
+                        { name: 'diagram_generator', tier: 'progressive', tools: ['graphviz', 'mermaid'] },
+                        { name: 'readme_updater', tier: 'cheap_only', tools: ['markdown'] },
+                        { name: 'link_validator', tier: 'cheap_only', tools: ['linkchecker'] },
+                        { name: 'documentation_formatter', tier: 'cheap_only', tools: ['prettier', 'mdformat'] },
+                        { name: 'quality_reviewer', tier: 'progressive', tools: ['grammarly-cli'] },
+                    ]
+                }
+            },
+            {
+                id: 'python_package_publish',
+                name: 'Python Package Publishing Workflow',
+                description: 'End-to-end workflow for publishing Python packages to PyPI with quality checks',
+                icon: '📦',
+                questions: 8,
+                agents: 8,
+                cost_min: 0.05,
+                cost_max: 0.30,
+                details: {
+                    agents: [
+                        { name: 'test_runner', tier: 'cheap_only', tools: ['pytest'] },
+                        { name: 'coverage_checker', tier: 'cheap_only', tools: ['coverage'] },
+                        { name: 'quality_validator', tier: 'cheap_only', tools: ['ruff', 'mypy'] },
+                        { name: 'version_bumper', tier: 'cheap_only', tools: ['bumpversion'] },
+                        { name: 'changelog_updater', tier: 'cheap_only', tools: ['git'] },
+                        { name: 'build_creator', tier: 'cheap_only', tools: ['build'] },
+                        { name: 'pypi_publisher', tier: 'cheap_only', tools: ['twine'] },
+                        { name: 'notification_sender', tier: 'cheap_only', tools: ['email', 'slack'] },
+                    ]
+                }
+            },
+        ];
+
+        function renderTemplates() {
+            const container = document.getElementById('templates');
+            container.innerHTML = templates.map(t => `
+                <div class="template-card" onclick="showTemplate('${t.id}')">
+                    <div class="template-header">
+                        <div class="template-icon">${t.icon}</div>
+                        <div class="template-title">
+                            <div class="template-name">${t.name}</div>
+                            <div class="template-id">${t.id}</div>
+                        </div>
+                    </div>
+                    <div class="template-description">${t.description}</div>
+                    <div class="template-meta">
+                        <span class="meta-badge">📋 ${t.questions} questions</span>
+                        <span class="meta-badge">🤖 ${t.agents} agents</span>
+                        <span class="meta-badge cost-range">💰 $${t.cost_min.toFixed(2)}-$${t.cost_max.toFixed(2)}</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary" onclick="event.stopPropagation(); inspectTemplate('${t.id}')">Inspect</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); showTemplate('${t.id}')">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showTemplate(templateId) {
+            const template = templates.find(t => t.id === templateId);
+            if (!template) return;
+
+            currentTemplate = template; // Store for execution
+
+            document.getElementById('modal-title').textContent = template.name;
+            document.getElementById('modal-subtitle').textContent = template.description;
+
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Agent Team (${template.agents} agents)</h3>
+                    <div class="agent-list">
+                        ${template.details.agents.map(agent => `
+                            <div class="agent-card">
+                                <div class="agent-name">🤖 ${agent.name.replace(/_/g, ' ')}</div>
+                                <div class="agent-meta">
+                                    <span>Tier: <strong>${agent.tier}</strong></span>
+                                    <span>Tools: ${agent.tools.slice(0, 2).join(', ')}${agent.tools.length > 2 ? '...' : ''}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg); border-radius: 8px; border: 1px solid var(--border);">
+                        <h4 style="margin-bottom: 1rem;">💰 Cost Breakdown</h4>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                            Estimated cost: <strong style="color: var(--primary);">$${template.cost_min.toFixed(2)}-$${template.cost_max.toFixed(2)}</strong>
+                        </p>
+                        <p style="font-size: 0.875rem; color: var(--text-muted);">
+                            Actual cost depends on codebase size, tier escalations, and agent retries.
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%); border-radius: 8px; border: 1px solid var(--primary);">
+                        <h4 style="margin-bottom: 1rem;">📊 Configuration</h4>
+                        <p style="color: var(--text-muted);">
+                            This workflow collects <strong>${template.questions} questions</strong> through an interactive form, then dynamically generates a team of <strong>${template.agents} specialized agents</strong> to execute the task.
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function inspectTemplate(templateId) {
+            const template = templates.find(t => t.id === templateId);
+            alert(`To inspect this template using the CLI:\n\nempathy meta-workflow inspect ${templateId}`);
+        }
+
+        let currentTemplate = null;
+        let formResponses = {};
+        let currentStep = 0;
+
+        async function showExecutionPreview() {
+            if (!currentTemplate) return;
+
+            closeModal();
+            formResponses = {};
+            currentStep = 0;
+
+            // Show Socratic form first
+            showSocraticForm();
+        }
+
+        function showSocraticForm() {
+            const template = currentTemplate;
+            const questions = template.id === 'test_creation_management_workflow' ? [
+                { id: 'test_scope', text: 'What is the scope of your testing effort?', type: 'single_select', options: ['Single function/class', 'Single module/package', 'Multiple modules', 'Entire project (full suite)'] },
+                { id: 'test_types', text: 'What types of tests should be created?', type: 'multi_select', options: ['Unit tests (functions, classes)', 'Integration tests (module interactions)', 'End-to-end tests (full workflows)', 'Performance/Load tests', 'Security tests', 'Contract tests', 'Regression tests'] },
+                { id: 'testing_framework', text: 'Which testing framework should be used?', type: 'single_select', options: ['pytest (Python)', 'unittest (Python standard)', 'Jest (JavaScript/TypeScript)', 'JUnit (Java)', 'RSpec (Ruby)', 'Auto-detect from project'] },
+                { id: 'coverage_target', text: 'What is your target test coverage?', type: 'single_select', options: ['60% (basic coverage)', '70% (standard coverage)', '80% (good coverage)', '90% (high coverage)', '95%+ (comprehensive coverage)'] },
+                { id: 'test_quality_checks', text: 'What quality checks should be applied to tests?', type: 'multi_select', options: ['Assertion depth (avoid shallow tests)', 'Edge case coverage (boundary conditions)', 'Error handling tests (exception paths)', 'Mock/fixture quality validation', 'Test isolation verification', 'Test performance', 'Flaky test detection'] },
+                { id: 'test_inspection_mode', text: 'Should we analyze existing tests or create new ones?', type: 'single_select', options: ['Analyze existing tests only', 'Create new tests only', 'Both (analyze + create new)'] },
+                { id: 'update_outdated_tests', text: 'Update outdated or broken tests automatically?', type: 'boolean', options: ['Yes', 'No'] },
+                { id: 'test_data_strategy', text: 'What test data strategy should be used?', type: 'single_select', options: ['Minimal fixtures (simple test data)', 'Realistic fixtures (production-like data)', 'Property-based testing (Hypothesis/QuickCheck)', 'Snapshot testing (freeze outputs)', 'Mixed strategy (combination)'] },
+                { id: 'parallel_execution', text: 'Enable parallel test execution?', type: 'boolean', options: ['Yes', 'No'] },
+                { id: 'generate_test_reports', text: 'What test reports should be generated?', type: 'multi_select', options: ['Coverage report (HTML + terminal)', 'Test execution summary (JUnit XML)', 'Performance metrics (test duration)', 'Flaky test report', 'Missing coverage report'] },
+                { id: 'ci_integration', text: 'Generate CI/CD integration (GitHub Actions, etc.)?', type: 'boolean', options: ['Yes', 'No'] },
+                { id: 'test_documentation', text: 'Generate test documentation and examples?', type: 'boolean', options: ['Yes', 'No'] },
+            ] : [];
+
+            const totalSteps = Math.ceil(questions.length / 4);
+
+            const formModal = document.createElement('div');
+            formModal.className = 'modal active';
+            formModal.id = 'form-modal';
+            formModal.innerHTML = `
+                <div class="modal-content" style="max-width: 800px;">
+                    <button class="close-btn" onclick="closeFormModal()">&times;</button>
+                    <div class="modal-header">
+                        <div class="modal-title">📋 Configure Workflow</div>
+                        <div class="question-help">${template.name}</div>
+                    </div>
+                    <div class="modal-body" id="form-body">
+                        <div style="margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.875rem; color: var(--text-muted);">Step <span id="current-step">1</span> of ${totalSteps}</span>
+                                <span style="font-size: 0.875rem; color: var(--text-muted);"><span id="question-progress">0</span>/${questions.length} questions answered</span>
+                            </div>
+                            <div style="background: var(--border); height: 4px; border-radius: 2px; overflow: hidden;">
+                                <div id="form-progress" style="background: var(--primary); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                            </div>
+                        </div>
+                        <div id="questions-container"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="back-btn" onclick="previousStep()" style="display: none;">← Back</button>
+                        <button class="btn btn-secondary" onclick="closeFormModal()">Cancel</button>
+                        <button class="btn btn-primary" id="next-btn" onclick="nextStep()">Next →</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(formModal);
+
+            renderFormStep(questions, 0);
+        }
+
+        function renderFormStep(questions, step) {
+            const container = document.getElementById('questions-container');
+            const startIdx = step * 4;
+            const endIdx = Math.min(startIdx + 4, questions.length);
+            const stepQuestions = questions.slice(startIdx, endIdx);
+            const totalSteps = Math.ceil(questions.length / 4);
+
+            container.innerHTML = stepQuestions.map((q, idx) => {
+                const globalIdx = startIdx + idx;
+                let inputHtml = '';
+
+                if (q.type === 'single_select') {
+                    inputHtml = `
+                        <select id="q_${q.id}" class="form-input" onchange="updateProgress()">
+                            <option value="">-- Select an option --</option>
+                            ${q.options.map(opt => `<option value="${opt}" ${formResponses[q.id] === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                        </select>
+                    `;
+                } else if (q.type === 'multi_select') {
+                    const selected = formResponses[q.id] || [];
+                    inputHtml = `
+                        <div class="checkbox-group">
+                            ${q.options.map(opt => `
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="q_${q.id}" value="${opt}" ${selected.includes(opt) ? 'checked' : ''} onchange="updateProgress()">
+                                    ${opt}
+                                </label>
+                            `).join('')}
+                        </div>
+                    `;
+                } else if (q.type === 'boolean') {
+                    inputHtml = `
+                        <select id="q_${q.id}" class="form-input" onchange="updateProgress()">
+                            <option value="">-- Select an option --</option>
+                            <option value="true" ${formResponses[q.id] === true ? 'selected' : ''}>Yes</option>
+                            <option value="false" ${formResponses[q.id] === false ? 'selected' : ''}>No</option>
+                        </select>
+                    `;
+                }
+
+                return `
+                    <div class="question-group">
+                        <label class="question-label">${globalIdx + 1}. ${q.text}</label>
+                        ${inputHtml}
+                    </div>
+                `;
+            }).join('');
+
+            // Update UI
+            document.getElementById('current-step').textContent = step + 1;
+            document.getElementById('back-btn').style.display = step > 0 ? 'block' : 'none';
+            document.getElementById('next-btn').textContent = step === totalSteps - 1 ? '🚀 Run Workflow' : 'Next →';
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(formResponses).length;
+            const total = currentTemplate.id === 'test_creation_management_workflow' ? 12 : 8;
+            const progress = (answered / total) * 100;
+
+            document.getElementById('form-progress').style.width = `${progress}%`;
+            document.getElementById('question-progress').textContent = answered;
+        }
+
+        function nextStep() {
+            const template = currentTemplate;
+            const questions = template.id === 'test_creation_management_workflow' ? [
+                { id: 'test_scope', type: 'single_select' },
+                { id: 'test_types', type: 'multi_select' },
+                { id: 'testing_framework', type: 'single_select' },
+                { id: 'coverage_target', type: 'single_select' },
+                { id: 'test_quality_checks', type: 'multi_select' },
+                { id: 'test_inspection_mode', type: 'single_select' },
+                { id: 'update_outdated_tests', type: 'boolean' },
+                { id: 'test_data_strategy', type: 'single_select' },
+                { id: 'parallel_execution', type: 'boolean' },
+                { id: 'generate_test_reports', type: 'multi_select' },
+                { id: 'ci_integration', type: 'boolean' },
+                { id: 'test_documentation', type: 'boolean' },
+            ] : [];
+
+            // Collect responses from current step
+            const startIdx = currentStep * 4;
+            const endIdx = Math.min(startIdx + 4, questions.length);
+            const stepQuestions = questions.slice(startIdx, endIdx);
+
+            for (const q of stepQuestions) {
+                if (q.type === 'multi_select') {
+                    const checkboxes = document.querySelectorAll(`input[name="q_${q.id}"]:checked`);
+                    formResponses[q.id] = Array.from(checkboxes).map(cb => cb.value);
+                } else if (q.type === 'boolean') {
+                    const value = document.getElementById(`q_${q.id}`).value;
+                    if (value) formResponses[q.id] = value === 'true';
+                } else {
+                    const value = document.getElementById(`q_${q.id}`).value;
+                    if (value) formResponses[q.id] = value;
+                }
+            }
+
+            const totalSteps = Math.ceil(questions.length / 4);
+
+            if (currentStep === totalSteps - 1) {
+                // All done, run workflow
+                closeFormModal();
+                runWorkflowWithResponses();
+            } else {
+                // Next step
+                currentStep++;
+                renderFormStep(questions, currentStep);
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                const questions = currentTemplate.id === 'test_creation_management_workflow' ? [
+                    { id: 'test_scope', type: 'single_select' },
+                    { id: 'test_types', type: 'multi_select' },
+                    { id: 'testing_framework', type: 'single_select' },
+                    { id: 'coverage_target', type: 'single_select' },
+                    { id: 'test_quality_checks', type: 'multi_select' },
+                    { id: 'test_inspection_mode', type: 'single_select' },
+                    { id: 'update_outdated_tests', type: 'boolean' },
+                    { id: 'test_data_strategy', type: 'single_select' },
+                    { id: 'parallel_execution', type: 'boolean' },
+                    { id: 'generate_test_reports', type: 'multi_select' },
+                    { id: 'ci_integration', type: 'boolean' },
+                    { id: 'test_documentation', type: 'boolean' },
+                ] : [];
+                renderFormStep(questions, currentStep);
+            }
+        }
+
+        function closeFormModal() {
+            const modal = document.getElementById('form-modal');
+            if (modal) modal.remove();
+        }
+
+        async function runWorkflowWithResponses() {
+            // Create execution modal
+            const executionModal = document.createElement('div');
+            executionModal.className = 'modal active';
+            executionModal.id = 'execution-modal';
+            executionModal.innerHTML = `
+                <div class="modal-content" style="max-width: 1000px;">
+                    <button class="close-btn" onclick="closeExecutionModal()">&times;</button>
+                    <div class="modal-header">
+                        <div class="modal-title">🚀 Executing Workflow</div>
+                        <div class="question-help">${currentTemplate.name}</div>
+                    </div>
+                    <div class="modal-body" id="execution-body" style="min-height: 400px;">
+                        <div style="margin-bottom: 2rem; padding: 1rem; background: var(--bg); border-radius: 8px; border: 1px solid var(--border);">
+                            <h4 style="margin-bottom: 0.5rem;">Your Configuration:</h4>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">
+                                ${Object.entries(formResponses).slice(0, 3).map(([key, val]) => {
+                                    const displayVal = Array.isArray(val) ? val.join(', ') : String(val);
+                                    return `<div>• ${key}: ${displayVal.length > 50 ? displayVal.substring(0, 50) + '...' : displayVal}</div>`;
+                                }).join('')}
+                                <div style="margin-top: 0.5rem;"><em>...and ${Object.keys(formResponses).length - 3} more settings</em></div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: 2rem;">
+                            <div class="spinner" style="margin: 0 auto 1rem;"></div>
+                            <p style="color: var(--text-muted);">Initializing agents...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(executionModal);
+
+            // Simulate execution
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await simulateExecution(currentTemplate);
+        }
+
+        async function simulateExecution(template) {
+            const executionBody = document.getElementById('execution-body');
+            const agents = template.details.agents;
+            let totalCost = 0;
+            let executionLog = [];
+
+            executionBody.innerHTML = `
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="margin-bottom: 1rem;">Agent Execution Progress</h4>
+                    <div id="progress-bar" style="background: var(--border); height: 8px; border-radius: 4px; overflow: hidden;">
+                        <div id="progress-fill" style="background: linear-gradient(90deg, var(--primary), var(--success)); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-muted);">
+                        <span id="progress-text">0/${agents.length} agents completed</span>
+                    </div>
+                </div>
+                <div id="agent-execution-log" style="max-height: 300px; overflow-y: auto;"></div>
+                <div id="execution-summary" style="margin-top: 2rem; padding: 1.5rem; background: var(--bg); border-radius: 8px; border: 1px solid var(--border);">
+                    <h4 style="margin-bottom: 1rem;">💰 Cost Tracking</h4>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary);" id="running-cost">$0.00</p>
+                </div>
+            `;
+
+            const log = document.getElementById('agent-execution-log');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const runningCost = document.getElementById('running-cost');
+
+            // Execute each agent
+            for (let i = 0; i < agents.length; i++) {
+                const agent = agents[i];
+
+                // Calculate simulated cost and duration
+                let cost, duration;
+                if (agent.tier === 'cheap_only') {
+                    cost = 0.05;
+                    duration = 1.5;
+                } else if (agent.tier === 'progressive') {
+                    cost = 0.15;
+                    duration = 3.0;
+                } else if (agent.tier === 'capable_first') {
+                    cost = 0.25;
+                    duration = 4.0;
+                } else {
+                    cost = 0.40;
+                    duration = 6.0;
+                }
+
+                // Add "executing" message
+                const executingDiv = document.createElement('div');
+                executingDiv.id = `agent-${i}`;
+                executingDiv.style.cssText = 'padding: 0.75rem; margin-bottom: 0.5rem; background: rgba(99, 102, 241, 0.1); border-radius: 6px; border-left: 3px solid var(--primary);';
+                executingDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div class="spinner" style="width: 1rem; height: 1rem; border-width: 2px;"></div>
+                        <strong>${agent.name.replace(/_/g, ' ')}</strong>
+                        <span style="color: var(--text-muted); font-size: 0.875rem;">(${agent.tier})</span>
+                    </div>
+                `;
+                log.appendChild(executingDiv);
+                log.scrollTop = log.scrollHeight;
+
+                // Wait for simulated duration (scaled down for demo)
+                await new Promise(resolve => setTimeout(resolve, duration * 200));
+
+                // Update to "completed"
+                totalCost += cost;
+                executingDiv.style.cssText = 'padding: 0.75rem; margin-bottom: 0.5rem; background: rgba(16, 185, 129, 0.1); border-radius: 6px; border-left: 3px solid var(--success);';
+                executingDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--success);">✓</span>
+                            <strong>${agent.name.replace(/_/g, ' ')}</strong>
+                            <span style="color: var(--text-muted); font-size: 0.875rem;">(${agent.tier})</span>
+                        </div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">
+                            $${cost.toFixed(2)} • ${duration.toFixed(1)}s
+                        </div>
+                    </div>
+                `;
+
+                // Update progress
+                const progress = ((i + 1) / agents.length) * 100;
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${i + 1}/${agents.length} agents completed`;
+                runningCost.textContent = `$${totalCost.toFixed(2)}`;
+            }
+
+            // Show completion summary
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            executionBody.innerHTML += `
+                <div style="margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); border-radius: 8px; border: 1px solid var(--success); text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                    <h3 style="margin-bottom: 1rem; color: var(--success);">Workflow Completed Successfully!</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem;">
+                        <div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Agents Executed</div>
+                            <div style="font-size: 1.5rem; font-weight: 700;">${agents.length}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Total Cost</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);">$${totalCost.toFixed(2)}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Duration</div>
+                            <div style="font-size: 1.5rem; font-weight: 700;">${(agents.reduce((sum, a) => {
+                                if (a.tier === 'cheap_only') return sum + 1.5;
+                                if (a.tier === 'progressive') return sum + 3.0;
+                                if (a.tier === 'capable_first') return sum + 4.0;
+                                return sum + 6.0;
+                            }, 0) / 10).toFixed(1)}s</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 2rem; padding: 1rem 2rem;" onclick="closeExecutionModal()">Done</button>
+                </div>
+            `;
+        }
+
+        function closeExecutionModal() {
+            const modal = document.getElementById('execution-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Render templates on load
+        renderTemplates();
+
+        // Close modal on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Close on backdrop click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+    </script>
+</body>
+</html>
