@@ -216,6 +216,145 @@ def inspect_template(
 
 
 # =============================================================================
+# Plan Generation Commands (Claude Code Integration)
+# =============================================================================
+
+
+@meta_workflow_app.command("plan")
+def generate_plan_cmd(
+    template_id: str = typer.Argument(..., help="Template ID to generate plan for"),
+    output_format: str = typer.Option(
+        "markdown",
+        "--format",
+        "-f",
+        help="Output format: markdown, skill, or json",
+    ),
+    output_file: str = typer.Option(
+        None,
+        "--output",
+        "-o",
+        help="Output file path (default: stdout)",
+    ),
+    use_defaults: bool = typer.Option(
+        True,
+        "--use-defaults/--interactive",
+        help="Use default values or ask interactively",
+    ),
+    install_skill: bool = typer.Option(
+        False,
+        "--install",
+        "-i",
+        help="Install as Claude Code skill in .claude/commands/",
+    ),
+):
+    """Generate execution plan for Claude Code (no API costs).
+
+    This generates a plan that can be executed by Claude Code using your
+    Max subscription instead of making API calls.
+
+    Output formats:
+    - markdown: Human-readable plan to paste into Claude Code
+    - skill: Claude Code skill format for .claude/commands/
+    - json: Structured format for programmatic use
+
+    Examples:
+        empathy meta-workflow plan release-prep
+        empathy meta-workflow plan release-prep --format skill --install
+        empathy meta-workflow plan test-coverage-boost -o plan.md
+        empathy meta-workflow plan manage-docs --format json
+    """
+    try:
+        from empathy_os.meta_workflows.plan_generator import generate_plan
+
+        # Load template
+        console.print(f"\n[bold]Generating plan for:[/bold] {template_id}")
+        registry = TemplateRegistry()
+        template = registry.load_template(template_id)
+
+        if not template:
+            console.print(f"[red]Template not found:[/red] {template_id}")
+            raise typer.Exit(code=1)
+
+        # Collect responses if interactive
+        form_responses = None
+        if not use_defaults and template.form_schema.questions:
+            console.print("\n[bold]Configuration:[/bold]")
+            form_responses = {}
+            for question in template.form_schema.questions:
+                if question.options:
+                    # Multiple choice
+                    console.print(f"\n{question.text}")
+                    for i, opt in enumerate(question.options, 1):
+                        default_mark = " (default)" if opt == question.default else ""
+                        console.print(f"  {i}. {opt}{default_mark}")
+                    choice = typer.prompt("Choice", default="1")
+                    try:
+                        idx = int(choice) - 1
+                        form_responses[question.id] = question.options[idx]
+                    except (ValueError, IndexError):
+                        form_responses[question.id] = question.default or question.options[0]
+                else:
+                    # Yes/No or text
+                    default = question.default or "Yes"
+                    response = typer.prompt(question.text, default=default)
+                    form_responses[question.id] = response
+
+        # Generate plan
+        plan_content = generate_plan(
+            template_id=template_id,
+            form_responses=form_responses,
+            use_defaults=use_defaults,
+            output_format=output_format,
+        )
+
+        # Handle output
+        if install_skill:
+            # Install as Claude Code skill
+            skill_dir = Path(".claude/commands")
+            skill_dir.mkdir(parents=True, exist_ok=True)
+            skill_path = skill_dir / f"{template_id}.md"
+
+            # Convert to skill format if not already
+            if output_format != "skill":
+                plan_content = generate_plan(
+                    template_id=template_id,
+                    form_responses=form_responses,
+                    use_defaults=use_defaults,
+                    output_format="skill",
+                )
+
+            skill_path.write_text(plan_content)
+            console.print(f"\n[green]✓ Installed as Claude Code skill:[/green] {skill_path}")
+            console.print(f"\nRun with: [bold]/project:{template_id}[/bold]")
+
+        elif output_file:
+            # Write to file
+            Path(output_file).write_text(plan_content)
+            console.print(f"\n[green]✓ Plan saved to:[/green] {output_file}")
+
+        else:
+            # Print to stdout
+            console.print("\n" + "=" * 60)
+            console.print(plan_content)
+            console.print("=" * 60)
+
+        # Show usage hints
+        console.print("\n[bold]Usage Options:[/bold]")
+        console.print("1. Copy prompts into Claude Code conversation")
+        console.print("2. Install as skill with: --install")
+        console.print("3. Use with Claude Code Task tool")
+        console.print("\n[dim]Cost: $0 (uses your Max subscription)[/dim]")
+
+    except ImportError:
+        console.print("[red]Plan generator not available.[/red]")
+        console.print("This feature requires the plan_generator module.")
+        raise typer.Exit(code=1)
+    except Exception as e:
+        console.print(f"[red]Error generating plan:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
+# =============================================================================
 # Execution Commands
 # =============================================================================
 
@@ -459,7 +598,6 @@ def natural_language_run(
             console.print(f"[bold]Running {best_match.template_id}...[/bold]\n")
 
             # Run the workflow
-            ctx = typer.Context(run_workflow)
             run_workflow(
                 template_id=best_match.template_id,
                 mock=mock,

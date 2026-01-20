@@ -51,7 +51,7 @@ from .blueprint import (
 )
 
 # CLI interface
-from .cli import Console, SocraticCLI
+from .cli import Console
 
 # Collaboration
 from .collaboration import (
@@ -199,7 +199,6 @@ __all__ = [
     "SQLiteStorage",
     "StorageManager",
     # CLI interface
-    "SocraticCLI",
     "Console",
     # Web UI components
     "ReactFormSchema",

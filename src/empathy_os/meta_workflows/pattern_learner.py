@@ -21,6 +21,8 @@ from empathy_os.meta_workflows.workflow import list_execution_results, load_exec
 
 if TYPE_CHECKING:
     from empathy_os.memory.unified import UnifiedMemory
+    from empathy_os.meta_workflows.models import FormResponse
+    from empathy_os.meta_workflows.workflow import MetaWorkflowResult
 
 logger = logging.getLogger(__name__)
 

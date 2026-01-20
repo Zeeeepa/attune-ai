@@ -28,6 +28,7 @@ class AgentRole(Enum):
     ANALYZER = "analyzer"  # Examines input, identifies patterns
     REVIEWER = "reviewer"  # Evaluates quality, finds issues
     AUDITOR = "auditor"  # Deep-dive security/compliance checks
+    RESEARCHER = "researcher"  # Gathers information and context
 
     # Action agents
     GENERATOR = "generator"  # Creates new content/code

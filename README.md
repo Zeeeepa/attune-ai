@@ -2,7 +2,7 @@
 
 **The AI collaboration framework with breakthrough meta-orchestration - agents that compose themselves.**
 
-🎭 **v4.5: Production-Ready Agent Teams** - Real LLM execution, VS Code integration, rich reports.
+🎭 **v4.6: $0 Cost AI Workflows** - Run agent teams free with any Claude Code subscription, Socratic agent creation, memory-enhanced learning.
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://img.shields.io/badge/tests-7%2C200%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
@@ -14,6 +14,49 @@
 ```bash
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
+
+## What's New in v4.6.0 💰 **$0 COST AI WORKFLOWS**
+
+### **Run Agent Teams Free with Any Claude Code Subscription**
+
+**v4.6** revolutionizes how you use Empathy Framework - all multi-agent workflows now run **at no additional cost** when you have any Claude Code subscription.
+
+**Key Features:**
+
+- 💰 **$0 Execution** - Agent teams use Claude Code's Task tool instead of API calls
+- 🎓 **Socratic Agent Creation** - `/create-agent` and `/create-team` guide you through building custom agents
+- 🧠 **Memory Enhancement** - Optional short-term and long-term memory for agents that learn
+- 🧹 **Streamlined Skills** - 13 clean skills that work without API keys
+
+**Quick Start (Claude Code):**
+
+```
+/create-agent     # Walk through creating a custom AI agent
+/create-team      # Build a multi-agent team with guided questions
+/release-prep     # Run 4-agent release readiness check ($0)
+/test-coverage    # 3-agent coverage analysis ($0)
+```
+
+**Available Skills:**
+
+| Skill | Description | Cost |
+|-------|-------------|------|
+| `/create-agent` | Socratic guide to build custom agents | $0 |
+| `/create-team` | Build multi-agent teams interactively | $0 |
+| `/release-prep` | Security, coverage, quality, docs check | $0 |
+| `/test-coverage` | Coverage gap analysis + suggestions | $0 |
+| `/test-maintenance` | Find stale/flaky tests | $0 |
+| `/manage-docs` | Keep docs in sync with code | $0 |
+| `/feature-overview` | Generate technical documentation | $0 |
+
+**Enterprise API Mode** (optional):
+
+```bash
+# For CI/CD, cron jobs, or programmatic control
+empathy meta-workflow run release-prep --real --use-defaults
+```
+
+---
 
 ## What's New in v4.5.0 🖥️ **VS CODE INTEGRATION**
 
@@ -1112,7 +1155,7 @@ For those interested in the development history and architectural decisions:
 
 - **[Development Logs](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/development-logs/)** — Execution plans, phase completions, and progress tracking
 - **[Architecture Docs](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/architecture/)** — System design, memory architecture, and integration plans
-- **[Marketing Materials](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/marketing/)** — Pitch decks, outreach templates, and commercial readiness
+- **[Claude Code Skills](.claude/commands/)** — AI-powered workflows and custom agent creation
 - **[Guides](https://github.com/Smart-AI-Memory/empathy-framework/tree/main/docs/guides/)** — Publishing tutorials, MkDocs setup, and distribution policies
 
 ---

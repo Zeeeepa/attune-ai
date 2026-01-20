@@ -143,8 +143,8 @@ patterns/debugging/workflow_*.json
 # Consolidated wizards (working directory)
 wizards_consolidated/
 
-# Marketing drafts (internal only)
-docs/marketing/drafts/
+# Marketing (internal/admin only)
+docs/marketing/
 
 # VS Code extension telemetry panel (separate project)
 vscode-telemetry-panel/

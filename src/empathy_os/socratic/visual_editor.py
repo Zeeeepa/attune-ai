@@ -265,9 +265,6 @@ class WorkflowVisualizer:
         stage_nodes = [n for n in state.nodes if n.node_type == NodeType.STAGE]
         agent_nodes = [n for n in state.nodes if n.node_type == NodeType.AGENT]
 
-        # Build agent lookup from original
-        agents_by_id = {a.agent_id: a for a in original_blueprint.agents}
-
         # Build edge lookup
         edges_by_source: dict[str, list[str]] = {}
         edges_by_target: dict[str, list[str]] = {}
@@ -410,8 +407,8 @@ class ASCIIVisualizer:
         stages = []
         for stage in blueprint.stages:
             agents = ",".join(a[:8] for a in stage.agent_ids)
-            parallel = "∥" if stage.parallel else "→"
-            stages.append(f"[{stage.name}:{agents}]")
+            marker = "∥" if stage.parallel else "→"
+            stages.append(f"[{stage.name}{marker}:{agents}]")
 
         return f" {' → '.join(stages)} "
 

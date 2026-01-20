@@ -1,14 +1,15 @@
-# /release-prep - Release Preparation Agent Team
+# /release-prep - Release Preparation Workflow
 
-Invoke an AI agent team to assess release readiness.
+Comprehensive release readiness assessment using AI agent analysis.
 
 ## What This Does
 
-Creates and executes a team of specialized agents:
-- **Security Auditor** - Vulnerability scanning
-- **Test Coverage Analyst** - Test quality validation
-- **Code Quality Reviewer** - Best practices check
-- **Documentation Specialist** - Doc completeness verification
+Runs 4 specialized analyses to check your code before release:
+
+- **Security Audit** - Vulnerabilities, secrets, dependency issues
+- **Test Coverage** - Verify coverage meets 80% threshold
+- **Code Quality** - Linting, complexity, best practices
+- **Documentation** - API docs, README, CHANGELOG completeness
 
 ## Usage
 
@@ -18,28 +19,101 @@ Creates and executes a team of specialized agents:
 
 ## Instructions for Claude
 
-When the user invokes /release-prep, execute this workflow:
+When the user invokes /release-prep, execute these steps using the Task tool.
+This runs entirely within Claude Code using the user's Max subscription ($0 cost).
 
-1. Run the release preparation meta-workflow with real execution:
-   ```bash
-   python -m empathy_os.meta_workflows.cli_meta_workflows run release-prep --real --use-defaults
-   ```
+### Step 1: Security Audit
 
-2. If ANTHROPIC_API_KEY is not set, fall back to mock execution:
-   ```bash
-   python -m empathy_os.meta_workflows.cli_meta_workflows run release-prep --use-defaults
-   ```
+Use the Task tool with subagent_type="Explore":
 
-3. Present the results to the user with:
-   - Overall status (ready/not ready)
-   - Agent findings summary
-   - Any blockers identified
-   - Recommended next steps
+```
+Analyze this codebase for security vulnerabilities:
 
-## Expected Output
+1. Search for dangerous patterns:
+   - eval() or exec() usage (search with Grep)
+   - SQL injection risks
+   - Command injection (subprocess with shell=True)
+   - Hardcoded secrets or API keys
 
-The command will output:
-- Agents created and executed
-- Total cost of execution
-- Results saved location
-- Summary of findings from each agent
+2. Check for path traversal vulnerabilities
+3. Review authentication/authorization patterns
+
+Report as CRITICAL/HIGH/MEDIUM severity.
+```
+
+### Step 2: Test Coverage Analysis
+
+First run coverage check with Bash:
+
+```bash
+pytest --cov=src --cov-report=term-missing -q 2>&1 | head -80
+```
+
+Then analyze with Task (subagent_type="Explore"):
+
+```
+Based on the coverage output:
+1. What is the current coverage %?
+2. Which files are below 80%?
+3. Which uncovered paths are highest risk?
+4. Any failing tests?
+```
+
+### Step 3: Code Quality Review
+
+Run linting with Bash:
+
+```bash
+ruff check src/ --statistics 2>&1 | head -40
+```
+
+Then analyze results - identify top quality issues.
+
+### Step 4: Documentation Check
+
+Use Task (subagent_type="Explore", model="haiku"):
+
+```
+Check documentation completeness:
+1. Public APIs have docstrings?
+2. README.md is current?
+3. CHANGELOG.md updated for this release?
+```
+
+### Step 5: Synthesize Final Report
+
+Create a release readiness report:
+
+```markdown
+## Release Readiness Report
+
+### Overall Status: [READY / NEEDS WORK / BLOCKED]
+
+| Area | Status | Issues |
+|------|--------|--------|
+| Security | PASS/FAIL | X critical, Y high |
+| Test Coverage | X% (target 80%) | PASS/FAIL |
+| Code Quality | PASS/FAIL | X issues |
+| Documentation | PASS/FAIL | X gaps |
+
+### Blockers (must fix)
+- [list any critical issues]
+
+### Recommendations
+- [list improvements]
+
+### Release Decision
+[Ready to release / Fix blockers first / Needs more work]
+```
+
+## Cost
+
+**$0** - Runs entirely within Claude Code using your Max subscription.
+
+## Alternative: API Mode
+
+To use the API-based execution instead (costs $0.10-$0.75):
+
+```bash
+empathy meta-workflow run release-prep --real --use-defaults
+```

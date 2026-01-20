@@ -163,15 +163,15 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
         """
         logger.info(f"Generating {len(items)} tests at {tier.value} tier")
 
-        # Build prompt for this tier
+        # Build prompt for this tier (prepared for future LLM integration)
         base_task = self._build_test_gen_task(items)
-        prompt = self.meta_orchestrator.build_tier_prompt(
+        _prompt = self.meta_orchestrator.build_tier_prompt(  # noqa: F841
             tier,
             base_task,
             context
         )
 
-        # TODO: Call LLM API with prompt
+        # TODO: Call LLM API with _prompt
         # For now, simulate test generation
         generated_tests = self._simulate_test_generation(tier, items)
 
@@ -228,8 +228,8 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
         """
         generated_tests = []
 
-        # Simulate different quality levels per tier
-        base_quality = {
+        # Quality thresholds per tier (prepared for future LLM integration)
+        _base_quality = {  # noqa: F841
             Tier.CHEAP: 70,
             Tier.CAPABLE: 85,
             Tier.PREMIUM: 95

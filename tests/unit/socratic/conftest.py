@@ -96,25 +96,25 @@ def sample_agent_spec():
     from empathy_os.socratic.blueprint import AgentRole, AgentSpec, ToolCategory, ToolSpec
 
     return AgentSpec(
-        agent_id="test-agent-001",
+        id="test-agent-001",
         name="Test Code Reviewer",
         role=AgentRole.REVIEWER,
-        description="Reviews code for quality issues",
+        goal="Review code for quality issues",
+        backstory="Expert code reviewer with 10 years of experience",
         tools=[
             ToolSpec(
-                tool_id="read_file",
+                id="read_file",
                 name="Read File",
                 description="Read file contents",
                 category=ToolCategory.CODE_ANALYSIS,
             ),
             ToolSpec(
-                tool_id="grep_code",
+                id="grep_code",
                 name="Grep Code",
                 description="Search code",
                 category=ToolCategory.CODE_ANALYSIS,
             ),
         ],
-        system_prompt="You are a code reviewer.",
     )
 
 
@@ -131,13 +131,14 @@ def sample_workflow_blueprint(sample_agent_spec):
     )
 
     synthesizer = AgentSpec(
-        agent_id="synthesizer-001",
+        id="synthesizer-001",
         name="Result Synthesizer",
         role=AgentRole.ORCHESTRATOR,
-        description="Synthesizes results",
+        goal="Synthesize results from analysis",
+        backstory="Expert at combining insights from multiple sources",
         tools=[
             ToolSpec(
-                tool_id="read_file",
+                id="read_file",
                 name="Read File",
                 description="Read file contents",
                 category=ToolCategory.CODE_ANALYSIS,

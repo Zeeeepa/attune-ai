@@ -151,5 +151,5 @@ Estimated cost: $0.40-0.80 per run with real LLM execution.
 ## Related Commands
 
 - `/release-prep` - Prepare a full release with changelog
-- `/docs` - Generate API documentation
-- `/marketing` - Create marketing content from features
+- `/manage-docs` - Keep documentation in sync with code
+- `/create-agent` - Create custom AI agents

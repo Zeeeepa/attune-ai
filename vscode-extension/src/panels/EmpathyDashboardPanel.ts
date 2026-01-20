@@ -814,19 +814,30 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _runOrchestratedHealthCheck() {
-        // Open dedicated WorkflowReportPanel for orchestrated-health-check (v4.0.0 Meta-Orchestration)
-        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'orchestrated-health-check');
+        // v4.6.0: Prefer Claude Code skill ($0 cost) with API fallback
+        await this._startClaudeCodeWithSkill(
+            '/security-scan',
+            'Health Check',
+            'empathy workflow run orchestrated-health-check'
+        );
     }
 
     private async _runOrchestratedReleasePrep() {
-        // Open dedicated WorkflowReportPanel for orchestrated-release-prep (v4.0.0 Meta-Orchestration)
-        await vscode.commands.executeCommand('empathy.openWorkflowReport', 'orchestrated-release-prep');
+        // v4.6.0: Prefer Claude Code skill ($0 cost) with API fallback
+        await this._startClaudeCodeWithSkill(
+            '/release-prep',
+            'Release Prep',
+            'empathy meta-workflow run release-prep --real --use-defaults'
+        );
     }
 
     private async _runOrchestratedTestCoverage() {
-        // Open dedicated CoveragePanel for test-coverage-boost (v4.0.0 CrewAI)
-        // This panel has the target input dialog
-        await vscode.commands.executeCommand('empathy.openCoveragePanel');
+        // v4.6.0: Prefer Claude Code skill ($0 cost) with API fallback
+        await this._startClaudeCodeWithSkill(
+            '/test-coverage',
+            'Test Coverage',
+            'empathy meta-workflow run test-coverage-boost --real --use-defaults'
+        );
     }
 
     private _getClaudeCodeExtension(): vscode.Extension<unknown> | undefined {
@@ -902,9 +913,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 );
             }
         } else {
-            // No Claude Code extension - fall back to terminal
+            // No Claude Code extension - fall back to API mode (enterprise feature)
             vscode.window.showInformationMessage(
-                `Running ${fallbackLabel} in terminal (install Claude Code extension for better experience)...`
+                `Running ${fallbackLabel} via API (install Claude Code for $0 execution)...`
             );
             const terminal = vscode.window.createTerminal({
                 name: `Empathy: ${fallbackLabel}`,
