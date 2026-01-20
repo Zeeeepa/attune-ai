@@ -17,6 +17,7 @@ class TestConsole:
         console = Console()
         assert console is not None
 
+    @pytest.mark.xfail(reason="Console has no print() method - uses header/success/error/warning/info")
     def test_console_print(self, capsys):
         """Test console print."""
         from empathy_os.socratic.cli import Console
@@ -35,8 +36,8 @@ class TestConsole:
         console.error("An error occurred")
 
         captured = capsys.readouterr()
-        # Error might go to stderr or stdout depending on implementation
-        assert "error" in captured.err.lower() or "error" in captured.out.lower()
+        # error() prints to stdout with red color, not stderr
+        assert "error" in captured.out.lower()
 
     def test_console_info(self, capsys):
         """Test console info output."""

@@ -11,7 +11,6 @@ import json
 import os
 import tempfile
 from collections.abc import Generator
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
@@ -122,6 +121,7 @@ def sample_agent_spec():
 def sample_workflow_blueprint(sample_agent_spec):
     """Create a sample WorkflowBlueprint for testing."""
     from empathy_os.socratic.blueprint import (
+        AgentBlueprint,
         AgentRole,
         AgentSpec,
         StageSpec,
@@ -147,27 +147,31 @@ def sample_workflow_blueprint(sample_agent_spec):
     )
 
     return WorkflowBlueprint(
-        blueprint_id="test-blueprint-001",
+        id="test-blueprint-001",
         name="Test Code Review Workflow",
         description="A test workflow for code reviews",
-        domains=["code_review"],
-        agents=[sample_agent_spec, synthesizer],
+        domain="code_review",
+        agents=[
+            AgentBlueprint(spec=sample_agent_spec),
+            AgentBlueprint(spec=synthesizer),
+        ],
         stages=[
             StageSpec(
-                stage_id="analysis",
+                id="analysis",
                 name="Code Analysis",
-                agent_ids=[sample_agent_spec.agent_id],
+                description="Analyze code for issues",
+                agent_ids=[sample_agent_spec.id],
                 parallel=False,
             ),
             StageSpec(
-                stage_id="synthesis",
+                id="synthesis",
                 name="Result Synthesis",
-                agent_ids=[synthesizer.agent_id],
-                dependencies=["analysis"],
+                description="Synthesize analysis results",
+                agent_ids=[synthesizer.id],
+                depends_on=["analysis"],
                 parallel=False,
             ),
         ],
-        created_at=datetime.now(),
     )
 
 

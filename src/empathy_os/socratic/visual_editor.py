@@ -54,20 +54,23 @@ class EditorNode:
     """A node in the visual editor."""
 
     node_id: str
-    node_type: NodeType
+    node_type: str | NodeType  # Accept both string and enum
     label: str
-    position: Position
+    position: dict[str, int] | Position  # Accept both dict and Position
     data: dict[str, Any] = field(default_factory=dict)
     selected: bool = False
     locked: bool = False
 
     def to_dict(self) -> dict[str, Any]:
+        # Handle both string and enum for node_type
+        node_type_str = self.node_type.value if isinstance(self.node_type, NodeType) else self.node_type
+        # Handle both dict and Position for position
+        pos_dict = self.position.to_dict() if isinstance(self.position, Position) else self.position
         return {
             "id": self.node_id,
-            "type": self.node_type.value,
-            "label": self.label,
-            "position": self.position.to_dict(),
-            "data": self.data,
+            "type": node_type_str,
+            "data": {"label": self.label, **self.data},
+            "position": pos_dict,
             "selected": self.selected,
             "locked": self.locked,
         }
@@ -78,16 +81,16 @@ class EditorEdge:
     """An edge (connection) in the visual editor."""
 
     edge_id: str
-    source_id: str
-    target_id: str
+    source: str  # Source node ID
+    target: str  # Target node ID
     label: str = ""
     animated: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.edge_id,
-            "source": self.source_id,
-            "target": self.target_id,
+            "source": self.source,
+            "target": self.target,
             "label": self.label,
             "animated": self.animated,
         }
@@ -97,8 +100,9 @@ class EditorEdge:
 class EditorState:
     """State of the visual editor."""
 
-    nodes: list[EditorNode]
-    edges: list[EditorEdge]
+    workflow_id: str = ""  # ID of the workflow being edited
+    nodes: list[EditorNode] = field(default_factory=list)
+    edges: list[EditorEdge] = field(default_factory=list)
     selected_node_id: str | None = None
     zoom: float = 1.0
     pan_x: int = 0
@@ -112,6 +116,17 @@ class EditorState:
             "zoom": self.zoom,
             "panX": self.pan_x,
             "panY": self.pan_y,
+        }
+
+    def to_react_flow(self) -> dict[str, Any]:
+        """Convert state to React Flow schema format.
+
+        Returns:
+            Dict with 'nodes' and 'edges' arrays for React Flow
+        """
+        return {
+            "nodes": [n.to_dict() for n in self.nodes],
+            "edges": [e.to_dict() for e in self.edges],
         }
 
 
@@ -145,8 +160,8 @@ class WorkflowVisualizer:
         nodes: list[EditorNode] = []
         edges: list[EditorEdge] = []
 
-        # Create agent lookup
-        agents_by_id = {a.agent_id: a for a in blueprint.agents}
+        # Create agent lookup (agents are AgentBlueprint objects with .spec attribute)
+        agents_by_id = {a.spec.id: a for a in blueprint.agents}
 
         # Create start node
         start_node = EditorNode(
@@ -165,13 +180,13 @@ class WorkflowVisualizer:
         for stage in blueprint.stages:
             # Create stage node
             stage_node = EditorNode(
-                node_id=stage.stage_id,
+                node_id=stage.id,
                 node_type=NodeType.STAGE,
                 label=stage.name,
                 position=Position(x=400, y=y_offset),
                 data={
                     "parallel": stage.parallel,
-                    "timeout": stage.timeout_seconds,
+                    "timeout": stage.timeout,
                 },
             )
             nodes.append(stage_node)
@@ -179,48 +194,48 @@ class WorkflowVisualizer:
             # Connect from start or dependencies
             if first_stage:
                 edges.append(EditorEdge(
-                    edge_id=f"start->{stage.stage_id}",
-                    source_id="start",
-                    target_id=stage.stage_id,
+                    edge_id=f"start->{stage.id}",
+                    source="start",
+                    target=stage.id,
                     animated=True,
                 ))
                 first_stage = False
             else:
-                for dep in stage.dependencies:
+                for dep in stage.depends_on:
                     edges.append(EditorEdge(
-                        edge_id=f"{dep}->{stage.stage_id}",
-                        source_id=dep,
-                        target_id=stage.stage_id,
+                        edge_id=f"{dep}->{stage.id}",
+                        source=dep,
+                        target=stage.id,
                     ))
 
             # Create agent nodes for this stage
             agent_x_start = 200
             for i, agent_id in enumerate(stage.agent_ids):
-                agent = agents_by_id.get(agent_id)
-                if not agent:
+                agent_bp = agents_by_id.get(agent_id)
+                if not agent_bp:
                     continue
 
                 agent_node = EditorNode(
                     node_id=agent_id,
                     node_type=NodeType.AGENT,
-                    label=agent.name,
+                    label=agent_bp.spec.name,
                     position=Position(
                         x=agent_x_start + (i * self.node_spacing),
                         y=y_offset + 60,
                     ),
                     data={
-                        "role": agent.role.value,
-                        "tools": [t.tool_id for t in agent.tools],
-                        "description": agent.description,
+                        "role": agent_bp.spec.role.value,
+                        "tools": [t.id for t in agent_bp.spec.tools],
+                        "goal": agent_bp.spec.goal,
                     },
                 )
                 nodes.append(agent_node)
 
                 # Connect stage to agent
                 edges.append(EditorEdge(
-                    edge_id=f"{stage.stage_id}->{agent_id}",
-                    source_id=stage.stage_id,
-                    target_id=agent_id,
+                    edge_id=f"{stage.id}->{agent_id}",
+                    source=stage.id,
+                    target=agent_id,
                 ))
 
             y_offset += self.stage_spacing
@@ -239,13 +254,32 @@ class WorkflowVisualizer:
         if blueprint.stages:
             last_stage = blueprint.stages[-1]
             edges.append(EditorEdge(
-                edge_id=f"{last_stage.stage_id}->end",
-                source_id=last_stage.stage_id,
-                target_id="end",
+                edge_id=f"{last_stage.id}->end",
+                source=last_stage.id,
+                target="end",
                 animated=True,
             ))
 
-        return EditorState(nodes=nodes, edges=edges)
+        return EditorState(workflow_id=blueprint.id, nodes=nodes, edges=edges)
+
+    def from_blueprint(self, blueprint: WorkflowBlueprint) -> EditorState:
+        """Alias for blueprint_to_editor - converts blueprint to editor state."""
+        return self.blueprint_to_editor(blueprint)
+
+    def to_blueprint(
+        self, state: EditorState, original_blueprint: WorkflowBlueprint | None = None
+    ) -> WorkflowBlueprint:
+        """Alias for editor_to_blueprint - converts editor state back to blueprint."""
+        if original_blueprint is None:
+            # Create minimal blueprint for reconstruction
+            from .blueprint import WorkflowBlueprint
+            original_blueprint = WorkflowBlueprint(
+                id=state.workflow_id,
+                name="Reconstructed Workflow",
+                description="Reconstructed from editor state",
+                domain="general",
+            )
+        return self.editor_to_blueprint(state, original_blueprint)
 
     def editor_to_blueprint(
         self,
@@ -269,8 +303,8 @@ class WorkflowVisualizer:
         edges_by_source: dict[str, list[str]] = {}
         edges_by_target: dict[str, list[str]] = {}
         for edge in state.edges:
-            edges_by_source.setdefault(edge.source_id, []).append(edge.target_id)
-            edges_by_target.setdefault(edge.target_id, []).append(edge.source_id)
+            edges_by_source.setdefault(edge.source, []).append(edge.target)
+            edges_by_target.setdefault(edge.target, []).append(edge.source)
 
         # Rebuild stages
         new_stages: list[StageSpec] = []
@@ -293,23 +327,23 @@ class WorkflowVisualizer:
             ]
 
             new_stages.append(StageSpec(
-                stage_id=stage_node.node_id,
+                id=stage_node.node_id,
                 name=stage_node.label,
                 agent_ids=agent_ids,
-                dependencies=dependencies,
+                depends_on=dependencies,
                 parallel=stage_node.data.get("parallel", False),
-                timeout_seconds=stage_node.data.get("timeout"),
+                timeout=stage_node.data.get("timeout"),
             ))
 
         # Update blueprint
         return WorkflowBlueprint(
-            blueprint_id=original_blueprint.blueprint_id,
+            id=original_blueprint.id,
             name=original_blueprint.name,
             description=original_blueprint.description,
-            domains=original_blueprint.domains,
+            domain=original_blueprint.domain,
             agents=original_blueprint.agents,
             stages=new_stages,
-            created_at=original_blueprint.created_at,
+            generated_at=original_blueprint.generated_at,
         )
 
 
@@ -500,8 +534,8 @@ def generate_react_flow_schema(state: EditorState) -> dict[str, Any]:
     for edge in state.edges:
         rf_edge = {
             "id": edge.edge_id,
-            "source": edge.source_id,
-            "target": edge.target_id,
+            "source": edge.source,
+            "target": edge.target,
             "label": edge.label,
             "animated": edge.animated,
             "style": {"strokeWidth": 2},
@@ -777,8 +811,8 @@ class VisualWorkflowEditor:
         node_ids = {n.node_id for n in state.nodes}
         connected_nodes: set[str] = set()
         for edge in state.edges:
-            connected_nodes.add(edge.source_id)
-            connected_nodes.add(edge.target_id)
+            connected_nodes.add(edge.source)
+            connected_nodes.add(edge.target)
 
         orphans = node_ids - connected_nodes - {"start", "end"}
         if orphans:
@@ -797,8 +831,8 @@ class VisualWorkflowEditor:
             path.add(node_id)
 
             for edge in state.edges:
-                if edge.source_id == node_id:
-                    if check_cycle(edge.target_id, path.copy()):
+                if edge.source == node_id:
+                    if check_cycle(edge.target, path.copy()):
                         return True
 
             return False

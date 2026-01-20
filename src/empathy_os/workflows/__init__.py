@@ -89,6 +89,9 @@ from .test5 import Test5Workflow
 from .test_coverage_boost_crew import TestCoverageBoostCrew, TestCoverageBoostCrewResult
 from .test_gen import TestGenerationWorkflow
 
+# XML-enhanced prompting (for Socratic workflow generator)
+from .xml_enhanced_crew import XMLAgent, XMLTask, parse_xml_response
+
 # Re-export CLI commands from workflow_commands.py
 _parent_dir = os.path.dirname(os.path.dirname(__file__))
 _workflows_module_path = os.path.join(_parent_dir, "workflow_commands.py")
@@ -395,4 +398,8 @@ __all__ = [
     "OrchestratedReleasePrepWorkflow",
     "HealthCheckReport",
     "ReleaseReadinessReport",
+    # XML-enhanced prompting
+    "XMLAgent",
+    "XMLTask",
+    "parse_xml_response",
 ]

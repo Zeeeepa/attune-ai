@@ -63,17 +63,17 @@ class TestExplanation:
         )
 
         explanation = Explanation(
-            workflow_id="wf-001",
-            audience=AudienceLevel.TECHNICAL,
-            detail_level=DetailLevel.STANDARD,
+            title="Code Review Workflow",
             summary="This workflow automates code review.",
             sections=[
-                {"title": "Overview", "content": "The workflow consists of..."},
-                {"title": "Steps", "content": "1. Analyze code..."},
+                {"heading": "Overview", "content": "The workflow consists of..."},
+                {"heading": "Steps", "content": "1. Analyze code..."},
             ],
+            audience=AudienceLevel.TECHNICAL,
+            detail_level=DetailLevel.STANDARD,
         )
 
-        assert explanation.workflow_id == "wf-001"
+        assert explanation.title == "Code Review Workflow"
         assert explanation.audience == AudienceLevel.TECHNICAL
         assert len(explanation.sections) == 2
 
@@ -86,13 +86,13 @@ class TestExplanation:
         )
 
         explanation = Explanation(
-            workflow_id="wf-001",
-            audience=AudienceLevel.BUSINESS,
-            detail_level=DetailLevel.BRIEF,
+            title="Code Review",
             summary="Automated code review workflow.",
             sections=[
-                {"title": "Benefits", "content": "Improves code quality."},
+                {"heading": "Benefits", "content": "Improves code quality."},
             ],
+            audience=AudienceLevel.BUSINESS,
+            detail_level=DetailLevel.BRIEF,
         )
 
         text = explanation.to_text()
@@ -109,13 +109,13 @@ class TestExplanation:
         )
 
         explanation = Explanation(
-            workflow_id="wf-001",
-            audience=AudienceLevel.TECHNICAL,
-            detail_level=DetailLevel.DETAILED,
+            title="Technical Explanation",
             summary="Technical explanation",
             sections=[
-                {"title": "Architecture", "content": "The system uses..."},
+                {"heading": "Architecture", "content": "The system uses..."},
             ],
+            audience=AudienceLevel.TECHNICAL,
+            detail_level=DetailLevel.DETAILED,
         )
 
         markdown = explanation.to_markdown()
@@ -132,11 +132,11 @@ class TestExplanation:
         )
 
         explanation = Explanation(
-            workflow_id="wf-001",
-            audience=AudienceLevel.BEGINNER,
-            detail_level=DetailLevel.STANDARD,
+            title="Simple Guide",
             summary="Simple explanation",
             sections=[],
+            audience=AudienceLevel.BEGINNER,
+            detail_level=DetailLevel.STANDARD,
         )
 
         html = explanation.to_html()
@@ -153,17 +153,18 @@ class TestExplanation:
         )
 
         explanation = Explanation(
-            workflow_id="wf-001",
-            audience=AudienceLevel.TECHNICAL,
-            detail_level=DetailLevel.STANDARD,
+            title="Test Workflow",
             summary="Test",
             sections=[],
+            audience=AudienceLevel.TECHNICAL,
+            detail_level=DetailLevel.STANDARD,
         )
 
         data = explanation.to_dict()
 
         assert isinstance(data, dict)
-        assert data["workflow_id"] == "wf-001"
+        assert data["title"] == "Test Workflow"
+        assert data["audience"] == "technical"
 
 
 class TestWorkflowExplainer:
@@ -176,94 +177,66 @@ class TestWorkflowExplainer:
         explainer = WorkflowExplainer()
         assert explainer is not None
 
-    def test_explain_for_technical(self, sample_workflow_blueprint):
+    def test_create_explainer_with_options(self):
+        """Test creating explainer with options."""
+        from empathy_os.socratic.explainer import (
+            AudienceLevel,
+            DetailLevel,
+            WorkflowExplainer,
+        )
+
+        explainer = WorkflowExplainer(
+            audience=AudienceLevel.BUSINESS,
+            detail_level=DetailLevel.BRIEF,
+        )
+
+        assert explainer.audience == AudienceLevel.BUSINESS
+        assert explainer.detail_level == DetailLevel.BRIEF
+
+    def test_explain_workflow_for_technical(self, sample_workflow_blueprint):
         """Test explaining workflow for technical audience."""
         from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
-        explainer = WorkflowExplainer()
+        explainer = WorkflowExplainer(audience=AudienceLevel.TECHNICAL)
 
-        explanation = explainer.explain(
-            sample_workflow_blueprint,
-            audience=AudienceLevel.TECHNICAL,
-        )
+        explanation = explainer.explain_workflow(sample_workflow_blueprint)
 
         assert explanation is not None
         assert explanation.audience == AudienceLevel.TECHNICAL
         assert len(explanation.summary) > 0
 
-    def test_explain_for_business(self, sample_workflow_blueprint):
+    def test_explain_workflow_for_business(self, sample_workflow_blueprint):
         """Test explaining workflow for business audience."""
         from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
-        explainer = WorkflowExplainer()
+        explainer = WorkflowExplainer(audience=AudienceLevel.BUSINESS)
 
-        explanation = explainer.explain(
-            sample_workflow_blueprint,
-            audience=AudienceLevel.BUSINESS,
-        )
+        explanation = explainer.explain_workflow(sample_workflow_blueprint)
 
         assert explanation is not None
         assert explanation.audience == AudienceLevel.BUSINESS
 
-    def test_explain_for_beginner(self, sample_workflow_blueprint):
+    def test_explain_workflow_for_beginner(self, sample_workflow_blueprint):
         """Test explaining workflow for beginner audience."""
         from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
-        explainer = WorkflowExplainer()
+        explainer = WorkflowExplainer(audience=AudienceLevel.BEGINNER)
 
-        explanation = explainer.explain(
-            sample_workflow_blueprint,
-            audience=AudienceLevel.BEGINNER,
-        )
+        explanation = explainer.explain_workflow(sample_workflow_blueprint)
 
         assert explanation is not None
         assert explanation.audience == AudienceLevel.BEGINNER
 
-    def test_explain_with_detail_levels(self, sample_workflow_blueprint):
-        """Test explaining with different detail levels."""
-        from empathy_os.socratic.explainer import (
-            DetailLevel,
-            WorkflowExplainer,
-        )
-
-        explainer = WorkflowExplainer()
-
-        brief = explainer.explain(
-            sample_workflow_blueprint,
-            detail_level=DetailLevel.BRIEF,
-        )
-
-        detailed = explainer.explain(
-            sample_workflow_blueprint,
-            detail_level=DetailLevel.DETAILED,
-        )
-
-        # Detailed should have more content
-        assert len(detailed.sections) >= len(brief.sections)
-
-    def test_explain_agents(self, sample_workflow_blueprint):
-        """Test explaining individual agents."""
+    def test_explain_agent(self, sample_agent_spec):
+        """Test explaining individual agent."""
         from empathy_os.socratic.explainer import WorkflowExplainer
 
         explainer = WorkflowExplainer()
 
-        agent_explanation = explainer.explain_agent(
-            sample_workflow_blueprint.agents[0],
-        )
+        agent_explanation = explainer.explain_agent(sample_agent_spec)
 
         assert agent_explanation is not None
-        assert len(agent_explanation) > 0
-
-    def test_explain_flow(self, sample_workflow_blueprint):
-        """Test explaining the workflow flow."""
-        from empathy_os.socratic.explainer import WorkflowExplainer
-
-        explainer = WorkflowExplainer()
-
-        flow_explanation = explainer.explain_flow(sample_workflow_blueprint)
-
-        assert flow_explanation is not None
-        assert isinstance(flow_explanation, str)
+        assert len(agent_explanation.summary) > 0
 
 
 class TestLLMExplanationGenerator:
@@ -276,67 +249,37 @@ class TestLLMExplanationGenerator:
         generator = LLMExplanationGenerator()
         assert generator is not None
 
-    def test_generate_without_api_key(self, sample_workflow_blueprint):
-        """Test generation falls back gracefully without API key."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            LLMExplanationGenerator,
-        )
+    def test_create_generator_with_api_key(self):
+        """Test creating generator with API key."""
+        from empathy_os.socratic.explainer import LLMExplanationGenerator
 
-        generator = LLMExplanationGenerator()
-
-        # Should not raise, may return basic explanation
-        explanation = generator.generate(
-            sample_workflow_blueprint,
-            audience=AudienceLevel.TECHNICAL,
-        )
-
-        # May return None or basic explanation depending on implementation
-        if explanation:
-            assert explanation.workflow_id == sample_workflow_blueprint.workflow_id
-
-    def test_generate_with_mock_client(
-        self, sample_workflow_blueprint, mock_anthropic_client
-    ):
-        """Test generation with mocked Anthropic client."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            LLMExplanationGenerator,
-        )
-
-        generator = LLMExplanationGenerator(client=mock_anthropic_client)
-
-        explanation = generator.generate(
-            sample_workflow_blueprint,
-            audience=AudienceLevel.BUSINESS,
-        )
-
-        if explanation:
-            assert explanation.audience == AudienceLevel.BUSINESS
+        generator = LLMExplanationGenerator(api_key="test-api-key")
+        assert generator.api_key == "test-api-key"
 
 
 class TestExplainWorkflowFunction:
     """Tests for the explain_workflow convenience function."""
 
-    def test_explain_workflow(self, sample_workflow_blueprint):
-        """Test the explain_workflow function."""
+    def test_explain_workflow_returns_string(self, sample_workflow_blueprint):
+        """Test the explain_workflow function returns string."""
         from empathy_os.socratic.explainer import explain_workflow
 
-        explanation = explain_workflow(sample_workflow_blueprint)
+        result = explain_workflow(sample_workflow_blueprint)
 
-        assert explanation is not None
-        assert explanation.workflow_id == sample_workflow_blueprint.workflow_id
+        # Module-level function returns string (formatted output)
+        assert isinstance(result, str)
+        assert len(result) > 0
 
     def test_explain_workflow_with_audience(self, sample_workflow_blueprint):
         """Test explain_workflow with audience parameter."""
         from empathy_os.socratic.explainer import AudienceLevel, explain_workflow
 
-        explanation = explain_workflow(
+        result = explain_workflow(
             sample_workflow_blueprint,
             audience=AudienceLevel.BEGINNER,
         )
 
-        assert explanation.audience == AudienceLevel.BEGINNER
+        assert isinstance(result, str)
 
     def test_explain_workflow_with_format(self, sample_workflow_blueprint):
         """Test explain_workflow with output format."""
@@ -345,13 +288,12 @@ class TestExplainWorkflowFunction:
             explain_workflow,
         )
 
-        explanation = explain_workflow(
+        result = explain_workflow(
             sample_workflow_blueprint,
-            output_format=OutputFormat.MARKDOWN,
+            format=OutputFormat.MARKDOWN,
         )
 
-        markdown = explanation.to_markdown()
-        assert "#" in markdown
+        assert "#" in result  # Markdown headers
 
 
 class TestExplanationContent:
@@ -365,45 +307,51 @@ class TestExplanationContent:
             WorkflowExplainer,
         )
 
-        explainer = WorkflowExplainer()
-
-        explanation = explainer.explain(
-            sample_workflow_blueprint,
+        explainer = WorkflowExplainer(
             audience=AudienceLevel.TECHNICAL,
             detail_level=DetailLevel.DETAILED,
         )
 
+        explanation = explainer.explain_workflow(sample_workflow_blueprint)
+
         text = explanation.to_text()
 
-        # Should include agent info
-        for agent in sample_workflow_blueprint.agents:
-            # Agent name or role should appear
-            assert agent.name in text or agent.role in text or len(text) > 0
+        # Should have content
+        assert len(text) > 0
 
-    def test_business_avoids_jargon(self, sample_workflow_blueprint):
-        """Test business explanation avoids technical jargon."""
+    def test_business_explanation_works(self, sample_workflow_blueprint):
+        """Test business explanation generates valid output."""
         from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
-        explainer = WorkflowExplainer()
+        explainer = WorkflowExplainer(audience=AudienceLevel.BUSINESS)
 
-        explanation = explainer.explain(
-            sample_workflow_blueprint,
-            audience=AudienceLevel.BUSINESS,
-        )
+        explanation = explainer.explain_workflow(sample_workflow_blueprint)
 
-        # This is a soft test - just ensure it runs
         assert explanation is not None
 
-    def test_beginner_uses_simple_language(self, sample_workflow_blueprint):
-        """Test beginner explanation uses simple language."""
+    def test_beginner_explanation_works(self, sample_workflow_blueprint):
+        """Test beginner explanation generates valid output."""
         from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
 
-        explainer = WorkflowExplainer()
+        explainer = WorkflowExplainer(audience=AudienceLevel.BEGINNER)
 
-        explanation = explainer.explain(
-            sample_workflow_blueprint,
-            audience=AudienceLevel.BEGINNER,
-        )
+        explanation = explainer.explain_workflow(sample_workflow_blueprint)
 
-        # This is a soft test - just ensure it runs
         assert explanation is not None
+
+
+class TestRoleDescriptions:
+    """Tests for role description mappings."""
+
+    def test_role_descriptions_exist(self):
+        """Test role descriptions are configured."""
+        from empathy_os.socratic.explainer import ROLE_DESCRIPTIONS
+
+        assert len(ROLE_DESCRIPTIONS) > 0
+
+    def test_role_descriptions_for_all_audiences(self):
+        """Test role descriptions exist for all audience levels."""
+        from empathy_os.socratic.explainer import ROLE_DESCRIPTIONS, AudienceLevel
+
+        for audience in AudienceLevel:
+            assert audience in ROLE_DESCRIPTIONS

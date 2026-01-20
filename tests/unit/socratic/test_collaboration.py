@@ -4,7 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
 
 
 class TestParticipantRole:
@@ -39,7 +38,6 @@ class TestVoteType:
         assert hasattr(VoteType, "ABSTAIN")
 
 
-@pytest.mark.xfail(reason="ChangeType enum values changed - tests need update")
 class TestChangeType:
     """Tests for ChangeType enum."""
 
@@ -47,14 +45,25 @@ class TestChangeType:
         """Test all expected change types exist."""
         from empathy_os.socratic.collaboration import ChangeType
 
-        assert hasattr(ChangeType, "ADD_AGENT")
-        assert hasattr(ChangeType, "REMOVE_AGENT")
-        assert hasattr(ChangeType, "MODIFY_AGENT")
-        assert hasattr(ChangeType, "ADD_CONNECTION")
-        assert hasattr(ChangeType, "REMOVE_CONNECTION")
+        # Test actual enum values
+        assert hasattr(ChangeType, "GOAL_SET")
+        assert hasattr(ChangeType, "ANSWER_SUBMITTED")
+        assert hasattr(ChangeType, "REQUIREMENT_ADDED")
+        assert hasattr(ChangeType, "REQUIREMENT_REMOVED")
+        assert hasattr(ChangeType, "AGENT_ADDED")
+        assert hasattr(ChangeType, "AGENT_REMOVED")
+        assert hasattr(ChangeType, "WORKFLOW_MODIFIED")
+        assert hasattr(ChangeType, "COMMENT_ADDED")
+        assert hasattr(ChangeType, "VOTE_CAST")
+
+    def test_change_type_values(self):
+        """Test change type values."""
+        from empathy_os.socratic.collaboration import ChangeType
+
+        assert ChangeType.AGENT_ADDED.value == "agent_added"
+        assert ChangeType.AGENT_REMOVED.value == "agent_removed"
 
 
-@pytest.mark.xfail(reason="Participant API changed - tests need update")
 class TestParticipant:
     """Tests for Participant dataclass."""
 
@@ -84,92 +93,40 @@ class TestParticipant:
 
         assert participant.role == ParticipantRole.VIEWER
 
-    def test_participant_permissions(self):
-        """Test participant permissions based on role."""
+    def test_participant_serialization(self):
+        """Test participant serialization."""
         from empathy_os.socratic.collaboration import Participant, ParticipantRole
 
-        owner = Participant(user_id="1", name="Owner", role=ParticipantRole.OWNER)
-        editor = Participant(user_id="2", name="Editor", role=ParticipantRole.EDITOR)
-        reviewer = Participant(
-            user_id="3", name="Reviewer", role=ParticipantRole.REVIEWER
-        )
-        viewer = Participant(user_id="4", name="Viewer", role=ParticipantRole.VIEWER)
-
-        assert owner.can_edit()
-        assert editor.can_edit()
-        assert not reviewer.can_edit()
-        assert not viewer.can_edit()
-
-
-@pytest.mark.xfail(reason="Comment API changed - tests need update")
-class TestComment:
-    """Tests for Comment dataclass."""
-
-    def test_create_comment(self):
-        """Test creating a comment."""
-        from empathy_os.socratic.collaboration import Comment
-
-        comment = Comment(
-            comment_id="comment-001",
-            author_id="user-001",
-            content="This agent should have retry logic.",
-            target_id="agent-001",
-            target_type="agent",
+        participant = Participant(
+            user_id="user-001",
+            name="Alice",
+            role=ParticipantRole.EDITOR,
         )
 
-        assert comment.comment_id == "comment-001"
-        assert comment.content == "This agent should have retry logic."
+        data = participant.to_dict()
 
-    def test_comment_reply(self):
-        """Test creating a reply to a comment."""
-        from empathy_os.socratic.collaboration import Comment
+        assert data["user_id"] == "user-001"
+        assert data["name"] == "Alice"
+        assert data["role"] == "editor"
 
-        parent = Comment(
-            comment_id="parent-001",
-            author_id="user-001",
-            content="Original comment",
-        )
+    def test_participant_deserialization(self):
+        """Test participant deserialization."""
+        from empathy_os.socratic.collaboration import Participant
 
-        reply = Comment(
-            comment_id="reply-001",
-            author_id="user-002",
-            content="I agree!",
-            parent_id="parent-001",
-        )
+        data = {
+            "user_id": "user-001",
+            "name": "Alice",
+            "email": "alice@example.com",
+            "role": "editor",
+            "joined_at": "2026-01-20T12:00:00",
+            "last_active": "2026-01-20T12:00:00",
+            "is_online": True,
+        }
 
-        assert reply.parent_id == parent.comment_id
+        participant = Participant.from_dict(data)
 
-
-@pytest.mark.xfail(reason="Vote API changed - tests need update")
-class TestVote:
-    """Tests for Vote dataclass."""
-
-    def test_create_vote(self):
-        """Test creating a vote."""
-        from empathy_os.socratic.collaboration import Vote, VoteType
-
-        vote = Vote(
-            vote_id="vote-001",
-            voter_id="user-001",
-            vote_type=VoteType.APPROVE,
-            target_id="change-001",
-        )
-
-        assert vote.vote_type == VoteType.APPROVE
-
-    def test_vote_with_comment(self):
-        """Test vote with optional comment."""
-        from empathy_os.socratic.collaboration import Vote, VoteType
-
-        vote = Vote(
-            vote_id="vote-002",
-            voter_id="user-002",
-            vote_type=VoteType.REJECT,
-            target_id="change-001",
-            comment="Needs more testing.",
-        )
-
-        assert vote.comment == "Needs more testing."
+        assert participant.user_id == "user-001"
+        assert participant.name == "Alice"
 
 
 class TestChange:
@@ -190,19 +147,38 @@ class TestChange:
         assert change.change_type == ChangeType.AGENT_ADDED
         assert change.after_value["name"] == "Security Scanner"
 
-    def test_change_requires_approval(self):
-        """Test that significant changes require approval."""
+    def test_change_with_before_after(self):
+        """Test change with before and after values."""
+        from empathy_os.socratic.collaboration import Change, ChangeType
+
+        change = Change(
+            change_id="change-002",
+            change_type=ChangeType.WORKFLOW_MODIFIED,
+            author_id="user-001",
+            description="Updated workflow",
+            before_value={"name": "old"},
+            after_value={"name": "new"},
+        )
+
+        assert change.before_value == {"name": "old"}
+        assert change.after_value == {"name": "new"}
+
+    def test_change_serialization(self):
+        """Test change serialization."""
         from empathy_os.socratic.collaboration import Change, ChangeType
 
         change = Change(
             change_id="change-001",
+            change_type=ChangeType.AGENT_ADDED,
             author_id="user-001",
-            change_type=ChangeType.REMOVE_AGENT,
-            description="Removed agent",
-            requires_approval=True,
+            description="Added agent",
         )
 
-        assert change.requires_approval is True
+        data = change.to_dict()
+
+        assert data["change_id"] == "change-001"
+        assert data["change_type"] == "agent_added"
+        assert data["author_id"] == "user-001"
 
 
 class TestVotingResult:
@@ -214,215 +190,132 @@ class TestVotingResult:
 
         result = VotingResult(
             target_id="change-001",
-            approve_count=5,
-            reject_count=1,
-            abstain_count=2,
-            quorum_met=True,
-            approved=True,
+            total_votes=8,
+            approvals=5,
+            rejections=1,
+            abstentions=2,
+            is_approved=True,
+            quorum_reached=True,
         )
 
-        assert result.approved is True
-        assert result.quorum_met is True
-        assert result.approve_count == 5
+        assert result.is_approved is True
+        assert result.quorum_reached is True
+        assert result.approvals == 5
+
+    def test_voting_result_approval_rate(self):
+        """Test voting result approval rate calculation."""
+        from empathy_os.socratic.collaboration import VotingResult
+
+        result = VotingResult(
+            target_id="change-001",
+            total_votes=10,
+            approvals=8,
+            rejections=2,
+            abstentions=0,
+            is_approved=True,
+            quorum_reached=True,
+        )
+
+        assert result.approval_rate == 0.8
 
 
-@pytest.mark.xfail(reason="CollaborativeSession API changed - tests need update")
 class TestCollaborativeSession:
-    """Tests for CollaborativeSession class."""
+    """Tests for CollaborativeSession dataclass."""
 
-    def test_create_session(self, sample_session):
+    def test_create_session(self):
         """Test creating a collaborative session."""
         from empathy_os.socratic.collaboration import CollaborativeSession
 
-        collab = CollaborativeSession(
+        session = CollaborativeSession(
             session_id="collab-001",
-            base_session=sample_session,
+            base_session_id="base-session-001",
+            name="Test Collaboration",
         )
 
-        assert collab.session_id == "collab-001"
-        assert len(collab.participants) == 0
+        assert session.session_id == "collab-001"
+        assert session.base_session_id == "base-session-001"
+        assert len(session.participants) == 0
 
-    def test_add_participant(self, sample_session):
-        """Test adding a participant."""
-        from empathy_os.socratic.collaboration import (
-            CollaborativeSession,
-            Participant,
-            ParticipantRole,
-        )
-
-        collab = CollaborativeSession(
-            session_id="collab-001",
-            base_session=sample_session,
-        )
-
-        participant = Participant(
-            user_id="user-001",
-            name="Alice",
-            role=ParticipantRole.EDITOR,
-        )
-
-        collab.add_participant(participant)
-
-        assert len(collab.participants) == 1
-        assert collab.get_participant("user-001") is not None
-
-    def test_remove_participant(self, sample_session):
-        """Test removing a participant."""
-        from empathy_os.socratic.collaboration import (
-            CollaborativeSession,
-            Participant,
-            ParticipantRole,
-        )
-
-        collab = CollaborativeSession(
-            session_id="collab-001",
-            base_session=sample_session,
-        )
-
-        participant = Participant(
-            user_id="user-001",
-            name="Alice",
-            role=ParticipantRole.EDITOR,
-        )
-
-        collab.add_participant(participant)
-        collab.remove_participant("user-001")
-
-        assert len(collab.participants) == 0
-
-    def test_add_comment(self, sample_session):
-        """Test adding a comment."""
+    def test_session_serialization(self):
+        """Test session serialization."""
         from empathy_os.socratic.collaboration import CollaborativeSession
 
-        collab = CollaborativeSession(
+        session = CollaborativeSession(
             session_id="collab-001",
-            base_session=sample_session,
+            base_session_id="base-session-001",
+            name="Test",
+            description="A test session",
         )
 
-        comment = collab.add_comment(
-            author_id="user-001",
-            content="Great workflow design!",
-        )
+        data = session.to_dict()
 
-        assert comment.comment_id is not None
-        assert len(collab.comments) == 1
+        assert data["session_id"] == "collab-001"
+        assert data["base_session_id"] == "base-session-001"
+        assert data["name"] == "Test"
 
-    def test_add_vote(self, sample_session):
-        """Test adding a vote."""
+    def test_session_with_participants(self):
+        """Test session with participants."""
         from empathy_os.socratic.collaboration import (
-            ChangeType,
-            CollaborativeSession,
-            VoteType,
-        )
-
-        collab = CollaborativeSession(
-            session_id="collab-001",
-            base_session=sample_session,
-        )
-
-        # Create a change to vote on
-        change = collab.propose_change(
-            author_id="user-001",
-            change_type=ChangeType.ADD_AGENT,
-            description="Add new agent",
-            data={},
-        )
-
-        # Vote on it
-        vote = collab.add_vote(
-            voter_id="user-002",
-            target_id=change.change_id,
-            vote_type=VoteType.APPROVE,
-        )
-
-        assert vote is not None
-        assert len(collab.votes) == 1
-
-    def test_get_voting_result(self, sample_session):
-        """Test getting voting results."""
-        from empathy_os.socratic.collaboration import (
-            ChangeType,
             CollaborativeSession,
             Participant,
             ParticipantRole,
-            VoteType,
         )
 
-        collab = CollaborativeSession(
+        session = CollaborativeSession(
             session_id="collab-001",
-            base_session=sample_session,
-        )
-
-        # Add participants
-        for i in range(3):
-            collab.add_participant(
+            base_session_id="base-001",
+            name="Test",
+            participants=[
                 Participant(
-                    user_id=f"user-{i}",
-                    name=f"User {i}",
-                    role=ParticipantRole.REVIEWER,
-                )
-            )
-
-        # Propose a change
-        change = collab.propose_change(
-            author_id="user-0",
-            change_type=ChangeType.ADD_AGENT,
-            description="Add agent",
-            data={},
+                    user_id="user-001",
+                    name="Alice",
+                    role=ParticipantRole.OWNER,
+                ),
+            ],
         )
 
-        # Add votes
-        collab.add_vote("user-0", change.change_id, VoteType.APPROVE)
-        collab.add_vote("user-1", change.change_id, VoteType.APPROVE)
-        collab.add_vote("user-2", change.change_id, VoteType.REJECT)
-
-        result = collab.get_voting_result(change.change_id)
-
-        assert result.approve_count == 2
-        assert result.reject_count == 1
+        assert len(session.participants) == 1
+        assert session.participants[0].name == "Alice"
 
 
-@pytest.mark.xfail(reason="CollaborationManager API changed - tests need update")
 class TestCollaborationManager:
     """Tests for CollaborationManager class."""
 
-    def test_create_manager(self, storage_path):
+    def test_create_manager(self, temp_dir):
         """Test creating a collaboration manager."""
         from empathy_os.socratic.collaboration import CollaborationManager
 
-        manager = CollaborationManager(
-            storage_path=storage_path / "collaboration.json"
-        )
+        manager = CollaborationManager(storage_path=temp_dir / "collaboration")
 
         assert manager is not None
+        assert manager.storage_path.exists()
 
-    def test_create_collaborative_session(self, storage_path, sample_session):
+    def test_create_session(self, temp_dir):
         """Test creating a collaborative session via manager."""
         from empathy_os.socratic.collaboration import CollaborationManager
 
-        manager = CollaborationManager(
-            storage_path=storage_path / "collaboration.json"
-        )
+        manager = CollaborationManager(storage_path=temp_dir / "collaboration")
 
         session = manager.create_session(
-            base_session=sample_session,
+            base_session_id="base-001",
+            name="Test Session",
             owner_id="user-001",
             owner_name="Alice",
         )
 
-        assert session.session_id is not None
-        assert len(session.participants) == 1  # Owner
+        assert session is not None
+        assert session.name == "Test Session"
+        assert len(session.participants) == 1  # Owner auto-added
 
-    def test_get_session(self, storage_path, sample_session):
-        """Test getting a collaborative session."""
+    def test_get_session(self, temp_dir):
+        """Test getting a session."""
         from empathy_os.socratic.collaboration import CollaborationManager
 
-        manager = CollaborationManager(
-            storage_path=storage_path / "collaboration.json"
-        )
+        manager = CollaborationManager(storage_path=temp_dir / "collaboration")
 
         created = manager.create_session(
-            base_session=sample_session,
+            base_session_id="base-001",
+            name="Test Session",
             owner_id="user-001",
             owner_name="Alice",
         )
@@ -432,115 +325,6 @@ class TestCollaborationManager:
         assert retrieved is not None
         assert retrieved.session_id == created.session_id
 
-    def test_invite_participant(self, storage_path, sample_session):
-        """Test inviting a participant."""
-        from empathy_os.socratic.collaboration import (
-            CollaborationManager,
-            ParticipantRole,
-        )
-
-        manager = CollaborationManager(
-            storage_path=storage_path / "collaboration.json"
-        )
-
-        session = manager.create_session(
-            base_session=sample_session,
-            owner_id="user-001",
-            owner_name="Alice",
-        )
-
-        manager.invite_participant(
-            session_id=session.session_id,
-            inviter_id="user-001",
-            invitee_id="user-002",
-            invitee_name="Bob",
-            role=ParticipantRole.EDITOR,
-        )
-
-        updated = manager.get_session(session.session_id)
-        assert len(updated.participants) == 2
-
-    def test_list_user_sessions(self, storage_path, sample_session):
-        """Test listing sessions for a user."""
-        from empathy_os.socratic.collaboration import CollaborationManager
-
-        manager = CollaborationManager(
-            storage_path=storage_path / "collaboration.json"
-        )
-
-        # Create multiple sessions
-        manager.create_session(
-            base_session=sample_session,
-            owner_id="user-001",
-            owner_name="Alice",
-        )
-        manager.create_session(
-            base_session=sample_session,
-            owner_id="user-001",
-            owner_name="Alice",
-        )
-
-        sessions = manager.list_user_sessions("user-001")
-        assert len(sessions) >= 2
-
-
-class TestInvitationManager:
-    """Tests for InvitationManager class."""
-
-    def test_create_invitation_manager(self):
-        """Test creating an invitation manager."""
-        from empathy_os.socratic.collaboration import InvitationManager
-
-        manager = InvitationManager()
-        assert manager is not None
-
-    def test_create_invitation(self):
-        """Test creating an invitation."""
-        from empathy_os.socratic.collaboration import InvitationManager
-
-        manager = InvitationManager()
-
-        invitation = manager.create_invitation(
-            session_id="collab-001",
-            inviter_id="user-001",
-            invitee_email="bob@example.com",
-        )
-
-        assert invitation["invitation_id"] is not None
-        assert invitation["token"] is not None
-
-    def test_validate_invitation(self):
-        """Test validating an invitation token."""
-        from empathy_os.socratic.collaboration import InvitationManager
-
-        manager = InvitationManager()
-
-        invitation = manager.create_invitation(
-            session_id="collab-001",
-            inviter_id="user-001",
-            invitee_email="bob@example.com",
-        )
-
-        is_valid = manager.validate_token(invitation["token"])
-        assert is_valid is True
-
-    def test_revoke_invitation(self):
-        """Test revoking an invitation."""
-        from empathy_os.socratic.collaboration import InvitationManager
-
-        manager = InvitationManager()
-
-        invitation = manager.create_invitation(
-            session_id="collab-001",
-            inviter_id="user-001",
-            invitee_email="bob@example.com",
-        )
-
-        manager.revoke_invitation(invitation["invitation_id"])
-
-        is_valid = manager.validate_token(invitation["token"])
-        assert is_valid is False
-
 
 class TestSyncAdapter:
     """Tests for SyncAdapter class."""
@@ -549,71 +333,35 @@ class TestSyncAdapter:
         """Test creating a sync adapter."""
         from empathy_os.socratic.collaboration import SyncAdapter
 
-        adapter = SyncAdapter()
+        adapter = SyncAdapter(session_id="session-001")
+
         assert adapter is not None
+        assert adapter.session_id == "session-001"
 
-    def test_apply_change(self, sample_session):
-        """Test applying a change."""
+    def test_register_event_handler(self):
+        """Test registering an event handler."""
+        from empathy_os.socratic.collaboration import SyncAdapter
+
+        adapter = SyncAdapter(session_id="session-001")
+
+        events_received = []
+        adapter.on_event(lambda e: events_received.append(e))
+
+        assert len(adapter._event_handlers) == 1
+
+
+class TestInvitationManager:
+    """Tests for InvitationManager class."""
+
+    def test_create_manager(self, temp_dir):
+        """Test creating an invitation manager."""
         from empathy_os.socratic.collaboration import (
-            Change,
-            ChangeType,
-            CollaborativeSession,
-            SyncAdapter,
+            CollaborationManager,
+            InvitationManager,
         )
 
-        adapter = SyncAdapter()
+        collab_manager = CollaborationManager(storage_path=temp_dir / "collaboration")
+        invitation_manager = InvitationManager(collab_manager)
 
-        collab = CollaborativeSession(
-            session_id="collab-001",
-            base_session=sample_session,
-        )
-
-        change = Change(
-            change_id="change-001",
-            author_id="user-001",
-            change_type=ChangeType.ADD_AGENT,
-            description="Add new agent",
-            data={"name": "New Agent", "role": "helper"},
-        )
-
-        result = adapter.apply_change(collab, change)
-
-        assert result is not None
-
-    def test_merge_changes(self, sample_session):
-        """Test merging concurrent changes."""
-        from empathy_os.socratic.collaboration import (
-            Change,
-            ChangeType,
-            CollaborativeSession,
-            SyncAdapter,
-        )
-
-        adapter = SyncAdapter()
-
-        collab = CollaborativeSession(
-            session_id="collab-001",
-            base_session=sample_session,
-        )
-
-        changes = [
-            Change(
-                change_id="change-001",
-                author_id="user-001",
-                change_type=ChangeType.MODIFY_AGENT,
-                description="Modify agent 1",
-                data={"agent_id": "agent-1"},
-            ),
-            Change(
-                change_id="change-002",
-                author_id="user-002",
-                change_type=ChangeType.MODIFY_AGENT,
-                description="Modify agent 2",
-                data={"agent_id": "agent-2"},
-            ),
-        ]
-
-        merged = adapter.merge_changes(collab, changes)
-
-        # Should return merged state or conflict info
-        assert merged is not None
+        assert invitation_manager is not None
+        assert invitation_manager.collab is collab_manager

@@ -273,7 +273,7 @@ class WorkflowExplainer:
             "content": self._explain_agent_value(agent),
         })
 
-        summary = f"{agent.name} is a {agent.role.value} agent that {agent.description.lower()}"
+        summary = f"{agent.name} is a {agent.role.value} agent that {agent.goal.lower()}"
 
         return Explanation(
             title=f"Agent: {agent.name}",
@@ -289,47 +289,55 @@ class WorkflowExplainer:
             return (
                 f"This workflow uses {len(blueprint.agents)} AI helpers to "
                 f"complete {len(blueprint.stages)} steps. "
-                f"It focuses on: {', '.join(blueprint.domains)}."
+                f"It focuses on: {blueprint.domain}."
             )
         elif self.audience == AudienceLevel.BUSINESS:
             return (
                 f"This automated workflow deploys {len(blueprint.agents)} specialized agents "
                 f"across {len(blueprint.stages)} execution stages. "
-                f"Target domains: {', '.join(blueprint.domains)}."
+                f"Target domain: {blueprint.domain}."
             )
         else:
+            generated_at = blueprint.generated_at.strftime('%Y-%m-%d') if blueprint.generated_at else 'N/A'
             return (
                 f"Multi-agent workflow with {len(blueprint.agents)} agents, "
                 f"{len(blueprint.stages)} stages. "
-                f"Domains: {', '.join(blueprint.domains)}. "
-                f"Created: {blueprint.created_at.strftime('%Y-%m-%d') if blueprint.created_at else 'N/A'}."
+                f"Domain: {blueprint.domain}. "
+                f"Generated: {generated_at}."
             )
 
-    def _explain_agents(self, agents: list[AgentSpec]) -> str:
-        """Generate agents explanation."""
+    def _explain_agents(self, agents: list) -> str:
+        """Generate agents explanation.
+
+        Args:
+            agents: List of AgentBlueprint objects (each has .spec with AgentSpec)
+        """
         lines = []
 
-        for agent in agents:
+        for agent_blueprint in agents:
+            # Access the AgentSpec via .spec
+            spec = agent_blueprint.spec
             role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(
-                agent.role, "works on the task"
+                spec.role, "works on the task"
             )
 
             if self.detail_level == DetailLevel.BRIEF:
-                lines.append(f"• {agent.name}: {role_desc}")
+                lines.append(f"• {spec.name}: {role_desc}")
             else:
-                tool_count = len(agent.tools)
+                tool_count = len(spec.tools)
                 tool_str = f" ({tool_count} tools)" if self.detail_level == DetailLevel.DETAILED else ""
-                lines.append(f"• **{agent.name}**{tool_str}: {agent.description}")
+                lines.append(f"• **{spec.name}**{tool_str}: {spec.goal}")
 
         return "\n".join(lines)
 
     def _explain_process(
         self,
         stages: list[StageSpec],
-        agents: list[AgentSpec],
+        agents: list,  # list[AgentBlueprint]
     ) -> str:
         """Generate process explanation."""
-        agent_lookup = {a.agent_id: a for a in agents}
+        # Build lookup from agent ID to name (agents are AgentBlueprint, spec has id)
+        agent_lookup = {a.spec.id: a.spec for a in agents}
         lines = []
 
         for i, stage in enumerate(stages, 1):
@@ -354,8 +362,8 @@ class WorkflowExplainer:
                     f"{i}. **{stage.name}**{parallel_str}: {', '.join(agent_names)}"
                 )
 
-            if self.detail_level == DetailLevel.DETAILED and stage.dependencies:
-                lines.append(f"   Depends on: {', '.join(stage.dependencies)}")
+            if self.detail_level == DetailLevel.DETAILED and stage.depends_on:
+                lines.append(f"   Depends on: {', '.join(stage.depends_on)}")
 
         return "\n".join(lines)
 
@@ -376,7 +384,7 @@ class WorkflowExplainer:
 
         lines = ["This agent can:"]
         for tool in tools:
-            tool_id = tool.tool_id if hasattr(tool, 'tool_id') else str(tool)
+            tool_id = tool.id if hasattr(tool, 'id') else str(tool)
             explanation = tool_explanations.get(tool_id, f"use {tool_id}")
             lines.append(f"• {explanation}")
 
@@ -419,7 +427,7 @@ class WorkflowExplainer:
         """Generate workflow summary."""
         if self.audience == AudienceLevel.BEGINNER:
             return (
-                f"This workflow automatically helps you with {', '.join(blueprint.domains)}. "
+                f"This workflow automatically helps you with {blueprint.domain}. "
                 f"It uses {len(blueprint.agents)} AI helpers that work together in "
                 f"{len(blueprint.stages)} steps to get the job done."
             )
@@ -430,7 +438,7 @@ class WorkflowExplainer:
                 f"to deliver results efficiently and consistently."
             )
         else:
-            return blueprint.description or f"A {len(blueprint.stages)}-stage workflow for {', '.join(blueprint.domains)}."
+            return blueprint.description or f"A {len(blueprint.stages)}-stage workflow for {blueprint.domain}."
 
     def generate_narrative(self, blueprint: WorkflowBlueprint) -> str:
         """Generate a narrative story-like explanation.
@@ -441,7 +449,8 @@ class WorkflowExplainer:
         Returns:
             Narrative explanation string
         """
-        agent_lookup = {a.agent_id: a for a in blueprint.agents}
+        # Build lookup from agent ID to AgentSpec (agents are AgentBlueprint)
+        agent_lookup = {a.spec.id: a.spec for a in blueprint.agents}
 
         lines = [
             f"## The {blueprint.name} Story",
@@ -507,7 +516,7 @@ class LLMExplanationGenerator:
 
 Workflow: {name}
 Description: {description}
-Domains: {domains}
+Domain: {domain}
 Agents: {agents}
 Stages: {stages}
 
@@ -576,7 +585,7 @@ Format as markdown with clear sections."""
             audience=audience.value,
             name=blueprint.name,
             description=blueprint.description,
-            domains=", ".join(blueprint.domains),
+            domain=blueprint.domain,
             agents=agents_str,
             stages=stages_str,
             detail_level=detail_level.value,

@@ -4,7 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import pytest
 
 
 class TestSocraticWorkflowBuilder:
@@ -49,34 +48,9 @@ class TestSocraticWorkflowBuilder:
         session = builder.set_goal(session, "I want to automate testing")
 
         assert session.goal == "I want to automate testing"
-        assert session.detected_domains is not None
-
-    def test_detect_domains_code_review(self):
-        """Test domain detection for code review."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-
-        builder = SocraticWorkflowBuilder()
-        domains = builder._detect_domains("I want to review code quality")
-
-        assert "code_review" in domains
-
-    def test_detect_domains_security(self):
-        """Test domain detection for security."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-
-        builder = SocraticWorkflowBuilder()
-        domains = builder._detect_domains("Scan for security vulnerabilities")
-
-        assert "security" in domains
-
-    def test_detect_domains_testing(self):
-        """Test domain detection for testing."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-
-        builder = SocraticWorkflowBuilder()
-        domains = builder._detect_domains("Generate unit tests for coverage")
-
-        assert "testing" in domains
+        # After set_goal, goal_analysis should be populated
+        assert session.goal_analysis is not None
+        assert session.goal_analysis.domain is not None
 
     def test_get_next_questions(self, sample_session):
         """Test getting next questions."""
@@ -98,8 +72,8 @@ class TestSocraticWorkflowBuilder:
         builder = SocraticWorkflowBuilder()
         session = builder.submit_answers(sample_session, sample_answers)
 
-        assert session.answers is not None
-        assert "languages" in session.answers
+        # After submit_answers, requirements should be updated
+        assert session.requirements is not None
 
     def test_is_ready_to_generate(self, sample_session):
         """Test checking if ready to generate."""
@@ -137,30 +111,86 @@ class TestSocraticWorkflowBuilder:
         assert workflow.blueprint is not None
         assert len(workflow.blueprint.agents) > 0
 
-
-class TestDomainDetection:
-    """Tests for domain detection functionality."""
-
-    @pytest.mark.parametrize("goal,expected_domain", [
-        ("Review my code for bugs", "code_review"),
-        ("Check for security vulnerabilities", "security"),
-        ("Generate unit tests", "testing"),
-        ("Write documentation", "documentation"),
-        ("Optimize performance", "performance"),
-        ("Refactor this module", "refactoring"),
-    ])
-    def test_domain_detection_keywords(self, goal, expected_domain):
-        """Test domain detection with various keywords."""
+    def test_get_session_summary(self, sample_session):
+        """Test getting session summary."""
         from empathy_os.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
-        domains = builder._detect_domains(goal)
+        summary = builder.get_session_summary(sample_session)
 
-        assert expected_domain in domains
+        assert summary is not None
+        assert "session_id" in summary
+        assert "state" in summary
+
+
+class TestDetectDomainFunction:
+    """Tests for the detect_domain module-level function."""
+
+    def test_detect_code_review_domain(self):
+        """Test domain detection for code review."""
+        from empathy_os.socratic.engine import detect_domain
+
+        domain, confidence = detect_domain("I want to review code quality")
+
+        assert domain == "code_review"
+        assert confidence > 0
+
+    def test_detect_security_domain(self):
+        """Test domain detection for security."""
+        from empathy_os.socratic.engine import detect_domain
+
+        domain, confidence = detect_domain("Scan for security vulnerabilities")
+
+        assert domain == "security"
+        assert confidence > 0
+
+    def test_detect_testing_domain(self):
+        """Test domain detection for testing."""
+        from empathy_os.socratic.engine import detect_domain
+
+        domain, confidence = detect_domain("Generate unit tests for coverage")
+
+        assert domain == "testing"
+        assert confidence > 0
+
+    def test_detect_documentation_domain(self):
+        """Test domain detection for documentation."""
+        from empathy_os.socratic.engine import detect_domain
+
+        domain, confidence = detect_domain("Write API documentation")
+
+        assert domain == "documentation"
+        assert confidence > 0
+
+    def test_detect_performance_domain(self):
+        """Test domain detection for performance."""
+        from empathy_os.socratic.engine import detect_domain
+
+        domain, confidence = detect_domain("Optimize for performance")
+
+        assert domain == "performance"
+        assert confidence > 0
+
+    def test_detect_refactoring_domain(self):
+        """Test domain detection for refactoring."""
+        from empathy_os.socratic.engine import detect_domain
+
+        domain, confidence = detect_domain("Refactor this module")
+
+        assert domain == "refactoring"
+        assert confidence > 0
+
+    def test_returns_general_for_unknown(self):
+        """Test that unknown goals return general domain."""
+        from empathy_os.socratic.engine import detect_domain
+
+        domain, confidence = detect_domain("Do something vague")
+
+        assert domain == "general"
 
 
 class TestQuestionGeneration:
-    """Tests for question generation."""
+    """Tests for question generation functions."""
 
     def test_generate_initial_questions(self):
         """Test generating initial questions."""
@@ -169,20 +199,71 @@ class TestQuestionGeneration:
         builder = SocraticWorkflowBuilder()
         session = builder.start_session("Code review automation")
 
-        form = builder.generate_initial_questions(session)
+        # get_next_questions handles initial question generation internally
+        form = builder.get_next_questions(session)
 
         assert form is not None
         assert form.round_number == 1
 
-    def test_generate_followup_questions(self, sample_session):
-        """Test generating follow-up questions."""
+    def test_get_initial_form(self):
+        """Test getting the initial form template."""
         from empathy_os.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
-        sample_session.answers = {"languages": ["python"]}
+        form = builder.get_initial_form()
 
-        form = builder.generate_followup_questions(sample_session, round_number=2)
+        assert form is not None
+        assert len(form.fields) > 0
 
-        # May or may not have follow-up questions depending on answers
-        # Just verify it doesn't error
-        assert form is None or hasattr(form, 'fields')
+
+class TestDomainPatterns:
+    """Tests for domain pattern configuration."""
+
+    def test_domain_patterns_exist(self):
+        """Test that domain patterns are configured."""
+        from empathy_os.socratic.engine import DOMAIN_PATTERNS
+
+        assert len(DOMAIN_PATTERNS) > 0
+
+    def test_domain_pattern_has_required_fields(self):
+        """Test domain patterns have required fields."""
+        from empathy_os.socratic.engine import DOMAIN_PATTERNS
+
+        for pattern in DOMAIN_PATTERNS:
+            assert hasattr(pattern, "domain")
+            assert hasattr(pattern, "keywords")
+            assert hasattr(pattern, "weight")
+
+
+class TestSessionWorkflow:
+    """Integration tests for the full session workflow."""
+
+    def test_full_workflow_happy_path(self):
+        """Test complete session workflow from start to generation."""
+        from empathy_os.socratic.engine import SocraticWorkflowBuilder
+        from empathy_os.socratic.session import SessionState
+
+        builder = SocraticWorkflowBuilder()
+
+        # 1. Start session with goal
+        session = builder.start_session("Automate security code review for Python")
+
+        # 2. Get initial questions
+        form = builder.get_next_questions(session)
+        assert form is not None
+
+        # 3. Submit answers
+        session = builder.submit_answers(session, {
+            "languages": ["python"],
+            "quality_focus": ["security"],
+        })
+
+        # 4. Force ready state for test
+        session.state = SessionState.READY_TO_GENERATE
+
+        # 5. Generate workflow
+        workflow = builder.generate_workflow(session)
+
+        assert workflow is not None
+        assert workflow.blueprint is not None
+        assert len(workflow.blueprint.agents) > 0

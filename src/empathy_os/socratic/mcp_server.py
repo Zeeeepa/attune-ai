@@ -220,11 +220,11 @@ class SocraticMCPServer:
             from .engine import SocraticWorkflowBuilder
             from .feedback import FeedbackLoop
             from .llm_analyzer import LLMGoalAnalyzer
-            from .storage import JSONFileStorage, StorageManager
+            from .storage import JSONFileStorage, set_default_storage
 
             # Initialize storage
             self._storage = JSONFileStorage()
-            StorageManager.initialize(self._storage)
+            set_default_storage(self._storage)
 
             # Initialize builder
             self._builder = SocraticWorkflowBuilder()
@@ -234,8 +234,8 @@ class SocraticMCPServer:
             if api_key:
                 self._llm_analyzer = LLMGoalAnalyzer(api_key=api_key)
 
-            # Initialize feedback loop
-            self._feedback_loop = FeedbackLoop(self._storage)
+            # Initialize feedback loop (uses default storage path)
+            self._feedback_loop = FeedbackLoop()
 
             self._initialized = True
             logger.info("Socratic MCP Server initialized successfully")
@@ -298,7 +298,9 @@ class SocraticMCPServer:
 
         if goal:
             result["goal"] = goal
-            result["detected_domains"] = list(session.detected_domains) if session.detected_domains else []
+            # Get domain from goal_analysis if available
+            if session.goal_analysis:
+                result["detected_domain"] = session.goal_analysis.domain
 
         return result
 
@@ -329,8 +331,10 @@ class SocraticMCPServer:
             "session_id": session_id,
             "state": session.state.value,
             "goal": goal,
-            "detected_domains": list(session.detected_domains) if session.detected_domains else []
         }
+        # Add domain from goal_analysis if available
+        if session.goal_analysis:
+            result["detected_domain"] = session.goal_analysis.domain
 
         if analysis:
             result["llm_analysis"] = {
@@ -363,25 +367,29 @@ class SocraticMCPServer:
         questions = []
         for field in form.fields:
             q = {
-                "field_id": field.field_id,
+                "field_id": field.id,
                 "type": field.field_type.value,
                 "label": field.label,
-                "required": field.required
+                "required": field.validation.required if field.validation else False
             }
             if field.options:
-                q["options"] = field.options
+                # Serialize FieldOption objects
+                q["options"] = [
+                    {"value": opt.value, "label": opt.label, "description": opt.description}
+                    for opt in field.options
+                ]
             if field.placeholder:
                 q["placeholder"] = field.placeholder
             if field.help_text:
                 q["help_text"] = field.help_text
-            if field.default_value is not None:
-                q["default"] = field.default_value
+            if field.default is not None:
+                q["default"] = field.default
             questions.append(q)
 
         return {
             "session_id": session_id,
             "state": session.state.value,
-            "form_id": form.form_id,
+            "form_id": form.id,
             "form_title": form.title,
             "questions": questions
         }
@@ -511,15 +519,18 @@ class SocraticMCPServer:
         if not session:
             return {"error": f"Session not found: {session_id}"}
 
-        return {
+        result = {
             "session_id": session.session_id,
             "state": session.state.value,
             "goal": session.goal,
-            "detected_domains": list(session.detected_domains) if session.detected_domains else [],
-            "answers": session.answers,
+            "question_rounds": session.question_rounds,
             "created_at": session.created_at.isoformat() if session.created_at else None,
             "updated_at": session.updated_at.isoformat() if session.updated_at else None
         }
+        # Add domain from goal_analysis if available
+        if session.goal_analysis:
+            result["detected_domain"] = session.goal_analysis.domain
+        return result
 
     async def _handle_list_blueprints(self, args: dict[str, Any]) -> dict[str, Any]:
         """List all blueprints."""
