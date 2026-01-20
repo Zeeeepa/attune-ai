@@ -526,8 +526,8 @@ class TestSecretsDetector:
     def test_detect_stripe_key(self):
         """Test Stripe key detection."""
         detector = SecretsDetector()
-        # Use test key prefix (sk_test_) to avoid GitHub push protection
-        content = "stripe_key = 'sk_test_FAKE_KEY_FOR_TESTING_ONLY'"
+        # Use test key prefix (sk_test_) with 24+ alphanumeric chars to match pattern
+        content = "stripe_key = 'sk_test_FAKEKEYFAKEKEYFAKEKEY123'"
         detections = detector.detect(content)
 
         stripe_detections = [d for d in detections if d.secret_type == SecretType.STRIPE_KEY]
