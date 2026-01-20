@@ -3593,9 +3593,108 @@
         ".../orchestration/execution_strategies.py"
       ],
       "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260120_99461b9c",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "Release v4.6.1 - Documentation fixes",
+      "fix": "See commit 99461b9c",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-20",
+      "files_affected": [
+        ".claude/CLAUDE.md",
+        "CHANGELOG.md",
+        "README.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260119_9b048dcb",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove specific $99 pricing from all documentation",
+      "fix": "See commit 9b048dcb",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-19",
+      "files_affected": [
+        "docs/architecture/STRIPE_INTEGRATION_PLAN.md",
+        "docs/explanation/COMPARISON.md",
+        "docs/guides/MKDOCS_TUTORIAL.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260119_63889f8e",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove specific $99 pricing from user-facing pages",
+      "fix": "See commit 63889f8e",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-19",
+      "files_affected": [
+        "website/app/book/page.tsx",
+        "website/app/faq/page.tsx",
+        "website/app/pricing/page.tsx"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260119_9f8d15f5",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Restore full memory feature description",
+      "fix": "See commit 9f8d15f5",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-19",
+      "files_affected": [
+        "website/lib/features.ts"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260119_dcf0d039",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Remove app.py that broke Vercel deployment",
+      "fix": "See commit dcf0d039",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-19",
+      "files_affected": [
+        ".claude/commands/cache 2.md",
+        ".claude/commands/cost-report 2.md",
+        ".claude/commands/create-agent 2.md"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260119_c48fee49",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Add FastAPI entrypoint for deployment platform auto-detection",
+      "fix": "See commit c48fee49",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-19",
+      "files_affected": [
+        "app.py"
+      ],
+      "source": "git_history"
+    },
+    {
+      "pattern_id": "bug_20260119_29467e01",
+      "bug_type": "unknown",
+      "status": "resolved",
+      "root_cause": "fix: Change 'agent composition' to 'dynamic agent creation' in Footer",
+      "fix": "See commit 29467e01",
+      "resolved_by": "@geneai",
+      "resolved_at": "2026-01-19",
+      "files_affected": [
+        "website/components/Footer.tsx"
+      ],
+      "source": "git_history"
     }
   ],
-  "last_updated": "2026-01-16T02:42:28.286434",
+  "last_updated": "2026-01-20T10:39:56.805750",
   "migration_metadata": {
     "migrated_at": "2026-01-07T05:51:07.939260",
     "total_patterns": 64,
