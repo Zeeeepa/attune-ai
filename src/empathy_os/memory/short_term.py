@@ -33,6 +33,10 @@ from typing import Any
 
 import structlog
 
+from .security.pii_scrubber import PIIScrubber
+from .security.secrets_detector import SecretsDetector
+from .security.secrets_detector import Severity as SecretSeverity
+
 logger = structlog.get_logger(__name__)
 
 try:
@@ -100,6 +104,10 @@ class RedisConfig:
     password: str | None = None
     use_mock: bool = False
 
+    # Security settings
+    pii_scrub_enabled: bool = True  # Scrub PII before storing (HIPAA/GDPR compliance)
+    secrets_detection_enabled: bool = True  # Block storage of detected secrets
+
     # SSL/TLS settings
     ssl: bool = False
     ssl_cert_reqs: str | None = None  # "required", "optional", "none"
@@ -166,6 +174,11 @@ class RedisMetrics:
     publish_count: int = 0
     stream_append_count: int = 0
 
+    # Security metrics
+    pii_scrubbed_total: int = 0  # Total PII instances scrubbed
+    pii_scrub_operations: int = 0  # Operations that had PII scrubbed
+    secrets_blocked_total: int = 0  # Total secrets blocked from storage
+
     def record_operation(self, operation: str, latency_ms: float, success: bool = True) -> None:
         """Record an operation metric."""
         self.operations_total += 1
@@ -216,6 +229,11 @@ class RedisMetrics:
                 "retrieve": self.retrieve_count,
                 "publish": self.publish_count,
                 "stream_append": self.stream_append_count,
+            },
+            "security": {
+                "pii_scrubbed_total": self.pii_scrubbed_total,
+                "pii_scrub_operations": self.pii_scrub_operations,
+                "secrets_blocked_total": self.secrets_blocked_total,
             },
         }
 
@@ -387,6 +405,10 @@ class ConflictContext:
         )
 
 
+class SecurityError(Exception):
+    """Raised when a security policy is violated (e.g., secrets detected in data)."""
+
+
 class RedisShortTermMemory:
     """Redis-backed short-term memory for agent coordination
 
@@ -487,6 +509,18 @@ class RedisShortTermMemory:
         self._mock_sorted_sets: dict[str, list[tuple[float, str]]] = {}
         self._mock_streams: dict[str, list[tuple[str, dict]]] = {}
         self._mock_pubsub_handlers: dict[str, list[Callable[[dict], None]]] = {}
+
+        # Security: Initialize PII scrubber and secrets detector
+        self._pii_scrubber: PIIScrubber | None = None
+        self._secrets_detector: SecretsDetector | None = None
+
+        if self._config.pii_scrub_enabled:
+            self._pii_scrubber = PIIScrubber(enable_name_detection=False)
+            logger.debug("pii_scrubber_enabled", message="PII scrubbing active for short-term memory")
+
+        if self._config.secrets_detection_enabled:
+            self._secrets_detector = SecretsDetector()
+            logger.debug("secrets_detector_enabled", message="Secrets detection active for short-term memory")
 
         if self.use_mock:
             self._client = None
@@ -621,6 +655,82 @@ class RedisShortTermMemory:
         # Convert bytes to strings - needed for API return type
         return [k.decode() if isinstance(k, bytes) else str(k) for k in keys]
 
+    # === Security Methods ===
+
+    def _sanitize_data(self, data: Any) -> tuple[Any, int]:
+        """Sanitize data by scrubbing PII and checking for secrets.
+
+        Args:
+            data: Data to sanitize (dict, list, or str)
+
+        Returns:
+            Tuple of (sanitized_data, pii_count)
+
+        Raises:
+            SecurityError: If secrets are detected and blocking is enabled
+
+        """
+        pii_count = 0
+
+        if data is None:
+            return data, 0
+
+        # Convert data to string for scanning
+        if isinstance(data, dict):
+            data_str = json.dumps(data)
+        elif isinstance(data, list):
+            data_str = json.dumps(data)
+        elif isinstance(data, str):
+            data_str = data
+        else:
+            # For other types, convert to string
+            data_str = str(data)
+
+        # Check for secrets first (before modifying data)
+        if self._secrets_detector is not None:
+            detections = self._secrets_detector.detect(data_str)
+            # Block critical and high severity secrets
+            critical_secrets = [
+                d for d in detections
+                if d.severity in (SecretSeverity.CRITICAL, SecretSeverity.HIGH)
+            ]
+            if critical_secrets:
+                self._metrics.secrets_blocked_total += len(critical_secrets)
+                secret_types = [d.secret_type.value for d in critical_secrets]
+                logger.warning(
+                    "secrets_detected_blocked",
+                    secret_types=secret_types,
+                    count=len(critical_secrets),
+                )
+                raise SecurityError(
+                    f"Cannot store data containing secrets: {secret_types}. "
+                    "Remove sensitive credentials before storing."
+                )
+
+        # Scrub PII
+        if self._pii_scrubber is not None:
+            sanitized_str, pii_detections = self._pii_scrubber.scrub(data_str)
+            pii_count = len(pii_detections)
+
+            if pii_count > 0:
+                self._metrics.pii_scrubbed_total += pii_count
+                self._metrics.pii_scrub_operations += 1
+                logger.debug(
+                    "pii_scrubbed",
+                    pii_count=pii_count,
+                    pii_types=[d.pii_type for d in pii_detections],
+                )
+
+                # Convert back to original type
+                if isinstance(data, dict):
+                    return json.loads(sanitized_str), pii_count
+                elif isinstance(data, list):
+                    return json.loads(sanitized_str), pii_count
+                else:
+                    return sanitized_str, pii_count
+
+        return data, pii_count
+
     # === Working Memory (Stash/Retrieve) ===
 
     def stash(
@@ -629,6 +739,7 @@ class RedisShortTermMemory:
         data: Any,
         credentials: AgentCredentials,
         ttl: TTLStrategy = TTLStrategy.WORKING_RESULTS,
+        skip_sanitization: bool = False,
     ) -> bool:
         """Stash data in short-term memory
 
@@ -637,6 +748,7 @@ class RedisShortTermMemory:
             data: Data to store (will be JSON serialized)
             credentials: Agent credentials
             ttl: Time-to-live strategy
+            skip_sanitization: Skip PII scrubbing and secrets detection (use with caution)
 
         Returns:
             True if successful
@@ -644,6 +756,12 @@ class RedisShortTermMemory:
         Raises:
             ValueError: If key is empty or invalid
             PermissionError: If credentials lack write access
+            SecurityError: If secrets are detected in data (when secrets_detection_enabled)
+
+        Note:
+            PII (emails, SSNs, phone numbers, etc.) is automatically scrubbed
+            before storage unless skip_sanitization=True or pii_scrub_enabled=False.
+            Secrets (API keys, passwords, etc.) will block storage by default.
 
         Example:
             >>> memory.stash("analysis_v1", {"findings": [...]}, creds)
@@ -658,6 +776,17 @@ class RedisShortTermMemory:
                 f"Agent {credentials.agent_id} (Tier {credentials.tier.name}) "
                 "cannot write to memory. Requires CONTRIBUTOR or higher.",
             )
+
+        # Sanitize data (PII scrubbing + secrets detection)
+        if not skip_sanitization:
+            data, pii_count = self._sanitize_data(data)
+            if pii_count > 0:
+                logger.info(
+                    "stash_pii_scrubbed",
+                    key=key,
+                    agent_id=credentials.agent_id,
+                    pii_count=pii_count,
+                )
 
         full_key = f"{self.PREFIX_WORKING}{credentials.agent_id}:{key}"
         payload = {
@@ -2217,6 +2346,63 @@ class RedisShortTermMemory:
                 self._client.unwatch()
             except Exception:
                 pass
+
+    # =========================================================================
+    # CROSS-SESSION COMMUNICATION
+    # =========================================================================
+
+    def enable_cross_session(
+        self,
+        access_tier: AccessTier = AccessTier.CONTRIBUTOR,
+        auto_announce: bool = True,
+    ):
+        """Enable cross-session communication for this memory instance.
+
+        This allows agents in different Claude Code sessions to communicate
+        and coordinate via Redis.
+
+        Args:
+            access_tier: Access tier for this session
+            auto_announce: Whether to announce presence automatically
+
+        Returns:
+            CrossSessionCoordinator instance
+
+        Raises:
+            ValueError: If in mock mode (Redis required for cross-session)
+
+        Example:
+            >>> memory = RedisShortTermMemory()
+            >>> coordinator = memory.enable_cross_session(AccessTier.CONTRIBUTOR)
+            >>> print(f"Session ID: {coordinator.agent_id}")
+            >>> sessions = coordinator.get_active_sessions()
+
+        """
+        if self.use_mock:
+            raise ValueError(
+                "Cross-session communication requires Redis. "
+                "Set REDIS_HOST/REDIS_PORT or disable mock mode."
+            )
+
+        from .cross_session import CrossSessionCoordinator, SessionType
+
+        coordinator = CrossSessionCoordinator(
+            memory=self,
+            session_type=SessionType.CLAUDE,
+            access_tier=access_tier,
+            auto_announce=auto_announce,
+        )
+
+        return coordinator
+
+    def cross_session_available(self) -> bool:
+        """Check if cross-session communication is available.
+
+        Returns:
+            True if Redis is connected (not mock mode)
+
+        """
+        return not self.use_mock and self._client is not None
 
     # =========================================================================
     # CLEANUP AND LIFECYCLE

@@ -232,7 +232,7 @@ def get_all_templates() -> list[AgentTemplate]:
 
     Example:
         >>> templates = get_all_templates()
-        >>> len(templates) >= 7
+        >>> len(templates) >= 13
         True
     """
     return list(_TEMPLATE_REGISTRY.values())
@@ -503,6 +503,191 @@ _REFACTORING_SPECIALIST = AgentTemplate(
 )
 
 
+# Template 8: Test Generator
+_TEST_GENERATOR = AgentTemplate(
+    id="test_generator",
+    role="Test Generator",
+    capabilities=[
+        "generate_unit_tests",
+        "generate_integration_tests",
+        "create_test_fixtures",
+    ],
+    tier_preference="CAPABLE",
+    tools=["ast_parser", "pytest", "test_framework"],
+    default_instructions=(
+        "You are a test generator. Create comprehensive tests:\n"
+        "1. Generate unit tests for uncovered code paths\n"
+        "2. Create integration tests for component interactions\n"
+        "3. Include edge cases and boundary conditions\n"
+        "4. Use appropriate assertions and fixtures\n"
+        "Focus on high-value tests that catch real bugs."
+    ),
+    quality_gates={
+        "min_assertions_per_test": 1,
+        "max_test_complexity": 10,
+    },
+    resource_requirements=ResourceRequirements(
+        min_tokens=2000,
+        max_tokens=20000,
+        timeout_seconds=600,
+        memory_mb=1024,
+    ),
+)
+
+# Template 9: Test Validator
+_TEST_VALIDATOR = AgentTemplate(
+    id="test_validator",
+    role="Test Validator",
+    capabilities=[
+        "validate_tests",
+        "run_tests",
+        "verify_coverage",
+    ],
+    tier_preference="CHEAP",
+    tools=["pytest", "coverage_analyzer"],
+    default_instructions=(
+        "You are a test validator. Verify test quality:\n"
+        "1. Run generated tests to verify they pass\n"
+        "2. Check that tests actually test the intended behavior\n"
+        "3. Verify coverage improvements\n"
+        "4. Identify flaky or unreliable tests\n"
+        "Focus on ensuring test reliability and correctness."
+    ),
+    quality_gates={
+        "min_pass_rate": 100,
+        "max_flaky_tests": 0,
+    },
+    resource_requirements=ResourceRequirements(
+        min_tokens=1000,
+        max_tokens=8000,
+        timeout_seconds=300,
+        memory_mb=512,
+    ),
+)
+
+# Template 10: Report Generator
+_REPORT_GENERATOR = AgentTemplate(
+    id="report_generator",
+    role="Report Generator",
+    capabilities=[
+        "generate_reports",
+        "summarize_findings",
+        "create_recommendations",
+    ],
+    tier_preference="CHEAP",
+    tools=["markdown_writer"],
+    default_instructions=(
+        "You are a report generator. Create clear, actionable reports:\n"
+        "1. Summarize key findings from analysis\n"
+        "2. Prioritize issues by severity and impact\n"
+        "3. Provide specific recommendations\n"
+        "4. Include metrics and progress indicators\n"
+        "Focus on clarity and actionability for the reader."
+    ),
+    quality_gates={
+        "min_sections": 3,
+        "max_report_length": 5000,
+    },
+    resource_requirements=ResourceRequirements(
+        min_tokens=500,
+        max_tokens=5000,
+        timeout_seconds=180,
+        memory_mb=256,
+    ),
+)
+
+# Template 11: Documentation Analyst
+_DOCUMENTATION_ANALYST = AgentTemplate(
+    id="documentation_analyst",
+    role="Documentation Analyst",
+    capabilities=[
+        "analyze_docs",
+        "find_gaps",
+        "check_freshness",
+    ],
+    tier_preference="CAPABLE",
+    tools=["ast_parser", "doc_analyzer", "pydocstyle"],
+    default_instructions=(
+        "You are a documentation analyst. Analyze documentation quality:\n"
+        "1. Identify missing docstrings and documentation\n"
+        "2. Find outdated documentation that needs updates\n"
+        "3. Check documentation completeness for public APIs\n"
+        "4. Verify README and guides are current\n"
+        "Focus on finding gaps that impact developer experience."
+    ),
+    quality_gates={
+        "min_doc_coverage": 80,
+        "max_stale_docs": 5,
+    },
+    resource_requirements=ResourceRequirements(
+        min_tokens=1500,
+        max_tokens=12000,
+        timeout_seconds=450,
+        memory_mb=768,
+    ),
+)
+
+# Template 12: Synthesizer
+_SYNTHESIZER = AgentTemplate(
+    id="synthesizer",
+    role="Information Synthesizer",
+    capabilities=[
+        "synthesize_findings",
+        "create_action_plans",
+        "prioritize_work",
+    ],
+    tier_preference="CAPABLE",
+    tools=["markdown_writer"],
+    default_instructions=(
+        "You are an information synthesizer. Combine and prioritize findings:\n"
+        "1. Consolidate findings from multiple analyses\n"
+        "2. Identify patterns and common themes\n"
+        "3. Create prioritized action plans\n"
+        "4. Provide clear next steps with owners\n"
+        "Focus on actionable synthesis that drives improvements."
+    ),
+    quality_gates={
+        "min_action_items": 3,
+        "max_priority_levels": 3,
+    },
+    resource_requirements=ResourceRequirements(
+        min_tokens=1500,
+        max_tokens=10000,
+        timeout_seconds=400,
+        memory_mb=512,
+    ),
+)
+
+# Template 13: Generic Agent
+_GENERIC_AGENT = AgentTemplate(
+    id="generic_agent",
+    role="General Purpose Agent",
+    capabilities=[
+        "analyze",
+        "generate",
+        "review",
+    ],
+    tier_preference="CAPABLE",
+    tools=["read", "write", "grep"],
+    default_instructions=(
+        "You are a general purpose agent. Complete the assigned task:\n"
+        "1. Understand the task requirements thoroughly\n"
+        "2. Gather necessary information and context\n"
+        "3. Execute the task systematically\n"
+        "4. Verify the results meet success criteria\n"
+        "Focus on quality and completeness."
+    ),
+    quality_gates={
+        "min_quality_score": 7,
+    },
+    resource_requirements=ResourceRequirements(
+        min_tokens=1000,
+        max_tokens=15000,
+        timeout_seconds=600,
+        memory_mb=1024,
+    ),
+)
+
 # Register all pre-built templates
 _register_template(_TEST_COVERAGE_ANALYZER)
 _register_template(_SECURITY_AUDITOR)
@@ -511,6 +696,12 @@ _register_template(_DOCUMENTATION_WRITER)
 _register_template(_PERFORMANCE_OPTIMIZER)
 _register_template(_ARCHITECTURE_ANALYST)
 _register_template(_REFACTORING_SPECIALIST)
+_register_template(_TEST_GENERATOR)
+_register_template(_TEST_VALIDATOR)
+_register_template(_REPORT_GENERATOR)
+_register_template(_DOCUMENTATION_ANALYST)
+_register_template(_SYNTHESIZER)
+_register_template(_GENERIC_AGENT)
 
 
 logger.info(f"Registered {len(_TEMPLATE_REGISTRY)} agent templates")

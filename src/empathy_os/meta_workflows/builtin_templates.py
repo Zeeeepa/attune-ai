@@ -80,7 +80,7 @@ RELEASE_PREP_TEMPLATE = MetaWorkflowTemplate(
     agent_composition_rules=[
         AgentCompositionRule(
             role="Security Auditor",
-            base_template="security-analyst",
+            base_template="security_auditor",
             tier_strategy=TierStrategy.CAPABLE_FIRST,
             tools=["grep", "bandit", "safety"],
             required_responses={"security_scan": "Yes"},
@@ -92,7 +92,7 @@ RELEASE_PREP_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Test Coverage Analyst",
-            base_template="test-analyst",
+            base_template="test_coverage_analyzer",
             tier_strategy=TierStrategy.PROGRESSIVE,
             tools=["pytest", "coverage"],
             required_responses={"test_coverage_check": "Yes"},
@@ -104,7 +104,7 @@ RELEASE_PREP_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Code Quality Reviewer",
-            base_template="code-reviewer",
+            base_template="code_reviewer",
             tier_strategy=TierStrategy.PROGRESSIVE,
             tools=["ruff", "mypy"],
             required_responses={"quality_review": "Yes"},
@@ -116,7 +116,7 @@ RELEASE_PREP_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Documentation Specialist",
-            base_template="doc-reviewer",
+            base_template="documentation_writer",
             tier_strategy=TierStrategy.CHEAP_ONLY,
             tools=["pydocstyle"],
             required_responses={"doc_verification": "Yes"},
@@ -181,7 +181,7 @@ TEST_COVERAGE_BOOST_TEMPLATE = MetaWorkflowTemplate(
     agent_composition_rules=[
         AgentCompositionRule(
             role="Gap Analyzer",
-            base_template="coverage-analyst",
+            base_template="test_coverage_analyzer",
             tier_strategy=TierStrategy.PROGRESSIVE,
             tools=["pytest-cov", "coverage"],
             required_responses={},
@@ -193,7 +193,7 @@ TEST_COVERAGE_BOOST_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Test Generator",
-            base_template="test-generator",
+            base_template="test_generator",
             tier_strategy=TierStrategy.CAPABLE_FIRST,
             tools=["ast", "pytest"],
             required_responses={},
@@ -208,7 +208,7 @@ TEST_COVERAGE_BOOST_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Test Validator",
-            base_template="test-validator",
+            base_template="test_validator",
             tier_strategy=TierStrategy.CHEAP_ONLY,
             tools=["pytest"],
             required_responses={},
@@ -250,8 +250,8 @@ TEST_MAINTENANCE_TEMPLATE = MetaWorkflowTemplate(
                 id="max_files",
                 text="Maximum files to process",
                 type=QuestionType.SINGLE_SELECT,
-                options=["5", "10", "20", "50"],
-                default="10",
+                options=["5", "10", "20", "30", "50"],
+                default="30",
                 help_text="Limit number of files to process per run",
             ),
             FormQuestion(
@@ -274,7 +274,7 @@ TEST_MAINTENANCE_TEMPLATE = MetaWorkflowTemplate(
     agent_composition_rules=[
         AgentCompositionRule(
             role="Test Analyst",
-            base_template="test-analyst",
+            base_template="test_coverage_analyzer",
             tier_strategy=TierStrategy.PROGRESSIVE,
             tools=["pytest-cov", "coverage"],
             required_responses={"mode": ["full", "analyze"]},
@@ -289,7 +289,7 @@ TEST_MAINTENANCE_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Test Generator",
-            base_template="test-generator",
+            base_template="test_generator",
             tier_strategy=TierStrategy.CAPABLE_FIRST,
             tools=["ast", "pytest"],
             required_responses={"mode": ["full", "generate"]},
@@ -300,7 +300,7 @@ TEST_MAINTENANCE_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Test Validator",
-            base_template="test-validator",
+            base_template="test_validator",
             tier_strategy=TierStrategy.CHEAP_ONLY,
             tools=["pytest"],
             required_responses={"mode": ["full", "validate"], "auto_validation": "Yes"},
@@ -311,7 +311,7 @@ TEST_MAINTENANCE_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Test Reporter",
-            base_template="reporter",
+            base_template="report_generator",
             tier_strategy=TierStrategy.CHEAP_ONLY,
             tools=[],
             required_responses={},
@@ -373,7 +373,7 @@ MANAGE_DOCS_TEMPLATE = MetaWorkflowTemplate(
     agent_composition_rules=[
         AgentCompositionRule(
             role="Documentation Analyst",
-            base_template="doc-analyst",
+            base_template="documentation_analyst",
             tier_strategy=TierStrategy.PROGRESSIVE,
             tools=["ast", "pydocstyle"],
             required_responses={},
@@ -388,7 +388,7 @@ MANAGE_DOCS_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Documentation Reviewer",
-            base_template="doc-reviewer",
+            base_template="documentation_writer",
             tier_strategy=TierStrategy.PROGRESSIVE,
             tools=[],
             required_responses={},
@@ -463,7 +463,7 @@ FEATURE_OVERVIEW_TEMPLATE = MetaWorkflowTemplate(
     agent_composition_rules=[
         AgentCompositionRule(
             role="Code Scanner",
-            base_template="generic",
+            base_template="generic_agent",
             tier_strategy=TierStrategy.CAPABLE_FIRST,
             tools=["read", "grep", "glob"],
             required_responses={},
@@ -475,7 +475,7 @@ FEATURE_OVERVIEW_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Insights Reporter",
-            base_template="generic",
+            base_template="generic_agent",
             tier_strategy=TierStrategy.CAPABLE_FIRST,
             tools=["read"],
             required_responses={},
@@ -487,7 +487,7 @@ FEATURE_OVERVIEW_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Architecture Analyst",
-            base_template="generic",
+            base_template="architecture_analyst",
             tier_strategy=TierStrategy.CAPABLE_FIRST,
             tools=["read"],
             required_responses={"include_diagrams": "Yes"},
@@ -499,7 +499,7 @@ FEATURE_OVERVIEW_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Quality Reviewer",
-            base_template="generic",
+            base_template="code_reviewer",
             tier_strategy=TierStrategy.PREMIUM_ONLY,
             tools=["read"],
             required_responses={},
@@ -511,7 +511,7 @@ FEATURE_OVERVIEW_TEMPLATE = MetaWorkflowTemplate(
         ),
         AgentCompositionRule(
             role="Blog Content Creator",
-            base_template="generic",
+            base_template="generic_agent",
             tier_strategy=TierStrategy.PREMIUM_ONLY,
             tools=["write"],
             required_responses={"include_blog_summary": "Yes"},

@@ -12,6 +12,28 @@ Updated: 2026-01-18 (v4.3.0 - Real LLM execution with Anthropic client)
 Purpose: Core orchestration for meta-workflows
 """
 
+# Load environment variables from .env file
+# Try multiple locations: project root, home directory, empathy config
+try:
+    from pathlib import Path
+
+    from dotenv import load_dotenv
+
+    # Try common .env locations
+    _env_paths = [
+        Path.cwd() / ".env",  # Current working directory
+        Path(__file__).parent.parent.parent.parent / ".env",  # Project root
+        Path.home() / ".env",  # Home directory
+        Path.home() / ".empathy" / ".env",  # Empathy config directory
+    ]
+
+    for _env_path in _env_paths:
+        if _env_path.exists():
+            load_dotenv(_env_path)
+            break
+except ImportError:
+    pass  # dotenv not installed, use environment variables directly
+
 import json
 import logging
 import time
@@ -616,7 +638,14 @@ class MetaWorkflow:
         try:
             from anthropic import Anthropic
 
-            client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+            api_key = os.environ.get("ANTHROPIC_API_KEY")
+            if not api_key:
+                raise ValueError(
+                    "ANTHROPIC_API_KEY not found. Set it in environment or .env file "
+                    "(checked: ./env, ~/.env, ~/.empathy/.env)"
+                )
+
+            client = Anthropic(api_key=api_key)
 
             # Execute the LLM call
             response = client.messages.create(

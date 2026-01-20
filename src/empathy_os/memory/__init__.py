@@ -67,6 +67,18 @@ from .config import check_redis_connection, get_railway_redis, get_redis_config,
 # Control Panel
 from .control_panel import ControlPanelConfig, MemoryControlPanel, MemoryStats
 
+# Cross-session communication
+from .cross_session import (
+    BackgroundService,
+    ConflictResult,
+    ConflictStrategy,
+    CrossSessionCoordinator,
+    SessionInfo,
+    SessionType,
+    check_redis_cross_session_support,
+    generate_agent_id,
+)
+
 # Memory Graph (Cross-Wizard Intelligence)
 from .edges import REVERSE_EDGE_TYPES, WIZARD_EDGE_PATTERNS, Edge, EdgeType
 from .graph import MemoryGraph
@@ -132,6 +144,8 @@ __all__ = [
     "AuditEvent",
     # Security - Audit
     "AuditLogger",
+    # Cross-session communication
+    "BackgroundService",
     "BugNode",
     "Classification",
     "ClassificationRules",
@@ -139,9 +153,12 @@ __all__ = [
     "ClaudeMemoryConfig",
     "ClaudeMemoryLoader",
     "ConflictContext",
+    "ConflictResult",
+    "ConflictStrategy",
     "ControlPanelConfig",
     # Conversation Summary Index
     "ConversationSummaryIndex",
+    "CrossSessionCoordinator",
     "Edge",
     "EdgeType",
     "EncryptionManager",
@@ -176,6 +193,8 @@ __all__ = [
     "SecurePattern",
     "SecurityError",
     "SecurityViolation",
+    "SessionInfo",
+    "SessionType",
     "Severity",
     "StagedPattern",
     "TTLStrategy",
@@ -183,9 +202,11 @@ __all__ = [
     "UnifiedMemory",
     "VulnerabilityNode",
     "check_redis_connection",
+    "check_redis_cross_session_support",
     "detect_secrets",
     # Redis Bootstrap
     "ensure_redis",
+    "generate_agent_id",
     "get_railway_redis",
     "get_redis_config",
     # Configuration

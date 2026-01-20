@@ -246,6 +246,12 @@ def run_workflow(
         "-u",
         help="User ID for memory integration",
     ),
+    json_output: bool = typer.Option(
+        False,
+        "--json",
+        "-j",
+        help="Output result as JSON (for programmatic use)",
+    ),
 ):
     """Execute a meta-workflow from template.
 
@@ -261,32 +267,43 @@ def run_workflow(
         empathy meta-workflow run release-prep
         empathy meta-workflow run test-coverage-boost --real
         empathy meta-workflow run manage-docs --use-defaults
+        empathy meta-workflow run release-prep --json --use-defaults
     """
+    import json
+
     try:
         # Load template
-        console.print(f"\n[bold]Loading template:[/bold] {template_id}")
+        if not json_output:
+            console.print(f"\n[bold]Loading template:[/bold] {template_id}")
         registry = TemplateRegistry()
         template = registry.load_template(template_id)
 
         if not template:
-            console.print(f"[red]Template not found:[/red] {template_id}")
+            if json_output:
+                print(json.dumps({"success": False, "error": f"Template not found: {template_id}"}))
+            else:
+                console.print(f"[red]Template not found:[/red] {template_id}")
             raise typer.Exit(code=1)
 
-        console.print(f"[green]✓[/green] {template.name}")
+        if not json_output:
+            console.print(f"[green]✓[/green] {template.name}")
 
         # Setup memory if requested
         pattern_learner = None
         if use_memory:
-            console.print("\n[bold]Initializing memory integration...[/bold]")
+            if not json_output:
+                console.print("\n[bold]Initializing memory integration...[/bold]")
             from empathy_os.memory.unified import UnifiedMemory
 
             try:
                 memory = UnifiedMemory(user_id=user_id)
                 pattern_learner = PatternLearner(memory=memory)
-                console.print("[green]✓[/green] Memory enabled")
+                if not json_output:
+                    console.print("[green]✓[/green] Memory enabled")
             except Exception as e:
-                console.print(f"[yellow]Warning:[/yellow] Memory initialization failed: {e}")
-                console.print("[yellow]Continuing without memory integration[/yellow]")
+                if not json_output:
+                    console.print(f"[yellow]Warning:[/yellow] Memory initialization failed: {e}")
+                    console.print("[yellow]Continuing without memory integration[/yellow]")
 
         # Create workflow
         workflow = MetaWorkflow(
@@ -295,14 +312,49 @@ def run_workflow(
         )
 
         # Execute (will ask questions via AskUserQuestion unless --use-defaults)
-        console.print("\n[bold]Executing workflow...[/bold]")
-        console.print(f"Mode: {'Mock' if mock else 'Real'}")
-        if use_defaults:
-            console.print("[cyan]Using default values (non-interactive)[/cyan]")
+        if not json_output:
+            console.print("\n[bold]Executing workflow...[/bold]")
+            console.print(f"Mode: {'Mock' if mock else 'Real'}")
+            if use_defaults:
+                console.print("[cyan]Using default values (non-interactive)[/cyan]")
 
         result = workflow.execute(mock_execution=mock, use_defaults=use_defaults)
 
-        # Display summary
+        # JSON output mode - print result as JSON and exit
+        if json_output:
+            output = {
+                "run_id": result.run_id,
+                "template_id": template_id,
+                "timestamp": result.timestamp,
+                "success": result.success,
+                "error": result.error,
+                "total_cost": result.total_cost,
+                "total_duration": result.total_duration,
+                "agents_created": len(result.agents_created),
+                "form_responses": {
+                    "template_id": result.form_responses.template_id,
+                    "responses": result.form_responses.responses,
+                    "timestamp": result.form_responses.timestamp,
+                    "response_id": result.form_responses.response_id,
+                },
+                "agent_results": [
+                    {
+                        "agent_id": ar.agent_id,
+                        "role": ar.role,
+                        "success": ar.success,
+                        "cost": ar.cost,
+                        "duration": ar.duration,
+                        "tier_used": ar.tier_used,
+                        "output": ar.output,
+                        "error": ar.error,
+                    }
+                    for ar in result.agent_results
+                ],
+            }
+            print(json.dumps(output))
+            return
+
+        # Display summary (normal mode)
         console.print("\n[bold green]Execution Complete![/bold green]\n")
 
         summary_lines = [
@@ -340,9 +392,12 @@ def run_workflow(
         console.print()
 
     except Exception as e:
-        console.print(f"\n[red]Error:[/red] {e}")
-        import traceback
-        traceback.print_exc()
+        if json_output:
+            print(json.dumps({"success": False, "error": str(e)}))
+        else:
+            console.print(f"\n[red]Error:[/red] {e}")
+            import traceback
+            traceback.print_exc()
         raise typer.Exit(code=1)
 
 

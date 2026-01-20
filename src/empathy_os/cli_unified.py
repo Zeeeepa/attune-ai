@@ -832,6 +832,263 @@ def telemetry_reset(
 
 
 # =============================================================================
+# SERVICE SUBCOMMAND GROUP (Cross-Session Communication)
+# =============================================================================
+
+service_app = typer.Typer(help="Cross-session coordination service")
+app.add_typer(service_app, name="service")
+
+
+@service_app.command("start")
+def service_start(
+    daemon: bool = typer.Option(False, "--daemon", "-d", help="Run as daemon (auto-start on connect)"),
+):
+    """Start the cross-session coordination service.
+
+    The service enables communication between multiple Claude Code sessions
+    via Redis-backed short-term memory.
+
+    Requires Redis to be running (empathy memory start).
+    """
+    from empathy_os.redis_config import get_redis_memory
+
+    try:
+        memory = get_redis_memory()
+
+        if memory.use_mock:
+            console.print("[yellow]⚠️  Cross-session service requires Redis.[/yellow]")
+            console.print("[dim]Start Redis with: empathy memory start[/dim]")
+            console.print("[dim]Or set REDIS_HOST/REDIS_PORT environment variables[/dim]")
+            raise typer.Exit(code=1)
+
+        from empathy_os.memory.cross_session import BackgroundService
+
+        service = BackgroundService(memory, auto_start_on_connect=daemon)
+
+        if service.start():
+            console.print("[bold green]✅ Cross-session service started[/bold green]")
+            status = service.get_status()
+            console.print(f"[dim]Agent ID: {status['agent_id']}[/dim]")
+            console.print(f"[dim]Active sessions: {status['active_sessions']}[/dim]")
+
+            if daemon:
+                console.print("[dim]Running in daemon mode (press Ctrl+C to stop)[/dim]")
+                try:
+                    import time
+                    while service.is_running:
+                        time.sleep(1)
+                except KeyboardInterrupt:
+                    service.stop()
+                    console.print("\n[dim]Service stopped[/dim]")
+        else:
+            console.print("[yellow]⚠️  Service already running (or couldn't acquire lock)[/yellow]")
+            console.print("[dim]Use 'empathy service status' to check[/dim]")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@service_app.command("stop")
+def service_stop():
+    """Stop the cross-session coordination service."""
+    from empathy_os.redis_config import get_redis_memory
+
+    try:
+        memory = get_redis_memory()
+
+        if memory.use_mock:
+            console.print("[yellow]No service to stop (mock mode)[/yellow]")
+            return
+
+        # Check if service is running and signal it to stop
+        client = memory._client
+        if client:
+            from empathy_os.memory.cross_session import KEY_SERVICE_LOCK
+
+            lock_holder = client.get(KEY_SERVICE_LOCK)
+            if lock_holder:
+                client.delete(KEY_SERVICE_LOCK)
+                console.print("[green]✅ Service stop signal sent[/green]")
+            else:
+                console.print("[dim]No service currently running[/dim]")
+        else:
+            console.print("[yellow]Redis not connected[/yellow]")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@service_app.command("status")
+def service_status(
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Show cross-session service status and active sessions."""
+    import json as json_mod
+
+    from empathy_os.redis_config import get_redis_memory
+
+    try:
+        memory = get_redis_memory()
+
+        if memory.use_mock:
+            status = {
+                "mode": "mock",
+                "cross_session_available": False,
+                "message": "Cross-session requires Redis",
+            }
+            if json_output:
+                console.print(json_mod.dumps(status, indent=2))
+            else:
+                console.print("[yellow]⚠️  Mock mode - cross-session not available[/yellow]")
+                console.print("[dim]Start Redis: empathy memory start[/dim]")
+            return
+
+        from empathy_os.memory.cross_session import (
+            KEY_ACTIVE_AGENTS,
+            KEY_SERVICE_HEARTBEAT,
+            KEY_SERVICE_LOCK,
+            SessionInfo,
+        )
+
+        client = memory._client
+        if not client:
+            console.print("[red]Redis not connected[/red]")
+            raise typer.Exit(code=1)
+
+        # Check service status
+        service_lock = client.get(KEY_SERVICE_LOCK)
+        service_heartbeat = client.get(KEY_SERVICE_HEARTBEAT)
+
+        # Get active sessions
+        all_agents = client.hgetall(KEY_ACTIVE_AGENTS)
+        sessions = []
+        for agent_id, data in all_agents.items():
+            try:
+                if isinstance(agent_id, bytes):
+                    agent_id = agent_id.decode()
+                if isinstance(data, bytes):
+                    data = data.decode()
+                info = SessionInfo.from_dict(json_mod.loads(data))
+                if not info.is_stale:
+                    sessions.append(info.to_dict())
+            except (json_mod.JSONDecodeError, KeyError, ValueError):
+                pass
+
+        status = {
+            "mode": "redis",
+            "cross_session_available": True,
+            "service_running": bool(service_lock),
+            "service_pid": service_lock.decode() if isinstance(service_lock, bytes) else service_lock,
+            "last_heartbeat": service_heartbeat.decode() if isinstance(service_heartbeat, bytes) else service_heartbeat,
+            "active_sessions": len(sessions),
+            "sessions": sessions,
+        }
+
+        if json_output:
+            console.print(json_mod.dumps(status, indent=2))
+        else:
+            console.print()
+            console.print("[bold cyan]CROSS-SESSION SERVICE STATUS[/bold cyan]")
+            console.print("=" * 50)
+            console.print()
+
+            if status["service_running"]:
+                console.print("[green]● Service Running[/green]")
+                console.print(f"[dim]  PID: {status['service_pid']}[/dim]")
+                if status["last_heartbeat"]:
+                    console.print(f"[dim]  Last heartbeat: {status['last_heartbeat']}[/dim]")
+            else:
+                console.print("[yellow]○ Service Not Running[/yellow]")
+                console.print("[dim]  Start with: empathy service start[/dim]")
+
+            console.print()
+            console.print(f"[bold]Active Sessions:[/bold] {status['active_sessions']}")
+
+            if sessions:
+                console.print()
+                for session in sessions:
+                    session_type = session.get("session_type", "unknown")
+                    agent_id = session.get("agent_id", "unknown")
+                    tier = session.get("access_tier", "unknown")
+                    emoji = "🤖" if session_type == "claude" else "⚙️" if session_type == "service" else "👷"
+                    console.print(f"  {emoji} {agent_id}")
+                    console.print(f"     [dim]Type: {session_type} | Tier: {tier}[/dim]")
+
+            console.print()
+            console.print("=" * 50)
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@service_app.command("sessions")
+def service_sessions():
+    """List all active cross-session agents."""
+    import json as json_mod
+
+    from empathy_os.redis_config import get_redis_memory
+
+    try:
+        memory = get_redis_memory()
+
+        if memory.use_mock:
+            console.print("[yellow]No sessions (mock mode)[/yellow]")
+            return
+
+        from empathy_os.memory.cross_session import KEY_ACTIVE_AGENTS, SessionInfo
+
+        client = memory._client
+        if not client:
+            console.print("[red]Redis not connected[/red]")
+            return
+
+        all_agents = client.hgetall(KEY_ACTIVE_AGENTS)
+
+        if not all_agents:
+            console.print("[dim]No active sessions[/dim]")
+            return
+
+        console.print()
+        console.print("[bold]Active Cross-Session Agents[/bold]")
+        console.print("-" * 60)
+
+        for agent_id, data in all_agents.items():
+            try:
+                if isinstance(agent_id, bytes):
+                    agent_id = agent_id.decode()
+                if isinstance(data, bytes):
+                    data = data.decode()
+
+                info = SessionInfo.from_dict(json_mod.loads(data))
+
+                if info.is_stale:
+                    status_str = "[red]STALE[/red]"
+                else:
+                    status_str = "[green]ACTIVE[/green]"
+
+                console.print(f"\n{agent_id}")
+                console.print(f"  Status: {status_str}")
+                console.print(f"  Type: {info.session_type.value}")
+                console.print(f"  Tier: {info.access_tier.name}")
+                console.print(f"  Started: {info.started_at.isoformat()}")
+                console.print(f"  Last heartbeat: {info.last_heartbeat.isoformat()}")
+                if info.capabilities:
+                    console.print(f"  Capabilities: {', '.join(info.capabilities)}")
+
+            except (json_mod.JSONDecodeError, KeyError, ValueError) as e:
+                console.print(f"\n{agent_id}: [red]Invalid data[/red] - {e}")
+
+        console.print()
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+# =============================================================================
 # META-WORKFLOW SUBCOMMAND GROUP
 # =============================================================================
 
@@ -1064,6 +1321,11 @@ def cheatsheet():
   empathy memory status     Check Redis & patterns
   empathy memory start      Start Redis server
   empathy memory patterns   List stored patterns
+
+[bold]Cross-Session Service[/bold]
+  empathy service start     Start coordination service
+  empathy service status    Show service & sessions
+  empathy service sessions  List active agents
 
 [bold]Provider Config[/bold]
   empathy provider          Show current config

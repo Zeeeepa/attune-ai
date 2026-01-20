@@ -5,6 +5,56 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5.0] - 2026-01-20
+
+### Added
+
+#### VS Code Extension - Rich HTML Meta-Workflow Reports
+- **MetaWorkflowReportPanel** - New webview panel for displaying meta-workflow results
+  - Rich HTML report with collapsible sections for agent results
+  - Agent cards with tier badges (CHEAP/CAPABLE/PREMIUM) and status indicators
+  - Cost breakdown with total cost, duration, and success metrics
+  - Form responses section showing collected user inputs
+  - Copy/Export/Re-run functionality from the report panel
+  - Running state animation during execution
+  - **Files**: `vscode-extension/src/panels/MetaWorkflowReportPanel.ts`
+
+- **Quick Run Mode** - Execute meta-workflows with default values
+  - Mode selection: "Quick Run (Webview Report)" vs "Interactive Mode (Terminal)"
+  - Quick Run uses `--json --use-defaults` flags for programmatic execution
+  - Automatic panel display with formatted results
+  - **Files**: `vscode-extension/src/commands/metaWorkflowCommands.ts`
+
+#### CLI Enhancements
+- **JSON Output Flag** - `--json` / `-j` flag for meta-workflow run command
+  - Enables programmatic consumption of workflow results
+  - Suppresses rich console output when enabled
+  - Returns structured JSON with run_id, costs, agent results
+  - **Files**: `src/empathy_os/meta_workflows/cli_meta_workflows.py`
+
+### Fixed
+
+#### Meta-Workflow Execution Issues
+- **Template ID Consistency** - Fixed kebab-case vs snake_case mismatch
+  - Updated builtin_templates.py to use correct snake_case agent template IDs
+  - Fixed `security-analyst` → `security_auditor`, `test-analyst` → `test_coverage_analyzer`, etc.
+  - **Files**: `src/empathy_os/meta_workflows/builtin_templates.py`
+
+- **Environment Variable Loading** - Fixed .env file not being loaded
+  - Added multi-path search for .env files (cwd, project root, home, ~/.empathy)
+  - Uses python-dotenv for reliable environment variable loading
+  - **Files**: `src/empathy_os/meta_workflows/workflow.py`
+
+- **Missing Agent Templates** - Added 6 new agent templates
+  - `test_generator`, `test_validator`, `report_generator`
+  - `documentation_analyst`, `synthesizer`, `generic_agent`
+  - Each with appropriate tier_preference, tools, and quality_gates
+  - **Files**: `src/empathy_os/orchestration/agent_templates.py`
+
+### Changed
+- VS Code extension version bumped to 1.3.2
+- Added new keybinding: `Cmd+Shift+E W` for meta-workflow commands
+
 ## [4.4.0] - 2026-01-19
 
 ### Added - PRODUCTION-READY AGENT TEAM SYSTEM 🚀🎯
