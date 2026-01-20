@@ -289,6 +289,10 @@ class IndexConfig:
             "**/*.pyo",
             # Version control
             "**/.git/**",
+            # Environment files (contain secrets)
+            "**/.env",
+            "**/.env.*",
+            "**/*.env",
             # Virtual environments
             "**/.venv/**",
             "**/venv/**",

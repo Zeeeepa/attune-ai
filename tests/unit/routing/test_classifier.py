@@ -353,8 +353,11 @@ class TestReasoningExplanation:
 class TestClientLazyLoading:
     """Test lazy loading of Anthropic client."""
 
-    def test_get_client_without_api_key(self):
+    def test_get_client_without_api_key(self, monkeypatch):
         """Test get_client returns None without API key."""
+        # Clear env var so api_key=None truly means no key
+        monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+
         classifier = HaikuClassifier(api_key=None)
 
         client = classifier._get_client()

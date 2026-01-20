@@ -582,7 +582,7 @@ class TestSecurityIntegration:
             # Create node_modules
             nm = Path(tmpdir) / "node_modules"
             nm.mkdir()
-            (nm / "package" / "index.js").mkdir(parents=True)
+            (nm / "package").mkdir(parents=True)
             (nm / "package" / "index.js").write_text("// package")
 
             # Add comprehensive exclusion config
