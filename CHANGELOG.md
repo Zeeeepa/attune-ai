@@ -5,6 +5,73 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.1] - 2026-01-20
+
+### Fixed
+
+- **README code example** - Fixed `os.collaborate()` to use actual `level_2_guided()` method
+- **README skills table** - Added all 13 skills (was showing only 7)
+- **CHANGELOG** - Added missing v4.6.0 release notes
+
+## [4.6.0] - 2026-01-20
+
+### Added - $0 COST AI WORKFLOWS 💰
+
+#### Claude Code Integration
+- **$0 Execution Model** - All multi-agent workflows now run at no additional cost with any Claude Code subscription
+  - Workflows use Claude Code's Task tool instead of direct API calls
+  - Enterprise API mode remains available for CI/CD, cron jobs, and programmatic control
+  - **Files**: `.claude/commands/*.md`
+
+- **Socratic Agent Creation** - New guided workflows for building custom agents
+  - `/create-agent` - 6-step Socratic guide to build custom AI agents
+  - `/create-team` - 7-step Socratic guide to build multi-agent teams
+  - Progressive questioning using AskUserQuestion tool
+  - Model tier selection (Haiku/Sonnet/Opus)
+  - Optional memory enhancement (short-term and long-term)
+  - **Files**: `.claude/commands/create-agent.md`, `.claude/commands/create-team.md`
+
+- **Memory Enhancement for Agents** - Optional memory features for custom agents
+  - Short-term memory: Session-scoped context sharing between agents
+  - Long-term memory: Persistent pattern storage across sessions
+  - Integration with `/memory` skill for pattern recall
+  - **Files**: `.claude/commands/create-agent.md`, `.claude/commands/create-team.md`
+
+#### Streamlined Skills (13 Total)
+- **Multi-Agent Workflows ($0)**:
+  - `/release-prep` - 4-agent release readiness check
+  - `/test-coverage` - 3-agent coverage analysis
+  - `/test-maintenance` - 4-agent test health analysis
+  - `/manage-docs` - 3-agent documentation sync
+  - `/feature-overview` - Technical documentation generator
+
+- **Utility Skills**:
+  - `/security-scan` - Run pytest, ruff, black checks
+  - `/test` - Run test suite
+  - `/status` - Project dashboard
+  - `/publish` - PyPI publishing guide
+  - `/init` - Initialize new project
+  - `/memory` - Memory system management
+
+### Removed
+- 10 API-dependent skills that required external API calls:
+  - `/marketing`, `/draft`, `/morning-report` - Marketing (now gitignored)
+  - `/crew` - CrewAI integration
+  - `/cost-report`, `/cache` - API telemetry
+  - `/docs`, `/refactor`, `/perf`, `/deps` - API workflows
+
+### Changed
+- **VS Code Dashboard** - Now prefers Claude Code skills ($0) over API mode
+  - Health Check, Release Prep, Test Coverage buttons use skills first
+  - Falls back to API mode only when Claude Code extension not installed
+  - Updated fallback message to clarify API mode is enterprise feature
+  - **Files**: `vscode-extension/src/panels/EmpathyDashboardPanel.ts`
+
+- **Marketing folder** moved to .gitignore (internal/admin only)
+
+### Fixed
+- Test file Stripe API key pattern changed to use `sk_test_` prefix to avoid GitHub push protection
+
 ## [4.5.1] - 2026-01-20
 
 ### Changed

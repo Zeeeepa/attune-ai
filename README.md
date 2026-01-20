@@ -37,7 +37,7 @@ pip install empathy-framework[developer]  # Lightweight for individual developer
 /test-coverage    # 3-agent coverage analysis ($0)
 ```
 
-**Available Skills:**
+**Available Skills (13 total):**
 
 | Skill | Description | Cost |
 |-------|-------------|------|
@@ -48,6 +48,12 @@ pip install empathy-framework[developer]  # Lightweight for individual developer
 | `/test-maintenance` | Find stale/flaky tests | $0 |
 | `/manage-docs` | Keep docs in sync with code | $0 |
 | `/feature-overview` | Generate technical documentation | $0 |
+| `/security-scan` | Run pytest, ruff, black checks | $0 |
+| `/test` | Run test suite with summary | $0 |
+| `/status` | Show project dashboard | $0 |
+| `/publish` | PyPI publishing guide | $0 |
+| `/init` | Initialize new Empathy project | $0 |
+| `/memory` | Memory system management | $0 |
 
 **Enterprise API Mode** (optional):
 
@@ -583,15 +589,15 @@ python -m empathy_os.models.cli provider --set hybrid  # Best of all providers
 ```python
 from empathy_os import EmpathyOS
 
-os = EmpathyOS()
-result = await os.collaborate(
-    "Review this code for security issues",
-    context={"code": your_code}
-)
+async with EmpathyOS() as empathy:
+    # Level 2: Guided - asks clarifying questions
+    result = await empathy.level_2_guided(
+        "Review this code for security issues"
+    )
 
-print(result.current_issues)      # What's wrong now
-print(result.predicted_issues)    # What will break in 30-90 days
-print(result.prevention_steps)    # How to prevent it
+    print(result["questions"])        # Clarifying questions asked
+    print(result["response"])         # Analysis response
+    print(result["next_steps"])       # Recommended actions
 ```
 
 ### 4. Track Your Savings
