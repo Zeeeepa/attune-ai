@@ -2,10 +2,10 @@
 
 **The AI collaboration framework with breakthrough meta-orchestration - agents that compose themselves.**
 
-🎭 **v4.0: The Meta-Orchestration Era** - Dynamic agent teams, intelligent composition, self-learning systems.
+🎭 **v4.5: Production-Ready Agent Teams** - Real LLM execution, VS Code integration, rich reports.
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-6%2C038%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
+[![Tests](https://img.shields.io/badge/tests-7%2C200%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
 [![Coverage](https://img.shields.io/badge/coverage-68%25-yellow)](https://github.com/Smart-AI-Memory/empathy-framework)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
@@ -15,11 +15,58 @@
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
-## What's New in v4.2.0 🤖 **META-WORKFLOW SYSTEM**
+## What's New in v4.5.0 🖥️ **VS CODE INTEGRATION**
+
+### **Rich HTML Reports for Agent Team Execution**
+
+**v4.5** adds VS Code webview integration with rich HTML reports, Quick Run mode, and JSON output for programmatic workflows.
+
+**Key Features:**
+
+- 📊 **MetaWorkflowReportPanel** - Rich HTML webview displaying agent results with collapsible sections
+- ⚡ **Quick Run Mode** - Execute with defaults, see results in beautiful reports
+- 🔧 **CLI JSON Output** - `--json` flag for programmatic consumption
+- 🎨 **Agent Cards** - Tier badges, status indicators, cost breakdowns
+
+**Quick Start (VS Code):**
+
+1. Open Command Palette (`Cmd+Shift+P`)
+2. Run "Empathy: Run Meta-Workflow"
+3. Select "Quick Run (Webview Report)"
+4. View rich HTML report with agent results
+
+---
+
+## What's New in v4.4.0 🚀 **PRODUCTION-READY AGENT TEAMS**
+
+### **Real LLM Execution with Cost Tracking**
+
+**v4.4** brings production-ready agent teams with real Claude model execution, accurate cost tracking, and skill-based invocation.
+
+**Breakthrough Features:**
+
+- 🤖 **Real LLM Execution** - Agents execute with actual Claude API calls
+- 💰 **Accurate Cost Tracking** - Token counting from real API usage
+- 📈 **Progressive Tier Escalation** - CHEAP → CAPABLE → PREMIUM with actual execution
+- 🎯 **Skill-based Invocation** - Use `/release-prep`, `/test-coverage`, `/manage-docs` in Claude Code
+
+**Quick Start (CLI):**
+
+```bash
+# Run release preparation agent team
+empathy meta-workflow run release-prep --real
+
+# Natural language - describe what you need
+empathy meta-workflow ask "prepare my code for release" --auto
+```
+
+---
+
+## Meta-Workflow System 🤖 (v4.2+)
 
 ### **Intelligent Workflow Orchestration Through Forms + Dynamic Agents**
 
-**The breakthrough:** v4.2 introduces a meta-workflow system that combines Socratic forms (interactive questions), dynamic agent team creation, and pattern learning for self-improving workflows.
+**The breakthrough:** The meta-workflow system combines Socratic forms (interactive questions), dynamic agent team creation, and pattern learning for self-improving workflows.
 
 **How it works:**
 
