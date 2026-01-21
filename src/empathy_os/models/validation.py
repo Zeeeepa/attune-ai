@@ -13,6 +13,8 @@ Licensed under Fair Source License 0.9
 from dataclasses import dataclass, field
 from typing import Any
 
+from empathy_os.config import _validate_file_path
+
 from .registry import MODEL_REGISTRY, ModelTier
 
 
@@ -258,10 +260,14 @@ def validate_yaml_file(file_path: str) -> ValidationResult:
     result = ValidationResult(valid=True)
 
     try:
-        with open(file_path) as f:
+        validated_path = _validate_file_path(str(file_path))
+        with open(validated_path) as f:
             config = yaml.safe_load(f)
     except FileNotFoundError:
         result.add_error("file", f"File not found: {file_path}")
+        return result
+    except ValueError as e:
+        result.add_error("file", f"Invalid file path: {e}")
         return result
     except yaml.YAMLError as e:
         result.add_error("yaml", f"Invalid YAML: {e}")

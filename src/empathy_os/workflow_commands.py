@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
+from empathy_os.config import _validate_file_path
 from empathy_os.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -33,10 +34,11 @@ def _load_patterns(patterns_dir: str = "./patterns") -> dict[str, list]:
         file_path = patterns_path / f"{pattern_type}.json"
         if file_path.exists():
             try:
-                with open(file_path) as f:
+                validated_path = _validate_file_path(str(file_path))
+                with open(validated_path) as f:
                     data = json.load(f)
                     patterns[pattern_type] = data.get("patterns", data.get("items", []))
-            except (OSError, json.JSONDecodeError):
+            except (OSError, json.JSONDecodeError, ValueError):
                 pass
 
     return patterns
@@ -47,10 +49,11 @@ def _load_stats(empathy_dir: str = ".empathy") -> dict[str, Any]:
     stats_file = Path(empathy_dir) / "stats.json"
     if stats_file.exists():
         try:
-            with open(stats_file) as f:
+            validated_path = _validate_file_path(str(stats_file))
+            with open(validated_path) as f:
                 result: dict[str, Any] = json.load(f)
                 return result
-        except (OSError, json.JSONDecodeError):
+        except (OSError, json.JSONDecodeError, ValueError):
             pass
     return {"commands": {}, "last_session": None, "patterns_learned": 0}
 
@@ -60,7 +63,8 @@ def _save_stats(stats: dict, empathy_dir: str = ".empathy") -> None:
     stats_dir = Path(empathy_dir)
     stats_dir.mkdir(parents=True, exist_ok=True)
 
-    with open(stats_dir / "stats.json", "w") as f:
+    validated_path = _validate_file_path(str(stats_dir / "stats.json"))
+    with open(validated_path, "w") as f:
         json.dump(stats, f, indent=2, default=str)
 
 
@@ -84,7 +88,8 @@ def _get_tech_debt_trend(patterns_dir: str = "./patterns") -> str:
         return "unknown"
 
     try:
-        with open(tech_debt_file) as f:
+        validated_path = _validate_file_path(str(tech_debt_file))
+        with open(validated_path) as f:
             data = json.load(f)
 
         snapshots = data.get("snapshots", [])

@@ -355,7 +355,8 @@ class TestExportFunctionality:
             assert doc_path is not None
             assert doc_path.name.startswith("api_reference_")
             assert doc_path.name.endswith(".md")
-            assert doc_path.parent == Path(tmpdir)
+            # Use resolve() to handle macOS symlinks (/var -> /private/var)
+            assert doc_path.parent.resolve() == Path(tmpdir).resolve()
 
     def test_export_document_sanitizes_filename(self):
         """Test export sanitizes document type in filename."""

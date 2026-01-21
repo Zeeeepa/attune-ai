@@ -23,6 +23,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
+from empathy_os.config import _validate_file_path
+
 
 @dataclass
 class TierRecommendationResult:
@@ -86,7 +88,8 @@ class TierRecommender:
 
         for file_path in self.patterns_dir.glob("*.json"):
             try:
-                with open(file_path) as f:
+                validated_path = _validate_file_path(str(file_path))
+                with open(validated_path) as f:
                     data = json.load(f)
 
                     # Check if this is an enhanced pattern
@@ -97,7 +100,7 @@ class TierRecommender:
                         for pattern in data["patterns"]:
                             if "tier_progression" in pattern:
                                 patterns.append(pattern)
-            except (json.JSONDecodeError, KeyError):
+            except (json.JSONDecodeError, KeyError, ValueError):
                 continue
 
         return patterns

@@ -420,18 +420,23 @@ class TestMetaOrchestratorIntegration:
             "empathy_os.orchestration.meta_orchestrator.get_templates_by_capability"
         ) as mock_get:
             # Provide mock agents with id attribute
+            mock_resource_req = Mock(timeout_seconds=300)
             mock_agents = [
                 Mock(
                     spec=AgentTemplate,
                     id="coverage-expert",
                     role="Coverage Expert",
                     capabilities=["coverage_analysis"],
+                    tier_preference="capable",
+                    resource_requirements=mock_resource_req,
                 ),
                 Mock(
                     spec=AgentTemplate,
                     id="test-generator",
                     role="Test Generator",
                     capabilities=["test_generation"],
+                    tier_preference="capable",
+                    resource_requirements=mock_resource_req,
                 ),
             ]
             mock_get.return_value = mock_agents
@@ -453,12 +458,15 @@ class TestMetaOrchestratorIntegration:
         with patch(
             "empathy_os.orchestration.meta_orchestrator.get_templates_by_capability"
         ) as mock_get:
+            mock_resource_req = Mock(timeout_seconds=300)
             mock_agents = [
                 Mock(
                     spec=AgentTemplate,
                     id="security-auditor",
                     role="Security Auditor",
                     capabilities=["security_scan"],
+                    tier_preference="capable",
+                    resource_requirements=mock_resource_req,
                 )
             ]
             mock_get.return_value = mock_agents

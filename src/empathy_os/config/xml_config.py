@@ -176,14 +176,19 @@ class EmpathyXMLConfig:
         Returns:
             EmpathyXMLConfig instance loaded from file, or default config if file doesn't exist
         """
-        path = Path(config_file)
+        # Validate path to prevent path traversal attacks
+        try:
+            validated_path = _validate_file_path(config_file)
+        except ValueError:
+            # Return default config if path is invalid
+            return cls()
 
-        if not path.exists():
+        if not validated_path.exists():
             # Return default config if file doesn't exist
             return cls()
 
         try:
-            with open(path) as f:
+            with open(validated_path) as f:
                 data = json.load(f)
 
             # Reconstruct nested dataclasses

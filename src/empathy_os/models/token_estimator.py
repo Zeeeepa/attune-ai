@@ -12,6 +12,8 @@ from __future__ import annotations
 import functools
 from typing import Any
 
+from empathy_os.config import _validate_file_path
+
 # Try to import tiktoken, fall back to heuristic if not available
 try:
     import tiktoken
@@ -192,24 +194,28 @@ def estimate_workflow_cost(
         try:
             import os
 
-            if os.path.isfile(target_path):
-                with open(target_path, encoding="utf-8", errors="ignore") as f:
+            # Validate path to prevent path traversal attacks
+            validated_target = _validate_file_path(target_path)
+
+            if os.path.isfile(validated_target):
+                with open(validated_target, encoding="utf-8", errors="ignore") as f:
                     file_content = f.read()
                 input_tokens += estimate_tokens(file_content)
-            elif os.path.isdir(target_path):
+            elif os.path.isdir(validated_target):
                 # Estimate based on directory size (rough heuristic)
                 total_chars = 0
-                for root, _, files in os.walk(target_path):
+                for root, _, files in os.walk(validated_target):
                     for file in files[:50]:  # Limit to first 50 files
                         if file.endswith((".py", ".js", ".ts", ".tsx", ".jsx")):
                             try:
                                 filepath = os.path.join(root, file)
-                                with open(filepath, encoding="utf-8", errors="ignore") as f:
+                                validated_filepath = _validate_file_path(filepath)
+                                with open(validated_filepath, encoding="utf-8", errors="ignore") as f:
                                     total_chars += len(f.read())
-                            except Exception:
+                            except (ValueError, OSError):
                                 pass
                 input_tokens += int(total_chars * TOKENS_PER_CHAR_HEURISTIC)
-        except Exception:
+        except (ValueError, OSError):
             pass  # Keep original estimate
 
     # Output multipliers by stage type
@@ -387,9 +393,10 @@ if __name__ == "__main__":
     input_text = ""
     if args.input:
         try:
-            with open(args.input) as f:
+            validated_input = _validate_file_path(args.input)
+            with open(validated_input) as f:
                 input_text = f.read()
-        except FileNotFoundError:
+        except (FileNotFoundError, ValueError):
             input_text = args.input
 
     result = estimate_workflow_cost(

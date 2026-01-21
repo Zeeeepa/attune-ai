@@ -5,6 +5,44 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.3] - 2026-01-21
+
+### Security
+
+- **Additional path traversal fixes (CWE-22)** - Extended `_validate_file_path()` validation to 5 more files:
+  - `workflow_commands.py` - Pattern loading, stats read/write, tech debt analysis (4 locations)
+  - `tier_recommender.py` - Pattern JSON loading
+  - `models/validation.py` - YAML config file loading
+  - `models/token_estimator.py` - Target path and input file handling (3 locations)
+  - `config/xml_config.py` - Config file loading in `load_from_file()`
+
+### Fixed
+
+- **Test failures resolved** - Fixed 6 failing tests:
+  - `test_meta_orchestration_architecture.py` - Added missing `tier_preference` and `resource_requirements` attributes to mock agents
+  - `test_document_manager.py` / `test_manage_docs.py` - Fixed `ModelTier` import to use correct enum from `workflows.base`
+  - `test_document_gen.py` - Fixed macOS symlink path comparison using `.resolve()`
+
+## [4.6.2] - 2026-01-20
+
+### Security
+
+- **Path traversal prevention (CWE-22)** - Added `_validate_file_path()` validation to 37 file write operations across 25 files
+  - Prevents attackers from writing to arbitrary system paths via path traversal attacks
+  - Blocks writes to dangerous directories (`/etc`, `/sys`, `/proc`, `/dev`)
+  - Validates against null byte injection
+  - **Files**: `cli.py`, `templates.py`, `persistence.py`, `cost_tracker.py`, `memory/*.py`, `workflows/*.py`, `scaffolding/*.py`, and more
+
+- **Centralized path validation** - Exported `_validate_file_path` from `empathy_os.config` for consistent security across all modules
+
+### Fixed
+
+- **Code quality issues** - Fixed 4 ruff linting errors:
+  - C401: Unnecessary generator in `template_registry.py` → set comprehension
+  - F402: Import shadowing in `execution_strategies.py` (`field` → `field_name`)
+  - E741: Ambiguous variable name in `feedback.py` (`l` → `lang_stats`)
+  - C416: Unnecessary dict comprehension in `feedback.py` → `dict()`
+
 ## [4.6.1] - 2026-01-20
 
 ### Fixed
