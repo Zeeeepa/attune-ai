@@ -16,6 +16,7 @@ Licensed under Fair Source License 0.9
 
 from __future__ import annotations
 
+import heapq
 import json
 import logging
 import sqlite3
@@ -284,7 +285,7 @@ class JSONFileStorage(StorageBackend):
             return []
 
         evaluations = []
-        for path in sorted(eval_dir.glob("*.json"), reverse=True)[:limit]:
+        for path in heapq.nlargest(limit, eval_dir.glob("*.json")):
             try:
                 with path.open() as f:
                     evaluations.append(json.load(f))

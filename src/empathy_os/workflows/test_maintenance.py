@@ -16,6 +16,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import heapq
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -598,7 +599,7 @@ class TestMaintenanceWorkflow:
                 "lines_of_code": f.lines_of_code,
                 "language": f.language,
             }
-            for f in sorted(files, key=lambda x: -x.impact_score)[:limit]
+            for f in heapq.nlargest(limit, files, key=lambda x: x.impact_score)
         ]
 
     def get_stale_tests(self, limit: int = 20) -> list[dict[str, Any]]:
@@ -610,7 +611,7 @@ class TestMaintenanceWorkflow:
                 "test_file": f.test_file_path,
                 "staleness_days": f.staleness_days,
             }
-            for f in sorted(files, key=lambda x: -x.staleness_days)[:limit]
+            for f in heapq.nlargest(limit, files, key=lambda x: x.staleness_days)
         ]
 
     def get_test_health_summary(self) -> dict[str, Any]:

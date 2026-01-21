@@ -10,6 +10,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import heapq
 from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Any
@@ -394,7 +395,7 @@ class LeveragePointAnalyzer:
         if min_level:
             points = [p for p in points if p.level >= min_level]
 
-        return sorted(points, key=lambda p: p.level, reverse=True)[:n]
+        return heapq.nlargest(n, points, key=lambda p: p.level)
 
     def analyze_intervention_feasibility(self, point: LeveragePoint) -> dict[str, Any]:
         """Analyze feasibility of intervening at a leverage point
