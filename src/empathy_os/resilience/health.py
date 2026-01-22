@@ -211,7 +211,7 @@ class HealthCheck:
 
     def run_all_sync(self) -> SystemHealth:
         """Synchronous version of run_all."""
-        return asyncio.get_event_loop().run_until_complete(self.run_all())
+        return asyncio.run(self.run_all())
 
 
 # Global health check instance

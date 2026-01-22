@@ -193,7 +193,7 @@ class TestAnthropicProvider:
         """Test successful AnthropicProvider initialization"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(
@@ -212,7 +212,7 @@ class TestAnthropicProvider:
         """Test AnthropicProvider default model"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key")
@@ -223,7 +223,7 @@ class TestAnthropicProvider:
         """Test get_model_info for Claude Opus"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", model="claude-3-opus-20240229")
@@ -239,7 +239,7 @@ class TestAnthropicProvider:
         """Test get_model_info for unknown model returns defaults"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", model="unknown-model")
@@ -386,7 +386,7 @@ class TestProviderComparison:
         """Test all providers implement get_model_info"""
         mock_anthropic = MagicMock()
         mock_openai = MagicMock()
-        mock_anthropic.Anthropic.return_value = MagicMock()
+        mock_anthropic.AsyncAnthropic.return_value = MagicMock()
         mock_openai.AsyncOpenAI.return_value = MagicMock()
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic, "openai": mock_openai}):
@@ -412,7 +412,7 @@ class TestAnthropicProviderGenerate:
         """Test basic Anthropic generate call"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         # Mock response
         mock_response = MagicMock()
@@ -428,7 +428,7 @@ class TestAnthropicProviderGenerate:
         mock_block.text = "Test response"
         mock_response.content = [mock_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key")
@@ -447,7 +447,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate with system prompt and prompt caching"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -463,7 +463,7 @@ class TestAnthropicProviderGenerate:
         mock_block.text = "Cached response"
         mock_response.content = [mock_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", use_prompt_caching=True)
@@ -480,7 +480,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate with system prompt but no caching"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -494,7 +494,7 @@ class TestAnthropicProviderGenerate:
         mock_block.text = "Regular response"
         mock_response.content = [mock_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", use_prompt_caching=False)
@@ -509,7 +509,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate with thinking mode enabled"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -530,7 +530,7 @@ class TestAnthropicProviderGenerate:
 
         mock_response.content = [mock_thinking_block, mock_text_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", use_thinking=True)
@@ -546,7 +546,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate with content block without type attribute"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -561,7 +561,7 @@ class TestAnthropicProviderGenerate:
         mock_block.text = "Legacy response"
         mock_response.content = [mock_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key")
@@ -576,7 +576,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate with unknown block type (skip it)"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -596,7 +596,7 @@ class TestAnthropicProviderGenerate:
 
         mock_response.content = [mock_unknown_block, mock_text_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key")
@@ -612,7 +612,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate without cache metrics in response"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -627,7 +627,7 @@ class TestAnthropicProviderGenerate:
         mock_block.text = "Response without cache"
         mock_response.content = [mock_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", use_prompt_caching=True)
@@ -645,7 +645,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate without thinking content"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -660,7 +660,7 @@ class TestAnthropicProviderGenerate:
         mock_text_block.text = "Simple response"
         mock_response.content = [mock_text_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", use_thinking=True)
@@ -677,7 +677,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic generate with thinking but no cache metrics"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -699,7 +699,7 @@ class TestAnthropicProviderGenerate:
 
         mock_response.content = [mock_thinking_block, mock_text_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key", use_thinking=True)
@@ -717,7 +717,7 @@ class TestAnthropicProviderGenerate:
         """Test Anthropic analyze_large_codebase method"""
         mock_anthropic = MagicMock()
         mock_client = MagicMock()
-        mock_anthropic.Anthropic.return_value = mock_client
+        mock_anthropic.AsyncAnthropic.return_value = mock_client
 
         mock_response = MagicMock()
         mock_response.model = "claude-3-sonnet"
@@ -731,7 +731,7 @@ class TestAnthropicProviderGenerate:
         mock_block.text = "Analysis complete"
         mock_response.content = [mock_block]
 
-        mock_client.messages.create.return_value = mock_response
+        mock_client.messages.create = AsyncMock(return_value=mock_response)
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
             provider = AnthropicProvider(api_key="test-key")

@@ -27,8 +27,10 @@ This runs entirely within Claude Code using the user's Max subscription ($0 cost
 Run tests with verbose output:
 
 ```bash
-pytest tests/ -v --tb=short 2>&1 | tail -100
+pytest tests/ -v --tb=short -n 0 2>&1 | tail -100
 ```
+
+NOTE: Always use `-n 0` (sequential execution). Parallel execution causes memory issues.
 
 Note any failures or errors.
 

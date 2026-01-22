@@ -453,11 +453,17 @@ def workflow_run(
         empathy workflow run code-review --path ./src
         empathy workflow run test-gen --input '{"path": ".", "file_types": [".py"]}'
     """
+    # Handle typer.Option defaults when called directly (not via CLI)
+    # When called directly, typer.Option() objects may be passed instead of resolved values
+    actual_path = path if isinstance(path, Path) else Path(".")
+    actual_input_json = input_json if isinstance(input_json, str) else None
+    actual_json_output = json_output if isinstance(json_output, bool) else False
+
     # Determine input JSON - explicit --input takes precedence over --path
-    if input_json:
-        workflow_input = input_json
+    if actual_input_json:
+        workflow_input = actual_input_json
     else:
-        workflow_input = f'{{"path": "{path}"}}'
+        workflow_input = f'{{"path": "{actual_path}"}}'
 
     cmd = [
         sys.executable,
@@ -476,7 +482,7 @@ def workflow_run(
     if health_score_threshold != 95:
         cmd.extend(["--health-score-threshold", str(health_score_threshold)])
 
-    if json_output:
+    if actual_json_output:
         cmd.append("--json")
 
     subprocess.run(cmd, check=False)

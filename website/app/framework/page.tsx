@@ -104,7 +104,7 @@ export default function FrameworkPage() {
 
             <div className="bg-[var(--background)] p-6 rounded-lg border-2 border-purple-500 border-opacity-50">
               <div className="mb-4 text-3xl">🧭</div>
-              <h3 className="text-xl font-bold mb-3">Meta-Orchestration <span className="text-xs font-normal text-purple-500 ml-2">v4.4.0</span></h3>
+              <h3 className="text-xl font-bold mb-3">Meta-Orchestration <span className="text-xs font-normal text-purple-500 ml-2">v4.6</span></h3>
               <p className="text-[var(--text-secondary)]">
                 6 composition patterns (Sequential, Parallel, Debate, Teaching, Refinement, Adaptive) + 7 agent templates. Agents compose themselves automatically.
               </p>
@@ -244,7 +244,7 @@ if builder.is_ready_to_generate(session):
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold mb-4">Orchestration System <span className="text-sm font-normal text-purple-500">v4.4.0</span></h3>
+                <h3 className="text-2xl font-bold mb-4">Orchestration System <span className="text-sm font-normal text-purple-500">v4.6.5</span></h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
                     <span className="text-purple-500 font-mono text-sm mt-1">SmartRouter</span>

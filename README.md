@@ -2,7 +2,7 @@
 
 **The Claude-optimized AI collaboration framework with breakthrough meta-orchestration - agents that compose themselves.**
 
-🎯 **v4.6.5: Optimized for Claude Code** - Built and tested extensively with Claude Code for the best experience. 10+ slash commands, automatic pattern learning, prompt caching (90% savings), true async I/O. **Full multi-LLM support** - works seamlessly with OpenAI, Gemini, and local models.
+🚀 **v4.6.6: Performance Optimized** - 36% faster scanning, 39% faster init, 11,000+ tests passing. Built and tested extensively with Claude Code. **Full multi-LLM support** - works seamlessly with OpenAI, Gemini, and local models.
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://img.shields.io/badge/tests-4%2C000%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
@@ -14,6 +14,29 @@
 ```bash
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
+
+## What's New in v4.6.6 🚀 **PERFORMANCE OPTIMIZED**
+
+### **Faster Scanning, Faster Init, More Tests**
+
+**v4.6.6** delivers significant performance improvements across core framework operations:
+
+**Performance Gains:**
+
+| Component | Improvement | Details |
+|-----------|-------------|---------|
+| Project Scanner | **36% faster** | Single-pass AST analysis (O(n) vs O(n²)) |
+| CostTracker Init | **39% faster** | Lazy loading with pre-computed summaries |
+| Test Generation | **95% faster** | Cascading benefit from CostTracker |
+| Test Suite | **11,000+ passing** | Comprehensive coverage |
+
+**Technical Details:**
+- Rewrote `_analyze_python_ast()` using `NodeVisitor` pattern
+- Implemented lazy loading for request history
+- Added `costs_summary.json` for fast aggregated access
+- Reduced function calls by 47% during scans
+
+---
 
 ## What's New in v4.6.5 🎯 **OPTIMIZED FOR CLAUDE CODE**
 

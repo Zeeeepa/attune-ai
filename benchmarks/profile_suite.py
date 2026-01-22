@@ -345,7 +345,8 @@ def profile_file_operations():
         try:
             lines = len(file.read_text().splitlines())
             total_lines += lines
-        except Exception:
+        except (OSError, UnicodeDecodeError):
+            # Skip files that can't be read (permissions, encoding issues)
             pass
 
     print(f"✓ Read {len(sample_files)} sample files")

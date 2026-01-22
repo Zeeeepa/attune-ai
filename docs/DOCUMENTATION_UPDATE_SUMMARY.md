@@ -151,8 +151,7 @@ docs/
 ├── architecture/               # ✅ EXISTS
 │   ├── SECURE_MEMORY_ARCHITECTURE.md
 │   ├── PLUGIN_SYSTEM_README.md
-│   ├── crewai-integration.md
-│   └── ... (15 files total)
+│   └── ... (14 files total)
 │
 ├── api-reference/              # ⏳ TODO - Awaiting 80% coverage
 │   ├── index.md

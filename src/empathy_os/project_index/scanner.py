@@ -472,47 +472,96 @@ class ProjectScanner:
         return metrics
 
     def _analyze_python_ast(self, tree: ast.AST) -> dict[str, Any]:
-        """Analyze Python AST for metrics."""
-        result: dict[str, Any] = {
-            "has_docstrings": False,
-            "has_type_hints": False,
-            "imports": [],
-            "test_count": 0,
-            "complexity": 0.0,
-        }
+        """Analyze Python AST for metrics.
 
-        for node in ast.walk(tree):
-            # Check for docstrings
-            if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef | ast.ClassDef | ast.Module):
+        Optimized to use single-pass traversal with NodeVisitor instead of
+        nested ast.walk() calls. Previous implementation was O(n²) due to
+        walking each function's subtree separately. This version is O(n).
+        """
+        # Use inner class to maintain state during traversal
+        class MetricsVisitor(ast.NodeVisitor):
+            def __init__(self) -> None:
+                self.result: dict[str, Any] = {
+                    "has_docstrings": False,
+                    "has_type_hints": False,
+                    "imports": [],
+                    "test_count": 0,
+                    "complexity": 0.0,
+                }
+                self.function_depth = 0  # Track if we're inside a function
+
+            def visit_Module(self, node: ast.Module) -> None:
                 if ast.get_docstring(node):
-                    result["has_docstrings"] = True
+                    self.result["has_docstrings"] = True
+                self.generic_visit(node)
 
-            # Check for type hints
-            if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef):
+            def visit_ClassDef(self, node: ast.ClassDef) -> None:
+                if ast.get_docstring(node):
+                    self.result["has_docstrings"] = True
+                self.generic_visit(node)
+
+            def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+                self._handle_function(node)
+
+            def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
+                self._handle_function(node)
+
+            def _handle_function(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
+                # Check for docstrings
+                if ast.get_docstring(node):
+                    self.result["has_docstrings"] = True
+
+                # Check for type hints
                 if node.returns or any(arg.annotation for arg in node.args.args):
-                    result["has_type_hints"] = True
+                    self.result["has_type_hints"] = True
 
                 # Count test functions
                 if node.name.startswith("test_"):
-                    result["test_count"] += 1
+                    self.result["test_count"] += 1
 
-                # Simple complexity: count branches
-                for child in ast.walk(node):
-                    if isinstance(
-                        child,
-                        ast.If | ast.For | ast.While | ast.Try | ast.ExceptHandler,
-                    ):
-                        result["complexity"] += 1.0
+                # Enter function scope for complexity counting
+                self.function_depth += 1
+                self.generic_visit(node)
+                self.function_depth -= 1
 
-            # Track imports
-            if isinstance(node, ast.Import):
+            def visit_If(self, node: ast.If) -> None:
+                if self.function_depth > 0:
+                    self.result["complexity"] += 1.0
+                self.generic_visit(node)
+
+            def visit_For(self, node: ast.For) -> None:
+                if self.function_depth > 0:
+                    self.result["complexity"] += 1.0
+                self.generic_visit(node)
+
+            def visit_While(self, node: ast.While) -> None:
+                if self.function_depth > 0:
+                    self.result["complexity"] += 1.0
+                self.generic_visit(node)
+
+            def visit_Try(self, node: ast.Try) -> None:
+                if self.function_depth > 0:
+                    self.result["complexity"] += 1.0
+                self.generic_visit(node)
+
+            def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
+                if self.function_depth > 0:
+                    self.result["complexity"] += 1.0
+                self.generic_visit(node)
+
+            def visit_Import(self, node: ast.Import) -> None:
                 for alias in node.names:
-                    result["imports"].append(alias.name)
-            elif isinstance(node, ast.ImportFrom):
-                if node.module:
-                    result["imports"].append(node.module)
+                    self.result["imports"].append(alias.name)
+                self.generic_visit(node)
 
-        return result
+            def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
+                if node.module:
+                    self.result["imports"].append(node.module)
+                self.generic_visit(node)
+
+        visitor = MetricsVisitor()
+        visitor.visit(tree)
+        return visitor.result
 
     def _analyze_dependencies(self, records: list[FileRecord]) -> None:
         """Build dependency graph between files.

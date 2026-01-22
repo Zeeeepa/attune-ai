@@ -46,6 +46,20 @@ jobs:
                tests/unit/workflows/test_workflow_execution.py \
                -v --tb=short
 
+    - name: Track per-file test results
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      run: |
+        python scripts/track_file_tests.py --coverage coverage.xml --limit 50
+      continue-on-error: true
+
+    - name: Upload file test tracking data
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      uses: actions/upload-artifact@v4
+      with:
+        name: file-test-tracking
+        path: .empathy/file_tests.jsonl
+      continue-on-error: true
+
     - name: Upload coverage to Codecov
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       uses: codecov/codecov-action@v4

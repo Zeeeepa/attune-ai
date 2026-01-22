@@ -44,6 +44,8 @@ from empathy_os.workflows import list_workflows as get_workflow_list
 try:
     from empathy_os.telemetry.cli import (
         cmd_agent_performance,
+        cmd_file_test_dashboard,
+        cmd_file_test_status,
         cmd_task_routing_report,
         cmd_telemetry_compare,
         cmd_telemetry_export,
@@ -3003,6 +3005,22 @@ def _cmd_test_status(args):
     return cmd_test_status(args)
 
 
+def _cmd_file_test_status(args):
+    """Wrapper for per-file test status command."""
+    if not TELEMETRY_CLI_AVAILABLE:
+        print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
+        return 1
+    return cmd_file_test_status(args)
+
+
+def _cmd_file_test_dashboard(args):
+    """Wrapper for file test dashboard command."""
+    if not TELEMETRY_CLI_AVAILABLE:
+        print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
+        return 1
+    return cmd_file_test_dashboard(args)
+
+
 def _cmd_agent_performance(args):
     """Wrapper for agent performance command."""
     if not TELEMETRY_CLI_AVAILABLE:
@@ -3621,6 +3639,47 @@ def main():
         help="Hours to analyze (default: 24)",
     )
     parser_tests.set_defaults(func=lambda args: _cmd_test_status(args))
+
+    # file-tests command - per-file test status
+    parser_file_tests = subparsers.add_parser(
+        "file-tests",
+        help="Show per-file test status (last tested, pass/fail, staleness)",
+    )
+    parser_file_tests.add_argument(
+        "--file",
+        type=str,
+        help="Check specific file path",
+    )
+    parser_file_tests.add_argument(
+        "--failed",
+        action="store_true",
+        help="Show only files with failing tests",
+    )
+    parser_file_tests.add_argument(
+        "--stale",
+        action="store_true",
+        help="Show only files with stale tests",
+    )
+    parser_file_tests.add_argument(
+        "--limit",
+        type=int,
+        default=50,
+        help="Maximum files to show (default: 50)",
+    )
+    parser_file_tests.set_defaults(func=lambda args: _cmd_file_test_status(args))
+
+    # file-test-dashboard command - interactive dashboard
+    parser_file_dashboard = subparsers.add_parser(
+        "file-test-dashboard",
+        help="Open interactive file test status dashboard in browser",
+    )
+    parser_file_dashboard.add_argument(
+        "--port",
+        type=int,
+        default=8765,
+        help="Port to serve dashboard on (default: 8765)",
+    )
+    parser_file_dashboard.set_defaults(func=lambda args: _cmd_file_test_dashboard(args))
 
     # agents command - agent performance
     parser_agents = subparsers.add_parser(

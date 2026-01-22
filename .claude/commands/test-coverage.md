@@ -26,8 +26,10 @@ This runs entirely within Claude Code using the user's Max subscription ($0 cost
 Run coverage analysis with Bash:
 
 ```bash
-pytest --cov=src --cov-report=term-missing --cov-report=html -q 2>&1 | tail -50
+pytest --cov=src --cov-report=term-missing --cov-report=html -n 0 -q 2>&1 | tail -50
 ```
+
+NOTE: Always use `-n 0` (sequential execution). Parallel execution causes memory issues.
 
 Record the current coverage percentage.
 

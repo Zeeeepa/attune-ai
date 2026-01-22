@@ -214,28 +214,7 @@ def find_by_type(self, node_type: NodeType) -> list[Node]:
 
 ---
 
-#### 3.2 File Index Lookups (Memory Impact: HIGH)
-
-**File:** `/src/empathy_os/project_index/crew_integration.py`
-**Line:** 108
-
-**Current:**
-```python
-return [f.to_dict() for f in files[:20]]
-```
-
-**Issue:** Serializes after slicing (inefficient)
-
-**Optimization:**
-```python
-return [f.to_dict() for f in files[:20]]  # Keep: small result, needs list for JSON
-```
-
-**Memory Savings:** Minimal (result is typically <10KB)
-
----
-
-#### 3.3 Memory Control Panel Operations (Memory Impact: MEDIUM)
+#### 3.2 Memory Control Panel Operations (Memory Impact: MEDIUM)
 
 **File:** `/src/empathy_os/memory/control_panel.py`
 **Lines:** 239, 254, 1372, 1403
@@ -259,7 +238,7 @@ self._requests[client_ip] = [ts for ts in self._requests[client_ip] if ts > wind
 
 ---
 
-#### 3.4 Test Generator Pattern Lookups (Memory Impact: MEDIUM)
+#### 3.3 Test Generator Pattern Lookups (Memory Impact: MEDIUM)
 
 **File:** `/src/empathy_os/test_generator/generator.py`
 **Line:** 148
@@ -297,7 +276,7 @@ patterns = _get_valid_patterns()
 
 ### Priority 2: Medium Impact, Medium Risk (Q1 2026)
 
-#### 3.5 Long-Term Memory Serialization (Memory Impact: MEDIUM)
+#### 3.4 Long-Term Memory Serialization (Memory Impact: MEDIUM)
 
 **File:** `/src/empathy_os/memory/long_term.py`
 **Lines:** 596, 601, 710
@@ -319,7 +298,7 @@ secret_types = [s.secret_type.value for s in secrets_found]
 
 ---
 
-#### 3.6 Short-Term Memory Key Filtering (Memory Impact: LOW)
+#### 3.5 Short-Term Memory Key Filtering (Memory Impact: LOW)
 
 **File:** `/src/empathy_os/memory/short_term.py`
 **Lines:** 1200-1206, 1410, 1478, etc.
@@ -339,7 +318,7 @@ working_keys = [k for k in self._mock_storage if k.startswith(self.PREFIX_WORKIN
 
 ### Priority 3: Low Impact or Complex (Future consideration)
 
-#### 3.7 Persistence Layer Operations (Complex)
+#### 3.6 Persistence Layer Operations (Complex)
 
 **File:** `/src/empathy_os/persistence.py`
 **Line:** 360
@@ -356,7 +335,7 @@ return [p.stem for p in self.storage_path.glob("*.json")]
 
 ---
 
-#### 3.8 Config and Import Handling (Compatibility risk)
+#### 3.7 Config and Import Handling (Compatibility risk)
 
 **File:** `/src/empathy_os/config.py`
 **Line:** 187

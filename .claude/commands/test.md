@@ -1,6 +1,8 @@
 Run the Empathy Framework test suite and report results.
 
-1. Run: `pytest tests/ -v --tb=short`
+1. Run: `pytest tests/ -v --tb=short -n 0`
+
+NOTE: Always use `-n 0` (sequential execution). Parallel execution causes memory issues.
 
 2. If tests fail, summarize:
    - Which tests failed

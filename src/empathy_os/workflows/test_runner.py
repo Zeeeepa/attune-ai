@@ -24,7 +24,12 @@ except ImportError:
 if TYPE_CHECKING:
     from xml.etree.ElementTree import Element
 
-from empathy_os.models import CoverageRecord, TestExecutionRecord, get_telemetry_store
+from empathy_os.models import (
+    CoverageRecord,
+    FileTestRecord,
+    TestExecutionRecord,
+    get_telemetry_store,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -357,3 +362,257 @@ def _analyze_coverage_files(root: "Element") -> dict[str, Any]:
         "untested": untested_files[:10],  # Limit to 10
         "gaps": critical_gaps[:10],  # Limit to 10
     }
+
+
+def track_file_tests(
+    source_file: str,
+    test_file: str | None = None,
+    workflow_id: str | None = None,
+) -> FileTestRecord:
+    """Track test execution for a specific source file.
+
+    Runs tests associated with a source file and creates a FileTestRecord.
+
+    Args:
+        source_file: Path to the source file to test
+        test_file: Path to the test file (auto-detected if not provided)
+        workflow_id: Optional workflow ID to link this execution
+
+    Returns:
+        FileTestRecord with per-file test results
+
+    Example:
+        >>> from empathy_os.workflows.test_runner import track_file_tests
+        >>> result = track_file_tests("src/empathy_os/config.py")
+        >>> print(f"Tests for config.py: {result.last_test_result}")
+    """
+    timestamp = datetime.utcnow().isoformat() + "Z"
+    started_at = datetime.utcnow()
+
+    source_path = Path(source_file)
+
+    # Auto-detect test file if not provided
+    if test_file is None:
+        test_file = _find_test_file(source_file)
+
+    # Get file modification times
+    source_modified_at = None
+    tests_modified_at = None
+
+    if source_path.exists():
+        source_modified_at = datetime.fromtimestamp(source_path.stat().st_mtime).isoformat() + "Z"
+
+    if test_file:
+        test_path = Path(test_file)
+        if test_path.exists():
+            tests_modified_at = datetime.fromtimestamp(test_path.stat().st_mtime).isoformat() + "Z"
+
+    # Check if we have tests to run
+    if test_file is None or not Path(test_file).exists():
+        # No tests found for this file
+        record = FileTestRecord(
+            file_path=source_file,
+            timestamp=timestamp,
+            last_test_result="no_tests",
+            test_count=0,
+            test_file_path=test_file,
+            source_modified_at=source_modified_at,
+            tests_modified_at=tests_modified_at,
+            is_stale=False,
+            workflow_id=workflow_id,
+        )
+        _log_file_test(record)
+        return record
+
+    # Run pytest for this specific test file
+    command = f"pytest {test_file} -v --tb=short"
+
+    logger.info(f"Running tests for {source_file}: {command}")
+    try:
+        cmd_args = shlex.split(command)
+        result = subprocess.run(
+            cmd_args,
+            shell=False,
+            capture_output=True,
+            text=True,
+            timeout=300,  # 5 minute timeout per file
+        )
+
+        output = result.stdout + result.stderr
+        total_tests, passed, failed, skipped, errors = _parse_pytest_output(output)
+
+        # Determine result status
+        if result.returncode == 0:
+            last_test_result = "passed"
+        elif failed > 0:
+            last_test_result = "failed"
+        elif errors > 0:
+            last_test_result = "error"
+        elif skipped == total_tests:
+            last_test_result = "skipped"
+        else:
+            last_test_result = "failed"
+
+        failed_tests = _parse_pytest_failures(output) if failed > 0 or errors > 0 else []
+        execution_id = f"file-{uuid.uuid4()}"
+
+    except subprocess.TimeoutExpired:
+        logger.error(f"Test execution timed out for {source_file}")
+        total_tests, passed, failed, skipped, errors = 0, 0, 0, 0, 1
+        last_test_result = "error"
+        failed_tests = [{"name": "timeout", "file": test_file, "error": "Timed out"}]
+        execution_id = f"file-{uuid.uuid4()}"
+
+    except Exception as e:
+        logger.error(f"Test execution failed for {source_file}: {e}")
+        total_tests, passed, failed, skipped, errors = 0, 0, 0, 0, 1
+        last_test_result = "error"
+        failed_tests = [{"name": "execution_error", "file": test_file, "error": str(e)}]
+        execution_id = f"file-{uuid.uuid4()}"
+
+    # Calculate duration
+    completed_at = datetime.utcnow()
+    duration_seconds = (completed_at - started_at).total_seconds()
+
+    # Check staleness (source modified after tests last modified)
+    is_stale = False
+    if source_modified_at and tests_modified_at:
+        is_stale = source_modified_at > tests_modified_at
+
+    record = FileTestRecord(
+        file_path=source_file,
+        timestamp=timestamp,
+        last_test_result=last_test_result,
+        test_count=total_tests,
+        passed=passed,
+        failed=failed,
+        skipped=skipped,
+        errors=errors,
+        duration_seconds=duration_seconds,
+        test_file_path=test_file,
+        failed_tests=failed_tests,
+        source_modified_at=source_modified_at,
+        tests_modified_at=tests_modified_at,
+        is_stale=is_stale,
+        execution_id=execution_id,
+        workflow_id=workflow_id,
+    )
+
+    _log_file_test(record)
+    return record
+
+
+def get_file_test_status(file_path: str) -> FileTestRecord | None:
+    """Get the latest test status for a specific file.
+
+    Args:
+        file_path: Path to the source file
+
+    Returns:
+        Latest FileTestRecord or None if no tests recorded
+    """
+    store = get_telemetry_store()
+    return store.get_latest_file_test(file_path)
+
+
+def get_files_needing_tests(
+    stale_only: bool = False,
+    failed_only: bool = False,
+) -> list[FileTestRecord]:
+    """Get files that need test attention.
+
+    Args:
+        stale_only: Only return files with stale tests
+        failed_only: Only return files with failed tests
+
+    Returns:
+        List of FileTestRecord for files needing attention
+    """
+    store = get_telemetry_store()
+    return store.get_files_needing_tests(stale_only=stale_only, failed_only=failed_only)
+
+
+def _find_test_file(source_file: str) -> str | None:
+    """Find the test file for a given source file.
+
+    Uses comprehensive search to find test files:
+    1. First checks explicit patterns based on source file location
+    2. Falls back to glob search for test_{filename}.py anywhere in tests/
+
+    Args:
+        source_file: Path to the source file
+
+    Returns:
+        Path to test file or None if not found
+    """
+    source_path = Path(source_file)
+    filename = source_path.stem
+    parent = source_path.parent
+
+    # Skip __init__.py - rarely have dedicated tests
+    if filename == "__init__":
+        return None
+
+    # Build list of explicit patterns to check first (most specific)
+    patterns = []
+
+    # Extract module info from source path
+    # e.g., src/empathy_os/models/registry.py -> module="models"
+    module_name = None
+    if "src" in source_path.parts:
+        try:
+            src_idx = source_path.parts.index("src")
+            rel_parts = source_path.parts[src_idx + 1:-1]  # Exclude src and filename
+            if len(rel_parts) >= 2:
+                # e.g., ('empathy_os', 'models') -> module_name = 'models'
+                module_name = rel_parts[-1]
+        except (ValueError, IndexError):
+            pass
+
+    # Priority 1: Module-specific test directory
+    # e.g., src/empathy_os/models/registry.py -> tests/unit/models/test_registry.py
+    if module_name:
+        patterns.extend([
+            Path("tests") / "unit" / module_name / f"test_{filename}.py",
+            Path("tests") / module_name / f"test_{filename}.py",
+            Path("tests") / "integration" / module_name / f"test_{filename}.py",
+        ])
+
+    # Priority 2: Standard locations
+    patterns.extend([
+        Path("tests") / "unit" / f"test_{filename}.py",
+        Path("tests") / f"test_{filename}.py",
+        Path("tests") / "integration" / f"test_{filename}.py",
+        parent / f"test_{filename}.py",
+    ])
+
+    # Check explicit patterns first
+    for pattern in patterns:
+        if pattern.exists():
+            return str(pattern)
+
+    # Priority 3: Glob search - find test_{filename}.py anywhere in tests/
+    tests_dir = Path("tests")
+    if tests_dir.exists():
+        # Search for exact match first
+        matches = list(tests_dir.rglob(f"test_{filename}.py"))
+        if matches:
+            # Return the first match (preferring shorter paths)
+            matches.sort(key=lambda p: len(p.parts))
+            return str(matches[0])
+
+    return None
+
+
+def _log_file_test(record: FileTestRecord) -> None:
+    """Log a FileTestRecord to the telemetry store.
+
+    Args:
+        record: FileTestRecord to log
+    """
+    try:
+        store = get_telemetry_store()
+        store.log_file_test(record)
+        logger.info(f"File test tracked: {record.file_path} ({record.last_test_result})")
+    except Exception as e:
+        logger.warning(f"Failed to log file test: {e}")

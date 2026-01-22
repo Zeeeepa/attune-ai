@@ -380,6 +380,72 @@ class AgentAssignmentRecord:
         return cls(**data)
 
 
+@dataclass
+class FileTestRecord:
+    """Record of test execution for a specific source file.
+
+    Tracks when tests for an individual file were last run, results,
+    and coverage - enabling per-file test status tracking.
+
+    This complements TestExecutionRecord (suite-level) by providing
+    granular file-level test tracking for better test maintenance.
+    """
+
+    # Identification (required)
+    file_path: str  # Source file path (relative to project root)
+    timestamp: str  # ISO format - when tests were run
+
+    # Test results (required)
+    last_test_result: str  # "passed", "failed", "error", "skipped", "no_tests"
+    test_count: int  # Number of tests for this file
+
+    # Detailed results with defaults
+    passed: int = 0
+    failed: int = 0
+    skipped: int = 0
+    errors: int = 0
+
+    # Timing
+    duration_seconds: float = 0.0
+
+    # Coverage for this file (if available)
+    coverage_percent: float | None = None
+    lines_total: int = 0
+    lines_covered: int = 0
+
+    # Test file info
+    test_file_path: str | None = None  # Associated test file
+
+    # Failure details (if any)
+    failed_tests: list[dict[str, Any]] = field(default_factory=list)
+
+    # Staleness tracking
+    source_modified_at: str | None = None  # When source file was last modified
+    tests_modified_at: str | None = None  # When test file was last modified
+    is_stale: bool = False  # Tests haven't been run since source changed
+
+    # Link to execution
+    execution_id: str | None = None  # Link to TestExecutionRecord
+    workflow_id: str | None = None
+
+    # Metadata
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert to dictionary for JSON serialization."""
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "FileTestRecord":
+        """Create from dictionary."""
+        return cls(**data)
+
+    @property
+    def success(self) -> bool:
+        """Check if all tests passed."""
+        return self.last_test_result == "passed" and self.failed == 0 and self.errors == 0
+
+
 @runtime_checkable
 class TelemetryBackend(Protocol):
     """Protocol for telemetry storage backends.
@@ -490,6 +556,25 @@ class TelemetryBackend(Protocol):
         """Get agent assignment records with optional filters."""
         ...
 
+    # Per-file test tracking methods
+    def log_file_test(self, record: "FileTestRecord") -> None:
+        """Log a per-file test execution record."""
+        ...
+
+    def get_file_tests(
+        self,
+        file_path: str | None = None,
+        since: datetime | None = None,
+        result_filter: str | None = None,
+        limit: int = 1000,
+    ) -> list["FileTestRecord"]:
+        """Get per-file test records with optional filters."""
+        ...
+
+    def get_latest_file_test(self, file_path: str) -> "FileTestRecord | None":
+        """Get the most recent test record for a specific file."""
+        ...
+
 
 def _parse_timestamp(timestamp_str: str) -> datetime:
     """Parse ISO format timestamp, handling 'Z' suffix for Python 3.10 compatibility.
@@ -541,6 +626,9 @@ class TelemetryStore:
         self.test_executions_file = self.storage_dir / "test_executions.jsonl"
         self.coverage_history_file = self.storage_dir / "coverage_history.jsonl"
         self.agent_assignments_file = self.storage_dir / "agent_assignments.jsonl"
+
+        # Per-file test tracking
+        self.file_tests_file = self.storage_dir / "file_tests.jsonl"
 
     def log_call(self, record: LLMCallRecord) -> None:
         """Log an LLM call record."""
@@ -850,6 +938,126 @@ class TelemetryStore:
                     continue
 
         return records
+
+    # Per-file test tracking methods
+
+    def log_file_test(self, record: "FileTestRecord") -> None:
+        """Log a per-file test execution record.
+
+        Args:
+            record: FileTestRecord to log
+        """
+        with open(self.file_tests_file, "a") as f:
+            f.write(json.dumps(record.to_dict()) + "\n")
+
+    def get_file_tests(
+        self,
+        file_path: str | None = None,
+        since: datetime | None = None,
+        result_filter: str | None = None,
+        limit: int = 1000,
+    ) -> list["FileTestRecord"]:
+        """Get per-file test records with optional filters.
+
+        Args:
+            file_path: Filter by specific file path
+            since: Only return records after this time
+            result_filter: Filter by result (passed, failed, error, skipped, no_tests)
+            limit: Maximum records to return
+
+        Returns:
+            List of FileTestRecord
+        """
+        records: list[FileTestRecord] = []
+        if not self.file_tests_file.exists():
+            return records
+
+        with open(self.file_tests_file) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                try:
+                    data = json.loads(line)
+                    record = FileTestRecord.from_dict(data)
+
+                    # Apply filters
+                    if file_path and record.file_path != file_path:
+                        continue
+
+                    if since:
+                        record_time = _parse_timestamp(record.timestamp)
+                        if record_time < since:
+                            continue
+
+                    if result_filter and record.last_test_result != result_filter:
+                        continue
+
+                    records.append(record)
+
+                    if len(records) >= limit:
+                        break
+                except (json.JSONDecodeError, KeyError):
+                    continue
+
+        return records
+
+    def get_latest_file_test(self, file_path: str) -> "FileTestRecord | None":
+        """Get the most recent test record for a specific file.
+
+        Args:
+            file_path: Path to the source file
+
+        Returns:
+            Most recent FileTestRecord or None if not found
+        """
+        records = self.get_file_tests(file_path=file_path, limit=10000)
+        if not records:
+            return None
+
+        # Return the most recent record (last one since we read in chronological order)
+        return records[-1]
+
+    def get_files_needing_tests(
+        self,
+        stale_only: bool = False,
+        failed_only: bool = False,
+    ) -> list["FileTestRecord"]:
+        """Get files that need test attention.
+
+        Args:
+            stale_only: Only return files with stale tests
+            failed_only: Only return files with failed tests
+
+        Returns:
+            List of FileTestRecord for files needing attention
+        """
+        all_records = self.get_file_tests(limit=100000)
+
+        # Get latest record per file
+        latest_by_file: dict[str, FileTestRecord] = {}
+        for record in all_records:
+            existing = latest_by_file.get(record.file_path)
+            if existing is None:
+                latest_by_file[record.file_path] = record
+            else:
+                # Keep the more recent one
+                if record.timestamp > existing.timestamp:
+                    latest_by_file[record.file_path] = record
+
+        # Filter based on criteria
+        results = []
+        for record in latest_by_file.values():
+            if stale_only and not record.is_stale:
+                continue
+            if failed_only and record.last_test_result not in ("failed", "error"):
+                continue
+            if not stale_only and not failed_only:
+                # Return all files needing attention (stale OR failed OR no_tests)
+                if record.last_test_result not in ("failed", "error", "no_tests") and not record.is_stale:
+                    continue
+            results.append(record)
+
+        return results
 
 
 class TelemetryAnalytics:

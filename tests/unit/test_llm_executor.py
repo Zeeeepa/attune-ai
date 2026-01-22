@@ -293,3 +293,162 @@ class TestExecutionContextMetadata:
         context = ExecutionContext(workflow_name="simple-workflow")
 
         assert context.metadata is None or context.metadata == {}
+
+
+@pytest.mark.unit
+class TestLLMResponseSuccessProperty:
+    """Test success property in LLMResponse"""
+
+    def test_success_with_content(self):
+        """Test success is True when content is present"""
+        response = LLMResponse(
+            content="Valid response content",
+            model_id="test",
+            provider="test",
+            tier="cheap",
+        )
+
+        assert response.success is True
+
+    def test_success_with_empty_content(self):
+        """Test success is False when content is empty string"""
+        response = LLMResponse(
+            content="",
+            model_id="test",
+            provider="test",
+            tier="cheap",
+        )
+
+        assert response.success is False
+
+    def test_success_with_whitespace_content(self):
+        """Test success is True when content is whitespace (non-empty)"""
+        response = LLMResponse(
+            content="   ",
+            model_id="test",
+            provider="test",
+            tier="cheap",
+        )
+
+        # Whitespace is technically content, so success should be True
+        assert response.success is True
+
+
+@pytest.mark.unit
+class TestMockLLMExecutor:
+    """Test MockLLMExecutor for testing workflows"""
+
+    @pytest.fixture
+    def mock_executor(self):
+        """Create a mock executor for testing"""
+        from empathy_os.models.executor import MockLLMExecutor
+
+        return MockLLMExecutor(
+            default_response="Mocked response content",
+            default_model="mock-model-v1",
+        )
+
+    def test_mock_executor_initialization(self, mock_executor):
+        """Test MockLLMExecutor initialization"""
+        assert mock_executor.default_response == "Mocked response content"
+        assert mock_executor.default_model == "mock-model-v1"
+        assert mock_executor.call_history == []
+
+    @pytest.mark.asyncio
+    async def test_mock_executor_run(self, mock_executor):
+        """Test MockLLMExecutor.run returns expected response"""
+        response = await mock_executor.run(
+            task_type="summarize",
+            prompt="Summarize this text",
+        )
+
+        assert response.content == "Mocked response content"
+        assert response.model_id == "mock-model-v1"
+        assert response.provider == "mock"
+        assert response.metadata["mock"] is True
+
+    @pytest.mark.asyncio
+    async def test_mock_executor_records_calls(self, mock_executor):
+        """Test MockLLMExecutor records all calls"""
+        await mock_executor.run(task_type="summarize", prompt="First call")
+        await mock_executor.run(task_type="fix_bug", prompt="Second call")
+
+        assert len(mock_executor.call_history) == 2
+        assert mock_executor.call_history[0]["task_type"] == "summarize"
+        assert mock_executor.call_history[1]["task_type"] == "fix_bug"
+        assert mock_executor.call_history[0]["prompt"] == "First call"
+
+    @pytest.mark.asyncio
+    async def test_mock_executor_with_system_prompt(self, mock_executor):
+        """Test MockLLMExecutor with system prompt"""
+        await mock_executor.run(
+            task_type="analyze",
+            prompt="Analyze this",
+            system="You are a helpful assistant",
+        )
+
+        assert mock_executor.call_history[0]["system"] == "You are a helpful assistant"
+
+    @pytest.mark.asyncio
+    async def test_mock_executor_with_context(self, mock_executor):
+        """Test MockLLMExecutor with execution context"""
+        context = ExecutionContext(
+            user_id="test_user",
+            workflow_name="test-workflow",
+        )
+
+        await mock_executor.run(
+            task_type="analyze",
+            prompt="Test prompt",
+            context=context,
+        )
+
+        assert mock_executor.call_history[0]["context"] == context
+
+    def test_mock_executor_get_model_for_task(self, mock_executor):
+        """Test MockLLMExecutor.get_model_for_task returns default model"""
+        model = mock_executor.get_model_for_task("any_task_type")
+
+        assert model == "mock-model-v1"
+
+    def test_mock_executor_estimate_cost(self, mock_executor):
+        """Test MockLLMExecutor.estimate_cost returns zero"""
+        cost = mock_executor.estimate_cost(
+            task_type="summarize",
+            input_tokens=1000,
+            output_tokens=500,
+        )
+
+        assert cost == 0.0
+
+    @pytest.mark.asyncio
+    async def test_mock_executor_token_estimation(self, mock_executor):
+        """Test MockLLMExecutor estimates tokens from prompt"""
+        response = await mock_executor.run(
+            task_type="summarize",
+            prompt="This is a test prompt with several words",
+        )
+
+        # Mock executor estimates ~4 tokens per word
+        assert response.tokens_input > 0
+        assert response.tokens_output > 0
+
+    @pytest.mark.asyncio
+    async def test_mock_executor_zero_cost(self, mock_executor):
+        """Test MockLLMExecutor has zero cost"""
+        response = await mock_executor.run(
+            task_type="summarize",
+            prompt="Test",
+        )
+
+        assert response.cost_estimate == 0.0
+
+    @pytest.mark.asyncio
+    async def test_mock_executor_low_latency(self, mock_executor):
+        """Test MockLLMExecutor has minimal latency"""
+        response = await mock_executor.run(
+            task_type="summarize",
+            prompt="Test",
+        )
+
+        assert response.latency_ms == 10  # Fixed mock latency

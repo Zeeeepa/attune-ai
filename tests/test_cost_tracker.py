@@ -53,7 +53,9 @@ class TestCostTrackerInit:
             json.dump(existing_data, f)
 
         tracker = CostTracker(storage_dir=str(storage_dir))
-        assert len(tracker.data["requests"]) == 1
+        # Use requests property (triggers lazy loading)
+        assert len(tracker.requests) == 1
+        # daily_totals are loaded eagerly for fast access
         assert "2025-01-01" in tracker.data["daily_totals"]
 
     def test_handles_corrupted_file(self, tmp_path):
@@ -66,7 +68,8 @@ class TestCostTrackerInit:
             f.write("not valid json {{{")
 
         tracker = CostTracker(storage_dir=str(storage_dir))
-        assert tracker.data["requests"] == []
+        # Use requests property (lazy-loaded, handles corruption gracefully)
+        assert tracker.requests == []
 
     def test_default_data_structure(self, tmp_path):
         """Test default data structure is created."""
@@ -169,7 +172,8 @@ class TestRequestLogging:
         for i in range(1050):
             tracker.log_request("claude-3-haiku-20240307", 100, 50, f"task_{i}")
 
-        assert len(tracker.data["requests"]) == 1000
+        # Use requests property (lazy-loaded and limited to 1000)
+        assert len(tracker.requests) == 1000
 
     def test_log_request_with_tier_override(self, tmp_path):
         """Test logging with explicit tier override."""

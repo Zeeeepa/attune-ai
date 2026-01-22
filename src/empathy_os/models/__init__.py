@@ -58,6 +58,7 @@ from .tasks import (
 from .telemetry import (
     AgentAssignmentRecord,
     CoverageRecord,
+    FileTestRecord,
     LLMCallRecord,
     TaskRoutingRecord,
     TelemetryAnalytics,
@@ -98,6 +99,7 @@ __all__ = [
     # Fallback exports
     "FallbackStrategy",
     # Telemetry exports
+    "FileTestRecord",
     "LLMCallRecord",
     # Executor exports
     "LLMExecutor",
