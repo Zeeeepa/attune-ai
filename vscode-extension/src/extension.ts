@@ -36,6 +36,7 @@ import { MorningBriefingPanel } from './panels/MorningBriefingPanel';
 // HIDDEN in v3.5.5: Workflow Wizard panel - temporarily hidden
 // import { WorkflowWizardPanel } from './panels/WorkflowWizardPanel';
 import { DocAnalysisPanel } from './panels/DocAnalysisPanel';
+import { TestTrackingPanel } from './panels/TestTrackingPanel';
 import { initializeProject, showWelcomeIfNeeded as showInitializeWelcome } from './commands/initializeProject';
 import { registerMetaWorkflowCommands } from './commands/metaWorkflowCommands';
 
@@ -183,17 +184,84 @@ export function activate(context: vscode.ExtensionContext) {
     //     )
     // );
 
-    // Register commands - existing
+    // Register commands - organized by CLI structure
     const commands = [
-        { name: 'empathy.morning', handler: cmdMorning },
-        { name: 'empathy.ship', handler: cmdShip },
-        { name: 'empathy.fixAll', handler: cmdFixAll },
-        { name: 'empathy.learn', handler: cmdLearn },
-        { name: 'empathy.costs', handler: cmdCosts },
-        { name: 'empathy.dashboard', handler: cmdDashboard },
-        { name: 'empathy.syncClaude', handler: cmdSyncClaude },
-        { name: 'empathy.status', handler: cmdStatus },
-        // New commands for Health view actions (Features A, B, C, D)
+        // =====================================================================
+        // WORKFLOW COMMANDS (14 top-level workflows)
+        // =====================================================================
+        { name: 'empathy.codeReview', handler: () => runUnifiedCommand('code-review .', 'Code Review') },
+        { name: 'empathy.securityAudit', handler: () => runUnifiedCommand('security-audit .', 'Security Audit') },
+        { name: 'empathy.testGen', handler: () => runUnifiedCommand('test-gen .', 'Test Generation') },
+        { name: 'empathy.bugPredict', handler: () => runUnifiedCommand('bug-predict .', 'Bug Prediction') },
+        { name: 'empathy.docGen', handler: () => runUnifiedCommand('doc-gen .', 'Doc Generation') },
+        { name: 'empathy.perfAudit', handler: () => runUnifiedCommand('perf-audit .', 'Performance Audit') },
+        { name: 'empathy.refactorPlan', handler: () => runUnifiedCommand('refactor-plan .', 'Refactor Plan') },
+        { name: 'empathy.dependencyCheck', handler: () => runUnifiedCommand('dependency-check .', 'Dependency Check') },
+        { name: 'empathy.releasePrep', handler: () => runUnifiedCommand('release-prep .', 'Release Prep') },
+        { name: 'empathy.healthCheck', handler: () => runUnifiedCommand('health-check .', 'Health Check') },
+        { name: 'empathy.testCoverageBoost', handler: () => runUnifiedCommand('test-coverage-boost .', 'Test Coverage Boost') },
+        { name: 'empathy.prReview', handler: () => runUnifiedCommand('pr-review .', 'PR Review') },
+        { name: 'empathy.proReview', handler: () => runUnifiedCommand('pro-review .', 'Pro Review') },
+        { name: 'empathy.secureRelease', handler: () => runUnifiedCommand('secure-release .', 'Secure Release') },
+
+        // =====================================================================
+        // REPORT COMMANDS (empathy report <subcommand>)
+        // =====================================================================
+        { name: 'empathy.report.costs', handler: () => runUnifiedCommand('report costs', 'API Costs') },
+        { name: 'empathy.report.health', handler: () => runUnifiedCommand('report health', 'Health Report') },
+        { name: 'empathy.report.coverage', handler: () => runUnifiedCommand('report coverage', 'Coverage Report') },
+        { name: 'empathy.report.patterns', handler: () => runUnifiedCommand('report patterns', 'Patterns Report') },
+        { name: 'empathy.report.metrics', handler: () => runUnifiedCommand('report metrics', 'Metrics Report') },
+        { name: 'empathy.report.telemetry', handler: () => runUnifiedCommand('report telemetry', 'Telemetry Report') },
+        { name: 'empathy.report.dashboard', handler: () => { runUnifiedCommand('report dashboard', 'Dashboard', { background: true }); vscode.window.showInformationMessage('Dashboard started. Check your browser.'); } },
+
+        // =====================================================================
+        // MEMORY COMMANDS (empathy memory <subcommand>)
+        // =====================================================================
+        { name: 'empathy.memory.status', handler: () => runUnifiedCommand('memory status', 'Memory Status') },
+        { name: 'empathy.memory.start', handler: () => runUnifiedCommand('memory start', 'Start Redis') },
+        { name: 'empathy.memory.stop', handler: () => runUnifiedCommand('memory stop', 'Stop Redis') },
+        { name: 'empathy.memory.patterns', handler: () => runUnifiedCommand('memory patterns', 'Memory Patterns') },
+
+        // =====================================================================
+        // TIER COMMANDS (empathy tier <subcommand>)
+        // =====================================================================
+        { name: 'empathy.tier.setup', handler: () => runUnifiedCommand('tier setup --show', 'Tier Setup') },
+        { name: 'empathy.tier.recommend', handler: async () => {
+            const description = await vscode.window.showInputBox({
+                prompt: 'Describe the bug or task',
+                placeHolder: 'fix login validation bug'
+            });
+            if (description) {
+                runUnifiedCommand(`tier recommend "${description}"`, 'Tier Recommendation');
+            }
+        }},
+
+        // =====================================================================
+        // UTILITY COMMANDS (empathy utility <subcommand>)
+        // =====================================================================
+        { name: 'empathy.utility.scan', handler: () => runUnifiedCommand('utility scan .', 'Scan') },
+        { name: 'empathy.utility.inspect', handler: () => runUnifiedCommand('utility inspect .', 'Inspect') },
+        { name: 'empathy.utility.fix', handler: () => runUnifiedCommand('utility fix', 'Fix Issues') },
+        { name: 'empathy.utility.init', handler: () => runUnifiedCommand('utility init', 'Initialize Project') },
+        { name: 'empathy.utility.new', handler: () => runUnifiedCommand('utility new --list', 'New Project') },
+        { name: 'empathy.utility.onboard', handler: () => runUnifiedCommand('utility onboard', 'Onboard Tutorial') },
+        { name: 'empathy.utility.explain', handler: async () => {
+            const command = await vscode.window.showInputBox({
+                prompt: 'Which command do you want explained?',
+                placeHolder: 'code-review'
+            });
+            if (command) {
+                runUnifiedCommand(`utility explain ${command}`, 'Explain Command');
+            }
+        }},
+        { name: 'empathy.utility.learn', handler: () => runUnifiedCommand('utility learn', 'Learn Patterns') },
+        { name: 'empathy.utility.syncClaude', handler: () => runUnifiedCommand('utility sync-claude', 'Sync to Claude') },
+        { name: 'empathy.utility.cheatsheet', handler: () => runUnifiedCommand('utility cheatsheet', 'Cheatsheet') },
+
+        // =====================================================================
+        // LEGACY/INTERNAL COMMANDS (kept for compatibility)
+        // =====================================================================
         { name: 'empathy.refreshHealth', handler: cmdRefreshHealth },
         { name: 'empathy.runScan', handler: cmdRunScan },
         { name: 'empathy.runSecurityScan', handler: cmdRunSecurityScan },
@@ -766,6 +834,16 @@ async function cmdDashboard() {
     );
 }
 
+async function cmdTestDashboard() {
+    // Open native VS Code panel - no server required
+    const extensionUri = vscode.extensions.getExtension('smart-ai-memory.empathy-framework')?.extensionUri;
+    if (extensionUri) {
+        TestTrackingPanel.createOrShow(extensionUri);
+    } else {
+        vscode.window.showErrorMessage('Could not load Test Tracking panel');
+    }
+}
+
 async function cmdSyncClaude() {
     runEmpathyCommand('sync-claude', 'Sync to Claude Code');
 }
@@ -1135,6 +1213,36 @@ async function cmdOpenWebDashboard() {
 
 interface RunOptions {
     background?: boolean;
+}
+
+/**
+ * Run a command using the unified CLI (empathy command directly)
+ */
+async function runUnifiedCommand(
+    command: string,
+    title: string,
+    options: RunOptions = {}
+): Promise<void> {
+    const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+
+    if (!workspaceFolder) {
+        vscode.window.showErrorMessage('No workspace folder open');
+        return;
+    }
+
+    if (options.background) {
+        // Run in background using execFile
+        cp.execFile('empathy', command.split(/\s+/), { cwd: workspaceFolder });
+        return;
+    }
+
+    // Show in terminal
+    const terminal = vscode.window.createTerminal({
+        name: `Empathy: ${title}`,
+        cwd: workspaceFolder,
+    });
+    terminal.show();
+    terminal.sendText(`empathy ${command}`);
 }
 
 async function runEmpathyCommand(
