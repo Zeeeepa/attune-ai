@@ -2,7 +2,7 @@
 
 **The Claude-optimized AI collaboration framework with breakthrough meta-orchestration - agents that compose themselves.**
 
-🎯 **v4.6.4: Optimized for Claude Code** - Built and tested extensively with Claude Code for the best experience. 10+ slash commands, automatic pattern learning, prompt caching (90% savings), true async I/O. **Full multi-LLM support** - works seamlessly with OpenAI, Gemini, and local models.
+🎯 **v4.6.5: Optimized for Claude Code** - Built and tested extensively with Claude Code for the best experience. 10+ slash commands, automatic pattern learning, prompt caching (90% savings), true async I/O. **Full multi-LLM support** - works seamlessly with OpenAI, Gemini, and local models.
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://img.shields.io/badge/tests-4%2C000%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
@@ -15,11 +15,11 @@
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
-## What's New in v4.6.4 🎯 **OPTIMIZED FOR CLAUDE CODE**
+## What's New in v4.6.5 🎯 **OPTIMIZED FOR CLAUDE CODE**
 
 ### **Built for Claude Code, Works Everywhere**
 
-**v4.6.4** is optimized and extensively tested with Claude Code for the best development experience, while maintaining full compatibility with OpenAI, Gemini, and local models.
+**v4.6.5** is optimized and extensively tested with Claude Code for the best development experience, while maintaining full compatibility with OpenAI, Gemini, and local models.
 
 **Cost-Saving Features:**
 
