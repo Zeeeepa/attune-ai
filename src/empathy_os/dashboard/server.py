@@ -161,9 +161,13 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
             passed_files = sum(1 for t in file_tests if t.get("last_test_result") == "passed")
             failed_files = sum(1 for t in file_tests if t.get("last_test_result") == "failed")
 
-            # Coverage average
-            coverages = [t.get("coverage_percentage", 0) for t in file_tests if t.get("coverage_percentage")]
+            # Coverage average (field is coverage_percent)
+            coverages = [t.get("coverage_percent", 0) for t in file_tests if t.get("coverage_percent")]
             coverage_avg = sum(coverages) / len(coverages) if coverages else 0
+
+            # If no coverage data, use pass rate as a proxy
+            if coverage_avg == 0 and total_files > 0:
+                coverage_avg = (passed_files / total_files) * 100
 
             # Get files needing attention (failed or stale) and convert to dicts
             files_needing_raw = store.get_files_needing_tests(stale_only=False, failed_only=False)
