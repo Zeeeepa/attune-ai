@@ -42,6 +42,14 @@ except ImportError:
     list_workflows = None  # type: ignore[assignment]
     HAS_WORKFLOWS = False
 
+try:
+    from empathy_os.models.telemetry import TelemetryStore
+
+    HAS_TELEMETRY = True
+except ImportError:
+    TelemetryStore = None  # type: ignore[misc, assignment]
+    HAS_TELEMETRY = False
+
 
 class DashboardHandler(http.server.BaseHTTPRequestHandler):
     """HTTP request handler for the dashboard."""
@@ -69,6 +77,8 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
             self._serve_health()
         elif path == "/api/workflows":
             self._serve_workflows()
+        elif path == "/api/tests":
+            self._serve_tests()
         else:
             self.send_error(404, "Not Found")
 
@@ -118,6 +128,62 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
         else:
             data = {"error": "Workflows not available"}
         self._send_json(data)
+
+    def _serve_tests(self):
+        """Serve test tracking data as JSON."""
+        data = self._get_test_stats()
+        self._send_json(data)
+
+    def _get_test_stats(self) -> dict:
+        """Get test tracking statistics.
+
+        Returns:
+            Dictionary with test tracking data including:
+            - total_files: Total files with test records
+            - passed_files: Files with passing tests
+            - failed_files: Files with failing tests
+            - coverage_avg: Average coverage percentage
+            - recent_tests: Recent test executions
+            - files_needing_tests: Files that need attention
+        """
+        if not HAS_TELEMETRY or TelemetryStore is None:
+            return {"error": "Telemetry not available"}
+
+        try:
+            store = TelemetryStore(Path(self.empathy_dir))
+
+            # Get file test records and convert to dicts
+            file_tests_raw = store.get_file_tests(limit=100)
+            file_tests = [t.to_dict() if hasattr(t, 'to_dict') else t for t in file_tests_raw]
+
+            # Calculate stats
+            total_files = len(file_tests)
+            passed_files = sum(1 for t in file_tests if t.get("last_test_result") == "passed")
+            failed_files = sum(1 for t in file_tests if t.get("last_test_result") == "failed")
+
+            # Coverage average
+            coverages = [t.get("coverage_percentage", 0) for t in file_tests if t.get("coverage_percentage")]
+            coverage_avg = sum(coverages) / len(coverages) if coverages else 0
+
+            # Get files needing attention (failed or stale) and convert to dicts
+            files_needing_raw = store.get_files_needing_tests(stale_only=False, failed_only=False)
+            files_needing_tests = [t.to_dict() if hasattr(t, 'to_dict') else t for t in files_needing_raw[:10]]
+
+            # Get recent test executions and convert to dicts
+            recent_raw = store.get_test_executions(limit=10)
+            recent_executions = [t.to_dict() if hasattr(t, 'to_dict') else t for t in recent_raw]
+
+            return {
+                "total_files": total_files,
+                "passed_files": passed_files,
+                "failed_files": failed_files,
+                "coverage_avg": round(coverage_avg, 1),
+                "files_needing_tests": files_needing_tests,
+                "recent_executions": recent_executions,
+                "file_tests": file_tests[:20],  # Most recent 20
+            }
+        except Exception as e:
+            return {"error": str(e)}
 
     def _send_json(self, data):
         """Send JSON response."""
@@ -200,6 +266,9 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
                 workflow_stats = get_workflow_stats()
             except Exception:
                 pass
+
+        # Get test stats
+        test_stats = self._get_test_stats()
 
         return f"""<!DOCTYPE html>
 <html lang="en">
@@ -507,6 +576,12 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
                 <div class="value">${workflow_stats.get("total_savings", 0):.2f}</div>
                 <div class="label">workflows + API</div>
             </div>
+
+            <div class="card {'success' if test_stats.get('failed_files', 0) == 0 else 'warning'}">
+                <h2>Test Coverage</h2>
+                <div class="value">{test_stats.get('coverage_avg', 0):.0f}%</div>
+                <div class="label">{test_stats.get('total_files', 0)} files tracked</div>
+            </div>
         </div>
 
         <div class="section">
@@ -537,6 +612,11 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
 
             <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1rem;">Recent Runs</h3>
             {self._render_recent_runs(workflow_stats)}
+        </div>
+
+        <div class="section">
+            <h2>Test Tracking</h2>
+            {self._render_test_tracking(test_stats)}
         </div>
 
         <div class="section">
@@ -683,6 +763,108 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
             )
 
         return "".join(runs_html)
+
+    def _render_test_tracking(self, test_stats: dict) -> str:
+        """Render test tracking section."""
+        if "error" in test_stats:
+            return f'<p style="color: var(--text-muted);">{test_stats["error"]}</p>'
+
+        total = test_stats.get("total_files", 0)
+        passed = test_stats.get("passed_files", 0)
+        failed = test_stats.get("failed_files", 0)
+        coverage = test_stats.get("coverage_avg", 0)
+
+        if total == 0:
+            return '<p style="color: var(--text-muted);">No test tracking data yet. Run tests with empathy to start tracking.</p>'
+
+        # Calculate pass rate
+        pass_rate = (passed / total * 100) if total > 0 else 0
+
+        # Stats grid
+        html = f"""
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="text-align: center; padding: 1rem; background: var(--bg); border-radius: 8px;">
+                <div style="font-size: 1.5rem; font-weight: 600; color: var(--success);">{passed}</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Passing</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: var(--bg); border-radius: 8px;">
+                <div style="font-size: 1.5rem; font-weight: 600; color: var(--danger);">{failed}</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Failing</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: var(--bg); border-radius: 8px;">
+                <div style="font-size: 1.5rem; font-weight: 600; color: var(--primary);">{pass_rate:.0f}%</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Pass Rate</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: var(--bg); border-radius: 8px;">
+                <div style="font-size: 1.5rem; font-weight: 600; color: var(--warning);">{coverage:.0f}%</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Coverage</div>
+            </div>
+        </div>
+        """
+
+        # Files needing attention
+        files_needing = test_stats.get("files_needing_tests", [])
+        if files_needing:
+            html += """
+            <h3 style="margin-bottom: 0.5rem; font-size: 1rem;">Files Needing Attention</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Status</th>
+                        <th>Last Run</th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for file_record in files_needing[:5]:
+                file_path = file_record.get("file_path", "unknown")
+                # Truncate long paths
+                display_path = ("..." + file_path[-40:]) if len(file_path) > 40 else file_path
+                result = file_record.get("last_test_result", "unknown")
+                timestamp = file_record.get("timestamp", "")[:10] if file_record.get("timestamp") else "-"
+                status_class = "resolved" if result == "passed" else "investigating"
+                html += f"""
+                    <tr>
+                        <td title="{file_path}">{display_path}</td>
+                        <td><span class="status {status_class}">{result}</span></td>
+                        <td>{timestamp}</td>
+                    </tr>
+                """
+            html += "</tbody></table>"
+
+        # Recent test executions
+        recent = test_stats.get("recent_executions", [])
+        if recent:
+            html += """
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1rem;">Recent Test Runs</h3>
+            """
+            for execution in recent[:5]:
+                suite = execution.get("test_suite", "unknown")
+                total_tests = execution.get("total_tests", 0)
+                exec_passed = execution.get("passed", 0)
+                exec_failed = execution.get("failed", 0)
+                duration = execution.get("duration_seconds", 0)
+                timestamp = execution.get("timestamp", "")[:16].replace("T", " ") if execution.get("timestamp") else "-"
+                success = execution.get("success", False)
+
+                status_icon = "&#10003;" if success else "&#10007;"
+                status_color = "var(--success)" if success else "var(--danger)"
+
+                html += f"""
+                <div class="recent-run">
+                    <span style="color: {status_color};">{status_icon}</span>
+                    <span class="name">{suite}</span>
+                    <span class="provider">{total_tests} tests</span>
+                    <span class="result">
+                        <span style="color: var(--success);">{exec_passed} passed</span>
+                        {f'<span style="color: var(--danger);">{exec_failed} failed</span>' if exec_failed > 0 else ''}
+                        <span class="time">{duration:.1f}s | {timestamp}</span>
+                    </span>
+                </div>
+                """
+
+        return html
 
 
 class ThreadedHTTPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
