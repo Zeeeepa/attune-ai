@@ -5,7 +5,7 @@
 🚀 **v4.6.6: Performance Optimized** - 36% faster scanning, 39% faster init, 11,000+ tests passing. Built and tested extensively with Claude Code. **Full multi-LLM support** - works seamlessly with OpenAI, Gemini, and local models.
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-4%2C000%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
+[![Tests](https://img.shields.io/badge/tests-11%2C000%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
 [![Coverage](https://img.shields.io/badge/coverage-68%25-yellow)](https://github.com/Smart-AI-Memory/empathy-framework)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)

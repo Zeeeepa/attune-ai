@@ -64,7 +64,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'How is the framework tested?',
-        answer: 'Empathy has 4,000+ comprehensive tests covering unit tests, integration tests, and cross-platform compatibility. Core modules are rigorously tested for security, memory systems, orchestration patterns, and meta-workflow functionality.',
+        answer: 'Empathy has 11,000+ comprehensive tests covering unit tests, integration tests, and cross-platform compatibility. Core modules are rigorously tested for security, memory systems, orchestration patterns, and meta-workflow functionality.',
       },
       {
         question: 'What platforms are supported?',
@@ -85,7 +85,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'Is the framework production-ready?',
-        answer: 'Yes! The framework is v4.6.5 Production/Stable with 4,000+ comprehensive tests, extensive documentation, and is being used in production software development tools and AI workflows.',
+        answer: 'Yes! The framework is v4.6.6 Production/Stable with 11,000+ comprehensive tests, extensive documentation, and is being used in production software development tools and AI workflows.',
       },
     ],
   },
