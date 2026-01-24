@@ -40,6 +40,55 @@ import { TestTrackingPanel } from './panels/TestTrackingPanel';
 import { initializeProject, showWelcomeIfNeeded as showInitializeWelcome } from './commands/initializeProject';
 import { registerMetaWorkflowCommands } from './commands/metaWorkflowCommands';
 
+// =============================================================================
+// HUB SLASH COMMANDS - Opens Claude Code with Socratic discovery flow
+// =============================================================================
+
+const HUB_SLASH_COMMANDS: Record<string, string> = {
+    agent: '/agent',
+    context: '/context',
+    dev: '/dev',
+    docs: '/docs',
+    learning: '/learning',
+    release: '/release',
+    testing: '/testing',
+    utilities: '/utilities',
+    workflow: '/workflow',
+};
+
+/**
+ * Open Claude Code sidebar and send a slash command for Socratic discovery.
+ * Uses the existing conversation instead of opening a new editor tab.
+ */
+async function openHubInClaudeCode(hubId: string): Promise<void> {
+    const slashCommand = HUB_SLASH_COMMANDS[hubId];
+    if (!slashCommand) {
+        vscode.window.showErrorMessage(`Unknown hub: ${hubId}`);
+        return;
+    }
+
+    // Copy command to clipboard
+    await vscode.env.clipboard.writeText(slashCommand);
+
+    // Open Claude Code sidebar
+    await vscode.commands.executeCommand('claude-vscode.sidebar.open');
+
+    // Wait for panel to be ready
+    await new Promise(resolve => setTimeout(resolve, 400));
+
+    // Focus the Claude Code input
+    await vscode.commands.executeCommand('claude-vscode.focus');
+
+    // Wait for focus
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // Paste from clipboard
+    await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+
+    // Show notification
+    vscode.window.showInformationMessage(`"${slashCommand}" ready - press Enter to run`);
+}
+
 // Status bar item
 let statusBarItem: vscode.StatusBarItem;
 
@@ -187,35 +236,35 @@ export function activate(context: vscode.ExtensionContext) {
     // Register commands - organized by 9 HUB structure (matches CLI and slash commands)
     const commands = [
         // =====================================================================
-        // HUB COMMANDS (9 hubs - each runs primary action directly)
+        // HUB COMMANDS (9 hubs - each opens Claude Code with Socratic discovery)
         // =====================================================================
 
-        // /agent - Shows cheatsheet with available commands
-        { name: 'empathy.hub.agent', handler: () => runUnifiedCommand('utility cheatsheet', 'Agent') },
+        // /agent - Agent management
+        { name: 'empathy.hub.agent', handler: () => openHubInClaudeCode('agent') },
 
-        // /context - Memory status
-        { name: 'empathy.hub.context', handler: () => runUnifiedCommand('memory status', 'Context') },
+        // /context - Context/memory management
+        { name: 'empathy.hub.context', handler: () => openHubInClaudeCode('context') },
 
-        // /dev - Code review
-        { name: 'empathy.hub.dev', handler: () => runUnifiedCommand('code-review .', 'Dev') },
+        // /dev - Developer tools
+        { name: 'empathy.hub.dev', handler: () => openHubInClaudeCode('dev') },
 
-        // /docs - Generate documentation
-        { name: 'empathy.hub.docs', handler: () => runUnifiedCommand('doc-gen .', 'Docs') },
+        // /docs - Documentation
+        { name: 'empathy.hub.docs', handler: () => openHubInClaudeCode('docs') },
 
-        // /learning - Learn from git history
-        { name: 'empathy.hub.learning', handler: () => runUnifiedCommand('utility learn', 'Learning') },
+        // /learning - Learning and patterns
+        { name: 'empathy.hub.learning', handler: () => openHubInClaudeCode('learning') },
 
-        // /release - Release prep
-        { name: 'empathy.hub.release', handler: () => runUnifiedCommand('release-prep .', 'Release') },
+        // /release - Release management
+        { name: 'empathy.hub.release', handler: () => openHubInClaudeCode('release') },
 
-        // /testing - Generate tests
-        { name: 'empathy.hub.testing', handler: () => runUnifiedCommand('test-gen .', 'Testing') },
+        // /testing - Testing tools
+        { name: 'empathy.hub.testing', handler: () => openHubInClaudeCode('testing') },
 
-        // /utilities - Quick scan
-        { name: 'empathy.hub.utilities', handler: () => runUnifiedCommand('utility scan .', 'Utilities') },
+        // /utilities - Utility tools
+        { name: 'empathy.hub.utilities', handler: () => openHubInClaudeCode('utilities') },
 
-        // /workflow - Health check
-        { name: 'empathy.hub.workflow', handler: () => runUnifiedCommand('health-check .', 'Workflow') },
+        // /workflow - Development workflows
+        { name: 'empathy.hub.workflow', handler: () => openHubInClaudeCode('workflow') },
 
         // =====================================================================
         // INTERNAL/LEGACY COMMANDS (kept for compatibility)

@@ -838,39 +838,26 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     }
 
     private async _openClaudeCodeWithCommand(command: string) {
-        // v4.6.7: Open Claude Code with command prefilled - user presses Enter to execute
-        // This approach works for ALL skills including interactive ones that use AskUserQuestion
-        try {
-            // Open Claude Code sidebar
-            await vscode.commands.executeCommand('claude-vscode.sidebar.open');
+        // Copy command to clipboard
+        await vscode.env.clipboard.writeText(command);
 
-            // Small delay to ensure the panel is ready
-            await new Promise(resolve => setTimeout(resolve, 200));
+        // Open Claude Code sidebar
+        await vscode.commands.executeCommand('claude-vscode.sidebar.open');
 
-            // Focus the input
-            await vscode.commands.executeCommand('claude-vscode.focus');
+        // Wait for panel to be ready
+        await new Promise(resolve => setTimeout(resolve, 400));
 
-            // Small delay to ensure focus is set
-            await new Promise(resolve => setTimeout(resolve, 100));
+        // Focus the Claude Code input
+        await vscode.commands.executeCommand('claude-vscode.focus');
 
-            // Try to type the command using VS Code's type command
-            // This inserts text at the current cursor position
-            await vscode.commands.executeCommand('type', { text: command });
+        // Wait for focus
+        await new Promise(resolve => setTimeout(resolve, 200));
 
-            // Show helpful notification
-            vscode.window.showInformationMessage(`Command "${command}" ready - press Enter to execute`);
-        } catch (error) {
-            // Fallback: copy to clipboard if typing doesn't work
-            await vscode.env.clipboard.writeText(command);
-            vscode.window.showInformationMessage(
-                `Command copied to clipboard. Paste in Claude Code chat and press Enter.`,
-                'Open Claude Code'
-            ).then(selection => {
-                if (selection === 'Open Claude Code') {
-                    vscode.commands.executeCommand('claude-vscode.sidebar.open');
-                }
-            });
-        }
+        // Paste from clipboard
+        await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+
+        // Show notification
+        vscode.window.showInformationMessage(`"${command}" ready - press Enter to run`);
     }
 
     private async _runAgentTeam(skill: string, _template: string, _label: string) {
@@ -2130,7 +2117,7 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
 
         <div class="card" style="margin-top: 12px">
             <div class="card-title">Command Hubs</div>
-            <div class="actions-grid hub-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px;">
+            <div class="actions-grid hub-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px;">
                 <button class="action-btn hub-btn" data-hub="agent" title="Agent management - create agents and teams">
                     <span class="action-icon">&#x1F916;</span>
                     <span>Agent</span>
@@ -2151,11 +2138,10 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span>Docs</span>
                     <span class="slash-cmd">/docs</span>
                 </button>
-                <button class="action-btn hub-btn" data-hub="learning" title="Learning - patterns, metrics, history">
-                    <span class="action-icon">&#x1F393;</span>
-                    <span>Learning</span>
-                    <span class="slash-cmd">/learning</span>
-                </button>
+                <!-- Learning button removed: /learning requires current conversation context
+                     which cannot be preserved when opening from dashboard.
+                     Users should type /learning directly in their Claude Code chat.
+                     See: .claude/rules/empathy/vscode-extension-limitations.md -->
                 <button class="action-btn hub-btn" data-hub="release" title="Release management - prep, security, publish">
                     <span class="action-icon">&#x1F680;</span>
                     <span>Release</span>
@@ -2176,6 +2162,9 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                     <span>Workflow</span>
                     <span class="slash-cmd">/workflow</span>
                 </button>
+            </div>
+            <div style="margin-top: 8px; padding: 8px; background: var(--vscode-textBlockQuote-background); border-left: 3px solid var(--vscode-textLink-foreground); border-radius: 3px; font-size: 11px; opacity: 0.9;">
+                <strong>Tip:</strong> Context-dependent commands like <code>/learning</code> should be typed directly in your Claude Code chat to preserve conversation history.
             </div>
         </div>
 
