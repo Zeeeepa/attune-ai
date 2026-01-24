@@ -168,6 +168,12 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
                 case 'createDynamic':
                     await this._createDynamic(message.createType);
                     break;
+                case 'executeHubCommand':
+                    // Execute the hub command (empathy.hub.agent, empathy.hub.dev, etc.)
+                    const hubCommand = `empathy.hub.${message.hub}`;
+                    console.log('[EmpathyDashboard] Executing hub command:', hubCommand);
+                    await vscode.commands.executeCommand(hubCommand);
+                    break;
             }
         });
 
@@ -2123,136 +2129,54 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
     </div>
 
         <div class="card" style="margin-top: 12px">
-            <div class="card-title">Workflows</div>
-
-            <!-- Code Review -->
-            <div style="margin-top: 8px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">📝 CODE REVIEW</div>
-            <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-workflow="code-review" title="Review any code via /review skill - enforces coding standards and best practices">
-                    <span class="action-icon">&#x1F50D;</span>
-                    <span>Review Code</span>
-                    <span class="slash-cmd">/review</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="pr-review" title="Review pull requests via /review-pr skill - code quality + security with verdict">
-                    <span class="action-icon">&#x1F4C4;</span>
-                    <span>Review PR</span>
-                    <span class="slash-cmd">/review-pr</span>
-                </button>
-            </div>
-
-            <!-- Development -->
-            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">🛠️ DEVELOPMENT</div>
-            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <button class="action-btn workflow-btn" data-workflow="bug-predict" title="Debug issues via /debug skill - analyze errors and find root causes">
-                    <span class="action-icon">&#x1F41B;</span>
-                    <span>Debug</span>
-                    <span class="slash-cmd">/debug</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="refactor-plan" title="Refactoring assistant via /refactor skill - safe code improvements">
-                    <span class="action-icon">&#x1F3D7;</span>
-                    <span>Refactor</span>
-                    <span class="slash-cmd">/refactor</span>
-                </button>
-                <button class="action-btn skill-btn" data-skill="/explain" title="Explain code via /explain skill - understand architecture and patterns">
-                    <span class="action-icon">&#x1F4A1;</span>
-                    <span>Explain</span>
-                    <span class="slash-cmd">/explain</span>
-                </button>
-            </div>
-            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 6px;">
-                <button class="action-btn workflow-btn dynamic-create-btn" data-create-type="agent" title="Create a custom AI agent with Socratic-guided questions">
+            <div class="card-title">Command Hubs</div>
+            <div class="actions-grid hub-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px;">
+                <button class="action-btn hub-btn" data-hub="agent" title="Agent management - create agents and teams">
                     <span class="action-icon">&#x1F916;</span>
-                    <span>New Agent</span>
-                    <span class="slash-cmd">/create-agent</span>
+                    <span>Agent</span>
+                    <span class="slash-cmd">/agent</span>
                 </button>
-                <button class="action-btn workflow-btn dynamic-create-btn" data-create-type="team" title="Create a custom AI agent team with Socratic-guided workflow">
-                    <span class="action-icon">&#x1F465;</span>
-                    <span>New Agent Team</span>
-                    <span class="slash-cmd">/create-team</span>
-                </button>
-            </div>
-
-            <!-- Security & Performance -->
-            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">🔒 SECURITY & PERFORMANCE</div>
-            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <button class="action-btn workflow-btn" data-workflow="security-audit" title="Security scan via /security-scan skill - OWASP checks and vulnerability detection">
-                    <span class="action-icon">&#x1F512;</span>
-                    <span>Security</span>
-                    <span class="slash-cmd">/security-scan</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="perf-audit" title="Performance profiling via /profile skill - identify bottlenecks and hot paths">
-                    <span class="action-icon">&#x26A1;</span>
-                    <span>Profile</span>
-                    <span class="slash-cmd">/profile</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="dependency-check" title="Dependency audit via /deps skill - CVE scanning, outdated packages, license compliance">
-                    <span class="action-icon">&#x1F4E6;</span>
-                    <span>Deps</span>
-                    <span class="slash-cmd">/deps</span>
-                </button>
-            </div>
-
-            <!-- Testing -->
-            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">🧪 TESTING</div>
-            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <button class="action-btn workflow-btn" id="btn-test-gen-direct" data-workflow="test-gen" title="Generate comprehensive test suites with smart coverage analysis">
-                    <span class="action-icon">&#x1F9EA;</span>
-                    <span>Gen Tests</span>
-                    <span class="slash-cmd">/test</span>
-                </button>
-                <button class="action-btn workflow-btn agent-team-btn" data-skill="/test-coverage" data-template="test-coverage-boost" title="Boost test coverage via /test-coverage skill">
-                    <span class="action-icon">&#x1F3AF;</span>
-                    <span>Coverage</span>
-                    <span class="slash-cmd">/test-coverage</span>
-                </button>
-                <button class="action-btn workflow-btn agent-team-btn" data-skill="/test-maintenance" data-template="test-maintenance" title="Maintain test health - analyze, fix, and validate tests">
-                    <span class="action-icon">&#x1F527;</span>
-                    <span>Maintenance</span>
-                    <span class="slash-cmd">/test-maintenance</span>
-                </button>
-                <button class="action-btn skill-btn" data-skill="/benchmark" title="Performance benchmarking via /benchmark skill - track regressions over time">
-                    <span class="action-icon">&#x1F4CA;</span>
-                    <span>Benchmark</span>
-                    <span class="slash-cmd">/benchmark</span>
-                </button>
-            </div>
-
-            <!-- Documentation -->
-            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">📚 DOCUMENTATION</div>
-            <div class="actions-grid workflow-grid">
-                <button class="action-btn workflow-btn" data-workflow="doc-orchestrator" title="End-to-end documentation management: scout gaps, prioritize, and generate">
-                    <span class="action-icon">&#x1F4DA;</span>
-                    <span>Manage Docs</span>
-                    <span class="slash-cmd">/manage-docs</span>
-                </button>
-                <button class="action-btn workflow-btn" data-workflow="doc-gen" title="Cost-optimized documentation generation: outline → write → polish">
-                    <span class="action-icon">&#x1F4DD;</span>
-                    <span>Generate Docs</span>
-                    <span class="slash-cmd">/feature-overview</span>
-                </button>
-            </div>
-
-            <!-- Git & Release -->
-            <div style="margin-top: 12px; margin-bottom: 4px; font-size: 10px; opacity: 0.6; font-weight: 600;">🚀 GIT & RELEASE</div>
-            <div class="actions-grid workflow-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <button class="action-btn workflow-btn skill-btn" data-skill="/commit" title="Create well-formatted commits via /commit skill">
+                <button class="action-btn hub-btn" data-hub="context" title="Context management - memory, status, patterns">
                     <span class="action-icon">&#x1F4BE;</span>
-                    <span>Commit</span>
-                    <span class="slash-cmd">/commit</span>
+                    <span>Context</span>
+                    <span class="slash-cmd">/context</span>
                 </button>
-                <button class="action-btn workflow-btn skill-btn" data-skill="/pr" title="Create pull requests via /pr skill - structured descriptions">
-                    <span class="action-icon">&#x1F500;</span>
-                    <span>Create PR</span>
-                    <span class="slash-cmd">/pr</span>
+                <button class="action-btn hub-btn" data-hub="dev" title="Developer tools - debug, commit, PR, review">
+                    <span class="action-icon">&#x1F4BB;</span>
+                    <span>Dev</span>
+                    <span class="slash-cmd">/dev</span>
                 </button>
-                <button class="action-btn workflow-btn agent-team-btn" data-skill="/release-prep" data-template="release-prep" title="Full release preparation via /release-prep skill">
+                <button class="action-btn hub-btn" data-hub="docs" title="Documentation - explain, generate, manage">
+                    <span class="action-icon">&#x1F4DA;</span>
+                    <span>Docs</span>
+                    <span class="slash-cmd">/docs</span>
+                </button>
+                <button class="action-btn hub-btn" data-hub="learning" title="Learning - patterns, metrics, history">
+                    <span class="action-icon">&#x1F393;</span>
+                    <span>Learning</span>
+                    <span class="slash-cmd">/learning</span>
+                </button>
+                <button class="action-btn hub-btn" data-hub="release" title="Release management - prep, security, publish">
                     <span class="action-icon">&#x1F680;</span>
                     <span>Release</span>
-                    <span class="slash-cmd">/release-prep</span>
+                    <span class="slash-cmd">/release</span>
+                </button>
+                <button class="action-btn hub-btn" data-hub="testing" title="Testing - generate, coverage, benchmarks">
+                    <span class="action-icon">&#x1F9EA;</span>
+                    <span>Testing</span>
+                    <span class="slash-cmd">/testing</span>
+                </button>
+                <button class="action-btn hub-btn" data-hub="utilities" title="Utilities - init, deps, profile, scan">
+                    <span class="action-icon">&#x1F527;</span>
+                    <span>Utilities</span>
+                    <span class="slash-cmd">/utilities</span>
+                </button>
+                <button class="action-btn hub-btn" data-hub="workflow" title="Workflows - code review, refactor, health">
+                    <span class="action-icon">&#x1F504;</span>
+                    <span>Workflow</span>
+                    <span class="slash-cmd">/workflow</span>
                 </button>
             </div>
-
-
         </div>
 
         <!-- Workflow Results Panel (hidden by default) -->
@@ -2648,6 +2572,17 @@ export class EmpathyDashboardProvider implements vscode.WebviewViewProvider {
 
                 // Show correct input type
                 showInputType(config.type, config);
+            });
+        });
+
+        // Hub button click handlers - trigger VS Code hub commands
+        const hubBtns = document.querySelectorAll('.action-btn[data-hub]');
+        console.log('[EmpathyDashboard] Found hub buttons:', hubBtns.length);
+        hubBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const hub = this.dataset.hub;
+                console.log('[EmpathyDashboard] Hub button clicked:', hub);
+                vscode.postMessage({ type: 'executeHubCommand', hub: hub });
             });
         });
 

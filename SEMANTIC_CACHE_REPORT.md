@@ -1,6 +1,6 @@
 # Semantic Cache Benchmark Report
 
-**Generated:** 2026-01-07 00:04:12
+**Generated:** 2026-01-23 21:32:00
 **Purpose:** Test hybrid cache semantic matching vs hash-only cache
 **Test Method:** Run workflows with identical, similar, and very similar prompts
 
@@ -40,14 +40,14 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
 
 | Run | Prompt Variant | Cost | Time | Hits | Misses | Hit Rate |
 |-----|----------------|------|------|------|--------|----------|
-| 1 | original | $0.004766 | 18.81s | 0 | 2 | 0.0% |
-| 2 | semantically_similar | $0.007591 | 14.08s | 0 | 4 | 0.0% |
-| 3 | very_similar | $0.081419 | 32.89s | 0 | 6 | 0.0% |
+| 1 | original | $0.000000 | 0.03s | 0 | 2 | 0.0% |
+| 2 | semantically_similar | $0.000000 | 0.01s | 0 | 4 | 0.0% |
+| 3 | very_similar | $0.000000 | 0.02s | 0 | 6 | 0.0% |
 
 ### Summary
 
-- **Average Cost:** $0.031259
-- **Average Time:** 21.93s
+- **Average Cost:** $0.000000
+- **Average Time:** 0.02s
 - **Average Hit Rate:** 0.0%
 - **Total Hits:** 0
 - **Total Misses:** 12
@@ -59,17 +59,17 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
 
 | Run | Prompt Variant | Cost | Time | Hits | Misses | Hit Rate |
 |-----|----------------|------|------|------|--------|----------|
-| 1 | original | $0.127637 | 35.32s | 0 | 7 | 0.0% |
-| 2 | semantically_similar | $0.161927 | 61.41s | 0 | 7 | 0.0% |
-| 3 | very_similar | $0.196262 | 59.41s | 0 | 7 | 0.0% |
+| 1 | original | $0.139566 | 5.96s | 0 | 7 | 0.0% |
+| 2 | semantically_similar | $0.139566 | 3.93s | 0 | 8 | 0.0% |
+| 3 | very_similar | $0.139566 | 3.86s | 0 | 9 | 0.0% |
 
 ### Summary
 
-- **Average Cost:** $0.161942
-- **Average Time:** 52.05s
+- **Average Cost:** $0.139566
+- **Average Time:** 4.58s
 - **Average Hit Rate:** 0.0%
 - **Total Hits:** 0
-- **Total Misses:** 21
+- **Total Misses:** 24
 
 
 ## Code-Review - HYBRID Cache
@@ -78,17 +78,17 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
 
 | Run | Prompt Variant | Cost | Time | Hits | Misses | Hit Rate |
 |-----|----------------|------|------|------|--------|----------|
-| 1 | original | $0.004987 | 15.50s | 0 | 2 | 0.0% |
-| 2 | semantically_similar | $0.004987 | 0.06s | 2 | 2 | 50.0% |
-| 3 | very_similar | $0.004987 | 0.05s | 4 | 2 | 66.7% |
+| 1 | original | $0.000000 | 0.02s | 0 | 2 | 0.0% |
+| 2 | semantically_similar | $0.000000 | 0.02s | 0 | 4 | 0.0% |
+| 3 | very_similar | $0.000000 | 0.01s | 0 | 6 | 0.0% |
 
 ### Summary
 
-- **Average Cost:** $0.004987
-- **Average Time:** 5.20s
-- **Average Hit Rate:** 38.9%
-- **Total Hits:** 6
-- **Total Misses:** 6
+- **Average Cost:** $0.000000
+- **Average Time:** 0.02s
+- **Average Hit Rate:** 0.0%
+- **Total Hits:** 0
+- **Total Misses:** 12
 
 
 ## Security-Audit - HYBRID Cache
@@ -97,37 +97,37 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
 
 | Run | Prompt Variant | Cost | Time | Hits | Misses | Hit Rate |
 |-----|----------------|------|------|------|--------|----------|
-| 1 | original | $0.148427 | 51.10s | 4 | 3 | 57.1% |
-| 2 | semantically_similar | $0.182762 | 44.00s | 4 | 3 | 57.1% |
-| 3 | very_similar | $0.217097 | 52.13s | 4 | 3 | 57.1% |
+| 1 | original | $0.139566 | 3.81s | 0 | 7 | 0.0% |
+| 2 | semantically_similar | $0.139566 | 4.00s | 0 | 8 | 0.0% |
+| 3 | very_similar | $0.139566 | 3.86s | 0 | 9 | 0.0% |
 
 ### Summary
 
-- **Average Cost:** $0.182762
-- **Average Time:** 49.07s
-- **Average Hit Rate:** 57.1%
-- **Total Hits:** 12
-- **Total Misses:** 9
+- **Average Cost:** $0.139566
+- **Average Time:** 3.89s
+- **Average Hit Rate:** 0.0%
+- **Total Hits:** 0
+- **Total Misses:** 24
 
 ---
 
 ## Comparison: Hash vs Hybrid Cache
 
-### Code-Review
-
-| Metric | Hash-Only | Hybrid | Improvement |
-|--------|-----------|--------|-------------|
-| Avg Hit Rate | 0.0% | 38.9% | +38.9% |
-| Avg Cost | $0.031259 | $0.004987 | $0.026272 |
-| Avg Time | 21.93s | 5.20s | 16.73s |
-
 ### Security-Audit
 
 | Metric | Hash-Only | Hybrid | Improvement |
 |--------|-----------|--------|-------------|
-| Avg Hit Rate | 0.0% | 57.1% | +57.1% |
-| Avg Cost | $0.161942 | $0.182762 | $-0.020820 |
-| Avg Time | 52.05s | 49.07s | 2.97s |
+| Avg Hit Rate | 0.0% | 0.0% | +0.0% |
+| Avg Cost | $0.139566 | $0.139566 | $0.000000 |
+| Avg Time | 4.58s | 3.89s | 0.69s |
+
+### Code-Review
+
+| Metric | Hash-Only | Hybrid | Improvement |
+|--------|-----------|--------|-------------|
+| Avg Hit Rate | 0.0% | 0.0% | +0.0% |
+| Avg Cost | $0.000000 | $0.000000 | $0.000000 |
+| Avg Time | 0.02s | 0.02s | 0.00s |
 
 ---
 
@@ -136,25 +136,17 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
 
 ### Semantic Matching Performance
 
-**Average hit rate with hybrid cache:** 48.0%
+**Average hit rate with hybrid cache:** 0.0%
 
-⚠️ **PARTIAL:** Hybrid cache achieves 48.0% hit rate (moderate improvement)
+❌ **UNDERWHELMING:** Hybrid cache only achieves 0.0% hit rate
 
-**Marketing claim:** "~48% cache hit rate with semantic matching (varies by similarity)"
+**Recommendation:** Do NOT claim "70% hit rate" - use actual measured value
 
 ---
 
 ## Honest Marketing Claims (Based on This Data)
 
 ### What We CAN Say
-
-✅ "39% cache hit rate on code-review with semantic matching"
-- Source: This benchmark, code-review hybrid cache results
-- Evidence: 6 hits, 6 misses across 3 runs
-
-✅ "57% cache hit rate on security-audit with semantic matching"
-- Source: This benchmark, security-audit hybrid cache results
-- Evidence: 12 hits, 9 misses across 3 runs
 
 
 ### What We Should NOT Say (Unless Verified)

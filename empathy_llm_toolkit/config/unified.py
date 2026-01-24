@@ -14,7 +14,7 @@ Licensed under Fair Source License 0.9
 from enum import Enum
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class ModelTier(str, Enum):
@@ -178,10 +178,7 @@ class UnifiedAgentConfig(BaseModel):
             redis_config=RedisConfig(),
         )
 
-    class Config:
-        """Pydantic configuration."""
-
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class MemDocsConfig(BaseModel):
@@ -291,5 +288,4 @@ class WorkflowConfig(BaseModel):
     # Framework options
     framework_options: dict[str, Any] = Field(default_factory=dict)
 
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)

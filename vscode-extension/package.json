@@ -2,7 +2,7 @@
   "name": "empathy-framework",
   "displayName": "Empathy Framework",
   "description": "AI-powered code health, pattern learning, and cost optimization for VS Code. Learn bug patterns from git history, track API costs, sync to Claude Code.",
-  "version": "1.3.3",
+  "version": "1.4.1",
   "publisher": "smart-ai-memory",
   "license": "SEE LICENSE IN LICENSE",
   "icon": "images/icon.png",
@@ -40,235 +40,68 @@
   "contributes": {
     "commands": [
       {
-        "command": "empathy.codeReview",
-        "title": "Empathy: Code Review",
-        "category": "Workflows",
-        "icon": "$(code)"
+        "command": "empathy.hub.agent",
+        "title": "Agent",
+        "category": "Empathy",
+        "icon": "$(hubot)"
       },
       {
-        "command": "empathy.securityAudit",
-        "title": "Empathy: Security Audit",
-        "category": "Workflows",
-        "icon": "$(shield)"
-      },
-      {
-        "command": "empathy.testGen",
-        "title": "Empathy: Generate Tests",
-        "category": "Workflows",
-        "icon": "$(beaker)"
-      },
-      {
-        "command": "empathy.bugPredict",
-        "title": "Empathy: Bug Predict",
-        "category": "Workflows",
-        "icon": "$(bug)"
-      },
-      {
-        "command": "empathy.docGen",
-        "title": "Empathy: Generate Docs",
-        "category": "Workflows",
-        "icon": "$(book)"
-      },
-      {
-        "command": "empathy.perfAudit",
-        "title": "Empathy: Performance Audit",
-        "category": "Workflows",
-        "icon": "$(dashboard)"
-      },
-      {
-        "command": "empathy.refactorPlan",
-        "title": "Empathy: Refactor Plan",
-        "category": "Workflows",
-        "icon": "$(edit)"
-      },
-      {
-        "command": "empathy.dependencyCheck",
-        "title": "Empathy: Dependency Check",
-        "category": "Workflows",
-        "icon": "$(package)"
-      },
-      {
-        "command": "empathy.releasePrep",
-        "title": "Empathy: Release Prep",
-        "category": "Workflows",
-        "icon": "$(rocket)"
-      },
-      {
-        "command": "empathy.healthCheck",
-        "title": "Empathy: Health Check",
-        "category": "Workflows",
-        "icon": "$(heart)"
-      },
-      {
-        "command": "empathy.testCoverageBoost",
-        "title": "Empathy: Test Coverage Boost",
-        "category": "Workflows",
-        "icon": "$(target)"
-      },
-      {
-        "command": "empathy.prReview",
-        "title": "Empathy: PR Review",
-        "category": "Workflows",
-        "icon": "$(git-pull-request)"
-      },
-      {
-        "command": "empathy.proReview",
-        "title": "Empathy: Pro Review",
-        "category": "Workflows",
-        "icon": "$(star)"
-      },
-      {
-        "command": "empathy.secureRelease",
-        "title": "Empathy: Secure Release",
-        "category": "Workflows",
-        "icon": "$(lock)"
-      },
-      {
-        "command": "empathy.report.costs",
-        "title": "Empathy: Report - Costs",
-        "category": "Reports",
-        "icon": "$(graph)"
-      },
-      {
-        "command": "empathy.report.health",
-        "title": "Empathy: Report - Health",
-        "category": "Reports",
-        "icon": "$(heart)"
-      },
-      {
-        "command": "empathy.report.coverage",
-        "title": "Empathy: Report - Coverage",
-        "category": "Reports",
-        "icon": "$(target)"
-      },
-      {
-        "command": "empathy.report.patterns",
-        "title": "Empathy: Report - Patterns",
-        "category": "Reports",
-        "icon": "$(symbol-pattern)"
-      },
-      {
-        "command": "empathy.report.metrics",
-        "title": "Empathy: Report - Metrics",
-        "category": "Reports",
-        "icon": "$(pulse)"
-      },
-      {
-        "command": "empathy.report.telemetry",
-        "title": "Empathy: Report - Telemetry",
-        "category": "Reports",
-        "icon": "$(radio-tower)"
-      },
-      {
-        "command": "empathy.report.dashboard",
-        "title": "Empathy: Report - Dashboard",
-        "category": "Reports",
-        "icon": "$(dashboard)"
-      },
-      {
-        "command": "empathy.memory.status",
-        "title": "Empathy: Memory - Status",
-        "category": "Memory",
+        "command": "empathy.hub.context",
+        "title": "Context",
+        "category": "Empathy",
         "icon": "$(database)"
       },
       {
-        "command": "empathy.memory.start",
-        "title": "Empathy: Memory - Start Redis",
-        "category": "Memory",
-        "icon": "$(play)"
+        "command": "empathy.hub.dev",
+        "title": "Dev",
+        "category": "Empathy",
+        "icon": "$(code)"
       },
       {
-        "command": "empathy.memory.stop",
-        "title": "Empathy: Memory - Stop Redis",
-        "category": "Memory",
-        "icon": "$(debug-stop)"
+        "command": "empathy.hub.docs",
+        "title": "Docs",
+        "category": "Empathy",
+        "icon": "$(book)"
       },
       {
-        "command": "empathy.memory.patterns",
-        "title": "Empathy: Memory - Patterns",
-        "category": "Memory",
-        "icon": "$(symbol-pattern)"
+        "command": "empathy.hub.learning",
+        "title": "Learning",
+        "category": "Empathy",
+        "icon": "$(mortar-board)"
       },
       {
-        "command": "empathy.tier.setup",
-        "title": "Empathy: Tier - Setup",
-        "category": "Tier",
-        "icon": "$(settings-gear)"
+        "command": "empathy.hub.release",
+        "title": "Release",
+        "category": "Empathy",
+        "icon": "$(rocket)"
       },
       {
-        "command": "empathy.tier.recommend",
-        "title": "Empathy: Tier - Recommend",
-        "category": "Tier",
-        "icon": "$(lightbulb)"
+        "command": "empathy.hub.testing",
+        "title": "Testing",
+        "category": "Empathy",
+        "icon": "$(beaker)"
       },
       {
-        "command": "empathy.utility.scan",
-        "title": "Empathy: Utility - Scan",
-        "category": "Utility",
-        "icon": "$(search)"
-      },
-      {
-        "command": "empathy.utility.inspect",
-        "title": "Empathy: Utility - Inspect",
-        "category": "Utility",
-        "icon": "$(eye)"
-      },
-      {
-        "command": "empathy.utility.fix",
-        "title": "Empathy: Utility - Fix",
-        "category": "Utility",
+        "command": "empathy.hub.utilities",
+        "title": "Utilities",
+        "category": "Empathy",
         "icon": "$(tools)"
       },
       {
-        "command": "empathy.utility.init",
-        "title": "Empathy: Utility - Init",
-        "category": "Utility",
-        "icon": "$(folder-opened)"
-      },
-      {
-        "command": "empathy.utility.new",
-        "title": "Empathy: Utility - New Project",
-        "category": "Utility",
-        "icon": "$(file-add)"
-      },
-      {
-        "command": "empathy.utility.onboard",
-        "title": "Empathy: Utility - Onboard",
-        "category": "Utility",
-        "icon": "$(mortar-board)"
-      },
-      {
-        "command": "empathy.utility.explain",
-        "title": "Empathy: Utility - Explain",
-        "category": "Utility",
-        "icon": "$(question)"
-      },
-      {
-        "command": "empathy.utility.learn",
-        "title": "Empathy: Utility - Learn",
-        "category": "Utility",
-        "icon": "$(mortar-board)"
-      },
-      {
-        "command": "empathy.utility.syncClaude",
-        "title": "Empathy: Utility - Sync Claude",
-        "category": "Utility",
-        "icon": "$(sync)"
-      },
-      {
-        "command": "empathy.utility.cheatsheet",
-        "title": "Empathy: Utility - Cheatsheet",
-        "category": "Utility",
-        "icon": "$(list-unordered)"
+        "command": "empathy.hub.workflow",
+        "title": "Workflow",
+        "category": "Empathy",
+        "icon": "$(git-merge)"
       },
       {
         "command": "empathy.focusSidebarDashboard",
-        "title": "Empathy: Focus on Dashboard View",
+        "title": "Focus on Dashboard View",
+        "category": "Empathy",
         "icon": "$(dashboard)"
       },
       {
         "command": "empathy.refreshHealth",
-        "title": "Empathy: Refresh Health",
+        "title": "Refresh Health",
         "icon": "$(refresh)"
       },
       {
@@ -287,148 +120,47 @@
         "icon": "$(eye-closed)"
       },
       {
-        "command": "empathy.openPowerPanel",
-        "title": "Empathy: Power Panel",
-        "icon": "$(zap)"
-      },
-      {
         "command": "empathy.openHealthPanel",
-        "title": "Empathy: Health Metrics",
+        "title": "Health Metrics",
         "icon": "$(heart)"
       },
       {
         "command": "empathy.openCoveragePanel",
-        "title": "Empathy: Test Coverage Boost",
+        "title": "Test Coverage Boost",
         "icon": "$(target)"
       },
       {
         "command": "empathy.openCostsPanel",
-        "title": "Empathy: Cost Metrics",
+        "title": "Cost Metrics",
         "icon": "$(graph)"
       },
       {
         "command": "empathy.openWorkflowHistory",
-        "title": "Empathy: Workflow History",
+        "title": "Workflow History",
         "icon": "$(history)"
       },
       {
-        "command": "empathy.runWorkflowQuick",
-        "title": "Empathy: Run Workflow",
-        "icon": "$(play)"
-      },
-      {
         "command": "empathy.memory.showPanel",
-        "title": "Empathy: Memory Panel (Beta)",
+        "title": "Memory Panel (Beta)",
         "icon": "$(database)"
       },
       {
         "command": "empathy.memory.refreshStatus",
-        "title": "Empathy: Refresh Memory Status (Beta)",
+        "title": "Refresh Memory Status (Beta)",
         "icon": "$(refresh)"
-      },
-      {
-        "command": "empathy.workflowWizard.show",
-        "title": "Empathy: Workflow Wizard",
-        "icon": "$(symbol-function)"
-      },
-      {
-        "command": "empathy.wizard.create",
-        "title": "Empathy: Create Wizard (12x faster)",
-        "icon": "$(wand)"
-      },
-      {
-        "command": "empathy.wizard.listPatterns",
-        "title": "Empathy: List Wizard Patterns",
-        "icon": "$(list-tree)"
-      },
-      {
-        "command": "empathy.wizard.generateTests",
-        "title": "Empathy: Generate Wizard Tests",
-        "icon": "$(beaker)"
-      },
-      {
-        "command": "empathy.wizard.analyze",
-        "title": "Empathy: Analyze Wizard Risk",
-        "icon": "$(graph-line)"
-      },
-      {
-        "command": "empathy.workflow.create",
-        "title": "Empathy: Create Workflow (12x faster)",
-        "icon": "$(output)"
-      },
-      {
-        "command": "empathy.workflow.listPatterns",
-        "title": "Empathy: List Workflow Patterns",
-        "icon": "$(list-tree)"
-      },
-      {
-        "command": "empathy.workflow.recommend",
-        "title": "Empathy: Recommend Workflow Patterns",
-        "icon": "$(lightbulb)"
-      },
-      {
-        "command": "empathy.metaWorkflow.listTemplates",
-        "title": "Empathy: List Meta-Workflow Templates",
-        "icon": "$(list-tree)"
-      },
-      {
-        "command": "empathy.metaWorkflow.inspect",
-        "title": "Empathy: Inspect Meta-Workflow Template",
-        "icon": "$(search)"
-      },
-      {
-        "command": "empathy.metaWorkflow.run",
-        "title": "Empathy: Run Meta-Workflow",
-        "icon": "$(play-circle)"
-      },
-      {
-        "command": "empathy.metaWorkflow.analytics",
-        "title": "Empathy: Meta-Workflow Analytics",
-        "icon": "$(graph)"
-      },
-      {
-        "command": "empathy.metaWorkflow.listRuns",
-        "title": "Empathy: Meta-Workflow History",
-        "icon": "$(history)"
-      },
-      {
-        "command": "empathy.metaWorkflow.sessionStats",
-        "title": "Empathy: Meta-Workflow Session Stats",
-        "icon": "$(dashboard)"
-      },
-      {
-        "command": "empathy.metaWorkflow.runWithReport",
-        "title": "Empathy: Run Meta-Workflow (Quick Mode)",
-        "icon": "$(play)"
-      },
-      {
-        "command": "empathy.metaWorkflow.showReport",
-        "title": "Empathy: Show Meta-Workflow Report",
-        "icon": "$(file-text)"
       }
     ],
     "keybindings": [
-      {"command": "empathy.openPowerPanel", "key": "ctrl+shift+e p", "mac": "cmd+shift+e p"},
-      {"command": "empathy.openHealthPanel", "key": "ctrl+shift+e 1", "mac": "cmd+shift+e 1"},
-      {"command": "empathy.openCoveragePanel", "key": "ctrl+shift+e 4", "mac": "cmd+shift+e 4"},
-      {"command": "empathy.openCostsPanel", "key": "ctrl+shift+e 2", "mac": "cmd+shift+e 2"},
-      {"command": "empathy.openWorkflowHistory", "key": "ctrl+shift+e 3", "mac": "cmd+shift+e 3"},
-      {"command": "empathy.focusSidebarDashboard", "key": "ctrl+shift+e d", "mac": "cmd+shift+e d"},
-      {"command": "empathy.codeReview", "key": "ctrl+shift+e r", "mac": "cmd+shift+e r"},
-      {"command": "empathy.securityAudit", "key": "ctrl+shift+e s", "mac": "cmd+shift+e s"},
-      {"command": "empathy.utility.fix", "key": "ctrl+shift+e f", "mac": "cmd+shift+e f"},
-      {"command": "empathy.utility.learn", "key": "ctrl+shift+e l", "mac": "cmd+shift+e l"},
-      {"command": "empathy.report.costs", "key": "ctrl+shift+e c", "mac": "cmd+shift+e c"},
-      {"command": "empathy.testGen", "key": "ctrl+shift+e t", "mac": "cmd+shift+e t"},
-      {"command": "empathy.utility.scan", "key": "ctrl+shift+e h", "mac": "cmd+shift+e h"},
-      {"command": "empathy.utility.syncClaude", "key": "ctrl+shift+e y", "mac": "cmd+shift+e y"},
-      {"command": "empathy.utility.init", "key": "ctrl+shift+e i", "mac": "cmd+shift+e i"},
-      {"command": "empathy.viewDetails", "key": "ctrl+shift+e v", "mac": "cmd+shift+e v"},
-      {"command": "empathy.refreshHealth", "key": "ctrl+shift+e u", "mac": "cmd+shift+e u"},
-      {"command": "empathy.docGen", "key": "ctrl+shift+e o", "mac": "cmd+shift+e o"},
-      {"command": "empathy.wizard.create", "key": "ctrl+shift+e z", "mac": "cmd+shift+e z"},
-      {"command": "empathy.workflow.create", "key": "ctrl+shift+e k", "mac": "cmd+shift+e k"},
-      {"command": "empathy.metaWorkflow.run", "key": "ctrl+shift+e w", "mac": "cmd+shift+e w"}
+      {"command": "empathy.hub.agent", "key": "ctrl+shift+e a", "mac": "cmd+shift+e a"},
+      {"command": "empathy.hub.context", "key": "ctrl+shift+e c", "mac": "cmd+shift+e c"},
+      {"command": "empathy.hub.dev", "key": "ctrl+shift+e d", "mac": "cmd+shift+e d"},
+      {"command": "empathy.hub.docs", "key": "ctrl+shift+e o", "mac": "cmd+shift+e o"},
+      {"command": "empathy.hub.learning", "key": "ctrl+shift+e l", "mac": "cmd+shift+e l"},
+      {"command": "empathy.hub.release", "key": "ctrl+shift+e r", "mac": "cmd+shift+e r"},
+      {"command": "empathy.hub.testing", "key": "ctrl+shift+e t", "mac": "cmd+shift+e t"},
+      {"command": "empathy.hub.utilities", "key": "ctrl+shift+e u", "mac": "cmd+shift+e u"},
+      {"command": "empathy.hub.workflow", "key": "ctrl+shift+e w", "mac": "cmd+shift+e w"},
+      {"command": "empathy.focusSidebarDashboard", "key": "ctrl+shift+e 1", "mac": "cmd+shift+e 1"}
     ],
     "viewsContainers": {
       "activitybar": [
@@ -450,30 +182,18 @@
     },
     "menus": {
       "commandPalette": [
-        {
-          "command": "empathy.codeReview",
-          "when": "true"
-        },
-        {
-          "command": "empathy.securityAudit",
-          "when": "true"
-        },
-        {
-          "command": "empathy.runWorkflowQuick",
-          "when": "true"
-        },
-        {
-          "command": "empathy.viewDetails",
-          "when": "false"
-        },
-        {
-          "command": "empathy.openFile",
-          "when": "false"
-        },
-        {
-          "command": "empathy.ignoreIssue",
-          "when": "false"
-        }
+        { "command": "empathy.hub.agent", "when": "true" },
+        { "command": "empathy.hub.context", "when": "true" },
+        { "command": "empathy.hub.dev", "when": "true" },
+        { "command": "empathy.hub.docs", "when": "true" },
+        { "command": "empathy.hub.learning", "when": "true" },
+        { "command": "empathy.hub.release", "when": "true" },
+        { "command": "empathy.hub.testing", "when": "true" },
+        { "command": "empathy.hub.utilities", "when": "true" },
+        { "command": "empathy.hub.workflow", "when": "true" },
+        { "command": "empathy.viewDetails", "when": "false" },
+        { "command": "empathy.openFile", "when": "false" },
+        { "command": "empathy.ignoreIssue", "when": "false" }
       ],
       "view/title": [],
       "view/item/context": []

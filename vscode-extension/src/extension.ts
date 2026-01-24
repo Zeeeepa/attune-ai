@@ -184,83 +184,41 @@ export function activate(context: vscode.ExtensionContext) {
     //     )
     // );
 
-    // Register commands - organized by CLI structure
+    // Register commands - organized by 9 HUB structure (matches CLI and slash commands)
     const commands = [
         // =====================================================================
-        // WORKFLOW COMMANDS (14 top-level workflows)
+        // HUB COMMANDS (9 hubs - each runs primary action directly)
         // =====================================================================
-        { name: 'empathy.codeReview', handler: () => runUnifiedCommand('code-review .', 'Code Review') },
-        { name: 'empathy.securityAudit', handler: () => runUnifiedCommand('security-audit .', 'Security Audit') },
-        { name: 'empathy.testGen', handler: () => runUnifiedCommand('test-gen .', 'Test Generation') },
-        { name: 'empathy.bugPredict', handler: () => runUnifiedCommand('bug-predict .', 'Bug Prediction') },
-        { name: 'empathy.docGen', handler: () => runUnifiedCommand('doc-gen .', 'Doc Generation') },
-        { name: 'empathy.perfAudit', handler: () => runUnifiedCommand('perf-audit .', 'Performance Audit') },
-        { name: 'empathy.refactorPlan', handler: () => runUnifiedCommand('refactor-plan .', 'Refactor Plan') },
-        { name: 'empathy.dependencyCheck', handler: () => runUnifiedCommand('dependency-check .', 'Dependency Check') },
-        { name: 'empathy.releasePrep', handler: () => runUnifiedCommand('release-prep .', 'Release Prep') },
-        { name: 'empathy.healthCheck', handler: () => runUnifiedCommand('health-check .', 'Health Check') },
-        { name: 'empathy.testCoverageBoost', handler: () => runUnifiedCommand('test-coverage-boost .', 'Test Coverage Boost') },
-        { name: 'empathy.prReview', handler: () => runUnifiedCommand('pr-review .', 'PR Review') },
-        { name: 'empathy.proReview', handler: () => runUnifiedCommand('pro-review .', 'Pro Review') },
-        { name: 'empathy.secureRelease', handler: () => runUnifiedCommand('secure-release .', 'Secure Release') },
+
+        // /agent - Shows cheatsheet with available commands
+        { name: 'empathy.hub.agent', handler: () => runUnifiedCommand('utility cheatsheet', 'Agent') },
+
+        // /context - Memory status
+        { name: 'empathy.hub.context', handler: () => runUnifiedCommand('memory status', 'Context') },
+
+        // /dev - Code review
+        { name: 'empathy.hub.dev', handler: () => runUnifiedCommand('code-review .', 'Dev') },
+
+        // /docs - Generate documentation
+        { name: 'empathy.hub.docs', handler: () => runUnifiedCommand('doc-gen .', 'Docs') },
+
+        // /learning - Learn from git history
+        { name: 'empathy.hub.learning', handler: () => runUnifiedCommand('utility learn', 'Learning') },
+
+        // /release - Release prep
+        { name: 'empathy.hub.release', handler: () => runUnifiedCommand('release-prep .', 'Release') },
+
+        // /testing - Generate tests
+        { name: 'empathy.hub.testing', handler: () => runUnifiedCommand('test-gen .', 'Testing') },
+
+        // /utilities - Quick scan
+        { name: 'empathy.hub.utilities', handler: () => runUnifiedCommand('utility scan .', 'Utilities') },
+
+        // /workflow - Health check
+        { name: 'empathy.hub.workflow', handler: () => runUnifiedCommand('health-check .', 'Workflow') },
 
         // =====================================================================
-        // REPORT COMMANDS (empathy report <subcommand>)
-        // =====================================================================
-        { name: 'empathy.report.costs', handler: () => runUnifiedCommand('report costs', 'API Costs') },
-        { name: 'empathy.report.health', handler: () => runUnifiedCommand('report health', 'Health Report') },
-        { name: 'empathy.report.coverage', handler: () => runUnifiedCommand('report coverage', 'Coverage Report') },
-        { name: 'empathy.report.patterns', handler: () => runUnifiedCommand('report patterns', 'Patterns Report') },
-        { name: 'empathy.report.metrics', handler: () => runUnifiedCommand('report metrics', 'Metrics Report') },
-        { name: 'empathy.report.telemetry', handler: () => runUnifiedCommand('report telemetry', 'Telemetry Report') },
-        { name: 'empathy.report.dashboard', handler: () => { runUnifiedCommand('report dashboard', 'Dashboard', { background: true }); vscode.window.showInformationMessage('Dashboard started. Check your browser.'); } },
-
-        // =====================================================================
-        // MEMORY COMMANDS (empathy memory <subcommand>)
-        // =====================================================================
-        { name: 'empathy.memory.status', handler: () => runUnifiedCommand('memory status', 'Memory Status') },
-        { name: 'empathy.memory.start', handler: () => runUnifiedCommand('memory start', 'Start Redis') },
-        { name: 'empathy.memory.stop', handler: () => runUnifiedCommand('memory stop', 'Stop Redis') },
-        { name: 'empathy.memory.patterns', handler: () => runUnifiedCommand('memory patterns', 'Memory Patterns') },
-
-        // =====================================================================
-        // TIER COMMANDS (empathy tier <subcommand>)
-        // =====================================================================
-        { name: 'empathy.tier.setup', handler: () => runUnifiedCommand('tier setup --show', 'Tier Setup') },
-        { name: 'empathy.tier.recommend', handler: async () => {
-            const description = await vscode.window.showInputBox({
-                prompt: 'Describe the bug or task',
-                placeHolder: 'fix login validation bug'
-            });
-            if (description) {
-                runUnifiedCommand(`tier recommend "${description}"`, 'Tier Recommendation');
-            }
-        }},
-
-        // =====================================================================
-        // UTILITY COMMANDS (empathy utility <subcommand>)
-        // =====================================================================
-        { name: 'empathy.utility.scan', handler: () => runUnifiedCommand('utility scan .', 'Scan') },
-        { name: 'empathy.utility.inspect', handler: () => runUnifiedCommand('utility inspect .', 'Inspect') },
-        { name: 'empathy.utility.fix', handler: () => runUnifiedCommand('utility fix', 'Fix Issues') },
-        { name: 'empathy.utility.init', handler: () => runUnifiedCommand('utility init', 'Initialize Project') },
-        { name: 'empathy.utility.new', handler: () => runUnifiedCommand('utility new --list', 'New Project') },
-        { name: 'empathy.utility.onboard', handler: () => runUnifiedCommand('utility onboard', 'Onboard Tutorial') },
-        { name: 'empathy.utility.explain', handler: async () => {
-            const command = await vscode.window.showInputBox({
-                prompt: 'Which command do you want explained?',
-                placeHolder: 'code-review'
-            });
-            if (command) {
-                runUnifiedCommand(`utility explain ${command}`, 'Explain Command');
-            }
-        }},
-        { name: 'empathy.utility.learn', handler: () => runUnifiedCommand('utility learn', 'Learn Patterns') },
-        { name: 'empathy.utility.syncClaude', handler: () => runUnifiedCommand('utility sync-claude', 'Sync to Claude') },
-        { name: 'empathy.utility.cheatsheet', handler: () => runUnifiedCommand('utility cheatsheet', 'Cheatsheet') },
-
-        // =====================================================================
-        // LEGACY/INTERNAL COMMANDS (kept for compatibility)
+        // INTERNAL/LEGACY COMMANDS (kept for compatibility)
         // =====================================================================
         { name: 'empathy.refreshHealth', handler: cmdRefreshHealth },
         { name: 'empathy.runScan', handler: cmdRunScan },

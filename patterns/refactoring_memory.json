@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-01-22T14:57:42.609759",
-  "node_count": 46,
+  "updated_at": "2026-01-23T12:28:26.852444",
+  "node_count": 48,
   "edge_count": 0,
   "nodes": [
     {
@@ -738,6 +738,38 @@
       "tags": [],
       "created_at": "2026-01-22T14:57:42.608968",
       "updated_at": "2026-01-22T14:57:42.608968",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260123122755_7a4898a6d14f",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmpka40v2qm/app.py",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_wizard": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-23T12:27:55.387504",
+      "updated_at": "2026-01-23T12:27:55.387505",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260123122826_b517fde25c89",
+      "type": "pattern",
+      "name": "refactor:.",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_wizard": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-23T12:28:26.851665",
+      "updated_at": "2026-01-23T12:28:26.851665",
       "status": "open"
     }
   ],

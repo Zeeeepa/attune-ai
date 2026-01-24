@@ -12,6 +12,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import json
 import subprocess
 import sys
 from importlib.metadata import version as get_version
@@ -20,6 +21,96 @@ from pathlib import Path
 import typer
 from rich.console import Console
 from rich.panel import Panel
+
+# =============================================================================
+# CONSTANTS
+# =============================================================================
+
+CHEATSHEET_CONTENT = """\
+[bold]Workflows (Analysis)[/bold]
+  empathy code-review .       Multi-tier code analysis
+  empathy security-audit .    OWASP vulnerability scan
+  empathy test-gen .          Generate tests
+  empathy bug-predict .       Predict bugs from patterns
+  empathy doc-gen .           Generate documentation
+  empathy perf-audit .        Performance analysis
+  empathy refactor-plan .     Tech debt prioritization
+  empathy dependency-check .  Dependency audit
+
+[bold]Workflows (Release)[/bold]
+  empathy release-prep .      Release readiness check
+  empathy health-check .      Project health check
+  empathy test-coverage-boost . Boost test coverage
+
+[bold]Workflows (Review)[/bold]
+  empathy pr-review .         Pull request review
+  empathy pro-review .        Professional code review
+  empathy secure-release .    Security-focused release
+
+[bold]Reports[/bold]
+  empathy report costs        API cost tracking
+  empathy report health       Project health summary
+  empathy report coverage     Test coverage
+  empathy report patterns     Learned patterns
+  empathy report metrics      Project metrics
+  empathy report telemetry    LLM usage telemetry
+  empathy report dashboard    Open web dashboard
+
+[bold]Memory[/bold]
+  empathy memory              Show status
+  empathy memory start        Start Redis
+  empathy memory stop         Stop Redis
+  empathy memory patterns     List patterns
+
+[bold]Tier Optimization[/bold]
+  empathy tier setup          Configure tier preferences
+  empathy tier recommend      Get tier recommendation
+
+[bold]Utility[/bold]
+  empathy utility scan .        Quick scan for issues
+  empathy utility inspect .     Deep inspection (SARIF)
+  empathy utility fix           Auto-fix lint/format
+  empathy utility init          Initialize project
+  empathy utility new --list    List project templates
+  empathy utility onboard       Interactive tutorial
+  empathy utility explain <cmd> Explain a command
+  empathy utility learn         Learn from git history
+  empathy utility sync-claude   Sync to Claude Code"""
+
+TIER_CONFIG_PATH = Path(".empathy") / "tier_config.json"
+
+
+# =============================================================================
+# HELPER FUNCTIONS
+# =============================================================================
+
+
+def _load_tier_config() -> dict:
+    """Load tier configuration from .empathy/tier_config.json."""
+    if TIER_CONFIG_PATH.exists():
+        try:
+            return json.loads(TIER_CONFIG_PATH.read_text())
+        except json.JSONDecodeError:
+            return {}
+    return {}
+
+
+def _save_tier_config(config: dict) -> None:
+    """Save tier configuration to .empathy/tier_config.json."""
+    TIER_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TIER_CONFIG_PATH.write_text(json.dumps(config, indent=2))
+
+
+def _display_tier_config(config: dict) -> None:
+    """Display current tier configuration."""
+    console.print("\n[bold]Tier Configuration[/bold]")
+    console.print("-" * 40)
+    console.print(f"Default Tier: {config.get('default_tier', 'CAPABLE')}")
+    console.print(f"Max Cost: ${config.get('max_cost', 1.00):.2f}")
+    console.print(f"Auto-Escalate: {config.get('auto_escalate', True)}")
+    console.print(f"\nConfig file: {TIER_CONFIG_PATH}")
+    console.print()
+
 
 # =============================================================================
 # APP SETUP
@@ -513,38 +604,26 @@ app.add_typer(tier_app, name="tier")
 
 @tier_app.command("setup")
 def tier_setup(
-    default_tier: str = typer.Option(
+    default_tier: str | None = typer.Option(
         None, "--default", "-d", help="Default tier: CHEAP, CAPABLE, or PREMIUM"
     ),
-    max_cost: float = typer.Option(
+    max_cost: float | None = typer.Option(
         None, "--max-cost", "-m", help="Maximum cost per workflow run ($)"
     ),
-    auto_escalate: bool = typer.Option(
+    auto_escalate: bool | None = typer.Option(
         None, "--auto-escalate/--no-auto-escalate", help="Enable automatic tier escalation"
     ),
     show: bool = typer.Option(False, "--show", "-s", help="Show current configuration"),
 ):
     """Configure tier preferences and cost limits."""
-    import json
-    config_path = Path(".empathy") / "tier_config.json"
+    config = _load_tier_config()
 
-    config = {}
-    if config_path.exists():
-        try:
-            config = json.loads(config_path.read_text())
-        except json.JSONDecodeError:
-            pass
-
+    # Show config if no changes requested
     if show or (default_tier is None and max_cost is None and auto_escalate is None):
-        console.print("\n[bold]Tier Configuration[/bold]")
-        console.print("-" * 40)
-        console.print(f"Default Tier: {config.get('default_tier', 'CAPABLE')}")
-        console.print(f"Max Cost: ${config.get('max_cost', 1.00):.2f}")
-        console.print(f"Auto-Escalate: {config.get('auto_escalate', True)}")
-        console.print(f"\nConfig file: {config_path}")
-        console.print()
+        _display_tier_config(config)
         return
 
+    # Validate and apply changes
     if default_tier:
         tier_upper = default_tier.upper()
         if tier_upper not in ("CHEAP", "CAPABLE", "PREMIUM"):
@@ -559,11 +638,9 @@ def tier_setup(
     if auto_escalate is not None:
         config["auto_escalate"] = auto_escalate
 
-    config_path.parent.mkdir(parents=True, exist_ok=True)
-    config_path.write_text(json.dumps(config, indent=2))
-
+    _save_tier_config(config)
     console.print("[green]Tier configuration updated[/green]")
-    console.print(f"Saved to: {config_path}")
+    console.print(f"Saved to: {TIER_CONFIG_PATH}")
 
 
 @tier_app.command("recommend")
@@ -716,55 +793,7 @@ def utility_cheatsheet():
     """Show quick reference for all commands."""
     console.print(
         Panel.fit(
-            """[bold]Workflows (Analysis)[/bold]
-  empathy code-review .       Multi-tier code analysis
-  empathy security-audit .    OWASP vulnerability scan
-  empathy test-gen .          Generate tests
-  empathy bug-predict .       Predict bugs from patterns
-  empathy doc-gen .           Generate documentation
-  empathy perf-audit .        Performance analysis
-  empathy refactor-plan .     Tech debt prioritization
-  empathy dependency-check .  Dependency audit
-
-[bold]Workflows (Release)[/bold]
-  empathy release-prep .      Release readiness check
-  empathy health-check .      Project health check
-  empathy test-coverage-boost . Boost test coverage
-
-[bold]Workflows (Review)[/bold]
-  empathy pr-review .         Pull request review
-  empathy pro-review .        Professional code review
-  empathy secure-release .    Security-focused release
-
-[bold]Reports[/bold]
-  empathy report costs        API cost tracking
-  empathy report health       Project health summary
-  empathy report coverage     Test coverage
-  empathy report patterns     Learned patterns
-  empathy report metrics      Project metrics
-  empathy report telemetry    LLM usage telemetry
-  empathy report dashboard    Open web dashboard
-
-[bold]Memory[/bold]
-  empathy memory              Show status
-  empathy memory start        Start Redis
-  empathy memory stop         Stop Redis
-  empathy memory patterns     List patterns
-
-[bold]Tier Optimization[/bold]
-  empathy tier setup          Configure tier preferences
-  empathy tier recommend      Get tier recommendation
-
-[bold]Utility[/bold]
-  empathy utility scan .        Quick scan for issues
-  empathy utility inspect .     Deep inspection (SARIF)
-  empathy utility fix           Auto-fix lint/format
-  empathy utility init          Initialize project
-  empathy utility new --list    List project templates
-  empathy utility onboard       Interactive tutorial
-  empathy utility explain <cmd> Explain a command
-  empathy utility learn         Learn from git history
-  empathy utility sync-claude   Sync to Claude Code""",
+            CHEATSHEET_CONTENT,
             title="[bold blue]Empathy Framework Cheatsheet[/bold blue]",
         ),
     )

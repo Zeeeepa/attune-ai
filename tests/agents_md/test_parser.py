@@ -1,0 +1,295 @@
+"""Tests for markdown agent parser."""
+
+import tempfile
+
+import pytest
+
+from empathy_llm_toolkit.agents_md.parser import MarkdownAgentParser
+from empathy_llm_toolkit.config.unified import ModelTier, Provider
+
+
+class TestMarkdownAgentParser:
+    """Tests for MarkdownAgentParser."""
+
+    @pytest.fixture
+    def parser(self):
+        """Create a parser instance."""
+        return MarkdownAgentParser()
+
+    def test_parse_minimal_agent(self, parser):
+        """Test parsing a minimal agent definition."""
+        content = """---
+name: test-agent
+---
+
+This is the system prompt.
+"""
+        config = parser.parse_content(content)
+
+        assert config.name == "test-agent"
+        assert config.role == "test-agent"  # Defaults to name
+        assert config.model_tier == ModelTier.CAPABLE  # Default
+        assert "This is the system prompt" in config.system_prompt
+
+    def test_parse_full_agent(self, parser):
+        """Test parsing an agent with all fields."""
+        content = """---
+name: architect
+description: Software architecture specialist
+role: architect
+model: opus
+provider: anthropic
+tools: Read, Grep, Glob
+empathy_level: 5
+memory_enabled: true
+pattern_learning: true
+temperature: 0.5
+max_tokens: 8192
+timeout: 180
+---
+
+You are an expert software architect.
+
+## Your Role
+Design systems.
+"""
+        config = parser.parse_content(content)
+
+        assert config.name == "architect"
+        assert config.description == "Software architecture specialist"
+        assert config.role == "architect"
+        assert config.model_tier == ModelTier.PREMIUM  # opus -> PREMIUM
+        assert config.provider == Provider.ANTHROPIC
+        assert "Read" in config.tools
+        assert "Grep" in config.tools
+        assert "Glob" in config.tools
+        assert config.empathy_level == 5
+        assert config.memory_enabled is True
+        assert config.pattern_learning is True
+        assert config.temperature == 0.5
+        assert config.max_tokens == 8192
+        assert config.timeout == 180
+        assert "expert software architect" in config.system_prompt
+        assert "Your Role" in config.system_prompt
+
+    def test_parse_model_tiers(self, parser):
+        """Test parsing different model tier names."""
+        test_cases = [
+            ("cheap", ModelTier.CHEAP),
+            ("haiku", ModelTier.CHEAP),
+            ("capable", ModelTier.CAPABLE),
+            ("sonnet", ModelTier.CAPABLE),
+            ("premium", ModelTier.PREMIUM),
+            ("opus", ModelTier.PREMIUM),
+        ]
+
+        for model_name, expected_tier in test_cases:
+            content = f"""---
+name: test
+model: {model_name}
+---
+Test.
+"""
+            config = parser.parse_content(content)
+            assert config.model_tier == expected_tier, f"Failed for {model_name}"
+
+    def test_parse_providers(self, parser):
+        """Test parsing different providers."""
+        test_cases = [
+            ("anthropic", Provider.ANTHROPIC),
+            ("openai", Provider.OPENAI),
+            ("local", Provider.LOCAL),
+        ]
+
+        for provider_name, expected_provider in test_cases:
+            content = f"""---
+name: test
+provider: {provider_name}
+---
+Test.
+"""
+            config = parser.parse_content(content)
+            assert config.provider == expected_provider
+
+    def test_parse_tools_as_list(self, parser):
+        """Test parsing tools as YAML list."""
+        content = """---
+name: test
+tools:
+  - Read
+  - Write
+  - Edit
+---
+Test.
+"""
+        config = parser.parse_content(content)
+        assert config.tools == ["Read", "Write", "Edit"]
+
+    def test_parse_tools_as_string(self, parser):
+        """Test parsing tools as comma-separated string."""
+        content = """---
+name: test
+tools: Read, Write, Edit
+---
+Test.
+"""
+        config = parser.parse_content(content)
+        assert "Read" in config.tools
+        assert "Write" in config.tools
+        assert "Edit" in config.tools
+
+    def test_parse_empty_body(self, parser):
+        """Test parsing with empty body."""
+        content = """---
+name: test
+---
+"""
+        config = parser.parse_content(content)
+
+        assert config.name == "test"
+        assert config.system_prompt is None or config.system_prompt == ""
+
+    def test_parse_missing_name_raises(self, parser):
+        """Test that missing name raises ValueError."""
+        content = """---
+description: No name here
+---
+Test.
+"""
+        with pytest.raises(ValueError, match="missing required 'name'"):
+            parser.parse_content(content)
+
+    def test_parse_no_frontmatter_raises(self, parser):
+        """Test that missing frontmatter raises ValueError."""
+        content = "Just markdown, no frontmatter."
+
+        with pytest.raises(ValueError, match="missing YAML frontmatter"):
+            parser.parse_content(content)
+
+    def test_parse_invalid_yaml_raises(self, parser):
+        """Test that invalid YAML raises ValueError."""
+        content = """---
+name: test
+invalid: yaml: syntax:
+---
+Test.
+"""
+        with pytest.raises(ValueError, match="Invalid YAML"):
+            parser.parse_content(content)
+
+    def test_parse_file(self, parser):
+        """Test parsing from a file."""
+        content = """---
+name: file-agent
+description: Loaded from file
+---
+
+File-based agent.
+"""
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".md",
+            delete=False,
+        ) as f:
+            f.write(content)
+            f.flush()
+
+            config = parser.parse_file(f.name)
+
+            assert config.name == "file-agent"
+            assert config.extra["source_file"] == f.name
+
+    def test_parse_file_not_found(self, parser):
+        """Test that missing file raises FileNotFoundError."""
+        with pytest.raises(FileNotFoundError):
+            parser.parse_file("/nonexistent/path/agent.md")
+
+    def test_validate_file_valid(self, parser):
+        """Test validating a valid file."""
+        content = """---
+name: valid-agent
+model: capable
+empathy_level: 4
+---
+Valid agent.
+"""
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".md",
+            delete=False,
+        ) as f:
+            f.write(content)
+            f.flush()
+
+            errors = parser.validate_file(f.name)
+            assert errors == []
+
+    def test_validate_file_missing_name(self, parser):
+        """Test validation catches missing name."""
+        content = """---
+description: No name
+---
+Invalid.
+"""
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".md",
+            delete=False,
+        ) as f:
+            f.write(content)
+            f.flush()
+
+            errors = parser.validate_file(f.name)
+            assert any("name" in e.lower() for e in errors)
+
+    def test_validate_file_invalid_model(self, parser):
+        """Test validation catches invalid model."""
+        content = """---
+name: test
+model: invalid_model_tier
+---
+Test.
+"""
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".md",
+            delete=False,
+        ) as f:
+            f.write(content)
+            f.flush()
+
+            errors = parser.validate_file(f.name)
+            assert any("model" in e.lower() for e in errors)
+
+    def test_validate_file_invalid_empathy_level(self, parser):
+        """Test validation catches invalid empathy level."""
+        content = """---
+name: test
+empathy_level: 10
+---
+Test.
+"""
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".md",
+            delete=False,
+        ) as f:
+            f.write(content)
+            f.flush()
+
+            errors = parser.validate_file(f.name)
+            assert any("empathy_level" in e for e in errors)
+
+    def test_extra_contains_source_and_raw(self, parser):
+        """Test that extra contains source_file and raw_frontmatter."""
+        content = """---
+name: test
+custom_field: custom_value
+---
+Test.
+"""
+        config = parser.parse_content(content, source="test.md")
+
+        assert config.extra["source_file"] == "test.md"
+        assert "raw_frontmatter" in config.extra
+        assert config.extra["raw_frontmatter"]["custom_field"] == "custom_value"

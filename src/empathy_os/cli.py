@@ -29,7 +29,6 @@ from empathy_os.pattern_library import PatternLibrary
 from empathy_os.persistence import MetricsCollector, PatternPersistence, StateManager
 from empathy_os.platform_utils import setup_asyncio_policy
 from empathy_os.templates import cmd_new
-from empathy_os.wizard_factory_cli import add_wizard_factory_commands
 from empathy_os.workflows import (
     cmd_fix_all,
     cmd_learn,
@@ -3955,9 +3954,6 @@ def main():
         help="Output results as JSON",
     )
     parser_orchestrate.set_defaults(func=cmd_orchestrate)
-
-    # Wizard Factory commands (create wizards 12x faster)
-    add_wizard_factory_commands(subparsers)
 
     # Parse arguments
     args = parser.parse_args()
