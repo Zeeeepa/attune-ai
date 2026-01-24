@@ -1,12 +1,14 @@
 """Unified CLI for Empathy Framework
 
-A single entry point for all Empathy Framework commands using Typer.
+A simplified, intelligent CLI using Socratic questioning.
 
 Usage:
-    empathy --help                    # Show all commands
-    empathy code-review .             # Run code review workflow
-    empathy report costs              # View cost reports
-    empathy memory status             # Memory control panel
+    empathy do "review code in src/"    # Intelligent - asks questions if needed
+    empathy r .                         # Quick: review
+    empathy s .                         # Quick: security
+    empathy t .                         # Quick: test
+    empathy scan .                      # Quick scan (no API)
+    empathy ship                        # Pre-commit check
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
@@ -27,55 +29,28 @@ from rich.panel import Panel
 # =============================================================================
 
 CHEATSHEET_CONTENT = """\
-[bold]Workflows (Analysis)[/bold]
-  empathy code-review .       Multi-tier code analysis
-  empathy security-audit .    OWASP vulnerability scan
-  empathy test-gen .          Generate tests
-  empathy bug-predict .       Predict bugs from patterns
-  empathy doc-gen .           Generate documentation
-  empathy perf-audit .        Performance analysis
-  empathy refactor-plan .     Tech debt prioritization
-  empathy dependency-check .  Dependency audit
+[bold]Main Command[/bold]
+  empathy do "..."        Intelligent task execution (asks questions if needed)
 
-[bold]Workflows (Release)[/bold]
-  empathy release-prep .      Release readiness check
-  empathy health-check .      Project health check
-  empathy test-coverage-boost . Boost test coverage
+[bold]Quick Actions (short aliases)[/bold]
+  empathy r [path]        Review code
+  empathy s [path]        Security audit
+  empathy t [path]        Generate tests
+  empathy d [path]        Generate docs
 
-[bold]Workflows (Review)[/bold]
-  empathy pr-review .         Pull request review
-  empathy pro-review .        Professional code review
-  empathy secure-release .    Security-focused release
+[bold]Utilities[/bold]
+  empathy scan [path]     Quick scan (no API needed)
+  empathy ship            Pre-commit validation
+  empathy health          Project health check
 
 [bold]Reports[/bold]
-  empathy report costs        API cost tracking
-  empathy report health       Project health summary
-  empathy report coverage     Test coverage
-  empathy report patterns     Learned patterns
-  empathy report metrics      Project metrics
-  empathy report telemetry    LLM usage telemetry
-  empathy report dashboard    Open web dashboard
+  empathy report costs    API cost tracking
+  empathy report health   Project health summary
+  empathy report patterns Learned patterns
 
 [bold]Memory[/bold]
-  empathy memory              Show status
-  empathy memory start        Start Redis
-  empathy memory stop         Stop Redis
-  empathy memory patterns     List patterns
-
-[bold]Tier Optimization[/bold]
-  empathy tier setup          Configure tier preferences
-  empathy tier recommend      Get tier recommendation
-
-[bold]Utility[/bold]
-  empathy utility scan .        Quick scan for issues
-  empathy utility inspect .     Deep inspection (SARIF)
-  empathy utility fix           Auto-fix lint/format
-  empathy utility init          Initialize project
-  empathy utility new --list    List project templates
-  empathy utility onboard       Interactive tutorial
-  empathy utility explain <cmd> Explain a command
-  empathy utility learn         Learn from git history
-  empathy utility sync-claude   Sync to Claude Code"""
+  empathy memory          Memory system status
+  empathy memory start    Start Redis"""
 
 TIER_CONFIG_PATH = Path(".empathy") / "tier_config.json"
 
@@ -101,15 +76,43 @@ def _save_tier_config(config: dict) -> None:
     TIER_CONFIG_PATH.write_text(json.dumps(config, indent=2))
 
 
-def _display_tier_config(config: dict) -> None:
-    """Display current tier configuration."""
-    console.print("\n[bold]Tier Configuration[/bold]")
-    console.print("-" * 40)
-    console.print(f"Default Tier: {config.get('default_tier', 'CAPABLE')}")
-    console.print(f"Max Cost: ${config.get('max_cost', 1.00):.2f}")
-    console.print(f"Auto-Escalate: {config.get('auto_escalate', True)}")
-    console.print(f"\nConfig file: {TIER_CONFIG_PATH}")
-    console.print()
+def _auto_sync_patterns() -> None:
+    """Automatically sync patterns to Claude Code after workflow completion."""
+    try:
+        result = subprocess.run(
+            ["empathy-sync-claude", "--source", "patterns"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        if result.returncode == 0:
+            console.print("\n[dim]✓ Patterns synced to Claude Code[/dim]")
+    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+        pass  # Silent fail
+
+
+def _run_workflow(name: str, path: Path, json_output: bool = False):
+    """Helper to run a workflow via the legacy CLI."""
+    workflow_input = f'{{"path": "{path}"}}'
+
+    cmd = [
+        sys.executable,
+        "-m",
+        "empathy_os.cli",
+        "workflow",
+        "run",
+        name,
+        "--input",
+        workflow_input,
+    ]
+    if json_output:
+        cmd.append("--json")
+
+    result = subprocess.run(cmd, check=False)
+
+    if result.returncode == 0 and not json_output:
+        _auto_sync_patterns()
 
 
 # =============================================================================
@@ -118,7 +121,7 @@ def _display_tier_config(config: dict) -> None:
 
 app = typer.Typer(
     name="empathy",
-    help="Empathy Framework - Predictive AI-Developer Collaboration",
+    help="Empathy Framework - Intelligent AI-Developer Collaboration",
     no_args_is_help=True,
     rich_markup_mode="rich",
 )
@@ -152,308 +155,222 @@ def callback(
         help="Show version and exit",
     ),
 ):
-    """Empathy Framework - Predictive AI-Developer Collaboration
+    """Empathy Framework - Intelligent AI-Developer Collaboration
 
-    The AI collaboration framework that predicts problems before they happen.
+    [bold]Quick Start:[/bold]
+        empathy do "review the code"    Ask AI to do something
+        empathy r .                     Quick code review
+        empathy scan .                  Quick security scan
 
-    [bold]Workflows:[/bold]
-        empathy code-review .     Multi-tier code analysis
-        empathy security-audit .  OWASP vulnerability scanning
-        empathy test-gen .        Generate tests for coverage gaps
-
-    [bold]Reports:[/bold]
-        empathy report costs      API cost tracking
-        empathy report dashboard  Open web dashboard
-
-    [bold]Memory:[/bold]
-        empathy memory status     Check memory system status
-        empathy memory start      Start Redis server
-
-    [bold]Utility:[/bold]
-        empathy utility scan .    Scan codebase for issues
-        empathy utility learn     Learn patterns from git history
+    [bold]Shortcuts:[/bold]
+        r = review, s = security, t = test, d = docs
     """
 
 
 # =============================================================================
-# WORKFLOW HELPER
+# MAIN COMMAND: do
 # =============================================================================
 
 
-def _run_workflow(name: str, path: Path, json_output: bool = False, extra_args: dict | None = None):
-    """Helper to run a workflow via the legacy CLI."""
-    workflow_input = f'{{"path": "{path}"}}'
-    if extra_args:
-        import json
-        input_dict = {"path": str(path), **extra_args}
-        workflow_input = json.dumps(input_dict)
-
-    cmd = [
-        sys.executable,
-        "-m",
-        "empathy_os.cli",
-        "workflow",
-        "run",
-        name,
-        "--input",
-        workflow_input,
-    ]
-    if json_output:
-        cmd.append("--json")
-    subprocess.run(cmd, check=False)
-
-
-# =============================================================================
-# WORKFLOW COMMANDS - Analysis (8)
-# =============================================================================
-
-
-@app.command("code-review")
-def code_review(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+@app.command("do")
+def do_command(
+    goal: str = typer.Argument(..., help="What you want to accomplish"),
+    path: Path = typer.Option(Path("."), "--path", "-p", help="Path to analyze"),
+    interactive: bool = typer.Option(
+        True, "--interactive/--no-interactive", "-i", help="Ask clarifying questions"
+    ),
 ):
-    """Multi-tier code review with pattern analysis.
+    """Intelligent task execution using Socratic questioning.
 
-    Analyzes code using Haiku (classify), Sonnet (scan), and Opus (architect review).
-    Detects change types, security issues, bug patterns, and architectural concerns.
+    The AI will understand your goal and ask clarifying questions if needed.
+    Uses domain templates for common tasks like code review, security, testing.
 
     Examples:
-        empathy code-review .
-        empathy code-review ./src --json
+        empathy do "review the authentication code"
+        empathy do "find security vulnerabilities" --path ./src
+        empathy do "generate tests for the API" --no-interactive
+    """
+    console.print(f"\n[bold]Goal:[/bold] {goal}")
+    console.print(f"[dim]Path: {path}[/dim]\n")
+
+    # Use Socratic system for intelligent task execution
+    try:
+        from empathy_os.socratic import SocraticWorkflowBuilder
+        from empathy_os.socratic.cli import console as socratic_console
+        from empathy_os.socratic.cli import render_form_interactive
+        from empathy_os.socratic.storage import get_default_storage
+
+        builder = SocraticWorkflowBuilder()
+        storage = get_default_storage()
+
+        # Start session with the goal
+        session = builder.start_session()
+        session = builder.set_goal(session, f"{goal} (path: {path})")
+        storage.save_session(session)
+
+        # Show domain detection
+        if session.goal_analysis:
+            console.print(f"[cyan]Detected domain:[/cyan] {session.goal_analysis.domain}")
+            console.print(f"[cyan]Confidence:[/cyan] {session.goal_analysis.confidence:.0%}")
+
+            if session.goal_analysis.ambiguities and interactive:
+                console.print("\n[yellow]Clarifications needed:[/yellow]")
+                for amb in session.goal_analysis.ambiguities:
+                    console.print(f"  • {amb}")
+
+        # Interactive questioning if needed
+        if interactive:
+            while not builder.is_ready_to_generate(session):
+                form = builder.get_next_questions(session)
+                if not form:
+                    break
+
+                answers = render_form_interactive(form, socratic_console)
+                session = builder.submit_answers(session, answers)
+                storage.save_session(session)
+
+        # Generate and execute workflow
+        if builder.is_ready_to_generate(session):
+            console.print("\n[bold]Generating workflow...[/bold]")
+            workflow = builder.generate_workflow(session)
+            storage.save_session(session)
+
+            console.print(
+                f"\n[green]✓ Generated workflow with {len(workflow.agents)} agents[/green]"
+            )
+            console.print(workflow.describe())
+
+            # Execute the workflow
+            if session.blueprint:
+                storage.save_blueprint(session.blueprint)
+                console.print(f"\n[dim]Blueprint saved: {session.blueprint.id[:8]}...[/dim]")
+
+        _auto_sync_patterns()
+
+    except ImportError as e:
+        console.print(f"[yellow]Socratic system not fully available: {e}[/yellow]")
+        console.print("[dim]Falling back to keyword matching...[/dim]\n")
+
+        # Fallback: keyword-based workflow selection
+        goal_lower = goal.lower()
+        if any(w in goal_lower for w in ["review", "check", "analyze"]):
+            _run_workflow("code-review", path)
+        elif any(w in goal_lower for w in ["security", "vulnerab", "owasp"]):
+            _run_workflow("security-audit", path)
+        elif any(w in goal_lower for w in ["test", "coverage"]):
+            _run_workflow("test-gen", path)
+        elif any(w in goal_lower for w in ["doc", "document"]):
+            _run_workflow("doc-gen", path)
+        else:
+            _run_workflow("code-review", path)
+
+
+# =============================================================================
+# SHORT ALIASES
+# =============================================================================
+
+
+@app.command("r")
+def review_short(
+    path: Path = typer.Argument(Path("."), help="Path to review"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """[bold]Review[/bold] - Quick code review.
+
+    Alias for: empathy do "review code"
     """
     _run_workflow("code-review", path, json_output)
 
 
-@app.command("security-audit")
-def security_audit(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
+@app.command("s")
+def security_short(
+    path: Path = typer.Argument(Path("."), help="Path to scan"),
     json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
 ):
-    """OWASP-focused vulnerability scanning.
+    """[bold]Security[/bold] - Quick security audit.
 
-    Scans for injection risks, authentication issues, and security vulnerabilities.
-    Integrates with team security decisions to filter false positives.
-
-    Examples:
-        empathy security-audit .
-        empathy security-audit ./src --json
+    Alias for: empathy do "security audit"
     """
     _run_workflow("security-audit", path, json_output)
 
 
-@app.command("test-gen")
-def test_gen(
+@app.command("t")
+def test_short(
     path: Path = typer.Argument(Path("."), help="Path to analyze"),
     json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
 ):
-    """Generate tests for areas with low coverage or historical bugs.
+    """[bold]Test[/bold] - Generate tests.
 
-    Uses AST-based function/class analysis with complexity estimation.
-    Identifies coverage gaps and generates appropriate test cases.
-
-    Examples:
-        empathy test-gen .
-        empathy test-gen ./src/utils --json
+    Alias for: empathy do "generate tests"
     """
     _run_workflow("test-gen", path, json_output)
 
 
-@app.command("bug-predict")
-def bug_predict(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
+@app.command("d")
+def docs_short(
+    path: Path = typer.Argument(Path("."), help="Path to document"),
     json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
 ):
-    """Predict bugs from learned patterns.
+    """[bold]Docs[/bold] - Generate documentation.
 
-    Analyzes code against historical bug patterns to identify potential issues.
-    Uses risk threshold of 0.7 (configurable).
-
-    Examples:
-        empathy bug-predict .
-        empathy bug-predict ./src --json
-    """
-    _run_workflow("bug-predict", path, json_output)
-
-
-@app.command("doc-gen")
-def doc_gen(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
-):
-    """Generate documentation with cost-optimized pipeline.
-
-    Stages: outline (CHEAP), write (CAPABLE), polish (PREMIUM).
-    Auto-scales tokens and uses chunked polish for large projects.
-
-    Examples:
-        empathy doc-gen .
-        empathy doc-gen ./src/api --json
+    Alias for: empathy do "generate docs"
     """
     _run_workflow("doc-gen", path, json_output)
 
 
-@app.command("perf-audit")
-def perf_audit(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
-):
-    """Identify performance bottlenecks and optimization opportunities.
-
-    Detects anti-patterns: N+1 queries, sync in async, unnecessary list copies.
-    Provides actionable recommendations for performance improvement.
-
-    Examples:
-        empathy perf-audit .
-        empathy perf-audit ./src --json
-    """
-    _run_workflow("perf-audit", path, json_output)
-
-
-@app.command("refactor-plan")
-def refactor_plan(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
-):
-    """Prioritize tech debt based on trajectory analysis.
-
-    Detects TODO, FIXME, HACK comments and complexity hotspots.
-    Creates prioritized refactoring plan based on impact and risk.
-
-    Examples:
-        empathy refactor-plan .
-        empathy refactor-plan ./src --json
-    """
-    _run_workflow("refactor-plan", path, json_output)
-
-
-@app.command("dependency-check")
-def dependency_check(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
-):
-    """Audit dependencies for vulnerabilities, updates, and licensing.
-
-    Parses requirements.txt, package.json, setup.py, and pyproject.toml.
-    Identifies outdated packages and security vulnerabilities.
-
-    Examples:
-        empathy dependency-check .
-        empathy dependency-check ./backend --json
-    """
-    _run_workflow("dependency-check", path, json_output)
-
-
 # =============================================================================
-# WORKFLOW COMMANDS - Release (3)
+# UTILITY COMMANDS
 # =============================================================================
 
 
-@app.command("release-prep")
-def release_prep(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+@app.command("scan")
+def scan_command(
+    scan_type: str = typer.Argument("all", help="Scan type: security, performance, or all"),
+    path: Path = typer.Argument(Path("."), help="Path to scan"),
 ):
-    """Multi-agent release readiness assessment.
-
-    Runs 4 agents: Security, Testing, Quality, Documentation.
-    Checks quality gates: security score, test coverage, code quality, docs completeness.
+    """Quick security/performance scan (no API needed).
 
     Examples:
-        empathy release-prep .
-        empathy release-prep . --json
+        empathy scan all .
+        empathy scan security ./src
     """
-    _run_workflow("release-prep", path, json_output)
+    if scan_type not in ("security", "performance", "all"):
+        console.print(f"[red]Invalid scan type: {scan_type}[/red]")
+        console.print("Valid types: security, performance, all")
+        raise typer.Exit(code=1)
+
+    subprocess.run(["empathy-scan", scan_type, str(path)], check=False)
 
 
-@app.command("health-check")
-def health_check(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+@app.command("ship")
+def ship_command(
+    skip_sync: bool = typer.Option(False, "--skip-sync", help="Skip pattern sync"),
 ):
-    """Project health check with multiple analysis dimensions.
+    """Pre-commit validation (lint, format, tests, security).
 
-    Evaluates code quality, test coverage, security posture, and documentation.
-    Provides overall health score and actionable recommendations.
-
-    Examples:
-        empathy health-check .
-        empathy health-check . --json
+    Run this before committing to ensure code quality.
     """
-    _run_workflow("health-check", path, json_output)
+    args = [sys.executable, "-m", "empathy_os.cli", "ship"]
+    if skip_sync:
+        args.append("--skip-sync")
+    subprocess.run(args, check=False)
 
 
-@app.command("test-coverage-boost")
-def test_coverage_boost(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+@app.command("health")
+def health_command(
+    deep: bool = typer.Option(False, "--deep", help="Comprehensive check"),
+    fix: bool = typer.Option(False, "--fix", help="Auto-fix issues"),
 ):
-    """Boost test coverage with intelligent test generation.
+    """Quick project health check.
 
-    3-agent workflow: Coverage Analyzer, Test Generator, Quality Validator.
-    Identifies gaps and generates high-quality tests to fill them.
-
-    Examples:
-        empathy test-coverage-boost .
-        empathy test-coverage-boost ./src --json
+    Shows lint issues, test status, and overall health score.
     """
-    _run_workflow("test-coverage-boost", path, json_output)
-
-
-# =============================================================================
-# WORKFLOW COMMANDS - Review (3)
-# =============================================================================
-
-
-@app.command("pr-review")
-def pr_review(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
-):
-    """Pull request analysis workflow.
-
-    Reviews changes for quality, security, and best practices.
-    Provides structured feedback suitable for PR comments.
-
-    Examples:
-        empathy pr-review .
-        empathy pr-review . --json
-    """
-    _run_workflow("pr-review", path, json_output)
-
-
-@app.command("pro-review")
-def pro_review(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
-):
-    """Professional code review pipeline.
-
-    Comprehensive code review with multiple analysis passes.
-    Suitable for formal code review processes.
-
-    Examples:
-        empathy pro-review .
-        empathy pro-review ./src --json
-    """
-    _run_workflow("pro-review", path, json_output)
-
-
-@app.command("secure-release")
-def secure_release(
-    path: Path = typer.Argument(Path("."), help="Path to analyze"),
-    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
-):
-    """Security-focused release pipeline.
-
-    Validates security requirements before release.
-    Checks for vulnerabilities, secrets, and compliance issues.
-
-    Examples:
-        empathy secure-release .
-        empathy secure-release . --json
-    """
-    _run_workflow("secure-release", path, json_output)
+    args = [sys.executable, "-m", "empathy_os.cli", "health"]
+    if deep:
+        args.append("--deep")
+    if fix:
+        args.append("--fix")
+    subprocess.run(args, check=False)
 
 
 # =============================================================================
@@ -462,21 +379,6 @@ def secure_release(
 
 report_app = typer.Typer(help="View reports and dashboards")
 app.add_typer(report_app, name="report")
-
-
-@report_app.callback(invoke_without_command=True)
-def report_default(ctx: typer.Context):
-    """View reports and dashboards."""
-    if ctx.invoked_subcommand is None:
-        console.print("\n[bold]Available Reports:[/bold]")
-        console.print("  empathy report costs      - API cost tracking")
-        console.print("  empathy report health     - Project health summary")
-        console.print("  empathy report coverage   - Test coverage report")
-        console.print("  empathy report patterns   - Learned patterns")
-        console.print("  empathy report metrics    - Project metrics")
-        console.print("  empathy report telemetry  - LLM usage telemetry")
-        console.print("  empathy report dashboard  - Open web dashboard")
-        console.print()
 
 
 @report_app.command("costs")
@@ -491,26 +393,11 @@ def report_health():
     subprocess.run([sys.executable, "-m", "empathy_os.cli", "status"], check=False)
 
 
-@report_app.command("coverage")
-def report_coverage():
-    """View test coverage report."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "tests"], check=False)
-
-
 @report_app.command("patterns")
 def report_patterns():
     """View learned patterns."""
     subprocess.run(
-        [sys.executable, "-m", "empathy_os.memory.control_panel", "patterns", "--list"],
-        check=False,
-    )
-
-
-@report_app.command("metrics")
-def report_metrics():
-    """View project metrics and statistics."""
-    subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "metrics", "show"],
+        [sys.executable, "-m", "empathy_os.memory.control_panel", "patterns"],
         check=False,
     )
 
@@ -518,26 +405,12 @@ def report_metrics():
 @report_app.command("telemetry")
 def report_telemetry(
     limit: int = typer.Option(20, "--limit", "-l", help="Number of entries"),
-    days: int = typer.Option(None, "--days", "-d", help="Filter to last N days"),
 ):
     """View LLM usage telemetry."""
-    args = [sys.executable, "-m", "empathy_os.cli", "telemetry", "show", "--limit", str(limit)]
-    if days:
-        args.extend(["--days", str(days)])
-    subprocess.run(args, check=False)
-
-
-@report_app.command("dashboard")
-def report_dashboard(
-    port: int = typer.Option(8765, "--port", "-p", help="Port to run on"),
-    no_browser: bool = typer.Option(False, "--no-browser", help="Don't open browser"),
-):
-    """Open web dashboard."""
-    cmd = [sys.executable, "-m", "empathy_os.cli", "dashboard"]
-    cmd.extend(["--port", str(port)])
-    if no_browser:
-        cmd.append("--no-browser")
-    subprocess.run(cmd, check=False)
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "telemetry", "show", "--limit", str(limit)],
+        check=False,
+    )
 
 
 # =============================================================================
@@ -560,7 +433,7 @@ def memory_default(ctx: typer.Context):
 
 @memory_app.command("status")
 def memory_status():
-    """Check memory system status (Redis, patterns, stats)."""
+    """Check memory system status."""
     subprocess.run(
         [sys.executable, "-m", "empathy_os.memory.control_panel", "status"],
         check=False,
@@ -589,207 +462,18 @@ def memory_stop():
 def memory_patterns():
     """List stored patterns."""
     subprocess.run(
-        [sys.executable, "-m", "empathy_os.memory.control_panel", "patterns", "--list"],
+        [sys.executable, "-m", "empathy_os.memory.control_panel", "patterns"],
         check=False,
     )
 
 
 # =============================================================================
-# TIER SUBCOMMAND GROUP
+# CHEATSHEET
 # =============================================================================
 
-tier_app = typer.Typer(help="Intelligent tier recommendations")
-app.add_typer(tier_app, name="tier")
 
-
-@tier_app.command("setup")
-def tier_setup(
-    default_tier: str | None = typer.Option(
-        None, "--default", "-d", help="Default tier: CHEAP, CAPABLE, or PREMIUM"
-    ),
-    max_cost: float | None = typer.Option(
-        None, "--max-cost", "-m", help="Maximum cost per workflow run ($)"
-    ),
-    auto_escalate: bool | None = typer.Option(
-        None, "--auto-escalate/--no-auto-escalate", help="Enable automatic tier escalation"
-    ),
-    show: bool = typer.Option(False, "--show", "-s", help="Show current configuration"),
-):
-    """Configure tier preferences and cost limits."""
-    config = _load_tier_config()
-
-    # Show config if no changes requested
-    if show or (default_tier is None and max_cost is None and auto_escalate is None):
-        _display_tier_config(config)
-        return
-
-    # Validate and apply changes
-    if default_tier:
-        tier_upper = default_tier.upper()
-        if tier_upper not in ("CHEAP", "CAPABLE", "PREMIUM"):
-            console.print(f"[red]Invalid tier: {default_tier}[/red]")
-            console.print("Valid tiers: CHEAP, CAPABLE, PREMIUM")
-            raise typer.Exit(code=1)
-        config["default_tier"] = tier_upper
-
-    if max_cost is not None:
-        config["max_cost"] = max_cost
-
-    if auto_escalate is not None:
-        config["auto_escalate"] = auto_escalate
-
-    _save_tier_config(config)
-    console.print("[green]Tier configuration updated[/green]")
-    console.print(f"Saved to: {TIER_CONFIG_PATH}")
-
-
-@tier_app.command("recommend")
-def tier_recommend(
-    description: str = typer.Argument(..., help="Description of the bug or task"),
-    files: str = typer.Option(None, "--files", "-f", help="Comma-separated affected files"),
-    complexity: int = typer.Option(None, "--complexity", "-c", help="Complexity hint 1-10"),
-):
-    """Get intelligent tier recommendation for a bug/task."""
-    from empathy_os.tier_recommender import TierRecommender
-
-    recommender = TierRecommender()
-    result = recommender.recommend(
-        bug_description=description,
-        files_affected=files.split(",") if files else None,
-        complexity_hint=complexity,
-    )
-
-    console.print()
-    console.print("[bold]TIER RECOMMENDATION[/bold]")
-    console.print("-" * 50)
-    console.print(f"Task: {description}")
-    console.print()
-    console.print(f"Recommended Tier: [bold]{result.tier}[/bold]")
-    console.print(f"Confidence: {result.confidence * 100:.1f}%")
-    console.print(f"Expected Cost: ${result.expected_cost:.3f}")
-    console.print()
-    console.print(f"Reasoning: {result.reasoning}")
-    console.print()
-
-
-# =============================================================================
-# UTILITY SUBCOMMAND GROUP
-# =============================================================================
-
-utility_app = typer.Typer(help="Project utility tools")
-app.add_typer(utility_app, name="utility")
-
-
-@utility_app.callback(invoke_without_command=True)
-def utility_default(ctx: typer.Context):
-    """Project utility tools."""
-    if ctx.invoked_subcommand is None:
-        console.print("\n[bold]Available Utility Commands:[/bold]")
-        console.print("  empathy utility scan .        - Scan codebase for issues")
-        console.print("  empathy utility inspect .     - Deep inspection (SARIF)")
-        console.print("  empathy utility fix           - Auto-fix lint/format")
-        console.print("  empathy utility init          - Initialize project")
-        console.print("  empathy utility new --list    - List project templates")
-        console.print("  empathy utility onboard       - Interactive tutorial")
-        console.print("  empathy utility explain <cmd> - Explain a command")
-        console.print("  empathy utility learn         - Learn from git history")
-        console.print("  empathy utility sync-claude   - Sync to Claude Code")
-        console.print("  empathy utility cheatsheet    - Show quick reference")
-        console.print()
-
-
-@utility_app.command("scan")
-def utility_scan(
-    path: Path = typer.Argument(Path("."), help="Path to scan"),
-    fix: bool = typer.Option(False, "--fix", help="Auto-fix issues"),
-    staged: bool = typer.Option(False, "--staged", help="Scan staged files only"),
-):
-    """Scan codebase for issues."""
-    args = ["empathy-scan", str(path)]
-    if fix:
-        args.append("--fix")
-    if staged:
-        args.append("--staged")
-    result = subprocess.run(args, check=False)
-    if result.returncode != 0:
-        console.print("[yellow]Note: empathy-scan may not be installed[/yellow]")
-
-
-@utility_app.command("inspect")
-def utility_inspect(
-    path: Path = typer.Argument(Path("."), help="Path to inspect"),
-    format_out: str = typer.Option("text", "--format", "-f", help="Output format"),
-):
-    """Deep inspection with SARIF output for CI/CD."""
-    args = ["empathy-inspect", str(path)]
-    if format_out != "text":
-        args.extend(["--format", format_out])
-    result = subprocess.run(args, check=False)
-    if result.returncode != 0:
-        console.print("[yellow]Note: empathy-inspect may not be installed[/yellow]")
-
-
-@utility_app.command("fix")
-def utility_fix():
-    """Auto-fix lint and format issues."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "fix-all"], check=False)
-
-
-@utility_app.command("init")
-def utility_init():
-    """Initialize a new Empathy project."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "init"], check=False)
-
-
-@utility_app.command("new")
-def utility_new(
-    template: str = typer.Argument(None, help="Template name (or --list to show all)"),
-    name: str = typer.Argument(None, help="Project name"),
-    list_templates: bool = typer.Option(False, "--list", "-l", help="List available templates"),
-):
-    """Create a new project from a template."""
-    if list_templates or template is None:
-        subprocess.run([sys.executable, "-m", "empathy_os.cli", "new", "--list"], check=False)
-    else:
-        args = [sys.executable, "-m", "empathy_os.cli", "new", template]
-        if name:
-            args.append(name)
-        subprocess.run(args, check=False)
-
-
-@utility_app.command("onboard")
-def utility_onboard():
-    """Interactive onboarding tutorial for new users."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "onboard"], check=False)
-
-
-@utility_app.command("explain")
-def utility_explain(
-    command: str = typer.Argument(..., help="Command to explain"),
-):
-    """Get detailed explanation of how a command works."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "explain", command], check=False)
-
-
-@utility_app.command("learn")
-def utility_learn(
-    analyze: int = typer.Option(20, "--analyze", "-a", help="Number of commits to analyze"),
-):
-    """Learn patterns from commit history."""
-    subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "learn", "--analyze", str(analyze)],
-        check=False,
-    )
-
-
-@utility_app.command("sync-claude")
-def utility_sync_claude():
-    """Sync patterns to Claude Code memory."""
-    subprocess.run(["empathy-sync-claude", "--source", "patterns"], check=False)
-
-
-@utility_app.command("cheatsheet")
-def utility_cheatsheet():
+@app.command("cheatsheet")
+def cheatsheet():
     """Show quick reference for all commands."""
     console.print(
         Panel.fit(

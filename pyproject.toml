@@ -193,6 +193,7 @@ dev = [
     # Test dependencies for API and integration tests
     "httpx>=0.27.0,<1.0.0",  # For API testing
     "fastapi>=0.109.1,<1.0.0",  # For wizard API tests
+    "requests>=2.28.0,<3.0.0",  # For notification tests
 ]
 
 # Individual developers - lightweight, software development focused
@@ -367,7 +368,7 @@ pr-review = "empathy_os.workflows.pr_review:PRReviewWorkflow"
 [tool.setuptools.packages.find]
 where = ["src", "."]
 namespaces = false
-exclude = ["tests*", "*.tests*", "examples*", "docs*", "*.archive*", "build*", "dist*", "coach_wizards*", "archived_wizards*", "wizards_consolidated*"]
+exclude = ["tests*", "*.tests*", "examples*", "docs*", "*.archive*", "build*", "dist*", "archived_wizards*", "wizards_consolidated*"]
 
 [tool.setuptools.package-dir]
 empathy_os = "src/empathy_os"
