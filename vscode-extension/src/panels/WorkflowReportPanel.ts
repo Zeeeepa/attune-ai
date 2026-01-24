@@ -88,14 +88,14 @@ export class WorkflowReportPanel {
         );
     }
 
-    public static createOrShow(extensionUri: vscode.Uri, workflowName: string, autoRun: boolean = true) {
+    public static createOrShow(extensionUri: vscode.Uri, workflowName: string, autoRun: boolean = true, input?: string) {
         const column = vscode.ViewColumn.One;
 
         // If we already have a panel for this workflow, show it
         if (WorkflowReportPanel.currentPanel && WorkflowReportPanel.currentPanel._currentWorkflow === workflowName) {
             WorkflowReportPanel.currentPanel._panel.reveal(column);
             if (autoRun) {
-                WorkflowReportPanel.currentPanel._runWorkflow();
+                WorkflowReportPanel.currentPanel._runWorkflow(input);
             }
             return;
         }
@@ -118,7 +118,7 @@ export class WorkflowReportPanel {
 
         // Auto-run the workflow if requested
         if (autoRun) {
-            WorkflowReportPanel.currentPanel._runWorkflow();
+            WorkflowReportPanel.currentPanel._runWorkflow(input);
         }
     }
 
@@ -234,25 +234,34 @@ export class WorkflowReportPanel {
     }
 
     private _buildWorkflowArgs(workflow: string, input?: string): string[] {
-        // v4.0: Orchestrated workflows use 'orchestrate' subcommand with JSON output
-        if (workflow === 'orchestrated-health-check') {
-            const baseArgs = ['-m', 'empathy_os.cli', 'orchestrate', 'health-check', '--mode', 'daily', '--json'];
-            return baseArgs;
-        } else if (workflow === 'orchestrated-release-prep') {
-            // v4.6.3: Use 'empathy' CLI directly
-            const baseArgs = ['orchestrate', 'release-prep', '--path', '.', '--json'];
-            return baseArgs;
-        } else {
-            // v4.6.3: Other workflows use 'empathy workflow run' command
-            const baseArgs = ['workflow', 'run', workflow];
+        // v4.7: Workflows are now top-level CLI commands
+        // e.g., empathy code-review . --json
+        const path = input ? JSON.parse(input).path || '.' : '.';
 
-            // Add input if provided
-            if (input) {
-                baseArgs.push('--input', input);
-            }
+        // Map old workflow names to new CLI commands
+        const workflowMap: Record<string, string> = {
+            'orchestrated-health-check': 'health-check',
+            'orchestrated-release-prep': 'release-prep',
+            'health-check': 'health-check',
+            'release-prep': 'release-prep',
+            'code-review': 'code-review',
+            'security-audit': 'security-audit',
+            'test-gen': 'test-gen',
+            'bug-predict': 'bug-predict',
+            'doc-gen': 'doc-gen',
+            'perf-audit': 'perf-audit',
+            'refactor-plan': 'refactor-plan',
+            'dependency-check': 'dependency-check',
+            'test-coverage-boost': 'test-coverage-boost',
+            'pr-review': 'pr-review',
+            'pro-review': 'pro-review',
+            'secure-release': 'secure-release',
+        };
 
-            return baseArgs;
-        }
+        const cliCommand = workflowMap[workflow] || workflow;
+
+        // v4.7: All workflows are now top-level: empathy <workflow> <path> --json
+        return ['-m', 'empathy_os.cli_unified', cliCommand, path, '--json'];
     }
 
     private _parseWorkflowOutput(output: string): any {

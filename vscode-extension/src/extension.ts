@@ -286,15 +286,11 @@ export function activate(context: vscode.ExtensionContext) {
             editor.selection = new vscode.Selection(position, position);
             editor.revealRange(new vscode.Range(position, position));
         }},
-        // Workflow execution command
+        // Workflow execution command (v4.7: displays results in webview panel)
         { name: 'empathy.runWorkflow', handler: async (workflowName: string, input?: any) => {
-            const terminal = vscode.window.createTerminal('Empathy Workflow');
-            terminal.show();
-            if (input) {
-                terminal.sendText(`empathy workflow run ${workflowName} --input '${JSON.stringify(input)}'`);
-            } else {
-                terminal.sendText(`empathy workflow run ${workflowName}`);
-            }
+            // v4.7: Use WorkflowReportPanel for rich webview display
+            const inputJson = input ? JSON.stringify(input) : JSON.stringify({ path: '.' });
+            WorkflowReportPanel.createOrShow(context.extensionUri, workflowName, true, inputJson);
         }},
         // Agent Factory command (distinct from wizards/workflows)
         { name: 'empathy.agentFactory', handler: async () => {
@@ -1994,28 +1990,42 @@ class HealthItem extends vscode.TreeItem {
 }
 
 // ============================================================================
-// Welcome Message
+// Welcome Message / First-Time Init
 // ============================================================================
 
-function showWelcomeIfNeeded(context: vscode.ExtensionContext): void {
-    const hasShownWelcome = context.globalState.get<boolean>('hasShownWelcome');
-    const isInitialized = context.globalState.get<boolean>('empathy.initialized');
+/**
+ * Check if project has .empathy/ directory (indicates initialization)
+ * Matches behavior of empathy_llm_toolkit/hooks/scripts/first_time_init.py
+ */
+function isEmpathyInitialized(): boolean {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        return false;
+    }
+    const empathyDir = path.join(workspaceFolders[0].uri.fsPath, '.empathy');
+    return fs.existsSync(empathyDir);
+}
 
-    if (!hasShownWelcome) {
-        // First-time users get the initialize option prominently
-        if (!isInitialized) {
-            vscode.window
-                .showInformationMessage(
-                    'Welcome to Empathy Framework! Set up your project to get started.',
-                    'Initialize Project',
-                    'Later'
-                )
-                .then((selection) => {
-                    if (selection === 'Initialize Project') {
-                        initializeProject(context);
-                    }
-                });
-        } else {
+/**
+ * Get workspace-specific key for "never show" preference
+ */
+function getNeverShowKey(): string | undefined {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        return undefined;
+    }
+    // Use workspace folder path as unique identifier
+    const workspacePath = workspaceFolders[0].uri.fsPath;
+    const hash = Buffer.from(workspacePath).toString('base64').slice(0, 16);
+    return `empathy.neverInit.${hash}`;
+}
+
+function showWelcomeIfNeeded(context: vscode.ExtensionContext): void {
+    // Check if already initialized (has .empathy/ directory)
+    if (isEmpathyInitialized()) {
+        // Project is initialized, show activation message for returning users
+        const hasShownWelcome = context.globalState.get<boolean>('hasShownWelcome');
+        if (!hasShownWelcome) {
             vscode.window
                 .showInformationMessage(
                     'Empathy Framework extension activated! Run "empathy morning" to get started.',
@@ -2030,9 +2040,36 @@ function showWelcomeIfNeeded(context: vscode.ExtensionContext): void {
                         );
                     }
                 });
+            context.globalState.update('hasShownWelcome', true);
         }
-        context.globalState.update('hasShownWelcome', true);
+        return;
     }
+
+    // Check workspace-specific "never show" preference
+    const neverShowKey = getNeverShowKey();
+    if (neverShowKey) {
+        const neverShow = context.workspaceState.get<boolean>(neverShowKey);
+        if (neverShow) {
+            return;
+        }
+    }
+
+    // Not initialized - show first-time dialog
+    vscode.window
+        .showInformationMessage(
+            'Welcome! Set up Empathy Framework for this project?',
+            'Yes, initialize now',
+            'Not now',
+            'Never for this project'
+        )
+        .then(async (selection) => {
+            if (selection === 'Yes, initialize now') {
+                await initializeProject(context);
+            } else if (selection === 'Never for this project' && neverShowKey) {
+                await context.workspaceState.update(neverShowKey, true);
+            }
+            // "Not now" does nothing - will show again next activation
+        });
 }
 
 // ============================================================================
