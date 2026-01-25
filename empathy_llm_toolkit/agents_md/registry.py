@@ -81,8 +81,7 @@ class AgentRegistry:
         """
         if config.name in self._agents and not overwrite:
             raise ValueError(
-                f"Agent '{config.name}' already registered. "
-                "Use overwrite=True to replace."
+                f"Agent '{config.name}' already registered. Use overwrite=True to replace."
             )
 
         self._agents[config.name] = config
@@ -132,9 +131,7 @@ class AgentRegistry:
         config = self.get(name)
         if config is None:
             available = ", ".join(sorted(self._agents.keys()))
-            raise KeyError(
-                f"Agent '{name}' not found. Available agents: {available}"
-            )
+            raise KeyError(f"Agent '{name}' not found. Available agents: {available}")
         return config
 
     def has(self, name: str) -> bool:
@@ -246,11 +243,7 @@ class AgentRegistry:
 
         """
         role = role.lower()
-        return [
-            config
-            for config in self._agents.values()
-            if config.role.lower() == role
-        ]
+        return [config for config in self._agents.values() if config.role.lower() == role]
 
     def get_by_empathy_level(
         self,
@@ -291,7 +284,11 @@ class AgentRegistry:
             level = config.empathy_level
             by_level[level] = by_level.get(level, 0) + 1
 
-            tier = config.model_tier.value if hasattr(config.model_tier, 'value') else str(config.model_tier)
+            tier = (
+                config.model_tier.value
+                if hasattr(config.model_tier, "value")
+                else str(config.model_tier)
+            )
             by_tier[tier] = by_tier.get(tier, 0) + 1
 
         return {

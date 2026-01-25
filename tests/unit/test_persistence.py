@@ -1,4 +1,5 @@
 """Tests for empathy_os.persistence"""
+
 import json
 import sqlite3
 from pathlib import Path
@@ -7,11 +8,7 @@ import pytest
 
 from empathy_os.core import CollaborationState
 from empathy_os.pattern_library import Pattern, PatternLibrary
-from empathy_os.persistence import (
-    MetricsCollector,
-    PatternPersistence,
-    StateManager,
-)
+from empathy_os.persistence import MetricsCollector, PatternPersistence, StateManager
 
 
 class TestPatternPersistence:

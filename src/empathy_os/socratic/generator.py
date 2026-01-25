@@ -506,14 +506,16 @@ class AgentGenerator:
         # Build stage configuration
         stages_config = []
         for stage in blueprint.stages:
-            stages_config.append({
-                "id": stage.id,
-                "name": stage.name,
-                "agents": stage.agent_ids,
-                "parallel": stage.parallel,
-                "depends_on": stage.depends_on,
-                "timeout": stage.timeout,
-            })
+            stages_config.append(
+                {
+                    "id": stage.id,
+                    "name": stage.name,
+                    "agents": stage.agent_ids,
+                    "parallel": stage.parallel,
+                    "depends_on": stage.depends_on,
+                    "timeout": stage.timeout,
+                }
+            )
 
         return GeneratedWorkflow(
             blueprint=blueprint,
@@ -557,7 +559,11 @@ class AgentGenerator:
             Complete WorkflowBlueprint
         """
         # Group agents by role for staging
-        analyzers = [a for a in agents if a.spec.role in (AgentRole.ANALYZER, AgentRole.REVIEWER, AgentRole.AUDITOR)]
+        analyzers = [
+            a
+            for a in agents
+            if a.spec.role in (AgentRole.ANALYZER, AgentRole.REVIEWER, AgentRole.AUDITOR)
+        ]
         generators = [a for a in agents if a.spec.role == AgentRole.GENERATOR]
         reporters = [a for a in agents if a.spec.role == AgentRole.REPORTER]
 
@@ -565,25 +571,29 @@ class AgentGenerator:
 
         # Stage 1: Analysis (parallel)
         if analyzers:
-            stages.append(StageSpec(
-                id="analysis",
-                name="Analysis",
-                description="Analyze code and identify issues",
-                agent_ids=[a.spec.id for a in analyzers],
-                parallel=True,
-                output_aggregation="merge",
-            ))
+            stages.append(
+                StageSpec(
+                    id="analysis",
+                    name="Analysis",
+                    description="Analyze code and identify issues",
+                    agent_ids=[a.spec.id for a in analyzers],
+                    parallel=True,
+                    output_aggregation="merge",
+                )
+            )
 
         # Stage 2: Generation (sequential, depends on analysis)
         if generators:
-            stages.append(StageSpec(
-                id="generation",
-                name="Generation",
-                description="Generate fixes and improvements",
-                agent_ids=[a.spec.id for a in generators],
-                parallel=False,
-                depends_on=["analysis"] if analyzers else [],
-            ))
+            stages.append(
+                StageSpec(
+                    id="generation",
+                    name="Generation",
+                    description="Generate fixes and improvements",
+                    agent_ids=[a.spec.id for a in generators],
+                    parallel=False,
+                    depends_on=["analysis"] if analyzers else [],
+                )
+            )
 
         # Stage 3: Synthesis (always last)
         if reporters:
@@ -593,14 +603,16 @@ class AgentGenerator:
             if generators:
                 depends.append("generation")
 
-            stages.append(StageSpec(
-                id="synthesis",
-                name="Synthesis",
-                description="Synthesize findings into report",
-                agent_ids=[a.spec.id for a in reporters],
-                parallel=False,
-                depends_on=depends,
-            ))
+            stages.append(
+                StageSpec(
+                    id="synthesis",
+                    name="Synthesis",
+                    description="Synthesize findings into report",
+                    agent_ids=[a.spec.id for a in reporters],
+                    parallel=False,
+                    depends_on=depends,
+                )
+            )
 
         return WorkflowBlueprint(
             name=name,
@@ -667,8 +679,12 @@ class GeneratedWorkflow:
             for agent_id in agent_ids:
                 # Find agent
                 agent = next(
-                    (a for a in self.agents if hasattr(a, "role") and self._match_agent(a, agent_id)),
-                    None
+                    (
+                        a
+                        for a in self.agents
+                        if hasattr(a, "role") and self._match_agent(a, agent_id)
+                    ),
+                    None,
                 )
                 if agent:
                     # Execute agent (simplified)

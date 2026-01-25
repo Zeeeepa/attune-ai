@@ -18,11 +18,8 @@ def test_track_4_token_counting():
 
     try:
         from empathy_llm_toolkit.utils.tokens import (
-            count_tokens,
-            count_message_tokens,
-            estimate_cost,
-            calculate_cost_with_cache,
-        )
+            calculate_cost_with_cache, count_message_tokens, count_tokens,
+            estimate_cost)
 
         # Test basic token counting
         test_text = "Hello, world! This is a test."
@@ -116,17 +113,15 @@ def test_track_1_batch_api():
 
         # Test workflow import
         from empathy_os.workflows.batch_processing import (
-            BatchProcessingWorkflow,
-            BatchRequest,
-            BatchResult,
-        )
+            BatchProcessingWorkflow, BatchRequest, BatchResult)
 
         print(f"✓ BatchProcessingWorkflow imported")
         print(f"✓ BatchRequest dataclass available")
         print(f"✓ BatchResult dataclass available")
 
         # Test task classification
-        from empathy_os.models.tasks import BATCH_ELIGIBLE_TASKS, REALTIME_REQUIRED_TASKS
+        from empathy_os.models.tasks import (BATCH_ELIGIBLE_TASKS,
+                                             REALTIME_REQUIRED_TASKS)
 
         print(f"✓ BATCH_ELIGIBLE_TASKS defined ({len(BATCH_ELIGIBLE_TASKS)} tasks)")
         print(f"✓ REALTIME_REQUIRED_TASKS defined ({len(REALTIME_REQUIRED_TASKS)} tasks)")

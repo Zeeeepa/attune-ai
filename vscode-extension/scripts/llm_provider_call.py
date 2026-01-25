@@ -48,7 +48,8 @@ def main():
 
         # Import providers
         try:
-            from empathy_llm_toolkit.providers import AnthropicProvider, OpenAIProvider
+            from empathy_llm_toolkit.providers import (AnthropicProvider,
+                                                       OpenAIProvider)
         except ImportError as e:
             print(json.dumps({"error": f"Import error: {e}", "fallback": True}))
             sys.exit(0)

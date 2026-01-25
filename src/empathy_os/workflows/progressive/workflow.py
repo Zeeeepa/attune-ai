@@ -24,11 +24,13 @@ logger = logging.getLogger(__name__)
 
 class BudgetExceededError(Exception):
     """Raised when execution cost exceeds configured budget."""
+
     pass
 
 
 class UserCancelledError(Exception):
     """Raised when user cancels execution during approval prompt."""
+
     pass
 
 
@@ -96,10 +98,7 @@ class ProgressiveWorkflow:
         raise NotImplementedError("Subclasses must implement execute()")
 
     def _execute_progressive(
-        self,
-        items: list[Any],
-        workflow_name: str,
-        **kwargs
+        self, items: list[Any], workflow_name: str, **kwargs
     ) -> ProgressiveWorkflowResult:
         """Execute items with progressive tier escalation.
 
@@ -129,8 +128,7 @@ class ProgressiveWorkflow:
         # Estimate cost and request approval
         estimated_cost = self._estimate_total_cost(len(items))
         if not self._request_approval(
-            f"Execute {workflow_name} on {len(items)} items",
-            estimated_cost
+            f"Execute {workflow_name} on {len(items)} items", estimated_cost
         ):
             raise UserCancelledError("User declined to proceed")
 
@@ -140,17 +138,10 @@ class ProgressiveWorkflow:
         context: dict[str, Any] | None = None
 
         while remaining_items and current_tier:
-            logger.info(
-                f"Executing {len(remaining_items)} items at {current_tier.value} tier"
-            )
+            logger.info(f"Executing {len(remaining_items)} items at {current_tier.value} tier")
 
             # Execute at current tier
-            tier_result = self._execute_tier(
-                current_tier,
-                remaining_items,
-                context,
-                **kwargs
-            )
+            tier_result = self._execute_tier(current_tier, remaining_items, context, **kwargs)
 
             self.tier_results.append(tier_result)
 
@@ -167,12 +158,10 @@ class ProgressiveWorkflow:
 
             # Separate successful and failed items
             successful = [
-                item for item in tier_result.generated_items
-                if item.get("quality_score", 0) >= 80
+                item for item in tier_result.generated_items if item.get("quality_score", 0) >= 80
             ]
             failed = [
-                item for item in tier_result.generated_items
-                if item.get("quality_score", 0) < 80
+                item for item in tier_result.generated_items if item.get("quality_score", 0) < 80
             ]
 
             logger.info(
@@ -189,9 +178,7 @@ class ProgressiveWorkflow:
                 break
 
             should_escalate, reason = self._should_escalate(
-                current_tier,
-                tier_result,
-                attempt=tier_result.attempt
+                current_tier, tier_result, attempt=tier_result.attempt
             )
 
             if should_escalate:
@@ -230,16 +217,13 @@ class ProgressiveWorkflow:
                     "previous_cqs": tier_result.quality_score,
                     "failures": failed,
                     "examples": tier_result.generated_items[-3:],  # Last 3 attempts
-                    "reason": reason
+                    "reason": reason,
                 }
 
                 # Request approval for escalation
                 escalation_cost = self._estimate_tier_cost(next_tier, len(remaining_items))
                 if not self._request_escalation_approval(
-                    current_tier,
-                    next_tier,
-                    len(remaining_items),
-                    escalation_cost
+                    current_tier, next_tier, len(remaining_items), escalation_cost
                 ):
                     logger.info("User declined escalation, stopping")
                     break
@@ -265,7 +249,7 @@ class ProgressiveWorkflow:
             final_result=self.tier_results[-1],
             total_cost=sum(r.cost for r in self.tier_results),
             total_duration=sum(r.duration for r in self.tier_results),
-            success=len(remaining_items) == 0
+            success=len(remaining_items) == 0,
         )
 
         # Track workflow completion in telemetry
@@ -275,10 +259,7 @@ class ProgressiveWorkflow:
         return result
 
     def _execute_single_tier(
-        self,
-        items: list[Any],
-        workflow_name: str,
-        **kwargs
+        self, items: list[Any], workflow_name: str, **kwargs
     ) -> ProgressiveWorkflowResult:
         """Execute without progressive escalation (single tier).
 
@@ -307,15 +288,11 @@ class ProgressiveWorkflow:
             final_result=tier_result,
             total_cost=tier_result.cost,
             total_duration=tier_result.duration,
-            success=tier_result.quality_score >= 80
+            success=tier_result.quality_score >= 80,
         )
 
     def _execute_tier(
-        self,
-        tier: Tier,
-        items: list[Any],
-        context: dict[str, Any] | None,
-        **kwargs
+        self, tier: Tier, items: list[Any], context: dict[str, Any] | None, **kwargs
     ) -> TierResult:
         """Execute items at a specific tier.
 
@@ -353,7 +330,7 @@ class ProgressiveWorkflow:
                 generated_items=generated_items,
                 failure_analysis=failure_analysis,
                 cost=cost,
-                duration=duration
+                duration=duration,
             )
 
         except Exception as e:
@@ -370,15 +347,11 @@ class ProgressiveWorkflow:
                 cost=0.0,
                 duration=duration,
                 escalated=True,
-                escalation_reason=f"Execution error: {str(e)}"
+                escalation_reason=f"Execution error: {str(e)}",
             )
 
     def _execute_tier_impl(
-        self,
-        tier: Tier,
-        items: list[Any],
-        context: dict[str, Any] | None,
-        **kwargs
+        self, tier: Tier, items: list[Any], context: dict[str, Any] | None, **kwargs
     ) -> list[dict[str, Any]]:
         """Execute items at specific tier (to be implemented by subclasses).
 
@@ -419,15 +392,10 @@ class ProgressiveWorkflow:
             test_pass_rate=passed / total_items if total_items > 0 else 0.0,
             coverage_percent=avg_coverage,
             assertion_depth=avg_assertions,
-            confidence_score=avg_confidence
+            confidence_score=avg_confidence,
         )
 
-    def _should_escalate(
-        self,
-        tier: Tier,
-        result: TierResult,
-        attempt: int
-    ) -> tuple[bool, str]:
+    def _should_escalate(self, tier: Tier, result: TierResult, attempt: int) -> tuple[bool, str]:
         """Determine if escalation is needed.
 
         Uses meta-orchestrator to make intelligent escalation decisions
@@ -441,12 +409,7 @@ class ProgressiveWorkflow:
         Returns:
             Tuple of (should_escalate, reason)
         """
-        return self.meta_orchestrator.should_escalate(
-            tier,
-            result,
-            attempt,
-            self.config
-        )
+        return self.meta_orchestrator.should_escalate(tier, result, attempt, self.config)
 
     def _get_next_tier(self, current_tier: Tier) -> Tier | None:
         """Get the next tier in the progression.
@@ -496,9 +459,9 @@ class ProgressiveWorkflow:
         """
         # Cost per item (approximate, based on typical token usage)
         COST_PER_ITEM = {
-            Tier.CHEAP: 0.003,     # ~$0.003 per item (gpt-4o-mini)
-            Tier.CAPABLE: 0.015,   # ~$0.015 per item (claude-3-5-sonnet)
-            Tier.PREMIUM: 0.05     # ~$0.05 per item (claude-opus-4)
+            Tier.CHEAP: 0.003,  # ~$0.003 per item (gpt-4o-mini)
+            Tier.CAPABLE: 0.015,  # ~$0.015 per item (claude-3-5-sonnet)
+            Tier.PREMIUM: 0.05,  # ~$0.05 per item (claude-opus-4)
         }
 
         return COST_PER_ITEM[tier] * item_count
@@ -530,7 +493,9 @@ class ProgressiveWorkflow:
         """
         # Check auto-approve threshold
         if self.config.auto_approve_under and estimated_cost <= self.config.auto_approve_under:
-            logger.info(f"Auto-approved: ${estimated_cost:.2f} <= ${self.config.auto_approve_under:.2f}")
+            logger.info(
+                f"Auto-approved: ${estimated_cost:.2f} <= ${self.config.auto_approve_under:.2f}"
+            )
             return True
 
         # Check if under default threshold ($1.00)
@@ -546,14 +511,10 @@ class ProgressiveWorkflow:
         print()
 
         response = input("Proceed? [y/N]: ").strip().lower()
-        return response == 'y'
+        return response == "y"
 
     def _request_escalation_approval(
-        self,
-        from_tier: Tier,
-        to_tier: Tier,
-        item_count: int,
-        additional_cost: float
+        self, from_tier: Tier, to_tier: Tier, item_count: int, additional_cost: float
     ) -> bool:
         """Request approval for tier escalation.
 
@@ -580,7 +541,7 @@ class ProgressiveWorkflow:
         print()
 
         response = input("Proceed? [Y/n]: ").strip().lower()
-        return response != 'n'
+        return response != "n"
 
     def _check_budget(self) -> None:
         """Check if budget has been exceeded.
@@ -622,7 +583,7 @@ class ProgressiveWorkflow:
         MODEL_MAP = {
             Tier.CHEAP: "gpt-4o-mini",
             Tier.CAPABLE: "claude-3-5-sonnet",
-            Tier.PREMIUM: "claude-opus-4"
+            Tier.PREMIUM: "claude-opus-4",
         }
 
         return MODEL_MAP.get(tier, "claude-3-5-sonnet")

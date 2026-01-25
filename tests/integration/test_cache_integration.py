@@ -1,14 +1,24 @@
 """Integration test for cache with BaseWorkflow.
 
 Tests that caching works end-to-end with real workflows.
+
+NOTE: These tests require ANTHROPIC_API_KEY to be set for actual LLM calls.
+Without API access, cache hit/miss stats won't be meaningful.
 """
 
 import asyncio
+import os
 
 import pytest
 
 from empathy_os.cache import create_cache
 from empathy_os.workflows.code_review import CodeReviewWorkflow
+
+# Skip tests if no API key available
+pytestmark = pytest.mark.skipif(
+    not os.environ.get("ANTHROPIC_API_KEY"),
+    reason="ANTHROPIC_API_KEY required for cache integration tests"
+)
 
 
 @pytest.mark.asyncio

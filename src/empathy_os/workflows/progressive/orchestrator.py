@@ -11,11 +11,7 @@ The MetaOrchestrator is responsible for:
 import logging
 from typing import Any
 
-from empathy_os.workflows.progressive.core import (
-    EscalationConfig,
-    Tier,
-    TierResult,
-)
+from empathy_os.workflows.progressive.core import EscalationConfig, Tier, TierResult
 
 logger = logging.getLogger(__name__)
 
@@ -50,15 +46,11 @@ class MetaOrchestrator:
         self.tier_history: dict[Tier, list[float]] = {
             Tier.CHEAP: [],
             Tier.CAPABLE: [],
-            Tier.PREMIUM: []
+            Tier.PREMIUM: [],
         }
 
     def should_escalate(
-        self,
-        tier: Tier,
-        result: TierResult,
-        attempt: int,
-        config: EscalationConfig
+        self, tier: Tier, result: TierResult, attempt: int, config: EscalationConfig
     ) -> tuple[bool, str]:
         """Determine if tier should escalate to next tier.
 
@@ -104,9 +96,7 @@ class MetaOrchestrator:
             return False, "Premium tier is final"
 
     def _check_cheap_escalation(
-        self,
-        result: TierResult,
-        config: EscalationConfig
+        self, result: TierResult, config: EscalationConfig
     ) -> tuple[bool, str]:
         """Check if cheap tier should escalate to capable.
 
@@ -127,24 +117,30 @@ class MetaOrchestrator:
 
         # Check syntax errors (prioritize over CQS)
         if syntax_error_count > config.cheap_to_capable_max_syntax_errors:
-            return True, f"{syntax_error_count} syntax errors exceeds limit {config.cheap_to_capable_max_syntax_errors}"
+            return (
+                True,
+                f"{syntax_error_count} syntax errors exceeds limit {config.cheap_to_capable_max_syntax_errors}",
+            )
 
         # Check failure rate
         if failure_rate > config.cheap_to_capable_failure_rate:
-            return True, f"Failure rate {failure_rate:.1%} exceeds threshold {config.cheap_to_capable_failure_rate:.1%}"
+            return (
+                True,
+                f"Failure rate {failure_rate:.1%} exceeds threshold {config.cheap_to_capable_failure_rate:.1%}",
+            )
 
         # Check CQS threshold
         if cqs < config.cheap_to_capable_min_cqs:
-            return True, f"Quality score {cqs:.1f} below threshold {config.cheap_to_capable_min_cqs}"
+            return (
+                True,
+                f"Quality score {cqs:.1f} below threshold {config.cheap_to_capable_min_cqs}",
+            )
 
         # All checks passed, no escalation needed
         return False, f"Quality acceptable (CQS={cqs:.1f})"
 
     def _check_capable_escalation(
-        self,
-        result: TierResult,
-        attempt: int,
-        config: EscalationConfig
+        self, result: TierResult, attempt: int, config: EscalationConfig
     ) -> tuple[bool, str]:
         """Check if capable tier should escalate to premium.
 
@@ -165,15 +161,24 @@ class MetaOrchestrator:
 
         # Check max attempts first
         if attempt >= config.capable_max_attempts:
-            return True, f"Max attempts ({config.capable_max_attempts}) reached without achieving target quality"
+            return (
+                True,
+                f"Max attempts ({config.capable_max_attempts}) reached without achieving target quality",
+            )
 
         # Check syntax errors (strict for capable tier)
         if syntax_error_count > config.capable_to_premium_max_syntax_errors:
-            return True, f"{syntax_error_count} syntax errors exceeds limit {config.capable_to_premium_max_syntax_errors}"
+            return (
+                True,
+                f"{syntax_error_count} syntax errors exceeds limit {config.capable_to_premium_max_syntax_errors}",
+            )
 
         # Check failure rate
         if failure_rate > config.capable_to_premium_failure_rate:
-            return True, f"Failure rate {failure_rate:.1%} exceeds threshold {config.capable_to_premium_failure_rate:.1%}"
+            return (
+                True,
+                f"Failure rate {failure_rate:.1%} exceeds threshold {config.capable_to_premium_failure_rate:.1%}",
+            )
 
         # Check stagnation (consecutive runs with <5% improvement)
         # Only check if we have enough history
@@ -181,7 +186,7 @@ class MetaOrchestrator:
             is_stagnant, stagnation_reason = self._detect_stagnation(
                 self.tier_history[Tier.CAPABLE],
                 config.improvement_threshold,
-                config.consecutive_stagnation_limit
+                config.consecutive_stagnation_limit,
             )
 
             if is_stagnant:
@@ -189,16 +194,16 @@ class MetaOrchestrator:
 
         # Check CQS threshold (after stagnation check)
         if cqs < config.capable_to_premium_min_cqs and attempt >= config.capable_min_attempts:
-            return True, f"Quality score {cqs:.1f} below threshold {config.capable_to_premium_min_cqs}"
+            return (
+                True,
+                f"Quality score {cqs:.1f} below threshold {config.capable_to_premium_min_cqs}",
+            )
 
         # No escalation needed
         return False, f"Quality acceptable (CQS={cqs:.1f}), continuing improvement"
 
     def _detect_stagnation(
-        self,
-        cqs_history: list[float],
-        improvement_threshold: float,
-        consecutive_limit: int
+        self, cqs_history: list[float], improvement_threshold: float, consecutive_limit: int
     ) -> tuple[bool, str]:
         """Detect if improvement has stagnated.
 
@@ -246,10 +251,7 @@ class MetaOrchestrator:
         return False, "No stagnation detected"
 
     def build_tier_prompt(
-        self,
-        tier: Tier,
-        base_task: str,
-        failure_context: dict[str, Any] | None = None
+        self, tier: Tier, base_task: str, failure_context: dict[str, Any] | None = None
     ) -> str:
         """Build XML-enhanced prompt with failure context.
 
@@ -304,11 +306,7 @@ class MetaOrchestrator:
   </instructions>
 </task>"""
 
-    def _build_capable_prompt(
-        self,
-        base_task: str,
-        failure_context: dict[str, Any] | None
-    ) -> str:
+    def _build_capable_prompt(self, base_task: str, failure_context: dict[str, Any] | None) -> str:
         """Build enhanced prompt for capable tier with failure context.
 
         Args:
@@ -359,12 +357,14 @@ class MetaOrchestrator:
         # Add failure pattern analysis
         if failure_patterns:
             prompt_parts.append("    <failure_analysis>")
-            prompt_parts.append(f"      <total_failures>{failure_patterns.get('total_failures', 0)}</total_failures>")
+            prompt_parts.append(
+                f"      <total_failures>{failure_patterns.get('total_failures', 0)}</total_failures>"
+            )
             prompt_parts.append("      <patterns>")
 
             error_types = failure_patterns.get("error_types", {})
             for error_type, count in sorted(error_types.items(), key=lambda x: -x[1]):
-                prompt_parts.append(f"        <pattern type=\"{error_type}\" count=\"{count}\" />")
+                prompt_parts.append(f'        <pattern type="{error_type}" count="{count}" />')
 
             prompt_parts.append("      </patterns>")
 
@@ -382,68 +382,74 @@ class MetaOrchestrator:
                 error = example.get("error", "Unknown error")
                 code_snippet = example.get("code", "")[:200]  # Limit snippet length
 
-                prompt_parts.append(f"      <example number=\"{i}\">")
+                prompt_parts.append(f'      <example number="{i}">')
                 prompt_parts.append(f"        <error>{self._escape_xml(error)}</error>")
                 if code_snippet:
-                    prompt_parts.append(f"        <code_snippet>{self._escape_xml(code_snippet)}</code_snippet>")
+                    prompt_parts.append(
+                        f"        <code_snippet>{self._escape_xml(code_snippet)}</code_snippet>"
+                    )
                 prompt_parts.append("      </example>")
 
             prompt_parts.append("    </failed_attempts>")
             prompt_parts.append("")
 
-        prompt_parts.extend([
-            "    <improvement_needed>",
-            "      The cheap tier struggled with these items. Analyze the failure",
-            "      patterns above and generate improved solutions that specifically",
-            "      address these issues.",
-            "    </improvement_needed>",
-            "  </context_from_previous_tier>",
-            "",
-            "  <your_task>",
-            "    Generate improved output that avoids the specific failure patterns identified above.",
-            "",
-            "    <quality_requirements>",
-            "      <pass_rate>80%+</pass_rate>",
-            "      <coverage>70%+</coverage>",
-            "      <quality_score>80+</quality_score>",
-            "    </quality_requirements>",
-            "",
-            "    <focus_areas>",
-        ])
+        prompt_parts.extend(
+            [
+                "    <improvement_needed>",
+                "      The cheap tier struggled with these items. Analyze the failure",
+                "      patterns above and generate improved solutions that specifically",
+                "      address these issues.",
+                "    </improvement_needed>",
+                "  </context_from_previous_tier>",
+                "",
+                "  <your_task>",
+                "    Generate improved output that avoids the specific failure patterns identified above.",
+                "",
+                "    <quality_requirements>",
+                "      <pass_rate>80%+</pass_rate>",
+                "      <coverage>70%+</coverage>",
+                "      <quality_score>80+</quality_score>",
+                "    </quality_requirements>",
+                "",
+                "    <focus_areas>",
+            ]
+        )
 
         # Add targeted focus areas based on failure patterns
         if failure_patterns:
             error_types = failure_patterns.get("error_types", {})
             if "async_errors" in error_types:
-                prompt_parts.append("      <focus area=\"async\">Proper async/await patterns and error handling</focus>")
+                prompt_parts.append(
+                    '      <focus area="async">Proper async/await patterns and error handling</focus>'
+                )
             if "mocking_errors" in error_types:
-                prompt_parts.append("      <focus area=\"mocking\">Correct mock setup and teardown</focus>")
+                prompt_parts.append(
+                    '      <focus area="mocking">Correct mock setup and teardown</focus>'
+                )
             if "syntax_errors" in error_types:
-                prompt_parts.append("      <focus area=\"syntax\">Valid Python syntax and imports</focus>")
+                prompt_parts.append(
+                    '      <focus area="syntax">Valid Python syntax and imports</focus>'
+                )
             if "other_errors" in error_types:
-                prompt_parts.append("      <focus area=\"general\">Edge cases and error handling</focus>")
+                prompt_parts.append(
+                    '      <focus area="general">Edge cases and error handling</focus>'
+                )
         else:
             # Default focus areas
-            prompt_parts.extend([
-                "      <focus area=\"syntax\">Correct syntax and structure</focus>",
-                "      <focus area=\"coverage\">Comprehensive test coverage</focus>",
-                "      <focus area=\"errors\">Proper error handling</focus>",
-                "      <focus area=\"edge_cases\">Edge case coverage</focus>",
-            ])
+            prompt_parts.extend(
+                [
+                    '      <focus area="syntax">Correct syntax and structure</focus>',
+                    '      <focus area="coverage">Comprehensive test coverage</focus>',
+                    '      <focus area="errors">Proper error handling</focus>',
+                    '      <focus area="edge_cases">Edge case coverage</focus>',
+                ]
+            )
 
-        prompt_parts.extend([
-            "    </focus_areas>",
-            "  </your_task>",
-            "</task>"
-        ])
+        prompt_parts.extend(["    </focus_areas>", "  </your_task>", "</task>"])
 
         return "\n".join(prompt_parts)
 
-    def _build_premium_prompt(
-        self,
-        base_task: str,
-        failure_context: dict[str, Any] | None
-    ) -> str:
+    def _build_premium_prompt(self, base_task: str, failure_context: dict[str, Any] | None) -> str:
         """Build comprehensive prompt for premium tier.
 
         Args:
@@ -503,25 +509,35 @@ class MetaOrchestrator:
         # Add detailed failure analysis
         if failure_patterns:
             prompt_parts.append("    <persistent_issues>")
-            prompt_parts.append(f"      <total_failures>{failure_patterns.get('total_failures', 0)}</total_failures>")
+            prompt_parts.append(
+                f"      <total_failures>{failure_patterns.get('total_failures', 0)}</total_failures>"
+            )
             prompt_parts.append("      <failure_patterns>")
 
             error_types = failure_patterns.get("error_types", {})
             for error_type, count in sorted(error_types.items(), key=lambda x: -x[1]):
-                prompt_parts.append(f"        <pattern type=\"{error_type}\" count=\"{count}\">")
+                prompt_parts.append(f'        <pattern type="{error_type}" count="{count}">')
 
                 # Add specific guidance per error type
                 if error_type == "async_errors":
-                    prompt_parts.append("          <guidance>Use proper async/await patterns, handle timeouts correctly</guidance>")
+                    prompt_parts.append(
+                        "          <guidance>Use proper async/await patterns, handle timeouts correctly</guidance>"
+                    )
                 elif error_type == "mocking_errors":
-                    prompt_parts.append("          <guidance>Ensure mocks are properly configured and reset</guidance>")
+                    prompt_parts.append(
+                        "          <guidance>Ensure mocks are properly configured and reset</guidance>"
+                    )
                 elif error_type == "syntax_errors":
-                    prompt_parts.append("          <guidance>Double-check syntax, imports, and type annotations</guidance>")
+                    prompt_parts.append(
+                        "          <guidance>Double-check syntax, imports, and type annotations</guidance>"
+                    )
 
                 prompt_parts.append("        </pattern>")
 
             prompt_parts.append("      </failure_patterns>")
-            prompt_parts.append(f"      <primary_issue>{failure_patterns.get('primary_issue', 'unknown')}</primary_issue>")
+            prompt_parts.append(
+                f"      <primary_issue>{failure_patterns.get('primary_issue', 'unknown')}</primary_issue>"
+            )
             prompt_parts.append("    </persistent_issues>")
             prompt_parts.append("")
 
@@ -535,67 +551,77 @@ class MetaOrchestrator:
                 code_snippet = example.get("code", "")[:300]  # More context for premium
                 quality_score = example.get("quality_score", 0)
 
-                prompt_parts.append(f"      <attempt number=\"{i}\" quality_score=\"{quality_score}\">")
+                prompt_parts.append(f'      <attempt number="{i}" quality_score="{quality_score}">')
                 prompt_parts.append(f"        <error>{self._escape_xml(error)}</error>")
                 if code_snippet:
-                    prompt_parts.append(f"        <code_snippet>{self._escape_xml(code_snippet)}</code_snippet>")
+                    prompt_parts.append(
+                        f"        <code_snippet>{self._escape_xml(code_snippet)}</code_snippet>"
+                    )
                 prompt_parts.append("      </attempt>")
 
             prompt_parts.append("    </capable_tier_attempts>")
             prompt_parts.append("")
 
-        prompt_parts.extend([
-            "  </escalation_context>",
-            "",
-            "  <expert_task>",
-            "    <critical_notice>",
-            "      You are the FINAL tier in the progressive escalation system.",
-            "      Previous tiers (cheap and capable) have attempted this task",
-            "      multiple times and could not achieve the required quality.",
-            "",
-            "      This is the last automated attempt before human review.",
-            "      Excellence is not optional - it is required.",
-            "    </critical_notice>",
-            "",
-            "    <expert_techniques>",
-            "      Apply sophisticated approaches:",
-            "      - Deep analysis of why previous attempts failed",
-            "      - Production-grade error handling and edge cases",
-            "      - Comprehensive documentation and clarity",
-            "      - Defensive programming against subtle bugs",
-        ])
+        prompt_parts.extend(
+            [
+                "  </escalation_context>",
+                "",
+                "  <expert_task>",
+                "    <critical_notice>",
+                "      You are the FINAL tier in the progressive escalation system.",
+                "      Previous tiers (cheap and capable) have attempted this task",
+                "      multiple times and could not achieve the required quality.",
+                "",
+                "      This is the last automated attempt before human review.",
+                "      Excellence is not optional - it is required.",
+                "    </critical_notice>",
+                "",
+                "    <expert_techniques>",
+                "      Apply sophisticated approaches:",
+                "      - Deep analysis of why previous attempts failed",
+                "      - Production-grade error handling and edge cases",
+                "      - Comprehensive documentation and clarity",
+                "      - Defensive programming against subtle bugs",
+            ]
+        )
 
         # Add specific techniques based on failure patterns
         if failure_patterns:
             error_types = failure_patterns.get("error_types", {})
             if "async_errors" in error_types:
-                prompt_parts.append("      - Advanced async patterns (asyncio.gather, proper timeouts)")
+                prompt_parts.append(
+                    "      - Advanced async patterns (asyncio.gather, proper timeouts)"
+                )
             if "mocking_errors" in error_types:
-                prompt_parts.append("      - Sophisticated mocking (pytest fixtures, proper lifecycle)")
+                prompt_parts.append(
+                    "      - Sophisticated mocking (pytest fixtures, proper lifecycle)"
+                )
             if "syntax_errors" in error_types:
                 prompt_parts.append("      - Rigorous syntax validation before submission")
 
-        prompt_parts.extend([
-            "    </expert_techniques>",
-            "",
-            "    <quality_requirements>",
-            "      <pass_rate>95%+</pass_rate>",
-            "      <coverage>85%+</coverage>",
-            "      <quality_score>95+</quality_score>",
-            "      <zero_syntax_errors>MANDATORY</zero_syntax_errors>",
-            "    </quality_requirements>",
-            "",
-            "    <success_criteria>",
-            "      Your implementation must:",
-            "      1. Address ALL failure patterns identified above",
-            "      2. Achieve exceptional quality scores (95+)",
-            "      3. Have zero syntax errors or runtime failures",
-            "      4. Include comprehensive edge case coverage",
-            "      5. Be production-ready with proper documentation",
-            "    </success_criteria>",
-            "  </expert_task>",
-            "</task>"
-        ])
+        prompt_parts.extend(
+            [
+                "    </expert_techniques>",
+                "",
+                "    <quality_requirements>",
+                "      <pass_rate>95%+</pass_rate>",
+                "      <coverage>85%+</coverage>",
+                "      <quality_score>95+</quality_score>",
+                "      <zero_syntax_errors>MANDATORY</zero_syntax_errors>",
+                "    </quality_requirements>",
+                "",
+                "    <success_criteria>",
+                "      Your implementation must:",
+                "      1. Address ALL failure patterns identified above",
+                "      2. Achieve exceptional quality scores (95+)",
+                "      3. Have zero syntax errors or runtime failures",
+                "      4. Include comprehensive edge case coverage",
+                "      5. Be production-ready with proper documentation",
+                "    </success_criteria>",
+                "  </expert_task>",
+                "</task>",
+            ]
+        )
 
         return "\n".join(prompt_parts)
 
@@ -613,8 +639,7 @@ class MetaOrchestrator:
             'Error: &lt;missing&gt;'
         """
         return (
-            text
-            .replace("&", "&amp;")
+            text.replace("&", "&amp;")
             .replace("<", "&lt;")
             .replace(">", "&gt;")
             .replace('"', "&quot;")
@@ -622,9 +647,7 @@ class MetaOrchestrator:
         )
 
     def create_agent_team(
-        self,
-        tier: Tier,
-        failure_context: dict[str, Any] | None = None
+        self, tier: Tier, failure_context: dict[str, Any] | None = None
     ) -> list[str]:
         """Create specialized agent team for tier.
 
@@ -658,10 +681,7 @@ class MetaOrchestrator:
         else:  # PREMIUM
             return ["generator", "analyzer", "reviewer"]
 
-    def analyze_failure_patterns(
-        self,
-        failures: list[dict[str, Any]]
-    ) -> dict[str, Any]:
+    def analyze_failure_patterns(self, failures: list[dict[str, Any]]) -> dict[str, Any]:
         """Analyze failure patterns to inform next tier.
 
         Groups failures by type and identifies common issues.
@@ -697,5 +717,7 @@ class MetaOrchestrator:
         return {
             "total_failures": len(failures),
             "error_types": error_types,
-            "primary_issue": max(error_types.items(), key=lambda x: x[1])[0] if error_types else "unknown"
+            "primary_issue": (
+                max(error_types.items(), key=lambda x: x[1])[0] if error_types else "unknown"
+            ),
         }

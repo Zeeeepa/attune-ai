@@ -5,7 +5,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 class TestExperiment:
     """Tests for Experiment dataclass."""
 
@@ -49,11 +48,7 @@ class TestExperiment:
 
     def test_experiment_with_custom_allocation(self):
         """Test experiment with custom allocation strategy."""
-        from empathy_os.socratic.ab_testing import (
-            AllocationStrategy,
-            Experiment,
-            Variant,
-        )
+        from empathy_os.socratic.ab_testing import AllocationStrategy, Experiment, Variant
 
         variant = Variant(
             variant_id="control",
@@ -189,7 +184,10 @@ class TestExperimentManager:
             hypothesis="More agents improve review quality",
             control_config={"agents": ["code_reviewer"]},
             treatment_configs=[
-                {"name": "Treatment A", "config": {"agents": ["code_reviewer", "security_scanner"]}},
+                {
+                    "name": "Treatment A",
+                    "config": {"agents": ["code_reviewer", "security_scanner"]},
+                },
             ],
         )
 
@@ -303,11 +301,7 @@ class TestExperimentResult:
 
     def test_create_result(self):
         """Test creating an experiment result."""
-        from empathy_os.socratic.ab_testing import (
-            Experiment,
-            ExperimentResult,
-            Variant,
-        )
+        from empathy_os.socratic.ab_testing import Experiment, ExperimentResult, Variant
 
         # Create experiment and variants first
         control = Variant(

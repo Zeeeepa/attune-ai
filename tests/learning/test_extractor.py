@@ -131,9 +131,7 @@ class TestPatternExtractor:
 
         patterns = extractor.extract_patterns(state, "test-session")
 
-        correction_patterns = [
-            p for p in patterns if p.category == PatternCategory.USER_CORRECTION
-        ]
+        correction_patterns = [p for p in patterns if p.category == PatternCategory.USER_CORRECTION]
         assert len(correction_patterns) >= 1
 
     def test_extract_error_resolutions(self):
@@ -147,9 +145,7 @@ class TestPatternExtractor:
 
         patterns = extractor.extract_patterns(state, "test-session")
 
-        error_patterns = [
-            p for p in patterns if p.category == PatternCategory.ERROR_RESOLUTION
-        ]
+        error_patterns = [p for p in patterns if p.category == PatternCategory.ERROR_RESOLUTION]
         assert len(error_patterns) >= 1
 
     def test_extract_workarounds(self):
@@ -166,9 +162,7 @@ class TestPatternExtractor:
 
         patterns = extractor.extract_patterns(state, "test-session")
 
-        workaround_patterns = [
-            p for p in patterns if p.category == PatternCategory.WORKAROUND
-        ]
+        workaround_patterns = [p for p in patterns if p.category == PatternCategory.WORKAROUND]
         assert len(workaround_patterns) >= 1
 
     def test_extract_preferences(self):
@@ -181,9 +175,7 @@ class TestPatternExtractor:
 
         patterns = extractor.extract_patterns(state, "test-session")
 
-        pref_patterns = [
-            p for p in patterns if p.category == PatternCategory.PREFERENCE
-        ]
+        pref_patterns = [p for p in patterns if p.category == PatternCategory.PREFERENCE]
         assert len(pref_patterns) >= 2
 
     def test_extract_project_patterns(self):
@@ -204,9 +196,7 @@ class TestPatternExtractor:
 
         patterns = extractor.extract_patterns(state, "test-session")
 
-        project_patterns = [
-            p for p in patterns if p.category == PatternCategory.PROJECT_SPECIFIC
-        ]
+        project_patterns = [p for p in patterns if p.category == PatternCategory.PROJECT_SPECIFIC]
         assert len(project_patterns) >= 1
 
     def test_max_patterns_limit(self):
@@ -243,20 +233,29 @@ class TestPatternExtractor:
         """Test pattern categorization."""
         extractor = PatternExtractor()
 
-        assert extractor.categorize_pattern(
-            "TypeError",
-            "Fix the error by adding null check",
-        ) == PatternCategory.ERROR_RESOLUTION
+        assert (
+            extractor.categorize_pattern(
+                "TypeError",
+                "Fix the error by adding null check",
+            )
+            == PatternCategory.ERROR_RESOLUTION
+        )
 
-        assert extractor.categorize_pattern(
-            "Actually",
-            "User clarification about requirements",
-        ) == PatternCategory.USER_CORRECTION
+        assert (
+            extractor.categorize_pattern(
+                "Actually",
+                "User clarification about requirements",
+            )
+            == PatternCategory.USER_CORRECTION
+        )
 
-        assert extractor.categorize_pattern(
-            "style",
-            "I prefer detailed responses",
-        ) == PatternCategory.PREFERENCE
+        assert (
+            extractor.categorize_pattern(
+                "style",
+                "I prefer detailed responses",
+            )
+            == PatternCategory.PREFERENCE
+        )
 
     def test_summarize_truncation(self):
         """Test that long text is truncated."""

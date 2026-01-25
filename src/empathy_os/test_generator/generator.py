@@ -1,6 +1,6 @@
 """Test generator core implementation.
 
-Generates comprehensive tests for wizards using Jinja2 templates
+Generates comprehensive tests for workflows using Jinja2 templates
 and risk-based prioritization.
 
 Copyright 2025 Smart AI Memory, LLC
@@ -46,7 +46,7 @@ def _get_default_template_dir() -> Path:
 
         # Last resort: Try to find from sys.modules
         this_module = sys.modules.get(__name__)
-        if this_module and hasattr(this_module, "__file__"):
+        if this_module and hasattr(this_module, "__file__") and this_module.__file__:
             return Path(this_module.__file__).parent / "templates"
 
         # Final fallback: Use current working directory
@@ -54,7 +54,7 @@ def _get_default_template_dir() -> Path:
 
 
 class TestGenerator:
-    """Generates tests for wizards based on patterns and risk analysis.
+    """Generates tests for workflows based on patterns and risk analysis.
 
     Uses Jinja2 templates to generate:
     - Unit tests with risk-prioritized coverage
@@ -87,18 +87,18 @@ class TestGenerator:
 
     def generate_tests(
         self,
-        wizard_id: str,
+        workflow_id: str,
         pattern_ids: list[str],
-        wizard_module: str | None = None,
-        wizard_class: str | None = None,
+        workflow_module: str | None = None,
+        workflow_class: str | None = None,
     ) -> dict[str, str | None]:
-        """Generate tests for a wizard.
+        """Generate tests for a workflow.
 
         Args:
-            wizard_id: Wizard identifier
-            pattern_ids: List of pattern IDs used by wizard
-            wizard_module: Python module path (e.g., "wizards.soap_note")
-            wizard_class: Wizard class name (e.g., "SOAPNoteWizard")
+            workflow_id: Workflow identifier
+            pattern_ids: List of pattern IDs used by workflow
+            workflow_module: Python module path (e.g., "workflows.soap_note")
+            workflow_class: Workflow class name (e.g., "SOAPNoteWorkflow")
 
         Returns:
             Dictionary with test types:
@@ -109,31 +109,31 @@ class TestGenerator:
                 }
 
         """
-        logger.info(f"Generating tests for wizard: {wizard_id}")
+        logger.info(f"Generating tests for workflow: {workflow_id}")
 
         # Perform risk analysis
-        risk_analysis = self.risk_analyzer.analyze(wizard_id, pattern_ids)
+        risk_analysis = self.risk_analyzer.analyze(workflow_id, pattern_ids)
 
         # Infer module and class if not provided
-        if not wizard_module:
-            wizard_module = self._infer_module(wizard_id)
+        if not workflow_module:
+            workflow_module = self._infer_module(workflow_id)
 
-        if not wizard_class:
-            wizard_class = self._infer_class_name(wizard_id)
+        if not workflow_class:
+            workflow_class = self._infer_class_name(workflow_id)
 
         # Gather template context
         context = self._build_template_context(
-            wizard_id=wizard_id,
+            workflow_id=workflow_id,
             pattern_ids=pattern_ids,
-            wizard_module=wizard_module,
-            wizard_class=wizard_class,
+            workflow_module=workflow_module,
+            workflow_class=workflow_class,
             risk_analysis=risk_analysis,
         )
 
         # Generate unit tests (always)
         unit_tests = self._generate_unit_tests(context)
 
-        # Generate integration tests (for multi-step wizards)
+        # Generate integration tests (for multi-step workflows)
         integration_tests = None
         if self._needs_integration_tests(pattern_ids):
             integration_tests = self._generate_integration_tests(context)
@@ -142,7 +142,7 @@ class TestGenerator:
         fixtures = self._generate_fixtures(context)
 
         logger.info(
-            f"Generated tests for {wizard_id}: "
+            f"Generated tests for {workflow_id}: "
             f"unit={len(unit_tests)} chars, "
             f"integration={'yes' if integration_tests else 'no'}, "
             f"fixtures={len(fixtures)} chars"
@@ -156,19 +156,19 @@ class TestGenerator:
 
     def _build_template_context(
         self,
-        wizard_id: str,
+        workflow_id: str,
         pattern_ids: list[str],
-        wizard_module: str,
-        wizard_class: str,
+        workflow_module: str,
+        workflow_class: str,
         risk_analysis: Any,
     ) -> dict:
         """Build Jinja2 template context.
 
         Args:
-            wizard_id: Wizard identifier
+            workflow_id: Workflow identifier
             pattern_ids: Pattern IDs
-            wizard_module: Module path
-            wizard_class: Class name
+            workflow_module: Module path
+            workflow_class: Class name
             risk_analysis: RiskAnalysis object
 
         Returns:
@@ -182,7 +182,7 @@ class TestGenerator:
         has_linear_flow = "linear_flow" in pattern_ids
         has_phased = "phased_processing" in pattern_ids
         has_approval = "approval" in pattern_ids
-        has_async = True  # Assume async by default for modern wizards
+        has_async = True  # Assume async by default for modern workflows
 
         # Get linear flow details if present
         total_steps = None
@@ -199,9 +199,9 @@ class TestGenerator:
                 phases = phased_pattern.phases
 
         return {
-            "wizard_id": wizard_id,
-            "wizard_module": wizard_module,
-            "wizard_class": wizard_class,
+            "workflow_id": workflow_id,
+            "workflow_module": workflow_module,
+            "workflow_class": workflow_class,
             "pattern_ids": pattern_ids,
             "patterns": patterns,
             "risk_analysis": risk_analysis,
@@ -239,30 +239,30 @@ class TestGenerator:
         """
         # For now, return a simple integration test template
         # In full implementation, would use integration_test.py.jinja2
-        return f'''"""Integration tests for {context["wizard_id"]} wizard.
+        return f'''"""Integration tests for {context["workflow_id"]} workflow.
 
 Auto-generated by Empathy Framework Test Generator
-Tests end-to-end wizard workflows.
+Tests end-to-end workflow workflows.
 """
 
 import pytest
-from {context["wizard_module"]} import {context["wizard_class"]}
+from {context["workflow_module"]} import {context["workflow_class"]}
 
 
-class TestIntegration{context["wizard_class"]}:
-    """Integration tests for {context["wizard_id"]} wizard."""
+class TestIntegration{context["workflow_class"]}:
+    """Integration tests for {context["workflow_id"]} workflow."""
 
     @pytest.fixture
-    async def wizard(self):
-        """Create wizard instance."""
-        return {context["wizard_class"]}()
+    async def workflow(self):
+        """Create workflow instance."""
+        return {context["workflow_class"]}()
 
     @pytest.mark.asyncio
-    async def test_complete_wizard_workflow(self, wizard):
-        """Test complete wizard workflow end-to-end."""
-        # Start wizard
-        session = await wizard.start()
-        wizard_id = session["wizard_id"]
+    async def test_complete_workflow_workflow(self, workflow):
+        """Test complete workflow workflow end-to-end."""
+        # Start workflow
+        session = await workflow.start()
+        workflow_id = session["workflow_id"]
 
         # Complete all steps with valid data
         # TODO: Add step completion logic
@@ -281,7 +281,7 @@ class TestIntegration{context["wizard_class"]}:
             Generated fixture code
 
         """
-        return f'''"""Test fixtures for {context["wizard_id"]} wizard.
+        return f'''"""Test fixtures for {context["workflow_id"]} workflow.
 
 Auto-generated by Empathy Framework Test Generator
 Provides common test data and mocks.
@@ -292,8 +292,8 @@ from unittest.mock import MagicMock
 
 
 @pytest.fixture
-def sample_{context["wizard_id"]}_data():
-    """Sample data for {context["wizard_id"]} wizard."""
+def sample_{context["workflow_id"]}_data():
+    """Sample data for {context["workflow_id"]} workflow."""
     return {{
         "field1": "test value 1",
         "field2": "test value 2",
@@ -301,8 +301,8 @@ def sample_{context["wizard_id"]}_data():
 
 
 @pytest.fixture
-def mock_{context["wizard_id"]}_dependencies():
-    """Mock dependencies for {context["wizard_id"]} wizard."""
+def mock_{context["workflow_id"]}_dependencies():
+    """Mock dependencies for {context["workflow_id"]} workflow."""
     return {{
         "database": MagicMock(),
         "api_client": MagicMock(),
@@ -319,39 +319,37 @@ def mock_{context["wizard_id"]}_dependencies():
             True if integration tests recommended
 
         """
-        # Integration tests for multi-step or phased wizards
+        # Integration tests for multi-step or phased workflows
         return "linear_flow" in pattern_ids or "phased_processing" in pattern_ids
 
-    def _infer_module(self, wizard_id: str) -> str:
-        """Infer module path from wizard ID.
+    def _infer_module(self, workflow_id: str) -> str:
+        """Infer module path from workflow ID.
 
         Args:
-            wizard_id: Wizard identifier
+            workflow_id: Workflow identifier
 
         Returns:
             Inferred module path
 
         """
-        # Try to determine wizard location
+        # Try to determine workflow location
         # This is a simple heuristic - can be improved
-        if wizard_id in ["soap_note", "sbar", "care_plan"]:
-            return f"wizards.{wizard_id}"
-        elif wizard_id in ["debugging", "testing", "security"]:
-            return f"coach_wizards.{wizard_id}_wizard"
+        if workflow_id in ["soap_note", "sbar", "care_plan"]:
+            return f"workflows.{workflow_id}"
         else:
-            return f"wizards.{wizard_id}_wizard"
+            return f"workflows.{workflow_id}_workflow"
 
-    def _infer_class_name(self, wizard_id: str) -> str:
-        """Infer wizard class name from ID.
+    def _infer_class_name(self, workflow_id: str) -> str:
+        """Infer workflow class name from ID.
 
         Args:
-            wizard_id: Wizard identifier
+            workflow_id: Workflow identifier
 
         Returns:
             Inferred class name
 
         """
-        # Convert snake_case to PascalCase and add "Wizard"
-        parts = wizard_id.split("_")
+        # Convert snake_case to PascalCase and add "Workflow"
+        parts = workflow_id.split("_")
         class_name = "".join(part.capitalize() for part in parts)
-        return f"{class_name}Wizard"
+        return f"{class_name}Workflow"

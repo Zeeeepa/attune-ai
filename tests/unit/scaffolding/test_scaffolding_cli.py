@@ -19,9 +19,9 @@ from unittest.mock import MagicMock, Mock, patch
 import pytest
 
 # Mock imports that scaffolding needs before importing the module
-sys.modules['test_generator'] = MagicMock()
-sys.modules['patterns'] = MagicMock()
-sys.modules['patterns.core'] = MagicMock()
+sys.modules["test_generator"] = MagicMock()
+sys.modules["patterns"] = MagicMock()
+sys.modules["patterns.core"] = MagicMock()
 
 from empathy_os.scaffolding.cli import cmd_create, cmd_list_patterns, main  # noqa: E402
 
@@ -31,9 +31,7 @@ class TestCmdCreate:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_minimal_args(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_minimal_args(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with minimal arguments."""
         # Setup mocks
         mock_reg = Mock()
@@ -80,9 +78,7 @@ class TestCmdCreate:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_custom_domain(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_custom_domain(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with custom domain."""
         # Setup mocks
         mock_reg = Mock()
@@ -124,9 +120,7 @@ class TestCmdCreate:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.TDDFirst")
-    def test_create_with_tdd_methodology(
-        self, mock_tdd_first, mock_registry, capsys
-    ):
+    def test_create_with_tdd_methodology(self, mock_tdd_first, mock_registry, capsys):
         """Test create command with TDD methodology."""
         # Setup mocks
         mock_reg = Mock()
@@ -171,9 +165,7 @@ class TestCmdCreate:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_manual_patterns(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_manual_patterns(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with manually specified patterns."""
         # Setup mocks
         mock_reg = Mock()
@@ -225,7 +217,9 @@ class TestCmdCreate:
         mock_reg = Mock()
         mock_pattern1 = Mock()
         mock_pattern1.name = "Pattern A"
-        mock_pattern1.description = "Description A with more than sixty characters to test truncation"
+        mock_pattern1.description = (
+            "Description A with more than sixty characters to test truncation"
+        )
         mock_pattern1.id = "pattern_a"
         mock_pattern2 = Mock()
         mock_pattern2.name = "Pattern B"
@@ -417,9 +411,7 @@ class TestCmdCreate:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_displays_all_result_info(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_displays_all_result_info(self, mock_pattern_compose, mock_registry, capsys):
         """Test that create command displays all result information."""
         # Setup mocks
         mock_reg = Mock()
@@ -474,9 +466,7 @@ class TestCmdCreate:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_no_recommended_patterns(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_no_recommended_patterns(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command when no patterns are recommended."""
         # Setup mocks
         mock_reg = Mock()
@@ -510,9 +500,7 @@ class TestCmdCreate:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_coach_type(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_coach_type(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with coach wizard type."""
         # Setup mocks
         mock_reg = Mock()
@@ -546,15 +534,11 @@ class TestCmdCreate:
         # Verify
         captured = capsys.readouterr()
         assert "Type: coach" in captured.out
-        mock_reg.recommend_for_wizard.assert_called_once_with(
-            wizard_type="coach", domain="general"
-        )
+        mock_reg.recommend_for_wizard.assert_called_once_with(wizard_type="coach", domain="general")
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_ai_type(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_ai_type(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with AI wizard type."""
         # Setup mocks
         mock_reg = Mock()
@@ -663,7 +647,10 @@ class TestCmdListPatterns:
         # Verify statistics are displayed
         captured = capsys.readouterr()
         assert "Total: 5 patterns" in captured.out
-        assert "Average Reusability: 0.88" in captured.out or "Average Reusability: 0.87" in captured.out
+        assert (
+            "Average Reusability: 0.88" in captured.out
+            or "Average Reusability: 0.87" in captured.out
+        )
 
 
 class TestMainFunction:
@@ -790,9 +777,7 @@ class TestArgumentParsing:
         subparsers = parser.add_subparsers(dest="command")
         create_parser = subparsers.add_parser("create")
         create_parser.add_argument("name")
-        create_parser.add_argument(
-            "--type", choices=["domain", "coach", "ai"]
-        )
+        create_parser.add_argument("--type", choices=["domain", "coach", "ai"])
 
         # Test valid types
         for wtype in ["domain", "coach", "ai"]:
@@ -807,9 +792,7 @@ class TestArgumentParsing:
         subparsers = parser.add_subparsers(dest="command")
         create_parser = subparsers.add_parser("create")
         create_parser.add_argument("name")
-        create_parser.add_argument(
-            "--methodology", choices=["pattern", "tdd"]
-        )
+        create_parser.add_argument("--methodology", choices=["pattern", "tdd"])
 
         # Test valid methodologies
         for method in ["pattern", "tdd"]:
@@ -824,9 +807,7 @@ class TestArgumentParsing:
         subparsers = parser.add_subparsers(dest="command")
         create_parser = subparsers.add_parser("create")
         create_parser.add_argument("name")
-        create_parser.add_argument(
-            "--type", choices=["domain", "coach", "ai"]
-        )
+        create_parser.add_argument("--type", choices=["domain", "coach", "ai"])
 
         with pytest.raises(SystemExit):
             parser.parse_args(["create", "test", "--type", "invalid"])
@@ -862,9 +843,7 @@ class TestEdgeCases:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_empty_pattern_names(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_empty_pattern_names(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with empty pattern names."""
         # Setup mocks
         mock_reg = Mock()
@@ -901,9 +880,7 @@ class TestEdgeCases:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
-    def test_create_with_very_long_wizard_name(
-        self, mock_pattern_compose, mock_registry, capsys
-    ):
+    def test_create_with_very_long_wizard_name(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with very long wizard name."""
         # Setup mocks
         mock_reg = Mock()
@@ -1080,6 +1057,7 @@ class TestPatternImport:
         # This validates the import statement in cmd_list_patterns
         try:
             from patterns.core import PatternCategory
+
             assert PatternCategory is not None
         except ImportError as e:
             pytest.skip(f"Pattern module not available: {e}")
@@ -1088,6 +1066,7 @@ class TestPatternImport:
         """Test that get_pattern_registry can be imported."""
         try:
             from patterns import get_pattern_registry
+
             assert callable(get_pattern_registry)
         except ImportError as e:
             pytest.skip(f"Pattern module not available: {e}")
@@ -1179,9 +1158,7 @@ class TestErrorHandling:
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.TDDFirst")
-    def test_create_when_tdd_first_raises_exception(
-        self, mock_tdd_first, mock_registry
-    ):
+    def test_create_when_tdd_first_raises_exception(self, mock_tdd_first, mock_registry):
         """Test create command when TDDFirst raises exception."""
         # Setup mocks
         mock_reg = Mock()
@@ -1218,9 +1195,7 @@ class TestErrorHandling:
             cmd_list_patterns(args)
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    def test_list_patterns_when_get_statistics_raises_exception(
-        self, mock_registry
-    ):
+    def test_list_patterns_when_get_statistics_raises_exception(self, mock_registry):
         """Test list-patterns when get_statistics raises exception."""
         # Setup mock
         mock_reg = Mock()

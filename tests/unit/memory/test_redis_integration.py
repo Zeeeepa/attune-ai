@@ -11,12 +11,12 @@ Reference: docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md Section 1.1
 Agent: a2cc1e9 - Created 50 comprehensive tests
 """
 
-
 import pytest
 
 # Import Redis memory components
 try:
     from fakeredis import FakeStrictRedis
+
     HAS_FAKEREDIS = True
 except ImportError:
     HAS_FAKEREDIS = False
@@ -130,14 +130,7 @@ class TestDataPersistence:
     def test_stash_complex_nested_data(self, redis_memory, agent_contributor):
         """Test storing complex nested data structures."""
         key = "nested_data"
-        data = {
-            "level1": {
-                "level2": {
-                    "level3": ["a", "b", "c"],
-                    "numbers": [1, 2, 3]
-                }
-            }
-        }
+        data = {"level1": {"level2": {"level3": ["a", "b", "c"], "numbers": [1, 2, 3]}}}
 
         redis_memory.stash(key, data, agent_contributor)
         retrieved = redis_memory.retrieve(key, agent_contributor)
@@ -147,11 +140,7 @@ class TestDataPersistence:
     def test_stash_unicode_data(self, redis_memory, agent_contributor):
         """Test storing unicode characters."""
         key = "unicode_test"
-        data = {
-            "chinese": "测试",
-            "japanese": "テスト",
-            "emoji": "🎉🎊"
-        }
+        data = {"chinese": "测试", "japanese": "テスト", "emoji": "🎉🎊"}
 
         redis_memory.stash(key, data, agent_contributor)
         retrieved = redis_memory.retrieve(key, agent_contributor)
@@ -224,9 +213,7 @@ class TestPagination:
     def test_paginated_result_empty(self, redis_memory, agent_contributor):
         """Test pagination with no staged patterns."""
         result = redis_memory.list_staged_patterns_paginated(
-            agent_contributor,
-            cursor="0",
-            count=10
+            agent_contributor, cursor="0", count=10
         )
 
         assert isinstance(result, PaginatedResult)
@@ -245,9 +232,7 @@ class TestPagination:
         redis_memory.stage_pattern(pattern, agent_contributor)
 
         result = redis_memory.list_staged_patterns_paginated(
-            agent_contributor,
-            cursor="0",
-            count=10
+            agent_contributor, cursor="0", count=10
         )
 
         assert len(result.items) == 1

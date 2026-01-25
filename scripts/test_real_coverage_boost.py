@@ -16,11 +16,9 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.orchestration.real_tools import (
-    RealCoverageAnalyzer,
-    RealTestGenerator,
-    RealTestValidator,
-)
+from empathy_os.orchestration.real_tools import (RealCoverageAnalyzer,
+                                                 RealTestGenerator,
+                                                 RealTestValidator)
 
 
 async def main():

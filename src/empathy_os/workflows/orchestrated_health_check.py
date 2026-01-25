@@ -46,10 +46,7 @@ from typing import Any
 from empathy_os.config import _validate_file_path
 
 from ..orchestration.agent_templates import AgentTemplate, get_template
-from ..orchestration.execution_strategies import (
-    ParallelStrategy,
-    StrategyResult,
-)
+from ..orchestration.execution_strategies import ParallelStrategy, StrategyResult
 from ..orchestration.meta_orchestrator import MetaOrchestrator
 
 logger = logging.getLogger(__name__)
@@ -184,7 +181,7 @@ class HealthCheckReport:
             bar = "█" * bar_length
             lines.append(
                 f"{status} {category.name:15} {category.score:5.1f}/100 "
-                f"(weight: {category.weight*100:2.0f}%) {bar}"
+                f"(weight: {category.weight * 100:2.0f}%) {bar}"
             )
 
             # Show issues for failing categories
@@ -318,7 +315,7 @@ class OrchestratedHealthCheckWorkflow:
         self,
         project_root: str | None = None,
         context: dict[str, Any] | None = None,
-        **kwargs  # Absorb extra parameters from VSCode/CLI (target, etc.)
+        **kwargs,  # Absorb extra parameters from VSCode/CLI (target, etc.)
     ) -> HealthCheckReport:
         """Execute health check workflow.
 
@@ -334,8 +331,8 @@ class OrchestratedHealthCheckWorkflow:
             ValueError: If project_root is invalid
         """
         # Map 'target' to 'project_root' for VSCode compatibility
-        if 'target' in kwargs and not project_root:
-            project_root = kwargs['target']
+        if "target" in kwargs and not project_root:
+            project_root = kwargs["target"]
         if project_root:
             self.project_root = Path(project_root).resolve()
 
@@ -639,9 +636,7 @@ class OrchestratedHealthCheckWorkflow:
                     recommendations.append(
                         f"🧪 Increase test coverage to 80%+ (currently {category.score:.1f}%)"
                     )
-                    recommendations.append(
-                        "   → Run: pytest --cov=src --cov-report=term-missing"
-                    )
+                    recommendations.append("   → Run: pytest --cov=src --cov-report=term-missing")
                     recommendations.append(
                         "   → Or use: empathy workflow run test-gen --path <file>"
                     )

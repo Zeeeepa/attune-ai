@@ -47,7 +47,7 @@ try:
         cmd_inspect = _cli_legacy.cmd_inspect
         cmd_export = _cli_legacy.cmd_export
         cmd_import = _cli_legacy.cmd_import
-        cmd_wizard = _cli_legacy.cmd_wizard
+        cmd_workflow = _cli_legacy.cmd_workflow
         cmd_cheatsheet = _cli_legacy.cmd_cheatsheet
         cmd_frameworks = _cli_legacy.cmd_frameworks
         main_legacy = _cli_legacy.main
@@ -68,18 +68,20 @@ try:
             "cmd_inspect",
             "cmd_export",
             "cmd_import",
-            "cmd_wizard",
+            "cmd_workflow",
             "cmd_cheatsheet",
             "cmd_frameworks",
         ]
-except Exception:
-    # If legacy import fails, functions won't be available
-    # Tests will fail but the new CLI will still work
+except Exception:  # noqa: BLE001
+    # INTENTIONAL: If legacy import fails, functions won't be available.
+    # New CLI still works; legacy re-exports are for backward compatibility only.
     pass
 
-from empathy_os.cli.commands import inspection, utilities
+from empathy_os.cli.commands import inspection
 from empathy_os.cli.commands.memory import memory_app
+from empathy_os.cli.commands.profiling import profile_app
 from empathy_os.cli.commands.provider import provider_app
+from empathy_os.cli.commands.utilities import utilities_app
 from empathy_os.cli.core import console, get_empathy_version, version_callback
 
 # Create the main Typer app
@@ -92,7 +94,10 @@ app = typer.Typer(
 
 # Register command group apps
 app.add_typer(memory_app, name="memory")
+app.add_typer(profile_app, name="profile")
 app.add_typer(provider_app, name="provider")
+app.add_typer(utilities_app, name="utilities")
+app.add_typer(utilities_app, name="utility", hidden=True)  # Alias for common typo
 
 
 @app.callback()
@@ -155,56 +160,9 @@ def inspect_cmd(
 
 
 # =============================================================================
-# UTILITY COMMANDS (top-level)
-# =============================================================================
-
-
-@app.command("sync-claude")
-def sync_claude(source: str = "patterns") -> None:
-    """Sync patterns to Claude Code memory."""
-    utilities.sync_claude(source)
-
-
-@app.command("cheatsheet")
-def cheatsheet() -> None:
-    """Show quick reference for all commands."""
-    utilities.cheatsheet()
-
-
-@app.command("dashboard")
-def dashboard() -> None:
-    """Launch visual dashboard."""
-    utilities.dashboard()
-
-
-@app.command("costs")
-def costs() -> None:
-    """View API cost tracking."""
-    utilities.costs()
-
-
-@app.command("init")
-def init() -> None:
-    """Create a new configuration file."""
-    utilities.init()
-
-
-@app.command("status")
-def status() -> None:
-    """What needs attention now."""
-    utilities.status()
-
-
-# =============================================================================
 # WORKFLOW COMMANDS (delegate to legacy CLI for now)
 # These will be extracted in Phase 2b
 # =============================================================================
-
-
-@app.command("morning")
-def morning() -> None:
-    """Start-of-day briefing with patterns, git context, and priorities."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "morning"], check=False)
 
 
 @app.command("ship")
@@ -273,11 +231,9 @@ try:
         service_app,
         telemetry_app,
         tier_app,
-        wizard_app,
         workflow_app,
     )
 
-    app.add_typer(wizard_app, name="wizard")
     app.add_typer(workflow_app, name="workflow")
     app.add_typer(orchestrate_app, name="orchestrate")
     app.add_typer(telemetry_app, name="telemetry")

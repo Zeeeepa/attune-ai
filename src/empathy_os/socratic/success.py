@@ -147,7 +147,9 @@ class SuccessMetric:
             if self.maximum_value is not None:
                 met = value <= self.maximum_value
                 # Score is inverse ratio (lower is better)
-                score = max(1.0 - (value / self.maximum_value), 0.0) if self.maximum_value > 0 else 1.0
+                score = (
+                    max(1.0 - (value / self.maximum_value), 0.0) if self.maximum_value > 0 else 1.0
+                )
             else:
                 met = True
                 score = 1.0
@@ -204,7 +206,11 @@ class SuccessMetric:
             parts.append(f"Measured: {value}")
 
         # Comparison to baseline
-        if baseline is not None and isinstance(value, (int, float)) and isinstance(baseline, (int, float)):
+        if (
+            baseline is not None
+            and isinstance(value, (int, float))
+            and isinstance(baseline, (int, float))
+        ):
             diff = value - baseline
             pct_change = (diff / baseline * 100) if baseline != 0 else 0
             direction = "↑" if diff > 0 else "↓" if diff < 0 else "→"
@@ -336,14 +342,16 @@ class SuccessCriteria:
 
             if value is None:
                 # Metric not found in output
-                results.append(MetricResult(
-                    metric_id=metric.id,
-                    value=0,
-                    met_criteria=False,
-                    score=0.0,
-                    explanation=f"Metric '{metric.name}' not found in output",
-                    timestamp=timestamp,
-                ))
+                results.append(
+                    MetricResult(
+                        metric_id=metric.id,
+                        value=0,
+                        met_criteria=False,
+                        score=0.0,
+                        explanation=f"Metric '{metric.name}' not found in output",
+                        timestamp=timestamp,
+                    )
+                )
                 continue
 
             # Get baseline if available
@@ -352,15 +360,17 @@ class SuccessCriteria:
             # Evaluate
             met, score, explanation = metric.evaluate(value, baseline)
 
-            results.append(MetricResult(
-                metric_id=metric.id,
-                value=value,
-                met_criteria=met,
-                score=score,
-                explanation=explanation,
-                baseline=baseline,
-                timestamp=timestamp,
-            ))
+            results.append(
+                MetricResult(
+                    metric_id=metric.id,
+                    value=value,
+                    met_criteria=met,
+                    score=score,
+                    explanation=explanation,
+                    baseline=baseline,
+                    timestamp=timestamp,
+                )
+            )
 
         # Calculate overall success
         return self._calculate_overall_success(results)
@@ -419,8 +429,7 @@ class SuccessCriteria:
 
         # Check primary metrics
         primary_results = [
-            r for r in results
-            if any(m.id == r.metric_id and m.is_primary for m in self.metrics)
+            r for r in results if any(m.id == r.metric_id and m.is_primary for m in self.metrics)
         ]
         primary_passed = sum(1 for r in primary_results if r.met_criteria)
 
@@ -435,15 +444,17 @@ class SuccessCriteria:
         else:
             # Weighted average score
             total_weight = sum(
-                m.weight for m in self.metrics
-                if any(r.metric_id == m.id for r in results)
+                m.weight for m in self.metrics if any(r.metric_id == m.id for r in results)
             )
 
             if total_weight > 0:
-                weighted_score = sum(
-                    r.score * next((m.weight for m in self.metrics if m.id == r.metric_id), 1.0)
-                    for r in results
-                ) / total_weight
+                weighted_score = (
+                    sum(
+                        r.score * next((m.weight for m in self.metrics if m.id == r.metric_id), 1.0)
+                        for r in results
+                    )
+                    / total_weight
+                )
             else:
                 weighted_score = sum(r.score for r in results) / len(results)
 

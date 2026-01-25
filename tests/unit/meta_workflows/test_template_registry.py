@@ -20,10 +20,7 @@ from empathy_os.meta_workflows.models import (
     QuestionType,
     TierStrategy,
 )
-from empathy_os.meta_workflows.template_registry import (
-    TemplateRegistry,
-    get_default_registry,
-)
+from empathy_os.meta_workflows.template_registry import TemplateRegistry, get_default_registry
 
 
 def create_test_template(template_id: str = "test-template") -> MetaWorkflowTemplate:
@@ -44,7 +41,7 @@ def create_test_template(template_id: str = "test-template") -> MetaWorkflowTemp
                     text="Test question?",
                     type=QuestionType.TEXT_INPUT,
                 )
-            ]
+            ],
         ),
         agent_composition_rules=[
             AgentCompositionRule(

@@ -68,12 +68,7 @@ class TestTimeWindowQuery:
         start = datetime(2026, 1, 1, 0, 0, 0)
         end = datetime(2026, 1, 31, 23, 59, 59)
 
-        query = TimeWindowQuery(
-            start_time=start,
-            end_time=end,
-            limit=50,
-            offset=10
-        )
+        query = TimeWindowQuery(start_time=start, end_time=end, limit=50, offset=10)
 
         assert query.start_score == start.timestamp()
         assert query.end_score == end.timestamp()

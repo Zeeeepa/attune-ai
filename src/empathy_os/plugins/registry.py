@@ -9,7 +9,7 @@ Licensed under Fair Source 0.9
 import logging
 from importlib.metadata import entry_points
 
-from .base import BasePlugin, BaseWizard, PluginValidationError
+from .base import BasePlugin, BaseWorkflow, PluginValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -118,11 +118,11 @@ class PluginRegistry:
 
         return list(self._plugins.keys())
 
-    def list_all_wizards(self) -> dict[str, list[str]]:
-        """List all wizards from all plugins.
+    def list_all_workflows(self) -> dict[str, list[str]]:
+        """List all workflows from all plugins.
 
         Returns:
-            Dictionary mapping plugin_name -> list of wizard_ids
+            Dictionary mapping plugin_name -> list of workflow_ids
 
         """
         if not self._auto_discovered:
@@ -130,19 +130,19 @@ class PluginRegistry:
 
         result = {}
         for plugin_name, plugin in self._plugins.items():
-            result[plugin_name] = plugin.list_wizards()
+            result[plugin_name] = plugin.list_workflows()
 
         return result
 
-    def get_wizard(self, plugin_name: str, wizard_id: str) -> type[BaseWizard] | None:
-        """Get a wizard from a specific plugin.
+    def get_workflow(self, plugin_name: str, workflow_id: str) -> type[BaseWorkflow] | None:
+        """Get a workflow from a specific plugin.
 
         Args:
             plugin_name: Plugin identifier
-            wizard_id: Wizard identifier within plugin
+            workflow_id: Workflow identifier within plugin
 
         Returns:
-            Wizard class or None if not found
+            Workflow class or None if not found
 
         """
         plugin = self.get_plugin(plugin_name)
@@ -150,33 +150,33 @@ class PluginRegistry:
             self.logger.warning(f"Plugin '{plugin_name}' not found")
             return None
 
-        return plugin.get_wizard(wizard_id)
+        return plugin.get_workflow(workflow_id)
 
-    def get_wizard_info(self, plugin_name: str, wizard_id: str) -> dict | None:
-        """Get information about a wizard.
+    def get_workflow_info(self, plugin_name: str, workflow_id: str) -> dict | None:
+        """Get information about a workflow.
 
         Args:
             plugin_name: Plugin identifier
-            wizard_id: Wizard identifier
+            workflow_id: Workflow identifier
 
         Returns:
-            Dictionary with wizard metadata or None
+            Dictionary with workflow metadata or None
 
         """
         plugin = self.get_plugin(plugin_name)
         if not plugin:
             return None
 
-        return plugin.get_wizard_info(wizard_id)
+        return plugin.get_workflow_info(workflow_id)
 
-    def find_wizards_by_level(self, empathy_level: int) -> list[dict]:
-        """Find all wizards operating at a specific empathy level.
+    def find_workflows_by_level(self, empathy_level: int) -> list[dict]:
+        """Find all workflows operating at a specific empathy level.
 
         Args:
             empathy_level: Target empathy level (1-5)
 
         Returns:
-            List of wizard info dictionaries
+            List of workflow info dictionaries
 
         """
         if not self._auto_discovered:
@@ -184,22 +184,22 @@ class PluginRegistry:
 
         results = []
         for plugin_name, plugin in self._plugins.items():
-            for wizard_id in plugin.list_wizards():
-                info = plugin.get_wizard_info(wizard_id)
+            for workflow_id in plugin.list_workflows():
+                info = plugin.get_workflow_info(workflow_id)
                 if info and info.get("empathy_level") == empathy_level:
                     info["plugin"] = plugin_name
                     results.append(info)
 
         return results
 
-    def find_wizards_by_domain(self, domain: str) -> list[dict]:
-        """Find all wizards for a specific domain.
+    def find_workflows_by_domain(self, domain: str) -> list[dict]:
+        """Find all workflows for a specific domain.
 
         Args:
             domain: Domain identifier (e.g., 'software', 'healthcare')
 
         Returns:
-            List of wizard info dictionaries
+            List of workflow info dictionaries
 
         """
         if not self._auto_discovered:
@@ -209,8 +209,8 @@ class PluginRegistry:
         for plugin_name, plugin in self._plugins.items():
             metadata = plugin.get_metadata()
             if metadata.domain == domain:
-                for wizard_id in plugin.list_wizards():
-                    info = plugin.get_wizard_info(wizard_id)
+                for workflow_id in plugin.list_workflows():
+                    info = plugin.get_workflow_info(workflow_id)
                     if info:
                         info["plugin"] = plugin_name
                         results.append(info)
@@ -227,26 +227,26 @@ class PluginRegistry:
         if not self._auto_discovered:
             self.auto_discover()
 
-        total_wizards = sum(len(plugin.list_wizards()) for plugin in self._plugins.values())
+        total_workflows = sum(len(plugin.list_workflows()) for plugin in self._plugins.values())
 
-        # Count wizards by level
-        wizards_by_level = {}
+        # Count workflows by level
+        workflows_by_level = {}
         for level in range(1, 6):
-            wizards_by_level[f"level_{level}"] = len(self.find_wizards_by_level(level))
+            workflows_by_level[f"level_{level}"] = len(self.find_workflows_by_level(level))
 
         return {
             "total_plugins": len(self._plugins),
-            "total_wizards": total_wizards,
+            "total_workflows": total_workflows,
             "plugins": [
                 {
                     "name": name,
                     "domain": plugin.get_metadata().domain,
                     "version": plugin.get_metadata().version,
-                    "wizard_count": len(plugin.list_wizards()),
+                    "workflow_count": len(plugin.list_workflows()),
                 }
                 for name, plugin in self._plugins.items()
             ],
-            "wizards_by_level": wizards_by_level,
+            "workflows_by_level": workflows_by_level,
         }
 
 

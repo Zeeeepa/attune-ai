@@ -29,7 +29,10 @@ class TestDocumentationOrchestratorInitialization:
     def test_orchestrator_basic_initialization(self, orchestrator, tmp_path):
         """Test orchestrator initializes with correct defaults."""
         assert orchestrator.name == "documentation-orchestrator"
-        assert orchestrator.description == "End-to-end documentation management: scout gaps, prioritize, generate docs"
+        assert (
+            orchestrator.description
+            == "End-to-end documentation management: scout gaps, prioritize, generate docs"
+        )
         assert orchestrator.project_root == tmp_path
         assert orchestrator.max_items == 5
         assert orchestrator.max_cost == 5.0
@@ -461,10 +464,7 @@ class TestPrioritizeItems:
 
     def test_prioritize_respects_max_items(self, orchestrator):
         """Test prioritization limits to max_items."""
-        items = [
-            DocumentationItem(f"file{i}.py", "missing", "high", 1)
-            for i in range(10)
-        ]
+        items = [DocumentationItem(f"file{i}.py", "missing", "high", 1) for i in range(10)]
 
         prioritized = orchestrator._prioritize_items(items)
         assert len(prioritized) == 3  # max_items=3
@@ -507,11 +507,11 @@ class TestParseScoutFindings:
         mock_result.findings = [
             {
                 "agent": "Documentation Analyst",
-                "response": '''Found issues:
+                "response": """Found issues:
                 "file_path": "src/main.py"
                 "issue_type": "missing_docstring"
                 "severity": "high"
-                ''',
+                """,
             }
         ]
 
@@ -532,19 +532,19 @@ class TestParseScoutFindings:
         mock_result.findings = [
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "stale.py"
                 "issue_type": "stale_doc"
                 "severity": "high"
-                ''',
+                """,
             },
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "missing.py"
                 "issue_type": "missing_docstring"
                 "severity": "high"
-                ''',
+                """,
             },
         ]
 
@@ -564,19 +564,19 @@ class TestParseScoutFindings:
         mock_result.findings = [
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "high.py"
                 "issue_type": "missing_docstring"
                 "severity": "high"
-                ''',
+                """,
             },
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "low.py"
                 "issue_type": "missing_docstring"
                 "severity": "low"
-                ''',
+                """,
             },
         ]
 
@@ -814,11 +814,11 @@ class TestScoutPhase:
         mock_result.findings = [
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "src/main.py"
                 "issue_type": "missing_docstring"
                 "severity": "high"
-                ''',
+                """,
             }
         ]
         mock_scout.execute = AsyncMock(return_value=mock_result)
@@ -1050,11 +1050,11 @@ class TestExecuteWorkflow:
         mock_result.findings = [
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "test.py"
                 "issue_type": "missing_docstring"
                 "severity": "high"
-                ''',
+                """,
             }
         ]
         mock_scout.execute = AsyncMock(return_value=mock_result)
@@ -1214,10 +1214,12 @@ class TestGenerateForFilesMethods:
         mock_writer.execute = AsyncMock(return_value=mock_result)
         orchestrator._writer = mock_writer
 
-        result = await orchestrator.generate_for_files([
-            "src/main.py",
-            "requirements.txt",  # Should be excluded
-        ])
+        result = await orchestrator.generate_for_files(
+            [
+                "src/main.py",
+                "requirements.txt",  # Should be excluded
+            ]
+        )
 
         assert result["success"] is True
         assert len(result["skipped"]) == 1
@@ -1272,11 +1274,11 @@ class TestEndToEndScenarios:
         mock_scout_result.findings = [
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "main.py"
                 "issue_type": "missing_docstring"
                 "severity": "high"
-                ''',
+                """,
             }
         ]
         mock_scout.execute = AsyncMock(return_value=mock_scout_result)
@@ -1319,11 +1321,11 @@ class TestEndToEndScenarios:
         mock_scout_result.findings = [
             {
                 "agent": "Analyst",
-                "response": '''
+                "response": """
                 "file_path": "test.py"
                 "issue_type": "missing_docstring"
                 "severity": "high"
-                ''',
+                """,
             }
         ]
         mock_scout.execute = AsyncMock(return_value=mock_scout_result)
@@ -1359,7 +1361,7 @@ class TestErrorHandlingPaths:
         test_file.write_text("def test(): pass")
 
         # Make file unreadable (Unix-like systems)
-        if os.name != 'nt':  # Skip on Windows
+        if os.name != "nt":  # Skip on Windows
             original_mode = test_file.stat().st_mode
             test_file.chmod(0o000)
 
@@ -1371,11 +1373,11 @@ class TestErrorHandlingPaths:
         result = await orchestrator.generate_for_file("test.py")
 
         # Restore permissions for cleanup
-        if os.name != 'nt':
+        if os.name != "nt":
             test_file.chmod(original_mode)
 
         # Should handle error gracefully
-        if os.name != 'nt':
+        if os.name != "nt":
             assert "error" in result or "document" in result  # Different OSes behave differently
 
     async def test_generate_phase_file_read_error_handling(self, tmp_path):

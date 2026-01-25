@@ -4,12 +4,22 @@ description: Agent hub - create, manage, and invoke specialized agents
 category: hub
 aliases: [agents]
 tags: [agents, teams, orchestration, hub]
-version: "1.0"
+version: "2.0"
 ---
 
 # Agent Management
 
+**Aliases:** `/agents`
+
 Create, configure, and orchestrate specialized agents.
+
+## Quick Examples
+
+```bash
+/agent                      # Interactive menu
+/agent "create code review" # Create new agent
+/agent "list available"     # List agents
+```
 
 ## Discovery
 
@@ -28,36 +38,30 @@ Question:
       description: "Run a specific agent for a task"
 ```
 
-## Routing
+---
 
-Based on selection:
+## Create New Agent
 
-| Selection | Command | Description |
-|-----------|---------|-------------|
-| Create new agent | `/create-agent` | Define agent with markdown format |
-| Create agent team | `/create-team` | Assemble multi-agent workflow |
-| List agents | `/agents list` | Show all available agents |
-| Invoke agent | `/agents invoke` | Run specific agent |
+Define a new specialized agent in markdown format.
 
-## Quick Access
+**Tell me:**
 
-- `/create-agent "name"` - Create new agent
-- `/create-team "team-name"` - Create agent team
-- `/agents list` - List all agents
-- `/agents invoke architect` - Invoke architect agent
+- Agent name and purpose
+- What tasks it should handle
+- Any special tools or permissions needed
 
-## Agent Types
+**I will:**
 
-| Agent | Role | Use Case |
-|-------|------|----------|
-| **architect** | System design | Architecture decisions |
-| **code-reviewer** | Quality review | Code review tasks |
-| **security-reviewer** | Security audit | Security-sensitive code |
-| **empathy-specialist** | Level 4+ anticipation | Complex user needs |
+1. Create agent markdown file in `agents_md/`
+2. Define appropriate:
+   - Role and description
+   - Tool permissions
+   - Model tier (cheap/capable/premium)
+   - Empathy level (1-5)
+3. Add detailed instructions
+4. Register in the agent registry
 
-## Agent Format
-
-Agents are defined in markdown with YAML frontmatter:
+**Agent file format:**
 
 ```markdown
 ---
@@ -71,12 +75,29 @@ empathy_level: 3
 
 # Agent Instructions
 
-Detailed instructions in markdown...
+Detailed instructions for the agent...
 ```
 
-## Team Composition
+---
 
-Teams combine agents for complex workflows:
+## Create Agent Team
+
+Assemble multiple agents for collaborative work.
+
+**Tell me:**
+
+- Team purpose
+- What agents should be included
+- Workflow type (sequential, parallel, or custom)
+
+**I will:**
+
+1. Select appropriate agents
+2. Define the workflow
+3. Set up handoff points
+4. Configure aggregation of results
+
+**Team composition example:**
 
 ```yaml
 team: code-review-team
@@ -87,30 +108,63 @@ agents:
 workflow: sequential
 ```
 
-## When to Use Each
+---
 
-**Use `/create-agent` when:**
+## List Agents
 
-- Need specialized capability
-- Recurring task pattern
-- Want consistent behavior
-- Building reusable workflows
+View all available agents and their capabilities.
 
-**Use `/create-team` when:**
+**I will:**
 
-- Complex multi-step task
-- Multiple perspectives needed
-- Collaborative workflow
-- Quality gates required
+1. Scan `agents_md/` directory
+2. Load agent registry
+3. Display:
+   - Agent name and role
+   - Description
+   - Tools available
+   - Model tier
+   - Empathy level
 
-**Use `/agents list` when:**
+**Available agents:**
 
-- Exploring capabilities
-- Finding right agent
-- Checking agent status
+| Agent                  | Role            | Use Case                |
+| ---------------------- | --------------- | ----------------------- |
+| **architect**          | System design   | Architecture decisions  |
+| **code-reviewer**      | Quality review  | Code review tasks       |
+| **security-reviewer**  | Security audit  | Security-sensitive code |
+| **empathy-specialist** | Level 4+ work   | Complex user needs      |
 
-**Use `/agents invoke` when:**
+---
 
-- Know which agent needed
-- Running specific workflow
-- Testing agent behavior
+## Invoke Agent
+
+Run a specific agent for a task.
+
+**Tell me:**
+
+- Which agent to invoke
+- The task or input for the agent
+
+**I will:**
+
+1. Load the agent configuration
+2. Set up the appropriate context
+3. Run the agent with your input
+4. Return the agent's output
+
+---
+
+## When NOT to Use This Hub
+
+| If you need...        | Use instead |
+| --------------------- | ----------- |
+| Debug code            | `/dev`      |
+| Run tests             | `/testing`  |
+| Plan implementation   | `/workflow` |
+| Manage context/memory | `/context`  |
+
+## Related Hubs
+
+- `/workflow` - Development workflows
+- `/context` - Context and memory management
+- `/learning` - Pattern learning

@@ -187,18 +187,22 @@ Updated.
 
     def test_get_summary(self, registry):
         """Test getting registry summary."""
-        registry.register(UnifiedAgentConfig(
-            name="arch",
-            role="architect",
-            model_tier=ModelTier.PREMIUM,
-            empathy_level=5,
-        ))
-        registry.register(UnifiedAgentConfig(
-            name="rev",
-            role="reviewer",
-            model_tier=ModelTier.CAPABLE,
-            empathy_level=4,
-        ))
+        registry.register(
+            UnifiedAgentConfig(
+                name="arch",
+                role="architect",
+                model_tier=ModelTier.PREMIUM,
+                empathy_level=5,
+            )
+        )
+        registry.register(
+            UnifiedAgentConfig(
+                name="rev",
+                role="reviewer",
+                model_tier=ModelTier.CAPABLE,
+                empathy_level=4,
+            )
+        )
 
         summary = registry.get_summary()
 

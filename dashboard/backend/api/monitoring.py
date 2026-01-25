@@ -15,13 +15,9 @@ from fastapi import APIRouter, HTTPException, Query, status
 
 from empathy_os.models.telemetry import TelemetryAnalytics, get_telemetry_store
 
-from ..schemas import (
-    AgentPerformanceResponse,
-    CoverageStatsResponse,
-    TaskRoutingStatsResponse,
-    TestExecutionStatsResponse,
-    Tier1SummaryResponse,
-)
+from ..schemas import (AgentPerformanceResponse, CoverageStatsResponse,
+                       TaskRoutingStatsResponse, TestExecutionStatsResponse,
+                       Tier1SummaryResponse)
 
 logger = structlog.get_logger(__name__)
 

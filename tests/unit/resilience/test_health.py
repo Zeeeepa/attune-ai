@@ -103,9 +103,7 @@ class TestSystemHealth:
         """Test serialization to dictionary."""
         checks = [HealthCheckResult(name="check1", status=HealthStatus.HEALTHY)]
 
-        health = SystemHealth(
-            status=HealthStatus.HEALTHY, checks=checks, version="1.0.0"
-        )
+        health = SystemHealth(status=HealthStatus.HEALTHY, checks=checks, version="1.0.0")
 
         result = health.to_dict()
 
@@ -126,6 +124,7 @@ class TestHealthCheckClass:
 
     def test_register_check_as_decorator(self, health):
         """Test registering health check as decorator."""
+
         @health.register("my_check")
         def check_func():
             return True
@@ -135,6 +134,7 @@ class TestHealthCheckClass:
 
     def test_register_check_with_timeout(self, health):
         """Test registering check with custom timeout."""
+
         @health.register("slow_check", timeout=30.0)
         def slow_check():
             return True
@@ -143,6 +143,7 @@ class TestHealthCheckClass:
 
     def test_register_critical_check(self, health):
         """Test registering critical check."""
+
         @health.register("critical_check", critical=True)
         def critical_func():
             return True
@@ -152,6 +153,7 @@ class TestHealthCheckClass:
     @pytest.mark.asyncio
     async def test_run_check_returns_healthy(self, health):
         """Test running check that returns True."""
+
         @health.register("healthy_check")
         def healthy():
             return True
@@ -163,6 +165,7 @@ class TestHealthCheckClass:
     @pytest.mark.asyncio
     async def test_run_check_returns_unhealthy(self, health):
         """Test running check that returns False."""
+
         @health.register("unhealthy_check")
         def unhealthy():
             return False
@@ -174,6 +177,7 @@ class TestHealthCheckClass:
     @pytest.mark.asyncio
     async def test_run_check_with_dict_response(self, health):
         """Test running check that returns dict."""
+
         @health.register("dict_check")
         def dict_response():
             return {"healthy": True, "connections": 5}
@@ -185,6 +189,7 @@ class TestHealthCheckClass:
     @pytest.mark.asyncio
     async def test_run_check_handles_exception(self, health):
         """Test running check that raises exception."""
+
         @health.register("error_check")
         def raises_error():
             raise ValueError("Something went wrong")
@@ -197,6 +202,7 @@ class TestHealthCheckClass:
     @pytest.mark.asyncio
     async def test_run_check_tracks_latency(self, health):
         """Test that run_check tracks execution latency."""
+
         @health.register("latency_check")
         async def slow_check():
             await asyncio.sleep(0.05)
@@ -209,6 +215,7 @@ class TestHealthCheckClass:
     @pytest.mark.asyncio
     async def test_run_all_checks(self, health):
         """Test running all registered checks."""
+
         @health.register("check1")
         def check1():
             return True
@@ -225,6 +232,7 @@ class TestHealthCheckClass:
     @pytest.mark.asyncio
     async def test_run_all_with_unhealthy_check(self, health):
         """Test run_all with one unhealthy check."""
+
         @health.register("healthy")
         def healthy():
             return True
@@ -240,6 +248,7 @@ class TestHealthCheckClass:
 
     def test_run_all_sync(self, health):
         """Test synchronous run_all wrapper."""
+
         @health.register("sync_check")
         def sync_check():
             return True
@@ -261,6 +270,7 @@ class TestHealthCheckAsync:
     @pytest.mark.asyncio
     async def test_async_check_function(self, health):
         """Test registering and running async check."""
+
         @health.register("async_check")
         async def async_healthy():
             await asyncio.sleep(0.01)

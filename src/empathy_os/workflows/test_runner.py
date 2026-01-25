@@ -562,7 +562,7 @@ def _find_test_file(source_file: str) -> str | None:
     if "src" in source_path.parts:
         try:
             src_idx = source_path.parts.index("src")
-            rel_parts = source_path.parts[src_idx + 1:-1]  # Exclude src and filename
+            rel_parts = source_path.parts[src_idx + 1 : -1]  # Exclude src and filename
             if len(rel_parts) >= 2:
                 # e.g., ('empathy_os', 'models') -> module_name = 'models'
                 module_name = rel_parts[-1]
@@ -572,19 +572,23 @@ def _find_test_file(source_file: str) -> str | None:
     # Priority 1: Module-specific test directory
     # e.g., src/empathy_os/models/registry.py -> tests/unit/models/test_registry.py
     if module_name:
-        patterns.extend([
-            Path("tests") / "unit" / module_name / f"test_{filename}.py",
-            Path("tests") / module_name / f"test_{filename}.py",
-            Path("tests") / "integration" / module_name / f"test_{filename}.py",
-        ])
+        patterns.extend(
+            [
+                Path("tests") / "unit" / module_name / f"test_{filename}.py",
+                Path("tests") / module_name / f"test_{filename}.py",
+                Path("tests") / "integration" / module_name / f"test_{filename}.py",
+            ]
+        )
 
     # Priority 2: Standard locations
-    patterns.extend([
-        Path("tests") / "unit" / f"test_{filename}.py",
-        Path("tests") / f"test_{filename}.py",
-        Path("tests") / "integration" / f"test_{filename}.py",
-        parent / f"test_{filename}.py",
-    ])
+    patterns.extend(
+        [
+            Path("tests") / "unit" / f"test_{filename}.py",
+            Path("tests") / f"test_{filename}.py",
+            Path("tests") / "integration" / f"test_{filename}.py",
+            parent / f"test_{filename}.py",
+        ]
+    )
 
     # Check explicit patterns first
     for pattern in patterns:

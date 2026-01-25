@@ -3,9 +3,7 @@
 import tempfile
 from datetime import datetime
 
-from empathy_llm_toolkit.context.compaction import (
-    CompactState,
-)
+from empathy_llm_toolkit.context.compaction import CompactState
 from empathy_llm_toolkit.context.manager import ContextManager
 from empathy_llm_toolkit.state import CollaborationState, PatternType, UserPattern
 

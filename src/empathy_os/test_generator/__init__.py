@@ -1,6 +1,6 @@
-"""Risk-Driven Test Generator for Wizard Factory.
+"""Risk-Driven Test Generator for Workflow Factory.
 
-Generates comprehensive tests for wizards based on risk analysis and patterns.
+Generates comprehensive tests for workflows based on risk analysis and patterns.
 
 Features:
 - Risk-based test prioritization
@@ -14,7 +14,7 @@ Usage:
 
     generator = TestGenerator()
     tests = generator.generate_tests(
-        wizard_id="soap_note",
+        workflow_id="soap_note",
         pattern_ids=["linear_flow", "approval", "structured_fields"]
     )
 

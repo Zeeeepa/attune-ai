@@ -143,9 +143,7 @@ def fhir_observation_data():
     return json.dumps(
         {
             "resourceType": "Observation",
-            "code": {
-                "coding": [{"system": "http://loinc.org", "code": "8867-4"}]
-            },
+            "code": {"coding": [{"system": "http://loinc.org", "code": "8867-4"}]},
             "valueQuantity": {"value": 110, "unit": "bpm"},
             "effectiveDateTime": "2026-01-20T14:30:00Z",
             "subject": {"reference": "Patient/12345"},
@@ -227,9 +225,7 @@ class TestSimpleJSONParser:
     def test_parse_unknown_vitals(self):
         """Test parsing data with unknown vital types."""
         parser = SimpleJSONParser()
-        data = json.dumps(
-            {"patient_id": "12345", "vitals": {"unknown_vital": 100}}
-        )
+        data = json.dumps({"patient_id": "12345", "vitals": {"unknown_vital": 100}})
         readings = parser.parse(data)
         assert readings == []
 
@@ -291,9 +287,7 @@ class TestFHIRObservationParser:
         data = json.dumps(
             {
                 "resourceType": "Observation",
-                "code": {
-                    "coding": [{"system": "http://loinc.org", "code": "99999-9"}]
-                },
+                "code": {"coding": [{"system": "http://loinc.org", "code": "99999-9"}]},
                 "valueQuantity": {"value": 100},
             }
         )
@@ -310,9 +304,7 @@ class TestFHIRObservationParser:
             data = json.dumps(
                 {
                     "resourceType": "Observation",
-                    "code": {
-                        "coding": [{"system": "http://loinc.org", "code": code}]
-                    },
+                    "code": {"coding": [{"system": "http://loinc.org", "code": code}]},
                     "valueQuantity": {"value": 100, "unit": "units"},
                     "subject": {"reference": "Patient/test"},
                 }
@@ -583,9 +575,7 @@ class TestProtocolChecker:
         assert result.activation_score < sample_protocol.screening_threshold
         assert result.alert_level == "NONE"
 
-    def test_check_compliance_protocol_activated(
-        self, sample_protocol, sample_patient_data
-    ):
+    def test_check_compliance_protocol_activated(self, sample_protocol, sample_patient_data):
         """Test compliance check when criteria met."""
         checker = ProtocolChecker()
 
@@ -595,9 +585,7 @@ class TestProtocolChecker:
         assert result.activation_score >= sample_protocol.screening_threshold
         assert result.threshold == sample_protocol.screening_threshold
 
-    def test_check_compliance_with_intervention_status(
-        self, sample_protocol, sample_patient_data
-    ):
+    def test_check_compliance_with_intervention_status(self, sample_protocol, sample_patient_data):
         """Test compliance check with intervention status."""
         checker = ProtocolChecker()
         intervention_status = {
@@ -606,17 +594,13 @@ class TestProtocolChecker:
             "Administer antibiotics": {"completed": False, "time_due": None},
         }
 
-        result = checker.check_compliance(
-            sample_protocol, sample_patient_data, intervention_status
-        )
+        result = checker.check_compliance(sample_protocol, sample_patient_data, intervention_status)
 
         assert result.protocol_activated
         assert len(result.deviations) == 2  # Two pending
         assert "Draw blood cultures" in result.compliant_items
 
-    def test_check_compliance_overdue_intervention(
-        self, sample_protocol, sample_patient_data
-    ):
+    def test_check_compliance_overdue_intervention(self, sample_protocol, sample_patient_data):
         """Test compliance check with overdue intervention."""
         checker = ProtocolChecker()
         past_time = datetime.now() - timedelta(hours=2)
@@ -627,9 +611,7 @@ class TestProtocolChecker:
             },
         }
 
-        result = checker.check_compliance(
-            sample_protocol, sample_patient_data, intervention_status
-        )
+        result = checker.check_compliance(sample_protocol, sample_patient_data, intervention_status)
 
         assert result.alert_level == "CRITICAL"
         overdue = [d for d in result.deviations if d.status == ComplianceStatus.OVERDUE]
@@ -654,9 +636,7 @@ class TestProtocolChecker:
         ]
 
         for patient_data, condition, value, expected in test_cases:
-            result = checker._evaluate_condition(
-                patient_data.get("test"), condition, value
-            )
+            result = checker._evaluate_condition(patient_data.get("test"), condition, value)
             assert result == expected, f"Failed for condition {condition}"
 
     def test_evaluate_criterion_missing_parameter(self, sample_protocol):
@@ -681,7 +661,10 @@ class TestProtocolChecker:
 
         result = checker.check_compliance(sample_protocol, patient_data)
 
-        assert "stable" in result.recommendation.lower() or "monitoring" in result.recommendation.lower()
+        assert (
+            "stable" in result.recommendation.lower()
+            or "monitoring" in result.recommendation.lower()
+        )
 
 
 # =============================================================================
@@ -723,16 +706,12 @@ class TestClinicalProtocolMonitor:
     async def test_analyze_no_active_protocol(self):
         """Test analyze without active protocol."""
         monitor = ClinicalProtocolMonitor()
-        result = await monitor.analyze(
-            {"patient_id": "12345", "sensor_data": "{}"}
-        )
+        result = await monitor.analyze({"patient_id": "12345", "sensor_data": "{}"})
         assert "error" in result
         assert "No active protocol" in result["error"]
 
     @pytest.mark.asyncio
-    async def test_analyze_with_loaded_protocol(
-        self, sample_protocol, simple_json_data
-    ):
+    async def test_analyze_with_loaded_protocol(self, sample_protocol, simple_json_data):
         """Test analyze with pre-loaded protocol."""
         monitor = ClinicalProtocolMonitor()
         monitor.active_protocols["12345"] = sample_protocol
@@ -797,9 +776,7 @@ class TestClinicalProtocolMonitor:
         # Pre-populate with 150 entries
         monitor.patient_history["12345"] = [{"hr": i} for i in range(150)]
 
-        await monitor.analyze(
-            {"patient_id": "12345", "sensor_data": {"hr": 100}}
-        )
+        await monitor.analyze({"patient_id": "12345", "sensor_data": {"hr": 100}})
 
         # Should be trimmed to 144
         assert len(monitor.patient_history["12345"]) <= 144
@@ -941,9 +918,7 @@ class TestClinicalProtocolMonitor:
             recommendations=["Start monitoring", "Check vitals"],  # Duplicate
         )
 
-        recommendations = monitor._generate_recommendations(
-            compliance, trajectory, sample_protocol
-        )
+        recommendations = monitor._generate_recommendations(compliance, trajectory, sample_protocol)
 
         # Should be deduplicated
         assert recommendations.count("Start monitoring") == 1

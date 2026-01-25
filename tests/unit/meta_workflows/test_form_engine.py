@@ -62,9 +62,7 @@ class TestSocraticFormEngine:
         """Test responses are cached by response_id."""
         engine = SocraticFormEngine()
 
-        questions = [
-            FormQuestion(id="q1", text="Question 1", type=QuestionType.BOOLEAN)
-        ]
+        questions = [FormQuestion(id="q1", text="Question 1", type=QuestionType.BOOLEAN)]
         schema = FormSchema(questions=questions, title="Test", description="Test")
 
         engine._ask_batch = Mock(return_value={"q1": "Yes"})
@@ -81,9 +79,7 @@ class TestSocraticFormEngine:
         """Test cache clearing."""
         engine = SocraticFormEngine()
 
-        questions = [
-            FormQuestion(id="q1", text="Question 1", type=QuestionType.BOOLEAN)
-        ]
+        questions = [FormQuestion(id="q1", text="Question 1", type=QuestionType.BOOLEAN)]
         schema = FormSchema(questions=questions, title="Test", description="Test")
 
         engine._ask_batch = Mock(return_value={"q1": "Yes"})
@@ -131,9 +127,7 @@ class TestConvertAskUserResponseToFormResponse:
         """Test basic conversion."""
         ask_user_result = {"q1": "Answer 1", "q2": "Answer 2"}
 
-        response = convert_ask_user_response_to_form_response(
-            ask_user_result, "test_template"
-        )
+        response = convert_ask_user_response_to_form_response(ask_user_result, "test_template")
 
         assert response.template_id == "test_template"
         assert response.get("q1") == "Answer 1"
@@ -146,9 +140,7 @@ class TestConvertAskUserResponseToFormResponse:
             "q2": ["Option A", "Option B", "Option C"],
         }
 
-        response = convert_ask_user_response_to_form_response(
-            ask_user_result, "test_template"
-        )
+        response = convert_ask_user_response_to_form_response(ask_user_result, "test_template")
 
         assert response.get("q1") == "Single answer"
         assert isinstance(response.get("q2"), list)

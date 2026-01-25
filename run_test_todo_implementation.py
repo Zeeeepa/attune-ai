@@ -64,17 +64,19 @@ def run_meta_workflow_for_file(test_file: Path, todo_count: int):
         "file": test_file.name,
         "todos": todo_count,
         "cost": estimated_cost,
-        "agents_used": len(agents)
+        "agents_used": len(agents),
     }
 
 
 def main():
     console.print()
-    console.print(Panel.fit(
-        "[bold cyan]🤖 Test TODO Implementation via Meta-Workflow[/bold cyan]\n"
-        "[dim]Using 11-agent Test Creation & Management workflow[/dim]",
-        border_style="cyan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold cyan]🤖 Test TODO Implementation via Meta-Workflow[/bold cyan]\n"
+            "[dim]Using 11-agent Test Creation & Management workflow[/dim]",
+            border_style="cyan",
+        )
+    )
     console.print()
 
     # Find files
@@ -102,24 +104,26 @@ def main():
     console.print()
 
     # Show workflow configuration
-    console.print(Panel(
-        "[bold]Meta-Workflow Configuration:[/bold]\n\n"
-        "• Template: Test Creation and Management Workflow\n"
-        "• Agents: 11 specialized testing agents\n"
-        "• Scope: File-by-file progressive implementation\n"
-        "• Mode: TODO implementation (analyze + update)\n"
-        f"• Total Cost: ${total_todos * 0.01:.2f} - ${total_todos * 0.02:.2f}\n\n"
-        "[bold]Agent Team:[/bold]\n"
-        "  1. test_analyzer - Analyze test structure\n"
-        "  2. unit_test_generator - Generate unit tests\n"
-        "  3. integration_test_creator - Create integration tests\n"
-        "  4. test_quality_validator - Validate quality\n"
-        "  5. test_updater - Update implementations\n"
-        "  6. fixture_manager - Create fixtures\n"
-        "  7. test_report_generator - Generate reports",
-        border_style="blue",
-        title="📋 Configuration"
-    ))
+    console.print(
+        Panel(
+            "[bold]Meta-Workflow Configuration:[/bold]\n\n"
+            "• Template: Test Creation and Management Workflow\n"
+            "• Agents: 11 specialized testing agents\n"
+            "• Scope: File-by-file progressive implementation\n"
+            "• Mode: TODO implementation (analyze + update)\n"
+            f"• Total Cost: ${total_todos * 0.01:.2f} - ${total_todos * 0.02:.2f}\n\n"
+            "[bold]Agent Team:[/bold]\n"
+            "  1. test_analyzer - Analyze test structure\n"
+            "  2. unit_test_generator - Generate unit tests\n"
+            "  3. integration_test_creator - Create integration tests\n"
+            "  4. test_quality_validator - Validate quality\n"
+            "  5. test_updater - Update implementations\n"
+            "  6. fixture_manager - Create fixtures\n"
+            "  7. test_report_generator - Generate reports",
+            border_style="blue",
+            title="📋 Configuration",
+        )
+    )
     console.print()
 
     # Simulate execution
@@ -133,12 +137,11 @@ def main():
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        console=console
+        console=console,
     ) as progress:
-
         task = progress.add_task(
             "[cyan]Processing files...",
-            total=min(len(test_files), 3)  # Process first 3 as demo
+            total=min(len(test_files), 3),  # Process first 3 as demo
         )
 
         for test_file, todo_count in test_files[:3]:
@@ -148,27 +151,29 @@ def main():
             progress.update(task, advance=1)
 
     console.print()
-    console.print(Panel.fit(
-        "[bold green]✅ Ready to Execute[/bold green]\n\n"
-        f"[bold]Summary:[/bold]\n"
-        f"• Files to process: [cyan]{len(test_files)}[/cyan]\n"
-        f"• Total TODOs: [yellow]{total_todos}[/yellow]\n"
-        f"• Estimated cost: [yellow]${total_cost:.2f}[/yellow]\n"
-        f"• Estimated time: [cyan]15-20 minutes[/cyan]\n\n"
-        "[bold]To run the actual workflow:[/bold]\n"
-        "1. Use the meta-workflow system:\n"
-        "   [cyan]empathy meta-workflow run test_creation_management_workflow[/cyan]\n\n"
-        "2. Or run via Python:\n"
-        "   [cyan]python demo_meta_workflows.py[/cyan]\n\n"
-        "[bold]What happens next:[/bold]\n"
-        "• Each agent analyzes source code\n"
-        "• Generates test implementations with real LLM\n"
-        "• Validates test quality\n"
-        "• Runs tests to verify\n"
-        "• Reports coverage improvements",
-        border_style="green",
-        title="🚀 Execution Plan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold green]✅ Ready to Execute[/bold green]\n\n"
+            f"[bold]Summary:[/bold]\n"
+            f"• Files to process: [cyan]{len(test_files)}[/cyan]\n"
+            f"• Total TODOs: [yellow]{total_todos}[/yellow]\n"
+            f"• Estimated cost: [yellow]${total_cost:.2f}[/yellow]\n"
+            f"• Estimated time: [cyan]15-20 minutes[/cyan]\n\n"
+            "[bold]To run the actual workflow:[/bold]\n"
+            "1. Use the meta-workflow system:\n"
+            "   [cyan]empathy meta-workflow run test_creation_management_workflow[/cyan]\n\n"
+            "2. Or run via Python:\n"
+            "   [cyan]python demo_meta_workflows.py[/cyan]\n\n"
+            "[bold]What happens next:[/bold]\n"
+            "• Each agent analyzes source code\n"
+            "• Generates test implementations with real LLM\n"
+            "• Validates test quality\n"
+            "• Runs tests to verify\n"
+            "• Reports coverage improvements",
+            border_style="green",
+            title="🚀 Execution Plan",
+        )
+    )
     console.print()
 
 

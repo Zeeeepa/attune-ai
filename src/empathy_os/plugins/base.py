@@ -30,25 +30,25 @@ class PluginMetadata:
     dependencies: list[str] | None = None  # Additional package dependencies
 
 
-class BaseWizard(ABC):
-    """Universal base class for all wizards across all domains.
+class BaseWorkflow(ABC):
+    """Universal base class for all workflows across all domains.
 
-    This replaces domain-specific base classes (BaseCoachWizard, etc.)
+    This replaces domain-specific base classes (BaseCoachWorkflow, etc.)
     to provide a unified interface.
 
     Design Philosophy:
     - Domain-agnostic: Works for software, healthcare, finance, etc.
-    - Level-aware: Each wizard declares its empathy level
-    - Pattern-contributing: Wizards share learnings via pattern library
+    - Level-aware: Each workflow declares its empathy level
+    - Pattern-contributing: Workflows share learnings via pattern library
     """
 
     def __init__(self, name: str, domain: str, empathy_level: int, category: str | None = None):
-        """Initialize a wizard
+        """Initialize a workflow
 
         Args:
-            name: Human-readable wizard name
-            domain: Domain this wizard belongs to (e.g., 'software', 'healthcare')
-            empathy_level: Which empathy level this wizard operates at (1-5)
+            name: Human-readable workflow name
+            domain: Domain this workflow belongs to (e.g., 'software', 'healthcare')
+            empathy_level: Which empathy level this workflow operates at (1-5)
             category: Optional category within domain
 
         """
@@ -56,16 +56,16 @@ class BaseWizard(ABC):
         self.domain = domain
         self.empathy_level = empathy_level
         self.category = category
-        self.logger = logging.getLogger(f"wizard.{domain}.{name}")
+        self.logger = logging.getLogger(f"workflow.{domain}.{name}")
 
     @abstractmethod
     async def analyze(self, context: dict[str, Any]) -> dict[str, Any]:
         """Analyze the given context and return results.
 
-        This is the main entry point for all wizards. The context structure
+        This is the main entry point for all workflows. The context structure
         is domain-specific but the return format should follow a standard pattern.
         Subclasses must implement domain-specific analysis logic that aligns with
-        the wizard's empathy level.
+        the workflow's empathy level.
 
         Args:
             context: dict[str, Any]
@@ -83,7 +83,7 @@ class BaseWizard(ABC):
                 - 'recommendations': list[dict] - Actionable next steps
                 - 'patterns': list[str] - Patterns detected for the pattern library
                 - 'confidence': float - Confidence score between 0.0 and 1.0
-                - 'wizard': str - Name of the wizard that performed analysis
+                - 'workflow': str - Name of the workflow that performed analysis
                 - 'empathy_level': int - Empathy level of this analysis (1-5)
                 - 'timestamp': str - ISO format timestamp of analysis
 
@@ -103,9 +103,9 @@ class BaseWizard(ABC):
 
     @abstractmethod
     def get_required_context(self) -> list[str]:
-        """Declare what context fields this wizard needs.
+        """Declare what context fields this workflow needs.
 
-        This method defines the contract between the caller and the wizard.
+        This method defines the contract between the caller and the workflow.
         The caller must provide all declared fields before calling analyze().
         This enables validation via validate_context() and helps with introspection.
 
@@ -116,9 +116,9 @@ class BaseWizard(ABC):
                 passed to analyze().
 
         Examples:
-            Software wizard returns: ['code', 'file_path', 'language']
-            Healthcare wizard returns: ['patient_id', 'vitals', 'medications']
-            Finance wizard returns: ['transactions', 'account_id', 'period']
+            Software workflow returns: ['code', 'file_path', 'language']
+            Healthcare workflow returns: ['patient_id', 'vitals', 'medications']
+            Finance workflow returns: ['transactions', 'account_id', 'period']
 
         Note:
             - Must return at least one field (even if minimal)
@@ -143,12 +143,12 @@ class BaseWizard(ABC):
         missing = [key for key in required if key not in context]
 
         if missing:
-            raise ValueError(f"Wizard '{self.name}' missing required context: {missing}")
+            raise ValueError(f"Workflow '{self.name}' missing required context: {missing}")
 
         return True
 
     def get_empathy_level(self) -> int:
-        """Get the empathy level this wizard operates at"""
+        """Get the empathy level this workflow operates at"""
         return self.empathy_level
 
     def contribute_patterns(self, analysis_result: dict[str, Any]) -> dict[str, Any]:
@@ -165,7 +165,7 @@ class BaseWizard(ABC):
         """
         # Default implementation - override for custom pattern extraction
         return {
-            "wizard": self.name,
+            "workflow": self.name,
             "domain": self.domain,
             "timestamp": datetime.now().isoformat(),
             "patterns": analysis_result.get("patterns", []),
@@ -175,18 +175,18 @@ class BaseWizard(ABC):
 class BasePlugin(ABC):
     """Base class for domain plugins.
 
-    A plugin is a collection of wizards and patterns for a specific domain.
+    A plugin is a collection of workflows and patterns for a specific domain.
 
     Example:
-        - SoftwarePlugin: 16+ coach wizards for code analysis
-        - HealthcarePlugin: Clinical and compliance wizards
-        - FinancePlugin: Fraud detection, compliance wizards
+        - SoftwarePlugin: 16+ coach workflows for code analysis
+        - HealthcarePlugin: Clinical and compliance workflows
+        - FinancePlugin: Fraud detection, compliance workflows
 
     """
 
     def __init__(self):
         self.logger = logging.getLogger(f"plugin.{self.get_metadata().domain}")
-        self._wizards: dict[str, type[BaseWizard]] = {}
+        self._workflows: dict[str, type[BaseWorkflow]] = {}
         self._initialized = False
 
     @abstractmethod
@@ -220,44 +220,44 @@ class BasePlugin(ABC):
         """
 
     @abstractmethod
-    def register_wizards(self) -> dict[str, type[BaseWizard]]:
-        """Register all wizards provided by this plugin.
+    def register_workflows(self) -> dict[str, type[BaseWorkflow]]:
+        """Register all workflows provided by this plugin.
 
-        This method defines all analysis wizards available in this plugin.
-        Wizards are lazy-instantiated by get_wizard() when first requested.
+        This method defines all analysis workflows available in this plugin.
+        Workflows are lazy-instantiated by get_workflow() when first requested.
         This method is called during plugin initialization.
 
         Returns:
-            dict[str, type[BaseWizard]]
-                Dictionary mapping wizard identifiers to Wizard classes (not instances).
+            dict[str, type[BaseWorkflow]]
+                Dictionary mapping workflow identifiers to Workflow classes (not instances).
                 Keys should be lowercase, snake_case identifiers. Values should be
                 uninstantiated class references.
 
         Returns:
-            dict[str, type[BaseWizard]]
+            dict[str, type[BaseWorkflow]]
                 Mapping structure:
                 {
-                    'wizard_id': WizardClass,
-                    'another_wizard': AnotherWizardClass,
+                    'workflow_id': WorkflowClass,
+                    'another_workflow': AnotherWorkflowClass,
                     ...
                 }
 
         Example:
             Software plugin might return:
             {
-                'security': SecurityWizard,
-                'performance': PerformanceWizard,
-                'maintainability': MaintainabilityWizard,
-                'accessibility': AccessibilityWizard,
+                'security': SecurityWorkflow,
+                'performance': PerformanceWorkflow,
+                'maintainability': MaintainabilityWorkflow,
+                'accessibility': AccessibilityWorkflow,
             }
 
         Note:
             - Return only the class, not instances (instantiation is lazy)
-            - Use consistent, descriptive wizard IDs
-            - All returned classes must be subclasses of BaseWizard
-            - Can return empty dict {} if plugin provides no wizards initially
+            - Use consistent, descriptive workflow IDs
+            - All returned classes must be subclasses of BaseWorkflow
+            - Can return empty dict {} if plugin provides no workflows initially
             - Called once during initialization via initialize()
-            - Framework caches results in self._wizards
+            - Framework caches results in self._workflows
 
         """
 
@@ -284,63 +284,63 @@ class BasePlugin(ABC):
 
         self.logger.info(f"Initializing plugin: {self.get_metadata().name}")
 
-        # Register wizards
-        self._wizards = self.register_wizards()
+        # Register workflows
+        self._workflows = self.register_workflows()
 
         self.logger.info(
-            f"Plugin '{self.get_metadata().name}' initialized with {len(self._wizards)} wizards",
+            f"Plugin '{self.get_metadata().name}' initialized with {len(self._workflows)} workflows",
         )
 
         self._initialized = True
 
-    def get_wizard(self, wizard_id: str) -> type[BaseWizard] | None:
-        """Get a wizard by ID.
+    def get_workflow(self, workflow_id: str) -> type[BaseWorkflow] | None:
+        """Get a workflow by ID.
 
         Args:
-            wizard_id: Wizard identifier
+            workflow_id: Workflow identifier
 
         Returns:
-            Wizard class or None if not found
+            Workflow class or None if not found
 
         """
         if not self._initialized:
             self.initialize()
 
-        return self._wizards.get(wizard_id)
+        return self._workflows.get(workflow_id)
 
-    def list_wizards(self) -> list[str]:
-        """List all wizard IDs provided by this plugin.
+    def list_workflows(self) -> list[str]:
+        """List all workflow IDs provided by this plugin.
 
         Returns:
-            List of wizard identifiers
+            List of workflow identifiers
 
         """
         if not self._initialized:
             self.initialize()
 
-        return list(self._wizards.keys())
+        return list(self._workflows.keys())
 
-    def get_wizard_info(self, wizard_id: str) -> dict[str, Any] | None:
-        """Get information about a wizard without instantiating it.
+    def get_workflow_info(self, workflow_id: str) -> dict[str, Any] | None:
+        """Get information about a workflow without instantiating it.
 
         Args:
-            wizard_id: Wizard identifier
+            workflow_id: Workflow identifier
 
         Returns:
-            Dictionary with wizard metadata
+            Dictionary with workflow metadata
 
         """
-        wizard_class = self.get_wizard(wizard_id)
-        if not wizard_class:
+        workflow_class = self.get_workflow(workflow_id)
+        if not workflow_class:
             return None
 
         # Create temporary instance to get metadata
-        # (wizards should be lightweight to construct)
+        # (workflows should be lightweight to construct)
         # Subclasses provide their own defaults for name, domain, empathy_level
-        temp_instance = wizard_class()  # type: ignore[call-arg]
+        temp_instance = workflow_class()  # type: ignore[call-arg]
 
         return {
-            "id": wizard_id,
+            "id": workflow_id,
             "name": temp_instance.name,
             "domain": temp_instance.domain,
             "empathy_level": temp_instance.empathy_level,

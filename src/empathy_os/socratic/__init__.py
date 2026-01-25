@@ -43,12 +43,7 @@ from .ab_testing import (
     Variant,
     WorkflowABTester,
 )
-from .blueprint import (
-    AgentBlueprint,
-    AgentSpec,
-    ToolSpec,
-    WorkflowBlueprint,
-)
+from .blueprint import AgentBlueprint, AgentSpec, ToolSpec, WorkflowBlueprint
 
 # CLI interface
 from .cli import Console
@@ -110,13 +105,7 @@ from .feedback import (
     FeedbackLoop,
     WorkflowPattern,
 )
-from .forms import (
-    FieldType,
-    Form,
-    FormField,
-    FormResponse,
-    ValidationResult,
-)
+from .forms import FieldType, Form, FormField, FormResponse, ValidationResult
 from .generator import AgentGenerator
 
 # LLM-powered analysis
@@ -133,12 +122,7 @@ from .mcp_server import SOCRATIC_TOOLS, SocraticMCPServer
 from .session import SessionState, SocraticSession
 
 # Persistent storage
-from .storage import (
-    JSONFileStorage,
-    SQLiteStorage,
-    StorageBackend,
-    StorageManager,
-)
+from .storage import JSONFileStorage, SQLiteStorage, StorageBackend, StorageManager
 from .success import MetricType, SuccessCriteria, SuccessMetric
 
 # Visual editor

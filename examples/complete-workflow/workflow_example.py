@@ -19,18 +19,15 @@ from pathlib import Path
 from typing import Any
 
 from empathy_llm_toolkit.agents_md import AgentRegistry
-from empathy_llm_toolkit.context import CompactState, ContextManager, SBARHandoff
+from empathy_llm_toolkit.context import (CompactState, ContextManager,
+                                         SBARHandoff)
 from empathy_llm_toolkit.context.compaction import PatternSummary
 from empathy_llm_toolkit.hooks.config import HookEvent
 from empathy_llm_toolkit.hooks.registry import HookRegistry
-from empathy_llm_toolkit.learning import (
-    ExtractedPattern,
-    LearnedSkillsStorage,
-    PatternCategory,
-    PatternExtractor,
-    SessionEvaluator,
-    SessionQuality,
-)
+from empathy_llm_toolkit.learning import (ExtractedPattern,
+                                          LearnedSkillsStorage,
+                                          PatternCategory, PatternExtractor,
+                                          SessionEvaluator, SessionQuality)
 
 
 class EmpathyWorkflow:

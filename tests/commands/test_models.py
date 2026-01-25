@@ -151,9 +151,7 @@ class TestCommandConfig:
     def test_get_all_names(self):
         """Test getting name and all aliases."""
         meta = CommandMetadata(name="test", aliases=["t", "tst"])
-        config = CommandConfig(
-            name="test", description="", body="", metadata=meta
-        )
+        config = CommandConfig(name="test", description="", body="", metadata=meta)
 
         names = config.get_all_names()
 

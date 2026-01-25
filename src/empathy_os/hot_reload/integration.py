@@ -1,6 +1,6 @@
-"""Integration example for hot-reload with wizard API.
+"""Integration example for hot-reload with workflow API.
 
-Shows how to integrate hot-reload into the existing wizard_api.py.
+Shows how to integrate hot-reload into the existing workflow_api.py.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -12,17 +12,17 @@ from collections.abc import Callable
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 from .config import get_hot_reload_config
-from .reloader import WizardReloader
-from .watcher import WizardFileWatcher
+from .reloader import WorkflowReloader
+from .watcher import WorkflowFileWatcher
 from .websocket import create_notification_callback, get_notification_manager
 
 logger = logging.getLogger(__name__)
 
 
 class HotReloadIntegration:
-    """Integrates hot-reload with wizard API.
+    """Integrates hot-reload with workflow API.
 
-    Example usage in wizard_api.py:
+    Example usage in workflow_api.py:
 
         from hot_reload.integration import HotReloadIntegration
 
@@ -30,11 +30,11 @@ class HotReloadIntegration:
         app = FastAPI()
 
         # Initialize hot-reload (if enabled)
-        hot_reload = HotReloadIntegration(app, register_wizard)
+        hot_reload = HotReloadIntegration(app, register_workflow)
 
         @app.on_event("startup")
         async def startup_event():
-            init_wizards()  # Initialize wizards
+            init_workflows()  # Initialize workflows
             hot_reload.start()  # Start hot-reload watcher
 
         @app.on_event("shutdown")
@@ -52,7 +52,7 @@ class HotReloadIntegration:
 
         Args:
             app: FastAPI application instance
-            register_callback: Function to register wizard (wizard_id, wizard_class) -> bool
+            register_callback: Function to register workflow (workflow_id, workflow_class) -> bool
 
         """
         self.app = app
@@ -61,32 +61,32 @@ class HotReloadIntegration:
 
         # Initialize components
         self.notification_callback = create_notification_callback()
-        self.reloader = WizardReloader(
-            register_callback=self._register_wizard_wrapper,
+        self.reloader = WorkflowReloader(
+            register_callback=self._register_workflow_wrapper,
             notification_callback=self.notification_callback,
         )
 
-        self.watcher: WizardFileWatcher | None = None
+        self.watcher: WorkflowFileWatcher | None = None
 
         # Add WebSocket endpoint to app
         if self.config.enabled:
             self._setup_websocket_endpoint()
 
-    def _register_wizard_wrapper(self, wizard_id: str, wizard_class: type) -> bool:
+    def _register_workflow_wrapper(self, workflow_id: str, workflow_class: type) -> bool:
         """Wrapper for register callback that handles errors.
 
         Args:
-            wizard_id: Wizard identifier
-            wizard_class: Wizard class to register
+            workflow_id: Workflow identifier
+            workflow_class: Workflow class to register
 
         Returns:
             True if registration succeeded
 
         """
         try:
-            return self.register_callback(wizard_id, wizard_class)
+            return self.register_callback(workflow_id, workflow_class)
         except Exception as e:
-            logger.error(f"Error registering wizard {wizard_id}: {e}")
+            logger.error(f"Error registering workflow {workflow_id}: {e}")
             return False
 
     def _setup_websocket_endpoint(self) -> None:
@@ -120,7 +120,7 @@ class HotReloadIntegration:
             return
 
         if not self.config.watch_dirs:
-            logger.warning("No wizard directories found to watch")
+            logger.warning("No workflow directories found to watch")
             return
 
         if self.watcher and self.watcher.is_running():
@@ -128,8 +128,8 @@ class HotReloadIntegration:
             return
 
         # Create watcher
-        self.watcher = WizardFileWatcher(
-            wizard_dirs=self.config.watch_dirs,
+        self.watcher = WorkflowFileWatcher(
+            workflow_dirs=self.config.watch_dirs,
             reload_callback=self._on_file_change,
         )
 
@@ -145,18 +145,18 @@ class HotReloadIntegration:
             self.watcher = None
             logger.info("Hot-reload stopped")
 
-    def _on_file_change(self, wizard_id: str, file_path: str) -> None:
+    def _on_file_change(self, workflow_id: str, file_path: str) -> None:
         """Handle file change event.
 
         Args:
-            wizard_id: ID of wizard that changed
+            workflow_id: ID of workflow that changed
             file_path: Path to changed file
 
         """
-        logger.info(f"File change detected: {wizard_id} ({file_path})")
+        logger.info(f"File change detected: {workflow_id} ({file_path})")
 
-        # Reload wizard
-        result = self.reloader.reload_wizard(wizard_id, file_path)
+        # Reload workflow
+        result = self.reloader.reload_workflow(workflow_id, file_path)
 
         if result.success:
             logger.info(f"✓ {result.message}")
@@ -180,25 +180,25 @@ class HotReloadIntegration:
         }
 
 
-# Example usage in wizard_api.py:
+# Example usage in workflow_api.py:
 """
 from fastapi import FastAPI
 from hot_reload.integration import HotReloadIntegration
 
-app = FastAPI(title="Empathy Wizard API")
+app = FastAPI(title="Empathy Workflow API")
 
 # Global hot-reload instance
 hot_reload = None
 
 
-def register_wizard(wizard_id: str, wizard_class: type, *args, **kwargs) -> bool:
-    '''Register wizard with WIZARDS dict'''
+def register_workflow(workflow_id: str, workflow_class: type, *args, **kwargs) -> bool:
+    '''Register workflow with WORKFLOWS dict'''
     try:
-        WIZARDS[wizard_id] = wizard_class(*args, **kwargs)
-        logger.info(f"✓ Registered wizard: {wizard_id}")
+        WORKFLOWS[workflow_id] = workflow_class(*args, **kwargs)
+        logger.info(f"✓ Registered workflow: {workflow_id}")
         return True
     except Exception as e:
-        logger.error(f"Failed to register {wizard_id}: {e}")
+        logger.error(f"Failed to register {workflow_id}: {e}")
         return False
 
 
@@ -206,11 +206,11 @@ def register_wizard(wizard_id: str, wizard_class: type, *args, **kwargs) -> bool
 async def startup_event():
     global hot_reload
 
-    # Initialize wizards
-    init_wizards()
+    # Initialize workflows
+    init_workflows()
 
     # Start hot-reload
-    hot_reload = HotReloadIntegration(app, register_wizard)
+    hot_reload = HotReloadIntegration(app, register_workflow)
     hot_reload.start()
 
 

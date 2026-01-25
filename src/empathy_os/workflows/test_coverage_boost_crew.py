@@ -11,6 +11,7 @@ to analyze coverage gaps, generate tests, and validate improvements.
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
+
 import asyncio
 import json
 import re
@@ -375,7 +376,7 @@ CRITICAL FORMATTING RULES:
 
                 # Limit code size to avoid token bloat (max ~5000 chars per file)
                 if len(code) > 5000:
-                    code = code[:5000] + f"\n... (truncated, {len(code)-5000} more chars)"
+                    code = code[:5000] + f"\n... (truncated, {len(code) - 5000} more chars)"
 
                 result.append(
                     {
@@ -814,7 +815,7 @@ CRITICAL FORMATTING RULES:
         lines.append(f"Tests Passing: {result.tests_passing}")
         lines.append("")
         lines.append(f"Cost: ${result.cost:.4f}")
-        lines.append(f"Duration: {result.duration_ms}ms ({result.duration_ms/1000:.1f}s)")
+        lines.append(f"Duration: {result.duration_ms}ms ({result.duration_ms / 1000:.1f}s)")
         lines.append("")
 
         if result.gaps_analyzed:

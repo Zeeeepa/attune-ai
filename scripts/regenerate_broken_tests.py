@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from empathy_os.orchestration.real_tools import RealTestGenerator
 
+
 def main():
     print("=" * 80)
     print("  PHASE 3: REGENERATING 3 BROKEN FILES WITH FIXES")

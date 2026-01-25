@@ -18,12 +18,7 @@ from empathy_llm_toolkit.agent_factory.base import (
     WorkflowConfig,
 )
 from empathy_llm_toolkit.levels import EmpathyLevel
-from empathy_llm_toolkit.state import (
-    CollaborationState,
-    Interaction,
-    PatternType,
-    UserPattern,
-)
+from empathy_llm_toolkit.state import CollaborationState, Interaction, PatternType, UserPattern
 
 # =============================================================================
 # Agent Factory Base Tests

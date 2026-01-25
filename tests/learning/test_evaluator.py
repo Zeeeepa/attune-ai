@@ -1,6 +1,5 @@
 """Tests for the session evaluator."""
 
-
 import pytest
 
 from empathy_llm_toolkit.learning.evaluator import (

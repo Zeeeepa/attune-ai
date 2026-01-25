@@ -21,17 +21,12 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
-from empathy_os.orchestration.execution_strategies import (
-    get_strategy,
-    StrategyResult,
-)
-from empathy_os.orchestration.config_store import (
-    AgentConfiguration,
-    ConfigurationStore,
-)
 from empathy_os.orchestration.agent_templates import get_template
-
+from empathy_os.orchestration.config_store import (AgentConfiguration,
+                                                   ConfigurationStore)
+from empathy_os.orchestration.execution_strategies import (StrategyResult,
+                                                           get_strategy)
+from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
 
 # =============================================================================
 # Example 1: Simple Custom Workflow

@@ -431,9 +431,7 @@ class TestCachedPatternQueryDecorator:
 
         class TestClass:
             @cached_pattern_query(cache)
-            def query_patterns(
-                self, context: dict, filters: list = None, options: dict = None
-            ):
+            def query_patterns(self, context: dict, filters: list = None, options: dict = None):
                 return {
                     "context": context,
                     "filters": filters,
@@ -443,14 +441,10 @@ class TestCachedPatternQueryDecorator:
         obj = TestClass()
         context = {"query": "test"}
 
-        result1 = obj.query_patterns(
-            context, filters=["a", "b"], options={"limit": 10}
-        )
+        result1 = obj.query_patterns(context, filters=["a", "b"], options={"limit": 10})
 
         # Same call should hit cache
-        result2 = obj.query_patterns(
-            context, filters=["a", "b"], options={"limit": 10}
-        )
+        result2 = obj.query_patterns(context, filters=["a", "b"], options={"limit": 10})
 
         assert result1 == result2
 

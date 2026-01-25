@@ -4,12 +4,22 @@ description: Documentation hub - explain code, manage docs, feature overviews
 category: hub
 aliases: [documentation]
 tags: [documentation, explanation, hub]
-version: "1.0"
+version: "2.0"
 ---
 
 # Documentation
 
+**Aliases:** `/documentation`
+
 Create, manage, and understand documentation.
+
+## Quick Examples
+
+```bash
+/docs                         # Interactive menu
+/docs "explain auth module"   # Get code explanation
+/docs "update README"         # Manage docs
+```
 
 ## Discovery
 
@@ -26,51 +36,96 @@ Question:
       description: "Generate overview of a feature or module"
 ```
 
-## Routing
+---
 
-Based on selection:
+## Explain Code
 
-| Selection | Command | Description |
-|-----------|---------|-------------|
-| Explain code | `/explain` | Detailed code explanation |
-| Manage documentation | `/manage-docs` | Documentation management |
-| Feature overview | `/feature-overview` | High-level feature summary |
+Get a detailed explanation of how code works.
 
-## Quick Access
+**Tell me:**
 
-- `/explain path/to/file.py` - Explain specific code
-- `/explain function_name` - Explain a function
-- `/manage-docs` - Start doc management
-- `/feature-overview "feature"` - Generate feature overview
+- File, function, or module to explain
+- Your current understanding level
+- Specific aspects you're curious about
 
-## Documentation Types
+**I will:**
 
-| Type | Use Case | Command |
-|------|----------|---------|
-| Code explanation | Understanding unfamiliar code | `/explain` |
-| API docs | Documenting public interfaces | `/manage-docs` |
-| Feature docs | User-facing documentation | `/feature-overview` |
-| Architecture | System design docs | `/manage-docs` |
+1. Read and analyze the code
+2. Explain the high-level purpose
+3. Walk through the logic step by step
+4. Highlight key patterns and decisions
+5. Explain connections to other code
+6. Answer follow-up questions
 
-## When to Use Each
+**Good for:**
 
-**Use `/explain` when:**
+- Onboarding to unfamiliar code
+- Understanding complex algorithms
+- Learning patterns used in codebase
+- Reviewing before making changes
 
-- Onboarding to new codebase
-- Understanding complex logic
-- Reviewing unfamiliar code
-- Learning patterns used
+---
 
-**Use `/manage-docs` when:**
+## Manage Documentation
 
-- Docs need updating
-- Creating new documentation
-- Organizing existing docs
-- Checking doc coverage
+Create, update, or organize documentation.
 
-**Use `/feature-overview` when:**
+**Tell me:**
 
-- Documenting for users
-- Creating release notes
-- Stakeholder communication
-- Feature handoff
+- What docs need work (README, API, guides)
+- What's outdated or missing
+- Target audience
+
+**I will:**
+
+1. Review existing documentation
+2. Identify gaps and outdated sections
+3. Draft new or updated content
+4. Ensure consistency with code
+5. Format appropriately (Markdown, docstrings)
+
+**Documentation types:**
+
+- README.md - Project overview
+- API reference - Function/class docs
+- Guides - How-to tutorials
+- Architecture - System design
+- CHANGELOG - Version history
+
+---
+
+## Feature Overview
+
+Generate a high-level overview of a feature or module.
+
+**Tell me:**
+
+- Feature or module to document
+- Target audience (users, developers, stakeholders)
+- Desired depth (summary vs detailed)
+
+**I will:**
+
+1. Explore the relevant code
+2. Identify key components
+3. Document the purpose and scope
+4. Explain how to use it
+5. Note any limitations or caveats
+6. Format for your audience
+
+---
+
+## When NOT to Use This Hub
+
+| If you need...     | Use instead |
+| ------------------ | ----------- |
+| Fix code issues    | `/dev`      |
+| Review code        | `/workflow` |
+| Run tests          | `/testing`  |
+| Deploy changes     | `/release`  |
+
+## Related Hubs
+
+- `/dev` - Commits, PRs, debugging
+- `/workflow` - Code review, refactoring
+- `/learning` - Pattern documentation

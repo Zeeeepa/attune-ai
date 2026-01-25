@@ -59,76 +59,208 @@ __version__ = "4.6.5"
 __author__ = "Patrick Roebuck"
 __email__ = "hello@deepstudy.ai"
 
-from .agent_monitoring import AgentMetrics, AgentMonitor, TeamMetrics
-from .config import EmpathyConfig, load_config
-from .coordination import (
-    AgentCoordinator,
-    AgentTask,
-    ConflictResolver,
-    ResolutionResult,
-    ResolutionStrategy,
-    TeamPriorities,
-    TeamSession,
-)
-from .core import EmpathyOS
-from .emergence import EmergenceDetector
-from .exceptions import (
-    CollaborationStateError,
-    ConfidenceThresholdError,
-    EmpathyFrameworkError,
-    EmpathyLevelError,
-    FeedbackLoopError,
-    LeveragePointError,
-    PatternNotFoundError,
-    TrustThresholdError,
-    ValidationError,
-)
-from .feedback_loops import FeedbackLoopDetector
-from .levels import Level1Reactive, Level2Guided, Level3Proactive, Level4Anticipatory, Level5Systems
-from .leverage_points import LeveragePointAnalyzer
-from .logging_config import LoggingConfig, get_logger
+# =============================================================================
+# LAZY IMPORTS - Deferred loading for faster startup
+# =============================================================================
+# Instead of importing everything at module load, we use __getattr__ to load
+# modules only when they're actually accessed. This reduces import time from
+# ~1s to ~0.05s for simple use cases.
 
-# Memory module (unified short-term + long-term + security)
-from .memory import (
-    AccessTier,
-    AgentCredentials,  # Memory module imports
-    AuditEvent,
-    AuditLogger,
-    Classification,
-    ClassificationRules,
-    ClaudeMemoryConfig,
-    ClaudeMemoryLoader,
-    ConflictContext,
-    EncryptionManager,
-    Environment,
-    MemDocsStorage,
-    MemoryConfig,
-    MemoryPermissionError,
-    PatternMetadata,
-    PIIDetection,
-    PIIPattern,
-    PIIScrubber,
-    RedisShortTermMemory,
-    SecretDetection,
-    SecretsDetector,
-    SecretType,
-    SecureMemDocsIntegration,
-    SecurePattern,
-    SecurityError,
-    SecurityViolation,
-    Severity,
-    StagedPattern,
-    TTLStrategy,
-    UnifiedMemory,
-    check_redis_connection,
-    detect_secrets,
-    get_railway_redis,
-    get_redis_config,
-    get_redis_memory,
-)
-from .pattern_library import Pattern, PatternLibrary, PatternMatch
-from .persistence import MetricsCollector, PatternPersistence, StateManager
-from .trust_building import TrustBuildingBehaviors
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # Type hints for IDE support (not evaluated at runtime)
+    from .agent_monitoring import AgentMetrics, AgentMonitor, TeamMetrics
+    from .config import EmpathyConfig, load_config
+    from .coordination import (
+        AgentCoordinator,
+        AgentTask,
+        ConflictResolver,
+        ResolutionResult,
+        ResolutionStrategy,
+        TeamPriorities,
+        TeamSession,
+    )
+    from .core import EmpathyOS
+    from .emergence import EmergenceDetector
+    from .exceptions import (
+        CollaborationStateError,
+        ConfidenceThresholdError,
+        EmpathyFrameworkError,
+        EmpathyLevelError,
+        FeedbackLoopError,
+        LeveragePointError,
+        PatternNotFoundError,
+        TrustThresholdError,
+        ValidationError,
+    )
+    from .feedback_loops import FeedbackLoopDetector
+    from .levels import (
+        Level1Reactive,
+        Level2Guided,
+        Level3Proactive,
+        Level4Anticipatory,
+        Level5Systems,
+    )
+    from .leverage_points import LeveragePointAnalyzer
+    from .logging_config import LoggingConfig, get_logger
+    from .memory import (
+        AccessTier,
+        AgentCredentials,
+        AuditEvent,
+        AuditLogger,
+        Classification,
+        ClassificationRules,
+        ClaudeMemoryConfig,
+        ClaudeMemoryLoader,
+        ConflictContext,
+        EncryptionManager,
+        Environment,
+        MemDocsStorage,
+        MemoryConfig,
+        MemoryPermissionError,
+        PatternMetadata,
+        PIIDetection,
+        PIIPattern,
+        PIIScrubber,
+        RedisShortTermMemory,
+        SecretDetection,
+        SecretsDetector,
+        SecretType,
+        SecureMemDocsIntegration,
+        SecurePattern,
+        SecurityError,
+        SecurityViolation,
+        Severity,
+        StagedPattern,
+        TTLStrategy,
+        UnifiedMemory,
+        check_redis_connection,
+        detect_secrets,
+        get_railway_redis,
+        get_redis_config,
+        get_redis_memory,
+    )
+    from .pattern_library import Pattern, PatternLibrary, PatternMatch
+    from .persistence import MetricsCollector, PatternPersistence, StateManager
+    from .trust_building import TrustBuildingBehaviors
+
+# Mapping of attribute names to their module paths
+_LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    # agent_monitoring
+    "AgentMetrics": (".agent_monitoring", "AgentMetrics"),
+    "AgentMonitor": (".agent_monitoring", "AgentMonitor"),
+    "TeamMetrics": (".agent_monitoring", "TeamMetrics"),
+    # config
+    "EmpathyConfig": (".config", "EmpathyConfig"),
+    "load_config": (".config", "load_config"),
+    # coordination
+    "AgentCoordinator": (".coordination", "AgentCoordinator"),
+    "AgentTask": (".coordination", "AgentTask"),
+    "ConflictResolver": (".coordination", "ConflictResolver"),
+    "ResolutionResult": (".coordination", "ResolutionResult"),
+    "ResolutionStrategy": (".coordination", "ResolutionStrategy"),
+    "TeamPriorities": (".coordination", "TeamPriorities"),
+    "TeamSession": (".coordination", "TeamSession"),
+    # core
+    "EmpathyOS": (".core", "EmpathyOS"),
+    # emergence
+    "EmergenceDetector": (".emergence", "EmergenceDetector"),
+    # exceptions
+    "CollaborationStateError": (".exceptions", "CollaborationStateError"),
+    "ConfidenceThresholdError": (".exceptions", "ConfidenceThresholdError"),
+    "EmpathyFrameworkError": (".exceptions", "EmpathyFrameworkError"),
+    "EmpathyLevelError": (".exceptions", "EmpathyLevelError"),
+    "FeedbackLoopError": (".exceptions", "FeedbackLoopError"),
+    "LeveragePointError": (".exceptions", "LeveragePointError"),
+    "PatternNotFoundError": (".exceptions", "PatternNotFoundError"),
+    "TrustThresholdError": (".exceptions", "TrustThresholdError"),
+    "ValidationError": (".exceptions", "ValidationError"),
+    # feedback_loops
+    "FeedbackLoopDetector": (".feedback_loops", "FeedbackLoopDetector"),
+    # levels
+    "Level1Reactive": (".levels", "Level1Reactive"),
+    "Level2Guided": (".levels", "Level2Guided"),
+    "Level3Proactive": (".levels", "Level3Proactive"),
+    "Level4Anticipatory": (".levels", "Level4Anticipatory"),
+    "Level5Systems": (".levels", "Level5Systems"),
+    # leverage_points
+    "LeveragePointAnalyzer": (".leverage_points", "LeveragePointAnalyzer"),
+    # logging_config
+    "LoggingConfig": (".logging_config", "LoggingConfig"),
+    "get_logger": (".logging_config", "get_logger"),
+    # memory module
+    "AccessTier": (".memory", "AccessTier"),
+    "AgentCredentials": (".memory", "AgentCredentials"),
+    "AuditEvent": (".memory", "AuditEvent"),
+    "AuditLogger": (".memory", "AuditLogger"),
+    "Classification": (".memory", "Classification"),
+    "ClassificationRules": (".memory", "ClassificationRules"),
+    "ClaudeMemoryConfig": (".memory", "ClaudeMemoryConfig"),
+    "ClaudeMemoryLoader": (".memory", "ClaudeMemoryLoader"),
+    "ConflictContext": (".memory", "ConflictContext"),
+    "EncryptionManager": (".memory", "EncryptionManager"),
+    "Environment": (".memory", "Environment"),
+    "MemDocsStorage": (".memory", "MemDocsStorage"),
+    "MemoryConfig": (".memory", "MemoryConfig"),
+    "MemoryPermissionError": (".memory", "MemoryPermissionError"),
+    "PatternMetadata": (".memory", "PatternMetadata"),
+    "PIIDetection": (".memory", "PIIDetection"),
+    "PIIPattern": (".memory", "PIIPattern"),
+    "PIIScrubber": (".memory", "PIIScrubber"),
+    "RedisShortTermMemory": (".memory", "RedisShortTermMemory"),
+    "SecretDetection": (".memory", "SecretDetection"),
+    "SecretsDetector": (".memory", "SecretsDetector"),
+    "SecretType": (".memory", "SecretType"),
+    "SecureMemDocsIntegration": (".memory", "SecureMemDocsIntegration"),
+    "SecurePattern": (".memory", "SecurePattern"),
+    "SecurityError": (".memory", "SecurityError"),
+    "SecurityViolation": (".memory", "SecurityViolation"),
+    "Severity": (".memory", "Severity"),
+    "StagedPattern": (".memory", "StagedPattern"),
+    "TTLStrategy": (".memory", "TTLStrategy"),
+    "UnifiedMemory": (".memory", "UnifiedMemory"),
+    "check_redis_connection": (".memory", "check_redis_connection"),
+    "detect_secrets": (".memory", "detect_secrets"),
+    "get_railway_redis": (".memory", "get_railway_redis"),
+    "get_redis_config": (".memory", "get_redis_config"),
+    "get_redis_memory": (".memory", "get_redis_memory"),
+    # pattern_library
+    "Pattern": (".pattern_library", "Pattern"),
+    "PatternLibrary": (".pattern_library", "PatternLibrary"),
+    "PatternMatch": (".pattern_library", "PatternMatch"),
+    # persistence
+    "MetricsCollector": (".persistence", "MetricsCollector"),
+    "PatternPersistence": (".persistence", "PatternPersistence"),
+    "StateManager": (".persistence", "StateManager"),
+    # trust_building
+    "TrustBuildingBehaviors": (".trust_building", "TrustBuildingBehaviors"),
+}
+
+# Cache for loaded modules
+_loaded_modules: dict[str, object] = {}
+
+
+def __getattr__(name: str) -> object:
+    """Lazy import handler - loads modules only when accessed."""
+    if name in _LAZY_IMPORTS:
+        module_path, attr_name = _LAZY_IMPORTS[name]
+
+        # Check cache first
+        cache_key = f"{module_path}.{attr_name}"
+        if cache_key in _loaded_modules:
+            return _loaded_modules[cache_key]
+
+        # Import the module and get the attribute
+        import importlib
+        module = importlib.import_module(module_path, package="empathy_os")
+        attr = getattr(module, attr_name)
+
+        # Cache and return
+        _loaded_modules[cache_key] = attr
+        return attr
+
+    raise AttributeError(f"module 'empathy_os' has no attribute '{name}'")
 
 __all__ = [
     "AccessTier",

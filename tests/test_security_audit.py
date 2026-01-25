@@ -219,9 +219,9 @@ class TestSkipDirectories:
         """Should skip vscode-memory-panel directory."""
         assert "vscode-memory-panel" in SKIP_DIRECTORIES
 
-    def test_contains_wizard_dashboard(self):
-        """Should skip wizard-dashboard directory."""
-        assert "wizard-dashboard" in SKIP_DIRECTORIES
+    def test_contains_workflow_dashboard(self):
+        """Should skip workflow-dashboard directory."""
+        assert "workflow-dashboard" in SKIP_DIRECTORIES
 
     def test_all_entries_are_strings(self):
         """All entries should be strings."""
@@ -604,9 +604,9 @@ class TestSecurityPatternsStructure:
         """Severity values should be valid."""
         valid_severities = {"critical", "high", "medium", "low"}
         for name, info in SECURITY_PATTERNS.items():
-            assert (
-                info["severity"] in valid_severities
-            ), f"{name} has invalid severity: {info['severity']}"
+            assert info["severity"] in valid_severities, (
+                f"{name} has invalid severity: {info['severity']}"
+            )
 
     def test_owasp_format_is_valid(self):
         """OWASP references should follow expected format."""

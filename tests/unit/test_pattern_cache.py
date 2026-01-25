@@ -1,8 +1,6 @@
 """Tests for empathy_os.pattern_cache"""
-from empathy_os.pattern_cache import (
-    PatternMatchCache,
-    cached_pattern_query,
-)
+
+from empathy_os.pattern_cache import PatternMatchCache, cached_pattern_query
 
 
 class TestPatternMatchCache:
@@ -132,6 +130,7 @@ class TestPatternMatchCache:
 
         # Compute function should NOT be called
         compute_called = False
+
         def compute():
             nonlocal compute_called
             compute_called = True
@@ -151,6 +150,7 @@ class TestPatternMatchCache:
         # Compute function SHOULD be called
         compute_called = False
         expected = ["pattern1"]
+
         def compute():
             nonlocal compute_called
             compute_called = True
@@ -238,4 +238,3 @@ def test_cached_pattern_query_with_different_contexts():
 
     # All three results should be cached
     assert len(cache._cache) == 2  # Two unique contexts
-

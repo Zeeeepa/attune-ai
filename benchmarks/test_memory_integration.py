@@ -22,7 +22,8 @@ import os
 from pathlib import Path
 
 from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
+from empathy_llm_toolkit.claude_memory import (ClaudeMemoryConfig,
+                                               ClaudeMemoryLoader)
 
 
 def test_basic_memory_loading() -> None:

@@ -270,9 +270,7 @@ def incomplete():
         (tmp_path / "test.py").write_text("x = 1")
 
         input_data = {"path": str(tmp_path), "file_types": [".py"]}
-        result, input_tokens, output_tokens = await workflow._scan(
-            input_data, ModelTier.CHEAP
-        )
+        result, input_tokens, output_tokens = await workflow._scan(input_data, ModelTier.CHEAP)
 
         assert isinstance(input_tokens, int)
         assert isinstance(output_tokens, int)
@@ -543,9 +541,7 @@ class TestRecommendStage:
     @pytest.mark.asyncio
     async def test_recommend_generates_recommendations(self, bug_predict_workflow):
         """Test recommend generates recommendations via LLM."""
-        with patch.object(
-            bug_predict_workflow, "_call_llm", new_callable=AsyncMock
-        ) as mock_llm:
+        with patch.object(bug_predict_workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = ("Fix the broad exception handlers.", 100, 200)
 
             input_data = {
@@ -567,9 +563,7 @@ class TestRecommendStage:
     @pytest.mark.asyncio
     async def test_recommend_includes_formatted_report(self, bug_predict_workflow):
         """Test recommend includes formatted report."""
-        with patch.object(
-            bug_predict_workflow, "_call_llm", new_callable=AsyncMock
-        ) as mock_llm:
+        with patch.object(bug_predict_workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = ("Recommendations here", 50, 100)
 
             input_data = {
@@ -617,9 +611,7 @@ class TestRecommendStage:
 
                 input_data = {"predictions": [], "overall_risk_score": 0.5}
 
-                result, _, _ = await bug_predict_workflow._recommend(
-                    input_data, ModelTier.PREMIUM
-                )
+                result, _, _ = await bug_predict_workflow._recommend(input_data, ModelTier.PREMIUM)
 
                 mock_llm.assert_called_once()
 
@@ -669,9 +661,7 @@ class TestRunStageRouter:
     @pytest.mark.asyncio
     async def test_run_stage_routes_to_recommend(self, bug_predict_workflow):
         """Test run_stage routes 'recommend' to _recommend method."""
-        with patch.object(
-            bug_predict_workflow, "_call_llm", new_callable=AsyncMock
-        ) as mock_llm:
+        with patch.object(bug_predict_workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = ("Recommendations", 50, 100)
 
             input_data = {"predictions": [], "overall_risk_score": 0.5}

@@ -4,10 +4,6 @@ Tests context management, state compaction, and restoration
 with integration to hooks and other framework components.
 """
 
-from datetime import datetime
-from pathlib import Path
-from typing import Any
-
 import pytest
 
 from empathy_llm_toolkit.context import (
@@ -350,9 +346,7 @@ class TestContextManagerIntegration:
         context_manager._state_manager.save_state(state)
 
         # Create new manager and restore
-        new_manager = ContextManager(
-            storage_dir=context_manager._state_manager.storage_dir
-        )
+        new_manager = ContextManager(storage_dir=context_manager._state_manager.storage_dir)
 
         restored = new_manager.restore_state(user_id)
 
@@ -375,7 +369,9 @@ class TestContextWithHooksIntegration:
         hook_registry = HookRegistry()
         states_saved = []
 
-        def pre_compact_handler(user_id="unknown", trust_level=0.5, empathy_level=1, session_id="", **kwargs):
+        def pre_compact_handler(
+            user_id="unknown", trust_level=0.5, empathy_level=1, session_id="", **kwargs
+        ):
             # Save state on pre-compact
             state = CompactState(
                 user_id=user_id,

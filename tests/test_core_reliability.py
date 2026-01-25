@@ -187,14 +187,19 @@ class TestWorkflowRegistry:
 
     def test_workflow_registry_exists(self):
         """Test workflow registry is populated."""
-        from empathy_os.workflows import WORKFLOW_REGISTRY
+        from empathy_os.workflows import list_workflows
 
-        assert isinstance(WORKFLOW_REGISTRY, dict)
-        assert len(WORKFLOW_REGISTRY) > 0
+        workflows = list_workflows()  # Triggers initialization
+        assert isinstance(workflows, list)
+        assert len(workflows) > 0
 
     def test_key_workflows_registered(self):
         """Test key workflows are registered."""
-        from empathy_os.workflows import WORKFLOW_REGISTRY
+        from empathy_os.workflows import get_workflow, list_workflows
+
+        # Trigger initialization
+        workflows = list_workflows()
+        workflow_names = {w["name"] for w in workflows}
 
         expected = [
             "code-review",
@@ -205,19 +210,20 @@ class TestWorkflowRegistry:
         ]
 
         for workflow in expected:
-            assert workflow in WORKFLOW_REGISTRY, f"{workflow} not registered"
+            assert workflow in workflow_names, f"{workflow} not registered"
+            assert get_workflow(workflow) is not None, f"{workflow} not retrievable"
 
     def test_workflow_entries_are_valid(self):
         """Test workflow entries are valid workflow classes or dicts."""
-        from empathy_os.workflows import WORKFLOW_REGISTRY
+        from empathy_os.workflows import list_workflows
 
-        for name, entry in WORKFLOW_REGISTRY.items():
-            # Entry can be a class or a dict with 'class' key
-            if isinstance(entry, dict):
-                assert "class" in entry, f"{name} missing 'class'"
-            else:
-                # It's a class directly
-                assert callable(entry), f"{name} is not callable"
+        workflows = list_workflows()
+
+        for w in workflows:
+            # Each entry should have a name
+            assert "name" in w, "workflow missing 'name'"
+            # Entry should have a description
+            assert "description" in w or "class" in w, f"{w['name']} missing metadata"
 
 
 # ============================================================================

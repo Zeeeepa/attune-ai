@@ -9,7 +9,6 @@ Reference: docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md Section 1.3
 Agent: a7ea2ab - Created 40 comprehensive scanner tests
 """
 
-
 import pytest
 
 from empathy_os.project_index.scanner import FileCategory, IndexConfig, ProjectScanner
@@ -99,7 +98,9 @@ class TestBasicTraversal:
         records, summary = scanner.scan()
 
         assert len(records) > 0
-        assert summary.total_files >= 6  # main.py, utils.py, test_main.py, setup.py, config.yaml, README.md
+        assert (
+            summary.total_files >= 6
+        )  # main.py, utils.py, test_main.py, setup.py, config.yaml, README.md
 
     def test_file_categorization_source(self, temp_project, scanner_config):
         """Test source file categorization."""

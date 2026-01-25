@@ -26,9 +26,11 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import heapq
 import json
 import os
 import uuid
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -39,6 +41,7 @@ import structlog
 
 from .claude_memory import ClaudeMemoryConfig
 from .config import get_redis_memory
+from .file_session import FileSessionConfig, FileSessionMemory
 from .long_term import Classification, LongTermMemory, SecureMemDocsIntegration
 from .redis_bootstrap import RedisStartMethod, RedisStatus, ensure_redis
 from .short_term import (
@@ -67,12 +70,17 @@ class MemoryConfig:
     # Environment
     environment: Environment = Environment.DEVELOPMENT
 
-    # Short-term memory settings
+    # File-first architecture settings (always available)
+    file_session_enabled: bool = True  # Use file-based session as primary
+    file_session_dir: str = ".empathy"  # Directory for file-based storage
+
+    # Short-term memory settings (Redis - optional enhancement)
     redis_url: str | None = None
     redis_host: str = "localhost"
     redis_port: int = 6379
     redis_mock: bool = False
-    redis_auto_start: bool = True  # Auto-start Redis if not running
+    redis_auto_start: bool = False  # Changed to False - file-first by default
+    redis_required: bool = False  # If True, fail without Redis
     default_ttl_seconds: int = 3600  # 1 hour
 
     # Long-term memory settings
@@ -88,14 +96,22 @@ class MemoryConfig:
     # Pattern promotion settings
     auto_promote_threshold: float = 0.8  # Confidence threshold for auto-promotion
 
+    # Compact state auto-generation
+    auto_generate_compact_state: bool = True
+    compact_state_path: str = ".claude/compact-state.md"
+
     @classmethod
     def from_environment(cls) -> "MemoryConfig":
         """Create configuration from environment variables.
 
         Environment Variables:
             EMPATHY_ENV: Environment (development/staging/production)
+            EMPATHY_FILE_SESSION: Enable file-based session (true/false, default: true)
+            EMPATHY_FILE_SESSION_DIR: Directory for file-based storage
             REDIS_URL: Redis connection URL
             EMPATHY_REDIS_MOCK: Use mock Redis (true/false)
+            EMPATHY_REDIS_AUTO_START: Auto-start Redis (true/false, default: false)
+            EMPATHY_REDIS_REQUIRED: Fail without Redis (true/false, default: false)
             EMPATHY_STORAGE_DIR: Long-term storage directory
             EMPATHY_ENCRYPTION: Enable encryption (true/false)
         """
@@ -108,14 +124,25 @@ class MemoryConfig:
 
         return cls(
             environment=environment,
+            # File-first settings (always available)
+            file_session_enabled=os.getenv("EMPATHY_FILE_SESSION", "true").lower() == "true",
+            file_session_dir=os.getenv("EMPATHY_FILE_SESSION_DIR", ".empathy"),
+            # Redis settings (optional)
             redis_url=os.getenv("REDIS_URL"),
             redis_host=os.getenv("EMPATHY_REDIS_HOST", "localhost"),
             redis_port=int(os.getenv("EMPATHY_REDIS_PORT", "6379")),
             redis_mock=os.getenv("EMPATHY_REDIS_MOCK", "").lower() == "true",
-            redis_auto_start=os.getenv("EMPATHY_REDIS_AUTO_START", "true").lower() == "true",
+            redis_auto_start=os.getenv("EMPATHY_REDIS_AUTO_START", "false").lower() == "true",
+            redis_required=os.getenv("EMPATHY_REDIS_REQUIRED", "false").lower() == "true",
+            # Long-term storage
             storage_dir=os.getenv("EMPATHY_STORAGE_DIR", "./memdocs_storage"),
             encryption_enabled=os.getenv("EMPATHY_ENCRYPTION", "true").lower() == "true",
             claude_memory_enabled=os.getenv("EMPATHY_CLAUDE_MEMORY", "true").lower() == "true",
+            # Compact state
+            auto_generate_compact_state=os.getenv(
+                "EMPATHY_AUTO_COMPACT_STATE", "true"
+            ).lower() == "true",
+            compact_state_path=os.getenv("EMPATHY_COMPACT_STATE_PATH", ".claude/compact-state.md"),
         )
 
 
@@ -135,22 +162,49 @@ class UnifiedMemory:
     access_tier: AccessTier = AccessTier.CONTRIBUTOR
 
     # Internal state
-    _short_term: RedisShortTermMemory | None = field(default=None, init=False)
+    _file_session: FileSessionMemory | None = field(default=None, init=False)  # Primary storage
+    _short_term: RedisShortTermMemory | None = field(default=None, init=False)  # Optional Redis
     _long_term: SecureMemDocsIntegration | None = field(default=None, init=False)
     _simple_long_term: LongTermMemory | None = field(default=None, init=False)
     _redis_status: RedisStatus | None = field(default=None, init=False)
     _initialized: bool = field(default=False, init=False)
+    # LRU cache for pattern lookups (pattern_id -> pattern_data)
+    _pattern_cache: dict[str, dict[str, Any]] = field(default_factory=dict, init=False)
+    _pattern_cache_max_size: int = field(default=100, init=False)
 
     def __post_init__(self):
         """Initialize memory backends based on configuration."""
         self._initialize_backends()
 
     def _initialize_backends(self):
-        """Initialize short-term and long-term memory backends."""
+        """Initialize short-term and long-term memory backends.
+
+        File-First Architecture:
+        1. FileSessionMemory is always initialized (primary storage)
+        2. Redis is optional (for real-time features like pub/sub)
+        3. Falls back gracefully when Redis is unavailable
+        """
         if self._initialized:
             return
 
-        # Initialize short-term memory (Redis)
+        # Initialize file-based session memory (PRIMARY - always available)
+        if self.config.file_session_enabled:
+            try:
+                file_config = FileSessionConfig(base_dir=self.config.file_session_dir)
+                self._file_session = FileSessionMemory(
+                    user_id=self.user_id,
+                    config=file_config,
+                )
+                logger.info(
+                    "file_session_memory_initialized",
+                    base_dir=self.config.file_session_dir,
+                    session_id=self._file_session._state.session_id,
+                )
+            except Exception as e:
+                logger.error("file_session_memory_failed", error=str(e))
+                self._file_session = None
+
+        # Initialize Redis short-term memory (OPTIONAL - for real-time features)
         try:
             if self.config.redis_mock:
                 self._short_term = RedisShortTermMemory(use_mock=True)
@@ -181,24 +235,57 @@ class UnifiedMemory:
                         use_mock=False,
                     )
                 else:
-                    self._short_term = RedisShortTermMemory(use_mock=True)
+                    # File session is primary, so Redis mock is not needed
+                    self._short_term = None
+                    self._redis_status = RedisStatus(
+                        available=False,
+                        method=RedisStartMethod.MOCK,
+                        message="Redis unavailable, using file-based storage",
+                    )
             else:
-                self._short_term = get_redis_memory()
-                self._redis_status = RedisStatus(
-                    available=True,
-                    method=RedisStartMethod.ALREADY_RUNNING,
-                    message="Connected to existing Redis",
-                )
+                # Try to connect to existing Redis
+                try:
+                    self._short_term = get_redis_memory()
+                    if self._short_term.is_connected():
+                        self._redis_status = RedisStatus(
+                            available=True,
+                            method=RedisStartMethod.ALREADY_RUNNING,
+                            message="Connected to existing Redis",
+                        )
+                    else:
+                        self._short_term = None
+                        self._redis_status = RedisStatus(
+                            available=False,
+                            method=RedisStartMethod.MOCK,
+                            message="Redis not available, using file-based storage",
+                        )
+                except Exception:
+                    self._short_term = None
+                    self._redis_status = RedisStatus(
+                        available=False,
+                        method=RedisStartMethod.MOCK,
+                        message="Redis not available, using file-based storage",
+                    )
 
             logger.info(
                 "short_term_memory_initialized",
-                mock_mode=self.config.redis_mock or not self._redis_status.available,
-                redis_method=self._redis_status.method.value if self._redis_status else "unknown",
+                redis_available=self._redis_status.available if self._redis_status else False,
+                file_session_available=self._file_session is not None,
+                redis_method=self._redis_status.method.value if self._redis_status else "none",
                 environment=self.config.environment.value,
             )
+
+            # Fail if Redis is required but not available
+            if self.config.redis_required and not (
+                self._redis_status and self._redis_status.available
+            ):
+                raise RuntimeError("Redis is required but not available")
+
+        except RuntimeError:
+            raise  # Re-raise required Redis error
         except Exception as e:
-            logger.warning("short_term_memory_failed", error=str(e))
-            self._short_term = RedisShortTermMemory(use_mock=True)
+            logger.warning("redis_initialization_failed", error=str(e))
+            self._short_term = None
             self._redis_status = RedisStatus(
                 available=False,
                 method=RedisStartMethod.MOCK,
@@ -297,7 +384,10 @@ class UnifiedMemory:
     # =========================================================================
 
     def stash(self, key: str, value: Any, ttl_seconds: int | None = None) -> bool:
-        """Store data in short-term memory with TTL.
+        """Store data in working memory with TTL.
+
+        Uses file-based session as primary storage, with optional Redis for
+        real-time features. Data is persisted to disk automatically.
 
         Args:
             key: Storage key
@@ -308,29 +398,41 @@ class UnifiedMemory:
             True if stored successfully
 
         """
-        if not self._short_term:
-            logger.warning("short_term_memory_unavailable")
-            return False
+        ttl = ttl_seconds or self.config.default_ttl_seconds
 
-        # Map ttl_seconds to TTLStrategy (use WORKING_RESULTS as default)
-        ttl_strategy = TTLStrategy.WORKING_RESULTS
-        if ttl_seconds is not None:
-            # Find closest TTL strategy or use working results
-            if ttl_seconds <= TTLStrategy.COORDINATION.value:
-                ttl_strategy = TTLStrategy.COORDINATION
-            elif ttl_seconds <= TTLStrategy.SESSION.value:
-                ttl_strategy = TTLStrategy.SESSION
-            elif ttl_seconds <= TTLStrategy.WORKING_RESULTS.value:
-                ttl_strategy = TTLStrategy.WORKING_RESULTS
-            elif ttl_seconds <= TTLStrategy.STAGED_PATTERNS.value:
-                ttl_strategy = TTLStrategy.STAGED_PATTERNS
-            else:
-                ttl_strategy = TTLStrategy.CONFLICT_CONTEXT
+        # Primary: File session memory (always available)
+        if self._file_session:
+            self._file_session.stash(key, value, ttl=ttl)
 
-        return self._short_term.stash(key, value, self.credentials, ttl_strategy)
+        # Optional: Redis for real-time sync
+        if self._short_term and self._redis_status and self._redis_status.available:
+            # Map ttl_seconds to TTLStrategy
+            ttl_strategy = TTLStrategy.WORKING_RESULTS
+            if ttl_seconds is not None:
+                if ttl_seconds <= TTLStrategy.COORDINATION.value:
+                    ttl_strategy = TTLStrategy.COORDINATION
+                elif ttl_seconds <= TTLStrategy.SESSION.value:
+                    ttl_strategy = TTLStrategy.SESSION
+                elif ttl_seconds <= TTLStrategy.WORKING_RESULTS.value:
+                    ttl_strategy = TTLStrategy.WORKING_RESULTS
+                elif ttl_seconds <= TTLStrategy.STAGED_PATTERNS.value:
+                    ttl_strategy = TTLStrategy.STAGED_PATTERNS
+                else:
+                    ttl_strategy = TTLStrategy.CONFLICT_CONTEXT
+
+            try:
+                self._short_term.stash(key, value, self.credentials, ttl_strategy)
+            except Exception as e:
+                logger.debug("redis_stash_failed", key=key, error=str(e))
+
+        # Return True if at least one backend succeeded
+        return self._file_session is not None
 
     def retrieve(self, key: str) -> Any | None:
-        """Retrieve data from short-term memory.
+        """Retrieve data from working memory.
+
+        Checks Redis first (if available) for faster access, then falls back
+        to file-based session storage.
 
         Args:
             key: Storage key
@@ -339,10 +441,20 @@ class UnifiedMemory:
             Stored data or None if not found
 
         """
-        if not self._short_term:
-            return None
+        # Try Redis first (faster, if available)
+        if self._short_term and self._redis_status and self._redis_status.available:
+            try:
+                result = self._short_term.retrieve(key, self.credentials)
+                if result is not None:
+                    return result
+            except Exception as e:
+                logger.debug("redis_retrieve_failed", key=key, error=str(e))
 
-        return self._short_term.retrieve(key, self.credentials)
+        # Fall back to file session (primary storage)
+        if self._file_session:
+            return self._file_session.retrieve(key)
+
+        return None
 
     def stage_pattern(
         self,
@@ -455,16 +567,30 @@ class UnifiedMemory:
             logger.error("persist_pattern_failed", error=str(e))
             return None
 
+    def _cache_pattern(self, pattern_id: str, pattern: dict[str, Any]) -> None:
+        """Add pattern to LRU cache, evicting oldest if at capacity."""
+        # Simple LRU: remove oldest entry if at max size
+        if len(self._pattern_cache) >= self._pattern_cache_max_size:
+            # Remove first (oldest) item
+            oldest_key = next(iter(self._pattern_cache))
+            del self._pattern_cache[oldest_key]
+
+        self._pattern_cache[pattern_id] = pattern
+
     def recall_pattern(
         self,
         pattern_id: str,
         check_permissions: bool = True,
+        use_cache: bool = True,
     ) -> dict[str, Any] | None:
         """Retrieve a pattern from long-term memory.
+
+        Uses LRU cache for frequently accessed patterns to reduce I/O.
 
         Args:
             pattern_id: ID of pattern to retrieve
             check_permissions: Verify user has access to pattern
+            use_cache: Whether to use/update the pattern cache (default: True)
 
         Returns:
             Pattern data with content and metadata, or None if not found
@@ -474,15 +600,118 @@ class UnifiedMemory:
             logger.error("long_term_memory_unavailable")
             return None
 
+        # Check cache first (if enabled)
+        if use_cache and pattern_id in self._pattern_cache:
+            logger.debug("pattern_cache_hit", pattern_id=pattern_id)
+            return self._pattern_cache[pattern_id]
+
         try:
-            return self._long_term.retrieve_pattern(
+            pattern = self._long_term.retrieve_pattern(
                 pattern_id=pattern_id,
                 user_id=self.user_id,
                 check_permissions=check_permissions,
             )
+
+            # Cache the result (if enabled and pattern found)
+            if use_cache and pattern:
+                self._cache_pattern(pattern_id, pattern)
+
+            return pattern
         except Exception as e:
             logger.error("recall_pattern_failed", pattern_id=pattern_id, error=str(e))
             return None
+
+    def clear_pattern_cache(self) -> int:
+        """Clear the pattern lookup cache.
+
+        Returns:
+            Number of entries cleared
+        """
+        count = len(self._pattern_cache)
+        self._pattern_cache.clear()
+        logger.debug("pattern_cache_cleared", entries=count)
+        return count
+
+    def _score_pattern(
+        self,
+        pattern: dict[str, Any],
+        query_lower: str,
+        query_words: list[str],
+    ) -> float:
+        """Calculate relevance score for a pattern.
+
+        Args:
+            pattern: Pattern data dictionary
+            query_lower: Lowercase query string
+            query_words: Pre-split query words (length >= 3)
+
+        Returns:
+            Relevance score (0.0 if no match)
+        """
+        if not query_lower:
+            return 1.0  # No query - all patterns have equal score
+
+        content = str(pattern.get("content", "")).lower()
+        metadata_str = str(pattern.get("metadata", {})).lower()
+
+        score = 0.0
+
+        # Exact phrase match in content (highest score)
+        if query_lower in content:
+            score += 10.0
+
+        # Keyword matching (medium score)
+        for word in query_words:
+            if word in content:
+                score += 2.0
+            if word in metadata_str:
+                score += 1.0
+
+        return score
+
+    def _filter_and_score_patterns(
+        self,
+        query: str | None,
+        pattern_type: str | None,
+        classification: Classification | None,
+    ) -> Iterator[tuple[float, dict[str, Any]]]:
+        """Generator that filters and scores patterns.
+
+        Memory-efficient: yields (score, pattern) tuples one at a time.
+        Use with heapq.nlargest() for efficient top-N selection.
+
+        Args:
+            query: Search query (case-insensitive)
+            pattern_type: Filter by pattern type
+            classification: Filter by classification level
+
+        Yields:
+            Tuples of (score, pattern) for matching patterns
+        """
+        query_lower = query.lower() if query else ""
+        query_words = [w for w in query_lower.split() if len(w) >= 3] if query else []
+
+        for pattern in self._iter_all_patterns():
+            # Apply filters
+            if pattern_type and pattern.get("pattern_type") != pattern_type:
+                continue
+
+            if classification:
+                pattern_class = pattern.get("classification")
+                if isinstance(classification, Classification):
+                    if pattern_class != classification.value:
+                        continue
+                elif pattern_class != classification:
+                    continue
+
+            # Calculate relevance score
+            score = self._score_pattern(pattern, query_lower, query_words)
+
+            # Skip if no matches found (when query is provided)
+            if query and score == 0.0:
+                continue
+
+            yield (score, pattern)
 
     def search_patterns(
         self,
@@ -498,6 +727,9 @@ class UnifiedMemory:
         2. Filter by pattern_type and classification
         3. Relevance scoring (exact matches rank higher)
         4. Results sorted by relevance
+
+        Memory-efficient: Uses generators and heapq.nlargest() to avoid
+        loading all patterns into memory. Only keeps top N results.
 
         Args:
             query: Text to search for in pattern content (case-insensitive)
@@ -520,65 +752,74 @@ class UnifiedMemory:
             return []
 
         try:
-            # Get all patterns from storage
-            all_patterns = self._get_all_patterns()
+            # Use heapq.nlargest for memory-efficient top-N selection
+            # This avoids loading all patterns into memory at once
+            scored_patterns = heapq.nlargest(
+                limit,
+                self._filter_and_score_patterns(query, pattern_type, classification),
+                key=lambda x: x[0],
+            )
 
-            # Filter and score patterns
-            scored_patterns = []
-            query_lower = query.lower() if query else ""
-
-            for pattern in all_patterns:
-                # Apply filters
-                if pattern_type and pattern.get("pattern_type") != pattern_type:
-                    continue
-
-                if classification:
-                    pattern_class = pattern.get("classification")
-                    if isinstance(classification, Classification):
-                        if pattern_class != classification.value:
-                            continue
-                    elif pattern_class != classification:
-                        continue
-
-                # Calculate relevance score
-                score = 0.0
-
-                if query:
-                    content = str(pattern.get("content", "")).lower()
-                    metadata_str = str(pattern.get("metadata", {})).lower()
-
-                    # Exact phrase match in content (highest score)
-                    if query_lower in content:
-                        score += 10.0
-
-                    # Keyword matching (medium score)
-                    query_words = query_lower.split()
-                    for word in query_words:
-                        if len(word) < 3:  # Skip short words
-                            continue
-                        if word in content:
-                            score += 2.0
-                        if word in metadata_str:
-                            score += 1.0
-
-                    # Skip if no matches found
-                    if score == 0.0:
-                        continue
-                else:
-                    # No query - all filtered patterns have equal score
-                    score = 1.0
-
-                scored_patterns.append((score, pattern))
-
-            # Sort by relevance (highest score first)
-            scored_patterns.sort(key=lambda x: x[0], reverse=True)
-
-            # Return top N patterns (without scores)
-            return [pattern for _, pattern in scored_patterns[:limit]]
+            # Return patterns without scores
+            return [pattern for _, pattern in scored_patterns]
 
         except Exception as e:
             logger.error("pattern_search_failed", error=str(e))
             return []
+
+    def _get_storage_dir(self) -> Path | None:
+        """Get the storage directory from long-term memory backend.
+
+        Returns:
+            Path to storage directory, or None if unavailable.
+        """
+        if not self._long_term:
+            return None
+
+        # Try different ways to access storage directory
+        if hasattr(self._long_term, "storage_dir"):
+            return Path(self._long_term.storage_dir)
+        elif hasattr(self._long_term, "storage"):
+            if hasattr(self._long_term.storage, "storage_dir"):
+                return Path(self._long_term.storage.storage_dir)
+        elif hasattr(self._long_term, "_storage"):
+            if hasattr(self._long_term._storage, "storage_dir"):
+                return Path(self._long_term._storage.storage_dir)
+
+        return None
+
+    def _iter_all_patterns(self) -> Iterator[dict[str, Any]]:
+        """Iterate over all patterns from long-term memory storage.
+
+        Memory-efficient generator that yields patterns one at a time,
+        avoiding loading all patterns into memory simultaneously.
+
+        Yields:
+            Pattern data dictionaries
+
+        Note:
+            This is O(1) memory vs O(n) for _get_all_patterns().
+            Use this for large datasets or when streaming is acceptable.
+        """
+        storage_dir = self._get_storage_dir()
+        if not storage_dir:
+            logger.warning("cannot_access_storage_directory")
+            return
+
+        if not storage_dir.exists():
+            return
+
+        # Yield patterns one at a time (memory-efficient)
+        for pattern_file in storage_dir.rglob("*.json"):
+            try:
+                with pattern_file.open("r", encoding="utf-8") as f:
+                    yield json.load(f)
+            except json.JSONDecodeError as e:
+                logger.debug("pattern_json_decode_failed", file=str(pattern_file), error=str(e))
+                continue
+            except Exception as e:
+                logger.debug("pattern_load_failed", file=str(pattern_file), error=str(e))
+                continue
 
     def _get_all_patterns(self) -> list[dict[str, Any]]:
         """Get all patterns from long-term memory storage.
@@ -595,57 +836,13 @@ class UnifiedMemory:
             List of all stored patterns
 
         Note:
-            This performs a full scan and is O(n). For large datasets,
-            use indexed storage backends.
+            This performs a full scan and is O(n) memory. For large datasets,
+            use _iter_all_patterns() generator instead.
         """
-        if not self._long_term:
-            return []
-
         try:
-            # Get storage directory from long-term memory
-            storage_dir = None
-
-            # Try different ways to access storage directory
-            if hasattr(self._long_term, 'storage_dir'):
-                storage_dir = Path(self._long_term.storage_dir)
-            elif hasattr(self._long_term, 'storage'):
-                if hasattr(self._long_term.storage, 'storage_dir'):
-                    storage_dir = Path(self._long_term.storage.storage_dir)
-            elif hasattr(self._long_term, '_storage'):
-                if hasattr(self._long_term._storage, 'storage_dir'):
-                    storage_dir = Path(self._long_term._storage.storage_dir)
-
-            if not storage_dir:
-                logger.warning("cannot_access_storage_directory")
-                return []
-
-            patterns = []
-
-            # Scan for pattern files (*.json)
-            if storage_dir.exists():
-                for pattern_file in storage_dir.rglob("*.json"):
-                    try:
-                        with pattern_file.open('r', encoding='utf-8') as f:
-                            pattern_data = json.load(f)
-                            patterns.append(pattern_data)
-                    except json.JSONDecodeError as e:
-                        logger.debug(
-                            "pattern_json_decode_failed",
-                            file=str(pattern_file),
-                            error=str(e)
-                        )
-                        continue
-                    except Exception as e:
-                        logger.debug(
-                            "pattern_load_failed",
-                            file=str(pattern_file),
-                            error=str(e)
-                        )
-                        continue
-
+            patterns = list(self._iter_all_patterns())
             logger.debug("patterns_loaded", count=len(patterns))
             return patterns
-
         except Exception as e:
             logger.error("get_all_patterns_failed", error=str(e))
             return []
@@ -792,6 +989,11 @@ class UnifiedMemory:
             redis_info["port"] = self._redis_status.port
 
         return {
+            "file_session": {
+                "available": self._file_session is not None,
+                "session_id": self._file_session._state.session_id if self._file_session else None,
+                "base_dir": self.config.file_session_dir,
+            },
             "short_term": redis_info,
             "long_term": {
                 "available": self.has_long_term,
@@ -800,3 +1002,267 @@ class UnifiedMemory:
             },
             "environment": self.config.environment.value,
         }
+
+    # =========================================================================
+    # CAPABILITY DETECTION (File-First Architecture)
+    # =========================================================================
+
+    @property
+    def has_file_session(self) -> bool:
+        """Check if file-based session memory is available (always True if enabled)."""
+        return self._file_session is not None
+
+    @property
+    def file_session(self) -> FileSessionMemory:
+        """Get file session memory backend for direct access.
+
+        Returns:
+            FileSessionMemory instance
+
+        Raises:
+            RuntimeError: If file session memory is not initialized
+        """
+        if self._file_session is None:
+            raise RuntimeError("File session memory not initialized")
+        return self._file_session
+
+    def supports_realtime(self) -> bool:
+        """Check if real-time features are available (requires Redis).
+
+        Real-time features include:
+        - Pub/Sub messaging between agents
+        - Cross-session coordination
+        - Distributed task queues
+
+        Returns:
+            True if Redis is available and connected
+        """
+        return self.using_real_redis
+
+    def supports_distributed(self) -> bool:
+        """Check if distributed features are available (requires Redis).
+
+        Distributed features include:
+        - Multi-process coordination
+        - Cross-session state sharing
+        - Agent discovery
+
+        Returns:
+            True if Redis is available and connected
+        """
+        return self.using_real_redis
+
+    def supports_persistence(self) -> bool:
+        """Check if persistence is available (always True with file-first).
+
+        Returns:
+            True if file session or long-term memory is available
+        """
+        return self._file_session is not None or self._long_term is not None
+
+    def get_capabilities(self) -> dict[str, bool]:
+        """Get a summary of available memory capabilities.
+
+        Returns:
+            Dictionary mapping capability names to availability
+        """
+        return {
+            "file_session": self.has_file_session,
+            "redis": self.using_real_redis,
+            "long_term": self.has_long_term,
+            "persistence": self.supports_persistence(),
+            "realtime": self.supports_realtime(),
+            "distributed": self.supports_distributed(),
+            "encryption": self.config.encryption_enabled and self.has_long_term,
+        }
+
+    # =========================================================================
+    # COMPACT STATE GENERATION
+    # =========================================================================
+
+    def generate_compact_state(self) -> str:
+        """Generate SBAR-format compact state from current session.
+
+        Creates a human-readable summary of the current session state,
+        suitable for Claude Code's .claude/compact-state.md file.
+
+        Returns:
+            Markdown-formatted compact state string
+        """
+        from datetime import datetime
+
+        lines = [
+            "# Compact State - Session Handoff",
+            "",
+            f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        ]
+
+        # Add session info
+        if self._file_session:
+            session = self._file_session._state
+            lines.extend([
+                f"**Session ID:** {session.session_id}",
+                f"**User ID:** {session.user_id}",
+                "",
+            ])
+
+        lines.extend([
+            "## SBAR Handoff",
+            "",
+            "### Situation",
+        ])
+
+        # Get context from file session
+        context = {}
+        if self._file_session:
+            context = self._file_session.get_all_context()
+
+        situation = context.get("situation", "Session in progress.")
+        background = context.get("background", "No background information recorded.")
+        assessment = context.get("assessment", "No assessment recorded.")
+        recommendation = context.get("recommendation", "Continue with current task.")
+
+        lines.extend([
+            situation,
+            "",
+            "### Background",
+            background,
+            "",
+            "### Assessment",
+            assessment,
+            "",
+            "### Recommendation",
+            recommendation,
+            "",
+        ])
+
+        # Add working memory summary
+        if self._file_session:
+            working_keys = list(self._file_session._state.working_memory.keys())
+            if working_keys:
+                lines.extend([
+                    "## Working Memory",
+                    "",
+                    f"**Active keys:** {len(working_keys)}",
+                    "",
+                ])
+                for key in working_keys[:10]:  # Show max 10
+                    lines.append(f"- `{key}`")
+                if len(working_keys) > 10:
+                    lines.append(f"- ... and {len(working_keys) - 10} more")
+                lines.append("")
+
+        # Add staged patterns summary
+        if self._file_session:
+            staged = list(self._file_session._state.staged_patterns.values())
+            if staged:
+                lines.extend([
+                    "## Staged Patterns",
+                    "",
+                    f"**Pending validation:** {len(staged)}",
+                    "",
+                ])
+                for pattern in staged[:5]:  # Show max 5
+                    lines.append(f"- {pattern.name} ({pattern.pattern_type}, conf: {pattern.confidence:.2f})")
+                if len(staged) > 5:
+                    lines.append(f"- ... and {len(staged) - 5} more")
+                lines.append("")
+
+        # Add capabilities
+        caps = self.get_capabilities()
+        lines.extend([
+            "## Capabilities",
+            "",
+            f"- File session: {'Yes' if caps['file_session'] else 'No'}",
+            f"- Redis: {'Yes' if caps['redis'] else 'No'}",
+            f"- Long-term memory: {'Yes' if caps['long_term'] else 'No'}",
+            f"- Real-time sync: {'Yes' if caps['realtime'] else 'No'}",
+            "",
+        ])
+
+        return "\n".join(lines)
+
+    def export_to_claude_md(self, path: str | None = None) -> Path:
+        """Export current session state to Claude Code's compact-state.md.
+
+        Args:
+            path: Path to write to (defaults to config.compact_state_path)
+
+        Returns:
+            Path where state was written
+        """
+        from empathy_os.config import _validate_file_path
+
+        path = path or self.config.compact_state_path
+        validated_path = _validate_file_path(path)
+
+        # Ensure parent directory exists
+        validated_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Generate and write compact state
+        content = self.generate_compact_state()
+        validated_path.write_text(content, encoding="utf-8")
+
+        logger.info("compact_state_exported", path=str(validated_path))
+        return validated_path
+
+    def set_handoff(
+        self,
+        situation: str,
+        background: str,
+        assessment: str,
+        recommendation: str,
+        **extra_context,
+    ) -> None:
+        """Set SBAR handoff context for session continuity.
+
+        This data is used by generate_compact_state() and export_to_claude_md().
+
+        Args:
+            situation: Current situation summary
+            background: Relevant background information
+            assessment: Assessment of progress/state
+            recommendation: Recommended next steps
+            **extra_context: Additional context key-value pairs
+        """
+        if not self._file_session:
+            logger.warning("file_session_not_available")
+            return
+
+        self._file_session.set_context("situation", situation)
+        self._file_session.set_context("background", background)
+        self._file_session.set_context("assessment", assessment)
+        self._file_session.set_context("recommendation", recommendation)
+
+        for key, value in extra_context.items():
+            self._file_session.set_context(key, value)
+
+        # Auto-export if configured
+        if self.config.auto_generate_compact_state:
+            self.export_to_claude_md()
+
+    # =========================================================================
+    # LIFECYCLE
+    # =========================================================================
+
+    def save(self) -> None:
+        """Explicitly save all memory state."""
+        if self._file_session:
+            self._file_session.save()
+        logger.debug("memory_saved")
+
+    def close(self) -> None:
+        """Close all memory backends and save state."""
+        if self._file_session:
+            self._file_session.close()
+
+        if self._short_term and hasattr(self._short_term, "close"):
+            self._short_term.close()
+
+        logger.info("unified_memory_closed")
+
+    def __enter__(self) -> "UnifiedMemory":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        self.close()

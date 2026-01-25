@@ -15,13 +15,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
-from .forms import (
-    FieldOption,
-    FieldType,
-    FieldValidation,
-    Form,
-    FormField,
-)
+from .forms import FieldOption, FieldType, FieldValidation, Form, FormField
 from .session import SocraticSession
 
 logger = logging.getLogger(__name__)
@@ -245,6 +239,7 @@ class LLMGoalAnalyzer:
             model_tier: Model tier (cheap, capable, premium)
         """
         import os
+
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         self.provider = provider
         self.model_tier = model_tier
@@ -256,6 +251,7 @@ class LLMGoalAnalyzer:
         if self._client is None and self.api_key:
             try:
                 import anthropic
+
                 self._client = anthropic.Anthropic(api_key=self.api_key)
             except ImportError:
                 logger.warning("anthropic package not installed")
@@ -266,6 +262,7 @@ class LLMGoalAnalyzer:
         if self._executor is None:
             try:
                 from ..models.empathy_executor import EmpathyLLMExecutor
+
                 self._executor = EmpathyLLMExecutor(provider=self.provider)
             except ImportError:
                 logger.warning("EmpathyLLMExecutor not available, using mock")
@@ -310,7 +307,7 @@ class LLMGoalAnalyzer:
             prompt=prompt,
             system=system,
         )
-        return response.content if hasattr(response, 'content') else str(response)
+        return response.content if hasattr(response, "content") else str(response)
 
     async def analyze_goal(self, goal: str) -> LLMAnalysisResult:
         """Analyze a goal using LLM.
@@ -559,6 +556,7 @@ class MockLLMExecutor:
 
     async def run(self, **kwargs) -> Any:
         """Return mock response."""
+
         @dataclass
         class MockResponse:
             content: str = "{}"
@@ -604,21 +602,25 @@ def llm_questions_to_form(
             if isinstance(opt, str):
                 options.append(FieldOption(value=opt.lower().replace(" ", "_"), label=opt))
             elif isinstance(opt, dict):
-                options.append(FieldOption(
-                    value=opt.get("value", opt.get("label", "").lower().replace(" ", "_")),
-                    label=opt.get("label", ""),
-                    description=opt.get("description", ""),
-                ))
+                options.append(
+                    FieldOption(
+                        value=opt.get("value", opt.get("label", "").lower().replace(" ", "_")),
+                        label=opt.get("label", ""),
+                        description=opt.get("description", ""),
+                    )
+                )
 
-        fields.append(FormField(
-            id=q_id,
-            field_type=field_type,
-            label=q.get("question", ""),
-            options=options,
-            validation=FieldValidation(required=q.get("required", False)),
-            category=q.get("category", "general"),
-            order=q.get("priority", 5),
-        ))
+        fields.append(
+            FormField(
+                id=q_id,
+                field_type=field_type,
+                label=q.get("question", ""),
+                options=options,
+                validation=FieldValidation(required=q.get("required", False)),
+                category=q.get("category", "general"),
+                order=q.get("priority", 5),
+            )
+        )
 
     # Sort by priority (higher priority = lower order number = appears first)
     fields.sort(key=lambda f: f.order, reverse=True)

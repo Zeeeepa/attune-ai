@@ -87,11 +87,13 @@ class TestSafeAgentOperation:
                 self.audit_entries = []
 
             def add_audit_entry(self, state, action, details):
-                self.audit_entries.append({
-                    "state": state,
-                    "action": action,
-                    "details": details,
-                })
+                self.audit_entries.append(
+                    {
+                        "state": state,
+                        "action": action,
+                        "details": details,
+                    }
+                )
 
             @safe_agent_operation("audited_op")
             async def operation_with_audit(self, state=None):
@@ -352,11 +354,13 @@ class TestWithCostTracking:
             tracked_costs = []
 
             def _track_cost(self, operation_id, operation_type, model, tokens):
-                self.tracked_costs.append({
-                    "operation_type": operation_type,
-                    "model": model,
-                    "tokens": tokens,
-                })
+                self.tracked_costs.append(
+                    {
+                        "operation_type": operation_type,
+                        "model": model,
+                        "tokens": tokens,
+                    }
+                )
 
             @with_cost_tracking(operation_type="research")
             async def research(self, query):

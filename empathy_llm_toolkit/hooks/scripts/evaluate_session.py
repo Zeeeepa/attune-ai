@@ -112,9 +112,7 @@ def run_evaluate_session(context: dict[str, Any]) -> dict[str, Any]:
                     f"for user {user_id}"
                 )
         else:
-            logger.debug(
-                f"Session not recommended for extraction (score: {evaluation.score:.2f})"
-            )
+            logger.debug(f"Session not recommended for extraction (score: {evaluation.score:.2f})")
 
         return result
 

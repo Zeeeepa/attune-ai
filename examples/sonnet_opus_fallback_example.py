@@ -21,7 +21,8 @@ import asyncio
 from datetime import datetime, timedelta
 
 from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
+from empathy_os.models.fallback import (SONNET_TO_OPUS_FALLBACK,
+                                        ResilientExecutor)
 from empathy_os.models.telemetry import TelemetryAnalytics, get_telemetry_store
 
 

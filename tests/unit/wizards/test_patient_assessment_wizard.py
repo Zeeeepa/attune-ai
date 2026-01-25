@@ -7,7 +7,6 @@ Generated: 2026-01-05T20:15:06.683937
 """
 
 import pytest
-
 from wizards.patient_assessment_wizard import PatientAssessmentWizard
 
 

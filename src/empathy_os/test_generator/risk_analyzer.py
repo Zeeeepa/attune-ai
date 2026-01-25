@@ -1,6 +1,6 @@
 """Risk analyzer for test generation.
 
-Analyzes wizard patterns to identify critical paths and determine
+Analyzes workflow patterns to identify critical paths and determine
 appropriate test coverage levels.
 
 Copyright 2025 Smart AI Memory, LLC
@@ -20,9 +20,9 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class RiskAnalysis:
-    """Risk analysis results for a wizard."""
+    """Risk analysis results for a workflow."""
 
-    wizard_id: str
+    workflow_id: str
     pattern_ids: list[str]
     critical_paths: list[str] = field(default_factory=list)
     high_risk_inputs: list[str] = field(default_factory=list)
@@ -54,7 +54,7 @@ class RiskAnalysis:
     def to_dict(self) -> dict:
         """Convert to dictionary."""
         return {
-            "wizard_id": self.wizard_id,
+            "workflow_id": self.workflow_id,
             "pattern_ids": self.pattern_ids,
             "critical_paths": self.critical_paths,
             "high_risk_inputs": self.high_risk_inputs,
@@ -65,7 +65,7 @@ class RiskAnalysis:
 
 
 class RiskAnalyzer:
-    """Analyzes wizard patterns to determine testing requirements.
+    """Analyzes workflow patterns to determine testing requirements.
 
     Uses pattern analysis to identify:
     - Critical execution paths
@@ -78,21 +78,21 @@ class RiskAnalyzer:
         """Initialize risk analyzer."""
         self.registry = get_pattern_registry()
 
-    def analyze(self, wizard_id: str, pattern_ids: list[str]) -> RiskAnalysis:
-        """Analyze wizard patterns for risk.
+    def analyze(self, workflow_id: str, pattern_ids: list[str]) -> RiskAnalysis:
+        """Analyze workflow patterns for risk.
 
         Args:
-            wizard_id: Wizard identifier
-            pattern_ids: List of pattern IDs used by wizard
+            workflow_id: Workflow identifier
+            pattern_ids: List of pattern IDs used by workflow
 
         Returns:
             RiskAnalysis with recommendations
 
         """
-        logger.info(f"Analyzing risk for wizard: {wizard_id}")
+        logger.info(f"Analyzing risk for workflow: {workflow_id}")
 
         analysis = RiskAnalysis(
-            wizard_id=wizard_id,
+            workflow_id=workflow_id,
             pattern_ids=pattern_ids,
         )
 

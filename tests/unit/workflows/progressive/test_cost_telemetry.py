@@ -13,10 +13,7 @@ from empathy_os.workflows.progressive.core import (
     TierResult,
 )
 from empathy_os.workflows.progressive.telemetry import ProgressiveTelemetry
-from empathy_os.workflows.progressive.workflow import (
-    BudgetExceededError,
-    ProgressiveWorkflow,
-)
+from empathy_os.workflows.progressive.workflow import BudgetExceededError, ProgressiveWorkflow
 
 
 class TestCostEstimation:
@@ -479,8 +476,6 @@ class TestCostManagementEdgeCases:
         workflow._check_budget()
 
 
-
-
 class TestTelemetryEdgeCases:
     """Test edge cases in telemetry analytics calculations."""
 
@@ -607,11 +602,7 @@ class TestTelemetryEdgeCases:
 
     def test_custom_event_with_anonymous_user(self):
         """Test custom event tracking with no user ID."""
-        telemetry = ProgressiveTelemetry(
-            workflow_name="test-gen", user_id=None
-        )  # No user ID
+        telemetry = ProgressiveTelemetry(workflow_name="test-gen", user_id=None)  # No user ID
 
         # Should use "anonymous" in event data
-        telemetry._track_custom_event(
-            event_type="test_event", data={"test_key": "test_value"}
-        )
+        telemetry._track_custom_event(event_type="test_event", data={"test_key": "test_value"})

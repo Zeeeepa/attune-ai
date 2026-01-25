@@ -6,10 +6,16 @@ Provides secure authentication with:
 - Rate limiting (5 failed attempts = 15min lockout)
 - Secure password requirements
 
+Security:
+- JWT_SECRET_KEY must be set via environment variable
+- Minimum 32 bytes required for HS256 security
+- No default/fallback value (fails explicitly)
+
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import logging
 import os
 from datetime import datetime, timedelta
 from typing import Any
@@ -19,9 +25,51 @@ from fastapi import HTTPException, status
 
 from backend.services.database import AuthDatabase
 
-# JWT Configuration
-# In production, load from environment variable
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev_secret_key_change_in_production")
+logger = logging.getLogger(__name__)
+
+
+def _get_jwt_secret_key() -> str:
+    """Get JWT secret key from environment with validation.
+
+    Returns:
+        Validated JWT secret key
+
+    Raises:
+        ValueError: If JWT_SECRET_KEY not set or too weak
+
+    Security:
+        - Requires explicit configuration (no defaults)
+        - Enforces minimum 32 bytes for HS256 security
+        - Fails fast at startup, not during request handling
+    """
+    secret = os.getenv("JWT_SECRET_KEY")
+
+    if not secret:
+        error_msg = (
+            "JWT_SECRET_KEY environment variable not set. "
+            "This is required for authentication security. "
+            "Generate a secure key with: "
+            "python -c 'import secrets; print(secrets.token_urlsafe(32))'"
+        )
+        logger.critical("jwt_secret_key_missing")
+        raise ValueError(error_msg)
+
+    # HS256 requires minimum 256 bits (32 bytes) for security
+    if len(secret) < 32:
+        error_msg = (
+            f"JWT_SECRET_KEY too weak ({len(secret)} chars). "
+            "Minimum 32 characters required for HS256 security. "
+            "Generate a secure key with: "
+            "python -c 'import secrets; print(secrets.token_urlsafe(32))'"
+        )
+        logger.critical("jwt_secret_key_too_weak", length=len(secret))
+        raise ValueError(error_msg)
+
+    return secret
+
+
+# JWT Configuration - validated at module load time
+JWT_SECRET_KEY = _get_jwt_secret_key()
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_MINUTES = 30
 

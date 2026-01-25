@@ -240,9 +240,7 @@ class TestClassificationLogic:
 
         for content in healthcare_content:
             classification = integration._classify_pattern(content, "general")
-            assert (
-                classification == Classification.SENSITIVE
-            ), f"Failed for: {content}"
+            assert classification == Classification.SENSITIVE, f"Failed for: {content}"
 
     def test_classify_financial_keywords_as_sensitive(self, tmp_path):
         """Test financial keywords trigger SENSITIVE classification.
@@ -266,9 +264,7 @@ class TestClassificationLogic:
 
         for content in financial_content:
             classification = integration._classify_pattern(content, "general")
-            assert (
-                classification == Classification.SENSITIVE
-            ), f"Failed for: {content}"
+            assert classification == Classification.SENSITIVE, f"Failed for: {content}"
 
     def test_classify_proprietary_keywords_as_internal(self, tmp_path):
         """Test proprietary keywords trigger INTERNAL classification.
@@ -292,9 +288,7 @@ class TestClassificationLogic:
 
         for content in proprietary_content:
             classification = integration._classify_pattern(content, "general")
-            assert (
-                classification == Classification.INTERNAL
-            ), f"Failed for: {content}"
+            assert classification == Classification.INTERNAL, f"Failed for: {content}"
 
     def test_classify_by_pattern_type_clinical_as_sensitive(self, tmp_path):
         """Test pattern_type based classification for clinical data.
@@ -315,12 +309,8 @@ class TestClassificationLogic:
         ]
 
         for pattern_type in sensitive_types:
-            classification = integration._classify_pattern(
-                "Generic content", pattern_type
-            )
-            assert (
-                classification == Classification.SENSITIVE
-            ), f"Failed for type: {pattern_type}"
+            classification = integration._classify_pattern("Generic content", pattern_type)
+            assert classification == Classification.SENSITIVE, f"Failed for type: {pattern_type}"
 
     def test_classify_by_pattern_type_architecture_as_internal(self, tmp_path):
         """Test pattern_type based classification for internal data.
@@ -340,12 +330,8 @@ class TestClassificationLogic:
         ]
 
         for pattern_type in internal_types:
-            classification = integration._classify_pattern(
-                "Generic content", pattern_type
-            )
-            assert (
-                classification == Classification.INTERNAL
-            ), f"Failed for type: {pattern_type}"
+            classification = integration._classify_pattern("Generic content", pattern_type)
+            assert classification == Classification.INTERNAL, f"Failed for type: {pattern_type}"
 
     def test_classify_generic_content_as_public(self, tmp_path):
         """Test generic content defaults to PUBLIC classification.
@@ -367,9 +353,7 @@ class TestClassificationLogic:
 
         for content in generic_content:
             classification = integration._classify_pattern(content, "tutorial")
-            assert (
-                classification == Classification.PUBLIC
-            ), f"Failed for: {content}"
+            assert classification == Classification.PUBLIC, f"Failed for: {content}"
 
     def test_classify_mixed_keywords_uses_highest_sensitivity(self, tmp_path):
         """Test mixed keywords use highest sensitivity level.
@@ -411,9 +395,7 @@ class TestClassificationLogic:
 
         for content in case_variants:
             classification = integration._classify_pattern(content, "general")
-            assert (
-                classification == Classification.SENSITIVE
-            ), f"Case sensitivity issue: {content}"
+            assert classification == Classification.SENSITIVE, f"Case sensitivity issue: {content}"
 
 
 # =============================================================================
@@ -628,9 +610,7 @@ class TestSecureMemDocsErrorHandling:
                 user_id="user@example.com",
             )
 
-    def test_store_pattern_invalid_custom_metadata_type_raises_type_error(
-        self, tmp_path
-    ):
+    def test_store_pattern_invalid_custom_metadata_type_raises_type_error(self, tmp_path):
         """Test invalid custom_metadata type raises TypeError.
 
         SECURITY: Prevent storage of unexpected object types.

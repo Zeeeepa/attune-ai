@@ -7,11 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.commands.models import (
-    CommandCategory,
-    CommandConfig,
-    CommandMetadata,
-)
+from empathy_llm_toolkit.commands.models import CommandCategory, CommandConfig, CommandMetadata
 from empathy_llm_toolkit.commands.registry import CommandRegistry
 
 

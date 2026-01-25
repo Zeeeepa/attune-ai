@@ -323,9 +323,7 @@ class TestLearningStore:
         """Test that data persists across instances."""
         # First instance - add data
         store1 = LearningStore(temp_storage)
-        store1.add_record(
-            ExecutionRecord(pattern="parallel", success=True, duration_seconds=1.0)
-        )
+        store1.add_record(ExecutionRecord(pattern="parallel", success=True, duration_seconds=1.0))
         store1.save()
 
         # Second instance - should load data
@@ -534,9 +532,7 @@ class TestLearnerIntegration:
 
     def test_singleton_access(self):
         """Test get_learner returns same instance."""
-        with patch(
-            "empathy_os.orchestration.pattern_learner._default_learner", None
-        ):
+        with patch("empathy_os.orchestration.pattern_learner._default_learner", None):
             learner1 = get_learner()
             learner2 = get_learner()
             assert learner1 is learner2

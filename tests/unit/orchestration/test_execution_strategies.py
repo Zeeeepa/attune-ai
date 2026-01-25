@@ -291,7 +291,9 @@ class TestDebateStrategy:
         strategy = DebateStrategy()
 
         async def mock_execute(agent, context):
-            return create_success_result(agent.id, {"opinion": f"{agent.id}_opinion", "passed": True})
+            return create_success_result(
+                agent.id, {"opinion": f"{agent.id}_opinion", "passed": True}
+            )
 
         with patch.object(strategy, "_execute_agent", side_effect=mock_execute):
             result = await strategy.execute(mock_agents[:2], test_context)
@@ -382,7 +384,9 @@ class TestTeachingStrategy:
         assert "junior_output" in result.aggregated_output
 
     @pytest.mark.asyncio
-    async def test_teaching_expert_takeover(self, mock_junior_agent, mock_expert_agent, test_context):
+    async def test_teaching_expert_takeover(
+        self, mock_junior_agent, mock_expert_agent, test_context
+    ):
         """Test teaching pattern when expert takes over."""
         strategy = TeachingStrategy(quality_threshold=0.95)
 
@@ -410,7 +414,9 @@ class TestTeachingStrategy:
             await strategy.execute(mock_agents, test_context)
 
     @pytest.mark.asyncio
-    async def test_teaching_custom_threshold(self, mock_junior_agent, mock_expert_agent, test_context):
+    async def test_teaching_custom_threshold(
+        self, mock_junior_agent, mock_expert_agent, test_context
+    ):
         """Test teaching with custom quality threshold."""
         strategy = TeachingStrategy(quality_threshold=0.5)
 
@@ -458,7 +464,9 @@ class TestRefinementStrategy:
         async def mock_execute(agent, context):
             nonlocal stage
             stage += 1
-            return create_success_result(agent.id, {"stage": stage, "quality": 0.5 + stage * 0.1, "passed": True})
+            return create_success_result(
+                agent.id, {"stage": stage, "quality": 0.5 + stage * 0.1, "passed": True}
+            )
 
         with patch.object(strategy, "_execute_agent", side_effect=mock_execute):
             result = await strategy.execute(mock_agents, test_context)
@@ -864,10 +872,7 @@ class TestWorkflowReference:
 
     def test_create_with_inline_workflow(self):
         """Test creating WorkflowReference with inline workflow."""
-        from empathy_os.orchestration.execution_strategies import (
-            InlineWorkflow,
-            WorkflowReference,
-        )
+        from empathy_os.orchestration.execution_strategies import InlineWorkflow, WorkflowReference
 
         agent = create_mock_agent("agent_1", "analyzer")
         inline = InlineWorkflow(agents=[agent], strategy="sequential")
@@ -879,10 +884,7 @@ class TestWorkflowReference:
 
     def test_validation_requires_exactly_one(self):
         """Test validation requires exactly one of workflow_id or inline."""
-        from empathy_os.orchestration.execution_strategies import (
-            InlineWorkflow,
-            WorkflowReference,
-        )
+        from empathy_os.orchestration.execution_strategies import InlineWorkflow, WorkflowReference
 
         # Neither provided - should raise
         with pytest.raises(ValueError, match="exactly one of"):
@@ -967,10 +969,7 @@ class TestStepDefinition:
 
     def test_create_with_workflow_ref(self):
         """Test creating StepDefinition with workflow reference."""
-        from empathy_os.orchestration.execution_strategies import (
-            StepDefinition,
-            WorkflowReference,
-        )
+        from empathy_os.orchestration.execution_strategies import StepDefinition, WorkflowReference
 
         ref = WorkflowReference(workflow_id="sub-workflow")
         step = StepDefinition(workflow_ref=ref)
@@ -980,10 +979,7 @@ class TestStepDefinition:
 
     def test_validation_requires_exactly_one(self):
         """Test validation requires exactly one of agent or workflow_ref."""
-        from empathy_os.orchestration.execution_strategies import (
-            StepDefinition,
-            WorkflowReference,
-        )
+        from empathy_os.orchestration.execution_strategies import StepDefinition, WorkflowReference
 
         # Neither provided - should raise
         with pytest.raises(ValueError, match="exactly one of"):
@@ -1020,9 +1016,7 @@ class TestNestedStrategy:
 
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch.object(
-            strategy, "_execute_agent", new_callable=AsyncMock
-        ) as mock_execute:
+        with patch.object(strategy, "_execute_agent", new_callable=AsyncMock) as mock_execute:
             mock_execute.return_value = create_success_result("agent_1")
             result = await strategy.execute([], {"task": "test"})
 
@@ -1141,9 +1135,7 @@ class TestNestedStrategy:
 
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch.object(
-            strategy, "_execute_agent", new_callable=AsyncMock
-        ) as mock_execute:
+        with patch.object(strategy, "_execute_agent", new_callable=AsyncMock) as mock_execute:
             mock_execute.return_value = create_success_result("agent_1")
             result = await strategy.execute([], {"task": "test"})
 
@@ -1177,9 +1169,7 @@ class TestNestedSequentialStrategy:
 
         strategy = NestedSequentialStrategy(steps=steps)
 
-        with patch.object(
-            strategy, "_execute_agent", new_callable=AsyncMock
-        ) as mock_execute:
+        with patch.object(strategy, "_execute_agent", new_callable=AsyncMock) as mock_execute:
             mock_execute.return_value = create_success_result("agent_1")
             result = await strategy.execute([], {"task": "test"})
 
@@ -1218,9 +1208,7 @@ class TestNestedSequentialStrategy:
 
         strategy = NestedSequentialStrategy(steps=steps)
 
-        with patch.object(
-            strategy, "_execute_agent", new_callable=AsyncMock
-        ) as mock_execute:
+        with patch.object(strategy, "_execute_agent", new_callable=AsyncMock) as mock_execute:
             mock_execute.return_value = create_success_result("agent_1")
             result = await strategy.execute([], {"task": "test"})
 
@@ -1252,9 +1240,7 @@ class TestNestedSequentialStrategy:
             call_contexts.append(context.copy())
             return create_success_result(agent.id, {"step_data": agent.id})
 
-        with patch.object(
-            strategy, "_execute_agent", side_effect=capture_context
-        ):
+        with patch.object(strategy, "_execute_agent", side_effect=capture_context):
             await strategy.execute([], {"task": "test"})
 
         # Second call should have first agent's output in context
@@ -1296,9 +1282,7 @@ class TestNestedSequentialStrategy:
             ),
         ]
 
-        with patch.object(
-            strategy, "_execute_agent", new_callable=AsyncMock, side_effect=results
-        ):
+        with patch.object(strategy, "_execute_agent", new_callable=AsyncMock, side_effect=results):
             result = await strategy.execute([], {"task": "test"})
 
         assert result.total_duration == 3.5
@@ -1414,9 +1398,7 @@ class TestConditionalStrategyExecute:
             description="Status check",
         )
 
-        strategy = ConditionalStrategy(
-            condition=condition, then_branch=then_branch
-        )
+        strategy = ConditionalStrategy(condition=condition, then_branch=then_branch)
 
         context = {"status": "ready"}
 
@@ -1425,6 +1407,7 @@ class TestConditionalStrategyExecute:
             new_callable=AsyncMock,
         ) as mock_execute:
             from empathy_os.orchestration.execution_strategies import StrategyResult
+
             mock_execute.return_value = StrategyResult(
                 success=True,
                 outputs=[],
@@ -1497,9 +1480,7 @@ class TestMultiConditionalStrategyExecute:
         ]
         default_branch = Branch(agents=[default_agent])
 
-        strategy = MultiConditionalStrategy(
-            conditions=conditions, default_branch=default_branch
-        )
+        strategy = MultiConditionalStrategy(conditions=conditions, default_branch=default_branch)
 
         context = {"type": "info"}  # No match
 
@@ -1633,20 +1614,14 @@ class TestGetStrategy:
 
     def test_get_sequential_strategy(self):
         """Test getting sequential strategy by name."""
-        from empathy_os.orchestration.execution_strategies import (
-            SequentialStrategy,
-            get_strategy,
-        )
+        from empathy_os.orchestration.execution_strategies import SequentialStrategy, get_strategy
 
         strategy = get_strategy("sequential")
         assert isinstance(strategy, SequentialStrategy)
 
     def test_get_parallel_strategy(self):
         """Test getting parallel strategy by name."""
-        from empathy_os.orchestration.execution_strategies import (
-            ParallelStrategy,
-            get_strategy,
-        )
+        from empathy_os.orchestration.execution_strategies import ParallelStrategy, get_strategy
 
         strategy = get_strategy("parallel")
         assert isinstance(strategy, ParallelStrategy)
@@ -1660,10 +1635,7 @@ class TestGetStrategy:
 
     def test_all_registered_strategies_are_retrievable(self):
         """Test all strategies in registry can be retrieved."""
-        from empathy_os.orchestration.execution_strategies import (
-            STRATEGY_REGISTRY,
-            get_strategy,
-        )
+        from empathy_os.orchestration.execution_strategies import STRATEGY_REGISTRY, get_strategy
 
         for strategy_name in STRATEGY_REGISTRY:
             # ConditionalStrategy and others need args, skip those

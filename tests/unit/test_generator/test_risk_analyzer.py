@@ -19,7 +19,7 @@ class TestRiskAnalysisDataClass:
             high_risk_inputs=["empty_string", "null_value"],
             validation_points=["input_validation", "output_validation"],
             recommended_coverage=85,
-            test_priorities=["high", "medium"]
+            test_priorities=["high", "medium"],
         )
 
         assert analysis.wizard_id == "test_wizard"
@@ -37,7 +37,7 @@ class TestRiskAnalysisDataClass:
             high_risk_inputs=[],
             validation_points=[],
             recommended_coverage=80,
-            test_priorities=[]
+            test_priorities=[],
         )
 
         test_cases = analysis.get_critical_test_cases()
@@ -61,7 +61,7 @@ class TestRiskAnalysisDataClass:
             high_risk_inputs=["Empty String", "Null Value", "SQL Injection"],
             validation_points=[],
             recommended_coverage=80,
-            test_priorities=[]
+            test_priorities=[],
         )
 
         test_cases = analysis.get_critical_test_cases()
@@ -84,7 +84,7 @@ class TestRiskAnalysisDataClass:
             high_risk_inputs=["Invalid Input"],
             validation_points=[],
             recommended_coverage=80,
-            test_priorities=[]
+            test_priorities=[],
         )
 
         test_cases = analysis.get_critical_test_cases()
@@ -101,7 +101,7 @@ class TestRiskAnalysisDataClass:
             high_risk_inputs=[],
             validation_points=[],
             recommended_coverage=80,
-            test_priorities=[]
+            test_priorities=[],
         )
 
         test_cases = analysis.get_critical_test_cases()
@@ -119,7 +119,7 @@ class TestRiskAnalysisDataClass:
             high_risk_inputs=["input1"],
             validation_points=["validate1"],
             recommended_coverage=90,
-            test_priorities=["high"]
+            test_priorities=["high"],
         )
 
         result = analysis.to_dict()
@@ -143,7 +143,7 @@ class TestRiskAnalysisDataClass:
             high_risk_inputs=[],
             validation_points=[],
             recommended_coverage=80,
-            test_priorities=[]
+            test_priorities=[],
         )
 
         result = analysis.to_dict()
@@ -156,7 +156,7 @@ class TestRiskAnalysisDataClass:
             "high_risk_inputs",
             "validation_points",
             "recommended_coverage",
-            "test_priorities"
+            "test_priorities",
         }
 
         assert set(result.keys()) == expected_keys
@@ -176,10 +176,7 @@ class TestRiskAnalyzer:
         """Test analyze returns RiskAnalysis object."""
         analyzer = RiskAnalyzer()
 
-        result = analyzer.analyze(
-            wizard_id="test_wizard",
-            pattern_ids=["linear_flow"]
-        )
+        result = analyzer.analyze(wizard_id="test_wizard", pattern_ids=["linear_flow"])
 
         # Should return RiskAnalysis
         assert isinstance(result, RiskAnalysis)
@@ -190,10 +187,7 @@ class TestRiskAnalyzer:
         """Test analyze handles wizard with no patterns."""
         analyzer = RiskAnalyzer()
 
-        result = analyzer.analyze(
-            wizard_id="simple_wizard",
-            pattern_ids=[]
-        )
+        result = analyzer.analyze(wizard_id="simple_wizard", pattern_ids=[])
 
         assert isinstance(result, RiskAnalysis)
         assert result.wizard_id == "simple_wizard"
@@ -203,42 +197,39 @@ class TestRiskAnalyzer:
         """Test analyze identifies linear flow patterns."""
         analyzer = RiskAnalyzer()
 
-        result = analyzer.analyze(
-            wizard_id="linear_wizard",
-            pattern_ids=["linear_flow"]
-        )
+        result = analyzer.analyze(wizard_id="linear_wizard", pattern_ids=["linear_flow"])
 
         # Should identify linear flow characteristics
         assert isinstance(result, RiskAnalysis)
         # Check that analysis produced some output (priorities, paths, or validation)
-        assert (len(result.test_priorities) > 0 or
-                len(result.critical_paths) > 0 or
-                len(result.validation_points) > 0 or
-                result.recommended_coverage > 0)
+        assert (
+            len(result.test_priorities) > 0
+            or len(result.critical_paths) > 0
+            or len(result.validation_points) > 0
+            or result.recommended_coverage > 0
+        )
 
     def test_analyze_with_approval_pattern(self):
         """Test analyze identifies approval patterns."""
         analyzer = RiskAnalyzer()
 
-        result = analyzer.analyze(
-            wizard_id="approval_wizard",
-            pattern_ids=["approval"]
-        )
+        result = analyzer.analyze(wizard_id="approval_wizard", pattern_ids=["approval"])
 
         # Approval patterns should require validation
         assert isinstance(result, RiskAnalysis)
         # Should have some validation points or high-risk inputs
-        assert (len(result.validation_points) > 0 or
-                len(result.high_risk_inputs) > 0 or
-                result.recommended_coverage >= 80)
+        assert (
+            len(result.validation_points) > 0
+            or len(result.high_risk_inputs) > 0
+            or result.recommended_coverage >= 80
+        )
 
     def test_analyze_with_multiple_patterns(self):
         """Test analyze combines multiple pattern risks."""
         analyzer = RiskAnalyzer()
 
         result = analyzer.analyze(
-            wizard_id="complex_wizard",
-            pattern_ids=["linear_flow", "phased_processing", "approval"]
+            wizard_id="complex_wizard", pattern_ids=["linear_flow", "phased_processing", "approval"]
         )
 
         # Complex wizards should have higher coverage recommendations
@@ -252,10 +243,7 @@ class TestRiskAnalyzer:
         """Test analyze sets test priorities."""
         analyzer = RiskAnalyzer()
 
-        result = analyzer.analyze(
-            wizard_id="wizard",
-            pattern_ids=["linear_flow"]
-        )
+        result = analyzer.analyze(wizard_id="wizard", pattern_ids=["linear_flow"])
 
         # Should have test priorities (dict or list)
         assert isinstance(result.test_priorities, (dict, list))
@@ -266,10 +254,7 @@ class TestRiskAnalyzer:
         """Test analyze handles phased processing pattern."""
         analyzer = RiskAnalyzer()
 
-        result = analyzer.analyze(
-            wizard_id="phased_wizard",
-            pattern_ids=["phased_processing"]
-        )
+        result = analyzer.analyze(wizard_id="phased_wizard", pattern_ids=["phased_processing"])
 
         assert isinstance(result, RiskAnalysis)
         # Phased processing should have critical paths for phases
@@ -280,15 +265,11 @@ class TestRiskAnalyzer:
         analyzer = RiskAnalyzer()
 
         # Test with simple wizard
-        simple_result = analyzer.analyze(
-            wizard_id="simple",
-            pattern_ids=[]
-        )
+        simple_result = analyzer.analyze(wizard_id="simple", pattern_ids=[])
 
         # Test with complex wizard
         complex_result = analyzer.analyze(
-            wizard_id="complex",
-            pattern_ids=["linear_flow", "approval", "phased_processing"]
+            wizard_id="complex", pattern_ids=["linear_flow", "approval", "phased_processing"]
         )
 
         # Both should have valid coverage recommendations
@@ -299,10 +280,7 @@ class TestRiskAnalyzer:
         """Test analyze produces valid test case names."""
         analyzer = RiskAnalyzer()
 
-        result = analyzer.analyze(
-            wizard_id="wizard",
-            pattern_ids=["linear_flow"]
-        )
+        result = analyzer.analyze(wizard_id="wizard", pattern_ids=["linear_flow"])
 
         test_cases = result.get_critical_test_cases()
 
@@ -321,8 +299,7 @@ class TestRiskAnalysisIntegration:
 
         # Step 1: Analyze
         analysis = analyzer.analyze(
-            wizard_id="integration_wizard",
-            pattern_ids=["linear_flow", "approval"]
+            wizard_id="integration_wizard", pattern_ids=["linear_flow", "approval"]
         )
 
         # Step 2: Get test cases
@@ -359,10 +336,7 @@ class TestRiskAnalysisIntegration:
         # Use patterns that likely exist in registry
         common_patterns = ["linear_flow", "phased_processing"]
 
-        result = analyzer.analyze(
-            wizard_id="real_pattern_wizard",
-            pattern_ids=common_patterns
-        )
+        result = analyzer.analyze(wizard_id="real_pattern_wizard", pattern_ids=common_patterns)
 
         # Should handle real patterns without errors
         assert isinstance(result, RiskAnalysis)

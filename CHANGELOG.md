@@ -5,6 +5,32 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.7.0] - 2026-01-24
+
+### Security
+
+- **Fixed path traversal vulnerability** in dashboard patterns API (`dashboard/backend/api/patterns.py`)
+  - Export and download endpoints now validate paths using `_validate_file_path()`
+  - Prevents CWE-22 path traversal attacks via filename parameters
+
+- **Fixed hardcoded JWT secret** in authentication service (`backend/services/auth_service.py`)
+  - JWT_SECRET_KEY now requires explicit environment variable (no default fallback)
+  - Enforces minimum 32-byte secret length for HS256 security
+  - Fails fast at startup if not configured
+
+- **Added SSRF protection** for webhook URLs (`src/empathy_os/monitoring/alerts.py`)
+  - New `_validate_webhook_url()` function prevents Server-Side Request Forgery
+  - Blocks localhost, private IPs, cloud metadata services, and internal ports
+
+### Changed
+
+- **Exception handling** documented per coding standards with `# noqa: BLE001` and `# INTENTIONAL:` comments
+- **Test discovery** fixed for `tests/unit/test_generator/` directory
+
+### Fixed
+
+- **Audit logger test imports** corrected from `empathy_llm_toolkit` to `empathy_os` path
+
 ## [4.6.6] - 2026-01-22
 
 ### Performance

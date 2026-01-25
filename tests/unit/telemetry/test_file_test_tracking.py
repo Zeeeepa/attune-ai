@@ -153,19 +153,23 @@ class TestTelemetryStoreFileTests:
     def test_get_file_tests_filter_by_path(self, temp_store):
         """Test filtering file tests by path."""
         # Log multiple records
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/config.py",
-            timestamp="2026-01-22T10:00:00Z",
-            last_test_result="passed",
-            test_count=5,
-        ))
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/cli.py",
-            timestamp="2026-01-22T10:01:00Z",
-            last_test_result="failed",
-            test_count=3,
-            failed=1,
-        ))
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/config.py",
+                timestamp="2026-01-22T10:00:00Z",
+                last_test_result="passed",
+                test_count=5,
+            )
+        )
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/cli.py",
+                timestamp="2026-01-22T10:01:00Z",
+                last_test_result="failed",
+                test_count=3,
+                failed=1,
+            )
+        )
 
         # Filter by path
         records = temp_store.get_file_tests(file_path="src/config.py")
@@ -174,19 +178,23 @@ class TestTelemetryStoreFileTests:
 
     def test_get_file_tests_filter_by_result(self, temp_store):
         """Test filtering file tests by result."""
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/config.py",
-            timestamp="2026-01-22T10:00:00Z",
-            last_test_result="passed",
-            test_count=5,
-        ))
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/cli.py",
-            timestamp="2026-01-22T10:01:00Z",
-            last_test_result="failed",
-            test_count=3,
-            failed=1,
-        ))
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/config.py",
+                timestamp="2026-01-22T10:00:00Z",
+                last_test_result="passed",
+                test_count=5,
+            )
+        )
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/cli.py",
+                timestamp="2026-01-22T10:01:00Z",
+                last_test_result="failed",
+                test_count=3,
+                failed=1,
+            )
+        )
 
         # Filter by result
         failed_records = temp_store.get_file_tests(result_filter="failed")
@@ -196,20 +204,24 @@ class TestTelemetryStoreFileTests:
     def test_get_latest_file_test(self, temp_store):
         """Test getting the most recent test record for a file."""
         # Log multiple records for the same file
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/config.py",
-            timestamp="2026-01-22T10:00:00Z",
-            last_test_result="failed",
-            test_count=5,
-            failed=1,
-        ))
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/config.py",
-            timestamp="2026-01-22T11:00:00Z",
-            last_test_result="passed",
-            test_count=5,
-            passed=5,
-        ))
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/config.py",
+                timestamp="2026-01-22T10:00:00Z",
+                last_test_result="failed",
+                test_count=5,
+                failed=1,
+            )
+        )
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/config.py",
+                timestamp="2026-01-22T11:00:00Z",
+                last_test_result="passed",
+                test_count=5,
+                passed=5,
+            )
+        )
 
         # Get latest
         latest = temp_store.get_latest_file_test("src/config.py")
@@ -224,19 +236,23 @@ class TestTelemetryStoreFileTests:
 
     def test_get_files_needing_tests_failed(self, temp_store):
         """Test getting files with failed tests."""
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/good.py",
-            timestamp="2026-01-22T10:00:00Z",
-            last_test_result="passed",
-            test_count=5,
-        ))
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/bad.py",
-            timestamp="2026-01-22T10:00:00Z",
-            last_test_result="failed",
-            test_count=3,
-            failed=1,
-        ))
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/good.py",
+                timestamp="2026-01-22T10:00:00Z",
+                last_test_result="passed",
+                test_count=5,
+            )
+        )
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/bad.py",
+                timestamp="2026-01-22T10:00:00Z",
+                last_test_result="failed",
+                test_count=3,
+                failed=1,
+            )
+        )
 
         # Get only failed
         needing_attention = temp_store.get_files_needing_tests(failed_only=True)
@@ -245,20 +261,24 @@ class TestTelemetryStoreFileTests:
 
     def test_get_files_needing_tests_stale(self, temp_store):
         """Test getting files with stale tests."""
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/fresh.py",
-            timestamp="2026-01-22T10:00:00Z",
-            last_test_result="passed",
-            test_count=5,
-            is_stale=False,
-        ))
-        temp_store.log_file_test(FileTestRecord(
-            file_path="src/stale.py",
-            timestamp="2026-01-22T10:00:00Z",
-            last_test_result="passed",
-            test_count=3,
-            is_stale=True,
-        ))
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/fresh.py",
+                timestamp="2026-01-22T10:00:00Z",
+                last_test_result="passed",
+                test_count=5,
+                is_stale=False,
+            )
+        )
+        temp_store.log_file_test(
+            FileTestRecord(
+                file_path="src/stale.py",
+                timestamp="2026-01-22T10:00:00Z",
+                last_test_result="passed",
+                test_count=3,
+                is_stale=True,
+            )
+        )
 
         # Get only stale
         stale_files = temp_store.get_files_needing_tests(stale_only=True)
@@ -288,6 +308,7 @@ class TestTestRunnerFileTracking:
         import os
 
         from empathy_os.workflows.test_runner import _find_test_file
+
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)

@@ -69,11 +69,13 @@ def implement_simple_tests(test_file: Path):
 
 def main():
     console.print()
-    console.print(Panel.fit(
-        "[bold cyan]🔧 Simple TODO Implementation[/bold cyan]\n"
-        "[dim]Basic placeholder implementations[/dim]",
-        border_style="cyan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold cyan]🔧 Simple TODO Implementation[/bold cyan]\n"
+            "[dim]Basic placeholder implementations[/dim]",
+            border_style="cyan",
+        )
+    )
     console.print()
 
     # Find files
@@ -93,13 +95,9 @@ def main():
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        console=console
+        console=console,
     ) as progress:
-
-        task = progress.add_task(
-            "[cyan]Processing files...",
-            total=len(test_files)
-        )
+        task = progress.add_task("[cyan]Processing files...", total=len(test_files))
 
         for test_file, todo_count in test_files:
             console.print(f"\n[cyan]{test_file.name}[/cyan] ({todo_count} TODOs)")
@@ -111,14 +109,16 @@ def main():
             progress.update(task, advance=1)
 
     console.print()
-    console.print(Panel(
-        f"[bold green]✅ Complete![/bold green]\n\n"
-        f"• Files processed: {len(test_files)}\n"
-        f"• TODOs updated: {total_implemented}\n\n"
-        f"[bold]Next: Run tests[/bold]\n"
-        f"pytest tests/unit/ -v",
-        border_style="green"
-    ))
+    console.print(
+        Panel(
+            f"[bold green]✅ Complete![/bold green]\n\n"
+            f"• Files processed: {len(test_files)}\n"
+            f"• TODOs updated: {total_implemented}\n\n"
+            f"[bold]Next: Run tests[/bold]\n"
+            f"pytest tests/unit/ -v",
+            border_style="green",
+        )
+    )
 
 
 if __name__ == "__main__":

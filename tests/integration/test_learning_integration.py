@@ -4,10 +4,6 @@ Tests session evaluation, pattern extraction, and learned skills storage
 with integration to other framework components.
 """
 
-from datetime import datetime
-from pathlib import Path
-from typing import Any
-
 import pytest
 
 from empathy_llm_toolkit.learning import (
@@ -32,7 +28,7 @@ class TestSessionEvaluatorIntegration:
     def test_evaluator_instantiation(self, evaluator):
         """Test that evaluator can be instantiated."""
         assert evaluator is not None
-        assert hasattr(evaluator, 'evaluate')
+        assert hasattr(evaluator, "evaluate")
 
     def test_session_quality_enum_values(self):
         """Test that SessionQuality enum has expected values."""
@@ -45,9 +41,9 @@ class TestSessionEvaluatorIntegration:
     def test_evaluator_has_pattern_attributes(self, evaluator):
         """Test that evaluator has expected pattern detection attributes."""
         # These are internal but should exist
-        assert hasattr(evaluator, '_correction_re')
-        assert hasattr(evaluator, '_error_re')
-        assert hasattr(evaluator, '_workaround_re')
+        assert hasattr(evaluator, "_correction_re")
+        assert hasattr(evaluator, "_error_re")
+        assert hasattr(evaluator, "_workaround_re")
 
 
 class TestPatternExtractorIntegration:
@@ -64,8 +60,8 @@ class TestPatternExtractorIntegration:
 
     def test_extractor_has_internal_methods(self, extractor):
         """Test that extractor has internal extraction methods."""
-        assert hasattr(extractor, '_extract_corrections')
-        assert hasattr(extractor, '_extract_error_resolutions')
+        assert hasattr(extractor, "_extract_corrections")
+        assert hasattr(extractor, "_extract_error_resolutions")
 
     def test_pattern_category_enum_values(self):
         """Test that PatternCategory enum has expected values."""
@@ -256,9 +252,7 @@ class TestLearnedSkillsStorageIntegration:
             storage.save_pattern(user_id, p)
 
         # Filter by category
-        preferences = storage.get_patterns_by_category(
-            user_id, PatternCategory.PREFERENCE
-        )
+        preferences = storage.get_patterns_by_category(user_id, PatternCategory.PREFERENCE)
         assert len(preferences) >= 1
         assert all(p.category == PatternCategory.PREFERENCE for p in preferences)
 
@@ -398,10 +392,12 @@ class TestLearningWithContextIntegration:
         user_id = "compaction_user"
 
         # Save patterns
-        for i, category in enumerate([
-            PatternCategory.PREFERENCE,
-            PatternCategory.ERROR_RESOLUTION,
-        ]):
+        for i, category in enumerate(
+            [
+                PatternCategory.PREFERENCE,
+                PatternCategory.ERROR_RESOLUTION,
+            ]
+        ):
             pattern = ExtractedPattern(
                 category=category,
                 trigger=f"trigger_{i}",

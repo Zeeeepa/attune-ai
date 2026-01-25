@@ -17,10 +17,14 @@ import asyncio
 import logging
 from datetime import datetime
 
-from ..adapters import CodeHealthAdapter, SecurityAdapter, TechDebtAdapter, TestQualityAdapter
+from ..adapters import CodeHealthAdapter
 from ..state import CodeInspectionState, InspectionPhase, add_audit_entry
 
 logger = logging.getLogger(__name__)
+
+# NOTE: SecurityAdapter, TechDebtAdapter, TestQualityAdapter have been deprecated.
+# These tools are now available through CLI workflows.
+# See: empathy workflow run security-audit, empathy workflow run test-coverage
 
 
 async def run_static_analysis(state: CodeInspectionState) -> CodeInspectionState:
@@ -56,29 +60,16 @@ async def run_static_analysis(state: CodeInspectionState) -> CodeInspectionState
         tasks.append(adapter.analyze())
         task_names.append("code_health")
 
+    # NOTE: security, tech_debt, and test_quality adapters have been deprecated.
+    # These tools are now available through CLI workflows.
     if enabled_tools.get("security", True):
-        adapter = SecurityAdapter(
-            project_root=project_path,
-            config=state["tool_configs"].get("security"),
-        )
-        tasks.append(adapter.analyze())
-        task_names.append("security")
+        logger.warning("security tool is deprecated - use 'empathy workflow run security-audit'")
 
     if enabled_tools.get("tech_debt", True):
-        adapter = TechDebtAdapter(
-            project_root=project_path,
-            config=state["tool_configs"].get("tech_debt"),
-        )
-        tasks.append(adapter.analyze())
-        task_names.append("tech_debt")
+        logger.warning("tech_debt tool is deprecated - use 'empathy workflow run bug-predict'")
 
     if enabled_tools.get("test_quality", True):
-        adapter = TestQualityAdapter(
-            project_root=project_path,
-            config=state["tool_configs"].get("test_quality"),
-        )
-        tasks.append(adapter.analyze())
-        task_names.append("test_quality")
+        logger.warning("test_quality tool is deprecated - use 'empathy workflow run test-coverage'")
 
     if not tasks:
         logger.warning("No static analysis tools enabled")

@@ -166,9 +166,7 @@ class TestEmpathyLLMSecurity:
     @patch("empathy_llm_toolkit.core.PIIScrubber")
     @patch("empathy_llm_toolkit.core.SecretsDetector")
     @patch("empathy_llm_toolkit.core.AuditLogger")
-    def test_init_with_security_enabled(
-        self, mock_audit, mock_secrets, mock_pii, mock_provider
-    ):
+    def test_init_with_security_enabled(self, mock_audit, mock_secrets, mock_pii, mock_provider):
         """Test initialization with security enabled."""
         from empathy_llm_toolkit.core import EmpathyLLM
 
@@ -191,9 +189,7 @@ class TestEmpathyLLMSecurity:
     @patch("empathy_llm_toolkit.core.AnthropicProvider")
     @patch("empathy_llm_toolkit.core.PIIScrubber")
     @patch("empathy_llm_toolkit.core.SecretsDetector")
-    def test_init_security_without_audit(
-        self, mock_secrets, mock_pii, mock_provider
-    ):
+    def test_init_security_without_audit(self, mock_secrets, mock_pii, mock_provider):
         """Test security without audit logging."""
         from empathy_llm_toolkit.core import EmpathyLLM
 
@@ -431,9 +427,7 @@ class TestEmpathyLLMInteract:
     @patch("empathy_llm_toolkit.core.PIIScrubber")
     @patch("empathy_llm_toolkit.core.SecretsDetector")
     @pytest.mark.asyncio
-    async def test_interact_with_pii_scrubbing(
-        self, mock_secrets, mock_pii, mock_provider_class
-    ):
+    async def test_interact_with_pii_scrubbing(self, mock_secrets, mock_pii, mock_provider_class):
         """Test interaction with PII scrubbing."""
         from empathy_llm_toolkit.core import EmpathyLLM
         from empathy_llm_toolkit.providers import LLMResponse
@@ -480,9 +474,7 @@ class TestEmpathyLLMInteract:
     @patch("empathy_llm_toolkit.core.PIIScrubber")
     @patch("empathy_llm_toolkit.core.SecretsDetector")
     @pytest.mark.asyncio
-    async def test_interact_blocks_secrets(
-        self, mock_secrets, mock_pii, mock_provider_class
-    ):
+    async def test_interact_blocks_secrets(self, mock_secrets, mock_pii, mock_provider_class):
         """Test that secrets are blocked."""
         from empathy_llm_toolkit.core import EmpathyLLM
 
@@ -539,9 +531,7 @@ class TestEmpathyLLMModelRouting:
     @patch("empathy_llm_toolkit.core.AnthropicProvider")
     @patch("empathy_llm_toolkit.core.ModelRouter")
     @pytest.mark.asyncio
-    async def test_interact_with_model_routing(
-        self, mock_router_class, mock_provider_class
-    ):
+    async def test_interact_with_model_routing(self, mock_router_class, mock_provider_class):
         """Test interaction with model routing."""
         from empathy_llm_toolkit.core import EmpathyLLM
         from empathy_llm_toolkit.providers import LLMResponse
@@ -968,9 +958,7 @@ class TestAuditLogging:
     @patch("empathy_llm_toolkit.core.AnthropicProvider")
     @patch("empathy_llm_toolkit.core.AuditLogger")
     @pytest.mark.asyncio
-    async def test_interact_with_audit_logging(
-        self, mock_audit_class, mock_provider_class
-    ):
+    async def test_interact_with_audit_logging(self, mock_audit_class, mock_provider_class):
         """Test interaction with audit logging enabled."""
         from empathy_llm_toolkit.core import EmpathyLLM
         from empathy_llm_toolkit.providers import LLMResponse
@@ -1004,9 +992,7 @@ class TestAuditLogging:
     @patch("empathy_llm_toolkit.core.AnthropicProvider")
     @patch("empathy_llm_toolkit.core.AuditLogger")
     @pytest.mark.asyncio
-    async def test_audit_logging_captures_metadata(
-        self, mock_audit_class, mock_provider_class
-    ):
+    async def test_audit_logging_captures_metadata(self, mock_audit_class, mock_provider_class):
         """Test that audit logging captures correct metadata."""
         from empathy_llm_toolkit.core import EmpathyLLM
         from empathy_llm_toolkit.providers import LLMResponse

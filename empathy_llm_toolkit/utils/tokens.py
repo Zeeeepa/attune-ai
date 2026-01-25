@@ -23,8 +23,7 @@ def _get_client():
             _client = Anthropic()
         except ImportError as e:
             raise ImportError(
-                "anthropic package required for token counting. "
-                "Install with: pip install anthropic"
+                "anthropic package required for token counting. Install with: pip install anthropic"
             ) from e
     return _client
 
@@ -112,9 +111,7 @@ def count_message_tokens(
     return counts
 
 
-def estimate_cost(
-    input_tokens: int, output_tokens: int, model: str = "claude-sonnet-4-5"
-) -> float:
+def estimate_cost(input_tokens: int, output_tokens: int, model: str = "claude-sonnet-4-5") -> float:
     """Estimate cost in USD based on token counts.
 
     Args:

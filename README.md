@@ -2,7 +2,7 @@
 
 **The Claude-optimized AI collaboration framework with breakthrough meta-orchestration - agents that compose themselves.**
 
-🚀 **v4.6.6: Performance Optimized** - 36% faster scanning, 39% faster init, 11,000+ tests passing. Built and tested extensively with Claude Code. **Full multi-LLM support** - works seamlessly with OpenAI, Gemini, and local models.
+🚀 **v4.7.0: Security Hardened** - Fixed critical vulnerabilities (path traversal, JWT, SSRF), 11,000+ tests passing. Built and tested extensively with Claude Code. **Full multi-LLM support** - works seamlessly with OpenAI, Gemini, and local models.
 
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://img.shields.io/badge/tests-11%2C000%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
@@ -15,11 +15,11 @@
 pip install empathy-framework[developer]  # Lightweight for individual developers
 ```
 
-## What's New in v4.6.6 🚀 **PERFORMANCE OPTIMIZED**
+## What's New in v4.7.0 🔒 **SECURITY HARDENED**
 
-### **Faster Scanning, Faster Init, More Tests**
+### **Critical Security Fixes + Performance**
 
-**v4.6.6** delivers significant performance improvements across core framework operations:
+**v4.7.0** addresses critical security vulnerabilities and maintains the performance improvements from v4.6.6:
 
 **Performance Gains:**
 

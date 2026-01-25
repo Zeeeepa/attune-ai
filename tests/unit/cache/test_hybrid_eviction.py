@@ -64,9 +64,9 @@ class TestHybridCacheEviction:
 
         # Verify cache size is constrained
         assert len(cache._hash_cache) < entries_to_add, "Cache should be smaller than total entries"
-        assert (
-            len(cache._semantic_cache) < entries_to_add
-        ), "Semantic cache should be smaller than total entries"
+        assert len(cache._semantic_cache) < entries_to_add, (
+            "Semantic cache should be smaller than total entries"
+        )
 
         # Verify LRU behavior: access first few entries to mark them as recently used
         # Then add more entries and verify the unaccessed ones are evicted
@@ -134,7 +134,9 @@ class TestHybridCacheEviction:
 
         # Final get should return the last update
         result = cache.get(workflow, stage, prompt, model)
-        assert result == {"version": 7, "data": "update_7"}, "Should return latest value after multiple updates"
+        assert result == {"version": 7, "data": "update_7"}, (
+            "Should return latest value after multiple updates"
+        )
 
         # Verify cache stats are accurate
         # We did: 1 initial get + 1 get after first update + 1 final get = 3 hits
@@ -215,7 +217,9 @@ class TestHybridCacheEviction:
 
         mock_model.encode.side_effect = encode_side_effect_boundary
 
-        cache_boundary = HybridCache(similarity_threshold=0.95, cache_dir=tmp_path / "cache_boundary")
+        cache_boundary = HybridCache(
+            similarity_threshold=0.95, cache_dir=tmp_path / "cache_boundary"
+        )
 
         cache_boundary.put("workflow", "stage", "base prompt", "model", {"match": "boundary"})
 
@@ -272,7 +276,9 @@ class TestHybridCacheEviction:
 
         # Verify all entries are gone
         for i in range(num_entries):
-            result = cache.get(f"workflow_{i % 3}", f"stage_{i % 2}", f"test prompt {i}", "test-model")
+            result = cache.get(
+                f"workflow_{i % 3}", f"stage_{i % 2}", f"test prompt {i}", "test-model"
+            )
             assert result is None, f"Entry {i} should not be found after clear()"
 
         # Note: stats are NOT reset by clear() - they're cumulative metrics
@@ -379,7 +385,9 @@ class TestHybridCacheEviction:
 
         # Verify stats accuracy
         assert cache.stats.hits == manual_stats["hits"], "Hit count should match manual tracking"
-        assert cache.stats.misses == manual_stats["misses"], "Miss count should match manual tracking"
+        assert cache.stats.misses == manual_stats["misses"], (
+            "Miss count should match manual tracking"
+        )
         assert final_evictions > initial_evictions, "Evictions should have occurred"
 
         # Verify eviction count is reasonable (at least some entries evicted)
@@ -389,15 +397,17 @@ class TestHybridCacheEviction:
 
         # Evicted entries + current entries should roughly equal total added
         # (allowing for some discrepancy due to timing, duplicates, etc.)
-        assert (
-            evicted_count + current_size <= total_added
-        ), "Evicted + current should not exceed total added"
+        assert evicted_count + current_size <= total_added, (
+            "Evicted + current should not exceed total added"
+        )
 
         # Hit rate calculation should be accurate
-        expected_hit_rate = (manual_stats["hits"] / (manual_stats["hits"] + manual_stats["misses"])) * 100
-        assert cache.stats.hit_rate == pytest.approx(
-            expected_hit_rate, abs=0.1
-        ), "Hit rate calculation should be accurate"
+        expected_hit_rate = (
+            manual_stats["hits"] / (manual_stats["hits"] + manual_stats["misses"])
+        ) * 100
+        assert cache.stats.hit_rate == pytest.approx(expected_hit_rate, abs=0.1), (
+            "Hit rate calculation should be accurate"
+        )
 
 
 # Summary: 7 comprehensive hybrid cache eviction tests ✅

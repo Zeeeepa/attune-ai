@@ -348,9 +348,7 @@ class CollaborationManager:
         Returns:
             The created session
         """
-        session_id = hashlib.sha256(
-            f"{base_session_id}:{time.time()}".encode()
-        ).hexdigest()[:12]
+        session_id = hashlib.sha256(f"{base_session_id}:{time.time()}".encode()).hexdigest()[:12]
 
         owner = Participant(
             user_id=owner_id,
@@ -485,9 +483,9 @@ class CollaborationManager:
         if not author:
             return None
 
-        comment_id = hashlib.sha256(
-            f"{session_id}:{author_id}:{time.time()}".encode()
-        ).hexdigest()[:12]
+        comment_id = hashlib.sha256(f"{session_id}:{author_id}:{time.time()}".encode()).hexdigest()[
+            :12
+        ]
 
         comment = Comment(
             comment_id=comment_id,
@@ -614,9 +612,14 @@ class CollaborationManager:
 
         # Check if already voted
         existing = next(
-            (v for v in session.votes
-             if v.voter_id == voter_id and v.target_type == target_type and v.target_id == target_id),
-            None
+            (
+                v
+                for v in session.votes
+                if v.voter_id == voter_id
+                and v.target_type == target_type
+                and v.target_id == target_id
+            ),
+            None,
         )
         if existing:
             # Update existing vote
@@ -676,8 +679,7 @@ class CollaborationManager:
 
         # Get votes for this target
         votes = [
-            v for v in session.votes
-            if v.target_type == target_type and v.target_id == target_id
+            v for v in session.votes if v.target_type == target_type and v.target_id == target_id
         ]
 
         # Count by type
@@ -686,10 +688,7 @@ class CollaborationManager:
         abstentions = sum(1 for v in votes if v.vote_type == VoteType.ABSTAIN)
 
         # Calculate quorum
-        eligible_voters = [
-            p for p in session.participants
-            if p.role != ParticipantRole.VIEWER
-        ]
+        eligible_voters = [p for p in session.participants if p.role != ParticipantRole.VIEWER]
         participation_rate = len(votes) / len(eligible_voters) if eligible_voters else 0
         quorum_reached = participation_rate >= session.quorum
 
@@ -731,8 +730,7 @@ class CollaborationManager:
             return []
 
         comments = [
-            c for c in session.comments
-            if c.target_type == target_type and c.target_id == target_id
+            c for c in session.comments if c.target_type == target_type and c.target_id == target_id
         ]
 
         if not include_resolved:
@@ -786,8 +784,7 @@ class CollaborationManager:
         session = self._sessions.get(session_id)
         if session:
             self._track_change(
-                session, change_type, author_id, description,
-                before_value, after_value
+                session, change_type, author_id, description, before_value, after_value
             )
             self._save_session(session)
 
@@ -818,9 +815,7 @@ class CollaborationManager:
         after_value: Any = None,
     ):
         """Internal method to track a change."""
-        change_id = hashlib.sha256(
-            f"{session.session_id}:{time.time()}".encode()
-        ).hexdigest()[:12]
+        change_id = hashlib.sha256(f"{session.session_id}:{time.time()}".encode()).hexdigest()[:12]
 
         change = Change(
             change_id=change_id,
@@ -836,7 +831,9 @@ class CollaborationManager:
         for listener in self._change_listeners:
             try:
                 listener(change)
-            except Exception:
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Listener failure should not break change tracking.
+                # One bad listener shouldn't prevent others from executing.
                 pass
 
     def _save_session(self, session: CollaborativeSession):
@@ -853,7 +850,9 @@ class CollaborationManager:
                     data = json.load(f)
                 session = CollaborativeSession.from_dict(data)
                 self._sessions[session.session_id] = session
-            except Exception:
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Skip corrupted session files gracefully.
+                # Loading should not fail due to one malformed file.
                 pass
 
     def list_sessions(self) -> list[CollaborativeSession]:
@@ -874,8 +873,7 @@ class CollaborationManager:
             List of sessions the user participates in
         """
         return [
-            s for s in self._sessions.values()
-            if any(p.user_id == user_id for p in s.participants)
+            s for s in self._sessions.values() if any(p.user_id == user_id for p in s.participants)
         ]
 
 
@@ -930,7 +928,9 @@ class SyncAdapter:
         for handler in self._event_handlers:
             try:
                 handler(event)
-            except Exception:
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Handler failure should not prevent other handlers.
+                # Event propagation must continue for sync reliability.
                 pass
 
     def on_event(self, handler: Callable[[SyncEvent], None]):
@@ -1038,6 +1038,7 @@ class InvitationManager:
         ).hexdigest()[:16]
 
         from datetime import timedelta
+
         expires = datetime.now() + timedelta(hours=expires_hours)
 
         invitation = Invitation(
@@ -1105,7 +1106,8 @@ class InvitationManager:
         """
         now = datetime.now()
         return [
-            inv for inv in self._invitations.values()
+            inv
+            for inv in self._invitations.values()
             if inv.session_id == session_id
             and not inv.accepted
             and (inv.expires_at is None or inv.expires_at > now)

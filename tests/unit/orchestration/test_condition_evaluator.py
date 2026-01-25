@@ -215,9 +215,7 @@ class TestConditionEvaluator:
 
     def test_evaluate_in_true(self, evaluator, test_context):
         """Test $in evaluates to True."""
-        condition = Condition(
-            predicate={"tier": {"$in": ["cheap", "capable", "premium"]}}
-        )
+        condition = Condition(predicate={"tier": {"$in": ["cheap", "capable", "premium"]}})
         result = evaluator.evaluate(condition, test_context)
         assert result is True
 
@@ -319,9 +317,7 @@ class TestConditionEvaluator:
 
     def test_evaluate_not_true(self, evaluator, test_context):
         """Test $not inverts condition."""
-        condition = Condition(
-            predicate={"$not": {"tier": {"$eq": "premium"}}}
-        )
+        condition = Condition(predicate={"$not": {"tier": {"$eq": "premium"}}})
         result = evaluator.evaluate(condition, test_context)
         assert result is True
 
@@ -602,8 +598,14 @@ class TestMultiConditionalStrategyExecute:
         from unittest.mock import AsyncMock, patch
 
         conditions = [
-            (Condition(predicate={"tier": {"$eq": "premium"}}), Branch(agents=["premium"], strategy="sequential")),
-            (Condition(predicate={"tier": {"$eq": "capable"}}), Branch(agents=["standard"], strategy="sequential")),
+            (
+                Condition(predicate={"tier": {"$eq": "premium"}}),
+                Branch(agents=["premium"], strategy="sequential"),
+            ),
+            (
+                Condition(predicate={"tier": {"$eq": "capable"}}),
+                Branch(agents=["standard"], strategy="sequential"),
+            ),
         ]
 
         strategy = MultiConditionalStrategy(conditions=conditions)
@@ -628,8 +630,14 @@ class TestMultiConditionalStrategyExecute:
         from unittest.mock import AsyncMock, patch
 
         conditions = [
-            (Condition(predicate={"tier": {"$eq": "premium"}}), Branch(agents=["premium"], strategy="sequential")),
-            (Condition(predicate={"tier": {"$eq": "capable"}}), Branch(agents=["standard"], strategy="sequential")),
+            (
+                Condition(predicate={"tier": {"$eq": "premium"}}),
+                Branch(agents=["premium"], strategy="sequential"),
+            ),
+            (
+                Condition(predicate={"tier": {"$eq": "capable"}}),
+                Branch(agents=["standard"], strategy="sequential"),
+            ),
         ]
 
         strategy = MultiConditionalStrategy(conditions=conditions)
@@ -654,7 +662,10 @@ class TestMultiConditionalStrategyExecute:
         from unittest.mock import AsyncMock, patch
 
         conditions = [
-            (Condition(predicate={"tier": {"$eq": "premium"}}), Branch(agents=["premium"], strategy="sequential")),
+            (
+                Condition(predicate={"tier": {"$eq": "premium"}}),
+                Branch(agents=["premium"], strategy="sequential"),
+            ),
         ]
         default_branch = Branch(agents=["basic"], strategy="sequential")
 
@@ -682,7 +693,10 @@ class TestMultiConditionalStrategyExecute:
     async def test_execute_returns_empty_result_when_no_match_and_no_default(self):
         """Test execute returns empty result when no conditions match and no default."""
         conditions = [
-            (Condition(predicate={"tier": {"$eq": "premium"}}), Branch(agents=["premium"], strategy="sequential")),
+            (
+                Condition(predicate={"tier": {"$eq": "premium"}}),
+                Branch(agents=["premium"], strategy="sequential"),
+            ),
         ]
 
         strategy = MultiConditionalStrategy(conditions=conditions, default_branch=None)
@@ -703,8 +717,14 @@ class TestMultiConditionalStrategyExecute:
 
         # Both conditions would match, but only first should be used
         conditions = [
-            (Condition(predicate={"score": {"$gt": 50}}), Branch(agents=["first"], strategy="sequential")),
-            (Condition(predicate={"score": {"$gt": 50}}), Branch(agents=["second"], strategy="sequential")),
+            (
+                Condition(predicate={"score": {"$gt": 50}}),
+                Branch(agents=["first"], strategy="sequential"),
+            ),
+            (
+                Condition(predicate={"score": {"$gt": 50}}),
+                Branch(agents=["second"], strategy="sequential"),
+            ),
         ]
 
         strategy = MultiConditionalStrategy(conditions=conditions)

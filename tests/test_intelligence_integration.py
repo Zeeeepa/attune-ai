@@ -12,8 +12,8 @@ from pathlib import Path
 
 import pytest
 
-# Check if wizard_chains.yaml exists for chain executor tests
-CHAIN_CONFIG_EXISTS = Path(".empathy/wizard_chains.yaml").exists()
+# Check if workflow_chains.yaml exists for chain executor tests
+CHAIN_CONFIG_EXISTS = Path(".empathy/workflow_chains.yaml").exists()
 
 from empathy_os.memory import EdgeType, MemoryGraph  # noqa: E402
 from empathy_os.routing import (  # noqa: E402
@@ -21,7 +21,7 @@ from empathy_os.routing import (  # noqa: E402
     ClassificationResult,
     HaikuClassifier,
     SmartRouter,
-    WizardRegistry,
+    WorkflowRegistry,
 )
 
 
@@ -33,7 +33,7 @@ class TestSmartRouterIntegration:
         router = SmartRouter()
 
         # Verify all registered wizards are accessible
-        wizards = router.list_wizards()
+        wizards = router.list_workflows()
         assert len(wizards) >= 10
 
         # Verify wizard info is complete
@@ -47,7 +47,7 @@ class TestSmartRouterIntegration:
         router = SmartRouter()
         decision = router.route_sync("Check for SQL injection vulnerabilities in auth.py")
 
-        assert decision.primary_wizard == "security-audit"
+        assert decision.primary_workflow == "security-audit"
         assert decision.confidence > 0.1  # Keyword-based classifier has lower confidence
         assert "security-audit" in decision.suggested_chain
 
@@ -56,7 +56,7 @@ class TestSmartRouterIntegration:
         router = SmartRouter()
         decision = router.route_sync("Optimize slow database queries")
 
-        assert decision.primary_wizard == "perf-audit"
+        assert decision.primary_workflow == "perf-audit"
         assert decision.confidence > 0.1  # Keyword-based classifier has lower confidence
 
     def test_router_testing_request(self):
@@ -65,7 +65,7 @@ class TestSmartRouterIntegration:
         # Use request without "authentication" which triggers security-audit
         decision = router.route_sync("Generate unit tests for the user service module")
 
-        assert decision.primary_wizard == "test-gen"
+        assert decision.primary_workflow == "test-gen"
 
     def test_router_with_context(self):
         """Test routing with file context."""
@@ -135,7 +135,7 @@ class TestMemoryGraphIntegration:
         )
 
         assert len(similar) >= 1
-        assert similar[0][0].source_wizard == "security-audit"
+        assert similar[0][0].source_workflow == "security-audit"
 
     def test_finding_relationships(self, temp_graph):
         """Test creating and querying relationships between findings."""
@@ -204,7 +204,7 @@ class TestMemoryGraphIntegration:
         assert stats["nodes_by_wizard"]["bug-predict"] == 1
 
 
-@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".empathy/wizard_chains.yaml not found")
+@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".empathy/workflow_chains.yaml not found")
 class TestChainExecutorIntegration:
     """Integration tests for Chain Executor with routing."""
 
@@ -276,20 +276,20 @@ class TestFullIntegration:
         router = SmartRouter()
         decision = router.route_sync(request)
 
-        assert decision.primary_wizard in ["security-audit", "dependency-check"]
+        assert decision.primary_workflow in ["security-audit", "dependency-check"]
         assert len(decision.suggested_chain) >= 1
 
         # 3. Chain Executor creates execution plan
         executor = ChainExecutor()
-        config = executor.get_chain_config(decision.primary_wizard)
+        config = executor.get_chain_config(decision.primary_workflow)
 
         if config and config.auto_chain:
             # Simulate wizard result
             mock_result = {"high_severity_count": 2}
-            triggers = executor.get_triggered_chains(decision.primary_wizard, mock_result)
-            execution = executor.create_execution(decision.primary_wizard, triggers)
+            triggers = executor.get_triggered_chains(decision.primary_workflow, mock_result)
+            execution = executor.create_execution(decision.primary_workflow, triggers)
 
-            assert execution.initial_wizard == decision.primary_wizard
+            assert execution.initial_wizard == decision.primary_workflow
 
     def test_wizard_findings_inform_routing(self):
         """Test that memory graph findings influence routing."""
@@ -323,7 +323,7 @@ class TestFullIntegration:
 
     def test_registry_wizard_info_completeness(self):
         """Test that all registered wizards have complete information."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
         wizards = registry.list_all()
 
         for wizard in wizards:
@@ -346,7 +346,7 @@ class TestFullIntegration:
         result = classifier.classify_sync("Check for security vulnerabilities")
 
         assert isinstance(result, ClassificationResult)
-        assert result.primary_wizard == "security-audit"
+        assert result.primary_workflow == "security-audit"
         assert result.confidence > 0
 
 
@@ -361,7 +361,7 @@ class TestResilienceIntegration:
         decision = router.route_sync("do something")
 
         assert decision is not None
-        assert decision.primary_wizard  # Should have a default
+        assert decision.primary_workflow  # Should have a default
 
     def test_memory_graph_handles_corrupt_file(self):
         """Test memory graph handles corrupt JSON gracefully."""

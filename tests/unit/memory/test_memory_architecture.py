@@ -396,8 +396,7 @@ class TestConcurrentAccess:
                 success_count.append(i)
 
         threads = [
-            threading.Thread(target=write_unique_data, args=(i,))
-            for i in range(write_count)
+            threading.Thread(target=write_unique_data, args=(i,)) for i in range(write_count)
         ]
 
         for thread in threads:

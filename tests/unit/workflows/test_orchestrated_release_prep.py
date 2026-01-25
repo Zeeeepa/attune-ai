@@ -567,9 +567,7 @@ class TestOrchestratedReleasePrepWorkflow:
         workflow = OrchestratedReleasePrepWorkflow()
 
         # Mock strategy result
-        from empathy_os.orchestration.execution_strategies import (
-            StrategyResult,
-        )
+        from empathy_os.orchestration.execution_strategies import StrategyResult
 
         agent_results = [
             AgentResult(
@@ -633,9 +631,7 @@ class TestOrchestratedReleasePrepWorkflow:
         """Test report creation with some failures."""
         workflow = OrchestratedReleasePrepWorkflow()
 
-        from empathy_os.orchestration.execution_strategies import (
-            StrategyResult,
-        )
+        from empathy_os.orchestration.execution_strategies import StrategyResult
 
         agent_results = [
             AgentResult(
@@ -690,9 +686,7 @@ class TestOrchestratedReleasePrepWorkflow:
         """Test report creation with warnings but approval."""
         workflow = OrchestratedReleasePrepWorkflow()
 
-        from empathy_os.orchestration.execution_strategies import (
-            StrategyResult,
-        )
+        from empathy_os.orchestration.execution_strategies import StrategyResult
 
         agent_results = [
             AgentResult(

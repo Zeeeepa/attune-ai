@@ -524,10 +524,14 @@ class TestEndToEndIntegration:
                     coverage_file=str(coverage_xml), workflow_id=self._run_id
                 )
 
-                return {
-                    "test_success": test_record.success,
-                    "coverage": coverage_record.overall_percentage,
-                }, 0, 0
+                return (
+                    {
+                        "test_success": test_record.success,
+                        "coverage": coverage_record.overall_percentage,
+                    },
+                    0,
+                    0,
+                )
 
         workflow = CompleteWorkflow()
 

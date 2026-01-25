@@ -44,9 +44,13 @@ class TestMemoryConfig:
         assert config.redis_host == "localhost"
         assert config.redis_port == 6379
         assert config.redis_mock is False
-        assert config.redis_auto_start is True
+        assert config.redis_auto_start is False  # File-first: Redis is optional
         assert config.encryption_enabled is True
         assert config.claude_memory_enabled is True
+        # File-first architecture fields
+        assert config.file_session_enabled is True
+        assert config.file_session_dir == ".empathy"
+        assert config.redis_required is False
 
     def test_memory_config_custom_values(self):
         """Test custom configuration values"""
@@ -233,15 +237,24 @@ class TestUnifiedMemoryBackendInit:
 
     @patch("empathy_os.memory.unified.ensure_redis")
     def test_init_with_auto_start_failure(self, mock_ensure):
-        """Test initialization with auto-start failure falls back to mock"""
+        """Test initialization with auto-start failure uses file-first fallback.
+
+        File-first architecture: When Redis is unavailable, file session memory
+        remains available as the primary storage backend.
+        """
         mock_ensure.return_value = RedisStatus(available=False, method=RedisStartMethod.MOCK)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(storage_dir=tmpdir, redis_auto_start=True)
             memory = UnifiedMemory(user_id="test_user", config=config)
 
-            # Should fallback to mock
-            assert memory._short_term is not None
+            # File-first: file session should be available even when Redis fails
+            assert memory._file_session is not None
+            # Redis may or may not be available
+            assert memory._redis_status.available is False
+            # Memory should still be functional via file session
+            assert memory.stash("test_key", {"value": 1}) is True
+            assert memory.retrieve("test_key") == {"value": 1}
 
     def test_init_long_term_memory(self):
         """Test long-term memory initialization"""
@@ -302,22 +315,30 @@ class TestUnifiedMemoryShortTermOps:
             retrieved = memory.retrieve("nonexistent_key")
             assert retrieved is None
 
-    def test_stash_without_short_term(self):
-        """Test stash when short-term memory is unavailable"""
+    def test_stash_without_any_memory(self):
+        """Test stash when all memory backends are unavailable.
+
+        File-first architecture: must disable both file session AND Redis.
+        """
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(storage_dir=tmpdir, redis_mock=True)
             memory = UnifiedMemory(user_id="test_user", config=config)
-            memory._short_term = None
+            memory._file_session = None  # File-first: disable file session
+            memory._short_term = None  # Also disable Redis
 
             result = memory.stash("test_key", {"data": "test"})
             assert result is False
 
-    def test_retrieve_without_short_term(self):
-        """Test retrieve when short-term memory is unavailable"""
+    def test_retrieve_without_any_memory(self):
+        """Test retrieve when all memory backends are unavailable.
+
+        File-first architecture: must disable both file session AND Redis.
+        """
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(storage_dir=tmpdir, redis_mock=True)
             memory = UnifiedMemory(user_id="test_user", config=config)
-            memory._short_term = None
+            memory._file_session = None  # File-first: disable file session
+            memory._short_term = None  # Also disable Redis
 
             result = memory.retrieve("test_key")
             assert result is None
@@ -715,19 +736,25 @@ class TestUnifiedMemoryEdgeCases:
             assert memory._long_term is long_term_ref
 
     @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    def test_short_term_init_exception_fallback(self, mock_redis):
-        """Test fallback to mock when short-term init fails"""
-        # First call (normal init) fails, second call (fallback mock) succeeds
-        mock_instance = Mock()
-        mock_redis.side_effect = [Exception("Connection failed"), mock_instance]
+    def test_short_term_init_exception_uses_file_first(self, mock_redis):
+        """Test file-first fallback when Redis init fails.
+
+        File-first architecture: When Redis initialization fails, file session
+        memory remains available as the primary storage backend.
+        """
+        # Redis init fails
+        mock_redis.side_effect = Exception("Connection failed")
 
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(storage_dir=tmpdir, redis_mock=False)
             memory = UnifiedMemory(user_id="test_user", config=config)
 
-            # Should fallback to mock despite exception
-            assert memory._short_term is not None
-            assert memory._short_term is mock_instance
+            # File-first: file session should be available
+            assert memory._file_session is not None
+            # Redis may be None when init fails
+            # Memory should still be functional via file session
+            assert memory.stash("test_key", {"value": 1}) is True
+            assert memory.retrieve("test_key") == {"value": 1}
 
     def test_empty_user_id(self):
         """Test with empty user_id"""

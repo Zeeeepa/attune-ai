@@ -101,9 +101,7 @@ class TestCircuitBreakerStates:
 
     def test_reopens_on_failure_in_half_open(self):
         """Test circuit reopens on failure in HALF_OPEN state."""
-        cb = CircuitBreaker(
-            name="test_reopen", failure_threshold=1, reset_timeout=0.1
-        )
+        cb = CircuitBreaker(name="test_reopen", failure_threshold=1, reset_timeout=0.1)
 
         # Open the circuit
         cb.record_failure(Exception("test"))
@@ -244,6 +242,7 @@ class TestCircuitBreakerDecorator:
 
     def test_decorator_raises_circuit_open_error(self):
         """Test decorator raises CircuitOpenError when open."""
+
         @circuit_breaker(name="test_open_dec", failure_threshold=1, reset_timeout=60)
         def failing_func():
             raise ValueError("always fails")
@@ -258,6 +257,7 @@ class TestCircuitBreakerDecorator:
 
     def test_decorator_with_fallback(self):
         """Test decorator calls fallback when circuit open."""
+
         def fallback_func():
             return "fallback result"
 
@@ -286,6 +286,7 @@ class TestCircuitBreakerRegistry:
 
     def test_get_circuit_breaker_returns_same_instance(self):
         """Test get_circuit_breaker returns same instance by name."""
+
         # Create circuit breaker via decorator
         @circuit_breaker(name="registry_test", failure_threshold=5)
         def test_func():

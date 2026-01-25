@@ -478,6 +478,7 @@ class ProjectScanner:
         nested ast.walk() calls. Previous implementation was O(n²) due to
         walking each function's subtree separately. This version is O(n).
         """
+
         # Use inner class to maintain state during traversal
         class MetricsVisitor(ast.NodeVisitor):
             def __init__(self) -> None:

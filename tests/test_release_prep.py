@@ -664,7 +664,7 @@ class TestSecurityStage:
         with tempfile.TemporaryDirectory() as tmpdir:
             vuln_file = Path(tmpdir) / "shell.py"
             # os.system with user input triggers B605 (HIGH severity)
-            vuln_file.write_text('import os\nos.system(user_input)')
+            vuln_file.write_text("import os\nos.system(user_input)")
 
             workflow = ReleasePreparationWorkflow()
 
@@ -1020,7 +1020,7 @@ class TestIntegration:
         with tempfile.TemporaryDirectory() as tmpdir:
             vuln_file = Path(tmpdir) / "shell.py"
             # os.system with user input triggers B605 (HIGH severity)
-            vuln_file.write_text('import os\nos.system(user_input)')
+            vuln_file.write_text("import os\nos.system(user_input)")
 
             workflow = ReleasePreparationWorkflow()
 

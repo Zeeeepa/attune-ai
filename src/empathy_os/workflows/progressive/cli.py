@@ -69,6 +69,7 @@ def cmd_show_report(args: argparse.Namespace) -> int:
 
         if args.json:
             import json
+
             print(json.dumps(result_data, indent=2))
         else:
             # Show human-readable report
@@ -103,6 +104,7 @@ def cmd_analytics(args: argparse.Namespace) -> int:
 
     if args.json:
         import json
+
         print(json.dumps(analytics, indent=2))
     else:
         report = format_cost_analytics_report(analytics)
@@ -125,9 +127,7 @@ def cmd_cleanup(args: argparse.Namespace) -> int:
     dry_run = args.dry_run
 
     deleted, retained = cleanup_old_results(
-        storage_path=storage_path,
-        retention_days=retention_days,
-        dry_run=dry_run
+        storage_path=storage_path, retention_days=retention_days, dry_run=dry_run
     )
 
     if dry_run:
@@ -149,70 +149,47 @@ def create_parser() -> argparse.ArgumentParser:
         Configured argument parser
     """
     parser = argparse.ArgumentParser(
-        prog="empathy progressive",
-        description="Manage progressive tier escalation workflows"
+        prog="empathy progressive", description="Manage progressive tier escalation workflows"
     )
 
     parser.add_argument(
         "--storage-path",
         type=str,
         default=None,
-        help="Custom storage path (default: .empathy/progressive_runs)"
+        help="Custom storage path (default: .empathy/progressive_runs)",
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # List command
-    list_parser = subparsers.add_parser(
-        "list",
-        help="List all saved progressive workflow results"
-    )
+    list_parser = subparsers.add_parser("list", help="List all saved progressive workflow results")
     list_parser.set_defaults(func=cmd_list_results)
 
     # Show command
-    show_parser = subparsers.add_parser(
-        "show",
-        help="Show detailed report for a specific task"
-    )
-    show_parser.add_argument(
-        "task_id",
-        type=str,
-        help="Task ID to display"
-    )
-    show_parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Output in JSON format"
-    )
+    show_parser = subparsers.add_parser("show", help="Show detailed report for a specific task")
+    show_parser.add_argument("task_id", type=str, help="Task ID to display")
+    show_parser.add_argument("--json", action="store_true", help="Output in JSON format")
     show_parser.set_defaults(func=cmd_show_report)
 
     # Analytics command
-    analytics_parser = subparsers.add_parser(
-        "analytics",
-        help="Show cost optimization analytics"
-    )
-    analytics_parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Output in JSON format"
-    )
+    analytics_parser = subparsers.add_parser("analytics", help="Show cost optimization analytics")
+    analytics_parser.add_argument("--json", action="store_true", help="Output in JSON format")
     analytics_parser.set_defaults(func=cmd_analytics)
 
     # Cleanup command
     cleanup_parser = subparsers.add_parser(
-        "cleanup",
-        help="Clean up old progressive workflow results"
+        "cleanup", help="Clean up old progressive workflow results"
     )
     cleanup_parser.add_argument(
         "--retention-days",
         type=int,
         default=30,
-        help="Number of days to retain results (default: 30)"
+        help="Number of days to retain results (default: 30)",
     )
     cleanup_parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Show what would be deleted without actually deleting"
+        help="Show what would be deleted without actually deleting",
     )
     cleanup_parser.set_defaults(func=cmd_cleanup)
 

@@ -202,9 +202,7 @@ class TestIntentDetectorCalculateScore:
             "weight": 1.0,
         }
 
-        score, keywords = detector._calculate_match_score(
-            "improve test coverage", pattern_config
-        )
+        score, keywords = detector._calculate_match_score("improve test coverage", pattern_config)
 
         assert score > 0
         assert "test" in keywords
@@ -219,9 +217,7 @@ class TestIntentDetectorCalculateScore:
             "weight": 1.0,
         }
 
-        score, keywords = detector._calculate_match_score(
-            "prepare for a release", pattern_config
-        )
+        score, keywords = detector._calculate_match_score("prepare for a release", pattern_config)
 
         assert score > 0.3  # Phrase matching adds 0.3
 
@@ -247,9 +243,7 @@ class TestIntentDetectorCalculateScore:
             "weight": 1.0,
         }
 
-        score, keywords = detector._calculate_match_score(
-            "nothing matches here", pattern_config
-        )
+        score, keywords = detector._calculate_match_score("nothing matches here", pattern_config)
 
         assert score == 0
         assert keywords == []
@@ -288,10 +282,7 @@ class TestIntentDetectorSuggestionText:
     def test_suggestion_text_limits_to_3(self):
         """Test that suggestion text shows at most 3 matches."""
         detector = IntentDetector()
-        matches = [
-            IntentMatch(f"template-{i}", f"Template {i}", 0.9 - i * 0.1)
-            for i in range(5)
-        ]
+        matches = [IntentMatch(f"template-{i}", f"Template {i}", 0.9 - i * 0.1) for i in range(5)]
 
         text = detector.get_suggestion_text(matches)
 

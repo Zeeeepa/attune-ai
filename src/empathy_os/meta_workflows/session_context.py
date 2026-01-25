@@ -109,8 +109,7 @@ class SessionContext:
             self.memory.stash(key, value, ttl_seconds=ttl or self.default_ttl)
 
             logger.debug(
-                f"Recorded choice: template={template_id}, "
-                f"question={question_id}, choice={choice}"
+                f"Recorded choice: template={template_id}, question={question_id}, choice={choice}"
             )
             return True
 
@@ -336,7 +335,7 @@ class SessionContext:
         """
         try:
             # Basic validation - could be enhanced
-            if hasattr(question, 'options') and question.options:
+            if hasattr(question, "options") and question.options:
                 # Check if choice is in options (only if options are defined)
                 if isinstance(choice, list):
                     # Multi-select - all choices must be in options

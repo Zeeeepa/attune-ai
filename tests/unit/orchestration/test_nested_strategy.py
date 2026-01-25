@@ -84,9 +84,7 @@ class TestWorkflowReference:
     def test_valid_inline_reference(self, mock_agent):
         """Test creating inline workflow reference."""
         inline = InlineWorkflow(
-            agents=[mock_agent],
-            strategy="parallel",
-            description="Inline workflow"
+            agents=[mock_agent], strategy="parallel", description="Inline workflow"
         )
         ref = WorkflowReference(inline=inline)
         assert ref.workflow_id == ""
@@ -140,7 +138,7 @@ class TestNestingContext:
         ctx = NestingContext()
         ctx.workflow_stack = ["workflow-a", "workflow-b"]
         assert ctx.can_nest("workflow-a") is False  # Cycle!
-        assert ctx.can_nest("workflow-c") is True   # No cycle
+        assert ctx.can_nest("workflow-c") is True  # No cycle
 
     def test_enter_increments_depth(self):
         """Test that entering a workflow increments depth."""
@@ -230,9 +228,7 @@ class TestNestedStrategy:
         ref = WorkflowReference(workflow_id="test-workflow")
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy"
-        ) as mock_get:
+        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,
@@ -258,9 +254,7 @@ class TestNestedStrategy:
         ref = WorkflowReference(inline=inline)
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy"
-        ) as mock_get:
+        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,
@@ -314,9 +308,7 @@ class TestNestedStrategy:
             "config": {"setting": True},
         }
 
-        with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy"
-        ) as mock_get:
+        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,

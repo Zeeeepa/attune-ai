@@ -52,7 +52,7 @@ def implement_pattern_library_test():
     
     assert result == 0.8, "Success rate should be 80%"
     assert isinstance(result, float), "Should return float"
-    assert 0.0 <= result <= 1.0, "Rate should be between 0 and 1"'''
+    assert 0.0 <= result <= 1.0, "Rate should be between 0 and 1"''',
     )
 
     # Replace edge case test
@@ -73,7 +73,7 @@ def implement_pattern_library_test():
     assert success_rate("test", 10, 0) == 0.0
     
     # Test with single use
-    assert success_rate("test", 1, 1) == 1.0'''
+    assert success_rate("test", 1, 1) == 1.0''',
     )
 
     # Write back
@@ -83,28 +83,32 @@ def implement_pattern_library_test():
 
 def main():
     console.print()
-    console.print(Panel.fit(
-        "[bold cyan]🚀 Implementing Test TODOs[/bold cyan]\n"
-        "[dim]Replacing TODO markers with real test code[/dim]",
-        border_style="cyan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold cyan]🚀 Implementing Test TODOs[/bold cyan]\n"
+            "[dim]Replacing TODO markers with real test code[/dim]",
+            border_style="cyan",
+        )
+    )
     console.print()
 
     # Implement example file
     implement_pattern_library_test()
 
     console.print()
-    console.print(Panel(
-        "[bold green]✅ Implementation Complete![/bold green]\n\n"
-        "[bold]Next Steps:[/bold]\n\n"
-        "1. Run the implemented tests:\n"
-        "   [cyan]pytest tests/unit/test_pattern_library.py -v[/cyan]\n\n"
-        "2. Check coverage:\n"
-        "   [cyan]pytest --cov=src/empathy_os/pattern_library --cov-report=html[/cyan]\n\n"
-        "3. View results:\n"
-        "   [cyan]open htmlcov/index.html[/cyan]",
-        border_style="green"
-    ))
+    console.print(
+        Panel(
+            "[bold green]✅ Implementation Complete![/bold green]\n\n"
+            "[bold]Next Steps:[/bold]\n\n"
+            "1. Run the implemented tests:\n"
+            "   [cyan]pytest tests/unit/test_pattern_library.py -v[/cyan]\n\n"
+            "2. Check coverage:\n"
+            "   [cyan]pytest --cov=src/empathy_os/pattern_library --cov-report=html[/cyan]\n\n"
+            "3. View results:\n"
+            "   [cyan]open htmlcov/index.html[/cyan]",
+            border_style="green",
+        )
+    )
 
 
 if __name__ == "__main__":

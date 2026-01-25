@@ -43,8 +43,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.75,  # High enough to avoid failure_rate trigger
                 coverage_percent=50.0,
                 assertion_depth=3.0,
-                confidence_score=0.70
-            )
+                confidence_score=0.70,
+            ),
         )
 
         should_escalate, reason = orchestrator.should_escalate(
@@ -75,8 +75,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.90,
                 coverage_percent=85.0,
                 assertion_depth=7.0,
-                confidence_score=0.95
-            )
+                confidence_score=0.95,
+            ),
         )
 
         should_escalate, reason = orchestrator.should_escalate(
@@ -100,8 +100,8 @@ class TestMetaOrchestrator:
             failure_analysis=FailureAnalysis(
                 test_pass_rate=0.80,
                 coverage_percent=70.0,
-                syntax_errors=[SyntaxError(f"error {i}") for i in range(5)]
-            )
+                syntax_errors=[SyntaxError(f"error {i}") for i in range(5)],
+            ),
         )
 
         should_escalate, reason = orchestrator.should_escalate(
@@ -117,10 +117,7 @@ class TestMetaOrchestrator:
         # Reset history to avoid cross-test contamination
         orchestrator.tier_history[Tier.CAPABLE] = []
 
-        config = EscalationConfig(
-            improvement_threshold=5.0,
-            consecutive_stagnation_limit=2
-        )
+        config = EscalationConfig(improvement_threshold=5.0, consecutive_stagnation_limit=2)
 
         # First attempt: CQS ~80 (high enough to avoid immediate escalation)
         result1 = TierResult(
@@ -133,8 +130,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.80,  # Above threshold
                 coverage_percent=80.0,
                 assertion_depth=8.0,  # Higher to boost CQS
-                confidence_score=0.82
-            )
+                confidence_score=0.82,
+            ),
         )
 
         should_esc1, _ = orchestrator.should_escalate(
@@ -153,8 +150,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.83,
                 coverage_percent=83.0,
                 assertion_depth=8.5,
-                confidence_score=0.84
-            )
+                confidence_score=0.84,
+            ),
         )
 
         should_esc2, reason2 = orchestrator.should_escalate(
@@ -175,8 +172,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.85,
                 coverage_percent=85.0,
                 assertion_depth=9.0,
-                confidence_score=0.86
-            )
+                confidence_score=0.86,
+            ),
         )
 
         should_esc3, reason3 = orchestrator.should_escalate(
@@ -205,8 +202,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.80,
                 coverage_percent=80.0,
                 assertion_depth=6.0,
-                confidence_score=0.82
-            )
+                confidence_score=0.82,
+            ),
         )
 
         orchestrator.should_escalate(Tier.CAPABLE, result1, attempt=1, config=config)
@@ -222,8 +219,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.88,
                 coverage_percent=88.0,
                 assertion_depth=7.5,
-                confidence_score=0.90
-            )
+                confidence_score=0.90,
+            ),
         )
 
         should_escalate, reason = orchestrator.should_escalate(
@@ -247,8 +244,8 @@ class TestMetaOrchestrator:
                 test_pass_rate=0.78,  # Decent but not great
                 coverage_percent=75.0,
                 assertion_depth=6.0,
-                confidence_score=0.80
-            )
+                confidence_score=0.80,
+            ),
         )
 
         # Build history to avoid early escalation
@@ -269,18 +266,14 @@ class TestMetaOrchestrator:
         # No stagnation: good improvement
         history1 = [70.0, 78.0, 86.0, 92.0]
         is_stagnant1, _ = orchestrator._detect_stagnation(
-            history1,
-            improvement_threshold=5.0,
-            consecutive_limit=2
+            history1, improvement_threshold=5.0, consecutive_limit=2
         )
         assert is_stagnant1 is False
 
         # Stagnation: <5% improvement for 2 consecutive runs
         history2 = [70.0, 78.0, 79.0, 80.0]  # Last two improvements: +1%, +1%
         is_stagnant2, reason2 = orchestrator._detect_stagnation(
-            history2,
-            improvement_threshold=5.0,
-            consecutive_limit=2
+            history2, improvement_threshold=5.0, consecutive_limit=2
         )
         assert is_stagnant2 is True
         assert "consecutive" in reason2.lower()
@@ -288,9 +281,7 @@ class TestMetaOrchestrator:
         # Not enough history
         history3 = [70.0]
         is_stagnant3, _ = orchestrator._detect_stagnation(
-            history3,
-            improvement_threshold=5.0,
-            consecutive_limit=2
+            history3, improvement_threshold=5.0, consecutive_limit=2
         )
         assert is_stagnant3 is False
 
@@ -303,9 +294,7 @@ class TestPromptGeneration:
         orchestrator = MetaOrchestrator()
 
         prompt = orchestrator.build_tier_prompt(
-            Tier.CHEAP,
-            "Generate tests for module.py",
-            failure_context=None
+            Tier.CHEAP, "Generate tests for module.py", failure_context=None
         )
 
         assert "<task>" in prompt
@@ -330,15 +319,13 @@ class TestPromptGeneration:
                 {
                     "error": "SyntaxError: invalid syntax",
                     "code": "def test_async():\n    result = async_function()",
-                    "quality_score": 45
+                    "quality_score": 45,
                 }
-            ]
+            ],
         }
 
         prompt = orchestrator.build_tier_prompt(
-            Tier.CAPABLE,
-            "Generate tests for async module",
-            failure_context=failure_context
+            Tier.CAPABLE, "Generate tests for async module", failure_context=failure_context
         )
 
         assert "<context_from_previous_tier>" in prompt
@@ -365,15 +352,13 @@ class TestPromptGeneration:
                 {
                     "error": "AssertionError: timeout",
                     "code": "async def test_timeout():\n    result = await slow_function()",
-                    "quality_score": 75
+                    "quality_score": 75,
                 }
-            ]
+            ],
         }
 
         prompt = orchestrator.build_tier_prompt(
-            Tier.PREMIUM,
-            "Generate tests for complex async module",
-            failure_context=failure_context
+            Tier.PREMIUM, "Generate tests for complex async module", failure_context=failure_context
         )
 
         assert "<escalation_context>" in prompt
@@ -391,7 +376,7 @@ class TestPromptGeneration:
         orchestrator = MetaOrchestrator()
 
         # Test all special characters
-        text = 'Error: <missing> & "invalid" \'quote\''
+        text = "Error: <missing> & \"invalid\" 'quote'"
         escaped = orchestrator._escape_xml(text)
 
         assert "&lt;" in escaped  # <
@@ -501,10 +486,7 @@ class TestAgentTeamCreation:
         """Test that capable tier gets two agents."""
         orchestrator = MetaOrchestrator()
 
-        failure_context = {
-            "previous_cqs": 65.0,
-            "failures": []
-        }
+        failure_context = {"previous_cqs": 65.0, "failures": []}
 
         agents = orchestrator.create_agent_team(Tier.CAPABLE, failure_context)
 
@@ -516,10 +498,7 @@ class TestAgentTeamCreation:
         """Test that premium tier gets three agents."""
         orchestrator = MetaOrchestrator()
 
-        failure_context = {
-            "previous_cqs": 78.0,
-            "failures": []
-        }
+        failure_context = {"previous_cqs": 78.0, "failures": []}
 
         agents = orchestrator.create_agent_team(Tier.PREMIUM, failure_context)
 
@@ -543,7 +522,7 @@ class TestEdgeCases:
             model="gpt-4o-mini",
             attempt=1,
             timestamp=datetime.now(),
-            failure_analysis=FailureAnalysis(test_pass_rate=0.30)  # Very low
+            failure_analysis=FailureAnalysis(test_pass_rate=0.30),  # Very low
         )
 
         should_escalate, reason = orchestrator.should_escalate(
@@ -564,7 +543,7 @@ class TestEdgeCases:
             model="claude-opus-4",
             attempt=1,
             timestamp=datetime.now(),
-            failure_analysis=FailureAnalysis(test_pass_rate=0.50)
+            failure_analysis=FailureAnalysis(test_pass_rate=0.50),
         )
 
         should_escalate, reason = orchestrator.should_escalate(

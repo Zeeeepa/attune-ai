@@ -81,7 +81,7 @@ class TestProviderConfigHybridMode:
         result = config.get_model_for_tier("cheap")
 
         # Result should be a ModelInfo object or None
-        assert result is None or hasattr(result, 'id')  # ModelInfo has id attribute
+        assert result is None or hasattr(result, "id")  # ModelInfo has id attribute
 
     def test_custom_mode_with_tier_providers(self):
         """Test CUSTOM mode with tier_providers mapping."""
@@ -230,7 +230,7 @@ class TestOllamaDetection:
 
     def test_check_ollama_not_running(self):
         """Test _check_ollama_available when Ollama is not running."""
-        with patch('socket.socket') as mock_socket:
+        with patch("socket.socket") as mock_socket:
             mock_instance = MagicMock()
             mock_instance.connect.side_effect = ConnectionRefusedError()
             mock_socket.return_value.__enter__.return_value = mock_instance
@@ -242,7 +242,7 @@ class TestOllamaDetection:
     def test_check_ollama_timeout(self):
         """Test _check_ollama_available with timeout."""
 
-        with patch('socket.socket') as mock_socket:
+        with patch("socket.socket") as mock_socket:
             mock_instance = MagicMock()
             mock_instance.connect.side_effect = TimeoutError()
             mock_socket.return_value.__enter__.return_value = mock_instance
@@ -267,21 +267,21 @@ class TestEnvFileLoading:
     def test_provider_detection_with_env_vars(self):
         """Test provider detection with environment variables."""
         # Mock environment to have ANTHROPIC_API_KEY
-        with patch.dict('os.environ', {'ANTHROPIC_API_KEY': 'test_key'}):
+        with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test_key"}):
             providers = ProviderConfig.detect_available_providers()
 
             assert "anthropic" in providers
 
     def test_provider_detection_with_openai(self):
         """Test provider detection with OPENAI_API_KEY."""
-        with patch.dict('os.environ', {'OPENAI_API_KEY': 'test_key'}, clear=True):
+        with patch.dict("os.environ", {"OPENAI_API_KEY": "test_key"}, clear=True):
             providers = ProviderConfig.detect_available_providers()
 
             assert "openai" in providers
 
     def test_auto_detect_with_single_provider(self):
         """Test auto_detect with single provider available."""
-        with patch.object(ProviderConfig, 'detect_available_providers', return_value=['openai']):
+        with patch.object(ProviderConfig, "detect_available_providers", return_value=["openai"]):
             config = ProviderConfig.auto_detect()
 
             assert config.mode == ProviderMode.SINGLE
@@ -289,7 +289,9 @@ class TestEnvFileLoading:
 
     def test_auto_detect_with_multiple_providers(self):
         """Test auto_detect with multiple providers prioritizes anthropic."""
-        with patch.object(ProviderConfig, 'detect_available_providers', return_value=['openai', 'anthropic']):
+        with patch.object(
+            ProviderConfig, "detect_available_providers", return_value=["openai", "anthropic"]
+        ):
             config = ProviderConfig.auto_detect()
 
             assert config.mode == ProviderMode.SINGLE

@@ -149,7 +149,7 @@ class TFIDFEmbeddingProvider(EmbeddingProvider):
         """Tokenize text into words."""
         # Simple tokenization: lowercase, split on non-alphanumeric
         text = text.lower()
-        tokens = re.findall(r'\b[a-z][a-z0-9_]*\b', text)
+        tokens = re.findall(r"\b[a-z][a-z0-9_]*\b", text)
         return tokens
 
     def _compute_tf(self, tokens: list[str]) -> dict[str, float]:
@@ -255,6 +255,7 @@ class AnthropicEmbeddingProvider(EmbeddingProvider):
         if self._client is None and self.api_key:
             try:
                 import anthropic
+
                 self._client = anthropic.Anthropic(api_key=self.api_key)
             except ImportError:
                 logger.warning("anthropic package not installed")
@@ -268,13 +269,13 @@ class AnthropicEmbeddingProvider(EmbeddingProvider):
             fallback = TFIDFEmbeddingProvider(dimension=self._dimension)
             return fallback.embed(text)
 
-        aspects = self.ASPECTS[:self._dimension]
+        aspects = self.ASPECTS[: self._dimension]
         prompt = f"""Rate how relevant this goal is to each aspect on a scale of 0.0 to 1.0.
 
 Goal: "{text}"
 
 Aspects to rate:
-{chr(10).join(f'{i+1}. {aspect}' for i, aspect in enumerate(aspects))}
+{chr(10).join(f"{i + 1}. {aspect}" for i, aspect in enumerate(aspects))}
 
 Respond with ONLY a JSON array of numbers, one per aspect, in order.
 Example: [0.8, 0.2, 0.5, ...]"""
@@ -290,7 +291,7 @@ Example: [0.8, 0.2, 0.5, ...]"""
             # Parse JSON array
             scores = json.loads(content.strip())
             if isinstance(scores, list) and len(scores) >= self._dimension:
-                return [float(s) for s in scores[:self._dimension]]
+                return [float(s) for s in scores[: self._dimension]]
 
         except Exception as e:
             logger.warning(f"Anthropic embedding failed: {e}")
@@ -331,6 +332,7 @@ class SentenceTransformerProvider(EmbeddingProvider):
         if self._model is None:
             try:
                 from sentence_transformers import SentenceTransformer
+
                 self._model = SentenceTransformer(self.model_name)
                 self._dimension = self._model.get_sentence_embedding_dimension()
             except ImportError:
@@ -677,15 +679,17 @@ class SemanticGoalMatcher:
         formatted = []
         for result in results:
             if result.goal.success_score >= min_success_score:
-                formatted.append({
-                    "goal_id": result.goal.goal_id,
-                    "goal_text": result.goal.goal_text,
-                    "similarity": round(result.similarity, 3),
-                    "workflow_id": result.goal.workflow_id,
-                    "domains": result.goal.domains,
-                    "success_score": result.goal.success_score,
-                    "metadata": result.goal.metadata,
-                })
+                formatted.append(
+                    {
+                        "goal_id": result.goal.goal_id,
+                        "goal_text": result.goal.goal_text,
+                        "similarity": round(result.similarity, 3),
+                        "workflow_id": result.goal.workflow_id,
+                        "domains": result.goal.domains,
+                        "success_score": result.goal.success_score,
+                        "metadata": result.goal.metadata,
+                    }
+                )
 
             if len(formatted) >= top_k:
                 break

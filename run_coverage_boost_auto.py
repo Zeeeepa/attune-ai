@@ -27,11 +27,13 @@ def main():
     """Main execution - runs automatically."""
 
     console.print()
-    console.print(Panel.fit(
-        "[bold cyan]🎯 Automatic Test Coverage Boost[/bold cyan]\n"
-        "[dim]Interactive Agent Team for 95% Coverage[/dim]",
-        border_style="cyan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold cyan]🎯 Automatic Test Coverage Boost[/bold cyan]\n"
+            "[dim]Interactive Agent Team for 95% Coverage[/dim]",
+            border_style="cyan",
+        )
+    )
     console.print()
 
     # Current coverage
@@ -59,7 +61,7 @@ def main():
     ]
 
     for agent, role in agents_config:
-        table.add_row(agent.replace('_', ' ').title(), role)
+        table.add_row(agent.replace("_", " ").title(), role)
 
     console.print(table)
     console.print()
@@ -77,13 +79,14 @@ def main():
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        console=console
+        console=console,
     ) as progress:
-
         task = progress.add_task("[cyan]Executing agents...", total=len(agents_config))
 
         for i, (agent_name, role) in enumerate(agents_config, 1):
-            console.print(f"\n[bold cyan]{i}/11. {agent_name.replace('_', ' ').title()}[/bold cyan]")
+            console.print(
+                f"\n[bold cyan]{i}/11. {agent_name.replace('_', ' ').title()}[/bold cyan]"
+            )
             console.print(f"[dim]{role}...[/dim]\n")
 
             # Simulate execution
@@ -91,7 +94,12 @@ def main():
                 cost = 0.25
                 duration = 6.0
                 tests = 25
-            elif "progressive" in agent_name or "generator" in agent_name or "creator" in agent_name or "updater" in agent_name:
+            elif (
+                "progressive" in agent_name
+                or "generator" in agent_name
+                or "creator" in agent_name
+                or "updater" in agent_name
+            ):
                 cost = 0.15
                 duration = 4.0
                 tests = 20
@@ -118,32 +126,36 @@ def main():
     final_coverage = min(current_coverage, 95.0)
 
     console.print("\n")
-    console.print(Panel.fit(
-        "[bold green]✅ Agent Team Execution Complete![/bold green]\n\n"
-        f"[bold]📊 Results:[/bold]\n"
-        f"• Tests Created: [cyan]{total_tests}[/cyan]\n"
-        f"• Coverage: [green]{62.0:.1f}% → {final_coverage:.1f}%[/green]\n"
-        f"• Total Cost: [yellow]${total_cost:.2f}[/yellow]\n"
-        f"• Agents: [cyan]11/11 executed[/cyan]\n\n"
-        "[bold]📁 Outputs:[/bold]\n"
-        "• [dim]tests/unit/, tests/integration/[/dim]\n"
-        "• [dim]htmlcov/index.html[/dim]\n"
-        "• [dim]docs/TESTING.md[/dim]\n"
-        "• [dim].github/workflows/test.yml[/dim]",
-        border_style="green",
-        title="🎉 Success"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold green]✅ Agent Team Execution Complete![/bold green]\n\n"
+            f"[bold]📊 Results:[/bold]\n"
+            f"• Tests Created: [cyan]{total_tests}[/cyan]\n"
+            f"• Coverage: [green]{62.0:.1f}% → {final_coverage:.1f}%[/green]\n"
+            f"• Total Cost: [yellow]${total_cost:.2f}[/yellow]\n"
+            f"• Agents: [cyan]11/11 executed[/cyan]\n\n"
+            "[bold]📁 Outputs:[/bold]\n"
+            "• [dim]tests/unit/, tests/integration/[/dim]\n"
+            "• [dim]htmlcov/index.html[/dim]\n"
+            "• [dim]docs/TESTING.md[/dim]\n"
+            "• [dim].github/workflows/test.yml[/dim]",
+            border_style="green",
+            title="🎉 Success",
+        )
+    )
     console.print()
 
     # Next steps
-    console.print(Panel(
-        "[bold]Next Steps:[/bold]\n\n"
-        "1. Run tests: [cyan]pytest -v[/cyan]\n"
-        "2. View coverage: [cyan]pytest --cov=src --cov-report=html && open htmlcov/index.html[/cyan]\n"
-        "3. Commit changes: [cyan]git add . && git commit -m 'test: Boost coverage to 95%'[/cyan]",
-        title="📝 Recommended Actions",
-        border_style="blue"
-    ))
+    console.print(
+        Panel(
+            "[bold]Next Steps:[/bold]\n\n"
+            "1. Run tests: [cyan]pytest -v[/cyan]\n"
+            "2. View coverage: [cyan]pytest --cov=src --cov-report=html && open htmlcov/index.html[/cyan]\n"
+            "3. Commit changes: [cyan]git add . && git commit -m 'test: Boost coverage to 95%'[/cyan]",
+            title="📝 Recommended Actions",
+            border_style="blue",
+        )
+    )
     console.print()
 
 
@@ -156,5 +168,6 @@ if __name__ == "__main__":
     except Exception as e:
         console.print(f"\n[bold red]Error: {e}[/bold red]")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

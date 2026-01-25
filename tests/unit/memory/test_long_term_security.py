@@ -26,6 +26,7 @@ from empathy_os.memory.long_term import (
 # Check if cryptography library is available
 try:
     from cryptography.fernet import Fernet  # noqa: F401
+
     HAS_ENCRYPTION = True
 except ImportError:
     HAS_ENCRYPTION = False

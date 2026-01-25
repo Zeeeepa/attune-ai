@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.memory.edges import REVERSE_EDGE_TYPES, WIZARD_EDGE_PATTERNS, Edge, EdgeType
+from empathy_os.memory.edges import REVERSE_EDGE_TYPES, WORKFLOW_EDGE_PATTERNS, Edge, EdgeType
 from empathy_os.memory.graph import MemoryGraph
 from empathy_os.memory.nodes import (
     BugNode,
@@ -120,27 +120,27 @@ class TestReverseEdgeTypes:
 
 
 class TestWizardEdgePatterns:
-    """Tests for WIZARD_EDGE_PATTERNS configuration."""
+    """Tests for WORKFLOW_EDGE_PATTERNS configuration."""
 
     def test_security_audit_patterns(self):
         """Test security-audit wizard has patterns."""
-        assert "security-audit" in WIZARD_EDGE_PATTERNS
-        patterns = WIZARD_EDGE_PATTERNS["security-audit"]
+        assert "security-audit" in WORKFLOW_EDGE_PATTERNS
+        patterns = WORKFLOW_EDGE_PATTERNS["security-audit"]
         edge_types = [p[0] for p in patterns]
         assert EdgeType.CAUSES in edge_types
         assert EdgeType.FIXED_BY in edge_types
 
     def test_bug_predict_patterns(self):
         """Test bug-predict wizard has patterns."""
-        assert "bug-predict" in WIZARD_EDGE_PATTERNS
-        patterns = WIZARD_EDGE_PATTERNS["bug-predict"]
+        assert "bug-predict" in WORKFLOW_EDGE_PATTERNS
+        patterns = WORKFLOW_EDGE_PATTERNS["bug-predict"]
         edge_types = [p[0] for p in patterns]
         assert EdgeType.SIMILAR_TO in edge_types
 
     def test_test_gen_patterns(self):
         """Test test-gen wizard has patterns."""
-        assert "test-gen" in WIZARD_EDGE_PATTERNS
-        patterns = WIZARD_EDGE_PATTERNS["test-gen"]
+        assert "test-gen" in WORKFLOW_EDGE_PATTERNS
+        patterns = WORKFLOW_EDGE_PATTERNS["test-gen"]
         edge_types = [p[0] for p in patterns]
         assert EdgeType.TESTS in edge_types
         assert EdgeType.COVERS in edge_types
@@ -164,7 +164,7 @@ class TestNode:
         """Test node default values."""
         node = Node(id="test", type=NodeType.PATTERN, name="Test")
         assert node.description == ""
-        assert node.source_wizard == ""
+        assert node.source_workflow == ""
         assert node.source_file == ""
         assert node.source_line is None
         assert node.severity == ""
@@ -180,7 +180,7 @@ class TestNode:
             type=NodeType.VULNERABILITY,
             name="SQL Injection",
             description="User input not sanitized",
-            source_wizard="security-audit",
+            source_workflow="security-audit",
             source_file="src/db/query.py",
             source_line=42,
             severity="critical",
@@ -189,7 +189,7 @@ class TestNode:
             tags=["security", "injection"],
             status="investigating",
         )
-        assert node.source_wizard == "security-audit"
+        assert node.source_workflow == "security-audit"
         assert node.source_file == "src/db/query.py"
         assert node.source_line == 42
         assert node.severity == "critical"
@@ -239,7 +239,7 @@ class TestNode:
             type=NodeType.PATTERN,
             name="Best Practice",
             description="Always validate input",
-            source_wizard="code-review",
+            source_workflow="code-review",
             tags=["validation", "security"],
         )
         data = original.to_dict()
@@ -248,7 +248,7 @@ class TestNode:
         assert restored.type == original.type
         assert restored.name == original.name
         assert restored.description == original.description
-        assert restored.source_wizard == original.source_wizard
+        assert restored.source_workflow == original.source_workflow
 
 
 class TestSpecializedNodes:
@@ -338,7 +338,7 @@ class TestEdge:
         assert edge.weight == 1.0
         assert edge.confidence == 1.0
         assert edge.description == ""
-        assert edge.source_wizard == ""
+        assert edge.source_workflow == ""
         assert edge.metadata == {}
 
     def test_full_edge_creation(self):
@@ -350,13 +350,13 @@ class TestEdge:
             weight=0.9,
             confidence=0.85,
             description="Bug fixed by adding validation",
-            source_wizard="bug-predict",
+            source_workflow="bug-predict",
             metadata={"commit": "abc123"},
         )
         assert edge.weight == 0.9
         assert edge.confidence == 0.85
         assert edge.description == "Bug fixed by adding validation"
-        assert edge.source_wizard == "bug-predict"
+        assert edge.source_workflow == "bug-predict"
         assert edge.metadata["commit"] == "abc123"
 
     def test_edge_id_property(self):
@@ -426,7 +426,7 @@ class TestMemoryGraphInit:
             # Create initial graph
             graph1 = MemoryGraph(path=path)
             node_id = graph1.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={"type": "bug", "name": "Test bug"},
             )
 
@@ -449,7 +449,7 @@ class TestMemoryGraphAddFinding:
     def test_add_simple_finding(self, graph):
         """Test adding simple finding."""
         node_id = graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={"type": "bug", "name": "Null reference"},
         )
         assert node_id is not None
@@ -457,12 +457,12 @@ class TestMemoryGraphAddFinding:
         node = graph.nodes[node_id]
         assert node.type == NodeType.BUG
         assert node.name == "Null reference"
-        assert node.source_wizard == "bug-predict"
+        assert node.source_workflow == "bug-predict"
 
     def test_add_finding_with_file_info(self, graph):
         """Test adding finding with file information."""
         node_id = graph.add_finding(
-            wizard="security-audit",
+            workflow="security-audit",
             finding={
                 "type": "vulnerability",
                 "name": "SQL Injection",
@@ -479,7 +479,7 @@ class TestMemoryGraphAddFinding:
     def test_add_finding_unknown_type_defaults_to_pattern(self, graph):
         """Test unknown finding type defaults to PATTERN."""
         node_id = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "unknown_type", "name": "Unknown"},
         )
         node = graph.nodes[node_id]
@@ -488,7 +488,7 @@ class TestMemoryGraphAddFinding:
     def test_add_finding_with_metadata(self, graph):
         """Test adding finding with metadata."""
         node_id = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={
                 "type": "bug",
                 "name": "Test",
@@ -510,8 +510,8 @@ class TestMemoryGraphAddEdge:
         with tempfile.TemporaryDirectory() as tmpdir:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
-            id1 = graph.add_finding(wizard="test", finding={"type": "bug", "name": "Bug 1"})
-            id2 = graph.add_finding(wizard="test", finding={"type": "fix", "name": "Fix 1"})
+            id1 = graph.add_finding(workflow="test", finding={"type": "bug", "name": "Bug 1"})
+            id2 = graph.add_finding(workflow="test", finding={"type": "fix", "name": "Fix 1"})
             yield graph, id1, id2
 
     def test_add_simple_edge(self, graph_with_nodes):
@@ -532,12 +532,12 @@ class TestMemoryGraphAddEdge:
             id2,
             EdgeType.CAUSES,
             description="Bug causes crash",
-            wizard="bug-predict",
+            workflow="bug-predict",
             weight=0.8,
         )
         edge = graph.edges[0]
         assert edge.description == "Bug causes crash"
-        assert edge.source_wizard == "bug-predict"
+        assert edge.source_workflow == "bug-predict"
         assert edge.weight == 0.8
 
     def test_add_bidirectional_edge(self, graph_with_nodes):
@@ -574,7 +574,7 @@ class TestMemoryGraphGetNode:
 
     def test_get_existing_node(self, graph):
         """Test getting existing node."""
-        node_id = graph.add_finding(wizard="test", finding={"type": "bug", "name": "Test"})
+        node_id = graph.add_finding(workflow="test", finding={"type": "bug", "name": "Test"})
         node = graph.get_node(node_id)
         assert node is not None
         assert node.id == node_id
@@ -596,10 +596,10 @@ class TestMemoryGraphFindRelated:
             graph = MemoryGraph(path=path)
 
             # Create nodes: A -> B -> C
-            id_a = graph.add_finding(wizard="test", finding={"type": "bug", "name": "Bug A"})
-            id_b = graph.add_finding(wizard="test", finding={"type": "fix", "name": "Fix B"})
+            id_a = graph.add_finding(workflow="test", finding={"type": "bug", "name": "Bug A"})
+            id_b = graph.add_finding(workflow="test", finding={"type": "fix", "name": "Fix B"})
             id_c = graph.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={"type": "pattern", "name": "Pattern C"},
             )
 
@@ -668,7 +668,7 @@ class TestMemoryGraphFindSimilar:
             graph = MemoryGraph(path=path)
 
             graph.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={
                     "type": "bug",
                     "name": "Null reference in auth module",
@@ -677,7 +677,7 @@ class TestMemoryGraphFindSimilar:
                 },
             )
             graph.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={
                     "type": "bug",
                     "name": "Null pointer in payment",
@@ -686,7 +686,7 @@ class TestMemoryGraphFindSimilar:
                 },
             )
             graph.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={
                     "type": "vulnerability",
                     "name": "SQL injection attack",
@@ -759,15 +759,15 @@ class TestMemoryGraphFindBy:
             graph = MemoryGraph(path=path)
 
             graph.add_finding(
-                wizard="security-audit",
+                workflow="security-audit",
                 finding={"type": "vulnerability", "name": "V1", "file": "src/auth.py"},
             )
             graph.add_finding(
-                wizard="security-audit",
+                workflow="security-audit",
                 finding={"type": "vulnerability", "name": "V2", "file": "src/db.py"},
             )
             graph.add_finding(
-                wizard="bug-predict",
+                workflow="bug-predict",
                 finding={"type": "bug", "name": "B1", "file": "src/auth.py"},
             )
 
@@ -779,11 +779,11 @@ class TestMemoryGraphFindBy:
         assert len(vulns) == 2
         assert all(n.type == NodeType.VULNERABILITY for n in vulns)
 
-    def test_find_by_wizard(self, graph):
+    def test_find_by_workflow(self, graph):
         """Test finding nodes by wizard."""
-        security = graph.find_by_wizard("security-audit")
+        security = graph.find_by_workflow("security-audit")
         assert len(security) == 2
-        assert all(n.source_wizard == "security-audit" for n in security)
+        assert all(n.source_workflow == "security-audit" for n in security)
 
     def test_find_by_file(self, graph):
         """Test finding nodes by file."""
@@ -802,10 +802,10 @@ class TestMemoryGraphGetPath:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
 
-            id_a = graph.add_finding(wizard="t", finding={"type": "bug", "name": "A"})
-            id_b = graph.add_finding(wizard="t", finding={"type": "fix", "name": "B"})
-            id_c = graph.add_finding(wizard="t", finding={"type": "pattern", "name": "C"})
-            id_d = graph.add_finding(wizard="t", finding={"type": "refactor", "name": "D"})
+            id_a = graph.add_finding(workflow="t", finding={"type": "bug", "name": "A"})
+            id_b = graph.add_finding(workflow="t", finding={"type": "fix", "name": "B"})
+            id_c = graph.add_finding(workflow="t", finding={"type": "pattern", "name": "C"})
+            id_d = graph.add_finding(workflow="t", finding={"type": "refactor", "name": "D"})
 
             graph.add_edge(id_a, id_b, EdgeType.FIXED_BY)
             graph.add_edge(id_b, id_c, EdgeType.LEADS_TO)
@@ -860,15 +860,15 @@ class TestMemoryGraphStatistics:
             graph = MemoryGraph(path=path)
 
             id1 = graph.add_finding(
-                wizard="security",
+                workflow="security",
                 finding={"type": "vulnerability", "name": "V1", "severity": "critical"},
             )
             id2 = graph.add_finding(
-                wizard="security",
+                workflow="security",
                 finding={"type": "vulnerability", "name": "V2", "severity": "high"},
             )
             id3 = graph.add_finding(
-                wizard="bugs",
+                workflow="bugs",
                 finding={"type": "bug", "name": "B1", "severity": "medium"},
             )
             graph.add_edge(id1, id2, EdgeType.CAUSES)
@@ -893,12 +893,12 @@ class TestMemoryGraphStatistics:
         assert by_type.get("vulnerability") == 2
         assert by_type.get("bug") == 1
 
-    def test_statistics_nodes_by_wizard(self, graph_with_data):
+    def test_statistics_nodes_by_workflow(self, graph_with_data):
         """Test statistics groups nodes by wizard."""
         stats = graph_with_data.get_statistics()
-        by_wizard = stats["nodes_by_wizard"]
-        assert by_wizard.get("security") == 2
-        assert by_wizard.get("bugs") == 1
+        by_workflow = stats["nodes_by_workflow"]
+        assert by_workflow.get("security") == 2
+        assert by_workflow.get("bugs") == 1
 
     def test_statistics_nodes_by_severity(self, graph_with_data):
         """Test statistics groups nodes by severity."""
@@ -926,7 +926,7 @@ class TestMemoryGraphUpdateNode:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
             node_id = graph.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={"type": "bug", "name": "Bug", "severity": "low"},
             )
             yield graph, node_id
@@ -984,9 +984,9 @@ class TestMemoryGraphDeleteNode:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
 
-            id1 = graph.add_finding(wizard="test", finding={"type": "bug", "name": "A"})
-            id2 = graph.add_finding(wizard="test", finding={"type": "fix", "name": "B"})
-            id3 = graph.add_finding(wizard="test", finding={"type": "pattern", "name": "C"})
+            id1 = graph.add_finding(workflow="test", finding={"type": "bug", "name": "A"})
+            id2 = graph.add_finding(workflow="test", finding={"type": "fix", "name": "B"})
+            id3 = graph.add_finding(workflow="test", finding={"type": "pattern", "name": "C"})
             graph.add_edge(id1, id2, EdgeType.FIXED_BY)
             graph.add_edge(id2, id3, EdgeType.LEADS_TO)
 
@@ -1024,8 +1024,8 @@ class TestMemoryGraphClear:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
 
-            id1 = graph.add_finding(wizard="t", finding={"type": "bug", "name": "A"})
-            id2 = graph.add_finding(wizard="t", finding={"type": "fix", "name": "B"})
+            id1 = graph.add_finding(workflow="t", finding={"type": "bug", "name": "A"})
+            id2 = graph.add_finding(workflow="t", finding={"type": "fix", "name": "B"})
             graph.add_edge(id1, id2, EdgeType.FIXED_BY)
 
             assert len(graph.nodes) == 2
@@ -1048,11 +1048,11 @@ class TestMemoryGraphPersistence:
             # Create and populate graph
             graph1 = MemoryGraph(path=path)
             id1 = graph1.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={"type": "bug", "name": "Bug 1", "severity": "high"},
             )
             id2 = graph1.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={"type": "fix", "name": "Fix 1"},
             )
             graph1.add_edge(id1, id2, EdgeType.FIXED_BY)
@@ -1073,7 +1073,7 @@ class TestMemoryGraphPersistence:
 
             graph = MemoryGraph(path=path)
             graph.add_finding(
-                wizard="test",
+                workflow="test",
                 finding={"type": "bug", "name": "Test"},
             )
 
@@ -1098,25 +1098,25 @@ class TestMemoryGraphIndexes:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
 
-            graph.add_finding(wizard="t", finding={"type": "bug", "name": "B1"})
-            graph.add_finding(wizard="t", finding={"type": "bug", "name": "B2"})
-            graph.add_finding(wizard="t", finding={"type": "fix", "name": "F1"})
+            graph.add_finding(workflow="t", finding={"type": "bug", "name": "B1"})
+            graph.add_finding(workflow="t", finding={"type": "bug", "name": "B2"})
+            graph.add_finding(workflow="t", finding={"type": "fix", "name": "F1"})
 
             assert len(graph._nodes_by_type[NodeType.BUG]) == 2
             assert len(graph._nodes_by_type[NodeType.FIX]) == 1
 
-    def test_nodes_indexed_by_wizard(self):
+    def test_nodes_indexed_by_workflow(self):
         """Test nodes are indexed by wizard."""
         with tempfile.TemporaryDirectory() as tmpdir:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
 
-            graph.add_finding(wizard="security", finding={"type": "bug", "name": "B1"})
-            graph.add_finding(wizard="security", finding={"type": "bug", "name": "B2"})
-            graph.add_finding(wizard="perf", finding={"type": "bug", "name": "B3"})
+            graph.add_finding(workflow="security", finding={"type": "bug", "name": "B1"})
+            graph.add_finding(workflow="security", finding={"type": "bug", "name": "B2"})
+            graph.add_finding(workflow="perf", finding={"type": "bug", "name": "B3"})
 
-            assert len(graph._nodes_by_wizard["security"]) == 2
-            assert len(graph._nodes_by_wizard["perf"]) == 1
+            assert len(graph._nodes_by_workflow["security"]) == 2
+            assert len(graph._nodes_by_workflow["perf"]) == 1
 
     def test_edges_indexed_by_source(self):
         """Test edges are indexed by source."""
@@ -1124,9 +1124,9 @@ class TestMemoryGraphIndexes:
             path = Path(tmpdir) / "graph.json"
             graph = MemoryGraph(path=path)
 
-            id1 = graph.add_finding(wizard="t", finding={"type": "bug", "name": "A"})
-            id2 = graph.add_finding(wizard="t", finding={"type": "fix", "name": "B"})
-            id3 = graph.add_finding(wizard="t", finding={"type": "fix", "name": "C"})
+            id1 = graph.add_finding(workflow="t", finding={"type": "bug", "name": "A"})
+            id2 = graph.add_finding(workflow="t", finding={"type": "fix", "name": "B"})
+            id3 = graph.add_finding(workflow="t", finding={"type": "fix", "name": "C"})
 
             graph.add_edge(id1, id2, EdgeType.FIXED_BY)
             graph.add_edge(id1, id3, EdgeType.LEADS_TO)

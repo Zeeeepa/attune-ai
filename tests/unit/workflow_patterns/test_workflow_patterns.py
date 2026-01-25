@@ -13,11 +13,7 @@ from empathy_os.workflow_patterns.behavior import (
     ConditionalTierPattern,
     ConfigDrivenPattern,
 )
-from empathy_os.workflow_patterns.core import (
-    CodeSection,
-    PatternCategory,
-    WorkflowComplexity,
-)
+from empathy_os.workflow_patterns.core import CodeSection, PatternCategory, WorkflowComplexity
 from empathy_os.workflow_patterns.registry import (
     WorkflowPatternRegistry,
     get_workflow_pattern_registry,

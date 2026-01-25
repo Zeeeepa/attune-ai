@@ -6,9 +6,9 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import sys
 import time
 from pathlib import Path
-import sys
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))

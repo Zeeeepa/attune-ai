@@ -22,15 +22,11 @@ class TestLoadPatterns:
         debugging_patterns = {
             "patterns": [
                 {"id": "pattern1", "description": "Debug pattern 1"},
-                {"id": "pattern2", "description": "Debug pattern 2"}
+                {"id": "pattern2", "description": "Debug pattern 2"},
             ]
         }
 
-        security_patterns = {
-            "patterns": [
-                {"id": "sec1", "description": "Security pattern 1"}
-            ]
-        }
+        security_patterns = {"patterns": [{"id": "sec1", "description": "Security pattern 1"}]}
 
         # Write real JSON files
         (patterns_dir / "debugging.json").write_text(json.dumps(debugging_patterns))
@@ -70,7 +66,7 @@ class TestLoadPatterns:
         tech_debt_data = {
             "items": [
                 {"id": "debt1", "description": "Technical debt item 1"},
-                {"id": "debt2", "description": "Technical debt item 2"}
+                {"id": "debt2", "description": "Technical debt item 2"},
             ]
         }
 
@@ -126,12 +122,9 @@ class TestLoadStats:
 
         # Create real stats file
         stats_data = {
-            "commands": {
-                "morning": 5,
-                "ship": 3
-            },
+            "commands": {"morning": 5, "ship": 3},
             "last_session": "2025-01-14T10:00:00",
-            "patterns_learned": 12
+            "patterns_learned": 12,
         }
 
         (empathy_dir / "stats.json").write_text(json.dumps(stats_data))
@@ -180,7 +173,7 @@ class TestSaveStats:
         stats_data = {
             "commands": {"morning": 1},
             "last_session": "2025-01-14",
-            "patterns_learned": 5
+            "patterns_learned": 5,
         }
 
         workflow_commands._save_stats(stats_data, str(empathy_dir))
@@ -199,13 +192,9 @@ class TestSaveStats:
         empathy_dir.mkdir()
 
         stats_data = {
-            "commands": {
-                "morning": 3,
-                "ship": 2,
-                "fix-all": 1
-            },
+            "commands": {"morning": 3, "ship": 2, "fix-all": 1},
             "last_session": "2025-01-14T12:00:00",
-            "patterns_learned": 10
+            "patterns_learned": 10,
         }
 
         workflow_commands._save_stats(stats_data, str(empathy_dir))
@@ -242,11 +231,7 @@ class TestSaveStats:
         empathy_dir.mkdir()
 
         now = datetime.now()
-        stats_data = {
-            "commands": {},
-            "last_session": now,
-            "patterns_learned": 0
-        }
+        stats_data = {"commands": {}, "last_session": now, "patterns_learned": 0}
 
         # Should not raise error
         workflow_commands._save_stats(stats_data, str(empathy_dir))
@@ -292,9 +277,7 @@ class TestRunCommand:
     def test_run_command_captures_stderr(self):
         """Test that stderr is captured in output."""
         # Use sh -c to write to stderr
-        success, output = workflow_commands._run_command(
-            ["sh", "-c", "echo 'error message' >&2"]
-        )
+        success, output = workflow_commands._run_command(["sh", "-c", "echo 'error message' >&2"])
 
         assert "error message" in output
 
@@ -311,7 +294,7 @@ class TestGetTechDebtTrend:
         tech_debt_data = {
             "snapshots": [
                 {"timestamp": "2025-01-10", "total_items": 5},
-                {"timestamp": "2025-01-14", "total_items": 8}
+                {"timestamp": "2025-01-14", "total_items": 8},
             ]
         }
 
@@ -330,7 +313,7 @@ class TestGetTechDebtTrend:
         tech_debt_data = {
             "snapshots": [
                 {"timestamp": "2025-01-10", "total_items": 10},
-                {"timestamp": "2025-01-14", "total_items": 6}
+                {"timestamp": "2025-01-14", "total_items": 6},
             ]
         }
 
@@ -349,7 +332,7 @@ class TestGetTechDebtTrend:
         tech_debt_data = {
             "snapshots": [
                 {"timestamp": "2025-01-10", "total_items": 7},
-                {"timestamp": "2025-01-14", "total_items": 7}
+                {"timestamp": "2025-01-14", "total_items": 7},
             ]
         }
 
@@ -365,11 +348,7 @@ class TestGetTechDebtTrend:
         patterns_dir.mkdir()
 
         # Create tech debt file with only one snapshot
-        tech_debt_data = {
-            "snapshots": [
-                {"timestamp": "2025-01-14", "total_items": 5}
-            ]
-        }
+        tech_debt_data = {"snapshots": [{"timestamp": "2025-01-14", "total_items": 5}]}
 
         (patterns_dir / "tech_debt.json").write_text(json.dumps(tech_debt_data))
 
@@ -397,7 +376,7 @@ class TestGetTechDebtTrend:
                 {"timestamp": "2025-01-01", "total_items": 10},
                 {"timestamp": "2025-01-07", "total_items": 8},
                 {"timestamp": "2025-01-10", "total_items": 12},
-                {"timestamp": "2025-01-14", "total_items": 15}
+                {"timestamp": "2025-01-14", "total_items": 15},
             ]
         }
 
@@ -417,14 +396,9 @@ class TestStatsLoadSaveRoundTrip:
         empathy_dir = tmp_path / ".empathy"
 
         original_stats = {
-            "commands": {
-                "morning": 10,
-                "ship": 5,
-                "fix-all": 3,
-                "learn": 2
-            },
+            "commands": {"morning": 10, "ship": 5, "fix-all": 3, "learn": 2},
             "last_session": "2025-01-14T15:30:00",
-            "patterns_learned": 25
+            "patterns_learned": 25,
         }
 
         # Save
@@ -452,7 +426,7 @@ class TestPatternsLoadingIntegration:
             "debugging": [{"id": "d1"}],
             "security": [{"id": "s1"}, {"id": "s2"}],
             "tech_debt": [{"id": "t1"}, {"id": "t2"}, {"id": "t3"}],
-            "inspection": [{"id": "i1"}]
+            "inspection": [{"id": "i1"}],
         }
 
         for pattern_type, patterns in pattern_types.items():
@@ -483,7 +457,7 @@ class TestMorningWorkflow:
         debugging_patterns = {
             "patterns": [
                 {"id": "p1", "bug_type": "null_reference", "status": "resolved"},
-                {"id": "p2", "bug_type": "type_mismatch", "status": "investigating"}
+                {"id": "p2", "bug_type": "type_mismatch", "status": "investigating"},
             ]
         }
         (patterns_dir / "debugging.json").write_text(json.dumps(debugging_patterns))
@@ -500,9 +474,7 @@ class TestMorningWorkflow:
 
         # Run workflow
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path),
-            verbose=False
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path), verbose=False
         )
 
         assert result == 0
@@ -522,6 +494,7 @@ class TestMorningWorkflow:
 
         # Create patterns with recent timestamps
         from datetime import datetime, timedelta
+
         recent_date = (datetime.now() - timedelta(days=2)).isoformat()
         old_date = (datetime.now() - timedelta(days=30)).isoformat()
 
@@ -532,15 +505,15 @@ class TestMorningWorkflow:
                     "bug_type": "null_reference",
                     "status": "resolved",
                     "timestamp": recent_date,
-                    "root_cause": "Recent bug fix"
+                    "root_cause": "Recent bug fix",
                 },
                 {
                     "id": "old1",
                     "bug_type": "type_mismatch",
                     "status": "resolved",
                     "timestamp": old_date,
-                    "root_cause": "Old bug fix"
-                }
+                    "root_cause": "Old bug fix",
+                },
             ]
         }
         (patterns_dir / "debugging.json").write_text(json.dumps(debugging_patterns))
@@ -551,15 +524,16 @@ class TestMorningWorkflow:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
         captured = capsys.readouterr()
         assert "New this week: 1 patterns" in captured.out
 
-    def test_morning_workflow_suggests_resolving_investigating_bugs(self, tmp_path, monkeypatch, capsys):
+    def test_morning_workflow_suggests_resolving_investigating_bugs(
+        self, tmp_path, monkeypatch, capsys
+    ):
         """Test morning workflow suggests resolving investigating bugs."""
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
@@ -568,7 +542,7 @@ class TestMorningWorkflow:
             "patterns": [
                 {"id": "p1", "status": "investigating"},
                 {"id": "p2", "status": "investigating"},
-                {"id": "p3", "status": "resolved"}
+                {"id": "p3", "status": "resolved"},
             ]
         }
         (patterns_dir / "debugging.json").write_text(json.dumps(debugging_patterns))
@@ -579,8 +553,7 @@ class TestMorningWorkflow:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
@@ -597,13 +570,13 @@ class TestMorningWorkflow:
                 {
                     "timestamp": "2025-01-10",
                     "total_items": 5,
-                    "hotspots": ["file1.py", "file2.py", "file3.py"]
+                    "hotspots": ["file1.py", "file2.py", "file3.py"],
                 },
                 {
                     "timestamp": "2025-01-14",
                     "total_items": 8,
-                    "hotspots": ["file1.py", "file2.py", "file4.py"]
-                }
+                    "hotspots": ["file1.py", "file2.py", "file4.py"],
+                },
             ]
         }
         (patterns_dir / "tech_debt.json").write_text(json.dumps(tech_debt_data))
@@ -614,8 +587,7 @@ class TestMorningWorkflow:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
@@ -637,8 +609,7 @@ class TestMorningWorkflow:
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
@@ -649,6 +620,7 @@ class TestShipWorkflow:
 
     def test_ship_workflow_tests_only_mode(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow with --tests-only flag."""
+
         def mock_run_command(cmd, capture=True):
             if "pytest" in cmd:
                 return True, "All tests passed"
@@ -656,10 +628,7 @@ class TestShipWorkflow:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
-        result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            tests_only=True
-        )
+        result = workflow_commands.ship_workflow(project_root=str(tmp_path), tests_only=True)
 
         assert result == 0
         captured = capsys.readouterr()
@@ -667,15 +636,13 @@ class TestShipWorkflow:
 
     def test_ship_workflow_security_only_mode(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow with --security-only flag."""
+
         def mock_run_command(cmd, capture=True):
             return True, ""
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
-        result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            security_only=True
-        )
+        result = workflow_commands.ship_workflow(project_root=str(tmp_path), security_only=True)
 
         assert result == 0
         captured = capsys.readouterr()
@@ -683,6 +650,7 @@ class TestShipWorkflow:
 
     def test_ship_workflow_full_validation(self, tmp_path, monkeypatch, capsys):
         """Test full ship workflow with all checks."""
+
         def mock_run_command(cmd, capture=True):
             # All checks pass
             return True, ""
@@ -691,10 +659,7 @@ class TestShipWorkflow:
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
-        result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        result = workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         assert result == 0
         captured = capsys.readouterr()
@@ -702,6 +667,7 @@ class TestShipWorkflow:
 
     def test_ship_workflow_with_lint_failures(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow detects lint failures."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "ruff" and "check" in cmd:
                 return False, "error: E501 line too long\nerror: F401 unused import"
@@ -709,10 +675,7 @@ class TestShipWorkflow:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
-        result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        result = workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         assert result == 1
         captured = capsys.readouterr()
@@ -721,6 +684,7 @@ class TestShipWorkflow:
 
     def test_ship_workflow_with_format_warnings(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow detects formatting warnings."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "ruff" and "format" in cmd:
                 return False, "file1.py would be reformatted\nfile2.py would be reformatted"
@@ -730,10 +694,7 @@ class TestShipWorkflow:
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
-        result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        result = workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         assert result == 0
         captured = capsys.readouterr()
@@ -741,6 +702,7 @@ class TestShipWorkflow:
 
     def test_ship_workflow_syncs_to_claude(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow syncs patterns to Claude."""
+
         def mock_run_command(cmd, capture=True):
             return True, ""
 
@@ -754,14 +716,12 @@ class TestShipWorkflow:
         # Mock the sync_patterns import
         import sys
         from unittest.mock import MagicMock
+
         mock_module = MagicMock()
         mock_module.sync_patterns = mock_sync_patterns
         sys.modules["empathy_llm_toolkit.cli.sync_claude"] = mock_module
 
-        result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=False
-        )
+        result = workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=False)
 
         assert result == 0
         captured = capsys.readouterr()
@@ -773,6 +733,7 @@ class TestRunTestsOnly:
 
     def test_run_tests_only_success(self, tmp_path, monkeypatch, capsys):
         """Test running tests successfully."""
+
         def mock_run_command(cmd, capture=True):
             if "pytest" in cmd:
                 return True, "test_example.py::test_foo PASSED"
@@ -788,6 +749,7 @@ class TestRunTestsOnly:
 
     def test_run_tests_only_failure(self, tmp_path, monkeypatch, capsys):
         """Test running tests with failures."""
+
         def mock_run_command(cmd, capture=True):
             if "pytest" in cmd:
                 return False, "test_example.py::test_foo FAILED"
@@ -807,6 +769,7 @@ class TestRunSecurityOnly:
 
     def test_run_security_only_no_issues(self, tmp_path, monkeypatch, capsys):
         """Test security scan with no issues."""
+
         def mock_run_command(cmd, capture=True):
             return True, ""
 
@@ -820,9 +783,13 @@ class TestRunSecurityOnly:
 
     def test_run_security_only_with_bandit_issues(self, tmp_path, monkeypatch, capsys):
         """Test security scan detects Bandit issues."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "bandit":
-                return False, ">> Issue: [B105:hardcoded_password_string]\n>> Issue: [B602:shell_injection]"
+                return (
+                    False,
+                    ">> Issue: [B105:hardcoded_password_string]\n>> Issue: [B602:shell_injection]",
+                )
             return True, ""
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
@@ -836,6 +803,7 @@ class TestRunSecurityOnly:
 
     def test_run_security_only_detects_hardcoded_secrets(self, tmp_path, monkeypatch, capsys):
         """Test security scan detects hardcoded secrets."""
+
         def mock_run_command(cmd, capture=True):
             if "grep" in cmd and "password" in str(cmd):
                 return True, "file1.py:10:password='secret123'\nfile2.py:20:password = 'test'"
@@ -851,6 +819,7 @@ class TestRunSecurityOnly:
 
     def test_run_security_only_detects_sensitive_files(self, tmp_path, monkeypatch, capsys):
         """Test security scan detects sensitive files in git."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "git" and "ls-files" in cmd:
                 return True, ".env\napi_key.pem\nprivate.key"
@@ -870,6 +839,7 @@ class TestFixAllWorkflow:
 
     def test_fix_all_workflow_basic_execution(self, tmp_path, monkeypatch, capsys):
         """Test fix-all workflow runs all fixes."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "ruff" and "--fix" in cmd:
                 return True, "Fixed 5 issues"
@@ -891,6 +861,7 @@ class TestFixAllWorkflow:
 
     def test_fix_all_workflow_dry_run(self, tmp_path, monkeypatch, capsys):
         """Test fix-all workflow in dry-run mode."""
+
         def mock_run_command(cmd, capture=True):
             if "--diff" in cmd:
                 return True, "@@ diff output"
@@ -909,6 +880,7 @@ class TestFixAllWorkflow:
 
     def test_fix_all_workflow_with_unfixable_issues(self, tmp_path, monkeypatch, capsys):
         """Test fix-all workflow with issues that can't be auto-fixed."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "ruff" and "--fix" in cmd:
                 return False, "error: syntax error in file1.py\nerror: undefined name in file2.py"
@@ -946,11 +918,12 @@ class TestLearnWorkflow:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
+        )
 
         result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=10
+            patterns_dir=str(patterns_dir), analyze_commits=10
         )
 
         assert result == 0
@@ -983,11 +956,12 @@ class TestLearnWorkflow:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
+        )
 
         result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=10
+            patterns_dir=str(patterns_dir), analyze_commits=10
         )
 
         assert result == 0
@@ -1008,9 +982,7 @@ class TestLearnWorkflow:
 
         # Create existing pattern
         existing_pattern = {
-            "patterns": [
-                {"pattern_id": "bug_20250114_abc123", "bug_type": "null_reference"}
-            ]
+            "patterns": [{"pattern_id": "bug_20250114_abc123", "bug_type": "null_reference"}]
         }
         (patterns_dir / "debugging.json").write_text(json.dumps(existing_pattern))
 
@@ -1023,12 +995,11 @@ class TestLearnWorkflow:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
-
-        result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=5
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
         )
+
+        result = workflow_commands.learn_workflow(patterns_dir=str(patterns_dir), analyze_commits=5)
 
         assert result == 0
 
@@ -1039,10 +1010,7 @@ class TestLearnWorkflow:
 
     def test_learn_workflow_watch_mode_not_implemented(self, tmp_path, monkeypatch, capsys):
         """Test learn workflow watch mode returns error."""
-        result = workflow_commands.learn_workflow(
-            patterns_dir=str(tmp_path),
-            watch=True
-        )
+        result = workflow_commands.learn_workflow(patterns_dir=str(tmp_path), watch=True)
 
         assert result == 1
         captured = capsys.readouterr()
@@ -1050,6 +1018,7 @@ class TestLearnWorkflow:
 
     def test_learn_workflow_handles_git_errors(self, tmp_path, monkeypatch, capsys):
         """Test learn workflow handles git command failures."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "git":
                 return False, "fatal: not a git repository"
@@ -1057,10 +1026,7 @@ class TestLearnWorkflow:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
-        result = workflow_commands.learn_workflow(
-            patterns_dir=str(tmp_path),
-            analyze_commits=5
-        )
+        result = workflow_commands.learn_workflow(patterns_dir=str(tmp_path), analyze_commits=5)
 
         assert result == 1
         captured = capsys.readouterr()
@@ -1099,7 +1065,9 @@ class TestCLICommandHandlers:
         """Test cmd_ship delegates to ship_workflow."""
         called_with = {}
 
-        def mock_ship_workflow(patterns_dir, project_root, skip_sync, tests_only, security_only, verbose):
+        def mock_ship_workflow(
+            patterns_dir, project_root, skip_sync, tests_only, security_only, verbose
+        ):
             called_with["skip_sync"] = skip_sync
             called_with["tests_only"] = tests_only
             called_with["security_only"] = security_only
@@ -1229,12 +1197,7 @@ class TestTechDebtTrendEdgeCases:
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
 
-        tech_debt_data = {
-            "snapshots": [
-                {"timestamp": "2025-01-10"},
-                {"timestamp": "2025-01-14"}
-            ]
-        }
+        tech_debt_data = {"snapshots": [{"timestamp": "2025-01-10"}, {"timestamp": "2025-01-14"}]}
         (patterns_dir / "tech_debt.json").write_text(json.dumps(tech_debt_data))
 
         result = workflow_commands._get_tech_debt_trend(str(patterns_dir))
@@ -1248,6 +1211,7 @@ class TestVerboseOutputMode:
 
     def test_ship_workflow_verbose_mode(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow shows detailed output in verbose mode."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "ruff" and "check" in cmd:
                 return False, "file1.py:10: E501 line too long\nfile2.py:5: F401 unused import"
@@ -1256,9 +1220,7 @@ class TestVerboseOutputMode:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True,
-            verbose=True
+            project_root=str(tmp_path), skip_sync=True, verbose=True
         )
 
         assert result == 1
@@ -1280,12 +1242,12 @@ class TestVerboseOutputMode:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
+        )
 
         result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=5,
-            verbose=True
+            patterns_dir=str(patterns_dir), analyze_commits=5, verbose=True
         )
 
         assert result == 0
@@ -1298,6 +1260,7 @@ class TestGitStatusParsing:
 
     def test_ship_workflow_detects_staged_files(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow detects staged files correctly."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "git" and "status" in cmd:
                 return True, "A  new_file.py\nM  modified_file.py\n M unstaged_file.py"
@@ -1307,16 +1270,14 @@ class TestGitStatusParsing:
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
-        workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         captured = capsys.readouterr()
         assert "staged" in captured.out
 
     def test_ship_workflow_warns_unstaged_files(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow warns about unstaged files."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "git" and "status" in cmd:
                 return True, " M unstaged1.py\n M unstaged2.py\n?? untracked.py"
@@ -1326,10 +1287,7 @@ class TestGitStatusParsing:
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
-        workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         captured = capsys.readouterr()
         assert "unstaged" in captured.out
@@ -1338,7 +1296,9 @@ class TestGitStatusParsing:
 class TestMorningWorkflowEdgeCases:
     """Additional tests for morning workflow edge cases."""
 
-    def test_morning_workflow_handles_missing_timestamp_formats(self, tmp_path, monkeypatch, capsys):
+    def test_morning_workflow_handles_missing_timestamp_formats(
+        self, tmp_path, monkeypatch, capsys
+    ):
         """Test morning workflow handles various timestamp formats."""
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
@@ -1358,8 +1318,7 @@ class TestMorningWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
@@ -1377,8 +1336,7 @@ class TestMorningWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
@@ -1398,8 +1356,7 @@ class TestMorningWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
@@ -1415,8 +1372,7 @@ class TestMorningWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         result = workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert result == 0
@@ -1429,6 +1385,7 @@ class TestShipWorkflowEdgeCases:
 
     def test_ship_workflow_handles_mypy_not_installed(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow handles mypy not being installed."""
+
         def mock_run_command(cmd, capture=True):
             if "mypy" in cmd:
                 return False, "No module named 'mypy'"
@@ -1438,15 +1395,13 @@ class TestShipWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
-        result = workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        result = workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         assert result == 0
 
     def test_ship_workflow_detects_type_errors(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow detects type errors."""
+
         def mock_run_command(cmd, capture=True):
             if "mypy" in cmd:
                 return False, "file.py:10: error: incompatible types\nfile.py:20: error: undefined"
@@ -1456,16 +1411,14 @@ class TestShipWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
-        workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         captured = capsys.readouterr()
         assert "type issues" in captured.out
 
     def test_ship_workflow_sync_claude_import_error(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow handles sync_claude import errors gracefully."""
+
         def mock_run_command(cmd, capture=True):
             return True, ""
 
@@ -1474,16 +1427,14 @@ class TestShipWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
         # Don't mock the import - let it fail naturally
-        workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=False
-        )
+        workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=False)
 
         captured = capsys.readouterr()
         assert "SKIP" in captured.out or "sync" in captured.out.lower()
 
     def test_ship_workflow_handles_empty_git_status(self, tmp_path, monkeypatch, capsys):
         """Test ship workflow handles clean git status."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "git" and "status" in cmd:
                 return True, ""  # Empty = clean
@@ -1493,10 +1444,7 @@ class TestShipWorkflowEdgeCases:
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
         monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}})
 
-        workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         captured = capsys.readouterr()
         assert "clean" in captured.out.lower()
@@ -1507,6 +1455,7 @@ class TestSecurityOnlyEdgeCases:
 
     def test_security_only_bandit_not_installed(self, tmp_path, monkeypatch, capsys):
         """Test security scan handles bandit not installed."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "bandit":
                 return False, "bandit: command not found"
@@ -1522,6 +1471,7 @@ class TestSecurityOnlyEdgeCases:
 
     def test_security_only_multiple_issues(self, tmp_path, monkeypatch, capsys):
         """Test security scan detects multiple issue types."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "bandit":
                 return False, ">> Issue: [B105]\n>> Issue: [B602]"
@@ -1547,6 +1497,7 @@ class TestFixAllWorkflowEdgeCases:
 
     def test_fix_all_counts_fixes_correctly(self, tmp_path, monkeypatch, capsys):
         """Test fix-all workflow counts fixes correctly."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "ruff" and "--fix" in cmd:
                 return True, "Fixed 10 issues\nFixed 5 more\nFixed 3 additional"
@@ -1564,6 +1515,7 @@ class TestFixAllWorkflowEdgeCases:
 
     def test_fix_all_isort_output_handling(self, tmp_path, monkeypatch, capsys):
         """Test fix-all workflow handles isort output correctly."""
+
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "isort":
                 return True, "Skipped 5 files\nFixing file1.py\nFixing file2.py"
@@ -1579,6 +1531,7 @@ class TestFixAllWorkflowEdgeCases:
 
     def test_fix_all_dry_run_counts_diffs(self, tmp_path, monkeypatch, capsys):
         """Test fix-all dry-run counts diff blocks correctly."""
+
         def mock_run_command(cmd, capture=True):
             if "--diff" in cmd:
                 return True, "@@ -1,5 +1,5 @@\n@@ -10,3 +10,3 @@"
@@ -1610,11 +1563,12 @@ class TestLearnWorkflowEdgeCases:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
+        )
 
         result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=10
+            patterns_dir=str(patterns_dir), analyze_commits=10
         )
 
         assert result == 0
@@ -1633,11 +1587,12 @@ class TestLearnWorkflowEdgeCases:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
+        )
 
         result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=10
+            patterns_dir=str(patterns_dir), analyze_commits=10
         )
 
         assert result == 0
@@ -1661,11 +1616,12 @@ class TestLearnWorkflowEdgeCases:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
+        )
 
         result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=10
+            patterns_dir=str(patterns_dir), analyze_commits=10
         )
 
         assert result == 0
@@ -1694,11 +1650,12 @@ class TestLearnWorkflowEdgeCases:
 
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
         monkeypatch.setattr(workflow_commands, "_save_stats", lambda stats: None)
-        monkeypatch.setattr(workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0})
+        monkeypatch.setattr(
+            workflow_commands, "_load_stats", lambda: {"commands": {}, "patterns_learned": 0}
+        )
 
         result = workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=10
+            patterns_dir=str(patterns_dir), analyze_commits=10
         )
 
         assert result == 0
@@ -1739,7 +1696,9 @@ class TestCLIHandlerDefaults:
         """Test cmd_ship uses defaults when attributes missing."""
         called = False
 
-        def mock_ship_workflow(patterns_dir, project_root, skip_sync, tests_only, security_only, verbose):
+        def mock_ship_workflow(
+            patterns_dir, project_root, skip_sync, tests_only, security_only, verbose
+        ):
             nonlocal called
             called = True
             assert skip_sync is False
@@ -1823,8 +1782,7 @@ class TestStatsIntegration:
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
         workflow_commands.morning_workflow(
-            patterns_dir=str(patterns_dir),
-            project_root=str(tmp_path)
+            patterns_dir=str(patterns_dir), project_root=str(tmp_path)
         )
 
         assert saved_stats["commands"]["morning"] == 6
@@ -1847,10 +1805,7 @@ class TestStatsIntegration:
         monkeypatch.setattr(workflow_commands, "_save_stats", mock_save_stats)
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
-        workflow_commands.ship_workflow(
-            project_root=str(tmp_path),
-            skip_sync=True
-        )
+        workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=True)
 
         assert saved_stats["commands"]["ship"] == 3
 
@@ -1870,10 +1825,7 @@ class TestStatsIntegration:
 
         def mock_run_command(cmd, capture=True):
             if cmd[0] == "git" and "log" in cmd:
-                return True, (
-                    "a1|fix: bug1|Dev|2025-01-14\n"
-                    "a2|fix: bug2|Dev|2025-01-14"
-                )
+                return True, ("a1|fix: bug1|Dev|2025-01-14\na2|fix: bug2|Dev|2025-01-14")
             if cmd[0] == "git" and "show" in cmd:
                 return True, "file.py | 5 ++"
             return False, ""
@@ -1882,10 +1834,7 @@ class TestStatsIntegration:
         monkeypatch.setattr(workflow_commands, "_save_stats", mock_save_stats)
         monkeypatch.setattr(workflow_commands, "_run_command", mock_run_command)
 
-        workflow_commands.learn_workflow(
-            patterns_dir=str(patterns_dir),
-            analyze_commits=10
-        )
+        workflow_commands.learn_workflow(patterns_dir=str(patterns_dir), analyze_commits=10)
 
         # Should increment by 2 new patterns
         assert saved_stats["patterns_learned"] == 12

@@ -285,8 +285,7 @@ class HookRegistry:
 
         """
         total_hooks = sum(
-            sum(len(rule.hooks) for rule in rules)
-            for rules in self.config.hooks.values()
+            sum(len(rule.hooks) for rule in rules) for rules in self.config.hooks.values()
         )
 
         executions = len(self._execution_log)

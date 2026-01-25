@@ -1,24 +1,24 @@
-"""Methodology Scaffolding for Wizard Factory.
+"""Methodology Scaffolding for Workflow Factory.
 
-Provides CLI tools and methodologies for creating new wizards quickly
+Provides CLI tools and methodologies for creating new workflows quickly
 using proven patterns.
 
 Methodologies:
-- Pattern-Compose: Select patterns, compose wizard (Recommended)
-- TDD-First: Write tests first, implement wizard
+- Pattern-Compose: Select patterns, compose workflow (Recommended)
+- TDD-First: Write tests first, implement workflow
 - Prototype-Refine: Quick prototype, then refactor
 - Risk-Driven: Focus on high-risk paths first
 - Empathy-Centered: Design for user experience
 
 Usage:
-    # Create wizard using Pattern-Compose (recommended)
-    python -m scaffolding create my_wizard --domain healthcare
+    # Create workflow using Pattern-Compose (recommended)
+    python -m scaffolding create my_workflow --domain healthcare
 
     # Create with specific methodology
-    python -m scaffolding create my_wizard --methodology tdd
+    python -m scaffolding create my_workflow --methodology tdd
 
     # Interactive mode
-    python -m scaffolding create my_wizard --interactive
+    python -m scaffolding create my_workflow --interactive
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9

@@ -229,18 +229,18 @@ def get_health_check() -> HealthCheck:
 def register_default_checks(health: HealthCheck) -> None:
     """Register default health checks for Empathy Framework."""
 
-    @health.register("wizard_registry")
-    async def check_wizard_registry() -> dict[str, Any]:
-        """Check wizard registry is loaded."""
+    @health.register("workflow_registry")
+    async def check_workflow_registry() -> dict[str, Any]:
+        """Check workflow registry is loaded."""
         try:
-            from empathy_os.routing import WizardRegistry
+            from empathy_os.routing import WorkflowRegistry
 
-            registry = WizardRegistry()
-            wizard_count = len(registry.list_all())
+            registry = WorkflowRegistry()
+            workflow_count = len(registry.list_all())
             return {
-                "healthy": wizard_count > 0,
-                "wizard_count": wizard_count,
-                "message": f"{wizard_count} wizards registered",
+                "healthy": workflow_count > 0,
+                "workflow_count": workflow_count,
+                "message": f"{workflow_count} workflows registered",
             }
         except Exception as e:
             return {"healthy": False, "message": str(e)}
@@ -279,7 +279,7 @@ def register_default_checks(health: HealthCheck) -> None:
             decision = router.route_sync("test request")
             return {
                 "healthy": decision is not None,
-                "primary_wizard": decision.primary_wizard,
+                "primary_workflow": decision.primary_workflow,
             }
         except Exception as e:
             return {"healthy": False, "message": str(e)}

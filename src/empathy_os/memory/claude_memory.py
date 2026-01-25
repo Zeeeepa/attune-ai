@@ -405,7 +405,7 @@ This project uses the Empathy Framework for AI-powered software development assi
 
 ## Testing Standards
 - Maintain 90%+ test coverage
-- Write tests for all wizards
+- Write tests for all workflows
 - Use pytest fixtures for common setup
 - Mock external API calls
 

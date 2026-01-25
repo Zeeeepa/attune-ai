@@ -119,9 +119,7 @@ class MetaWorkflow:
 
         # Set up storage
         if storage_dir is None:
-            storage_dir = str(
-                Path.home() / ".empathy" / "meta_workflows" / "executions"
-            )
+            storage_dir = str(Path.home() / ".empathy" / "meta_workflows" / "executions")
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
 
@@ -229,8 +227,7 @@ class MetaWorkflow:
                 run_id=run_id,
                 template_id=self.template.template_id,
                 timestamp=datetime.now().isoformat(),
-                form_responses=form_response
-                or FormResponse(template_id=self.template.template_id),
+                form_responses=form_response or FormResponse(template_id=self.template.template_id),
                 total_cost=0.0,
                 total_duration=time.time() - start_time,
                 success=False,
@@ -245,9 +242,7 @@ class MetaWorkflow:
 
             raise ValueError(f"Meta-workflow execution failed: {e}") from e
 
-    def _execute_agents_mock(
-        self, agents: list[AgentSpec]
-    ) -> list[AgentExecutionResult]:
+    def _execute_agents_mock(self, agents: list[AgentSpec]) -> list[AgentExecutionResult]:
         """Execute agents with mock execution (for MVP).
 
         Args:
@@ -330,9 +325,7 @@ class MetaWorkflow:
             logger.info(f"Executing agent: {agent.role} ({agent.tier_strategy.value})")
 
             try:
-                result = self._execute_single_agent_with_escalation(
-                    agent, router, tracker
-                )
+                result = self._execute_single_agent_with_escalation(agent, router, tracker)
                 results.append(result)
 
                 logger.info(
@@ -408,20 +401,14 @@ class MetaWorkflow:
                 return tier_result
 
             # Failed - try next tier
-            logger.debug(
-                f"Tier {tier.value} did not meet success criteria, "
-                f"attempting escalation"
-            )
+            logger.debug(f"Tier {tier.value} did not meet success criteria, attempting escalation")
             result = tier_result
 
         # All tiers exhausted - return final result (failed)
         if result:
             result.cost = total_cost
             result.duration = time.time() - start_time
-            logger.warning(
-                f"Agent {agent.role} failed at all tiers "
-                f"(cost: ${total_cost:.4f})"
-            )
+            logger.warning(f"Agent {agent.role} failed at all tiers (cost: ${total_cost:.4f})")
             return result
 
         # Should never reach here
@@ -587,9 +574,7 @@ class MetaWorkflow:
             instructions = base_template.default_instructions
         else:
             # Fallback if template not found - use role-based generic prompt
-            logger.warning(
-                f"Template {agent.base_template} not found, using generic prompt"
-            )
+            logger.warning(f"Template {agent.base_template} not found, using generic prompt")
             instructions = self._get_generic_instructions(agent.role)
 
         # Build prompt
@@ -614,9 +599,7 @@ class MetaWorkflow:
 
         return "\n".join(prompt_parts)
 
-    def _execute_llm_call(
-        self, prompt: str, model_config: Any, tier: ModelTier
-    ) -> dict[str, Any]:
+    def _execute_llm_call(self, prompt: str, model_config: Any, tier: ModelTier) -> dict[str, Any]:
         """Execute real LLM call via Anthropic or other providers.
 
         Uses the Anthropic client for Claude models, with fallback to
@@ -652,9 +635,7 @@ class MetaWorkflow:
             response = client.messages.create(
                 model=model_config.model_id,
                 max_tokens=2048,
-                messages=[
-                    {"role": "user", "content": prompt}
-                ],
+                messages=[{"role": "user", "content": prompt}],
             )
 
             # Extract response data
@@ -663,10 +644,9 @@ class MetaWorkflow:
             completion_tokens = response.usage.output_tokens
 
             # Calculate cost
-            cost = (
-                (prompt_tokens / 1000) * model_config.cost_per_1k_input
-                + (completion_tokens / 1000) * model_config.cost_per_1k_output
-            )
+            cost = (prompt_tokens / 1000) * model_config.cost_per_1k_input + (
+                completion_tokens / 1000
+            ) * model_config.cost_per_1k_output
 
             return {
                 "cost": cost,
@@ -703,9 +683,7 @@ class MetaWorkflow:
                 },
             }
 
-    def _simulate_llm_call(
-        self, prompt: str, model_config: Any, tier: ModelTier
-    ) -> dict[str, Any]:
+    def _simulate_llm_call(self, prompt: str, model_config: Any, tier: ModelTier) -> dict[str, Any]:
         """Simulate LLM call with realistic cost/token estimates.
 
         Used as fallback when real LLM execution is not available
@@ -726,10 +704,9 @@ class MetaWorkflow:
         completion_tokens = 500  # Assume moderate response
 
         # Calculate cost
-        cost = (
-            (prompt_tokens / 1000) * model_config.cost_per_1k_input
-            + (completion_tokens / 1000) * model_config.cost_per_1k_output
-        )
+        cost = (prompt_tokens / 1000) * model_config.cost_per_1k_input + (
+            completion_tokens / 1000
+        ) * model_config.cost_per_1k_output
 
         # Simulate success rate based on tier
         # cheap: 80%, capable: 95%, premium: 99%
@@ -756,9 +733,7 @@ class MetaWorkflow:
             },
         }
 
-    def _evaluate_success_criteria(
-        self, result: AgentExecutionResult, agent: AgentSpec
-    ) -> bool:
+    def _evaluate_success_criteria(self, result: AgentExecutionResult, agent: AgentSpec) -> bool:
         """Evaluate if agent result meets success criteria.
 
         Args:
@@ -779,9 +754,7 @@ class MetaWorkflow:
         # success_criteria is a list of descriptive strings (e.g., ["code reviewed", "tests pass"])
         # These are informational criteria - if result.success is True, we consider the criteria met
         # The criteria serve as documentation of what success means for this agent
-        logger.debug(
-            f"Agent succeeded with criteria: {agent.success_criteria}"
-        )
+        logger.debug(f"Agent succeeded with criteria: {agent.success_criteria}")
         return True
 
     def _save_execution(self, result: MetaWorkflowResult) -> Path:
@@ -883,9 +856,7 @@ class MetaWorkflow:
         lines.append("## Summary")
         lines.append("")
         lines.append(f"- **Agents Created**: {len(result.agents_created)}")
-        lines.append(
-            f"- **Agents Executed**: {len(result.agent_results)}"
-        )
+        lines.append(f"- **Agents Executed**: {len(result.agent_results)}")
         lines.append(f"- **Total Cost**: ${result.total_cost:.2f}")
         lines.append(f"- **Total Duration**: {result.total_duration:.1f}s")
         lines.append("")
@@ -918,9 +889,7 @@ class MetaWorkflow:
         for i, agent_result in enumerate(result.agent_results, 1):
             lines.append(f"### {i}. {agent_result.role}")
             lines.append("")
-            lines.append(
-                f"- **Status**: {'✅ Success' if agent_result.success else '❌ Failed'}"
-            )
+            lines.append(f"- **Status**: {'✅ Success' if agent_result.success else '❌ Failed'}")
             lines.append(f"- **Tier Used**: {agent_result.tier_used}")
             lines.append(f"- **Cost**: ${agent_result.cost:.2f}")
             lines.append(f"- **Duration**: {agent_result.duration:.1f}s")

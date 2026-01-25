@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.plugins.base import BasePlugin, BaseWizard, PluginValidationError
+from empathy_os.plugins.base import BasePlugin, BaseWorkflow, PluginValidationError
 from empathy_os.plugins.registry import PluginRegistry, get_global_registry
 
 
@@ -26,13 +26,13 @@ class MockPluginMetadata:
     description: str = "Test plugin"
 
 
-class MockWizard(BaseWizard):
+class MockWorkflow(BaseWorkflow):
     """Mock wizard for testing"""
 
-    def __init__(self, wizard_id: str, empathy_level: int = 4):
-        self.wizard_id = wizard_id
+    def __init__(self, workflow_id: str, empathy_level: int = 4):
+        self.workflow_id = workflow_id
         self._level = empathy_level
-        self._name = f"Test Wizard {wizard_id}"
+        self._name = f"Test Wizard {workflow_id}"
 
     @property
     def name(self) -> str:
@@ -55,40 +55,40 @@ class MockPlugin(BasePlugin):
 
     def __init__(self, name: str = "test", domain: str = "testing", version: str = "1.0.0"):
         self._metadata = MockPluginMetadata(name=name, domain=domain, version=version)
-        self._custom_wizards: dict[str, BaseWizard] = {}
+        self._custom_workflows: dict[str, BaseWorkflow] = {}
         super().__init__()
 
     def get_metadata(self) -> MockPluginMetadata:
         return self._metadata
 
-    def register_wizards(self) -> dict[str, BaseWizard]:
-        """Return custom wizards added via add_wizard"""
-        return self._custom_wizards
+    def register_workflows(self) -> dict[str, BaseWorkflow]:
+        """Return custom wizards added via add_workflow"""
+        return self._custom_workflows
 
     def initialize(self) -> None:
         """Override to use custom wizards"""
         if self._initialized:
             return
-        self._wizards = self._custom_wizards
+        self._workflows = self._custom_workflows
         self._initialized = True
 
-    def add_wizard(self, wizard_id: str, wizard: BaseWizard):
+    def add_workflow(self, workflow_id: str, wizard: BaseWorkflow):
         """Add a wizard to this mock plugin"""
-        self._custom_wizards[wizard_id] = wizard
+        self._custom_workflows[workflow_id] = wizard
         if self._initialized:
-            self._wizards[wizard_id] = wizard
+            self._workflows[workflow_id] = wizard
 
-    def list_wizards(self) -> list[str]:
-        return list(self._custom_wizards.keys())
+    def list_workflows(self) -> list[str]:
+        return list(self._custom_workflows.keys())
 
-    def get_wizard(self, wizard_id: str):
-        return self._custom_wizards.get(wizard_id)
+    def get_workflow(self, workflow_id: str):
+        return self._custom_workflows.get(workflow_id)
 
-    def get_wizard_info(self, wizard_id: str) -> dict[str, Any]:
-        wizard = self._custom_wizards.get(wizard_id)
+    def get_workflow_info(self, workflow_id: str) -> dict[str, Any]:
+        wizard = self._custom_workflows.get(workflow_id)
         if wizard:
             return {
-                "id": wizard_id,
+                "id": workflow_id,
                 "name": wizard.name,
                 "empathy_level": wizard.level,
                 "domain": self._metadata.domain,
@@ -230,108 +230,108 @@ class TestPluginRegistryAutoDiscovery:
 class TestPluginRegistryWizards:
     """Test wizard-related functionality"""
 
-    def test_list_all_wizards(self):
+    def test_list_all_workflows(self):
         """Test listing all wizards from all plugins"""
         registry = PluginRegistry()
 
         plugin1 = MockPlugin(name="plugin1", domain="software")
-        plugin1.add_wizard("wizard1", MockWizard("wizard1"))
-        plugin1.add_wizard("wizard2", MockWizard("wizard2"))
+        plugin1.add_workflow("wizard1", MockWorkflow("wizard1"))
+        plugin1.add_workflow("wizard2", MockWorkflow("wizard2"))
 
         plugin2 = MockPlugin(name="plugin2", domain="healthcare")
-        plugin2.add_wizard("wizard3", MockWizard("wizard3"))
+        plugin2.add_workflow("wizard3", MockWorkflow("wizard3"))
 
         registry.register_plugin("plugin1", plugin1)
         registry.register_plugin("plugin2", plugin2)
 
-        all_wizards = registry.list_all_wizards()
+        all_workflows = registry.list_all_workflows()
 
-        assert len(all_wizards) == 2
-        assert "plugin1" in all_wizards
-        assert "plugin2" in all_wizards
-        assert len(all_wizards["plugin1"]) == 2
-        assert len(all_wizards["plugin2"]) == 1
+        assert len(all_workflows) == 2
+        assert "plugin1" in all_workflows
+        assert "plugin2" in all_workflows
+        assert len(all_workflows["plugin1"]) == 2
+        assert len(all_workflows["plugin2"]) == 1
 
-    def test_get_wizard(self):
+    def test_get_workflow(self):
         """Test retrieving a specific wizard"""
         registry = PluginRegistry()
 
         plugin = MockPlugin(name="test", domain="software")
-        wizard = MockWizard("test_wizard")
-        plugin.add_wizard("test_wizard", wizard)
+        wizard = MockWorkflow("test_wizard")
+        plugin.add_workflow("test_wizard", wizard)
 
         registry.register_plugin("test", plugin)
 
-        retrieved = registry.get_wizard("test", "test_wizard")
+        retrieved = registry.get_workflow("test", "test_wizard")
 
         assert retrieved == wizard
 
-    def test_get_wizard_from_nonexistent_plugin(self):
+    def test_get_workflow_from_nonexistent_plugin(self):
         """Test getting wizard from non-existent plugin returns None"""
         registry = PluginRegistry()
 
-        result = registry.get_wizard("nonexistent", "wizard")
+        result = registry.get_workflow("nonexistent", "wizard")
 
         assert result is None
 
-    def test_get_wizard_info(self):
+    def test_get_workflow_info(self):
         """Test retrieving wizard information"""
         registry = PluginRegistry()
 
         plugin = MockPlugin(name="test", domain="software")
-        wizard = MockWizard("test_wizard", empathy_level=4)
-        plugin.add_wizard("test_wizard", wizard)
+        wizard = MockWorkflow("test_wizard", empathy_level=4)
+        plugin.add_workflow("test_wizard", wizard)
 
         registry.register_plugin("test", plugin)
 
-        info = registry.get_wizard_info("test", "test_wizard")
+        info = registry.get_workflow_info("test", "test_wizard")
 
         assert info is not None
         assert info["id"] == "test_wizard"
         assert info["empathy_level"] == 4
 
-    def test_find_wizards_by_level(self):
+    def test_find_workflows_by_level(self):
         """Test finding wizards by empathy level"""
         registry = PluginRegistry()
 
         plugin1 = MockPlugin(name="plugin1", domain="software")
-        plugin1.add_wizard("level4_wizard", MockWizard("level4", empathy_level=4))
-        plugin1.add_wizard("level5_wizard", MockWizard("level5", empathy_level=5))
+        plugin1.add_workflow("level4_wizard", MockWorkflow("level4", empathy_level=4))
+        plugin1.add_workflow("level5_wizard", MockWorkflow("level5", empathy_level=5))
 
         plugin2 = MockPlugin(name="plugin2", domain="healthcare")
-        plugin2.add_wizard("another_level4", MockWizard("level4_2", empathy_level=4))
+        plugin2.add_workflow("another_level4", MockWorkflow("level4_2", empathy_level=4))
 
         registry.register_plugin("plugin1", plugin1)
         registry.register_plugin("plugin2", plugin2)
 
-        level4_wizards = registry.find_wizards_by_level(4)
+        level4_workflows = registry.find_workflows_by_level(4)
 
-        assert len(level4_wizards) == 2
-        for wizard_info in level4_wizards:
+        assert len(level4_workflows) == 2
+        for wizard_info in level4_workflows:
             assert wizard_info["empathy_level"] == 4
             assert "plugin" in wizard_info
 
-    def test_find_wizards_by_domain(self):
+    def test_find_workflows_by_domain(self):
         """Test finding wizards by domain"""
         registry = PluginRegistry()
 
         plugin1 = MockPlugin(name="plugin1", domain="software")
-        plugin1.add_wizard("wizard1", MockWizard("wizard1"))
+        plugin1.add_workflow("wizard1", MockWorkflow("wizard1"))
 
         plugin2 = MockPlugin(name="plugin2", domain="software")
-        plugin2.add_wizard("wizard2", MockWizard("wizard2"))
+        plugin2.add_workflow("wizard2", MockWorkflow("wizard2"))
 
         plugin3 = MockPlugin(name="plugin3", domain="healthcare")
-        plugin3.add_wizard("wizard3", MockWizard("wizard3"))
+        plugin3.add_workflow("wizard3", MockWorkflow("wizard3"))
 
         registry.register_plugin("plugin1", plugin1)
         registry.register_plugin("plugin2", plugin2)
         registry.register_plugin("plugin3", plugin3)
 
-        software_wizards = registry.find_wizards_by_domain("software")
+        software_workflows = registry.find_workflows_by_domain("software")
 
-        assert len(software_wizards) == 2
-        for wizard_info in software_wizards:
+        assert len(software_workflows) == 2
+        for wizard_info in software_workflows:
             assert wizard_info["domain"] == "software"
             assert "plugin" in wizard_info
 
@@ -346,7 +346,7 @@ class TestPluginRegistryStatistics:
         stats = registry.get_statistics()
 
         assert stats["total_plugins"] == 0
-        assert stats["total_wizards"] == 0
+        assert stats["total_workflows"] == 0
         assert "wizards_by_level" in stats
 
     def test_get_statistics_with_plugins(self):
@@ -354,11 +354,11 @@ class TestPluginRegistryStatistics:
         registry = PluginRegistry()
 
         plugin1 = MockPlugin(name="plugin1", domain="software", version="1.0.0")
-        plugin1.add_wizard("wizard1", MockWizard("wizard1", empathy_level=4))
-        plugin1.add_wizard("wizard2", MockWizard("wizard2", empathy_level=5))
+        plugin1.add_workflow("wizard1", MockWorkflow("wizard1", empathy_level=4))
+        plugin1.add_workflow("wizard2", MockWorkflow("wizard2", empathy_level=5))
 
         plugin2 = MockPlugin(name="plugin2", domain="healthcare", version="2.0.0")
-        plugin2.add_wizard("wizard3", MockWizard("wizard3", empathy_level=4))
+        plugin2.add_workflow("wizard3", MockWorkflow("wizard3", empathy_level=4))
 
         registry.register_plugin("plugin1", plugin1)
         registry.register_plugin("plugin2", plugin2)
@@ -366,7 +366,7 @@ class TestPluginRegistryStatistics:
         stats = registry.get_statistics()
 
         assert stats["total_plugins"] == 2
-        assert stats["total_wizards"] == 3
+        assert stats["total_workflows"] == 3
         assert len(stats["plugins"]) == 2
 
         # Check plugin info
@@ -438,27 +438,27 @@ class TestPluginRegistryEdgeCases:
 
             assert registry._auto_discovered is True
 
-    def test_find_wizards_with_none_info(self):
-        """Test finding wizards when get_wizard_info returns None"""
+    def test_find_workflows_with_none_info(self):
+        """Test finding wizards when get_workflow_info returns None"""
         registry = PluginRegistry()
 
         plugin = MockPlugin(name="test", domain="software")
-        # Don't add any wizards, so get_wizard_info will return None
-        plugin.add_wizard("invalid", MockWizard("invalid"))
+        # Don't add any wizards, so get_workflow_info will return None
+        plugin.add_workflow("invalid", MockWorkflow("invalid"))
 
-        # Make get_wizard_info return None
-        plugin.get_wizard_info = Mock(return_value=None)
+        # Make get_workflow_info return None
+        plugin.get_workflow_info = Mock(return_value=None)
 
         registry.register_plugin("test", plugin)
 
         # Should not crash, just return empty list
-        results = registry.find_wizards_by_level(4)
+        results = registry.find_workflows_by_level(4)
         assert results == []
 
-    def test_get_wizard_info_from_nonexistent_plugin(self):
-        """Test get_wizard_info from non-existent plugin returns None"""
+    def test_get_workflow_info_from_nonexistent_plugin(self):
+        """Test get_workflow_info from non-existent plugin returns None"""
         registry = PluginRegistry()
 
-        result = registry.get_wizard_info("nonexistent", "wizard")
+        result = registry.get_workflow_info("nonexistent", "wizard")
 
         assert result is None

@@ -55,6 +55,7 @@ class TestBaseLLMProvider:
 
     def test_init(self):
         """Test initialization stores api_key and config."""
+
         # Create concrete implementation
         class ConcreteProvider(BaseLLMProvider):
             async def generate(self, messages, **kwargs):
@@ -70,6 +71,7 @@ class TestBaseLLMProvider:
 
     def test_estimate_tokens(self):
         """Test token estimation."""
+
         class ConcreteProvider(BaseLLMProvider):
             async def generate(self, messages, **kwargs):
                 return LLMResponse("", "", 0, "", {})
@@ -106,7 +108,9 @@ class TestAnthropicProvider:
     def test_init_requires_anthropic_package(self):
         """Test handling when anthropic package not installed."""
         with patch.dict("sys.modules", {"anthropic": None}):
-            with patch("builtins.__import__", side_effect=ImportError("No module named 'anthropic'")):
+            with patch(
+                "builtins.__import__", side_effect=ImportError("No module named 'anthropic'")
+            ):
                 with pytest.raises(ImportError, match="anthropic package required"):
                     AnthropicProvider(api_key="sk-test")
 
@@ -478,6 +482,7 @@ class TestGeminiProvider:
 
     def test_init_requires_google_package(self):
         """Test handling when google-generativeai package not installed."""
+
         # Create mock that raises ImportError
         def mock_import(name, *args, **kwargs):
             if "google" in name:
@@ -485,6 +490,7 @@ class TestGeminiProvider:
             return original_import(name, *args, **kwargs)
 
         import builtins
+
         original_import = builtins.__import__
 
         with patch.object(builtins, "__import__", side_effect=mock_import):
@@ -493,6 +499,7 @@ class TestGeminiProvider:
                 import importlib
 
                 import empathy_llm_toolkit.providers as providers_mod
+
                 importlib.reload(providers_mod)
                 providers_mod.GeminiProvider(api_key="test-key")
 
@@ -590,17 +597,21 @@ class TestLocalProvider:
         provider = LocalProvider()
 
         mock_response = MagicMock()
-        mock_response.json = AsyncMock(return_value={
-            "message": {"content": "Hello from local!"},
-            "eval_count": 30,
-            "prompt_eval_count": 10,
-        })
+        mock_response.json = AsyncMock(
+            return_value={
+                "message": {"content": "Hello from local!"},
+                "eval_count": 30,
+                "prompt_eval_count": 10,
+            }
+        )
 
         mock_session = MagicMock()
-        mock_session.post = MagicMock(return_value=MagicMock(
-            __aenter__=AsyncMock(return_value=mock_response),
-            __aexit__=AsyncMock(),
-        ))
+        mock_session.post = MagicMock(
+            return_value=MagicMock(
+                __aenter__=AsyncMock(return_value=mock_response),
+                __aexit__=AsyncMock(),
+            )
+        )
 
         with patch("aiohttp.ClientSession") as mock_client_session:
             mock_client_session.return_value.__aenter__ = AsyncMock(return_value=mock_session)

@@ -210,7 +210,9 @@ def estimate_workflow_cost(
                             try:
                                 filepath = os.path.join(root, file)
                                 validated_filepath = _validate_file_path(filepath)
-                                with open(validated_filepath, encoding="utf-8", errors="ignore") as f:
+                                with open(
+                                    validated_filepath, encoding="utf-8", errors="ignore"
+                                ) as f:
                                     total_chars += len(f.read())
                             except (ValueError, OSError):
                                 pass

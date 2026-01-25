@@ -252,9 +252,7 @@ class TestConflictResolution:
             last_heartbeat=datetime.now(),
         )
 
-        mock_redis_memory._client.hget.return_value = json.dumps(
-            other_session.to_dict()
-        ).encode()
+        mock_redis_memory._client.hget.return_value = json.dumps(other_session.to_dict()).encode()
 
         result = coordinator.resolve_conflict(
             resource_key="test_resource",
@@ -285,9 +283,7 @@ class TestConflictResolution:
             last_heartbeat=datetime.now(),
         )
 
-        mock_redis_memory._client.hget.return_value = json.dumps(
-            other_session.to_dict()
-        ).encode()
+        mock_redis_memory._client.hget.return_value = json.dumps(other_session.to_dict()).encode()
 
         result = coordinator.resolve_conflict(
             resource_key="test_resource",
@@ -602,9 +598,7 @@ class TestCrossSessionCoordinatorGetSession:
             last_heartbeat=now,
         )
 
-        mock_redis_memory._client.hget.return_value = json.dumps(
-            session_data.to_dict()
-        ).encode()
+        mock_redis_memory._client.hget.return_value = json.dumps(session_data.to_dict()).encode()
 
         coordinator = CrossSessionCoordinator(
             memory=mock_redis_memory,
@@ -640,9 +634,7 @@ class TestCrossSessionCoordinatorGetSession:
             last_heartbeat=old_time,
         )
 
-        mock_redis_memory._client.hget.return_value = json.dumps(
-            session_data.to_dict()
-        ).encode()
+        mock_redis_memory._client.hget.return_value = json.dumps(session_data.to_dict()).encode()
 
         coordinator = CrossSessionCoordinator(
             memory=mock_redis_memory,
@@ -668,15 +660,17 @@ class TestCrossSessionCoordinatorInvalidData:
         """Should handle invalid JSON gracefully."""
         now = datetime.now()
         mock_redis_memory._client.hgetall.return_value = {
-            b"good_agent": json.dumps({
-                "agent_id": "good_agent",
-                "session_type": "claude",
-                "access_tier": 2,  # CONTRIBUTOR = 2
-                "capabilities": [],
-                "started_at": now.isoformat(),
-                "last_heartbeat": now.isoformat(),
-                "metadata": {},
-            }).encode(),
+            b"good_agent": json.dumps(
+                {
+                    "agent_id": "good_agent",
+                    "session_type": "claude",
+                    "access_tier": 2,  # CONTRIBUTOR = 2
+                    "capabilities": [],
+                    "started_at": now.isoformat(),
+                    "last_heartbeat": now.isoformat(),
+                    "metadata": {},
+                }
+            ).encode(),
             b"bad_agent": b"not valid json {{{",
         }
 
@@ -693,10 +687,12 @@ class TestCrossSessionCoordinatorInvalidData:
     def test_get_active_sessions_handles_missing_fields(self, mock_redis_memory):
         """Should handle sessions with missing fields gracefully."""
         mock_redis_memory._client.hgetall.return_value = {
-            b"incomplete_agent": json.dumps({
-                "agent_id": "incomplete_agent",
-                # Missing required fields
-            }).encode(),
+            b"incomplete_agent": json.dumps(
+                {
+                    "agent_id": "incomplete_agent",
+                    # Missing required fields
+                }
+            ).encode(),
         }
 
         coordinator = CrossSessionCoordinator(

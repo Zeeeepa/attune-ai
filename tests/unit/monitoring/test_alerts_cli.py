@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.monitoring.alerts_cli import AlertEngine
+from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
 
 @pytest.mark.unit
@@ -61,18 +61,18 @@ class TestAlertEngineAddAlert:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Test Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
             assert len(alerts) == 1
-            assert alerts[0]["id"] == "alert_001"
-            assert alerts[0]["name"] == "Test Alert"
-            assert alerts[0]["metric"] == "daily_cost"
-            assert alerts[0]["threshold"] == 10.0
-            assert alerts[0]["channel"] == "vscode_output"
+            assert alerts[0].alert_id == "alert_001"
+            assert alerts[0].name == "Test Alert"
+            assert alerts[0].metric == AlertMetric.DAILY_COST
+            assert alerts[0].threshold == 10.0
+            assert alerts[0].channel == AlertChannel.STDOUT
 
     def test_add_alert_with_webhook(self):
         """Test adding alert with webhook URL."""
@@ -83,14 +83,14 @@ class TestAlertEngineAddAlert:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Webhook Alert",
-                metric="error_rate",
+                metric=AlertMetric.ERROR_RATE,
                 threshold=5.0,
-                channel="webhook",
+                channel=AlertChannel.WEBHOOK,
                 webhook_url="https://hooks.slack.com/test",
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["webhook_url"] == "https://hooks.slack.com/test"
+            assert alerts[0].webhook_url == "https://hooks.slack.com/test"
 
     def test_add_alert_with_email(self):
         """Test adding alert with email."""
@@ -101,14 +101,14 @@ class TestAlertEngineAddAlert:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Email Alert",
-                metric="token_usage",
+                metric=AlertMetric.TOKEN_USAGE,
                 threshold=100000.0,
-                channel="email",
+                channel=AlertChannel.EMAIL,
                 email="admin@example.com",
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["email"] == "admin@example.com"
+            assert alerts[0].email == "admin@example.com"
 
     def test_add_multiple_alerts(self):
         """Test adding multiple alerts."""
@@ -119,17 +119,17 @@ class TestAlertEngineAddAlert:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Cost Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             engine.add_alert(
                 alert_id="alert_002",
                 name="Error Alert",
-                metric="error_rate",
+                metric=AlertMetric.ERROR_RATE,
                 threshold=5.0,
-                channel="email",
+                channel=AlertChannel.EMAIL,
                 email="admin@example.com",
             )
 
@@ -152,7 +152,7 @@ class TestAlertEngineListAlerts:
             assert isinstance(alerts, list)
 
     def test_list_alerts_returns_all_fields(self):
-        """Test that list_alerts returns all alert fields."""
+        """Test that list_alerts returns AlertConfig with all fields."""
         with tempfile.TemporaryDirectory() as tmpdir:
             db_path = os.path.join(tmpdir, "alerts.db")
             engine = AlertEngine(db_path=db_path)
@@ -160,28 +160,28 @@ class TestAlertEngineListAlerts:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Test Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
             alert = alerts[0]
 
             # Check all expected fields exist
-            assert "id" in alert
-            assert "name" in alert
-            assert "metric" in alert
-            assert "threshold" in alert
-            assert "channel" in alert
-            assert "webhook_url" in alert
-            assert "email" in alert
-            assert "enabled" in alert
-            assert "cooldown" in alert
-            assert "created_at" in alert
+            assert hasattr(alert, "alert_id")
+            assert hasattr(alert, "name")
+            assert hasattr(alert, "metric")
+            assert hasattr(alert, "threshold")
+            assert hasattr(alert, "channel")
+            assert hasattr(alert, "webhook_url")
+            assert hasattr(alert, "email")
+            assert hasattr(alert, "enabled")
+            assert hasattr(alert, "cooldown_seconds")
+            assert hasattr(alert, "created_at")
 
     def test_list_alerts_enabled_field_is_boolean(self):
-        """Test that enabled field is converted to boolean."""
+        """Test that enabled field is boolean."""
         with tempfile.TemporaryDirectory() as tmpdir:
             db_path = os.path.join(tmpdir, "alerts.db")
             engine = AlertEngine(db_path=db_path)
@@ -189,14 +189,14 @@ class TestAlertEngineListAlerts:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Test Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
-            assert isinstance(alerts[0]["enabled"], bool)
-            assert alerts[0]["enabled"] is True
+            assert isinstance(alerts[0].enabled, bool)
+            assert alerts[0].enabled is True
 
     def test_list_alerts_default_values(self):
         """Test that default values are set correctly."""
@@ -207,16 +207,16 @@ class TestAlertEngineListAlerts:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Test Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["enabled"] is True
-            assert alerts[0]["cooldown"] == 3600  # Default 1 hour
-            assert alerts[0]["webhook_url"] is None
-            assert alerts[0]["email"] is None
+            assert alerts[0].enabled is True
+            assert alerts[0].cooldown_seconds == 3600  # Default 1 hour
+            assert alerts[0].webhook_url is None
+            assert alerts[0].email is None
 
 
 @pytest.mark.unit
@@ -232,9 +232,9 @@ class TestAlertEngineDeleteAlert:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Test Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             assert len(engine.list_alerts()) == 1
@@ -263,17 +263,17 @@ class TestAlertEngineDeleteAlert:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Alert 1",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             engine.add_alert(
                 alert_id="alert_002",
                 name="Alert 2",
-                metric="error_rate",
+                metric=AlertMetric.ERROR_RATE,
                 threshold=5.0,
-                channel="email",
+                channel=AlertChannel.EMAIL,
                 email="admin@example.com",
             )
 
@@ -284,7 +284,7 @@ class TestAlertEngineDeleteAlert:
             assert deleted is True
             alerts = engine.list_alerts()
             assert len(alerts) == 1
-            assert alerts[0]["id"] == "alert_002"
+            assert alerts[0].alert_id == "alert_002"
 
 
 @pytest.mark.unit
@@ -300,13 +300,13 @@ class TestAlertEngineMetricTypes:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Daily Cost Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["metric"] == "daily_cost"
+            assert alerts[0].metric == AlertMetric.DAILY_COST
 
     def test_error_rate_alert(self):
         """Test creating error_rate alert."""
@@ -317,13 +317,13 @@ class TestAlertEngineMetricTypes:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Error Rate Alert",
-                metric="error_rate",
+                metric=AlertMetric.ERROR_RATE,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["metric"] == "error_rate"
+            assert alerts[0].metric == AlertMetric.ERROR_RATE
 
     def test_avg_latency_alert(self):
         """Test creating avg_latency alert."""
@@ -334,13 +334,13 @@ class TestAlertEngineMetricTypes:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Latency Alert",
-                metric="avg_latency",
+                metric=AlertMetric.AVG_LATENCY,
                 threshold=3000.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["metric"] == "avg_latency"
+            assert alerts[0].metric == AlertMetric.AVG_LATENCY
 
     def test_token_usage_alert(self):
         """Test creating token_usage alert."""
@@ -351,35 +351,35 @@ class TestAlertEngineMetricTypes:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Token Usage Alert",
-                metric="token_usage",
+                metric=AlertMetric.TOKEN_USAGE,
                 threshold=100000.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["metric"] == "token_usage"
+            assert alerts[0].metric == AlertMetric.TOKEN_USAGE
 
 
 @pytest.mark.unit
 class TestAlertEngineChannelTypes:
     """Test different channel types."""
 
-    def test_vscode_output_channel(self):
-        """Test vscode_output channel."""
+    def test_stdout_channel(self):
+        """Test stdout channel."""
         with tempfile.TemporaryDirectory() as tmpdir:
             db_path = os.path.join(tmpdir, "alerts.db")
             engine = AlertEngine(db_path=db_path)
 
             engine.add_alert(
                 alert_id="alert_001",
-                name="VSCode Alert",
-                metric="daily_cost",
+                name="Stdout Alert",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["channel"] == "vscode_output"
+            assert alerts[0].channel == AlertChannel.STDOUT
 
     def test_webhook_channel(self):
         """Test webhook channel."""
@@ -390,15 +390,15 @@ class TestAlertEngineChannelTypes:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Webhook Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="webhook",
+                channel=AlertChannel.WEBHOOK,
                 webhook_url="https://hooks.slack.com/test",
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["channel"] == "webhook"
-            assert alerts[0]["webhook_url"] == "https://hooks.slack.com/test"
+            assert alerts[0].channel == AlertChannel.WEBHOOK
+            assert alerts[0].webhook_url == "https://hooks.slack.com/test"
 
     def test_email_channel(self):
         """Test email channel."""
@@ -409,15 +409,15 @@ class TestAlertEngineChannelTypes:
             engine.add_alert(
                 alert_id="alert_001",
                 name="Email Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="email",
+                channel=AlertChannel.EMAIL,
                 email="admin@example.com",
             )
 
             alerts = engine.list_alerts()
-            assert alerts[0]["channel"] == "email"
-            assert alerts[0]["email"] == "admin@example.com"
+            assert alerts[0].channel == AlertChannel.EMAIL
+            assert alerts[0].email == "admin@example.com"
 
 
 @pytest.mark.unit
@@ -434,9 +434,9 @@ class TestAlertEnginePersistence:
             engine1.add_alert(
                 alert_id="alert_001",
                 name="Test Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             # Create second engine with same database
@@ -444,7 +444,7 @@ class TestAlertEnginePersistence:
             alerts = engine2.list_alerts()
 
             assert len(alerts) == 1
-            assert alerts[0]["id"] == "alert_001"
+            assert alerts[0].alert_id == "alert_001"
 
     def test_delete_persists_across_instances(self):
         """Test that deletions persist across engine instances."""
@@ -456,9 +456,9 @@ class TestAlertEnginePersistence:
             engine1.add_alert(
                 alert_id="alert_001",
                 name="Test Alert",
-                metric="daily_cost",
+                metric=AlertMetric.DAILY_COST,
                 threshold=10.0,
-                channel="vscode_output",
+                channel=AlertChannel.STDOUT,
             )
 
             # Delete with first engine

@@ -9,7 +9,6 @@ These tests cover:
 - on_retry callback
 """
 
-
 import pytest
 
 from empathy_os.resilience.retry import RetryConfig, retry, retry_with_backoff
@@ -60,9 +59,7 @@ class TestRetryConfigDelay:
 
     def test_get_delay_exponential_growth(self):
         """Test delay grows exponentially."""
-        config = RetryConfig(
-            initial_delay=1.0, backoff_factor=2.0, jitter=False, max_delay=100
-        )
+        config = RetryConfig(initial_delay=1.0, backoff_factor=2.0, jitter=False, max_delay=100)
 
         assert config.get_delay(1) == 1.0  # 1 * 2^0
         assert config.get_delay(2) == 2.0  # 1 * 2^1
@@ -71,9 +68,7 @@ class TestRetryConfigDelay:
 
     def test_get_delay_capped_at_max(self):
         """Test delay is capped at max_delay."""
-        config = RetryConfig(
-            initial_delay=1.0, backoff_factor=10.0, max_delay=5.0, jitter=False
-        )
+        config = RetryConfig(initial_delay=1.0, backoff_factor=10.0, max_delay=5.0, jitter=False)
 
         delay = config.get_delay(10)  # Would be huge without cap
 

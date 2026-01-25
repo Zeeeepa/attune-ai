@@ -49,7 +49,7 @@ class ReportGenerator:
             "summary": {
                 "total_files_needing_tests": len(needing_tests),
                 "total_loc_untested": sum(r.lines_of_code for r in needing_tests),
-                "high_impact_untested": len([r for r in needing_tests if r.impact_score >= 5.0]),
+                "high_impact_untested": sum(1 for r in needing_tests if r.impact_score >= 5.0),
             },
             "priority_files": [
                 {

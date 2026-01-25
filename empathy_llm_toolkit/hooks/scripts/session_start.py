@@ -129,9 +129,7 @@ def main(**context: Any) -> dict[str, Any]:
                 "interaction_count": state.get("interaction_count", 0),
                 "patterns_detected": len(state.get("detected_patterns", [])),
             }
-            result["messages"].append(
-                f"[SessionStart] Restored state from {latest.name}"
-            )
+            result["messages"].append(f"[SessionStart] Restored state from {latest.name}")
             logger.info("Loaded session state from %s", latest)
 
     # Count learned skills
@@ -148,9 +146,7 @@ def main(**context: Any) -> dict[str, Any]:
     result["patterns_count"] = len(pattern_files)
 
     if pattern_files:
-        result["messages"].append(
-            f"[SessionStart] {len(pattern_files)} pattern file(s) loaded"
-        )
+        result["messages"].append(f"[SessionStart] {len(pattern_files)} pattern file(s) loaded")
 
     # Log summary
     for msg in result["messages"]:

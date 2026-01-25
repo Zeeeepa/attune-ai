@@ -1,11 +1,8 @@
 """Tests for empathy_os.pattern_library"""
+
 import pytest
 
-from empathy_os.pattern_library import (
-    Pattern,
-    PatternLibrary,
-    PatternMatch,
-)
+from empathy_os.pattern_library import Pattern, PatternLibrary, PatternMatch
 
 # Tests are implemented in the class-based tests below
 
@@ -20,7 +17,7 @@ class TestPattern:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Test Pattern",
-            description="A test pattern for unit testing"
+            description="A test pattern for unit testing",
         )
 
         assert pattern.id == "test_001"
@@ -38,7 +35,7 @@ class TestPattern:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Success Rate Test",
-            description="Test success rate calculation"
+            description="Test success rate calculation",
         )
 
         # Initially 0 (no usage)
@@ -61,7 +58,7 @@ class TestPattern:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Record Usage Test",
-            description="Test recording successful usage"
+            description="Test recording successful usage",
         )
 
         # Record successful usage
@@ -79,7 +76,7 @@ class TestPattern:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Record Failure Test",
-            description="Test recording failed usage"
+            description="Test recording failed usage",
         )
 
         # Record failed usage
@@ -96,7 +93,7 @@ class TestPattern:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Confidence Test",
-            description="Test confidence auto-update"
+            description="Test confidence auto-update",
         )
 
         # Record 4 successes (below threshold)
@@ -120,13 +117,11 @@ class TestPatternMatch:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Match Test",
-            description="Pattern for matching test"
+            description="Pattern for matching test",
         )
 
         match = PatternMatch(
-            pattern=pattern,
-            relevance_score=0.85,
-            matching_factors=["temporal", "contextual"]
+            pattern=pattern, relevance_score=0.85, matching_factors=["temporal", "contextual"]
         )
 
         assert match.pattern == pattern
@@ -141,22 +136,16 @@ class TestPatternMatch:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Range Test",
-            description="Test relevance range"
+            description="Test relevance range",
         )
 
         # Test minimum score
-        match_min = PatternMatch(
-            pattern=pattern,
-            relevance_score=0.0,
-            matching_factors=[]
-        )
+        match_min = PatternMatch(pattern=pattern, relevance_score=0.0, matching_factors=[])
         assert match_min.relevance_score == 0.0
 
         # Test maximum score
         match_max = PatternMatch(
-            pattern=pattern,
-            relevance_score=1.0,
-            matching_factors=["perfect_match"]
+            pattern=pattern, relevance_score=1.0, matching_factors=["perfect_match"]
         )
         assert match_max.relevance_score == 1.0
 
@@ -169,7 +158,7 @@ class TestPatternLibrary:
         library = PatternLibrary()
 
         assert library is not None
-        assert hasattr(library, 'patterns')
+        assert hasattr(library, "patterns")
 
     def test_contribute_pattern(self):
         """Test contributing a pattern to the library."""
@@ -180,7 +169,7 @@ class TestPatternLibrary:
             agent_id="agent_1",
             pattern_type="sequential",
             name="Contributed Pattern",
-            description="Pattern contributed by agent"
+            description="Pattern contributed by agent",
         )
 
         # Contribute pattern (requires agent_id parameter)
@@ -202,7 +191,7 @@ class TestPatternLibrary:
             name="Sequential Pattern",
             description="Test sequential pattern",
             tags=["testing", "sequential"],
-            confidence=0.8  # Above minimum
+            confidence=0.8,  # Above minimum
         )
 
         pattern2 = Pattern(
@@ -212,7 +201,7 @@ class TestPatternLibrary:
             name="Temporal Pattern",
             description="Test temporal pattern",
             tags=["testing", "temporal"],
-            confidence=0.9  # Above minimum
+            confidence=0.9,  # Above minimum
         )
 
         library.contribute_pattern("agent_1", pattern1)
@@ -224,7 +213,7 @@ class TestPatternLibrary:
             agent_id="test_agent",
             context=context,
             pattern_type="sequential",
-            min_confidence=0.1  # Low threshold to ensure matches
+            min_confidence=0.1,  # Low threshold to ensure matches
         )
 
         # Verify we got results
@@ -567,4 +556,3 @@ class TestPatternLibrary:
 
         related = library.get_related_patterns("nonexistent")
         assert len(related) == 0
-

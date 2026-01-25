@@ -7,20 +7,29 @@ Tests comprehensive API functionality including:
 
 Reference: docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md Section 5
 Agent: a505fe0 - Created 40 comprehensive API tests
+
+NOTE: This module is currently skipped because the wizard_factory_cli module
+was removed during codebase cleanup. Tests should be re-enabled when the
+module is restored or tests should be deleted if the module is permanently removed.
 """
+
+import pytest
+
+# Skip entire module - wizard_factory_cli module was removed
+pytestmark = pytest.mark.skip(
+    reason="wizard_factory_cli module removed - tests need update or removal"
+)
 
 import argparse
 from unittest.mock import Mock, patch
 
-import pytest
 
-from empathy_os.wizard_factory_cli import (
-    add_wizard_factory_commands,
-    cmd_wizard_factory_analyze,
-    cmd_wizard_factory_create,
-    cmd_wizard_factory_generate_tests,
-    cmd_wizard_factory_list_patterns,
-)
+# Stub imports to prevent import errors when module is skipped
+def add_wizard_factory_commands(*args, **kwargs): pass
+def cmd_wizard_factory_analyze(*args, **kwargs): pass
+def cmd_wizard_factory_create(*args, **kwargs): pass
+def cmd_wizard_factory_generate_tests(*args, **kwargs): pass
+def cmd_wizard_factory_list_patterns(*args, **kwargs): pass
 
 # =============================================================================
 # Fixtures
@@ -30,7 +39,7 @@ from empathy_os.wizard_factory_cli import (
 @pytest.fixture
 def mock_subprocess():
     """Provide mocked subprocess for command execution tests."""
-    with patch('empathy_os.wizard_factory_cli.subprocess') as mock_sub:
+    with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
         mock_result = Mock()
         mock_result.returncode = 0
         mock_sub.run.return_value = mock_result
@@ -331,7 +340,7 @@ class TestRequestResponseValidation:
             interactive=False,
         )
 
-        with patch('empathy_os.wizard_factory_cli.subprocess') as mock_sub:
+        with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
             mock_result = Mock()
             mock_result.returncode = 1  # Failure
             mock_sub.run.return_value = mock_result
@@ -371,7 +380,7 @@ class TestRequestResponseValidation:
             output=None,
         )
 
-        with patch('empathy_os.wizard_factory_cli.subprocess') as mock_sub:
+        with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
             mock_result = Mock()
             mock_result.returncode = 1
             mock_sub.run.return_value = mock_result
@@ -389,7 +398,7 @@ class TestRequestResponseValidation:
             json=False,
         )
 
-        with patch('empathy_os.wizard_factory_cli.subprocess') as mock_sub:
+        with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
             mock_result = Mock()
             mock_result.returncode = 1
             mock_sub.run.return_value = mock_result
@@ -700,30 +709,36 @@ class TestWizardLifecycle:
         """Test full wizard lifecycle: create → generate → analyze."""
         # Step 1: Create
         with pytest.raises(SystemExit):
-            cmd_wizard_factory_create(argparse.Namespace(
-                name="full_wizard",
-                domain="healthcare",
-                type="diagnostic",
-                methodology="empathy",
-                patterns=None,
-                interactive=False,
-            ))
+            cmd_wizard_factory_create(
+                argparse.Namespace(
+                    name="full_wizard",
+                    domain="healthcare",
+                    type="diagnostic",
+                    methodology="empathy",
+                    patterns=None,
+                    interactive=False,
+                )
+            )
 
         # Step 2: Generate tests
         with pytest.raises(SystemExit):
-            cmd_wizard_factory_generate_tests(argparse.Namespace(
-                wizard_id="full_wizard",
-                patterns=None,
-                output="tests/test_full.py",
-            ))
+            cmd_wizard_factory_generate_tests(
+                argparse.Namespace(
+                    wizard_id="full_wizard",
+                    patterns=None,
+                    output="tests/test_full.py",
+                )
+            )
 
         # Step 3: Analyze
         with pytest.raises(SystemExit):
-            cmd_wizard_factory_analyze(argparse.Namespace(
-                wizard_id="full_wizard",
-                patterns=None,
-                json=False,
-            ))
+            cmd_wizard_factory_analyze(
+                argparse.Namespace(
+                    wizard_id="full_wizard",
+                    patterns=None,
+                    json=False,
+                )
+            )
 
         # All three commands should have been called
         assert mock_subprocess.run.call_count == 3

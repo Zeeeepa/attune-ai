@@ -147,9 +147,7 @@ class PlanGenerator:
                 AgentStep(
                     order=order,
                     role=rule.role,
-                    tier_recommendation=self.TIER_TO_MODEL.get(
-                        rule.tier_strategy, "sonnet"
-                    ),
+                    tier_recommendation=self.TIER_TO_MODEL.get(rule.tier_strategy, "sonnet"),
                     tools=rule.tools,
                     prompt=prompt,
                     success_criteria=rule.success_criteria,
@@ -204,7 +202,7 @@ Configuration:
 Success Criteria:
 {criteria}
 
-Tools available: {', '.join(rule.tools)}
+Tools available: {", ".join(rule.tools)}
 
 Provide a structured report with findings, issues by severity, and recommendations.
 """
@@ -256,32 +254,36 @@ What risks exist? What's the recommended path forward?
         lines.extend(["", "---", "", "## Execution Steps", ""])
 
         for step in plan.steps:
-            lines.extend([
-                f"### Step {step.order}: {step.role}",
-                "",
-                f"**Tier Recommendation**: {step.tier_recommendation}",
-                f"**Tools**: {', '.join(step.tools)}",
-                "",
-                "**Prompt:**",
-                "```",
-                step.prompt,
-                "```",
-                "",
-                "**Success Criteria:**",
-            ])
+            lines.extend(
+                [
+                    f"### Step {step.order}: {step.role}",
+                    "",
+                    f"**Tier Recommendation**: {step.tier_recommendation}",
+                    f"**Tools**: {', '.join(step.tools)}",
+                    "",
+                    "**Prompt:**",
+                    "```",
+                    step.prompt,
+                    "```",
+                    "",
+                    "**Success Criteria:**",
+                ]
+            )
             for criterion in step.success_criteria:
                 lines.append(f"- [ ] {criterion}")
             lines.extend(["", "---", ""])
 
-        lines.extend([
-            "## Synthesis",
-            "",
-            "After all steps complete, run this synthesis:",
-            "",
-            "```",
-            plan.synthesis_prompt,
-            "```",
-        ])
+        lines.extend(
+            [
+                "## Synthesis",
+                "",
+                "After all steps complete, run this synthesis:",
+                "",
+                "```",
+                plan.synthesis_prompt,
+                "```",
+            ]
+        )
 
         return "\n".join(lines)
 
@@ -292,11 +294,13 @@ What risks exist? What's the recommended path forward?
         """
         steps_text = []
         for step in plan.steps:
-            steps_text.append(f"""
+            steps_text.append(
+                f"""
 ### {step.role}
 Use the Task tool with subagent_type="Explore" to:
 {step.prompt}
-""")
+"""
+            )
 
         return f"""# {plan.template_name}
 
@@ -353,24 +357,28 @@ def generate_plan(
         return generator.to_claude_code_skill(plan)
     elif output_format == "json":
         import json
-        return json.dumps({
-            "template_id": plan.template_id,
-            "template_name": plan.template_name,
-            "generated_at": plan.generated_at,
-            "form_responses": plan.form_responses,
-            "steps": [
-                {
-                    "order": s.order,
-                    "role": s.role,
-                    "tier_recommendation": s.tier_recommendation,
-                    "tools": s.tools,
-                    "prompt": s.prompt,
-                    "success_criteria": s.success_criteria,
-                    "config": s.config,
-                }
-                for s in plan.steps
-            ],
-            "synthesis_prompt": plan.synthesis_prompt,
-        }, indent=2)
+
+        return json.dumps(
+            {
+                "template_id": plan.template_id,
+                "template_name": plan.template_name,
+                "generated_at": plan.generated_at,
+                "form_responses": plan.form_responses,
+                "steps": [
+                    {
+                        "order": s.order,
+                        "role": s.role,
+                        "tier_recommendation": s.tier_recommendation,
+                        "tools": s.tools,
+                        "prompt": s.prompt,
+                        "success_criteria": s.success_criteria,
+                        "config": s.config,
+                    }
+                    for s in plan.steps
+                ],
+                "synthesis_prompt": plan.synthesis_prompt,
+            },
+            indent=2,
+        )
     else:
         raise ValueError(f"Unknown format: {output_format}")

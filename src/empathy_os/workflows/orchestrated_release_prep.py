@@ -294,7 +294,7 @@ class OrchestratedReleasePrepWorkflow:
         self,
         path: str = ".",
         context: dict[str, Any] | None = None,
-        **kwargs  # Absorb extra parameters from VSCode/CLI (target, etc.)
+        **kwargs,  # Absorb extra parameters from VSCode/CLI (target, etc.)
     ) -> ReleaseReadinessReport:
         """Execute release preparation workflow.
 
@@ -310,8 +310,8 @@ class OrchestratedReleasePrepWorkflow:
             ValueError: If path is invalid
         """
         # Map 'target' to 'path' for VSCode compatibility
-        if 'target' in kwargs and path == ".":
-            path = kwargs['target']
+        if "target" in kwargs and path == ".":
+            path = kwargs["target"]
         if not path or not isinstance(path, str):
             raise ValueError("path must be a non-empty string")
 

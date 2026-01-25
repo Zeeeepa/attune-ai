@@ -136,7 +136,9 @@ class FormResponse:
     template_id: str
     responses: dict[str, Any] = field(default_factory=dict)
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
-    response_id: str = field(default_factory=lambda: f"resp-{datetime.now().strftime('%Y%m%d-%H%M%S')}")
+    response_id: str = field(
+        default_factory=lambda: f"resp-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+    )
 
     def get(self, question_id: str, default: Any = None) -> Any:
         """Get response for a question.

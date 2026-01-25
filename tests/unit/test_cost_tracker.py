@@ -1,10 +1,6 @@
 """Tests for empathy_os.cost_tracker"""
-from empathy_os.cost_tracker import (
-    CostTracker,
-    cmd_costs,
-    get_tracker,
-    log_request,
-)
+
+from empathy_os.cost_tracker import CostTracker, cmd_costs, get_tracker, log_request
 
 
 class TestCostTracker:
@@ -32,7 +28,7 @@ class TestCostTracker:
             model="claude-3-haiku-20240307",
             input_tokens=1000,
             output_tokens=500,
-            task_type="summarize"
+            task_type="summarize",
         )
 
         assert request is not None
@@ -57,7 +53,7 @@ class TestCostTracker:
                 model="claude-3-haiku-20240307",
                 input_tokens=100,
                 output_tokens=50,
-                task_type="test"
+                task_type="test",
             )
 
         # Buffer should have 5 requests
@@ -76,7 +72,7 @@ class TestCostTracker:
                 model="claude-3-haiku-20240307",
                 input_tokens=100,
                 output_tokens=50,
-                task_type="test"
+                task_type="test",
             )
 
         # Buffer should be empty (auto-flushed)
@@ -95,7 +91,7 @@ class TestCostTracker:
                 model="claude-3-haiku-20240307",
                 input_tokens=100,
                 output_tokens=50,
-                task_type="test"
+                task_type="test",
             )
 
         # Verify buffered
@@ -120,7 +116,7 @@ class TestCostTracker:
                 model="claude-3-haiku-20240307",
                 input_tokens=1000,
                 output_tokens=500,
-                task_type="summarize"
+                task_type="summarize",
             )
 
         summary = tracker.get_summary(days=7)
@@ -145,7 +141,7 @@ class TestCostTracker:
                 model="claude-3-haiku-20240307",
                 input_tokens=1000,
                 output_tokens=500,
-                task_type="test"
+                task_type="test",
             )
 
         # Verify still buffered
@@ -166,7 +162,7 @@ class TestCostTracker:
                 model="claude-3-haiku-20240307",
                 input_tokens=1000,
                 output_tokens=500,
-                task_type="summarize"
+                task_type="summarize",
             )
 
         report = tracker.get_report(days=7)
@@ -187,7 +183,7 @@ class TestCostTracker:
                 model="claude-3-haiku-20240307",
                 input_tokens=1000,
                 output_tokens=500,
-                task_type="test"
+                task_type="test",
             )
 
         today = tracker.get_today()
@@ -203,28 +199,19 @@ class TestCostTracker:
 
         # Test haiku (cheap)
         req1 = tracker.log_request(
-            model="claude-3-haiku-20240307",
-            input_tokens=100,
-            output_tokens=50,
-            task_type="test"
+            model="claude-3-haiku-20240307", input_tokens=100, output_tokens=50, task_type="test"
         )
         assert req1["tier"] == "cheap"
 
         # Test sonnet (capable)
         req2 = tracker.log_request(
-            model="claude-3-5-sonnet-20241022",
-            input_tokens=100,
-            output_tokens=50,
-            task_type="test"
+            model="claude-3-5-sonnet-20241022", input_tokens=100, output_tokens=50, task_type="test"
         )
         assert req2["tier"] == "capable"
 
         # Test opus (premium)
         req3 = tracker.log_request(
-            model="claude-opus-4-20250514",
-            input_tokens=100,
-            output_tokens=50,
-            task_type="test"
+            model="claude-opus-4-20250514", input_tokens=100, output_tokens=50, task_type="test"
         )
         assert req3["tier"] == "premium"
 
@@ -233,6 +220,7 @@ def test_get_tracker_singleton(tmp_path):
     """Test get_tracker returns singleton instance."""
     # Reset global tracker
     import empathy_os.cost_tracker
+
     empathy_os.cost_tracker._tracker = None
 
     tracker1 = get_tracker(storage_dir=str(tmp_path))
@@ -246,14 +234,12 @@ def test_log_request_convenience(tmp_path):
     """Test convenience log_request function."""
     # Reset global tracker
     import empathy_os.cost_tracker
+
     empathy_os.cost_tracker._tracker = None
 
     # First call creates tracker
     request = log_request(
-        model="claude-3-haiku-20240307",
-        input_tokens=1000,
-        output_tokens=500,
-        task_type="test"
+        model="claude-3-haiku-20240307", input_tokens=1000, output_tokens=500, task_type="test"
     )
 
     assert request is not None
@@ -269,10 +255,7 @@ def test_cmd_costs_basic(tmp_path):
     # Log some requests
     for _i in range(5):
         tracker.log_request(
-            model="claude-3-haiku-20240307",
-            input_tokens=1000,
-            output_tokens=500,
-            task_type="test"
+            model="claude-3-haiku-20240307", input_tokens=1000, output_tokens=500, task_type="test"
         )
 
     # Create args object
@@ -296,10 +279,7 @@ def test_cmd_costs_json_output(tmp_path, capsys):
     # Log some requests
     for _i in range(5):
         tracker.log_request(
-            model="claude-3-haiku-20240307",
-            input_tokens=1000,
-            output_tokens=500,
-            task_type="test"
+            model="claude-3-haiku-20240307", input_tokens=1000, output_tokens=500, task_type="test"
         )
 
     # Create args object with json flag
@@ -319,4 +299,3 @@ def test_cmd_costs_json_output(tmp_path, capsys):
     captured = capsys.readouterr()
     assert "{" in captured.out
     assert "requests" in captured.out
-

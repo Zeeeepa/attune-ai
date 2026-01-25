@@ -16,7 +16,8 @@ sys.path.insert(0, str(src_path))
 
 async def run_synthesis(sources: list[str], question: str) -> dict:
     """Run the research synthesis workflow."""
-    from empathy_os.workflows.research_synthesis import ResearchSynthesisWorkflow
+    from empathy_os.workflows.research_synthesis import \
+        ResearchSynthesisWorkflow
 
     workflow = ResearchSynthesisWorkflow()
 

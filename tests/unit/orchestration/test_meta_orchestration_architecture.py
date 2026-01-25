@@ -65,9 +65,7 @@ class TestTaskAnalysisDeterminism:
 
         for task in simple_tasks:
             # Run classification multiple times
-            results = [
-                self.orchestrator._classify_complexity(task) for _ in range(5)
-            ]
+            results = [self.orchestrator._classify_complexity(task) for _ in range(5)]
 
             # All results should be identical (deterministic)
             assert all(r == TaskComplexity.SIMPLE for r in results)
@@ -83,9 +81,7 @@ class TestTaskAnalysisDeterminism:
         ]
 
         for task in moderate_tasks:
-            results = [
-                self.orchestrator._classify_complexity(task) for _ in range(5)
-            ]
+            results = [self.orchestrator._classify_complexity(task) for _ in range(5)]
             assert all(r == TaskComplexity.MODERATE for r in results)
 
     def test_complex_task_classification_deterministic(self):
@@ -98,9 +94,7 @@ class TestTaskAnalysisDeterminism:
         ]
 
         for task in complex_tasks:
-            results = [
-                self.orchestrator._classify_complexity(task) for _ in range(5)
-            ]
+            results = [self.orchestrator._classify_complexity(task) for _ in range(5)]
             assert all(r == TaskComplexity.COMPLEX for r in results)
 
     def test_domain_classification_accuracy(self):
@@ -248,7 +242,9 @@ class TestQualityGatesEnforcement:
         """Set up test fixtures."""
         self.orchestrator = MetaOrchestrator()
 
-    @pytest.mark.skip(reason="create_execution_plan() doesn't exist as standalone method - see ARCHITECTURAL_GAPS_ANALYSIS.md Gap 1.3")
+    @pytest.mark.skip(
+        reason="create_execution_plan() doesn't exist as standalone method - see ARCHITECTURAL_GAPS_ANALYSIS.md Gap 1.3"
+    )
     def test_quality_gates_copied_to_execution_plan(self):
         """Test that quality gates from requirements appear in execution plan."""
         # TODO: Extract create_execution_plan() method for testability
@@ -342,7 +338,9 @@ class TestFailureHandlingAndRecovery:
             # Should return empty list or fallback agents
             assert isinstance(agents, list)
 
-    @pytest.mark.skip(reason="Private method _choose_composition_pattern not accessible - architectural gap")
+    @pytest.mark.skip(
+        reason="Private method _choose_composition_pattern not accessible - architectural gap"
+    )
     def test_invalid_pattern_selection_fallback(self):
         """Test that invalid pattern selection has fallback."""
         # TODO: Re-enable when pattern selection is testable
@@ -510,6 +508,4 @@ class TestResourceLimits:
 
             agents = self.orchestrator._select_agents(requirements)
 
-            assert (
-                len(agents) <= MAX_AGENTS
-            ), f"Too many agents selected: {len(agents)}"
+            assert len(agents) <= MAX_AGENTS, f"Too many agents selected: {len(agents)}"

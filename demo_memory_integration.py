@@ -20,12 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import (
-    FormResponse,
-    MetaWorkflow,
-    PatternLearner,
-    TemplateRegistry,
-)
+from empathy_os.meta_workflows import FormResponse, MetaWorkflow, PatternLearner, TemplateRegistry
 
 
 def print_section(title: str):
@@ -56,9 +51,9 @@ def demo_hybrid_storage():
     print("\n🧠 Initializing pattern learner with memory...")
     learner = PatternLearner(memory=memory)
 
-    # Load template
+    # Load template (using built-in release-prep template)
     registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-    template = registry.load_template("python_package_publish")
+    template = registry.load_template("release-prep")  # Built-in template
 
     # Create workflow with pattern learner
     print("\n🤖 Creating meta-workflow with memory integration...")
@@ -74,39 +69,30 @@ def demo_hybrid_storage():
         {
             "name": "Minimal Quality",
             "responses": {
-                "has_tests": "No",
-                "version_bump": "patch",
-                "publish_to": "Skip publishing",
-                "create_git_tag": "No",
-                "update_changelog": "No",
+                "security_scan": "No",
+                "test_coverage_check": "No",
+                "quality_review": "No",
+                "doc_verification": "No",
             },
         },
         {
             "name": "Medium Quality",
             "responses": {
-                "has_tests": "Yes",
-                "test_coverage_required": "80%",
-                "quality_checks": ["Linting (ruff)"],
-                "version_bump": "patch",
-                "publish_to": "Skip publishing",
-                "create_git_tag": "No",
-                "update_changelog": "No",
+                "security_scan": "Yes",
+                "test_coverage_check": "Yes",
+                "coverage_threshold": "80%",
+                "quality_review": "No",
+                "doc_verification": "No",
             },
         },
         {
             "name": "High Quality",
             "responses": {
-                "has_tests": "Yes",
-                "test_coverage_required": "90%",
-                "quality_checks": [
-                    "Type checking (mypy)",
-                    "Linting (ruff)",
-                    "Security scan (bandit)",
-                ],
-                "version_bump": "minor",
-                "publish_to": "PyPI (production)",
-                "create_git_tag": "Yes",
-                "update_changelog": "Yes",
+                "security_scan": "Yes",
+                "test_coverage_check": "Yes",
+                "coverage_threshold": "90%",
+                "quality_review": "Yes",
+                "doc_verification": "Yes",
             },
         },
     ]
@@ -116,7 +102,7 @@ def demo_hybrid_storage():
         print(f"   Executing: {config['name']}...")
 
         response = FormResponse(
-            template_id="python_package_publish",
+            template_id="release-prep",
             responses=config["responses"],
         )
 
@@ -126,9 +112,7 @@ def demo_hybrid_storage():
         print(f"      ✓ {result.run_id}")
         print(f"        Agents: {len(result.agents_created)}")
         print(f"        Cost: ${result.total_cost:.2f}")
-        print(
-            f"        Storage: File ✅ | Memory {'✅' if learner.memory else '❌'}\n"
-        )
+        print(f"        Storage: File ✅ | Memory {'✅' if learner.memory else '❌'}\n")
 
     return learner, results
 
@@ -260,17 +244,13 @@ def demo_analytics_report(learner: PatternLearner):
 
     print("\n📊 Generating analytics report...\n")
 
-    report = learner.generate_analytics_report(
-        template_id="python_package_publish"
-    )
+    report = learner.generate_analytics_report(template_id="python_package_publish")
 
     # Print summary
     summary = report["summary"]
     print("## Summary")
     print(f"\n   Total Runs: {summary['total_runs']}")
-    print(
-        f"   Successful: {summary['successful_runs']} ({summary['success_rate']:.0%})"
-    )
+    print(f"   Successful: {summary['successful_runs']} ({summary['success_rate']:.0%})")
     print(f"   Total Cost: ${summary['total_cost']:.2f}")
     print(f"   Avg Cost/Run: ${summary['avg_cost_per_run']:.2f}")
     print(f"   Total Agents: {summary['total_agents_created']}")

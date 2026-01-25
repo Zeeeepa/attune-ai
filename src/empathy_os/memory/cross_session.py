@@ -31,11 +31,7 @@ from typing import Any
 
 import structlog
 
-from .short_term import (
-    AccessTier,
-    AgentCredentials,
-    RedisShortTermMemory,
-)
+from .short_term import AccessTier, AgentCredentials, RedisShortTermMemory
 
 logger = structlog.get_logger(__name__)
 
@@ -571,8 +567,8 @@ class CrossSessionCoordinator:
 
         if owner:
             if isinstance(owner, bytes):
-                owner = owner.decode()
-            return owner
+                return owner.decode()
+            return str(owner)
 
         return None
 
@@ -618,12 +614,12 @@ class CrossSessionCoordinator:
 
                 if event.get("event") == "session_joined":
                     session_info = SessionInfo.from_dict(event["session"])
-                    for handler in self._on_session_joined:
-                        handler(session_info)
+                    for joined_handler in self._on_session_joined:
+                        joined_handler(session_info)
                 elif event.get("event") == "session_left":
                     agent_id = event["agent_id"]
-                    for handler in self._on_session_left:
-                        handler(agent_id)
+                    for left_handler in self._on_session_left:
+                        left_handler(agent_id)
             except (json.JSONDecodeError, KeyError, ValueError) as e:
                 logger.warning("invalid_session_event", error=str(e))
 
@@ -800,7 +796,7 @@ class BackgroundService:
         Returns:
             Dict with service status information
         """
-        status = {
+        status: dict[str, Any] = {
             "running": self._running,
             "agent_id": self._coordinator.agent_id if self._coordinator else None,
             "active_sessions": 0,

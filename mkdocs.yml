@@ -20,11 +20,18 @@ copyright: Copyright &copy; 2025 Smart-AI-Memory
 nav:
   - Home: index.md
 
-  # Learning-oriented
+  # Onboarding - Clear path for new users
+  - Getting Started:
+      - getting-started/index.md
+      - Installation: getting-started/installation.md
+      - First Steps: getting-started/first-steps.md
+      - Choose Your Path: getting-started/choose-your-path.md
+      - Redis Setup: getting-started/redis-setup.md
+
+  # Learning-oriented - Deeper tutorials after onboarding
   - Tutorials:
       - tutorials/index.md
-      - Installation: tutorials/installation.md
-      - Quick Start: tutorials/quickstart.md
+      - Multi-Agent Team: tutorials/quickstart.md
       - Examples:
           - Code Review Assistant: tutorials/examples/simple-chatbot.md
           - SBAR Clinical Handoff: tutorials/examples/sbar-clinical-handoff.md

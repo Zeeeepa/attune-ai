@@ -1,6 +1,6 @@
 """Chain Executor
 
-Executes wizard chains based on triggers and conditions.
+Executes workflow chains based on triggers and conditions.
 Handles auto-chaining, approval workflows, and chain tracking.
 
 Copyright 2025 Smart AI Memory, LLC
@@ -14,7 +14,7 @@ from typing import Any
 
 import yaml
 
-from .wizard_registry import WizardRegistry
+from .workflow_registry import WorkflowRegistry
 
 
 @dataclass
@@ -22,16 +22,16 @@ class ChainTrigger:
     """A trigger condition for auto-chaining."""
 
     condition: str
-    next_wizard: str
+    next_workflow: str
     approval_required: bool = False
     reason: str = ""
 
 
 @dataclass
 class ChainConfig:
-    """Configuration for a wizard's chaining behavior."""
+    """Configuration for a workflow's chaining behavior."""
 
-    wizard_name: str
+    workflow_name: str
     auto_chain: bool = True
     description: str = ""
     triggers: list[ChainTrigger] = field(default_factory=list)
@@ -41,7 +41,7 @@ class ChainConfig:
 class ChainStep:
     """A step in an executed chain."""
 
-    wizard_name: str
+    workflow_name: str
     triggered_by: str  # condition or manual
     approval_required: bool
     approved: bool | None = None  # None = pending
@@ -55,7 +55,7 @@ class ChainExecution:
     """Record of a chain execution."""
 
     chain_id: str
-    initial_wizard: str
+    initial_workflow: str
     steps: list[ChainStep] = field(default_factory=list)
     started_at: datetime = field(default_factory=datetime.now)
     completed_at: datetime | None = None
@@ -64,12 +64,12 @@ class ChainExecution:
 
 
 class ChainExecutor:
-    """Executes wizard chains based on configuration and results.
+    """Executes workflow chains based on configuration and results.
 
     Usage:
         executor = ChainExecutor()
 
-        # Check for triggered chains after a wizard run
+        # Check for triggered chains after a workflow run
         result = {"high_severity_count": 5, "vulnerability_type": "injection"}
         next_steps = executor.get_triggered_chains("security-audit", result)
 
@@ -79,19 +79,19 @@ class ChainExecutor:
 
     def __init__(
         self,
-        config_path: str | Path = ".empathy/wizard_chains.yaml",
+        config_path: str | Path = ".empathy/workflow_chains.yaml",
     ):
         """Initialize the chain executor.
 
         Args:
-            config_path: Path to wizard_chains.yaml
+            config_path: Path to workflow_chains.yaml
 
         """
         self.config_path = Path(config_path)
         self._configs: dict[str, ChainConfig] = {}
         self._templates: dict[str, list[str]] = {}
         self._global_settings: dict[str, Any] = {}
-        self._registry = WizardRegistry()
+        self._registry = WorkflowRegistry()
         self._executions: list[ChainExecution] = []
 
         self._load_config()
@@ -110,20 +110,20 @@ class ChainExecutor:
 
             # Load chain configs
             chains = data.get("chains", {})
-            for wizard_name, config in chains.items():
+            for workflow_name, config in chains.items():
                 triggers = []
                 for t in config.get("triggers", []):
                     triggers.append(
                         ChainTrigger(
                             condition=t.get("condition", ""),
-                            next_wizard=t.get("next", ""),
+                            next_workflow=t.get("next", ""),
                             approval_required=t.get("approval_required", False),
                             reason=t.get("reason", ""),
                         ),
                     )
 
-                self._configs[wizard_name] = ChainConfig(
-                    wizard_name=wizard_name,
+                self._configs[workflow_name] = ChainConfig(
+                    workflow_name=workflow_name,
                     auto_chain=config.get("auto_chain", True),
                     description=config.get("description", ""),
                     triggers=triggers,
@@ -139,14 +139,14 @@ class ChainExecutor:
 
     def get_triggered_chains(
         self,
-        wizard_name: str,
+        workflow_name: str,
         result: dict[str, Any],
     ) -> list[ChainTrigger]:
-        """Get triggered chain steps based on wizard result.
+        """Get triggered chain steps based on workflow result.
 
         Args:
-            wizard_name: The wizard that just completed
-            result: The wizard's result dictionary
+            workflow_name: The workflow that just completed
+            result: The workflow's result dictionary
 
         Returns:
             List of triggered ChainTriggers
@@ -155,7 +155,7 @@ class ChainExecutor:
         if not self._global_settings.get("auto_chain_enabled", True):
             return []
 
-        config = self._configs.get(wizard_name)
+        config = self._configs.get(workflow_name)
         if not config or not config.auto_chain:
             return []
 
@@ -227,25 +227,25 @@ class ChainExecutor:
 
     def should_trigger_chain(
         self,
-        wizard_name: str,
+        workflow_name: str,
         result: dict[str, Any],
     ) -> tuple[bool, list[ChainTrigger]]:
         """Check if a chain should be triggered and return triggers.
 
         Args:
-            wizard_name: The wizard that completed
-            result: The wizard's result
+            workflow_name: The workflow that completed
+            result: The workflow's result
 
         Returns:
             Tuple of (should_trigger, list_of_triggers)
 
         """
-        triggers = self.get_triggered_chains(wizard_name, result)
+        triggers = self.get_triggered_chains(workflow_name, result)
         return len(triggers) > 0, triggers
 
-    def get_chain_config(self, wizard_name: str) -> ChainConfig | None:
-        """Get chain configuration for a wizard."""
-        return self._configs.get(wizard_name)
+    def get_chain_config(self, workflow_name: str) -> ChainConfig | None:
+        """Get chain configuration for a workflow."""
+        return self._configs.get(workflow_name)
 
     def get_template(self, template_name: str) -> list[str] | None:
         """Get a chain template by name."""
@@ -257,13 +257,13 @@ class ChainExecutor:
 
     def create_execution(
         self,
-        initial_wizard: str,
+        initial_workflow: str,
         triggered_steps: list[ChainTrigger] | None = None,
     ) -> ChainExecution:
         """Create a new chain execution record.
 
         Args:
-            initial_wizard: The starting wizard
+            initial_workflow: The starting workflow
             triggered_steps: Optional list of triggered next steps
 
         Returns:
@@ -272,13 +272,13 @@ class ChainExecutor:
         """
         execution = ChainExecution(
             chain_id=f"chain_{datetime.now().strftime('%Y%m%d%H%M%S')}",
-            initial_wizard=initial_wizard,
+            initial_workflow=initial_workflow,
         )
 
         # Add initial step
         execution.steps.append(
             ChainStep(
-                wizard_name=initial_wizard,
+                workflow_name=initial_workflow,
                 triggered_by="manual",
                 approval_required=False,
                 approved=True,
@@ -290,7 +290,7 @@ class ChainExecutor:
             for trigger in triggered_steps:
                 execution.steps.append(
                     ChainStep(
-                        wizard_name=trigger.next_wizard,
+                        workflow_name=trigger.next_workflow,
                         triggered_by=trigger.condition,
                         approval_required=trigger.approval_required,
                     ),
@@ -358,15 +358,15 @@ class ChainExecutor:
         step.result = result
 
         # Check for new triggers
-        new_triggers = self.get_triggered_chains(step.wizard_name, result)
+        new_triggers = self.get_triggered_chains(step.workflow_name, result)
 
         # Add new steps (if not already in chain)
-        existing_wizards = {s.wizard_name for s in execution.steps}
+        existing_workflows = {s.workflow_name for s in execution.steps}
         for trigger in new_triggers:
-            if trigger.next_wizard not in existing_wizards:
+            if trigger.next_workflow not in existing_workflows:
                 execution.steps.append(
                     ChainStep(
-                        wizard_name=trigger.next_wizard,
+                        workflow_name=trigger.next_workflow,
                         triggered_by=trigger.condition,
                         approval_required=trigger.approval_required,
                     ),

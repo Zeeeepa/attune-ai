@@ -56,9 +56,7 @@ class PatternLearner:
                    If provided, insights will be stored in both files and memory
         """
         if executions_dir is None:
-            executions_dir = str(
-                Path.home() / ".empathy" / "meta_workflows" / "executions"
-            )
+            executions_dir = str(Path.home() / ".empathy" / "meta_workflows" / "executions")
         self.executions_dir = Path(executions_dir)
         self.memory = memory
 
@@ -90,9 +88,7 @@ class PatternLearner:
         results = []
         for run_id in run_ids:
             try:
-                result = load_execution_result(
-                    run_id, storage_dir=str(self.executions_dir)
-                )
+                result = load_execution_result(run_id, storage_dir=str(self.executions_dir))
                 if template_id is None or result.template_id == template_id:
                     results.append(result)
             except Exception as e:
@@ -312,9 +308,7 @@ class PatternLearner:
 
         return insights
 
-    def get_recommendations(
-        self, template_id: str, min_confidence: float = 0.7
-    ) -> list[str]:
+    def get_recommendations(self, template_id: str, min_confidence: float = 0.7) -> list[str]:
         """Get actionable recommendations for a template.
 
         Args:
@@ -324,9 +318,7 @@ class PatternLearner:
         Returns:
             List of recommendation strings
         """
-        insights = self.analyze_patterns(
-            template_id=template_id, min_confidence=min_confidence
-        )
+        insights = self.analyze_patterns(template_id=template_id, min_confidence=min_confidence)
 
         recommendations = []
 
@@ -347,9 +339,7 @@ class PatternLearner:
 
             elif insight.insight_type == "cost_analysis":
                 avg_cost = insight.data["average"]
-                recommendations.append(
-                    f"💰 Expected workflow cost: ${avg_cost:.2f}"
-                )
+                recommendations.append(f"💰 Expected workflow cost: ${avg_cost:.2f}")
 
             elif insight.insight_type == "failure_analysis":
                 role = insight.data["role"]
@@ -361,9 +351,7 @@ class PatternLearner:
 
         return recommendations
 
-    def generate_analytics_report(
-        self, template_id: str | None = None
-    ) -> dict[str, Any]:
+    def generate_analytics_report(self, template_id: str | None = None) -> dict[str, Any]:
         """Generate comprehensive analytics report.
 
         Args:
@@ -384,9 +372,7 @@ class PatternLearner:
         results = []
         for run_id in run_ids:
             try:
-                result = load_execution_result(
-                    run_id, storage_dir=str(self.executions_dir)
-                )
+                result = load_execution_result(run_id, storage_dir=str(self.executions_dir))
                 if template_id is None or result.template_id == template_id:
                     results.append(result)
             except Exception:
@@ -412,9 +398,7 @@ class PatternLearner:
                 insight_type: [i.to_dict() for i in insights_list]
                 for insight_type, insights_list in insights_by_type.items()
             },
-            "recommendations": self.get_recommendations(template_id)
-            if template_id
-            else [],
+            "recommendations": self.get_recommendations(template_id) if template_id else [],
         }
 
         return report
@@ -465,7 +449,7 @@ class PatternLearner:
             # Create searchable content
             content = f"""Meta-workflow execution: {result.template_id}
 Run ID: {result.run_id}
-Status: {'SUCCESS' if result.success else 'FAILED'}
+Status: {"SUCCESS" if result.success else "FAILED"}
 Agents created: {len(result.agents_created)}
 Total cost: ${result.total_cost:.2f}
 Duration: {result.total_duration:.1f}s
@@ -574,9 +558,7 @@ Form Responses:
 
                     # Load full result from files
                     try:
-                        result = load_execution_result(
-                            run_id, storage_dir=str(self.executions_dir)
-                        )
+                        result = load_execution_result(run_id, storage_dir=str(self.executions_dir))
                         results.append(result)
                     except FileNotFoundError:
                         logger.warning(f"Result file not found for run_id: {run_id}")
@@ -670,9 +652,9 @@ Form Responses:
 
             # Generate memory-enhanced recommendations
             if similar_executions:
-                success_rate = sum(
-                    1 for e in similar_executions if e.success
-                ) / len(similar_executions)
+                success_rate = sum(1 for e in similar_executions if e.success) / len(
+                    similar_executions
+                )
 
                 if success_rate >= 0.8:
                     base_recs.insert(

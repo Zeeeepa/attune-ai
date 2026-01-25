@@ -160,11 +160,18 @@ class SecureReleasePipeline:
             SecureReleaseResult with combined analysis
 
         """
-        from .security_adapters import (
-            _check_crew_available,
-            _get_crew_audit,
-            crew_report_to_workflow_format,
-        )
+        try:
+            from .security_adapters import (
+                _check_crew_available,
+                _get_crew_audit,
+                crew_report_to_workflow_format,
+            )
+            adapters_available = True
+        except ImportError:
+            adapters_available = False
+            _check_crew_available = lambda: False
+            _get_crew_audit = None
+            crew_report_to_workflow_format = None
 
         started_at = datetime.now()
 
@@ -181,7 +188,7 @@ class SecureReleasePipeline:
         try:
             # Step 1: SecurityAuditCrew (parallel or first)
             crew_task = None
-            crew_enabled = self.use_crew and _check_crew_available()
+            crew_enabled = self.use_crew and adapters_available and _check_crew_available()
 
             if crew_enabled:
                 if self.parallel_crew:

@@ -11,11 +11,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from empathy_llm_toolkit.config.unified import (
-    ModelTier,
-    Provider,
-    UnifiedAgentConfig,
-)
+from empathy_llm_toolkit.config.unified import ModelTier, Provider, UnifiedAgentConfig
 
 logger = logging.getLogger(__name__)
 
@@ -115,9 +111,7 @@ class MarkdownAgentParser:
         match = FRONTMATTER_PATTERN.match(content)
 
         if not match:
-            raise ValueError(
-                f"Invalid agent file format - missing YAML frontmatter: {source}"
-            )
+            raise ValueError(f"Invalid agent file format - missing YAML frontmatter: {source}")
 
         frontmatter_yaml = match.group(1)
         body = content[match.end() :].strip()
@@ -253,8 +247,7 @@ class MarkdownAgentParser:
         model = frontmatter.get("model", "").lower()
         if model and model not in self.MODEL_TIER_MAP:
             errors.append(
-                f"Invalid model '{model}'. "
-                f"Valid options: {', '.join(self.MODEL_TIER_MAP.keys())}"
+                f"Invalid model '{model}'. Valid options: {', '.join(self.MODEL_TIER_MAP.keys())}"
             )
 
         # Validate provider

@@ -32,10 +32,12 @@ class TestRunPreCompact:
 
             context_manager = ContextManager(storage_dir=tmpdir)
 
-            result = run_pre_compact({
-                "collaboration_state": collab,
-                "context_manager": context_manager,
-            })
+            result = run_pre_compact(
+                {
+                    "collaboration_state": collab,
+                    "context_manager": context_manager,
+                }
+            )
 
             assert result["state_saved"] is True
             assert result["trust_level"] == 0.8
@@ -49,11 +51,13 @@ class TestRunPreCompact:
             collab = CollaborationState(user_id="session_hook_user")
             context_manager = ContextManager(storage_dir=tmpdir)
 
-            result = run_pre_compact({
-                "collaboration_state": collab,
-                "context_manager": context_manager,
-                "session_id": "test-session-123",
-            })
+            result = run_pre_compact(
+                {
+                    "collaboration_state": collab,
+                    "context_manager": context_manager,
+                    "session_id": "test-session-123",
+                }
+            )
 
             assert result["state_saved"] is True
             assert context_manager.session_id == "test-session-123"
@@ -64,11 +68,13 @@ class TestRunPreCompact:
             collab = CollaborationState(user_id="phase_hook_user")
             context_manager = ContextManager(storage_dir=tmpdir)
 
-            result = run_pre_compact({
-                "collaboration_state": collab,
-                "context_manager": context_manager,
-                "current_phase": "implementation",
-            })
+            result = run_pre_compact(
+                {
+                    "collaboration_state": collab,
+                    "context_manager": context_manager,
+                    "current_phase": "implementation",
+                }
+            )
 
             assert result["state_saved"] is True
             assert context_manager.current_phase == "implementation"
@@ -79,17 +85,19 @@ class TestRunPreCompact:
             collab = CollaborationState(user_id="work_hook_user")
             context_manager = ContextManager(storage_dir=tmpdir)
 
-            result = run_pre_compact({
-                "collaboration_state": collab,
-                "context_manager": context_manager,
-                "pending_work": {
-                    "situation": "Working on feature X",
-                    "background": "Feature request from customer",
-                    "assessment": "70% complete",
-                    "recommendation": "Complete unit tests",
-                    "priority": "high",
-                },
-            })
+            result = run_pre_compact(
+                {
+                    "collaboration_state": collab,
+                    "context_manager": context_manager,
+                    "pending_work": {
+                        "situation": "Working on feature X",
+                        "background": "Feature request from customer",
+                        "assessment": "70% complete",
+                        "recommendation": "Complete unit tests",
+                        "priority": "high",
+                    },
+                }
+            )
 
             assert result["state_saved"] is True
             assert result["has_handoff"] is True
@@ -113,10 +121,12 @@ class TestRunPreCompact:
 
             context_manager = ContextManager(storage_dir=tmpdir)
 
-            result = run_pre_compact({
-                "collaboration_state": collab,
-                "context_manager": context_manager,
-            })
+            result = run_pre_compact(
+                {
+                    "collaboration_state": collab,
+                    "context_manager": context_manager,
+                }
+            )
 
             assert result["state_saved"] is True
             assert result["patterns_count"] == 1
@@ -137,9 +147,11 @@ class TestRunPreCompact:
                 # This will fail because we mocked __init__, but it demonstrates
                 # the context manager creation path is taken
                 try:
-                    result = run_pre_compact({
-                        "collaboration_state": collab,
-                    })
+                    result = run_pre_compact(
+                        {
+                            "collaboration_state": collab,
+                        }
+                    )
                 except Exception:
                     pass  # Expected due to mock
 

@@ -74,7 +74,7 @@ def list_templates(
         if not template_ids:
             console.print("[yellow]No templates found.[/yellow]")
             console.print(f"\nLooking in: {storage_dir}")
-            console.print("\nCreate templates by running workflow wizard or")
+            console.print("\nCreate templates by running workflow workflow or")
             console.print("placing template JSON files in the templates directory.")
             return
 
@@ -83,11 +83,15 @@ def list_templates(
         user_count = len(template_ids) - builtin_count
 
         console.print(f"\n[bold]Available Templates[/bold] ({len(template_ids)} total)")
-        console.print(f"  [cyan]📦 Built-in:[/cyan] {builtin_count}  [green]👤 User:[/green] {user_count}\n")
+        console.print(
+            f"  [cyan]📦 Built-in:[/cyan] {builtin_count}  [green]👤 User:[/green] {user_count}\n"
+        )
 
         # Show migration hint for users coming from Crew workflows
         if builtin_count > 0:
-            console.print("[dim]💡 Tip: Built-in templates replace deprecated Crew workflows.[/dim]")
+            console.print(
+                "[dim]💡 Tip: Built-in templates replace deprecated Crew workflows.[/dim]"
+            )
             console.print("[dim]   See: empathy meta-workflow migrate --help[/dim]\n")
 
         for template_id in template_ids:
@@ -117,9 +121,13 @@ def list_templates(
 
                 # Add quick start command
                 info_lines.append("")
-                info_lines.append(f"[bold]Quick Start:[/bold] empathy meta-workflow run {template_id}")
+                info_lines.append(
+                    f"[bold]Quick Start:[/bold] empathy meta-workflow run {template_id}"
+                )
 
-                console.print(Panel("\n".join(info_lines), border_style="blue" if is_builtin else "green"))
+                console.print(
+                    Panel("\n".join(info_lines), border_style="blue" if is_builtin else "green")
+                )
                 console.print()
 
     except Exception as e:
@@ -185,7 +193,9 @@ def inspect_template(
 
         # Agent Composition Rules (optional)
         if show_rules:
-            console.print(f"\n[bold]Agent Composition Rules:[/bold] ({len(template.agent_composition_rules)})\n")
+            console.print(
+                f"\n[bold]Agent Composition Rules:[/bold] ({len(template.agent_composition_rules)})\n"
+            )
 
             for i, rule in enumerate(template.agent_composition_rules, 1):
                 rule_lines = [
@@ -208,7 +218,9 @@ def inspect_template(
         console.print("\n[bold]Summary:[/bold]")
         console.print(f"  Questions: {len(template.form_schema.questions)}")
         console.print(f"  Agent Rules: {len(template.agent_composition_rules)}")
-        console.print(f"  Estimated Cost: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}")
+        console.print(
+            f"  Estimated Cost: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}"
+        )
         console.print()
 
     except Exception as e:
@@ -326,7 +338,9 @@ def generate_plan_cmd(
 
             validated_skill_path = _validate_file_path(str(skill_path))
             validated_skill_path.write_text(plan_content)
-            console.print(f"\n[green]✓ Installed as Claude Code skill:[/green] {validated_skill_path}")
+            console.print(
+                f"\n[green]✓ Installed as Claude Code skill:[/green] {validated_skill_path}"
+            )
             console.print(f"\nRun with: [bold]/project:{template_id}[/bold]")
 
         elif output_file:
@@ -512,7 +526,9 @@ def run_workflow(
         if result.error:
             summary_lines.append(f"\n[bold red]Error:[/bold red] {result.error}")
 
-        console.print(Panel("\n".join(summary_lines), title="Execution Summary", border_style="green"))
+        console.print(
+            Panel("\n".join(summary_lines), title="Execution Summary", border_style="green")
+        )
 
         # Show agents
         console.print("\n[bold]Agents Executed:[/bold]\n")
@@ -539,6 +555,7 @@ def run_workflow(
         else:
             console.print(f"\n[red]Error:[/red] {e}")
             import traceback
+
             traceback.print_exc()
         raise typer.Exit(code=1)
 
@@ -579,24 +596,32 @@ def natural_language_run(
         matches = detector.detect(request)
 
         if not matches:
-            console.print("\n[yellow]I couldn't identify a matching agent team for your request.[/yellow]")
+            console.print(
+                "\n[yellow]I couldn't identify a matching agent team for your request.[/yellow]"
+            )
             console.print("\n[bold]Available agent teams:[/bold]")
-            console.print("  • [cyan]release-prep[/cyan] - Security, testing, code quality, documentation checks")
-            console.print("  • [cyan]test-coverage-boost[/cyan] - Analyze and improve test coverage")
+            console.print(
+                "  • [cyan]release-prep[/cyan] - Security, testing, code quality, documentation checks"
+            )
+            console.print(
+                "  • [cyan]test-coverage-boost[/cyan] - Analyze and improve test coverage"
+            )
             console.print("  • [cyan]test-maintenance[/cyan] - Test lifecycle management")
             console.print("  • [cyan]manage-docs[/cyan] - Documentation sync and gap detection")
             console.print("\n[dim]Try: empathy meta-workflow run <template-id>[/dim]\n")
             return
 
         # Show detected matches
-        console.print(f"\n[bold]Analyzing:[/bold] \"{request}\"\n")
+        console.print(f'\n[bold]Analyzing:[/bold] "{request}"\n')
 
         best_match = matches[0]
         confidence_pct = int(best_match.confidence * 100)
 
         # If auto-run and high confidence, run immediately
         if auto_run and best_match.confidence >= 0.6:
-            console.print(f"[bold green]Auto-detected:[/bold green] {best_match.template_name} ({confidence_pct}% confidence)")
+            console.print(
+                f"[bold green]Auto-detected:[/bold green] {best_match.template_name} ({confidence_pct}% confidence)"
+            )
             console.print(f"[dim]{best_match.description}[/dim]\n")
             console.print(f"[bold]Running {best_match.template_id}...[/bold]\n")
 
@@ -615,7 +640,11 @@ def natural_language_run(
 
         for i, match in enumerate(matches[:3], 1):
             confidence = int(match.confidence * 100)
-            style = "green" if match.confidence >= 0.6 else "yellow" if match.confidence >= 0.4 else "dim"
+            style = (
+                "green"
+                if match.confidence >= 0.6
+                else "yellow" if match.confidence >= 0.4 else "dim"
+            )
 
             console.print(f"  {i}. [{style}]{match.template_name}[/{style}] ({confidence}% match)")
             console.print(f"     [dim]{match.description}[/dim]")
@@ -627,8 +656,12 @@ def natural_language_run(
 
         # Prompt to run best match
         if best_match.confidence >= 0.5:
-            console.print("[bold]Quick Run:[/bold] Use [cyan]--auto[/cyan] to automatically run the best match")
-            console.print(f"[dim]Example: empathy meta-workflow ask \"{request}\" --auto --real[/dim]\n")
+            console.print(
+                "[bold]Quick Run:[/bold] Use [cyan]--auto[/cyan] to automatically run the best match"
+            )
+            console.print(
+                f'[dim]Example: empathy meta-workflow ask "{request}" --auto --real[/dim]\n'
+            )
 
     except Exception as e:
         console.print(f"[red]Error:[/red] {e}")
@@ -657,7 +690,7 @@ def detect_intent(
         detector = IntentDetector()
         matches = detector.detect(request, threshold=threshold)
 
-        console.print(f"\n[bold]Intent Analysis:[/bold] \"{request}\"\n")
+        console.print(f'\n[bold]Intent Analysis:[/bold] "{request}"\n')
         console.print(f"[dim]Threshold: {threshold:.0%}[/dim]\n")
 
         if not matches:
@@ -730,6 +763,7 @@ def show_analytics(
         if use_memory:
             console.print("[bold]Initializing memory-enhanced analytics...[/bold]\n")
             from empathy_os.memory.unified import UnifiedMemory
+
             memory = UnifiedMemory(user_id="cli_analytics")
             pattern_learner = PatternLearner(memory=memory)
 
@@ -750,8 +784,7 @@ def show_analytics(
 
         summary_table.add_row("Total Runs", str(summary["total_runs"]))
         summary_table.add_row(
-            "Successful",
-            f"{summary['successful_runs']} ({summary['success_rate']:.0%})"
+            "Successful", f"{summary['successful_runs']} ({summary['success_rate']:.0%})"
         )
         summary_table.add_row("Total Cost", f"${summary['total_cost']:.2f}")
         summary_table.add_row("Avg Cost/Run", f"${summary['avg_cost_per_run']:.2f}")
@@ -774,7 +807,9 @@ def show_analytics(
             console.print("\n[bold]Tier Performance:[/bold]\n")
             for insight in insights["tier_performance"][:5]:  # Top 5
                 console.print(f"  • {insight['description']}")
-                console.print(f"    [dim]Confidence: {insight['confidence']:.0%} (n={insight['sample_size']})[/dim]")
+                console.print(
+                    f"    [dim]Confidence: {insight['confidence']:.0%} (n={insight['sample_size']})[/dim]"
+                )
 
         if insights.get("cost_analysis"):
             console.print("\n[bold]Cost Analysis:[/bold]\n")
@@ -782,7 +817,7 @@ def show_analytics(
                 console.print(f"  • {insight['description']}")
 
                 # Tier breakdown
-                breakdown = insight['data'].get('tier_breakdown', {})
+                breakdown = insight["data"].get("tier_breakdown", {})
                 if breakdown:
                     console.print("\n  [dim]By Tier:[/dim]")
                     for tier, stats in breakdown.items():
@@ -838,7 +873,9 @@ def list_runs(
             console.print("[yellow]No execution results found.[/yellow]")
             return
 
-        console.print(f"\n[bold]Recent Executions[/bold] (showing {min(limit, len(run_ids))} of {len(run_ids)}):\n")
+        console.print(
+            f"\n[bold]Recent Executions[/bold] (showing {min(limit, len(run_ids))} of {len(run_ids)}):\n"
+        )
 
         # Create table
         table = Table(show_header=True)
@@ -1042,9 +1079,7 @@ def cleanup_executions(
                 continue
 
         if not to_delete:
-            console.print(
-                f"[green]No executions older than {older_than_days} days found.[/green]"
-            )
+            console.print(f"[green]No executions older than {older_than_days} days found.[/green]")
             return
 
         # Show what will be deleted
@@ -1082,6 +1117,7 @@ def cleanup_executions(
 
         # Delete
         import shutil
+
         deleted = 0
         for run_id, _, _ in to_delete:
             try:
@@ -1177,8 +1213,7 @@ def search_memory(
 
     except ImportError:
         console.print(
-            "[red]Error:[/red] UnifiedMemory not available. "
-            "Ensure memory module is installed."
+            "[red]Error:[/red] UnifiedMemory not available. Ensure memory module is installed."
         )
         raise typer.Exit(code=1)
     except Exception as e:
@@ -1242,10 +1277,7 @@ def show_session_stats(
 
         table.add_row("Total Choices", str(stats.get("choice_count", 0)))
         table.add_row("Templates Used", str(len(stats.get("templates_used", []))))
-        table.add_row(
-            "Most Recent Choice",
-            stats.get("most_recent_choice_timestamp", "N/A")
-        )
+        table.add_row("Most Recent Choice", stats.get("most_recent_choice_timestamp", "N/A"))
 
         console.print(table)
         console.print()
@@ -1332,8 +1364,7 @@ def suggest_defaults_cmd(
         for question_id, value in defaults.items():
             # Find the question to get the display text
             question = next(
-                (q for q in template.form_schema.questions if q.id == question_id),
-                None
+                (q for q in template.form_schema.questions if q.id == question_id), None
             )
             question_text = question.text if question else question_id
 
@@ -1462,7 +1493,9 @@ def show_migration_guide(
         console.print(table)
 
         console.print("\n[bold]Quick Start:[/bold]")
-        console.print("  1. List available templates: [cyan]empathy meta-workflow list-templates[/cyan]")
+        console.print(
+            "  1. List available templates: [cyan]empathy meta-workflow list-templates[/cyan]"
+        )
         console.print("  2. Run a workflow: [cyan]empathy meta-workflow run release-prep[/cyan]")
         console.print("  3. View results: [cyan]empathy meta-workflow list-runs[/cyan]\n")
 
@@ -1534,7 +1567,9 @@ def create_agent(
 
         # Question 2: Specific tasks
         console.print("\n[bold]2. What specific tasks will it perform?[/bold]")
-        console.print("   [dim]Examples: analyze code, generate tests, review PRs, write docs[/dim]")
+        console.print(
+            "   [dim]Examples: analyze code, generate tests, review PRs, write docs[/dim]"
+        )
         tasks = typer.prompt("   List main tasks (comma-separated)")
 
         # Question 3: Tier selection
@@ -1598,7 +1633,9 @@ def create_agent(
 
     # Show usage
     console.print("\n[bold]Next Steps:[/bold]")
-    console.print("  1. Use this agent in a custom team: [cyan]empathy meta-workflow create-team[/cyan]")
+    console.print(
+        "  1. Use this agent in a custom team: [cyan]empathy meta-workflow create-team[/cyan]"
+    )
     console.print("  2. Or add to an existing template manually")
     console.print(f"\n[dim]Agent tier '{tier}' will cost approximately:")
     costs = {"cheap": "$0.001-0.01", "capable": "$0.01-0.05", "premium": "$0.05-0.20"}
@@ -1662,21 +1699,25 @@ def create_team(
 
         # Question 3: Agent roles
         console.print(f"\n[bold]3. Define {agent_count} agent roles:[/bold]")
-        console.print("   [dim]Common roles: analyst, reviewer, generator, validator, reporter[/dim]")
+        console.print(
+            "   [dim]Common roles: analyst, reviewer, generator, validator, reporter[/dim]"
+        )
 
         agents = []
         for i in range(agent_count):
-            console.print(f"\n   [bold]Agent {i+1}:[/bold]")
+            console.print(f"\n   [bold]Agent {i + 1}:[/bold]")
             role = typer.prompt("     Role name")
             purpose = typer.prompt("     What does this agent do?")
             tier = typer.prompt("     Tier (cheap/capable/premium)", default="capable")
 
-            agents.append({
-                "role": role,
-                "purpose": purpose,
-                "tier": tier,
-                "base_template": "generic",
-            })
+            agents.append(
+                {
+                    "role": role,
+                    "purpose": purpose,
+                    "tier": tier,
+                    "base_template": "generic",
+                }
+            )
 
         # Question 4: Collaboration pattern
         console.print("\n[bold]4. How should agents collaborate?[/bold]")
@@ -1716,9 +1757,24 @@ def create_team(
             "description": goal,
             "collaboration_pattern": "sequential",
             "agents": [
-                {"role": "Analyst", "purpose": "Analyze requirements", "tier": "cheap", "base_template": "generic"},
-                {"role": "Executor", "purpose": "Perform main task", "tier": "capable", "base_template": "generic"},
-                {"role": "Validator", "purpose": "Verify results", "tier": "capable", "base_template": "generic"},
+                {
+                    "role": "Analyst",
+                    "purpose": "Analyze requirements",
+                    "tier": "cheap",
+                    "base_template": "generic",
+                },
+                {
+                    "role": "Executor",
+                    "purpose": "Perform main task",
+                    "tier": "capable",
+                    "base_template": "generic",
+                },
+                {
+                    "role": "Validator",
+                    "purpose": "Verify results",
+                    "tier": "capable",
+                    "base_template": "generic",
+                },
             ],
             "estimated_cost_range": {"min": 0.03, "max": 0.45},
         }
@@ -1737,11 +1793,15 @@ def create_team(
 
     # Show usage
     console.print("\n[bold]Next Steps:[/bold]")
-    console.print(f"  1. Save as template: [cyan]--output .empathy/meta_workflows/templates/{team_template['id']}.json[/cyan]")
-    console.print(f"  2. Run the team: [cyan]empathy meta-workflow run {team_template['id']}[/cyan]")
+    console.print(
+        f"  1. Save as template: [cyan]--output .empathy/meta_workflows/templates/{team_template['id']}.json[/cyan]"
+    )
+    console.print(
+        f"  2. Run the team: [cyan]empathy meta-workflow run {team_template['id']}[/cyan]"
+    )
 
-    cost_min = team_template['estimated_cost_range']['min']
-    cost_max = team_template['estimated_cost_range']['max']
+    cost_min = team_template["estimated_cost_range"]["min"]
+    cost_max = team_template["estimated_cost_range"]["max"]
     console.print(f"\n[dim]Estimated cost: ${cost_min:.2f} - ${cost_max:.2f} per execution[/dim]\n")
 
 

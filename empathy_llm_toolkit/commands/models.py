@@ -176,24 +176,30 @@ class CommandConfig:
         ]
 
         if self.aliases:
-            lines.extend([
-                "## Aliases",
-                ", ".join(f"/{a}" for a in self.aliases),
-                "",
-            ])
+            lines.extend(
+                [
+                    "## Aliases",
+                    ", ".join(f"/{a}" for a in self.aliases),
+                    "",
+                ]
+            )
 
         if self.metadata.tags:
-            lines.extend([
-                "## Tags",
-                ", ".join(self.metadata.tags),
-                "",
-            ])
+            lines.extend(
+                [
+                    "## Tags",
+                    ", ".join(self.metadata.tags),
+                    "",
+                ]
+            )
 
-        lines.extend([
-            "## Instructions",
-            "",
-            self.body,
-        ])
+        lines.extend(
+            [
+                "## Instructions",
+                "",
+                self.body,
+            ]
+        )
 
         return "\n".join(lines)
 

@@ -144,9 +144,7 @@ def main(**context: Any) -> dict[str, Any]:
         removed = cleanup_old_sessions()
         result["old_sessions_removed"] = removed
         if removed > 0:
-            result["messages"].append(
-                f"[SessionEnd] Removed {removed} old session file(s)"
-            )
+            result["messages"].append(f"[SessionEnd] Removed {removed} old session file(s)")
 
         # Check if session should be evaluated for learning
         min_interactions = context.get("min_learning_interactions", 10)

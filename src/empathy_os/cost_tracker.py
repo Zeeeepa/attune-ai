@@ -142,8 +142,12 @@ class CostTracker:
                 with open(self.costs_summary) as f:
                     summary_data = json.load(f)
                     self.data["daily_totals"] = summary_data.get("daily_totals", {})
-                    self.data["created_at"] = summary_data.get("created_at", self.data["created_at"])
-                    self.data["last_updated"] = summary_data.get("last_updated", self.data["last_updated"])
+                    self.data["created_at"] = summary_data.get(
+                        "created_at", self.data["created_at"]
+                    )
+                    self.data["last_updated"] = summary_data.get(
+                        "last_updated", self.data["last_updated"]
+                    )
                     return  # Summary loaded, done
             except (OSError, json.JSONDecodeError):
                 pass  # Fall through to JSON fallback
@@ -155,7 +159,9 @@ class CostTracker:
                     json_data = json.load(f)
                     self.data["daily_totals"] = json_data.get("daily_totals", {})
                     self.data["created_at"] = json_data.get("created_at", self.data["created_at"])
-                    self.data["last_updated"] = json_data.get("last_updated", self.data["last_updated"])
+                    self.data["last_updated"] = json_data.get(
+                        "last_updated", self.data["last_updated"]
+                    )
                     # Don't load requests here - they'll be lazy-loaded
             except (OSError, json.JSONDecodeError):
                 pass  # Use defaults

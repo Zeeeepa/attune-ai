@@ -404,27 +404,21 @@ class WorkflowBlueprint:
         # Validate all agents
         for agent in self.agents:
             if not agent.validate():
-                errors.extend(
-                    f"Agent '{agent.spec.id}': {e}" for e in agent.validation_errors
-                )
+                errors.extend(f"Agent '{agent.spec.id}': {e}" for e in agent.validation_errors)
 
         # Validate stages reference valid agents
         agent_ids = {a.spec.id for a in self.agents}
         for stage in self.stages:
             for agent_id in stage.agent_ids:
                 if agent_id not in agent_ids:
-                    errors.append(
-                        f"Stage '{stage.id}' references unknown agent '{agent_id}'"
-                    )
+                    errors.append(f"Stage '{stage.id}' references unknown agent '{agent_id}'")
 
         # Validate stage dependencies
         stage_ids = {s.id for s in self.stages}
         for stage in self.stages:
             for dep in stage.depends_on:
                 if dep not in stage_ids:
-                    errors.append(
-                        f"Stage '{stage.id}' depends on unknown stage '{dep}'"
-                    )
+                    errors.append(f"Stage '{stage.id}' depends on unknown stage '{dep}'")
 
         return len(errors) == 0, errors
 
@@ -497,37 +491,43 @@ class WorkflowBlueprint:
 
             # Parse tools
             for tool_data in spec_data.get("tools", []):
-                spec.tools.append(ToolSpec(
-                    id=tool_data.get("id", ""),
-                    name=tool_data.get("name", ""),
-                    category=ToolCategory(tool_data.get("category", "code_analysis")),
-                    description=tool_data.get("description", ""),
-                    parameters=tool_data.get("parameters", {}),
-                    requires_confirmation=tool_data.get("requires_confirmation", False),
-                    is_mutating=tool_data.get("is_mutating", False),
-                    cost_tier=tool_data.get("cost_tier", "cheap"),
-                ))
+                spec.tools.append(
+                    ToolSpec(
+                        id=tool_data.get("id", ""),
+                        name=tool_data.get("name", ""),
+                        category=ToolCategory(tool_data.get("category", "code_analysis")),
+                        description=tool_data.get("description", ""),
+                        parameters=tool_data.get("parameters", {}),
+                        requires_confirmation=tool_data.get("requires_confirmation", False),
+                        is_mutating=tool_data.get("is_mutating", False),
+                        cost_tier=tool_data.get("cost_tier", "cheap"),
+                    )
+                )
 
-            blueprint.agents.append(AgentBlueprint(
-                spec=spec,
-                generated_from=agent_data.get("generated_from", "socratic"),
-                template_id=agent_data.get("template_id"),
-                customizations=agent_data.get("customizations", {}),
-            ))
+            blueprint.agents.append(
+                AgentBlueprint(
+                    spec=spec,
+                    generated_from=agent_data.get("generated_from", "socratic"),
+                    template_id=agent_data.get("template_id"),
+                    customizations=agent_data.get("customizations", {}),
+                )
+            )
 
         # Parse stages
         for stage_data in data.get("stages", []):
-            blueprint.stages.append(StageSpec(
-                id=stage_data.get("id", ""),
-                name=stage_data.get("name", ""),
-                description=stage_data.get("description", ""),
-                agent_ids=stage_data.get("agent_ids", []),
-                parallel=stage_data.get("parallel", False),
-                run_when=stage_data.get("run_when"),
-                depends_on=stage_data.get("depends_on", []),
-                input_mapping=stage_data.get("input_mapping", {}),
-                output_aggregation=stage_data.get("output_aggregation", "merge"),
-                timeout=stage_data.get("timeout", 300),
-            ))
+            blueprint.stages.append(
+                StageSpec(
+                    id=stage_data.get("id", ""),
+                    name=stage_data.get("name", ""),
+                    description=stage_data.get("description", ""),
+                    agent_ids=stage_data.get("agent_ids", []),
+                    parallel=stage_data.get("parallel", False),
+                    run_when=stage_data.get("run_when"),
+                    depends_on=stage_data.get("depends_on", []),
+                    input_mapping=stage_data.get("input_mapping", {}),
+                    output_aggregation=stage_data.get("output_aggregation", "merge"),
+                    timeout=stage_data.get("timeout", 300),
+                )
+            )
 
         return blueprint

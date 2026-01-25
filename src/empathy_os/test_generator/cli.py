@@ -28,33 +28,33 @@ logger = logging.getLogger(__name__)
 
 
 def cmd_generate(args):
-    """Generate tests for a wizard.
+    """Generate tests for a workflow.
 
     Args:
         args: Command line arguments
 
     """
-    wizard_id = args.wizard_id
+    workflow_id = args.workflow_id
     pattern_ids = args.patterns.split(",") if args.patterns else []
 
-    logger.info(f"Generating tests for wizard: {wizard_id}")
+    logger.info(f"Generating tests for workflow: {workflow_id}")
     logger.info(f"Patterns: {', '.join(pattern_ids)}")
 
     # Generate tests
     generator = TestGenerator()
     tests = generator.generate_tests(
-        wizard_id=wizard_id,
+        workflow_id=workflow_id,
         pattern_ids=pattern_ids,
-        wizard_module=args.module,
-        wizard_class=args.wizard_class,
+        workflow_module=args.module,
+        workflow_class=args.workflow_class,
     )
 
     # Determine output directory
-    output_dir = Path(args.output) if args.output else Path("tests/unit/wizards")
+    output_dir = Path(args.output) if args.output else Path("tests/unit/workflows")
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Write unit tests
-    unit_test_file = output_dir / f"test_{wizard_id}_wizard.py"
+    unit_test_file = output_dir / f"test_{workflow_id}_workflow.py"
     validated_unit_test = _validate_file_path(str(unit_test_file))
     with open(validated_unit_test, "w") as f:
         f.write(tests["unit"])
@@ -63,7 +63,7 @@ def cmd_generate(args):
     # Write integration tests (if generated)
     if tests["integration"]:
         integration_test_file = (
-            output_dir.parent.parent / "integration" / f"test_{wizard_id}_integration.py"
+            output_dir.parent.parent / "integration" / f"test_{workflow_id}_integration.py"
         )
         integration_test_file.parent.mkdir(parents=True, exist_ok=True)
         validated_integration = _validate_file_path(str(integration_test_file))
@@ -72,7 +72,7 @@ def cmd_generate(args):
         logger.info(f"✓ Integration tests written to: {validated_integration}")
 
     # Write fixtures
-    fixtures_file = output_dir / f"fixtures_{wizard_id}.py"
+    fixtures_file = output_dir / f"fixtures_{workflow_id}.py"
     validated_fixtures = _validate_file_path(str(fixtures_file))
     with open(validated_fixtures, "w") as f:
         f.write(tests["fixtures"])
@@ -92,24 +92,24 @@ def cmd_generate(args):
 
 
 def cmd_analyze(args):
-    """Analyze wizard risk and show recommendations.
+    """Analyze workflow risk and show recommendations.
 
     Args:
         args: Command line arguments
 
     """
-    wizard_id = args.wizard_id
+    workflow_id = args.workflow_id
     pattern_ids = args.patterns.split(",") if args.patterns else []
 
-    logger.info(f"Analyzing wizard: {wizard_id}")
+    logger.info(f"Analyzing workflow: {workflow_id}")
 
     # Perform risk analysis
     analyzer = RiskAnalyzer()
-    analysis = analyzer.analyze(wizard_id, pattern_ids)
+    analysis = analyzer.analyze(workflow_id, pattern_ids)
 
     # Display results
     print(f"\n{'=' * 60}")
-    print(f"Risk Analysis: {wizard_id}")
+    print(f"Risk Analysis: {workflow_id}")
     print(f"{'=' * 60}\n")
 
     print(f"Patterns Used: {len(analysis.pattern_ids)}")
@@ -148,7 +148,7 @@ def cmd_analyze(args):
     # JSON output if requested
     if args.json:
         json_output = analysis.to_dict()
-        json_file = Path(f"{wizard_id}_risk_analysis.json")
+        json_file = Path(f"{workflow_id}_risk_analysis.json")
         with open(json_file, "w") as f:
             json.dump(json_output, f, indent=2)
         print(f"\n✓ JSON output written to: {json_file}")
@@ -157,18 +157,18 @@ def cmd_analyze(args):
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Test Generator for Empathy Wizard Factory",
+        description="Test Generator for Empathy Workflow Factory",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Generate tests for SOAP Note wizard
+  # Generate tests for SOAP Note workflow
   %(prog)s generate soap_note --patterns linear_flow,approval,structured_fields
 
-  # Analyze risk for debugging wizard
+  # Analyze risk for debugging workflow
   %(prog)s analyze debugging --patterns code_analysis_input,risk_assessment
 
   # Generate with custom module/class
-  %(prog)s generate my_wizard --patterns linear_flow --module wizards.my_wizard --class MyWizard
+  %(prog)s generate my_workflow --patterns linear_flow --module workflows.my_workflow --class MyWorkflow
 
   # Output to custom directory
   %(prog)s generate soap_note --patterns linear_flow --output tests/custom/
@@ -178,8 +178,8 @@ Examples:
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
 
     # Generate command
-    gen_parser = subparsers.add_parser("generate", help="Generate tests for a wizard")
-    gen_parser.add_argument("wizard_id", help="Wizard identifier (e.g., soap_note)")
+    gen_parser = subparsers.add_parser("generate", help="Generate tests for a workflow")
+    gen_parser.add_argument("workflow_id", help="Workflow identifier (e.g., soap_note)")
     gen_parser.add_argument(
         "--patterns",
         required=True,
@@ -187,22 +187,22 @@ Examples:
     )
     gen_parser.add_argument(
         "--module",
-        help="Python module path (e.g., wizards.soap_note)",
+        help="Python module path (e.g., workflows.soap_note)",
     )
     gen_parser.add_argument(
         "--class",
-        dest="wizard_class",
-        help="Wizard class name (e.g., SOAPNoteWizard)",
+        dest="workflow_class",
+        help="Workflow class name (e.g., SOAPNoteWorkflow)",
     )
     gen_parser.add_argument(
         "--output",
         "-o",
-        help="Output directory (default: tests/unit/wizards/)",
+        help="Output directory (default: tests/unit/workflows/)",
     )
 
     # Analyze command
-    analyze_parser = subparsers.add_parser("analyze", help="Analyze wizard risk")
-    analyze_parser.add_argument("wizard_id", help="Wizard identifier")
+    analyze_parser = subparsers.add_parser("analyze", help="Analyze workflow risk")
+    analyze_parser.add_argument("workflow_id", help="Workflow identifier")
     analyze_parser.add_argument(
         "--patterns",
         required=True,

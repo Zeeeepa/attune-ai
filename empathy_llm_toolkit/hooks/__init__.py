@@ -11,11 +11,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from empathy_llm_toolkit.hooks.config import (
-    HookConfig,
-    HookDefinition,
-    HookEvent,
-)
+from empathy_llm_toolkit.hooks.config import HookConfig, HookDefinition, HookEvent
 from empathy_llm_toolkit.hooks.executor import HookExecutor
 from empathy_llm_toolkit.hooks.registry import HookRegistry
 

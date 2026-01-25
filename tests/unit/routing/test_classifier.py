@@ -13,16 +13,16 @@ class TestClassificationResultDataClass:
     def test_classification_result_initialization(self):
         """Test ClassificationResult can be created."""
         result = ClassificationResult(
-            primary_wizard="code-review",
-            secondary_wizards=["security-scan", "test-gen"],
+            primary_workflow="code-review",
+            secondary_workflows=["security-scan", "test-gen"],
             confidence=0.85,
             reasoning="High confidence match",
             suggested_chain=["code-review", "security-scan"],
-            extracted_context={"file": "auth.py", "issue": "security"}
+            extracted_context={"file": "auth.py", "issue": "security"},
         )
 
-        assert result.primary_wizard == "code-review"
-        assert len(result.secondary_wizards) == 2
+        assert result.primary_workflow == "code-review"
+        assert len(result.secondary_workflows) == 2
         assert result.confidence == 0.85
         assert result.reasoning == "High confidence match"
         assert len(result.suggested_chain) == 2
@@ -30,23 +30,20 @@ class TestClassificationResultDataClass:
 
     def test_classification_result_defaults(self):
         """Test ClassificationResult uses default values."""
-        result = ClassificationResult(primary_wizard="test-wizard")
+        result = ClassificationResult(primary_workflow="test-workflow")
 
-        assert result.secondary_wizards == []
+        assert result.secondary_workflows == []
         assert result.confidence == 0.0
         assert result.reasoning == ""
         assert result.suggested_chain == []
         assert result.extracted_context == {}
 
     def test_classification_result_with_no_secondary(self):
-        """Test ClassificationResult with only primary wizard."""
-        result = ClassificationResult(
-            primary_wizard="security-scan",
-            confidence=0.95
-        )
+        """Test ClassificationResult with only primary workflow."""
+        result = ClassificationResult(primary_workflow="security-scan", confidence=0.95)
 
-        assert result.primary_wizard == "security-scan"
-        assert result.secondary_wizards == []
+        assert result.primary_workflow == "security-scan"
+        assert result.secondary_workflows == []
         assert result.confidence == 0.95
 
 
@@ -69,6 +66,7 @@ class TestHaikuClassifierInitialization:
     def test_classifier_without_api_key(self):
         """Test HaikuClassifier without API key uses env var."""
         import os
+
         # Save original env var
         original_key = os.environ.get("ANTHROPIC_API_KEY")
 
@@ -104,7 +102,7 @@ class TestKeywordClassification:
         result = classifier.classify_sync("review my code")
 
         assert isinstance(result, ClassificationResult)
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None
         assert isinstance(result.confidence, float)
         assert 0.0 <= result.confidence <= 1.0
 
@@ -116,7 +114,7 @@ class TestKeywordClassification:
 
         # Should match code-review wizard
         assert isinstance(result, ClassificationResult)
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None
         assert result.confidence > 0.0
 
     def test_classify_security_keywords(self):
@@ -145,7 +143,7 @@ class TestKeywordClassification:
         result = classifier.classify_sync("xyz abc qwerty nonsense")
 
         # Should default to code-review
-        assert result.primary_wizard == "code-review"
+        assert result.primary_workflow == "code-review"
         assert result.confidence == 0.3
         assert "No keyword matches" in result.reasoning
 
@@ -153,15 +151,12 @@ class TestKeywordClassification:
         """Test classification with additional context."""
         classifier = HaikuClassifier()
 
-        context = {
-            "current_file": "test_auth.py",
-            "project_type": "web-app"
-        }
+        context = {"current_file": "test_auth.py", "project_type": "web-app"}
 
         result = classifier.classify_sync("review this file", context=context)
 
         assert isinstance(result, ClassificationResult)
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None
 
     def test_classify_case_insensitive(self):
         """Test classification is case insensitive."""
@@ -172,8 +167,8 @@ class TestKeywordClassification:
         result_mixed = classifier.classify_sync("Review Code")
 
         # All should produce same primary wizard
-        assert result_lower.primary_wizard == result_upper.primary_wizard
-        assert result_lower.primary_wizard == result_mixed.primary_wizard
+        assert result_lower.primary_workflow == result_upper.primary_workflow
+        assert result_lower.primary_workflow == result_mixed.primary_workflow
 
 
 class TestKeywordScoring:
@@ -219,9 +214,9 @@ class TestKeywordScoring:
         result = classifier.classify_sync("review code and scan for security issues")
 
         assert isinstance(result, ClassificationResult)
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None
         # May or may not have secondary based on scoring
-        assert isinstance(result.secondary_wizards, list)
+        assert isinstance(result.secondary_workflows, list)
 
     def test_secondary_requires_significant_score(self):
         """Test secondary wizards require significant score."""
@@ -231,10 +226,10 @@ class TestKeywordScoring:
         result = classifier.classify_sync("security vulnerability scan")
 
         # Primary should exist
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None
 
         # If secondaries exist, they should have reasonable scores
-        for secondary in result.secondary_wizards:
+        for secondary in result.secondary_workflows:
             assert isinstance(secondary, str)
             assert len(secondary) > 0
 
@@ -249,7 +244,7 @@ class TestClassificationEdgeCases:
         result = classifier.classify_sync("")
 
         # Should default to code-review
-        assert result.primary_wizard == "code-review"
+        assert result.primary_workflow == "code-review"
         assert result.confidence == 0.3
 
     def test_classify_whitespace_only(self):
@@ -259,7 +254,7 @@ class TestClassificationEdgeCases:
         result = classifier.classify_sync("   \n\t   ")
 
         # Should default to code-review
-        assert result.primary_wizard == "code-review"
+        assert result.primary_workflow == "code-review"
 
     def test_classify_special_characters(self):
         """Test classification with special characters."""
@@ -281,7 +276,7 @@ class TestClassificationEdgeCases:
 
         # Should still work
         assert isinstance(result, ClassificationResult)
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None
 
 
 class TestConfidenceScoring:
@@ -291,13 +286,7 @@ class TestConfidenceScoring:
         """Test confidence is always in valid range."""
         classifier = HaikuClassifier()
 
-        test_requests = [
-            "review code",
-            "security scan",
-            "generate tests",
-            "xyz nonsense",
-            ""
-        ]
+        test_requests = ["review code", "security scan", "generate tests", "xyz nonsense", ""]
 
         for request in test_requests:
             result = classifier.classify_sync(request)
@@ -388,7 +377,7 @@ class TestAvailableWizardsOverride:
         result = classifier.classify_sync("review code")
 
         assert isinstance(result, ClassificationResult)
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None
 
     def test_classify_with_limited_wizards(self):
         """Test classification still works with limited wizard set."""

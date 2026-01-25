@@ -192,11 +192,7 @@ class TestEditorState:
 
     def test_create_state(self):
         """Test creating an editor state."""
-        from empathy_os.socratic.visual_editor import (
-            EditorEdge,
-            EditorNode,
-            EditorState,
-        )
+        from empathy_os.socratic.visual_editor import EditorEdge, EditorNode, EditorState
 
         nodes = [
             EditorNode(
@@ -247,10 +243,7 @@ class TestEditorState:
 
     def test_state_to_dict(self):
         """Test EditorState serialization."""
-        from empathy_os.socratic.visual_editor import (
-            EditorNode,
-            EditorState,
-        )
+        from empathy_os.socratic.visual_editor import EditorNode, EditorState
 
         state = EditorState(
             workflow_id="wf-001",
@@ -275,10 +268,7 @@ class TestEditorState:
 
     def test_state_to_react_flow(self):
         """Test converting state to React Flow schema."""
-        from empathy_os.socratic.visual_editor import (
-            EditorNode,
-            EditorState,
-        )
+        from empathy_os.socratic.visual_editor import EditorNode, EditorState
 
         state = EditorState(
             workflow_id="wf-001",
@@ -547,10 +537,7 @@ class TestGenerateReactFlowSchema:
 
     def test_generate_schema(self, sample_workflow_blueprint):
         """Test generating React Flow schema from editor state."""
-        from empathy_os.socratic.visual_editor import (
-            WorkflowVisualizer,
-            generate_react_flow_schema,
-        )
+        from empathy_os.socratic.visual_editor import WorkflowVisualizer, generate_react_flow_schema
 
         # First convert blueprint to editor state
         visualizer = WorkflowVisualizer()
@@ -568,10 +555,7 @@ class TestGenerateReactFlowSchema:
 
     def test_schema_is_json_serializable(self, sample_workflow_blueprint):
         """Test that schema can be serialized to JSON."""
-        from empathy_os.socratic.visual_editor import (
-            WorkflowVisualizer,
-            generate_react_flow_schema,
-        )
+        from empathy_os.socratic.visual_editor import WorkflowVisualizer, generate_react_flow_schema
 
         visualizer = WorkflowVisualizer()
         state = visualizer.blueprint_to_editor(sample_workflow_blueprint)

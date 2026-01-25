@@ -63,9 +63,7 @@ class SocraticFormEngine:
         self._ask_user_callback = ask_user_callback
         self._use_defaults_when_no_callback = use_defaults_when_no_callback
 
-    def ask_questions(
-        self, form_schema: FormSchema, template_id: str
-    ) -> FormResponse:
+    def ask_questions(self, form_schema: FormSchema, template_id: str) -> FormResponse:
         """Ask all questions in the form schema and collect responses.
 
         Args:
@@ -86,9 +84,7 @@ class SocraticFormEngine:
         batches = form_schema.get_question_batches(batch_size=4)
         all_responses = {}
 
-        logger.info(
-            f"Asking {len(form_schema.questions)} questions in {len(batches)} batch(es)"
-        )
+        logger.info(f"Asking {len(form_schema.questions)} questions in {len(batches)} batch(es)")
 
         for batch_idx, batch in enumerate(batches, 1):
             logger.debug(f"Processing batch {batch_idx}/{len(batches)}")
@@ -109,14 +105,10 @@ class SocraticFormEngine:
         # Cache response
         self.responses_cache[response.response_id] = response
 
-        logger.info(
-            f"Collected {len(all_responses)} responses for template {template_id}"
-        )
+        logger.info(f"Collected {len(all_responses)} responses for template {template_id}")
         return response
 
-    def _convert_batch_to_ask_user_format(
-        self, batch: list[FormQuestion]
-    ) -> list[dict[str, Any]]:
+    def _convert_batch_to_ask_user_format(self, batch: list[FormQuestion]) -> list[dict[str, Any]]:
         """Convert a batch of FormQuestions to AskUserQuestion format.
 
         Args:
@@ -127,9 +119,7 @@ class SocraticFormEngine:
         """
         return [q.to_ask_user_format() for q in batch]
 
-    def _ask_batch(
-        self, questions: list[dict[str, Any]], template_id: str
-    ) -> dict[str, Any]:
+    def _ask_batch(self, questions: list[dict[str, Any]], template_id: str) -> dict[str, Any]:
         """Ask a batch of questions using AskUserQuestion tool.
 
         Args:
@@ -173,9 +163,7 @@ class SocraticFormEngine:
             "Either provide a callback or set use_defaults_when_no_callback=True."
         )
 
-    def _get_defaults_from_questions(
-        self, questions: list[dict[str, Any]]
-    ) -> dict[str, Any]:
+    def _get_defaults_from_questions(self, questions: list[dict[str, Any]]) -> dict[str, Any]:
         """Extract default values from question definitions.
 
         Args:

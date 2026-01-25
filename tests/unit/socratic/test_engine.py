@@ -5,7 +5,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 class TestSocraticWorkflowBuilder:
     """Tests for SocraticWorkflowBuilder class."""
 
@@ -99,10 +98,13 @@ class TestSocraticWorkflowBuilder:
 
         # Create a session ready for generation
         session = builder.start_session("Automate code reviews for Python")
-        session = builder.submit_answers(session, {
-            "languages": ["python"],
-            "quality_focus": ["security", "maintainability"],
-        })
+        session = builder.submit_answers(
+            session,
+            {
+                "languages": ["python"],
+                "quality_focus": ["security", "maintainability"],
+            },
+        )
         session.state = SessionState.READY_TO_GENERATE
 
         workflow = builder.generate_workflow(session)
@@ -253,10 +255,13 @@ class TestSessionWorkflow:
         assert form is not None
 
         # 3. Submit answers
-        session = builder.submit_answers(session, {
-            "languages": ["python"],
-            "quality_focus": ["security"],
-        })
+        session = builder.submit_answers(
+            session,
+            {
+                "languages": ["python"],
+                "quality_focus": ["security"],
+            },
+        )
 
         # 4. Force ready state for test
         session.state = SessionState.READY_TO_GENERATE

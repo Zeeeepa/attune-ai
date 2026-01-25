@@ -1,4 +1,5 @@
 """Create demo progressive workflow data for CLI testing."""
+
 import sys
 from datetime import datetime
 from pathlib import Path

@@ -1,6 +1,5 @@
 """Tests for hook configuration models."""
 
-
 from empathy_llm_toolkit.hooks.config import (
     HookConfig,
     HookDefinition,
@@ -162,9 +161,7 @@ class TestHookConfig:
         rule2 = HookRule(hooks=[HookDefinition(command="b")], priority=10)
         rule3 = HookRule(hooks=[HookDefinition(command="c")], enabled=False)
 
-        config = HookConfig(
-            hooks={HookEvent.SESSION_START.value: [rule1, rule2, rule3]}
-        )
+        config = HookConfig(hooks={HookEvent.SESSION_START.value: [rule1, rule2, rule3]})
 
         hooks = config.get_hooks_for_event(HookEvent.SESSION_START)
 

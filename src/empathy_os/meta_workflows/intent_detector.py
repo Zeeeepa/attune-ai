@@ -39,12 +39,26 @@ class IntentMatch:
 INTENT_PATTERNS = {
     "release-prep": {
         "keywords": [
-            "release", "deploy", "publish", "ship", "launch",
-            "ready", "readiness", "checklist", "preparation",
-            "security scan", "vulnerability", "audit",
-            "production", "go live", "version bump",
-            "pre-release", "before release", "quality check",
-            "code review", "final check"
+            "release",
+            "deploy",
+            "publish",
+            "ship",
+            "launch",
+            "ready",
+            "readiness",
+            "checklist",
+            "preparation",
+            "security scan",
+            "vulnerability",
+            "audit",
+            "production",
+            "go live",
+            "version bump",
+            "pre-release",
+            "before release",
+            "quality check",
+            "code review",
+            "final check",
         ],
         "phrases": [
             r"ready (for|to) (release|deploy|publish)",
@@ -63,11 +77,23 @@ INTENT_PATTERNS = {
     },
     "test-coverage-boost": {
         "keywords": [
-            "test coverage", "coverage", "tests", "testing",
-            "unit tests", "improve coverage", "boost coverage",
-            "generate tests", "missing tests", "coverage gap",
-            "80%", "90%", "percent coverage", "more tests",
-            "add tests", "write tests", "create tests"
+            "test coverage",
+            "coverage",
+            "tests",
+            "testing",
+            "unit tests",
+            "improve coverage",
+            "boost coverage",
+            "generate tests",
+            "missing tests",
+            "coverage gap",
+            "80%",
+            "90%",
+            "percent coverage",
+            "more tests",
+            "add tests",
+            "write tests",
+            "create tests",
         ],
         "phrases": [
             r"(improve|increase|boost) (test )?coverage",
@@ -83,10 +109,17 @@ INTENT_PATTERNS = {
     },
     "test-maintenance": {
         "keywords": [
-            "test maintenance", "stale tests", "outdated tests",
-            "flaky tests", "test health", "test cleanup",
-            "test lifecycle", "maintain tests", "fix tests",
-            "broken tests", "failing tests"
+            "test maintenance",
+            "stale tests",
+            "outdated tests",
+            "flaky tests",
+            "test health",
+            "test cleanup",
+            "test lifecycle",
+            "maintain tests",
+            "fix tests",
+            "broken tests",
+            "failing tests",
         ],
         "phrases": [
             r"(fix|update|maintain) tests",
@@ -101,10 +134,20 @@ INTENT_PATTERNS = {
     },
     "manage-docs": {
         "keywords": [
-            "documentation", "docs", "docstrings", "readme",
-            "api docs", "missing docs", "update docs",
-            "document", "documenting", "undocumented",
-            "up to date", "sync", "stale docs", "outdated docs"
+            "documentation",
+            "docs",
+            "docstrings",
+            "readme",
+            "api docs",
+            "missing docs",
+            "update docs",
+            "document",
+            "documenting",
+            "undocumented",
+            "up to date",
+            "sync",
+            "stale docs",
+            "outdated docs",
         ],
         "phrases": [
             r"(update|improve|fix|add) (the )?doc(s|umentation)?",
@@ -227,9 +270,7 @@ class IntentDetector:
 
         for i, match in enumerate(matches[:3], 1):  # Top 3 suggestions
             confidence_pct = int(match.confidence * 100)
-            lines.append(
-                f"  {i}. **{match.template_name}** ({confidence_pct}% match)"
-            )
+            lines.append(f"  {i}. **{match.template_name}** ({confidence_pct}% match)")
             lines.append(f"     {match.description}")
             lines.append(f"     Run with: `empathy meta-workflow run {match.template_id}`")
             lines.append("")
@@ -290,8 +331,7 @@ def auto_detect_template(user_input: str) -> str | None:
 
     if match and match.confidence >= 0.6:
         logger.info(
-            f"Auto-detected template: {match.template_id} "
-            f"(confidence: {match.confidence:.0%})"
+            f"Auto-detected template: {match.template_id} (confidence: {match.confidence:.0%})"
         )
         return match.template_id
 

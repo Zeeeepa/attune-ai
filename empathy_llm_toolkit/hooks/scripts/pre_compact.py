@@ -65,6 +65,7 @@ def run_pre_compact(context: dict[str, Any]) -> dict[str, Any]:
         # Initialize context manager if not provided
         if not context_manager:
             from empathy_llm_toolkit.context import ContextManager
+
             context_manager = ContextManager()
 
         # Set session tracking if provided
@@ -167,9 +168,7 @@ def generate_compaction_summary(
         lines.append("### Known Patterns")
         for pattern in collaboration_state.detected_patterns[:5]:
             confidence_pct = int(pattern.confidence * 100)
-            lines.append(
-                f"- {pattern.trigger} → {pattern.action} ({confidence_pct}%)"
-            )
+            lines.append(f"- {pattern.trigger} → {pattern.action} ({confidence_pct}%)")
         lines.append("")
 
     if include_history and collaboration_state.interactions:
@@ -196,7 +195,6 @@ def generate_compaction_summary(
 
 # Main entry point for hook execution
 if __name__ == "__main__":
-
     # Example usage for testing
     print("Pre-compact hook script")
     print("This script is called before context compaction")

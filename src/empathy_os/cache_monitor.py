@@ -303,8 +303,9 @@ class CacheMonitor:
         Returns:
             List of CacheStats with hit rate >= threshold, sorted by hit rate
         """
+        # Use generator expression for memory efficiency
         return sorted(
-            [s for s in self._caches.values() if s.hit_rate >= threshold],
+            (s for s in self._caches.values() if s.hit_rate >= threshold),
             key=lambda s: s.hit_rate,
             reverse=True,
         )
@@ -318,8 +319,9 @@ class CacheMonitor:
         Returns:
             List of CacheStats with hit rate <= threshold, sorted by hit rate
         """
+        # Use generator expression for memory efficiency
         return sorted(
-            [s for s in self._caches.values() if s.hit_rate <= threshold],
+            (s for s in self._caches.values() if s.hit_rate <= threshold),
             key=lambda s: s.hit_rate,
         )
 
@@ -345,7 +347,7 @@ class CacheMonitor:
         lines.append("=" * 70)
         if total_capacity > 0:
             lines.append(
-                f"{'TOTAL':<30} {total_used:>8,} / {total_capacity:>8,}  ({total_used/total_capacity*100:>5.1f}%)"
+                f"{'TOTAL':<30} {total_used:>8,} / {total_capacity:>8,}  ({total_used / total_capacity * 100:>5.1f}%)"
             )
         else:
             lines.append(f"{'TOTAL':<30} {total_used:>8,} / unlimited")

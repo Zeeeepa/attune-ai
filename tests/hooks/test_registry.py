@@ -2,12 +2,7 @@
 
 import pytest
 
-from empathy_llm_toolkit.hooks.config import (
-    HookConfig,
-    HookDefinition,
-    HookEvent,
-    HookMatcher,
-)
+from empathy_llm_toolkit.hooks.config import HookConfig, HookDefinition, HookEvent, HookMatcher
 from empathy_llm_toolkit.hooks.registry import HookRegistry
 
 
@@ -136,16 +131,20 @@ class TestHookRegistry:
         registry = HookRegistry()
 
         # Manually add to execution log (simulating execution)
-        registry._execution_log.append({
-            "event": "SessionStart",
-            "hook": "test:main",
-            "success": True,
-        })
-        registry._execution_log.append({
-            "event": "SessionEnd",
-            "hook": "test:end",
-            "success": False,
-        })
+        registry._execution_log.append(
+            {
+                "event": "SessionStart",
+                "hook": "test:main",
+                "success": True,
+            }
+        )
+        registry._execution_log.append(
+            {
+                "event": "SessionEnd",
+                "hook": "test:end",
+                "success": False,
+            }
+        )
 
         log = registry.get_execution_log()
         assert len(log) == 2

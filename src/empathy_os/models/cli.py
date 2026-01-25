@@ -541,7 +541,7 @@ Examples:
   %(prog)s provider                     Show current provider config
   %(prog)s provider --set anthropic     Set Anthropic as primary
   %(prog)s provider --set hybrid        Enable hybrid mode
-  %(prog)s provider --interactive       Interactive setup wizard
+  %(prog)s provider --interactive       Interactive setup workflow
         """,
     )
 
@@ -600,7 +600,7 @@ Examples:
         "--interactive",
         "-i",
         action="store_true",
-        help="Interactive configuration wizard",
+        help="Interactive configuration workflow",
     )
     prov_parser.add_argument("--format", "-f", choices=["table", "json"], default="table")
 

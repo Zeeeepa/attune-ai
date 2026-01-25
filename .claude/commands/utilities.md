@@ -4,12 +4,22 @@ description: Utility tools hub - project init, dependencies, profiling
 category: hub
 aliases: [util, utils]
 tags: [utilities, setup, dependencies, profiling, hub]
-version: "1.0"
+version: "2.0"
 ---
 
 # Utilities
 
+**Aliases:** `/util`, `/utils`
+
 Project setup, dependency management, and profiling tools.
+
+## Quick Examples
+
+```bash
+/utilities                # Interactive menu
+/utilities "init"         # Initialize project
+/utilities "check deps"   # Audit dependencies
+```
 
 ## Discovery
 
@@ -26,40 +36,105 @@ Question:
       description: "Profile code to find bottlenecks"
 ```
 
-## Routing
+---
 
-Based on selection:
+## Initialize Project
 
-| Selection | Command | Description |
-|-----------|---------|-------------|
-| Initialize project | `/init` | Create config, env template, storage dirs |
-| Dependency audit | `/deps` | Security, outdated, license compliance |
-| Performance profiling | `/profile` | CPU and memory profiling |
+Set up Empathy Framework configuration for a project.
 
-## Quick Access
+**I will:**
 
-- `/init` - Initialize new project
-- `/deps` - Run dependency audit
-- `/profile` - Profile performance
+1. Create `.claude/` directory structure:
+   - `commands/` - Custom commands
+   - `rules/` - Project rules
+2. Generate configuration files:
+   - `empathy.config.yml`
+   - `.env.example`
+3. Set up storage directories
+4. Initialize pattern storage
+5. Create starter templates
 
-## When to Use Each
+**Created structure:**
 
-**Use `/init` when:**
+```text
+.claude/
+├── commands/      # Custom slash commands
+├── rules/         # Project-specific rules
+├── CLAUDE.md      # Project instructions
+└── compact-state.md
+```
 
-- Starting a new project
-- Adding Empathy Framework to existing project
-- Resetting configuration
+---
 
-**Use `/deps` when:**
+## Dependency Audit
 
-- Before releases
-- After adding dependencies
-- Regular security audits
-- CI/CD pipeline checks
+Check for security vulnerabilities and outdated packages.
 
-**Use `/profile` when:**
+**I will:**
 
-- Code is running slow
-- Optimizing hot paths
-- Memory usage is high
-- Before/after optimization comparison
+1. Scan for security vulnerabilities:
+   - `pip-audit` / `safety` for Python
+   - `npm audit` for JavaScript
+2. Check for outdated packages
+3. Review license compliance
+4. Report findings with:
+   - Severity level
+   - Affected package
+   - Fix recommendation
+
+**Output includes:**
+
+| Category       | Tool        |
+| -------------- | ----------- |
+| Vulnerabilities| pip-audit   |
+| Outdated       | pip list -o |
+| Licenses       | pip-licenses|
+
+---
+
+## Performance Profiling
+
+Profile code to find bottlenecks.
+
+**Tell me:**
+
+- What to profile (script, function, endpoint)
+- Concern (CPU, memory, or both)
+
+**I will:**
+
+1. Set up profiling:
+   - `cProfile` for CPU time
+   - `memory_profiler` for memory
+2. Run the target code
+3. Analyze results:
+   - Identify hot spots
+   - Find memory leaks
+   - Measure timing
+4. Suggest optimizations
+
+**Profiling output:**
+
+```text
+Top 10 by cumulative time:
+  function_name    calls    tottime    cumtime
+  slow_func        1000     5.23s      8.45s
+  ...
+```
+
+---
+
+## When NOT to Use This Hub
+
+| If you need...    | Use instead |
+| ----------------- | ----------- |
+| Run tests         | `/testing`  |
+| Debug issues      | `/dev`      |
+| Security scan     | `/release`  |
+| Manage context    | `/context`  |
+
+## Related Hubs
+
+- `/release` - Security scanning for releases
+- `/testing` - Run benchmarks
+- `/dev` - Development tasks

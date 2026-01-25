@@ -21,7 +21,8 @@ from empathy_os.workflows.code_review import CodeReviewWorkflow
 from empathy_os.workflows.dependency_check import DependencyCheckWorkflow
 from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
 from empathy_os.workflows.health_check import HealthCheckWorkflow
-from empathy_os.workflows.keyboard_shortcuts.workflow import KeyboardShortcutWorkflow
+from empathy_os.workflows.keyboard_shortcuts.workflow import \
+    KeyboardShortcutWorkflow
 from empathy_os.workflows.perf_audit import PerformanceAuditWorkflow
 from empathy_os.workflows.refactor_plan import RefactorPlanWorkflow
 from empathy_os.workflows.release_prep import ReleasePreparationWorkflow

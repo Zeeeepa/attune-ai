@@ -90,11 +90,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
         logger.info(f"Found {len(functions)} functions to test")
 
         # Execute with progressive escalation
-        return self._execute_progressive(
-            items=functions,
-            workflow_name="test-gen",
-            **kwargs
-        )
+        return self._execute_progressive(items=functions, workflow_name="test-gen", **kwargs)
 
     def _parse_functions(self, file_path: Path) -> list[dict[str, Any]]:
         """Parse Python file to extract function definitions.
@@ -133,18 +129,14 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
                     "args": [arg.arg for arg in node.args.args],
                     "docstring": ast.get_docstring(node) or "",
                     "code": ast.unparse(node),  # Python 3.9+
-                    "file": str(file_path)
+                    "file": str(file_path),
                 }
                 functions.append(func_info)
 
         return functions
 
     def _execute_tier_impl(
-        self,
-        tier: Tier,
-        items: list[Any],
-        context: dict[str, Any] | None,
-        **kwargs
+        self, tier: Tier, items: list[Any], context: dict[str, Any] | None, **kwargs
     ) -> list[dict[str, Any]]:
         """Execute test generation at specific tier.
 
@@ -165,11 +157,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
 
         # Build prompt for this tier (prepared for future LLM integration)
         base_task = self._build_test_gen_task(items)
-        _prompt = self.meta_orchestrator.build_tier_prompt(  # noqa: F841
-            tier,
-            base_task,
-            context
-        )
+        _prompt = self.meta_orchestrator.build_tier_prompt(tier, base_task, context)  # noqa: F841
 
         # TODO: Call LLM API with _prompt
         # For now, simulate test generation
@@ -202,9 +190,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
         return task
 
     def _simulate_test_generation(
-        self,
-        tier: Tier,
-        functions: list[dict[str, Any]]
+        self, tier: Tier, functions: list[dict[str, Any]]
     ) -> list[dict[str, Any]]:
         """Simulate test generation (placeholder for LLM integration).
 
@@ -232,7 +218,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
         _base_quality = {  # noqa: F841
             Tier.CHEAP: 70,
             Tier.CAPABLE: 85,
-            Tier.PREMIUM: 95
+            Tier.PREMIUM: 95,
         }[tier]
 
         for func in functions:
@@ -245,17 +231,19 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
             # Calculate quality score
             quality_score = analysis.calculate_quality_score()
 
-            generated_tests.append({
-                "function_name": func["name"],
-                "test_code": test_code,
-                "quality_score": quality_score,
-                "passed": analysis.test_pass_rate > 0.5,
-                "coverage": analysis.coverage_percent,
-                "assertions": analysis.assertion_depth,
-                "confidence": analysis.confidence_score,
-                "syntax_errors": [str(e) for e in analysis.syntax_errors],
-                "error": "" if not analysis.syntax_errors else str(analysis.syntax_errors[0])
-            })
+            generated_tests.append(
+                {
+                    "function_name": func["name"],
+                    "test_code": test_code,
+                    "quality_score": quality_score,
+                    "passed": analysis.test_pass_rate > 0.5,
+                    "coverage": analysis.coverage_percent,
+                    "assertions": analysis.assertion_depth,
+                    "confidence": analysis.confidence_score,
+                    "syntax_errors": [str(e) for e in analysis.syntax_errors],
+                    "error": "" if not analysis.syntax_errors else str(analysis.syntax_errors[0]),
+                }
+            )
 
         return generated_tests
 
@@ -312,11 +300,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
 
         return "\n    ".join(setup_lines)
 
-    def _analyze_generated_test(
-        self,
-        test_code: str,
-        func: dict[str, Any]
-    ) -> FailureAnalysis:
+    def _analyze_generated_test(self, test_code: str, func: dict[str, Any]) -> FailureAnalysis:
         """Analyze quality of generated test.
 
         Args:
@@ -338,10 +322,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
         # 2. Count assertions
         try:
             tree = ast.parse(test_code)
-            assertion_count = sum(
-                1 for node in ast.walk(tree)
-                if isinstance(node, ast.Assert)
-            )
+            assertion_count = sum(1 for node in ast.walk(tree) if isinstance(node, ast.Assert))
             analysis.assertion_depth = assertion_count
         except Exception as e:
             logger.warning(f"Failed to count assertions: {e}")
@@ -378,7 +359,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
             generated_items=[],
             failure_analysis=FailureAnalysis(),
             cost=0.0,
-            duration=0.0
+            duration=0.0,
         )
 
         task_id = f"{workflow_name}-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
@@ -390,7 +371,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
             final_result=empty_result,
             total_cost=0.0,
             total_duration=0.0,
-            success=False
+            success=False,
         )
 
 
@@ -416,7 +397,7 @@ def execute_test_file(test_file: Path) -> dict[str, Any]:
             ["pytest", str(test_file), "-v", "--tb=short"],
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=60,
         )
 
         # Parse pytest output to get pass/fail counts
@@ -435,7 +416,7 @@ def execute_test_file(test_file: Path) -> dict[str, Any]:
             "total": total,
             "pass_rate": pass_rate,
             "output": output,
-            "returncode": result.returncode
+            "returncode": result.returncode,
         }
 
     except subprocess.TimeoutExpired:
@@ -445,7 +426,7 @@ def execute_test_file(test_file: Path) -> dict[str, Any]:
             "total": 0,
             "pass_rate": 0.0,
             "output": "Test execution timed out",
-            "returncode": -1
+            "returncode": -1,
         }
     except Exception as e:
         logger.error(f"Failed to execute tests: {e}")
@@ -455,7 +436,7 @@ def execute_test_file(test_file: Path) -> dict[str, Any]:
             "total": 0,
             "pass_rate": 0.0,
             "output": str(e),
-            "returncode": -1
+            "returncode": -1,
         }
 
 
@@ -484,12 +465,12 @@ def calculate_coverage(test_file: Path, source_file: Path) -> float:
                 str(test_file),
                 f"--cov={source_file.stem}",
                 "--cov-report=term-missing",
-                "--no-cov-on-fail"
+                "--no-cov-on-fail",
             ],
             capture_output=True,
             text=True,
             timeout=60,
-            cwd=source_file.parent
+            cwd=source_file.parent,
         )
 
         output = result.stdout + result.stderr

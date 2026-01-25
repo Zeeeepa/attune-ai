@@ -17,10 +17,13 @@ import logging
 from datetime import datetime
 from typing import Any
 
-from ..adapters import CodeReviewAdapter, DebuggingAdapter
 from ..state import CodeInspectionState, InspectionPhase, add_audit_entry
 
 logger = logging.getLogger(__name__)
+
+# NOTE: CodeReviewAdapter and DebuggingAdapter have been deprecated.
+# Dynamic analysis tools are now available through CLI workflows.
+# See: empathy workflow run bug-predict
 
 
 async def run_dynamic_analysis(state: CodeInspectionState) -> CodeInspectionState:
@@ -50,22 +53,14 @@ async def run_dynamic_analysis(state: CodeInspectionState) -> CodeInspectionStat
     tasks = []
     task_names = []
 
+    # NOTE: code_review and memory_debugging adapters have been deprecated.
+    # Dynamic analysis tools are now available through CLI workflows.
+    # See: empathy workflow run bug-predict
     if enabled_tools.get("code_review", True):
-        adapter = CodeReviewAdapter(
-            project_root=project_path,
-            config=state["tool_configs"].get("code_review"),
-            security_context=security_context,
-        )
-        tasks.append(adapter.analyze(security_informed=bool(security_context)))
-        task_names.append("code_review")
+        logger.warning("code_review tool is deprecated - use 'empathy workflow run bug-predict'")
 
     if enabled_tools.get("memory_debugging", True):
-        adapter = DebuggingAdapter(
-            project_root=project_path,
-            config=state["tool_configs"].get("memory_debugging"),
-        )
-        tasks.append(adapter.analyze_memory_enhanced())
-        task_names.append("memory_debugging")
+        logger.warning("memory_debugging tool is deprecated - use 'empathy workflow run bug-predict'")
 
     if not tasks:
         logger.warning("No dynamic analysis tools enabled")
@@ -160,23 +155,15 @@ async def run_deep_dive_analysis(state: CodeInspectionState) -> CodeInspectionSt
 
     project_path = state["project_path"]
 
-    # Run advanced debugging for more thorough analysis
-    adapter = DebuggingAdapter(
-        project_root=project_path,
-        config=state["tool_configs"].get("advanced_debugging"),
-    )
-
-    try:
-        result = await adapter.analyze_advanced()
-        state["dynamic_analysis_results"]["advanced_debugging"] = result
-        state["advanced_debugging_result"] = result
-
-        logger.info(
-            f"Deep-dive: status={result.get('status')}, findings={result.get('findings_count')}",
-        )
-    except Exception as e:
-        logger.error(f"Deep-dive analysis failed: {e}")
-        state["errors"].append(f"deep_dive: {e!s}")
+    # NOTE: DebuggingAdapter has been deprecated.
+    # Advanced debugging is now available through CLI workflows.
+    logger.warning("advanced_debugging tool is deprecated - use 'empathy workflow run bug-predict'")
+    state["dynamic_analysis_results"]["advanced_debugging"] = {
+        "status": "skipped",
+        "message": "DebuggingAdapter deprecated - use CLI workflows",
+        "findings_count": 0,
+    }
+    state["advanced_debugging_result"] = state["dynamic_analysis_results"]["advanced_debugging"]
 
     # Also run standard dynamic analysis
     state = await run_dynamic_analysis(state)

@@ -43,7 +43,7 @@ def profile_scanner():
 @time_function
 def profile_pattern_library():
     """Profile pattern library operations."""
-    from empathy_os.pattern_library import PatternLibrary, Pattern
+    from empathy_os.pattern_library import Pattern, PatternLibrary
 
     print("\n" + "=" * 60)
     print("Profiling: Pattern Library")

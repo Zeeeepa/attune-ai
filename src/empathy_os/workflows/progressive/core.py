@@ -19,6 +19,7 @@ class Tier(Enum):
         CAPABLE: Mid-tier models (e.g., claude-3-5-sonnet, gpt-4o)
         PREMIUM: High-end models (e.g., claude-opus-4, o1)
     """
+
     CHEAP = "cheap"
     CAPABLE = "capable"
     PREMIUM = "premium"
@@ -116,10 +117,10 @@ class FailureAnalysis:
 
         # Weighted composite
         cqs = (
-            0.40 * pass_rate_score +
-            0.25 * coverage_score +
-            0.20 * assertion_quality_score +
-            0.15 * confidence_score_scaled
+            0.40 * pass_rate_score
+            + 0.25 * coverage_score
+            + 0.20 * assertion_quality_score
+            + 0.15 * confidence_score_scaled
         )
 
         # Apply syntax error penalty
@@ -148,10 +149,10 @@ class FailureAnalysis:
         """
         cqs = self.calculate_quality_score()
         return (
-            cqs < 70 or
-            len(self.syntax_errors) > 3 or
-            self.test_pass_rate < 0.7 or
-            self.coverage_percent < 60
+            cqs < 70
+            or len(self.syntax_errors) > 3
+            or self.test_pass_rate < 0.7
+            or self.coverage_percent < 60
         )
 
     @property
@@ -249,10 +250,7 @@ class TierResult:
         Returns:
             Number of items meeting quality threshold
         """
-        return sum(
-            1 for item in self.generated_items
-            if item.get("quality_score", 0) >= 80
-        )
+        return sum(1 for item in self.generated_items if item.get("quality_score", 0) >= 80)
 
     @property
     def success_rate(self) -> float:
@@ -320,6 +318,7 @@ class ProgressiveWorkflowResult:
         """
         # Implementation will be in reports.py module
         from empathy_os.workflows.progressive.reports import generate_progression_report
+
         return generate_progression_report(self)
 
     def save_to_disk(self, storage_path: str) -> None:
@@ -334,6 +333,7 @@ class ProgressiveWorkflowResult:
             storage_path: Base path for saving results
         """
         from empathy_os.workflows.progressive.reports import save_results_to_disk
+
         save_results_to_disk(self, storage_path)
 
     @property

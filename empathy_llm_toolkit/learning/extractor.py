@@ -328,9 +328,7 @@ class PatternExtractor:
             pattern = ExtractedPattern(
                 category=PatternCategory.WORKAROUND,
                 trigger="Framework/library limitation",
-                context=self._extract_context_around_keyword(
-                    content, workaround_indicators
-                ),
+                context=self._extract_context_around_keyword(content, workaround_indicators),
                 resolution=self._summarize(content, 200),
                 confidence=0.6,
                 source_session=session_id,
@@ -496,33 +494,20 @@ class PatternExtractor:
         content_lower = content.lower()
         trigger_lower = trigger.lower()
 
-        if any(
-            word in content_lower
-            for word in ["error", "exception", "failed", "fix", "bug"]
-        ):
+        if any(word in content_lower for word in ["error", "exception", "failed", "fix", "bug"]):
             return PatternCategory.ERROR_RESOLUTION
 
-        if any(
-            word in trigger_lower
-            for word in ["actually", "correction", "meant", "clarify"]
-        ):
+        if any(word in trigger_lower for word in ["actually", "correction", "meant", "clarify"]):
             return PatternCategory.USER_CORRECTION
 
-        if any(
-            word in content_lower
-            for word in ["workaround", "instead", "alternative", "hack"]
-        ):
+        if any(word in content_lower for word in ["workaround", "instead", "alternative", "hack"]):
             return PatternCategory.WORKAROUND
 
-        if any(
-            word in content_lower
-            for word in ["prefer", "like", "always", "never", "style"]
-        ):
+        if any(word in content_lower for word in ["prefer", "like", "always", "never", "style"]):
             return PatternCategory.PREFERENCE
 
         if any(
-            word in content_lower
-            for word in ["project", "codebase", "convention", "this repo"]
+            word in content_lower for word in ["project", "codebase", "convention", "this repo"]
         ):
             return PatternCategory.PROJECT_SPECIFIC
 

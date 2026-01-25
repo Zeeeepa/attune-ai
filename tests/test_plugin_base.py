@@ -2,7 +2,7 @@
 
 Tests cover:
 - PluginMetadata dataclass
-- BaseWizard abstract class and methods
+- BaseWorkflow abstract class and methods
 - BasePlugin abstract class and lifecycle
 - Plugin exception classes
 """
@@ -11,7 +11,7 @@ import pytest
 
 from empathy_os.plugins.base import (
     BasePlugin,
-    BaseWizard,
+    BaseWorkflow,
     PluginError,
     PluginLoadError,
     PluginMetadata,
@@ -59,13 +59,13 @@ class TestPluginMetadata:
         assert metadata.dependencies is None
 
 
-class TestBaseWizard:
-    """Test BaseWizard abstract class"""
+class TestBaseWorkflow:
+    """Test BaseWorkflow abstract class"""
 
     def test_base_wizard_initialization(self):
-        """Test BaseWizard initialization"""
+        """Test BaseWorkflow initialization"""
 
-        class ConcreteWizard(BaseWizard):
+        class ConcreteWizard(BaseWorkflow):
             async def analyze(self, context):
                 return {
                     "issues": [],
@@ -91,9 +91,9 @@ class TestBaseWizard:
         assert wizard.category == "testing"
 
     def test_base_wizard_no_category(self):
-        """Test BaseWizard without category"""
+        """Test BaseWorkflow without category"""
 
-        class ConcreteWizard(BaseWizard):
+        class ConcreteWizard(BaseWorkflow):
             async def analyze(self, context):
                 return {"issues": []}
 
@@ -107,7 +107,7 @@ class TestBaseWizard:
     def test_wizard_validate_context_valid(self):
         """Test validate_context with valid context"""
 
-        class ConcreteWizard(BaseWizard):
+        class ConcreteWizard(BaseWorkflow):
             async def analyze(self, context):
                 return {}
 
@@ -123,7 +123,7 @@ class TestBaseWizard:
     def test_wizard_validate_context_missing_fields(self):
         """Test validate_context with missing fields"""
 
-        class ConcreteWizard(BaseWizard):
+        class ConcreteWizard(BaseWorkflow):
             async def analyze(self, context):
                 return {}
 
@@ -143,7 +143,7 @@ class TestBaseWizard:
     def test_wizard_get_empathy_level(self):
         """Test get_empathy_level method"""
 
-        class ConcreteWizard(BaseWizard):
+        class ConcreteWizard(BaseWorkflow):
             async def analyze(self, context):
                 return {}
 
@@ -157,7 +157,7 @@ class TestBaseWizard:
     def test_wizard_contribute_patterns_default(self):
         """Test default contribute_patterns implementation"""
 
-        class ConcreteWizard(BaseWizard):
+        class ConcreteWizard(BaseWorkflow):
             async def analyze(self, context):
                 return {}
 
@@ -178,7 +178,7 @@ class TestBaseWizard:
     def test_wizard_contribute_patterns_no_patterns(self):
         """Test contribute_patterns with no patterns in result"""
 
-        class ConcreteWizard(BaseWizard):
+        class ConcreteWizard(BaseWorkflow):
             async def analyze(self, context):
                 return {}
 
@@ -221,7 +221,7 @@ class TestBasePlugin:
     def test_plugin_initialize(self):
         """Test plugin initialization"""
 
-        class TestWizard(BaseWizard):
+        class TestWizard(BaseWorkflow):
             def __init__(self):
                 super().__init__(name="Test", domain="test", empathy_level=1)
 
@@ -287,7 +287,7 @@ class TestBasePlugin:
     def test_plugin_get_wizard(self):
         """Test get_wizard method"""
 
-        class TestWizard(BaseWizard):
+        class TestWizard(BaseWorkflow):
             def __init__(self):
                 super().__init__(name="Test", domain="test", empathy_level=1)
 
@@ -343,7 +343,7 @@ class TestBasePlugin:
     def test_plugin_list_wizards(self):
         """Test list_wizards method"""
 
-        class Wizard1(BaseWizard):
+        class Wizard1(BaseWorkflow):
             def __init__(self):
                 super().__init__(name="W1", domain="test", empathy_level=1)
 
@@ -353,7 +353,7 @@ class TestBasePlugin:
             def get_required_context(self):
                 return []
 
-        class Wizard2(BaseWizard):
+        class Wizard2(BaseWorkflow):
             def __init__(self):
                 super().__init__(name="W2", domain="test", empathy_level=2)
 
@@ -388,7 +388,7 @@ class TestBasePlugin:
     def test_plugin_get_wizard_info(self):
         """Test get_wizard_info method"""
 
-        class TestWizard(BaseWizard):
+        class TestWizard(BaseWorkflow):
             def __init__(self):
                 super().__init__(
                     name="Info Wizard",

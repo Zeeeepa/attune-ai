@@ -249,9 +249,7 @@ class TestTriageStage:
         assert len(cmd_findings) >= 1
 
     @pytest.mark.asyncio
-    async def test_triage_marks_test_files_as_low_severity(
-        self, security_audit_workflow, tmp_path
-    ):
+    async def test_triage_marks_test_files_as_low_severity(self, security_audit_workflow, tmp_path):
         """Test triage marks findings in test files as low severity."""
         tests_dir = tmp_path / "tests"
         tests_dir.mkdir()
@@ -812,9 +810,7 @@ class TestCrewIntegration:
         assert workflow._crew is None
 
         # The workflow should still work for non-crew operations
-        input_data = {
-            "needs_review": [{"type": "xss", "severity": "high", "owasp": "A03:2021"}]
-        }
+        input_data = {"needs_review": [{"type": "xss", "severity": "high", "owasp": "A03:2021"}]}
         result, _, _ = await workflow._assess(input_data, ModelTier.CAPABLE)
         assert result["assessment"]["crew_enhanced"] is False
 
@@ -823,9 +819,7 @@ class TestCrewIntegration:
         """Test assess works without crew available."""
         security_audit_workflow.use_crew_for_assessment = False
 
-        input_data = {
-            "needs_review": [{"type": "xss", "severity": "high", "owasp": "A03:2021"}]
-        }
+        input_data = {"needs_review": [{"type": "xss", "severity": "high", "owasp": "A03:2021"}]}
 
         result, _, _ = await security_audit_workflow._assess(input_data, ModelTier.CAPABLE)
 
@@ -879,9 +873,7 @@ class TestRemediateStage:
     async def test_remediate_builds_findings_summary(self, security_audit_workflow):
         """Test remediate builds findings summary for LLM."""
         # Mock _call_llm to capture the prompt
-        with patch.object(
-            security_audit_workflow, "_call_llm", new_callable=AsyncMock
-        ) as mock_llm:
+        with patch.object(security_audit_workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = ("Remediation plan here", 100, 200)
 
             input_data = {
@@ -916,9 +908,7 @@ class TestRemediateStage:
     @pytest.mark.asyncio
     async def test_remediate_returns_token_counts(self, security_audit_workflow):
         """Test remediate returns token counts for cost tracking."""
-        with patch.object(
-            security_audit_workflow, "_call_llm", new_callable=AsyncMock
-        ) as mock_llm:
+        with patch.object(security_audit_workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = ("Plan", 150, 300)
 
             input_data = {
@@ -961,9 +951,7 @@ class TestRemediateStage:
                 }
             }
 
-            result, _, _ = await security_audit_workflow._remediate(
-                input_data, ModelTier.PREMIUM
-            )
+            result, _, _ = await security_audit_workflow._remediate(input_data, ModelTier.PREMIUM)
 
             mock_run.assert_called_once()
             assert "Executor plan" in result["remediation_plan"]
@@ -1006,9 +994,7 @@ class TestRemediateStage:
     @pytest.mark.asyncio
     async def test_remediate_with_no_findings(self, security_audit_workflow):
         """Test remediate handles case with no critical/high findings."""
-        with patch.object(
-            security_audit_workflow, "_call_llm", new_callable=AsyncMock
-        ) as mock_llm:
+        with patch.object(security_audit_workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = ("No issues to remediate", 50, 100)
 
             input_data = {
@@ -1021,18 +1007,14 @@ class TestRemediateStage:
                 }
             }
 
-            result, _, _ = await security_audit_workflow._remediate(
-                input_data, ModelTier.PREMIUM
-            )
+            result, _, _ = await security_audit_workflow._remediate(input_data, ModelTier.PREMIUM)
 
             assert result["remediation_count"] == 0
 
     @pytest.mark.asyncio
     async def test_run_stage_routes_to_remediate(self, security_audit_workflow):
         """Test run_stage routes 'remediate' to _remediate method."""
-        with patch.object(
-            security_audit_workflow, "_call_llm", new_callable=AsyncMock
-        ) as mock_llm:
+        with patch.object(security_audit_workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = ("Plan", 50, 100)
 
             input_data = {
@@ -1064,9 +1046,7 @@ class TestXMLPromptHandling:
     @pytest.mark.asyncio
     async def test_remediate_uses_xml_when_enabled(self, security_audit_workflow):
         """Test remediate uses XML-enhanced prompts when enabled."""
-        with patch.object(
-            security_audit_workflow, "_is_xml_enabled", return_value=True
-        ):
+        with patch.object(security_audit_workflow, "_is_xml_enabled", return_value=True):
             with patch.object(
                 security_audit_workflow, "_render_xml_prompt", return_value="<xml>prompt</xml>"
             ) as mock_render:
@@ -1090,13 +1070,9 @@ class TestXMLPromptHandling:
                     mock_render.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_remediate_uses_legacy_prompt_when_xml_disabled(
-        self, security_audit_workflow
-    ):
+    async def test_remediate_uses_legacy_prompt_when_xml_disabled(self, security_audit_workflow):
         """Test remediate uses legacy prompts when XML is disabled."""
-        with patch.object(
-            security_audit_workflow, "_is_xml_enabled", return_value=False
-        ):
+        with patch.object(security_audit_workflow, "_is_xml_enabled", return_value=False):
             with patch.object(
                 security_audit_workflow, "_call_llm", new_callable=AsyncMock
             ) as mock_llm:

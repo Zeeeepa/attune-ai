@@ -80,7 +80,7 @@ class TestTestGeneration:
             wizard_id="test_wizard",
             pattern_ids=["linear_flow"],
             wizard_module="wizards.test_wizard",
-            wizard_class="TestWizard"
+            wizard_class="TestWizard",
         )
 
         # Verify return structure
@@ -97,7 +97,7 @@ class TestTestGeneration:
             wizard_id="simple_wizard",
             pattern_ids=[],  # No patterns
             wizard_module="wizards.simple",
-            wizard_class="SimpleWizard"
+            wizard_class="SimpleWizard",
         )
 
         # Unit tests should always be present
@@ -113,7 +113,7 @@ class TestTestGeneration:
             wizard_id="complex_wizard",
             pattern_ids=["linear_flow", "phased_processing"],
             wizard_module="wizards.complex",
-            wizard_class="ComplexWizard"
+            wizard_class="ComplexWizard",
         )
 
         # Integration tests should be generated for multi-step
@@ -128,7 +128,7 @@ class TestTestGeneration:
             wizard_id="wizard_with_fixtures",
             pattern_ids=["linear_flow"],
             wizard_module="wizards.fixtures_test",
-            wizard_class="FixturesTestWizard"
+            wizard_class="FixturesTestWizard",
         )
 
         # Fixtures should be included
@@ -145,8 +145,7 @@ class TestTemplateContextBuilding:
 
         # Create mock risk analysis
         risk_analysis = generator.risk_analyzer.analyze(
-            wizard_id="test_wizard",
-            pattern_ids=["linear_flow"]
+            wizard_id="test_wizard", pattern_ids=["linear_flow"]
         )
 
         context = generator._build_template_context(
@@ -154,7 +153,7 @@ class TestTemplateContextBuilding:
             pattern_ids=["linear_flow"],
             wizard_module="wizards.test",
             wizard_class="TestWizard",
-            risk_analysis=risk_analysis
+            risk_analysis=risk_analysis,
         )
 
         # Verify required context fields
@@ -171,8 +170,7 @@ class TestTemplateContextBuilding:
         generator = TestGenerator()
 
         risk_analysis = generator.risk_analyzer.analyze(
-            wizard_id="linear_wizard",
-            pattern_ids=["linear_flow"]
+            wizard_id="linear_wizard", pattern_ids=["linear_flow"]
         )
 
         context = generator._build_template_context(
@@ -180,7 +178,7 @@ class TestTemplateContextBuilding:
             pattern_ids=["linear_flow"],
             wizard_module="wizards.linear",
             wizard_class="LinearWizard",
-            risk_analysis=risk_analysis
+            risk_analysis=risk_analysis,
         )
 
         # Should detect linear flow
@@ -192,8 +190,7 @@ class TestTemplateContextBuilding:
 
         pattern_ids = ["linear_flow", "phased_processing", "approval"]
         risk_analysis = generator.risk_analyzer.analyze(
-            wizard_id="multi_pattern_wizard",
-            pattern_ids=pattern_ids
+            wizard_id="multi_pattern_wizard", pattern_ids=pattern_ids
         )
 
         context = generator._build_template_context(
@@ -201,7 +198,7 @@ class TestTemplateContextBuilding:
             pattern_ids=pattern_ids,
             wizard_module="wizards.multi",
             wizard_class="MultiPatternWizard",
-            risk_analysis=risk_analysis
+            risk_analysis=risk_analysis,
         )
 
         # All patterns should be in context
@@ -216,9 +213,7 @@ class TestIntegrationTestDetection:
         generator = TestGenerator()
 
         # Multi-step patterns should require integration tests
-        needs_integration = generator._needs_integration_tests(
-            ["linear_flow", "phased_processing"]
-        )
+        needs_integration = generator._needs_integration_tests(["linear_flow", "phased_processing"])
 
         # Should detect need for integration tests
         assert isinstance(needs_integration, bool)
@@ -258,7 +253,7 @@ class TestGeneratorWithRealTemplates:
             wizard_id="real_wizard",
             pattern_ids=["linear_flow"],
             wizard_module="wizards.real",
-            wizard_class="RealWizard"
+            wizard_class="RealWizard",
         )
 
         # Verify generated code is not empty
@@ -292,7 +287,7 @@ class TestErrorHandling:
             wizard_id="wizard",
             pattern_ids=["nonexistent_pattern_123"],
             wizard_module="wizards.test",
-            wizard_class="TestWizard"
+            wizard_class="TestWizard",
         )
 
         # Should still return structure (even if patterns not found)

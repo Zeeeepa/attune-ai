@@ -53,6 +53,7 @@ def workflow_config():
 @pytest.fixture
 def execution_context():
     """Provide execution context for workflows."""
+
     @dataclass
     class ExecutionContext:
         workflow_id: str
@@ -471,7 +472,7 @@ class TestErrorRecovery:
         results = []
         for i in range(2):
             try:
-                result = mock_llm_executor.execute(prompt=f"step {i+1}")
+                result = mock_llm_executor.execute(prompt=f"step {i + 1}")
                 results.append(result)
             except Exception:
                 # Capture partial results

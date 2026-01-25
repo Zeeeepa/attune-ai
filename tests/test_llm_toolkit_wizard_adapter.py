@@ -6,7 +6,6 @@ Created: 2026-01-20
 Coverage target: 80%+
 """
 
-
 import pytest
 
 from empathy_llm_toolkit.agent_factory.adapters.wizard_adapter import (

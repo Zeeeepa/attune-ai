@@ -98,9 +98,7 @@ class RealCoverageAnalyzer:
             file_age = time.time() - coverage_file.stat().st_mtime
             # Use existing file if less than 1 hour old
             if file_age < 3600:
-                logger.info(
-                    f"Using existing coverage data (age: {file_age/60:.1f} minutes)"
-                )
+                logger.info(f"Using existing coverage data (age: {file_age / 60:.1f} minutes)")
             else:
                 logger.info("Existing coverage data is stale, regenerating")
                 use_existing = False
@@ -230,6 +228,7 @@ class RealTestGenerator:
             # Try to load .env file
             try:
                 from dotenv import load_dotenv
+
                 load_dotenv()
             except ImportError:
                 pass  # python-dotenv not required
@@ -254,9 +253,7 @@ class RealTestGenerator:
             logger.warning(f"Failed to initialize LLM: {e}. Falling back to templates")
             self.use_llm = False
 
-    def generate_tests_for_file(
-        self, source_file: str, missing_lines: list[int]
-    ) -> Path:
+    def generate_tests_for_file(self, source_file: str, missing_lines: list[int]) -> Path:
         """Generate tests for uncovered code in a file.
 
         Args:
@@ -294,9 +291,7 @@ class RealTestGenerator:
         if self.use_llm and self._llm:
             test_code = self._generate_llm_tests(source_file, source_code, missing_lines)
         else:
-            test_code = self._generate_basic_test_template(
-                source_file, source_code, missing_lines
-            )
+            test_code = self._generate_basic_test_template(source_file, source_code, missing_lines)
 
         # Write test file
         validated_path = _validate_file_path(str(test_path))
@@ -423,9 +418,7 @@ Return ONLY the Python test code, starting with imports. No markdown, no explana
 
         except Exception as e:
             logger.error(f"LLM test generation failed: {e}, falling back to template")
-            return self._generate_basic_test_template(
-                source_file, source_code, missing_lines
-            )
+            return self._generate_basic_test_template(source_file, source_code, missing_lines)
 
     def _extract_api_docs(self, source_code: str) -> str:
         """Extract API signatures from source code using AST.
@@ -808,9 +801,7 @@ class RealCodeQualityAnalyzer:
             )
 
             # Count error lines
-            error_count = sum(
-                1 for line in result.stdout.split("\n") if ": error:" in line
-            )
+            error_count = sum(1 for line in result.stdout.split("\n") if ": error:" in line)
             return error_count
 
         except FileNotFoundError:

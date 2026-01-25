@@ -582,9 +582,7 @@ class TestActionItems:
 
     def test_action_items_for_critical_untested(self):
         """Test action items for critical untested files."""
-        summary = create_test_summary(
-            critical_untested_files=["critical.py", "important.py"]
-        )
+        summary = create_test_summary(critical_untested_files=["critical.py", "important.py"])
         generator = ReportGenerator(summary, [])
 
         items = generator._generate_action_items()
@@ -652,15 +650,9 @@ class TestSprintPlanningReport:
         """Test that sprint work is prioritized by impact."""
         summary = create_test_summary()
         records = [
-            create_test_record(
-                path="src/low.py", needs_attention=True, impact_score=2.0
-            ),
-            create_test_record(
-                path="src/high.py", needs_attention=True, impact_score=9.0
-            ),
-            create_test_record(
-                path="src/mid.py", needs_attention=True, impact_score=5.0
-            ),
+            create_test_record(path="src/low.py", needs_attention=True, impact_score=2.0),
+            create_test_record(path="src/high.py", needs_attention=True, impact_score=9.0),
+            create_test_record(path="src/mid.py", needs_attention=True, impact_score=5.0),
         ]
 
         generator = ReportGenerator(summary, records)

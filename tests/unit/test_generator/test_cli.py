@@ -222,7 +222,9 @@ class TestGenerateCommand:
 
             cmd_generate(args)
 
-            integration_file = tmp_path / "tests" / "integration" / "test_test_wizard_integration.py"
+            integration_file = (
+                tmp_path / "tests" / "integration" / "test_test_wizard_integration.py"
+            )
             assert integration_file.exists()
             assert "# Integration tests" in integration_file.read_text()
 
@@ -250,7 +252,9 @@ class TestGenerateCommand:
 
             cmd_generate(args)
 
-            integration_file = tmp_path / "tests" / "integration" / "test_test_wizard_integration.py"
+            integration_file = (
+                tmp_path / "tests" / "integration" / "test_test_wizard_integration.py"
+            )
             assert not integration_file.exists()
 
     def test_generate_uses_default_output_dir(self):
@@ -951,9 +955,7 @@ class TestIntegrationWithDependencies:
             mock_analyzer_class.assert_called_once()
 
             # Verify analyze was called with correct parameters
-            mock_analyzer.analyze.assert_called_once_with(
-                "my_wizard", ["pattern1", "pattern2"]
-            )
+            mock_analyzer.analyze.assert_called_once_with("my_wizard", ["pattern1", "pattern2"])
 
 
 @pytest.mark.unit

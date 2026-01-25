@@ -1,6 +1,6 @@
 """Tests for routing module.
 
-Covers WizardInfo, WizardRegistry, ClassificationResult, HaikuClassifier,
+Covers WorkflowInfo, WorkflowRegistry, ClassificationResult, HaikuClassifier,
 RoutingDecision, and SmartRouter.
 
 Copyright 2025 Smart-AI-Memory
@@ -9,28 +9,18 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.routing.classifier import (
-    ClassificationResult,
-    HaikuClassifier,
-)
-from empathy_os.routing.smart_router import (
-    RoutingDecision,
-    SmartRouter,
-)
-from empathy_os.routing.wizard_registry import (
-    WIZARD_REGISTRY,
-    WizardInfo,
-    WizardRegistry,
-)
+from empathy_os.routing.classifier import ClassificationResult, HaikuClassifier
+from empathy_os.routing.smart_router import RoutingDecision, SmartRouter
+from empathy_os.routing.workflow_registry import WORKFLOW_REGISTRY, WorkflowInfo, WorkflowRegistry
 
 
 @pytest.mark.unit
-class TestWizardInfo:
-    """Tests for WizardInfo dataclass."""
+class TestWorkflowInfo:
+    """Tests for WorkflowInfo dataclass."""
 
     def test_wizard_info_creation(self):
-        """Test creating a WizardInfo."""
-        info = WizardInfo(
+        """Test creating a WorkflowInfo."""
+        info = WorkflowInfo(
             name="test-wizard",
             description="A test wizard",
             keywords=["test", "example"],
@@ -41,8 +31,8 @@ class TestWizardInfo:
         assert info.keywords == ["test", "example"]
 
     def test_wizard_info_defaults(self):
-        """Test WizardInfo default values."""
-        info = WizardInfo(
+        """Test WorkflowInfo default values."""
+        info = WorkflowInfo(
             name="test",
             description="Test",
             keywords=[],
@@ -53,12 +43,12 @@ class TestWizardInfo:
         assert info.complexity == "medium"
         assert info.auto_chain is False
         assert info.chain_triggers == []
-        assert info.wizard_class is None
+        assert info.workflow_class is None
         assert info.factory is None
 
     def test_wizard_info_with_chain_triggers(self):
-        """Test WizardInfo with chain triggers."""
-        info = WizardInfo(
+        """Test WorkflowInfo with chain triggers."""
+        info = WorkflowInfo(
             name="test",
             description="Test",
             keywords=[],
@@ -74,12 +64,12 @@ class TestWizardInfo:
 
 
 @pytest.mark.unit
-class TestWizardRegistry:
-    """Tests for WizardRegistry class."""
+class TestWorkflowRegistry:
+    """Tests for WorkflowRegistry class."""
 
     def test_registry_initializes_with_defaults(self):
         """Test registry has default wizards."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         wizards = registry.list_all()
 
@@ -90,9 +80,9 @@ class TestWizardRegistry:
 
     def test_register_new_wizard(self):
         """Test registering a new wizard."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
-        custom_wizard = WizardInfo(
+        custom_wizard = WorkflowInfo(
             name="custom-wizard",
             description="Custom wizard",
             keywords=["custom"],
@@ -105,13 +95,13 @@ class TestWizardRegistry:
 
     def test_get_returns_none_for_unknown(self):
         """Test get returns None for unknown wizard."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         assert registry.get("nonexistent") is None
 
     def test_find_by_domain(self):
         """Test finding wizards by domain."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         security_wizards = registry.find_by_domain("security")
 
@@ -120,7 +110,7 @@ class TestWizardRegistry:
 
     def test_find_by_keyword(self):
         """Test finding wizards by keyword."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         # "security" keyword should match security-audit
         wizards = registry.find_by_keyword("security")
@@ -131,7 +121,7 @@ class TestWizardRegistry:
 
     def test_find_by_keyword_case_insensitive(self):
         """Test find_by_keyword is case insensitive."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         lower = registry.find_by_keyword("security")
         upper = registry.find_by_keyword("SECURITY")
@@ -140,7 +130,7 @@ class TestWizardRegistry:
 
     def test_get_descriptions_for_classification(self):
         """Test getting descriptions for LLM classification."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         descriptions = registry.get_descriptions_for_classification()
 
@@ -150,7 +140,7 @@ class TestWizardRegistry:
 
     def test_get_chain_triggers(self):
         """Test getting chain triggers for a wizard."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         triggers = registry.get_chain_triggers("security-audit")
 
@@ -159,7 +149,7 @@ class TestWizardRegistry:
 
     def test_get_chain_triggers_empty_for_no_autochain(self):
         """Test chain triggers empty for wizard without auto_chain."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         # refactor-plan has auto_chain=False
         triggers = registry.get_chain_triggers("refactor-plan")
@@ -168,12 +158,10 @@ class TestWizardRegistry:
 
     def test_unregister(self):
         """Test unregistering a wizard."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         # Add custom wizard first
-        registry.register(
-            WizardInfo(name="to-remove", description="Test", keywords=[])
-        )
+        registry.register(WorkflowInfo(name="to-remove", description="Test", keywords=[]))
 
         assert registry.get("to-remove") is not None
 
@@ -184,7 +172,7 @@ class TestWizardRegistry:
 
     def test_unregister_nonexistent(self):
         """Test unregistering nonexistent wizard returns False."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         result = registry.unregister("nonexistent")
 
@@ -198,22 +186,22 @@ class TestClassificationResult:
     def test_classification_result_creation(self):
         """Test creating a ClassificationResult."""
         result = ClassificationResult(
-            primary_wizard="security-audit",
-            secondary_wizards=["code-review"],
+            primary_workflow="security-audit",
+            secondary_workflows=["code-review"],
             confidence=0.9,
             reasoning="Security keywords detected",
         )
 
-        assert result.primary_wizard == "security-audit"
-        assert result.secondary_wizards == ["code-review"]
+        assert result.primary_workflow == "security-audit"
+        assert result.secondary_workflows == ["code-review"]
         assert result.confidence == 0.9
         assert "Security" in result.reasoning
 
     def test_classification_result_defaults(self):
         """Test ClassificationResult default values."""
-        result = ClassificationResult(primary_wizard="test")
+        result = ClassificationResult(primary_workflow="test")
 
-        assert result.secondary_wizards == []
+        assert result.secondary_workflows == []
         assert result.confidence == 0.0
         assert result.reasoning == ""
         assert result.suggested_chain == []
@@ -240,7 +228,7 @@ class TestHaikuClassifier:
             {},
         )
 
-        assert result.primary_wizard == "security-audit"
+        assert result.primary_workflow == "security-audit"
         assert result.confidence > 0
 
     def test_classifier_keyword_classify_performance(self):
@@ -252,7 +240,7 @@ class TestHaikuClassifier:
             {},
         )
 
-        assert result.primary_wizard == "perf-audit"
+        assert result.primary_workflow == "perf-audit"
 
     def test_classifier_keyword_classify_testing(self):
         """Test keyword classification for testing request."""
@@ -263,7 +251,7 @@ class TestHaikuClassifier:
             {},
         )
 
-        assert result.primary_wizard == "test-gen"
+        assert result.primary_workflow == "test-gen"
 
     def test_classifier_keyword_classify_default(self):
         """Test keyword classification defaults to code-review."""
@@ -274,10 +262,10 @@ class TestHaikuClassifier:
             {},
         )
 
-        assert result.primary_wizard == "code-review"
+        assert result.primary_workflow == "code-review"
         assert result.confidence == 0.3
 
-    def test_classifier_keyword_classify_secondary_wizards(self):
+    def test_classifier_keyword_classify_secondary_workflows(self):
         """Test keyword classification finds secondary wizards."""
         classifier = HaikuClassifier()
 
@@ -288,7 +276,7 @@ class TestHaikuClassifier:
         )
 
         # Should have secondary wizards
-        assert len(result.secondary_wizards) >= 0  # May or may not have secondary
+        assert len(result.secondary_workflows) >= 0  # May or may not have secondary
 
     def test_classify_sync(self):
         """Test synchronous classification."""
@@ -296,7 +284,7 @@ class TestHaikuClassifier:
 
         result = classifier.classify_sync("Check for security vulnerabilities")
 
-        assert result.primary_wizard == "security-audit"
+        assert result.primary_workflow == "security-audit"
 
     def test_classify_sync_with_context(self):
         """Test synchronous classification with context."""
@@ -307,7 +295,7 @@ class TestHaikuClassifier:
             context={"file": "auth.py"},
         )
 
-        assert result.primary_wizard in ["code-review", "security-audit"]
+        assert result.primary_workflow in ["code-review", "security-audit"]
 
 
 @pytest.mark.unit
@@ -317,22 +305,22 @@ class TestRoutingDecision:
     def test_routing_decision_creation(self):
         """Test creating a RoutingDecision."""
         decision = RoutingDecision(
-            primary_wizard="security-audit",
-            secondary_wizards=["code-review"],
+            primary_workflow="security-audit",
+            secondary_workflows=["code-review"],
             confidence=0.85,
             reasoning="Security keywords detected",
             classification_method="keyword",
         )
 
-        assert decision.primary_wizard == "security-audit"
+        assert decision.primary_workflow == "security-audit"
         assert decision.confidence == 0.85
         assert decision.classification_method == "keyword"
 
     def test_routing_decision_defaults(self):
         """Test RoutingDecision default values."""
-        decision = RoutingDecision(primary_wizard="test")
+        decision = RoutingDecision(primary_workflow="test")
 
-        assert decision.secondary_wizards == []
+        assert decision.secondary_workflows == []
         assert decision.confidence == 0.0
         assert decision.reasoning == ""
         assert decision.suggested_chain == []
@@ -358,7 +346,7 @@ class TestSmartRouter:
 
         decision = router.route_sync("Check for SQL injection vulnerabilities")
 
-        assert decision.primary_wizard == "security-audit"
+        assert decision.primary_workflow == "security-audit"
         assert decision.classification_method == "keyword"
 
     def test_route_sync_with_context(self):
@@ -370,7 +358,7 @@ class TestSmartRouter:
             context={"file": "auth.py"},
         )
 
-        assert decision.primary_wizard is not None
+        assert decision.primary_workflow is not None
         assert "file" in decision.context
 
     def test_route_sync_builds_chain(self):
@@ -380,30 +368,30 @@ class TestSmartRouter:
         decision = router.route_sync("Check for security vulnerabilities")
 
         assert len(decision.suggested_chain) >= 1
-        assert decision.primary_wizard in decision.suggested_chain
+        assert decision.primary_workflow in decision.suggested_chain
 
-    def test_get_wizard_info(self):
+    def test_get_workflow_info(self):
         """Test getting wizard info through router."""
         router = SmartRouter()
 
-        info = router.get_wizard_info("security-audit")
+        info = router.get_workflow_info("security-audit")
 
         assert info is not None
         assert info.name == "security-audit"
 
-    def test_get_wizard_info_unknown(self):
+    def test_get_workflow_info_unknown(self):
         """Test getting unknown wizard info returns None."""
         router = SmartRouter()
 
-        info = router.get_wizard_info("nonexistent")
+        info = router.get_workflow_info("nonexistent")
 
         assert info is None
 
-    def test_list_wizards(self):
+    def test_list_workflows(self):
         """Test listing all wizards through router."""
         router = SmartRouter()
 
-        wizards = router.list_wizards()
+        wizards = router.list_workflows()
 
         assert len(wizards) >= 9
         wizard_names = [w.name for w in wizards]
@@ -487,12 +475,12 @@ class TestSmartRouter:
 
 
 @pytest.mark.unit
-class TestDefaultWizardRegistry:
-    """Tests for the default WIZARD_REGISTRY constant."""
+class TestDefaultWorkflowRegistry:
+    """Tests for the default WORKFLOW_REGISTRY constant."""
 
     def test_security_audit_keywords(self):
         """Test security-audit wizard has expected keywords."""
-        info = WIZARD_REGISTRY["security-audit"]
+        info = WORKFLOW_REGISTRY["security-audit"]
 
         assert "security" in info.keywords
         assert "vulnerability" in info.keywords
@@ -500,38 +488,38 @@ class TestDefaultWizardRegistry:
 
     def test_code_review_file_types(self):
         """Test code-review wizard handles expected file types."""
-        info = WIZARD_REGISTRY["code-review"]
+        info = WORKFLOW_REGISTRY["code-review"]
 
         assert ".py" in info.handles_file_types
         assert ".js" in info.handles_file_types
 
     def test_bug_predict_domain(self):
         """Test bug-predict wizard has debugging domain."""
-        info = WIZARD_REGISTRY["bug-predict"]
+        info = WORKFLOW_REGISTRY["bug-predict"]
 
         assert info.primary_domain == "debugging"
 
     def test_perf_audit_auto_chain(self):
         """Test perf-audit wizard has auto-chain enabled."""
-        info = WIZARD_REGISTRY["perf-audit"]
+        info = WORKFLOW_REGISTRY["perf-audit"]
 
         assert info.auto_chain is True
         assert len(info.chain_triggers) >= 1
 
     def test_refactor_plan_no_auto_chain(self):
         """Test refactor-plan wizard has auto-chain disabled."""
-        info = WIZARD_REGISTRY["refactor-plan"]
+        info = WORKFLOW_REGISTRY["refactor-plan"]
 
         assert info.auto_chain is False
 
     def test_all_wizards_have_descriptions(self):
         """Test all default wizards have descriptions."""
-        for name, info in WIZARD_REGISTRY.items():
+        for name, info in WORKFLOW_REGISTRY.items():
             assert info.description, f"{name} missing description"
 
     def test_all_wizards_have_keywords(self):
         """Test all default wizards have keywords."""
-        for name, info in WIZARD_REGISTRY.items():
+        for name, info in WORKFLOW_REGISTRY.items():
             assert len(info.keywords) > 0, f"{name} missing keywords"
 
 
@@ -545,7 +533,7 @@ class TestChainBuilding:
 
         decision = router.route_sync("Check security")
 
-        assert decision.primary_wizard in decision.suggested_chain
+        assert decision.primary_workflow in decision.suggested_chain
 
     def test_build_chain_includes_secondary(self):
         """Test chain includes secondary wizards."""
@@ -555,8 +543,8 @@ class TestChainBuilding:
         from empathy_os.routing.classifier import ClassificationResult
 
         classification = ClassificationResult(
-            primary_wizard="security-audit",
-            secondary_wizards=["code-review"],
+            primary_workflow="security-audit",
+            secondary_workflows=["code-review"],
         )
 
         chain = router._build_chain(classification)
@@ -572,7 +560,7 @@ class TestChainBuilding:
         from empathy_os.routing.classifier import ClassificationResult
 
         classification = ClassificationResult(
-            primary_wizard="security-audit",
+            primary_workflow="security-audit",
         )
 
         chain = router._build_chain(classification)
@@ -587,8 +575,8 @@ class TestChainBuilding:
         from empathy_os.routing.classifier import ClassificationResult
 
         classification = ClassificationResult(
-            primary_wizard="security-audit",
-            secondary_wizards=["security-audit"],  # Duplicate
+            primary_workflow="security-audit",
+            secondary_workflows=["security-audit"],  # Duplicate
         )
 
         chain = router._build_chain(classification)
@@ -609,7 +597,7 @@ class TestAsyncRouting:
         decision = await router.route("Check for security vulnerabilities")
 
         # Should work with fallback
-        assert decision.primary_wizard is not None
+        assert decision.primary_workflow is not None
 
     async def test_classify_async_fallback(self):
         """Test async classification falls back to keyword."""
@@ -618,4 +606,4 @@ class TestAsyncRouting:
         result = await classifier.classify("Check security")
 
         # Should work with fallback
-        assert result.primary_wizard is not None
+        assert result.primary_workflow is not None

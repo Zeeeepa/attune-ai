@@ -61,14 +61,8 @@ from empathy_os.models.fallback import (
     ResilientExecutor,
     RetryPolicy,
 )
-from empathy_os.models.registry import (
-    ModelTier,
-)
-from empathy_os.models.tasks import (
-    TASK_TIER_MAP,
-    TaskType,
-    get_tier_for_task,
-)
+from empathy_os.models.registry import ModelTier
+from empathy_os.models.tasks import TASK_TIER_MAP, TaskType, get_tier_for_task
 
 # ============================================================================
 # Test Category 1: Task-Tier Mapping (8 tests)
@@ -162,9 +156,7 @@ class TestTaskTierMapping:
         # Map should only contain valid tiers
         valid_tiers = {ModelTier.CHEAP, ModelTier.CAPABLE, ModelTier.PREMIUM}
         for task_type, tier in TASK_TIER_MAP.items():
-            assert tier in valid_tiers, (
-                f"Task {task_type} has invalid tier {tier}"
-            )
+            assert tier in valid_tiers, f"Task {task_type} has invalid tier {tier}"
 
     def test_tier_selection_deterministic(self):
         """Tier selection should be deterministic for same task.
@@ -272,6 +264,7 @@ class TestFallbackActivation:
         # Should fail after all fallbacks exhausted
         with pytest.raises(AllProvidersFailedError) as exc_info:
             import asyncio
+
             asyncio.run(executor.run("generate_code", "Test prompt"))
 
         # Verify fallback was attempted
@@ -302,6 +295,7 @@ class TestFallbackActivation:
         # Should fail after all fallbacks exhausted
         with pytest.raises(AllProvidersFailedError) as exc_info:
             import asyncio
+
             asyncio.run(executor.run("generate_code", "Test prompt"))
 
         # Verify timeout was classified
@@ -332,6 +326,7 @@ class TestFallbackActivation:
         # Should fail after all fallbacks exhausted
         with pytest.raises(AllProvidersFailedError):
             import asyncio
+
             asyncio.run(executor.run("generate_code", "Test prompt"))
 
     @pytest.mark.xfail(
@@ -413,6 +408,7 @@ class TestFallbackActivation:
         # Should fail after max retries
         with pytest.raises(AllProvidersFailedError):
             import asyncio
+
             asyncio.run(executor.run("generate_code", "Test prompt"))
 
         # Verify retry count (2 retries per fallback step)
@@ -562,8 +558,9 @@ class TestCostTrackingAccuracy:
 
         # Should use Sonnet pricing, not Haiku pricing
         sonnet_pricing = MODEL_PRICING["claude-sonnet-4-5"]
-        expected_cost = (1000 / 1_000_000) * sonnet_pricing["input"] + \
-                       (500 / 1_000_000) * sonnet_pricing["output"]
+        expected_cost = (1000 / 1_000_000) * sonnet_pricing["input"] + (
+            500 / 1_000_000
+        ) * sonnet_pricing["output"]
 
         assert abs(request["actual_cost"] - expected_cost) < 0.001
 
@@ -665,7 +662,7 @@ class TestCostTrackingAccuracy:
         tracker.log_request(
             model="claude-opus-4-5-20251101",
             input_tokens=10_000_000,  # 10M tokens
-            output_tokens=1_000_000,   # 1M tokens
+            output_tokens=1_000_000,  # 1M tokens
             task_type="coordinate",
         )
 
@@ -743,6 +740,7 @@ class TestRoutingDecisions:
 
         # Log requests with timestamps
         import time
+
         start_time = time.time()
 
         tracker.log_request(
@@ -858,6 +856,7 @@ class TestRoutingAndCostIntegration:
 
         # Execute task
         import asyncio
+
         asyncio.run(executor.run("generate_code", "Test prompt"))
 
         # Verify execution happened

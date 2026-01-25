@@ -4,7 +4,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-
 import pytest
 
 
@@ -390,10 +389,7 @@ class TestStorageEdgeCases:
             session = SocraticSession(session_id=session_id)
             storage.save_session(session)
 
-        threads = [
-            threading.Thread(target=save_session, args=(f"session-{i}",))
-            for i in range(10)
-        ]
+        threads = [threading.Thread(target=save_session, args=(f"session-{i}",)) for i in range(10)]
 
         for t in threads:
             t.start()
@@ -417,10 +413,7 @@ class TestDefaultStorage:
 
     def test_set_default_storage(self, storage_path):
         """Test setting default storage."""
-        from empathy_os.socratic.storage import (
-            JSONFileStorage,
-            set_default_storage,
-        )
+        from empathy_os.socratic.storage import JSONFileStorage, set_default_storage
 
         custom_storage = JSONFileStorage(base_dir=str(storage_path))
         set_default_storage(custom_storage)

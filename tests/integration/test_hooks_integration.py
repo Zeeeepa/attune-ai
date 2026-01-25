@@ -3,7 +3,6 @@
 Tests hook system integration with other framework components.
 """
 
-
 import pytest
 
 from empathy_llm_toolkit.hooks.config import (
@@ -24,8 +23,9 @@ class TestHookRegistryIntegration:
         registry = HookRegistry()
         results = []
 
-        def my_handler(context):
-            results.append(context.get("value", "default"))
+        # Note: Hook handlers receive keyword arguments, not positional context dict
+        def my_handler(**kwargs):
+            results.append(kwargs.get("value", "default"))
             return {"success": True, "output": "handled"}
 
         # Register
@@ -164,7 +164,8 @@ class TestHookRegistryIntegration:
         config = HookConfig(log_executions=True)
         registry = HookRegistry(config=config)
 
-        def handler(ctx):
+        # Hook handlers receive keyword arguments
+        def handler(**kwargs):
             return {"success": True, "output": "logged"}
 
         registry.register(
@@ -185,8 +186,9 @@ class TestHookRegistryIntegration:
         """Test hook registry statistics."""
         registry = HookRegistry()
 
-        registry.register(HookEvent.SESSION_START, lambda ctx: {"success": True})
-        registry.register(HookEvent.SESSION_END, lambda ctx: {"success": True})
+        # Hook handlers receive keyword arguments
+        registry.register(HookEvent.SESSION_START, lambda **kw: {"success": True})
+        registry.register(HookEvent.SESSION_END, lambda **kw: {"success": True})
 
         # Fire one
         registry.fire_sync(HookEvent.SESSION_START, {})
@@ -238,9 +240,17 @@ class TestHookEventTypes:
         registry = HookRegistry()
         executed = []
 
+        # Use a closure to capture the event value correctly
+        # Hook handlers receive keyword arguments
+        def make_handler(evt):
+            def handler(**kwargs):
+                executed.append(evt.value)
+                return {"success": True}
+            return handler
+
         registry.register(
             event=event,
-            handler=lambda ctx: executed.append(event.value) or {"success": True},
+            handler=make_handler(event),
         )
 
         registry.fire_sync(event, {"test": True})

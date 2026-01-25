@@ -4,7 +4,7 @@ Provides CLI commands for:
 - Running interactive REPL (empathy run)
 - Inspecting patterns, metrics, state (empathy inspect)
 - Exporting/importing patterns (empathy export/import)
-- Interactive setup wizard (empathy wizard)
+- Interactive setup workflow (empathy workflow)
 - Configuration management
 - Power user workflows: morning, ship, fix-all, learn (v2.4+)
 
@@ -83,7 +83,7 @@ logger = get_logger(__name__)
 CHEATSHEET = {
     "Getting Started": [
         ("empathy init", "Create a new config file"),
-        ("empathy wizard", "Interactive setup wizard"),
+        ("empathy workflow", "Interactive setup workflow"),
         ("empathy run", "Interactive REPL mode"),
     ],
     "Daily Workflow": [
@@ -442,7 +442,7 @@ First, let's create a configuration file for your project.
 Run: empathy init
 
 This creates empathy.config.yaml with sensible defaults.
-Alternatively, use 'empathy wizard' for an interactive setup.
+Alternatively, use 'empathy workflow' for an interactive setup.
 """,
             "check": lambda: _file_exists("empathy.config.yaml")
             or _file_exists("empathy.config.yml"),
@@ -821,8 +821,8 @@ def cmd_orchestrate(args):
 
     from empathy_os.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
     from empathy_os.workflows.orchestrated_release_prep import OrchestratedReleasePrepWorkflow
-    # test_coverage_boost removed - feature disabled in v4.0.0 (being redesigned)
 
+    # test_coverage_boost removed - feature disabled in v4.0.0 (being redesigned)
     # Get workflow type
     workflow_type = args.workflow
 
@@ -1355,50 +1355,24 @@ def cmd_status(args):
 def cmd_review(args):
     """Pattern-based code review against historical bugs.
 
-    Analyzes code changes against learned patterns to identify potential issues.
+    Note: This command has been deprecated. The underlying workflow module
+    has been removed. Use 'empathy workflow run bug-predict' instead.
 
     Args:
-        args: Namespace object from argparse with attributes:
-            - files (list[str]): Files to review (default: recent changes).
-            - staged (bool): If True, review staged changes only.
-            - severity (str): Minimum severity threshold for findings.
-            - patterns_dir (str): Path to patterns directory.
-            - json (bool): If True, output as JSON format.
+        args: Namespace object from argparse.
 
     Returns:
-        None: Prints review findings and recommendations.
+        None: Prints deprecation message.
     """
-    import asyncio
-
-    from empathy_software_plugin.wizards.code_review_wizard import CodeReviewWizard
-
-    wizard = CodeReviewWizard(patterns_dir=args.patterns_dir)
-
-    # Run the async analysis
-    result = asyncio.run(
-        wizard.analyze(
-            {
-                "files": args.files,
-                "staged_only": args.staged,
-                "severity_threshold": args.severity,
-            },
-        ),
-    )
-
-    # Output results
-    if args.json:
-        import json
-
-        print(json.dumps(result, indent=2, default=str))
-    else:
-        print(wizard.format_terminal_output(result))
-
-        # Show recommendations
-        recommendations = result.get("recommendations", [])
-        if recommendations and result.get("findings"):
-            print("\nRecommendations:")
-            for rec in recommendations:
-                print(f"  • {rec}")
+    print("⚠️  The 'review' command has been deprecated.")
+    print()
+    print("The CodeReviewWorkflow module has been removed.")
+    print("Please use one of these alternatives:")
+    print()
+    print("  empathy workflow run bug-predict    # Scan for risky patterns")
+    print("  ruff check <files>                  # Fast linting")
+    print("  bandit -r <path>                    # Security scanning")
+    print()
 
 
 def cmd_health(args):
@@ -1822,7 +1796,7 @@ def cmd_inspect(args):
                     print(f"     Success rate: {pattern.success_rate:.0%}")
         except FileNotFoundError:
             print(f"✗ Pattern library not found: {db_path}")
-            print("  Tip: Use 'empathy-framework wizard' to set up your first project")
+            print("  Tip: Use 'empathy-framework workflow' to set up your first project")
             sys.exit(1)
         except (ValueError, KeyError) as e:
             # Invalid pattern data format
@@ -2045,8 +2019,8 @@ def cmd_import(args):
     print()
 
 
-def cmd_wizard(args):
-    """Interactive setup wizard.
+def cmd_workflow(args):
+    """Interactive setup workflow.
 
     Guides user through initial framework configuration step by step.
 
@@ -2056,7 +2030,7 @@ def cmd_wizard(args):
     Returns:
         None: Creates empathy.config.yml with user's choices.
     """
-    print("🧙 Empathy Framework Setup Wizard")
+    print("🧙 Empathy Framework Setup Workflow")
     print("=" * 50)
     print("\nI'll help you set up your Empathy Framework configuration.\n")
 
@@ -2139,7 +2113,7 @@ def cmd_wizard(args):
 
     # Write YAML config
     yaml_content = f"""# Empathy Framework Configuration
-# Generated by setup wizard
+# Generated by setup workflow
 
 # Core settings
 user_id: "{config["user_id"]}"
@@ -2604,6 +2578,7 @@ def cmd_workflow(args):
             # Initialize workflow with provider and optional tier fallback
             # Note: Not all workflows support enable_tier_fallback, so we check first
             import inspect
+
             use_tier_fallback = getattr(args, "use_recommended_tier", False)
 
             # Get the workflow's __init__ signature to know what params it accepts
@@ -3202,12 +3177,12 @@ def main():
     parser_import.add_argument("--db", help="Database path (default: .empathy/patterns.db)")
     parser_import.set_defaults(func=cmd_import)
 
-    # Wizard command (Interactive setup)
-    parser_wizard = subparsers.add_parser(
-        "wizard",
-        help="Interactive setup wizard for creating configuration",
+    # Workflow command (Interactive setup)
+    parser_workflow = subparsers.add_parser(
+        "workflow",
+        help="Interactive setup workflow for creating configuration",
     )
-    parser_wizard.set_defaults(func=cmd_wizard)
+    parser_workflow.set_defaults(func=cmd_workflow)
 
     # Provider command (Model provider configuration)
     parser_provider = subparsers.add_parser(

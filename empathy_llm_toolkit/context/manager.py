@@ -155,9 +155,7 @@ class ContextManager:
         ]
 
         # Extract key preferences (limit to essentials)
-        key_preferences = self._extract_key_preferences(
-            collaboration_state.preferences
-        )
+        key_preferences = self._extract_key_preferences(collaboration_state.preferences)
 
         return CompactState(
             user_id=collaboration_state.user_id,

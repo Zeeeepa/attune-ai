@@ -23,24 +23,15 @@ import asyncio
 import os
 
 from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import (
-    AccountingWizard,
-    CustomerSupportWizard,
-    EducationWizard,
-    FinanceWizard,
-    GovernmentWizard,
-    HealthcareWizard,
-    HRWizard,
-    InsuranceWizard,
-    LegalWizard,
-    LogisticsWizard,
-    ManufacturingWizard,
-    RealEstateWizard,
-    ResearchWizard,
-    RetailWizard,
-    SalesWizard,
-    TechnologyWizard,
-)
+from empathy_llm_toolkit.wizards import (AccountingWizard,
+                                         CustomerSupportWizard,
+                                         EducationWizard, FinanceWizard,
+                                         GovernmentWizard, HealthcareWizard,
+                                         HRWizard, InsuranceWizard,
+                                         LegalWizard, LogisticsWizard,
+                                         ManufacturingWizard, RealEstateWizard,
+                                         ResearchWizard, RetailWizard,
+                                         SalesWizard, TechnologyWizard)
 
 
 def print_section(title: str, subtitle: str = ""):

@@ -4,7 +4,6 @@ This module tests the simple tier-based fallback helpers added for Sprint 1.
 The sophisticated FallbackPolicy is still the primary fallback mechanism.
 """
 
-
 from empathy_os.models import TierFallbackHelper
 
 

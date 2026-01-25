@@ -757,7 +757,9 @@ class RedisShortTermMemory:
             return False
         try:
             return bool(self._client.ping())
-        except Exception:
+        except Exception:  # noqa: BLE001
+            # INTENTIONAL: Health check is best-effort. Connection failure is non-fatal.
+            # Consumers will handle disconnection gracefully.
             return False
 
     def get_stats(self) -> dict:
@@ -768,17 +770,18 @@ class RedisShortTermMemory:
 
         """
         if self.use_mock:
+            # Use generator expressions for memory-efficient counting
             return {
                 "mode": "mock",
                 "total_keys": len(self._mock_storage),
-                "working_keys": len(
-                    [k for k in self._mock_storage if k.startswith(self.PREFIX_WORKING)],
+                "working_keys": sum(
+                    1 for k in self._mock_storage if k.startswith(self.PREFIX_WORKING)
                 ),
-                "staged_keys": len(
-                    [k for k in self._mock_storage if k.startswith(self.PREFIX_STAGED)],
+                "staged_keys": sum(
+                    1 for k in self._mock_storage if k.startswith(self.PREFIX_STAGED)
                 ),
-                "conflict_keys": len(
-                    [k for k in self._mock_storage if k.startswith(self.PREFIX_CONFLICT)],
+                "conflict_keys": sum(
+                    1 for k in self._mock_storage if k.startswith(self.PREFIX_CONFLICT)
                 ),
             }
 

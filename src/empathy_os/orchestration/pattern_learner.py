@@ -17,6 +17,7 @@ Security:
 import json
 import logging
 from collections import defaultdict
+from collections.abc import Iterator
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -121,9 +122,7 @@ class PatternStats:
 
         # Running average for confidence
         n = self.total_executions
-        self.avg_confidence = (
-            (self.avg_confidence * (n - 1) + record.confidence) / n
-        )
+        self.avg_confidence = (self.avg_confidence * (n - 1) + record.confidence) / n
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
@@ -289,21 +288,14 @@ class LearningStore:
                 data = json.load(f)
 
             # Load records
-            self._records = [
-                ExecutionRecord.from_dict(r) for r in data.get("records", [])
-            ]
+            self._records = [ExecutionRecord.from_dict(r) for r in data.get("records", [])]
 
             # Load stats
-            self._stats = {
-                s["pattern"]: PatternStats.from_dict(s)
-                for s in data.get("stats", [])
-            }
+            self._stats = {s["pattern"]: PatternStats.from_dict(s) for s in data.get("stats", [])}
 
             # Rebuild context index
             for i, record in enumerate(self._records):
-                sig = ContextSignature(
-                    task_type=record.context_features.get("task_type", "")
-                )
+                sig = ContextSignature(task_type=record.context_features.get("task_type", ""))
                 self._context_index[sig.task_type].append(i)
 
             logger.info(
@@ -376,14 +368,22 @@ class LearningStore:
         """
         return self._stats.get(pattern)
 
-    def get_all_stats(self) -> list[PatternStats]:
-        """Get all pattern statistics.
+    def iter_all_stats(self) -> Iterator[PatternStats]:
+        """Iterate over all pattern statistics (memory-efficient).
 
-        Returns:
-            List of PatternStats sorted by success rate
+        Yields patterns in arbitrary order. For sorted results,
+        use get_all_stats().
+        """
+        yield from self._stats.values()
+
+    def get_all_stats(self) -> list[PatternStats]:
+        """Get all pattern statistics sorted by success rate.
+
+        Note: For large pattern sets, prefer iter_all_stats() when
+        you don't need sorted results.
         """
         return sorted(
-            self._stats.values(),
+            self.iter_all_stats(),
             key=lambda s: s.success_rate,
             reverse=True,
         )
@@ -457,9 +457,7 @@ class PatternRecommender:
         """
         self.store = store
 
-    def recommend(
-        self, context: dict[str, Any], top_k: int = 3
-    ) -> list[PatternRecommendation]:
+    def recommend(self, context: dict[str, Any], top_k: int = 3) -> list[PatternRecommendation]:
         """Recommend patterns for a context.
 
         Uses hybrid approach:
@@ -516,9 +514,7 @@ class PatternRecommender:
         recommendations = []
         for pattern, scores in pattern_scores.items():
             if scores["total_similarity"] > 0:
-                weighted_success = (
-                    scores["success_similarity"] / scores["total_similarity"]
-                )
+                weighted_success = scores["success_similarity"] / scores["total_similarity"]
                 stats = self.store.get_stats(pattern)
 
                 recommendations.append(
@@ -626,9 +622,7 @@ class PatternLearner:
         self.store.add_record(record)
         logger.debug(f"Recorded {pattern} execution: success={success}")
 
-    def recommend(
-        self, context: dict[str, Any], top_k: int = 3
-    ) -> list[PatternRecommendation]:
+    def recommend(self, context: dict[str, Any], top_k: int = 3) -> list[PatternRecommendation]:
         """Get pattern recommendations for a context.
 
         Args:

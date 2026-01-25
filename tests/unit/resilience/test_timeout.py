@@ -439,9 +439,7 @@ class TestTimeoutEdgeCases:
             await asyncio.sleep(0.05)
             return value
 
-        results = await asyncio.gather(
-            slow_func("a"), slow_func("b"), slow_func("c")
-        )
+        results = await asyncio.gather(slow_func("a"), slow_func("b"), slow_func("c"))
 
         assert set(results) == {"a", "b", "c"}
 

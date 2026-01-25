@@ -560,11 +560,15 @@ class RedisShortTermMemory:
 
         if self._config.pii_scrub_enabled:
             self._pii_scrubber = PIIScrubber(enable_name_detection=False)
-            logger.debug("pii_scrubber_enabled", message="PII scrubbing active for short-term memory")
+            logger.debug(
+                "pii_scrubber_enabled", message="PII scrubbing active for short-term memory"
+            )
 
         if self._config.secrets_detection_enabled:
             self._secrets_detector = SecretsDetector()
-            logger.debug("secrets_detector_enabled", message="Secrets detection active for short-term memory")
+            logger.debug(
+                "secrets_detector_enabled", message="Secrets detection active for short-term memory"
+            )
 
         if self.use_mock:
             self._client = None
@@ -735,7 +739,8 @@ class RedisShortTermMemory:
             detections = self._secrets_detector.detect(data_str)
             # Block critical and high severity secrets
             critical_secrets = [
-                d for d in detections
+                d
+                for d in detections
                 if d.severity in (SecretSeverity.CRITICAL, SecretSeverity.HIGH)
             ]
             if critical_secrets:
@@ -1378,17 +1383,18 @@ class RedisShortTermMemory:
 
         """
         if self.use_mock:
+            # Use generator expressions for memory-efficient counting
             return {
                 "mode": "mock",
                 "total_keys": len(self._mock_storage),
-                "working_keys": len(
-                    [k for k in self._mock_storage if k.startswith(self.PREFIX_WORKING)],
+                "working_keys": sum(
+                    1 for k in self._mock_storage if k.startswith(self.PREFIX_WORKING)
                 ),
-                "staged_keys": len(
-                    [k for k in self._mock_storage if k.startswith(self.PREFIX_STAGED)],
+                "staged_keys": sum(
+                    1 for k in self._mock_storage if k.startswith(self.PREFIX_STAGED)
                 ),
-                "conflict_keys": len(
-                    [k for k in self._mock_storage if k.startswith(self.PREFIX_CONFLICT)],
+                "conflict_keys": sum(
+                    1 for k in self._mock_storage if k.startswith(self.PREFIX_CONFLICT)
                 ),
             }
 

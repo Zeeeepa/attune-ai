@@ -1,4 +1,5 @@
 """Tests for empathy_os.discovery"""
+
 from empathy_os.discovery import (
     DiscoveryEngine,
     format_tips_for_cli,
@@ -162,6 +163,7 @@ def test_get_engine_singleton(tmp_path):
     """Test get_engine returns singleton instance."""
     # Reset global engine
     import empathy_os.discovery
+
     empathy_os.discovery._engine = None
 
     engine1 = get_engine(storage_dir=str(tmp_path))
@@ -175,6 +177,7 @@ def test_show_tip_if_available(tmp_path, capsys):
     """Test show_tip_if_available displays tips."""
     # Reset global engine
     import empathy_os.discovery
+
     empathy_os.discovery._engine = None
 
     # This should create global engine and record command
@@ -188,6 +191,7 @@ def test_show_tip_if_available_quiet_mode(tmp_path, capsys):
     """Test show_tip_if_available with quiet mode."""
     # Reset global engine
     import empathy_os.discovery
+
     empathy_os.discovery._engine = None
 
     # Quiet mode should not print anything
@@ -217,4 +221,3 @@ def test_format_tips_for_cli_empty():
     result = format_tips_for_cli([])
 
     assert result == ""
-

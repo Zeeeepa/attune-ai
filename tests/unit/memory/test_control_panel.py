@@ -715,7 +715,9 @@ class TestMemoryControlPanelHealthCheck:
             health = panel.health_check()
 
         assert health["overall"] == "healthy"
-        assert any(check["name"] == "redis" and check["status"] == "pass" for check in health["checks"])
+        assert any(
+            check["name"] == "redis" and check["status"] == "pass" for check in health["checks"]
+        )
 
     @patch("empathy_os.memory.control_panel._check_redis_running")
     def test_health_check_redis_not_running(self, mock_check):

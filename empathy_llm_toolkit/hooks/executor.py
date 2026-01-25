@@ -190,9 +190,7 @@ class HookExecutor:
 
         # Otherwise, import module:function
         if ":" not in command:
-            raise ValueError(
-                f"Python hook must be 'module.path:function' format: {command}"
-            )
+            raise ValueError(f"Python hook must be 'module.path:function' format: {command}")
 
         module_path, func_name = command.rsplit(":", 1)
 
@@ -256,9 +254,7 @@ class HookExecutor:
             ) as response:
                 if response.status >= 400:
                     text = await response.text()
-                    raise RuntimeError(
-                        f"Webhook failed with status {response.status}: {text}"
-                    )
+                    raise RuntimeError(f"Webhook failed with status {response.status}: {text}")
 
                 try:
                     return await response.json()

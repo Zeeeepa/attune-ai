@@ -1,11 +1,8 @@
 """Tests for empathy_os.agent_monitoring"""
+
 from datetime import datetime
 
-from empathy_os.agent_monitoring import (
-    AgentMetrics,
-    AgentMonitor,
-    TeamMetrics,
-)
+from empathy_os.agent_monitoring import AgentMetrics, AgentMonitor, TeamMetrics
 from empathy_os.pattern_library import Pattern, PatternLibrary
 
 

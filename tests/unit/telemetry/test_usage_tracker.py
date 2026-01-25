@@ -488,9 +488,7 @@ class TestSingletonPattern:
         UsageTracker._instance = None
 
         instance = UsageTracker.get_instance(
-            telemetry_dir=temp_dir,
-            retention_days=30,
-            max_file_size_mb=5
+            telemetry_dir=temp_dir, retention_days=30, max_file_size_mb=5
         )
 
         assert instance.retention_days == 30
@@ -506,7 +504,7 @@ class TestPermissionErrors:
     def test_directory_creation_permission_error(self):
         """Test that permission errors during directory creation are handled gracefully."""
         # Try to create telemetry in a restricted directory
-        with patch('pathlib.Path.mkdir', side_effect=PermissionError("Access denied")):
+        with patch("pathlib.Path.mkdir", side_effect=PermissionError("Access denied")):
             tracker = UsageTracker(telemetry_dir=Path("/root/.empathy"))
             # Should not raise, just log
             assert tracker.telemetry_dir == Path("/root/.empathy")
@@ -514,7 +512,7 @@ class TestPermissionErrors:
     def test_track_call_with_permission_error(self, tracker, temp_dir):
         """Test that permission errors during write are handled gracefully."""
         # Mock open to raise PermissionError
-        with patch('builtins.open', side_effect=PermissionError("Access denied")):
+        with patch("builtins.open", side_effect=PermissionError("Access denied")):
             # Should not raise exception, just log
             tracker.track_llm_call(
                 workflow="test",
@@ -533,7 +531,7 @@ class TestPermissionErrors:
     def test_track_call_with_unexpected_error(self, tracker):
         """Test that unexpected errors during write are handled gracefully."""
         # Mock _write_entry to raise unexpected exception
-        with patch.object(tracker, '_write_entry', side_effect=RuntimeError("Unexpected error")):
+        with patch.object(tracker, "_write_entry", side_effect=RuntimeError("Unexpected error")):
             # Should not raise exception, just log
             tracker.track_llm_call(
                 workflow="test",
@@ -557,7 +555,7 @@ class TestFileRotation:
         """Test rotation when rotated file already exists."""
         # Create a large file that will trigger rotation
         large_data = "x" * 1024 * 1024  # 1 MB of data
-        with open(tracker.usage_file, 'w') as f:
+        with open(tracker.usage_file, "w") as f:
             f.write(large_data)
 
         # Create a rotated file with today's date to force counter increment
@@ -642,7 +640,7 @@ class TestRetentionPolicy:
         test_file.write_text('{"test": "data"}\n')
 
         # Mock unlink to raise error
-        with patch('pathlib.Path.unlink', side_effect=OSError("Delete failed")):
+        with patch("pathlib.Path.unlink", side_effect=OSError("Delete failed")):
             # Should not raise exception
             tracker._cleanup_old_files()
 
@@ -679,7 +677,7 @@ class TestAtomicWrites:
         entry = {"test": "data"}
 
         # Mock file operations to trigger cleanup path
-        with patch('builtins.open', side_effect=OSError("Write failed")):
+        with patch("builtins.open", side_effect=OSError("Write failed")):
             with pytest.raises(OSError):
                 tracker._write_entry(entry)
 
@@ -696,9 +694,9 @@ class TestAtomicWrites:
         temp_file.write_text("test")
 
         # Mock open to raise error on write
-        with patch('builtins.open', side_effect=OSError("Write failed")):
+        with patch("builtins.open", side_effect=OSError("Write failed")):
             # Mock unlink to also fail (simulating nested error handling)
-            with patch.object(Path, 'unlink', side_effect=OSError("Cleanup failed")):
+            with patch.object(Path, "unlink", side_effect=OSError("Cleanup failed")):
                 # The outer OSError should still be raised
                 with pytest.raises(OSError, match="Write failed"):
                     tracker._write_entry(entry)
@@ -749,10 +747,10 @@ class TestDataRetrieval:
     def test_get_recent_entries_handles_invalid_json(self, tracker):
         """Test that invalid JSON lines are skipped."""
         # Write some valid and invalid entries
-        with open(tracker.usage_file, 'w', encoding='utf-8') as f:
+        with open(tracker.usage_file, "w", encoding="utf-8") as f:
             f.write('{"v": "1.0", "workflow": "valid1", "ts": "2024-01-01T00:00:00Z"}\n')
-            f.write('invalid json line\n')
-            f.write('\n')  # Empty line
+            f.write("invalid json line\n")
+            f.write("\n")  # Empty line
             f.write('{"v": "1.0", "workflow": "valid2", "ts": "2024-01-01T00:00:01Z"}\n')
 
         entries = tracker.get_recent_entries(limit=100)
@@ -764,7 +762,7 @@ class TestDataRetrieval:
     def test_get_recent_entries_handles_missing_timestamp(self, tracker):
         """Test handling entries with missing or invalid timestamp."""
         # Write entry without timestamp
-        with open(tracker.usage_file, 'w', encoding='utf-8') as f:
+        with open(tracker.usage_file, "w", encoding="utf-8") as f:
             f.write('{"v": "1.0", "workflow": "no_ts"}\n')
             f.write('{"v": "1.0", "workflow": "valid", "ts": "2024-01-01T00:00:00Z"}\n')
 
@@ -790,7 +788,7 @@ class TestDataRetrieval:
         )
 
         # Mock open to raise error
-        with patch('builtins.open', side_effect=OSError("Read failed")):
+        with patch("builtins.open", side_effect=OSError("Read failed")):
             entries = tracker.get_recent_entries(limit=100)
 
         # Should return empty list, not raise exception
@@ -938,7 +936,7 @@ class TestResetFunctionality:
         test_file.write_text('{"test": "data"}\n')
 
         # Mock unlink to raise error
-        with patch('pathlib.Path.unlink', side_effect=OSError("Delete failed")):
+        with patch("pathlib.Path.unlink", side_effect=OSError("Delete failed")):
             # Should not raise exception
             count = tracker.reset()
             # Returns count of entries attempted to delete
@@ -1038,7 +1036,7 @@ class TestEdgeCases:
                 raise OSError("Cannot stat")
             return original_stat(self)
 
-        with patch.object(Path, 'stat', mock_stat):
+        with patch.object(Path, "stat", mock_stat):
             # Should not raise exception
             tracker._cleanup_old_files()
 
@@ -1049,7 +1047,7 @@ class TestEdgeCases:
         test_file.write_text('{"test": "data"}\n')
 
         # Mock fromtimestamp to raise ValueError
-        with patch('empathy_os.telemetry.usage_tracker.datetime') as mock_dt:
+        with patch("empathy_os.telemetry.usage_tracker.datetime") as mock_dt:
             mock_dt.now.return_value = datetime.now()
             mock_dt.fromtimestamp.side_effect = ValueError("Invalid timestamp")
             # Should not raise exception
@@ -1071,7 +1069,7 @@ class TestEdgeCases:
                 return False  # File was deleted
             return original_exists(self)
 
-        with patch.object(Path, 'exists', mock_exists):
+        with patch.object(Path, "exists", mock_exists):
             entries = tracker.get_recent_entries(limit=100)
             # Should skip the "deleted" file and only read the other
             assert len(entries) >= 1
@@ -1079,7 +1077,7 @@ class TestEdgeCases:
     def test_get_recent_entries_handles_invalid_timestamp_format(self, tracker):
         """Test handling of entries with malformed timestamp."""
         # Write entry with invalid timestamp format
-        with open(tracker.usage_file, 'w', encoding='utf-8') as f:
+        with open(tracker.usage_file, "w", encoding="utf-8") as f:
             f.write('{"v": "1.0", "workflow": "invalid_ts", "ts": "not-a-timestamp"}\n')
             f.write('{"v": "1.0", "workflow": "valid", "ts": "2024-01-01T00:00:00Z"}\n')
 

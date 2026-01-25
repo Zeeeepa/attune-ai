@@ -566,9 +566,7 @@ class UsageTracker:
         # Calculate hit rates for workflows
         for wf_stats in by_workflow.values():
             wf_requests = wf_stats["requests"]
-            wf_stats["hit_rate"] = (
-                (wf_stats["hits"] / wf_requests) if wf_requests > 0 else 0.0
-            )
+            wf_stats["hit_rate"] = (wf_stats["hits"] / wf_requests) if wf_requests > 0 else 0.0
 
         return {
             "hit_rate": round(hit_rate, 4),

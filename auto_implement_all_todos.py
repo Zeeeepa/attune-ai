@@ -37,6 +37,7 @@ console = Console()
 @dataclass
 class TestFileAnalysis:
     """Analysis of a test file."""
+
     file_path: Path
     module_path: str
     source_file: Path
@@ -49,6 +50,7 @@ class TestFileAnalysis:
 @dataclass
 class ImplementationResult:
     """Result of implementing a test file."""
+
     file_path: Path
     todos_found: int
     todos_implemented: int
@@ -79,7 +81,7 @@ def extract_module_info(test_file: Path) -> tuple[str, Path] | None:
     content = test_file.read_text()
 
     # Find import statement
-    module_match = re.search(r'from (empathy_os\.\S+) import', content)
+    module_match = re.search(r"from (empathy_os\.\S+) import", content)
     if not module_match:
         return None
 
@@ -103,10 +105,10 @@ def analyze_source_file(source_file: Path) -> tuple[list[str], list[str]]:
 
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef):
-                if not node.name.startswith('_'):
+                if not node.name.startswith("_"):
                     functions.append(node.name)
             elif isinstance(node, ast.ClassDef):
-                if not node.name.startswith('_'):
+                if not node.name.startswith("_"):
                     classes.append(node.name)
 
         return (functions, classes)
@@ -132,7 +134,7 @@ def get_function_signature(source_file: Path, func_name: str) -> dict | None:
                     "name": func_name,
                     "args": args,
                     "has_return": has_return,
-                    "docstring": docstring
+                    "docstring": docstring,
                 }
     except (SyntaxError, OSError) as e:
         console.print(f"[dim]Could not parse function {func_name}: {e}[/dim]")
@@ -150,7 +152,7 @@ def get_class_methods(source_file: Path, class_name: str) -> list[str]:
             if isinstance(node, ast.ClassDef) and node.name == class_name:
                 methods = []
                 for item in node.body:
-                    if isinstance(item, ast.FunctionDef) and not item.name.startswith('_'):
+                    if isinstance(item, ast.FunctionDef) and not item.name.startswith("_"):
                         methods.append(item.name)
                 return methods
     except (SyntaxError, OSError) as e:
@@ -181,28 +183,28 @@ def test_{func_name}_edge_cases():
     pass
 """
 
-    args = signature['args']
-    has_return = signature['has_return']
+    args = signature["args"]
+    has_return = signature["has_return"]
 
     # Generate sample arguments
     test_args = []
     for arg in args:
-        if arg == 'self':
+        if arg == "self":
             continue
-        if 'id' in arg.lower() or 'name' in arg.lower():
+        if "id" in arg.lower() or "name" in arg.lower():
             test_args.append(f'"{arg}_test"')
-        elif 'count' in arg.lower() or 'num' in arg.lower() or 'size' in arg.lower():
-            test_args.append('10')
-        elif 'rate' in arg.lower() or 'percent' in arg.lower():
-            test_args.append('0.8')
-        elif 'enable' in arg.lower() or 'is_' in arg.lower() or 'has_' in arg.lower():
-            test_args.append('True')
-        elif 'path' in arg.lower():
+        elif "count" in arg.lower() or "num" in arg.lower() or "size" in arg.lower():
+            test_args.append("10")
+        elif "rate" in arg.lower() or "percent" in arg.lower():
+            test_args.append("0.8")
+        elif "enable" in arg.lower() or "is_" in arg.lower() or "has_" in arg.lower():
+            test_args.append("True")
+        elif "path" in arg.lower():
             test_args.append('"test/path"')
         else:
             test_args.append('"test_value"')
 
-    args_str = ', '.join(test_args)
+    args_str = ", ".join(test_args)
 
     test_code = f"""
 def test_{func_name}_basic():
@@ -298,7 +300,7 @@ def implement_test_file(test_file: Path, dry_run: bool = False) -> Implementatio
             coverage_before=0.0,
             coverage_after=0.0,
             success=False,
-            error_message="Could not extract module information"
+            error_message="Could not extract module information",
         )
 
     module_path, source_file = module_info
@@ -320,7 +322,7 @@ def implement_test_file(test_file: Path, dry_run: bool = False) -> Implementatio
             tests_failing=0,
             coverage_before=0.0,
             coverage_after=0.0,
-            success=True
+            success=True,
         )
 
     # Replace TODOs with implementations
@@ -329,7 +331,7 @@ def implement_test_file(test_file: Path, dry_run: bool = False) -> Implementatio
     # Strategy: Replace entire test function blocks that contain TODOs
     for func_name in functions:
         # Look for test functions with TODOs
-        pattern = rf'def test_{func_name}_basic\(\):.*?(?=\n(?:def |class |\Z))'
+        pattern = rf"def test_{func_name}_basic\(\):.*?(?=\n(?:def |class |\Z))"
         matches = list(re.finditer(pattern, content, re.DOTALL))
 
         for match in matches:
@@ -338,7 +340,7 @@ def implement_test_file(test_file: Path, dry_run: bool = False) -> Implementatio
                 new_impl = generate_function_test(func_name, module_path, signature)
 
                 # Find the full function including edge cases
-                full_pattern = rf'def test_{func_name}_basic\(\):.*?def test_{func_name}_edge_cases\(\):.*?(?=\n(?:def |class |\Z))'
+                full_pattern = rf"def test_{func_name}_basic\(\):.*?def test_{func_name}_edge_cases\(\):.*?(?=\n(?:def |class |\Z))"
                 full_match = re.search(full_pattern, content, re.DOTALL)
 
                 if full_match:
@@ -347,7 +349,7 @@ def implement_test_file(test_file: Path, dry_run: bool = False) -> Implementatio
 
     # Replace class test TODOs
     for class_name in classes:
-        pattern = rf'class Test{class_name}:.*?(?=\nclass |\Z)'
+        pattern = rf"class Test{class_name}:.*?(?=\nclass |\Z)"
         matches = list(re.finditer(pattern, content, re.DOTALL))
 
         for match in matches:
@@ -371,17 +373,17 @@ def implement_test_file(test_file: Path, dry_run: bool = False) -> Implementatio
                 ["pytest", str(test_file), "-v", "--tb=no", "-q"],
                 capture_output=True,
                 text=True,
-                timeout=60
+                timeout=60,
             )
 
             # Parse output
             output = result.stdout + result.stderr
             if "passed" in output:
-                match = re.search(r'(\d+) passed', output)
+                match = re.search(r"(\d+) passed", output)
                 if match:
                     tests_passing = int(match.group(1))
             if "failed" in output:
-                match = re.search(r'(\d+) failed', output)
+                match = re.search(r"(\d+) failed", output)
                 if match:
                     tests_failing = int(match.group(1))
         except subprocess.TimeoutExpired as e:
@@ -397,7 +399,7 @@ def implement_test_file(test_file: Path, dry_run: bool = False) -> Implementatio
         tests_failing=tests_failing,
         coverage_before=0.0,
         coverage_after=0.0,
-        success=todos_implemented > 0
+        success=todos_implemented > 0,
     )
 
 
@@ -409,11 +411,13 @@ def main():
     args = parser.parse_args()
 
     console.print()
-    console.print(Panel.fit(
-        "[bold cyan]🤖 Automatic TODO Implementation Tool[/bold cyan]\n"
-        "[dim]Progressive test implementation across all files[/dim]",
-        border_style="cyan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold cyan]🤖 Automatic TODO Implementation Tool[/bold cyan]\n"
+            "[dim]Progressive test implementation across all files[/dim]",
+            border_style="cyan",
+        )
+    )
     console.print()
 
     # Find test files
@@ -442,13 +446,9 @@ def main():
         BarColumn(),
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
         TimeElapsedColumn(),
-        console=console
+        console=console,
     ) as progress:
-
-        task = progress.add_task(
-            "[cyan]Implementing TODOs...",
-            total=len(test_files)
-        )
+        task = progress.add_task("[cyan]Implementing TODOs...", total=len(test_files))
 
         for test_file in test_files:
             console.print(f"\n[bold cyan]Processing: {test_file.name}[/bold cyan]")
@@ -461,13 +461,9 @@ def main():
                     f"[green]✓ Implemented {result.todos_implemented}/{result.todos_found} TODOs[/green]"
                 )
                 if not args.dry_run and result.tests_passing > 0:
-                    console.print(
-                        f"[green]  {result.tests_passing} tests passing[/green]"
-                    )
+                    console.print(f"[green]  {result.tests_passing} tests passing[/green]")
                 if result.tests_failing > 0:
-                    console.print(
-                        f"[yellow]  {result.tests_failing} tests failing[/yellow]"
-                    )
+                    console.print(f"[yellow]  {result.tests_failing} tests failing[/yellow]")
             else:
                 console.print(f"[red]✗ Failed: {result.error_message}[/red]")
 
@@ -482,23 +478,25 @@ def main():
     total_tests_failing = sum(r.tests_failing for r in results)
     files_processed = sum(1 for r in results if r.success)
 
-    console.print(Panel.fit(
-        "[bold green]✅ Implementation Complete![/bold green]\n\n"
-        f"[bold]📊 Results:[/bold]\n"
-        f"• Files Processed: [cyan]{files_processed}/{len(test_files)}[/cyan]\n"
-        f"• TODOs Found: [yellow]{total_todos_found}[/yellow]\n"
-        f"• TODOs Implemented: [green]{total_todos_implemented}[/green]\n"
-        f"• Tests Passing: [green]{total_tests_passing}[/green]\n"
-        f"• Tests Failing: [yellow]{total_tests_failing}[/yellow]\n"
-        f"• Success Rate: [cyan]{(total_todos_implemented/total_todos_found*100) if total_todos_found > 0 else 0:.1f}%[/cyan]\n\n"
-        f"[bold]🎯 Next Steps:[/bold]\n"
-        f"1. Review implemented tests: [cyan]pytest tests/unit/ -v[/cyan]\n"
-        f"2. Check coverage: [cyan]pytest --cov=src --cov-report=html[/cyan]\n"
-        f"3. Fix any failing tests\n"
-        f"4. View coverage: [cyan]open htmlcov/index.html[/cyan]",
-        border_style="green",
-        title="🎉 Success"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold green]✅ Implementation Complete![/bold green]\n\n"
+            f"[bold]📊 Results:[/bold]\n"
+            f"• Files Processed: [cyan]{files_processed}/{len(test_files)}[/cyan]\n"
+            f"• TODOs Found: [yellow]{total_todos_found}[/yellow]\n"
+            f"• TODOs Implemented: [green]{total_todos_implemented}[/green]\n"
+            f"• Tests Passing: [green]{total_tests_passing}[/green]\n"
+            f"• Tests Failing: [yellow]{total_tests_failing}[/yellow]\n"
+            f"• Success Rate: [cyan]{(total_todos_implemented / total_todos_found * 100) if total_todos_found > 0 else 0:.1f}%[/cyan]\n\n"
+            f"[bold]🎯 Next Steps:[/bold]\n"
+            f"1. Review implemented tests: [cyan]pytest tests/unit/ -v[/cyan]\n"
+            f"2. Check coverage: [cyan]pytest --cov=src --cov-report=html[/cyan]\n"
+            f"3. Fix any failing tests\n"
+            f"4. View coverage: [cyan]open htmlcov/index.html[/cyan]",
+            border_style="green",
+            title="🎉 Success",
+        )
+    )
     console.print()
 
 
@@ -512,5 +510,6 @@ if __name__ == "__main__":
         # INTENTIONAL: CLI boundary - show user-friendly error with traceback
         console.print(f"\n[bold red]Error: {e}[/bold red]")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

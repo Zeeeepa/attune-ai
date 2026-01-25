@@ -65,16 +65,20 @@ class ReactFormSchema:
                     "pattern": f.validation.pattern,
                 },
                 "showWhen": f.show_when,
-                "options": [
-                    {
-                        "value": o.value,
-                        "label": o.label,
-                        "description": o.description,
-                        "icon": o.icon,
-                        "recommended": o.recommended,
-                    }
-                    for o in f.options
-                ] if f.options else None,
+                "options": (
+                    [
+                        {
+                            "value": o.value,
+                            "label": o.label,
+                            "description": o.description,
+                            "icon": o.icon,
+                            "recommended": o.recommended,
+                        }
+                        for o in f.options
+                    ]
+                    if f.options
+                    else None
+                ),
             }
             fields.append(field_schema)
 
@@ -165,26 +169,34 @@ class ReactBlueprintSchema:
         """Create schema from a WorkflowBlueprint."""
         agents = []
         for agent in blueprint.agents:
-            agents.append({
-                "id": agent.spec.id,
-                "name": agent.spec.name,
-                "role": agent.spec.role.value,
-                "goal": agent.spec.goal,
-                "backstory": agent.spec.backstory[:200] + "..." if len(agent.spec.backstory) > 200 else agent.spec.backstory,
-                "modelTier": agent.spec.model_tier,
-                "tools": [t.name for t in agent.spec.tools],
-            })
+            agents.append(
+                {
+                    "id": agent.spec.id,
+                    "name": agent.spec.name,
+                    "role": agent.spec.role.value,
+                    "goal": agent.spec.goal,
+                    "backstory": (
+                        agent.spec.backstory[:200] + "..."
+                        if len(agent.spec.backstory) > 200
+                        else agent.spec.backstory
+                    ),
+                    "modelTier": agent.spec.model_tier,
+                    "tools": [t.name for t in agent.spec.tools],
+                }
+            )
 
         stages = []
         for stage in blueprint.stages:
-            stages.append({
-                "id": stage.id,
-                "name": stage.name,
-                "description": stage.description,
-                "agents": stage.agent_ids,
-                "parallel": stage.parallel,
-                "dependsOn": stage.depends_on,
-            })
+            stages.append(
+                {
+                    "id": stage.id,
+                    "name": stage.name,
+                    "description": stage.description,
+                    "agents": stage.agent_ids,
+                    "parallel": stage.parallel,
+                    "dependsOn": stage.depends_on,
+                }
+            )
 
         success_criteria = None
         if blueprint.success_criteria:
@@ -226,13 +238,13 @@ def render_form_html(form: Form, action_url: str = "/api/socratic/submit") -> st
     html_parts = [
         f'<form id="{form.id}" action="{action_url}" method="POST" class="socratic-form">',
         '  <div class="form-header">',
-        f'    <h2>{_escape_html(form.title)}</h2>',
+        f"    <h2>{_escape_html(form.title)}</h2>",
         f'    <p class="form-description">{_escape_html(form.description)}</p>',
         '    <div class="progress-bar">',
         f'      <div class="progress-fill" style="width: {form.progress * 100}%"></div>',
         f'      <span class="progress-text">{form.progress:.0%}</span>',
-        '    </div>',
-        '  </div>',
+        "    </div>",
+        "  </div>",
         '  <div class="form-fields">',
     ]
 
@@ -242,34 +254,36 @@ def render_form_html(form: Form, action_url: str = "/api/socratic/submit") -> st
     for category, fields in fields_by_category.items():
         if len(fields_by_category) > 1:
             html_parts.append(f'    <fieldset class="field-category" data-category="{category}">')
-            html_parts.append(f'      <legend>{category.title()}</legend>')
+            html_parts.append(f"      <legend>{category.title()}</legend>")
 
         for field in fields:
             html_parts.append(_render_field_html(field))
 
         if len(fields_by_category) > 1:
-            html_parts.append('    </fieldset>')
+            html_parts.append("    </fieldset>")
 
-    html_parts.extend([
-        '  </div>',
-        '  <div class="form-actions">',
-        '    <button type="submit" class="btn-primary">Continue</button>',
-        '  </div>',
-        '</form>',
-    ])
+    html_parts.extend(
+        [
+            "  </div>",
+            '  <div class="form-actions">',
+            '    <button type="submit" class="btn-primary">Continue</button>',
+            "  </div>",
+            "</form>",
+        ]
+    )
 
     return "\n".join(html_parts)
 
 
 def _render_field_html(field: FormField) -> str:
     """Render a single field as HTML."""
-    required = 'required' if field.validation.required else ''
-    required_indicator = '<span class="required">*</span>' if field.validation.required else ''
+    required = "required" if field.validation.required else ""
+    required_indicator = '<span class="required">*</span>' if field.validation.required else ""
 
     # Show when data attribute
     show_when = ""
     if field.show_when:
-        show_when = f' data-show-when=\'{json.dumps(field.show_when)}\''
+        show_when = f" data-show-when='{json.dumps(field.show_when)}'"
 
     parts = [
         f'    <div class="form-field" data-field-id="{field.id}"{show_when}>',
@@ -283,65 +297,84 @@ def _render_field_html(field: FormField) -> str:
     if field.field_type == FieldType.SINGLE_SELECT:
         parts.append('      <div class="radio-group">')
         for opt in field.options:
-            rec_class = ' recommended' if opt.recommended else ''
+            rec_class = " recommended" if opt.recommended else ""
             parts.append(f'        <label class="radio-option{rec_class}">')
-            parts.append(f'          <input type="radio" name="{field.id}" value="{opt.value}" {required}>')
+            parts.append(
+                f'          <input type="radio" name="{field.id}" value="{opt.value}" {required}>'
+            )
             parts.append(f'          <span class="option-label">{_escape_html(opt.label)}</span>')
             if opt.description:
-                parts.append(f'          <span class="option-desc">{_escape_html(opt.description)}</span>')
-            parts.append('        </label>')
-        parts.append('      </div>')
+                parts.append(
+                    f'          <span class="option-desc">{_escape_html(opt.description)}</span>'
+                )
+            parts.append("        </label>")
+        parts.append("      </div>")
 
     elif field.field_type == FieldType.MULTI_SELECT:
         parts.append('      <div class="checkbox-group">')
         for opt in field.options:
-            rec_class = ' recommended' if opt.recommended else ''
+            rec_class = " recommended" if opt.recommended else ""
             parts.append(f'        <label class="checkbox-option{rec_class}">')
             parts.append(f'          <input type="checkbox" name="{field.id}" value="{opt.value}">')
             parts.append(f'          <span class="option-label">{_escape_html(opt.label)}</span>')
             if opt.description:
-                parts.append(f'          <span class="option-desc">{_escape_html(opt.description)}</span>')
-            parts.append('        </label>')
-        parts.append('      </div>')
+                parts.append(
+                    f'          <span class="option-desc">{_escape_html(opt.description)}</span>'
+                )
+            parts.append("        </label>")
+        parts.append("      </div>")
 
     elif field.field_type == FieldType.TEXT_AREA:
-        max_len = f' maxlength="{field.validation.max_length}"' if field.validation.max_length else ''
-        parts.append(f'      <textarea id="{field.id}" name="{field.id}" placeholder="{_escape_html(field.placeholder)}"{max_len} {required}></textarea>')
+        max_len = (
+            f' maxlength="{field.validation.max_length}"' if field.validation.max_length else ""
+        )
+        parts.append(
+            f'      <textarea id="{field.id}" name="{field.id}" placeholder="{_escape_html(field.placeholder)}"{max_len} {required}></textarea>'
+        )
 
     elif field.field_type == FieldType.BOOLEAN:
         parts.append('      <div class="switch-container">')
         parts.append('        <label class="switch">')
-        parts.append(f'          <input type="checkbox" id="{field.id}" name="{field.id}" value="true">')
+        parts.append(
+            f'          <input type="checkbox" id="{field.id}" name="{field.id}" value="true">'
+        )
         parts.append('          <span class="slider"></span>')
-        parts.append('        </label>')
-        parts.append('      </div>')
+        parts.append("        </label>")
+        parts.append("      </div>")
 
     elif field.field_type == FieldType.SLIDER:
         min_val = field.validation.min_value or 0
         max_val = field.validation.max_value or 100
         parts.append('      <div class="slider-container">')
-        parts.append(f'        <input type="range" id="{field.id}" name="{field.id}" min="{min_val}" max="{max_val}">')
+        parts.append(
+            f'        <input type="range" id="{field.id}" name="{field.id}" min="{min_val}" max="{max_val}">'
+        )
         parts.append(f'        <output for="{field.id}"></output>')
-        parts.append('      </div>')
+        parts.append("      </div>")
 
     else:  # TEXT, NUMBER
         input_type = "number" if field.field_type == FieldType.NUMBER else "text"
-        max_len = f' maxlength="{field.validation.max_length}"' if field.validation.max_length else ''
-        parts.append(f'      <input type="{input_type}" id="{field.id}" name="{field.id}" placeholder="{_escape_html(field.placeholder)}"{max_len} {required}>')
+        max_len = (
+            f' maxlength="{field.validation.max_length}"' if field.validation.max_length else ""
+        )
+        parts.append(
+            f'      <input type="{input_type}" id="{field.id}" name="{field.id}" placeholder="{_escape_html(field.placeholder)}"{max_len} {required}>'
+        )
 
-    parts.append('    </div>')
+    parts.append("    </div>")
 
     return "\n".join(parts)
 
 
 def _escape_html(text: str) -> str:
     """Escape HTML special characters."""
-    return (text
-        .replace("&", "&amp;")
+    return (
+        text.replace("&", "&amp;")
         .replace("<", "&lt;")
         .replace(">", "&gt;")
         .replace('"', "&quot;")
-        .replace("'", "&#x27;"))
+        .replace("'", "&#x27;")
+    )
 
 
 # =============================================================================
@@ -908,7 +941,7 @@ def render_complete_page(form: Form, session: SocraticSession) -> str:
 <body>
     <div class="container">
         <div class="session-info">
-            <span class="domain-badge">{session_data.domain or 'General'}</span>
+            <span class="domain-badge">{session_data.domain or "General"}</span>
             <span class="confidence">Confidence: {session_data.confidence:.0%}</span>
         </div>
 

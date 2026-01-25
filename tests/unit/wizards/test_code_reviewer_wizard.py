@@ -7,7 +7,6 @@ Generated: 2026-01-05T20:15:45.112306
 """
 
 import pytest
-
 from wizards.code_reviewer_wizard import CodeReviewerWizard
 
 

@@ -5,7 +5,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 class TestAgentSpec:
     """Tests for AgentSpec class."""
 

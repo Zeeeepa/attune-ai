@@ -15,13 +15,11 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import FileResponse
 
-from ..schemas import (
-    ClassificationEnum,
-    ExportPatternsRequest,
-    ExportPatternsResponse,
-    PatternListResponse,
-    PatternSummary,
-)
+from empathy_os.config import _validate_file_path
+
+from ..schemas import (ClassificationEnum, ExportPatternsRequest,
+                       ExportPatternsResponse, PatternListResponse,
+                       PatternSummary)
 from ..services.memory_service import MemoryService, get_memory_service
 
 logger = structlog.get_logger(__name__)
@@ -117,12 +115,17 @@ async def export_patterns(
     - patterns: Array of pattern data
     """
     try:
-        # Generate output path
+        # Generate output path with security validation
+        temp_dir = tempfile.gettempdir()
         if request.output_filename:
-            output_path = str(Path(tempfile.gettempdir()) / request.output_filename)
+            raw_path = str(Path(temp_dir) / request.output_filename)
         else:
             timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-            output_path = str(Path(tempfile.gettempdir()) / f"patterns_export_{timestamp}.json")
+            raw_path = str(Path(temp_dir) / f"patterns_export_{timestamp}.json")
+
+        # Validate path to prevent path traversal attacks (CWE-22)
+        validated_path = _validate_file_path(raw_path, allowed_dir=temp_dir)
+        output_path = str(validated_path)
 
         classification_str = request.classification.value if request.classification else None
 
@@ -138,6 +141,13 @@ async def export_patterns(
         )
 
         return ExportPatternsResponse(**result)
+    except ValueError as e:
+        # Path validation failed - likely path traversal attempt
+        logger.warning("invalid_export_path", error=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid export path: {e!s}",
+        )
     except Exception as e:
         logger.error("pattern_export_failed", error=str(e))
         raise HTTPException(
@@ -158,22 +168,37 @@ async def download_export(filename: str) -> FileResponse:
     - filename: Name of the exported file
 
     Returns the JSON file for download.
+
+    Security:
+    - Validates file path to prevent path traversal attacks (CWE-22)
+    - Only allows downloads from temp directory
     """
     try:
-        file_path = Path(tempfile.gettempdir()) / filename
+        temp_dir = tempfile.gettempdir()
+        raw_path = str(Path(temp_dir) / filename)
 
-        if not file_path.exists():
+        # Validate path to prevent path traversal attacks (CWE-22)
+        validated_path = _validate_file_path(raw_path, allowed_dir=temp_dir)
+
+        if not validated_path.exists():
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Export file not found: {filename}",
             )
 
-        logger.info("export_downloaded", filename=filename)
+        logger.info("export_downloaded", filename=validated_path.name)
 
         return FileResponse(
-            path=str(file_path),
-            filename=filename,
+            path=str(validated_path),
+            filename=validated_path.name,
             media_type="application/json",
+        )
+    except ValueError as e:
+        # Path validation failed - likely path traversal attempt
+        logger.warning("invalid_download_path", filename=filename, error=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid file path",
         )
     except HTTPException:
         raise

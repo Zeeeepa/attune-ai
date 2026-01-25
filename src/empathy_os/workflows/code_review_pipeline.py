@@ -276,17 +276,22 @@ class CodeReviewPipeline:
     ) -> tuple[dict | None, Any]:  # Second element is WorkflowResult or None
         """Run full mode with crew and workflow."""
         from .code_review import CodeReviewWorkflow
-        from .code_review_adapters import (
-            _check_crew_available,
-            _get_crew_review,
-            crew_report_to_workflow_format,
-        )
+
+        try:
+            from .code_review_adapters import (
+                _check_crew_available,
+                _get_crew_review,
+                crew_report_to_workflow_format,
+            )
+            crew_available = _check_crew_available()
+        except ImportError:
+            # Crew adapters removed - fall back to workflow only
+            crew_available = False
+            _get_crew_review = None
+            crew_report_to_workflow_format = None
 
         crew_report: dict | None = None
         workflow_result: Any = None  # WorkflowResult or None
-
-        # Check if crew is available
-        crew_available = _check_crew_available()
 
         if crew_available and self.parallel_crew:
             # Run crew and workflow in parallel

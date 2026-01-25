@@ -305,7 +305,9 @@ default_provider: anthropic
         # Valid file should return 0
         assert result == 0
 
-    @pytest.mark.skip(reason="Test expectations need update - validate_file prints errors instead of raising (fix in v4.0.3)")
+    @pytest.mark.skip(
+        reason="Test expectations need update - validate_file prints errors instead of raising (fix in v4.0.3)"
+    )
     def test_validate_invalid_yaml_syntax(self, tmp_path, capsys):
         """Test validating a YAML file with syntax errors."""
         config_file = tmp_path / "invalid_syntax.yaml"
@@ -320,7 +322,9 @@ mode: [
             # Invalid YAML should raise exception
             validate_file(str(config_file))
 
-    @pytest.mark.skip(reason="Test expectations need update - validate_file prints errors instead of raising (fix in v4.0.3)")
+    @pytest.mark.skip(
+        reason="Test expectations need update - validate_file prints errors instead of raising (fix in v4.0.3)"
+    )
     def test_validate_nonexistent_file(self, capsys):
         """Test validating a file that doesn't exist."""
         with pytest.raises(FileNotFoundError):
@@ -380,7 +384,9 @@ class TestPrintEffectiveConfigRealData:
 
         captured = capsys.readouterr()
         # Should show example tasks being routed
-        assert "summarize" in captured.out or "fix_bug" in captured.out or "coordinate" in captured.out
+        assert (
+            "summarize" in captured.out or "fix_bug" in captured.out or "coordinate" in captured.out
+        )
         # Should show the arrow symbol for routing
         assert "→" in captured.out
 
@@ -867,9 +873,7 @@ class TestEdgeCases:
         captured = capsys.readouterr()
         # Should show examples of different tasks
         # At least one of the example tasks should be present
-        assert any(
-            task in captured.out for task in ["summarize", "fix_bug", "coordinate", "→"]
-        )
+        assert any(task in captured.out for task in ["summarize", "fix_bug", "coordinate", "→"])
 
 
 @pytest.mark.unit

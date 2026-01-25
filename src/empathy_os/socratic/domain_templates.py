@@ -777,7 +777,15 @@ class DomainTemplateRegistry:
             agents=[SECURITY_SCANNER, COMPLIANCE_AUDITOR, RESULT_SYNTHESIZER],
             workflows=[SECURITY_AUDIT_WORKFLOW],
             default_workflow="security_audit_comprehensive",
-            keywords=["security", "vulnerability", "audit", "compliance", "penetration", "CVE", "OWASP"],
+            keywords=[
+                "security",
+                "vulnerability",
+                "audit",
+                "compliance",
+                "penetration",
+                "CVE",
+                "OWASP",
+            ],
             required_tools=["read_file", "security_scan"],
             optional_tools=["grep_code", "analyze_ast"],
         )

@@ -584,57 +584,61 @@ HTML_TEMPLATE = """
 """
 
 
-@app.route('/')
+@app.route("/")
 def index():
     """Main dashboard page."""
     return render_template_string(HTML_TEMPLATE)
 
 
-@app.route('/api/templates')
+@app.route("/api/templates")
 def api_templates():
     """API endpoint to list all templates."""
     templates = registry.list_templates()
-    return jsonify([
-        {
-            'id': t.template_id,
-            'name': t.name,
-            'description': t.description,
-            'questions': len(t.form_schema.questions),
-            'agents': len(t.agent_composition_rules),
-            'cost_min': t.estimated_cost_range[0],
-            'cost_max': t.estimated_cost_range[1],
-        }
-        for t in templates
-    ])
+    return jsonify(
+        [
+            {
+                "id": t.template_id,
+                "name": t.name,
+                "description": t.description,
+                "questions": len(t.form_schema.questions),
+                "agents": len(t.agent_composition_rules),
+                "cost_min": t.estimated_cost_range[0],
+                "cost_max": t.estimated_cost_range[1],
+            }
+            for t in templates
+        ]
+    )
 
 
-@app.route('/api/templates/<template_id>')
+@app.route("/api/templates/<template_id>")
 def api_template_detail(template_id):
     """API endpoint to get template details."""
     template = registry.load_template(template_id)
     if not template:
-        return jsonify({'error': 'Template not found'}), 404
+        return jsonify({"error": "Template not found"}), 404
 
-    return jsonify({
-        'id': template.template_id,
-        'name': template.name,
-        'description': template.description,
-        'form_schema': {
-            'title': template.form_schema.title,
-            'description': template.form_schema.description,
-            'questions': [
-                {
-                    'id': q.id,
-                    'text': q.text,
-                    'type': q.type.value,
-                    'options': q.options or [],
-                    'required': q.required,
-                    'help_text': q.help_text,
-                }
-                for q in template.form_schema.questions
-            ]
+    return jsonify(
+        {
+            "id": template.template_id,
+            "name": template.name,
+            "description": template.description,
+            "form_schema": {
+                "title": template.form_schema.title,
+                "description": template.form_schema.description,
+                "questions": [
+                    {
+                        "id": q.id,
+                        "text": q.text,
+                        "type": q.type.value,
+                        "options": q.options or [],
+                        "required": q.required,
+                        "help_text": q.help_text,
+                    }
+                    for q in template.form_schema.questions
+                ],
+            },
         }
-    })
+    )
 
 
 INSPECT_TEMPLATE = """
@@ -759,7 +763,7 @@ INSPECT_TEMPLATE = """
 """
 
 
-@app.route('/inspect/<template_id>')
+@app.route("/inspect/<template_id>")
 def inspect_template(template_id):
     """Inspect page showing detailed template information."""
     template = registry.load_template(template_id)
@@ -773,18 +777,18 @@ def inspect_template(template_id):
         description=template.description,
         questions=[
             {
-                'text': q.text,
-                'type': q.type.value,
-                'options': q.options or [],
-                'required': q.required,
-                'help_text': q.help_text,
+                "text": q.text,
+                "type": q.type.value,
+                "options": q.options or [],
+                "required": q.required,
+                "help_text": q.help_text,
             }
             for q in template.form_schema.questions
         ],
         agents=[
             {
-                'agent_type': rule.agent_type,
-                'condition': rule.condition,
+                "agent_type": rule.agent_type,
+                "condition": rule.condition,
             }
             for rule in template.agent_composition_rules
         ],
@@ -793,7 +797,7 @@ def inspect_template(template_id):
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("=" * 80)
     print("🚀 Empathy Framework - Meta-Workflow Dashboard")
     print("=" * 80)
@@ -806,4 +810,4 @@ if __name__ == '__main__':
     print("=" * 80)
     print()
 
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)

@@ -1,6 +1,6 @@
-"""Hot-Reload Infrastructure for Wizard Factory.
+"""Hot-Reload Infrastructure for Workflow Factory.
 
-Enables real-time wizard reloading during development without server restarts.
+Enables real-time workflow reloading during development without server restarts.
 
 Features:
 - File system monitoring with watchdog
@@ -13,7 +13,7 @@ Usage:
     from hot_reload.integration import HotReloadIntegration
 
     app = FastAPI()
-    hot_reload = HotReloadIntegration(app, register_wizard)
+    hot_reload = HotReloadIntegration(app, register_workflow)
 
     @app.on_event("startup")
     async def startup():
@@ -35,8 +35,8 @@ Licensed under Fair Source 0.9
 
 from .config import HotReloadConfig, get_hot_reload_config
 from .integration import HotReloadIntegration
-from .reloader import ReloadResult, WizardReloader
-from .watcher import WizardFileWatcher
+from .reloader import ReloadResult, WorkflowReloader
+from .watcher import WorkflowFileWatcher
 from .websocket import (
     ReloadNotificationManager,
     create_notification_callback,
@@ -45,8 +45,8 @@ from .websocket import (
 
 __all__ = [
     # Core components
-    "WizardFileWatcher",
-    "WizardReloader",
+    "WorkflowFileWatcher",
+    "WorkflowReloader",
     "ReloadResult",
     # WebSocket
     "ReloadNotificationManager",

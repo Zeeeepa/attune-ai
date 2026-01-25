@@ -1,4 +1,5 @@
 """Tests for empathy_os.logging_config"""
+
 import logging
 
 from empathy_os.logging_config import (
@@ -58,6 +59,7 @@ class TestStructuredFormatter:
             raise ValueError("Test error")
         except ValueError:
             import sys
+
             exc_info = sys.exc_info()
 
         record = logging.LogRecord(
@@ -89,10 +91,7 @@ class TestLoggingConfig:
         LoggingConfig._loggers.clear()
 
         LoggingConfig.configure(
-            level=logging.DEBUG,
-            log_dir=None,
-            use_color=True,
-            include_context=False
+            level=logging.DEBUG, log_dir=None, use_color=True, include_context=False
         )
 
         assert LoggingConfig._configured is True
@@ -242,4 +241,3 @@ def test_init_logging_from_env_custom(monkeypatch, tmp_path):
     assert LoggingConfig._log_dir == str(tmp_path)
     assert LoggingConfig._use_color is False
     assert LoggingConfig._include_context is True
-

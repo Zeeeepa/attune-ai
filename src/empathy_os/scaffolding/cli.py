@@ -1,9 +1,9 @@
-"""CLI for wizard scaffolding.
+"""CLI for workflow scaffolding.
 
 Usage:
-    python -m scaffolding create my_wizard --domain healthcare
-    python -m scaffolding create my_wizard --methodology tdd --domain finance
-    python -m scaffolding create my_wizard --interactive
+    python -m scaffolding create my_workflow --domain healthcare
+    python -m scaffolding create my_workflow --methodology tdd --domain finance
+    python -m scaffolding create my_workflow --interactive
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -26,29 +26,29 @@ logger = logging.getLogger(__name__)
 
 
 def cmd_create(args):
-    """Create a new wizard using specified methodology.
+    """Create a new workflow using specified methodology.
 
     Args:
         args: Command line arguments
 
     """
-    wizard_name = args.name
+    workflow_name = args.name
     domain = args.domain or "general"
-    wizard_type = args.type or "domain"
+    workflow_type = args.type or "domain"
     methodology = args.methodology or "pattern"
 
     print(f"\n{'=' * 60}")
-    print(f"Creating Wizard: {wizard_name}")
+    print(f"Creating Workflow: {workflow_name}")
     print(f"{'=' * 60}\n")
     print(f"Domain: {domain}")
-    print(f"Type: {wizard_type}")
+    print(f"Type: {workflow_type}")
     print(f"Methodology: {methodology}")
     print()
 
     # Get pattern recommendations
     registry = get_pattern_registry()
-    recommended = registry.recommend_for_wizard(
-        wizard_type=wizard_type,
+    recommended = registry.recommend_for_workflow(
+        workflow_type=workflow_type,
         domain=domain,
     )
 
@@ -82,23 +82,23 @@ def cmd_create(args):
     for pid in selected_patterns:
         print(f"  - {pid}")
 
-    # Create wizard using selected methodology
-    print(f"\nCreating wizard with {methodology} methodology...")
+    # Create workflow using selected methodology
+    print(f"\nCreating workflow with {methodology} methodology...")
 
     if methodology == "pattern":
         method = PatternCompose()
-        result = method.create_wizard(
-            name=wizard_name,
+        result = method.create_workflow(
+            name=workflow_name,
             domain=domain,
-            wizard_type=wizard_type,
+            workflow_type=workflow_type,
             selected_patterns=selected_patterns,
         )
     elif methodology == "tdd":
         method = TDDFirst()
-        result = method.create_wizard(
-            name=wizard_name,
+        result = method.create_workflow(
+            name=workflow_name,
             domain=domain,
-            wizard_type=wizard_type,
+            workflow_type=workflow_type,
             pattern_ids=selected_patterns,
         )
     else:
@@ -107,7 +107,7 @@ def cmd_create(args):
 
     # Display results
     print(f"\n{'=' * 60}")
-    print("✅ Wizard Created Successfully!")
+    print("✅ Workflow Created Successfully!")
     print(f"{'=' * 60}\n")
 
     print("Generated Files:")
@@ -162,21 +162,21 @@ def cmd_list_patterns(args):
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Wizard Scaffolding for Empathy Framework",
+        description="Workflow Scaffolding for Empathy Framework",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Create healthcare wizard (recommended approach)
+  # Create healthcare workflow (recommended approach)
   %(prog)s create patient_intake --domain healthcare
 
   # Create with TDD methodology
-  %(prog)s create my_wizard --methodology tdd --domain finance
+  %(prog)s create my_workflow --methodology tdd --domain finance
 
   # Interactive pattern selection
-  %(prog)s create my_wizard --interactive --domain legal
+  %(prog)s create my_workflow --interactive --domain legal
 
   # Specify patterns manually
-  %(prog)s create my_wizard --patterns linear_flow,approval,structured_fields
+  %(prog)s create my_workflow --patterns linear_flow,approval,structured_fields
 
   # List available patterns
   %(prog)s list-patterns
@@ -186,8 +186,8 @@ Examples:
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
 
     # Create command
-    create_parser = subparsers.add_parser("create", help="Create a new wizard")
-    create_parser.add_argument("name", help="Wizard name (e.g., patient_intake)")
+    create_parser = subparsers.add_parser("create", help="Create a new workflow")
+    create_parser.add_argument("name", help="Workflow name (e.g., patient_intake)")
     create_parser.add_argument(
         "--domain",
         "-d",
@@ -197,7 +197,7 @@ Examples:
         "--type",
         "-t",
         choices=["domain", "coach", "ai"],
-        help="Wizard type (default: domain)",
+        help="Workflow type (default: domain)",
     )
     create_parser.add_argument(
         "--methodology",

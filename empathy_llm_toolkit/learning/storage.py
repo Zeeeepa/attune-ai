@@ -72,9 +72,7 @@ class LearnedSkill:
             patterns=data.get("patterns", []),
             confidence=data.get("confidence", 0.5),
             usage_count=data.get("usage_count", 0),
-            last_used=datetime.fromisoformat(data["last_used"])
-            if data.get("last_used")
-            else None,
+            last_used=datetime.fromisoformat(data["last_used"]) if data.get("last_used") else None,
             created_at=datetime.fromisoformat(data["created_at"])
             if "created_at" in data
             else datetime.now(),
@@ -490,13 +488,9 @@ class LearnedSkillsStorage:
             "total_skills": len(skills),
             "patterns_by_category": category_counts,
             "avg_confidence": (
-                sum(p.confidence for p in patterns) / len(patterns)
-                if patterns
-                else 0.0
+                sum(p.confidence for p in patterns) / len(patterns) if patterns else 0.0
             ),
-            "most_used_skill": (
-                max(skills, key=lambda s: s.usage_count).name if skills else None
-            ),
+            "most_used_skill": (max(skills, key=lambda s: s.usage_count).name if skills else None),
         }
 
     def clear_user_data(self, user_id: str) -> int:

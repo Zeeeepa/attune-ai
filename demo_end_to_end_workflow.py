@@ -50,7 +50,9 @@ def main():
     print(f"  Version: {template.version}")
     print(f"  Questions: {len(template.form_schema.questions)}")
     print(f"  Agent rules: {len(template.agent_composition_rules)}")
-    print(f"  Estimated cost: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}")
+    print(
+        f"  Estimated cost: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}"
+    )
 
     # Step 2: Simulate user responses
     print("\n" + "=" * 70)

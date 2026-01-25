@@ -53,11 +53,9 @@ def test_workflow_plugin_discovery():
     header("Phase 5: Workflow Plugin Discovery")
 
     try:
-        from empathy_os.workflows import (
-            WORKFLOW_REGISTRY,
-            discover_workflows,
-            refresh_workflow_registry,
-        )
+        from empathy_os.workflows import (WORKFLOW_REGISTRY,
+                                          discover_workflows,
+                                          refresh_workflow_registry)
 
         # Test 1: Registry is populated
         if len(WORKFLOW_REGISTRY) >= 13:

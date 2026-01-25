@@ -212,7 +212,7 @@ class TestCmdTelemetryShow:
         assert result == 0
         captured = capsys.readouterr()
         # Rich truncates long workflow names in table, so check for partial match
-        assert ("test-workflow" in captured.out or "test…" in captured.out)
+        assert "test-workflow" in captured.out or "test…" in captured.out
         assert "CAPABLE" in captured.out or "CAPA…" in captured.out
         assert "$0.0025" in captured.out or "$0.0…" in captured.out
 
@@ -267,7 +267,7 @@ class TestCmdTelemetryShow:
         assert result == 0
         captured = capsys.readouterr()
         # Rich truncates workflow names, check for partial match
-        assert ("recent" in captured.out or "rece…" in captured.out)
+        assert "recent" in captured.out or "rece…" in captured.out
 
     def test_show_displays_cache_hit(self, tmp_path, capsys):
         """Test show command displays cache hit information."""
@@ -793,9 +793,7 @@ class TestTier1MonitoringCommands:
             },
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_tier1_status(args)
 
@@ -825,9 +823,7 @@ class TestTier1MonitoringCommands:
             "by_task_type": {},
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_task_routing_report(args)
 
@@ -850,9 +846,7 @@ class TestTier1MonitoringCommands:
             },
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_task_routing_report(args)
 
@@ -878,9 +872,7 @@ class TestTier1MonitoringCommands:
             "trend": "stable",
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_test_status(args)
 
@@ -908,9 +900,7 @@ class TestTier1MonitoringCommands:
             "trend": "increasing",
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_test_status(args)
 
@@ -928,9 +918,7 @@ class TestTier1MonitoringCommands:
             "human_review_rate": 0.0,
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=168)
             result = cmd_agent_performance(args)
 
@@ -961,9 +949,7 @@ class TestTier1MonitoringCommands:
             "human_review_rate": 0.08,
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=168)
             result = cmd_agent_performance(args)
 
@@ -994,9 +980,7 @@ class TestSonnetOpusAnalysis:
             "avg_opus_cost_per_call": 0.0,
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -1022,9 +1006,7 @@ class TestSonnetOpusAnalysis:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -1050,9 +1032,7 @@ class TestSonnetOpusAnalysis:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -1665,9 +1645,7 @@ class TestTier1MonitoringEdgeCases:
             },
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=48)
             result = cmd_tier1_status(args)
 
@@ -1733,9 +1711,7 @@ class TestSonnetOpusAnalysisEdgeCases:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -1761,9 +1737,7 @@ class TestSonnetOpusAnalysisEdgeCases:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch(
-            "empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics
-        ):
+        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 

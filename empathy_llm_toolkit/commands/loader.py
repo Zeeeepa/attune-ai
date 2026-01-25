@@ -25,14 +25,16 @@ logger = logging.getLogger(__name__)
 DEFAULT_COMMANDS_DIR = ".claude/commands"
 
 # Files to skip when scanning
-SKIP_FILES = frozenset({
-    "README.md",
-    "readme.md",
-    "CHANGELOG.md",
-    "changelog.md",
-    "INDEX.md",
-    "index.md",
-})
+SKIP_FILES = frozenset(
+    {
+        "README.md",
+        "readme.md",
+        "CHANGELOG.md",
+        "changelog.md",
+        "INDEX.md",
+        "index.md",
+    }
+)
 
 
 class CommandLoader:

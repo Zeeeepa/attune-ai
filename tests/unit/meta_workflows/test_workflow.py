@@ -30,12 +30,12 @@ class TestMetaWorkflowInitialization:
     def test_init_with_template(self):
         """Test initialization with direct template."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template)
 
         assert workflow.template == template
-        assert workflow.template.template_id == "python_package_publish"
+        assert workflow.template.template_id == "release-prep"
 
     def test_init_with_template_id(self):
         """Test initialization with template_id (loads template)."""
@@ -65,7 +65,7 @@ class TestMetaWorkflowInitialization:
     def test_init_with_custom_storage_dir(self, tmp_path):
         """Test initialization with custom storage directory."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         storage_dir = tmp_path / "custom_storage"
         workflow = MetaWorkflow(template=template, storage_dir=str(storage_dir))
@@ -80,15 +80,15 @@ class TestMetaWorkflowExecution:
     def test_execute_with_provided_response(self, tmp_path):
         """Test execution with pre-provided form response."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish",
+            template_id="release-prep",
             responses={
-                "has_tests": "Yes",
+                "security_scan": "Yes",
                 "test_coverage_required": "80%",
                 "quality_checks": ["Linting (ruff)"],
-                "version_bump": "patch",
+                "coverage_threshold": "80%",
                 "publish_to": "Skip publishing",
                 "create_git_tag": "No",
                 "update_changelog": "No",
@@ -99,7 +99,7 @@ class TestMetaWorkflowExecution:
         result = workflow.execute(form_response=response, mock_execution=True)
 
         assert result.success is True
-        assert result.template_id == "python_package_publish"
+        assert result.template_id == "release-prep"
         assert len(result.agents_created) > 0
         assert len(result.agent_results) == len(result.agents_created)
         assert result.total_cost > 0
@@ -108,13 +108,13 @@ class TestMetaWorkflowExecution:
     def test_execute_mock_agents(self, tmp_path):
         """Test mock agent execution."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish",
+            template_id="release-prep",
             responses={
-                "has_tests": "Yes",
-                "version_bump": "patch",
+                "security_scan": "Yes",
+                "coverage_threshold": "80%",
                 "publish_to": "Skip publishing",
                 "create_git_tag": "No",
                 "update_changelog": "No",
@@ -143,11 +143,11 @@ class TestResultStorage:
     def test_result_saved_to_disk(self, tmp_path):
         """Test that result is saved to disk."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish",
-            responses={"has_tests": "No", "version_bump": "patch"},
+            template_id="release-prep",
+            responses={"security_scan": "No", "coverage_threshold": "80%"},
         )
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -165,10 +165,10 @@ class TestResultStorage:
     def test_config_file_content(self, tmp_path):
         """Test config file contains correct data."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish", responses={"version_bump": "patch"}
+            template_id="release-prep", responses={"coverage_threshold": "80%"}
         )
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -177,18 +177,18 @@ class TestResultStorage:
         config_file = tmp_path / result.run_id / "config.json"
         config_data = json.loads(config_file.read_text())
 
-        assert config_data["template_id"] == "python_package_publish"
-        assert config_data["template_name"] == "Python Package Publishing Workflow"
+        assert config_data["template_id"] == "release-prep"
+        assert config_data["template_name"] == "Release Preparation"
         assert config_data["run_id"] == result.run_id
 
     def test_report_generation(self, tmp_path):
         """Test human-readable report is generated."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish",
-            responses={"has_tests": "Yes", "version_bump": "patch"},
+            template_id="release-prep",
+            responses={"security_scan": "Yes", "coverage_threshold": "80%"},
         )
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -200,7 +200,7 @@ class TestResultStorage:
         # Check report contains key information
         assert "Meta-Workflow Execution Report" in report
         assert result.run_id in report
-        assert "Python Package Publishing Workflow" in report
+        assert "Release Preparation" in report
         assert "Summary" in report
         assert "Form Responses" in report
         assert "Agents Created" in report
@@ -214,10 +214,10 @@ class TestResultLoading:
     def test_load_execution_result(self, tmp_path):
         """Test loading a saved execution result."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish", responses={"version_bump": "patch"}
+            template_id="release-prep", responses={"coverage_threshold": "80%"}
         )
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -242,10 +242,10 @@ class TestResultLoading:
         import time
 
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish", responses={"version_bump": "patch"}
+            template_id="release-prep", responses={"coverage_threshold": "80%"}
         )
 
         # Create multiple executions
@@ -277,10 +277,10 @@ class TestErrorHandling:
     def test_execution_error_creates_error_result(self, tmp_path):
         """Test that execution errors are captured in result."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish", responses={"version_bump": "patch"}
+            template_id="release-prep", responses={"coverage_threshold": "80%"}
         )
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -311,20 +311,20 @@ class TestAgentExecution:
     def test_mock_execution_cost_by_tier(self, tmp_path):
         """Test mock execution assigns correct costs by tier."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         # Get full quality response to create all agents
         response = FormResponse(
-            template_id="python_package_publish",
+            template_id="release-prep",
             responses={
-                "has_tests": "Yes",
+                "security_scan": "Yes",
                 "test_coverage_required": "90%",
                 "quality_checks": [
                     "Type checking (mypy)",
                     "Linting (ruff)",
                     "Security scan (bandit)",
                 ],
-                "version_bump": "patch",
+                "coverage_threshold": "80%",
                 "publish_to": "PyPI (production)",
                 "create_git_tag": "Yes",
                 "update_changelog": "Yes",
@@ -335,12 +335,8 @@ class TestAgentExecution:
         result = workflow.execute(form_response=response, mock_execution=True)
 
         # Check that costs vary by tier
-        cheap_costs = [
-            r.cost for r in result.agent_results if r.tier_used == "cheap"
-        ]
-        capable_costs = [
-            r.cost for r in result.agent_results if r.tier_used == "capable"
-        ]
+        cheap_costs = [r.cost for r in result.agent_results if r.tier_used == "cheap"]
+        capable_costs = [r.cost for r in result.agent_results if r.tier_used == "capable"]
 
         if cheap_costs:
             assert all(cost == 0.05 for cost in cheap_costs)
@@ -350,11 +346,11 @@ class TestAgentExecution:
     def test_all_agents_executed(self, tmp_path):
         """Test that all created agents are executed."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         response = FormResponse(
-            template_id="python_package_publish",
-            responses={"has_tests": "Yes", "version_bump": "patch"},
+            template_id="release-prep",
+            responses={"security_scan": "Yes", "coverage_threshold": "80%"},
         )
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))

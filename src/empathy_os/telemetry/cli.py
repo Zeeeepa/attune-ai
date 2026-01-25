@@ -1493,7 +1493,9 @@ def cmd_file_test_status(args: Any) -> int:
             stale_marker = " [STALE]" if record.is_stale else ""
             print(f"\n{record.file_path}")
             print(f"  Status: {status}{stale_marker}")
-            print(f"  Tests: {record.test_count} (passed: {record.passed}, failed: {record.failed})")
+            print(
+                f"  Tests: {record.test_count} (passed: {record.passed}, failed: {record.failed})"
+            )
             if record.duration_seconds:
                 print(f"  Duration: {record.duration_seconds:.1f}s")
             print(f"  Last Run: {record.timestamp[:19]}")

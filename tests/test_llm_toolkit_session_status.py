@@ -345,12 +345,16 @@ class TestSessionStatusCollectorCollect:
         security_dir.mkdir(parents=True)
 
         decisions_file = security_dir / "team_decisions.json"
-        decisions_file.write_text(json.dumps({
-            "decisions": [
-                {"decision": "PENDING", "finding_hash": "abc123"},
-                {"decision": "ACCEPTED", "finding_hash": "def456"},
-            ]
-        }))
+        decisions_file.write_text(
+            json.dumps(
+                {
+                    "decisions": [
+                        {"decision": "PENDING", "finding_hash": "abc123"},
+                        {"decision": "ACCEPTED", "finding_hash": "def456"},
+                    ]
+                }
+            )
+        )
 
         collector = SessionStatusCollector(
             patterns_dir=str(patterns_dir),
@@ -371,14 +375,18 @@ class TestSessionStatusCollectorCollect:
         debugging_dir.mkdir(parents=True)
 
         bug_file = debugging_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-001",
-            "status": "open",
-            "severity": "high",
-            "error_type": "TypeError",
-            "error_message": "Cannot read property of undefined",
-            "file_path": "src/utils.ts",
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-001",
+                    "status": "open",
+                    "severity": "high",
+                    "error_type": "TypeError",
+                    "error_message": "Cannot read property of undefined",
+                    "file_path": "src/utils.ts",
+                }
+            )
+        )
 
         collector = SessionStatusCollector(
             patterns_dir=str(patterns_dir),
@@ -398,12 +406,16 @@ class TestSessionStatusCollectorCollect:
         debugging_dir.mkdir(parents=True)
 
         bug_file = debugging_dir / "bug_002.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-002",
-            "status": "investigating",
-            "severity": "medium",
-            "error_message": "Race condition in async code",
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-002",
+                    "status": "investigating",
+                    "severity": "medium",
+                    "error_message": "Race condition in async code",
+                }
+            )
+        )
 
         collector = SessionStatusCollector(
             patterns_dir=str(patterns_dir),
@@ -422,12 +434,16 @@ class TestSessionStatusCollectorCollect:
         debt_dir.mkdir(parents=True)
 
         debt_file = debt_dir / "debt_history.json"
-        debt_file.write_text(json.dumps({
-            "snapshots": [
-                {"date": "2026-01-18", "total_items": 10},
-                {"date": "2026-01-19", "total_items": 15},  # Increased
-            ]
-        }))
+        debt_file.write_text(
+            json.dumps(
+                {
+                    "snapshots": [
+                        {"date": "2026-01-18", "total_items": 10},
+                        {"date": "2026-01-19", "total_items": 15},  # Increased
+                    ]
+                }
+            )
+        )
 
         collector = SessionStatusCollector(
             patterns_dir=str(patterns_dir),
@@ -447,12 +463,16 @@ class TestSessionStatusCollectorCollect:
         debt_dir.mkdir(parents=True)
 
         debt_file = debt_dir / "debt_history.json"
-        debt_file.write_text(json.dumps({
-            "snapshots": [
-                {"date": "2026-01-18", "total_items": 15},
-                {"date": "2026-01-19", "total_items": 10},  # Decreased
-            ]
-        }))
+        debt_file.write_text(
+            json.dumps(
+                {
+                    "snapshots": [
+                        {"date": "2026-01-18", "total_items": 15},
+                        {"date": "2026-01-19", "total_items": 10},  # Decreased
+                    ]
+                }
+            )
+        )
 
         collector = SessionStatusCollector(
             patterns_dir=str(patterns_dir),
@@ -556,13 +576,15 @@ class TestSessionStatusCollectorFormatOutput:
         )
 
         status = SessionStatus()
-        status.add_item(StatusItem(
-            category="security_pending",
-            priority=100,
-            icon="🔴",
-            title="Security: 1 pending review",
-            description="Review finding xyz",
-        ))
+        status.add_item(
+            StatusItem(
+                category="security_pending",
+                priority=100,
+                icon="🔴",
+                title="Security: 1 pending review",
+                description="Review finding xyz",
+            )
+        )
 
         output = collector.format_output(status)
 
@@ -597,13 +619,15 @@ class TestSessionStatusCollectorFormatOutput:
 
         status = SessionStatus()
         for i in range(10):
-            status.add_item(StatusItem(
-                category=f"category_{i}",
-                priority=i,
-                icon="⚪",
-                title=f"Item {i}",
-                description="Description",
-            ))
+            status.add_item(
+                StatusItem(
+                    category=f"category_{i}",
+                    priority=i,
+                    icon="⚪",
+                    title=f"Item {i}",
+                    description="Description",
+                )
+            )
 
         output = collector.format_output(status, max_items=3)
 
@@ -623,14 +647,16 @@ class TestSessionStatusCollectorFormatJson:
         )
 
         status = SessionStatus()
-        status.add_item(StatusItem(
-            category="bugs_high",
-            priority=80,
-            icon="🔴",
-            title="Bug found",
-            description="Fix it",
-            action_prompt="Run fix command",
-        ))
+        status.add_item(
+            StatusItem(
+                category="bugs_high",
+                priority=80,
+                icon="🔴",
+                title="Bug found",
+                description="Fix it",
+                action_prompt="Run fix command",
+            )
+        )
         status.wins.append("Test passed")
 
         json_output = collector.format_json(status)
@@ -653,14 +679,16 @@ class TestSessionStatusCollectorActionPrompt:
         )
 
         status = SessionStatus()
-        status.add_item(StatusItem(
-            category="bugs_high",
-            priority=80,
-            icon="🔴",
-            title="Bug",
-            description="Desc",
-            action_prompt="Fix the bug please",
-        ))
+        status.add_item(
+            StatusItem(
+                category="bugs_high",
+                priority=80,
+                icon="🔴",
+                title="Bug",
+                description="Desc",
+                action_prompt="Fix the bug please",
+            )
+        )
 
         prompt = collector.get_action_prompt(status, 1)
 
@@ -674,13 +702,15 @@ class TestSessionStatusCollectorActionPrompt:
         )
 
         status = SessionStatus()
-        status.add_item(StatusItem(
-            category="bugs_high",
-            priority=80,
-            icon="🔴",
-            title="Bug",
-            description="Desc",
-        ))
+        status.add_item(
+            StatusItem(
+                category="bugs_high",
+                priority=80,
+                icon="🔴",
+                title="Bug",
+                description="Desc",
+            )
+        )
 
         # Selection out of range
         assert collector.get_action_prompt(status, 0) is None
@@ -698,14 +728,16 @@ class TestSessionStatusCollectorSnapshots:
         )
 
         status = SessionStatus()
-        status.add_item(StatusItem(
-            category="bugs_investigating",
-            priority=60,
-            icon="🟡",
-            title="Bug",
-            description="Desc",
-            details={"count": 3},
-        ))
+        status.add_item(
+            StatusItem(
+                category="bugs_investigating",
+                priority=60,
+                icon="🟡",
+                title="Bug",
+                description="Desc",
+                details={"count": 3},
+            )
+        )
 
         collector._save_daily_snapshot(status)
 
@@ -731,10 +763,14 @@ class TestSessionStatusCollectorSnapshots:
 
         yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
         snapshot_file = history_dir / f"{yesterday}.json"
-        snapshot_file.write_text(json.dumps({
-            "date": yesterday,
-            "bugs_investigating": 5,
-        }))
+        snapshot_file.write_text(
+            json.dumps(
+                {
+                    "date": yesterday,
+                    "bugs_investigating": 5,
+                }
+            )
+        )
 
         snapshot = collector._load_previous_snapshot()
 
@@ -769,21 +805,27 @@ class TestSessionStatusCollectorWins:
 
         yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
         snapshot_file = history_dir / f"{yesterday}.json"
-        snapshot_file.write_text(json.dumps({
-            "date": yesterday,
-            "bugs_investigating": 5,
-        }))
+        snapshot_file.write_text(
+            json.dumps(
+                {
+                    "date": yesterday,
+                    "bugs_investigating": 5,
+                }
+            )
+        )
 
         # Current status with only 2 investigating bugs
         status = SessionStatus()
-        status.add_item(StatusItem(
-            category="bugs_investigating",
-            priority=60,
-            icon="🟡",
-            title="Bugs",
-            description="Desc",
-            details={"count": 2},
-        ))
+        status.add_item(
+            StatusItem(
+                category="bugs_investigating",
+                priority=60,
+                icon="🟡",
+                title="Bugs",
+                description="Desc",
+                details={"count": 2},
+            )
+        )
 
         collector._detect_wins(status)
 
@@ -807,11 +849,15 @@ class TestSessionStatusIntegration:
         security_dir.mkdir(parents=True)
 
         decisions_file = security_dir / "team_decisions.json"
-        decisions_file.write_text(json.dumps({
-            "decisions": [
-                {"decision": "PENDING", "finding_hash": "sec123"},
-            ]
-        }))
+        decisions_file.write_text(
+            json.dumps(
+                {
+                    "decisions": [
+                        {"decision": "PENDING", "finding_hash": "sec123"},
+                    ]
+                }
+            )
+        )
 
         # Setup docs
         docs_dir = tmp_path / "docs"
@@ -854,15 +900,17 @@ class TestSessionStatusIntegration:
         )
 
         status = SessionStatus()
-        status.add_item(StatusItem(
-            category="security_pending",
-            priority=100,
-            icon="🔴",
-            title="Security review",
-            description="Review finding",
-            action_prompt="Review XYZ",
-            details={"count": 1},
-        ))
+        status.add_item(
+            StatusItem(
+                category="security_pending",
+                priority=100,
+                icon="🔴",
+                title="Security review",
+                description="Review finding",
+                action_prompt="Review XYZ",
+                details={"count": 1},
+            )
+        )
         status.wins.append("Bug fixed")
 
         # Convert to JSON and back

@@ -53,15 +53,19 @@ class TestGetRelevantPatterns:
         debug_dir.mkdir()
 
         bug_file = debug_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-001",
-            "file_path": "src/api.py",
-            "error_type": "TypeError",
-            "error_message": "Cannot read property",
-            "fix_description": "Check for null",
-            "status": "resolved",
-            "timestamp": datetime.now().isoformat(),
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-001",
+                    "file_path": "src/api.py",
+                    "error_type": "TypeError",
+                    "error_message": "Cannot read property",
+                    "fix_description": "Check for null",
+                    "status": "resolved",
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -76,15 +80,19 @@ class TestGetRelevantPatterns:
         debug_dir.mkdir()
 
         bug_file = debug_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-002",
-            "file_path": "src/utils.py",
-            "error_type": "async_timing",
-            "error_message": "Race condition",
-            "fix_description": "Use async lock",
-            "status": "resolved",
-            "timestamp": datetime.now().isoformat(),
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-002",
+                    "file_path": "src/utils.py",
+                    "error_type": "async_timing",
+                    "error_message": "Race condition",
+                    "fix_description": "Use async lock",
+                    "status": "resolved",
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -100,14 +108,18 @@ class TestGetRelevantPatterns:
         # Create multiple bug patterns
         for i in range(10):
             bug_file = debug_dir / f"bug_{i:03d}.json"
-            bug_file.write_text(json.dumps({
-                "bug_id": f"BUG-{i:03d}",
-                "file_path": f"src/file{i}.py",
-                "error_type": "TypeError",
-                "error_message": f"Error {i}",
-                "status": "resolved",
-                "timestamp": datetime.now().isoformat(),
-            }))
+            bug_file.write_text(
+                json.dumps(
+                    {
+                        "bug_id": f"BUG-{i:03d}",
+                        "file_path": f"src/file{i}.py",
+                        "error_type": "TypeError",
+                        "error_message": f"Error {i}",
+                        "status": "resolved",
+                        "timestamp": datetime.now().isoformat(),
+                    }
+                )
+            )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -152,14 +164,18 @@ class TestGetPatternsForReview:
 
         # Create bug pattern
         bug_file = debug_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-001",
-            "file_path": "src/api.py",
-            "error_type": "TypeError",
-            "error_message": "Error",
-            "status": "resolved",
-            "timestamp": datetime.now().isoformat(),
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-001",
+                    "file_path": "src/api.py",
+                    "error_type": "TypeError",
+                    "error_message": "Error",
+                    "status": "resolved",
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -203,11 +219,15 @@ class TestInternalMethods:
         debug_dir.mkdir()
 
         bug_file = debug_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-001",
-            "file_path": "src/test.py",
-            "error_type": "TypeError",
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-001",
+                    "file_path": "src/test.py",
+                    "error_type": "TypeError",
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -229,11 +249,15 @@ class TestInternalMethods:
         security_dir.mkdir()
 
         decisions_file = security_dir / "team_decisions.json"
-        decisions_file.write_text(json.dumps({
-            "decisions": [
-                {"finding_hash": "abc123", "decision": "ACCEPTED"},
-            ]
-        }))
+        decisions_file.write_text(
+            json.dumps(
+                {
+                    "decisions": [
+                        {"finding_hash": "abc123", "decision": "ACCEPTED"},
+                    ]
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -258,7 +282,9 @@ class TestInternalMethods:
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
-        result = injector._score_bugs(bugs, file_path="src/api.py", error_type=None, error_message=None)
+        result = injector._score_bugs(
+            bugs, file_path="src/api.py", error_type=None, error_message=None
+        )
 
         # Bug with matching file should score higher
         assert isinstance(result, list)
@@ -335,11 +361,15 @@ class TestCaching:
         debug_dir.mkdir()
 
         bug_file = debug_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-001",
-            "file_path": "src/test.py",
-            "error_type": "TypeError",
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-001",
+                    "file_path": "src/test.py",
+                    "error_type": "TypeError",
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -387,9 +417,7 @@ class TestEdgeCases:
         """Test file path with special characters."""
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
-        result = injector.get_relevant_patterns(
-            file_path="src/my-app (copy)/utils.py"
-        )
+        result = injector.get_relevant_patterns(file_path="src/my-app (copy)/utils.py")
 
         assert isinstance(result, str)
 
@@ -451,18 +479,24 @@ class TestGetPatternsFromGitChanges:
 
         # Create bug pattern matching changed file type
         bug_file = debug_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-001",
-            "file_path": "src/api.py",
-            "error_type": "TypeError",
-            "error_message": "Test error",
-            "status": "resolved",
-            "timestamp": datetime.now().isoformat(),
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-001",
+                    "file_path": "src/api.py",
+                    "error_type": "TypeError",
+                    "error_message": "Test error",
+                    "status": "resolved",
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
-        with patch.object(injector, "_get_git_changed_files", return_value=["src/main.py", "src/utils.py"]):
+        with patch.object(
+            injector, "_get_git_changed_files", return_value=["src/main.py", "src/utils.py"]
+        ):
             result = injector.get_patterns_from_git_changes(max_patterns=5)
 
         assert isinstance(result, str)
@@ -521,11 +555,15 @@ class TestClearCache:
         debug_dir.mkdir()
 
         bug_file = debug_dir / "bug_001.json"
-        bug_file.write_text(json.dumps({
-            "bug_id": "BUG-001",
-            "file_path": "src/test.py",
-            "error_type": "TypeError",
-        }))
+        bug_file.write_text(
+            json.dumps(
+                {
+                    "bug_id": "BUG-001",
+                    "file_path": "src/test.py",
+                    "error_type": "TypeError",
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
@@ -545,14 +583,26 @@ class TestScoreBugsAdvanced:
     def test_score_bugs_with_error_message_similarity(self, tmp_path):
         """Test scoring bugs with error message similarity."""
         bugs = [
-            {"bug_id": "1", "file_path": "src/api.py", "error_type": "TypeError", "error_message": "cannot read property"},
-            {"bug_id": "2", "file_path": "src/other.py", "error_type": "ValueError", "error_message": "invalid value"},
+            {
+                "bug_id": "1",
+                "file_path": "src/api.py",
+                "error_type": "TypeError",
+                "error_message": "cannot read property",
+            },
+            {
+                "bug_id": "2",
+                "file_path": "src/other.py",
+                "error_type": "ValueError",
+                "error_message": "invalid value",
+            },
         ]
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
         # Bug 1 should score higher due to matching error message words
-        result = injector._score_bugs(bugs, file_path=None, error_type=None, error_message="Cannot read property of undefined")
+        result = injector._score_bugs(
+            bugs, file_path=None, error_type=None, error_message="Cannot read property of undefined"
+        )
 
         assert isinstance(result, list)
         assert len(result) == 2
@@ -565,20 +615,32 @@ class TestScoreBugsAdvanced:
         old_date = (datetime.now() - timedelta(days=60)).isoformat()
 
         bugs = [
-            {"bug_id": "1", "file_path": "src/api.py", "error_type": "TypeError", "date": recent_date},
+            {
+                "bug_id": "1",
+                "file_path": "src/api.py",
+                "error_type": "TypeError",
+                "date": recent_date,
+            },
             {"bug_id": "2", "file_path": "src/api.py", "error_type": "TypeError", "date": old_date},
         ]
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 
-        result = injector._score_bugs(bugs, file_path="src/api.py", error_type="TypeError", error_message=None)
+        result = injector._score_bugs(
+            bugs, file_path="src/api.py", error_type="TypeError", error_message=None
+        )
 
         assert isinstance(result, list)
 
     def test_score_bugs_with_invalid_date(self, tmp_path):
         """Test scoring bugs with invalid date format."""
         bugs = [
-            {"bug_id": "1", "file_path": "src/api.py", "error_type": "TypeError", "date": "invalid-date"},
+            {
+                "bug_id": "1",
+                "file_path": "src/api.py",
+                "error_type": "TypeError",
+                "date": "invalid-date",
+            },
             {"bug_id": "2", "file_path": "src/api.py", "error_type": "TypeError", "date": ""},
         ]
 
@@ -613,11 +675,15 @@ class TestLoadSecurityEdgeCases:
         security_dir.mkdir()
 
         decisions_file = security_dir / "team_decisions.json"
-        decisions_file.write_text(json.dumps({
-            "decisions": [
-                {"finding_hash": "abc123", "decision": "ACCEPTED"},
-            ]
-        }))
+        decisions_file.write_text(
+            json.dumps(
+                {
+                    "decisions": [
+                        {"finding_hash": "abc123", "decision": "ACCEPTED"},
+                    ]
+                }
+            )
+        )
 
         injector = ContextualPatternInjector(patterns_dir=str(tmp_path))
 

@@ -1,10 +1,8 @@
 """Tests for empathy_os.core"""
+
 import pytest
 
-from empathy_os.core import (
-    CollaborationState,
-    EmpathyOS,
-)
+from empathy_os.core import CollaborationState, EmpathyOS
 from empathy_os.redis_memory import AccessTier
 
 
@@ -131,6 +129,7 @@ class TestEmpathyOS:
     def test_persist_pattern(self, tmp_path):
         """Test persist_pattern convenience method."""
         import os
+
         os.environ["EMPATHY_STORAGE_DIR"] = str(tmp_path)
 
         empathy = EmpathyOS(user_id="test_user")
@@ -147,6 +146,7 @@ class TestEmpathyOS:
     def test_recall_pattern(self, tmp_path):
         """Test recall_pattern convenience method."""
         import os
+
         os.environ["EMPATHY_STORAGE_DIR"] = str(tmp_path)
 
         empathy = EmpathyOS(user_id="test_user")
@@ -170,6 +170,7 @@ class TestEmpathyOS:
     def test_stash_and_retrieve(self, tmp_path):
         """Test stash and retrieve convenience methods."""
         import os
+
         os.environ["EMPATHY_STORAGE_DIR"] = str(tmp_path)
 
         empathy = EmpathyOS(user_id="test_user")
@@ -188,6 +189,7 @@ class TestEmpathyOS:
     def test_stash_nonexistent_key(self, tmp_path):
         """Test retrieving non-existent key returns None."""
         import os
+
         os.environ["EMPATHY_STORAGE_DIR"] = str(tmp_path)
 
         empathy = EmpathyOS(user_id="test_user")
@@ -195,7 +197,6 @@ class TestEmpathyOS:
         result = empathy.retrieve("nonexistent_key")
 
         assert result is None
-
 
     def test_has_shared_library_with_library(self):
         """Test has_shared_library returns True when library is configured."""
@@ -324,7 +325,6 @@ class TestEmpathyOS:
     def test_level_1_reactive_basic(self):
         """Test Level 1 reactive empathy with basic request."""
         import asyncio
-
 
         empathy = EmpathyOS(user_id="test_user")
 

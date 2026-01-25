@@ -8,6 +8,7 @@ Licensed under Fair Source 0.9
 
 import json
 import logging
+from collections.abc import Iterator
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -278,37 +279,70 @@ class ProjectIndex:
         """Get project summary."""
         return self._summary
 
+    def iter_all_files(self) -> Iterator[FileRecord]:
+        """Iterate over all file records (memory-efficient).
+
+        Use this when you don't need all records at once.
+        """
+        yield from self._records.values()
+
     def get_all_files(self) -> list[FileRecord]:
-        """Get all file records."""
-        return list(self._records.values())
+        """Get all file records as a list.
+
+        Note: For large indexes, prefer iter_all_files() to avoid
+        loading all records into memory at once.
+        """
+        return list(self.iter_all_files())
+
+    def iter_files_needing_tests(self) -> Iterator[FileRecord]:
+        """Iterate over files that need tests (memory-efficient)."""
+        for r in self._records.values():
+            if r.test_requirement.value == "required" and not r.tests_exist:
+                yield r
 
     def get_files_needing_tests(self) -> list[FileRecord]:
         """Get files that need tests but don't have them."""
-        return [
-            r
-            for r in self._records.values()
-            if r.test_requirement.value == "required" and not r.tests_exist
-        ]
+        return list(self.iter_files_needing_tests())
+
+    def iter_stale_files(self) -> Iterator[FileRecord]:
+        """Iterate over files with stale tests (memory-efficient)."""
+        for r in self._records.values():
+            if r.is_stale:
+                yield r
 
     def get_stale_files(self) -> list[FileRecord]:
         """Get files with stale tests."""
-        return [r for r in self._records.values() if r.is_stale]
+        return list(self.iter_stale_files())
+
+    def iter_files_needing_attention(self) -> Iterator[FileRecord]:
+        """Iterate over files that need attention (memory-efficient).
+
+        Note: For sorted results, use get_files_needing_attention().
+        """
+        for r in self._records.values():
+            if r.needs_attention:
+                yield r
 
     def get_files_needing_attention(self) -> list[FileRecord]:
-        """Get files that need attention."""
+        """Get files that need attention, sorted by impact score."""
         return sorted(
-            [r for r in self._records.values() if r.needs_attention],
+            self.iter_files_needing_attention(),
             key=lambda r: -r.impact_score,
         )
+
+    def iter_high_impact_files(self) -> Iterator[FileRecord]:
+        """Iterate over high-impact files (memory-efficient).
+
+        Note: For sorted results, use get_high_impact_files().
+        """
+        for r in self._records.values():
+            if r.impact_score >= self.config.high_impact_threshold:
+                yield r
 
     def get_high_impact_files(self) -> list[FileRecord]:
         """Get high-impact files sorted by impact score."""
         return sorted(
-            [
-                r
-                for r in self._records.values()
-                if r.impact_score >= self.config.high_impact_threshold
-            ],
+            self.iter_high_impact_files(),
             key=lambda r: -r.impact_score,
         )
 

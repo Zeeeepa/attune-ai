@@ -369,7 +369,7 @@ class IndexConfig:
             "**/poetry.lock",
             "**/Pipfile.lock",
             # Archive directories
-            "**/archived_wizards/**",
+            "**/archived_workflows/**",
         ],
     )
 
@@ -453,7 +453,6 @@ class IndexConfig:
         default_factory=lambda: [
             "src",
             "empathy_llm_toolkit",
-            "coach_wizards",
             "empathy_software_plugin",
             "empathy_healthcare_plugin",
         ],

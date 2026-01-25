@@ -136,6 +136,7 @@ class TestRedisConnectionFailureGracefulDegradation:
 
         # Test pattern staging
         from empathy_os.memory.short_term import StagedPattern
+
         pattern = StagedPattern(
             pattern_id="pat_001",
             agent_id="test_agent",

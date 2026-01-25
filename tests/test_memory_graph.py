@@ -54,7 +54,7 @@ class TestMemoryGraph:
         assert node.name == "SQL Injection"
         assert node.type == NodeType.VULNERABILITY
         assert node.severity == "critical"
-        assert node.source_wizard == "security-audit"
+        assert node.source_workflow == "security-audit"
 
     def test_add_edge_connects_nodes(self, graph):
         """Test adding an edge connects two nodes."""
@@ -289,7 +289,7 @@ class TestNodeTypes:
             type=NodeType.BUG,
             name="Test Bug",
             description="A test bug",
-            source_wizard="test",
+            source_workflow="test",
             severity="high",
         )
 
@@ -307,7 +307,7 @@ class TestNodeTypes:
             "type": "vulnerability",
             "name": "Test Vuln",
             "description": "A vulnerability",
-            "source_wizard": "security",
+            "source_workflow": "security",
             "severity": "critical",
             "created_at": "2025-01-01T00:00:00",
             "updated_at": "2025-01-01T00:00:00",

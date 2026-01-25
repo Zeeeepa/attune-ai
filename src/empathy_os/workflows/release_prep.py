@@ -321,12 +321,27 @@ class ReleasePreparationWorkflow(BaseWorkflow):
 
         Falls back gracefully if SecurityAuditCrew is not available.
         """
-        from .security_adapters import (
-            _check_crew_available,
-            _get_crew_audit,
-            crew_report_to_workflow_format,
-            merge_security_results,
-        )
+        try:
+            from .security_adapters import (
+                _check_crew_available,
+                _get_crew_audit,
+                crew_report_to_workflow_format,
+                merge_security_results,
+            )
+        except ImportError:
+            # Security adapters removed - return fallback
+            return (
+                {
+                    "crew_security": {
+                        "available": False,
+                        "fallback": True,
+                        "reason": "Security adapters not installed",
+                    },
+                    **input_data,
+                },
+                0,
+                0,
+            )
 
         target_path = input_data.get("path", ".")
         existing_security = input_data.get("security", {})

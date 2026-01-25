@@ -9,7 +9,6 @@ These tests cover additional functionality not in test_memory_graph.py:
 - Error handling
 """
 
-
 import pytest
 
 from empathy_os.memory.edges import REVERSE_EDGE_TYPES, Edge, EdgeType
@@ -38,7 +37,7 @@ class TestNodeCreation:
         node = Node(id="n", type=NodeType.BUG, name="Test")
 
         assert node.description == ""
-        assert node.source_wizard == ""
+        assert node.source_workflow == ""
         assert node.confidence == 1.0
         assert node.status == "open"
         assert node.tags == []
@@ -305,9 +304,7 @@ class TestMemoryGraphTraversal:
         graph.add_edge(bug_id, fix_id, EdgeType.FIXED_BY)
 
         # Filter to only CAUSES edges
-        related = graph.find_related(
-            bug_id, direction="outgoing", edge_types=[EdgeType.CAUSES]
-        )
+        related = graph.find_related(bug_id, direction="outgoing", edge_types=[EdgeType.CAUSES])
 
         ids = [n.id for n in related]
         assert vuln_id in ids
@@ -368,8 +365,7 @@ class TestMemoryGraphSearch:
         """Test find_similar returns similar nodes."""
         # Use lower threshold since similarity is based on word overlap
         results = graph_with_types.find_similar(
-            {"name": "Memory Leak Bug", "description": "Leak in memory"},
-            threshold=0.3
+            {"name": "Memory Leak Bug", "description": "Leak in memory"}, threshold=0.3
         )
 
         # Should find "Memory Leak" as similar
@@ -379,9 +375,7 @@ class TestMemoryGraphSearch:
 
     def test_find_similar_with_threshold(self, graph_with_types):
         """Test find_similar respects threshold."""
-        results = graph_with_types.find_similar(
-            {"name": "Completely Different"}, threshold=0.9
-        )
+        results = graph_with_types.find_similar({"name": "Completely Different"}, threshold=0.9)
 
         # High threshold should filter out weak matches
         assert len(results) == 0
@@ -400,7 +394,9 @@ class TestMemoryGraphStatistics:
         graph.add_finding("test", {"type": "bug", "name": "Bug 1", "severity": "high"})
         graph.add_finding("test", {"type": "bug", "name": "Bug 2", "severity": "high"})
         graph.add_finding("test", {"type": "bug", "name": "Bug 3", "severity": "medium"})
-        graph.add_finding("test", {"type": "vulnerability", "name": "Vuln 1", "severity": "critical"})
+        graph.add_finding(
+            "test", {"type": "vulnerability", "name": "Vuln 1", "severity": "critical"}
+        )
 
         return graph
 

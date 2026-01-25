@@ -210,7 +210,7 @@ class TestSuggestDefaults:
                     type=QuestionType.SINGLE_SELECT,
                     options=["Option A", "Option B", "Option C"],
                 ),
-            ]
+            ],
         )
 
         # Record a choice

@@ -5,7 +5,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 class TestSocraticSession:
     """Tests for SocraticSession class."""
 
@@ -104,8 +103,7 @@ class TestSocraticSession:
         assert session.current_round == 0
 
         session.add_question_round(
-            questions=[{"id": "q1", "text": "What language?"}],
-            answers={"q1": "python"}
+            questions=[{"id": "q1", "text": "What language?"}], answers={"q1": "python"}
         )
 
         assert session.current_round == 1

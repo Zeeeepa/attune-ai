@@ -8,25 +8,25 @@ from pathlib import Path
 
 import pytest
 
-# Check if wizard_chains.yaml exists for chain executor tests
-CHAIN_CONFIG_EXISTS = Path(".empathy/wizard_chains.yaml").exists()
+# Check if workflow_chains.yaml exists for chain executor tests
+CHAIN_CONFIG_EXISTS = Path(".empathy/workflow_chains.yaml").exists()
 
 from empathy_os.routing import (  # noqa: E402
     ChainExecutor,
     HaikuClassifier,
     RoutingDecision,
     SmartRouter,
-    WizardInfo,
-    WizardRegistry,
+    WorkflowInfo,
+    WorkflowRegistry,
 )
 
 
-class TestWizardRegistry:
-    """Tests for WizardRegistry."""
+class TestWorkflowRegistry:
+    """Tests for WorkflowRegistry."""
 
-    def test_default_wizards_loaded(self):
+    def test_default_workflows_loaded(self):
         """Test that default wizards are loaded."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
         wizards = registry.list_all()
 
         assert len(wizards) >= 10
@@ -36,7 +36,7 @@ class TestWizardRegistry:
 
     def test_get_wizard(self):
         """Test getting a specific wizard."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
         wizard = registry.get("security-audit")
 
         assert wizard is not None
@@ -46,9 +46,9 @@ class TestWizardRegistry:
 
     def test_register_custom_wizard(self):
         """Test registering a custom wizard."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
-        custom = WizardInfo(
+        custom = WorkflowInfo(
             name="custom-wizard",
             description="A custom wizard for testing",
             keywords=["custom", "test"],
@@ -62,7 +62,7 @@ class TestWizardRegistry:
 
     def test_find_by_domain(self):
         """Test finding wizards by domain."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
         security_wizards = registry.find_by_domain("security")
 
         assert len(security_wizards) >= 1
@@ -70,7 +70,7 @@ class TestWizardRegistry:
 
     def test_find_by_keyword(self):
         """Test finding wizards by keyword."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
         vuln_wizards = registry.find_by_keyword("vulnerability")
 
         assert len(vuln_wizards) >= 1
@@ -80,7 +80,7 @@ class TestWizardRegistry:
 
     def test_get_descriptions_for_classification(self):
         """Test getting descriptions for LLM classification."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
         descriptions = registry.get_descriptions_for_classification()
 
         assert "security-audit" in descriptions
@@ -88,11 +88,11 @@ class TestWizardRegistry:
 
     def test_unregister_wizard(self):
         """Test removing a wizard."""
-        registry = WizardRegistry()
+        registry = WorkflowRegistry()
 
         # Add then remove
         registry.register(
-            WizardInfo(
+            WorkflowInfo(
                 name="temp-wizard",
                 description="Temporary",
                 keywords=["temp"],
@@ -112,7 +112,7 @@ class TestHaikuClassifier:
         classifier = HaikuClassifier()
         result = classifier.classify_sync("Check for SQL injection vulnerabilities")
 
-        assert result.primary_wizard == "security-audit"
+        assert result.primary_workflow == "security-audit"
         assert result.confidence > 0
 
     def test_keyword_classify_performance(self):
@@ -120,21 +120,21 @@ class TestHaikuClassifier:
         classifier = HaikuClassifier()
         result = classifier.classify_sync("Optimize slow database queries")
 
-        assert result.primary_wizard == "perf-audit"
+        assert result.primary_workflow == "perf-audit"
 
     def test_keyword_classify_testing(self):
         """Test keyword classification for testing requests."""
         classifier = HaikuClassifier()
         result = classifier.classify_sync("Generate unit tests for the auth module")
 
-        assert result.primary_wizard == "test-gen"
+        assert result.primary_workflow == "test-gen"
 
     def test_keyword_classify_bugs(self):
         """Test keyword classification for bug requests."""
         classifier = HaikuClassifier()
         result = classifier.classify_sync("Find the null reference error causing crashes")
 
-        assert result.primary_wizard == "bug-predict"
+        assert result.primary_workflow == "bug-predict"
 
     def test_keyword_classify_with_secondary(self):
         """Test that secondary wizards are suggested."""
@@ -142,9 +142,9 @@ class TestHaikuClassifier:
         # Request that matches multiple domains
         result = classifier.classify_sync("Fix the security vulnerability bug")
 
-        assert result.primary_wizard in ["security-audit", "bug-predict"]
+        assert result.primary_workflow in ["security-audit", "bug-predict"]
         # Should have secondary suggestions
-        assert len(result.secondary_wizards) >= 0
+        assert len(result.secondary_workflows) >= 0
 
     def test_default_to_code_review(self):
         """Test defaulting to code-review for unclear requests."""
@@ -152,7 +152,7 @@ class TestHaikuClassifier:
         result = classifier.classify_sync("Can you help with my code?")
 
         # Should default to code-review with low confidence
-        assert result.primary_wizard == "code-review"
+        assert result.primary_workflow == "code-review"
         assert result.confidence < 0.5
 
 
@@ -165,7 +165,7 @@ class TestSmartRouter:
         decision = router.route_sync("Fix security issues in auth.py")
 
         assert isinstance(decision, RoutingDecision)
-        assert decision.primary_wizard == "security-audit"
+        assert decision.primary_workflow == "security-audit"
         assert decision.classification_method == "keyword"
 
     def test_route_sync_with_context(self):
@@ -207,18 +207,18 @@ class TestSmartRouter:
 
         assert "bug-predict" in suggestions
 
-    def test_list_wizards(self):
+    def test_list_workflows(self):
         """Test listing all wizards."""
         router = SmartRouter()
-        wizards = router.list_wizards()
+        wizards = router.list_workflows()
 
         assert len(wizards) >= 10
-        assert all(isinstance(w, WizardInfo) for w in wizards)
+        assert all(isinstance(w, WorkflowInfo) for w in wizards)
 
-    def test_get_wizard_info(self):
+    def test_get_workflow_info(self):
         """Test getting specific wizard info."""
         router = SmartRouter()
-        info = router.get_wizard_info("security-audit")
+        info = router.get_workflow_info("security-audit")
 
         assert info is not None
         assert info.name == "security-audit"
@@ -228,38 +228,38 @@ class TestSmartRouter:
         router = SmartRouter()
         decision = router.route_sync("Test request")
 
-        assert hasattr(decision, "primary_wizard")
-        assert hasattr(decision, "secondary_wizards")
+        assert hasattr(decision, "primary_workflow")
+        assert hasattr(decision, "secondary_workflows")
         assert hasattr(decision, "confidence")
         assert hasattr(decision, "reasoning")
         assert hasattr(decision, "suggested_chain")
         assert hasattr(decision, "context")
 
 
-@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".empathy/wizard_chains.yaml not found")
+@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".empathy/workflow_chains.yaml not found")
 class TestChainExecutor:
     """Tests for ChainExecutor."""
 
     def test_load_config(self):
         """Test loading chain configuration."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
         templates = executor.list_templates()
 
         assert len(templates) >= 1
 
     def test_get_triggered_chains(self):
         """Test getting triggered chains based on results."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
 
         result = {"high_severity_count": 5}
         triggers = executor.get_triggered_chains("security-audit", result)
 
         assert len(triggers) >= 1
-        assert any(t.next_wizard == "dependency-check" for t in triggers)
+        assert any(t.next_workflow == "dependency-check" for t in triggers)
 
     def test_condition_evaluation_greater_than(self):
         """Test condition evaluation with greater than."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
 
         result = {"count": 10}
         assert executor._evaluate_condition("count > 5", result) is True
@@ -267,7 +267,7 @@ class TestChainExecutor:
 
     def test_condition_evaluation_equals(self):
         """Test condition evaluation with equals."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
 
         result = {"status": "critical"}
         assert executor._evaluate_condition("status == 'critical'", result) is True
@@ -275,7 +275,7 @@ class TestChainExecutor:
 
     def test_condition_evaluation_boolean(self):
         """Test condition evaluation with booleans."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
 
         result = {"has_issues": True}
         assert executor._evaluate_condition("has_issues == true", result) is True
@@ -283,7 +283,7 @@ class TestChainExecutor:
 
     def test_should_trigger_chain(self):
         """Test should_trigger_chain helper."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
 
         should, triggers = executor.should_trigger_chain(
             "bug-predict",
@@ -295,7 +295,7 @@ class TestChainExecutor:
 
     def test_get_chain_config(self):
         """Test getting chain config for a wizard."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
         config = executor.get_chain_config("security-audit")
 
         assert config is not None
@@ -304,7 +304,7 @@ class TestChainExecutor:
 
     def test_get_template(self):
         """Test getting a chain template."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
         template = executor.get_template("full-security-review")
 
         assert template is not None
@@ -312,7 +312,7 @@ class TestChainExecutor:
 
     def test_create_execution(self):
         """Test creating a chain execution."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
 
         triggers = executor.get_triggered_chains(
             "security-audit",
@@ -321,12 +321,12 @@ class TestChainExecutor:
 
         execution = executor.create_execution("security-audit", triggers)
 
-        assert execution.initial_wizard == "security-audit"
+        assert execution.initial_workflow == "security-audit"
         assert len(execution.steps) >= 2  # Initial + triggered
 
     def test_approve_step(self):
         """Test approving a chain step."""
-        executor = ChainExecutor(".empathy/wizard_chains.yaml")
+        executor = ChainExecutor(".empathy/workflow_chains.yaml")
         execution = executor.create_execution("test", [])
 
         # Add a step that needs approval
@@ -334,7 +334,7 @@ class TestChainExecutor:
 
         execution.steps.append(
             ChainStep(
-                wizard_name="next-wizard",
+                workflow_name="next-wizard",
                 triggered_by="test",
                 approval_required=True,
             ),

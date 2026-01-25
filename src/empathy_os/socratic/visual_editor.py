@@ -63,7 +63,9 @@ class EditorNode:
 
     def to_dict(self) -> dict[str, Any]:
         # Handle both string and enum for node_type
-        node_type_str = self.node_type.value if isinstance(self.node_type, NodeType) else self.node_type
+        node_type_str = (
+            self.node_type.value if isinstance(self.node_type, NodeType) else self.node_type
+        )
         # Handle both dict and Position for position
         pos_dict = self.position.to_dict() if isinstance(self.position, Position) else self.position
         return {
@@ -193,20 +195,24 @@ class WorkflowVisualizer:
 
             # Connect from start or dependencies
             if first_stage:
-                edges.append(EditorEdge(
-                    edge_id=f"start->{stage.id}",
-                    source="start",
-                    target=stage.id,
-                    animated=True,
-                ))
+                edges.append(
+                    EditorEdge(
+                        edge_id=f"start->{stage.id}",
+                        source="start",
+                        target=stage.id,
+                        animated=True,
+                    )
+                )
                 first_stage = False
             else:
                 for dep in stage.depends_on:
-                    edges.append(EditorEdge(
-                        edge_id=f"{dep}->{stage.id}",
-                        source=dep,
-                        target=stage.id,
-                    ))
+                    edges.append(
+                        EditorEdge(
+                            edge_id=f"{dep}->{stage.id}",
+                            source=dep,
+                            target=stage.id,
+                        )
+                    )
 
             # Create agent nodes for this stage
             agent_x_start = 200
@@ -232,11 +238,13 @@ class WorkflowVisualizer:
                 nodes.append(agent_node)
 
                 # Connect stage to agent
-                edges.append(EditorEdge(
-                    edge_id=f"{stage.id}->{agent_id}",
-                    source=stage.id,
-                    target=agent_id,
-                ))
+                edges.append(
+                    EditorEdge(
+                        edge_id=f"{stage.id}->{agent_id}",
+                        source=stage.id,
+                        target=agent_id,
+                    )
+                )
 
             y_offset += self.stage_spacing
 
@@ -253,12 +261,14 @@ class WorkflowVisualizer:
         # Connect last stage to end
         if blueprint.stages:
             last_stage = blueprint.stages[-1]
-            edges.append(EditorEdge(
-                edge_id=f"{last_stage.id}->end",
-                source=last_stage.id,
-                target="end",
-                animated=True,
-            ))
+            edges.append(
+                EditorEdge(
+                    edge_id=f"{last_stage.id}->end",
+                    source=last_stage.id,
+                    target="end",
+                    animated=True,
+                )
+            )
 
         return EditorState(workflow_id=blueprint.id, nodes=nodes, edges=edges)
 
@@ -273,6 +283,7 @@ class WorkflowVisualizer:
         if original_blueprint is None:
             # Create minimal blueprint for reconstruction
             from .blueprint import WorkflowBlueprint
+
             original_blueprint = WorkflowBlueprint(
                 id=state.workflow_id,
                 name="Reconstructed Workflow",
@@ -320,21 +331,21 @@ class WorkflowVisualizer:
             dependencies = [
                 source
                 for source in edges_by_target.get(stage_node.node_id, [])
-                if source != "start" and any(
-                    s.node_id == source and s.node_type == NodeType.STAGE
-                    for s in stage_nodes
-                )
+                if source != "start"
+                and any(s.node_id == source and s.node_type == NodeType.STAGE for s in stage_nodes)
             ]
 
-            new_stages.append(StageSpec(
-                id=stage_node.node_id,
-                name=stage_node.label,
-                description=stage_node.data.get("description", f"Stage: {stage_node.label}"),
-                agent_ids=agent_ids,
-                depends_on=dependencies,
-                parallel=stage_node.data.get("parallel", False),
-                timeout=stage_node.data.get("timeout"),
-            ))
+            new_stages.append(
+                StageSpec(
+                    id=stage_node.node_id,
+                    name=stage_node.label,
+                    description=stage_node.data.get("description", f"Stage: {stage_node.label}"),
+                    agent_ids=agent_ids,
+                    depends_on=dependencies,
+                    parallel=stage_node.data.get("parallel", False),
+                    timeout=stage_node.data.get("timeout"),
+                )
+            )
 
         # Update blueprint
         return WorkflowBlueprint(
@@ -414,7 +425,7 @@ class ASCIIVisualizer:
             if stage.agent_ids:
                 agent_str = " → ".join(stage.agent_ids)
                 if len(agent_str) > self.width - 10:
-                    agent_str = agent_str[:self.width - 13] + "..."
+                    agent_str = agent_str[: self.width - 13] + "..."
                 lines.append(self._center(f"({agent_str})"))
 
             # Connector
@@ -636,8 +647,8 @@ def generate_editor_html(
         const {{ useState, useCallback }} = React;
         const {{ ReactFlow, Background, Controls, MiniMap }} = window.ReactFlow;
 
-        const initialNodes = {json.dumps(react_schema['nodes'], indent=2)};
-        const initialEdges = {json.dumps(react_schema['edges'], indent=2)};
+        const initialNodes = {json.dumps(react_schema["nodes"], indent=2)};
+        const initialEdges = {json.dumps(react_schema["edges"], indent=2)};
 
         function WorkflowEditor() {{
             const [nodes, setNodes] = useState(initialNodes);
@@ -826,6 +837,7 @@ class VisualWorkflowEditor:
         # Check for cycles (simple detection)
         # Note: A more robust implementation would use DFS
         visited: set[str] = set()
+
         def check_cycle(node_id: str, path: set[str]) -> bool:
             if node_id in path:
                 return True

@@ -200,6 +200,7 @@ class FormField:
         # Check pattern
         if v.pattern and isinstance(value, str):
             import re
+
             if not re.match(v.pattern, value):
                 return False, v.error_message
 
@@ -347,16 +348,20 @@ class Form:
                     "placeholder": f.placeholder,
                     "default": f.default,
                     "category": f.category,
-                    "options": [
-                        {
-                            "value": o.value,
-                            "label": o.label,
-                            "description": o.description,
-                            "icon": o.icon,
-                            "recommended": o.recommended,
-                        }
-                        for o in f.options
-                    ] if f.options else [],
+                    "options": (
+                        [
+                            {
+                                "value": o.value,
+                                "label": o.label,
+                                "description": o.description,
+                                "icon": o.icon,
+                                "recommended": o.recommended,
+                            }
+                            for o in f.options
+                        ]
+                        if f.options
+                        else []
+                    ),
                     "validation": {
                         "required": f.validation.required,
                         "min_length": f.validation.min_length,

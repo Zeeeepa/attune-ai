@@ -368,9 +368,7 @@ class TestMetaWorkflowTemplate:
             name="Test Template",
             description="Test description",
             form_schema=FormSchema(
-                questions=[
-                    FormQuestion(id="q1", text="Question 1", type=QuestionType.BOOLEAN)
-                ],
+                questions=[FormQuestion(id="q1", text="Question 1", type=QuestionType.BOOLEAN)],
                 title="Test Form",
                 description="Test",
             ),

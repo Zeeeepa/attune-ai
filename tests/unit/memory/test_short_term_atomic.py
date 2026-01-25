@@ -70,9 +70,7 @@ class TestAtomicPromotePattern:
 
         # Promote atomically
         success, promoted_pattern, message = memory.atomic_promote_pattern(
-            "pat_atomic_001",
-            validator_creds,
-            min_confidence=0.5
+            "pat_atomic_001", validator_creds, min_confidence=0.5
         )
 
         assert success is True
@@ -90,9 +88,7 @@ class TestAtomicPromotePattern:
 
         # Promote
         success, _, _ = memory.atomic_promote_pattern(
-            "pat_remove_001",
-            validator_creds,
-            min_confidence=0.5
+            "pat_remove_001", validator_creds, min_confidence=0.5
         )
 
         assert success is True
@@ -101,7 +97,9 @@ class TestAtomicPromotePattern:
         staged = memory.get_staged_pattern("pat_remove_001", validator_creds)
         assert staged is None
 
-    def test_atomic_promote_returns_correct_pattern(self, memory, validator_creds, contributor_creds):
+    def test_atomic_promote_returns_correct_pattern(
+        self, memory, validator_creds, contributor_creds
+    ):
         """Test that promotion returns the correct pattern data."""
         pattern = StagedPattern(
             pattern_id="pat_data_001",
@@ -116,9 +114,7 @@ class TestAtomicPromotePattern:
         memory.stage_pattern(pattern, contributor_creds)
 
         success, promoted, _ = memory.atomic_promote_pattern(
-            "pat_data_001",
-            validator_creds,
-            min_confidence=0.5
+            "pat_data_001", validator_creds, min_confidence=0.5
         )
 
         assert success is True
@@ -132,9 +128,7 @@ class TestAtomicPromotePattern:
         self._stage_pattern(memory, contributor_creds, "pat_steward_001", confidence=0.85)
 
         success, pattern, message = memory.atomic_promote_pattern(
-            "pat_steward_001",
-            steward_creds,
-            min_confidence=0.5
+            "pat_steward_001", steward_creds, min_confidence=0.5
         )
 
         assert success is True
@@ -153,7 +147,7 @@ class TestAtomicPromotePattern:
         success, promoted_pattern, message = memory.atomic_promote_pattern(
             "pat_low_conf",
             validator_creds,
-            min_confidence=0.7  # Higher threshold
+            min_confidence=0.7,  # Higher threshold
         )
 
         assert success is False
@@ -168,9 +162,7 @@ class TestAtomicPromotePattern:
 
         # Try to promote with high threshold
         success, _, _ = memory.atomic_promote_pattern(
-            "pat_stay_staged",
-            validator_creds,
-            min_confidence=0.8
+            "pat_stay_staged", validator_creds, min_confidence=0.8
         )
 
         assert success is False
@@ -188,7 +180,7 @@ class TestAtomicPromotePattern:
         success, pattern, _ = memory.atomic_promote_pattern(
             "pat_exact",
             validator_creds,
-            min_confidence=0.7  # Exact match
+            min_confidence=0.7,  # Exact match
         )
 
         assert success is True
@@ -201,9 +193,7 @@ class TestAtomicPromotePattern:
         self._stage_pattern(memory, contributor_creds, "pat_zero", confidence=0.1)
 
         success, pattern, _ = memory.atomic_promote_pattern(
-            "pat_zero",
-            validator_creds,
-            min_confidence=0.0
+            "pat_zero", validator_creds, min_confidence=0.0
         )
 
         assert success is True
@@ -215,9 +205,7 @@ class TestAtomicPromotePattern:
         self._stage_pattern(memory, contributor_creds, "pat_max", confidence=1.0)
 
         success, pattern, _ = memory.atomic_promote_pattern(
-            "pat_max",
-            validator_creds,
-            min_confidence=1.0
+            "pat_max", validator_creds, min_confidence=1.0
         )
 
         assert success is True
@@ -226,9 +214,7 @@ class TestAtomicPromotePattern:
     # Permission tests
     # =========================================================================
 
-    def test_atomic_promote_requires_validator_tier(
-        self, memory, contributor_creds
-    ):
+    def test_atomic_promote_requires_validator_tier(self, memory, contributor_creds):
         """Test that only VALIDATOR+ can promote patterns."""
         pattern = StagedPattern(
             pattern_id="pat_no_perm",
@@ -243,7 +229,7 @@ class TestAtomicPromotePattern:
         success, promoted_pattern, message = memory.atomic_promote_pattern(
             "pat_no_perm",
             contributor_creds,  # Not validator tier
-            min_confidence=0.5
+            min_confidence=0.5,
         )
 
         assert success is False
@@ -257,9 +243,7 @@ class TestAtomicPromotePattern:
         observer = AgentCredentials("observer", AccessTier.OBSERVER)
 
         success, pattern, message = memory.atomic_promote_pattern(
-            "pat_observer",
-            observer,
-            min_confidence=0.5
+            "pat_observer", observer, min_confidence=0.5
         )
 
         assert success is False
@@ -272,49 +256,39 @@ class TestAtomicPromotePattern:
     def test_atomic_promote_nonexistent_pattern(self, memory, validator_creds):
         """Test promotion fails for nonexistent pattern."""
         success, promoted_pattern, message = memory.atomic_promote_pattern(
-            "nonexistent_pattern",
-            validator_creds,
-            min_confidence=0.5
+            "nonexistent_pattern", validator_creds, min_confidence=0.5
         )
 
         assert success is False
         assert promoted_pattern is None
         assert "not found" in message
 
-    def test_atomic_promote_empty_pattern_id_raises_value_error(
-        self, memory, validator_creds
-    ):
+    def test_atomic_promote_empty_pattern_id_raises_value_error(self, memory, validator_creds):
         """Test empty pattern_id raises ValueError."""
         with pytest.raises(ValueError, match="pattern_id cannot be empty"):
             memory.atomic_promote_pattern("", validator_creds)
 
-    def test_atomic_promote_whitespace_pattern_id_raises_value_error(
-        self, memory, validator_creds
-    ):
+    def test_atomic_promote_whitespace_pattern_id_raises_value_error(self, memory, validator_creds):
         """Test whitespace-only pattern_id raises ValueError."""
         with pytest.raises(ValueError, match="pattern_id cannot be empty"):
             memory.atomic_promote_pattern("   ", validator_creds)
 
-    def test_atomic_promote_confidence_above_one_raises_value_error(
-        self, memory, validator_creds
-    ):
+    def test_atomic_promote_confidence_above_one_raises_value_error(self, memory, validator_creds):
         """Test min_confidence > 1.0 raises ValueError."""
         with pytest.raises(ValueError, match="min_confidence must be between"):
             memory.atomic_promote_pattern(
                 "pat_001",
                 validator_creds,
-                min_confidence=1.5  # Invalid: > 1.0
+                min_confidence=1.5,  # Invalid: > 1.0
             )
 
-    def test_atomic_promote_negative_confidence_raises_value_error(
-        self, memory, validator_creds
-    ):
+    def test_atomic_promote_negative_confidence_raises_value_error(self, memory, validator_creds):
         """Test min_confidence < 0.0 raises ValueError."""
         with pytest.raises(ValueError, match="min_confidence must be between"):
             memory.atomic_promote_pattern(
                 "pat_001",
                 validator_creds,
-                min_confidence=-0.1  # Invalid: < 0.0
+                min_confidence=-0.1,  # Invalid: < 0.0
             )
 
     # =========================================================================
@@ -327,17 +301,13 @@ class TestAtomicPromotePattern:
         """Test promoting multiple patterns one after another."""
         # Stage multiple patterns
         for i in range(5):
-            self._stage_pattern(
-                memory, contributor_creds, f"pat_multi_{i}", confidence=0.8
-            )
+            self._stage_pattern(memory, contributor_creds, f"pat_multi_{i}", confidence=0.8)
 
         # Promote all of them
         promoted_count = 0
         for i in range(5):
             success, _, _ = memory.atomic_promote_pattern(
-                f"pat_multi_{i}",
-                validator_creds,
-                min_confidence=0.5
+                f"pat_multi_{i}", validator_creds, min_confidence=0.5
             )
             if success:
                 promoted_count += 1
@@ -356,17 +326,13 @@ class TestAtomicPromotePattern:
         threshold = 0.6
 
         for i, conf in enumerate(confidences):
-            self._stage_pattern(
-                memory, contributor_creds, f"pat_mixed_{i}", confidence=conf
-            )
+            self._stage_pattern(memory, contributor_creds, f"pat_mixed_{i}", confidence=conf)
 
         # Try to promote all with threshold 0.6
         results = []
         for i in range(5):
             success, _, _ = memory.atomic_promote_pattern(
-                f"pat_mixed_{i}",
-                validator_creds,
-                min_confidence=threshold
+                f"pat_mixed_{i}", validator_creds, min_confidence=threshold
             )
             results.append(success)
 
@@ -382,9 +348,7 @@ class TestAtomicPromotePattern:
 
         # First promotion succeeds
         success1, _, msg1 = memory.atomic_promote_pattern(
-            "pat_once",
-            validator_creds,
-            min_confidence=0.5
+            "pat_once", validator_creds, min_confidence=0.5
         )
 
         assert success1 is True
@@ -392,9 +356,7 @@ class TestAtomicPromotePattern:
 
         # Second promotion fails (pattern no longer staged)
         success2, _, msg2 = memory.atomic_promote_pattern(
-            "pat_once",
-            validator_creds,
-            min_confidence=0.5
+            "pat_once", validator_creds, min_confidence=0.5
         )
 
         assert success2 is False

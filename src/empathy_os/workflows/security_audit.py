@@ -58,7 +58,7 @@ SKIP_DIRECTORIES = {
     ".coverage",  # Coverage data
     "vscode-extension",  # VSCode extension code (separate security review)
     "vscode-memory-panel",  # VSCode panel code
-    "wizard-dashboard",  # Dashboard build
+    "workflow-dashboard",  # Dashboard build
 }
 
 # Patterns that indicate a line is DETECTION code, not vulnerable code
@@ -672,7 +672,12 @@ class SecurityAuditWorkflow(BaseWorkflow):
 
         Supports XML-enhanced prompts when enabled in workflow config.
         """
-        from .security_adapters import _check_crew_available
+        try:
+            from .security_adapters import _check_crew_available
+            adapters_available = True
+        except ImportError:
+            adapters_available = False
+            _check_crew_available = lambda: False
 
         assessment = input_data.get("assessment", {})
         critical = assessment.get("critical_findings", [])
@@ -683,7 +688,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
         crew_enhanced = False
 
         # Try crew-based remediation first if enabled
-        if self.use_crew_for_remediation and _check_crew_available():
+        if self.use_crew_for_remediation and adapters_available and _check_crew_available():
             crew_remediation = await self._get_crew_remediation(target, critical + high, assessment)
             if crew_remediation:
                 crew_enhanced = True

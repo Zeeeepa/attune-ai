@@ -17,11 +17,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from empathy_llm_toolkit.commands.models import (
-    CommandCategory,
-    CommandConfig,
-    CommandMetadata,
-)
+from empathy_llm_toolkit.commands.models import CommandCategory, CommandConfig, CommandMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -123,7 +119,7 @@ class CommandParser:
         if match:
             # Has frontmatter
             frontmatter_yaml = match.group(1)
-            body = content[match.end():].strip()
+            body = content[match.end() :].strip()
             metadata = self._parse_frontmatter(frontmatter_yaml, source_str)
         else:
             # No frontmatter - infer from content
@@ -200,11 +196,7 @@ class CommandParser:
 
                 # Handle simple arrays [a, b, c]
                 if value.startswith("[") and value.endswith("]"):
-                    value = [
-                        v.strip().strip("'\"")
-                        for v in value[1:-1].split(",")
-                        if v.strip()
-                    ]
+                    value = [v.strip().strip("'\"") for v in value[1:-1].split(",") if v.strip()]
                 # Handle booleans
                 elif value.lower() in ("true", "yes"):
                     value = True
@@ -362,9 +354,7 @@ class CommandParser:
                         CommandCategory(category)
                     except ValueError:
                         valid = ", ".join(c.value for c in CommandCategory)
-                        errors.append(
-                            f"Invalid category '{category}'. Valid: {valid}"
-                        )
+                        errors.append(f"Invalid category '{category}'. Valid: {valid}")
 
             except ImportError:
                 pass  # Skip YAML validation if not installed

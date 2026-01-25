@@ -11,12 +11,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.memory.edges import (
-    REVERSE_EDGE_TYPES,
-    WIZARD_EDGE_PATTERNS,
-    Edge,
-    EdgeType,
-)
+from empathy_os.memory.edges import REVERSE_EDGE_TYPES, WORKFLOW_EDGE_PATTERNS, Edge, EdgeType
 from empathy_os.memory.nodes import (
     BugNode,
     Node,
@@ -84,7 +79,7 @@ class TestNode:
             type=NodeType.VULNERABILITY,
             name="SQL Injection",
             description="User input not sanitized",
-            source_wizard="security-audit",
+            source_workflow="security-audit",
             source_file="src/db.py",
             source_line=42,
             severity="critical",
@@ -94,7 +89,7 @@ class TestNode:
             status="investigating",
         )
 
-        assert node.source_wizard == "security-audit"
+        assert node.source_workflow == "security-audit"
         assert node.source_file == "src/db.py"
         assert node.source_line == 42
         assert node.severity == "critical"
@@ -150,7 +145,7 @@ class TestNode:
             type=NodeType.PATTERN,
             name="Factory Pattern",
             description="Creates objects",
-            source_wizard="code-review",
+            source_workflow="code-review",
             severity="info",
             confidence=0.99,
             metadata={"language": "python"},
@@ -322,14 +317,14 @@ class TestEdge:
             weight=0.9,
             confidence=0.85,
             description="Bug fixed by commit abc123",
-            source_wizard="bug-predict",
+            source_workflow="bug-predict",
             metadata={"commit": "abc123"},
         )
 
         assert edge.weight == 0.9
         assert edge.confidence == 0.85
         assert edge.description == "Bug fixed by commit abc123"
-        assert edge.source_wizard == "bug-predict"
+        assert edge.source_workflow == "bug-predict"
         assert edge.metadata["commit"] == "abc123"
 
     def test_edge_id_property(self):
@@ -388,7 +383,7 @@ class TestEdge:
             weight=0.8,
             confidence=0.95,
             description="Vulnerability affects file",
-            source_wizard="security-audit",
+            source_workflow="security-audit",
             metadata={"severity": "high"},
         )
 
@@ -469,11 +464,11 @@ class TestReverseEdgeTypes:
 
 @pytest.mark.unit
 class TestWizardEdgePatterns:
-    """Tests for WIZARD_EDGE_PATTERNS configuration."""
+    """Tests for WORKFLOW_EDGE_PATTERNS configuration."""
 
     def test_security_audit_patterns(self):
         """Test security-audit wizard has edge patterns."""
-        patterns = WIZARD_EDGE_PATTERNS["security-audit"]
+        patterns = WORKFLOW_EDGE_PATTERNS["security-audit"]
         assert len(patterns) > 0
 
         edge_types = [p[0] for p in patterns]
@@ -482,7 +477,7 @@ class TestWizardEdgePatterns:
 
     def test_bug_predict_patterns(self):
         """Test bug-predict wizard has edge patterns."""
-        patterns = WIZARD_EDGE_PATTERNS["bug-predict"]
+        patterns = WORKFLOW_EDGE_PATTERNS["bug-predict"]
         assert len(patterns) > 0
 
         edge_types = [p[0] for p in patterns]
@@ -491,7 +486,7 @@ class TestWizardEdgePatterns:
 
     def test_test_gen_patterns(self):
         """Test test-gen wizard has edge patterns."""
-        patterns = WIZARD_EDGE_PATTERNS["test-gen"]
+        patterns = WORKFLOW_EDGE_PATTERNS["test-gen"]
         assert len(patterns) > 0
 
         edge_types = [p[0] for p in patterns]
@@ -510,4 +505,4 @@ class TestWizardEdgePatterns:
         ]
 
         for wizard in expected_wizards:
-            assert wizard in WIZARD_EDGE_PATTERNS, f"{wizard} missing patterns"
+            assert wizard in WORKFLOW_EDGE_PATTERNS, f"{wizard} missing patterns"

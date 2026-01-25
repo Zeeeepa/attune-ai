@@ -166,24 +166,16 @@ class Experiment:
             variants=[Variant.from_dict(v) for v in data["variants"]],
             domain_filter=data.get("domain_filter"),
             goal_filter=data.get("goal_filter"),
-            allocation_strategy=AllocationStrategy(
-                data.get("allocation_strategy", "fixed")
-            ),
+            allocation_strategy=AllocationStrategy(data.get("allocation_strategy", "fixed")),
             min_sample_size=data.get("min_sample_size", 100),
             max_duration_days=data.get("max_duration_days", 30),
             confidence_level=data.get("confidence_level", 0.95),
             status=ExperimentStatus(data.get("status", "draft")),
             created_at=datetime.fromisoformat(data["created_at"]),
             started_at=(
-                datetime.fromisoformat(data["started_at"])
-                if data.get("started_at")
-                else None
+                datetime.fromisoformat(data["started_at"]) if data.get("started_at") else None
             ),
-            ended_at=(
-                datetime.fromisoformat(data["ended_at"])
-                if data.get("ended_at")
-                else None
-            ),
+            ended_at=(datetime.fromisoformat(data["ended_at"]) if data.get("ended_at") else None),
         )
 
     @property
@@ -360,7 +352,7 @@ class StatisticalAnalyzer:
         # Continued fraction approximation (simplified)
         result = 0.0
         for k in range(100):
-            term = (x ** k) * math.gamma(a + k) / (math.gamma(k + 1) * math.gamma(a))
+            term = (x**k) * math.gamma(a + k) / (math.gamma(k + 1) * math.gamma(a))
             result += term * ((1 - x) ** b) / (a + k)
             if abs(term) < 1e-10:
                 break
@@ -421,10 +413,12 @@ class TrafficAllocator:
     def _fixed_allocation(self, user_id: str) -> Variant:
         """Deterministic allocation based on user ID hash."""
         # Hash user ID for consistent assignment (not for security)
-        hash_val = int(hashlib.md5(
-            f"{self.experiment.experiment_id}:{user_id}".encode(),
-            usedforsecurity=False
-        ).hexdigest(), 16)
+        hash_val = int(
+            hashlib.md5(
+                f"{self.experiment.experiment_id}:{user_id}".encode(), usedforsecurity=False
+            ).hexdigest(),
+            16,
+        )
         bucket = hash_val % 100
 
         cumulative = 0.0
@@ -471,12 +465,10 @@ class TrafficAllocator:
         for variant in self.experiment.variants:
             if variant.impressions == 0:
                 # Give unvisited variants high priority
-                ucb_scores.append((float('inf'), variant))
+                ucb_scores.append((float("inf"), variant))
             else:
                 mean = variant.avg_success_score
-                exploration = math.sqrt(
-                    2 * math.log(total_impressions) / variant.impressions
-                )
+                exploration = math.sqrt(2 * math.log(total_impressions) / variant.impressions)
                 ucb = mean + exploration
                 ucb_scores.append((ucb, variant))
 
@@ -532,9 +524,7 @@ class ExperimentManager:
         Returns:
             Created experiment
         """
-        experiment_id = hashlib.sha256(
-            f"{name}:{time.time()}".encode()
-        ).hexdigest()[:12]
+        experiment_id = hashlib.sha256(f"{name}:{time.time()}".encode()).hexdigest()[:12]
 
         # Create variants
         num_variants = 1 + len(treatment_configs)
@@ -552,14 +542,16 @@ class ExperimentManager:
         ]
 
         for i, config in enumerate(treatment_configs):
-            variants.append(Variant(
-                variant_id=f"{experiment_id}_treatment_{i}",
-                name=config.get("name", f"Treatment {i + 1}"),
-                description=config.get("description", ""),
-                config=config.get("config", config),
-                is_control=False,
-                traffic_percentage=traffic_each,
-            ))
+            variants.append(
+                Variant(
+                    variant_id=f"{experiment_id}_treatment_{i}",
+                    name=config.get("name", f"Treatment {i + 1}"),
+                    description=config.get("description", ""),
+                    config=config.get("config", config),
+                    is_control=False,
+                    traffic_percentage=traffic_each,
+                )
+            )
 
         experiment = Experiment(
             experiment_id=experiment_id,
@@ -724,8 +716,7 @@ class ExperimentManager:
         # Calculate lift
         if control.conversion_rate > 0:
             lift = (
-                (best_treatment.conversion_rate - control.conversion_rate)
-                / control.conversion_rate
+                (best_treatment.conversion_rate - control.conversion_rate) / control.conversion_rate
             ) * 100
         else:
             lift = 0.0
@@ -750,9 +741,7 @@ class ExperimentManager:
                 )
             else:
                 winner = control
-                recommendation = (
-                    "Keep control. Treatment did not show improvement."
-                )
+                recommendation = "Keep control. Treatment did not show improvement."
         else:
             recommendation = (
                 f"No significant difference detected (p={p_value:.4f}). "

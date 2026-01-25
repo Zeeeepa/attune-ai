@@ -1053,7 +1053,10 @@ class TelemetryStore:
                 continue
             if not stale_only and not failed_only:
                 # Return all files needing attention (stale OR failed OR no_tests)
-                if record.last_test_result not in ("failed", "error", "no_tests") and not record.is_stale:
+                if (
+                    record.last_test_result not in ("failed", "error", "no_tests")
+                    and not record.is_stale
+                ):
                     continue
             results.append(record)
 

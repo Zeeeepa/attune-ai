@@ -5,7 +5,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 class TestAudienceLevel:
     """Tests for AudienceLevel enum."""
 
@@ -56,11 +55,7 @@ class TestExplanation:
 
     def test_create_explanation(self):
         """Test creating an explanation."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            DetailLevel,
-            Explanation,
-        )
+        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Code Review Workflow",
@@ -79,11 +74,7 @@ class TestExplanation:
 
     def test_explanation_to_text(self):
         """Test converting explanation to text."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            DetailLevel,
-            Explanation,
-        )
+        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Code Review",
@@ -102,11 +93,7 @@ class TestExplanation:
 
     def test_explanation_to_markdown(self):
         """Test converting explanation to markdown."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            DetailLevel,
-            Explanation,
-        )
+        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Technical Explanation",
@@ -125,11 +112,7 @@ class TestExplanation:
 
     def test_explanation_to_html(self):
         """Test converting explanation to HTML."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            DetailLevel,
-            Explanation,
-        )
+        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Simple Guide",
@@ -146,11 +129,7 @@ class TestExplanation:
 
     def test_explanation_to_dict(self):
         """Test converting explanation to dict."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            DetailLevel,
-            Explanation,
-        )
+        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Test Workflow",
@@ -179,11 +158,7 @@ class TestWorkflowExplainer:
 
     def test_create_explainer_with_options(self):
         """Test creating explainer with options."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            DetailLevel,
-            WorkflowExplainer,
-        )
+        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(
             audience=AudienceLevel.BUSINESS,
@@ -283,10 +258,7 @@ class TestExplainWorkflowFunction:
 
     def test_explain_workflow_with_format(self, sample_workflow_blueprint):
         """Test explain_workflow with output format."""
-        from empathy_os.socratic.explainer import (
-            OutputFormat,
-            explain_workflow,
-        )
+        from empathy_os.socratic.explainer import OutputFormat, explain_workflow
 
         result = explain_workflow(
             sample_workflow_blueprint,
@@ -301,11 +273,7 @@ class TestExplanationContent:
 
     def test_technical_includes_details(self, sample_workflow_blueprint):
         """Test technical explanation includes technical details."""
-        from empathy_os.socratic.explainer import (
-            AudienceLevel,
-            DetailLevel,
-            WorkflowExplainer,
-        )
+        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(
             audience=AudienceLevel.TECHNICAL,

@@ -210,12 +210,14 @@ class SocraticSession:
         answers: dict[str, Any],
     ) -> None:
         """Record a round of questions and answers."""
-        self.question_rounds.append({
-            "round": self.current_round,
-            "questions": questions,
-            "answers": answers,
-            "timestamp": datetime.now().isoformat(),
-        })
+        self.question_rounds.append(
+            {
+                "round": self.current_round,
+                "questions": questions,
+                "answers": answers,
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
         self.current_round += 1
         self.touch()
 
@@ -239,13 +241,17 @@ class SocraticSession:
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
             "goal": self.goal,
-            "goal_analysis": {
-                "intent": self.goal_analysis.intent,
-                "domain": self.goal_analysis.domain,
-                "confidence": self.goal_analysis.confidence,
-                "ambiguities": self.goal_analysis.ambiguities,
-                "assumptions": self.goal_analysis.assumptions,
-            } if self.goal_analysis else None,
+            "goal_analysis": (
+                {
+                    "intent": self.goal_analysis.intent,
+                    "domain": self.goal_analysis.domain,
+                    "confidence": self.goal_analysis.confidence,
+                    "ambiguities": self.goal_analysis.ambiguities,
+                    "assumptions": self.goal_analysis.assumptions,
+                }
+                if self.goal_analysis
+                else None
+            ),
             "requirements": {
                 "must_have": self.requirements.must_have,
                 "should_have": self.requirements.should_have,

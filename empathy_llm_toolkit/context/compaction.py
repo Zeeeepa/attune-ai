@@ -161,10 +161,7 @@ class CompactState:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> CompactState:
         """Create from dictionary."""
-        patterns = [
-            PatternSummary.from_dict(p)
-            for p in data.get("detected_patterns", [])
-        ]
+        patterns = [PatternSummary.from_dict(p) for p in data.get("detected_patterns", [])]
 
         handoff_data = data.get("pending_handoff")
         handoff = SBARHandoff.from_dict(handoff_data) if handoff_data else None
@@ -386,7 +383,7 @@ class CompactionStateManager:
 
         # Remove files beyond limit
         removed = 0
-        for old_file in state_files[self.max_states_per_user:]:
+        for old_file in state_files[self.max_states_per_user :]:
             try:
                 old_file.unlink()
                 removed += 1

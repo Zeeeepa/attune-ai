@@ -415,18 +415,34 @@ class TestWorkflowRegistry:
     """Test workflow registration."""
 
     def test_crew_review_registered(self):
-        """Test pro-review is registered in workflow registry."""
-        from empathy_os.workflows import WORKFLOW_REGISTRY, CodeReviewPipeline
+        """Test pro-review is registered in workflow registry.
 
-        assert "pro-review" in WORKFLOW_REGISTRY
-        assert WORKFLOW_REGISTRY["pro-review"] == CodeReviewPipeline
+        Note: WORKFLOW_REGISTRY is lazily populated, so we use get_workflow()
+        which triggers initialization.
+        """
+        from empathy_os.workflows import CodeReviewPipeline, get_workflow, list_workflows
+
+        # list_workflows triggers registry initialization
+        workflows = list_workflows()
+        workflow_names = {w["name"] for w in workflows}
+
+        assert "pro-review" in workflow_names
+        assert get_workflow("pro-review") == CodeReviewPipeline
 
     def test_pr_review_registered(self):
-        """Test pr-review is registered in workflow registry."""
-        from empathy_os.workflows import WORKFLOW_REGISTRY, PRReviewWorkflow
+        """Test pr-review is registered in workflow registry.
 
-        assert "pr-review" in WORKFLOW_REGISTRY
-        assert WORKFLOW_REGISTRY["pr-review"] == PRReviewWorkflow
+        Note: WORKFLOW_REGISTRY is lazily populated, so we use get_workflow()
+        which triggers initialization.
+        """
+        from empathy_os.workflows import PRReviewWorkflow, get_workflow, list_workflows
+
+        # list_workflows triggers registry initialization
+        workflows = list_workflows()
+        workflow_names = {w["name"] for w in workflows}
+
+        assert "pr-review" in workflow_names
+        assert get_workflow("pr-review") == PRReviewWorkflow
 
     def test_get_workflow(self):
         """Test get_workflow function."""

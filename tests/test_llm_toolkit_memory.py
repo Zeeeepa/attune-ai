@@ -342,7 +342,7 @@ class TestClaudeMemoryLoaderImports:
         for i in range(5):
             file = tmp_path / f"level{i}.md"
             if i < 4:
-                file.write_text(f"# Level {i}\n@level{i+1}.md")
+                file.write_text(f"# Level {i}\n@level{i + 1}.md")
             else:
                 file.write_text(f"# Level {i}")
             files.append(file)
@@ -661,10 +661,7 @@ class TestClaudeMemoryIntegration:
         main_file = tmp_path / ".claude" / "CLAUDE.md"
         main_file.parent.mkdir()
         main_file.write_text(
-            "# Main\n"
-            "@../shared/coding.md\n"
-            "@../shared/security.md\n"
-            "## Project Specific"
+            "# Main\n@../shared/coding.md\n@../shared/security.md\n## Project Specific"
         )
 
         config = ClaudeMemoryConfig(

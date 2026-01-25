@@ -129,10 +129,7 @@ class BatchProcessingWorkflow:
         logger.info(f"Submitting batch of {len(requests)} requests")
         batch_id = self.batch_provider.create_batch(api_requests)
 
-        logger.info(
-            f"Batch {batch_id} created, polling every {poll_interval}s "
-            f"(max {timeout}s)"
-        )
+        logger.info(f"Batch {batch_id} created, polling every {poll_interval}s (max {timeout}s)")
 
         # Wait for completion
         try:
@@ -152,9 +149,7 @@ class BatchProcessingWorkflow:
         except RuntimeError as e:
             logger.error(f"Batch {batch_id} failed: {e}")
             return [
-                BatchResult(
-                    task_id=req.task_id, success=False, error=f"Batch failed: {e}"
-                )
+                BatchResult(task_id=req.task_id, success=False, error=f"Batch failed: {e}")
                 for req in requests
             ]
 
@@ -165,21 +160,15 @@ class BatchProcessingWorkflow:
 
             if "error" in raw:
                 error_msg = raw["error"].get("message", "Unknown error")
-                results.append(
-                    BatchResult(task_id=task_id, success=False, error=error_msg)
-                )
+                results.append(BatchResult(task_id=task_id, success=False, error=error_msg))
             else:
                 results.append(
-                    BatchResult(
-                        task_id=task_id, success=True, output=raw.get("response")
-                    )
+                    BatchResult(task_id=task_id, success=True, output=raw.get("response"))
                 )
 
         # Log summary
         success_count = sum(r.success for r in results)
-        logger.info(
-            f"Batch {batch_id} completed: {success_count}/{len(results)} successful"
-        )
+        logger.info(f"Batch {batch_id} completed: {success_count}/{len(results)} successful")
 
         return results
 
@@ -203,17 +192,14 @@ class BatchProcessingWorkflow:
         }
 
         # Get prompt template or use default
-        prompt_template = task_prompts.get(
-            request.task_type, "Process the following:\n\n{input}"
-        )
+        prompt_template = task_prompts.get(request.task_type, "Process the following:\n\n{input}")
 
         # Format with input data
         try:
             content = prompt_template.format(**request.input_data)
         except KeyError as e:
             logger.warning(
-                f"Missing required field {e} for task {request.task_type}, "
-                f"using raw input"
+                f"Missing required field {e} for task {request.task_type}, using raw input"
             )
             content = prompt_template.format(input=json.dumps(request.input_data))
 
@@ -282,9 +268,7 @@ class BatchProcessingWorkflow:
 
         return requests
 
-    def save_results_to_file(
-        self, results: list[BatchResult], output_path: str
-    ) -> None:
+    def save_results_to_file(self, results: list[BatchResult], output_path: str) -> None:
         """Save batch results to JSON file.
 
         Args:

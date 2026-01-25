@@ -206,29 +206,37 @@ class WorkflowExplainer:
         sections: list[dict[str, str]] = []
 
         # Overview section
-        sections.append({
-            "heading": "Overview",
-            "content": self._explain_overview(blueprint),
-        })
+        sections.append(
+            {
+                "heading": "Overview",
+                "content": self._explain_overview(blueprint),
+            }
+        )
 
         # Agents section
-        sections.append({
-            "heading": "Agents Involved",
-            "content": self._explain_agents(blueprint.agents),
-        })
+        sections.append(
+            {
+                "heading": "Agents Involved",
+                "content": self._explain_agents(blueprint.agents),
+            }
+        )
 
         # Process section
-        sections.append({
-            "heading": "How It Works",
-            "content": self._explain_process(blueprint.stages, blueprint.agents),
-        })
+        sections.append(
+            {
+                "heading": "How It Works",
+                "content": self._explain_process(blueprint.stages, blueprint.agents),
+            }
+        )
 
         # Success criteria section (if provided)
         if success_criteria:
-            sections.append({
-                "heading": "Success Metrics",
-                "content": self._explain_success_criteria(success_criteria),
-            })
+            sections.append(
+                {
+                    "heading": "Success Metrics",
+                    "content": self._explain_success_criteria(success_criteria),
+                }
+            )
 
         # Summary
         summary = self._generate_summary(blueprint)
@@ -256,22 +264,28 @@ class WorkflowExplainer:
         role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(
             agent.role, "performs automated tasks"
         )
-        sections.append({
-            "heading": "Role",
-            "content": f"This agent {role_desc}.",
-        })
+        sections.append(
+            {
+                "heading": "Role",
+                "content": f"This agent {role_desc}.",
+            }
+        )
 
         # Capabilities section
-        sections.append({
-            "heading": "Capabilities",
-            "content": self._explain_tools(agent.tools),
-        })
+        sections.append(
+            {
+                "heading": "Capabilities",
+                "content": self._explain_tools(agent.tools),
+            }
+        )
 
         # How it helps section
-        sections.append({
-            "heading": "How It Helps",
-            "content": self._explain_agent_value(agent),
-        })
+        sections.append(
+            {
+                "heading": "How It Helps",
+                "content": self._explain_agent_value(agent),
+            }
+        )
 
         summary = f"{agent.name} is a {agent.role.value} agent that {agent.goal.lower()}"
 
@@ -298,7 +312,9 @@ class WorkflowExplainer:
                 f"Target domain: {blueprint.domain}."
             )
         else:
-            generated_at = blueprint.generated_at.strftime('%Y-%m-%d') if blueprint.generated_at else 'N/A'
+            generated_at = (
+                blueprint.generated_at.strftime("%Y-%m-%d") if blueprint.generated_at else "N/A"
+            )
             return (
                 f"Multi-agent workflow with {len(blueprint.agents)} agents, "
                 f"{len(blueprint.stages)} stages. "
@@ -317,15 +333,15 @@ class WorkflowExplainer:
         for agent_blueprint in agents:
             # Access the AgentSpec via .spec
             spec = agent_blueprint.spec
-            role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(
-                spec.role, "works on the task"
-            )
+            role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(spec.role, "works on the task")
 
             if self.detail_level == DetailLevel.BRIEF:
                 lines.append(f"• {spec.name}: {role_desc}")
             else:
                 tool_count = len(spec.tools)
-                tool_str = f" ({tool_count} tools)" if self.detail_level == DetailLevel.DETAILED else ""
+                tool_str = (
+                    f" ({tool_count} tools)" if self.detail_level == DetailLevel.DETAILED else ""
+                )
                 lines.append(f"• **{spec.name}**{tool_str}: {spec.goal}")
 
         return "\n".join(lines)
@@ -341,11 +357,7 @@ class WorkflowExplainer:
         lines = []
 
         for i, stage in enumerate(stages, 1):
-            agent_names = [
-                agent_lookup[aid].name
-                for aid in stage.agent_ids
-                if aid in agent_lookup
-            ]
+            agent_names = [agent_lookup[aid].name for aid in stage.agent_ids if aid in agent_lookup]
 
             if self.audience == AudienceLevel.BEGINNER:
                 if stage.parallel:
@@ -358,9 +370,7 @@ class WorkflowExplainer:
                     )
             else:
                 parallel_str = " (parallel)" if stage.parallel else ""
-                lines.append(
-                    f"{i}. **{stage.name}**{parallel_str}: {', '.join(agent_names)}"
-                )
+                lines.append(f"{i}. **{stage.name}**{parallel_str}: {', '.join(agent_names)}")
 
             if self.detail_level == DetailLevel.DETAILED and stage.depends_on:
                 lines.append(f"   Depends on: {', '.join(stage.depends_on)}")
@@ -384,7 +394,7 @@ class WorkflowExplainer:
 
         lines = ["This agent can:"]
         for tool in tools:
-            tool_id = tool.id if hasattr(tool, 'id') else str(tool)
+            tool_id = tool.id if hasattr(tool, "id") else str(tool)
             explanation = tool_explanations.get(tool_id, f"use {tool_id}")
             lines.append(f"• {explanation}")
 
@@ -418,7 +428,9 @@ class WorkflowExplainer:
             if self.audience == AudienceLevel.BEGINNER:
                 lines.append(f"• {metric.name}: {metric.description}")
             else:
-                target = f" (target: {metric.target_value})" if metric.target_value is not None else ""
+                target = (
+                    f" (target: {metric.target_value})" if metric.target_value is not None else ""
+                )
                 lines.append(f"• **{metric.name}**{target}: {metric.description}")
 
         return "\n".join(lines)
@@ -438,7 +450,10 @@ class WorkflowExplainer:
                 f"to deliver results efficiently and consistently."
             )
         else:
-            return blueprint.description or f"A {len(blueprint.stages)}-stage workflow for {blueprint.domain}."
+            return (
+                blueprint.description
+                or f"A {len(blueprint.stages)}-stage workflow for {blueprint.domain}."
+            )
 
     def generate_narrative(self, blueprint: WorkflowBlueprint) -> str:
         """Generate a narrative story-like explanation.
@@ -473,22 +488,16 @@ class WorkflowExplainer:
             lines.append(f"### Step {i}: {stage.name}")
             lines.append("")
 
-            agents_in_stage = [
-                agent_lookup[aid] for aid in stage.agent_ids if aid in agent_lookup
-            ]
+            agents_in_stage = [agent_lookup[aid] for aid in stage.agent_ids if aid in agent_lookup]
 
             if stage.parallel and len(agents_in_stage) > 1:
                 lines.append("Working in parallel:")
                 for agent in agents_in_stage:
-                    role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(
-                        agent.role, "works"
-                    )
+                    role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(agent.role, "works")
                     lines.append(f"- **{agent.name}** {role_desc}")
             else:
                 for agent in agents_in_stage:
-                    role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(
-                        agent.role, "works"
-                    )
+                    role_desc = ROLE_DESCRIPTIONS.get(self.audience, {}).get(agent.role, "works")
                     lines.append(f"**{agent.name}** {role_desc}.")
 
             lines.append("")
@@ -542,6 +551,7 @@ Format as markdown with clear sections."""
         if self._client is None and self.api_key:
             try:
                 import anthropic
+
                 self._client = anthropic.Anthropic(api_key=self.api_key)
             except ImportError:
                 pass
@@ -571,13 +581,11 @@ Format as markdown with clear sections."""
 
         # Format workflow info for prompt
         agents_str = "\n".join(
-            f"- {a.name} ({a.role.value}): {a.description}"
-            for a in blueprint.agents
+            f"- {a.name} ({a.role.value}): {a.description}" for a in blueprint.agents
         )
 
         stages_str = "\n".join(
-            f"- {s.name}: {', '.join(s.agent_ids)}"
-            + (" (parallel)" if s.parallel else "")
+            f"- {s.name}: {', '.join(s.agent_ids)}" + (" (parallel)" if s.parallel else "")
             for s in blueprint.stages
         )
 
@@ -645,9 +653,10 @@ def explain_workflow(
         elif format == OutputFormat.TEXT:
             # Simple markdown to text conversion
             import re
-            text = re.sub(r'#{1,6}\s+', '', markdown)  # Remove headers
-            text = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)  # Remove bold
-            text = re.sub(r'\*([^*]+)\*', r'\1', text)  # Remove italic
+
+            text = re.sub(r"#{1,6}\s+", "", markdown)  # Remove headers
+            text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)  # Remove bold
+            text = re.sub(r"\*([^*]+)\*", r"\1", text)  # Remove italic
             return text
         elif format == OutputFormat.HTML:
             # Simple markdown to HTML
@@ -667,6 +676,7 @@ def explain_workflow(
         return explanation.to_html()
     elif format == OutputFormat.JSON:
         import json
+
         return json.dumps(explanation.to_dict(), indent=2)
     else:
         return explanation.to_markdown()

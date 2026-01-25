@@ -13,11 +13,7 @@ import pytest
 
 from empathy_os.memory.redis_bootstrap import RedisStartMethod, RedisStatus
 from empathy_os.memory.short_term import AccessTier, TTLStrategy
-from empathy_os.memory.unified import (
-    Environment,
-    MemoryConfig,
-    UnifiedMemory,
-)
+from empathy_os.memory.unified import Environment, MemoryConfig, UnifiedMemory
 
 
 @pytest.mark.unit
@@ -63,12 +59,16 @@ class TestMemoryConfig:
         assert config.redis_host == "localhost"
         assert config.redis_port == 6379
         assert config.redis_mock is False
-        assert config.redis_auto_start is True
+        assert config.redis_auto_start is False  # File-first: Redis is optional
         assert config.default_ttl_seconds == 3600
         assert config.storage_dir == "./memdocs_storage"
         assert config.encryption_enabled is True
         assert config.claude_memory_enabled is True
         assert config.auto_promote_threshold == 0.8
+        # File-first architecture fields
+        assert config.file_session_enabled is True
+        assert config.file_session_dir == ".empathy"
+        assert config.redis_required is False
 
     def test_custom_config(self):
         """Test MemoryConfig with custom values."""
@@ -287,81 +287,87 @@ class TestUnifiedMemoryBackendStatus:
 
 @pytest.mark.unit
 class TestUnifiedMemoryShortTermOps:
-    """Tests for short-term memory operations."""
+    """Tests for short-term memory operations.
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
+    File-first architecture: FileSessionMemory is the primary storage,
+    with optional Redis for real-time features.
+    """
+
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_stash_success(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test stash stores data successfully."""
-        mock_redis = MagicMock()
-        mock_redis.stash.return_value = True
-        mock_redis_cls.return_value = mock_redis
+    def test_stash_success(self, mock_ltm, mock_secure, mock_file_session_cls):
+        """Test stash stores data successfully using file session."""
+        mock_file_session = MagicMock()
+        mock_file_session.stash.return_value = True
+        mock_file_session_cls.return_value = mock_file_session
 
-        config = MemoryConfig(redis_mock=True)
+        config = MemoryConfig(file_session_enabled=True, redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
 
         result = memory.stash("test_key", {"data": "value"})
 
         assert result is True
-        mock_redis.stash.assert_called_once()
+        mock_file_session.stash.assert_called_once()
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_stash_with_custom_ttl(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test stash with custom TTL selects appropriate strategy."""
-        mock_redis = MagicMock()
-        mock_redis.stash.return_value = True
-        mock_redis_cls.return_value = mock_redis
+    def test_stash_with_custom_ttl(self, mock_ltm, mock_secure, mock_file_session_cls):
+        """Test stash with custom TTL."""
+        mock_file_session = MagicMock()
+        mock_file_session.stash.return_value = True
+        mock_file_session_cls.return_value = mock_file_session
 
-        config = MemoryConfig(redis_mock=True)
+        config = MemoryConfig(file_session_enabled=True, redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
 
         # Use a TTL that maps to SESSION strategy
         memory.stash("key", "value", ttl_seconds=1800)
 
-        # Verify stash was called with SESSION strategy
-        call_args = mock_redis.stash.call_args
-        assert call_args[0][2].tier == AccessTier.CONTRIBUTOR  # credentials
+        # Verify stash was called with TTL
+        call_args = mock_file_session.stash.call_args
+        assert call_args[1]["ttl"] == 1800  # TTL passed to file session
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_stash_no_short_term_memory(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test stash returns False when short-term memory unavailable."""
-        config = MemoryConfig(redis_mock=True)
+    def test_stash_no_file_session(self, mock_ltm, mock_secure, mock_file_session_cls):
+        """Test stash returns False when file session unavailable."""
+        config = MemoryConfig(file_session_enabled=False, redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
-        memory._short_term = None
+        memory._file_session = None
+        memory._short_term = None  # Also no Redis
 
         result = memory.stash("key", "value")
 
         assert result is False
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_retrieve_success(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test retrieve returns stored data."""
-        mock_redis = MagicMock()
-        mock_redis.retrieve.return_value = {"data": "stored_value"}
-        mock_redis_cls.return_value = mock_redis
+    def test_retrieve_success(self, mock_ltm, mock_secure, mock_file_session_cls):
+        """Test retrieve returns stored data from file session."""
+        mock_file_session = MagicMock()
+        mock_file_session.retrieve.return_value = {"data": "stored_value"}
+        mock_file_session_cls.return_value = mock_file_session
 
-        config = MemoryConfig(redis_mock=True)
+        config = MemoryConfig(file_session_enabled=True, redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
 
         result = memory.retrieve("test_key")
 
         assert result == {"data": "stored_value"}
-        mock_redis.retrieve.assert_called_once()
+        mock_file_session.retrieve.assert_called_once()
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_retrieve_no_short_term_memory(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test retrieve returns None when short-term memory unavailable."""
-        config = MemoryConfig(redis_mock=True)
+    def test_retrieve_no_file_session(self, mock_ltm, mock_secure, mock_file_session_cls):
+        """Test retrieve returns None when no memory available."""
+        config = MemoryConfig(file_session_enabled=False, redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
+        memory._file_session = None
         memory._short_term = None
 
         result = memory.retrieve("key")
@@ -563,12 +569,14 @@ class TestUnifiedMemorySearch:
         config = MemoryConfig(redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
 
-        # Mock _get_all_patterns to return test data
-        memory._get_all_patterns = MagicMock(return_value=[
-            {"content": "algorithm for sorting", "pattern_type": "algorithm"},
-            {"content": "protocol for messaging", "pattern_type": "protocol"},
-            {"content": "algorithm for searching", "pattern_type": "algorithm"},
-        ])
+        # Mock _iter_all_patterns to return test data (generator)
+        memory._iter_all_patterns = MagicMock(
+            return_value=iter([
+                {"content": "algorithm for sorting", "pattern_type": "algorithm"},
+                {"content": "protocol for messaging", "pattern_type": "protocol"},
+                {"content": "algorithm for searching", "pattern_type": "algorithm"},
+            ])
+        )
 
         result = memory.search_patterns(query="algorithm")
 
@@ -587,10 +595,12 @@ class TestUnifiedMemorySearch:
         config = MemoryConfig(redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
 
-        memory._get_all_patterns = MagicMock(return_value=[
-            {"content": "test content", "pattern_type": "algorithm"},
-            {"content": "test content", "pattern_type": "protocol"},
-        ])
+        memory._iter_all_patterns = MagicMock(
+            return_value=iter([
+                {"content": "test content", "pattern_type": "algorithm"},
+                {"content": "test content", "pattern_type": "protocol"},
+            ])
+        )
 
         result = memory.search_patterns(pattern_type="algorithm")
 
@@ -609,13 +619,15 @@ class TestUnifiedMemorySearch:
         config = MemoryConfig(redis_mock=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
 
-        memory._get_all_patterns = MagicMock(return_value=[
-            {"content": "pattern 1"},
-            {"content": "pattern 2"},
-            {"content": "pattern 3"},
-            {"content": "pattern 4"},
-            {"content": "pattern 5"},
-        ])
+        memory._iter_all_patterns = MagicMock(
+            return_value=iter([
+                {"content": "pattern 1"},
+                {"content": "pattern 2"},
+                {"content": "pattern 3"},
+                {"content": "pattern 4"},
+                {"content": "pattern 5"},
+            ])
+        )
 
         result = memory.search_patterns(limit=3)
 
@@ -821,19 +833,30 @@ class TestUnifiedMemoryHealthCheck:
 
 @pytest.mark.unit
 class TestUnifiedMemoryTTLStrategy:
-    """Tests for TTL strategy mapping in stash."""
+    """Tests for TTL strategy mapping in stash.
 
+    File-first architecture: TTL strategies are only used for Redis backend.
+    These tests verify Redis receives correct strategies when Redis is available.
+    """
+
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.RedisShortTermMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_ttl_maps_to_coordination(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test short TTL maps to COORDINATION strategy."""
+    def test_ttl_maps_to_coordination(self, mock_ltm, mock_secure, mock_redis_cls, mock_file):
+        """Test short TTL maps to COORDINATION strategy for Redis."""
         mock_redis = MagicMock()
         mock_redis.stash.return_value = True
         mock_redis_cls.return_value = mock_redis
 
-        config = MemoryConfig(redis_mock=True)
+        config = MemoryConfig(redis_mock=True, file_session_enabled=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
+        # Force Redis to be available for this test
+        memory._redis_status = RedisStatus(
+            available=True,
+            method=RedisStartMethod.MOCK,
+            message="Test mock"
+        )
 
         memory.stash("key", "value", ttl_seconds=60)
 
@@ -841,17 +864,24 @@ class TestUnifiedMemoryTTLStrategy:
         ttl_strategy = call_args[0][3]  # 4th arg is TTLStrategy
         assert ttl_strategy == TTLStrategy.COORDINATION
 
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.RedisShortTermMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_ttl_maps_to_session(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test medium TTL maps to SESSION strategy."""
+    def test_ttl_maps_to_session(self, mock_ltm, mock_secure, mock_redis_cls, mock_file):
+        """Test medium TTL maps to SESSION strategy for Redis."""
         mock_redis = MagicMock()
         mock_redis.stash.return_value = True
         mock_redis_cls.return_value = mock_redis
 
-        config = MemoryConfig(redis_mock=True)
+        config = MemoryConfig(redis_mock=True, file_session_enabled=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
+        # Force Redis to be available for this test
+        memory._redis_status = RedisStatus(
+            available=True,
+            method=RedisStartMethod.MOCK,
+            message="Test mock"
+        )
 
         memory.stash("key", "value", ttl_seconds=1800)
 
@@ -859,17 +889,24 @@ class TestUnifiedMemoryTTLStrategy:
         ttl_strategy = call_args[0][3]
         assert ttl_strategy == TTLStrategy.SESSION
 
+    @patch("empathy_os.memory.unified.FileSessionMemory")
     @patch("empathy_os.memory.unified.RedisShortTermMemory")
     @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
     @patch("empathy_os.memory.unified.LongTermMemory")
-    def test_ttl_maps_to_conflict_context(self, mock_ltm, mock_secure, mock_redis_cls):
-        """Test very long TTL maps to CONFLICT_CONTEXT strategy."""
+    def test_ttl_maps_to_conflict_context(self, mock_ltm, mock_secure, mock_redis_cls, mock_file):
+        """Test very long TTL maps to CONFLICT_CONTEXT strategy for Redis."""
         mock_redis = MagicMock()
         mock_redis.stash.return_value = True
         mock_redis_cls.return_value = mock_redis
 
-        config = MemoryConfig(redis_mock=True)
+        config = MemoryConfig(redis_mock=True, file_session_enabled=True)
         memory = UnifiedMemory(user_id="test_user", config=config)
+        # Force Redis to be available for this test
+        memory._redis_status = RedisStatus(
+            available=True,
+            method=RedisStartMethod.MOCK,
+            message="Test mock"
+        )
 
         memory.stash("key", "value", ttl_seconds=1000000)
 

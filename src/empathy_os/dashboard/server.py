@@ -154,7 +154,7 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
 
             # Get file test records and convert to dicts
             file_tests_raw = store.get_file_tests(limit=100)
-            file_tests = [t.to_dict() if hasattr(t, 'to_dict') else t for t in file_tests_raw]
+            file_tests = [t.to_dict() if hasattr(t, "to_dict") else t for t in file_tests_raw]
 
             # Calculate stats
             total_files = len(file_tests)
@@ -162,7 +162,9 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
             failed_files = sum(1 for t in file_tests if t.get("last_test_result") == "failed")
 
             # Coverage average (field is coverage_percent)
-            coverages = [t.get("coverage_percent", 0) for t in file_tests if t.get("coverage_percent")]
+            coverages = [
+                t.get("coverage_percent", 0) for t in file_tests if t.get("coverage_percent")
+            ]
             coverage_avg = sum(coverages) / len(coverages) if coverages else 0
 
             # If no coverage data, use pass rate as a proxy
@@ -171,11 +173,13 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
 
             # Get files needing attention (failed or stale) and convert to dicts
             files_needing_raw = store.get_files_needing_tests(stale_only=False, failed_only=False)
-            files_needing_tests = [t.to_dict() if hasattr(t, 'to_dict') else t for t in files_needing_raw[:10]]
+            files_needing_tests = [
+                t.to_dict() if hasattr(t, "to_dict") else t for t in files_needing_raw[:10]
+            ]
 
             # Get recent test executions and convert to dicts
             recent_raw = store.get_test_executions(limit=10)
-            recent_executions = [t.to_dict() if hasattr(t, 'to_dict') else t for t in recent_raw]
+            recent_executions = [t.to_dict() if hasattr(t, "to_dict") else t for t in recent_raw]
 
             return {
                 "total_files": total_files,
@@ -253,7 +257,8 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
             try:
                 tracker = CostTracker(self.empathy_dir)
                 cost_summary = tracker.get_summary(30)  # noqa: F841
-            except Exception:
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Dashboard should render even if cost tracking unavailable.
                 pass
 
         # Get workflow stats
@@ -268,7 +273,8 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
         if HAS_WORKFLOWS and get_workflow_stats is not None:
             try:
                 workflow_stats = get_workflow_stats()
-            except Exception:
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Dashboard should render even if workflow stats unavailable.
                 pass
 
         # Get test stats
@@ -581,10 +587,10 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
                 <div class="label">workflows + API</div>
             </div>
 
-            <div class="card {'success' if test_stats.get('failed_files', 0) == 0 else 'warning'}">
+            <div class="card {"success" if test_stats.get("failed_files", 0) == 0 else "warning"}">
                 <h2>Test Coverage</h2>
-                <div class="value">{test_stats.get('coverage_avg', 0):.0f}%</div>
-                <div class="label">{test_stats.get('total_files', 0)} files tracked</div>
+                <div class="value">{test_stats.get("coverage_avg", 0):.0f}%</div>
+                <div class="label">{test_stats.get("total_files", 0)} files tracked</div>
             </div>
         </div>
 
@@ -826,7 +832,9 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
                 # Truncate long paths
                 display_path = ("..." + file_path[-40:]) if len(file_path) > 40 else file_path
                 result = file_record.get("last_test_result", "unknown")
-                timestamp = file_record.get("timestamp", "")[:10] if file_record.get("timestamp") else "-"
+                timestamp = (
+                    file_record.get("timestamp", "")[:10] if file_record.get("timestamp") else "-"
+                )
                 status_class = "resolved" if result == "passed" else "investigating"
                 html += f"""
                     <tr>
@@ -849,7 +857,11 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
                 exec_passed = execution.get("passed", 0)
                 exec_failed = execution.get("failed", 0)
                 duration = execution.get("duration_seconds", 0)
-                timestamp = execution.get("timestamp", "")[:16].replace("T", " ") if execution.get("timestamp") else "-"
+                timestamp = (
+                    execution.get("timestamp", "")[:16].replace("T", " ")
+                    if execution.get("timestamp")
+                    else "-"
+                )
                 success = execution.get("success", False)
 
                 status_icon = "&#10003;" if success else "&#10007;"
@@ -862,7 +874,7 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
                     <span class="provider">{total_tests} tests</span>
                     <span class="result">
                         <span style="color: var(--success);">{exec_passed} passed</span>
-                        {f'<span style="color: var(--danger);">{exec_failed} failed</span>' if exec_failed > 0 else ''}
+                        {f'<span style="color: var(--danger);">{exec_failed} failed</span>' if exec_failed > 0 else ""}
                         <span class="time">{duration:.1f}s | {timestamp}</span>
                     </span>
                 </div>

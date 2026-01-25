@@ -144,9 +144,32 @@ def extract_keywords(goal: str) -> list[str]:
     """Extract important keywords from goal."""
     # Remove common words
     stop_words = {
-        "i", "want", "to", "the", "a", "an", "my", "our", "for", "with",
-        "that", "this", "is", "are", "be", "will", "would", "could",
-        "should", "can", "help", "me", "us", "please", "need", "like",
+        "i",
+        "want",
+        "to",
+        "the",
+        "a",
+        "an",
+        "my",
+        "our",
+        "for",
+        "with",
+        "that",
+        "this",
+        "is",
+        "are",
+        "be",
+        "will",
+        "would",
+        "could",
+        "should",
+        "can",
+        "help",
+        "me",
+        "us",
+        "please",
+        "need",
+        "like",
     }
 
     # Extract words
@@ -162,7 +185,10 @@ def identify_ambiguities(goal: str, domain: str) -> list[str]:
     ambiguities = []
 
     # Check for missing specifics
-    if not any(lang in goal.lower() for lang in ["python", "javascript", "typescript", "java", "go", "rust"]):
+    if not any(
+        lang in goal.lower()
+        for lang in ["python", "javascript", "typescript", "java", "go", "rust"]
+    ):
         ambiguities.append("Programming language not specified")
 
     # Check for vague scope
@@ -223,50 +249,78 @@ def generate_initial_questions(
 
     # Domain-specific questions
     if goal_analysis.domain == "code_review":
-        fields.append(FormField(
-            id="review_scope",
-            field_type=FieldType.SINGLE_SELECT,
-            label="What scope of review do you need?",
-            options=[
-                FieldOption("pr", "Pull Request/Diff", description="Review specific changes", recommended=True),
-                FieldOption("file", "Single File", description="Deep review of one file"),
-                FieldOption("directory", "Directory/Module", description="Review entire module"),
-                FieldOption("project", "Full Project", description="Comprehensive codebase review"),
-            ],
-            validation=FieldValidation(required=True),
-            category="scope",
-        ))
+        fields.append(
+            FormField(
+                id="review_scope",
+                field_type=FieldType.SINGLE_SELECT,
+                label="What scope of review do you need?",
+                options=[
+                    FieldOption(
+                        "pr",
+                        "Pull Request/Diff",
+                        description="Review specific changes",
+                        recommended=True,
+                    ),
+                    FieldOption("file", "Single File", description="Deep review of one file"),
+                    FieldOption(
+                        "directory", "Directory/Module", description="Review entire module"
+                    ),
+                    FieldOption(
+                        "project", "Full Project", description="Comprehensive codebase review"
+                    ),
+                ],
+                validation=FieldValidation(required=True),
+                category="scope",
+            )
+        )
 
     if goal_analysis.domain == "security":
-        fields.append(FormField(
-            id="security_focus",
-            field_type=FieldType.MULTI_SELECT,
-            label="What security aspects are most important?",
-            options=[
-                FieldOption("owasp", "OWASP Top 10", description="Common web vulnerabilities"),
-                FieldOption("injection", "Injection Attacks", description="SQL, command, XSS"),
-                FieldOption("auth", "Authentication/Authorization", description="Access control issues"),
-                FieldOption("crypto", "Cryptography", description="Encryption, hashing, secrets"),
-                FieldOption("deps", "Dependencies", description="Vulnerable dependencies"),
-            ],
-            validation=FieldValidation(required=True),
-            category="security",
-        ))
+        fields.append(
+            FormField(
+                id="security_focus",
+                field_type=FieldType.MULTI_SELECT,
+                label="What security aspects are most important?",
+                options=[
+                    FieldOption("owasp", "OWASP Top 10", description="Common web vulnerabilities"),
+                    FieldOption("injection", "Injection Attacks", description="SQL, command, XSS"),
+                    FieldOption(
+                        "auth", "Authentication/Authorization", description="Access control issues"
+                    ),
+                    FieldOption(
+                        "crypto", "Cryptography", description="Encryption, hashing, secrets"
+                    ),
+                    FieldOption("deps", "Dependencies", description="Vulnerable dependencies"),
+                ],
+                validation=FieldValidation(required=True),
+                category="security",
+            )
+        )
 
     if goal_analysis.domain == "testing":
-        fields.append(FormField(
-            id="test_type",
-            field_type=FieldType.MULTI_SELECT,
-            label="What types of tests do you need?",
-            options=[
-                FieldOption("unit", "Unit Tests", description="Test individual functions", recommended=True),
-                FieldOption("integration", "Integration Tests", description="Test component interactions"),
-                FieldOption("e2e", "End-to-End Tests", description="Test full user flows"),
-                FieldOption("edge", "Edge Cases", description="Test boundary conditions"),
-            ],
-            validation=FieldValidation(required=True),
-            category="testing",
-        ))
+        fields.append(
+            FormField(
+                id="test_type",
+                field_type=FieldType.MULTI_SELECT,
+                label="What types of tests do you need?",
+                options=[
+                    FieldOption(
+                        "unit",
+                        "Unit Tests",
+                        description="Test individual functions",
+                        recommended=True,
+                    ),
+                    FieldOption(
+                        "integration",
+                        "Integration Tests",
+                        description="Test component interactions",
+                    ),
+                    FieldOption("e2e", "End-to-End Tests", description="Test full user flows"),
+                    FieldOption("edge", "Edge Cases", description="Test boundary conditions"),
+                ],
+                validation=FieldValidation(required=True),
+                category="testing",
+            )
+        )
 
     # Automation level (always relevant)
     fields.append(create_automation_level_field())
@@ -280,7 +334,7 @@ def generate_initial_questions(
     return Form(
         id=f"round_{session.current_round + 1}",
         title="Help Us Understand Your Needs",
-        description=f"Based on your goal: \"{goal_analysis.raw_goal[:100]}...\"",
+        description=f'Based on your goal: "{goal_analysis.raw_goal[:100]}..."',
         fields=fields,
         round_number=session.current_round + 1,
         progress=0.3,
@@ -305,14 +359,16 @@ def generate_followup_questions(
 
     # If no must-haves, ask for priorities
     if not reqs.must_have:
-        fields.append(FormField(
-            id="priorities",
-            field_type=FieldType.TEXT_AREA,
-            label="What are your top 3 priorities for this workflow?",
-            help_text="Be as specific as possible about what success looks like.",
-            validation=FieldValidation(required=True, min_length=20),
-            category="priorities",
-        ))
+        fields.append(
+            FormField(
+                id="priorities",
+                field_type=FieldType.TEXT_AREA,
+                label="What are your top 3 priorities for this workflow?",
+                help_text="Be as specific as possible about what success looks like.",
+                validation=FieldValidation(required=True, min_length=20),
+                category="priorities",
+            )
+        )
 
     # If technical constraints missing
     if not reqs.technical_constraints.get("languages"):
@@ -320,18 +376,28 @@ def generate_followup_questions(
 
     # Domain-specific follow-ups
     if session.goal_analysis and session.goal_analysis.domain == "code_review":
-        if "review_depth" not in [r.get("id") for r in session.question_rounds[-1]["questions"]] if session.question_rounds else True:
-            fields.append(FormField(
-                id="review_depth",
-                field_type=FieldType.SINGLE_SELECT,
-                label="How thorough should the review be?",
-                options=[
-                    FieldOption("quick", "Quick Scan", description="Fast, surface-level review"),
-                    FieldOption("standard", "Standard", description="Balanced depth", recommended=True),
-                    FieldOption("deep", "Deep Dive", description="Thorough, detailed analysis"),
-                ],
-                category="depth",
-            ))
+        if (
+            "review_depth" not in [r.get("id") for r in session.question_rounds[-1]["questions"]]
+            if session.question_rounds
+            else True
+        ):
+            fields.append(
+                FormField(
+                    id="review_depth",
+                    field_type=FieldType.SINGLE_SELECT,
+                    label="How thorough should the review be?",
+                    options=[
+                        FieldOption(
+                            "quick", "Quick Scan", description="Fast, surface-level review"
+                        ),
+                        FieldOption(
+                            "standard", "Standard", description="Balanced depth", recommended=True
+                        ),
+                        FieldOption("deep", "Deep Dive", description="Thorough, detailed analysis"),
+                    ],
+                    category="depth",
+                )
+            )
 
     if not fields:
         return None
@@ -513,10 +579,7 @@ class SocraticWorkflowBuilder:
         current_form = self.get_next_questions(session)
         questions_data = []
         if current_form:
-            questions_data = [
-                {"id": f.id, "label": f.label}
-                for f in current_form.fields
-            ]
+            questions_data = [{"id": f.id, "label": f.label} for f in current_form.fields]
 
         session.add_question_round(questions_data, answers)
 
@@ -725,5 +788,7 @@ class SocraticWorkflowBuilder:
             "rounds_completed": session.current_round,
             "requirements_completeness": session.requirements.completeness_score(),
             "ready_to_generate": self.is_ready_to_generate(session),
-            "ambiguities_remaining": len(session.goal_analysis.ambiguities) if session.goal_analysis else 0,
+            "ambiguities_remaining": (
+                len(session.goal_analysis.ambiguities) if session.goal_analysis else 0
+            ),
         }

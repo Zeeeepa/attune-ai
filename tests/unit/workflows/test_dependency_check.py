@@ -425,9 +425,7 @@ class TestInventoryStage:
     """Tests for _inventory stage method."""
 
     @pytest.mark.asyncio
-    async def test_scans_empty_directory(
-        self, tmp_path, monkeypatch, dependency_check_workflow
-    ):
+    async def test_scans_empty_directory(self, tmp_path, monkeypatch, dependency_check_workflow):
         """Test inventory stage with no dependency files."""
         monkeypatch.chdir(tmp_path)
 
@@ -784,9 +782,7 @@ class TestReportStage:
         assert result["risk_level"] == "critical"
 
     @pytest.mark.asyncio
-    async def test_generates_recommendations_for_vulnerabilities(
-        self, dependency_check_workflow
-    ):
+    async def test_generates_recommendations_for_vulnerabilities(self, dependency_check_workflow):
         """Test that recommendations are generated for vulnerabilities."""
         input_data = {
             "path": ".",
@@ -833,9 +829,7 @@ class TestReportStage:
         assert high_rec["priority"] == 2
 
     @pytest.mark.asyncio
-    async def test_includes_outdated_packages_in_recommendations(
-        self, dependency_check_workflow
-    ):
+    async def test_includes_outdated_packages_in_recommendations(self, dependency_check_workflow):
         """Test that outdated packages get review recommendations."""
         input_data = {
             "path": ".",
@@ -843,8 +837,16 @@ class TestReportStage:
             "assessment": {
                 "vulnerabilities": [],
                 "outdated": [
-                    {"package": "old-pkg1", "current_version": "<1.0.0", "status": "potentially_outdated"},
-                    {"package": "old-pkg2", "current_version": "^0.5.0", "status": "potentially_outdated"},
+                    {
+                        "package": "old-pkg1",
+                        "current_version": "<1.0.0",
+                        "status": "potentially_outdated",
+                    },
+                    {
+                        "package": "old-pkg2",
+                        "current_version": "^0.5.0",
+                        "status": "potentially_outdated",
+                    },
                 ],
                 "vulnerability_count": 0,
                 "critical_count": 0,

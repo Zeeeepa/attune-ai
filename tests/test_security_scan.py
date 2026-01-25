@@ -23,7 +23,6 @@ class TestSecurityScanning:
                 "src/",
                 "empathy_software_plugin/",
                 "empathy_llm_toolkit/",
-                "coach_wizards/",
                 "empathy_healthcare_plugin/",
                 "-f",
                 "json",
@@ -68,9 +67,9 @@ class TestSecurityScanning:
 
         # Fail if any high or medium severity issues found
         assert len(high_severity) == 0, f"Found {len(high_severity)} high severity security issues"
-        assert (
-            len(medium_severity) == 0
-        ), f"Found {len(medium_severity)} medium severity security issues"
+        assert len(medium_severity) == 0, (
+            f"Found {len(medium_severity)} medium severity security issues"
+        )
 
         print("\n✅ Security scan passed: No high or medium severity vulnerabilities detected")
 

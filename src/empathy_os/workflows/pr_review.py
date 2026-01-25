@@ -356,11 +356,15 @@ class PRReviewWorkflow:
         files_changed: list[str],
     ) -> dict | None:
         """Run CodeReviewCrew."""
-        from .code_review_adapters import (
-            _check_crew_available,
-            _get_crew_review,
-            crew_report_to_workflow_format,
-        )
+        try:
+            from .code_review_adapters import (
+                _check_crew_available,
+                _get_crew_review,
+                crew_report_to_workflow_format,
+            )
+        except ImportError:
+            logger.info("CodeReviewCrew adapters not installed")
+            return None
 
         if not _check_crew_available():
             logger.info("CodeReviewCrew not available")
@@ -381,11 +385,15 @@ class PRReviewWorkflow:
         target_path: str,
     ) -> dict | None:
         """Run SecurityAuditCrew."""
-        from .security_adapters import (
-            _check_crew_available,
-            _get_crew_audit,
-            crew_report_to_workflow_format,
-        )
+        try:
+            from .security_adapters import (
+                _check_crew_available,
+                _get_crew_audit,
+                crew_report_to_workflow_format,
+            )
+        except ImportError:
+            logger.info("SecurityAuditCrew adapters not installed")
+            return None
 
         if not _check_crew_available():
             logger.info("SecurityAuditCrew not available")

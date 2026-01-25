@@ -1,6 +1,6 @@
 """Empathy Framework Routing Module
 
-Intelligent request routing to wizards using LLM classification.
+Intelligent request routing to workflows using LLM classification.
 
 Usage:
     from empathy_os.routing import SmartRouter, quick_route
@@ -8,7 +8,7 @@ Usage:
     # Full router
     router = SmartRouter()
     decision = await router.route("Fix security issue in auth.py")
-    print(f"Use: {decision.primary_wizard}")
+    print(f"Use: {decision.primary_workflow}")
 
     # Quick helper
     decision = await quick_route("Optimize database queries")
@@ -20,10 +20,10 @@ Licensed under Fair Source 0.9
 from .chain_executor import ChainConfig, ChainExecution, ChainExecutor, ChainStep, ChainTrigger
 from .classifier import ClassificationResult, HaikuClassifier
 from .smart_router import RoutingDecision, SmartRouter, quick_route
-from .wizard_registry import WIZARD_REGISTRY, WizardInfo, WizardRegistry
+from .workflow_registry import WORKFLOW_REGISTRY, WorkflowInfo, WorkflowRegistry
 
 __all__ = [
-    "WIZARD_REGISTRY",
+    "WORKFLOW_REGISTRY",
     "ChainConfig",
     "ChainExecution",
     # Chain Executor
@@ -36,8 +36,8 @@ __all__ = [
     "RoutingDecision",
     # Smart Router
     "SmartRouter",
-    "WizardInfo",
-    # Wizard Registry
-    "WizardRegistry",
+    "WorkflowInfo",
+    # Workflow Registry
+    "WorkflowRegistry",
     "quick_route",
 ]

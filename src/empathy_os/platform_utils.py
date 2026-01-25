@@ -200,7 +200,8 @@ def write_text_file(path: str | Path, content: str, encoding: str = "utf-8") -> 
 
     """
     validated_path = _validate_file_path(str(path))
-    return validated_path.write_text(content, encoding=encoding)
+    result: int = validated_path.write_text(content, encoding=encoding)
+    return result
 
 
 def normalize_path(path: str | Path) -> Path:

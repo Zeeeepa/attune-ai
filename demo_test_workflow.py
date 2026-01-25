@@ -10,11 +10,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.meta_workflows import (
-    FormResponse,
-    MetaWorkflow,
-    TemplateRegistry,
-)
+from empathy_os.meta_workflows import FormResponse, MetaWorkflow, TemplateRegistry
 
 
 def main():
@@ -26,14 +22,16 @@ def main():
 
     # Load template
     print("📋 Loading template...")
-    # Use project-local templates directory
+    # Use built-in test-coverage-boost template (similar to test creation workflow)
     templates_dir = Path(__file__).parent / ".empathy" / "meta_workflows" / "templates"
     registry = TemplateRegistry(storage_dir=str(templates_dir))
-    template = registry.load_template("test_creation_management_workflow")
+    template = registry.load_template("test-coverage-boost")  # Built-in template
     print(f"✅ Loaded: {template.name}")
     print(f"   Questions: {len(template.form_schema.questions)}")
     print(f"   Agents: {len(template.agent_composition_rules)}")
-    print(f"   Cost Range: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}")
+    print(
+        f"   Cost Range: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}"
+    )
     print()
 
     # Show questions that would be asked
@@ -43,38 +41,21 @@ def main():
         print(f"{i}. {question.text}")
         print(f"   Type: {question.type.value}")
         if question.options:
-            print(f"   Options: {', '.join(question.options[:3])}{'...' if len(question.options) > 3 else ''}")
+            print(
+                f"   Options: {', '.join(question.options[:3])}{'...' if len(question.options) > 3 else ''}"
+            )
         print()
 
     # Simulated user responses (what a real user would provide)
+    # Using test-coverage-boost template's expected format
     print("💭 Simulating user responses...")
     print()
 
     responses = {
-        "test_scope": "Entire project (full suite)",
-        "test_types": [
-            "Unit tests (functions, classes)",
-            "Integration tests (module interactions)",
-            "End-to-end tests (full workflows)"
-        ],
-        "testing_framework": "pytest (Python)",
-        "coverage_target": "80% (good coverage)",
-        "test_quality_checks": [
-            "Assertion depth (avoid shallow tests)",
-            "Edge case coverage (boundary conditions)",
-            "Error handling tests (exception paths)"
-        ],
-        "test_inspection_mode": "Both (analyze + create new)",
-        "update_outdated_tests": True,
-        "test_data_strategy": "Realistic fixtures (production-like data)",
-        "parallel_execution": True,
-        "generate_test_reports": [
-            "Coverage report (HTML + terminal)",
-            "Test execution summary (JUnit XML)",
-            "Performance metrics (test duration)"
-        ],
-        "ci_integration": True,
-        "test_documentation": True,
+        "target_coverage": "80%",
+        "test_style": "pytest",
+        "prioritize_high_impact": "Yes",
+        "include_edge_cases": "Yes",
     }
 
     for key, value in responses.items():
@@ -92,7 +73,7 @@ def main():
 
     # Create form response
     form_response = FormResponse(
-        template_id="test_creation_management_workflow",
+        template_id="test-coverage-boost",  # Match loaded template
         responses=responses,
     )
 
@@ -105,7 +86,7 @@ def main():
     try:
         result = workflow.execute(
             form_response=form_response,
-            mock_execution=True  # Use mock execution for demo
+            mock_execution=True,  # Use mock execution for demo
         )
 
         print("=" * 80)
@@ -123,14 +104,13 @@ def main():
         for agent in result.agents_created:
             print(f"   • {agent.role}")
             print(f"     - Tier Strategy: {agent.tier_strategy.value}")
-            print(f"     - Tools: {', '.join(agent.tools[:3])}{'...' if len(agent.tools) > 3 else ''}")
+            print(
+                f"     - Tools: {', '.join(agent.tools[:3])}{'...' if len(agent.tools) > 3 else ''}"
+            )
 
             # Show execution result if available
             if result.agent_results:
-                agent_result = next(
-                    (r for r in result.agent_results if r.role == agent.role),
-                    None
-                )
+                agent_result = next((r for r in result.agent_results if r.role == agent.role), None)
                 if agent_result:
                     print(f"     - Executed: {agent_result.tier_used} tier")
                     print(f"     - Cost: ${agent_result.cost:.2f}")
@@ -215,6 +195,7 @@ def main():
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

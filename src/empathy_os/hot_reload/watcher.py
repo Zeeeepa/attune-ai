@@ -1,6 +1,6 @@
-"""File system watcher for wizard hot-reload.
+"""File system watcher for workflow hot-reload.
 
-Monitors wizard directories for changes and triggers reloads.
+Monitors workflow directories for changes and triggers reloads.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -16,14 +16,14 @@ from watchdog.observers import Observer
 logger = logging.getLogger(__name__)
 
 
-class WizardFileHandler(FileSystemEventHandler):
-    """Handles file system events for wizard files."""
+class WorkflowFileHandler(FileSystemEventHandler):
+    """Handles file system events for workflow files."""
 
     def __init__(self, reload_callback: Callable[[str, str], None]):
         """Initialize handler.
 
         Args:
-            reload_callback: Function to call when wizard file changes (wizard_id, file_path)
+            reload_callback: Function to call when workflow file changes (workflow_id, file_path)
 
         """
         super().__init__()
@@ -61,24 +61,24 @@ class WizardFileHandler(FileSystemEventHandler):
         try:
             self._processing.add(file_path)
 
-            wizard_id = self._extract_wizard_id(file_path)
-            if wizard_id:
-                logger.info(f"Detected change in {wizard_id} ({file_path})")
-                self.reload_callback(wizard_id, file_path)
+            workflow_id = self._extract_workflow_id(file_path)
+            if workflow_id:
+                logger.info(f"Detected change in {workflow_id} ({file_path})")
+                self.reload_callback(workflow_id, file_path)
 
         except Exception as e:
             logger.error(f"Error processing file change {file_path}: {e}")
         finally:
             self._processing.discard(file_path)
 
-    def _extract_wizard_id(self, file_path: str) -> str | None:
-        """Extract wizard ID from file path.
+    def _extract_workflow_id(self, file_path: str) -> str | None:
+        """Extract workflow ID from file path.
 
         Args:
-            file_path: Path to wizard file
+            file_path: Path to workflow file
 
         Returns:
-            Wizard ID or None if cannot extract
+            Workflow ID or None if cannot extract
 
         """
         path = Path(file_path)
@@ -87,43 +87,43 @@ class WizardFileHandler(FileSystemEventHandler):
         filename = path.stem
 
         # Remove common suffixes
-        wizard_id = filename.replace("_wizard", "").replace("wizard_", "")
+        workflow_id = filename.replace("_workflow", "").replace("workflow_", "")
 
-        # Convert to wizard ID format (snake_case)
-        wizard_id = wizard_id.lower()
+        # Convert to workflow ID format (snake_case)
+        workflow_id = workflow_id.lower()
 
-        return wizard_id if wizard_id else None
+        return workflow_id if workflow_id else None
 
 
-class WizardFileWatcher:
-    """Watches wizard directories for file changes.
+class WorkflowFileWatcher:
+    """Watches workflow directories for file changes.
 
     Monitors specified directories and triggers reload callbacks
-    when wizard files are modified.
+    when workflow files are modified.
     """
 
-    def __init__(self, wizard_dirs: list[Path], reload_callback: Callable[[str, str], None]):
+    def __init__(self, workflow_dirs: list[Path], reload_callback: Callable[[str, str], None]):
         """Initialize watcher.
 
         Args:
-            wizard_dirs: List of directories to watch
-            reload_callback: Function to call on file changes (wizard_id, file_path)
+            workflow_dirs: List of directories to watch
+            reload_callback: Function to call on file changes (workflow_id, file_path)
 
         """
-        self.wizard_dirs = [Path(d) for d in wizard_dirs]
+        self.workflow_dirs = [Path(d) for d in workflow_dirs]
         self.reload_callback = reload_callback
         self.observer = Observer()
-        self.event_handler = WizardFileHandler(reload_callback)
+        self.event_handler = WorkflowFileHandler(reload_callback)
         self._running = False
 
     def start(self) -> None:
-        """Start watching wizard directories."""
+        """Start watching workflow directories."""
         if self._running:
             logger.warning("Watcher already running")
             return
 
         valid_dirs = []
-        for directory in self.wizard_dirs:
+        for directory in self.workflow_dirs:
             if not directory.exists():
                 logger.warning(f"Directory does not exist: {directory}")
                 continue
@@ -154,7 +154,7 @@ class WizardFileWatcher:
         )
 
     def stop(self) -> None:
-        """Stop watching wizard directories."""
+        """Stop watching workflow directories."""
         if not self._running:
             return
 

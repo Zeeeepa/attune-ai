@@ -4,12 +4,25 @@ description: Learning hub - evaluate sessions, view patterns, teach preferences
 category: hub
 aliases: [learn-hub]
 tags: [learning, patterns, memory, hub]
-version: "1.0"
+version: "2.1"
+inline: true
 ---
 
 # Learning Management
 
+**Aliases:** `/learn-hub`
+
+**IMPORTANT:** This command operates on the CURRENT conversation. Do NOT start a new conversation or clear context. You have full access to the conversation history above this point.
+
 Manage continuous learning, pattern extraction, and preferences.
+
+## Quick Examples
+
+```bash
+/learning                      # Interactive menu
+/learning "evaluate session"   # Analyze for patterns
+/learning "show patterns"      # View learned patterns
+```
 
 ## Discovery
 
@@ -26,50 +39,103 @@ Question:
       description: "Manually teach a preference or pattern"
 ```
 
-## Routing
+---
 
-Based on selection:
+## Evaluate Session
 
-| Selection | Command | Description |
-|-----------|---------|-------------|
-| Evaluate session | `/evaluate` | Assess session quality and extract patterns |
-| View patterns | `/patterns` | List all learned patterns for your user |
-| Teach something | `/learn` | Explicitly teach a preference or rule |
+Analyze the CURRENT session for learning opportunities.
 
-## Quick Access
+**Context:** You have access to ALL messages in this conversation above this command. Use that history to identify patterns.
 
-- `/evaluate` - Evaluate current session
-- `/patterns` - View learned patterns
-- `/learn "preference"` - Teach a preference directly
+**I will:**
 
-## Learning Categories
+1. Review the conversation history IN THIS SESSION (all messages above)
+2. Identify:
+   - Corrections you made to my responses
+   - Preferences you expressed (coding style, verbosity, etc.)
+   - Effective approaches that worked well
+   - Workarounds we discovered together
+3. Extract patterns with confidence scores
+4. Store valuable patterns to [patterns/](patterns/) or [.claude/rules/](.claude/rules/)
+5. Report what was learned
 
-Patterns are categorized as:
+**Best after:**
 
-| Category | Example |
-|----------|---------|
-| **Preference** | "I prefer concise code" |
-| **Correction** | "Actually, use X not Y" |
-| **Workaround** | "For this error, do Z" |
-| **Project** | "We use kebab-case here" |
-| **Error** | "This error means..." |
+- Productive debugging sessions
+- When you corrected my approach
+- Discovering project conventions
+- Finding effective solutions
 
-## When to Use Each
+**Note:** If invoked at the start of a session with no history, will report "no patterns to evaluate".
 
-**Use `/evaluate` when:**
+---
 
-- Session had valuable corrections
-- Want to extract patterns automatically
-- Before ending a productive session
+## View Patterns
 
-**Use `/patterns` when:**
+See patterns learned from previous sessions.
 
-- Curious what's been learned
-- Want to verify a pattern exists
-- Debugging unexpected behavior
+**I will:**
 
-**Use `/learn` when:**
+1. Load pattern storage
+2. Display patterns by category:
+   - Preferences
+   - Corrections
+   - Workarounds
+   - Project conventions
+   - Error solutions
+3. Show confidence and usage stats
+4. Allow filtering and search
 
-- Have a clear preference to teach
-- Want immediate pattern capture
-- Correcting a misunderstanding
+**Pattern categories:**
+
+| Category       | Example                    |
+| -------------- | -------------------------- |
+| **Preference** | "I prefer concise code"    |
+| **Correction** | "Actually, use X not Y"    |
+| **Workaround** | "For this error, do Z"     |
+| **Project**    | "We use kebab-case here"   |
+| **Error**      | "This error means..."      |
+
+---
+
+## Teach Something
+
+Manually teach a preference or pattern.
+
+**Tell me:**
+
+- What you want me to remember
+- When it applies (always, in this project, for specific tasks)
+- Why (helps me understand context)
+
+**Examples:**
+
+- "Always use type hints in Python"
+- "In this project, we use tabs not spaces"
+- "When I say 'fix', I mean fix without refactoring"
+- "Remember: the API is at localhost:8080"
+
+**I will:**
+
+1. Parse your instruction
+2. Categorize the pattern
+3. Store with appropriate scope
+4. Confirm what was learned
+5. Apply immediately going forward
+
+---
+
+## When NOT to Use This Hub
+
+| If you need...       | Use instead |
+| -------------------- | ----------- |
+| Save session state   | `/context`  |
+| Create documentation | `/docs`     |
+| Debug issues         | `/dev`      |
+| Run tests            | `/testing`  |
+
+## Related Hubs
+
+- `/context` - State and memory management
+- `/agent` - Agent pattern learning
+- `/workflow` - Development workflows

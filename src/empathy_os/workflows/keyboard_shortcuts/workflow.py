@@ -358,7 +358,9 @@ class KeyboardShortcutWorkflow(BaseWorkflow):
             if isinstance(result, dict):
                 return result
             return None
-        except Exception:
+        except Exception:  # noqa: BLE001
+            # INTENTIONAL: LLM responses may have unparseable YAML.
+            # Return None and let caller handle fallback gracefully.
             return None
 
     def _parse_json_response(self, response: str) -> dict[str, Any] | None:
@@ -376,7 +378,9 @@ class KeyboardShortcutWorkflow(BaseWorkflow):
             if isinstance(result, dict):
                 return result
             return None
-        except Exception:
+        except Exception:  # noqa: BLE001
+            # INTENTIONAL: LLM responses may have unparseable JSON.
+            # Return None and let caller handle fallback gracefully.
             return None
 
     def _update_manifest_from_analysis(

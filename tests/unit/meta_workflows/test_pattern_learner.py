@@ -15,12 +15,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from empathy_os.meta_workflows import (
-    FormResponse,
-    MetaWorkflow,
-    PatternLearner,
-    TemplateRegistry,
-)
+from empathy_os.meta_workflows import FormResponse, MetaWorkflow, PatternLearner, TemplateRegistry
 
 
 class TestPatternLearnerInitialization:
@@ -58,7 +53,7 @@ class TestPatternAnalysis:
     def sample_executions(self, tmp_path):
         """Create sample execution results for testing."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
 
@@ -66,19 +61,19 @@ class TestPatternAnalysis:
         results = []
 
         configs = [
-            {"has_tests": "No", "version_bump": "patch"},
-            {"has_tests": "Yes", "test_coverage_required": "80%", "version_bump": "patch"},
+            {"security_scan": "No", "coverage_threshold": "70%"},
+            {"security_scan": "Yes", "coverage_threshold": "80%", "quality_review": "Yes"},
             {
-                "has_tests": "Yes",
-                "test_coverage_required": "90%",
-                "quality_checks": ["Linting (ruff)", "Type checking (mypy)"],
-                "version_bump": "minor",
+                "security_scan": "Yes",
+                "coverage_threshold": "90%",
+                "quality_review": "Yes",
+                "doc_verification": "Yes",
             },
         ]
 
         for config in configs:
             response = FormResponse(
-                template_id="python_package_publish",
+                template_id="release-prep",
                 responses=config,
             )
             result = workflow.execute(form_response=response, mock_execution=True)
@@ -183,18 +178,18 @@ class TestRecommendations:
     def sample_executions(self, tmp_path):
         """Create sample execution results for testing."""
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
 
         # Create 5 executions to have enough data for recommendations
         for _i in range(5):
             response = FormResponse(
-                template_id="python_package_publish",
+                template_id="release-prep",
                 responses={
-                    "has_tests": "Yes",
-                    "test_coverage_required": "80%",
-                    "version_bump": "patch",
+                    "security_scan": "Yes",
+                    "coverage_threshold": "80%",
+                    "quality_review": "Yes",
                 },
             )
             workflow.execute(form_response=response, mock_execution=True)
@@ -205,7 +200,7 @@ class TestRecommendations:
         """Test get_recommendations with no execution data."""
         learner = PatternLearner(executions_dir=str(tmp_path))
 
-        recommendations = learner.get_recommendations("python_package_publish")
+        recommendations = learner.get_recommendations("release-prep")
 
         assert recommendations == []
 
@@ -214,7 +209,7 @@ class TestRecommendations:
         learner = PatternLearner(executions_dir=str(sample_executions))
 
         recommendations = learner.get_recommendations(
-            "python_package_publish",
+            "release-prep",
             min_confidence=0.0,  # Very low threshold for small sample
         )
 
@@ -227,7 +222,7 @@ class TestRecommendations:
         learner = PatternLearner(executions_dir=str(sample_executions))
 
         # Valid template
-        valid_recs = learner.get_recommendations("python_package_publish", min_confidence=0.0)
+        valid_recs = learner.get_recommendations("release-prep", min_confidence=0.0)
 
         # Invalid template
         invalid_recs = learner.get_recommendations("nonexistent_template")
@@ -248,14 +243,14 @@ class TestAnalyticsReport:
         import time
 
         registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
-        template = registry.load_template("python_package_publish")
+        template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
 
         for i in range(3):
             response = FormResponse(
-                template_id="python_package_publish",
-                responses={"has_tests": "Yes", "version_bump": "patch"},
+                template_id="release-prep",
+                responses={"security_scan": "Yes", "coverage_threshold": "80%"},
             )
             workflow.execute(form_response=response, mock_execution=True)
 
@@ -269,9 +264,7 @@ class TestAnalyticsReport:
         """Test analytics report generation."""
         learner = PatternLearner(executions_dir=str(sample_executions))
 
-        report = learner.generate_analytics_report(
-            template_id="python_package_publish"
-        )
+        report = learner.generate_analytics_report(template_id="release-prep")
 
         # Check structure
         assert "summary" in report

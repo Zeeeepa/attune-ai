@@ -1,6 +1,6 @@
 """WebSocket notification system for hot-reload events.
 
-Notifies connected clients when wizards are reloaded.
+Notifies connected clients when workflows are reloaded.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -143,7 +143,7 @@ def get_notification_manager() -> ReloadNotificationManager:
 
 
 def create_notification_callback() -> Callable[[dict[str, Any]], None]:
-    """Create a callback function for the wizard reloader.
+    """Create a callback function for the workflow reloader.
 
     Returns:
         Callback function that broadcasts notifications

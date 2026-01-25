@@ -135,9 +135,7 @@ class TestLangGraphAgent:
         config = AgentConfig(name="test_agent", role=AgentRole.RESEARCHER)
 
         mock_runnable = MagicMock()
-        mock_runnable.ainvoke = AsyncMock(
-            return_value={"output": "async result", "messages": []}
-        )
+        mock_runnable.ainvoke = AsyncMock(return_value={"output": "async result", "messages": []})
 
         agent = LangGraphAgent(config, runnable=mock_runnable)
         result = await agent.invoke("test")
@@ -361,9 +359,7 @@ class TestLangGraphWorkflow:
         config = WorkflowConfig(name="test_workflow")
         mock_graph = MagicMock()
         mock_compiled = MagicMock()
-        mock_compiled.ainvoke = AsyncMock(
-            return_value={"messages": [{"content": "result"}]}
-        )
+        mock_compiled.ainvoke = AsyncMock(return_value={"messages": [{"content": "result"}]})
         mock_graph.compile.return_value = mock_compiled
 
         workflow = LangGraphWorkflow(config, [], graph=mock_graph)
@@ -509,7 +505,9 @@ class TestLangGraphAdapter:
         mock_chat_class = MagicMock()
         mock_chat_class.return_value = MagicMock()
 
-        with patch.dict("sys.modules", {"langchain_anthropic": MagicMock(ChatAnthropic=mock_chat_class)}):
+        with patch.dict(
+            "sys.modules", {"langchain_anthropic": MagicMock(ChatAnthropic=mock_chat_class)}
+        ):
             try:
                 llm = adapter._get_llm(config)
             except ImportError:
@@ -558,7 +556,9 @@ class TestLangGraphAdapter:
 
             # Mock langchain_anthropic to ensure we reach the api_key check
             mock_chat_class = MagicMock()
-            with patch.dict("sys.modules", {"langchain_anthropic": MagicMock(ChatAnthropic=mock_chat_class)}):
+            with patch.dict(
+                "sys.modules", {"langchain_anthropic": MagicMock(ChatAnthropic=mock_chat_class)}
+            ):
                 with pytest.raises(ValueError, match="API key required"):
                     adapter._get_llm(config)
 

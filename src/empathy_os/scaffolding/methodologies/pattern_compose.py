@@ -1,11 +1,11 @@
-"""Pattern-Compose methodology for wizard creation.
+"""Pattern-Compose methodology for workflow creation.
 
-The recommended approach: Select patterns, compose wizard.
+The recommended approach: Select patterns, compose workflow.
 
 Workflow:
-1. Get pattern recommendations based on wizard type and domain
+1. Get pattern recommendations based on workflow type and domain
 2. User selects patterns to use
-3. Generate wizard code from patterns
+3. Generate workflow code from patterns
 4. Generate tests with test generator
 5. Generate documentation
 
@@ -27,10 +27,10 @@ logger = logging.getLogger(__name__)
 
 
 class PatternCompose:
-    """Pattern-Compose methodology: Select patterns, compose wizard.
+    """Pattern-Compose methodology: Select patterns, compose workflow.
 
-    This is the RECOMMENDED methodology for wizard creation because:
-    - Leverages proven patterns from 78 existing wizards
+    This is the RECOMMENDED methodology for workflow creation because:
+    - Leverages proven patterns from 78 existing workflows
     - Fast (10 minutes vs 2 hours manual)
     - Generates tests automatically
     - High quality, consistent code
@@ -50,22 +50,22 @@ class PatternCompose:
             autoescape=True,  # Enable autoescape for security (code gen templates should be safe)
         )
 
-    def create_wizard(
+    def create_workflow(
         self,
         name: str,
         domain: str,
-        wizard_type: str,
+        workflow_type: str,
         selected_patterns: list[str] | None = None,
         output_dir: Path | None = None,
     ) -> dict[str, Any]:
-        """Create wizard using Pattern-Compose methodology.
+        """Create workflow using Pattern-Compose methodology.
 
         Args:
-            name: Wizard name (e.g., "patient_intake")
+            name: Workflow name (e.g., "patient_intake")
             domain: Domain (e.g., "healthcare", "finance")
-            wizard_type: Type (e.g., "domain", "coach", "ai")
+            workflow_type: Type (e.g., "domain", "coach", "ai")
             selected_patterns: Pre-selected pattern IDs (if None, will recommend)
-            output_dir: Output directory (defaults to wizards/)
+            output_dir: Output directory (defaults to workflows/)
 
         Returns:
             Dictionary with:
@@ -74,12 +74,12 @@ class PatternCompose:
                 - next_steps: List of next step instructions
 
         """
-        logger.info(f"Creating wizard '{name}' using Pattern-Compose methodology")
+        logger.info(f"Creating workflow '{name}' using Pattern-Compose methodology")
 
         # Get pattern recommendations if not provided
         if selected_patterns is None:
-            recommended = self.registry.recommend_for_wizard(
-                wizard_type=wizard_type,
+            recommended = self.registry.recommend_for_workflow(
+                workflow_type=workflow_type,
                 domain=domain,
             )
             selected_patterns = [p.id for p in recommended if p]
@@ -91,20 +91,18 @@ class PatternCompose:
 
         # Determine output directory
         if output_dir is None:
-            if wizard_type == "coach":
-                output_dir = Path("coach_wizards")
-            elif wizard_type == "domain":
-                output_dir = Path("empathy_llm_toolkit/wizards")
+            if workflow_type == "domain":
+                output_dir = Path("empathy_llm_toolkit/workflows")
             else:
-                output_dir = Path("wizards")
+                output_dir = Path("workflows")
 
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Generate wizard file
-        wizard_file = self._generate_wizard_file(
+        # Generate workflow file
+        workflow_file = self._generate_workflow_file(
             name=name,
             domain=domain,
-            wizard_type=wizard_type,
+            workflow_type=workflow_type,
             patterns=patterns,
             output_dir=output_dir,
         )
@@ -124,17 +122,17 @@ class PatternCompose:
         )
 
         # Collect all generated files
-        generated_files = [wizard_file, readme_file] + test_files
+        generated_files = [workflow_file, readme_file] + test_files
 
         # Next steps
         next_steps = [
-            f"1. Review generated wizard: {wizard_file}",
+            f"1. Review generated workflow: {workflow_file}",
             f"2. Run tests: pytest {test_files[0] if test_files else 'tests/'}",
-            "3. Register wizard in backend/api/wizard_api.py",
-            f"4. Test via API: POST /api/wizard/{name}/process",
+            "3. Register workflow in backend/api/workflow_api.py",
+            f"4. Test via API: POST /api/workflow/{name}/process",
         ]
 
-        logger.info(f"✓ Wizard '{name}' created successfully!")
+        logger.info(f"✓ Workflow '{name}' created successfully!")
 
         return {
             "files": generated_files,
@@ -142,20 +140,20 @@ class PatternCompose:
             "next_steps": next_steps,
         }
 
-    def _generate_wizard_file(
+    def _generate_workflow_file(
         self,
         name: str,
         domain: str,
-        wizard_type: str,
+        workflow_type: str,
         patterns: list,
         output_dir: Path,
     ) -> Path:
-        """Generate wizard Python file.
+        """Generate workflow Python file.
 
         Args:
-            name: Wizard name
+            name: Workflow name
             domain: Domain
-            wizard_type: Wizard type
+            workflow_type: Workflow type
             patterns: List of pattern objects
             output_dir: Output directory
 
@@ -163,14 +161,14 @@ class PatternCompose:
             Path to generated file
 
         """
-        # Get template based on wizard type
-        template_name = self._get_template_name(wizard_type, patterns)
+        # Get template based on workflow type
+        template_name = self._get_template_name(workflow_type, patterns)
         template = self.env.get_template(template_name)
 
         # Build context
         from datetime import datetime
 
-        # Determine total steps for linear flow wizards
+        # Determine total steps for linear flow workflows
         total_steps = 5  # Default
         linear_pattern = next((p for p in patterns if p.id == "linear_flow"), None)
         if linear_pattern and hasattr(linear_pattern, "total_steps"):
@@ -185,13 +183,13 @@ class PatternCompose:
             )
 
         context = {
-            "wizard_name": name,
-            "wizard_class": self._to_class_name(name),
+            "workflow_name": name,
+            "workflow_class": self._to_class_name(name),
             "domain": domain,
-            "wizard_type": wizard_type,
+            "workflow_type": workflow_type,
             "methodology": "pattern-compose",
             "timestamp": datetime.now().isoformat(),
-            "description": f"{self._to_title(name)} wizard for {domain}",
+            "description": f"{self._to_title(name)} workflow for {domain}",
             "patterns": patterns,
             "pattern_ids": [p.id for p in patterns],
             "has_linear_flow": any(p.id == "linear_flow" for p in patterns),
@@ -199,26 +197,26 @@ class PatternCompose:
             "has_structured_fields": any(p.id == "structured_fields" for p in patterns),
             "total_steps": total_steps,
             "empathy_level": empathy_level,
-            "educational_message": f"This wizard will guide you through creating a {self._to_title(name)}.",
+            "educational_message": f"This workflow will guide you through creating a {self._to_title(name)}.",
         }
 
         # Render template
-        wizard_code = template.render(**context)
+        workflow_code = template.render(**context)
 
         # Write file
-        wizard_file = output_dir / f"{name}_wizard.py"
-        validated_wizard = _validate_file_path(str(wizard_file))
-        with open(validated_wizard, "w") as f:
-            f.write(wizard_code)
+        workflow_file = output_dir / f"{name}_workflow.py"
+        validated_workflow = _validate_file_path(str(workflow_file))
+        with open(validated_workflow, "w") as f:
+            f.write(workflow_code)
 
-        logger.info(f"✓ Generated wizard file: {validated_wizard}")
-        return wizard_file
+        logger.info(f"✓ Generated workflow file: {validated_workflow}")
+        return workflow_file
 
     def _generate_tests(self, name: str, pattern_ids: list[str]) -> list[Path]:
-        """Generate tests for wizard.
+        """Generate tests for workflow.
 
         Args:
-            name: Wizard name
+            name: Workflow name
             pattern_ids: Pattern IDs
 
         Returns:
@@ -228,14 +226,14 @@ class PatternCompose:
         logger.info(f"Generating tests for {name}...")
 
         tests = self.test_generator.generate_tests(
-            wizard_id=name,
+            workflow_id=name,
             pattern_ids=pattern_ids,
         )
 
         test_files = []
 
         # Write unit tests
-        unit_test_file = Path(f"tests/unit/wizards/test_{name}_wizard.py")
+        unit_test_file = Path(f"tests/unit/workflows/test_{name}_workflow.py")
         unit_test_file.parent.mkdir(parents=True, exist_ok=True)
         validated_unit_test = _validate_file_path(str(unit_test_file))
         with open(validated_unit_test, "w") as f:
@@ -244,7 +242,7 @@ class PatternCompose:
         logger.info(f"✓ Generated unit tests: {validated_unit_test}")
 
         # Write fixtures
-        fixtures_file = Path(f"tests/unit/wizards/fixtures_{name}.py")
+        fixtures_file = Path(f"tests/unit/workflows/fixtures_{name}.py")
         validated_fixtures = _validate_file_path(str(fixtures_file))
         with open(validated_fixtures, "w") as f:
             f.write(tests["fixtures"])
@@ -260,10 +258,10 @@ class PatternCompose:
         patterns: list,
         output_dir: Path,
     ) -> Path:
-        """Generate README for wizard.
+        """Generate README for workflow.
 
         Args:
-            name: Wizard name
+            name: Workflow name
             domain: Domain
             patterns: Pattern objects
             output_dir: Output directory
@@ -272,15 +270,15 @@ class PatternCompose:
             Path to README file
 
         """
-        readme_content = f"""# {self._to_title(name)} Wizard
+        readme_content = f"""# {self._to_title(name)} Workflow
 
 **Domain:** {domain}
-**Type:** Wizard
+**Type:** Workflow
 **Generated:** Pattern-Compose Methodology
 
 ## Overview
 
-Auto-generated wizard using proven patterns from the Empathy Framework.
+Auto-generated workflow using proven patterns from the Empathy Framework.
 
 ## Patterns Used
 
@@ -289,17 +287,17 @@ Auto-generated wizard using proven patterns from the Empathy Framework.
 ## Usage
 
 ```python
-from {output_dir.name}.{name}_wizard import {self._to_class_name(name)}
+from {output_dir.name}.{name}_workflow import {self._to_class_name(name)}
 
-wizard = {self._to_class_name(name)}()
-result = await wizard.process(user_input="...")
+workflow = {self._to_class_name(name)}()
+result = await workflow.process(user_input="...")
 ```
 
 ## API Endpoints
 
 ```bash
-# Process with wizard
-POST /api/wizard/{name}/process
+# Process with workflow
+POST /api/workflow/{name}/process
 {{
   "input": "your input here",
   "context": {{}}
@@ -310,22 +308,22 @@ POST /api/wizard/{name}/process
 
 ```bash
 # Run unit tests
-pytest tests/unit/wizards/test_{name}_wizard.py
+pytest tests/unit/workflows/test_{name}_workflow.py
 
 # Run with coverage
-pytest tests/unit/wizards/test_{name}_wizard.py --cov
+pytest tests/unit/workflows/test_{name}_workflow.py --cov
 ```
 
 ## Next Steps
 
-1. Customize wizard logic as needed
+1. Customize workflow logic as needed
 2. Add domain-specific validation
 3. Extend with additional features
 4. Update tests for custom logic
 
 ---
 
-**Generated by:** Empathy Framework - Wizard Factory
+**Generated by:** Empathy Framework - Workflow Factory
 **Methodology:** Pattern-Compose
 """
 
@@ -337,11 +335,11 @@ pytest tests/unit/wizards/test_{name}_wizard.py --cov
         logger.info(f"✓ Generated README: {validated_readme}")
         return readme_file
 
-    def _get_template_name(self, wizard_type: str, patterns: list) -> str:
-        """Get template name based on wizard type and patterns.
+    def _get_template_name(self, workflow_type: str, patterns: list) -> str:
+        """Get template name based on workflow type and patterns.
 
         Args:
-            wizard_type: Wizard type
+            workflow_type: Workflow type
             patterns: Pattern objects
 
         Returns:
@@ -352,32 +350,32 @@ pytest tests/unit/wizards/test_{name}_wizard.py --cov
         has_linear_flow = any(p.id == "linear_flow" for p in patterns)
 
         if has_linear_flow:
-            return "linear_flow_wizard.py.jinja2"
-        elif wizard_type == "coach":
-            return "coach_wizard.py.jinja2"
-        elif wizard_type == "domain":
-            return "domain_wizard.py.jinja2"
+            return "linear_flow_workflow.py.jinja2"
+        elif workflow_type == "coach":
+            return "coach_workflow.py.jinja2"
+        elif workflow_type == "domain":
+            return "domain_workflow.py.jinja2"
         else:
-            return "base_wizard.py.jinja2"
+            return "base_workflow.py.jinja2"
 
     def _to_class_name(self, name: str) -> str:
-        """Convert wizard name to class name.
+        """Convert workflow name to class name.
 
         Args:
-            name: Wizard name (snake_case)
+            name: Workflow name (snake_case)
 
         Returns:
             Class name (PascalCase)
 
         """
         parts = name.split("_")
-        return "".join(part.capitalize() for part in parts) + "Wizard"
+        return "".join(part.capitalize() for part in parts) + "Workflow"
 
     def _to_title(self, name: str) -> str:
-        """Convert wizard name to title.
+        """Convert workflow name to title.
 
         Args:
-            name: Wizard name (snake_case)
+            name: Workflow name (snake_case)
 
         Returns:
             Title (Title Case)

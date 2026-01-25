@@ -10,6 +10,7 @@
 
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import * as path from 'path';
 import { WorkflowFinding, CodeReviewResult } from '../types/WorkflowContracts';
 import { CostEstimator } from '../services/CostEstimator';
 
@@ -63,9 +64,85 @@ export class CodeReviewPanelProvider implements vscode.WebviewViewProvider {
         groupBy: 'file',
     };
     private _disposables: vscode.Disposable[] = [];
+    private _fileWatcher?: vscode.FileSystemWatcher;
 
     private constructor(extensionUri: vscode.Uri) {
         this._extensionUri = extensionUri;
+        this._initFileWatcher();
+    }
+
+    /**
+     * Initialize file watcher for Claude Code bridge
+     * Watches .empathy/code-review-results.json for updates from CLI
+     */
+    private _initFileWatcher() {
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+        if (!workspaceFolder) {
+            return;
+        }
+
+        const pattern = new vscode.RelativePattern(
+            workspaceFolder,
+            '.empathy/code-review-results.json'
+        );
+
+        this._fileWatcher = vscode.workspace.createFileSystemWatcher(pattern);
+
+        this._fileWatcher.onDidChange(() => this._loadResultsFromFile());
+        this._fileWatcher.onDidCreate(() => this._loadResultsFromFile());
+
+        this._disposables.push(this._fileWatcher);
+
+        // Load existing results on startup
+        this._loadResultsFromFile();
+    }
+
+    /**
+     * Load code review results from file (Claude Code bridge)
+     */
+    private async _loadResultsFromFile() {
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+        if (!workspaceFolder) {
+            return;
+        }
+
+        const filePath = path.join(workspaceFolder.uri.fsPath, '.empathy', 'code-review-results.json');
+
+        try {
+            if (!fs.existsSync(filePath)) {
+                return;
+            }
+
+            const content = fs.readFileSync(filePath, 'utf-8');
+            const data = JSON.parse(content);
+
+            // Update session with loaded data
+            if (data.findings) {
+                this._session.findings = data.findings;
+            }
+            if (data.summary) {
+                this._session.summary = data.summary;
+            }
+            if (data.verdict) {
+                this._session.verdict = data.verdict;
+            }
+            if (data.security_score !== undefined) {
+                this._session.security_score = data.security_score;
+            }
+            if (data.model_tier_used) {
+                this._session.model_tier_used = data.model_tier_used;
+            }
+
+            // Refresh the webview
+            this._sendSessionState();
+
+            // Show notification
+            vscode.window.showInformationMessage(
+                `Code review loaded: ${data.summary?.total_findings || 0} findings`
+            );
+        } catch (error) {
+            console.error('[CodeReviewPanel] Failed to load results from file:', error);
+        }
     }
 
     public static getInstance(extensionUri?: vscode.Uri): CodeReviewPanelProvider {

@@ -171,3 +171,12 @@ TIER_FALLBACK_TEST_REPORT.md
 
 # Coverage parallel test files
 .coverage.*
+
+# Example applications (not part of framework distribution)
+examples/craps-dice-tracker/
+
+# Local data files
+memdocs_storage/
+metrics.db
+benchmarks/profiles/*.prof
+benchmarks/profiles/*.dat

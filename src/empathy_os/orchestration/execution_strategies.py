@@ -257,9 +257,7 @@ class WorkflowReference:
     def __post_init__(self):
         """Validate that exactly one reference type is provided."""
         if bool(self.workflow_id) == bool(self.inline):
-            raise ValueError(
-                "WorkflowReference must have exactly one of: workflow_id or inline"
-            )
+            raise ValueError("WorkflowReference must have exactly one of: workflow_id or inline")
 
 
 @dataclass
@@ -415,8 +413,7 @@ def get_workflow(workflow_id: str) -> WorkflowDefinition:
     """
     if workflow_id not in WORKFLOW_REGISTRY:
         raise ValueError(
-            f"Unknown workflow: {workflow_id}. "
-            f"Available: {list(WORKFLOW_REGISTRY.keys())}"
+            f"Unknown workflow: {workflow_id}. Available: {list(WORKFLOW_REGISTRY.keys())}"
         )
     return WORKFLOW_REGISTRY[workflow_id]
 
@@ -530,9 +527,7 @@ class ConditionEvaluator:
 
         return current
 
-    def _evaluate_natural_language(
-        self, condition_text: str, context: dict[str, Any]
-    ) -> bool:
+    def _evaluate_natural_language(self, condition_text: str, context: dict[str, Any]) -> bool:
         """Evaluate natural language condition using LLM.
 
         Args:
@@ -617,9 +612,7 @@ Respond with ONLY "TRUE" or "FALSE" (no explanation)."""
         result = match_ratio > 0.5
         return not result if is_negated else result
 
-    def _evaluate_composite(
-        self, predicate: dict[str, Any], context: dict[str, Any]
-    ) -> bool:
+    def _evaluate_composite(self, predicate: dict[str, Any], context: dict[str, Any]) -> bool:
         """Evaluate composite condition (AND/OR of other conditions).
 
         Args:
@@ -1159,7 +1152,7 @@ class RefinementStrategy(ExecutionStrategy):
         total_duration = 0.0
 
         for i, agent in enumerate(agents):
-            stage_name = f"stage_{i+1}"
+            stage_name = f"stage_{i + 1}"
             logger.info(f"Refinement {stage_name}: {agent.id}")
 
             result = await self._execute_agent(agent, current_context)
@@ -1171,7 +1164,7 @@ class RefinementStrategy(ExecutionStrategy):
                 current_context[f"{stage_name}_output"] = result.output
                 current_context["previous_output"] = result.output
             else:
-                logger.error(f"Refinement stage {i+1} failed: {result.error}")
+                logger.error(f"Refinement stage {i + 1} failed: {result.error}")
                 break  # Stop refinement on failure
 
         # Final output is from last successful stage
@@ -1303,9 +1296,7 @@ class ConditionalStrategy(ExecutionStrategy):
         self.else_branch = else_branch
         self.evaluator = ConditionEvaluator()
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute conditional branching."""
         logger.info(f"Conditional: Evaluating '{self.condition.description or 'condition'}'")
 
@@ -1353,9 +1344,7 @@ class MultiConditionalStrategy(ExecutionStrategy):
         self.default_branch = default_branch
         self.evaluator = ConditionEvaluator()
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute multi-conditional branching."""
         for i, (condition, branch) in enumerate(self.conditions):
             if self.evaluator.evaluate(condition, context):
@@ -1427,9 +1416,7 @@ class NestedStrategy(ExecutionStrategy):
         self.workflow_ref = workflow_ref
         self.max_depth = max_depth
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute nested workflow.
 
         Args:
@@ -1471,9 +1458,7 @@ class NestedStrategy(ExecutionStrategy):
             logger.error(error_msg)
             raise RecursionError(error_msg)
 
-        logger.info(
-            f"Nested: Entering '{workflow_id}' at depth {nesting.current_depth + 1}"
-        )
+        logger.info(f"Nested: Entering '{workflow_id}' at depth {nesting.current_depth + 1}")
 
         # Create child context with updated nesting
         child_nesting = nesting.enter(workflow_id)
@@ -1529,9 +1514,7 @@ class NestedSequentialStrategy(ExecutionStrategy):
         self.steps = steps
         self.max_depth = max_depth
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute steps sequentially, handling both agents and nested workflows."""
         if not self.steps:
             raise ValueError("steps list cannot be empty")
@@ -1640,7 +1623,7 @@ def get_strategy(strategy_name: str) -> ExecutionStrategy:
     """
     if strategy_name not in STRATEGY_REGISTRY:
         raise ValueError(
-            f"Unknown strategy: {strategy_name}. " f"Available: {list(STRATEGY_REGISTRY.keys())}"
+            f"Unknown strategy: {strategy_name}. Available: {list(STRATEGY_REGISTRY.keys())}"
         )
 
     strategy_class = STRATEGY_REGISTRY[strategy_name]

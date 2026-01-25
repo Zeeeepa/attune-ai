@@ -8,7 +8,7 @@ Licensed under Fair Source 0.9
 
 from .base import (
     BasePlugin,
-    BaseWizard,
+    BaseWorkflow,
     PluginError,
     PluginLoadError,
     PluginMetadata,
@@ -18,7 +18,7 @@ from .registry import PluginRegistry, get_global_registry
 
 __all__ = [
     "BasePlugin",
-    "BaseWizard",
+    "BaseWorkflow",
     "PluginError",
     "PluginLoadError",
     "PluginMetadata",

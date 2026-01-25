@@ -30,6 +30,7 @@ class TestHookExecutorAsync:
 
     async def test_execute_python_hook_by_id(self):
         """Test executing a Python hook by handler ID."""
+
         def my_handler(**context):
             return {"value": context.get("input", 0) * 2}
 
@@ -48,6 +49,7 @@ class TestHookExecutorAsync:
 
     async def test_execute_python_hook_async_handler(self):
         """Test executing an async Python handler."""
+
         async def async_handler(**context):
             await asyncio.sleep(0.01)
             return {"async": True}
@@ -108,6 +110,7 @@ class TestHookExecutorAsync:
 
     async def test_execute_timeout(self):
         """Test hook timeout handling."""
+
         async def slow_handler(**context):
             await asyncio.sleep(10)
             return {}
@@ -189,6 +192,7 @@ class TestHookExecutorSync:
 
     def test_execute_sync(self):
         """Test synchronous execution."""
+
         def sync_handler(**context):
             return {"sync": True}
 

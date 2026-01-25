@@ -4,17 +4,11 @@ Tests markdown agent parsing, loading, and registry functionality
 with integration to other framework components.
 """
 
-from pathlib import Path
 from textwrap import dedent
-from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_llm_toolkit.agents_md import (
-    AgentLoader,
-    AgentRegistry,
-    MarkdownAgentParser,
-)
+from empathy_llm_toolkit.agents_md import AgentLoader, AgentRegistry, MarkdownAgentParser
 from empathy_llm_toolkit.config.unified import UnifiedAgentConfig
 
 
@@ -114,7 +108,8 @@ class TestAgentLoaderIntegration:
         agents.mkdir()
 
         # Create architect agent
-        (agents / "architect.md").write_text(dedent("""
+        (agents / "architect.md").write_text(
+            dedent("""
             ---
             name: architect
             description: Designs system architecture
@@ -124,10 +119,12 @@ class TestAgentLoaderIntegration:
             ---
 
             You design scalable systems.
-        """).strip())
+        """).strip()
+        )
 
         # Create reviewer agent
-        (agents / "reviewer.md").write_text(dedent("""
+        (agents / "reviewer.md").write_text(
+            dedent("""
             ---
             name: reviewer
             description: Reviews code quality
@@ -137,12 +134,14 @@ class TestAgentLoaderIntegration:
             ---
 
             You review code.
-        """).strip())
+        """).strip()
+        )
 
         # Create subdirectory with empathy specialist
         specialists = agents / "specialists"
         specialists.mkdir()
-        (specialists / "empathy-specialist.md").write_text(dedent("""
+        (specialists / "empathy-specialist.md").write_text(
+            dedent("""
             ---
             name: empathy-specialist
             description: Operates at Level 4+ with pattern learning
@@ -153,7 +152,8 @@ class TestAgentLoaderIntegration:
             ---
 
             You anticipate needs.
-        """).strip())
+        """).strip()
+        )
 
         return agents
 
@@ -332,13 +332,15 @@ class TestAgentRegistryIntegration:
         agents_dir = tmp_path / "agents"
         agents_dir.mkdir()
 
-        (agents_dir / "agent1.md").write_text(dedent("""
+        (agents_dir / "agent1.md").write_text(
+            dedent("""
             ---
             name: loaded-agent
             description: Loaded from file
             ---
             System prompt here.
-        """).strip())
+        """).strip()
+        )
 
         registry = AgentRegistry()
         count = registry.load_from_directory(agents_dir)

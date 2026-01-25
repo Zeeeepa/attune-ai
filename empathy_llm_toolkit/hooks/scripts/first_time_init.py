@@ -9,8 +9,6 @@ Licensed under Fair Source License 0.9
 
 import json
 import logging
-import os
-import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -130,9 +128,7 @@ def initialize_project(project_root: Path) -> dict[str, Any]:
     config_path = project_root / "empathy.config.yaml"
     if not config_path.exists():
         try:
-            config_content = DEFAULT_CONFIG.format(
-                timestamp=datetime.now().isoformat()
-            )
+            config_content = DEFAULT_CONFIG.format(timestamp=datetime.now().isoformat())
             config_path.write_text(config_content)
             result["created_files"].append("empathy.config.yaml")
             logger.info("Created config file: empathy.config.yaml")

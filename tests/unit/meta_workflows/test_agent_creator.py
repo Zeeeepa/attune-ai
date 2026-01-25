@@ -10,7 +10,6 @@ Tests cover:
 Created: 2026-01-17
 """
 
-
 from empathy_os.meta_workflows.agent_creator import (
     DynamicAgentCreator,
     estimate_agent_costs,
@@ -264,8 +263,12 @@ class TestGroupAgentsByTierStrategy:
     def test_group_single_tier(self):
         """Test grouping with all agents same tier."""
         agents = [
-            AgentSpec(role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
-            AgentSpec(role="agent2", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
+            AgentSpec(
+                role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
+            AgentSpec(
+                role="agent2", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
         ]
 
         grouped = group_agents_by_tier_strategy(agents)
@@ -277,10 +280,18 @@ class TestGroupAgentsByTierStrategy:
     def test_group_multiple_tiers(self):
         """Test grouping with agents in different tiers."""
         agents = [
-            AgentSpec(role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
-            AgentSpec(role="agent2", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE),
-            AgentSpec(role="agent3", base_template="generic", tier_strategy=TierStrategy.CAPABLE_FIRST),
-            AgentSpec(role="agent4", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
+            AgentSpec(
+                role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
+            AgentSpec(
+                role="agent2", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE
+            ),
+            AgentSpec(
+                role="agent3", base_template="generic", tier_strategy=TierStrategy.CAPABLE_FIRST
+            ),
+            AgentSpec(
+                role="agent4", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
         ]
 
         grouped = group_agents_by_tier_strategy(agents)
@@ -303,8 +314,12 @@ class TestEstimateAgentCosts:
     def test_estimate_with_default_costs(self):
         """Test estimation with default cost mapping."""
         agents = [
-            AgentSpec(role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
-            AgentSpec(role="agent2", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE),
+            AgentSpec(
+                role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
+            AgentSpec(
+                role="agent2", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE
+            ),
         ]
 
         estimate = estimate_agent_costs(agents)
@@ -318,7 +333,9 @@ class TestEstimateAgentCosts:
     def test_estimate_with_custom_costs(self):
         """Test estimation with custom cost mapping."""
         agents = [
-            AgentSpec(role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
+            AgentSpec(
+                role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
         ]
 
         custom_costs = {"cheap_only": 0.10}
@@ -331,9 +348,15 @@ class TestEstimateAgentCosts:
     def test_estimate_multiple_agents_same_tier(self):
         """Test estimation with multiple agents in same tier."""
         agents = [
-            AgentSpec(role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
-            AgentSpec(role="agent2", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
-            AgentSpec(role="agent3", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
+            AgentSpec(
+                role="agent1", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
+            AgentSpec(
+                role="agent2", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
+            AgentSpec(
+                role="agent3", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
         ]
 
         estimate = estimate_agent_costs(agents)
@@ -349,8 +372,14 @@ class TestValidateAgentDependencies:
     def test_no_warnings_when_dependencies_met(self):
         """Test no warnings when all dependencies satisfied."""
         agents = [
-            AgentSpec(role="package_builder", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
-            AgentSpec(role="publisher", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE),
+            AgentSpec(
+                role="package_builder",
+                base_template="generic",
+                tier_strategy=TierStrategy.CHEAP_ONLY,
+            ),
+            AgentSpec(
+                role="publisher", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE
+            ),
         ]
 
         warnings = validate_agent_dependencies(agents)
@@ -360,7 +389,9 @@ class TestValidateAgentDependencies:
     def test_warning_when_publisher_without_builder(self):
         """Test warning when publisher present but package_builder missing."""
         agents = [
-            AgentSpec(role="publisher", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE),
+            AgentSpec(
+                role="publisher", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE
+            ),
         ]
 
         warnings = validate_agent_dependencies(agents)
@@ -372,7 +403,11 @@ class TestValidateAgentDependencies:
     def test_warning_when_changelog_updater_without_version_manager(self):
         """Test warning when changelog_updater present but version_manager missing."""
         agents = [
-            AgentSpec(role="changelog_updater", base_template="generic", tier_strategy=TierStrategy.CAPABLE_FIRST),
+            AgentSpec(
+                role="changelog_updater",
+                base_template="generic",
+                tier_strategy=TierStrategy.CAPABLE_FIRST,
+            ),
         ]
 
         warnings = validate_agent_dependencies(agents)
@@ -384,8 +419,14 @@ class TestValidateAgentDependencies:
     def test_multiple_dependency_warnings(self):
         """Test multiple dependency warnings."""
         agents = [
-            AgentSpec(role="publisher", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE),
-            AgentSpec(role="changelog_updater", base_template="generic", tier_strategy=TierStrategy.CAPABLE_FIRST),
+            AgentSpec(
+                role="publisher", base_template="generic", tier_strategy=TierStrategy.PROGRESSIVE
+            ),
+            AgentSpec(
+                role="changelog_updater",
+                base_template="generic",
+                tier_strategy=TierStrategy.CAPABLE_FIRST,
+            ),
         ]
 
         warnings = validate_agent_dependencies(agents)
@@ -395,8 +436,12 @@ class TestValidateAgentDependencies:
     def test_no_warnings_for_agents_without_dependencies(self):
         """Test no warnings for agents that don't have dependencies."""
         agents = [
-            AgentSpec(role="test_runner", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
-            AgentSpec(role="linter", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY),
+            AgentSpec(
+                role="test_runner", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
+            AgentSpec(
+                role="linter", base_template="generic", tier_strategy=TierStrategy.CHEAP_ONLY
+            ),
         ]
 
         warnings = validate_agent_dependencies(agents)

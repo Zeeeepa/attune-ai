@@ -12,14 +12,9 @@ from typing import Annotated
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from ..schemas import (
-    HealthCheckResponse,
-    MemoryStatsResponse,
-    RedisStartRequest,
-    RedisStartResponse,
-    RedisStopResponse,
-    SystemStatusResponse,
-)
+from ..schemas import (HealthCheckResponse, MemoryStatsResponse,
+                       RedisStartRequest, RedisStartResponse,
+                       RedisStopResponse, SystemStatusResponse)
 from ..services.memory_service import MemoryService, get_memory_service
 
 logger = structlog.get_logger(__name__)

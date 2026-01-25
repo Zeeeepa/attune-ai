@@ -20,10 +20,7 @@ from empathy_os.workflows.keyboard_shortcuts.parsers import (
     VSCodeCommandParser,
     YAMLManifestParser,
 )
-from empathy_os.workflows.keyboard_shortcuts.schema import (
-    Feature,
-    FrequencyTier,
-)
+from empathy_os.workflows.keyboard_shortcuts.schema import Feature, FrequencyTier
 
 
 class TestVSCodeCommandParser:

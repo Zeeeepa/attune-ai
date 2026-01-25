@@ -1,7 +1,7 @@
 """Smart Router
 
 Intelligent dispatcher that analyzes developer input and routes
-to the appropriate wizard(s) using LLM classification.
+to the appropriate workflow(s) using LLM classification.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -11,15 +11,15 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .classifier import ClassificationResult, HaikuClassifier
-from .wizard_registry import WizardInfo, WizardRegistry
+from .workflow_registry import WorkflowInfo, WorkflowRegistry
 
 
 @dataclass
 class RoutingDecision:
     """Decision from the smart router."""
 
-    primary_wizard: str
-    secondary_wizards: list[str] = field(default_factory=list)
+    primary_workflow: str
+    secondary_workflows: list[str] = field(default_factory=list)
     confidence: float = 0.0
     reasoning: str = ""
     suggested_chain: list[str] = field(default_factory=list)
@@ -31,17 +31,17 @@ class RoutingDecision:
 
 
 class SmartRouter:
-    """Routes developer requests to appropriate wizard(s).
+    """Routes developer requests to appropriate workflow(s).
 
     Uses LLM classification (Haiku) to understand natural language
-    requests and route them to the best wizard(s).
+    requests and route them to the best workflow(s).
 
     Usage:
         router = SmartRouter()
 
         # Async routing (preferred - uses LLM)
         decision = await router.route("Fix the security issue in auth.py")
-        print(f"Primary: {decision.primary_wizard}")
+        print(f"Primary: {decision.primary_workflow}")
         print(f"Confidence: {decision.confidence}")
 
         # Sync routing (keyword fallback)
@@ -55,7 +55,7 @@ class SmartRouter:
             api_key: Optional Anthropic API key for LLM classification
 
         """
-        self._registry = WizardRegistry()
+        self._registry = WorkflowRegistry()
         self._classifier = HaikuClassifier(api_key=api_key)
 
     async def route(
@@ -63,7 +63,7 @@ class SmartRouter:
         request: str,
         context: dict[str, Any] | None = None,
     ) -> RoutingDecision:
-        """Route a request to the appropriate wizard(s).
+        """Route a request to the appropriate workflow(s).
 
         Uses LLM classification for accurate natural language understanding.
 
@@ -72,7 +72,7 @@ class SmartRouter:
             context: Optional context (current file, project info, etc.)
 
         Returns:
-            RoutingDecision with wizard recommendations
+            RoutingDecision with workflow recommendations
 
         """
         # Classify the request
@@ -81,15 +81,15 @@ class SmartRouter:
             context=context,
         )
 
-        # Build suggested chain based on wizard triggers
+        # Build suggested chain based on workflow triggers
         suggested_chain = self._build_chain(classification)
 
         # Merge extracted context
         merged_context = {**(context or {}), **classification.extracted_context}
 
         return RoutingDecision(
-            primary_wizard=classification.primary_wizard,
-            secondary_wizards=classification.secondary_wizards,
+            primary_workflow=classification.primary_workflow,
+            secondary_workflows=classification.secondary_workflows,
             confidence=classification.confidence,
             reasoning=classification.reasoning,
             suggested_chain=suggested_chain,
@@ -112,7 +112,7 @@ class SmartRouter:
             context: Optional context
 
         Returns:
-            RoutingDecision with wizard recommendations
+            RoutingDecision with workflow recommendations
 
         """
         classification = self._classifier.classify_sync(
@@ -123,8 +123,8 @@ class SmartRouter:
         suggested_chain = self._build_chain(classification)
 
         return RoutingDecision(
-            primary_wizard=classification.primary_wizard,
-            secondary_wizards=classification.secondary_wizards,
+            primary_workflow=classification.primary_workflow,
+            secondary_workflows=classification.secondary_workflows,
             confidence=classification.confidence,
             reasoning=classification.reasoning,
             suggested_chain=suggested_chain,
@@ -134,39 +134,39 @@ class SmartRouter:
         )
 
     def _build_chain(self, classification: ClassificationResult) -> list[str]:
-        """Build suggested wizard chain based on triggers."""
-        chain = [classification.primary_wizard]
+        """Build suggested workflow chain based on triggers."""
+        chain = [classification.primary_workflow]
 
-        # Add secondary wizards to chain
-        for secondary in classification.secondary_wizards:
+        # Add secondary workflows to chain
+        for secondary in classification.secondary_workflows:
             if secondary not in chain:
                 chain.append(secondary)
 
-        # Check for auto-chain triggers from primary wizard
-        triggers = self._registry.get_chain_triggers(classification.primary_wizard)
+        # Check for auto-chain triggers from primary workflow
+        triggers = self._registry.get_chain_triggers(classification.primary_workflow)
         for trigger in triggers:
-            next_wizard = trigger.get("next")
-            if next_wizard and next_wizard not in chain:
-                chain.append(next_wizard)
+            next_workflow = trigger.get("next")
+            if next_workflow and next_workflow not in chain:
+                chain.append(next_workflow)
 
         return chain
 
-    def get_wizard_info(self, name: str) -> WizardInfo | None:
-        """Get information about a specific wizard."""
+    def get_workflow_info(self, name: str) -> WorkflowInfo | None:
+        """Get information about a specific workflow."""
         return self._registry.get(name)
 
-    def list_wizards(self) -> list[WizardInfo]:
-        """List all available wizards."""
+    def list_workflows(self) -> list[WorkflowInfo]:
+        """List all available workflows."""
         return self._registry.list_all()
 
     def suggest_for_file(self, file_path: str) -> list[str]:
-        """Suggest wizards based on file type.
+        """Suggest workflows based on file type.
 
         Args:
             file_path: Path to the file
 
         Returns:
-            List of suggested wizard names
+            List of suggested workflow names
 
         """
         suggestions = []
@@ -175,9 +175,9 @@ class SmartRouter:
         ext = "." + file_path.rsplit(".", 1)[-1] if "." in file_path else ""
         filename = file_path.rsplit("/", 1)[-1]
 
-        for wizard in self._registry.list_all():
-            if ext in wizard.handles_file_types or filename in wizard.handles_file_types:
-                suggestions.append(wizard.name)
+        for workflow in self._registry.list_all():
+            if ext in workflow.handles_file_types or filename in workflow.handles_file_types:
+                suggestions.append(workflow.name)
 
         # Default suggestions if no matches
         if not suggestions:
@@ -186,19 +186,19 @@ class SmartRouter:
         return suggestions
 
     def suggest_for_error(self, error_type: str) -> list[str]:
-        """Suggest wizards based on error type.
+        """Suggest workflows based on error type.
 
         Args:
             error_type: Type of error (e.g., "TypeError", "SecurityError")
 
         Returns:
-            List of suggested wizard names
+            List of suggested workflow names
 
         """
         error_lower = error_type.lower()
 
-        # Map error types to wizards
-        error_wizard_map = {
+        # Map error types to workflows
+        error_workflow_map = {
             "security": ["security-audit", "code-review"],
             "type": ["code-review", "bug-predict"],
             "null": ["bug-predict", "test-gen"],
@@ -211,9 +211,9 @@ class SmartRouter:
             "test": ["test-gen", "bug-predict"],
         }
 
-        for keyword, wizards in error_wizard_map.items():
+        for keyword, workflows in error_workflow_map.items():
             if keyword in error_lower:
-                return wizards
+                return workflows
 
         return ["bug-predict", "code-review"]
 

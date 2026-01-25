@@ -9,16 +9,27 @@ Licensed under Fair Source License 0.9
 import subprocess
 import sys
 
+import typer
 from rich.panel import Panel
 
 from empathy_os.cli.core import console
 
+# Create the utilities Typer app
+utilities_app = typer.Typer(
+    help="Utility tools - project init, cheatsheet, dashboard, costs",
+    no_args_is_help=True,
+)
 
-def sync_claude(source: str = "patterns") -> None:
+
+@utilities_app.command("sync-claude")
+def sync_claude(
+    source: str = typer.Option("patterns", "--source", "-s", help="Source to sync"),
+) -> None:
     """Sync patterns to Claude Code memory."""
     subprocess.run(["empathy-sync-claude", "--source", source], check=False)
 
 
+@utilities_app.command("cheatsheet")
 def cheatsheet() -> None:
     """Show quick reference for all commands."""
     console.print(
@@ -49,9 +60,14 @@ def cheatsheet() -> None:
   empathy inspect .         Deep analysis (SARIF)
   empathy fix-all           Auto-fix everything
 
+[bold]Profiling[/bold]
+  empathy profile memory-scan   Scan for memory leaks
+  empathy profile hot-files     Show riskiest files
+  empathy profile memory-test   Profile memory module
+
 [bold]Pattern Learning[/bold]
   empathy learn --analyze 20    Learn from commits
-  empathy sync-claude           Sync to Claude Code
+  empathy utilities sync-claude Sync to Claude Code
 
 [bold]Workflows[/bold]
   empathy workflow list     Show available workflows
@@ -59,11 +75,11 @@ def cheatsheet() -> None:
   empathy workflow create <name> -p <patterns>  Create workflow (12x faster)
   empathy workflow list-patterns                List available patterns
 
-[bold]Wizards[/bold]
-  empathy wizard list       Show available wizards
-  empathy wizard run <name> Execute a wizard
-  empathy wizard create <name> -d <domain>  Create wizard (12x faster)
-  empathy wizard list-patterns              List available patterns
+[bold]Workflows[/bold]
+  empathy workflow list       Show available workflows
+  empathy workflow run <name> Execute a workflow
+  empathy workflow create <name> -d <domain>  Create workflow (12x faster)
+  empathy workflow list-patterns              List available patterns
 
 [bold]Usage Telemetry[/bold]
   empathy telemetry show    View recent LLM calls & costs
@@ -74,21 +90,25 @@ def cheatsheet() -> None:
     )
 
 
+@utilities_app.command("dashboard")
 def dashboard() -> None:
     """Launch visual dashboard."""
     subprocess.run([sys.executable, "-m", "empathy_os.cli", "dashboard"], check=False)
 
 
+@utilities_app.command("costs")
 def costs() -> None:
     """View API cost tracking."""
     subprocess.run([sys.executable, "-m", "empathy_os.cli", "costs"], check=False)
 
 
+@utilities_app.command("init")
 def init() -> None:
     """Create a new configuration file."""
     subprocess.run([sys.executable, "-m", "empathy_os.cli", "init"], check=False)
 
 
+@utilities_app.command("status")
 def status() -> None:
     """What needs attention now."""
     subprocess.run([sys.executable, "-m", "empathy_os.cli", "status"], check=False)

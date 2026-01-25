@@ -79,8 +79,11 @@ from .cross_session import (
     generate_agent_id,
 )
 
-# Memory Graph (Cross-Wizard Intelligence)
-from .edges import REVERSE_EDGE_TYPES, WIZARD_EDGE_PATTERNS, Edge, EdgeType
+# Memory Graph (Cross-Workflow Intelligence)
+from .edges import REVERSE_EDGE_TYPES, WORKFLOW_EDGE_PATTERNS, Edge, EdgeType
+
+# File-based session memory (always available, no Redis required)
+from .file_session import FileSessionConfig, FileSessionMemory, get_file_session_memory
 from .graph import MemoryGraph
 
 # Long-term memory (Persistent patterns)
@@ -137,7 +140,7 @@ from .unified import Environment, MemoryConfig, UnifiedMemory
 
 __all__ = [
     "REVERSE_EDGE_TYPES",
-    "WIZARD_EDGE_PATTERNS",
+    "WORKFLOW_EDGE_PATTERNS",
     "AccessTier",
     "AgentContext",
     "AgentCredentials",
@@ -152,6 +155,10 @@ __all__ = [
     # Claude Memory
     "ClaudeMemoryConfig",
     "ClaudeMemoryLoader",
+    # File Session Memory (always available)
+    "FileSessionConfig",
+    "FileSessionMemory",
+    "get_file_session_memory",
     "ConflictContext",
     "ConflictResult",
     "ConflictStrategy",
@@ -167,7 +174,7 @@ __all__ = [
     "MemoryConfig",
     # Control Panel
     "MemoryControlPanel",
-    # Memory Graph (Cross-Wizard Intelligence)
+    # Memory Graph (Cross-Workflow Intelligence)
     "MemoryGraph",
     "MemoryPermissionError",
     "MemoryStats",

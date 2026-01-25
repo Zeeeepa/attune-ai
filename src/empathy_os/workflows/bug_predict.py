@@ -372,7 +372,7 @@ def _remove_docstrings(content: str) -> str:
     """
     # Remove triple-quoted strings (docstrings)
     # Match """ ... """ and ''' ... ''' including multiline
-    content = re.sub(r'"""[\s\S]*?"""', '# [docstring removed]', content)
+    content = re.sub(r'"""[\s\S]*?"""', "# [docstring removed]", content)
     content = re.sub(r"'''[\s\S]*?'''", "# [docstring removed]", content)
     return content
 

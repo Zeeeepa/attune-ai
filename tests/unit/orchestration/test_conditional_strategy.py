@@ -59,17 +59,12 @@ class TestCondition:
 
     def test_json_predicate_validation(self):
         """Test that valid JSON predicates are accepted."""
-        cond = Condition(
-            predicate={"confidence": {"$lt": 0.8}},
-            description="Low confidence"
-        )
+        cond = Condition(predicate={"confidence": {"$lt": 0.8}}, description="Low confidence")
         assert cond.condition_type == ConditionType.JSON_PREDICATE
 
     def test_natural_language_auto_detection(self):
         """Test that prose is auto-detected as natural language."""
-        cond = Condition(
-            predicate="The security audit found critical vulnerabilities"
-        )
+        cond = Condition(predicate="The security audit found critical vulnerabilities")
         assert cond.condition_type == ConditionType.NATURAL_LANGUAGE
 
     def test_invalid_operator_rejected(self):
@@ -80,14 +75,7 @@ class TestCondition:
     def test_nested_predicate_validation(self):
         """Test that nested predicates are validated."""
         # Valid nested
-        cond = Condition(
-            predicate={
-                "$and": [
-                    {"confidence": {"$gt": 0.5}},
-                    {"errors": {"$eq": 0}}
-                ]
-            }
-        )
+        cond = Condition(predicate={"$and": [{"confidence": {"$gt": 0.5}}, {"errors": {"$eq": 0}}]})
         assert cond.condition_type == ConditionType.JSON_PREDICATE
 
     def test_invalid_predicate_type(self):
@@ -172,12 +160,7 @@ class TestConditionEvaluator:
     def test_nested_path_evaluation(self, evaluator):
         """Test nested path evaluation with dot notation."""
         cond = Condition(predicate={"result.confidence": {"$gt": 0.8}})
-        context = {
-            "result": {
-                "confidence": 0.9,
-                "status": "success"
-            }
-        }
+        context = {"result": {"confidence": 0.9, "status": "success"}}
         assert evaluator.evaluate(cond, context) is True
 
     def test_deeply_nested_path(self, evaluator):
@@ -188,14 +171,7 @@ class TestConditionEvaluator:
 
     def test_and_operator(self, evaluator):
         """Test $and logical operator."""
-        cond = Condition(
-            predicate={
-                "$and": [
-                    {"confidence": {"$gt": 0.5}},
-                    {"errors": {"$eq": 0}}
-                ]
-            }
-        )
+        cond = Condition(predicate={"$and": [{"confidence": {"$gt": 0.5}}, {"errors": {"$eq": 0}}]})
         assert evaluator.evaluate(cond, {"confidence": 0.8, "errors": 0}) is True
         assert evaluator.evaluate(cond, {"confidence": 0.8, "errors": 1}) is False
         assert evaluator.evaluate(cond, {"confidence": 0.3, "errors": 0}) is False
@@ -203,12 +179,7 @@ class TestConditionEvaluator:
     def test_or_operator(self, evaluator):
         """Test $or logical operator."""
         cond = Condition(
-            predicate={
-                "$or": [
-                    {"status": {"$eq": "success"}},
-                    {"confidence": {"$gt": 0.9}}
-                ]
-            }
+            predicate={"$or": [{"status": {"$eq": "success"}}, {"confidence": {"$gt": 0.9}}]}
         )
         assert evaluator.evaluate(cond, {"status": "success", "confidence": 0.5}) is True
         assert evaluator.evaluate(cond, {"status": "pending", "confidence": 0.95}) is True
@@ -216,11 +187,7 @@ class TestConditionEvaluator:
 
     def test_not_operator(self, evaluator):
         """Test $not logical operator."""
-        cond = Condition(
-            predicate={
-                "$not": {"status": {"$eq": "failed"}}
-            }
-        )
+        cond = Condition(predicate={"$not": {"status": {"$eq": "failed"}}})
         assert evaluator.evaluate(cond, {"status": "success"}) is True
         assert evaluator.evaluate(cond, {"status": "failed"}) is False
 
@@ -234,7 +201,7 @@ class TestConditionEvaluator:
         """Test keyword-based fallback for natural language."""
         result = evaluator._keyword_fallback(
             "security vulnerabilities detected",
-            {"report": "Found 3 security vulnerabilities in the code"}
+            {"report": "Found 3 security vulnerabilities in the code"},
         )
         assert result is True
 
@@ -242,8 +209,7 @@ class TestConditionEvaluator:
         """Test negation handling in keyword fallback."""
         # Condition says "no critical errors" - if context has errors, should be False
         result = evaluator._keyword_fallback(
-            "no critical errors found",
-            {"report": "Found 5 critical errors in module"}
+            "no critical errors found", {"report": "Found 5 critical errors in module"}
         )
         # "no" negates - errors found means condition "no errors" is False
         assert result is False
@@ -260,29 +226,22 @@ class TestConditionalStrategy:
     @pytest.mark.asyncio
     async def test_then_branch_execution(self, mock_agent):
         """Test that then branch executes when condition is true."""
-        condition = Condition(
-            predicate={"confidence": {"$lt": 0.8}},
-            description="Low confidence"
-        )
+        condition = Condition(predicate={"confidence": {"$lt": 0.8}}, description="Low confidence")
         then_branch = Branch(agents=[mock_agent], label="Expert Review")
         else_branch = Branch(agents=[mock_agent], label="Auto Approve")
 
         strategy = ConditionalStrategy(
-            condition=condition,
-            then_branch=then_branch,
-            else_branch=else_branch
+            condition=condition, then_branch=then_branch, else_branch=else_branch
         )
 
         # Mock the branch strategy execution
-        with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy"
-        ) as mock_get:
+        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True,
                 outputs=[],
                 aggregated_output={"result": "expert_review_done"},
-                total_duration=1.0
+                total_duration=1.0,
             )
             mock_get.return_value = mock_branch_strategy
 
@@ -295,28 +254,21 @@ class TestConditionalStrategy:
     @pytest.mark.asyncio
     async def test_else_branch_execution(self, mock_agent):
         """Test that else branch executes when condition is false."""
-        condition = Condition(
-            predicate={"confidence": {"$lt": 0.8}},
-            description="Low confidence"
-        )
+        condition = Condition(predicate={"confidence": {"$lt": 0.8}}, description="Low confidence")
         then_branch = Branch(agents=[mock_agent], label="Expert Review")
         else_branch = Branch(agents=[mock_agent], label="Auto Approve")
 
         strategy = ConditionalStrategy(
-            condition=condition,
-            then_branch=then_branch,
-            else_branch=else_branch
+            condition=condition, then_branch=then_branch, else_branch=else_branch
         )
 
-        with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy"
-        ) as mock_get:
+        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True,
                 outputs=[],
                 aggregated_output={"result": "auto_approved"},
-                total_duration=0.5
+                total_duration=0.5,
             )
             mock_get.return_value = mock_branch_strategy
 
@@ -335,7 +287,7 @@ class TestConditionalStrategy:
         strategy = ConditionalStrategy(
             condition=condition,
             then_branch=then_branch,
-            else_branch=None  # No else branch
+            else_branch=None,  # No else branch
         )
 
         result = await strategy.execute([], {"errors": 0})
@@ -356,22 +308,20 @@ class TestMultiConditionalStrategy:
     async def test_first_match_wins(self, mock_agent):
         """Test that first matching condition is executed."""
         conditions = [
-            (Condition(predicate={"severity": "critical"}), Branch([mock_agent], label="Emergency")),
+            (
+                Condition(predicate={"severity": "critical"}),
+                Branch([mock_agent], label="Emergency"),
+            ),
             (Condition(predicate={"severity": "high"}), Branch([mock_agent], label="Urgent")),
             (Condition(predicate={"severity": "medium"}), Branch([mock_agent], label="Normal")),
         ]
 
         strategy = MultiConditionalStrategy(conditions=conditions)
 
-        with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy"
-        ) as mock_get:
+        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
-                success=True,
-                outputs=[],
-                aggregated_output={},
-                total_duration=1.0
+                success=True, outputs=[], aggregated_output={}, total_duration=1.0
             )
             mock_get.return_value = mock_branch_strategy
 
@@ -388,20 +338,12 @@ class TestMultiConditionalStrategy:
         ]
         default = Branch([mock_agent], label="Default")
 
-        strategy = MultiConditionalStrategy(
-            conditions=conditions,
-            default_branch=default
-        )
+        strategy = MultiConditionalStrategy(conditions=conditions, default_branch=default)
 
-        with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy"
-        ) as mock_get:
+        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
-                success=True,
-                outputs=[],
-                aggregated_output={},
-                total_duration=0.5
+                success=True, outputs=[], aggregated_output={}, total_duration=0.5
             )
             mock_get.return_value = mock_branch_strategy
 

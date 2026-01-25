@@ -183,13 +183,7 @@ def sample_workflow_blueprint(sample_agent_spec):
 @pytest.fixture
 def sample_form():
     """Create a sample Form for testing."""
-    from empathy_os.socratic.forms import (
-        FieldOption,
-        FieldType,
-        FieldValidation,
-        Form,
-        FormField,
-    )
+    from empathy_os.socratic.forms import FieldOption, FieldType, FieldValidation, Form, FormField
 
     return Form(
         id="test-form-001",
@@ -281,24 +275,28 @@ def mock_anthropic_client():
     # Mock response
     mock_response = MagicMock()
     mock_response.content = [
-        MagicMock(text=json.dumps({
-            "intent": "Automate code reviews",
-            "domain": "code_review",
-            "confidence": 0.85,
-            "ambiguities": ["Which languages?"],
-            "assumptions": ["Python codebase"],
-            "constraints": [],
-            "keywords": ["code", "review", "python"],
-            "suggested_agents": ["code_quality_reviewer", "security_scanner"],
-            "suggested_questions": [
+        MagicMock(
+            text=json.dumps(
                 {
-                    "id": "q1",
-                    "question": "Which programming languages?",
-                    "type": "multi_select",
-                    "options": ["Python", "JavaScript"],
+                    "intent": "Automate code reviews",
+                    "domain": "code_review",
+                    "confidence": 0.85,
+                    "ambiguities": ["Which languages?"],
+                    "assumptions": ["Python codebase"],
+                    "constraints": [],
+                    "keywords": ["code", "review", "python"],
+                    "suggested_agents": ["code_quality_reviewer", "security_scanner"],
+                    "suggested_questions": [
+                        {
+                            "id": "q1",
+                            "question": "Which programming languages?",
+                            "type": "multi_select",
+                            "options": ["Python", "JavaScript"],
+                        }
+                    ],
                 }
-            ],
-        }))
+            )
+        )
     ]
 
     mock_client.messages.create.return_value = mock_response
@@ -311,10 +309,12 @@ def mock_llm_executor():
     mock_executor = AsyncMock()
 
     class MockResponse:
-        content = json.dumps({
-            "domain": "code_review",
-            "confidence": 0.8,
-        })
+        content = json.dumps(
+            {
+                "domain": "code_review",
+                "confidence": 0.8,
+            }
+        )
 
     mock_executor.run.return_value = MockResponse()
     return mock_executor
@@ -391,10 +391,7 @@ def vector_store(storage_path):
 @pytest.fixture
 def sample_experiment(storage_path):
     """Create a sample Experiment for testing."""
-    from empathy_os.socratic.ab_testing import (
-        AllocationStrategy,
-        ExperimentManager,
-    )
+    from empathy_os.socratic.ab_testing import AllocationStrategy, ExperimentManager
 
     manager = ExperimentManager(storage_path=storage_path / "experiments.json")
 

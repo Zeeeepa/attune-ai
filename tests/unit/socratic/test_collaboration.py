@@ -5,7 +5,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 class TestParticipantRole:
     """Tests for ParticipantRole enum."""
 
@@ -355,10 +354,7 @@ class TestInvitationManager:
 
     def test_create_manager(self, temp_dir):
         """Test creating an invitation manager."""
-        from empathy_os.socratic.collaboration import (
-            CollaborationManager,
-            InvitationManager,
-        )
+        from empathy_os.socratic.collaboration import CollaborationManager, InvitationManager
 
         collab_manager = CollaborationManager(storage_path=temp_dir / "collaboration")
         invitation_manager = InvitationManager(collab_manager)

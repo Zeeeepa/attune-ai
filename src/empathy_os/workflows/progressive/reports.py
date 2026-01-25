@@ -13,10 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from empathy_os.config import _validate_file_path
-from empathy_os.workflows.progressive.core import (
-    ProgressiveWorkflowResult,
-    Tier,
-)
+from empathy_os.workflows.progressive.core import ProgressiveWorkflowResult, Tier
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +58,9 @@ def generate_progression_report(result: ProgressiveWorkflowResult) -> str:
 
     # Cost savings
     if result.cost_savings > 0:
-        report.append(f"Cost Savings: ${result.cost_savings:.2f} ({result.cost_savings_percent:.0f}% vs all-Premium)")
+        report.append(
+            f"Cost Savings: ${result.cost_savings:.2f} ({result.cost_savings_percent:.0f}% vs all-Premium)"
+        )
         report.append("")
 
     report.append("TIER BREAKDOWN:")
@@ -69,11 +68,7 @@ def generate_progression_report(result: ProgressiveWorkflowResult) -> str:
 
     # Tier-by-tier breakdown
     for tier_result in result.tier_results:
-        tier_emoji = {
-            Tier.CHEAP: "💰",
-            Tier.CAPABLE: "📊",
-            Tier.PREMIUM: "💎"
-        }[tier_result.tier]
+        tier_emoji = {Tier.CHEAP: "💰", Tier.CAPABLE: "📊", Tier.PREMIUM: "💎"}[tier_result.tier]
 
         report.append(f"{tier_emoji} {tier_result.tier.value.upper()} Tier ({tier_result.model})")
         report.append(f"   • Items: {len(tier_result.generated_items)}")
@@ -147,14 +142,16 @@ def save_results_to_disk(result: ProgressiveWorkflowResult, storage_path: str) -
         summary = {
             "workflow": result.workflow_name,
             "task_id": result.task_id,
-            "timestamp": result.tier_results[0].timestamp.isoformat() if result.tier_results else None,
+            "timestamp": (
+                result.tier_results[0].timestamp.isoformat() if result.tier_results else None
+            ),
             "total_cost": result.total_cost,
             "total_duration": result.total_duration,
             "cost_savings": result.cost_savings,
             "cost_savings_percent": result.cost_savings_percent,
             "success": result.success,
             "tier_count": len(result.tier_results),
-            "final_cqs": result.final_result.quality_score if result.final_result else 0
+            "final_cqs": result.final_result.quality_score if result.final_result else 0,
         }
 
         summary_file = validated_dir / "summary.json"
@@ -179,9 +176,9 @@ def save_results_to_disk(result: ProgressiveWorkflowResult, storage_path: str) -
                     "test_pass_rate": tier_result.failure_analysis.test_pass_rate,
                     "coverage": tier_result.failure_analysis.coverage_percent,
                     "assertion_depth": tier_result.failure_analysis.assertion_depth,
-                    "confidence": tier_result.failure_analysis.confidence_score
+                    "confidence": tier_result.failure_analysis.confidence_score,
                 },
-                "item_count": len(tier_result.generated_items)
+                "item_count": len(tier_result.generated_items),
             }
 
             tier_file = validated_dir / f"tier_{i}_{tier_result.tier.value}.json"
@@ -222,7 +219,9 @@ def _format_duration(seconds: float) -> str:
     return f"{minutes}m {remaining_seconds}s"
 
 
-def load_result_from_disk(task_id: str, storage_path: str = ".empathy/progressive_runs") -> dict[str, Any]:
+def load_result_from_disk(
+    task_id: str, storage_path: str = ".empathy/progressive_runs"
+) -> dict[str, Any]:
     """Load saved result from disk.
 
     Args:
@@ -262,11 +261,7 @@ def load_result_from_disk(task_id: str, storage_path: str = ".empathy/progressiv
     report_file = task_dir / "report.txt"
     report = report_file.read_text() if report_file.exists() else ""
 
-    return {
-        "summary": summary,
-        "tier_results": tier_results,
-        "report": report
-    }
+    return {"summary": summary, "tier_results": tier_results, "report": report}
 
 
 def list_saved_results(storage_path: str = ".empathy/progressive_runs") -> list[dict[str, Any]]:
@@ -311,9 +306,7 @@ def list_saved_results(storage_path: str = ".empathy/progressive_runs") -> list[
 
 
 def cleanup_old_results(
-    storage_path: str = ".empathy/progressive_runs",
-    retention_days: int = 30,
-    dry_run: bool = False
+    storage_path: str = ".empathy/progressive_runs", retention_days: int = 30, dry_run: bool = False
 ) -> tuple[int, int]:
     """Clean up old progressive workflow results.
 
@@ -363,6 +356,7 @@ def cleanup_old_results(
                 # Old result, delete it
                 if not dry_run:
                     import shutil
+
                     shutil.rmtree(task_dir)
                     logger.info(f"Deleted old result: {task_dir.name}")
                 else:
@@ -378,9 +372,7 @@ def cleanup_old_results(
     return (deleted_count, retained_count)
 
 
-def generate_cost_analytics(
-    storage_path: str = ".empathy/progressive_runs"
-) -> dict[str, Any]:
+def generate_cost_analytics(storage_path: str = ".empathy/progressive_runs") -> dict[str, Any]:
     """Generate cost optimization analytics from saved results.
 
     Analyzes historical progressive workflow runs to provide insights:
@@ -408,7 +400,7 @@ def generate_cost_analytics(
             "total_runs": 0,
             "total_cost": 0.0,
             "total_savings": 0.0,
-            "avg_savings_percent": 0.0
+            "avg_savings_percent": 0.0,
         }
 
     total_runs = len(results)
@@ -417,8 +409,7 @@ def generate_cost_analytics(
 
     # Calculate average savings percent (weighted by cost)
     weighted_savings = sum(
-        r.get("cost_savings_percent", 0) * r.get("total_cost", 0)
-        for r in results
+        r.get("cost_savings_percent", 0) * r.get("total_cost", 0) for r in results
     )
     avg_savings_percent = weighted_savings / total_cost if total_cost > 0 else 0
 
@@ -450,7 +441,7 @@ def generate_cost_analytics(
                 "runs": 0,
                 "total_cost": 0.0,
                 "total_savings": 0.0,
-                "successes": 0
+                "successes": 0,
             }
 
         stats = workflow_stats[workflow]
@@ -476,7 +467,7 @@ def generate_cost_analytics(
         "avg_final_cqs": round(avg_cqs, 1),
         "tier_usage": tier_usage,
         "tier_costs": tier_costs,
-        "workflow_stats": workflow_stats
+        "workflow_stats": workflow_stats,
     }
 
 

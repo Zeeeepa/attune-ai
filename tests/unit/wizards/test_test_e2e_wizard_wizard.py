@@ -7,7 +7,6 @@ Generated: 2026-01-05T20:10:24.248597
 """
 
 import pytest
-
 from wizards.test_e2e_wizard_wizard import TestE2eWizardWizard
 
 

@@ -212,7 +212,7 @@ class TestResultStorage:
                 "task_id": f"test-task-00{i}",
                 "timestamp": (datetime.now() - timedelta(days=i)).isoformat(),
                 "total_cost": 0.30 + (i * 0.1),
-                "success": True
+                "success": True,
             }
 
             (task_dir / "summary.json").write_text(json.dumps(summary))
@@ -254,9 +254,7 @@ class TestCleanupPolicy:
 
         # Dry run cleanup (30 day retention)
         deleted, retained = cleanup_old_results(
-            storage_path=str(storage_path),
-            retention_days=30,
-            dry_run=True
+            storage_path=str(storage_path), retention_days=30, dry_run=True
         )
 
         assert deleted == 1  # Would delete old-task
@@ -281,9 +279,7 @@ class TestCleanupPolicy:
 
         # Cleanup (30 day retention)
         deleted, retained = cleanup_old_results(
-            storage_path=str(storage_path),
-            retention_days=30,
-            dry_run=False
+            storage_path=str(storage_path), retention_days=30, dry_run=False
         )
 
         assert deleted == 1
@@ -330,7 +326,7 @@ class TestCostAnalytics:
             "cost_savings_percent": 85.0,
             "success": True,
             "tier_count": 2,
-            "final_cqs": 92.0
+            "final_cqs": 92.0,
         }
         (task_dir / "summary.json").write_text(json.dumps(summary))
 
@@ -361,7 +357,7 @@ class TestCostAnalytics:
                 "cost_savings_percent": 80.0 - (i * 5),
                 "success": i < 2,  # First 2 succeed, last fails
                 "tier_count": 1 + i,  # Varying tier counts
-                "final_cqs": 85.0 + (i * 3)
+                "final_cqs": 85.0 + (i * 3),
             }
             (task_dir / "summary.json").write_text(json.dumps(summary))
 
@@ -400,15 +396,15 @@ class TestCostAnalytics:
                     "runs": 7,
                     "avg_cost": 0.85,
                     "avg_savings": 4.15,
-                    "success_rate": 0.86
+                    "success_rate": 0.86,
                 },
                 "code-review": {
                     "runs": 3,
                     "avg_cost": 0.83,
                     "avg_savings": 4.17,
-                    "success_rate": 1.0
-                }
-            }
+                    "success_rate": 1.0,
+                },
+            },
         }
 
         report = format_cost_analytics_report(analytics)

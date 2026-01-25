@@ -16,7 +16,7 @@ class HotReloadConfig:
         # Development mode (enables hot-reload)
         self.enabled = os.getenv("HOT_RELOAD_ENABLED", "false").lower() == "true"
 
-        # Wizard directories to watch
+        # Workflow directories to watch
         self.watch_dirs = self._get_watch_dirs()
 
         # WebSocket endpoint for notifications
@@ -26,20 +26,19 @@ class HotReloadConfig:
         self.reload_delay = float(os.getenv("HOT_RELOAD_DELAY", "0.5"))
 
     def _get_watch_dirs(self) -> list[Path]:
-        """Get directories to watch for wizard changes.
+        """Get directories to watch for workflow changes.
 
         Returns:
             List of directories to watch
 
         """
-        # Default wizard directories
+        # Default workflow directories
         project_root = Path(__file__).parent.parent
 
         default_dirs = [
-            project_root / "wizards",
-            project_root / "coach_wizards",
-            project_root / "empathy_software_plugin" / "wizards",
-            project_root / "empathy_llm_toolkit" / "wizards",
+            project_root / "workflows",
+            project_root / "empathy_software_plugin" / "workflows",
+            project_root / "empathy_llm_toolkit" / "workflows",
         ]
 
         # Filter to only existing directories

@@ -44,11 +44,11 @@ SOCRATIC_TOOLS = [
             "properties": {
                 "goal": {
                     "type": "string",
-                    "description": "Optional initial goal. If not provided, session starts in AWAITING_GOAL state."
+                    "description": "Optional initial goal. If not provided, session starts in AWAITING_GOAL state.",
                 }
             },
-            "required": []
-        }
+            "required": [],
+        },
     },
     {
         "name": "socratic_set_goal",
@@ -56,31 +56,20 @@ SOCRATIC_TOOLS = [
         "inputSchema": {
             "type": "object",
             "properties": {
-                "session_id": {
-                    "type": "string",
-                    "description": "The session ID to update"
-                },
-                "goal": {
-                    "type": "string",
-                    "description": "The user's goal in free-form text"
-                }
+                "session_id": {"type": "string", "description": "The session ID to update"},
+                "goal": {"type": "string", "description": "The user's goal in free-form text"},
             },
-            "required": ["session_id", "goal"]
-        }
+            "required": ["session_id", "goal"],
+        },
     },
     {
         "name": "socratic_get_questions",
         "description": "Get the next set of clarifying questions for a session.",
         "inputSchema": {
             "type": "object",
-            "properties": {
-                "session_id": {
-                    "type": "string",
-                    "description": "The session ID"
-                }
-            },
-            "required": ["session_id"]
-        }
+            "properties": {"session_id": {"type": "string", "description": "The session ID"}},
+            "required": ["session_id"],
+        },
     },
     {
         "name": "socratic_submit_answers",
@@ -88,31 +77,23 @@ SOCRATIC_TOOLS = [
         "inputSchema": {
             "type": "object",
             "properties": {
-                "session_id": {
-                    "type": "string",
-                    "description": "The session ID"
-                },
+                "session_id": {"type": "string", "description": "The session ID"},
                 "answers": {
                     "type": "object",
-                    "description": "Dictionary of field_id -> answer value"
-                }
+                    "description": "Dictionary of field_id -> answer value",
+                },
             },
-            "required": ["session_id", "answers"]
-        }
+            "required": ["session_id", "answers"],
+        },
     },
     {
         "name": "socratic_generate_workflow",
         "description": "Generate the workflow once all questions are answered. Returns agent blueprints and success criteria.",
         "inputSchema": {
             "type": "object",
-            "properties": {
-                "session_id": {
-                    "type": "string",
-                    "description": "The session ID"
-                }
-            },
-            "required": ["session_id"]
-        }
+            "properties": {"session_id": {"type": "string", "description": "The session ID"}},
+            "required": ["session_id"],
+        },
     },
     {
         "name": "socratic_list_sessions",
@@ -123,11 +104,11 @@ SOCRATIC_TOOLS = [
                 "status_filter": {
                     "type": "string",
                     "enum": ["all", "active", "completed"],
-                    "description": "Filter sessions by status"
+                    "description": "Filter sessions by status",
                 }
             },
-            "required": []
-        }
+            "required": [],
+        },
     },
     {
         "name": "socratic_get_session",
@@ -135,13 +116,10 @@ SOCRATIC_TOOLS = [
         "inputSchema": {
             "type": "object",
             "properties": {
-                "session_id": {
-                    "type": "string",
-                    "description": "The session ID to retrieve"
-                }
+                "session_id": {"type": "string", "description": "The session ID to retrieve"}
             },
-            "required": ["session_id"]
-        }
+            "required": ["session_id"],
+        },
     },
     {
         "name": "socratic_list_blueprints",
@@ -151,25 +129,20 @@ SOCRATIC_TOOLS = [
             "properties": {
                 "domain_filter": {
                     "type": "string",
-                    "description": "Optional domain to filter by (e.g., 'code_review', 'security')"
+                    "description": "Optional domain to filter by (e.g., 'code_review', 'security')",
                 }
             },
-            "required": []
-        }
+            "required": [],
+        },
     },
     {
         "name": "socratic_analyze_goal",
         "description": "Analyze a goal using LLM to detect domains, requirements, and ambiguities without starting a full session.",
         "inputSchema": {
             "type": "object",
-            "properties": {
-                "goal": {
-                    "type": "string",
-                    "description": "The goal to analyze"
-                }
-            },
-            "required": ["goal"]
-        }
+            "properties": {"goal": {"type": "string", "description": "The goal to analyze"}},
+            "required": ["goal"],
+        },
     },
     {
         "name": "socratic_recommend_agents",
@@ -180,22 +153,22 @@ SOCRATIC_TOOLS = [
                 "domains": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "List of domains (e.g., ['code_review', 'security'])"
+                    "description": "List of domains (e.g., ['code_review', 'security'])",
                 },
                 "languages": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Programming languages involved"
+                    "description": "Programming languages involved",
                 },
                 "quality_focus": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Quality focus areas (e.g., ['security', 'performance'])"
-                }
+                    "description": "Quality focus areas (e.g., ['security', 'performance'])",
+                },
             },
-            "required": ["domains"]
-        }
-    }
+            "required": ["domains"],
+        },
+    },
 ]
 
 
@@ -293,7 +266,7 @@ class SocraticMCPServer:
         result = {
             "session_id": session.session_id,
             "state": session.state.value,
-            "message": "Session started successfully"
+            "message": "Session started successfully",
         }
 
         if goal:
@@ -341,7 +314,7 @@ class SocraticMCPServer:
                 "primary_domain": analysis.primary_domain,
                 "confidence": analysis.confidence,
                 "ambiguities": analysis.ambiguities,
-                "suggested_questions": analysis.suggested_questions[:3]
+                "suggested_questions": analysis.suggested_questions[:3],
             }
 
         return result
@@ -360,7 +333,7 @@ class SocraticMCPServer:
                 "session_id": session_id,
                 "state": session.state.value,
                 "questions": [],
-                "message": "No more questions - ready to generate workflow"
+                "message": "No more questions - ready to generate workflow",
             }
 
         # Convert form to JSON-serializable format
@@ -370,7 +343,7 @@ class SocraticMCPServer:
                 "field_id": field.id,
                 "type": field.field_type.value,
                 "label": field.label,
-                "required": field.validation.required if field.validation else False
+                "required": field.validation.required if field.validation else False,
             }
             if field.options:
                 # Serialize FieldOption objects
@@ -391,7 +364,7 @@ class SocraticMCPServer:
             "state": session.state.value,
             "form_id": form.id,
             "form_title": form.title,
-            "questions": questions
+            "questions": questions,
         }
 
     async def _handle_submit_answers(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -415,7 +388,7 @@ class SocraticMCPServer:
             "session_id": session_id,
             "state": session.state.value,
             "ready_to_generate": ready,
-            "message": "Ready to generate workflow" if ready else "More questions available"
+            "message": "Ready to generate workflow" if ready else "More questions available",
         }
 
     async def _handle_generate_workflow(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -427,10 +400,7 @@ class SocraticMCPServer:
             return {"error": f"Session not found: {session_id}"}
 
         if not self._builder.is_ready_to_generate(session):
-            return {
-                "error": "Session not ready for generation",
-                "state": session.state.value
-            }
+            return {"error": "Session not ready for generation", "state": session.state.value}
 
         workflow = self._builder.generate_workflow(session)
 
@@ -442,32 +412,38 @@ class SocraticMCPServer:
         # Convert to JSON-serializable format
         agents = []
         for agent in workflow.blueprint.agents:
-            agents.append({
-                "agent_id": agent.agent_id,
-                "name": agent.name,
-                "role": agent.role.value,
-                "description": agent.description,
-                "tools": [t.tool_id for t in agent.tools]
-            })
+            agents.append(
+                {
+                    "agent_id": agent.agent_id,
+                    "name": agent.name,
+                    "role": agent.role.value,
+                    "description": agent.description,
+                    "tools": [t.tool_id for t in agent.tools],
+                }
+            )
 
         stages = []
         for stage in workflow.blueprint.stages:
-            stages.append({
-                "stage_id": stage.stage_id,
-                "name": stage.name,
-                "agent_ids": stage.agent_ids,
-                "dependencies": stage.dependencies
-            })
+            stages.append(
+                {
+                    "stage_id": stage.stage_id,
+                    "name": stage.name,
+                    "agent_ids": stage.agent_ids,
+                    "dependencies": stage.dependencies,
+                }
+            )
 
         metrics = []
         for metric in workflow.success_criteria.metrics:
-            metrics.append({
-                "metric_id": metric.metric_id,
-                "name": metric.name,
-                "description": metric.description,
-                "type": metric.metric_type.value,
-                "target": metric.target_value
-            })
+            metrics.append(
+                {
+                    "metric_id": metric.metric_id,
+                    "name": metric.name,
+                    "description": metric.description,
+                    "type": metric.metric_type.value,
+                    "target": metric.target_value,
+                }
+            )
 
         return {
             "session_id": session_id,
@@ -476,7 +452,7 @@ class SocraticMCPServer:
             "agents": agents,
             "stages": stages,
             "success_metrics": metrics,
-            "state": session.state.value
+            "state": session.state.value,
         }
 
     async def _handle_list_sessions(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -499,17 +475,18 @@ class SocraticMCPServer:
         # Add in-memory sessions not yet persisted
         for sid, session in self._sessions.items():
             if not any(s.get("session_id") == sid for s in sessions):
-                sessions.append({
-                    "session_id": session.session_id,
-                    "state": session.state.value,
-                    "goal": session.goal,
-                    "created_at": session.created_at.isoformat() if session.created_at else None
-                })
+                sessions.append(
+                    {
+                        "session_id": session.session_id,
+                        "state": session.state.value,
+                        "goal": session.goal,
+                        "created_at": (
+                            session.created_at.isoformat() if session.created_at else None
+                        ),
+                    }
+                )
 
-        return {
-            "sessions": sessions,
-            "count": len(sessions)
-        }
+        return {"sessions": sessions, "count": len(sessions)}
 
     async def _handle_get_session(self, args: dict[str, Any]) -> dict[str, Any]:
         """Get session details."""
@@ -525,7 +502,7 @@ class SocraticMCPServer:
             "goal": session.goal,
             "question_rounds": session.question_rounds,
             "created_at": session.created_at.isoformat() if session.created_at else None,
-            "updated_at": session.updated_at.isoformat() if session.updated_at else None
+            "updated_at": session.updated_at.isoformat() if session.updated_at else None,
         }
         # Add domain from goal_analysis if available
         if session.goal_analysis:
@@ -547,10 +524,7 @@ class SocraticMCPServer:
                         continue
                 blueprints.append(bp)
 
-        return {
-            "blueprints": blueprints,
-            "count": len(blueprints)
-        }
+        return {"blueprints": blueprints, "count": len(blueprints)}
 
     async def _handle_analyze_goal(self, args: dict[str, Any]) -> dict[str, Any]:
         """Analyze a goal without starting a session."""
@@ -569,18 +543,14 @@ class SocraticMCPServer:
                     "ambiguities": analysis.ambiguities,
                     "suggested_questions": analysis.suggested_questions,
                     "suggested_agents": analysis.suggested_agents,
-                    "analysis_method": "llm"
+                    "analysis_method": "llm",
                 }
             except Exception as e:
                 logger.warning(f"LLM analysis failed: {e}")
 
         # Fallback to keyword-based analysis
         domains = self._builder._detect_domains(goal)
-        return {
-            "goal": goal,
-            "detected_domains": list(domains),
-            "analysis_method": "keyword"
-        }
+        return {"goal": goal, "detected_domains": list(domains), "analysis_method": "keyword"}
 
     async def _handle_recommend_agents(self, args: dict[str, Any]) -> dict[str, Any]:
         """Get agent recommendations."""
@@ -594,11 +564,7 @@ class SocraticMCPServer:
         # Use adaptive generator if feedback available
         if self._feedback_loop:
             adaptive_gen = AdaptiveAgentGenerator(self._feedback_loop.collector)
-            context = {
-                "domains": domains,
-                "languages": languages,
-                "quality_focus": quality_focus
-            }
+            context = {"domains": domains, "languages": languages, "quality_focus": quality_focus}
             recommendations = adaptive_gen.recommend_agents(context)
         else:
             # Use basic generator
@@ -607,16 +573,9 @@ class SocraticMCPServer:
             for domain in domains:
                 templates = generator._get_templates_for_domain(domain)
                 for t in templates:
-                    recommendations.append({
-                        "template_id": t,
-                        "domain": domain,
-                        "confidence": 0.8
-                    })
+                    recommendations.append({"template_id": t, "domain": domain, "confidence": 0.8})
 
-        return {
-            "recommendations": recommendations,
-            "count": len(recommendations)
-        }
+        return {"recommendations": recommendations, "count": len(recommendations)}
 
     def _get_session(self, session_id: str):
         """Get session from memory or storage."""
@@ -646,7 +605,9 @@ async def run_mcp_server():
     writer_transport, writer_protocol = await asyncio.get_event_loop().connect_write_pipe(
         asyncio.streams.FlowControlMixin, sys.stdout
     )
-    writer = asyncio.StreamWriter(writer_transport, writer_protocol, reader, asyncio.get_event_loop())
+    writer = asyncio.StreamWriter(
+        writer_transport, writer_protocol, reader, asyncio.get_event_loop()
+    )
 
     async def send_response(response: dict):
         """Send a JSON-RPC response."""
@@ -667,26 +628,15 @@ async def run_mcp_server():
                 "id": msg_id,
                 "result": {
                     "protocolVersion": MCP_VERSION,
-                    "capabilities": {
-                        "tools": {}
-                    },
-                    "serverInfo": {
-                        "name": "socratic-workflow-builder",
-                        "version": "1.0.0"
-                    }
-                }
+                    "capabilities": {"tools": {}},
+                    "serverInfo": {"name": "socratic-workflow-builder", "version": "1.0.0"},
+                },
             }
             await send_response(response)
 
         elif method == "tools/list":
             # List available tools
-            response = {
-                "jsonrpc": "2.0",
-                "id": msg_id,
-                "result": {
-                    "tools": SOCRATIC_TOOLS
-                }
-            }
+            response = {"jsonrpc": "2.0", "id": msg_id, "result": {"tools": SOCRATIC_TOOLS}}
             await send_response(response)
 
         elif method == "tools/call":
@@ -699,14 +649,7 @@ async def run_mcp_server():
             response = {
                 "jsonrpc": "2.0",
                 "id": msg_id,
-                "result": {
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": json.dumps(result, indent=2)
-                        }
-                    ]
-                }
+                "result": {"content": [{"type": "text", "text": json.dumps(result, indent=2)}]},
             }
             await send_response(response)
 
@@ -719,10 +662,7 @@ async def run_mcp_server():
             response = {
                 "jsonrpc": "2.0",
                 "id": msg_id,
-                "error": {
-                    "code": -32601,
-                    "message": f"Method not found: {method}"
-                }
+                "error": {"code": -32601, "message": f"Method not found: {method}"},
             }
             await send_response(response)
 
@@ -749,7 +689,7 @@ def main():
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        stream=sys.stderr  # Log to stderr, MCP uses stdout
+        stream=sys.stderr,  # Log to stderr, MCP uses stdout
     )
 
     try:

@@ -3,7 +3,6 @@
 Provides a unified vocabulary for task types across:
 - empathy_llm_toolkit.routing.ModelRouter
 - src/empathy_os/workflows.WorkflowBase
-- empathy_software_plugin.wizards.MultiModelWizard
 
 This module defines:
 - TaskType enum with canonical task names
@@ -184,7 +183,7 @@ REALTIME_REQUIRED_TASKS: frozenset[str] = frozenset(
         "interactive_debug",
         "live_coding",
         "user_query",
-        "wizard_step",
+        "workflow_step",
         # Urgent Actions
         "critical_fix",
         "security_incident",

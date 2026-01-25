@@ -4,10 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.workflows.progressive.core import (
-    EscalationConfig,
-    Tier,
-)
+from empathy_os.workflows.progressive.core import EscalationConfig, Tier
 from empathy_os.workflows.progressive.test_gen import (
     ProgressiveTestGenWorkflow,
     calculate_coverage,
@@ -137,10 +134,10 @@ def documented_func(param1: str, param2: int) -> bool:
 
         # Create file with syntax error
         bad_file = tmp_path / "bad.py"
-        bad_file.write_text('''
+        bad_file.write_text("""
 def broken_func(
     # Missing closing paren and body
-''')
+""")
 
         functions = workflow._parse_functions(bad_file)
 
@@ -269,10 +266,10 @@ def test_example():
         """Test analyzing test with syntax error."""
         workflow = ProgressiveTestGenWorkflow()
 
-        test_code = '''
+        test_code = """
 def test_broken(
     # Missing closing paren and body
-'''
+"""
 
         func = {"name": "broken", "args": []}
 
@@ -357,9 +354,7 @@ def test_no_asserts():
         # Simulate failure context from cheap tier
         context = {
             "previous_tier": "cheap",
-            "failures": [
-                {"function": "example", "error": "Low coverage", "quality_score": 65}
-            ],
+            "failures": [{"function": "example", "error": "Low coverage", "quality_score": 65}],
         }
 
         # Execute at capable tier with context
@@ -437,22 +432,22 @@ class TestCalculateCoverage:
         """Test coverage calculation with valid files."""
         # Create source file
         source_file = tmp_path / "sample.py"
-        source_file.write_text('''
+        source_file.write_text("""
 def add(a, b):
     return a + b
 
 def multiply(x, y):
     return x * y
-''')
+""")
 
         # Create test file
         test_file = tmp_path / "test_sample.py"
-        test_file.write_text('''
+        test_file.write_text("""
 from sample import add
 
 def test_add():
     assert add(1, 2) == 3
-''')
+""")
 
         coverage = calculate_coverage(test_file, source_file)
 
@@ -530,10 +525,10 @@ def complex_function(data: dict) -> list:
     def test_workflow_generates_report(self, tmp_path):
         """Test workflow generates proper report."""
         source_file = tmp_path / "simple.py"
-        source_file.write_text('''
+        source_file.write_text("""
 def hello() -> str:
     return "world"
-''')
+""")
 
         workflow = ProgressiveTestGenWorkflow()
         result = workflow.execute(target_file=str(source_file))

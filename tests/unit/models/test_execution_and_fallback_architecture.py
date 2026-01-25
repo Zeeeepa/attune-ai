@@ -55,9 +55,7 @@ class TestModelRegistryAndSelection:
     def test_task_tier_mapping_complete(self):
         """Test that all task types have tier mappings."""
         for task_type in TaskType:
-            assert (
-                task_type in TASK_TIER_MAP
-            ), f"TaskType {task_type} missing from TASK_TIER_MAP"
+            assert task_type in TASK_TIER_MAP, f"TaskType {task_type} missing from TASK_TIER_MAP"
 
     def test_cheap_tier_for_simple_tasks(self):
         """Test that simple tasks map to CHEAP tier."""
@@ -103,25 +101,23 @@ class TestModelRegistryAndSelection:
         for provider_name, provider_models in MODEL_REGISTRY.items():
             available_tiers = set(provider_models.keys())
             for tier in required_tiers:
-                assert (
-                    tier in available_tiers
-                ), f"Provider {provider_name} missing tier {tier}"
+                assert tier in available_tiers, f"Provider {provider_name} missing tier {tier}"
 
     def test_model_costs_defined(self):
         """Test that all models have cost information."""
         for provider_name, provider_models in MODEL_REGISTRY.items():
             for tier, model_info in provider_models.items():
-                assert hasattr(
-                    model_info, "input_cost_per_million"
-                ), f"Model {provider_name}/{tier} missing input cost"
-                assert hasattr(
-                    model_info, "output_cost_per_million"
-                ), f"Model {provider_name}/{tier} missing output cost"
+                assert hasattr(model_info, "input_cost_per_million"), (
+                    f"Model {provider_name}/{tier} missing input cost"
+                )
+                assert hasattr(model_info, "output_cost_per_million"), (
+                    f"Model {provider_name}/{tier} missing output cost"
+                )
                 # Ollama models are free (cost = 0), others should cost > 0
                 if provider_name != "ollama":
-                    assert (
-                        model_info.input_cost_per_million > 0
-                    ), f"Model {provider_name}/{tier} has invalid input cost"
+                    assert model_info.input_cost_per_million > 0, (
+                        f"Model {provider_name}/{tier} has invalid input cost"
+                    )
 
     def test_cheap_tier_actually_cheaper(self):
         """Test that CHEAP tier models cost less than CAPABLE/PREMIUM."""
@@ -374,9 +370,7 @@ class TestLLMExecutorInterface:
 
         executor = LLMExecutor()
 
-        result = executor.execute(
-            model="gpt-4o", messages=[{"role": "user", "content": "Test"}]
-        )
+        result = executor.execute(model="gpt-4o", messages=[{"role": "user", "content": "Test"}])
 
         # Should have called the client
         mock_get_client.assert_called_once()
@@ -404,9 +398,7 @@ class TestLLMExecutorInterface:
         mock_get_client.return_value = mock_client
 
         executor = LLMExecutor()
-        result = executor.execute(
-            model="gpt-4o", messages=[{"role": "user", "content": "Test"}]
-        )
+        result = executor.execute(model="gpt-4o", messages=[{"role": "user", "content": "Test"}])
 
         # Should have token count
         assert hasattr(result, "usage") or isinstance(result, dict)
@@ -707,9 +699,7 @@ class TestProviderSwitching:
 
         # Mock OpenAI client
         openai_client = Mock()
-        openai_client.chat.completions.create = Mock(
-            side_effect=Exception("OpenAI down")
-        )
+        openai_client.chat.completions.create = Mock(side_effect=Exception("OpenAI down"))
 
         # Mock Anthropic client
         anthropic_client = Mock()
@@ -787,16 +777,12 @@ class TestTelemetryAndLogging:
                 mock_client.side_effect = Exception("API Error")
 
                 try:
-                    executor.execute(
-                        model="gpt-4o", messages=[{"role": "user", "content": "Test"}]
-                    )
+                    executor.execute(model="gpt-4o", messages=[{"role": "user", "content": "Test"}])
                 except Exception:
                     pass
 
                 # Should have logged the error
-                assert (
-                    mock_logger.error.called or mock_logger.exception.called
-                ), "Error not logged"
+                assert mock_logger.error.called or mock_logger.exception.called, "Error not logged"
 
 
 # ============================================================================
@@ -812,9 +798,7 @@ class TestExecutionAndFallbackIntegration:
         """Test complete flow: execute → fail → fallback → succeed."""
         # Setup: Primary fails, fallback succeeds
         primary_client = Mock()
-        primary_client.chat.completions.create = Mock(
-            side_effect=Exception("Primary failed")
-        )
+        primary_client.chat.completions.create = Mock(side_effect=Exception("Primary failed"))
 
         fallback_client = Mock()
         fallback_client.chat.completions.create = Mock(
@@ -903,9 +887,7 @@ class TestEdgeCasesAndRobustness:
 
         for model_id in malformed_ids:
             with pytest.raises((ValueError, KeyError, TypeError, Exception)):
-                executor.execute(
-                    model=model_id, messages=[{"role": "user", "content": "Test"}]
-                )
+                executor.execute(model=model_id, messages=[{"role": "user", "content": "Test"}])
 
     def test_concurrent_executions_isolated(self):
         """Test that concurrent executions don't interfere."""

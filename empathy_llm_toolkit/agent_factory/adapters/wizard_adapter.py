@@ -234,20 +234,18 @@ class WizardAdapter(BaseAdapter):
     Agent Factory ecosystem.
 
     Example:
-        from empathy_software_plugin.wizards import AdvancedDebuggingWizard
-
         adapter = WizardAdapter()
 
-        # Wrap a wizard
-        wizard = AdvancedDebuggingWizard()
+        # Wrap a wizard instance
+        wizard = MyCustomWizard()
         agent = adapter.create_agent_from_wizard(
             wizard,
-            name="debugger",
+            name="my_wizard",
             model_tier="capable"
         )
 
         # Use in workflow
-        result = await agent.invoke({"linters": {"eslint": output}})
+        result = await agent.invoke({"input": data})
 
     """
 
@@ -413,13 +411,12 @@ def wrap_wizard(wizard, name: str | None = None, model_tier: str = "capable") ->
         WizardAgent instance
 
     Example:
-        from empathy_software_plugin.wizards import SecurityAnalysisWizard
         from empathy_llm_toolkit.agent_factory.adapters.wizard_adapter import wrap_wizard
 
-        security_wizard = SecurityAnalysisWizard()
-        security_agent = wrap_wizard(security_wizard, model_tier="capable")
+        my_wizard = MyCustomWizard()
+        agent = wrap_wizard(my_wizard, model_tier="capable")
 
-        result = await security_agent.invoke({"code": source_code})
+        result = await agent.invoke({"input": data})
 
     """
     adapter = WizardAdapter()

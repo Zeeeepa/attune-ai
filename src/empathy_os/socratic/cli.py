@@ -109,17 +109,13 @@ class Console:
                     widths[i] = max(widths[i], len(str(cell)))
 
         # Print header
-        header_line = " | ".join(
-            self._c("bold", h.ljust(widths[i])) for i, h in enumerate(headers)
-        )
+        header_line = " | ".join(self._c("bold", h.ljust(widths[i])) for i, h in enumerate(headers))
         print(header_line)
         print("-" * (sum(widths) + len(widths) * 3 - 1))
 
         # Print rows
         for row in rows:
-            row_line = " | ".join(
-                str(cell).ljust(widths[i]) for i, cell in enumerate(row)
-            )
+            row_line = " | ".join(str(cell).ljust(widths[i]) for i, cell in enumerate(row))
             print(row_line)
 
 
@@ -469,12 +465,18 @@ def cmd_list(args: argparse.Namespace) -> int:
     headers = ["ID", "State", "Goal", "Updated"]
     rows = []
     for s in sessions:
-        rows.append([
-            s["session_id"][:8],
-            s["state"],
-            (s.get("goal") or "")[:40] + "..." if len(s.get("goal") or "") > 40 else s.get("goal") or "",
-            s.get("updated_at", "")[:16],
-        ])
+        rows.append(
+            [
+                s["session_id"][:8],
+                s["state"],
+                (
+                    (s.get("goal") or "")[:40] + "..."
+                    if len(s.get("goal") or "") > 40
+                    else s.get("goal") or ""
+                ),
+                s.get("updated_at", "")[:16],
+            ]
+        )
 
     console.table(headers, rows)
     return 0
@@ -495,13 +497,15 @@ def cmd_blueprints(args: argparse.Namespace) -> int:
     headers = ["ID", "Name", "Domain", "Agents", "Generated"]
     rows = []
     for b in blueprints:
-        rows.append([
-            b["id"][:8] if b.get("id") else "?",
-            b.get("name", "")[:30],
-            b.get("domain", ""),
-            str(b.get("agents_count", 0)),
-            (b.get("generated_at") or "")[:16],
-        ])
+        rows.append(
+            [
+                b["id"][:8] if b.get("id") else "?",
+                b.get("name", "")[:30],
+                b.get("domain", ""),
+                str(b.get("agents_count", 0)),
+                (b.get("generated_at") or "")[:16],
+            ]
+        )
 
     console.table(headers, rows)
     return 0
@@ -625,7 +629,17 @@ def create_parser() -> argparse.ArgumentParser:
 
     # list
     list_parser = subparsers.add_parser("list", help="List sessions")
-    list_parser.add_argument("--state", "-s", choices=["awaiting_goal", "awaiting_answers", "ready_to_generate", "completed", "cancelled"])
+    list_parser.add_argument(
+        "--state",
+        "-s",
+        choices=[
+            "awaiting_goal",
+            "awaiting_answers",
+            "ready_to_generate",
+            "completed",
+            "cancelled",
+        ],
+    )
     list_parser.add_argument("--limit", "-n", type=int, default=20)
 
     # blueprints

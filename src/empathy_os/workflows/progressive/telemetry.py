@@ -8,11 +8,7 @@ from datetime import datetime
 from typing import Any
 
 from empathy_os.telemetry.usage_tracker import UsageTracker
-from empathy_os.workflows.progressive.core import (
-    ProgressiveWorkflowResult,
-    Tier,
-    TierResult,
-)
+from empathy_os.workflows.progressive.core import ProgressiveWorkflowResult, Tier, TierResult
 
 logger = logging.getLogger(__name__)
 
@@ -135,9 +131,11 @@ class ProgressiveTelemetry:
                     "all_premium_cost": all_premium_cost,
                     "tier_breakdown": tier_breakdown,
                     "success": result.success,
-                    "final_cqs": result.final_result.failure_analysis.calculate_quality_score()
-                    if result.final_result.failure_analysis
-                    else None,
+                    "final_cqs": (
+                        result.final_result.failure_analysis.calculate_quality_score()
+                        if result.final_result.failure_analysis
+                        else None
+                    ),
                 },
             )
 
@@ -206,9 +204,7 @@ class ProgressiveTelemetry:
                 },
             )
 
-            logger.warning(
-                f"Budget exceeded: ${current_cost:.3f} > ${max_budget:.3f} ({action})"
-            )
+            logger.warning(f"Budget exceeded: ${current_cost:.3f} > ${max_budget:.3f} ({action})")
 
         except Exception as e:
             logger.warning(f"Failed to track budget exceeded: {e}")
@@ -234,9 +230,7 @@ class ProgressiveTelemetry:
             event = {
                 "timestamp": datetime.now().isoformat(),
                 "event_type": event_type,
-                "user_id_hash": (
-                    self._hash_user_id(self.user_id) if self.user_id else "anonymous"
-                ),
+                "user_id_hash": (self._hash_user_id(self.user_id) if self.user_id else "anonymous"),
                 **data,
             }
 

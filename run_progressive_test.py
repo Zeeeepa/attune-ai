@@ -12,6 +12,7 @@ from rich.table import Table
 
 console = Console()
 
+
 def find_test_files_with_todos():
     """Find test files containing TODO markers."""
     test_dir = Path("tests/unit")
@@ -25,13 +26,16 @@ def find_test_files_with_todos():
 
     return files_with_todos
 
+
 def main():
     console.print()
-    console.print(Panel.fit(
-        "[bold cyan]🚀 Progressive Test Implementation[/bold cyan]\n"
-        "[dim]Finding tests to implement...[/dim]",
-        border_style="cyan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold cyan]🚀 Progressive Test Implementation[/bold cyan]\n"
+            "[dim]Finding tests to implement...[/dim]",
+            border_style="cyan",
+        )
+    )
     console.print()
 
     test_files = find_test_files_with_todos()
@@ -50,13 +54,16 @@ def main():
 
     total_todos = sum(tf.read_text().count("TODO") for tf in test_files)
 
-    console.print(Panel(
-        f"[bold]Summary:[/bold]\n\n"
-        f"• Test Files: [cyan]{len(test_files)}[/cyan]\n"
-        f"• Total TODOs: [yellow]{total_todos}[/yellow]\n"
-        f"• Estimated Coverage Gain: [green]+{min(total_todos * 0.3, 33.0):.1f}%[/green]",
-        border_style="green"
-    ))
+    console.print(
+        Panel(
+            f"[bold]Summary:[/bold]\n\n"
+            f"• Test Files: [cyan]{len(test_files)}[/cyan]\n"
+            f"• Total TODOs: [yellow]{total_todos}[/yellow]\n"
+            f"• Estimated Coverage Gain: [green]+{min(total_todos * 0.3, 33.0):.1f}%[/green]",
+            border_style="green",
+        )
+    )
+
 
 if __name__ == "__main__":
     main()

@@ -4,12 +4,22 @@ description: Context management hub - state, memory, status/profile
 category: hub
 aliases: [ctx]
 tags: [context, memory, state, profile, hub]
-version: "1.0"
+version: "2.0"
 ---
 
 # Context Management
 
+**Aliases:** `/ctx`
+
 Manage session context, state preservation, and memory.
+
+## Quick Examples
+
+```bash
+/context                 # Interactive menu
+/context "save state"    # Compact current context
+/context "check memory"  # View stored memories
+```
 
 ## Discovery
 
@@ -28,52 +38,112 @@ Question:
       description: "View session status, patterns, or update preferences"
 ```
 
-## Routing
+---
 
-Based on selection:
+## Save State (Compact)
 
-| Selection | Command | Description |
-|-----------|---------|-------------|
-| Save state | `/compact` | Save collaboration state with SBAR handoff |
-| Restore state | `/restore` | Restore from previously compacted session |
-| Manage memory | `/memory` | Access persistent memory storage |
-| Status & profile | `/status` | View status, then `/profile` for preferences |
+Preserve current state before context window resets.
 
-## Quick Access
+**I will:**
 
-If you know what you need:
+1. Summarize current session progress
+2. Extract key decisions and context
+3. Generate SBAR handoff format:
+   - **S**ituation: What we're working on
+   - **B**ackground: Relevant history
+   - **A**ssessment: Current state
+   - **R**ecommendation: Next steps
+4. Save to `.claude/compact-state.md`
+5. Store in cross-session memory
 
-- `/compact` - Save state now
-- `/restore` - Restore previous state
-- `/memory` - Access memory storage
-- `/status` - Check current status
-- `/profile` - View/update user profile
+**When to compact:**
 
-## When to Use Each
-
-**Use `/compact` when:**
-
-- Context window is getting full
+- Context window getting full (~80%)
 - Before a long break
+- Significant milestone reached
 - Handing off to another session
-- Important progress to preserve
 
-**Use `/restore` when:**
+---
 
-- Starting a new session
-- Continuing previous work
-- Need to recover state
+## Restore State
 
-**Use `/memory` when:**
+Load previously saved state from a past session.
 
-- Store important information persistently
-- Retrieve facts from previous sessions
-- Manage cross-session knowledge
+**Tell me:**
 
-**Use `/status` or `/profile` when:**
+- Session to restore (or use most recent)
 
-- Want to see current empathy level (`/status`)
-- Check detected patterns (`/status`)
-- Review session progress (`/status`)
-- Update your preferences (`/profile`)
-- Review your settings (`/profile`)
+**I will:**
+
+1. Load compact state from memory
+2. Restore the SBAR context
+3. Resume from where we left off
+4. Confirm understanding of current task
+
+**Stored in:** `.claude/compact-state.md`
+
+---
+
+## Manage Memory
+
+Store and retrieve persistent memory across sessions.
+
+**Tell me:**
+
+- What to store or retrieve
+- Memory type (fact, preference, project info)
+
+**I will:**
+
+1. Access cross-session memory
+2. Store new memories with context
+3. Retrieve relevant memories
+4. Update or delete as needed
+
+**Memory types:**
+
+- **Facts:** Project-specific information
+- **Preferences:** Your coding style, tools
+- **Patterns:** Learned behaviors
+- **Context:** Project state
+
+---
+
+## Status & Profile
+
+View session status or update your preferences.
+
+**Status shows:**
+
+- Current empathy level (1-5)
+- Detected patterns
+- Session progress
+- Context usage
+
+**Profile shows:**
+
+- Your preferences
+- Learned patterns
+- Settings
+
+**Tell me:**
+
+- "status" to view current session
+- "profile" to view/update preferences
+
+---
+
+## When NOT to Use This Hub
+
+| If you need...     | Use instead  |
+| ------------------ | ------------ |
+| Create commits     | `/dev`       |
+| Run tests          | `/testing`   |
+| Plan features      | `/workflow`  |
+| Learn patterns     | `/learning`  |
+
+## Related Hubs
+
+- `/learning` - Pattern management
+- `/agent` - Agent configuration
+- `/dev` - Development tasks

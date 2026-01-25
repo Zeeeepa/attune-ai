@@ -14,14 +14,16 @@ import pytest
 # =============================================================================
 
 # Global collector for test results per test file
-_test_results_by_file: dict = defaultdict(lambda: {
-    "passed": 0,
-    "failed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "duration": 0.0,
-    "failed_tests": [],
-})
+_test_results_by_file: dict = defaultdict(
+    lambda: {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "errors": 0,
+        "duration": 0.0,
+        "failed_tests": [],
+    }
+)
 
 
 def _map_test_to_source(test_file: str) -> str | None:
@@ -48,7 +50,7 @@ def _map_test_to_source(test_file: str) -> str | None:
     # Handle tests/unit/<module>/test_*.py pattern
     if "unit" in parts:
         unit_idx = parts.index("unit")
-        module_parts = parts[unit_idx + 1:-1]  # Get parts between unit/ and filename
+        module_parts = parts[unit_idx + 1 : -1]  # Get parts between unit/ and filename
 
         if module_parts:
             # Try 1: Direct file in module (e.g., models/registry.py)
@@ -102,11 +104,13 @@ def pytest_runtest_makereport(item, call):
             if len(_test_results_by_file[test_file]["failed_tests"]) < 10:
                 # Truncate error message to prevent memory bloat
                 error_msg = str(report.longrepr)[:500] if report.longrepr else "Unknown error"
-                _test_results_by_file[test_file]["failed_tests"].append({
-                    "name": item.name,
-                    "file": test_file,
-                    "error": error_msg,
-                })
+                _test_results_by_file[test_file]["failed_tests"].append(
+                    {
+                        "name": item.name,
+                        "file": test_file,
+                        "error": error_msg,
+                    }
+                )
         elif report.skipped:
             _test_results_by_file[test_file]["skipped"] += 1
 
@@ -129,14 +133,16 @@ def _get_worker_results_file(worker_id: str) -> Path:
 
 def _aggregate_xdist_results() -> dict:
     """Aggregate results from all xdist worker files."""
-    aggregated = defaultdict(lambda: {
-        "passed": 0,
-        "failed": 0,
-        "skipped": 0,
-        "errors": 0,
-        "duration": 0.0,
-        "failed_tests": [],
-    })
+    aggregated = defaultdict(
+        lambda: {
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "errors": 0,
+            "duration": 0.0,
+            "failed_tests": [],
+        }
+    )
 
     if not _XDIST_RESULTS_DIR.exists():
         return dict(aggregated)
@@ -236,14 +242,14 @@ def pytest_sessionfinish(session, exitstatus):
             tests_modified_at = None
 
             if source_path.exists():
-                source_modified_at = datetime.fromtimestamp(
-                    source_path.stat().st_mtime
-                ).isoformat() + "Z"
+                source_modified_at = (
+                    datetime.fromtimestamp(source_path.stat().st_mtime).isoformat() + "Z"
+                )
 
             if test_path.exists():
-                tests_modified_at = datetime.fromtimestamp(
-                    test_path.stat().st_mtime
-                ).isoformat() + "Z"
+                tests_modified_at = (
+                    datetime.fromtimestamp(test_path.stat().st_mtime).isoformat() + "Z"
+                )
 
             # Check staleness
             is_stale = False
@@ -275,6 +281,7 @@ def pytest_sessionfinish(session, exitstatus):
     except Exception as e:
         # Don't fail tests due to tracking errors
         import sys
+
         print(f"\nWarning: File test tracking failed: {e}", file=sys.stderr)
 
 
@@ -334,6 +341,7 @@ def setup_test_environment(tmp_path, monkeypatch, request):
     # Restore original working directory in case test changed it
     try:
         import os
+
         os.chdir(original_cwd)
     except (FileNotFoundError, OSError):
         # If original directory was deleted (e.g., by test cleanup), ignore

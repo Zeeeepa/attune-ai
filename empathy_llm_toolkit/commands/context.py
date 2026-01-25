@@ -231,10 +231,13 @@ class CommandExecutor:
         pre_hook = command.hooks.get("pre")
         if pre_hook:
             try:
-                self.context.fire_hook(pre_hook, {
-                    "command": command.name,
-                    "args": args,
-                })
+                self.context.fire_hook(
+                    pre_hook,
+                    {
+                        "command": command.name,
+                        "args": args,
+                    },
+                )
                 hooks_fired.append(f"pre:{pre_hook}")
                 logger.debug("Pre-command hook fired: %s", pre_hook)
             except Exception as e:
@@ -253,11 +256,14 @@ class CommandExecutor:
         post_hook = command.hooks.get("post")
         if post_hook:
             try:
-                self.context.fire_hook(post_hook, {
-                    "command": command.name,
-                    "args": args,
-                    "success": True,
-                })
+                self.context.fire_hook(
+                    post_hook,
+                    {
+                        "command": command.name,
+                        "args": args,
+                        "success": True,
+                    },
+                )
                 hooks_fired.append(f"post:{post_hook}")
                 logger.debug("Post-command hook fired: %s", post_hook)
             except Exception as e:

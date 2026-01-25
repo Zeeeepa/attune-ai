@@ -359,11 +359,26 @@ Code:
         """
         await self._initialize_crew()
 
-        from .code_review_adapters import (
-            _check_crew_available,
-            _get_crew_review,
-            crew_report_to_workflow_format,
-        )
+        try:
+            from .code_review_adapters import (
+                _check_crew_available,
+                _get_crew_review,
+                crew_report_to_workflow_format,
+            )
+        except ImportError:
+            # Crew adapters removed - return fallback
+            return (
+                {
+                    "crew_review": {
+                        "available": False,
+                        "fallback": True,
+                        "reason": "Crew adapters not installed",
+                    },
+                    **input_data,
+                },
+                0,
+                0,
+            )
 
         # Get code to review
         diff = input_data.get("diff", "") or input_data.get("code_to_review", "")

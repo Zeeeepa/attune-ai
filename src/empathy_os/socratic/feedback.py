@@ -64,7 +64,9 @@ class AgentPerformance:
             return "insufficient_data"
 
         recent_5 = [s for _, s in self.recent_scores[-5:]]
-        older_5 = [s for _, s in self.recent_scores[-10:-5]] if len(self.recent_scores) >= 10 else []
+        older_5 = (
+            [s for _, s in self.recent_scores[-10:-5]] if len(self.recent_scores) >= 10 else []
+        )
 
         if not older_5:
             return "stable"
@@ -343,12 +345,12 @@ class FeedbackCollector:
         if success:
             pattern.successes += 1
         # Rolling average
-        pattern.average_score = (
-            (pattern.average_score * (pattern.uses - 1) + score) / pattern.uses
-        )
+        pattern.average_score = (pattern.average_score * (pattern.uses - 1) + score) / pattern.uses
 
         self._save_data()
-        logger.info(f"Recorded feedback for blueprint {blueprint.id[:8]}: success={success}, score={score:.2f}")
+        logger.info(
+            f"Recorded feedback for blueprint {blueprint.id[:8]}: success={success}, score={score:.2f}"
+        )
 
     def _generate_pattern_id(self, blueprint: WorkflowBlueprint) -> str:
         """Generate a unique ID for a workflow pattern."""
@@ -444,8 +446,7 @@ class FeedbackCollector:
 
         # Top performing agents
         all_agents = [
-            (tid, perf) for tid, perf in self._agent_performance.items()
-            if perf.total_uses >= 5
+            (tid, perf) for tid, perf in self._agent_performance.items() if perf.total_uses >= 5
         ]
         all_agents.sort(key=lambda x: x[1].average_score, reverse=True)
         insights["top_performing_agents"] = [
@@ -456,11 +457,13 @@ class FeedbackCollector:
         # Declining agents
         for tid, perf in self._agent_performance.items():
             if perf.trend == "declining" and perf.total_uses >= 5:
-                insights["declining_agents"].append({
-                    "template_id": tid,
-                    "current_score": perf.average_score,
-                    "uses": perf.total_uses,
-                })
+                insights["declining_agents"].append(
+                    {
+                        "template_id": tid,
+                        "current_score": perf.average_score,
+                        "uses": perf.total_uses,
+                    }
+                )
 
         # Domain insights
         domains: dict[str, dict[str, Any]] = {}
@@ -602,7 +605,7 @@ class AdaptiveAgentGenerator:
                         customizations={
                             "languages": languages,
                             "quality_focus": quality_focus,
-                        }
+                        },
                     )
                     scored_base.append((new_agent, score))
                     logger.info(f"Added high-performing agent '{tid}' based on feedback")
@@ -649,8 +652,11 @@ class AdaptiveAgentGenerator:
                 {
                     "template_id": tid,
                     "score": score,
-                    "performance": self.feedback.get_agent_performance(tid).to_dict()
-                    if self.feedback.get_agent_performance(tid) else None,
+                    "performance": (
+                        self.feedback.get_agent_performance(tid).to_dict()
+                        if self.feedback.get_agent_performance(tid)
+                        else None
+                    ),
                 }
                 for tid, score in best_agents
             ],
@@ -659,10 +665,9 @@ class AdaptiveAgentGenerator:
                 "total_executions": sum(
                     p.total_uses for p in self.feedback.get_all_performance().values()
                 ),
-                "agents_with_data": len([
-                    p for p in self.feedback.get_all_performance().values()
-                    if p.total_uses >= 5
-                ]),
+                "agents_with_data": len(
+                    [p for p in self.feedback.get_all_performance().values() if p.total_uses >= 5]
+                ),
             },
         }
 

@@ -1,17 +1,49 @@
-# Short-Term Memory: Redis-Backed Multi-Agent Coordination
+# Short-Term Memory: File-First Architecture with Optional Redis
 
-The Empathy Framework provides a Redis-backed short-term memory system for real-time multi-agent coordination, pattern staging, and collaboration state management.
+The Empathy Framework provides a **file-first memory system** that works without Redis, with optional Redis enhancement for real-time multi-agent coordination.
 
 ## Overview
 
-Short-term memory enables:
-- **Working Memory**: Fast TTL-based storage for intermediate results
-- **Pattern Staging**: Validate patterns before promotion to the library
-- **Coordination Signals**: Real-time communication between agents
-- **Session Management**: Collaborative multi-agent sessions
-- **State Persistence**: Save/restore collaboration state
+The memory system uses a tiered architecture:
 
-## Quick Start
+1. **File Session Memory (Primary)** - Always available, no external dependencies
+   - Persists to `.empathy/sessions/` directory
+   - Works offline and in development
+   - Atomic writes for data safety
+
+2. **Redis (Optional Enhancement)** - For real-time features
+   - Pub/Sub messaging between agents
+   - Cross-session coordination
+   - Distributed task queues
+
+Short-term memory enables:
+- **Working Memory**: TTL-based storage for intermediate results (file-backed)
+- **Pattern Staging**: Validate patterns before promotion (file-backed)
+- **Coordination Signals**: Real-time communication (Redis only)
+- **Session Management**: Multi-agent sessions (Redis only)
+- **State Persistence**: Always available with file-first architecture
+
+## Quick Start (No Redis Required)
+
+```python
+from empathy_os.memory import UnifiedMemory
+
+# Works without Redis - uses file-based storage
+memory = UnifiedMemory(user_id="developer")
+
+# Store working data (persists to .empathy/sessions/)
+memory.stash("analysis_results", {"files": 10, "issues": 3})
+
+# Retrieve data
+results = memory.retrieve("analysis_results")
+print(results)  # {'files': 10, 'issues': 3}
+
+# Check capabilities
+caps = memory.get_capabilities()
+print(caps)  # {'file_session': True, 'redis': False, 'persistence': True, ...}
+```
+
+## Quick Start (With Redis)
 
 ```python
 from empathy_os import EmpathyOS, get_redis_memory, AccessTier
@@ -244,27 +276,23 @@ scope = session.get("scope")
 session.signal("review_complete", {"agent": "security_agent", "passed": True})
 ```
 
-## Wizards with Redis Memory
+## Workflows with Redis Memory
 
-Wizards automatically support short-term memory:
+Workflows can use short-term memory for caching and coordination:
 
 ```python
-from empathy_software_plugin.wizards.security_analysis_wizard import SecurityAnalysisWizard
-from empathy_os import get_redis_memory
+from empathy_os.memory.short_term import RedisShortTermMemory
 
-memory = get_redis_memory()
+memory = RedisShortTermMemory()
 
-# Create wizard with memory
-wizard = SecurityAnalysisWizard(short_term_memory=memory)
+# Store working results
+memory.store_working_result("analysis_cache", {"findings": [...]})
 
-# Analysis with automatic caching
-result = await wizard.analyze_with_cache({"code": "...", "language": "python"})
-
-# Share context with other wizards
-wizard.share_context("security_findings", result["vulnerabilities"])
+# Retrieve cached results
+cached = memory.get_working_result("analysis_cache")
 
 # Stage discovered patterns
-wizard.stage_discovered_pattern(
+memory.stage_pattern(
     pattern_id="sec_001",
     pattern_type="security",
     name="SQL Injection Prevention",

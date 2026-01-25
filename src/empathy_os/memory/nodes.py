@@ -1,7 +1,7 @@
 """Memory Graph Node Types
 
-Defines node types for the cross-wizard knowledge graph.
-Each node represents an entity discovered by a wizard.
+Defines node types for the cross-workflow knowledge graph.
+Each node represents an entity discovered by a workflow.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -52,7 +52,7 @@ class NodeType(Enum):
 class Node:
     """A node in the memory graph.
 
-    Represents any entity that wizards discover or create.
+    Represents any entity that workflows discover or create.
     """
 
     id: str
@@ -61,7 +61,7 @@ class Node:
     description: str = ""
 
     # Where this node came from
-    source_wizard: str = ""
+    source_workflow: str = ""
     source_file: str = ""
     source_line: int | None = None
 
@@ -87,7 +87,7 @@ class Node:
             "type": self.type.value,
             "name": self.name,
             "description": self.description,
-            "source_wizard": self.source_wizard,
+            "source_workflow": self.source_workflow,
             "source_file": self.source_file,
             "source_line": self.source_line,
             "severity": self.severity,
@@ -107,7 +107,7 @@ class Node:
             type=NodeType(data["type"]),
             name=data["name"],
             description=data.get("description", ""),
-            source_wizard=data.get("source_wizard", ""),
+            source_workflow=data.get("source_workflow", data.get("source_wizard", "")),
             source_file=data.get("source_file", ""),
             source_line=data.get("source_line"),
             severity=data.get("severity", ""),

@@ -16,11 +16,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.meta_workflows import (
-    DynamicAgentCreator,
-    FormResponse,
-    TemplateRegistry,
-)
+from empathy_os.meta_workflows import DynamicAgentCreator, FormResponse, TemplateRegistry
 from empathy_os.meta_workflows.agent_creator import (
     estimate_agent_costs,
     group_agents_by_tier_strategy,
@@ -57,7 +53,9 @@ def demo_template_loading():
     print(f"   Version: {template.version}")
     print(f"   Author: {template.author}")
     print(f"   Tags: {', '.join(template.tags)}")
-    print(f"   Estimated cost: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}")
+    print(
+        f"   Estimated cost: ${template.estimated_cost_range[0]:.2f}-${template.estimated_cost_range[1]:.2f}"
+    )
     print(f"   Estimated duration: {template.estimated_duration_minutes} minutes")
 
     print(f"\n📝 Form Schema: {template.form_schema.title}")
@@ -282,9 +280,7 @@ def main():
         minimal_response, full_response = demo_form_responses(template)
 
         # Demo 3: Agent creation
-        minimal_agents, full_agents = demo_agent_creation(
-            template, minimal_response, full_response
-        )
+        minimal_agents, full_agents = demo_agent_creation(template, minimal_response, full_response)
 
         # Demo 4: Cost estimation
         demo_cost_estimation(minimal_agents, full_agents)

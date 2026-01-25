@@ -130,14 +130,14 @@ class TestSonnetOpusFallback:
             breaker.record_failure("anthropic", "capable")
 
         # Circuit should be open
-        assert not breaker.is_available(
-            "anthropic", "capable"
-        ), "Circuit should be open after threshold"
+        assert not breaker.is_available("anthropic", "capable"), (
+            "Circuit should be open after threshold"
+        )
 
         # Other tiers should still be available
-        assert breaker.is_available(
-            "anthropic", "premium"
-        ), "Premium tier should still be available"
+        assert breaker.is_available("anthropic", "premium"), (
+            "Premium tier should still be available"
+        )
 
     @pytest.mark.asyncio
     async def test_fallback_metadata_complete(self):

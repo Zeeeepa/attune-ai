@@ -1,6 +1,6 @@
 """Empathy Framework Resilience Module
 
-Provides reliability patterns for fault-tolerant wizard operations.
+Provides reliability patterns for fault-tolerant workflow operations.
 
 Usage:
     from empathy_os.resilience import retry, circuit_breaker, timeout, fallback

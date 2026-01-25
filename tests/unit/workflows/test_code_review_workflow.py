@@ -92,9 +92,7 @@ class TestWorkflowInitialization:
     def test_custom_core_modules(self, cost_tracker):
         """Test workflow respects custom core modules list."""
         custom_modules = ["src/critical/", "lib/secure/"]
-        workflow = CodeReviewWorkflow(
-            cost_tracker=cost_tracker, core_modules=custom_modules
-        )
+        workflow = CodeReviewWorkflow(cost_tracker=cost_tracker, core_modules=custom_modules)
 
         assert workflow.core_modules == custom_modules
 
@@ -143,11 +141,9 @@ class TestClassifyStage:
         with patch.object(workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             # _call_llm returns (response, input_tokens, output_tokens)
             mock_llm.return_value = (
-                "Classification: Simple utility addition\n"
-                "Change Type: feature\n"
-                "Complexity: low",
+                "Classification: Simple utility addition\nChange Type: feature\nComplexity: low",
                 100,  # input_tokens
-                50,   # output_tokens
+                50,  # output_tokens
             )
 
             input_data = {"diff": sample_diff, "files_changed": ["src/utils.py"]}
@@ -159,9 +155,7 @@ class TestClassifyStage:
     @pytest.mark.asyncio
     async def test_classify_triggers_architect_for_many_files(self, cost_tracker):
         """Test that many file changes trigger architect review."""
-        workflow = CodeReviewWorkflow(
-            cost_tracker=cost_tracker, file_threshold=3, use_crew=False
-        )
+        workflow = CodeReviewWorkflow(cost_tracker=cost_tracker, file_threshold=3, use_crew=False)
 
         with patch.object(workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
             mock_llm.return_value = (
@@ -336,9 +330,7 @@ class TestWorkflowExecution:
 
             workflow._needs_architect_review = False
 
-            result = await workflow.execute(
-                diff=sample_diff, files_changed=["src/utils.py"]
-            )
+            result = await workflow.execute(diff=sample_diff, files_changed=["src/utils.py"])
 
             # Result is a WorkflowResult object
             assert result is not None

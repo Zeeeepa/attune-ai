@@ -24,16 +24,12 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from empathy_os.orchestration.execution_strategies import ParallelStrategy
-from empathy_os.orchestration.meta_orchestrator import (
-    CompositionPattern,
-    ExecutionPlan,
-    MetaOrchestrator,
-)
-from empathy_os.orchestration.real_tools import (
-    RealCoverageAnalyzer,
-    RealTestGenerator,
-    RealTestValidator,
-)
+from empathy_os.orchestration.meta_orchestrator import (CompositionPattern,
+                                                        ExecutionPlan,
+                                                        MetaOrchestrator)
+from empathy_os.orchestration.real_tools import (RealCoverageAnalyzer,
+                                                 RealTestGenerator,
+                                                 RealTestValidator)
 
 
 @dataclass

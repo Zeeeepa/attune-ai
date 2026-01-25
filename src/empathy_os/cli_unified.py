@@ -339,7 +339,27 @@ def scan_command(
         console.print("Valid types: security, performance, all")
         raise typer.Exit(code=1)
 
-    subprocess.run(["empathy-scan", scan_type, str(path)], check=False)
+    console.print(f"[bold blue]Scanning {path} ({scan_type})...[/bold blue]\n")
+
+    if scan_type in ("all", "security"):
+        # Run ruff for linting
+        console.print("[bold]Running ruff (linting)...[/bold]")
+        subprocess.run(["ruff", "check", str(path)], check=False)
+
+        # Run bandit for security
+        console.print("\n[bold]Running bandit (security)...[/bold]")
+        result = subprocess.run(["bandit", "-r", str(path), "-q"], check=False, capture_output=True)
+        if result.returncode == 0:
+            console.print("[green]No security issues found[/green]")
+        elif result.stdout:
+            console.print(result.stdout.decode())
+
+    if scan_type in ("all", "performance"):
+        console.print("\n[bold]Checking for performance patterns...[/bold]")
+        # Basic performance check - look for common issues
+        subprocess.run(["ruff", "check", str(path), "--select", "PERF"], check=False)
+
+    console.print("\n[bold green]Scan complete![/bold green]")
 
 
 @app.command("ship")
@@ -468,7 +488,74 @@ def memory_patterns():
 
 
 # =============================================================================
-# CHEATSHEET
+# UTILITIES SUBCOMMAND GROUP
+# =============================================================================
+
+utilities_app = typer.Typer(help="Utility tools - init, cheatsheet, dashboard, sync")
+app.add_typer(utilities_app, name="utilities")
+app.add_typer(utilities_app, name="utility", hidden=True)  # Alias for common typo
+
+
+@utilities_app.command("cheatsheet")
+def utilities_cheatsheet():
+    """Show quick reference for all commands."""
+    console.print(
+        Panel.fit(
+            CHEATSHEET_CONTENT,
+            title="[bold blue]Empathy Framework Cheatsheet[/bold blue]",
+        ),
+    )
+
+
+@utilities_app.command("init")
+def utilities_init():
+    """Create a new configuration file."""
+    subprocess.run([sys.executable, "-m", "empathy_os.cli", "init"], check=False)
+
+
+@utilities_app.command("dashboard")
+def utilities_dashboard():
+    """Launch visual dashboard."""
+    subprocess.run([sys.executable, "-m", "empathy_os.cli", "dashboard"], check=False)
+
+
+@utilities_app.command("sync-claude")
+def utilities_sync_claude(
+    source: str = typer.Option("patterns", "--source", "-s", help="Source to sync"),
+):
+    """Sync patterns to Claude Code memory."""
+    subprocess.run(["empathy-sync-claude", "--source", source], check=False)
+
+
+@utilities_app.command("costs")
+def utilities_costs():
+    """View API cost tracking."""
+    subprocess.run([sys.executable, "-m", "empathy_os.cli", "costs"], check=False)
+
+
+@utilities_app.command("status")
+def utilities_status():
+    """What needs attention now."""
+    subprocess.run([sys.executable, "-m", "empathy_os.cli", "status"], check=False)
+
+
+@utilities_app.command("scan")
+def utilities_scan(
+    path: Path = typer.Argument(Path("."), help="Path to scan"),
+    scan_type: str = typer.Option("all", "--type", "-t", help="Scan type: security, performance, or all"),
+):
+    """Scan codebase for issues.
+
+    Examples:
+        empathy utility scan .
+        empathy utility scan ./src --type security
+    """
+    # Delegate to main scan command
+    scan_command(scan_type, path)
+
+
+# =============================================================================
+# CHEATSHEET (top-level alias for convenience)
 # =============================================================================
 
 
@@ -481,6 +568,200 @@ def cheatsheet():
             title="[bold blue]Empathy Framework Cheatsheet[/bold blue]",
         ),
     )
+
+
+# =============================================================================
+# ADDITIONAL COMMAND APPS (exported for cli/__init__.py)
+# These provide structure for commands that will be migrated from legacy CLI
+# =============================================================================
+
+# Workflow commands - run multi-model AI workflows
+workflow_app = typer.Typer(help="Run multi-model AI workflows")
+
+
+@workflow_app.command("list")
+def workflow_list():
+    """List available workflows."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "workflow", "list"],
+        check=False,
+    )
+
+
+@workflow_app.command("run")
+def workflow_run(
+    name: str = typer.Argument(..., help="Workflow name"),
+    input_json: str = typer.Option("{}", "--input", "-i", help="Input JSON"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Run a workflow by name."""
+    args = [sys.executable, "-m", "empathy_os.cli", "workflow", "run", name, "--input", input_json]
+    if json_output:
+        args.append("--json")
+    subprocess.run(args, check=False)
+
+
+@workflow_app.command("describe")
+def workflow_describe(name: str = typer.Argument(..., help="Workflow name")):
+    """Describe a workflow."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "workflow", "describe", name],
+        check=False,
+    )
+
+
+# Orchestrate commands - advanced orchestration features
+orchestrate_app = typer.Typer(help="Advanced workflow orchestration")
+
+
+@orchestrate_app.command("run")
+def orchestrate_run(
+    task: str = typer.Argument(..., help="Task description"),
+    path: Path = typer.Option(Path("."), "--path", "-p", help="Path to analyze"),
+):
+    """Run orchestrated task."""
+    task_json = json.dumps({"task": task, "path": str(path)})
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "orchestrate", "--input", task_json],
+        check=False,
+    )
+
+
+# Telemetry commands - LLM usage tracking
+telemetry_app = typer.Typer(help="LLM usage telemetry and cost tracking")
+
+
+@telemetry_app.command("show")
+def telemetry_show(
+    limit: int = typer.Option(20, "--limit", "-l", help="Number of entries"),
+):
+    """Show telemetry data."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "telemetry", "show", "--limit", str(limit)],
+        check=False,
+    )
+
+
+@telemetry_app.command("export")
+def telemetry_export(
+    output: Path = typer.Argument(..., help="Output file path"),
+    format_type: str = typer.Option("json", "--format", "-f", help="Output format: json, csv"),
+):
+    """Export telemetry data."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "telemetry", "export", str(output), "--format", format_type],
+        check=False,
+    )
+
+
+@telemetry_app.command("reset")
+def telemetry_reset():
+    """Reset telemetry data."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "telemetry", "reset"],
+        check=False,
+    )
+
+
+# Service commands - background services
+service_app = typer.Typer(help="Background services management")
+
+
+@service_app.command("status")
+def service_status():
+    """Check service status."""
+    # Check Redis status via memory control panel
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.memory.control_panel", "status"],
+        check=False,
+    )
+
+
+@service_app.command("start")
+def service_start(service_name: str = typer.Argument("all", help="Service to start")):
+    """Start background services."""
+    if service_name in ("all", "redis"):
+        subprocess.run(
+            [sys.executable, "-m", "empathy_os.memory.control_panel", "start"],
+            check=False,
+        )
+
+
+@service_app.command("stop")
+def service_stop(service_name: str = typer.Argument("all", help="Service to stop")):
+    """Stop background services."""
+    if service_name in ("all", "redis"):
+        subprocess.run(
+            [sys.executable, "-m", "empathy_os.memory.control_panel", "stop"],
+            check=False,
+        )
+
+
+# Progressive commands - progressive test generation
+progressive_app = typer.Typer(help="Progressive test generation")
+
+
+@progressive_app.command("list")
+def progressive_list():
+    """List progressive test results."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "progressive", "list"],
+        check=False,
+    )
+
+
+@progressive_app.command("report")
+def progressive_report(session_id: str = typer.Argument(..., help="Session ID")):
+    """Show progressive test report."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "progressive", "report", session_id],
+        check=False,
+    )
+
+
+@progressive_app.command("analytics")
+def progressive_analytics():
+    """Show progressive test analytics."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "progressive", "analytics"],
+        check=False,
+    )
+
+
+# Tier commands - model tier management
+tier_app = typer.Typer(help="Model tier configuration")
+
+
+@tier_app.command("recommend")
+def tier_recommend(
+    task: str = typer.Argument("code-review", help="Task type"),
+):
+    """Get tier recommendation for a task."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "tier", "recommend", task],
+        check=False,
+    )
+
+
+@tier_app.command("stats")
+def tier_stats():
+    """Show tier usage statistics."""
+    subprocess.run(
+        [sys.executable, "-m", "empathy_os.cli", "tier", "stats"],
+        check=False,
+    )
+
+
+@tier_app.command("set")
+def tier_set(
+    task: str = typer.Argument(..., help="Task type"),
+    tier_name: str = typer.Argument(..., help="Tier name: cheap, balanced, premium"),
+):
+    """Set tier for a task type."""
+    config = _load_tier_config()
+    config[task] = tier_name
+    _save_tier_config(config)
+    console.print(f"[green]Set {task} to use {tier_name} tier[/green]")
 
 
 # =============================================================================

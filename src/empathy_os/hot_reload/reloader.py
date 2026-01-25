@@ -1,6 +1,6 @@
-"""Dynamic wizard reloader for hot-reload.
+"""Dynamic workflow reloader for hot-reload.
 
-Handles reloading wizard modules without server restart.
+Handles reloading workflow modules without server restart.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -17,12 +17,12 @@ logger = logging.getLogger(__name__)
 
 
 class ReloadResult:
-    """Result of a wizard reload operation."""
+    """Result of a workflow reload operation."""
 
     def __init__(
         self,
         success: bool,
-        wizard_id: str,
+        workflow_id: str,
         message: str,
         error: str | None = None,
     ):
@@ -30,13 +30,13 @@ class ReloadResult:
 
         Args:
             success: Whether reload succeeded
-            wizard_id: ID of wizard that was reloaded
+            workflow_id: ID of workflow that was reloaded
             message: Status message
             error: Error message if failed
 
         """
         self.success = success
-        self.wizard_id = wizard_id
+        self.workflow_id = workflow_id
         self.message = message
         self.error = error
 
@@ -44,19 +44,19 @@ class ReloadResult:
         """Convert to dictionary."""
         return {
             "success": self.success,
-            "wizard_id": self.wizard_id,
+            "workflow_id": self.workflow_id,
             "message": self.message,
             "error": self.error,
         }
 
 
-class WizardReloader:
-    """Handles dynamic reloading of wizard modules.
+class WorkflowReloader:
+    """Handles dynamic reloading of workflow modules.
 
-    Supports hot-reload of wizards without server restart by:
+    Supports hot-reload of workflows without server restart by:
     1. Unloading old module from sys.modules
     2. Reloading module with importlib
-    3. Re-registering wizard with wizard API
+    3. Re-registering workflow with workflow API
     4. Notifying clients via callback
     """
 
@@ -68,7 +68,7 @@ class WizardReloader:
         """Initialize reloader.
 
         Args:
-            register_callback: Function to register wizard (wizard_id, wizard_class) -> success
+            register_callback: Function to register workflow (workflow_id, workflow_class) -> success
             notification_callback: Optional function to notify clients of reload events
 
         """
@@ -76,18 +76,18 @@ class WizardReloader:
         self.notification_callback = notification_callback
         self._reload_count = 0
 
-    def reload_wizard(self, wizard_id: str, file_path: str) -> ReloadResult:
-        """Reload a wizard module.
+    def reload_workflow(self, workflow_id: str, file_path: str) -> ReloadResult:
+        """Reload a workflow module.
 
         Args:
-            wizard_id: Wizard identifier
-            file_path: Path to wizard file
+            workflow_id: Workflow identifier
+            file_path: Path to workflow file
 
         Returns:
             ReloadResult with outcome
 
         """
-        logger.info(f"Attempting to reload wizard: {wizard_id} from {file_path}")
+        logger.info(f"Attempting to reload workflow: {workflow_id} from {file_path}")
 
         try:
             # Get module name from file path
@@ -97,7 +97,7 @@ class WizardReloader:
                 logger.error(error_msg)
                 return ReloadResult(
                     success=False,
-                    wizard_id=wizard_id,
+                    workflow_id=workflow_id,
                     message="Failed to reload",
                     error=error_msg,
                 )
@@ -111,60 +111,60 @@ class WizardReloader:
             except ImportError as e:
                 error_msg = f"Failed to import module {module_name}: {e}"
                 logger.error(error_msg)
-                self._notify_reload_failed(wizard_id, error_msg)
+                self._notify_reload_failed(workflow_id, error_msg)
                 return ReloadResult(
                     success=False,
-                    wizard_id=wizard_id,
+                    workflow_id=workflow_id,
                     message="Import failed",
                     error=error_msg,
                 )
 
-            # Find wizard class in module
-            wizard_class = self._find_wizard_class(module)
-            if not wizard_class:
-                error_msg = f"No wizard class found in {module_name}"
+            # Find workflow class in module
+            workflow_class = self._find_workflow_class(module)
+            if not workflow_class:
+                error_msg = f"No workflow class found in {module_name}"
                 logger.error(error_msg)
-                self._notify_reload_failed(wizard_id, error_msg)
+                self._notify_reload_failed(workflow_id, error_msg)
                 return ReloadResult(
                     success=False,
-                    wizard_id=wizard_id,
-                    message="No wizard class found",
+                    workflow_id=workflow_id,
+                    message="No workflow class found",
                     error=error_msg,
                 )
 
-            # Re-register wizard
-            success = self.register_callback(wizard_id, wizard_class)
+            # Re-register workflow
+            success = self.register_callback(workflow_id, workflow_class)
 
             if success:
                 self._reload_count += 1
                 logger.info(
-                    f"✓ Successfully reloaded {wizard_id} ({self._reload_count} total reloads)"
+                    f"✓ Successfully reloaded {workflow_id} ({self._reload_count} total reloads)"
                 )
-                self._notify_reload_success(wizard_id)
+                self._notify_reload_success(workflow_id)
 
                 return ReloadResult(
                     success=True,
-                    wizard_id=wizard_id,
+                    workflow_id=workflow_id,
                     message=f"Reloaded successfully (reload #{self._reload_count})",
                 )
             else:
                 error_msg = "Registration failed"
-                logger.error(f"Failed to re-register {wizard_id}")
-                self._notify_reload_failed(wizard_id, error_msg)
+                logger.error(f"Failed to re-register {workflow_id}")
+                self._notify_reload_failed(workflow_id, error_msg)
                 return ReloadResult(
                     success=False,
-                    wizard_id=wizard_id,
+                    workflow_id=workflow_id,
                     message="Registration failed",
                     error=error_msg,
                 )
 
         except Exception as e:
-            error_msg = f"Unexpected error reloading {wizard_id}: {e}"
+            error_msg = f"Unexpected error reloading {workflow_id}: {e}"
             logger.exception(error_msg)
-            self._notify_reload_failed(wizard_id, str(e))
+            self._notify_reload_failed(workflow_id, str(e))
             return ReloadResult(
                 success=False,
-                wizard_id=wizard_id,
+                workflow_id=workflow_id,
                 message="Unexpected error",
                 error=str(e),
             )
@@ -187,17 +187,17 @@ class WizardReloader:
                 return None
 
             # Get parts relative to project root
-            # Try to find common patterns: wizards/, coach_wizards/, empathy_software_plugin/wizards/
+            # Try to find common patterns: workflows/, empathy_software_plugin/workflows/
             parts = path.parts
 
-            # Find wizard directory in path
-            wizard_dir_indices = [i for i, part in enumerate(parts) if "wizard" in part.lower()]
+            # Find workflow directory in path
+            workflow_dir_indices = [i for i, part in enumerate(parts) if "workflow" in part.lower()]
 
-            if not wizard_dir_indices:
+            if not workflow_dir_indices:
                 return None
 
-            # Take from first wizard directory
-            start_idx = wizard_dir_indices[0]
+            # Take from first workflow directory
+            start_idx = workflow_dir_indices[0]
 
             # Build module name
             module_parts = list(parts[start_idx:])
@@ -228,38 +228,38 @@ class WizardReloader:
             del sys.modules[submodule]
             logger.debug(f"Unloaded submodule: {submodule}")
 
-    def _find_wizard_class(self, module: Any) -> type | None:
-        """Find wizard class in module.
+    def _find_workflow_class(self, module: Any) -> type | None:
+        """Find workflow class in module.
 
         Args:
             module: Python module
 
         Returns:
-            Wizard class or None if not found
+            Workflow class or None if not found
 
         """
-        # Look for classes ending with "Wizard"
+        # Look for classes ending with "Workflow"
         for name in dir(module):
-            if name.endswith("Wizard") and not name.startswith("_"):
+            if name.endswith("Workflow") and not name.startswith("_"):
                 attr = getattr(module, name)
                 if isinstance(attr, type):
                     return attr
 
         return None
 
-    def _notify_reload_success(self, wizard_id: str) -> None:
+    def _notify_reload_success(self, workflow_id: str) -> None:
         """Notify clients of successful reload.
 
         Args:
-            wizard_id: ID of reloaded wizard
+            workflow_id: ID of reloaded workflow
 
         """
         if self.notification_callback:
             try:
                 self.notification_callback(
                     {
-                        "event": "wizard_reloaded",
-                        "wizard_id": wizard_id,
+                        "event": "workflow_reloaded",
+                        "workflow_id": workflow_id,
                         "success": True,
                         "reload_count": self._reload_count,
                     }
@@ -267,11 +267,11 @@ class WizardReloader:
             except Exception as e:
                 logger.error(f"Error sending reload notification: {e}")
 
-    def _notify_reload_failed(self, wizard_id: str, error: str) -> None:
+    def _notify_reload_failed(self, workflow_id: str, error: str) -> None:
         """Notify clients of failed reload.
 
         Args:
-            wizard_id: ID of wizard that failed to reload
+            workflow_id: ID of workflow that failed to reload
             error: Error message
 
         """
@@ -279,8 +279,8 @@ class WizardReloader:
             try:
                 self.notification_callback(
                     {
-                        "event": "wizard_reload_failed",
-                        "wizard_id": wizard_id,
+                        "event": "workflow_reload_failed",
+                        "workflow_id": workflow_id,
                         "success": False,
                         "error": error,
                     }

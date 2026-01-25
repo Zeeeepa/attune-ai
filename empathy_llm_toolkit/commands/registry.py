@@ -92,8 +92,7 @@ class CommandRegistry:
         """
         if config.name in self._commands and not overwrite:
             raise ValueError(
-                f"Command '{config.name}' already registered. "
-                "Use overwrite=True to replace."
+                f"Command '{config.name}' already registered. Use overwrite=True to replace."
             )
 
         self._commands[config.name] = config
@@ -170,9 +169,7 @@ class CommandRegistry:
         config = self.get(name)
         if config is None:
             available = ", ".join(sorted(self._commands.keys()))
-            raise KeyError(
-                f"Command '{name}' not found. Available commands: {available}"
-            )
+            raise KeyError(f"Command '{name}' not found. Available commands: {available}")
         return config
 
     def has(self, name: str) -> bool:
@@ -329,11 +326,7 @@ class CommandRegistry:
             List of matching command configs
 
         """
-        return [
-            config
-            for config in self._commands.values()
-            if config.category == category
-        ]
+        return [config for config in self._commands.values() if config.category == category]
 
     def get_by_tag(self, tag: str) -> list[CommandConfig]:
         """Get all commands with a specific tag.

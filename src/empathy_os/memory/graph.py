@@ -1,10 +1,10 @@
-"""Memory Graph - Cross-Wizard Knowledge Base
+"""Memory Graph - Cross-Workflow Knowledge Base
 
-A knowledge graph that connects findings across all wizards,
+A knowledge graph that connects findings across all workflows,
 enabling intelligent correlation and learning.
 
 Features:
-- Add findings from any wizard as nodes
+- Add findings from any workflow as nodes
 - Connect related findings with typed edges
 - Query for similar past findings
 - Traverse relationships to find root causes
@@ -29,17 +29,17 @@ from .nodes import Node, NodeType
 
 
 class MemoryGraph:
-    """Knowledge graph for cross-wizard intelligence.
+    """Knowledge graph for cross-workflow intelligence.
 
     Stores nodes (findings) and edges (relationships) discovered
-    by wizards, enabling pattern correlation across sessions.
+    by workflows, enabling pattern correlation across sessions.
 
     Usage:
         graph = MemoryGraph()
 
         # Add a bug finding
         bug_id = graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={
                 "type": "bug",
                 "name": "Null reference in auth.py",
@@ -52,7 +52,7 @@ class MemoryGraph:
 
         # Connect to a fix
         fix_id = graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={
                 "type": "fix",
                 "name": "Add null check",
@@ -80,7 +80,7 @@ class MemoryGraph:
         self._edges_by_source: dict[str, list[Edge]] = defaultdict(list)
         self._edges_by_target: dict[str, list[Edge]] = defaultdict(list)
         self._nodes_by_type: dict[NodeType, list[str]] = defaultdict(list)
-        self._nodes_by_wizard: dict[str, list[str]] = defaultdict(list)
+        self._nodes_by_workflow: dict[str, list[str]] = defaultdict(list)
         self._nodes_by_file: dict[str, list[str]] = defaultdict(list)
 
         self._load()
@@ -133,8 +133,8 @@ class MemoryGraph:
     def _index_node(self, node: Node) -> None:
         """Add node to indexes."""
         self._nodes_by_type[node.type].append(node.id)
-        if node.source_wizard:
-            self._nodes_by_wizard[node.source_wizard].append(node.id)
+        if node.source_workflow:
+            self._nodes_by_workflow[node.source_workflow].append(node.id)
         if node.source_file:
             self._nodes_by_file[node.source_file].append(node.id)
 
@@ -151,11 +151,11 @@ class MemoryGraph:
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
         return f"{finding.get('type', 'node')}_{timestamp}_{hash_val}"
 
-    def add_finding(self, wizard: str, finding: dict[str, Any]) -> str:
-        """Add a finding from any wizard, return node ID.
+    def add_finding(self, workflow: str, finding: dict[str, Any]) -> str:
+        """Add a finding from any workflow, return node ID.
 
         Args:
-            wizard: Name of the wizard adding this finding
+            workflow: Name of the workflow adding this finding
             finding: Dict with at least 'type' and 'name' keys
 
         Returns:
@@ -163,7 +163,7 @@ class MemoryGraph:
 
         Example:
             node_id = graph.add_finding(
-                wizard="security-audit",
+                workflow="security-audit",
                 finding={
                     "type": "vulnerability",
                     "name": "SQL Injection in query builder",
@@ -189,7 +189,7 @@ class MemoryGraph:
             type=node_type,
             name=finding.get("name", "Unnamed finding"),
             description=finding.get("description", ""),
-            source_wizard=wizard,
+            source_workflow=workflow,
             source_file=finding.get("file", finding.get("source_file", "")),
             source_line=finding.get("line", finding.get("source_line")),
             severity=finding.get("severity", ""),
@@ -210,7 +210,7 @@ class MemoryGraph:
         target_id: str,
         edge_type: EdgeType,
         description: str = "",
-        wizard: str = "",
+        workflow: str = "",
         weight: float = 1.0,
         bidirectional: bool = False,
     ) -> str:
@@ -221,7 +221,7 @@ class MemoryGraph:
             target_id: Target node ID
             edge_type: Type of relationship
             description: Optional description of the relationship
-            wizard: Wizard that created this edge
+            workflow: Workflow that created this edge
             weight: Strength of relationship (0.0 - 1.0)
             bidirectional: If True, also create reverse edge
 
@@ -239,7 +239,7 @@ class MemoryGraph:
             target_id=target_id,
             type=edge_type,
             description=description,
-            source_wizard=wizard,
+            source_workflow=workflow,
             weight=weight,
         )
 
@@ -254,7 +254,7 @@ class MemoryGraph:
                 target_id=source_id,
                 type=reverse_type,
                 description=description,
-                source_wizard=wizard,
+                source_workflow=workflow,
                 weight=weight,
             )
             self.edges.append(reverse_edge)
@@ -404,9 +404,9 @@ class MemoryGraph:
         node_ids = self._nodes_by_type.get(node_type, [])
         return [self.nodes[nid] for nid in node_ids if nid in self.nodes]
 
-    def find_by_wizard(self, wizard: str) -> list[Node]:
-        """Find all nodes created by a specific wizard."""
-        node_ids = self._nodes_by_wizard.get(wizard, [])
+    def find_by_workflow(self, workflow: str) -> list[Node]:
+        """Find all nodes created by a specific workflow."""
+        node_ids = self._nodes_by_workflow.get(workflow, [])
         return [self.nodes[nid] for nid in node_ids if nid in self.nodes]
 
     def find_by_file(self, file_path: str) -> list[Node]:
@@ -463,13 +463,13 @@ class MemoryGraph:
     def get_statistics(self) -> dict[str, Any]:
         """Get graph statistics."""
         type_counts: dict[str, int] = defaultdict(int)
-        wizard_counts: dict[str, int] = defaultdict(int)
+        workflow_counts: dict[str, int] = defaultdict(int)
         severity_counts: dict[str, int] = defaultdict(int)
 
         for node in self.nodes.values():
             type_counts[node.type.value] += 1
-            if node.source_wizard:
-                wizard_counts[node.source_wizard] += 1
+            if node.source_workflow:
+                workflow_counts[node.source_workflow] += 1
             if node.severity:
                 severity_counts[node.severity] += 1
 
@@ -481,7 +481,7 @@ class MemoryGraph:
             "total_nodes": len(self.nodes),
             "total_edges": len(self.edges),
             "nodes_by_type": dict(type_counts),
-            "nodes_by_wizard": dict(wizard_counts),
+            "nodes_by_workflow": dict(workflow_counts),
             "nodes_by_severity": dict(severity_counts),
             "edges_by_type": dict(edge_type_counts),
             "unique_files": len(self._nodes_by_file),
@@ -537,9 +537,9 @@ class MemoryGraph:
             self._nodes_by_type[node.type] = [
                 nid for nid in self._nodes_by_type[node.type] if nid != node_id
             ]
-        if node.source_wizard in self._nodes_by_wizard:
-            self._nodes_by_wizard[node.source_wizard] = [
-                nid for nid in self._nodes_by_wizard[node.source_wizard] if nid != node_id
+        if node.source_workflow in self._nodes_by_workflow:
+            self._nodes_by_workflow[node.source_workflow] = [
+                nid for nid in self._nodes_by_workflow[node.source_workflow] if nid != node_id
             ]
         if node.source_file in self._nodes_by_file:
             self._nodes_by_file[node.source_file] = [
@@ -565,6 +565,6 @@ class MemoryGraph:
         self._edges_by_source = defaultdict(list)
         self._edges_by_target = defaultdict(list)
         self._nodes_by_type = defaultdict(list)
-        self._nodes_by_wizard = defaultdict(list)
+        self._nodes_by_workflow = defaultdict(list)
         self._nodes_by_file = defaultdict(list)
         self._save()

@@ -56,13 +56,9 @@ class DynamicAgentCreator:
             return []
 
         agents = []
-        self.creation_stats["total_rules_evaluated"] = len(
-            template.agent_composition_rules
-        )
+        self.creation_stats["total_rules_evaluated"] = len(template.agent_composition_rules)
 
-        logger.info(
-            f"Evaluating {len(template.agent_composition_rules)} composition rules"
-        )
+        logger.info(f"Evaluating {len(template.agent_composition_rules)} composition rules")
 
         for rule in template.agent_composition_rules:
             # Check if agent should be created based on form responses
@@ -77,9 +73,7 @@ class DynamicAgentCreator:
                 )
             else:
                 self.creation_stats["rules_skipped"] += 1
-                logger.debug(
-                    f"Skipped agent {rule.role} - conditions not met"
-                )
+                logger.debug(f"Skipped agent {rule.role} - conditions not met")
 
         logger.info(
             f"Created {len(agents)} agents from {len(template.agent_composition_rules)} rules"

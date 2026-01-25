@@ -5,7 +5,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 class TestDomain:
     """Tests for Domain enum."""
 
@@ -168,8 +167,18 @@ class TestWorkflowTemplate:
             domain=Domain.TESTING,
             agents=["agent1", "agent2", "synthesizer"],
             stages=[
-                {"stage_id": "analyze", "name": "Analyze", "agents": ["agent1", "agent2"], "parallel": True},
-                {"stage_id": "synthesize", "name": "Synthesize", "agents": ["synthesizer"], "dependencies": ["analyze"]},
+                {
+                    "stage_id": "analyze",
+                    "name": "Analyze",
+                    "agents": ["agent1", "agent2"],
+                    "parallel": True,
+                },
+                {
+                    "stage_id": "synthesize",
+                    "name": "Synthesize",
+                    "agents": ["synthesizer"],
+                    "dependencies": ["analyze"],
+                },
             ],
             success_metrics=[],
             estimated_duration="slow",
@@ -273,10 +282,7 @@ class TestDomainTemplateRegistry:
 
     def test_get_domain(self):
         """Test getting a domain template."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -296,10 +302,7 @@ class TestDomainTemplateRegistry:
 
     def test_list_agents_by_domain(self):
         """Test listing agent templates filtered by domain."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -329,10 +332,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_code_review(self):
         """Test domain detection for code review goals."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -343,10 +343,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_security(self):
         """Test domain detection for security goals."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -357,10 +354,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_testing(self):
         """Test domain detection for testing goals."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -371,10 +365,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_performance(self):
         """Test domain detection for performance goals."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -385,10 +376,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_unknown(self):
         """Test domain detection for unknown goals."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -400,10 +388,7 @@ class TestDomainTemplateRegistry:
 
     def test_get_default_workflow(self):
         """Test getting default workflow for a domain."""
-        from empathy_os.socratic.domain_templates import (
-            Domain,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -413,10 +398,7 @@ class TestDomainTemplateRegistry:
     def test_register_agent(self):
         """Test registering a custom agent template."""
         from empathy_os.socratic.blueprint import AgentRole
-        from empathy_os.socratic.domain_templates import (
-            AgentTemplate,
-            DomainTemplateRegistry,
-        )
+        from empathy_os.socratic.domain_templates import AgentTemplate, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 

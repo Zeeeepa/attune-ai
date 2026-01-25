@@ -70,8 +70,11 @@ class Test_ValidateFilePath:
         # path won't match the /etc check. This is a known limitation.
         # Skip this test on macOS and use /sys instead which exists directly
         import platform
+
         if platform.system() == "Darwin":
-            pytest.skip("/etc resolves to /private/etc on macOS - see test_system_directory_sys instead")
+            pytest.skip(
+                "/etc resolves to /private/etc on macOS - see test_system_directory_sys instead"
+            )
 
         with pytest.raises(ValueError, match="Cannot write to system directory"):
             _validate_file_path("/etc/passwd")
@@ -107,17 +110,13 @@ class TestRealCoverageAnalyzer:
         coverage_file = tmp_path / "coverage.json"
         coverage_data = {
             "totals": {"percent_covered": 85.5},
-            "files": {
-                "src/test.py": {
-                    "summary": {"percent_covered": 90.0},
-                    "missing_lines": []
-                }
-            }
+            "files": {"src/test.py": {"summary": {"percent_covered": 90.0}, "missing_lines": []}},
         }
         coverage_file.write_text(json.dumps(coverage_data))
 
         # Mock time to make file appear fresh (< 1 hour old)
         import time
+
         original_time = time.time
         monkeypatch.setattr(time, "time", lambda: original_time() + 10)
 
@@ -132,14 +131,12 @@ class TestRealCoverageAnalyzer:
         """Test that stale coverage.json triggers regeneration."""
         # Create fake old coverage.json
         coverage_file = tmp_path / "coverage.json"
-        coverage_data = {
-            "totals": {"percent_covered": 50.0},
-            "files": {}
-        }
+        coverage_data = {"totals": {"percent_covered": 50.0}, "files": {}}
         coverage_file.write_text(json.dumps(coverage_data))
 
         # Mock time to make file appear stale (> 1 hour old)
         import time
+
         original_time = time.time
         monkeypatch.setattr(time, "time", lambda: original_time() + 7200)  # 2 hours
 
@@ -174,13 +171,10 @@ class TestRealCoverageAnalyzer:
             "files": {
                 "src/low.py": {
                     "summary": {"percent_covered": 45.0},
-                    "missing_lines": [10, 11, 12, 13, 14]
+                    "missing_lines": [10, 11, 12, 13, 14],
                 },
-                "src/high.py": {
-                    "summary": {"percent_covered": 95.0},
-                    "missing_lines": []
-                }
-            }
+                "src/high.py": {"summary": {"percent_covered": 95.0}, "missing_lines": []},
+            },
         }
         coverage_file.write_text(json.dumps(coverage_data))
 
@@ -209,16 +203,14 @@ class TestRealSecurityAuditor:
         # Mock Bandit to return clean results
         mock_result = Mock()
         mock_result.returncode = 0
-        mock_result.stdout = json.dumps({
-            "metrics": {
-                "_totals": {
-                    "SEVERITY.HIGH": 0,
-                    "SEVERITY.MEDIUM": 0,
-                    "SEVERITY.LOW": 0
-                }
-            },
-            "results": []
-        })
+        mock_result.stdout = json.dumps(
+            {
+                "metrics": {
+                    "_totals": {"SEVERITY.HIGH": 0, "SEVERITY.MEDIUM": 0, "SEVERITY.LOW": 0}
+                },
+                "results": [],
+            }
+        )
 
         with patch("subprocess.run", return_value=mock_result):
             auditor = RealSecurityAuditor(str(tmp_path))
@@ -235,26 +227,28 @@ class TestRealSecurityAuditor:
         """Test that high severity issues are counted correctly."""
         mock_result = Mock()
         mock_result.returncode = 0
-        mock_result.stdout = json.dumps({
-            "results": [
-                {
-                    "issue_severity": "HIGH",
-                    "issue_confidence": "HIGH",
-                    "issue_text": "Possible SQL injection",
-                    "filename": "src/test.py",
-                    "line_number": 42,
-                    "test_id": "B608"
-                },
-                {
-                    "issue_severity": "HIGH",
-                    "issue_confidence": "MEDIUM",
-                    "issue_text": "Use of eval() detected",
-                    "filename": "src/bad.py",
-                    "line_number": 10,
-                    "test_id": "B307"
-                }
-            ]
-        })
+        mock_result.stdout = json.dumps(
+            {
+                "results": [
+                    {
+                        "issue_severity": "HIGH",
+                        "issue_confidence": "HIGH",
+                        "issue_text": "Possible SQL injection",
+                        "filename": "src/test.py",
+                        "line_number": 42,
+                        "test_id": "B608",
+                    },
+                    {
+                        "issue_severity": "HIGH",
+                        "issue_confidence": "MEDIUM",
+                        "issue_text": "Use of eval() detected",
+                        "filename": "src/bad.py",
+                        "line_number": 10,
+                        "test_id": "B307",
+                    },
+                ]
+            }
+        )
 
         with patch("subprocess.run", return_value=mock_result):
             auditor = RealSecurityAuditor(str(tmp_path))
@@ -310,20 +304,22 @@ class TestRealCodeQualityAnalyzer:
         # Mock Ruff with JSON issues (--output-format=json returns array)
         ruff_result = Mock()
         ruff_result.returncode = 1
-        ruff_result.stdout = json.dumps([
-            {
-                "code": "F401",
-                "message": "'os' imported but unused",
-                "location": {"row": 10, "column": 5},
-                "filename": "src/test.py"
-            },
-            {
-                "code": "E302",
-                "message": "expected 2 blank lines",
-                "location": {"row": 15, "column": 1},
-                "filename": "src/test.py"
-            }
-        ])
+        ruff_result.stdout = json.dumps(
+            [
+                {
+                    "code": "F401",
+                    "message": "'os' imported but unused",
+                    "location": {"row": 10, "column": 5},
+                    "filename": "src/test.py",
+                },
+                {
+                    "code": "E302",
+                    "message": "expected 2 blank lines",
+                    "location": {"row": 15, "column": 1},
+                    "filename": "src/test.py",
+                },
+            ]
+        )
 
         # Mock MyPy (no errors)
         mypy_result = Mock()
@@ -392,13 +388,13 @@ class DocumentedClass:
         src_dir = tmp_path / "src"
         src_dir.mkdir()
         test_file = src_dir / "test.py"
-        test_file.write_text('''def undocumented_function():
+        test_file.write_text("""def undocumented_function():
     pass
 
 class UndocumentedClass:
     def method(self):
         pass
-''')
+""")
 
         analyzer = RealDocumentationAnalyzer(str(tmp_path))
         report = analyzer.analyze()
@@ -426,7 +422,7 @@ class TestDataclasses:
             total_coverage=85.5,
             files_analyzed=100,
             uncovered_files=[{"path": "test.py", "coverage": 45.0}],
-            missing_lines={"test.py": [10, 11, 12]}
+            missing_lines={"test.py": [10, 11, 12]},
         )
 
         assert report.total_coverage == 85.5
@@ -443,7 +439,7 @@ class TestDataclasses:
             medium_count=5,
             low_count=10,
             issues_by_file={"src/test.py": [{"severity": "HIGH", "issue_text": "SQL injection"}]},
-            passed=False
+            passed=False,
         )
 
         assert report.critical_count == 0
@@ -459,7 +455,7 @@ class TestDataclasses:
             mypy_issues=1,
             total_files=10,
             issues_by_category={"unused-import": 2, "type-error": 1, "line-too-long": 1},
-            passed=True
+            passed=True,
         )
 
         assert report.quality_score == 9.5
@@ -476,7 +472,7 @@ class TestDataclasses:
             total_classes=10,
             documented_classes=8,
             missing_docstrings=["function1", "function2"],
-            passed=False
+            passed=False,
         )
 
         assert report.completeness_percentage == 88.5
@@ -493,9 +489,7 @@ class TestRealTestGenerator:
         output_dir = tmp_path / "tests" / "generated"
 
         generator = RealTestGenerator(
-            project_root=str(tmp_path),
-            output_dir="tests/generated",
-            use_llm=False
+            project_root=str(tmp_path), output_dir="tests/generated", use_llm=False
         )
 
         assert generator.project_root == tmp_path.resolve()
@@ -507,11 +501,16 @@ class TestRealTestGenerator:
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
 
         # Mock anthropic import to succeed but no key
-        with patch("builtins.__import__", side_effect=lambda name, *args: __import__(name, *args) if name != "anthropic" else Mock()):
+        with patch(
+            "builtins.__import__",
+            side_effect=lambda name, *args: __import__(name, *args)
+            if name != "anthropic"
+            else Mock(),
+        ):
             generator = RealTestGenerator(
                 project_root=str(tmp_path),
                 api_key=None,
-                use_llm=True  # Request LLM but no key
+                use_llm=True,  # Request LLM but no key
             )
 
         assert generator.use_llm is False  # Should fallback to template mode
@@ -526,9 +525,7 @@ class TestRealTestGenerator:
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
             generator = RealTestGenerator(
-                project_root=str(tmp_path),
-                api_key="test-key-123",
-                use_llm=True
+                project_root=str(tmp_path), api_key="test-key-123", use_llm=True
             )
 
             assert generator.use_llm is True
@@ -539,6 +536,7 @@ class TestRealTestGenerator:
         """Test that missing anthropic package disables LLM."""
         # Temporarily remove anthropic from sys.modules if it exists
         import sys
+
         anthropic_backup = sys.modules.pop("anthropic", None)
 
         try:
@@ -550,9 +548,7 @@ class TestRealTestGenerator:
 
             with patch("builtins.__import__", side_effect=mock_import):
                 generator = RealTestGenerator(
-                    project_root=str(tmp_path),
-                    api_key="test-key",
-                    use_llm=True
+                    project_root=str(tmp_path), api_key="test-key", use_llm=True
                 )
 
             assert generator.use_llm is False  # Should fallback
@@ -571,14 +567,10 @@ def add(a: int, b: int) -> int:
     return a + b
 """)
 
-        generator = RealTestGenerator(
-            project_root=str(tmp_path),
-            use_llm=False
-        )
+        generator = RealTestGenerator(project_root=str(tmp_path), use_llm=False)
 
         test_path = generator.generate_tests_for_file(
-            str(source_file.relative_to(tmp_path)),
-            missing_lines=[3, 4]
+            str(source_file.relative_to(tmp_path)), missing_lines=[3, 4]
         )
 
         assert test_path.exists()
@@ -589,16 +581,10 @@ def add(a: int, b: int) -> int:
 
     def test_generate_tests_for_nonexistent_file_raises_error(self, tmp_path):
         """Test that generating tests for missing file raises RuntimeError."""
-        generator = RealTestGenerator(
-            project_root=str(tmp_path),
-            use_llm=False
-        )
+        generator = RealTestGenerator(project_root=str(tmp_path), use_llm=False)
 
         with pytest.raises(RuntimeError, match="Cannot read source file"):
-            generator.generate_tests_for_file(
-                "nonexistent.py",
-                missing_lines=[1, 2, 3]
-            )
+            generator.generate_tests_for_file("nonexistent.py", missing_lines=[1, 2, 3])
 
     def test_generate_tests_validates_output_path(self, tmp_path):
         """Test that output path is validated for security."""
@@ -607,16 +593,12 @@ def add(a: int, b: int) -> int:
         source_file = src_dir / "test.py"
         source_file.write_text("# test")
 
-        generator = RealTestGenerator(
-            project_root=str(tmp_path),
-            use_llm=False
-        )
+        generator = RealTestGenerator(project_root=str(tmp_path), use_llm=False)
 
         # Should not allow writing to system directories
         # The validation happens in _validate_file_path
         test_path = generator.generate_tests_for_file(
-            str(source_file.relative_to(tmp_path)),
-            missing_lines=[1]
+            str(source_file.relative_to(tmp_path)), missing_lines=[1]
         )
 
         # Should generate in output_dir, not system dir
@@ -627,12 +609,16 @@ def add(a: int, b: int) -> int:
         # Setup mock LLM response
         mock_client = Mock()
         mock_response = Mock()
-        mock_response.content = [Mock(text="""
+        mock_response.content = [
+            Mock(
+                text="""
 import pytest
 
 def test_example():
     assert True
-""")]
+"""
+            )
+        ]
         mock_client.messages.create.return_value = mock_response
 
         # Mock the Anthropic import
@@ -648,14 +634,11 @@ def test_example():
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
             generator = RealTestGenerator(
-                project_root=str(tmp_path),
-                api_key="test-key",
-                use_llm=True
+                project_root=str(tmp_path), api_key="test-key", use_llm=True
             )
 
             test_path = generator.generate_tests_for_file(
-                str(source_file.relative_to(tmp_path)),
-                missing_lines=[1]
+                str(source_file.relative_to(tmp_path)), missing_lines=[1]
             )
 
         assert test_path.exists()
@@ -667,12 +650,16 @@ def test_example():
         """Test that LLM response with markdown fences is cleaned."""
         mock_client = Mock()
         mock_response = Mock()
-        mock_response.content = [Mock(text="""```python
+        mock_response.content = [
+            Mock(
+                text="""```python
 import pytest
 
 def test_example():
     assert True
-```""")]
+```"""
+            )
+        ]
         mock_client.messages.create.return_value = mock_response
 
         # Mock the Anthropic import
@@ -687,14 +674,11 @@ def test_example():
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
             generator = RealTestGenerator(
-                project_root=str(tmp_path),
-                api_key="test-key",
-                use_llm=True
+                project_root=str(tmp_path), api_key="test-key", use_llm=True
             )
 
             test_path = generator.generate_tests_for_file(
-                str(source_file.relative_to(tmp_path)),
-                missing_lines=[1]
+                str(source_file.relative_to(tmp_path)), missing_lines=[1]
             )
 
         test_content = test_path.read_text()
@@ -720,14 +704,11 @@ def test_example():
 
         with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
             generator = RealTestGenerator(
-                project_root=str(tmp_path),
-                api_key="test-key",
-                use_llm=True
+                project_root=str(tmp_path), api_key="test-key", use_llm=True
             )
 
             test_path = generator.generate_tests_for_file(
-                str(source_file.relative_to(tmp_path)),
-                missing_lines=[1]
+                str(source_file.relative_to(tmp_path)), missing_lines=[1]
             )
 
         # Should fallback to template
@@ -737,10 +718,7 @@ def test_example():
 
     def test_extract_api_docs_with_valid_code(self, tmp_path):
         """Test API extraction from source code."""
-        generator = RealTestGenerator(
-            project_root=str(tmp_path),
-            use_llm=False
-        )
+        generator = RealTestGenerator(project_root=str(tmp_path), use_llm=False)
 
         source_code = """
 class MyClass:
@@ -762,10 +740,7 @@ def my_function(x: int, y: int) -> int:
 
     def test_extract_api_docs_with_invalid_code(self, tmp_path):
         """Test API extraction with syntax errors returns fallback."""
-        generator = RealTestGenerator(
-            project_root=str(tmp_path),
-            use_llm=False
-        )
+        generator = RealTestGenerator(project_root=str(tmp_path), use_llm=False)
 
         invalid_code = "def invalid syntax:"
 
@@ -875,10 +850,7 @@ class TestRealCoverageAnalyzerEdgeCases:
         """Test that timeout allows using partial coverage.json."""
         # Create coverage.json first
         coverage_file = tmp_path / "coverage.json"
-        coverage_data = {
-            "totals": {"percent_covered": 75.0},
-            "files": {}
-        }
+        coverage_data = {"totals": {"percent_covered": 75.0}, "files": {}}
         coverage_file.write_text(json.dumps(coverage_data))
 
         # Mock subprocess to timeout
@@ -929,18 +901,20 @@ class TestRealSecurityAuditorEdgeCases:
         """Test that CRITICAL severity issues are counted."""
         mock_result = Mock()
         mock_result.returncode = 1
-        mock_result.stdout = json.dumps({
-            "results": [
-                {
-                    "issue_severity": "CRITICAL",
-                    "issue_confidence": "HIGH",
-                    "issue_text": "Critical security flaw",
-                    "filename": "src/bad.py",
-                    "line_number": 10,
-                    "test_id": "B501"
-                }
-            ]
-        })
+        mock_result.stdout = json.dumps(
+            {
+                "results": [
+                    {
+                        "issue_severity": "CRITICAL",
+                        "issue_confidence": "HIGH",
+                        "issue_text": "Critical security flaw",
+                        "filename": "src/bad.py",
+                        "line_number": 10,
+                        "test_id": "B501",
+                    }
+                ]
+            }
+        )
 
         with patch("subprocess.run", return_value=mock_result):
             auditor = RealSecurityAuditor(str(tmp_path))
@@ -953,34 +927,36 @@ class TestRealSecurityAuditorEdgeCases:
         """Test that issues are grouped by filename."""
         mock_result = Mock()
         mock_result.returncode = 1
-        mock_result.stdout = json.dumps({
-            "results": [
-                {
-                    "issue_severity": "MEDIUM",
-                    "filename": "src/file1.py",
-                    "line_number": 10,
-                    "test_id": "B101",
-                    "issue_text": "Issue 1",
-                    "issue_confidence": "HIGH"
-                },
-                {
-                    "issue_severity": "MEDIUM",
-                    "filename": "src/file1.py",
-                    "line_number": 20,
-                    "test_id": "B102",
-                    "issue_text": "Issue 2",
-                    "issue_confidence": "MEDIUM"
-                },
-                {
-                    "issue_severity": "LOW",
-                    "filename": "src/file2.py",
-                    "line_number": 5,
-                    "test_id": "B103",
-                    "issue_text": "Issue 3",
-                    "issue_confidence": "LOW"
-                }
-            ]
-        })
+        mock_result.stdout = json.dumps(
+            {
+                "results": [
+                    {
+                        "issue_severity": "MEDIUM",
+                        "filename": "src/file1.py",
+                        "line_number": 10,
+                        "test_id": "B101",
+                        "issue_text": "Issue 1",
+                        "issue_confidence": "HIGH",
+                    },
+                    {
+                        "issue_severity": "MEDIUM",
+                        "filename": "src/file1.py",
+                        "line_number": 20,
+                        "test_id": "B102",
+                        "issue_text": "Issue 2",
+                        "issue_confidence": "MEDIUM",
+                    },
+                    {
+                        "issue_severity": "LOW",
+                        "filename": "src/file2.py",
+                        "line_number": 5,
+                        "test_id": "B103",
+                        "issue_text": "Issue 3",
+                        "issue_confidence": "LOW",
+                    },
+                ]
+            }
+        )
 
         with patch("subprocess.run", return_value=mock_result):
             auditor = RealSecurityAuditor(str(tmp_path))
@@ -1149,7 +1125,7 @@ class _PrivateClass:
 
         # Should only count public items
         assert report.total_functions == 1  # Only public_function
-        assert report.total_classes == 1    # Only PublicClass
+        assert report.total_classes == 1  # Only PublicClass
 
     def test_analyze_limits_missing_docstrings_to_10(self, tmp_path):
         """Test that missing docstrings are limited to first 10."""

@@ -1,7 +1,7 @@
 """Memory Graph Edge Types
 
 Defines edge types for connecting nodes in the knowledge graph.
-Edges represent relationships between entities discovered by wizards.
+Edges represent relationships between entities discovered by workflows.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
@@ -74,7 +74,7 @@ class Edge:
 
     # Context
     description: str = ""
-    source_wizard: str = ""
+    source_workflow: str = ""
 
     # Additional data
     metadata: dict[str, Any] = field(default_factory=dict)
@@ -91,7 +91,7 @@ class Edge:
             "weight": self.weight,
             "confidence": self.confidence,
             "description": self.description,
-            "source_wizard": self.source_wizard,
+            "source_workflow": self.source_workflow,
             "metadata": self.metadata,
             "created_at": self.created_at.isoformat(),
         }
@@ -106,7 +106,7 @@ class Edge:
             weight=data.get("weight", 1.0),
             confidence=data.get("confidence", 1.0),
             description=data.get("description", ""),
-            source_wizard=data.get("source_wizard", ""),
+            source_workflow=data.get("source_workflow", data.get("source_wizard", "")),
             metadata=data.get("metadata", {}),
             created_at=(
                 datetime.fromisoformat(data["created_at"])
@@ -121,8 +121,8 @@ class Edge:
         return f"{self.source_id}-{self.type.value}-{self.target_id}"
 
 
-# Common edge patterns for wizard findings
-WIZARD_EDGE_PATTERNS = {
+# Common edge patterns for workflow findings
+WORKFLOW_EDGE_PATTERNS = {
     "security-audit": [
         (EdgeType.CAUSES, "vulnerability → vulnerability"),
         (EdgeType.FIXED_BY, "vulnerability → fix"),

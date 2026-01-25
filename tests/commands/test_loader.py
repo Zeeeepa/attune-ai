@@ -244,10 +244,12 @@ class TestLoadCommandsFromPaths:
         (tmp_path / "a.md").write_text("A - Description A")
         (tmp_path / "b.md").write_text("B - Description B")
 
-        commands = load_commands_from_paths([
-            tmp_path / "a.md",
-            tmp_path / "b.md",
-        ])
+        commands = load_commands_from_paths(
+            [
+                tmp_path / "a.md",
+                tmp_path / "b.md",
+            ]
+        )
 
         assert len(commands) == 2
         assert "a" in commands
@@ -277,10 +279,12 @@ class TestLoadCommandsFromPaths:
         (tmp_path / "file.md").write_text("File - Description")
         (dir1 / "dir-cmd.md").write_text("DirCmd - Description")
 
-        commands = load_commands_from_paths([
-            tmp_path / "file.md",
-            dir1,
-        ])
+        commands = load_commands_from_paths(
+            [
+                tmp_path / "file.md",
+                dir1,
+            ]
+        )
 
         assert len(commands) == 2
         assert "file" in commands
@@ -290,10 +294,12 @@ class TestLoadCommandsFromPaths:
         """Test that non-existent paths are skipped."""
         (tmp_path / "exists.md").write_text("Exists - Description")
 
-        commands = load_commands_from_paths([
-            tmp_path / "exists.md",
-            tmp_path / "nonexistent.md",
-        ])
+        commands = load_commands_from_paths(
+            [
+                tmp_path / "exists.md",
+                tmp_path / "nonexistent.md",
+            ]
+        )
 
         assert len(commands) == 1
         assert "exists" in commands

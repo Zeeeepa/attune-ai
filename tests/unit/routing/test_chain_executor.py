@@ -22,22 +22,19 @@ class TestChainTrigger:
         """Test ChainTrigger can be created."""
         trigger = ChainTrigger(
             condition="high_severity > 5",
-            next_wizard="remediation-wizard",
+            next_workflow="remediation-wizard",
             approval_required=True,
-            reason="Critical security issues found"
+            reason="Critical security issues found",
         )
 
         assert trigger.condition == "high_severity > 5"
-        assert trigger.next_wizard == "remediation-wizard"
+        assert trigger.next_workflow == "remediation-wizard"
         assert trigger.approval_required is True
         assert trigger.reason == "Critical security issues found"
 
     def test_chain_trigger_defaults(self):
         """Test ChainTrigger uses default values."""
-        trigger = ChainTrigger(
-            condition="always",
-            next_wizard="follow-up"
-        )
+        trigger = ChainTrigger(condition="always", next_workflow="follow-up")
 
         assert trigger.approval_required is False
         assert trigger.reason == ""
@@ -49,12 +46,12 @@ class TestChainConfig:
     def test_chain_config_initialization(self):
         """Test ChainConfig can be created."""
         config = ChainConfig(
-            wizard_name="security-audit",
+            workflow_name="security-audit",
             auto_chain=True,
-            description="Security audit with auto-remediation"
+            description="Security audit with auto-remediation",
         )
 
-        assert config.wizard_name == "security-audit"
+        assert config.workflow_name == "security-audit"
         assert config.auto_chain is True
         assert config.description == "Security audit with auto-remediation"
         assert config.triggers == []
@@ -64,18 +61,15 @@ class TestChainConfig:
         trigger1 = ChainTrigger("severity > 3", "fix-wizard")
         trigger2 = ChainTrigger("coverage < 80", "test-wizard")
 
-        config = ChainConfig(
-            wizard_name="audit",
-            triggers=[trigger1, trigger2]
-        )
+        config = ChainConfig(workflow_name="audit", triggers=[trigger1, trigger2])
 
         assert len(config.triggers) == 2
-        assert config.triggers[0].next_wizard == "fix-wizard"
-        assert config.triggers[1].next_wizard == "test-wizard"
+        assert config.triggers[0].next_workflow == "fix-wizard"
+        assert config.triggers[1].next_workflow == "test-wizard"
 
     def test_chain_config_defaults(self):
         """Test ChainConfig default values."""
-        config = ChainConfig(wizard_name="test")
+        config = ChainConfig(workflow_name="test")
 
         assert config.auto_chain is True
         assert config.description == ""
@@ -88,12 +82,10 @@ class TestChainStep:
     def test_chain_step_initialization(self):
         """Test ChainStep can be created."""
         step = ChainStep(
-            wizard_name="security-scan",
-            triggered_by="manual",
-            approval_required=False
+            workflow_name="security-scan", triggered_by="manual", approval_required=False
         )
 
-        assert step.wizard_name == "security-scan"
+        assert step.workflow_name == "security-scan"
         assert step.triggered_by == "manual"
         assert step.approval_required is False
         assert step.approved is None
@@ -101,17 +93,10 @@ class TestChainStep:
 
     def test_chain_step_with_result(self):
         """Test ChainStep with execution result."""
-        result_data = {
-            "issues_found": 3,
-            "severity": "high",
-            "status": "completed"
-        }
+        result_data = {"issues_found": 3, "severity": "high", "status": "completed"}
 
         step = ChainStep(
-            wizard_name="analyzer",
-            triggered_by="auto",
-            approval_required=False,
-            result=result_data
+            workflow_name="analyzer", triggered_by="auto", approval_required=False, result=result_data
         )
 
         assert step.result["issues_found"] == 3
@@ -122,10 +107,10 @@ class TestChainStep:
         start_time = datetime.now()
 
         step = ChainStep(
-            wizard_name="processor",
+            workflow_name="processor",
             triggered_by="condition",
             approval_required=True,
-            started_at=start_time
+            started_at=start_time,
         )
 
         assert step.started_at == start_time
@@ -134,28 +119,18 @@ class TestChainStep:
     def test_chain_step_approval_states(self):
         """Test ChainStep approval states."""
         # Pending approval
-        pending = ChainStep(
-            wizard_name="test",
-            triggered_by="auto",
-            approval_required=True
-        )
+        pending = ChainStep(workflow_name="test", triggered_by="auto", approval_required=True)
         assert pending.approved is None
 
         # Approved
         approved = ChainStep(
-            wizard_name="test",
-            triggered_by="auto",
-            approval_required=True,
-            approved=True
+            workflow_name="test", triggered_by="auto", approval_required=True, approved=True
         )
         assert approved.approved is True
 
         # Rejected
         rejected = ChainStep(
-            wizard_name="test",
-            triggered_by="auto",
-            approval_required=True,
-            approved=False
+            workflow_name="test", triggered_by="auto", approval_required=True, approved=False
         )
         assert rejected.approved is False
 
@@ -165,39 +140,26 @@ class TestChainExecution:
 
     def test_chain_execution_initialization(self):
         """Test ChainExecution can be created."""
-        execution = ChainExecution(
-            chain_id="chain_123",
-            initial_wizard="security-audit"
-        )
+        execution = ChainExecution(chain_id="chain_123", initial_workflow="security-audit")
 
         assert execution.chain_id == "chain_123"
-        assert execution.initial_wizard == "security-audit"
+        assert execution.initial_workflow == "security-audit"
         assert execution.steps == []
         assert execution.status == "running"
         assert execution.current_step == 0
 
     def test_chain_execution_with_steps(self):
         """Test ChainExecution with multiple steps."""
-        step1 = ChainStep(
-            wizard_name="scan",
-            triggered_by="manual",
-            approval_required=False
-        )
-        step2 = ChainStep(
-            wizard_name="fix",
-            triggered_by="auto",
-            approval_required=True
-        )
+        step1 = ChainStep(workflow_name="scan", triggered_by="manual", approval_required=False)
+        step2 = ChainStep(workflow_name="fix", triggered_by="auto", approval_required=True)
 
         execution = ChainExecution(
-            chain_id="chain_456",
-            initial_wizard="scan",
-            steps=[step1, step2]
+            chain_id="chain_456", initial_workflow="scan", steps=[step1, step2]
         )
 
         assert len(execution.steps) == 2
-        assert execution.steps[0].wizard_name == "scan"
-        assert execution.steps[1].wizard_name == "fix"
+        assert execution.steps[0].workflow_name == "scan"
+        assert execution.steps[1].workflow_name == "fix"
 
     def test_chain_execution_status_values(self):
         """Test ChainExecution different status values."""
@@ -205,18 +167,13 @@ class TestChainExecution:
 
         for status in statuses:
             execution = ChainExecution(
-                chain_id=f"chain_{status}",
-                initial_wizard="test",
-                status=status
+                chain_id=f"chain_{status}", initial_workflow="test", status=status
             )
             assert execution.status == status
 
     def test_chain_execution_timestamps(self):
         """Test ChainExecution has started_at timestamp."""
-        execution = ChainExecution(
-            chain_id="chain_789",
-            initial_wizard="test"
-        )
+        execution = ChainExecution(chain_id="chain_789", initial_workflow="test")
 
         assert execution.started_at is not None
         assert isinstance(execution.started_at, datetime)
@@ -282,11 +239,11 @@ templates:
         # Verify chain config loaded
         config = executor.get_chain_config("security-audit")
         assert config is not None
-        assert config.wizard_name == "security-audit"
+        assert config.workflow_name == "security-audit"
         assert config.auto_chain is True
         assert len(config.triggers) == 1
         assert config.triggers[0].condition == "high_severity > 0"
-        assert config.triggers[0].next_wizard == "remediation"
+        assert config.triggers[0].next_workflow == "remediation"
 
         # Verify template loaded
         template = executor.get_template("full-audit")
@@ -321,7 +278,7 @@ chains:
         result = {"severity": 10}
         triggers = executor.get_triggered_chains("test-wizard", result)
         assert len(triggers) == 1
-        assert triggers[0].next_wizard == "next-wizard"
+        assert triggers[0].next_workflow == "next-wizard"
 
         # Should not trigger when severity <= 5
         result = {"severity": 5}
@@ -408,17 +365,17 @@ chains:
 class TestChainExecutionManagement:
     """Test chain execution creation and management."""
 
-    def test_create_execution_with_initial_wizard(self):
+    def test_create_execution_with_initial_workflow(self):
         """Test creating a new chain execution."""
         executor = ChainExecutor()
 
         execution = executor.create_execution("test-wizard")
 
         assert execution.chain_id.startswith("chain_")
-        assert execution.initial_wizard == "test-wizard"
+        assert execution.initial_workflow == "test-wizard"
         assert execution.status == "running"
         assert len(execution.steps) == 1
-        assert execution.steps[0].wizard_name == "test-wizard"
+        assert execution.steps[0].workflow_name == "test-wizard"
         assert execution.steps[0].triggered_by == "manual"
 
     def test_create_execution_with_triggered_steps(self):
@@ -429,15 +386,14 @@ class TestChainExecutionManagement:
         trigger2 = ChainTrigger("errors > 0", "step3", approval_required=True)
 
         execution = executor.create_execution(
-            "initial-wizard",
-            triggered_steps=[trigger1, trigger2]
+            "initial-wizard", triggered_steps=[trigger1, trigger2]
         )
 
         assert len(execution.steps) == 3
-        assert execution.steps[0].wizard_name == "initial-wizard"
-        assert execution.steps[1].wizard_name == "step2"
+        assert execution.steps[0].workflow_name == "initial-wizard"
+        assert execution.steps[1].workflow_name == "step2"
         assert execution.steps[1].triggered_by == "count > 0"
-        assert execution.steps[2].wizard_name == "step3"
+        assert execution.steps[2].workflow_name == "step3"
         assert execution.steps[2].approval_required is True
 
     def test_approve_step(self):
@@ -446,9 +402,7 @@ class TestChainExecutionManagement:
         execution = executor.create_execution("test-wizard")
 
         # Add a step requiring approval
-        execution.steps.append(
-            ChainStep("approval-wizard", "auto", approval_required=True)
-        )
+        execution.steps.append(ChainStep("approval-wizard", "auto", approval_required=True))
 
         success = executor.approve_step(execution, 1)
 
@@ -460,9 +414,7 @@ class TestChainExecutionManagement:
         executor = ChainExecutor()
         execution = executor.create_execution("test-wizard")
 
-        execution.steps.append(
-            ChainStep("approval-wizard", "auto", approval_required=True)
-        )
+        execution.steps.append(ChainStep("approval-wizard", "auto", approval_required=True))
 
         success = executor.reject_step(execution, 1)
 
@@ -486,14 +438,12 @@ class TestChainExecutionManagement:
         execution.steps[0].completed_at = datetime.now()
 
         # Add incomplete step
-        execution.steps.append(
-            ChainStep("step2", "auto", approval_required=False, approved=True)
-        )
+        execution.steps.append(ChainStep("step2", "auto", approval_required=False, approved=True))
 
         next_step = executor.get_next_step(execution)
 
         assert next_step is not None
-        assert next_step.wizard_name == "step2"
+        assert next_step.workflow_name == "step2"
 
     def test_get_next_step_waits_for_approval(self, tmp_path):
         """Test get_next_step waits when approval required."""
@@ -537,7 +487,7 @@ class TestChainExecutionManagement:
 
         # Should skip rejected and return approved
         assert next_step is not None
-        assert next_step.wizard_name == "approved-step"
+        assert next_step.workflow_name == "approved-step"
 
     def test_complete_step_marks_complete(self):
         """Test complete_step marks step as complete."""
@@ -571,10 +521,10 @@ chains:
         new_triggers = executor.complete_step(execution, step, result)
 
         assert len(new_triggers) == 1
-        assert new_triggers[0].next_wizard == "step2"
+        assert new_triggers[0].next_workflow == "step2"
         # New step should be added to execution
         assert len(execution.steps) == 2
-        assert execution.steps[1].wizard_name == "step2"
+        assert execution.steps[1].workflow_name == "step2"
 
     def test_complete_step_does_not_duplicate_wizards(self, tmp_path):
         """Test complete_step doesn't add duplicate wizards."""
@@ -598,7 +548,7 @@ chains:
         executor.complete_step(execution, step, result)
 
         # Should not add duplicate step2
-        step2_count = sum(1 for s in execution.steps if s.wizard_name == "step2")
+        step2_count = sum(1 for s in execution.steps if s.workflow_name == "step2")
         assert step2_count == 1
 
     def test_complete_step_completes_execution(self):
@@ -752,43 +702,36 @@ class TestChainDataClassIntegration:
         # Create triggers
         trigger = ChainTrigger(
             condition="issues > 0",
-            next_wizard="remediation",
+            next_workflow="remediation",
             approval_required=True,
-            reason="Issues need fixing"
+            reason="Issues need fixing",
         )
 
         # Create config
-        config = ChainConfig(
-            wizard_name="audit",
-            auto_chain=True,
-            triggers=[trigger]
-        )
+        config = ChainConfig(workflow_name="audit", auto_chain=True, triggers=[trigger])
 
         # Create steps
         step1 = ChainStep(
-            wizard_name="audit",
+            workflow_name="audit",
             triggered_by="manual",
             approval_required=False,
-            result={"issues": 5}
+            result={"issues": 5},
         )
 
         step2 = ChainStep(
-            wizard_name="remediation",
-            triggered_by="auto",
-            approval_required=True,
-            approved=True
+            workflow_name="remediation", triggered_by="auto", approval_required=True, approved=True
         )
 
         # Create execution
         execution = ChainExecution(
             chain_id="full_chain_001",
-            initial_wizard="audit",
+            initial_workflow="audit",
             steps=[step1, step2],
-            status="running"
+            status="running",
         )
 
         # Verify structure
-        assert config.triggers[0].next_wizard == "remediation"
+        assert config.triggers[0].next_workflow == "remediation"
         assert execution.steps[0].result["issues"] == 5
         assert execution.steps[1].approval_required is True
         assert execution.steps[1].approved is True
@@ -800,9 +743,9 @@ class TestChainDataClassIntegration:
         # Start execution
         execution = ChainExecution(
             chain_id="lifecycle_001",
-            initial_wizard="start",
+            initial_workflow="start",
             started_at=start_time,
-            status="running"
+            status="running",
         )
 
         assert execution.status == "running"
@@ -810,10 +753,10 @@ class TestChainDataClassIntegration:
 
         # Add first step
         step1 = ChainStep(
-            wizard_name="start",
+            workflow_name="start",
             triggered_by="manual",
             approval_required=False,
-            started_at=start_time
+            started_at=start_time,
         )
         execution.steps.append(step1)
 

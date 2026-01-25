@@ -8,10 +8,7 @@ Coverage target: 80%+
 
 import pytest
 
-from empathy_llm_toolkit.security.pii_scrubber import (
-    PIIDetection,
-    PIIScrubber,
-)
+from empathy_llm_toolkit.security.pii_scrubber import PIIDetection, PIIScrubber
 from empathy_llm_toolkit.security.secrets_detector import (
     SecretDetection,
     SecretsDetector,
@@ -246,7 +243,9 @@ class TestPIIScrubber:
         content = "Dr. John Smith is the attending physician"
         sanitized, detections = scrubber.scrub(content)
         # Name detection should work with title prefix
-        assert "[NAME]" in sanitized or "John Smith" in sanitized  # May or may not match depending on pattern
+        assert (
+            "[NAME]" in sanitized or "John Smith" in sanitized
+        )  # May or may not match depending on pattern
 
     def test_scrub_name_when_disabled(self):
         """Test name detection when disabled."""
@@ -614,7 +613,9 @@ MIIEpAIBAAKCAQEA...
     def test_detect_connection_string(self):
         """Test connection string detection."""
         detector = SecretsDetector()
-        content = "connection_string = 'Server=myserver;Database=mydb;User=admin;Password=secret123;'"
+        content = (
+            "connection_string = 'Server=myserver;Database=mydb;User=admin;Password=secret123;'"
+        )
         detections = detector.detect(content)
 
         conn_detections = [d for d in detections if d.secret_type == SecretType.CONNECTION_STRING]
@@ -645,7 +646,9 @@ MIIEpAIBAAKCAQEA...
         content = "secret = 'aK7bN2cX9dY3eZ4fW5gV6hU8iT1jS0kR'"
         detections = detector.detect(content)
 
-        entropy_detections = [d for d in detections if d.secret_type == SecretType.HIGH_ENTROPY_STRING]
+        entropy_detections = [
+            d for d in detections if d.secret_type == SecretType.HIGH_ENTROPY_STRING
+        ]
         # May or may not detect based on exact entropy
         assert isinstance(detections, list)
 
@@ -655,7 +658,9 @@ MIIEpAIBAAKCAQEA...
         content = "random = 'aK7bN2cX9dY3eZ4fW5gV6hU8iT1jS0kRm'"
         detections = detector.detect(content)
 
-        entropy_detections = [d for d in detections if d.secret_type == SecretType.HIGH_ENTROPY_STRING]
+        entropy_detections = [
+            d for d in detections if d.secret_type == SecretType.HIGH_ENTROPY_STRING
+        ]
         assert len(entropy_detections) == 0
 
     def test_detect_multiple_secrets(self):
@@ -819,7 +824,9 @@ class TestDetectSecretsConvenience:
         detections = detect_secrets(content, enable_entropy_analysis=False)
 
         # With entropy disabled, should not detect high entropy strings
-        entropy_detections = [d for d in detections if d.secret_type == SecretType.HIGH_ENTROPY_STRING]
+        entropy_detections = [
+            d for d in detections if d.secret_type == SecretType.HIGH_ENTROPY_STRING
+        ]
         assert len(entropy_detections) == 0
 
 

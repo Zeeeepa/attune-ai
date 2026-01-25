@@ -29,20 +29,18 @@ def get_current_coverage() -> dict[str, float]:
             ["pytest", "--cov=src", "--cov-report=json", "--cov-report=term", "-q"],
             capture_output=True,
             text=True,
-            timeout=120
+            timeout=120,
         )
 
         # Try to parse coverage from JSON
         import json
+
         cov_file = Path("coverage.json")
         if cov_file.exists():
             with open(cov_file) as f:
                 data = json.load(f)
                 total_coverage = data.get("totals", {}).get("percent_covered", 0.0)
-                return {
-                    "total": total_coverage,
-                    "details": data
-                }
+                return {"total": total_coverage, "details": data}
     except Exception as e:
         console.print(f"[yellow]Warning: Could not get coverage: {e}[/yellow]")
 
@@ -81,17 +79,13 @@ def analyze_file_for_test_targets(file_path: Path) -> dict[str, list[str]]:
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef):
                 # Skip private functions and tests
-                if not node.name.startswith('_') and not node.name.startswith('test_'):
+                if not node.name.startswith("_") and not node.name.startswith("test_"):
                     functions.append(node.name)
             elif isinstance(node, ast.ClassDef):
-                if not node.name.startswith('_') and not node.name.startswith('Test'):
+                if not node.name.startswith("_") and not node.name.startswith("Test"):
                     classes.append(node.name)
 
-        return {
-            "functions": functions,
-            "classes": classes,
-            "file": str(file_path)
-        }
+        return {"functions": functions, "classes": classes, "file": str(file_path)}
     except Exception as e:
         console.print(f"[yellow]Warning: Could not analyze {file_path}: {e}[/yellow]")
         return {"functions": [], "classes": [], "file": str(file_path)}
@@ -161,7 +155,7 @@ def create_test_file(test_path: Path, content: str):
     """Create a test file with the generated content."""
     test_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(test_path, 'w') as f:
+    with open(test_path, "w") as f:
         f.write(content)
 
     console.print(f"[green]✓ Created {test_path}[/green]")
@@ -171,11 +165,13 @@ def main():
     """Main execution."""
 
     console.print()
-    console.print(Panel.fit(
-        "[bold cyan]🎯 Test Coverage Boost - Real Implementation[/bold cyan]\n"
-        "[dim]Analyzing codebase and generating actual tests[/dim]",
-        border_style="cyan"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold cyan]🎯 Test Coverage Boost - Real Implementation[/bold cyan]\n"
+            "[dim]Analyzing codebase and generating actual tests[/dim]",
+            border_style="cyan",
+        )
+    )
     console.print()
 
     # Get current coverage
@@ -209,11 +205,7 @@ def main():
         targets_by_file[file_path] = targets
 
         rel_path = str(file_path.relative_to(Path("src")))
-        table.add_row(
-            rel_path,
-            str(len(targets["functions"])),
-            str(len(targets["classes"]))
-        )
+        table.add_row(rel_path, str(len(targets["functions"])), str(len(targets["classes"])))
 
     console.print(table)
     console.print()
@@ -228,13 +220,9 @@ def main():
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        console=console
+        console=console,
     ) as progress:
-
-        task = progress.add_task(
-            "[cyan]Generating tests...",
-            total=len(targets_by_file)
-        )
+        task = progress.add_task("[cyan]Generating tests...", total=len(targets_by_file))
 
         for file_path, targets in targets_by_file.items():
             # Generate test file path
@@ -254,22 +242,24 @@ def main():
     console.print()
 
     # Summary
-    console.print(Panel.fit(
-        "[bold green]✅ Test Generation Complete![/bold green]\n\n"
-        f"[bold]📊 Results:[/bold]\n"
-        f"• Test Files Created: [cyan]{tests_created}[/cyan]\n"
-        f"• Functions Covered: [cyan]{sum(len(t['functions']) for t in targets_by_file.values())}[/cyan]\n"
-        f"• Classes Covered: [cyan]{sum(len(t['classes']) for t in targets_by_file.values())}[/cyan]\n\n"
-        "[bold]📁 Location:[/bold]\n"
-        f"• [dim]tests/unit/[/dim]\n\n"
-        "[bold]⚠️  Next Steps:[/bold]\n"
-        "1. Review generated tests and implement TODOs\n"
-        "2. Run tests: [cyan]pytest tests/unit/ -v[/cyan]\n"
-        "3. Check coverage: [cyan]pytest --cov=src --cov-report=html[/cyan]\n"
-        "4. View report: [cyan]open htmlcov/index.html[/cyan]",
-        border_style="green",
-        title="🎉 Success"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold green]✅ Test Generation Complete![/bold green]\n\n"
+            f"[bold]📊 Results:[/bold]\n"
+            f"• Test Files Created: [cyan]{tests_created}[/cyan]\n"
+            f"• Functions Covered: [cyan]{sum(len(t['functions']) for t in targets_by_file.values())}[/cyan]\n"
+            f"• Classes Covered: [cyan]{sum(len(t['classes']) for t in targets_by_file.values())}[/cyan]\n\n"
+            "[bold]📁 Location:[/bold]\n"
+            f"• [dim]tests/unit/[/dim]\n\n"
+            "[bold]⚠️  Next Steps:[/bold]\n"
+            "1. Review generated tests and implement TODOs\n"
+            "2. Run tests: [cyan]pytest tests/unit/ -v[/cyan]\n"
+            "3. Check coverage: [cyan]pytest --cov=src --cov-report=html[/cyan]\n"
+            "4. View report: [cyan]open htmlcov/index.html[/cyan]",
+            border_style="green",
+            title="🎉 Success",
+        )
+    )
     console.print()
 
     # Show example test file
@@ -278,14 +268,16 @@ def main():
         rel_path = example_file.relative_to(Path("src/empathy_os"))
         test_path = Path("tests/unit") / rel_path.parent / f"test_{example_file.name}"
 
-        console.print(Panel(
-            f"[bold]Example Generated Test:[/bold]\n\n"
-            f"[dim]{test_path}[/dim]\n\n"
-            f"Open this file to see the test template and\n"
-            f"implement the TODO sections.",
-            title="📝 Review Tests",
-            border_style="blue"
-        ))
+        console.print(
+            Panel(
+                f"[bold]Example Generated Test:[/bold]\n\n"
+                f"[dim]{test_path}[/dim]\n\n"
+                f"Open this file to see the test template and\n"
+                f"implement the TODO sections.",
+                title="📝 Review Tests",
+                border_style="blue",
+            )
+        )
         console.print()
 
 
@@ -298,5 +290,6 @@ if __name__ == "__main__":
     except Exception as e:
         console.print(f"\n[bold red]Error: {e}[/bold red]")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

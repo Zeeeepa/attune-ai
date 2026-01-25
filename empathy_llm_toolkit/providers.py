@@ -363,13 +363,10 @@ class AnthropicBatchProvider:
             self._batch_jobs: dict[str, Any] = {}
         except ImportError as e:
             raise ImportError(
-                "anthropic package required for Batch API. "
-                "Install with: pip install anthropic"
+                "anthropic package required for Batch API. Install with: pip install anthropic"
             ) from e
 
-    def create_batch(
-        self, requests: list[dict[str, Any]], job_id: str | None = None
-    ) -> str:
+    def create_batch(self, requests: list[dict[str, Any]], job_id: str | None = None) -> str:
         """Create a batch job.
 
         Args:
@@ -454,9 +451,7 @@ class AnthropicBatchProvider:
         status = self.get_batch_status(batch_id)
 
         if status.status != "completed":
-            raise ValueError(
-                f"Batch {batch_id} not completed (status: {status.status})"
-            )
+            raise ValueError(f"Batch {batch_id} not completed (status: {status.status})")
 
         try:
             results = self.client.batches.results(batch_id)
@@ -510,9 +505,7 @@ class AnthropicBatchProvider:
             # Check timeout
             elapsed = (datetime.now() - start_time).total_seconds()
             if elapsed > timeout:
-                raise TimeoutError(
-                    f"Batch {batch_id} did not complete within {timeout}s"
-                )
+                raise TimeoutError(f"Batch {batch_id} did not complete within {timeout}s")
 
             # Log progress
             logger.debug(f"Batch {batch_id} status: {status.status} (elapsed: {elapsed:.0f}s)")
