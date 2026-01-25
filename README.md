@@ -18,11 +18,11 @@ pip install empathy-framework[developer]
 
 ## What's New in v4.7.0
 
+**$0 Workflows via Skills** - Multi-agent workflows run through Claude Code's Task tool instead of API calls. No additional cost with your Claude subscription.
+
 **Socratic Workflows** - Interactive discovery through guided questions. Workflows ask what you need rather than requiring upfront configuration.
 
 **Security Hardened** - Fixed critical vulnerabilities (path traversal, JWT, SSRF).
-
-**Performance** - 36% faster scanning, 39% faster init, 11,000+ tests passing.
 
 **Hub-Based Commands** - Organized workflows into intuitive command hubs.
 
@@ -142,26 +142,29 @@ Claude: What error or unexpected behavior are you seeing?
 
 ## Cost Optimization
 
-Smart tier routing automatically selects the right model for each task:
+### Skills = $0 (Claude Code)
 
-| Tier | Model | Use Case | Cost |
-|------|-------|----------|------|
-| CHEAP | Haiku / GPT-4o-mini | Formatting, simple tasks | ~$0.005/task |
-| CAPABLE | Sonnet / GPT-4o | Bug fixes, code review | ~$0.08/task |
-| PREMIUM | Opus / o1 | Architecture, complex design | ~$0.45/task |
-
-**Savings by role:**
-
-| Role | Savings |
-|------|---------|
-| Junior Developer | 86% |
-| QA Engineer | 80% |
-| Mid-Level Developer | 73% |
-| Senior Developer | 65% |
-| Architect | 34% |
+When using Claude Code, workflows run as skills through the Task tool - **no API costs**:
 
 ```bash
-# Track your actual savings
+/dev           # $0 - uses your Claude subscription
+/testing       # $0
+/release       # $0
+/agent create  # $0
+```
+
+### API Mode (CI/CD, Automation)
+
+For programmatic use, smart tier routing saves 34-86%:
+
+| Tier    | Model               | Use Case                    | Cost        |
+| ------- | ------------------- | --------------------------- | ----------- |
+| CHEAP   | Haiku / GPT-4o-mini | Formatting, simple tasks    | ~$0.005     |
+| CAPABLE | Sonnet / GPT-4o     | Bug fixes, code review      | ~$0.08      |
+| PREMIUM | Opus / o1           | Architecture, complex design | ~$0.45      |
+
+```bash
+# Track API usage and savings
 empathy telemetry savings --days 30
 ```
 
