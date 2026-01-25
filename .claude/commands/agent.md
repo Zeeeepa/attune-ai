@@ -97,14 +97,31 @@ Assemble multiple agents for collaborative work.
 3. Set up handoff points
 4. Configure aggregation of results
 
-**Team composition example:**
+**Team composition examples:**
 
 ```yaml
+# Comprehensive code review
 team: code-review-team
 agents:
-  - code-reviewer     # Quality check
-  - security-reviewer # Security audit
-  - architect        # Architecture review
+  - code-reviewer       # Quality check
+  - security-reviewer   # Security audit
+  - quality-validator   # Metrics analysis
+workflow: sequential
+
+# Debug and fix
+team: debug-fix-team
+agents:
+  - debugger            # Find root cause
+  - test-writer         # Write regression test
+  - refactorer          # Clean up fix
+workflow: sequential
+
+# Feature planning
+team: planning-team
+agents:
+  - planner             # Requirements discovery
+  - architect           # Technical design
+  - performance-analyst # Scalability review
 workflow: sequential
 ```
 
@@ -127,12 +144,20 @@ View all available agents and their capabilities.
 
 **Available agents:**
 
-| Agent                  | Role            | Use Case                |
-| ---------------------- | --------------- | ----------------------- |
-| **architect**          | System design   | Architecture decisions  |
-| **code-reviewer**      | Quality review  | Code review tasks       |
-| **security-reviewer**  | Security audit  | Security-sensitive code |
-| **empathy-specialist** | Level 4+ work   | Complex user needs      |
+All agents use **Socratic questioning** to guide discovery rather than just providing answers.
+
+| Agent                    | Role               | Use Case                              |
+| ------------------------ | ------------------ | ------------------------------------- |
+| **architect**            | System design      | Architecture decisions, tech choices  |
+| **code-reviewer**        | Quality review     | Code review, design patterns          |
+| **debugger**             | Bug investigation  | Root cause analysis, hypothesis tests |
+| **empathy-specialist**   | Level 4-5 empathy  | Complex user needs, trust building    |
+| **performance-analyst**  | Optimization       | Bottlenecks, profiling, memory issues |
+| **planner**              | Requirements       | Sprint planning, scope discovery      |
+| **quality-validator**    | Code quality       | Complexity, naming, documentation     |
+| **refactorer**           | Code improvement   | Clean code, pattern application       |
+| **security-reviewer**    | Security audit     | Vulnerabilities, attack scenarios     |
+| **test-writer**          | Test design        | Edge cases, test strategy, TDD        |
 
 ---
 
@@ -154,17 +179,31 @@ Run a specific agent for a task.
 
 ---
 
-## When NOT to Use This Hub
+## Cross-Hub Agent Integration
 
-| If you need...        | Use instead |
-| --------------------- | ----------- |
-| Debug code            | `/dev`      |
-| Run tests             | `/testing`  |
-| Plan implementation   | `/workflow` |
-| Manage context/memory | `/context`  |
+Agents can also be invoked from relevant hubs:
+
+| Hub         | Related Agents                                  |
+| ----------- | ----------------------------------------------- |
+| `/dev`      | debugger, code-reviewer, refactorer             |
+| `/testing`  | test-writer, quality-validator                  |
+| `/workflow` | planner, architect                              |
+| `/docs`     | code-reviewer (documentation review)            |
+| `/release`  | security-reviewer, quality-validator            |
+
+## When to Use This Hub Directly
+
+Use `/agent` when you want to:
+
+- Create a new custom agent
+- Compose an agent team for collaborative work
+- Invoke a specific agent by name
+- See all available agents and their capabilities
 
 ## Related Hubs
 
-- `/workflow` - Development workflows
+- `/workflow` - Development workflows (uses planner, architect)
+- `/dev` - Development tools (uses debugger, code-reviewer)
+- `/testing` - Testing workflows (uses test-writer)
 - `/context` - Context and memory management
 - `/learning` - Pattern learning

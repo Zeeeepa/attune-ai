@@ -320,11 +320,12 @@ all = [
 ]
 
 [project.scripts]
-# Primary unified CLI (Typer-based)
-empathy = "empathy_os.cli_unified:main"
+# Primary minimal CLI (v4.7.1+) - streamlined for automation/CI
+empathy = "empathy_os.cli_minimal:main"
 
 # Legacy entry points (for backwards compatibility)
 empathy-legacy = "empathy_os.cli:main"
+empathy-unified = "empathy_os.cli_unified:main"  # Previous unified CLI
 empathy-scan = "empathy_software_plugin.cli:scan_command"
 empathy-memory = "empathy_os.memory.control_panel:main"
 empathy-inspect = "empathy_software_plugin.cli.inspect:main"
@@ -368,7 +369,7 @@ pr-review = "empathy_os.workflows.pr_review:PRReviewWorkflow"
 [tool.setuptools.packages.find]
 where = ["src", "."]
 namespaces = false
-exclude = ["tests*", "*.tests*", "examples*", "docs*", "*.archive*", "build*", "dist*", "archived_wizards*", "wizards_consolidated*"]
+exclude = ["tests*", "*.tests*", "examples*", "docs*", "*.archive*", "build*", "dist*", "archived_wizards*", "wizards_consolidated*", "*.mypy_cache*", "*.__pycache__*"]
 
 [tool.setuptools.package-dir]
 empathy_os = "src/empathy_os"

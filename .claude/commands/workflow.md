@@ -42,23 +42,72 @@ Question:
 
 ## Plan Implementation
 
-Create a plan with Socratic discovery before coding.
+Create a plan with structured Socratic discovery before coding.
 
-**Tell me:**
+### Step 1: Understand the Change
 
-- What feature or change you want to implement
-- Any constraints or requirements
+```yaml
+Question:
+  header: "Change Type"
+  question: "What kind of change are you planning?"
+  options:
+    - label: "New feature"
+      description: "Adding entirely new functionality"
+    - label: "Enhancement"
+      description: "Improving or extending existing functionality"
+    - label: "Bug fix"
+      description: "Correcting broken behavior"
+    - label: "Refactor"
+      description: "Restructuring without changing behavior"
+```
 
-**I will:**
+### Step 2: Clarify Constraints
 
-1. Ask clarifying questions about requirements
-2. Explore the codebase for relevant patterns
-3. Identify architectural considerations
-4. Present implementation options with trade-offs
-5. Create a step-by-step plan
-6. Get your approval before proceeding
+```yaml
+Question:
+  header: "Constraints"
+  question: "What constraints should I consider?"
+  multiSelect: true
+  options:
+    - label: "Backward compatible"
+      description: "Must not break existing APIs or behavior"
+    - label: "Performance critical"
+      description: "Speed or memory usage is important"
+    - label: "Security sensitive"
+      description: "Handles auth, user data, or system access"
+    - label: "Minimal changes"
+      description: "Prefer smallest possible footprint"
+```
 
-**This enters Plan Mode** - I'll research thoroughly before proposing changes.
+### Step 3: Socratic Exploration
+
+After reading the codebase, I'll ask clarifying questions like:
+
+**For patterns:**
+"I see the codebase uses [pattern X] for similar features. Should we follow this pattern, or is there a reason to do something different?"
+
+**For trade-offs:**
+
+"There are two approaches here:
+
+- Option A: [description] - simpler but less flexible
+- Option B: [description] - more complex but extensible
+
+What matters more for this feature: simplicity or flexibility?"
+
+**For scope:**
+"This change will touch [X, Y, Z]. Are all of these okay to modify, or should some be off-limits?"
+
+### Step 4: Plan Approval
+
+Before any code changes, I'll present:
+
+1. Summary of what I understood
+2. Files I plan to modify
+3. Step-by-step approach
+4. Risks or concerns
+
+**This enters Plan Mode** - I'll research thoroughly and get your approval before proceeding.
 
 ---
 
@@ -91,25 +140,59 @@ Write tests first, then implement (Red-Green-Refactor).
 
 ## Code Review
 
-Review code for quality, security, and best practices.
+Review code using Socratic questioning to help you understand issues.
 
-**Tell me:**
+### Step 1: Review Focus
 
-- File or directory to review
-- Focus areas (security, performance, style)
+```yaml
+Question:
+  header: "Focus"
+  question: "What kind of review do you need?"
+  options:
+    - label: "Quick sanity check"
+      description: "High-level review for obvious issues"
+    - label: "Thorough review"
+      description: "Deep dive into all aspects"
+    - label: "Security focused"
+      description: "Priority on vulnerabilities and risks"
+    - label: "Learning review"
+      description: "Help me understand best practices"
+```
+
+### Step 2: Socratic Feedback
+
+> **Philosophy:** Teach, don't just tell
+
+Instead of: "Line 42 has a bug"
+I'll ask: "What do you think happens when `users` is empty on line 42?"
+
+Instead of: "This violates DRY"
+I'll ask: "I notice similar logic in these 3 places. What might happen if we need to change this behavior?"
+
+Instead of: "Security issue here"
+I'll ask: "Let's trace how user input flows through this function. What validation happens before line 78?"
+
+### Step 3: Guided Discovery
+
+For each issue found, I'll guide your understanding:
+
+```text
+"Looking at getUserProfile() on line 47.
+What happens if the user doesn't exist?"
+
+[Wait for your response]
+
+"And on line 52, you're accessing user.email.
+What would happen if getUserProfile returned null?"
+```
 
 **I will:**
 
 1. Read and understand the code
-2. Check for:
-   - Correctness and logic errors
-   - Security vulnerabilities
-   - Performance issues
-   - Style and consistency
-   - Test coverage
-3. Provide structured feedback
-4. Suggest specific improvements
-5. Highlight what's done well
+2. Identify issues through questions, not lectures
+3. Help you discover problems yourself
+4. Explain the *why*, not just the *what*
+5. Highlight what's done well (reinforce good patterns)
 
 ---
 
@@ -155,6 +238,20 @@ Need both?
 
 ---
 
+## Invoke Socratic Agents
+
+For deeper analysis, invoke specialized agents via `/agent`:
+
+| Agent          | Use When                                            |
+| -------------- | --------------------------------------------------- |
+| **planner**    | Complex requirements discovery, sprint planning     |
+| **architect**  | System design decisions, technology choices         |
+| **refactorer** | Code improvement with pattern guidance and examples |
+
+**Example:** `/agent "invoke planner for user authentication feature"`
+
+---
+
 ## When NOT to Use This Hub
 
 | If you need...       | Use instead |
@@ -169,3 +266,4 @@ Need both?
 - `/dev` - Debugging, commits, PRs
 - `/testing` - Run tests, coverage
 - `/docs` - Documentation
+- `/agent` - Invoke planner, architect, refactorer agents
