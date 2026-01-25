@@ -18,6 +18,8 @@ pip install empathy-framework[developer]
 
 ## What's New in v4.7.0
 
+**Socratic Workflows** - Interactive discovery through guided questions. Workflows ask what you need rather than requiring upfront configuration.
+
 **Security Hardened** - Fixed critical vulnerabilities (path traversal, JWT, SSRF).
 
 **Performance** - 36% faster scanning, 39% faster init, 11,000+ tests passing.
@@ -100,6 +102,40 @@ Workflows are organized into hubs for easy discovery:
 /dev "debug auth error" # Jump directly to debugging
 /testing "run coverage" # Run coverage analysis
 /release                # Start release preparation
+```
+
+---
+
+## Socratic Method
+
+Workflows guide you through discovery instead of requiring upfront configuration:
+
+```text
+You: /dev
+
+Claude: What development task do you need?
+  1. Debug issue
+  2. Create commit
+  3. PR workflow
+  4. Quality check
+
+You: 1
+
+Claude: What error or unexpected behavior are you seeing?
+```
+
+**How it works:**
+
+1. **Discovery** - Workflow asks targeted questions to understand your needs
+2. **Context gathering** - Collects relevant code, errors, and constraints
+3. **Dynamic agent creation** - Assembles the right team based on your answers
+4. **Execution** - Runs with appropriate tier selection
+
+**Create custom agents with Socratic guidance:**
+
+```bash
+/agent create    # Guided agent creation
+/agent team      # Build multi-agent teams interactively
 ```
 
 ---
