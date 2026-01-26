@@ -42,18 +42,14 @@ class TestModelTier:
 
 @pytest.mark.unit
 class TestModelProvider:
-    """Educational tests for model provider enum."""
+    """Educational tests for model provider enum (Anthropic-only as of v5.0.0)."""
 
     def test_provider_values(self):
         """Teaching Pattern: Testing provider enumeration.
 
-        Support for multiple LLM providers.
+        Claude-native architecture supports only Anthropic provider.
         """
         assert ModelProvider.ANTHROPIC.value == "anthropic"
-        assert ModelProvider.OPENAI.value == "openai"
-        assert ModelProvider.GOOGLE.value == "google"
-        assert ModelProvider.OLLAMA.value == "ollama"
-        assert ModelProvider.HYBRID.value == "hybrid"
 
     def test_provider_to_string(self):
         """Teaching Pattern: Testing enum serialization.
@@ -64,21 +60,12 @@ class TestModelProvider:
         assert provider.value == "anthropic"
         assert str(provider.value) == "anthropic"
 
-    @pytest.mark.parametrize(
-        "provider,expected",
-        [
-            (ModelProvider.ANTHROPIC, "anthropic"),
-            (ModelProvider.OPENAI, "openai"),
-            (ModelProvider.GOOGLE, "google"),
-            (ModelProvider.OLLAMA, "ollama"),
-        ],
-    )
-    def test_all_providers(self, provider, expected):
-        """Teaching Pattern: Parametrized provider testing.
+    def test_anthropic_provider(self):
+        """Teaching Pattern: Testing Anthropic provider.
 
-        Each provider should have correct value.
+        Anthropic is the only supported provider in v5.0.0.
         """
-        assert provider.value == expected
+        assert ModelProvider.ANTHROPIC.value == "anthropic"
 
 
 @pytest.mark.unit
@@ -209,30 +196,28 @@ class TestModelInfo:
 class TestModelRegistry:
     """Educational tests for MODEL_REGISTRY."""
 
-    def test_registry_has_all_providers(self):
+    def test_registry_has_anthropic_provider(self):
         """Teaching Pattern: Testing registry structure.
 
-        Registry should have all major providers.
+        Registry should have Anthropic provider (Claude-native v5.0.0).
         """
         from empathy_os.models.registry import MODEL_REGISTRY
 
         assert "anthropic" in MODEL_REGISTRY
-        assert "openai" in MODEL_REGISTRY
-        assert "google" in MODEL_REGISTRY
-        assert "ollama" in MODEL_REGISTRY
-        assert "hybrid" in MODEL_REGISTRY
+        # v5.0.0: Only Anthropic provider supported
+        assert len(MODEL_REGISTRY) == 1
 
-    def test_each_provider_has_all_tiers(self):
+    def test_anthropic_has_all_tiers(self):
         """Teaching Pattern: Testing registry completeness.
 
-        Each provider should have all tier levels.
+        Anthropic provider should have all tier levels.
         """
         from empathy_os.models.registry import MODEL_REGISTRY
 
-        for provider_name, models in MODEL_REGISTRY.items():
-            assert "cheap" in models, f"{provider_name} missing 'cheap' tier"
-            assert "capable" in models, f"{provider_name} missing 'capable' tier"
-            assert "premium" in models, f"{provider_name} missing 'premium' tier"
+        anthropic = MODEL_REGISTRY["anthropic"]
+        assert "cheap" in anthropic
+        assert "capable" in anthropic
+        assert "premium" in anthropic
 
     def test_anthropic_models(self):
         """Teaching Pattern: Testing specific provider models.
@@ -246,19 +231,6 @@ class TestModelRegistry:
         assert "haiku" in anthropic["cheap"].id.lower()
         assert "sonnet" in anthropic["capable"].id.lower()
         assert "opus" in anthropic["premium"].id.lower()
-
-    def test_ollama_models_are_free(self):
-        """Teaching Pattern: Testing provider-specific features.
-
-        Ollama models run locally and are free.
-        """
-        from empathy_os.models.registry import MODEL_REGISTRY
-
-        ollama = MODEL_REGISTRY["ollama"]
-
-        for _tier, model in ollama.items():
-            assert model.input_cost_per_million == 0.0
-            assert model.output_cost_per_million == 0.0
 
 
 @pytest.mark.unit
@@ -294,13 +266,12 @@ class TestRegistryHelpers:
     def test_get_model_invalid_provider(self):
         """Teaching Pattern: Testing error handling.
 
-        Invalid provider should return None.
+        Invalid provider should raise ValueError (v5.0.0: Anthropic-only).
         """
         from empathy_os.models.registry import get_model
 
-        model = get_model("invalid_provider", "cheap")
-
-        assert model is None
+        with pytest.raises(ValueError, match="not supported"):
+            get_model("invalid_provider", "cheap")
 
     def test_get_model_invalid_tier(self):
         """Teaching Pattern: Testing invalid tier.
@@ -316,7 +287,7 @@ class TestRegistryHelpers:
     def test_get_all_models(self):
         """Teaching Pattern: Testing registry access.
 
-        get_all_models returns the complete registry.
+        get_all_models returns the complete registry (Anthropic-only v5.0.0).
         """
         from empathy_os.models.registry import get_all_models
 
@@ -324,7 +295,7 @@ class TestRegistryHelpers:
 
         assert isinstance(all_models, dict)
         assert "anthropic" in all_models
-        assert len(all_models) >= 5  # At least 5 providers
+        assert len(all_models) == 1  # v5.0.0: Anthropic only
 
     def test_get_pricing_for_model(self):
         """Teaching Pattern: Testing pricing lookup by model ID.
@@ -354,7 +325,7 @@ class TestRegistryHelpers:
     def test_get_supported_providers(self):
         """Teaching Pattern: Testing provider list.
 
-        Can get list of all supported providers.
+        Can get list of all supported providers (Anthropic-only v5.0.0).
         """
         from empathy_os.models.registry import get_supported_providers
 
@@ -362,8 +333,7 @@ class TestRegistryHelpers:
 
         assert isinstance(providers, list)
         assert "anthropic" in providers
-        assert "openai" in providers
-        assert len(providers) >= 5
+        assert len(providers) == 1  # v5.0.0: Anthropic only
 
     def test_get_tiers(self):
         """Teaching Pattern: Testing tier list.
