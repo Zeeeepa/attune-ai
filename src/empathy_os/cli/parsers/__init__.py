@@ -6,7 +6,20 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from . import help, info, inspect, patterns, status, tier, workflow
+from . import (
+    help,
+    info,
+    inspect,
+    metrics,
+    orchestrate,
+    patterns,
+    provider,
+    setup,
+    status,
+    sync,
+    tier,
+    workflow,
+)
 
 
 def register_all_parsers(subparsers):
@@ -19,13 +32,31 @@ def register_all_parsers(subparsers):
         subparsers: ArgumentParser subparsers object from main parser
 
     Note:
-        As additional command modules are extracted from cli.py,
-        import them here and call their register_parsers() function.
+        All 30 commands have been extracted from the monolithic cli.py
+        and organized into focused modules.
     """
+    # Core commands
     help.register_parsers(subparsers)
     tier.register_parsers(subparsers)
     info.register_parsers(subparsers)
+
+    # Pattern and state management
     patterns.register_parsers(subparsers)
     status.register_parsers(subparsers)
+
+    # Workflow and execution
     workflow.register_parsers(subparsers)
     inspect.register_parsers(subparsers)
+
+    # Provider configuration
+    provider.register_parsers(subparsers)
+
+    # Orchestration and sync
+    orchestrate.register_parsers(subparsers)
+    sync.register_parsers(subparsers)
+
+    # Metrics and state
+    metrics.register_parsers(subparsers)
+
+    # Setup and initialization
+    setup.register_parsers(subparsers)
