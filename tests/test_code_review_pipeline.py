@@ -151,7 +151,7 @@ class TestCodeReviewPipelineInit:
 
     def test_custom_provider(self):
         """Test custom provider."""
-        pipeline = CodeReviewPipeline(provider="openai")
+        pipeline = CodeReviewPipeline(provider="anthropic")
 
         assert pipeline.provider == "openai"
         assert pipeline.crew_config["provider"] == "openai"

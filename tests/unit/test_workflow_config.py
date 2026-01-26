@@ -48,7 +48,7 @@ class TestWorkflowConfigInitialization:
     def test_initialization_with_custom_values(self):
         """Test creating config with custom values."""
         config = WorkflowConfig(
-            default_provider="openai",
+            default_provider="anthropic",
             workflow_providers={"research": "anthropic"},
             compliance_mode="hipaa",
             enabled_workflows=["test-gen"],
@@ -410,7 +410,7 @@ class TestWorkflowConfigSaving:
         """Test saving config to JSON file."""
         with tempfile.TemporaryDirectory() as tmpdir:
             config = WorkflowConfig(
-                default_provider="openai",
+                default_provider="anthropic",
                 workflow_providers={"research": "anthropic"},
             )
 
@@ -428,7 +428,7 @@ class TestWorkflowConfigSaving:
         """Test saving config to YAML file."""
         with tempfile.TemporaryDirectory() as tmpdir:
             config = WorkflowConfig(
-                default_provider="openai",
+                default_provider="anthropic",
                 workflow_providers={"research": "anthropic"},
             )
 

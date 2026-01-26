@@ -545,7 +545,7 @@ class TestRefactoringConfig:
     def test_custom_values(self):
         """Test creating config with custom values."""
         config = RefactoringConfig(
-            provider="openai",
+            provider="anthropic",
             api_key="sk-test",
             depth="thorough",
             focus_areas=["rename", "simplify"],
@@ -617,14 +617,14 @@ class TestRefactoringCrewInit:
 
     def test_init_with_config(self):
         """Test initialization with config object."""
-        config = RefactoringConfig(provider="openai", depth="thorough")
+        config = RefactoringConfig(provider="anthropic", depth="thorough")
         crew = RefactoringCrew(config=config)
         assert crew.config.provider == "openai"
         assert crew.config.depth == "thorough"
 
     def test_init_with_kwargs(self):
         """Test initialization with keyword arguments."""
-        crew = RefactoringCrew(provider="openai", api_key="sk-test")
+        crew = RefactoringCrew(provider="anthropic", api_key="sk-test")
         assert crew.config.provider == "openai"
         assert crew.config.api_key == "sk-test"
 

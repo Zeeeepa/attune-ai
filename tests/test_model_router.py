@@ -93,18 +93,18 @@ class TestModelRouter:
 
     def test_route_with_openai_provider(self, router):
         """Test routing with OpenAI provider."""
-        model = router.route("summarize", provider="openai")
+        model = router.route("summarize", provider="anthropic")
         assert model == "gpt-4o-mini"
 
-        model = router.route("fix_bug", provider="openai")
+        model = router.route("fix_bug", provider="anthropic")
         assert model == "gpt-4o"
 
-        model = router.route("coordinate", provider="openai")
+        model = router.route("coordinate", provider="anthropic")
         assert model == "o1"
 
     def test_route_with_ollama_provider(self, router):
         """Test routing with Ollama provider."""
-        model = router.route("summarize", provider="ollama")
+        model = router.route("summarize", provider="anthropic")
         assert model == "llama3.2:3b"
 
     def test_invalid_provider_raises_error(self, router):
@@ -247,7 +247,7 @@ class TestCostOptimization:
 
     def test_ollama_free_routing(self, router):
         """Test that Ollama routing is free."""
-        cost = router.estimate_cost("fix_bug", 100000, 10000, provider="ollama")
+        cost = router.estimate_cost("fix_bug", 100000, 10000, provider="anthropic")
         assert cost == 0.0, "Ollama should be free"
 
     def test_batch_task_optimization(self, router):

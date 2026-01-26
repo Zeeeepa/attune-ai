@@ -105,7 +105,7 @@ class TestLLMResponse:
         resp = LLMResponse(
             content="Test",
             model_id="gpt-4o",
-            provider="openai",
+            provider="anthropic",
             tier="capable",
             tokens_input=100,
             tokens_output=50,

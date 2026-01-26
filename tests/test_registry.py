@@ -107,7 +107,7 @@ class TestModelInfo:
         """Test ModelInfo with custom values."""
         model = ModelInfo(
             id="vision-model",
-            provider="openai",
+            provider="anthropic",
             tier="capable",
             input_cost_per_million=5.0,
             output_cost_per_million=15.0,
@@ -134,7 +134,7 @@ class TestModelInfo:
         """Test name property alias for id."""
         model = ModelInfo(
             id="gpt-4o",
-            provider="openai",
+            provider="anthropic",
             tier="capable",
             input_cost_per_million=2.5,
             output_cost_per_million=10.0,
@@ -200,7 +200,7 @@ class TestModelInfo:
         """Test to_workflow_config method."""
         model = ModelInfo(
             id="gpt-4o",
-            provider="openai",
+            provider="anthropic",
             tier="capable",
             input_cost_per_million=2.5,
             output_cost_per_million=10.0,
