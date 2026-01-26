@@ -92,7 +92,7 @@ class FallbackPolicy:
             return self.custom_chain
 
         chain: list[FallbackStep] = []
-        all_providers = ["anthropic", "openai", "ollama"]
+        all_providers = ["anthropic"]  # Anthropic-only as of v5.0.0
         all_tiers = ["premium", "capable", "cheap"]
         # Optimization: Cache tier index for O(1) lookup (vs O(n) .index() call)
         tier_index_map = {tier: i for i, tier in enumerate(all_tiers)}
