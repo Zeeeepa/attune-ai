@@ -8,6 +8,17 @@ from pathlib import Path
 
 import pytest
 
+# Load test environment variables from .env.test
+try:
+    from dotenv import load_dotenv
+
+    # Load .env.test if it exists (for local testing with mock API keys)
+    test_env_path = Path(__file__).parent.parent / ".env.test"
+    if test_env_path.exists():
+        load_dotenv(test_env_path, override=True)
+except ImportError:
+    pass  # python-dotenv not installed
+
 # =============================================================================
 # File Test Tracking - Automatic per-file test result recording
 # Supports both single-process and xdist parallel execution

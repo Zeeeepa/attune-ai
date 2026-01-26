@@ -38,26 +38,26 @@ except ImportError:
     pass  # python-dotenv not installed, rely on environment variables
 
 # Import caching infrastructure
-from empathy_os.cache import BaseCache, auto_setup_cache, create_cache
+from empathy_os.cache import BaseCache
 from empathy_os.config import _validate_file_path
 from empathy_os.cost_tracker import MODEL_PRICING, CostTracker
 
 # Import unified types from empathy_os.models
 from empathy_os.models import (
     ExecutionContext,
-    LLMCallRecord,
     LLMExecutor,
     TaskRoutingRecord,
     TelemetryBackend,
-    WorkflowRunRecord,
-    WorkflowStageRecord,
-    get_telemetry_store,
 )
 from empathy_os.models import ModelProvider as UnifiedModelProvider
 from empathy_os.models import ModelTier as UnifiedModelTier
 
+# Import mixins (extracted for maintainability)
+from .caching import CachedResponse, CachingMixin
+
 # Import progress tracking
 from .progress import ProgressCallback, ProgressTracker
+from .telemetry_mixin import TelemetryMixin
 
 # Import telemetry tracking
 try:
@@ -368,8 +368,10 @@ def get_workflow_stats(history_file: str = WORKFLOW_HISTORY_FILE) -> dict:
     }
 
 
-class BaseWorkflow(ABC):
+class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
     """Base class for multi-model workflows.
+
+    Inherits from CachingMixin and TelemetryMixin (extracted for maintainability).
 
     Subclasses define stages and tier mappings:
 
@@ -439,8 +441,6 @@ class BaseWorkflow(ABC):
 
         # New: LLMExecutor support
         self._executor = executor
-        self._telemetry_backend = telemetry_backend or get_telemetry_store()
-        self._run_id: str | None = None  # Set at start of execute()
         self._api_key: str | None = None  # For default executor creation
 
         # Cache support
@@ -456,20 +456,8 @@ class BaseWorkflow(ABC):
         self._enable_tier_fallback = enable_tier_fallback
         self._tier_progression: list[tuple[str, str, bool]] = []  # (stage, tier, success)
 
-        # Telemetry tracking (singleton instance)
-        self._telemetry_tracker: UsageTracker | None = None
-        self._enable_telemetry = True  # Enable by default
-        if TELEMETRY_AVAILABLE and UsageTracker is not None:
-            try:
-                self._telemetry_tracker = UsageTracker.get_instance()
-            except (OSError, PermissionError) as e:
-                # File system errors - log but disable telemetry
-                logger.debug(f"Failed to initialize telemetry tracker (file system error): {e}")
-                self._enable_telemetry = False
-            except (AttributeError, TypeError, ValueError) as e:
-                # Configuration or initialization errors
-                logger.debug(f"Failed to initialize telemetry tracker (config error): {e}")
-                self._enable_telemetry = False
+        # Telemetry tracking (uses TelemetryMixin)
+        self._init_telemetry(telemetry_backend)
 
         # Load config if not provided
         self._config = config or WorkflowConfig.load()
@@ -507,43 +495,7 @@ class BaseWorkflow(ABC):
         model = get_model(provider_str, tier.value, self._config)
         return model
 
-    def _maybe_setup_cache(self) -> None:
-        """Set up cache with one-time user prompt if needed.
-
-        This is called lazily on first workflow execution to avoid
-        blocking workflow initialization.
-        """
-        if not self._enable_cache:
-            return
-
-        if self._cache_setup_attempted:
-            return
-
-        self._cache_setup_attempted = True
-
-        # If cache already provided, use it
-        if self._cache is not None:
-            return
-
-        # Otherwise, trigger auto-setup (which may prompt user)
-        try:
-            auto_setup_cache()
-            self._cache = create_cache()
-            logger.info(f"Cache initialized for workflow: {self.name}")
-        except ImportError as e:
-            # Hybrid cache dependencies not available, fall back to hash-only
-            logger.info(
-                f"Using hash-only cache (install empathy-framework[cache] for semantic caching): {e}"
-            )
-            self._cache = create_cache(cache_type="hash")
-        except (OSError, PermissionError) as e:
-            # File system errors - disable cache
-            logger.warning(f"Cache setup failed (file system error): {e}, continuing without cache")
-            self._enable_cache = False
-        except (ValueError, TypeError, AttributeError) as e:
-            # Configuration errors - disable cache
-            logger.warning(f"Cache setup failed (config error): {e}, continuing without cache")
-            self._enable_cache = False
+    # Note: _maybe_setup_cache is inherited from CachingMixin
 
     async def _call_llm(
         self,
@@ -582,54 +534,26 @@ class BaseWorkflow(ABC):
         model = self.get_model_for_tier(tier)
         cache_type = None
 
-        # Try cache lookup if enabled
-        if self._enable_cache and self._cache is not None:
-            try:
-                # Combine system + user message for cache key
-                full_prompt = f"{system}\n\n{user_message}" if system else user_message
-                cached_response = self._cache.get(self.name, stage, full_prompt, model)
+        # Try cache lookup using CachingMixin
+        cached = self._try_cache_lookup(stage, system, user_message, model)
+        if cached is not None:
+            # Track telemetry for cache hit
+            duration_ms = int((time.time() - start_time) * 1000)
+            cost = self._calculate_cost(tier, cached.input_tokens, cached.output_tokens)
+            cache_type = self._get_cache_type()
 
-                if cached_response is not None:
-                    logger.debug(f"Cache hit for {self.name}:{stage}")
-                    # Determine cache type
-                    if hasattr(self._cache, "cache_type"):
-                        ct = self._cache.cache_type
-                        # Ensure it's a string (not a Mock object)
-                        cache_type = str(ct) if ct and isinstance(ct, str) else "hash"
-                    else:
-                        cache_type = "hash"  # Default assumption
+            self._track_telemetry(
+                stage=stage,
+                tier=tier,
+                model=model,
+                cost=cost,
+                tokens={"input": cached.input_tokens, "output": cached.output_tokens},
+                cache_hit=True,
+                cache_type=cache_type,
+                duration_ms=duration_ms,
+            )
 
-                    # Track telemetry for cache hit
-                    duration_ms = int((time.time() - start_time) * 1000)
-                    in_tokens = cached_response["input_tokens"]
-                    out_tokens = cached_response["output_tokens"]
-                    cost = self._calculate_cost(tier, in_tokens, out_tokens)
-
-                    self._track_telemetry(
-                        stage=stage,
-                        tier=tier,
-                        model=model,
-                        cost=cost,
-                        tokens={"input": in_tokens, "output": out_tokens},
-                        cache_hit=True,
-                        cache_type=cache_type,
-                        duration_ms=duration_ms,
-                    )
-
-                    # Cached response is dict with content, input_tokens, output_tokens
-                    return (
-                        cached_response["content"],
-                        cached_response["input_tokens"],
-                        cached_response["output_tokens"],
-                    )
-            except (KeyError, TypeError, ValueError) as e:
-                # Malformed cache data - continue with LLM call
-                logger.debug(f"Cache lookup failed (malformed data): {e}, continuing with LLM call")
-            except (OSError, PermissionError) as e:
-                # File system errors - continue with LLM call
-                logger.debug(
-                    f"Cache lookup failed (file system error): {e}, continuing with LLM call"
-                )
+            return (cached.content, cached.input_tokens, cached.output_tokens)
 
         # Create a step config for this call
         step = WorkflowStepConfig(
@@ -662,23 +586,14 @@ class BaseWorkflow(ABC):
                 duration_ms=duration_ms,
             )
 
-            # Store in cache if enabled
-            if self._enable_cache and self._cache is not None:
-                try:
-                    full_prompt = f"{system}\n\n{user_message}" if system else user_message
-                    response_data = {
-                        "content": content,
-                        "input_tokens": in_tokens,
-                        "output_tokens": out_tokens,
-                    }
-                    self._cache.put(self.name, stage, full_prompt, model, response_data)
-                    logger.debug(f"Cached response for {self.name}:{stage}")
-                except (OSError, PermissionError) as e:
-                    # File system errors - log but continue
-                    logger.debug(f"Failed to cache response (file system error): {e}")
-                except (ValueError, TypeError, KeyError) as e:
-                    # Data serialization errors - log but continue
-                    logger.debug(f"Failed to cache response (serialization error): {e}")
+            # Store in cache using CachingMixin
+            self._store_in_cache(
+                stage,
+                system,
+                user_message,
+                model,
+                CachedResponse(content=content, input_tokens=in_tokens, output_tokens=out_tokens),
+            )
 
             return content, in_tokens, out_tokens
         except (ValueError, TypeError, KeyError) as e:
@@ -698,53 +613,7 @@ class BaseWorkflow(ABC):
             logger.exception(f"Unexpected error calling LLM: {e}")
             return f"Error calling LLM: {type(e).__name__}", 0, 0
 
-    def _track_telemetry(
-        self,
-        stage: str,
-        tier: ModelTier,
-        model: str,
-        cost: float,
-        tokens: dict[str, int],
-        cache_hit: bool,
-        cache_type: str | None,
-        duration_ms: int,
-    ) -> None:
-        """Track telemetry for an LLM call.
-
-        Args:
-            stage: Stage name
-            tier: Model tier used
-            model: Model ID used
-            cost: Cost in USD
-            tokens: Dictionary with "input" and "output" token counts
-            cache_hit: Whether this was a cache hit
-            cache_type: Cache type if cache hit
-            duration_ms: Duration in milliseconds
-
-        """
-        if not self._enable_telemetry or self._telemetry_tracker is None:
-            return
-
-        try:
-            provider_str = getattr(self, "_provider_str", "unknown")
-            self._telemetry_tracker.track_llm_call(
-                workflow=self.name,
-                stage=stage,
-                tier=tier.value.upper(),
-                model=model,
-                provider=provider_str,
-                cost=cost,
-                tokens=tokens,
-                cache_hit=cache_hit,
-                cache_type=cache_type,
-                duration_ms=duration_ms,
-            )
-        except (AttributeError, TypeError, ValueError) as e:
-            # INTENTIONAL: Telemetry tracking failures should never crash workflows
-            logger.debug(f"Failed to track telemetry (config/data error): {e}")
-        except (OSError, PermissionError) as e:
-            # File system errors - log but never crash workflow
-            logger.debug(f"Failed to track telemetry (file system error): {e}")
+    # Note: _track_telemetry is inherited from TelemetryMixin
 
     def _calculate_cost(self, tier: ModelTier, input_tokens: int, output_tokens: int) -> float:
         """Calculate cost for a stage."""
@@ -784,32 +653,20 @@ class BaseWorkflow(ABC):
         savings = baseline_cost - total_cost
         savings_percent = (savings / baseline_cost * 100) if baseline_cost > 0 else 0.0
 
-        # Calculate cache metrics if cache is enabled
-        cache_hits = 0
-        cache_misses = 0
-        cache_hit_rate = 0.0
+        # Calculate cache metrics using CachingMixin
+        cache_stats = self._get_cache_stats()
+        cache_hits = cache_stats["hits"]
+        cache_misses = cache_stats["misses"]
+        cache_hit_rate = cache_stats["hit_rate"]
         estimated_cost_without_cache = total_cost
         savings_from_cache = 0.0
 
-        if self._cache is not None:
-            try:
-                stats = self._cache.get_stats()
-                cache_hits = stats.hits
-                cache_misses = stats.misses
-                cache_hit_rate = stats.hit_rate
-
-                # Estimate cost without cache (assumes cache hits would have incurred full cost)
-                # This is a conservative estimate
-                if cache_hits > 0:
-                    # Average cost per non-cached call
-                    avg_cost_per_call = total_cost / cache_misses if cache_misses > 0 else 0.0
-                    # Estimated additional cost if cache hits were actual API calls
-                    estimated_additional_cost = cache_hits * avg_cost_per_call
-                    estimated_cost_without_cache = total_cost + estimated_additional_cost
-                    savings_from_cache = estimated_additional_cost
-            except (AttributeError, TypeError):
-                # Cache doesn't support stats or error occurred
-                pass
+        # Estimate cost without cache (assumes cache hits would have incurred full cost)
+        if cache_hits > 0:
+            avg_cost_per_call = total_cost / cache_misses if cache_misses > 0 else 0.0
+            estimated_additional_cost = cache_hits * avg_cost_per_call
+            estimated_cost_without_cache = total_cost + estimated_additional_cost
+            savings_from_cache = estimated_additional_cost
 
         return CostReport(
             total_cost=total_cost,
@@ -956,7 +813,8 @@ class BaseWorkflow(ABC):
 
         # Log routing start
         try:
-            self._telemetry_backend.log_task_routing(routing_record)
+            if self._telemetry_backend is not None:
+                self._telemetry_backend.log_task_routing(routing_record)
         except Exception as e:
             logger.debug(f"Failed to log task routing: {e}")
 
@@ -1364,7 +1222,8 @@ class BaseWorkflow(ABC):
 
         # Log routing completion
         try:
-            self._telemetry_backend.log_task_routing(routing_record)
+            if self._telemetry_backend is not None:
+                self._telemetry_backend.log_task_routing(routing_record)
         except Exception as e:
             logger.debug(f"Failed to log task routing completion: {e}")
 
@@ -1543,119 +1402,7 @@ class BaseWorkflow(ABC):
             self._executor = self._create_default_executor()
         return self._executor
 
-    def _emit_call_telemetry(
-        self,
-        step_name: str,
-        task_type: str,
-        tier: str,
-        model_id: str,
-        input_tokens: int,
-        output_tokens: int,
-        cost: float,
-        latency_ms: int,
-        success: bool = True,
-        error_message: str | None = None,
-        fallback_used: bool = False,
-    ) -> None:
-        """Emit an LLMCallRecord to the telemetry backend.
-
-        Args:
-            step_name: Name of the workflow step
-            task_type: Task type used for routing
-            tier: Model tier used
-            model_id: Model ID used
-            input_tokens: Input token count
-            output_tokens: Output token count
-            cost: Estimated cost
-            latency_ms: Latency in milliseconds
-            success: Whether the call succeeded
-            error_message: Error message if failed
-            fallback_used: Whether fallback was used
-
-        """
-        record = LLMCallRecord(
-            call_id=str(uuid.uuid4()),
-            timestamp=datetime.now().isoformat(),
-            workflow_name=self.name,
-            step_name=step_name,
-            task_type=task_type,
-            provider=self._provider_str,
-            tier=tier,
-            model_id=model_id,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-            estimated_cost=cost,
-            latency_ms=latency_ms,
-            success=success,
-            error_message=error_message,
-            fallback_used=fallback_used,
-            metadata={"run_id": self._run_id},
-        )
-        try:
-            self._telemetry_backend.log_call(record)
-        except (AttributeError, ValueError, TypeError):
-            # Telemetry backend errors - log but don't crash workflow
-            logger.debug("Failed to log call telemetry (backend error)")
-        except OSError:
-            # File system errors - log but don't crash workflow
-            logger.debug("Failed to log call telemetry (file system error)")
-        except Exception:  # noqa: BLE001
-            # INTENTIONAL: Telemetry is optional diagnostics - never crash workflow
-            logger.debug("Unexpected error logging call telemetry")
-
-    def _emit_workflow_telemetry(self, result: WorkflowResult) -> None:
-        """Emit a WorkflowRunRecord to the telemetry backend.
-
-        Args:
-            result: The workflow result to record
-
-        """
-        # Build stage records
-        stages = [
-            WorkflowStageRecord(
-                stage_name=s.name,
-                tier=s.tier.value,
-                model_id=self.get_model_for_tier(s.tier),
-                input_tokens=s.input_tokens,
-                output_tokens=s.output_tokens,
-                cost=s.cost,
-                latency_ms=s.duration_ms,
-                success=not s.skipped and result.error is None,
-                skipped=s.skipped,
-                skip_reason=s.skip_reason,
-            )
-            for s in result.stages
-        ]
-
-        record = WorkflowRunRecord(
-            run_id=self._run_id or str(uuid.uuid4()),
-            workflow_name=self.name,
-            started_at=result.started_at.isoformat(),
-            completed_at=result.completed_at.isoformat(),
-            stages=stages,
-            total_input_tokens=sum(s.input_tokens for s in result.stages if not s.skipped),
-            total_output_tokens=sum(s.output_tokens for s in result.stages if not s.skipped),
-            total_cost=result.cost_report.total_cost,
-            baseline_cost=result.cost_report.baseline_cost,
-            savings=result.cost_report.savings,
-            savings_percent=result.cost_report.savings_percent,
-            total_duration_ms=result.total_duration_ms,
-            success=result.success,
-            error=result.error,
-            providers_used=[self._provider_str],
-            tiers_used=list(result.cost_report.by_tier.keys()),
-        )
-        try:
-            self._telemetry_backend.log_workflow(record)
-        except (AttributeError, ValueError, TypeError):
-            # Telemetry backend errors - log but don't crash workflow
-            logger.debug("Failed to log workflow telemetry (backend error)")
-        except OSError:
-            # File system errors - log but don't crash workflow
-            logger.debug("Failed to log workflow telemetry (file system error)")
-        except Exception:  # noqa: BLE001
-            # INTENTIONAL: Telemetry is optional diagnostics - never crash workflow
-            logger.debug("Unexpected error logging workflow telemetry")
+    # Note: _emit_call_telemetry and _emit_workflow_telemetry are inherited from TelemetryMixin
 
     async def run_step_with_executor(
         self,

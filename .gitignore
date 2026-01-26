@@ -180,3 +180,4 @@ memdocs_storage/
 metrics.db
 benchmarks/profiles/*.prof
 benchmarks/profiles/*.dat
+.env.test
