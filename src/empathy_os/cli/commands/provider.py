@@ -1,86 +1,107 @@
-"""Multi-model provider configuration commands.
-
-Commands for managing provider settings, registry, costs, and telemetry.
+"""Provider configuration commands.
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import subprocess
-import sys
+from pathlib import Path
 
-import typer
+from empathy_os.config import _validate_file_path
+from empathy_os.logging_config import get_logger
 
-# Create the provider Typer app
-provider_app = typer.Typer(help="Multi-model provider configuration")
-
-
-@provider_app.callback(invoke_without_command=True)
-def provider_show(
-    ctx: typer.Context,
-    set_provider: str | None = None,
-    interactive: bool = False,
-    format_out: str = "table",
-) -> None:
-    """Show or configure provider settings."""
-    if ctx.invoked_subcommand is not None:
-        return
-
-    args = [sys.executable, "-m", "empathy_os.models.cli", "provider"]
-    if set_provider:
-        args.extend(["--set", set_provider])
-    if interactive:
-        args.append("--interactive")
-    if format_out != "table":
-        args.extend(["-f", format_out])
-
-    subprocess.run(args, check=False)
+logger = get_logger(__name__)
 
 
-@provider_app.command("registry")
-def provider_registry(
-    provider_filter: str | None = None,
-) -> None:
-    """Show all available models in the registry."""
-    args = [sys.executable, "-m", "empathy_os.models.cli", "registry"]
-    if provider_filter:
-        args.extend(["--provider", provider_filter])
-    subprocess.run(args, check=False)
+def cmd_provider_hybrid(args):
+    """Configure hybrid mode - pick best models for each tier.
+
+    Args:
+        args: Namespace object from argparse (no additional attributes used).
+
+    Returns:
+        None: Launches interactive tier configuration.
+    """
+    from empathy_os.models.provider_config import configure_hybrid_interactive
+
+    configure_hybrid_interactive()
 
 
-@provider_app.command("costs")
-def provider_costs(
-    input_tokens: int = 10000,
-    output_tokens: int = 2000,
-) -> None:
-    """Estimate costs for token usage."""
-    subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "empathy_os.models.cli",
-            "costs",
-            "--input-tokens",
-            str(input_tokens),
-            "--output-tokens",
-            str(output_tokens),
-        ],
-        check=False,
+def cmd_provider_show(args):
+    """Show current provider configuration.
+
+    Args:
+        args: Namespace object from argparse (no additional attributes used).
+
+    Returns:
+        None: Prints provider configuration and model mappings.
+    """
+    from empathy_os.models import MODEL_REGISTRY
+    from empathy_os.models.provider_config import ProviderConfig
+    from empathy_os.workflows.config import WorkflowConfig
+
+    print("\n" + "=" * 60)
+    print("Provider Configuration")
+    print("=" * 60)
+
+    # Detect available providers
+    config = ProviderConfig.auto_detect()
+    print(
+        f"\nDetected API keys for: {', '.join(config.available_providers) if config.available_providers else 'None'}",
     )
 
+    # Load workflow config
+    wf_config = WorkflowConfig.load()
+    print(f"\nDefault provider: {wf_config.default_provider}")
 
-@provider_app.command("telemetry")
-def provider_telemetry(
-    summary: bool = False,
-    costs: bool = False,
-    providers: bool = False,
-) -> None:
-    """View telemetry and analytics."""
-    args = [sys.executable, "-m", "empathy_os.models.cli", "telemetry"]
-    if summary:
-        args.append("--summary")
-    if costs:
-        args.append("--costs")
-    if providers:
-        args.append("--providers")
-    subprocess.run(args, check=False)
+    # Show effective models
+    print("\nEffective model mapping:")
+    if wf_config.custom_models and "hybrid" in wf_config.custom_models:
+        hybrid = wf_config.custom_models["hybrid"]
+        for tier in ["cheap", "capable", "premium"]:
+            model = hybrid.get(tier, "not configured")
+            print(f"  {tier:8} → {model}")
+    else:
+        provider = wf_config.default_provider
+        if provider in MODEL_REGISTRY:
+            for tier in ["cheap", "capable", "premium"]:
+                model_info = MODEL_REGISTRY[provider].get(tier)
+                if model_info:
+                    print(f"  {tier:8} → {model_info.id} ({provider})")
+
+    print()
+
+
+def cmd_provider_set(args):
+    """Set default provider.
+
+    Args:
+        args: Namespace object from argparse with attributes:
+            - name (str): Provider name to set as default.
+
+    Returns:
+        None: Saves provider to .empathy/workflows.yaml.
+    """
+    import yaml
+
+    provider = args.name
+    workflows_path = Path(".empathy/workflows.yaml")
+
+    # Load existing config or create new
+    if workflows_path.exists():
+        with open(workflows_path) as f:
+            config = yaml.safe_load(f) or {}
+    else:
+        config = {}
+        workflows_path.parent.mkdir(parents=True, exist_ok=True)
+
+    config["default_provider"] = provider
+
+    validated_workflows_path = _validate_file_path(str(workflows_path))
+    with open(validated_workflows_path, "w") as f:
+        yaml.dump(config, f, default_flow_style=False, sort_keys=False)
+
+    print(f"✓ Default provider set to: {provider}")
+    print(f"  Saved to: {validated_workflows_path}")
+
+    if provider == "hybrid":
+        print("\n  Tip: Run 'empathy provider hybrid' to customize tier models")

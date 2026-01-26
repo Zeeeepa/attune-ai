@@ -6,7 +6,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from . import help, info, patterns, status, tier
+from . import help, info, inspect, patterns, status, tier, workflow
 
 
 def register_all_parsers(subparsers):
@@ -27,3 +27,5 @@ def register_all_parsers(subparsers):
     info.register_parsers(subparsers)
     patterns.register_parsers(subparsers)
     status.register_parsers(subparsers)
+    workflow.register_parsers(subparsers)
+    inspect.register_parsers(subparsers)

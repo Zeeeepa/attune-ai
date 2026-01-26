@@ -63,13 +63,18 @@ def main() -> int:
     # TODO: Import and register remaining commands from cli.py
     # This is a partial refactoring - additional commands still in cli.py
     # For now, if command not found in new structure, fall back to old cli.py
-    try:
-        from empathy_os import cli as old_cli
-
-        # Register commands not yet extracted (fallback for now)
-        _register_legacy_commands(subparsers, old_cli)
-    except ImportError:
-        pass  # Old cli.py not available or already moved
+    #
+    # NOTE: Temporarily disabled to avoid conflicts with extracted commands.
+    # Commands that have been extracted:
+    #   - help, tier, info, patterns, status (Phase 1)
+    #   - workflow, inspect (run, inspect, export, import) (Phase 2)
+    # Once all commands are extracted, the old cli.py will be removed entirely.
+    #
+    # try:
+    #     from empathy_os import cli as old_cli
+    #     _register_legacy_commands(subparsers, old_cli)
+    # except ImportError:
+    #     pass  # Old cli.py not available or already moved
 
     # Parse arguments
     args = parser.parse_args()
