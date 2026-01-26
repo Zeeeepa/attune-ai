@@ -16,6 +16,24 @@ pip install empathy-framework[developer]
 
 ---
 
+## 🎯 Transitioning to Claude-Native Architecture
+
+**Empathy Framework is evolving to focus exclusively on Anthropic/Claude** to unlock features impossible with multi-provider abstraction:
+
+- **📦 Prompt Caching:** 90% cost reduction on repeated prompts
+- **📖 200K Context:** Largest context window available (vs 128K for competitors)
+- **🧠 Extended Thinking:** See Claude's internal reasoning process
+- **🔧 Advanced Tool Use:** Optimized for agentic workflows
+
+**Timeline:**
+- ✅ **v4.8.0 (Jan 2026):** Deprecation warnings for OpenAI/Google/Ollama providers
+- ✅ **v5.0.0 (Jan 26, 2026):** Non-Anthropic providers removed (BREAKING - COMPLETE)
+- 🎯 **v5.1.0 (Feb 2026):** Prompt caching enabled by default
+
+**Migration Guide:** [docs/CLAUDE_NATIVE.md](docs/CLAUDE_NATIVE.md)
+
+---
+
 ## What's New in v4.7.0
 
 **$0 Workflows via Skills** - Multi-agent workflows run through Claude Code's Task tool instead of API calls. No additional cost with your Claude subscription.
