@@ -13,6 +13,19 @@ version: "1.0"
 
 Overview of all available hubs and how to use them.
 
+## Understanding Commands
+
+When you type `/` in Claude Code, you'll see two types of commands:
+
+| Type             | Source                             | Examples                                                                          |
+| ---------------- | ---------------------------------- | --------------------------------------------------------------------------------- |
+| **Project Hubs** | This project (`.claude/commands/`) | `/dev`, `/testing`, `/workflow`, `/docs`, etc.                                    |
+| **Built-in**     | Claude Code itself                 | `/clear`, `/compact`, `/config`, `/cost`, `/doctor`, `/init`, `/model`, `/status` |
+
+**This help covers the 9 Project Hubs below.** For built-in commands, see [Claude Code documentation](https://docs.anthropic.com/claude-code).
+
+---
+
 ## Available Hubs
 
 | Hub          | Aliases              | Purpose                                    |
