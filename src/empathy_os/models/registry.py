@@ -31,14 +31,9 @@ class ModelTier(Enum):
 
 
 class ModelProvider(Enum):
-    """Supported model providers."""
+    """Supported model provider (Claude-native architecture as of v5.0.0)."""
 
     ANTHROPIC = "anthropic"
-    OPENAI = "openai"
-    GOOGLE = "google"
-    OLLAMA = "ollama"
-    HYBRID = "hybrid"
-    CUSTOM = "custom"
 
 
 @dataclass(frozen=True)
@@ -164,156 +159,6 @@ MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
             supports_tools=True,
         ),
     },
-    # -------------------------------------------------------------------------
-    # OpenAI Models
-    # -------------------------------------------------------------------------
-    "openai": {
-        "cheap": ModelInfo(
-            id="gpt-4o-mini",
-            provider="openai",
-            tier="cheap",
-            input_cost_per_million=0.15,
-            output_cost_per_million=0.60,
-            max_tokens=4096,
-            supports_vision=False,
-            supports_tools=True,
-        ),
-        "capable": ModelInfo(
-            id="gpt-4o",
-            provider="openai",
-            tier="capable",
-            input_cost_per_million=2.50,
-            output_cost_per_million=10.00,
-            max_tokens=4096,
-            supports_vision=True,
-            supports_tools=True,
-        ),
-        "premium": ModelInfo(
-            id="o1",
-            provider="openai",
-            tier="premium",
-            input_cost_per_million=15.00,
-            output_cost_per_million=60.00,
-            max_tokens=32768,
-            supports_vision=False,
-            supports_tools=False,  # o1 doesn't support tools yet
-        ),
-    },
-    # -------------------------------------------------------------------------
-    # Google Gemini Models
-    # Key feature: Massive context windows (1M-2M tokens)
-    # Model recommendations by tier:
-    #   cheap: gemini-2.0-flash-exp (1M context, fast, very cheap)
-    #   capable: gemini-1.5-pro (2M context, excellent for large codebases)
-    #   premium: gemini-2.5-pro (Google's most capable reasoning model)
-    # -------------------------------------------------------------------------
-    "google": {
-        "cheap": ModelInfo(
-            id="gemini-2.0-flash-exp",
-            provider="google",
-            tier="cheap",
-            input_cost_per_million=0.10,
-            output_cost_per_million=0.40,
-            max_tokens=8192,
-            supports_vision=True,
-            supports_tools=True,
-        ),
-        "capable": ModelInfo(
-            id="gemini-1.5-pro",
-            provider="google",
-            tier="capable",
-            input_cost_per_million=1.25,
-            output_cost_per_million=5.00,
-            max_tokens=8192,
-            supports_vision=True,
-            supports_tools=True,
-        ),
-        "premium": ModelInfo(
-            id="gemini-2.5-pro",
-            provider="google",
-            tier="premium",
-            input_cost_per_million=1.25,
-            output_cost_per_million=10.00,
-            max_tokens=8192,
-            supports_vision=True,
-            supports_tools=True,
-        ),
-    },
-    # -------------------------------------------------------------------------
-    # Ollama (Local) Models - Zero cost
-    # Model recommendations by tier:
-    #   cheap: Small, fast models (3B params) - llama3.2:3b
-    #   capable: Mid-size models (8B params) - llama3.1:8b
-    #   premium: Large models (70B params) - llama3.1:70b
-    # Users need to pull models: ollama pull llama3.2:3b llama3.1:8b llama3.1:70b
-    # -------------------------------------------------------------------------
-    "ollama": {
-        "cheap": ModelInfo(
-            id="llama3.2:3b",
-            provider="ollama",
-            tier="cheap",
-            input_cost_per_million=0.0,
-            output_cost_per_million=0.0,
-            max_tokens=4096,
-            supports_vision=False,
-            supports_tools=True,
-        ),
-        "capable": ModelInfo(
-            id="llama3.1:8b",
-            provider="ollama",
-            tier="capable",
-            input_cost_per_million=0.0,
-            output_cost_per_million=0.0,
-            max_tokens=8192,
-            supports_vision=False,
-            supports_tools=True,
-        ),
-        "premium": ModelInfo(
-            id="llama3.1:70b",
-            provider="ollama",
-            tier="premium",
-            input_cost_per_million=0.0,
-            output_cost_per_million=0.0,
-            max_tokens=8192,
-            supports_vision=False,
-            supports_tools=True,
-        ),
-    },
-    # -------------------------------------------------------------------------
-    # Hybrid - Mix of best models from different providers
-    # -------------------------------------------------------------------------
-    "hybrid": {
-        "cheap": ModelInfo(
-            id="gpt-4o-mini",  # OpenAI - cheapest per token
-            provider="openai",
-            tier="cheap",
-            input_cost_per_million=0.15,
-            output_cost_per_million=0.60,
-            max_tokens=4096,
-            supports_vision=False,
-            supports_tools=True,
-        ),
-        "capable": ModelInfo(
-            id="claude-sonnet-4-5",  # Anthropic Sonnet 4.5 - best reasoning (2026)
-            provider="anthropic",
-            tier="capable",
-            input_cost_per_million=3.00,
-            output_cost_per_million=15.00,
-            max_tokens=8192,
-            supports_vision=True,
-            supports_tools=True,
-        ),
-        "premium": ModelInfo(
-            id="claude-opus-4-5-20251101",  # Anthropic - best overall
-            provider="anthropic",
-            tier="premium",
-            input_cost_per_million=15.00,
-            output_cost_per_million=75.00,
-            max_tokens=8192,
-            supports_vision=True,
-            supports_tools=True,
-        ),
-    },
 }
 
 
@@ -381,11 +226,14 @@ class ModelRegistry:
         """Get model info for a provider/tier combination.
 
         Args:
-            provider: Provider name (anthropic, openai, google, ollama, hybrid)
+            provider: Provider name (anthropic only as of v5.0.0)
             tier: Tier level (cheap, capable, premium)
 
         Returns:
             ModelInfo if found, None otherwise
+
+        Raises:
+            ValueError: If provider is not 'anthropic'
 
         Example:
             >>> registry = ModelRegistry()
@@ -393,11 +241,15 @@ class ModelRegistry:
             >>> print(model.id)
             claude-sonnet-4-5
 
-            >>> model = registry.get_model("openai", "cheap")
-            >>> print(model.cost_per_1k_input)
-            0.00015
-
         """
+        if provider.lower() != "anthropic":
+            raise ValueError(
+                f"Provider '{provider}' is not supported. "
+                f"Empathy Framework is now Claude-native (v5.0.0). "
+                f"Only 'anthropic' provider is available. "
+                f"See docs/CLAUDE_NATIVE.md for migration guide."
+            )
+
         provider_models = self._registry.get(provider.lower())
         if provider_models is None:
             return None
@@ -430,7 +282,7 @@ class ModelRegistry:
         return self._model_id_cache.get(model_id)
 
     def get_models_by_tier(self, tier: str) -> list[ModelInfo]:
-        """Get all models in a specific tier across all providers.
+        """Get all models in a specific tier (Anthropic-only as of v5.0.0).
 
         Uses O(1) cache lookup for fast performance.
 
@@ -444,33 +296,29 @@ class ModelRegistry:
             >>> registry = ModelRegistry()
             >>> cheap_models = registry.get_models_by_tier("cheap")
             >>> print(len(cheap_models))
-            5
+            1
             >>> print([m.provider for m in cheap_models])
-            ['anthropic', 'openai', 'google', 'ollama', 'openai']
+            ['anthropic']
 
             >>> premium_models = registry.get_models_by_tier("premium")
             >>> for model in premium_models:
             ...     print(f"{model.provider}: {model.id}")
-            anthropic: claude-opus-4-5-20251101
-            openai: o1
-            google: gemini-2.5-pro
-            ollama: llama3.1:70b
             anthropic: claude-opus-4-5-20251101
 
         """
         return self._tier_cache.get(tier.lower(), [])
 
     def list_providers(self) -> list[str]:
-        """Get list of all provider names.
+        """Get list of all provider names (Anthropic-only as of v5.0.0).
 
         Returns:
-            List of provider names (e.g., ['anthropic', 'openai', ...])
+            List of provider names (['anthropic'])
 
         Example:
             >>> registry = ModelRegistry()
             >>> providers = registry.list_providers()
             >>> print(providers)
-            ['anthropic', 'openai', 'google', 'ollama', 'hybrid']
+            ['anthropic']
 
         """
         return list(self._registry.keys())
@@ -491,7 +339,7 @@ class ModelRegistry:
         return [tier.value for tier in ModelTier]
 
     def get_all_models(self) -> dict[str, dict[str, ModelInfo]]:
-        """Get the complete model registry.
+        """Get the complete model registry (Anthropic-only as of v5.0.0).
 
         Returns:
             Full registry dict (provider -> tier -> ModelInfo)
@@ -500,7 +348,7 @@ class ModelRegistry:
             >>> registry = ModelRegistry()
             >>> all_models = registry.get_all_models()
             >>> print(all_models.keys())
-            dict_keys(['anthropic', 'openai', 'google', 'ollama', 'hybrid'])
+            dict_keys(['anthropic'])
 
         """
         return self._registry
@@ -520,9 +368,9 @@ class ModelRegistry:
             >>> print(pricing)
             {'input': 3.0, 'output': 15.0}
 
-            >>> pricing = registry.get_pricing_for_model("gpt-4o-mini")
+            >>> pricing = registry.get_pricing_for_model("claude-opus-4-5-20251101")
             >>> print(f"${pricing['input']}/M input, ${pricing['output']}/M output")
-            $0.15/M input, $0.6/M output
+            $15.0/M input, $75.0/M output
 
         """
         model = self.get_model_by_id(model_id)
@@ -549,11 +397,14 @@ def get_model(provider: str, tier: str) -> ModelInfo | None:
     """Get model info for a provider/tier combination.
 
     Args:
-        provider: Provider name (anthropic, openai, ollama, hybrid)
+        provider: Provider name (anthropic only as of v5.0.0)
         tier: Tier level (cheap, capable, premium)
 
     Returns:
         ModelInfo if found, None otherwise
+
+    Raises:
+        ValueError: If provider is not 'anthropic'
 
     Note:
         This is a convenience wrapper around the default ModelRegistry instance.
