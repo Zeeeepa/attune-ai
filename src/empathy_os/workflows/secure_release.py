@@ -166,6 +166,7 @@ class SecureReleasePipeline:
                 _get_crew_audit,
                 crew_report_to_workflow_format,
             )
+
             adapters_available = True
         except ImportError:
             adapters_available = False

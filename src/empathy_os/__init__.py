@@ -253,6 +253,7 @@ def __getattr__(name: str) -> object:
 
         # Import the module and get the attribute
         import importlib
+
         module = importlib.import_module(module_path, package="empathy_os")
         attr = getattr(module, attr_name)
 
@@ -261,6 +262,7 @@ def __getattr__(name: str) -> object:
         return attr
 
     raise AttributeError(f"module 'empathy_os' has no attribute '{name}'")
+
 
 __all__ = [
     "AccessTier",

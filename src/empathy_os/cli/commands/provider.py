@@ -37,7 +37,7 @@ def cmd_provider_show(args):
         print("   Set your API key: export ANTHROPIC_API_KEY='your-key-here'")
         print("   Get key at: https://console.anthropic.com/settings/keys")
 
-    print(f"\nProvider: anthropic")
+    print("\nProvider: anthropic")
 
     # Show Anthropic models
     print("\nModel mapping:")
@@ -73,9 +73,9 @@ def cmd_provider_set(args):
     # Validate provider is Anthropic
     if provider.lower() != "anthropic":
         print(f"❌ Error: Provider '{provider}' is not supported.")
-        print(f"   Empathy Framework is now Claude-native (v5.0.0).")
-        print(f"   Only 'anthropic' provider is available.")
-        print(f"   See docs/CLAUDE_NATIVE.md for migration guide.")
+        print("   Empathy Framework is now Claude-native (v5.0.0).")
+        print("   Only 'anthropic' provider is available.")
+        print("   See docs/CLAUDE_NATIVE.md for migration guide.")
         sys.exit(1)
 
     workflows_path = Path(".empathy/workflows.yaml")

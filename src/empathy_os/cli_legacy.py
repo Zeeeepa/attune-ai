@@ -22,7 +22,6 @@ from pathlib import Path
 from empathy_os import EmpathyConfig, EmpathyOS, load_config
 from empathy_os.config import _validate_file_path
 from empathy_os.cost_tracker import cmd_costs
-from empathy_os.dashboard import cmd_dashboard
 from empathy_os.discovery import show_tip_if_available
 from empathy_os.logging_config import get_logger
 from empathy_os.pattern_library import PatternLibrary
@@ -3680,31 +3679,6 @@ def main():
     parser_new.add_argument("--force", "-f", action="store_true", help="Overwrite existing files")
     parser_new.add_argument("--list", "-l", action="store_true", help="List available templates")
     parser_new.set_defaults(func=cmd_new)
-
-    # Dashboard command (visual web interface)
-    parser_dashboard = subparsers.add_parser("dashboard", help="Launch visual dashboard in browser")
-    parser_dashboard.add_argument(
-        "--port",
-        type=int,
-        default=8765,
-        help="Port to run on (default: 8765)",
-    )
-    parser_dashboard.add_argument(
-        "--patterns-dir",
-        default="./patterns",
-        help="Path to patterns directory",
-    )
-    parser_dashboard.add_argument(
-        "--empathy-dir",
-        default=".empathy",
-        help="Empathy data directory",
-    )
-    parser_dashboard.add_argument(
-        "--no-browser",
-        action="store_true",
-        help="Don't open browser automatically",
-    )
-    parser_dashboard.set_defaults(func=cmd_dashboard)
 
     # Frameworks command (agent framework management)
     parser_frameworks = subparsers.add_parser(

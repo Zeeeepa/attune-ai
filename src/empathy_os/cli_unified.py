@@ -542,7 +542,9 @@ def utilities_status():
 @utilities_app.command("scan")
 def utilities_scan(
     path: Path = typer.Argument(Path("."), help="Path to scan"),
-    scan_type: str = typer.Option("all", "--type", "-t", help="Scan type: security, performance, or all"),
+    scan_type: str = typer.Option(
+        "all", "--type", "-t", help="Scan type: security, performance, or all"
+    ),
 ):
     """Scan codebase for issues.
 
@@ -649,7 +651,16 @@ def telemetry_export(
 ):
     """Export telemetry data."""
     subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "telemetry", "export", str(output), "--format", format_type],
+        [
+            sys.executable,
+            "-m",
+            "empathy_os.cli",
+            "telemetry",
+            "export",
+            str(output),
+            "--format",
+            format_type,
+        ],
         check=False,
     )
 

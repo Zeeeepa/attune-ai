@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from .routing import TierRoutingStrategy
     from .tier_tracking import WorkflowTierTracker
 
 # Load .env file for API keys if python-dotenv is available
@@ -78,14 +79,46 @@ logger = logging.getLogger(__name__)
 WORKFLOW_HISTORY_FILE = ".empathy/workflow_runs.json"
 
 
-# Local enums for backward compatibility
+# Local enums for backward compatibility - DEPRECATED
 # New code should use empathy_os.models.ModelTier/ModelProvider
 class ModelTier(Enum):
-    """Model tier for cost optimization."""
+    """DEPRECATED: Model tier for cost optimization.
+
+    This enum is deprecated and will be removed in v5.0.
+    Use empathy_os.models.ModelTier instead.
+
+    Migration:
+        # Old:
+        from empathy_os.workflows.base import ModelTier
+
+        # New:
+        from empathy_os.models import ModelTier
+
+    Why deprecated:
+        - Creates confusion with dual definitions
+        - empathy_os.models.ModelTier is the canonical location
+        - Simplifies imports and reduces duplication
+    """
 
     CHEAP = "cheap"  # Haiku/GPT-4o-mini - $0.25-1.25/M tokens
     CAPABLE = "capable"  # Sonnet/GPT-4o - $3-15/M tokens
     PREMIUM = "premium"  # Opus/o1 - $15-75/M tokens
+
+    def __init__(self, value: str):
+        """Initialize with deprecation warning."""
+        # Only warn once per process, not per instance
+        import warnings
+
+        # Use self.__class__ instead of ModelTier (class not yet defined during creation)
+        if not hasattr(self.__class__, "_deprecation_warned"):
+            warnings.warn(
+                "workflows.base.ModelTier is deprecated and will be removed in v5.0. "
+                "Use empathy_os.models.ModelTier instead. "
+                "Update imports: from empathy_os.models import ModelTier",
+                DeprecationWarning,
+                stacklevel=4,
+            )
+            self.__class__._deprecation_warned = True
 
     def to_unified(self) -> UnifiedModelTier:
         """Convert to unified ModelTier from empathy_os.models."""
@@ -214,8 +247,52 @@ class WorkflowResult:
     transient: bool = False  # True if retry is reasonable (e.g., provider timeout)
 
 
+# Global singleton for workflow history store (lazy-initialized)
+_history_store: Any = None  # WorkflowHistoryStore | None
+
+
+def _get_history_store():
+    """Get or create workflow history store singleton.
+
+    Returns SQLite-based history store. Falls back to None if initialization fails.
+    """
+    global _history_store
+
+    if _history_store is None:
+        try:
+            from .history import WorkflowHistoryStore
+
+            _history_store = WorkflowHistoryStore()
+            logger.debug("Workflow history store initialized (SQLite)")
+        except (ImportError, OSError, PermissionError) as e:
+            # File system errors or missing dependencies
+            logger.warning(f"Failed to initialize SQLite history store: {e}")
+            _history_store = False  # Mark as failed to avoid repeated attempts
+
+    # Return store or None if initialization failed
+    return _history_store if _history_store is not False else None
+
+
 def _load_workflow_history(history_file: str = WORKFLOW_HISTORY_FILE) -> list[dict]:
-    """Load workflow run history from disk."""
+    """Load workflow run history from disk (legacy JSON support).
+
+    DEPRECATED: Use WorkflowHistoryStore for new code.
+    This function is maintained for backward compatibility.
+
+    Args:
+        history_file: Path to JSON history file
+
+    Returns:
+        List of workflow run dictionaries
+    """
+    import warnings
+
+    warnings.warn(
+        "_load_workflow_history is deprecated. Use WorkflowHistoryStore instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
     path = Path(history_file)
     if not path.exists():
         return []
@@ -234,11 +311,42 @@ def _save_workflow_run(
     history_file: str = WORKFLOW_HISTORY_FILE,
     max_history: int = 100,
 ) -> None:
-    """Save a workflow run to history."""
+    """Save a workflow run to history.
+
+    Uses SQLite-based storage by default. Falls back to JSON if SQLite unavailable.
+
+    Args:
+        workflow_name: Name of the workflow
+        provider: Provider used (anthropic, openai, google)
+        result: WorkflowResult object
+        history_file: Legacy JSON path (ignored if SQLite available)
+        max_history: Legacy max history limit (ignored if SQLite available)
+    """
+    # Try SQLite first (new approach)
+    store = _get_history_store()
+    if store is not None:
+        try:
+            run_id = str(uuid.uuid4())
+            store.record_run(run_id, workflow_name, provider, result)
+            logger.debug(f"Workflow run saved to SQLite: {run_id}")
+            return
+        except (OSError, PermissionError, ValueError) as e:
+            # SQLite failed, fall back to JSON
+            logger.warning(f"Failed to save to SQLite, falling back to JSON: {e}")
+
+    # Fallback: Legacy JSON storage
+    logger.debug("Using legacy JSON storage for workflow history")
     path = Path(history_file)
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    history = _load_workflow_history(history_file)
+    history = []
+    if path.exists():
+        try:
+            with open(path) as f:
+                data = json.load(f)
+                history = list(data) if isinstance(data, list) else []
+        except (json.JSONDecodeError, OSError):
+            pass
 
     # Create run record
     run: dict = {
@@ -285,20 +393,48 @@ def _save_workflow_run(
 def get_workflow_stats(history_file: str = WORKFLOW_HISTORY_FILE) -> dict:
     """Get workflow statistics for dashboard.
 
+    Uses SQLite-based storage by default. Falls back to JSON if unavailable.
+
+    Args:
+        history_file: Legacy JSON path (used only if SQLite unavailable)
+
     Returns:
         Dictionary with workflow stats including:
         - total_runs: Total workflow runs
+        - successful_runs: Number of successful runs
         - by_workflow: Per-workflow stats
         - by_provider: Per-provider stats
+        - by_tier: Cost breakdown by tier
         - recent_runs: Last 10 runs
+        - total_cost: Total cost across all runs
         - total_savings: Total cost savings
-
+        - avg_savings_percent: Average savings percentage
     """
-    history = _load_workflow_history(history_file)
+    # Try SQLite first (new approach)
+    store = _get_history_store()
+    if store is not None:
+        try:
+            return store.get_stats()
+        except (OSError, PermissionError, ValueError) as e:
+            # SQLite failed, fall back to JSON
+            logger.warning(f"Failed to get stats from SQLite, falling back to JSON: {e}")
+
+    # Fallback: Legacy JSON storage
+    logger.debug("Using legacy JSON storage for workflow stats")
+    history = []
+    path = Path(history_file)
+    if path.exists():
+        try:
+            with open(path) as f:
+                data = json.load(f)
+                history = list(data) if isinstance(data, list) else []
+        except (json.JSONDecodeError, OSError):
+            pass
 
     if not history:
         return {
             "total_runs": 0,
+            "successful_runs": 0,
             "by_workflow": {},
             "by_provider": {},
             "by_tier": {"cheap": 0, "capable": 0, "premium": 0},
@@ -407,6 +543,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         enable_cache: bool = True,
         enable_tier_tracking: bool = True,
         enable_tier_fallback: bool = False,
+        routing_strategy: TierRoutingStrategy | None = None,
     ):
         """Initialize workflow with optional cost tracker, provider, and config.
 
@@ -428,6 +565,10 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
             enable_tier_tracking: Whether to enable automatic tier tracking (default True).
             enable_tier_fallback: Whether to enable intelligent tier fallback
                      (CHEAP → CAPABLE → PREMIUM). Opt-in feature (default False).
+            routing_strategy: Optional TierRoutingStrategy for dynamic tier selection.
+                     When provided, overrides static tier_map for stage tier decisions.
+                     Strategies: CostOptimizedRouting, PerformanceOptimizedRouting,
+                     BalancedRouting, HybridRouting.
 
         """
         from .config import WorkflowConfig
@@ -456,6 +597,9 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         self._enable_tier_fallback = enable_tier_fallback
         self._tier_progression: list[tuple[str, str, bool]] = []  # (stage, tier, success)
 
+        # Routing strategy support
+        self._routing_strategy: TierRoutingStrategy | None = routing_strategy
+
         # Telemetry tracking (uses TelemetryMixin)
         self._init_telemetry(telemetry_backend)
 
@@ -482,8 +626,82 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         self.provider = provider
 
     def get_tier_for_stage(self, stage_name: str) -> ModelTier:
-        """Get the model tier for a stage."""
+        """Get the model tier for a stage from static tier_map."""
         return self.tier_map.get(stage_name, ModelTier.CAPABLE)
+
+    def _get_tier_with_routing(
+        self,
+        stage_name: str,
+        input_data: dict[str, Any],
+        budget_remaining: float = 100.0,
+    ) -> ModelTier:
+        """Get tier for a stage using routing strategy if available.
+
+        If a routing strategy is configured, creates a RoutingContext and
+        delegates tier selection to the strategy. Otherwise falls back to
+        the static tier_map.
+
+        Args:
+            stage_name: Name of the stage
+            input_data: Current workflow data (used to estimate input size)
+            budget_remaining: Remaining budget in USD for this execution
+
+        Returns:
+            ModelTier to use for this stage
+        """
+        # Fall back to static tier_map if no routing strategy
+        if self._routing_strategy is None:
+            return self.get_tier_for_stage(stage_name)
+
+        from .routing import RoutingContext
+
+        # Estimate input size from data
+        input_size = self._estimate_input_tokens(input_data)
+
+        # Assess complexity
+        complexity = self._assess_complexity(input_data)
+
+        # Determine latency sensitivity based on stage position
+        # First stages are more latency-sensitive (user waiting)
+        stage_index = self.stages.index(stage_name) if stage_name in self.stages else 0
+        if stage_index == 0:
+            latency_sensitivity = "high"
+        elif stage_index < len(self.stages) // 2:
+            latency_sensitivity = "medium"
+        else:
+            latency_sensitivity = "low"
+
+        # Create routing context
+        context = RoutingContext(
+            task_type=f"{self.name}:{stage_name}",
+            input_size=input_size,
+            complexity=complexity,
+            budget_remaining=budget_remaining,
+            latency_sensitivity=latency_sensitivity,
+        )
+
+        # Delegate to routing strategy
+        return self._routing_strategy.route(context)
+
+    def _estimate_input_tokens(self, input_data: dict[str, Any]) -> int:
+        """Estimate input token count from data.
+
+        Simple heuristic: ~4 characters per token on average.
+
+        Args:
+            input_data: Workflow input data
+
+        Returns:
+            Estimated token count
+        """
+        import json
+
+        try:
+            # Serialize to estimate size
+            data_str = json.dumps(input_data, default=str)
+            return len(data_str) // 4
+        except (TypeError, ValueError):
+            return 1000  # Default estimate
 
     def get_model_for_tier(self, tier: ModelTier) -> str:
         """Get the model for a tier based on configured provider and config."""
@@ -1002,10 +1220,20 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                             self._progress_tracker.fail_stage(stage_name, error_msg)
                         raise ValueError(error_msg)
 
-            # Standard mode: use configured tier_map (backward compatible)
+            # Standard mode: use routing strategy or tier_map (backward compatible)
             else:
+                # Track budget for routing decisions
+                total_budget = 100.0  # Default budget in USD
+                budget_spent = 0.0
+
                 for stage_name in self.stages:
-                    tier = self.get_tier_for_stage(stage_name)
+                    # Use routing strategy if available, otherwise fall back to tier_map
+                    budget_remaining = total_budget - budget_spent
+                    tier = self._get_tier_with_routing(
+                        stage_name,
+                        current_data if isinstance(current_data, dict) else {},
+                        budget_remaining,
+                    )
                     stage_start = datetime.now()
 
                     # Check if stage should be skipped
@@ -1042,6 +1270,9 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     stage_end = datetime.now()
                     duration_ms = int((stage_end - stage_start).total_seconds() * 1000)
                     cost = self._calculate_cost(tier, input_tokens, output_tokens)
+
+                    # Update budget spent for routing decisions
+                    budget_spent += cost
 
                     stage = WorkflowStage(
                         name=stage_name,

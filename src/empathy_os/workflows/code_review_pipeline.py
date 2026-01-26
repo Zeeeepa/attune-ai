@@ -283,6 +283,7 @@ class CodeReviewPipeline:
                 _get_crew_review,
                 crew_report_to_workflow_format,
             )
+
             crew_available = _check_crew_available()
         except ImportError:
             # Crew adapters removed - fall back to workflow only

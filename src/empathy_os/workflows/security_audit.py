@@ -674,6 +674,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
         """
         try:
             from .security_adapters import _check_crew_available
+
             adapters_available = True
         except ImportError:
             adapters_available = False

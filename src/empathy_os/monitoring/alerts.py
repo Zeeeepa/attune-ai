@@ -117,15 +117,15 @@ def _validate_webhook_url(url: str) -> str:
     # Block common internal service ports
     if parsed.port is not None:
         blocked_ports = {
-            22,     # SSH
-            23,     # Telnet
-            3306,   # MySQL
-            5432,   # PostgreSQL
-            6379,   # Redis
+            22,  # SSH
+            23,  # Telnet
+            3306,  # MySQL
+            5432,  # PostgreSQL
+            6379,  # Redis
             27017,  # MongoDB
-            9200,   # Elasticsearch
-            2379,   # etcd
-            8500,   # Consul
+            9200,  # Elasticsearch
+            2379,  # etcd
+            8500,  # Consul
         }
         if parsed.port in blocked_ports:
             raise ValueError(
@@ -208,9 +208,9 @@ class AlertConfig:
             enabled=data.get("enabled", True),
             cooldown_seconds=data.get("cooldown_seconds", 3600),
             severity=AlertSeverity(data.get("severity", "warning")),
-            created_at=datetime.fromisoformat(data["created_at"])
-            if data.get("created_at")
-            else None,
+            created_at=(
+                datetime.fromisoformat(data["created_at"]) if data.get("created_at") else None
+            ),
         )
 
 
@@ -276,9 +276,7 @@ class AlertEngine:
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
 
         self.telemetry_dir = (
-            Path(telemetry_dir)
-            if telemetry_dir
-            else Path.home() / ".empathy" / "telemetry"
+            Path(telemetry_dir) if telemetry_dir else Path.home() / ".empathy" / "telemetry"
         )
 
         self._cooldown_cache: dict[str, float] = {}  # alert_id -> last_triggered_time
@@ -529,9 +527,7 @@ class AlertEngine:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
-        cursor.execute(
-            "UPDATE alerts SET enabled = ? WHERE id = ?", (int(enabled), alert_id)
-        )
+        cursor.execute("UPDATE alerts SET enabled = ? WHERE id = ?", (int(enabled), alert_id))
         updated = cursor.rowcount > 0
 
         conn.commit()
@@ -577,9 +573,7 @@ class AlertEngine:
                         continue
                     try:
                         entry = json.loads(line)
-                        timestamp = datetime.fromisoformat(
-                            entry.get("timestamp", "2000-01-01")
-                        )
+                        timestamp = datetime.fromisoformat(entry.get("timestamp", "2000-01-01"))
                         if timestamp < cutoff:
                             continue
 
