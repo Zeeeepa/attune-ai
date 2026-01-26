@@ -8,7 +8,7 @@ from ..commands import provider
 
 
 def register_parsers(subparsers):
-    """Register provider command parsers.
+    """Register provider command parsers (Anthropic-only as of v5.0.0).
 
     Args:
         subparsers: ArgumentParser subparsers object from main parser
@@ -16,16 +16,9 @@ def register_parsers(subparsers):
     # Provider parent command
     parser_provider = subparsers.add_parser(
         "provider",
-        help="Configure model providers and hybrid mode",
+        help="Configure Claude/Anthropic provider",
     )
     provider_sub = parser_provider.add_subparsers(dest="provider_command", required=True)
-
-    # Provider hybrid command
-    p_hybrid = provider_sub.add_parser(
-        "hybrid",
-        help="Configure hybrid mode (pick best models for each tier)",
-    )
-    p_hybrid.set_defaults(func=provider.cmd_provider_hybrid)
 
     # Provider show command
     p_show = provider_sub.add_parser(
@@ -37,11 +30,11 @@ def register_parsers(subparsers):
     # Provider set command
     p_set = provider_sub.add_parser(
         "set",
-        help="Set default provider",
+        help="Set default provider (must be 'anthropic')",
     )
     p_set.add_argument(
         "name",
-        choices=["anthropic", "openai", "google", "ollama", "hybrid"],
-        help="Provider name",
+        choices=["anthropic"],
+        help="Provider name (anthropic only)",
     )
     p_set.set_defaults(func=provider.cmd_provider_set)

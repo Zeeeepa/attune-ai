@@ -12,78 +12,72 @@ from empathy_os.logging_config import get_logger
 logger = get_logger(__name__)
 
 
-def cmd_provider_hybrid(args):
-    """Configure hybrid mode - pick best models for each tier.
-
-    Args:
-        args: Namespace object from argparse (no additional attributes used).
-
-    Returns:
-        None: Launches interactive tier configuration.
-    """
-    from empathy_os.models.provider_config import configure_hybrid_interactive
-
-    configure_hybrid_interactive()
-
-
 def cmd_provider_show(args):
-    """Show current provider configuration.
+    """Show current provider configuration (Anthropic-only as of v5.0.0).
 
     Args:
         args: Namespace object from argparse (no additional attributes used).
 
     Returns:
-        None: Prints provider configuration and model mappings.
+        None: Prints Anthropic provider configuration and model mappings.
     """
     from empathy_os.models import MODEL_REGISTRY
     from empathy_os.models.provider_config import ProviderConfig
-    from empathy_os.workflows.config import WorkflowConfig
 
     print("\n" + "=" * 60)
-    print("Provider Configuration")
+    print("Provider Configuration (Claude-Native v5.0.0)")
     print("=" * 60)
 
-    # Detect available providers
+    # Check for Anthropic API key
     config = ProviderConfig.auto_detect()
-    print(
-        f"\nDetected API keys for: {', '.join(config.available_providers) if config.available_providers else 'None'}",
-    )
-
-    # Load workflow config
-    wf_config = WorkflowConfig.load()
-    print(f"\nDefault provider: {wf_config.default_provider}")
-
-    # Show effective models
-    print("\nEffective model mapping:")
-    if wf_config.custom_models and "hybrid" in wf_config.custom_models:
-        hybrid = wf_config.custom_models["hybrid"]
-        for tier in ["cheap", "capable", "premium"]:
-            model = hybrid.get(tier, "not configured")
-            print(f"  {tier:8} → {model}")
+    if config.available_providers:
+        print("\n✓ ANTHROPIC_API_KEY detected")
     else:
-        provider = wf_config.default_provider
-        if provider in MODEL_REGISTRY:
-            for tier in ["cheap", "capable", "premium"]:
-                model_info = MODEL_REGISTRY[provider].get(tier)
-                if model_info:
-                    print(f"  {tier:8} → {model_info.id} ({provider})")
+        print("\n⚠️  ANTHROPIC_API_KEY not detected")
+        print("   Set your API key: export ANTHROPIC_API_KEY='your-key-here'")
+        print("   Get key at: https://console.anthropic.com/settings/keys")
+
+    print(f"\nProvider: anthropic")
+
+    # Show Anthropic models
+    print("\nModel mapping:")
+    anthropic_models = MODEL_REGISTRY.get("anthropic", {})
+    for tier in ["cheap", "capable", "premium"]:
+        model_info = anthropic_models.get(tier)
+        if model_info:
+            cost = f"${model_info.input_cost_per_million:.2f}/${model_info.output_cost_per_million:.2f} per M tokens"
+            print(f"  {tier:8} → {model_info.id:40} {cost}")
 
     print()
 
 
 def cmd_provider_set(args):
-    """Set default provider.
+    """Set default provider (Anthropic-only as of v5.0.0).
 
     Args:
         args: Namespace object from argparse with attributes:
-            - name (str): Provider name to set as default.
+            - name (str): Provider name to set as default (must be 'anthropic').
 
     Returns:
         None: Saves provider to .empathy/workflows.yaml.
+
+    Raises:
+        SystemExit: If provider is not 'anthropic'.
     """
+    import sys
+
     import yaml
 
     provider = args.name
+
+    # Validate provider is Anthropic
+    if provider.lower() != "anthropic":
+        print(f"❌ Error: Provider '{provider}' is not supported.")
+        print(f"   Empathy Framework is now Claude-native (v5.0.0).")
+        print(f"   Only 'anthropic' provider is available.")
+        print(f"   See docs/CLAUDE_NATIVE.md for migration guide.")
+        sys.exit(1)
+
     workflows_path = Path(".empathy/workflows.yaml")
 
     # Load existing config or create new
@@ -102,6 +96,3 @@ def cmd_provider_set(args):
 
     print(f"✓ Default provider set to: {provider}")
     print(f"  Saved to: {validated_workflows_path}")
-
-    if provider == "hybrid":
-        print("\n  Tip: Run 'empathy provider hybrid' to customize tier models")
