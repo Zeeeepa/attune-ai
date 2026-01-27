@@ -4,11 +4,11 @@
 
 Run code review, debugging, testing, and release workflows from your terminal or Claude Code. Smart tier routing saves 34-86% on LLM costs.
 
-[![PyPI](https://img.shields.io/pypi/v/empathy-framework)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-11%2C000%2B%20passing-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
-[![Coverage](https://img.shields.io/badge/coverage-68%25-yellow)](https://github.com/Smart-AI-Memory/empathy-framework)
+[![PyPI](https://img.shields.io/pypi/v/empathy-framework?color=blue)](https://pypi.org/project/empathy-framework/)
+[![Tests](https://img.shields.io/badge/tests-7%2C168%20passing%20(99.9%25)-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 [![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
+[![Performance](https://img.shields.io/badge/performance-18x%20faster-success)](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md)
 
 ```bash
 pip install empathy-framework[developer]
@@ -34,20 +34,37 @@ pip install empathy-framework[developer]
 
 ---
 
-## What's New in v4.8.0
+## What's New in v4.9.0
 
-**🚀 Scanner Performance Optimizations** - **3.65x faster** project scanning with parallel processing and incremental updates:
+**⚡ 18x Faster Performance** - Massive performance gains through Phase 2 optimizations:
 
-- **Parallel Processing:** Multi-core scanning enabled by default (2x faster)
-- **Incremental Scanning:** Git diff-based updates (10x faster for typical changes)
-- **Optional Dependencies:** Skip dependency analysis for 27% speedup
+- **Redis Two-Tier Caching:** 2x faster memory operations (37,000x for cached keys)
+- **Generator Expressions:** 99.9% memory reduction across 27 optimizations
+- **Parallel Scanning:** Multi-core processing enabled by default (2-4x faster)
+- **Incremental Scanning:** Git diff-based updates (10x faster)
+
+**🧭 Natural Language Workflows** - Use plain English instead of workflow names:
+
+```bash
+/workflows "find security vulnerabilities"  # → security-audit
+/workflows "check code performance"         # → perf-audit
+/workflows "predict bugs"                   # → bug-predict
+/plan "review my code"                      # → code-review
+```
 
 **📊 Real-World Performance:**
 
-- Full scan: 3,472 files in 1.8s (was 3.6s)
-- Incremental: 100 changed files in 0.3s (was 1.0s)
+- Combined workflow: 3.59s → 0.2s (**18x faster**)
+- Full scan: 3,472 files in 0.98s (was 3.59s)
+- Redis cached operations: 37ms → 0.001ms
 
-[See performance guide](docs/SCANNER_OPTIMIZATIONS.md) | [Examples](examples/scanner_usage.py)
+**🎯 Improved Navigation:**
+
+- Split `/workflow` into `/workflows` (automated analysis) and `/plan` (planning/review)
+- Clearer hub organization with better categorization
+- Natural language routing matches intent to workflow
+
+[See CHANGELOG.md](CHANGELOG.md) | [Performance Docs](docs/REDIS_OPTIMIZATION_SUMMARY.md)
 
 ---
 
@@ -88,8 +105,14 @@ python -m empathy_os.models.cli provider --set anthropic
 ```bash
 /dev           # Developer tools (debug, commit, PR, review)
 /testing       # Run tests, coverage, benchmarks
+/workflows     # Automated analysis (security, bugs, perf)
+/plan          # Planning, TDD, code review
 /docs          # Documentation generation
 /release       # Release preparation
+
+# Natural language support:
+/workflows "find security issues"
+/plan "review my code"
 ```
 
 **CLI:**
@@ -118,19 +141,35 @@ async with EmpathyOS() as empathy:
 
 Workflows are organized into hubs for easy discovery:
 
-| Hub               | Command      | Description                                  |
-| ----------------- | ------------ | -------------------------------------------- |
-| **Developer**     | `/dev`       | Debug, commit, PR, code review, quality      |
-| **Testing**       | `/testing`   | Run tests, coverage analysis, benchmarks     |
-| **Documentation** | `/docs`      | Generate and manage documentation            |
-| **Release**       | `/release`   | Release prep, security scan, publishing      |
-| **Workflow**      | `/workflow`  | Planning, TDD, refactoring workflows         |
-| **Utilities**     | `/utilities` | Project init, dependencies, profiling        |
-| **Learning**      | `/learning`  | Pattern learning and session evaluation      |
-| **Context**       | `/context`   | State management and memory                  |
-| **Agent**         | `/agent`     | Create and manage custom agents              |
+| Hub               | Command       | Description                                  |
+| ----------------- | ------------- | -------------------------------------------- |
+| **Developer**     | `/dev`        | Debug, commit, PR, code review, quality      |
+| **Testing**       | `/testing`    | Run tests, coverage analysis, benchmarks     |
+| **Documentation** | `/docs`       | Generate and manage documentation            |
+| **Release**       | `/release`    | Release prep, security scan, publishing      |
+| **Workflows**     | `/workflows`  | Automated analysis (security, bugs, perf)    |
+| **Plan**          | `/plan`       | Planning, TDD, code review, refactoring      |
+| **Utilities**     | `/utilities`  | Project init, dependencies, profiling        |
+| **Learning**      | `/learning`   | Pattern learning and session evaluation      |
+| **Context**       | `/context`    | State management and memory                  |
+| **Agent**         | `/agent`      | Create and manage custom agents              |
 
-**Example usage:**
+**Natural Language Support:**
+
+```bash
+# Use plain English - intelligent routing matches your intent
+/workflows "find security vulnerabilities"  # → security-audit
+/workflows "check code performance"         # → perf-audit
+/workflows "predict bugs"                   # → bug-predict
+/plan "review my code"                      # → code-review
+/plan "help me plan this feature"           # → planning
+
+# Or use traditional workflow names
+/workflows security-audit
+/plan code-review
+```
+
+**Interactive menus:**
 
 ```bash
 /dev                    # Show interactive menu
