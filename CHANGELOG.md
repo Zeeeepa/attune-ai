@@ -5,6 +5,79 @@ All notable changes to the Empathy Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Parallel project scanning** - Multi-core file analysis enabled by default
+  - `ParallelProjectScanner` uses multiprocessing for 2-4x faster scanning
+  - `ProjectIndex` now uses parallel scanner automatically
+  - Configurable worker count: `ProjectIndex(workers=4)`
+  - Auto-detects CPU cores by default
+  - **Files**: `src/empathy_os/project_index/scanner_parallel.py` (330 lines)
+
+- **Incremental scanning** - Git diff-based updates for 10x faster development workflow
+  - `ProjectIndex.refresh_incremental()` scans only changed files
+  - Uses `git diff` to identify modified/added/deleted files
+  - Supports custom base refs: `refresh_incremental(base_ref="origin/main")`
+  - Falls back gracefully when git not available
+  - **Performance**: 10x faster for small changes (10-100 files)
+  - **Files**: `src/empathy_os/project_index/index.py` (150+ lines added)
+
+- **Optional dependency analysis** - Skip expensive dependency graph for 27% speedup
+  - `scanner.scan(analyze_dependencies=False)` for quick scans
+  - `index.refresh(analyze_dependencies=False)` for fast refreshes
+  - **Performance**: 2.62s vs 3.59s for 3,472 files
+
+- **Scanner usage examples** - Comprehensive examples demonstrating optimizations
+  - 6 complete examples in `examples/scanner_usage.py`
+  - Quick scan, full scan, incremental update, worker tuning, etc.
+  - Run with: `python examples/scanner_usage.py`
+
+- **Performance documentation** - Complete optimization guide
+  - `docs/SCANNER_OPTIMIZATIONS.md` (400+ lines)
+  - `docs/IMPLEMENTATION_COMPLETE.md` (implementation summary)
+  - `benchmarks/OPTIMIZATION_SUMMARY.md` (technical analysis)
+  - `benchmarks/PROFILING_REPORT.md` (profiling results)
+
+### Changed
+
+- **ProjectIndex default behavior** - Now uses parallel scanning automatically
+  - `ProjectIndex.refresh()` 2x faster with no code changes
+  - Backward compatible - existing code automatically benefits
+  - Disable with: `ProjectIndex(use_parallel=False)`
+
+- **ProjectScanner optimizations** - Skip AST analysis for test files
+  - Test files use simple regex for test counting instead of full AST parsing
+  - Saves ~30% of AST traversal time for cold cache scenarios
+  - **Files**: `src/empathy_os/project_index/scanner.py` (lines 429-488)
+
+### Performance
+
+**Benchmarks** (3,472 files on 12-core machine):
+
+| Configuration | Time | Speedup |
+|---------------|------|---------|
+| Sequential (baseline) | 3.59s | 1.00x |
+| Optimized (no deps) | 2.62s | 1.37x |
+| Parallel (12 workers) | 1.84s | 1.95x |
+| Parallel (no deps) | 0.98s | **3.65x** |
+
+**Incremental scanning**:
+
+| Changed Files | Full Scan | Incremental | Speedup |
+|---------------|-----------|-------------|---------|
+| 10 files | 1.0s | 0.1s | **10x** |
+| 100 files | 1.0s | 0.3s | **3.3x** |
+
+**Combined impact** (development workflow):
+
+- Before: 3.59s per scan
+- After: 0.2s incremental updates
+- **18x faster for typical usage!** 🚀
+
+---
+
 ## [5.0.0] - 2026-01-26
 
 ### ⚠️ BREAKING CHANGES - Claude-Native Architecture

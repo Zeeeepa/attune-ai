@@ -19,10 +19,12 @@ from .index import ProjectIndex
 from .models import FileRecord, IndexConfig, ProjectSummary
 from .reports import ReportGenerator
 from .scanner import ProjectScanner
+from .scanner_parallel import ParallelProjectScanner
 
 __all__ = [
     "FileRecord",
     "IndexConfig",
+    "ParallelProjectScanner",
     "ProjectIndex",
     "ProjectScanner",
     "ProjectSummary",

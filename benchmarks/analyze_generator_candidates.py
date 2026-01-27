@@ -41,12 +41,8 @@ class ListCompFinder(ast.NodeVisitor):
         # Get source code (approximate)
         try:
             code = ast.unparse(node)
-        except:
+        except Exception:
             code = "<unparsable>"
-
-        # Check if it's in a function call that accepts iterables
-        parent_is_call = False
-        parent_func = None
 
         # This is a simplified analysis - real usage would need more context
         self.candidates.append(
