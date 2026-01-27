@@ -463,6 +463,14 @@ class BugPredictionWorkflow(BaseWorkflow):
         """
         super().__init__(**kwargs)
 
+        # Create instance-level tier_map to prevent class-level mutation
+        self.tier_map = {
+            "scan": ModelTier.CHEAP,
+            "correlate": ModelTier.CAPABLE,
+            "predict": ModelTier.CAPABLE,
+            "recommend": ModelTier.PREMIUM,
+        }
+
         # Load bug_predict config from empathy.config.yml
         self._bug_predict_config = _load_bug_predict_config()
 
@@ -687,7 +695,7 @@ class BugPredictionWorkflow(BaseWorkflow):
             {
                 "correlations": correlations,
                 "correlation_count": len(correlations),
-                "high_confidence_count": len([c for c in correlations if c["confidence"] > 0.6]),
+                "high_confidence_count": sum(1 for c in correlations if c["confidence"] > 0.6),
                 **input_data,
             },
             input_tokens,
@@ -751,7 +759,7 @@ class BugPredictionWorkflow(BaseWorkflow):
             {
                 "predictions": predictions[:20],  # Top 20 risky files
                 "overall_risk_score": round(self._risk_score, 2),
-                "high_risk_files": len([p for p in predictions if float(p["risk_score"]) > 0.7]),
+                "high_risk_files": sum(1 for p in predictions if float(p["risk_score"]) > 0.7),
                 **input_data,
             },
             input_tokens,

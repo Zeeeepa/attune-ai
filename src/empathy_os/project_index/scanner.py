@@ -470,8 +470,9 @@ class ProjectScanner:
         try:
             content = path.read_text(encoding="utf-8", errors="ignore")
             lines = content.split("\n")
-            metrics["lines_of_code"] = len(
-                [line for line in lines if line.strip() and not line.strip().startswith("#")],
+            # Use generator expression for memory efficiency (no intermediate list)
+            metrics["lines_of_code"] = sum(
+                1 for line in lines if line.strip() and not line.strip().startswith("#")
             )
 
             # Optimization: Skip expensive AST analysis for test files

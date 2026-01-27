@@ -137,7 +137,7 @@ def morning_workflow(
     print("-" * 40)
 
     total_bugs = len(patterns.get("debugging", []))
-    resolved_bugs = len([p for p in patterns.get("debugging", []) if p.get("status") == "resolved"])
+    resolved_bugs = sum(1 for p in patterns.get("debugging", []) if p.get("status") == "resolved")
     security_decisions = len(patterns.get("security", []))
 
     print(f"  Bug patterns:        {total_bugs} ({resolved_bugs} resolved)")
@@ -207,14 +207,14 @@ def morning_workflow(
         checks_passed += 1
         print("  Lint:     OK")
     else:
-        issues = len([line for line in output.split("\n") if line.strip()])
+        issues = sum(1 for line in output.split("\n") if line.strip())
         print(f"  Lint:     {issues} issues")
 
     # Check for uncommitted changes
     checks_total += 1
     success, output = _run_command(["git", "status", "--porcelain"])
     if success:
-        changes = len([line for line in output.split("\n") if line.strip()])
+        changes = sum(1 for line in output.split("\n") if line.strip())
         if changes == 0:
             checks_passed += 1
             print("  Git:      Clean")
@@ -312,7 +312,7 @@ def _run_security_only(project_root: str = ".", verbose: bool = False) -> int:
     if not success or not output.strip():
         print("   PASS - No obvious hardcoded secrets")
     else:
-        lines = len([line for line in output.split("\n") if line.strip()])
+        lines = sum(1 for line in output.split("\n") if line.strip())
         issues.append(f"Secrets: {lines} potential hardcoded secrets")
         print(f"   WARN - {lines} potential hardcoded values found")
 
@@ -322,7 +322,7 @@ def _run_security_only(project_root: str = ".", verbose: bool = False) -> int:
     if not output.strip():
         print("   PASS - No sensitive files tracked")
     else:
-        files = len([line for line in output.split("\n") if line.strip()])
+        files = sum(1 for line in output.split("\n") if line.strip())
         issues.append(f"Files: {files} sensitive files in git")
         print(f"   WARN - {files} sensitive files tracked in git")
 
@@ -427,10 +427,10 @@ def ship_workflow(
     print("4. Checking git status...")
     success, output = _run_command(["git", "status", "--porcelain"])
     if success:
-        staged = len(
-            [line for line in output.split("\n") if line.startswith(("A ", "M ", "D ", "R "))],
+        staged = sum(
+            1 for line in output.split("\n") if line.startswith(("A ", "M ", "D ", "R "))
         )
-        unstaged = len([line for line in output.split("\n") if line.startswith((" M", " D", "??"))])
+        unstaged = sum(1 for line in output.split("\n") if line.startswith((" M", " D", "??")))
         if staged > 0:
             print(f"   INFO - {staged} staged, {unstaged} unstaged")
         elif unstaged > 0:
@@ -523,7 +523,7 @@ def fix_all_workflow(project_root: str = ".", dry_run: bool = False, verbose: bo
         print(f"   Fixed {fixed} issues")
     else:
         # Some issues couldn't be auto-fixed
-        unfixable = len([line for line in output.split("\n") if "error" in line.lower()])
+        unfixable = sum(1 for line in output.split("\n") if "error" in line.lower())
         print(f"   {unfixable} issues require manual fix")
         if verbose:
             print(output)
