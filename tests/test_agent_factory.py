@@ -248,6 +248,8 @@ class TestNativeAgent:
     """Test NativeAgent functionality."""
 
     @pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_native_agent_invoke(self):
         """Test invoking native agent."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -262,6 +264,8 @@ class TestNativeAgent:
         assert "metadata" in result
 
     @pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_native_agent_conversation_history(self):
         """Test agent tracks conversation history."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -284,6 +288,8 @@ class TestNativeWorkflow:
     """Test NativeWorkflow functionality."""
 
     @pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_native_workflow_sequential(self):
         """Test sequential workflow execution."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -306,6 +312,8 @@ class TestNativeWorkflow:
         assert len(result["results"]) == 2
 
     @pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_native_workflow_parallel(self):
         """Test parallel workflow execution."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -332,13 +340,13 @@ class TestCLIFrameworks:
 
     def test_cli_frameworks_import(self):
         """Test frameworks CLI command can be imported."""
-        from empathy_os.cli import cmd_frameworks
+        from empathy_os.cli.commands.info import cmd_frameworks
 
         assert callable(cmd_frameworks)
 
     def test_cli_frameworks_execution(self):
         """Test frameworks CLI command execution."""
-        from empathy_os.cli import cmd_frameworks
+        from empathy_os.cli.commands.info import cmd_frameworks
 
         class MockArgs:
             all = False
@@ -350,7 +358,7 @@ class TestCLIFrameworks:
 
     def test_cli_frameworks_recommend(self):
         """Test frameworks recommendation."""
-        from empathy_os.cli import cmd_frameworks
+        from empathy_os.cli.commands.info import cmd_frameworks
 
         class MockArgs:
             all = False

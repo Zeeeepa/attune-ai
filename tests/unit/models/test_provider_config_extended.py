@@ -58,6 +58,7 @@ class TestProviderConfigSecurity:
 
 
 @pytest.mark.unit
+@pytest.mark.skip(reason="HYBRID/CUSTOM modes removed in v5.0.0 (Anthropic-only)")
 class TestProviderConfigHybridMode:
     """Test HYBRID mode functionality."""
 
@@ -117,6 +118,7 @@ class TestProviderConfigHybridMode:
 class TestProviderConfigEdgeCases:
     """Test edge cases and error handling."""
 
+    @pytest.mark.skip(reason="CUSTOM mode removed in v5.0.0 (Anthropic-only)")
     def test_empty_tier_providers_fallback(self):
         """Test CUSTOM mode with empty tier_providers falls back to primary."""
         config = ProviderConfig(
@@ -163,13 +165,13 @@ class TestProviderConfigEdgeCases:
         assert isinstance(config, ProviderConfig)
 
     def test_to_dict_roundtrip(self):
-        """Test to_dict and from_dict roundtrip."""
+        """Test to_dict and from_dict roundtrip (Anthropic-only architecture)."""
         original = ProviderConfig(
-            mode=ProviderMode.CUSTOM,
-            primary_provider="openai",
-            tier_providers={"cheap": "ollama", "capable": "openai"},
-            prefer_local=True,
-            cost_optimization=False,
+            mode=ProviderMode.SINGLE,
+            primary_provider="anthropic",
+            tier_providers={"cheap": "anthropic", "capable": "anthropic"},
+            prefer_local=False,
+            cost_optimization=True,
         )
 
         data = original.to_dict()
@@ -225,6 +227,7 @@ class TestGlobalConfigManagement:
 
 
 @pytest.mark.unit
+@pytest.mark.skip(reason="Ollama removed in v5.0.0 (Anthropic-only architecture)")
 class TestOllamaDetection:
     """Test Ollama provider detection."""
 
@@ -272,6 +275,7 @@ class TestEnvFileLoading:
 
             assert "anthropic" in providers
 
+    @pytest.mark.skip(reason="OpenAI removed in v5.0.0 (Anthropic-only architecture)")
     def test_provider_detection_with_openai(self):
         """Test provider detection with OPENAI_API_KEY."""
         with patch.dict("os.environ", {"OPENAI_API_KEY": "test_key"}, clear=True):
@@ -280,12 +284,12 @@ class TestEnvFileLoading:
             assert "openai" in providers
 
     def test_auto_detect_with_single_provider(self):
-        """Test auto_detect with single provider available."""
-        with patch.object(ProviderConfig, "detect_available_providers", return_value=["openai"]):
+        """Test auto_detect with single provider available (Anthropic-only)."""
+        with patch.object(ProviderConfig, "detect_available_providers", return_value=["anthropic"]):
             config = ProviderConfig.auto_detect()
 
             assert config.mode == ProviderMode.SINGLE
-            assert config.primary_provider == "openai"
+            assert config.primary_provider == "anthropic"
 
     def test_auto_detect_with_multiple_providers(self):
         """Test auto_detect with multiple providers prioritizes anthropic."""

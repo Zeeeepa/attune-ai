@@ -183,13 +183,14 @@ Run a specific agent for a task.
 
 Agents can also be invoked from relevant hubs:
 
-| Hub         | Related Agents                                  |
-| ----------- | ----------------------------------------------- |
-| `/dev`      | debugger, code-reviewer, refactorer             |
-| `/testing`  | test-writer, quality-validator                  |
-| `/workflow` | planner, architect                              |
-| `/docs`     | code-reviewer (documentation review)            |
-| `/release`  | security-reviewer, quality-validator            |
+| Hub          | Related Agents                                  |
+| ------------ | ----------------------------------------------- |
+| `/dev`       | debugger, code-reviewer, refactorer             |
+| `/testing`   | test-writer, quality-validator                  |
+| `/workflows` | (runs automated multi-stage workflows)          |
+| `/plan`      | planner, architect                              |
+| `/docs`      | code-reviewer (documentation review)            |
+| `/release`   | security-reviewer, quality-validator            |
 
 ## When to Use This Hub Directly
 
@@ -202,7 +203,8 @@ Use `/agent` when you want to:
 
 ## Related Hubs
 
-- `/workflow` - Development workflows (uses planner, architect)
+- `/workflows` - Run automated AI workflows (security-audit, bug-predict, etc.)
+- `/plan` - Development planning (uses planner, architect)
 - `/dev` - Development tools (uses debugger, code-reviewer)
 - `/testing` - Testing workflows (uses test-writer)
 - `/context` - Context and memory management

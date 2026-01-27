@@ -5,6 +5,19 @@ category: hub
 aliases: [documentation]
 tags: [documentation, explanation, hub]
 version: "3.0"
+question:
+  header: "Documentation"
+  question: "What documentation task do you need?"
+  multiSelect: false
+  options:
+    - label: "💡 Explain code"
+      description: "Understand how code works with teaching-focused explanations"
+    - label: "📝 Generate docs"
+      description: "Create documentation from code with examples"
+    - label: "📋 Feature overview"
+      description: "Get high-level overview of a feature or module"
+    - label: "🔍 API reference"
+      description: "Generate API documentation with usage examples"
 ---
 
 # Documentation
@@ -176,6 +189,7 @@ Need summary for stakeholders       → /docs overview
 ## Related Hubs
 
 - `/dev` - Code changes, commits, PRs
-- `/workflow` - Feature planning
+- `/workflows` - Run automated workflows (doc-gen, doc-orchestrator)
+- `/plan` - Feature planning
 - `/learning` - Pattern documentation
 - `/agent` - Direct agent invocation

@@ -6,6 +6,7 @@ Created: 2026-01-20
 Coverage target: 80%+
 """
 
+
 import pytest
 
 from empathy_llm_toolkit.agent_factory.adapters.native import (
@@ -631,14 +632,6 @@ class TestModelRouter:
         assert isinstance(capable_model, str)
         assert isinstance(premium_model, str)
 
-    def test_route_with_provider_override(self):
-        """Test routing with provider override."""
-        router = ModelRouter(default_provider="anthropic")
-
-        model = router.route("summarize", provider="openai")
-
-        assert isinstance(model, str)
-
     def test_route_invalid_provider(self):
         """Test routing with invalid provider."""
         router = ModelRouter()
@@ -708,7 +701,7 @@ class TestModelRouter:
         providers = ModelRouter.get_supported_providers()
 
         assert "anthropic" in providers
-        assert "openai" in providers
+        assert len(providers) == 1  # Anthropic-only architecture
 
     def test_get_all_tasks(self):
         """Test getting all tasks by tier."""
@@ -747,6 +740,10 @@ class TestAgentFactoryIntegration:
     """Integration tests for agent factory."""
 
     @pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.skip(
+        reason="Integration test requiring valid ANTHROPIC_API_KEY - run manually with: pytest -m integration"
+    )
     async def test_full_workflow_execution(self):
         """Test complete workflow from factory creation to execution."""
         factory = AgentFactory(framework=Framework.NATIVE)

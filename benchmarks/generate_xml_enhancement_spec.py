@@ -16,8 +16,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.workflows.xml_enhanced_crew import (XMLAgent, XMLTask,
-                                                    parse_xml_response)
+from empathy_os.workflows.xml_enhanced_crew import XMLAgent, XMLTask, parse_xml_response
 
 
 def main():

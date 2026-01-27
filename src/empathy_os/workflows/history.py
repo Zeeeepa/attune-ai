@@ -459,10 +459,6 @@ class WorkflowHistoryStore:
         Returns:
             Number of runs deleted
         """
-        cutoff = datetime.now().replace(
-            hour=0, minute=0, second=0, microsecond=0
-        ).isoformat()
-
         cursor = self.conn.cursor()
 
         # Get run IDs to delete
@@ -480,12 +476,14 @@ class WorkflowHistoryStore:
             return 0
 
         # Delete stages for these runs
+        # Security Note: f-string builds placeholder list only ("?, ?, ?")
+        # Actual data (run_ids) passed as parameters - SQL injection safe
         placeholders = ",".join("?" * len(run_ids))
         cursor.execute(
             f"DELETE FROM workflow_stages WHERE run_id IN ({placeholders})", run_ids
         )
 
-        # Delete runs
+        # Delete runs (same safe parameterization pattern)
         cursor.execute(
             f"DELETE FROM workflow_runs WHERE run_id IN ({placeholders})", run_ids
         )

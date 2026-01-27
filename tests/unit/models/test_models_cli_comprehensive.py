@@ -86,24 +86,6 @@ class TestPrintRegistryRealData:
         # Should show Anthropic models
         assert "claude" in captured.out.lower()
 
-    def test_print_registry_openai_only(self, capsys):
-        """Test filtering registry by OpenAI provider."""
-        print_registry(provider="openai")
-
-        captured = capsys.readouterr()
-        assert "OPENAI" in captured.out
-        # Should show OpenAI models
-        assert "gpt" in captured.out.lower()
-
-    def test_print_registry_google_only(self, capsys):
-        """Test filtering registry by Google provider."""
-        print_registry(provider="google")
-
-        captured = capsys.readouterr()
-        assert "GOOGLE" in captured.out
-        # Should show Google models
-        assert "gemini" in captured.out.lower()
-
     def test_print_registry_invalid_provider_exits(self, capsys):
         """Test that invalid provider causes exit."""
         with pytest.raises(SystemExit) as exc_info:
@@ -367,16 +349,6 @@ class TestPrintEffectiveConfigRealData:
         assert "[Models]" in captured.out
         assert "[Task Routing Examples]" in captured.out
         assert "[Default Timeouts]" in captured.out
-
-    def test_print_effective_config_openai(self, capsys):
-        """Test printing effective config for OpenAI."""
-        print_effective_config(provider="openai")
-
-        captured = capsys.readouterr()
-        assert "OPENAI" in captured.out
-        assert "cheap" in captured.out
-        assert "capable" in captured.out
-        assert "premium" in captured.out
 
     def test_print_effective_config_shows_task_routing(self, capsys):
         """Test that effective config shows task routing examples."""
@@ -770,15 +742,6 @@ class TestMainCLIRealData:
         assert result == 0
         captured = capsys.readouterr()
         assert "EFFECTIVE CONFIGURATION" in captured.out
-
-    def test_main_effective_with_provider(self, capsys):
-        """Test effective command with provider."""
-        with patch.object(sys, "argv", ["cli", "effective", "--provider", "openai"]):
-            result = main()
-
-        assert result == 0
-        captured = capsys.readouterr()
-        assert "OPENAI" in captured.out
 
     def test_main_provider_command(self, capsys):
         """Test provider command."""

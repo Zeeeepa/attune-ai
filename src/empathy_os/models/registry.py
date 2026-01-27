@@ -209,11 +209,11 @@ class ModelRegistry:
         """Build tier and model ID caches for O(1) lookups."""
         # Cache for get_models_by_tier (tier -> list[ModelInfo])
         self._tier_cache: dict[str, list[ModelInfo]] = {}
-        for tier_value in [t.value for t in ModelTier]:
-            self._tier_cache[tier_value] = [
-                provider_models[tier_value]
+        for tier in ModelTier:
+            self._tier_cache[tier.value] = [
+                provider_models[tier.value]
                 for provider_models in self._registry.values()
-                if tier_value in provider_models
+                if tier.value in provider_models
             ]
 
         # Cache for get_model_by_id (model_id -> ModelInfo)

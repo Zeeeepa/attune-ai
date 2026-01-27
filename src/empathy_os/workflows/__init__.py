@@ -80,9 +80,11 @@ from .base import (
     get_workflow_stats,
 )
 
+# Builder pattern for workflow construction
+from .builder import WorkflowBuilder, workflow_builder
+
 # Config is small and frequently needed
 from .config import DEFAULT_MODELS, ModelConfig, WorkflowConfig, create_example_config, get_model
-from .step_config import WorkflowStepConfig, steps_from_tier_map, validate_step_config
 
 # Routing strategies (small, frequently needed for builder pattern)
 from .routing import (
@@ -92,9 +94,7 @@ from .routing import (
     RoutingContext,
     TierRoutingStrategy,
 )
-
-# Builder pattern for workflow construction
-from .builder import WorkflowBuilder, workflow_builder
+from .step_config import WorkflowStepConfig, steps_from_tier_map, validate_step_config
 
 # Lazy import mapping for workflow classes
 _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {

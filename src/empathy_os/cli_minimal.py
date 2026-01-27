@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Empathy Framework Minimal CLI.
+"""Empathy Framework CLI.
 
-A streamlined CLI for automation and CI/CD workflows.
-Interactive features are available via Claude Code skills.
+IMPORTANT: This CLI is for automation only (git hooks, scripts, CI/CD).
+For interactive use, use Claude Code skills in VSCode or Claude Desktop.
 
-Commands:
+Automation commands:
     empathy workflow list              List available workflows
     empathy workflow run <name>        Execute a workflow
     empathy workflow info <name>       Show workflow details
 
+Utility commands:
     empathy telemetry show             Display usage summary
     empathy telemetry savings          Show cost savings
     empathy telemetry export           Export to CSV/JSON
@@ -19,11 +20,13 @@ Commands:
     empathy validate                   Validate configuration
     empathy version                    Show version
 
-For interactive features, use Claude Code skills:
-    /dev        Developer tools (debug, commit, PR, review)
-    /testing    Run tests, coverage, benchmarks
+For interactive development, use Claude Code skills:
+    /dev        Developer tools (commit, review, debug, refactor)
+    /testing    Run tests, coverage, generate tests
+    /workflows  AI-powered workflows (security, bug prediction)
     /docs       Documentation generation
     /release    Release preparation
+    /learning   Session evaluation and improvement
 """
 
 from __future__ import annotations
@@ -509,6 +512,8 @@ def cmd_version(args: Namespace) -> int:
 
 
 # =============================================================================
+# Convenience Commands (Keyword Shortcuts)
+# =============================================================================
 # Main Entry Point
 # =============================================================================
 
@@ -517,14 +522,16 @@ def create_parser() -> argparse.ArgumentParser:
     """Create the argument parser."""
     parser = argparse.ArgumentParser(
         prog="empathy",
-        description="Empathy Framework CLI - AI-powered developer workflows",
+        description="Empathy Framework CLI (automation interface - for git hooks, scripts, CI/CD)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-For interactive features, use Claude Code skills:
-    /dev        Developer tools (debug, commit, PR, review)
-    /testing    Run tests, coverage, benchmarks
-    /docs       Documentation generation
-    /release    Release preparation
+NOTE: This CLI is for automation only. For interactive development,
+use Claude Code skills in VSCode or Claude Desktop:
+
+    /dev        Developer tools (commit, review, debug, refactor)
+    /testing    Run tests, coverage, generate tests
+    /workflows  AI-powered workflows (security, bug prediction)
+    /learning   Session evaluation
 
 Documentation: https://smartaimemory.com/framework-docs/
         """,
@@ -600,7 +607,6 @@ Documentation: https://smartaimemory.com/framework-docs/
 
     version_parser = subparsers.add_parser("version", help="Show version")
     version_parser.add_argument("-v", "--verbose", action="store_true", help="Show detailed info")
-
     return parser
 
 

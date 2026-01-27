@@ -182,6 +182,16 @@ class TestPerformanceOptimizedRouting:
 class TestBalancedRouting:
     """Test BalancedRouting strategy."""
 
+    def test_zero_budget_raises_value_error(self):
+        """Test that zero total_budget raises ValueError."""
+        with pytest.raises(ValueError, match="total_budget must be positive"):
+            BalancedRouting(total_budget=0)
+
+    def test_negative_budget_raises_value_error(self):
+        """Test that negative total_budget raises ValueError."""
+        with pytest.raises(ValueError, match="total_budget must be positive"):
+            BalancedRouting(total_budget=-50.0)
+
     def test_low_budget_routes_to_cheap(self):
         """Test that low budget routes to CHEAP tier."""
         strategy = BalancedRouting(total_budget=100.0)

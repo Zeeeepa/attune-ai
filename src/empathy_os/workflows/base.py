@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
+import sys
 import time
 import uuid
 from abc import ABC, abstractmethod
@@ -57,7 +58,12 @@ from empathy_os.models import ModelTier as UnifiedModelTier
 from .caching import CachedResponse, CachingMixin
 
 # Import progress tracking
-from .progress import ProgressCallback, ProgressTracker
+from .progress import (
+    RICH_AVAILABLE,
+    ProgressCallback,
+    ProgressTracker,
+    RichProgressReporter,
+)
 from .telemetry_mixin import TelemetryMixin
 
 # Import telemetry tracking
@@ -544,6 +550,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         enable_tier_tracking: bool = True,
         enable_tier_fallback: bool = False,
         routing_strategy: TierRoutingStrategy | None = None,
+        enable_rich_progress: bool = False,
     ):
         """Initialize workflow with optional cost tracker, provider, and config.
 
@@ -569,6 +576,11 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                      When provided, overrides static tier_map for stage tier decisions.
                      Strategies: CostOptimizedRouting, PerformanceOptimizedRouting,
                      BalancedRouting, HybridRouting.
+            enable_rich_progress: Whether to enable Rich-based live progress display
+                     (default False). When enabled and output is a TTY, shows live
+                     progress bars with spinners. Default is False because most users
+                     run workflows from IDEs (VSCode, etc.) where TTY is not available.
+                     The console reporter works reliably in all environments.
 
         """
         from .config import WorkflowConfig
@@ -579,6 +591,8 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         # Progress tracking
         self._progress_callback = progress_callback
         self._progress_tracker: ProgressTracker | None = None
+        self._enable_rich_progress = enable_rich_progress
+        self._rich_reporter: RichProgressReporter | None = None
 
         # New: LLMExecutor support
         self._executor = executor
@@ -1055,15 +1069,39 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         current_data = kwargs
         error = None
 
-        # Initialize progress tracker if callback provided
+        # Initialize progress tracker
+        # Always show progress by default (IDE-friendly console output)
+        # Rich live display only when explicitly enabled AND in TTY
+        from .progress import ConsoleProgressReporter
+
+        self._progress_tracker = ProgressTracker(
+            workflow_name=self.name,
+            workflow_id=self._run_id,
+            stage_names=self.stages,
+        )
+
+        # Add user's callback if provided
         if self._progress_callback:
-            self._progress_tracker = ProgressTracker(
-                workflow_name=self.name,
-                workflow_id=self._run_id,
-                stage_names=self.stages,
-            )
             self._progress_tracker.add_callback(self._progress_callback)
-            self._progress_tracker.start_workflow()
+
+        # Rich progress: only when explicitly enabled AND in a TTY
+        if self._enable_rich_progress and RICH_AVAILABLE and sys.stdout.isatty():
+            try:
+                self._rich_reporter = RichProgressReporter(self.name, self.stages)
+                self._progress_tracker.add_callback(self._rich_reporter.report)
+                self._rich_reporter.start()
+            except Exception as e:
+                # Fall back to console reporter
+                logger.debug(f"Rich progress unavailable: {e}")
+                self._rich_reporter = None
+                console_reporter = ConsoleProgressReporter(verbose=False)
+                self._progress_tracker.add_callback(console_reporter.report)
+        else:
+            # Default: use console reporter (works in IDEs, terminals, everywhere)
+            console_reporter = ConsoleProgressReporter(verbose=False)
+            self._progress_tracker.add_callback(console_reporter.report)
+
+        self._progress_tracker.start_workflow()
 
         try:
             # Tier fallback mode: try CHEAP → CAPABLE → PREMIUM with validation
@@ -1392,6 +1430,14 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         # Report workflow completion to progress tracker
         if self._progress_tracker and error is None:
             self._progress_tracker.complete_workflow()
+
+        # Stop Rich progress display if active
+        if self._rich_reporter:
+            try:
+                self._rich_reporter.stop()
+            except Exception:
+                pass  # Best effort cleanup
+            self._rich_reporter = None
 
         # Save to workflow history for dashboard
         try:

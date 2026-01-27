@@ -23,8 +23,7 @@ def test_imports():
 
     # Test 2: HealthcareWizard
     try:
-        from empathy_llm_toolkit.wizards.healthcare_wizard import \
-            HealthcareWizard
+        from empathy_llm_toolkit.wizards.healthcare_wizard import HealthcareWizard
 
         print("✅ HealthcareWizard imported")
 

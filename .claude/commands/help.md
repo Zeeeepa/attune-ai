@@ -19,7 +19,7 @@ When you type `/` in Claude Code, you'll see two types of commands:
 
 | Type             | Source                             | Examples                                                                          |
 | ---------------- | ---------------------------------- | --------------------------------------------------------------------------------- |
-| **Project Hubs** | This project (`.claude/commands/`) | `/dev`, `/testing`, `/workflow`, `/docs`, etc.                                    |
+| **Project Hubs** | This project (`.claude/commands/`) | `/dev`, `/testing`, `/workflows`, `/plan`, `/docs`, etc.                          |
 | **Built-in**     | Claude Code itself                 | `/clear`, `/compact`, `/config`, `/cost`, `/doctor`, `/init`, `/model`, `/status` |
 
 **This help covers the 9 Project Hubs below.** For built-in commands, see [Claude Code documentation](https://docs.anthropic.com/claude-code).
@@ -32,7 +32,8 @@ When you type `/` in Claude Code, you'll see two types of commands:
 | ------------ | -------------------- | ------------------------------------------ |
 | `/dev`       | `/developer`         | Debugging, commits, PRs, code quality      |
 | `/testing`   | `/tests`, `/test-hub`| Run tests, coverage, benchmarks            |
-| `/workflow`  | `/wf`                | Planning, TDD, code review, refactoring    |
+| `/workflows` | `/wf`, `/workflow`   | Run automated AI workflows (security, perf)|
+| `/plan`      | `/approach`          | Planning, TDD, code review, refactoring    |
 | `/docs`      | `/documentation`     | Explain code, manage docs, feature overview|
 | `/agent`     | `/agents`            | Create and manage specialized agents       |
 | `/context`   | `/ctx`               | Save/restore state, memory, status         |
@@ -46,12 +47,14 @@ When you type `/` in Claude Code, you'll see two types of commands:
 # Run any hub for an interactive menu
 /dev
 /testing
-/workflow
+/workflows
+/plan
 
 # Or provide context directly
 /dev "debug login error"
 /testing "run unit tests"
-/workflow "plan new feature"
+/workflows run security-audit
+/plan "new feature"
 ```
 
 ## Finding the Right Hub
@@ -65,8 +68,11 @@ Code & Git:
 Testing:
   └─ Run tests, coverage, benchmarks → /testing
 
+Automated Analysis:
+  └─ Security audit, bug predict, perf audit → /workflows
+
 Development Process:
-  └─ Plan, TDD, review, refactor → /workflow
+  └─ Plan, TDD, review, refactor → /plan
 
 Documentation:
   └─ Explain code, write docs → /docs
@@ -89,18 +95,20 @@ Setup:
 
 ## Common Tasks Quick Reference
 
-| Task                     | Command                    |
-| ------------------------ | -------------------------- |
-| Debug an error           | `/dev "debug <error>"`     |
-| Create a commit          | `/dev "commit"`            |
-| Create a PR              | `/dev "create PR"`         |
-| Run tests                | `/testing "run tests"`     |
-| Check coverage           | `/testing "coverage"`      |
-| Plan a feature           | `/workflow "plan <feat>"`  |
-| Review code              | `/workflow "review"`       |
-| Explain code             | `/docs "explain <file>"`   |
-| Save session state       | `/context "save state"`    |
-| Prepare release          | `/release "prep 1.0.0"`    |
+| Task                     | Command                         |
+| ------------------------ | ------------------------------- |
+| Debug an error           | `/dev "debug <error>"`          |
+| Create a commit          | `/dev "commit"`                 |
+| Create a PR              | `/dev "create PR"`              |
+| Run tests                | `/testing "run tests"`          |
+| Check coverage           | `/testing "coverage"`           |
+| Security audit           | `/workflows run security-audit` |
+| Bug prediction           | `/workflows run bug-predict`    |
+| Plan a feature           | `/plan "new feature"`           |
+| Review code              | `/plan "review"`                |
+| Explain code             | `/docs "explain <file>"`        |
+| Save session state       | `/context "save state"`         |
+| Prepare release          | `/release "prep 1.0.0"`         |
 
 ## Hub Features
 

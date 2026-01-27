@@ -553,12 +553,6 @@ class TestBaseAdapter:
         model = adapter.get_model_for_tier("cheap", "anthropic")
         assert "claude" in model.lower() or "haiku" in model.lower()
 
-    def test_get_model_for_tier_fallback_openai(self):
-        """Test get_model_for_tier fallback for openai."""
-        adapter = ConcreteAdapter()
-        model = adapter.get_model_for_tier("cheap", "openai")
-        assert "gpt" in model.lower() or "mini" in model.lower()
-
     def test_get_model_for_tier_capable(self):
         """Test get_model_for_tier with capable tier."""
         adapter = ConcreteAdapter()

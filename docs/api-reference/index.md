@@ -51,6 +51,23 @@ Data persistence for patterns, metrics, and state.
 - `StateManager` - Manage user collaboration states
 - `MetricsCollector` - Track usage metrics and performance
 
+### [Workflows](workflows.md)
+Cost-optimized workflow patterns with 3-tier model routing.
+
+**Key Classes:**
+- `BaseWorkflow` - Base class for workflow implementation
+- `WorkflowBuilder` - Fluent API for building workflows
+- `SecurityAuditWorkflow`, `CodeReviewWorkflow`, etc. - Built-in workflows
+
+### [Memory](memory.md)
+Unified two-tier memory system for AI agent collaboration.
+
+**Key Classes:**
+- `UnifiedMemory` - Main entry point for memory operations
+- `RedisShortTermMemory` - Short-term Redis-backed storage
+- `SecureMemDocsIntegration` - Encrypted long-term storage
+- `MemoryGraph` - Cross-workflow intelligence graph
+
 ### [LLM Toolkit](llm-toolkit.md)
 LLM provider integration with security controls.
 

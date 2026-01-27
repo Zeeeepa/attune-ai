@@ -39,11 +39,11 @@ class TestCmdCreate:
         mock_pattern.name = "Linear Flow"
         mock_pattern.description = "Sequential step wizard"
         mock_pattern.id = "linear_flow"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py", "/tmp/test.py"],
             "patterns": ["Linear Flow"],
             "next_steps": ["Run tests", "Review code"],
@@ -65,16 +65,16 @@ class TestCmdCreate:
 
         # Verify
         captured = capsys.readouterr()
-        assert "Creating Wizard: test_wizard" in captured.out
+        assert "Creating Workflow: test_wizard" in captured.out
         assert "Domain: general" in captured.out
         assert "Type: domain" in captured.out
         assert "Methodology: pattern" in captured.out
-        assert "✅ Wizard Created Successfully!" in captured.out
+        assert "✅ Workflow Created Successfully!" in captured.out
 
-        mock_reg.recommend_for_wizard.assert_called_once_with(
-            wizard_type="domain", domain="general"
+        mock_reg.recommend_for_workflow.assert_called_once_with(
+            workflow_type="domain", domain="general"
         )
-        mock_method.create_wizard.assert_called_once()
+        mock_method.create_workflow.assert_called_once()
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
@@ -86,11 +86,11 @@ class TestCmdCreate:
         mock_pattern.name = "Healthcare Pattern"
         mock_pattern.description = "Patient data collection"
         mock_pattern.id = "healthcare_flow"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/healthcare_wizard.py"],
             "patterns": ["Healthcare Pattern"],
             "next_steps": ["Test wizard"],
@@ -114,8 +114,8 @@ class TestCmdCreate:
         assert "Domain: healthcare" in captured.out
         assert "Healthcare Pattern" in captured.out
 
-        mock_reg.recommend_for_wizard.assert_called_once_with(
-            wizard_type="domain", domain="healthcare"
+        mock_reg.recommend_for_workflow.assert_called_once_with(
+            workflow_type="domain", domain="healthcare"
         )
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
@@ -128,11 +128,11 @@ class TestCmdCreate:
         mock_pattern.name = "TDD Pattern"
         mock_pattern.description = "Test-driven wizard"
         mock_pattern.id = "tdd_pattern"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py", "/tmp/tests.py"],
             "patterns": ["TDD Pattern"],
             "next_steps": ["Run failing tests", "Implement wizard"],
@@ -156,10 +156,10 @@ class TestCmdCreate:
         assert "Methodology: tdd" in captured.out
         assert "Run failing tests" in captured.out
 
-        mock_method.create_wizard.assert_called_once_with(
+        mock_method.create_workflow.assert_called_once_with(
             name="tdd_wizard",
             domain="finance",
-            wizard_type="domain",
+            workflow_type="domain",
             pattern_ids=["tdd_pattern"],
         )
 
@@ -177,11 +177,11 @@ class TestCmdCreate:
         mock_pattern2.name = "Pattern Two"
         mock_pattern2.description = "Second pattern"
         mock_pattern2.id = "pattern_two"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern1, mock_pattern2]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern1, mock_pattern2]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py"],
             "patterns": ["Pattern One", "Pattern Two"],
             "next_steps": ["Test"],
@@ -225,11 +225,11 @@ class TestCmdCreate:
         mock_pattern2.name = "Pattern B"
         mock_pattern2.description = "Description B"
         mock_pattern2.id = "pattern_b"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern1, mock_pattern2]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern1, mock_pattern2]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py"],
             "patterns": ["Pattern A", "Pattern B"],
             "next_steps": ["Test"],
@@ -270,11 +270,11 @@ class TestCmdCreate:
             p.description = f"Description {i}"
             p.id = f"pattern_{i}"
             patterns.append(p)
-        mock_reg.recommend_for_wizard.return_value = patterns
+        mock_reg.recommend_for_workflow.return_value = patterns
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py"],
             "patterns": ["Pattern 0", "Pattern 1"],
             "next_steps": ["Test"],
@@ -312,11 +312,11 @@ class TestCmdCreate:
         mock_pattern.name = "Pattern"
         mock_pattern.description = "Description"
         mock_pattern.id = "pattern_id"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py"],
             "patterns": ["Pattern"],
             "next_steps": ["Test"],
@@ -352,11 +352,11 @@ class TestCmdCreate:
         mock_pattern.name = "Pattern"
         mock_pattern.description = "Description"
         mock_pattern.id = "pattern_id"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py"],
             "patterns": ["Pattern"],
             "next_steps": ["Test"],
@@ -388,7 +388,7 @@ class TestCmdCreate:
             mock_pattern.name = "Pattern"
             mock_pattern.description = "Description"
             mock_pattern.id = "pattern_id"
-            mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+            mock_reg.recommend_for_workflow.return_value = [mock_pattern]
             mock_registry.return_value = mock_reg
 
             args = argparse.Namespace(
@@ -419,11 +419,11 @@ class TestCmdCreate:
         mock_pattern.name = "Test Pattern"
         mock_pattern.description = "Test description"
         mock_pattern.id = "test_pattern"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": [
                 "/tmp/wizard.py",
                 "/tmp/test_wizard.py",
@@ -470,11 +470,11 @@ class TestCmdCreate:
         """Test create command when no patterns are recommended."""
         # Setup mocks
         mock_reg = Mock()
-        mock_reg.recommend_for_wizard.return_value = []
+        mock_reg.recommend_for_workflow.return_value = []
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py"],
             "patterns": [],
             "next_steps": ["Review code"],
@@ -508,11 +508,11 @@ class TestCmdCreate:
         mock_pattern.name = "Coach Pattern"
         mock_pattern.description = "Coaching flow"
         mock_pattern.id = "coach_flow"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/coach_wizard.py"],
             "patterns": ["Coach Pattern"],
             "next_steps": ["Test coach"],
@@ -534,7 +534,7 @@ class TestCmdCreate:
         # Verify
         captured = capsys.readouterr()
         assert "Type: coach" in captured.out
-        mock_reg.recommend_for_wizard.assert_called_once_with(wizard_type="coach", domain="general")
+        mock_reg.recommend_for_workflow.assert_called_once_with(workflow_type="coach", domain="general")
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
@@ -546,11 +546,11 @@ class TestCmdCreate:
         mock_pattern.name = "AI Pattern"
         mock_pattern.description = "AI-enhanced flow"
         mock_pattern.id = "ai_flow"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/ai_wizard.py"],
             "patterns": ["AI Pattern"],
             "next_steps": ["Test AI wizard"],
@@ -851,11 +851,11 @@ class TestEdgeCases:
         mock_pattern.name = ""
         mock_pattern.description = ""
         mock_pattern.id = ""
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": [],
             "patterns": [],
             "next_steps": [],
@@ -876,7 +876,7 @@ class TestEdgeCases:
 
         # Verify it completes
         captured = capsys.readouterr()
-        assert "Wizard Created Successfully" in captured.out
+        assert "Workflow Created Successfully" in captured.out
 
     @patch("empathy_os.scaffolding.cli.get_pattern_registry")
     @patch("empathy_os.scaffolding.cli.PatternCompose")
@@ -884,11 +884,11 @@ class TestEdgeCases:
         """Test create command with very long wizard name."""
         # Setup mocks
         mock_reg = Mock()
-        mock_reg.recommend_for_wizard.return_value = []
+        mock_reg.recommend_for_workflow.return_value = []
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": [],
             "patterns": [],
             "next_steps": [],
@@ -920,11 +920,11 @@ class TestEdgeCases:
         """Test create command with special characters in wizard name."""
         # Setup mocks
         mock_reg = Mock()
-        mock_reg.recommend_for_wizard.return_value = []
+        mock_reg.recommend_for_workflow.return_value = []
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": [],
             "patterns": [],
             "next_steps": [],
@@ -961,11 +961,11 @@ class TestEdgeCases:
         mock_pattern.name = "Pattern"
         mock_pattern.description = "Description"
         mock_pattern.id = "pattern_id"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": [],
             "patterns": [],
             "next_steps": [],
@@ -1020,12 +1020,12 @@ class TestEdgeCases:
         mock_pattern.name = "Pattern"
         mock_pattern.description = "Description"
         mock_pattern.id = "pattern_id"
-        mock_reg.recommend_for_wizard.return_value = [mock_pattern]
+        mock_reg.recommend_for_workflow.return_value = [mock_pattern]
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
         # Missing 'patterns' key - should use selected_patterns
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/wizard.py"],
             "next_steps": ["Test"],
         }
@@ -1093,11 +1093,11 @@ class TestLoggingOutput:
         """Test that create command outputs properly formatted sections."""
         # Setup mocks
         mock_reg = Mock()
-        mock_reg.recommend_for_wizard.return_value = []
+        mock_reg.recommend_for_workflow.return_value = []
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.return_value = {
+        mock_method.create_workflow.return_value = {
             "files": ["/tmp/test.py"],
             "patterns": ["Pattern"],
             "next_steps": ["Step 1"],
@@ -1119,7 +1119,7 @@ class TestLoggingOutput:
         # Verify formatting with separators
         captured = capsys.readouterr()
         assert "=" * 60 in captured.out  # Header separator
-        assert "Creating Wizard:" in captured.out
+        assert "Creating Workflow:" in captured.out
         assert "Generated Files:" in captured.out
         assert "Patterns Used:" in captured.out
         assert "Next Steps:" in captured.out
@@ -1136,11 +1136,11 @@ class TestErrorHandling:
         """Test create command when PatternCompose raises exception."""
         # Setup mocks
         mock_reg = Mock()
-        mock_reg.recommend_for_wizard.return_value = []
+        mock_reg.recommend_for_workflow.return_value = []
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.side_effect = Exception("Failed to create wizard")
+        mock_method.create_workflow.side_effect = Exception("Failed to create wizard")
         mock_pattern_compose.return_value = mock_method
 
         args = argparse.Namespace(
@@ -1162,11 +1162,11 @@ class TestErrorHandling:
         """Test create command when TDDFirst raises exception."""
         # Setup mocks
         mock_reg = Mock()
-        mock_reg.recommend_for_wizard.return_value = []
+        mock_reg.recommend_for_workflow.return_value = []
         mock_registry.return_value = mock_reg
 
         mock_method = Mock()
-        mock_method.create_wizard.side_effect = Exception("TDD failed")
+        mock_method.create_workflow.side_effect = Exception("TDD failed")
         mock_tdd_first.return_value = mock_method
 
         args = argparse.Namespace(

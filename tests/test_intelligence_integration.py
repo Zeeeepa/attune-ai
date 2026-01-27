@@ -118,7 +118,7 @@ class TestMemoryGraphIntegration:
         """Test that findings from one wizard are accessible to others."""
         # Security wizard finds a vulnerability
         _vuln_id = temp_graph.add_finding(
-            wizard="security-audit",
+            workflow="security-audit",
             finding={
                 "type": "vulnerability",
                 "name": "SQL Injection in login",
@@ -141,13 +141,13 @@ class TestMemoryGraphIntegration:
         """Test creating and querying relationships between findings."""
         # Create a bug finding
         bug_id = temp_graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={"type": "bug", "name": "Null reference error"},
         )
 
         # Create a fix
         fix_id = temp_graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={"type": "fix", "name": "Add null check"},
         )
 
@@ -163,45 +163,45 @@ class TestMemoryGraphIntegration:
         """Test that wizard findings can be queried by source."""
         # Add findings from different wizards
         temp_graph.add_finding(
-            wizard="security-audit",
+            workflow="security-audit",
             finding={"type": "vulnerability", "name": "XSS"},
         )
         temp_graph.add_finding(
-            wizard="security-audit",
+            workflow="security-audit",
             finding={"type": "vulnerability", "name": "CSRF"},
         )
         temp_graph.add_finding(
-            wizard="perf-audit",
+            workflow="perf-audit",
             finding={"type": "performance_issue", "name": "Slow query"},
         )
 
-        # Query by wizard
-        security_findings = temp_graph.find_by_wizard("security-audit")
+        # Query by workflow
+        security_findings = temp_graph.find_by_workflow("security-audit")
         assert len(security_findings) == 2
 
-        perf_findings = temp_graph.find_by_wizard("perf-audit")
+        perf_findings = temp_graph.find_by_workflow("perf-audit")
         assert len(perf_findings) == 1
 
     def test_graph_statistics(self, temp_graph):
         """Test graph statistics for monitoring."""
         temp_graph.add_finding(
-            wizard="security-audit",
+            workflow="security-audit",
             finding={"type": "vulnerability", "name": "V1", "severity": "high"},
         )
         temp_graph.add_finding(
-            wizard="security-audit",
+            workflow="security-audit",
             finding={"type": "vulnerability", "name": "V2", "severity": "critical"},
         )
         temp_graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={"type": "bug", "name": "B1", "severity": "medium"},
         )
 
         stats = temp_graph.get_statistics()
 
         assert stats["total_nodes"] == 3
-        assert stats["nodes_by_wizard"]["security-audit"] == 2
-        assert stats["nodes_by_wizard"]["bug-predict"] == 1
+        assert stats["nodes_by_workflow"]["security-audit"] == 2
+        assert stats["nodes_by_workflow"]["bug-predict"] == 1
 
 
 @pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".empathy/workflow_chains.yaml not found")
@@ -300,7 +300,7 @@ class TestFullIntegration:
             # Add historical security findings
             graph = MemoryGraph(path=path)
             graph.add_finding(
-                wizard="security-audit",
+                workflow="security-audit",
                 finding={
                     "type": "vulnerability",
                     "name": "Previous SQL Injection",

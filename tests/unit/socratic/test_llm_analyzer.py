@@ -299,9 +299,15 @@ class TestLLMGoalAnalyzerInit:
 class TestGetClient:
     """Tests for _get_client method."""
 
-    def test_get_client_without_api_key(self, analyzer):
+    def test_get_client_without_api_key(self, analyzer, monkeypatch):
         """Test _get_client returns None without API key."""
-        client = analyzer._get_client()
+        # Ensure no API key from environment
+        monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+        # Create a fresh analyzer without API key
+        from src.empathy_os.socratic.llm_analyzer import LLMGoalAnalyzer
+
+        analyzer_no_key = LLMGoalAnalyzer(api_key=None)
+        client = analyzer_no_key._get_client()
         assert client is None
 
     def test_get_client_with_api_key_no_anthropic(self, analyzer_with_key):

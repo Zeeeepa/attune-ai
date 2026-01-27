@@ -16,7 +16,6 @@ Licensed under Fair Source License 0.9
 
 import sys
 import time
-from functools import lru_cache
 from pathlib import Path
 
 # Add src to path
@@ -85,12 +84,12 @@ def main():
     # Get cache stats after first scan
     stats1 = get_cache_stats()
     print("Cache Statistics (After First Scan):")
-    print(f"  File Hash Cache:")
+    print("  File Hash Cache:")
     print(f"    - Hits: {stats1['hash_cache']['hits']}")
     print(f"    - Misses: {stats1['hash_cache']['misses']}")
     print(f"    - Hit Rate: {stats1['hash_cache']['hit_rate']:.1f}%")
     print(f"    - Size: {stats1['hash_cache']['size']}/{stats1['hash_cache']['maxsize']}")
-    print(f"  AST Parse Cache:")
+    print("  AST Parse Cache:")
     print(f"    - Hits: {stats1['parse_cache']['hits']}")
     print(f"    - Misses: {stats1['parse_cache']['misses']}")
     print(f"    - Hit Rate: {stats1['parse_cache']['hit_rate']:.1f}%")
@@ -116,12 +115,12 @@ def main():
     # Get cache stats after second scan
     stats2 = get_cache_stats()
     print("Cache Statistics (After Second Scan):")
-    print(f"  File Hash Cache:")
+    print("  File Hash Cache:")
     print(f"    - Hits: {stats2['hash_cache']['hits']}")
     print(f"    - Misses: {stats2['hash_cache']['misses']}")
     print(f"    - Hit Rate: {stats2['hash_cache']['hit_rate']:.1f}%")
     print(f"    - Size: {stats2['hash_cache']['size']}/{stats2['hash_cache']['maxsize']}")
-    print(f"  AST Parse Cache:")
+    print("  AST Parse Cache:")
     print(f"    - Hits: {stats2['parse_cache']['hits']}")
     print(f"    - Misses: {stats2['parse_cache']['misses']}")
     print(f"    - Hit Rate: {stats2['parse_cache']['hit_rate']:.1f}%")

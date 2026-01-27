@@ -36,7 +36,7 @@ class TestMemoryGraph:
     def test_add_finding_creates_node(self, graph):
         """Test adding a finding creates a node."""
         node_id = graph.add_finding(
-            wizard="security-audit",
+            workflow="security-audit",
             finding={
                 "type": "vulnerability",
                 "name": "SQL Injection",
@@ -59,12 +59,12 @@ class TestMemoryGraph:
     def test_add_edge_connects_nodes(self, graph):
         """Test adding an edge connects two nodes."""
         bug_id = graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={"type": "bug", "name": "Null reference"},
         )
 
         fix_id = graph.add_finding(
-            wizard="bug-predict",
+            workflow="bug-predict",
             finding={"type": "fix", "name": "Add null check"},
         )
 
@@ -76,12 +76,12 @@ class TestMemoryGraph:
     def test_add_edge_bidirectional(self, graph):
         """Test bidirectional edge creation."""
         node1 = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "bug", "name": "Bug A"},
         )
 
         node2 = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "bug", "name": "Bug B"},
         )
 
@@ -93,17 +93,17 @@ class TestMemoryGraph:
     def test_find_related_outgoing(self, graph):
         """Test finding related nodes via outgoing edges."""
         parent = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "file", "name": "auth.py"},
         )
 
         child1 = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "function", "name": "login()"},
         )
 
         child2 = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "function", "name": "logout()"},
         )
 
@@ -119,17 +119,17 @@ class TestMemoryGraph:
     def test_find_related_with_edge_filter(self, graph):
         """Test filtering related nodes by edge type."""
         bug = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "bug", "name": "Bug"},
         )
 
         fix = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "fix", "name": "Fix"},
         )
 
         similar = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "bug", "name": "Similar Bug"},
         )
 
@@ -144,7 +144,7 @@ class TestMemoryGraph:
     def test_find_similar(self, graph):
         """Test finding similar nodes."""
         graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={
                 "type": "bug",
                 "name": "Null reference in auth module",
@@ -153,7 +153,7 @@ class TestMemoryGraph:
         )
 
         graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={
                 "type": "bug",
                 "name": "Type error in utils",
@@ -173,27 +173,27 @@ class TestMemoryGraph:
 
     def test_find_by_type(self, graph):
         """Test finding nodes by type."""
-        graph.add_finding(wizard="test", finding={"type": "bug", "name": "Bug 1"})
-        graph.add_finding(wizard="test", finding={"type": "bug", "name": "Bug 2"})
-        graph.add_finding(wizard="test", finding={"type": "fix", "name": "Fix 1"})
+        graph.add_finding(workflow="test", finding={"type": "bug", "name": "Bug 1"})
+        graph.add_finding(workflow="test", finding={"type": "bug", "name": "Bug 2"})
+        graph.add_finding(workflow="test", finding={"type": "fix", "name": "Fix 1"})
 
         bugs = graph.find_by_type(NodeType.BUG)
         assert len(bugs) == 2
 
-    def test_find_by_wizard(self, graph):
-        """Test finding nodes by source wizard."""
-        graph.add_finding(wizard="security-audit", finding={"type": "vulnerability", "name": "V1"})
-        graph.add_finding(wizard="security-audit", finding={"type": "vulnerability", "name": "V2"})
-        graph.add_finding(wizard="bug-predict", finding={"type": "bug", "name": "B1"})
+    def test_find_by_workflow(self, graph):
+        """Test finding nodes by source workflow."""
+        graph.add_finding(workflow="security-audit", finding={"type": "vulnerability", "name": "V1"})
+        graph.add_finding(workflow="security-audit", finding={"type": "vulnerability", "name": "V2"})
+        graph.add_finding(workflow="bug-predict", finding={"type": "bug", "name": "B1"})
 
-        security_nodes = graph.find_by_wizard("security-audit")
+        security_nodes = graph.find_by_workflow("security-audit")
         assert len(security_nodes) == 2
 
     def test_get_path(self, graph):
         """Test finding path between nodes."""
-        a = graph.add_finding(wizard="test", finding={"type": "bug", "name": "A"})
-        b = graph.add_finding(wizard="test", finding={"type": "bug", "name": "B"})
-        c = graph.add_finding(wizard="test", finding={"type": "fix", "name": "C"})
+        a = graph.add_finding(workflow="test", finding={"type": "bug", "name": "A"})
+        b = graph.add_finding(workflow="test", finding={"type": "bug", "name": "B"})
+        c = graph.add_finding(workflow="test", finding={"type": "fix", "name": "C"})
 
         graph.add_edge(a, b, EdgeType.CAUSES)
         graph.add_edge(b, c, EdgeType.FIXED_BY)
@@ -207,7 +207,7 @@ class TestMemoryGraph:
     def test_update_node(self, graph):
         """Test updating node properties."""
         node_id = graph.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "bug", "name": "Bug", "severity": "medium"},
         )
 
@@ -219,8 +219,8 @@ class TestMemoryGraph:
 
     def test_delete_node(self, graph):
         """Test deleting a node and its edges."""
-        a = graph.add_finding(wizard="test", finding={"type": "bug", "name": "A"})
-        b = graph.add_finding(wizard="test", finding={"type": "fix", "name": "B"})
+        a = graph.add_finding(workflow="test", finding={"type": "bug", "name": "A"})
+        b = graph.add_finding(workflow="test", finding={"type": "fix", "name": "B"})
 
         graph.add_edge(a, b, EdgeType.FIXED_BY)
 
@@ -236,21 +236,21 @@ class TestMemoryGraph:
     def test_get_statistics(self, graph):
         """Test getting graph statistics."""
         graph.add_finding(
-            wizard="security",
+            workflow="security",
             finding={"type": "vulnerability", "name": "V1", "severity": "high"},
         )
         graph.add_finding(
-            wizard="security",
+            workflow="security",
             finding={"type": "vulnerability", "name": "V2", "severity": "critical"},
         )
-        graph.add_finding(wizard="bugs", finding={"type": "bug", "name": "B1", "severity": "high"})
+        graph.add_finding(workflow="bugs", finding={"type": "bug", "name": "B1", "severity": "high"})
 
         stats = graph.get_statistics()
 
         assert stats["total_nodes"] == 3
         assert stats["nodes_by_type"]["vulnerability"] == 2
         assert stats["nodes_by_type"]["bug"] == 1
-        assert stats["nodes_by_wizard"]["security"] == 2
+        assert stats["nodes_by_workflow"]["security"] == 2
         assert stats["nodes_by_severity"]["high"] == 2
 
     def test_persistence(self, temp_graph_path):
@@ -258,7 +258,7 @@ class TestMemoryGraph:
         # Create graph and add data
         graph1 = MemoryGraph(path=temp_graph_path)
         node_id = graph1.add_finding(
-            wizard="test",
+            workflow="test",
             finding={"type": "bug", "name": "Persistent Bug"},
         )
 
@@ -270,8 +270,8 @@ class TestMemoryGraph:
 
     def test_clear(self, graph):
         """Test clearing the graph."""
-        graph.add_finding(wizard="test", finding={"type": "bug", "name": "Bug"})
-        graph.add_finding(wizard="test", finding={"type": "fix", "name": "Fix"})
+        graph.add_finding(workflow="test", finding={"type": "bug", "name": "Bug"})
+        graph.add_finding(workflow="test", finding={"type": "fix", "name": "Fix"})
 
         graph.clear()
 

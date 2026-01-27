@@ -8,10 +8,10 @@ Or for line-by-line profiling:
     mprof plot  # View graph
 """
 
+import json
 import os
 import sys
 import tempfile
-import json
 from pathlib import Path
 
 # Add src to path
@@ -22,7 +22,6 @@ os.environ["EMPATHY_REDIS_MOCK"] = "true"
 os.environ["EMPATHY_ENV"] = "development"
 
 from memory_profiler import profile
-
 
 # Create test data directory
 TEST_DIR = tempfile.mkdtemp(prefix="empathy_profile_")
@@ -53,7 +52,7 @@ def create_test_patterns(storage_dir: str, count: int = 100) -> None:
 @profile
 def profile_initialization():
     """Profile UnifiedMemory initialization."""
-    from empathy_os.memory.unified import UnifiedMemory, MemoryConfig, Environment
+    from empathy_os.memory.unified import Environment, MemoryConfig, UnifiedMemory
 
     config = MemoryConfig(
         environment=Environment.DEVELOPMENT,

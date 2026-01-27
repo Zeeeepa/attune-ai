@@ -552,7 +552,7 @@ class TestRefactoringConfig:
             memory_graph_enabled=False,
             timeout_seconds=600.0,
         )
-        assert config.provider == "openai"
+        assert config.provider == "anthropic"
         assert config.api_key == "sk-test"
         assert config.depth == "thorough"
         assert config.focus_areas == ["rename", "simplify"]
@@ -619,13 +619,13 @@ class TestRefactoringCrewInit:
         """Test initialization with config object."""
         config = RefactoringConfig(provider="anthropic", depth="thorough")
         crew = RefactoringCrew(config=config)
-        assert crew.config.provider == "openai"
+        assert crew.config.provider == "anthropic"
         assert crew.config.depth == "thorough"
 
     def test_init_with_kwargs(self):
         """Test initialization with keyword arguments."""
         crew = RefactoringCrew(provider="anthropic", api_key="sk-test")
-        assert crew.config.provider == "openai"
+        assert crew.config.provider == "anthropic"
         assert crew.config.api_key == "sk-test"
 
     def test_init_internal_state(self):

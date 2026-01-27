@@ -1,5 +1,21 @@
 """Unified CLI for Empathy Framework
 
+DEPRECATED: This module is deprecated as of v5.0.0.
+Use the minimal CLI instead: `empathy` (empathy_os.cli_minimal)
+
+The minimal CLI provides:
+- `empathy workflow list|info|run` - Workflow management
+- `empathy telemetry show|savings|export` - Usage tracking
+- `empathy provider show|set` - Provider configuration
+- `empathy validate` - Configuration validation
+
+For interactive features, use Claude Code slash commands:
+- /dev, /testing, /docs, /release, /help
+
+Migration guide: https://smartaimemory.com/framework-docs/migration/cli/
+
+---
+
 A simplified, intelligent CLI using Socratic questioning.
 
 Usage:
@@ -13,6 +29,15 @@ Usage:
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
+
+import warnings
+
+warnings.warn(
+    "empathy-unified CLI is deprecated. Use 'empathy' (cli_minimal) instead. "
+    "See: https://smartaimemory.com/framework-docs/reference/cli-reference/",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 import json
 import subprocess

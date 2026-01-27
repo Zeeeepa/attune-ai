@@ -136,7 +136,12 @@ class BalancedRouting(TierRoutingStrategy):
 
         Args:
             total_budget: Total budget in USD for this workflow execution
+
+        Raises:
+            ValueError: If total_budget is not positive
         """
+        if total_budget <= 0:
+            raise ValueError("total_budget must be positive")
         self.total_budget = total_budget
 
     def route(self, context: RoutingContext) -> ModelTier:

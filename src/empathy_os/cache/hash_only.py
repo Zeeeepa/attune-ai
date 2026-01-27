@@ -6,6 +6,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import heapq
 import logging
 import time
 from typing import Any
@@ -202,10 +203,12 @@ class HashOnlyCache(BaseCache):
             # Evict 10% of entries (LRU)
             num_to_evict = max(1, len(self._memory_cache) // 10)
 
-            # Sort by access time (oldest first)
-            sorted_keys = sorted(self._access_times.items(), key=lambda x: x[1])
+            # Get oldest entries by access time (LRU eviction)
+            oldest_keys = heapq.nsmallest(
+                num_to_evict, self._access_times.items(), key=lambda x: x[1]
+            )
 
-            for cache_key, _ in sorted_keys[:num_to_evict]:
+            for cache_key, _ in oldest_keys:
                 self._evict_entry(cache_key)
                 logger.debug(f"LRU eviction: {cache_key[:16]}...")
 

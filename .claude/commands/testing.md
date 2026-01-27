@@ -5,6 +5,19 @@ category: hub
 aliases: [test-hub, tests]
 tags: [testing, coverage, benchmarks, hub]
 version: "3.0"
+question:
+  header: "Testing Task"
+  question: "What testing task do you need?"
+  multiSelect: false
+  options:
+    - label: "🧪 Run & analyze tests"
+      description: "Execute tests with failure analysis and coverage report"
+    - label: "✨ Generate tests"
+      description: "AI-powered test generation for your code"
+    - label: "🎯 TDD session"
+      description: "Test-driven development with red-green-refactor"
+    - label: "⚡ Benchmarks"
+      description: "Performance benchmarking and profiling"
 ---
 
 # Testing
@@ -220,5 +233,6 @@ Checking for performance issues  → /testing benchmark
 
 - `/dev` - Debug failures, code review
 - `/release` - Pre-release validation
-- `/workflow` - Feature planning
+- `/workflows` - Run automated workflows (security-audit, test-gen, etc.)
+- `/plan` - Feature planning
 - `/agent` - Direct agent invocation

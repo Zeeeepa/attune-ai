@@ -1,16 +1,14 @@
-"""Hybrid CLI Router - Slash Commands + Natural Language
+"""Hybrid CLI Router - Skills + Natural Language
 
-Supports both structured slash commands and natural language routing:
-- Slash commands: empathy /dev commit
-- Natural language: empathy "commit my changes"
-- Single word: empathy commit (infers /dev commit)
+Routes keywords and natural language to Claude Code skill invocations:
+- Skills: /dev, /testing, /workflows (Claude Code Skill tool)
+- Keywords: commit, test, security (maps to skills)
+- Natural language: "commit my changes" (SmartRouter classification)
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import os
-import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -25,33 +23,34 @@ class RoutingPreference:
     """User's learned routing preferences."""
 
     keyword: str
-    slash_command: str
+    skill: str
+    args: str = ""
     usage_count: int = 0
     confidence: float = 1.0
 
 
 class HybridRouter:
-    """Routes user input to appropriate commands or workflows.
+    """Routes user input to Claude Code skill invocations.
 
     Supports three input modes:
-    1. Slash commands: /dev commit (direct, structured)
-    2. Single words: commit (infers /dev commit from context)
+    1. Skills: /dev, /testing (returns skill invocation metadata)
+    2. Keywords: commit, test (maps to skill invocations)
     3. Natural language: "I need to commit" (uses SmartRouter)
 
     Example:
         router = HybridRouter()
 
-        # Direct slash command
-        result = await router.route("/dev commit")
-        # → {type: "slash", hub: "dev", command: "commit"}
+        # Skill invocation
+        result = await router.route("/dev")
+        # → {type: "skill", skill: "dev", args: "", instruction: "Use Skill tool..."}
 
-        # Single word inference
+        # Keyword to skill
         result = await router.route("commit")
-        # → {type: "inferred", hub: "dev", command: "commit", confidence: 0.9}
+        # → {type: "skill", skill: "dev", args: "commit", instruction: "Use Skill tool..."}
 
         # Natural language
         result = await router.route("I want to commit my changes")
-        # → {type: "natural", workflow: "commit", slash_equivalent: "/dev commit"}
+        # → {type: "skill", skill: "dev", args: "commit", reasoning: "..."}
     """
 
     def __init__(self, preferences_path: str | None = None):
@@ -67,38 +66,47 @@ class HybridRouter:
         self.smart_router = SmartRouter()
         self.preferences: dict[str, RoutingPreference] = {}
 
-        # Command to slash command mapping
-        self._command_map = {
-            # Dev commands
-            "commit": "/dev commit",
-            "review": "/dev review-pr",
-            "review-pr": "/dev review-pr",
-            "refactor": "/dev refactor",
-            "perf": "/dev perf-audit",
-            "perf-audit": "/dev perf-audit",
-            # Testing commands
-            "test": "/testing run",
-            "tests": "/testing run",
-            "coverage": "/testing coverage",
-            "generate-tests": "/testing gen",
-            "test-gen": "/testing gen",
-            # Learning commands
-            "evaluate": "/learning evaluate",
-            "patterns": "/learning patterns",
-            "improve": "/learning improve",
-            # Workflow commands
-            "security": "/workflows security-audit",
-            "security-audit": "/workflows security-audit",
-            "bug-predict": "/workflows bug-predict",
-            "bugs": "/workflows bug-predict",
-            # Context commands
-            "status": "/context status",
-            "memory": "/context memory",
-            "state": "/context state",
-            # Doc commands
-            "explain": "/docs explain",
-            "document": "/docs generate",
-            "overview": "/docs overview",
+        # Keyword to skill mapping: keyword → (skill_name, args)
+        self._keyword_to_skill = {
+            # Dev commands → /dev skill
+            "commit": ("dev", "commit"),
+            "review": ("dev", "review"),
+            "review-pr": ("dev", "review"),
+            "refactor": ("dev", "refactor"),
+            "perf": ("dev", "perf-audit"),
+            "perf-audit": ("dev", "perf-audit"),
+            "debug": ("dev", "debug"),
+            # Testing commands → /testing skill
+            "test": ("testing", "run"),
+            "tests": ("testing", "run"),
+            "coverage": ("testing", "coverage"),
+            "generate-tests": ("testing", "gen"),
+            "test-gen": ("testing", "gen"),
+            "benchmark": ("testing", "benchmark"),
+            # Learning commands → /learning skill
+            "evaluate": ("learning", "evaluate"),
+            "patterns": ("learning", "patterns"),
+            "improve": ("learning", "improve"),
+            # Workflow commands → /workflows skill
+            "security": ("workflows", "run security-audit"),
+            "security-audit": ("workflows", "run security-audit"),
+            "bug-predict": ("workflows", "run bug-predict"),
+            "bugs": ("workflows", "run bug-predict"),
+            "perf-workflow": ("workflows", "run perf-audit"),
+            # Context commands → /context skill
+            "status": ("context", "status"),
+            "memory": ("context", "memory"),
+            "state": ("context", "state"),
+            # Doc commands → /docs skill
+            "explain": ("docs", "explain"),
+            "document": ("docs", "generate"),
+            "overview": ("docs", "overview"),
+            # Plan commands → /plan skill
+            "plan": ("plan", ""),
+            "tdd": ("plan", "tdd"),
+            # Release commands → /release skill
+            "release": ("release", "prep"),
+            "ship": ("release", "prep"),
         }
 
         # Hub descriptions for disambiguation
@@ -126,9 +134,22 @@ class HybridRouter:
                 data = yaml.safe_load(f) or {}
 
             for keyword, pref_data in data.get("preferences", {}).items():
+                # Handle backward compatibility: old format had "slash_command"
+                if "slash_command" in pref_data:
+                    # Migrate old format: "/dev commit" → skill="dev", args="commit"
+                    slash_cmd = pref_data["slash_command"].lstrip("/")
+                    parts = slash_cmd.split(maxsplit=1)
+                    skill = parts[0] if parts else "help"
+                    args = parts[1] if len(parts) > 1 else ""
+                else:
+                    # New format
+                    skill = pref_data["skill"]
+                    args = pref_data.get("args", "")
+
                 self.preferences[keyword] = RoutingPreference(
                     keyword=keyword,
-                    slash_command=pref_data["slash_command"],
+                    skill=skill,
+                    args=args,
                     usage_count=pref_data.get("usage_count", 0),
                     confidence=pref_data.get("confidence", 1.0),
                 )
@@ -142,7 +163,8 @@ class HybridRouter:
         data = {
             "preferences": {
                 pref.keyword: {
-                    "slash_command": pref.slash_command,
+                    "skill": pref.skill,
+                    "args": pref.args,
                     "usage_count": pref.usage_count,
                     "confidence": pref.confidence,
                 }
@@ -182,81 +204,82 @@ class HybridRouter:
         return await self._route_natural_language(user_input, context)
 
     def _route_slash_command(self, command: str) -> dict[str, Any]:
-        """Route slash command directly.
+        """Route slash command to skill invocation.
 
         Args:
-            command: Slash command like "/dev commit"
+            command: Slash command like "/dev" or "/dev commit"
 
         Returns:
-            Routing result
+            Skill invocation instructions
         """
         parts = command[1:].split(maxsplit=1)  # Remove leading /
-        hub = parts[0] if parts else "help"
-        subcommand = parts[1] if len(parts) > 1 else None
+        skill = parts[0] if parts else "help"
+        args = parts[1] if len(parts) > 1 else ""
 
         return {
-            "type": "slash",
-            "hub": hub,
-            "command": subcommand,
+            "type": "skill",
+            "skill": skill,
+            "args": args,
             "original": command,
             "confidence": 1.0,
+            "instruction": f"Use Skill tool with skill='{skill}'" + (f", args='{args}'" if args else ""),
         }
 
     def _infer_command(self, keyword: str) -> dict[str, Any] | None:
-        """Infer slash command from keyword or short phrase.
+        """Infer skill invocation from keyword or short phrase.
 
         Args:
             keyword: Single word or short phrase
 
         Returns:
-            Routing result if inference successful, None otherwise
+            Skill invocation instructions if inference successful, None otherwise
         """
         keyword_lower = keyword.lower().strip()
 
         # Check learned preferences first
         if keyword_lower in self.preferences:
             pref = self.preferences[keyword_lower]
-            slash_cmd = pref.slash_command
 
             # Update usage count
             pref.usage_count += 1
             self._save_preferences()
 
-            return self._parse_inferred(slash_cmd, keyword, pref.confidence, "learned")
+            return {
+                "type": "skill",
+                "skill": pref.skill,
+                "args": pref.args,
+                "original": keyword,
+                "confidence": pref.confidence,
+                "source": "learned",
+                "instruction": f"Use Skill tool with skill='{pref.skill}'" + (f", args='{pref.args}'" if pref.args else ""),
+            }
 
-        # Check built-in command map
-        if keyword_lower in self._command_map:
-            slash_cmd = self._command_map[keyword_lower]
-            return self._parse_inferred(slash_cmd, keyword, 0.9, "builtin")
+        # Check built-in keyword map
+        if keyword_lower in self._keyword_to_skill:
+            skill, args = self._keyword_to_skill[keyword_lower]
+            return {
+                "type": "skill",
+                "skill": skill,
+                "args": args,
+                "original": keyword,
+                "confidence": 0.9,
+                "source": "builtin",
+                "instruction": f"Use Skill tool with skill='{skill}'" + (f", args='{args}'" if args else ""),
+            }
 
         # Check for hub names (show hub menu)
         if keyword_lower in self._hub_descriptions:
             return {
-                "type": "hub_menu",
-                "hub": keyword_lower,
+                "type": "skill",
+                "skill": keyword_lower,
+                "args": "",
                 "original": keyword,
                 "confidence": 1.0,
+                "source": "hub",
+                "instruction": f"Use Skill tool with skill='{keyword_lower}'",
             }
 
         return None
-
-    def _parse_inferred(
-        self, slash_cmd: str, original: str, confidence: float, source: str
-    ) -> dict[str, Any]:
-        """Parse inferred slash command."""
-        parts = slash_cmd[1:].split(maxsplit=1)  # Remove leading /
-        hub = parts[0] if parts else "help"
-        subcommand = parts[1] if len(parts) > 1 else None
-
-        return {
-            "type": "inferred",
-            "hub": hub,
-            "command": subcommand,
-            "original": original,
-            "slash_equivalent": slash_cmd,
-            "confidence": confidence,
-            "source": source,  # learned, builtin
-        }
 
     async def _route_natural_language(
         self, text: str, context: dict[str, Any] | None = None
@@ -268,52 +291,59 @@ class HybridRouter:
             context: Optional context
 
         Returns:
-            Routing result with workflow and slash equivalent
+            Skill invocation instructions based on SmartRouter decision
         """
         # Use SmartRouter for classification
         decision = await self.smart_router.route(text, context)
 
-        # Map workflow to slash command
-        slash_equivalent = self._workflow_to_slash(decision.primary_workflow)
+        # Map workflow to skill invocation
+        skill, args = self._workflow_to_skill(decision.primary_workflow)
 
         return {
-            "type": "natural",
+            "type": "skill",
+            "skill": skill,
+            "args": args,
             "workflow": decision.primary_workflow,
             "secondary_workflows": decision.secondary_workflows,
-            "slash_equivalent": slash_equivalent,
             "confidence": decision.confidence,
             "reasoning": decision.reasoning,
             "original": text,
+            "source": "natural_language",
+            "instruction": f"Use Skill tool with skill='{skill}'" + (f", args='{args}'" if args else ""),
         }
 
-    def _workflow_to_slash(self, workflow: str) -> str:
-        """Map workflow name to slash command equivalent.
+    def _workflow_to_skill(self, workflow: str) -> tuple[str, str]:
+        """Map workflow name to skill invocation.
 
         Args:
             workflow: Workflow name (e.g., "security-audit")
 
         Returns:
-            Slash command equivalent
+            Tuple of (skill_name, args)
         """
-        # Workflow to slash command mapping
+        # Workflow to skill mapping
         workflow_map = {
-            "security-audit": "/workflows security-audit",
-            "bug-predict": "/workflows bug-predict",
-            "code-review": "/dev review",
-            "test-gen": "/testing gen",
-            "perf-audit": "/dev perf-audit",
-            "commit": "/dev commit",
-            "refactor": "/dev refactor",
+            "security-audit": ("workflows", "run security-audit"),
+            "bug-predict": ("workflows", "run bug-predict"),
+            "code-review": ("dev", "review"),
+            "test-gen": ("testing", "gen"),
+            "perf-audit": ("workflows", "run perf-audit"),
+            "commit": ("dev", "commit"),
+            "refactor": ("dev", "refactor"),
+            "debug": ("dev", "debug"),
+            "explain": ("docs", "explain"),
+            "plan": ("plan", ""),
         }
 
-        return workflow_map.get(workflow, f"/workflows {workflow}")
+        return workflow_map.get(workflow, ("workflows", f"run {workflow}"))
 
-    def learn_preference(self, keyword: str, slash_command: str) -> None:
+    def learn_preference(self, keyword: str, skill: str, args: str = "") -> None:
         """Learn user's routing preference.
 
         Args:
             keyword: Keyword user typed
-            slash_command: Command that was executed
+            skill: Skill name that was invoked
+            args: Arguments passed to skill
         """
         if keyword in self.preferences:
             pref = self.preferences[keyword]
@@ -323,7 +353,8 @@ class HybridRouter:
         else:
             self.preferences[keyword] = RoutingPreference(
                 keyword=keyword,
-                slash_command=slash_command,
+                skill=skill,
+                args=args,
                 usage_count=1,
                 confidence=0.8,
             )
@@ -337,20 +368,21 @@ class HybridRouter:
             partial: Partial command input
 
         Returns:
-            List of suggested commands
+            List of suggested keywords and skills
         """
         suggestions = []
         partial_lower = partial.lower()
 
-        # Suggest slash commands
-        for cmd in self._command_map.values():
-            if partial_lower in cmd.lower():
-                suggestions.append(cmd)
+        # Suggest keywords
+        for keyword in self._keyword_to_skill.keys():
+            if partial_lower in keyword:
+                skill, args = self._keyword_to_skill[keyword]
+                suggestions.append(f"{keyword} → /{skill} {args}".strip())
 
         # Suggest learned preferences
         for pref in self.preferences.values():
             if partial_lower in pref.keyword.lower():
-                suggestions.append(f"{pref.keyword} → {pref.slash_command}")
+                suggestions.append(f"{pref.keyword} → /{pref.skill} {pref.args}".strip())
 
         return suggestions[:5]  # Top 5 suggestions
 

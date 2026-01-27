@@ -5,6 +5,19 @@ category: hub
 aliases: [developer]
 tags: [development, git, debugging, quality, hub]
 version: "3.0"
+question:
+  header: "Task"
+  question: "What development task do you need?"
+  multiSelect: false
+  options:
+    - label: "🐛 Debug & analyze"
+      description: "Investigate bugs, review code, refactor with guidance"
+    - label: "📝 Git operations"
+      description: "Create commits, pull requests, manage branches"
+    - label: "✅ Quality check"
+      description: "Run linting, type checking, security scans"
+    - label: "⚡ Performance"
+      description: "Profile code, identify bottlenecks, optimize"
 ---
 
 # Developer Tools
@@ -13,32 +26,30 @@ version: "3.0"
 
 Development operations powered by Socratic agents that guide you through discovery.
 
-## Quick Examples
+---
+
+**Based on your selection, I will:**
+
+- **🐛 Debug issue** → Use the debugger agent with Socratic questioning to help you discover root causes
+- **👀 Review code** → Use the code-reviewer agent to provide teaching-focused quality review
+- **🔧 Refactor code** → Use the refactorer agent to guide structural improvements
+- **📝 Git commit** → Stage files and create a well-formatted commit
+- **🚀 Create PR** → Push changes and create a pull request with summary
+- **✅ Quality check** → Run linters, type checking, and security scans
+
+---
+
+## Quick Direct Access
+
+You can also invoke sub-commands directly:
 
 ```bash
-/dev                      # Interactive menu
-/dev debug                # Start debugging with debugger agent
-/dev review               # Code review with code-reviewer agent
-/dev refactor             # Refactoring with refactorer agent
-/dev commit               # Create a git commit
-/dev pr                   # Create a pull request
-```
-
-## Discovery
-
-```yaml
-Question:
-  header: "Task"
-  question: "What development task do you need?"
-  options:
-    - label: "Debug issue"
-      description: "Investigate bugs with guided root cause analysis"
-    - label: "Review code"
-      description: "Quality review with teaching explanations"
-    - label: "Refactor code"
-      description: "Improve structure with pattern guidance"
-    - label: "Git operations"
-      description: "Commits, PRs, and version control"
+/dev debug                # Start debugging
+/dev review               # Code review
+/dev refactor             # Refactoring
+/dev commit               # Git commit
+/dev pr                   # Create PR
+/dev quality              # Quality check
 ```
 
 ---
@@ -216,17 +227,19 @@ Ready to open PR                 → /dev pr
 
 ## When NOT to Use This Hub
 
-| If you need...         | Use instead |
-|------------------------|-------------|
-| Run tests              | `/testing`  |
-| Write documentation    | `/docs`     |
-| Release/deploy         | `/release`  |
-| Plan a feature         | `/workflow` |
-| Manage context/memory  | `/context`  |
+| If you need...         | Use instead  |
+|------------------------|--------------|
+| Run tests              | `/testing`   |
+| Write documentation    | `/docs`      |
+| Release/deploy         | `/release`   |
+| Plan a feature         | `/plan`      |
+| Run automated analysis | `/workflows` |
+| Manage context/memory  | `/context`   |
 
 ## Related Hubs
 
 - `/testing` - Run tests, coverage, TDD
-- `/workflow` - Plan features, architecture
+- `/workflows` - Run automated workflows (security-audit, bug-predict, etc.)
+- `/plan` - Plan features, architecture
 - `/release` - Prepare and publish releases
 - `/agent` - Direct agent invocation

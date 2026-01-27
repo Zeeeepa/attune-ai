@@ -42,13 +42,10 @@ class TestModelProviderEnum:
     """Tests for ModelProvider enum."""
 
     def test_provider_values(self):
-        """Verify provider enum values."""
+        """Verify provider enum values (Anthropic-only architecture)."""
         assert ModelProvider.ANTHROPIC.value == "anthropic"
-        assert ModelProvider.OPENAI.value == "openai"
-        assert ModelProvider.GOOGLE.value == "google"
-        assert ModelProvider.OLLAMA.value == "ollama"
-        assert ModelProvider.HYBRID.value == "hybrid"
-        assert ModelProvider.CUSTOM.value == "custom"
+        # Only Anthropic provider in v5.0.0
+        assert len(ModelProvider) == 1
 
 
 class TestModelInfo:
@@ -161,8 +158,8 @@ class TestModelRegistry:
     """Tests for MODEL_REGISTRY."""
 
     def test_all_providers_present(self):
-        """Verify all expected providers are in registry."""
-        expected = {"anthropic", "openai", "google", "ollama", "hybrid"}
+        """Verify all expected providers are in registry (Anthropic-only)."""
+        expected = {"anthropic"}  # Only Anthropic in v5.0.0
         assert set(MODEL_REGISTRY.keys()) == expected
 
     def test_all_tiers_present_for_each_provider(self):
@@ -185,66 +182,7 @@ class TestModelRegistry:
         assert "opus" in premium.id.lower()
         assert premium.input_cost_per_million == 15.00
 
-    def test_openai_models(self):
-        """Verify OpenAI model configurations."""
-        cheap = MODEL_REGISTRY["openai"]["cheap"]
-        assert cheap.id == "gpt-4o-mini"
-        assert cheap.input_cost_per_million == 0.15
 
-        capable = MODEL_REGISTRY["openai"]["capable"]
-        assert capable.id == "gpt-4o"
-
-        premium = MODEL_REGISTRY["openai"]["premium"]
-        assert premium.id == "o1"
-        assert premium.supports_tools is False  # o1 doesn't support tools
-
-    def test_google_models(self):
-        """Verify Google/Gemini model configurations."""
-        cheap = MODEL_REGISTRY["google"]["cheap"]
-        assert cheap.id == "gemini-2.0-flash-exp"
-        assert cheap.provider == "google"
-        assert cheap.input_cost_per_million == 0.10
-
-        capable = MODEL_REGISTRY["google"]["capable"]
-        assert capable.id == "gemini-1.5-pro"
-        assert capable.provider == "google"
-
-        premium = MODEL_REGISTRY["google"]["premium"]
-        assert premium.id == "gemini-2.5-pro"
-        assert premium.provider == "google"
-        # Gemini 2.5 Pro is Google's most capable model
-        assert premium.supports_vision is True
-        assert premium.supports_tools is True
-
-    def test_google_tier_differentiation(self):
-        """Verify Google tiers use different models."""
-        cheap = MODEL_REGISTRY["google"]["cheap"]
-        capable = MODEL_REGISTRY["google"]["capable"]
-        premium = MODEL_REGISTRY["google"]["premium"]
-
-        # Each tier should have a distinct model
-        assert cheap.id != capable.id
-        assert capable.id != premium.id
-        assert cheap.id != premium.id
-
-    def test_ollama_zero_cost(self):
-        """Verify Ollama models have zero cost."""
-        for _tier, info in MODEL_REGISTRY["ollama"].items():
-            assert info.input_cost_per_million == 0.0
-            assert info.output_cost_per_million == 0.0
-
-    def test_hybrid_uses_best_models(self):
-        """Verify hybrid uses cheapest/best from each provider."""
-        cheap = MODEL_REGISTRY["hybrid"]["cheap"]
-        assert cheap.id == "gpt-4o-mini"  # OpenAI for cheap
-        assert cheap.provider == "openai"
-
-        capable = MODEL_REGISTRY["hybrid"]["capable"]
-        assert "sonnet" in capable.id.lower()  # Anthropic for capable
-        assert capable.provider == "anthropic"
-
-        premium = MODEL_REGISTRY["hybrid"]["premium"]
-        assert "opus" in premium.id.lower()  # Anthropic for premium
 
 
 class TestHelperFunctions:
@@ -263,9 +201,10 @@ class TestHelperFunctions:
         assert model1 == model2
 
     def test_get_model_invalid_provider(self):
-        """Test getting model with invalid provider."""
-        model = get_model("invalid", "cheap")
-        assert model is None
+        """Test getting model with invalid provider raises error (Anthropic-only)."""
+        # In v5.0.0, invalid providers raise ValueError instead of returning None
+        with pytest.raises(ValueError, match="Provider .* is not supported"):
+            get_model("invalid", "cheap")
 
     def test_get_model_invalid_tier(self):
         """Test getting model with invalid tier."""
@@ -290,13 +229,10 @@ class TestHelperFunctions:
         assert pricing is None
 
     def test_get_supported_providers(self):
-        """Test getting supported providers list."""
+        """Test getting supported providers list (Anthropic-only)."""
         providers = get_supported_providers()
         assert "anthropic" in providers
-        assert "openai" in providers
-        assert "google" in providers
-        assert "ollama" in providers
-        assert "hybrid" in providers
+        assert len(providers) == 1  # Only Anthropic in v5.0.0
 
     def test_get_tiers(self):
         """Test getting tiers list."""

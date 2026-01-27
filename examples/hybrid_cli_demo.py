@@ -1,10 +1,9 @@
-"""Hybrid CLI Demo - Slash Commands + Natural Language
+"""Hybrid CLI Demo - Skills + Keywords + Natural Language
 
-Demonstrates the four levels of user interaction:
-1. Discovery (slash commands)
-2. Structured usage (slash commands)
+Demonstrates three levels of user interaction:
+1. Claude Code Skills (/dev, /testing, /workflows)
+2. Keywords (commit, test, security)
 3. Natural language (automatic routing)
-4. AI assistant mode (fully automatic)
 
 Usage:
     python examples/hybrid_cli_demo.py
@@ -31,79 +30,56 @@ def print_section(title: str):
 
 
 async def demo_level_1_discovery():
-    """Level 1: Discovery using slash commands."""
-    print_section("LEVEL 1: Discovery (Slash Commands)")
+    """Level 1: Discovery using Claude Code skills."""
+    print_section("LEVEL 1: Claude Code Skills")
 
     examples = [
-        ("/help", "Show all available hubs"),
-        ("/dev", "Show development tools"),
-        ("/testing", "Show testing commands"),
-        ("/workflows", "Show workflow commands"),
+        ("/help", "Show all available skills"),
+        ("/dev", "Development tools"),
+        ("/testing", "Testing commands"),
+        ("/workflows", "AI-powered workflows"),
     ]
 
     router = HybridRouter()
 
     for command, description in examples:
         print(f"\n💡 {description}")
-        print(f"   $ empathy {command}")
+        print(f"   In Claude Code: {command}")
 
         result = await router.route(command)
         print(f"   → Type: {result['type']}")
-        print(f"   → Hub: {result['hub']}")
-        if result.get("command"):
-            print(f"   → Command: {result['command']}")
+        print(f"   → Skill: {result['skill']}")
+        print(f"   → Args: {result['args'] or '(interactive menu)'}")
+        print(f"   → Instruction: {result['instruction']}")
 
 
 async def demo_level_2_structured():
-    """Level 2: Structured usage with slash commands."""
-    print_section("LEVEL 2: Structured Usage (Slash Commands)")
+    """Level 2: Keyword shortcuts for Skills."""
+    print_section("LEVEL 2: Keywords → Skills")
 
     examples = [
-        ("/dev commit", "Create a git commit"),
-        ("/testing run", "Run test suite"),
-        ("/workflows security-audit", "Run security audit"),
-        ("/learning evaluate", "Evaluate session"),
+        ("commit", "Create a git commit", "Skill: /dev commit"),
+        ("test", "Run test suite", "Skill: /testing run"),
+        ("security", "Run security audit", "Skill: /workflows run security-audit"),
+        ("review", "Code review", "Skill: /dev review"),
     ]
 
     router = HybridRouter()
 
-    for command, description in examples:
+    for keyword, description, usage in examples:
         print(f"\n🎯 {description}")
-        print(f"   $ empathy {command}")
-
-        result = await router.route(command)
-        print(f"   → Hub: {result['hub']}")
-        print(f"   → Command: {result['command']}")
-        print(f"   → Confidence: {result['confidence']:.0%}")
-
-
-async def demo_level_3_inference():
-    """Level 3: Single word inference."""
-    print_section("LEVEL 3: Command Inference (Single Words)")
-
-    examples = [
-        ("commit", "Infers /dev commit"),
-        ("test", "Infers /testing run"),
-        ("security", "Infers /workflows security-audit"),
-        ("review", "Infers /dev review-pr"),
-    ]
-
-    router = HybridRouter()
-
-    for keyword, description in examples:
-        print(f"\n🔍 {description}")
-        print(f"   $ empathy {keyword}")
+        print(f"   Maps to: {usage}")
 
         result = await router.route(keyword)
         print(f"   → Type: {result['type']}")
-        print(f"   → Inferred: {result.get('slash_equivalent', 'N/A')}")
+        print(f"   → Skill: {result['skill']}")
+        print(f"   → Args: {result['args']}")
         print(f"   → Confidence: {result['confidence']:.0%}")
-        print(f"   → Source: {result.get('source', 'N/A')}")
 
 
-async def demo_level_4_natural_language():
-    """Level 4: Natural language routing."""
-    print_section("LEVEL 4: Natural Language (Automatic Routing)")
+async def demo_level_3_natural_language():
+    """Level 3: Natural language routing."""
+    print_section("LEVEL 3: Natural Language")
 
     examples = [
         ("I want to commit my changes", "Commit workflow"),
@@ -120,8 +96,8 @@ async def demo_level_4_natural_language():
 
         result = await router.route(text)
         print(f"   → Type: {result['type']}")
-        print(f"   → Workflow: {result.get('workflow', 'N/A')}")
-        print(f"   → Slash equivalent: {result.get('slash_equivalent', 'N/A')}")
+        print(f"   → Skill: {result['skill']}")
+        print(f"   → Args: {result['args']}")
         print(f"   → Confidence: {result['confidence']:.0%}")
         if result.get("reasoning"):
             print(f"   → Reasoning: {result['reasoning']}")
@@ -163,47 +139,48 @@ async def demo_real_world_flow():
     print("""
 📖 Scenario: Developer's typical workflow
 
-1. Morning: Check what to work on
-   $ empathy /context status
-   → Shows: memory, current tasks, recent activity
+1. Morning: Check what to work on (in Claude Code)
+   /context status
+   → Interactive skill menu shows: memory, current tasks, recent activity
 
 2. Start work: Make code changes
    [... editing files ...]
 
-3. Run tests quickly:
-   $ empathy test
-   → Infers: /testing run
-   → Runs test suite
+3. Run tests quickly (in Claude Code):
+   /testing run
+   → Interactive test runner with options
+   → Test suite executes
 
-4. Tests fail - debug:
-   $ empathy "what's wrong with auth.py?"
-   → Natural language routing
-   → Suggests: /dev review + /workflows bug-predict
+4. Tests fail - debug (in Claude Code):
+   /dev debug "tests failing in auth.py"
+   → Interactive Socratic debugging
+   → Guides you through root cause analysis
 
 5. Fix bugs, run tests again:
-   $ empathy test
+   /testing run
    → Tests pass ✅
 
-6. Commit changes:
-   $ empathy commit
-   → Infers: /dev commit
-   → Creates commit with AI-generated message
+6. Commit changes (in Claude Code):
+   /dev commit
+   → Guided interactive commit creation
+   → Reviews changes, suggests message
 
-7. Pre-commit hook triggers:
+7. Pre-commit hook triggers (automation):
    $ empathy workflow run security-audit
+   → Runs: security-audit workflow
    → Finds 5 issues
    → Chain triggers: bug-predict (auto)
    → Chain suggests: code-review (asks approval)
 
-8. End of day: Evaluate session
-   $ empathy /learning evaluate
+8. End of day (in Claude Code):
+   /learning evaluate
    → Analyzes session, suggests improvements
 
-💡 Multiple input styles in one workflow:
-   - Slash commands for discovery (/context status)
-   - Keywords for speed (test, commit)
-   - Natural language for exploration ("what's wrong?")
-   - All seamlessly integrated! ✨
+💡 Two interfaces, one framework:
+   - Claude Code skills for interactive work (/dev, /testing, /workflows)
+   - Workflow commands for automation (CI/CD, hooks, scripts)
+   - Natural language routing maps to skills
+   - Simple and focused! ✨
     """)
 
 
@@ -229,14 +206,13 @@ async def main():
     """Run all demos."""
     print("=" * 70)
     print("HYBRID CLI DEMO")
-    print("Empathy Framework - Slash Commands + Natural Language")
+    print("Empathy Framework - Skills + Keywords + Natural Language")
     print("=" * 70)
 
     try:
         await demo_level_1_discovery()
         await demo_level_2_structured()
-        await demo_level_3_inference()
-        await demo_level_4_natural_language()
+        await demo_level_3_natural_language()
         await demo_user_preference_learning()
         await demo_suggestions()
         await demo_real_world_flow()
@@ -248,30 +224,32 @@ async def main():
         print("""
 🎯 Key Takeaways:
 
-1. **Multiple Input Styles**
-   - Slash commands for structure and discovery
-   - Keywords for speed and muscle memory
-   - Natural language for exploration
+1. **Three Input Methods**
+   - Claude Code skills: Interactive, guided (/dev, /testing, /workflows)
+   - Natural language: Router maps to skills ("commit my changes" → /dev commit)
+   - Workflow automation: CI/CD integration (empathy workflow run <name>)
 
 2. **Learning System**
    - Framework learns your preferences
    - Repeated usage increases confidence
    - Personalized experience over time
 
-3. **Seamless Integration**
-   - All styles work together
-   - No learning curve required
-   - Choose what feels natural
+3. **Real Integration**
+   - Skills invoke Claude Code functionality
+   - Natural language maps to real skill invocations
+   - No fake slash commands - everything works!
 
-4. **Best of Both Worlds**
-   - Slash commands: Predictable, structured
-   - Natural language: Flexible, intuitive
-   - Together: Powerful and accessible
+4. **Choose Your Interface**
+   - Interactive work: Use skills in Claude Code
+   - Natural language: "commit my changes", "run security audit"
+   - Automation/CI: empathy workflow run <name>
+   - All methods work together seamlessly
 
 📚 Next Steps:
-1. Try: empathy /help (discovery)
-2. Try: empathy commit (inference)
-3. Try: empathy "run security check" (natural language)
+1. In Claude Code: /help (discover all skills)
+2. In Claude Code: /dev commit (interactive commit)
+3. Natural language: "debug the login issue"
+4. In CI/CD: empathy workflow run security-audit
         """)
 
     except Exception as e:

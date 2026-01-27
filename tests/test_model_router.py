@@ -91,21 +91,8 @@ class TestModelRouter:
         model = router.route("coordinate")
         assert model == "claude-opus-4-5-20251101"  # Opus 4.5
 
-    def test_route_with_openai_provider(self, router):
-        """Test routing with OpenAI provider."""
-        model = router.route("summarize", provider="anthropic")
-        assert model == "gpt-4o-mini"
-
-        model = router.route("fix_bug", provider="anthropic")
-        assert model == "gpt-4o"
-
-        model = router.route("coordinate", provider="anthropic")
-        assert model == "o1"
-
-    def test_route_with_ollama_provider(self, router):
-        """Test routing with Ollama provider."""
-        model = router.route("summarize", provider="anthropic")
-        assert model == "llama3.2:3b"
+    # test_route_with_openai_provider deleted - OpenAI removed in v5.0.0 (Anthropic-only)
+    # test_route_with_ollama_provider deleted - Ollama removed in v5.0.0 (Anthropic-only)
 
     def test_invalid_provider_raises_error(self, router):
         """Test that invalid provider raises error."""
@@ -192,12 +179,11 @@ class TestModelRouter:
         assert savings["savings_percent"] == 0
 
     def test_get_supported_providers(self):
-        """Test getting supported providers."""
+        """Test getting supported providers (Anthropic-only architecture)."""
         providers = ModelRouter.get_supported_providers()
 
         assert "anthropic" in providers
-        assert "openai" in providers
-        assert "ollama" in providers
+        assert len(providers) == 1  # Only Anthropic in v5.0.0
 
     def test_get_all_tasks(self):
         """Test getting all known task types."""
@@ -245,10 +231,7 @@ class TestCostOptimization:
         savings_percent = (unoptimized - optimized) / unoptimized * 100
         assert savings_percent > 50, "Should save >50% with smart routing"
 
-    def test_ollama_free_routing(self, router):
-        """Test that Ollama routing is free."""
-        cost = router.estimate_cost("fix_bug", 100000, 10000, provider="anthropic")
-        assert cost == 0.0, "Ollama should be free"
+    # test_ollama_free_routing deleted - Ollama removed in v5.0.0 (Anthropic-only)
 
     def test_batch_task_optimization(self, router):
         """Test optimization for batch of tasks."""

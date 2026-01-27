@@ -170,7 +170,7 @@ class TestBaseWorkflow:
 
         patterns = wizard.contribute_patterns(analysis_result)
 
-        assert patterns["wizard"] == "PatternWizard"
+        assert patterns["workflow"] == "PatternWizard"
         assert patterns["domain"] == "patterns"
         assert "timestamp" in patterns
         assert patterns["patterns"] == ["pattern1", "pattern2"]
@@ -210,13 +210,13 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {}
 
         plugin = ConcretePlugin()
 
         assert plugin._initialized is False
-        assert plugin._wizards == {}
+        assert plugin._workflows == {}
 
     def test_plugin_initialize(self):
         """Test plugin initialization"""
@@ -243,15 +243,15 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {"test_wizard": TestWizard}
 
         plugin = ConcretePlugin()
         plugin.initialize()
 
         assert plugin._initialized is True
-        assert len(plugin._wizards) == 1
-        assert "test_wizard" in plugin._wizards
+        assert len(plugin._workflows) == 1
+        assert "test_wizard" in plugin._workflows
 
     def test_plugin_initialize_idempotent(self):
         """Test that initialize can be called multiple times safely"""
@@ -272,7 +272,7 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 self.init_count += 1
                 return {}
 
@@ -284,7 +284,7 @@ class TestBasePlugin:
 
         assert plugin.init_count == 1  # Should only register once
 
-    def test_plugin_get_wizard(self):
+    def test_plugin_get_workflow(self):
         """Test get_wizard method"""
 
         class TestWizard(BaseWorkflow):
@@ -309,11 +309,11 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {"test": TestWizard}
 
         plugin = ConcretePlugin()
-        wizard_class = plugin.get_wizard("test")
+        wizard_class = plugin.get_workflow("test")
 
         assert wizard_class == TestWizard
 
@@ -332,15 +332,15 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {}
 
         plugin = ConcretePlugin()
-        wizard_class = plugin.get_wizard("nonexistent")
+        wizard_class = plugin.get_workflow("nonexistent")
 
         assert wizard_class is None
 
-    def test_plugin_list_wizards(self):
+    def test_plugin_list_workflows(self):
         """Test list_wizards method"""
 
         class Wizard1(BaseWorkflow):
@@ -375,17 +375,17 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {"wizard1": Wizard1, "wizard2": Wizard2}
 
         plugin = ConcretePlugin()
-        wizard_list = plugin.list_wizards()
+        wizard_list = plugin.list_workflows()
 
         assert len(wizard_list) == 2
         assert "wizard1" in wizard_list
         assert "wizard2" in wizard_list
 
-    def test_plugin_get_wizard_info(self):
+    def test_plugin_get_workflow_info(self):
         """Test get_wizard_info method"""
 
         class TestWizard(BaseWorkflow):
@@ -415,11 +415,11 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {"test": TestWizard}
 
         plugin = ConcretePlugin()
-        info = plugin.get_wizard_info("test")
+        info = plugin.get_workflow_info("test")
 
         assert info is not None
         assert info["id"] == "test"
@@ -444,11 +444,11 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {}
 
         plugin = ConcretePlugin()
-        info = plugin.get_wizard_info("nonexistent")
+        info = plugin.get_workflow_info("nonexistent")
 
         assert info is None
 
@@ -467,7 +467,7 @@ class TestBasePlugin:
                     requires_core_version="1.0.0",
                 )
 
-            def register_wizards(self):
+            def register_workflows(self):
                 return {}
 
         plugin = ConcretePlugin()

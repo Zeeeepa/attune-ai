@@ -59,6 +59,23 @@ nav:
           - Resilience Patterns: how-to/resilience-patterns.md
       - Prerequisites: how-to/prerequisites.md
 
+  # Security - Critical cross-cutting concern
+  - Security:
+      - Overview: SECURITY.md
+      - Security Scanning:
+          - Developer Workflow: DEVELOPER_SECURITY_WORKFLOW.md
+          - CI/CD Integration: CI_SECURITY_SCANNING.md
+          - Scanner Architecture: SECURITY_SCANNER_ARCHITECTURE.md
+          - Remediation Process: SECURITY_REMEDIATION_PROCESS.md
+          - API Reference: api-reference/security-scanner.md
+      - Implementation Journey:
+          - Complete Summary: SECURITY_COMPLETE_SUMMARY.md
+          - Phase 2 Details: SECURITY_PHASE2_COMPLETE.md
+          - Phase 3 Details: SECURITY_PHASE3_COMPLETE.md
+      - Standards:
+          - Coding Standards: CODING_STANDARDS.md
+          - Exception Handling: EXCEPTION_HANDLING_GUIDE.md
+
   # Understanding-oriented
   - Explanation:
       - explanation/index.md

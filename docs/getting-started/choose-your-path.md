@@ -4,13 +4,14 @@ You've installed the framework and run your first workflow. Now choose the appro
 
 ---
 
-## Three Ways to Use Empathy Framework
+## Four Ways to Use Empathy Framework
 
 | Path | Best For | Complexity |
 |------|----------|------------|
 | [CLI Power User](#path-1-cli-power-user) | Quick tasks, automation, CI/CD | Simple |
-| [Workflow Developer](#path-2-workflow-developer) | Custom automations, Python integration | Moderate |
-| [Meta-Orchestration](#path-3-meta-orchestration) | Complex tasks, multi-agent teams | Advanced |
+| [MCP Integration](#path-2-mcp-integration) | Claude Desktop, conversational workflow building | Simple |
+| [Workflow Developer](#path-3-workflow-developer) | Custom automations, Python integration | Moderate |
+| [Meta-Orchestration](#path-4-meta-orchestration) | Complex tasks, multi-agent teams | Advanced |
 
 ---
 
@@ -35,12 +36,43 @@ empathy telemetry savings --days 30
 
 ### Next Steps
 
-- [CLI Guide](../reference/CLI_GUIDE.md) - Complete command reference
+- [CLI Reference](../reference/cli-reference.md) - Complete command reference
 - [CLI Cheatsheet](../reference/CLI_CHEATSHEET.md) - Quick reference
 
 ---
 
-## Path 2: Workflow Developer
+## Path 2: MCP Integration
+
+**Best for:** Claude Desktop users, conversational workflow building
+
+Connect to Claude Desktop or any MCP-compatible client for guided workflow creation.
+
+### Quick Setup
+
+Add to Claude Desktop config:
+
+```json
+{
+    "mcpServers": {
+        "socratic": {
+            "command": "python",
+            "args": ["-m", "empathy_os.socratic.mcp_server"],
+            "env": {"ANTHROPIC_API_KEY": "your-key"}
+        }
+    }
+}
+```
+
+Then ask Claude to help you build workflows conversationally.
+
+### Next Steps
+
+- [MCP Integration Guide](mcp-integration.md) - Full setup instructions
+- [Socratic Tutorial](../tutorials/socratic-tutorial.md) - Guided workflow building
+
+---
+
+## Path 3: Workflow Developer
 
 **Best for:** Custom automations, integrating AI into Python apps
 
@@ -62,12 +94,12 @@ asyncio.run(audit())
 
 ### Next Steps
 
+- [Python API Reference](../api-reference/index.md) - Full API documentation
 - [Practical Patterns](../how-to/practical-patterns.md) - Ready-to-use patterns
-- [Examples](../tutorials/examples/simple-chatbot.md) - Working code
 
 ---
 
-## Path 3: Meta-Orchestration
+## Path 4: Meta-Orchestration
 
 **Best for:** Complex tasks needing multiple AI agents
 
@@ -93,4 +125,11 @@ result = await orchestrator.execute(plan)
 
 ## Still Not Sure?
 
-**Start with the CLI.** Move to Workflows when you need custom logic, and Meta-Orchestration when tasks get complex.
+| If you want to... | Start with... |
+|-------------------|---------------|
+| Run quick tasks from terminal | CLI |
+| Use Claude Desktop | MCP Integration |
+| Build custom Python apps | Workflow Developer |
+| Orchestrate complex multi-agent tasks | Meta-Orchestration |
+
+**Most users start with CLI or MCP.** Move to Workflow Developer when you need custom logic, and Meta-Orchestration when tasks get complex.

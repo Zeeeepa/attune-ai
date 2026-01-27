@@ -150,11 +150,11 @@ class TestCodeReviewPipelineInit:
         assert pipeline.crew_enabled is False
 
     def test_custom_provider(self):
-        """Test custom provider."""
+        """Test custom provider (Anthropic-only architecture)."""
         pipeline = CodeReviewPipeline(provider="anthropic")
 
-        assert pipeline.provider == "openai"
-        assert pipeline.crew_config["provider"] == "openai"
+        assert pipeline.provider == "anthropic"
+        assert pipeline.crew_config["provider"] == "anthropic"
 
     def test_custom_crew_config(self):
         """Test custom crew configuration."""

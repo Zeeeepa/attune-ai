@@ -42,9 +42,16 @@ def mock_embeddings():
     """Mock embeddings for semantic cache testing.
 
     Returns:
-        List of float values representing embeddings
+        List of float values representing embeddings (384-dimensional)
+
+    Security Note:
+        Uses `random` (not `secrets`) intentionally for reproducible test data.
+        This is NOT used for cryptographic operations or security tokens.
+        For security-critical random generation, use `secrets` module.
     """
     import random
 
-    random.seed(42)  # Fixed seed for reproducibility
+    # Security Note: Using random (not secrets) for deterministic test fixtures
+    # Fixed seed ensures reproducible test results - NOT for cryptographic use
+    random.seed(42)
     return [random.random() for _ in range(384)]
