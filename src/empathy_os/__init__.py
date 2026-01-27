@@ -55,9 +55,9 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-__version__ = "4.6.5"
+__version__ = "4.9.0"
 __author__ = "Patrick Roebuck"
-__email__ = "hello@deepstudy.ai"
+__email__ = "patrick.roebuck@smartaimemory.com"
 
 # =============================================================================
 # LAZY IMPORTS - Deferred loading for faster startup
