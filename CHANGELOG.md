@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Adaptive Routing CLI Commands**: Added CLI commands for analyzing routing performance and tier upgrade recommendations
+  - `empathy routing stats <workflow>` - Show model performance metrics and quality scores
+  - `empathy routing check <workflow>` or `--all` - Get tier upgrade recommendations based on failure rates
+  - `empathy routing models --provider anthropic` - Compare model performance across all workflows
+  - Displays success rates, costs, latency, and potential savings
+  - Recommends tier upgrades when failure rate exceeds 20%
+  - 6 comprehensive tests covering all command variants
+  - **Note**: CLI integration pending fix for missing `state_manager` module (existing bug)
+
 - **Batch API Integration (Issue #22 - 50% Cost Savings)**: Integrated Anthropic's Message Batches API for asynchronous batch processing
   - Updated `AnthropicBatchProvider` to use correct `client.messages.batches` API endpoints
   - Enhanced `BatchProcessingWorkflow` to handle new result format with succeeded/errored/expired/canceled states
