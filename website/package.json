@@ -11,6 +11,9 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "overrides": {
+    "tar": "^7.5.7"
+  },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
@@ -20,7 +23,7 @@
     "bcryptjs": "^3.0.2",
     "gray-matter": "^4.0.3",
     "ioredis": "^5.8.2",
-    "next": "15.5.9",
+    "next": "15.5.10",
     "nodemailer": "^7.0.10",
     "pg": "^8.16.3",
     "react": "19.1.4",
