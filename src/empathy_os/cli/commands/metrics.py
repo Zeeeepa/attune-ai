@@ -8,7 +8,7 @@ import sys
 
 from empathy_os.logging_config import get_logger
 from empathy_os.metrics.collector import MetricsCollector
-from empathy_os.state_manager import StateManager
+from empathy_os.persistence import StateManager
 
 logger = get_logger(__name__)
 
