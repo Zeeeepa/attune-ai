@@ -28,9 +28,53 @@ pip install empathy-framework[developer]
 **Timeline:**
 - ✅ **v4.8.0 (Jan 2026):** Deprecation warnings for OpenAI/Google/Ollama providers
 - ✅ **v5.0.0 (Jan 26, 2026):** Non-Anthropic providers removed (BREAKING - COMPLETE)
-- 🎯 **v5.1.0 (Feb 2026):** Prompt caching enabled by default
+- ✅ **v5.0.2 (Jan 28, 2026):** Cost optimization suite with batch processing and caching monitoring
 
 **Migration Guide:** [docs/CLAUDE_NATIVE.md](docs/CLAUDE_NATIVE.md)
+
+---
+
+## What's New in v5.0.2
+
+**💰 50% Cost Savings with Batch API** - Process non-urgent tasks asynchronously:
+
+```bash
+empathy batch submit batch_requests.json  # Submit batch job
+empathy batch status msgbatch_abc123      # Check progress
+empathy batch results msgbatch_abc123 output.json  # Download results
+```
+
+Perfect for: log analysis, report generation, bulk classification, test generation
+
+**📊 Precise Token Counting** - >98% accurate cost tracking:
+
+- Integrated Anthropic's `count_tokens()` API for billing-accurate measurements
+- 3-tier fallback: API → tiktoken (local) → heuristic
+- Cache-aware cost calculation (25% write markup, 90% read discount)
+
+**📈 Cache Performance Monitoring** - Track your 20-30% caching savings:
+
+```bash
+empathy cache stats           # Show hit rates and cost savings
+empathy cache stats --verbose # Detailed token metrics
+empathy cache stats --format json  # Machine-readable output
+```
+
+**🧭 Adaptive Routing Analytics** - Intelligent tier recommendations:
+
+```bash
+empathy routing stats <workflow>    # Performance metrics
+empathy routing check --all         # Tier upgrade recommendations
+empathy routing models --provider anthropic  # Compare models
+```
+
+**🔧 Dashboard Fixes** - All 6 agent coordination patterns now operational:
+- Agent heartbeats displaying correctly
+- Event streaming functional
+- Coordination signals working
+- Approval gates operational
+
+[See Full Changelog](CHANGELOG.md#502---2026-01-28) | [Batch API Guide](docs/BATCH_API_GUIDE.md) | [User API Docs](docs/USER_API_DOCUMENTATION.md)
 
 ---
 
