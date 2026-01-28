@@ -229,16 +229,13 @@ class FeedbackLoop:
         key = f"feedback:{workflow_name}:{stage_name}:{tier}:{feedback_id}"
 
         try:
-            if hasattr(self.memory, "stash"):
-                self.memory.stash(
-                    key=key, data=entry.to_dict(), credentials=None, ttl_seconds=self.FEEDBACK_TTL
-                )
-            elif hasattr(self.memory, "_redis"):
+            # Use direct Redis access for custom TTL
+            if hasattr(self.memory, "_client") and self.memory._client:
                 import json
 
-                self.memory._redis.setex(key, self.FEEDBACK_TTL, json.dumps(entry.to_dict()))
+                self.memory._client.setex(key, self.FEEDBACK_TTL, json.dumps(entry.to_dict()))
             else:
-                logger.warning("Cannot store feedback: unsupported memory type")
+                logger.warning("Cannot store feedback: no Redis backend available")
                 return ""
         except Exception as e:
             logger.error(f"Failed to store feedback: {e}")
@@ -263,7 +260,7 @@ class FeedbackLoop:
         Returns:
             List of feedback entries (newest first)
         """
-        if not self.memory or not hasattr(self.memory, "_redis"):
+        if not self.memory or not hasattr(self.memory, "_client"):
             return []
 
         # Convert tier to string if ModelTier enum
@@ -277,7 +274,7 @@ class FeedbackLoop:
             else:
                 pattern = f"feedback:{workflow_name}:{stage_name}:*"
 
-            keys = self.memory._redis.keys(pattern)
+            keys = self.memory._client.keys(pattern)
 
             entries = []
             for key in keys:
@@ -308,10 +305,10 @@ class FeedbackLoop:
         try:
             if hasattr(self.memory, "retrieve"):
                 return self.memory.retrieve(key, credentials=None)
-            elif hasattr(self.memory, "_redis"):
+            elif hasattr(self.memory, "_client"):
                 import json
 
-                data = self.memory._redis.get(key)
+                data = self.memory._client.get(key)
                 if data:
                     if isinstance(data, bytes):
                         data = data.decode("utf-8")
@@ -494,13 +491,13 @@ class FeedbackLoop:
         Returns:
             List of (stage_name, stats) tuples for underperforming stages
         """
-        if not self.memory or not hasattr(self.memory, "_redis"):
+        if not self.memory or not hasattr(self.memory, "_client"):
             return []
 
         try:
             # Find all feedback keys for this workflow
             pattern = f"feedback:{workflow_name}:*"
-            keys = self.memory._redis.keys(pattern)
+            keys = self.memory._client.keys(pattern)
 
             # Extract unique stages
             stages = set()
@@ -537,7 +534,7 @@ class FeedbackLoop:
         Returns:
             Number of feedback entries cleared
         """
-        if not self.memory or not hasattr(self.memory, "_redis"):
+        if not self.memory or not hasattr(self.memory, "_client"):
             return 0
 
         try:
@@ -546,11 +543,11 @@ class FeedbackLoop:
             else:
                 pattern = f"feedback:{workflow_name}:*"
 
-            keys = self.memory._redis.keys(pattern)
+            keys = self.memory._client.keys(pattern)
             if not keys:
                 return 0
 
-            deleted = self.memory._redis.delete(*keys)
+            deleted = self.memory._client.delete(*keys)
             return deleted
         except Exception as e:
             logger.error(f"Failed to clear feedback: {e}")

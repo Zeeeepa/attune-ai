@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.2] - 2026-01-28
+
 ### Added
 
 - **Adaptive Routing CLI Commands**: Added CLI commands for analyzing routing performance and tier upgrade recommendations
@@ -16,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Displays success rates, costs, latency, and potential savings
   - Recommends tier upgrades when failure rate exceeds 20%
   - 6 comprehensive tests covering all command variants
-  - **Note**: CLI integration pending fix for missing `state_manager` module (existing bug)
 
 - **Batch API Integration (Issue #22 - 50% Cost Savings)**: Integrated Anthropic's Message Batches API for asynchronous batch processing
   - Updated `AnthropicBatchProvider` to use correct `client.messages.batches` API endpoints
@@ -54,28 +55,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Impact**: Visibility into 20-30% cost savings from prompt caching
   - Closes #23
 
-### Added
+### Fixed
 
-- **Precise Token Counting** (`empathy_llm_toolkit/utils/tokens.py`) [Issue #24]
-  - Accurate token counting using Anthropic's official API counter
-  - Fast local estimation via tiktoken (~98% accurate, no API calls)
-  - Graceful fallback to heuristic if both unavailable
-  - Support for message arrays with system prompts
-  - Cache-aware cost calculation (tracks cache writes/reads)
-  - `AnthropicProvider.estimate_tokens()` now uses accurate counting
-  - `AnthropicProvider.calculate_actual_cost()` for precise billing estimates
-  - Replaces rough estimates (4 chars/token) with billing-accurate counts
-  - **Impact:** Cost tracking accuracy improved from ~80% to >98%
-
-- **Prompt Caching Monitoring** (`src/empathy_os/cli/commands/cache.py`) [Issue #23]
-  - New `empathy cache stats` command to monitor caching performance
-  - Analyzes logs to show cache hit rates and cost savings
-  - Performance assessment with recommendations (EXCELLENT/GOOD/LOW/VERY LOW)
-  - Support for JSON and table output formats (`--format json|table`)
-  - Verbose mode showing detailed token metrics (`--verbose`)
-  - Tracks total savings from cache reads (90% discount)
-  - Shows cache write costs (25% markup)
-  - **Impact:** Users can now measure and optimize their 20-30% cost savings from caching
+- **Dashboard Integration (Agent Coordination Patterns 1-6)**: Fixed critical bugs preventing dashboard functionality
+  - **Redis Client Access**: Changed `self.memory._redis` → `self.memory._client` across all telemetry modules
+    - Fixed: `agent_tracking.py` (heartbeat persistence)
+    - Fixed: `event_streaming.py` (real-time events)
+    - Fixed: `feedback_loop.py` (quality feedback storage)
+    - Fixed: `agent_coordination.py` (inter-agent signals)
+    - Fixed: `approval_gates.py` (approval request storage)
+  - **Event Stream Naming**: Corrected stream prefix from `empathy:events:` to `stream:`
+  - **Event Structure Parsing**: Fixed dashboard API to parse top-level event fields correctly
+  - **Approval Key Pattern**: Fixed dashboard to use correct pattern `approval_request:*` instead of `approval:pending:*`
+  - **Impact**: All 6 agent coordination patterns now fully operational with dashboard
+  - **Verification**: 46 heartbeats, 724 feedback entries, 5 signals, 4 approvals displayed correctly
 
 ### Improved
 

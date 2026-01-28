@@ -236,19 +236,13 @@ class ApprovalGate:
         # Store approval request (for UI to retrieve)
         request_key = f"approval_request:{request_id}"
         try:
-            if hasattr(self.memory, "stash"):
-                self.memory.stash(
-                    key=request_key,
-                    data=request.to_dict(),
-                    credentials=None,
-                    ttl_seconds=int(timeout) + 60,  # TTL = timeout + buffer
-                )
-            elif hasattr(self.memory, "_redis"):
+            # Use direct Redis access for custom TTL
+            if hasattr(self.memory, "_client") and self.memory._client:
                 import json
 
-                self.memory._redis.setex(request_key, int(timeout) + 60, json.dumps(request.to_dict()))
+                self.memory._client.setex(request_key, int(timeout) + 60, json.dumps(request.to_dict()))
             else:
-                logger.warning("Cannot store approval request: unsupported memory type")
+                logger.warning("Cannot store approval request: no Redis backend available")
         except Exception as e:
             logger.error(f"Failed to store approval request: {e}")
             return ApprovalResponse(
@@ -294,12 +288,11 @@ class ApprovalGate:
         # Update request status to timeout
         request.status = "timeout"
         try:
-            if hasattr(self.memory, "stash"):
-                self.memory.stash(key=request_key, data=request.to_dict(), credentials=None, ttl_seconds=60)
-            elif hasattr(self.memory, "_redis"):
+            # Use direct Redis access
+            if hasattr(self.memory, "_client") and self.memory._client:
                 import json
 
-                self.memory._redis.setex(request_key, 60, json.dumps(request.to_dict()))
+                self.memory._client.setex(request_key, 60, json.dumps(request.to_dict()))
         except Exception:
             pass
 
@@ -322,10 +315,10 @@ class ApprovalGate:
             if hasattr(self.memory, "retrieve"):
                 data = self.memory.retrieve(response_key, credentials=None)
             # Try direct Redis access
-            elif hasattr(self.memory, "_redis"):
+            elif hasattr(self.memory, "_client"):
                 import json
 
-                raw_data = self.memory._redis.get(response_key)
+                raw_data = self.memory._client.get(response_key)
                 if raw_data:
                     if isinstance(raw_data, bytes):
                         raw_data = raw_data.decode("utf-8")
@@ -376,16 +369,13 @@ class ApprovalGate:
         # Store approval response (for workflow to retrieve)
         response_key = f"approval_response:{request_id}"
         try:
-            if hasattr(self.memory, "stash"):
-                self.memory.stash(
-                    key=response_key, data=response.to_dict(), credentials=None, ttl_seconds=300  # 5 min TTL
-                )
-            elif hasattr(self.memory, "_redis"):
+            # Use direct Redis access
+            if hasattr(self.memory, "_client") and self.memory._client:
                 import json
 
-                self.memory._redis.setex(response_key, 300, json.dumps(response.to_dict()))
+                self.memory._client.setex(response_key, 300, json.dumps(response.to_dict()))
             else:
-                logger.warning("Cannot store approval response: unsupported memory type")
+                logger.warning("Cannot store approval response: no Redis backend available")
                 return False
         except Exception as e:
             logger.error(f"Failed to store approval response: {e}")
@@ -396,10 +386,10 @@ class ApprovalGate:
         try:
             if hasattr(self.memory, "retrieve"):
                 request_data = self.memory.retrieve(request_key, credentials=None)
-            elif hasattr(self.memory, "_redis"):
+            elif hasattr(self.memory, "_client"):
                 import json
 
-                raw_data = self.memory._redis.get(request_key)
+                raw_data = self.memory._client.get(request_key)
                 if raw_data:
                     if isinstance(raw_data, bytes):
                         raw_data = raw_data.decode("utf-8")
@@ -413,12 +403,11 @@ class ApprovalGate:
                 request = ApprovalRequest.from_dict(request_data)
                 request.status = "approved" if approved else "rejected"
 
-                if hasattr(self.memory, "stash"):
-                    self.memory.stash(key=request_key, data=request.to_dict(), credentials=None, ttl_seconds=300)
-                elif hasattr(self.memory, "_redis"):
+                # Use direct Redis access
+                if hasattr(self.memory, "_client") and self.memory._client:
                     import json
 
-                    self.memory._redis.setex(request_key, 300, json.dumps(request.to_dict()))
+                    self.memory._client.setex(request_key, 300, json.dumps(request.to_dict()))
         except Exception as e:
             logger.debug(f"Failed to update request status: {e}")
 
@@ -457,12 +446,12 @@ class ApprovalGate:
             >>> for request in pending:
             ...     print(f"{request.approval_type}: {request.context}")
         """
-        if not self.memory or not hasattr(self.memory, "_redis"):
+        if not self.memory or not hasattr(self.memory, "_client"):
             return []
 
         try:
             # Scan for approval_request:* keys
-            keys = self.memory._redis.keys("approval_request:*")
+            keys = self.memory._client.keys("approval_request:*")
 
             requests = []
             for key in keys:
@@ -475,7 +464,7 @@ class ApprovalGate:
                 else:
                     import json
 
-                    raw_data = self.memory._redis.get(key)
+                    raw_data = self.memory._client.get(key)
                     if raw_data:
                         if isinstance(raw_data, bytes):
                             raw_data = raw_data.decode("utf-8")
@@ -512,11 +501,11 @@ class ApprovalGate:
         Returns:
             Number of requests cleared
         """
-        if not self.memory or not hasattr(self.memory, "_redis"):
+        if not self.memory or not hasattr(self.memory, "_client"):
             return 0
 
         try:
-            keys = self.memory._redis.keys("approval_request:*")
+            keys = self.memory._client.keys("approval_request:*")
             now = datetime.utcnow()
             cleared = 0
 
@@ -530,7 +519,7 @@ class ApprovalGate:
                 else:
                     import json
 
-                    raw_data = self.memory._redis.get(key)
+                    raw_data = self.memory._client.get(key)
                     if raw_data:
                         if isinstance(raw_data, bytes):
                             raw_data = raw_data.decode("utf-8")
@@ -548,12 +537,11 @@ class ApprovalGate:
                 if elapsed > request.timeout_seconds and request.status == "pending":
                     # Update to timeout status
                     request.status = "timeout"
-                    if hasattr(self.memory, "stash"):
-                        self.memory.stash(key=key, data=request.to_dict(), credentials=None, ttl_seconds=60)
-                    elif hasattr(self.memory, "_redis"):
+                    # Use direct Redis access
+                    if hasattr(self.memory, "_client") and self.memory._client:
                         import json
 
-                        self.memory._redis.setex(key, 60, json.dumps(request.to_dict()))
+                        self.memory._client.setex(key, 60, json.dumps(request.to_dict()))
 
                     cleared += 1
 

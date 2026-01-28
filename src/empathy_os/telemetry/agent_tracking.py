@@ -211,18 +211,14 @@ class HeartbeatCoordinator:
         # Store in Redis with TTL (Pattern 1)
         key = f"heartbeat:{self.agent_id}"
         try:
-            # Use stash if available (UnifiedMemory), otherwise try Redis directly
-            if hasattr(self.memory, "stash"):
-                self.memory.stash(
-                    key=key, data=heartbeat.to_dict(), credentials=None, ttl_seconds=self.HEARTBEAT_TTL
-                )
-            elif hasattr(self.memory, "_redis"):
-                # Direct Redis access for ShortTermMemory
+            # Use direct Redis access for heartbeats (need custom 30s TTL)
+            if hasattr(self.memory, "_client") and self.memory._client:
+                # Direct Redis access with setex for custom TTL
                 import json
 
-                self.memory._redis.setex(key, self.HEARTBEAT_TTL, json.dumps(heartbeat.to_dict()))
+                self.memory._client.setex(key, self.HEARTBEAT_TTL, json.dumps(heartbeat.to_dict()))
             else:
-                logger.warning(f"Cannot publish heartbeat: unsupported memory type {type(self.memory)}")
+                logger.warning(f"Cannot publish heartbeat: no Redis backend available")
         except Exception as e:
             logger.warning(f"Failed to publish heartbeat for {self.agent_id}: {e}")
 
@@ -249,8 +245,8 @@ class HeartbeatCoordinator:
 
         try:
             # Scan for heartbeat:* keys
-            if hasattr(self.memory, "_redis"):
-                keys = self.memory._redis.keys("heartbeat:*")
+            if hasattr(self.memory, "_client") and self.memory._client:
+                keys = self.memory._client.keys("heartbeat:*")
             else:
                 logger.warning("Cannot scan for heartbeats: no Redis access")
                 return []
@@ -305,23 +301,26 @@ class HeartbeatCoordinator:
         return None
 
     def _retrieve_heartbeat(self, key: str) -> dict[str, Any] | None:
-        """Retrieve heartbeat data from memory."""
+        """Retrieve heartbeat data from memory.
+
+        Heartbeat keys are stored directly as 'heartbeat:{agent_id}' and must be
+        retrieved via direct Redis access, not through the standard retrieve() method
+        which expects keys with 'working:{agent_id}:{key}' format.
+        """
         if not self.memory:
             return None
 
         try:
-            # Try retrieve method first (UnifiedMemory)
-            if hasattr(self.memory, "retrieve"):
-                return self.memory.retrieve(key, credentials=None)
-            # Try direct Redis access
-            elif hasattr(self.memory, "_redis"):
+            # Use direct Redis access for heartbeat keys
+            if hasattr(self.memory, "_client") and self.memory._client:
                 import json
 
-                data = self.memory._redis.get(key)
+                data = self.memory._client.get(key)
                 if data:
                     if isinstance(data, bytes):
                         data = data.decode("utf-8")
-                    return json.loads(data)
+                    result = json.loads(data)
+                    return result if isinstance(result, dict) else None
             return None
         except Exception as e:
             logger.debug(f"Failed to retrieve heartbeat {key}: {e}")

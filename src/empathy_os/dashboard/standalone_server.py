@@ -290,17 +290,28 @@ class StandaloneDashboardHandler(BaseHTTPRequestHandler):
                     # Get last N entries from stream
                     entries = r.xrevrange(stream_key, count=limit)
                     for entry_id, fields in entries:
+                        # Parse event structure: top-level fields + data payload
+                        event_type = fields.get(b"event_type", b"unknown").decode("utf-8")
+                        timestamp = fields.get(b"timestamp", b"").decode("utf-8")
+                        source = fields.get(b"source", b"empathy_os").decode("utf-8")
+
+                        # Parse the data payload (JSON-encoded)
+                        data = {}
                         if b"data" in fields:
-                            event = json.loads(fields[b"data"].decode("utf-8"))
-                            result.append(
-                                {
-                                    "event_id": event.get("event_id"),
-                                    "event_type": event.get("event_type"),
-                                    "timestamp": event.get("timestamp"),
-                                    "data": event.get("data", {}),
-                                    "source": event.get("source"),
-                                }
-                            )
+                            try:
+                                data = json.loads(fields[b"data"].decode("utf-8"))
+                            except json.JSONDecodeError:
+                                data = {}
+
+                        result.append(
+                            {
+                                "event_id": entry_id.decode("utf-8") if isinstance(entry_id, bytes) else entry_id,
+                                "event_type": event_type,
+                                "timestamp": timestamp,
+                                "data": data,
+                                "source": source,
+                            }
+                        )
                 except Exception as e:
                     logger.debug(f"Stream {stream_key} not found or empty: {e}")
 
@@ -320,7 +331,7 @@ class StandaloneDashboardHandler(BaseHTTPRequestHandler):
                 return
 
             result = []
-            for key in r.keys(b"approval:pending:*"):
+            for key in r.keys(b"approval_request:*"):
                 try:
                     data = r.get(key)
                     if data:

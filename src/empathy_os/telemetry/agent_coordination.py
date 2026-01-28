@@ -222,15 +222,13 @@ class CoordinationSignals:
         key = f"{self.KEY_PREFIX}{target_key}:{signal_type}:{signal_id}"
 
         try:
-            if hasattr(self.memory, "stash"):
-                # Pass credentials through to memory backend for permission enforcement
-                self.memory.stash(key=key, data=signal.to_dict(), credentials=credentials, ttl_seconds=ttl)
-            elif hasattr(self.memory, "_redis"):
+            # Use direct Redis access for custom TTL
+            if hasattr(self.memory, "_client") and self.memory._client:
                 import json
 
-                self.memory._redis.setex(key, ttl, json.dumps(signal.to_dict()))
+                self.memory._client.setex(key, ttl, json.dumps(signal.to_dict()))
             else:
-                logger.warning(f"Cannot send signal: unsupported memory type {type(self.memory)}")
+                logger.warning(f"Cannot send signal: no Redis backend available")
         except Exception as e:
             logger.error(f"Failed to send signal {signal_id}: {e}")
 
@@ -341,8 +339,8 @@ class CoordinationSignals:
             ]
 
             for pattern in patterns:
-                if hasattr(self.memory, "_redis"):
-                    keys = self.memory._redis.keys(pattern)
+                if hasattr(self.memory, "_client"):
+                    keys = self.memory._client.keys(pattern)
                 else:
                     continue
 
@@ -393,8 +391,8 @@ class CoordinationSignals:
 
             signals = []
             for pattern in patterns:
-                if hasattr(self.memory, "_redis"):
-                    keys = self.memory._redis.keys(pattern)
+                if hasattr(self.memory, "_client"):
+                    keys = self.memory._client.keys(pattern)
                 else:
                     continue
 
@@ -451,10 +449,10 @@ class CoordinationSignals:
         try:
             if hasattr(self.memory, "retrieve"):
                 return self.memory.retrieve(key, credentials=None)
-            elif hasattr(self.memory, "_redis"):
+            elif hasattr(self.memory, "_client"):
                 import json
 
-                data = self.memory._redis.get(key)
+                data = self.memory._client.get(key)
                 if data:
                     if isinstance(data, bytes):
                         data = data.decode("utf-8")
@@ -470,8 +468,8 @@ class CoordinationSignals:
             return False
 
         try:
-            if hasattr(self.memory, "_redis"):
-                return self.memory._redis.delete(key) > 0
+            if hasattr(self.memory, "_client"):
+                return self.memory._client.delete(key) > 0
             return False
         except Exception as e:
             logger.debug(f"Failed to delete signal {key}: {e}")
