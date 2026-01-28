@@ -7,6 +7,207 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-01-27
+
+### 🚨 Breaking Changes
+
+**Agent Coordination System Migration**
+
+The legacy coordination system in `ShortTermMemory` has been removed in favor of the new, enhanced `CoordinationSignals` API. This migration provides better security, more features, and cleaner architecture.
+
+**What Changed:**
+- ❌ **Removed:** `ShortTermMemory.send_signal()` and `receive_signals()` methods
+- ❌ **Removed:** `TTLStrategy.COORDINATION` constant
+- ❌ **Changed:** Redis key format: `empathy:coord:*` → `empathy:signal:*`
+- ✅ **New API:** `empathy_os.telemetry.CoordinationSignals` (Pattern 2 from Agent Coordination Architecture)
+
+**Migration Guide:**
+
+```python
+# Before (v4.x - REMOVED):
+from empathy_os.memory import ShortTermMemory, AgentCredentials
+
+memory = ShortTermMemory()
+credentials = AgentCredentials("agent-1", AccessTier.CONTRIBUTOR)
+memory.send_signal("task_complete", {"status": "done"}, credentials, target_agent="agent-2")
+signals = memory.receive_signals(credentials, signal_type="task_complete")
+
+# After (v5.0 - NEW):
+from empathy_os.telemetry import CoordinationSignals
+from empathy_os.memory.types import AgentCredentials, AccessTier
+
+coordinator = CoordinationSignals(agent_id="agent-1")
+credentials = AgentCredentials("agent-1", AccessTier.CONTRIBUTOR)
+
+# Send signal (with permission check)
+coordinator.signal(
+    signal_type="task_complete",
+    target_agent="agent-2",
+    payload={"status": "done"},
+    credentials=credentials  # Required for security
+)
+
+# Receive signals
+signals = coordinator.get_pending_signals(signal_type="task_complete")
+```
+
+**Benefits of Migration:**
+- ✅ **Security:** Permission checks enforced (CONTRIBUTOR tier required)
+- ✅ **Features:** Blocking wait with timeout, event streaming integration
+- ✅ **Flexibility:** Per-signal TTL configuration (no fixed 5-minute limit)
+- ✅ **Type Safety:** Structured `CoordinationSignal` dataclass with validation
+- ✅ **Consistency:** Unified `empathy:` key namespace across framework
+
+### Added
+
+**Agent Coordination Patterns (Patterns 1-6)**
+
+Complete implementation of agent coordination patterns for multi-agent workflows:
+
+- **Pattern 1: Heartbeat Tracking** (`HeartbeatCoordinator`)
+  - TTL-based agent liveness monitoring (30s heartbeat expiration)
+  - Track agent status, progress, and current task
+  - Detect stale/failed agents automatically
+  - Files: `src/empathy_os/telemetry/agent_tracking.py`
+
+- **Pattern 2: Coordination Signals** (`CoordinationSignals`)
+  - TTL-based inter-agent communication (60s default TTL)
+  - Send targeted signals or broadcast to all agents
+  - Blocking wait with timeout support
+  - Permission enforcement (CONTRIBUTOR tier required)
+  - Files: `src/empathy_os/telemetry/agent_coordination.py`
+
+- **Pattern 4: Event Streaming** (`EventStreamer`)
+  - Real-time event streaming via Redis Streams
+  - Publish workflow events for monitoring/audit
+  - Subscribe with consumer groups
+  - Files: `src/empathy_os/telemetry/event_streaming.py`
+
+- **Pattern 5: Approval Gates** (`ApprovalGate`)
+  - Human-in-the-loop workflow control
+  - Block workflow execution pending approval
+  - Timeout handling for abandoned requests
+  - Files: `src/empathy_os/telemetry/approval_gates.py`
+
+- **Pattern 6: Quality Feedback Loop** (`FeedbackLoop`)
+  - Record quality scores per workflow/stage/tier
+  - Automatic tier upgrade recommendations (quality < 0.7)
+  - Adaptive routing based on historical performance
+  - Files: `src/empathy_os/telemetry/feedback_loop.py`
+
+**Agent Coordination Dashboard**
+
+Web-based dashboard for real-time monitoring of all 6 coordination patterns:
+
+- **Zero-Dependency Design:** Uses Python stdlib `http.server` (no Flask/FastAPI required)
+- **Three Implementation Tiers:**
+  - Standalone: Direct Redis access (recommended)
+  - Simple: Uses telemetry API classes
+  - FastAPI: Advanced features (optional dependency)
+- **Real-Time Updates:** Auto-refresh every 5 seconds
+- **7 Dashboard Panels:**
+  - Active agents with heartbeat status
+  - Coordination signals between agents
+  - Event stream (real-time events)
+  - Pending approval requests
+  - Quality metrics by workflow/stage/tier
+  - Underperforming stages (quality < 0.7)
+  - System health status
+- **CLI Integration:** `empathy dashboard start [--host HOST] [--port PORT]`
+- **VS Code Task:** `Cmd+Shift+B` to start dashboard and auto-open browser
+- **Files:** `src/empathy_os/dashboard/{standalone_server.py,simple_server.py,app.py,static/}`
+
+**Adaptive Model Routing**
+
+Telemetry-based model selection for cost optimization:
+
+- **AdaptiveModelRouter:** Analyzes historical performance data
+- **Auto-Upgrade:** Recommends tier upgrade when failure rate > 20%
+- **Quality Tracking:** Per-workflow/stage/tier success rate monitoring
+- **Workflow Integration:** `enable_adaptive_routing=True` parameter
+- **CLI Commands:** `empathy telemetry routing-stats`, `routing-check`
+- **Files:** `src/empathy_os/models/adaptive_routing.py`
+
+**Enhanced Telemetry CLI**
+
+New commands for coordination and routing monitoring:
+
+```bash
+empathy telemetry routing-stats [--workflow NAME] [--stage NAME] [--days N]
+empathy telemetry routing-check [--workflow NAME] [--threshold 0.7]
+empathy telemetry models [--days N]
+empathy telemetry agents [--status running|idle|failed]
+empathy telemetry signals --agent AGENT_ID [--type TYPE]
+```
+
+**Comprehensive Documentation**
+
+- `docs/AGENT_COORDINATION_ARCHITECTURE.md` - Pattern architecture (6 patterns)
+- `docs/DASHBOARD_COMPLETE.md` - Dashboard reference guide (500+ lines)
+- `docs/DASHBOARD_GUIDE.md` - Usage guide with examples
+- `docs/DASHBOARD_USAGE.md` - 5 methods to start dashboard
+- `docs/ADAPTIVE_ROUTING_ANTHROPIC_NATIVE.md` - Model selection guide
+- `DASHBOARD_QUICKSTART.md` - 3-command quick start
+
+### Changed
+
+**Improved Test Data**
+
+Test data now uses descriptive agent names for better UX:
+
+- **Workflow Agents:** `code-review`, `test-generation`, `security-audit`, `refactoring`, `bug-predict`
+- **Role Agents:** `orchestrator`, `validator`, `monitor`
+- Makes dashboard immediately understandable
+- Professional demo/screenshot appearance
+- File: `scripts/populate_redis_direct.py`
+
+**Redis Key Namespace Unification**
+
+All agent coordination keys now use consistent `empathy:` prefix:
+
+- Signals: `empathy:signal:{target}:{type}:{id}` (was `signal:*`)
+- Maintains consistency with other keys: `empathy:working:*`, `empathy:staged:*`, etc.
+
+**Workflow Base Class Enhancements**
+
+New opt-in features for workflows:
+
+```python
+workflow = MyWorkflow(
+    enable_adaptive_routing=True,      # Pattern 3: Adaptive tier selection
+    enable_heartbeat_tracking=True,    # Pattern 1: Agent liveness
+    enable_coordination=True,          # Pattern 2: Inter-agent signals
+    agent_id="my-workflow-abc123"      # Custom agent ID
+)
+```
+
+### Fixed
+
+**Security:** Permission enforcement restored in coordination system
+- All coordination signals require CONTRIBUTOR tier or higher
+- Prevents unauthorized agent communication
+- Backward compatible (warns if credentials not provided)
+
+### Testing
+
+**Comprehensive Test Suite:**
+- ✅ 280 telemetry tests passing (including 8 new permission tests)
+- ✅ Pattern 1-6 tests (19 heartbeat, 28 coordination, 24 feedback, etc.)
+- ✅ Dashboard integration tests
+- ✅ Permission enforcement tests (OBSERVER blocked, CONTRIBUTOR allowed)
+- ✅ Key format migration verified
+
+**Test Files:**
+- `tests/unit/telemetry/test_agent_tracking.py` (19 tests)
+- `tests/unit/telemetry/test_agent_coordination.py` (28 tests, including 8 permission tests)
+- `tests/unit/telemetry/test_event_streaming.py`
+- `tests/unit/telemetry/test_approval_gates.py`
+- `tests/unit/telemetry/test_feedback_loop.py` (24 tests)
+
+### Deprecated
+
+None (deprecated features removed in this major version)
+
 ## [4.9.0] - 2026-01-27
 
 ### 🚀 Performance & Memory Optimization Release

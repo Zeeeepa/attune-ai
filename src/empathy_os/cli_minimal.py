@@ -9,10 +9,19 @@ Automation commands:
     empathy workflow run <name>        Execute a workflow
     empathy workflow info <name>       Show workflow details
 
+Monitoring commands:
+    empathy dashboard start            Start agent coordination dashboard
+                                       (opens web UI at http://localhost:8000)
+
 Utility commands:
     empathy telemetry show             Display usage summary
     empathy telemetry savings          Show cost savings
     empathy telemetry export           Export to CSV/JSON
+    empathy telemetry routing-stats    Show adaptive routing statistics
+    empathy telemetry routing-check    Check for tier upgrade recommendations
+    empathy telemetry models           Show model performance by provider
+    empathy telemetry agents           Show active agents and their status
+    empathy telemetry signals          Show coordination signals for an agent
 
     empathy provider show              Show current provider config
     empathy provider set <name>        Set provider (anthropic, openai, hybrid)
@@ -342,6 +351,386 @@ def cmd_telemetry_export(args: Namespace) -> int:
         return 1
 
 
+def cmd_telemetry_routing_stats(args: Namespace) -> int:
+    """Show adaptive routing statistics."""
+    try:
+        from empathy_os.models import AdaptiveModelRouter
+        from empathy_os.telemetry import UsageTracker
+
+        tracker = UsageTracker.get_instance()
+        router = AdaptiveModelRouter(telemetry=tracker)
+
+        workflow = args.workflow if hasattr(args, "workflow") and args.workflow else None
+        stage = args.stage if hasattr(args, "stage") and args.stage else None
+        days = args.days if hasattr(args, "days") else 7
+
+        print("\n📊 Adaptive Routing Statistics\n")
+        print("-" * 70)
+
+        if workflow:
+            # Show stats for specific workflow
+            stats = router.get_routing_stats(workflow=workflow, stage=stage, days=days)
+
+            if stats["total_calls"] == 0:
+                print(f"\n  No data found for workflow: {workflow}")
+                if stage:
+                    print(f"  Stage: {stage}")
+                return 0
+
+            print(f"\n  Workflow:      {stats['workflow']}")
+            if stage:
+                print(f"  Stage:         {stage}")
+            print(f"  Period:        Last {days} days")
+            print(f"  Total calls:   {stats['total_calls']}")
+            print(f"  Avg cost:      ${stats['avg_cost']:.4f}")
+            print(f"  Success rate:  {stats['avg_success_rate']:.1%}")
+
+            print(f"\n  Models used:   {', '.join(stats['models_used'])}")
+
+            if stats["performance_by_model"]:
+                print("\n  Per-Model Performance:")
+                for model, perf in sorted(
+                    stats["performance_by_model"].items(),
+                    key=lambda x: x[1]["quality_score"],
+                    reverse=True,
+                ):
+                    print(f"\n    {model}:")
+                    print(f"      Calls:         {perf['calls']}")
+                    print(f"      Success rate:  {perf['success_rate']:.1%}")
+                    print(f"      Avg cost:      ${perf['avg_cost']:.4f}")
+                    print(f"      Avg latency:   {perf['avg_latency_ms']:.0f}ms")
+                    print(f"      Quality score: {perf['quality_score']:.2f}")
+
+        else:
+            # Show overall statistics
+            stats = tracker.get_stats(days=days)
+
+            if stats["total_calls"] == 0:
+                print("\n  No telemetry data found.")
+                return 0
+
+            print(f"\n  Period:          Last {days} days")
+            print(f"  Total calls:     {stats['total_calls']:,}")
+            print(f"  Total cost:      ${stats['total_cost']:.2f}")
+            print(f"  Cache hit rate:  {stats['cache_hit_rate']:.1f}%")
+
+            print("\n  Cost by Tier:")
+            for tier, cost in sorted(stats["by_tier"].items(), key=lambda x: x[1], reverse=True):
+                pct = (cost / stats["total_cost"] * 100) if stats["total_cost"] > 0 else 0
+                print(f"    {tier:8s}: ${cost:6.2f} ({pct:5.1f}%)")
+
+            print("\n  Top Workflows:")
+            for workflow_name, cost in list(stats["by_workflow"].items())[:5]:
+                pct = (cost / stats["total_cost"] * 100) if stats["total_cost"] > 0 else 0
+                print(f"    {workflow_name:30s}: ${cost:6.2f} ({pct:5.1f}%)")
+
+        print("\n" + "-" * 70)
+        return 0
+
+    except ImportError as e:
+        print(f"❌ Adaptive routing not available: {e}")
+        print("   Ensure empathy-framework is installed with telemetry support")
+        return 1
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: CLI commands should catch all errors and report gracefully
+        logger.exception(f"Routing stats error: {e}")
+        print(f"❌ Error: {e}")
+        return 1
+
+
+def cmd_telemetry_routing_check(args: Namespace) -> int:
+    """Check for tier upgrade recommendations."""
+    try:
+        from empathy_os.models import AdaptiveModelRouter
+        from empathy_os.telemetry import UsageTracker
+
+        tracker = UsageTracker.get_instance()
+        router = AdaptiveModelRouter(telemetry=tracker)
+
+        workflow = args.workflow if hasattr(args, "workflow") and args.workflow else None
+        check_all = args.all if hasattr(args, "all") else False
+
+        print("\n🔍 Adaptive Routing Tier Upgrade Checks\n")
+        print("-" * 70)
+
+        if check_all:
+            # Check all workflows
+            stats = tracker.get_stats(days=7)
+            workflows = list(stats["by_workflow"].keys())
+
+            if not workflows:
+                print("\n  No workflow data found.")
+                return 0
+
+            recommendations = []
+
+            for wf_name in workflows:
+                try:
+                    should_upgrade, reason = router.recommend_tier_upgrade(
+                        workflow=wf_name, stage=None
+                    )
+
+                    if should_upgrade:
+                        recommendations.append(
+                            {
+                                "workflow": wf_name,
+                                "reason": reason,
+                            }
+                        )
+                except Exception:  # noqa: BLE001
+                    # INTENTIONAL: Skip workflows without enough data
+                    continue
+
+            if recommendations:
+                print("\n  ⚠️  Tier Upgrade Recommendations:\n")
+                for rec in recommendations:
+                    print(f"    Workflow: {rec['workflow']}")
+                    print(f"    Reason:   {rec['reason']}")
+                    print()
+            else:
+                print("\n  ✅ All workflows performing well - no upgrades needed.\n")
+
+        elif workflow:
+            # Check specific workflow
+            should_upgrade, reason = router.recommend_tier_upgrade(workflow=workflow, stage=None)
+
+            print(f"\n  Workflow: {workflow}")
+
+            if should_upgrade:
+                print(f"  Status:   ⚠️  UPGRADE RECOMMENDED")
+                print(f"  Reason:   {reason}")
+                print("\n  Action: Consider upgrading from CHEAP → CAPABLE or CAPABLE → PREMIUM")
+            else:
+                print(f"  Status:   ✅ Performing well")
+                print(f"  Reason:   {reason}")
+
+        else:
+            print("\n  Error: Specify --workflow <name> or --all")
+            return 1
+
+        print("\n" + "-" * 70)
+        return 0
+
+    except ImportError as e:
+        print(f"❌ Adaptive routing not available: {e}")
+        return 1
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: CLI commands should catch all errors and report gracefully
+        logger.exception(f"Routing check error: {e}")
+        print(f"❌ Error: {e}")
+        return 1
+
+
+def cmd_telemetry_models(args: Namespace) -> int:
+    """Show model performance by provider."""
+    try:
+        from empathy_os.telemetry import UsageTracker
+
+        tracker = UsageTracker.get_instance()
+        provider = args.provider if hasattr(args, "provider") else None
+        days = args.days if hasattr(args, "days") else 7
+
+        stats = tracker.get_stats(days=days)
+
+        if stats["total_calls"] == 0:
+            print("\n  No telemetry data found.")
+            return 0
+
+        print("\n📊 Model Performance\n")
+        print("-" * 70)
+        print(f"\n  Period: Last {days} days")
+
+        # Get entries for analysis
+        entries = tracker.get_recent_entries(limit=10000, days=days)
+
+        # Group by provider and model
+        model_stats: dict[str, dict[str, dict]] = {}
+
+        for entry in entries:
+            entry_provider = entry.get("provider", "unknown")
+            if provider and entry_provider != provider:
+                continue
+
+            model = entry.get("model", "unknown")
+            cost = entry.get("cost", 0.0)
+            success = entry.get("success", True)
+            duration = entry.get("duration_ms", 0)
+
+            if entry_provider not in model_stats:
+                model_stats[entry_provider] = {}
+
+            if model not in model_stats[entry_provider]:
+                model_stats[entry_provider][model] = {
+                    "calls": 0,
+                    "total_cost": 0.0,
+                    "successes": 0,
+                    "total_duration": 0,
+                }
+
+            model_stats[entry_provider][model]["calls"] += 1
+            model_stats[entry_provider][model]["total_cost"] += cost
+            if success:
+                model_stats[entry_provider][model]["successes"] += 1
+            model_stats[entry_provider][model]["total_duration"] += duration
+
+        # Display by provider
+        for prov, models in sorted(model_stats.items()):
+            print(f"\n  Provider: {prov.upper()}")
+
+            for model_name, mstats in sorted(
+                models.items(), key=lambda x: x[1]["total_cost"], reverse=True
+            ):
+                calls = mstats["calls"]
+                avg_cost = mstats["total_cost"] / calls if calls > 0 else 0
+                success_rate = (mstats["successes"] / calls * 100) if calls > 0 else 0
+                avg_duration = mstats["total_duration"] / calls if calls > 0 else 0
+
+                print(f"\n    {model_name}:")
+                print(f"      Calls:        {calls:,}")
+                print(f"      Total cost:   ${mstats['total_cost']:.2f}")
+                print(f"      Avg cost:     ${avg_cost:.4f}")
+                print(f"      Success rate: {success_rate:.1f}%")
+                print(f"      Avg duration: {avg_duration:.0f}ms")
+
+        print("\n" + "-" * 70)
+        return 0
+
+    except ImportError as e:
+        print(f"❌ Telemetry not available: {e}")
+        return 1
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: CLI commands should catch all errors and report gracefully
+        logger.exception(f"Models error: {e}")
+        print(f"❌ Error: {e}")
+        return 1
+
+
+def cmd_telemetry_agents(args: Namespace) -> int:
+    """Show active agents and their status."""
+    try:
+        from empathy_os.telemetry import HeartbeatCoordinator
+
+        coordinator = HeartbeatCoordinator()
+        active_agents = coordinator.get_active_agents()
+
+        print("\n🤖 Active Agents\n")
+        print("-" * 70)
+
+        if not active_agents:
+            print("\n  No active agents found.")
+            print("  (Agents must use HeartbeatCoordinator to be tracked)")
+            return 0
+
+        print(f"\n  Found {len(active_agents)} active agent(s):\n")
+
+        for agent in sorted(active_agents, key=lambda a: a.last_beat, reverse=True):
+            # Calculate time since last beat
+            from datetime import datetime
+
+            now = datetime.utcnow()
+            time_since = (now - agent.last_beat).total_seconds()
+
+            # Status indicator
+            if agent.status in ("completed", "failed", "cancelled"):
+                status_icon = "✅" if agent.status == "completed" else "❌"
+            elif time_since > 30:
+                status_icon = "⚠️"  # Stale
+            else:
+                status_icon = "🟢"  # Active
+
+            print(f"  {status_icon} {agent.agent_id}")
+            print(f"      Status:       {agent.status}")
+            print(f"      Progress:     {agent.progress*100:.1f}%")
+            print(f"      Task:         {agent.current_task}")
+            print(f"      Last beat:    {time_since:.1f}s ago")
+
+            # Show metadata if present
+            if agent.metadata:
+                workflow = agent.metadata.get("workflow", "")
+                if workflow:
+                    print(f"      Workflow:     {workflow}")
+            print()
+
+        print("-" * 70)
+        return 0
+
+    except ImportError as e:
+        print(f"❌ Agent tracking not available: {e}")
+        return 1
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: CLI commands should catch all errors and report gracefully
+        logger.exception(f"Agents error: {e}")
+        print(f"❌ Error: {e}")
+        return 1
+
+
+def cmd_telemetry_signals(args: Namespace) -> int:
+    """Show coordination signals."""
+    try:
+        from empathy_os.telemetry import CoordinationSignals
+
+        agent_id = args.agent if hasattr(args, "agent") else None
+
+        if not agent_id:
+            print("❌ Error: --agent <id> required to view signals")
+            return 1
+
+        coordinator = CoordinationSignals(agent_id=agent_id)
+        signals = coordinator.get_pending_signals()
+
+        print(f"\n📡 Coordination Signals for {agent_id}\n")
+        print("-" * 70)
+
+        if not signals:
+            print("\n  No pending signals.")
+            return 0
+
+        print(f"\n  Found {len(signals)} pending signal(s):\n")
+
+        for signal in sorted(signals, key=lambda s: s.timestamp, reverse=True):
+            # Calculate age
+            from datetime import datetime
+
+            now = datetime.utcnow()
+            age = (now - signal.timestamp).total_seconds()
+
+            # Signal type indicator
+            type_icons = {
+                "task_complete": "✅",
+                "abort": "🛑",
+                "ready": "🟢",
+                "checkpoint": "🔄",
+                "error": "❌",
+            }
+            icon = type_icons.get(signal.signal_type, "📨")
+
+            print(f"  {icon} {signal.signal_type}")
+            print(f"      From:         {signal.source_agent}")
+            print(f"      Target:       {signal.target_agent or '* (broadcast)'}")
+            print(f"      Age:          {age:.1f}s")
+            print(f"      Expires in:   {signal.ttl_seconds - age:.1f}s")
+
+            # Show payload summary
+            if signal.payload:
+                payload_str = str(signal.payload)
+                if len(payload_str) > 60:
+                    payload_str = payload_str[:57] + "..."
+                print(f"      Payload:      {payload_str}")
+            print()
+
+        print("-" * 70)
+        return 0
+
+    except ImportError as e:
+        print(f"❌ Coordination signals not available: {e}")
+        return 1
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: CLI commands should catch all errors and report gracefully
+        logger.exception(f"Signals error: {e}")
+        print(f"❌ Error: {e}")
+        return 1
+
+
 # =============================================================================
 # Provider Commands
 # =============================================================================
@@ -412,6 +801,44 @@ def cmd_provider_set(args: Namespace) -> int:
         # INTENTIONAL: CLI commands should catch all errors and report gracefully
         logger.exception(f"Provider error: {e}")
         print(f"❌ Error: {e}")
+        return 1
+
+
+# =============================================================================
+# Dashboard Commands
+# =============================================================================
+
+
+def cmd_dashboard_start(args: Namespace) -> int:
+    """Start the agent coordination dashboard."""
+    try:
+        from empathy_os.dashboard import run_standalone_dashboard
+
+        # Get host and port from args
+        host = args.host
+        port = args.port
+
+        print(f"\n🚀 Starting Agent Coordination Dashboard...")
+        print(f"📊 Dashboard will be available at: http://{host}:{port}\n")
+        print("💡 Make sure Redis is populated with test data:")
+        print("   python scripts/populate_redis_direct.py\n")
+        print("Press Ctrl+C to stop\n")
+
+        # Start dashboard
+        run_standalone_dashboard(host=host, port=port)
+        return 0
+
+    except KeyboardInterrupt:
+        print("\n\n🛑 Dashboard stopped")
+        return 0
+    except ImportError as e:
+        print(f"❌ Dashboard not available: {e}")
+        print("   Install dashboard dependencies: pip install redis")
+        return 1
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: CLI commands should catch all errors and report gracefully
+        logger.exception(f"Dashboard error: {e}")
+        print(f"❌ Error starting dashboard: {e}")
         return 1
 
 
@@ -591,6 +1018,44 @@ Documentation: https://smartaimemory.com/framework-docs/
         "--days", "-d", type=int, default=30, help="Number of days (default: 30)"
     )
 
+    # telemetry routing-stats
+    routing_stats_parser = telemetry_sub.add_parser(
+        "routing-stats", help="Show adaptive routing statistics"
+    )
+    routing_stats_parser.add_argument("--workflow", "-w", help="Workflow name")
+    routing_stats_parser.add_argument("--stage", "-s", help="Stage name")
+    routing_stats_parser.add_argument(
+        "--days", "-d", type=int, default=7, help="Number of days (default: 7)"
+    )
+
+    # telemetry routing-check
+    routing_check_parser = telemetry_sub.add_parser(
+        "routing-check", help="Check for tier upgrade recommendations"
+    )
+    routing_check_parser.add_argument("--workflow", "-w", help="Workflow name")
+    routing_check_parser.add_argument(
+        "--all", "-a", action="store_true", help="Check all workflows"
+    )
+
+    # telemetry models
+    models_parser = telemetry_sub.add_parser("models", help="Show model performance by provider")
+    models_parser.add_argument(
+        "--provider",
+        "-p",
+        choices=["anthropic", "openai", "google"],
+        help="Filter by provider",
+    )
+    models_parser.add_argument(
+        "--days", "-d", type=int, default=7, help="Number of days (default: 7)"
+    )
+
+    # telemetry agents
+    telemetry_sub.add_parser("agents", help="Show active agents and their status")
+
+    # telemetry signals
+    signals_parser = telemetry_sub.add_parser("signals", help="Show coordination signals")
+    signals_parser.add_argument("--agent", "-a", required=True, help="Agent ID to view signals for")
+
     # --- Provider commands ---
     provider_parser = subparsers.add_parser("provider", help="LLM provider configuration")
     provider_sub = provider_parser.add_subparsers(dest="provider_command")
@@ -601,6 +1066,15 @@ Documentation: https://smartaimemory.com/framework-docs/
     # provider set
     set_parser = provider_sub.add_parser("set", help="Set provider")
     set_parser.add_argument("name", choices=["anthropic", "openai", "hybrid"], help="Provider name")
+
+    # --- Dashboard commands ---
+    dashboard_parser = subparsers.add_parser("dashboard", help="Agent coordination dashboard")
+    dashboard_sub = dashboard_parser.add_subparsers(dest="dashboard_command")
+
+    # dashboard start
+    start_parser = dashboard_sub.add_parser("start", help="Start dashboard web server")
+    start_parser.add_argument("--host", default="127.0.0.1", help="Host to bind to (default: 127.0.0.1)")
+    start_parser.add_argument("--port", type=int, default=8000, help="Port to bind to (default: 8000)")
 
     # --- Utility commands ---
     subparsers.add_parser("validate", help="Validate configuration")
@@ -640,8 +1114,18 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_telemetry_savings(args)
         elif args.telemetry_command == "export":
             return cmd_telemetry_export(args)
+        elif args.telemetry_command == "routing-stats":
+            return cmd_telemetry_routing_stats(args)
+        elif args.telemetry_command == "routing-check":
+            return cmd_telemetry_routing_check(args)
+        elif args.telemetry_command == "models":
+            return cmd_telemetry_models(args)
+        elif args.telemetry_command == "agents":
+            return cmd_telemetry_agents(args)
+        elif args.telemetry_command == "signals":
+            return cmd_telemetry_signals(args)
         else:
-            print("Usage: empathy telemetry {show|savings|export}")
+            print("Usage: empathy telemetry {show|savings|export|routing-stats|routing-check|models|agents|signals}")
             return 1
 
     elif args.command == "provider":
@@ -651,6 +1135,13 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_provider_set(args)
         else:
             print("Usage: empathy provider {show|set}")
+            return 1
+
+    elif args.command == "dashboard":
+        if args.dashboard_command == "start":
+            return cmd_dashboard_start(args)
+        else:
+            print("Usage: empathy dashboard start [--host HOST] [--port PORT]")
             return 1
 
     elif args.command == "validate":

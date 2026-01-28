@@ -42,13 +42,13 @@ class TTLStrategy(Enum):
     Per EMPATHY_PHILOSOPHY.md Section 9.3:
     - Working results: 1 hour
     - Staged patterns: 24 hours
-    - Coordination signals: 5 minutes
+    - Coordination signals: 5 minutes (REMOVED in v5.0 - see CoordinationSignals)
     - Conflict context: Until resolution
     """
 
     WORKING_RESULTS = 3600  # 1 hour
     STAGED_PATTERNS = 86400  # 24 hours
-    COORDINATION = 300  # 5 minutes
+    # COORDINATION removed in v5.0 - use CoordinationSignals with custom TTLs
     CONFLICT_CONTEXT = 604800  # 7 days (fallback for unresolved)
     SESSION = 1800  # 30 minutes
     STREAM_ENTRY = 86400 * 7  # 7 days for audit stream entries

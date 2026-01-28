@@ -9,6 +9,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+from .adaptive_routing import AdaptiveModelRouter, ModelPerformance
 from .empathy_executor import EmpathyLLMExecutor
 from .executor import ExecutionContext, LLMExecutor, LLMResponse, MockLLMExecutor
 from .fallback import (
@@ -87,6 +88,7 @@ __all__ = [
     "MODEL_REGISTRY",
     "PREMIUM_TASKS",
     "TASK_TIER_MAP",
+    "AdaptiveModelRouter",
     "AgentAssignmentRecord",
     "CircuitBreaker",
     "CircuitBreakerState",
@@ -106,6 +108,7 @@ __all__ = [
     "LLMResponse",
     "MockLLMExecutor",
     "ModelInfo",
+    "ModelPerformance",
     "ModelProvider",
     # Registry exports
     "ModelRegistry",

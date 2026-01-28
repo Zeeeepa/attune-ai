@@ -551,6 +551,10 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         enable_tier_fallback: bool = False,
         routing_strategy: TierRoutingStrategy | None = None,
         enable_rich_progress: bool = False,
+        enable_adaptive_routing: bool = False,
+        enable_heartbeat_tracking: bool = False,
+        enable_coordination: bool = False,
+        agent_id: str | None = None,
     ):
         """Initialize workflow with optional cost tracker, provider, and config.
 
@@ -581,6 +585,22 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                      progress bars with spinners. Default is False because most users
                      run workflows from IDEs (VSCode, etc.) where TTY is not available.
                      The console reporter works reliably in all environments.
+            enable_adaptive_routing: Whether to enable adaptive model routing based
+                     on telemetry history (default False). When enabled, uses historical
+                     performance data to select the optimal Anthropic model for each stage,
+                     automatically upgrading tiers when failure rates exceed 20%.
+                     Opt-in feature for cost optimization and automatic quality improvement.
+            enable_heartbeat_tracking: Whether to enable agent heartbeat tracking
+                     (default False). When enabled, publishes TTL-based heartbeat updates
+                     to Redis for agent liveness monitoring. Requires Redis backend.
+                     Pattern 1 from Agent Coordination Architecture.
+            enable_coordination: Whether to enable inter-agent coordination signals
+                     (default False). When enabled, workflow can send and receive TTL-based
+                     ephemeral signals for agent-to-agent communication. Requires Redis backend.
+                     Pattern 2 from Agent Coordination Architecture.
+            agent_id: Optional agent ID for heartbeat tracking and coordination.
+                     If None, auto-generates ID from workflow name and run ID.
+                     Used as identifier in Redis keys (heartbeat:{agent_id}, signal:{agent_id}:...).
 
         """
         from .config import WorkflowConfig
@@ -614,6 +634,17 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         # Routing strategy support
         self._routing_strategy: TierRoutingStrategy | None = routing_strategy
 
+        # Adaptive routing support (Pattern 3 from AGENT_COORDINATION_ARCHITECTURE)
+        self._enable_adaptive_routing = enable_adaptive_routing
+        self._adaptive_router = None  # Lazy initialization on first use
+
+        # Agent tracking and coordination (Pattern 1 & 2 from AGENT_COORDINATION_ARCHITECTURE)
+        self._enable_heartbeat_tracking = enable_heartbeat_tracking
+        self._enable_coordination = enable_coordination
+        self._agent_id = agent_id  # Will be set during execute() if None
+        self._heartbeat_coordinator = None  # Lazy initialization on first use
+        self._coordination_signals = None  # Lazy initialization on first use
+
         # Telemetry tracking (uses TelemetryMixin)
         self._init_telemetry(telemetry_backend)
 
@@ -643,17 +674,314 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
         """Get the model tier for a stage from static tier_map."""
         return self.tier_map.get(stage_name, ModelTier.CAPABLE)
 
+    def _get_adaptive_router(self):
+        """Get or create AdaptiveModelRouter instance (lazy initialization).
+
+        Returns:
+            AdaptiveModelRouter instance if telemetry is available, None otherwise
+        """
+        if not self._enable_adaptive_routing:
+            return None
+
+        if self._adaptive_router is None:
+            # Lazy import to avoid circular dependencies
+            try:
+                from empathy_os.models import AdaptiveModelRouter
+
+                if TELEMETRY_AVAILABLE and UsageTracker is not None:
+                    self._adaptive_router = AdaptiveModelRouter(
+                        telemetry=UsageTracker.get_instance()
+                    )
+                    logger.debug(
+                        "adaptive_routing_initialized",
+                        workflow=self.name,
+                        message="Adaptive routing enabled for cost optimization"
+                    )
+                else:
+                    logger.warning(
+                        "adaptive_routing_unavailable",
+                        workflow=self.name,
+                        message="Telemetry not available, adaptive routing disabled"
+                    )
+                    self._enable_adaptive_routing = False
+            except ImportError as e:
+                logger.warning(
+                    "adaptive_routing_import_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to import AdaptiveModelRouter"
+                )
+                self._enable_adaptive_routing = False
+
+        return self._adaptive_router
+
+    def _get_heartbeat_coordinator(self):
+        """Get or create HeartbeatCoordinator instance (lazy initialization).
+
+        Returns:
+            HeartbeatCoordinator instance if heartbeat tracking is enabled, None otherwise
+        """
+        if not self._enable_heartbeat_tracking:
+            return None
+
+        if self._heartbeat_coordinator is None:
+            try:
+                from empathy_os.telemetry import HeartbeatCoordinator
+
+                self._heartbeat_coordinator = HeartbeatCoordinator()
+                logger.debug(
+                    "heartbeat_tracking_initialized",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    message="Heartbeat tracking enabled for agent liveness monitoring"
+                )
+            except ImportError as e:
+                logger.warning(
+                    "heartbeat_tracking_import_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to import HeartbeatCoordinator"
+                )
+                self._enable_heartbeat_tracking = False
+            except Exception as e:
+                logger.warning(
+                    "heartbeat_tracking_init_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to initialize HeartbeatCoordinator (Redis unavailable?)"
+                )
+                self._enable_heartbeat_tracking = False
+
+        return self._heartbeat_coordinator
+
+    def _get_coordination_signals(self):
+        """Get or create CoordinationSignals instance (lazy initialization).
+
+        Returns:
+            CoordinationSignals instance if coordination is enabled, None otherwise
+        """
+        if not self._enable_coordination:
+            return None
+
+        if self._coordination_signals is None:
+            try:
+                from empathy_os.telemetry import CoordinationSignals
+
+                self._coordination_signals = CoordinationSignals(agent_id=self._agent_id)
+                logger.debug(
+                    "coordination_initialized",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    message="Coordination signals enabled for inter-agent communication"
+                )
+            except ImportError as e:
+                logger.warning(
+                    "coordination_import_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to import CoordinationSignals"
+                )
+                self._enable_coordination = False
+            except Exception as e:
+                logger.warning(
+                    "coordination_init_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to initialize CoordinationSignals (Redis unavailable?)"
+                )
+                self._enable_coordination = False
+
+        return self._coordination_signals
+
+    def _check_adaptive_tier_upgrade(self, stage_name: str, current_tier: ModelTier) -> ModelTier:
+        """Check if adaptive routing recommends a tier upgrade.
+
+        Uses historical telemetry to detect if the current tier has a high
+        failure rate (>20%) and automatically upgrades to the next tier.
+
+        Args:
+            stage_name: Name of the stage
+            current_tier: Currently selected tier
+
+        Returns:
+            Upgraded tier if recommended, otherwise current_tier
+        """
+        router = self._get_adaptive_router()
+        if router is None:
+            return current_tier
+
+        # Check if tier upgrade is recommended
+        should_upgrade, reason = router.recommend_tier_upgrade(
+            workflow=self.name,
+            stage=stage_name
+        )
+
+        if should_upgrade:
+            # Upgrade to next tier: CHEAP → CAPABLE → PREMIUM
+            if current_tier == ModelTier.CHEAP:
+                new_tier = ModelTier.CAPABLE
+            elif current_tier == ModelTier.CAPABLE:
+                new_tier = ModelTier.PREMIUM
+            else:
+                new_tier = current_tier  # Already at highest tier
+
+            logger.warning(
+                "adaptive_routing_tier_upgrade",
+                workflow=self.name,
+                stage=stage_name,
+                old_tier=current_tier.value,
+                new_tier=new_tier.value,
+                reason=reason
+            )
+
+            return new_tier
+
+        return current_tier
+
+    def send_signal(
+        self,
+        signal_type: str,
+        target_agent: str | None = None,
+        payload: dict[str, Any] | None = None,
+        ttl_seconds: int | None = None,
+    ) -> str:
+        """Send a coordination signal to another agent (Pattern 2).
+
+        Args:
+            signal_type: Type of signal (e.g., "task_complete", "checkpoint", "error")
+            target_agent: Target agent ID (None for broadcast to all agents)
+            payload: Optional signal payload data
+            ttl_seconds: Optional TTL override (default 60 seconds)
+
+        Returns:
+            Signal ID if coordination is enabled, empty string otherwise
+
+        Example:
+            >>> # Signal completion to orchestrator
+            >>> workflow.send_signal(
+            ...     signal_type="task_complete",
+            ...     target_agent="orchestrator",
+            ...     payload={"result": "success", "data": {...}}
+            ... )
+
+            >>> # Broadcast abort to all agents
+            >>> workflow.send_signal(
+            ...     signal_type="abort",
+            ...     target_agent=None,  # Broadcast
+            ...     payload={"reason": "user_cancelled"}
+            ... )
+        """
+        coordinator = self._get_coordination_signals()
+        if coordinator is None:
+            return ""
+
+        try:
+            return coordinator.signal(
+                signal_type=signal_type,
+                source_agent=self._agent_id,
+                target_agent=target_agent,
+                payload=payload or {},
+                ttl_seconds=ttl_seconds,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to send coordination signal: {e}")
+            return ""
+
+    def wait_for_signal(
+        self,
+        signal_type: str,
+        source_agent: str | None = None,
+        timeout: float = 30.0,
+        poll_interval: float = 0.5,
+    ) -> Any:
+        """Wait for a coordination signal from another agent (Pattern 2).
+
+        Blocking call that polls for signals with timeout.
+
+        Args:
+            signal_type: Type of signal to wait for
+            source_agent: Optional source agent filter
+            timeout: Maximum wait time in seconds (default 30.0)
+            poll_interval: Poll interval in seconds (default 0.5)
+
+        Returns:
+            CoordinationSignal if received, None if timeout or coordination disabled
+
+        Example:
+            >>> # Wait for orchestrator approval
+            >>> signal = workflow.wait_for_signal(
+            ...     signal_type="approval",
+            ...     source_agent="orchestrator",
+            ...     timeout=60.0
+            ... )
+            >>> if signal:
+            ...     proceed_with_deployment(signal.payload)
+        """
+        coordinator = self._get_coordination_signals()
+        if coordinator is None:
+            return None
+
+        try:
+            return coordinator.wait_for_signal(
+                signal_type=signal_type,
+                source_agent=source_agent,
+                timeout=timeout,
+                poll_interval=poll_interval,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to wait for coordination signal: {e}")
+            return None
+
+    def check_signal(
+        self,
+        signal_type: str,
+        source_agent: str | None = None,
+        consume: bool = True,
+    ) -> Any:
+        """Check for a coordination signal without blocking (Pattern 2).
+
+        Non-blocking check for pending signals.
+
+        Args:
+            signal_type: Type of signal to check for
+            source_agent: Optional source agent filter
+            consume: If True, remove signal after reading (default True)
+
+        Returns:
+            CoordinationSignal if available, None otherwise
+
+        Example:
+            >>> # Non-blocking check for abort signal
+            >>> signal = workflow.check_signal(signal_type="abort")
+            >>> if signal:
+            ...     raise WorkflowAbortedException(signal.payload["reason"])
+        """
+        coordinator = self._get_coordination_signals()
+        if coordinator is None:
+            return None
+
+        try:
+            return coordinator.check_signal(
+                signal_type=signal_type,
+                source_agent=source_agent,
+                consume=consume,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to check coordination signal: {e}")
+            return None
+
     def _get_tier_with_routing(
         self,
         stage_name: str,
         input_data: dict[str, Any],
         budget_remaining: float = 100.0,
     ) -> ModelTier:
-        """Get tier for a stage using routing strategy if available.
+        """Get tier for a stage using routing strategy or adaptive routing if available.
 
-        If a routing strategy is configured, creates a RoutingContext and
-        delegates tier selection to the strategy. Otherwise falls back to
-        the static tier_map.
+        Priority order:
+        1. If routing_strategy configured, uses that for tier selection
+        2. Otherwise uses static tier_map
+        3. If adaptive routing enabled, checks for tier upgrade recommendations
 
         Args:
             stage_name: Name of the stage
@@ -661,41 +989,50 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
             budget_remaining: Remaining budget in USD for this execution
 
         Returns:
-            ModelTier to use for this stage
+            ModelTier to use for this stage (potentially upgraded by adaptive routing)
         """
-        # Fall back to static tier_map if no routing strategy
-        if self._routing_strategy is None:
-            return self.get_tier_for_stage(stage_name)
+        # Get base tier from routing strategy or static map
+        if self._routing_strategy is not None:
+            from .routing import RoutingContext
 
-        from .routing import RoutingContext
+            # Estimate input size from data
+            input_size = self._estimate_input_tokens(input_data)
 
-        # Estimate input size from data
-        input_size = self._estimate_input_tokens(input_data)
+            # Assess complexity
+            complexity = self._assess_complexity(input_data)
 
-        # Assess complexity
-        complexity = self._assess_complexity(input_data)
+            # Determine latency sensitivity based on stage position
+            # First stages are more latency-sensitive (user waiting)
+            stage_index = self.stages.index(stage_name) if stage_name in self.stages else 0
+            if stage_index == 0:
+                latency_sensitivity = "high"
+            elif stage_index < len(self.stages) // 2:
+                latency_sensitivity = "medium"
+            else:
+                latency_sensitivity = "low"
 
-        # Determine latency sensitivity based on stage position
-        # First stages are more latency-sensitive (user waiting)
-        stage_index = self.stages.index(stage_name) if stage_name in self.stages else 0
-        if stage_index == 0:
-            latency_sensitivity = "high"
-        elif stage_index < len(self.stages) // 2:
-            latency_sensitivity = "medium"
+            # Create routing context
+            context = RoutingContext(
+                task_type=f"{self.name}:{stage_name}",
+                input_size=input_size,
+                complexity=complexity,
+                budget_remaining=budget_remaining,
+                latency_sensitivity=latency_sensitivity,
+            )
+
+            # Delegate to routing strategy
+            base_tier = self._routing_strategy.route(context)
         else:
-            latency_sensitivity = "low"
+            # Use static tier_map
+            base_tier = self.get_tier_for_stage(stage_name)
 
-        # Create routing context
-        context = RoutingContext(
-            task_type=f"{self.name}:{stage_name}",
-            input_size=input_size,
-            complexity=complexity,
-            budget_remaining=budget_remaining,
-            latency_sensitivity=latency_sensitivity,
-        )
+        # Check if adaptive routing recommends a tier upgrade
+        # This uses telemetry history to detect high failure rates
+        if self._enable_adaptive_routing:
+            final_tier = self._check_adaptive_tier_upgrade(stage_name, base_tier)
+            return final_tier
 
-        # Delegate to routing strategy
-        return self._routing_strategy.route(context)
+        return base_tier
 
     def _estimate_input_tokens(self, input_data: dict[str, Any]) -> int:
         """Estimate input token count from data.
@@ -1064,6 +1401,34 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                 logger.debug(f"Tier tracking disabled: {e}")
                 self._enable_tier_tracking = False
 
+        # Initialize agent ID for heartbeat/coordination (Pattern 1 & 2)
+        if self._agent_id is None:
+            # Auto-generate agent ID from workflow name and run ID
+            self._agent_id = f"{self.name}-{self._run_id[:8]}"
+
+        # Start heartbeat tracking (Pattern 1)
+        heartbeat_coordinator = self._get_heartbeat_coordinator()
+        if heartbeat_coordinator:
+            try:
+                heartbeat_coordinator.start_heartbeat(
+                    agent_id=self._agent_id,
+                    metadata={
+                        "workflow": self.name,
+                        "run_id": self._run_id,
+                        "provider": getattr(self, "_provider_str", "unknown"),
+                        "stages": len(self.stages),
+                    }
+                )
+                logger.debug(
+                    "heartbeat_started",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    message="Agent heartbeat tracking started"
+                )
+            except Exception as e:
+                logger.warning(f"Failed to start heartbeat tracking: {e}")
+                self._enable_heartbeat_tracking = False
+
         started_at = datetime.now()
         self._stages_run = []
         current_data = kwargs
@@ -1149,6 +1514,19 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                                     stage_name, tier.value, f"{prev_tier}_failed"
                                 )
 
+                        # Update heartbeat at stage start (Pattern 1)
+                        if heartbeat_coordinator:
+                            try:
+                                stage_index = self.stages.index(stage_name)
+                                progress = stage_index / len(self.stages)
+                                heartbeat_coordinator.beat(
+                                    status="running",
+                                    progress=progress,
+                                    current_task=f"Running stage: {stage_name} ({tier.value})"
+                                )
+                            except Exception as e:
+                                logger.debug(f"Heartbeat update failed: {e}")
+
                         try:
                             # Run the stage at current tier
                             output, input_tokens, output_tokens = await self.run_stage(
@@ -1191,6 +1569,19 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                                         tokens_in=input_tokens,
                                         tokens_out=output_tokens,
                                     )
+
+                                # Update heartbeat after stage completion (Pattern 1)
+                                if heartbeat_coordinator:
+                                    try:
+                                        stage_index = self.stages.index(stage_name) + 1
+                                        progress = stage_index / len(self.stages)
+                                        heartbeat_coordinator.beat(
+                                            status="running",
+                                            progress=progress,
+                                            current_task=f"Completed stage: {stage_name}"
+                                        )
+                                    except Exception as e:
+                                        logger.debug(f"Heartbeat update failed: {e}")
 
                                 # Log to cost tracker
                                 self.cost_tracker.log_request(
@@ -1454,6 +1845,21 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
 
         # Emit workflow telemetry to backend
         self._emit_workflow_telemetry(result)
+
+        # Stop heartbeat tracking (Pattern 1)
+        if heartbeat_coordinator:
+            try:
+                final_status = "completed" if result.success else "failed"
+                heartbeat_coordinator.stop_heartbeat(final_status=final_status)
+                logger.debug(
+                    "heartbeat_stopped",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    status=final_status,
+                    message="Agent heartbeat tracking stopped"
+                )
+            except Exception as e:
+                logger.warning(f"Failed to stop heartbeat tracking: {e}")
 
         # Auto-save tier progression
         if self._enable_tier_tracking and self._tier_tracker:

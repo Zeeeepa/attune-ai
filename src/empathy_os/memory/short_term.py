@@ -107,7 +107,7 @@ class RedisShortTermMemory:
     PREFIX_WORKING = "empathy:working:"
     PREFIX_STAGED = "empathy:staged:"
     PREFIX_CONFLICT = "empathy:conflict:"
-    PREFIX_COORDINATION = "empathy:coord:"
+    # PREFIX_COORDINATION removed in v5.0 - use empathy_os.telemetry.CoordinationSignals
     PREFIX_SESSION = "empathy:session:"
     PREFIX_PUBSUB = "empathy:pubsub:"
     PREFIX_STREAM = "empathy:stream:"
@@ -920,75 +920,9 @@ class RedisShortTermMemory:
         return True
 
     # === Coordination Signals ===
-
-    def send_signal(
-        self,
-        signal_type: str,
-        data: Any,
-        credentials: AgentCredentials,
-        target_agent: str | None = None,
-    ) -> bool:
-        """Send coordination signal to other agents
-
-        Args:
-            signal_type: Type of signal (e.g., "ready", "blocking", "complete")
-            data: Signal payload
-            credentials: Must be CONTRIBUTOR or higher
-            target_agent: Specific agent to signal (None = broadcast)
-
-        Returns:
-            True if sent
-
-        """
-        if not credentials.can_stage():
-            raise PermissionError(
-                f"Agent {credentials.agent_id} cannot send signals. "
-                "Requires CONTRIBUTOR tier or higher.",
-            )
-
-        target = target_agent or "broadcast"
-        key = f"{self.PREFIX_COORDINATION}{signal_type}:{credentials.agent_id}:{target}"
-        payload = {
-            "signal_type": signal_type,
-            "from_agent": credentials.agent_id,
-            "to_agent": target_agent,
-            "data": data,
-            "sent_at": datetime.now().isoformat(),
-        }
-        return self._set(key, json.dumps(payload), TTLStrategy.COORDINATION.value)
-
-    def receive_signals(
-        self,
-        credentials: AgentCredentials,
-        signal_type: str | None = None,
-    ) -> list[dict]:
-        """Receive coordination signals
-
-        Args:
-            credentials: Agent receiving signals
-            signal_type: Filter by signal type (optional)
-
-        Returns:
-            List of signals
-
-        """
-        if signal_type:
-            pattern = f"{self.PREFIX_COORDINATION}{signal_type}:*:{credentials.agent_id}"
-        else:
-            pattern = f"{self.PREFIX_COORDINATION}*:{credentials.agent_id}"
-
-        # Also get broadcasts
-        broadcast_pattern = f"{self.PREFIX_COORDINATION}*:*:broadcast"
-
-        keys = set(self._keys(pattern)) | set(self._keys(broadcast_pattern))
-        signals = []
-
-        for key in keys:
-            raw = self._get(key)
-            if raw:
-                signals.append(json.loads(raw))
-
-        return signals
+    # REMOVED in v5.0 - Use empathy_os.telemetry.CoordinationSignals instead
+    # - send_signal() → CoordinationSignals.signal()
+    # - receive_signals() → CoordinationSignals.get_pending_signals()
 
     # === Session Management ===
 
