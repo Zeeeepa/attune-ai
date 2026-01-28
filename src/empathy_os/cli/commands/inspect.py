@@ -13,8 +13,7 @@ from empathy_os.core import EmpathyOS
 from empathy_os.logging_config import get_logger
 from empathy_os.metrics.collector import MetricsCollector
 from empathy_os.pattern_library import PatternLibrary
-from empathy_os.persistence import PatternPersistence
-from empathy_os.state_manager import StateManager
+from empathy_os.persistence import PatternPersistence, StateManager
 
 logger = get_logger(__name__)
 

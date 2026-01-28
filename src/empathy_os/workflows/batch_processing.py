@@ -109,19 +109,22 @@ class BatchProcessingWorkflow:
         if not requests:
             raise ValueError("requests cannot be empty")
 
-        # Convert to Anthropic batch format
+        # Convert to Anthropic Message Batches format
         api_requests = []
         for req in requests:
             model = get_model("anthropic", req.model_tier)
             if model is None:
                 raise ValueError(f"Unknown model tier: {req.model_tier}")
 
+            # Use correct format with params wrapper
             api_requests.append(
                 {
                     "custom_id": req.task_id,
-                    "model": model.id,
-                    "messages": self._format_messages(req),
-                    "max_tokens": 4096,
+                    "params": {
+                        "model": model.id,
+                        "messages": self._format_messages(req),
+                        "max_tokens": 4096,
+                    },
                 }
             )
 
@@ -153,17 +156,58 @@ class BatchProcessingWorkflow:
                 for req in requests
             ]
 
-        # Parse results
+        # Parse results - new Message Batches API format
         results = []
         for raw in raw_results:
             task_id = raw.get("custom_id", "unknown")
+            result = raw.get("result", {})
+            result_type = result.get("type", "unknown")
 
-            if "error" in raw:
-                error_msg = raw["error"].get("message", "Unknown error")
-                results.append(BatchResult(task_id=task_id, success=False, error=error_msg))
+            if result_type == "succeeded":
+                # Extract message content from succeeded result
+                message = result.get("message", {})
+                content_blocks = message.get("content", [])
+
+                # Convert content blocks to simple output format
+                output_text = ""
+                for block in content_blocks:
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        output_text += block.get("text", "")
+
+                output = {
+                    "content": output_text,
+                    "usage": message.get("usage", {}),
+                    "model": message.get("model"),
+                    "stop_reason": message.get("stop_reason"),
+                }
+                results.append(BatchResult(task_id=task_id, success=True, output=output))
+
+            elif result_type == "errored":
+                # Extract error from errored result
+                error = result.get("error", {})
+                error_msg = error.get("message", "Unknown error")
+                error_type = error.get("type", "unknown_error")
+                results.append(
+                    BatchResult(task_id=task_id, success=False, error=f"{error_type}: {error_msg}")
+                )
+
+            elif result_type == "expired":
+                results.append(
+                    BatchResult(task_id=task_id, success=False, error="Request expired")
+                )
+
+            elif result_type == "canceled":
+                results.append(
+                    BatchResult(task_id=task_id, success=False, error="Request canceled")
+                )
+
             else:
                 results.append(
-                    BatchResult(task_id=task_id, success=True, output=raw.get("response"))
+                    BatchResult(
+                        task_id=task_id,
+                        success=False,
+                        error=f"Unknown result type: {result_type}",
+                    )
                 )
 
         # Log summary
@@ -201,7 +245,9 @@ class BatchProcessingWorkflow:
             logger.warning(
                 f"Missing required field {e} for task {request.task_type}, using raw input"
             )
-            content = prompt_template.format(input=json.dumps(request.input_data))
+            # Use default template instead of the specific one
+            default_template = "Process the following:\n\n{input}"
+            content = default_template.format(input=json.dumps(request.input_data))
 
         return [{"role": "user", "content": content}]
 
