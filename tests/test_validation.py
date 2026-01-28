@@ -113,10 +113,9 @@ class TestConfigValidator:
         return ConfigValidator()
 
     def test_valid_providers(self, validator):
-        """Test valid providers list."""
+        """Test valid providers list (Anthropic-only architecture)."""
         assert "anthropic" in validator.VALID_PROVIDERS
-        assert "openai" in validator.VALID_PROVIDERS
-        assert "ollama" in validator.VALID_PROVIDERS
+        assert len(validator.VALID_PROVIDERS) == 1  # Only Anthropic in v5.0.0
 
     def test_valid_tiers(self, validator):
         """Test valid tiers list."""

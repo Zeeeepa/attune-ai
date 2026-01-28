@@ -1,262 +1,152 @@
-"""Unified CLI for Empathy Framework.
+"""Empathy Framework CLI - Refactored modular structure.
 
-A single entry point for all Empathy Framework commands using Typer.
-
-Usage:
-    empathy --help                    # Show all commands
-    empathy memory status             # Memory control panel
-    empathy provider                  # Show provider config
-    empathy scan .                    # Scan codebase
-    empathy morning                   # Start-of-day briefing
+Entry point for the empathy command-line interface.
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import subprocess
+import argparse
 import sys
-from pathlib import Path
 
-import typer
+from empathy_os.discovery import show_tip_if_available
+from empathy_os.logging_config import get_logger
+from empathy_os.platform_utils import setup_asyncio_policy
 
-# Re-export legacy CLI functions for backward compatibility
-# These functions are defined in the sibling cli.py module (now cli_legacy)
-# Tests and other code may import them from empathy_os.cli
-try:
-    # Import from the legacy module using relative import workaround
-    # Since this package shadows cli.py, we need to import it explicitly
-    import importlib.util
-    import os
-
-    _legacy_cli_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "cli.py")
-    if os.path.exists(_legacy_cli_path):
-        _spec = importlib.util.spec_from_file_location("cli_legacy", _legacy_cli_path)
-        _cli_legacy = importlib.util.module_from_spec(_spec)
-        _spec.loader.exec_module(_cli_legacy)
-
-        # Re-export legacy functions
-        cmd_info = _cli_legacy.cmd_info
-        cmd_init = _cli_legacy.cmd_init
-        cmd_version = _cli_legacy.cmd_version
-        cmd_validate = _cli_legacy.cmd_validate
-        cmd_patterns_list = _cli_legacy.cmd_patterns_list
-        cmd_patterns_export = _cli_legacy.cmd_patterns_export
-        cmd_metrics_show = _cli_legacy.cmd_metrics_show
-        cmd_state_list = _cli_legacy.cmd_state_list
-        cmd_run = _cli_legacy.cmd_run
-        cmd_inspect = _cli_legacy.cmd_inspect
-        cmd_export = _cli_legacy.cmd_export
-        cmd_import = _cli_legacy.cmd_import
-        cmd_workflow = _cli_legacy.cmd_workflow
-        cmd_cheatsheet = _cli_legacy.cmd_cheatsheet
-        cmd_frameworks = _cli_legacy.cmd_frameworks
-        main_legacy = _cli_legacy.main
-
-        # Export for backward compatibility
-        __all__ = [
-            "app",
-            "main",
-            "cmd_info",
-            "cmd_init",
-            "cmd_version",
-            "cmd_validate",
-            "cmd_patterns_list",
-            "cmd_patterns_export",
-            "cmd_metrics_show",
-            "cmd_state_list",
-            "cmd_run",
-            "cmd_inspect",
-            "cmd_export",
-            "cmd_import",
-            "cmd_workflow",
-            "cmd_cheatsheet",
-            "cmd_frameworks",
-        ]
-except Exception:  # noqa: BLE001
-    # INTENTIONAL: If legacy import fails, functions won't be available.
-    # New CLI still works; legacy re-exports are for backward compatibility only.
-    pass
-
-from empathy_os.cli.commands import inspection
-from empathy_os.cli.commands.memory import memory_app
-from empathy_os.cli.commands.profiling import profile_app
-from empathy_os.cli.commands.provider import provider_app
-from empathy_os.cli.commands.utilities import utilities_app
-from empathy_os.cli.core import console, get_empathy_version, version_callback
-
-# Create the main Typer app
-app = typer.Typer(
-    name="empathy",
-    help="Empathy Framework - Predictive AI-Developer Collaboration",
-    no_args_is_help=True,
-    rich_markup_mode="rich",
-)
-
-# Register command group apps
-app.add_typer(memory_app, name="memory")
-app.add_typer(profile_app, name="profile")
-app.add_typer(provider_app, name="provider")
-app.add_typer(utilities_app, name="utilities")
-app.add_typer(utilities_app, name="utility", hidden=True)  # Alias for common typo
+logger = get_logger(__name__)
 
 
-@app.callback()
-def callback(
-    version: bool = typer.Option(
-        None,
-        "--version",
-        "-v",
-        callback=version_callback,
-        is_eager=True,
-        help="Show version and exit",
-    ),
-) -> None:
-    """Empathy Framework - Predictive AI-Developer Collaboration
+def get_version() -> str:
+    """Get package version.
 
-    The AI collaboration framework that predicts problems before they happen.
-
-    [bold]Quick Start:[/bold]
-        empathy morning         Start-of-day briefing
-        empathy health          Quick health check
-        empathy ship            Pre-commit validation
-
-    [bold]Memory:[/bold]
-        empathy memory status   Check memory system status
-        empathy memory start    Start Redis server
-
-    [bold]Provider:[/bold]
-        empathy provider        Show current provider config
-        empathy provider --set hybrid   Configure provider
-
-    [bold]Inspection:[/bold]
-        empathy scan .          Scan codebase for issues
-        empathy inspect .       Deep inspection with SARIF output
+    Returns:
+        Version string or "dev" if not installed
     """
+    try:
+        from importlib.metadata import version
+
+        return version("empathy-framework")
+    except Exception:  # noqa: BLE001
+        return "dev"
 
 
-# =============================================================================
-# SCAN/INSPECT COMMANDS (top-level)
-# =============================================================================
+def main() -> int:
+    """Main CLI entry point.
 
+    This is the refactored CLI entry point that uses modular command
+    and parser organization instead of a monolithic 3,957-line file.
 
-@app.command("scan")
-def scan(
-    path: Path = Path("."),
-    format_out: str = "text",
-    fix: bool = False,
-    staged: bool = False,
-) -> None:
-    """Scan codebase for issues."""
-    inspection.scan(path, format_out, fix, staged)
+    Returns:
+        Exit code (0 for success, non-zero for error)
+    """
+    # Windows async compatibility
+    setup_asyncio_policy()
 
-
-@app.command("inspect")
-def inspect_cmd(
-    path: Path = Path("."),
-    format_out: str = "text",
-) -> None:
-    """Deep inspection with code analysis."""
-    inspection.inspect_cmd(path, format_out)
-
-
-# =============================================================================
-# WORKFLOW COMMANDS (delegate to legacy CLI for now)
-# These will be extracted in Phase 2b
-# =============================================================================
-
-
-@app.command("ship")
-def ship(
-    tests_only: bool = False,
-    security_only: bool = False,
-    skip_sync: bool = False,
-) -> None:
-    """Pre-commit validation (lint, format, tests, security)."""
-    args = [sys.executable, "-m", "empathy_os.cli", "ship"]
-    if tests_only:
-        args.append("--tests-only")
-    if security_only:
-        args.append("--security-only")
-    if skip_sync:
-        args.append("--skip-sync")
-    subprocess.run(args, check=False)
-
-
-@app.command("health")
-def health(
-    deep: bool = False,
-    fix: bool = False,
-) -> None:
-    """Quick health check (lint, types, tests)."""
-    args = [sys.executable, "-m", "empathy_os.cli", "health"]
-    if deep:
-        args.append("--deep")
-    if fix:
-        args.append("--fix")
-    subprocess.run(args, check=False)
-
-
-@app.command("fix-all")
-def fix_all() -> None:
-    """Fix all lint and format issues."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "fix-all"], check=False)
-
-
-@app.command("learn")
-def learn(analyze: int = 20) -> None:
-    """Learn patterns from commit history."""
-    subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "learn", "--analyze", str(analyze)],
-        check=False,
+    # Create main parser
+    parser = argparse.ArgumentParser(
+        prog="empathy", description="Empathy Framework - Context-aware development automation"
     )
 
+    # Add global flags
+    parser.add_argument("--version", action="version", version=f"empathy {get_version()}")
 
-@app.command("run")
-def run_repl() -> None:
-    """Start interactive REPL mode."""
-    subprocess.run([sys.executable, "-m", "empathy_os.cli", "run"], check=False)
-
-
-# =============================================================================
-# REMAINING COMMAND GROUPS
-# Import directly from cli_unified.py for now - will be extracted later
-# =============================================================================
-
-# Import and register remaining command groups from cli_unified.py
-# These are imported here to keep the transition incremental
-try:
-    from empathy_os.cli_unified import (
-        orchestrate_app,
-        progressive_app,
-        service_app,
-        telemetry_app,
-        tier_app,
-        workflow_app,
+    # Create subparsers
+    subparsers = parser.add_subparsers(
+        dest="command", title="commands", description="Available commands"
     )
 
-    app.add_typer(workflow_app, name="workflow")
-    app.add_typer(orchestrate_app, name="orchestrate")
-    app.add_typer(telemetry_app, name="telemetry")
-    app.add_typer(service_app, name="service")
-    app.add_typer(progressive_app, name="progressive")
-    app.add_typer(tier_app, name="tier")
-except ImportError:
-    # cli_unified.py may not have these exports yet
-    pass
+    # Register all command parsers (modular!)
+    from .parsers import register_all_parsers
 
-# Register meta-workflow if available
-try:
-    from empathy_os.meta_workflows.cli_meta_workflows import meta_workflow_app
+    register_all_parsers(subparsers)
 
-    app.add_typer(meta_workflow_app, name="meta-workflow")
-except ImportError:
-    pass
+    # TODO: Import and register remaining commands from cli.py
+    # This is a partial refactoring - additional commands still in cli.py
+    # For now, if command not found in new structure, fall back to old cli.py
+    #
+    # NOTE: Temporarily disabled to avoid conflicts with extracted commands.
+    # Commands that have been extracted:
+    #   - help, tier, info, patterns, status (Phase 1)
+    #   - workflow, inspect (run, inspect, export, import) (Phase 2)
+    # Once all commands are extracted, the old cli.py will be removed entirely.
+    #
+    # try:
+    #     from empathy_os import cli as old_cli
+    #     _register_legacy_commands(subparsers, old_cli)
+    # except ImportError:
+    #     pass  # Old cli.py not available or already moved
+
+    # Parse arguments
+    args = parser.parse_args()
+
+    # Execute command
+    if hasattr(args, "func"):
+        try:
+            result = args.func(args)
+
+            # Show discovery tips (except for dashboard/run)
+            if args.command and args.command not in ("dashboard", "run"):
+                try:
+                    show_tip_if_available(args.command)
+                except Exception:  # noqa: BLE001
+                    logger.debug("Discovery tip not available")
+
+            return result if result is not None else 0
+
+        except KeyboardInterrupt:
+            print("\n\n⚠️  Interrupted by user")
+            return 130
+
+        except Exception as e:  # noqa: BLE001
+            logger.exception(f"Unexpected error in command {args.command}")
+            print(f"\n❌ Error: {e}")
+            return 1
+
+    # No command specified
+    parser.print_help()
+    return 0
 
 
-def main() -> None:
-    """Entry point for the unified CLI."""
-    app()
+def _register_legacy_commands(subparsers, old_cli):
+    """Temporarily register commands not yet extracted from old cli.py.
+
+    This function provides backward compatibility during the refactoring process.
+    As commands are extracted into the new structure, they should be removed
+    from this registration.
+
+    Args:
+        subparsers: ArgumentParser subparsers object
+        old_cli: Reference to old cli module
+
+    Note:
+        This is a TEMPORARY function that will be removed once all commands
+        are extracted from the monolithic cli.py file.
+    """
+    # Import command functions that haven't been extracted yet
+    try:
+        # Patterns commands
+        from empathy_os.cli import cmd_patterns_export, cmd_patterns_list, cmd_patterns_resolve
+
+        patterns_parser = subparsers.add_parser("patterns", help="Pattern management")
+        patterns_sub = patterns_parser.add_subparsers(dest="patterns_command")
+
+        p_list = patterns_sub.add_parser("list", help="List patterns")
+        p_list.set_defaults(func=cmd_patterns_list)
+
+        p_export = patterns_sub.add_parser("export", help="Export patterns")
+        p_export.add_argument("output", help="Output file")
+        p_export.set_defaults(func=cmd_patterns_export)
+
+        p_resolve = patterns_sub.add_parser("resolve", help="Resolve pattern")
+        p_resolve.add_argument("pattern_id", help="Pattern ID")
+        p_resolve.set_defaults(func=cmd_patterns_resolve)
+    except (ImportError, AttributeError):
+        pass  # Commands not available
+
+    # Add other legacy commands as needed...
+    # This list will shrink as commands are extracted
 
 
+# Preserve backward compatibility
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

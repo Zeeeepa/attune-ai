@@ -13,6 +13,7 @@ Licensed under Fair Source License 0.9
 """
 
 import hashlib
+import heapq
 import logging
 import time
 from pathlib import Path
@@ -407,10 +408,12 @@ class HybridCache(BaseCache):
             # Evict 10% of entries
             num_to_evict = max(1, len(self._hash_cache) // 10)
 
-            # Sort by access time
-            sorted_keys = sorted(self._access_times.items(), key=lambda x: x[1])
+            # Get oldest entries by access time (LRU eviction)
+            oldest_keys = heapq.nsmallest(
+                num_to_evict, self._access_times.items(), key=lambda x: x[1]
+            )
 
-            for cache_key, _ in sorted_keys[:num_to_evict]:
+            for cache_key, _ in oldest_keys:
                 self._evict_entry(cache_key)
 
             logger.info(

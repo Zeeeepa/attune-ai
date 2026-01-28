@@ -139,9 +139,8 @@ class MemoryConfig:
             encryption_enabled=os.getenv("EMPATHY_ENCRYPTION", "true").lower() == "true",
             claude_memory_enabled=os.getenv("EMPATHY_CLAUDE_MEMORY", "true").lower() == "true",
             # Compact state
-            auto_generate_compact_state=os.getenv(
-                "EMPATHY_AUTO_COMPACT_STATE", "true"
-            ).lower() == "true",
+            auto_generate_compact_state=os.getenv("EMPATHY_AUTO_COMPACT_STATE", "true").lower()
+            == "true",
             compact_state_path=os.getenv("EMPATHY_COMPACT_STATE_PATH", ".claude/compact-state.md"),
         )
 
@@ -1100,17 +1099,21 @@ class UnifiedMemory:
         # Add session info
         if self._file_session:
             session = self._file_session._state
-            lines.extend([
-                f"**Session ID:** {session.session_id}",
-                f"**User ID:** {session.user_id}",
-                "",
-            ])
+            lines.extend(
+                [
+                    f"**Session ID:** {session.session_id}",
+                    f"**User ID:** {session.user_id}",
+                    "",
+                ]
+            )
 
-        lines.extend([
-            "## SBAR Handoff",
-            "",
-            "### Situation",
-        ])
+        lines.extend(
+            [
+                "## SBAR Handoff",
+                "",
+                "### Situation",
+            ]
+        )
 
         # Get context from file session
         context = {}
@@ -1122,30 +1125,34 @@ class UnifiedMemory:
         assessment = context.get("assessment", "No assessment recorded.")
         recommendation = context.get("recommendation", "Continue with current task.")
 
-        lines.extend([
-            situation,
-            "",
-            "### Background",
-            background,
-            "",
-            "### Assessment",
-            assessment,
-            "",
-            "### Recommendation",
-            recommendation,
-            "",
-        ])
+        lines.extend(
+            [
+                situation,
+                "",
+                "### Background",
+                background,
+                "",
+                "### Assessment",
+                assessment,
+                "",
+                "### Recommendation",
+                recommendation,
+                "",
+            ]
+        )
 
         # Add working memory summary
         if self._file_session:
             working_keys = list(self._file_session._state.working_memory.keys())
             if working_keys:
-                lines.extend([
-                    "## Working Memory",
-                    "",
-                    f"**Active keys:** {len(working_keys)}",
-                    "",
-                ])
+                lines.extend(
+                    [
+                        "## Working Memory",
+                        "",
+                        f"**Active keys:** {len(working_keys)}",
+                        "",
+                    ]
+                )
                 for key in working_keys[:10]:  # Show max 10
                     lines.append(f"- `{key}`")
                 if len(working_keys) > 10:
@@ -1156,29 +1163,35 @@ class UnifiedMemory:
         if self._file_session:
             staged = list(self._file_session._state.staged_patterns.values())
             if staged:
-                lines.extend([
-                    "## Staged Patterns",
-                    "",
-                    f"**Pending validation:** {len(staged)}",
-                    "",
-                ])
+                lines.extend(
+                    [
+                        "## Staged Patterns",
+                        "",
+                        f"**Pending validation:** {len(staged)}",
+                        "",
+                    ]
+                )
                 for pattern in staged[:5]:  # Show max 5
-                    lines.append(f"- {pattern.name} ({pattern.pattern_type}, conf: {pattern.confidence:.2f})")
+                    lines.append(
+                        f"- {pattern.name} ({pattern.pattern_type}, conf: {pattern.confidence:.2f})"
+                    )
                 if len(staged) > 5:
                     lines.append(f"- ... and {len(staged) - 5} more")
                 lines.append("")
 
         # Add capabilities
         caps = self.get_capabilities()
-        lines.extend([
-            "## Capabilities",
-            "",
-            f"- File session: {'Yes' if caps['file_session'] else 'No'}",
-            f"- Redis: {'Yes' if caps['redis'] else 'No'}",
-            f"- Long-term memory: {'Yes' if caps['long_term'] else 'No'}",
-            f"- Real-time sync: {'Yes' if caps['realtime'] else 'No'}",
-            "",
-        ])
+        lines.extend(
+            [
+                "## Capabilities",
+                "",
+                f"- File session: {'Yes' if caps['file_session'] else 'No'}",
+                f"- Redis: {'Yes' if caps['redis'] else 'No'}",
+                f"- Long-term memory: {'Yes' if caps['long_term'] else 'No'}",
+                f"- Real-time sync: {'Yes' if caps['realtime'] else 'No'}",
+                "",
+            ]
+        )
 
         return "\n".join(lines)
 

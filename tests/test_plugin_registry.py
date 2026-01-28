@@ -347,7 +347,7 @@ class TestPluginRegistryStatistics:
 
         assert stats["total_plugins"] == 0
         assert stats["total_workflows"] == 0
-        assert "wizards_by_level" in stats
+        assert "workflows_by_level" in stats
 
     def test_get_statistics_with_plugins(self):
         """Test statistics with registered plugins"""
@@ -375,8 +375,8 @@ class TestPluginRegistryStatistics:
         assert "plugin2" in plugin_names
 
         # Check wizards by level
-        assert stats["wizards_by_level"]["level_4"] == 2
-        assert stats["wizards_by_level"]["level_5"] == 1
+        assert stats["workflows_by_level"]["level_4"] == 2
+        assert stats["workflows_by_level"]["level_5"] == 1
 
 
 class TestGlobalRegistry:

@@ -47,29 +47,9 @@ class TestModelProviderEnum:
         """Test ANTHROPIC provider value."""
         assert ModelProvider.ANTHROPIC.value == "anthropic"
 
-    def test_openai_value(self):
-        """Test OPENAI provider value."""
-        assert ModelProvider.OPENAI.value == "openai"
-
-    def test_google_value(self):
-        """Test GOOGLE provider value."""
-        assert ModelProvider.GOOGLE.value == "google"
-
-    def test_ollama_value(self):
-        """Test OLLAMA provider value."""
-        assert ModelProvider.OLLAMA.value == "ollama"
-
-    def test_hybrid_value(self):
-        """Test HYBRID provider value."""
-        assert ModelProvider.HYBRID.value == "hybrid"
-
-    def test_custom_value(self):
-        """Test CUSTOM provider value."""
-        assert ModelProvider.CUSTOM.value == "custom"
-
     def test_all_providers_count(self):
-        """Test total number of providers."""
-        assert len(ModelProvider) == 6
+        """Test total number of providers (Anthropic-only architecture)."""
+        assert len(ModelProvider) == 1
 
 
 class TestModelInfo:
@@ -107,7 +87,7 @@ class TestModelInfo:
         """Test ModelInfo with custom values."""
         model = ModelInfo(
             id="vision-model",
-            provider="openai",
+            provider="anthropic",
             tier="capable",
             input_cost_per_million=5.0,
             output_cost_per_million=15.0,
@@ -134,7 +114,7 @@ class TestModelInfo:
         """Test name property alias for id."""
         model = ModelInfo(
             id="gpt-4o",
-            provider="openai",
+            provider="anthropic",
             tier="capable",
             input_cost_per_million=2.5,
             output_cost_per_million=10.0,
@@ -199,8 +179,8 @@ class TestModelInfo:
     def test_to_workflow_config(self):
         """Test to_workflow_config method."""
         model = ModelInfo(
-            id="gpt-4o",
-            provider="openai",
+            id="claude-sonnet-4-5",
+            provider="anthropic",
             tier="capable",
             input_cost_per_million=2.5,
             output_cost_per_million=10.0,
@@ -209,8 +189,8 @@ class TestModelInfo:
             supports_tools=True,
         )
         config = model.to_workflow_config()
-        assert config["name"] == "gpt-4o"
-        assert config["provider"] == "openai"
+        assert config["name"] == "claude-sonnet-4-5"
+        assert config["provider"] == "anthropic"
         assert config["tier"] == "capable"
         assert config["input_cost_per_million"] == 2.5
         assert config["output_cost_per_million"] == 10.0
@@ -251,17 +231,10 @@ class TestModelRegistry:
         """Test registry contains Anthropic models."""
         assert "anthropic" in MODEL_REGISTRY
 
-    def test_registry_has_openai(self):
-        """Test registry contains OpenAI models."""
-        assert "openai" in MODEL_REGISTRY
-
-    def test_registry_has_google(self):
-        """Test registry contains Google models."""
-        assert "google" in MODEL_REGISTRY
-
-    def test_registry_has_ollama(self):
-        """Test registry contains Ollama models."""
-        assert "ollama" in MODEL_REGISTRY
+    def test_registry_only_has_anthropic(self):
+        """Test registry only contains Anthropic (Anthropic-only architecture)."""
+        assert len(MODEL_REGISTRY) == 1
+        assert list(MODEL_REGISTRY.keys()) == ["anthropic"]
 
     def test_anthropic_has_all_tiers(self):
         """Test Anthropic has cheap, capable, and premium tiers."""
@@ -270,47 +243,12 @@ class TestModelRegistry:
         assert "capable" in anthropic
         assert "premium" in anthropic
 
-    def test_openai_has_all_tiers(self):
-        """Test OpenAI has cheap, capable, and premium tiers."""
-        openai = MODEL_REGISTRY["openai"]
-        assert "cheap" in openai
-        assert "capable" in openai
-        assert "premium" in openai
-
-    def test_google_has_all_tiers(self):
-        """Test Google has cheap, capable, and premium tiers."""
-        google = MODEL_REGISTRY["google"]
-        assert "cheap" in google
-        assert "capable" in google
-        assert "premium" in google
-
-    def test_ollama_has_all_tiers(self):
-        """Test Ollama has cheap, capable, and premium tiers."""
-        ollama = MODEL_REGISTRY["ollama"]
-        assert "cheap" in ollama
-        assert "capable" in ollama
-        assert "premium" in ollama
-
     def test_anthropic_models_are_modelinfo(self):
         """Test Anthropic models are ModelInfo instances."""
         anthropic = MODEL_REGISTRY["anthropic"]
         for _tier, model in anthropic.items():
             assert isinstance(model, ModelInfo)
             assert model.provider == "anthropic"
-
-    def test_openai_models_are_modelinfo(self):
-        """Test OpenAI models are ModelInfo instances."""
-        openai = MODEL_REGISTRY["openai"]
-        for _tier, model in openai.items():
-            assert isinstance(model, ModelInfo)
-            assert model.provider == "openai"
-
-    def test_google_models_are_modelinfo(self):
-        """Test Google models are ModelInfo instances."""
-        google = MODEL_REGISTRY["google"]
-        for _tier, model in google.items():
-            assert isinstance(model, ModelInfo)
-            assert model.provider == "google"
 
     def test_anthropic_haiku_is_cheap(self):
         """Test Anthropic cheap tier is Haiku."""
@@ -328,19 +266,6 @@ class TestModelRegistry:
         model = MODEL_REGISTRY["anthropic"]["premium"]
         assert "opus" in model.id.lower()
         assert model.tier == "premium"
-
-    def test_openai_mini_is_cheap(self):
-        """Test OpenAI cheap tier is GPT-4o-mini."""
-        model = MODEL_REGISTRY["openai"]["cheap"]
-        assert "mini" in model.id.lower()
-
-    def test_ollama_models_are_free(self):
-        """Test Ollama models have zero cost."""
-        ollama = MODEL_REGISTRY["ollama"]
-        for _tier, model in ollama.items():
-            assert model.input_cost_per_million == 0.0
-            assert model.output_cost_per_million == 0.0
-
 
 class TestModelPricingConsistency:
     """Tests for model pricing consistency."""
@@ -401,11 +326,11 @@ class TestRegistryAccess:
             _ = MODEL_REGISTRY["anthropic"]["nonexistent_tier"]
 
     def test_iterate_all_models(self):
-        """Test iterating all models in registry."""
+        """Test iterating all models in registry (Anthropic-only architecture)."""
         model_count = 0
         for _provider, models in MODEL_REGISTRY.items():
             for _tier, model in models.items():
                 model_count += 1
                 assert isinstance(model, ModelInfo)
-        # Should have at least 12 models (4 providers x 3 tiers)
-        assert model_count >= 12
+        # Should have at least 3 models (1 provider x 3 tiers)
+        assert model_count >= 3

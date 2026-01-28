@@ -514,26 +514,6 @@ class TestLangGraphAdapter:
                 # LangChain not installed, which is fine
                 pass
 
-    def test_get_llm_openai(self):
-        """Test _get_llm for OpenAI provider."""
-        adapter = LangGraphAdapter(provider="openai", api_key="test-key")
-
-        config = AgentConfig(
-            name="test",
-            role=AgentRole.RESEARCHER,
-            model_tier="capable",
-        )
-
-        # Mock the langchain_openai module
-        mock_chat_class = MagicMock()
-        mock_chat_class.return_value = MagicMock()
-
-        with patch.dict("sys.modules", {"langchain_openai": MagicMock(ChatOpenAI=mock_chat_class)}):
-            try:
-                llm = adapter._get_llm(config)
-            except ImportError:
-                pass
-
     def test_get_llm_unsupported_provider(self):
         """Test _get_llm raises for unsupported provider."""
         adapter = LangGraphAdapter(provider="unsupported", api_key="test-key")

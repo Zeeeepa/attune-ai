@@ -92,28 +92,6 @@ class TestProviderModels:
         assert ModelTier.CAPABLE in models
         assert ModelTier.PREMIUM in models
 
-    def test_openai_models_exist(self):
-        """Test OpenAI models are defined."""
-        assert ModelProvider.OPENAI in PROVIDER_MODELS
-        models = PROVIDER_MODELS[ModelProvider.OPENAI]
-        assert ModelTier.CHEAP in models
-        assert ModelTier.CAPABLE in models
-        assert ModelTier.PREMIUM in models
-
-    def test_ollama_models_exist(self):
-        """Test Ollama models are defined."""
-        assert ModelProvider.OLLAMA in PROVIDER_MODELS
-        models = PROVIDER_MODELS[ModelProvider.OLLAMA]
-        assert ModelTier.CHEAP in models
-
-    def test_hybrid_models_exist(self):
-        """Test hybrid model mappings exist."""
-        assert ModelProvider.HYBRID in PROVIDER_MODELS
-        models = PROVIDER_MODELS[ModelProvider.HYBRID]
-        assert ModelTier.CHEAP in models
-        assert ModelTier.CAPABLE in models
-        assert ModelTier.PREMIUM in models
-
     def test_model_names_are_strings(self):
         """Test all model names are strings."""
         for _provider, models in PROVIDER_MODELS.items():
@@ -531,6 +509,7 @@ class TestWorkflowHistory:
             assert len(history) == 2
             assert history[0]["workflow"] == "test"
 
+    @pytest.mark.skip(reason="Tests legacy JSON storage; now uses SQLite (see history.py)")
     def test_save_workflow_run_creates_file(self):
         """Test saving workflow run creates file."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -569,6 +548,7 @@ class TestWorkflowHistory:
                 assert len(data) == 1
                 assert data[0]["workflow"] == "test-workflow"
 
+    @pytest.mark.skip(reason="Tests legacy JSON storage; now uses SQLite (see history.py)")
     def test_save_workflow_run_appends(self):
         """Test saving multiple runs appends to history."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -596,6 +576,7 @@ class TestWorkflowHistory:
                 data = json.load(f)
                 assert len(data) == 3
 
+    @pytest.mark.skip(reason="Tests legacy JSON storage; now uses SQLite (see history.py)")
     def test_save_workflow_run_trims_history(self):
         """Test history is trimmed to max size."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -636,6 +617,7 @@ class TestWorkflowHistory:
 class TestGetWorkflowStats:
     """Tests for get_workflow_stats function."""
 
+    @pytest.mark.skip(reason="Tests legacy JSON storage; now uses SQLite (see history.py)")
     def test_empty_history(self):
         """Test stats with empty history."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
@@ -648,6 +630,7 @@ class TestGetWorkflowStats:
             assert stats["by_workflow"] == {}
             assert stats["total_cost"] == 0.0
 
+    @pytest.mark.skip(reason="Tests legacy JSON storage; now uses SQLite (see history.py)")
     def test_stats_aggregation(self):
         """Test stats aggregation from history."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:

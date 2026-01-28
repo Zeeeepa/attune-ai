@@ -161,6 +161,7 @@ class TestResilientAgentInvoke:
     """Test ResilientAgent invoke functionality."""
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_resilient_agent_invoke_success(self):
         """Test successful invocation through resilient wrapper."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -183,6 +184,7 @@ class TestResilientAgentInvoke:
         assert "metadata" in result
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_resilient_agent_adds_metadata(self):
         """Test resilient agent adds resilience metadata."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -428,6 +430,7 @@ class TestResilientAgentDelegation:
         assert tool in base_agent.config.tools
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_conversation_history_delegation(self):
         """Test conversation history is delegated to wrapped agent."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter

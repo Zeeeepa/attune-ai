@@ -48,14 +48,14 @@ class TestWorkflowConfigInitialization:
     def test_initialization_with_custom_values(self):
         """Test creating config with custom values."""
         config = WorkflowConfig(
-            default_provider="openai",
+            default_provider="anthropic",
             workflow_providers={"research": "anthropic"},
             compliance_mode="hipaa",
             enabled_workflows=["test-gen"],
             pii_scrubbing_enabled=True,
         )
 
-        assert config.default_provider == "openai"
+        assert config.default_provider == "anthropic"
         assert config.workflow_providers == {"research": "anthropic"}
         assert config.compliance_mode == "hipaa"
         assert config.enabled_workflows == ["test-gen"]
@@ -410,7 +410,7 @@ class TestWorkflowConfigSaving:
         """Test saving config to JSON file."""
         with tempfile.TemporaryDirectory() as tmpdir:
             config = WorkflowConfig(
-                default_provider="openai",
+                default_provider="anthropic",
                 workflow_providers={"research": "anthropic"},
             )
 
@@ -420,7 +420,7 @@ class TestWorkflowConfigSaving:
             # Verify file was created and content is correct
             assert config_path.exists()
             data = json.loads(config_path.read_text())
-            assert data["default_provider"] == "openai"
+            assert data["default_provider"] == "anthropic"
             assert data["workflow_providers"] == {"research": "anthropic"}
 
     @pytest.mark.skipif(not YAML_AVAILABLE, reason="PyYAML not installed")
@@ -428,7 +428,7 @@ class TestWorkflowConfigSaving:
         """Test saving config to YAML file."""
         with tempfile.TemporaryDirectory() as tmpdir:
             config = WorkflowConfig(
-                default_provider="openai",
+                default_provider="anthropic",
                 workflow_providers={"research": "anthropic"},
             )
 
@@ -438,7 +438,7 @@ class TestWorkflowConfigSaving:
             # Verify file was created
             assert config_path.exists()
             content = config_path.read_text()
-            assert "default_provider: openai" in content
+            assert "default_provider: anthropic" in content
             assert "research: anthropic" in content
 
     def test_save_creates_parent_directory(self):

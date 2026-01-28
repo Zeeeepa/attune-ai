@@ -342,9 +342,27 @@ class SecurityAuditWorkflow(BaseWorkflow):
                                     if self._is_detection_code(line_content, match.group()):
                                         continue
 
+                                    # Phase 2: Skip safe SQL parameterization patterns
+                                    if vuln_type == "sql_injection":
+                                        if self._is_safe_sql_parameterization(
+                                            line_content,
+                                            match.group(),
+                                            content,
+                                        ):
+                                            continue
+
                                     # Skip fake/test credentials
                                     if vuln_type == "hardcoded_secret":
                                         if self._is_fake_credential(match.group()):
+                                            continue
+
+                                    # Phase 2: Skip safe random usage (tests, demos, documented)
+                                    if vuln_type == "insecure_random":
+                                        if self._is_safe_random_usage(
+                                            line_content,
+                                            file_name,
+                                            content,
+                                        ):
                                             continue
 
                                     # Skip command_injection in documentation strings
@@ -379,6 +397,29 @@ class SecurityAuditWorkflow(BaseWorkflow):
                                     )
                     except OSError:
                         continue
+
+        # Phase 3: Apply AST-based filtering for command injection
+        try:
+            from .security_audit_phase3 import apply_phase3_filtering
+
+            # Separate command injection findings
+            cmd_findings = [f for f in findings if f["type"] == "command_injection"]
+            other_findings = [f for f in findings if f["type"] != "command_injection"]
+
+            # Apply Phase 3 filtering to command injection
+            filtered_cmd = apply_phase3_filtering(cmd_findings)
+
+            # Combine back
+            findings = other_findings + filtered_cmd
+
+            logger.info(
+                f"Phase 3: Filtered command_injection from {len(cmd_findings)} to {len(filtered_cmd)} "
+                f"({len(cmd_findings) - len(filtered_cmd)} false positives removed)"
+            )
+        except ImportError:
+            logger.debug("Phase 3 module not available, skipping AST-based filtering")
+        except Exception as e:
+            logger.warning(f"Phase 3 filtering failed: {e}")
 
         input_tokens = len(str(input_data)) // 4
         output_tokens = len(str(findings)) // 4
@@ -541,6 +582,154 @@ class SecurityAuditWorkflow(BaseWorkflow):
 
         return False
 
+    def _is_safe_sql_parameterization(self, line_content: str, match_text: str, file_content: str) -> bool:
+        """Check if SQL query uses safe parameterization despite f-string usage.
+
+        Phase 2 Enhancement: Detects safe patterns like:
+        - placeholders = ",".join("?" * len(ids))
+        - cursor.execute(f"... IN ({placeholders})", ids)
+
+        This prevents false positives for the SQLite-recommended pattern
+        of building dynamic placeholder strings.
+
+        Args:
+            line_content: The line containing the match (may be incomplete for multi-line)
+            match_text: The matched text
+            file_content: Full file content for context analysis
+
+        Returns:
+            True if this is safe parameterized SQL, False otherwise
+        """
+        # Get the position of the match in the full file content
+        match_pos = file_content.find(match_text)
+        if match_pos == -1:
+            # Try to find cursor.execute
+            match_pos = file_content.find("cursor.execute")
+            if match_pos == -1:
+                return False
+
+        # Extract a larger context (next 200 chars after match)
+        context = file_content[match_pos:match_pos + 200]
+
+        # Also get lines before the match for placeholder detection
+        lines_before = file_content[:match_pos].split("\n")
+        recent_lines = lines_before[-10:] if len(lines_before) > 10 else lines_before
+
+        # Pattern 1: Check if this is a placeholder-based parameterized query
+        # Look for: cursor.execute(f"... IN ({placeholders})", params)
+        if "placeholders" in context or any("placeholders" in line for line in recent_lines[-5:]):
+            # Check if context has both f-string and separate parameters
+            # Pattern: f"...{placeholders}..." followed by comma and params
+            if re.search(r'f["\'][^"\']*\{placeholders\}[^"\']*["\']\s*,\s*\w+', context):
+                return True  # Safe - has separate parameters
+
+            # Also check if recent lines built the placeholders
+            for prev_line in reversed(recent_lines):
+                if "placeholders" in prev_line and '"?"' in prev_line and "join" in prev_line:
+                    # Found placeholder construction
+                    # Now check if the execute has separate parameters
+                    if "," in context and any(param in context for param in ["run_ids", "ids", "params", "values", ")"]):
+                        return True
+
+        # Pattern 2: Check if f-string only builds SQL structure with constants
+        # Example: f"SELECT * FROM {TABLE_NAME}" where TABLE_NAME is a constant
+        f_string_vars = re.findall(r'\{(\w+)\}', context)
+        if f_string_vars:
+            # Check if all variables are constants (UPPERCASE or table/column names)
+            all_constants = all(
+                var.isupper() or "TABLE" in var.upper() or "COLUMN" in var.upper()
+                for var in f_string_vars
+            )
+            if all_constants:
+                return True  # Safe - using constants, not user data
+
+        # Pattern 3: Check for security note comments nearby
+        # If developers added security notes, it's likely safe
+        for prev_line in reversed(recent_lines[-3:]):
+            if "security note" in prev_line.lower() and "safe" in prev_line.lower():
+                return True
+
+        return False
+
+    def _is_safe_random_usage(self, line_content: str, file_path: str, file_content: str) -> bool:
+        """Check if random usage is in a safe context (tests, simulations, non-crypto).
+
+        Phase 2 Enhancement: Reduces false positives for random module usage
+        in test fixtures, A/B testing simulations, and demo code.
+
+        Args:
+            line_content: The line containing the match
+            file_path: Path to the file being scanned
+            file_content: Full file content for context analysis
+
+        Returns:
+            True if random usage is safe/documented, False if potentially insecure
+        """
+        # Check if file is a test file
+        is_test = any(pattern in file_path.lower() for pattern in ["/test", "test_", "conftest"])
+
+        # Check for explicit security notes nearby
+        lines = file_content.split("\n")
+        line_index = None
+        for i, line in enumerate(lines):
+            if line_content.strip() in line:
+                line_index = i
+                break
+
+        if line_index is not None:
+            # Check 5 lines before and after for security notes
+            context_start = max(0, line_index - 5)
+            context_end = min(len(lines), line_index + 5)
+            context = "\n".join(lines[context_start:context_end]).lower()
+
+            # Look for clarifying comments
+            safe_indicators = [
+                "security note",
+                "not cryptographic",
+                "not for crypto",
+                "test data",
+                "demo data",
+                "simulation",
+                "reproducible",
+                "deterministic",
+                "fixed seed",
+                "not used for security",
+                "not used for secrets",
+                "not used for tokens",
+            ]
+
+            if any(indicator in context for indicator in safe_indicators):
+                return True  # Documented as safe
+
+        # Check for common safe random patterns
+        line_lower = line_content.lower()
+
+        # Pattern 1: Fixed seed (reproducible tests)
+        if "random.seed(" in line_lower:
+            return True  # Fixed seed is for reproducibility, not security
+
+        # Pattern 2: A/B testing, simulations, demos
+        safe_contexts = [
+            "simulation",
+            "demo",
+            "a/b test",
+            "ab_test",
+            "fixture",
+            "mock",
+            "example",
+            "sample",
+        ]
+        if any(context in file_path.lower() for context in safe_contexts):
+            return True
+
+        # If it's a test file without crypto indicators, it's probably safe
+        if is_test:
+            crypto_indicators = ["password", "secret", "token", "key", "crypto", "auth"]
+            if not any(indicator in file_path.lower() for indicator in crypto_indicators):
+                return True
+
+        return False
+
     async def _assess(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
         """Risk scoring and severity classification.
 
@@ -674,6 +863,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
         """
         try:
             from .security_adapters import _check_crew_available
+
             adapters_available = True
         except ImportError:
             adapters_available = False

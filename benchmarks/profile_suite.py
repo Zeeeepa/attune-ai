@@ -77,8 +77,8 @@ def profile_pattern_library():
         )
         match_count += len(matches)
 
-    print(f"✓ Created 100 patterns")
-    print(f"✓ Performed 1000 pattern matches")
+    print("✓ Created 100 patterns")
+    print("✓ Performed 1000 pattern matches")
     print(f"✓ Total matches: {match_count}")
 
 
@@ -105,7 +105,7 @@ def profile_cost_tracker():
 
     summary = tracker.get_summary(days=7)
 
-    print(f"✓ Logged 1000 requests")
+    print("✓ Logged 1000 requests")
     print(f"✓ Actual cost: ${summary['actual_cost']:.4f}")
     print(f"✓ Input tokens: {summary['input_tokens']:,}")
     print(f"✓ Output tokens: {summary['output_tokens']:,}")
@@ -149,8 +149,8 @@ def profile_feedback_loops():
         if active:
             active_count += 1
 
-    print(f"✓ Generated 500-item session history")
-    print(f"✓ Ran 100 detection cycles")
+    print("✓ Generated 500-item session history")
+    print("✓ Ran 100 detection cycles")
     print(f"✓ Virtuous cycles detected: {virtuous_count}")
     print(f"✓ Vicious cycles detected: {vicious_count}")
     print(f"✓ Active loops detected: {active_count}")
@@ -203,7 +203,6 @@ def profile_workflow_execution():
 def profile_memory_operations():
     """Profile unified memory operations."""
     from empathy_os.memory.unified import UnifiedMemory
-    from empathy_os.pattern_library import Pattern
 
     print("\n" + "=" * 60)
     print("Profiling: Memory Operations")

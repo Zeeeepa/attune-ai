@@ -138,10 +138,10 @@ class TestEstimateWorkflowCost:
         result = estimate_workflow_cost(
             workflow_name="code-review",
             input_text="test",
-            provider="openai",
+            provider="anthropic",
         )
 
-        assert result["provider"] == "openai"
+        assert result["provider"] == "anthropic"
 
     def test_unknown_provider_fallback(self):
         """Test unknown provider falls back to anthropic."""
@@ -334,21 +334,15 @@ class TestEstimateSingleCallCost:
         # Generate code should have more output tokens
         assert result["estimated_output_tokens"] >= result["input_tokens"]
 
-    def test_different_providers(self):
-        """Test different providers work."""
-        anthropic = estimate_single_call_cost(
+    def test_anthropic_provider(self):
+        """Test Anthropic provider works (Anthropic-only architecture)."""
+        result = estimate_single_call_cost(
             text="Test",
             task_type="review",
             provider="anthropic",
         )
-        openai = estimate_single_call_cost(
-            text="Test",
-            task_type="review",
-            provider="openai",
-        )
 
-        assert anthropic["provider"] == "anthropic"
-        assert openai["provider"] == "openai"
+        assert result["provider"] == "anthropic"
 
     def test_display_format(self):
         """Test display format."""

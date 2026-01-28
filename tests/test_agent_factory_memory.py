@@ -131,6 +131,7 @@ class TestMemoryAwareAgentInvoke:
     """Test MemoryAwareAgent invoke functionality."""
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_memory_aware_agent_invoke_success(self):
         """Test successful invocation through memory-aware wrapper."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -156,6 +157,7 @@ class TestMemoryAwareAgentInvoke:
             assert "memory_graph" in result["metadata"]
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_memory_aware_agent_adds_metadata(self):
         """Test memory-aware agent adds graph metadata."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -293,6 +295,7 @@ class TestMemoryAwareAgentDelegation:
             assert tool in base_agent.config.tools
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_conversation_history_delegation(self):
         """Test conversation history is delegated to wrapped agent."""
         from empathy_llm_toolkit.agent_factory.adapters.native import NativeAdapter
@@ -444,6 +447,7 @@ class TestCombinedWrappers:
             assert isinstance(agent._wrapped, MemoryAwareAgent)
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="Integration test requiring valid ANTHROPIC_API_KEY")
     async def test_combined_wrappers_invoke(self):
         """Test invoking agent with both wrappers."""
         from empathy_llm_toolkit.agent_factory import AgentFactory, Framework

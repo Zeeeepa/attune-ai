@@ -76,7 +76,7 @@ class TestFallbackPolicy:
         assert policy.max_retries == 2
 
     def test_same_tier_different_provider_chain(self):
-        """Test SAME_TIER_DIFFERENT_PROVIDER strategy."""
+        """Test SAME_TIER_DIFFERENT_PROVIDER strategy (Anthropic-only)."""
         policy = FallbackPolicy(
             primary_provider="anthropic",
             primary_tier="capable",
@@ -85,12 +85,9 @@ class TestFallbackPolicy:
 
         chain = policy.get_fallback_chain()
 
-        # Should include openai and ollama at capable tier
-        assert len(chain) >= 2
-        providers = [step.provider for step in chain]
-        assert "anthropic" not in providers  # Primary not in fallback
-        assert "openai" in providers
-        assert all(step.tier == "capable" for step in chain)
+        # In Anthropic-only architecture, there are no different providers at same tier
+        # Chain should be empty or fall back to different tiers
+        assert len(chain) == 0
 
     def test_cheaper_tier_same_provider_chain(self):
         """Test CHEAPER_TIER_SAME_PROVIDER strategy."""
@@ -109,7 +106,7 @@ class TestFallbackPolicy:
         assert all(step.provider == "anthropic" for step in chain)
 
     def test_different_provider_any_tier_chain(self):
-        """Test DIFFERENT_PROVIDER_ANY_TIER strategy."""
+        """Test DIFFERENT_PROVIDER_ANY_TIER strategy (Anthropic-only)."""
         policy = FallbackPolicy(
             primary_provider="anthropic",
             primary_tier="capable",
@@ -118,10 +115,9 @@ class TestFallbackPolicy:
 
         chain = policy.get_fallback_chain()
 
-        # Should include other providers with same tier first, then cheaper
-        assert len(chain) >= 2
-        # First entries should be same tier on different providers
-        assert chain[0].tier == "capable"
+        # In Anthropic-only architecture, there are no different providers
+        # Chain should be empty
+        assert len(chain) == 0
 
     def test_custom_chain(self):
         """Test CUSTOM strategy with explicit chain."""
@@ -349,8 +345,11 @@ class TestResilientExecutor:
         assert metadata["attempts"] == 1
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(
+        reason="Anthropic-only architecture - no multi-provider fallback available"
+    )
     async def test_fallback_on_primary_failure(self, executor):
-        """Test fallback when primary fails."""
+        """Test fallback when primary fails (requires multiple providers)."""
         call_count = 0
 
         async def failing_then_success(*args, **kwargs):
@@ -367,8 +366,11 @@ class TestResilientExecutor:
         assert metadata["final_provider"] != "anthropic"
 
     @pytest.mark.asyncio
+    @pytest.mark.skip(
+        reason="Anthropic-only architecture - circuit breaker skip requires multi-provider fallback"
+    )
     async def test_circuit_breaker_skip(self, executor):
-        """Test that open circuits are skipped."""
+        """Test that open circuits are skipped (requires multiple providers)."""
         # Open the circuit for anthropic:capable (the primary tier)
         # CircuitBreaker now tracks per provider:tier combination
         executor.circuit_breaker.record_failure("anthropic", "capable")

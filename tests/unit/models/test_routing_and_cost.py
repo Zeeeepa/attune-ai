@@ -775,8 +775,11 @@ class TestRoutingDecisions:
 
         assert not breaker.is_available("anthropic", "capable")
 
+    @pytest.mark.skip(
+        reason="Anthropic-only architecture - no multi-provider load balancing"
+    )
     def test_load_balancing_across_providers(self):
-        """Fallback policy should enable load balancing.
+        """Fallback policy should enable load balancing (requires multiple providers).
 
         Tests: Sprint 2 Day 18 - Load balancing across providers
         """

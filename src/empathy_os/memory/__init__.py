@@ -123,17 +123,24 @@ from .security import (  # Audit Logging; PII Scrubbing; Secrets Detection
     Severity,
     detect_secrets,
 )
-from .short_term import (
-    AccessTier,
-    AgentCredentials,
-    ConflictContext,
-    RedisShortTermMemory,
-    StagedPattern,
-    TTLStrategy,
-)
+from .short_term import RedisShortTermMemory
 
 # Conversation Summary Index
 from .summary_index import AgentContext, ConversationSummaryIndex
+
+# Types (extracted to types.py for cleaner separation)
+from .types import (
+    AccessTier,
+    AgentCredentials,
+    ConflictContext,
+    PaginatedResult,
+    RedisConfig,
+    RedisMetrics,
+    StagedPattern,
+    TimeWindowQuery,
+    TTLStrategy,
+)
+from .types import SecurityError as ShortTermSecurityError
 
 # Unified memory interface
 from .unified import Environment, MemoryConfig, UnifiedMemory
@@ -180,6 +187,8 @@ __all__ = [
     "MemoryStats",
     "Node",
     "NodeType",
+    # Pagination and Query Types
+    "PaginatedResult",
     "PIIDetection",
     "PIIPattern",
     # Security - PII
@@ -187,6 +196,9 @@ __all__ = [
     "PatternMetadata",
     "PatternNode",
     "PerformanceNode",
+    # Redis Configuration and Metrics
+    "RedisConfig",
+    "RedisMetrics",
     # Short-term Memory
     "RedisShortTermMemory",
     "RedisStartMethod",
@@ -203,8 +215,10 @@ __all__ = [
     "SessionInfo",
     "SessionType",
     "Severity",
+    "ShortTermSecurityError",
     "StagedPattern",
     "TTLStrategy",
+    "TimeWindowQuery",
     # Unified Memory Interface (recommended)
     "UnifiedMemory",
     "VulnerabilityNode",

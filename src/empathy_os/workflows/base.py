@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
+import sys
 import time
 import uuid
 from abc import ABC, abstractmethod
@@ -27,6 +28,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from .routing import TierRoutingStrategy
     from .tier_tracking import WorkflowTierTracker
 
 # Load .env file for API keys if python-dotenv is available
@@ -38,26 +40,31 @@ except ImportError:
     pass  # python-dotenv not installed, rely on environment variables
 
 # Import caching infrastructure
-from empathy_os.cache import BaseCache, auto_setup_cache, create_cache
+from empathy_os.cache import BaseCache
 from empathy_os.config import _validate_file_path
 from empathy_os.cost_tracker import MODEL_PRICING, CostTracker
 
 # Import unified types from empathy_os.models
 from empathy_os.models import (
     ExecutionContext,
-    LLMCallRecord,
     LLMExecutor,
     TaskRoutingRecord,
     TelemetryBackend,
-    WorkflowRunRecord,
-    WorkflowStageRecord,
-    get_telemetry_store,
 )
 from empathy_os.models import ModelProvider as UnifiedModelProvider
 from empathy_os.models import ModelTier as UnifiedModelTier
 
+# Import mixins (extracted for maintainability)
+from .caching import CachedResponse, CachingMixin
+
 # Import progress tracking
-from .progress import ProgressCallback, ProgressTracker
+from .progress import (
+    RICH_AVAILABLE,
+    ProgressCallback,
+    ProgressTracker,
+    RichProgressReporter,
+)
+from .telemetry_mixin import TelemetryMixin
 
 # Import telemetry tracking
 try:
@@ -78,14 +85,46 @@ logger = logging.getLogger(__name__)
 WORKFLOW_HISTORY_FILE = ".empathy/workflow_runs.json"
 
 
-# Local enums for backward compatibility
+# Local enums for backward compatibility - DEPRECATED
 # New code should use empathy_os.models.ModelTier/ModelProvider
 class ModelTier(Enum):
-    """Model tier for cost optimization."""
+    """DEPRECATED: Model tier for cost optimization.
+
+    This enum is deprecated and will be removed in v5.0.
+    Use empathy_os.models.ModelTier instead.
+
+    Migration:
+        # Old:
+        from empathy_os.workflows.base import ModelTier
+
+        # New:
+        from empathy_os.models import ModelTier
+
+    Why deprecated:
+        - Creates confusion with dual definitions
+        - empathy_os.models.ModelTier is the canonical location
+        - Simplifies imports and reduces duplication
+    """
 
     CHEAP = "cheap"  # Haiku/GPT-4o-mini - $0.25-1.25/M tokens
     CAPABLE = "capable"  # Sonnet/GPT-4o - $3-15/M tokens
     PREMIUM = "premium"  # Opus/o1 - $15-75/M tokens
+
+    def __init__(self, value: str):
+        """Initialize with deprecation warning."""
+        # Only warn once per process, not per instance
+        import warnings
+
+        # Use self.__class__ instead of ModelTier (class not yet defined during creation)
+        if not hasattr(self.__class__, "_deprecation_warned"):
+            warnings.warn(
+                "workflows.base.ModelTier is deprecated and will be removed in v5.0. "
+                "Use empathy_os.models.ModelTier instead. "
+                "Update imports: from empathy_os.models import ModelTier",
+                DeprecationWarning,
+                stacklevel=4,
+            )
+            self.__class__._deprecation_warned = True
 
     def to_unified(self) -> UnifiedModelTier:
         """Convert to unified ModelTier from empathy_os.models."""
@@ -214,8 +253,52 @@ class WorkflowResult:
     transient: bool = False  # True if retry is reasonable (e.g., provider timeout)
 
 
+# Global singleton for workflow history store (lazy-initialized)
+_history_store: Any = None  # WorkflowHistoryStore | None
+
+
+def _get_history_store():
+    """Get or create workflow history store singleton.
+
+    Returns SQLite-based history store. Falls back to None if initialization fails.
+    """
+    global _history_store
+
+    if _history_store is None:
+        try:
+            from .history import WorkflowHistoryStore
+
+            _history_store = WorkflowHistoryStore()
+            logger.debug("Workflow history store initialized (SQLite)")
+        except (ImportError, OSError, PermissionError) as e:
+            # File system errors or missing dependencies
+            logger.warning(f"Failed to initialize SQLite history store: {e}")
+            _history_store = False  # Mark as failed to avoid repeated attempts
+
+    # Return store or None if initialization failed
+    return _history_store if _history_store is not False else None
+
+
 def _load_workflow_history(history_file: str = WORKFLOW_HISTORY_FILE) -> list[dict]:
-    """Load workflow run history from disk."""
+    """Load workflow run history from disk (legacy JSON support).
+
+    DEPRECATED: Use WorkflowHistoryStore for new code.
+    This function is maintained for backward compatibility.
+
+    Args:
+        history_file: Path to JSON history file
+
+    Returns:
+        List of workflow run dictionaries
+    """
+    import warnings
+
+    warnings.warn(
+        "_load_workflow_history is deprecated. Use WorkflowHistoryStore instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
     path = Path(history_file)
     if not path.exists():
         return []
@@ -234,11 +317,42 @@ def _save_workflow_run(
     history_file: str = WORKFLOW_HISTORY_FILE,
     max_history: int = 100,
 ) -> None:
-    """Save a workflow run to history."""
+    """Save a workflow run to history.
+
+    Uses SQLite-based storage by default. Falls back to JSON if SQLite unavailable.
+
+    Args:
+        workflow_name: Name of the workflow
+        provider: Provider used (anthropic, openai, google)
+        result: WorkflowResult object
+        history_file: Legacy JSON path (ignored if SQLite available)
+        max_history: Legacy max history limit (ignored if SQLite available)
+    """
+    # Try SQLite first (new approach)
+    store = _get_history_store()
+    if store is not None:
+        try:
+            run_id = str(uuid.uuid4())
+            store.record_run(run_id, workflow_name, provider, result)
+            logger.debug(f"Workflow run saved to SQLite: {run_id}")
+            return
+        except (OSError, PermissionError, ValueError) as e:
+            # SQLite failed, fall back to JSON
+            logger.warning(f"Failed to save to SQLite, falling back to JSON: {e}")
+
+    # Fallback: Legacy JSON storage
+    logger.debug("Using legacy JSON storage for workflow history")
     path = Path(history_file)
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    history = _load_workflow_history(history_file)
+    history = []
+    if path.exists():
+        try:
+            with open(path) as f:
+                data = json.load(f)
+                history = list(data) if isinstance(data, list) else []
+        except (json.JSONDecodeError, OSError):
+            pass
 
     # Create run record
     run: dict = {
@@ -285,20 +399,48 @@ def _save_workflow_run(
 def get_workflow_stats(history_file: str = WORKFLOW_HISTORY_FILE) -> dict:
     """Get workflow statistics for dashboard.
 
+    Uses SQLite-based storage by default. Falls back to JSON if unavailable.
+
+    Args:
+        history_file: Legacy JSON path (used only if SQLite unavailable)
+
     Returns:
         Dictionary with workflow stats including:
         - total_runs: Total workflow runs
+        - successful_runs: Number of successful runs
         - by_workflow: Per-workflow stats
         - by_provider: Per-provider stats
+        - by_tier: Cost breakdown by tier
         - recent_runs: Last 10 runs
+        - total_cost: Total cost across all runs
         - total_savings: Total cost savings
-
+        - avg_savings_percent: Average savings percentage
     """
-    history = _load_workflow_history(history_file)
+    # Try SQLite first (new approach)
+    store = _get_history_store()
+    if store is not None:
+        try:
+            return store.get_stats()
+        except (OSError, PermissionError, ValueError) as e:
+            # SQLite failed, fall back to JSON
+            logger.warning(f"Failed to get stats from SQLite, falling back to JSON: {e}")
+
+    # Fallback: Legacy JSON storage
+    logger.debug("Using legacy JSON storage for workflow stats")
+    history = []
+    path = Path(history_file)
+    if path.exists():
+        try:
+            with open(path) as f:
+                data = json.load(f)
+                history = list(data) if isinstance(data, list) else []
+        except (json.JSONDecodeError, OSError):
+            pass
 
     if not history:
         return {
             "total_runs": 0,
+            "successful_runs": 0,
             "by_workflow": {},
             "by_provider": {},
             "by_tier": {"cheap": 0, "capable": 0, "premium": 0},
@@ -368,8 +510,10 @@ def get_workflow_stats(history_file: str = WORKFLOW_HISTORY_FILE) -> dict:
     }
 
 
-class BaseWorkflow(ABC):
+class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
     """Base class for multi-model workflows.
+
+    Inherits from CachingMixin and TelemetryMixin (extracted for maintainability).
 
     Subclasses define stages and tier mappings:
 
@@ -405,6 +549,12 @@ class BaseWorkflow(ABC):
         enable_cache: bool = True,
         enable_tier_tracking: bool = True,
         enable_tier_fallback: bool = False,
+        routing_strategy: TierRoutingStrategy | None = None,
+        enable_rich_progress: bool = False,
+        enable_adaptive_routing: bool = False,
+        enable_heartbeat_tracking: bool = False,
+        enable_coordination: bool = False,
+        agent_id: str | None = None,
     ):
         """Initialize workflow with optional cost tracker, provider, and config.
 
@@ -426,6 +576,31 @@ class BaseWorkflow(ABC):
             enable_tier_tracking: Whether to enable automatic tier tracking (default True).
             enable_tier_fallback: Whether to enable intelligent tier fallback
                      (CHEAP → CAPABLE → PREMIUM). Opt-in feature (default False).
+            routing_strategy: Optional TierRoutingStrategy for dynamic tier selection.
+                     When provided, overrides static tier_map for stage tier decisions.
+                     Strategies: CostOptimizedRouting, PerformanceOptimizedRouting,
+                     BalancedRouting, HybridRouting.
+            enable_rich_progress: Whether to enable Rich-based live progress display
+                     (default False). When enabled and output is a TTY, shows live
+                     progress bars with spinners. Default is False because most users
+                     run workflows from IDEs (VSCode, etc.) where TTY is not available.
+                     The console reporter works reliably in all environments.
+            enable_adaptive_routing: Whether to enable adaptive model routing based
+                     on telemetry history (default False). When enabled, uses historical
+                     performance data to select the optimal Anthropic model for each stage,
+                     automatically upgrading tiers when failure rates exceed 20%.
+                     Opt-in feature for cost optimization and automatic quality improvement.
+            enable_heartbeat_tracking: Whether to enable agent heartbeat tracking
+                     (default False). When enabled, publishes TTL-based heartbeat updates
+                     to Redis for agent liveness monitoring. Requires Redis backend.
+                     Pattern 1 from Agent Coordination Architecture.
+            enable_coordination: Whether to enable inter-agent coordination signals
+                     (default False). When enabled, workflow can send and receive TTL-based
+                     ephemeral signals for agent-to-agent communication. Requires Redis backend.
+                     Pattern 2 from Agent Coordination Architecture.
+            agent_id: Optional agent ID for heartbeat tracking and coordination.
+                     If None, auto-generates ID from workflow name and run ID.
+                     Used as identifier in Redis keys (heartbeat:{agent_id}, signal:{agent_id}:...).
 
         """
         from .config import WorkflowConfig
@@ -436,11 +611,11 @@ class BaseWorkflow(ABC):
         # Progress tracking
         self._progress_callback = progress_callback
         self._progress_tracker: ProgressTracker | None = None
+        self._enable_rich_progress = enable_rich_progress
+        self._rich_reporter: RichProgressReporter | None = None
 
         # New: LLMExecutor support
         self._executor = executor
-        self._telemetry_backend = telemetry_backend or get_telemetry_store()
-        self._run_id: str | None = None  # Set at start of execute()
         self._api_key: str | None = None  # For default executor creation
 
         # Cache support
@@ -456,20 +631,22 @@ class BaseWorkflow(ABC):
         self._enable_tier_fallback = enable_tier_fallback
         self._tier_progression: list[tuple[str, str, bool]] = []  # (stage, tier, success)
 
-        # Telemetry tracking (singleton instance)
-        self._telemetry_tracker: UsageTracker | None = None
-        self._enable_telemetry = True  # Enable by default
-        if TELEMETRY_AVAILABLE and UsageTracker is not None:
-            try:
-                self._telemetry_tracker = UsageTracker.get_instance()
-            except (OSError, PermissionError) as e:
-                # File system errors - log but disable telemetry
-                logger.debug(f"Failed to initialize telemetry tracker (file system error): {e}")
-                self._enable_telemetry = False
-            except (AttributeError, TypeError, ValueError) as e:
-                # Configuration or initialization errors
-                logger.debug(f"Failed to initialize telemetry tracker (config error): {e}")
-                self._enable_telemetry = False
+        # Routing strategy support
+        self._routing_strategy: TierRoutingStrategy | None = routing_strategy
+
+        # Adaptive routing support (Pattern 3 from AGENT_COORDINATION_ARCHITECTURE)
+        self._enable_adaptive_routing = enable_adaptive_routing
+        self._adaptive_router = None  # Lazy initialization on first use
+
+        # Agent tracking and coordination (Pattern 1 & 2 from AGENT_COORDINATION_ARCHITECTURE)
+        self._enable_heartbeat_tracking = enable_heartbeat_tracking
+        self._enable_coordination = enable_coordination
+        self._agent_id = agent_id  # Will be set during execute() if None
+        self._heartbeat_coordinator = None  # Lazy initialization on first use
+        self._coordination_signals = None  # Lazy initialization on first use
+
+        # Telemetry tracking (uses TelemetryMixin)
+        self._init_telemetry(telemetry_backend)
 
         # Load config if not provided
         self._config = config or WorkflowConfig.load()
@@ -494,8 +671,388 @@ class BaseWorkflow(ABC):
         self.provider = provider
 
     def get_tier_for_stage(self, stage_name: str) -> ModelTier:
-        """Get the model tier for a stage."""
+        """Get the model tier for a stage from static tier_map."""
         return self.tier_map.get(stage_name, ModelTier.CAPABLE)
+
+    def _get_adaptive_router(self):
+        """Get or create AdaptiveModelRouter instance (lazy initialization).
+
+        Returns:
+            AdaptiveModelRouter instance if telemetry is available, None otherwise
+        """
+        if not self._enable_adaptive_routing:
+            return None
+
+        if self._adaptive_router is None:
+            # Lazy import to avoid circular dependencies
+            try:
+                from empathy_os.models import AdaptiveModelRouter
+
+                if TELEMETRY_AVAILABLE and UsageTracker is not None:
+                    self._adaptive_router = AdaptiveModelRouter(
+                        telemetry=UsageTracker.get_instance()
+                    )
+                    logger.debug(
+                        "adaptive_routing_initialized",
+                        workflow=self.name,
+                        message="Adaptive routing enabled for cost optimization"
+                    )
+                else:
+                    logger.warning(
+                        "adaptive_routing_unavailable",
+                        workflow=self.name,
+                        message="Telemetry not available, adaptive routing disabled"
+                    )
+                    self._enable_adaptive_routing = False
+            except ImportError as e:
+                logger.warning(
+                    "adaptive_routing_import_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to import AdaptiveModelRouter"
+                )
+                self._enable_adaptive_routing = False
+
+        return self._adaptive_router
+
+    def _get_heartbeat_coordinator(self):
+        """Get or create HeartbeatCoordinator instance (lazy initialization).
+
+        Returns:
+            HeartbeatCoordinator instance if heartbeat tracking is enabled, None otherwise
+        """
+        if not self._enable_heartbeat_tracking:
+            return None
+
+        if self._heartbeat_coordinator is None:
+            try:
+                from empathy_os.telemetry import HeartbeatCoordinator
+
+                self._heartbeat_coordinator = HeartbeatCoordinator()
+                logger.debug(
+                    "heartbeat_tracking_initialized",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    message="Heartbeat tracking enabled for agent liveness monitoring"
+                )
+            except ImportError as e:
+                logger.warning(
+                    "heartbeat_tracking_import_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to import HeartbeatCoordinator"
+                )
+                self._enable_heartbeat_tracking = False
+            except Exception as e:
+                logger.warning(
+                    "heartbeat_tracking_init_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to initialize HeartbeatCoordinator (Redis unavailable?)"
+                )
+                self._enable_heartbeat_tracking = False
+
+        return self._heartbeat_coordinator
+
+    def _get_coordination_signals(self):
+        """Get or create CoordinationSignals instance (lazy initialization).
+
+        Returns:
+            CoordinationSignals instance if coordination is enabled, None otherwise
+        """
+        if not self._enable_coordination:
+            return None
+
+        if self._coordination_signals is None:
+            try:
+                from empathy_os.telemetry import CoordinationSignals
+
+                self._coordination_signals = CoordinationSignals(agent_id=self._agent_id)
+                logger.debug(
+                    "coordination_initialized",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    message="Coordination signals enabled for inter-agent communication"
+                )
+            except ImportError as e:
+                logger.warning(
+                    "coordination_import_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to import CoordinationSignals"
+                )
+                self._enable_coordination = False
+            except Exception as e:
+                logger.warning(
+                    "coordination_init_error",
+                    workflow=self.name,
+                    error=str(e),
+                    message="Failed to initialize CoordinationSignals (Redis unavailable?)"
+                )
+                self._enable_coordination = False
+
+        return self._coordination_signals
+
+    def _check_adaptive_tier_upgrade(self, stage_name: str, current_tier: ModelTier) -> ModelTier:
+        """Check if adaptive routing recommends a tier upgrade.
+
+        Uses historical telemetry to detect if the current tier has a high
+        failure rate (>20%) and automatically upgrades to the next tier.
+
+        Args:
+            stage_name: Name of the stage
+            current_tier: Currently selected tier
+
+        Returns:
+            Upgraded tier if recommended, otherwise current_tier
+        """
+        router = self._get_adaptive_router()
+        if router is None:
+            return current_tier
+
+        # Check if tier upgrade is recommended
+        should_upgrade, reason = router.recommend_tier_upgrade(
+            workflow=self.name,
+            stage=stage_name
+        )
+
+        if should_upgrade:
+            # Upgrade to next tier: CHEAP → CAPABLE → PREMIUM
+            if current_tier == ModelTier.CHEAP:
+                new_tier = ModelTier.CAPABLE
+            elif current_tier == ModelTier.CAPABLE:
+                new_tier = ModelTier.PREMIUM
+            else:
+                new_tier = current_tier  # Already at highest tier
+
+            logger.warning(
+                "adaptive_routing_tier_upgrade",
+                workflow=self.name,
+                stage=stage_name,
+                old_tier=current_tier.value,
+                new_tier=new_tier.value,
+                reason=reason
+            )
+
+            return new_tier
+
+        return current_tier
+
+    def send_signal(
+        self,
+        signal_type: str,
+        target_agent: str | None = None,
+        payload: dict[str, Any] | None = None,
+        ttl_seconds: int | None = None,
+    ) -> str:
+        """Send a coordination signal to another agent (Pattern 2).
+
+        Args:
+            signal_type: Type of signal (e.g., "task_complete", "checkpoint", "error")
+            target_agent: Target agent ID (None for broadcast to all agents)
+            payload: Optional signal payload data
+            ttl_seconds: Optional TTL override (default 60 seconds)
+
+        Returns:
+            Signal ID if coordination is enabled, empty string otherwise
+
+        Example:
+            >>> # Signal completion to orchestrator
+            >>> workflow.send_signal(
+            ...     signal_type="task_complete",
+            ...     target_agent="orchestrator",
+            ...     payload={"result": "success", "data": {...}}
+            ... )
+
+            >>> # Broadcast abort to all agents
+            >>> workflow.send_signal(
+            ...     signal_type="abort",
+            ...     target_agent=None,  # Broadcast
+            ...     payload={"reason": "user_cancelled"}
+            ... )
+        """
+        coordinator = self._get_coordination_signals()
+        if coordinator is None:
+            return ""
+
+        try:
+            return coordinator.signal(
+                signal_type=signal_type,
+                source_agent=self._agent_id,
+                target_agent=target_agent,
+                payload=payload or {},
+                ttl_seconds=ttl_seconds,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to send coordination signal: {e}")
+            return ""
+
+    def wait_for_signal(
+        self,
+        signal_type: str,
+        source_agent: str | None = None,
+        timeout: float = 30.0,
+        poll_interval: float = 0.5,
+    ) -> Any:
+        """Wait for a coordination signal from another agent (Pattern 2).
+
+        Blocking call that polls for signals with timeout.
+
+        Args:
+            signal_type: Type of signal to wait for
+            source_agent: Optional source agent filter
+            timeout: Maximum wait time in seconds (default 30.0)
+            poll_interval: Poll interval in seconds (default 0.5)
+
+        Returns:
+            CoordinationSignal if received, None if timeout or coordination disabled
+
+        Example:
+            >>> # Wait for orchestrator approval
+            >>> signal = workflow.wait_for_signal(
+            ...     signal_type="approval",
+            ...     source_agent="orchestrator",
+            ...     timeout=60.0
+            ... )
+            >>> if signal:
+            ...     proceed_with_deployment(signal.payload)
+        """
+        coordinator = self._get_coordination_signals()
+        if coordinator is None:
+            return None
+
+        try:
+            return coordinator.wait_for_signal(
+                signal_type=signal_type,
+                source_agent=source_agent,
+                timeout=timeout,
+                poll_interval=poll_interval,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to wait for coordination signal: {e}")
+            return None
+
+    def check_signal(
+        self,
+        signal_type: str,
+        source_agent: str | None = None,
+        consume: bool = True,
+    ) -> Any:
+        """Check for a coordination signal without blocking (Pattern 2).
+
+        Non-blocking check for pending signals.
+
+        Args:
+            signal_type: Type of signal to check for
+            source_agent: Optional source agent filter
+            consume: If True, remove signal after reading (default True)
+
+        Returns:
+            CoordinationSignal if available, None otherwise
+
+        Example:
+            >>> # Non-blocking check for abort signal
+            >>> signal = workflow.check_signal(signal_type="abort")
+            >>> if signal:
+            ...     raise WorkflowAbortedException(signal.payload["reason"])
+        """
+        coordinator = self._get_coordination_signals()
+        if coordinator is None:
+            return None
+
+        try:
+            return coordinator.check_signal(
+                signal_type=signal_type,
+                source_agent=source_agent,
+                consume=consume,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to check coordination signal: {e}")
+            return None
+
+    def _get_tier_with_routing(
+        self,
+        stage_name: str,
+        input_data: dict[str, Any],
+        budget_remaining: float = 100.0,
+    ) -> ModelTier:
+        """Get tier for a stage using routing strategy or adaptive routing if available.
+
+        Priority order:
+        1. If routing_strategy configured, uses that for tier selection
+        2. Otherwise uses static tier_map
+        3. If adaptive routing enabled, checks for tier upgrade recommendations
+
+        Args:
+            stage_name: Name of the stage
+            input_data: Current workflow data (used to estimate input size)
+            budget_remaining: Remaining budget in USD for this execution
+
+        Returns:
+            ModelTier to use for this stage (potentially upgraded by adaptive routing)
+        """
+        # Get base tier from routing strategy or static map
+        if self._routing_strategy is not None:
+            from .routing import RoutingContext
+
+            # Estimate input size from data
+            input_size = self._estimate_input_tokens(input_data)
+
+            # Assess complexity
+            complexity = self._assess_complexity(input_data)
+
+            # Determine latency sensitivity based on stage position
+            # First stages are more latency-sensitive (user waiting)
+            stage_index = self.stages.index(stage_name) if stage_name in self.stages else 0
+            if stage_index == 0:
+                latency_sensitivity = "high"
+            elif stage_index < len(self.stages) // 2:
+                latency_sensitivity = "medium"
+            else:
+                latency_sensitivity = "low"
+
+            # Create routing context
+            context = RoutingContext(
+                task_type=f"{self.name}:{stage_name}",
+                input_size=input_size,
+                complexity=complexity,
+                budget_remaining=budget_remaining,
+                latency_sensitivity=latency_sensitivity,
+            )
+
+            # Delegate to routing strategy
+            base_tier = self._routing_strategy.route(context)
+        else:
+            # Use static tier_map
+            base_tier = self.get_tier_for_stage(stage_name)
+
+        # Check if adaptive routing recommends a tier upgrade
+        # This uses telemetry history to detect high failure rates
+        if self._enable_adaptive_routing:
+            final_tier = self._check_adaptive_tier_upgrade(stage_name, base_tier)
+            return final_tier
+
+        return base_tier
+
+    def _estimate_input_tokens(self, input_data: dict[str, Any]) -> int:
+        """Estimate input token count from data.
+
+        Simple heuristic: ~4 characters per token on average.
+
+        Args:
+            input_data: Workflow input data
+
+        Returns:
+            Estimated token count
+        """
+        import json
+
+        try:
+            # Serialize to estimate size
+            data_str = json.dumps(input_data, default=str)
+            return len(data_str) // 4
+        except (TypeError, ValueError):
+            return 1000  # Default estimate
 
     def get_model_for_tier(self, tier: ModelTier) -> str:
         """Get the model for a tier based on configured provider and config."""
@@ -507,43 +1064,7 @@ class BaseWorkflow(ABC):
         model = get_model(provider_str, tier.value, self._config)
         return model
 
-    def _maybe_setup_cache(self) -> None:
-        """Set up cache with one-time user prompt if needed.
-
-        This is called lazily on first workflow execution to avoid
-        blocking workflow initialization.
-        """
-        if not self._enable_cache:
-            return
-
-        if self._cache_setup_attempted:
-            return
-
-        self._cache_setup_attempted = True
-
-        # If cache already provided, use it
-        if self._cache is not None:
-            return
-
-        # Otherwise, trigger auto-setup (which may prompt user)
-        try:
-            auto_setup_cache()
-            self._cache = create_cache()
-            logger.info(f"Cache initialized for workflow: {self.name}")
-        except ImportError as e:
-            # Hybrid cache dependencies not available, fall back to hash-only
-            logger.info(
-                f"Using hash-only cache (install empathy-framework[cache] for semantic caching): {e}"
-            )
-            self._cache = create_cache(cache_type="hash")
-        except (OSError, PermissionError) as e:
-            # File system errors - disable cache
-            logger.warning(f"Cache setup failed (file system error): {e}, continuing without cache")
-            self._enable_cache = False
-        except (ValueError, TypeError, AttributeError) as e:
-            # Configuration errors - disable cache
-            logger.warning(f"Cache setup failed (config error): {e}, continuing without cache")
-            self._enable_cache = False
+    # Note: _maybe_setup_cache is inherited from CachingMixin
 
     async def _call_llm(
         self,
@@ -582,54 +1103,26 @@ class BaseWorkflow(ABC):
         model = self.get_model_for_tier(tier)
         cache_type = None
 
-        # Try cache lookup if enabled
-        if self._enable_cache and self._cache is not None:
-            try:
-                # Combine system + user message for cache key
-                full_prompt = f"{system}\n\n{user_message}" if system else user_message
-                cached_response = self._cache.get(self.name, stage, full_prompt, model)
+        # Try cache lookup using CachingMixin
+        cached = self._try_cache_lookup(stage, system, user_message, model)
+        if cached is not None:
+            # Track telemetry for cache hit
+            duration_ms = int((time.time() - start_time) * 1000)
+            cost = self._calculate_cost(tier, cached.input_tokens, cached.output_tokens)
+            cache_type = self._get_cache_type()
 
-                if cached_response is not None:
-                    logger.debug(f"Cache hit for {self.name}:{stage}")
-                    # Determine cache type
-                    if hasattr(self._cache, "cache_type"):
-                        ct = self._cache.cache_type
-                        # Ensure it's a string (not a Mock object)
-                        cache_type = str(ct) if ct and isinstance(ct, str) else "hash"
-                    else:
-                        cache_type = "hash"  # Default assumption
+            self._track_telemetry(
+                stage=stage,
+                tier=tier,
+                model=model,
+                cost=cost,
+                tokens={"input": cached.input_tokens, "output": cached.output_tokens},
+                cache_hit=True,
+                cache_type=cache_type,
+                duration_ms=duration_ms,
+            )
 
-                    # Track telemetry for cache hit
-                    duration_ms = int((time.time() - start_time) * 1000)
-                    in_tokens = cached_response["input_tokens"]
-                    out_tokens = cached_response["output_tokens"]
-                    cost = self._calculate_cost(tier, in_tokens, out_tokens)
-
-                    self._track_telemetry(
-                        stage=stage,
-                        tier=tier,
-                        model=model,
-                        cost=cost,
-                        tokens={"input": in_tokens, "output": out_tokens},
-                        cache_hit=True,
-                        cache_type=cache_type,
-                        duration_ms=duration_ms,
-                    )
-
-                    # Cached response is dict with content, input_tokens, output_tokens
-                    return (
-                        cached_response["content"],
-                        cached_response["input_tokens"],
-                        cached_response["output_tokens"],
-                    )
-            except (KeyError, TypeError, ValueError) as e:
-                # Malformed cache data - continue with LLM call
-                logger.debug(f"Cache lookup failed (malformed data): {e}, continuing with LLM call")
-            except (OSError, PermissionError) as e:
-                # File system errors - continue with LLM call
-                logger.debug(
-                    f"Cache lookup failed (file system error): {e}, continuing with LLM call"
-                )
+            return (cached.content, cached.input_tokens, cached.output_tokens)
 
         # Create a step config for this call
         step = WorkflowStepConfig(
@@ -662,23 +1155,14 @@ class BaseWorkflow(ABC):
                 duration_ms=duration_ms,
             )
 
-            # Store in cache if enabled
-            if self._enable_cache and self._cache is not None:
-                try:
-                    full_prompt = f"{system}\n\n{user_message}" if system else user_message
-                    response_data = {
-                        "content": content,
-                        "input_tokens": in_tokens,
-                        "output_tokens": out_tokens,
-                    }
-                    self._cache.put(self.name, stage, full_prompt, model, response_data)
-                    logger.debug(f"Cached response for {self.name}:{stage}")
-                except (OSError, PermissionError) as e:
-                    # File system errors - log but continue
-                    logger.debug(f"Failed to cache response (file system error): {e}")
-                except (ValueError, TypeError, KeyError) as e:
-                    # Data serialization errors - log but continue
-                    logger.debug(f"Failed to cache response (serialization error): {e}")
+            # Store in cache using CachingMixin
+            self._store_in_cache(
+                stage,
+                system,
+                user_message,
+                model,
+                CachedResponse(content=content, input_tokens=in_tokens, output_tokens=out_tokens),
+            )
 
             return content, in_tokens, out_tokens
         except (ValueError, TypeError, KeyError) as e:
@@ -698,53 +1182,7 @@ class BaseWorkflow(ABC):
             logger.exception(f"Unexpected error calling LLM: {e}")
             return f"Error calling LLM: {type(e).__name__}", 0, 0
 
-    def _track_telemetry(
-        self,
-        stage: str,
-        tier: ModelTier,
-        model: str,
-        cost: float,
-        tokens: dict[str, int],
-        cache_hit: bool,
-        cache_type: str | None,
-        duration_ms: int,
-    ) -> None:
-        """Track telemetry for an LLM call.
-
-        Args:
-            stage: Stage name
-            tier: Model tier used
-            model: Model ID used
-            cost: Cost in USD
-            tokens: Dictionary with "input" and "output" token counts
-            cache_hit: Whether this was a cache hit
-            cache_type: Cache type if cache hit
-            duration_ms: Duration in milliseconds
-
-        """
-        if not self._enable_telemetry or self._telemetry_tracker is None:
-            return
-
-        try:
-            provider_str = getattr(self, "_provider_str", "unknown")
-            self._telemetry_tracker.track_llm_call(
-                workflow=self.name,
-                stage=stage,
-                tier=tier.value.upper(),
-                model=model,
-                provider=provider_str,
-                cost=cost,
-                tokens=tokens,
-                cache_hit=cache_hit,
-                cache_type=cache_type,
-                duration_ms=duration_ms,
-            )
-        except (AttributeError, TypeError, ValueError) as e:
-            # INTENTIONAL: Telemetry tracking failures should never crash workflows
-            logger.debug(f"Failed to track telemetry (config/data error): {e}")
-        except (OSError, PermissionError) as e:
-            # File system errors - log but never crash workflow
-            logger.debug(f"Failed to track telemetry (file system error): {e}")
+    # Note: _track_telemetry is inherited from TelemetryMixin
 
     def _calculate_cost(self, tier: ModelTier, input_tokens: int, output_tokens: int) -> float:
         """Calculate cost for a stage."""
@@ -784,32 +1222,20 @@ class BaseWorkflow(ABC):
         savings = baseline_cost - total_cost
         savings_percent = (savings / baseline_cost * 100) if baseline_cost > 0 else 0.0
 
-        # Calculate cache metrics if cache is enabled
-        cache_hits = 0
-        cache_misses = 0
-        cache_hit_rate = 0.0
+        # Calculate cache metrics using CachingMixin
+        cache_stats = self._get_cache_stats()
+        cache_hits = cache_stats["hits"]
+        cache_misses = cache_stats["misses"]
+        cache_hit_rate = cache_stats["hit_rate"]
         estimated_cost_without_cache = total_cost
         savings_from_cache = 0.0
 
-        if self._cache is not None:
-            try:
-                stats = self._cache.get_stats()
-                cache_hits = stats.hits
-                cache_misses = stats.misses
-                cache_hit_rate = stats.hit_rate
-
-                # Estimate cost without cache (assumes cache hits would have incurred full cost)
-                # This is a conservative estimate
-                if cache_hits > 0:
-                    # Average cost per non-cached call
-                    avg_cost_per_call = total_cost / cache_misses if cache_misses > 0 else 0.0
-                    # Estimated additional cost if cache hits were actual API calls
-                    estimated_additional_cost = cache_hits * avg_cost_per_call
-                    estimated_cost_without_cache = total_cost + estimated_additional_cost
-                    savings_from_cache = estimated_additional_cost
-            except (AttributeError, TypeError):
-                # Cache doesn't support stats or error occurred
-                pass
+        # Estimate cost without cache (assumes cache hits would have incurred full cost)
+        if cache_hits > 0:
+            avg_cost_per_call = total_cost / cache_misses if cache_misses > 0 else 0.0
+            estimated_additional_cost = cache_hits * avg_cost_per_call
+            estimated_cost_without_cache = total_cost + estimated_additional_cost
+            savings_from_cache = estimated_additional_cost
 
         return CostReport(
             total_cost=total_cost,
@@ -956,7 +1382,8 @@ class BaseWorkflow(ABC):
 
         # Log routing start
         try:
-            self._telemetry_backend.log_task_routing(routing_record)
+            if self._telemetry_backend is not None:
+                self._telemetry_backend.log_task_routing(routing_record)
         except Exception as e:
             logger.debug(f"Failed to log task routing: {e}")
 
@@ -974,20 +1401,72 @@ class BaseWorkflow(ABC):
                 logger.debug(f"Tier tracking disabled: {e}")
                 self._enable_tier_tracking = False
 
+        # Initialize agent ID for heartbeat/coordination (Pattern 1 & 2)
+        if self._agent_id is None:
+            # Auto-generate agent ID from workflow name and run ID
+            self._agent_id = f"{self.name}-{self._run_id[:8]}"
+
+        # Start heartbeat tracking (Pattern 1)
+        heartbeat_coordinator = self._get_heartbeat_coordinator()
+        if heartbeat_coordinator:
+            try:
+                heartbeat_coordinator.start_heartbeat(
+                    agent_id=self._agent_id,
+                    metadata={
+                        "workflow": self.name,
+                        "run_id": self._run_id,
+                        "provider": getattr(self, "_provider_str", "unknown"),
+                        "stages": len(self.stages),
+                    }
+                )
+                logger.debug(
+                    "heartbeat_started",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    message="Agent heartbeat tracking started"
+                )
+            except Exception as e:
+                logger.warning(f"Failed to start heartbeat tracking: {e}")
+                self._enable_heartbeat_tracking = False
+
         started_at = datetime.now()
         self._stages_run = []
         current_data = kwargs
         error = None
 
-        # Initialize progress tracker if callback provided
+        # Initialize progress tracker
+        # Always show progress by default (IDE-friendly console output)
+        # Rich live display only when explicitly enabled AND in TTY
+        from .progress import ConsoleProgressReporter
+
+        self._progress_tracker = ProgressTracker(
+            workflow_name=self.name,
+            workflow_id=self._run_id,
+            stage_names=self.stages,
+        )
+
+        # Add user's callback if provided
         if self._progress_callback:
-            self._progress_tracker = ProgressTracker(
-                workflow_name=self.name,
-                workflow_id=self._run_id,
-                stage_names=self.stages,
-            )
             self._progress_tracker.add_callback(self._progress_callback)
-            self._progress_tracker.start_workflow()
+
+        # Rich progress: only when explicitly enabled AND in a TTY
+        if self._enable_rich_progress and RICH_AVAILABLE and sys.stdout.isatty():
+            try:
+                self._rich_reporter = RichProgressReporter(self.name, self.stages)
+                self._progress_tracker.add_callback(self._rich_reporter.report)
+                self._rich_reporter.start()
+            except Exception as e:
+                # Fall back to console reporter
+                logger.debug(f"Rich progress unavailable: {e}")
+                self._rich_reporter = None
+                console_reporter = ConsoleProgressReporter(verbose=False)
+                self._progress_tracker.add_callback(console_reporter.report)
+        else:
+            # Default: use console reporter (works in IDEs, terminals, everywhere)
+            console_reporter = ConsoleProgressReporter(verbose=False)
+            self._progress_tracker.add_callback(console_reporter.report)
+
+        self._progress_tracker.start_workflow()
 
         try:
             # Tier fallback mode: try CHEAP → CAPABLE → PREMIUM with validation
@@ -1035,6 +1514,19 @@ class BaseWorkflow(ABC):
                                     stage_name, tier.value, f"{prev_tier}_failed"
                                 )
 
+                        # Update heartbeat at stage start (Pattern 1)
+                        if heartbeat_coordinator:
+                            try:
+                                stage_index = self.stages.index(stage_name)
+                                progress = stage_index / len(self.stages)
+                                heartbeat_coordinator.beat(
+                                    status="running",
+                                    progress=progress,
+                                    current_task=f"Running stage: {stage_name} ({tier.value})"
+                                )
+                            except Exception as e:
+                                logger.debug(f"Heartbeat update failed: {e}")
+
                         try:
                             # Run the stage at current tier
                             output, input_tokens, output_tokens = await self.run_stage(
@@ -1077,6 +1569,19 @@ class BaseWorkflow(ABC):
                                         tokens_in=input_tokens,
                                         tokens_out=output_tokens,
                                     )
+
+                                # Update heartbeat after stage completion (Pattern 1)
+                                if heartbeat_coordinator:
+                                    try:
+                                        stage_index = self.stages.index(stage_name) + 1
+                                        progress = stage_index / len(self.stages)
+                                        heartbeat_coordinator.beat(
+                                            status="running",
+                                            progress=progress,
+                                            current_task=f"Completed stage: {stage_name}"
+                                        )
+                                    except Exception as e:
+                                        logger.debug(f"Heartbeat update failed: {e}")
 
                                 # Log to cost tracker
                                 self.cost_tracker.log_request(
@@ -1144,10 +1649,20 @@ class BaseWorkflow(ABC):
                             self._progress_tracker.fail_stage(stage_name, error_msg)
                         raise ValueError(error_msg)
 
-            # Standard mode: use configured tier_map (backward compatible)
+            # Standard mode: use routing strategy or tier_map (backward compatible)
             else:
+                # Track budget for routing decisions
+                total_budget = 100.0  # Default budget in USD
+                budget_spent = 0.0
+
                 for stage_name in self.stages:
-                    tier = self.get_tier_for_stage(stage_name)
+                    # Use routing strategy if available, otherwise fall back to tier_map
+                    budget_remaining = total_budget - budget_spent
+                    tier = self._get_tier_with_routing(
+                        stage_name,
+                        current_data if isinstance(current_data, dict) else {},
+                        budget_remaining,
+                    )
                     stage_start = datetime.now()
 
                     # Check if stage should be skipped
@@ -1184,6 +1699,9 @@ class BaseWorkflow(ABC):
                     stage_end = datetime.now()
                     duration_ms = int((stage_end - stage_start).total_seconds() * 1000)
                     cost = self._calculate_cost(tier, input_tokens, output_tokens)
+
+                    # Update budget spent for routing decisions
+                    budget_spent += cost
 
                     stage = WorkflowStage(
                         name=stage_name,
@@ -1304,6 +1822,14 @@ class BaseWorkflow(ABC):
         if self._progress_tracker and error is None:
             self._progress_tracker.complete_workflow()
 
+        # Stop Rich progress display if active
+        if self._rich_reporter:
+            try:
+                self._rich_reporter.stop()
+            except Exception:
+                pass  # Best effort cleanup
+            self._rich_reporter = None
+
         # Save to workflow history for dashboard
         try:
             _save_workflow_run(self.name, provider_str, result)
@@ -1319,6 +1845,21 @@ class BaseWorkflow(ABC):
 
         # Emit workflow telemetry to backend
         self._emit_workflow_telemetry(result)
+
+        # Stop heartbeat tracking (Pattern 1)
+        if heartbeat_coordinator:
+            try:
+                final_status = "completed" if result.success else "failed"
+                heartbeat_coordinator.stop_heartbeat(final_status=final_status)
+                logger.debug(
+                    "heartbeat_stopped",
+                    workflow=self.name,
+                    agent_id=self._agent_id,
+                    status=final_status,
+                    message="Agent heartbeat tracking stopped"
+                )
+            except Exception as e:
+                logger.warning(f"Failed to stop heartbeat tracking: {e}")
 
         # Auto-save tier progression
         if self._enable_tier_tracking and self._tier_tracker:
@@ -1364,7 +1905,8 @@ class BaseWorkflow(ABC):
 
         # Log routing completion
         try:
-            self._telemetry_backend.log_task_routing(routing_record)
+            if self._telemetry_backend is not None:
+                self._telemetry_backend.log_task_routing(routing_record)
         except Exception as e:
             logger.debug(f"Failed to log task routing completion: {e}")
 
@@ -1543,119 +2085,7 @@ class BaseWorkflow(ABC):
             self._executor = self._create_default_executor()
         return self._executor
 
-    def _emit_call_telemetry(
-        self,
-        step_name: str,
-        task_type: str,
-        tier: str,
-        model_id: str,
-        input_tokens: int,
-        output_tokens: int,
-        cost: float,
-        latency_ms: int,
-        success: bool = True,
-        error_message: str | None = None,
-        fallback_used: bool = False,
-    ) -> None:
-        """Emit an LLMCallRecord to the telemetry backend.
-
-        Args:
-            step_name: Name of the workflow step
-            task_type: Task type used for routing
-            tier: Model tier used
-            model_id: Model ID used
-            input_tokens: Input token count
-            output_tokens: Output token count
-            cost: Estimated cost
-            latency_ms: Latency in milliseconds
-            success: Whether the call succeeded
-            error_message: Error message if failed
-            fallback_used: Whether fallback was used
-
-        """
-        record = LLMCallRecord(
-            call_id=str(uuid.uuid4()),
-            timestamp=datetime.now().isoformat(),
-            workflow_name=self.name,
-            step_name=step_name,
-            task_type=task_type,
-            provider=self._provider_str,
-            tier=tier,
-            model_id=model_id,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-            estimated_cost=cost,
-            latency_ms=latency_ms,
-            success=success,
-            error_message=error_message,
-            fallback_used=fallback_used,
-            metadata={"run_id": self._run_id},
-        )
-        try:
-            self._telemetry_backend.log_call(record)
-        except (AttributeError, ValueError, TypeError):
-            # Telemetry backend errors - log but don't crash workflow
-            logger.debug("Failed to log call telemetry (backend error)")
-        except OSError:
-            # File system errors - log but don't crash workflow
-            logger.debug("Failed to log call telemetry (file system error)")
-        except Exception:  # noqa: BLE001
-            # INTENTIONAL: Telemetry is optional diagnostics - never crash workflow
-            logger.debug("Unexpected error logging call telemetry")
-
-    def _emit_workflow_telemetry(self, result: WorkflowResult) -> None:
-        """Emit a WorkflowRunRecord to the telemetry backend.
-
-        Args:
-            result: The workflow result to record
-
-        """
-        # Build stage records
-        stages = [
-            WorkflowStageRecord(
-                stage_name=s.name,
-                tier=s.tier.value,
-                model_id=self.get_model_for_tier(s.tier),
-                input_tokens=s.input_tokens,
-                output_tokens=s.output_tokens,
-                cost=s.cost,
-                latency_ms=s.duration_ms,
-                success=not s.skipped and result.error is None,
-                skipped=s.skipped,
-                skip_reason=s.skip_reason,
-            )
-            for s in result.stages
-        ]
-
-        record = WorkflowRunRecord(
-            run_id=self._run_id or str(uuid.uuid4()),
-            workflow_name=self.name,
-            started_at=result.started_at.isoformat(),
-            completed_at=result.completed_at.isoformat(),
-            stages=stages,
-            total_input_tokens=sum(s.input_tokens for s in result.stages if not s.skipped),
-            total_output_tokens=sum(s.output_tokens for s in result.stages if not s.skipped),
-            total_cost=result.cost_report.total_cost,
-            baseline_cost=result.cost_report.baseline_cost,
-            savings=result.cost_report.savings,
-            savings_percent=result.cost_report.savings_percent,
-            total_duration_ms=result.total_duration_ms,
-            success=result.success,
-            error=result.error,
-            providers_used=[self._provider_str],
-            tiers_used=list(result.cost_report.by_tier.keys()),
-        )
-        try:
-            self._telemetry_backend.log_workflow(record)
-        except (AttributeError, ValueError, TypeError):
-            # Telemetry backend errors - log but don't crash workflow
-            logger.debug("Failed to log workflow telemetry (backend error)")
-        except OSError:
-            # File system errors - log but don't crash workflow
-            logger.debug("Failed to log workflow telemetry (file system error)")
-        except Exception:  # noqa: BLE001
-            # INTENTIONAL: Telemetry is optional diagnostics - never crash workflow
-            logger.debug("Unexpected error logging workflow telemetry")
+    # Note: _emit_call_telemetry and _emit_workflow_telemetry are inherited from TelemetryMixin
 
     async def run_step_with_executor(
         self,

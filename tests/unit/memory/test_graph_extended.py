@@ -355,9 +355,9 @@ class TestMemoryGraphSearch:
         assert len(bugs) == 2
         assert all(b.type == NodeType.BUG for b in bugs)
 
-    def test_find_by_wizard(self, graph_with_types):
-        """Test find_by_wizard filters correctly."""
-        findings = graph_with_types.find_by_wizard("bug-predict")
+    def test_find_by_workflow(self, graph_with_types):
+        """Test find_by_workflow filters correctly."""
+        findings = graph_with_types.find_by_workflow("bug-predict")
 
         assert len(findings) == 2
 

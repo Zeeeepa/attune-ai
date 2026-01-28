@@ -26,12 +26,11 @@ Usage:
 import argparse
 import ast
 import json
-import os
 import re
 import sys
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterator
 
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -271,7 +270,7 @@ class MemoryLeakScanner:
         try:
             content = file_path.read_text(encoding="utf-8")
             lines = content.splitlines()
-        except (OSError, UnicodeDecodeError) as e:
+        except (OSError, UnicodeDecodeError):
             return analysis
 
         # Regex-based pattern matching

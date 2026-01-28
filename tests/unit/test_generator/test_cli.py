@@ -37,7 +37,7 @@ class TestCommandParsing:
 
             # Check help was printed
             captured = capsys.readouterr()
-            assert "Test Generator for Empathy Wizard Factory" in captured.out
+            assert "Test Generator for Empathy Workflow Factory" in captured.out
 
     def test_generate_command_parsing(self):
         """Test parsing generate command with all arguments."""
@@ -48,7 +48,7 @@ class TestCommandParsing:
             "--patterns",
             "linear_flow,approval",
             "--module",
-            "wizards.test_wizard",
+            "workflows.test_wizard",
             "--class",
             "TestWizard",
             "--output",
@@ -64,10 +64,10 @@ class TestCommandParsing:
 
                 # Check parsed arguments
                 args = mock_cmd.call_args[0][0]
-                assert args.wizard_id == "test_wizard"
+                assert args.workflow_id == "test_wizard"
                 assert args.patterns == "linear_flow,approval"
-                assert args.module == "wizards.test_wizard"
-                assert args.wizard_class == "TestWizard"
+                assert args.module == "workflows.test_wizard"
+                assert args.workflow_class == "TestWizard"
                 assert args.output == "tests/custom/"
 
     def test_generate_command_minimal_args(self):
@@ -85,10 +85,10 @@ class TestCommandParsing:
                 main()
 
                 args = mock_cmd.call_args[0][0]
-                assert args.wizard_id == "my_wizard"
+                assert args.workflow_id == "my_wizard"
                 assert args.patterns == "linear_flow"
                 assert args.module is None
-                assert args.wizard_class is None
+                assert args.workflow_class is None
                 assert args.output is None
 
     def test_generate_command_missing_patterns_fails(self):
@@ -121,7 +121,7 @@ class TestCommandParsing:
                 mock_cmd.assert_called_once()
 
                 args = mock_cmd.call_args[0][0]
-                assert args.wizard_id == "test_wizard"
+                assert args.workflow_id == "test_wizard"
                 assert args.patterns == "risk_assessment,code_analysis"
                 assert args.json is True
 
@@ -140,7 +140,7 @@ class TestCommandParsing:
                 main()
 
                 args = mock_cmd.call_args[0][0]
-                assert args.wizard_id == "my_wizard"
+                assert args.workflow_id == "my_wizard"
                 assert args.patterns == "linear_flow"
                 assert args.json is False
 
@@ -166,12 +166,12 @@ class TestGenerateCommand:
     def test_generate_creates_unit_tests(self, tmp_path):
         """Test that generate command creates unit test file."""
         # Arrange
-        output_dir = tmp_path / "tests" / "unit" / "wizards"
+        output_dir = tmp_path / "tests" / "unit" / "workflows"
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow,approval",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -190,7 +190,7 @@ class TestGenerateCommand:
             cmd_generate(args)
 
             # Assert
-            unit_test_file = output_dir / "test_test_wizard_wizard.py"
+            unit_test_file = output_dir / "test_test_wizard_workflow.py"
             fixtures_file = output_dir / "fixtures_test_wizard.py"
 
             assert unit_test_file.exists()
@@ -200,12 +200,12 @@ class TestGenerateCommand:
 
     def test_generate_creates_integration_tests_when_provided(self, tmp_path):
         """Test that integration tests are created when available."""
-        output_dir = tmp_path / "tests" / "unit" / "wizards"
+        output_dir = tmp_path / "tests" / "unit" / "workflows"
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -230,12 +230,12 @@ class TestGenerateCommand:
 
     def test_generate_no_integration_tests_when_empty(self, tmp_path):
         """Test that integration test file is not created when empty."""
-        output_dir = tmp_path / "tests" / "unit" / "wizards"
+        output_dir = tmp_path / "tests" / "unit" / "workflows"
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -260,10 +260,10 @@ class TestGenerateCommand:
     def test_generate_uses_default_output_dir(self):
         """Test that default output directory is used when not specified."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=None,  # No output specified
         )
 
@@ -283,15 +283,15 @@ class TestGenerateCommand:
 
                 # Check that default path was used
                 calls = mock_open.call_args_list
-                assert any("tests/unit/wizards" in str(call) for call in calls)
+                assert any("tests/unit/workflows" in str(call) for call in calls)
 
     def test_generate_parses_pattern_ids_correctly(self):
         """Test that comma-separated pattern IDs are parsed correctly."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow,approval,structured_fields",
-            module="wizards.test_wizard",
-            wizard_class="TestWizard",
+            module="workflows.test_wizard",
+            workflow_class="TestWizard",
             output=None,
         )
 
@@ -316,10 +316,10 @@ class TestGenerateCommand:
     def test_generate_passes_module_and_class(self):
         """Test that module and class names are passed to generator."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
-            module="wizards.custom.test_wizard",
-            wizard_class="CustomTestWizard",
+            module="workflows.custom.test_wizard",
+            workflow_class="CustomTestWizard",
             output=None,
         )
 
@@ -334,8 +334,8 @@ class TestGenerateCommand:
                 cmd_generate(args)
 
                 call_args = mock_generator.generate_tests.call_args
-                assert call_args[1]["wizard_module"] == "wizards.custom.test_wizard"
-                assert call_args[1]["wizard_class"] == "CustomTestWizard"
+                assert call_args[1]["workflow_module"] == "workflows.custom.test_wizard"
+                assert call_args[1]["workflow_class"] == "CustomTestWizard"
 
     def test_generate_creates_output_directory_if_missing(self, tmp_path):
         """Test that output directory is created if it doesn't exist."""
@@ -343,10 +343,10 @@ class TestGenerateCommand:
         assert not output_dir.exists()
 
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -365,11 +365,11 @@ class TestGenerateCommand:
         """Test that success message is printed after generation."""
         output_dir = tmp_path / "tests"
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
-            output=str(output_dir / "unit" / "wizards"),
+            workflow_class=None,
+            output=str(output_dir / "unit" / "workflows"),
         )
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
@@ -394,13 +394,13 @@ class TestAnalyzeCommand:
     def test_analyze_displays_risk_analysis(self, capsys):
         """Test that analyze command displays risk analysis results."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow,risk_assessment",
             json=False,
         )
 
         mock_analysis = RiskAnalysis(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["linear_flow", "risk_assessment"],
             critical_paths=["initialization", "data_processing", "cleanup"],
             high_risk_inputs=["user_code", "file_path", "sql_query"],
@@ -438,13 +438,13 @@ class TestAnalyzeCommand:
     def test_analyze_displays_test_priorities(self, capsys):
         """Test that test priorities are displayed correctly."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=False,
         )
 
         mock_analysis = RiskAnalysis(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["linear_flow"],
             test_priorities={
                 "test_critical_path": 1,
@@ -475,14 +475,14 @@ class TestAnalyzeCommand:
     def test_analyze_limits_displayed_items(self, capsys):
         """Test that only top 5 items are displayed for long lists."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=False,
         )
 
         # Create analysis with many items
         mock_analysis = RiskAnalysis(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["linear_flow"],
             high_risk_inputs=[f"input_{i}" for i in range(20)],
             validation_points=[f"validation_{i}" for i in range(15)],
@@ -507,7 +507,7 @@ class TestAnalyzeCommand:
     def test_analyze_outputs_json_file_when_requested(self, tmp_path):
         """Test that JSON file is created when --json flag is used."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=True,
         )
@@ -558,13 +558,13 @@ class TestAnalyzeCommand:
     def test_analyze_parses_pattern_ids_correctly(self):
         """Test that comma-separated pattern IDs are parsed correctly."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="pattern1,pattern2,pattern3",
             json=False,
         )
 
         mock_analysis = RiskAnalysis(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["pattern1", "pattern2", "pattern3"],
         )
 
@@ -588,11 +588,11 @@ class TestFileOperations:
         """Test that generated files are UTF-8 encoded."""
         output_dir = tmp_path / "tests"
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
-            output=str(output_dir / "unit" / "wizards"),
+            workflow_class=None,
+            output=str(output_dir / "unit" / "workflows"),
         )
 
         # Include unicode characters in test content
@@ -610,28 +610,28 @@ class TestFileOperations:
             cmd_generate(args)
 
             # Verify files can be read back with UTF-8
-            unit_file = output_dir / "unit" / "wizards" / "test_test_wizard_wizard.py"
+            unit_file = output_dir / "unit" / "workflows" / "test_test_wizard_workflow.py"
             content = unit_file.read_text(encoding="utf-8")
             assert "✓ 🎉" in content
 
-            fixtures_file = output_dir / "unit" / "wizards" / "fixtures_test_wizard.py"
+            fixtures_file = output_dir / "unit" / "workflows" / "fixtures_test_wizard.py"
             content = fixtures_file.read_text(encoding="utf-8")
             assert "café naïve" in content
 
     def test_generate_overwrites_existing_files(self, tmp_path):
         """Test that existing test files are overwritten."""
-        output_dir = tmp_path / "tests" / "unit" / "wizards"
+        output_dir = tmp_path / "tests" / "unit" / "workflows"
         output_dir.mkdir(parents=True)
 
         # Create existing file with old content
-        unit_file = output_dir / "test_test_wizard_wizard.py"
+        unit_file = output_dir / "test_test_wizard_workflow.py"
         unit_file.write_text("# Old content")
 
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -655,10 +655,10 @@ class TestFileOperations:
         """Test that deeply nested output paths are handled correctly."""
         output_dir = tmp_path / "a" / "b" / "c" / "d" / "tests"
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -672,7 +672,7 @@ class TestFileOperations:
             cmd_generate(args)
 
             assert output_dir.exists()
-            assert (output_dir / "test_test_wizard_wizard.py").exists()
+            assert (output_dir / "test_test_wizard_workflow.py").exists()
 
 
 @pytest.mark.unit
@@ -682,10 +682,10 @@ class TestErrorHandling:
     def test_generate_handles_generator_exception(self, tmp_path, capsys):
         """Test that generator exceptions are properly handled."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(tmp_path),
         )
 
@@ -700,7 +700,7 @@ class TestErrorHandling:
     def test_analyze_handles_analyzer_exception(self, capsys):
         """Test that analyzer exceptions are properly handled."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="invalid_pattern",
             json=False,
         )
@@ -719,10 +719,10 @@ class TestErrorHandling:
         output_dir.mkdir()
 
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -749,12 +749,12 @@ class TestErrorHandling:
     def test_analyze_handles_json_write_error(self, tmp_path):
         """Test handling of errors when writing JSON output."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=True,
         )
 
-        mock_analysis = RiskAnalysis(wizard_id="test_wizard", pattern_ids=["linear_flow"])
+        mock_analysis = RiskAnalysis(workflow_id="test_wizard", pattern_ids=["linear_flow"])
 
         with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
@@ -776,10 +776,10 @@ class TestEdgeCases:
     def test_generate_with_empty_pattern_string(self, tmp_path):
         """Test generation with empty pattern string."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="",  # Empty string
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(tmp_path),
         )
 
@@ -799,10 +799,10 @@ class TestEdgeCases:
     def test_generate_with_special_characters_in_wizard_id(self, tmp_path):
         """Test generation with special characters in wizard ID."""
         args = argparse.Namespace(
-            wizard_id="test-wizard_v2.0",
+            workflow_id="test-wizard_v2.0",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(tmp_path),
         )
 
@@ -816,19 +816,19 @@ class TestEdgeCases:
             cmd_generate(args)
 
             # Files should be created with wizard_id in name
-            expected_file = tmp_path / "test_test-wizard_v2.0_wizard.py"
+            expected_file = tmp_path / "test_test-wizard_v2.0_workflow.py"
             assert expected_file.exists()
 
     def test_analyze_with_no_test_priorities(self, capsys):
         """Test analyze when risk analysis has no test priorities."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=False,
         )
 
         mock_analysis = RiskAnalysis(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["linear_flow"],
             test_priorities={},  # Empty priorities
         )
@@ -847,13 +847,13 @@ class TestEdgeCases:
     def test_analyze_with_all_empty_lists(self, capsys):
         """Test analyze when all analysis lists are empty."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=False,
         )
 
         mock_analysis = RiskAnalysis(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=[],
             critical_paths=[],
             high_risk_inputs=[],
@@ -878,10 +878,10 @@ class TestEdgeCases:
         """Test generation with very long wizard ID."""
         long_id = "a" * 200
         args = argparse.Namespace(
-            wizard_id=long_id,
+            workflow_id=long_id,
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(tmp_path),
         )
 
@@ -906,10 +906,10 @@ class TestIntegrationWithDependencies:
     def test_generate_calls_test_generator_with_correct_params(self):
         """Test that cmd_generate correctly calls TestGenerator.generate_tests."""
         args = argparse.Namespace(
-            wizard_id="my_wizard",
+            workflow_id="my_wizard",
             patterns="pattern1,pattern2",
-            module="wizards.my_wizard",
-            wizard_class="MyWizard",
+            module="workflows.my_wizard",
+            workflow_class="MyWizard",
             output=None,
         )
 
@@ -928,21 +928,21 @@ class TestIntegrationWithDependencies:
 
                 # Verify generate_tests was called with correct parameters
                 mock_generator.generate_tests.assert_called_once_with(
-                    wizard_id="my_wizard",
+                    workflow_id="my_wizard",
                     pattern_ids=["pattern1", "pattern2"],
-                    wizard_module="wizards.my_wizard",
-                    wizard_class="MyWizard",
+                    workflow_module="workflows.my_wizard",
+                    workflow_class="MyWizard",
                 )
 
     def test_analyze_calls_risk_analyzer_with_correct_params(self):
         """Test that cmd_analyze correctly calls RiskAnalyzer.analyze."""
         args = argparse.Namespace(
-            wizard_id="my_wizard",
+            workflow_id="my_wizard",
             patterns="pattern1,pattern2",
             json=False,
         )
 
-        mock_analysis = RiskAnalysis(wizard_id="my_wizard", pattern_ids=["pattern1", "pattern2"])
+        mock_analysis = RiskAnalysis(workflow_id="my_wizard", pattern_ids=["pattern1", "pattern2"])
 
         with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
@@ -965,10 +965,10 @@ class TestLogging:
     def test_generate_logs_wizard_info(self, tmp_path, caplog):
         """Test that generate command logs wizard information."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow,approval",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(tmp_path),
         )
 
@@ -985,18 +985,18 @@ class TestLogging:
                 cmd_generate(args)
 
                 # Check log messages
-                assert "Generating tests for wizard: test_wizard" in caplog.text
+                assert "Generating tests for workflow: test_wizard" in caplog.text
                 assert "Patterns: linear_flow, approval" in caplog.text
 
     def test_analyze_logs_wizard_info(self, caplog):
         """Test that analyze command logs wizard information."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=False,
         )
 
-        mock_analysis = RiskAnalysis(wizard_id="test_wizard", pattern_ids=["linear_flow"])
+        mock_analysis = RiskAnalysis(workflow_id="test_wizard", pattern_ids=["linear_flow"])
 
         with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
@@ -1008,7 +1008,7 @@ class TestLogging:
             with caplog.at_level(logging.INFO):
                 cmd_analyze(args)
 
-                assert "Analyzing wizard: test_wizard" in caplog.text
+                assert "Analyzing workflow: test_wizard" in caplog.text
 
 
 @pytest.mark.unit
@@ -1017,12 +1017,12 @@ class TestOutputFormatting:
 
     def test_generate_displays_file_paths(self, tmp_path, capsys):
         """Test that generated file paths are displayed."""
-        output_dir = tmp_path / "tests" / "unit" / "wizards"
+        output_dir = tmp_path / "tests" / "unit" / "workflows"
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             module=None,
-            wizard_class=None,
+            workflow_class=None,
             output=str(output_dir),
         )
 
@@ -1042,20 +1042,20 @@ class TestOutputFormatting:
             captured = capsys.readouterr()
 
             # Check that file paths are shown
-            assert "test_test_wizard_wizard.py" in captured.out
+            assert "test_test_wizard_workflow.py" in captured.out
             assert "test_test_wizard_integration.py" in captured.out
             assert "fixtures_test_wizard.py" in captured.out
 
     def test_analyze_formats_priority_labels_correctly(self, capsys):
         """Test that priority labels are formatted with consistent width."""
         args = argparse.Namespace(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             patterns="linear_flow",
             json=False,
         )
 
         mock_analysis = RiskAnalysis(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["linear_flow"],
             test_priorities={
                 "test_a": 1,  # CRITICAL

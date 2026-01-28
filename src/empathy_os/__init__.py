@@ -55,9 +55,9 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-__version__ = "4.6.5"
+__version__ = "5.0.1"
 __author__ = "Patrick Roebuck"
-__email__ = "hello@deepstudy.ai"
+__email__ = "patrick.roebuck@smartaimemory.com"
 
 # =============================================================================
 # LAZY IMPORTS - Deferred loading for faster startup
@@ -253,6 +253,7 @@ def __getattr__(name: str) -> object:
 
         # Import the module and get the attribute
         import importlib
+
         module = importlib.import_module(module_path, package="empathy_os")
         attr = getattr(module, attr_name)
 
@@ -261,6 +262,7 @@ def __getattr__(name: str) -> object:
         return attr
 
     raise AttributeError(f"module 'empathy_os' has no attribute '{name}'")
+
 
 __all__ = [
     "AccessTier",

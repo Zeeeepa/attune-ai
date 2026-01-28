@@ -591,6 +591,7 @@ def assess_current_compliance(state: ComplianceAgentState) -> ComplianceAgentSta
         # is_compliant = check_requirement_compliance(state["hospital_id"], req)
 
         # Simulated: 90% compliant
+        # Security Note: Using random for demo/simulation data only, not cryptographic use
         import random
 
         is_compliant = random.random() < 0.90

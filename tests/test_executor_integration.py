@@ -105,7 +105,7 @@ class TestLLMResponse:
         resp = LLMResponse(
             content="Test",
             model_id="gpt-4o",
-            provider="openai",
+            provider="anthropic",
             tier="capable",
             tokens_input=100,
             tokens_output=50,
@@ -474,19 +474,18 @@ class TestProviderModelsSync:
         )
 
     def test_provider_models_contains_all_providers(self):
-        """Verify all known providers are in PROVIDER_MODELS."""
+        """Verify all known providers are in PROVIDER_MODELS (Anthropic-only architecture)."""
         from empathy_os.workflows.base import PROVIDER_MODELS, ModelProvider
 
         assert ModelProvider.ANTHROPIC in PROVIDER_MODELS
-        assert ModelProvider.OPENAI in PROVIDER_MODELS
-        assert ModelProvider.OLLAMA in PROVIDER_MODELS
-        assert ModelProvider.HYBRID in PROVIDER_MODELS
+        # Only Anthropic in v5.0.0
+        assert len(PROVIDER_MODELS) == 1
 
     def test_provider_models_contains_all_tiers(self):
-        """Verify all tiers are present for each provider."""
+        """Verify all tiers are present for Anthropic (Anthropic-only architecture)."""
         from empathy_os.workflows.base import PROVIDER_MODELS, ModelProvider, ModelTier
 
-        for provider in [ModelProvider.ANTHROPIC, ModelProvider.OPENAI, ModelProvider.HYBRID]:
-            assert ModelTier.CHEAP in PROVIDER_MODELS[provider]
-            assert ModelTier.CAPABLE in PROVIDER_MODELS[provider]
-            assert ModelTier.PREMIUM in PROVIDER_MODELS[provider]
+        # Only test Anthropic in v5.0.0
+        assert ModelTier.CHEAP in PROVIDER_MODELS[ModelProvider.ANTHROPIC]
+        assert ModelTier.CAPABLE in PROVIDER_MODELS[ModelProvider.ANTHROPIC]
+        assert ModelTier.PREMIUM in PROVIDER_MODELS[ModelProvider.ANTHROPIC]

@@ -143,14 +143,15 @@ class TestModelRegistry:
     """Test model registry functionality."""
 
     def test_get_all_models(self):
-        """Test getting all registered models."""
+        """Test getting all registered models (Anthropic-only architecture)."""
         from empathy_os.models import get_all_models
 
         models = get_all_models()
 
         assert isinstance(models, dict)
         assert "anthropic" in models
-        assert "openai" in models
+        # Only Anthropic in v5.0.0 (Anthropic-only architecture)
+        assert len(models) == 1
 
     def test_anthropic_models_have_tiers(self):
         """Test Anthropic provider has all required tiers."""

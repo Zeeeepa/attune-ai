@@ -80,8 +80,20 @@ from .base import (
     get_workflow_stats,
 )
 
+# Builder pattern for workflow construction
+from .builder import WorkflowBuilder, workflow_builder
+
 # Config is small and frequently needed
 from .config import DEFAULT_MODELS, ModelConfig, WorkflowConfig, create_example_config, get_model
+
+# Routing strategies (small, frequently needed for builder pattern)
+from .routing import (
+    BalancedRouting,
+    CostOptimizedRouting,
+    PerformanceOptimizedRouting,
+    RoutingContext,
+    TierRoutingStrategy,
+)
 from .step_config import WorkflowStepConfig, steps_from_tier_map, validate_step_config
 
 # Lazy import mapping for workflow classes
@@ -99,9 +111,15 @@ _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {
     "KeyboardShortcutWorkflow": (".keyboard_shortcuts", "KeyboardShortcutWorkflow"),
     "ManageDocumentationCrew": (".manage_documentation", "ManageDocumentationCrew"),
     "ManageDocumentationCrewResult": (".manage_documentation", "ManageDocumentationCrewResult"),
-    "OrchestratedHealthCheckWorkflow": (".orchestrated_health_check", "OrchestratedHealthCheckWorkflow"),
+    "OrchestratedHealthCheckWorkflow": (
+        ".orchestrated_health_check",
+        "OrchestratedHealthCheckWorkflow",
+    ),
     "HealthCheckReport": (".orchestrated_health_check", "HealthCheckReport"),
-    "OrchestratedReleasePrepWorkflow": (".orchestrated_release_prep", "OrchestratedReleasePrepWorkflow"),
+    "OrchestratedReleasePrepWorkflow": (
+        ".orchestrated_release_prep",
+        "OrchestratedReleasePrepWorkflow",
+    ),
     "ReleaseReadinessReport": (".orchestrated_release_prep", "ReleaseReadinessReport"),
     "PerformanceAuditWorkflow": (".perf_audit", "PerformanceAuditWorkflow"),
     "PRReviewWorkflow": (".pr_review", "PRReviewWorkflow"),
@@ -141,12 +159,14 @@ def _lazy_import_workflow(name: str) -> object:
 
     # Import the module and get the attribute
     import importlib
+
     module = importlib.import_module(module_path, package="empathy_os.workflows")
     attr = getattr(module, attr_name)
 
     # Cache and return
     _loaded_workflow_modules[cache_key] = attr
     return attr
+
 
 # Re-export CLI commands from workflow_commands.py (lazy loaded)
 _parent_dir = os.path.dirname(os.path.dirname(__file__))
@@ -420,6 +440,15 @@ __all__ = [
     "WORKFLOW_REGISTRY",
     # Base classes
     "BaseWorkflow",
+    # Routing strategies
+    "TierRoutingStrategy",
+    "RoutingContext",
+    "CostOptimizedRouting",
+    "PerformanceOptimizedRouting",
+    "BalancedRouting",
+    # Builder pattern
+    "WorkflowBuilder",
+    "workflow_builder",
     # New high-value workflows
     "BugPredictionWorkflow",
     # Code review crew integration (v3.1)

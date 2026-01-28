@@ -20,7 +20,7 @@ import hashlib
 import json
 import logging
 import math
-import random
+import random  # Security Note: For A/B test simulation data, not cryptographic use
 import time
 from dataclasses import dataclass, field
 from datetime import datetime

@@ -597,8 +597,8 @@ class TestGenerationWorkflow(BaseWorkflow):
             {
                 "candidates": candidates[:max_candidates],
                 "total_candidates": len(candidates),
-                "hotspot_count": len([c for c in candidates if c["is_hotspot"]]),
-                "untested_count": len([c for c in candidates if not c["has_tests"]]),
+                "hotspot_count": sum(1 for c in candidates if c["is_hotspot"]),
+                "untested_count": sum(1 for c in candidates if not c["has_tests"]),
                 # Scope awareness fields for enterprise reporting
                 "total_source_files": total_source_files,
                 "existing_test_files": existing_test_files,
@@ -1503,13 +1503,13 @@ END OF REQUIRED FORMAT - output nothing after recommendations."""
         lines.append(f"| **Total Test Functions** | {total_test_count} |")
         lines.append(f"| **Files Covered** | {len(generated_tests)} |")
 
-        # Count classes and functions
+        # Count classes and functions (generator expressions for memory efficiency)
         total_classes = sum(
-            len([t for t in item.get("tests", []) if t.get("type") == "class"])
+            sum(1 for t in item.get("tests", []) if t.get("type") == "class")
             for item in generated_tests
         )
         total_functions = sum(
-            len([t for t in item.get("tests", []) if t.get("type") == "function"])
+            sum(1 for t in item.get("tests", []) if t.get("type") == "function")
             for item in generated_tests
         )
         lines.append(f"| **Classes Tested** | {total_classes} |")
@@ -1799,8 +1799,8 @@ def format_test_gen_report(result: dict, input_data: dict) -> str:
     lines.append("NEXT STEPS")
     lines.append("-" * 60)
 
-    high_findings = len([f for f in xml_findings if f["severity"] == "high"])
-    medium_findings = len([f for f in xml_findings if f["severity"] == "medium"])
+    high_findings = sum(1 for f in xml_findings if f["severity"] == "high")
+    medium_findings = sum(1 for f in xml_findings if f["severity"] == "medium")
 
     if high_findings > 0:
         lines.append(f"  🔴 Address {high_findings} high-priority finding(s) first")

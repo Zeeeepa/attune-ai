@@ -19,11 +19,9 @@ from .registry import MODEL_REGISTRY, ModelInfo, ModelTier
 
 
 class ProviderMode(str, Enum):
-    """How the system selects models across providers."""
+    """Provider selection mode (Anthropic-only as of v5.0.0)."""
 
-    SINGLE = "single"  # Use one provider for all tiers
-    HYBRID = "hybrid"  # Best-of across providers (requires multiple API keys)
-    CUSTOM = "custom"  # User-defined per-tier mapping
+    SINGLE = "single"  # Anthropic for all tiers
 
 
 @dataclass
@@ -43,32 +41,20 @@ class ProviderConfig:
     available_providers: list[str] = field(default_factory=list)
 
     # User preferences
-    prefer_local: bool = False  # Prefer Ollama when available
+    prefer_local: bool = False  # Deprecated (v5.0.0)
     cost_optimization: bool = True  # Use cheaper tiers when appropriate
 
     @classmethod
     def detect_available_providers(cls) -> list[str]:
-        """Detect which providers have API keys configured."""
+        """Detect if Anthropic API key is configured (Anthropic-only as of v5.0.0)."""
         available = []
 
         # Load .env files if they exist (project root and home)
         env_keys = cls._load_env_files()
 
-        # Check environment variables for API keys
-        provider_env_vars = {
-            "anthropic": ["ANTHROPIC_API_KEY"],
-            "openai": ["OPENAI_API_KEY"],
-            "google": ["GOOGLE_API_KEY", "GEMINI_API_KEY"],
-            "ollama": [],  # Ollama is local, check if running
-        }
-
-        for provider, env_vars in provider_env_vars.items():
-            if provider == "ollama":
-                # Check if Ollama is available (local)
-                if cls._check_ollama_available():
-                    available.append(provider)
-            elif any(os.getenv(var) or env_keys.get(var) for var in env_vars):
-                available.append(provider)
+        # Check for ANTHROPIC_API_KEY
+        if os.getenv("ANTHROPIC_API_KEY") or env_keys.get("ANTHROPIC_API_KEY"):
+            available.append("anthropic")
 
         return available
 
@@ -101,68 +87,32 @@ class ProviderConfig:
 
         return env_keys
 
-    @staticmethod
-    def _check_ollama_available() -> bool:
-        """Check if Ollama is running locally."""
-        try:
-            import socket
-
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(1)
-            result = sock.connect_ex(("localhost", 11434))
-            sock.close()
-            return result == 0
-        except Exception:
-            return False
-
     @classmethod
     def auto_detect(cls) -> ProviderConfig:
-        """Auto-detect the best configuration based on available API keys.
+        """Auto-detect configuration (Anthropic-only as of v5.0.0).
 
-        Logic:
-        - If only one provider available → SINGLE mode with that provider
-        - If multiple providers available → SINGLE mode with first cloud provider
-        - If no providers available → SINGLE mode with anthropic (will prompt for key)
+        Returns:
+            ProviderConfig with Anthropic as primary provider
         """
         available = cls.detect_available_providers()
 
-        if len(available) == 0:
-            # No providers detected, default to anthropic
-            return cls(
-                mode=ProviderMode.SINGLE,
-                primary_provider="anthropic",
-                available_providers=[],
-            )
-        if len(available) == 1:
-            # Single provider available, use it
-            return cls(
-                mode=ProviderMode.SINGLE,
-                primary_provider=available[0],
-                available_providers=available,
-            )
-        # Multiple providers available
-        # Default to first cloud provider (prefer anthropic > openai > google > ollama)
-        priority = ["anthropic", "openai", "google", "ollama"]
-        primary = next((p for p in priority if p in available), available[0])
         return cls(
             mode=ProviderMode.SINGLE,
-            primary_provider=primary,
+            primary_provider="anthropic",
             available_providers=available,
         )
 
     def get_model_for_tier(self, tier: str | ModelTier) -> ModelInfo | None:
-        """Get the model to use for a given tier based on current config."""
-        tier_str = tier.value if isinstance(tier, ModelTier) else tier
+        """Get the model to use for a given tier (Anthropic-only as of v5.0.0).
 
-        if self.mode == ProviderMode.HYBRID:
-            # Use hybrid provider from registry
-            return MODEL_REGISTRY.get("hybrid", {}).get(tier_str)
-        if self.mode == ProviderMode.CUSTOM:
-            # Use per-tier provider mapping
-            provider = self.tier_providers.get(tier_str, self.primary_provider)
-            return MODEL_REGISTRY.get(provider, {}).get(tier_str)
-        # SINGLE mode: use primary provider for all tiers
-        return MODEL_REGISTRY.get(self.primary_provider, {}).get(tier_str)
+        Args:
+            tier: Tier level (cheap, capable, premium)
+
+        Returns:
+            ModelInfo for the Anthropic model at the specified tier
+        """
+        tier_str = tier.value if isinstance(tier, ModelTier) else tier
+        return MODEL_REGISTRY.get("anthropic", {}).get(tier_str)
 
     def get_effective_registry(self) -> dict[str, ModelInfo]:
         """Get the effective model registry based on current config."""
@@ -224,108 +174,52 @@ class ProviderConfig:
 
 # Interactive configuration for install/update
 def configure_provider_interactive() -> ProviderConfig:
-    """Interactive provider configuration for install/update.
+    """Interactive provider configuration for install/update (Anthropic-only as of v5.0.0).
 
-    Returns configured ProviderConfig after user selection.
+    Returns:
+        ProviderConfig configured for Anthropic
     """
     print("\n" + "=" * 60)
-    print("Empathy Framework - Provider Configuration")
+    print("Empathy Framework - Provider Configuration (Claude-Native v5.0.0)")
     print("=" * 60)
 
-    # Detect available providers
+    # Check for Anthropic API key
     config = ProviderConfig.auto_detect()
     available = config.available_providers
 
-    print(f"\nDetected API keys for: {', '.join(available) if available else 'None'}")
-
     if not available:
-        print("\n⚠️  No API keys detected. Please set one of:")
-        print("   - ANTHROPIC_API_KEY (recommended)")
-        print("   - OPENAI_API_KEY")
-        print("   - GOOGLE_API_KEY or GEMINI_API_KEY (2M context window)")
-        print("   - Or run Ollama locally")
-        print("\nDefaulting to Anthropic. You'll need to set ANTHROPIC_API_KEY.")
+        print("\n⚠️  ANTHROPIC_API_KEY not detected.")
+        print("\nPlease set your Anthropic API key:")
+        print("   export ANTHROPIC_API_KEY='your-key-here'")
+        print("\nGet your API key at: https://console.anthropic.com/settings/keys")
+        print("\nDefaulting to Anthropic configuration.")
+        print("You'll need to set ANTHROPIC_API_KEY before running workflows.")
         return ProviderConfig(
             mode=ProviderMode.SINGLE,
             primary_provider="anthropic",
             available_providers=[],
         )
 
-    # Show options
-    print("\nSelect your provider configuration:")
-    print("-" * 40)
+    # Anthropic API key detected
+    print("\n✓ ANTHROPIC_API_KEY detected")
+    print("\nConfiguring Anthropic as provider...")
 
-    options = []
-
-    # Option 1: Single provider (for each available)
-    for i, provider in enumerate(available, 1):
-        provider_name = provider.capitalize()
-        if provider == "anthropic":
-            desc = "Claude models (Haiku/Sonnet/Opus)"
-        elif provider == "openai":
-            desc = "GPT models (GPT-4o-mini/GPT-4o/o1)"
-        elif provider == "google":
-            desc = "Gemini models (Flash/Pro - 2M context window)"
-        elif provider == "ollama":
-            desc = "Local models (Llama 3.2)"
-        else:
-            desc = "Unknown provider"
-        options.append((provider, ProviderMode.SINGLE))
-        print(f"  [{i}] {provider_name} only - {desc}")
-
-    # Option: Hybrid (if multiple providers available)
-    if len(available) > 1:
-        options.append(("hybrid", ProviderMode.HYBRID))
-        print(f"  [{len(options)}] Hybrid - Best model from each provider per tier")
-        print("         (Recommended if you have multiple API keys)")
-
-    # Default selection
-    default_idx = 0
-    if len(available) == 1:
-        default_idx = 0
-    elif "anthropic" in available:
-        default_idx = available.index("anthropic")
-
-    print(f"\nDefault: [{default_idx + 1}]")
-
-    # Get user input
-    try:
-        choice = input(f"\nYour choice [1-{len(options)}]: ").strip()
-        if not choice:
-            choice = str(default_idx + 1)
-        idx = int(choice) - 1
-        if idx < 0 or idx >= len(options):
-            idx = default_idx
-    except (ValueError, EOFError):
-        idx = default_idx
-
-    selected_provider, selected_mode = options[idx]
-
-    if selected_mode == ProviderMode.HYBRID:
-        config = ProviderConfig(
-            mode=ProviderMode.HYBRID,
-            primary_provider="hybrid",
-            available_providers=available,
-        )
-        print("\n✓ Configured: Hybrid mode (best-of across providers)")
-    else:
-        config = ProviderConfig(
-            mode=ProviderMode.SINGLE,
-            primary_provider=selected_provider,
-            available_providers=available,
-        )
-        print(f"\n✓ Configured: {selected_provider.capitalize()} as primary provider")
+    config = ProviderConfig(
+        mode=ProviderMode.SINGLE,
+        primary_provider="anthropic",
+        available_providers=available,
+    )
 
     # Show effective models
     print("\nEffective model mapping:")
     effective = config.get_effective_registry()
     for tier, model in effective.items():
         if model:
-            print(f"  {tier:8} → {model.id} ({model.provider})")
+            print(f"  {tier:8} → {model.id}")
 
     # Save configuration
     config.save()
-    print("\nConfiguration saved to ~/.empathy/provider_config.json")
+    print("\n✓ Configuration saved to ~/.empathy/provider_config.json")
 
     return config
 
@@ -334,33 +228,33 @@ def configure_provider_cli(
     provider: str | None = None,
     mode: str | None = None,
 ) -> ProviderConfig:
-    """CLI-based provider configuration (non-interactive).
+    """CLI-based provider configuration (Anthropic-only as of v5.0.0).
 
     Args:
-        provider: Provider name (anthropic, openai, google, ollama, hybrid)
-        mode: Mode (single, hybrid, custom)
+        provider: Provider name (must be 'anthropic' or None)
+        mode: Mode (must be 'single' or None)
 
     Returns:
-        Configured ProviderConfig
+        Configured ProviderConfig for Anthropic
 
+    Raises:
+        ValueError: If provider is not 'anthropic'
     """
-    available = ProviderConfig.detect_available_providers()
-
-    if provider == "hybrid" or mode == "hybrid":
-        return ProviderConfig(
-            mode=ProviderMode.HYBRID,
-            primary_provider="hybrid",
-            available_providers=available,
+    if provider and provider.lower() != "anthropic":
+        raise ValueError(
+            f"Provider '{provider}' is not supported. "
+            f"Empathy Framework is now Claude-native (v5.0.0). "
+            f"Only 'anthropic' provider is available. "
+            f"See docs/CLAUDE_NATIVE.md for migration guide."
         )
 
-    if provider:
-        return ProviderConfig(
-            mode=ProviderMode.SINGLE,
-            primary_provider=provider,
-            available_providers=available,
+    if mode and mode.lower() != "single":
+        raise ValueError(
+            f"Mode '{mode}' is not supported. "
+            f"Only 'single' mode is available in v5.0.0 (Anthropic-only)."
         )
 
-    # Auto-detect
+    # Always return Anthropic configuration
     return ProviderConfig.auto_detect()
 
 
@@ -386,182 +280,3 @@ def reset_provider_config() -> None:
     """Reset the global provider configuration (forces reload)."""
     global _global_config
     _global_config = None
-
-
-def configure_hybrid_interactive() -> ProviderConfig:
-    """Interactive hybrid configuration - let users pick models for each tier.
-
-    Shows available models from all providers with detected API keys,
-    allowing users to mix and match the best models for their workflow.
-
-    Returns:
-        ProviderConfig with custom tier mappings
-
-    """
-    print("\n" + "=" * 60)
-    print("🔀 Hybrid Model Configuration")
-    print("=" * 60)
-    print("\nSelect the best model for each tier from available providers.")
-    print("This creates a custom mix optimized for your workflow.\n")
-
-    # Detect available providers
-    available = ProviderConfig.detect_available_providers()
-
-    if not available:
-        print("⚠️  No API keys detected. Please set at least one of:")
-        print("   - ANTHROPIC_API_KEY")
-        print("   - OPENAI_API_KEY")
-        print("   - GOOGLE_API_KEY")
-        print("   - Or run Ollama locally")
-        return ProviderConfig.auto_detect()
-
-    print(f"✓ Available providers: {', '.join(available)}\n")
-
-    # Collect models for each tier from available providers
-    tier_selections: dict[str, str] = {}
-
-    for tier in ["cheap", "capable", "premium"]:
-        tier_upper = tier.upper()
-        print("-" * 60)
-        print(f"  {tier_upper} TIER - Select a model:")
-        print("-" * 60)
-
-        # Build options from available providers
-        options: list[tuple[str, ModelInfo]] = []
-        for provider in available:
-            model_info = MODEL_REGISTRY.get(provider, {}).get(tier)
-            if model_info:
-                options.append((provider, model_info))
-
-        if not options:
-            print(f"  No models available for {tier} tier")
-            continue
-
-        # Display options with pricing info
-        for i, (provider, info) in enumerate(options, 1):
-            provider_label = provider.capitalize()
-            cost_info = f"${info.input_cost_per_million:.2f}/${info.output_cost_per_million:.2f} per M tokens"
-            if provider == "ollama":
-                cost_info = "FREE (local)"
-
-            # Add feature badges
-            features = []
-            if info.supports_vision:
-                features.append("👁 vision")
-            if info.supports_tools:
-                features.append("🔧 tools")
-            if provider == "google":
-                features.append("📚 2M context")
-
-            features_str = f" [{', '.join(features)}]" if features else ""
-
-            print(f"  [{i}] {info.id}")
-            print(f"      Provider: {provider_label} | {cost_info}{features_str}")
-
-        # Get user choice
-        default_idx = 0
-        # Set smart defaults based on tier
-        if tier == "cheap":
-            # Prefer cheapest: ollama > google > openai > anthropic
-            for pref in ["ollama", "google", "openai", "anthropic"]:
-                for i, (p, _) in enumerate(options):
-                    if p == pref:
-                        default_idx = i
-                        break
-                else:
-                    continue
-                break
-        elif tier == "capable":
-            # Prefer best reasoning: anthropic > openai > google > ollama
-            for pref in ["anthropic", "openai", "google", "ollama"]:
-                for i, (p, _) in enumerate(options):
-                    if p == pref:
-                        default_idx = i
-                        break
-                else:
-                    continue
-                break
-        elif tier == "premium":
-            # Prefer most capable: anthropic > openai > google > ollama
-            for pref in ["anthropic", "openai", "google", "ollama"]:
-                for i, (p, _) in enumerate(options):
-                    if p == pref:
-                        default_idx = i
-                        break
-                else:
-                    continue
-                break
-
-        print(f"\n  Recommended: [{default_idx + 1}] {options[default_idx][1].id}")
-
-        try:
-            choice = input(f"  Your choice [1-{len(options)}]: ").strip()
-            if not choice:
-                idx = default_idx
-            else:
-                idx = int(choice) - 1
-                if idx < 0 or idx >= len(options):
-                    idx = default_idx
-        except (ValueError, EOFError):
-            idx = default_idx
-
-        selected_provider, selected_model = options[idx]
-        tier_selections[tier] = selected_model.id
-        print(f"  ✓ Selected: {selected_model.id} ({selected_provider})\n")
-
-    # Create custom config
-    config = ProviderConfig(
-        mode=ProviderMode.CUSTOM,
-        primary_provider="custom",
-        tier_providers={},  # Not used in CUSTOM mode
-        available_providers=available,
-    )
-
-    # Store the custom tier->model mapping
-    # We'll save this to workflows.yaml custom_models section
-    print("\n" + "=" * 60)
-    print("✅ Hybrid Configuration Complete!")
-    print("=" * 60)
-    print("\nYour custom model mapping:")
-    for tier, model_id in tier_selections.items():
-        print(f"  {tier:8} → {model_id}")
-
-    # Save to workflows.yaml
-    _save_hybrid_to_workflows_yaml(tier_selections)
-
-    print("\n✓ Configuration saved to .empathy/workflows.yaml")
-    print("  Run workflows with: python -m empathy_os.cli workflow run <name>")
-
-    return config
-
-
-def _save_hybrid_to_workflows_yaml(tier_selections: dict[str, str]) -> None:
-    """Save hybrid tier selections to workflows.yaml."""
-    from pathlib import Path
-
-    import yaml
-
-    workflows_path = Path(".empathy/workflows.yaml")
-
-    # Load existing config or create new
-    if workflows_path.exists():
-        with open(workflows_path) as f:
-            config = yaml.safe_load(f) or {}
-    else:
-        config = {}
-        workflows_path.parent.mkdir(parents=True, exist_ok=True)
-
-    # Update config
-    config["default_provider"] = "hybrid"
-
-    # Ensure custom_models exists
-    if "custom_models" not in config or config["custom_models"] is None:
-        config["custom_models"] = {}
-
-    # Set hybrid model mapping
-    config["custom_models"]["hybrid"] = tier_selections
-
-    # Write back
-    validated_workflows_path = _validate_file_path(str(workflows_path))
-    with open(validated_workflows_path, "w") as f:
-        yaml.dump(config, f, default_flow_style=False, sort_keys=False)

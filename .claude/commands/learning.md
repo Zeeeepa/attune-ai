@@ -6,6 +6,19 @@ aliases: [learn-hub]
 tags: [learning, patterns, memory, hub]
 version: "2.1"
 inline: true
+question:
+  header: "Learning"
+  question: "What would you like to do?"
+  multiSelect: false
+  options:
+    - label: "📊 Evaluate session"
+      description: "Analyze current session and extract learnings"
+    - label: "🔍 View patterns"
+      description: "Browse learned debugging and refactoring patterns"
+    - label: "📚 Teach preferences"
+      description: "Add new preferences or update existing ones"
+    - label: "💡 Suggest improvements"
+      description: "Get recommendations based on session analysis"
 ---
 
 # Learning Management
@@ -138,4 +151,5 @@ Manually teach a preference or pattern.
 
 - `/context` - State and memory management
 - `/agent` - Agent pattern learning
-- `/workflow` - Development workflows
+- `/workflows` - Run automated workflows
+- `/plan` - Development approaches (TDD, planning, review)

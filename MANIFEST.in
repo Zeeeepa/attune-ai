@@ -126,6 +126,8 @@ prune htmlcov_logging
 prune site
 prune .pytest_cache
 prune .mypy_cache
+recursive-exclude * .mypy_cache
+recursive-exclude src .mypy_cache
 prune .ruff_cache
 
 # Coverage and audit reports

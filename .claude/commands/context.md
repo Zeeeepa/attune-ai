@@ -5,6 +5,19 @@ category: hub
 aliases: [ctx]
 tags: [context, memory, state, profile, hub]
 version: "2.0"
+question:
+  header: "Context"
+  question: "What context operation do you need?"
+  multiSelect: false
+  options:
+    - label: "📊 Show status"
+      description: "Display current session state, tasks, and context"
+    - label: "💭 View memory"
+      description: "Browse and search learned patterns and preferences"
+    - label: "💾 Save state"
+      description: "Preserve current state for later resumption"
+    - label: "📝 Edit CLAUDE.md"
+      description: "Update project memory and instructions"
 ---
 
 # Context Management
@@ -139,7 +152,8 @@ View session status or update your preferences.
 | ------------------ | ------------ |
 | Create commits     | `/dev`       |
 | Run tests          | `/testing`   |
-| Plan features      | `/workflow`  |
+| Plan features      | `/plan`      |
+| Run workflows      | `/workflows` |
 | Learn patterns     | `/learning`  |
 
 ## Related Hubs

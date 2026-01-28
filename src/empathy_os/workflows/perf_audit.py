@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from .base import BaseWorkflow, ModelTier
+from .output import Finding, WorkflowReport, get_console
 from .step_config import WorkflowStepConfig
 
 # Define step configurations for executor-based execution
@@ -268,10 +269,10 @@ class PerformanceAuditWorkflow(BaseWorkflow):
         # Analyze each file
         analysis: list[dict] = []
         for file_path, file_findings in by_file.items():
-            # Calculate file complexity score
-            high_count = len([f for f in file_findings if f["impact"] == "high"])
-            medium_count = len([f for f in file_findings if f["impact"] == "medium"])
-            low_count = len([f for f in file_findings if f["impact"] == "low"])
+            # Calculate file complexity score (generator expressions for memory efficiency)
+            high_count = sum(1 for f in file_findings if f["impact"] == "high")
+            medium_count = sum(1 for f in file_findings if f["impact"] == "medium")
+            low_count = sum(1 for f in file_findings if f["impact"] == "low")
 
             complexity_score = high_count * 10 + medium_count * 5 + low_count * 1
 
@@ -483,6 +484,9 @@ Provide detailed optimization strategies."""
         # Add formatted report for human readability
         result["formatted_report"] = format_perf_audit_report(result, input_data)
 
+        # Add structured WorkflowReport for Rich rendering
+        result["workflow_report"] = create_perf_audit_workflow_report(result, input_data)
+
         return (result, input_tokens, output_tokens)
 
     def _get_optimization_action(self, concern: str) -> dict | None:
@@ -530,6 +534,92 @@ Provide detailed optimization strategies."""
             },
         }
         return actions.get(concern)
+
+
+def create_perf_audit_workflow_report(result: dict, input_data: dict) -> WorkflowReport:
+    """Create a WorkflowReport from performance audit results.
+
+    Args:
+        result: The optimize stage result
+        input_data: Input data from previous stages
+
+    Returns:
+        WorkflowReport instance for Rich or plain text rendering
+    """
+    perf_score = result.get("perf_score", 0)
+    perf_level = result.get("perf_level", "unknown")
+
+    # Determine report level
+    if perf_score >= 85:
+        level = "success"
+    elif perf_score >= 50:
+        level = "warning"
+    else:
+        level = "error"
+
+    # Build summary
+    files_scanned = input_data.get("files_scanned", 0)
+    finding_count = input_data.get("finding_count", 0)
+    by_impact = input_data.get("by_impact", {})
+
+    summary = (
+        f"Scanned {files_scanned} files, found {finding_count} issues. "
+        f"High: {by_impact.get('high', 0)}, Medium: {by_impact.get('medium', 0)}, "
+        f"Low: {by_impact.get('low', 0)}"
+    )
+
+    report = WorkflowReport(
+        title="Performance Audit Report",
+        summary=summary,
+        score=perf_score,
+        level=level,
+        metadata={
+            "perf_level": perf_level,
+            "files_scanned": files_scanned,
+            "finding_count": finding_count,
+        },
+    )
+
+    # Add top issues section
+    top_issues = result.get("top_issues", [])
+    if top_issues:
+        issues_content = {
+            issue.get("type", "unknown").replace("_", " ").title(): f"{issue.get('count', 0)} occurrences"
+            for issue in top_issues
+        }
+        report.add_section("Top Performance Issues", issues_content)
+
+    # Add hotspots section
+    hotspot_result = input_data.get("hotspot_result", {})
+    hotspots = hotspot_result.get("hotspots", [])
+    if hotspots:
+        hotspot_content = {
+            "Critical Hotspots": hotspot_result.get("critical_count", 0),
+            "Moderate Hotspots": hotspot_result.get("moderate_count", 0),
+        }
+        report.add_section("Hotspot Summary", hotspot_content)
+
+    # Add findings section
+    findings = input_data.get("findings", [])
+    high_impact = [f for f in findings if f.get("impact") == "high"]
+    if high_impact:
+        finding_objs = [
+            Finding(
+                severity="high",
+                file=f.get("file", "unknown"),
+                line=f.get("line"),
+                message=f.get("description", ""),
+            )
+            for f in high_impact[:10]
+        ]
+        report.add_section("High Impact Findings", finding_objs, style="error")
+
+    # Add recommendations section
+    optimization_plan = result.get("optimization_plan", "")
+    if optimization_plan:
+        report.add_section("Optimization Recommendations", optimization_plan)
+
+    return report
 
 
 def format_perf_audit_report(result: dict, input_data: dict) -> str:
@@ -660,26 +750,42 @@ def main():
         workflow = PerformanceAuditWorkflow()
         result = await workflow.execute(path=".", file_types=[".py"])
 
-        print("\nPerformance Audit Results")
-        print("=" * 50)
-        print(f"Provider: {result.provider}")
-        print(f"Success: {result.success}")
-
         output = result.final_output
-        print(f"Performance Level: {output.get('perf_level', 'N/A')}")
-        print(f"Performance Score: {output.get('perf_score', 0)}/100")
-        print(f"Recommendations: {output.get('recommendation_count', 0)}")
 
-        if output.get("top_issues"):
-            print("\nTop Issues:")
-            for issue in output["top_issues"]:
-                print(f"  - {issue['type']}: {issue['count']} occurrences")
+        # Try Rich output first
+        console = get_console()
+        workflow_report = output.get("workflow_report")
 
-        print("\nCost Report:")
-        print(f"  Total Cost: ${result.cost_report.total_cost:.4f}")
-        savings = result.cost_report.savings
-        pct = result.cost_report.savings_percent
-        print(f"  Savings: ${savings:.4f} ({pct:.1f}%)")
+        if console and workflow_report:
+            # Render with Rich
+            workflow_report.render(console, use_rich=True)
+            console.print()
+            console.print(f"[dim]Provider: {result.provider}[/dim]")
+            console.print(f"[dim]Cost: ${result.cost_report.total_cost:.4f}[/dim]")
+            savings = result.cost_report.savings
+            pct = result.cost_report.savings_percent
+            console.print(f"[dim]Savings: ${savings:.4f} ({pct:.1f}%)[/dim]")
+        else:
+            # Fallback to plain text
+            print("\nPerformance Audit Results")
+            print("=" * 50)
+            print(f"Provider: {result.provider}")
+            print(f"Success: {result.success}")
+
+            print(f"Performance Level: {output.get('perf_level', 'N/A')}")
+            print(f"Performance Score: {output.get('perf_score', 0)}/100")
+            print(f"Recommendations: {output.get('recommendation_count', 0)}")
+
+            if output.get("top_issues"):
+                print("\nTop Issues:")
+                for issue in output["top_issues"]:
+                    print(f"  - {issue['type']}: {issue['count']} occurrences")
+
+            print("\nCost Report:")
+            print(f"  Total Cost: ${result.cost_report.total_cost:.4f}")
+            savings = result.cost_report.savings
+            pct = result.cost_report.savings_percent
+            print(f"  Savings: ${savings:.4f} ({pct:.1f}%)")
 
     asyncio.run(run())
 

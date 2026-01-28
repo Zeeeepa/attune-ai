@@ -36,19 +36,9 @@ class TestProviderMode:
         """Test SINGLE mode has correct value."""
         assert ProviderMode.SINGLE.value == "single"
 
-    def test_hybrid_mode_value(self):
-        """Test HYBRID mode has correct value."""
-        assert ProviderMode.HYBRID.value == "hybrid"
-
-    def test_custom_mode_value(self):
-        """Test CUSTOM mode has correct value."""
-        assert ProviderMode.CUSTOM.value == "custom"
-
     def test_mode_from_string(self):
         """Test creating ProviderMode from string."""
         assert ProviderMode("single") == ProviderMode.SINGLE
-        assert ProviderMode("hybrid") == ProviderMode.HYBRID
-        assert ProviderMode("custom") == ProviderMode.CUSTOM
 
     def test_invalid_mode_raises(self):
         """Test invalid mode string raises ValueError."""
@@ -70,65 +60,32 @@ class TestProviderConfigBasics:
         assert config.cost_optimization is True
 
     def test_custom_initialization(self):
-        """Test ProviderConfig with custom values."""
+        """Test ProviderConfig with custom values (Anthropic-only)."""
         config = ProviderConfig(
-            mode=ProviderMode.HYBRID,
-            primary_provider="openai",
-            tier_providers={"cheap": "ollama"},
-            available_providers=["openai", "ollama"],
-            prefer_local=True,
+            mode=ProviderMode.SINGLE,
+            primary_provider="anthropic",
+            tier_providers={"cheap": "anthropic"},
+            available_providers=["anthropic"],
+            prefer_local=False,
             cost_optimization=False,
         )
-        assert config.mode == ProviderMode.HYBRID
-        assert config.primary_provider == "openai"
-        assert config.tier_providers == {"cheap": "ollama"}
-        assert config.available_providers == ["openai", "ollama"]
-        assert config.prefer_local is True
+        assert config.mode == ProviderMode.SINGLE
+        assert config.primary_provider == "anthropic"
+        assert config.tier_providers == {"cheap": "anthropic"}
+        assert config.available_providers == ["anthropic"]
+        assert config.prefer_local is False
         assert config.cost_optimization is False
 
 
 class TestProviderDetection:
-    """Tests for provider detection logic."""
+    """Tests for provider detection logic (Anthropic-only)."""
 
     @patch.dict(os.environ, {"ANTHROPIC_API_KEY": "test-key"}, clear=True)
-    @patch.object(ProviderConfig, "_load_env_files", return_value={})
-    @patch.object(ProviderConfig, "_check_ollama_available", return_value=False)
-    def test_detect_anthropic_from_env(self, mock_ollama, mock_env):
+    def test_detect_anthropic_from_env(self):
         """Test detection of Anthropic from environment variable."""
         available = ProviderConfig.detect_available_providers()
         assert "anthropic" in available
-
-    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}, clear=True)
-    @patch.object(ProviderConfig, "_load_env_files", return_value={})
-    @patch.object(ProviderConfig, "_check_ollama_available", return_value=False)
-    def test_detect_openai_from_env(self, mock_ollama, mock_env):
-        """Test detection of OpenAI from environment variable."""
-        available = ProviderConfig.detect_available_providers()
-        assert "openai" in available
-
-    @patch.dict(os.environ, {"GOOGLE_API_KEY": "test-key"}, clear=True)
-    @patch.object(ProviderConfig, "_load_env_files", return_value={})
-    @patch.object(ProviderConfig, "_check_ollama_available", return_value=False)
-    def test_detect_google_from_env(self, mock_ollama, mock_env):
-        """Test detection of Google from GOOGLE_API_KEY."""
-        available = ProviderConfig.detect_available_providers()
-        assert "google" in available
-
-    @patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}, clear=True)
-    @patch.object(ProviderConfig, "_load_env_files", return_value={})
-    @patch.object(ProviderConfig, "_check_ollama_available", return_value=False)
-    def test_detect_google_from_gemini_key(self, mock_ollama, mock_env):
-        """Test detection of Google from GEMINI_API_KEY."""
-        available = ProviderConfig.detect_available_providers()
-        assert "google" in available
-
-    @patch.dict(os.environ, {}, clear=True)
-    @patch.object(ProviderConfig, "_load_env_files", return_value={})
-    @patch.object(ProviderConfig, "_check_ollama_available", return_value=True)
-    def test_detect_ollama_local(self, mock_ollama, mock_env):
-        """Test detection of Ollama when running locally."""
-        available = ProviderConfig.detect_available_providers()
-        assert "ollama" in available
+        assert len(available) == 1  # Anthropic-only
 
     @patch.dict(os.environ, {}, clear=True)
     @patch.object(
@@ -136,17 +93,15 @@ class TestProviderDetection:
         "_load_env_files",
         return_value={"ANTHROPIC_API_KEY": "from-file"},
     )
-    @patch.object(ProviderConfig, "_check_ollama_available", return_value=False)
-    def test_detect_from_env_file(self, mock_ollama, mock_env):
+    def test_detect_from_env_file(self, mock_env):
         """Test detection of provider from .env file."""
         available = ProviderConfig.detect_available_providers()
         assert "anthropic" in available
 
     @patch.dict(os.environ, {}, clear=True)
     @patch.object(ProviderConfig, "_load_env_files", return_value={})
-    @patch.object(ProviderConfig, "_check_ollama_available", return_value=False)
-    def test_detect_no_providers(self, mock_ollama, mock_env):
-        """Test detection when no providers available."""
+    def test_detect_no_providers(self, mock_env):
+        """Test detection when no providers available (Anthropic-only)."""
         available = ProviderConfig.detect_available_providers()
         assert available == []
 
@@ -162,30 +117,13 @@ class TestAutoDetect:
         assert config.primary_provider == "anthropic"
         assert config.available_providers == []
 
-    @patch.object(ProviderConfig, "detect_available_providers", return_value=["openai"])
-    def test_auto_detect_single_provider(self, mock_detect):
-        """Test auto_detect with single provider available."""
-        config = ProviderConfig.auto_detect()
-        assert config.mode == ProviderMode.SINGLE
-        assert config.primary_provider == "openai"
-        assert config.available_providers == ["openai"]
-
-    @patch.object(
-        ProviderConfig,
-        "detect_available_providers",
-        return_value=["openai", "anthropic"],
-    )
-    def test_auto_detect_multiple_prefers_anthropic(self, mock_detect):
-        """Test auto_detect prefers anthropic when multiple available."""
+    @patch.object(ProviderConfig, "detect_available_providers", return_value=["anthropic"])
+    def test_auto_detect_with_anthropic(self, mock_detect):
+        """Test auto_detect with Anthropic provider available (Anthropic-only architecture)."""
         config = ProviderConfig.auto_detect()
         assert config.mode == ProviderMode.SINGLE
         assert config.primary_provider == "anthropic"
-
-    @patch.object(ProviderConfig, "detect_available_providers", return_value=["ollama", "google"])
-    def test_auto_detect_multiple_priority_order(self, mock_detect):
-        """Test auto_detect follows priority: anthropic > openai > google > ollama."""
-        config = ProviderConfig.auto_detect()
-        assert config.primary_provider == "google"
+        assert config.available_providers == ["anthropic"]
 
 
 class TestGetModelForTier:
@@ -202,17 +140,6 @@ class TestGetModelForTier:
         if model:  # Model may be None if registry not populated
             assert model.provider == "anthropic"
 
-    def test_custom_mode_with_tier_override(self):
-        """Test CUSTOM mode uses tier_providers mapping."""
-        config = ProviderConfig(
-            mode=ProviderMode.CUSTOM,
-            primary_provider="anthropic",
-            tier_providers={"cheap": "openai"},
-        )
-        model = config.get_model_for_tier("cheap")
-        if model:
-            assert model.provider == "openai"
-
     def test_get_model_with_enum_tier(self):
         """Test get_model_for_tier with ModelTier enum."""
         from empathy_os.models.registry import ModelTier
@@ -227,37 +154,37 @@ class TestSerialization:
     """Tests for serialization methods."""
 
     def test_to_dict(self):
-        """Test to_dict serialization."""
+        """Test to_dict serialization (Anthropic-only architecture)."""
         config = ProviderConfig(
-            mode=ProviderMode.HYBRID,
-            primary_provider="openai",
-            tier_providers={"cheap": "ollama"},
-            prefer_local=True,
-            cost_optimization=False,
+            mode=ProviderMode.SINGLE,
+            primary_provider="anthropic",
+            tier_providers={"cheap": "anthropic"},
+            prefer_local=False,
+            cost_optimization=True,
         )
         data = config.to_dict()
-        assert data["mode"] == "hybrid"
-        assert data["primary_provider"] == "openai"
-        assert data["tier_providers"] == {"cheap": "ollama"}
-        assert data["prefer_local"] is True
-        assert data["cost_optimization"] is False
+        assert data["mode"] == "single"
+        assert data["primary_provider"] == "anthropic"
+        assert data["tier_providers"] == {"cheap": "anthropic"}
+        assert data["prefer_local"] is False
+        assert data["cost_optimization"] is True
 
     @patch.object(ProviderConfig, "detect_available_providers", return_value=["anthropic"])
     def test_from_dict(self, mock_detect):
-        """Test from_dict deserialization."""
+        """Test from_dict deserialization (Anthropic-only architecture)."""
         data = {
-            "mode": "hybrid",
-            "primary_provider": "openai",
-            "tier_providers": {"cheap": "ollama"},
-            "prefer_local": True,
-            "cost_optimization": False,
+            "mode": "single",
+            "primary_provider": "anthropic",
+            "tier_providers": {"cheap": "anthropic"},
+            "prefer_local": False,
+            "cost_optimization": True,
         }
         config = ProviderConfig.from_dict(data)
-        assert config.mode == ProviderMode.HYBRID
-        assert config.primary_provider == "openai"
-        assert config.tier_providers == {"cheap": "ollama"}
-        assert config.prefer_local is True
-        assert config.cost_optimization is False
+        assert config.mode == ProviderMode.SINGLE
+        assert config.primary_provider == "anthropic"
+        assert config.tier_providers == {"cheap": "anthropic"}
+        assert config.prefer_local is False
+        assert config.cost_optimization is True
 
     @patch.object(ProviderConfig, "detect_available_providers", return_value=[])
     def test_from_dict_with_defaults(self, mock_detect):
@@ -267,12 +194,12 @@ class TestSerialization:
         assert config.primary_provider == "anthropic"
 
     def test_roundtrip_serialization(self):
-        """Test to_dict followed by from_dict preserves data."""
+        """Test to_dict followed by from_dict preserves data (Anthropic-only)."""
         original = ProviderConfig(
-            mode=ProviderMode.CUSTOM,
-            primary_provider="google",
-            tier_providers={"premium": "anthropic", "cheap": "ollama"},
-            prefer_local=True,
+            mode=ProviderMode.SINGLE,
+            primary_provider="anthropic",
+            tier_providers={"premium": "anthropic", "cheap": "anthropic"},
+            prefer_local=False,
         )
         with patch.object(ProviderConfig, "detect_available_providers", return_value=[]):
             restored = ProviderConfig.from_dict(original.to_dict())
@@ -347,30 +274,10 @@ class TestConfigureCli:
 
     @patch.object(ProviderConfig, "detect_available_providers", return_value=["anthropic"])
     def test_configure_cli_explicit_provider(self, mock_detect):
-        """Test CLI configuration with explicit provider."""
-        config = configure_provider_cli(provider="openai")
+        """Test CLI configuration with explicit Anthropic provider (Anthropic-only)."""
+        config = configure_provider_cli(provider="anthropic")
         assert config.mode == ProviderMode.SINGLE
-        assert config.primary_provider == "openai"
-
-    @patch.object(
-        ProviderConfig,
-        "detect_available_providers",
-        return_value=["anthropic", "openai"],
-    )
-    def test_configure_cli_hybrid_mode(self, mock_detect):
-        """Test CLI configuration with hybrid mode."""
-        config = configure_provider_cli(mode="hybrid")
-        assert config.mode == ProviderMode.HYBRID
-
-    @patch.object(
-        ProviderConfig,
-        "detect_available_providers",
-        return_value=["anthropic", "openai"],
-    )
-    def test_configure_cli_hybrid_provider(self, mock_detect):
-        """Test CLI configuration with provider=hybrid."""
-        config = configure_provider_cli(provider="hybrid")
-        assert config.mode == ProviderMode.HYBRID
+        assert config.primary_provider == "anthropic"
 
     @patch.object(ProviderConfig, "auto_detect")
     def test_configure_cli_no_args_auto_detects(self, mock_auto):

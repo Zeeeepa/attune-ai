@@ -1,0 +1,185 @@
+name: Security Scan
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.py'
+      - '**.js'
+      - '**.ts'
+      - '**.tsx'
+      - '**.jsx'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  security-scan:
+    name: Run Security Scanner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better context
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run security audit
+        id: security_scan
+        continue-on-error: true  # Don't fail job, we'll control blocking in next step
+        run: |
+          # Run security audit and capture output
+          empathy workflow run security-audit --json > security_results.json 2>&1 || true
+
+          # Check if scan succeeded
+          if [ $? -eq 0 ]; then
+            echo "scan_status=success" >> $GITHUB_OUTPUT
+          else
+            echo "scan_status=failed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Parse and analyze results
+        id: analyze
+        run: |
+          python .github/scripts/analyze_security_results.py \
+            --input security_results.json \
+            --output analysis.json \
+            --github-output $GITHUB_OUTPUT
+
+      - name: Post results to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const analysis = JSON.parse(fs.readFileSync('analysis.json', 'utf8'));
+
+            // Read the formatted comment
+            const comment = fs.readFileSync('pr_comment.md', 'utf8');
+
+            // Find existing security scan comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('🔒 Security Scan Results')
+            );
+
+            // Update or create comment
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Check for bypass label
+        if: github.event_name == 'pull_request'
+        id: check_bypass
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+
+            const bypassLabels = ['security-scan-bypass', 'hotfix', 'security-approved'];
+            const hasBypass = pr.labels.some(label => bypassLabels.includes(label.name));
+
+            console.log(`Has bypass label: ${hasBypass}`);
+            core.setOutput('has_bypass', hasBypass);
+
+            return hasBypass;
+
+      - name: Block on critical findings
+        if: steps.analyze.outputs.has_critical == 'true' && steps.check_bypass.outputs.has_bypass != 'true'
+        run: |
+          echo "❌ CRITICAL security issues found!"
+          echo ""
+          echo "Found ${{ steps.analyze.outputs.critical_count }} CRITICAL security finding(s)."
+          echo "These must be fixed before merging."
+          echo ""
+          echo "If this is a false positive, you can:"
+          echo "1. Add a security note comment in the code"
+          echo "2. Request security team review by adding 'security-review' label"
+          echo "3. For emergencies, add 'hotfix' label (requires post-deploy fix)"
+          echo ""
+          echo "See PR comment for detailed findings."
+          exit 1
+
+      - name: Upload scan results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-scan-results
+          path: |
+            security_results.json
+            analysis.json
+            pr_comment.md
+          retention-days: 90
+
+      - name: Create check run
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const analysis = JSON.parse(fs.readFileSync('analysis.json', 'utf8'));
+
+            const conclusion = analysis.has_critical && !analysis.has_bypass ? 'failure' : 'success';
+            const summary = `
+            ## Security Scan Summary
+
+            - **Total Findings:** ${analysis.total_findings}
+            - **Critical:** ${analysis.critical_count}
+            - **Medium:** ${analysis.medium_count}
+            - **Low:** ${analysis.low_count}
+
+            ${conclusion === 'failure' ? '❌ **BLOCKED:** Critical findings must be resolved' : '✅ No blocking issues'}
+            `;
+
+            await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Security Scan',
+              head_sha: context.sha,
+              status: 'completed',
+              conclusion: conclusion,
+              output: {
+                title: conclusion === 'failure' ? 'Critical Security Issues Found' : 'Security Scan Passed',
+                summary: summary,
+                text: analysis.detailed_text || 'See PR comment for details'
+              }
+            });
