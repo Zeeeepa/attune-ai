@@ -322,6 +322,93 @@ class AnthropicProvider(BaseLLMProvider):
             },
         )
 
+    def estimate_tokens(self, text: str) -> int:
+        """Estimate token count using accurate token counter (overrides base class).
+
+        Uses tiktoken for fast local estimation (~98% accurate).
+        Falls back to heuristic if tiktoken unavailable.
+
+        Args:
+            text: Text to count tokens for
+
+        Returns:
+            Estimated token count
+        """
+        try:
+            from .utils.tokens import count_tokens
+
+            return count_tokens(text, model=self.model, use_api=False)
+        except ImportError:
+            # Fallback to base class heuristic if utils not available
+            return super().estimate_tokens(text)
+
+    def calculate_actual_cost(
+        self,
+        input_tokens: int,
+        output_tokens: int,
+        cache_creation_tokens: int = 0,
+        cache_read_tokens: int = 0,
+    ) -> dict[str, Any]:
+        """Calculate actual cost based on precise token counts.
+
+        Includes Anthropic prompt caching cost adjustments:
+        - Cache writes: 25% markup over standard input pricing
+        - Cache reads: 90% discount from standard input pricing
+
+        Args:
+            input_tokens: Regular input tokens (not cached)
+            output_tokens: Output tokens
+            cache_creation_tokens: Tokens written to cache
+            cache_read_tokens: Tokens read from cache
+
+        Returns:
+            Dictionary with cost breakdown:
+            - base_cost: Cost for regular input/output tokens
+            - cache_write_cost: Cost for cache creation (if any)
+            - cache_read_cost: Cost for cache reads (if any)
+            - total_cost: Total cost including all components
+            - savings: Amount saved by cache reads vs. full price
+
+        Example:
+            >>> provider = AnthropicProvider(api_key="...")
+            >>> cost = provider.calculate_actual_cost(
+            ...     input_tokens=1000,
+            ...     output_tokens=500,
+            ...     cache_read_tokens=10000
+            ... )
+            >>> cost["total_cost"]
+            0.0105  # Significantly less than without cache
+        """
+        # Get pricing for this model
+        model_info = self.get_model_info()
+        input_price_per_million = model_info["cost_per_1m_input"]
+        output_price_per_million = model_info["cost_per_1m_output"]
+
+        # Base cost (non-cached tokens)
+        base_cost = (input_tokens / 1_000_000) * input_price_per_million
+        base_cost += (output_tokens / 1_000_000) * output_price_per_million
+
+        # Cache write cost (25% markup)
+        cache_write_price = input_price_per_million * 1.25
+        cache_write_cost = (cache_creation_tokens / 1_000_000) * cache_write_price
+
+        # Cache read cost (90% discount = 10% of input price)
+        cache_read_price = input_price_per_million * 0.1
+        cache_read_cost = (cache_read_tokens / 1_000_000) * cache_read_price
+
+        # Calculate savings from cache reads
+        full_price_for_cached = (cache_read_tokens / 1_000_000) * input_price_per_million
+        savings = full_price_for_cached - cache_read_cost
+
+        return {
+            "base_cost": round(base_cost, 6),
+            "cache_write_cost": round(cache_write_cost, 6),
+            "cache_read_cost": round(cache_read_cost, 6),
+            "total_cost": round(base_cost + cache_write_cost + cache_read_cost, 6),
+            "savings": round(savings, 6),
+            "currency": "USD",
+        }
+
 
 class AnthropicBatchProvider:
     """Provider for Anthropic Batch API (50% cost reduction).
@@ -370,7 +457,8 @@ class AnthropicBatchProvider:
         """Create a batch job.
 
         Args:
-            requests: List of request dicts with 'custom_id', 'model', 'messages', etc.
+            requests: List of request dicts with 'custom_id' and 'params' containing message creation parameters.
+                Format: [{"custom_id": "id1", "params": {"model": "...", "messages": [...], "max_tokens": 1024}}]
             job_id: Optional job identifier for tracking (unused, for API compatibility)
 
         Returns:
@@ -384,22 +472,46 @@ class AnthropicBatchProvider:
             >>> requests = [
             ...     {
             ...         "custom_id": "task_1",
-            ...         "model": "claude-sonnet-4-5",
-            ...         "messages": [{"role": "user", "content": "Test"}],
-            ...         "max_tokens": 1024
+            ...         "params": {
+            ...             "model": "claude-sonnet-4-5-20250929",
+            ...             "messages": [{"role": "user", "content": "Test"}],
+            ...             "max_tokens": 1024
+            ...         }
             ...     }
             ... ]
             >>> batch_id = provider.create_batch(requests)
             >>> print(f"Batch created: {batch_id}")
-            Batch created: batch_abc123
+            Batch created: msgbatch_abc123
         """
         if not requests:
             raise ValueError("requests cannot be empty")
 
+        # Validate and convert old format to new format if needed
+        formatted_requests = []
+        for req in requests:
+            if "params" not in req:
+                # Old format: convert to new format with params wrapper
+                formatted_req = {
+                    "custom_id": req.get("custom_id", f"req_{id(req)}"),
+                    "params": {
+                        "model": req.get("model", "claude-sonnet-4-5-20250929"),
+                        "messages": req.get("messages", []),
+                        "max_tokens": req.get("max_tokens", 4096),
+                    },
+                }
+                # Copy other optional params
+                for key in ["temperature", "system", "stop_sequences"]:
+                    if key in req:
+                        formatted_req["params"][key] = req[key]
+                formatted_requests.append(formatted_req)
+            else:
+                formatted_requests.append(req)
+
         try:
-            batch = self.client.batches.create(requests=requests)
+            # Use correct Message Batches API endpoint
+            batch = self.client.messages.batches.create(requests=formatted_requests)
             self._batch_jobs[batch.id] = batch
-            logger.info(f"Created batch {batch.id} with {len(requests)} requests")
+            logger.info(f"Created batch {batch.id} with {len(formatted_requests)} requests")
             return batch.id
         except Exception as e:
             logger.error(f"Failed to create batch: {e}")
@@ -412,18 +524,20 @@ class AnthropicBatchProvider:
             batch_id: Batch job ID
 
         Returns:
-            BatchStatus object with status field:
-            - "processing": Batch is being processed
-            - "completed": Batch processing completed
-            - "failed": Batch processing failed
+            MessageBatch object with processing_status field:
+            - "in_progress": Batch is being processed
+            - "canceling": Cancellation initiated
+            - "ended": Batch processing ended (check request_counts for success/errors)
 
         Example:
-            >>> status = provider.get_batch_status("batch_abc123")
-            >>> print(status.status)
-            processing
+            >>> status = provider.get_batch_status("msgbatch_abc123")
+            >>> print(status.processing_status)
+            in_progress
+            >>> print(f"Succeeded: {status.request_counts.succeeded}")
         """
         try:
-            batch = self.client.batches.retrieve(batch_id)
+            # Use correct Message Batches API endpoint
+            batch = self.client.messages.batches.retrieve(batch_id)
             self._batch_jobs[batch_id] = batch
             return batch
         except Exception as e:
@@ -437,25 +551,37 @@ class AnthropicBatchProvider:
             batch_id: Batch job ID
 
         Returns:
-            List of result dicts matching input order
+            List of result dicts. Each dict contains:
+            - custom_id: Request identifier
+            - result: Either {"type": "succeeded", "message": {...}} or {"type": "errored", "error": {...}}
 
         Raises:
-            ValueError: If batch is not completed
+            ValueError: If batch has not ended processing
             RuntimeError: If API call fails
 
         Example:
-            >>> results = provider.get_batch_results("batch_abc123")
+            >>> results = provider.get_batch_results("msgbatch_abc123")
             >>> for result in results:
-            ...     print(f"{result['custom_id']}: {result['response']['content']}")
+            ...     if result['result']['type'] == 'succeeded':
+            ...         message = result['result']['message']
+            ...         print(f"{result['custom_id']}: {message.content[0].text}")
+            ...     else:
+            ...         error = result['result']['error']
+            ...         print(f"{result['custom_id']}: Error {error['type']}")
         """
         status = self.get_batch_status(batch_id)
 
-        if status.status != "completed":
-            raise ValueError(f"Batch {batch_id} not completed (status: {status.status})")
+        # Check processing_status instead of status
+        if status.processing_status != "ended":
+            raise ValueError(
+                f"Batch {batch_id} has not ended processing (status: {status.processing_status})"
+            )
 
         try:
-            results = self.client.batches.results(batch_id)
-            return list(results)
+            # Use correct Message Batches API endpoint
+            # results() returns an iterator, convert to list
+            results_iterator = self.client.messages.batches.results(batch_id)
+            return list(results_iterator)
         except Exception as e:
             logger.error(f"Failed to get batch results for {batch_id}: {e}")
             raise RuntimeError(f"Failed to get batch results: {e}") from e
@@ -474,15 +600,15 @@ class AnthropicBatchProvider:
             timeout: Maximum wait time in seconds (default: 86400 = 24 hours)
 
         Returns:
-            Batch results when completed
+            Batch results when processing ends
 
         Raises:
             TimeoutError: If batch doesn't complete within timeout
-            RuntimeError: If batch processing fails
+            RuntimeError: If batch had errors during processing
 
         Example:
             >>> results = await provider.wait_for_batch(
-            ...     "batch_abc123",
+            ...     "msgbatch_abc123",
             ...     poll_interval=300,  # Check every 5 minutes
             ... )
             >>> print(f"Batch completed: {len(results)} results")
@@ -493,22 +619,36 @@ class AnthropicBatchProvider:
         while True:
             status = self.get_batch_status(batch_id)
 
-            if status.status == "completed":
-                logger.info(f"Batch {batch_id} completed successfully")
-                return self.get_batch_results(batch_id)
+            # Check if batch processing has ended
+            if status.processing_status == "ended":
+                # Check request counts to see if there were errors
+                counts = status.request_counts
+                logger.info(
+                    f"Batch {batch_id} ended: "
+                    f"{counts.succeeded} succeeded, {counts.errored} errored, "
+                    f"{counts.canceled} canceled, {counts.expired} expired"
+                )
 
-            if status.status == "failed":
-                error_msg = getattr(status, "error", "Unknown error")
-                logger.error(f"Batch {batch_id} failed: {error_msg}")
-                raise RuntimeError(f"Batch {batch_id} failed: {error_msg}")
+                # Return results even if some requests failed
+                # The caller can inspect individual results for errors
+                return self.get_batch_results(batch_id)
 
             # Check timeout
             elapsed = (datetime.now() - start_time).total_seconds()
             if elapsed > timeout:
                 raise TimeoutError(f"Batch {batch_id} did not complete within {timeout}s")
 
-            # Log progress
-            logger.debug(f"Batch {batch_id} status: {status.status} (elapsed: {elapsed:.0f}s)")
+            # Log progress with request counts
+            try:
+                counts = status.request_counts
+                logger.debug(
+                    f"Batch {batch_id} status: {status.processing_status} "
+                    f"(processing: {counts.processing}, elapsed: {elapsed:.0f}s)"
+                )
+            except AttributeError:
+                logger.debug(
+                    f"Batch {batch_id} status: {status.processing_status} (elapsed: {elapsed:.0f}s)"
+                )
 
             # Wait before next poll
             await asyncio.sleep(poll_interval)

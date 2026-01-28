@@ -7,6 +7,8 @@ Licensed under Fair Source License 0.9
 """
 
 from . import (
+    batch,
+    cache,
     help,
     info,
     inspect,
@@ -57,6 +59,8 @@ def register_all_parsers(subparsers):
 
     # Metrics and state
     metrics.register_parsers(subparsers)
+    cache.register_parsers(subparsers)  # Cache monitoring
+    batch.register_parsers(subparsers)  # Batch processing (50% cost savings)
 
     # Setup and initialization
     setup.register_parsers(subparsers)
