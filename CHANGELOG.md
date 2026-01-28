@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.1] - 2026-01-28
+
+### Added
+- **Interactive Approval Gates Demo** (`examples/test_approval_gates.py`)
+  - Demonstrates Pattern 5: Approval Gates workflow
+  - Creates test approval requests for dashboard interaction
+  - Shows approve/reject flow with timeout handling
+  - Useful for testing and understanding approval gates
+
+### Documentation
+- Added example script for approval gates testing
+- Helps users understand human-in-the-loop workflows
+
 ## [5.0.0] - 2026-01-27
 
 ### 🚨 Breaking Changes
