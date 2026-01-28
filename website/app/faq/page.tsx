@@ -39,15 +39,15 @@ const faqData: FAQCategory[] = [
     questions: [
       {
         question: 'How much does Empathy cost?',
-        answer: 'Empathy is free for students, educators, and teams with 5 or fewer employees under the Fair Source License 0.9. For businesses with 6+ employees, contact us for commercial licensing options. One license covers all environments (workstation, staging, production, CI/CD).',
+        answer: 'Empathy Framework is completely free and open source under the Apache License 2.0. Use it in personal projects, startups, or large enterprises at no cost. No license keys, no restrictions, no hidden fees.',
       },
       {
-        question: 'What is the Fair Source License?',
-        answer: 'The Fair Source License 0.9 is a source-available license that provides free use for small teams (≤5 employees) while requiring commercial licenses for larger organizations. It allows you to read and modify the source code while supporting sustainable development.',
+        question: 'What is the Apache 2.0 License?',
+        answer: 'Apache 2.0 is a permissive open source license approved by the OSI. It allows you to use, modify, distribute, and sell products built with Empathy Framework. It includes patent protection and is approved by most enterprise legal teams.',
       },
       {
-        question: 'Do I need separate licenses for different environments?',
-        answer: 'No! One developer license covers all environments including development workstations, staging servers, production servers, and CI/CD pipelines. You only pay per human developer, not per installation.',
+        question: 'Can I use Empathy for commercial projects?',
+        answer: 'Yes! Apache 2.0 explicitly permits commercial use. Build and sell products using Empathy Framework without any licensing fees or restrictions.',
       },
     ],
   },
@@ -80,8 +80,8 @@ const faqData: FAQCategory[] = [
         answer: 'You can build anticipatory AI systems for software development (bug prediction, security scanning, test generation), healthcare (patient monitoring, clinical decision support), and any domain where predicting problems before they happen adds value.',
       },
       {
-        question: 'Can I use this for commercial projects?',
-        answer: 'Yes! If your organization has 5 or fewer employees, you can use it for free under the Fair Source License. Larger organizations need a commercial license—contact us for pricing.',
+        question: 'What happened to the Fair Source License?',
+        answer: 'As of January 28, 2026, we switched from Fair Source 0.9 to Apache 2.0. We realized the licensing restrictions were limiting adoption without generating revenue. Going fully open source lets us focus on building the best framework and growing a community.',
       },
       {
         question: 'Is the framework production-ready?',
@@ -111,7 +111,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'Can I contribute to the project?',
-        answer: 'Yes! We welcome contributions. Check out our GitHub repository for contribution guidelines. The source code is available for reading and modification under the Fair Source License.',
+        answer: 'Yes! We welcome contributions. Check out our GitHub repository for contribution guidelines. The framework is fully open source under Apache 2.0, making it easy to fork, modify, and contribute back.',
       },
     ],
   },
@@ -119,7 +119,7 @@ const faqData: FAQCategory[] = [
 
 export const metadata: Metadata = generateMetadata({
   title: 'FAQ',
-  description: 'Frequently asked questions about Empathy, licensing, pricing, and technical details.',
+  description: 'Frequently asked questions about Empathy, open source licensing, and technical details.',
   url: 'https://smartaimemory.com/faq',
 });
 

@@ -7,7 +7,7 @@ Run code review, debugging, testing, and release workflows from your terminal or
 [![PyPI](https://img.shields.io/pypi/v/empathy-framework?color=blue)](https://pypi.org/project/empathy-framework/)
 [![Tests](https://img.shields.io/badge/tests-7%2C168%20passing%20(99.9%25)-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
-[![License](https://img.shields.io/badge/license-Fair%20Source%200.9-blue)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 [![Performance](https://img.shields.io/badge/performance-18x%20faster-success)](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md)
 
 ```bash
@@ -471,7 +471,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
-**Fair Source License 0.9** - Free for students, educators, and teams ≤5 employees. Commercial license for larger organizations. [Details →](LICENSE)
+**Apache License 2.0** - Free and open source for everyone. Use it, modify it, build commercial products with it. [Details →](LICENSE)
 
 ---
 

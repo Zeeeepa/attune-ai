@@ -110,7 +110,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-[var(--border)] flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-[var(--muted)] text-center md:text-left">
-            © {currentYear} SmartAI Memory · Fair Source License
+            © {currentYear} SmartAI Memory · <a href="https://github.com/Smart-AI-Memory/empathy-framework/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--primary)] transition-colors">Apache 2.0 License</a>
           </div>
           <div className="flex gap-6 text-xs text-[var(--muted)]">
             <Link href="/privacy" className="hover:text-[var(--primary)] transition-colors">

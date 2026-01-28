@@ -1,5 +1,11 @@
 import crypto from 'crypto';
 
+/**
+ * @deprecated This module is deprecated as of January 28, 2026.
+ * Empathy Framework is now fully open source under Apache 2.0.
+ * No license keys are required. This code is kept for historical purposes only.
+ */
+
 // License key format: EMPATHY-XXXX-XXXX-XXXX-XXXX
 // Where X is alphanumeric (excluding confusing chars like 0/O, 1/I/l)
 const CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
