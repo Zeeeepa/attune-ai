@@ -60,6 +60,7 @@ class ReleasePreparationWorkflow(BaseWorkflow):
         skip_approve_if_clean: bool = True,
         use_security_crew: bool = False,
         crew_config: dict | None = None,
+        enable_auth_strategy: bool = True,
         **kwargs: Any,
     ):
         """Initialize release preparation workflow.
@@ -68,6 +69,7 @@ class ReleasePreparationWorkflow(BaseWorkflow):
             skip_approve_if_clean: Skip premium approval if all checks pass
             use_security_crew: Enable SecurityAuditCrew for comprehensive security audit
             crew_config: Configuration dict for SecurityAuditCrew
+            enable_auth_strategy: Enable intelligent auth routing (default: True)
             **kwargs: Additional arguments passed to BaseWorkflow
 
         """
@@ -75,7 +77,9 @@ class ReleasePreparationWorkflow(BaseWorkflow):
         self.skip_approve_if_clean = skip_approve_if_clean
         self.use_security_crew = use_security_crew
         self.crew_config = crew_config or {}
+        self.enable_auth_strategy = enable_auth_strategy
         self._has_blockers: bool = False
+        self._auth_mode_used: str | None = None
 
         # Dynamically configure stages based on security crew setting
         if use_security_crew:
@@ -137,6 +141,52 @@ class ReleasePreparationWorkflow(BaseWorkflow):
         Executes lint, type checking, and tests.
         """
         target_path = input_data.get("path", ".")
+
+        # === AUTH STRATEGY INTEGRATION ===
+        if self.enable_auth_strategy:
+            try:
+                import logging
+                from pathlib import Path
+
+                from empathy_os.models import (
+                    count_lines_of_code,
+                    get_auth_strategy,
+                    get_module_size_category,
+                )
+                logger = logging.getLogger(__name__)
+
+                # Calculate total LOC for project/directory
+                target = Path(target_path)
+                total_lines = 0
+                if target.is_file():
+                    total_lines = count_lines_of_code(target)
+                elif target.is_dir():
+                    for py_file in target.rglob("*.py"):
+                        try:
+                            total_lines += count_lines_of_code(py_file)
+                        except Exception:
+                            pass
+
+                if total_lines > 0:
+                    strategy = get_auth_strategy()
+                    recommended_mode = strategy.get_recommended_mode(total_lines)
+                    self._auth_mode_used = recommended_mode.value
+
+                    size_category = get_module_size_category(total_lines)
+                    logger.info(f"Release prep target: {target_path} ({total_lines:,} LOC, {size_category})")
+                    logger.info(f"Recommended auth mode: {recommended_mode.value}")
+
+                    cost_estimate = strategy.estimate_cost(total_lines, recommended_mode)
+                    if recommended_mode.value == "subscription":
+                        logger.info(f"Cost: {cost_estimate['quota_cost']}")
+                    else:
+                        logger.info(f"Cost: ~${cost_estimate['monetary_cost']:.4f}")
+
+            except Exception as e:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.warning(f"Auth strategy detection failed: {e}")
+
         checks: dict[str, dict] = {}
 
         # Lint check (ruff)
@@ -639,6 +689,10 @@ Provide a comprehensive release readiness assessment."""
             ),
             "model_tier_used": tier.value,
         }
+
+        # Include auth mode used for telemetry
+        if self._auth_mode_used:
+            result["auth_mode_used"] = self._auth_mode_used
 
         # Merge parsed XML data if available
         if parsed_data.get("xml_parsed"):

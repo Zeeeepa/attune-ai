@@ -55,7 +55,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-__version__ = "5.0.3"
+__version__ = "5.1.0"
 __author__ = "Patrick Roebuck"
 __email__ = "patrick.roebuck@smartaimemory.com"
 

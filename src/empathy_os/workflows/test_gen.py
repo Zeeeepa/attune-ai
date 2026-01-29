@@ -391,6 +391,7 @@ class TestGenerationWorkflow(BaseWorkflow):
         min_tests_for_review: int = 10,
         write_tests: bool = False,
         output_dir: str = "tests/generated",
+        enable_auth_strategy: bool = True,
         **kwargs: Any,
     ):
         """Initialize test generation workflow.
@@ -400,6 +401,7 @@ class TestGenerationWorkflow(BaseWorkflow):
             min_tests_for_review: Minimum tests generated to trigger premium review
             write_tests: If True, write generated tests to output_dir
             output_dir: Directory to write generated test files
+            enable_auth_strategy: Enable intelligent auth routing (default: True)
             **kwargs: Additional arguments passed to BaseWorkflow
 
         """
@@ -408,8 +410,10 @@ class TestGenerationWorkflow(BaseWorkflow):
         self.min_tests_for_review = min_tests_for_review
         self.write_tests = write_tests
         self.output_dir = output_dir
+        self.enable_auth_strategy = enable_auth_strategy
         self._test_count: int = 0
         self._bug_hotspots: list[str] = []
+        self._auth_mode_used: str | None = None
         self._load_bug_hotspots()
 
     def _load_bug_hotspots(self) -> None:
@@ -481,6 +485,57 @@ class TestGenerationWorkflow(BaseWorkflow):
         """
         target_path = input_data.get("path", ".")
         file_types = input_data.get("file_types", [".py"])
+
+        # === AUTH STRATEGY INTEGRATION ===
+        if self.enable_auth_strategy:
+            try:
+                import logging
+                from pathlib import Path
+
+                from empathy_os.models import (
+                    count_lines_of_code,
+                    get_auth_strategy,
+                    get_module_size_category,
+                )
+
+                logger = logging.getLogger(__name__)
+
+                # Calculate total LOC for the project/path
+                target = Path(target_path)
+                total_lines = 0
+                if target.is_file():
+                    total_lines = count_lines_of_code(target)
+                elif target.is_dir():
+                    # Estimate total lines for directory
+                    for py_file in target.rglob("*.py"):
+                        try:
+                            total_lines += count_lines_of_code(py_file)
+                        except Exception:
+                            pass
+
+                if total_lines > 0:
+                    strategy = get_auth_strategy()
+                    recommended_mode = strategy.get_recommended_mode(total_lines)
+                    self._auth_mode_used = recommended_mode.value
+
+                    size_category = get_module_size_category(total_lines)
+                    logger.info(
+                        f"Test generation target: {target_path} "
+                        f"({total_lines:,} LOC, {size_category})"
+                    )
+                    logger.info(f"Recommended auth mode: {recommended_mode.value}")
+
+                    cost_estimate = strategy.estimate_cost(total_lines, recommended_mode)
+                    if recommended_mode.value == "subscription":
+                        logger.info(f"Cost: {cost_estimate['quota_cost']}")
+                    else:
+                        logger.info(f"Cost: ~${cost_estimate['monetary_cost']:.4f}")
+
+            except Exception as e:
+                import logging
+
+                logger = logging.getLogger(__name__)
+                logger.warning(f"Auth strategy detection failed: {e}")
 
         # Parse configurable limits with sensible defaults
         max_files_to_scan = input_data.get("max_files_to_scan", 1000)
@@ -1452,6 +1507,11 @@ END OF REQUIRED FORMAT - output nothing after recommendations."""
 
         # Replace the previous analysis with the final, accurate report
         input_data["analysis_report"] = report
+
+        # Include auth mode used for telemetry
+        if self._auth_mode_used:
+            input_data["auth_mode_used"] = self._auth_mode_used
+
         return input_data, total_in, total_out
 
     def _response_contains_questions(self, response: str) -> bool:

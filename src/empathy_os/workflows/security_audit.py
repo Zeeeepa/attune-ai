@@ -212,6 +212,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
         use_crew_for_assessment: bool = True,
         use_crew_for_remediation: bool = False,
         crew_config: dict | None = None,
+        enable_auth_strategy: bool = True,
         **kwargs: Any,
     ):
         """Initialize security audit workflow.
@@ -222,6 +223,8 @@ class SecurityAuditWorkflow(BaseWorkflow):
             use_crew_for_assessment: Use SecurityAuditCrew for vulnerability assessment (default: True)
             use_crew_for_remediation: Use SecurityAuditCrew for enhanced remediation (default: True)
             crew_config: Configuration dict for SecurityAuditCrew
+            enable_auth_strategy: If True, use intelligent subscription vs API routing
+                based on codebase size (default: True)
             **kwargs: Additional arguments passed to BaseWorkflow
 
         """
@@ -231,10 +234,12 @@ class SecurityAuditWorkflow(BaseWorkflow):
         self.use_crew_for_assessment = use_crew_for_assessment
         self.use_crew_for_remediation = use_crew_for_remediation
         self.crew_config = crew_config or {}
+        self.enable_auth_strategy = enable_auth_strategy
         self._has_critical: bool = False
         self._team_decisions: dict[str, dict] = {}
         self._crew: Any = None
         self._crew_available = False
+        self._auth_mode_used: str | None = None  # Track which auth was recommended
         self._load_team_decisions()
 
     def _load_team_decisions(self) -> None:
@@ -312,91 +317,101 @@ class SecurityAuditWorkflow(BaseWorkflow):
 
         target = Path(target_path)
         if target.exists():
-            for ext in file_types:
-                for file_path in target.rglob(f"*{ext}"):
-                    # Skip excluded directories
-                    if any(skip in str(file_path) for skip in SKIP_DIRECTORIES):
-                        continue
+            # Handle both file and directory targets
+            files_to_scan: list[Path] = []
+            if target.is_file():
+                # Single file - check if it matches file_types
+                if any(str(target).endswith(ext) for ext in file_types):
+                    files_to_scan = [target]
+            else:
+                # Directory - recursively find all matching files
+                for ext in file_types:
+                    for file_path in target.rglob(f"*{ext}"):
+                        # Skip excluded directories
+                        if any(skip in str(file_path) for skip in SKIP_DIRECTORIES):
+                            continue
+                        files_to_scan.append(file_path)
 
-                    try:
-                        content = file_path.read_text(errors="ignore")
-                        lines = content.split("\n")
-                        files_scanned += 1
+            for file_path in files_to_scan:
+                try:
+                    content = file_path.read_text(errors="ignore")
+                    lines = content.split("\n")
+                    files_scanned += 1
 
-                        for vuln_type, vuln_info in SECURITY_PATTERNS.items():
-                            for pattern in vuln_info["patterns"]:
-                                matches = list(re.finditer(pattern, content, re.IGNORECASE))
-                                for match in matches:
-                                    # Find line number and get the line content
-                                    line_num = content[: match.start()].count("\n") + 1
-                                    line_content = (
-                                        lines[line_num - 1] if line_num <= len(lines) else ""
-                                    )
+                    for vuln_type, vuln_info in SECURITY_PATTERNS.items():
+                        for pattern in vuln_info["patterns"]:
+                            matches = list(re.finditer(pattern, content, re.IGNORECASE))
+                            for match in matches:
+                                # Find line number and get the line content
+                                line_num = content[: match.start()].count("\n") + 1
+                                line_content = (
+                                    lines[line_num - 1] if line_num <= len(lines) else ""
+                                )
 
-                                    # Skip if file is a security example/test file
-                                    file_name = str(file_path)
-                                    if any(exp in file_name for exp in SECURITY_EXAMPLE_PATHS):
+                                # Skip if file is a security example/test file
+                                file_name = str(file_path)
+                                if any(exp in file_name for exp in SECURITY_EXAMPLE_PATHS):
+                                    continue
+
+                                # Skip if this looks like detection/scanning code
+                                if self._is_detection_code(line_content, match.group()):
+                                    continue
+
+                                # Phase 2: Skip safe SQL parameterization patterns
+                                if vuln_type == "sql_injection":
+                                    if self._is_safe_sql_parameterization(
+                                        line_content,
+                                        match.group(),
+                                        content,
+                                    ):
                                         continue
 
-                                    # Skip if this looks like detection/scanning code
-                                    if self._is_detection_code(line_content, match.group()):
+                                # Skip fake/test credentials
+                                if vuln_type == "hardcoded_secret":
+                                    if self._is_fake_credential(match.group()):
                                         continue
 
-                                    # Phase 2: Skip safe SQL parameterization patterns
-                                    if vuln_type == "sql_injection":
-                                        if self._is_safe_sql_parameterization(
-                                            line_content,
-                                            match.group(),
-                                            content,
-                                        ):
-                                            continue
-
-                                    # Skip fake/test credentials
-                                    if vuln_type == "hardcoded_secret":
-                                        if self._is_fake_credential(match.group()):
-                                            continue
-
-                                    # Phase 2: Skip safe random usage (tests, demos, documented)
-                                    if vuln_type == "insecure_random":
-                                        if self._is_safe_random_usage(
-                                            line_content,
-                                            file_name,
-                                            content,
-                                        ):
-                                            continue
-
-                                    # Skip command_injection in documentation strings
-                                    if vuln_type == "command_injection":
-                                        if self._is_documentation_or_string(
-                                            line_content,
-                                            match.group(),
-                                        ):
-                                            continue
-
-                                    # Check if this is a test file - downgrade to informational
-                                    is_test_file = any(
-                                        re.search(pat, file_name) for pat in TEST_FILE_PATTERNS
-                                    )
-
-                                    # Skip test file findings for hardcoded_secret (expected in tests)
-                                    if is_test_file and vuln_type == "hardcoded_secret":
+                                # Phase 2: Skip safe random usage (tests, demos, documented)
+                                if vuln_type == "insecure_random":
+                                    if self._is_safe_random_usage(
+                                        line_content,
+                                        file_name,
+                                        content,
+                                    ):
                                         continue
 
-                                    findings.append(
-                                        {
-                                            "type": vuln_type,
-                                            "file": str(file_path),
-                                            "line": line_num,
-                                            "match": match.group()[:100],
-                                            "severity": (
-                                                "low" if is_test_file else vuln_info["severity"]
-                                            ),
-                                            "owasp": vuln_info["owasp"],
-                                            "is_test": is_test_file,
-                                        },
-                                    )
-                    except OSError:
-                        continue
+                                # Skip command_injection in documentation strings
+                                if vuln_type == "command_injection":
+                                    if self._is_documentation_or_string(
+                                        line_content,
+                                        match.group(),
+                                    ):
+                                        continue
+
+                                # Check if this is a test file - downgrade to informational
+                                is_test_file = any(
+                                    re.search(pat, file_name) for pat in TEST_FILE_PATTERNS
+                                )
+
+                                # Skip test file findings for hardcoded_secret (expected in tests)
+                                if is_test_file and vuln_type == "hardcoded_secret":
+                                    continue
+
+                                findings.append(
+                                    {
+                                        "type": vuln_type,
+                                        "file": str(file_path),
+                                        "line": line_num,
+                                        "match": match.group()[:100],
+                                        "severity": (
+                                            "low" if is_test_file else vuln_info["severity"]
+                                        ),
+                                        "owasp": vuln_info["owasp"],
+                                        "is_test": is_test_file,
+                                    },
+                                )
+                except OSError:
+                    continue
 
         # Phase 3: Apply AST-based filtering for command injection
         try:
@@ -420,6 +435,64 @@ class SecurityAuditWorkflow(BaseWorkflow):
             logger.debug("Phase 3 module not available, skipping AST-based filtering")
         except Exception as e:
             logger.warning(f"Phase 3 filtering failed: {e}")
+
+        # === AUTH STRATEGY INTEGRATION ===
+        # Detect codebase size and recommend auth mode (first stage only)
+        if self.enable_auth_strategy:
+            try:
+                from empathy_os.models import (
+                    count_lines_of_code,
+                    get_auth_strategy,
+                    get_module_size_category,
+                )
+
+                # Calculate codebase size
+                codebase_lines = 0
+                if target.exists():
+                    if target.is_file():
+                        codebase_lines = count_lines_of_code(target)
+                    elif target.is_dir():
+                        # Sum lines across all Python files
+                        for py_file in target.rglob("*.py"):
+                            try:
+                                codebase_lines += count_lines_of_code(py_file)
+                            except Exception:
+                                pass
+
+                if codebase_lines > 0:
+                    # Get auth strategy (first-time setup if needed)
+                    strategy = get_auth_strategy()
+
+                    # Get recommended auth mode
+                    recommended_mode = strategy.get_recommended_mode(codebase_lines)
+                    self._auth_mode_used = recommended_mode.value
+
+                    # Get size category
+                    size_category = get_module_size_category(codebase_lines)
+
+                    # Log recommendation
+                    logger.info(
+                        f"Codebase: {target} ({codebase_lines} LOC, {size_category})"
+                    )
+                    logger.info(f"Recommended auth mode: {recommended_mode.value}")
+
+                    # Get cost estimate
+                    cost_estimate = strategy.estimate_cost(codebase_lines, recommended_mode)
+
+                    if recommended_mode.value == "subscription":
+                        logger.info(
+                            f"Cost: {cost_estimate['quota_cost']} "
+                            f"(fits in {cost_estimate['fits_in_context']} context)"
+                        )
+                    else:  # API
+                        logger.info(
+                            f"Cost: ~${cost_estimate['monetary_cost']:.4f} "
+                            f"(1M context window)"
+                        )
+
+            except Exception as e:
+                # Don't fail workflow if auth strategy fails
+                logger.warning(f"Auth strategy detection failed: {e}")
 
         input_tokens = len(str(input_data)) // 4
         output_tokens = len(str(findings)) // 4
@@ -991,6 +1064,8 @@ Provide a detailed remediation plan with specific fixes."""
             "risk_level": assessment.get("risk_level", "unknown"),
             "model_tier_used": tier.value,
             "crew_enhanced": crew_enhanced,
+            "auth_mode_used": self._auth_mode_used,  # Track recommended auth mode
+            **input_data,  # Merge all previous stage data
         }
 
         # Add crew-specific fields if enhanced

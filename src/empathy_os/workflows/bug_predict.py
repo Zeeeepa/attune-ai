@@ -450,6 +450,7 @@ class BugPredictionWorkflow(BaseWorkflow):
         self,
         risk_threshold: float | None = None,
         patterns_dir: str = "./patterns",
+        enable_auth_strategy: bool = True,
         **kwargs: Any,
     ):
         """Initialize bug prediction workflow.
@@ -458,6 +459,8 @@ class BugPredictionWorkflow(BaseWorkflow):
             risk_threshold: Minimum risk score to trigger premium recommendations
                            (defaults to config value or 0.7)
             patterns_dir: Directory containing learned patterns
+            enable_auth_strategy: If True, use intelligent subscription vs API routing
+                based on codebase size (default True)
             **kwargs: Additional arguments passed to BaseWorkflow
 
         """
@@ -481,8 +484,10 @@ class BugPredictionWorkflow(BaseWorkflow):
             else self._bug_predict_config["risk_threshold"]
         )
         self.patterns_dir = patterns_dir
+        self.enable_auth_strategy = enable_auth_strategy
         self._risk_score: float = 0.0
         self._bug_patterns: list[dict] = []
+        self._auth_mode_used: str | None = None  # Track which auth was recommended
         self._load_patterns()
 
     def _load_patterns(self) -> None:
@@ -574,6 +579,45 @@ class BugPredictionWorkflow(BaseWorkflow):
         # Get config options
         config_exclude_patterns = self._bug_predict_config.get("exclude_files", [])
         acceptable_contexts = self._bug_predict_config.get("acceptable_exception_contexts", None)
+
+        # === AUTH STRATEGY INTEGRATION ===
+        # Detect codebase size and recommend auth mode (first stage only)
+        if self.enable_auth_strategy:
+            try:
+                from empathy_os.models import (
+                    count_lines_of_code,
+                    get_auth_strategy,
+                    get_module_size_category,
+                )
+
+                # Calculate codebase size
+                codebase_lines = 0
+                target = Path(target_path)
+                if target.exists():
+                    codebase_lines = count_lines_of_code(str(target))
+
+                # Get auth strategy and recommendation
+                strategy = get_auth_strategy()
+                if strategy:
+                    # Get recommended auth mode
+                    recommended_mode = strategy.get_recommended_mode(codebase_lines)
+                    self._auth_mode_used = recommended_mode.value
+
+                    # Get size category
+                    size_category = get_module_size_category(codebase_lines)
+
+                    # Log recommendation
+                    logger.info(
+                        f"Auth Strategy: {size_category.value} codebase ({codebase_lines} lines) "
+                        f"-> {recommended_mode.value}",
+                    )
+            except ImportError:
+                # Auth strategy module not available - continue without it
+                logger.debug("Auth strategy module not available")
+            except Exception as e:
+                # Don't fail the workflow if auth strategy detection fails
+                logger.warning(f"Auth strategy detection failed: {e}")
+        # === END AUTH STRATEGY ===/
 
         # Walk directory and collect file info
         target = Path(target_path)
@@ -878,6 +922,7 @@ Provide detailed recommendations for preventing bugs."""
             "recommendation_count": len(top_risks),
             "model_tier_used": tier.value,
             "overall_risk_score": input_data.get("overall_risk_score", 0),
+            "auth_mode_used": self._auth_mode_used,  # Track recommended auth mode
         }
 
         # Merge parsed XML data if available

@@ -57,6 +57,7 @@ class CodeReviewWorkflow(BaseWorkflow):
         core_modules: list[str] | None = None,
         use_crew: bool = True,
         crew_config: dict | None = None,
+        enable_auth_strategy: bool = True,
         **kwargs: Any,
     ):
         """Initialize workflow.
@@ -66,6 +67,8 @@ class CodeReviewWorkflow(BaseWorkflow):
             core_modules: List of module paths considered "core" (trigger premium).
             use_crew: Enable CodeReviewCrew for comprehensive 5-agent analysis (default: True).
             crew_config: Configuration dict for CodeReviewCrew.
+            enable_auth_strategy: If True, use intelligent subscription vs API routing
+                based on module size (default True).
 
         """
         super().__init__(**kwargs)
@@ -79,10 +82,12 @@ class CodeReviewWorkflow(BaseWorkflow):
         ]
         self.use_crew = use_crew
         self.crew_config = crew_config or {}
+        self.enable_auth_strategy = enable_auth_strategy
         self._needs_architect_review: bool = False
         self._change_type: str = "unknown"
         self._crew: Any = None
         self._crew_available = False
+        self._auth_mode_used: str | None = None
 
         # Dynamically configure stages based on crew setting
         if use_crew:
@@ -295,6 +300,56 @@ class CodeReviewWorkflow(BaseWorkflow):
             code_to_review = project_context
             # Mark as project-level review
             input_data["is_project_review"] = True
+
+        # === AUTH STRATEGY INTEGRATION ===
+        if self.enable_auth_strategy:
+            try:
+                import logging
+                from pathlib import Path
+
+                from empathy_os.models import (
+                    count_lines_of_code,
+                    get_auth_strategy,
+                    get_module_size_category,
+                )
+
+                logger = logging.getLogger(__name__)
+
+                # Calculate module size (for file) or total LOC (for directory)
+                target_path = target or diff
+                total_lines = 0
+                if target_path:
+                    target_obj = Path(target_path)
+                    if target_obj.exists():
+                        if target_obj.is_file():
+                            total_lines = count_lines_of_code(target_obj)
+                        elif target_obj.is_dir():
+                            for py_file in target_obj.rglob("*.py"):
+                                try:
+                                    total_lines += count_lines_of_code(py_file)
+                                except Exception:
+                                    pass
+
+                if total_lines > 0:
+                    strategy = get_auth_strategy()
+                    recommended_mode = strategy.get_recommended_mode(total_lines)
+                    self._auth_mode_used = recommended_mode.value
+
+                    size_category = get_module_size_category(total_lines)
+                    logger.info(
+                        f"Code review target: {target_path} ({total_lines:,} LOC, {size_category})"
+                    )
+                    logger.info(f"Recommended auth mode: {recommended_mode.value}")
+
+                    cost_estimate = strategy.estimate_cost(total_lines, recommended_mode)
+                    if recommended_mode.value == "subscription":
+                        logger.info(f"Cost: {cost_estimate['quota_cost']}")
+                    else:
+                        logger.info(f"Cost: ~${cost_estimate['monetary_cost']:.4f}")
+
+            except Exception as e:
+                logger = logging.getLogger(__name__)
+                logger.warning(f"Auth strategy detection failed: {e}")
 
         system = """You are a code review classifier. Analyze the code and classify:
 1. Change type: bug_fix, feature, refactor, docs, test, config, or security
@@ -590,28 +645,42 @@ Code to review:
                 "Code will proceed to architectural review."
             )
 
-        return (
-            {
-                "scan_results": response,
-                "findings": all_findings,  # NEW: structured findings for UI
-                "summary": summary,  # NEW: summary statistics
-                "security_findings": security_findings,  # Keep for backward compat
-                "bug_patterns": [],
-                "quality_issues": [],
-                "has_critical_issues": has_critical,
-                "security_score": 70 if has_critical else 90,
-                "needs_architect_review": input_data.get("needs_architect_review", False)
-                or has_critical,
-                "code_to_review": code_to_review,
-                "classification": classification,
-                "external_audit_included": external_audit is not None,
-                "external_audit_risk_score": (
-                    external_audit.get("risk_score", 0) if external_audit else 0
-                ),
-            },
-            input_tokens,
-            output_tokens,
-        )
+        # Determine preliminary verdict based on scan
+        if has_critical:
+            preliminary_verdict = "request_changes"
+        elif security_score >= 90:
+            preliminary_verdict = "approve"
+        else:
+            preliminary_verdict = "approve_with_suggestions"
+
+        result = {
+            "scan_results": response,
+            "findings": all_findings,  # NEW: structured findings for UI
+            "summary": summary,  # NEW: summary statistics
+            "security_findings": security_findings,  # Keep for backward compat
+            "bug_patterns": [],
+            "quality_issues": [],
+            "has_critical_issues": has_critical,
+            "security_score": 70 if has_critical else 90,
+            "verdict": preliminary_verdict,  # Add verdict for when architect_review is skipped
+            "needs_architect_review": input_data.get("needs_architect_review", False)
+            or has_critical,
+            "code_to_review": code_to_review,
+            "classification": classification,
+            "external_audit_included": external_audit is not None,
+            "external_audit_risk_score": (
+                external_audit.get("risk_score", 0) if external_audit else 0
+            ),
+            "auth_mode_used": self._auth_mode_used,  # Track auth mode
+            "model_tier_used": tier.value,  # Track model tier
+        }
+
+        # Generate formatted report (for when architect_review is skipped)
+        formatted_report = format_code_review_report(result, input_data)
+        result["formatted_report"] = formatted_report
+        result["display_output"] = formatted_report
+
+        return (result, input_tokens, output_tokens)
 
     def _merge_external_audit(
         self,
@@ -796,6 +865,7 @@ Provide actionable, specific feedback."""
             "verdict": verdict,
             "recommendations": [],
             "model_tier_used": tier.value,
+            "auth_mode_used": self._auth_mode_used,
         }
 
         # Merge parsed XML data if available

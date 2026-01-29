@@ -7,6 +7,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.0] - 2026-01-29
+
+### Added
+
+- **Authentication Strategy System**: Intelligent routing between Claude subscriptions and Anthropic API based on codebase/module size
+  - Automatically detects module size and recommends optimal authentication mode (subscription vs API)
+  - Cost optimization: Small/medium modules use subscription (free), large modules use API (1M context)
+  - Configurable thresholds based on subscription tier (Pro, Max, Enterprise)
+  - CLI commands for configuration management:
+    - `python -m empathy_os.models.auth_cli setup` - Interactive configuration wizard
+    - `python -m empathy_os.models.auth_cli status` - View current auth strategy (table or JSON)
+    - `python -m empathy_os.models.auth_cli recommend <file>` - Get auth recommendation for specific file
+    - `python -m empathy_os.models.auth_cli reset --confirm` - Clear configuration
+  - Integrated into 7 major workflows with consistent 4-step pattern:
+    - DocumentGenerationWorkflow
+    - TestGenerationWorkflow
+    - CodeReviewWorkflow
+    - BugPredictWorkflow
+    - SecurityAuditWorkflow
+    - PerformanceAuditWorkflow
+    - ReleasePreparationWorkflow
+  - Non-breaking: Enabled by default with graceful degradation
+  - Auth mode tracking: All workflows report `auth_mode_used` in output for telemetry
+  - Comprehensive documentation: 3 guides (950+ lines total)
+  - 7 integration tests created and passing
+
+### Fixed
+
+- **Dashboard Demo Script**: Updated `dashboard_demo.py` to use correct HeartbeatCoordinator API
+  - Changed from `HeartbeatCoordinator(agent_id=...)` to `coordinator.start_heartbeat(agent_id=...)`
+  - Changed from `coordinator.report()` to `coordinator.beat()`
+  - Fixed compatibility with current telemetry API
+
+- **SecurityAuditWorkflow**: Fixed LOC calculation and file scanning issues
+  - Fixed `count_lines_of_code()` to handle directories recursively
+  - Fixed file scanning to handle both single files and directories
+  - Fixed data propagation in `_remediate` stage
+
+- **CodeReviewWorkflow**: Fixed auth mode tracking in scan stage
+  - Added `auth_mode_used` to scan stage output for cases where architect_review is skipped
+
+### Documentation
+
+- Added `docs/AUTH_STRATEGY_GUIDE.md` - Complete user guide with CLI commands (457 lines)
+- Added `docs/AUTH_CLI_IMPLEMENTATION.md` - CLI implementation details (286 lines)
+- Added `docs/AUTH_WORKFLOW_INTEGRATIONS.md` - Integration guide for all 7 workflows (430+ lines)
+- Updated all workflow documentation with auth strategy usage examples
+
+### Tests
+
+- Added 7 integration tests for auth strategy in workflows (all passing)
+- All existing tests continue to pass (127+ tests for DocumentGenerationWorkflow alone)
+- Zero breaking changes - full backward compatibility maintained
+
 ## [5.0.2] - 2026-01-28
 
 ### Added

@@ -26,11 +26,64 @@ pip install empathy-framework[developer]
 - **🔧 Advanced Tool Use:** Optimized for agentic workflows
 
 **Timeline:**
+
 - ✅ **v4.8.0 (Jan 2026):** Deprecation warnings for OpenAI/Google/Ollama providers
 - ✅ **v5.0.0 (Jan 26, 2026):** Non-Anthropic providers removed (BREAKING - COMPLETE)
 - ✅ **v5.0.2 (Jan 28, 2026):** Cost optimization suite with batch processing and caching monitoring
 
 **Migration Guide:** [docs/CLAUDE_NATIVE.md](docs/CLAUDE_NATIVE.md)
+
+---
+
+## What's New in v5.1.0
+
+**🤖 Multi-Agent Orchestration** - Full support for custom agents and Anthropic LLM agents:
+
+- **Agent Coordination Dashboard** - Real-time monitoring with 6 coordination patterns:
+  - Agent heartbeats and status tracking
+  - Inter-agent coordination signals
+  - Event streaming across agent workflows
+  - Approval gates for human-in-the-loop
+  - Quality feedback and performance metrics
+  - Demo mode with test data generation
+
+- **Custom Agents** - Build specialized agents for your workflow needs
+- **LLM Agents from Anthropic** - Leverage Claude's advanced capabilities
+- Dashboard accessible at `http://localhost:8000` with `python examples/dashboard_demo.py`
+
+**🔐 Authentication Strategy System** - Intelligent routing between Claude subscriptions and Anthropic API:
+
+```bash
+# Interactive setup
+python -m empathy_os.models.auth_cli setup
+
+# View current configuration
+python -m empathy_os.models.auth_cli status
+
+# Get recommendation for a file
+python -m empathy_os.models.auth_cli recommend src/module.py
+```
+
+**💰 Automatic Cost Optimization** - Workflows choose the best auth method:
+
+- Small/medium modules (<2000 LOC) → Claude subscription (free)
+- Large modules (>2000 LOC) → Anthropic API (pay for what you need)
+- 7 workflows integrated: document-gen, test-gen, code-review, bug-predict, security-audit, perf-audit, release-prep
+- Auth mode tracking in all workflow outputs for telemetry
+
+**🧪 Comprehensive Testing** - 7 new integration tests for auth strategy:
+
+- All workflows tested with auth enabled/disabled
+- API and subscription mode verification
+- Cost tracking validation
+
+**📖 Documentation** - 950+ lines across 3 guides:
+
+- [AUTH_STRATEGY_GUIDE.md](docs/AUTH_STRATEGY_GUIDE.md) - User guide for configuration
+- [AUTH_CLI_IMPLEMENTATION.md](docs/AUTH_CLI_IMPLEMENTATION.md) - CLI command reference
+- [AUTH_WORKFLOW_INTEGRATIONS.md](docs/AUTH_WORKFLOW_INTEGRATIONS.md) - Integration patterns
+
+[See Full Changelog](CHANGELOG.md#510---2026-01-29)
 
 ---
 

@@ -140,18 +140,22 @@ class PerformanceAuditWorkflow(BaseWorkflow):
     def __init__(
         self,
         min_hotspots_for_premium: int = 3,
+        enable_auth_strategy: bool = True,
         **kwargs: Any,
     ):
         """Initialize performance audit workflow.
 
         Args:
             min_hotspots_for_premium: Minimum hotspots to trigger premium optimization
+            enable_auth_strategy: Enable intelligent auth routing (default: True)
             **kwargs: Additional arguments passed to BaseWorkflow
 
         """
         super().__init__(**kwargs)
         self.min_hotspots_for_premium = min_hotspots_for_premium
+        self.enable_auth_strategy = enable_auth_strategy
         self._hotspot_count: int = 0
+        self._auth_mode_used: str | None = None
 
     def should_skip_stage(self, stage_name: str, input_data: Any) -> tuple[bool, str | None]:
         """Downgrade optimize stage if few hotspots.
@@ -199,6 +203,70 @@ class PerformanceAuditWorkflow(BaseWorkflow):
         files_scanned = 0
 
         target = Path(target_path)
+
+        # === AUTH STRATEGY INTEGRATION ===
+        if self.enable_auth_strategy:
+            try:
+                import logging
+
+                from empathy_os.models import (
+                    count_lines_of_code,
+                    get_auth_strategy,
+                    get_module_size_category,
+                )
+
+                logger = logging.getLogger(__name__)
+
+                # Calculate total LOC for the project/path
+                total_lines = 0
+                if target.is_file():
+                    total_lines = count_lines_of_code(target)
+                elif target.is_dir():
+                    # Estimate total lines for directory
+                    for ext in file_types:
+                        for file_path in target.rglob(f"*{ext}"):
+                            if any(
+                                skip in str(file_path)
+                                for skip in [".git", "node_modules", "__pycache__", "venv", "test"]
+                            ):
+                                continue
+                            try:
+                                total_lines += count_lines_of_code(file_path)
+                            except Exception:
+                                pass
+
+                if total_lines > 0:
+                    strategy = get_auth_strategy()
+                    recommended_mode = strategy.get_recommended_mode(total_lines)
+                    self._auth_mode_used = recommended_mode.value
+
+                    size_category = get_module_size_category(total_lines)
+                    logger.info(
+                        f"Performance audit target: {target_path} "
+                        f"({total_lines:,} LOC, {size_category})"
+                    )
+                    logger.info(f"Recommended auth mode: {recommended_mode.value}")
+
+                    cost_estimate = strategy.estimate_cost(total_lines, recommended_mode)
+                    if recommended_mode.value == "subscription":
+                        logger.info(
+                            f"Cost estimate: ~${cost_estimate:.4f} "
+                            "(significantly cheaper with subscription)"
+                        )
+                    else:
+                        logger.info(f"Cost estimate: ~${cost_estimate:.4f} (API-based)")
+
+            except ImportError as e:
+                import logging
+
+                logger = logging.getLogger(__name__)
+                logger.debug(f"Auth strategy not available: {e}")
+            except Exception as e:
+                import logging
+
+                logger = logging.getLogger(__name__)
+                logger.warning(f"Auth strategy detection failed: {e}")
+        # === END AUTH STRATEGY INTEGRATION ===
         if target.exists():
             for ext in file_types:
                 for file_path in target.rglob(f"*{ext}"):
@@ -468,6 +536,7 @@ Provide detailed optimization strategies."""
             "perf_score": hotspot_result.get("perf_score", 0),
             "perf_level": hotspot_result.get("perf_level", "unknown"),
             "model_tier_used": tier.value,
+            "auth_mode_used": self._auth_mode_used,
         }
 
         # Merge parsed XML data if available

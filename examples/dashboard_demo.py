@@ -32,7 +32,7 @@ def generate_test_data():
     print("📊 Pattern 1: Creating test agent heartbeats...")
     for i in range(5):
         agent_id = f"agent-{i+1}"
-        coordinator = HeartbeatCoordinator(agent_id=agent_id)
+        coordinator = HeartbeatCoordinator()
 
         status = random.choice(["running", "idle", "running", "running"])
         progress = random.random()
@@ -44,8 +44,10 @@ def generate_test_data():
             "Idle - awaiting tasks",
         ]
 
-        coordinator.report(
-            status=status, progress=progress, current_task=random.choice(tasks), metadata={"demo": True}
+        # Start heartbeat and publish update
+        coordinator.start_heartbeat(agent_id=agent_id, metadata={"demo": True})
+        coordinator.beat(
+            status=status, progress=progress, current_task=random.choice(tasks)
         )
 
         print(f"  ✓ {agent_id}: {status} ({progress*100:.0f}%)")

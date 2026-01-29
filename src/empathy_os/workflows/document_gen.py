@@ -86,6 +86,7 @@ class DocumentGenerationWorkflow(BaseWorkflow):
         graceful_degradation: bool = True,  # Return partial results on error
         export_path: str | Path | None = None,  # Export docs to file (e.g., "docs/generated")
         max_display_chars: int = 45000,  # Max chars before chunking output
+        enable_auth_strategy: bool = True,  # Enable intelligent auth routing
         **kwargs: Any,
     ):
         """Initialize workflow with enterprise-safe defaults.
@@ -110,6 +111,8 @@ class DocumentGenerationWorkflow(BaseWorkflow):
                 If provided, documentation will be saved to a file automatically.
             max_display_chars: Maximum characters before splitting output into chunks
                 for display (default 45000). Helps avoid terminal/UI truncation.
+            enable_auth_strategy: If True, use intelligent subscription vs API routing
+                based on module size (default True).
 
         """
         super().__init__(**kwargs)
@@ -125,10 +128,12 @@ class DocumentGenerationWorkflow(BaseWorkflow):
         self.graceful_degradation = graceful_degradation
         self.export_path = Path(export_path) if export_path else None
         self.max_display_chars = max_display_chars
+        self.enable_auth_strategy = enable_auth_strategy
         self._total_content_tokens: int = 0
         self._accumulated_cost: float = 0.0
         self._cost_warning_issued: bool = False
         self._partial_results: dict = {}
+        self._auth_mode_used: str | None = None  # Track which auth was recommended
 
     def _estimate_cost(self, tier: ModelTier, input_tokens: int, output_tokens: int) -> float:
         """Estimate cost for a given tier and token counts."""
@@ -308,6 +313,8 @@ class DocumentGenerationWorkflow(BaseWorkflow):
 
     async def _outline(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
         """Generate document outline from source."""
+        from pathlib import Path
+
         source_code = input_data.get("source_code", "")
         target = input_data.get("target", "")
         doc_type = input_data.get("doc_type", "general")
@@ -318,8 +325,6 @@ class DocumentGenerationWorkflow(BaseWorkflow):
 
         # If target looks like a file path and source_code wasn't provided, read the file
         if not source_code and target:
-            from pathlib import Path
-
             target_path = Path(target)
             if target_path.exists() and target_path.is_file():
                 try:
@@ -349,22 +354,108 @@ class DocumentGenerationWorkflow(BaseWorkflow):
                     f"Target appears to be a file path but doesn't exist: {target}",
                 )
 
-        system = """You are a technical writer. Create a detailed outline for documentation.
+        # === AUTH STRATEGY INTEGRATION ===
+        # Detect module size and recommend auth mode (first stage only)
+        if self.enable_auth_strategy:
+            try:
+                from empathy_os.models import (
+                    count_lines_of_code,
+                    get_auth_strategy,
+                    get_module_size_category,
+                )
 
-Based on the content provided, generate an outline with:
-1. Logical section structure (5-8 sections)
-2. Brief description of each section's purpose
-3. Key points to cover in each section
+                # Calculate module size
+                module_lines = 0
+                if target and Path(target).exists():
+                    module_lines = count_lines_of_code(target)
+                elif content_to_document:
+                    # Count from source code content
+                    module_lines = len(
+                        [
+                            line
+                            for line in content_to_document.split("\n")
+                            if line.strip() and not line.strip().startswith("#")
+                        ]
+                    )
 
-Format as a numbered list with section titles and descriptions."""
+                if module_lines > 0:
+                    # Get auth strategy (first-time setup if needed)
+                    strategy = get_auth_strategy()
 
-        user_message = f"""Create a documentation outline:
+                    # Get recommended auth mode
+                    recommended_mode = strategy.get_recommended_mode(module_lines)
+                    self._auth_mode_used = recommended_mode.value
+
+                    # Get size category
+                    size_category = get_module_size_category(module_lines)
+
+                    # Log recommendation
+                    logger.info(
+                        f"Module: {target or 'source'} ({module_lines} LOC, {size_category})"
+                    )
+                    logger.info(f"Recommended auth mode: {recommended_mode.value}")
+
+                    # Get cost estimate
+                    cost_estimate = strategy.estimate_cost(module_lines, recommended_mode)
+
+                    if recommended_mode.value == "subscription":
+                        logger.info(
+                            f"Cost: {cost_estimate['quota_cost']} "
+                            f"(fits in {cost_estimate['fits_in_context']} context)"
+                        )
+                    else:  # API
+                        logger.info(
+                            f"Cost: ~${cost_estimate['monetary_cost']:.4f} "
+                            f"(1M context window)"
+                        )
+
+            except Exception as e:
+                # Don't fail workflow if auth strategy fails
+                logger.warning(f"Auth strategy detection failed: {e}")
+
+        system = """You are an expert technical writer specializing in API Reference documentation.
+
+IMPORTANT: This is API REFERENCE documentation, not a tutorial. Focus on documenting EVERY function/class with structured Args/Returns/Raises format.
+
+Create a detailed, structured outline for API Reference documentation:
+
+1. **Logical Section Structure** (emphasize API reference sections):
+   - Overview/Introduction (brief)
+   - Quick Start (1 complete example)
+   - API Reference - Functions (one subsection per function with Args/Returns/Raises)
+   - API Reference - Classes (one subsection per class with Args/Returns/Raises for methods)
+   - Usage Examples (showing how to combine multiple functions)
+   - Additional reference sections as needed
+
+2. **For Each Section**:
+   - Clear purpose and what readers will learn
+   - Specific topics to cover
+   - Types of examples to include (with actual code)
+
+3. **Key Requirements**:
+   - Include sections for real, copy-paste ready code examples
+   - Plan for comprehensive API documentation with all parameters
+   - Include edge cases and error handling examples
+   - Add best practices and common patterns
+
+Format as a numbered list with section titles and detailed descriptions."""
+
+        user_message = f"""Create a comprehensive documentation outline:
 
 Document Type: {doc_type}
 Target Audience: {audience}
 
+IMPORTANT: This documentation should be production-ready with:
+- Real, executable code examples (not placeholders)
+- Complete API reference with parameter types and descriptions
+- Usage guides showing common patterns
+- Edge case handling and error scenarios
+- Best practices for the target audience
+
 Content to document:
-{content_to_document[:4000]}"""
+{content_to_document[:4000]}
+
+Generate an outline that covers all these aspects comprehensively."""
 
         response, input_tokens, output_tokens = await self._call_llm(
             tier,
@@ -450,29 +541,118 @@ IMPORTANT: Focus ONLY on generating these specific sections:
 
 Generate comprehensive, detailed content for each of these sections."""
 
-        system = f"""You are a technical writer. Write comprehensive documentation.
+        system = f"""You are an expert technical writer creating comprehensive developer documentation.
 
-Based on the outline provided, write full content for each section:
-1. Use clear, professional language
-2. Include code examples where appropriate
-3. Use markdown formatting
-4. Be thorough and detailed - do NOT truncate sections
-5. Target the specified audience
-6. Complete ALL sections before stopping
+YOUR TASK HAS TWO CRITICAL PHASES - YOU MUST COMPLETE BOTH:
+
+═══════════════════════════════════════════════════════════════
+PHASE 1: Write Comprehensive Documentation
+═══════════════════════════════════════════════════════════════
+
+Write clear, helpful documentation with:
+- Overview and introduction explaining what this code does
+- Real, executable code examples (NOT placeholders - use actual code from source)
+- Usage guides showing how to use the code in real scenarios
+- Best practices and common patterns
+- Step-by-step instructions where helpful
+- Tables, diagrams, and visual aids as appropriate
+- Clear explanations appropriate for {audience}
+
+Do this naturally - write the kind of documentation that helps developers understand and use the code effectively.
+
+═══════════════════════════════════════════════════════════════
+PHASE 2: Add Structured API Reference Sections (MANDATORY)
+═══════════════════════════════════════════════════════════════
+
+After writing the comprehensive documentation above, you MUST add structured API reference sections for EVERY function and class method.
+
+For EACH function/method in the source code, add this EXACT structure:
+
+---
+### `function_name()`
+
+**Function Signature:**
+```python
+def function_name(param1: type, param2: type = default) -> return_type
+```
+
+**Description:**
+[Brief description of what the function does - 1-2 sentences]
+
+**Args:**
+- `param1` (`type`): Clear description of this parameter
+- `param2` (`type`, optional): Description. Defaults to `default`.
+
+**Returns:**
+- `return_type`: Description of the return value
+
+**Raises:**
+- `ExceptionType`: Description of when and why this exception occurs
+- `AnotherException`: Another exception case
+
+**Example:**
+```python
+from module import function_name
+
+# Show real usage with actual code
+result = function_name(actual_value, param2=123)
+print(result)
+```
+---
+
+CRITICAL RULES FOR PHASE 2:
+- Include **Args:** header for ALL functions (write "None" if no parameters)
+- Include **Returns:** header for ALL functions (write "None" if void/no return)
+- Include **Raises:** header for ALL functions (write "None" if no exceptions)
+- Use backticks for code: `param_name` (`type`)
+- Document EVERY public function and method you see in the source code
+
 {section_instruction}
 
-Write the complete document with all sections."""
+═══════════════════════════════════════════════════════════════
+REMINDER: BOTH PHASES ARE MANDATORY
+═══════════════════════════════════════════════════════════════
 
-        user_message = f"""Write documentation based on this outline:
+1. Write comprehensive documentation (Phase 1) - what you do naturally
+2. Add structured API reference sections (Phase 2) - for every function/method
+
+Do NOT skip Phase 2 after completing Phase 1. Both phases are required for complete documentation."""
+
+        user_message = f"""Write comprehensive, production-ready documentation in TWO PHASES:
 
 Document Type: {doc_type}
 Target Audience: {audience}
 
-Outline:
+Outline to follow:
 {outline}
 
-Source content for reference:
-{content_to_document[:5000]}"""
+Source code to document (extract actual class names, function signatures, parameters):
+{content_to_document[:5000]}
+
+═══════════════════════════════════════════════════════════════
+YOUR TASK:
+═══════════════════════════════════════════════════════════════
+
+PHASE 1: Write comprehensive documentation
+- Use the outline above as your guide
+- Include real, executable code examples from the source
+- Show usage patterns, best practices, common workflows
+- Write clear explanations that help developers understand the code
+
+PHASE 2: Add structured API reference sections
+- For EACH function/method in the source code, add:
+  - Function signature
+  - Description
+  - **Args:** section (every parameter with type and description)
+  - **Returns:** section (return type and description)
+  - **Raises:** section (exceptions that can occur)
+  - Example code snippet
+
+═══════════════════════════════════════════════════════════════
+IMPORTANT: Complete BOTH phases. Don't stop after Phase 1.
+═══════════════════════════════════════════════════════════════
+
+Generate the complete documentation now, ensuring both comprehensive content AND structured API reference sections."""
 
         response, input_tokens, output_tokens = await self._call_llm(
             tier,
@@ -490,6 +670,7 @@ Source content for reference:
                 "audience": audience,
                 "outline": outline,
                 "chunked": False,
+                "source_code": content_to_document,  # Pass through for API reference generation
             },
             input_tokens,
             output_tokens,
@@ -534,32 +715,72 @@ Previous sections already written (for context/continuity):
 
 Continue with the next sections, maintaining consistent style and terminology."""
 
-            system = f"""You are a technical writer. Write comprehensive documentation.
+            system = f"""You are an expert technical writer creating comprehensive developer documentation.
 
-Write ONLY the following sections (you are generating part {chunk_idx + 1} of {len(chunks)}):
-{sections_list}
+Write ONLY these sections (part {chunk_idx + 1} of {len(chunks)}): {sections_list}
 
-Requirements:
-1. Use clear, professional language
-2. Include code examples where appropriate
-3. Use markdown formatting with ## headers
-4. Be thorough and detailed - complete each section fully
-5. Target {audience} audience
-6. Write ONLY these specific sections, nothing else"""
+YOUR TASK FOR THESE SECTIONS (TWO PHASES):
 
-            user_message = f"""Write documentation for these specific sections:
+═══════════════════════════════════════════════════════════════
+PHASE 1: Comprehensive Content
+═══════════════════════════════════════════════════════════════
+- Write clear explanations and overviews
+- Include real, executable code examples (extract from source)
+- Show usage patterns and workflows
+- Add best practices and common patterns
+- Professional language for {audience}
+
+═══════════════════════════════════════════════════════════════
+PHASE 2: Structured API Reference
+═══════════════════════════════════════════════════════════════
+For EACH function/method in these sections, add:
+
+### `function_name()`
+
+**Function Signature:**
+```python
+def function_name(params) -> return_type
+```
+
+**Description:**
+[Brief description]
+
+**Args:**
+- `param` (`type`): Description
+
+**Returns:**
+- `type`: Description
+
+**Raises:**
+- `Exception`: When it occurs
+
+**Example:**
+```python
+# Real usage example
+```
+
+═══════════════════════════════════════════════════════════════
+Complete BOTH phases for these sections.
+═══════════════════════════════════════════════════════════════"""
+
+            user_message = f"""Write comprehensive documentation for these sections in TWO PHASES:
+
+Sections to write: {sections_list}
 
 Document Type: {doc_type}
 Target Audience: {audience}
 
-Sections to write: {sections_list}
+Source code (extract actual functions/classes from here):
+{content_to_document[:3000]}
 
 Full outline (for context):
 {outline}
+{previous_context}
 
-Source content for reference:
-{content_to_document[:3000]}
-{previous_context}"""
+PHASE 1: Write comprehensive content with real code examples
+PHASE 2: Add structured API reference sections with **Args:**, **Returns:**, **Raises:**
+
+Generate complete sections now, ensuring both phases are complete."""
 
             try:
                 response, input_tokens, output_tokens = await self._call_llm(
@@ -623,6 +844,7 @@ Source content for reference:
             "chunks_completed": len(all_content),
             "stopped_early": stopped_early,
             "accumulated_cost": self._accumulated_cost,
+            "source_code": content_to_document,  # Pass through for API reference generation
         }
 
         if error_message:
@@ -688,28 +910,82 @@ Draft:
             system = None  # XML prompt includes all context
         else:
             # Use legacy plain text prompts
-            system = """You are a senior technical editor. Polish and improve the documentation:
+            system = """You are a senior technical editor specializing in developer documentation.
 
-1. CONSISTENCY:
-   - Standardize terminology
+Polish and improve this documentation. The writer was asked to complete TWO PHASES:
+- Phase 1: Comprehensive content with real examples
+- Phase 2: Structured API reference sections with **Args:**, **Returns:**, **Raises:**
+
+Your job is to verify BOTH phases are complete and polish to production quality.
+
+═══════════════════════════════════════════════════════════════
+CRITICAL: Verify Phase 2 Completion
+═══════════════════════════════════════════════════════════════
+
+1. **Check for Missing API Reference Sections**:
+   - Scan the entire document for all functions and methods
+   - EVERY function MUST have these sections:
+     - **Args:** (write "None" if no parameters)
+     - **Returns:** (write "None" if void)
+     - **Raises:** (write "None" if no exceptions)
+   - If ANY function is missing these sections, ADD them now
+   - Format: **Args:**, **Returns:**, **Raises:** (bold headers with colons)
+
+2. **Polish API Reference Sections**:
+   - Verify all parameters have types in backticks: `param` (`type`)
+   - Ensure return values are clearly described
+   - Check exception documentation is complete
+   - Validate code examples in each function section
+
+3. **Polish General Content**:
+   - Verify code examples are complete and runnable
+   - Ensure proper imports and setup code
+   - Replace any placeholders with real code
+   - Standardize terminology throughout
    - Fix formatting inconsistencies
-   - Ensure consistent code style
-
-2. QUALITY:
    - Improve clarity and flow
-   - Add missing cross-references
-   - Fix grammatical issues
+   - Add cross-references between sections
 
-3. COMPLETENESS:
-   - Identify gaps
-   - Add helpful notes or warnings
-   - Ensure examples are complete
+4. **Production Readiness**:
+   - Remove any TODO or placeholder comments
+   - Ensure professional tone
+   - Add helpful notes, tips, and warnings
+   - Verify edge cases are covered
 
-Return the polished document with improvements noted at the end."""
+═══════════════════════════════════════════════════════════════
+Return the complete, polished document. Add a brief "## Polish Notes" section at the end summarizing improvements made."""
 
-            user_message = f"""Polish this documentation:
+            user_message = f"""Polish this documentation to production quality.
 
-{input_payload}"""
+The writer was asked to complete TWO PHASES:
+1. Comprehensive content with real examples
+2. Structured API reference with **Args:**, **Returns:**, **Raises:** for every function
+
+Verify BOTH phases are complete, then polish:
+
+{input_payload}
+
+═══════════════════════════════════════════════════════════════
+YOUR TASKS:
+═══════════════════════════════════════════════════════════════
+
+1. SCAN for missing API reference sections
+   - Find every function/method in the document
+   - Check if it has **Args:**, **Returns:**, **Raises:** sections
+   - ADD these sections if missing (use "None" if no parameters/returns/exceptions)
+
+2. POLISH existing content
+   - Verify code examples are complete and runnable
+   - Ensure terminology is consistent
+   - Fix formatting issues
+   - Improve clarity and flow
+
+3. VALIDATE production readiness
+   - Remove TODOs and placeholders
+   - Add warnings and best practices
+   - Ensure professional tone
+
+Return the complete, polished documentation with all API reference sections present."""
 
         # Calculate polish tokens based on draft size (at least as much as write stage)
         polish_max_tokens = max(self.max_write_tokens, 20000)
@@ -745,11 +1021,25 @@ Return the polished document with improvements noted at the end."""
         # Parse XML response if enforcement is enabled
         parsed_data = self._parse_xml_response(response)
 
+        # Add structured API reference sections (Step 4: Post-processing)
+        source_code = input_data.get("source_code", "")
+        if source_code:
+            logger.info("Adding structured API reference sections to polished document...")
+            response = await self._add_api_reference_sections(
+                narrative_doc=response,
+                source_code=source_code,
+                tier=ModelTier.CHEAP,  # Use cheap tier for structured extraction
+            )
+        else:
+            logger.warning("No source code available for API reference generation")
+
         result = {
             "document": response,
             "doc_type": doc_type,
             "audience": audience,
             "model_tier_used": tier.value,
+            "accumulated_cost": self._accumulated_cost,  # Track total cost
+            "auth_mode_used": self._auth_mode_used,  # Track recommended auth mode
         }
 
         # Merge parsed XML data if available
@@ -823,22 +1113,46 @@ Return the polished document with improvements noted at the end."""
         total_output_tokens: int = 0
 
         for chunk_idx, section in enumerate(sections):
-            system = """You are a senior technical editor. Polish this section of documentation:
+            system = """You are a senior technical editor specializing in developer documentation.
 
-1. Standardize terminology and formatting
-2. Improve clarity and flow
-3. Fix grammatical issues
-4. Ensure code examples are complete and accurate
+Polish this section to production quality. The writer was asked to complete TWO PHASES:
+1. Comprehensive content with real examples
+2. Structured API reference with **Args:**, **Returns:**, **Raises:** for every function
 
-Return ONLY the polished section. Do not add commentary."""
+Verify both phases are complete in this section:
 
-            user_message = f"""Polish this documentation section (part {chunk_idx + 1} of {len(sections)}):
+═══════════════════════════════════════════════════════════════
+CRITICAL: Check for Missing API Reference Format
+═══════════════════════════════════════════════════════════════
+
+1. **Scan for functions/methods in this section**
+   - If any function is missing **Args:**, **Returns:**, **Raises:** sections, ADD them
+   - Format: **Args:**, **Returns:**, **Raises:** (bold headers with colons)
+   - Write "None" if no parameters/returns/exceptions
+
+2. **Polish API Documentation**:
+   - Verify parameters documented with types in backticks
+   - Ensure return values and exceptions are clear
+   - Validate code examples are complete
+
+3. **Polish General Content**:
+   - Ensure all examples are runnable with proper imports
+   - Standardize terminology and formatting
+   - Fix grammatical issues
+   - Remove TODOs and placeholders
+
+Return ONLY the polished section. Do not add commentary about changes."""
+
+            user_message = f"""Polish this section to production quality (part {chunk_idx + 1} of {len(sections)}):
 
 Document Type: {doc_type}
 Target Audience: {audience}
 
 Section to polish:
-{section}"""
+{section}
+
+Check if all functions have **Args:**, **Returns:**, **Raises:** sections - add if missing.
+Make all code examples complete and executable."""
 
             try:
                 response, input_tokens, output_tokens = await self._call_llm(
@@ -880,6 +1194,18 @@ Section to polish:
         # Combine polished chunks
         polished_document = "\n\n".join(polished_chunks)
 
+        # Add structured API reference sections (Step 4: Post-processing)
+        source_code = input_data.get("source_code", "")
+        if source_code:
+            logger.info("Adding structured API reference sections to chunked polished document...")
+            polished_document = await self._add_api_reference_sections(
+                narrative_doc=polished_document,
+                source_code=source_code,
+                tier=ModelTier.CHEAP,  # Use cheap tier for structured extraction
+            )
+        else:
+            logger.warning("No source code available for API reference generation")
+
         result = {
             "document": polished_document,
             "doc_type": doc_type,
@@ -918,6 +1244,212 @@ Section to polish:
             )
 
         return (result, total_input_tokens, total_output_tokens)
+
+    def _extract_functions_from_source(self, source_code: str) -> list[dict]:
+        """Extract function information from source code using AST.
+
+        Args:
+            source_code: Python source code to parse
+
+        Returns:
+            List of dicts with function information (name, args, returns, docstring)
+        """
+        import ast
+
+        functions = []
+
+        try:
+            tree = ast.parse(source_code)
+        except SyntaxError as e:
+            logger.warning(f"Failed to parse source code: {e}")
+            return functions
+
+        for node in ast.walk(tree):
+            # Extract top-level functions and class methods
+            if isinstance(node, ast.FunctionDef):
+                # Skip private functions (starting with _)
+                if node.name.startswith("_"):
+                    continue
+
+                # Extract function signature
+                args_list = []
+                for arg in node.args.args:
+                    arg_name = arg.arg
+                    # Get type annotation if available
+                    arg_type = ast.unparse(arg.annotation) if arg.annotation else "Any"
+                    args_list.append({"name": arg_name, "type": arg_type})
+
+                # Extract return type
+                return_type = ast.unparse(node.returns) if node.returns else "Any"
+
+                # Extract docstring
+                docstring = ast.get_docstring(node) or ""
+
+                functions.append({
+                    "name": node.name,
+                    "args": args_list,
+                    "return_type": return_type,
+                    "docstring": docstring,
+                    "lineno": node.lineno,
+                })
+
+        return functions
+
+    async def _generate_api_section_for_function(
+        self,
+        func_info: dict,
+        tier: ModelTier,
+    ) -> str:
+        """Generate structured API reference section for a single function.
+
+        This is a focused prompt that ONLY asks for Args/Returns/Raises format,
+        not narrative documentation.
+
+        Args:
+            func_info: Function information from AST extraction
+            tier: Model tier to use for generation
+
+        Returns:
+            Markdown formatted API reference section
+        """
+        func_name = func_info["name"]
+        args_list = func_info["args"]
+        return_type = func_info["return_type"]
+        docstring = func_info["docstring"]
+
+        # Build function signature
+        args_str = ", ".join([f"{arg['name']}: {arg['type']}" for arg in args_list])
+        signature = f"def {func_name}({args_str}) -> {return_type}"
+
+        system = """You are an API documentation generator. Output ONLY structured API reference sections in the EXACT format specified below.
+
+CRITICAL: Do NOT write explanatory text, questions, or narrative. Output ONLY the formatted section.
+
+REQUIRED FORMAT (copy this structure EXACTLY, replace bracketed content):
+
+### `function_name()`
+
+**Function Signature:**
+```python
+def function_name(param: type) -> return_type
+```
+
+**Description:**
+Brief 1-2 sentence description.
+
+**Args:**
+- `param_name` (`type`): Parameter description
+
+**Returns:**
+- `return_type`: Return value description
+
+**Raises:**
+- `ExceptionType`: When this exception occurs
+
+IMPORTANT:
+- Use "**Args:**" (NOT "Parameters" or "params")
+- Write "None" if no Args/Returns/Raises
+- NO conversational text - just the formatted section"""
+
+        user_message = f"""Generate API reference section using EXACT format specified in system prompt.
+
+Function:
+```python
+{signature}
+```
+
+Docstring:
+{docstring if docstring else "No docstring"}
+
+Output the formatted section EXACTLY as shown in system prompt. Use **Args:** (not Parameters). NO conversational text."""
+
+        try:
+            response, input_tokens, output_tokens = await self._call_llm(
+                tier,
+                system,
+                user_message,
+                max_tokens=1000,  # Small response - just the structured section
+            )
+
+            # Track cost
+            self._track_cost(tier, input_tokens, output_tokens)
+
+            return response
+
+        except Exception as e:
+            logger.error(f"Failed to generate API section for {func_name}: {e}")
+            # Return minimal fallback
+            return f"""### `{func_name}()`
+
+**Function Signature:**
+```python
+{signature}
+```
+
+**Description:**
+{docstring.split('.')[0] if docstring else "No description available."}
+
+**Args:**
+None
+
+**Returns:**
+- `{return_type}`: Return value
+
+**Raises:**
+None
+"""
+
+    async def _add_api_reference_sections(
+        self,
+        narrative_doc: str,
+        source_code: str,
+        tier: ModelTier,
+    ) -> str:
+        """Add structured API reference sections to narrative documentation.
+
+        This is Step 4 of the pipeline: after outline, write, and polish,
+        we add structured API reference sections extracted from source code.
+
+        Args:
+            narrative_doc: The polished narrative documentation
+            source_code: Original source code to extract functions from
+            tier: Model tier to use for API section generation
+
+        Returns:
+            Complete documentation with API reference appendix
+        """
+        logger.info("Adding structured API reference sections...")
+
+        # Extract functions from source code
+        functions = self._extract_functions_from_source(source_code)
+
+        if not functions:
+            logger.warning("No public functions found in source code")
+            return narrative_doc
+
+        logger.info(f"Found {len(functions)} public functions to document")
+
+        # Generate API section for each function
+        api_sections = []
+        for func_info in functions:
+            func_name = func_info["name"]
+            logger.debug(f"Generating API reference for {func_name}()")
+
+            api_section = await self._generate_api_section_for_function(
+                func_info, tier
+            )
+            api_sections.append(api_section)
+
+        # Append API reference section to narrative doc
+        full_doc = narrative_doc
+        full_doc += "\n\n---\n\n"
+        full_doc += "## API Reference\n\n"
+        full_doc += "Complete structured reference for all public functions:\n\n"
+        full_doc += "\n\n".join(api_sections)
+
+        logger.info(f"Added {len(api_sections)} API reference sections")
+
+        return full_doc
 
 
 def format_doc_gen_report(result: dict, input_data: dict) -> str:
