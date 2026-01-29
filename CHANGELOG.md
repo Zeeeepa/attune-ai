@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.1] - 2026-01-29
+
+### Added
+
+- **Enhanced Natural Language Routing**: Improved discoverability of v5.1.0 features through conversational language
+  - Added intent detection patterns for authentication strategy commands
+    - Recognizes queries like: "setup authentication", "configure auth", "check auth status", "recommend auth"
+  - Added intent detection patterns for agent dashboard
+    - Recognizes queries like: "show dashboard", "monitor agents", "agent coordination"
+  - Enhanced test-coverage-boost patterns for batch generation
+    - Recognizes queries like: "batch test generation", "rapidly generate tests", "bulk tests"
+  - Added keyword mappings in CLI router for direct access:
+    - Auth commands: `auth-setup`, `auth-status`, `auth-recommend`, `auth-reset`, `auth`
+    - Dashboard commands: `dashboard`, `agent-dashboard`
+    - Batch test commands: `batch-tests`, `bulk-tests`
+
+### Tests
+
+- Added 12 comprehensive tests for natural language routing (all passing)
+  - Intent detection tests for all new patterns
+  - Keyword routing verification tests
+  - End-to-end natural language routing tests
+  - Pattern and mapping registration verification
+
+### Documentation
+
+- Users can now discover v5.1.0 features using natural language:
+  - "I need to setup authentication" → routes to auth CLI
+  - "show me the agent dashboard" → opens coordination dashboard
+  - "rapidly generate tests in batch" → batch test generation
+
 ## [5.1.0] - 2026-01-29
 
 ### Added

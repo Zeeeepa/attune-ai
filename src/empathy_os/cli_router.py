@@ -107,6 +107,18 @@ class HybridRouter:
             # Release commands → /release skill
             "release": ("release", "prep"),
             "ship": ("release", "prep"),
+            # Authentication strategy commands (CLI)
+            "auth-setup": ("workflows", "python -m empathy_os.models.auth_cli setup"),
+            "auth-status": ("workflows", "python -m empathy_os.models.auth_cli status"),
+            "auth-recommend": ("workflows", "python -m empathy_os.models.auth_cli recommend"),
+            "auth-reset": ("workflows", "python -m empathy_os.models.auth_cli reset"),
+            "auth": ("workflows", "python -m empathy_os.models.auth_cli status"),
+            # Agent dashboard commands
+            "dashboard": ("workflows", "python examples/dashboard_demo.py"),
+            "agent-dashboard": ("workflows", "python examples/dashboard_demo.py"),
+            # Batch test generation (enhanced)
+            "batch-tests": ("testing", "generate --batch"),
+            "bulk-tests": ("testing", "generate --batch"),
         }
 
         # Hub descriptions for disambiguation
