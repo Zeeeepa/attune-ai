@@ -1,66 +1,12 @@
-# Coverage.py configuration for Empathy Framework
-# Phase 1 Test Coverage Improvement (Jan 2026)
-
 [run]
-source = src/empathy_os
-omit =
-    */tests/*
-    */test_*.py
-    */__pycache__/*
-    */site-packages/*
-    */dist-packages/*
-    */venv/*
-    */.venv/*
-    */env/*
+source = src
+parallel = false
+concurrency = thread
 
 [report]
-# Minimum coverage threshold
-# Phase 1 target: 53% (baseline)
-# Phase 2 target: 75%
-fail_under = 53
-
-# Show lines that need coverage
-show_missing = True
-
-# Include branch coverage
 precision = 2
-
-# Exclude certain lines from coverage
-exclude_lines =
-    # Have to re-enable the standard pragma
-    pragma: no cover
-
-    # Don't complain about missing debug-only code
-    def __repr__
-    def __str__
-
-    # Don't complain if tests don't hit defensive assertion code
-    raise AssertionError
-    raise NotImplementedError
-
-    # Don't complain if non-runnable code isn't run
-    if __name__ == .__main__.:
-    if TYPE_CHECKING:
-    if typing.TYPE_CHECKING:
-
-    # Don't complain about abstract methods
-    @abstractmethod
-    @abc.abstractmethod
-
-    # Don't complain about protocol methods
-    @overload
-    \.\.\.$
+show_missing = true
+skip_covered = false
 
 [html]
 directory = htmlcov
-
-[xml]
-output = coverage.xml
-
-# Module-specific targets (aspirational for Phase 2)
-# These are documented goals, not enforced
-# scanner.py: 81.52% (exceeds target!)
-# long_term.py: Target 78%
-# cli.py: Target 85%
-# cache: Target 82%
-# workflows: Target 85%

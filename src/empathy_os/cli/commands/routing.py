@@ -97,7 +97,7 @@ def cmd_routing_stats(args: Any) -> int:
 
             if cheapest[0] != most_expensive[0]:
                 savings_per_call = most_expensive[1]["avg_cost"] - cheapest[1]["avg_cost"]
-                print(f"\n  💰 Potential savings:")
+                print("\n  💰 Potential savings:")
                 print(f"    Using {cheapest[0]} instead of {most_expensive[0]}")
                 print(f"    ${savings_per_call:.4f} per call")
                 if stats["total_calls"] > 0:

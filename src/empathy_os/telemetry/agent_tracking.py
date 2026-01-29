@@ -33,7 +33,6 @@ Licensed under Fair Source License 0.9
 from __future__ import annotations
 
 import logging
-import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -218,7 +217,7 @@ class HeartbeatCoordinator:
 
                 self.memory._client.setex(key, self.HEARTBEAT_TTL, json.dumps(heartbeat.to_dict()))
             else:
-                logger.warning(f"Cannot publish heartbeat: no Redis backend available")
+                logger.warning("Cannot publish heartbeat: no Redis backend available")
         except Exception as e:
             logger.warning(f"Failed to publish heartbeat for {self.agent_id}: {e}")
 

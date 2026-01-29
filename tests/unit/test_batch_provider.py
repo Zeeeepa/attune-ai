@@ -4,9 +4,9 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
-from datetime import datetime
 
 
 class TestAnthropicBatchProvider:

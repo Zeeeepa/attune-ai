@@ -6,7 +6,6 @@ Licensed under Fair Source 0.9
 
 import json
 from argparse import Namespace
-from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -27,7 +26,6 @@ class TestCacheStatsCollection:
 
     def test_collect_stats_from_log_file(self, tmp_path):
         """Test collecting stats from a real log file."""
-        from empathy_os.cli.commands.cache import _collect_cache_stats
 
         # Create a test log file
         log_file = tmp_path / "empathy_os.log"

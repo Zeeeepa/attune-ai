@@ -37,9 +37,9 @@ from __future__ import annotations
 
 import logging
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from uuid import uuid4
 
 if TYPE_CHECKING:
@@ -228,7 +228,7 @@ class CoordinationSignals:
 
                 self.memory._client.setex(key, ttl, json.dumps(signal.to_dict()))
             else:
-                logger.warning(f"Cannot send signal: no Redis backend available")
+                logger.warning("Cannot send signal: no Redis backend available")
         except Exception as e:
             logger.error(f"Failed to send signal {signal_id}: {e}")
 

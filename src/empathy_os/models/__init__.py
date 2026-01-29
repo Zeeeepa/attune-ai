@@ -10,6 +10,16 @@ Licensed under Fair Source License 0.9
 """
 
 from .adaptive_routing import AdaptiveModelRouter, ModelPerformance
+from .auth_strategy import (
+    AUTH_STRATEGY_FILE,
+    AuthMode,
+    AuthStrategy,
+    SubscriptionTier,
+    configure_auth_interactive,
+    count_lines_of_code,
+    get_auth_strategy,
+    get_module_size_category,
+)
 from .empathy_executor import EmpathyLLMExecutor
 from .executor import ExecutionContext, LLMExecutor, LLMResponse, MockLLMExecutor
 from .fallback import (
@@ -90,6 +100,10 @@ __all__ = [
     "TASK_TIER_MAP",
     "AdaptiveModelRouter",
     "AgentAssignmentRecord",
+    # Auth strategy exports
+    "AUTH_STRATEGY_FILE",
+    "AuthMode",
+    "AuthStrategy",
     "CircuitBreaker",
     "CircuitBreakerState",
     "ConfigValidator",
@@ -118,6 +132,7 @@ __all__ = [
     "ProviderMode",
     "ResilientExecutor",
     "RetryPolicy",
+    "SubscriptionTier",
     "TaskInfo",
     "TierFallbackHelper",
     # Task exports
@@ -132,11 +147,15 @@ __all__ = [
     "ValidationResult",
     "WorkflowRunRecord",
     "WorkflowStageRecord",
+    "configure_auth_interactive",
     "configure_provider_cli",
     "configure_provider_interactive",
+    "count_lines_of_code",
     "get_all_models",
     "get_all_tasks",
+    "get_auth_strategy",
     "get_model",
+    "get_module_size_category",
     "get_pricing_for_model",
     "get_provider_config",
     "get_tasks_for_tier",

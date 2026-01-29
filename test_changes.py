@@ -41,9 +41,9 @@ print("-" * 70)
 
 try:
     from empathy_os.cli.commands.routing import (
-        cmd_routing_stats,
         cmd_routing_check,
-        cmd_routing_models
+        cmd_routing_models,
+        cmd_routing_stats,
     )
     print("✅ cmd_routing_stats imported")
     print("✅ cmd_routing_check imported")
@@ -123,7 +123,7 @@ try:
     from empathy_os.workflows.batch_processing import (
         BatchProcessingWorkflow,
         BatchRequest,
-        BatchResult
+        BatchResult,
     )
 
     print("✅ BatchProcessingWorkflow imported")
@@ -148,11 +148,7 @@ print("\n6️⃣  Testing CLI Parser Registration")
 print("-" * 70)
 
 try:
-    from empathy_os.cli.parsers import (
-        routing,
-        batch,
-        cache
-    )
+    from empathy_os.cli.parsers import batch, cache, routing
 
     print("✅ routing parser module imported")
     print("✅ batch parser module imported")

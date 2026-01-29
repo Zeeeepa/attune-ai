@@ -11,7 +11,8 @@ from pathlib import Path
 
 from empathy_os.config import _validate_file_path
 from empathy_os.logging_config import get_logger
-from empathy_os.workflows import get_workflow, list_workflows as get_workflow_list
+from empathy_os.workflows import get_workflow
+from empathy_os.workflows import list_workflows as get_workflow_list
 from empathy_os.workflows.config import WorkflowConfig, create_example_config
 
 logger = get_logger(__name__)

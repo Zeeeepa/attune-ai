@@ -5,14 +5,14 @@ Licensed under Fair Source License 0.9
 """
 
 import json
-import pytest
-from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import pytest
+
 from empathy_os.workflows.batch_processing import (
+    BatchProcessingWorkflow,
     BatchRequest,
     BatchResult,
-    BatchProcessingWorkflow,
 )
 
 

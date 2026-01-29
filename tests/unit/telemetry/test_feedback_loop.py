@@ -7,8 +7,6 @@ Licensed under Fair Source License 0.9
 from datetime import datetime
 from unittest.mock import Mock
 
-import pytest
-
 from empathy_os.telemetry.feedback_loop import (
     FeedbackEntry,
     FeedbackLoop,

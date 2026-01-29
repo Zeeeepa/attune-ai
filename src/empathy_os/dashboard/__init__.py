@@ -27,10 +27,9 @@ Licensed under Fair Source License 0.9
 """
 
 # Standalone server - reads directly from Redis
-from .standalone_server import run_standalone_dashboard
-
 # Simple server - uses telemetry API classes
 from .simple_server import run_simple_dashboard
+from .standalone_server import run_standalone_dashboard
 
 # Optional FastAPI version (requires dependencies)
 try:

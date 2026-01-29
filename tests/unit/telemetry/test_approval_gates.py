@@ -8,8 +8,6 @@ import time
 from datetime import datetime
 from unittest.mock import Mock, patch
 
-import pytest
-
 from empathy_os.telemetry.approval_gates import ApprovalGate, ApprovalRequest, ApprovalResponse
 
 

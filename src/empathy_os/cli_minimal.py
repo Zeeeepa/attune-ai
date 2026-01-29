@@ -497,11 +497,11 @@ def cmd_telemetry_routing_check(args: Namespace) -> int:
             print(f"\n  Workflow: {workflow}")
 
             if should_upgrade:
-                print(f"  Status:   ⚠️  UPGRADE RECOMMENDED")
+                print("  Status:   ⚠️  UPGRADE RECOMMENDED")
                 print(f"  Reason:   {reason}")
                 print("\n  Action: Consider upgrading from CHEAP → CAPABLE or CAPABLE → PREMIUM")
             else:
-                print(f"  Status:   ✅ Performing well")
+                print("  Status:   ✅ Performing well")
                 print(f"  Reason:   {reason}")
 
         else:
@@ -818,7 +818,7 @@ def cmd_dashboard_start(args: Namespace) -> int:
         host = args.host
         port = args.port
 
-        print(f"\n🚀 Starting Agent Coordination Dashboard...")
+        print("\n🚀 Starting Agent Coordination Dashboard...")
         print(f"📊 Dashboard will be available at: http://{host}:{port}\n")
         print("💡 Make sure Redis is populated with test data:")
         print("   python scripts/populate_redis_direct.py\n")

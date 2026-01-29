@@ -32,6 +32,7 @@ Testing operations powered by Socratic agents that help you understand failures 
 /testing                    # Interactive menu
 /testing run                # Run tests with guided failure analysis
 /testing coverage           # Coverage analysis with risk prioritization
+/testing generate           # Batch generate tests to boost coverage
 /testing tdd                # Test-driven development guidance
 /testing benchmark          # Performance benchmarking
 ```
@@ -111,6 +112,88 @@ Coverage analysis that prioritizes gaps by *risk*, not just percentage.
 - Critical paths (auth, payments, data): 90%+
 - Core business logic: 80%+
 - Utilities and helpers: 70%+
+
+---
+
+## Generate Tests
+
+**Agent:** `test-writer` | **Workflow:** `test_gen_parallel`
+
+AI-powered batch test generation to rapidly achieve high coverage.
+
+**Invoke:**
+
+```bash
+/testing generate                      # Interactive batch generation
+/testing generate --module path.py     # Generate for specific module
+/testing generate --batch --top 50     # Batch generate for 50 modules
+/testing generate --parallel 20        # Process 20 modules in parallel
+```
+
+**The test-writer agent will:**
+
+1. Analyze your codebase for low-coverage modules
+2. Use AST parsing to extract classes, methods, and functions
+3. Generate test templates in parallel (cheap tier - fast)
+4. Complete test implementations with AI (capable tier - quality)
+5. Validate and save runnable tests
+
+**How it works:**
+
+```
+1. Discovery (cheap tier)
+   └─> Scan coverage data, find modules <80% coverage
+
+2. Template Generation (cheap tier, parallel)
+   └─> AST parse → Extract structure → Generate test scaffolds
+   └─> Process 10-50 modules simultaneously
+
+3. Test Completion (capable tier, parallel)
+   └─> Add test data → Write assertions → Mock dependencies
+   └─> Generate complete, runnable tests
+
+4. Validation & Save
+   └─> Verify syntax → Check imports → Save to tests/behavioral/generated/
+```
+
+**Examples:**
+
+```bash
+# Generate tests for a specific module
+/testing generate --module src/empathy_os/config.py
+
+# Batch generate for top 200 low-coverage modules
+/testing generate --batch --top 200 --parallel 10
+
+# Focus on critical modules only
+/testing generate --batch --top 50 --min-coverage 0 --max-coverage 50
+```
+
+**Output:**
+
+```
+🔍 Discovering top 200 modules with lowest coverage...
+📋 Found 200 modules to process
+
+⚡ Processing in batches of 10...
+✅ Generated: tests/behavioral/generated/test_config_behavioral.py
+✅ Generated: tests/behavioral/generated/test_memory_behavioral.py
+...
+
+================================================================================
+✅ COMPLETED: 200 test files
+❌ ERRORS: 0 modules
+📁 Location: tests/behavioral/generated/
+================================================================================
+```
+
+**Philosophy:** Instead of manually writing hundreds of tests, let AI generate comprehensive test suites in parallel. The system uses multi-tier LLM orchestration: cheap models for fast template generation, capable models for quality test completion.
+
+**Coverage targets:**
+- First batch (top 50): Raise coverage from ~2% to ~40%
+- Second batch (next 50): Push to ~60%
+- Third batch (next 100): Reach ~85%
+- Manual refinement: Polish to 90%+ or even 99.9%
 
 ---
 
@@ -202,6 +285,7 @@ Performance testing and regression detection.
 |-------|-------|----------|-------------|
 | `/testing run` | test-writer | test_runner | Running tests, understanding failures |
 | `/testing coverage` | quality-validator | test_coverage_boost | Finding and prioritizing coverage gaps |
+| `/testing generate` | test-writer | test_gen_parallel | Batch generating tests to boost coverage |
 | `/testing tdd` | test-writer | test_gen | Writing tests before code |
 | `/testing maintenance` | quality-validator | test_maintenance | Cleaning up test suite |
 | `/testing benchmark` | performance-analyst | (benchmarking) | Performance testing |
@@ -211,11 +295,12 @@ Performance testing and regression detection.
 ## When to Use Each Skill
 
 ```text
-Tests are failing                → /testing run
-Need more test coverage          → /testing coverage
-Building new feature with TDD    → /testing tdd
-Test suite is messy/slow         → /testing maintenance
-Checking for performance issues  → /testing benchmark
+Tests are failing                       → /testing run
+Need more test coverage                 → /testing coverage
+Want to rapidly boost coverage to 90%+  → /testing generate
+Building new feature with TDD           → /testing tdd
+Test suite is messy/slow                → /testing maintenance
+Checking for performance issues         → /testing benchmark
 ```
 
 ---

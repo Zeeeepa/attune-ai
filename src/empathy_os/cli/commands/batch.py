@@ -70,7 +70,7 @@ def cmd_batch_submit(args):
             ]
         )
 
-        print(f"\n✅ Batch submitted successfully!")
+        print("\n✅ Batch submitted successfully!")
         print(f"   Batch ID: {batch_id}")
         print(f"\nMonitor status with: empathy batch status {batch_id}")
         print(f"Retrieve results with: empathy batch results {batch_id} output.json")
@@ -105,7 +105,7 @@ def cmd_batch_status(args):
         workflow = BatchProcessingWorkflow(api_key=api_key)
         status = workflow.batch_provider.get_batch_status(batch_id)
 
-        print(f"\n📊 Batch Status:")
+        print("\n📊 Batch Status:")
         print(f"   ID: {status.id}")
         print(f"   Processing Status: {status.processing_status}")
         print(f"   Created: {status.created_at}")
@@ -113,7 +113,7 @@ def cmd_batch_status(args):
         if hasattr(status, "ended_at") and status.ended_at:
             print(f"   Ended: {status.ended_at}")
 
-        print(f"\n📈 Request Counts:")
+        print("\n📈 Request Counts:")
         counts = status.request_counts
         print(f"   Processing: {counts.processing}")
         print(f"   Succeeded: {counts.succeeded}")
@@ -122,10 +122,10 @@ def cmd_batch_status(args):
         print(f"   Expired: {counts.expired}")
 
         if status.processing_status == "ended":
-            print(f"\n✅ Batch processing completed!")
+            print("\n✅ Batch processing completed!")
             print(f"   Retrieve results with: empathy batch results {batch_id} output.json")
         else:
-            print(f"\n⏳ Batch still processing...")
+            print("\n⏳ Batch still processing...")
 
         # Output JSON if requested
         if args.json:

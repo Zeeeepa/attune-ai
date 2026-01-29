@@ -66,6 +66,8 @@ if TYPE_CHECKING:
     from .test5 import Test5Workflow
     from .test_coverage_boost_crew import TestCoverageBoostCrew, TestCoverageBoostCrewResult
     from .test_gen import TestGenerationWorkflow
+    from .test_gen_behavioral import BehavioralTestGenerationWorkflow
+    from .test_gen_parallel import ParallelTestGenerationWorkflow
     from .xml_enhanced_crew import XMLAgent, XMLTask
 
 # Only import base module eagerly (small, needed for type checks)
@@ -136,6 +138,8 @@ _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {
     "TestCoverageBoostCrew": (".test_coverage_boost_crew", "TestCoverageBoostCrew"),
     "TestCoverageBoostCrewResult": (".test_coverage_boost_crew", "TestCoverageBoostCrewResult"),
     "TestGenerationWorkflow": (".test_gen", "TestGenerationWorkflow"),
+    "BehavioralTestGenerationWorkflow": (".test_gen_behavioral", "BehavioralTestGenerationWorkflow"),
+    "ParallelTestGenerationWorkflow": (".test_gen_parallel", "ParallelTestGenerationWorkflow"),
     "XMLAgent": (".xml_enhanced_crew", "XMLAgent"),
     "XMLTask": (".xml_enhanced_crew", "XMLTask"),
     "parse_xml_response": (".xml_enhanced_crew", "parse_xml_response"),
@@ -213,6 +217,8 @@ _DEFAULT_WORKFLOW_NAMES: dict[str, str] = {
     "perf-audit": "PerformanceAuditWorkflow",
     # Generation workflows
     "test-gen": "TestGenerationWorkflow",
+    "test-gen-behavioral": "BehavioralTestGenerationWorkflow",
+    "test-gen-parallel": "ParallelTestGenerationWorkflow",
     "refactor-plan": "RefactorPlanWorkflow",
     # Operational workflows
     "dependency-check": "DependencyCheckWorkflow",
@@ -484,6 +490,8 @@ __all__ = [
     "SecureReleaseResult",
     "SecurityAuditWorkflow",
     "TestGenerationWorkflow",
+    "BehavioralTestGenerationWorkflow",
+    "ParallelTestGenerationWorkflow",
     # Configuration
     "WorkflowConfig",
     "WorkflowResult",

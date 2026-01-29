@@ -4,11 +4,8 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import time
 from datetime import datetime
-from unittest.mock import Mock, patch
-
-import pytest
+from unittest.mock import Mock
 
 from empathy_os.telemetry.event_streaming import EventStreamer, StreamEvent
 
