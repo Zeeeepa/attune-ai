@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.3] - 2026-01-29
+
+### Changed
+
+- **Project Status**: Updated from Beta to Production/Stable
+  - Framework has proven stability and reliability in production environments
+  - Comprehensive test coverage (80%+) and extensive real-world usage
+  - Mature API with semantic versioning commitment
+  - PyPI classifier updated to "Development Status :: 5 - Production/Stable"
+
 ## [5.1.2] - 2026-01-29
 
 ### Added
@@ -18,14 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Categories include: Core Framework, AI/LLM Integration, Memory & Storage, Web Framework & API, Security & Authentication, Observability & Telemetry, Developer Tools, Documentation, Editor Integration, Platform Compatibility, and Document Processing
   - Updated `README.md` with links to acknowledgements and contributors documentation
   - Demonstrates respect for open source community and proper attribution practices
-
-### Changed
-
-- **Project Status**: Updated from Beta to Production/Stable
-  - Framework has proven stability and reliability in production environments
-  - Comprehensive test coverage (80%+) and extensive real-world usage
-  - Mature API with semantic versioning commitment
-  - PyPI classifier updated to "Development Status :: 5 - Production/Stable"
 
 ### Documentation
 
