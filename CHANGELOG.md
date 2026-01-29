@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.4] - 2026-01-29
+
+### Added
+
+- **Model Context Protocol (MCP) Integration**: Complete MCP server implementation for Claude Code
+  - Created `src/empathy_os/mcp/server.py` (502 lines) - Production MCP server exposing all workflows
+  - Exposes 10 tools: security_audit, bug_predict, code_review, test_generation, performance_audit, release_prep, auth_status, auth_recommend, telemetry_stats, dashboard_status
+  - Exposes 3 resources: empathy://workflows, empathy://auth/config, empathy://telemetry
+  - JSON-RPC stdio transport for seamless Claude Code integration
+  - Automatic server discovery via `.claude/mcp.json` configuration
+  - Comprehensive testing documented in `.claude/MCP_TEST_RESULTS.md` (all tests passing)
+
+- **Claude Code Best Practices**: Enhanced project configuration for optimal Claude Code experience
+  - Updated `.claude/CLAUDE.md` to v5.1.1 with comprehensive structure
+  - Added quick start examples, natural language commands, key capabilities
+  - Documented all 10 command hubs with usage examples
+  - Added verification hooks for automatic validation:
+    - Python syntax validation on file writes
+    - JSON format validation on file writes
+    - Workflow output verification
+    - Session end reminders
+
+- **Documentation Quality**: Process improvements for better documentation
+  - Added `.claude/rules/empathy/markdown-formatting.md` - Comprehensive formatting guide
+  - 5 critical rules to prevent recurring linting warnings (MD031, MD040, MD032, MD029, MD060)
+  - Saves tokens and time by getting formatting right first time
+
+### Documentation
+
+- **MCP Integration Guide**: Complete rewrite of `docs/getting-started/mcp-integration.md` (295 lines)
+  - Two setup options: Claude Code (automatic) and Claude Desktop (manual)
+  - Comprehensive tool documentation with examples
+  - Troubleshooting guide for common issues
+  - Testing instructions and verification steps
+
 ## [5.1.3] - 2026-01-29
 
 ### Changed
