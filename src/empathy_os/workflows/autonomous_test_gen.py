@@ -564,6 +564,7 @@ Return ONLY the complete Python test file content, no explanations."""
                     "budget_tokens": 20000  # Generous thinking budget for thorough planning
                 },
                 messages=messages,
+                timeout=900.0,  # 15 minutes timeout for extended thinking + generation
             )
 
             if not response.content:
@@ -705,6 +706,7 @@ Return ONLY the complete Python test file content, no explanations."""
                     "budget_tokens": 20000  # Generous thinking budget for thorough analysis
                 },
                 messages=conversation_history,
+                timeout=900.0,  # 15 minutes timeout for refinement iterations
             )
 
             if not response.content:
@@ -1099,6 +1101,7 @@ Return ONLY the complete Python test file with additions, no explanations."""
                     max_tokens=40000,  # Very generous total budget for coverage improvement
                     thinking={"type": "enabled", "budget_tokens": 20000},  # Thorough thinking for coverage gaps
                     messages=messages,
+                    timeout=900.0,  # 15 minutes timeout for coverage-guided iterations
                 )
 
                 refined_content = None
