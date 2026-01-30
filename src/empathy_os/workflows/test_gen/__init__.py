@@ -1,31 +1,34 @@
-"""Test Generation Workflow (Backward Compatible Entry Point).
+"""Test Generation Workflow Package.
 
-This module maintains backward compatibility by re-exporting all public APIs
-from the test_gen package.
-
-For new code, import from the package directly:
-    from empathy_os.workflows.test_gen import TestGenerationWorkflow
+Generates tests targeting areas with historical bugs and low coverage.
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-# Re-export all public APIs from the package for backward compatibility
-from .test_gen import (
-    DEFAULT_SKIP_PATTERNS,
-    TEST_GEN_STEPS,
-    ASTFunctionAnalyzer,
-    ClassSignature,
-    FunctionSignature,
-    TestGenerationWorkflow,
-    format_test_gen_report,
+# Core workflow
+from .workflow import TestGenerationWorkflow, main
+
+# Data models
+from .data_models import ClassSignature, FunctionSignature
+
+# AST analyzer
+from .ast_analyzer import ASTFunctionAnalyzer
+
+# Configuration
+from .config import DEFAULT_SKIP_PATTERNS, TEST_GEN_STEPS
+
+# Test generation templates
+from .test_templates import (
     generate_test_cases_for_params,
     generate_test_for_class,
     generate_test_for_function,
     get_param_test_values,
     get_type_assertion,
-    main,
 )
+
+# Report formatter
+from .report_formatter import format_test_gen_report
 
 __all__ = [
     # Workflow
@@ -48,7 +51,3 @@ __all__ = [
     # Report formatter
     "format_test_gen_report",
 ]
-
-
-if __name__ == "__main__":
-    main()
