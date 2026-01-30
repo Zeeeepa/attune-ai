@@ -357,3 +357,88 @@ def setup_test_environment(tmp_path, monkeypatch, request):
     except (FileNotFoundError, OSError):
         # If original directory was deleted (e.g., by test cleanup), ignore
         pass
+
+
+# =============================================================================
+# Additional Shared Fixtures for Testing Improvements
+# =============================================================================
+
+
+@pytest.fixture
+def mock_llm_response():
+    """Mock LLM API response for testing.
+
+    Returns:
+        Callable that creates mock LLM responses
+
+    Example:
+        >>> response = mock_llm_response(content="test response")
+        >>> assert response["content"] == "test response"
+    """
+    def _mock_response(content: str = "mock response", model: str = "claude-3-5-sonnet"):
+        return {
+            "content": content,
+            "role": "assistant",
+            "model": model,
+            "usage": {"input_tokens": 100, "output_tokens": 50},
+            "stop_reason": "end_turn",
+        }
+
+    return _mock_response
+
+
+@pytest.fixture
+def temp_project_dir(tmp_path):
+    """Create a temporary project directory with common structure.
+
+    Args:
+        tmp_path: pytest fixture providing a temporary directory
+
+    Returns:
+        Path to temporary project directory with src/, tests/, docs/ structure
+
+    Example:
+        >>> project = temp_project_dir
+        >>> assert (project / "src").exists()
+        >>> assert (project / "README.md").exists()
+    """
+    project = tmp_path / "project"
+    project.mkdir()
+
+    # Create standard project structure
+    (project / "src").mkdir()
+    (project / "tests").mkdir()
+    (project / "docs").mkdir()
+
+    # Create sample files
+    (project / "src" / "__init__.py").touch()
+    (project / "tests" / "__init__.py").touch()
+    (project / "README.md").write_text("# Test Project\n\nA test project for testing.")
+    (project / "pyproject.toml").write_text(
+        """[project]
+name = "test-project"
+version = "0.1.0"
+"""
+    )
+
+    return project
+
+
+@pytest.fixture
+def mock_workflow_config():
+    """Mock workflow configuration dictionary.
+
+    Returns:
+        Dictionary with standard workflow configuration
+
+    Example:
+        >>> config = mock_workflow_config
+        >>> assert config["tier_routing"] is True
+    """
+    return {
+        "tier_routing": True,
+        "max_tokens": 4000,
+        "cache_enabled": True,
+        "telemetry_enabled": False,
+        "user_id": "test-user",
+    }

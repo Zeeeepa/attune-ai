@@ -1,61 +1,78 @@
-# Empathy Framework Test Suite
+# Test Suite Documentation
 
-## Test Organization
+**Empathy Framework Test Suite**  
+**Last Updated:** January 30, 2026  
+**Test Count:** 1,382+ tests  
+**Coverage:** ~82%
 
-- **Unit Tests** (`tests/unit/`): Import and test modules directly, measured for coverage
-- **Integration Tests** (root `test_*.py`): Run CLI commands via subprocess, no coverage
+---
 
-## Running Tests
+## 📁 Test Structure
 
-### All Tests (Unit + Integration)
+```
+tests/
+├── unit/                    # Unit tests (fast, isolated)
+│   ├── workflows/          # Workflow module tests
+│   ├── models/             # Model and provider tests
+│   ├── memory/             # Memory system tests
+│   ├── meta_workflows/     # Meta-orchestration tests
+│   └── telemetry/          # Telemetry and tracking tests
+├── behavioral/             # Behavioral tests (user-facing)
+│   ├── generated/          # Auto-generated behavioral tests
+│   │   ├── batch11/       # test_gen module tests (128 tests)
+│   │   ├── batch12/       # document_gen module tests (50 tests)
+│   │   └── batch13/       # cli_commands module tests (131 tests)
+│   └── *.py               # Handwritten behavioral tests
+├── integration/            # Integration tests (cross-component)
+│   └── test_*_with_auth.py
+├── utils/                  # Test utilities and helpers
+│   ├── cli_test_helpers.py # CLI mocking utilities
+│   └── __init__.py
+└── conftest.py            # Shared pytest fixtures
+```
+
+---
+
+## 🚀 Running Tests
+
+### Quick Commands
+
 ```bash
+# Run all tests
 pytest
+
+# Run specific category
+pytest tests/unit/
+pytest tests/behavioral/
+pytest tests/integration/
+
+# Run specific refactored module tests
+pytest tests/behavioral/generated/batch11/  # test_gen
+pytest tests/behavioral/generated/batch12/  # document_gen
+pytest tests/behavioral/generated/batch13/  # cli_commands
+
+# Run with coverage
+pytest --cov=src --cov-report=term-missing
+pytest --cov=src --cov-report=html
+
+# Run only fast tests (skip slow integration tests)
+pytest -m "not slow"
+
+# Run only refactored module tests
+pytest -m refactored
+
+# Run tests in parallel (faster)
+pytest -n auto
 ```
 
-### Unit Tests Only (with coverage)
-```bash
-pytest -m unit --cov=src/empathy_os --cov-report=term-missing --cov-fail-under=10
-```
+---
 
-### Integration Tests Only (no coverage)
-```bash
-pytest -m integration
-```
+## 🔧 Test Utilities
 
-### Specific Test File
-```bash
-pytest tests/unit/test_config.py
-pytest test_dashboard.py
-```
+Located in `tests/utils/cli_test_helpers.py` - provides mocking utilities for CLI commands.
 
-### With Verbose Output
-```bash
-pytest -v
-pytest -vv  # Extra verbose
-```
+See [docs/TESTING_IMPROVEMENT_PLAN.md](../docs/TESTING_IMPROVEMENT_PLAN.md) for detailed usage.
 
-## Coverage Requirements
+---
 
-- **Unit tests**: Required to meet 10% coverage minimum
-- **Integration tests**: Excluded from coverage (run CLI via subprocess)
-
-## Test Markers
-
-- `@pytest.mark.unit` - Unit test (imports modules, measured for coverage)
-- `@pytest.mark.integration` - Integration test (subprocess, no coverage)
-- `@pytest.mark.slow` - Slow test (can be skipped with `-m "not slow"`)
-- `@pytest.mark.network` - Requires network (skip with `-m "not network"`)
-- `@pytest.mark.llm` - Requires LLM API access
-
-## Examples
-
-```bash
-# Run only fast unit tests with coverage
-pytest -m "unit and not slow" --cov=src/empathy_os
-
-# Run all tests except network-dependent ones
-pytest -m "not network"
-
-# Run integration tests with extra output
-pytest -m integration -vv
-```
+**More documentation:** [TESTING_IMPROVEMENT_PLAN.md](../docs/TESTING_IMPROVEMENT_PLAN.md)
