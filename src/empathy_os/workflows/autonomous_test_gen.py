@@ -386,7 +386,7 @@ Return ONLY the complete Python test file, no explanations."""
         """Generate comprehensive tests using LLM with Anthropic best practices.
 
         ENHANCEMENTS (Phase 1):
-        - Extended thinking for better test planning
+        - Extended thinking (20K token budget) for thorough test planning
         - Prompt caching for 90% cost reduction
         - Full source code (NO TRUNCATION)
         - Workflow-specific prompts when detected
@@ -490,7 +490,7 @@ Return ONLY the complete Python test file content, no explanations."""
                 max_tokens=16000,  # Output tokens
                 thinking={
                     "type": "enabled",
-                    "budget_tokens": 4000  # Thinking budget for test planning
+                    "budget_tokens": 20000  # Generous thinking budget to prevent truncation
                 },
                 messages=messages,
             )
