@@ -1,5 +1,5 @@
 ---
-description: Production-ready AI framework with Level 4 Anticipatory Intelligence that predicts problems before they happen. Multi-agent orchestration, cost optimization, and pattern learning.
+description: Production-ready AI framework with Level 4 Anticipatory Intelligence. Multi-agent orchestration, cost optimization, and pattern learning.
 ---
 
 # Empathy Framework

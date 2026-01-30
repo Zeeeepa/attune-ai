@@ -1,5 +1,5 @@
 ---
-description: Multi-agent coordination with conflict resolution, team monitoring, and shared memory. Enable distributed AI agents to collaborate effectively with pattern-based coordination.
+description: Multi-agent coordination API with conflict resolution, team monitoring, and shared memory. Enable distributed AI agents to collaborate effectively.
 ---
 
 # Multi-Agent Coordination
