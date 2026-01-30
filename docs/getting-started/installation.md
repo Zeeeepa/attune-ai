@@ -170,6 +170,15 @@ pyenv local 3.11
 
 ---
 
+## See Also
+
+- [Redis Setup](redis-setup.md) - Configure Redis for production use
+- [MCP Integration](mcp-integration.md) - Connect to Claude Code
+- [Configuration Reference](../reference/config.md) - Customize settings
+- [First Steps](first-steps.md) - Run your first workflow
+
+---
+
 ## Next Step
 
 You're installed! Continue to [First Steps](first-steps.md) to run your first workflow.

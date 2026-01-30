@@ -373,6 +373,9 @@ export EMPATHY_PATTERN_CONFIDENCE_THRESHOLD=0.70
 
 ## See Also
 
-- [EmpathyOS API](empathy-os.md)
-- [Quick Start Guide](../tutorials/quickstart.md)
-- [Configuration Examples](../reference/configuration.md)
+- [EmpathyOS API](empathy-os.md) - Main entry point API
+- [Installation Guide](../getting-started/installation.md) - Package installation and setup
+- [Persistence](persistence.md) - Configure pattern storage backends
+- [Multi-Agent Coordination](multi-agent.md) - Agent configuration and coordination
+- [Quick Start Guide](../tutorials/quickstart.md) - Get started with examples
+- [Configuration Examples](../reference/configuration.md) - Additional configuration patterns

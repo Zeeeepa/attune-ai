@@ -27,11 +27,13 @@ nav:
       - First Steps: getting-started/first-steps.md
       - Choose Your Path: getting-started/choose-your-path.md
       - Redis Setup: getting-started/redis-setup.md
+      - MCP Integration: getting-started/mcp-integration.md
 
   # Learning-oriented - Deeper tutorials after onboarding
   - Tutorials:
       - tutorials/index.md
       - Multi-Agent Team: tutorials/quickstart.md
+      - Interactive Agent Creation: blog/interactive-agent-creation-tutorial.md
       - Examples:
           - Code Review Assistant: tutorials/examples/simple-chatbot.md
           - SBAR Clinical Handoff: tutorials/examples/sbar-clinical-handoff.md
@@ -51,6 +53,7 @@ nav:
           - Smart Router: how-to/smart-router.md
           - Auto-Chaining: how-to/auto-chaining.md
       - Integration:
+          - Claude Code: integration/claude-code-integration.md
           - Webhooks: how-to/webhook-integration.md
           - Security: how-to/security-architecture.md
           - HIPAA Compliance: how-to/hipaa-compliance.md

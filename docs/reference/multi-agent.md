@@ -432,7 +432,10 @@ if stats["most_used_strategy"] == "highest_confidence":
 
 ## See Also
 
-- [Pattern Library](pattern-library.md) - Pattern storage and retrieval
-- [EmpathyOS](empathy-os.md) - Core agent API
-- [Multi-Agent Coordination Example](../tutorials/examples/multi-agent-team-coordination.md)
-- See the Memory System chapter for distributed memory concepts
+- [Pattern Library](pattern-library.md) - Pattern storage, retrieval, and sharing
+- [EmpathyOS](empathy-os.md) - Core agent API and configuration
+- [Configuration](config.md) - Agent configuration options
+- [Persistence](persistence.md) - Backend storage for shared patterns
+- [Agent Factory](../how-to/agent-factory.md) - Create custom agents
+- [Multi-Agent Tutorial](../tutorials/examples/multi-agent-team-coordination.md) - Step-by-step example
+- [Unified Memory System](../how-to/unified-memory-system.md) - Distributed memory concepts

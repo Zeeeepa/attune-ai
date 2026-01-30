@@ -133,6 +133,16 @@ Now that you've run a workflow, it's time to [Choose Your Path](choose-your-path
 
 ---
 
+## See Also
+
+- [Choose Your Path](choose-your-path.md) - Decide between Quick Start, Tutorial, or Deep Dive
+- [Installation Guide](installation.md) - Package options and configuration
+- [MCP Integration](mcp-integration.md) - Connect to Claude Code for IDE integration
+- [Multi-Agent Coordination](../reference/multi-agent.md) - Build agent teams
+- [Configuration Reference](../reference/config.md) - Customize framework behavior
+
+---
+
 ## Quick Reference
 
 ```bash
