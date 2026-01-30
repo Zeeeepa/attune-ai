@@ -101,6 +101,14 @@ class HybridRouter:
             "explain": ("docs", "explain"),
             "document": ("docs", "generate"),
             "overview": ("docs", "overview"),
+            "docs-seo": ("workflows", "run seo-optimization --mode audit"),
+            # SEO commands → /workflows skill
+            "seo": ("workflows", "run seo-optimization --mode audit"),
+            "seo-audit": ("workflows", "run seo-optimization --mode audit"),
+            "seo-optimize": ("workflows", "run seo-optimization --mode fix"),
+            "optimize-seo": ("workflows", "run seo-optimization --mode suggest"),
+            "meta-tags": ("workflows", "run seo-optimization --mode audit"),
+            "check-seo": ("workflows", "run seo-optimization --mode audit"),
             # Plan commands → /plan skill
             "plan": ("plan", ""),
             "tdd": ("plan", "tdd"),
@@ -340,6 +348,7 @@ class HybridRouter:
             "code-review": ("dev", "review"),
             "test-gen": ("testing", "gen"),
             "perf-audit": ("workflows", "run perf-audit"),
+            "seo-optimization": ("workflows", "run seo-optimization"),
             "commit": ("dev", "commit"),
             "refactor": ("dev", "refactor"),
             "debug": ("dev", "debug"),

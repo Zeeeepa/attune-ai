@@ -192,6 +192,32 @@ Manage documentation across a project with intelligent updates.
 
 ---
 
+### seo-optimization
+
+Audit and optimize SEO for MkDocs documentation sites.
+
+```bash
+/workflows run seo-optimization --mode audit      # Audit only
+/workflows run seo-optimization --mode suggest    # Audit + suggestions
+/workflows run seo-optimization --mode fix        # Interactive fixes
+```
+
+**Stages:** scan (CHEAP) → analyze (CAPABLE) → recommend (PREMIUM) → implement (CAPABLE)
+
+**Features:**
+
+- Meta tags audit (titles, descriptions, OpenGraph)
+- Content structure analysis (headings, keywords)
+- Technical SEO checks (sitemap, robots.txt)
+- Link analysis (broken links, opportunities)
+- Interactive approval workflow for fixes
+
+**Output:** SEO score, detailed findings, and implementation report.
+
+**Reference Example:** See [examples/seo_optimization/](../../examples/seo_optimization/) for complete multi-agent system demo.
+
+---
+
 ## Release Workflows
 
 ### release-prep
@@ -245,6 +271,7 @@ Check dependencies for updates and vulnerabilities.
 | `test-coverage-boost` | Coverage improvement | Meta-orchestrated |
 | `doc-gen` | Documentation generation | CAPABLE |
 | `doc-orchestrator` | Documentation management | Meta-orchestrated |
+| `seo-optimization` | SEO audit and optimization for docs | CHEAP → CAPABLE → PREMIUM → CAPABLE |
 | `release-prep` | Release preparation | CHEAP → CAPABLE → PREMIUM |
 | `secure-release` | Security-focused release | Multi-stage |
 | `dependency-check` | Dependency analysis | CHEAP |

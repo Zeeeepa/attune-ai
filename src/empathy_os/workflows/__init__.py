@@ -62,6 +62,7 @@ if TYPE_CHECKING:
     from .research_synthesis import ResearchSynthesisWorkflow
     from .secure_release import SecureReleasePipeline, SecureReleaseResult
     from .security_audit import SecurityAuditWorkflow
+    from .seo_optimization import SEOOptimizationWorkflow
     from .step_config import WorkflowStepConfig
     from .test5 import Test5Workflow
     from .test_coverage_boost_crew import TestCoverageBoostCrew, TestCoverageBoostCrewResult
@@ -134,6 +135,7 @@ _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {
     "SecureReleasePipeline": (".secure_release", "SecureReleasePipeline"),
     "SecureReleaseResult": (".secure_release", "SecureReleaseResult"),
     "SecurityAuditWorkflow": (".security_audit", "SecurityAuditWorkflow"),
+    "SEOOptimizationWorkflow": (".seo_optimization", "SEOOptimizationWorkflow"),
     "Test5Workflow": (".test5", "Test5Workflow"),
     "TestCoverageBoostCrew": (".test_coverage_boost_crew", "TestCoverageBoostCrew"),
     "TestCoverageBoostCrewResult": (".test_coverage_boost_crew", "TestCoverageBoostCrewResult"),
@@ -210,7 +212,9 @@ def _load_cli_commands() -> None:
 _DEFAULT_WORKFLOW_NAMES: dict[str, str] = {
     # Core workflows
     "code-review": "CodeReviewWorkflow",
+    # Documentation workflows
     "doc-gen": "DocumentGenerationWorkflow",
+    "seo-optimization": "SEOOptimizationWorkflow",
     # Analysis workflows
     "bug-predict": "BugPredictionWorkflow",
     "security-audit": "SecurityAuditWorkflow",
@@ -489,6 +493,7 @@ __all__ = [
     "SecureReleasePipeline",
     "SecureReleaseResult",
     "SecurityAuditWorkflow",
+    "SEOOptimizationWorkflow",
     "TestGenerationWorkflow",
     "BehavioralTestGenerationWorkflow",
     "ParallelTestGenerationWorkflow",
