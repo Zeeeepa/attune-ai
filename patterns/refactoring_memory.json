@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-01-30T16:15:43.975511",
-  "node_count": 96,
+  "updated_at": "2026-01-30T16:25:51.071060",
+  "node_count": 97,
   "edge_count": 0,
   "nodes": [
     {
@@ -1538,6 +1538,22 @@
       "tags": [],
       "created_at": "2026-01-30T16:15:43.974106",
       "updated_at": "2026-01-30T16:15:43.974107",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260130162551_b517fde25c89",
+      "type": "pattern",
+      "name": "refactor:.",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_workflow": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-30T16:25:51.066226",
+      "updated_at": "2026-01-30T16:25:51.066226",
       "status": "open"
     }
   ],
