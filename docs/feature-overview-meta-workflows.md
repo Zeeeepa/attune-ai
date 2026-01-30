@@ -1,3 +1,7 @@
+---
+description: Feature Overview: Meta-Workflow System: **Generated:** 2026-01-19 **Modules Analyzed:** 11 files (5,871 lines) **Target Audience:** Architects **Path:** `src/em
+---
+
 # Feature Overview: Meta-Workflow System
 
 **Generated:** 2026-01-19

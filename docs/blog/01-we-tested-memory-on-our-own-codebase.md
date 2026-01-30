@@ -1,3 +1,7 @@
+---
+description: We Tested Our Memory System on Our Own Codebase. Here's What Happened.: **Date:** December 12, 2025 **Author:** Patrick Roebuck **Series:** Memory-Enhanced Deve
+---
+
 # We Tested Our Memory System on Our Own Codebase. Here's What Happened.
 
 **Date:** December 12, 2025

@@ -1,3 +1,7 @@
+---
+description: Memory Graph: The Memory Graph provides cross-wizard knowledge sharing by connecting findings, bugs, fixes, and patterns across sessions.
+---
+
 # Memory Graph
 
 The Memory Graph provides cross-wizard knowledge sharing by connecting findings, bugs, fixes, and patterns across sessions.

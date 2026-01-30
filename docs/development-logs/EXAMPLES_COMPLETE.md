@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Comprehensive Examples - Complete! 🎉. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Comprehensive Examples - Complete! 🎉
 
 **Created**: November 25, 2025

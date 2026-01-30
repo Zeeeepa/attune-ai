@@ -1,3 +1,7 @@
+---
+description: Sonnet 4.5 → Opus 4.5 Quick Start Guide: **Updated:** January 9, 2026 **Empathy Framework v3.9.2+** ## What Changed? The Empathy Framework now uses **Claude Son
+---
+
 # Sonnet 4.5 → Opus 4.5 Quick Start Guide
 
 **Updated:** January 9, 2026

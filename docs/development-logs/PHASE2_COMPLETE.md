@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Phase 2: Enterprise Security Controls - COMPLETE ✅. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Phase 2: Enterprise Security Controls - COMPLETE ✅
 
 **Empathy Framework v1.8.0-beta**

@@ -1,3 +1,7 @@
+---
+description: The Empathy Framework for AI Systems: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # The Empathy Framework for AI Systems
 ## A Guide for Non-Technical Readers
 

@@ -1,3 +1,7 @@
+---
+description: OpenSSF Best Practices Badge - Application Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # OpenSSF Best Practices Badge - Application Guide
 
 This guide provides step-by-step instructions for submitting the Empathy Framework's OpenSSF Best Practices Badge application.

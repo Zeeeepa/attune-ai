@@ -1,3 +1,7 @@
+---
+description: Meta-Orchestration API Reference API reference: **Version:** 3.12.0 **Last Updated:** January 10, 2026 --- ## Table of Contents 1. [Core Components]
+---
+
 # Meta-Orchestration API Reference
 
 **Version:** 3.12.0

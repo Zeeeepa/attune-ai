@@ -1,3 +1,7 @@
+---
+description: Authentication Strategy - All Workflow Integrations integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Authentication Strategy - All Workflow Integrations
 
 **Date:** January 29, 2026

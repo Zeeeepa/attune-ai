@@ -1,3 +1,7 @@
+---
+description: Authentication Strategy Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Authentication Strategy Guide
 
 **Version:** 1.0

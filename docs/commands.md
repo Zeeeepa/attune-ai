@@ -1,3 +1,7 @@
+---
+description: Commands System: Load, parse, and execute markdown-based commands with framework integration.
+---
+
 # Commands System
 
 Load, parse, and execute markdown-based commands with framework integration.

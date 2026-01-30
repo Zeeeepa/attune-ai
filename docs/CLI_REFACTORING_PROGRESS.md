@@ -1,3 +1,7 @@
+---
+description: CLI Refactoring Progress Update: **Date:** 2026-01-26 (Continued Session) **Progress:** 40% Complete (12/30 commands) --- ## ✅ Newly Extracted (This Session) ##
+---
+
 # CLI Refactoring Progress Update
 
 **Date:** 2026-01-26 (Continued Session)

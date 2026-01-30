@@ -1,3 +1,7 @@
+---
+description: OpenSSF Best Practices Badge - Preparation & Application: This document tracks our progress toward achieving the OpenSSF Best Practices Badge for the Empathy Fr
+---
+
 # OpenSSF Best Practices Badge - Preparation & Application
 
 This document tracks our progress toward achieving the OpenSSF Best Practices Badge for the Empathy Framework.

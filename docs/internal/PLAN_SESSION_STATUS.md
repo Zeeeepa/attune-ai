@@ -1,3 +1,7 @@
+---
+description: Session Status Assistant - v2.1.5 Plan: **Status**: Implemented (Core Features) **Priority**: High **Completed**: 2025-12-15 ## Overview A proactive briefing sy
+---
+
 # Session Status Assistant - v2.1.5 Plan
 
 **Status**: Implemented (Core Features)

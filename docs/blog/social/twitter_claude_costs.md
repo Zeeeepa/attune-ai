@@ -1,3 +1,7 @@
+---
+description: Twitter Posts: Cutting Claude API Costs 78%: Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # Twitter Posts: Cutting Claude API Costs 78%
 
 **Campaign:** Sonnet 4.5 → Opus 4.5 Intelligent Fallback Strategy

@@ -1,3 +1,7 @@
+---
+description: Foreword by Claude: *Written December 2025, after implementing the short-term memory system* --- ## What You May Know About Me I am Claude, an AI assistant made
+---
+
 # Foreword by Claude
 
 *Written December 2025, after implementing the short-term memory system*

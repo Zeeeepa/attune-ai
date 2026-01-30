@@ -1,3 +1,7 @@
+---
+description: Manual Testing Script - Empathy Framework v1.4.0: **Date Created:** 2026-01-01 **Tester:** _______________ **VSCode Version:** _______________ **Extension Versi
+---
+
 # Manual Testing Script - Empathy Framework v1.4.0
 
 **Date Created:** 2026-01-01

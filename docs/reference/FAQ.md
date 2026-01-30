@@ -1,3 +1,7 @@
+---
+description: Frequently Asked Questions API reference: **Last Updated:** January 9, 2026 **Version:** 3.10.0 --- ## Table of Contents 1. [Getting Started](
+---
+
 # Frequently Asked Questions
 
 **Last Updated:** January 9, 2026

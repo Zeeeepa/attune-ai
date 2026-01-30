@@ -1,3 +1,7 @@
+---
+description: Install Empathy Framework with pip in 2 minutes. Choose from developer, minimal, or full packages. Includes CLI tools, VSCode extension, and workflow support.
+---
+
 # Installation
 
 Get Empathy Framework installed and configured in about 2 minutes.

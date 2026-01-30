@@ -1,3 +1,7 @@
+---
+description: Agent Factory Feature Design: **Date:** 2026-01-01 **Status:** Design Phase **Target:** VSCode Extension Integration --- ## Executive Summary The **Agent Factor
+---
+
 # Agent Factory Feature Design
 
 **Date:** 2026-01-01

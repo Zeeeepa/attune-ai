@@ -1,3 +1,7 @@
+---
+description: Workflow Factory - Completion Report: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Workflow Factory - Completion Report
 
 **Date Completed:** 2025-01-05

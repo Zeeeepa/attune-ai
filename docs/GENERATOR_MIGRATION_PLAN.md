@@ -1,3 +1,7 @@
+---
+description: Generator Expression Migration Plan: ## Phase 2: Track 2 Optimization - Empathy Framework **Version:** 1.0 **Created:** January 10, 2026 **Owner:** Engineering 
+---
+
 # Generator Expression Migration Plan
 ## Phase 2: Track 2 Optimization - Empathy Framework
 

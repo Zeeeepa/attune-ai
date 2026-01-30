@@ -1,3 +1,7 @@
+---
+description: Monitoring System - Sprint Plan & Task Tracker: **Project:** Empathy Framework Monitoring System (v3.8.0) **Timeline:** 3 sprints (2-3 weeks) **Status:** 🟡 Plan
+---
+
 # Monitoring System - Sprint Plan & Task Tracker
 
 **Project:** Empathy Framework Monitoring System (v3.8.0)

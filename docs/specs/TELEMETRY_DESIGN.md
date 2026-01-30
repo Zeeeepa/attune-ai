@@ -1,3 +1,7 @@
+---
+description: Telemetry System Design: **Version**: 1.0 (for v3.8.2) **Status**: Design Phase **Privacy**: Local-only, no PII/prompts/responses --- ## Overview Lightweight lo
+---
+
 # Telemetry System Design
 
 **Version**: 1.0 (for v3.8.2)

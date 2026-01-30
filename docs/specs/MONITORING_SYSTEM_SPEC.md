@@ -1,3 +1,7 @@
+---
+description: Empathy Framework Monitoring System - Specification & Implementation Plan: **Version:** 2.0 (Simplified) **Created:** 2026-01-05 **Updated:** 2026-01-05 **Targe
+---
+
 # Empathy Framework Monitoring System - Specification & Implementation Plan
 
 **Version:** 2.0 (Simplified)

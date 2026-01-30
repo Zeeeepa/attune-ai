@@ -1,3 +1,7 @@
+---
+description: Governance: This document outlines the governance structure for the Empathy Framework project.
+---
+
 # Governance
 
 This document outlines the governance structure for the Empathy Framework project.

@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Week 2 Execution Plan: Performance + Wizards. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Week 2 Execution Plan: Performance + Wizards
 **Phase 3, Week 2 of 10**
 **Approach:** Option C (Performance First) → Option A (Full Wizard Integration)

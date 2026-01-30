@@ -1,3 +1,7 @@
+---
+description: Development guidelines for AI Development Wizards - Level 4 Anticipatory Empathy. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # AI Development Wizards - Level 4 Anticipatory Empathy
 
 ## Overview

@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - Plugin System: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Empathy Framework - Plugin System
 
 ## Overview

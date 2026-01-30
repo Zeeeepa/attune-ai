@@ -1,3 +1,7 @@
+---
+description: Empathy Philosophy: **Version**: 1.1.0 **Last Updated**: 2025-12-10 **Maintainers**: Patrick Roebuck, Claude (Anthropic) **Status**: Living Document --- ## Purp
+---
+
 # Empathy Philosophy
 
 **Version**: 1.1.0

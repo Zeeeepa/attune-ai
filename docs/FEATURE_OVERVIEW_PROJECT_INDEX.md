@@ -1,3 +1,7 @@
+---
+description: Feature Overview: Project Index Module: **Generated:** January 21, 2026 **Modules Analyzed:** 6 files **Target Audience:** Engineers --- ## Executive Summary Th
+---
+
 # Feature Overview: Project Index Module
 
 **Generated:** January 21, 2026

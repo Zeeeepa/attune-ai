@@ -1,3 +1,7 @@
+---
+description: Keyboard Shortcuts: > First letter of each command ## Quick Reference Hold **ctrl+shift+e** (Mac: **cmd+shift+e**) then press one key: ## Keyboard Layout ┌─────
+---
+
 #  Keyboard Shortcuts
 
 > First letter of each command

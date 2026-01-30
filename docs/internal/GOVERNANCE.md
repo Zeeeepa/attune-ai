@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - Project Governance: This document describes the governance structure and decision-making processes for the Empathy Framework.
+---
+
 # Empathy Framework - Project Governance
 
 This document describes the governance structure and decision-making processes for the Empathy Framework.

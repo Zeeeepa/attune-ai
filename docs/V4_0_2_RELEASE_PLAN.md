@@ -1,3 +1,7 @@
+---
+description: v4.0.2 Release Plan - Stabilize & Iterate: **Release Date:** January 26, 2026 (2 weeks from now) **Strategy:** Option 1 - Stabilize & Iterate **Status:** 🟡 Plan
+---
+
 # v4.0.2 Release Plan - Stabilize & Iterate
 
 **Release Date:** January 26, 2026 (2 weeks from now)

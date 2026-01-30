@@ -1,3 +1,7 @@
+---
+description: Powered by Claude - Tier Structure: **Multi-LLM Support with Claude-First Approach** The Empathy Framework supports multiple LLM providers while showcasing Clau
+---
+
 # Powered by Claude - Tier Structure
 
 **Multi-LLM Support with Claude-First Approach**

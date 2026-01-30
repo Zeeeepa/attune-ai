@@ -1,3 +1,7 @@
+---
+description: Reddit Follow-up: Tech Debt Trajectory: **Subreddit:** r/Python (or r/ExperiencedDevs) **Title:** We tracked our tech debt for 90 days.
+---
+
 # Reddit Follow-up: Tech Debt Trajectory
 
 **Subreddit:** r/Python (or r/ExperiencedDevs)

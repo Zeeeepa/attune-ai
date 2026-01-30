@@ -1,3 +1,7 @@
+---
+description: Keyboard Shortcuts Module - Test Coverage Report: ## Overview Comprehensive test suite created for the keyboard shortcuts workflow module.
+---
+
 # Keyboard Shortcuts Module - Test Coverage Report
 
 ## Overview

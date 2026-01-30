@@ -1,3 +1,7 @@
+---
+description: Industry Wizards API reference: Domain-specific AI assistants with built-in security, compliance, and industry best practices. ## Ov
+---
+
 # Industry Wizards
 
 Domain-specific AI assistants with built-in security, compliance, and industry best practices.

@@ -1,3 +1,7 @@
+---
+description: Reddit Follow-up: Bug Correlation: **Subreddit:** r/Python (or r/programming) **Title:** Built a system that matches new bugs against your team's debugging hist
+---
+
 # Reddit Follow-up: Bug Correlation
 
 **Subreddit:** r/Python (or r/programming)

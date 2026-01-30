@@ -1,3 +1,7 @@
+---
+description: API Reference API reference: Complete API documentation for the Empathy Framework. ## Overview The Empathy Framework provides a c
+---
+
 # API Reference
 
 Complete API documentation for the Empathy Framework.

@@ -1,3 +1,7 @@
+---
+description: Twitter/X Thread: --- **Tweet 1 (Hook)** We tested our AI memory system on our own codebase.
+---
+
 # Twitter/X Thread
 
 ---

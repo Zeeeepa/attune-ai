@@ -1,3 +1,7 @@
+---
+description: Advanced Grammar: Conditional Logic, Nesting, and Learning: **Date:** January 2026 **Author:** Patrick Roebuck **Tags:** AI, Multi-Agent Systems, Advanced Patte
+---
+
 # Advanced Grammar: Conditional Logic, Nesting, and Learning
 
 **Date:** January 2026

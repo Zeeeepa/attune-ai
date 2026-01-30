@@ -1,3 +1,7 @@
+---
+description: Release Notes: Empathy Framework v4.0.2: **Release Date:** January 16, 2026 **Type:** Feature Release **Branch:** experimental/v4.0-meta-orchestration → main --
+---
+
 # Release Notes: Empathy Framework v4.0.2
 
 **Release Date:** January 16, 2026

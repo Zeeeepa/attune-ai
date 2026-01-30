@@ -1,3 +1,7 @@
+---
+description: Coding Standards: **Version:** 3.9.1 **Last Updated:** January 7, 2026 **Maintained By:** Engineering Team --- ## Purpose This document establishes coding stand
+---
+
 # Coding Standards
 
 **Version:** 3.9.1

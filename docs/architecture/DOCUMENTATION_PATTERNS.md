@@ -1,3 +1,7 @@
+---
+description: Documentation Patterns for Empathy Framework v1.8.0: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Documentation Patterns for Empathy Framework v1.8.0
 
 **Purpose**: Define consistent patterns for creating high-quality, user-focused documentation

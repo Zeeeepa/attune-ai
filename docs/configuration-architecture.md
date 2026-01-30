@@ -1,3 +1,7 @@
+---
+description: Configuration Architecture: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Configuration Architecture
 
 This document explains the configuration schema separation in the Empathy Framework.

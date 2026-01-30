@@ -1,3 +1,7 @@
+---
+description: Caching Configuration Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Caching Configuration Guide
 
 ## Overview

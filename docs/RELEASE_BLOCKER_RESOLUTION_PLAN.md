@@ -1,3 +1,7 @@
+---
+description: Release Blocker Resolution Plan: **Created:** January 10, 2026 **Status:** In Progress **Target Completion:** Before next release --- ## Executive Summary The r
+---
+
 # Release Blocker Resolution Plan
 
 **Created:** January 10, 2026

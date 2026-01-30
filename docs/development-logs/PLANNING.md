@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Empathy Project Planning. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Empathy Project Planning
 
 **Last Updated:** December 12, 2025

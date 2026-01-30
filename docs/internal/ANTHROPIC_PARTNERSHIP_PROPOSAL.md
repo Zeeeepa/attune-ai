@@ -1,3 +1,7 @@
+---
+description: Anthropic Partnership Proposal: ## Empathy Framework x Claude **Date:** December 2025 **From:** Patrick Roebuck, Founder - Smart AI Memory, LLC **To:** Anthropi
+---
+
 # Anthropic Partnership Proposal
 ## Empathy Framework x Claude
 

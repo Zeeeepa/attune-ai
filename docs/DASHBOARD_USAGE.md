@@ -1,3 +1,7 @@
+---
+description: How to Start the Dashboard: **Multiple ways to start the Agent Coordination Dashboard** --- ## 🚀 Method 1: CLI Command (Easiest) # Default (localhost:8000) empa
+---
+
 # How to Start the Dashboard
 
 **Multiple ways to start the Agent Coordination Dashboard**

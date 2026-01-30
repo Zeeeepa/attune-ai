@@ -1,3 +1,7 @@
+---
+description: How Claude Learns and Retains Information: --- **License**: Apache License 2.0 **Copyright**: © 2025 Smart AI Memory, LLC **Project**: AI Nurse Florence **Repos
+---
+
 # How Claude Learns and Retains Information
 
 ---

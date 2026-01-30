@@ -1,3 +1,7 @@
+---
+description: Authentication Strategy Integration - Complete integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Authentication Strategy Integration - Complete
 
 **Date:** January 29, 2026

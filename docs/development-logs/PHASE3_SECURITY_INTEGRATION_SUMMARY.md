@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Phase 3 Security Integration - Implementation Summary. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Phase 3 Security Integration - Implementation Summary
 
 **Date:** 2025-11-24

@@ -1,3 +1,7 @@
+---
+description: Explanation: Understanding-oriented content that explains the concepts and philosophy behind Empathy Framework.
+---
+
 # Explanation
 
 Understanding-oriented content that explains the concepts and philosophy

@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Empathy Framework contributors. Level 3 anticipatory design principles, error handling patterns, and maintainability best practices.
+---
+
 # Empathy Framework Development Guidelines
 **Purpose**: Guide contributors to maintain empathy principles in code
 **Audience**: Contributors, maintainers, technical decision-makers
@@ -782,5 +786,5 @@ When in doubt:
 ---
 
 **Last updated**: 2026-01-06
-**Maintainer**: Empathy Framework team
+**Maintainer**: Patrick Roebuck
 **Feedback**: [GitHub Issues](https://github.com/empathy-ai/empathy-framework/issues)

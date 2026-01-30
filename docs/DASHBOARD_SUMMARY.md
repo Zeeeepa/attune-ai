@@ -1,3 +1,7 @@
+---
+description: Starts on http://localhost:8000: ### What Was Built **1.
+---
+
 ## ✅ Agent Coordination Dashboard - Implementation Complete
 
 ### What Was Built

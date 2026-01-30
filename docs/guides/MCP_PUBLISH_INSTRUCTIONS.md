@@ -1,3 +1,7 @@
+---
+description: MCP Registry Publish Instructions for MemDocs: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # MCP Registry Publish Instructions for MemDocs
 
 ## Status: Ready to Publish (after PyPI update)

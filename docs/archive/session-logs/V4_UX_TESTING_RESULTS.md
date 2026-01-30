@@ -1,3 +1,7 @@
+---
+description: v4.0 Experimental Branch - UX Testing Results: **Date:** Monday, January 13, 2026 **Branch:** `experimental/v4.0-meta-orchestration` **Testing Focus:** End-to-e
+---
+
 # v4.0 Experimental Branch - UX Testing Results
 
 **Date:** Monday, January 13, 2026

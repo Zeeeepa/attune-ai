@@ -1,3 +1,7 @@
+---
+description: Customer Case Study Template: **Template Version**: 1.0 **Last Updated**: November 2025 **Purpose**: Document customer success stories with Empathy Framework --
+---
+
 # Customer Case Study Template
 
 **Template Version**: 1.0

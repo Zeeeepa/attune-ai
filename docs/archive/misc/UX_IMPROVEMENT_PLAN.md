@@ -1,3 +1,7 @@
+---
+description: Meta-Workflow UX Improvement Plan: **Version:** 1.0 **Created:** 2026-01-17 **Status:** Planning Phase --- ## Current UX Issues Identified ### 1.
+---
+
 # Meta-Workflow UX Improvement Plan
 
 **Version:** 1.0

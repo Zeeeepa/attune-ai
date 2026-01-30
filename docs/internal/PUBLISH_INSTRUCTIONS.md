@@ -1,3 +1,7 @@
+---
+description: How to Publish - Step by Step: ## Step 1: Create GitHub Repository (5 minutes) # Navigate to the directory cd /Users/patrickroebuck/projects/ai-nurse-florence/e
+---
+
 # How to Publish - Step by Step
 
 ## Step 1: Create GitHub Repository (5 minutes)

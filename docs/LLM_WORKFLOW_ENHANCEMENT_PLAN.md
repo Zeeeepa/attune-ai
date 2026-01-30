@@ -1,3 +1,7 @@
+---
+description: LLM Workflow Enhancement Plan: **Created:** January 29, 2026 **Status:** Approved - Ready for Implementation **Goal:** Enhance template-based workflows with com
+---
+
 # LLM Workflow Enhancement Plan
 
 **Created:** January 29, 2026

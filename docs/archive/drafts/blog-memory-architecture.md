@@ -1,3 +1,7 @@
+---
+description: Rethinking AI Memory: Privacy-First Architecture for Enterprise: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Rethinking AI Memory: Privacy-First Architecture for Enterprise
 
 **By Patrick Roebuck · December 12, 2025**

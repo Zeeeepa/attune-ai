@@ -1,3 +1,7 @@
+---
+description: Example: SBAR Clinical Handoff Report (Healthcare): **Difficulty**: Intermediate **Time**: 20 minutes **Empathy Level**: 4 (Anticipatory) **Domain**: Healthcare
+---
+
 # Example: SBAR Clinical Handoff Report (Healthcare)
 
 **Difficulty**: Intermediate

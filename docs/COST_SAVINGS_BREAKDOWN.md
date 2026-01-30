@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - Cost Savings Breakdown (Transparent Math): Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # Empathy Framework - Cost Savings Breakdown (Transparent Math)
 
 **Last Updated:** 2026-01-06

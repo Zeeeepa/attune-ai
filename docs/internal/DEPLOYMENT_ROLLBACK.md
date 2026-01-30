@@ -1,3 +1,7 @@
+---
+description: Deployment Rollback Procedures: **Last Updated**: December 15, 2025 **Applies To**: Railway deployments of smartaimemory.com --- ## Overview This document outli
+---
+
 # Deployment Rollback Procedures
 
 **Last Updated**: December 15, 2025

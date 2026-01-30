@@ -1,3 +1,7 @@
+---
+description: Empathy Framework Blog: Technical deep-dives into memory-enhanced AI development.
+---
+
 # Empathy Framework Blog
 
 Technical deep-dives into memory-enhanced AI development.

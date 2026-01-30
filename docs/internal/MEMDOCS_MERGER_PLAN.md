@@ -1,3 +1,7 @@
+---
+description: MemDocs Merger into Empathy Framework: ## Executive Summary This document outlines the plan to merge MemDocs functionality directly into the Empathy Framework.
+---
+
 # MemDocs Merger into Empathy Framework
 
 ## Executive Summary

@@ -1,3 +1,7 @@
+---
+description: Ship Better Code, Faster: Introducing the Code Inspection Pipeline: **By Patrick Roebuck · December 18, 2025** *Unified code analysis that learns from your bugs
+---
+
 # Ship Better Code, Faster: Introducing the Code Inspection Pipeline
 
 **By Patrick Roebuck · December 18, 2025**

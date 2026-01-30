@@ -1,3 +1,7 @@
+---
+description: Building Agent Teams: From Words to Sentences: **Date:** January 2026 **Author:** Patrick Roebuck **Tags:** AI, Multi-Agent Systems, Composition Patterns, Pytho
+---
+
 # Building Agent Teams: From Words to Sentences
 
 **Date:** January 2026

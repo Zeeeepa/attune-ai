@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Test Coverage Improvement Plan. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Test Coverage Improvement Plan
 
 **Current:** 75.90% (1,491 tests)

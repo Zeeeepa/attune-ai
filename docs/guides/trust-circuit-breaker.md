@@ -1,3 +1,7 @@
+---
+description: Trust Circuit Breaker Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Trust Circuit Breaker Guide
 
 A cross-domain transfer of the circuit breaker pattern from reliability engineering to human-AI trust management. This guide covers setup, configuration, and integration patterns.

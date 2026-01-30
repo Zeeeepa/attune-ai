@@ -1,3 +1,7 @@
+---
+description: HIPAA Compliance Guide: Complete guide to achieving HIPAA compliance when using Empathy Framework for healthcare applications.
+---
+
 # HIPAA Compliance Guide
 
 Complete guide to achieving HIPAA compliance when using Empathy Framework for healthcare applications.

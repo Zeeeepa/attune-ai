@@ -1,3 +1,7 @@
+---
+description: Glossary API reference: *Key terms and definitions for the Empathy Framework* --- ## A ### Access Tier A permission level th
+---
+
 # Glossary
 
 *Key terms and definitions for the Empathy Framework*

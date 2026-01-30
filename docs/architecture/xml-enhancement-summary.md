@@ -1,3 +1,7 @@
+---
+description: XML-Enhanced Prompts Implementation Summary: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # XML-Enhanced Prompts Implementation Summary
 
 **Project**: Empathy Framework v3.7.0

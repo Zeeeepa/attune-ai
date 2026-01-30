@@ -1,3 +1,7 @@
+---
+description: Content Humanization Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Content Humanization Guide
 
 **Purpose:** Mark specific spots where YOU should add personal touches to make posts authentic.

@@ -1,3 +1,7 @@
+---
+description: Agent Factory: The Universal Agent Factory allows you to create AI agents and workflows using your preferred framework while retaining Empathy's core features: 
+---
+
 # Agent Factory
 
 The Universal Agent Factory allows you to create AI agents and workflows using your preferred framework while retaining Empathy's core features: cost optimization, pattern learning, and memory.

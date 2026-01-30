@@ -1,3 +1,7 @@
+---
+description: Empathy: <div class="cover-page" markdown> <div class="cover-logo" markdown> </div> <div class="cover-title" markdown> # Empathy </div> <div class="cover-subti.
+---
+
 # Empathy
 
 <div class="cover-page" markdown>
@@ -52,7 +56,7 @@ Version 2.0 | 2025
 
 <div class="cover-footer" markdown>
 
-Built with ❤️ by the Empathy Framework team
+Built by Patrick Roebuck in collaboration with Claude
 
 </div>
 

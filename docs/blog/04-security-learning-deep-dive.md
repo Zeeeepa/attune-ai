@@ -1,3 +1,7 @@
+---
+description: Security Learning: Teaching AI Your Team's Security Policies: **Date:** December 12, 2025 **Author:** Patrick Roebuck **Series:** Memory-Enhanced Development (P
+---
+
 # Security Learning: Teaching AI Your Team's Security Policies
 
 **Date:** December 12, 2025

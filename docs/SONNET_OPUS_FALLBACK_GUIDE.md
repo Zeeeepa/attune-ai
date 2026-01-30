@@ -1,3 +1,7 @@
+---
+description: Sonnet 4.5 → Opus 4.5 Intelligent Fallback Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Sonnet 4.5 → Opus 4.5 Intelligent Fallback Guide
 
 **Updated:** January 9, 2026

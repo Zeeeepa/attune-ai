@@ -1,3 +1,7 @@
+---
+description: Adaptive Workflows and Caching Behavior: ## Overview The Empathy Framework uses two types of workflow execution strategies: **Deterministic** and **Adaptive**.
+---
+
 # Adaptive Workflows and Caching Behavior
 
 ## Overview

@@ -1,3 +1,7 @@
+---
+description: Empathy Framework v3.6.0: Error Messages That Actually Help You: **Published:** January 5, 2026 **Author:** [Your Name] **Reading Time:** 8 minutes --- ## The P
+---
+
 # Empathy Framework v3.6.0: Error Messages That Actually Help You
 
 **Published:** January 5, 2026

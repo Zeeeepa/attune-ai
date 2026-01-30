@@ -1,3 +1,7 @@
+---
+description: Performance Optimization Roadmap - Empathy Framework: **Status:** In Progress **Last Updated:** January 10, 2026 **Owner:** Engineering Team --- ## 🎯 Vision Tra
+---
+
 # Performance Optimization Roadmap - Empathy Framework
 
 **Status:** In Progress

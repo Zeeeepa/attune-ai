@@ -1,3 +1,7 @@
+---
+description: Continuous Learning: Extract and apply patterns from collaboration sessions for improved interactions.
+---
+
 # Continuous Learning
 
 Extract and apply patterns from collaboration sessions for improved interactions.

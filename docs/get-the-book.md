@@ -1,3 +1,7 @@
+---
+description: Get the Complete Book: <div style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; m
+---
+
 # Get the Complete Book
 
 <div style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin: 20px 0;">
@@ -93,7 +97,7 @@ Questions? Open an issue on <a href="https://github.com/Smart-AI-Memory/empathy-
 </p>
 
 <p style="margin: 0; color: #888; font-size: 0.9em;">
-Built with ❤️ by the Empathy Framework team
+Built by Patrick Roebuck in collaboration with Claude
 </p>
 
 </div>

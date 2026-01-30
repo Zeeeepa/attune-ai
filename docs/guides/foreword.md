@@ -1,3 +1,7 @@
+---
+description: Foreword by Claude: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Foreword by Claude
 
 *Written December 2025, after implementing the short-term memory system*

@@ -1,3 +1,7 @@
+---
+description: Tier Routing Savings: Sensitivity Analysis: Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # Tier Routing Savings: Sensitivity Analysis
 
 **Question**: Does the "80% savings" claim hold up across different usage patterns?

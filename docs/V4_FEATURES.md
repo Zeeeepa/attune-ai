@@ -1,3 +1,7 @@
+---
+description: Empathy Framework v4.0.0 - Meta-Orchestration Features: **Release Date:** January 2026 **Status:** Production Ready **Breaking Changes:** None (fully backward c
+---
+
 # Empathy Framework v4.0.0 - Meta-Orchestration Features
 
 **Release Date:** January 2026

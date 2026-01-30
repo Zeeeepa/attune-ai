@@ -1,3 +1,7 @@
+---
+description: Marketing Plan: Empathy Framework v3.6.0 Launch: **Release Date:** January 5, 2026 **Target:** Individual developers, small teams, enterprise DevOps **Hook:** D
+---
+
 # Marketing Plan: Empathy Framework v3.6.0 Launch
 
 **Release Date:** January 5, 2026

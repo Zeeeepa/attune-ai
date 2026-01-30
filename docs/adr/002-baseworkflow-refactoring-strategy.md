@@ -1,3 +1,7 @@
+---
+description: ADR-002: BaseWorkflow Refactoring Strategy: ## Status **Proposed** - January 26, 2026 ### Supersedes This ADR extends [ADR-001: Workflow Engine Architecture Rev
+---
+
 # ADR-002: BaseWorkflow Refactoring Strategy
 
 ## Status

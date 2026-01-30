@@ -1,3 +1,7 @@
+---
+description: Secure Memory Architecture for Enterprise Deployment: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Secure Memory Architecture for Enterprise Deployment
 **Empathy Framework v1.8.0-alpha**
 

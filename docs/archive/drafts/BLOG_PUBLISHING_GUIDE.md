@@ -1,3 +1,7 @@
+---
+description: Blog Publishing Guide: Grammar of AI Collaboration Series: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Blog Publishing Guide: Grammar of AI Collaboration Series
 
 **Ready for publishing:** January 19-20, 2026

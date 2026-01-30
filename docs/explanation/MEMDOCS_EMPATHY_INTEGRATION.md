@@ -1,3 +1,7 @@
+---
+description: MemDocs + Empathy Framework Integration: Transformative Development Showcase integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # MemDocs + Empathy Framework Integration: Transformative Development Showcase
 
 **Date**: January 2025

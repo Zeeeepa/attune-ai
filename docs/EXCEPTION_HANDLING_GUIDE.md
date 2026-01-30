@@ -1,3 +1,7 @@
+---
+description: Exception Handling Best Practices: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Exception Handling Best Practices
 
 **Version:** 3.9.0

@@ -1,3 +1,7 @@
+---
+description: Wizard & Agent Improvement Plan: **Created:** December 12, 2025 **Status:** PLAN ONLY - Not yet implemented **Scope:** 55 wizards + 6 agents --- ## Executive Su
+---
+
 # Wizard & Agent Improvement Plan
 
 **Created:** December 12, 2025

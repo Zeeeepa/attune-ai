@@ -1,3 +1,7 @@
+---
+description: Usage Tracker Test Enhancement Summary: ## Executive Summary Successfully enhanced test coverage for `src/empathy_os/telemetry/usage_tracker.py` from **30.14% t
+---
+
 # Usage Tracker Test Enhancement Summary
 
 ## Executive Summary

@@ -1,3 +1,7 @@
+---
+description: Security Scanner API Reference API reference: **Version:** 1.0 **Module:** `empathy_os.workflows.security_audit` and `empathy_os.workflows.securit
+---
+
 # Security Scanner API Reference
 
 **Version:** 1.0

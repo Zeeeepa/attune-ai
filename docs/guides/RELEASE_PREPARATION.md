@@ -1,3 +1,7 @@
+---
+description: Release Preparation Guide - Empathy Framework v3.7.0: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Release Preparation Guide - Empathy Framework v3.7.0
 
 **Date**: 2026-01-05

@@ -1,3 +1,7 @@
+---
+description: TierFallbackHelper Extension Summary: ## Overview Extended `src/empathy_os/models/fallback.py` to add Sprint 1 convenience methods for simple tier-based fallbac
+---
+
 # TierFallbackHelper Extension Summary
 
 ## Overview

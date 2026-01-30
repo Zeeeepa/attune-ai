@@ -1,3 +1,7 @@
+---
+description: Social Media Posts - Empathy Framework v3.6.0: Copy-paste ready content for all platforms.
+---
+
 # Social Media Posts - Empathy Framework v3.6.0
 
 Copy-paste ready content for all platforms. Customize as needed.

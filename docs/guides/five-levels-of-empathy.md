@@ -1,3 +1,7 @@
+---
+description: The Five Levels of Empathy: From Reactive to Transformative: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # The Five Levels of Empathy: From Reactive to Transformative
 
 **Real examples from the Empathy Framework showing each level in practice**

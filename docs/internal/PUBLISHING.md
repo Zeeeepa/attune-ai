@@ -1,3 +1,7 @@
+---
+description: Publishing to PyPI: This guide explains how to publish the Empathy framework to PyPI.
+---
+
 # Publishing to PyPI
 
 This guide explains how to publish the Empathy framework to PyPI.

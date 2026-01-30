@@ -1,3 +1,7 @@
+---
+description: Building Real-Time AI Memory with Redis: **Date:** December 2025 **Author:** Patrick Roebuck **Tags:** Redis, AI, Memory, Multi-Agent --- ## TL;DR We needed sub
+---
+
 # Building Real-Time AI Memory with Redis
 
 **Date:** December 2025

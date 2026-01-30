@@ -1,3 +1,7 @@
+---
+description: Workflows API API reference. Cost-optimized AI workflows with 3-tier model routing, parameters, examples, and usage patterns.
+---
+
 # Workflows API
 
 Cost-optimized workflow patterns that leverage 3-tier model routing.

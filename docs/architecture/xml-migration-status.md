@@ -1,3 +1,7 @@
+---
+description: XML Migration Final Status Report: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # XML Migration Final Status Report
 
 **Date**: 2026-01-05

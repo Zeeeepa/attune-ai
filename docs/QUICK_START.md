@@ -1,4 +1,8 @@
 ---
+description: This page has moved: <meta http-equiv="refresh" content="0; url=getting-started/"> # This page has moved You're being redirected to the new [Getting Started](ge
+---
+
+---
 title: Redirecting...
 ---
 

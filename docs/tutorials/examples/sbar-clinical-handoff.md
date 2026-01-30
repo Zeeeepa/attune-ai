@@ -1,3 +1,7 @@
+---
+description: Example: SBAR Clinical Handoff Report (Healthcare): Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Example: SBAR Clinical Handoff Report (Healthcare)
 
 **Difficulty**: Intermediate

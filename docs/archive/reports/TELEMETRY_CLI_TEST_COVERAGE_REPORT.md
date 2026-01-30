@@ -1,3 +1,7 @@
+---
+description: Telemetry CLI Test Coverage Enhancement Report: **Date**: 2026-01-15 **Target Module**: `src/empathy_os/telemetry/cli.py` (1,198 lines) **Test File**: `tests/un
+---
+
 # Telemetry CLI Test Coverage Enhancement Report
 
 **Date**: 2026-01-15

@@ -1,3 +1,7 @@
+---
+description: Software Development Wizards API reference: **16 specialized wizards** for software engineering tasks with Level 4 Anticipatory Intelligence. ##
+---
+
 # Software Development Wizards
 
 **16 specialized wizards** for software engineering tasks with Level 4 Anticipatory Intelligence.

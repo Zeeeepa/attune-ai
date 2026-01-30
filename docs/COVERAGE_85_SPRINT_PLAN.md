@@ -1,3 +1,7 @@
+---
+description: Sprint Series: Achieving 85%+ Test Coverage: **Version:** 1.0 **Created:** January 16, 2026 **Owner:** Engineering Team **Status:** Planning → Execution Ready -
+---
+
 # Sprint Series: Achieving 85%+ Test Coverage
 
 **Version:** 1.0

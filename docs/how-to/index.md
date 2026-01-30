@@ -1,3 +1,7 @@
+---
+description: How-to Guides: Task-oriented guides for accomplishing specific goals with Empathy Framework.
+---
+
 # How-to Guides
 
 Task-oriented guides for accomplishing specific goals with Empathy Framework.

@@ -1,3 +1,7 @@
+---
+description: Agent Improvement Recommendations: A comprehensive evaluation of existing software development agents with recommendations for improvement using the new Agent F
+---
+
 # Agent Improvement Recommendations
 
 A comprehensive evaluation of existing software development agents with recommendations for improvement using the new Agent Factory features.

@@ -1,3 +1,7 @@
+---
+description: Configure Redis for Empathy Framework. Docker setup, persistence, monitoring. Production and development configurations included.
+---
+
 # Redis Setup Guide
 
 Redis provides **short-term memory** for the Empathy Framework, enabling:

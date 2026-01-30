@@ -1,3 +1,7 @@
+---
+description: Coverage Boost Button Fix: **Date:** Monday, January 13, 2026, 5:00 AM **Status:** ✅ FIXED - Ready to Test **Issue:** Coverage Boost button didn't show target i
+---
+
 # Coverage Boost Button Fix
 
 **Date:** Monday, January 13, 2026, 5:00 AM

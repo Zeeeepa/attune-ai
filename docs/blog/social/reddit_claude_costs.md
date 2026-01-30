@@ -1,3 +1,7 @@
+---
+description: Reddit Posts: Cutting Claude API Costs 78% (Personal Voice): Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # Reddit Posts: Cutting Claude API Costs 78% (Personal Voice)
 
 **Campaign:** Sonnet 4.5 → Opus 4.5 Intelligent Fallback Strategy

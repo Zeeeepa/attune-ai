@@ -1,3 +1,7 @@
+---
+description: Security Review - Bandit Findings: **Date:** 2026-01-26 **Reviewer:** Automated code quality review **Tool:** Bandit v1.8.6 --- ## Summary **2 medium-severity f
+---
+
 # Security Review - Bandit Findings
 
 **Date:** 2026-01-26

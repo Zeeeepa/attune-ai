@@ -1,3 +1,7 @@
+---
+description: Developer Guide - Empathy Framework: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Developer Guide - Empathy Framework
 
 **Version:** 4.0.0

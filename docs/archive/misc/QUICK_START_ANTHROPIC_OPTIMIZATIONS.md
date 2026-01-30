@@ -1,3 +1,7 @@
+---
+description: Quick Start: Anthropic Optimizations: **🎉 Implementation Complete!** All three optimization tracks are now active.
+---
+
 # Quick Start: Anthropic Optimizations
 
 **🎉 Implementation Complete!** All three optimization tracks are now active.

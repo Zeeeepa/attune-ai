@@ -1,3 +1,7 @@
+---
+description: Practical Patterns for Multi-Agent Systems: *Ready-to-use patterns with measured benefits* --- ## Overview This chapter provides copy-paste patterns for common 
+---
+
 # Practical Patterns for Multi-Agent Systems
 
 *Ready-to-use patterns with measured benefits*

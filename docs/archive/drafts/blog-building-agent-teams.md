@@ -1,3 +1,7 @@
+---
+description: Building Agent Teams: From Words to Sentences: **By Patrick Roebuck · January 2026** *How composition patterns transform individual agents into collaborative te
+---
+
 # Building Agent Teams: From Words to Sentences
 
 **By Patrick Roebuck · January 2026**

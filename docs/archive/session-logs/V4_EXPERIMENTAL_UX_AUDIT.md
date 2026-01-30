@@ -1,3 +1,7 @@
+---
+description: v4.0 Experimental Branch - UX Audit & Release Readiness: **Date:** Monday, January 13, 2026 **Branch:** `experimental/v4.0-meta-orchestration` **Focus:** User E
+---
+
 # v4.0 Experimental Branch - UX Audit & Release Readiness
 
 **Date:** Monday, January 13, 2026

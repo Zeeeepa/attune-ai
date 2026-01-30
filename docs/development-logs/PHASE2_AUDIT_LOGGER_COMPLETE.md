@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Phase 2: Audit Logging Framework - Implementation Complete. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Phase 2: Audit Logging Framework - Implementation Complete
 
 ## Executive Summary

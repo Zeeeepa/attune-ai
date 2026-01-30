@@ -1,3 +1,7 @@
+---
+description: Webhook Integration integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Webhook Integration
 
 Connect Empathy Framework to external services via webhooks for real-time notifications and automated workflows.

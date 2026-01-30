@@ -1,3 +1,7 @@
+---
+description: Advanced Grammar: Conditional Logic, Nesting, and Learning: **By Patrick Roebuck · January 2026** *The patterns that make agent teams truly intelligent.* --- Pa
+---
+
 # Advanced Grammar: Conditional Logic, Nesting, and Learning
 
 **By Patrick Roebuck · January 2026**

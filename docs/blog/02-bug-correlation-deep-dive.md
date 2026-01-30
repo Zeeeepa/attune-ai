@@ -1,3 +1,7 @@
+---
+description: Bug Correlation: How AI Learns From Your Team's Debugging History: **Date:** December 12, 2025 **Author:** Patrick Roebuck **Series:** Memory-Enhanced Developme
+---
+
 # Bug Correlation: How AI Learns From Your Team's Debugging History
 
 **Date:** December 12, 2025

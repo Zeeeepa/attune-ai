@@ -1,3 +1,7 @@
+---
+description: XML-Enhanced Workflow Migration Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # XML-Enhanced Workflow Migration Guide
 
 **Status**: Phase 2 Complete - Pattern Documented

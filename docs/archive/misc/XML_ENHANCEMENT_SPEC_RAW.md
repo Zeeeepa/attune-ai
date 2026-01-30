@@ -1,3 +1,7 @@
+---
+description: XML Enhancement Specification - Raw Response: <thinking> Let me analyze the requirements and context systematically: 1.
+---
+
 # XML Enhancement Specification - Raw Response
 
 <thinking>

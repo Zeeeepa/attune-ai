@@ -1,3 +1,7 @@
+---
+description: Cascading Tier Retry System with AI-ADDIE Methodology: **Version**: 1.0 **Created**: 2026-01-07 **Purpose**: Progressive cost optimization through intelligent t
+---
+
 # Cascading Tier Retry System with AI-ADDIE Methodology
 
 **Version**: 1.0

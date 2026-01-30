@@ -1,3 +1,7 @@
+---
+description: Blog Post Series Outlines: ## "Progressive Test Coverage: An Educational Journey" **Series Theme**: Transforming test coverage improvement from a metrics exerci
+---
+
 # Blog Post Series Outlines
 ## "Progressive Test Coverage: An Educational Journey"
 

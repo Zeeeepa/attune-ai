@@ -1,3 +1,7 @@
+---
+description: CLI Minimal Refactor Plan: **Goal:** Reduce CLI from ~4,000 lines to ~500 lines by removing redundant commands covered by skills.
+---
+
 # CLI Minimal Refactor Plan
 
 **Goal:** Reduce CLI from ~4,000 lines to ~500 lines by removing redundant commands covered by skills.

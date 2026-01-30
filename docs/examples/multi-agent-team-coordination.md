@@ -1,3 +1,7 @@
+---
+description: Example: Multi-Agent Team Coordination: **Difficulty**: Advanced **Time**: 30 minutes **Empathy Level**: 4 (Anticipatory) **Domain**: Software Development --- #
+---
+
 # Example: Multi-Agent Team Coordination
 
 **Difficulty**: Advanced

@@ -1,3 +1,7 @@
+---
+description: Memory Integration Summary integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Memory Integration Summary
 
 ## What We Built

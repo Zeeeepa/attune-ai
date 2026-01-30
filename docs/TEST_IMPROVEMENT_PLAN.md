@@ -1,3 +1,7 @@
+---
+description: Test Improvement Plan & Tracking: **Date Created:** January 10, 2026 **Current Status:** Phase 1 - Baseline Established **Target Coverage:** 80%+ **Baseline Cov
+---
+
 # Test Improvement Plan & Tracking
 
 **Date Created:** January 10, 2026

@@ -1,3 +1,7 @@
+---
+description: Reliability Review and Recommendations for empathy-framework: **Date:** 2025-12-28 ## Checklist - [x] Review core reliability surfaces (workflows, executor, tel
+---
+
 # Reliability Review and Recommendations for empathy-framework
 
 **Date:** 2025-12-28

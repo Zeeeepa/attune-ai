@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Performance Profiling Baseline Report. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Performance Profiling Baseline Report
 **Week 2, Phase 1: Performance Optimization**
 **Date:** 2025-11-25

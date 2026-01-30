@@ -1,3 +1,7 @@
+---
+description: Code Health Assistant - Expansion Plan: **Status**: Implemented (v2.2.0) **Priority**: High **Foundation**: Session Status Assistant (v2.1.5) **Released**: v2.2
+---
+
 # Code Health Assistant - Expansion Plan
 
 **Status**: Implemented (v2.2.0)

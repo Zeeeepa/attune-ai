@@ -1,3 +1,7 @@
+---
+description: Configure Empathy Framework with Python, YAML, JSON, or environment variables. Flexible configuration management with automatic validation and defaults.
+---
+
 # Configuration
 
 Configuration management for the Empathy Framework. Configure via direct instantiation, YAML/JSON files, or environment variables.

@@ -1,3 +1,7 @@
+---
+description: Agent Coordination Architecture - TTL & Telemetry Patterns: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Agent Coordination Architecture - TTL & Telemetry Patterns
 
 **Version:** 1.0

@@ -1,3 +1,7 @@
+---
+description: Hybrid Caching System: **Version:** 3.9.0 **Status:** Production-ready Empathy Framework's hybrid caching system can reduce API costs by 70-75% through intellig
+---
+
 # Hybrid Caching System
 
 **Version:** 3.9.0

@@ -1,3 +1,7 @@
+---
+description: Documentation Pipeline Plan: Adobe + GitBook Integration: **Created:** December 14, 2025 **Status:** Planning **Goal:** Professional book publishing + sustainab
+---
+
 # Documentation Pipeline Plan: Adobe + GitBook Integration
 
 **Created:** December 14, 2025

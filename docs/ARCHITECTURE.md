@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - Architecture Overview: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Empathy Framework - Architecture Overview
 
 **Version:** 4.0.0

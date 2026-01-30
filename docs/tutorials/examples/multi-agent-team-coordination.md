@@ -1,3 +1,7 @@
+---
+description: Example: Multi-Agent Team Coordination: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Example: Multi-Agent Team Coordination
 
 **Difficulty**: Advanced

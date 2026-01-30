@@ -1,3 +1,7 @@
+---
+description: Empathy Framework User Guide API reference: **Transform your development workflow with Level 4 Anticipatory AI collaboration** **Version:** 3.1.
+---
+
 # Empathy Framework User Guide
 
 **Transform your development workflow with Level 4 Anticipatory AI collaboration**

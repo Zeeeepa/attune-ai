@@ -1,3 +1,7 @@
+---
+description: Test Coverage Report - January 20, 2026: ## Summary Test coverage improvement work completed for `empathy_llm_toolkit` and `empathy_healthcare_plugin`.
+---
+
 # Test Coverage Report - January 20, 2026
 
 ## Summary

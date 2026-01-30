@@ -1,3 +1,7 @@
+---
+description: Workflow Patterns Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Workflow Patterns Guide
 
 This guide helps you choose the right workflow pattern for your use case. The Empathy Framework supports three patterns, each optimized for different scenarios.

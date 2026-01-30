@@ -1,3 +1,7 @@
+---
+description: Tier Fallback Integration Test - SUCCESS ✅ integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Tier Fallback Integration Test - SUCCESS ✅
 
 **Date:** January 9, 2026

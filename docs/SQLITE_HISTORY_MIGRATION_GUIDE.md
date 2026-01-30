@@ -1,3 +1,7 @@
+---
+description: SQLite History Migration Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # SQLite History Migration Guide
 
 **Date:** January 26, 2026

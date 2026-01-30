@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - User API Documentation API reference: **Version:** 5.1.0 **Last Updated:** January 27, 2026 **Status:** Anthropic-Native (Claude-only) ---
+---
+
 # Empathy Framework - User API Documentation
 
 **Version:** 5.1.0

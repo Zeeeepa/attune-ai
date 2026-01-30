@@ -1,3 +1,7 @@
+---
+description: Workflow Templates Reference: **Version:** 4.2.0 **Last Updated:** 2026-01-17 **Total Templates:** 5 production-ready workflows --- ## Overview Empathy Framewor
+---
+
 # Workflow Templates Reference
 
 **Version:** 4.2.0

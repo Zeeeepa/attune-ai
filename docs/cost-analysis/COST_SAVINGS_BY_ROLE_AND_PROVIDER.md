@@ -1,3 +1,7 @@
+---
+description: Cost Savings Analysis: Role-Based Usage & Provider Comparison: Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # Cost Savings Analysis: Role-Based Usage & Provider Comparison
 
 **Critical Issues Identified**:

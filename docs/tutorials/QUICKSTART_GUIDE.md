@@ -1,3 +1,7 @@
+---
+description: Empathy Framework Quick Start Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Empathy Framework Quick Start Guide
 
 **Get from zero to production in 5 minutes**

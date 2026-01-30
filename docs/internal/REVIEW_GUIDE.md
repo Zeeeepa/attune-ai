@@ -1,3 +1,7 @@
+---
+description: Book Preview Review Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Book Preview Review Guide
 
 ## Files to Review

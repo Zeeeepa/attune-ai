@@ -1,3 +1,7 @@
+---
+description: XML-Enhanced Prompting - Executive Report: **Date:** January 5, 2026 **Project:** Empathy Framework v3.6.0 **Scope:** Implementation of XML-enhanced prompting f
+---
+
 # XML-Enhanced Prompting - Executive Report
 
 **Date:** January 5, 2026

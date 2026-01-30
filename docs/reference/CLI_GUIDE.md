@@ -1,3 +1,7 @@
+---
+description: Empathy Framework CLI Guide API reference: The Empathy Framework includes a command-line tool for managing configurations, pattern libraries, m
+---
+
 # Empathy Framework CLI Guide
 
 The Empathy Framework includes a command-line tool for managing configurations, pattern libraries, metrics, and state.

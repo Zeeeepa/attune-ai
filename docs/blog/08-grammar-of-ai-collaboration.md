@@ -1,3 +1,7 @@
+---
+description: The Grammar of AI Collaboration: Building Dynamic Agent Teams: **Date:** January 2026 **Author:** Patrick Roebuck **Tags:** AI, Multi-Agent Systems, Orchestrati
+---
+
 # The Grammar of AI Collaboration: Building Dynamic Agent Teams
 
 **Date:** January 2026

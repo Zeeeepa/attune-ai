@@ -1,3 +1,7 @@
+---
+description: Multi-Model Architecture Design Specification: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Multi-Model Architecture Design Specification
 
 **Version:** 1.0

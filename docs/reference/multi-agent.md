@@ -1,3 +1,7 @@
+---
+description: Multi-agent coordination with conflict resolution, team monitoring, and shared memory. Enable distributed AI agents to collaborate effectively with pattern-based coordination.
+---
+
 # Multi-Agent Coordination
 
 Conflict resolution and monitoring for distributed agent teams.

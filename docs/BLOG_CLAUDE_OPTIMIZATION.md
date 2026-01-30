@@ -1,3 +1,7 @@
+---
+description: Why I Made Empathy Framework Claude-First (And How It Cuts Your Costs): **January 2026** --- ## TL;DR I rebuilt Empathy Framework v4.6.3 around Claude Code with
+---
+
 # Why I Made Empathy Framework Claude-First (And How It Cuts Your Costs)
 
 **January 2026**

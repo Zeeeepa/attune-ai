@@ -1,3 +1,7 @@
+---
+description: Dynamic Agent Creation: Teaching AI to Spawn Itself: **Date:** January 2026 **Author:** Patrick Roebuck **Tags:** AI, Agent Factory, Multi-Agent Systems, Python
+---
+
 # Dynamic Agent Creation: Teaching AI to Spawn Itself
 
 **Date:** January 2026

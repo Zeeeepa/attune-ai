@@ -1,3 +1,7 @@
+---
+description: CLI Reference API reference: Complete reference for the `empathy` command-line interface. --- ## Quick Reference # Workflows empa
+---
+
 # CLI Reference
 
 Complete reference for the `empathy` command-line interface.

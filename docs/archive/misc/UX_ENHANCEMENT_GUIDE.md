@@ -1,3 +1,7 @@
+---
+description: Developer Guide: User Experience Enhancements: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Developer Guide: User Experience Enhancements
 
 This document outlines the technical implementation plan for the proposed user experience enhancements to the Empathy Framework.

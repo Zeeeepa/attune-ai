@@ -1,3 +1,7 @@
+---
+description: Plan: Advanced Debugging Wizard (Protocol-Based): ## Vision A **production-ready debugging wizard** that uses the **linting configuration pattern** to systemati
+---
+
 # Plan: Advanced Debugging Wizard (Protocol-Based)
 
 ## Vision

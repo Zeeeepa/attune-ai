@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - API Reference API reference: **Version:** 4.0.0 **Last Updated:** January 16, 2026 **Status:** Living Documentation --- ## Overvi
+---
+
 # Empathy Framework - API Reference
 
 **Version:** 4.0.0

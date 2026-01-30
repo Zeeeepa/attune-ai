@@ -1,3 +1,7 @@
+---
+description: Install dashboard dependencies: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 ## Agent Coordination Dashboard
 
 **Status:** ✅ Implemented and Ready to Use

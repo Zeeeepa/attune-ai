@@ -1,3 +1,7 @@
+---
+description: Testing Patterns Library: ## Reusable Patterns from Educational Test Suite **Source**: Empathy Framework Test Suite (307 tests, 17.64% coverage) **Version**: 1.
+---
+
 # Testing Patterns Library
 ## Reusable Patterns from Educational Test Suite
 

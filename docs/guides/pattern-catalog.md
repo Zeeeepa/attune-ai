@@ -1,3 +1,7 @@
+---
+description: Pattern Catalog Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Pattern Catalog Guide
 
 The Pattern Catalog is a collection of reusable software patterns extracted from the Empathy Framework, organized for cross-domain transfer and Level 5 (Systems Thinking) capability development.

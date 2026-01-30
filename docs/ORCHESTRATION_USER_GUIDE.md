@@ -1,3 +1,7 @@
+---
+description: Meta-Orchestration User Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Meta-Orchestration User Guide
 
 **Version:** 3.12.0

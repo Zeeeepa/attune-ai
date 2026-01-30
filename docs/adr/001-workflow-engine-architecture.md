@@ -1,3 +1,7 @@
+---
+description: ADR-001: Workflow Engine Architecture Review: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # ADR-001: Workflow Engine Architecture Review
 
 ## Status

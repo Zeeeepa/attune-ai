@@ -1,3 +1,7 @@
+---
+description: From 14% to 18%: The Journey Begins: ## How We Turned Test Coverage into a Learning Experience *Part 1 of the "Progressive Test Coverage" series* --- We had a p
+---
+
 # From 14% to 18%: The Journey Begins
 ## How We Turned Test Coverage into a Learning Experience
 

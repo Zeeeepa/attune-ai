@@ -1,3 +1,7 @@
+---
+description: Implementation Plan: Empathy Framework UX Enhancements (Refined): This plan delivers interactive workflow experiences through three focused initiatives.
+---
+
 # Implementation Plan: Empathy Framework UX Enhancements (Refined)
 
 This plan delivers interactive workflow experiences through three focused initiatives. Each builds on existing infrastructure (webview panels, XML prompts, Socratic refinement) to maximize velocity and minimize risk.

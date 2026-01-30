@@ -1,3 +1,7 @@
+---
+description: Multi-agent coordination API with conflict resolution, team monitoring, and shared memory. Enable distributed AI agents to collaborate.
+---
+
 # Multi-Agent Coordination
 
 Conflict resolution and monitoring for distributed agent teams.

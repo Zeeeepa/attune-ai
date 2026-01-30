@@ -1,3 +1,7 @@
+---
+description: Option A: Complete Framework Implementation Plan: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Option A: Complete Framework Implementation Plan
 # Empathy Framework v1.7.0 → v1.8.0 Production-Ready
 

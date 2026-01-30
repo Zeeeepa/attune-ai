@@ -1,3 +1,7 @@
+---
+description: Preface: Why Empathy Exists: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Preface: Why Empathy Exists
 
 *By Patrick Roebuck*

@@ -1,3 +1,7 @@
+---
+description: Production-ready AI framework with Level 4 Anticipatory Intelligence that predicts problems before they happen. Multi-agent orchestration, cost optimization, and pattern learning.
+---
+
 # Empathy Framework
 
 **Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration**
@@ -253,4 +257,6 @@ Organized using the [Diátaxis framework](https://diataxis.fr/) for better disco
 
 ---
 
-**Built with ❤️ by the Empathy Framework team**
+<!-- markdownlint-disable MD036 -->
+**Built by Patrick Roebuck in collaboration with Claude**
+<!-- markdownlint-enable MD036 -->

@@ -1,3 +1,7 @@
+---
+description: Release Notes - Empathy Framework v4.0.3: **Release Date**: January 16, 2026 **Type**: Bug Fix Release **PyPI**: https://pypi.org/project/empathy-framework/4.0.
+---
+
 # Release Notes - Empathy Framework v4.0.3
 
 **Release Date**: January 16, 2026

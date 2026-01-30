@@ -1,3 +1,7 @@
+---
+description: Empathy Framework — Technical Brief: **For:** Technical due diligence, engineering leadership, architecture review --- ## Architecture Overview ┌───────────────
+---
+
 # Empathy Framework — Technical Brief
 
 **For:** Technical due diligence, engineering leadership, architecture review

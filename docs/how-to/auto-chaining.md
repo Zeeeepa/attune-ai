@@ -1,3 +1,7 @@
+---
+description: Auto-Chaining: Auto-Chaining enables wizards to automatically trigger related wizards based on their findings.
+---
+
 # Auto-Chaining
 
 Auto-Chaining enables wizards to automatically trigger related wizards based on their findings. This creates intelligent workflows where a security scan can automatically trigger a dependency check, or a bug prediction can trigger test generation.

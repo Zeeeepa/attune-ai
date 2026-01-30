@@ -1,3 +1,7 @@
+---
+description: Development guidelines for 16 Security-Aware Wizards Complete ✓. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # 16 Security-Aware Wizards Complete ✓
 **Week 2, Wizard Integration: All Domain Wizards**
 **Date:** 2025-11-25

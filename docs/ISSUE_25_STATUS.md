@@ -1,3 +1,7 @@
+---
+description: Issue #25 Status: Basic Tier Routing: **Date:** January 27, 2026 **Status:** ❌ OBSOLETE / REPLACED **Replacement:** Adaptive Routing (Pattern 3) - Superior impl
+---
+
 # Issue #25 Status: Basic Tier Routing
 
 **Date:** January 27, 2026

@@ -1,3 +1,7 @@
+---
+description: Markdown Agents: Define agents using simple markdown files with YAML frontmatter.
+---
+
 # Markdown Agents
 
 Define agents using simple markdown files with YAML frontmatter.

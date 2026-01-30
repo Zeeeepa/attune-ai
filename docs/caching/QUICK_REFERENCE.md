@@ -1,3 +1,7 @@
+---
+description: Caching Quick Reference API reference: One-page reference for common caching scenarios. ## TL;DR # Default (recommended for most users) wor
+---
+
 # Caching Quick Reference
 
 One-page reference for common caching scenarios.

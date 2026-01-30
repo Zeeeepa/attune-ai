@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Phase 3: Production Integration & Enterprise Release. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Phase 3: Production Integration & Enterprise Release
 **Empathy Framework v1.8.0-rc → v1.8.0**
 **Timeline:** 10 weeks (70 business days)

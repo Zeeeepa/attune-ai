@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - Troubleshooting Guide API reference: **Last Updated:** November 2025 **Version:** 1.0.0 This guide covers common issues, error messages, 
+---
+
 # Empathy Framework - Troubleshooting Guide
 
 **Last Updated:** November 2025

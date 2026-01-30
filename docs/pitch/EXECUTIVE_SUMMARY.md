@@ -1,3 +1,7 @@
+---
+description: Empathy Framework — Executive Summary: **One-liner:** AI that predicts problems before they happen, with memory that learns your codebase.
+---
+
 # Empathy Framework — Executive Summary
 
 **One-liner:** AI that predicts problems before they happen, with memory that learns your codebase.

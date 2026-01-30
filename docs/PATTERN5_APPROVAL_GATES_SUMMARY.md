@@ -1,3 +1,7 @@
+---
+description: In workflow: Request approval: ### What Was Built **1.
+---
+
 ## ✅ Pattern 5: Human Approval Gates Implementation Complete
 
 ### What Was Built

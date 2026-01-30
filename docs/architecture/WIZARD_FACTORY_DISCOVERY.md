@@ -1,3 +1,7 @@
+---
+description: Wizard Factory Enhancement - Discovery Report: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Wizard Factory Enhancement - Discovery Report
 
 **Date:** 2026-01-05

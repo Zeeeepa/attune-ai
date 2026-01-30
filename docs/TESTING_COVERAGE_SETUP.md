@@ -1,3 +1,7 @@
+---
+description: Testing & Coverage Setup Guide: **Purpose:** Ensure test coverage measurement works correctly and doesn't break again.
+---
+
 # Testing & Coverage Setup Guide
 
 **Purpose:** Ensure test coverage measurement works correctly and doesn't break again.

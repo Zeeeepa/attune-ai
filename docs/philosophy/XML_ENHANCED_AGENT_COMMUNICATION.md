@@ -1,3 +1,7 @@
+---
+description: XML-Enhanced Agent Communication Protocol: **Version**: 1.0 **Created**: 2026-01-07 **Purpose**: Establish XML-based communication protocol between Claude Code 
+---
+
 # XML-Enhanced Agent Communication Protocol
 
 **Version**: 1.0

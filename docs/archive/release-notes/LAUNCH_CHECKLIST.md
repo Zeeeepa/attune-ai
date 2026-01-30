@@ -1,3 +1,7 @@
+---
+description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** January 5, 2026 (Tomorrow) **Prepared:** January 4, 2026 --- ## Pre-Launch (Do Tonight or Early Mo
+---
+
 # Launch Checklist - Empathy Framework v3.6.0
 
 **Launch Date:** January 5, 2026 (Tomorrow)

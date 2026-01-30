@@ -1,3 +1,7 @@
+---
+description: Connect Empathy Framework to Claude Code via MCP. Enable AI workflows, agent coordination, and pattern learning in your IDE.
+---
+
 # MCP Integration (v5.1.1+)
 
 Connect Empathy Framework workflows directly to Claude Code or Claude Desktop using the Model Context Protocol.

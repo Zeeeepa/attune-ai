@@ -1,3 +1,7 @@
+---
+description: Authentic Story Builder: What Really Happened?: **Purpose:** Figure out YOUR real story so we can tell it authentically across all platforms.
+---
+
 # Authentic Story Builder: What Really Happened?
 
 **Purpose:** Figure out YOUR real story so we can tell it authentically across all platforms.

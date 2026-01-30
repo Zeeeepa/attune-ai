@@ -1,3 +1,7 @@
+---
+description: Anthropic-Only Architecture: Strategic Brainstorming: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Anthropic-Only Architecture: Strategic Brainstorming
 
 **Date:** January 26, 2026

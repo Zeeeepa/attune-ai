@@ -1,3 +1,7 @@
+---
+description: Understanding By Tier (7 days) in the Empathy Dashboard: Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # Understanding By Tier (7 days) in the Empathy Dashboard
 
 The Empathy VS Code dashboard includes a **Cost Details** panel that shows how model routing is saving you money over the last 7 days.

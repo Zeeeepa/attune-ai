@@ -1,3 +1,7 @@
+---
+description: Short-Term Memory: File-First Architecture with Optional Redis API reference: The Empathy Framework provides a **file-first memory system** that works without R
+---
+
 # Short-Term Memory: File-First Architecture with Optional Redis
 
 The Empathy Framework provides a **file-first memory system** that works without Redis, with optional Redis enhancement for real-time multi-agent coordination.

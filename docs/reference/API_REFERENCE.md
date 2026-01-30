@@ -1,3 +1,7 @@
+---
+description: Empathy Framework API Reference API reference: **Version:** 3.1.0 **License:** Fair Source 0.9 **Copyright:** 2025 Smart AI Memory, LLC --- ## Tabl
+---
+
 # Empathy Framework API Reference
 
 **Version:** 3.1.0

@@ -1,3 +1,7 @@
+---
+description: Prerequisites: *What you need before building with the Empathy Framework* --- ## Quick Checklist Before you begin, ensure you have: - [ ] **Python 3.9+** instal
+---
+
 # Prerequisites
 
 *What you need before building with the Empathy Framework*

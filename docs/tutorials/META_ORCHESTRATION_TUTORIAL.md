@@ -1,3 +1,7 @@
+---
+description: Meta-Orchestration Tutorial: AI Agents That Compose Themselves: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Meta-Orchestration Tutorial: AI Agents That Compose Themselves
 
 **Version:** 4.0.0

@@ -1,4 +1,8 @@
 ---
+description: This page has moved: <meta http-equiv="refresh" content="0; url=../getting-started/"> # This page has moved The quickstart guides have been consolidated into [G
+---
+
+---
 title: Redirecting...
 ---
 

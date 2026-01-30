@@ -1,3 +1,7 @@
+---
+description: The Grammar of AI Collaboration: Building Dynamic Agent Teams: **By Patrick Roebuck · January 2026** *What if AI agents could compose themselves like words form
+---
+
 # The Grammar of AI Collaboration: Building Dynamic Agent Teams
 
 **By Patrick Roebuck · January 2026**

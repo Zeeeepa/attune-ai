@@ -1,3 +1,7 @@
+---
+description: Hacker News Submission: --- ## Option A: Show HN **Title:** Show HN: Memory-enhanced dev tools – tested on our own codebase **URL:** [Link to blog post or GitHu
+---
+
 # Hacker News Submission
 
 ---

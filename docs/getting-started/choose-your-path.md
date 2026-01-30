@@ -1,3 +1,7 @@
+---
+description: Choose your learning path for Empathy Framework. Quick Start, Tutorial, or Deep Dive approaches based on your experience level.
+---
+
 # Choose Your Path
 
 You've installed the framework and run your first workflow. Now choose the approach that fits your needs.

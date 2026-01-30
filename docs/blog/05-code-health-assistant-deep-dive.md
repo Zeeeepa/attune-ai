@@ -1,3 +1,7 @@
+---
+description: One Command to Rule Them All: The Code Health Assistant: **Date:** December 15, 2025 **Author:** Patrick Roebuck **Series:** Memory-Enhanced Development (Part 5
+---
+
 # One Command to Rule Them All: The Code Health Assistant
 
 **Date:** December 15, 2025

@@ -1,3 +1,7 @@
+---
+description: Test Generation Workflow: Analysis and Refactoring Plan: ## 1.
+---
+
 # Test Generation Workflow: Analysis and Refactoring Plan
 
 ## 1. Problem Definition

@@ -1,3 +1,7 @@
+---
+description: Meta-Workflow System User Guide: **Version:** 4.6.2 **Last Updated:** 2026-01-21 --- ## Table of Contents 1.
+---
+
 # Meta-Workflow System User Guide
 
 **Version:** 4.6.2

@@ -1,3 +1,7 @@
+---
+description: Enterprise Privacy Integration Plan integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Enterprise Privacy Integration Plan
 ## Claude Memory + MemDocs with Privacy Controls
 

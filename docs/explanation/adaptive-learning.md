@@ -1,3 +1,7 @@
+---
+description: Adaptive Learning: System-level learning that improves AI responses over time based on user feedback and acceptance patterns.
+---
+
 # Adaptive Learning
 
 System-level learning that improves AI responses over time based on user feedback and acceptance patterns.

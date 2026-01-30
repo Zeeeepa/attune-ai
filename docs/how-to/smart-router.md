@@ -1,3 +1,7 @@
+---
+description: Smart Router: The Smart Router enables natural language wizard dispatch - instead of knowing wizard names, developers describe what they need and the router fig
+---
+
 # Smart Router
 
 The Smart Router enables natural language wizard dispatch - instead of knowing wizard names, developers describe what they need and the router figures out which wizard(s) to invoke.

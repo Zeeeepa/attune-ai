@@ -1,3 +1,7 @@
+---
+description: Wizard Factory Enhancement - Project Completion Report: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Wizard Factory Enhancement - Project Completion Report
 
 **Project:** Wizard Factory Enhancement for Empathy Framework

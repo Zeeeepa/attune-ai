@@ -1,3 +1,7 @@
+---
+description: Empathy Framework: ## AI That Anticipates Problems Before They Happen --- ### The Problem **AI coding assistants are reactive, not proactive.** - Developers spe
+---
+
 # Empathy Framework
 ## AI That Anticipates Problems Before They Happen
 

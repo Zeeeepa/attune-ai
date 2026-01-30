@@ -1,3 +1,7 @@
+---
+description: SigNoz Integration Guide integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # SigNoz Integration Guide
 
 This guide explains how to export Empathy Framework LLM telemetry to SigNoz for enterprise-grade observability.

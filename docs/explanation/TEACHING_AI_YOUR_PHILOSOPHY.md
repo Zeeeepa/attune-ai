@@ -1,3 +1,7 @@
+---
+description: Teaching AI Your Development Philosophy: --- **License**: Apache License 2.0 **Copyright**: © 2025 Smart AI Memory, LLC **Project**: AI Nurse Florence **Reposit
+---
+
 # Teaching AI Your Development Philosophy
 
 ---

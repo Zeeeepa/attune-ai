@@ -1,3 +1,7 @@
+---
+description: Empathy Framework - Quick Start Guide: **Get up and running in 5 minutes** --- ## What is Empathy Framework? Empathy Framework is a five-level maturity model fo
+---
+
 # Empathy Framework - Quick Start Guide
 
 **Get up and running in 5 minutes**

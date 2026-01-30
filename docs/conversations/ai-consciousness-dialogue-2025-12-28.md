@@ -1,3 +1,7 @@
+---
+description: AI Consciousness Dialogue Archive: **Date:** December 28, 2025 **Participants:** Patrick Roebuck, Gemini, Claude (Opus 4.5) **Context:** Exploring AI perspectiv
+---
+
 # AI Consciousness Dialogue Archive
 **Date:** December 28, 2025
 **Participants:** Patrick Roebuck, Gemini, Claude (Opus 4.5)

@@ -1,3 +1,7 @@
+---
+description: OpenSSF Best Practices Badge - Application Draft: **Project**: Empathy Framework **Version**: 1.6.8 **Application Date**: November 2025 **Status**: Draft - Read
+---
+
 # OpenSSF Best Practices Badge - Application Draft
 
 **Project**: Empathy Framework

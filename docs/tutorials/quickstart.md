@@ -1,3 +1,7 @@
+---
+description: Quick Start: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Quick Start
 
 Get up and running with Empathy Framework in 5 minutes - with something genuinely useful.

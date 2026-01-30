@@ -1,3 +1,7 @@
+---
+description: Publishing Guide for Empathy: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Publishing Guide for Empathy
 
 This guide covers how to build and publish the Empathy package to PyPI.

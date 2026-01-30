@@ -1,3 +1,7 @@
+---
+description: Choose your learning path for Empathy Framework. Quick Start, Tutorial, or Deep Dive approaches based on your experience level.
+---
+
 # Getting Started
 
 Welcome to Empathy Framework! This guide will take you from zero to running your first AI workflow in about 10 minutes.

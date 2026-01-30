@@ -1,3 +1,7 @@
+---
+description: Testing Guide: New Workflow Buttons: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Testing Guide: New Workflow Buttons
 
 **Date:** 2026-01-01

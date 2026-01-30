@@ -1,3 +1,7 @@
+---
+description: Meta-Orchestration Architecture: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Meta-Orchestration Architecture
 **The Grammar Engine for AI Collaboration**
 

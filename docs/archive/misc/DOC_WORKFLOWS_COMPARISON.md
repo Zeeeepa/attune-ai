@@ -1,3 +1,7 @@
+---
+description: Documentation Workflows Comparison: ## Current Situation: 3 Doc Workflows ### 1.
+---
+
 # Documentation Workflows Comparison
 
 ## Current Situation: 3 Doc Workflows

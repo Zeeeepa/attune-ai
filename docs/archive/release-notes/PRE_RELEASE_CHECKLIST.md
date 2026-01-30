@@ -1,3 +1,7 @@
+---
+description: Pre-Release Checklist - v4.0.0: **Release Date:** January 16, 2026 **Version:** 4.0.0 **Type:** Minor Feature Release (Anthropic Optimizations) --- ## ✅ Testing
+---
+
 # Pre-Release Checklist - v4.0.0
 
 **Release Date:** January 16, 2026

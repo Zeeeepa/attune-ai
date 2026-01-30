@@ -1,3 +1,7 @@
+---
+description: Distribution Policy: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Distribution Policy
 
 **Version:** 1.0

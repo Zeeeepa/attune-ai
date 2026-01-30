@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Contributing Tests to Empathy Framework. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Contributing Tests to Empathy Framework
 
 This guide will help you write high-quality tests for the Empathy Framework. Whether you're adding a new feature or fixing a bug, tests are essential to ensure code quality and prevent regressions.

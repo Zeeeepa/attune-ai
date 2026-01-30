@@ -1,3 +1,7 @@
+---
+description: Empathy Framework — Case Studies & ROI Scenarios: **For:** Business development, enterprise sales, partnership discussions --- ## Case Study 1: Enterprise Engin
+---
+
 # Empathy Framework — Case Studies & ROI Scenarios
 
 **For:** Business development, enterprise sales, partnership discussions

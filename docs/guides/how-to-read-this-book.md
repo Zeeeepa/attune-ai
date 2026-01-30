@@ -1,3 +1,7 @@
+---
+description: How to Read This Book: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # How to Read This Book
 
 *A guide to getting the most from the Empathy Framework*

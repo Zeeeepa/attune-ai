@@ -1,3 +1,7 @@
+---
+description: Bug Prediction Fix Plan: **Generated:** 2026-01-21 **Scanner Report:** 78% Risk Score (Moderate) **Files Scanned:** 1,374 **High Severity:** 7 | **Medium:** 44 
+---
+
 # Bug Prediction Fix Plan
 
 **Generated:** 2026-01-21

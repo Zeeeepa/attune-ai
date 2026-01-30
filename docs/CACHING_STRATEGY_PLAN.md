@@ -1,3 +1,7 @@
+---
+description: Caching Strategy Plan - Empathy Framework: **Version:** 1.0 **Created:** January 10, 2026 **Status:** Phase 2 Planning (Quick Wins Implemented) **Owner:** Engin
+---
+
 # Caching Strategy Plan - Empathy Framework
 
 **Version:** 1.0

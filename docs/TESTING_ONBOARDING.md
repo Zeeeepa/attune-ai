@@ -1,3 +1,7 @@
+---
+description: Testing Onboarding Guide: ## Welcome to the Empathy Framework Test Suite **Audience**: New team members, contributors **Time to Complete**: 30-60 minutes **Prer
+---
+
 # Testing Onboarding Guide
 ## Welcome to the Empathy Framework Test Suite
 

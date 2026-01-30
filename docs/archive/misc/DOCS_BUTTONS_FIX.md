@@ -1,3 +1,7 @@
+---
+description: VSCode Extension - Docs Buttons Fix: ## Issue The "Generate Docs" and "Sync Docs" buttons in the VSCode dashboard open an input form card instead of running the
+---
+
 # VSCode Extension - Docs Buttons Fix
 
 ## Issue

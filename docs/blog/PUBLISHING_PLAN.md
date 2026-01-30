@@ -1,3 +1,7 @@
+---
+description: Publishing Plan: Week of December 16-22, 2025: ## Overview Daily publishing cadence across multiple platforms to maximize reach.
+---
+
 # Publishing Plan: Week of December 16-22, 2025
 
 ## Overview

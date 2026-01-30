@@ -1,3 +1,7 @@
+---
+description: TierFallbackHelper Quick Start: ## Overview `TierFallbackHelper` provides simple convenience methods for tier-based fallback logic in Sprint 1 tests.
+---
+
 # TierFallbackHelper Quick Start
 
 ## Overview

@@ -1,3 +1,7 @@
+---
+description: Monitoring System - Executive Summary: **Version:** 2.0 (Simplified) **Status:** Ready to implement **Timeline:** 3 weeks (3 sprints) --- ## What We're Building
+---
+
 # Monitoring System - Executive Summary
 
 **Version:** 2.0 (Simplified)

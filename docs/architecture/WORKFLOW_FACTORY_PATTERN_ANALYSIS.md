@@ -1,3 +1,7 @@
+---
+description: Workflow Factory Pattern Analysis: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Workflow Factory Pattern Analysis
 
 **Date:** 2025-01-05

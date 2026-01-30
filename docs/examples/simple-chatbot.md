@@ -1,3 +1,7 @@
+---
+description: Example: Code Review Assistant with Memory: **Difficulty**: Beginner → Intermediate **Time**: 15 minutes **Core Features**: Short-Term Memory (Redis), Long-Term
+---
+
 # Example: Code Review Assistant with Memory
 
 **Difficulty**: Beginner → Intermediate

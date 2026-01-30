@@ -1,3 +1,7 @@
+---
+description: XML-Enhanced Prompts Implementation Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # XML-Enhanced Prompts Implementation Guide
 
 **Empathy Framework v3.7.0 - XML Schema v1.0**

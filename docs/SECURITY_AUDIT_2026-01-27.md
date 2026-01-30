@@ -1,3 +1,7 @@
+---
+description: Security Audit & Dependency Upgrade Report: **Date:** January 27, 2026 **Auditor:** Claude Sonnet 4.5 (via /release audit) **Status:** ✅ Complete - All Critical
+---
+
 # Security Audit & Dependency Upgrade Report
 
 **Date:** January 27, 2026

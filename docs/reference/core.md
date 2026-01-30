@@ -1,3 +1,7 @@
+---
+description: Core API reference: Core data structures and state management for the Empathy Framework. ## Overview The core module pro
+---
+
 # Core
 
 Core data structures and state management for the Empathy Framework.

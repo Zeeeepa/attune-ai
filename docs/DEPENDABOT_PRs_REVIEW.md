@@ -1,3 +1,7 @@
+---
+description: Dependabot PRs Review & Merge Strategy: **Date:** 2026-01-26 **Status:** 9 open PRs pending review **Last Updated:** After immediate quality fixes (test env, Bl
+---
+
 # Dependabot PRs Review & Merge Strategy
 
 **Date:** 2026-01-26

@@ -1,3 +1,7 @@
+---
+description: FAQ Distribution Strategy: **Goal:** Make FAQ content available everywhere it's needed without duplication **Approach:** Single source of truth (docs/FAQ.md) wi
+---
+
 # FAQ Distribution Strategy
 
 **Goal:** Make FAQ content available everywhere it's needed without duplication

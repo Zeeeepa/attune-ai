@@ -1,3 +1,7 @@
+---
+description: How the Project Index Keeps Your Codebase Honest: **Draft for Developer Blog** --- ## The Problem: Technical Debt Hides in Plain Sight Every engineering team ha
+---
+
 # How the Project Index Keeps Your Codebase Honest
 
 **Draft for Developer Blog**

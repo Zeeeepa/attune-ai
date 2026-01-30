@@ -1,3 +1,7 @@
+---
+description: Claude Memory Strategy Guide: Best practices for leveraging Claude's memory features to build more effective AI-human collaboration.
+---
+
 # Claude Memory Strategy Guide
 
 Best practices for leveraging Claude's memory features to build more effective AI-human collaboration.

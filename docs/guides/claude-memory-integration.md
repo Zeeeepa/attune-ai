@@ -1,3 +1,7 @@
+---
+description: Claude Memory Integration Guide integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Claude Memory Integration Guide
 
 ## 1. Overview

@@ -1,3 +1,7 @@
+---
+description: How I Cut My Claude API Costs by 78% with Intelligent Model Fallback: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # How I Cut My Claude API Costs by 78% with Intelligent Model Fallback
 
 **A practical guide to implementing Sonnet 4.5 → Opus 4.5 intelligent routing**

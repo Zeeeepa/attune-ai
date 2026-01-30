@@ -1,3 +1,7 @@
+---
+description: Multi-Agent Coordination: Enable multiple AI agents to work together on complex tasks through shared pattern libraries and coordinated workflows.
+---
+
 # Multi-Agent Coordination
 
 Enable multiple AI agents to work together on complex tasks through shared pattern libraries and coordinated workflows.

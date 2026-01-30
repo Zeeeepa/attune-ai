@@ -1,3 +1,7 @@
+---
+description: Migration Guide: Empathy Framework 4.7.0: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Migration Guide: Empathy Framework 4.7.0
 
 > **Attribution**: Version 4.7.0 adds architectural patterns inspired by [everything-claude-code](https://github.com/affaan-m/everything-claude-code) by Affaan Mustafa (MIT License). These complement the Empathy Framework's existing learning capabilities.

@@ -1,3 +1,7 @@
+---
+description: Dynamic Agent Creation: Teaching AI to Spawn Itself: **By Patrick Roebuck · January 2026** *Inside the Agent Factory—where templates become task-specific specia
+---
+
 # Dynamic Agent Creation: Teaching AI to Spawn Itself
 
 **By Patrick Roebuck · January 2026**

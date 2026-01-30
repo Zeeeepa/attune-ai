@@ -1,3 +1,7 @@
+---
+description: Caching Documentation: Complete guide to Empathy Framework's intelligent response caching system (v3.8.0+).
+---
+
 # Caching Documentation
 
 Complete guide to Empathy Framework's intelligent response caching system (v3.8.0+).

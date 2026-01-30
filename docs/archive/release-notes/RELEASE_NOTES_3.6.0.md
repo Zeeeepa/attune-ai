@@ -1,3 +1,7 @@
+---
+description: Empathy Framework v3.6.0 Release Notes: ## 🔐 Security & Compliance Infrastructure Release **Release Date**: January 4, 2026 **Release Type**: Minor (New Feature
+---
+
 # Empathy Framework v3.6.0 Release Notes
 
 ## 🔐 Security & Compliance Infrastructure Release

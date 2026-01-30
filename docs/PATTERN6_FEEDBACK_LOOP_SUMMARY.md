@@ -1,3 +1,7 @@
+---
+description: Initialize feedback loop: ### What Was Built **1.
+---
+
 ## ✅ Pattern 6: Agent-to-LLM Feedback Loop Implementation Complete
 
 ### What Was Built

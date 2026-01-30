@@ -1,3 +1,7 @@
+---
+description: Known Issues & Technical Debt: ## VSCode Extension ### Category Mismatch (Fixed ✓) **Status:** ✓ RESOLVED **Was:** The VSCode extension expected "quick" workflo
+---
+
 # Known Issues & Technical Debt
 
 ## VSCode Extension

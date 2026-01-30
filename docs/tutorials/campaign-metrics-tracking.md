@@ -1,3 +1,7 @@
+---
+description: Tutorial: Automating Campaign Metrics Tracking: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Tutorial: Automating Campaign Metrics Tracking
 
 **Level:** Intermediate

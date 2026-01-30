@@ -1,3 +1,7 @@
+---
+description: Persistence API for pattern storage. Redis, file-based, or in-memory backends. Enable pattern learning across sessions.
+---
+
 # Persistence
 
 Data persistence for patterns, metrics, and collaboration state.

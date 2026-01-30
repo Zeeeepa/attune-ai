@@ -1,3 +1,7 @@
+---
+description: The Philosophy of Multi-Agent Coordination: *How foundational principles shaped the architecture of collaborative AI systems* --- ## Why Philosophy Matters When
+---
+
 # The Philosophy of Multi-Agent Coordination
 
 *How foundational principles shaped the architecture of collaborative AI systems*

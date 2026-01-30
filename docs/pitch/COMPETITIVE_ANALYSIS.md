@@ -1,3 +1,7 @@
+---
+description: Empathy Framework — Competitive Analysis: **For:** Investor due diligence, strategic positioning, sales enablement --- ## Market Landscape The AI developer tool
+---
+
 # Empathy Framework — Competitive Analysis
 
 **For:** Investor due diligence, strategic positioning, sales enablement

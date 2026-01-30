@@ -1,3 +1,7 @@
+---
+description: Meta-Orchestration API API reference: **Version:** 4.0.0 (New in v4.0) **Module:** `empathy_os.orchestration` **Stability:** 🟢 Stable (Pub
+---
+
 # Meta-Orchestration API
 
 **Version:** 4.0.0 (New in v4.0)

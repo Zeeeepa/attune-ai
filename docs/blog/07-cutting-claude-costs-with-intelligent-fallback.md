@@ -1,3 +1,7 @@
+---
+description: How I Cut My Claude API Costs by 78% with Intelligent Model Fallback: Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # How I Cut My Claude API Costs by 78% with Intelligent Model Fallback
 
 **Date:** January 2026

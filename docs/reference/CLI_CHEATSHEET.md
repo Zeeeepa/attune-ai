@@ -1,3 +1,7 @@
+---
+description: Empathy Framework CLI Cheatsheet API reference: Quick reference for Empathy Framework commands. Full docs at [smartaimemory.com/framework-docs](http
+---
+
 # Empathy Framework CLI Cheatsheet
 
 Quick reference for Empathy Framework commands. Full docs at [smartaimemory.com/framework-docs](https://www.smartaimemory.com/framework-docs/).

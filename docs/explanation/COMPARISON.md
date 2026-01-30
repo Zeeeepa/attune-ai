@@ -1,3 +1,7 @@
+---
+description: Empathy Framework vs. Competitors: Comprehensive Comparison: **Last Updated**: November 2025 **Version**: 1.6.8 --- ## Executive Summary The Empathy Framework i
+---
+
 # Empathy Framework vs. Competitors: Comprehensive Comparison
 
 **Last Updated**: November 2025

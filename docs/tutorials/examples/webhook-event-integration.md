@@ -1,3 +1,7 @@
+---
+description: Example: Webhook & Event Integration integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Example: Webhook & Event Integration
 
 **Difficulty**: Intermediate

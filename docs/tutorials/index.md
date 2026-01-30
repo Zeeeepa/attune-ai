@@ -1,3 +1,7 @@
+---
+description: Tutorials: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Tutorials
 
 Learning-oriented guides to help you get started with Empathy Framework.

@@ -1,3 +1,7 @@
+---
+description: Release Test Results - Empathy Framework v3.7.0: **Date**: 2026-01-06 **Package Version**: 3.7.0 **Test Status**: 🔴 **CRITICAL ISSUES FOUND - DO NOT PUBLISH YET
+---
+
 # Release Test Results - Empathy Framework v3.7.0
 
 **Date**: 2026-01-06

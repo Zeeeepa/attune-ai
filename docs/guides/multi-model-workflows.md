@@ -1,3 +1,7 @@
+---
+description: Multi-Model Workflows: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Multi-Model Workflows
 
 Cost-optimized workflow pipelines that route tasks to appropriate model tiers.

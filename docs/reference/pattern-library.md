@@ -1,3 +1,7 @@
+---
+description: Pattern Library API for learning and sharing patterns. Pattern matching, confidence scoring, and cross-agent pattern sharing.
+---
+
 # Pattern Library
 
 Pattern discovery, learning, and sharing system for multi-agent coordination.

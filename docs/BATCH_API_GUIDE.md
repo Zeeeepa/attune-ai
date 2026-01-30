@@ -1,3 +1,7 @@
+---
+description: Batch API Integration Guide API reference: **Version:** 5.0.2 **Last Updated:** January 27, 2026 **Cost Savings:** 50% off standard pricing ---
+---
+
 # Batch API Integration Guide
 
 **Version:** 5.0.2  

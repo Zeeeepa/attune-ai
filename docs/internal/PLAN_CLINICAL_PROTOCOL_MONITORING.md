@@ -1,3 +1,7 @@
+---
+description: Plan: Clinical Protocol Monitoring System: ## Vision A **production-ready healthcare monitoring system** that uses the **clinical pathway protocol pattern** (sa
+---
+
 # Plan: Clinical Protocol Monitoring System
 
 ## Vision

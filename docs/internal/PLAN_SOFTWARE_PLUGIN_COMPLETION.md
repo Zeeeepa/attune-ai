@@ -1,3 +1,7 @@
+---
+description: Software Development Plugin - Production-Ready Plan: **Goal**: Bring Software Plugin to same quality level as Healthcare Plugin.
+---
+
 # Software Development Plugin - Production-Ready Plan
 
 **Goal**: Bring Software Plugin to same quality level as Healthcare Plugin.

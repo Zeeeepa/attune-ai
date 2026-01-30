@@ -1,3 +1,7 @@
+---
+description: EmpathyOS API reference: The main entry point for the Empathy Framework. `EmpathyOS` orchestrates empathy level progression, 
+---
+
 # EmpathyOS
 
 The main entry point for the Empathy Framework. `EmpathyOS` orchestrates empathy level progression, trust management, and interaction handling.

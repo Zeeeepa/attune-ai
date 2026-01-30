@@ -1,3 +1,7 @@
+---
+description: Security Architecture: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Security Architecture
 
 Comprehensive security implementation for enterprise AI applications with PII protection, secrets detection, and compliance logging.

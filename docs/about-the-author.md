@@ -1,3 +1,7 @@
+---
+description: About the Author: --- ## Patrick Roebuck Patrick Roebuck is a software engineer and AI systems architect focused on building AI that genuinely helps people.
+---
+
 # About the Author
 
 ---

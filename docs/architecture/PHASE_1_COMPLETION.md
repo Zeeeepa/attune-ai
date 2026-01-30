@@ -1,3 +1,7 @@
+---
+description: Phase 1: Pattern Library - COMPLETION REPORT: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+---
+
 # Phase 1: Pattern Library - COMPLETION REPORT
 
 **Date:** 2026-01-05

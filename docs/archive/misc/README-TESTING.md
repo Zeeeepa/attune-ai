@@ -1,3 +1,7 @@
+---
+description: Testing Guide - Empathy Framework: **Version**: 3.11.0 **Last Updated**: January 10, 2026 This guide covers the testing infrastructure, optimization strategies,
+---
+
 # Testing Guide - Empathy Framework
 
 **Version**: 3.11.0

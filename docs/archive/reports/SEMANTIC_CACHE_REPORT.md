@@ -1,3 +1,7 @@
+---
+description: Semantic Cache Benchmark Report: **Generated:** 2026-01-23 21:32:00 **Purpose:** Test hybrid cache semantic matching vs hash-only cache **Test Method:** Run wor
+---
+
 # Semantic Cache Benchmark Report
 
 **Generated:** 2026-01-23 21:32:00

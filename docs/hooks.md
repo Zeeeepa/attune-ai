@@ -1,3 +1,7 @@
+---
+description: Hook System: The Empathy Framework hook system provides event-driven extensibility for session lifecycle management.
+---
+
 # Hook System
 
 The Empathy Framework hook system provides event-driven extensibility for session lifecycle management.

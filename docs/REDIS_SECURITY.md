@@ -1,3 +1,7 @@
+---
+description: Redis Short-Term Memory Security Guide: **Version:** 4.4.0 **Last Updated:** January 2026 This document covers security considerations, best practices, and conf
+---
+
 # Redis Short-Term Memory Security Guide
 
 **Version:** 4.4.0

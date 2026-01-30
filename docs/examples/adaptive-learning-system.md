@@ -1,3 +1,7 @@
+---
+description: Example: Adaptive Learning System: **Difficulty**: Advanced **Time**: 25 minutes **Empathy Level**: 3-4 (Self-improving) **Features**: Dynamic thresholds, patte
+---
+
 # Example: Adaptive Learning System
 
 **Difficulty**: Advanced

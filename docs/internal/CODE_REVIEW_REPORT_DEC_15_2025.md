@@ -1,3 +1,7 @@
+---
+description: Code Review Report - December 15, 2025: **Reviewer:** Claude Sonnet 4.5 **Scope:** Recently updated code from today's session **Date:** December 15, 2025 --- ##
+---
+
 # Code Review Report - December 15, 2025
 
 **Reviewer:** Claude Sonnet 4.5

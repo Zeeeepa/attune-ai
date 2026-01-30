@@ -1,3 +1,7 @@
+---
+description: Empathy Framework Testing Strategy: ## Executive Summary This document outlines a phased approach to transform the Empathy Framework's testing infrastructure fr
+---
+
 # Empathy Framework Testing Strategy
 
 ## Executive Summary

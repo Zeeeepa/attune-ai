@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Pipeline Parallelization Complete ✓. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Pipeline Parallelization Complete ✓
 **Week 2, Task 5: Pipeline Optimization**
 **Date:** 2025-11-25

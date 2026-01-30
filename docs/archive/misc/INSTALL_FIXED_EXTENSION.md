@@ -1,3 +1,7 @@
+---
+description: Install Fixed VSCode Extension: ## The Fix "Generate Docs" and "Sync Docs" buttons now run workflows directly instead of showing input form.
+---
+
 # Install Fixed VSCode Extension
 
 ## The Fix

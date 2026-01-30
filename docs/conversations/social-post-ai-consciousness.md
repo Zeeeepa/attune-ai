@@ -1,3 +1,7 @@
+---
+description: Social Media Post: AI Consciousness Dialogue: ## Reddit Version (r/artificial, r/philosophy, r/singularity) --- **Title:** "It feels less like an installation a
+---
+
 # Social Media Post: AI Consciousness Dialogue
 
 ## Reddit Version (r/artificial, r/philosophy, r/singularity)

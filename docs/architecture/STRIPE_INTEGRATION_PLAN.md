@@ -1,3 +1,7 @@
+---
+description: Stripe Integration Plan for Empathy Framework integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+---
+
 # Stripe Integration Plan for Empathy Framework
 
 **Prepared:** December 7, 2025

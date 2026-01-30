@@ -1,3 +1,7 @@
+---
+description: Run your first Empathy Framework AI workflow in 5 minutes. Security audit, bug prediction, and code review with CLI or Python. See immediate results.
+---
+
 # First Steps
 
 Run your first AI workflow and see results in under 5 minutes.

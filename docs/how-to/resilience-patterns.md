@@ -1,3 +1,7 @@
+---
+description: Resilience Patterns: Production-ready patterns for fault tolerance and reliability.
+---
+
 # Resilience Patterns
 
 Production-ready patterns for fault tolerance and reliability. These patterns help your application handle failures gracefully, prevent cascading failures, and maintain service availability.

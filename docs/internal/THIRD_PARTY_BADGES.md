@@ -1,3 +1,7 @@
+---
+description: Third-Party Certification & Badges: This guide explains third-party standards you can use to objectively certify your project's readiness for production use.
+---
+
 # Third-Party Certification & Badges
 
 This guide explains third-party standards you can use to objectively certify your project's readiness for production use.

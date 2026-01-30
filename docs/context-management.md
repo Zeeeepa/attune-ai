@@ -1,3 +1,7 @@
+---
+description: Context Management: Preserve collaboration state across context window resets and sessions.
+---
+
 # Context Management
 
 Preserve collaboration state across context window resets and sessions.

@@ -1,3 +1,7 @@
+---
+description: Reddit Follow-up: Security Learning: **Subreddit:** r/Python (or r/netsec, r/devops) **Title:** Our security scanner flags 108 issues every time.
+---
+
 # Reddit Follow-up: Security Learning
 
 **Subreddit:** r/Python (or r/netsec, r/devops)

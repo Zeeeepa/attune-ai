@@ -1,3 +1,7 @@
+---
+description: Scaffolding CLI Test Report: ## Summary **File:** `src/empathy_os/scaffolding/cli.py` (241 lines total, 101 SLOC) **Test File:** `tests/unit/scaffolding/test_sc
+---
+
 # Scaffolding CLI Test Report
 
 ## Summary

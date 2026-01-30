@@ -1,3 +1,7 @@
+---
+description: Empathy Framework for Healthcare: ## HIPAA-Ready AI Development Tools --- ## The Opportunity **Claude for Healthcare launched January 2026** — Anthropic is inve
+---
+
 # Empathy Framework for Healthcare
 ## HIPAA-Ready AI Development Tools
 

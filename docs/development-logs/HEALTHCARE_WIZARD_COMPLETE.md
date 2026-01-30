@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Healthcare Wizard HIPAA++ Complete ✓. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Healthcare Wizard HIPAA++ Complete ✓
 **Week 2, Task 6: Healthcare Wizard with HIPAA Safeguards**
 **Date:** 2025-11-25

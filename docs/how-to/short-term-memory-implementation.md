@@ -1,3 +1,7 @@
+---
+description: Implementing Short-Term Memory: *A practical guide to building multi-agent coordination with measurable outcomes* --- ## What You'll Build By the end of this ch
+---
+
 # Implementing Short-Term Memory
 
 *A practical guide to building multi-agent coordination with measurable outcomes*

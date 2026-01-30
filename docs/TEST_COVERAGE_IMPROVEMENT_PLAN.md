@@ -1,3 +1,7 @@
+---
+description: Test Coverage Improvement Plan - Empathy Framework v4.6.3: **Updated**: January 21, 2026 **Current Coverage**: 59.28% **Target Coverage**: 80%+ **Estimated Time
+---
+
 # Test Coverage Improvement Plan - Empathy Framework v4.6.3
 
 **Updated**: January 21, 2026

@@ -1,3 +1,7 @@
+---
+description: Teaching AI Your Coding Standards: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+---
+
 # Teaching AI Your Coding Standards
 
 **Level 5 Empathy in Practice: Preventing Errors Before They Happen**

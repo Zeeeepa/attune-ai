@@ -1,3 +1,7 @@
+---
+description: Reddit Posts: Cost Savings Tutorial (Personal + Step-by-Step): Analyze AI model costs with 3-tier routing. Compare savings across providers and optimization strategies.
+---
+
 # Reddit Posts: Cost Savings Tutorial (Personal + Step-by-Step)
 
 **Style:** First-person, authentic, with complete follow-along tutorial

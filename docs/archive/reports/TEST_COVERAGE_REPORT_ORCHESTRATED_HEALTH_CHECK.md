@@ -1,3 +1,7 @@
+---
+description: Test Coverage Report: Orchestrated Health Check Workflow: **Date:** January 15, 2026 **Module:** `src/empathy_os/workflows/orchestrated_health_check.py` **Total
+---
+
 # Test Coverage Report: Orchestrated Health Check Workflow
 
 **Date:** January 15, 2026

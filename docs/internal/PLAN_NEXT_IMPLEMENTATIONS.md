@@ -1,3 +1,7 @@
+---
+description: Next Implementations - Comprehensive Plan: Based on our conversation and your goals, here are all the suggested implementations organized by priority and relati
+---
+
 # Next Implementations - Comprehensive Plan
 
 Based on our conversation and your goals, here are all the suggested implementations organized by priority and relationship.

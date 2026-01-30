@@ -1,3 +1,7 @@
+---
+description: LinkedIn Announcement Post: --- **We tested our AI memory system on our own codebase.
+---
+
 # LinkedIn Announcement Post
 
 ---

@@ -1,3 +1,7 @@
+---
+description: Tech Debt Trajectory: Predicting When Debt Becomes Critical: **Date:** December 12, 2025 **Author:** Patrick Roebuck **Series:** Memory-Enhanced Development (Pa
+---
+
 # Tech Debt Trajectory: Predicting When Debt Becomes Critical
 
 **Date:** December 12, 2025

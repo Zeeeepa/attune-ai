@@ -1,3 +1,7 @@
+---
+description: Development guidelines for Empathy Framework - Commercial Launch Execution Plan. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+---
+
 # Empathy Framework - Commercial Launch Execution Plan
 
 **Optimized for Parallel Processing & Agent Coordination**

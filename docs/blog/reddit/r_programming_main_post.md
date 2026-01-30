@@ -1,3 +1,7 @@
+---
+description: Reddit Post: r/programming: **Title:** The problem with AI coding assistants: they forget everything.
+---
+
 # Reddit Post: r/programming
 
 **Title:** The problem with AI coding assistants: they forget everything. We built memory and tested it on our own repo.
