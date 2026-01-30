@@ -22,7 +22,7 @@ def format_doc_gen_report(result: dict, input_data: dict) -> str:
 
     # Header
     doc_type = result.get("doc_type", "general").replace("_", " ").title()
-    audience = result.get("audience", "developers").title()
+    audience = result.get("audience", "developers").replace("_", " ").title()
 
     lines.append("=" * 60)
     lines.append("DOCUMENTATION GENERATION REPORT")
@@ -111,15 +111,17 @@ def format_doc_gen_report(result: dict, input_data: dict) -> str:
         lines.append("")
 
     # Truncation detection and scope notice
-    truncation_indicators = [
-        document.rstrip().endswith("..."),
-        document.rstrip().endswith("-"),
-        "```" in document and document.count("```") % 2 != 0,  # Unclosed code block
-        any(
-            phrase in document.lower()
-            for phrase in ["continued in", "see next section", "to be continued"]
-        ),
-    ]
+    truncation_indicators = []
+    if document:  # Handle None or empty document
+        truncation_indicators = [
+            document.rstrip().endswith("..."),
+            document.rstrip().endswith("-"),
+            "```" in document and document.count("```") % 2 != 0,  # Unclosed code block
+            any(
+                phrase in document.lower()
+                for phrase in ["continued in", "see next section", "to be continued"]
+            ),
+        ]
 
     # Count planned sections from outline (top-level only)
     import re
