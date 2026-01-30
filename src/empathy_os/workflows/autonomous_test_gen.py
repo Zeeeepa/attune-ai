@@ -293,7 +293,7 @@ Return ONLY the complete Python test file content, no explanations."""
             client = anthropic.Anthropic(api_key=api_key)
             response = client.messages.create(
                 model="claude-sonnet-4-5",  # capable tier
-                max_tokens=4000,
+                max_tokens=8000,  # Increased from 4000 to prevent truncation
                 messages=[{"role": "user", "content": prompt}],
             )
 
@@ -313,6 +313,20 @@ Return ONLY the complete Python test file content, no explanations."""
                 test_content = test_content[len("```python"):].strip()
             if test_content.endswith("```"):
                 test_content = test_content[:-3].strip()
+
+            # Check for truncation indicators
+            if response.stop_reason == "max_tokens":
+                logger.warning(f"⚠️  LLM response truncated for {module_name} (hit max_tokens)")
+                # Response might be incomplete but let validation catch it
+
+            # Quick syntax pre-check before returning
+            try:
+                import ast
+                ast.parse(test_content)
+                logger.info(f"✓ Quick syntax check passed for {module_name}")
+            except SyntaxError as e:
+                logger.error(f"❌ LLM generated invalid syntax for {module_name}: {e.msg} at line {e.lineno}")
+                return None
 
             logger.info(f"Test content cleaned, final size: {len(test_content)} bytes")
             return test_content
@@ -475,7 +489,7 @@ class TestEdgeCases:
         return test_content
 
     def _validate_test_file(self, test_file: Path) -> bool:
-        """Validate test file can be imported.
+        """Validate test file can be imported and has valid syntax.
 
         Args:
             test_file: Path to test file
@@ -483,6 +497,20 @@ class TestEdgeCases:
         Returns:
             True if valid, False otherwise
         """
+        # Step 1: Check for syntax errors with ast.parse (fast)
+        try:
+            import ast
+            content = test_file.read_text()
+            ast.parse(content)
+            logger.info(f"✓ Syntax check passed for {test_file.name}")
+        except SyntaxError as e:
+            logger.error(f"❌ Syntax error in {test_file.name} at line {e.lineno}: {e.msg}")
+            return False
+        except Exception as e:
+            logger.error(f"❌ Cannot parse {test_file.name}: {e}")
+            return False
+
+        # Step 2: Check if pytest can collect the tests
         try:
             result = subprocess.run(
                 [sys.executable, "-m", "pytest", "--collect-only", str(test_file)],
@@ -492,14 +520,18 @@ class TestEdgeCases:
             )
 
             if result.returncode != 0:
-                logger.warning(f"Validation failed for {test_file.name}: {result.stderr[:500]}")
-                # Don't fail validation on collection errors - test might still be valuable
-                # Just log the error and keep the file
-                return True  # Changed from False - be permissive
+                logger.error(f"❌ Pytest collection failed for {test_file.name}")
+                logger.error(f"   Error: {result.stderr[:500]}")
+                return False  # FIXED: Actually fail validation for broken tests
 
+            logger.info(f"✓ Pytest collection passed for {test_file.name}")
             return True
+
+        except subprocess.TimeoutExpired:
+            logger.error(f"❌ Validation timeout for {test_file.name}")
+            return False
         except Exception as e:
-            logger.error(f"Validation exception for {test_file}: {e}")
+            logger.error(f"❌ Validation exception for {test_file}: {e}")
             return False
 
     def _count_tests(self) -> int:
