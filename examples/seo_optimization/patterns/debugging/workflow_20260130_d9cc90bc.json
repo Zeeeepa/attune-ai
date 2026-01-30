@@ -1,0 +1,43 @@
+{
+  "pattern_id": "workflow_20260130_d9cc90bc",
+  "bug_type": "workflow_run",
+  "status": "failed",
+  "root_cause": "Workflow: seo-optimization - Audit and optimize SEO for documentation sites",
+  "fix": "Completed via seo-optimization workflow",
+  "resolved_by": "@empathy_framework",
+  "resolved_at": "2026-01-30",
+  "files_affected": [],
+  "source": "workflow_tracking",
+  "tier_progression": {
+    "methodology": "AI-ADDIE",
+    "recommended_tier": "CHEAP",
+    "starting_tier": "CHEAP",
+    "successful_tier": "CHEAP",
+    "total_attempts": 0,
+    "tier_history": [],
+    "cost_breakdown": {
+      "total_cost": 0,
+      "cost_if_always_premium": 0,
+      "savings_percent": 0
+    },
+    "quality_metrics": {
+      "tests_passed": false,
+      "health_score_before": 73,
+      "health_score_after": 73
+    },
+    "xml_protocol_compliance": {
+      "prompt_used_xml": true,
+      "response_used_xml": true,
+      "all_sections_present": true,
+      "test_evidence_provided": true,
+      "false_complete_avoided": false
+    }
+  },
+  "workflow_metadata": {
+    "workflow_name": "seo-optimization",
+    "workflow_id": "d9cc90bc-84fe-4761-90f5-64228259362e",
+    "duration_seconds": 0.02,
+    "started_at": "2026-01-30T03:14:04.441846",
+    "completed_at": "2026-01-30T03:14:04.459476"
+  }
+}

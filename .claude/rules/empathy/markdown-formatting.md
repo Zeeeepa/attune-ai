@@ -121,6 +121,53 @@ More text
 | foo  | description |
 ```
 
+### 6. Duplicate Headings (MD024)
+
+**Avoid duplicate headings WITHIN the same section:**
+
+```markdown
+❌ WRONG (duplicate in same section):
+## Configuration
+
+### Database Setup
+...
+
+### Database Setup
+...
+
+✅ CORRECT (use different names):
+## Configuration
+
+### Database Setup
+...
+
+### Database Connection
+...
+```
+
+**ACCEPTABLE: Duplicate headings in different sections (like CHANGELOG.md):**
+
+```markdown
+✅ ACCEPTABLE (different sections):
+## [1.0.0]
+
+### Added
+- New feature
+
+### Fixed
+- Bug fix
+
+## [0.9.0]
+
+### Added
+- Another feature
+
+### Fixed
+- Another fix
+```
+
+**Configuration:** The `.markdownlint.json` file is configured with `"siblings_only": true` which allows duplicate headings in different sections (standard for changelogs) while still catching problematic duplicates within the same section.
+
 ---
 
 ## Common Patterns to Remember
@@ -212,11 +259,12 @@ These features enable...
 
 Before saving any markdown file, verify:
 
-- [ ] All code blocks have language specifiers
-- [ ] Blank lines before/after all code blocks
-- [ ] Blank lines before/after all lists
-- [ ] Ordered lists use sequential numbers (1, 2, 3...)
-- [ ] Tables have proper spacing around pipes
+- [ ] All code blocks have language specifiers (MD040)
+- [ ] Blank lines before/after all code blocks (MD031)
+- [ ] Blank lines before/after all lists (MD032)
+- [ ] Ordered lists use sequential numbers (1, 2, 3...) (MD029)
+- [ ] Tables have proper spacing around pipes (MD060)
+- [ ] No duplicate headings within same section (MD024)
 - [ ] No trailing whitespace on lines
 - [ ] File ends with single newline
 
@@ -318,17 +366,41 @@ You can use these...
 
 ---
 
-## VSCode Extension Integration
+## Project Configuration
 
-If using VSCode with markdownlint extension:
+### .markdownlint.json (Project Root)
 
-**.vscode/settings.json:**
+The project uses `.markdownlint.json` for consistent linting across all tools:
+
+```json
+{
+  "default": true,
+  "MD013": false,
+  "MD024": {
+    "siblings_only": true
+  },
+  "MD033": false,
+  "MD041": false
+}
+```
+
+**Configuration explained:**
+
+- **`MD013: false`** - Disables line length check (we use Black with 100 chars for code)
+- **`MD024: siblings_only`** - Allows duplicate headings in different sections (enables standard CHANGELOG.md format)
+- **`MD033: false`** - Allows inline HTML (needed for some documentation features)
+- **`MD041: false`** - Allows files to not start with top-level heading (flexible document structure)
+
+### VSCode Extension Integration
+
+If using VSCode with markdownlint extension, settings are automatically loaded from `.markdownlint.json`. You can also override in `.vscode/settings.json`:
+
 ```json
 {
   "markdownlint.config": {
-    "MD013": false,  // Line length - disable if needed
-    "MD033": false,  // HTML allowed - disable if needed
-    "MD041": false   // First line heading - disable if needed
+    "MD013": false,
+    "MD033": false,
+    "MD041": false
   }
 }
 ```
@@ -344,5 +416,8 @@ If using VSCode with markdownlint extension:
 3. ✅ Add blank lines around lists (MD032)
 4. ✅ Use sequential list numbering (MD029)
 5. ✅ Add spaces around table pipes (MD060)
+6. ✅ Avoid duplicate headings within same section (MD024)
 
 **Remember:** Getting it right the first time saves tokens and time!
+
+**Note:** Duplicate headings in CHANGELOG.md are acceptable - they follow the standard Keep a Changelog format.

@@ -82,48 +82,87 @@ Detailed instructions for the agent...
 
 ## Create Agent Team
 
-Assemble multiple agents for collaborative work.
+Assemble multiple agents for collaborative work using one of **10 composition patterns**.
 
 **Tell me:**
 
 - Team purpose
 - What agents should be included
-- Workflow type (sequential, parallel, or custom)
+- Workflow type (or let me auto-select based on task)
 
 **I will:**
 
 1. Select appropriate agents
-2. Define the workflow
+2. Choose optimal composition pattern (from 10 available)
 3. Set up handoff points
 4. Configure aggregation of results
+
+**Available Composition Patterns:**
+
+| Pattern                            | When to Use               | Example                                 |
+| ---------------------------------- | ------------------------- | --------------------------------------- |
+| **sequential**                     | Step-by-step pipeline     | Parse → Analyze → Report                |
+| **parallel**                       | Independent tasks         | Security + Quality + Performance audits |
+| **debate**                         | Multiple perspectives     | 3 reviewers discuss approach            |
+| **teaching**                       | Expert validates junior   | Draft (cheap) → Expert review           |
+| **refinement**                     | Iterative improvement     | Draft → Review → Polish                 |
+| **adaptive**                       | Dynamic routing           | Classifier → Specialist                 |
+| **conditional**                    | Branch by condition       | If bug → Debugger, else Reviewer        |
+| **tool_enhanced** (NEW)            | Single agent + tools      | File reader with analysis tools         |
+| **prompt_cached_sequential** (NEW) | Shared large context      | 3 agents using same docs/codebase       |
+| **delegation_chain** (NEW)         | Hierarchical coordination | Coordinator → Specialists (≤3 levels)   |
+
+**NEW** = Anthropic-inspired patterns added in v5.1.4
 
 **Team composition examples:**
 
 ```yaml
-# Comprehensive code review
+# Comprehensive code review (parallel pattern)
 team: code-review-team
 agents:
   - code-reviewer       # Quality check
   - security-reviewer   # Security audit
   - quality-validator   # Metrics analysis
-workflow: sequential
+workflow: parallel      # Run all simultaneously
 
-# Debug and fix
+# Debug and fix (sequential pattern)
 team: debug-fix-team
 agents:
   - debugger            # Find root cause
   - test-writer         # Write regression test
   - refactorer          # Clean up fix
-workflow: sequential
+workflow: sequential    # One after another
 
-# Feature planning
+# Feature planning (delegation_chain pattern - NEW)
 team: planning-team
 agents:
-  - planner             # Requirements discovery
-  - architect           # Technical design
-  - performance-analyst # Scalability review
-workflow: sequential
+  - planner             # Coordinator (delegates tasks)
+  - architect           # Technical design specialist
+  - performance-analyst # Scalability specialist
+workflow: delegation_chain  # Hierarchical coordination
+
+# Single agent with tools (tool_enhanced pattern - NEW)
+team: file-analyzer
+agents:
+  - code-reviewer       # Single agent
+tools:
+  - read_file          # File reading
+  - analyze_ast        # Code parsing
+workflow: tool_enhanced  # Tools over multiple agents
+
+# Large codebase analysis (prompt_cached_sequential pattern - NEW)
+team: codebase-review
+agents:
+  - security-reviewer   # Security check
+  - quality-validator   # Quality check
+  - performance-analyst # Performance check
+cached_context: |
+  # Large codebase documentation (cached across all agents)
+  [10,000 lines of architecture docs, API specs, etc.]
+workflow: prompt_cached_sequential  # Shared cached context
 ```
+
+**Learn more:** See [Anthropic Agent Patterns Guide](../../docs/architecture/anthropic-agent-patterns.md)
 
 ---
 

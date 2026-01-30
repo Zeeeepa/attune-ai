@@ -25,10 +25,22 @@ async def main():
     )
 
     print(f"✅ Audit complete!")
-    print(f"   Files scanned: {result.metadata['files_scanned']}")
-    print(f"   Issues found: {result.metadata['issues_found']}")
-    print(f"   Cost: ${result.cost_report.total_cost:.4f}")
-    print(f"   Savings: {result.cost_report.savings_percent:.1f}%")
+    if result.success:
+        print(f"   Stages completed: {len(result.stages)}")
+
+        # Get data from stages
+        for stage in result.stages:
+            if stage.name == "scan":
+                scan_output = stage.result if isinstance(stage.result, dict) else {}
+                print(f"   Files scanned: {scan_output.get('file_count', 'N/A')}")
+            elif stage.name == "analyze":
+                analyze_output = stage.result if isinstance(stage.result, dict) else {}
+                print(f"   Issues found: {analyze_output.get('total_issues', 'N/A')}")
+
+        print(f"   Cost: ${result.cost_report.total_cost:.4f}")
+        print(f"   Savings: {result.cost_report.savings_percent:.1f}%")
+    else:
+        print(f"   Error: {result.error}")
 
     # Example 2: Suggest fixes
     print("\n💡 Example 2: Generate Fix Suggestions")
@@ -40,14 +52,27 @@ async def main():
     )
 
     print(f"✅ Suggestions generated!")
-    print(f"   Files scanned: {result.metadata['files_scanned']}")
-    print(f"   Issues found: {result.metadata['issues_found']}")
-    recommendations = result.data.get("recommendations", {})
-    print(
-        f"   Recommendations: {recommendations.get('total_recommendations', 0)}"
-    )
-    print(f"   High priority: {recommendations.get('high_priority', 0)}")
-    print(f"   Cost: ${result.cost_report.total_cost:.4f}")
+    if result.success:
+        output = result.final_output if isinstance(result.final_output, dict) else {}
+        print(f"   Stages completed: {len(result.stages)}")
+
+        # Get data from stages
+        for stage in result.stages:
+            if stage.name == "scan":
+                scan_output = stage.result if isinstance(stage.result, dict) else {}
+                print(f"   Files scanned: {scan_output.get('file_count', 'N/A')}")
+            elif stage.name == "analyze":
+                analyze_output = stage.result if isinstance(stage.result, dict) else {}
+                print(f"   Issues found: {analyze_output.get('total_issues', 'N/A')}")
+            elif stage.name == "recommend" and not stage.skipped:
+                recommend_output = stage.result if isinstance(stage.result, dict) else {}
+                print(f"   Recommendations: {recommend_output.get('total_recommendations', 0)}")
+                print(f"   High priority: {recommend_output.get('high_priority', 0)}")
+
+        print(f"   Cost: ${result.cost_report.total_cost:.4f}")
+        print(f"   Savings: {result.cost_report.savings_percent:.1f}%")
+    else:
+        print(f"   Error: {result.error}")
 
     # Example 3: Interactive fix (would prompt user in real scenario)
     print("\n🔧 Example 3: Interactive Fix Mode")

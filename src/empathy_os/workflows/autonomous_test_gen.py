@@ -293,7 +293,7 @@ Return ONLY the complete Python test file content, no explanations."""
             client = anthropic.Anthropic(api_key=api_key)
             response = client.messages.create(
                 model="claude-sonnet-4-5",  # capable tier
-                max_tokens=8000,  # Increased from 4000 to prevent truncation
+                max_tokens=20000,  # Increased to 20000 to prevent truncation
                 messages=[{"role": "user", "content": prompt}],
             )
 

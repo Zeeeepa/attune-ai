@@ -1,0 +1,77 @@
+{
+  "pattern_id": "workflow_20260130_99a9c227",
+  "bug_type": "workflow_run",
+  "status": "resolved",
+  "root_cause": "Workflow: seo-optimization - Audit and optimize SEO for documentation sites",
+  "fix": "Completed via seo-optimization workflow",
+  "resolved_by": "@empathy_framework",
+  "resolved_at": "2026-01-30",
+  "files_affected": [],
+  "source": "workflow_tracking",
+  "tier_progression": {
+    "methodology": "AI-ADDIE",
+    "recommended_tier": "CHEAP",
+    "starting_tier": "PREMIUM",
+    "successful_tier": "PREMIUM",
+    "total_attempts": 3,
+    "tier_history": [
+      {
+        "tier": "CHEAP",
+        "attempts": 1,
+        "success": {
+          "attempt": 1,
+          "quality_gates_passed": [
+            "execution",
+            "output"
+          ]
+        }
+      },
+      {
+        "tier": "CAPABLE",
+        "attempts": 2,
+        "success": {
+          "attempt": 2,
+          "quality_gates_passed": [
+            "execution",
+            "output"
+          ]
+        }
+      },
+      {
+        "tier": "PREMIUM",
+        "attempts": 1,
+        "success": {
+          "attempt": 1,
+          "quality_gates_passed": [
+            "execution",
+            "output"
+          ]
+        }
+      }
+    ],
+    "cost_breakdown": {
+      "total_cost": 0.153,
+      "cost_if_always_premium": 0.765,
+      "savings_percent": 80.0
+    },
+    "quality_metrics": {
+      "tests_passed": true,
+      "health_score_before": 73,
+      "health_score_after": 73
+    },
+    "xml_protocol_compliance": {
+      "prompt_used_xml": true,
+      "response_used_xml": true,
+      "all_sections_present": true,
+      "test_evidence_provided": true,
+      "false_complete_avoided": true
+    }
+  },
+  "workflow_metadata": {
+    "workflow_name": "seo-optimization",
+    "workflow_id": "99a9c227-a20a-43e2-bcdb-389968fc952b",
+    "duration_seconds": 0.06,
+    "started_at": "2026-01-30T03:34:08.021470",
+    "completed_at": "2026-01-30T03:34:08.081424"
+  }
+}
