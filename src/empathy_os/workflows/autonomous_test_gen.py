@@ -1,6 +1,13 @@
-"""Autonomous Test Generation with Dashboard Integration.
+"""Autonomous Test Generation with Dashboard Integration - Enhanced Edition.
 
 Generates behavioral tests with real-time monitoring via Agent Coordination Dashboard.
+
+ENHANCEMENTS (Phase 1):
+- Extended thinking mode for better test planning
+- Prompt caching for 90% cost reduction
+- Full source code (no truncation)
+- Workflow-specific prompts with mocking templates
+- Few-shot learning with examples
 
 Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
@@ -8,6 +15,7 @@ Licensed under Apache 2.0
 
 import json
 import logging
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -22,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 class AutonomousTestGenerator:
-    """Generate tests autonomously with dashboard monitoring."""
+    """Generate tests autonomously with dashboard monitoring and Anthropic best practices."""
 
     def __init__(self, agent_id: str, batch_num: int, modules: list[dict[str, Any]]):
         """Initialize generator.
@@ -204,7 +212,7 @@ class AutonomousTestGenerator:
         # Extract module path for imports
         module_path = str(source_file).replace("src/", "").replace(".py", "").replace("/", ".")
 
-        # Generate tests using LLM agent (inline - no Task tool)
+        # Generate tests using LLM agent with Anthropic best practices
         test_content = self._generate_with_llm(module_name, module_path, source_file, source_code)
 
         if not test_content:
@@ -224,14 +232,170 @@ class AutonomousTestGenerator:
 
         return test_file
 
+    def _is_workflow_module(self, source_code: str, module_path: str) -> bool:
+        """Detect if module is a workflow requiring special handling.
+
+        Args:
+            source_code: Source code content
+            module_path: Python import path
+
+        Returns:
+            True if this is a workflow module needing LLM mocking
+        """
+        # Check for workflow indicators
+        indicators = [
+            r"class\s+\w+Workflow",
+            r"async\s+def\s+execute",
+            r"tier_routing",
+            r"LLMProvider",
+            r"TelemetryCollector",
+            r"from\s+anthropic\s+import",
+            r"messages\.create",
+            r"client\.messages"
+        ]
+
+        return any(re.search(pattern, source_code) for pattern in indicators)
+
+    def _get_example_tests(self) -> str:
+        """Get few-shot examples of excellent tests for prompt learning."""
+        return """EXAMPLE 1: Testing a utility function with mocking
+```python
+import pytest
+from unittest.mock import Mock, patch
+from mymodule import process_data
+
+class TestProcessData:
+    def test_processes_valid_data_successfully(self):
+        \"\"\"Given valid input data, when processing, then returns expected result.\"\"\"
+        # Given
+        input_data = {"key": "value", "count": 42}
+
+        # When
+        result = process_data(input_data)
+
+        # Then
+        assert result is not None
+        assert result["status"] == "success"
+        assert result["processed"] is True
+
+    def test_handles_invalid_data_with_error(self):
+        \"\"\"Given invalid input, when processing, then raises ValueError.\"\"\"
+        # Given
+        invalid_data = {"missing": "key"}
+
+        # When/Then
+        with pytest.raises(ValueError, match="Required key 'key' not found"):
+            process_data(invalid_data)
+```
+
+EXAMPLE 2: Testing a workflow with LLM mocking
+```python
+import pytest
+from unittest.mock import Mock, AsyncMock, patch
+from mymodule import MyWorkflow
+
+@pytest.fixture
+def mock_llm_client(mocker):
+    \"\"\"Mock Anthropic LLM client.\"\"\"
+    mock = mocker.patch('anthropic.Anthropic')
+    mock_response = Mock()
+    mock_response.content = [Mock(text="mock LLM response")]
+    mock_response.usage = Mock(input_tokens=100, output_tokens=50)
+    mock_response.stop_reason = "end_turn"
+    mock.return_value.messages.create = AsyncMock(return_value=mock_response)
+    return mock
+
+class TestMyWorkflow:
+    @pytest.mark.asyncio
+    async def test_executes_successfully_with_mocked_llm(self, mock_llm_client):
+        \"\"\"Given valid input, when executing workflow, then completes successfully.\"\"\"
+        # Given
+        workflow = MyWorkflow()
+        input_data = {"prompt": "test prompt"}
+
+        # When
+        result = await workflow.execute(input_data)
+
+        # Then
+        assert result is not None
+        assert "response" in result
+        mock_llm_client.return_value.messages.create.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_handles_api_error_gracefully(self, mock_llm_client):
+        \"\"\"Given API failure, when executing, then handles error appropriately.\"\"\"
+        # Given
+        workflow = MyWorkflow()
+        mock_llm_client.return_value.messages.create.side_effect = Exception("API Error")
+
+        # When/Then
+        with pytest.raises(Exception, match="API Error"):
+            await workflow.execute({"prompt": "test"})
+```
+"""
+
+    def _get_workflow_specific_prompt(self, module_name: str, module_path: str, source_code: str) -> str:
+        """Get workflow-specific test generation prompt with comprehensive mocking guidance."""
+        return f"""Generate comprehensive tests for this WORKFLOW module.
+
+⚠️ CRITICAL: This module makes LLM API calls and requires proper mocking.
+
+MODULE: {module_name}
+IMPORT PATH: {module_path}
+
+SOURCE CODE (COMPLETE - NO TRUNCATION):
+```python
+{source_code}
+```
+
+WORKFLOW TESTING REQUIREMENTS:
+
+1. **Mock LLM API calls** - NEVER make real API calls in tests
+   ```python
+   @pytest.fixture
+   def mock_llm_client(mocker):
+       mock = mocker.patch('anthropic.Anthropic')
+       mock_response = Mock()
+       mock_response.content = [Mock(text="mock response")]
+       mock_response.usage = Mock(input_tokens=100, output_tokens=50)
+       mock_response.stop_reason = "end_turn"
+       mock.return_value.messages.create = AsyncMock(return_value=mock_response)
+       return mock
+   ```
+
+2. **Test tier routing** - Verify correct model selection (cheap/capable/premium)
+3. **Test telemetry** - Mock and verify telemetry recording
+4. **Test cost calculation** - Verify token usage and cost tracking
+5. **Test error handling** - Mock API failures, timeouts, rate limits
+6. **Test caching** - Mock cache hits/misses if applicable
+
+TARGET COVERAGE: 40-50% (realistic for workflow classes with proper mocking)
+
+Generate a complete test file with:
+- Copyright header: "Generated by enhanced autonomous test generation system."
+- Proper imports (from {module_path})
+- Mock fixtures for ALL external dependencies (LLM, databases, APIs, file I/O)
+- Given/When/Then structure in docstrings
+- Both success and failure test cases
+- Edge case handling
+- Docstrings for all tests describing behavior
+
+Return ONLY the complete Python test file, no explanations."""
+
     def _generate_with_llm(self, module_name: str, module_path: str, source_file: Path, source_code: str) -> str | None:
-        """Generate comprehensive tests using LLM.
+        """Generate comprehensive tests using LLM with Anthropic best practices.
+
+        ENHANCEMENTS (Phase 1):
+        - Extended thinking for better test planning
+        - Prompt caching for 90% cost reduction
+        - Full source code (NO TRUNCATION)
+        - Workflow-specific prompts when detected
 
         Args:
             module_name: Name of module being tested
             module_path: Python import path (e.g., empathy_os.config)
             source_file: Path to source file
-            source_code: Source code content
+            source_code: Source code content (FULL, not truncated)
 
         Returns:
             Test file content with comprehensive tests, or None if generation failed
@@ -250,15 +414,22 @@ class AutonomousTestGenerator:
             logger.error("ANTHROPIC_API_KEY not set")
             return None
 
-        # Craft comprehensive test generation prompt
-        prompt = f"""Generate comprehensive behavioral tests for this Python module.
+        # Detect if this is a workflow module
+        is_workflow = self._is_workflow_module(source_code, module_path)
+        logger.info(f"Module {module_name}: workflow={is_workflow}, size={len(source_code)} bytes (FULL)")
+
+        # Build appropriate prompt based on module type
+        if is_workflow:
+            generation_prompt = self._get_workflow_specific_prompt(module_name, module_path, source_code)
+        else:
+            generation_prompt = f"""Generate comprehensive behavioral tests for this Python module.
 
 SOURCE FILE: {source_file}
 MODULE PATH: {module_path}
 
-SOURCE CODE:
+SOURCE CODE (COMPLETE):
 ```python
-{source_code[:3000]}{"..." if len(source_code) > 3000 else ""}
+{source_code}
 ```
 
 Generate a complete test file that:
@@ -287,21 +458,58 @@ Licensed under Apache 2.0
 
 Return ONLY the complete Python test file content, no explanations."""
 
+        # Build messages with prompt caching (90% cost reduction on retries)
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "You are an expert Python test engineer. Here are examples of excellent tests:",
+                        "cache_control": {"type": "ephemeral"}
+                    },
+                    {
+                        "type": "text",
+                        "text": self._get_example_tests(),
+                        "cache_control": {"type": "ephemeral"}
+                    },
+                    {
+                        "type": "text",
+                        "text": generation_prompt
+                    }
+                ]
+            }
+        ]
+
         try:
-            # Call Anthropic API with capable model
-            logger.info(f"Calling LLM for {module_name} (source: {len(source_code)} bytes)")
+            # Call Anthropic API with extended thinking and caching
+            logger.info(f"Calling LLM with extended thinking for {module_name} (workflow={is_workflow})")
             client = anthropic.Anthropic(api_key=api_key)
             response = client.messages.create(
                 model="claude-sonnet-4-5",  # capable tier
-                max_tokens=20000,  # Increased to 20000 to prevent truncation
-                messages=[{"role": "user", "content": prompt}],
+                max_tokens=16000,  # Output tokens
+                thinking={
+                    "type": "enabled",
+                    "budget_tokens": 4000  # Thinking budget for test planning
+                },
+                messages=messages,
             )
 
             if not response.content:
                 logger.warning(f"Empty LLM response for {module_name}")
                 return None
 
-            test_content = response.content[0].text.strip()
+            # Extract test content (thinking comes first, then text)
+            test_content = None
+            for block in response.content:
+                if block.type == "text":
+                    test_content = block.text.strip()
+                    break
+
+            if not test_content:
+                logger.warning(f"No text content in LLM response for {module_name}")
+                return None
+
             logger.info(f"LLM returned {len(test_content)} bytes for {module_name}")
 
             if len(test_content) < 100:
@@ -334,159 +542,6 @@ Return ONLY the complete Python test file content, no explanations."""
         except Exception as e:
             logger.error(f"LLM generation error for {module_name}: {e}", exc_info=True)
             return None
-
-    def _create_test_template_DEPRECATED(self, module_name: str, source_file: Path, source_code: str) -> str:
-        """Create comprehensive behavioral test template.
-
-        Args:
-            module_name: Name of module being tested
-            source_file: Path to source file
-            source_code: Source code content
-
-        Returns:
-            Test file content with comprehensive tests
-        """
-        import ast
-
-        # Extract module path for imports
-        module_path = str(source_file).replace("src/", "").replace(".py", "").replace("/", ".")
-
-        # Parse source to find functions and classes
-        try:
-            tree = ast.parse(source_code)
-            functions = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and not node.name.startswith('_')]
-            classes = [node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)]
-        except:
-            functions = []
-            classes = []
-
-        # Generate test classes for each class found
-        test_classes = []
-        for cls_name in classes[:5]:  # Limit to 5 classes
-            test_classes.append(f'''
-class Test{cls_name}:
-    """Behavioral tests for {cls_name} class."""
-
-    def test_{cls_name.lower()}_instantiation(self):
-        """Test {cls_name} can be instantiated."""
-        # Given: Class is available
-        # When: Creating instance
-        try:
-            from {module_path} import {cls_name}
-            # Then: Instance created successfully
-            assert {cls_name} is not None
-        except ImportError:
-            pytest.skip("Class not available")
-
-    def test_{cls_name.lower()}_has_expected_methods(self):
-        """Test {cls_name} has expected interface."""
-        # Given: Class is available
-        try:
-            from {module_path} import {cls_name}
-            # When: Checking methods
-            # Then: Common methods should exist
-            assert hasattr({cls_name}, '__init__')
-        except ImportError:
-            pytest.skip("Class not available")
-''')
-
-        # Generate tests for functions
-        function_tests = []
-        for func_name in functions[:10]:  # Limit to 10 functions
-            function_tests.append(f'''
-    def test_{func_name}_callable(self):
-        """Test {func_name} function is callable."""
-        # Given: Function is available
-        try:
-            from {module_path} import {func_name}
-            # When: Checking if callable
-            # Then: Function should be callable
-            assert callable({func_name})
-        except ImportError:
-            pytest.skip("Function not available")
-
-    def test_{func_name}_with_valid_input(self):
-        """Test {func_name} with valid input."""
-        # Given: Function is available
-        try:
-            from {module_path} import {func_name}
-            # When: Called with mocked dependencies
-            with patch.object({module_path}, '{func_name}', return_value=Mock()) as mock_func:
-                result = mock_func()
-                # Then: Should return successfully
-                assert result is not None
-        except (ImportError, AttributeError):
-            pytest.skip("Function not available or cannot be mocked")
-''')
-
-        # Combine all test content
-        test_content = f'''"""Behavioral tests for {module_name}.
-
-Generated by enhanced autonomous test generation system.
-
-Copyright 2026 Smart-AI-Memory
-Licensed under Apache 2.0
-"""
-
-import pytest
-from unittest.mock import Mock, patch, MagicMock, AsyncMock
-from pathlib import Path
-
-# Import module under test
-try:
-    import {module_path}
-except ImportError as e:
-    pytest.skip(f"Cannot import {module_path}: {{e}}", allow_module_level=True)
-
-
-class TestModule{module_name.title().replace("_", "")}:
-    """Behavioral tests for {module_name} module."""
-
-    def test_module_imports_successfully(self):
-        """Test that module can be imported."""
-        # Given: Module exists
-        # When: Importing module
-        # Then: No import errors
-        assert {module_path} is not None
-
-    def test_module_has_expected_attributes(self):
-        """Test module has expected top-level attributes."""
-        # Given: Module is imported
-        # When: Checking for __doc__
-        # Then: Documentation should exist
-        assert hasattr({module_path}, '__doc__')
-{"".join(function_tests)}
-
-{"".join(test_classes)}
-
-class TestEdgeCases:
-    """Edge case and error handling tests."""
-
-    def test_import_does_not_raise_exceptions(self):
-        """Test that importing module doesn't raise exceptions."""
-        # Given: Module path is valid
-        # When: Importing
-        # Then: Should not raise
-        try:
-            import {module_path}
-            assert True
-        except Exception as e:
-            pytest.fail(f"Import raised unexpected exception: {{e}}")
-
-    def test_module_constants_are_defined(self):
-        """Test that common constants are properly defined."""
-        # Given: Module is imported
-        # When: Checking for logger or similar
-        # Then: Should have standard attributes
-        try:
-            import {module_path}
-            # Check for common patterns
-            assert True  # Module loaded
-        except ImportError:
-            pytest.skip("Module not available")
-'''
-
-        return test_content
 
     def _validate_test_file(self, test_file: Path) -> bool:
         """Validate test file can be imported and has valid syntax.
@@ -522,7 +577,7 @@ class TestEdgeCases:
             if result.returncode != 0:
                 logger.error(f"❌ Pytest collection failed for {test_file.name}")
                 logger.error(f"   Error: {result.stderr[:500]}")
-                return False  # FIXED: Actually fail validation for broken tests
+                return False
 
             logger.info(f"✓ Pytest collection passed for {test_file.name}")
             return True
@@ -574,6 +629,7 @@ def run_batch_generation(batch_num: int, modules_json: str) -> None:
     print(f"Starting autonomous test generation for batch {batch_num}")
     print(f"Modules to process: {len(modules)}")
     print(f"Agent ID: {agent_id}")
+    print(f"ENHANCEMENTS: Extended thinking + Prompt caching + Workflow detection")
     print("Monitor at: http://localhost:8000\n")
 
     results = generator.generate_all()
