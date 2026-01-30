@@ -558,10 +558,10 @@ Return ONLY the complete Python test file content, no explanations."""
             client = anthropic.Anthropic(api_key=api_key)
             response = client.messages.create(
                 model="claude-sonnet-4-5",  # capable tier
-                max_tokens=16000,  # Output tokens
+                max_tokens=40000,  # Very generous total budget for comprehensive tests
                 thinking={
                     "type": "enabled",
-                    "budget_tokens": 20000  # Generous thinking budget to prevent truncation
+                    "budget_tokens": 20000  # Generous thinking budget for thorough planning
                 },
                 messages=messages,
             )
@@ -699,10 +699,10 @@ Return ONLY the complete Python test file content, no explanations."""
             client = anthropic.Anthropic(api_key=api_key)
             response = client.messages.create(
                 model="claude-sonnet-4-5",
-                max_tokens=16000,
+                max_tokens=40000,  # Very generous total budget for iterative refinement
                 thinking={
                     "type": "enabled",
-                    "budget_tokens": 20000
+                    "budget_tokens": 20000  # Generous thinking budget for thorough analysis
                 },
                 messages=conversation_history,
             )
@@ -1096,8 +1096,8 @@ Return ONLY the complete Python test file with additions, no explanations."""
                 client = anthropic.Anthropic(api_key=api_key)
                 response = client.messages.create(
                     model="claude-sonnet-4-5",
-                    max_tokens=16000,
-                    thinking={"type": "enabled", "budget_tokens": 20000},
+                    max_tokens=40000,  # Very generous total budget for coverage improvement
+                    thinking={"type": "enabled", "budget_tokens": 20000},  # Thorough thinking for coverage gaps
                     messages=messages,
                 )
 
