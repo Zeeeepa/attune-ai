@@ -27,39 +27,31 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-import base64
-import binascii
 import concurrent.futures
 import hashlib
-import json
 import os
-from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from enum import Enum
-from pathlib import Path
 from typing import Any
 
 import structlog
 
-from empathy_os.config import _validate_file_path
-
-from .security.audit_logger import AuditEvent, AuditLogger
-from .security.pii_scrubber import PIIScrubber
-from .security.secrets_detector import SecretsDetector
+from .encryption import HAS_ENCRYPTION, EncryptionManager
 
 # Import extracted modules for backward compatibility
 from .long_term_types import (
+    DEFAULT_CLASSIFICATION_RULES,
     Classification,
     ClassificationRules,
-    DEFAULT_CLASSIFICATION_RULES,
     PatternMetadata,
     PermissionError,
     SecurePattern,
     SecurityError,
 )
-from .encryption import EncryptionManager, HAS_ENCRYPTION
-from .storage_backend import MemDocsStorage
+from .security.audit_logger import AuditEvent, AuditLogger
+from .security.pii_scrubber import PIIScrubber
+from .security.secrets_detector import SecretsDetector
 from .simple_storage import LongTermMemory
+from .storage_backend import MemDocsStorage
 
 logger = structlog.get_logger(__name__)
 

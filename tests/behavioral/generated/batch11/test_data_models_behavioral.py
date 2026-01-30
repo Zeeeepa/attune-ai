@@ -6,13 +6,11 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
 from dataclasses import fields, is_dataclass
-from typing import get_type_hints
 
 from empathy_os.workflows.test_gen.data_models import (
-    FunctionSignature,
     ClassSignature,
+    FunctionSignature,
 )
 
 
@@ -32,7 +30,7 @@ class TestFunctionSignature:
         raises = {"ValueError", "TypeError"}
         has_side_effects = True
         docstring = "Test docstring"
-        
+
         # When
         signature = FunctionSignature(
             name=name,
@@ -43,7 +41,7 @@ class TestFunctionSignature:
             has_side_effects=has_side_effects,
             docstring=docstring,
         )
-        
+
         # Then
         assert signature.name == name
         assert signature.params == params
@@ -70,7 +68,7 @@ class TestFunctionSignature:
         docstring = "Complex function docstring"
         complexity = 5
         decorators = ["@staticmethod", "@property"]
-        
+
         # When
         signature = FunctionSignature(
             name=name,
@@ -83,7 +81,7 @@ class TestFunctionSignature:
             complexity=complexity,
             decorators=decorators,
         )
-        
+
         # Then
         assert signature.name == name
         assert signature.params == params
@@ -103,7 +101,7 @@ class TestFunctionSignature:
         # Given
         name = "no_param_func"
         params = []
-        
+
         # When
         signature = FunctionSignature(
             name=name,
@@ -114,7 +112,7 @@ class TestFunctionSignature:
             has_side_effects=False,
             docstring=None,
         )
-        
+
         # Then
         assert signature.params == []
         assert len(signature.params) == 0
@@ -134,7 +132,7 @@ class TestFunctionSignature:
             has_side_effects=False,
             docstring=None,
         )
-        
+
         # Then
         assert signature.return_type is None
 
@@ -153,7 +151,7 @@ class TestFunctionSignature:
             has_side_effects=False,
             docstring=None,
         )
-        
+
         # Then
         assert signature.raises == set()
         assert len(signature.raises) == 0
@@ -165,7 +163,7 @@ class TestFunctionSignature:
         """
         # Given
         exceptions = {"ValueError", "TypeError", "KeyError", "IndexError"}
-        
+
         # When
         signature = FunctionSignature(
             name="risky_function",
@@ -176,7 +174,7 @@ class TestFunctionSignature:
             has_side_effects=True,
             docstring=None,
         )
-        
+
         # Then
         assert signature.raises == exceptions
         assert len(signature.raises) == 4
@@ -196,7 +194,7 @@ class TestFunctionSignature:
             has_side_effects=False,
             docstring=None,
         )
-        
+
         # Then
         assert signature.is_async is True
 
@@ -215,7 +213,7 @@ class TestFunctionSignature:
             has_side_effects=False,
             docstring=None,
         )
-        
+
         # Then
         assert signature.is_async is False
 
@@ -231,7 +229,7 @@ class TestFunctionSignature:
             ("optional_str", "str", "'default'"),
             ("optional_list", "list", "[]"),
         ]
-        
+
         # When
         signature = FunctionSignature(
             name="function_with_defaults",
@@ -242,7 +240,7 @@ class TestFunctionSignature:
             has_side_effects=False,
             docstring=None,
         )
-        
+
         # Then
         assert len(signature.params) == 4
         assert signature.params[0] == ("required_arg", "str", None)
@@ -257,7 +255,7 @@ class TestFunctionSignature:
         """
         # Given
         decorators = ["@classmethod", "@lru_cache", "@deprecated"]
-        
+
         # When
         signature = FunctionSignature(
             name="decorated_function",
@@ -269,7 +267,7 @@ class TestFunctionSignature:
             docstring=None,
             decorators=decorators,
         )
-        
+
         # Then
         assert signature.decorators == decorators
         assert len(signature.decorators) == 3
@@ -281,7 +279,7 @@ class TestFunctionSignature:
         """
         # Given
         complexity = 15
-        
+
         # When
         signature = FunctionSignature(
             name="complex_function",
@@ -293,7 +291,7 @@ class TestFunctionSignature:
             docstring=None,
             complexity=complexity,
         )
-        
+
         # Then
         assert signature.complexity == 15
 
@@ -312,7 +310,7 @@ class TestFunctionSignature:
             has_side_effects=False,
             docstring=None,
         )
-        
+
         # When/Then
         assert is_dataclass(signature)
         assert is_dataclass(FunctionSignature)
@@ -327,10 +325,10 @@ class TestFunctionSignature:
             "name", "params", "return_type", "is_async", "raises",
             "has_side_effects", "docstring", "complexity", "decorators"
         }
-        
+
         # When
         actual_fields = {f.name for f in fields(FunctionSignature)}
-        
+
         # Then
         assert actual_fields == expected_fields
 
@@ -349,7 +347,7 @@ class TestClassSignature:
         init_params = []
         base_classes = []
         docstring = "Test class docstring"
-        
+
         # When
         signature = ClassSignature(
             name=name,
@@ -358,7 +356,7 @@ class TestClassSignature:
             base_classes=base_classes,
             docstring=docstring,
         )
-        
+
         # Then
         assert signature.name == name
         assert signature.methods == methods
@@ -394,7 +392,7 @@ class TestClassSignature:
             docstring="Method 2",
         )
         methods = [method1, method2]
-        
+
         # When
         signature = ClassSignature(
             name="MyClass",
@@ -403,7 +401,7 @@ class TestClassSignature:
             base_classes=[],
             docstring=None,
         )
-        
+
         # Then
         assert len(signature.methods) == 2
         assert signature.methods[0].name == "method1"
@@ -420,7 +418,7 @@ class TestClassSignature:
             ("age", "int", "0"),
             ("active", "bool", "True"),
         ]
-        
+
         # When
         signature = ClassSignature(
             name="Person",
@@ -429,7 +427,7 @@ class TestClassSignature:
             base_classes=[],
             docstring=None,
         )
-        
+
         # Then
         assert len(signature.init_params) == 3
         assert signature.init_params[0] == ("name", "str", None)
@@ -443,7 +441,7 @@ class TestClassSignature:
         """
         # Given
         base_classes = ["BaseClass", "Mixin1", "Mixin2"]
-        
+
         # When
         signature = ClassSignature(
             name="DerivedClass",
@@ -452,7 +450,7 @@ class TestClassSignature:
             base_classes=base_classes,
             docstring=None,
         )
-        
+
         # Then
         assert signature.base_classes == base_classes
         assert len(signature.base_classes) == 3
@@ -471,7 +469,7 @@ class TestClassSignature:
             docstring=None,
             is_enum=True,
         )
-        
+
         # Then
         assert signature.is_enum is True
 
@@ -489,7 +487,7 @@ class TestClassSignature:
             docstring=None,
             is_dataclass=True,
         )
-        
+
         # Then
         assert signature.is_dataclass is True
 
@@ -500,7 +498,7 @@ class TestClassSignature:
         """
         # Given
         required_count = 3
-        
+
         # When
         signature = ClassSignature(
             name="MyClass",
@@ -515,7 +513,7 @@ class TestClassSignature:
             docstring=None,
             required_init_params=required_count,
         )
-        
+
         # Then
         assert signature.required_init_params == 3
 
@@ -532,7 +530,7 @@ class TestClassSignature:
             base_classes=[],
             docstring=None,
         )
-        
+
         # Then
         assert signature.docstring is None
 
@@ -549,7 +547,7 @@ class TestClassSignature:
             base_classes=[],
             docstring=None,
         )
-        
+
         # Then
         assert signature.methods == []
         assert len(signature.methods) == 0
@@ -567,7 +565,7 @@ class TestClassSignature:
             base_classes=[],
             docstring=None,
         )
-        
+
         # Then
         assert signature.base_classes == []
         assert len(signature.base_classes) == 0
@@ -595,7 +593,7 @@ class TestClassSignature:
         is_enum = False
         is_dataclass = True
         required_init_params = 1
-        
+
         # When
         signature = ClassSignature(
             name=name,
@@ -607,7 +605,7 @@ class TestClassSignature:
             is_dataclass=is_dataclass,
             required_init_params=required_init_params,
         )
-        
+
         # Then
         assert signature.name == name
         assert signature.methods == methods
@@ -631,7 +629,7 @@ class TestClassSignature:
             base_classes=[],
             docstring=None,
         )
-        
+
         # When/Then
         assert is_dataclass(signature)
         assert is_dataclass(ClassSignature)
@@ -646,10 +644,10 @@ class TestClassSignature:
             "name", "methods", "init_params", "base_classes", "docstring",
             "is_enum", "is_dataclass", "required_init_params"
         }
-        
+
         # When
         actual_fields = {f.name for f in fields(ClassSignature)}
-        
+
         # Then
         assert actual_fields == expected_fields
 
@@ -671,7 +669,7 @@ class TestClassSignature:
             )
             for i in range(10)
         ]
-        
+
         # When
         signature = ClassSignature(
             name="ClassWithManyMethods",
@@ -680,7 +678,7 @@ class TestClassSignature:
             base_classes=[],
             docstring=None,
         )
-        
+
         # Then
         assert len(signature.methods) == 10
         for i, method in enumerate(signature.methods):
@@ -707,7 +705,7 @@ class TestDataModelsIntegration:
             complexity=3,
             decorators=["@retry"],
         )
-        
+
         static_method = FunctionSignature(
             name="validate",
             params=[("data", "dict", None)],
@@ -719,7 +717,7 @@ class TestDataModelsIntegration:
             complexity=2,
             decorators=["@staticmethod"],
         )
-        
+
         # When
         class_sig = ClassSignature(
             name="DataFetcher",
@@ -731,7 +729,7 @@ class TestDataModelsIntegration:
             is_dataclass=False,
             required_init_params=1,
         )
-        
+
         # Then
         assert class_sig.name == "DataFetcher"
         assert len(class_sig.methods) == 2
@@ -755,7 +753,7 @@ class TestDataModelsIntegration:
             base_classes=[],
             docstring="Base class",
         )
-        
+
         derived_sig = ClassSignature(
             name="DerivedClass",
             methods=[],
@@ -763,7 +761,7 @@ class TestDataModelsIntegration:
             base_classes=["BaseClass"],
             docstring="Derived class",
         )
-        
+
         # Then
         assert base_sig.base_classes == []
         assert "BaseClass" in derived_sig.base_classes
@@ -788,7 +786,7 @@ class TestDataModelsIntegration:
             is_dataclass=True,
             required_init_params=2,
         )
-        
+
         # Then
         assert dataclass_sig.is_dataclass is True
         assert dataclass_sig.is_enum is False
@@ -810,7 +808,7 @@ class TestDataModelsIntegration:
             docstring="Status enumeration",
             is_enum=True,
         )
-        
+
         # Then
         assert enum_sig.is_enum is True
         assert enum_sig.is_dataclass is False

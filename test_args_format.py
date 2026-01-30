@@ -18,7 +18,7 @@ async def test_args_format():
         return
 
     print(f"📝 Generating documentation for: {test_module}")
-    print(f"🎯 Expected: **Args:**, **Returns:**, **Raises:** sections\n")
+    print("🎯 Expected: **Args:**, **Returns:**, **Raises:** sections\n")
 
     # Read full source code (needed for AST parsing in API reference generation)
     source_code = test_module.read_text()
@@ -30,7 +30,7 @@ async def test_args_format():
         graceful_degradation=True,
     )
 
-    print(f"🔄 Calling LLM with MANDATORY format requirements...\n")
+    print("🔄 Calling LLM with MANDATORY format requirements...\n")
 
     # Generate documentation
     result = await workflow.execute(
@@ -45,17 +45,17 @@ async def test_args_format():
         document = result.final_output.get("document", "")
         export_path = result.final_output.get("export_path", "")
     else:
-        print(f"❌ Unexpected result format")
+        print("❌ Unexpected result format")
         return
 
-    print(f"✅ Documentation Generated!\n")
+    print("✅ Documentation Generated!\n")
 
     # Check for required format elements
     has_args = "**Args:**" in document or "Args:" in document
     has_returns = "**Returns:**" in document or "Returns:" in document
     has_raises = "**Raises:**" in document or "Raises:" in document
 
-    print(f"📊 Format Check:")
+    print("📊 Format Check:")
     print(f"   {'✅' if has_args else '❌'} Has **Args:** sections")
     print(f"   {'✅' if has_returns else '❌'} Has **Returns:** sections")
     print(f"   {'✅' if has_raises else '❌'} Has **Raises:** sections")
@@ -65,7 +65,7 @@ async def test_args_format():
     returns_count = document.count("**Returns:**") + document.count("Returns:")
     raises_count = document.count("**Raises:**") + document.count("Raises:")
 
-    print(f"\n📈 Occurrences:")
+    print("\n📈 Occurrences:")
     print(f"   Args: {args_count} times")
     print(f"   Returns: {returns_count} times")
     print(f"   Raises: {raises_count} times")
@@ -75,7 +75,7 @@ async def test_args_format():
 
     # Show a sample with Args
     if has_args:
-        print(f"\n📄 Sample showing Args format:")
+        print("\n📄 Sample showing Args format:")
         print("-" * 60)
         lines = document.split("\n")
         for i, line in enumerate(lines):
@@ -87,16 +87,16 @@ async def test_args_format():
                 break
         print("-" * 60)
     else:
-        print(f"\n⚠️  No Args sections found! Showing first 1000 chars:")
+        print("\n⚠️  No Args sections found! Showing first 1000 chars:")
         print("-" * 60)
         print(document[:1000])
         print("-" * 60)
 
     # Overall verdict
     if has_args and has_returns:
-        print(f"\n✅ SUCCESS: Documentation uses required Args/Returns/Raises format!")
+        print("\n✅ SUCCESS: Documentation uses required Args/Returns/Raises format!")
     else:
-        print(f"\n❌ FAILED: Documentation missing required format sections")
+        print("\n❌ FAILED: Documentation missing required format sections")
 
 
 if __name__ == "__main__":

@@ -6,10 +6,7 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-from pathlib import Path
 from unittest.mock import Mock
-
-import pytest
 
 from empathy_os.cli.utils.helpers import _file_exists, _show_achievements
 

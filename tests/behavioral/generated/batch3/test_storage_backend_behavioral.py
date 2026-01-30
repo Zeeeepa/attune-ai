@@ -8,11 +8,9 @@ Licensed under Apache 2.0
 
 import json
 from pathlib import Path
-from typing import Any
-from unittest.mock import MagicMock, Mock, mock_open, patch
+from unittest.mock import patch
 
 import pytest
-import structlog
 
 from empathy_os.memory.storage_backend import MemDocsStorage
 
@@ -205,7 +203,7 @@ class TestMemDocsStorageStore:
         # Then
         assert result is True
         pattern_file = temp_storage_dir / f"{pattern_id}.json"
-        
+
         with open(pattern_file, encoding="utf-8") as f:
             saved_data = json.load(f)
             assert saved_data["content"].startswith("ENCRYPTED:")
@@ -227,7 +225,7 @@ class TestMemDocsStorageStore:
         # Then
         assert result is True
         pattern_file = temp_storage_dir / f"{pattern_id}.json"
-        
+
         with open(pattern_file, encoding="utf-8") as f:
             saved_data = json.load(f)
             assert saved_data["content"] == content
@@ -244,7 +242,7 @@ class TestMemDocsStorageStore:
         metadata = {"version": 1}
 
         storage_backend.store(pattern_id, original_content, metadata)
-        
+
         # When
         metadata["version"] = 2
         result = storage_backend.store(pattern_id, new_content, metadata)
@@ -252,7 +250,7 @@ class TestMemDocsStorageStore:
         # Then
         assert result is True
         pattern_file = temp_storage_dir / f"{pattern_id}.json"
-        
+
         with open(pattern_file, encoding="utf-8") as f:
             saved_data = json.load(f)
             assert saved_data["content"] == new_content
@@ -357,7 +355,7 @@ class TestMemDocsStorageStore:
         # Then
         assert result is True
         pattern_file = temp_storage_dir / f"{pattern_id}.json"
-        
+
         with open(pattern_file, encoding="utf-8") as f:
             saved_data = json.load(f)
             assert saved_data["metadata"] == {}
@@ -387,7 +385,7 @@ class TestMemDocsStorageStore:
         # Then
         assert result is True
         pattern_file = temp_storage_dir / f"{pattern_id}.json"
-        
+
         with open(pattern_file, encoding="utf-8") as f:
             saved_data = json.load(f)
             assert saved_data["metadata"]["nested"]["level1"]["level2"] == ["item1", "item2"]
@@ -522,7 +520,7 @@ class TestMemDocsStorageRetrieve:
             ("pattern2", "content2", {"key": "value2"}),
             ("pattern3", "content3", {"key": "value3"})
         ]
-        
+
         for pid, content, metadata in patterns:
             storage_backend.store(pid, content, metadata)
 
@@ -606,7 +604,7 @@ class TestMemDocsStorageIntegration:
         # Given
         storage1 = MemDocsStorage(storage_dir=str(temp_storage_dir))
         storage2 = MemDocsStorage(storage_dir=str(temp_storage_dir))
-        
+
         pattern_id = "shared_pattern"
         content = "Shared content"
         metadata = {"shared": True}
@@ -767,11 +765,11 @@ class TestMemDocsStorageEdgeCases:
         import os
         original_cwd = os.getcwd()
         os.chdir(tmp_path)
-        
+
         try:
             # When
             storage = MemDocsStorage(storage_dir="./relative_storage")
-            
+
             # Then
             assert storage.storage_dir.exists()
             assert storage.storage_dir.name == "relative_storage"
@@ -787,7 +785,7 @@ class TestMemDocsStorageEdgeCases:
         pattern_id = "size_change"
         small_content = "small"
         large_content = "large" * 1000
-        
+
         storage_backend.store(pattern_id, small_content, {})
         pattern_file = temp_storage_dir / f"{pattern_id}.json"
         small_size = pattern_file.stat().st_size

@@ -28,7 +28,7 @@ def test_llm_generation():
         return
 
     print(f"📝 Generating tests for: {test_module}")
-    print(f"🤖 LLM Tier: capable (Claude Sonnet 4.5)\n")
+    print("🤖 LLM Tier: capable (Claude Sonnet 4.5)\n")
 
     # Analyze module
     source_code = test_module.read_text()
@@ -51,7 +51,7 @@ def test_llm_generation():
     output_dir.mkdir(exist_ok=True, parents=True)
     output_file = output_dir / f"test_{test_module.stem}_behavioral.py"
 
-    print(f"🔄 Calling LLM to generate tests...")
+    print("🔄 Calling LLM to generate tests...")
     test_content = generator.generate_test_file(
         module_info=module_info, output_path=output_file, source_code=source_code
     )
@@ -59,7 +59,7 @@ def test_llm_generation():
     # Save generated test
     output_file.write_text(test_content)
 
-    print(f"\n✅ Test Generation Complete!")
+    print("\n✅ Test Generation Complete!")
     print(f"   Output File: {output_file}")
     print(f"   Size: {len(test_content)} bytes")
     print(f"   Lines: {len(test_content.splitlines())}")
@@ -67,9 +67,9 @@ def test_llm_generation():
     # Check if it's a real test (not placeholder)
     has_todos = "# TODO:" in test_content or "pass  # TODO" in test_content
     if has_todos:
-        print(f"   ⚠️  Contains TODOs (template fallback)")
+        print("   ⚠️  Contains TODOs (template fallback)")
     else:
-        print(f"   ✅ Complete implementation (LLM generated)")
+        print("   ✅ Complete implementation (LLM generated)")
 
     # Count test functions
     test_count = test_content.count("def test_")
@@ -77,7 +77,7 @@ def test_llm_generation():
 
     # Show stats
     stats = generator.get_stats()
-    print(f"\n📊 Generation Stats:")
+    print("\n📊 Generation Stats:")
     print(f"   LLM Requests: {stats['llm_requests']}")
     print(f"   LLM Failures: {stats['llm_failures']}")
     print(f"   Template Fallbacks: {stats['template_fallbacks']}")

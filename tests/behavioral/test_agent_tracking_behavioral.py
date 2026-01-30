@@ -6,9 +6,9 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
+
 from empathy_os.telemetry.agent_tracking import (
     AgentHeartbeat,
     HeartbeatCoordinator,

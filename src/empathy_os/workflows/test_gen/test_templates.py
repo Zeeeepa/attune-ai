@@ -6,17 +6,16 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from pathlib import Path
 
 
 def generate_test_for_function(module: str, func: dict) -> str:
     """Generate executable tests for a function based on AST analysis."""
     name = func["name"]
-    params = func.get("params", [])  # List of (name, type, default) tuples
-    param_names = func.get("param_names", [p[0] if isinstance(p, tuple) else p for p in params])
+    params = func.get("params") or []  # List of (name, type, default) tuples, handle None
+    param_names = func.get("param_names") or [p[0] if isinstance(p, tuple) else p for p in params]
     is_async = func.get("is_async", False)
     return_type = func.get("return_type")
-    raises = func.get("raises", [])
+    raises = func.get("raises") or []
     has_side_effects = func.get("has_side_effects", False)
 
     # Generate test values based on parameter types

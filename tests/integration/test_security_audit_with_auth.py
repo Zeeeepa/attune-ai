@@ -62,14 +62,14 @@ async def test_security_audit_with_auth():
         setup_completed=True,
     )
     max_strategy.save()
-    print(f"   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(codebase_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")
     print(f"   Recommended mode: {recommended_mode.value}")
 
     cost_estimate = max_strategy.estimate_cost(codebase_lines, recommended_mode)
-    print(f"\n   Cost Estimate:")
+    print("\n   Cost Estimate:")
     print(f"      Mode: {cost_estimate['mode']}")
     if cost_estimate["mode"] == "subscription":
         print(f"      Monetary cost: ${cost_estimate['monetary_cost']}")
@@ -91,9 +91,9 @@ async def test_security_audit_with_auth():
     )
 
     print(f"   Scanning {test_target}...")
-    print(f"   Auth strategy: ENABLED")
+    print("   Auth strategy: ENABLED")
     print(f"   Expected recommendation: {recommended_mode.value}")
-    print(f"   File types: [.py, .ts, .tsx, .js, .jsx]")
+    print("   File types: [.py, .ts, .tsx, .js, .jsx]")
 
     # Run workflow
     result = await workflow.execute(
@@ -121,7 +121,7 @@ async def test_security_audit_with_auth():
     accepted_risks = output.get("accepted_risks", [])
     assessment = output.get("assessment", {})
 
-    print(f"\n   Security Audit Results:")
+    print("\n   Security Audit Results:")
     print(f"      Files scanned: {files_scanned}")
     print(f"      Total findings: {finding_count}")
     print(f"      Needs review: {len(needs_review)}")
@@ -133,7 +133,7 @@ async def test_security_audit_with_auth():
         risk_score = assessment.get("risk_score", 0)
         severity_breakdown = assessment.get("severity_breakdown", {})
 
-        print(f"\n   Risk Assessment:")
+        print("\n   Risk Assessment:")
         print(f"      Risk level: {risk_level.upper()}")
         print(f"      Risk score: {risk_score}/100")
         print(f"      Critical: {severity_breakdown.get('critical', 0)}")
@@ -141,7 +141,7 @@ async def test_security_audit_with_auth():
         print(f"      Medium: {severity_breakdown.get('medium', 0)}")
         print(f"      Low: {severity_breakdown.get('low', 0)}")
 
-    print(f"\n   Auth Strategy:")
+    print("\n   Auth Strategy:")
     print(f"      Recommended: {recommended_mode.value}")
     print(f"      Tracked in workflow: {auth_mode_used or 'Not tracked'}")
     print(f"      Match: {auth_mode_used == recommended_mode.value}")
@@ -193,7 +193,7 @@ async def test_security_audit_with_auth():
         print(f"   Stages with costs: {len(result.cost_report.by_stage)}")
 
         if result.cost_report.by_stage:
-            print(f"   Stage breakdown:")
+            print("   Stage breakdown:")
             for stage, cost in result.cost_report.by_stage.items():
                 print(f"      {stage}: ${cost:.4f}")
 

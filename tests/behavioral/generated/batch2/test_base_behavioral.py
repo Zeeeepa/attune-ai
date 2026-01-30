@@ -8,19 +8,15 @@ Licensed under Apache 2.0
 
 import json
 import logging
-import uuid
 from datetime import datetime
-from enum import Enum
-from pathlib import Path
-from typing import Any, Dict, List, Optional
-from unittest.mock import MagicMock, Mock, PropertyMock, mock_open, patch
+from typing import Any
+from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
 from empathy_os.models import (
     ExecutionContext,
     LLMExecutor,
-    ModelProvider,
     ModelTier,
     TaskRoutingRecord,
     TelemetryBackend,
@@ -105,11 +101,11 @@ def concrete_workflow(execution_context, sample_workflow_config):
         def __init__(self, context, config):
             super().__init__(context=context, config=config)
 
-        def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
             """Execute the workflow."""
             return {"result": "success", "input": input_data}
 
-        def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+        def _validate_input(self, input_data: dict[str, Any]) -> bool:
             """Validate input data."""
             return isinstance(input_data, dict)
 
@@ -153,10 +149,10 @@ class TestCachingMixin:
             def __init__(self, context, config):
                 BaseWorkflow.__init__(self, context=context, config=config)
 
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 return {"result": "success"}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         return CachingWorkflow(
@@ -272,10 +268,10 @@ class TestTelemetryMixin:
             def __init__(self, context, config):
                 BaseWorkflow.__init__(self, context=context, config=config)
 
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 return {"result": "success"}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         return TelemetryWorkflow(
@@ -594,7 +590,7 @@ class TestWorkflowIntegration:
             def __init__(self, context, config):
                 BaseWorkflow.__init__(self, context=context, config=config)
 
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 # Simulate caching
                 result = self._get_cached_or_compute(
                     cache_key="test_key", computation_func=lambda: {"computed": True}
@@ -610,7 +606,7 @@ class TestWorkflowIntegration:
 
                 return {"result": result}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         return FullWorkflow(context=execution_context, config=sample_workflow_config)
@@ -656,14 +652,14 @@ class TestWorkflowIntegration:
             def __init__(self, context, config):
                 super().__init__(context=context, config=config)
 
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 tracker = ProgressTracker(total_steps=3, callback=callback)
                 tracker.update("Step 1")
                 tracker.update("Step 2")
                 tracker.complete()
                 return {"result": "success"}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         workflow = ProgressWorkflow(
@@ -687,7 +683,7 @@ class TestWorkflowErrorHandling:
         Then should handle gracefully."""
 
         class ErrorWorkflow(BaseWorkflow):
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 self.context.llm_executor.execute.side_effect = Exception("LLM error")
                 try:
                     self.context.llm_executor.execute({"prompt": "test"})
@@ -695,7 +691,7 @@ class TestWorkflowErrorHandling:
                     return {"error": str(e)}
                 return {"result": "success"}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         workflow = ErrorWorkflow(
@@ -714,13 +710,13 @@ class TestWorkflowErrorHandling:
         mock_cache.get.side_effect = Exception("Cache error")
 
         class CachedWorkflow(CachingMixin, BaseWorkflow):
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 result = self._get_cached_or_compute(
                     cache_key="test", computation_func=lambda: {"computed": True}
                 )
                 return {"result": result}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         workflow = CachedWorkflow(
@@ -741,7 +737,7 @@ class TestWorkflowErrorHandling:
         )
 
         class TelemetryWorkflow(TelemetryMixin, BaseWorkflow):
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 self._record_task_routing(
                     task_id="test",
                     task_type="test",
@@ -750,7 +746,7 @@ class TestWorkflowErrorHandling:
                 )
                 return {"result": "success"}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         workflow = TelemetryWorkflow(
@@ -782,10 +778,10 @@ class TestWorkflowEdgeCases:
         Then should use default configuration."""
 
         class DefaultWorkflow(BaseWorkflow):
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 return {"result": "success"}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         workflow = DefaultWorkflow(context=execution_context, config=None)
@@ -825,10 +821,10 @@ class TestWorkflowEdgeCases:
         results = []
 
         class ThreadSafeWorkflow(BaseWorkflow):
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 return {"thread_id": threading.current_thread().ident}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return True
 
         workflow = ThreadSafeWorkflow(
@@ -932,10 +928,10 @@ class TestWorkflowValidation:
         Then should use custom validation."""
 
         class CustomValidationWorkflow(BaseWorkflow):
-            def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+            def execute(self, input_data: dict[str, Any]) -> dict[str, Any]:
                 return {"result": "success"}
 
-            def _validate_input(self, input_data: Dict[str, Any]) -> bool:
+            def _validate_input(self, input_data: dict[str, Any]) -> bool:
                 return "required_field" in input_data
 
         workflow = CustomValidationWorkflow(

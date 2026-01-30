@@ -59,7 +59,7 @@ async def test_code_review_with_auth():
 
     # Save strategy so workflow can load it
     max_strategy.save()
-    print(f"   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(module_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")
@@ -67,7 +67,7 @@ async def test_code_review_with_auth():
 
     # Get cost estimate
     cost_estimate = max_strategy.estimate_cost(module_lines, recommended_mode)
-    print(f"\n   Cost Estimate:")
+    print("\n   Cost Estimate:")
     print(f"      Mode: {cost_estimate['mode']}")
     if cost_estimate["mode"] == "subscription":
         print(f"      Monetary cost: ${cost_estimate['monetary_cost']}")
@@ -92,9 +92,9 @@ async def test_code_review_with_auth():
     )
 
     print(f"   Reviewing {test_module.name}...")
-    print(f"   Auth strategy: ENABLED")
+    print("   Auth strategy: ENABLED")
     print(f"   Expected recommendation: {recommended_mode.value}")
-    print(f"   Crew review: DISABLED (for faster testing)")
+    print("   Crew review: DISABLED (for faster testing)")
 
     # Execute code review
     result = await workflow.execute(
@@ -126,17 +126,17 @@ async def test_code_review_with_auth():
     security_score = output.get("security_score", 0)
     has_critical_issues = output.get("has_critical_issues", False)
 
-    print(f"\n   Review Results:")
+    print("\n   Review Results:")
     print(f"      Classification: {classification[:80]}..." if classification else "      Classification: None")
     print(f"      Verdict: {verdict.upper()}")
     print(f"      Security score: {security_score}/100")
     print(f"      Critical issues: {'Yes' if has_critical_issues else 'No'}")
 
-    print(f"\n   Review Content:")
+    print("\n   Review Content:")
     print(f"      Scan results: {len(scan_results):,} characters")
     print(f"      Architectural review: {len(architectural_review):,} characters")
 
-    print(f"\n   Auth Strategy:")
+    print("\n   Auth Strategy:")
     print(f"      Recommended: {recommended_mode.value}")
     print(f"      Tracked in workflow: {auth_mode_used or 'Not tracked'}")
     print(f"      Match: {auth_mode_used == recommended_mode.value}")
@@ -171,7 +171,7 @@ async def test_code_review_with_auth():
     print(f"   Bug patterns: {len(bug_patterns)}")
 
     if findings:
-        print(f"\n   Sample findings:")
+        print("\n   Sample findings:")
         for i, finding in enumerate(findings[:3], 1):
             severity = finding.get("severity", "unknown")
             title = finding.get("title", "N/A")
@@ -185,17 +185,17 @@ async def test_code_review_with_auth():
     print(f"      Recommended: {recommended_mode.value.upper()} mode")
 
     if recommended_mode.value == "subscription":
-        print(f"      Reason: Small module fits easily in 200K context")
-        print(f"      Benefit: No additional cost, uses existing subscription")
+        print("      Reason: Small module fits easily in 200K context")
+        print("      Benefit: No additional cost, uses existing subscription")
     else:
-        print(f"      Reason: Large module needs 1M context window")
-        print(f"      Benefit: Higher context limit, no quota consumption")
+        print("      Reason: Large module needs 1M context window")
+        print("      Benefit: Higher context limit, no quota consumption")
 
-    print(f"\n   Workflow Integration:")
-    print(f"      ✅ Auth strategy detected module size")
+    print("\n   Workflow Integration:")
+    print("      ✅ Auth strategy detected module size")
     print(f"      ✅ Recommended {recommended_mode.value} mode")
-    print(f"      ✅ Tracked auth_mode_used in results")
-    print(f"      ✅ Ready for telemetry logging")
+    print("      ✅ Tracked auth_mode_used in results")
+    print("      ✅ Ready for telemetry logging")
 
     # === STEP 8: Formatted Report Check ===
     print("\n8. Formatted Report")
@@ -209,12 +209,12 @@ async def test_code_review_with_auth():
         print(f"   Includes verdict: {'✅' if verdict.upper() in formatted_report else '❌'}")
         print(f"   Includes security: {'✅' if 'SECURITY' in formatted_report else '❌'}")
     else:
-        print(f"   ❌ No formatted report generated")
+        print("   ❌ No formatted report generated")
 
     if display_output:
         print(f"   Display output: {len(display_output):,} characters")
     else:
-        print(f"   ⚠️  No display_output field (may impact UI presentation)")
+        print("   ⚠️  No display_output field (may impact UI presentation)")
 
     print("\n" + "=" * 60)
     print("✅ Integration Test Complete!")
@@ -245,7 +245,7 @@ async def test_code_review_with_api_mode():
     print("\n1. Simulating Large Module (>8000 LOC)")
     print("-" * 60)
     print(f"   Note: Using {test_module.name} as test target")
-    print(f"   Simulated LOC: 10,000 (would trigger API mode)")
+    print("   Simulated LOC: 10,000 (would trigger API mode)")
 
     # Create strategy that should recommend API mode for large modules
     max_strategy = AuthStrategy(
@@ -262,7 +262,7 @@ async def test_code_review_with_api_mode():
     print(f"   Recommended mode: {recommended_mode.value}")
 
     cost_estimate = max_strategy.estimate_cost(simulated_loc, recommended_mode)
-    print(f"\n   Cost Estimate:")
+    print("\n   Cost Estimate:")
     print(f"      Mode: {cost_estimate['mode']}")
     print(f"      Monetary cost: ${cost_estimate['monetary_cost']:.4f}")
     print(f"      Fits in context: {cost_estimate['fits_in_context']}")
@@ -270,8 +270,8 @@ async def test_code_review_with_api_mode():
     print("\n2. Expected Behavior for Large Modules")
     print("-" * 60)
     print(f"   ✅ Strategy recommends {recommended_mode.value.upper()} mode")
-    print(f"   ✅ Uses 1M context window (API)")
-    print(f"   ✅ Avoids quota consumption on subscription")
+    print("   ✅ Uses 1M context window (API)")
+    print("   ✅ Avoids quota consumption on subscription")
     print(f"   ✅ Estimated cost: ${cost_estimate['monetary_cost']:.4f}")
 
     print("\n" + "=" * 60)

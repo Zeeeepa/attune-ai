@@ -7,27 +7,24 @@ Licensed under Apache 2.0
 """
 
 import asyncio
-import json
+from unittest.mock import AsyncMock, Mock
+
 import pytest
-from dataclasses import asdict
-from typing import Any
-from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 from empathy_os.orchestration.execution_strategies import (
+    AdaptiveStrategy,
     AgentResult,
-    StrategyResult,
-    ConditionType,
     Condition,
     ConditionalStrategy,
-    SequentialStrategy,
-    ParallelStrategy,
+    ConditionType,
     DebateStrategy,
-    TeachingStrategy,
-    RefinementStrategy,
-    AdaptiveStrategy,
     ExecutionStrategy,
+    ParallelStrategy,
+    RefinementStrategy,
+    SequentialStrategy,
+    StrategyResult,
+    TeachingStrategy,
 )
-
 
 # =============================================================================
 # Fixtures

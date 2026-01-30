@@ -29,17 +29,14 @@ Licensed under Fair Source 0.9
 """
 
 import argparse
-import hashlib
 import json
 import logging
-import os
 import re
 import signal
 import ssl
 import sys
 import time
 import warnings
-from collections import defaultdict
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer

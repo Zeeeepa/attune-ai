@@ -336,8 +336,13 @@ class EmpathyMCPServer:
 
     async def _get_auth_recommend(self, args: dict[str, Any]) -> dict[str, Any]:
         """Get authentication recommendation."""
-        from empathy_os.models import count_lines_of_code, get_auth_strategy, get_module_size_category
         from pathlib import Path
+
+        from empathy_os.models import (
+            count_lines_of_code,
+            get_auth_strategy,
+            get_module_size_category,
+        )
 
         file_path = Path(args["file_path"])
         lines = count_lines_of_code(file_path)

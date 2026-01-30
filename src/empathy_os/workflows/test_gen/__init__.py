@@ -7,16 +7,17 @@ Licensed under Fair Source License 0.9
 """
 
 # Core workflow
-from .workflow import TestGenerationWorkflow, main
-
-# Data models
-from .data_models import ClassSignature, FunctionSignature
-
 # AST analyzer
 from .ast_analyzer import ASTFunctionAnalyzer
 
 # Configuration
 from .config import DEFAULT_SKIP_PATTERNS, TEST_GEN_STEPS
+
+# Data models
+from .data_models import ClassSignature, FunctionSignature
+
+# Report formatter
+from .report_formatter import format_test_gen_report
 
 # Test generation templates
 from .test_templates import (
@@ -26,9 +27,7 @@ from .test_templates import (
     get_param_test_values,
     get_type_assertion,
 )
-
-# Report formatter
-from .report_formatter import format_test_gen_report
+from .workflow import TestGenerationWorkflow, main
 
 __all__ = [
     # Workflow

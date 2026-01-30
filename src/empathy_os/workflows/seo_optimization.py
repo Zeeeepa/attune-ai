@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from empathy_os.models import ModelTier
-from empathy_os.workflows.base import BaseWorkflow, WorkflowResult, WorkflowStage
+from empathy_os.workflows.base import BaseWorkflow, WorkflowResult
 
 
 @dataclass

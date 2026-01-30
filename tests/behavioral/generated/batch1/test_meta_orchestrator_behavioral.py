@@ -6,25 +6,25 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
-from unittest.mock import Mock, patch, MagicMock
 from dataclasses import dataclass, field
-from typing import Any
+from unittest.mock import patch
+
+import pytest
 
 from empathy_os.orchestration.meta_orchestrator import (
+    CompositionPattern,
+    ExecutionPlan,
     MetaOrchestrator,
     TaskComplexity,
     TaskDomain,
-    CompositionPattern,
     TaskRequirements,
-    ExecutionPlan,
 )
 
 
 @dataclass
 class MockAgentTemplate:
     """Mock agent template for testing."""
-    
+
     name: str
     role: str
     capabilities: list[str] = field(default_factory=list)
@@ -82,7 +82,7 @@ class TestTaskComplexityEnum:
         """Test SIMPLE complexity has correct value."""
         # Given/When
         complexity = TaskComplexity.SIMPLE
-        
+
         # Then
         assert complexity.value == "simple"
 
@@ -90,7 +90,7 @@ class TestTaskComplexityEnum:
         """Test MODERATE complexity has correct value."""
         # Given/When
         complexity = TaskComplexity.MODERATE
-        
+
         # Then
         assert complexity.value == "moderate"
 
@@ -98,7 +98,7 @@ class TestTaskComplexityEnum:
         """Test COMPLEX complexity has correct value."""
         # Given/When
         complexity = TaskComplexity.COMPLEX
-        
+
         # Then
         assert complexity.value == "complex"
 
@@ -110,7 +110,7 @@ class TestTaskDomainEnum:
         """Test TESTING domain has correct value."""
         # Given/When
         domain = TaskDomain.TESTING
-        
+
         # Then
         assert domain.value == "testing"
 
@@ -118,7 +118,7 @@ class TestTaskDomainEnum:
         """Test SECURITY domain has correct value."""
         # Given/When
         domain = TaskDomain.SECURITY
-        
+
         # Then
         assert domain.value == "security"
 
@@ -129,10 +129,10 @@ class TestTaskDomainEnum:
             "testing", "security", "code_quality", "documentation",
             "performance", "architecture", "refactoring", "general"
         }
-        
+
         # When
         actual_domains = {domain.value for domain in TaskDomain}
-        
+
         # Then
         assert actual_domains == expected_domains
 
@@ -144,7 +144,7 @@ class TestCompositionPatternEnum:
         """Test SEQUENTIAL pattern has correct value."""
         # Given/When
         pattern = CompositionPattern.SEQUENTIAL
-        
+
         # Then
         assert pattern.value == "sequential"
 
@@ -152,7 +152,7 @@ class TestCompositionPatternEnum:
         """Test PARALLEL pattern has correct value."""
         # Given/When
         pattern = CompositionPattern.PARALLEL
-        
+
         # Then
         assert pattern.value == "parallel"
 
@@ -160,7 +160,7 @@ class TestCompositionPatternEnum:
         """Test DEBATE pattern has correct value."""
         # Given/When
         pattern = CompositionPattern.DEBATE
-        
+
         # Then
         assert pattern.value == "debate"
 
@@ -168,7 +168,7 @@ class TestCompositionPatternEnum:
         """Test TOOL_ENHANCED pattern has correct value."""
         # Given/When
         pattern = CompositionPattern.TOOL_ENHANCED
-        
+
         # Then
         assert pattern.value == "tool_enhanced"
 
@@ -176,7 +176,7 @@ class TestCompositionPatternEnum:
         """Test all 10 patterns are present."""
         # Given/When
         patterns = list(CompositionPattern)
-        
+
         # Then
         assert len(patterns) == 10
 
@@ -190,14 +190,14 @@ class TestTaskRequirements:
         complexity = TaskComplexity.SIMPLE
         domain = TaskDomain.TESTING
         capabilities = ["testing"]
-        
+
         # When
         requirements = TaskRequirements(
             complexity=complexity,
             domain=domain,
             capabilities_needed=capabilities,
         )
-        
+
         # Then
         assert requirements.complexity == complexity
         assert requirements.domain == domain
@@ -214,7 +214,7 @@ class TestTaskRequirements:
         capabilities = ["security", "analysis"]
         quality_gates = {"coverage": 90}
         context = {"current_coverage": 75}
-        
+
         # When
         requirements = TaskRequirements(
             complexity=complexity,
@@ -224,7 +224,7 @@ class TestTaskRequirements:
             quality_gates=quality_gates,
             context=context,
         )
-        
+
         # Then
         assert requirements.complexity == complexity
         assert requirements.domain == domain
@@ -246,11 +246,11 @@ class TestTaskRequirements:
             domain=TaskDomain.TESTING,
             capabilities_needed=["testing"],
         )
-        
+
         # When
         req1.quality_gates["key"] = "value1"
         req2.quality_gates["key"] = "value2"
-        
+
         # Then
         assert req1.quality_gates["key"] == "value1"
         assert req2.quality_gates["key"] == "value2"
@@ -264,13 +264,13 @@ class TestExecutionPlan:
         # Given
         strategy = CompositionPattern.SEQUENTIAL
         agents = []
-        
+
         # When
         plan = ExecutionPlan(
             strategy=strategy,
             agents=agents,
         )
-        
+
         # Then
         assert plan.strategy == strategy
         assert plan.agents == agents
@@ -282,13 +282,13 @@ class TestExecutionPlan:
         agent1 = MockAgentTemplate(name="agent1", role="Role 1")
         agent2 = MockAgentTemplate(name="agent2", role="Role 2")
         agents = [agent1, agent2]
-        
+
         # When
         plan = ExecutionPlan(
             strategy=strategy,
             agents=agents,
         )
-        
+
         # Then
         assert len(plan.agents) == 2
         assert plan.agents[0].name == "agent1"
@@ -302,7 +302,7 @@ class TestMetaOrchestratorInitialization:
         """Test MetaOrchestrator can be instantiated."""
         # Given/When
         orchestrator = MetaOrchestrator()
-        
+
         # Then
         assert orchestrator is not None
         assert isinstance(orchestrator, MetaOrchestrator)
@@ -323,10 +323,10 @@ class TestMetaOrchestratorAnalyzeAndCompose:
             mock_agent_templates["test_generator"],
         ]
         mock_get_template.side_effect = lambda name: mock_agent_templates.get(name)
-        
+
         task = "Boost test coverage to 90%"
         context = {"current_coverage": 75}
-        
+
         # When
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -343,7 +343,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
                         mock_agent_templates["test_generator"],
                     ]
                     plan = orchestrator.analyze_and_compose(task, context)
-        
+
         # Then
         assert plan is not None
         assert plan.strategy == CompositionPattern.SEQUENTIAL
@@ -357,10 +357,10 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         mock_get_templates.return_value = [
             mock_agent_templates["security_analyzer"],
         ]
-        
+
         task = "Perform comprehensive security audit"
         context = {"scope": "full_codebase"}
-        
+
         # When
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -376,7 +376,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
                         mock_agent_templates["security_analyzer"],
                     ]
                     plan = orchestrator.analyze_and_compose(task, context)
-        
+
         # Then
         assert plan is not None
         assert plan.strategy == CompositionPattern.DEBATE
@@ -386,7 +386,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         # Given
         task = ""
         context = {}
-        
+
         # When/Then
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -406,7 +406,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         # Given
         task = "Test task"
         context = None
-        
+
         # When/Then
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -430,11 +430,11 @@ class TestMetaOrchestratorAnalyzeTask:
         # Given
         task = "Improve test coverage and add unit tests"
         context = {}
-        
+
         # When
         with patch.object(orchestrator, '_analyze_task', wraps=orchestrator._analyze_task):
             requirements = orchestrator._analyze_task(task, context)
-        
+
         # Then
         assert requirements.domain == TaskDomain.TESTING
 
@@ -443,10 +443,10 @@ class TestMetaOrchestratorAnalyzeTask:
         # Given
         task = "Audit security vulnerabilities and fix exploits"
         context = {}
-        
+
         # When
         requirements = orchestrator._analyze_task(task, context)
-        
+
         # Then
         assert requirements.domain == TaskDomain.SECURITY
 
@@ -455,10 +455,10 @@ class TestMetaOrchestratorAnalyzeTask:
         # Given
         task = "Refactor entire architecture, improve performance, add security, and update documentation"
         context = {}
-        
+
         # When
         requirements = orchestrator._analyze_task(task, context)
-        
+
         # Then
         assert requirements.complexity in [TaskComplexity.MODERATE, TaskComplexity.COMPLEX]
 
@@ -467,10 +467,10 @@ class TestMetaOrchestratorAnalyzeTask:
         # Given
         task = "Fix typo"
         context = {}
-        
+
         # When
         requirements = orchestrator._analyze_task(task, context)
-        
+
         # Then
         assert requirements.complexity == TaskComplexity.SIMPLE
 
@@ -479,10 +479,10 @@ class TestMetaOrchestratorAnalyzeTask:
         # Given
         task = "Boost coverage"
         context = {"current_coverage": 50, "target": 90}
-        
+
         # When
         requirements = orchestrator._analyze_task(task, context)
-        
+
         # Then
         assert requirements.context == context
         assert "current_coverage" in requirements.context
@@ -499,10 +499,10 @@ class TestMetaOrchestratorSelectCompositionPattern:
             domain=TaskDomain.TESTING,
             capabilities_needed=["testing"],
         )
-        
+
         # When
         pattern = orchestrator._select_composition_pattern(requirements)
-        
+
         # Then
         assert pattern == CompositionPattern.SEQUENTIAL
 
@@ -517,10 +517,10 @@ class TestMetaOrchestratorSelectCompositionPattern:
             capabilities_needed=["testing"],
             parallelizable=True,
         )
-        
+
         # When
         pattern = orchestrator._select_composition_pattern(requirements)
-        
+
         # Then
         assert pattern == CompositionPattern.PARALLEL
 
@@ -534,10 +534,10 @@ class TestMetaOrchestratorSelectCompositionPattern:
             domain=TaskDomain.ARCHITECTURE,
             capabilities_needed=["architecture", "design"],
         )
-        
+
         # When
         pattern = orchestrator._select_composition_pattern(requirements)
-        
+
         # Then
         assert pattern in [
             CompositionPattern.DEBATE,
@@ -564,10 +564,10 @@ class TestMetaOrchestratorSelectAgents:
             mock_agent_templates["test_coverage_expert"],
             mock_agent_templates["test_generator"],
         ]
-        
+
         # When
         agents = orchestrator._select_agents(requirements)
-        
+
         # Then
         assert len(agents) > 0
         assert any("test" in agent.role.lower() for agent in agents)
@@ -584,10 +584,10 @@ class TestMetaOrchestratorSelectAgents:
             capabilities_needed=["nonexistent"],
         )
         mock_get_templates.return_value = []
-        
+
         # When
         agents = orchestrator._select_agents(requirements)
-        
+
         # Then
         assert agents == []
 
@@ -607,10 +607,10 @@ class TestMetaOrchestratorSelectAgents:
             [mock_agent_templates["security_analyzer"]],
             [mock_agent_templates["code_reviewer"]],
         ]
-        
+
         # When
         agents = orchestrator._select_agents(requirements)
-        
+
         # Then
         assert len(agents) > 0
 
@@ -623,7 +623,7 @@ class TestMetaOrchestratorEdgeCases:
         # Given
         task = "task " * 10000  # Very long task
         context = {}
-        
+
         # When
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -636,7 +636,7 @@ class TestMetaOrchestratorEdgeCases:
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
-        
+
         # Then
         assert plan is not None
 
@@ -647,7 +647,7 @@ class TestMetaOrchestratorEdgeCases:
         # Given
         task = "Test @#$% special <>&\" characters"
         context = {}
-        
+
         # When
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -660,7 +660,7 @@ class TestMetaOrchestratorEdgeCases:
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
-        
+
         # Then
         assert plan is not None
 
@@ -669,7 +669,7 @@ class TestMetaOrchestratorEdgeCases:
         # Given
         task = "测试 тест परीक्षण テスト"
         context = {}
-        
+
         # When
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -682,7 +682,7 @@ class TestMetaOrchestratorEdgeCases:
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
-        
+
         # Then
         assert plan is not None
 
@@ -691,7 +691,7 @@ class TestMetaOrchestratorEdgeCases:
         # Given
         task = "Test task"
         context = {f"key_{i}": f"value_{i}" for i in range(1000)}
-        
+
         # When
         with patch.object(orchestrator, '_analyze_task') as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
@@ -705,7 +705,7 @@ class TestMetaOrchestratorEdgeCases:
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
-        
+
         # Then
         assert plan is not None
 
@@ -722,17 +722,17 @@ class TestMetaOrchestratorIntegration:
         # Given
         mock_get_templates.return_value = list(mock_agent_templates.values())
         mock_get_template.side_effect = lambda name: mock_agent_templates.get(name)
-        
+
         task = "Improve code quality by adding tests and fixing security issues"
         context = {
             "current_coverage": 60,
             "target_coverage": 85,
             "security_issues": 5,
         }
-        
+
         # When
         plan = orchestrator.analyze_and_compose(task, context)
-        
+
         # Then
         assert plan is not None
         assert isinstance(plan, ExecutionPlan)
@@ -743,7 +743,7 @@ class TestMetaOrchestratorIntegration:
         """Test all composition patterns are valid."""
         # Given
         patterns = list(CompositionPattern)
-        
+
         # When/Then
         for pattern in patterns:
             assert isinstance(pattern, CompositionPattern)
@@ -754,7 +754,7 @@ class TestMetaOrchestratorIntegration:
         """Test all task domains are valid."""
         # Given
         domains = list(TaskDomain)
-        
+
         # When/Then
         for domain in domains:
             assert isinstance(domain, TaskDomain)
@@ -765,7 +765,7 @@ class TestMetaOrchestratorIntegration:
         """Test all complexity levels are valid."""
         # Given
         complexities = list(TaskComplexity)
-        
+
         # When/Then
         for complexity in complexities:
             assert isinstance(complexity, TaskComplexity)

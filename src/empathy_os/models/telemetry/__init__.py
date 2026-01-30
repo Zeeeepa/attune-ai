@@ -7,6 +7,11 @@ Licensed under Fair Source License 0.9
 """
 
 # Data models
+# Analytics
+from .analytics import TelemetryAnalytics
+
+# Backend interface
+from .backend import TelemetryBackend
 from .data_models import (
     AgentAssignmentRecord,
     CoverageRecord,
@@ -18,14 +23,8 @@ from .data_models import (
     WorkflowStageRecord,
 )
 
-# Backend interface
-from .backend import TelemetryBackend
-
 # Storage implementation
 from .storage import TelemetryStore
-
-# Analytics
-from .analytics import TelemetryAnalytics
 
 # Singleton store instance
 _store_instance: TelemetryStore | None = None

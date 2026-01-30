@@ -6,8 +6,9 @@ added to support user choice when automatic selection has low confidence.
 Created: 2026-01-29
 """
 import sys
+from unittest.mock import MagicMock, Mock, patch
+
 import pytest
-from unittest.mock import Mock, patch, MagicMock
 
 from empathy_os.orchestration.agent_templates import AgentTemplate
 from empathy_os.orchestration.meta_orchestrator import (
@@ -17,7 +18,6 @@ from empathy_os.orchestration.meta_orchestrator import (
     TaskDomain,
     TaskRequirements,
 )
-
 
 # Mock the tools module since it doesn't exist yet
 mock_tools = MagicMock()

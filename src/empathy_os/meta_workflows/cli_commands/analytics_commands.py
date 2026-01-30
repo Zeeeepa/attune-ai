@@ -13,17 +13,12 @@ import typer
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from rich.tree import Tree
 
-from empathy_os.config import _validate_file_path
 from empathy_os.meta_workflows import (
-    MetaWorkflow,
     PatternLearner,
-    TemplateRegistry,
     list_execution_results,
     load_execution_result,
 )
-from empathy_os.meta_workflows.intent_detector import IntentDetector
 
 from . import meta_workflow_app
 

@@ -65,14 +65,14 @@ async def test_perf_audit_with_auth():
         setup_completed=True,
     )
     max_strategy.save()
-    print(f"   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(total_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")
     print(f"   Recommended mode: {recommended_mode.value}")
 
     cost_estimate = max_strategy.estimate_cost(total_lines, recommended_mode)
-    print(f"\n   Cost Estimate:")
+    print("\n   Cost Estimate:")
     print(f"      Mode: {cost_estimate['mode']}")
     if cost_estimate["mode"] == "subscription":
         print(f"      Monetary cost: ${cost_estimate['monetary_cost']}")
@@ -92,7 +92,7 @@ async def test_perf_audit_with_auth():
     )
 
     print(f"   Auditing {test_directory}...")
-    print(f"   Auth strategy: ENABLED")
+    print("   Auth strategy: ENABLED")
     print(f"   Expected recommendation: {recommended_mode.value}")
 
     # Run workflow (limited scope for testing)
@@ -119,19 +119,19 @@ async def test_perf_audit_with_auth():
     top_issues = output.get("top_issues", [])
     optimization_plan = output.get("optimization_plan", "")
 
-    print(f"\n   Performance Audit Results:")
+    print("\n   Performance Audit Results:")
     print(f"      Performance Score: {perf_score}/100")
     print(f"      Performance Level: {perf_level}")
     print(f"      Top Issues: {len(top_issues)}")
     print(f"      Optimization Plan: {len(optimization_plan)} characters")
 
-    print(f"\n   Auth Strategy:")
+    print("\n   Auth Strategy:")
     print(f"      Recommended: {recommended_mode.value}")
     print(f"      Tracked in workflow: {auth_mode_used or 'Not tracked'}")
     print(f"      Match: {auth_mode_used == recommended_mode.value}")
 
     if top_issues:
-        print(f"\n   Top Performance Issues:")
+        print("\n   Top Performance Issues:")
         for issue in top_issues[:3]:
             print(f"      - {issue.get('type', 'unknown')}: {issue.get('count', 0)} occurrences")
 

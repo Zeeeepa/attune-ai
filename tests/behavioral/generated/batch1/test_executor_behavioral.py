@@ -6,12 +6,10 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
-from dataclasses import FrozenInstanceError
 from empathy_os.models.executor import (
-    LLMResponse,
     ExecutionContext,
     LLMExecutor,
+    LLMResponse,
 )
 
 

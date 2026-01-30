@@ -53,14 +53,14 @@ async def test_test_gen_with_auth():
         setup_completed=True,
     )
     max_strategy.save()
-    print(f"   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(module_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")
     print(f"   Recommended mode: {recommended_mode.value}")
 
     cost_estimate = max_strategy.estimate_cost(module_lines, recommended_mode)
-    print(f"\n   Cost Estimate:")
+    print("\n   Cost Estimate:")
     print(f"      Mode: {cost_estimate['mode']}")
     if cost_estimate["mode"] == "subscription":
         print(f"      Monetary cost: ${cost_estimate['monetary_cost']}")
@@ -80,7 +80,7 @@ async def test_test_gen_with_auth():
     )
 
     print(f"   Generating tests for {test_module.name}...")
-    print(f"   Auth strategy: ENABLED")
+    print("   Auth strategy: ENABLED")
     print(f"   Expected recommendation: {recommended_mode.value}")
 
     # Run workflow (small scope for testing)
@@ -106,10 +106,10 @@ async def test_test_gen_with_auth():
     auth_mode_used = output.get("auth_mode_used")
     analysis_report = output.get("analysis_report", "")
 
-    print(f"\n   Test Generation Results:")
+    print("\n   Test Generation Results:")
     print(f"      Analysis: {len(analysis_report)} characters")
 
-    print(f"\n   Auth Strategy:")
+    print("\n   Auth Strategy:")
     print(f"      Recommended: {recommended_mode.value}")
     print(f"      Tracked in workflow: {auth_mode_used or 'Not tracked'}")
     print(f"      Match: {auth_mode_used == recommended_mode.value}")

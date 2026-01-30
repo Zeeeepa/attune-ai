@@ -7,11 +7,12 @@ Licensed under Apache 2.0
 """
 
 import pytest
+
+from empathy_os.workflows.step_config import WorkflowStepConfig
 from empathy_os.workflows.test_gen.config import (
     DEFAULT_SKIP_PATTERNS,
     TEST_GEN_STEPS,
 )
-from empathy_os.workflows.step_config import WorkflowStepConfig
 
 
 class TestDefaultSkipPatterns:

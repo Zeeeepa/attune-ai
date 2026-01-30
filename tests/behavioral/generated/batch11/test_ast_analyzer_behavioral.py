@@ -6,13 +6,9 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import ast
-from typing import Any
 
-import pytest
 
 from empathy_os.workflows.test_gen.ast_analyzer import ASTFunctionAnalyzer
-from empathy_os.workflows.test_gen.data_models import ClassSignature, FunctionSignature
 
 
 class TestASTFunctionAnalyzerInitialization:

@@ -7,9 +7,9 @@ Licensed under Apache 2.0
 """
 
 import pytest
+
 from empathy_os.workflows.test_gen.test_templates import (
     generate_test_for_function,
-    generate_test_cases_for_params,
 )
 
 
@@ -109,10 +109,10 @@ class TestGenerateTestForFunctionBasicBehavior:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "import pytest" in result
         assert f"from {module} import {basic_function_metadata['name']}" in result
@@ -125,10 +125,10 @@ class TestGenerateTestForFunctionBasicBehavior:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert f"test_{basic_function_metadata['name']}" in result
 
@@ -140,10 +140,10 @@ class TestGenerateTestForFunctionBasicBehavior:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert '"""' in result
         assert "Test" in result
@@ -157,10 +157,10 @@ class TestGenerateTestForFunctionBasicBehavior:
         # Given
         module = "my_module"
         basic_function_metadata["is_async"] = False
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "@pytest.mark.asyncio" not in result
         assert "async def test_" not in result
@@ -173,10 +173,10 @@ class TestGenerateTestForFunctionBasicBehavior:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, function_with_no_params)
-        
+
         # Then
         assert "import pytest" in result
         assert f"from {module} import {function_with_no_params['name']}" in result
@@ -194,10 +194,10 @@ class TestGenerateTestForFunctionAsyncSupport:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, async_function_metadata)
-        
+
         # Then
         assert "@pytest.mark.asyncio" in result
 
@@ -209,10 +209,10 @@ class TestGenerateTestForFunctionAsyncSupport:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, async_function_metadata)
-        
+
         # Then
         assert "async def test_" in result
 
@@ -224,10 +224,10 @@ class TestGenerateTestForFunctionAsyncSupport:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, async_function_metadata)
-        
+
         # Then
         assert f"await {async_function_metadata['name']}" in result
 
@@ -250,18 +250,18 @@ class TestGenerateTestForFunctionParametrization:
             "parametrize_cases": ["(1, 0.5, [], True)", "(2, 1.0, [1], False)"],
             "edge_cases": [],
         }
-        
+
         def mock_generate_cases(params):
             return mock_cases
-        
+
         monkeypatch.setattr(
             "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
-        
+
         # When
         result = generate_test_for_function(module, function_with_multiple_params)
-        
+
         # Then
         assert "@pytest.mark.parametrize" in result
 
@@ -280,18 +280,18 @@ class TestGenerateTestForFunctionParametrization:
             "parametrize_cases": ["(1, 0.5, [], True)", "(2, 1.0, [1], False)"],
             "edge_cases": [],
         }
-        
+
         def mock_generate_cases(params):
             return mock_cases
-        
+
         monkeypatch.setattr(
             "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
-        
+
         # When
         result = generate_test_for_function(module, function_with_multiple_params)
-        
+
         # Then
         param_names_str = ", ".join(function_with_multiple_params["param_names"])
         assert param_names_str in result
@@ -309,18 +309,18 @@ class TestGenerateTestForFunctionParametrization:
             "parametrize_cases": ["(1, 'test')"],  # Only one case
             "edge_cases": [],
         }
-        
+
         def mock_generate_cases(params):
             return mock_cases
-        
+
         monkeypatch.setattr(
             "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "@pytest.mark.parametrize" not in result or result.count("@pytest.mark.parametrize") < 2
 
@@ -343,18 +343,18 @@ class TestGenerateTestForFunctionEdgeCases:
             "parametrize_cases": [],
             "edge_cases": ["(0, '')", "(-1, None)"],
         }
-        
+
         def mock_generate_cases(params):
             return mock_cases
-        
+
         monkeypatch.setattr(
             "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "edge_cases" in result or "edge_input" in result
 
@@ -371,18 +371,18 @@ class TestGenerateTestForFunctionEdgeCases:
             "parametrize_cases": [],
             "edge_cases": [],
         }
-        
+
         def mock_generate_cases(params):
             return mock_cases
-        
+
         monkeypatch.setattr(
             "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         edge_test_count = result.count("edge_input")
         assert edge_test_count == 0
@@ -400,10 +400,10 @@ class TestGenerateTestForFunctionReturnTypeHandling:
         # Given
         module = "my_module"
         basic_function_metadata["return_type"] = "str"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "assert result is not None" in result
 
@@ -416,10 +416,10 @@ class TestGenerateTestForFunctionReturnTypeHandling:
         # Given
         module = "my_module"
         basic_function_metadata["return_type"] = None
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "import pytest" in result
         assert f"def test_{basic_function_metadata['name']}" in result
@@ -437,10 +437,10 @@ class TestGenerateTestForFunctionErrorHandling:
         # Given
         module = "my_module"
         basic_function_metadata["raises"] = ["ValueError", "TypeError"]
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert result is not None
         assert "import pytest" in result
@@ -454,10 +454,10 @@ class TestGenerateTestForFunctionErrorHandling:
         # Given
         module = "my_module"
         basic_function_metadata["has_side_effects"] = True
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert result is not None
         assert "import pytest" in result
@@ -481,18 +481,18 @@ class TestGenerateTestForFunctionComplexScenarios:
             "parametrize_cases": ["({'a': 1},)", "({'b': 2},)"],
             "edge_cases": [],
         }
-        
+
         def mock_generate_cases(params):
             return mock_cases
-        
+
         monkeypatch.setattr(
             "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
-        
+
         # When
         result = generate_test_for_function(module, async_function_metadata)
-        
+
         # Then
         assert "@pytest.mark.asyncio" in result
         assert "@pytest.mark.parametrize" in result
@@ -514,10 +514,10 @@ class TestGenerateTestForFunctionComplexScenarios:
             "is_async": False,
             "return_type": "bool",
         }
-        
+
         # When
         result = generate_test_for_function(module, metadata)
-        
+
         # Then
         assert "import pytest" in result
         assert "from my_module import tuple_param_func" in result
@@ -536,10 +536,10 @@ class TestGenerateTestForFunctionComplexScenarios:
             "param_names": [],  # Empty, should be derived
             "is_async": False,
         }
-        
+
         # When
         result = generate_test_for_function(module, metadata)
-        
+
         # Then
         assert result is not None
         assert "import pytest" in result
@@ -558,10 +558,10 @@ class TestGenerateTestForFunctionComplexScenarios:
             "param_names": [],
             "is_async": False,
         }
-        
+
         # When
         result = generate_test_for_function(module, metadata)
-        
+
         # Then
         assert f"from {module} import deep_func" in result
 
@@ -579,10 +579,10 @@ class TestGenerateTestForFunctionComplexScenarios:
             "param_names": [],
             "is_async": False,
         }
-        
+
         # When
         result = generate_test_for_function(module, metadata)
-        
+
         # Then
         assert "my_special_func_with_underscores" in result
         assert "test_my_special_func_with_underscores" in result
@@ -599,10 +599,10 @@ class TestGenerateTestForFunctionAssertions:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "assert" in result
 
@@ -614,10 +614,10 @@ class TestGenerateTestForFunctionAssertions:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "result =" in result
 
@@ -630,10 +630,10 @@ class TestGenerateTestForFunctionAssertions:
         # Given
         module = "my_module"
         func_name = basic_function_metadata["name"]
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert f"{func_name}(" in result
 
@@ -649,10 +649,10 @@ class TestGenerateTestForFunctionOutputFormat:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert isinstance(result, str)
 
@@ -664,10 +664,10 @@ class TestGenerateTestForFunctionOutputFormat:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert len(result) > 0
 
@@ -679,10 +679,10 @@ class TestGenerateTestForFunctionOutputFormat:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         assert "def " in result or "async def " in result
         assert "import" in result
@@ -695,10 +695,10 @@ class TestGenerateTestForFunctionOutputFormat:
         """
         # Given
         module = "my_module"
-        
+
         # When
         result = generate_test_for_function(module, basic_function_metadata)
-        
+
         # Then
         lines = result.split("\n")
         # Check that function body lines have indentation
@@ -724,10 +724,10 @@ class TestGenerateTestForFunctionEdgeCasesIntegration:
         # Given
         module = "my_module"
         metadata = {"name": "minimal_func"}
-        
+
         # When
         result = generate_test_for_function(module, metadata)
-        
+
         # Then
         assert "import pytest" in result
         assert "minimal_func" in result
@@ -749,10 +749,10 @@ class TestGenerateTestForFunctionEdgeCasesIntegration:
             "raises": None,
             "has_side_effects": None,
         }
-        
+
         # When
         result = generate_test_for_function(module, metadata)
-        
+
         # Then
         assert result is not None
         assert "import pytest" in result
@@ -766,9 +766,9 @@ class TestGenerateTestForFunctionEdgeCasesIntegration:
         # Given
         module = "my_module"
         metadata = {"name": ""}
-        
+
         # When
         result = generate_test_for_function(module, metadata)
-        
+
         # Then
         assert isinstance(result, str)

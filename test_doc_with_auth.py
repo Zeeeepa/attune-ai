@@ -56,7 +56,7 @@ async def test_doc_with_auth():
 
     # Save strategy so workflow can load it
     max_strategy.save()
-    print(f"   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(module_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")
@@ -64,7 +64,7 @@ async def test_doc_with_auth():
 
     # Get cost estimate
     cost_estimate = max_strategy.estimate_cost(module_lines, recommended_mode)
-    print(f"\n   Cost Estimate:")
+    print("\n   Cost Estimate:")
     print(f"      Mode: {cost_estimate['mode']}")
     if cost_estimate["mode"] == "subscription":
         print(f"      Monetary cost: ${cost_estimate['monetary_cost']}")
@@ -90,7 +90,7 @@ async def test_doc_with_auth():
     )
 
     print(f"   Generating documentation for {test_module.name}...")
-    print(f"   Auth strategy: ENABLED")
+    print("   Auth strategy: ENABLED")
     print(f"   Expected recommendation: {recommended_mode.value}")
 
     # Generate documentation
@@ -119,18 +119,18 @@ async def test_doc_with_auth():
     accumulated_cost = output.get("accumulated_cost", 0.0)
     export_path = output.get("export_path", "")
 
-    print(f"\n   Generated Document:")
+    print("\n   Generated Document:")
     print(f"      Size: {len(document):,} characters")
     print(f"      Sections: ~{document.count('##')}")
     print(f"      Cost: ${accumulated_cost:.4f}")
 
-    print(f"\n   Auth Strategy:")
+    print("\n   Auth Strategy:")
     print(f"      Recommended: {recommended_mode.value}")
     print(f"      Tracked in workflow: {auth_mode_used or 'Not tracked'}")
     print(f"      Match: {auth_mode_used == recommended_mode.value}")
 
     if export_path:
-        print(f"\n   Export:")
+        print("\n   Export:")
         print(f"      Saved to: {export_path}")
 
     # === STEP 5: Quality Checks ===
@@ -157,17 +157,17 @@ async def test_doc_with_auth():
     print(f"      Recommended: {recommended_mode.value.upper()} mode")
 
     if recommended_mode.value == "subscription":
-        print(f"      Reason: Small module fits easily in 200K context")
-        print(f"      Benefit: No additional cost, uses existing subscription")
+        print("      Reason: Small module fits easily in 200K context")
+        print("      Benefit: No additional cost, uses existing subscription")
     else:
-        print(f"      Reason: Large module needs 1M context window")
-        print(f"      Benefit: Higher context limit, no quota consumption")
+        print("      Reason: Large module needs 1M context window")
+        print("      Benefit: Higher context limit, no quota consumption")
 
-    print(f"\n   Workflow Integration:")
-    print(f"      ✅ Auth strategy detected module size")
+    print("\n   Workflow Integration:")
+    print("      ✅ Auth strategy detected module size")
     print(f"      ✅ Recommended {recommended_mode.value} mode")
-    print(f"      ✅ Tracked auth_mode_used in results")
-    print(f"      ✅ Ready for telemetry logging")
+    print("      ✅ Tracked auth_mode_used in results")
+    print("      ✅ Ready for telemetry logging")
 
     print("\n" + "=" * 60)
     print("✅ Integration Test Complete!")

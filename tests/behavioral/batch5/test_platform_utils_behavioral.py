@@ -7,12 +7,8 @@ Licensed under Apache 2.0
 """
 
 import asyncio
-import platform
-import sys
 from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import patch
 
 from empathy_os.platform_utils import (
     PLATFORM_INFO,

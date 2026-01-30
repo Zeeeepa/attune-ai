@@ -6,14 +6,7 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import http.server
-import socketserver
-import tempfile
-import webbrowser
-from collections import Counter
-from datetime import datetime
-from typing import Any
-from unittest.mock import MagicMock, Mock, patch, mock_open, call
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
@@ -80,16 +73,16 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         mock_tracker.export_to_dict.return_value = []
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class:
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             # When
             with patch("builtins.print") as mock_print:
                 result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
             mock_print.assert_called_once_with("No telemetry data available.")
@@ -106,7 +99,7 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
@@ -114,28 +107,28 @@ class TestCmdTelemetryDashboard:
              patch("webbrowser.open") as mock_browser, \
              patch("socketserver.TCPServer") as mock_tcp_server, \
              patch("builtins.print") as mock_print:
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             # Mock temporary file
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # Mock server
             mock_server = MagicMock()
             mock_tcp_server.return_value = mock_server
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
             mock_tracker.export_to_dict.assert_called_once_with(days=30)
             assert mock_tempfile.called
             assert mock_file.write.called
-            
+
             # Verify HTML content was written
             written_content = mock_file.write.call_args[0][0]
             assert "<!DOCTYPE html>" in written_content
@@ -155,19 +148,19 @@ class TestCmdTelemetryDashboard:
         expected_total_cost = 0.008  # 0.001 + 0.005 + 0.002
         expected_total_calls = 3
         expected_avg_duration = 150.0  # (100 + 200 + 150) / 3
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile"), \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
 
@@ -182,24 +175,24 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
             # Verify tier distribution is included in HTML
@@ -218,24 +211,24 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
             written_content = mock_file.write.call_args[0][0]
@@ -258,24 +251,24 @@ class TestCmdTelemetryDashboard:
             {"timestamp": "2025-01-01T12:00:00", "tokens": {}},
         ]
         mock_tracker.export_to_dict.return_value = incomplete_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
             assert mock_file.write.called
@@ -292,24 +285,24 @@ class TestCmdTelemetryDashboard:
         # Given
         args_without_days = Mock(spec=[])
         mock_tracker.export_to_dict.return_value = sample_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(args_without_days)
-            
+
             # Then
             assert result == 0
             mock_tracker.export_to_dict.assert_called_once_with(days=30)
@@ -327,24 +320,24 @@ class TestCmdTelemetryDashboard:
         args = Mock()
         args.days = 7
         mock_tracker.export_to_dict.return_value = sample_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(args)
-            
+
             # Then
             assert result == 0
             mock_tracker.export_to_dict.assert_called_once_with(days=7)
@@ -369,24 +362,24 @@ class TestCmdTelemetryDashboard:
             }
         ]
         mock_tracker.export_to_dict.return_value = single_entry
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
 
@@ -406,24 +399,24 @@ class TestCmdTelemetryDashboard:
             {"tier": None, "cost": 0.003, "duration_ms": 200, "tokens": {}},
         ]
         mock_tracker.export_to_dict.return_value = entries_with_unknown
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
 
@@ -446,24 +439,24 @@ class TestCmdTelemetryDashboard:
             }
         ]
         mock_tracker.export_to_dict.return_value = zero_token_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
 
@@ -478,28 +471,28 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
             written_content = mock_file.write.call_args[0][0]
-            
+
             # Verify key sections are present
             assert "<!DOCTYPE html>" in written_content
             assert "Empathy Telemetry Dashboard" in written_content
@@ -526,24 +519,24 @@ class TestCmdTelemetryDashboard:
             for i in range(1000)
         ]
         mock_tracker.export_to_dict.return_value = large_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
 
@@ -562,24 +555,24 @@ class TestCmdTelemetryDashboard:
             {"tier": "BASIC", "cost": 0.005, "duration_ms": 150, "tokens": {"input": 150, "output": 75}},
         ]
         mock_tracker.export_to_dict.return_value = negative_cost_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
 
@@ -594,24 +587,24 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
-        
+
         with patch(
             "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
              patch("socketserver.TCPServer"):
-            
+
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
-            
+
             mock_file = MagicMock()
             mock_file.name = "/tmp/dashboard.html"
             mock_file.__enter__.return_value = mock_file
             mock_tempfile.return_value = mock_file
-            
+
             # When
             result = cmd_telemetry_dashboard(mock_args)
-            
+
             # Then
             assert result == 0
             # Verify tempfile was called with correct parameters

@@ -11,17 +11,18 @@ Integration with Claude Code:
 
 Created: 2026-01-29
 """
-from typing import Any, Callable, Optional
+import json
 import logging
 import os
-import json
 import tempfile
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 # Global callback for custom AskUserQuestion implementations
-_custom_ask_function: Optional[Callable] = None
+_custom_ask_function: Callable | None = None
 
 
 def set_ask_user_question_handler(handler: Callable) -> None:

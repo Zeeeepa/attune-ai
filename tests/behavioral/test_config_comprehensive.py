@@ -8,8 +8,6 @@ Licensed under Apache 2.0
 
 import json
 import os
-import tempfile
-from pathlib import Path
 
 import pytest
 import yaml

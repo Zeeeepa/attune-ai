@@ -65,14 +65,20 @@ class ASTFunctionAnalyzer(ast.NodeVisitor):
         if self._current_class is None:  # Only top-level functions
             sig = self._extract_function_signature(node)
             self.functions.append(sig)
-        self.generic_visit(node)
+            # Don't visit nested functions - we only want top-level
+        else:
+            # Inside a class - this is a method, visit it
+            self.generic_visit(node)
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
         """Extract async function signature."""
         if self._current_class is None:
             sig = self._extract_function_signature(node, is_async=True)
             self.functions.append(sig)
-        self.generic_visit(node)
+            # Don't visit nested functions - we only want top-level
+        else:
+            # Inside a class - this is a method, visit it
+            self.generic_visit(node)
 
     def visit_ClassDef(self, node: ast.ClassDef) -> None:
         """Extract class signature with methods."""

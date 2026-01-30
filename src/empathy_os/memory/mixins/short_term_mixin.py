@@ -15,7 +15,11 @@ import structlog
 if TYPE_CHECKING:
     from ..file_session import FileSessionMemory
     from ..redis_bootstrap import RedisStatus
-    from ..short_term import AccessTier, AgentCredentials, RedisShortTermMemory, StagedPattern, TTLStrategy
+    from ..short_term import (
+        AccessTier,
+        AgentCredentials,
+        RedisShortTermMemory,
+    )
 
 logger = structlog.get_logger(__name__)
 

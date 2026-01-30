@@ -6,18 +6,17 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
+
 import pytest
-from dataclasses import FrozenInstanceError
-from datetime import datetime
 
 from empathy_os.memory.long_term_types import (
+    DEFAULT_CLASSIFICATION_RULES,
     Classification,
     ClassificationRules,
     PatternMetadata,
+    PermissionError,
     SecurePattern,
     SecurityError,
-    PermissionError,
-    DEFAULT_CLASSIFICATION_RULES,
 )
 
 

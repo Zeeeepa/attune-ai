@@ -9,11 +9,9 @@ Licensed under Apache 2.0
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any
-from unittest.mock import MagicMock, Mock, mock_open, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
-import structlog
 
 from empathy_os.memory.long_term_types import Classification
 from empathy_os.memory.simple_storage import LongTermMemory
@@ -46,10 +44,10 @@ class TestLongTermMemoryInit:
         """Given a valid storage path, when initializing, then creates the directory."""
         # Given
         storage_path = temp_storage_path
-        
+
         # When
         memory = LongTermMemory(storage_path=storage_path)
-        
+
         # Then
         assert memory.storage_path == Path(storage_path)
         assert memory.storage_path.exists()
@@ -59,10 +57,10 @@ class TestLongTermMemoryInit:
         """Given a nested path, when initializing, then creates all parent directories."""
         # Given
         nested_path = tmp_path / "level1" / "level2" / "storage"
-        
+
         # When
         memory = LongTermMemory(storage_path=str(nested_path))
-        
+
         # Then
         assert memory.storage_path.exists()
         assert memory.storage_path.is_dir()
@@ -71,10 +69,10 @@ class TestLongTermMemoryInit:
         """Given an existing directory, when initializing, then reuses the directory."""
         # Given
         Path(temp_storage_path).mkdir(parents=True, exist_ok=True)
-        
+
         # When
         memory = LongTermMemory(storage_path=temp_storage_path)
-        
+
         # Then
         assert memory.storage_path.exists()
         assert memory.storage_path.is_dir()
@@ -86,7 +84,7 @@ class TestLongTermMemoryInit:
             mock_path_instance = MagicMock()
             mock_path.return_value = mock_path_instance
             memory = LongTermMemory()
-        
+
         # Then
         mock_path.assert_called_once_with("./long_term_storage")
 
@@ -94,7 +92,7 @@ class TestLongTermMemoryInit:
         """Given initialization, when called, then logs the event."""
         # Given/When
         memory = LongTermMemory(storage_path=temp_storage_path)
-        
+
         # Then
         mock_logger.info.assert_called_with(
             "long_term_memory_initialized",
@@ -110,15 +108,15 @@ class TestLongTermMemoryStore:
         # Given
         key = "test_key"
         data = {"value": "test"}
-        
+
         # When
         result = memory_instance.store(key, data)
-        
+
         # Then
         assert result is True
         file_path = memory_instance.storage_path / f"{key}.json"
         assert file_path.exists()
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             saved_data = json.load(f)
         assert saved_data["data"] == data
 
@@ -127,7 +125,7 @@ class TestLongTermMemoryStore:
         # Given
         key = ""
         data = {"value": "test"}
-        
+
         # When/Then
         with pytest.raises(ValueError, match="key cannot be empty"):
             memory_instance.store(key, data)
@@ -137,7 +135,7 @@ class TestLongTermMemoryStore:
         # Given
         key = "   "
         data = {"value": "test"}
-        
+
         # When/Then
         with pytest.raises(ValueError, match="key cannot be empty"):
             memory_instance.store(key, data)
@@ -148,14 +146,14 @@ class TestLongTermMemoryStore:
         key = "classified_key"
         data = {"value": "secret"}
         classification = "SENSITIVE"
-        
+
         # When
         result = memory_instance.store(key, data, classification=classification)
-        
+
         # Then
         assert result is True
         file_path = memory_instance.storage_path / f"{key}.json"
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             saved_data = json.load(f)
         assert saved_data["classification"] == classification
 
@@ -165,14 +163,14 @@ class TestLongTermMemoryStore:
         key = "enum_key"
         data = {"value": "internal"}
         classification = Classification.INTERNAL
-        
+
         # When
         result = memory_instance.store(key, data, classification=classification)
-        
+
         # Then
         assert result is True
         file_path = memory_instance.storage_path / f"{key}.json"
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             saved_data = json.load(f)
         assert saved_data["classification"] == "INTERNAL"
 
@@ -181,13 +179,13 @@ class TestLongTermMemoryStore:
         # Given
         key = "default_key"
         data = {"value": "data"}
-        
+
         # When
         memory_instance.store(key, data)
-        
+
         # Then
         file_path = memory_instance.storage_path / f"{key}.json"
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             saved_data = json.load(f)
         assert saved_data["classification"] == "INTERNAL"
 
@@ -203,14 +201,14 @@ class TestLongTermMemoryStore:
             "boolean": True,
             "null": None
         }
-        
+
         # When
         result = memory_instance.store(key, data)
-        
+
         # Then
         assert result is True
         file_path = memory_instance.storage_path / f"{key}.json"
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             saved_data = json.load(f)
         assert saved_data["data"] == data
 
@@ -219,7 +217,7 @@ class TestLongTermMemoryStore:
         # Given
         key = "bad_key"
         data = {"function": lambda x: x}
-        
+
         # When/Then
         with pytest.raises(TypeError):
             memory_instance.store(key, data)
@@ -231,10 +229,10 @@ class TestLongTermMemoryStore:
         old_data = {"value": "old"}
         new_data = {"value": "new"}
         memory_instance.store(key, old_data)
-        
+
         # When
         result = memory_instance.store(key, new_data)
-        
+
         # Then
         assert result is True
         retrieved = memory_instance.retrieve(key)
@@ -245,13 +243,13 @@ class TestLongTermMemoryStore:
         # Given
         key = "timestamp_key"
         data = {"value": "test"}
-        
+
         # When
         memory_instance.store(key, data)
-        
+
         # Then
         file_path = memory_instance.storage_path / f"{key}.json"
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             saved_data = json.load(f)
         assert "timestamp" in saved_data
         # Verify timestamp is valid ISO format
@@ -264,11 +262,11 @@ class TestLongTermMemoryStore:
         # Given
         key = "../../../etc/passwd"
         data = {"value": "malicious"}
-        
+
         # When
         with patch("empathy_os.memory.simple_storage._validate_file_path") as mock_validate:
             mock_validate.side_effect = ValueError("Invalid path")
-            
+
             # Then
             with pytest.raises(ValueError, match="Invalid path"):
                 memory_instance.store(key, data)
@@ -278,11 +276,11 @@ class TestLongTermMemoryStore:
         # Given
         key = "io_error_key"
         data = {"value": "test"}
-        
+
         # When
-        with patch("builtins.open", side_effect=IOError("Disk full")):
+        with patch("builtins.open", side_effect=OSError("Disk full")):
             result = memory_instance.store(key, data)
-        
+
         # Then
         assert result is False
 
@@ -296,10 +294,10 @@ class TestLongTermMemoryRetrieve:
         key = "retrieve_key"
         data = {"value": "test", "number": 42}
         memory_instance.store(key, data)
-        
+
         # When
         result = memory_instance.retrieve(key)
-        
+
         # Then
         assert result == data
 
@@ -307,10 +305,10 @@ class TestLongTermMemoryRetrieve:
         """Given a nonexistent key, when retrieving, then returns None."""
         # Given
         key = "nonexistent_key"
-        
+
         # When
         result = memory_instance.retrieve(key)
-        
+
         # Then
         assert result is None
 
@@ -318,7 +316,7 @@ class TestLongTermMemoryRetrieve:
         """Given an empty key, when retrieving, then raises ValueError."""
         # Given
         key = ""
-        
+
         # When/Then
         with pytest.raises(ValueError, match="key cannot be empty"):
             memory_instance.retrieve(key)
@@ -329,10 +327,10 @@ class TestLongTermMemoryRetrieve:
         key = "corrupted_key"
         file_path = memory_instance.storage_path / f"{key}.json"
         file_path.write_text("invalid json content")
-        
+
         # When
         result = memory_instance.retrieve(key)
-        
+
         # Then
         assert result is None
 
@@ -342,10 +340,10 @@ class TestLongTermMemoryRetrieve:
         key = "no_data_key"
         file_path = memory_instance.storage_path / f"{key}.json"
         file_path.write_text(json.dumps({"classification": "PUBLIC"}))
-        
+
         # When
         result = memory_instance.retrieve(key)
-        
+
         # Then
         assert result is None
 
@@ -355,11 +353,11 @@ class TestLongTermMemoryRetrieve:
         """Given path validation, when retrieving with invalid key, then raises error."""
         # Given
         key = "../../../etc/passwd"
-        
+
         # When
         with patch("empathy_os.memory.simple_storage._validate_file_path") as mock_validate:
             mock_validate.side_effect = ValueError("Invalid path")
-            
+
             # Then
             with pytest.raises(ValueError, match="Invalid path"):
                 memory_instance.retrieve(key)
@@ -369,11 +367,11 @@ class TestLongTermMemoryRetrieve:
         # Given
         key = "permission_key"
         memory_instance.store(key, {"value": "test"})
-        
+
         # When
         with patch("builtins.open", side_effect=PermissionError("Access denied")):
             result = memory_instance.retrieve(key)
-        
+
         # Then
         assert result is None
 
@@ -388,10 +386,10 @@ class TestLongTermMemoryDelete:
         memory_instance.store(key, {"value": "test"})
         file_path = memory_instance.storage_path / f"{key}.json"
         assert file_path.exists()
-        
+
         # When
         result = memory_instance.delete(key)
-        
+
         # Then
         assert result is True
         assert not file_path.exists()
@@ -400,10 +398,10 @@ class TestLongTermMemoryDelete:
         """Given a nonexistent key, when deleting, then returns False."""
         # Given
         key = "nonexistent_key"
-        
+
         # When
         result = memory_instance.delete(key)
-        
+
         # Then
         assert result is False
 
@@ -411,7 +409,7 @@ class TestLongTermMemoryDelete:
         """Given an empty key, when deleting, then raises ValueError."""
         # Given
         key = ""
-        
+
         # When/Then
         with pytest.raises(ValueError, match="key cannot be empty"):
             memory_instance.delete(key)
@@ -422,11 +420,11 @@ class TestLongTermMemoryDelete:
         """Given path validation, when deleting with invalid key, then raises error."""
         # Given
         key = "../../../etc/passwd"
-        
+
         # When
         with patch("empathy_os.memory.simple_storage._validate_file_path") as mock_validate:
             mock_validate.side_effect = ValueError("Invalid path")
-            
+
             # Then
             with pytest.raises(ValueError, match="Invalid path"):
                 memory_instance.delete(key)
@@ -436,11 +434,11 @@ class TestLongTermMemoryDelete:
         # Given
         key = "permission_key"
         memory_instance.store(key, {"value": "test"})
-        
+
         # When
         with patch("pathlib.Path.unlink", side_effect=PermissionError("Access denied")):
             result = memory_instance.delete(key)
-        
+
         # Then
         assert result is False
 
@@ -452,7 +450,7 @@ class TestLongTermMemoryListKeys:
         """Given no stored files, when listing keys, then returns empty list."""
         # Given/When
         result = memory_instance.list_keys()
-        
+
         # Then
         assert result == []
 
@@ -462,10 +460,10 @@ class TestLongTermMemoryListKeys:
         keys = ["key1", "key2", "key3"]
         for key in keys:
             memory_instance.store(key, {"value": key})
-        
+
         # When
         result = memory_instance.list_keys()
-        
+
         # Then
         assert set(result) == set(keys)
 
@@ -477,10 +475,10 @@ class TestLongTermMemoryListKeys:
         memory_instance.store("public_key", {"value": "public"}, "PUBLIC")
         memory_instance.store("internal_key", {"value": "internal"}, "INTERNAL")
         memory_instance.store("sensitive_key", {"value": "sensitive"}, "SENSITIVE")
-        
+
         # When
         result = memory_instance.list_keys(classification="INTERNAL")
-        
+
         # Then
         assert result == ["internal_key"]
 
@@ -491,10 +489,10 @@ class TestLongTermMemoryListKeys:
         # Given
         memory_instance.store("public_key", {"value": "public"}, Classification.PUBLIC)
         memory_instance.store("internal_key", {"value": "internal"}, Classification.INTERNAL)
-        
+
         # When
         result = memory_instance.list_keys(classification=Classification.PUBLIC)
-        
+
         # Then
         assert result == ["public_key"]
 
@@ -504,10 +502,10 @@ class TestLongTermMemoryListKeys:
         """Given no matching classification, when listing keys, then returns empty list."""
         # Given
         memory_instance.store("key1", {"value": "test"}, "PUBLIC")
-        
+
         # When
         result = memory_instance.list_keys(classification="SENSITIVE")
-        
+
         # Then
         assert result == []
 
@@ -517,10 +515,10 @@ class TestLongTermMemoryListKeys:
         memory_instance.store("valid_key", {"value": "test"})
         (memory_instance.storage_path / "file.txt").write_text("not json")
         (memory_instance.storage_path / "no_extension").write_text("also not json")
-        
+
         # When
         result = memory_instance.list_keys()
-        
+
         # Then
         assert result == ["valid_key"]
 
@@ -531,10 +529,10 @@ class TestLongTermMemoryListKeys:
         # Given
         memory_instance.store("valid_key", {"value": "test"})
         (memory_instance.storage_path / "corrupted.json").write_text("invalid json")
-        
+
         # When
         result = memory_instance.list_keys()
-        
+
         # Then
         assert result == ["valid_key"]
 
@@ -546,19 +544,19 @@ class TestLongTermMemoryListKeys:
         key = "no_class_key"
         file_path = memory_instance.storage_path / f"{key}.json"
         file_path.write_text(json.dumps({"data": {"value": "test"}}))
-        
+
         # When
         result = memory_instance.list_keys(classification="INTERNAL")
-        
+
         # Then
         assert key in result
 
     def test_given_io_error_when_list_keys_then_returns_empty_list(self, memory_instance):
         """Given an IO error, when listing keys, then returns empty list."""
         # Given/When
-        with patch("pathlib.Path.glob", side_effect=IOError("Disk error")):
+        with patch("pathlib.Path.glob", side_effect=OSError("Disk error")):
             result = memory_instance.list_keys()
-        
+
         # Then
         assert result == []
 
@@ -571,10 +569,10 @@ class TestLongTermMemoryExists:
         # Given
         key = "exists_key"
         memory_instance.store(key, {"value": "test"})
-        
+
         # When
         result = memory_instance.exists(key)
-        
+
         # Then
         assert result is True
 
@@ -582,10 +580,10 @@ class TestLongTermMemoryExists:
         """Given a nonexistent key, when checking existence, then returns False."""
         # Given
         key = "nonexistent_key"
-        
+
         # When
         result = memory_instance.exists(key)
-        
+
         # Then
         assert result is False
 
@@ -593,7 +591,7 @@ class TestLongTermMemoryExists:
         """Given an empty key, when checking existence, then raises ValueError."""
         # Given
         key = ""
-        
+
         # When/Then
         with pytest.raises(ValueError, match="key cannot be empty"):
             memory_instance.exists(key)
@@ -604,11 +602,11 @@ class TestLongTermMemoryExists:
         """Given path validation, when checking existence with invalid key, then raises error."""
         # Given
         key = "../../../etc/passwd"
-        
+
         # When
         with patch("empathy_os.memory.simple_storage._validate_file_path") as mock_validate:
             mock_validate.side_effect = ValueError("Invalid path")
-            
+
             # Then
             with pytest.raises(ValueError, match="Invalid path"):
                 memory_instance.exists(key)
@@ -625,10 +623,10 @@ class TestLongTermMemoryGetClassification:
         key = "classified_key"
         classification = "SENSITIVE"
         memory_instance.store(key, {"value": "test"}, classification=classification)
-        
+
         # When
         result = memory_instance.get_classification(key)
-        
+
         # Then
         assert result == classification
 
@@ -638,10 +636,10 @@ class TestLongTermMemoryGetClassification:
         """Given a nonexistent key, when getting classification, then returns None."""
         # Given
         key = "nonexistent_key"
-        
+
         # When
         result = memory_instance.get_classification(key)
-        
+
         # Then
         assert result is None
 
@@ -653,10 +651,10 @@ class TestLongTermMemoryGetClassification:
         key = "no_class_key"
         file_path = memory_instance.storage_path / f"{key}.json"
         file_path.write_text(json.dumps({"data": {"value": "test"}}))
-        
+
         # When
         result = memory_instance.get_classification(key)
-        
+
         # Then
         assert result == "INTERNAL"
 
@@ -666,7 +664,7 @@ class TestLongTermMemoryGetClassification:
         """Given an empty key, when getting classification, then raises ValueError."""
         # Given
         key = ""
-        
+
         # When/Then
         with pytest.raises(ValueError, match="key cannot be empty"):
             memory_instance.get_classification(key)
@@ -679,10 +677,10 @@ class TestLongTermMemoryGetClassification:
         key = "corrupted_key"
         file_path = memory_instance.storage_path / f"{key}.json"
         file_path.write_text("invalid json")
-        
+
         # When
         result = memory_instance.get_classification(key)
-        
+
         # Then
         assert result is None
 
@@ -698,40 +696,40 @@ class TestLongTermMemoryIntegration:
         key = "workflow_key"
         data = {"value": "test", "number": 42}
         classification = "INTERNAL"
-        
+
         # When - Store
         store_result = memory_instance.store(key, data, classification=classification)
-        
+
         # Then
         assert store_result is True
-        
+
         # When - Check existence
         exists_result = memory_instance.exists(key)
-        
+
         # Then
         assert exists_result is True
-        
+
         # When - Retrieve
         retrieved_data = memory_instance.retrieve(key)
-        
+
         # Then
         assert retrieved_data == data
-        
+
         # When - Get classification
         retrieved_class = memory_instance.get_classification(key)
-        
+
         # Then
         assert retrieved_class == classification
-        
+
         # When - List keys
         keys = memory_instance.list_keys(classification=classification)
-        
+
         # Then
         assert key in keys
-        
+
         # When - Delete
         delete_result = memory_instance.delete(key)
-        
+
         # Then
         assert delete_result is True
         assert not memory_instance.exists(key)
@@ -748,18 +746,18 @@ class TestLongTermMemoryIntegration:
             ("internal2", {"value": "i2"}, "INTERNAL"),
             ("sensitive1", {"value": "s1"}, "SENSITIVE"),
         ]
-        
+
         # When
         for key, data, classification in test_data:
             memory_instance.store(key, data, classification=classification)
-        
+
         # Then
         public_keys = memory_instance.list_keys(classification="PUBLIC")
         assert set(public_keys) == {"public1", "public2"}
-        
+
         internal_keys = memory_instance.list_keys(classification="INTERNAL")
         assert set(internal_keys) == {"internal1", "internal2"}
-        
+
         sensitive_keys = memory_instance.list_keys(classification="SENSITIVE")
         assert set(sensitive_keys) == {"sensitive1"}
 
@@ -769,19 +767,19 @@ class TestLongTermMemoryIntegration:
         """Given concurrent-like operations, when executed, then maintains consistency."""
         # Given
         keys = [f"concurrent_key_{i}" for i in range(10)]
-        
+
         # When - Store multiple
         for key in keys:
             memory_instance.store(key, {"value": key})
-        
+
         # Then - All exist
         for key in keys:
             assert memory_instance.exists(key)
-        
+
         # When - Delete half
         for key in keys[:5]:
             memory_instance.delete(key)
-        
+
         # Then - Half remain
         remaining = memory_instance.list_keys()
         assert len(remaining) == 5

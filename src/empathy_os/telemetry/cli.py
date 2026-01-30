@@ -10,7 +10,6 @@ import csv
 import json
 import sys
 from datetime import datetime
-from pathlib import Path
 from typing import Any
 
 try:
@@ -26,9 +25,7 @@ except ImportError:
 
 from empathy_os.config import _validate_file_path
 
-from .commands import cmd_file_test_dashboard, cmd_telemetry_dashboard
 from .usage_tracker import UsageTracker
-
 
 # _validate_file_path is now imported from empathy_os.config
 # This eliminates the duplicate definition that previously existed here (lines 30-69)

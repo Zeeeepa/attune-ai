@@ -7,13 +7,12 @@ Licensed under Apache 2.0
 """
 
 import json
-import time
 from datetime import datetime, timedelta
-from unittest.mock import MagicMock, Mock, patch, call
+from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.memory.short_term import RedisShortTermMemory, REDIS_AVAILABLE
+from empathy_os.memory.short_term import RedisShortTermMemory
 from empathy_os.memory.types import (
     AccessTier,
     AgentCredentials,
@@ -26,7 +25,6 @@ from empathy_os.memory.types import (
     TimeWindowQuery,
     TTLStrategy,
 )
-
 
 # ============================================================================
 # Fixtures
@@ -142,7 +140,7 @@ class TestRedisShortTermMemoryInitialization:
         """Given connection fails, when initializing, then raises ConnectionError."""
         mock_client = MagicMock()
         mock_client.ping.side_effect = Exception("Connection failed")
-        
+
         with patch("empathy_os.memory.short_term.redis.Redis", return_value=mock_client):
             with patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True):
                 with pytest.raises(ConnectionError, match="Failed to connect to Redis"):
@@ -153,7 +151,7 @@ class TestRedisShortTermMemoryInitialization:
         redis_config.ssl = True
         mock_client = MagicMock()
         mock_client.ping.return_value = True
-        
+
         with patch("empathy_os.memory.short_term.redis.Redis", return_value=mock_client) as mock_redis:
             with patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True):
                 RedisShortTermMemory(config=redis_config)
@@ -246,7 +244,7 @@ class TestStash:
         key = "test_key"
         data = {"api_key": "sk_live_12345"}
         from empathy_os.memory.security.secrets_detector import SecretMatch, SecretType
-        
+
         secret_match = SecretMatch(
             type=SecretType.API_KEY,
             value="sk_live_12345",
@@ -666,7 +664,7 @@ class TestPubSub:
         callback = MagicMock()
         mock_pubsub = MagicMock()
         mock_redis_client.pubsub.return_value = mock_pubsub
-        
+
         # Subscribe first
         memory_instance.subscribe(channel, callback, reader_credentials)
 
@@ -778,7 +776,7 @@ class TestTimeWindow:
         start_time = datetime.now() - timedelta(hours=1)
         end_time = datetime.now()
         query = TimeWindowQuery(key=key, start_time=start_time, end_time=end_time)
-        
+
         mock_redis_client.zrangebyscore.return_value = [
             json.dumps({"value": 85.5, "timestamp": start_time.timestamp()}).encode()
         ]

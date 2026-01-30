@@ -6,17 +6,14 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
-from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
 from empathy_os.monitoring.alerts_cli import (
+    delete_alert_cli,
+    disable_alert_cli,
+    enable_alert_cli,
     init_alert_wizard,
     list_alerts_cli,
-    watch_alerts,
     show_history,
-    delete_alert_cli,
-    enable_alert_cli,
-    disable_alert_cli,
+    watch_alerts,
 )
 
 
@@ -140,7 +137,7 @@ class TestListAlertsCommand:
 
     def test_lists_configured_alerts(self, tmp_path, capsys):
         """Test listing all configured alerts."""
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         db_path = tmp_path / "alerts.db"
         engine = AlertEngine(db_path=db_path)
@@ -182,9 +179,9 @@ class TestListAlertsCommand:
     def test_shows_alert_details(self, tmp_path, capsys):
         """Test displaying alert details."""
         from empathy_os.monitoring.alerts import (
+            AlertChannel,
             AlertEngine,
             AlertMetric,
-            AlertChannel,
             AlertSeverity,
         )
 
@@ -214,7 +211,7 @@ class TestWatchAlertsCommand:
 
     def test_watches_alerts_single_check(self, tmp_path, capsys):
         """Test single alert check (non-daemon mode)."""
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         db_path = tmp_path / "alerts.db"
         engine = AlertEngine(db_path=db_path, telemetry_dir=tmp_path / "telemetry")
@@ -239,7 +236,8 @@ class TestWatchAlertsCommand:
         """Test detection when threshold is exceeded."""
         import json
         from datetime import datetime
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         # Create telemetry data exceeding threshold
         telemetry_dir = tmp_path / "telemetry"
@@ -293,7 +291,8 @@ class TestHistoryCommand:
         """Test showing history of triggered alerts."""
         import json
         from datetime import datetime
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         # Setup telemetry data
         telemetry_dir = tmp_path / "telemetry"
@@ -337,7 +336,8 @@ class TestHistoryCommand:
         """Test filtering history by specific alert ID."""
         import json
         from datetime import datetime
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         telemetry_dir = tmp_path / "telemetry"
         telemetry_dir.mkdir()
@@ -403,7 +403,7 @@ class TestDeleteAlertCommand:
 
     def test_deletes_existing_alert(self, tmp_path, capsys):
         """Test deleting an existing alert."""
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         db_path = tmp_path / "alerts.db"
         engine = AlertEngine(db_path=db_path)
@@ -440,7 +440,7 @@ class TestEnableDisableCommands:
 
     def test_disables_alert(self, tmp_path, capsys):
         """Test disabling an alert."""
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         db_path = tmp_path / "alerts.db"
         engine = AlertEngine(db_path=db_path)
@@ -465,7 +465,7 @@ class TestEnableDisableCommands:
 
     def test_enables_alert(self, tmp_path, capsys):
         """Test enabling an alert."""
-        from empathy_os.monitoring.alerts import AlertEngine, AlertMetric, AlertChannel
+        from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
         db_path = tmp_path / "alerts.db"
         engine = AlertEngine(db_path=db_path)

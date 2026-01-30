@@ -16,7 +16,6 @@ from empathy_os.orchestration.execution_strategies import (
     ToolEnhancedStrategy,
 )
 
-
 # ============================================================================
 # Fixtures
 # ============================================================================

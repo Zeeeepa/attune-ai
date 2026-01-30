@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from ..file_session import FileSessionMemory
     from ..long_term import LongTermMemory
-    from ..redis_bootstrap import RedisStartMethod, RedisStatus
+    from ..redis_bootstrap import RedisStatus
     from ..short_term import RedisShortTermMemory
 
 

@@ -6,9 +6,8 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Protocol, runtime_checkable
+from typing import Protocol
 
 from .data_models import (
     AgentAssignmentRecord,
@@ -19,6 +18,7 @@ from .data_models import (
     TestExecutionRecord,
     WorkflowRunRecord,
 )
+
 
 def _parse_timestamp(timestamp_str: str) -> datetime:
     """Parse ISO format timestamp, handling 'Z' suffix for Python 3.10 compatibility.

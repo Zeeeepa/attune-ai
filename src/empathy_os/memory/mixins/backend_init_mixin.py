@@ -11,10 +11,9 @@ from typing import TYPE_CHECKING, Any
 import structlog
 
 if TYPE_CHECKING:
-    from ..claude_memory import ClaudeMemoryConfig
-    from ..file_session import FileSessionConfig, FileSessionMemory
+    from ..file_session import FileSessionMemory
     from ..long_term import LongTermMemory, SecureMemDocsIntegration
-    from ..redis_bootstrap import RedisStartMethod, RedisStatus
+    from ..redis_bootstrap import RedisStatus
     from ..short_term import RedisShortTermMemory
 
 logger = structlog.get_logger(__name__)

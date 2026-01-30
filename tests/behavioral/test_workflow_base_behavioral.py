@@ -7,10 +7,7 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import asyncio
-from dataclasses import dataclass
-from typing import Any
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -20,14 +17,10 @@ from empathy_os.workflows.base import (
     ModelProvider,
     ModelTier,
     WorkflowResult,
-    WorkflowStage,
     _build_provider_models,
     _get_history_store,
     _load_workflow_history,
-    _save_workflow_run,
-    get_workflow_stats,
 )
-
 
 # =============================================================================
 # Test Enums and Helper Functions
@@ -120,9 +113,8 @@ class TestWorkflowHistory:
 
     def test_save_workflow_run_appends_to_history(self, tmp_path):
         """Test WorkflowHistoryStore.record_run stores run data."""
-        import tempfile
-        from datetime import datetime
         import uuid
+        from datetime import datetime
 
         # Create a temporary database for this test
         db_path = tmp_path / "test_history.db"

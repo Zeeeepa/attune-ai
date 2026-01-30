@@ -14,28 +14,27 @@ Licensed under Apache 2.0
 
 import json
 import os
-import pytest
-from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
 from dataclasses import asdict
+from unittest.mock import patch
+
+import pytest
+
+# Parser modules
+from empathy_os.cli.parsers import batch, cache, metrics, provider, workflow
 
 # Config modules
 from empathy_os.config import EmpathyConfig, _validate_file_path
 from empathy_os.config.xml_config import (
-    XMLConfig,
-    OptimizationConfig,
     AdaptiveConfig,
     MetricsConfig,
-    EmpathyXMLConfig,
+    OptimizationConfig,
+    XMLConfig,
 )
-from empathy_os.workflows.config import WorkflowConfig, ModelConfig
-from empathy_os.workflows.step_config import WorkflowStepConfig, validate_step_config
-from empathy_os.models.provider_config import ProviderConfig
 from empathy_os.logging_config import LoggingConfig, get_logger
 from empathy_os.memory.config import get_redis_config, parse_redis_url
-
-# Parser modules
-from empathy_os.cli.parsers import workflow, batch, cache, provider, metrics
+from empathy_os.models.provider_config import ProviderConfig
+from empathy_os.workflows.config import ModelConfig, WorkflowConfig
+from empathy_os.workflows.step_config import WorkflowStepConfig, validate_step_config
 
 
 class TestFilePathValidation:

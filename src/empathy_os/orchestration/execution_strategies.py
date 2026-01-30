@@ -1916,8 +1916,9 @@ class DelegationChainStrategy(ExecutionStrategy):
         self, coordinator: AgentTemplate, task: str, specialists: list[AgentTemplate]
     ) -> dict[str, Any]:
         """Coordinator plans delegation strategy."""
-        from empathy_os.models import LLMClient
         import json
+
+        from empathy_os.models import LLMClient
 
         client = LLMClient()
 

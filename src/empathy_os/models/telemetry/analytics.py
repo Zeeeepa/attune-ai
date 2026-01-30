@@ -6,10 +6,11 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any
 
 from .storage import TelemetryStore
+
 
 class TelemetryAnalytics:
     """Analytics helpers for telemetry data.

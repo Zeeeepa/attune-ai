@@ -7,13 +7,12 @@ Licensed under Fair Source License 0.9
 """
 
 # Core workflow
-from .workflow import DocumentGenerationWorkflow
-
 # Configuration
 from .config import DOC_GEN_STEPS, TOKEN_COSTS
 
 # Report formatter
 from .report_formatter import format_doc_gen_report
+from .workflow import DocumentGenerationWorkflow
 
 __all__ = [
     # Workflow

@@ -6,10 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import json
-import pytest
-from datetime import datetime, timedelta
-from pathlib import Path
 from empathy_os.telemetry.usage_tracker import UsageTracker
 
 

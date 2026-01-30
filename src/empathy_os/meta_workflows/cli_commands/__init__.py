@@ -16,17 +16,17 @@ meta_workflow_app = typer.Typer(
 )
 
 # Import all commands (they will auto-register with meta_workflow_app via decorators)
-from .template_commands import generate_plan_cmd, inspect_template, list_templates
-from .workflow_commands import detect_intent, natural_language_run, run_workflow
+from .agent_commands import create_agent, create_team
 from .analytics_commands import (
     cleanup_executions,
     list_runs,
     show_analytics,
     show_execution,
 )
-from .memory_commands import search_memory, show_session_stats
 from .config_commands import show_migration_guide, suggest_defaults_cmd
-from .agent_commands import create_agent, create_team
+from .memory_commands import search_memory, show_session_stats
+from .template_commands import generate_plan_cmd, inspect_template, list_templates
+from .workflow_commands import detect_intent, natural_language_run, run_workflow
 
 __all__ = [
     # Typer app

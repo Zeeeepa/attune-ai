@@ -7,11 +7,9 @@ Licensed under Fair Source License 0.9
 """
 
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Any
 
-from .backend import TelemetryBackend
 from .data_models import (
     AgentAssignmentRecord,
     CoverageRecord,
@@ -21,6 +19,7 @@ from .data_models import (
     TestExecutionRecord,
     WorkflowRunRecord,
 )
+
 
 class TelemetryStore:
     """JSONL file-based telemetry backend (default implementation).

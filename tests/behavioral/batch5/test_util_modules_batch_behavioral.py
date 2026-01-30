@@ -22,10 +22,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
-from dataclasses import dataclass
-from pathlib import Path
-from unittest.mock import Mock, patch
 
 
 # ============================================================================
@@ -34,9 +30,11 @@ from unittest.mock import Mock, patch
 
 from empathy_os.models.validation import (
     ConfigValidator,
-    ValidationError as ConfigValidationError,
     ValidationResult,
     validate_config,
+)
+from empathy_os.models.validation import (
+    ValidationError as ConfigValidationError,
 )
 
 
@@ -291,9 +289,9 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.resilience.timeout import timeout
-    from empathy_os.resilience.retry import retry
     from empathy_os.resilience.fallback import with_fallback
+    from empathy_os.resilience.retry import retry
+    from empathy_os.resilience.timeout import timeout
 
     class TestTimeoutDecorator:
         """Behavioral tests for timeout decorator."""
@@ -396,7 +394,7 @@ except ImportError:
 
 try:
     from empathy_os.workflow_patterns.core import WorkflowPattern
-    from empathy_os.workflow_patterns.output import format_output, OutputFormatter
+    from empathy_os.workflow_patterns.output import OutputFormatter, format_output
 
     class TestWorkflowPattern:
         """Behavioral tests for WorkflowPattern base class."""
@@ -669,8 +667,8 @@ class TestUtilModulesIntegration:
         When: Attempting imports
         Then: No import errors for core modules."""
         # Given/When/Then - Main modules should import
-        from empathy_os.models.validation import ConfigValidator
         from empathy_os.exceptions import EmpathyFrameworkError
+        from empathy_os.models.validation import ConfigValidator
 
         assert ConfigValidator is not None
         assert EmpathyFrameworkError is not None

@@ -6,7 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
 
 from empathy_os.cli.utils.data import CHEATSHEET, EXPLAIN_CONTENT
 

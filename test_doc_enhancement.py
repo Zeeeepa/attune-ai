@@ -21,7 +21,7 @@ async def test_doc_generation():
         return
 
     print(f"📝 Generating documentation for: {test_module}")
-    print(f"🎯 Expected improvements:")
+    print("🎯 Expected improvements:")
     print("   - Real, executable code examples (not placeholders)")
     print("   - Comprehensive API documentation with parameters")
     print("   - Usage guides with best practices")
@@ -37,7 +37,7 @@ async def test_doc_generation():
         graceful_degradation=True,
     )
 
-    print(f"🔄 Calling LLM to generate enhanced documentation...\n")
+    print("🔄 Calling LLM to generate enhanced documentation...\n")
 
     # Generate documentation
     result = await workflow.execute(
@@ -66,10 +66,10 @@ async def test_doc_generation():
         return
 
     if not document:
-        print(f"❌ No document generated (document is empty)")
+        print("❌ No document generated (document is empty)")
         return
 
-    print(f"📊 Results:")
+    print("📊 Results:")
     print(f"   Output Size: {len(document)} characters")
     print(f"   Word Count: {len(document.split())} words")
     print(f"   Sections: ~{document.count('##')} sections")
@@ -78,7 +78,7 @@ async def test_doc_generation():
     if export_path:
         print(f"   📁 Saved to: {export_path}")
 
-    print(f"\n🔍 Quality Checks:")
+    print("\n🔍 Quality Checks:")
 
     # Check for real examples (not placeholders)
     has_code_blocks = "```python" in document
@@ -101,7 +101,7 @@ async def test_doc_generation():
         print(f"   {icon} {check}")
 
     # Show a sample of the output
-    print(f"\n📄 Documentation Preview (first 1000 chars):")
+    print("\n📄 Documentation Preview (first 1000 chars):")
     print("-" * 60)
     print(document[:1000])
     if len(document) > 1000:

@@ -53,14 +53,14 @@ async def test_bug_predict_with_auth():
         setup_completed=True,
     )
     max_strategy.save()
-    print(f"   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(codebase_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")
     print(f"   Recommended mode: {recommended_mode.value}")
 
     cost_estimate = max_strategy.estimate_cost(codebase_lines, recommended_mode)
-    print(f"\n   Cost Estimate:")
+    print("\n   Cost Estimate:")
     print(f"      Mode: {cost_estimate['mode']}")
     if cost_estimate["mode"] == "subscription":
         print(f"      Monetary cost: ${cost_estimate['monetary_cost']}")
@@ -79,7 +79,7 @@ async def test_bug_predict_with_auth():
     )
 
     print(f"   Analyzing {test_dir}...")
-    print(f"   Auth strategy: ENABLED")
+    print("   Auth strategy: ENABLED")
     print(f"   Expected recommendation: {recommended_mode.value}")
 
     # Run workflow on src/empathy_os
@@ -106,13 +106,13 @@ async def test_bug_predict_with_auth():
     pattern_count = output.get("pattern_count", 0)
     high_risk_files = output.get("high_risk_files", 0)
 
-    print(f"\n   Bug Prediction Results:")
+    print("\n   Bug Prediction Results:")
     print(f"      Overall risk score: {overall_risk_score}")
     print(f"      Patterns found: {pattern_count}")
     print(f"      High risk files: {high_risk_files}")
     print(f"      Recommendations: {len(recommendations)} characters")
 
-    print(f"\n   Auth Strategy:")
+    print("\n   Auth Strategy:")
     print(f"      Recommended: {recommended_mode.value}")
     print(f"      Tracked in workflow: {auth_mode_used or 'Not tracked'}")
     print(f"      Match: {auth_mode_used == recommended_mode.value}")

@@ -33,10 +33,8 @@ from typing import Any
 
 import structlog
 
-from .claude_memory import ClaudeMemoryConfig
-from .config import get_redis_memory
-from .file_session import FileSessionConfig, FileSessionMemory
-from .long_term import Classification, LongTermMemory, SecureMemDocsIntegration
+from .file_session import FileSessionMemory
+from .long_term import LongTermMemory, SecureMemDocsIntegration
 from .mixins import (
     BackendInitMixin,
     CapabilitiesMixin,
@@ -46,13 +44,10 @@ from .mixins import (
     PatternPromotionMixin,
     ShortTermOperationsMixin,
 )
-from .redis_bootstrap import RedisStartMethod, RedisStatus, ensure_redis
+from .redis_bootstrap import RedisStatus
 from .short_term import (
     AccessTier,
-    AgentCredentials,
     RedisShortTermMemory,
-    StagedPattern,
-    TTLStrategy,
 )
 
 logger = structlog.get_logger(__name__)

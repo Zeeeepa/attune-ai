@@ -8,9 +8,7 @@ Licensed under Apache 2.0
 
 import time
 from datetime import datetime, timedelta
-from unittest.mock import MagicMock, Mock, patch
-
-import pytest
+from unittest.mock import Mock, patch
 
 from empathy_os.models.fallback import (
     CircuitBreaker,

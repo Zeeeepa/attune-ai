@@ -9,11 +9,11 @@ Licensed under Apache 2.0
 import base64
 import os
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, mock_open, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.memory.encryption import EncryptionManager, HAS_ENCRYPTION
+from empathy_os.memory.encryption import HAS_ENCRYPTION, EncryptionManager
 from empathy_os.memory.long_term_types import SecurityError
 
 
