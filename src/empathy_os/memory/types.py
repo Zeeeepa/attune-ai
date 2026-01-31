@@ -297,11 +297,11 @@ class StagedPattern:
         """Validate fields after initialization"""
         # Pattern 1: String ID validation
         if not self.pattern_id or not self.pattern_id.strip():
-            raise ValueError("pattern_id cannot be empty")
+            raise ValueError(f"pattern_id cannot be empty. Got: {self.pattern_id!r}")
         if not self.agent_id or not self.agent_id.strip():
-            raise ValueError("agent_id cannot be empty")
+            raise ValueError(f"agent_id cannot be empty. Got: {self.agent_id!r}")
         if not self.pattern_type or not self.pattern_type.strip():
-            raise ValueError("pattern_type cannot be empty")
+            raise ValueError(f"pattern_type cannot be empty. Got: {self.pattern_type!r}")
 
         # Pattern 4: Range validation for confidence
         if not 0.0 <= self.confidence <= 1.0:

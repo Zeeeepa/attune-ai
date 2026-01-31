@@ -560,7 +560,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not key or not key.strip():
-            raise ValueError("key cannot be empty")
+            raise ValueError(f"key cannot be empty. Got: {key!r}")
 
         if not credentials.can_stage():
             raise PermissionError(
@@ -612,7 +612,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not key or not key.strip():
-            raise ValueError("key cannot be empty")
+            raise ValueError(f"key cannot be empty. Got: {key!r}")
 
         owner = agent_id or credentials.agent_id
         full_key = f"{self.PREFIX_WORKING}{owner}:{key}"
@@ -703,7 +703,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not pattern_id or not pattern_id.strip():
-            raise ValueError("pattern_id cannot be empty")
+            raise ValueError(f"pattern_id cannot be empty. Got: {pattern_id!r}")
 
         key = f"{self.PREFIX_STAGED}{pattern_id}"
         raw = self._get(key)
@@ -824,7 +824,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not conflict_id or not conflict_id.strip():
-            raise ValueError("conflict_id cannot be empty")
+            raise ValueError(f"conflict_id cannot be empty. Got: {conflict_id!r}")
 
         # Pattern 5: Type validation
         if not isinstance(positions, dict):
@@ -874,7 +874,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not conflict_id or not conflict_id.strip():
-            raise ValueError("conflict_id cannot be empty")
+            raise ValueError(f"conflict_id cannot be empty. Got: {conflict_id!r}")
 
         key = f"{self.PREFIX_CONFLICT}{conflict_id}"
         raw = self._get(key)
@@ -949,7 +949,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not session_id or not session_id.strip():
-            raise ValueError("session_id cannot be empty")
+            raise ValueError(f"session_id cannot be empty. Got: {session_id!r}")
 
         # Pattern 5: Type validation
         if metadata is not None and not isinstance(metadata, dict):
@@ -985,7 +985,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not session_id or not session_id.strip():
-            raise ValueError("session_id cannot be empty")
+            raise ValueError(f"session_id cannot be empty. Got: {session_id!r}")
 
         key = f"{self.PREFIX_SESSION}{session_id}"
         raw = self._get(key)
@@ -2009,7 +2009,7 @@ class RedisShortTermMemory:
         """
         # Pattern 1: String ID validation
         if not pattern_id or not pattern_id.strip():
-            raise ValueError("pattern_id cannot be empty")
+            raise ValueError(f"pattern_id cannot be empty. Got: {pattern_id!r}")
 
         # Pattern 4: Range validation
         if not 0.0 <= min_confidence <= 1.0:

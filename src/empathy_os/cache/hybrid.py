@@ -256,7 +256,11 @@ class HybridCache(BaseCache):
             return None
 
         if self._model is None:
-            raise RuntimeError("Sentence transformer model not loaded")
+            raise RuntimeError(
+                f"Sentence transformer model '{self.model_name}' not loaded. "
+                "Install required dependencies with: pip install empathy-framework[cache] "
+                "or pip install sentence-transformers torch"
+            )
 
         # Encode prompt
         prompt_embedding = self._model.encode(prompt, convert_to_numpy=True)

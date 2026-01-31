@@ -225,11 +225,11 @@ class SecureMemDocsIntegration:
         try:
             # Pattern 1: String ID validation
             if not content or not content.strip():
-                raise ValueError("content cannot be empty")
+                raise ValueError(f"content cannot be empty. Got: {content!r}")
             if not pattern_type or not pattern_type.strip():
-                raise ValueError("pattern_type cannot be empty")
+                raise ValueError(f"pattern_type cannot be empty. Got: {pattern_type!r}")
             if not user_id or not user_id.strip():
-                raise ValueError("user_id cannot be empty")
+                raise ValueError(f"user_id cannot be empty. Got: {user_id!r}")
 
             # Pattern 5: Type validation
             if custom_metadata is not None and not isinstance(custom_metadata, dict):
@@ -446,7 +446,7 @@ class SecureMemDocsIntegration:
         """
         # Pattern 1: String ID validation
         if not pattern_id or not pattern_id.strip():
-            raise ValueError("pattern_id cannot be empty")
+            raise ValueError(f"pattern_id cannot be empty. Got: {pattern_id!r}")
         if not user_id or not user_id.strip():
             raise ValueError("user_id cannot be empty")
 
@@ -793,7 +793,7 @@ class SecureMemDocsIntegration:
         """
         # Pattern 1: String ID validation
         if not pattern_id or not pattern_id.strip():
-            raise ValueError("pattern_id cannot be empty")
+            raise ValueError(f"pattern_id cannot be empty. Got: {pattern_id!r}")
         if not user_id or not user_id.strip():
             raise ValueError("user_id cannot be empty")
 

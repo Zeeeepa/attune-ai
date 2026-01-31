@@ -590,7 +590,10 @@ class RichProgressReporter:
             stage_names: List of stage names for progress tracking
         """
         if not RICH_AVAILABLE:
-            raise RuntimeError("Rich library required for RichProgressReporter")
+            raise RuntimeError(
+                "Rich library required for RichProgressReporter. "
+                "Install with: pip install rich"
+            )
 
         self.workflow_name = workflow_name
         self.stage_names = stage_names
@@ -674,7 +677,10 @@ class RichProgressReporter:
             Rich Panel containing progress information
         """
         if not RICH_AVAILABLE or Panel is None or Table is None:
-            raise RuntimeError("Rich not available")
+            raise RuntimeError(
+                "Rich library not available. "
+                "Install with: pip install rich"
+            )
 
         # Build metrics table
         metrics = Table(show_header=False, box=None, padding=(0, 2))

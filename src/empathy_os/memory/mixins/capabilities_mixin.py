@@ -68,7 +68,10 @@ class CapabilitiesMixin:
 
         """
         if self._short_term is None:
-            raise RuntimeError("Short-term memory not initialized")
+            raise RuntimeError(
+                "Short-term memory not initialized. "
+                "Ensure Redis is running and UnifiedMemory was initialized with Redis enabled."
+            )
         return self._short_term
 
     @property
@@ -87,7 +90,10 @@ class CapabilitiesMixin:
 
         """
         if self._simple_long_term is None:
-            raise RuntimeError("Long-term memory not initialized")
+            raise RuntimeError(
+                "Long-term memory not initialized. "
+                "Ensure UnifiedMemory was initialized with long_term_enabled=True."
+            )
         return self._simple_long_term
 
     # =========================================================================
@@ -145,7 +151,10 @@ class CapabilitiesMixin:
             RuntimeError: If file session memory is not initialized
         """
         if self._file_session is None:
-            raise RuntimeError("File session memory not initialized")
+            raise RuntimeError(
+                "File session memory not initialized. "
+                "File session tracking is automatically enabled when UnifiedMemory is initialized."
+            )
         return self._file_session
 
     def supports_realtime(self) -> bool:

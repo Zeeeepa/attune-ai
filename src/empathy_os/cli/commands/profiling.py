@@ -86,6 +86,8 @@ def memory_scan(
     if not scanner_path.exists():
         console.print("[red]Error:[/red] Memory leak scanner not found at expected path")
         console.print(f"Expected: {scanner_path}")
+        console.print("\nThe scanner script may have been moved or renamed.")
+        console.print("Check the scripts/ directory or reinstall the package.")
         raise typer.Exit(1)
 
     args = [sys.executable, str(scanner_path), "--path", str(path)]
@@ -135,6 +137,8 @@ def memory_test(
     if not profile_script.exists():
         console.print("[red]Error:[/red] Memory profiling script not found")
         console.print(f"Expected: {profile_script}")
+        console.print("\nInstall memory_profiler with: pip install memory-profiler")
+        console.print("Or check that the benchmarks directory exists.")
         raise typer.Exit(1)
 
     console.print(f"[bold]Profiling memory module: {module}[/bold]\n")

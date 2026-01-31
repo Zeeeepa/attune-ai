@@ -94,7 +94,7 @@ class LongTermMemory:
 
         """
         if not key or not key.strip():
-            raise ValueError("key cannot be empty")
+            raise ValueError(f"key cannot be empty. Got: {key!r}")
 
         # Validate key for path traversal attacks
         if ".." in key or key.startswith("/") or "\x00" in key:
@@ -165,7 +165,7 @@ class LongTermMemory:
 
         """
         if not key or not key.strip():
-            raise ValueError("key cannot be empty")
+            raise ValueError(f"key cannot be empty. Got: {key!r}")
 
         try:
             file_path = self.storage_path / f"{key}.json"
@@ -204,7 +204,7 @@ class LongTermMemory:
 
         """
         if not key or not key.strip():
-            raise ValueError("key cannot be empty")
+            raise ValueError(f"key cannot be empty. Got: {key!r}")
 
         try:
             file_path = self.storage_path / f"{key}.json"

@@ -146,7 +146,12 @@ class BackendInitMixin:
             if self.config.redis_required and not (
                 self._redis_status and self._redis_status.available
             ):
-                raise RuntimeError("Redis is required but not available")
+                raise RuntimeError(
+                    "Redis is required but not available. "
+                    f"Config requires Redis (redis_required=True, environment={self.config.environment.value}). "
+                    "Either: (1) Start Redis server, (2) Set REDIS_URL environment variable, "
+                    "or (3) Set redis_required=False in MemoryConfig."
+                )
 
         except RuntimeError:
             raise  # Re-raise required Redis error

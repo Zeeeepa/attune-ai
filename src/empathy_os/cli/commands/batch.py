@@ -47,6 +47,8 @@ def cmd_batch_submit(args):
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
             print("❌ Error: ANTHROPIC_API_KEY environment variable not set")
+            print("   Set it with: export ANTHROPIC_API_KEY='your-api-key-here'")
+            print("   Or get a key from: https://console.anthropic.com/")
             return 1
 
         # Load requests from file
@@ -100,6 +102,8 @@ def cmd_batch_status(args):
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
             print("❌ Error: ANTHROPIC_API_KEY environment variable not set")
+            print("   Set it with: export ANTHROPIC_API_KEY='your-api-key-here'")
+            print("   Or get a key from: https://console.anthropic.com/")
             return 1
 
         workflow = BatchProcessingWorkflow(api_key=api_key)
@@ -154,6 +158,8 @@ def cmd_batch_results(args):
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
             print("❌ Error: ANTHROPIC_API_KEY environment variable not set")
+            print("   Set it with: export ANTHROPIC_API_KEY='your-api-key-here'")
+            print("   Or get a key from: https://console.anthropic.com/")
             return 1
 
         workflow = BatchProcessingWorkflow(api_key=api_key)
@@ -214,6 +220,8 @@ def cmd_batch_wait(args):
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
             print("❌ Error: ANTHROPIC_API_KEY environment variable not set")
+            print("   Set it with: export ANTHROPIC_API_KEY='your-api-key-here'")
+            print("   Or get a key from: https://console.anthropic.com/")
             return 1
 
         workflow = BatchProcessingWorkflow(api_key=api_key)

@@ -326,7 +326,10 @@ class MetricsPanel:
             Rich Panel with formatted score
         """
         if not RICH_AVAILABLE or Panel is None:
-            raise RuntimeError("Rich is not available")
+            raise RuntimeError(
+                "Rich library not available. "
+                "Install with: pip install rich"
+            )
 
         style = cls.get_style(score)
         icon = cls.get_icon(score)

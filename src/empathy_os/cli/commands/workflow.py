@@ -152,7 +152,8 @@ def cmd_workflow(args):
                 print(workflow.describe())
 
         except KeyError as e:
-            print(f"Error: {e}")
+            print(f"Error: Workflow '{name}' not found")
+            print(f"\nRun 'empathy workflow list' to see available workflows")
             return 1
 
     elif action == "run":
@@ -367,10 +368,13 @@ def cmd_workflow(args):
                     print(f"\n✗ Workflow failed: {error_msg}\n")
 
         except KeyError as e:
-            print(f"Error: {e}")
+            print(f"Error: Workflow '{name}' not found")
+            print(f"\nRun 'empathy workflow list' to see available workflows")
             return 1
         except json_mod.JSONDecodeError as e:
             print(f"Error parsing input JSON: {e}")
+            print(f"\nExpected valid JSON, e.g.: --input '{\"key\": \"value\"}'")
+            print("Make sure to use single quotes around JSON and double quotes inside")
             return 1
 
     elif action == "config":

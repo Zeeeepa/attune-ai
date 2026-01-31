@@ -352,4 +352,8 @@ class TestGetDefaultCacheDir:
         """
         # Given
         with patch("empathy_os.platform_utils.is_windows", return_value=True):
-            with patch.dict(os.environ, {"LOCALAPPDATA": "C:\\Users\\Test\\AppData\\Local"}):
+            with patch.dict(os.environ, {"LOCALAPPDATA": r"C:\Users\Test\AppData\Local"}):
+                # When
+                result = platform_utils.get_default_cache_dir()
+                # Then
+                assert result == Path(r"C:\Users\Test\AppData\Local\empathy\cache")
