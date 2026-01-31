@@ -170,7 +170,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     {
                         "agent_id": agent.agent_id,
                         "status": agent.status,
-                        "last_seen": agent.timestamp.isoformat(),
+                        "last_seen": agent.last_beat.isoformat(),
                         "progress": agent.progress,
                         "current_task": agent.current_task,
                     }
@@ -198,7 +198,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 {
                     "agent_id": heartbeat.agent_id,
                     "status": heartbeat.status,
-                    "last_seen": heartbeat.timestamp.isoformat(),
+                    "last_seen": heartbeat.last_beat.isoformat(),
                     "progress": heartbeat.progress,
                     "current_task": heartbeat.current_task,
                     "metadata": heartbeat.metadata,
