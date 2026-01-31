@@ -61,9 +61,22 @@ def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
             raise ValueError(f"path must be within {allowed_dir}")
 
     # Check for dangerous system paths
-    dangerous_paths = ["/etc", "/sys", "/proc", "/dev"]
+    # Note: On macOS, /etc is a symlink to /private/etc, so we check both
+    dangerous_paths = [
+        "/etc",
+        "/sys",
+        "/proc",
+        "/dev",
+        "/private/etc",  # macOS: /etc -> /private/etc
+        "/private/var/root",  # macOS: root's home directory
+        "/usr/bin",  # System binaries
+        "/usr/sbin",  # System admin binaries
+        "/bin",  # Essential binaries
+        "/sbin",  # System binaries
+    ]
+    resolved_str = str(resolved)
     for dangerous in dangerous_paths:
-        if str(resolved).startswith(dangerous):
+        if resolved_str.startswith(dangerous + "/") or resolved_str == dangerous:
             raise ValueError(f"Cannot write to system directory: {dangerous}")
 
     return resolved
