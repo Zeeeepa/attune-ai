@@ -274,9 +274,9 @@ class TestEdgeCases:
 
 
 class TestGetAllPatterns:
-    """Test _get_all_patterns helper method."""
+    """Test _iter_all_patterns helper method."""
 
-    def test_get_all_patterns_empty_storage(self, tmp_path, monkeypatch):
+    def test_iter_all_patterns_empty_storage(self, tmp_path, monkeypatch):
         """Test getting patterns from empty storage."""
         storage_dir = tmp_path / "empty_storage"
         storage_dir.mkdir()
@@ -285,11 +285,11 @@ class TestGetAllPatterns:
         monkeypatch.setenv("EMPATHY_STORAGE_DIR", str(storage_dir))
 
         memory = UnifiedMemory(user_id="test_user")
-        patterns = memory._get_all_patterns()
+        patterns = list(memory._iter_all_patterns())
 
         assert patterns == []
 
-    def test_get_all_patterns_with_invalid_json(self, tmp_path, monkeypatch):
+    def test_iter_all_patterns_with_invalid_json(self, tmp_path, monkeypatch):
         """Test getting patterns with invalid JSON files."""
         storage_dir = tmp_path / "invalid_storage"
         storage_dir.mkdir()
@@ -302,12 +302,12 @@ class TestGetAllPatterns:
         monkeypatch.setenv("EMPATHY_STORAGE_DIR", str(storage_dir))
 
         memory = UnifiedMemory(user_id="test_user")
-        patterns = memory._get_all_patterns()
+        patterns = list(memory._iter_all_patterns())
 
         # Should skip invalid files and not crash
         assert isinstance(patterns, list)
 
-    def test_get_all_patterns_nested_directories(self, tmp_path, monkeypatch):
+    def test_iter_all_patterns_nested_directories(self, tmp_path, monkeypatch):
         """Test getting patterns from nested directories."""
         storage_dir = tmp_path / "nested_storage"
         storage_dir.mkdir()
@@ -326,7 +326,7 @@ class TestGetAllPatterns:
         monkeypatch.setenv("EMPATHY_STORAGE_DIR", str(storage_dir))
 
         memory = UnifiedMemory(user_id="test_user")
-        patterns = memory._get_all_patterns()
+        patterns = list(memory._iter_all_patterns())
 
         # Should find both patterns (recursive glob)
         assert len(patterns) == 2

@@ -159,9 +159,9 @@ class TestFeedbackLoop:
 
     def test_record_feedback_validates_quality_score(self):
         """Test record_feedback validates quality score range."""
-        mock_redis = Mock()
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_client = Mock()
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -178,9 +178,9 @@ class TestFeedbackLoop:
 
     def test_record_feedback_stores_entry(self):
         """Test that record_feedback stores feedback in memory."""
-        mock_redis = Mock()
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_client = Mock()
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -193,19 +193,19 @@ class TestFeedbackLoop:
         )
 
         # Should have stored feedback
-        assert mock_redis.setex.called
+        assert mock_client.setex.called
         assert feedback_id.startswith("feedback_")
 
         # Verify key format
-        call_args = mock_redis.setex.call_args[0]
+        call_args = mock_client.setex.call_args[0]
         assert call_args[0].startswith("feedback:code-review:analysis:cheap:")
         assert call_args[1] == loop.FEEDBACK_TTL  # 7 days
 
     def test_record_feedback_converts_model_tier_enum(self):
         """Test that record_feedback converts ModelTier enum to string."""
-        mock_redis = Mock()
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_client = Mock()
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -220,16 +220,16 @@ class TestFeedbackLoop:
         assert feedback_id != ""
 
         # Verify tier stored as string
-        call_args = mock_redis.setex.call_args[0]
+        call_args = mock_client.setex.call_args[0]
         assert "capable" in call_args[0]
 
     def test_get_feedback_history_empty(self):
         """Test get_feedback_history returns empty list when no data."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = []
+        mock_client = Mock()
+        mock_client.keys.return_value = []
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -239,7 +239,7 @@ class TestFeedbackLoop:
 
     def test_get_feedback_history_filters_by_tier(self):
         """Test get_feedback_history filters by tier."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         all_keys = [
             b"feedback:test:analysis:cheap:abc123",
@@ -255,7 +255,7 @@ class TestFeedbackLoop:
             else:
                 return all_keys
 
-        mock_redis.keys.side_effect = mock_keys
+        mock_client.keys.side_effect = mock_keys
 
         import json
 
@@ -289,10 +289,10 @@ class TestFeedbackLoop:
                 return json.dumps(capable_data).encode()
             return None
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -305,11 +305,11 @@ class TestFeedbackLoop:
 
     def test_get_quality_stats_no_data(self):
         """Test get_quality_stats returns None when no data."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = []
+        mock_client = Mock()
+        mock_client.keys.return_value = []
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -319,7 +319,7 @@ class TestFeedbackLoop:
 
     def test_get_quality_stats_calculates_correctly(self):
         """Test get_quality_stats calculates statistics correctly."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Create 10 feedback entries
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(10)]
@@ -330,7 +330,7 @@ class TestFeedbackLoop:
                 return all_keys
             return []
 
-        mock_redis.keys.side_effect = mock_keys
+        mock_client.keys.side_effect = mock_keys
 
         import json
 
@@ -351,10 +351,10 @@ class TestFeedbackLoop:
             }
             return json.dumps(data).encode()
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -369,11 +369,11 @@ class TestFeedbackLoop:
 
     def test_recommend_tier_no_data(self):
         """Test recommend_tier with no feedback data."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = []
+        mock_client = Mock()
+        mock_client.keys.return_value = []
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -386,7 +386,7 @@ class TestFeedbackLoop:
 
     def test_recommend_tier_insufficient_samples(self):
         """Test recommend_tier with insufficient samples."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Create 5 feedback entries (less than MIN_SAMPLES=10)
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(5)]
@@ -397,7 +397,7 @@ class TestFeedbackLoop:
                 return all_keys
             return []
 
-        mock_redis.keys.side_effect = mock_keys
+        mock_client.keys.side_effect = mock_keys
 
         import json
 
@@ -415,10 +415,10 @@ class TestFeedbackLoop:
             }
             return json.dumps(data).encode()
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -431,7 +431,7 @@ class TestFeedbackLoop:
 
     def test_recommend_tier_upgrade_on_low_quality(self):
         """Test recommend_tier suggests upgrade when quality is low."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Create 15 feedback entries with low quality (0.6)
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(15)]
@@ -442,7 +442,7 @@ class TestFeedbackLoop:
                 return all_keys
             return []
 
-        mock_redis.keys.side_effect = mock_keys
+        mock_client.keys.side_effect = mock_keys
 
         import json
 
@@ -460,10 +460,10 @@ class TestFeedbackLoop:
             }
             return json.dumps(data).encode()
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -475,7 +475,7 @@ class TestFeedbackLoop:
 
     def test_recommend_tier_maintain_on_acceptable_quality(self):
         """Test recommend_tier maintains tier when quality is acceptable."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Create 15 feedback entries with acceptable quality (0.8)
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(15)]
@@ -486,7 +486,7 @@ class TestFeedbackLoop:
                 return all_keys
             return []
 
-        mock_redis.keys.side_effect = mock_keys
+        mock_client.keys.side_effect = mock_keys
 
         import json
 
@@ -504,10 +504,10 @@ class TestFeedbackLoop:
             }
             return json.dumps(data).encode()
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -519,7 +519,7 @@ class TestFeedbackLoop:
 
     def test_recommend_tier_already_premium(self):
         """Test recommend_tier when already using premium tier."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Create 15 feedback entries with low quality on premium tier
         all_keys = [f"feedback:test:analysis:premium:id{i}".encode() for i in range(15)]
@@ -530,7 +530,7 @@ class TestFeedbackLoop:
                 return all_keys
             return []
 
-        mock_redis.keys.side_effect = mock_keys
+        mock_client.keys.side_effect = mock_keys
 
         import json
 
@@ -548,10 +548,10 @@ class TestFeedbackLoop:
             }
             return json.dumps(data).encode()
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -563,11 +563,11 @@ class TestFeedbackLoop:
 
     def test_get_underperforming_stages_no_stages(self):
         """Test get_underperforming_stages returns empty when no stages."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = []
+        mock_client = Mock()
+        mock_client.keys.return_value = []
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -577,7 +577,7 @@ class TestFeedbackLoop:
 
     def test_get_underperforming_stages_filters_by_threshold(self):
         """Test get_underperforming_stages filters by quality threshold."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Create feedback for 2 stages: one good, one bad
         all_keys = [
@@ -597,7 +597,7 @@ class TestFeedbackLoop:
                 return [k for k in all_keys if b"stage2" in k]
             return []
 
-        mock_redis.keys.side_effect = mock_keys
+        mock_client.keys.side_effect = mock_keys
 
         import json
 
@@ -628,10 +628,10 @@ class TestFeedbackLoop:
                 }
             return json.dumps(data).encode()
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -644,31 +644,31 @@ class TestFeedbackLoop:
 
     def test_clear_feedback_no_stage(self):
         """Test clear_feedback clears all stages for workflow."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = [
+        mock_client = Mock()
+        mock_client.keys.return_value = [
             b"feedback:test:stage1:cheap:id1",
             b"feedback:test:stage2:cheap:id2",
         ]
-        mock_redis.delete.return_value = 2
+        mock_client.delete.return_value = 2
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
         cleared = loop.clear_feedback("test")
 
         assert cleared == 2
-        assert mock_redis.delete.called
+        assert mock_client.delete.called
 
     def test_clear_feedback_specific_stage(self):
         """Test clear_feedback clears only specified stage."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = [b"feedback:test:stage1:cheap:id1"]
-        mock_redis.delete.return_value = 1
+        mock_client = Mock()
+        mock_client.keys.return_value = [b"feedback:test:stage1:cheap:id1"]
+        mock_client.delete.return_value = 1
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         loop = FeedbackLoop(memory=mock_memory)
 
@@ -677,5 +677,5 @@ class TestFeedbackLoop:
         assert cleared == 1
 
         # Verify pattern includes stage name
-        call_args = mock_redis.keys.call_args[0]
+        call_args = mock_client.keys.call_args[0]
         assert call_args[0] == "feedback:test:stage1:*"

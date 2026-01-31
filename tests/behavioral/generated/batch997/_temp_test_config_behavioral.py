@@ -8,15 +8,16 @@ Licensed under Apache 2.0
 
 import json
 import os
-import pytest
 from pathlib import Path
 from unittest.mock import Mock, mock_open, patch
 
+import pytest
+
 from empathy_os.config import (
-    _validate_file_path,
-    EmpathyConfig,
-    load_config,
     YAML_AVAILABLE,
+    EmpathyConfig,
+    _validate_file_path,
+    load_config,
 )
 
 
@@ -105,7 +106,7 @@ class TestValidateFilePath:
                 mock_resolved = Mock(spec=Path)
                 mock_resolved.__str__ = Mock(return_value=path)
                 mock_resolve.return_value = mock_resolved
-                
+
                 with pytest.raises(ValueError, match="Cannot write to system directory"):
                     _validate_file_path(path)
 

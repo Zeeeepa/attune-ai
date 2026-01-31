@@ -63,21 +63,29 @@ class TestModelProvider:
         assert ModelProvider.CUSTOM.value == "custom"
 
     def test_model_provider_to_unified(self):
-        """Test conversion to unified ModelProvider"""
+        """Test conversion to unified ModelProvider.
+
+        As of v5.0.0, framework is Claude-native. All providers map to ANTHROPIC.
+        """
         anthropic = ModelProvider.ANTHROPIC.to_unified()
         assert isinstance(anthropic, UnifiedModelProvider)
         assert anthropic.value == "anthropic"
 
+        # v5.0.0: All providers map to ANTHROPIC (Claude-native)
         openai = ModelProvider.OPENAI.to_unified()
         assert isinstance(openai, UnifiedModelProvider)
-        assert openai.value == "openai"
+        assert openai.value == "anthropic"  # Maps to anthropic in v5.0
 
     def test_all_providers_can_convert(self):
-        """Test that all provider enums can convert to unified"""
+        """Test that all provider enums can convert to unified.
+
+        As of v5.0.0, framework is Claude-native. All providers map to ANTHROPIC.
+        """
         for provider in ModelProvider:
             unified = provider.to_unified()
             assert isinstance(unified, UnifiedModelProvider)
-            assert unified.value == provider.value
+            # v5.0.0: All providers map to ANTHROPIC
+            assert unified.value == "anthropic"
 
 
 @pytest.mark.unit

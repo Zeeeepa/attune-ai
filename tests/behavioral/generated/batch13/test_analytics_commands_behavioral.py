@@ -6,12 +6,9 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-from datetime import datetime, timedelta
-from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch, call
+from unittest.mock import MagicMock, patch
 
 import pytest
-import typer
 from typer.testing import CliRunner
 
 from empathy_os.meta_workflows.cli_commands.analytics_commands import show_analytics

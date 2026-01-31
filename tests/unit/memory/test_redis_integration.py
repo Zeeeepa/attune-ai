@@ -174,18 +174,17 @@ class TestTTLExpiration:
 
     def test_ttl_strategy_values(self):
         """Test TTL strategy enum has correct values."""
-        assert TTLStrategy.COORDINATION.value == 300  # 5 minutes
-        assert TTLStrategy.WORKING_RESULTS.value == 3600  # 1 hour
         assert TTLStrategy.SESSION.value == 1800  # 30 minutes
+        assert TTLStrategy.WORKING_RESULTS.value == 3600  # 1 hour
         assert TTLStrategy.STAGED_PATTERNS.value == 86400  # 24 hours
         assert TTLStrategy.CONFLICT_CONTEXT.value == 604800  # 7 days
+        # COORDINATION removed in v5.0
 
     def test_stash_with_different_ttl_strategies(self, redis_memory, agent_contributor):
         """Test stashing with each TTL strategy."""
         strategies = [
-            TTLStrategy.COORDINATION,
-            TTLStrategy.WORKING_RESULTS,
             TTLStrategy.SESSION,
+            TTLStrategy.WORKING_RESULTS,
             TTLStrategy.STAGED_PATTERNS,
             TTLStrategy.CONFLICT_CONTEXT,
         ]

@@ -645,6 +645,9 @@ Code to review:
                 "Code will proceed to architectural review."
             )
 
+        # Calculate security score
+        security_score = 70 if has_critical else 90
+
         # Determine preliminary verdict based on scan
         if has_critical:
             preliminary_verdict = "request_changes"
@@ -661,7 +664,7 @@ Code to review:
             "bug_patterns": [],
             "quality_issues": [],
             "has_critical_issues": has_critical,
-            "security_score": 70 if has_critical else 90,
+            "security_score": security_score,
             "verdict": preliminary_verdict,  # Add verdict for when architect_review is skipped
             "needs_architect_review": input_data.get("needs_architect_review", False)
             or has_critical,

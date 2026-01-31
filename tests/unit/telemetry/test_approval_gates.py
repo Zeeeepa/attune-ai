@@ -151,9 +151,9 @@ class TestApprovalGate:
 
     def test_request_approval_stores_request(self):
         """Test that request_approval stores approval request in memory."""
-        mock_redis = Mock()
+        mock_client = Mock()
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
         # Don't provide stash method, so it will use Redis directly
         del mock_memory.stash
 
@@ -167,8 +167,8 @@ class TestApprovalGate:
                 )
 
         # Should have stored the request
-        assert mock_redis.setex.called
-        call_args = mock_redis.setex.call_args[0]
+        assert mock_client.setex.called
+        call_args = mock_client.setex.call_args[0]
         assert call_args[0].startswith("approval_request:")
 
         # Should timeout since no response
@@ -178,9 +178,9 @@ class TestApprovalGate:
 
     def test_request_approval_receives_approved_response(self):
         """Test successful approval flow."""
-        mock_redis = Mock()
+        mock_client = Mock()
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory, agent_id="test-agent")
 
@@ -203,9 +203,9 @@ class TestApprovalGate:
 
     def test_request_approval_receives_rejected_response(self):
         """Test rejection flow."""
-        mock_redis = Mock()
+        mock_client = Mock()
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory, agent_id="test-agent")
 
@@ -228,11 +228,11 @@ class TestApprovalGate:
 
     def test_respond_to_approval_success(self):
         """Test successful approval response."""
-        mock_redis = Mock()
-        mock_redis.get.return_value = b'{"request_id": "approval_abc123", "approval_type": "deploy", "agent_id": "test", "context": {}, "timestamp": "2026-01-27T12:00:00", "timeout_seconds": 300, "status": "pending"}'
+        mock_client = Mock()
+        mock_client.get.return_value = b'{"request_id": "approval_abc123", "approval_type": "deploy", "agent_id": "test", "context": {}, "timestamp": "2026-01-27T12:00:00", "timeout_seconds": 300, "status": "pending"}'
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory)
 
@@ -245,7 +245,7 @@ class TestApprovalGate:
 
         assert success is True
         # Should have stored response
-        assert mock_redis.setex.called
+        assert mock_client.setex.called
 
     def test_respond_to_approval_without_memory(self):
         """Test respond_to_approval returns False when no memory."""
@@ -261,11 +261,11 @@ class TestApprovalGate:
 
     def test_get_pending_approvals_empty(self):
         """Test get_pending_approvals returns empty list when no requests."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = []
+        mock_client = Mock()
+        mock_client.keys.return_value = []
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory)
 
@@ -275,11 +275,11 @@ class TestApprovalGate:
 
     def test_get_pending_approvals_with_requests(self):
         """Test get_pending_approvals returns pending requests."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Return list of keys
         keys_list = [b"approval_request:approval_abc123", b"approval_request:approval_xyz789"]
-        mock_redis.keys.return_value = keys_list
+        mock_client.keys.return_value = keys_list
 
         # Mock request data
         request1_data = {
@@ -315,10 +315,10 @@ class TestApprovalGate:
                 return json.dumps(request2_data).encode()
             return None
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory)
 
@@ -330,10 +330,10 @@ class TestApprovalGate:
 
     def test_get_pending_approvals_filters_by_type(self):
         """Test get_pending_approvals filters by approval_type."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         keys_list = [b"approval_request:approval_abc123", b"approval_request:approval_xyz789"]
-        mock_redis.keys.return_value = keys_list
+        mock_client.keys.return_value = keys_list
 
         # Mock request data
         request1_data = {
@@ -368,10 +368,10 @@ class TestApprovalGate:
                 return json.dumps(request2_data).encode()
             return None
 
-        mock_redis.get.side_effect = mock_get
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory)
 
@@ -383,8 +383,8 @@ class TestApprovalGate:
 
     def test_get_pending_approvals_excludes_non_pending(self):
         """Test get_pending_approvals excludes approved/rejected/timeout requests."""
-        mock_redis = Mock()
-        mock_redis.keys.return_value = [b"approval_request:approval_abc123"]
+        mock_client = Mock()
+        mock_client.keys.return_value = [b"approval_request:approval_abc123"]
 
         # Mock approved request (should be excluded)
         request_data = {
@@ -399,10 +399,10 @@ class TestApprovalGate:
 
         import json
 
-        mock_redis.get.return_value = json.dumps(request_data).encode()
+        mock_client.get.return_value = json.dumps(request_data).encode()
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory)
 
@@ -412,10 +412,10 @@ class TestApprovalGate:
 
     def test_clear_expired_requests(self):
         """Test clearing expired approval requests."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         keys_list = [b"approval_request:approval_abc123"]
-        mock_redis.keys.return_value = keys_list
+        mock_client.keys.return_value = keys_list
 
         # Mock expired request
         request_data = {
@@ -430,10 +430,10 @@ class TestApprovalGate:
 
         import json
 
-        mock_redis.get.return_value = json.dumps(request_data).encode()
+        mock_client.get.return_value = json.dumps(request_data).encode()
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         gate = ApprovalGate(memory=mock_memory)
 
@@ -441,7 +441,7 @@ class TestApprovalGate:
 
         assert cleared == 1
         # Should have updated status to timeout
-        assert mock_redis.setex.called
+        assert mock_client.setex.called
 
 
 class TestApprovalGateIntegration:
@@ -449,7 +449,7 @@ class TestApprovalGateIntegration:
 
     def test_full_approval_flow(self):
         """Test complete approval flow: request → respond → receive."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Track stored data
         stored_data = {}
@@ -461,11 +461,11 @@ class TestApprovalGateIntegration:
         def mock_get(key):
             return stored_data.get(key)
 
-        mock_redis.setex.side_effect = mock_setex
-        mock_redis.get.side_effect = mock_get
+        mock_client.setex.side_effect = mock_setex
+        mock_client.get.side_effect = mock_get
 
-        mock_memory = Mock(spec=["_redis"])
-        mock_memory._redis = mock_redis
+        mock_memory = Mock(spec=["_client"])
+        mock_memory._client = mock_client
 
         # Workflow: Request approval
         workflow_gate = ApprovalGate(memory=mock_memory, agent_id="workflow-001")

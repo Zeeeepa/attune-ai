@@ -66,8 +66,9 @@ class TestTTLStrategy:
         """Test TTL values are correct."""
         assert TTLStrategy.WORKING_RESULTS.value == 3600  # 1 hour
         assert TTLStrategy.STAGED_PATTERNS.value == 86400  # 24 hours
-        assert TTLStrategy.COORDINATION.value == 300  # 5 minutes
         assert TTLStrategy.SESSION.value == 1800  # 30 minutes
+        assert TTLStrategy.STREAM_ENTRY.value == 86400 * 7  # 7 days
+        assert TTLStrategy.CONFLICT_CONTEXT.value == 604800  # 7 days
 
 
 # =============================================================================

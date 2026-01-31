@@ -618,8 +618,8 @@ class SecurityAuditWorkflow(BaseWorkflow):
         """
         line = line_content.strip()
 
-        # Check if line is a comment
-        if line.startswith("#") or line.startswith("//") or line.startswith("*"):
+        # Check if line is a comment or documentation
+        if line.startswith("#") or line.startswith("//") or line.startswith("*") or line.startswith("-"):
             return True
 
         # Check if inside a docstring (triple quotes)

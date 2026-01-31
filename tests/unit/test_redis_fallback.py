@@ -116,7 +116,7 @@ class TestMockStorageFunctionality:
         creds = AgentCredentials("test_agent", AccessTier.CONTRIBUTOR)
 
         # Stash data
-        memory.stash("expires_soon", {"data": "test"}, creds, ttl=TTLStrategy.COORDINATION)
+        memory.stash("expires_soon", {"data": "test"}, creds, ttl=TTLStrategy.SESSION)
 
         # Should be retrievable immediately
         result = memory.retrieve("expires_soon", creds)

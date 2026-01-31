@@ -6,14 +6,12 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
-from decimal import Decimal
 
-from empathy_os.workflows.document_gen.config import (
-    TOKEN_COSTS,
-    DOC_GEN_STEPS,
-)
 from empathy_os.workflows.base import ModelTier
+from empathy_os.workflows.document_gen.config import (
+    DOC_GEN_STEPS,
+    TOKEN_COSTS,
+)
 from empathy_os.workflows.step_config import WorkflowStepConfig
 
 
@@ -28,7 +26,7 @@ class TestTokenCostsStructure:
         """
         # Given / When
         available_tiers = set(TOKEN_COSTS.keys())
-        
+
         # Then
         assert ModelTier.CHEAP in available_tiers
         assert ModelTier.CAPABLE in available_tiers
@@ -81,7 +79,7 @@ class TestTokenCostsStructure:
         cheap_costs = TOKEN_COSTS[ModelTier.CHEAP]
         capable_costs = TOKEN_COSTS[ModelTier.CAPABLE]
         premium_costs = TOKEN_COSTS[ModelTier.PREMIUM]
-        
+
         # When / Then
         assert cheap_costs["input"] < capable_costs["input"]
         assert capable_costs["input"] < premium_costs["input"]
@@ -96,7 +94,7 @@ class TestTokenCostsStructure:
         """
         # Given / When
         cheap_costs = TOKEN_COSTS[ModelTier.CHEAP]
-        
+
         # Then
         assert cheap_costs["input"] == 0.00025
         assert cheap_costs["output"] == 0.00125
@@ -109,7 +107,7 @@ class TestTokenCostsStructure:
         """
         # Given / When
         capable_costs = TOKEN_COSTS[ModelTier.CAPABLE]
-        
+
         # Then
         assert capable_costs["input"] == 0.003
         assert capable_costs["output"] == 0.015
@@ -122,7 +120,7 @@ class TestTokenCostsStructure:
         """
         # Given / When
         premium_costs = TOKEN_COSTS[ModelTier.PREMIUM]
-        
+
         # Then
         assert premium_costs["input"] == 0.015
         assert premium_costs["output"] == 0.075
@@ -148,7 +146,7 @@ class TestDocGenStepsStructure:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert isinstance(polish_step, WorkflowStepConfig)
 
@@ -160,7 +158,7 @@ class TestDocGenStepsStructure:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert polish_step.name == "polish"
 
@@ -172,7 +170,7 @@ class TestDocGenStepsStructure:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert polish_step.task_type == "final_review"
 
@@ -184,7 +182,7 @@ class TestDocGenStepsStructure:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert polish_step.tier_hint == "premium"
 
@@ -196,7 +194,7 @@ class TestDocGenStepsStructure:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert polish_step.description
         assert len(polish_step.description) > 0
@@ -210,7 +208,7 @@ class TestDocGenStepsStructure:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert hasattr(polish_step, "max_tokens")
         assert polish_step.max_tokens > 0
@@ -223,7 +221,7 @@ class TestDocGenStepsStructure:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert polish_step.max_tokens == 20000
 
@@ -239,7 +237,7 @@ class TestConfigImmutability:
         """
         # Given / When
         costs = TOKEN_COSTS
-        
+
         # Then
         assert costs is not None
         assert isinstance(costs, dict)
@@ -252,7 +250,7 @@ class TestConfigImmutability:
         """
         # Given / When
         steps = DOC_GEN_STEPS
-        
+
         # Then
         assert steps is not None
         assert isinstance(steps, dict)
@@ -269,10 +267,10 @@ class TestConfigurationIntegration:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When
         tier_hint = polish_step.tier_hint
-        
+
         # Then
         assert tier_hint == "premium"
         assert ModelTier.PREMIUM in TOKEN_COSTS
@@ -285,7 +283,7 @@ class TestConfigurationIntegration:
         """
         # Given
         valid_tiers = {"cheap", "capable", "premium"}
-        
+
         # When / Then
         for step_name, step_config in DOC_GEN_STEPS.items():
             assert step_config.tier_hint in valid_tiers, \
@@ -301,12 +299,12 @@ class TestConfigurationIntegration:
         input_tokens = 1000
         output_tokens = 2000
         tier = ModelTier.CAPABLE
-        
+
         # When
         input_cost = (input_tokens / 1000) * TOKEN_COSTS[tier]["input"]
         output_cost = (output_tokens / 1000) * TOKEN_COSTS[tier]["output"]
         total_cost = input_cost + output_cost
-        
+
         # Then
         assert total_cost > 0
         assert total_cost == 0.003 * 1 + 0.015 * 2
@@ -321,7 +319,7 @@ class TestConfigurationIntegration:
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
         expected_min_tokens = 20000  # For large chunked documents
-        
+
         # When / Then
         assert polish_step.max_tokens >= expected_min_tokens
 
@@ -337,7 +335,7 @@ class TestConfigurationMetadata:
         """
         # Given
         import empathy_os.workflows.document_gen.config as config_module
-        
+
         # When / Then
         assert config_module.__doc__ is not None
         assert len(config_module.__doc__.strip()) > 0
@@ -350,7 +348,7 @@ class TestConfigurationMetadata:
         """
         # Given
         import empathy_os.workflows.document_gen.config as config_module
-        
+
         # When / Then
         docstring = config_module.__doc__
         assert "Token costs" in docstring or "cost" in docstring.lower()
@@ -368,10 +366,10 @@ class TestEdgeCases:
         # Given
         tokens = 1  # 1 token
         tier = ModelTier.CHEAP
-        
+
         # When
         cost = (tokens / 1000) * TOKEN_COSTS[tier]["input"]
-        
+
         # Then
         assert cost > 0
         assert cost == 0.00025 / 1000
@@ -385,10 +383,10 @@ class TestEdgeCases:
         # Given
         large_token_count = 1_000_000  # 1 million tokens
         tier = ModelTier.PREMIUM
-        
+
         # When
         cost = (large_token_count / 1000) * TOKEN_COSTS[tier]["output"]
-        
+
         # Then
         assert cost > 0
         assert cost == 75.0  # 0.075 * 1000
@@ -410,7 +408,7 @@ class TestEdgeCases:
         """
         # Given
         polish_step = DOC_GEN_STEPS["polish"]
-        
+
         # When / Then
         assert hasattr(polish_step, "name")
         assert hasattr(polish_step, "task_type")

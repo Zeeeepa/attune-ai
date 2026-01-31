@@ -123,7 +123,7 @@ class TestBatchOperations:
         items = [("ttl_key", {"data": "value"})]
 
         count = memory.stash_batch(
-            items, contributor_creds, ttl=TTLStrategy.COORDINATION
+            items, contributor_creds, ttl=TTLStrategy.SESSION
         )
 
         assert count == 1

@@ -6,10 +6,9 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import json
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import Mock, patch, MagicMock, call
-from pathlib import Path
 from typer.testing import CliRunner
 
 from empathy_os.meta_workflows.cli_commands.agent_commands import (
@@ -70,7 +69,7 @@ class TestCreateAgentInteractiveMode:
         with patch('builtins.open', create=True) as mock_open:
             mock_file = MagicMock()
             mock_open.return_value.__enter__.return_value = mock_file
-            
+
             create_agent(
                 interactive=True,
                 name=None,
@@ -184,7 +183,7 @@ class TestCreateAgentInteractiveMode:
         with patch('builtins.open', create=True) as mock_open:
             mock_file = MagicMock()
             mock_open.return_value.__enter__.return_value = mock_file
-            
+
             create_agent(interactive=True, output_file=str(output_file))
 
             # Then
@@ -275,7 +274,7 @@ class TestCreateAgentQuickMode:
         with patch('builtins.open', create=True) as mock_open:
             mock_file = MagicMock()
             mock_open.return_value.__enter__.return_value = mock_file
-            
+
             create_agent(
                 interactive=False,
                 name="FileAgent",
@@ -601,7 +600,7 @@ class TestCreateAgentFileOperations:
                 mock_file = MagicMock()
                 mock_open.return_value.__enter__.return_value = mock_file
                 mock_json_dump.return_value = None
-                
+
                 create_agent(interactive=True, output_file=str(output_file))
 
                 # Then
@@ -643,7 +642,7 @@ class TestCreateAgentFileOperations:
         with patch('builtins.open', create=True) as mock_open:
             mock_file = MagicMock()
             mock_open.return_value.__enter__.return_value = mock_file
-            
+
             create_agent(
                 interactive=False,
                 name="DirAgent",

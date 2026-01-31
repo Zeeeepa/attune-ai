@@ -213,8 +213,9 @@ class TestTTLStrategies:
         """
         assert TTLStrategy.WORKING_RESULTS.value == 3600  # 1 hour
         assert TTLStrategy.STAGED_PATTERNS.value == 86400  # 24 hours
-        assert TTLStrategy.COORDINATION.value == 300  # 5 minutes
+        # COORDINATION removed in v5.0 - use CoordinationSignals with custom TTLs
         assert TTLStrategy.SESSION.value == 1800  # 30 minutes
+        assert TTLStrategy.STREAM_ENTRY.value == 86400 * 7  # 7 days
 
     def test_stash_with_custom_ttl(self, memory, agent_creds):
         """Teaching Pattern: Testing TTL parameter handling.
@@ -276,18 +277,18 @@ class TestTTLStrategies:
             ttl=TTLStrategy.STAGED_PATTERNS,
         )
 
-        # Coordination - 5 minutes
+        # Session - 30 minutes (replaces COORDINATION which was removed in v5.0)
         memory.stash(
-            "coord:signal1",
+            "session:data1",
             {"status": "ready"},
             agent_creds,
-            ttl=TTLStrategy.COORDINATION,
+            ttl=TTLStrategy.SESSION,
         )
 
         # All should be retrievable immediately
         assert memory.retrieve("working:result1", agent_creds) is not None
         assert memory.retrieve("staged:pattern1", agent_creds) is not None
-        assert memory.retrieve("coord:signal1", agent_creds) is not None
+        assert memory.retrieve("session:data1", agent_creds) is not None
 
 
 # ============================================================================

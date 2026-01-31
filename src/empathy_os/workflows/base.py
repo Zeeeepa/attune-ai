@@ -142,8 +142,12 @@ class ModelProvider(Enum):
     CUSTOM = "custom"  # User-defined custom models
 
     def to_unified(self) -> UnifiedModelProvider:
-        """Convert to unified ModelProvider from empathy_os.models."""
-        return UnifiedModelProvider(self.value)
+        """Convert to unified ModelProvider from empathy_os.models.
+
+        As of v5.0.0, framework is Claude-native. All providers map to ANTHROPIC.
+        """
+        # v5.0.0: Framework is Claude-native, only ANTHROPIC supported
+        return UnifiedModelProvider.ANTHROPIC
 
 
 # Import unified MODEL_REGISTRY as single source of truth

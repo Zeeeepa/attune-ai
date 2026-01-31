@@ -6,9 +6,10 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-from typing import Any, Callable
-from unittest.mock import MagicMock, Mock, patch
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
+from unittest.mock import MagicMock, Mock, patch
 
 
 class MockTyperContext:

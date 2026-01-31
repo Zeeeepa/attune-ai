@@ -324,11 +324,19 @@ class TestModelProvider:
         assert ModelProvider.OLLAMA.value == "ollama"
 
     def test_provider_to_unified(self):
-        """Test provider converts to unified ModelProvider."""
+        """Test provider converts to unified ModelProvider.
+
+        As of v5.0.0, framework is Claude-native.
+        All providers map to ANTHROPIC.
+        """
         from empathy_os.models import ModelProvider as UnifiedModelProvider
 
         unified = ModelProvider.ANTHROPIC.to_unified()
         assert unified == UnifiedModelProvider.ANTHROPIC
 
+        # v5.0.0: All providers map to ANTHROPIC (Claude-native)
         unified = ModelProvider.OPENAI.to_unified()
-        assert unified == UnifiedModelProvider.OPENAI
+        assert unified == UnifiedModelProvider.ANTHROPIC
+
+        unified = ModelProvider.GOOGLE.to_unified()
+        assert unified == UnifiedModelProvider.ANTHROPIC

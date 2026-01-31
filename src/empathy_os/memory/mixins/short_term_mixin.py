@@ -74,9 +74,8 @@ class ShortTermOperationsMixin:
             # Map ttl_seconds to TTLStrategy
             ttl_strategy = TTLStrategy.WORKING_RESULTS
             if ttl_seconds is not None:
-                if ttl_seconds <= TTLStrategy.COORDINATION.value:
-                    ttl_strategy = TTLStrategy.COORDINATION
-                elif ttl_seconds <= TTLStrategy.SESSION.value:
+                # COORDINATION removed in v5.0 - use SESSION for short-lived data
+                if ttl_seconds <= TTLStrategy.SESSION.value:
                     ttl_strategy = TTLStrategy.SESSION
                 elif ttl_seconds <= TTLStrategy.WORKING_RESULTS.value:
                     ttl_strategy = TTLStrategy.WORKING_RESULTS

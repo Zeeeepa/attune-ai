@@ -6,14 +6,15 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
+from unittest.mock import Mock, patch
+
 import pytest
-from unittest.mock import Mock, patch, MagicMock
-from typer.testing import CliRunner
 from typer import Typer
+from typer.testing import CliRunner
 
 from empathy_os.meta_workflows.cli_commands.memory_commands import (
-    search_memory,
     meta_workflow_app,
+    search_memory,
 )
 
 
@@ -314,7 +315,7 @@ class TestSearchMemoryErrorHandling:
             # When/Then
             with pytest.raises(SystemExit) as exc_info:
                 search_memory(query="test")
-            
+
             # Verify error message was printed
             print_calls = [str(call) for call in mock_console.print.call_args_list]
             assert any("UnifiedMemory not available" in str(call) for call in print_calls)
@@ -367,7 +368,7 @@ class TestSearchMemoryIntegrationWithTyperApp:
         """
         # Given/When
         # The command is registered via decorator in the module
-        
+
         # Then
         assert isinstance(meta_workflow_app, Typer)
 

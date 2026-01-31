@@ -30,10 +30,11 @@ def verify_phase_2_methods():
 
     # Check ValidationResult dataclass
     print("\n✓ Checking ValidationResult dataclass...")
-    assert hasattr(ValidationResult, "passed")
-    assert hasattr(ValidationResult, "failures")
-    assert hasattr(ValidationResult, "error_count")
-    assert hasattr(ValidationResult, "output")
+    assert hasattr(ValidationResult, "__dataclass_fields__"), "ValidationResult is not a dataclass"
+    assert "passed" in ValidationResult.__dataclass_fields__
+    assert "failures" in ValidationResult.__dataclass_fields__
+    assert "error_count" in ValidationResult.__dataclass_fields__
+    assert "output" in ValidationResult.__dataclass_fields__
     print("  ✅ ValidationResult has all required fields")
 
     # Check AutonomousTestGenerator has Phase 2 methods
@@ -59,6 +60,13 @@ def verify_phase_2_methods():
 
         # Remove 'self' from comparison
         params = [p for p in params if p != "self"]
+
+        # Validate parameters match expected
+        for expected_param in expected_params:
+            assert expected_param in params, (
+                f"Missing parameter '{expected_param}' in {method_name}. "
+                f"Expected: {expected_params}, Got: {params}"
+            )
 
         print(f"  ✅ {method_name} exists with params: {params}")
 
@@ -89,10 +97,11 @@ def verify_phase_3_methods():
 
     # Check CoverageResult dataclass
     print("\n✓ Checking CoverageResult dataclass...")
-    assert hasattr(CoverageResult, "coverage")
-    assert hasattr(CoverageResult, "missing_lines")
-    assert hasattr(CoverageResult, "total_statements")
-    assert hasattr(CoverageResult, "covered_statements")
+    assert hasattr(CoverageResult, "__dataclass_fields__"), "CoverageResult is not a dataclass"
+    assert "coverage" in CoverageResult.__dataclass_fields__
+    assert "missing_lines" in CoverageResult.__dataclass_fields__
+    assert "total_statements" in CoverageResult.__dataclass_fields__
+    assert "covered_statements" in CoverageResult.__dataclass_fields__
     print("  ✅ CoverageResult has all required fields")
 
     # Check AutonomousTestGenerator has Phase 3 methods
@@ -119,6 +128,13 @@ def verify_phase_3_methods():
 
         # Remove 'self' from comparison
         params = [p for p in params if p != "self"]
+
+        # Validate parameters match expected
+        for expected_param in expected_params:
+            assert expected_param in params, (
+                f"Missing parameter '{expected_param}' in {method_name}. "
+                f"Expected: {expected_params}, Got: {params}"
+            )
 
         print(f"  ✅ {method_name} exists with params: {params}")
 

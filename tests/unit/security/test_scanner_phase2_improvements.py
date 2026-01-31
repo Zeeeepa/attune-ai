@@ -229,6 +229,7 @@ class TestFakeCredentialRecognition:
 
 
 @pytest.mark.integration
+@pytest.mark.skip(reason="Integration tests - require API credentials for workflow execution")
 class TestPhase2Improvements:
     """Integration tests for Phase 2 scanner improvements."""
 

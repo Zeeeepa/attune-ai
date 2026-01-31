@@ -2034,6 +2034,9 @@ class RedisShortTermMemory:
                     f"Confidence {pattern.confidence} below threshold {min_confidence}",
                 )
             del self._mock_storage[key]
+            # Also invalidate local cache
+            if key in self._local_cache:
+                del self._local_cache[key]
             return True, pattern, "Pattern promoted successfully"
 
         if self._client is None:
@@ -2062,6 +2065,10 @@ class RedisShortTermMemory:
             pipe = self._client.pipeline(True)
             pipe.delete(key)
             pipe.execute()
+
+            # Also invalidate local cache
+            if key in self._local_cache:
+                del self._local_cache[key]
 
             return True, pattern, "Pattern promoted successfully"
 

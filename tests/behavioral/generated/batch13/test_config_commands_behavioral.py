@@ -6,15 +6,13 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
+from unittest.mock import Mock, patch
+
 import pytest
-from unittest.mock import Mock, MagicMock, patch, call
 from typer.testing import CliRunner
-from rich.console import Console
-from rich.table import Table
 
 from empathy_os.meta_workflows.cli_commands.config_commands import (
     suggest_defaults_cmd,
-    console,
 )
 
 
@@ -54,16 +52,16 @@ def mock_template():
     mock = Mock()
     mock.name = "Test Template"
     mock.form_schema = Mock()
-    
+
     # Create mock questions
     question1 = Mock()
     question1.id = "question_1"
     question1.text = "What is your name?"
-    
+
     question2 = Mock()
     question2.id = "question_2"
     question2.text = "Select your options"
-    
+
     mock.form_schema.questions = [question1, question2]
     return mock
 
@@ -80,7 +78,7 @@ class TestSuggestDefaultsCommand:
     """Test suite for suggest_defaults_cmd function."""
 
     def test_given_valid_template_when_no_history_then_shows_no_suggestions(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context, 
+        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
         mock_template_registry, mock_template
     ):
         """
@@ -89,27 +87,27 @@ class TestSuggestDefaultsCommand:
         THEN it should display a message indicating no suggestions are available
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = {}
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="test_user"
             )
-            
+
             # THEN
             assert mock_template_registry.load_template.called
             assert mock_session_context.suggest_defaults.called
             assert any(
-                "No suggestions available" in str(call_args) 
+                "No suggestions available" in str(call_args)
                 for call_args in mock_console.print.call_args_list
             )
 
@@ -127,30 +125,30 @@ class TestSuggestDefaultsCommand:
             "question_1": "John Doe",
             "question_2": ["option1", "option2"]
         }
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = suggestions
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id="test_session",
                 user_id="test_user"
             )
-            
+
             # THEN
             mock_template_registry.load_template.assert_called_once_with("test_template")
             mock_session_context.suggest_defaults.assert_called_once_with(
                 template_id="test_template",
                 form_schema=mock_template.form_schema
             )
-            
+
             # Verify console print calls
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("Suggested Defaults for:" in call for call in print_calls)
@@ -166,15 +164,15 @@ class TestSuggestDefaultsCommand:
         THEN it should display an error message and exit with code 1
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_template_registry.load_template.return_value = None
-            
+
             # WHEN/THEN
             with pytest.raises(SystemExit) as exc_info:
                 suggest_defaults_cmd(
@@ -182,7 +180,7 @@ class TestSuggestDefaultsCommand:
                     session_id=None,
                     user_id="test_user"
                 )
-            
+
             assert exc_info.value.code == 1
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("Error" in call and "Template not found" in call for call in print_calls)
@@ -198,23 +196,23 @@ class TestSuggestDefaultsCommand:
         """
         # GIVEN
         session_id = "custom_session_123"
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context) as mock_session_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = {}
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=session_id,
                 user_id="test_user"
             )
-            
+
             # THEN
             mock_session_cls.assert_called_once_with(
                 memory=mock_unified_memory,
@@ -232,23 +230,23 @@ class TestSuggestDefaultsCommand:
         """
         # GIVEN
         user_id = "custom_user_456"
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = {}
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id=user_id
             )
-            
+
             # THEN
             mock_memory_cls.assert_called_once_with(user_id=user_id)
 
@@ -265,23 +263,23 @@ class TestSuggestDefaultsCommand:
         suggestions = {
             "question_2": ["option1", "option2", "option3"]
         }
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = suggestions
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="test_user"
             )
-            
+
             # THEN
             # Verify table creation (list should be comma-separated)
             assert mock_console.print.called
@@ -299,23 +297,23 @@ class TestSuggestDefaultsCommand:
         suggestions = {
             "unknown_question": "some value"
         }
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = suggestions
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="test_user"
             )
-            
+
             # THEN
             assert mock_console.print.called
 
@@ -330,23 +328,23 @@ class TestSuggestDefaultsCommand:
         """
         # GIVEN
         mock_template.name = "My Awesome Template"
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = {}
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="test_user"
             )
-            
+
             # THEN
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("My Awesome Template" in call for call in print_calls)
@@ -367,23 +365,23 @@ class TestSuggestDefaultsCommand:
             "question_2": "value2",
             "question_3": "value3"
         }
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = suggestions
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="test_user"
             )
-            
+
             # THEN
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("Found 3 suggested default(s)" in call for call in print_calls)
@@ -398,9 +396,9 @@ class TestSuggestDefaultsCommand:
         THEN the exception should propagate
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    side_effect=Exception("Unexpected error")):
-            
+
             # WHEN/THEN
             with pytest.raises(Exception) as exc_info:
                 suggest_defaults_cmd(
@@ -408,7 +406,7 @@ class TestSuggestDefaultsCommand:
                     session_id=None,
                     user_id="test_user"
                 )
-            
+
             assert "Unexpected error" in str(exc_info.value)
 
     def test_given_empty_suggestions_dict_when_displaying_then_shows_no_suggestions(
@@ -421,22 +419,22 @@ class TestSuggestDefaultsCommand:
         THEN it should show the no suggestions message
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = {}
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="test_user"
             )
-            
+
             # THEN
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("No suggestions available" in call for call in print_calls)
@@ -451,22 +449,22 @@ class TestSuggestDefaultsCommand:
         THEN it should use 'cli_user' as default
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = {}
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="cli_user"  # default value
             )
-            
+
             # THEN
             mock_memory_cls.assert_called_once_with(user_id="cli_user")
 
@@ -484,22 +482,22 @@ class TestSuggestDefaultsCommand:
             "question_1": 123,
             "question_2": True
         }
-        
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory', 
+
+        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry', 
+             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
-            
+
             mock_session_context.suggest_defaults.return_value = suggestions
-            
+
             # WHEN
             suggest_defaults_cmd(
                 template_id="test_template",
                 session_id=None,
                 user_id="test_user"
             )
-            
+
             # THEN
             assert mock_console.print.called

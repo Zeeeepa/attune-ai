@@ -18,7 +18,6 @@ from empathy_os.telemetry.cli import (
     cmd_sonnet_opus_analysis,
     cmd_task_routing_report,
     cmd_telemetry_compare,
-    cmd_telemetry_dashboard,
     cmd_telemetry_export,
     cmd_telemetry_reset,
     cmd_telemetry_savings,
@@ -26,6 +25,7 @@ from empathy_os.telemetry.cli import (
     cmd_test_status,
     cmd_tier1_status,
 )
+from empathy_os.telemetry.commands.dashboard_commands import cmd_telemetry_dashboard
 from empathy_os.telemetry.usage_tracker import UsageTracker
 
 

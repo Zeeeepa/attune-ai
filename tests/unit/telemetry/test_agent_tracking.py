@@ -121,8 +121,8 @@ class TestHeartbeatCoordinatorWithMemory:
         """Create mock memory backend."""
         # Use spec to prevent Mock from having stash attribute
         # This makes hasattr(memory, "stash") return False
-        memory = Mock(spec=["_redis"])
-        memory._redis = Mock()
+        memory = Mock(spec=["_client"])
+        memory._client = Mock()
         return memory
 
     @pytest.fixture
@@ -137,7 +137,7 @@ class TestHeartbeatCoordinatorWithMemory:
         assert coordinator.agent_id == "test-agent"
 
         # Verify stash was called
-        assert mock_memory._redis.setex.called
+        assert mock_memory._client.setex.called
 
     def test_beat_updates_heartbeat(self, coordinator, mock_memory):
         """Test beat updates heartbeat."""
@@ -146,8 +146,8 @@ class TestHeartbeatCoordinatorWithMemory:
         coordinator.beat(status="running", progress=0.75, current_task="Processing")
 
         # Verify Redis setex was called
-        assert mock_memory._redis.setex.called
-        call_args = mock_memory._redis.setex.call_args
+        assert mock_memory._client.setex.called
+        call_args = mock_memory._client.setex.call_args
         key, ttl, data = call_args[0]
 
         assert key == "heartbeat:test-agent"
@@ -160,7 +160,7 @@ class TestHeartbeatCoordinatorWithMemory:
         coordinator.stop_heartbeat(final_status="completed")
 
         # Verify final heartbeat was sent
-        assert mock_memory._redis.setex.called
+        assert mock_memory._client.setex.called
 
         # Verify agent_id cleared
         assert coordinator.agent_id is None
@@ -168,7 +168,7 @@ class TestHeartbeatCoordinatorWithMemory:
     def test_get_active_agents(self, coordinator, mock_memory):
         """Test getting active agents."""
         # Mock Redis keys response
-        mock_memory._redis.keys.return_value = [b"heartbeat:agent-1", b"heartbeat:agent-2"]
+        mock_memory._client.keys.return_value = [b"heartbeat:agent-1", b"heartbeat:agent-2"]
 
         # Mock Redis get responses
         import json
@@ -190,7 +190,7 @@ class TestHeartbeatCoordinatorWithMemory:
             "metadata": {},
         }
 
-        mock_memory._redis.get.side_effect = [
+        mock_memory._client.get.side_effect = [
             json.dumps(heartbeat1).encode(),
             json.dumps(heartbeat2).encode(),
         ]
@@ -215,12 +215,12 @@ class TestHeartbeatCoordinatorWithMemory:
             "metadata": {},
         }
 
-        mock_memory._redis.get.return_value = json.dumps(heartbeat).encode()
+        mock_memory._client.get.return_value = json.dumps(heartbeat).encode()
 
         assert coordinator.is_agent_alive("test-agent") is True
 
         # Test non-existent agent
-        mock_memory._redis.get.return_value = None
+        mock_memory._client.get.return_value = None
         assert coordinator.is_agent_alive("missing-agent") is False
 
     def test_get_agent_status(self, coordinator, mock_memory):
@@ -236,7 +236,7 @@ class TestHeartbeatCoordinatorWithMemory:
             "metadata": {"key": "value"},
         }
 
-        mock_memory._redis.get.return_value = json.dumps(heartbeat).encode()
+        mock_memory._client.get.return_value = json.dumps(heartbeat).encode()
 
         status = coordinator.get_agent_status("test-agent")
 
@@ -252,7 +252,7 @@ class TestHeartbeatCoordinatorWithMemory:
         fresh_time = now - timedelta(seconds=10)
         stale_time = now - timedelta(seconds=120)
 
-        mock_memory._redis.keys.return_value = [b"heartbeat:agent-fresh", b"heartbeat:agent-stale"]
+        mock_memory._client.keys.return_value = [b"heartbeat:agent-fresh", b"heartbeat:agent-stale"]
 
         import json
 
@@ -274,7 +274,7 @@ class TestHeartbeatCoordinatorWithMemory:
             "metadata": {},
         }
 
-        mock_memory._redis.get.side_effect = [
+        mock_memory._client.get.side_effect = [
             json.dumps(heartbeat_fresh).encode(),
             json.dumps(heartbeat_stale).encode(),
         ]
@@ -311,30 +311,36 @@ class TestHeartbeatCoordinatorIntegration:
         memory.retrieve = Mock()
         return memory
 
-    def test_stash_method_support(self, mock_memory_with_stash):
-        """Test coordinator works with stash method."""
+    def test_client_method_support(self, mock_memory_with_stash):
+        """Test coordinator works with _client method."""
+        # Add _client to the mock
+        mock_memory_with_stash._client = Mock()
         coordinator = HeartbeatCoordinator(memory=mock_memory_with_stash)
 
         coordinator.start_heartbeat("test-agent", metadata={})
 
-        # Verify stash was called
-        assert mock_memory_with_stash.stash.called
-        call_args = mock_memory_with_stash.stash.call_args
+        # Verify setex was called
+        assert mock_memory_with_stash._client.setex.called
+        call_args = mock_memory_with_stash._client.setex.call_args
+        key, ttl, data = call_args[0]
 
-        assert call_args[1]["key"] == "heartbeat:test-agent"
-        assert call_args[1]["ttl_seconds"] == coordinator.HEARTBEAT_TTL
+        assert key == "heartbeat:test-agent"
+        assert ttl == coordinator.HEARTBEAT_TTL
 
     def test_error_handling_in_publish(self, mock_memory_with_stash):
         """Test error handling when publish fails."""
-        mock_memory_with_stash.stash.side_effect = Exception("Redis error")
+        mock_memory_with_stash._client = Mock()
+        mock_memory_with_stash._client.setex.side_effect = Exception("Redis error")
 
         coordinator = HeartbeatCoordinator(memory=mock_memory_with_stash)
 
         # Should not raise, just log warning
         coordinator.start_heartbeat("test-agent", metadata={})
 
-    def test_retrieve_heartbeat_with_retrieve_method(self, mock_memory_with_stash):
-        """Test _retrieve_heartbeat with retrieve method."""
+    def test_retrieve_heartbeat_with_client_method(self, mock_memory_with_stash):
+        """Test _retrieve_heartbeat with _client.get method."""
+        import json
+
         heartbeat_data = {
             "agent_id": "test",
             "status": "running",
@@ -344,7 +350,8 @@ class TestHeartbeatCoordinatorIntegration:
             "metadata": {},
         }
 
-        mock_memory_with_stash.retrieve.return_value = heartbeat_data
+        mock_memory_with_stash._client = Mock()
+        mock_memory_with_stash._client.get.return_value = json.dumps(heartbeat_data).encode()
 
         coordinator = HeartbeatCoordinator(memory=mock_memory_with_stash)
         result = coordinator._retrieve_heartbeat("heartbeat:test")

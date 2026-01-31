@@ -10,6 +10,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 
+@dataclass
 class LLMCallRecord:
     """Record of a single LLM API call.
 

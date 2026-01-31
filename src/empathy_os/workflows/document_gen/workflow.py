@@ -15,6 +15,7 @@ from empathy_os.config import _validate_file_path
 
 from ..base import BaseWorkflow, ModelTier
 from .config import DOC_GEN_STEPS, TOKEN_COSTS
+from .report_formatter import format_doc_gen_report
 
 logger = logging.getLogger(__name__)
 

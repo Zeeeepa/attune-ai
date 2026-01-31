@@ -10,6 +10,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+from .backend import _parse_timestamp
 from .data_models import (
     AgentAssignmentRecord,
     CoverageRecord,

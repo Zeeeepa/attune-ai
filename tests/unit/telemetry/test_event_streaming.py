@@ -102,10 +102,10 @@ class TestEventStreamer:
         streamer = EventStreamer()
 
         key = streamer._get_stream_key("agent_heartbeat")
-        assert key == "empathy:events:agent_heartbeat"
+        assert key == "stream:agent_heartbeat"
 
         key = streamer._get_stream_key("coordination_signal")
-        assert key == "empathy:events:coordination_signal"
+        assert key == "stream:coordination_signal"
 
     def test_publish_event_without_memory(self):
         """Test publish_event returns empty string when no memory backend."""
@@ -119,11 +119,11 @@ class TestEventStreamer:
 
     def test_publish_event_success(self):
         """Test successful event publishing."""
-        mock_redis = Mock()
-        mock_redis.xadd.return_value = b"1706356800000-0"
+        mock_client = Mock()
+        mock_client.xadd.return_value = b"1706356800000-0"
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -134,21 +134,21 @@ class TestEventStreamer:
         )
 
         assert event_id == "1706356800000-0"
-        mock_redis.xadd.assert_called_once()
+        mock_client.xadd.assert_called_once()
 
         # Check XADD arguments
-        call_args = mock_redis.xadd.call_args
-        assert call_args[0][0] == "empathy:events:agent_heartbeat"
+        call_args = mock_client.xadd.call_args
+        assert call_args[0][0] == "stream:agent_heartbeat"
         assert call_args[1]["maxlen"] == 10000
         assert call_args[1]["approximate"] is True
 
     def test_publish_event_failure(self):
         """Test publish_event handles Redis errors gracefully."""
-        mock_redis = Mock()
-        mock_redis.xadd.side_effect = Exception("Redis error")
+        mock_client = Mock()
+        mock_client.xadd.side_effect = Exception("Redis error")
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -168,8 +168,8 @@ class TestEventStreamer:
 
     def test_get_recent_events_success(self):
         """Test successful retrieval of recent events."""
-        mock_redis = Mock()
-        mock_redis.xrevrange.return_value = [
+        mock_client = Mock()
+        mock_client.xrevrange.return_value = [
             (
                 b"1706356800000-0",
                 {
@@ -191,7 +191,7 @@ class TestEventStreamer:
         ]
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -205,11 +205,11 @@ class TestEventStreamer:
 
     def test_get_recent_events_failure(self):
         """Test get_recent_events handles Redis errors gracefully."""
-        mock_redis = Mock()
-        mock_redis.xrevrange.side_effect = Exception("Redis error")
+        mock_client = Mock()
+        mock_client.xrevrange.side_effect = Exception("Redis error")
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -219,14 +219,14 @@ class TestEventStreamer:
 
     def test_get_stream_info_success(self):
         """Test get_stream_info returns stream metadata."""
-        mock_redis = Mock()
-        mock_redis.xinfo_stream.return_value = {
+        mock_client = Mock()
+        mock_client.xinfo_stream.return_value = {
             b"length": 100,
             b"first-entry": [b"1706356800000-0", {b"data": b"..."}],
         }
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -237,11 +237,11 @@ class TestEventStreamer:
 
     def test_get_stream_info_failure(self):
         """Test get_stream_info handles errors gracefully."""
-        mock_redis = Mock()
-        mock_redis.xinfo_stream.side_effect = Exception("Stream does not exist")
+        mock_client = Mock()
+        mock_client.xinfo_stream.side_effect = Exception("Stream does not exist")
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -251,26 +251,26 @@ class TestEventStreamer:
 
     def test_delete_stream_success(self):
         """Test successful stream deletion."""
-        mock_redis = Mock()
-        mock_redis.delete.return_value = 1
+        mock_client = Mock()
+        mock_client.delete.return_value = 1
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
         result = streamer.delete_stream(event_type="test_event")
 
         assert result is True
-        mock_redis.delete.assert_called_once_with("empathy:events:test_event")
+        mock_client.delete.assert_called_once_with("stream:test_event")
 
     def test_delete_stream_not_found(self):
         """Test delete_stream returns False when stream doesn't exist."""
-        mock_redis = Mock()
-        mock_redis.delete.return_value = 0
+        mock_client = Mock()
+        mock_client.delete.return_value = 0
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -280,28 +280,28 @@ class TestEventStreamer:
 
     def test_trim_stream_success(self):
         """Test successful stream trimming."""
-        mock_redis = Mock()
-        mock_redis.xtrim.return_value = 50
+        mock_client = Mock()
+        mock_client.xtrim.return_value = 50
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
         trimmed = streamer.trim_stream(event_type="agent_heartbeat", max_length=1000)
 
         assert trimmed == 50
-        mock_redis.xtrim.assert_called_once_with(
-            "empathy:events:agent_heartbeat", maxlen=1000, approximate=True
+        mock_client.xtrim.assert_called_once_with(
+            "stream:agent_heartbeat", maxlen=1000, approximate=True
         )
 
     def test_trim_stream_failure(self):
         """Test trim_stream handles errors gracefully."""
-        mock_redis = Mock()
-        mock_redis.xtrim.side_effect = Exception("Trim error")
+        mock_client = Mock()
+        mock_client.xtrim.side_effect = Exception("Trim error")
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 
@@ -323,13 +323,13 @@ class TestEventStreamerIntegration:
 
     def test_publish_and_retrieve_event_flow(self):
         """Test complete flow of publishing and retrieving events."""
-        mock_redis = Mock()
+        mock_client = Mock()
 
         # Mock xadd (publish)
-        mock_redis.xadd.return_value = b"1706356800000-0"
+        mock_client.xadd.return_value = b"1706356800000-0"
 
         # Mock xrevrange (retrieve)
-        mock_redis.xrevrange.return_value = [
+        mock_client.xrevrange.return_value = [
             (
                 b"1706356800000-0",
                 {
@@ -342,7 +342,7 @@ class TestEventStreamerIntegration:
         ]
 
         mock_memory = Mock()
-        mock_memory._redis = mock_redis
+        mock_memory._client = mock_client
 
         streamer = EventStreamer(memory=mock_memory)
 

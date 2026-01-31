@@ -64,9 +64,8 @@ class TestTTLStrategy:
         """Test STAGED_PATTERNS is 24 hours."""
         assert TTLStrategy.STAGED_PATTERNS.value == 86400
 
-    def test_coordination_ttl(self):
-        """Test COORDINATION is 5 minutes."""
-        assert TTLStrategy.COORDINATION.value == 300
+    # test_coordination_ttl removed - COORDINATION TTL removed in v5.0
+    # Coordination now uses CoordinationSignals with custom TTLs
 
     def test_conflict_context_ttl(self):
         """Test CONFLICT_CONTEXT is 7 days."""
@@ -526,7 +525,7 @@ class TestRedisShortTermMemory:
         assert RedisShortTermMemory.PREFIX_WORKING == "empathy:working:"
         assert RedisShortTermMemory.PREFIX_STAGED == "empathy:staged:"
         assert RedisShortTermMemory.PREFIX_CONFLICT == "empathy:conflict:"
-        assert RedisShortTermMemory.PREFIX_COORDINATION == "empathy:coord:"
+        # PREFIX_COORDINATION removed in v5.0 - use CoordinationSignals
         assert RedisShortTermMemory.PREFIX_SESSION == "empathy:session:"
         assert RedisShortTermMemory.PREFIX_PUBSUB == "empathy:pubsub:"
         assert RedisShortTermMemory.PREFIX_STREAM == "empathy:stream:"
@@ -566,8 +565,8 @@ class TestRedisShortTermMemory:
         memory = RedisShortTermMemory(use_mock=True)
         creds = AgentCredentials("test_agent", AccessTier.CONTRIBUTOR)
 
-        # TTL should be passed as the enum, not the value
-        memory.stash("expiring_key", {"data": "temp"}, creds, ttl=TTLStrategy.COORDINATION)
+        # Use SESSION TTL instead (COORDINATION removed in v5.0)
+        memory.stash("expiring_key", {"data": "temp"}, creds, ttl=TTLStrategy.SESSION)
         result = memory.retrieve("expiring_key", creds)
         assert result is not None
 

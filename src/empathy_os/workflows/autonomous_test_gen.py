@@ -883,7 +883,7 @@ Return ONLY the complete Python test file, no explanations."""
                     sys.executable, "-m", "pytest",
                     str(test_file),
                     f"--cov={source_file.parent}",
-                    f"--cov-report=term-missing",
+                    "--cov-report=term-missing",
                     "--cov-report=json",
                     "-v"
                 ],
@@ -1230,8 +1230,8 @@ def run_batch_generation(
     print(f"Starting autonomous test generation for batch {batch_num}")
     print(f"Modules to process: {len(modules)}")
     print(f"Agent ID: {agent_id}")
-    print(f"\nENHANCEMENTS:")
-    print(f"  Phase 1: Extended thinking + Prompt caching + Workflow detection")
+    print("\nENHANCEMENTS:")
+    print("  Phase 1: Extended thinking + Prompt caching + Workflow detection")
     print(f"  Phase 2: Multi-turn refinement = {'ENABLED' if enable_refinement else 'DISABLED'}")
     print(f"  Phase 3: Coverage-guided = {'ENABLED' if enable_coverage_guided else 'DISABLED'}")
     print("\nMonitor at: http://localhost:8000\n")

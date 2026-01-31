@@ -9,6 +9,7 @@ Related: docs/SECURITY_PHASE2_COMPLETE.md
 
 import ast
 import logging
+import re
 from pathlib import Path
 from typing import Any
 
@@ -167,12 +168,14 @@ def is_in_docstring_or_comment(line_content: str, file_content: str, line_num: i
     try:
         tree = ast.parse(file_content)
 
-        # Get all docstrings
+        # Get all docstrings - only from nodes that can have docstrings
         docstrings = []
         for node in ast.walk(tree):
-            docstring = ast.get_docstring(node)
-            if docstring:
-                docstrings.append(docstring)
+            # Only these node types can have docstrings
+            if isinstance(node, (ast.FunctionDef, ast.ClassDef, ast.AsyncFunctionDef, ast.Module)):
+                docstring = ast.get_docstring(node)
+                if docstring:
+                    docstrings.append(docstring)
 
         # Check if any docstring contains this line content
         for docstring in docstrings:

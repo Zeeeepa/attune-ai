@@ -42,30 +42,32 @@ class TestTestGeneratorInitialization:
 class TestWizardNameInference:
     """Test wizard module and class name inference."""
 
-    def test_infer_module_from_wizard_id(self):
-        """Test module path inference from wizard ID."""
+    def test_infer_module_from_workflow_id(self):
+        """Test module path inference from workflow ID."""
         generator = TestGenerator()
 
-        # Test with typical wizard ID format
-        wizard_id = "soap_note"
-        module = generator._infer_module(wizard_id)
+        # Test with typical workflow ID format
+        workflow_id = "soap_note"
+        module = generator._infer_module(workflow_id)
 
-        # Should convert to module path
+        # Should convert to module path in workflows package
         assert isinstance(module, str)
-        assert "wizard" in module.lower() or wizard_id in module
+        assert "workflow" in module.lower() or workflow_id in module
+        assert module == "workflows.soap_note"
 
-    def test_infer_class_name_from_wizard_id(self):
-        """Test class name inference from wizard ID."""
+    def test_infer_class_name_from_workflow_id(self):
+        """Test class name inference from workflow ID."""
         generator = TestGenerator()
 
-        # Test with snake_case wizard ID
-        wizard_id = "soap_note"
-        class_name = generator._infer_class_name(wizard_id)
+        # Test with snake_case workflow ID
+        workflow_id = "soap_note"
+        class_name = generator._infer_class_name(workflow_id)
 
-        # Should convert to PascalCase
+        # Should convert to PascalCase with Workflow suffix
         assert isinstance(class_name, str)
         assert class_name[0].isupper()  # Starts with capital
-        assert "Wizard" in class_name or "SOAP" in class_name
+        assert "Workflow" in class_name
+        assert class_name == "SoapNoteWorkflow"
 
 
 class TestTestGeneration:
@@ -77,10 +79,10 @@ class TestTestGeneration:
 
         # Use real pattern IDs
         result = generator.generate_tests(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["linear_flow"],
-            wizard_module="wizards.test_wizard",
-            wizard_class="TestWizard",
+            workflow_module="wizards.test_wizard",
+            workflow_class="TestWizard",
         )
 
         # Verify return structure
@@ -94,10 +96,10 @@ class TestTestGeneration:
         generator = TestGenerator()
 
         result = generator.generate_tests(
-            wizard_id="simple_wizard",
+            workflow_id="simple_wizard",
             pattern_ids=[],  # No patterns
-            wizard_module="wizards.simple",
-            wizard_class="SimpleWizard",
+            workflow_module="wizards.simple",
+            workflow_class="SimpleWizard",
         )
 
         # Unit tests should always be present
@@ -110,10 +112,10 @@ class TestTestGeneration:
 
         # Use patterns that indicate multi-step workflow
         result = generator.generate_tests(
-            wizard_id="complex_wizard",
+            workflow_id="complex_wizard",
             pattern_ids=["linear_flow", "phased_processing"],
-            wizard_module="wizards.complex",
-            wizard_class="ComplexWizard",
+            workflow_module="wizards.complex",
+            workflow_class="ComplexWizard",
         )
 
         # Integration tests should be generated for multi-step
@@ -125,10 +127,10 @@ class TestTestGeneration:
         generator = TestGenerator()
 
         result = generator.generate_tests(
-            wizard_id="wizard_with_fixtures",
+            workflow_id="wizard_with_fixtures",
             pattern_ids=["linear_flow"],
-            wizard_module="wizards.fixtures_test",
-            wizard_class="FixturesTestWizard",
+            workflow_module="wizards.fixtures_test",
+            workflow_class="FixturesTestWizard",
         )
 
         # Fixtures should be included
@@ -145,24 +147,24 @@ class TestTemplateContextBuilding:
 
         # Create mock risk analysis
         risk_analysis = generator.risk_analyzer.analyze(
-            wizard_id="test_wizard", pattern_ids=["linear_flow"]
+            workflow_id="test_wizard", pattern_ids=["linear_flow"]
         )
 
         context = generator._build_template_context(
-            wizard_id="test_wizard",
+            workflow_id="test_wizard",
             pattern_ids=["linear_flow"],
-            wizard_module="wizards.test",
-            wizard_class="TestWizard",
+            workflow_module="wizards.test",
+            workflow_class="TestWizard",
             risk_analysis=risk_analysis,
         )
 
         # Verify required context fields
-        assert "wizard_id" in context
-        assert context["wizard_id"] == "test_wizard"
-        assert "wizard_module" in context
-        assert context["wizard_module"] == "wizards.test"
-        assert "wizard_class" in context
-        assert context["wizard_class"] == "TestWizard"
+        assert "workflow_id" in context
+        assert context["workflow_id"] == "test_wizard"
+        assert "workflow_module" in context
+        assert context["workflow_module"] == "wizards.test"
+        assert "workflow_class" in context
+        assert context["workflow_class"] == "TestWizard"
         assert "pattern_ids" in context
 
     def test_build_context_detects_linear_flow(self):
@@ -170,14 +172,14 @@ class TestTemplateContextBuilding:
         generator = TestGenerator()
 
         risk_analysis = generator.risk_analyzer.analyze(
-            wizard_id="linear_wizard", pattern_ids=["linear_flow"]
+            workflow_id="linear_wizard", pattern_ids=["linear_flow"]
         )
 
         context = generator._build_template_context(
-            wizard_id="linear_wizard",
+            workflow_id="linear_wizard",
             pattern_ids=["linear_flow"],
-            wizard_module="wizards.linear",
-            wizard_class="LinearWizard",
+            workflow_module="wizards.linear",
+            workflow_class="LinearWizard",
             risk_analysis=risk_analysis,
         )
 
@@ -190,14 +192,14 @@ class TestTemplateContextBuilding:
 
         pattern_ids = ["linear_flow", "phased_processing", "approval"]
         risk_analysis = generator.risk_analyzer.analyze(
-            wizard_id="multi_pattern_wizard", pattern_ids=pattern_ids
+            workflow_id="multi_pattern_wizard", pattern_ids=pattern_ids
         )
 
         context = generator._build_template_context(
-            wizard_id="multi_pattern_wizard",
+            workflow_id="multi_pattern_wizard",
             pattern_ids=pattern_ids,
-            wizard_module="wizards.multi",
-            wizard_class="MultiPatternWizard",
+            workflow_module="wizards.multi",
+            workflow_class="MultiPatternWizard",
             risk_analysis=risk_analysis,
         )
 
@@ -250,10 +252,10 @@ class TestGeneratorWithRealTemplates:
 
         # Generate tests using real templates
         result = generator.generate_tests(
-            wizard_id="real_wizard",
+            workflow_id="real_wizard",
             pattern_ids=["linear_flow"],
-            wizard_module="wizards.real",
-            wizard_class="RealWizard",
+            workflow_module="wizards.real",
+            workflow_class="RealWizard",
         )
 
         # Verify generated code is not empty
@@ -284,10 +286,10 @@ class TestErrorHandling:
 
         # Use nonexistent pattern IDs
         result = generator.generate_tests(
-            wizard_id="wizard",
+            workflow_id="wizard",
             pattern_ids=["nonexistent_pattern_123"],
-            wizard_module="wizards.test",
-            wizard_class="TestWizard",
+            workflow_module="wizards.test",
+            workflow_class="TestWizard",
         )
 
         # Should still return structure (even if patterns not found)

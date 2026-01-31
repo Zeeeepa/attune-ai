@@ -3,7 +3,6 @@
 Tests template generation for functions and classes.
 """
 
-import pytest
 
 from empathy_os.workflows.test_gen.test_templates import (
     generate_test_cases_for_params,

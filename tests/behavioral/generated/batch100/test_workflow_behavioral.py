@@ -8,8 +8,7 @@ Licensed under Fair Source License 0.9
 
 import json
 from pathlib import Path
-from typing import Any
-from unittest.mock import AsyncMock, Mock, mock_open, patch
+from unittest.mock import Mock, mock_open
 
 import pytest
 

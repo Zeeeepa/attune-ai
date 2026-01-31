@@ -6,8 +6,7 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-from pathlib import Path
-from unittest.mock import MagicMock, Mock, call, mock_open, patch
+from unittest.mock import Mock, patch
 
 import pytest
 import typer

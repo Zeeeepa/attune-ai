@@ -6,6 +6,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import heapq
 from datetime import datetime
 from typing import Any
 

@@ -6,15 +6,14 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import json
-from unittest.mock import MagicMock, Mock, patch, call
+from unittest.mock import Mock, patch
 
 import pytest
 import typer
 
 from empathy_os.meta_workflows.cli_commands.workflow_commands import (
-    run_workflow,
     console,
+    run_workflow,
 )
 
 
@@ -119,7 +118,7 @@ class TestRunWorkflowBasicExecution:
                     user_id="cli_user",
                     json_output=False
                 )
-        
+
         assert exc_info.value.exit_code == 1
 
     @patch('empathy_os.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
@@ -574,7 +573,7 @@ class TestRunWorkflowErrorHandling:
                     user_id="cli_user",
                     json_output=False
                 )
-        
+
         assert exc_info.value.exit_code == 1
 
 

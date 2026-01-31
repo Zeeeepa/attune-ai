@@ -4,6 +4,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import logging
 import time
 from datetime import datetime
 from unittest.mock import Mock, patch
@@ -118,8 +119,8 @@ class TestCoordinationSignalsWithMemory:
         """Create mock memory backend."""
         # Use spec to prevent Mock from having stash attribute
         # This makes hasattr(memory, "stash") return False
-        memory = Mock(spec=["_redis"])
-        memory._redis = Mock()
+        memory = Mock(spec=["_client"])
+        memory._client = Mock()
         return memory
 
     @pytest.fixture
@@ -140,8 +141,8 @@ class TestCoordinationSignalsWithMemory:
         assert signal_id.startswith("signal_")
 
         # Verify Redis setex was called
-        assert mock_memory._redis.setex.called
-        call_args = mock_memory._redis.setex.call_args
+        assert mock_memory._client.setex.called
+        call_args = mock_memory._client.setex.call_args
         key, ttl, data = call_args[0]
 
         assert "signal:agent-b:task_complete:" in key
@@ -156,7 +157,7 @@ class TestCoordinationSignalsWithMemory:
         )
 
         # Verify source was set to coordinator's agent_id
-        call_args = mock_memory._redis.setex.call_args
+        call_args = mock_memory._client.setex.call_args
         import json
 
         data = json.loads(call_args[0][2])
@@ -171,7 +172,7 @@ class TestCoordinationSignalsWithMemory:
         assert signal_id.startswith("signal_")
 
         # Verify broadcast key format (target = *)
-        call_args = mock_memory._redis.setex.call_args
+        call_args = mock_memory._client.setex.call_args
         key = call_args[0][0]
 
         assert "signal:*:abort:" in key
@@ -181,7 +182,7 @@ class TestCoordinationSignalsWithMemory:
         import json
 
         # Mock Redis keys and get
-        mock_memory._redis.keys.return_value = [b"signal:test-agent:task_complete:sig123"]
+        mock_memory._client.keys.return_value = [b"signal:test-agent:task_complete:sig123"]
 
         signal_data = {
             "signal_id": "sig123",
@@ -193,7 +194,7 @@ class TestCoordinationSignalsWithMemory:
             "ttl_seconds": 60,
         }
 
-        mock_memory._redis.get.return_value = json.dumps(signal_data).encode()
+        mock_memory._client.get.return_value = json.dumps(signal_data).encode()
 
         # Check for signal
         signal = coordinator.check_signal(signal_type="task_complete", consume=False)
@@ -204,13 +205,13 @@ class TestCoordinationSignalsWithMemory:
         assert signal.payload == {"data": "value"}
 
         # Verify delete not called (consume=False)
-        assert not mock_memory._redis.delete.called
+        assert not mock_memory._client.delete.called
 
     def test_check_signal_with_consume(self, coordinator, mock_memory):
         """Test checking and consuming signal."""
         import json
 
-        mock_memory._redis.keys.return_value = [b"signal:test-agent:ready:sig456"]
+        mock_memory._client.keys.return_value = [b"signal:test-agent:ready:sig456"]
 
         signal_data = {
             "signal_id": "sig456",
@@ -222,8 +223,8 @@ class TestCoordinationSignalsWithMemory:
             "ttl_seconds": 60,
         }
 
-        mock_memory._redis.get.return_value = json.dumps(signal_data).encode()
-        mock_memory._redis.delete.return_value = 1
+        mock_memory._client.get.return_value = json.dumps(signal_data).encode()
+        mock_memory._client.delete.return_value = 1
 
         # Check and consume
         signal = coordinator.check_signal(signal_type="ready", consume=True)
@@ -231,13 +232,13 @@ class TestCoordinationSignalsWithMemory:
         assert signal is not None
 
         # Verify delete was called
-        assert mock_memory._redis.delete.called
+        assert mock_memory._client.delete.called
 
     def test_check_signal_with_source_filter(self, coordinator, mock_memory):
         """Test checking signal with source filter."""
         import json
 
-        mock_memory._redis.keys.return_value = [b"signal:test-agent:checkpoint:sig789"]
+        mock_memory._client.keys.return_value = [b"signal:test-agent:checkpoint:sig789"]
 
         signal_data = {
             "signal_id": "sig789",
@@ -249,7 +250,7 @@ class TestCoordinationSignalsWithMemory:
             "ttl_seconds": 60,
         }
 
-        mock_memory._redis.get.return_value = json.dumps(signal_data).encode()
+        mock_memory._client.get.return_value = json.dumps(signal_data).encode()
 
         # Check with source filter (should not match)
         signal = coordinator.check_signal(signal_type="checkpoint", source_agent="expected-agent")
@@ -266,7 +267,7 @@ class TestCoordinationSignalsWithMemory:
         import json
 
         # Mock both targeted and broadcast keys
-        mock_memory._redis.keys.return_value = [b"signal:*:abort:sig_broadcast"]
+        mock_memory._client.keys.return_value = [b"signal:*:abort:sig_broadcast"]
 
         signal_data = {
             "signal_id": "sig_broadcast",
@@ -278,7 +279,7 @@ class TestCoordinationSignalsWithMemory:
             "ttl_seconds": 60,
         }
 
-        mock_memory._redis.get.return_value = json.dumps(signal_data).encode()
+        mock_memory._client.get.return_value = json.dumps(signal_data).encode()
 
         # Check for broadcast
         signal = coordinator.check_signal(signal_type="abort")
@@ -290,7 +291,7 @@ class TestCoordinationSignalsWithMemory:
         """Test getting all pending signals."""
         import json
 
-        mock_memory._redis.keys.side_effect = [
+        mock_memory._client.keys.side_effect = [
             [b"signal:test-agent:task1:sig1", b"signal:test-agent:task2:sig2"],
             [b"signal:*:broadcast:sig3"],
         ]
@@ -325,7 +326,7 @@ class TestCoordinationSignalsWithMemory:
             },
         ]
 
-        mock_memory._redis.get.side_effect = [json.dumps(s).encode() for s in signals_data]
+        mock_memory._client.get.side_effect = [json.dumps(s).encode() for s in signals_data]
 
         # Get all pending
         signals = coordinator.get_pending_signals()
@@ -336,7 +337,7 @@ class TestCoordinationSignalsWithMemory:
         """Test getting pending signals filtered by type."""
         import json
 
-        mock_memory._redis.keys.side_effect = [
+        mock_memory._client.keys.side_effect = [
             [b"signal:test-agent:checkpoint:sig1", b"signal:test-agent:ready:sig2"],
             [],
         ]
@@ -360,7 +361,7 @@ class TestCoordinationSignalsWithMemory:
             },
         ]
 
-        mock_memory._redis.get.side_effect = [json.dumps(s).encode() for s in signals_data]
+        mock_memory._client.get.side_effect = [json.dumps(s).encode() for s in signals_data]
 
         # Get filtered signals
         signals = coordinator.get_pending_signals(signal_type="checkpoint")
@@ -372,7 +373,7 @@ class TestCoordinationSignalsWithMemory:
         """Test clearing signals."""
         import json
 
-        mock_memory._redis.keys.side_effect = [[b"signal:test-agent:test:sig1"], []]
+        mock_memory._client.keys.side_effect = [[b"signal:test-agent:test:sig1"], []]
 
         signal_data = {
             "signal_id": "sig1",
@@ -383,18 +384,18 @@ class TestCoordinationSignalsWithMemory:
             "timestamp": datetime.utcnow().isoformat(),
         }
 
-        mock_memory._redis.get.return_value = json.dumps(signal_data).encode()
-        mock_memory._redis.delete.return_value = 1
+        mock_memory._client.get.return_value = json.dumps(signal_data).encode()
+        mock_memory._client.delete.return_value = 1
 
         # Clear signals
         count = coordinator.clear_signals()
 
         assert count == 1
-        assert mock_memory._redis.delete.called
+        assert mock_memory._client.delete.called
 
     def test_wait_for_signal_timeout(self, coordinator, mock_memory):
         """Test wait_for_signal with timeout."""
-        mock_memory._redis.keys.return_value = []
+        mock_memory._client.keys.return_value = []
 
         # Wait should timeout quickly
         start = time.time()
@@ -411,7 +412,7 @@ class TestCoordinationSignalsWithMemory:
 
         # First check: no signal
         # Second check: signal arrives
-        mock_memory._redis.keys.side_effect = [[], [b"signal:test-agent:ready:sig1"]]
+        mock_memory._client.keys.side_effect = [[], [b"signal:test-agent:ready:sig1"]]
 
         signal_data = {
             "signal_id": "sig1",
@@ -422,8 +423,8 @@ class TestCoordinationSignalsWithMemory:
             "timestamp": datetime.utcnow().isoformat(),
         }
 
-        mock_memory._redis.get.return_value = json.dumps(signal_data).encode()
-        mock_memory._redis.delete.return_value = 1
+        mock_memory._client.get.return_value = json.dumps(signal_data).encode()
+        mock_memory._client.delete.return_value = 1
 
         # Wait for signal
         signal = coordinator.wait_for_signal(signal_type="ready", timeout=2.0, poll_interval=0.1)
@@ -433,7 +434,7 @@ class TestCoordinationSignalsWithMemory:
 
     def test_signal_error_handling(self, coordinator, mock_memory):
         """Test error handling when signal fails."""
-        mock_memory._redis.setex.side_effect = Exception("Redis error")
+        mock_memory._client.setex.side_effect = Exception("Redis error")
 
         # Should not raise, just log error
         signal_id = coordinator.signal(signal_type="test", payload={})
@@ -451,29 +452,22 @@ class TestCoordinationSignalsWithMemory:
 
 
 class TestCoordinationSignalsWithStash:
-    """Test CoordinationSignals with stash method (UnifiedMemory style)."""
+    """Test CoordinationSignals fallback when no Redis client available."""
 
-    @pytest.fixture
-    def mock_memory_with_stash(self):
-        """Mock memory with stash method."""
-        memory = Mock()
-        memory.stash = Mock()
-        memory.retrieve = Mock()
-        return memory
+    def test_signal_without_client_logs_warning(self, caplog):
+        """Test signal logs warning when no Redis client is available."""
+        # Memory mock with no _client attribute
+        memory = Mock(spec=[])
+        coordinator = CoordinationSignals(memory=memory, agent_id="test")
 
-    def test_signal_with_stash(self, mock_memory_with_stash):
-        """Test signal uses stash method when available."""
-        coordinator = CoordinationSignals(memory=mock_memory_with_stash, agent_id="test")
+        with caplog.at_level(logging.WARNING):
+            signal_id = coordinator.signal(signal_type="test", payload={})
 
-        coordinator.signal(signal_type="test", payload={})
+        # Signal ID is still generated
+        assert signal_id.startswith("signal_")
 
-        # Verify stash was called
-        assert mock_memory_with_stash.stash.called
-        call_args = mock_memory_with_stash.stash.call_args
-
-        # Verify new key format with empathy: prefix
-        assert "empathy:signal:" in call_args[1]["key"]
-        assert call_args[1]["ttl_seconds"] == coordinator.DEFAULT_TTL
+        # Warning is logged about no Redis backend
+        assert any("no Redis backend available" in record.message for record in caplog.records)
 
 
 class TestCoordinationSignalsPermissions:
@@ -481,9 +475,9 @@ class TestCoordinationSignalsPermissions:
 
     @pytest.fixture
     def mock_memory(self):
-        """Mock memory with stash method."""
+        """Mock memory with _client for Redis operations."""
         memory = Mock()
-        memory.stash = Mock()
+        memory._client = Mock()
         return memory
 
     def test_signal_without_credentials_logs_warning(self, mock_memory, caplog):
@@ -517,11 +511,8 @@ class TestCoordinationSignalsPermissions:
         )
 
         assert signal_id != ""
-        assert mock_memory.stash.called
-
-        # Verify credentials were passed through to memory backend
-        call_args = mock_memory.stash.call_args
-        assert call_args[1]["credentials"] == credentials
+        assert mock_memory._client.setex.called
+        # Credentials are used for permission check, not passed to storage layer
 
     def test_signal_with_validator_succeeds(self, mock_memory):
         """Test that VALIDATOR tier can send signals."""
@@ -536,7 +527,7 @@ class TestCoordinationSignalsPermissions:
         )
 
         assert signal_id != ""
-        assert mock_memory.stash.called
+        assert mock_memory._client.setex.called
 
     def test_signal_with_steward_succeeds(self, mock_memory):
         """Test that STEWARD tier can send signals."""
@@ -551,7 +542,7 @@ class TestCoordinationSignalsPermissions:
         )
 
         assert signal_id != ""
-        assert mock_memory.stash.called
+        assert mock_memory._client.setex.called
 
     def test_signal_with_observer_fails(self, mock_memory):
         """Test that OBSERVER tier cannot send signals."""
@@ -599,9 +590,9 @@ class TestCoordinationSignalsPermissions:
         )
 
         assert signal_id != ""
-        assert mock_memory.stash.called
+        assert mock_memory._client.setex.called
 
         # Verify it's a broadcast (target_agent=None)
-        call_args = mock_memory.stash.call_args
-        key = call_args[1]["key"]
+        call_args = mock_memory._client.setex.call_args
+        key = call_args[0][0]  # First positional arg is the key
         assert "empathy:signal:*:" in key  # * is the broadcast target

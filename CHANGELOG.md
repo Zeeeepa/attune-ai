@@ -7,6 +7,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.1] - 2026-01-30
+
+### Fixed
+
+- **100% Unit Test Pass Rate**: Resolved 108 failing unit tests (93.9% → 100% pass rate)
+  - Fixed security audit Phase 3 missing `import re` statement
+  - Fixed code review workflow undefined `security_score` variable
+  - Fixed verification script dataclass field checking (use `__dataclass_fields__`)
+  - Removed deprecated `TTLStrategy.COORDINATION` enum (removed in v5.0) from 8 files
+  - Updated `ModelProvider.to_unified()` for v5.0 Claude-native architecture
+  - Fixed telemetry Redis mocking in 65+ tests (agent coordination, tracking, approval gates, events, feedback)
+  - Updated test generator API (`wizard_id` → `workflow_id`) in 10 tests
+  - Fixed memory search API (`_get_all_patterns` → `_iter_all_patterns`)
+  - Fixed token estimator test to match actual tiktoken behavior
+  - Added missing `heapq` import to tier1 analytics
+  - Improved security scanner documentation detection (added markdown lists)
+  - Fixed AST scanner to only check docstring-capable nodes
+  - Fixed memory atomic operations cache invalidation
+  - Fixed SQL parameterization test for safe placeholder patterns
+
+### Changed
+
+- **Code Cleanup**: Removed 6 duplicate files improving codebase maintainability
+  - Removed 5 duplicate telemetry test files (`test_agent_coordination 2.py`, etc.)
+  - Removed 1 duplicate source file (`types 2.py`)
+
+### Testing
+
+- **Test Suite Health**: Now at 5,814 passing tests with 0 failures
+  - 100% pass rate on active unit tests
+  - 90 tests appropriately skipped (integration tests requiring API/Redis)
+  - 3 tests marked as expected failures (xfailed)
+  - Comprehensive test coverage across all framework modules
+
+## [5.2.0] - 2026-01-30
+
+### Added
+
+- **3-Phase Autonomous Test Generation**: Major enhancement to test generation workflow
+  - **Phase 1**: Extended thinking mode with 20K token budget for thorough test planning
+  - **Phase 2**: Multi-turn refinement with pytest validation loop (generate → validate → fix → repeat)
+  - **Phase 3**: Coverage-guided generation iteratively targeting 80% coverage
+  - Prompt caching reduces test generation costs by 90%
+  - Workflow detection with specialized test patterns for LLM mocking
+  - Few-shot learning examples for consistent test quality
+  - Configuration options: `--no-refinement`, `--coverage-guided`
+
+### Fixed
+
+- Test import errors after refactoring (dashboard commands moved to separate module)
+- API configuration for extended thinking (max_tokens 40K, budget_tokens 20K)
+- Missing pytest-mock dependency for comprehensive test mocking
+
+### Changed
+
+- **Code Refactoring**: Modularized large files for better maintainability
+  - Reduced telemetry/cli.py complexity (36% reduction)
+  - Extracted dashboard commands to separate module
+  - Improved file organization for automated test generation
+
+### Dependencies
+
+- Added pytest-mock>=3.14.0 for enhanced test mocking capabilities
+
 ## [5.1.4] - 2026-01-29
 
 ### Added
