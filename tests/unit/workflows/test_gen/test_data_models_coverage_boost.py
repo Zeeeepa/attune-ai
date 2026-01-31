@@ -9,7 +9,6 @@ import pytest
 
 from empathy_os.workflows.test_gen.data_models import ClassSignature, FunctionSignature
 
-
 # ============================================================================
 # FunctionSignature Dataclass Tests
 # ============================================================================

@@ -10,8 +10,8 @@ Licensed under Fair Source License 0.9
 import pytest
 
 from empathy_os.prompts.registry import (
-    BUILTIN_TEMPLATES,
     BUG_ANALYSIS_RESPONSE,
+    BUILTIN_TEMPLATES,
     CODE_REVIEW_RESPONSE,
     DEPENDENCY_CHECK_RESPONSE,
     DOC_GEN_RESPONSE,

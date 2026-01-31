@@ -8,7 +8,7 @@ Licensed under Fair Source License 0.9
 """
 
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, call, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 from watchdog.events import FileSystemEvent

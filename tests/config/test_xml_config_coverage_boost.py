@@ -14,16 +14,15 @@ Licensed under Apache 2.0
 
 import json
 import os
-import tempfile
 from pathlib import Path
 
 import pytest
 
 from empathy_os.config import (
     EmpathyXMLConfig,
-    XMLConfig,
-    OptimizationConfig,
     MetricsConfig,
+    OptimizationConfig,
+    XMLConfig,
 )
 from empathy_os.config.xml_config import _validate_file_path
 

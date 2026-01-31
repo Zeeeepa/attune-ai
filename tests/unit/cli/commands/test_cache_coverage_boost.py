@@ -3,17 +3,16 @@
 Module: cli/commands/cache.py (248 lines)
 """
 
+from unittest.mock import Mock, mock_open, patch
+
 import pytest
-from unittest.mock import Mock, patch, mock_open
-from pathlib import Path
 
 from empathy_os.cli.commands.cache import (
-    cmd_cache_stats,
-    cmd_cache_clear,
     _collect_cache_stats,
     _display_cache_report,
+    cmd_cache_clear,
+    cmd_cache_stats,
 )
-
 
 # ============================================================================
 # cmd_cache_stats Tests
@@ -56,7 +55,7 @@ class TestCmdCacheStats:
             "cache_hits": 50,
         }
         mock_collect.return_value = stats
-        
+
         args = Mock()
         args.days = 7
         args.format = "json"

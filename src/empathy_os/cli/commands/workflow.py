@@ -151,9 +151,9 @@ def cmd_workflow(args):
                 print(f"Provider: {actual_provider}")
                 print(workflow.describe())
 
-        except KeyError as e:
+        except KeyError:
             print(f"Error: Workflow '{name}' not found")
-            print(f"\nRun 'empathy workflow list' to see available workflows")
+            print("\nRun 'empathy workflow list' to see available workflows")
             return 1
 
     elif action == "run":
@@ -367,9 +367,9 @@ def cmd_workflow(args):
                     error_msg = error_msg or "Unknown error"
                     print(f"\n✗ Workflow failed: {error_msg}\n")
 
-        except KeyError as e:
+        except KeyError:
             print(f"Error: Workflow '{name}' not found")
-            print(f"\nRun 'empathy workflow list' to see available workflows")
+            print("\nRun 'empathy workflow list' to see available workflows")
             return 1
         except json_mod.JSONDecodeError as e:
             print(f"Error parsing input JSON: {e}")

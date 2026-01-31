@@ -3,17 +3,16 @@
 Module: cli/commands/batch.py (264 lines)
 """
 
+from unittest.mock import Mock, patch
+
 import pytest
-from unittest.mock import Mock, patch, MagicMock
-from pathlib import Path
 
 from empathy_os.cli.commands.batch import (
-    cmd_batch_submit,
-    cmd_batch_status,
     cmd_batch_results,
+    cmd_batch_status,
+    cmd_batch_submit,
     cmd_batch_wait,
 )
-
 
 # ============================================================================
 # cmd_batch_submit Tests

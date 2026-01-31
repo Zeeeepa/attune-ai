@@ -9,15 +9,14 @@ Module: memory/long_term_types.py (99 lines)
 import pytest
 
 from empathy_os.memory.long_term_types import (
+    DEFAULT_CLASSIFICATION_RULES,
     Classification,
     ClassificationRules,
-    DEFAULT_CLASSIFICATION_RULES,
     PatternMetadata,
     PermissionError,
     SecurePattern,
     SecurityError,
 )
-
 
 # ============================================================================
 # Classification Enum Tests

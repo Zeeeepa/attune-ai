@@ -3,16 +3,17 @@
 Module: cli/commands/memory.py (48 lines)
 """
 
-import pytest
 from unittest.mock import patch
+
+import pytest
 
 from empathy_os.cli.commands.memory import (
     memory_app,
-    memory_status,
-    memory_start,
-    memory_stop,
-    memory_stats,
     memory_patterns,
+    memory_start,
+    memory_stats,
+    memory_status,
+    memory_stop,
 )
 
 
@@ -33,7 +34,7 @@ class TestMemoryCommands:
     def test_memory_status_calls_subprocess(self, mock_run):
         """Test that memory_status calls subprocess."""
         memory_status()
-        
+
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         assert "empathy_os.memory.control_panel" in args
@@ -43,7 +44,7 @@ class TestMemoryCommands:
     def test_memory_start_calls_subprocess(self, mock_run):
         """Test that memory_start calls subprocess."""
         memory_start()
-        
+
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         assert "start" in args
@@ -52,7 +53,7 @@ class TestMemoryCommands:
     def test_memory_stop_calls_subprocess(self, mock_run):
         """Test that memory_stop calls subprocess."""
         memory_stop()
-        
+
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         assert "stop" in args
@@ -61,7 +62,7 @@ class TestMemoryCommands:
     def test_memory_stats_calls_subprocess(self, mock_run):
         """Test that memory_stats calls subprocess."""
         memory_stats()
-        
+
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         assert "stats" in args
@@ -70,7 +71,7 @@ class TestMemoryCommands:
     def test_memory_patterns_calls_subprocess(self, mock_run):
         """Test that memory_patterns calls subprocess."""
         memory_patterns()
-        
+
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         assert "patterns" in args

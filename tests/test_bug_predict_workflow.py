@@ -13,10 +13,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows import ModelTier
-
 # Import using module approach to avoid package initialization issues
 import empathy_os.workflows.bug_predict as bug_predict_module
+from empathy_os.workflows import ModelTier
 
 BUG_PREDICT_STEPS = bug_predict_module.BUG_PREDICT_STEPS
 BugPredictionWorkflow = bug_predict_module.BugPredictionWorkflow

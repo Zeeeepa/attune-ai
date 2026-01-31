@@ -6,17 +6,16 @@ Module: exceptions.py (123 lines)
 import pytest
 
 from empathy_os.exceptions import (
+    CollaborationStateError,
+    ConfidenceThresholdError,
     EmpathyFrameworkError,
-    ValidationError,
+    EmpathyLevelError,
+    FeedbackLoopError,
+    LeveragePointError,
     PatternNotFoundError,
     TrustThresholdError,
-    ConfidenceThresholdError,
-    EmpathyLevelError,
-    LeveragePointError,
-    FeedbackLoopError,
-    CollaborationStateError,
+    ValidationError,
 )
-
 
 # ============================================================================
 # Base Exception Tests

@@ -11,8 +11,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.memory.redis_bootstrap import RedisStartMethod, RedisStatus
-from empathy_os.memory.short_term import AccessTier, TTLStrategy
+from empathy_os.memory.redis_bootstrap import RedisStartMethod
+from empathy_os.memory.short_term import AccessTier
 from empathy_os.memory.unified import Environment, MemoryConfig, UnifiedMemory
 
 

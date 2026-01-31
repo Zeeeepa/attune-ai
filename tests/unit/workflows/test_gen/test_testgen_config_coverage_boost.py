@@ -5,12 +5,11 @@ Module: workflows/test_gen/config.py (88 lines)
 
 import pytest
 
+from empathy_os.workflows.step_config import WorkflowStepConfig
 from empathy_os.workflows.test_gen.config import (
     DEFAULT_SKIP_PATTERNS,
     TEST_GEN_STEPS,
 )
-from empathy_os.workflows.step_config import WorkflowStepConfig
-
 
 # ============================================================================
 # DEFAULT_SKIP_PATTERNS Tests

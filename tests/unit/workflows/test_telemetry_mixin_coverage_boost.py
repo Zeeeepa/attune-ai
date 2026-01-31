@@ -6,7 +6,6 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import uuid
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 

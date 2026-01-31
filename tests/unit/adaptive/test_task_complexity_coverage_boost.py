@@ -13,7 +13,6 @@ from empathy_os.adaptive.task_complexity import (
     TaskComplexityScorer,
 )
 
-
 # ============================================================================
 # TaskComplexity Enum Tests
 # ============================================================================

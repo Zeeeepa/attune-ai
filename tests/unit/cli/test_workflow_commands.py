@@ -6,10 +6,7 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import json
 from unittest.mock import MagicMock, patch
-
-import pytest
 
 
 class TestWorkflowListCommand:

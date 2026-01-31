@@ -7,10 +7,9 @@ Licensed under Apache 2.0
 """
 
 
-from empathy_os.workflows import ModelTier, WorkflowStepConfig
-
 # Import config module to access DOC_GEN_STEPS and TOKEN_COSTS
 import empathy_os.workflows.document_gen.config as config_module
+from empathy_os.workflows import ModelTier, WorkflowStepConfig
 
 DOC_GEN_STEPS = config_module.DOC_GEN_STEPS
 TOKEN_COSTS = config_module.TOKEN_COSTS

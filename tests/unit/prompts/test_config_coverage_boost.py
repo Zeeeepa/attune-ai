@@ -7,7 +7,6 @@ import pytest
 
 from empathy_os.prompts.config import XmlPromptConfig
 
-
 # ============================================================================
 # XmlPromptConfig Creation Tests
 # ============================================================================

@@ -3,11 +3,11 @@
 Module: cli/commands/info.py (141 lines)
 """
 
-import pytest
 from unittest.mock import Mock, patch
 
-from empathy_os.cli.commands.info import cmd_info, cmd_frameworks
+import pytest
 
+from empathy_os.cli.commands.info import cmd_frameworks, cmd_info
 
 # ============================================================================
 # cmd_info Tests

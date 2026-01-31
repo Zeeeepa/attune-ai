@@ -6,14 +6,9 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import asyncio
 import os
-import sys
 from pathlib import Path
-from typing import Any
-from unittest.mock import MagicMock, Mock, call, mock_open, patch
-
-import pytest
+from unittest.mock import MagicMock, patch
 
 from empathy_os import platform_utils
 
@@ -163,7 +158,7 @@ class TestGetDefaultLogDir:
                 mock_path = MagicMock()
                 mock_path.exists.return_value = False
                 mock_path.parent.exists.return_value = True
-                
+
                 with patch("pathlib.Path", return_value=mock_path):
                     with patch("os.access", return_value=True):
                         # When
@@ -183,7 +178,7 @@ class TestGetDefaultLogDir:
                 mock_path = MagicMock()
                 mock_path.exists.return_value = False
                 mock_path.parent.exists.return_value = False
-                
+
                 with patch("pathlib.Path") as mock_path_class:
                     mock_path_class.side_effect = lambda x: mock_path if x == "/var/log/empathy" else MagicMock()
                     with patch("pathlib.Path.home", return_value=Path("/home/test")):

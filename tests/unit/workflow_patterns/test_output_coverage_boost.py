@@ -10,7 +10,6 @@ import pytest
 from empathy_os.workflow_patterns.core import CodeSection, PatternCategory, WorkflowComplexity
 from empathy_os.workflow_patterns.output import ResultDataclassPattern
 
-
 # ============================================================================
 # ResultDataclassPattern Attribute Tests
 # ============================================================================

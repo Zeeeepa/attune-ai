@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.models import FallbackPolicy, ModelTier, RetryPolicy
+from empathy_os.models import ModelTier
 from empathy_os.workflows.step_config import (
     WorkflowStepConfig,
     steps_from_tier_map,

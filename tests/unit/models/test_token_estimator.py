@@ -8,13 +8,11 @@ Licensed under Fair Source License 0.9
 
 import tempfile
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
 from empathy_os.models.token_estimator import (
     TIKTOKEN_AVAILABLE,
-    TOKENS_PER_CHAR_HEURISTIC,
     _get_encoding,
     estimate_single_call_cost,
     estimate_tokens,

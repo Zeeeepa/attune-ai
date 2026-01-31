@@ -3,11 +3,11 @@
 Module: cli/parsers/sync.py (31 lines)
 """
 
-import pytest
 from argparse import ArgumentParser
 
-from empathy_os.cli.parsers.sync import register_parsers
+import pytest
 
+from empathy_os.cli.parsers.sync import register_parsers
 
 # ============================================================================
 # register_parsers Tests

@@ -7,12 +7,11 @@ import pytest
 from pydantic import ValidationError
 
 from empathy_os.workflow_patterns.core import (
+    CodeSection,
     PatternCategory,
     WorkflowComplexity,
-    CodeSection,
     WorkflowPattern,
 )
-
 
 # ============================================================================
 # PatternCategory Enum Tests
