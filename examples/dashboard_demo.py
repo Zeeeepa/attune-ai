@@ -160,8 +160,8 @@ def generate_test_data():
             "status": "pending"
         }
 
-        # Store in Redis with empathy: prefix
-        request_key = f"empathy:approval_request:{request_id}"
+        # Store in Redis (without empathy: prefix for approval gates)
+        request_key = f"approval_request:{request_id}"
         memory._client.setex(request_key, 360, json.dumps(approval_data))
         print(f"  ✓ Approval request {i+1}: {approval_data['approval_type']}")
 
