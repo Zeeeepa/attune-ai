@@ -373,7 +373,7 @@ def cmd_workflow(args):
             return 1
         except json_mod.JSONDecodeError as e:
             print(f"Error parsing input JSON: {e}")
-            print(f"\nExpected valid JSON, e.g.: --input '{\"key\": \"value\"}'")
+            print('\nExpected valid JSON, e.g.: --input \'{"key": "value"}\'')
             print("Make sure to use single quotes around JSON and double quotes inside")
             return 1
 
