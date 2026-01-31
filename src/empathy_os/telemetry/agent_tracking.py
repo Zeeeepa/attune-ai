@@ -208,7 +208,7 @@ class HeartbeatCoordinator:
         )
 
         # Store in Redis with TTL (Pattern 1)
-        key = f"heartbeat:{self.agent_id}"
+        key = f"empathy:heartbeat:{self.agent_id}"
         try:
             # Use direct Redis access for heartbeats (need custom 30s TTL)
             if hasattr(self.memory, "_client") and self.memory._client:
@@ -243,9 +243,9 @@ class HeartbeatCoordinator:
             return []
 
         try:
-            # Scan for heartbeat:* keys
+            # Scan for empathy:heartbeat:* keys
             if hasattr(self.memory, "_client") and self.memory._client:
-                keys = self.memory._client.keys("heartbeat:*")
+                keys = self.memory._client.keys("empathy:heartbeat:*")
             else:
                 logger.warning("Cannot scan for heartbeats: no Redis access")
                 return []
