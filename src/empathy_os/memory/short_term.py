@@ -23,6 +23,7 @@ Licensed under Fair Source 0.9
 """
 
 import json
+import os
 import threading
 import time
 from collections.abc import Callable
@@ -138,11 +139,25 @@ class RedisShortTermMemory:
         if config is not None:
             self._config = config
         else:
+            # Check environment variable for Redis enablement (default: disabled)
+            redis_enabled = os.getenv("REDIS_ENABLED", "false").lower() in ("true", "1", "yes")
+
+            # Use environment variables for configuration if available
+            env_host = os.getenv("REDIS_HOST", host)
+            env_port = int(os.getenv("REDIS_PORT", str(port)))
+            env_db = int(os.getenv("REDIS_DB", str(db)))
+            env_password = os.getenv("REDIS_PASSWORD", password)
+
+            # If Redis is not enabled via env var, force mock mode
+            if not redis_enabled and not use_mock:
+                use_mock = True
+                logger.info("redis_disabled_via_env", message="Redis not enabled in environment, using mock mode")
+
             self._config = RedisConfig(
-                host=host,
-                port=port,
-                db=db,
-                password=password,
+                host=env_host,
+                port=env_port,
+                db=env_db,
+                password=env_password if env_password else None,
                 use_mock=use_mock,
             )
 
