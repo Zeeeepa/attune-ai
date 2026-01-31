@@ -13,12 +13,14 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.bug_predict import (
-    BUG_PREDICT_STEPS,
-    BugPredictionWorkflow,
-    format_bug_predict_report,
-)
+from empathy_os.workflows import ModelTier
+
+# Import using module approach to avoid package initialization issues
+import empathy_os.workflows.bug_predict as bug_predict_module
+
+BUG_PREDICT_STEPS = bug_predict_module.BUG_PREDICT_STEPS
+BugPredictionWorkflow = bug_predict_module.BugPredictionWorkflow
+format_bug_predict_report = bug_predict_module.format_bug_predict_report
 
 
 class TestBugPredictSteps:

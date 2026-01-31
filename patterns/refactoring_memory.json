@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-01-30T23:47:56.933932",
-  "node_count": 116,
+  "updated_at": "2026-01-31T07:54:54.963831",
+  "node_count": 118,
   "edge_count": 0,
   "nodes": [
     {
@@ -1858,6 +1858,38 @@
       "tags": [],
       "created_at": "2026-01-30T23:47:56.932024",
       "updated_at": "2026-01-30T23:47:56.932025",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260131073552_b517fde25c89",
+      "type": "pattern",
+      "name": "refactor:.",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_workflow": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-31T07:35:52.923569",
+      "updated_at": "2026-01-31T07:35:52.923570",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260131075454_b517fde25c89",
+      "type": "pattern",
+      "name": "refactor:.",
+      "description": "Found 1 refactoring opportunities:\n  - 1 medium impact\n\nTop categories:\n  - other: 1",
+      "source_workflow": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-01-31T07:54:54.962119",
+      "updated_at": "2026-01-31T07:54:54.962120",
       "status": "open"
     }
   ],

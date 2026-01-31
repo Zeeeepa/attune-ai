@@ -10,11 +10,12 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.code_review_pipeline import (
-    CodeReviewPipeline,
-    CodeReviewPipelineResult,
-    format_code_review_pipeline_report,
-)
+# Import using module approach to avoid package initialization issues
+import empathy_os.workflows.code_review_pipeline as code_review_pipeline_module
+
+CodeReviewPipeline = code_review_pipeline_module.CodeReviewPipeline
+CodeReviewPipelineResult = code_review_pipeline_module.CodeReviewPipelineResult
+format_code_review_pipeline_report = code_review_pipeline_module.format_code_review_pipeline_report
 
 
 class TestCodeReviewPipelineResult:
