@@ -132,12 +132,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_health(self):
         """System health endpoint."""
         try:
-            coordinator = HeartbeatCoordinator()
-            has_redis = coordinator.memory is not None
+            from empathy_os.memory.short_term import RedisShortTermMemory
 
+            memory = RedisShortTermMemory()
+            has_redis = memory._client is not None
+
+            coordinator = HeartbeatCoordinator(memory=memory)
             active_agents = len(coordinator.get_active_agents()) if has_redis else 0
 
-            gate = ApprovalGate()
+            gate = ApprovalGate(memory=memory)
             pending_approvals = len(gate.get_pending_approvals()) if has_redis else 0
 
             self.send_json(
@@ -155,7 +158,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_agents(self):
         """List active agents."""
         try:
-            coordinator = HeartbeatCoordinator()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            coordinator = HeartbeatCoordinator(memory=memory)
             active_agents = coordinator.get_active_agents()
 
             result = []
@@ -180,7 +186,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_agent_detail(self, agent_id: str):
         """Get specific agent details."""
         try:
-            coordinator = HeartbeatCoordinator()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            coordinator = HeartbeatCoordinator(memory=memory)
             heartbeat = coordinator.get_heartbeat(agent_id)
 
             if not heartbeat:
@@ -203,8 +212,12 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_signals(self, limit: int):
         """Get recent coordination signals."""
         try:
-            signals = CoordinationSignals()
-            recent = signals.get_recent_signals(limit=limit)
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            # Use broadcast target to get all signals (not just for dashboard)
+            signals = CoordinationSignals(memory=memory, agent_id="*")
+            recent = signals.get_pending_signals()[:limit]
 
             result = [
                 {
@@ -225,15 +238,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_events(self, event_type: str | None, limit: int):
         """Get recent events."""
         try:
-            streamer = EventStreamer()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            streamer = EventStreamer(memory=memory)
 
             if event_type:
-                events = list(streamer.get_recent_events(event_type, limit=limit))
+                events = list(streamer.get_recent_events(event_type, count=limit))
             else:
                 # Get events from multiple streams
                 all_events = []
                 for evt_type in ["agent_heartbeat", "coordination_signal", "workflow_progress"]:
-                    events = list(streamer.get_recent_events(evt_type, limit=20))
+                    events = list(streamer.get_recent_events(evt_type, count=20))
                     all_events.extend(events)
 
                 all_events.sort(key=lambda e: e.timestamp, reverse=True)
@@ -258,7 +274,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_approvals(self):
         """Get pending approvals."""
         try:
-            gate = ApprovalGate()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            gate = ApprovalGate(memory=memory)
             pending = gate.get_pending_approvals()
 
             result = [
@@ -281,7 +300,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_approve(self, request_id: str, reason: str):
         """Approve request."""
         try:
-            gate = ApprovalGate()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            gate = ApprovalGate(memory=memory)
             success = gate.respond_to_approval(
                 request_id=request_id, approved=True, responder="dashboard", reason=reason
             )
@@ -296,7 +318,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_reject(self, request_id: str, reason: str):
         """Reject request."""
         try:
-            gate = ApprovalGate()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            gate = ApprovalGate(memory=memory)
             success = gate.respond_to_approval(
                 request_id=request_id, approved=False, responder="dashboard", reason=reason
             )
@@ -311,7 +336,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_feedback_workflows(self):
         """Get workflow quality metrics."""
         try:
-            feedback = FeedbackLoop()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            feedback = FeedbackLoop(memory=memory)
 
             workflows = ["code-review", "test-generation", "refactoring"]
             results = []
@@ -340,7 +368,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_underperforming(self, threshold: float):
         """Get underperforming stages."""
         try:
-            feedback = FeedbackLoop()
+            from empathy_os.memory.short_term import RedisShortTermMemory
+
+            memory = RedisShortTermMemory()
+            feedback = FeedbackLoop(memory=memory)
 
             workflows = ["code-review", "test-generation", "refactoring"]
             all_underperforming = []

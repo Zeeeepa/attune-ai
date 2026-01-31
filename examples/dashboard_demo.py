@@ -137,25 +137,34 @@ def generate_test_data():
 
     print()
 
-    # Pattern 5: Approval Requests (create in background to avoid blocking)
+    # Pattern 5: Approval Requests (create directly without blocking)
     print("✋ Pattern 5: Creating test approval requests...")
 
-    def create_approval(memory_backend):
-        gate = ApprovalGate(memory=memory_backend, agent_id="demo-workflow")
-        # This will timeout after 60s if not approved
-        gate.request_approval(
-            approval_type=random.choice(["deploy_to_staging", "delete_old_data", "refactor_module"]),
-            context={"version": "1.0.0", "demo": True},
-            timeout=300.0,  # 5 minutes
-        )
+    # Create approval requests directly in Redis without blocking
+    gate = ApprovalGate(memory=memory, agent_id="demo-workflow")
 
-    # Create 2 approval requests in background
+    # Manually store 2 approval requests without the blocking wait
+    from uuid import uuid4
+    from datetime import datetime
+    import json
+
     for i in range(2):
-        thread = threading.Thread(target=create_approval, args=(memory,), daemon=True)
-        thread.start()
-        time.sleep(0.5)  # Stagger creation
+        request_id = f"approval_{uuid4().hex[:8]}"
+        approval_data = {
+            "request_id": request_id,
+            "approval_type": random.choice(["deploy_to_staging", "delete_old_data", "refactor_module"]),
+            "agent_id": "demo-workflow",
+            "context": {"version": "1.0.0", "demo": True, "number": i+1},
+            "timestamp": datetime.utcnow().isoformat(),
+            "timeout_seconds": 300.0,
+            "status": "pending"
+        }
 
-    print(f"  ✓ 2 approval requests created (will timeout in 5 minutes)")
+        # Store in Redis with empathy: prefix
+        request_key = f"empathy:approval_request:{request_id}"
+        memory._client.setex(request_key, 360, json.dumps(approval_data))
+        print(f"  ✓ Approval request {i+1}: {approval_data['approval_type']}")
+
     print()
 
     # Pattern 6: Quality Feedback
