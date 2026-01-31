@@ -165,18 +165,16 @@ class DashboardHandler(BaseHTTPRequestHandler):
             active_agents = coordinator.get_active_agents()
 
             result = []
-            for agent_id in active_agents:
-                heartbeat = coordinator.get_heartbeat(agent_id)
-                if heartbeat:
-                    result.append(
-                        {
-                            "agent_id": agent_id,
-                            "status": heartbeat.status,
-                            "last_seen": heartbeat.timestamp.isoformat(),
-                            "progress": heartbeat.progress,
-                            "current_task": heartbeat.current_task,
-                        }
-                    )
+            for agent in active_agents:
+                result.append(
+                    {
+                        "agent_id": agent.agent_id,
+                        "status": agent.status,
+                        "last_seen": agent.timestamp.isoformat(),
+                        "progress": agent.progress,
+                        "current_task": agent.current_task,
+                    }
+                )
 
             self.send_json(result)
         except Exception as e:
@@ -190,7 +188,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
 
             memory = RedisShortTermMemory()
             coordinator = HeartbeatCoordinator(memory=memory)
-            heartbeat = coordinator.get_heartbeat(agent_id)
+            heartbeat = coordinator.get_agent_status(agent_id)
 
             if not heartbeat:
                 self.send_json({"error": f"Agent {agent_id} not found"}, status=404)
@@ -198,7 +196,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
 
             self.send_json(
                 {
-                    "agent_id": agent_id,
+                    "agent_id": heartbeat.agent_id,
                     "status": heartbeat.status,
                     "last_seen": heartbeat.timestamp.isoformat(),
                     "progress": heartbeat.progress,
