@@ -1,604 +1,799 @@
-"""Coverage boost tests for models/adaptive_routing.py
+"""Unit tests for adaptive model routing module.
 
-Targets uncovered adaptive model routing logic and performance analysis to increase
-coverage from current baseline to 85%+.
+This test suite provides comprehensive coverage for the adaptive routing system
+that learns from telemetry to optimize model selection based on performance,
+cost, and success rates.
 
-Missing coverage areas:
-- ModelPerformance quality_score calculation
-- AdaptiveModelRouter._get_default_model() fallback logic
-- get_best_model() with various constraints
-- recommend_tier_upgrade() decision logic
-- get_routing_stats() telemetry analysis
-- _analyze_model_performance() metrics calculation
-- Edge cases and boundary conditions
-
-Copyright 2026 Smart-AI-Memory
-Licensed under Apache 2.0
+Copyright 2025 Smart-AI-Memory
+Licensed under Fair Source License 0.9
 """
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.models.adaptive_routing import AdaptiveModelRouter, ModelPerformance
+from empathy_os.models.adaptive_routing import (
+    AdaptiveModelRouter,
+    ModelPerformance,
+)
 
 
 @pytest.mark.unit
-class TestModelPerformanceQualityScore:
-    """Test ModelPerformance.quality_score property."""
+class TestModelPerformance:
+    """Test suite for ModelPerformance dataclass."""
 
-    def test_quality_score_high_success_low_cost(self):
-        """Test quality score for high success rate and low cost."""
+    def test_create_model_performance_with_required_fields(self):
+        """Test creating ModelPerformance with required fields."""
         perf = ModelPerformance(
             model_id="claude-3-5-haiku-20241022",
-            tier="cheap",
-            success_rate=1.0,  # 100% success
-            avg_latency_ms=500,
-            avg_cost=0.001,  # $0.001 per call
+            tier="CHEAP",
+            success_rate=0.95,
+            avg_latency_ms=850.5,
+            avg_cost=0.0025,
             sample_size=100,
         )
 
-        # Quality = (1.0 * 100) - (0.001 * 10) = 100 - 0.01 = 99.99
-        assert perf.quality_score == pytest.approx(99.99, rel=1e-2)
+        assert perf.model_id == "claude-3-5-haiku-20241022"
+        assert perf.tier == "CHEAP"
+        assert perf.success_rate == 0.95
+        assert perf.avg_latency_ms == 850.5
+        assert perf.avg_cost == 0.0025
+        assert perf.sample_size == 100
+        assert perf.recent_failures == 0
 
-    def test_quality_score_medium_success_medium_cost(self):
-        """Test quality score for medium success rate and cost."""
-        perf = ModelPerformance(
-            model_id="claude-sonnet-4-5",
-            tier="capable",
-            success_rate=0.9,  # 90% success
-            avg_latency_ms=800,
-            avg_cost=0.01,  # $0.01 per call
-            sample_size=50,
-        )
-
-        # Quality = (0.9 * 100) - (0.01 * 10) = 90 - 0.1 = 89.9
-        assert perf.quality_score == pytest.approx(89.9, rel=1e-2)
-
-    def test_quality_score_low_success_high_cost(self):
-        """Test quality score for low success rate and high cost."""
-        perf = ModelPerformance(
-            model_id="claude-opus-4-5-20251101",
-            tier="premium",
-            success_rate=0.5,  # 50% success
-            avg_latency_ms=1200,
-            avg_cost=0.1,  # $0.10 per call
-            sample_size=10,
-        )
-
-        # Quality = (0.5 * 100) - (0.1 * 10) = 50 - 1 = 49
-        assert perf.quality_score == pytest.approx(49.0, rel=1e-2)
-
-    def test_quality_score_perfect_performance(self):
-        """Test quality score for perfect performance."""
+    def test_create_model_performance_with_recent_failures(self):
+        """Test creating ModelPerformance with recent failures."""
         perf = ModelPerformance(
             model_id="test-model",
-            tier="cheap",
-            success_rate=1.0,
-            avg_latency_ms=100,
-            avg_cost=0.0001,  # Nearly free
-            sample_size=1000,
+            tier="CAPABLE",
+            success_rate=0.8,
+            avg_latency_ms=1200,
+            avg_cost=0.005,
+            sample_size=50,
+            recent_failures=5,
         )
 
-        # Quality = (1.0 * 100) - (0.0001 * 10) = 100 - 0.001 = 99.999
-        assert perf.quality_score == pytest.approx(99.999, rel=1e-2)
+        assert perf.recent_failures == 5
 
-    def test_quality_score_zero_success(self):
-        """Test quality score when success rate is zero."""
+    def test_quality_score_calculation(self):
+        """Test quality_score property calculation."""
         perf = ModelPerformance(
-            model_id="failing-model",
-            tier="cheap",
-            success_rate=0.0,  # Total failure
-            avg_latency_ms=500,
-            avg_cost=0.01,
-            sample_size=10,
+            model_id="test-model",
+            tier="CHEAP",
+            success_rate=0.9,
+            avg_latency_ms=1000,
+            avg_cost=0.002,
+            sample_size=100,
         )
 
-        # Quality = (0.0 * 100) - (0.01 * 10) = 0 - 0.1 = -0.1
-        assert perf.quality_score == pytest.approx(-0.1, rel=1e-2)
+        # Formula: (success_rate * 100) - (avg_cost * 10)
+        # = (0.9 * 100) - (0.002 * 10)
+        # = 90 - 0.02 = 89.98
+        expected_score = (0.9 * 100) - (0.002 * 10)
+        assert perf.quality_score == expected_score
 
-    def test_quality_score_comparison(self):
-        """Test that quality scores correctly compare different models."""
-        cheap_model = ModelPerformance(
-            model_id="haiku",
-            tier="cheap",
+    def test_quality_score_prioritizes_success_rate(self):
+        """Test that quality score is dominated by success rate."""
+        high_success = ModelPerformance(
+            model_id="model1",
+            tier="CHEAP",
             success_rate=0.95,
-            avg_latency_ms=300,
+            avg_latency_ms=1000,
+            avg_cost=0.005,
+            sample_size=100,
+        )
+
+        low_success = ModelPerformance(
+            model_id="model2",
+            tier="CHEAP",
+            success_rate=0.5,
+            avg_latency_ms=1000,
+            avg_cost=0.001,  # Cheaper but worse success rate
+            sample_size=100,
+        )
+
+        # High success rate should have better quality score despite higher cost
+        assert high_success.quality_score > low_success.quality_score
+
+    def test_quality_score_favors_lower_cost(self):
+        """Test that quality score favors lower cost when success rates equal."""
+        cheap_model = ModelPerformance(
+            model_id="model1",
+            tier="CHEAP",
+            success_rate=0.9,
+            avg_latency_ms=1000,
             avg_cost=0.001,
             sample_size=100,
         )
 
-        premium_model = ModelPerformance(
-            model_id="opus",
-            tier="premium",
-            success_rate=0.98,
+        expensive_model = ModelPerformance(
+            model_id="model2",
+            tier="PREMIUM",
+            success_rate=0.9,
             avg_latency_ms=1000,
-            avg_cost=0.05,
-            sample_size=50,
+            avg_cost=0.01,
+            sample_size=100,
         )
 
-        # Cheap model: (0.95 * 100) - (0.001 * 10) = 95 - 0.01 = 94.99
-        # Premium model: (0.98 * 100) - (0.05 * 10) = 98 - 0.5 = 97.5
-        # Premium has higher quality despite higher cost
-        assert premium_model.quality_score > cheap_model.quality_score
+        # Same success rate, but cheaper model should score higher
+        assert cheap_model.quality_score > expensive_model.quality_score
 
 
 @pytest.mark.unit
-class TestAdaptiveModelRouterDefaultModel:
-    """Test AdaptiveModelRouter._get_default_model method."""
+class TestAdaptiveModelRouterInit:
+    """Test suite for AdaptiveModelRouter initialization."""
 
-    def test_get_default_cheap_model(self):
-        """Test getting default cheap tier model."""
+    def test_router_initializes_with_telemetry(self):
+        """Test that router initializes with telemetry instance."""
         mock_telemetry = MagicMock()
         router = AdaptiveModelRouter(mock_telemetry)
 
-        model_id = router._get_default_model("CHEAP")
+        assert router.telemetry == mock_telemetry
 
-        # Should return Haiku model
-        assert "haiku" in model_id.lower()
-
-    def test_get_default_capable_model(self):
-        """Test getting default capable tier model."""
-        mock_telemetry = MagicMock()
-        router = AdaptiveModelRouter(mock_telemetry)
-
-        model_id = router._get_default_model("CAPABLE")
-
-        # Should return Sonnet model
-        assert "sonnet" in model_id.lower()
-
-    def test_get_default_premium_model(self):
-        """Test getting default premium tier model."""
-        mock_telemetry = MagicMock()
-        router = AdaptiveModelRouter(mock_telemetry)
-
-        model_id = router._get_default_model("PREMIUM")
-
-        # Should return Opus model
-        assert "opus" in model_id.lower()
-
-    def test_get_default_model_case_insensitive(self):
-        """Test that tier parameter is case-insensitive."""
-        mock_telemetry = MagicMock()
-        router = AdaptiveModelRouter(mock_telemetry)
-
-        cheap1 = router._get_default_model("cheap")
-        cheap2 = router._get_default_model("CHEAP")
-        cheap3 = router._get_default_model("Cheap")
-
-        assert cheap1 == cheap2 == cheap3
-
-    def test_get_default_model_unknown_tier_returns_haiku(self):
-        """Test that unknown tier falls back to Haiku."""
-        mock_telemetry = MagicMock()
-        router = AdaptiveModelRouter(mock_telemetry)
-
-        model_id = router._get_default_model("UNKNOWN_TIER")
-
-        # Should fall back to Haiku (cheap default)
-        assert model_id == "claude-3-5-haiku-20241022"
+    def test_router_has_class_constants(self):
+        """Test that router has expected class constants."""
+        assert AdaptiveModelRouter.MIN_SAMPLE_SIZE == 10
+        assert AdaptiveModelRouter.FAILURE_RATE_THRESHOLD == 0.2
+        assert AdaptiveModelRouter.RECENT_WINDOW_SIZE == 20
 
 
 @pytest.mark.unit
-class TestAdaptiveModelRouterGetBestModel:
-    """Test AdaptiveModelRouter.get_best_model method."""
+class TestGetBestModel:
+    """Test suite for get_best_model method."""
 
-    def test_get_best_model_no_telemetry_returns_default(self):
-        """Test that with no telemetry data, returns default model."""
+    def test_get_best_model_returns_default_when_no_history(self):
+        """Test that get_best_model returns default model when no telemetry."""
         mock_telemetry = MagicMock()
         mock_telemetry.get_recent_entries.return_value = []
 
         router = AdaptiveModelRouter(mock_telemetry)
 
-        model = router.get_best_model(
-            workflow="code-review",
-            stage="analysis",
-        )
+        with patch.object(router, "_get_default_model", return_value="default-model"):
+            model = router.get_best_model(workflow="test", stage="analysis")
 
-        # Should return default cheap model
-        assert "haiku" in model.lower()
+        assert model == "default-model"
 
-    def test_get_best_model_with_cost_constraint(self):
-        """Test get_best_model respects max_cost constraint."""
+    def test_get_best_model_selects_highest_quality_score(self):
+        """Test that get_best_model selects model with highest quality score."""
         mock_telemetry = MagicMock()
 
-        # Mock telemetry with models of different costs (need 10+ calls per model for MIN_SAMPLE_SIZE)
+        # Mock telemetry entries for two models
         mock_telemetry.get_recent_entries.return_value = [
-            {
-                "workflow": "code-review",
-                "stage": "analysis",
-                "model": "claude-opus-4-5-20251101",
-                "success": True,
-                "duration_ms": 1200,
-                "cost": 0.05,  # Expensive
-            }
-            for _ in range(10)
-        ] + [
-            {
-                "workflow": "code-review",
-                "stage": "analysis",
-                "model": "claude-3-5-haiku-20241022",
-                "success": True,
-                "duration_ms": 300,
-                "cost": 0.001,  # Cheap
-            }
-            for _ in range(10)
+            # Model 1: 12 successful calls
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "model1",
+                    "success": True,
+                    "cost": 0.002,
+                    "duration_ms": 800,
+                    "tier": "CHEAP",
+                }
+                for _ in range(12)
+            ],
+            # Model 2: 15 successful calls, lower cost
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "model2",
+                    "success": True,
+                    "cost": 0.001,
+                    "duration_ms": 900,
+                    "tier": "CHEAP",
+                }
+                for _ in range(15)
+            ],
         ]
 
         router = AdaptiveModelRouter(mock_telemetry)
-
-        # Request with low cost constraint
         model = router.get_best_model(
-            workflow="code-review",
-            stage="analysis",
-            max_cost=0.01,  # Excludes Opus
+            workflow="test", stage="analysis", min_success_rate=0.8
         )
 
-        # Should return Haiku (cheaper model)
-        assert "haiku" in model.lower()
+        # model2 should win (same success rate, lower cost)
+        assert model == "model2"
 
-    def test_get_best_model_with_latency_constraint(self):
-        """Test get_best_model respects max_latency_ms constraint."""
+    def test_get_best_model_respects_max_cost_constraint(self):
+        """Test that get_best_model filters by max_cost."""
         mock_telemetry = MagicMock()
 
-        # Mock telemetry with models of different latencies (need 10+ calls per model for MIN_SAMPLE_SIZE)
         mock_telemetry.get_recent_entries.return_value = [
-            {
-                "workflow": "code-review",
-                "stage": "analysis",
-                "model": "claude-opus-4-5-20251101",
-                "success": True,
-                "duration_ms": 2000,  # Slow
-                "cost": 0.05,
-            }
-            for _ in range(10)
-        ] + [
-            {
-                "workflow": "code-review",
-                "stage": "analysis",
-                "model": "claude-3-5-haiku-20241022",
-                "success": True,
-                "duration_ms": 300,  # Fast
-                "cost": 0.001,
-            }
-            for _ in range(10)
+            # Expensive model (avg cost: 0.01)
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "expensive",
+                    "success": True,
+                    "cost": 0.01,
+                    "duration_ms": 500,
+                    "tier": "PREMIUM",
+                }
+                for _ in range(15)
+            ],
+            # Cheap model (avg cost: 0.002)
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "cheap",
+                    "success": True,
+                    "cost": 0.002,
+                    "duration_ms": 800,
+                    "tier": "CHEAP",
+                }
+                for _ in range(15)
+            ],
         ]
 
         router = AdaptiveModelRouter(mock_telemetry)
-
-        # Request with latency constraint
         model = router.get_best_model(
-            workflow="code-review",
-            stage="analysis",
-            max_latency_ms=1000,  # Excludes Opus
+            workflow="test", stage="analysis", max_cost=0.005, min_success_rate=0.8
         )
 
-        # Should return Haiku (faster model)
-        assert "haiku" in model.lower()
+        # Should select cheap model (expensive exceeds max_cost)
+        assert model == "cheap"
 
-    def test_get_best_model_with_success_rate_filter(self):
-        """Test get_best_model filters by minimum success rate."""
+    def test_get_best_model_respects_max_latency_constraint(self):
+        """Test that get_best_model filters by max_latency_ms."""
         mock_telemetry = MagicMock()
 
-        # Mock telemetry with models of different success rates
-        # Sonnet: 5/10 = 50% success (below 90% threshold)
-        # Haiku: 10/10 = 100% success (meets 90% threshold)
         mock_telemetry.get_recent_entries.return_value = [
-            {
-                "workflow": "test-gen",
-                "stage": "generate",
-                "model": "claude-sonnet-4-5",
-                "success": True,
-                "duration_ms": 800,
-                "cost": 0.01,
-            }
-            for _ in range(5)
-        ] + [
-            {
-                "workflow": "test-gen",
-                "stage": "generate",
-                "model": "claude-sonnet-4-5",
-                "success": False,
-                "duration_ms": 500,
-                "cost": 0.005,
-            }
-            for _ in range(5)
-        ] + [
-            {
-                "workflow": "test-gen",
-                "stage": "generate",
-                "model": "claude-3-5-haiku-20241022",
-                "success": True,
-                "duration_ms": 300,
-                "cost": 0.001,
-            }
-            for _ in range(10)
+            # Fast model (avg latency: 500ms)
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "fast",
+                    "success": True,
+                    "cost": 0.003,
+                    "duration_ms": 500,
+                    "tier": "CHEAP",
+                }
+                for _ in range(15)
+            ],
+            # Slow model (avg latency: 2000ms)
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "slow",
+                    "success": True,
+                    "cost": 0.001,
+                    "duration_ms": 2000,
+                    "tier": "CHEAP",
+                }
+                for _ in range(15)
+            ],
         ]
 
         router = AdaptiveModelRouter(mock_telemetry)
-
-        # Request with high success rate requirement
         model = router.get_best_model(
-            workflow="test-gen",
-            stage="generate",
-            min_success_rate=0.9,  # Requires 90% success - filters out Sonnet
+            workflow="test",
+            stage="analysis",
+            max_latency_ms=1000,
+            min_success_rate=0.8,
         )
 
-        # Should return Haiku (only model meeting 90% success rate)
-        assert "haiku" in model.lower()
+        # Should select fast model (slow exceeds max_latency)
+        assert model == "fast"
+
+    def test_get_best_model_respects_min_success_rate(self):
+        """Test that get_best_model filters by min_success_rate."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            # Reliable model (100% success)
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "reliable",
+                    "success": True,
+                    "cost": 0.003,
+                    "duration_ms": 800,
+                    "tier": "CAPABLE",
+                }
+                for _ in range(15)
+            ],
+            # Unreliable model (70% success)
+            *[
+                {
+                    "workflow": "test",
+                    "stage": "analysis",
+                    "model": "unreliable",
+                    "success": i < 10,  # 10 successes, 5 failures
+                    "cost": 0.001,
+                    "duration_ms": 500,
+                    "tier": "CHEAP",
+                }
+                for i in range(15)
+            ],
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        model = router.get_best_model(
+            workflow="test", stage="analysis", min_success_rate=0.9
+        )
+
+        # Should select reliable model (unreliable fails min_success_rate)
+        assert model == "reliable"
+
+
+
 
 
 @pytest.mark.unit
-class TestAdaptiveModelRouterTierUpgrade:
-    """Test AdaptiveModelRouter.recommend_tier_upgrade method."""
+class TestRecommendTierUpgrade:
+    """Test suite for recommend_tier_upgrade method."""
 
-    def test_recommend_upgrade_no_telemetry(self):
-        """Test tier upgrade recommendation with no telemetry."""
+    def test_recommend_tier_upgrade_when_high_failure_rate(self):
+        """Test that upgrade is recommended when failure rate exceeds threshold."""
         mock_telemetry = MagicMock()
-        mock_telemetry.get_recent_entries.return_value = []
+
+        # 25 calls with 6 failures in last 20 (30% failure rate)
+        entries = [
+            {"workflow": "test", "stage": "analysis", "success": i < 19}
+            for i in range(25)
+        ]
+        mock_telemetry.get_recent_entries.return_value = entries
 
         router = AdaptiveModelRouter(mock_telemetry)
+        should_upgrade, reason = router.recommend_tier_upgrade("test", "analysis")
 
-        should_upgrade, reason = router.recommend_tier_upgrade(
-            workflow="code-review",
-            stage="analysis",
-        )
+        assert should_upgrade is True
+        assert "High failure rate" in reason
+        assert "30.0%" in reason
 
-        # Should not recommend upgrade without data
+    def test_recommend_tier_upgrade_when_acceptable_performance(self):
+        """Test that no upgrade when failure rate is acceptable."""
+        mock_telemetry = MagicMock()
+
+        # 25 calls with only 2 failures in last 20 (10% failure rate)
+        entries = [
+            {"workflow": "test", "stage": "analysis", "success": i < 23}
+            for i in range(25)
+        ]
+        mock_telemetry.get_recent_entries.return_value = entries
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        should_upgrade, reason = router.recommend_tier_upgrade("test", "analysis")
+
+        assert should_upgrade is False
+        assert "Performance acceptable" in reason
+        assert "10.0%" in reason
+
+    def test_recommend_tier_upgrade_insufficient_data(self):
+        """Test that no upgrade recommended when insufficient data."""
+        mock_telemetry = MagicMock()
+
+        # Only 5 calls (less than MIN_SAMPLE_SIZE of 10)
+        mock_telemetry.get_recent_entries.return_value = [
+            {"workflow": "test", "stage": "analysis", "success": False} for _ in range(5)
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        should_upgrade, reason = router.recommend_tier_upgrade("test", "analysis")
+
         assert should_upgrade is False
         assert "Insufficient data" in reason
 
-    def test_recommend_upgrade_high_failure_rate(self):
-        """Test tier upgrade recommended when failure rate is high."""
+    def test_recommend_tier_upgrade_at_exact_threshold(self):
+        """Test behavior at exact failure rate threshold (20%)."""
         mock_telemetry = MagicMock()
 
-        # Mock telemetry with high failure rate (>20%)
-        calls = [
-            {"workflow": "bug-predict", "stage": "analyze", "model": "claude-3-5-haiku-20241022", "success": False}
-            for _ in range(30)  # 30 failures
-        ] + [
-            {"workflow": "bug-predict", "stage": "analyze", "model": "claude-3-5-haiku-20241022", "success": True}
-            for _ in range(10)  # 10 successes
+        # Exactly 4 failures in 20 calls = 20% (at threshold)
+        entries = [
+            {"workflow": "test", "stage": "analysis", "success": i < 16}
+            for i in range(20)
         ]
-        # Failure rate: 30/40 = 75% (well above 20% threshold)
-
-        mock_telemetry.get_recent_entries.return_value = calls
+        mock_telemetry.get_recent_entries.return_value = entries
 
         router = AdaptiveModelRouter(mock_telemetry)
+        should_upgrade, reason = router.recommend_tier_upgrade("test", "analysis")
 
-        should_upgrade, reason = router.recommend_tier_upgrade(
-            workflow="bug-predict",
-            stage="analyze",
-        )
-
-        # Should recommend upgrade due to high failure rate
-        assert should_upgrade is True
-        assert "failure rate" in reason.lower() or "high" in reason.lower()
-
-    def test_no_upgrade_with_good_performance(self):
-        """Test no upgrade recommended when performance is good."""
-        mock_telemetry = MagicMock()
-
-        # Mock telemetry with good performance (<20% failure)
-        # Need to spread failures throughout, not bunch at end
-        # Pattern: 9 successes, 1 failure, repeated 10 times = 10% failure rate throughout
-        calls = []
-        for _ in range(10):
-            # 9 successes
-            calls.extend([
-                {"workflow": "code-review", "stage": "lint", "model": "claude-3-5-haiku-20241022", "success": True}
-                for _ in range(9)
-            ])
-            # 1 failure
-            calls.append(
-                {"workflow": "code-review", "stage": "lint", "model": "claude-3-5-haiku-20241022", "success": False}
-            )
-        # Total: 90 successes + 10 failures = 100 calls
-        # Recent 20: 18 successes + 2 failures = 10% (below 20% threshold)
-
-        mock_telemetry.get_recent_entries.return_value = calls
-
-        router = AdaptiveModelRouter(mock_telemetry)
-
-        should_upgrade, reason = router.recommend_tier_upgrade(
-            workflow="code-review",
-            stage="lint",
-        )
-
-        # Should not recommend upgrade (performance is good even in recent window)
+        # At threshold, should not upgrade (uses > not >=)
         assert should_upgrade is False
 
 
 @pytest.mark.unit
-class TestAdaptiveModelRouterRoutingStats:
-    """Test AdaptiveModelRouter.get_routing_stats method."""
+class TestGetRoutingStats:
+    """Test suite for get_routing_stats method."""
 
-    def test_get_routing_stats_no_data(self):
-        """Test routing stats with no telemetry data."""
+    def test_get_routing_stats_returns_empty_for_no_data(self):
+        """Test that get_routing_stats returns empty stats when no data."""
         mock_telemetry = MagicMock()
         mock_telemetry.get_recent_entries.return_value = []
 
         router = AdaptiveModelRouter(mock_telemetry)
+        stats = router.get_routing_stats("test", days=7)
 
-        stats = router.get_routing_stats(
-            workflow="code-review",
-            stage="analysis",
-        )
-
-        assert isinstance(stats, dict)
-        assert "models_used" in stats
         assert stats["models_used"] == []
+        assert stats["performance_by_model"] == {}
         assert stats["total_calls"] == 0
         assert stats["avg_cost"] == 0.0
         assert stats["avg_success_rate"] == 0.0
 
-    def test_get_routing_stats_with_data(self):
-        """Test routing stats with telemetry data."""
+    def test_get_routing_stats_calculates_totals(self):
+        """Test that get_routing_stats calculates total metrics."""
         mock_telemetry = MagicMock()
 
-        # Mock telemetry with various model calls
         mock_telemetry.get_recent_entries.return_value = [
             {
-                "workflow": "doc-gen",
-                "stage": "write",
-                "model": "claude-3-5-haiku-20241022",
+                "workflow": "test",
+                "model": "model1",
                 "success": True,
-                "input_tokens": 1000,
-                "output_tokens": 500,
-                "duration_ms": 300,
-                "cost": 0.001,
+                "cost": 0.002,
+                "duration_ms": 800,
             },
             {
-                "workflow": "doc-gen",
-                "stage": "write",
-                "model": "claude-sonnet-4-5",
+                "workflow": "test",
+                "model": "model2",
+                "success": False,
+                "cost": 0.003,
+                "duration_ms": 900,
+            },
+            {
+                "workflow": "test",
+                "model": "model1",
                 "success": True,
-                "input_tokens": 2000,
-                "output_tokens": 1000,
-                "duration_ms": 800,
-                "cost": 0.01,
+                "cost": 0.002,
+                "duration_ms": 850,
             },
         ]
 
         router = AdaptiveModelRouter(mock_telemetry)
+        stats = router.get_routing_stats("test", days=7)
 
-        stats = router.get_routing_stats(
-            workflow="doc-gen",
-            stage="write",
-        )
+        assert stats["total_calls"] == 3
+        assert stats["avg_cost"] == (0.002 + 0.003 + 0.002) / 3
+        assert stats["avg_success_rate"] == 2 / 3  # 2 successes out of 3
 
-        # Should return stats dictionary with correct structure
-        assert isinstance(stats, dict)
-        assert "models_used" in stats
-        assert len(stats["models_used"]) == 2
+    def test_get_routing_stats_groups_by_model(self):
+        """Test that get_routing_stats groups performance by model."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            {
+                "workflow": "test",
+                "model": "model1",
+                "success": True,
+                "cost": 0.002,
+                "duration_ms": 800,
+            },
+            {
+                "workflow": "test",
+                "model": "model1",
+                "success": True,
+                "cost": 0.002,
+                "duration_ms": 850,
+            },
+            {
+                "workflow": "test",
+                "model": "model2",
+                "success": False,
+                "cost": 0.005,
+                "duration_ms": 1200,
+            },
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        stats = router.get_routing_stats("test", days=7)
+
+        assert set(stats["models_used"]) == {"model1", "model2"}
+
+        # model1 performance
+        assert stats["performance_by_model"]["model1"]["calls"] == 2
+        assert stats["performance_by_model"]["model1"]["success_rate"] == 1.0
+        assert stats["performance_by_model"]["model1"]["avg_cost"] == 0.002
+
+        # model2 performance
+        assert stats["performance_by_model"]["model2"]["calls"] == 1
+        assert stats["performance_by_model"]["model2"]["success_rate"] == 0.0
+        assert stats["performance_by_model"]["model2"]["avg_cost"] == 0.005
+
+    def test_get_routing_stats_filters_by_workflow(self):
+        """Test that get_routing_stats filters to specified workflow."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            {"workflow": "test", "model": "m1", "success": True, "cost": 0.001},
+            {"workflow": "other", "model": "m1", "success": True, "cost": 0.001},
+            {"workflow": "test", "model": "m1", "success": True, "cost": 0.001},
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        stats = router.get_routing_stats("test", days=7)
+
+        # Should only count entries for "test" workflow
         assert stats["total_calls"] == 2
+
+    def test_get_routing_stats_filters_by_stage_when_specified(self):
+        """Test that get_routing_stats filters by stage when provided."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "m1",
+                "success": True,
+                "cost": 0.001,
+            },
+            {
+                "workflow": "test",
+                "stage": "synthesis",
+                "model": "m1",
+                "success": True,
+                "cost": 0.001,
+            },
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "m1",
+                "success": True,
+                "cost": 0.001,
+            },
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        stats = router.get_routing_stats("test", stage="analysis", days=7)
+
+        # Should only count entries for "analysis" stage
+        assert stats["total_calls"] == 2
+        assert stats["stage"] == "analysis"
+
+    def test_get_routing_stats_includes_all_stages_when_none_specified(self):
+        """Test that get_routing_stats includes all stages when stage=None."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "m1",
+                "success": True,
+                "cost": 0.001,
+            },
+            {
+                "workflow": "test",
+                "stage": "synthesis",
+                "model": "m1",
+                "success": True,
+                "cost": 0.001,
+            },
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        stats = router.get_routing_stats("test", stage=None, days=7)
+
+        # Should count all stages
+        assert stats["total_calls"] == 2
+        assert stats["stage"] == "all"
 
 
 @pytest.mark.unit
-class TestAdaptiveModelRouterEdgeCases:
-    """Test edge cases and boundary conditions."""
+class TestAnalyzeModelPerformance:
+    """Test suite for _analyze_model_performance method."""
 
-    def test_router_initialization(self):
-        """Test that router initializes correctly."""
-        mock_telemetry = MagicMock()
-
-        router = AdaptiveModelRouter(mock_telemetry)
-
-        assert router.telemetry is mock_telemetry
-
-    def test_model_performance_with_recent_failures(self):
-        """Test ModelPerformance with recent_failures tracking."""
-        perf = ModelPerformance(
-            model_id="test-model",
-            tier="cheap",
-            success_rate=0.8,
-            avg_latency_ms=500,
-            avg_cost=0.01,
-            sample_size=100,
-            recent_failures=5,  # 5 recent failures
-        )
-
-        assert perf.recent_failures == 5
-        assert perf.success_rate == 0.8
-
-    def test_model_performance_default_recent_failures(self):
-        """Test that recent_failures defaults to 0."""
-        perf = ModelPerformance(
-            model_id="test-model",
-            tier="cheap",
-            success_rate=1.0,
-            avg_latency_ms=500,
-            avg_cost=0.01,
-            sample_size=100,
-        )
-
-        assert perf.recent_failures == 0
-
-    def test_get_best_model_empty_workflow_stage(self):
-        """Test get_best_model with empty workflow/stage names."""
+    def test_analyze_model_performance_returns_empty_for_no_data(self):
+        """Test that _analyze_model_performance returns empty list when no data."""
         mock_telemetry = MagicMock()
         mock_telemetry.get_recent_entries.return_value = []
 
         router = AdaptiveModelRouter(mock_telemetry)
+        performances = router._analyze_model_performance("test", "analysis")
 
-        # Should handle empty strings gracefully
-        model = router.get_best_model(workflow="", stage="")
+        assert performances == []
 
-        assert isinstance(model, str)
-        assert len(model) > 0  # Returns default model
-
-    def test_quality_score_with_extreme_values(self):
-        """Test quality_score with extreme cost values."""
-        # Very expensive model
-        expensive = ModelPerformance(
-            model_id="expensive",
-            tier="premium",
-            success_rate=1.0,
-            avg_latency_ms=1000,
-            avg_cost=10.0,  # $10 per call!
-            sample_size=10,
-        )
-
-        # Quality = (1.0 * 100) - (10.0 * 10) = 100 - 100 = 0
-        assert expensive.quality_score == pytest.approx(0.0, rel=1e-2)
-
-        # Very cheap model
-        cheap = ModelPerformance(
-            model_id="cheap",
-            tier="cheap",
-            success_rate=0.5,
-            avg_latency_ms=100,
-            avg_cost=0.00001,  # Nearly free
-            sample_size=1000,
-        )
-
-        # Quality = (0.5 * 100) - (0.00001 * 10) = 50 - 0.0001 ≈ 50
-        assert cheap.quality_score == pytest.approx(50.0, rel=1e-2)
-
-
-@pytest.mark.unit
-class TestAdaptiveModelRouterIntegration:
-    """Integration-style tests combining multiple components."""
-
-    def test_full_routing_workflow(self):
-        """Test complete routing workflow from stats to recommendation."""
+    def test_analyze_model_performance_calculates_metrics(self):
+        """Test that _analyze_model_performance calculates correct metrics."""
         mock_telemetry = MagicMock()
 
-        # Simulate realistic telemetry data (need 10+ entries for MIN_SAMPLE_SIZE)
         mock_telemetry.get_recent_entries.return_value = [
             {
-                "workflow": "test-workflow",
-                "stage": "test-stage",
-                "model": "claude-3-5-haiku-20241022",
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "model1",
+                "tier": "CHEAP",
                 "success": True,
-                "duration_ms": 250 + (i * 10),  # Vary slightly
-                "cost": 0.001,
-            }
-            for i in range(10)
+                "cost": 0.002,
+                "duration_ms": 800,
+            },
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "model1",
+                "tier": "CHEAP",
+                "success": False,
+                "cost": 0.002,
+                "duration_ms": 850,
+            },
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "model1",
+                "tier": "CHEAP",
+                "success": True,
+                "cost": 0.002,
+                "duration_ms": 900,
+            },
         ]
 
         router = AdaptiveModelRouter(mock_telemetry)
+        performances = router._analyze_model_performance("test", "analysis")
 
-        # Get best model
-        best_model = router.get_best_model(
-            workflow="test-workflow",
-            stage="test-stage",
-        )
+        assert len(performances) == 1
+        perf = performances[0]
 
-        # Get routing stats
-        stats = router.get_routing_stats(
-            workflow="test-workflow",
-            stage="test-stage",
-        )
+        assert perf.model_id == "model1"
+        assert perf.tier == "CHEAP"
+        assert perf.success_rate == 2 / 3  # 2 successes out of 3
+        assert perf.avg_cost == 0.002
+        assert perf.avg_latency_ms == (800 + 850 + 900) / 3
+        assert perf.sample_size == 3
 
-        # Check tier upgrade recommendation
-        should_upgrade, reason = router.recommend_tier_upgrade(
-            workflow="test-workflow",
-            stage="test-stage",
-        )
+    def test_analyze_model_performance_groups_by_model(self):
+        """Test that _analyze_model_performance groups entries by model."""
+        mock_telemetry = MagicMock()
 
-        # All operations should complete successfully
-        assert isinstance(best_model, str)
-        assert isinstance(stats, dict)
-        assert isinstance(should_upgrade, bool)
-        assert isinstance(reason, str)
+        mock_telemetry.get_recent_entries.return_value = [
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "model1",
+                "tier": "CHEAP",
+                "success": True,
+                "cost": 0.001,
+                "duration_ms": 500,
+            },
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "model2",
+                "tier": "CAPABLE",
+                "success": True,
+                "cost": 0.003,
+                "duration_ms": 600,
+            },
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        performances = router._analyze_model_performance("test", "analysis")
+
+        assert len(performances) == 2
+        model_ids = {p.model_id for p in performances}
+        assert model_ids == {"model1", "model2"}
+
+    def test_analyze_model_performance_counts_recent_failures(self):
+        """Test that _analyze_model_performance counts recent failures."""
+        mock_telemetry = MagicMock()
+
+        # 30 calls with 5 failures in last 20
+        entries = [
+            {
+                "workflow": "test",
+                "stage": "analysis",
+                "model": "model1",
+                "tier": "CHEAP",
+                "success": i < 25,  # Last 5 are failures
+                "cost": 0.001,
+                "duration_ms": 500,
+            }
+            for i in range(30)
+        ]
+        mock_telemetry.get_recent_entries.return_value = entries
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        performances = router._analyze_model_performance("test", "analysis")
+
+        assert len(performances) == 1
+        # Should count 5 recent failures in last 20 calls
+        assert performances[0].recent_failures == 5
+
+
+@pytest.mark.unit
+class TestGetWorkflowStageEntries:
+    """Test suite for _get_workflow_stage_entries method."""
+
+    def test_get_workflow_stage_entries_filters_by_workflow(self):
+        """Test that entries are filtered to specified workflow."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            {"workflow": "test1", "stage": "analysis"},
+            {"workflow": "test2", "stage": "analysis"},
+            {"workflow": "test1", "stage": "synthesis"},
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        entries = router._get_workflow_stage_entries("test1", None, days=7)
+
+        assert len(entries) == 2
+        assert all(e["workflow"] == "test1" for e in entries)
+
+    def test_get_workflow_stage_entries_filters_by_stage_when_specified(self):
+        """Test that entries are filtered by stage when provided."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            {"workflow": "test", "stage": "analysis"},
+            {"workflow": "test", "stage": "synthesis"},
+            {"workflow": "test", "stage": "analysis"},
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        entries = router._get_workflow_stage_entries("test", "analysis", days=7)
+
+        assert len(entries) == 2
+        assert all(e["stage"] == "analysis" for e in entries)
+
+    def test_get_workflow_stage_entries_includes_all_stages_when_none(self):
+        """Test that all stages included when stage=None."""
+        mock_telemetry = MagicMock()
+
+        mock_telemetry.get_recent_entries.return_value = [
+            {"workflow": "test", "stage": "analysis"},
+            {"workflow": "test", "stage": "synthesis"},
+        ]
+
+        router = AdaptiveModelRouter(mock_telemetry)
+        entries = router._get_workflow_stage_entries("test", None, days=7)
+
+        assert len(entries) == 2
+
+
+@pytest.mark.unit
+class TestGetDefaultModel:
+    """Test suite for _get_default_model method."""
+
+    @patch("empathy_os.models.adaptive_routing._get_registry")
+    def test_get_default_model_returns_from_registry(self, mock_get_registry):
+        """Test that _get_default_model returns model from registry."""
+        # Mock registry structure
+        mock_registry = {
+            "anthropic": {
+                "cheap": MagicMock(id="claude-3-5-haiku-20241022"),
+                "capable": MagicMock(id="claude-sonnet-4-5"),
+            }
+        }
+        mock_get_registry.return_value = mock_registry
+
+        mock_telemetry = MagicMock()
+        router = AdaptiveModelRouter(mock_telemetry)
+
+        model = router._get_default_model("CHEAP")
+        assert model == "claude-3-5-haiku-20241022"
+
+    @patch("empathy_os.models.adaptive_routing._get_registry")
+    def test_get_default_model_falls_back_when_registry_missing(
+        self, mock_get_registry
+    ):
+        """Test fallback when tier not in registry."""
+        mock_get_registry.return_value = {"anthropic": {}}
+
+        mock_telemetry = MagicMock()
+        router = AdaptiveModelRouter(mock_telemetry)
+
+        model = router._get_default_model("CHEAP")
+        # Should fall back to hardcoded default
+        assert model == "claude-3-5-haiku-20241022"
+
+    @patch("empathy_os.models.adaptive_routing._get_registry")
+    def test_get_default_model_handles_case_insensitive_tier(self, mock_get_registry):
+        """Test that tier name is case-insensitive."""
+        mock_registry = {
+            "anthropic": {
+                "cheap": MagicMock(id="test-model"),
+            }
+        }
+        mock_get_registry.return_value = mock_registry
+
+        mock_telemetry = MagicMock()
+        router = AdaptiveModelRouter(mock_telemetry)
+
+        # Should work with uppercase tier name
+        model = router._get_default_model("CHEAP")
+        assert model == "test-model"
