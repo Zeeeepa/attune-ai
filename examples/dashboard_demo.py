@@ -10,6 +10,18 @@ Licensed under Fair Source License 0.9
 import random
 import threading
 import time
+from pathlib import Path
+
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+
+    # Load .env from project root
+    env_path = Path(__file__).parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
+except ImportError:
+    pass  # dotenv not installed, will use system environment
 
 from empathy_os.telemetry import (
     ApprovalGate,
@@ -28,11 +40,24 @@ def generate_test_data():
     print("=" * 70)
     print()
 
+    # Initialize Redis memory backend for all patterns
+    try:
+        from empathy_os.memory.short_term import RedisShortTermMemory
+
+        memory = RedisShortTermMemory()
+        print("✅ Connected to Redis memory backend")
+        print()
+    except Exception as e:
+        print(f"❌ Failed to connect to Redis: {e}")
+        print("   Make sure Redis is running and REDIS_ENABLED=true in .env")
+        print()
+        return
+
     # Pattern 1: Agent Heartbeats
     print("📊 Pattern 1: Creating test agent heartbeats...")
     for i in range(5):
         agent_id = f"agent-{i+1}"
-        coordinator = HeartbeatCoordinator()
+        coordinator = HeartbeatCoordinator(memory=memory)
 
         status = random.choice(["running", "idle", "running", "running"])
         progress = random.random()
@@ -61,7 +86,7 @@ def generate_test_data():
         target = f"agent-{random.randint(1, 5)}"
         signal_types = ["status_update", "task_complete", "request_help", "acknowledge"]
 
-        signals = CoordinationSignals(agent_id=source)
+        signals = CoordinationSignals(memory=memory, agent_id=source)
         signals.signal(
             signal_type=random.choice(signal_types),
             source_agent=source,
@@ -75,7 +100,7 @@ def generate_test_data():
 
     # Pattern 4: Event Streaming
     print("📤 Pattern 4: Creating test events...")
-    streamer = EventStreamer()
+    streamer = EventStreamer(memory=memory)
 
     for i in range(15):
         event_types = ["workflow_progress", "agent_heartbeat", "coordination_signal"]
@@ -99,8 +124,8 @@ def generate_test_data():
     # Pattern 5: Approval Requests (create in background to avoid blocking)
     print("✋ Pattern 5: Creating test approval requests...")
 
-    def create_approval():
-        gate = ApprovalGate(agent_id="demo-workflow")
+    def create_approval(memory_backend):
+        gate = ApprovalGate(memory=memory_backend, agent_id="demo-workflow")
         # This will timeout after 60s if not approved
         gate.request_approval(
             approval_type=random.choice(["deploy_to_staging", "delete_old_data", "refactor_module"]),
@@ -110,7 +135,7 @@ def generate_test_data():
 
     # Create 2 approval requests in background
     for i in range(2):
-        thread = threading.Thread(target=create_approval, daemon=True)
+        thread = threading.Thread(target=create_approval, args=(memory,), daemon=True)
         thread.start()
         time.sleep(0.5)  # Stagger creation
 
@@ -119,7 +144,7 @@ def generate_test_data():
 
     # Pattern 6: Quality Feedback
     print("📊 Pattern 6: Creating test quality feedback...")
-    feedback = FeedbackLoop()
+    feedback = FeedbackLoop(memory=memory)
 
     workflows = ["code-review", "test-generation", "refactoring"]
     stages = ["analysis", "generation", "validation"]
