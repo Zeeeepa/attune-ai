@@ -8,6 +8,37 @@ from pathlib import Path
 
 import pytest
 
+# =============================================================================
+# Import Guard - Ensure workflows package is properly initialized
+# =============================================================================
+# This prevents import errors when tests import from workflows package
+# in different orders. The lazy loading mechanism in workflows/__init__.py
+# can cause "not a package" errors if submodules are imported before the
+# package is fully initialized.
+#
+# We force eager initialization of ALL workflows by:
+# 1. Calling discover_workflows() to trigger lazy loading of registered workflows
+# 2. Explicitly importing non-registered workflow modules used by tests
+try:
+    import empathy_os.workflows
+    # Force all lazy workflows to load by discovering them
+    empathy_os.workflows.discover_workflows()
+
+    # Import additional workflow modules not in lazy registry
+    import empathy_os.workflows.history  # noqa: F401
+    import empathy_os.workflows.manage_docs  # noqa: F401
+    import empathy_os.workflows.batch_processing  # noqa: F401
+    import empathy_os.workflows.new_sample_workflow1  # noqa: F401
+    import empathy_os.workflows.security_adapters  # noqa: F401
+    import empathy_os.workflows.security_audit_phase3  # noqa: F401
+    import empathy_os.workflows.progressive.core  # noqa: F401
+    import empathy_os.workflows.progressive.orchestrator  # noqa: F401
+    import empathy_os.workflows.progressive.test_gen  # noqa: F401
+    import empathy_os.workflows.progressive.reports_analytics  # noqa: F401
+    import empathy_os.workflows.progressive.cost_telemetry  # noqa: F401
+except ImportError:
+    pass  # Package might not be available in minimal test environments
+
 # Load test environment variables from .env.test
 try:
     from dotenv import load_dotenv
