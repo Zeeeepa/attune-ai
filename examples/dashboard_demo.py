@@ -33,6 +33,42 @@ from empathy_os.telemetry import (
 from empathy_os.telemetry.feedback_loop import ModelTier
 
 
+def keep_agents_alive(memory):
+    """Continuously publish heartbeats to keep agents visible in dashboard.
+
+    Runs in background thread, updating agent heartbeats every 3 seconds.
+    """
+    agent_configs = {
+        "agent-1": {"tasks": ["Analyzing code quality", "Running static analysis", "Checking dependencies"]},
+        "agent-2": {"tasks": ["Generating unit tests", "Creating test fixtures", "Validating coverage"]},
+        "agent-3": {"tasks": ["Refactoring code", "Optimizing performance", "Improving readability"]},
+        "agent-4": {"tasks": ["Running CI/CD pipeline", "Deploying to staging", "Idle - awaiting tasks"]},
+        "agent-5": {"tasks": ["Monitoring system health", "Processing metrics", "Generating reports"]},
+    }
+
+    coordinators = {}
+    for agent_id in agent_configs:
+        coordinator = HeartbeatCoordinator(memory=memory)
+        coordinator.start_heartbeat(agent_id=agent_id, metadata={"demo": True, "persistent": True})
+        coordinators[agent_id] = coordinator
+
+    while True:
+        for agent_id, config in agent_configs.items():
+            coordinator = coordinators[agent_id]
+            # Randomly vary status and progress for realistic simulation
+            status = random.choice(["running", "running", "running", "idle"])  # Bias toward "running"
+            progress = random.random()
+            current_task = random.choice(config["tasks"])
+
+            coordinator.beat(
+                status=status,
+                progress=progress,
+                current_task=current_task
+            )
+
+        time.sleep(3)  # Update heartbeats every 3 seconds
+
+
 def generate_test_data():
     """Generate test data for all dashboard patterns."""
     print("=" * 70)
@@ -51,32 +87,12 @@ def generate_test_data():
         print(f"❌ Failed to connect to Redis: {e}")
         print("   Make sure Redis is running and REDIS_ENABLED=true in .env")
         print()
-        return
+        return None
 
-    # Pattern 1: Agent Heartbeats
-    print("📊 Pattern 1: Creating test agent heartbeats...")
-    for i in range(5):
-        agent_id = f"agent-{i+1}"
-        coordinator = HeartbeatCoordinator(memory=memory)
-
-        status = random.choice(["running", "idle", "running", "running"])
-        progress = random.random()
-        tasks = [
-            "Analyzing code quality",
-            "Generating tests",
-            "Running validation",
-            "Processing workflow",
-            "Idle - awaiting tasks",
-        ]
-
-        # Start heartbeat and publish update
-        coordinator.start_heartbeat(agent_id=agent_id, metadata={"demo": True})
-        coordinator.beat(
-            status=status, progress=progress, current_task=random.choice(tasks)
-        )
-
-        print(f"  ✓ {agent_id}: {status} ({progress*100:.0f}%)")
-
+    # Pattern 1: Agent Heartbeats (continuous in background)
+    print("📊 Pattern 1: Setting up continuous agent heartbeats...")
+    print("  ✓ 5 agents will publish heartbeats every 3 seconds")
+    print("  ✓ Agents: agent-1, agent-2, agent-3, agent-4, agent-5")
     print()
 
     # Pattern 2: Coordination Signals
@@ -185,6 +201,8 @@ def generate_test_data():
     print("=" * 70)
     print()
 
+    return memory
+
 
 def run_dashboard_demo():
     """Run dashboard demo with test data."""
@@ -201,12 +219,20 @@ def run_dashboard_demo():
 
     # Generate test data
     try:
-        generate_test_data()
+        memory = generate_test_data()
+        if memory is None:
+            return  # Failed to connect to Redis
     except Exception as e:
         print(f"\n❌ Failed to generate test data: {e}")
         print("    Make sure Redis is running: redis-server")
         print("    Or run: empathy memory start")
         return
+
+    # Start background thread for continuous agent heartbeats
+    heartbeat_thread = threading.Thread(target=keep_agents_alive, args=(memory,), daemon=True)
+    heartbeat_thread.start()
+    print("🔄 Background thread started: Agents will remain active")
+    print()
 
     # Start dashboard
     print()
@@ -217,13 +243,14 @@ def run_dashboard_demo():
     print("📊 Dashboard will be available at: http://localhost:8000")
     print()
     print("💡 What you'll see:")
-    print("  • 5 active agents with heartbeats (Pattern 1)")
+    print("  • 5 active agents with live heartbeats (updating every 3s)")
     print("  • 10 coordination signals (Pattern 2)")
     print("  • 15 stream events (Pattern 4)")
     print("  • 2 pending approval requests (Pattern 5)")
     print("  • Quality metrics for 3 workflows × 3 stages × 3 tiers (Pattern 6)")
     print()
     print("🔄 Dashboard auto-refreshes every 5 seconds")
+    print("💓 Agent heartbeats update continuously in background")
     print()
     print("Press Ctrl+C to stop the server")
     print("=" * 70)
