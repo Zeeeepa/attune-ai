@@ -188,6 +188,11 @@ class RedisMetrics:
             return 100.0
         return (self.operations_success / self.operations_total) * 100
 
+    @property
+    def total_requests(self) -> int:
+        """Total requests (alias for operations_total for backward compatibility)."""
+        return self.operations_total
+
     def to_dict(self) -> dict:
         """Convert metrics to dictionary for reporting and serialization.
 
