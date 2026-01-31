@@ -193,6 +193,33 @@ class RedisShortTermMemory:
         else:
             self._client = self._create_client_with_retry()
 
+    @property
+    def client(self) -> Any:
+        """Get the Redis client instance.
+
+        Returns:
+            Redis client instance or None if using mock mode
+
+        Example:
+            >>> memory = RedisShortTermMemory()
+            >>> if memory.client:
+            ...     print("Redis connected")
+        """
+        return self._client
+
+    @property
+    def metrics(self) -> "RedisMetrics":
+        """Get Redis metrics instance.
+
+        Returns:
+            RedisMetrics instance with connection and operation statistics
+
+        Example:
+            >>> memory = RedisShortTermMemory()
+            >>> print(f"Retries: {memory.metrics.retries_total}")
+        """
+        return self._metrics
+
     def _create_client_with_retry(self) -> Any:
         """Create Redis client with retry logic."""
         max_attempts = self._config.retry_max_attempts
