@@ -1,11 +1,99 @@
 # Changelog
 
-All notable changes to the Empathy Framework will be documented in this file.
+All notable changes to Attune AI (formerly Empathy Framework) will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.0.0] - 2026-02-01
+
+### BREAKING CHANGES 🚨
+
+**Package Rename**: `empathy-framework` → `attune-ai`
+
+This is the inaugural release of **attune-ai** (v2.0.0), a complete rebrand from empathy-framework. We start at v2.0 to signify a fresh beginning under the new name.
+
+#### Migration Required
+
+**Installation:**
+```bash
+# Uninstall old package
+pip uninstall empathy-framework
+
+# Install new package
+pip install attune-ai
+```
+
+**Import Changes:**
+```python
+# OLD (empathy-framework v5.x and below)
+from empathy_os.config import EmpathyConfig
+from empathy_os.workflows import CodeReviewWorkflow
+
+# NEW (attune-ai v2.0.0+)
+from attune.config import EmpathyConfig
+from attune.workflows import CodeReviewWorkflow
+```
+
+**CLI Command:**
+```bash
+# OLD: empathy workflow run code-review
+# NEW: attune workflow run code-review
+```
+
+### Changed
+
+- **Package name**: `empathy-framework` → `attune-ai`
+- **Python module**: `empathy_os` → `attune`
+- **CLI command**: `empathy` → `attune`
+- **Config directory**: `.empathy/` → `.attune/`
+- **Toolkit module**: `empathy_llm_toolkit` → `attune_llm`
+- **Healthcare plugin**: `empathy_healthcare_plugin` → `attune_healthcare`
+- **Software plugin**: `empathy_software_plugin` → `attune_software`
+
+### Updated
+
+- All Python imports (3,139 files updated)
+- All configuration files (YAML, JSON, TOML)
+- All documentation and README files
+- All CI/CD workflows in `.github/workflows/`
+- PyPI package metadata and URLs
+- Entry point scripts and CLI commands
+
+### Fixed
+
+- **Test Pollution Bug**: Fixed sys.modules contamination in batch101 tests
+  - Root cause: Module-level `sys.modules` mocking without cleanup
+  - Solution: Converted to pytest fixture with proper teardown
+  - Impact: All 1,392 behavioral tests now pass reliably
+
+- **Test Cleanup**: Added `tests/behavioral/conftest.py` with autouse fixture
+  - Prevents future test pollution with `patch.stopall()`
+  - Ensures clean state between all behavioral tests
+
+### Testing
+
+- ✅ **1,392 behavioral tests passing** (100% pass rate)
+- ✅ 7,168+ unit tests passing
+- ✅ Total: ~8,500+ tests passing
+- ✅ Package verified with new `attune-ai` name
+- ✅ All imports tested and working
+
+### Infrastructure
+
+- Added automated migration script (`rename_to_attune.sh`)
+- Updated all GitHub Actions workflows
+- Updated repository URLs to point to `attune-ai`
+- Prepared for GitHub repository rename
+
+### Notes
+
+This release maintains 100% API compatibility at the code level - only package and module names changed. All functionality remains identical to v5.3.0.
+
+**PyPI**: https://pypi.org/project/attune-ai/
+**GitHub**: https://github.com/Smart-AI-Memory/attune-ai (pending repository rename)
 
 ## [5.3.0] - 2026-01-31
 
