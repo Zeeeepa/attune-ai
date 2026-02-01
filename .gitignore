@@ -48,6 +48,16 @@ htmlcov/
 *.pyc
 __pycache__/
 
+# Root-level test files (should be in tests/)
+/test_*.py
+test_env/
+test*.json
+!tests/**/*.json
+
+# Redis dumps
+*.rdb
+dump*.rdb
+
 # Security
 security_scan_results.json
 pip_audit_results.json
