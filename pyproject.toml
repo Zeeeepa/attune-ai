@@ -86,7 +86,7 @@ agents = [
     "langchain-core>=1.2.5,<2.0.0",  # 1.2.5+ has security fixes
     "langchain-text-splitters>=0.3.9,<0.4.0",
     "langgraph>=1.0.0,<2.0.0",  # 1.0+ required for langgraph-checkpoint 3.0 (RCE fix)
-    "langgraph-checkpoint>=3.0.0,<4.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
+    "langgraph-checkpoint>=3.0.0,<5.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
     "marshmallow>=4.1.2,<5.0.0",  # Security: GHSA-428g-f7cq-pgp5
 ]
 
@@ -119,7 +119,7 @@ healthcare = [
     "langchain-core>=1.2.5,<2.0.0",
     "langchain-text-splitters>=0.3.9,<0.4.0",
     "langgraph>=1.0.0,<2.0.0",
-    "langgraph-checkpoint>=3.0.0,<4.0.0",
+    "langgraph-checkpoint>=3.0.0,<5.0.0",
     "marshmallow>=4.1.2,<5.0.0",
     "python-docx>=0.8.11,<1.0.0",
     "pyyaml>=6.0,<7.0",
@@ -211,7 +211,7 @@ developer = [
     "langchain-core>=1.2.5,<2.0.0",  # 1.2.5+ has security fixes
     "langchain-text-splitters>=0.3.9,<0.4.0",
     "langgraph>=1.0.0,<2.0.0",  # 1.0+ required for langgraph-checkpoint 3.0 (RCE fix)
-    "langgraph-checkpoint>=3.0.0,<4.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
+    "langgraph-checkpoint>=3.0.0,<5.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
     "marshmallow>=4.1.2,<5.0.0",  # Security: GHSA-428g-f7cq-pgp5
     # Software development plugins
     "python-docx>=0.8.11,<1.0.0",
@@ -229,7 +229,7 @@ enterprise = [
     "langchain-core>=1.2.5,<2.0.0",
     "langchain-text-splitters>=0.3.9,<0.4.0",
     "langgraph>=1.0.0,<2.0.0",
-    "langgraph-checkpoint>=3.0.0,<4.0.0",
+    "langgraph-checkpoint>=3.0.0,<5.0.0",
     "marshmallow>=4.1.2,<5.0.0",
     "python-docx>=0.8.11,<1.0.0",
     "pyyaml>=6.0,<7.0",
@@ -258,7 +258,7 @@ full = [
     "langchain-core>=1.2.5,<2.0.0",  # 1.2.5+ has security fixes
     "langchain-text-splitters>=0.3.9,<0.4.0",
     "langgraph>=1.0.0,<2.0.0",  # 1.0+ required for langgraph-checkpoint 3.0 (RCE fix)
-    "langgraph-checkpoint>=3.0.0,<4.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
+    "langgraph-checkpoint>=3.0.0,<5.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
     "marshmallow>=4.1.2,<5.0.0",  # Security: GHSA-428g-f7cq-pgp5
     # Plugins
     "python-docx>=0.8.11,<1.0.0",
@@ -278,7 +278,7 @@ all = [
     "langchain-core>=1.2.5,<2.0.0",  # 1.2.5+ has security fixes
     "langchain-text-splitters>=0.3.9,<0.4.0",
     "langgraph>=1.0.0,<2.0.0",  # 1.0+ required for langgraph-checkpoint 3.0 (RCE fix)
-    "langgraph-checkpoint>=3.0.0,<4.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
+    "langgraph-checkpoint>=3.0.0,<5.0.0",  # Security: GHSA-wwqv-p2pp-99h5 (RCE fix)
     "marshmallow>=4.1.2,<5.0.0",  # Security: GHSA-428g-f7cq-pgp5
     # Plugins
     "python-docx>=0.8.11,<1.0.0",
