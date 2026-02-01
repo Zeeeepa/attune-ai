@@ -39,6 +39,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
         # Route requests
         if path == "/" or path == "/index.html":
             self.serve_file("index.html", "text/html")
+        elif path == "/test.html":
+            self.serve_file("test.html", "text/html")
         elif path == "/static/style.css":
             self.serve_file("style.css", "text/css")
         elif path == "/static/app.js":
@@ -169,6 +171,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 result.append(
                     {
                         "agent_id": agent.agent_id,
+                        "display_name": agent.display_name,
                         "status": agent.status,
                         "last_seen": agent.last_beat.isoformat(),
                         "progress": agent.progress,

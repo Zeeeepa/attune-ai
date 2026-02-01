@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.0] - 2026-01-31
+
+### Added
+
+- **Agent Display Names**: Added optional `display_name` field to agent heartbeats for human-readable dashboard labels
+  - Backend: `display_name` parameter in `start_heartbeat()` and `beat()` methods
+  - API: Dashboard `/api/agents` endpoint returns display names
+  - Frontend: JavaScript lookup map translates agent IDs to display names across all sections
+  - Demo: Updated `dashboard_demo.py` to use descriptive names like "Code Analyzer", "Test Generator"
+
+- **Dashboard Help Panel**: Comprehensive slide-out help system explaining dashboard features
+  - 5 accordion sections: What is this dashboard, When needed, When NOT needed, Dashboard sections, Redis setup
+  - Emphasizes dashboard is optional for basic workflows
+  - Clear Redis installation instructions for Docker, macOS, Linux
+  - Improved accessibility with proper button type attributes
+
+### Changed
+
+- **Dashboard UX Improvements**:
+  - Changed "Source:" to "Source Agent:" in Event Stream for clarity
+  - Updated Redis status message to "Redis Requires Enabling" when Redis unavailable
+  - Display names now shown consistently across Active Agents, Event Stream, and Recent Signals
+  - Implemented date-based cache busting (`?v=20260131d`) for reliable browser updates
+
+### Documentation
+
+- Cleaned up root directory structure:
+  - Moved 8 batch/behavioral test summaries to `.archive/`
+  - Removed duplicate dashboard documentation files
+  - Moved historical testing session summary to `.archive/`
+- Updated README to accurately highlight flexible context routing (200K subscription + 1M API availability)
+- Added clear Redis requirement documentation for Agent Dashboard
+
 ## [5.2.1] - 2026-01-30
 
 ### Fixed

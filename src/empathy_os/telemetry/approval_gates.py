@@ -458,19 +458,16 @@ class ApprovalGate:
                 if isinstance(key, bytes):
                     key = key.decode("utf-8")
 
-                # Retrieve request
-                if hasattr(self.memory, "retrieve"):
-                    data = self.memory.retrieve(key, credentials=None)
-                else:
-                    import json
+                # Retrieve request - use direct Redis access (approval keys are stored without prefix)
+                import json
 
-                    raw_data = self.memory._client.get(key)
-                    if raw_data:
-                        if isinstance(raw_data, bytes):
-                            raw_data = raw_data.decode("utf-8")
-                        data = json.loads(raw_data)
-                    else:
-                        data = None
+                raw_data = self.memory._client.get(key)
+                if raw_data:
+                    if isinstance(raw_data, bytes):
+                        raw_data = raw_data.decode("utf-8")
+                    data = json.loads(raw_data)
+                else:
+                    data = None
 
                 if not data:
                     continue
@@ -513,19 +510,16 @@ class ApprovalGate:
                 if isinstance(key, bytes):
                     key = key.decode("utf-8")
 
-                # Retrieve request
-                if hasattr(self.memory, "retrieve"):
-                    data = self.memory.retrieve(key, credentials=None)
-                else:
-                    import json
+                # Retrieve request - use direct Redis access (approval keys are stored without prefix)
+                import json
 
-                    raw_data = self.memory._client.get(key)
-                    if raw_data:
-                        if isinstance(raw_data, bytes):
-                            raw_data = raw_data.decode("utf-8")
-                        data = json.loads(raw_data)
-                    else:
-                        data = None
+                raw_data = self.memory._client.get(key)
+                if raw_data:
+                    if isinstance(raw_data, bytes):
+                        raw_data = raw_data.decode("utf-8")
+                    data = json.loads(raw_data)
+                else:
+                    data = None
 
                 if not data:
                     continue

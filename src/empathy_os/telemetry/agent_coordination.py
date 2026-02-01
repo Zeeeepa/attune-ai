@@ -447,9 +447,8 @@ class CoordinationSignals:
             return None
 
         try:
-            if hasattr(self.memory, "retrieve"):
-                return self.memory.retrieve(key, credentials=None)
-            elif hasattr(self.memory, "_client"):
+            # Use direct Redis access (signal keys are stored without prefix)
+            if hasattr(self.memory, "_client"):
                 import json
 
                 data = self.memory._client.get(key)

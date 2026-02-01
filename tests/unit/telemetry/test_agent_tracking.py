@@ -150,7 +150,7 @@ class TestHeartbeatCoordinatorWithMemory:
         call_args = mock_memory._client.setex.call_args
         key, ttl, data = call_args[0]
 
-        assert key == "heartbeat:test-agent"
+        assert key == "empathy:heartbeat:test-agent"
         assert ttl == coordinator.HEARTBEAT_TTL
 
     def test_stop_heartbeat(self, coordinator, mock_memory):
@@ -324,7 +324,7 @@ class TestHeartbeatCoordinatorIntegration:
         call_args = mock_memory_with_stash._client.setex.call_args
         key, ttl, data = call_args[0]
 
-        assert key == "heartbeat:test-agent"
+        assert key == "empathy:heartbeat:test-agent"
         assert ttl == coordinator.HEARTBEAT_TTL
 
     def test_error_handling_in_publish(self, mock_memory_with_stash):

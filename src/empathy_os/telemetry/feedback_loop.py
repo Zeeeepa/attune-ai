@@ -93,8 +93,13 @@ class FeedbackEntry:
         elif not isinstance(timestamp, datetime):
             timestamp = datetime.utcnow()
 
+        # Handle missing feedback_id (legacy entries)
+        feedback_id = data.get("feedback_id")
+        if not feedback_id:
+            feedback_id = f"fb-{int(timestamp.timestamp()*1000)}"
+
         return cls(
-            feedback_id=data["feedback_id"],
+            feedback_id=feedback_id,
             workflow_name=data["workflow_name"],
             stage_name=data["stage_name"],
             tier=data["tier"],
@@ -284,7 +289,11 @@ class FeedbackLoop:
                 # Retrieve entry
                 data = self._retrieve_feedback(key)
                 if data:
-                    entries.append(FeedbackEntry.from_dict(data))
+                    try:
+                        entries.append(FeedbackEntry.from_dict(data))
+                    except Exception as e:
+                        logger.error(f"Failed to parse feedback entry {key}: {e}, data={data}")
+                        continue
 
                 if len(entries) >= limit:
                     break
@@ -303,9 +312,8 @@ class FeedbackLoop:
             return None
 
         try:
-            if hasattr(self.memory, "retrieve"):
-                return self.memory.retrieve(key, credentials=None)
-            elif hasattr(self.memory, "_client"):
+            # Use direct Redis access (feedback keys are stored without prefix)
+            if hasattr(self.memory, "_client"):
                 import json
 
                 data = self.memory._client.get(key)
@@ -482,14 +490,15 @@ class FeedbackLoop:
     def get_underperforming_stages(
         self, workflow_name: str, quality_threshold: float = 0.7
     ) -> list[tuple[str, QualityStats]]:
-        """Get workflow stages with poor quality scores.
+        """Get workflow stages/tiers with poor quality scores.
 
         Args:
             workflow_name: Name of workflow
-            quality_threshold: Threshold below which stage is considered underperforming
+            quality_threshold: Threshold below which stage/tier is considered underperforming
 
         Returns:
-            List of (stage_name, stats) tuples for underperforming stages
+            List of (stage_name, stats) tuples for underperforming stage/tier combinations
+            The stage_name includes the tier for clarity (e.g., "analysis/cheap")
         """
         if not self.memory or not hasattr(self.memory, "_client"):
             return []
@@ -499,22 +508,26 @@ class FeedbackLoop:
             pattern = f"feedback:{workflow_name}:*"
             keys = self.memory._client.keys(pattern)
 
-            # Extract unique stages
-            stages = set()
+            # Extract unique stage/tier combinations
+            stage_tier_combos = set()
             for key in keys:
                 if isinstance(key, bytes):
                     key = key.decode("utf-8")
                 # Parse key: feedback:{workflow}:{stage}:{tier}:{id}
                 parts = key.split(":")
                 if len(parts) >= 4:
-                    stages.add(parts[2])
+                    stage_name = parts[2]
+                    tier = parts[3]
+                    stage_tier_combos.add((stage_name, tier))
 
-            # Get stats for each stage
+            # Get stats for each stage/tier combination
             underperforming = []
-            for stage_name in stages:
-                stats = self.get_quality_stats(workflow_name, stage_name)
+            for stage_name, tier in stage_tier_combos:
+                stats = self.get_quality_stats(workflow_name, stage_name, tier=tier)
                 if stats and stats.avg_quality < quality_threshold:
-                    underperforming.append((stage_name, stats))
+                    # Include tier in the stage name for clarity
+                    stage_label = f"{stage_name}/{tier}"
+                    underperforming.append((stage_label, stats))
 
             # Sort by quality (worst first)
             underperforming.sort(key=lambda x: x[1].avg_quality)

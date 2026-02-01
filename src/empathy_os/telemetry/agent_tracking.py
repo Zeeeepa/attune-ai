@@ -53,6 +53,7 @@ class AgentHeartbeat:
     current_task: str
     last_beat: datetime
     metadata: dict[str, Any] = field(default_factory=dict)
+    display_name: str | None = None  # Optional human-readable name for dashboard
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
@@ -63,6 +64,7 @@ class AgentHeartbeat:
             "current_task": self.current_task,
             "last_beat": self.last_beat.isoformat() if isinstance(self.last_beat, datetime) else self.last_beat,
             "metadata": self.metadata,
+            "display_name": self.display_name,
         }
 
     @classmethod
@@ -82,6 +84,7 @@ class AgentHeartbeat:
             current_task=data["current_task"],
             last_beat=last_beat,
             metadata=data.get("metadata", {}),
+            display_name=data.get("display_name"),
         )
 
 
@@ -110,6 +113,7 @@ class HeartbeatCoordinator:
         """
         self.memory = memory
         self.agent_id: str | None = None
+        self.display_name: str | None = None
         self._enable_streaming = enable_streaming
         self._event_streamer = None
 
@@ -142,20 +146,28 @@ class HeartbeatCoordinator:
 
         return self._event_streamer
 
-    def start_heartbeat(self, agent_id: str, metadata: dict[str, Any] | None = None) -> None:
+    def start_heartbeat(
+        self, agent_id: str, metadata: dict[str, Any] | None = None, display_name: str | None = None
+    ) -> None:
         """Start heartbeat for an agent.
 
         Args:
             agent_id: Unique agent identifier
             metadata: Initial metadata (workflow, run_id, etc.)
+            display_name: Optional human-readable name for dashboard display
         """
         if not self.memory:
             logger.debug("Heartbeat tracking disabled (no memory backend)")
             return
 
         self.agent_id = agent_id
+        self.display_name = display_name
         self._publish_heartbeat(
-            status="starting", progress=0.0, current_task="initializing", metadata=metadata or {}
+            status="starting",
+            progress=0.0,
+            current_task="initializing",
+            metadata=metadata or {},
+            display_name=display_name,
         )
 
     def beat(self, status: str = "running", progress: float = 0.0, current_task: str = "") -> None:
@@ -169,7 +181,13 @@ class HeartbeatCoordinator:
         if not self.agent_id or not self.memory:
             return
 
-        self._publish_heartbeat(status=status, progress=progress, current_task=current_task, metadata={})
+        self._publish_heartbeat(
+            status=status,
+            progress=progress,
+            current_task=current_task,
+            metadata={},
+            display_name=self.display_name,
+        )
 
     def stop_heartbeat(self, final_status: str = "completed") -> None:
         """Stop heartbeat (agent finished).
@@ -192,7 +210,7 @@ class HeartbeatCoordinator:
         self.agent_id = None
 
     def _publish_heartbeat(
-        self, status: str, progress: float, current_task: str, metadata: dict[str, Any]
+        self, status: str, progress: float, current_task: str, metadata: dict[str, Any], display_name: str | None = None
     ) -> None:
         """Publish heartbeat to Redis with TTL and optionally to event stream."""
         if not self.memory or not self.agent_id:
@@ -205,6 +223,7 @@ class HeartbeatCoordinator:
             current_task=current_task,
             last_beat=datetime.utcnow(),
             metadata=metadata,
+            display_name=display_name,
         )
 
         # Store in Redis with TTL (Pattern 1)

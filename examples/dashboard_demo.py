@@ -39,17 +39,21 @@ def keep_agents_alive(memory):
     Runs in background thread, updating agent heartbeats every 3 seconds.
     """
     agent_configs = {
-        "agent-1": {"tasks": ["Analyzing code quality", "Running static analysis", "Checking dependencies"]},
-        "agent-2": {"tasks": ["Generating unit tests", "Creating test fixtures", "Validating coverage"]},
-        "agent-3": {"tasks": ["Refactoring code", "Optimizing performance", "Improving readability"]},
-        "agent-4": {"tasks": ["Running CI/CD pipeline", "Deploying to staging", "Idle - awaiting tasks"]},
-        "agent-5": {"tasks": ["Monitoring system health", "Processing metrics", "Generating reports"]},
+        "Code Analyzer": {"tasks": ["Analyzing code quality", "Running static analysis", "Checking dependencies"]},
+        "Test Generator": {"tasks": ["Generating unit tests", "Creating test fixtures", "Validating coverage"]},
+        "Refactoring Agent": {"tasks": ["Refactoring code", "Optimizing performance", "Improving readability"]},
+        "CI/CD Pipeline": {"tasks": ["Running CI/CD pipeline", "Deploying to staging", "Idle - awaiting tasks"]},
+        "System Monitor": {"tasks": ["Monitoring system health", "Processing metrics", "Generating reports"]},
     }
 
     coordinators = {}
-    for agent_id in agent_configs:
+    for agent_id, config in agent_configs.items():
         coordinator = HeartbeatCoordinator(memory=memory)
-        coordinator.start_heartbeat(agent_id=agent_id, metadata={"demo": True, "persistent": True})
+        coordinator.start_heartbeat(
+            agent_id=f"agent-{list(agent_configs.keys()).index(agent_id) + 1}",  # Internal ID
+            display_name=agent_id,  # Display name for dashboard
+            metadata={"demo": True, "persistent": True}
+        )
         coordinators[agent_id] = coordinator
 
     while True:
@@ -92,7 +96,7 @@ def generate_test_data():
     # Pattern 1: Agent Heartbeats (continuous in background)
     print("📊 Pattern 1: Setting up continuous agent heartbeats...")
     print("  ✓ 5 agents will publish heartbeats every 3 seconds")
-    print("  ✓ Agents: agent-1, agent-2, agent-3, agent-4, agent-5")
+    print("  ✓ Agents: Code Analyzer, Test Generator, Refactoring Agent, CI/CD Pipeline, System Monitor")
     print()
 
     # Pattern 2: Coordination Signals
@@ -108,6 +112,7 @@ def generate_test_data():
             source_agent=source,
             target_agent=target,
             payload={"message": f"Test signal {i+1}", "demo": True},
+            ttl_seconds=3600,  # 1 hour TTL for demo (default is 5 minutes)
         )
 
         print(f"  ✓ Signal: {source} → {target}")

@@ -66,13 +66,17 @@ class StreamEvent:
 
         Args:
             event_id: Redis stream entry ID
-            entry_data: Raw entry data from Redis (bytes dict)
+            entry_data: Raw entry data from Redis (bytes dict or str dict)
 
         Returns:
             StreamEvent instance
         """
-        # Decode bytes to strings
-        decoded = {k.decode("utf-8"): v.decode("utf-8") for k, v in entry_data.items()}
+        # Decode bytes to strings (handle both bytes and str)
+        decoded = {}
+        for k, v in entry_data.items():
+            key = k.decode("utf-8") if isinstance(k, bytes) else k
+            value = v.decode("utf-8") if isinstance(v, bytes) else v
+            decoded[key] = value
 
         # Parse timestamp
         timestamp_str = decoded.get("timestamp", "")

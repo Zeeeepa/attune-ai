@@ -21,7 +21,7 @@ pip install empathy-framework[developer]
 **Empathy Framework is evolving to focus exclusively on Anthropic/Claude** to unlock features impossible with multi-provider abstraction:
 
 - **📦 Prompt Caching:** 90% cost reduction on repeated prompts
-- **📖 200K Context:** Largest context window available (vs 128K for competitors)
+- **📖 Flexible Context:** 200K via subscription for most tasks, up to 1M via API for large codebases
 - **🧠 Extended Thinking:** See Claude's internal reasoning process
 - **🔧 Advanced Tool Use:** Optimized for agentic workflows
 
@@ -49,7 +49,7 @@ pip install empathy-framework[developer]
 
 - **Custom Agents** - Build specialized agents for your workflow needs
 - **LLM Agents from Anthropic** - Leverage Claude's advanced capabilities
-- Dashboard accessible at `http://localhost:8000` with `python examples/dashboard_demo.py`
+- Dashboard accessible at `http://localhost:8000` with `python examples/dashboard_demo.py` **(Requires Redis)**
 
 **🔐 Authentication Strategy System** - Intelligent routing between Claude subscriptions and Anthropic API:
 
@@ -479,7 +479,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 export OPENAI_API_KEY="sk-..."
 export GOOGLE_API_KEY="..."
 
-# Optional: Redis for memory
+# Optional (but required for Agent Dashboard): Redis for memory
 export REDIS_URL="redis://localhost:6379"
 ```
 
