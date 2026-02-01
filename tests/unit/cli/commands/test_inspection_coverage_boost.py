@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.cli.commands.inspection import inspect_cmd, scan
+from attune.cli.commands.inspection import inspect_cmd, scan
 
 
 @pytest.mark.unit
@@ -15,7 +15,7 @@ class TestScan:
     """Test suite for scan function."""
 
     @patch("subprocess.run")
-    @patch("empathy_os.cli.commands.inspection.console")
+    @patch("attune.cli.commands.inspection.console")
     def test_scan_calls_ruff(self, mock_console, mock_run):
         """Test that scan calls ruff."""
         scan()
@@ -25,7 +25,7 @@ class TestScan:
         assert any("ruff" in call for call in calls)
 
     @patch("subprocess.run")
-    @patch("empathy_os.cli.commands.inspection.console")
+    @patch("attune.cli.commands.inspection.console")
     def test_scan_with_fix_flag(self, mock_console, mock_run):
         """Test scan with fix=True adds --fix flag."""
         scan(fix=True)
@@ -40,7 +40,7 @@ class TestInspectCmd:
     """Test suite for inspect_cmd function."""
 
     @patch("subprocess.run")
-    @patch("empathy_os.cli.commands.inspection.console")
+    @patch("attune.cli.commands.inspection.console")
     def test_inspect_cmd_calls_subprocess(self, mock_console, mock_run):
         """Test that inspect_cmd calls subprocess."""
         mock_run.return_value = Mock(returncode=0)
@@ -52,7 +52,7 @@ class TestInspectCmd:
         assert "empathy-inspect" in args[0]
 
     @patch("subprocess.run")
-    @patch("empathy_os.cli.commands.inspection.console")
+    @patch("attune.cli.commands.inspection.console")
     def test_inspect_cmd_with_format(self, mock_console, mock_run):
         """Test inspect_cmd with format parameter."""
         mock_run.return_value = Mock(returncode=0)

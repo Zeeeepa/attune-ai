@@ -6,7 +6,7 @@ Licensed under Fair Source 0.9
 
 from datetime import datetime
 
-from empathy_os.routing.chain_executor import (
+from attune.routing.chain_executor import (
     ChainConfig,
     ChainExecution,
     ChainExecutor,
@@ -614,26 +614,26 @@ class TestHelperFunctions:
 
     def test_is_numeric_with_int(self):
         """Test _is_numeric with integer."""
-        from empathy_os.routing.chain_executor import _is_numeric
+        from attune.routing.chain_executor import _is_numeric
 
         assert _is_numeric(42) is True
 
     def test_is_numeric_with_float(self):
         """Test _is_numeric with float."""
-        from empathy_os.routing.chain_executor import _is_numeric
+        from attune.routing.chain_executor import _is_numeric
 
         assert _is_numeric(3.14) is True
 
     def test_is_numeric_with_numeric_string(self):
         """Test _is_numeric with numeric string."""
-        from empathy_os.routing.chain_executor import _is_numeric
+        from attune.routing.chain_executor import _is_numeric
 
         assert _is_numeric("123") is True
         assert _is_numeric("45.67") is True
 
     def test_is_numeric_with_non_numeric(self):
         """Test _is_numeric with non-numeric values."""
-        from empathy_os.routing.chain_executor import _is_numeric
+        from attune.routing.chain_executor import _is_numeric
 
         assert _is_numeric("abc") is False
         assert _is_numeric(None) is False
@@ -641,7 +641,7 @@ class TestHelperFunctions:
 
     def test_parse_value_boolean(self):
         """Test _parse_value with boolean strings."""
-        from empathy_os.routing.chain_executor import _parse_value
+        from attune.routing.chain_executor import _parse_value
 
         assert _parse_value("true") is True
         assert _parse_value("false") is False
@@ -650,14 +650,14 @@ class TestHelperFunctions:
 
     def test_parse_value_null(self):
         """Test _parse_value with null."""
-        from empathy_os.routing.chain_executor import _parse_value
+        from attune.routing.chain_executor import _parse_value
 
         assert _parse_value("null") is None
         assert _parse_value("NULL") is None
 
     def test_parse_value_numbers(self):
         """Test _parse_value with numbers."""
-        from empathy_os.routing.chain_executor import _parse_value
+        from attune.routing.chain_executor import _parse_value
 
         assert _parse_value("42") == 42
         assert _parse_value("3.14") == 3.14
@@ -665,7 +665,7 @@ class TestHelperFunctions:
 
     def test_parse_value_strings(self):
         """Test _parse_value with strings."""
-        from empathy_os.routing.chain_executor import _parse_value
+        from attune.routing.chain_executor import _parse_value
 
         assert _parse_value("'hello'") == "hello"
         assert _parse_value('"world"') == "world"
@@ -673,21 +673,21 @@ class TestHelperFunctions:
 
     def test_get_nested_simple(self):
         """Test _get_nested with simple path."""
-        from empathy_os.routing.chain_executor import _get_nested
+        from attune.routing.chain_executor import _get_nested
 
         data = {"key": "value"}
         assert _get_nested(data, "key") == "value"
 
     def test_get_nested_deep_path(self):
         """Test _get_nested with nested path."""
-        from empathy_os.routing.chain_executor import _get_nested
+        from attune.routing.chain_executor import _get_nested
 
         data = {"level1": {"level2": {"level3": "deep_value"}}}
         assert _get_nested(data, "level1.level2.level3") == "deep_value"
 
     def test_get_nested_missing_path(self):
         """Test _get_nested with missing path."""
-        from empathy_os.routing.chain_executor import _get_nested
+        from attune.routing.chain_executor import _get_nested
 
         data = {"key": "value"}
         assert _get_nested(data, "nonexistent") is None

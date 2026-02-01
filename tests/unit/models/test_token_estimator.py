@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.models.token_estimator import (
+from attune.models.token_estimator import (
     TIKTOKEN_AVAILABLE,
     _get_encoding,
     estimate_single_call_cost,

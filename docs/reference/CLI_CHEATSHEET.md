@@ -11,7 +11,7 @@ Quick reference for Empathy Framework commands. Full docs at [smartaimemory.com/
 ## Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ---
@@ -198,4 +198,4 @@ empathy cheatsheet             # Quick reference
 
 ---
 
-*Empathy Framework v4.6.6 | [GitHub](https://github.com/Smart-AI-Memory/empathy-framework) | [Docs](https://www.smartaimemory.com/framework-docs/)*
+*Empathy Framework v4.6.6 | [GitHub](https://github.com/Smart-AI-Memory/attune-ai) | [Docs](https://www.smartaimemory.com/framework-docs/)*

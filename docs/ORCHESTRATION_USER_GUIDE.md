@@ -86,7 +86,7 @@ print(report.format_console_output())  # Done!
 Meta-orchestration is included in Empathy Framework v3.12.0+:
 
 ```bash
-pip install empathy-framework[developer]>=3.12.0
+pip install attune-ai[developer]>=3.12.0
 ```
 
 ### Quick Start: Release Preparation
@@ -248,7 +248,7 @@ empathy orchestrate test-coverage \
 
 ```python
 import asyncio
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 
@@ -274,7 +274,7 @@ asyncio.run(main())
 ### Custom Quality Gates
 
 ```python
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 
@@ -308,7 +308,7 @@ report = await workflow.execute(path=".")
 ### Test Coverage Boost
 
 ```python
-from empathy_os.workflows.test_coverage_boost import (
+from attune.workflows.test_coverage_boost import (
     TestCoverageBoostWorkflow
 )
 
@@ -334,8 +334,8 @@ print(f"New tests: {result['tests_generated']}")
 **For custom workflows:**
 
 ```python
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
-from empathy_os.orchestration.execution_strategies import get_strategy
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.orchestration.execution_strategies import get_strategy
 
 # Create orchestrator
 orchestrator = MetaOrchestrator()
@@ -397,7 +397,7 @@ class AgentTemplate:
 ### Retrieving Templates
 
 ```python
-from empathy_os.orchestration.agent_templates import (
+from attune.orchestration.agent_templates import (
     get_template,
     get_all_templates,
     get_templates_by_capability,
@@ -456,7 +456,7 @@ cheap_templates = get_templates_by_tier("CHEAP")
 **Use when:** Tasks must be done in order, each step depends on previous results
 
 ```python
-from empathy_os.orchestration.execution_strategies import SequentialStrategy
+from attune.orchestration.execution_strategies import SequentialStrategy
 
 strategy = SequentialStrategy()
 
@@ -482,7 +482,7 @@ Coverage Analyzer → Test Generator → Test Validator
 **Use when:** Independent validations needed, time optimization important
 
 ```python
-from empathy_os.orchestration.execution_strategies import ParallelStrategy
+from attune.orchestration.execution_strategies import ParallelStrategy
 
 strategy = ParallelStrategy()
 
@@ -513,7 +513,7 @@ Security Audit ‖ Performance Check ‖ Code Quality ‖ Docs Check
 **Use when:** Multiple expert opinions needed, tradeoff analysis required
 
 ```python
-from empathy_os.orchestration.execution_strategies import DebateStrategy
+from attune.orchestration.execution_strategies import DebateStrategy
 
 strategy = DebateStrategy()
 
@@ -555,7 +555,7 @@ Architect(scale) ‖ Architect(cost) ‖ Architect(simplicity) → Synthesizer
 **Use when:** Cost-effective generation desired, quality assurance critical
 
 ```python
-from empathy_os.orchestration.execution_strategies import TeachingStrategy
+from attune.orchestration.execution_strategies import TeachingStrategy
 
 # Configure quality threshold
 strategy = TeachingStrategy(quality_threshold=0.7)
@@ -590,7 +590,7 @@ Junior Writer(CHEAP) → Quality Gate → (pass ? done : Expert Review(CAPABLE))
 **Use when:** Iterative improvement needed, quality ladder desired
 
 ```python
-from empathy_os.orchestration.execution_strategies import RefinementStrategy
+from attune.orchestration.execution_strategies import RefinementStrategy
 
 strategy = RefinementStrategy()
 
@@ -623,7 +623,7 @@ Drafter(CHEAP) → Reviewer(CAPABLE) → Polisher(PREMIUM)
 **Use when:** Variable task complexity, cost optimization desired
 
 ```python
-from empathy_os.orchestration.execution_strategies import AdaptiveStrategy
+from attune.orchestration.execution_strategies import AdaptiveStrategy
 
 strategy = AdaptiveStrategy()
 
@@ -674,7 +674,7 @@ Classifier(CHEAP) → route(simple|moderate|complex) → Specialist(tier)
 **Override pattern:**
 
 ```python
-from empathy_os.orchestration.execution_strategies import get_strategy
+from attune.orchestration.execution_strategies import get_strategy
 
 # Force specific pattern
 strategy = get_strategy("parallel")
@@ -716,7 +716,7 @@ Each configuration stores:
 ### Basic Usage
 
 ```python
-from empathy_os.orchestration.config_store import (
+from attune.orchestration.config_store import (
     ConfigurationStore,
     AgentConfiguration,
 )
@@ -820,8 +820,8 @@ workflow = OrchestratedReleasePrepWorkflow()
 **Manual integration:**
 
 ```python
-from empathy_os.orchestration.config_store import ConfigurationStore
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.orchestration.config_store import ConfigurationStore
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
 
 store = ConfigurationStore()
 orchestrator = MetaOrchestrator()
@@ -849,7 +849,7 @@ else:
 **Successful compositions contribute to the pattern library:**
 
 ```python
-from empathy_os.pattern_library import PatternLibrary
+from attune.pattern_library import PatternLibrary
 
 store = ConfigurationStore(
     pattern_library=PatternLibrary()
@@ -879,9 +879,9 @@ store.save(config)
 ```python
 import asyncio
 from dataclasses import dataclass
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
-from empathy_os.orchestration.execution_strategies import get_strategy
-from empathy_os.orchestration.config_store import (
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.orchestration.execution_strategies import get_strategy
+from attune.orchestration.config_store import (
     ConfigurationStore,
     AgentConfiguration,
 )
@@ -966,7 +966,7 @@ result = await workflow.execute({"param": "value"})
 **Define your own agent templates:**
 
 ```python
-from empathy_os.orchestration.agent_templates import (
+from attune.orchestration.agent_templates import (
     AgentTemplate,
     ResourceRequirements,
 )
@@ -1004,7 +1004,7 @@ Focus on production-ready, maintainable solutions.
 )
 
 # Use in custom workflow
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(
@@ -1083,7 +1083,7 @@ async def multi_stage_workflow(context: dict):
 **Solution:**
 ```python
 # Check available templates
-from empathy_os.orchestration.agent_templates import get_all_templates
+from attune.orchestration.agent_templates import get_all_templates
 
 templates = get_all_templates()
 print(f"Available: {[t.id for t in templates]}")
@@ -1117,7 +1117,7 @@ workflow = OrchestratedReleasePrepWorkflow(quality_gates=quality_gates)
 **Solution:**
 ```python
 # Increase agent timeout
-from empathy_os.orchestration.agent_templates import (
+from attune.orchestration.agent_templates import (
     AgentTemplate,
     ResourceRequirements,
 )
@@ -1157,7 +1157,7 @@ print(f"Writable: {os.access('.empathy', os.W_OK)}")
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger("empathy_os.orchestration")
+logger = logging.getLogger("attune.orchestration")
 logger.setLevel(logging.DEBUG)
 
 # Now see detailed orchestration decisions
@@ -1207,7 +1207,7 @@ for agent_result in result.outputs:
 strategy = get_strategy("parallel")
 
 # 2. Use cheaper tiers for non-critical tasks
-from empathy_os.orchestration.agent_templates import get_templates_by_tier
+from attune.orchestration.agent_templates import get_templates_by_tier
 
 cheap_agents = get_templates_by_tier("CHEAP")
 
@@ -1228,8 +1228,8 @@ best = store.get_best_for_task("release_prep")
 
 **Resources:**
 - [API Documentation](ORCHESTRATION_API.md)
-- [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 - [Example Code](../examples/orchestration/)
 
 **Report bugs:**

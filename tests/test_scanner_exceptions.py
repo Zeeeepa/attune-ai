@@ -15,8 +15,8 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-from empathy_os.project_index.models import FileCategory
-from empathy_os.project_index.scanner import ProjectScanner
+from attune.project_index.models import FileCategory
+from attune.project_index.scanner import ProjectScanner
 
 
 class TestProjectScannerFileIOErrors:

@@ -164,7 +164,7 @@ The system is ready for release.
   </summary>
 
   <changes_made>
-    <file path="src/empathy_os/telemetry/usage_tracker.py">
+    <file path="src/attune/telemetry/usage_tracker.py">
       <change line="407">
         Replaced hardcoded baseline_cost = len(entries) * 0.015
         with dynamic calculation using avg_premium_cost
@@ -175,7 +175,7 @@ The system is ready for release.
       </rationale>
     </file>
 
-    <file path="src/empathy_os/workflows/base.py">
+    <file path="src/attune/workflows/base.py">
       <change line="89">
         Added telemetry tracking call in _call_llm() method
       </change>

@@ -71,7 +71,7 @@ Patterns that weren't explicitly taught but arise from collective agent operatio
 The main interface class for interacting with the Empathy Framework. Provides methods for memory operations, pattern management, and agent coordination.
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 empathy = EmpathyOS(user_id="developer@company.com")
 ```
 

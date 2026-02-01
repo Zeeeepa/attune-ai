@@ -56,7 +56,7 @@ The MemDocs + Empathy integration has already demonstrated **200-400% productivi
 │                    Empathy Framework Memory                          │
 ├─────────────────────────────────┬───────────────────────────────────┤
 │     SHORT-TERM (Redis)          │      LONG-TERM (MemDocs)          │
-│     empathy_os/redis_memory.py  │  empathy_llm_toolkit/security/    │
+│     attune/redis_memory.py  │  attune_llm/security/    │
 │                                 │      secure_memdocs.py            │
 ├─────────────────────────────────┼───────────────────────────────────┤
 │ Purpose:                        │ Purpose:                          │
@@ -79,13 +79,13 @@ The MemDocs + Empathy integration has already demonstrated **200-400% productivi
 
 | Component | Location | Lines | Status |
 |-----------|----------|-------|--------|
-| Redis Short-Term Memory | `src/empathy_os/redis_memory.py` | 794 | Production-ready |
-| Redis Configuration | `src/empathy_os/redis_config.py` | 216 | Production-ready |
-| MemDocs Secure Storage | `empathy_llm_toolkit/security/secure_memdocs.py` | 1,192 | Production-ready |
-| Claude Memory Loader | `empathy_llm_toolkit/claude_memory.py` | 467 | Production-ready |
-| PII Scrubber | `empathy_llm_toolkit/security/pii_scrubber.py` | 642 | Production-ready |
-| Secrets Detector | `empathy_llm_toolkit/security/secrets_detector.py` | 675 | Production-ready |
-| Audit Logger | `empathy_llm_toolkit/security/audit_logger.py` | 913 | Production-ready |
+| Redis Short-Term Memory | `src/attune/redis_memory.py` | 794 | Production-ready |
+| Redis Configuration | `src/attune/redis_config.py` | 216 | Production-ready |
+| MemDocs Secure Storage | `attune_llm/security/secure_memdocs.py` | 1,192 | Production-ready |
+| Claude Memory Loader | `attune_llm/claude_memory.py` | 467 | Production-ready |
+| PII Scrubber | `attune_llm/security/pii_scrubber.py` | 642 | Production-ready |
+| Secrets Detector | `attune_llm/security/secrets_detector.py` | 675 | Production-ready |
+| Audit Logger | `attune_llm/security/audit_logger.py` | 913 | Production-ready |
 | Pattern Storage Dir | `memdocs_storage/` | - | Ready (empty) |
 
 **Total Production Code**: ~4,899 lines across core memory + security components
@@ -97,7 +97,7 @@ The MemDocs + Empathy integration has already demonstrated **200-400% productivi
 ### Unified Memory Module
 
 ```
-src/empathy_os/
+src/attune/
 ├── memory/
 │   ├── __init__.py           # Public API
 │   ├── short_term.py         # Redis (renamed from redis_memory.py)
@@ -170,7 +170,7 @@ src/empathy_os/
 
 **API**:
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 os = EmpathyOS(user_id="agent_1")
 os.stash("key", value)           # Store with TTL
@@ -198,7 +198,7 @@ os.send_signal("ready", target)  # Agent coordination
 
 **API**:
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 os = EmpathyOS(user_id="user@org.com")
 os.persist_pattern(             # Store long-term
@@ -253,7 +253,7 @@ def get_storage_backend():
 ## Migration Path
 
 ### Phase 1: Consolidate (No Breaking Changes)
-- [ ] Create `src/empathy_os/memory/` directory structure
+- [ ] Create `src/attune/memory/` directory structure
 - [ ] Move existing code without changes
 - [ ] Add backwards-compatible imports
 - [ ] Update documentation
@@ -277,15 +277,15 @@ def get_storage_backend():
 The following files/directories MUST be preserved:
 
 ### Core Memory Implementation
-- [ ] `src/empathy_os/redis_memory.py` - 794 lines of working code
-- [ ] `src/empathy_os/redis_config.py` - Environment configuration
-- [ ] `empathy_llm_toolkit/security/secure_memdocs.py` - 1,192 lines
-- [ ] `empathy_llm_toolkit/claude_memory.py` - CLAUDE.md loader
+- [ ] `src/attune/redis_memory.py` - 794 lines of working code
+- [ ] `src/attune/redis_config.py` - Environment configuration
+- [ ] `attune_llm/security/secure_memdocs.py` - 1,192 lines
+- [ ] `attune_llm/claude_memory.py` - CLAUDE.md loader
 
 ### Security Components
-- [ ] `empathy_llm_toolkit/security/pii_scrubber.py`
-- [ ] `empathy_llm_toolkit/security/secrets_detector.py`
-- [ ] `empathy_llm_toolkit/security/audit_logger.py`
+- [ ] `attune_llm/security/pii_scrubber.py`
+- [ ] `attune_llm/security/secrets_detector.py`
+- [ ] `attune_llm/security/audit_logger.py`
 
 ### Tests
 - [ ] `tests/test_redis_memory.py`
@@ -305,7 +305,7 @@ The following files/directories MUST be preserved:
 ### Examples
 - [ ] `examples/test_short_term_memory_full.py`
 - [ ] `examples/security_integration_example.py`
-- [ ] `empathy_llm_toolkit/security/secure_memdocs_example.py`
+- [ ] `attune_llm/security/secure_memdocs_example.py`
 - [ ] `examples/claude_memory/` directory
 
 ### Storage
@@ -325,7 +325,7 @@ The following files/directories MUST be preserved:
 
 ## Decisions (Approved 2025-12-11)
 
-1. **Directory Structure**: Consolidate `empathy_llm_toolkit/` into `src/empathy_os/`
+1. **Directory Structure**: Consolidate `attune_llm/` into `src/attune/`
    - Single unified package
    - Cleaner import paths
 

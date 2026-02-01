@@ -8,8 +8,8 @@ Licensed under Apache 2.0
 
 import pytest
 
-from empathy_os.workflows.step_config import WorkflowStepConfig
-from empathy_os.workflows.test_gen.config import (
+from attune.workflows.step_config import WorkflowStepConfig
+from attune.workflows.test_gen.config import (
     DEFAULT_SKIP_PATTERNS,
     TEST_GEN_STEPS,
 )
@@ -341,7 +341,7 @@ class TestModuleImports:
         Then: Import succeeds without errors
         """
         # When/Then
-        from empathy_os.workflows.test_gen.config import DEFAULT_SKIP_PATTERNS
+        from attune.workflows.test_gen.config import DEFAULT_SKIP_PATTERNS
 
         assert DEFAULT_SKIP_PATTERNS is not None
 
@@ -352,7 +352,7 @@ class TestModuleImports:
         Then: Import succeeds without errors
         """
         # When/Then
-        from empathy_os.workflows.test_gen.config import TEST_GEN_STEPS
+        from attune.workflows.test_gen.config import TEST_GEN_STEPS
 
         assert TEST_GEN_STEPS is not None
 
@@ -363,7 +363,7 @@ class TestModuleImports:
         Then: Both imports succeed without errors
         """
         # When/Then
-        from empathy_os.workflows.test_gen.config import (
+        from attune.workflows.test_gen.config import (
             DEFAULT_SKIP_PATTERNS,
             TEST_GEN_STEPS,
         )

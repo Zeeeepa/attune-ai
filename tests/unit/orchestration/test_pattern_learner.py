@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.orchestration.pattern_learner import (
+from attune.orchestration.pattern_learner import (
     ContextSignature,
     ExecutionRecord,
     LearningStore,
@@ -532,7 +532,7 @@ class TestLearnerIntegration:
 
     def test_singleton_access(self):
         """Test get_learner returns same instance."""
-        with patch("empathy_os.orchestration.pattern_learner._default_learner", None):
+        with patch("attune.orchestration.pattern_learner._default_learner", None):
             learner1 = get_learner()
             learner2 = get_learner()
             assert learner1 is learner2

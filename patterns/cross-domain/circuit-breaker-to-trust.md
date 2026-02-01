@@ -5,7 +5,7 @@
 **Target Domain:** Human-AI Trust Management
 **Transfer Type:** Conceptual Mapping
 **Status:** IMPLEMENTED
-**Implementation:** [src/empathy_os/trust/circuit_breaker.py](../../src/empathy_os/trust/circuit_breaker.py)
+**Implementation:** [src/attune/trust/circuit_breaker.py](../../src/attune/trust/circuit_breaker.py)
 **Guide:** [docs/guides/trust-circuit-breaker.md](../../docs/guides/trust-circuit-breaker.md)
 
 ## The Transfer Insight

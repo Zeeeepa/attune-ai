@@ -14,7 +14,7 @@ from datetime import datetime
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from empathy_llm_toolkit import EmpathyLLM, PatternType, UserPattern
+from attune_llm import EmpathyLLM, PatternType, UserPattern
 
 
 async def demo_level_progression():
@@ -270,6 +270,6 @@ async def main():
 
 if __name__ == "__main__":
     # Import EmpathyLevel for demo
-    from empathy_llm_toolkit.levels import EmpathyLevel
+    from attune_llm.levels import EmpathyLevel
 
     asyncio.run(main())

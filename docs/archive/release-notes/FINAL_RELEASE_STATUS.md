@@ -45,8 +45,8 @@ description: Final Release Status - Empathy Framework v3.7.0: **Date**: 2026-01-
 **Severity**: LOW (acceptable for v3.7.0, can fix in v3.7.1)
 
 **Files Found in Package**:
-- `empathy_os/workflows/test5.py`
-- `empathy_os/workflows/new_sample_workflow1.py`
+- `attune/workflows/test5.py`
+- `attune/workflows/new_sample_workflow1.py`
 
 **Why**: The `[tool.setuptools.packages.find]` exclude patterns don't work for individual files within packages, only for excluding entire packages.
 
@@ -118,9 +118,9 @@ This is an **interactive report**, not a "useless form". ✅
 - **Total Files**: ~120 files
 
 **Includes**:
-- ✅ empathy_os (all 20 subpackages)
-- ✅ empathy_os.workflows (with test5 and new_sample_workflow1)
-- ✅ empathy_llm_toolkit
+- ✅ attune (all 20 subpackages)
+- ✅ attune.workflows (with test5 and new_sample_workflow1)
+- ✅ attune_llm
 - ✅ coach_wizards
 - ✅ wizards
 - ✅ agents

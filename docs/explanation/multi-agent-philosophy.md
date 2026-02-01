@@ -57,7 +57,7 @@ The Empathy Framework rejects this model entirely.
 ### Implementation
 
 ```python
-from empathy_os import get_redis_memory, PatternLibrary
+from attune import get_redis_memory, PatternLibrary
 
 # YOU choose where Redis runs
 # Option 1: Your local machine
@@ -347,7 +347,7 @@ scope = session.get("scope")
 Trust is earned, not declared. The access tier system implements this:
 
 ```python
-from empathy_os import AccessTier, EmpathyOS, get_redis_memory
+from attune import AccessTier, EmpathyOS, get_redis_memory
 
 memory = get_redis_memory()
 
@@ -387,7 +387,7 @@ validator = EmpathyOS(
 Here's how philosophy becomes practice:
 
 ```python
-from empathy_os import (
+from attune import (
     EmpathyOS, get_redis_memory, AccessTier,
     AgentCoordinator, AgentTask, TeamSession
 )

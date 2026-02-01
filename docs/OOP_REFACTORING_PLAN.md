@@ -121,7 +121,7 @@ class UnifiedMemory:
 
 1. **Create `LongTermMemory` class** (2 hours)
    ```bash
-   # File: src/empathy_os/memory/long_term.py
+   # File: src/attune/memory/long_term.py
 
    - Move existing SecurePattern, PatternMetadata to separate file
    - Create LongTermMemory class with CRUD operations
@@ -132,7 +132,7 @@ class UnifiedMemory:
 
 2. **Update `UnifiedMemory`** (1 hour)
    ```bash
-   # File: src/empathy_os/memory/unified.py
+   # File: src/attune/memory/unified.py
 
    - Initialize LongTermMemory in __init__
    - Implement store/retrieve/delete with tier logic
@@ -304,7 +304,7 @@ def get_model_by_id(model_id: str) -> ModelInfo | None:
 
 1. **Create `ModelRegistry` class** (2 hours)
    ```bash
-   # File: src/empathy_os/models/registry.py
+   # File: src/attune/models/registry.py
 
    - Define ModelRegistry class
    - Move logic from functions to methods
@@ -426,7 +426,7 @@ class MetaOrchestrator:
 
 1. **Extract `analyze_task()` public method** (1 hour)
    ```bash
-   # File: src/empathy_os/orchestration/meta_orchestrator.py
+   # File: src/attune/orchestration/meta_orchestrator.py
 
    - Rename _analyze_task to analyze_task (public)
    - Keep internal helpers private (_classify_complexity, etc.)
@@ -465,14 +465,14 @@ class MetaOrchestrator:
 ### Day 1 Morning (4 hours) - P0: Memory System
 
 **9:00 AM - 11:00 AM: Create LongTermMemory**
-- [ ] Create `src/empathy_os/memory/long_term.py` (new implementation)
+- [ ] Create `src/attune/memory/long_term.py` (new implementation)
 - [ ] Define `LongTermMemory` class with CRUD operations
 - [ ] Implement JSON file storage
 - [ ] Add classification support
 - [ ] Write comprehensive docstrings
 
 **11:00 AM - 12:00 PM: Update UnifiedMemory**
-- [ ] Update `src/empathy_os/memory/unified.py`
+- [ ] Update `src/attune/memory/unified.py`
 - [ ] Initialize LongTermMemory in constructor
 - [ ] Implement tier logic (store, retrieve, delete)
 - [ ] Add promote_to_long_term, sync_tiers methods
@@ -486,7 +486,7 @@ class MetaOrchestrator:
 ### Day 1 Afternoon (4 hours) - P1: Model Registry
 
 **1:00 PM - 3:00 PM: Create ModelRegistry**
-- [ ] Update `src/empathy_os/models/registry.py`
+- [ ] Update `src/attune/models/registry.py`
 - [ ] Define `ModelRegistry` class
 - [ ] Implement all methods (get_model, get_model_by_id, etc.)
 - [ ] Add ID cache for performance
@@ -548,13 +548,13 @@ class MetaOrchestrator:
 # Test that old code still works
 
 # Memory
-python -c "from empathy_os.memory.unified import UnifiedMemory; m = UnifiedMemory()"
+python -c "from attune.memory.unified import UnifiedMemory; m = UnifiedMemory()"
 
 # Models (functional interface)
-python -c "from empathy_os.models.registry import get_model; print(get_model('anthropic', 'cheap'))"
+python -c "from attune.models.registry import get_model; print(get_model('anthropic', 'cheap'))"
 
 # Orchestrator
-python -c "from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator; o = MetaOrchestrator(); p = o.analyze_and_compose('test task')"
+python -c "from attune.orchestration.meta_orchestrator import MetaOrchestrator; o = MetaOrchestrator(); p = o.analyze_and_compose('test task')"
 ```
 
 ### New API Testing
@@ -563,13 +563,13 @@ python -c "from empathy_os.orchestration.meta_orchestrator import MetaOrchestrat
 # Test new OOP interfaces
 
 # Memory
-python -c "from empathy_os.memory.long_term import LongTermMemory; m = LongTermMemory(); m.store('key', {'data': 'value'})"
+python -c "from attune.memory.long_term import LongTermMemory; m = LongTermMemory(); m.store('key', {'data': 'value'})"
 
 # Models (class interface)
-python -c "from empathy_os.models.registry import ModelRegistry; r = ModelRegistry(); print(r.get_model('anthropic', 'cheap'))"
+python -c "from attune.models.registry import ModelRegistry; r = ModelRegistry(); print(r.get_model('anthropic', 'cheap'))"
 
 # Orchestrator (public methods)
-python -c "from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator; o = MetaOrchestrator(); r = o.analyze_task('test task', {})"
+python -c "from attune.orchestration.meta_orchestrator import MetaOrchestrator; o = MetaOrchestrator(); r = o.analyze_task('test task', {})"
 ```
 
 ### Architectural Tests
@@ -668,18 +668,18 @@ pytest tests/unit/models/test_execution_and_fallback_architecture.py -v
 
 ### Code Changes
 
-1. **`src/empathy_os/memory/long_term.py`** (NEW)
+1. **`src/attune/memory/long_term.py`** (NEW)
    - LongTermMemory class with CRUD operations
 
-2. **`src/empathy_os/memory/unified.py`** (MODIFIED)
+2. **`src/attune/memory/unified.py`** (MODIFIED)
    - Initialize LongTermMemory
    - Complete tier logic
 
-3. **`src/empathy_os/models/registry.py`** (MODIFIED)
+3. **`src/attune/models/registry.py`** (MODIFIED)
    - ModelRegistry class
    - Backward compatible functional wrappers
 
-4. **`src/empathy_os/orchestration/meta_orchestrator.py`** (MODIFIED)
+4. **`src/attune/orchestration/meta_orchestrator.py`** (MODIFIED)
    - Public analyze_task()
    - Extracted create_execution_plan()
 

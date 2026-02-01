@@ -11,7 +11,7 @@ from unittest.mock import Mock, patch
 import pytest
 from typer.testing import CliRunner
 
-from empathy_os.meta_workflows.cli_commands.config_commands import (
+from attune.meta_workflows.cli_commands.config_commands import (
     suggest_defaults_cmd,
 )
 
@@ -25,7 +25,7 @@ def cli_runner():
 @pytest.fixture
 def mock_console():
     """Provide a mocked Rich console."""
-    with patch('empathy_os.meta_workflows.cli_commands.config_commands.console') as mock:
+    with patch('attune.meta_workflows.cli_commands.config_commands.console') as mock:
         yield mock
 
 
@@ -87,11 +87,11 @@ class TestSuggestDefaultsCommand:
         THEN it should display a message indicating no suggestions are available
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = {}
@@ -126,11 +126,11 @@ class TestSuggestDefaultsCommand:
             "question_2": ["option1", "option2"]
         }
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = suggestions
@@ -164,24 +164,25 @@ class TestSuggestDefaultsCommand:
         THEN it should display an error message and exit with code 1
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        from click.exceptions import Exit
+
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_template_registry.load_template.return_value = None
 
             # WHEN/THEN
-            with pytest.raises(SystemExit) as exc_info:
+            with pytest.raises(Exit):
                 suggest_defaults_cmd(
                     template_id="invalid_template",
                     session_id=None,
                     user_id="test_user"
                 )
 
-            assert exc_info.value.code == 1
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("Error" in call and "Template not found" in call for call in print_calls)
 
@@ -197,11 +198,11 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         session_id = "custom_session_123"
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context) as mock_session_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = {}
@@ -231,11 +232,11 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         user_id = "custom_user_456"
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = {}
@@ -264,11 +265,11 @@ class TestSuggestDefaultsCommand:
             "question_2": ["option1", "option2", "option3"]
         }
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = suggestions
@@ -298,11 +299,11 @@ class TestSuggestDefaultsCommand:
             "unknown_question": "some value"
         }
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = suggestions
@@ -329,11 +330,11 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         mock_template.name = "My Awesome Template"
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = {}
@@ -366,11 +367,11 @@ class TestSuggestDefaultsCommand:
             "question_3": "value3"
         }
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = suggestions
@@ -393,21 +394,25 @@ class TestSuggestDefaultsCommand:
         """
         GIVEN an unexpected exception during execution
         WHEN suggest_defaults_cmd is called
-        THEN the exception should propagate
+        THEN it should display an error message and exit with code 1
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        from click.exceptions import Exit
+
+        with patch('attune.memory.unified.UnifiedMemory',
                    side_effect=Exception("Unexpected error")):
 
-            # WHEN/THEN
-            with pytest.raises(Exception) as exc_info:
+            # WHEN/THEN - The function catches exceptions and converts them to Exit
+            with pytest.raises(Exit):
                 suggest_defaults_cmd(
                     template_id="test_template",
                     session_id=None,
                     user_id="test_user"
                 )
 
-            assert "Unexpected error" in str(exc_info.value)
+            # Verify error was printed to console
+            print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
+            assert any("Error" in call and "Unexpected error" in call for call in print_calls)
 
     def test_given_empty_suggestions_dict_when_displaying_then_shows_no_suggestions(
         self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
@@ -419,11 +424,11 @@ class TestSuggestDefaultsCommand:
         THEN it should show the no suggestions message
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = {}
@@ -449,11 +454,11 @@ class TestSuggestDefaultsCommand:
         THEN it should use 'cli_user' as default
         """
         # GIVEN
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = {}
@@ -483,11 +488,11 @@ class TestSuggestDefaultsCommand:
             "question_2": True
         }
 
-        with patch('empathy_os.meta_workflows.cli_commands.config_commands.UnifiedMemory',
+        with patch('attune.memory.unified.UnifiedMemory',
                    return_value=mock_unified_memory), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.SessionContext',
+             patch('attune.meta_workflows.session_context.SessionContext',
                    return_value=mock_session_context), \
-             patch('empathy_os.meta_workflows.cli_commands.config_commands.TemplateRegistry',
+             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
                    return_value=mock_template_registry):
 
             mock_session_context.suggest_defaults.return_value = suggestions

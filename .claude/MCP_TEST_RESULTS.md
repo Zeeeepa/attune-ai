@@ -10,7 +10,7 @@ The Empathy MCP Server has been successfully implemented and tested. All functio
 ### Test 1: Server Startup ✅
 
 ```bash
-echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m empathy_os.mcp.server
+echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m attune.mcp.server
 ```
 
 **Result:** Server starts without errors and responds to JSON-RPC requests.
@@ -82,7 +82,7 @@ echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m empathy_
   "mcpServers": {
     "empathy": {
       "command": "python",
-      "args": ["-m", "empathy_os.mcp.server"],
+      "args": ["-m", "attune.mcp.server"],
       "env": {
         "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
         "PYTHONPATH": "${workspaceFolder}/src"
@@ -117,7 +117,7 @@ Added PostToolUse hooks for:
 User: "Run a security audit on the src/ directory"
 Claude: [Invokes mcp__empathy__security_audit tool]
 
-User: "Generate tests for src/empathy_os/config.py"
+User: "Generate tests for src/attune/config.py"
 Claude: [Invokes mcp__empathy__test_generation tool]
 
 User: "What's my auth status?"
@@ -152,10 +152,10 @@ All Empathy workflows are now accessible through natural language or direct MCP 
 
 ```bash
 # Check Python environment
-python -c "import empathy_os.mcp.server; print('OK')"
+python -c "import attune.mcp.server; print('OK')"
 
 # Test server directly
-echo '{"method":"tools/list","params":{}}' | python -m empathy_os.mcp.server
+echo '{"method":"tools/list","params":{}}' | python -m attune.mcp.server
 ```
 
 ### Tools Not Available

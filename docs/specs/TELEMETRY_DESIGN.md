@@ -278,7 +278,7 @@ empathy telemetry export --from 2026-01-01 --to 2026-01-31
 **Hook Location**: After LLM response received
 
 ```python
-# In src/empathy_os/workflows/base.py
+# In src/attune/workflows/base.py
 async def _call_llm(self, prompt: str, stage: str = None) -> dict:
     start_time = time.time()
 
@@ -313,7 +313,7 @@ async def _call_llm(self, prompt: str, stage: str = None) -> dict:
 
 ### 2. UsageTracker Class
 
-**Location**: `src/empathy_os/telemetry/usage_tracker.py`
+**Location**: `src/attune/telemetry/usage_tracker.py`
 
 ```python
 from pathlib import Path

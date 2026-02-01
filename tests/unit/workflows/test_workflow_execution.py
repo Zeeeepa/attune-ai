@@ -1,4 +1,4 @@
-"""Workflow execution tests for src/empathy_os/workflows/base.py.
+"""Workflow execution tests for src/attune/workflows/base.py.
 
 Tests comprehensive workflow functionality including:
 - Workflow execution (15 tests)
@@ -15,8 +15,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from empathy_os.cache.base import CacheEntry, CacheStats
-from empathy_os.workflows.base import ModelProvider, ModelTier
+from attune.cache.base import CacheEntry, CacheStats
+from attune.workflows.base import ModelProvider, ModelTier
 
 # =============================================================================
 # Fixtures

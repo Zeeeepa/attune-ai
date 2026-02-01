@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 
 
-from empathy_os.workflows.test_gen.ast_analyzer import ASTFunctionAnalyzer
+from attune.workflows.test_gen.ast_analyzer import ASTFunctionAnalyzer
 
 
 class TestASTFunctionAnalyzerInitialization:

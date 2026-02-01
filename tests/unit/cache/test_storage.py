@@ -8,8 +8,8 @@ import tempfile
 import time
 from pathlib import Path
 
-from empathy_os.cache.base import CacheEntry
-from empathy_os.cache.storage import CacheStorage
+from attune.cache.base import CacheEntry
+from attune.cache.storage import CacheStorage
 
 
 class TestCacheStorage:

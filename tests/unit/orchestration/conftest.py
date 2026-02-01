@@ -9,7 +9,7 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from empathy_os.orchestration.execution_strategies import AgentResult
+from attune.orchestration.execution_strategies import AgentResult
 
 
 @pytest.fixture

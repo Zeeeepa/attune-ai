@@ -7,7 +7,7 @@ Licensed under Fair Source License 0.9
 from datetime import datetime
 from unittest.mock import Mock
 
-from empathy_os.telemetry.event_streaming import EventStreamer, StreamEvent
+from attune.telemetry.event_streaming import EventStreamer, StreamEvent
 
 
 class TestStreamEvent:
@@ -20,13 +20,13 @@ class TestStreamEvent:
             event_type="agent_heartbeat",
             timestamp=datetime(2026, 1, 27, 12, 0, 0),
             data={"agent_id": "test-agent", "status": "running"},
-            source="empathy_os",
+            source="attune",
         )
 
         assert event.event_id == "1706356800000-0"
         assert event.event_type == "agent_heartbeat"
         assert event.data["agent_id"] == "test-agent"
-        assert event.source == "empathy_os"
+        assert event.source == "attune"
 
     def test_to_dict(self):
         """Test converting StreamEvent to dict."""
@@ -35,7 +35,7 @@ class TestStreamEvent:
             event_type="coordination_signal",
             timestamp=datetime(2026, 1, 27, 12, 0, 0),
             data={"signal_type": "task_complete"},
-            source="empathy_os",
+            source="attune",
         )
 
         event_dict = event.to_dict()
@@ -44,7 +44,7 @@ class TestStreamEvent:
         assert event_dict["event_type"] == "coordination_signal"
         assert event_dict["timestamp"] == "2026-01-27T12:00:00"
         assert event_dict["data"] == {"signal_type": "task_complete"}
-        assert event_dict["source"] == "empathy_os"
+        assert event_dict["source"] == "attune"
 
     def test_from_redis_entry(self):
         """Test creating StreamEvent from Redis stream entry."""
@@ -53,7 +53,7 @@ class TestStreamEvent:
             b"event_type": b"agent_heartbeat",
             b"timestamp": b"2026-01-27T12:00:00",
             b"data": b'{"agent_id": "test-agent"}',
-            b"source": b"empathy_os",
+            b"source": b"attune",
         }
 
         event = StreamEvent.from_redis_entry(event_id, entry_data)
@@ -61,7 +61,7 @@ class TestStreamEvent:
         assert event.event_id == "1706356800000-0"
         assert event.event_type == "agent_heartbeat"
         assert event.data == {"agent_id": "test-agent"}
-        assert event.source == "empathy_os"
+        assert event.source == "attune"
 
     def test_from_redis_entry_with_invalid_data(self):
         """Test from_redis_entry handles invalid JSON gracefully."""
@@ -130,7 +130,7 @@ class TestEventStreamer:
         event_id = streamer.publish_event(
             event_type="agent_heartbeat",
             data={"agent_id": "test-agent", "status": "running"},
-            source="empathy_os",
+            source="attune",
         )
 
         assert event_id == "1706356800000-0"
@@ -176,7 +176,7 @@ class TestEventStreamer:
                     b"event_type": b"agent_heartbeat",
                     b"timestamp": b"2026-01-27T12:00:00",
                     b"data": b'{"agent_id": "agent-1"}',
-                    b"source": b"empathy_os",
+                    b"source": b"attune",
                 },
             ),
             (
@@ -185,7 +185,7 @@ class TestEventStreamer:
                     b"event_type": b"agent_heartbeat",
                     b"timestamp": b"2026-01-27T12:00:01",
                     b"data": b'{"agent_id": "agent-2"}',
-                    b"source": b"empathy_os",
+                    b"source": b"attune",
                 },
             ),
         ]
@@ -336,7 +336,7 @@ class TestEventStreamerIntegration:
                     b"event_type": b"agent_heartbeat",
                     b"timestamp": b"2026-01-27T12:00:00",
                     b"data": b'{"agent_id": "test-agent", "status": "running"}',
-                    b"source": b"empathy_os",
+                    b"source": b"attune",
                 },
             )
         ]

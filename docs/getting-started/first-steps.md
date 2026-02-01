@@ -47,7 +47,7 @@ Cost: $0.0850
 ### Option 2: Python
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 import asyncio
 
 async def audit():

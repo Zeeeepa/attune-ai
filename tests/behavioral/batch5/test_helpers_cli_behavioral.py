@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 from unittest.mock import Mock
 
-from empathy_os.cli.utils.helpers import _file_exists, _show_achievements
+from attune.cli.utils.helpers import _file_exists, _show_achievements
 
 
 class TestFileExists:

@@ -13,7 +13,7 @@ The Trust Circuit Breaker protects the AI-user relationship by dynamically adjus
 ## Quick Start
 
 ```python
-from empathy_os.trust import TrustCircuitBreaker, TrustDamageType
+from attune.trust import TrustCircuitBreaker, TrustDamageType
 
 # Create a trust breaker for a user
 breaker = TrustCircuitBreaker(user_id="user_123")
@@ -61,7 +61,7 @@ FULL_AUTONOMY ──────────────────────
 ### Basic Configuration
 
 ```python
-from empathy_os.trust import TrustCircuitBreaker, TrustConfig
+from attune.trust import TrustCircuitBreaker, TrustConfig
 
 config = TrustConfig(
     # How many damage "points" before reducing autonomy
@@ -89,7 +89,7 @@ breaker = TrustCircuitBreaker(
 Different types of trust damage have different weights:
 
 ```python
-from empathy_os.trust import TrustConfig, TrustDamageType
+from attune.trust import TrustConfig, TrustDamageType
 
 config = TrustConfig(
     severity_weights={
@@ -126,7 +126,7 @@ config = TrustConfig(
 ### Recording Damage
 
 ```python
-from empathy_os.trust import TrustDamageType
+from attune.trust import TrustDamageType
 
 # Basic damage recording
 breaker.record_damage(TrustDamageType.WRONG_ANSWER)
@@ -286,7 +286,7 @@ class TrustStore:
 ### With Workflow Execution
 
 ```python
-from empathy_os.trust import TrustCircuitBreaker, TrustDamageType
+from attune.trust import TrustCircuitBreaker, TrustDamageType
 
 class TrustAwareWorkflow:
     def __init__(self, user_id: str):
@@ -344,7 +344,7 @@ class TrustAwareLLM:
 ### With Empathy Levels
 
 ```python
-from empathy_os.trust import TrustCircuitBreaker, TrustState
+from attune.trust import TrustCircuitBreaker, TrustState
 
 def get_empathy_level_adjustment(trust: TrustCircuitBreaker) -> int:
     """
@@ -400,7 +400,7 @@ async def show_confirmation_dialog(action: str, trust: TrustCircuitBreaker):
 ### Quick Setup
 
 ```python
-from empathy_os.trust import create_trust_breaker
+from attune.trust import create_trust_breaker
 
 # Standard configuration
 breaker = create_trust_breaker(user_id="user_123")
@@ -506,7 +506,7 @@ avg_recovery_time = mean(
 
 ## API Reference
 
-See [src/empathy_os/trust/circuit_breaker.py](../../src/empathy_os/trust/circuit_breaker.py) for full API documentation.
+See [src/attune/trust/circuit_breaker.py](../../src/attune/trust/circuit_breaker.py) for full API documentation.
 
 ---
 

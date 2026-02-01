@@ -16,7 +16,7 @@ class TestAgentSpec:
 
     def test_agent_role(self, sample_agent_spec):
         """Test agent role."""
-        from empathy_os.socratic.blueprint import AgentRole
+        from attune.socratic.blueprint import AgentRole
 
         assert sample_agent_spec.role == AgentRole.REVIEWER
 
@@ -51,7 +51,7 @@ class TestToolSpec:
 
     def test_create_tool_spec(self):
         """Test creating a ToolSpec."""
-        from empathy_os.socratic.blueprint import ToolCategory, ToolSpec
+        from attune.socratic.blueprint import ToolCategory, ToolSpec
 
         tool = ToolSpec(
             id="security_scan",
@@ -65,7 +65,7 @@ class TestToolSpec:
 
     def test_tool_serialization(self):
         """Test tool serialization."""
-        from empathy_os.socratic.blueprint import ToolCategory, ToolSpec
+        from attune.socratic.blueprint import ToolCategory, ToolSpec
 
         tool = ToolSpec(
             id="read_file",
@@ -86,7 +86,7 @@ class TestStageSpec:
 
     def test_create_stage_spec(self):
         """Test creating a StageSpec."""
-        from empathy_os.socratic.blueprint import StageSpec
+        from attune.socratic.blueprint import StageSpec
 
         stage = StageSpec(
             id="analysis",
@@ -102,7 +102,7 @@ class TestStageSpec:
 
     def test_stage_with_dependencies(self):
         """Test stage with dependencies."""
-        from empathy_os.socratic.blueprint import StageSpec
+        from attune.socratic.blueprint import StageSpec
 
         stage = StageSpec(
             id="synthesis",
@@ -117,7 +117,7 @@ class TestStageSpec:
 
     def test_stage_serialization(self):
         """Test stage serialization."""
-        from empathy_os.socratic.blueprint import StageSpec
+        from attune.socratic.blueprint import StageSpec
 
         stage = StageSpec(
             id="analysis",
@@ -159,7 +159,7 @@ class TestWorkflowBlueprint:
 
     def test_workflow_deserialization(self, sample_workflow_blueprint):
         """Test workflow deserialization."""
-        from empathy_os.socratic.blueprint import WorkflowBlueprint
+        from attune.socratic.blueprint import WorkflowBlueprint
 
         data = sample_workflow_blueprint.to_dict()
         restored = WorkflowBlueprint.from_dict(data)
@@ -185,7 +185,7 @@ class TestAgentRole:
 
     def test_all_roles_exist(self):
         """Test all agent roles exist."""
-        from empathy_os.socratic.blueprint import AgentRole
+        from attune.socratic.blueprint import AgentRole
 
         roles = [
             AgentRole.ANALYZER,
@@ -206,7 +206,7 @@ class TestToolCategory:
 
     def test_all_categories_exist(self):
         """Test all tool categories exist."""
-        from empathy_os.socratic.blueprint import ToolCategory
+        from attune.socratic.blueprint import ToolCategory
 
         # Verify core categories exist (subset check for stability)
         categories = [

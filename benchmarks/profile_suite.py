@@ -24,7 +24,7 @@ from scripts.profile_utils import profile_function, time_function
 @time_function
 def profile_scanner():
     """Profile project scanner on real codebase."""
-    from empathy_os.project_index.scanner import ProjectScanner
+    from attune.project_index.scanner import ProjectScanner
 
     print("\n" + "=" * 60)
     print("Profiling: Project Scanner")
@@ -43,7 +43,7 @@ def profile_scanner():
 @time_function
 def profile_pattern_library():
     """Profile pattern library operations."""
-    from empathy_os.pattern_library import Pattern, PatternLibrary
+    from attune.pattern_library import Pattern, PatternLibrary
 
     print("\n" + "=" * 60)
     print("Profiling: Pattern Library")
@@ -86,7 +86,7 @@ def profile_pattern_library():
 @time_function
 def profile_cost_tracker():
     """Profile cost tracking operations."""
-    from empathy_os.cost_tracker import CostTracker
+    from attune.cost_tracker import CostTracker
 
     print("\n" + "=" * 60)
     print("Profiling: Cost Tracker")
@@ -115,7 +115,7 @@ def profile_cost_tracker():
 @time_function
 def profile_feedback_loops():
     """Profile feedback loop detection."""
-    from empathy_os.feedback_loops import FeedbackLoopDetector
+    from attune.feedback_loops import FeedbackLoopDetector
 
     print("\n" + "=" * 60)
     print("Profiling: Feedback Loop Detector")
@@ -160,7 +160,7 @@ def profile_feedback_loops():
 @time_function
 def profile_workflow_execution():
     """Profile workflow execution data processing."""
-    from empathy_os.workflows.base import ModelTier, _load_workflow_history
+    from attune.workflows.base import ModelTier, _load_workflow_history
 
     print("\n" + "=" * 60)
     print("Profiling: Workflow Execution")
@@ -202,7 +202,7 @@ def profile_workflow_execution():
 @time_function
 def profile_memory_operations():
     """Profile unified memory operations."""
-    from empathy_os.memory.unified import UnifiedMemory
+    from attune.memory.unified import UnifiedMemory
 
     print("\n" + "=" * 60)
     print("Profiling: Memory Operations")
@@ -274,7 +274,7 @@ def profile_memory_operations():
 @time_function
 def profile_test_generation():
     """Profile test generation workflow."""
-    from empathy_os.workflows.test_gen import TestGenerationWorkflow
+    from attune.workflows.test_gen import TestGenerationWorkflow
 
     print("\n" + "=" * 60)
     print("Profiling: Test Generation")

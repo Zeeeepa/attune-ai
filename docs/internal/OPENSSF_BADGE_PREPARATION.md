@@ -96,7 +96,7 @@ This document tracks our progress toward achieving the OpenSSF Best Practices Ba
 | Project documentation | ✅ | Comprehensive README.md |
 | How to contribute | ✅ | CONTRIBUTING.md |
 | Installation instructions | ✅ | README.md |
-| Build/install process works | ✅ | `pip install empathy-framework` |
+| Build/install process works | ✅ | `pip install attune-ai` |
 | Example usage | ✅ | examples/ directory |
 
 ### ⚠️ Other (MOSTLY MET - 80%)

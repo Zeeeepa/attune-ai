@@ -49,7 +49,7 @@ graph.add_node("static_analysis", static_analysis_node)
 # ... 200+ lines of graph setup
 
 # After: Using Agent Factory
-from empathy_llm_toolkit.agent_factory import AgentFactory, Framework
+from attune_llm.agent_factory import AgentFactory, Framework
 
 factory = AgentFactory(framework=Framework.LANGGRAPH)
 
@@ -217,9 +217,9 @@ content_pipeline = factory.create_workflow(
 ### Implementation: Wizard Adapter
 
 ```python
-# New file: empathy_llm_toolkit/agent_factory/adapters/wizard_adapter.py
+# New file: attune_llm/agent_factory/adapters/wizard_adapter.py
 
-from empathy_llm_toolkit.agent_factory.base import BaseAgent, AgentConfig
+from attune_llm.agent_factory.base import BaseAgent, AgentConfig
 
 class WizardAdapter(BaseAgent):
     """Adapt existing wizards to Agent Factory interface."""
@@ -316,7 +316,7 @@ full_review = factory.create_workflow(
 
 ## 6. Domain Wizards
 
-**Location:** `empathy_llm_toolkit/wizards/`
+**Location:** `attune_llm/wizards/`
 
 ### Current State
 - TechnologyWizard, HealthcareWizard, CustomerSupportWizard
@@ -637,7 +637,7 @@ class AgentConfig:  # Different fields!
     ...
 
 # Recommended: Unify or namespace
-from empathy_llm_toolkit.agent_factory.base import AgentConfig as FactoryAgentConfig
+from attune_llm.agent_factory.base import AgentConfig as FactoryAgentConfig
 
 @dataclass
 class BookProductionConfig:
@@ -740,7 +740,7 @@ hash_val = xxhash.xxh64(context_str.encode()).hexdigest()[:12]
 Create a single source of truth for agent configuration:
 
 ```python
-# empathy_llm_toolkit/config/unified.py
+# attune_llm/config/unified.py
 
 from pydantic import BaseModel, Field
 
@@ -777,7 +777,7 @@ class UnifiedAgentConfig(BaseModel):
 Standardize error handling across all agents:
 
 ```python
-# empathy_llm_toolkit/agent_factory/decorators.py
+# attune_llm/agent_factory/decorators.py
 
 from functools import wraps
 
@@ -805,7 +805,7 @@ def safe_agent_operation(operation_name: str):
 Create a bridge between wizards and Agent Factory:
 
 ```python
-# empathy_llm_toolkit/agent_factory/wizard_bridge.py
+# attune_llm/agent_factory/wizard_bridge.py
 
 class WizardToAgentBridge(BaseAgent):
     """Bridge existing wizards to Agent Factory interface."""

@@ -22,7 +22,7 @@ from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeEl
 from rich.prompt import Confirm
 from rich.table import Table
 
-from empathy_os.meta_workflows import FormResponse, TemplateRegistry
+from attune.meta_workflows import FormResponse, TemplateRegistry
 
 console = Console()
 

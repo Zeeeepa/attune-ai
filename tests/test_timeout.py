@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/resilience/timeout.py
+"""Tests for src/attune/resilience/timeout.py
 
 Comprehensive tests for the timeout decorator and with_timeout utility.
 """
@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.resilience.timeout import TimeoutError, timeout, with_timeout
+from attune.resilience.timeout import TimeoutError, timeout, with_timeout
 
 
 class TestTimeoutError:

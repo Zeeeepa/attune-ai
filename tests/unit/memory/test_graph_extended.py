@@ -11,9 +11,9 @@ These tests cover additional functionality not in test_memory_graph.py:
 
 import pytest
 
-from empathy_os.memory.edges import REVERSE_EDGE_TYPES, Edge, EdgeType
-from empathy_os.memory.graph import MemoryGraph
-from empathy_os.memory.nodes import BugNode, Node, NodeType, VulnerabilityNode
+from attune.memory.edges import REVERSE_EDGE_TYPES, Edge, EdgeType
+from attune.memory.graph import MemoryGraph
+from attune.memory.nodes import BugNode, Node, NodeType, VulnerabilityNode
 
 
 @pytest.mark.unit

@@ -4,8 +4,8 @@ import tempfile
 
 import pytest
 
-from empathy_llm_toolkit.agents_md.parser import MarkdownAgentParser
-from empathy_llm_toolkit.config.unified import ModelTier, Provider
+from attune_llm.agents_md.parser import MarkdownAgentParser
+from attune_llm.config.unified import ModelTier, Provider
 
 
 class TestMarkdownAgentParser:

@@ -9,7 +9,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.batch_processing import (
+from attune.workflows.batch_processing import (
     BatchProcessingWorkflow,
     BatchRequest,
     BatchResult,
@@ -78,7 +78,7 @@ class TestBatchProcessingWorkflow:
     @pytest.fixture
     def workflow(self):
         """Create workflow instance with mocked provider."""
-        with patch("empathy_os.workflows.batch_processing.AnthropicBatchProvider"):
+        with patch("attune.workflows.batch_processing.AnthropicBatchProvider"):
             workflow = BatchProcessingWorkflow(api_key="test_key")
             workflow.batch_provider = MagicMock()
             return workflow
@@ -330,8 +330,8 @@ class TestBatchProcessingCostSavings:
     @pytest.mark.asyncio
     async def test_batch_uses_correct_models(self):
         """Test that batch requests use correct model for each tier."""
-        with patch("empathy_os.workflows.batch_processing.AnthropicBatchProvider"):
-            with patch("empathy_os.workflows.batch_processing.get_model") as mock_get_model:
+        with patch("attune.workflows.batch_processing.AnthropicBatchProvider"):
+            with patch("attune.workflows.batch_processing.get_model") as mock_get_model:
                 # Mock model responses
                 mock_cheap = MagicMock(id="claude-3-5-haiku-20241022")
                 mock_capable = MagicMock(id="claude-sonnet-4-5-20250929")

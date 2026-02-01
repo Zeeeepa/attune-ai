@@ -24,7 +24,7 @@ The `AskUserQuestion` function supports three modes:
 
 #### 1. **Custom Handler Mode** (Recommended for testing)
 ```python
-from empathy_os.tools import set_ask_user_question_handler
+from attune.tools import set_ask_user_question_handler
 
 def my_handler(questions):
     # Your custom UI logic
@@ -55,7 +55,7 @@ If no handler is set and not in Claude Code environment, raises helpful error.
 ### Example 1: Interactive Mode in Claude Code
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 
@@ -84,8 +84,8 @@ print(f"Agents: {[a.role for a in plan.agents]}")
 ### Example 2: Custom Handler for Testing
 
 ```python
-from empathy_os.tools import set_ask_user_question_handler
-from empathy_os.orchestration import MetaOrchestrator
+from attune.tools import set_ask_user_question_handler
+from attune.orchestration import MetaOrchestrator
 
 # Set up test handler
 def test_handler(questions):
@@ -112,7 +112,7 @@ plan = orchestrator.analyze_and_compose(
 ### Example 3: CLI Integration
 
 ```python
-from empathy_os.tools import set_ask_user_question_handler
+from attune.tools import set_ask_user_question_handler
 
 def cli_handler(questions):
     """Simple CLI prompt for questions."""
@@ -231,8 +231,8 @@ python your_script.py
 ### Unit Tests
 
 ```python
-from empathy_os.tools import set_ask_user_question_handler
-from empathy_os.orchestration import MetaOrchestrator
+from attune.tools import set_ask_user_question_handler
+from attune.orchestration import MetaOrchestrator
 
 def test_interactive_mode():
     # Mock user choices
@@ -263,7 +263,7 @@ export CLAUDE_CODE_SESSION=1
 
 # Run your code
 python -c "
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(
     task='Complex architectural redesign',
@@ -306,7 +306,7 @@ export CLAUDE_CODE_SESSION=1
 python scripts/claude_code_ipc_monitor.py &
 
 # Or increase timeout in code:
-# Edit src/empathy_os/tools.py, change timeout=60 to higher value
+# Edit src/attune/tools.py, change timeout=60 to higher value
 ```
 
 ### Issue: "No questions asked even with interactive=True"
@@ -382,9 +382,9 @@ Current API is **stable** and will be maintained:
 
 Questions or issues with Claude Code integration?
 
-- GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
-- Discord: https://discord.gg/empathy-framework
-- Email: support@empathy-framework.dev
+- GitHub Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
+- Discord: https://discord.gg/attune-ai
+- Email: support@attune-ai.dev
 
 ---
 

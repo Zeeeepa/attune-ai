@@ -14,7 +14,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from empathy_os.meta_workflows import (
+from attune.meta_workflows import (
     FormResponse,
     MetaWorkflow,
     PatternLearner,
@@ -55,7 +55,7 @@ class TestEndToEndWorkflow:
         7. Analytics report generation
         """
         # Step 1: Load built-in template
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         assert template is not None
@@ -138,7 +138,7 @@ class TestEndToEndWorkflow:
 
     def test_multiple_executions_and_pattern_learning(self, temp_storage):
         """Test pattern learning across multiple executions."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(
@@ -213,7 +213,7 @@ class TestEndToEndWorkflow:
 
     def test_workflow_with_memory_integration(self, temp_storage):
         """Test workflow with memory integration enabled."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         # Create mock memory
@@ -249,7 +249,7 @@ class TestEndToEndWorkflow:
 
     def test_error_handling_and_recovery(self, temp_storage):
         """Test error handling during workflow execution."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(
@@ -287,7 +287,7 @@ class TestEndToEndWorkflow:
 
     def test_config_file_persistence(self, temp_storage):
         """Test that configuration files are properly saved and loaded."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(
@@ -333,7 +333,7 @@ class TestEndToEndWorkflow:
 
     def test_report_generation(self, temp_storage):
         """Test human-readable report generation."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(
@@ -368,7 +368,7 @@ class TestCLIIntegration:
     def test_cli_available(self):
         """Test that CLI commands are available."""
         try:
-            from empathy_os.meta_workflows.cli_meta_workflows import meta_workflow_app
+            from attune.meta_workflows.cli_meta_workflows import meta_workflow_app
 
             assert meta_workflow_app is not None
 
@@ -389,7 +389,7 @@ class TestCLIIntegration:
     def test_cli_integrated_with_main_cli(self):
         """Test that meta-workflow CLI is integrated with main empathy CLI."""
         try:
-            from empathy_os.cli_unified import app
+            from attune.cli_unified import app
 
             # Check if meta-workflow subcommand exists
             # This is a simple check - full CLI testing would require running actual commands
@@ -405,7 +405,7 @@ class TestSecurityValidation:
     def test_file_path_validation_in_workflow(self, tmp_path):
         """Test that file paths are validated during workflow execution."""
         # This is an indirect test - we verify the workflow uses validated paths
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         # Normal path should work
@@ -432,13 +432,13 @@ class TestSecurityValidation:
         import ast
 
         code_files = [
-            "src/empathy_os/meta_workflows/models.py",
-            "src/empathy_os/meta_workflows/workflow.py",
-            "src/empathy_os/meta_workflows/pattern_learner.py",
-            "src/empathy_os/meta_workflows/agent_creator.py",
-            "src/empathy_os/meta_workflows/form_engine.py",
-            "src/empathy_os/meta_workflows/template_registry.py",
-            "src/empathy_os/meta_workflows/cli_meta_workflows.py",
+            "src/attune/meta_workflows/models.py",
+            "src/attune/meta_workflows/workflow.py",
+            "src/attune/meta_workflows/pattern_learner.py",
+            "src/attune/meta_workflows/agent_creator.py",
+            "src/attune/meta_workflows/form_engine.py",
+            "src/attune/meta_workflows/template_registry.py",
+            "src/attune/meta_workflows/cli_meta_workflows.py",
         ]
 
         for file_path in code_files:

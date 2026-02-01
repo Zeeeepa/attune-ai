@@ -23,7 +23,7 @@ Successfully refactored 3 large monolithic files into 17 focused, maintainable m
 ### New Package Structure
 
 ```
-src/empathy_os/workflows/test_gen/
+src/attune/workflows/test_gen/
 ├── __init__.py           (53 lines) - Public API exports
 ├── data_models.py        (38 lines) - FunctionSignature, ClassSignature
 ├── config.py             (88 lines) - DEFAULT_SKIP_PATTERNS, TEST_GEN_STEPS
@@ -60,7 +60,7 @@ src/empathy_os/workflows/test_gen/
 ### New Package Structure
 
 ```
-src/empathy_os/workflows/document_gen/
+src/attune/workflows/document_gen/
 ├── __init__.py           (26 lines) - Public API exports
 ├── config.py             (30 lines) - TOKEN_COSTS, DOC_GEN_STEPS
 ├── workflow.py        (1,425 lines) - DocumentGenerationWorkflow
@@ -93,7 +93,7 @@ src/empathy_os/workflows/document_gen/
 ### New Package Structure
 
 ```
-src/empathy_os/meta_workflows/cli_commands/
+src/attune/meta_workflows/cli_commands/
 ├── __init__.py             (56 lines) - Typer app and exports
 ├── template_commands.py   (361 lines) - list-templates, inspect, plan
 ├── workflow_commands.py   (388 lines) - run, ask, detect
@@ -340,19 +340,19 @@ No regressions introduced ✓
 ## File Locations
 
 ### Refactored Packages
-- `src/empathy_os/workflows/test_gen/`
-- `src/empathy_os/workflows/document_gen/`
-- `src/empathy_os/meta_workflows/cli_commands/`
+- `src/attune/workflows/test_gen/`
+- `src/attune/workflows/document_gen/`
+- `src/attune/meta_workflows/cli_commands/`
 
 ### Backward Compatible Entry Points
-- `src/empathy_os/workflows/test_gen.py`
-- `src/empathy_os/workflows/document_gen.py`
-- `src/empathy_os/meta_workflows/cli_meta_workflows.py`
+- `src/attune/workflows/test_gen.py`
+- `src/attune/workflows/document_gen.py`
+- `src/attune/meta_workflows/cli_meta_workflows.py`
 
 ### Backups
-- `src/empathy_os/workflows/test_gen.py.backup`
-- `src/empathy_os/workflows/document_gen.py.backup`
-- `src/empathy_os/meta_workflows/cli_meta_workflows.py.backup`
+- `src/attune/workflows/test_gen.py.backup`
+- `src/attune/workflows/document_gen.py.backup`
+- `src/attune/meta_workflows/cli_meta_workflows.py.backup`
 
 ### Generated Tests
 - `tests/behavioral/generated/batch11/`

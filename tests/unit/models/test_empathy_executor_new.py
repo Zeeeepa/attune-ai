@@ -12,8 +12,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.models import ExecutionContext
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
+from attune.models import ExecutionContext
+from attune.models.empathy_executor import EmpathyLLMExecutor
 
 
 class TestEmpathyLLMExecutorCreation:
@@ -74,7 +74,7 @@ class TestEmpathyLLMExecutorTaskRouting:
     )
     def test_task_type_routes_to_correct_tier(self, task_type, expected_tier_value):
         """Test that task types route to expected tiers via tasks module."""
-        from empathy_os.models.tasks import get_tier_for_task
+        from attune.models.tasks import get_tier_for_task
 
         tier = get_tier_for_task(task_type)
         # get_tier_for_task returns ModelTier enum
@@ -85,7 +85,7 @@ class TestEmpathyLLMExecutorTaskRouting:
 
     def test_unknown_task_type_routes_to_capable(self):
         """Test that unknown task types default to capable tier."""
-        from empathy_os.models.tasks import get_tier_for_task
+        from attune.models.tasks import get_tier_for_task
 
         tier = get_tier_for_task("unknown_task")
         tier_value = tier.value if hasattr(tier, "value") else tier
@@ -117,7 +117,7 @@ class TestEmpathyLLMExecutorRun:
     @pytest.mark.asyncio
     async def test_run_returns_response(self, mock_executor):
         """Test that run() returns a response."""
-        from empathy_os.models.executor import LLMResponse
+        from attune.models.executor import LLMResponse
 
         context = ExecutionContext(
             workflow_name="test-workflow",
@@ -204,7 +204,7 @@ class TestEmpathyLLMExecutorCostTracking:
     @pytest.fixture
     def executor_with_telemetry(self, tmp_path):
         """Create executor with telemetry store."""
-        from empathy_os.models.telemetry import TelemetryStore
+        from attune.models.telemetry import TelemetryStore
 
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "test-key"}):
             store = TelemetryStore(storage_dir=tmp_path)

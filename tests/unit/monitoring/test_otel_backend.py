@@ -11,8 +11,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.models.telemetry import LLMCallRecord, WorkflowRunRecord, WorkflowStageRecord
-from empathy_os.monitoring.otel_backend import OTELBackend
+from attune.models.telemetry import LLMCallRecord, WorkflowRunRecord, WorkflowStageRecord
+from attune.monitoring.otel_backend import OTELBackend
 
 
 @pytest.mark.unit
@@ -159,15 +159,15 @@ class TestOTELBackendLogging:
         # Should not raise exception
         backend.log_workflow(workflow_record)
 
-    @patch("empathy_os.monitoring.otel_backend.OTELBackend._check_otel_installed")
-    @patch("empathy_os.monitoring.otel_backend.OTELBackend._check_availability")
+    @patch("attune.monitoring.otel_backend.OTELBackend._check_otel_installed")
+    @patch("attune.monitoring.otel_backend.OTELBackend._check_availability")
     def test_log_call_with_mocked_otel(self, mock_availability, mock_otel_installed):
         """Test log_call with mocked OTEL availability."""
         mock_otel_installed.return_value = True
         mock_availability.return_value = True
 
         # Mock the tracer
-        with patch("empathy_os.monitoring.otel_backend.OTELBackend._init_otel"):
+        with patch("attune.monitoring.otel_backend.OTELBackend._init_otel"):
             backend = OTELBackend()
             backend._otel_available = True
             backend._available = True

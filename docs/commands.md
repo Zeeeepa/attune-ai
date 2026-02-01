@@ -92,7 +92,7 @@ The name is inferred from the filename.
 ### From Directory
 
 ```python
-from empathy_llm_toolkit.commands import CommandRegistry
+from attune_llm.commands import CommandRegistry
 
 registry = CommandRegistry.get_instance()
 count = registry.load_from_directory(".claude/commands/")
@@ -160,7 +160,7 @@ print(cmd.format_full_help())
 Commands are executed through Claude Code, but the framework provides context:
 
 ```python
-from empathy_llm_toolkit.commands import CommandContext, CommandExecutor
+from attune_llm.commands import CommandContext, CommandExecutor
 
 # Create context with integrations
 ctx = CommandContext(
@@ -274,7 +274,7 @@ Evaluate session for learning:
 Validate command files:
 
 ```python
-from empathy_llm_toolkit.commands import CommandLoader
+from attune_llm.commands import CommandLoader
 
 loader = CommandLoader()
 errors = loader.validate_directory(".claude/commands/")

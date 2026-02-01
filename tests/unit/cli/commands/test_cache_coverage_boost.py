@@ -7,7 +7,7 @@ from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
-from empathy_os.cli.commands.cache import (
+from attune.cli.commands.cache import (
     _collect_cache_stats,
     _display_cache_report,
     cmd_cache_clear,
@@ -23,8 +23,8 @@ from empathy_os.cli.commands.cache import (
 class TestCmdCacheStats:
     """Test suite for cmd_cache_stats command."""
 
-    @patch("empathy_os.cli.commands.cache._collect_cache_stats")
-    @patch("empathy_os.cli.commands.cache._display_cache_report")
+    @patch("attune.cli.commands.cache._collect_cache_stats")
+    @patch("attune.cli.commands.cache._display_cache_report")
     def test_cache_stats_calls_collect(self, mock_display, mock_collect):
         """Test that cache_stats calls _collect_cache_stats."""
         # Given
@@ -45,7 +45,7 @@ class TestCmdCacheStats:
         mock_collect.assert_called_once_with(days=7)
         mock_display.assert_called_once()
 
-    @patch("empathy_os.cli.commands.cache._collect_cache_stats")
+    @patch("attune.cli.commands.cache._collect_cache_stats")
     def test_cache_stats_json_output(self, mock_collect):
         """Test cache_stats with JSON format."""
         # Given

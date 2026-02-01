@@ -11,8 +11,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.memory.types import AccessTier, AgentCredentials
-from empathy_os.telemetry.agent_coordination import CoordinationSignal, CoordinationSignals
+from attune.memory.types import AccessTier, AgentCredentials
+from attune.telemetry.agent_coordination import CoordinationSignal, CoordinationSignals
 
 
 class TestCoordinationSignal:
@@ -84,7 +84,7 @@ class TestCoordinationSignalsNoMemory:
     def test_init_no_memory(self):
         """Test initialization without memory backend."""
         # Patch UsageTracker at the source (where it's imported from)
-        with patch("empathy_os.telemetry.UsageTracker") as mock_tracker:
+        with patch("attune.telemetry.UsageTracker") as mock_tracker:
             mock_tracker.get_instance.side_effect = ImportError()
 
             coordinator = CoordinationSignals()

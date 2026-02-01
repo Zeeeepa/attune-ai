@@ -11,7 +11,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
 
 
 def demo_task_analysis():

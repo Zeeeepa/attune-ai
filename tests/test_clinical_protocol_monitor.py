@@ -14,22 +14,22 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_healthcare_plugin.monitors.clinical_protocol_monitor import ClinicalProtocolMonitor
-from empathy_healthcare_plugin.monitors.monitoring.protocol_checker import (
+from attune_healthcare.monitors.clinical_protocol_monitor import ClinicalProtocolMonitor
+from attune_healthcare.monitors.monitoring.protocol_checker import (
     ComplianceStatus,
     CriterionResult,
     ProtocolCheckResult,
     ProtocolDeviation,
     ProtocolIntervention,
 )
-from empathy_healthcare_plugin.monitors.monitoring.protocol_loader import (
+from attune_healthcare.monitors.monitoring.protocol_loader import (
     ClinicalProtocol,
     ProtocolCriterion,
 )
-from empathy_healthcare_plugin.monitors.monitoring.protocol_loader import (
+from attune_healthcare.monitors.monitoring.protocol_loader import (
     ProtocolIntervention as LoaderIntervention,
 )
-from empathy_healthcare_plugin.monitors.monitoring.trajectory_analyzer import (
+from attune_healthcare.monitors.monitoring.trajectory_analyzer import (
     TrajectoryPrediction,
     VitalTrend,
 )

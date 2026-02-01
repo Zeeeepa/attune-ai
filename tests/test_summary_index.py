@@ -7,7 +7,7 @@ import sys
 
 import pytest
 
-from empathy_os.memory import (
+from attune.memory import (
     AccessTier,
     AgentContext,
     AgentCredentials,

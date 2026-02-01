@@ -8,8 +8,8 @@ import asyncio
 from pathlib import Path
 
 # Import memory backend FIRST - must be done before any other empathy imports
-from empathy_os.coordination import InMemoryHeartbeatBackend
-from empathy_os.memory import ShortTermMemory
+from attune.coordination import InMemoryHeartbeatBackend
+from attune.memory import ShortTermMemory
 
 
 async def main():
@@ -29,7 +29,7 @@ async def main():
 
     # Step 2: Configure UsageTracker to use this memory
     print("🔧 Configuring telemetry to use in-memory backend...")
-    from empathy_os.telemetry import UsageTracker
+    from attune.telemetry import UsageTracker
 
     tracker = UsageTracker.get_instance()
     tracker._memory = memory
@@ -41,7 +41,7 @@ async def main():
     print("🚀 Starting SEO workflow...")
     print()
 
-    from empathy_os.workflows import SEOOptimizationWorkflow
+    from attune.workflows import SEOOptimizationWorkflow
 
     workflow = SEOOptimizationWorkflow()
     result = await workflow.execute(

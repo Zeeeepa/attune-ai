@@ -12,7 +12,7 @@ Tests the base classes and enums for the Agent Factory:
 
 import pytest
 
-from empathy_llm_toolkit.agent_factory.base import (
+from attune_llm.agent_factory.base import (
     AgentCapability,
     AgentConfig,
     AgentRole,

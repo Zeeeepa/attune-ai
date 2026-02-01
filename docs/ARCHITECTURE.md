@@ -436,7 +436,7 @@ class HybridCache:
 For healthcare deployments:
 
 ```python
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm.wizards import HealthcareWizard
 
 wizard = HealthcareWizard()
 # Automatic PHI detection and de-identification
@@ -454,7 +454,7 @@ wizard = HealthcareWizard()
 ┌────────────────────────────────────┐
 │  Developer Laptop                  │
 │  ┌──────────────────────────────┐  │
-│  │  empathy-framework[developer]│  │
+│  │  attune-ai[developer]│  │
 │  │  - CLI tools                 │  │
 │  │  - VSCode extension          │  │
 │  │  - Local telemetry           │  │

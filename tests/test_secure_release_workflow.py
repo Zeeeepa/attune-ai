@@ -10,7 +10,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.secure_release import (
+from attune.workflows.secure_release import (
     SecureReleasePipeline,
     SecureReleaseResult,
     format_secure_release_report,
@@ -628,12 +628,12 @@ class TestPipelineExecution:
 
         # Patch at source modules (where classes are defined)
         with (
-            patch("empathy_os.workflows.security_audit.SecurityAuditWorkflow") as mock_sec_cls,
+            patch("attune.workflows.security_audit.SecurityAuditWorkflow") as mock_sec_cls,
             patch(
-                "empathy_os.workflows.release_prep.ReleasePreparationWorkflow",
+                "attune.workflows.release_prep.ReleasePreparationWorkflow",
             ) as mock_rel_cls,
             patch(
-                "empathy_os.workflows.security_adapters._check_crew_available",
+                "attune.workflows.security_adapters._check_crew_available",
                 return_value=False,
             ),
         ):
@@ -660,9 +660,9 @@ class TestPipelineExecution:
 
         # Patch at source module (where class is defined)
         with (
-            patch("empathy_os.workflows.security_audit.SecurityAuditWorkflow") as mock_cls,
+            patch("attune.workflows.security_audit.SecurityAuditWorkflow") as mock_cls,
             patch(
-                "empathy_os.workflows.security_adapters._check_crew_available",
+                "attune.workflows.security_adapters._check_crew_available",
                 return_value=False,
             ),
         ):

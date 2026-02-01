@@ -13,13 +13,13 @@ Licensed under Fair Source License 0.9
 
 import asyncio
 
-from empathy_os.orchestration.agent_templates import (
+from attune.orchestration.agent_templates import (
     get_all_templates, get_template, get_templates_by_capability)
-from empathy_os.orchestration.execution_strategies import get_strategy
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
-from empathy_os.workflows.orchestrated_release_prep import \
+from attune.orchestration.execution_strategies import get_strategy
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.workflows.orchestrated_release_prep import \
     OrchestratedReleasePrepWorkflow
-from empathy_os.workflows.test_coverage_boost import TestCoverageBoostWorkflow
+from attune.workflows.test_coverage_boost import TestCoverageBoostWorkflow
 
 # =============================================================================
 # Example 1: Release Preparation with Default Settings

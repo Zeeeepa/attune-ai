@@ -94,12 +94,12 @@ This guide shows how to use XML-enhanced prompts across Empathy Framework compon
 
 ### 1. Workflows (BaseWorkflow)
 
-**Location**: [src/empathy_os/workflows/base.py](src/empathy_os/workflows/base.py#L1015)
+**Location**: [src/attune/workflows/base.py](src/attune/workflows/base.py#L1015)
 
 #### Configuration
 
 ```python
-from empathy_os.workflows import BaseWorkflow
+from attune.workflows import BaseWorkflow
 
 class MyWorkflow(BaseWorkflow):
     def __init__(self, **kwargs):
@@ -158,23 +158,23 @@ async def _my_stage(self, input_data: dict, tier: ModelTier) -> tuple[dict, int,
 
 | Workflow | XML Usage | Location |
 |----------|-----------|----------|
-| `test-gen` | ✅ _review stage | [test_gen.py:1333](src/empathy_os/workflows/test_gen.py#L1333) |
-| `bug-predict` | ✅ _predict stage | [bug_predict.py:467](src/empathy_os/workflows/bug_predict.py#L467) |
-| `perf-audit` | ✅ All stages | [perf_audit.py:285](src/empathy_os/workflows/perf_audit.py#L285) |
-| `document-gen` | ✅ _generate stage | [document_gen.py:312](src/empathy_os/workflows/document_gen.py#L312) |
+| `test-gen` | ✅ _review stage | [test_gen.py:1333](src/attune/workflows/test_gen.py#L1333) |
+| `bug-predict` | ✅ _predict stage | [bug_predict.py:467](src/attune/workflows/bug_predict.py#L467) |
+| `perf-audit` | ✅ All stages | [perf_audit.py:285](src/attune/workflows/perf_audit.py#L285) |
+| `document-gen` | ✅ _generate stage | [document_gen.py:312](src/attune/workflows/document_gen.py#L312) |
 
 ---
 
 ### 2. CrewAI Crews
 
-**Location**: `empathy_llm_toolkit/agent_factory/crews/`
+**Location**: `attune_llm/agent_factory/crews/`
 
 All 4 crews use XML prompts by default:
 
 #### Configuration
 
 ```python
-from empathy_llm_toolkit.agent_factory.crews import (
+from attune_llm.agent_factory.crews import (
     SecurityAuditCrew,
     CodeReviewCrew,
     RefactoringCrew,
@@ -237,21 +237,21 @@ XML_PROMPTS = {
 
 | Crew | Agents | XML Templates | File |
 |------|--------|--------------|------|
-| SecurityAuditCrew | 3 | Scanner, Analyst, Auditor | [security_audit.py:195](empathy_llm_toolkit/agent_factory/crews/security_audit.py#L195) |
-| CodeReviewCrew | 5 | Lead, Security, Architecture, Quality, Performance | [code_review.py:211](empathy_llm_toolkit/agent_factory/crews/code_review.py#L211) |
-| RefactoringCrew | 3 | Analyzer, Refactorer, Reviewer | [refactoring.py:311](empathy_llm_toolkit/agent_factory/crews/refactoring.py#L311) |
-| HealthCheckCrew | 3 | Metrics, Tester, Reporter | [health_check.py:226](empathy_llm_toolkit/agent_factory/crews/health_check.py#L226) |
+| SecurityAuditCrew | 3 | Scanner, Analyst, Auditor | [security_audit.py:195](attune_llm/agent_factory/crews/security_audit.py#L195) |
+| CodeReviewCrew | 5 | Lead, Security, Architecture, Quality, Performance | [code_review.py:211](attune_llm/agent_factory/crews/code_review.py#L211) |
+| RefactoringCrew | 3 | Analyzer, Refactorer, Reviewer | [refactoring.py:311](attune_llm/agent_factory/crews/refactoring.py#L311) |
+| HealthCheckCrew | 3 | Metrics, Tester, Reporter | [health_check.py:226](attune_llm/agent_factory/crews/health_check.py#L226) |
 
 ---
 
 ### 3. Wizards (BaseWizard)
 
-**Location**: [empathy_llm_toolkit/wizards/base_wizard.py](empathy_llm_toolkit/wizards/base_wizard.py)
+**Location**: [attune_llm/wizards/base_wizard.py](attune_llm/wizards/base_wizard.py)
 
 #### Configuration (NEW in v3.7.0)
 
 ```python
-from empathy_llm_toolkit.wizards import BaseWizard, WizardConfig
+from attune_llm.wizards import BaseWizard, WizardConfig
 
 config = WizardConfig(
     name="my_wizard",
@@ -337,7 +337,7 @@ parsed = self._parse_xml_response(response)
 
 ```python
 # For Workflows
-from empathy_os.workflows.base import BaseWorkflow
+from attune.workflows.base import BaseWorkflow
 
 workflow = MyWorkflow()
 if hasattr(workflow, '_is_xml_enabled'):
@@ -346,7 +346,7 @@ else:
     print("❌ Need to update base class")
 
 # For Wizards
-from empathy_llm_toolkit.wizards import BaseWizard
+from attune_llm.wizards import BaseWizard
 
 wizard = MyWizard()
 if hasattr(wizard, '_render_xml_prompt'):
@@ -646,7 +646,7 @@ prompt = self._render_xml_prompt(
     input_payload=module_code,
     extra={
         "module_name": module_name,
-        "framework": "empathy_os",
+        "framework": "attune",
         "version": "3.7.0",
         "docstring_style": "google",
     },
@@ -703,7 +703,7 @@ instructions=[
 ## References
 
 - [Claude API Extended Thinking](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags)
-- [Empathy Framework Workflows](src/empathy_os/workflows/)
+- [Empathy Framework Workflows](src/attune/workflows/)
 - [CrewAI Integration Guide](CREW_INTEGRATION_GUIDE.md)
 - [XML Enhancement Status](XML_ENHANCEMENT_STATUS.md)
 

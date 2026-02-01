@@ -1,19 +1,19 @@
-name: New Wizard Request
-description: Request a new specialized wizard for code analysis
-title: "[Wizard]: "
-labels: ["wizard", "enhancement", "triage"]
+name: New Workflow Request
+description: Request a new specialized workflow for code analysis
+title: "[Workflow]: "
+labels: ["workflow", "enhancement", "triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Request a new specialized wizard! Wizards are focused code analyzers that implement Level 4 Anticipatory Empathy.
+        Request a new specialized workflow! Workflows are focused code analyzers powered by AI.
 
   - type: input
-    id: wizard_name
+    id: workflow_name
     attributes:
-      label: Wizard Name
-      description: What should this wizard be called?
-      placeholder: e.g., "SecurityWizard", "PerformanceWizard", "CustomWizard"
+      label: Workflow Name
+      description: What should this workflow be called?
+      placeholder: e.g., "SecurityAudit", "PerformanceAnalysis", "CustomWorkflow"
     validations:
       required: true
 

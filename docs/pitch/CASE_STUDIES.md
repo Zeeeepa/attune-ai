@@ -227,7 +227,7 @@ Built-in audit trails and security scanning reduce compliance burden.
 
 ### Free Tier (Teams ≤5)
 ```bash
-pip install empathy-framework
+pip install attune-ai
 empathy init
 empathy workflow run security-scan
 ```

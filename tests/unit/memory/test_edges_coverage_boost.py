@@ -12,7 +12,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.memory.edges import (
+from attune.memory.edges import (
     REVERSE_EDGE_TYPES,
     WORKFLOW_EDGE_PATTERNS,
     Edge,

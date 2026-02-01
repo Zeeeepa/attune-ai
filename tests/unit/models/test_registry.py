@@ -14,7 +14,7 @@ Key Patterns:
 
 import pytest
 
-from empathy_os.models.registry import ModelInfo, ModelProvider, ModelTier
+from attune.models.registry import ModelInfo, ModelProvider, ModelTier
 
 
 @pytest.mark.unit
@@ -201,7 +201,7 @@ class TestModelRegistry:
 
         Registry should have Anthropic provider (Claude-native v5.0.0).
         """
-        from empathy_os.models.registry import MODEL_REGISTRY
+        from attune.models.registry import MODEL_REGISTRY
 
         assert "anthropic" in MODEL_REGISTRY
         # v5.0.0: Only Anthropic provider supported
@@ -212,7 +212,7 @@ class TestModelRegistry:
 
         Anthropic provider should have all tier levels.
         """
-        from empathy_os.models.registry import MODEL_REGISTRY
+        from attune.models.registry import MODEL_REGISTRY
 
         anthropic = MODEL_REGISTRY["anthropic"]
         assert "cheap" in anthropic
@@ -224,7 +224,7 @@ class TestModelRegistry:
 
         Anthropic should have Haiku, Sonnet, and Opus.
         """
-        from empathy_os.models.registry import MODEL_REGISTRY
+        from attune.models.registry import MODEL_REGISTRY
 
         anthropic = MODEL_REGISTRY["anthropic"]
 
@@ -242,7 +242,7 @@ class TestRegistryHelpers:
 
         get_model retrieves models by provider and tier.
         """
-        from empathy_os.models.registry import get_model
+        from attune.models.registry import get_model
 
         model = get_model("anthropic", "cheap")
 
@@ -255,7 +255,7 @@ class TestRegistryHelpers:
 
         Lookups should work regardless of case.
         """
-        from empathy_os.models.registry import get_model
+        from attune.models.registry import get_model
 
         model1 = get_model("ANTHROPIC", "CHEAP")
         model2 = get_model("anthropic", "cheap")
@@ -268,7 +268,7 @@ class TestRegistryHelpers:
 
         Invalid provider should raise ValueError (v5.0.0: Anthropic-only).
         """
-        from empathy_os.models.registry import get_model
+        from attune.models.registry import get_model
 
         with pytest.raises(ValueError, match="not supported"):
             get_model("invalid_provider", "cheap")
@@ -278,7 +278,7 @@ class TestRegistryHelpers:
 
         Invalid tier should return None.
         """
-        from empathy_os.models.registry import get_model
+        from attune.models.registry import get_model
 
         model = get_model("anthropic", "invalid_tier")
 
@@ -289,7 +289,7 @@ class TestRegistryHelpers:
 
         get_all_models returns the complete registry (Anthropic-only v5.0.0).
         """
-        from empathy_os.models.registry import get_all_models
+        from attune.models.registry import get_all_models
 
         all_models = get_all_models()
 
@@ -302,7 +302,7 @@ class TestRegistryHelpers:
 
         Can retrieve pricing for specific model ID.
         """
-        from empathy_os.models.registry import get_pricing_for_model
+        from attune.models.registry import get_pricing_for_model
 
         pricing = get_pricing_for_model("claude-3-5-haiku-20241022")
 
@@ -316,7 +316,7 @@ class TestRegistryHelpers:
 
         Non-existent model should return None.
         """
-        from empathy_os.models.registry import get_pricing_for_model
+        from attune.models.registry import get_pricing_for_model
 
         pricing = get_pricing_for_model("nonexistent-model")
 
@@ -327,7 +327,7 @@ class TestRegistryHelpers:
 
         Can get list of all supported providers (Anthropic-only v5.0.0).
         """
-        from empathy_os.models.registry import get_supported_providers
+        from attune.models.registry import get_supported_providers
 
         providers = get_supported_providers()
 
@@ -340,7 +340,7 @@ class TestRegistryHelpers:
 
         Can get list of all available tiers.
         """
-        from empathy_os.models.registry import get_tiers
+        from attune.models.registry import get_tiers
 
         tiers = get_tiers()
 
@@ -360,7 +360,7 @@ class TestTierPricing:
 
         TIER_PRICING provides fallback pricing.
         """
-        from empathy_os.models.registry import TIER_PRICING
+        from attune.models.registry import TIER_PRICING
 
         assert "cheap" in TIER_PRICING
         assert "capable" in TIER_PRICING
@@ -371,7 +371,7 @@ class TestTierPricing:
 
         Each tier has input and output pricing.
         """
-        from empathy_os.models.registry import TIER_PRICING
+        from attune.models.registry import TIER_PRICING
 
         for _tier, pricing in TIER_PRICING.items():
             assert "input" in pricing
@@ -384,7 +384,7 @@ class TestTierPricing:
 
         Premium should cost more than capable, which costs more than cheap.
         """
-        from empathy_os.models.registry import TIER_PRICING
+        from attune.models.registry import TIER_PRICING
 
         cheap_input = TIER_PRICING["cheap"]["input"]
         capable_input = TIER_PRICING["capable"]["input"]

@@ -39,8 +39,8 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
     ### Quick Example
 
     ```python
-    from empathy_llm_toolkit import EmpathyLLM
-    from empathy_llm_toolkit.wizards import HealthcareWizard
+    from attune_llm import EmpathyLLM
+    from attune_llm.wizards import HealthcareWizard
 
     # Initialize with security enabled
     llm = EmpathyLLM(
@@ -129,7 +129,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
     ### Quick Example
 
     ```python
-    from empathy_llm_toolkit.wizards import FinanceWizard
+    from attune_llm.wizards import FinanceWizard
 
     wizard = FinanceWizard(llm)
 
@@ -183,7 +183,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
     ### Quick Example
 
     ```python
-    from empathy_llm_toolkit.wizards import LegalWizard
+    from attune_llm.wizards import LegalWizard
 
     wizard = LegalWizard(llm)
 
@@ -236,7 +236,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
     ### Quick Example
 
     ```python
-    from empathy_llm_toolkit.wizards import RetailWizard
+    from attune_llm.wizards import RetailWizard
 
     wizard = RetailWizard(llm)
 
@@ -270,7 +270,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
     ### Quick Example
 
     ```python
-    from empathy_llm_toolkit.wizards import EducationWizard
+    from attune_llm.wizards import EducationWizard
 
     wizard = EducationWizard(llm)
 
@@ -302,7 +302,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
     ### Quick Example
 
     ```python
-    from empathy_llm_toolkit.wizards import HRWizard
+    from attune_llm.wizards import HRWizard
 
     wizard = HRWizard(llm)
 
@@ -333,7 +333,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
     ### Quick Example
 
     ```python
-    from empathy_llm_toolkit.wizards import TechnologyWizard
+    from attune_llm.wizards import TechnologyWizard
 
     wizard = TechnologyWizard(llm)
 
@@ -412,7 +412,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 All wizards extend the `BaseWizard` class with common functionality:
 
-::: empathy_llm_toolkit.wizards.BaseWizard
+::: attune_llm.wizards.BaseWizard
     options:
       show_root_heading: false
       show_source: false
@@ -420,7 +420,7 @@ All wizards extend the `BaseWizard` class with common functionality:
 
 ### WizardConfig
 
-::: empathy_llm_toolkit.wizards.WizardConfig
+::: attune_llm.wizards.WizardConfig
     options:
       show_root_heading: false
       show_source: true
@@ -447,8 +447,8 @@ All wizards extend the `BaseWizard` class with common functionality:
     You can create custom wizards for your specific industry:
 
 ```python
-from empathy_llm_toolkit.wizards import BaseWizard, WizardConfig
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm.wizards import BaseWizard, WizardConfig
+from attune_llm import EmpathyLLM
 
 class MyIndustryWizard(BaseWizard):
     """Custom wizard for my industry"""

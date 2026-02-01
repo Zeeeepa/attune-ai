@@ -59,7 +59,7 @@ This results in **+28% suggestion acceptance rate** improvement over time.
 ### Enable Adaptive Learning
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 empathy = EmpathyOS(
     user_id="developer_123",

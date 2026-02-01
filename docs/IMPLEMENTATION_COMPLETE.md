@@ -25,7 +25,7 @@ Successfully implemented **two major optimizations** for the Empathy Framework p
 
 #### 1. Updated ProjectIndex to Use Parallel Scanner
 
-**File:** [src/empathy_os/project_index/index.py](../src/empathy_os/project_index/index.py)
+**File:** [src/attune/project_index/index.py](../src/attune/project_index/index.py)
 
 **Changes:**
 - Added `workers` parameter to `__init__()` (default: auto-detect)
@@ -55,7 +55,7 @@ index = ProjectIndex(project_root=".", use_parallel=False)
 
 #### 2. Exported ParallelProjectScanner
 
-**File:** [src/empathy_os/project_index/__init__.py](../src/empathy_os/project_index/__init__.py)
+**File:** [src/attune/project_index/__init__.py](../src/attune/project_index/__init__.py)
 
 **Changes:**
 - Added `from .scanner_parallel import ParallelProjectScanner`
@@ -63,7 +63,7 @@ index = ProjectIndex(project_root=".", use_parallel=False)
 
 **Usage:**
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 scanner = ParallelProjectScanner(project_root=".", workers=4)
 records, summary = scanner.scan()
@@ -77,7 +77,7 @@ records, summary = scanner.scan()
 
 ```python
 # Old code - still works
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 index = ProjectIndex(project_root=".")
 index.refresh()  # Now 2x faster automatically!
@@ -91,7 +91,7 @@ index.refresh()  # Now 2x faster automatically!
 
 #### 1. Added refresh_incremental() Method
 
-**File:** [src/empathy_os/project_index/index.py](../src/empathy_os/project_index/index.py#L236-L352)
+**File:** [src/attune/project_index/index.py](../src/attune/project_index/index.py#L236-L352)
 
 **Implementation:**
 - Uses `git diff --name-only` to detect changed files
@@ -102,7 +102,7 @@ index.refresh()  # Now 2x faster automatically!
 
 **API:**
 ```python
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 # Load existing index
 index = ProjectIndex(project_root=".")
@@ -267,13 +267,13 @@ python examples/scanner_usage.py
 
 ### Core Changes
 
-1. **[src/empathy_os/project_index/index.py](../src/empathy_os/project_index/index.py)**
+1. **[src/attune/project_index/index.py](../src/attune/project_index/index.py)**
    - Added `workers` and `use_parallel` parameters
    - Updated `refresh()` to use parallel scanner
    - Added `refresh_incremental()` method (150+ lines)
    - Added `_is_excluded()` helper
 
-2. **[src/empathy_os/project_index/__init__.py](../src/empathy_os/project_index/__init__.py)**
+2. **[src/attune/project_index/__init__.py](../src/attune/project_index/__init__.py)**
    - Exported `ParallelProjectScanner`
 
 ### Documentation
@@ -316,10 +316,10 @@ python examples/scanner_usage.py
 
 ```python
 # Install (if not already)
-pip install empathy-framework
+pip install attune-ai
 
 # Use parallel scanner (automatic)
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 index = ProjectIndex(project_root=".")
 index.refresh()  # 2x faster automatically!
@@ -328,7 +328,7 @@ index.refresh()  # 2x faster automatically!
 ### Incremental Workflow
 
 ```python
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 # One-time setup
 index = ProjectIndex(".")

@@ -17,7 +17,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.models.telemetry import (
+from attune.models.telemetry import (
     LLMCallRecord,
     TelemetryAnalytics,
     TelemetryStore,

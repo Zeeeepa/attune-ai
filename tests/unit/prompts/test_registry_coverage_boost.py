@@ -9,7 +9,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.prompts.registry import (
+from attune.prompts.registry import (
     BUG_ANALYSIS_RESPONSE,
     BUILTIN_TEMPLATES,
     CODE_REVIEW_RESPONSE,
@@ -25,7 +25,7 @@ from empathy_os.prompts.registry import (
     list_templates,
     register_template,
 )
-from empathy_os.prompts.templates import XmlPromptTemplate
+from attune.prompts.templates import XmlPromptTemplate
 
 
 @pytest.mark.unit

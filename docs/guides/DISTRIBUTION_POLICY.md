@@ -20,13 +20,13 @@ When users install from PyPI or download from GitHub, they should receive a clea
 
 ## What Users Receive
 
-### PyPI Installation (`pip install empathy-framework`)
+### PyPI Installation (`pip install attune-ai`)
 
 Users receive the **core framework** needed to use Empathy:
 
 | Category | Included |
 |----------|----------|
-| **Source Code** | All Python packages (empathy_os, empathy_llm_toolkit, etc.) |
+| **Source Code** | All Python packages (attune, attune_llm, etc.) |
 | **Documentation** | README.md, CHANGELOG.md, QUICKSTART.md, CONTRIBUTING.md |
 | **Configuration** | pyproject.toml, requirements.txt, example configs |
 | **User Docs** | API reference, guides, getting-started, examples |

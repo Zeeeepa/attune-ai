@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.telemetry.cli import (
+from attune.telemetry.cli import (
     _validate_file_path,
     cmd_agent_performance,
     cmd_sonnet_opus_analysis,
@@ -25,8 +25,8 @@ from empathy_os.telemetry.cli import (
     cmd_test_status,
     cmd_tier1_status,
 )
-from empathy_os.telemetry.commands.dashboard_commands import cmd_telemetry_dashboard
-from empathy_os.telemetry.usage_tracker import UsageTracker
+from attune.telemetry.commands.dashboard_commands import cmd_telemetry_dashboard
+from attune.telemetry.usage_tracker import UsageTracker
 
 
 class TestValidateFilePath:
@@ -52,11 +52,10 @@ class TestValidateFilePath:
             _validate_file_path("output\x00.csv")
 
     def test_validate_file_path_with_system_paths(self):
-        """Test validation handles system paths."""
-        # Note: On macOS, /etc resolves to /private/etc which is not blocked
-        # This test verifies validation doesn't crash on system paths
-        result = _validate_file_path("/etc/test.txt")
-        assert isinstance(result, Path)
+        """Test validation blocks system paths including macOS symlinks."""
+        # On macOS, /etc resolves to /private/etc which IS blocked
+        with pytest.raises(ValueError, match="Cannot write to system directory"):
+            _validate_file_path("/etc/test.txt")
 
     def test_validate_file_path_rejects_sys_directory(self):
         """Test validation blocks /sys directory."""
@@ -764,7 +763,7 @@ class TestCmdTelemetryDashboard:
 class TestTier1MonitoringCommands:
     """Test Tier 1 automation monitoring commands."""
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_tier1_status_no_data(self, mock_store, capsys):
         """Test tier1_status with no data."""
         mock_analytics = Mock()
@@ -793,13 +792,13 @@ class TestTier1MonitoringCommands:
             },
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_tier1_status(args)
 
             assert result == 0
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_tier1_status_with_error(self, mock_store, capsys):
         """Test tier1_status handles errors gracefully."""
         mock_store.side_effect = Exception("Database error")
@@ -811,7 +810,7 @@ class TestTier1MonitoringCommands:
         captured = capsys.readouterr()
         assert "Error retrieving Tier 1 status" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_task_routing_report_no_data(self, mock_store, capsys):
         """Test task_routing_report with no data."""
         mock_analytics = Mock()
@@ -823,7 +822,7 @@ class TestTier1MonitoringCommands:
             "by_task_type": {},
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_task_routing_report(args)
 
@@ -831,7 +830,7 @@ class TestTier1MonitoringCommands:
             captured = capsys.readouterr()
             assert "No task routing data found" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_task_routing_report_with_data(self, mock_store, capsys):
         """Test task_routing_report displays data correctly."""
         mock_analytics = Mock()
@@ -846,7 +845,7 @@ class TestTier1MonitoringCommands:
             },
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_task_routing_report(args)
 
@@ -855,7 +854,7 @@ class TestTier1MonitoringCommands:
             assert "95" in captured.out  # successful_routing
             assert "100" in captured.out  # total_tasks
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_test_status_no_data(self, mock_store, capsys):
         """Test test_status with no data."""
         mock_analytics = Mock()
@@ -872,7 +871,7 @@ class TestTier1MonitoringCommands:
             "trend": "stable",
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_test_status(args)
 
@@ -880,7 +879,7 @@ class TestTier1MonitoringCommands:
             captured = capsys.readouterr()
             assert "No test execution data found" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_test_status_with_failures(self, mock_store, capsys):
         """Test test_status displays failing tests."""
         mock_analytics = Mock()
@@ -900,7 +899,7 @@ class TestTier1MonitoringCommands:
             "trend": "increasing",
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=24)
             result = cmd_test_status(args)
 
@@ -908,7 +907,7 @@ class TestTier1MonitoringCommands:
             captured = capsys.readouterr()
             assert "test_broken_function" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_agent_performance_no_data(self, mock_store, capsys):
         """Test agent_performance with no data."""
         mock_analytics = Mock()
@@ -918,7 +917,7 @@ class TestTier1MonitoringCommands:
             "human_review_rate": 0.0,
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=168)
             result = cmd_agent_performance(args)
 
@@ -926,7 +925,7 @@ class TestTier1MonitoringCommands:
             captured = capsys.readouterr()
             assert "No agent assignment data found" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_agent_performance_with_data(self, mock_store, capsys):
         """Test agent_performance displays agent metrics."""
         mock_analytics = Mock()
@@ -949,7 +948,7 @@ class TestTier1MonitoringCommands:
             "human_review_rate": 0.08,
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=168)
             result = cmd_agent_performance(args)
 
@@ -962,7 +961,7 @@ class TestTier1MonitoringCommands:
 class TestSonnetOpusAnalysis:
     """Test Sonnet 4.5 → Opus 4.5 fallback analysis."""
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_sonnet_opus_no_data(self, mock_store, capsys):
         """Test sonnet_opus_analysis with no data."""
         mock_analytics = Mock()
@@ -980,7 +979,7 @@ class TestSonnetOpusAnalysis:
             "avg_opus_cost_per_call": 0.0,
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -988,7 +987,7 @@ class TestSonnetOpusAnalysis:
             captured = capsys.readouterr()
             assert "No Sonnet/Opus calls found" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_sonnet_opus_low_fallback(self, mock_store, capsys):
         """Test sonnet_opus_analysis with low fallback rate."""
         mock_analytics = Mock()
@@ -1006,7 +1005,7 @@ class TestSonnetOpusAnalysis:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -1014,7 +1013,7 @@ class TestSonnetOpusAnalysis:
             captured = capsys.readouterr()
             assert "$50.00" in captured.out  # savings
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_sonnet_opus_high_fallback(self, mock_store, capsys):
         """Test sonnet_opus_analysis with high fallback rate."""
         mock_analytics = Mock()
@@ -1032,7 +1031,7 @@ class TestSonnetOpusAnalysis:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -1613,7 +1612,7 @@ class TestCmdTelemetryDashboardEdgeCases:
 class TestTier1MonitoringEdgeCases:
     """Test edge cases for Tier 1 monitoring commands."""
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_tier1_status_with_complete_data(self, mock_store, capsys):
         """Test tier1_status with comprehensive data."""
         mock_analytics = Mock()
@@ -1645,7 +1644,7 @@ class TestTier1MonitoringEdgeCases:
             },
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(hours=48)
             result = cmd_tier1_status(args)
 
@@ -1653,7 +1652,7 @@ class TestTier1MonitoringEdgeCases:
             captured = capsys.readouterr()
             assert "500" in captured.out or "Tier 1" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_task_routing_report_with_error(self, mock_store, capsys):
         """Test task_routing_report handles errors."""
         mock_store.side_effect = Exception("Connection error")
@@ -1665,7 +1664,7 @@ class TestTier1MonitoringEdgeCases:
         captured = capsys.readouterr()
         assert "Error retrieving task routing report" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_test_status_with_error(self, mock_store, capsys):
         """Test test_status handles errors."""
         mock_store.side_effect = Exception("Database error")
@@ -1677,7 +1676,7 @@ class TestTier1MonitoringEdgeCases:
         captured = capsys.readouterr()
         assert "Error retrieving test status" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_agent_performance_with_error(self, mock_store, capsys):
         """Test agent_performance handles errors."""
         mock_store.side_effect = Exception("Store error")
@@ -1693,7 +1692,7 @@ class TestTier1MonitoringEdgeCases:
 class TestSonnetOpusAnalysisEdgeCases:
     """Test edge cases for Sonnet/Opus analysis."""
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_sonnet_opus_moderate_fallback(self, mock_store, capsys):
         """Test sonnet_opus_analysis with moderate fallback rate."""
         mock_analytics = Mock()
@@ -1711,7 +1710,7 @@ class TestSonnetOpusAnalysisEdgeCases:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 
@@ -1719,7 +1718,7 @@ class TestSonnetOpusAnalysisEdgeCases:
             captured = capsys.readouterr()
             assert "10.0%" in captured.out
 
-    @patch("empathy_os.models.telemetry.get_telemetry_store")
+    @patch("attune.models.telemetry.get_telemetry_store")
     def test_sonnet_opus_with_zero_savings(self, mock_store, capsys):
         """Test sonnet_opus_analysis with no savings."""
         mock_analytics = Mock()
@@ -1737,7 +1736,7 @@ class TestSonnetOpusAnalysisEdgeCases:
             "avg_opus_cost_per_call": 1.0,
         }
 
-        with patch("empathy_os.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
+        with patch("attune.models.telemetry.TelemetryAnalytics", return_value=mock_analytics):
             args = Mock(days=30)
             result = cmd_sonnet_opus_analysis(args)
 

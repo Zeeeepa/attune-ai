@@ -13,7 +13,7 @@ Copyright 2025 Smart AI Memory, LLC
 import subprocess
 from unittest.mock import MagicMock, patch
 
-from empathy_os.memory.redis_bootstrap import (
+from attune.memory.redis_bootstrap import (
     RedisStartMethod,
     RedisStatus,
     _check_redis_running,
@@ -180,8 +180,8 @@ class TestRunSilent:
 class TestStartViaHomebrew:
     """Test Homebrew start method."""
 
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_false_if_brew_not_found(self, mock_find, mock_run):
         """Test returns False if brew command not found."""
         mock_find.return_value = None
@@ -190,8 +190,8 @@ class TestStartViaHomebrew:
 
         assert result is False
 
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_false_if_redis_not_installed(self, mock_find, mock_run):
         """Test returns False if Redis not installed via Homebrew."""
         mock_find.return_value = "/usr/local/bin/brew"
@@ -201,9 +201,9 @@ class TestStartViaHomebrew:
 
         assert result is False
 
-    @patch("empathy_os.memory.redis_bootstrap.time.sleep")
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap.time.sleep")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_true_on_successful_start(self, mock_find, mock_run, mock_sleep):
         """Test returns True when Redis starts successfully."""
         mock_find.return_value = "/usr/local/bin/brew"
@@ -220,7 +220,7 @@ class TestStartViaHomebrew:
 class TestStartViaSystemd:
     """Test systemd start method."""
 
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_false_if_systemctl_not_found(self, mock_find):
         """Test returns False if systemctl not found."""
         mock_find.return_value = None
@@ -229,9 +229,9 @@ class TestStartViaSystemd:
 
         assert result is False
 
-    @patch("empathy_os.memory.redis_bootstrap.time.sleep")
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap.time.sleep")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_true_on_successful_start(self, mock_find, mock_run, mock_sleep):
         """Test returns True when Redis starts successfully."""
         mock_find.return_value = "/usr/bin/systemctl"
@@ -241,9 +241,9 @@ class TestStartViaSystemd:
 
         assert result is True
 
-    @patch("empathy_os.memory.redis_bootstrap.time.sleep")
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap.time.sleep")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_tries_redis_server_service(self, mock_find, mock_run, mock_sleep):
         """Test tries redis-server service name as fallback."""
         mock_find.return_value = "/usr/bin/systemctl"
@@ -260,7 +260,7 @@ class TestStartViaSystemd:
 class TestStartViaDocker:
     """Test Docker start method."""
 
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_false_if_docker_not_found(self, mock_find):
         """Test returns False if docker not found."""
         mock_find.return_value = None
@@ -269,8 +269,8 @@ class TestStartViaDocker:
 
         assert result is False
 
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_false_if_daemon_not_running(self, mock_find, mock_run):
         """Test returns False if Docker daemon not running."""
         mock_find.return_value = "/usr/bin/docker"
@@ -280,9 +280,9 @@ class TestStartViaDocker:
 
         assert result is False
 
-    @patch("empathy_os.memory.redis_bootstrap.time.sleep")
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap.time.sleep")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_starts_existing_container(self, mock_find, mock_run, mock_sleep):
         """Test starts existing container if present."""
         mock_find.return_value = "/usr/bin/docker"
@@ -296,9 +296,9 @@ class TestStartViaDocker:
 
         assert result is True
 
-    @patch("empathy_os.memory.redis_bootstrap.time.sleep")
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap.time.sleep")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_creates_new_container(self, mock_find, mock_run, mock_sleep):
         """Test creates new container if not present."""
         mock_find.return_value = "/usr/bin/docker"
@@ -316,7 +316,7 @@ class TestStartViaDocker:
 class TestStartViaDirect:
     """Test direct redis-server start method."""
 
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_returns_false_if_redis_server_not_found(self, mock_find):
         """Test returns False if redis-server not found."""
         mock_find.return_value = None
@@ -325,10 +325,10 @@ class TestStartViaDirect:
 
         assert result is False
 
-    @patch("empathy_os.memory.redis_bootstrap.time.sleep")
-    @patch("empathy_os.memory.redis_bootstrap.subprocess.Popen")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
-    @patch("empathy_os.memory.redis_bootstrap.IS_WINDOWS", False)
+    @patch("attune.memory.redis_bootstrap.time.sleep")
+    @patch("attune.memory.redis_bootstrap.subprocess.Popen")
+    @patch("attune.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap.IS_WINDOWS", False)
     def test_uses_daemonize_on_unix(self, mock_find, mock_popen, mock_sleep):
         """Test uses daemonize flag on Unix."""
         mock_find.return_value = "/usr/bin/redis-server"
@@ -352,7 +352,7 @@ class TestStartViaDirect:
 class TestEnsureRedis:
     """Test ensure_redis function."""
 
-    @patch("empathy_os.memory.redis_bootstrap._check_redis_running")
+    @patch("attune.memory.redis_bootstrap._check_redis_running")
     def test_returns_already_running_if_available(self, mock_check):
         """Test returns ALREADY_RUNNING if Redis is available."""
         mock_check.return_value = True
@@ -362,7 +362,7 @@ class TestEnsureRedis:
         assert status.available is True
         assert status.method == RedisStartMethod.ALREADY_RUNNING
 
-    @patch("empathy_os.memory.redis_bootstrap._check_redis_running")
+    @patch("attune.memory.redis_bootstrap._check_redis_running")
     def test_returns_mock_if_auto_start_false(self, mock_check):
         """Test returns MOCK if auto_start is False and Redis not running."""
         mock_check.return_value = False
@@ -372,11 +372,11 @@ class TestEnsureRedis:
         assert status.available is False
         assert status.method == RedisStartMethod.MOCK
 
-    @patch("empathy_os.memory.redis_bootstrap._check_redis_running")
-    @patch("empathy_os.memory.redis_bootstrap._start_via_homebrew")
-    @patch("empathy_os.memory.redis_bootstrap.IS_MACOS", True)
-    @patch("empathy_os.memory.redis_bootstrap.IS_LINUX", False)
-    @patch("empathy_os.memory.redis_bootstrap.IS_WINDOWS", False)
+    @patch("attune.memory.redis_bootstrap._check_redis_running")
+    @patch("attune.memory.redis_bootstrap._start_via_homebrew")
+    @patch("attune.memory.redis_bootstrap.IS_MACOS", True)
+    @patch("attune.memory.redis_bootstrap.IS_LINUX", False)
+    @patch("attune.memory.redis_bootstrap.IS_WINDOWS", False)
     def test_tries_homebrew_on_macos(self, mock_homebrew, mock_check):
         """Test tries Homebrew on macOS."""
         mock_check.side_effect = [False, True]  # Not running, then running
@@ -388,11 +388,11 @@ class TestEnsureRedis:
         assert status.method == RedisStartMethod.HOMEBREW
         mock_homebrew.assert_called_once()
 
-    @patch("empathy_os.memory.redis_bootstrap._check_redis_running")
-    @patch("empathy_os.memory.redis_bootstrap._start_via_systemd")
-    @patch("empathy_os.memory.redis_bootstrap.IS_MACOS", False)
-    @patch("empathy_os.memory.redis_bootstrap.IS_LINUX", True)
-    @patch("empathy_os.memory.redis_bootstrap.IS_WINDOWS", False)
+    @patch("attune.memory.redis_bootstrap._check_redis_running")
+    @patch("attune.memory.redis_bootstrap._start_via_systemd")
+    @patch("attune.memory.redis_bootstrap.IS_MACOS", False)
+    @patch("attune.memory.redis_bootstrap.IS_LINUX", True)
+    @patch("attune.memory.redis_bootstrap.IS_WINDOWS", False)
     def test_tries_systemd_on_linux(self, mock_systemd, mock_check):
         """Test tries systemd on Linux."""
         mock_check.side_effect = [False, True]
@@ -412,13 +412,13 @@ class TestEnsureRedis:
         assert hasattr(status, "available")
         assert hasattr(status, "method")
 
-    @patch("empathy_os.memory.redis_bootstrap._check_redis_running")
-    @patch("empathy_os.memory.redis_bootstrap._start_via_direct")
-    @patch("empathy_os.memory.redis_bootstrap._start_via_docker")
-    @patch("empathy_os.memory.redis_bootstrap._start_via_homebrew")
-    @patch("empathy_os.memory.redis_bootstrap.IS_MACOS", True)
-    @patch("empathy_os.memory.redis_bootstrap.IS_LINUX", False)
-    @patch("empathy_os.memory.redis_bootstrap.IS_WINDOWS", False)
+    @patch("attune.memory.redis_bootstrap._check_redis_running")
+    @patch("attune.memory.redis_bootstrap._start_via_direct")
+    @patch("attune.memory.redis_bootstrap._start_via_docker")
+    @patch("attune.memory.redis_bootstrap._start_via_homebrew")
+    @patch("attune.memory.redis_bootstrap.IS_MACOS", True)
+    @patch("attune.memory.redis_bootstrap.IS_LINUX", False)
+    @patch("attune.memory.redis_bootstrap.IS_WINDOWS", False)
     def test_returns_mock_when_all_methods_fail(
         self, mock_homebrew, mock_docker, mock_direct, mock_check
     ):
@@ -442,7 +442,7 @@ class TestEnsureRedis:
 class TestStopRedis:
     """Test stop_redis function."""
 
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._run_silent")
     def test_stops_homebrew(self, mock_run):
         """Test stops Redis started via Homebrew."""
         mock_run.return_value = (True, "")
@@ -452,7 +452,7 @@ class TestStopRedis:
         assert result is True
         mock_run.assert_called_with(["brew", "services", "stop", "redis"])
 
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._run_silent")
     def test_stops_systemd(self, mock_run):
         """Test stops Redis started via systemd."""
         mock_run.return_value = (True, "")
@@ -461,7 +461,7 @@ class TestStopRedis:
 
         assert result is True
 
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._run_silent")
     def test_stops_docker(self, mock_run):
         """Test stops Redis started via Docker."""
         mock_run.return_value = (True, "")
@@ -471,8 +471,8 @@ class TestStopRedis:
         assert result is True
         mock_run.assert_called_with(["docker", "stop", "empathy-redis"])
 
-    @patch("empathy_os.memory.redis_bootstrap._run_silent")
-    @patch("empathy_os.memory.redis_bootstrap._find_command")
+    @patch("attune.memory.redis_bootstrap._run_silent")
+    @patch("attune.memory.redis_bootstrap._find_command")
     def test_stops_direct(self, mock_find, mock_run):
         """Test stops Redis started directly."""
         mock_find.return_value = "/usr/bin/redis-cli"
@@ -503,7 +503,7 @@ class TestStopRedis:
 class TestGetRedisOrMock:
     """Test get_redis_or_mock convenience function."""
 
-    @patch("empathy_os.memory.redis_bootstrap.ensure_redis")
+    @patch("attune.memory.redis_bootstrap.ensure_redis")
     def test_returns_status_when_available(self, mock_ensure):
         """Test returns status indicating Redis availability."""
         mock_ensure.return_value = RedisStatus(
@@ -516,7 +516,7 @@ class TestGetRedisOrMock:
         assert status.available is True
         assert memory is not None
 
-    @patch("empathy_os.memory.redis_bootstrap.ensure_redis")
+    @patch("attune.memory.redis_bootstrap.ensure_redis")
     def test_returns_mock_status_when_unavailable(self, mock_ensure):
         """Test returns mock status when Redis unavailable."""
         mock_ensure.return_value = RedisStatus(

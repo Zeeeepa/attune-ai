@@ -99,7 +99,7 @@ Possible Causes:
 
 ### 3. Real-Time Tier Recommendation API ✅
 
-**File**: `src/empathy_os/tier_recommender.py`
+**File**: `src/attune/tier_recommender.py`
 
 **Features**:
 - Intelligent tier selection based on historical patterns
@@ -111,7 +111,7 @@ Possible Causes:
 
 **API Usage**:
 ```python
-from empathy_os import TierRecommender
+from attune import TierRecommender
 
 recommender = TierRecommender()
 
@@ -246,7 +246,7 @@ python scripts/analyze_tier_patterns.py --json > report.json
 ### For Developers (Programmatic Access)
 
 ```python
-from empathy_os import TierRecommender
+from attune import TierRecommender
 
 # Initialize recommender
 recommender = TierRecommender()
@@ -386,7 +386,7 @@ $ empathy tier recommend "type annotation missing in function"
 ### Example 2: Programmatic Access
 
 ```python
-from empathy_os.tier_recommender import TierRecommender
+from attune.tier_recommender import TierRecommender
 
 recommender = TierRecommender()
 
@@ -401,7 +401,7 @@ print(f"Expected cost: ${result.expected_cost:.3f}")
 print(f"Confidence: {result.confidence:.1%}")
 
 # Use in cascading workflow
-from empathy_os.workflows import CascadingWorkflow
+from attune.workflows import CascadingWorkflow
 
 workflow = CascadingWorkflow(
     task=task,
@@ -438,7 +438,7 @@ Average cost per bug: $0.03
 
 ### New Files Created (7)
 1. `.github/workflows/tier-pattern-analysis.yml` - CI/CD workflow
-2. `src/empathy_os/tier_recommender.py` - Recommendation API
+2. `src/attune/tier_recommender.py` - Recommendation API
 3. `tests/unit/test_analyze_tier_patterns.py` - Unit tests
 4. `scripts/analyze_tier_patterns.py` - Analysis script
 5. `patterns/debugging/bug_20260107_telemetry_enhanced.json` - Example pattern
@@ -446,7 +446,7 @@ Average cost per bug: $0.03
 7. `docs/philosophy/XML_ENHANCED_AGENT_COMMUNICATION.md` - Protocol spec
 
 ### Files Modified (2)
-1. `src/empathy_os/cli.py` - Added tier commands
+1. `src/attune/cli.py` - Added tier commands
 2. `.claude/prompts/agent_templates.md` - Fixed health commands
 
 ---

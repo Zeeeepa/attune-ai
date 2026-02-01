@@ -32,8 +32,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import AgentTemplate
-from empathy_os.orchestration.meta_orchestrator import (
+from attune.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.meta_orchestrator import (
     CompositionPattern,
     ExecutionPlan,
     MetaOrchestrator,
@@ -140,7 +140,7 @@ class TestAgentSelectionLogic:
         """Set up test fixtures."""
         self.orchestrator = MetaOrchestrator()
 
-    @patch("empathy_os.orchestration.meta_orchestrator.get_templates_by_capability")
+    @patch("attune.orchestration.meta_orchestrator.get_templates_by_capability")
     def test_agents_match_required_capabilities(self, mock_get_templates):
         """Test that selected agents have required capabilities."""
         # Mock agent templates
@@ -183,7 +183,7 @@ class TestAgentSelectionLogic:
         )
 
         with patch(
-            "empathy_os.orchestration.meta_orchestrator.get_templates_by_capability"
+            "attune.orchestration.meta_orchestrator.get_templates_by_capability"
         ) as mock_get:
             mock_agents = [Mock(spec=AgentTemplate, role=f"Agent{i}") for i in range(5)]
             mock_get.return_value = mock_agents
@@ -328,7 +328,7 @@ class TestFailureHandlingAndRecovery:
         )
 
         with patch(
-            "empathy_os.orchestration.meta_orchestrator.get_templates_by_capability"
+            "attune.orchestration.meta_orchestrator.get_templates_by_capability"
         ) as mock_get:
             mock_get.return_value = []  # No agents found
 
@@ -415,7 +415,7 @@ class TestMetaOrchestratorIntegration:
         context = {"current_coverage": 75}
 
         with patch(
-            "empathy_os.orchestration.meta_orchestrator.get_templates_by_capability"
+            "attune.orchestration.meta_orchestrator.get_templates_by_capability"
         ) as mock_get:
             # Provide mock agents with id attribute
             mock_resource_req = Mock(timeout_seconds=300)
@@ -454,7 +454,7 @@ class TestMetaOrchestratorIntegration:
         context = {"target": "src/"}
 
         with patch(
-            "empathy_os.orchestration.meta_orchestrator.get_templates_by_capability"
+            "attune.orchestration.meta_orchestrator.get_templates_by_capability"
         ) as mock_get:
             mock_resource_req = Mock(timeout_seconds=300)
             mock_agents = [
@@ -500,7 +500,7 @@ class TestResourceLimits:
         )
 
         with patch(
-            "empathy_os.orchestration.meta_orchestrator.get_templates_by_capability"
+            "attune.orchestration.meta_orchestrator.get_templates_by_capability"
         ) as mock_get:
             # Provide many agents
             mock_agents = [Mock(spec=AgentTemplate) for _ in range(50)]

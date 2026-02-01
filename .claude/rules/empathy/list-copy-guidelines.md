@@ -409,7 +409,7 @@ Use this checklist during code review:
 - [Python heapq documentation](https://docs.python.org/3/library/heapq.html)
 - [Empathy Framework Coding Standards](./../../../docs/CODING_STANDARDS.md)
 - [Performance profiling guide](./../../docs/PERFORMANCE.md)
-- [List copy optimization PR #XXX](https://github.com/Smart-AI-Memory/empathy-framework/pulls)
+- [List copy optimization PR #XXX](https://github.com/Smart-AI-Memory/attune-ai/pulls)
 
 ---
 
@@ -423,7 +423,7 @@ Use this checklist during code review:
 
 ---
 
-**Questions or suggestions?** Open an issue at [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+**Questions or suggestions?** Open an issue at [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 
 **Maintained by:** Engineering Team
 **Last Review:** January 10, 2026

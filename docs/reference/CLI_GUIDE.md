@@ -9,7 +9,7 @@ The Empathy Framework includes a command-line tool for managing configurations, 
 ## Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 Or for development:
@@ -27,7 +27,7 @@ pip install -e .
 Display version information:
 
 ```bash
-empathy-framework version
+attune-ai version
 ```
 
 Output:
@@ -70,7 +70,7 @@ This creates `empathy.config.yml` with your settings.
 Validate a configuration file:
 
 ```bash
-empathy-framework validate empathy.config.yml
+attune-ai validate empathy.config.yml
 ```
 
 Output:
@@ -92,10 +92,10 @@ Display framework information:
 
 ```bash
 # With default config
-empathy-framework info
+attune-ai info
 
 # With custom config
-empathy-framework info --config my-config.yml
+attune-ai info --config my-config.yml
 ```
 
 Output:
@@ -132,10 +132,10 @@ List patterns in a pattern library:
 
 ```bash
 # List patterns from JSON file
-empathy-framework patterns list patterns.json
+attune-ai patterns list patterns.json
 
 # List patterns from SQLite database
-empathy-framework patterns list patterns.db --format sqlite
+attune-ai patterns list patterns.db --format sqlite
 ```
 
 Output:
@@ -168,11 +168,11 @@ Export patterns from one format to another:
 
 ```bash
 # JSON to SQLite
-empathy-framework patterns export patterns.json patterns.db \
+attune-ai patterns export patterns.json patterns.db \
   --input-format json --output-format sqlite
 
 # SQLite to JSON
-empathy-framework patterns export patterns.db patterns.json \
+attune-ai patterns export patterns.db patterns.json \
   --input-format sqlite --output-format json
 ```
 
@@ -192,10 +192,10 @@ Display metrics for a specific user:
 
 ```bash
 # Default metrics.db location
-empathy-framework metrics show alice
+attune-ai metrics show alice
 
 # Custom database location
-empathy-framework metrics show alice --db /path/to/metrics.db
+attune-ai metrics show alice --db /path/to/metrics.db
 ```
 
 Output:
@@ -227,10 +227,10 @@ List all saved user states:
 
 ```bash
 # Default state directory
-empathy-framework state list
+attune-ai state list
 
 # Custom state directory
-empathy-framework state list --state-dir /path/to/states
+attune-ai state list --state-dir /path/to/states
 ```
 
 Output:
@@ -523,32 +523,32 @@ empathy health --json
 
 ```bash
 # 1. Initialize project
-empathy-framework init --format yaml --output dev-config.yml
+attune-ai init --format yaml --output dev-config.yml
 
 # 2. Edit dev-config.yml to customize settings
 nano dev-config.yml
 
 # 3. Validate configuration
-empathy-framework validate dev-config.yml
+attune-ai validate dev-config.yml
 
 # 4. Check framework info
-empathy-framework info --config dev-config.yml
+attune-ai info --config dev-config.yml
 
 # 5. Run your application
 python my_app.py
 
 # 6. View metrics
-empathy-framework metrics show my_user
+attune-ai metrics show my_user
 
 # 7. List saved states
-empathy-framework state list
+attune-ai state list
 ```
 
 ### Production Deployment
 
 ```bash
 # 1. Create production config
-empathy-framework init --format yaml --output prod-config.yml
+attune-ai init --format yaml --output prod-config.yml
 
 # 2. Set production values via environment variables
 export EMPATHY_USER_ID=prod_system
@@ -557,7 +557,7 @@ export EMPATHY_PERSISTENCE_BACKEND=sqlite
 export EMPATHY_METRICS_ENABLED=true
 
 # 3. Validate combined config (file + env)
-empathy-framework validate prod-config.yml
+attune-ai validate prod-config.yml
 
 # 4. Deploy application with config
 python -m my_app --config prod-config.yml
@@ -567,7 +567,7 @@ python -m my_app --config prod-config.yml
 
 ```bash
 # 1. Export patterns from development to JSON (for version control)
-empathy-framework patterns export dev_patterns.db dev_patterns.json \
+attune-ai patterns export dev_patterns.db dev_patterns.json \
   --input-format sqlite --output-format json
 
 # 2. Commit to git
@@ -575,11 +575,11 @@ git add dev_patterns.json
 git commit -m "Update pattern library"
 
 # 3. On production, import patterns to SQLite
-empathy-framework patterns export dev_patterns.json prod_patterns.db \
+attune-ai patterns export dev_patterns.json prod_patterns.db \
   --input-format json --output-format sqlite
 
 # 4. List patterns to verify
-empathy-framework patterns list prod_patterns.db --format sqlite
+attune-ai patterns list prod_patterns.db --format sqlite
 ```
 
 ---
@@ -1094,4 +1094,4 @@ empathy-sync-claude --help
 ```
 
 For bugs and feature requests, visit:
-https://github.com/Smart-AI-Memory/empathy-framework/issues
+https://github.com/Smart-AI-Memory/attune-ai/issues

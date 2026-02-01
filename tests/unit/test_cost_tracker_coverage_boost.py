@@ -19,7 +19,7 @@ import json
 
 import pytest
 
-from empathy_os.cost_tracker import CostTracker
+from attune.cost_tracker import CostTracker
 
 
 @pytest.mark.unit
@@ -131,9 +131,9 @@ class TestErrorHandling:
         tracker = CostTracker(storage_dir=str(tmp_path))
 
         # Monkey patch validation to raise error
-        import empathy_os.cost_tracker
+        import attune.cost_tracker
 
-        monkeypatch.setattr(empathy_os.cost_tracker, "_validate_file_path", mock_validate_raises_error)
+        monkeypatch.setattr(attune.cost_tracker, "_validate_file_path", mock_validate_raises_error)
 
         # Should not crash - summary save is best-effort
         tracker.log_request("claude-3-haiku-20240307", 100, 50, "test")

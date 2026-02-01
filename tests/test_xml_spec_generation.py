@@ -22,7 +22,7 @@ class TestXMLAgentCreation:
 
     def test_agent_has_required_attributes(self):
         """Test XMLAgent is created with required attributes."""
-        from empathy_os.workflows.xml_enhanced_crew import XMLAgent
+        from attune.workflows.xml_enhanced_crew import XMLAgent
 
         agent = XMLAgent(
             role="Test Architect",
@@ -37,7 +37,7 @@ class TestXMLAgentCreation:
 
     def test_agent_system_prompt_structure(self):
         """Test agent generates proper system prompt."""
-        from empathy_os.workflows.xml_enhanced_crew import XMLAgent
+        from attune.workflows.xml_enhanced_crew import XMLAgent
 
         agent = XMLAgent(
             role="Architect",
@@ -64,7 +64,7 @@ class TestXMLTaskCreation:
 
     def test_task_creation_with_expected_output(self):
         """Test creating XMLTask with expected output structure."""
-        from empathy_os.workflows.xml_enhanced_crew import XMLAgent, XMLTask
+        from attune.workflows.xml_enhanced_crew import XMLAgent, XMLTask
 
         agent = XMLAgent(role="Test", goal="Test", backstory="Test")
 
@@ -79,7 +79,7 @@ class TestXMLTaskCreation:
 
     def test_task_user_prompt_generation(self):
         """Test task generates user prompt with context."""
-        from empathy_os.workflows.xml_enhanced_crew import XMLAgent, XMLTask
+        from attune.workflows.xml_enhanced_crew import XMLAgent, XMLTask
 
         agent = XMLAgent(role="Test", goal="Test", backstory="Test")
         task = XMLTask(description="Analyze data", expected_output="<output/>", agent=agent)
@@ -97,7 +97,7 @@ class TestXMLResponseParsing:
 
     def test_parse_xml_response_with_thinking_and_answer(self):
         """Test parsing response with proper XML structure."""
-        from empathy_os.workflows.xml_enhanced_crew import parse_xml_response
+        from attune.workflows.xml_enhanced_crew import parse_xml_response
 
         response = """
         <thinking>
@@ -117,7 +117,7 @@ class TestXMLResponseParsing:
 
     def test_parse_xml_response_without_structure(self):
         """Test parsing response without XML tags."""
-        from empathy_os.workflows.xml_enhanced_crew import parse_xml_response
+        from attune.workflows.xml_enhanced_crew import parse_xml_response
 
         response = "Just plain text without XML tags."
 

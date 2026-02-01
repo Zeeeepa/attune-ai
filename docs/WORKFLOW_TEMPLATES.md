@@ -352,7 +352,7 @@ empathy meta-workflow run test_creation_management_workflow
 ### Programmatic Usage
 
 ```python
-from empathy_os.meta_workflows import TemplateRegistry, MetaWorkflow, FormResponse
+from attune.meta_workflows import TemplateRegistry, MetaWorkflow, FormResponse
 
 # Load template
 registry = TemplateRegistry()
@@ -493,8 +493,8 @@ A: Each agent has a tier strategy (cheap_only, progressive, capable_first) that 
 ## Support
 
 - **Documentation:** [docs/META_WORKFLOWS.md](META_WORKFLOWS.md)
-- **GitHub Issues:** [Report bugs or request features](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- **Discussions:** [Ask questions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- **GitHub Issues:** [Report bugs or request features](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- **Discussions:** [Ask questions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 
 ---
 

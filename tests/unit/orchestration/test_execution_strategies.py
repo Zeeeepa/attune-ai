@@ -16,12 +16,12 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import (
+from attune.orchestration.agent_templates import (
     AgentTemplate,
     ResourceRequirements,
     get_template,
 )
-from empathy_os.orchestration.execution_strategies import (
+from attune.orchestration.execution_strategies import (
     AdaptiveStrategy,
     AgentResult,
     DebateStrategy,
@@ -737,7 +737,7 @@ class TestNestingContext:
 
     def test_create_with_default_max_depth(self):
         """Test NestingContext creation with default max depth."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         ctx = NestingContext()
 
@@ -747,7 +747,7 @@ class TestNestingContext:
 
     def test_create_with_custom_max_depth(self):
         """Test NestingContext creation with custom max depth."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         ctx = NestingContext(max_depth=5)
 
@@ -755,7 +755,7 @@ class TestNestingContext:
 
     def test_can_nest_within_limits(self):
         """Test can_nest returns True when within depth limits."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         ctx = NestingContext(max_depth=3)
 
@@ -763,7 +763,7 @@ class TestNestingContext:
 
     def test_can_nest_at_max_depth_returns_false(self):
         """Test can_nest returns False when at max depth."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         ctx = NestingContext(max_depth=2)
         ctx.current_depth = 2
@@ -772,7 +772,7 @@ class TestNestingContext:
 
     def test_can_nest_detects_cycles(self):
         """Test can_nest detects cycles in workflow stack."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         ctx = NestingContext(max_depth=5)
         ctx.workflow_stack = ["workflow_a", "workflow_b"]
@@ -784,7 +784,7 @@ class TestNestingContext:
 
     def test_enter_increments_depth(self):
         """Test enter creates child context with incremented depth."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         parent = NestingContext(max_depth=3)
         child = parent.enter("workflow_a")
@@ -795,7 +795,7 @@ class TestNestingContext:
 
     def test_enter_adds_to_workflow_stack(self):
         """Test enter adds workflow_id to stack."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         parent = NestingContext()
         child = parent.enter("workflow_a")
@@ -805,7 +805,7 @@ class TestNestingContext:
 
     def test_enter_preserves_existing_stack(self):
         """Test enter preserves existing workflow stack."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         parent = NestingContext()
         parent.workflow_stack = ["root_workflow"]
@@ -816,7 +816,7 @@ class TestNestingContext:
 
     def test_from_context_creates_new_if_missing(self):
         """Test from_context creates new NestingContext if not in context."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         context = {"task": "test"}
 
@@ -827,7 +827,7 @@ class TestNestingContext:
 
     def test_from_context_extracts_existing(self):
         """Test from_context extracts existing NestingContext."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         existing = NestingContext(max_depth=5)
         existing.current_depth = 2
@@ -840,7 +840,7 @@ class TestNestingContext:
 
     def test_to_context_adds_nesting_info(self):
         """Test to_context adds nesting context to dict."""
-        from empathy_os.orchestration.execution_strategies import NestingContext
+        from attune.orchestration.execution_strategies import NestingContext
 
         ctx = NestingContext()
         original = {"task": "test"}
@@ -863,7 +863,7 @@ class TestWorkflowReference:
 
     def test_create_with_workflow_id(self):
         """Test creating WorkflowReference with workflow_id."""
-        from empathy_os.orchestration.execution_strategies import WorkflowReference
+        from attune.orchestration.execution_strategies import WorkflowReference
 
         ref = WorkflowReference(workflow_id="security-audit")
 
@@ -872,7 +872,7 @@ class TestWorkflowReference:
 
     def test_create_with_inline_workflow(self):
         """Test creating WorkflowReference with inline workflow."""
-        from empathy_os.orchestration.execution_strategies import InlineWorkflow, WorkflowReference
+        from attune.orchestration.execution_strategies import InlineWorkflow, WorkflowReference
 
         agent = create_mock_agent("agent_1", "analyzer")
         inline = InlineWorkflow(agents=[agent], strategy="sequential")
@@ -884,7 +884,7 @@ class TestWorkflowReference:
 
     def test_validation_requires_exactly_one(self):
         """Test validation requires exactly one of workflow_id or inline."""
-        from empathy_os.orchestration.execution_strategies import InlineWorkflow, WorkflowReference
+        from attune.orchestration.execution_strategies import InlineWorkflow, WorkflowReference
 
         # Neither provided - should raise
         with pytest.raises(ValueError, match="exactly one of"):
@@ -898,7 +898,7 @@ class TestWorkflowReference:
 
     def test_context_mapping_defaults_empty(self):
         """Test context_mapping defaults to empty dict."""
-        from empathy_os.orchestration.execution_strategies import WorkflowReference
+        from attune.orchestration.execution_strategies import WorkflowReference
 
         ref = WorkflowReference(workflow_id="test")
 
@@ -906,7 +906,7 @@ class TestWorkflowReference:
 
     def test_result_key_defaults(self):
         """Test result_key has default value."""
-        from empathy_os.orchestration.execution_strategies import WorkflowReference
+        from attune.orchestration.execution_strategies import WorkflowReference
 
         ref = WorkflowReference(workflow_id="test")
 
@@ -919,7 +919,7 @@ class TestInlineWorkflow:
 
     def test_create_with_agents_and_strategy(self):
         """Test creating InlineWorkflow with agents and strategy."""
-        from empathy_os.orchestration.execution_strategies import InlineWorkflow
+        from attune.orchestration.execution_strategies import InlineWorkflow
 
         agent1 = create_mock_agent("agent_1", "analyzer")
         agent2 = create_mock_agent("agent_2", "reviewer")
@@ -931,7 +931,7 @@ class TestInlineWorkflow:
 
     def test_strategy_defaults_to_sequential(self):
         """Test strategy defaults to sequential."""
-        from empathy_os.orchestration.execution_strategies import InlineWorkflow
+        from attune.orchestration.execution_strategies import InlineWorkflow
 
         agent = create_mock_agent("agent_1", "analyzer")
         inline = InlineWorkflow(agents=[agent])
@@ -940,7 +940,7 @@ class TestInlineWorkflow:
 
     def test_description_defaults_empty(self):
         """Test description defaults to empty string."""
-        from empathy_os.orchestration.execution_strategies import InlineWorkflow
+        from attune.orchestration.execution_strategies import InlineWorkflow
 
         agent = create_mock_agent("agent_1", "analyzer")
         inline = InlineWorkflow(agents=[agent])
@@ -959,7 +959,7 @@ class TestStepDefinition:
 
     def test_create_with_agent(self):
         """Test creating StepDefinition with agent."""
-        from empathy_os.orchestration.execution_strategies import StepDefinition
+        from attune.orchestration.execution_strategies import StepDefinition
 
         agent = create_mock_agent("agent_1", "analyzer")
         step = StepDefinition(agent=agent)
@@ -969,7 +969,7 @@ class TestStepDefinition:
 
     def test_create_with_workflow_ref(self):
         """Test creating StepDefinition with workflow reference."""
-        from empathy_os.orchestration.execution_strategies import StepDefinition, WorkflowReference
+        from attune.orchestration.execution_strategies import StepDefinition, WorkflowReference
 
         ref = WorkflowReference(workflow_id="sub-workflow")
         step = StepDefinition(workflow_ref=ref)
@@ -979,7 +979,7 @@ class TestStepDefinition:
 
     def test_validation_requires_exactly_one(self):
         """Test validation requires exactly one of agent or workflow_ref."""
-        from empathy_os.orchestration.execution_strategies import StepDefinition, WorkflowReference
+        from attune.orchestration.execution_strategies import StepDefinition, WorkflowReference
 
         # Neither provided - should raise
         with pytest.raises(ValueError, match="exactly one of"):
@@ -1004,7 +1004,7 @@ class TestNestedStrategy:
     @pytest.mark.asyncio
     async def test_execute_inline_workflow(self):
         """Test executing inline nested workflow."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             InlineWorkflow,
             NestedStrategy,
             WorkflowReference,
@@ -1027,7 +1027,7 @@ class TestNestedStrategy:
     @pytest.mark.asyncio
     async def test_execute_registered_workflow(self):
         """Test executing registered workflow by ID."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             WORKFLOW_REGISTRY,
             NestedStrategy,
             WorkflowDefinition,
@@ -1049,7 +1049,7 @@ class TestNestedStrategy:
             strategy = NestedStrategy(workflow_ref=ref)
 
             with patch(
-                "empathy_os.orchestration.execution_strategies.SequentialStrategy._execute_agent",
+                "attune.orchestration.execution_strategies.SequentialStrategy._execute_agent",
                 new_callable=AsyncMock,
             ) as mock_execute:
                 mock_execute.return_value = create_success_result("agent_1")
@@ -1064,7 +1064,7 @@ class TestNestedStrategy:
     @pytest.mark.asyncio
     async def test_execute_exceeds_max_depth_raises(self):
         """Test execute raises RecursionError when max depth exceeded."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             InlineWorkflow,
             NestedStrategy,
             NestingContext,
@@ -1088,7 +1088,7 @@ class TestNestedStrategy:
     @pytest.mark.asyncio
     async def test_execute_detects_cycle_raises(self):
         """Test execute raises RecursionError when cycle detected."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             WORKFLOW_REGISTRY,
             NestedStrategy,
             NestingContext,
@@ -1123,7 +1123,7 @@ class TestNestedStrategy:
     @pytest.mark.asyncio
     async def test_execute_stores_result_with_key(self):
         """Test execute stores result under specified result_key."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             InlineWorkflow,
             NestedStrategy,
             WorkflowReference,
@@ -1154,7 +1154,7 @@ class TestNestedSequentialStrategy:
     @pytest.mark.asyncio
     async def test_execute_agent_steps(self):
         """Test executing steps with agents only."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             NestedSequentialStrategy,
             StepDefinition,
         )
@@ -1179,7 +1179,7 @@ class TestNestedSequentialStrategy:
     @pytest.mark.asyncio
     async def test_execute_empty_steps_raises(self):
         """Test execute raises ValueError with empty steps."""
-        from empathy_os.orchestration.execution_strategies import NestedSequentialStrategy
+        from attune.orchestration.execution_strategies import NestedSequentialStrategy
 
         strategy = NestedSequentialStrategy(steps=[])
 
@@ -1189,7 +1189,7 @@ class TestNestedSequentialStrategy:
     @pytest.mark.asyncio
     async def test_execute_mixed_agent_and_workflow_steps(self):
         """Test executing mixed agent and nested workflow steps."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             InlineWorkflow,
             NestedSequentialStrategy,
             StepDefinition,
@@ -1220,7 +1220,7 @@ class TestNestedSequentialStrategy:
     @pytest.mark.asyncio
     async def test_execute_passes_context_between_steps(self):
         """Test context is passed between sequential steps."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             NestedSequentialStrategy,
             StepDefinition,
         )
@@ -1250,7 +1250,7 @@ class TestNestedSequentialStrategy:
     @pytest.mark.asyncio
     async def test_execute_calculates_total_duration(self):
         """Test total duration is sum of all step durations."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             NestedSequentialStrategy,
             StepDefinition,
         )
@@ -1300,7 +1300,7 @@ class TestConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_then_branch_when_condition_true(self):
         """Test execute takes then_branch when condition is true."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             ConditionalStrategy,
@@ -1317,7 +1317,7 @@ class TestConditionalStrategyExecute:
         context = {"confidence": 0.9}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.SequentialStrategy._execute_agent",
+            "attune.orchestration.execution_strategies.SequentialStrategy._execute_agent",
             new_callable=AsyncMock,
         ) as mock_execute:
             mock_execute.return_value = create_success_result("then_agent")
@@ -1329,7 +1329,7 @@ class TestConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_else_branch_when_condition_false(self):
         """Test execute takes else_branch when condition is false."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             ConditionalStrategy,
@@ -1348,7 +1348,7 @@ class TestConditionalStrategyExecute:
         context = {"confidence": 0.5}  # Below threshold
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.SequentialStrategy._execute_agent",
+            "attune.orchestration.execution_strategies.SequentialStrategy._execute_agent",
             new_callable=AsyncMock,
         ) as mock_execute:
             mock_execute.return_value = create_success_result("else_agent")
@@ -1360,7 +1360,7 @@ class TestConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_no_branch_when_condition_false_and_no_else(self):
         """Test execute returns empty result when condition false and no else_branch."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             ConditionalStrategy,
@@ -1385,7 +1385,7 @@ class TestConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_passes_conditional_context(self):
         """Test execute adds conditional info to branch context."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             ConditionalStrategy,
@@ -1403,10 +1403,10 @@ class TestConditionalStrategyExecute:
         context = {"status": "ready"}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.SequentialStrategy.execute",
+            "attune.orchestration.execution_strategies.SequentialStrategy.execute",
             new_callable=AsyncMock,
         ) as mock_execute:
-            from empathy_os.orchestration.execution_strategies import StrategyResult
+            from attune.orchestration.execution_strategies import StrategyResult
 
             mock_execute.return_value = StrategyResult(
                 success=True,
@@ -1435,7 +1435,7 @@ class TestMultiConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_first_matching_condition(self):
         """Test execute takes first branch where condition matches."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             MultiConditionalStrategy,
@@ -1454,7 +1454,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"type": "warning"}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.SequentialStrategy._execute_agent",
+            "attune.orchestration.execution_strategies.SequentialStrategy._execute_agent",
             new_callable=AsyncMock,
         ) as mock_execute:
             mock_execute.return_value = create_success_result("agent_2")
@@ -1466,7 +1466,7 @@ class TestMultiConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_default_branch_when_no_match(self):
         """Test execute takes default_branch when no conditions match."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             MultiConditionalStrategy,
@@ -1485,7 +1485,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"type": "info"}  # No match
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.SequentialStrategy._execute_agent",
+            "attune.orchestration.execution_strategies.SequentialStrategy._execute_agent",
             new_callable=AsyncMock,
         ) as mock_execute:
             mock_execute.return_value = create_success_result("default_agent")
@@ -1496,7 +1496,7 @@ class TestMultiConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_returns_empty_when_no_match_and_no_default(self):
         """Test execute returns empty result when no match and no default."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             MultiConditionalStrategy,
@@ -1521,7 +1521,7 @@ class TestMultiConditionalStrategyExecute:
     @pytest.mark.asyncio
     async def test_execute_stops_at_first_match(self):
         """Test execute only evaluates until first match (short-circuit)."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             Branch,
             Condition,
             MultiConditionalStrategy,
@@ -1541,7 +1541,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"value": 10}  # Both conditions true
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.SequentialStrategy._execute_agent",
+            "attune.orchestration.execution_strategies.SequentialStrategy._execute_agent",
             new_callable=AsyncMock,
         ) as mock_execute:
             mock_execute.return_value = create_success_result("agent_1")
@@ -1561,7 +1561,7 @@ class TestWorkflowRegistry:
 
     def test_register_workflow(self):
         """Test registering a workflow."""
-        from empathy_os.orchestration.execution_strategies import (
+        from attune.orchestration.execution_strategies import (
             WORKFLOW_REGISTRY,
             WorkflowDefinition,
             get_workflow,
@@ -1587,14 +1587,14 @@ class TestWorkflowRegistry:
 
     def test_get_unknown_workflow_raises(self):
         """Test get_workflow raises ValueError for unknown workflow."""
-        from empathy_os.orchestration.execution_strategies import get_workflow
+        from attune.orchestration.execution_strategies import get_workflow
 
         with pytest.raises(ValueError, match="Unknown workflow"):
             get_workflow("nonexistent-workflow-12345")
 
     def test_workflow_definition_defaults(self):
         """Test WorkflowDefinition default values."""
-        from empathy_os.orchestration.execution_strategies import WorkflowDefinition
+        from attune.orchestration.execution_strategies import WorkflowDefinition
 
         agent = create_mock_agent("agent_1", "analyzer")
         workflow = WorkflowDefinition(id="test", agents=[agent])
@@ -1614,28 +1614,28 @@ class TestGetStrategy:
 
     def test_get_sequential_strategy(self):
         """Test getting sequential strategy by name."""
-        from empathy_os.orchestration.execution_strategies import SequentialStrategy, get_strategy
+        from attune.orchestration.execution_strategies import SequentialStrategy, get_strategy
 
         strategy = get_strategy("sequential")
         assert isinstance(strategy, SequentialStrategy)
 
     def test_get_parallel_strategy(self):
         """Test getting parallel strategy by name."""
-        from empathy_os.orchestration.execution_strategies import ParallelStrategy, get_strategy
+        from attune.orchestration.execution_strategies import ParallelStrategy, get_strategy
 
         strategy = get_strategy("parallel")
         assert isinstance(strategy, ParallelStrategy)
 
     def test_get_unknown_strategy_raises(self):
         """Test get_strategy raises ValueError for unknown strategy."""
-        from empathy_os.orchestration.execution_strategies import get_strategy
+        from attune.orchestration.execution_strategies import get_strategy
 
         with pytest.raises(ValueError, match="Unknown strategy"):
             get_strategy("nonexistent_strategy")
 
     def test_all_registered_strategies_are_retrievable(self):
         """Test all strategies in registry can be retrieved."""
-        from empathy_os.orchestration.execution_strategies import STRATEGY_REGISTRY, get_strategy
+        from attune.orchestration.execution_strategies import STRATEGY_REGISTRY, get_strategy
 
         for strategy_name in STRATEGY_REGISTRY:
             # ConditionalStrategy and others need args, skip those

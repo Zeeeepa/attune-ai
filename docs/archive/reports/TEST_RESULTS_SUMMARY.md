@@ -182,7 +182,7 @@ All templates now conform to required JSON structure:
 
 3. **Memory Search Test** (optional):
    ```python
-   from empathy_os.memory.unified import UnifiedMemory
+   from attune.memory.unified import UnifiedMemory
    memory = UnifiedMemory(user_id="test")
    results = memory.search_patterns(query="successful", limit=5)
    ```

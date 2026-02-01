@@ -57,7 +57,7 @@ In-depth explanation of:
 ### Default Setup (Recommended)
 
 ```python
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.workflows import CodeReviewWorkflow
 
 # That's it! Framework handles cache setup automatically
 workflow = CodeReviewWorkflow(enable_cache=True)
@@ -71,8 +71,8 @@ print(f"Savings: ${result.cost_report.savings_from_cache:.4f}")
 ### Explicit Cache Configuration
 
 ```python
-from empathy_os.cache import create_cache
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.cache import create_cache
+from attune.workflows import SecurityAuditWorkflow
 
 # Create cache instance
 cache = create_cache(cache_type="hash")  # or "hybrid"
@@ -164,7 +164,7 @@ cp ~/.empathy/cache/responses.json ~/.empathy/cache/responses.backup
 No additional installation required - included with Empathy Framework.
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### Hybrid Cache (Semantic Matching)
@@ -173,7 +173,7 @@ Install ML dependencies:
 
 ```bash
 # Recommended: Install with cache extra
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 
 # Or install dependencies separately
 pip install sentence-transformers torch
@@ -255,7 +255,7 @@ Key educational topics covered:
 ## 🆘 Support
 
 - **Examples:** `tests/integration/test_cache_integration.py`
-- **Issues:** [GitHub Issues](https://github.com/empathy-ai/empathy-framework/issues)
+- **Issues:** [GitHub Issues](https://github.com/empathy-ai/attune-ai/issues)
 - **Changelog:** [CHANGELOG.md](../../CHANGELOG.md#380---2026-01-06)
 
 ## 🔄 Version
@@ -264,14 +264,14 @@ This documentation is for **Empathy Framework v3.8.0+**.
 
 For earlier versions, upgrade to v3.8.0:
 ```bash
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 ```
 
 ## 📝 Contributing
 
 Found an issue or have suggestions for improving the caching documentation?
 
-1. Check existing [GitHub Issues](https://github.com/empathy-ai/empathy-framework/issues)
+1. Check existing [GitHub Issues](https://github.com/empathy-ai/attune-ai/issues)
 2. Create new issue with label `documentation`
 3. Include specific document and section
 

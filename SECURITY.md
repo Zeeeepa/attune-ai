@@ -6,13 +6,12 @@ We release patches for security vulnerabilities in the following versions:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 3.9.x   | :white_check_mark: |
-| 3.8.x   | :x:                |
-| < 3.8   | :x:                |
+| 2.0.x   | :white_check_mark: |
+| < 2.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-The Empathy Framework team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings.
+The Attune AI team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings.
 
 ### How to Report
 
@@ -20,7 +19,7 @@ The Empathy Framework team takes security vulnerabilities seriously. We apprecia
 
 Instead, please report security vulnerabilities to:
 - **Email**: security@smartaimemory.com
-- **Subject Line**: `[SECURITY] Empathy Framework Vulnerability Report`
+- **Subject Line**: `[SECURITY] Attune AI Vulnerability Report`
 
 ### What to Include
 
@@ -53,7 +52,7 @@ Please include the following information in your report:
 
 1. **Keep Dependencies Updated**: Regularly update the Empathy Framework and all dependencies
    ```bash
-   pip install --upgrade empathy-framework
+   pip install --upgrade attune-ai
    pip install --upgrade -r requirements.txt
    ```
 
@@ -116,7 +115,7 @@ Security hooks include:
 ### Built-in Security Tools
 
 ```python
-from empathy_llm_toolkit.security import SecretsDetector, PIIScrubber
+from attune_llm.security import SecretsDetector, PIIScrubber
 
 # Detect secrets in content
 detector = SecretsDetector()
@@ -145,19 +144,19 @@ In January 2026, we conducted a comprehensive security audit and applied Pattern
 
 **Sprint 1 (2026-01-06):**
 
-- [telemetry/cli.py](src/empathy_os/telemetry/cli.py) - Export operations (CSV, JSON)
-- [cli.py](src/empathy_os/cli.py) - Pattern and report exports
-- [memory/control_panel.py](src/empathy_os/memory/control_panel.py) - Memory management operations
+- [telemetry/cli.py](src/attune/telemetry/cli.py) - Export operations (CSV, JSON)
+- [cli.py](src/attune/cli.py) - Pattern and report exports
+- [memory/control_panel.py](src/attune/memory/control_panel.py) - Memory management operations
 
 **Sprint 2 (2026-01-07):**
 
-- [config.py](src/empathy_os/config.py) - Configuration exports (YAML, JSON)
-- [workflows/config.py](src/empathy_os/workflows/config.py) - Workflow configuration saves
-- [config/xml_config.py](src/empathy_os/config/xml_config.py) - XML configuration writes
+- [config.py](src/attune/config.py) - Configuration exports (YAML, JSON)
+- [workflows/config.py](src/attune/workflows/config.py) - Workflow configuration saves
+- [config/xml_config.py](src/attune/config/xml_config.py) - XML configuration writes
 
 **Sprint 3 (2026-01-07):**
 
-- [workflows/base.py](src/empathy_os/workflows/base.py) - Exception handling improvements
+- [workflows/base.py](src/attune/workflows/base.py) - Exception handling improvements
 - Fixed 8 blind exception handlers with specific exception types
 - Enhanced error logging for debugging while maintaining graceful degradation
 

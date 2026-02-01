@@ -25,7 +25,7 @@ These features integrate seamlessly with the existing workflow infrastructure, r
 ### Enable Heartbeat Tracking
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 class MyWorkflow(BaseWorkflow):
     name = "my-workflow"
@@ -416,7 +416,7 @@ empathy telemetry agents
 
 **Python API:**
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator
+from attune.telemetry import HeartbeatCoordinator
 
 coordinator = HeartbeatCoordinator()
 
@@ -456,14 +456,14 @@ empathy memory status
 
 **Heartbeat TTL** (default: 30 seconds):
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator
+from attune.telemetry import HeartbeatCoordinator
 
 HeartbeatCoordinator.HEARTBEAT_TTL = 60  # Increase for longer-running workflows
 ```
 
 **Signal TTL** (default: 60 seconds):
 ```python
-from empathy_os.telemetry import CoordinationSignals
+from attune.telemetry import CoordinationSignals
 
 CoordinationSignals.DEFAULT_TTL = 120  # Increase for slower coordination
 
@@ -533,7 +533,7 @@ Consumer: ✅ Success
 
 ```python
 import pytest
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 
 class TestWorkflow(BaseWorkflow):
@@ -548,7 +548,7 @@ class TestWorkflow(BaseWorkflow):
 @pytest.mark.asyncio
 async def test_workflow_with_heartbeat_tracking():
     """Test workflow with heartbeat tracking enabled."""
-    from empathy_os.telemetry import HeartbeatCoordinator
+    from attune.telemetry import HeartbeatCoordinator
 
     coordinator = HeartbeatCoordinator()
 
@@ -604,7 +604,7 @@ async def test_producer_consumer_coordination():
 - [AGENT_TRACKING_AND_COORDINATION.md](./AGENT_TRACKING_AND_COORDINATION.md) - Pattern 1 & 2 detailed docs
 - [AGENT_COORDINATION_ARCHITECTURE.md](./AGENT_COORDINATION_ARCHITECTURE.md) - Full architecture (Patterns 1-6)
 - [ADAPTIVE_ROUTING_INTEGRATION.md](./ADAPTIVE_ROUTING_INTEGRATION.md) - Pattern 3 integration
-- [BaseWorkflow API Reference](../src/empathy_os/workflows/base.py) - Complete workflow API
+- [BaseWorkflow API Reference](../src/attune/workflows/base.py) - Complete workflow API
 
 ---
 

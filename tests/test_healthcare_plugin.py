@@ -11,20 +11,20 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from empathy_healthcare_plugin import ClinicalProtocolMonitor
-from empathy_healthcare_plugin.monitors.monitoring.protocol_checker import (
+from attune_healthcare import ClinicalProtocolMonitor
+from attune_healthcare.monitors.monitoring.protocol_checker import (
     ComplianceStatus,
     ProtocolChecker,
     ProtocolCheckResult,
     ProtocolDeviation,
 )
-from empathy_healthcare_plugin.monitors.monitoring.protocol_loader import (
+from attune_healthcare.monitors.monitoring.protocol_loader import (
     ClinicalProtocol,
     ProtocolCriterion,
     ProtocolIntervention,
     ProtocolLoader,
 )
-from empathy_healthcare_plugin.monitors.monitoring.sensor_parsers import (
+from attune_healthcare.monitors.monitoring.sensor_parsers import (
     FHIRObservationParser,
     SensorParserFactory,
     SimpleJSONParser,
@@ -797,7 +797,7 @@ class TestClinicalProtocolMonitor:
         )
 
         # Create mock trajectory
-        from empathy_healthcare_plugin.monitors.monitoring.trajectory_analyzer import (
+        from attune_healthcare.monitors.monitoring.trajectory_analyzer import (
             TrajectoryPrediction,
         )
 
@@ -840,7 +840,7 @@ class TestClinicalProtocolMonitor:
             recommendation="Intervention overdue",
         )
 
-        from empathy_healthcare_plugin.monitors.monitoring.trajectory_analyzer import (
+        from attune_healthcare.monitors.monitoring.trajectory_analyzer import (
             TrajectoryPrediction,
         )
 
@@ -873,7 +873,7 @@ class TestClinicalProtocolMonitor:
             recommendation="",
         )
 
-        from empathy_healthcare_plugin.monitors.monitoring.trajectory_analyzer import (
+        from attune_healthcare.monitors.monitoring.trajectory_analyzer import (
             TrajectoryPrediction,
         )
 
@@ -905,7 +905,7 @@ class TestClinicalProtocolMonitor:
             recommendation="Start monitoring",
         )
 
-        from empathy_healthcare_plugin.monitors.monitoring.trajectory_analyzer import (
+        from attune_healthcare.monitors.monitoring.trajectory_analyzer import (
             TrajectoryPrediction,
         )
 

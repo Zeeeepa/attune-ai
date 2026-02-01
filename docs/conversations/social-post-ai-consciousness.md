@@ -157,4 +157,4 @@ The shift from "obviously not conscious" to "we can't easily rule it out" is phi
 
 Full blog and conversation transcripts: [link]
 
-Framework: https://github.com/Smart-AI-Memory/empathy-framework
+Framework: https://github.com/Smart-AI-Memory/attune-ai

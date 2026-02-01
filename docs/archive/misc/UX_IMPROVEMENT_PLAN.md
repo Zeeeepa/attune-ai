@@ -32,7 +32,7 @@ def _ask_batch(self, questions: list[dict[str, Any]], template_id: str) -> dict[
 ```python
 def _ask_batch(self, questions: list[dict[str, Any]], template_id: str) -> dict[str, Any]:
     """Ask questions using AskUserQuestion tool."""
-    from empathy_os.tools import AskUserQuestion
+    from attune.tools import AskUserQuestion
 
     result = AskUserQuestion(questions=questions)
     return result.get("answers", {})
@@ -336,7 +336,7 @@ def suggest_defaults(project_path: str) -> dict[str, Any]:
 
 #### Session-Based Defaults (Already Implemented!)
 ```python
-from empathy_os.meta_workflows.session_context import SessionContext
+from attune.meta_workflows.session_context import SessionContext
 
 session = SessionContext(memory=memory)
 

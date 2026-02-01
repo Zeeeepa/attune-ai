@@ -30,7 +30,7 @@ Successfully integrated authentication strategy into **ALL** major workflows in 
 
 **Usage:**
 ```python
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
+from attune.workflows.document_gen import DocumentGenerationWorkflow
 
 workflow = DocumentGenerationWorkflow(enable_auth_strategy=True)
 result = await workflow.execute(
@@ -56,7 +56,7 @@ print(f"Auth mode: {result.final_output['auth_mode_used']}")
 
 **Usage:**
 ```python
-from empathy_os.workflows.test_gen import TestGenerationWorkflow
+from attune.workflows.test_gen import TestGenerationWorkflow
 
 workflow = TestGenerationWorkflow(enable_auth_strategy=True)
 result = await workflow.execute(path="src/", file_types=[".py"])
@@ -78,7 +78,7 @@ print(f"Auth mode: {result.final_output['auth_mode_used']}")
 
 **Usage:**
 ```python
-from empathy_os.workflows.code_review import CodeReviewWorkflow
+from attune.workflows.code_review import CodeReviewWorkflow
 
 workflow = CodeReviewWorkflow(enable_auth_strategy=True)
 result = await workflow.execute(target="src/", diff=None)
@@ -100,7 +100,7 @@ print(f"Auth mode: {result.final_output['auth_mode_used']}")
 
 **Usage:**
 ```python
-from empathy_os.workflows.bug_predict import BugPredictWorkflow
+from attune.workflows.bug_predict import BugPredictWorkflow
 
 workflow = BugPredictWorkflow(enable_auth_strategy=True)
 result = await workflow.execute(target_path="src/")
@@ -122,7 +122,7 @@ print(f"Auth mode: {result.final_output['auth_mode_used']}")
 
 **Usage:**
 ```python
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 workflow = SecurityAuditWorkflow(enable_auth_strategy=True)
 result = await workflow.execute(path="src/", patterns=["dangerous_eval"])
@@ -144,7 +144,7 @@ print(f"Auth mode: {result.final_output['auth_mode_used']}")
 
 **Usage:**
 ```python
-from empathy_os.workflows.perf_audit import PerformanceAuditWorkflow
+from attune.workflows.perf_audit import PerformanceAuditWorkflow
 
 workflow = PerformanceAuditWorkflow(enable_auth_strategy=True)
 result = await workflow.execute(path=".", file_types=[".py"])
@@ -166,7 +166,7 @@ print(f"Auth mode: {result.final_output['auth_mode_used']}")
 
 **Usage:**
 ```python
-from empathy_os.workflows.release_prep import ReleasePreparationWorkflow
+from attune.workflows.release_prep import ReleasePreparationWorkflow
 
 workflow = ReleasePreparationWorkflow(enable_auth_strategy=True)
 result = await workflow.execute(path=".")
@@ -207,7 +207,7 @@ async def _first_stage(self, input_data: dict, tier: ModelTier):
     # === AUTH STRATEGY INTEGRATION ===
     if self.enable_auth_strategy:
         try:
-            from empathy_os.models import (
+            from attune.models import (
                 count_lines_of_code,
                 get_auth_strategy,
                 get_module_size_category,
@@ -333,17 +333,17 @@ See [AUTH_STRATEGY_GUIDE.md](./AUTH_STRATEGY_GUIDE.md) for full configuration op
 
 View current auth strategy:
 ```bash
-python -m empathy_os.models.auth_cli status
+python -m attune.models.auth_cli status
 ```
 
 Get recommendation for a specific file:
 ```bash
-python -m empathy_os.models.auth_cli recommend src/my_module.py
+python -m attune.models.auth_cli recommend src/my_module.py
 ```
 
 Interactive setup:
 ```bash
-python -m empathy_os.models.auth_cli setup
+python -m attune.models.auth_cli setup
 ```
 
 ---
@@ -435,7 +435,7 @@ Example telemetry data:
 **Questions or Issues?**
 - See [AUTH_STRATEGY_GUIDE.md](./AUTH_STRATEGY_GUIDE.md) for user guide
 - See [AUTH_CLI_IMPLEMENTATION.md](./AUTH_CLI_IMPLEMENTATION.md) for CLI details
-- Open issues at [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- Open issues at [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 
 ---
 

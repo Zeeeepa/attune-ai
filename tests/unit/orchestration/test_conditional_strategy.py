@@ -13,8 +13,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import AgentTemplate
-from empathy_os.orchestration.execution_strategies import (
+from attune.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.execution_strategies import (
     Branch,
     Condition,
     ConditionalStrategy,
@@ -235,7 +235,7 @@ class TestConditionalStrategy:
         )
 
         # Mock the branch strategy execution
-        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True,
@@ -262,7 +262,7 @@ class TestConditionalStrategy:
             condition=condition, then_branch=then_branch, else_branch=else_branch
         )
 
-        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True,
@@ -318,7 +318,7 @@ class TestMultiConditionalStrategy:
 
         strategy = MultiConditionalStrategy(conditions=conditions)
 
-        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True, outputs=[], aggregated_output={}, total_duration=1.0
@@ -340,7 +340,7 @@ class TestMultiConditionalStrategy:
 
         strategy = MultiConditionalStrategy(conditions=conditions, default_branch=default)
 
-        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True, outputs=[], aggregated_output={}, total_duration=0.5
@@ -376,14 +376,14 @@ class TestConditionalIntegration:
 
     def test_strategy_registry_includes_conditional(self):
         """Test that conditional strategies are in registry."""
-        from empathy_os.orchestration.execution_strategies import STRATEGY_REGISTRY
+        from attune.orchestration.execution_strategies import STRATEGY_REGISTRY
 
         assert "conditional" in STRATEGY_REGISTRY
         assert "multi_conditional" in STRATEGY_REGISTRY
 
     def test_get_strategy_returns_conditional(self):
         """Test get_strategy works with conditional."""
-        from empathy_os.orchestration.execution_strategies import get_strategy
+        from attune.orchestration.execution_strategies import get_strategy
 
         # Note: These require constructor args, so we just test registry lookup
         assert "conditional" in get_strategy.__code__.co_consts or True

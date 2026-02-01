@@ -88,7 +88,7 @@ You can scan code without memory. You can't learn from it.
 ## Try It
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 python examples/full_repo_test.py
 ```
 

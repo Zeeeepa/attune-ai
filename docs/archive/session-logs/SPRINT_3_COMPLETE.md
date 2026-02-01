@@ -27,7 +27,7 @@ Successfully completed Sprint 3 quality improvements by enhancing exception hand
 
 ## Work Completed
 
-### 1. Exception Handling Improvements ([workflows/base.py](src/empathy_os/workflows/base.py))
+### 1. Exception Handling Improvements ([workflows/base.py](src/attune/workflows/base.py))
 
 **Problem:** 8 blind `except Exception:` handlers masked real errors and made debugging difficult.
 
@@ -155,7 +155,7 @@ except Exception as e:  # INTENTIONAL: Graceful degradation
 #### [test_new_sample_workflow1.py](tests/unit/workflows/test_new_sample_workflow1.py)
 
 **Fixed:**
-- Added `from empathy_os.workflows.base import ModelTier` import
+- Added `from attune.workflows.base import ModelTier` import
 - Changed `workflow.ModelTier.CHEAP` → `ModelTier.CHEAP`
 - Fixed `execute(input_data)` → `execute()` (kwargs only)
 - Improved error handling test to check for graceful degradation
@@ -165,7 +165,7 @@ except Exception as e:  # INTENTIONAL: Graceful degradation
 #### [test_test5.py](tests/unit/workflows/test_test5.py)
 
 **Fixed:**
-- Added `from empathy_os.workflows.base import ModelTier` import
+- Added `from attune.workflows.base import ModelTier` import
 - Updated stages assertion to match actual stages: `["analyze", "fix"]`
 - Updated tier_map assertions to match actual tiers
 - Fixed `execute(input_data)` → `execute()` (kwargs only)
@@ -235,11 +235,11 @@ except Exception as e:  # INTENTIONAL: Graceful degradation
 
 **Files Moved from Root Directory:**
 
-**To `src/empathy_os/` subdirectories:**
-- `scaffolding/` → `src/empathy_os/scaffolding/`
-- `test_generator/` → `src/empathy_os/test_generator/`
-- `workflow_patterns/` → `src/empathy_os/workflow_patterns/`
-- `hot_reload/` → `src/empathy_os/hot_reload/`
+**To `src/attune/` subdirectories:**
+- `scaffolding/` → `src/attune/scaffolding/`
+- `test_generator/` → `src/attune/test_generator/`
+- `workflow_patterns/` → `src/attune/workflow_patterns/`
+- `hot_reload/` → `src/attune/hot_reload/`
 
 **To `vscode-extension/dist/`:**
 - `empathy-workflow-editor.vsix`
@@ -257,7 +257,7 @@ except Exception as e:  # INTENTIONAL: Graceful degradation
 
 ### 6. Minor Fixes
 
-**[tier_tracking.py:356](src/empathy_os/workflows/tier_tracking.py#L356)**
+**[tier_tracking.py:356](src/attune/workflows/tier_tracking.py#L356)**
 - Fixed unused variable: `total_tokens` → `_total_tokens`
 - Ruff warning eliminated
 
@@ -591,13 +591,13 @@ python -m pytest tests/unit/workflows/test_new_sample_workflow1.py tests/unit/wo
 
 ### Check for Blind Exceptions
 ```bash
-grep -n "except Exception:" src/empathy_os/workflows/base.py
+grep -n "except Exception:" src/attune/workflows/base.py
 # Expected: Only intentional catches with comments
 ```
 
 ### Verify Unused Variables
 ```bash
-ruff check src/empathy_os/workflows/tier_tracking.py
+ruff check src/attune/workflows/tier_tracking.py
 # Expected: No F841 warnings
 ```
 

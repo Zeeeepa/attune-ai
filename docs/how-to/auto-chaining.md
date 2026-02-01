@@ -20,7 +20,7 @@ chains:
 ```
 
 ```python
-from empathy_os.routing import ChainExecutor
+from attune.routing import ChainExecutor
 
 executor = ChainExecutor()
 
@@ -118,7 +118,7 @@ Conditions use simple expressions evaluated against wizard results:
 ### Check Triggered Chains
 
 ```python
-from empathy_os.routing import ChainExecutor
+from attune.routing import ChainExecutor
 
 executor = ChainExecutor()
 
@@ -167,7 +167,7 @@ else:
 Combine with Smart Router for complete workflows:
 
 ```python
-from empathy_os.routing import SmartRouter, ChainExecutor
+from attune.routing import SmartRouter, ChainExecutor
 
 router = SmartRouter()
 executor = ChainExecutor()

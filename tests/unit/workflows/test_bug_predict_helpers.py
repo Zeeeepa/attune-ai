@@ -26,7 +26,7 @@ from pathlib import Path
 import pytest
 
 # Import the helper functions we're testing
-from empathy_os.workflows.bug_predict import (
+from attune.workflows.bug_predict import (
     _has_problematic_exception_handlers,
     _is_acceptable_broad_exception,
     _is_dangerous_eval_usage,
@@ -79,13 +79,13 @@ class TestLoadBugPredictConfig:
                 os.chdir(original_cwd)
 
     def test_loads_from_empathy_config_yml(self, tmp_path, monkeypatch, bug_predict_workflow):
-        """Test loading from primary config file: empathy.config.yml
+        """Test loading from primary config file: attune.config.yml
 
         Teaching Pattern: Using tmp_path fixture to create temporary files.
         This is the preferred way to test file I/O in pytest.
         """
         # Arrange: Create a config file with custom settings
-        config_file = tmp_path / "empathy.config.yml"
+        config_file = tmp_path / "attune.config.yml"
         config_file.write_text(
             """
 bug_predict:
@@ -139,7 +139,7 @@ bug_predict:
         Production code should never crash on bad input - always have a fallback.
         """
         # Arrange: Create a config file with invalid YAML
-        config_file = tmp_path / "empathy.config.yml"
+        config_file = tmp_path / "attune.config.yml"
         config_file.write_text(
             """
 bug_predict:
@@ -164,7 +164,7 @@ bug_predict:
         This is common in configuration systems.
         """
         # Arrange: Config with only one custom field
-        config_file = tmp_path / "empathy.config.yml"
+        config_file = tmp_path / "attune.config.yml"
         config_file.write_text(
             """
 bug_predict:

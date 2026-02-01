@@ -30,7 +30,7 @@ description: Experimental Branch Assessment (v4.0.0): **Branch:** `experimental/
 
 ### 1. HealthCheckCrew
 
-**File:** `src/empathy_os/workflows/health_check_crew.py`
+**File:** `src/attune/workflows/health_check_crew.py`
 
 **CLI Test:**
 ```bash
@@ -58,7 +58,7 @@ empathy workflow run health-check --path .
 
 ### 2. ReleasePreparationCrew
 
-**File:** `src/empathy_os/workflows/release_prep_crew.py`
+**File:** `src/attune/workflows/release_prep_crew.py`
 
 **CLI Test:**
 ```bash
@@ -94,7 +94,7 @@ empathy workflow run release-prep --path .
 
 ### 3. TestCoverageBoostCrew
 
-**File:** `src/empathy_os/workflows/test_coverage_boost_crew.py`
+**File:** `src/attune/workflows/test_coverage_boost_crew.py`
 
 **CLI Test:**
 ```bash
@@ -116,8 +116,8 @@ empathy workflow run test-coverage-boost --path ./src
 1. `phase_2_setup.py::create_phase_1_patterns` (priority: 0.95)
 2. `phase_2_setup.py::make_pattern` (priority: 0.85)
 3. `empathy_software_plugin/wizards/base_wizard.py` (priority: 0.92)
-4. `empathy_os/pattern_library.py::get_related_patterns` (priority: 0.90)
-5. `empathy_os/pattern_library.py::add_pattern` (priority: 0.88)
+4. `attune/pattern_library.py::get_related_patterns` (priority: 0.90)
+5. `attune/pattern_library.py::add_pattern` (priority: 0.88)
 
 **Generated Tests Examples:**
 - `test_create_phase_1_patterns_returns_ten_patterns`
@@ -135,8 +135,8 @@ empathy workflow run test-coverage-boost --path ./src
 ### 4. Meta-Orchestration System
 
 **Files:**
-- `src/empathy_os/workflows/orchestrated_health_check.py`
-- `src/empathy_os/workflows/orchestrated_release_prep.py`
+- `src/attune/workflows/orchestrated_health_check.py`
+- `src/attune/workflows/orchestrated_release_prep.py`
 - Any "meta" or "orchestrator" files
 
 **Decision:** ❌ **SKIP - Too complex, caused v4.0.0 failure**
@@ -192,9 +192,9 @@ git diff main..experimental/v4.0-meta-orchestration -- vscode-extension/
 **Option A Details (Cherry-pick):**
 
 - **Files to cherry-pick:**
-  1. `src/empathy_os/workflows/health_check_crew.py`
-  2. `src/empathy_os/workflows/release_prep_crew.py`
-  3. `src/empathy_os/workflows/test_coverage_boost_crew.py`
+  1. `src/attune/workflows/health_check_crew.py`
+  2. `src/attune/workflows/release_prep_crew.py`
+  3. `src/attune/workflows/test_coverage_boost_crew.py`
 
 - **Files to SKIP:**
   - Any `orchestrated_*.py` files
@@ -245,9 +245,9 @@ git diff main..experimental/v4.0-meta-orchestration -- vscode-extension/
 2. Identify and cherry-pick commits from experimental branch:
    ```bash
    git checkout experimental/v4.0-meta-orchestration
-   git log --oneline -- src/empathy_os/workflows/health_check_crew.py
-   git log --oneline -- src/empathy_os/workflows/release_prep_crew.py
-   git log --oneline -- src/empathy_os/workflows/test_coverage_boost_crew.py
+   git log --oneline -- src/attune/workflows/health_check_crew.py
+   git log --oneline -- src/attune/workflows/release_prep_crew.py
+   git log --oneline -- src/attune/workflows/test_coverage_boost_crew.py
 
    git checkout v4.0.2-prep
    # Cherry-pick only the crew files (not orchestrated wrappers)
@@ -256,7 +256,7 @@ git diff main..experimental/v4.0-meta-orchestration -- vscode-extension/
    git cherry-pick <commit-hash-3>
    ```
 
-3. Update workflow registry in `src/empathy_os/workflows/__init__.py`
+3. Update workflow registry in `src/attune/workflows/__init__.py`
 
 4. Test CLI integration:
    ```bash

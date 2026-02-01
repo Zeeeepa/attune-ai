@@ -51,7 +51,7 @@ This document provides a comprehensive caching strategy for the Empathy Framewor
 
 #### 1.1 AST Parsing Cache (IMPLEMENTED)
 
-**Location:** `src/empathy_os/project_index/scanner.py:_parse_python_cached()`
+**Location:** `src/attune/project_index/scanner.py:_parse_python_cached()`
 
 **Problem:**
 - AST parsing accounts for 1.94s (20% of scanner time)
@@ -80,7 +80,7 @@ def _parse_python_cached(file_path: str, file_hash: str) -> ast.Module | None:
 
 #### 1.2 File Hash Cache (IMPLEMENTED)
 
-**Location:** `src/empathy_os/project_index/scanner.py:_hash_file()`
+**Location:** `src/attune/project_index/scanner.py:_hash_file()`
 
 **Problem:**
 - File hashing (SHA256) is I/O and CPU intensive
@@ -108,7 +108,7 @@ def _hash_file(file_path: str) -> str:
 
 #### 1.3 Pattern Match Result Cache (IMPLEMENTED)
 
-**Location:** `src/empathy_os/pattern_cache.py` (new module)
+**Location:** `src/attune/pattern_cache.py` (new module)
 
 **Problem:**
 - Pattern matching is expensive regex operation
@@ -170,7 +170,7 @@ if pattern_type:
 
 #### 2.2 Workflow Execution Result Cache (TTL-based)
 
-**Location:** `src/empathy_os/workflows/base.py`
+**Location:** `src/attune/workflows/base.py`
 
 **Problem:**
 - Workflows make expensive LLM API calls
@@ -212,7 +212,7 @@ class WorkflowCache:
 
 #### 3.1 Token Estimator Cache
 
-**Location:** `src/empathy_os/models/token_estimator.py`
+**Location:** `src/attune/models/token_estimator.py`
 
 **Current Status:** Already using `@functools.lru_cache`
 
@@ -232,7 +232,7 @@ def estimate_tokens(model: str, text: str) -> int:
 
 #### 3.2 Telemetry Event Cache
 
-**Location:** `src/empathy_os/telemetry/usage_tracker.py`
+**Location:** `src/attune/telemetry/usage_tracker.py`
 
 **Problem:**
 - Repeated telemetry events with same data
@@ -247,7 +247,7 @@ def estimate_tokens(model: str, text: str) -> int:
 
 #### 3.3 Config File Parse Cache
 
-**Location:** `src/empathy_os/config.py` and `src/empathy_os/config/xml_config.py`
+**Location:** `src/attune/config.py` and `src/attune/config/xml_config.py`
 
 **Problem:**
 - Config files parsed multiple times
@@ -595,8 +595,8 @@ class AdaptiveTTLCache:
 ### Monitoring Integration
 
 ```python
-from empathy_os.cache_monitor import CacheMonitor
-from empathy_os.cache_stats import CacheReporter
+from attune.cache_monitor import CacheMonitor
+from attune.cache_stats import CacheReporter
 
 # Register caches on startup
 monitor = CacheMonitor.get_instance()
@@ -797,7 +797,7 @@ def verify_cache_correctness():
 **Solution:**
 ```python
 # Enable debug logging
-logging.getLogger("empathy_os.cache").setLevel(logging.DEBUG)
+logging.getLogger("attune.cache").setLevel(logging.DEBUG)
 
 # Check if cache is even being consulted
 def cache_get_with_debug(key):
@@ -876,8 +876,8 @@ else:
 ### Enable Cache Monitoring
 
 ```python
-from empathy_os.cache_monitor import CacheMonitor
-from empathy_os.cache_stats import CacheReporter
+from attune.cache_monitor import CacheMonitor
+from attune.cache_stats import CacheReporter
 
 monitor = CacheMonitor.get_instance()
 

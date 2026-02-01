@@ -54,13 +54,13 @@ We'd really appreciate if you could:
 
 <div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
 
-<a href="https://github.com/Smart-AI-Memory/empathy-framework" target="_blank" style="flex: 1; min-width: 200px; padding: 20px; background: #f6f8fa; border-radius: 8px; text-decoration: none; color: inherit; text-align: center;">
+<a href="https://github.com/Smart-AI-Memory/attune-ai" target="_blank" style="flex: 1; min-width: 200px; padding: 20px; background: #f6f8fa; border-radius: 8px; text-decoration: none; color: inherit; text-align: center;">
 <strong style="font-size: 1.5em;">:star:</strong><br>
 <strong>Star on GitHub</strong><br>
 <span style="color: #666; font-size: 0.9em;">Help others discover Empathy</span>
 </a>
 
-<a href="https://github.com/Smart-AI-Memory/empathy-framework/discussions" target="_blank" style="flex: 1; min-width: 200px; padding: 20px; background: #f6f8fa; border-radius: 8px; text-decoration: none; color: inherit; text-align: center;">
+<a href="https://github.com/Smart-AI-Memory/attune-ai/discussions" target="_blank" style="flex: 1; min-width: 200px; padding: 20px; background: #f6f8fa; border-radius: 8px; text-decoration: none; color: inherit; text-align: center;">
 <strong style="font-size: 1.5em;">:speech_balloon:</strong><br>
 <strong>Share Feedback</strong><br>
 <span style="color: #666; font-size: 0.9em;">Tell us what you're building</span>
@@ -93,7 +93,7 @@ When you download through Gumroad, you'll automatically receive:
 <div style="text-align: center; padding: 20px; background: #f6f8fa; border-radius: 8px; margin-top: 40px;">
 
 <p style="margin: 0 0 10px 0; color: #666;">
-Questions? Open an issue on <a href="https://github.com/Smart-AI-Memory/empathy-framework/issues">GitHub</a> or email <a href="mailto:admin@smartaimemory.com">admin@smartaimemory.com</a>
+Questions? Open an issue on <a href="https://github.com/Smart-AI-Memory/attune-ai/issues">GitHub</a> or email <a href="mailto:admin@smartaimemory.com">admin@smartaimemory.com</a>
 </p>
 
 <p style="margin: 0; color: #888; font-size: 0.9em;">

@@ -13,7 +13,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.monitoring.alerts import _validate_webhook_url
+from attune.monitoring.alerts import _validate_webhook_url
 
 
 class TestSSRFPrevention:

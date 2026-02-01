@@ -22,8 +22,8 @@ Usage:
 import asyncio
 import os
 
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import (AccountingWizard,
+from attune_llm import EmpathyLLM
+from attune_llm.wizards import (AccountingWizard,
                                          CustomerSupportWizard,
                                          EducationWizard, FinanceWizard,
                                          GovernmentWizard, HealthcareWizard,

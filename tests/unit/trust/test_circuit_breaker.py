@@ -18,7 +18,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_os.trust.circuit_breaker import (
+from attune.trust.circuit_breaker import (
     TrustCircuitBreaker,
     TrustConfig,
     TrustDamageEvent,

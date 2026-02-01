@@ -12,7 +12,7 @@ from typing import Any
 
 from jinja2 import Environment, FileSystemLoader
 
-from empathy_os.workflow_patterns import get_workflow_pattern_registry
+from attune.workflow_patterns import get_workflow_pattern_registry
 
 
 class WorkflowGenerator:
@@ -243,7 +243,7 @@ class WorkflowGenerator:
         # Determine file paths
         workflow_file = self._workflow_name_to_file_name(workflow_name)
 
-        workflow_dir = output_dir / "src" / "empathy_os" / "workflows"
+        workflow_dir = output_dir / "src" / "attune" / "workflows"
         test_dir = output_dir / "tests" / "unit" / "workflows"
 
         workflow_dir.mkdir(parents=True, exist_ok=True)

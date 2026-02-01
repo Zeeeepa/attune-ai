@@ -5,7 +5,7 @@ Module: prompts/config.py (77 lines)
 
 import pytest
 
-from empathy_os.prompts.config import XmlPromptConfig
+from attune.prompts.config import XmlPromptConfig
 
 # ============================================================================
 # XmlPromptConfig Creation Tests

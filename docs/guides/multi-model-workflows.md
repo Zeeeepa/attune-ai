@@ -25,7 +25,7 @@ Most workflows achieve **80-96% cost reduction** compared to using premium model
 ## Quick Start
 
 ```python
-from empathy_os.workflows import ResearchSynthesisWorkflow
+from attune.workflows import ResearchSynthesisWorkflow
 
 # Create and run a workflow
 workflow = ResearchSynthesisWorkflow()
@@ -65,7 +65,7 @@ empathy workflow run code-review --input '{"diff": "..."}' --json
 Optimized for multi-source research tasks. Uses cheap models to summarize each source in parallel, capable models to identify patterns, and premium models only for final synthesis when complexity warrants it.
 
 ```python
-from empathy_os.workflows import ResearchSynthesisWorkflow
+from attune.workflows import ResearchSynthesisWorkflow
 
 workflow = ResearchSynthesisWorkflow(
     complexity_threshold=0.7  # Only use premium if complexity > 70%
@@ -84,7 +84,7 @@ result = await workflow.execute(
 Tiered code analysis that classifies changes cheaply, scans for security/bugs with capable models, and only invokes premium architectural review for large or critical changes.
 
 ```python
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.workflows import CodeReviewWorkflow
 
 workflow = CodeReviewWorkflow(
     file_threshold=10,  # Premium review if 10+ files changed
@@ -108,7 +108,7 @@ security_findings = result.final_output.get("security_findings", [])
 Cost-optimized documentation generation. Creates outlines cheaply, writes content with capable models, and uses premium models for final polish only on longer documents.
 
 ```python
-from empathy_os.workflows import DocumentGenerationWorkflow
+from attune.workflows import DocumentGenerationWorkflow
 
 workflow = DocumentGenerationWorkflow(
     skip_polish_threshold=1000,  # Skip premium for short docs
@@ -127,7 +127,7 @@ result = await workflow.execute(
 Extend `BaseWorkflow` to create your own multi-model pipelines:
 
 ```python
-from empathy_os.workflows import BaseWorkflow, ModelTier
+from attune.workflows import BaseWorkflow, ModelTier
 
 class MyCustomWorkflow(BaseWorkflow):
     """My custom 3-stage workflow."""
@@ -170,7 +170,7 @@ class MyCustomWorkflow(BaseWorkflow):
 All workflows integrate with Empathy's cost tracking system:
 
 ```python
-from empathy_os.cost_tracker import CostTracker
+from attune.cost_tracker import CostTracker
 
 # Use shared cost tracker
 tracker = CostTracker()

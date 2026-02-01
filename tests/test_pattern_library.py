@@ -6,7 +6,7 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os import Pattern, PatternLibrary
+from attune import Pattern, PatternLibrary
 
 
 class TestPattern:

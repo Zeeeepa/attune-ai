@@ -28,7 +28,7 @@ description: Session Summary: Framework Redesign Phase 1: **Date:** January 26, 
 
 #### Implementation
 
-**[src/empathy_os/workflows/history.py](../src/empathy_os/workflows/history.py)** (454 lines)
+**[src/attune/workflows/history.py](../src/attune/workflows/history.py)** (454 lines)
 - Full-featured WorkflowHistoryStore with CRUD operations
 - Concurrent-safe SQLite storage
 - 5 indexes for fast queries
@@ -41,7 +41,7 @@ description: Session Summary: Framework Redesign Phase 1: **Date:** January 26, 
 - Automatic backups
 - Error handling
 
-**[src/empathy_os/workflows/base.py](../src/empathy_os/workflows/base.py)** (updated)
+**[src/attune/workflows/base.py](../src/attune/workflows/base.py)** (updated)
 - Automatic SQLite usage with JSON fallback
 - Singleton pattern for history store
 - 100% backward compatible
@@ -74,13 +74,13 @@ description: Session Summary: Framework Redesign Phase 1: **Date:** January 26, 
 
 ### 3. Builder Pattern (Track 3 - COMPLETE)
 
-**[src/empathy_os/workflows/builder.py](../src/empathy_os/workflows/builder.py)** (250+ lines)
+**[src/attune/workflows/builder.py](../src/attune/workflows/builder.py)** (250+ lines)
 
 **Fluent API for workflow construction:**
 
 ```python
-from empathy_os.workflows.builder import WorkflowBuilder
-from empathy_os.workflows.routing import BalancedRouting
+from attune.workflows.builder import WorkflowBuilder
+from attune.workflows.routing import BalancedRouting
 
 workflow = (
     WorkflowBuilder(TestGenerationWorkflow)
@@ -101,21 +101,21 @@ workflow = (
 
 ### 4. Dual Enum Removal (Track 4 - COMPLETE)
 
-**Updated:** [src/empathy_os/workflows/base.py](../src/empathy_os/workflows/base.py)
+**Updated:** [src/attune/workflows/base.py](../src/attune/workflows/base.py)
 
 **Added deprecation warning:**
 ```python
 class ModelTier(Enum):
-    """DEPRECATED: Use empathy_os.models.ModelTier instead.
+    """DEPRECATED: Use attune.models.ModelTier instead.
 
     Will be removed in v5.0.
 
     Migration:
         # Old:
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         # New:
-        from empathy_os.models import ModelTier
+        from attune.models import ModelTier
     """
 ```
 
@@ -128,7 +128,7 @@ class ModelTier(Enum):
 
 ### 5. Tier Routing Strategy Stubs (Track 1 - Partial)
 
-**[src/empathy_os/workflows/routing.py](../src/empathy_os/workflows/routing.py)** (180 lines)
+**[src/attune/workflows/routing.py](../src/attune/workflows/routing.py)** (180 lines)
 
 **Implemented routing strategies:**
 - `CostOptimizedRouting` - Minimize cost (default)
@@ -352,7 +352,7 @@ The following features are production-ready:
 - Workflow history now uses SQLite by default (JSON fallback available)
 
 ### Deprecated
-- `workflows.base.ModelTier` - Use `empathy_os.models.ModelTier` instead (removal in v5.0)
+- `workflows.base.ModelTier` - Use `attune.models.ModelTier` instead (removal in v5.0)
 
 ### Performance
 - Workflow stats queries: 100x faster for 1000+ runs

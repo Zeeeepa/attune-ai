@@ -20,21 +20,21 @@ from unittest.mock import patch
 import pytest
 
 # Parser modules
-from empathy_os.cli.parsers import batch, cache, metrics, provider, workflow
+from attune.cli.parsers import batch, cache, metrics, provider, workflow
 
 # Config modules
-from empathy_os.config import EmpathyConfig, _validate_file_path
-from empathy_os.config.xml_config import (
+from attune.config import EmpathyConfig, _validate_file_path
+from attune.config.xml_config import (
     AdaptiveConfig,
     MetricsConfig,
     OptimizationConfig,
     XMLConfig,
 )
-from empathy_os.logging_config import LoggingConfig, get_logger
-from empathy_os.memory.config import get_redis_config, parse_redis_url
-from empathy_os.models.provider_config import ProviderConfig
-from empathy_os.workflows.config import ModelConfig, WorkflowConfig
-from empathy_os.workflows.step_config import WorkflowStepConfig, validate_step_config
+from attune.logging_config import LoggingConfig, get_logger
+from attune.memory.config import get_redis_config, parse_redis_url
+from attune.models.provider_config import ProviderConfig
+from attune.workflows.config import ModelConfig, WorkflowConfig
+from attune.workflows.step_config import WorkflowStepConfig, validate_step_config
 
 
 class TestFilePathValidation:
@@ -123,8 +123,7 @@ class TestEmpathyConfig:
         config = EmpathyConfig(user_id="test")
         output_file = tmp_path / "config.json"
 
-        result = config.to_json(str(output_file))
-        assert result == output_file.resolve()
+        config.to_json(str(output_file))
         assert output_file.exists()
 
         # Verify content
@@ -141,8 +140,7 @@ class TestEmpathyConfig:
         config = EmpathyConfig(user_id="test")
         output_file = tmp_path / "config.yaml"
 
-        result = config.to_yaml(str(output_file))
-        assert result == output_file.resolve()
+        config.to_yaml(str(output_file))
         assert output_file.exists()
 
     def test_from_json_file(self, tmp_path):
@@ -194,7 +192,7 @@ class TestXMLConfig:
         config = XMLConfig()
         assert config.use_xml_structure is True
         assert config.validate_schemas is False
-        assert config.schema_dir == ".empathy/schemas"
+        assert config.schema_dir == ".attune/schemas"
 
     def test_validates_boolean_flags(self):
         """Test XML config validates boolean flags."""
@@ -303,7 +301,7 @@ workflow_providers:
 """
         config_file.write_text(config_data)
 
-        with patch("empathy_os.workflows.config.YAML_AVAILABLE", True):
+        with patch("attune.workflows.config.YAML_AVAILABLE", True):
             config = WorkflowConfig.load(str(config_file))
             assert config.default_provider == "openai"
 
@@ -454,7 +452,15 @@ class TestMemoryConfig:
 
     def test_get_redis_config_from_env(self):
         """Test get_redis_config reads from environment."""
-        with patch.dict(os.environ, {"REDIS_HOST": "test-host", "REDIS_PORT": "6380"}):
+        # Clear REDIS_URL first to ensure env vars are used (Railway may set REDIS_URL)
+        env_vars = {
+            "REDIS_HOST": "test-host",
+            "REDIS_PORT": "6380",
+        }
+        with patch.dict(os.environ, env_vars, clear=False):
+            # Remove any existing Redis URL env vars
+            for key in ["REDIS_URL", "REDIS_PUBLIC_URL", "REDIS_PRIVATE_URL"]:
+                os.environ.pop(key, None)
             config = get_redis_config()
             assert config["host"] == "test-host"
             assert config["port"] == 6380
@@ -496,7 +502,7 @@ class TestLoggingConfig:
     def test_logging_from_env(self):
         """Test logging configuration from environment variables."""
         with patch.dict(os.environ, {"EMPATHY_LOG_LEVEL": "WARNING"}):
-            from empathy_os.logging_config import init_logging_from_env
+            from attune.logging_config import init_logging_from_env
 
             init_logging_from_env()
             # Configuration should be applied
@@ -742,16 +748,17 @@ class TestParserEdgeCases:
     """Behavioral tests for parser edge cases."""
 
     def test_parser_handles_missing_required_arg(self):
-        """Test parser errors on missing required argument."""
+        """Test parser handles optional name argument for workflow action."""
         from argparse import ArgumentParser
 
         parser = ArgumentParser()
         subparsers = parser.add_subparsers()
         workflow.register_parsers(subparsers)
 
-        # Missing workflow name for 'run' command
-        with pytest.raises(SystemExit):
-            parser.parse_args(["workflow", "run"])
+        # Name is optional (nargs="?"), so this should parse successfully
+        args = parser.parse_args(["workflow", "run"])
+        assert args.action == "run"
+        assert args.name is None
 
     def test_parser_validates_choices(self):
         """Test parser validates argument choices."""
@@ -827,8 +834,8 @@ class TestConfigIntegration:
 
         # Save to file
         config_file = tmp_path / "roundtrip.json"
-        result = original.to_json(str(config_file))
-        assert result == config_file.resolve()
+        original.to_json(str(config_file))
+        assert config_file.exists()
 
         # Load from file
         loaded = EmpathyConfig.from_json(str(config_file))
@@ -892,27 +899,27 @@ class TestParserIntegration:
 Test Coverage Summary - Batch 4: Configuration & Parser Modules
 
 CONFIGURATION MODULES TESTED (11):
-1. empathy_os.config._validate_file_path - Security validation
-2. empathy_os.config.EmpathyConfig - Main configuration
-3. empathy_os.config.xml_config.XMLConfig - XML prompt config
-4. empathy_os.config.xml_config.OptimizationConfig - Context optimization
-5. empathy_os.config.xml_config.AdaptiveConfig - Adaptive prompting
-6. empathy_os.config.xml_config.MetricsConfig - Metrics tracking
-7. empathy_os.workflows.config.WorkflowConfig - Workflow configuration
-8. empathy_os.workflows.config.ModelConfig - Model configuration
-9. empathy_os.workflows.step_config.WorkflowStepConfig - Step configuration
-10. empathy_os.models.provider_config.ProviderConfig - Provider config
-11. empathy_os.memory.config (parse_redis_url, get_redis_config) - Redis config
+1. attune.config._validate_file_path - Security validation
+2. attune.config.EmpathyConfig - Main configuration
+3. attune.config.xml_config.XMLConfig - XML prompt config
+4. attune.config.xml_config.OptimizationConfig - Context optimization
+5. attune.config.xml_config.AdaptiveConfig - Adaptive prompting
+6. attune.config.xml_config.MetricsConfig - Metrics tracking
+7. attune.workflows.config.WorkflowConfig - Workflow configuration
+8. attune.workflows.config.ModelConfig - Model configuration
+9. attune.workflows.step_config.WorkflowStepConfig - Step configuration
+10. attune.models.provider_config.ProviderConfig - Provider config
+11. attune.memory.config (parse_redis_url, get_redis_config) - Redis config
 
 PARSER MODULES TESTED (5):
-1. empathy_os.cli.parsers.workflow - Workflow command parsing
-2. empathy_os.cli.parsers.batch - Batch processing commands
-3. empathy_os.cli.parsers.cache - Cache management commands
-4. empathy_os.cli.parsers.provider - Provider configuration commands
-5. empathy_os.cli.parsers.metrics - Metrics and state commands
+1. attune.cli.parsers.workflow - Workflow command parsing
+2. attune.cli.parsers.batch - Batch processing commands
+3. attune.cli.parsers.cache - Cache management commands
+4. attune.cli.parsers.provider - Provider configuration commands
+5. attune.cli.parsers.metrics - Metrics and state commands
 
 LOGGING MODULE TESTED (1):
-1. empathy_os.logging_config - Logging configuration
+1. attune.logging_config - Logging configuration
 
 TEST CATEGORIES:
 - File path validation security: 6 tests

@@ -42,7 +42,7 @@ A **zero-config monitoring system** with progressive enhancement:
 ### Tier 1: Developer Install (Default - Zero Config)
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 empathy workflow run code-review
 # ✅ Telemetry works automatically
 # ✅ View with: empathy telemetry
@@ -87,7 +87,7 @@ empathy alerts init  # 3-question wizard
 
 ```bash
 export EMPATHY_OTEL_ENDPOINT=http://localhost:4317
-pip install empathy-framework[otel]
+pip install attune-ai[otel]
 ```
 
 **What happens:**
@@ -179,7 +179,7 @@ pip install empathy-framework[otel]
 
 **Day 1:**
 ```bash
-pip install empathy-framework
+pip install attune-ai
 empathy workflow run code-review
 ```
 ✅ Telemetry works automatically
@@ -216,7 +216,7 @@ empathy alerts init
 **Week 3:** Enable OTEL
 ```bash
 export EMPATHY_OTEL_ENDPOINT=http://localhost:4317
-pip install empathy-framework[otel]
+pip install attune-ai[otel]
 ```
 ✅ Data flowing to SigNoz
 
@@ -287,7 +287,7 @@ Workflow Execution → MultiBackend → JSONL Store → VSCode/CLI
 ## Questions Answered
 
 ### Q: Do I need to configure anything?
-**A:** No. `pip install empathy-framework` and it works.
+**A:** No. `pip install attune-ai` and it works.
 
 ### Q: How do I see my telemetry?
 **A:** Open VSCode extension or run `empathy telemetry`

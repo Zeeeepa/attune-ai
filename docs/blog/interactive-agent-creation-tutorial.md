@@ -27,7 +27,7 @@ The Empathy Framework now has **intelligent interactive mode** for agent team cr
 **Quick start:**
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(
@@ -93,7 +93,7 @@ This is the **easiest way** to use interactive mode. Zero configuration needed!
 **Claude writes and runs:**
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(
@@ -128,7 +128,7 @@ plan = orchestrator.analyze_and_compose(
 **Create `run_orchestrator.py`:**
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(
@@ -210,7 +210,7 @@ When confidence < 80%, you'll see something like this in your Claude Code interf
 #### 2. Claude writes
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(
@@ -616,8 +616,8 @@ If you're building a **web app**, **CLI tool**, or **custom UI**, you can provid
 ### CLI Handler Example
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
-from empathy_os.tools import set_ask_user_question_handler
+from attune.orchestration import MetaOrchestrator
+from attune.tools import set_ask_user_question_handler
 
 def cli_handler(questions):
     """Simple CLI prompts."""
@@ -648,7 +648,7 @@ plan = orchestrator.analyze_and_compose(
 
 ```python
 from flask import Flask, request, jsonify
-from empathy_os.tools import set_ask_user_question_handler
+from attune.tools import set_ask_user_question_handler
 
 pending_questions = {}
 
@@ -682,7 +682,7 @@ def create_team():
 ### Jupyter Notebook Handler
 
 ```python
-from empathy_os.tools import set_ask_user_question_handler
+from attune.tools import set_ask_user_question_handler
 from ipywidgets import RadioButtons, VBox
 from IPython.display import display
 
@@ -796,7 +796,7 @@ Just ask Claude:
 Or write your own:
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(
@@ -814,7 +814,7 @@ Run this in Claude Code and see the magic happen!
 - 📖 [Full technical docs](../architecture/interactive-agent-creation.md)
 - 🔧 [Claude Code integration guide](../integration/claude-code-integration.md)
 - 🎯 [Pattern selection guide](../architecture/composition-patterns.md)
-- 💬 [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- 💬 [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 
 ---
 

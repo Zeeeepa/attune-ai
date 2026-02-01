@@ -8,13 +8,13 @@ Coverage target: 80%+
 
 import pytest
 
-from empathy_llm_toolkit.agent_factory.adapters.wizard_adapter import (
+from attune_llm.agent_factory.adapters.wizard_adapter import (
     WizardAdapter,
     WizardAgent,
     WizardWorkflow,
     wrap_wizard,
 )
-from empathy_llm_toolkit.agent_factory.base import AgentConfig, AgentRole, WorkflowConfig
+from attune_llm.agent_factory.base import AgentConfig, AgentRole, WorkflowConfig
 
 # =============================================================================
 # Mock Wizard Classes

@@ -67,7 +67,7 @@ To use the fixed extension:
 cd vscode-extension
 npm run compile  # ✅ Already done
 npm run package  # Create .vsix file
-code --install-extension empathy-framework-*.vsix
+code --install-extension attune-ai-*.vsix
 ```
 
 Or reload VSCode if developing locally.

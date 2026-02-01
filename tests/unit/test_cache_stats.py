@@ -14,8 +14,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.cache_monitor import CacheStats
-from empathy_os.cache_stats import (
+from attune.cache_monitor import CacheStats
+from attune.cache_stats import (
     CacheAnalyzer,
     CacheHealthScore,
     CacheReporter,
@@ -93,7 +93,7 @@ class TestCacheAnalyzerBasic:
 
     def test_analyze_cache_not_found(self):
         """Test analyzing a cache that doesn't exist."""
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls:
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls:
             mock_monitor = MagicMock()
             mock_monitor.get_stats.return_value = None
             mock_monitor_cls.get_instance.return_value = mock_monitor
@@ -106,7 +106,7 @@ class TestCacheAnalyzerBasic:
         """Test analyzing an existing cache."""
         stats = CacheStats(name="test_cache", hits=80, misses=20, max_size=100)
 
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls:
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls:
             mock_monitor = MagicMock()
             mock_monitor.get_stats.return_value = stats
             mock_monitor_cls.get_instance.return_value = mock_monitor
@@ -119,7 +119,7 @@ class TestCacheAnalyzerBasic:
 
     def test_analyze_all_empty(self):
         """Test analyzing when no caches exist."""
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls:
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls:
             mock_monitor = MagicMock()
             mock_monitor.get_all_stats.return_value = {}
             mock_monitor_cls.get_instance.return_value = mock_monitor
@@ -133,7 +133,7 @@ class TestCacheAnalyzerBasic:
         stats1 = CacheStats(name="cache1", hits=80, misses=20)
         stats2 = CacheStats(name="cache2", hits=50, misses=50)
 
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls:
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls:
             mock_monitor = MagicMock()
             mock_monitor.get_all_stats.return_value = {"cache1": stats1, "cache2": stats2}
             mock_monitor_cls.get_instance.return_value = mock_monitor
@@ -446,7 +446,7 @@ class TestCacheReporterOptimizationReport:
 
     def test_optimization_report_structure(self):
         """Test optimization report has correct structure."""
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls:
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls:
             mock_monitor = MagicMock()
             mock_monitor.get_underperformers.return_value = []
             mock_monitor.get_high_performers.return_value = []
@@ -468,7 +468,7 @@ class TestCacheReporterOptimizationReport:
             reasons=[],
         )
 
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls, \
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls, \
              patch.object(CacheAnalyzer, "analyze_cache", return_value=health_score):
             mock_monitor = MagicMock()
             mock_monitor.get_underperformers.return_value = [low_stats]
@@ -485,7 +485,7 @@ class TestCacheReporterOptimizationReport:
         """Test optimization report shows high performers."""
         high_stats = CacheStats(name="fast_cache", hits=800, misses=200)
 
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls:
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls:
             mock_monitor = MagicMock()
             mock_monitor.get_underperformers.return_value = []
             mock_monitor.get_high_performers.return_value = [high_stats]
@@ -508,7 +508,7 @@ class TestCacheReporterFullReport:
 
     def test_full_report_structure(self):
         """Test full report has all sections."""
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls, \
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls, \
              patch.object(CacheAnalyzer, "analyze_all", return_value={}):
             mock_monitor = MagicMock()
             mock_monitor.get_report.return_value = "Cache Report"
@@ -546,7 +546,7 @@ class TestIntegration:
             max_size=100,
         )
 
-        with patch("empathy_os.cache_stats.CacheMonitor") as mock_monitor_cls:
+        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls:
             mock_monitor = MagicMock()
             mock_monitor.get_stats.return_value = stats
             mock_monitor.get_all_stats.return_value = {"integration_cache": stats}

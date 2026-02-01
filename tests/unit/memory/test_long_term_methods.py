@@ -22,7 +22,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from empathy_os.memory.long_term import (
+from attune.memory.long_term import (
     Classification,
     LongTermMemory,
     MemDocsStorage,

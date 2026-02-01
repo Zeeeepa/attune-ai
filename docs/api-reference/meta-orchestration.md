@@ -1,11 +1,11 @@
 ---
-description: Meta-Orchestration API API reference: **Version:** 4.0.0 (New in v4.0) **Module:** `empathy_os.orchestration` **Stability:** 🟢 Stable (Pub
+description: Meta-Orchestration API API reference: **Version:** 4.0.0 (New in v4.0) **Module:** `attune.orchestration` **Stability:** 🟢 Stable (Pub
 ---
 
 # Meta-Orchestration API
 
 **Version:** 4.0.0 (New in v4.0)
-**Module:** `empathy_os.orchestration`
+**Module:** `attune.orchestration`
 **Stability:** 🟢 Stable (Public API)
 
 ---
@@ -42,7 +42,7 @@ The Meta-Orchestration API enables automatic task analysis, agent selection, and
 ### Basic Usage
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 # Create orchestrator
 orchestrator = MetaOrchestrator()
@@ -70,7 +70,7 @@ print(f"Estimated duration: {plan.estimated_duration}s")
 ### Using Built-In Orchestrated Workflows
 
 ```python
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 
@@ -95,7 +95,7 @@ else:
 
 ## MetaOrchestrator Class
 
-### `empathy_os.orchestration.MetaOrchestrator`
+### `attune.orchestration.MetaOrchestrator`
 
 The core orchestration engine that analyzes tasks and composes agent teams.
 
@@ -347,7 +347,7 @@ The framework includes 7 pre-built agent templates. Templates define agent capab
 ### Available Templates
 
 ```python
-from empathy_os.orchestration.agent_templates import get_template, get_all_templates
+from attune.orchestration.agent_templates import get_template, get_all_templates
 
 # Get specific template
 security_agent = get_template("security_auditor")
@@ -543,7 +543,7 @@ The configuration store saves successful compositions and improves over time.
 ⚠️ **Note:** Full API documentation pending. Basic usage:
 
 ```python
-from empathy_os.orchestration.config_store import ConfigurationStore
+from attune.orchestration.config_store import ConfigurationStore
 
 store = ConfigurationStore()
 
@@ -569,7 +569,7 @@ if best:
 Parallel validation with 4 agents:
 
 ```python
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 
@@ -607,7 +607,7 @@ else:
 Sequential improvement workflow:
 
 ```python
-from empathy_os.workflows.orchestrated_test_coverage import (
+from attune.workflows.orchestrated_test_coverage import (
     OrchestratedTestCoverageWorkflow
 )
 
@@ -635,7 +635,7 @@ print(f"Tests added: {report.tests_added}")
 ### Example 1: Automatic Task Analysis
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 
@@ -807,8 +807,8 @@ See [ARCHITECTURAL_GAPS_ANALYSIS.md](../ARCHITECTURAL_GAPS_ANALYSIS.md) for comp
 
 Questions or issues with the Meta-Orchestration API?
 
-- **Issues:** https://github.com/Smart-AI-Memory/empathy-framework/issues
-- **Discussions:** https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- **Issues:** https://github.com/Smart-AI-Memory/attune-ai/issues
+- **Discussions:** https://github.com/Smart-AI-Memory/attune-ai/discussions
 
 ---
 

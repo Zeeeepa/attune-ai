@@ -32,7 +32,7 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        pytest --cov=src/empathy_os --cov-report=xml --cov-report=term-missing --cov-fail-under=53 -m "not network"
+        pytest --cov=src/attune --cov-report=xml --cov-report=term-missing --cov-fail-under=53 -m "not network"
       env:
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
@@ -94,11 +94,11 @@ jobs:
 
     - name: Type check with MyPy
       run: |
-        mypy src/empathy_os empathy_llm_toolkit --ignore-missing-imports --no-error-summary || true
+        mypy src/attune attune_llm --ignore-missing-imports --no-error-summary || true
       continue-on-error: true  # Non-blocking for now
 
     - name: Security scan with Bandit
-      run: bandit -c .bandit -r src/ empathy_llm_toolkit/ coach_wizards/ empathy_software_plugin/ --severity-level medium --confidence-level medium
+      run: bandit -c .bandit -r src/ attune_llm/ coach_wizards/ attune_software/ --severity-level medium --confidence-level medium
 
   platform-compat:
     runs-on: ubuntu-latest
@@ -150,7 +150,7 @@ jobs:
       id: debt
       run: |
         # Count TODO, FIXME, HACK, XXX markers
-        DEBT_COUNT=$(grep -rE "(TODO|FIXME|HACK|XXX):" --include="*.py" src/ empathy_llm_toolkit/ empathy_software_plugin/ empathy_os/ 2>/dev/null | wc -l || echo 0)
+        DEBT_COUNT=$(grep -rE "(TODO|FIXME|HACK|XXX):" --include="*.py" src/ attune_llm/ attune_software/ attune/ 2>/dev/null | wc -l || echo 0)
         echo "debt_count=$DEBT_COUNT" >> $GITHUB_OUTPUT
         echo "Found $DEBT_COUNT tech debt markers"
 

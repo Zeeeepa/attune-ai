@@ -8,7 +8,7 @@ description: How to Publish - Step by Step: ## Step 1: Create GitHub Repository 
 
 ```bash
 # Navigate to the directory
-cd /Users/patrickroebuck/projects/ai-nurse-florence/empathy-framework-book-preview
+cd /Users/patrickroebuck/projects/ai-nurse-florence/attune-ai-book-preview
 
 # Initialize git
 git init
@@ -27,23 +27,23 @@ git commit -m "Initial release: Empathy Framework preview chapter
 # Create GitHub repo (choose one method):
 
 ## Option A: Using GitHub CLI (if installed)
-gh repo create deepstudy-ai/empathy-framework-book-preview --public --source=. --remote=origin --push
+gh repo create deepstudy-ai/attune-ai-book-preview --public --source=. --remote=origin --push
 
 ## Option B: Manual (via web interface)
 # 1. Go to https://github.com/new
-# 2. Repository name: empathy-framework-book-preview
+# 2. Repository name: attune-ai-book-preview
 # 3. Description: Preview chapter from "The Empathy Framework" book (Full release Q1 2026)
 # 4. Public
 # 5. DO NOT initialize with README (we already have one)
 # 6. Create repository
 # 7. Then run these commands:
 
-git remote add origin https://github.com/deepstudy-ai/empathy-framework-book-preview.git
+git remote add origin https://github.com/deepstudy-ai/attune-ai-book-preview.git
 git branch -M main
 git push -u origin main
 ```
 
-**Repository URL will be**: `https://github.com/deepstudy-ai/empathy-framework-book-preview`
+**Repository URL will be**: `https://github.com/deepstudy-ai/attune-ai-book-preview`
 
 ---
 
@@ -61,7 +61,7 @@ git push -u origin main
 2. Click "..." menu → Import a story
 3. Paste GitHub raw URL:
    ```
-   https://raw.githubusercontent.com/deepstudy-ai/empathy-framework-book-preview/main/CHAPTER_EMPATHY_FRAMEWORK.md
+   https://raw.githubusercontent.com/deepstudy-ai/attune-ai-book-preview/main/CHAPTER_EMPATHY_FRAMEWORK.md
    ```
 4. Medium will auto-format the markdown
 
@@ -73,7 +73,7 @@ git push -u origin main
 ```markdown
 # The Empathy Framework for AI-Human Collaboration
 
-*This is a preview chapter from my upcoming book "The Empathy Framework" (full release Q1 2026). Read more and follow along on [GitHub](https://github.com/deepstudy-ai/empathy-framework-book-preview).*
+*This is a preview chapter from my upcoming book "The Empathy Framework" (full release Q1 2026). Read more and follow along on [GitHub](https://github.com/deepstudy-ai/attune-ai-book-preview).*
 
 ---
 ```
@@ -94,8 +94,8 @@ This is a preview chapter from **"The Empathy Framework"** book.
 - Case studies
 
 **Follow along**:
-- ⭐ Star the [GitHub repo](https://github.com/deepstudy-ai/empathy-framework-book-preview)
-- 💬 Join the [discussion](https://github.com/deepstudy-ai/empathy-framework-book-preview/discussions)
+- ⭐ Star the [GitHub repo](https://github.com/deepstudy-ai/attune-ai-book-preview)
+- 💬 Join the [discussion](https://github.com/deepstudy-ai/attune-ai-book-preview/discussions)
 - 📧 Get notified: hello@deepstudy.ai
 
 **Share your feedback!** I'd love to hear your thoughts in the comments below.
@@ -157,8 +157,8 @@ title: The Empathy Framework for AI-Human Collaboration
 published: true
 description: How to build AI systems that achieve 200-400% productivity gains through Level 4 Anticipatory Empathy (Preview chapter from upcoming book)
 tags: ai, productivity, machinelearning, programming
-cover_image: https://your-image-url.com/empathy-framework-banner.png
-canonical_url: https://github.com/deepstudy-ai/empathy-framework-book-preview
+cover_image: https://your-image-url.com/attune-ai-banner.png
+canonical_url: https://github.com/deepstudy-ai/attune-ai-book-preview
 ---
 ```
 
@@ -187,7 +187,7 @@ canonical_url: https://github.com/deepstudy-ai/empathy-framework-book-preview
 Learn how to build AI systems that achieve 200-400% productivity gains (not 20-30%)
 
 Preview chapter (3,000 lines) available now:
-https://github.com/deepstudy-ai/empathy-framework-book-preview
+https://github.com/deepstudy-ai/attune-ai-book-preview
 
 Full book: Q1 2026
 
@@ -261,7 +261,7 @@ The preview chapter includes:
 
 3,000 lines. Free.
 
-Read: https://github.com/deepstudy-ai/empathy-framework-book-preview
+Read: https://github.com/deepstudy-ai/attune-ai-book-preview
 ```
 
 **Tweet 7** (CTA):
@@ -273,7 +273,7 @@ Built from production experience with AI Nurse Florence
 (3x productivity, 5,680 hours saved)
 
 Read the preview:
-https://github.com/deepstudy-ai/empathy-framework-book-preview
+https://github.com/deepstudy-ai/attune-ai-book-preview
 
 Questions/feedback welcome! 💬
 ```
@@ -306,7 +306,7 @@ The difference? Level 4 doesn't just make work faster—it eliminates entire cat
 **This is based on production experience**, not theory.
 
 Preview chapter available now (free):
-https://github.com/deepstudy-ai/empathy-framework-book-preview
+https://github.com/deepstudy-ai/attune-ai-book-preview
 
 Full book releasing Q1 2026.
 
@@ -331,7 +331,7 @@ This emerged from building AI Nurse Florence (healthcare AI system) and achievin
 - Real production results (5,680 hours saved over 3 years)
 - Complete implementation (EmpathyOS architecture)
 
-Preview: https://github.com/deepstudy-ai/empathy-framework-book-preview
+Preview: https://github.com/deepstudy-ai/attune-ai-book-preview
 
 Full book Q1 2026. Feedback welcome!
 ```
@@ -346,7 +346,7 @@ I've published a preview chapter from my upcoming book on AI-human collaboration
 
 Real results from production: Built 18 features in time that would have allowed 6 (traditional approach).
 
-Preview chapter: https://github.com/deepstudy-ai/empathy-framework-book-preview
+Preview chapter: https://github.com/deepstudy-ai/attune-ai-book-preview
 
 Includes full implementation guide + code examples.
 ```
@@ -359,7 +359,7 @@ Includes full implementation guide + code examples.
 
 **Title**: "The Empathy Framework: From Reactive AI to Anticipatory Partners [book preview]"
 
-**URL**: `https://github.com/deepstudy-ai/empathy-framework-book-preview`
+**URL**: `https://github.com/deepstudy-ai/attune-ai-book-preview`
 
 **Strategy**:
 - Let it post naturally (don't ask for upvotes)
@@ -388,7 +388,7 @@ The core idea: Most AI tools are reactive (you ask, they respond). I'm formalizi
 This came from building AI Nurse Florence and achieving 3x productivity gains over traditional AI approaches.
 
 Preview chapter (3,000 lines, free):
-https://github.com/deepstudy-ai/empathy-framework-book-preview
+https://github.com/deepstudy-ai/attune-ai-book-preview
 
 I'd love your feedback if you have time to read it!
 

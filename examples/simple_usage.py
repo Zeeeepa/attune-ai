@@ -8,7 +8,7 @@ and the framework automatically handles empathy levels.
 import asyncio
 import os
 
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 
 async def simple_example():

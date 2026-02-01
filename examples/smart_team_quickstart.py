@@ -23,7 +23,7 @@ import re
 from dataclasses import dataclass
 
 # Import Empathy Framework
-from empathy_os import AccessTier, EmpathyOS, TeamSession, get_redis_memory
+from attune import AccessTier, EmpathyOS, TeamSession, get_redis_memory
 
 
 @dataclass

@@ -23,8 +23,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.orchestration.execution_strategies import AgentResult, StrategyResult
-from empathy_os.workflows.orchestrated_health_check import (
+from attune.orchestration.execution_strategies import AgentResult, StrategyResult
+from attune.workflows.orchestrated_health_check import (
     CategoryScore,
     HealthCheckReport,
     OrchestratedHealthCheckWorkflow,
@@ -210,7 +210,7 @@ class TestExecuteEdgeCases:
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=".")
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_results = [
                 AgentResult(
@@ -254,7 +254,7 @@ class TestExecuteEdgeCases:
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
@@ -288,7 +288,7 @@ class TestExecuteEdgeCases:
         """Test execute raises ValueError when no agents available."""
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
-        with patch("empathy_os.workflows.orchestrated_health_check.get_template") as mock_get:
+        with patch("attune.workflows.orchestrated_health_check.get_template") as mock_get:
             # Return None for all templates
             mock_get.return_value = None
 
@@ -306,7 +306,7 @@ class TestExecuteEdgeCases:
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(init_path))
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
@@ -682,7 +682,7 @@ class TestCLIIntegration:
         monkeypatch.chdir(tmp_path)
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
@@ -718,7 +718,7 @@ class TestCLIIntegration:
             )
 
             # Import and run main
-            from empathy_os.workflows.orchestrated_health_check import main
+            from attune.workflows.orchestrated_health_check import main
 
             # Should not raise exception
             with pytest.raises(SystemExit) as exc_info:
@@ -731,7 +731,7 @@ class TestCLIIntegration:
     async def test_main_with_custom_args(self, tmp_path, monkeypatch):
         """Test main function with custom mode and project_root."""
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
@@ -766,7 +766,7 @@ class TestCLIIntegration:
                 ["orchestrated_health_check.py", "weekly", str(tmp_path)],
             )
 
-            from empathy_os.workflows.orchestrated_health_check import main
+            from attune.workflows.orchestrated_health_check import main
 
             # Calculate expected score to verify exit code
             # Security: 100 (no issues) * 0.30 = 30
@@ -801,7 +801,7 @@ class TestRobustnessAndEdgeCases:
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             # Mix of successful and failed agents
             mock_results = [
@@ -882,7 +882,7 @@ class TestRobustnessAndEdgeCases:
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
 
             async def slow_execute(*args, **kwargs):

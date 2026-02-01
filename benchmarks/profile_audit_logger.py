@@ -15,7 +15,7 @@ import tempfile
 from pathlib import Path
 from pstats import SortKey
 
-from empathy_llm_toolkit.security import AuditLogger
+from attune_llm.security import AuditLogger
 
 
 def profile_audit_logging():

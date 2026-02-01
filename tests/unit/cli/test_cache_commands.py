@@ -16,7 +16,7 @@ class TestCacheStatsCollection:
 
     def test_collect_stats_no_log_file(self):
         """Test collecting stats when no log file exists."""
-        from empathy_os.cli.commands.cache import _collect_cache_stats
+        from attune.cli.commands.cache import _collect_cache_stats
 
         stats = _collect_cache_stats(days=7)
 
@@ -28,7 +28,7 @@ class TestCacheStatsCollection:
         """Test collecting stats from a real log file."""
 
         # Create a test log file
-        log_file = tmp_path / "empathy_os.log"
+        log_file = tmp_path / "attune.log"
         log_content = """
 2026-01-27 21:30:45 INFO Cache HIT: 5,000 tokens read from cache (saved $0.0135 vs full price)
 2026-01-27 21:30:46 DEBUG Cache WRITE: 2,000 tokens written to cache (cost $0.0075)
@@ -41,11 +41,11 @@ class TestCacheStatsCollection:
 
         # Patch the log file search
         with patch(
-            "empathy_os.cli.commands.cache.Path.cwd", return_value=tmp_path
-        ), patch("empathy_os.cli.commands.cache.Path.exists", return_value=True):
+            "attune.cli.commands.cache.Path.cwd", return_value=tmp_path
+        ), patch("attune.cli.commands.cache.Path.exists", return_value=True):
             # Override log path detection
             with patch(
-                "empathy_os.cli.commands.cache._collect_cache_stats"
+                "attune.cli.commands.cache._collect_cache_stats"
             ) as mock_collect:
                 # Manually parse the log
                 cache_hits = 2
@@ -82,7 +82,7 @@ class TestCacheStatsCommand:
 
     def test_cmd_cache_stats_table_format(self, capsys):
         """Test cache stats command with table output."""
-        from empathy_os.cli.commands.cache import cmd_cache_stats
+        from attune.cli.commands.cache import cmd_cache_stats
 
         args = Namespace(days=7, format="table", verbose=False)
 
@@ -94,7 +94,7 @@ class TestCacheStatsCommand:
 
     def test_cmd_cache_stats_json_format(self, capsys):
         """Test cache stats command with JSON output."""
-        from empathy_os.cli.commands.cache import cmd_cache_stats
+        from attune.cli.commands.cache import cmd_cache_stats
 
         args = Namespace(days=7, format="json", verbose=False)
 
@@ -126,7 +126,7 @@ class TestCacheStatsCommand:
 
     def test_cmd_cache_stats_verbose(self, capsys):
         """Test cache stats command with verbose output."""
-        from empathy_os.cli.commands.cache import cmd_cache_stats
+        from attune.cli.commands.cache import cmd_cache_stats
 
         args = Namespace(days=7, format="table", verbose=True)
 
@@ -141,7 +141,7 @@ class TestCacheReport:
 
     def test_display_cache_report_error(self, capsys):
         """Test displaying report when there's an error."""
-        from empathy_os.cli.commands.cache import _display_cache_report
+        from attune.cli.commands.cache import _display_cache_report
 
         stats = {
             "error": "No log file found",
@@ -156,7 +156,7 @@ class TestCacheReport:
 
     def test_display_cache_report_success(self, capsys):
         """Test displaying successful cache report."""
-        from empathy_os.cli.commands.cache import _display_cache_report
+        from attune.cli.commands.cache import _display_cache_report
 
         stats = {
             "days_analyzed": 7,
@@ -181,7 +181,7 @@ class TestCacheReport:
 
     def test_display_cache_report_verbose(self, capsys):
         """Test displaying verbose cache report."""
-        from empathy_os.cli.commands.cache import _display_cache_report
+        from attune.cli.commands.cache import _display_cache_report
 
         stats = {
             "days_analyzed": 7,
@@ -204,7 +204,7 @@ class TestCacheReport:
 
     def test_display_cache_report_performance_levels(self, capsys):
         """Test different performance assessment levels."""
-        from empathy_os.cli.commands.cache import _display_cache_report
+        from attune.cli.commands.cache import _display_cache_report
 
         # Test EXCELLENT (>50%)
         stats_excellent = {
@@ -248,7 +248,7 @@ class TestCacheClearCommand:
 
     def test_cmd_cache_clear(self, capsys):
         """Test cache clear command (placeholder)."""
-        from empathy_os.cli.commands.cache import cmd_cache_clear
+        from attune.cli.commands.cache import cmd_cache_clear
 
         args = Namespace()
 

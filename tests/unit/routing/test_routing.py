@@ -9,9 +9,9 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.routing.classifier import ClassificationResult, HaikuClassifier
-from empathy_os.routing.smart_router import RoutingDecision, SmartRouter
-from empathy_os.routing.workflow_registry import WORKFLOW_REGISTRY, WorkflowInfo, WorkflowRegistry
+from attune.routing.classifier import ClassificationResult, HaikuClassifier
+from attune.routing.smart_router import RoutingDecision, SmartRouter
+from attune.routing.workflow_registry import WORKFLOW_REGISTRY, WorkflowInfo, WorkflowRegistry
 
 
 @pytest.mark.unit
@@ -540,7 +540,7 @@ class TestChainBuilding:
         router = SmartRouter()
 
         # Create a classification with secondary wizards
-        from empathy_os.routing.classifier import ClassificationResult
+        from attune.routing.classifier import ClassificationResult
 
         classification = ClassificationResult(
             primary_workflow="security-audit",
@@ -557,7 +557,7 @@ class TestChainBuilding:
         router = SmartRouter()
 
         # security-audit has chain triggers
-        from empathy_os.routing.classifier import ClassificationResult
+        from attune.routing.classifier import ClassificationResult
 
         classification = ClassificationResult(
             primary_workflow="security-audit",
@@ -572,7 +572,7 @@ class TestChainBuilding:
         """Test chain doesn't have duplicates."""
         router = SmartRouter()
 
-        from empathy_os.routing.classifier import ClassificationResult
+        from attune.routing.classifier import ClassificationResult
 
         classification = ClassificationResult(
             primary_workflow="security-audit",

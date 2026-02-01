@@ -392,19 +392,19 @@
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.code_review:CodeReviewWorkflow",
+    "command": "attune.workflows.code_review:CodeReviewWorkflow",
     "// mnemonic": "E = Code Review"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.code_review_pipeline:CodeReviewPipeline",
+    "command": "attune.workflows.code_review_pipeline:CodeReviewPipeline",
     "// mnemonic": "E = Pro Review"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.pr_review:PRReviewWorkflow",
+    "command": "attune.workflows.pr_review:PRReviewWorkflow",
     "// mnemonic": "E = Pr Review"
   },
   {
@@ -446,61 +446,61 @@
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.document_gen:DocumentGenerationWorkflow",
+    "command": "attune.workflows.document_gen:DocumentGenerationWorkflow",
     "// mnemonic": "E = Doc Gen"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.bug_predict:BugPredictionWorkflow",
+    "command": "attune.workflows.bug_predict:BugPredictionWorkflow",
     "// mnemonic": "E = Bug Predict"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.security_audit:SecurityAuditWorkflow",
+    "command": "attune.workflows.security_audit:SecurityAuditWorkflow",
     "// mnemonic": "E = Security Audit"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.perf_audit:PerformanceAuditWorkflow",
+    "command": "attune.workflows.perf_audit:PerformanceAuditWorkflow",
     "// mnemonic": "E = Perf Audit"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.test_gen:TestGenerationWorkflow",
+    "command": "attune.workflows.test_gen:TestGenerationWorkflow",
     "// mnemonic": "E = Test Gen"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.refactor_plan:RefactorPlanWorkflow",
+    "command": "attune.workflows.refactor_plan:RefactorPlanWorkflow",
     "// mnemonic": "E = Refactor Plan"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.dependency_check:DependencyCheckWorkflow",
+    "command": "attune.workflows.dependency_check:DependencyCheckWorkflow",
     "// mnemonic": "E = Dependency Check"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.release_prep:ReleasePreparationWorkflow",
+    "command": "attune.workflows.release_prep:ReleasePreparationWorkflow",
     "// mnemonic": "E = Release Prep"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.secure_release:SecureReleasePipeline",
+    "command": "attune.workflows.secure_release:SecureReleasePipeline",
     "// mnemonic": "E = Secure Release"
   },
   {
     "key": "ctrl+shift+e e",
     "mac": "cmd+shift+e e",
-    "command": "empathy_os.workflows.health_check:HealthCheckWorkflow",
+    "command": "attune.workflows.health_check:HealthCheckWorkflow",
     "// mnemonic": "E = Health Check"
   },
   {

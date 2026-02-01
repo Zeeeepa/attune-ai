@@ -24,9 +24,9 @@ from pathlib import Path
 from typing import Any
 
 # Import unified configuration (preferred)
-from empathy_llm_toolkit.config.unified import MemDocsConfig as UnifiedMemDocsConfig
-from empathy_llm_toolkit.config.unified import RedisConfig as UnifiedRedisConfig
-from empathy_llm_toolkit.config.unified import UnifiedAgentConfig
+from attune_llm.config.unified import MemDocsConfig as UnifiedMemDocsConfig
+from attune_llm.config.unified import RedisConfig as UnifiedRedisConfig
+from attune_llm.config.unified import UnifiedAgentConfig
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,7 @@ class AgentConfig:
         config = AgentConfig(model="claude-opus-4-20250514")
 
         # New way
-        from empathy_llm_toolkit.config import UnifiedAgentConfig, ModelTier
+        from attune_llm.config import UnifiedAgentConfig, ModelTier
         config = UnifiedAgentConfig(
             name="writer",
             model_tier=ModelTier.PREMIUM
@@ -65,7 +65,7 @@ class AgentConfig:
     def __post_init__(self):
         warnings.warn(
             "AgentConfig is deprecated. Use UnifiedAgentConfig from "
-            "empathy_llm_toolkit.config instead.",
+            "attune_llm.config instead.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -96,7 +96,7 @@ class AgentConfig:
 class MemDocsConfig:
     """Legacy MemDocs configuration.
 
-    DEPRECATED: Use empathy_llm_toolkit.config.MemDocsConfig instead.
+    DEPRECATED: Use attune_llm.config.MemDocsConfig instead.
     """
 
     enabled: bool = True
@@ -123,7 +123,7 @@ class MemDocsConfig:
 class RedisConfig:
     """Legacy Redis configuration.
 
-    DEPRECATED: Use empathy_llm_toolkit.config.RedisConfig instead.
+    DEPRECATED: Use attune_llm.config.RedisConfig instead.
     """
 
     enabled: bool = True

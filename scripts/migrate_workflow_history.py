@@ -2,8 +2,8 @@
 """Migrate workflow history from JSON to SQLite.
 
 This script migrates the legacy JSON-based workflow history
-(.empathy/workflow_runs.json) to the new SQLite-based storage
-(.empathy/history.db).
+(.attune/workflow_runs.json) to the new SQLite-based storage
+(.attune/history.db).
 
 Features:
     - Preserves all workflow run data
@@ -16,8 +16,8 @@ Usage:
 
     # Custom paths:
     python scripts/migrate_workflow_history.py \\
-        --json-path=.empathy/workflow_runs.json \\
-        --db-path=.empathy/history.db
+        --json-path=.attune/workflow_runs.json \\
+        --db-path=.attune/history.db
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
@@ -33,14 +33,14 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.workflows.base import (
+from attune.workflows.base import (
     WORKFLOW_HISTORY_FILE,
     CostReport,
     ModelTier,
     WorkflowResult,
     WorkflowStage,
 )
-from empathy_os.workflows.history import WorkflowHistoryStore
+from attune.workflows.history import WorkflowHistoryStore
 
 
 def parse_args():
@@ -315,10 +315,10 @@ def migrate(
         print(f"  Backup: {backup_path}")
     print()
     print("Next steps:")
-    print("  1. Verify migration: python -c 'from empathy_os.workflows.history import WorkflowHistoryStore; store = WorkflowHistoryStore(); print(store.get_stats())'")
+    print("  1. Verify migration: python -c 'from attune.workflows.history import WorkflowHistoryStore; store = WorkflowHistoryStore(); print(store.get_stats())'")
     print("  2. Update your code to use WorkflowHistoryStore")
     print(
-        "  3. Delete backup after confidence period: rm .empathy/workflow_runs.json.backup"
+        "  3. Delete backup after confidence period: rm .attune/workflow_runs.json.backup"
     )
     print()
 

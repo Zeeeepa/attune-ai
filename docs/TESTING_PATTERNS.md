@@ -386,8 +386,8 @@ def test_contributor_and_above_can_stash(memory):
 
 **Pattern**:
 ```python
-@patch('empathy_os.memory.short_term.redis.Redis')
-@patch('empathy_os.memory.short_term.logger')
+@patch('attune.memory.short_term.redis.Redis')
+@patch('attune.memory.short_term.logger')
 def test_connection_retry_on_failure(mock_logger, mock_redis_class):
     """
     Teaching Pattern: Testing retry logic with mock failures.
@@ -409,7 +409,7 @@ def test_connection_retry_on_failure(mock_logger, mock_redis_class):
 
     config = RedisConfig(use_mock=False, retry_max_attempts=3)
 
-    with patch('empathy_os.memory.short_term.REDIS_AVAILABLE', True):
+    with patch('attune.memory.short_term.REDIS_AVAILABLE', True):
         memory = RedisShortTermMemory(config=config)
 
         # Should have called ping 3 times
@@ -688,7 +688,7 @@ def test_each_provider_has_all_tiers():
 
     Every provider should have all tier levels configured.
     """
-    from empathy_os.models.registry import MODEL_REGISTRY
+    from attune.models.registry import MODEL_REGISTRY
 
     # Define required tiers
     required_tiers = ["cheap", "capable", "premium"]
@@ -795,7 +795,7 @@ def test_get_model_case_insensitive():
 
     Lookups should work regardless of case.
     """
-    from empathy_os.models.registry import get_model
+    from attune.models.registry import get_model
 
     # Test different case combinations
     model1 = get_model("ANTHROPIC", "CHEAP")
@@ -828,7 +828,7 @@ def test_tier_pricing_hierarchy():
 
     Premium should cost more than capable, which costs more than cheap.
     """
-    from empathy_os.models.registry import TIER_PRICING
+    from attune.models.registry import TIER_PRICING
 
     # Extract input costs
     cheap_input = TIER_PRICING["cheap"]["input"]
@@ -867,7 +867,7 @@ def test_classification_enum_values():
 
     Three-tier system: PUBLIC → INTERNAL → SENSITIVE
     """
-    from empathy_os.memory.long_term import Classification
+    from attune.memory.long_term import Classification
 
     # Test enum values
     assert Classification.PUBLIC.value == "public"
@@ -884,7 +884,7 @@ def test_sensitive_requires_encryption():
 
     SENSITIVE data must be encrypted.
     """
-    from empathy_os.memory.long_term import DEFAULT_CLASSIFICATION_RULES, Classification
+    from attune.memory.long_term import DEFAULT_CLASSIFICATION_RULES, Classification
 
     rules = DEFAULT_CLASSIFICATION_RULES[Classification.SENSITIVE]
 

@@ -34,7 +34,7 @@
 **Strategic Shift:** Leveraging Anthropic's native capabilities more effectively
 
 **Files Changed:**
-- Enhanced: [src/empathy_os/workflows/autonomous_test_gen.py](../src/empathy_os/workflows/autonomous_test_gen.py) (+224 lines, -168 lines)
+- Enhanced: [src/attune/workflows/autonomous_test_gen.py](../src/attune/workflows/autonomous_test_gen.py) (+224 lines, -168 lines)
 - Created: [docs/TESTING_WORKFLOW_ANALYSIS.md](TESTING_WORKFLOW_ANALYSIS.md) (571 lines)
 
 **Enhancements Implemented:**
@@ -249,7 +249,7 @@ This pattern demonstrates how to apply Anthropic's advanced features across the 
 
    # Check coverage improvement
    pytest tests/behavioral/generated/batch99/ \
-       --cov=src/empathy_os/workflows/test_gen/workflow.py \
+       --cov=src/attune/workflows/test_gen/workflow.py \
        --cov-report=term-missing
    ```
 
@@ -363,7 +363,7 @@ This pattern demonstrates how to apply Anthropic's advanced features across the 
 - `tests/utils/__init__.py` (created earlier)
 
 **Enhanced (3 files):**
-- `src/empathy_os/workflows/autonomous_test_gen.py` (+224/-168 lines)
+- `src/attune/workflows/autonomous_test_gen.py` (+224/-168 lines)
 - `tests/conftest.py` (+83 lines - 3 fixtures)
 - `tests/README.md` (updated)
 
@@ -398,7 +398,7 @@ This pattern demonstrates how to apply Anthropic's advanced features across the 
 **Strategic Advancement:** Iterative test generation with automatic quality improvement
 
 **Files Changed:**
-- Enhanced: [src/empathy_os/workflows/autonomous_test_gen.py](../src/empathy_os/workflows/autonomous_test_gen.py) (+300 lines)
+- Enhanced: [src/attune/workflows/autonomous_test_gen.py](../src/attune/workflows/autonomous_test_gen.py) (+300 lines)
 
 **Implementation Details:**
 
@@ -456,7 +456,7 @@ def _generate_with_refinement(...) -> str | None:
 **Strategic Advancement:** Systematic path to 80%+ coverage with targeted improvements
 
 **Files Changed:**
-- Enhanced: [src/empathy_os/workflows/autonomous_test_gen.py](../src/empathy_os/workflows/autonomous_test_gen.py) (+250 lines)
+- Enhanced: [src/attune/workflows/autonomous_test_gen.py](../src/attune/workflows/autonomous_test_gen.py) (+250 lines)
 
 **Implementation Details:**
 
@@ -525,19 +525,19 @@ def _generate_with_coverage_target(...) -> str | None:
 ### Phase 1 Only (Fastest)
 
 ```bash
-python -m empathy_os.workflows.autonomous_test_gen <batch> <modules_json> --no-refinement
+python -m attune.workflows.autonomous_test_gen <batch> <modules_json> --no-refinement
 ```
 
 ### Phase 1 + 2 (Default - Recommended)
 
 ```bash
-python -m empathy_os.workflows.autonomous_test_gen <batch> <modules_json>
+python -m attune.workflows.autonomous_test_gen <batch> <modules_json>
 ```
 
 ### Phase 1 + 2 + 3 (Full Stack - Highest Coverage)
 
 ```bash
-python -m empathy_os.workflows.autonomous_test_gen <batch> <modules_json> --coverage-guided
+python -m attune.workflows.autonomous_test_gen <batch> <modules_json> --coverage-guided
 ```
 
 ---
@@ -573,7 +573,7 @@ python scripts/test_phases_2_3.py
 - Data classes: `ValidationResult`, `CoverageResult`
 
 **Enhanced (4 files):**
-- `src/empathy_os/workflows/autonomous_test_gen.py` (+774/-168 lines total)
+- `src/attune/workflows/autonomous_test_gen.py` (+774/-168 lines total)
   - Phase 1: +224 lines
   - Phase 2: +300 lines
   - Phase 3: +250 lines

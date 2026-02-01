@@ -8,7 +8,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.meta_workflows.intent_detector import (
+from attune.meta_workflows.intent_detector import (
     INTENT_PATTERNS,
     IntentDetector,
     IntentMatch,

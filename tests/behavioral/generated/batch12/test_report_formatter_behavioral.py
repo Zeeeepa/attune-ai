@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 
 # Import using module approach to avoid package initialization issues
-import empathy_os.workflows.document_gen.report_formatter as report_formatter_module
+import attune.workflows.document_gen.report_formatter as report_formatter_module
 
 format_doc_gen_report = report_formatter_module.format_doc_gen_report
 

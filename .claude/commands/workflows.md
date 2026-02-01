@@ -301,7 +301,7 @@ empathy workflow run perf-audit --json     # JSON output for CI
 ### From Python
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 import asyncio
 
 async def main():

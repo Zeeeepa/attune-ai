@@ -132,8 +132,8 @@ else:
 
 **Every LLM call must:**
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig
 
 # 1. Load enterprise security policies
 config = ClaudeMemoryConfig(

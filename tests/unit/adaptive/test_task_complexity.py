@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.adaptive.task_complexity import (
+from attune.adaptive.task_complexity import (
     ComplexityScore,
     TaskComplexity,
     TaskComplexityScorer,
@@ -63,7 +63,7 @@ class TestComplexityScore:
 class TestTaskComplexityScorerInitialization:
     """Test TaskComplexityScorer initialization."""
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_initialization_with_tiktoken(self, mock_tiktoken):
         """Test initialization when tiktoken is available."""
         mock_encoding = MagicMock()
@@ -74,7 +74,7 @@ class TestTaskComplexityScorerInitialization:
         assert scorer.tokenizer == mock_encoding
         mock_tiktoken.get_encoding.assert_called_once_with("cl100k_base")
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken", None)
+    @patch("attune.adaptive.task_complexity.tiktoken", None)
     def test_initialization_without_tiktoken(self):
         """Test initialization when tiktoken is not available."""
         scorer = TaskComplexityScorer()
@@ -86,7 +86,7 @@ class TestTaskComplexityScorerInitialization:
 class TestTaskComplexityScorerSimpleTasks:
     """Test scoring simple tasks."""
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_simple_task_with_tokenizer(self, mock_tiktoken):
         """Test scoring a simple task with tiktoken."""
         mock_encoding = MagicMock()
@@ -103,7 +103,7 @@ class TestTaskComplexityScorerSimpleTasks:
         assert score.file_count == 0
         assert score.confidence == 0.8
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken", None)
+    @patch("attune.adaptive.task_complexity.tiktoken", None)
     def test_simple_task_without_tokenizer(self):
         """Test scoring a simple task without tiktoken (fallback)."""
         scorer = TaskComplexityScorer()
@@ -116,7 +116,7 @@ class TestTaskComplexityScorerSimpleTasks:
         assert score.file_count == 0
         assert score.confidence == 0.6  # Lower confidence without tokenizer
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_simple_task_with_small_context(self, mock_tiktoken):
         """Test simple task with small code context."""
         mock_encoding = MagicMock()
@@ -138,7 +138,7 @@ class TestTaskComplexityScorerSimpleTasks:
 class TestTaskComplexityScorerModerateTasks:
     """Test scoring moderate complexity tasks."""
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_moderate_task(self, mock_tiktoken):
         """Test scoring a moderate complexity task."""
         mock_encoding = MagicMock()
@@ -155,7 +155,7 @@ class TestTaskComplexityScorerModerateTasks:
         assert score.line_count == 100
         assert score.file_count == 0
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_moderate_task_with_files(self, mock_tiktoken):
         """Test moderate task with multiple files."""
         mock_encoding = MagicMock()
@@ -175,7 +175,7 @@ class TestTaskComplexityScorerModerateTasks:
 class TestTaskComplexityScorerComplexTasks:
     """Test scoring complex tasks."""
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_complex_task(self, mock_tiktoken):
         """Test scoring a complex task."""
         mock_encoding = MagicMock()
@@ -191,7 +191,7 @@ class TestTaskComplexityScorerComplexTasks:
         assert score.token_count == 900
         assert score.line_count == 500
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_complex_task_with_many_files(self, mock_tiktoken):
         """Test complex task with many files."""
         mock_encoding = MagicMock()
@@ -211,7 +211,7 @@ class TestTaskComplexityScorerComplexTasks:
 class TestTaskComplexityScorerVeryComplexTasks:
     """Test scoring very complex tasks."""
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_very_complex_task(self, mock_tiktoken):
         """Test scoring a very complex task."""
         mock_encoding = MagicMock()
@@ -227,7 +227,7 @@ class TestTaskComplexityScorerVeryComplexTasks:
         assert score.token_count == 3200
         assert score.line_count == 1500
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_very_complex_by_tokens_only(self, mock_tiktoken):
         """Test very complex classification by tokens alone."""
         mock_encoding = MagicMock()
@@ -241,7 +241,7 @@ class TestTaskComplexityScorerVeryComplexTasks:
         assert score.complexity_level == TaskComplexity.VERY_COMPLEX
         assert score.token_count >= 2000
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_very_complex_by_lines_only(self, mock_tiktoken):
         """Test very complex classification by line count alone."""
         mock_encoding = MagicMock()
@@ -261,7 +261,7 @@ class TestTaskComplexityScorerVeryComplexTasks:
 class TestTaskComplexityScorerEdgeCases:
     """Test edge cases and boundary conditions."""
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken", None)
+    @patch("attune.adaptive.task_complexity.tiktoken", None)
     def test_fallback_estimation_accuracy(self):
         """Test fallback token estimation without tiktoken."""
         scorer = TaskComplexityScorer()
@@ -273,7 +273,7 @@ class TestTaskComplexityScorerEdgeCases:
         assert score.token_count == 100
         assert score.confidence == 0.6
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_empty_description(self, mock_tiktoken):
         """Test scoring with empty description."""
         mock_encoding = MagicMock()
@@ -286,7 +286,7 @@ class TestTaskComplexityScorerEdgeCases:
         assert score.complexity_level == TaskComplexity.SIMPLE
         assert score.token_count == 0
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_no_context_no_files(self, mock_tiktoken):
         """Test scoring with only description."""
         mock_encoding = MagicMock()
@@ -299,7 +299,7 @@ class TestTaskComplexityScorerEdgeCases:
         assert score.line_count == 0
         assert score.file_count == 0
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_empty_files_list(self, mock_tiktoken):
         """Test scoring with empty files list."""
         mock_encoding = MagicMock()
@@ -311,7 +311,7 @@ class TestTaskComplexityScorerEdgeCases:
 
         assert score.file_count == 0
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_boundary_simple_moderate(self, mock_tiktoken):
         """Test boundary between SIMPLE and MODERATE."""
         mock_encoding = MagicMock()
@@ -326,7 +326,7 @@ class TestTaskComplexityScorerEdgeCases:
         # Should be MODERATE (threshold is <100, <50 for SIMPLE)
         assert score.complexity_level == TaskComplexity.MODERATE
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_boundary_moderate_complex(self, mock_tiktoken):
         """Test boundary between MODERATE and COMPLEX."""
         mock_encoding = MagicMock()
@@ -341,7 +341,7 @@ class TestTaskComplexityScorerEdgeCases:
         # Should be COMPLEX (threshold is <500, <200 for MODERATE)
         assert score.complexity_level == TaskComplexity.COMPLEX
 
-    @patch("empathy_os.adaptive.task_complexity.tiktoken")
+    @patch("attune.adaptive.task_complexity.tiktoken")
     def test_boundary_complex_very_complex(self, mock_tiktoken):
         """Test boundary between COMPLEX and VERY_COMPLEX."""
         mock_encoding = MagicMock()

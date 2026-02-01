@@ -7,7 +7,7 @@ Module: adaptive/task_complexity.py (128 lines)
 
 import pytest
 
-from empathy_os.adaptive.task_complexity import (
+from attune.adaptive.task_complexity import (
     ComplexityScore,
     TaskComplexity,
     TaskComplexityScorer,

@@ -70,7 +70,7 @@ Redis itself is fast - the bottleneck is network round-trip time. Adding a local
 
 ### Code Changes
 
-#### File: `src/empathy_os/memory/types.py`
+#### File: `src/attune/memory/types.py`
 
 **Added configuration fields:**
 
@@ -84,7 +84,7 @@ class RedisConfig:
     local_cache_size: int = 500       # Max cached keys (~50KB memory)
 ```
 
-#### File: `src/empathy_os/memory/short_term.py`
+#### File: `src/attune/memory/short_term.py`
 
 **Added cache state tracking (lines 160-173):**
 
@@ -227,8 +227,8 @@ The low speedup in tests (1.02x) is because mock mode operations are extremely f
 ### Enable Two-Tier Caching (Default)
 
 ```python
-from empathy_os.memory import RedisShortTermMemory
-from empathy_os.memory.types import RedisConfig
+from attune.memory import RedisShortTermMemory
+from attune.memory.types import RedisConfig
 
 config = RedisConfig(
     host="localhost",
@@ -445,8 +445,8 @@ def _set(self, key: str, value: str, ttl: int | None = None) -> bool:
 
 ## Related Files
 
-- [src/empathy_os/memory/types.py](../src/empathy_os/memory/types.py) - Configuration
-- [src/empathy_os/memory/short_term.py](../src/empathy_os/memory/short_term.py) - Implementation
+- [src/attune/memory/types.py](../src/attune/memory/types.py) - Configuration
+- [src/attune/memory/short_term.py](../src/attune/memory/short_term.py) - Implementation
 - [benchmarks/measure_redis_optimization.py](../benchmarks/measure_redis_optimization.py) - Test script
 - [docs/PROFILING_RESULTS.md](../docs/PROFILING_RESULTS.md) - Updated profiling results
 

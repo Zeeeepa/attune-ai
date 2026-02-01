@@ -2,9 +2,9 @@
 Enable Anthropic's Batch API for non-urgent tasks to achieve 50% cost reduction.
 
 ## Implementation Tasks
-- [ ] Add `AnthropicBatchProvider` class to `empathy_llm_toolkit/providers.py`
-- [ ] Add batch-eligible task identification to `src/empathy_os/models/tasks.py`
-- [ ] Create `src/empathy_os/workflows/batch_processing.py`
+- [ ] Add `AnthropicBatchProvider` class to `attune_llm/providers.py`
+- [ ] Add batch-eligible task identification to `src/attune/models/tasks.py`
+- [ ] Create `src/attune/workflows/batch_processing.py`
 - [ ] Add CLI command for batch processing
 - [ ] Add tests in `tests/unit/providers/test_batch_api.py`
 - [ ] Update documentation

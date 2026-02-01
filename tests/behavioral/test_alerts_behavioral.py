@@ -11,7 +11,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.monitoring.alerts import (
+from attune.monitoring.alerts import (
     AlertChannel,
     AlertConfig,
     AlertEngine,
@@ -132,7 +132,7 @@ class TestAlertEngineInitialization:
         """Test default telemetry directory."""
         engine = AlertEngine(db_path=tmp_path / "alerts.db")
 
-        # Should default to ~/.empathy/telemetry
+        # Should default to ~/.attune/telemetry
         assert "telemetry" in str(engine.telemetry_dir)
 
 

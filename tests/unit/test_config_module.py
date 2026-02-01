@@ -10,8 +10,8 @@ import tempfile
 
 import pytest
 
-from empathy_os.config import YAML_AVAILABLE, EmpathyConfig
-from empathy_os.workflows.config import ModelConfig
+from attune.config import YAML_AVAILABLE, EmpathyConfig
+from attune.workflows.config import ModelConfig
 
 
 @pytest.mark.unit

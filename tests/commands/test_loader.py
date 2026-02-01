@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.commands.loader import (
+from attune_llm.commands.loader import (
     CommandLoader,
     get_default_commands_directory,
     load_commands_from_paths,

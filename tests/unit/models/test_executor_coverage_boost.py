@@ -8,7 +8,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-import empathy_os.models.executor as executor_module
+import attune.models.executor as executor_module
 
 LLMResponse = executor_module.LLMResponse
 ExecutionContext = executor_module.ExecutionContext

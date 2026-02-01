@@ -69,7 +69,7 @@ description: Development guidelines for Test Coverage Improvement Plan. Level 3 
 | scan_command() | 10 | Yes |
 | list_wizards/wizard_info | 7 | Yes |
 
-### 3.2 src/empathy_os/cli.py (45% → 80%)
+### 3.2 src/attune/cli.py (45% → 80%)
 **Estimated Tests:** 40
 
 | Test Category | Tests | Parallelizable |
@@ -114,7 +114,7 @@ def mock_registry():
     """Mock plugin registry"""
 
 @pytest.fixture
-def mock_empathy_os():
+def mock_attune():
     """Mock EmpathyOS instance"""
 
 @pytest.fixture
@@ -154,7 +154,7 @@ def mock_audit_directory(tmp_path):
 | audit_logger.py | 73% | 92% | +19% |
 | claude_memory.py | 72% | 95% | +23% |
 | software_plugin/cli.py | 34% | 75% | +41% |
-| empathy_os/cli.py | 45% | 80% | +35% |
+| attune/cli.py | 45% | 80% | +35% |
 | **OVERALL** | **75.9%** | **90%+** | **+14%** |
 
 ---
@@ -169,5 +169,5 @@ Task 2: "Write tests for secure_memdocs encryption and access control"
 Task 3: "Write tests for audit_logger rotation and compliance"
 Task 4: "Write tests for claude_memory enterprise/user loading"
 Task 5: "Write tests for software_plugin CLI commands"
-Task 6: "Write tests for empathy_os CLI interactive commands"
+Task 6: "Write tests for attune CLI interactive commands"
 ```

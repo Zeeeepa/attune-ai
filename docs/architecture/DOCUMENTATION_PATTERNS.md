@@ -49,7 +49,7 @@ Get up and running with Empathy Framework in 5 minutes!
 ## Step 1: Install
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ## Step 2: Create Your First Chatbot
@@ -57,7 +57,7 @@ pip install empathy-framework
 Create a file `my_first_bot.py`:
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Create Level 3 (Proactive) chatbot
 empathy = EmpathyOS(
@@ -322,8 +322,8 @@ Empathy Framework adds Level 4 Anticipatory Intelligence:
 ## Quick Start: SBAR Clinical Handoff
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_llm_toolkit.wizards import ClinicalProtocolMonitor
+from attune import EmpathyOS
+from attune_llm.wizards import ClinicalProtocolMonitor
 ```
 ```
 
@@ -365,7 +365,7 @@ print(response.response)
 ```python
 # Add configuration, context, error handling
 import os
-from empathy_os import EmpathyOS, load_config
+from attune import EmpathyOS, load_config
 
 config = load_config(filepath="empathy.config.yml")
 empathy = EmpathyOS.from_config(config)
@@ -405,9 +405,9 @@ except Exception as e:
 # - Audit logging (HIPAA compliance)
 
 import asyncio
-from empathy_os import EmpathyOS
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.security import PIIScrubber, AuditLogger
+from attune import EmpathyOS
+from attune_llm import EmpathyLLM
+from attune_llm.security import PIIScrubber, AuditLogger
 
 async def production_interact(user_id: str, user_input: str, context: dict):
     # Initialize with full security
@@ -571,7 +571,7 @@ response = empathy.interact(user_id="user_123", user_input="...", context={})
 
 ## Class Reference
 
-::: empathy_os.EmpathyOS
+::: attune.EmpathyOS
     options:
       show_source: true
       heading_level: 3
@@ -813,25 +813,25 @@ You can't skip floors. You earn your way up.
 
     1. Install Python from python.org
     2. Open terminal/command prompt
-    3. Run: `pip install empathy-framework`
-    4. Verify: `python -c "import empathy_os"`
+    3. Run: `pip install attune-ai`
+    4. Verify: `python -c "import attune"`
 
     **Troubleshooting**:
     - "pip not found": Install pip first
-    - "Permission denied": Use `pip install --user empathy-framework`
+    - "Permission denied": Use `pip install --user attune-ai`
 
 === "Intermediate"
 
     **Quick installation**:
     ```bash
-    pip install empathy-framework[full]
+    pip install attune-ai[full]
     ```
 
     **Virtual environment** (recommended):
     ```bash
     python -m venv empathy-env
     source empathy-env/bin/activate  # Windows: empathy-env\Scripts\activate
-    pip install empathy-framework[full]
+    pip install attune-ai[full]
     ```
 
 === "Advanced"
@@ -839,7 +839,7 @@ You can't skip floors. You earn your way up.
     **Development setup**:
     ```bash
     git clone https://github.com/Smart-AI-Memory/empathy.git
-    cd empathy-framework
+    cd attune-ai
     pip install -e .[dev]
     pre-commit install
     ```
@@ -847,7 +847,7 @@ You can't skip floors. You earn your way up.
     **Custom build** (enterprise):
     ```bash
     # Install from private PyPI
-    pip install empathy-framework --index-url https://pypi.company.internal
+    pip install attune-ai --index-url https://pypi.company.internal
 
     # Build from source with modifications
     python setup.py develop --config=enterprise.cfg

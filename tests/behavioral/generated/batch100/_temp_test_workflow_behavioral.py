@@ -12,13 +12,13 @@ from unittest.mock import Mock, mock_open
 
 import pytest
 
-from empathy_os.workflows.test_gen.workflow import TestGenerationWorkflow, main
+from attune.workflows.test_gen.workflow import TestGenerationWorkflow, main
 
 
 @pytest.fixture
 def mock_path_for_init(mocker):
     """Mock Path to prevent file I/O during initialization."""
-    mock_path_class = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+    mock_path_class = mocker.patch("attune.workflows.test_gen.workflow.Path")
     mock_path_instance = Mock()
     mock_debugging_file = Mock()
     mock_debugging_file.exists.return_value = False
@@ -31,7 +31,7 @@ def mock_path_for_init(mocker):
 def mock_ast_analyzer(mocker):
     """Mock ASTFunctionAnalyzer."""
     mock_class = mocker.patch(
-        "empathy_os.workflows.test_gen.workflow.ASTFunctionAnalyzer"
+        "attune.workflows.test_gen.workflow.ASTFunctionAnalyzer"
     )
     mock_instance = Mock()
     mock_instance.analyze.return_value = ([], [])
@@ -44,10 +44,10 @@ def mock_ast_analyzer(mocker):
 def mock_test_templates(mocker):
     """Mock test template generation functions."""
     mock_func = mocker.patch(
-        "empathy_os.workflows.test_gen.workflow.generate_test_for_function"
+        "attune.workflows.test_gen.workflow.generate_test_for_function"
     )
     mock_class = mocker.patch(
-        "empathy_os.workflows.test_gen.workflow.generate_test_for_class"
+        "attune.workflows.test_gen.workflow.generate_test_for_class"
     )
     mock_func.return_value = "def test_function():\n    pass"
     mock_class.return_value = "def test_class():\n    pass"
@@ -111,7 +111,7 @@ class TestTestGenerationWorkflowInit:
             ]
         }
 
-        mock_path_class = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path_class = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_path_instance = Mock()
         mock_file = Mock()
         mock_file.exists.return_value = True
@@ -141,7 +141,7 @@ class TestLoadBugHotspots:
             ]
         }
 
-        mock_path_class = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path_class = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_path_instance = Mock()
         mock_file = Mock()
         mock_file.exists.return_value = True
@@ -160,7 +160,7 @@ class TestLoadBugHotspots:
     def test_handles_missing_file_gracefully(self, workflow, mocker):
         """Given missing debugging.json, when loading, then sets empty hotspots."""
         # Given
-        mock_path_class = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path_class = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_path_instance = Mock()
         mock_file = Mock()
         mock_file.exists.return_value = False
@@ -176,7 +176,7 @@ class TestLoadBugHotspots:
     def test_handles_invalid_json_gracefully(self, workflow, mocker):
         """Given invalid JSON, when loading, then sets empty hotspots."""
         # Given
-        mock_path_class = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path_class = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_path_instance = Mock()
         mock_file = Mock()
         mock_file.exists.return_value = True
@@ -200,7 +200,7 @@ class TestLoadBugHotspots:
             ]
         }
 
-        mock_path_class = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path_class = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_path_instance = Mock()
         mock_file = Mock()
         mock_file.exists.return_value = True
@@ -224,7 +224,7 @@ class TestShouldSkipStage:
     def test_downgrades_review_when_few_tests(self, workflow):
         """Given few tests, when checking review stage, then downgrades to CAPABLE."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         workflow._test_count = 5
         workflow.min_tests_for_review = 10
@@ -240,7 +240,7 @@ class TestShouldSkipStage:
     def test_keeps_review_premium_when_enough_tests(self, workflow):
         """Given enough tests, when checking review stage, then keeps PREMIUM."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         workflow._test_count = 15
         workflow.min_tests_for_review = 10
@@ -273,7 +273,7 @@ class TestRunStage:
     async def test_routes_to_identify_stage(self, workflow, mocker):
         """Given identify stage, when running, then calls _identify."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         mock_identify = mocker.patch.object(
             workflow, "_identify", return_value=({}, 10, 20)
@@ -290,7 +290,7 @@ class TestRunStage:
     async def test_routes_to_analyze_stage(self, workflow, mocker):
         """Given analyze stage, when running, then calls _analyze."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         mock_analyze = mocker.patch.object(
             workflow, "_analyze", return_value=({}, 10, 20)
@@ -306,7 +306,7 @@ class TestRunStage:
     async def test_routes_to_generate_stage(self, workflow, mocker):
         """Given generate stage, when running, then calls _generate."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         mock_generate = mocker.patch.object(
             workflow, "_generate", return_value=({}, 10, 20)
@@ -322,7 +322,7 @@ class TestRunStage:
     async def test_routes_to_review_stage(self, workflow, mocker):
         """Given review stage, when running, then calls _review."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         mock_review = mocker.patch.object(
             workflow, "_review", return_value=({}, 10, 20)
@@ -338,7 +338,7 @@ class TestRunStage:
     async def test_raises_error_for_unknown_stage(self, workflow):
         """Given unknown stage, when running, then raises ValueError."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         # When/Then
         with pytest.raises(ValueError, match="Unknown stage: unknown"):
@@ -352,9 +352,9 @@ class TestIdentifyStage:
     async def test_identifies_python_files(self, workflow, mocker):
         """Given Python files, when identifying, then returns candidates."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
 
@@ -382,9 +382,9 @@ class TestIdentifyStage:
     async def test_skips_test_files(self, workflow, mocker):
         """Given test files, when identifying, then excludes them from candidates."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
 
@@ -408,9 +408,9 @@ class TestIdentifyStage:
     async def test_applies_skip_patterns(self, workflow, mocker):
         """Given skip patterns, when identifying, then excludes matching files."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
 
@@ -437,9 +437,9 @@ class TestIdentifyStage:
     async def test_respects_file_size_limit(self, workflow, mocker):
         """Given large files, when identifying, then skips files over limit."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
 
@@ -462,9 +462,9 @@ class TestIdentifyStage:
     async def test_respects_scan_limit(self, workflow, mocker):
         """Given many files, when identifying, then stops at scan limit."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
 
@@ -492,11 +492,11 @@ class TestIdentifyStage:
     async def test_calculates_priority_correctly(self, workflow, mocker):
         """Given file characteristics, when identifying, then calculates priority."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         workflow._bug_hotspots = ["src/buggy.py"]
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
 
@@ -527,11 +527,11 @@ class TestIdentifyStage:
     async def test_integrates_auth_strategy(self, workflow, mocker):
         """Given auth strategy enabled, when identifying, then calculates auth mode."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         workflow.enable_auth_strategy = True
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
         mock_target.is_file.return_value = False
@@ -541,7 +541,7 @@ class TestIdentifyStage:
         mock_path.return_value = mock_target
 
         mock_count_loc = mocker.patch(
-            "empathy_os.workflows.test_gen.workflow.count_lines_of_code"
+            "attune.workflows.test_gen.workflow.count_lines_of_code"
         )
         mock_count_loc.return_value = 1000
 
@@ -554,11 +554,11 @@ class TestIdentifyStage:
         }
 
         mocker.patch(
-            "empathy_os.workflows.test_gen.workflow.get_auth_strategy",
+            "attune.workflows.test_gen.workflow.get_auth_strategy",
             return_value=mock_strategy,
         )
         mocker.patch(
-            "empathy_os.workflows.test_gen.workflow.get_module_size_category",
+            "attune.workflows.test_gen.workflow.get_module_size_category",
             return_value="medium",
         )
 
@@ -574,11 +574,11 @@ class TestIdentifyStage:
     async def test_handles_auth_strategy_error(self, workflow, mocker):
         """Given auth strategy error, when identifying, then continues gracefully."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         workflow.enable_auth_strategy = True
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_target = Mock()
         mock_target.exists.return_value = True
         mock_target.is_file.return_value = True
@@ -587,7 +587,7 @@ class TestIdentifyStage:
         mock_path.return_value = mock_target
 
         mocker.patch(
-            "empathy_os.workflows.test_gen.workflow.count_lines_of_code",
+            "attune.workflows.test_gen.workflow.count_lines_of_code",
             side_effect=Exception("Count error"),
         )
 
@@ -640,9 +640,9 @@ class TestAnalyzeStage:
     async def test_analyzes_candidate_files(self, workflow, mock_ast_analyzer, mocker):
         """Given candidates, when analyzing, then extracts functions and classes."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_file = Mock()
         mock_file.exists.return_value = True
         mock_file.read_text.return_value = "def foo(): pass"
@@ -681,9 +681,9 @@ class TestAnalyzeStage:
     async def test_respects_max_files_to_analyze(self, workflow, mock_ast_analyzer, mocker):
         """Given many candidates, when analyzing, then respects limit."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_file = Mock()
         mock_file.exists.return_value = True
         mock_file.read_text.return_value = "# code"
@@ -707,9 +707,9 @@ class TestAnalyzeStage:
     async def test_tracks_parse_errors(self, workflow, mock_ast_analyzer, mocker):
         """Given parse errors, when analyzing, then tracks them."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_file = Mock()
         mock_file.exists.return_value = True
         mock_file.read_text.return_value = "invalid python"
@@ -734,9 +734,9 @@ class TestAnalyzeStage:
     async def test_handles_missing_files(self, workflow, mock_ast_analyzer, mocker):
         """Given missing files, when analyzing, then skips them."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_file = Mock()
         mock_file.exists.return_value = False
         mock_path.return_value = mock_file
@@ -1081,7 +1081,7 @@ class TestGenerateStage:
     ):
         """Given functions, when generating, then creates test code."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         input_data = {
             "analysis": [
@@ -1113,7 +1113,7 @@ class TestGenerateStage:
     async def test_generates_class_tests(self, workflow, mock_test_templates, mocker):
         """Given classes, when generating, then creates test code."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         input_data = {
             "analysis": [
@@ -1144,9 +1144,9 @@ class TestGenerateStage:
     async def test_writes_tests_when_enabled(self, workflow, mock_test_templates, mocker):
         """Given write_tests enabled, when generating, then writes files."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_output = Mock()
         mock_file = Mock()
         mock_output.__truediv__.return_value = mock_file
@@ -1180,9 +1180,9 @@ class TestGenerateStage:
     ):
         """Given write_tests disabled, when generating, then does not write files."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
 
         input_data = {
             "analysis": [
@@ -1210,7 +1210,7 @@ class TestGenerateStage:
     ):
         """Given generation limits, when generating, then respects them."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         functions = [{"name": f"func{i}", "params": [], "is_async": False} for i in range(20)]
         classes = [{"name": f"Class{i}", "init_params": [], "methods": []} for i in range(10)]
@@ -1244,14 +1244,14 @@ class TestGenerateStage:
     ):
         """Given multiple tests, when writing, then deduplicates imports."""
         # Given
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         mock_test_templates["function"].side_effect = [
             "import pytest\n\ndef test_one(): pass",
             "import pytest\nimport json\n\ndef test_two(): pass",
         ]
 
-        mock_path = mocker.patch("empathy_os.workflows.test_gen.workflow.Path")
+        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
         mock_output = Mock()
         mock_file = Mock()
         mock_output.__truediv__.return_value = mock_file

@@ -10,15 +10,15 @@ class TestSocraticWorkflowBuilder:
 
     def test_create_builder(self):
         """Test creating a workflow builder."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
         assert builder is not None
 
     def test_start_session(self):
         """Test starting a new session."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.session import SessionState
 
         builder = SocraticWorkflowBuilder()
         session = builder.start_session()
@@ -28,8 +28,8 @@ class TestSocraticWorkflowBuilder:
 
     def test_start_session_with_goal(self, sample_goal):
         """Test starting a session with initial goal."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.session import SessionState
 
         builder = SocraticWorkflowBuilder()
         session = builder.start_session(sample_goal)
@@ -39,7 +39,7 @@ class TestSocraticWorkflowBuilder:
 
     def test_set_goal(self):
         """Test setting goal on existing session."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
         session = builder.start_session()
@@ -53,8 +53,8 @@ class TestSocraticWorkflowBuilder:
 
     def test_get_next_questions(self, sample_session):
         """Test getting next questions."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.session import SessionState
 
         builder = SocraticWorkflowBuilder()
         sample_session.state = SessionState.AWAITING_ANSWERS
@@ -66,7 +66,7 @@ class TestSocraticWorkflowBuilder:
 
     def test_submit_answers(self, sample_session, sample_answers):
         """Test submitting answers."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
         session = builder.submit_answers(sample_session, sample_answers)
@@ -76,8 +76,8 @@ class TestSocraticWorkflowBuilder:
 
     def test_is_ready_to_generate(self, sample_session):
         """Test checking if ready to generate."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.session import SessionState
 
         builder = SocraticWorkflowBuilder()
 
@@ -91,8 +91,8 @@ class TestSocraticWorkflowBuilder:
 
     def test_generate_workflow(self):
         """Test generating a workflow."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.session import SessionState
 
         builder = SocraticWorkflowBuilder()
 
@@ -115,7 +115,7 @@ class TestSocraticWorkflowBuilder:
 
     def test_get_session_summary(self, sample_session):
         """Test getting session summary."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
         summary = builder.get_session_summary(sample_session)
@@ -130,7 +130,7 @@ class TestDetectDomainFunction:
 
     def test_detect_code_review_domain(self):
         """Test domain detection for code review."""
-        from empathy_os.socratic.engine import detect_domain
+        from attune.socratic.engine import detect_domain
 
         domain, confidence = detect_domain("I want to review code quality")
 
@@ -139,7 +139,7 @@ class TestDetectDomainFunction:
 
     def test_detect_security_domain(self):
         """Test domain detection for security."""
-        from empathy_os.socratic.engine import detect_domain
+        from attune.socratic.engine import detect_domain
 
         domain, confidence = detect_domain("Scan for security vulnerabilities")
 
@@ -148,7 +148,7 @@ class TestDetectDomainFunction:
 
     def test_detect_testing_domain(self):
         """Test domain detection for testing."""
-        from empathy_os.socratic.engine import detect_domain
+        from attune.socratic.engine import detect_domain
 
         domain, confidence = detect_domain("Generate unit tests for coverage")
 
@@ -157,7 +157,7 @@ class TestDetectDomainFunction:
 
     def test_detect_documentation_domain(self):
         """Test domain detection for documentation."""
-        from empathy_os.socratic.engine import detect_domain
+        from attune.socratic.engine import detect_domain
 
         domain, confidence = detect_domain("Write API documentation")
 
@@ -166,7 +166,7 @@ class TestDetectDomainFunction:
 
     def test_detect_performance_domain(self):
         """Test domain detection for performance."""
-        from empathy_os.socratic.engine import detect_domain
+        from attune.socratic.engine import detect_domain
 
         domain, confidence = detect_domain("Optimize for performance")
 
@@ -175,7 +175,7 @@ class TestDetectDomainFunction:
 
     def test_detect_refactoring_domain(self):
         """Test domain detection for refactoring."""
-        from empathy_os.socratic.engine import detect_domain
+        from attune.socratic.engine import detect_domain
 
         domain, confidence = detect_domain("Refactor this module")
 
@@ -184,7 +184,7 @@ class TestDetectDomainFunction:
 
     def test_returns_general_for_unknown(self):
         """Test that unknown goals return general domain."""
-        from empathy_os.socratic.engine import detect_domain
+        from attune.socratic.engine import detect_domain
 
         domain, confidence = detect_domain("Do something vague")
 
@@ -196,7 +196,7 @@ class TestQuestionGeneration:
 
     def test_generate_initial_questions(self):
         """Test generating initial questions."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
         session = builder.start_session("Code review automation")
@@ -209,7 +209,7 @@ class TestQuestionGeneration:
 
     def test_get_initial_form(self):
         """Test getting the initial form template."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.engine import SocraticWorkflowBuilder
 
         builder = SocraticWorkflowBuilder()
         form = builder.get_initial_form()
@@ -223,13 +223,13 @@ class TestDomainPatterns:
 
     def test_domain_patterns_exist(self):
         """Test that domain patterns are configured."""
-        from empathy_os.socratic.engine import DOMAIN_PATTERNS
+        from attune.socratic.engine import DOMAIN_PATTERNS
 
         assert len(DOMAIN_PATTERNS) > 0
 
     def test_domain_pattern_has_required_fields(self):
         """Test domain patterns have required fields."""
-        from empathy_os.socratic.engine import DOMAIN_PATTERNS
+        from attune.socratic.engine import DOMAIN_PATTERNS
 
         for pattern in DOMAIN_PATTERNS:
             assert hasattr(pattern, "domain")
@@ -242,8 +242,8 @@ class TestSessionWorkflow:
 
     def test_full_workflow_happy_path(self):
         """Test complete session workflow from start to generation."""
-        from empathy_os.socratic.engine import SocraticWorkflowBuilder
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.engine import SocraticWorkflowBuilder
+        from attune.socratic.session import SessionState
 
         builder = SocraticWorkflowBuilder()
 

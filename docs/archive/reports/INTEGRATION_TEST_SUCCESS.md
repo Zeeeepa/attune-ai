@@ -14,7 +14,7 @@ description: Tier Fallback Integration Test - SUCCESS ✅ integration guide. Con
 
 **Command:**
 ```bash
-python -m empathy_os.cli workflow run health-check --use-recommended-tier --input '{"path": "."}'
+python -m attune.cli workflow run health-check --use-recommended-tier --input '{"path": "."}'
 ```
 
 **Status:** ✅ **SUCCESSFUL** - Completed without errors
@@ -122,7 +122,7 @@ Health check completed in 18888ms | Cost: $0.0010
 ### 4. ✅ Pattern Telemetry Saved
 
 ```
-[2026-01-09 09:16:01] [INFO] empathy_os.workflows.tier_tracking:save_progression:
+[2026-01-09 09:16:01] [INFO] attune.workflows.tier_tracking:save_progression:
 💾 Saved tier progression: /Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/patterns/debugging/workflow_20260109_c007c7ff.json
 ```
 
@@ -194,7 +194,7 @@ This data will be used to improve future tier recommendations.
 
 **Test without flag:**
 ```bash
-python -m empathy_os.cli workflow run health-check --input '{"path": "."}'
+python -m attune.cli workflow run health-check --input '{"path": "."}'
 ```
 
 **Expected:** Should run in standard mode without tier fallback display

@@ -33,7 +33,7 @@ Major feature release introducing intelligent cost optimization through automati
 ## Quick Start
 
 ```python
-from empathy_os.workflows.progressive import (
+from attune.workflows.progressive import (
     ProgressiveTestGenWorkflow,
     EscalationConfig,
     Tier
@@ -68,18 +68,18 @@ print(f"Savings: ${result.cost_savings:.2f} ({result.cost_savings_percent:.0f}%)
 ## Installation
 
 ```bash
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 ```
 
 ## Documentation
 
-- [Progressive Workflows README](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/src/empathy_os/workflows/progressive/README.md)
-- [CHANGELOG](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md)
+- [Progressive Workflows README](https://github.com/Smart-AI-Memory/attune-ai/blob/main/src/attune/workflows/progressive/README.md)
+- [CHANGELOG](https://github.com/Smart-AI-Memory/attune-ai/blob/main/CHANGELOG.md)
 
 ## Migration Guide
 
-Progressive workflows are **opt-in**. Existing code continues unchanged. See [CHANGELOG.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md#410---2026-01-17) for details.
+Progressive workflows are **opt-in**. Existing code continues unchanged. See [CHANGELOG.md](https://github.com/Smart-AI-Memory/attune-ai/blob/main/CHANGELOG.md#410---2026-01-17) for details.
 
 ---
 
-**Full Changelog**: https://github.com/Smart-AI-Memory/empathy-framework/compare/v4.0.5...v4.1.0
+**Full Changelog**: https://github.com/Smart-AI-Memory/attune-ai/compare/v4.0.5...v4.1.0

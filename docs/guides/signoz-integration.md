@@ -60,13 +60,13 @@ This guide focuses on **Tier 2** - setting up OpenTelemetry export to SigNoz.
 Install Empathy Framework with OTEL support:
 
 ```bash
-pip install empathy-framework[otel]
+pip install attune-ai[otel]
 ```
 
 Or for enterprise users:
 
 ```bash
-pip install empathy-framework[enterprise]  # Includes OTEL
+pip install attune-ai[enterprise]  # Includes OTEL
 ```
 
 This installs:
@@ -135,8 +135,8 @@ If you don't set `EMPATHY_OTEL_ENDPOINT`, the framework automatically detects:
 Update your code to use the multi-backend:
 
 ```python
-from empathy_os.monitoring.multi_backend import get_multi_backend
-from empathy_os.models.telemetry import LLMCallRecord, WorkflowRunRecord
+from attune.monitoring.multi_backend import get_multi_backend
+from attune.models.telemetry import LLMCallRecord, WorkflowRunRecord
 
 # Get multi-backend (auto-detects OTEL if available)
 backend = get_multi_backend()
@@ -193,7 +193,7 @@ backend.log_workflow(workflow_record)
 ## Step 5: Verify Telemetry in SigNoz
 
 1. Open SigNoz UI: `http://localhost:3301` (or your SigNoz Cloud URL)
-2. Navigate to **Services** → **empathy-framework**
+2. Navigate to **Services** → **attune-ai**
 3. You should see:
    - Service overview with request rate, latency, error rate
    - Traces for each workflow run
@@ -221,7 +221,7 @@ workflow.code-review (2000ms)
 ### Using SigNoz UI
 
 1. **Metrics Dashboard**:
-   - Filter by `service.name = empathy-framework`
+   - Filter by `service.name = attune-ai`
    - View cost trends: `sum(llm.cost.estimated) by workflow.name`
    - View token usage: `sum(llm.usage.total_tokens) by llm.tier`
 
@@ -334,7 +334,7 @@ The Empathy Framework uses custom semantic conventions for LLM telemetry:
 
 2. Verify endpoint is correct:
    ```python
-   from empathy_os.monitoring.otel_backend import OTELBackend
+   from attune.monitoring.otel_backend import OTELBackend
    backend = OTELBackend()
    print(f"Endpoint: {backend.endpoint}")
    print(f"Available: {backend.is_available()}")
@@ -353,7 +353,7 @@ The Empathy Framework uses custom semantic conventions for LLM telemetry:
 1. Use batch export (already default in BatchSpanProcessor)
 2. Increase batch size:
    ```python
-   from empathy_os.monitoring.otel_backend import OTELBackend
+   from attune.monitoring.otel_backend import OTELBackend
    backend = OTELBackend(batch_size=100)  # Default: 10
    ```
 
@@ -471,6 +471,6 @@ ORDER BY date;
 ## Support
 
 For issues with:
-- **Empathy Framework**: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- **Empathy Framework**: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - **SigNoz**: [SigNoz Slack](https://signoz.io/slack) or [GitHub](https://github.com/SigNoz/signoz/issues)
 - **OpenTelemetry**: [CNCF Slack #opentelemetry](https://slack.cncf.io/)

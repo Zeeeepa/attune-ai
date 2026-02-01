@@ -22,9 +22,9 @@ pytest tests/behavioral/test_usage_tracker_behavioral.py -v
 ### Run With Coverage
 ```bash
 pytest tests/behavioral/ \
-  --cov=src/empathy_os/telemetry \
-  --cov=src/empathy_os/monitoring \
-  --cov=src/empathy_os/metrics \
+  --cov=src/attune/telemetry \
+  --cov=src/attune/monitoring \
+  --cov=src/attune/metrics \
   --cov-report=html
 ```
 
@@ -317,9 +317,9 @@ pytest tests/behavioral/test_usage_tracker_behavioral.py::TestLLMCallTracking::t
 ### With Coverage Report
 ```bash
 pytest tests/behavioral/ \
-  --cov=src/empathy_os/telemetry \
-  --cov=src/empathy_os/monitoring \
-  --cov=src/empathy_os/metrics \
+  --cov=src/attune/telemetry \
+  --cov=src/attune/monitoring \
+  --cov=src/attune/metrics \
   --cov-report=term-missing \
   --cov-report=html
 ```
@@ -352,7 +352,7 @@ tests/behavioral/test_alerts_behavioral.py::TestWebhookValidation::test_allows_v
 If you see `ModuleNotFoundError`:
 ```bash
 # Ensure you're in the project root
-cd /path/to/empathy-framework
+cd /path/to/attune-ai
 
 # Run with python -m pytest
 python -m pytest tests/behavioral/test_usage_tracker_behavioral.py -v

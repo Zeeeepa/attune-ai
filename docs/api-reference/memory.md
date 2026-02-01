@@ -22,7 +22,7 @@ The memory system provides two tiers:
 ## Quick Start
 
 ```python
-from empathy_os.memory import UnifiedMemory
+from attune.memory import UnifiedMemory
 
 # Initialize with environment auto-detection
 memory = UnifiedMemory(user_id="agent@company.com")
@@ -94,7 +94,7 @@ UnifiedMemory(
 Direct access to Redis-backed short-term memory.
 
 ```python
-from empathy_os.memory import RedisShortTermMemory, AccessTier
+from attune.memory import RedisShortTermMemory, AccessTier
 
 # Create with connection
 memory = RedisShortTermMemory(
@@ -129,7 +129,7 @@ data = memory.get("sensitive_data")
 Encrypted, classified storage for sensitive patterns.
 
 ```python
-from empathy_os.memory import SecureMemDocsIntegration, Classification
+from attune.memory import SecureMemDocsIntegration, Classification
 
 # Create secure storage
 storage = SecureMemDocsIntegration(
@@ -163,7 +163,7 @@ pattern = storage.get_pattern(pattern_id)
 Cross-workflow intelligence through graph-based pattern storage.
 
 ```python
-from empathy_os.memory import MemoryGraph, EdgeType
+from attune.memory import MemoryGraph, EdgeType
 
 graph = MemoryGraph(path="memory_graph.json")
 
@@ -202,7 +202,7 @@ fixes = graph.find_related(bug_id, edge_types=[EdgeType.FIXED_BY])
 ### PII Scrubbing
 
 ```python
-from empathy_os.memory import PIIScrubber
+from attune.memory import PIIScrubber
 
 scrubber = PIIScrubber()
 
@@ -216,7 +216,7 @@ clean_text = scrubber.scrub(
 ### Secrets Detection
 
 ```python
-from empathy_os.memory import SecretsDetector
+from attune.memory import SecretsDetector
 
 detector = SecretsDetector()
 
@@ -229,7 +229,7 @@ if secrets:
 ### Audit Logging
 
 ```python
-from empathy_os.memory import AuditLogger
+from attune.memory import AuditLogger
 
 logger = AuditLogger(log_path="audit.log")
 
@@ -249,7 +249,7 @@ logger.log_access(
 Coordinate between multiple agent sessions.
 
 ```python
-from empathy_os.memory import CrossSessionCoordinator
+from attune.memory import CrossSessionCoordinator
 
 coordinator = CrossSessionCoordinator(redis_url="redis://localhost:6379")
 

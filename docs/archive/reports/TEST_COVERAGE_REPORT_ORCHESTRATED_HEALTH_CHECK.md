@@ -1,11 +1,11 @@
 ---
-description: Test Coverage Report: Orchestrated Health Check Workflow: **Date:** January 15, 2026 **Module:** `src/empathy_os/workflows/orchestrated_health_check.py` **Total
+description: Test Coverage Report: Orchestrated Health Check Workflow: **Date:** January 15, 2026 **Module:** `src/attune/workflows/orchestrated_health_check.py` **Total
 ---
 
 # Test Coverage Report: Orchestrated Health Check Workflow
 
 **Date:** January 15, 2026
-**Module:** `src/empathy_os/workflows/orchestrated_health_check.py`
+**Module:** `src/attune/workflows/orchestrated_health_check.py`
 **Total Lines:** 304 statements
 **Coverage Achieved:** 98.26% (Target: 70%+)
 **Tests Created:** 62 tests (30 existing + 32 new)
@@ -368,7 +368,7 @@ tests/unit/workflows/test_orchestrated_health_check_comprehensive.py .. [100%]
 ---------- coverage: platform darwin, python 3.10.11-final-0 ----------
 Name                                                    Stmts   Miss Branch BrPart   Cover
 -----------------------------------------------------------------------------------------
-src/empathy_os/workflows/orchestrated_health_check.py     304      4     98      1  98.26%
+src/attune/workflows/orchestrated_health_check.py     304      4     98      1  98.26%
 -----------------------------------------------------------------------------------------
 TOTAL                                                     304      4     98      1  98.26%
 

@@ -31,7 +31,7 @@ Phase 2 of the Enterprise Privacy Integration roadmap is now complete. All four 
 
 ### 1. PII Scrubbing Module
 
-**File:** `empathy_llm_toolkit/security/pii_scrubber.py` (642 lines, 21KB)
+**File:** `attune_llm/security/pii_scrubber.py` (642 lines, 21KB)
 
 **Features:**
 - 10 default PII patterns (email, phone, SSN, credit card, IP, address, MRN, patient ID)
@@ -49,7 +49,7 @@ Phase 2 of the Enterprise Privacy Integration roadmap is now complete. All four 
 
 ### 2. Secrets Detection Module
 
-**File:** `empathy_llm_toolkit/security/secrets_detector.py` (181 lines, 22KB)
+**File:** `attune_llm/security/secrets_detector.py` (181 lines, 22KB)
 
 **Features:**
 - 20+ built-in secret patterns (API keys, passwords, private keys, tokens, DB URLs)
@@ -67,7 +67,7 @@ Phase 2 of the Enterprise Privacy Integration roadmap is now complete. All four 
 
 ### 3. Audit Logging Framework
 
-**File:** `empathy_llm_toolkit/security/audit_logger.py` (910 lines)
+**File:** `attune_llm/security/audit_logger.py` (910 lines)
 
 **Features:**
 - JSON Lines format (append-only, one event per line)
@@ -87,7 +87,7 @@ Phase 2 of the Enterprise Privacy Integration roadmap is now complete. All four 
 
 ### 4. Secure MemDocs Integration
 
-**File:** `empathy_llm_toolkit/security/secure_memdocs.py` (1,179 lines, 39KB)
+**File:** `attune_llm/security/secure_memdocs.py` (1,179 lines, 39KB)
 
 **Features:**
 - Three-tier classification (PUBLIC/INTERNAL/SENSITIVE)
@@ -225,7 +225,7 @@ Multiple security layers:
 ## 📁 File Structure
 
 ```
-empathy_llm_toolkit/security/
+attune_llm/security/
 ├── __init__.py                          # Module exports
 ├── pii_scrubber.py                      # PII scrubbing (642 lines)
 ├── secrets_detector.py                  # Secrets detection (181 lines)
@@ -260,7 +260,7 @@ Documentation/
 ### Example 1: Basic PII Scrubbing
 
 ```python
-from empathy_llm_toolkit.security import PIIScrubber
+from attune_llm.security import PIIScrubber
 
 scrubber = PIIScrubber()
 
@@ -278,7 +278,7 @@ sanitized, detections = scrubber.scrub(content)
 ### Example 2: Secrets Detection
 
 ```python
-from empathy_llm_toolkit.security import SecretsDetector
+from attune_llm.security import SecretsDetector
 
 detector = SecretsDetector()
 
@@ -293,8 +293,8 @@ if secrets:
 ### Example 3: Secure Pattern Storage
 
 ```python
-from empathy_llm_toolkit.security import SecureMemDocsIntegration
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm.security import SecureMemDocsIntegration
+from attune_llm.claude_memory import ClaudeMemoryConfig
 
 config = ClaudeMemoryConfig(enabled=True)
 integration = SecureMemDocsIntegration(config)
@@ -318,9 +318,9 @@ result = integration.store_pattern(
 ### Example 4: Complete Integration with EmpathyLLM
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
-from empathy_llm_toolkit.security import SecureMemDocsIntegration
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig
+from attune_llm.security import SecureMemDocsIntegration
 
 # Load security policies from CLAUDE.md
 config = ClaudeMemoryConfig(

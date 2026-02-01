@@ -13,7 +13,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_llm_toolkit.code_health import (
+from attune_llm.code_health import (
     CHECK_WEIGHTS,
     DEFAULT_CONFIG,
     AutoFixer,

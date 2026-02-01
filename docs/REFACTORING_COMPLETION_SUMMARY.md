@@ -149,7 +149,7 @@ Successfully completed Phase 1 autonomous refactoring of Empathy Framework's lar
 
 ### Before Refactoring:
 ```
-src/empathy_os/memory/
+src/attune/memory/
 ├── long_term.py (1,498 lines - monolithic)
 ├── unified.py (1,281 lines - monolithic)
 └── control_panel.py (1,420 lines - mixed concerns)
@@ -157,7 +157,7 @@ src/empathy_os/memory/
 
 ### After Refactoring:
 ```
-src/empathy_os/memory/
+src/attune/memory/
 ├── long_term.py (921 lines - core logic)
 ├── long_term_types.py (99 lines - types)
 ├── encryption.py (159 lines - security)

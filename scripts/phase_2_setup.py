@@ -11,7 +11,7 @@ import json
 
 import structlog
 
-from empathy_os.pattern_library import Pattern, PatternLibrary
+from attune.pattern_library import Pattern, PatternLibrary
 
 logger = structlog.get_logger()
 
@@ -331,7 +331,7 @@ def cmd_init(args):
         ValueError: If output path is invalid or unsafe
     '''
     config_format = args.format
-    output_path = args.output or f"empathy.config.{config_format}"
+    output_path = args.output or f"attune.config.{config_format}"
 
     # Validate output path to prevent path traversal attacks
     validated_path = _validate_file_path(output_path)

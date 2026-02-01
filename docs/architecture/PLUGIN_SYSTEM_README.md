@@ -15,19 +15,19 @@ The Empathy Framework is now **modular**, with a public core and domain-specific
 ## Architecture
 
 ```
-📦 empathy-framework (CORE)
+📦 attune-ai (CORE)
    ├── EmpathyOS orchestrator
    ├── 5 empathy levels (abstract)
    ├── Pattern library (cross-domain learning)
    ├── Systems thinking (feedback loops, leverage points)
    └── Plugin system (registry, auto-discovery)
 
-📦 empathy-framework-software (PRIMARY PLUGIN)
+📦 attune-ai-software (PRIMARY PLUGIN)
    ├── 16+ Coach wizards
    ├── Security, performance, testing, architecture analysis
    └── Level 4 anticipatory code analysis
 
-📦 empathy-framework-healthcare (SECONDARY PLUGIN)
+📦 attune-ai-healthcare (SECONDARY PLUGIN)
    ├── Clinical wizards (SOAP, SBAR)
    ├── Compliance anticipation agents
    └── Regulatory gap analysis
@@ -37,19 +37,19 @@ The Empathy Framework is now **modular**, with a public core and domain-specific
 
 ```bash
 # Install core framework
-pip install empathy-framework
+pip install attune-ai
 
 # Install software development plugin (primary)
-pip install empathy-framework-software
+pip install attune-ai-software
 
 # Install healthcare plugin (optional)
-pip install empathy-framework-healthcare
+pip install attune-ai-healthcare
 ```
 
 ## Quick Start - Software Development
 
 ```python
-from empathy_os.plugins import get_global_registry
+from attune.plugins import get_global_registry
 
 # Auto-discover all installed plugins
 registry = get_global_registry()
@@ -117,13 +117,13 @@ Confidence: 0.8
 empathy-software analyze /path/to/repo --wizards security,performance,testing
 
 # Get plugin statistics
-empathy-framework plugins --stats
+attune-ai plugins --stats
 
 # List all wizards
-empathy-framework wizards --list
+attune-ai wizards --list
 
 # Find Level 4 (Anticipatory) wizards
-empathy-framework wizards --level 4
+attune-ai wizards --level 4
 ```
 
 ## Creating Your Own Plugin
@@ -146,7 +146,7 @@ my-domain-plugin/
 
 ```python
 # my_domain_plugin/plugin.py
-from empathy_os.plugins import BasePlugin, PluginMetadata, BaseWizard
+from attune.plugins import BasePlugin, PluginMetadata, BaseWizard
 from typing import Dict, Type
 
 class MyDomainPlugin(BasePlugin):
@@ -173,7 +173,7 @@ class MyDomainPlugin(BasePlugin):
 
 ```python
 # my_domain_plugin/wizards/my_wizard.py
-from empathy_os.plugins import BaseWizard
+from attune.plugins import BaseWizard
 from typing import Dict, Any, List
 
 class MyWizard(BaseWizard):
@@ -223,7 +223,7 @@ my_domain = "my_domain_plugin.plugin:MyDomainPlugin"
 pip install -e .  # Install in development mode
 
 # Plugin is auto-discovered!
-python -c "from empathy_os.plugins import get_global_registry; \
+python -c "from attune.plugins import get_global_registry; \
            print(get_global_registry().list_plugins())"
 # Output: ['software', 'healthcare', 'my_domain']
 ```
@@ -271,7 +271,7 @@ python -c "from empathy_os.plugins import get_global_registry; \
 Plugins are automatically discovered via entry points—no manual registration needed.
 
 ```python
-from empathy_os.plugins import get_global_registry
+from attune.plugins import get_global_registry
 
 registry = get_global_registry()
 # All installed plugins loaded automatically!
@@ -372,10 +372,10 @@ We welcome plugins for new domains:
 
 ## Resources
 
-- Documentation: https://empathy-framework.readthedocs.io
+- Documentation: https://attune-ai.readthedocs.io
 - Examples: `/examples` directory
 - Plugin Template: `/plugin-template` directory
-- GitHub: https://github.com/your-org/empathy-framework
+- GitHub: https://github.com/your-org/attune-ai
 
 ---
 

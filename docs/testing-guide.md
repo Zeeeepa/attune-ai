@@ -182,15 +182,15 @@ The Dashboard now shows these workflow buttons in a 2-column grid:
 
 1. **Check Python Environment:**
    ```bash
-   python -m empathy_os.cli workflow list
+   python -m attune.cli workflow list
    ```
    Should show all available workflows including new ones
 
 2. **Check Workflow Registration:**
    ```bash
-   python -m empathy_os.cli workflow run doc-gen --help
-   python -m empathy_os.cli workflow run release-prep --help
-   python -m empathy_os.cli workflow run secure-release --help
+   python -m attune.cli workflow run doc-gen --help
+   python -m attune.cli workflow run release-prep --help
+   python -m attune.cli workflow run secure-release --help
    ```
 
 3. **Check VSCode DevTools:**
@@ -201,7 +201,7 @@ The Dashboard now shows these workflow buttons in a 2-column grid:
 
 **Issue:** "Workflow not found"
 - **Cause:** Workflow not registered in backend
-- **Fix:** Check `src/empathy_os/workflows/__init__.py` includes the workflow
+- **Fix:** Check `src/attune/workflows/__init__.py` includes the workflow
 
 **Issue:** "No input provided"
 - **Cause:** Workflow config missing or incorrect

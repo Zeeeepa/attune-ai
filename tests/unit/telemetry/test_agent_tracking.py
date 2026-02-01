@@ -9,7 +9,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.telemetry.agent_tracking import AgentHeartbeat, HeartbeatCoordinator
+from attune.telemetry.agent_tracking import AgentHeartbeat, HeartbeatCoordinator
 
 
 class TestAgentHeartbeat:
@@ -76,7 +76,7 @@ class TestHeartbeatCoordinatorNoMemory:
     def test_init_no_memory(self):
         """Test initialization without memory backend."""
         # Patch UsageTracker at the source (where it's imported from)
-        with patch("empathy_os.telemetry.UsageTracker") as mock_tracker:
+        with patch("attune.telemetry.UsageTracker") as mock_tracker:
             mock_tracker.get_instance.side_effect = ImportError()
 
             coordinator = HeartbeatCoordinator()

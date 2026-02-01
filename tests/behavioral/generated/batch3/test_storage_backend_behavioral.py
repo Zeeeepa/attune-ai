@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.memory.storage_backend import MemDocsStorage
+from attune.memory.storage_backend import MemDocsStorage
 
 
 @pytest.fixture
@@ -132,7 +132,7 @@ class TestMemDocsStorageInitialization:
         assert nested_path.exists()
         assert storage.storage_dir == nested_path
 
-    @patch('empathy_os.memory.storage_backend.logger')
+    @patch('attune.memory.storage_backend.logger')
     def test_init_logs_initialization(self, mock_logger, temp_storage_dir):
         """Given a storage directory path
         When initializing MemDocsStorage
@@ -273,7 +273,7 @@ class TestMemDocsStorageStore:
         assert result is True
         assert non_existent_dir.exists()
 
-    @patch('empathy_os.memory.storage_backend._validate_file_path')
+    @patch('attune.memory.storage_backend._validate_file_path')
     def test_store_validates_file_path(self, mock_validate, storage_backend):
         """Given a pattern to store
         When storing the pattern
@@ -290,7 +290,7 @@ class TestMemDocsStorageStore:
         # Then
         mock_validate.assert_called_once_with(str(expected_path))
 
-    @patch('empathy_os.memory.storage_backend.logger')
+    @patch('attune.memory.storage_backend.logger')
     def test_store_logs_success(self, mock_logger, storage_backend):
         """Given a successful pattern storage
         When storing a pattern
@@ -322,7 +322,7 @@ class TestMemDocsStorageStore:
         with pytest.raises(PermissionError, match="Access denied"):
             storage_backend.store("test_id", "content", {})
 
-    @patch('empathy_os.memory.storage_backend.logger')
+    @patch('attune.memory.storage_backend.logger')
     @patch('builtins.open', side_effect=OSError("Write failed"))
     def test_store_logs_error_on_failure(self, mock_file, mock_logger, storage_backend):
         """Given a storage failure
@@ -452,7 +452,7 @@ class TestMemDocsStorageRetrieve:
         assert result["content"].startswith("ENCRYPTED:")
         assert result["metadata"]["encrypted"] is True
 
-    @patch('empathy_os.memory.storage_backend.logger')
+    @patch('attune.memory.storage_backend.logger')
     def test_retrieve_logs_warning_for_missing_pattern(self, mock_logger, storage_backend):
         """Given a non-existent pattern ID
         When retrieving the pattern
@@ -490,7 +490,7 @@ class TestMemDocsStorageRetrieve:
         assert result["content"] == content
 
     @patch('builtins.open', side_effect=OSError("Read error"))
-    @patch('empathy_os.memory.storage_backend.logger')
+    @patch('attune.memory.storage_backend.logger')
     def test_retrieve_logs_error_on_read_failure(self, mock_logger, mock_file, storage_backend):
         """Given a file read error
         When retrieving a pattern
@@ -532,7 +532,7 @@ class TestMemDocsStorageRetrieve:
             assert result["metadata"] == metadata
 
     @patch('builtins.open', side_effect=json.JSONDecodeError("Invalid JSON", "", 0))
-    @patch('empathy_os.memory.storage_backend.logger')
+    @patch('attune.memory.storage_backend.logger')
     def test_retrieve_handles_corrupted_json(self, mock_logger, mock_file, storage_backend):
         """Given a corrupted JSON file
         When retrieving the pattern

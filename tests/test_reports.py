@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/project_index/reports.py
+"""Tests for src/attune/project_index/reports.py
 
 Tests the ReportGenerator class which creates various reports
 from project index data including test gap, staleness, coverage,
@@ -7,13 +7,13 @@ health, and sprint planning reports.
 
 from datetime import datetime, timedelta
 
-from empathy_os.project_index.models import (
+from attune.project_index.models import (
     FileCategory,
     FileRecord,
     ProjectSummary,
     TestRequirement,
 )
-from empathy_os.project_index.reports import ReportGenerator
+from attune.project_index.reports import ReportGenerator
 
 
 class TestReportGeneratorInit:

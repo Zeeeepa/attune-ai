@@ -75,7 +75,7 @@ pytest -m "not llm"  # Skip LLM tests that require API key
 
 ## License Acknowledgment
 
-- [ ] I confirm that my contributions are made under the Fair Source License 0.9 and will automatically convert to Apache 2.0 on January 1, 2029
+- [ ] I confirm that my contributions are made under the Apache License 2.0
 - [ ] I have read and agree to the [Contributing Guidelines](../CONTRIBUTING.md)
 
 ---

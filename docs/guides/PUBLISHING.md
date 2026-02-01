@@ -83,7 +83,7 @@ source test_env/bin/activate  # On Windows: test_env\Scripts\activate
 pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ empathy[full]
 
 # Test import
-python -c "from empathy_os import EmpathyOS; print('Success!')"
+python -c "from attune import EmpathyOS; print('Success!')"
 
 # Deactivate and clean up
 deactivate
@@ -126,10 +126,10 @@ python -m venv verify_env
 source verify_env/bin/activate
 
 # Install from PyPI
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # Verify
-python -c "from empathy_os import EmpathyOS; print('Production package works!')"
+python -c "from attune import EmpathyOS; print('Production package works!')"
 
 # Clean up
 deactivate
@@ -181,15 +181,15 @@ After publishing, users can install with:
 
 ```bash
 # Minimal installation
-pip install empathy-framework
+pip install attune-ai
 
 # Transformative stack (recommended)
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # Specific components
-pip install empathy-framework[llm]       # LLM providers
-pip install empathy-framework[agents]    # LangChain agents
-pip install empathy-framework[all]       # Everything + dev tools
+pip install attune-ai[llm]       # LLM providers
+pip install attune-ai[agents]    # LangChain agents
+pip install attune-ai[all]       # Everything + dev tools
 
 # Development
 git clone https://github.com/Smart-AI-Memory/empathy.git
@@ -207,8 +207,8 @@ empathy/
 ├── README.md              # PyPI project description
 ├── LICENSE                # Fair Source 0.9
 ├── src/
-│   └── empathy_os/        # Main package
-├── empathy_llm_toolkit/   # LLM integrations
+│   └── attune/        # Main package
+├── attune_llm/   # LLM integrations
 ├── empathy_software_plugin/
 ├── empathy_healthcare_plugin/
 ├── coach_wizards/
@@ -234,7 +234,7 @@ Check [`MANIFEST.in`](MANIFEST.in) includes all necessary files.
 Verify package structure in [`pyproject.toml`](pyproject.toml):
 ```toml
 [tool.setuptools]
-packages = ["empathy_os", "empathy_llm_toolkit", ...]
+packages = ["attune", "attune_llm", ...]
 ```
 
 ## Version Numbering

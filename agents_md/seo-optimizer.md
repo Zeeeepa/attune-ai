@@ -571,7 +571,7 @@ python examples/seo_optimization/seo_agent.py --mode fix --no-interactive
 ### Using MetaOrchestrator
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 from examples.seo_optimization.seo_agent import SEOOptimizationTeam, SEOAgentConfig
 
 # Initialize orchestrator

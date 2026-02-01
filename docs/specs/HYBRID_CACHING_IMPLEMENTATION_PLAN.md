@@ -63,7 +63,7 @@ Implement hybrid response caching (hash-based + semantic similarity) to reduce A
 
 ## Component Specifications
 
-### **1. Base Cache Interface** (`src/empathy_os/cache/base.py`)
+### **1. Base Cache Interface** (`src/attune/cache/base.py`)
 
 **Status:** ✅ Implemented
 
@@ -85,7 +85,7 @@ class BaseCache(ABC):
 
 ---
 
-### **2. Hash-Only Cache** (`src/empathy_os/cache/hash_only.py`)
+### **2. Hash-Only Cache** (`src/attune/cache/hash_only.py`)
 
 **Status:** 🔄 Next to implement
 
@@ -119,7 +119,7 @@ result = await code_review.execute(diff="fix bug in auth.py")
 
 ---
 
-### **3. Hybrid Cache** (`src/empathy_os/cache/hybrid.py`)
+### **3. Hybrid Cache** (`src/attune/cache/hybrid.py`)
 
 **Status:** 🔄 To implement
 
@@ -176,7 +176,7 @@ result2 = await code_review.execute(diff="Added logging middleware to app.py")
 
 ---
 
-### **4. Storage Layer** (`src/empathy_os/cache/storage.py`)
+### **4. Storage Layer** (`src/attune/cache/storage.py`)
 
 **Status:** 🔄 To implement
 
@@ -225,7 +225,7 @@ class CacheStorage:
 
 ---
 
-### **5. Dependency Manager** (`src/empathy_os/cache/dependency_manager.py`)
+### **5. Dependency Manager** (`src/attune/cache/dependency_manager.py`)
 
 **Status:** 🔄 To implement
 
@@ -234,7 +234,7 @@ class CacheStorage:
 **User Experience:**
 ```bash
 # User installs base version
-pip install empathy-framework
+pip install attune-ai
 
 # First workflow run
 empathy workflow run code-review
@@ -285,7 +285,7 @@ cache:
 
 ---
 
-### **6. BaseWorkflow Integration** (`src/empathy_os/workflows/base.py`)
+### **6. BaseWorkflow Integration** (`src/attune/workflows/base.py`)
 
 **Status:** 🔄 To implement
 
@@ -303,12 +303,12 @@ class BaseWorkflow:
 
     def _maybe_setup_cache(self):
         """One-time prompt to install cache deps."""
-        from empathy_os.cache import auto_setup_cache
+        from attune.cache import auto_setup_cache
         auto_setup_cache()
 
     def _create_cache(self):
         """Create appropriate cache based on installed deps."""
-        from empathy_os.cache import create_cache
+        from attune.cache import create_cache
         return create_cache()
 
     async def _execute_stage(self, stage_name, prompt, model):
@@ -535,7 +535,7 @@ cache = [
 ]
 
 full = [
-    "empathy-framework[cache,developer,healthcare]",
+    "attune-ai[cache,developer,healthcare]",
 ]
 ```
 
@@ -601,7 +601,7 @@ full = [
 - ✅ 70% cache hit rate on code-review workflow
 - ✅ <100ms cache lookup overhead
 - ✅ Zero breaking changes (all existing tests pass)
-- ✅ User can install with `pip install empathy-framework[cache]`
+- ✅ User can install with `pip install attune-ai[cache]`
 - ✅ User can add cache later with `empathy install cache`
 - ✅ Cost report shows savings accurately
 - ✅ Works offline after initial model download

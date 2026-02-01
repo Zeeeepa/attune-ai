@@ -10,7 +10,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.workflows.keyboard_shortcuts.schema import (
+from attune.workflows.keyboard_shortcuts.schema import (
     KEYBOARD_LAYOUTS,
     RESERVED_KEYS,
     Category,

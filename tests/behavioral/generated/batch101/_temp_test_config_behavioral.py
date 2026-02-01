@@ -14,7 +14,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 
-# Create a mock ModelConfig class before importing EmpathyConfig
+# Create a mock ModelConfig class for tests
 class ModelConfig:
     def __init__(self, name=None, provider=None, **kwargs):
         self.name = name
@@ -22,13 +22,38 @@ class ModelConfig:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-# Mock the workflows.config module to provide ModelConfig
-workflows_config = MagicMock()
-workflows_config.ModelConfig = ModelConfig
-sys.modules['empathy_os.workflows'] = MagicMock()
-sys.modules['empathy_os.workflows.config'] = workflows_config
 
-from empathy_os.config import (
+@pytest.fixture(scope="module", autouse=True)
+def mock_workflows_module():
+    """Mock workflows module for tests that can't import it.
+
+    This fixture ensures proper cleanup of sys.modules to prevent pollution.
+    """
+    # Save original modules if they exist
+    original_workflows = sys.modules.get('attune.workflows')
+    original_workflows_config = sys.modules.get('attune.workflows.config')
+
+    # Mock the workflows.config module to provide ModelConfig
+    workflows_config = MagicMock()
+    workflows_config.ModelConfig = ModelConfig
+    sys.modules['attune.workflows'] = MagicMock()
+    sys.modules['attune.workflows.config'] = workflows_config
+
+    yield
+
+    # Cleanup: restore original modules
+    if original_workflows is not None:
+        sys.modules['attune.workflows'] = original_workflows
+    else:
+        sys.modules.pop('attune.workflows', None)
+
+    if original_workflows_config is not None:
+        sys.modules['attune.workflows.config'] = original_workflows_config
+    else:
+        sys.modules.pop('attune.workflows.config', None)
+
+
+from attune.config import (
     YAML_AVAILABLE,
     EmpathyConfig,
     _validate_file_path,
@@ -106,7 +131,7 @@ class TestValidateFilePath:
     def test_rejects_dangerous_system_paths(self):
         """Given a dangerous system path, when validating, then raises ValueError."""
         # Given
-        with patch('empathy_os.config.Path') as MockPath:
+        with patch('attune.config.Path') as MockPath:
             mock_instance = MagicMock()
             mock_resolved = MagicMock()
             mock_resolved.__str__ = MagicMock(return_value="/etc/passwd")
@@ -218,7 +243,7 @@ provider: openai
     def test_raises_import_error_when_yaml_not_available(self, tmp_path, monkeypatch):
         """Given PyYAML not installed, when loading YAML, then raises ImportError."""
         # Given
-        monkeypatch.setattr("empathy_os.config.YAML_AVAILABLE", False)
+        monkeypatch.setattr("attune.config.YAML_AVAILABLE", False)
         yaml_file = tmp_path / "config.yml"
         yaml_file.write_text("user_id: alice")
 
@@ -510,7 +535,7 @@ class TestEmpathyConfigToYaml:
     def test_raises_import_error_when_yaml_not_available(self, tmp_path, monkeypatch):
         """Given PyYAML not installed, when saving to YAML, then raises ImportError."""
         # Given
-        monkeypatch.setattr("empathy_os.config.YAML_AVAILABLE", False)
+        monkeypatch.setattr("attune.config.YAML_AVAILABLE", False)
         config = EmpathyConfig()
         output_file = tmp_path / "output.yml"
 

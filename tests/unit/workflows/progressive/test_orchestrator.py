@@ -2,13 +2,13 @@
 
 from datetime import datetime
 
-from empathy_os.workflows.progressive.core import (
+from attune.workflows.progressive.core import (
     EscalationConfig,
     FailureAnalysis,
     Tier,
     TierResult,
 )
-from empathy_os.workflows.progressive.orchestrator import MetaOrchestrator
+from attune.workflows.progressive.orchestrator import MetaOrchestrator
 
 
 class TestMetaOrchestrator:

@@ -28,12 +28,12 @@ This guide covers common issues, error messages, and solutions for the Empathy F
 
 ## Installation Issues
 
-### Issue: `pip install empathy-framework` fails
+### Issue: `pip install attune-ai` fails
 
 **Error Messages:**
 ```
-ERROR: Could not find a version that satisfies the requirement empathy-framework
-ERROR: No matching distribution found for empathy-framework
+ERROR: Could not find a version that satisfies the requirement attune-ai
+ERROR: No matching distribution found for attune-ai
 ```
 
 **Solutions:**
@@ -87,7 +87,7 @@ source empathy_env/bin/activate
 empathy_env\Scripts\activate
 
 # Install in clean environment
-pip install empathy-framework
+pip install attune-ai
 ```
 
 **2. Use requirements.txt for reproducible installs:**
@@ -100,7 +100,7 @@ pip install -r requirements.txt
 pip install langchain==0.1.0
 pip install anthropic==0.8.0
 pip install openai==1.6.0
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### Issue: Permission denied during installation
@@ -121,23 +121,23 @@ python -m venv ~/.empathy_env
 source ~/.empathy_env/bin/activate
 
 # Install without sudo
-pip install empathy-framework
+pip install attune-ai
 ```
 
 **Or use --user flag:**
 ```bash
-pip install --user empathy-framework
+pip install --user attune-ai
 ```
 
 ---
 
 ## Import and Module Errors
 
-### Issue: `ModuleNotFoundError: No module named 'empathy_llm_toolkit'`
+### Issue: `ModuleNotFoundError: No module named 'attune_llm'`
 
 **Error Message:**
 ```python
-ModuleNotFoundError: No module named 'empathy_llm_toolkit'
+ModuleNotFoundError: No module named 'attune_llm'
 ```
 
 **Solutions:**
@@ -145,7 +145,7 @@ ModuleNotFoundError: No module named 'empathy_llm_toolkit'
 **1. Verify installation:**
 ```bash
 pip list | grep empathy
-# Should show: empathy-framework x.x.x
+# Should show: attune-ai x.x.x
 ```
 
 **2. Check Python path:**
@@ -196,22 +196,22 @@ python -c "from coach_wizards import SecurityWizard; print('Success!')"
 
 **1. Check version compatibility:**
 ```bash
-pip show empathy-framework
+pip show attune-ai
 # Compare with documentation version
 ```
 
 **2. Update to latest version:**
 ```bash
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 ```
 
 **3. Check import statement matches docs:**
 ```python
 # Old (might be outdated):
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 # Current (check docs for latest):
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 ```
 
 ---
@@ -296,7 +296,7 @@ curl https://api.anthropic.com/v1/messages \
 from dotenv import load_dotenv
 load_dotenv()  # Call this BEFORE importing framework
 
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 ```
 
 **2. Export in shell before running:**
@@ -401,7 +401,7 @@ import nest_asyncio
 nest_asyncio.apply()
 
 import asyncio
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 async def main():
     llm = EmpathyLLM(provider="anthropic", target_level=4)
@@ -454,7 +454,7 @@ llm = EmpathyLLM(
 
 **2. Enable prompt caching (Claude only):**
 ```python
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider(
     use_prompt_caching=True,  # 90% faster on repeated prompts
@@ -591,7 +591,7 @@ for file_path in large_codebase:
 
 **2. Use Claude's 200K context window:**
 ```python
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider(
     model="claude-3-5-sonnet-20241022",  # 200K context
@@ -667,7 +667,7 @@ import pytest
 from unittest.mock import AsyncMock, patch
 
 @pytest.mark.asyncio
-@patch('empathy_llm_toolkit.providers.AnthropicProvider.generate')
+@patch('attune_llm.providers.AnthropicProvider.generate')
 async def test_interaction(mock_generate):
     # Mock LLM response
     mock_generate.return_value = AsyncMock(
@@ -857,12 +857,12 @@ FileNotFoundError: [Errno 2] No such file or directory: 'empathy.config.yml'
 
 **1. Generate default config:**
 ```bash
-empathy-framework init --format yaml --output empathy.config.yml
+attune-ai init --format yaml --output empathy.config.yml
 ```
 
 **2. Specify config path:**
 ```python
-from empathy_os.config import load_config
+from attune.config import load_config
 
 config = load_config("/absolute/path/to/empathy.config.yml")
 ```
@@ -875,7 +875,7 @@ export EMPATHY_CONFIDENCE_THRESHOLD=0.75
 ```
 
 ```python
-from empathy_os.config import EmpathyConfig
+from attune.config import EmpathyConfig
 
 config = EmpathyConfig.from_env()
 ```
@@ -892,7 +892,7 @@ ValueError: confidence_threshold must be between 0.0 and 1.0, got 1.5
 
 **1. Validate configuration:**
 ```python
-from empathy_os.config import EmpathyConfig
+from attune.config import EmpathyConfig
 
 config = EmpathyConfig(
     target_level=4,  # Must be 1-5
@@ -1111,14 +1111,14 @@ When reporting issues, include:
 # System info
 uname -a
 python --version
-pip show empathy-framework
+pip show attune-ai
 
 # Environment
 echo $ANTHROPIC_API_KEY | cut -c1-10  # First 10 chars only
 echo $OPENAI_API_KEY | cut -c1-10
 
 # Test imports
-python -c "from empathy_llm_toolkit import EmpathyLLM; print('Core: OK')"
+python -c "from attune_llm import EmpathyLLM; print('Core: OK')"
 python -c "from coach_wizards import SecurityWizard; print('Wizards: OK')"
 ```
 

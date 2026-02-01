@@ -10,7 +10,7 @@ import time
 from datetime import datetime, timedelta
 from unittest.mock import Mock, patch
 
-from empathy_os.models.fallback import (
+from attune.models.fallback import (
     CircuitBreaker,
     CircuitBreakerState,
     FallbackPolicy,
@@ -54,7 +54,7 @@ class TestFallbackStrategy:
 class TestFallbackStep:
     """Test suite for FallbackStep dataclass."""
 
-    @patch("empathy_os.models.fallback.get_model")
+    @patch("attune.models.fallback.get_model")
     def test_given_valid_provider_and_tier_when_creating_fallback_step_then_initializes_correctly(
         self, mock_get_model
     ):
@@ -74,7 +74,7 @@ class TestFallbackStep:
         assert step.tier == tier
         assert step.description == description
 
-    @patch("empathy_os.models.fallback.get_model")
+    @patch("attune.models.fallback.get_model")
     def test_given_fallback_step_when_accessing_model_id_then_returns_correct_id(
         self, mock_get_model
     ):
@@ -92,7 +92,7 @@ class TestFallbackStep:
         assert model_id == "claude-3-sonnet"
         mock_get_model.assert_called_once_with("anthropic", "capable")
 
-    @patch("empathy_os.models.fallback.get_model")
+    @patch("attune.models.fallback.get_model")
     def test_given_nonexistent_model_when_accessing_model_id_then_returns_empty_string(
         self, mock_get_model
     ):
@@ -326,21 +326,41 @@ class TestFallbackPolicy:
 
 
 class TestCircuitBreakerState:
-    """Test suite for CircuitBreakerState enum."""
+    """Test suite for CircuitBreakerState dataclass."""
 
-    def test_given_circuit_breaker_state_when_accessing_values_then_returns_correct_strings(
+    def test_given_circuit_breaker_state_when_creating_then_initializes_with_defaults(
         self,
     ):
-        """Verify CircuitBreakerState enum values."""
+        """Verify CircuitBreakerState initializes with default values."""
         # Given/When
-        closed = CircuitBreakerState.CLOSED
-        open_state = CircuitBreakerState.OPEN
-        half_open = CircuitBreakerState.HALF_OPEN
+        state = CircuitBreakerState()
 
         # Then
-        assert closed.value == "closed"
-        assert open_state.value == "open"
-        assert half_open.value == "half_open"
+        assert state.failure_count == 0
+        assert state.last_failure is None
+        assert state.is_open is False
+        assert state.opened_at is None
+
+    def test_given_circuit_breaker_state_when_creating_with_values_then_stores_values(
+        self,
+    ):
+        """Verify CircuitBreakerState accepts custom values."""
+        # Given
+        now = datetime.now()
+
+        # When
+        state = CircuitBreakerState(
+            failure_count=5,
+            last_failure=now,
+            is_open=True,
+            opened_at=now
+        )
+
+        # Then
+        assert state.failure_count == 5
+        assert state.last_failure == now
+        assert state.is_open is True
+        assert state.opened_at == now
 
 
 class TestCircuitBreaker:
@@ -351,18 +371,13 @@ class TestCircuitBreaker:
     ):
         """Verify CircuitBreaker uses correct default values."""
         # Given/When
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
+        cb = CircuitBreaker()
 
         # Then
-        assert cb.provider == "anthropic"
-        assert cb.tier == "capable"
         assert cb.failure_threshold == 5
-        assert cb.success_threshold == 2
-        assert cb.timeout_seconds == 60
-        assert cb.state == CircuitBreakerState.CLOSED
-        assert cb.failure_count == 0
-        assert cb.success_count == 0
-        assert cb.last_failure_time is None
+        assert cb.recovery_timeout == timedelta(seconds=60)
+        assert cb.half_open_calls == 1
+        assert cb._states == {}
 
     def test_given_custom_params_when_creating_circuit_breaker_then_stores_values(
         self,
@@ -370,178 +385,165 @@ class TestCircuitBreaker:
         """Verify CircuitBreaker accepts custom parameters."""
         # Given/When
         cb = CircuitBreaker(
-            provider="openai",
-            tier="premium",
             failure_threshold=10,
-            success_threshold=3,
-            timeout_seconds=120,
+            recovery_timeout_seconds=120,
+            half_open_calls=2,
         )
 
         # Then
-        assert cb.provider == "openai"
-        assert cb.tier == "premium"
         assert cb.failure_threshold == 10
-        assert cb.success_threshold == 3
-        assert cb.timeout_seconds == 120
+        assert cb.recovery_timeout == timedelta(seconds=120)
+        assert cb.half_open_calls == 2
 
     def test_given_closed_state_when_recording_success_then_resets_failure_count(
         self,
     ):
         """Verify recording success resets failure count."""
         # Given
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
-        cb.failure_count = 3
+        cb = CircuitBreaker()
+        provider = "anthropic"
+        tier = "capable"
+
+        # Manually set failure count
+        state = cb._get_state(provider, tier)
+        state.failure_count = 3
 
         # When
-        cb.record_success()
+        cb.record_success(provider, tier)
 
         # Then
-        assert cb.failure_count == 0
-        assert cb.success_count == 0
-        assert cb.state == CircuitBreakerState.CLOSED
+        state = cb._get_state(provider, tier)
+        assert state.failure_count == 0
+        assert state.is_open is False
+        assert state.opened_at is None
 
     def test_given_closed_state_when_recording_failures_then_opens_circuit(self):
         """Verify circuit opens after threshold failures."""
         # Given
-        cb = CircuitBreaker(
-            provider="anthropic", tier="capable", failure_threshold=3
-        )
+        cb = CircuitBreaker(failure_threshold=3)
+        provider = "anthropic"
+        tier = "capable"
 
         # When
         for _ in range(3):
-            cb.record_failure()
+            cb.record_failure(provider, tier)
 
         # Then
-        assert cb.state == CircuitBreakerState.OPEN
-        assert cb.failure_count == 3
-        assert cb.last_failure_time is not None
+        state = cb._get_state(provider, tier)
+        assert state.is_open is True
+        assert state.failure_count == 3
+        assert state.last_failure is not None
 
     def test_given_closed_state_when_recording_below_threshold_then_stays_closed(
         self,
     ):
         """Verify circuit stays closed below failure threshold."""
         # Given
-        cb = CircuitBreaker(
-            provider="anthropic", tier="capable", failure_threshold=5
-        )
+        cb = CircuitBreaker(failure_threshold=5)
+        provider = "anthropic"
+        tier = "capable"
 
         # When
         for _ in range(4):
-            cb.record_failure()
+            cb.record_failure(provider, tier)
 
         # Then
-        assert cb.state == CircuitBreakerState.CLOSED
-        assert cb.failure_count == 4
+        state = cb._get_state(provider, tier)
+        assert state.is_open is False
+        assert state.failure_count == 4
 
-    def test_given_open_state_when_timeout_not_elapsed_then_can_request_returns_false(
+    def test_given_open_state_when_timeout_not_elapsed_then_is_available_returns_false(
         self,
     ):
-        """Verify can_request returns False when circuit is open and timeout not elapsed."""
+        """Verify is_available returns False when circuit is open and timeout not elapsed."""
         # Given
-        cb = CircuitBreaker(
-            provider="anthropic", tier="capable", timeout_seconds=60
-        )
-        cb.state = CircuitBreakerState.OPEN
-        cb.last_failure_time = datetime.now()
+        cb = CircuitBreaker(recovery_timeout_seconds=60)
+        provider = "anthropic"
+        tier = "capable"
+
+        state = cb._get_state(provider, tier)
+        state.is_open = True
+        state.opened_at = datetime.now()
 
         # When
-        result = cb.can_request()
+        result = cb.is_available(provider, tier)
 
         # Then
         assert result is False
 
-    def test_given_open_state_when_timeout_elapsed_then_transitions_to_half_open(
+    def test_given_open_state_when_timeout_elapsed_then_is_available_returns_true(
         self,
     ):
-        """Verify circuit transitions to half-open after timeout."""
+        """Verify circuit allows calls after timeout (half-open behavior)."""
         # Given
-        cb = CircuitBreaker(
-            provider="anthropic", tier="capable", timeout_seconds=1
-        )
-        cb.state = CircuitBreakerState.OPEN
-        cb.last_failure_time = datetime.now() - timedelta(seconds=2)
+        cb = CircuitBreaker(recovery_timeout_seconds=1)
+        provider = "anthropic"
+        tier = "capable"
+
+        state = cb._get_state(provider, tier)
+        state.is_open = True
+        state.opened_at = datetime.now() - timedelta(seconds=2)
 
         # When
-        result = cb.can_request()
-
-        # Then
-        assert result is True
-        assert cb.state == CircuitBreakerState.HALF_OPEN
-        assert cb.failure_count == 0
-        assert cb.success_count == 0
-
-    def test_given_half_open_state_when_recording_success_then_increments_success_count(
-        self,
-    ):
-        """Verify success count increments in half-open state."""
-        # Given
-        cb = CircuitBreaker(
-            provider="anthropic", tier="capable", success_threshold=2
-        )
-        cb.state = CircuitBreakerState.HALF_OPEN
-
-        # When
-        cb.record_success()
-
-        # Then
-        assert cb.success_count == 1
-        assert cb.state == CircuitBreakerState.HALF_OPEN
-
-    def test_given_half_open_state_when_reaching_success_threshold_then_closes_circuit(
-        self,
-    ):
-        """Verify circuit closes after reaching success threshold."""
-        # Given
-        cb = CircuitBreaker(
-            provider="anthropic", tier="capable", success_threshold=2
-        )
-        cb.state = CircuitBreakerState.HALF_OPEN
-
-        # When
-        cb.record_success()
-        cb.record_success()
-
-        # Then
-        assert cb.state == CircuitBreakerState.CLOSED
-        assert cb.success_count == 0
-        assert cb.failure_count == 0
-
-    def test_given_half_open_state_when_recording_failure_then_opens_circuit(
-        self,
-    ):
-        """Verify circuit opens on failure in half-open state."""
-        # Given
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
-        cb.state = CircuitBreakerState.HALF_OPEN
-
-        # When
-        cb.record_failure()
-
-        # Then
-        assert cb.state == CircuitBreakerState.OPEN
-        assert cb.failure_count == 1
-        assert cb.success_count == 0
-        assert cb.last_failure_time is not None
-
-    def test_given_closed_state_when_can_request_then_returns_true(self):
-        """Verify can_request returns True for closed state."""
-        # Given
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
-
-        # When
-        result = cb.can_request()
+        result = cb.is_available(provider, tier)
 
         # Then
         assert result is True
 
-    def test_given_half_open_state_when_can_request_then_returns_true(self):
-        """Verify can_request returns True for half-open state."""
+    def test_given_circuit_when_recording_success_then_resets_state(
+        self,
+    ):
+        """Verify success resets circuit state."""
         # Given
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
-        cb.state = CircuitBreakerState.HALF_OPEN
+        cb = CircuitBreaker()
+        provider = "anthropic"
+        tier = "capable"
+
+        state = cb._get_state(provider, tier)
+        state.is_open = True
+        state.failure_count = 5
 
         # When
-        result = cb.can_request()
+        cb.record_success(provider, tier)
+
+        # Then
+        state = cb._get_state(provider, tier)
+        assert state.failure_count == 0
+        assert state.is_open is False
+        assert state.opened_at is None
+
+    def test_given_circuit_when_recording_failure_then_increments_count(
+        self,
+    ):
+        """Verify failure increments count and opens circuit at threshold."""
+        # Given
+        cb = CircuitBreaker(failure_threshold=2)
+        provider = "anthropic"
+        tier = "capable"
+
+        # When
+        cb.record_failure(provider, tier)
+        state = cb._get_state(provider, tier)
+        assert state.failure_count == 1
+        assert state.is_open is False
+
+        cb.record_failure(provider, tier)
+        state = cb._get_state(provider, tier)
+
+        # Then
+        assert state.failure_count == 2
+        assert state.is_open is True
+        assert state.opened_at is not None
+
+    def test_given_closed_state_when_is_available_then_returns_true(self):
+        """Verify is_available returns True for closed state."""
+        # Given
+        cb = CircuitBreaker()
+        provider = "anthropic"
+        tier = "capable"
+
+        # When
+        result = cb.is_available(provider, tier)
 
         # Then
         assert result is True
@@ -551,37 +553,44 @@ class TestCircuitBreaker:
     ):
         """Verify reset method restores initial state."""
         # Given
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
-        cb.state = CircuitBreakerState.OPEN
-        cb.failure_count = 5
-        cb.success_count = 2
-        cb.last_failure_time = datetime.now()
+        cb = CircuitBreaker()
+        provider = "anthropic"
+        tier = "capable"
+
+        state = cb._get_state(provider, tier)
+        state.is_open = True
+        state.failure_count = 5
+        state.last_failure = datetime.now()
 
         # When
-        cb.reset()
+        cb.reset(provider, tier)
 
         # Then
-        assert cb.state == CircuitBreakerState.CLOSED
-        assert cb.failure_count == 0
-        assert cb.success_count == 0
-        assert cb.last_failure_time is None
+        state = cb._get_state(provider, tier)
+        assert state.failure_count == 0
+        assert state.is_open is False
+        assert state.last_failure is None
+        assert state.opened_at is None
 
-    def test_given_open_state_with_no_last_failure_time_when_can_request_then_transitions_to_half_open(
+    def test_given_open_state_with_no_opened_at_when_is_available_then_returns_true(
         self,
     ):
-        """Verify handling of open state without last_failure_time."""
+        """Verify handling of open state without opened_at."""
         # Given
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
-        cb.state = CircuitBreakerState.OPEN
-        cb.last_failure_time = None
+        cb = CircuitBreaker()
+        provider = "anthropic"
+        tier = "capable"
+
+        state = cb._get_state(provider, tier)
+        state.is_open = True
+        state.opened_at = None
 
         # When
-        result = cb.can_request()
+        result = cb.is_available(provider, tier)
 
         # Then
-        # Should transition to half-open since we can't determine timeout
-        assert result is True
-        assert cb.state == CircuitBreakerState.HALF_OPEN
+        # Should return False since circuit is open
+        assert result is False
 
 
 class TestRetryPolicy:
@@ -593,11 +602,11 @@ class TestRetryPolicy:
         policy = RetryPolicy()
 
         # Then
-        assert policy.max_attempts == 3
+        assert policy.max_retries == 3
         assert policy.initial_delay_ms == 1000
         assert policy.max_delay_ms == 30000
-        assert policy.exponential_base == 2.0
-        assert policy.jitter == True
+        assert policy.backoff_multiplier == 2.0
+        assert policy.exponential_backoff is True
 
     def test_given_custom_params_when_creating_retry_policy_then_stores_values(
         self,
@@ -605,150 +614,124 @@ class TestRetryPolicy:
         """Verify RetryPolicy accepts custom parameters."""
         # Given/When
         policy = RetryPolicy(
-            max_attempts=5,
+            max_retries=5,
             initial_delay_ms=500,
             max_delay_ms=60000,
-            exponential_base=3.0,
-            jitter=False,
+            backoff_multiplier=3.0,
+            exponential_backoff=False,
         )
 
         # Then
-        assert policy.max_attempts == 5
+        assert policy.max_retries == 5
         assert policy.initial_delay_ms == 500
         assert policy.max_delay_ms == 60000
-        assert policy.exponential_base == 3.0
-        assert policy.jitter is False
+        assert policy.backoff_multiplier == 3.0
+        assert policy.exponential_backoff is False
 
-    def test_given_first_attempt_when_getting_delay_then_returns_initial_delay(
+    def test_given_first_attempt_when_getting_delay_ms_then_returns_initial_delay(
         self,
     ):
         """Verify first retry uses initial delay."""
         # Given
-        policy = RetryPolicy(initial_delay_ms=1000, jitter=False)
+        policy = RetryPolicy(initial_delay_ms=1000, exponential_backoff=False)
 
         # When
-        delay = policy.get_delay(attempt=1)
+        delay = policy.get_delay_ms(attempt=1)
 
         # Then
-        assert delay == 1.0  # 1000ms = 1.0s
+        assert delay == 1000
 
-    def test_given_multiple_attempts_when_getting_delay_then_applies_exponential_backoff(
+    def test_given_multiple_attempts_when_getting_delay_ms_then_applies_exponential_backoff(
         self,
     ):
         """Verify exponential backoff is applied correctly."""
         # Given
         policy = RetryPolicy(
-            initial_delay_ms=1000, exponential_base=2.0, jitter=False
+            initial_delay_ms=1000,
+            backoff_multiplier=2.0,
+            exponential_backoff=True
         )
 
         # When
-        delay1 = policy.get_delay(attempt=1)
-        delay2 = policy.get_delay(attempt=2)
-        delay3 = policy.get_delay(attempt=3)
+        delay1 = policy.get_delay_ms(attempt=1)
+        delay2 = policy.get_delay_ms(attempt=2)
+        delay3 = policy.get_delay_ms(attempt=3)
 
         # Then
-        assert delay1 == 1.0  # 1000ms
-        assert delay2 == 2.0  # 1000 * 2^1
-        assert delay3 == 4.0  # 1000 * 2^2
+        assert delay1 == 1000  # 1000ms
+        assert delay2 == 2000  # 1000 * 2^1
+        assert delay3 == 4000  # 1000 * 2^2
 
-    def test_given_max_delay_when_getting_delay_then_caps_at_max(self):
+    def test_given_max_delay_when_getting_delay_ms_then_caps_at_max(self):
         """Verify delay is capped at max_delay_ms."""
         # Given
         policy = RetryPolicy(
             initial_delay_ms=1000,
             max_delay_ms=5000,
-            exponential_base=2.0,
-            jitter=False,
+            backoff_multiplier=2.0,
+            exponential_backoff=True,
         )
 
         # When
-        delay = policy.get_delay(attempt=10)  # Would be 1000 * 2^9 = 512000ms
+        delay = policy.get_delay_ms(attempt=10)  # Would be 1000 * 2^9 = 512000ms
 
         # Then
-        assert delay == 5.0  # Capped at 5000ms = 5.0s
+        assert delay == 5000  # Capped at 5000ms
 
-    def test_given_jitter_enabled_when_getting_delay_then_adds_randomness(self):
-        """Verify jitter adds randomness to delay."""
-        # Given
-        policy = RetryPolicy(initial_delay_ms=1000, jitter=True)
-
-        # When
-        delays = [policy.get_delay(attempt=1) for _ in range(10)]
-
-        # Then
-        # Not all delays should be exactly 1.0
-        assert len(set(delays)) > 1
-        # All delays should be between 0.5 and 1.5 (50% jitter)
-        for delay in delays:
-            assert 0.5 <= delay <= 1.5
-
-    def test_given_jitter_disabled_when_getting_delay_then_returns_exact_value(
+    def test_given_exponential_backoff_disabled_when_getting_delay_ms_then_returns_constant(
         self,
     ):
-        """Verify no jitter returns exact delay values."""
+        """Verify constant delay when exponential backoff is disabled."""
         # Given
-        policy = RetryPolicy(initial_delay_ms=1000, jitter=False)
+        policy = RetryPolicy(initial_delay_ms=1000, exponential_backoff=False)
 
         # When
-        delays = [policy.get_delay(attempt=1) for _ in range(10)]
+        delay1 = policy.get_delay_ms(attempt=1)
+        delay2 = policy.get_delay_ms(attempt=2)
+        delay3 = policy.get_delay_ms(attempt=3)
 
         # Then
-        # All delays should be exactly 1.0
-        assert all(delay == 1.0 for delay in delays)
+        assert delay1 == 1000
+        assert delay2 == 1000
+        assert delay3 == 1000
 
-    def test_given_zero_attempt_when_getting_delay_then_returns_initial_delay(
-        self,
-    ):
-        """Verify attempt 0 uses initial delay."""
+    def test_given_should_retry_when_below_max_retries_then_returns_true(self):
+        """Verify should_retry returns True below max retries."""
         # Given
-        policy = RetryPolicy(initial_delay_ms=1000, jitter=False)
-
-        # When
-        delay = policy.get_delay(attempt=0)
-
-        # Then
-        assert delay == 1.0
-
-    def test_given_negative_attempt_when_getting_delay_then_returns_initial_delay(
-        self,
-    ):
-        """Verify negative attempt uses initial delay."""
-        # Given
-        policy = RetryPolicy(initial_delay_ms=1000, jitter=False)
-
-        # When
-        delay = policy.get_delay(attempt=-1)
-
-        # Then
-        assert delay == 1.0
-
-    def test_given_should_retry_when_below_max_attempts_then_returns_true(self):
-        """Verify should_retry returns True below max attempts."""
-        # Given
-        policy = RetryPolicy(max_attempts=3)
+        policy = RetryPolicy(max_retries=3)
 
         # When/Then
-        assert policy.should_retry(attempt=1) is True
-        assert policy.should_retry(attempt=2) is True
+        assert policy.should_retry("rate_limit", 0) is True
+        assert policy.should_retry("rate_limit", 1) is True
+        assert policy.should_retry("rate_limit", 2) is True
 
-    def test_given_should_retry_when_at_max_attempts_then_returns_false(self):
-        """Verify should_retry returns False at max attempts."""
+    def test_given_should_retry_when_at_max_retries_then_returns_false(self):
+        """Verify should_retry returns False at max retries."""
         # Given
-        policy = RetryPolicy(max_attempts=3)
+        policy = RetryPolicy(max_retries=3)
 
         # When/Then
-        assert policy.should_retry(attempt=3) is False
+        assert policy.should_retry("rate_limit", 3) is False
 
-    def test_given_should_retry_when_exceeding_max_attempts_then_returns_false(
+    def test_given_should_retry_when_exceeding_max_retries_then_returns_false(
         self,
     ):
-        """Verify should_retry returns False beyond max attempts."""
+        """Verify should_retry returns False beyond max retries."""
         # Given
-        policy = RetryPolicy(max_attempts=3)
+        policy = RetryPolicy(max_retries=3)
 
         # When/Then
-        assert policy.should_retry(attempt=4) is False
-        assert policy.should_retry(attempt=10) is False
+        assert policy.should_retry("rate_limit", 4) is False
+        assert policy.should_retry("rate_limit", 10) is False
+
+    def test_given_should_retry_when_error_not_retryable_then_returns_false(self):
+        """Verify should_retry returns False for non-retryable errors."""
+        # Given
+        policy = RetryPolicy(max_retries=3)
+
+        # When/Then
+        assert policy.should_retry("unknown", 1) is False
+        assert policy.should_retry("validation_error", 1) is False
 
     @patch("time.sleep")
     def test_given_retry_policy_when_executing_with_sleep_then_waits_between_retries(
@@ -757,56 +740,60 @@ class TestRetryPolicy:
         """Verify retry delays are applied between attempts."""
         # Given
         policy = RetryPolicy(
-            max_attempts=3, initial_delay_ms=1000, jitter=False
+            max_retries=3, initial_delay_ms=1000, exponential_backoff=False
         )
 
         # When
         for attempt in range(1, 3):
-            if policy.should_retry(attempt):
-                delay = policy.get_delay(attempt)
-                time.sleep(delay)
+            if policy.should_retry("rate_limit", attempt):
+                delay_ms = policy.get_delay_ms(attempt)
+                time.sleep(delay_ms / 1000)
 
         # Then
         assert mock_sleep.call_count == 2
 
-    def test_given_custom_exponential_base_when_getting_delay_then_uses_custom_base(
+    def test_given_custom_backoff_multiplier_when_getting_delay_ms_then_uses_custom_multiplier(
         self,
     ):
-        """Verify custom exponential base is used."""
+        """Verify custom backoff multiplier is used."""
         # Given
         policy = RetryPolicy(
-            initial_delay_ms=1000, exponential_base=3.0, jitter=False
+            initial_delay_ms=1000,
+            backoff_multiplier=3.0,
+            exponential_backoff=True
         )
 
         # When
-        delay1 = policy.get_delay(attempt=1)
-        delay2 = policy.get_delay(attempt=2)
+        delay1 = policy.get_delay_ms(attempt=1)
+        delay2 = policy.get_delay_ms(attempt=2)
 
         # Then
-        assert delay1 == 1.0  # 1000ms
-        assert delay2 == 3.0  # 1000 * 3^1
+        assert delay1 == 1000  # 1000ms
+        assert delay2 == 3000  # 1000 * 3^1
 
-    def test_given_very_large_attempt_when_getting_delay_then_handles_overflow(
+    def test_given_very_large_attempt_when_getting_delay_ms_then_handles_overflow(
         self,
     ):
         """Verify handling of very large attempt numbers."""
         # Given
         policy = RetryPolicy(
-            initial_delay_ms=1000, max_delay_ms=30000, jitter=False
+            initial_delay_ms=1000,
+            max_delay_ms=30000,
+            exponential_backoff=True
         )
 
         # When
-        delay = policy.get_delay(attempt=1000)
+        delay = policy.get_delay_ms(attempt=1000)
 
         # Then
         # Should be capped at max_delay
-        assert delay == 30.0
+        assert delay == 30000
 
 
 class TestIntegration:
     """Integration tests for fallback components."""
 
-    @patch("empathy_os.models.fallback.get_model")
+    @patch("attune.models.fallback.get_model")
     def test_given_fallback_policy_with_circuit_breaker_when_provider_fails_then_uses_fallback(
         self, mock_get_model
     ):
@@ -825,17 +812,20 @@ class TestIntegration:
                 FallbackStep("anthropic", "cheap", "Fallback"),
             ],
         )
-        cb = CircuitBreaker(provider="anthropic", tier="capable")
+        cb = CircuitBreaker(failure_threshold=5)
+        provider = "anthropic"
+        tier = "capable"
 
         # When
         # Simulate failures to open circuit
         for _ in range(5):
-            cb.record_failure()
+            cb.record_failure(provider, tier)
 
         chain = policy.get_fallback_chain()
+        state = cb._get_state(provider, tier)
 
         # Then
-        assert cb.state == CircuitBreakerState.OPEN
+        assert state.is_open is True
         assert len(chain) == 2
         assert chain[1].tier == "cheap"
 
@@ -844,7 +834,7 @@ class TestIntegration:
     ):
         """Verify retry policy integrates with fallback policy."""
         # Given
-        retry_policy = RetryPolicy(max_attempts=3)
+        retry_policy = RetryPolicy(max_retries=3)
         fallback_policy = FallbackPolicy(
             strategy=FallbackStrategy.CUSTOM,
             custom_chain=[
@@ -855,11 +845,11 @@ class TestIntegration:
 
         # When
         attempt = 0
-        while retry_policy.should_retry(attempt):
+        while retry_policy.should_retry("rate_limit", attempt):
             attempt += 1
 
         # If retries exhausted, use fallback
-        if attempt >= retry_policy.max_attempts:
+        if attempt >= retry_policy.max_retries:
             chain = fallback_policy.get_fallback_chain()
 
         # Then
@@ -873,7 +863,7 @@ class TestIntegration:
         """Verify complete fallback scenario with retries and circuit breaker."""
         # Given
         retry_policy = RetryPolicy(
-            max_attempts=2, initial_delay_ms=100, jitter=False
+            max_retries=5, initial_delay_ms=100, exponential_backoff=False
         )
         fallback_policy = FallbackPolicy(
             strategy=FallbackStrategy.CUSTOM,
@@ -883,32 +873,26 @@ class TestIntegration:
                 FallbackStep("anthropic", "cheap", "Tertiary"),
             ],
         )
-        circuit_breakers = {
-            ("anthropic", "premium"): CircuitBreaker(
-                "anthropic", "premium"
-            ),
-            ("anthropic", "capable"): CircuitBreaker(
-                "anthropic", "capable"
-            ),
-            ("anthropic", "cheap"): CircuitBreaker("anthropic", "cheap"),
-        }
+        # Set failure threshold to match max_retries to ensure circuit opens
+        cb = CircuitBreaker(failure_threshold=5)
 
         # When
         chain = fallback_policy.get_fallback_chain()
         for step in chain:
-            cb = circuit_breakers[(step.provider, step.tier)]
             attempt = 0
 
-            while retry_policy.should_retry(attempt) and cb.can_request():
+            while retry_policy.should_retry("rate_limit", attempt) and cb.is_available(step.provider, step.tier):
                 attempt += 1
                 # Simulate failure
-                cb.record_failure()
-                if retry_policy.should_retry(attempt):
-                    delay = retry_policy.get_delay(attempt)
-                    time.sleep(delay)
+                cb.record_failure(step.provider, step.tier)
+                if retry_policy.should_retry("rate_limit", attempt):
+                    delay_ms = retry_policy.get_delay_ms(attempt)
+                    time.sleep(delay_ms / 1000)
 
         # Then
         assert len(chain) == 3
-        # All circuit breakers should be open after failures
-        for cb in circuit_breakers.values():
-            assert cb.state == CircuitBreakerState.OPEN
+        # All provider:tier combinations should be open after 5 failures each
+        for step in chain:
+            state = cb._get_state(step.provider, step.tier)
+            assert state.is_open is True
+            assert state.failure_count == 5

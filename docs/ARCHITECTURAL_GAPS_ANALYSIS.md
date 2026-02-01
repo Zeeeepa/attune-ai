@@ -136,7 +136,7 @@ plan = ExecutionPlan(
 
 **Expected:**
 ```python
-from empathy_os.memory.long_term import LongTermMemory
+from attune.memory.long_term import LongTermMemory
 
 memory = LongTermMemory(storage_path="/path")
 memory.store("key", data)
@@ -200,7 +200,7 @@ memory.sync_tiers("key")
 
 **Expected:**
 ```python
-from empathy_os.models.registry import ModelRegistry
+from attune.models.registry import ModelRegistry
 
 registry = ModelRegistry()
 model = registry.get_model_by_tier("CHEAP")

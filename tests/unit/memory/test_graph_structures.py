@@ -11,8 +11,8 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.memory.edges import REVERSE_EDGE_TYPES, WORKFLOW_EDGE_PATTERNS, Edge, EdgeType
-from empathy_os.memory.nodes import (
+from attune.memory.edges import REVERSE_EDGE_TYPES, WORKFLOW_EDGE_PATTERNS, Edge, EdgeType
+from attune.memory.nodes import (
     BugNode,
     Node,
     NodeType,

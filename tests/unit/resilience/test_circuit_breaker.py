@@ -13,7 +13,7 @@ import time
 
 import pytest
 
-from empathy_os.resilience.circuit_breaker import (
+from attune.resilience.circuit_breaker import (
     CircuitBreaker,
     CircuitOpenError,
     CircuitState,

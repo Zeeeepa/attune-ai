@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 import pytest
 
-from empathy_os.workflows.test_gen.test_templates import (
+from attune.workflows.test_gen.test_templates import (
     generate_test_for_function,
 )
 
@@ -255,7 +255,7 @@ class TestGenerateTestForFunctionParametrization:
             return mock_cases
 
         monkeypatch.setattr(
-            "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
+            "attune.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
 
@@ -285,7 +285,7 @@ class TestGenerateTestForFunctionParametrization:
             return mock_cases
 
         monkeypatch.setattr(
-            "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
+            "attune.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
 
@@ -314,7 +314,7 @@ class TestGenerateTestForFunctionParametrization:
             return mock_cases
 
         monkeypatch.setattr(
-            "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
+            "attune.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
 
@@ -348,7 +348,7 @@ class TestGenerateTestForFunctionEdgeCases:
             return mock_cases
 
         monkeypatch.setattr(
-            "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
+            "attune.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
 
@@ -376,7 +376,7 @@ class TestGenerateTestForFunctionEdgeCases:
             return mock_cases
 
         monkeypatch.setattr(
-            "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
+            "attune.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
 
@@ -486,7 +486,7 @@ class TestGenerateTestForFunctionComplexScenarios:
             return mock_cases
 
         monkeypatch.setattr(
-            "empathy_os.workflows.test_gen.test_templates.generate_test_cases_for_params",
+            "attune.workflows.test_gen.test_templates.generate_test_cases_for_params",
             mock_generate_cases,
         )
 

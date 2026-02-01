@@ -138,7 +138,7 @@ For 3 months I had no telemetry. I was just guessing. Once I added logging, the 
 ## It didn't take long to implement the fallback system after creating telemetric tracking showed it would make sense. You can do implement it starting with the code below.
 
 ```python
-from empathy_os.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
+from attune.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
 
 # Base executor (normal Claude API wrapper)
 base = EmpathyLLMExecutor(provider="anthropic")
@@ -172,7 +172,7 @@ The telemetry tracks:
 
 CLI command to see my stats:
 ```bash
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 30
+python -m attune.telemetry.cli sonnet-opus-analysis --days 30
 ```
 
 ## Honest Limitations
@@ -185,7 +185,7 @@ python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 30
 ## You Can Try It
 
 Everything is open source (I built it as part of my framework):
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - Blog with more details: [link]
 - Test suite you can run: `tests/test_fallback_suite.py`
 
@@ -309,13 +309,13 @@ Took me 30 minutes on a Saturday to set up:
 
 ```bash
 # Install (it's part of my open source framework)
-pip install empathy-framework
+pip install attune-ai
 
 # Run test suite to see it work
 ./run_fallback_tests.sh
 
 # Check your own savings
-python -m empathy_os.telemetry.cli sonnet-opus-analysis
+python -m attune.telemetry.cli sonnet-opus-analysis
 ```
 
 ## The ROI Math
@@ -325,7 +325,7 @@ python -m empathy_os.telemetry.cli sonnet-opus-analysis
 - Effective hourly rate: $422/hour
 - How I feel: Dumb for not doing this sooner
 
-Code on GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+Code on GitHub: https://github.com/Smart-AI-Memory/attune-ai
 Full writeup with more data: [link to blog]
 
 ---
@@ -355,8 +355,8 @@ Open-source Python library that tries Sonnet 4.5 first, automatically upgrades t
 
 ```python
 import asyncio
-from empathy_os.models import EmpathyLLMExecutor, ResilientExecutor
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK
+from attune.models import EmpathyLLMExecutor, ResilientExecutor
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK
 
 async def main():
     # Regular Claude API wrapper
@@ -440,7 +440,7 @@ SONNET_TO_OPUS_FALLBACK = FallbackPolicy(
 ## Tracking Costs
 
 ```python
-from empathy_os.models.telemetry import TelemetryAnalytics
+from attune.models.telemetry import TelemetryAnalytics
 
 analytics = TelemetryAnalytics(store)
 stats = analytics.sonnet_opus_fallback_analysis(since=thirty_days_ago)
@@ -454,7 +454,7 @@ print(f"Fallback rate: {stats['fallback_rate']:.1f}%")
 I built a CLI to check my stats:
 
 ```bash
-$ python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 30
+$ python -m attune.telemetry.cli sonnet-opus-analysis --days 30
 
 ┌─ Sonnet 4.5 → Opus 4.5 Performance ─────────┐
 │ Total Calls: 438                            │
@@ -502,11 +502,11 @@ Cost Savings:
 
 ```bash
 # From PyPI
-pip install empathy-framework
+pip install attune-ai
 
 # From source (if you want to hack on it)
-git clone https://github.com/Smart-AI-Memory/empathy-framework
-cd empathy-framework
+git clone https://github.com/Smart-AI-Memory/attune-ai
+cd attune-ai
 pip install -e .
 ```
 
@@ -558,7 +558,7 @@ PRs welcome! Things I'd love help with:
 
 ## Links
 
-- **GitHub:** https://github.com/Smart-AI-Memory/empathy-framework
+- **GitHub:** https://github.com/Smart-AI-Memory/attune-ai
 - **Docs:** [link when I write them]
 - **Blog post:** [link with more details]
 - **Examples:** See tests/ directory
@@ -634,12 +634,12 @@ Built it in an afternoon. Turns out: basically nothing I do needs Opus for typic
 ## The Code
 
 Open sourced it if anyone wants to try:
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - Blog with more details: [link]
 
 ```python
 # Super simple to use
-from empathy_os.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
+from attune.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
 
 executor = ResilientExecutor(base_executor, SONNET_TO_OPUS_FALLBACK)
 response = await executor.run(task_type, prompt)
@@ -757,7 +757,7 @@ I went 3 months without telemetry, just guessing at which model I "needed." Once
 Surprisingly simple:
 
 ```python
-from empathy_os.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
+from attune.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
 
 # Wrap your normal executor
 executor = ResilientExecutor(
@@ -774,7 +774,7 @@ Took me about 2 hours to build, including telemetry.
 ## You Can Reproduce This
 
 Everything is open source:
-- Code: https://github.com/Smart-AI-Memory/empathy-framework
+- Code: https://github.com/Smart-AI-Memory/attune-ai
 - Test suite: `./run_fallback_tests.sh`
 - Telemetry: Built-in analytics dashboard
 - Blog with methodology: [link]
@@ -793,7 +793,7 @@ For me, data > assumptions. Measuring my actual usage showed I was overpaying by
 
 **Important note:** This is for coding tasks specifically. Creative writing, complex reasoning, or other domains might show different results. Measure your own usage for your specific use case.
 
-**Open source:** https://github.com/Smart-AI-Memory/empathy-framework
+**Open source:** https://github.com/Smart-AI-Memory/attune-ai
 
 **Not affiliated with Anthropic.** Just a dev who got tired of overpaying for API calls.
 ```

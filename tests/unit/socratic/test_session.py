@@ -10,7 +10,7 @@ class TestSocraticSession:
 
     def test_create_session(self):
         """Test creating a new session."""
-        from empathy_os.socratic.session import SessionState, SocraticSession
+        from attune.socratic.session import SessionState, SocraticSession
 
         session = SocraticSession()
 
@@ -23,7 +23,7 @@ class TestSocraticSession:
 
     def test_create_session_with_id(self):
         """Test creating a session with specific ID."""
-        from empathy_os.socratic.session import SocraticSession
+        from attune.socratic.session import SocraticSession
 
         session = SocraticSession(session_id="custom-id-123")
         assert session.session_id == "custom-id-123"
@@ -41,7 +41,7 @@ class TestSocraticSession:
 
     def test_session_deserialization(self, sample_session):
         """Test session deserialization from dict."""
-        from empathy_os.socratic.session import SocraticSession
+        from attune.socratic.session import SocraticSession
 
         data = sample_session.to_dict()
         restored = SocraticSession.from_dict(data)
@@ -54,7 +54,7 @@ class TestSocraticSession:
         """Test updating the last activity timestamp."""
         import time
 
-        from empathy_os.socratic.session import SocraticSession
+        from attune.socratic.session import SocraticSession
 
         session = SocraticSession()
         original_updated = session.updated_at
@@ -66,7 +66,7 @@ class TestSocraticSession:
 
     def test_session_is_active(self):
         """Test checking if session is active."""
-        from empathy_os.socratic.session import SessionState, SocraticSession
+        from attune.socratic.session import SessionState, SocraticSession
 
         session = SocraticSession()
         assert session.is_active() is True
@@ -79,7 +79,7 @@ class TestSocraticSession:
 
     def test_session_can_generate(self):
         """Test checking if session can generate."""
-        from empathy_os.socratic.session import GoalAnalysis, SocraticSession
+        from attune.socratic.session import GoalAnalysis, SocraticSession
 
         session = SocraticSession()
 
@@ -97,7 +97,7 @@ class TestSocraticSession:
 
     def test_session_add_question_round(self):
         """Test adding a question round."""
-        from empathy_os.socratic.session import SocraticSession
+        from attune.socratic.session import SocraticSession
 
         session = SocraticSession()
         assert session.current_round == 0
@@ -116,7 +116,7 @@ class TestSessionState:
 
     def test_state_values(self):
         """Test all state values exist."""
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.session import SessionState
 
         assert SessionState.AWAITING_GOAL.value == "awaiting_goal"
         assert SessionState.ANALYZING_GOAL.value == "analyzing_goal"
@@ -126,19 +126,19 @@ class TestSessionState:
 
     def test_state_processing_answers(self):
         """Test PROCESSING_ANSWERS state exists."""
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.session import SessionState
 
         assert SessionState.PROCESSING_ANSWERS.value == "processing_answers"
 
     def test_state_generating(self):
         """Test GENERATING state exists."""
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.session import SessionState
 
         assert SessionState.GENERATING.value == "generating"
 
     def test_state_cancelled(self):
         """Test CANCELLED state exists."""
-        from empathy_os.socratic.session import SessionState
+        from attune.socratic.session import SessionState
 
         assert SessionState.CANCELLED.value == "cancelled"
 
@@ -148,7 +148,7 @@ class TestGoalAnalysis:
 
     def test_create_goal_analysis(self):
         """Test creating a GoalAnalysis."""
-        from empathy_os.socratic.session import GoalAnalysis
+        from attune.socratic.session import GoalAnalysis
 
         analysis = GoalAnalysis(
             raw_goal="Automate code reviews",
@@ -166,7 +166,7 @@ class TestGoalAnalysis:
 
     def test_goal_analysis_needs_clarification(self):
         """Test needs_clarification method."""
-        from empathy_os.socratic.session import GoalAnalysis
+        from attune.socratic.session import GoalAnalysis
 
         # Low confidence - needs clarification
         analysis = GoalAnalysis(
@@ -198,7 +198,7 @@ class TestGoalAnalysis:
 
     def test_goal_analysis_assumptions(self):
         """Test GoalAnalysis with assumptions."""
-        from empathy_os.socratic.session import GoalAnalysis
+        from attune.socratic.session import GoalAnalysis
 
         analysis = GoalAnalysis(
             raw_goal="Test",
@@ -217,7 +217,7 @@ class TestRequirementSet:
 
     def test_create_empty_requirement_set(self):
         """Test creating an empty RequirementSet."""
-        from empathy_os.socratic.session import RequirementSet
+        from attune.socratic.session import RequirementSet
 
         reqs = RequirementSet()
 
@@ -227,7 +227,7 @@ class TestRequirementSet:
 
     def test_add_requirements(self):
         """Test adding requirements."""
-        from empathy_os.socratic.session import RequirementSet
+        from attune.socratic.session import RequirementSet
 
         reqs = RequirementSet(
             must_have=["Security scanning"],
@@ -241,7 +241,7 @@ class TestRequirementSet:
 
     def test_requirement_set_must_not_have(self):
         """Test must_not_have field."""
-        from empathy_os.socratic.session import RequirementSet
+        from attune.socratic.session import RequirementSet
 
         reqs = RequirementSet(
             must_not_have=["Deprecated APIs"],
@@ -251,7 +251,7 @@ class TestRequirementSet:
 
     def test_completeness_score(self):
         """Test completeness_score method."""
-        from empathy_os.socratic.session import RequirementSet
+        from attune.socratic.session import RequirementSet
 
         # Empty requirements - low score
         reqs = RequirementSet()
@@ -270,7 +270,7 @@ class TestRequirementSet:
 
     def test_quality_attributes(self):
         """Test quality_attributes field."""
-        from empathy_os.socratic.session import RequirementSet
+        from attune.socratic.session import RequirementSet
 
         reqs = RequirementSet(
             quality_attributes={"security": 0.9, "performance": 0.8},
@@ -281,7 +281,7 @@ class TestRequirementSet:
 
     def test_domain_specific(self):
         """Test domain_specific field."""
-        from empathy_os.socratic.session import RequirementSet
+        from attune.socratic.session import RequirementSet
 
         reqs = RequirementSet(
             domain_specific={"code_review": {"severity_threshold": "high"}},
@@ -295,7 +295,7 @@ class TestSessionContextSummary:
 
     def test_get_context_summary(self):
         """Test getting context summary."""
-        from empathy_os.socratic.session import GoalAnalysis, SocraticSession
+        from attune.socratic.session import GoalAnalysis, SocraticSession
 
         session = SocraticSession()
         session.goal = "Review code"

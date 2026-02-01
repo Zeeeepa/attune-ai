@@ -12,7 +12,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_os.memory.cross_session import (
+from attune.memory.cross_session import (
     KEY_ACTIVE_AGENTS,
     KEY_SERVICE_LOCK,
     STALE_THRESHOLD_SECONDS,
@@ -24,7 +24,7 @@ from empathy_os.memory.cross_session import (
     check_redis_cross_session_support,
     generate_agent_id,
 )
-from empathy_os.memory.short_term import AccessTier, RedisShortTermMemory
+from attune.memory.short_term import AccessTier, RedisShortTermMemory
 
 
 class TestGenerateAgentId:

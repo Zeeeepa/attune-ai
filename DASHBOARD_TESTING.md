@@ -29,7 +29,7 @@ Total: **364 Redis keys**
 
 **Option B: Direct Python**
 ```bash
-python -c "from src.empathy_os.dashboard import run_simple_dashboard; run_simple_dashboard()"
+python -c "from src.attune.dashboard import run_simple_dashboard; run_simple_dashboard()"
 ```
 
 **Option C: From examples (includes test data generation)**
@@ -145,7 +145,7 @@ redis-server
 
 **Solution:** Stop other server or use different port:
 ```python
-python -c "from src.empathy_os.dashboard import run_simple_dashboard; run_simple_dashboard(port=8080)"
+python -c "from src.attune.dashboard import run_simple_dashboard; run_simple_dashboard(port=8080)"
 ```
 
 ## API Endpoints (for testing)

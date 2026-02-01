@@ -21,7 +21,7 @@ Empathy Framework is a production-ready anticipatory intelligence platform that 
 We're seeking strategic partnership with the Anthropic ecosystem to scale enterprise adoption and deepen Claude integration. The framework is open source (Fair Source License), production-stable at v4.4.0, and optimized for Claude Code workflows.
 
 **Website:** [smartaimemory.com](https://smartaimemory.com)
-**GitHub:** [Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework)
+**GitHub:** [Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
 
 ---
 

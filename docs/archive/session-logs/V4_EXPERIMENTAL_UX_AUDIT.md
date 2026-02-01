@@ -30,8 +30,8 @@ The experimental v4.0 branch contains **Meta-Orchestration features** but is **N
 ### 1. Test Coverage Boost (CrewAI v4.0)
 
 **Files:**
-- `src/empathy_os/workflows/test_coverage_boost_crew.py`
-- `src/empathy_os/workflows/test_coverage_boost.py` (older?)
+- `src/attune/workflows/test_coverage_boost_crew.py`
+- `src/attune/workflows/test_coverage_boost.py` (older?)
 - `vscode-extension/src/panels/CoveragePanel.ts`
 
 **What It Does:**
@@ -78,9 +78,9 @@ The experimental v4.0 branch contains **Meta-Orchestration features** but is **N
 ### 2. Orchestrated Health Check (v4.0)
 
 **Files:**
-- `src/empathy_os/workflows/orchestrated_health_check.py`
-- `src/empathy_os/workflows/health_check_crew.py`
-- `src/empathy_os/workflows/health_check.py` (legacy?)
+- `src/attune/workflows/orchestrated_health_check.py`
+- `src/attune/workflows/health_check_crew.py`
+- `src/attune/workflows/health_check.py` (legacy?)
 - VSCode panel integration
 
 **What It Does:**
@@ -117,7 +117,7 @@ Multi-agent health check with adaptive teams
 ### 3. Orchestrated Release Prep (v4.0)
 
 **Files:**
-- `src/empathy_os/workflows/orchestrated_release_prep.py`
+- `src/attune/workflows/orchestrated_release_prep.py`
 - VSCode panel integration
 
 **What It Does:**
@@ -145,7 +145,7 @@ Parallel release validation with 4 agents:
 ### 4. Documentation Orchestrator
 
 **Files:**
-- `src/empathy_os/workflows/documentation_orchestrator.py`
+- `src/attune/workflows/documentation_orchestrator.py`
 - VSCode panel integration
 
 **Status:**
@@ -417,16 +417,16 @@ empathy workflow run orchestrated-release-prep
 ## 📁 Files to Review
 
 ### Critical for UX Assessment:
-1. `src/empathy_os/workflows/test_coverage_boost_crew.py` - Coverage Boost implementation
-2. `src/empathy_os/workflows/orchestrated_health_check.py` - Health Check v4.0
-3. `src/empathy_os/workflows/orchestrated_release_prep.py` - Release Prep v4.0
+1. `src/attune/workflows/test_coverage_boost_crew.py` - Coverage Boost implementation
+2. `src/attune/workflows/orchestrated_health_check.py` - Health Check v4.0
+3. `src/attune/workflows/orchestrated_release_prep.py` - Release Prep v4.0
 4. `vscode-extension/src/panels/EmpathyDashboardPanel.ts` - UI entry points
 5. `vscode-extension/src/panels/CoveragePanel.ts` - Coverage UI
 
 ### Should Consider Removing:
-1. `src/empathy_os/workflows/health_check_crew.py` - Duplicate/deprecated?
-2. `src/empathy_os/workflows/test_coverage_boost.py` - Old version?
-3. `src/empathy_os/workflows/health_check.py` - Legacy?
+1. `src/attune/workflows/health_check_crew.py` - Duplicate/deprecated?
+2. `src/attune/workflows/test_coverage_boost.py` - Old version?
+3. `src/attune/workflows/health_check.py` - Legacy?
 
 ---
 

@@ -15,13 +15,13 @@ description: Testing & Coverage Setup Guide: **Purpose:** Ensure test coverage m
 
 ```bash
 # 1. Install in editable mode (REQUIRED)
-pip uninstall empathy-framework -y
-rm -rf ~/.pyenv/versions/*/lib/python*/site-packages/empathy_os  # Remove old remnants
+pip uninstall attune-ai -y
+rm -rf ~/.pyenv/versions/*/lib/python*/site-packages/attune  # Remove old remnants
 pip install -e .
 
 # 2. Verify editable install
-python -c "import empathy_os; print(empathy_os.__file__)"
-# Should print: /path/to/empathy-framework/src/empathy_os/__init__.py
+python -c "import attune; print(attune.__file__)"
+# Should print: /path/to/attune-ai/src/attune/__init__.py
 # NOT site-packages!
 
 # 3. Run tests with coverage (sequential, no parallel)
@@ -42,8 +42,8 @@ open htmlcov/index.html
 - Tests pass but coverage is 0%
 
 **Root cause:**
-- Tests import from `/site-packages/empathy_os` (installed package)
-- Coverage measures `/local/src/empathy_os` (local source)
+- Tests import from `/site-packages/attune` (installed package)
+- Coverage measures `/local/src/attune` (local source)
 - They're measuring different code!
 
 **Fix:**
@@ -53,9 +53,9 @@ pip install -e .  # Install in editable mode
 
 **Verify:**
 ```bash
-python -c "import empathy_os.config; print(empathy_os.config.__file__)"
-# GOOD: /path/to/empathy-framework/src/empathy_os/config/__init__.py
-# BAD:  /path/to/site-packages/empathy_os/config/__init__.py
+python -c "import attune.config; print(attune.config.__file__)"
+# GOOD: /path/to/attune-ai/src/attune/config/__init__.py
+# BAD:  /path/to/site-packages/attune/config/__init__.py
 ```
 
 ---
@@ -64,19 +64,19 @@ python -c "import empathy_os.config; print(empathy_os.config.__file__)"
 
 **Symptoms:**
 - Even after `pip install -e .`, imports fail
-- `ImportError: cannot import name 'X' from 'empathy_os' (unknown location)`
-- `empathy_os.__file__` is `None`
+- `ImportError: cannot import name 'X' from 'attune' (unknown location)`
+- `attune.__file__` is `None`
 
 **Root cause:**
-- Old `empathy_os/` directory in site-packages wasn't removed
+- Old `attune/` directory in site-packages wasn't removed
 - Python creates namespace package, mixing old + new
 - Lazy imports via `__getattr__` fail
 
 **Fix:**
 ```bash
 # Completely uninstall and clean
-pip uninstall empathy-framework -y
-rm -rf $(python -c "import site; print(site.getsitepackages()[0])")/empathy_os*
+pip uninstall attune-ai -y
+rm -rf $(python -c "import site; print(site.getsitepackages()[0])")/attune*
 
 # Reinstall in editable mode
 pip install -e .
@@ -228,7 +228,7 @@ def test_config_to_yaml_creates_valid_file(tmp_path):
 
 def test_validate_file_path_blocks_traversal():
     """Test that _validate_file_path() actually blocks attacks."""
-    from empathy_os.config import _validate_file_path
+    from attune.config import _validate_file_path
 
     # BEHAVIORAL: Actually call with malicious input
     with pytest.raises(ValueError, match="system directory"):
@@ -248,13 +248,13 @@ def test_validate_file_path_blocks_traversal():
 
 **Diagnosis:**
 ```bash
-python -c "import empathy_os; print(empathy_os.__file__)"
+python -c "import attune; print(attune.__file__)"
 ```
 
 **If None or site-packages:**
 ```bash
-pip uninstall empathy-framework -y
-rm -rf $(python -c "import site; print(site.getsitepackages()[0])")/empathy_os*
+pip uninstall attune-ai -y
+rm -rf $(python -c "import site; print(site.getsitepackages()[0])")/attune*
 pip install -e .
 ```
 
@@ -280,7 +280,7 @@ pytest --cov=src -n 0
 **Diagnosis:**
 ```bash
 # Check what's being imported
-python -c "from empathy_os.config import EmpathyConfig; import inspect; print(inspect.getfile(EmpathyConfig))"
+python -c "from attune.config import EmpathyConfig; import inspect; print(inspect.getfile(EmpathyConfig))"
 ```
 
 **Fix:** Reinstall in editable mode (see above)

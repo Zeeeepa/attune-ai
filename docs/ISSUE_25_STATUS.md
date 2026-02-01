@@ -35,7 +35,7 @@ description: Issue #25 Status: Basic Tier Routing: **Date:** January 27, 2026 **
 
 ### 1. Static Tier Mapping (BaseWorkflow)
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 **Feature:** Workflows define stage → tier mappings
 
@@ -59,20 +59,20 @@ class CustomWorkflow(BaseWorkflow):
 
 **Usage in Execution:**
 ```python
-# src/empathy_os/workflows/base.py:1026-1027
+# src/attune/workflows/base.py:1026-1027
 # Use static tier_map
 base_tier = self.get_tier_for_stage(stage_name)
 ```
 
 ### 2. Adaptive Routing (Pattern 3)
 
-**File:** `src/empathy_os/models/adaptive_routing.py`
+**File:** `src/attune/models/adaptive_routing.py`
 
 **Feature:** Intelligent model selection based on historical telemetry
 
 ```python
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 router = AdaptiveModelRouter(UsageTracker.get_instance())
 
@@ -109,12 +109,12 @@ class BaseWorkflow:
 
 ### 3. Task-Type Routing Strategies
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 **Feature:** Routing strategies override tier_map
 
 ```python
-from empathy_os.workflows.routing import RoutingStrategy
+from attune.workflows.routing import RoutingStrategy
 
 # Define custom routing strategy
 strategy = RoutingStrategy(
@@ -157,7 +157,7 @@ workflow = CustomWorkflow(routing_strategy=strategy)
 ### Example 1: Static Tier Mapping
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 class CodeReviewWorkflow(BaseWorkflow):
     """Code review with optimized tier usage."""
@@ -287,9 +287,9 @@ Issue #25 (Basic Tier Routing) was likely a prerequisite for:
 ## Files to Reference
 
 **Implementation:**
-- [src/empathy_os/workflows/base.py](../src/empathy_os/workflows/base.py) - BaseWorkflow with tier_map
-- [src/empathy_os/models/adaptive_routing.py](../src/empathy_os/models/adaptive_routing.py) - Adaptive routing
-- [src/empathy_os/telemetry/feedback_loop.py](../src/empathy_os/telemetry/feedback_loop.py) - Quality-based routing
+- [src/attune/workflows/base.py](../src/attune/workflows/base.py) - BaseWorkflow with tier_map
+- [src/attune/models/adaptive_routing.py](../src/attune/models/adaptive_routing.py) - Adaptive routing
+- [src/attune/telemetry/feedback_loop.py](../src/attune/telemetry/feedback_loop.py) - Quality-based routing
 
 **Documentation:**
 - [docs/USER_API_DOCUMENTATION.md](./USER_API_DOCUMENTATION.md) - User-facing API docs

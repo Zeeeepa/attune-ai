@@ -13,7 +13,7 @@ import io
 import pstats
 from pstats import SortKey
 
-from empathy_llm_toolkit.security import PIIScrubber
+from attune_llm.security import PIIScrubber
 
 
 def profile_pii_scrubbing():

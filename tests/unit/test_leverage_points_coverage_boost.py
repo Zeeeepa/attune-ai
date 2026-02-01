@@ -10,7 +10,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.leverage_points import (
+from attune.leverage_points import (
     LeverageLevel,
     LeveragePoint,
     LeveragePointAnalyzer,

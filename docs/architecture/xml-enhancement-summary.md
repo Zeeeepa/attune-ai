@@ -43,9 +43,9 @@ Successfully implemented XML-enhanced prompts across Empathy Framework following
 **Objective**: Integrate all 4 CrewAI crews with workflows and verify XML usage
 
 **Files Modified**:
-- [src/empathy_os/workflows/security_audit.py](src/empathy_os/workflows/security_audit.py#L196)
-- [src/empathy_os/workflows/code_review.py](src/empathy_os/workflows/code_review.py#L58)
-- [src/empathy_os/workflows/refactor_plan.py](src/empathy_os/workflows/refactor_plan.py#L68)
+- [src/attune/workflows/security_audit.py](src/attune/workflows/security_audit.py#L196)
+- [src/attune/workflows/code_review.py](src/attune/workflows/code_review.py#L58)
+- [src/attune/workflows/refactor_plan.py](src/attune/workflows/refactor_plan.py#L68)
 
 **Crews Integrated**:
 
@@ -124,7 +124,7 @@ HealthCheckConfig.xml_prompts_enabled = True    # Line 226
 
 **Objective**: Verify and document XML infrastructure in BaseWorkflow
 
-**Location**: [src/empathy_os/workflows/base.py:1015+](src/empathy_os/workflows/base.py#L1015)
+**Location**: [src/attune/workflows/base.py:1015+](src/attune/workflows/base.py#L1015)
 
 **Infrastructure Added**:
 
@@ -182,7 +182,7 @@ class BaseWorkflow:
 
 **Objective**: Add XML infrastructure to BaseWizard to enable 100+ wizards
 
-**Location**: [empathy_llm_toolkit/wizards/base_wizard.py](empathy_llm_toolkit/wizards/base_wizard.py)
+**Location**: [attune_llm/wizards/base_wizard.py](attune_llm/wizards/base_wizard.py)
 
 **Infrastructure Added**:
 
@@ -244,7 +244,7 @@ class BaseWizard:
 **Usage**:
 ```python
 # Wizards automatically inherit XML support
-from empathy_llm_toolkit.wizards import BaseWizard, WizardConfig
+from attune_llm.wizards import BaseWizard, WizardConfig
 
 config = WizardConfig(
     name="my_wizard",
@@ -270,7 +270,7 @@ class MyWizard(BaseWizard):
 
 **Objective**: Add XML-enhanced prompts to test-gen workflow
 
-**Location**: [src/empathy_os/workflows/test_gen.py:1293](src/empathy_os/workflows/test_gen.py#L1293)
+**Location**: [src/attune/workflows/test_gen.py:1293](src/attune/workflows/test_gen.py#L1293)
 
 **Changes Made**:
 
@@ -615,12 +615,12 @@ empathy workflow run test-gen --input '{"path":"./src"}'
 
 ### Code Locations
 
-- BaseWorkflow XML: [src/empathy_os/workflows/base.py:1015](src/empathy_os/workflows/base.py#L1015)
-- BaseWizard XML: [empathy_llm_toolkit/wizards/base_wizard.py](empathy_llm_toolkit/wizards/base_wizard.py)
-- SecurityAuditCrew: [empathy_llm_toolkit/agent_factory/crews/security_audit.py:195](empathy_llm_toolkit/agent_factory/crews/security_audit.py#L195)
-- CodeReviewCrew: [empathy_llm_toolkit/agent_factory/crews/code_review.py:211](empathy_llm_toolkit/agent_factory/crews/code_review.py#L211)
-- RefactoringCrew: [empathy_llm_toolkit/agent_factory/crews/refactoring.py:311](empathy_llm_toolkit/agent_factory/crews/refactoring.py#L311)
-- test-gen workflow: [src/empathy_os/workflows/test_gen.py:1333](src/empathy_os/workflows/test_gen.py#L1333)
+- BaseWorkflow XML: [src/attune/workflows/base.py:1015](src/attune/workflows/base.py#L1015)
+- BaseWizard XML: [attune_llm/wizards/base_wizard.py](attune_llm/wizards/base_wizard.py)
+- SecurityAuditCrew: [attune_llm/agent_factory/crews/security_audit.py:195](attune_llm/agent_factory/crews/security_audit.py#L195)
+- CodeReviewCrew: [attune_llm/agent_factory/crews/code_review.py:211](attune_llm/agent_factory/crews/code_review.py#L211)
+- RefactoringCrew: [attune_llm/agent_factory/crews/refactoring.py:311](attune_llm/agent_factory/crews/refactoring.py#L311)
+- test-gen workflow: [src/attune/workflows/test_gen.py:1333](src/attune/workflows/test_gen.py#L1333)
 
 ---
 

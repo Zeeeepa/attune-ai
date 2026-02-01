@@ -6,9 +6,9 @@ These tests import modules directly to contribute to coverage.
 
 import pytest
 
-from empathy_os.models import ModelProvider as UnifiedModelProvider
-from empathy_os.models import ModelTier as UnifiedModelTier
-from empathy_os.workflows.base import (
+from attune.models import ModelProvider as UnifiedModelProvider
+from attune.models import ModelTier as UnifiedModelTier
+from attune.workflows.base import (
     WORKFLOW_HISTORY_FILE,
     ModelProvider,
     ModelTier,
@@ -122,6 +122,6 @@ class TestWorkflowConstants:
 
     def test_workflow_history_file_path(self):
         """Test that workflow history file constant is defined"""
-        assert WORKFLOW_HISTORY_FILE == ".empathy/workflow_runs.json"
+        assert WORKFLOW_HISTORY_FILE == ".attune/workflow_runs.json"
         assert isinstance(WORKFLOW_HISTORY_FILE, str)
         assert WORKFLOW_HISTORY_FILE.endswith(".json")

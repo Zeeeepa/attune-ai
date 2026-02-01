@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.cli.commands.memory import (
+from attune.cli.commands.memory import (
     memory_app,
     memory_patterns,
     memory_start,
@@ -37,7 +37,7 @@ class TestMemoryCommands:
 
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        assert "empathy_os.memory.control_panel" in args
+        assert "attune.memory.control_panel" in args
         assert "status" in args
 
     @patch("subprocess.run")

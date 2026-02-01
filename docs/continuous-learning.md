@@ -18,7 +18,7 @@ The continuous learning system:
 ## Quick Start
 
 ```python
-from empathy_llm_toolkit.learning import (
+from attune_llm.learning import (
     SessionEvaluator,
     PatternExtractor,
     LearnedSkillsStorage,
@@ -216,7 +216,7 @@ Do: Prefer code examples over prose
 ### With Command Context
 
 ```python
-from empathy_llm_toolkit.commands import CommandContext
+from attune_llm.commands import CommandContext
 
 ctx = CommandContext(
     user_id="user123",
@@ -235,7 +235,7 @@ relevant = ctx.search_patterns("authentication")
 Aggregate patterns into higher-level skills:
 
 ```python
-from empathy_llm_toolkit.learning import LearnedSkill
+from attune_llm.learning import LearnedSkill
 
 skill = LearnedSkill(
     skill_id="skill_001",
@@ -283,7 +283,7 @@ summary = storage.get_summary("user123")
 ### Session End Evaluation
 
 ```python
-from empathy_llm_toolkit.hooks import HookRegistry, HookEvent
+from attune_llm.hooks import HookRegistry, HookEvent
 
 def evaluate_session_handler(context):
     evaluator = SessionEvaluator()

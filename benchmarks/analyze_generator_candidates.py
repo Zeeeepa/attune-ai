@@ -79,11 +79,11 @@ def main():
 
     # Key files to analyze
     target_files = [
-        "src/empathy_os/project_index/scanner.py",
-        "src/empathy_os/cost_tracker.py",
-        "src/empathy_os/pattern_library.py",
-        "src/empathy_os/workflows/test_gen.py",
-        "src/empathy_os/telemetry/cli.py",
+        "src/attune/project_index/scanner.py",
+        "src/attune/cost_tracker.py",
+        "src/attune/pattern_library.py",
+        "src/attune/workflows/test_gen.py",
+        "src/attune/telemetry/cli.py",
     ]
 
     total_candidates = 0

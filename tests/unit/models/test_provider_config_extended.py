@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.models.provider_config import (
+from attune.models.provider_config import (
     ProviderConfig,
     ProviderMode,
     get_provider_config,

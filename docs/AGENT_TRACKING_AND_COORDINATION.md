@@ -27,7 +27,7 @@ Enable inter-agent communication via TTL-based ephemeral messages. Agents can se
 ### Quick Start
 
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator
+from attune.telemetry import HeartbeatCoordinator
 
 # Initialize coordinator
 coordinator = HeartbeatCoordinator()
@@ -128,7 +128,7 @@ coordinator.HEARTBEAT_TTL = 120  # 2 minutes
 ### Quick Start
 
 ```python
-from empathy_os.telemetry import CoordinationSignals
+from attune.telemetry import CoordinationSignals
 
 # Agent A sends signal to Agent B
 sender = CoordinationSignals(agent_id="agent-a")
@@ -328,8 +328,8 @@ if error_signal:
 ### Example: Multi-Agent Workflow with Tracking
 
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator, CoordinationSignals
-from empathy_os.workflows.base import BaseWorkflow
+from attune.telemetry import HeartbeatCoordinator, CoordinationSignals
+from attune.workflows.base import BaseWorkflow
 import asyncio
 
 class CoordinatedWorkflow(BaseWorkflow):
@@ -530,7 +530,7 @@ Pattern 1 & 2 are now integrated with BaseWorkflow for automatic agent tracking 
 **Quick Start:**
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 workflow = BaseWorkflow(
     enable_heartbeat_tracking=True,  # Pattern 1
@@ -570,7 +570,7 @@ Pattern 4 provides real-time event streaming using Redis Streams, enabling live 
 ### Quick Start
 
 ```python
-from empathy_os.telemetry import EventStreamer
+from attune.telemetry import EventStreamer
 
 # Initialize event streamer
 streamer = EventStreamer()
@@ -696,8 +696,8 @@ python examples/event_streaming_demo.py
 ### Integration Example
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
-from empathy_os.telemetry import EventStreamer
+from attune.workflows.base import BaseWorkflow, ModelTier
+from attune.telemetry import EventStreamer
 
 class MonitoredWorkflow(BaseWorkflow):
     def __init__(self, **kwargs):
@@ -768,7 +768,7 @@ ApprovalGate allows workflows to block and wait for human approval before procee
 ### Basic Usage
 
 ```python
-from empathy_os.telemetry import ApprovalGate
+from attune.telemetry import ApprovalGate
 
 # In workflow: Request approval
 gate = ApprovalGate(agent_id="deployment-workflow")
@@ -851,8 +851,8 @@ FeedbackLoop tracks quality scores for LLM responses and uses historical perform
 ### Recording and Using Feedback
 
 ```python
-from empathy_os.telemetry import FeedbackLoop
-from empathy_os.telemetry.feedback_loop import ModelTier
+from attune.telemetry import FeedbackLoop
+from attune.telemetry.feedback_loop import ModelTier
 
 feedback = FeedbackLoop()
 
@@ -922,8 +922,8 @@ print(f"Trend: {stats.recent_trend:+.2f}")  # Positive = improving
 ### Workflow Integration
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow
-from empathy_os.telemetry import FeedbackLoop
+from attune.workflows.base import BaseWorkflow
+from attune.telemetry import FeedbackLoop
 
 class AdaptiveWorkflow(BaseWorkflow):
     def __init__(self):
@@ -979,7 +979,7 @@ class AdaptiveWorkflow(BaseWorkflow):
 A zero-dependency web dashboard for visualizing all 6 patterns in real-time:
 
 ```python
-from empathy_os.dashboard import run_simple_dashboard
+from attune.dashboard import run_simple_dashboard
 
 # Start dashboard (no external dependencies)
 run_simple_dashboard(host="0.0.0.0", port=8000)

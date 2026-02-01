@@ -243,7 +243,7 @@ empathy batch wait msgbatch_abc123 results.json --poll-interval 600 --timeout 43
 
 ```python
 import asyncio
-from empathy_os.workflows.batch_processing import (
+from attune.workflows.batch_processing import (
     BatchProcessingWorkflow,
     BatchRequest,
 )
@@ -290,7 +290,7 @@ asyncio.run(main())
 ### Load Requests from File
 
 ```python
-from empathy_os.workflows.batch_processing import BatchProcessingWorkflow
+from attune.workflows.batch_processing import BatchProcessingWorkflow
 
 workflow = BatchProcessingWorkflow(api_key="your-api-key")
 
@@ -309,7 +309,7 @@ workflow.save_results_to_file(results, "output.json")
 For more control, use `AnthropicBatchProvider` directly:
 
 ```python
-from empathy_llm_toolkit.providers import AnthropicBatchProvider
+from attune_llm.providers import AnthropicBatchProvider
 
 provider = AnthropicBatchProvider(api_key="your-api-key")
 
@@ -489,7 +489,7 @@ logger.info(
 Calculate actual costs:
 
 ```python
-from empathy_os.cost_tracker import log_request
+from attune.cost_tracker import log_request
 
 for result in results:
     if result["result"]["type"] == "succeeded":
@@ -549,7 +549,7 @@ for result in results:
 
 **Before (Real-time):**
 ```python
-from empathy_os.workflows.base import BaseWorkflow
+from attune.workflows.base import BaseWorkflow
 
 class MyWorkflow(BaseWorkflow):
     async def execute(self, items):
@@ -562,7 +562,7 @@ class MyWorkflow(BaseWorkflow):
 
 **After (Batch):**
 ```python
-from empathy_os.workflows.batch_processing import (
+from attune.workflows.batch_processing import (
     BatchProcessingWorkflow,
     BatchRequest,
 )
@@ -621,7 +621,7 @@ A: Yes, each request can specify its own model. However, grouping similar models
 ## Support
 
 **Issues with Batch API?**
-- GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
+- GitHub Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
 - Tag with: `batch-api`, `cost-optimization`
 - Include batch ID and error messages
 

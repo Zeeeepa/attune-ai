@@ -15,7 +15,7 @@ description: Agent Coordination Dashboard - COMPLETE ✅: **Status:** Fully impl
 ### 1. Populate Redis with Test Data
 
 ```bash
-cd /Users/patrickroebuck/Documents/empathy1-11-2025-local/empathy-framework
+cd /Users/patrickroebuck/Documents/empathy1-11-2025-local/attune-ai
 python scripts/populate_redis_direct.py
 ```
 
@@ -122,7 +122,7 @@ Shows stages below quality threshold:
 We built **3 versions** to give you flexibility:
 
 #### 1. Standalone Server (RECOMMENDED for testing)
-**File:** `src/empathy_os/dashboard/standalone_server.py`
+**File:** `src/attune/dashboard/standalone_server.py`
 
 **Characteristics:**
 - ✅ Zero dependencies (Python stdlib + redis-py)
@@ -133,12 +133,12 @@ We built **3 versions** to give you flexibility:
 
 **Usage:**
 ```python
-from empathy_os.dashboard import run_standalone_dashboard
+from attune.dashboard import run_standalone_dashboard
 run_standalone_dashboard(host="0.0.0.0", port=8000)
 ```
 
 #### 2. Simple Server (Uses Telemetry API)
-**File:** `src/empathy_os/dashboard/simple_server.py`
+**File:** `src/attune/dashboard/simple_server.py`
 
 **Characteristics:**
 - Zero framework dependencies (Python stdlib only)
@@ -148,12 +148,12 @@ run_standalone_dashboard(host="0.0.0.0", port=8000)
 
 **Usage:**
 ```python
-from empathy_os.dashboard import run_simple_dashboard
+from attune.dashboard import run_simple_dashboard
 run_simple_dashboard(host="0.0.0.0", port=8000)
 ```
 
 #### 3. FastAPI Server (Advanced)
-**File:** `src/empathy_os/dashboard/app.py`
+**File:** `src/attune/dashboard/app.py`
 
 **Characteristics:**
 - Requires FastAPI and uvicorn
@@ -163,7 +163,7 @@ run_simple_dashboard(host="0.0.0.0", port=8000)
 
 **Usage:**
 ```python
-from empathy_os.dashboard import run_dashboard
+from attune.dashboard import run_dashboard
 run_dashboard(host="0.0.0.0", port=8000)
 ```
 
@@ -248,7 +248,7 @@ The dashboard automatically refreshes every **5 seconds**:
 - Shows "Last update: [timestamp]" at bottom
 
 **To change refresh interval:**
-Edit `src/empathy_os/dashboard/static/app.js`:
+Edit `src/attune/dashboard/static/app.js`:
 
 ```javascript
 class Dashboard {
@@ -266,7 +266,7 @@ class Dashboard {
 ### Option 1: Direct Python
 
 ```bash
-python -c "from empathy_os.dashboard import run_standalone_dashboard; \
+python -c "from attune.dashboard import run_standalone_dashboard; \
            run_standalone_dashboard(host='0.0.0.0', port=8000)"
 ```
 
@@ -274,7 +274,7 @@ python -c "from empathy_os.dashboard import run_standalone_dashboard; \
 
 ```bash
 pip install fastapi uvicorn
-uvicorn empathy_os.dashboard.app:app --host 0.0.0.0 --port 8000 --workers 4
+uvicorn attune.dashboard.app:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
 ### Option 3: Docker
@@ -289,7 +289,7 @@ RUN pip install -r requirements.txt
 COPY src/ ./src/
 EXPOSE 8000
 
-CMD ["python", "-c", "from empathy_os.dashboard import run_standalone_dashboard; run_standalone_dashboard(host='0.0.0.0', port=8000)"]
+CMD ["python", "-c", "from attune.dashboard import run_standalone_dashboard; run_standalone_dashboard(host='0.0.0.0', port=8000)"]
 ```
 
 ### Option 4: Systemd Service
@@ -302,8 +302,8 @@ After=network.target redis.service
 [Service]
 Type=simple
 User=empathy
-WorkingDirectory=/opt/empathy-framework
-ExecStart=/usr/bin/python3 -c "from empathy_os.dashboard import run_standalone_dashboard; run_standalone_dashboard()"
+WorkingDirectory=/opt/attune-ai
+ExecStart=/usr/bin/python3 -c "from attune.dashboard import run_standalone_dashboard; run_standalone_dashboard()"
 Restart=on-failure
 
 [Install]
@@ -424,7 +424,7 @@ redis-cli ping  # Should return "PONG"
 lsof -i :8000
 
 # Kill process or use different port
-python -c "from empathy_os.dashboard import run_standalone_dashboard; \
+python -c "from attune.dashboard import run_standalone_dashboard; \
            run_standalone_dashboard(port=8080)"
 ```
 
@@ -448,7 +448,7 @@ python scripts/populate_redis_direct.py
 **Solution:**
 ```bash
 # Verify static files exist
-ls -la src/empathy_os/dashboard/static/
+ls -la src/attune/dashboard/static/
 
 # Should show: index.html, style.css, app.js
 ```
@@ -460,7 +460,7 @@ ls -la src/empathy_os/dashboard/static/
 ### Core Dashboard Files
 
 ```
-src/empathy_os/dashboard/
+src/attune/dashboard/
 ├── __init__.py                    # Exports all versions
 ├── standalone_server.py           # Standalone (direct Redis) - RECOMMENDED
 ├── simple_server.py               # Simple (telemetry API)

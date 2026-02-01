@@ -529,7 +529,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-      - run: pip install empathy-framework
+      - run: pip install attune-ai
       - run: python -m coach_wizards.cli analyze --path . --format github
 ```
 

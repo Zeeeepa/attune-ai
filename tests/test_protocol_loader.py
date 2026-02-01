@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_healthcare_plugin.monitors.monitoring.protocol_loader import (
+from attune_healthcare.monitors.monitoring.protocol_loader import (
     ClinicalProtocol,
     ProtocolCriterion,
     ProtocolIntervention,

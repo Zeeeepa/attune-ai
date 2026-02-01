@@ -16,7 +16,7 @@ Successfully implemented parallel execution of PII scrubbing and secrets detecti
 
 ### Changes Made
 
-**File:** `empathy_llm_toolkit/security/secure_memdocs.py`
+**File:** `attune_llm/security/secure_memdocs.py`
 
 **Implementation:**
 ```python
@@ -137,7 +137,7 @@ Based on profiling results, **skipping** originally planned Tasks 2-4:
 
 ## Files Modified
 
-1. `empathy_llm_toolkit/security/secure_memdocs.py`
+1. `attune_llm/security/secure_memdocs.py`
    - Added parallel execution with ThreadPoolExecutor
    - Updated architecture documentation
    - Added concurrent.futures import

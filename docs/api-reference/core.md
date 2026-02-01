@@ -21,7 +21,7 @@ The core module provides fundamental data structures used throughout the framewo
 
 Tracks the state of collaboration between the AI and user.
 
-::: empathy_os.core.CollaborationState
+::: attune.core.CollaborationState
     options:
       show_root_heading: false
       show_source: true
@@ -37,7 +37,7 @@ Tracks the state of collaboration between the AI and user.
 
 **Example:**
 ```python
-from empathy_os.core import CollaborationState
+from attune.core import CollaborationState
 
 state = CollaborationState(
     user_id="user_123",
@@ -81,7 +81,7 @@ Container for AI responses with empathy metadata.
 
 **Example:**
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 empathy = EmpathyOS(user_id="user_123", target_level=4)
 
@@ -174,7 +174,7 @@ EmpathyResponse(
 
 Enumeration of empathy levels.
 
-::: empathy_os.levels.EmpathyLevel
+::: attune.levels.EmpathyLevel
     options:
       show_root_heading: false
       show_source: true
@@ -189,7 +189,7 @@ Enumeration of empathy levels.
 
 **Example:**
 ```python
-from empathy_os.core import EmpathyLevel
+from attune.core import EmpathyLevel
 
 # Use in comparisons
 if response.level >= EmpathyLevel.ANTICIPATORY:
@@ -214,7 +214,7 @@ Tracks interaction history for pattern learning.
 
 **Example:**
 ```python
-from empathy_os.core import InteractionHistory
+from attune.core import InteractionHistory
 
 history = InteractionHistory(max_history=100)
 
@@ -240,7 +240,7 @@ for interaction in recent:
 ### Trust Management
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 empathy = EmpathyOS(
     user_id="user_123",

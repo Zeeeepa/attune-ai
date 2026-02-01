@@ -14,7 +14,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.orchestration.real_tools import (RealCoverageAnalyzer,
+from attune.orchestration.real_tools import (RealCoverageAnalyzer,
                                                  RealTestGenerator,
                                                  RealTestValidator)
 
@@ -31,7 +31,7 @@ async def main():
     print("-" * 80)
 
     analyzer = RealCoverageAnalyzer(project_root=".")
-    report = analyzer.analyze(target_package="src/empathy_os")
+    report = analyzer.analyze(target_package="src/attune")
 
     sorted_files = sorted(report.uncovered_files, key=lambda x: x["coverage"])
     target = sorted_files[0]
@@ -96,7 +96,7 @@ async def main():
     print("📈 Step 4: Measuring coverage improvement...")
     print("-" * 80)
 
-    new_report = analyzer.analyze(target_package="src/empathy_os")
+    new_report = analyzer.analyze(target_package="src/attune")
     improvement = new_report.total_coverage - report.total_coverage
 
     print(f"✓ Before: {report.total_coverage:.2f}%")

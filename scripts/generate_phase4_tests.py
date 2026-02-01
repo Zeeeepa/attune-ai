@@ -21,7 +21,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / "src"))
 
-from empathy_os.orchestration.real_tools import RealTestGenerator
+from attune.orchestration.real_tools import RealTestGenerator
 
 
 def main():
@@ -41,31 +41,31 @@ def main():
     # Files to generate, ordered by impact
     files_to_generate = [
         {
-            "source": "src/empathy_os/workflows/base.py",
+            "source": "src/attune/workflows/base.py",
             "missing": 606,
             "description": "Workflow base class (highest impact)",
             "expected_name": "test_src_empathy_os_workflows_base_generated.py"
         },
         {
-            "source": "src/empathy_os/memory/control_panel.py",
+            "source": "src/attune/memory/control_panel.py",
             "missing": 523,
             "description": "Memory control panel (high impact)",
             "expected_name": "test_src_empathy_os_memory_control_panel_generated.py"
         },
         {
-            "source": "src/empathy_os/orchestration/documentation_orchestrator.py",
+            "source": "src/attune/orchestration/documentation_orchestrator.py",
             "missing": 355,
             "description": "Documentation orchestrator",
             "expected_name": "test_src_empathy_os_orchestration_documentation_orchestrator_generated.py"
         },
         {
-            "source": "src/empathy_os/cli_unified.py",
+            "source": "src/attune/cli_unified.py",
             "missing": 342,
             "description": "Unified CLI interface",
             "expected_name": "test_src_empathy_os_cli_unified_generated.py"
         },
         {
-            "source": "src/empathy_os/workflows/code_review.py",
+            "source": "src/attune/workflows/code_review.py",
             "missing": 341,
             "description": "Code review workflow",
             "expected_name": "test_src_empathy_os_workflows_code_review_generated.py"

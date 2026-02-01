@@ -11,7 +11,7 @@ import json
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock, patch
 
-from empathy_llm_toolkit.session_status import (
+from attune_llm.session_status import (
     DEFAULT_CONFIG,
     PRIORITY_WEIGHTS,
     SessionStatus,

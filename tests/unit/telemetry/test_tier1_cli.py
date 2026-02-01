@@ -23,14 +23,14 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.models import (
+from attune.models import (
     AgentAssignmentRecord,
     CoverageRecord,
     TaskRoutingRecord,
     TestExecutionRecord,
 )
-from empathy_os.models.telemetry import TelemetryStore
-from empathy_os.telemetry.cli import (
+from attune.models.telemetry import TelemetryStore
+from attune.telemetry.cli import (
     cmd_agent_performance,
     cmd_task_routing_report,
     cmd_test_status,
@@ -163,7 +163,7 @@ class TestTier1StatusCommand:
         """Test tier1 command with populated data."""
         # Mock get_telemetry_store to return our populated store
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         # Create args namespace
@@ -187,7 +187,7 @@ class TestTier1StatusCommand:
     def test_command_with_empty_data(self, temp_dir, monkeypatch):
         """Test tier1 command with no data."""
         empty_store = TelemetryStore(storage_dir=str(temp_dir))
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", lambda: empty_store)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: empty_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -209,7 +209,7 @@ class TestTier1StatusCommand:
     def test_command_with_custom_hours(self, populated_store, monkeypatch):
         """Test tier1 command with custom time window."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         # Test with 168 hours (7 days)
@@ -227,7 +227,7 @@ class TestTaskRoutingReportCommand:
     def test_command_with_data(self, populated_store, monkeypatch):
         """Test tasks command with populated data."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=24)
@@ -247,7 +247,7 @@ class TestTaskRoutingReportCommand:
     def test_command_shows_task_types(self, populated_store, monkeypatch):
         """Test that command shows breakdown by task type."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=24)
@@ -269,7 +269,7 @@ class TestTaskRoutingReportCommand:
     def test_command_with_empty_data(self, temp_dir, monkeypatch):
         """Test tasks command with no data."""
         empty_store = TelemetryStore(storage_dir=str(temp_dir))
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", lambda: empty_store)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: empty_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -290,7 +290,7 @@ class TestTestStatusCommand:
     def test_command_with_data(self, populated_store, monkeypatch):
         """Test tests command with populated data."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=24)
@@ -314,7 +314,7 @@ class TestTestStatusCommand:
     def test_command_shows_failing_tests(self, populated_store, monkeypatch):
         """Test that command shows most failing tests."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=24)
@@ -337,7 +337,7 @@ class TestTestStatusCommand:
     def test_command_with_empty_data(self, temp_dir, monkeypatch):
         """Test tests command with no data."""
         empty_store = TelemetryStore(storage_dir=str(temp_dir))
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", lambda: empty_store)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: empty_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -358,7 +358,7 @@ class TestAgentPerformanceCommand:
     def test_command_with_data(self, populated_store, monkeypatch):
         """Test agents command with populated data."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=168)
@@ -382,7 +382,7 @@ class TestAgentPerformanceCommand:
     def test_command_shows_agent_names(self, populated_store, monkeypatch):
         """Test that command shows agent names and stats."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=168)
@@ -404,7 +404,7 @@ class TestAgentPerformanceCommand:
     def test_command_with_empty_data(self, temp_dir, monkeypatch):
         """Test agents command with no data."""
         empty_store = TelemetryStore(storage_dir=str(temp_dir))
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", lambda: empty_store)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: empty_store)
 
         args = argparse.Namespace(hours=168)
 
@@ -428,7 +428,7 @@ class TestErrorHandling:
         def mock_get_store_error():
             raise RuntimeError("Test error")
 
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", mock_get_store_error)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", mock_get_store_error)
 
         args = argparse.Namespace(hours=24)
 
@@ -449,7 +449,7 @@ class TestErrorHandling:
         def mock_get_store_error():
             raise RuntimeError("Test error")
 
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", mock_get_store_error)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", mock_get_store_error)
 
         args = argparse.Namespace(hours=24)
 
@@ -467,7 +467,7 @@ class TestErrorHandling:
         def mock_get_store_error():
             raise RuntimeError("Test error")
 
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", mock_get_store_error)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", mock_get_store_error)
 
         args = argparse.Namespace(hours=24)
 
@@ -485,7 +485,7 @@ class TestErrorHandling:
         def mock_get_store_error():
             raise RuntimeError("Test error")
 
-        monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", mock_get_store_error)
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", mock_get_store_error)
 
         args = argparse.Namespace(hours=168)
 
@@ -504,13 +504,13 @@ class TestRichFormatting:
     def test_tier1_uses_rich_when_available(self, populated_store, monkeypatch):
         """Test that tier1 command uses Rich for formatting when available."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=24)
 
         # Mock Rich to verify it's called
-        with patch("empathy_os.telemetry.cli.Console") as mock_console:
+        with patch("attune.telemetry.cli.Console") as mock_console:
             mock_console_instance = mock_console.return_value
 
             result = cmd_tier1_status(args)
@@ -521,13 +521,13 @@ class TestRichFormatting:
     def test_fallback_to_plain_text(self, populated_store, monkeypatch):
         """Test that commands fall back to plain text if Rich unavailable."""
         monkeypatch.setattr(
-            "empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store
+            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
         )
 
         args = argparse.Namespace(hours=24)
 
         # Mock Rich as unavailable by patching RICH_AVAILABLE
-        with patch("empathy_os.telemetry.cli.RICH_AVAILABLE", False):
+        with patch("attune.telemetry.cli.RICH_AVAILABLE", False):
             with patch("sys.stdout", new=StringIO()) as mock_stdout:
                 result = cmd_tier1_status(args)
 

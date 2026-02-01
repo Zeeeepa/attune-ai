@@ -1,7 +1,7 @@
 # Telemetry & Resilience Tracking Pattern
 
 **Source Domain:** Observability
-**Location in Codebase:** `src/empathy_os/models/telemetry.py`
+**Location in Codebase:** `src/attune/models/telemetry.py`
 **Level:** 3-4 (Proactive/Anticipatory)
 
 ## Overview
@@ -55,7 +55,7 @@ class LLMCallRecord:
 ## Implementation
 
 ```python
-from empathy_os.models.telemetry import TelemetryBackend, LLMCallRecord
+from attune.models.telemetry import TelemetryBackend, LLMCallRecord
 
 telemetry = TelemetryBackend()
 

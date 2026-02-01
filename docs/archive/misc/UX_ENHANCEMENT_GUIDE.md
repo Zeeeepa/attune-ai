@@ -14,7 +14,7 @@ This document outlines the technical implementation plan for the proposed user e
 
 **Goal:** Simplify the initial configuration process for new users.
 
-**File to Modify:** `src/empathy_os/cli.py` (or `src/empathy_os/cli_unified.py` if that is the primary entry point).
+**File to Modify:** `src/attune/cli.py` (or `src/attune/cli_unified.py` if that is the primary entry point).
 
 **Implementation Steps:**
 
@@ -77,7 +77,7 @@ This document outlines the technical implementation plan for the proposed user e
 
 **Goal:** Make the full capabilities of the CLI easier for users to find.
 
-**File to Modify:** `src/empathy_os/cli.py`
+**File to Modify:** `src/attune/cli.py`
 
 **Implementation Steps:**
 
@@ -86,7 +86,7 @@ This document outlines the technical implementation plan for the proposed user e
 2. **Group Commands:** Organize commands into logical groups like "Workflows", "Project Management", and "Configuration". This requires creating separate `Typer` app instances and adding them to the main app.
 
     ```python
-    # In src/empathy_os/cli.py
+    # In src/attune/cli.py
     import typer
     from rich.console import RichConsole
 
@@ -193,7 +193,7 @@ This document outlines the technical implementation plan for the proposed user e
         finding.message,
         vscode.DiagnosticSeverity.Warning // or Error, Information
     );
-    diagnostic.source = 'empathy-framework';
+    diagnostic.source = 'attune-ai';
     diagnostics.push(diagnostic);
 
     diagnosticCollection.set(vscode.Uri.file(filePath), diagnostics);
@@ -213,7 +213,7 @@ This document outlines the technical implementation plan for the proposed user e
 
 **Implementation Steps:**
 
-1. **Define a Custom Command URI:** The button will trigger a custom VS Code URI scheme. Example: `vscode://Smart-AI-Memory.empathy-framework/runCommand?command=empathy workflow run test-gen`.
+1. **Define a Custom Command URI:** The button will trigger a custom VS Code URI scheme. Example: `vscode://Smart-AI-Memory.attune-ai/runCommand?command=empathy workflow run test-gen`.
 
 2. **Register a URI Handler in the Extension:** In `vscode-extension/src/extension.ts`, register a `UriHandler` that listens for this custom URI.
 
@@ -237,7 +237,7 @@ This document outlines the technical implementation plan for the proposed user e
 3. **Create the Button in Markdown:** In your `.md` files, use raw HTML to create a button that links to the custom URI.
 
     ```markdown
-    <a href="vscode://Smart-AI-Memory.empathy-framework/runCommand?command=empathy%20workflow%20run%20test-gen" class="md-button">Run in Empathy</a>
+    <a href="vscode://Smart-AI-Memory.attune-ai/runCommand?command=empathy%20workflow%20run%20test-gen" class="md-button">Run in Empathy</a>
     ```
 
     This provides a low-tech but effective way to make documentation interactive, assuming the user has the extension installed.

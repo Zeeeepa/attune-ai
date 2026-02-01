@@ -26,7 +26,7 @@ description: Profiling Results - Phase 2 Optimization: **Date:** January 27, 202
 
 ### Redis Optimization Complete ✅
 
-**Two-Tier Caching Implementation** ([short_term.py:272-348](../src/empathy_os/memory/short_term.py#L272-L348)):
+**Two-Tier Caching Implementation** ([short_term.py:272-348](../src/attune/memory/short_term.py#L272-L348)):
 
 - **Local LRU Cache:** Memory-based cache (500 entries max) with LRU eviction
 - **Cache Hit Rate:** 100% in tests (66%+ expected in production)
@@ -41,8 +41,8 @@ description: Profiling Results - Phase 2 Optimization: **Date:** January 27, 202
 
 **Files Modified:**
 
-1. [src/empathy_os/memory/types.py](../src/empathy_os/memory/types.py) - Added config fields
-2. [src/empathy_os/memory/short_term.py](../src/empathy_os/memory/short_term.py) - Implemented two-tier caching
+1. [src/attune/memory/types.py](../src/attune/memory/types.py) - Added config fields
+2. [src/attune/memory/short_term.py](../src/attune/memory/short_term.py) - Implemented two-tier caching
 
 **Test Script:** [benchmarks/measure_redis_optimization.py](../benchmarks/measure_redis_optimization.py)
 
@@ -82,7 +82,7 @@ description: Profiling Results - Phase 2 Optimization: **Date:** January 27, 202
 ### ✅ 1. AST Parsing (compile) - ALREADY OPTIMIZED
 
 **Impact:** HIGH (24.7% of scanner time)
-**Location:** [scanner.py:79-120](../src/empathy_os/project_index/scanner.py#L79-L120) `_parse_python_cached()`
+**Location:** [scanner.py:79-120](../src/attune/project_index/scanner.py#L79-L120) `_parse_python_cached()`
 **Cumulative Time:** 1.187s (24.7% of scanner execution)
 **Calls:** 580 Python files parsed
 **Per Call:** 2.05ms
@@ -176,7 +176,7 @@ class ProjectScanner:
 ### ✅ 2. Redis Network I/O - OPTIMIZED WITH TWO-TIER CACHING
 
 **Impact:** HIGH (inherent network latency)
-**Location:** [memory/short_term.py:272-348](../src/empathy_os/memory/short_term.py#L272-L348)
+**Location:** [memory/short_term.py:272-348](../src/attune/memory/short_term.py#L272-L348)
 **Cumulative Time:** 14.74s (96.5% of memory operations)
 **Calls:** 807 socket recv() calls
 **Per Call:** 18.3ms (network round-trip)
@@ -261,7 +261,7 @@ Redis pipelining (`stash_batch`, `retrieve_batch`) is already implemented for ba
 ### 🟡 3. Code Metrics Analysis - MEDIUM
 
 **Impact:** MEDIUM
-**Location:** [scanner.py:435](../src/empathy_os/project_index/scanner.py#L435) `_analyze_code_metrics()`
+**Location:** [scanner.py:435](../src/attune/project_index/scanner.py#L435) `_analyze_code_metrics()`
 **Cumulative Time:** 2.967s (61.7% of scanner)
 **Calls:** 3,373 files
 **Per Call:** 0.88ms
@@ -325,7 +325,7 @@ class ProjectScanner:
 ### 🟡 5. Dependency Analysis - MEDIUM
 
 **Impact:** MEDIUM
-**Location:** [scanner.py:598](../src/empathy_os/project_index/scanner.py#L598) `_analyze_dependencies()`
+**Location:** [scanner.py:598](../src/attune/project_index/scanner.py#L598) `_analyze_dependencies()`
 **Cumulative Time:** 1.167s (24.3% of scanner)
 **Calls:** 1 (entire project)
 **Per Call:** 1,167ms
@@ -424,7 +424,7 @@ def _get_optional_feature():
 ### 🟢 9. File Discovery - LOW
 
 **Impact:** LOW (I/O bound)
-**Location:** [scanner.py:163](../src/empathy_os/project_index/scanner.py#L163) `_discover_files()`
+**Location:** [scanner.py:163](../src/attune/project_index/scanner.py#L163) `_discover_files()`
 **Cumulative Time:** 0.399s (8.3% of scanner)
 **Calls:** 1
 **Total Time:** 4.806s (scanner)
@@ -448,7 +448,7 @@ def _get_optional_feature():
 ### 🟢 10. Glob Pattern Matching - LOW
 
 **Impact:** LOW
-**Location:** [scanner.py:180](../src/empathy_os/project_index/scanner.py#L180) `_matches_glob_pattern()`
+**Location:** [scanner.py:180](../src/attune/project_index/scanner.py#L180) `_matches_glob_pattern()`
 **Cumulative Time:** 0.345s (7.2% of scanner)
 **Calls:** 285,061
 **Per Call:** 0.0012ms
@@ -504,7 +504,7 @@ def _get_optional_feature():
 
 **Days 1-2: AST Parsing Cache** (🔴 CRITICAL)
 
-File: `src/empathy_os/project_index/scanner.py`
+File: `src/attune/project_index/scanner.py`
 
 ```python
 from functools import lru_cache
@@ -621,7 +621,7 @@ class ProjectScanner:
 
 **Days 1-2: Redis Pipelining** (🔴 HIGH)
 
-File: `src/empathy_os/memory/short_term.py`
+File: `src/attune/memory/short_term.py`
 
 ```python
 def stash_batch(
@@ -895,7 +895,7 @@ done
 py-spy record -o profile.svg -- python benchmarks/profile_suite.py
 
 # Line-by-line profiling (add @profile decorator first)
-kernprof -l -v src/empathy_os/project_index/scanner.py
+kernprof -l -v src/attune/project_index/scanner.py
 
 # Memory profiling
 python -m memory_profiler benchmarks/profile_suite.py
@@ -911,7 +911,7 @@ Add these tests to prevent performance regressions:
 # File: tests/performance/test_scanner_performance.py
 
 import time
-from empathy_os.project_index import ProjectScanner
+from attune.project_index import ProjectScanner
 
 
 def test_scanner_cold_cache_performance():
@@ -950,7 +950,7 @@ def test_scanner_warm_cache_performance():
 
 def test_pattern_query_performance():
     """Pattern queries should complete in <1ms per query."""
-    from empathy_os.pattern_library import PatternLibrary
+    from attune.pattern_library import PatternLibrary
 
     library = PatternLibrary()
 
@@ -972,7 +972,7 @@ def test_pattern_query_performance():
 
 def test_memory_stash_performance():
     """Memory stash should handle 100 items in <500ms."""
-    from empathy_os.memory import UnifiedMemory
+    from attune.memory import UnifiedMemory
 
     memory = UnifiedMemory(user_id="perf_test")
 
@@ -986,7 +986,7 @@ def test_memory_stash_performance():
 
 def test_memory_batch_stash_performance():
     """Batch stash should be 50%+ faster than individual stashes."""
-    from empathy_os.memory.short_term import ShortTermMemory
+    from attune.memory.short_term import ShortTermMemory
     import redis
 
     client = redis.Redis()

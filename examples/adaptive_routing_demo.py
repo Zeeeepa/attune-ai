@@ -11,8 +11,8 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 
 def demo_adaptive_routing():

@@ -8,7 +8,7 @@ Demonstrates:
 
 from pathlib import Path
 
-from empathy_os.models import (
+from attune.models import (
     AuthMode,
     AuthStrategy,
     SubscriptionTier,
@@ -85,9 +85,9 @@ def test_auth_strategy():
     print("=" * 60)
 
     test_files = [
-        "src/empathy_os/cache_stats.py",
-        "src/empathy_os/config.py",
-        "src/empathy_os/workflows/document_gen.py",
+        "src/attune/cache_stats.py",
+        "src/attune/config.py",
+        "src/attune/workflows/document_gen.py",
     ]
 
     for file_path in test_files:

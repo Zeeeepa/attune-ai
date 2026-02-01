@@ -207,7 +207,7 @@ def generate_test_data():
     print("   python examples/dashboard_demo.py")
     print()
     print("   Or directly:")
-    print("   python -m src.empathy_os.dashboard.simple_server")
+    print("   python -m src.attune.dashboard.simple_server")
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@ python scripts/migrate_workflow_history.py
 
 ```python
 # Verify migration succeeded
-from empathy_os.workflows.history import WorkflowHistoryStore
+from attune.workflows.history import WorkflowHistoryStore
 
 with WorkflowHistoryStore() as store:
     stats = store.get_stats()
@@ -79,7 +79,7 @@ All existing code continues to work with no changes:
 
 ```python
 # These functions work exactly as before
-from empathy_os.workflows.base import get_workflow_stats, _save_workflow_run
+from attune.workflows.base import get_workflow_stats, _save_workflow_run
 
 # Get stats (now uses SQLite internally)
 stats = get_workflow_stats()
@@ -91,7 +91,7 @@ _save_workflow_run(workflow_name, provider, result)
 ### New SQLite API (Recommended for New Code)
 
 ```python
-from empathy_os.workflows.history import WorkflowHistoryStore
+from attune.workflows.history import WorkflowHistoryStore
 
 # Create store
 store = WorkflowHistoryStore()
@@ -291,7 +291,7 @@ with WorkflowHistoryStore() as store:
 
 ```python
 # Check if SQLite initialization failed
-from empathy_os.workflows.base import _get_history_store
+from attune.workflows.base import _get_history_store
 
 store = _get_history_store()
 if store is None:
@@ -355,7 +355,7 @@ Based on testing with real workflow data:
 ## Related Documents
 
 - [ADR-002: BaseWorkflow Refactoring Strategy](docs/adr/002-baseworkflow-refactoring-strategy.md)
-- [WorkflowHistoryStore API](src/empathy_os/workflows/history.py)
+- [WorkflowHistoryStore API](src/attune/workflows/history.py)
 - [Migration Script](scripts/migrate_workflow_history.py)
 - [Test Suite](tests/unit/workflows/test_workflow_history.py)
 

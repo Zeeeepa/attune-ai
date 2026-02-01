@@ -21,7 +21,7 @@ try:
 except ImportError:
     HAS_FAKEREDIS = False
 
-from empathy_os.memory.short_term import (
+from attune.memory.short_term import (
     AccessTier,
     AgentCredentials,
     PaginatedResult,

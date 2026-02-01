@@ -1,11 +1,99 @@
 # Changelog
 
-All notable changes to the Empathy Framework will be documented in this file.
+All notable changes to Attune AI (formerly Empathy Framework) will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.0.0] - 2026-02-01
+
+### BREAKING CHANGES 🚨
+
+**Package Rename**: `empathy-framework` → `attune-ai`
+
+This is the inaugural release of **attune-ai** (v2.0.0), a complete rebrand from empathy-framework. We start at v2.0 to signify a fresh beginning under the new name.
+
+#### Migration Required
+
+**Installation:**
+```bash
+# Uninstall old package
+pip uninstall empathy-framework
+
+# Install new package
+pip install attune-ai
+```
+
+**Import Changes:**
+```python
+# OLD (empathy-framework v5.x and below)
+from empathy_os.config import EmpathyConfig
+from empathy_os.workflows import CodeReviewWorkflow
+
+# NEW (attune-ai v2.0.0+)
+from attune.config import EmpathyConfig
+from attune.workflows import CodeReviewWorkflow
+```
+
+**CLI Command:**
+```bash
+# OLD: empathy workflow run code-review
+# NEW: attune workflow run code-review
+```
+
+### Changed
+
+- **Package name**: `empathy-framework` → `attune-ai`
+- **Python module**: `empathy_os` → `attune`
+- **CLI command**: `empathy` → `attune`
+- **Config directory**: `.empathy/` → `.attune/`
+- **Toolkit module**: `empathy_llm_toolkit` → `attune_llm`
+- **Healthcare plugin**: `empathy_healthcare_plugin` → `attune_healthcare`
+- **Software plugin**: `empathy_software_plugin` → `attune_software`
+
+### Updated
+
+- All Python imports (3,139 files updated)
+- All configuration files (YAML, JSON, TOML)
+- All documentation and README files
+- All CI/CD workflows in `.github/workflows/`
+- PyPI package metadata and URLs
+- Entry point scripts and CLI commands
+
+### Fixed
+
+- **Test Pollution Bug**: Fixed sys.modules contamination in batch101 tests
+  - Root cause: Module-level `sys.modules` mocking without cleanup
+  - Solution: Converted to pytest fixture with proper teardown
+  - Impact: All 1,392 behavioral tests now pass reliably
+
+- **Test Cleanup**: Added `tests/behavioral/conftest.py` with autouse fixture
+  - Prevents future test pollution with `patch.stopall()`
+  - Ensures clean state between all behavioral tests
+
+### Testing
+
+- ✅ **1,392 behavioral tests passing** (100% pass rate)
+- ✅ 7,168+ unit tests passing
+- ✅ Total: ~8,500+ tests passing
+- ✅ Package verified with new `attune-ai` name
+- ✅ All imports tested and working
+
+### Infrastructure
+
+- Added automated migration script (`rename_to_attune.sh`)
+- Updated all GitHub Actions workflows
+- Updated repository URLs to point to `attune-ai`
+- Prepared for GitHub repository rename
+
+### Notes
+
+This release maintains 100% API compatibility at the code level - only package and module names changed. All functionality remains identical to v5.3.0.
+
+**PyPI**: https://pypi.org/project/attune-ai/
+**GitHub**: https://github.com/Smart-AI-Memory/attune-ai (pending repository rename)
 
 ## [5.3.0] - 2026-01-31
 
@@ -109,7 +197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Model Context Protocol (MCP) Integration**: Complete MCP server implementation for Claude Code
-  - Created `src/empathy_os/mcp/server.py` (502 lines) - Production MCP server exposing all workflows
+  - Created `src/attune/mcp/server.py` (502 lines) - Production MCP server exposing all workflows
   - Exposes 10 tools: security_audit, bug_predict, code_review, test_generation, performance_audit, release_prep, auth_status, auth_recommend, telemetry_stats, dashboard_status
   - Exposes 3 resources: empathy://workflows, empathy://auth/config, empathy://telemetry
   - JSON-RPC stdio transport for seamless Claude Code integration
@@ -207,10 +295,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Cost optimization: Small/medium modules use subscription (free), large modules use API (1M context)
   - Configurable thresholds based on subscription tier (Pro, Max, Enterprise)
   - CLI commands for configuration management:
-    - `python -m empathy_os.models.auth_cli setup` - Interactive configuration wizard
-    - `python -m empathy_os.models.auth_cli status` - View current auth strategy (table or JSON)
-    - `python -m empathy_os.models.auth_cli recommend <file>` - Get auth recommendation for specific file
-    - `python -m empathy_os.models.auth_cli reset --confirm` - Clear configuration
+    - `python -m attune.models.auth_cli setup` - Interactive configuration wizard
+    - `python -m attune.models.auth_cli status` - View current auth strategy (table or JSON)
+    - `python -m attune.models.auth_cli recommend <file>` - Get auth recommendation for specific file
+    - `python -m attune.models.auth_cli reset --confirm` - Clear configuration
   - Integrated into 7 major workflows with consistent 4-step pattern:
     - DocumentGenerationWorkflow
     - TestGenerationWorkflow
@@ -283,7 +371,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 3-tier fallback system: Anthropic API → tiktoken (local) → heuristic
   - Added `estimate_tokens()` and `calculate_actual_cost()` methods to `AnthropicProvider`
   - Cost calculation with cache awareness (25% markup for writes, 90% discount for reads)
-  - Created `empathy_llm_toolkit/utils/tokens.py` with reusable utilities
+  - Created `attune_llm/utils/tokens.py` with reusable utilities
   - 20 comprehensive tests for token counting and cost calculation
   - **Accuracy**: Improved from ~80% (heuristic) to >98% (tiktoken/API)
   - **Impact**: More accurate cost tracking and budget planning
@@ -295,7 +383,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Performance levels: EXCELLENT (>50%), GOOD (30-50%), LOW (10-30%), VERY LOW (<10%)
   - Output formats: Table (default) and JSON for automation
   - Verbose mode shows detailed token metrics
-  - Created `src/empathy_os/cli/commands/cache.py` and parser
+  - Created `src/attune/cli/commands/cache.py` and parser
   - 10 comprehensive tests covering stats collection, formatting, error handling
   - **Impact**: Visibility into 20-30% cost savings from prompt caching
   - Closes #23
@@ -353,13 +441,13 @@ The legacy coordination system in `ShortTermMemory` has been removed in favor of
 - ❌ **Removed:** `ShortTermMemory.send_signal()` and `receive_signals()` methods
 - ❌ **Removed:** `TTLStrategy.COORDINATION` constant
 - ❌ **Changed:** Redis key format: `empathy:coord:*` → `empathy:signal:*`
-- ✅ **New API:** `empathy_os.telemetry.CoordinationSignals` (Pattern 2 from Agent Coordination Architecture)
+- ✅ **New API:** `attune.telemetry.CoordinationSignals` (Pattern 2 from Agent Coordination Architecture)
 
 **Migration Guide:**
 
 ```python
 # Before (v4.x - REMOVED):
-from empathy_os.memory import ShortTermMemory, AgentCredentials
+from attune.memory import ShortTermMemory, AgentCredentials
 
 memory = ShortTermMemory()
 credentials = AgentCredentials("agent-1", AccessTier.CONTRIBUTOR)
@@ -367,8 +455,8 @@ memory.send_signal("task_complete", {"status": "done"}, credentials, target_agen
 signals = memory.receive_signals(credentials, signal_type="task_complete")
 
 # After (v5.0 - NEW):
-from empathy_os.telemetry import CoordinationSignals
-from empathy_os.memory.types import AgentCredentials, AccessTier
+from attune.telemetry import CoordinationSignals
+from attune.memory.types import AgentCredentials, AccessTier
 
 coordinator = CoordinationSignals(agent_id="agent-1")
 credentials = AgentCredentials("agent-1", AccessTier.CONTRIBUTOR)
@@ -402,32 +490,32 @@ Complete implementation of agent coordination patterns for multi-agent workflows
   - TTL-based agent liveness monitoring (30s heartbeat expiration)
   - Track agent status, progress, and current task
   - Detect stale/failed agents automatically
-  - Files: `src/empathy_os/telemetry/agent_tracking.py`
+  - Files: `src/attune/telemetry/agent_tracking.py`
 
 - **Pattern 2: Coordination Signals** (`CoordinationSignals`)
   - TTL-based inter-agent communication (60s default TTL)
   - Send targeted signals or broadcast to all agents
   - Blocking wait with timeout support
   - Permission enforcement (CONTRIBUTOR tier required)
-  - Files: `src/empathy_os/telemetry/agent_coordination.py`
+  - Files: `src/attune/telemetry/agent_coordination.py`
 
 - **Pattern 4: Event Streaming** (`EventStreamer`)
   - Real-time event streaming via Redis Streams
   - Publish workflow events for monitoring/audit
   - Subscribe with consumer groups
-  - Files: `src/empathy_os/telemetry/event_streaming.py`
+  - Files: `src/attune/telemetry/event_streaming.py`
 
 - **Pattern 5: Approval Gates** (`ApprovalGate`)
   - Human-in-the-loop workflow control
   - Block workflow execution pending approval
   - Timeout handling for abandoned requests
-  - Files: `src/empathy_os/telemetry/approval_gates.py`
+  - Files: `src/attune/telemetry/approval_gates.py`
 
 - **Pattern 6: Quality Feedback Loop** (`FeedbackLoop`)
   - Record quality scores per workflow/stage/tier
   - Automatic tier upgrade recommendations (quality < 0.7)
   - Adaptive routing based on historical performance
-  - Files: `src/empathy_os/telemetry/feedback_loop.py`
+  - Files: `src/attune/telemetry/feedback_loop.py`
 
 **Agent Coordination Dashboard**
 
@@ -449,7 +537,7 @@ Web-based dashboard for real-time monitoring of all 6 coordination patterns:
   - System health status
 - **CLI Integration:** `empathy dashboard start [--host HOST] [--port PORT]`
 - **VS Code Task:** `Cmd+Shift+B` to start dashboard and auto-open browser
-- **Files:** `src/empathy_os/dashboard/{standalone_server.py,simple_server.py,app.py,static/}`
+- **Files:** `src/attune/dashboard/{standalone_server.py,simple_server.py,app.py,static/}`
 
 **Adaptive Model Routing**
 
@@ -460,7 +548,7 @@ Telemetry-based model selection for cost optimization:
 - **Quality Tracking:** Per-workflow/stage/tier success rate monitoring
 - **Workflow Integration:** `enable_adaptive_routing=True` parameter
 - **CLI Commands:** `empathy telemetry routing-stats`, `routing-check`
-- **Files:** `src/empathy_os/models/adaptive_routing.py`
+- **Files:** `src/attune/models/adaptive_routing.py`
 
 **Enhanced Telemetry CLI**
 
@@ -556,7 +644,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Performance: 37ms → 0.001ms for cached operations (37,000x faster)
   - Config: `RedisConfig(local_cache_enabled=True, local_cache_size=500)`
   - Works with both mock and real Redis modes
-  - Files: `src/empathy_os/memory/{types.py,short_term.py}`
+  - Files: `src/attune/memory/{types.py,short_term.py}`
 
 - **Generator Expression Memory Optimization** - 99.9% memory reduction
   - Replaced 27 list comprehensions with generator expressions
@@ -570,7 +658,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - `ProjectIndex` now uses parallel scanner automatically
   - Configurable worker count: `ProjectIndex(workers=4)`
   - Auto-detects CPU cores by default
-  - Files: `src/empathy_os/project_index/scanner_parallel.py`
+  - Files: `src/attune/project_index/scanner_parallel.py`
 
 - **Incremental Scanning** - Git diff-based updates (10x faster)
   - `ProjectIndex.refresh_incremental()` scans only changed files
@@ -607,7 +695,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
     - "generate tests" → `test-gen`
   - Intelligent routing matches intent to workflow automatically
   - Updated help system with better categorization
-  - Files: `.claude/commands/{workflows.md,plan.md,help.md}`, `src/empathy_os/workflows/routing.py`
+  - Files: `.claude/commands/{workflows.md,plan.md,help.md}`, `src/attune/workflows/routing.py`
 
 ### Changed
 
@@ -688,7 +776,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - `ProjectIndex` now uses parallel scanner automatically
   - Configurable worker count: `ProjectIndex(workers=4)`
   - Auto-detects CPU cores by default
-  - **Files**: `src/empathy_os/project_index/scanner_parallel.py` (330 lines)
+  - **Files**: `src/attune/project_index/scanner_parallel.py` (330 lines)
 
 - **Incremental scanning** - Git diff-based updates for 10x faster development workflow
   - `ProjectIndex.refresh_incremental()` scans only changed files
@@ -696,7 +784,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Supports custom base refs: `refresh_incremental(base_ref="origin/main")`
   - Falls back gracefully when git not available
   - **Performance**: 10x faster for small changes (10-100 files)
-  - **Files**: `src/empathy_os/project_index/index.py` (150+ lines added)
+  - **Files**: `src/attune/project_index/index.py` (150+ lines added)
 
 - **Optional dependency analysis** - Skip expensive dependency graph for 27% speedup
   - `scanner.scan(analyze_dependencies=False)` for quick scans
@@ -724,7 +812,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 - **ProjectScanner optimizations** - Skip AST analysis for test files
   - Test files use simple regex for test counting instead of full AST parsing
   - Saves ~30% of AST traversal time for cold cache scenarios
-  - **Files**: `src/empathy_os/project_index/scanner.py` (lines 429-488)
+  - **Files**: `src/attune/project_index/scanner.py` (lines 429-488)
 
 ### Performance
 
@@ -783,35 +871,35 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - `MODEL_REGISTRY["openai"]` no longer exists
   - `provider="openai"` will raise `ValueError`
   - GPT models (gpt-4o, gpt-4o-mini, o1) no longer available
-  - **Files**: `src/empathy_os/models/registry.py` (~100 lines removed)
+  - **Files**: `src/attune/models/registry.py` (~100 lines removed)
 
 - **Google Gemini provider support** - All Google-specific code removed
   - `MODEL_REGISTRY["google"]` no longer exists
   - `provider="google"` will raise `ValueError`
   - Gemini models (flash, pro, 2.5-pro) no longer available
-  - **Files**: `src/empathy_os/models/registry.py` (~100 lines removed)
+  - **Files**: `src/attune/models/registry.py` (~100 lines removed)
 
 - **Ollama (local) provider support** - All Ollama-specific code removed
   - `MODEL_REGISTRY["ollama"]` no longer exists
   - `provider="ollama"` will raise `ValueError`
   - Local Llama models no longer supported
   - `_check_ollama_available()` method removed
-  - **Files**: `src/empathy_os/models/registry.py`, `src/empathy_os/models/provider_config.py`
+  - **Files**: `src/attune/models/registry.py`, `src/attune/models/provider_config.py`
 
 - **Hybrid mode** - Multi-provider tier mixing removed
   - `MODEL_REGISTRY["hybrid"]` no longer exists
   - `ProviderMode.HYBRID` removed from enum
   - `configure_hybrid_interactive()` function deleted (177 lines)
   - CLI command `empathy provider hybrid` removed
-  - **Files**: `src/empathy_os/models/provider_config.py`, `src/empathy_os/cli/commands/provider.py`, `src/empathy_os/cli/parsers/provider.py`
+  - **Files**: `src/attune/models/provider_config.py`, `src/attune/cli/commands/provider.py`, `src/attune/cli/parsers/provider.py`
 
 - **Custom mode** - Per-tier provider selection removed
   - `ProviderMode.CUSTOM` removed from enum
   - `tier_providers` configuration no longer used
-  - **Files**: `src/empathy_os/models/provider_config.py`
+  - **Files**: `src/attune/models/provider_config.py`
 
 - **Deprecation warnings** - No longer needed
-  - `src/empathy_os/models/_deprecation.py` deleted entirely
+  - `src/attune/models/_deprecation.py` deleted entirely
   - `warn_once()`, `warn_non_anthropic_provider()` removed
   - Deprecation imports removed from registry and provider_config
 
@@ -828,51 +916,51 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Before: `{"anthropic": {...}, "openai": {...}, "google": {...}, "ollama": {...}, "hybrid": {...}}`
   - After: `{"anthropic": {...}}`
   - **Size reduction**: 167 lines removed
-  - **File**: `src/empathy_os/models/registry.py`
+  - **File**: `src/attune/models/registry.py`
 
 - **ModelProvider enum** - Reduced to single value
   - Before: `ANTHROPIC, OPENAI, GOOGLE, OLLAMA, HYBRID, CUSTOM`
   - After: `ANTHROPIC`
-  - **File**: `src/empathy_os/models/registry.py:33-36`
+  - **File**: `src/attune/models/registry.py:33-36`
 
 - **ProviderMode enum** - Reduced to single value
   - Before: `SINGLE, HYBRID, CUSTOM`
   - After: `SINGLE`
-  - **File**: `src/empathy_os/models/provider_config.py:21-24`
+  - **File**: `src/attune/models/provider_config.py:21-24`
 
 - **ProviderConfig.detect_available_providers()** - Only checks for Anthropic
   - Removed environment variable checks for `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GEMINI_API_KEY`
   - Removed Ollama availability check
   - Now only checks for `ANTHROPIC_API_KEY`
-  - **File**: `src/empathy_os/models/provider_config.py:50-61`
+  - **File**: `src/attune/models/provider_config.py:50-61`
 
 - **ProviderConfig.auto_detect()** - Always returns Anthropic configuration
   - Removed multi-provider priority logic
   - Always sets `primary_provider="anthropic"`, `mode=ProviderMode.SINGLE`
-  - **File**: `src/empathy_os/models/provider_config.py:122-134`
+  - **File**: `src/attune/models/provider_config.py:122-134`
 
 - **ProviderConfig.get_model_for_tier()** - Simplified to Anthropic-only
   - Removed HYBRID and CUSTOM mode logic
   - Always uses `MODEL_REGISTRY["anthropic"]`
-  - **File**: `src/empathy_os/models/provider_config.py:136-146`
+  - **File**: `src/attune/models/provider_config.py:136-146`
 
 - **FallbackPolicy.get_fallback_chain()** - Provider list updated
   - Before: `all_providers = ["anthropic", "openai", "ollama"]`
   - After: `all_providers = ["anthropic"]`
   - Provider-to-provider fallback no longer applicable
   - Tier-to-tier fallback within Anthropic still functional
-  - **File**: `src/empathy_os/models/fallback.py:95`
+  - **File**: `src/attune/models/fallback.py:95`
 
 - **CLI commands** - Updated for Anthropic-only
   - `empathy provider show` - Displays only Anthropic models
   - `empathy provider set <provider>` - Errors if provider != "anthropic"
   - Removed `empathy provider hybrid` command
-  - **Files**: `src/empathy_os/cli/commands/provider.py`, `src/empathy_os/cli/parsers/provider.py`
+  - **Files**: `src/attune/cli/commands/provider.py`, `src/attune/cli/parsers/provider.py`
 
 - **ModelRegistry.get_model()** - Now raises ValueError for non-Anthropic
   - Before: Returns `None` for invalid provider
   - After: Raises `ValueError` with migration guide message
-  - **File**: `src/empathy_os/models/registry.py:388-419`
+  - **File**: `src/attune/models/registry.py:388-419`
 
 - **Test files** - All tests updated to use Anthropic
   - Batch updated 7 test files: `sed 's/provider="openai"/provider="anthropic"/g'`
@@ -972,7 +1060,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 - **Deprecation warnings for non-Anthropic providers** - OpenAI, Google Gemini, Ollama, and Hybrid mode now emit deprecation warnings
   - Warnings displayed once per session with clear migration guidance
   - Full warning includes timeline, benefits, and migration steps
-  - **Files**: `src/empathy_os/models/_deprecation.py`, `src/empathy_os/models/registry.py`, `src/empathy_os/models/provider_config.py`
+  - **Files**: `src/attune/models/_deprecation.py`, `src/attune/models/registry.py`, `src/attune/models/provider_config.py`
 
 - **SQLite-based workflow history** - Production-ready replacement for JSON file storage
   - 10-100x faster queries with indexed SQLite database
@@ -980,20 +1068,20 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Full CRUD operations with filtering and aggregation
   - Automatic migration script with validation and backups
   - 26 comprehensive tests (all passing)
-  - **Files**: `src/empathy_os/workflows/history.py`, `scripts/migrate_workflow_history.py`, `tests/unit/workflows/test_workflow_history.py`
+  - **Files**: `src/attune/workflows/history.py`, `scripts/migrate_workflow_history.py`, `tests/unit/workflows/test_workflow_history.py`
 
 - **Builder pattern for workflows** - Simplified workflow construction with fluent API
   - Replaces 12+ parameter constructors with chainable methods
   - Type-safe generic implementation
   - More discoverable via IDE autocomplete
-  - **File**: `src/empathy_os/workflows/builder.py`
+  - **File**: `src/attune/workflows/builder.py`
 
 - **Tier routing strategies** - Pluggable routing algorithms (stubs, integration pending)
   - `CostOptimizedRouting` - Minimize cost (default)
   - `PerformanceOptimizedRouting` - Minimize latency
   - `BalancedRouting` - Balance cost and performance
   - `HybridRouting` - User-configured tier mappings
-  - **File**: `src/empathy_os/workflows/routing.py`
+  - **File**: `src/attune/workflows/routing.py`
 
 - **Architecture decision records** - Comprehensive documentation of design decisions
   - ADR-002: BaseWorkflow refactoring strategy (800+ lines)
@@ -1012,10 +1100,10 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - All existing functionality continues to work
   - **Timeline**: v4.8.0 (warnings) → v5.0.0 (removal)
 
-- **`workflows.base.ModelTier`** - Use `empathy_os.models.ModelTier` instead
+- **`workflows.base.ModelTier`** - Use `attune.models.ModelTier` instead
   - Local ModelTier enum in workflows module is redundant
   - Will be removed in v5.0.0
-  - **File**: `src/empathy_os/workflows/base.py`
+  - **File**: `src/attune/workflows/base.py`
 
 ### Changed
 
@@ -1080,7 +1168,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Enforces minimum 32-byte secret length for HS256 security
   - Fails fast at startup if not configured
 
-- **Added SSRF protection** for webhook URLs (`src/empathy_os/monitoring/alerts.py`)
+- **Added SSRF protection** for webhook URLs (`src/attune/monitoring/alerts.py`)
   - New `_validate_webhook_url()` function prevents Server-Side Request Forgery
   - Blocks localhost, private IPs, cloud metadata services, and internal ports
 
@@ -1091,7 +1179,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 
 ### Fixed
 
-- **Audit logger test imports** corrected from `empathy_llm_toolkit` to `empathy_os` path
+- **Audit logger test imports** corrected from `attune_llm` to `attune` path
 
 ## [4.6.6] - 2026-01-22
 
@@ -1100,13 +1188,13 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 - **Project Scanner: 36% faster** - Rewrote `_analyze_python_ast()` to use single-pass `NodeVisitor` pattern instead of nested `ast.walk()` loops, reducing complexity from O(n²) to O(n)
   - Scan time: 12.6s → 8.0s for 3,100+ files
   - Function calls reduced by 47% (57M → 30M)
-  - **File**: `src/empathy_os/project_index/scanner.py:474-559`
+  - **File**: `src/attune/project_index/scanner.py:474-559`
 
 - **CostTracker: 39% faster init** - Implemented lazy loading with separate summary file
   - Only loads daily_totals on init; full request history lazy-loaded when needed
   - New `costs_summary.json` for fast access to aggregated data
   - Added `requests` property for backward-compatible lazy access
-  - **File**: `src/empathy_os/cost_tracker.py:81-175`
+  - **File**: `src/attune/cost_tracker.py:81-175`
 
 - **Test Generation: 95% faster init** - Cascading benefit from CostTracker optimization
   - Init time: 0.15s → 0.008s
@@ -1131,7 +1219,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 
 ### Added
 
-- **New CLI module** - Restructured CLI into `src/empathy_os/cli/` package
+- **New CLI module** - Restructured CLI into `src/attune/cli/` package
 - **Extended test coverage** - New tests for:
   - Memory: `test_graph_extended.py`, `test_long_term_extended.py`, `test_short_term_*.py`
   - Workflows: `test_bug_predict_workflow.py`, `test_code_review_workflow.py`, `test_security_audit_workflow.py`
@@ -1157,7 +1245,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - **Files**: `.claude/commands/*.md`
 
 - **Automatic Pattern Learning** - Skills auto-capture insights after completion:
-  - Runs `python -m empathy_os.cli learn --quiet &` in background
+  - Runs `python -m attune.cli learn --quiet &` in background
   - Patterns saved to `patterns/debugging.json`, `patterns/refactoring_memory.json`
   - No manual "Learn Patterns" button needed
   - **Files**: `.claude/commands/debug.md`, `.claude/commands/refactor.md`, `.claude/commands/review.md`
@@ -1173,12 +1261,12 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 - **Prompt Caching Enabled by Default** - Up to 90% cost reduction on repeated operations:
   - System prompts marked with `cache_control: {type: "ephemeral"}`
   - 5-minute TTL, break-even at ~3 requests
-  - **Files**: `empathy_llm_toolkit/providers.py`
+  - **Files**: `attune_llm/providers.py`
 
 - **True Async I/O** - Migrated to `AsyncAnthropic` client:
   - Prevents event loop blocking in async contexts
   - Enables parallel API calls for better efficiency
-  - **Files**: `empathy_llm_toolkit/providers.py:112`
+  - **Files**: `attune_llm/providers.py:112`
 
 #### Multi-LLM Support (Unchanged)
 - All providers remain fully supported:
@@ -1213,7 +1301,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Validates against null byte injection
   - **Files**: `cli.py`, `templates.py`, `persistence.py`, `cost_tracker.py`, `memory/*.py`, `workflows/*.py`, `scaffolding/*.py`, and more
 
-- **Centralized path validation** - Exported `_validate_file_path` from `empathy_os.config` for consistent security across all modules
+- **Centralized path validation** - Exported `_validate_file_path` from `attune.config` for consistent security across all modules
 
 ### Fixed
 
@@ -1322,7 +1410,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Enables programmatic consumption of workflow results
   - Suppresses rich console output when enabled
   - Returns structured JSON with run_id, costs, agent results
-  - **Files**: `src/empathy_os/meta_workflows/cli_meta_workflows.py`
+  - **Files**: `src/attune/meta_workflows/cli_meta_workflows.py`
 
 ### Fixed
 
@@ -1330,18 +1418,18 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 - **Template ID Consistency** - Fixed kebab-case vs snake_case mismatch
   - Updated builtin_templates.py to use correct snake_case agent template IDs
   - Fixed `security-analyst` → `security_auditor`, `test-analyst` → `test_coverage_analyzer`, etc.
-  - **Files**: `src/empathy_os/meta_workflows/builtin_templates.py`
+  - **Files**: `src/attune/meta_workflows/builtin_templates.py`
 
 - **Environment Variable Loading** - Fixed .env file not being loaded
   - Added multi-path search for .env files (cwd, project root, home, ~/.empathy)
   - Uses python-dotenv for reliable environment variable loading
-  - **Files**: `src/empathy_os/meta_workflows/workflow.py`
+  - **Files**: `src/attune/meta_workflows/workflow.py`
 
 - **Missing Agent Templates** - Added 6 new agent templates
   - `test_generator`, `test_validator`, `report_generator`
   - `documentation_analyst`, `synthesizer`, `generic_agent`
   - Each with appropriate tier_preference, tools, and quality_gates
-  - **Files**: `src/empathy_os/orchestration/agent_templates.py`
+  - **Files**: `src/attune/orchestration/agent_templates.py`
 
 ### Changed
 - VS Code extension version bumped to 1.3.2
@@ -1358,7 +1446,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Progressive tier escalation (CHEAP → CAPABLE → PREMIUM) with real execution
   - Graceful fallback to simulation when API key not available
   - Full telemetry integration via UsageTracker
-  - **Files**: `src/empathy_os/meta_workflows/workflow.py`
+  - **Files**: `src/attune/meta_workflows/workflow.py`
 
 - **AskUserQuestion Tool Integration** - Form collection now supports real tool invocation
   - Callback-based pattern for AskUserQuestion tool injection
@@ -1366,7 +1454,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
   - Default mode: Graceful fallback to question defaults
   - `set_callback()` method for runtime configuration
   - Maintains full backward compatibility with existing tests
-  - **Files**: `src/empathy_os/meta_workflows/form_engine.py`
+  - **Files**: `src/attune/meta_workflows/form_engine.py`
 
 #### Enhanced Agent Team UX
 - **Skill-based invocation** for agent teams
@@ -1435,7 +1523,7 @@ PatternLearner (stores in files + memory)
 - **CrewAI moved to optional dependencies**
   - CrewAI and LangChain removed from core dependencies
   - Reduces install size and dependency conflicts
-  - Install with `pip install empathy-framework[crewai]` if needed
+  - Install with `pip install attune-ai[crewai]` if needed
   - The "Crew" workflows never actually used CrewAI library
 
 - `SocraticFormEngine` now accepts `ask_user_callback` parameter for tool integration
@@ -1501,7 +1589,7 @@ empathy meta-workflow run test-coverage-boost
   - **Explainer** (`explainer.py`): Workflow explanation system
   - **Feedback** (`feedback.py`): User feedback collection
   - **Web UI** (`web_ui.py`): Interactive web interface components
-  - **Files**: `src/empathy_os/socratic/` (19 modules)
+  - **Files**: `src/attune/socratic/` (19 modules)
 
 - **10 New CLI Skills** (882 lines)
   - `/cache` - Hybrid cache diagnostics and optimization
@@ -1567,7 +1655,7 @@ empathy meta-workflow run test-coverage-boost
     - `empathy meta-workflow session-stats` - Show session context statistics (NEW)
     - `empathy meta-workflow suggest-defaults <template_id>` - Get suggested defaults based on history (NEW)
   - **Progressive Tier Escalation**: Agent-level tier strategies (CHEAP_ONLY, PROGRESSIVE, CAPABLE_FIRST)
-  - **Files**: `src/empathy_os/meta_workflows/` (7 new modules, ~2,500 lines)
+  - **Files**: `src/attune/meta_workflows/` (7 new modules, ~2,500 lines)
     - `models.py` - Core data structures (MetaWorkflowTemplate, AgentSpec, FormSchema, etc.)
     - `form_engine.py` - Socratic form collection via AskUserQuestion
     - `agent_creator.py` - Dynamic agent generation from templates
@@ -1647,7 +1735,7 @@ Pattern Learning & Analytics
 Meta-workflows are opt-in. To use:
 
 ```python
-from empathy_os.meta_workflows import (
+from attune.meta_workflows import (
     TemplateRegistry,
     MetaWorkflow,
     FormResponse,
@@ -1682,8 +1770,8 @@ print(f"Total cost: ${result.total_cost:.2f}")
 **With Memory Integration** (optional):
 
 ```python
-from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import PatternLearner, MetaWorkflow
+from attune.memory.unified import UnifiedMemory
+from attune.meta_workflows import PatternLearner, MetaWorkflow
 
 # Initialize memory
 memory = UnifiedMemory(user_id="agent@company.com")
@@ -1736,7 +1824,7 @@ recommendations = learner.get_smart_recommendations(
   - **Relevance scoring algorithm**: Exact phrase matches (10 points), keyword in content (2 points), keyword in metadata (1 point)
   - **Filtering capabilities**: By pattern_type and classification
   - **Graceful fallback**: Returns empty list when memory unavailable
-  - **Files**: `src/empathy_os/memory/unified.py` (+165 lines)
+  - **Files**: `src/attune/memory/unified.py` (+165 lines)
   - **Tests**: `tests/unit/memory/test_memory_search.py` (30 tests, ~80% coverage)
     - Basic search functionality (query, pattern_type, classification filters)
     - Relevance scoring validation
@@ -1750,7 +1838,7 @@ recommendations = learner.get_smart_recommendations(
   - **TTL-based expiration**: Configurable time-to-live (default: 1 hour)
   - **Session statistics**: Track choice counts and workflow execution metadata
   - **Validation**: Choice validation against form schema
-  - **Files**: `src/empathy_os/meta_workflows/session_context.py` (340 lines)
+  - **Files**: `src/attune/meta_workflows/session_context.py` (340 lines)
   - **Tests**: `tests/unit/meta_workflows/test_session_context.py` (35 tests, ~85% coverage)
     - Choice recording with/without memory
     - Default suggestion with schema validation
@@ -1831,7 +1919,7 @@ recommendations = learner.get_smart_recommendations(
   - `empathy progressive analytics` - Show cost optimization analytics
   - `empathy progressive cleanup` - Clean up old progressive workflow results
   - Commands available in both Typer-based (`cli_unified.py`) and argparse-based (`cli.py`) CLIs
-  - Files: `src/empathy_os/cli_unified.py`, `src/empathy_os/cli.py`
+  - Files: `src/attune/cli_unified.py`, `src/attune/cli.py`
 
 ### Fixed
 
@@ -1855,7 +1943,7 @@ recommendations = learner.get_smart_recommendations(
   - **Analytics & reporting**: Historical analysis of runs, escalation rates, cost savings (typically 70-85%)
   - **Retention policy**: Automatic cleanup of results older than N days (default: 30 days)
   - **CLI tools**: List, show, analytics, and cleanup commands for managing workflow results
-  - **Files**: `src/empathy_os/workflows/progressive/` (7 new modules, 857 lines)
+  - **Files**: `src/attune/workflows/progressive/` (7 new modules, 857 lines)
 
 - **Comprehensive Test Suite**: 123 tests for progressive workflows (86.58% coverage)
   - Core data structures and quality metrics (21 tests)
@@ -1887,7 +1975,7 @@ recommendations = learner.get_smart_recommendations(
 **Migration Guide**: Progressive workflows are opt-in. Existing workflows continue unchanged. To use:
 
 ```python
-from empathy_os.workflows.progressive import ProgressiveTestGenWorkflow, EscalationConfig
+from attune.workflows.progressive import ProgressiveTestGenWorkflow, EscalationConfig
 
 config = EscalationConfig(enabled=True, max_cost=10.00)
 workflow = ProgressiveTestGenWorkflow(config)
@@ -1902,10 +1990,10 @@ print(result.generate_report())
 ### Fixed - CRITICAL
 
 - **🔴 Coverage Analyzer Returning 0%**: Fixed coverage analyzer using wrong package name
-  - Changed from `--cov=src` to `--cov=empathy_os --cov=empathy_llm_toolkit --cov=empathy_software_plugin --cov=empathy_healthcare_plugin`
+  - Changed from `--cov=src` to `--cov=attune --cov=attune_llm --cov=empathy_software_plugin --cov=empathy_healthcare_plugin`
   - Health check now shows actual coverage (~54-70%) instead of 0%
   - Grade improved from D (66.7) to B (84.8+)
-  - Files: [real_tools.py:111-131](src/empathy_os/orchestration/real_tools.py#L111-L131), [execution_strategies.py:150](src/empathy_os/orchestration/execution_strategies.py#L150)
+  - Files: [real_tools.py:111-131](src/attune/orchestration/real_tools.py#L111-L131), [execution_strategies.py:150](src/attune/orchestration/execution_strategies.py#L150)
 
 **Impact**: This was a critical bug causing health check to incorrectly report project health as grade D (66.7) instead of B (84.8+).
 
@@ -1917,12 +2005,12 @@ print(result.generate_report())
 
 - **🔧 Prompt Caching Bug**: Fixed type comparison error when cache statistics contain mock objects (affects testing)
   - Added type checking in `AnthropicProvider.generate()` to handle both real and mock cache metrics
-  - File: `empathy_llm_toolkit/providers.py:196-227`
+  - File: `attune_llm/providers.py:196-227`
 
 - **🔒 Health Check Bandit Integration**: Fixed JSON parsing error in security auditor
   - Added `-q` (quiet) flag to suppress Bandit log messages polluting JSON output
   - Health check now works correctly with all real analysis tools
-  - File: `src/empathy_os/orchestration/real_tools.py:598`
+  - File: `src/attune/orchestration/real_tools.py:598`
 
 ### Changed
 
@@ -2024,13 +2112,13 @@ print(result.generate_report())
 
 ### Deprecated
 
-- **⚠️ HealthcareWizard** ([empathy_llm_toolkit/wizards/healthcare_wizard.py](empathy_llm_toolkit/wizards/healthcare_wizard.py))
+- **⚠️ HealthcareWizard** ([attune_llm/wizards/healthcare_wizard.py](attune_llm/wizards/healthcare_wizard.py))
   - **Reason:** Basic example wizard, superseded by specialized healthcare plugin
   - **Migration:** `pip install empathy-healthcare-wizards`
   - **Removal:** Planned for v5.0 (Q2 2026)
   - **Impact:** Runtime deprecation warning added; backward compatible in v4.0
 
-- **⚠️ TechnologyWizard** ([empathy_llm_toolkit/wizards/technology_wizard.py](empathy_llm_toolkit/wizards/technology_wizard.py))
+- **⚠️ TechnologyWizard** ([attune_llm/wizards/technology_wizard.py](attune_llm/wizards/technology_wizard.py))
   - **Reason:** Basic example wizard, superseded by empathy_software_plugin (built-in)
   - **Migration:** Use `empathy_software_plugin.wizards` or `pip install empathy-software-wizards`
   - **Removal:** Planned for v5.0 (Q2 2026)
@@ -2043,7 +2131,7 @@ print(result.generate_report())
   - Aligned coding standards across [.claude/rules/empathy/](claude/rules/empathy/) directory
   - Added [docs/DOCUMENTATION_UPDATE_SUMMARY.md](docs/DOCUMENTATION_UPDATE_SUMMARY.md) tracking all changes
 
-- **🔧 Wizard Module Updates** ([empathy_llm_toolkit/wizards/\_\_init\_\_.py](empathy_llm_toolkit/wizards/__init__.py))
+- **🔧 Wizard Module Updates** ([attune_llm/wizards/\_\_init\_\_.py](attune_llm/wizards/__init__.py))
   - Updated module docstring to reflect 1 active example (CustomerSupportWizard)
   - Marked HealthcareWizard and TechnologyWizard as deprecated with clear migration paths
   - Maintained backward compatibility (all classes still exported)
@@ -2076,14 +2164,14 @@ print(result.generate_report())
 
 ### Added
 
-- **🔍 Real Analysis Tools Integration** ([src/empathy_os/orchestration/real_tools.py](src/empathy_os/orchestration/real_tools.py))
+- **🔍 Real Analysis Tools Integration** ([src/attune/orchestration/real_tools.py](src/attune/orchestration/real_tools.py))
   - **RealSecurityAuditor** - Runs Bandit for vulnerability scanning
   - **RealCodeQualityAnalyzer** - Runs Ruff (linting) and MyPy (type checking)
   - **RealCoverageAnalyzer** - Runs pytest-cov for actual test coverage
   - **RealDocumentationAnalyzer** - AST-based docstring completeness checker
   - All analyzers return structured reports with real metrics
 
-- **📊 Orchestrated Health Check Workflow** ([orchestrated_health_check.py](src/empathy_os/workflows/orchestrated_health_check.py))
+- **📊 Orchestrated Health Check Workflow** ([orchestrated_health_check.py](src/attune/workflows/orchestrated_health_check.py))
   - Three execution modes: daily (3 agents), weekly (5 agents), release (6 agents)
   - Real-time analysis: Security 100/100, Quality 99.5/100, Coverage measurement
   - Grading system: A (90-100), B (80-89), C (70-79), D (60-69), F (0-59)
@@ -2091,7 +2179,7 @@ print(result.generate_report())
   - CLI: `empathy orchestrate health-check --mode [daily|weekly|release]`
   - VSCode: One-click "Health Check" button in dashboard
 
-- **✅ Orchestrated Release Prep Workflow** ([orchestrated_release_prep.py](src/empathy_os/workflows/orchestrated_release_prep.py))
+- **✅ Orchestrated Release Prep Workflow** ([orchestrated_release_prep.py](src/attune/workflows/orchestrated_release_prep.py))
   - Four parallel quality gates with real metrics
   - Security gate: 0 high/critical vulnerabilities (Bandit)
   - Coverage gate: ≥80% test coverage (pytest-cov)
@@ -2108,18 +2196,18 @@ print(result.generate_report())
   - Improved button styling and visual hierarchy
 
 - **⚡ Performance Optimizations** - 9.8x speedup on cached runs, 481x faster than first run
-  - **Incremental Coverage Analysis** ([real_tools.py:RealCoverageAnalyzer](src/empathy_os/orchestration/real_tools.py))
+  - **Incremental Coverage Analysis** ([real_tools.py:RealCoverageAnalyzer](src/attune/orchestration/real_tools.py))
     - Uses cached `coverage.json` if <1 hour old
     - Skips running 1310 tests when no files changed
     - Git-based change detection with `_get_changed_files()`
     - Result: 0.43s vs 4.22s (9.8x speedup on repeated runs)
 
-  - **Parallel Test Execution** ([real_tools.py:RealCoverageAnalyzer](src/empathy_os/orchestration/real_tools.py))
+  - **Parallel Test Execution** ([real_tools.py:RealCoverageAnalyzer](src/attune/orchestration/real_tools.py))
     - Uses pytest-xdist with `-n auto` flag for multi-core execution
     - Automatically utilizes 3-4 CPU cores (330% CPU efficiency)
     - Result: 207.89s vs 296s (1.4x speedup on first run)
 
-  - **Incremental Security Scanning** ([real_tools.py:RealSecurityAuditor](src/empathy_os/orchestration/real_tools.py))
+  - **Incremental Security Scanning** ([real_tools.py:RealSecurityAuditor](src/attune/orchestration/real_tools.py))
     - Git-based change detection with `_get_changed_files()`
     - Scans only modified files instead of entire codebase
     - Result: 0.2s vs 3.8s (19x speedup)
@@ -2135,12 +2223,12 @@ print(result.generate_report())
   - Performance benchmarks: 481x speedup (cached), 1.4x first run, 19x security scan
 
 - **🎭 Meta-Orchestration System: Intelligent Multi-Agent Composition**
-  - **Core orchestration engine** ([src/empathy_os/orchestration/](src/empathy_os/orchestration/))
+  - **Core orchestration engine** ([src/attune/orchestration/](src/attune/orchestration/))
     - MetaOrchestrator analyzes tasks and selects optimal agent teams
     - Automatic complexity and domain classification
     - Cost estimation and duration prediction
 
-  - **7 pre-built agent templates** ([agent_templates.py](src/empathy_os/orchestration/agent_templates.py), 517 lines)
+  - **7 pre-built agent templates** ([agent_templates.py](src/attune/orchestration/agent_templates.py), 517 lines)
     1. Test Coverage Analyzer (CAPABLE) - Gap analysis and test suggestions
     2. Security Auditor (PREMIUM) - Vulnerability scanning and compliance
     3. Code Reviewer (CAPABLE) - Quality assessment and best practices
@@ -2149,7 +2237,7 @@ print(result.generate_report())
     6. Architecture Analyst (PREMIUM) - Design patterns and dependencies
     7. Refactoring Specialist (CAPABLE) - Code smells and improvements
 
-  - **6 composition strategies** ([execution_strategies.py](src/empathy_os/orchestration/execution_strategies.py), 667 lines)
+  - **6 composition strategies** ([execution_strategies.py](src/attune/orchestration/execution_strategies.py), 667 lines)
     1. **Sequential** (A → B → C) - Pipeline processing with context passing
     2. **Parallel** (A ‖ B ‖ C) - Independent validation with asyncio
     3. **Debate** (A ⇄ B ⇄ C → Synthesis) - Consensus building with synthesis
@@ -2157,7 +2245,7 @@ print(result.generate_report())
     5. **Refinement** (Draft → Review → Polish) - Iterative improvement
     6. **Adaptive** (Classifier → Specialist) - Right-sizing based on complexity
 
-  - **Configuration store with learning** ([config_store.py](src/empathy_os/orchestration/config_store.py), 508 lines)
+  - **Configuration store with learning** ([config_store.py](src/attune/orchestration/config_store.py), 508 lines)
     - Persistent storage in `.empathy/orchestration/compositions/`
     - Success rate tracking and quality score averaging
     - Search by task pattern, success rate, quality score
@@ -2165,18 +2253,18 @@ print(result.generate_report())
     - JSON serialization with datetime handling
 
   - **2 production workflows** demonstrating meta-orchestration
-    - **Release Preparation** ([orchestrated_release_prep.py](src/empathy_os/workflows/orchestrated_release_prep.py), 585 lines)
+    - **Release Preparation** ([orchestrated_release_prep.py](src/attune/workflows/orchestrated_release_prep.py), 585 lines)
       - 4 parallel agents: Security, Coverage, Quality, Docs
       - Quality gates: min_coverage (80%), min_quality (7.0), max_critical (0)
       - Consolidated release readiness report with blockers/warnings
       - CLI: `empathy orchestrate release-prep`
 
-    - **Test Coverage Boost** ([test_coverage_boost.py](src/empathy_os/workflows/test_coverage_boost.py))
+    - **Test Coverage Boost** ([test_coverage_boost.py](src/attune/workflows/test_coverage_boost.py))
       - 3 sequential stages: Analyzer → Generator → Validator
       - Automatic gap prioritization and test generation
       - CLI: `empathy orchestrate test-coverage --target 90`
 
-  - **CLI integration** ([cli.py](src/empathy_os/cli.py), new `cmd_orchestrate` function)
+  - **CLI integration** ([cli.py](src/attune/cli.py), new `cmd_orchestrate` function)
     - `empathy orchestrate release-prep [--min-coverage N] [--json]`
     - `empathy orchestrate test-coverage --target N [--project-root PATH]`
     - Custom quality gates via CLI arguments
@@ -2268,9 +2356,9 @@ print(result.generate_report())
 ### Removed
 
 - **Deprecated Workflow Files** - Deleted old v3.x workflow implementations
-  - `src/empathy_os/workflows/health_check.py` - Old single-agent health check
-  - `src/empathy_os/workflows/health_check_crew.py` - CrewAI multi-agent version
-  - `src/empathy_os/workflows/test_coverage_boost.py` - Old coverage boost workflow
+  - `src/attune/workflows/health_check.py` - Old single-agent health check
+  - `src/attune/workflows/health_check_crew.py` - CrewAI multi-agent version
+  - `src/attune/workflows/test_coverage_boost.py` - Old coverage boost workflow
   - Updated `__init__.py` to remove all imports and registry entries
   - Deleted corresponding test files: `test_health_check_workflow.py`, `test_coverage_boost.py`, `test_health_check_exceptions.py`
   - Users should migrate to `orchestrated-health-check` and `orchestrated-release-prep` v4.0 workflows
@@ -2330,12 +2418,12 @@ print(result.generate_report())
   - All optimizations 100% backward compatible, zero breaking changes
 
 - **Track 4: Intelligent Caching** ([docs/CACHING_STRATEGY_PLAN.md](docs/CACHING_STRATEGY_PLAN.md))
-  - **New cache monitoring infrastructure** ([src/empathy_os/cache_monitor.py](src/empathy_os/cache_monitor.py))
-  - **Pattern match caching** ([src/empathy_os/pattern_cache.py](src/empathy_os/pattern_cache.py), 169 lines)
+  - **New cache monitoring infrastructure** ([src/attune/cache_monitor.py](src/attune/cache_monitor.py))
+  - **Pattern match caching** ([src/attune/pattern_cache.py](src/attune/pattern_cache.py), 169 lines)
     - 60-70% cache hit rate for pattern queries
     - TTL-based invalidation with configurable timeouts
     - LRU eviction policy with size bounds
-  - **Cache health analytics** ([src/empathy_os/cache_stats.py](src/empathy_os/cache_stats.py), 298 lines)
+  - **Cache health analytics** ([src/attune/cache_stats.py](src/attune/cache_stats.py), 298 lines)
     - Real-time hit rate tracking
     - Memory usage monitoring
     - Performance recommendations
@@ -2394,7 +2482,7 @@ print(result.generate_report())
 
 **Example:**
 ```python
-from empathy_os.pattern_library import PatternLibrary
+from attune.pattern_library import PatternLibrary
 
 library = PatternLibrary()
 # Automatically uses O(1) index structures
@@ -2428,18 +2516,18 @@ patterns = library.get_patterns_by_tag("debugging")  # Fast!
   # 💰 Cost Savings: $0.0300 (66.7%)
   ```
 
-- **Quality Gate Infrastructure** ([src/empathy_os/workflows/base.py:156-187](src/empathy_os/workflows/base.py#L156-L187))
+- **Quality Gate Infrastructure** ([src/attune/workflows/base.py:156-187](src/attune/workflows/base.py#L156-L187))
   - New `validate_output()` method for per-stage quality validation
   - Default validation checks: execution success, non-empty output, no error keys
   - Workflow-specific validation overrides (e.g., health score threshold for health-check)
   - Configurable quality thresholds (default: 95% for health-check workflow)
 
-- **Progress UI with Tier Indicators** ([src/empathy_os/workflows/progress.py:236-254](src/empathy_os/workflows/progress.py#L236-L254))
+- **Progress UI with Tier Indicators** ([src/attune/workflows/progress.py:236-254](src/attune/workflows/progress.py#L236-L254))
   - Real-time tier display in progress bar: `diagnose [CHEAP]`, `fix [CAPABLE]`
   - Automatic tier upgrade notifications with reasons
   - Visual feedback for tier escalation decisions
 
-- **Tier Progression Telemetry** ([src/empathy_os/workflows/tier_tracking.py:321-375](src/empathy_os/workflows/tier_tracking.py#L321-L375))
+- **Tier Progression Telemetry** ([src/attune/workflows/tier_tracking.py:321-375](src/attune/workflows/tier_tracking.py#L321-L375))
   - Detailed tracking of tier attempts per stage: `(stage, tier, success)`
   - Fallback chain recording (e.g., `CHEAP → CAPABLE`)
   - Cost analysis: actual cost vs. all-PREMIUM baseline
@@ -2454,7 +2542,7 @@ patterns = library.get_patterns_by_tag("debugging")  # Fast!
 
 ### Changed
 
-- **Health Check Workflow Quality Gate** ([src/empathy_os/workflows/health_check.py:156-187](src/empathy_os/workflows/health_check.py#L156-L187))
+- **Health Check Workflow Quality Gate** ([src/attune/workflows/health_check.py:156-187](src/attune/workflows/health_check.py#L156-L187))
   - Default health score threshold changed from 100 to **95** (more practical balance)
   - Configurable via `--health-score-threshold` flag
   - Quality validation now blocks tier fallback if health score < threshold
@@ -2504,7 +2592,7 @@ empathy workflow run health-check --use-recommended-tier --health-score-threshol
 
 **Python API:**
 ```python
-from empathy_os.workflows import get_workflow
+from attune.workflows import get_workflow
 
 workflow_cls = get_workflow("health-check")
 workflow = workflow_cls(
@@ -2540,14 +2628,14 @@ for stage, tier, success in workflow._tier_progression:
 
 - **Type System Improvements**
   - Fixed 25+ type annotation issues across codebase
-  - [src/empathy_os/config.py](src/empathy_os/config.py#L19-L27): Fixed circular import with `workflows/config.py` using `TYPE_CHECKING` and lazy imports
-  - [src/empathy_os/tier_recommender.py](src/empathy_os/tier_recommender.py): Added explicit type annotations for `patterns`, `tier_dist`, and `bug_type_dist`
-  - [src/empathy_os/workflows/tier_tracking.py](src/empathy_os/workflows/tier_tracking.py#L372): Added explicit `float` type annotation for `actual_cost`
-  - [src/empathy_os/workflows/base.py](src/empathy_os/workflows/base.py#L436): Added proper type annotation for `_tier_tracker` using TYPE_CHECKING
-  - [src/empathy_os/hot_reload/watcher.py](src/empathy_os/hot_reload/watcher.py): Fixed callback signature and byte/str handling for file paths
-  - [src/empathy_os/hot_reload/websocket.py](src/empathy_os/hot_reload/websocket.py#L145): Changed `callable` to proper `Callable` type
-  - [src/empathy_os/hot_reload/integration.py](src/empathy_os/hot_reload/integration.py#L49): Changed `callable` to proper `Callable[[str, type], bool]`
-  - [src/empathy_os/test_generator/generator.py](src/empathy_os/test_generator/generator.py#L63): Fixed return type to `dict[str, str | None]`
+  - [src/attune/config.py](src/attune/config.py#L19-L27): Fixed circular import with `workflows/config.py` using `TYPE_CHECKING` and lazy imports
+  - [src/attune/tier_recommender.py](src/attune/tier_recommender.py): Added explicit type annotations for `patterns`, `tier_dist`, and `bug_type_dist`
+  - [src/attune/workflows/tier_tracking.py](src/attune/workflows/tier_tracking.py#L372): Added explicit `float` type annotation for `actual_cost`
+  - [src/attune/workflows/base.py](src/attune/workflows/base.py#L436): Added proper type annotation for `_tier_tracker` using TYPE_CHECKING
+  - [src/attune/hot_reload/watcher.py](src/attune/hot_reload/watcher.py): Fixed callback signature and byte/str handling for file paths
+  - [src/attune/hot_reload/websocket.py](src/attune/hot_reload/websocket.py#L145): Changed `callable` to proper `Callable` type
+  - [src/attune/hot_reload/integration.py](src/attune/hot_reload/integration.py#L49): Changed `callable` to proper `Callable[[str, type], bool]`
+  - [src/attune/test_generator/generator.py](src/attune/test_generator/generator.py#L63): Fixed return type to `dict[str, str | None]`
   - [patterns/registry.py](patterns/registry.py#L220): Added `cast` to help mypy with None filtering
   - [empathy_software_plugin/wizards/testing/test_suggester.py](empathy_software_plugin/wizards/testing/test_suggester.py#L497): Added type annotation for `by_priority`
   - [empathy_software_plugin/wizards/testing/quality_analyzer.py](empathy_software_plugin/wizards/testing/quality_analyzer.py): Replaced `__post_init__` pattern with `field(default_factory=list)`
@@ -2560,8 +2648,8 @@ for stage, tier, success in workflow._tier_progression:
   - **Result**: Production code (src/, plugins, tests/) now has **zero type errors**
 
 - **Import and Module Structure**
-  - Fixed 47 test files using incorrect `from src.empathy_os...` imports
-  - Changed to proper `from empathy_os...` imports across all test files
+  - Fixed 47 test files using incorrect `from src.attune...` imports
+  - Changed to proper `from attune...` imports across all test files
   - Fixed editable install by removing orphaned namespace package directory
   - **Result**: All imports now work correctly, CLI fully functional
 
@@ -2572,8 +2660,8 @@ for stage, tier, success in workflow._tier_progression:
 - **Configuration and Tooling**
   - [pyproject.toml](pyproject.toml#L471-L492): Added comprehensive mypy exclusions for non-production code
   - Excluded: `build/`, `backend/`, `scripts/`, `docs/`, `dashboard/`, `coach_wizards/`, `archived_wizards/`, `wizards_consolidated/`
-  - [empathy_llm_toolkit/agent_factory/crews/health_check.py](empathy_llm_toolkit/agent_factory/crews/health_check.py#L877-L897): Updated health check crew to scan only production directories
-  - Health check now focuses on: `src/`, `empathy_software_plugin/`, `empathy_healthcare_plugin/`, `empathy_llm_toolkit/`, `patterns/`, `tests/`
+  - [attune_llm/agent_factory/crews/health_check.py](attune_llm/agent_factory/crews/health_check.py#L877-L897): Updated health check crew to scan only production directories
+  - Health check now focuses on: `src/`, `empathy_software_plugin/`, `empathy_healthcare_plugin/`, `attune_llm/`, `patterns/`, `tests/`
   - **Result**: Health checks now accurately reflect production code quality
 
 - **Test Infrastructure**
@@ -2611,7 +2699,7 @@ for stage, tier, success in workflow._tier_progression:
 
 ### Fixed
 
-- **Exception handling improvements** ([src/empathy_os/workflows/base.py](src/empathy_os/workflows/base.py))
+- **Exception handling improvements** ([src/attune/workflows/base.py](src/attune/workflows/base.py))
   - Fixed 8 blind `except Exception:` handlers with specific exception types
   - Telemetry tracker initialization: Split into OSError/PermissionError and AttributeError/TypeError/ValueError
   - Cache setup: Added ImportError, OSError/PermissionError, and ValueError/TypeError/AttributeError catches
@@ -2628,7 +2716,7 @@ for stage, tier, success in workflow._tier_progression:
   - [tests/unit/workflows/test_test5.py](tests/unit/workflows/test_test5.py): Added ModelTier import, updated stages and tier_map assertions
   - All 110 workflow tests now passing (100% pass rate)
 
-- **Minor code quality**: Fixed unused variable warning in [src/empathy_os/workflows/tier_tracking.py](src/empathy_os/workflows/tier_tracking.py#L356)
+- **Minor code quality**: Fixed unused variable warning in [src/attune/workflows/tier_tracking.py](src/attune/workflows/tier_tracking.py#L356)
   - Changed `total_tokens` to `_total_tokens` to indicate intentionally unused variable
 
 ### Changed
@@ -2640,7 +2728,7 @@ for stage, tier, success in workflow._tier_progression:
   - Added security badge linking to SECURITY.md
 
 - **Project organization**: Cleaned root directory structure
-  - Moved scaffolding/, test_generator/, workflow_patterns/, hot_reload/ to src/empathy_os/ subdirectories
+  - Moved scaffolding/, test_generator/, workflow_patterns/, hot_reload/ to src/attune/ subdirectories
   - Moved .vsix files to vscode-extension/dist/
   - Moved RELEASE_PREPARATION.md to docs/guides/
   - Archived 15+ planning documents to .archive/
@@ -2705,7 +2793,7 @@ for stage, tier, success in workflow._tier_progression:
 
 ##### Dual-Mode Caching Architecture
 
-- **HashOnlyCache** ([empathy_os/cache/hash_only.py](src/empathy_os/cache/hash_only.py)) - Fast exact-match caching via SHA256 hashing
+- **HashOnlyCache** ([attune/cache/hash_only.py](src/attune/cache/hash_only.py)) - Fast exact-match caching via SHA256 hashing
   - ~5μs lookup time per query
   - 100% hit rate on identical prompts
   - Zero ML dependencies
@@ -2713,30 +2801,30 @@ for stage, tier, success in workflow._tier_progression:
   - Configurable TTL (default: 24 hours)
   - Disk persistence to `~/.empathy/cache/responses.json`
 
-- **HybridCache** ([empathy_os/cache/hybrid.py](src/empathy_os/cache/hybrid.py)) - Hash + semantic similarity matching
+- **HybridCache** ([attune/cache/hybrid.py](src/attune/cache/hybrid.py)) - Hash + semantic similarity matching
   - Falls back to semantic search when hash miss occurs
   - Up to 57% hit rate on similar prompts (benchmarked on security audit workflow)
   - Uses sentence-transformers (all-MiniLM-L6-v2 model)
   - Configurable similarity threshold (default: 0.95)
   - Automatic hash cache promotion for semantic hits
-  - Optional ML dependencies via `pip install empathy-framework[cache]`
+  - Optional ML dependencies via `pip install attune-ai[cache]`
 
 ##### Cache Infrastructure
 
-- **BaseCache** ([empathy_os/cache/base.py](src/empathy_os/cache/base.py)) - Abstract interface with CacheEntry dataclass
+- **BaseCache** ([attune/cache/base.py](src/attune/cache/base.py)) - Abstract interface with CacheEntry dataclass
   - Standardized cache entry format with workflow/stage/model/prompt metadata
   - TTL expiration support with automatic cleanup
   - Thread-safe statistics tracking (hits, misses, evictions)
   - Size information methods (entries, MB, hit rates)
 
-- **CacheStorage** ([empathy_os/cache/storage.py](src/empathy_os/cache/storage.py)) - Disk persistence layer
+- **CacheStorage** ([attune/cache/storage.py](src/attune/cache/storage.py)) - Disk persistence layer
   - JSON-based persistence with atomic writes
   - Auto-save on modifications (configurable)
   - Version tracking for cache compatibility
   - Expired entry filtering on load
   - Manual eviction and clearing methods
 
-- **DependencyManager** ([empathy_os/cache/dependencies.py](src/empathy_os/cache/dependencies.py)) - Optional dependency installer
+- **DependencyManager** ([attune/cache/dependencies.py](src/attune/cache/dependencies.py)) - Optional dependency installer
   - One-time interactive prompt for ML dependencies
   - Smart detection of existing installations
   - Clear upgrade path explanation
@@ -2854,15 +2942,15 @@ Tier routing savings vary significantly based on your role and task complexity:
 
 ##### Complete CrewAI Integration ✅ Production Ready
 
-- **SecurityAuditCrew** (`empathy_llm_toolkit/agent_factory/crews/security.py`) - Multi-agent security scanning with XML-enhanced prompts
-- **CodeReviewCrew** (`empathy_llm_toolkit/agent_factory/crews/code_review.py`) - Automated code review with quality scoring
-- **RefactoringCrew** (`empathy_llm_toolkit/agent_factory/crews/refactoring.py`) - Code quality improvements
-- **HealthCheckCrew** (`empathy_llm_toolkit/agent_factory/crews/health_check.py`) - Codebase health analysis
+- **SecurityAuditCrew** (`attune_llm/agent_factory/crews/security.py`) - Multi-agent security scanning with XML-enhanced prompts
+- **CodeReviewCrew** (`attune_llm/agent_factory/crews/code_review.py`) - Automated code review with quality scoring
+- **RefactoringCrew** (`attune_llm/agent_factory/crews/refactoring.py`) - Code quality improvements
+- **HealthCheckCrew** (`attune_llm/agent_factory/crews/health_check.py`) - Codebase health analysis
 - All 4 crews use XML-enhanced prompts for improved reliability
 
 ##### HIPAA-Compliant Healthcare Wizard with XML ✅ Production Ready
 
-- **HealthcareWizard** (`empathy_llm_toolkit/wizards/healthcare_wizard.py:225`) - XML-enhanced clinical decision support
+- **HealthcareWizard** (`attune_llm/wizards/healthcare_wizard.py:225`) - XML-enhanced clinical decision support
 - Automatic PHI de-identification with audit logging
 - 90-day retention policy for HIPAA compliance
 - Evidence-based medical guidance with reduced hallucinations
@@ -2870,11 +2958,11 @@ Tier routing savings vary significantly based on your role and task complexity:
 
 ##### Customer Support & Technology Wizards with XML ✅ Production Ready
 
-- **CustomerSupportWizard** (`empathy_llm_toolkit/wizards/customer_support_wizard.py:112`) - Privacy-compliant customer service assistant
+- **CustomerSupportWizard** (`attune_llm/wizards/customer_support_wizard.py:112`) - Privacy-compliant customer service assistant
   - Automatic PII de-identification
   - Empathetic customer communications with XML structure
   - Support ticket management and escalation
-- **TechnologyWizard** (`empathy_llm_toolkit/wizards/technology_wizard.py:116`) - IT/DevOps assistant with secrets detection
+- **TechnologyWizard** (`attune_llm/wizards/technology_wizard.py:116`) - IT/DevOps assistant with secrets detection
   - Automatic secrets/credentials detection
   - Infrastructure security best practices
   - Code review for security vulnerabilities
@@ -2887,14 +2975,14 @@ Tier routing savings vary significantly based on your role and task complexity:
 - `_parse_xml_response()` - Extract data from XML responses
 - Backward compatible: XML is opt-in via configuration
 
-##### Context Window Optimization ✅ Production Ready (`src/empathy_os/optimization/`)
+##### Context Window Optimization ✅ Production Ready (`src/attune/optimization/`)
 
 - **15-35% token reduction** depending on compression level (LIGHT/MODERATE/AGGRESSIVE)
 - **Tag compression**: `<thinking>` → `<t>`, `<answer>` → `<a>` with 15+ common tags
 - **Whitespace optimization**: Remove excess whitespace while preserving structure
 - **Real-world impact**: 49.7% reduction in typical prompts
 
-##### XML Validation System ✅ Production Ready (`src/empathy_os/validation/`)
+##### XML Validation System ✅ Production Ready (`src/attune/validation/`)
 
 - Well-formedness validation with graceful fallback parsing
 - Optional XSD schema validation with caching
@@ -2955,7 +3043,7 @@ Tier routing savings vary significantly based on your role and task complexity:
   - Fixed arrayLimit bypass that allowed memory exhaustion attacks
   - Updated Stripe dependency to 19.3.1 to pull in patched version
   - All npm audits now report 0 vulnerabilities
-  - Fixes: [Dependabot alerts #12, #13, #14](https://github.com/Smart-AI-Memory/empathy-framework/security/dependabot)
+  - Fixes: [Dependabot alerts #12, #13, #14](https://github.com/Smart-AI-Memory/attune-ai/security/dependabot)
 
 #### Enhanced Privacy and Compliance
 
@@ -3137,7 +3225,7 @@ Tier routing savings vary significantly based on your role and task complexity:
   - `test_reporting.py` - 27 tests for reporting concepts
   - `test_sbar_wizard.py` - Healthcare SBAR wizard tests
 - Integration and performance test directories (`tests/integration/`, `tests/performance/`)
-- **Project Indexing System** (`src/empathy_os/project_index/`) — JSON-based file tracking with:
+- **Project Indexing System** (`src/attune/project_index/`) — JSON-based file tracking with:
   - Automatic project structure scanning and indexing
   - File metadata tracking (size, type, last modified)
   - Codebase statistics and reports
@@ -3309,7 +3397,7 @@ Tier routing savings vary significantly based on your role and task complexity:
 - Fixed cost display inconsistency between workflow report and CLI footer
 - Unified timing display to use milliseconds across all workflow reports
 - Removed redundant CLI footer (workflow reports now contain complete timing/cost info)
-- Fixed all mypy type errors across empathy_os and empathy_llm_toolkit
+- Fixed all mypy type errors across attune and attune_llm
 - Fixed ruff linting warnings (unused variables in dependency_check.py, document_gen.py)
 
 ### Changed
@@ -3502,7 +3590,7 @@ Tier routing savings vary significantly based on your role and task complexity:
 **Multi-Model Provider System**
 - Provider configuration: Anthropic, OpenAI, Ollama, Hybrid
 - Auto-detection of API keys from environment and `.env` files
-- CLI commands: `python -m empathy_os.models.cli provider`
+- CLI commands: `python -m attune.models.cli provider`
 - Single, hybrid, and custom provider modes
 
 **Smart Tier Routing (80-96% Cost Savings)**
@@ -3837,10 +3925,10 @@ Phase 7: Pattern-Based Code Review (Capstone)
 - Pre-commit hook integration for optional automatic review
 
 **New Modules**
-- empathy_llm_toolkit/pattern_resolver.py - Resolution workflow
-- empathy_llm_toolkit/contextual_patterns.py - Context-aware filtering
-- empathy_llm_toolkit/pattern_confidence.py - Confidence tracking
-- empathy_llm_toolkit/git_pattern_extractor.py - Git integration
+- attune_llm/pattern_resolver.py - Resolution workflow
+- attune_llm/contextual_patterns.py - Context-aware filtering
+- attune_llm/pattern_confidence.py - Confidence tracking
+- attune_llm/git_pattern_extractor.py - Git integration
 - empathy_software_plugin/wizards/pattern_extraction_wizard.py
 - empathy_software_plugin/wizards/code_review_wizard.py
 
@@ -3952,7 +4040,7 @@ Phase 7: Pattern-Based Code Review (Capstone)
 - Fixed all broken relative links in README.md for PyPI compatibility
   - Updated Quick Start Guide, API Reference, and User Guide links (line 45)
   - Fixed all framework documentation links (CHAPTER_EMPATHY_FRAMEWORK.md, etc.)
-  - Updated all source file links (agents, coach_wizards, empathy_llm_toolkit, services)
+  - Updated all source file links (agents, coach_wizards, attune_llm, services)
   - Fixed examples and resources directory links
   - Updated LICENSE and SPONSORSHIP.md links
   - All relative paths now use full GitHub URLs (e.g., `https://github.com/Smart-AI-Memory/empathy/blob/main/docs/...`)
@@ -4016,7 +4104,7 @@ Phase 7: Pattern-Based Code Review (Capstone)
 ### Changed
 
 **Core Architecture**
-- **empathy_llm_toolkit/core.py**: Enhanced EmpathyLLM with memory support
+- **attune_llm/core.py**: Enhanced EmpathyLLM with memory support
   - Added `claude_memory_config` and `project_root` parameters
   - Added `_cached_memory` for performance optimization
   - All 5 empathy level handlers now use `_build_system_prompt()` for consistent memory integration
@@ -4063,8 +4151,8 @@ This release is Phase 1 of the enterprise privacy integration roadmap:
 - Compliance-ready architecture (GDPR, HIPAA, SOC2)
 
 ### Quality Metrics
-- **New Module**: empathy_llm_toolkit/claude_memory.py (483 lines)
-- **Modified Core**: empathy_llm_toolkit/core.py (memory integration)
+- **New Module**: attune_llm/claude_memory.py (483 lines)
+- **Modified Core**: attune_llm/core.py (memory integration)
 - **Tests Added**: 15+ comprehensive test cases
 - **Test Coverage**: All memory features covered
 - **Example Files**: 3 sample CLAUDE.md files
@@ -4218,16 +4306,16 @@ None - this is an additive feature. Memory integration is opt-in via `claude_mem
   - `empathy_software_plugin/wizards/rag_pattern_wizard.py` (5 fixes)
 
 ### Changed
-- **Logging**: Replaced 48 `print()` statements with structured logger calls in `src/empathy_os/cli.py`
+- **Logging**: Replaced 48 `print()` statements with structured logger calls in `src/attune/cli.py`
   - Improved log management and consistency across codebase
   - Better debugging and production monitoring capabilities
-- **Code Modernization**: Removed outdated Python 3.9 compatibility code from `src/empathy_os/plugins/registry.py`
+- **Code Modernization**: Removed outdated Python 3.9 compatibility code from `src/attune/plugins/registry.py`
   - Project requires Python 3.10+, version check was unnecessary
 
 ### Added
 - **Documentation**: Added comprehensive Google-style docstrings to 5 abstract methods (149 lines total)
-  - `src/empathy_os/levels.py`: Enhanced `EmpathyLevel.respond()` with implementation guidance
-  - `src/empathy_os/plugins/base.py`: Enhanced 4 methods with detailed parameter specs, return types, and examples
+  - `src/attune/levels.py`: Enhanced `EmpathyLevel.respond()` with implementation guidance
+  - `src/attune/plugins/base.py`: Enhanced 4 methods with detailed parameter specs, return types, and examples
     - `BaseWizard.analyze()` - Domain-specific analysis guidance
     - `BaseWizard.get_required_context()` - Context requirements specification
     - `BasePlugin.get_metadata()` - Plugin metadata standards
@@ -4308,7 +4396,7 @@ None - this is an additive feature. Memory integration is opt-in via `claude_mem
   - Zero high/medium severity vulnerabilities
 
 - **Professional Logging Infrastructure**
-  - src/empathy_os/logging_config.py
+  - src/attune/logging_config.py
   - Structured logging with rotation
   - Environment-based configuration
   - 35+ logger calls across codebase

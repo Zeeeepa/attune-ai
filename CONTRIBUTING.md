@@ -1,6 +1,6 @@
-# Contributing to Empathy Framework
+# Contributing to Attune AI
 
-Thank you for your interest in contributing to the Empathy Framework! This document provides guidelines and best practices for contributing.
+Thank you for your interest in contributing to Attune AI! This document provides guidelines and best practices for contributing.
 
 ## Table of Contents
 
@@ -28,8 +28,8 @@ We are committed to providing a welcoming and inclusive environment. Please be r
 
 ```bash
 # Clone the repository
-git clone https://github.com/Deep-Study-AI/Empathy.git
-cd Empathy
+git clone https://github.com/Smart-AI-Memory/attune-ai.git
+cd attune-ai
 
 # Create virtual environment
 python3 -m venv venv
@@ -49,8 +49,7 @@ pytest tests/
 
 ### Branch Strategy
 
-- `main` - Stable releases
-- `develop` - Development branch
+- `main` - Stable releases (merge via pull request)
 - `feature/*` - New features
 - `fix/*` - Bug fixes
 - `docs/*` - Documentation updates
@@ -58,9 +57,9 @@ pytest tests/
 ### Creating a Feature
 
 ```bash
-# Create feature branch from develop
-git checkout develop
-git pull origin develop
+# Create feature branch from main
+git checkout main
+git pull origin main
 git checkout -b feature/your-feature-name
 
 # Make your changes
@@ -82,7 +81,7 @@ git push origin feature/your-feature-name
 
 We follow conventional commits:
 
-```
+```text
 <type>: <subject>
 
 <body>
@@ -91,6 +90,7 @@ We follow conventional commits:
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -102,7 +102,7 @@ We follow conventional commits:
 
 **Examples:**
 
-```
+```text
 feat: Add Level 5 systems thinking module
 
 Implements pattern sharing between multiple AI agents
@@ -111,7 +111,7 @@ for emergent collaboration capabilities.
 Closes #42
 ```
 
-```
+```text
 fix: Correct trust calculation in feedback loops
 
 Trust erosion was not properly clamped to [0,1] range.
@@ -132,12 +132,12 @@ All new code must include tests. We aim for **70%+ coverage**.
 """
 Tests for Module Name
 
-Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Copyright 2025 Patrick Roebuck
+Licensed under Apache License 2.0
 """
 
 import pytest
-from empathy_os.your_module import YourClass
+from attune.your_module import YourClass
 
 
 class TestYourClass:
@@ -169,7 +169,7 @@ class TestYourClass:
 pytest tests/
 
 # Run with coverage
-pytest tests/ --cov=src/empathy_os --cov-report=term-missing
+pytest tests/ --cov=src/attune --cov-report=term-missing
 
 # Run specific test file
 pytest tests/test_your_module.py
@@ -186,9 +186,9 @@ pytest tests/ -s
 
 ### Coverage Requirements
 
-- Minimum **70% overall coverage**
-- New modules should have **80%+ coverage**
-- Critical modules (core, levels) should have **90%+ coverage**
+- Minimum **80% overall coverage**
+- New modules should have **90%+ coverage**
+- Critical modules (core, workflows, security) should have **95%+ coverage**
 
 ### Test Categories
 
@@ -256,6 +256,7 @@ class LeveragePointAnalyzer:
 ```
 
 **Docstring Sections:**
+
 - **Summary**: One-line description
 - **Extended Description**: Detailed explanation (optional)
 - **Example**: Usage example with >>> prompts
@@ -332,6 +333,7 @@ def process_data(data: List[Dict]) -> Dict:
 ### When to Update Documentation
 
 Update documentation when:
+
 - Adding new features
 - Changing public APIs
 - Adding examples
@@ -348,6 +350,7 @@ Update documentation when:
 ### Writing Examples
 
 Good examples are:
+
 - **Self-contained**: Run without external dependencies
 - **Well-commented**: Explain what and why
 - **Practical**: Show real-world use cases
@@ -360,11 +363,11 @@ Example: Building Trust Through Anticipation
 Demonstrates Level 4 Anticipatory Empathy by predicting
 user needs before they arise.
 
-Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Copyright 2025 Patrick Roebuck
+Licensed under Apache License 2.0
 """
 
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 def main():
     """Demonstrate anticipatory trust building"""
@@ -385,8 +388,8 @@ if __name__ == "__main__":
 
 ### Before Submitting
 
-1. **Run all tests**: `pytest tests/ --cov=src/empathy_os`
-2. **Check coverage**: Ensure 70%+ coverage
+1. **Run all tests**: `pytest tests/ --cov=src/attune`
+2. **Check coverage**: Ensure 80%+ coverage
 3. **Update documentation**: Add/update relevant docs
 4. **Add examples**: If adding features, add example
 5. **Self-review**: Read through your changes
@@ -394,13 +397,13 @@ if __name__ == "__main__":
 ### PR Checklist
 
 - [ ] Tests pass locally
-- [ ] Coverage is 70%+ overall
-- [ ] New code has tests (80%+ coverage for new modules)
+- [ ] Coverage is 80%+ overall
+- [ ] New code has tests (90%+ coverage for new modules)
 - [ ] Documentation updated
 - [ ] Examples added/updated if relevant
 - [ ] Commit messages follow conventional format
 - [ ] Code follows style guide
-- [ ] No merge conflicts with develop
+- [ ] No merge conflicts with main
 
 ### PR Template
 
@@ -445,7 +448,7 @@ Any additional context or notes for reviewers.
 
 - Your contribution will be included in next release
 - You'll be added to contributors list
-- Thank you for improving Empathy Framework!
+- Thank you for improving Attune AI!
 
 ## Getting Help
 
@@ -456,6 +459,7 @@ Any additional context or notes for reviewers.
 ## Recognition
 
 Contributors are recognized in:
+
 - README.md contributors section
 - Release notes
 - Project documentation
@@ -466,4 +470,4 @@ By contributing, you agree that your contributions will be licensed under the Ap
 
 ---
 
-Thank you for contributing to Empathy Framework! 🤝
+Thank you for contributing to Attune AI! 🤝

@@ -1,6 +1,6 @@
 # Release Automation Scripts
 
-Automated tools for creating new releases of empathy-framework.
+Automated tools for creating new releases of attune-ai.
 
 ## Quick Start
 

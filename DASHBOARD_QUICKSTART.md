@@ -7,7 +7,7 @@
 ## Start in 3 Commands
 
 ```bash
-cd /Users/patrickroebuck/Documents/empathy1-11-2025-local/empathy-framework
+cd /Users/patrickroebuck/Documents/empathy1-11-2025-local/attune-ai
 
 # 1. Start the dashboard
 ./scripts/start_dashboard.sh

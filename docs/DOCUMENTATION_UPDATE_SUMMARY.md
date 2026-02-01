@@ -22,17 +22,17 @@ Comprehensive documentation update completed in parallel with test coverage impr
 
 **Files Modified:**
 
-1. **[empathy_llm_toolkit/wizards/healthcare_wizard.py](../empathy_llm_toolkit/wizards/healthcare_wizard.py)**
+1. **[attune_llm/wizards/healthcare_wizard.py](../attune_llm/wizards/healthcare_wizard.py)**
    - Added deprecation warning at module level
    - Updated docstring with migration path
    - Points users to: `pip install empathy-healthcare-wizards`
 
-2. **[empathy_llm_toolkit/wizards/technology_wizard.py](../empathy_llm_toolkit/wizards/technology_wizard.py)**
+2. **[attune_llm/wizards/technology_wizard.py](../attune_llm/wizards/technology_wizard.py)**
    - Added deprecation warning at module level
    - Updated docstring with migration path
    - Points users to: `empathy_software_plugin` or `pip install empathy-software-wizards`
 
-3. **[empathy_llm_toolkit/wizards/__init__.py](../empathy_llm_toolkit/wizards/__init__.py)**
+3. **[attune_llm/wizards/__init__.py](../attune_llm/wizards/__init__.py)**
    - Updated module docstring to show 1 active example (CustomerSupportWizard)
    - Marked HealthcareWizard and TechnologyWizard as deprecated
    - Added inline comments: "Deprecated in v4.0, remove in v5.0"
@@ -269,9 +269,9 @@ docs/
 
 **Modified Files (3):**
 ```
-✅ empathy_llm_toolkit/wizards/__init__.py
-✅ empathy_llm_toolkit/wizards/healthcare_wizard.py
-✅ empathy_llm_toolkit/wizards/technology_wizard.py
+✅ attune_llm/wizards/__init__.py
+✅ attune_llm/wizards/healthcare_wizard.py
+✅ attune_llm/wizards/technology_wizard.py
 ```
 
 **Total Lines Added:** ~2,000+ lines of documentation
@@ -322,7 +322,7 @@ Before merging these changes:
 Users of deprecated wizards should see clear warnings:
 
 ```python
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm.wizards import HealthcareWizard
 
 # UserWarning: HealthcareWizard is deprecated and will be removed in v5.0.
 # Use the specialized healthcare plugin instead:
@@ -364,8 +364,8 @@ from empathy_llm_toolkit.wizards import HealthcareWizard
 - What's missing from architecture docs?
 
 **Feedback Channels:**
-- GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
-- GitHub Discussions: https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- GitHub Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
+- GitHub Discussions: https://github.com/Smart-AI-Memory/attune-ai/discussions
 - Email: team@smartaimemory.com
 
 ---

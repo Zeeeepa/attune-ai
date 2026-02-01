@@ -67,7 +67,7 @@ Anthropic's Batch API (announced 2024) processes requests asynchronously with:
 
 #### 1.1 Add Batch API Client
 
-**File:** `empathy_llm_toolkit/providers.py`
+**File:** `attune_llm/providers.py`
 
 **Add new class:**
 ```python
@@ -216,7 +216,7 @@ class AnthropicProvider:
 
 #### 1.2 Add Batch-Eligible Task Identification
 
-**File:** `src/empathy_os/models/tasks.py`
+**File:** `src/attune/models/tasks.py`
 
 **Add new constant:**
 ```python
@@ -264,7 +264,7 @@ REALTIME_REQUIRED_TASKS = {
 
 #### 1.3 Create Batch Workflow
 
-**File:** `src/empathy_os/workflows/batch_processing.py` (NEW)
+**File:** `src/attune/workflows/batch_processing.py` (NEW)
 
 ```python
 """Batch processing workflow using Anthropic Batch API."""
@@ -274,9 +274,9 @@ from dataclasses import dataclass
 from datetime import datetime
 import logging
 
-from empathy_os.workflows.base import BaseWorkflow
-from empathy_llm_toolkit.providers import AnthropicBatchProvider
-from empathy_os.models import get_model
+from attune.workflows.base import BaseWorkflow
+from attune_llm.providers import AnthropicBatchProvider
+from attune.models import get_model
 
 logger = logging.getLogger(__name__)
 
@@ -422,7 +422,7 @@ class BatchProcessingWorkflow(BaseWorkflow):
 
 #### 1.4 Add CLI Command
 
-**File:** `src/empathy_os/cli.py`
+**File:** `src/attune/cli.py`
 
 **Add new command:**
 ```python
@@ -444,7 +444,7 @@ def batch(
     """
     import json
     import asyncio
-    from empathy_os.workflows.batch_processing import (
+    from attune.workflows.batch_processing import (
         BatchProcessingWorkflow,
         BatchRequest,
     )
@@ -500,7 +500,7 @@ def batch(
 
 import pytest
 from unittest.mock import Mock, patch
-from empathy_llm_toolkit.providers import AnthropicBatchProvider
+from attune_llm.providers import AnthropicBatchProvider
 
 
 class TestBatchProvider:
@@ -631,7 +631,7 @@ Anthropic's Prompt Caching (2024):
 
 #### 2.1 Update Provider to Enable Caching
 
-**File:** `empathy_llm_toolkit/providers.py`
+**File:** `attune_llm/providers.py`
 
 **Modify `AnthropicProvider.__init__`:**
 ```python
@@ -719,7 +719,7 @@ def complete(
 
 #### 2.2 Add Cache-Aware System Prompts
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 **Add method to identify cacheable content:**
 ```python
@@ -760,7 +760,7 @@ class BaseWorkflow:
 
 #### 2.3 Track Cache Performance
 
-**File:** `src/empathy_os/telemetry/usage_tracker.py`
+**File:** `src/attune/telemetry/usage_tracker.py`
 
 **Add cache metrics:**
 ```python
@@ -819,7 +819,7 @@ class TokenUsage:
 
 #### 2.4 Add Cache Monitoring Dashboard
 
-**File:** `src/empathy_os/telemetry/cli.py`
+**File:** `src/attune/telemetry/cli.py`
 
 **Add command:**
 ```python
@@ -836,7 +836,7 @@ def cache_stats(
     - Top workflows benefiting from cache
     - Recommendations for optimization
     """
-    from empathy_os.telemetry import get_usage_tracker
+    from attune.telemetry import get_usage_tracker
     from rich.table import Table
 
     tracker = get_usage_tracker()
@@ -902,7 +902,7 @@ Extended Thinking (announced Dec 2024):
 
 #### 3.1 Add Thinking Mode to Model Registry
 
-**File:** `src/empathy_os/models/registry.py`
+**File:** `src/attune/models/registry.py`
 
 **Update model definitions:**
 ```python
@@ -937,7 +937,7 @@ ModelInfo(
 
 #### 3.2 Update Provider to Support Thinking Mode
 
-**File:** `empathy_llm_toolkit/providers.py`
+**File:** `attune_llm/providers.py`
 
 **Add thinking support:**
 ```python
@@ -997,7 +997,7 @@ def complete(
 
 #### 3.3 Auto-Enable for Complex Tasks
 
-**File:** `src/empathy_os/models/tasks.py`
+**File:** `src/attune/models/tasks.py`
 
 **Add thinking-required tasks:**
 ```python
@@ -1063,7 +1063,7 @@ class ModelRouter:
 
 #### 3.4 Add CLI Support
 
-**File:** `src/empathy_os/cli.py`
+**File:** `src/attune/cli.py`
 
 **Add option to workflow commands:**
 ```python
@@ -1089,7 +1089,7 @@ def workflow_run(
 
 #### 3.5 Display Thinking Process
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 **Add method to display thinking:**
 ```python
@@ -1142,7 +1142,7 @@ Current implementation uses rough estimate (4 chars per token). Anthropic provid
 
 #### 4.1 Add Token Counter Utility
 
-**File:** `empathy_llm_toolkit/utils/tokens.py` (NEW)
+**File:** `attune_llm/utils/tokens.py` (NEW)
 
 ```python
 """Token counting utilities using Anthropic's tokenizer."""
@@ -1236,7 +1236,7 @@ def estimate_cost(
         >>> estimate_cost(1000, 500, "claude-sonnet-4-5")
         0.0105  # $3/M input + $15/M output
     """
-    from empathy_os.models import get_model_by_id
+    from attune.models import get_model_by_id
 
     model_info = get_model_by_id(model)
     if not model_info:
@@ -1250,11 +1250,11 @@ def estimate_cost(
 
 #### 4.2 Replace Rough Estimates
 
-**File:** `empathy_llm_toolkit/providers.py`
+**File:** `attune_llm/providers.py`
 
 **Update AnthropicProvider:**
 ```python
-from empathy_llm_toolkit.utils.tokens import count_message_tokens, estimate_cost
+from attune_llm.utils.tokens import count_message_tokens, estimate_cost
 
 class AnthropicProvider:
     # ... existing code ...
@@ -1300,7 +1300,7 @@ class AnthropicProvider:
 
         # Adjust for cache (if used)
         if cache_creation or cache_read:
-            from empathy_os.models import get_model_by_id
+            from attune.models import get_model_by_id
             model_info = get_model_by_id(model)
 
             # Cache writes: 25% markup
@@ -1316,7 +1316,7 @@ class AnthropicProvider:
 
 #### 4.3 Add Pre-Request Validation
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 **Add validation:**
 ```python
@@ -1340,7 +1340,7 @@ class BaseWorkflow:
         Raises:
             ValueError: If request exceeds max_input_tokens
         """
-        from empathy_llm_toolkit.utils.tokens import count_message_tokens
+        from attune_llm.utils.tokens import count_message_tokens
 
         counts = count_message_tokens(messages, system_prompt, model)
 
@@ -1360,7 +1360,7 @@ class BaseWorkflow:
 
 #### 4.4 Update Telemetry
 
-**File:** `src/empathy_os/telemetry/usage_tracker.py`
+**File:** `src/attune/telemetry/usage_tracker.py`
 
 **Track accurate costs:**
 ```python
@@ -1372,7 +1372,7 @@ class UsageTracker:
         response: Dict[str, Any]
     ):
         """Track request with accurate cost calculation."""
-        from empathy_llm_toolkit.providers import AnthropicProvider
+        from attune_llm.providers import AnthropicProvider
 
         provider = AnthropicProvider()
         actual_cost = provider.calculate_actual_cost(response)
@@ -1424,7 +1424,7 @@ Claude Vision (Sonnet 4.5, Opus 4.5):
 
 #### 5.1 Add Vision Support to Provider
 
-**File:** `empathy_llm_toolkit/providers.py`
+**File:** `attune_llm/providers.py`
 
 **Add image handling:**
 ```python
@@ -1469,7 +1469,7 @@ class AnthropicProvider:
         Returns:
             API response
         """
-        from empathy_os.models import get_model_by_id
+        from attune.models import get_model_by_id
 
         # Validate model supports vision
         model_info = get_model_by_id(model)
@@ -1541,7 +1541,7 @@ class AnthropicProvider:
 
 #### 5.2 Create Image Analysis Workflow
 
-**File:** `src/empathy_os/workflows/image_analysis.py` (NEW)
+**File:** `src/attune/workflows/image_analysis.py` (NEW)
 
 ```python
 """Image analysis workflow using Claude Vision."""
@@ -1550,8 +1550,8 @@ from typing import List, Dict, Any
 from pathlib import Path
 import logging
 
-from empathy_os.workflows.base import BaseWorkflow
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune.workflows.base import BaseWorkflow
+from attune_llm.providers import AnthropicProvider
 
 logger = logging.getLogger(__name__)
 
@@ -1753,7 +1753,7 @@ class ImageAnalysisWorkflow(BaseWorkflow):
 
 #### 5.3 Add CLI Commands
 
-**File:** `src/empathy_os/cli.py`
+**File:** `src/attune/cli.py`
 
 **Add image commands:**
 ```python
@@ -1771,7 +1771,7 @@ def image_analyze(
     Example:
         empathy image-analyze screenshot.png --prompt "What error is shown?"
     """
-    from empathy_os.workflows.image_analysis import ImageAnalysisWorkflow
+    from attune.workflows.image_analysis import ImageAnalysisWorkflow
 
     workflow = ImageAnalysisWorkflow()
 
@@ -1799,7 +1799,7 @@ def image_ocr(
     Example:
         empathy image-ocr document.png --output-file text.txt
     """
-    from empathy_os.workflows.image_analysis import ImageAnalysisWorkflow
+    from attune.workflows.image_analysis import ImageAnalysisWorkflow
 
     workflow = ImageAnalysisWorkflow()
 
@@ -1829,7 +1829,7 @@ def image_debug(
     Example:
         empathy image-debug error_screenshot.png
     """
-    from empathy_os.workflows.image_analysis import ImageAnalysisWorkflow
+    from attune.workflows.image_analysis import ImageAnalysisWorkflow
     from rich.panel import Panel
 
     workflow = ImageAnalysisWorkflow()
@@ -1858,13 +1858,13 @@ def image_debug(
 import pytest
 from pathlib import Path
 from unittest.mock import Mock, patch
-from empathy_os.workflows.image_analysis import ImageAnalysisWorkflow
+from attune.workflows.image_analysis import ImageAnalysisWorkflow
 
 
 class TestImageAnalysisWorkflow:
     """Test suite for image analysis."""
 
-    @patch("empathy_llm_toolkit.providers.AnthropicProvider")
+    @patch("attune_llm.providers.AnthropicProvider")
     def test_analyze_image(self, mock_provider, tmp_path):
         """Test basic image analysis."""
         # Create test image
@@ -1883,7 +1883,7 @@ class TestImageAnalysisWorkflow:
         assert result["success"]
         assert "test image" in result["analysis"].lower()
 
-    @patch("empathy_llm_toolkit.providers.AnthropicProvider")
+    @patch("attune_llm.providers.AnthropicProvider")
     def test_extract_text_ocr(self, mock_provider, tmp_path):
         """Test OCR text extraction."""
         test_image = tmp_path / "document.png"
@@ -1902,14 +1902,14 @@ class TestImageAnalysisWorkflow:
 
     def test_load_image_not_found(self):
         """Test that loading non-existent image raises error."""
-        from empathy_llm_toolkit.providers import AnthropicProvider
+        from attune_llm.providers import AnthropicProvider
 
         with pytest.raises(FileNotFoundError):
             AnthropicProvider.load_image("nonexistent.png")
 
     def test_load_image_unsupported_format(self, tmp_path):
         """Test that unsupported format raises error."""
-        from empathy_llm_toolkit.providers import AnthropicProvider
+        from attune_llm.providers import AnthropicProvider
 
         test_file = tmp_path / "test.txt"
         test_file.write_text("not an image")
@@ -1950,7 +1950,7 @@ Anthropic Streaming:
 
 #### 6.1 Add Streaming to Provider
 
-**File:** `empathy_llm_toolkit/providers.py`
+**File:** `attune_llm/providers.py`
 
 **Add streaming method:**
 ```python
@@ -2011,7 +2011,7 @@ class AnthropicProvider:
 
 #### 6.2 Create Streaming Workflow Base
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 **Add streaming support:**
 ```python
@@ -2058,7 +2058,7 @@ class BaseWorkflow:
 
 #### 6.3 Add Streaming CLI
 
-**File:** `src/empathy_os/cli.py`
+**File:** `src/attune/cli.py`
 
 **Add streaming option:**
 ```python
@@ -2072,7 +2072,7 @@ def chat_stream(
     Example:
         empathy chat-stream "Explain async programming in Python"
     """
-    from empathy_llm_toolkit.providers import AnthropicProvider
+    from attune_llm.providers import AnthropicProvider
     from rich.live import Live
     from rich.markdown import Markdown
 
@@ -2115,7 +2115,7 @@ Set tier-appropriate max_tokens limits to avoid unnecessary costs.
 
 ### Implementation
 
-**File:** `src/empathy_os/models/registry.py`
+**File:** `src/attune/models/registry.py`
 
 **Update max_tokens:**
 ```python
@@ -2306,7 +2306,7 @@ ModelInfo(
 
 **Questions or feedback?**
 - Open discussion in GitHub Discussions
-- Slack: #empathy-framework-dev
+- Slack: #attune-ai-dev
 - Email: engineering@empathyframework.com
 
 **Document Version:** 1.0

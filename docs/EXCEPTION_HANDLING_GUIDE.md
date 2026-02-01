@@ -26,7 +26,7 @@ description: Exception Handling Best Practices: Step-by-step tutorial with examp
 ### Authentication Operations
 
 ```python
-from empathy_os.exceptions import AuthenticationError, ServiceUnavailableError
+from attune.exceptions import AuthenticationError, ServiceUnavailableError
 
 try:
     user = authenticate_user(credentials)
@@ -44,7 +44,7 @@ except ValueError as e:
 ### Security Scanning
 
 ```python
-from empathy_os.exceptions import SecurityScanException
+from attune.exceptions import SecurityScanException
 
 try:
     vulnerabilities = scan_code(source_code)
@@ -64,7 +64,7 @@ except OSError as e:
 ### Compliance Operations
 
 ```python
-from empathy_os.exceptions import ComplianceError
+from attune.exceptions import ComplianceError
 
 try:
     result = validate_compliance(data)
@@ -107,7 +107,7 @@ except UnicodeEncodeError as e:
 ### Database Operations
 
 ```python
-from empathy_os.exceptions import DatabaseError
+from attune.exceptions import DatabaseError
 
 try:
     result = db.execute(query, params)
@@ -283,7 +283,7 @@ except FileNotFoundError as e:
 Create custom exceptions for domain-specific errors:
 
 ```python
-# src/empathy_os/exceptions.py
+# src/attune/exceptions.py
 
 class EmpathyError(Exception):
     """Base exception for all Empathy Framework errors."""
@@ -517,7 +517,7 @@ for py_file in self.project_root.rglob("*.py"):
 ```
 
 ### Example 4: Health Check with Specific Handlers
-**File:** `empathy_llm_toolkit/code_health.py:393`
+**File:** `attune_llm/code_health.py:393`
 
 ```python
 try:
@@ -552,7 +552,7 @@ except Exception as e:
 ```
 
 ### Example 5: Acceptable Broad Exception with noqa
-**File:** `src/empathy_os/cli.py:2041`
+**File:** `src/attune/cli.py:2041`
 
 ```python
 # Best-effort serialization for JSON output
@@ -627,8 +627,8 @@ Is this an optional feature (wizard, plugin, tip)?
   - [auth_db.py](backend/services/database/auth_db.py) - Database patterns
   - [wizard_api.py](backend/api/wizard_api.py) - Graceful degradation
   - [security_adapter.py](agents/code_inspection/adapters/security_adapter.py) - Fail-secure
-  - [code_health.py](empathy_llm_toolkit/code_health.py) - Health checks
-  - [cli.py](src/empathy_os/cli.py) - CLI error handling
+  - [code_health.py](attune_llm/code_health.py) - Health checks
+  - [cli.py](src/attune/cli.py) - CLI error handling
 
 ---
 

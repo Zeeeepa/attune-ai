@@ -10,7 +10,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_llm_toolkit.providers import (
+from attune_llm.providers import (
     AnthropicBatchProvider,
     AnthropicProvider,
     BaseLLMProvider,
@@ -498,7 +498,7 @@ class TestGeminiProvider:
                 # Need to reimport the module to trigger the import error
                 import importlib
 
-                import empathy_llm_toolkit.providers as providers_mod
+                import attune_llm.providers as providers_mod
 
                 importlib.reload(providers_mod)
                 providers_mod.GeminiProvider(api_key="test-key")
@@ -511,7 +511,7 @@ class TestGeminiProvider:
 
         with patch.dict("sys.modules", {"google.generativeai": mock_genai}):
             # Need to reimport to use mocked module
-            from empathy_llm_toolkit.providers import GeminiProvider as GP
+            from attune_llm.providers import GeminiProvider as GP
 
             provider = GP.__new__(GP)
             provider.api_key = "test-key"

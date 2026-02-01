@@ -21,7 +21,7 @@ description: Monitoring System - Sprint Plan & Task Tracker: **Project:** Empath
 ### Day 1: Setup & Foundation
 
 - [ ] **T1.1** Create monitoring package structure
-  - Create `src/empathy_os/monitoring/__init__.py`
+  - Create `src/attune/monitoring/__init__.py`
   - Create `website/components/telemetry/` directory
   - Add package exports
   - **Estimate:** 1 hour
@@ -272,7 +272,7 @@ Blockers: None
   - **Estimate:** 2 hours
 
 - [ ] **T2.6** Create alert engine module
-  - Create `src/empathy_os/monitoring/alerts.py`
+  - Create `src/attune/monitoring/alerts.py`
   - Define `AlertRule`, `AlertCondition`, `AlertAction` dataclasses
   - Implement `Operator` enum (gt, lt, eq, gte, lte)
   - Implement `MetricType` enum (daily_cost, error_rate, etc.)
@@ -450,7 +450,7 @@ Blockers: None
   - **Estimate:** 30 minutes
 
 - [ ] **T3.2** Create `otel_backend.py` module
-  - Create `src/empathy_os/monitoring/otel_backend.py`
+  - Create `src/attune/monitoring/otel_backend.py`
   - Implement `OpenTelemetryBackend` class
   - Initialize OTLP exporter
   - Setup tracer provider

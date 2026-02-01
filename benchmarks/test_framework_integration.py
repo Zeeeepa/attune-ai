@@ -23,7 +23,7 @@ def test_imports():
 
     # Test 2: HealthcareWizard
     try:
-        from empathy_llm_toolkit.wizards.healthcare_wizard import HealthcareWizard
+        from attune_llm.wizards.healthcare_wizard import HealthcareWizard
 
         print("✅ HealthcareWizard imported")
 
@@ -86,7 +86,7 @@ def test_cli_availability():
     # Test empathy command
     try:
         result = subprocess.run(
-            ["python", "-m", "empathy_os.cli", "--help"], capture_output=True, text=True, timeout=5
+            ["python", "-m", "attune.cli", "--help"], capture_output=True, text=True, timeout=5
         )
         if result.returncode == 0 and "Empathy" in result.stdout:
             print("✅ CLI command available")
@@ -101,7 +101,7 @@ def test_cli_availability():
     # Test workflow list
     try:
         result = subprocess.run(
-            ["python", "-m", "empathy_os.cli", "workflow", "list"],
+            ["python", "-m", "attune.cli", "workflow", "list"],
             capture_output=True,
             text=True,
             timeout=5,

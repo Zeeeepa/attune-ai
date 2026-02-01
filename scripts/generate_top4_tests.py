@@ -15,7 +15,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.orchestration.real_tools import RealTestGenerator
+from attune.orchestration.real_tools import RealTestGenerator
 
 
 def main():
@@ -39,10 +39,10 @@ def main():
     )
 
     target_files = [
-        ("src/empathy_os/memory/short_term.py", 619),
-        ("src/empathy_os/telemetry/cli.py", 506),
-        ("src/empathy_os/workflow_commands.py", 386),
-        ("src/empathy_os/workflows/document_gen.py", 363),
+        ("src/attune/memory/short_term.py", 619),
+        ("src/attune/telemetry/cli.py", 506),
+        ("src/attune/workflow_commands.py", 386),
+        ("src/attune/workflows/document_gen.py", 363),
     ]
 
     results = []

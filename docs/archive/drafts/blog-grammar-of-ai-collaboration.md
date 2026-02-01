@@ -227,7 +227,7 @@ Clear execution plans. Visible decisions. Understand why agents were chosen.
 
 ```bash
 # Install
-pip install empathy-framework
+pip install attune-ai
 
 # Dynamic orchestration
 empathy orchestrate "prepare for release"

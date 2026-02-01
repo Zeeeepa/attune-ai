@@ -62,7 +62,7 @@ All 30 commands have been successfully extracted into modular structure.
 
 ### Old Monolithic Structure (BEFORE)
 
-**Original file:** `src/empathy_os/cli.py` (3,957 lines)
+**Original file:** `src/attune/cli.py` (3,957 lines)
 - 30 command functions in single file
 - Hard to navigate and maintain
 - High merge conflict risk
@@ -75,7 +75,7 @@ All 30 commands have been successfully extracted into modular structure.
 - 12 parser modules in `cli/parsers/` (~750 lines total)
 - 2 utility modules in `cli/utils/` (306 lines total)
 
-**Original file archived:** `src/empathy_os/cli_legacy.py` (kept for reference)
+**Original file archived:** `src/attune/cli_legacy.py` (kept for reference)
 
 ---
 
@@ -168,7 +168,7 @@ For each remaining command group, use this process:
 # Read from original cli.py (example for workflow)
 # Lines 2475-2820
 
-cat > src/empathy_os/cli/commands/workflow.py << 'EOF'
+cat > src/attune/cli/commands/workflow.py << 'EOF'
 """Workflow commands for multi-model execution."""
 
 # Copy imports
@@ -179,7 +179,7 @@ EOF
 
 **2. Create Parser:**
 ```bash
-cat > src/empathy_os/cli/parsers/workflow.py << 'EOF'
+cat > src/attune/cli/parsers/workflow.py << 'EOF'
 """Parser definitions for workflow commands."""
 
 from ..commands import workflow
@@ -278,9 +278,9 @@ When resuming:
 
 1. **Verify Current State**
    ```bash
-   ls -la src/empathy_os/cli/commands/
-   ls -la src/empathy_os/cli/parsers/
-   python -m empathy_os.cli version  # Test current commands
+   ls -la src/attune/cli/commands/
+   ls -la src/attune/cli/parsers/
+   python -m attune.cli version  # Test current commands
    ```
 
 2. **Choose Next Group**

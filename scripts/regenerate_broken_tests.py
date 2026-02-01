@@ -11,7 +11,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.orchestration.real_tools import RealTestGenerator
+from attune.orchestration.real_tools import RealTestGenerator
 
 
 def main():
@@ -32,19 +32,19 @@ def main():
 
     files_to_regenerate = [
         {
-            "source": "src/empathy_os/cli.py",
+            "source": "src/attune/cli.py",
             "missing": 1187,
             "description": "Main CLI (highest impact)",
             "expected_name": "test_src_empathy_os_cli_generated.py"
         },
         {
-            "source": "src/empathy_os/telemetry/cli.py",
+            "source": "src/attune/telemetry/cli.py",
             "missing": 506,
             "description": "Telemetry CLI",
             "expected_name": "test_src_empathy_os_telemetry_cli_generated.py"
         },
         {
-            "source": "src/empathy_os/workflows/document_gen.py",
+            "source": "src/attune/workflows/document_gen.py",
             "missing": 363,
             "description": "Document generation workflow",
             "expected_name": "test_src_empathy_os_workflows_document_gen_generated.py"

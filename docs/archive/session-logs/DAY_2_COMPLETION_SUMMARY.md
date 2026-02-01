@@ -15,7 +15,7 @@ description: Day 2 Completion Summary - Meta-Workflow MVP: **Date**: 2026-01-17 
 
 ### Core Implementations
 
-#### 1. **Socratic Form Engine** ([src/empathy_os/meta_workflows/form_engine.py](src/empathy_os/meta_workflows/form_engine.py))
+#### 1. **Socratic Form Engine** ([src/attune/meta_workflows/form_engine.py](src/attune/meta_workflows/form_engine.py))
 
 **Purpose**: Interactive requirements gathering via AskUserQuestion tool
 
@@ -34,7 +34,7 @@ description: Day 2 Completion Summary - Meta-Workflow MVP: **Date**: 2026-01-17 
 
 **Example Usage**:
 ```python
-from empathy_os.meta_workflows import SocraticFormEngine, FormSchema, FormQuestion, QuestionType
+from attune.meta_workflows import SocraticFormEngine, FormSchema, FormQuestion, QuestionType
 
 engine = SocraticFormEngine()
 
@@ -62,7 +62,7 @@ response = engine.ask_questions(schema, "python_package_publish")
 
 ---
 
-#### 2. **Dynamic Agent Creator** ([src/empathy_os/meta_workflows/agent_creator.py](src/empathy_os/meta_workflows/agent_creator.py))
+#### 2. **Dynamic Agent Creator** ([src/attune/meta_workflows/agent_creator.py](src/attune/meta_workflows/agent_creator.py))
 
 **Purpose**: Generate agent teams dynamically from templates and form responses
 
@@ -85,7 +85,7 @@ response = engine.ask_questions(schema, "python_package_publish")
 
 **Example Usage**:
 ```python
-from empathy_os.meta_workflows import DynamicAgentCreator, TemplateRegistry, FormResponse
+from attune.meta_workflows import DynamicAgentCreator, TemplateRegistry, FormResponse
 
 # Load template
 registry = TemplateRegistry(storage_dir='.empathy/meta_workflows/templates')
@@ -217,8 +217,8 @@ test_models.py (26 tests from Day 1) PASSED [100%]
 
 ### Files Modified
 
-- `src/empathy_os/meta_workflows/__init__.py` - Added exports for new modules
-- `src/empathy_os/meta_workflows/template_registry.py` - Fixed `_validate_file_path` import
+- `src/attune/meta_workflows/__init__.py` - Added exports for new modules
+- `src/attune/meta_workflows/template_registry.py` - Fixed `_validate_file_path` import
 
 ---
 
@@ -247,7 +247,7 @@ You can now:
 ### 1. Load Templates
 
 ```python
-from empathy_os.meta_workflows import TemplateRegistry
+from attune.meta_workflows import TemplateRegistry
 
 registry = TemplateRegistry(storage_dir='.empathy/meta_workflows/templates')
 templates = registry.list_templates()
@@ -261,7 +261,7 @@ print(template.name)
 ### 2. Create Agents from Responses
 
 ```python
-from empathy_os.meta_workflows import DynamicAgentCreator, FormResponse
+from attune.meta_workflows import DynamicAgentCreator, FormResponse
 
 response = FormResponse(
     template_id='python_package_publish',
@@ -288,7 +288,7 @@ for agent in agents:
 ### 3. Estimate Costs
 
 ```python
-from empathy_os.meta_workflows.agent_creator import estimate_agent_costs
+from attune.meta_workflows.agent_creator import estimate_agent_costs
 
 estimate = estimate_agent_costs(agents)
 print(f"Estimated cost: ${estimate['total_estimated_cost']}")
@@ -304,7 +304,7 @@ print(f"Agent count: {estimate['agent_count']}")
 ## 📁 File Structure (Current State)
 
 ```
-src/empathy_os/meta_workflows/
+src/attune/meta_workflows/
 ├── __init__.py                    # Package exports ✅
 ├── models.py                      # Core dataclasses ✅ (Day 1)
 ├── template_registry.py           # Template management ✅ (Day 1, fixed Day 2)
@@ -344,7 +344,7 @@ Tomorrow (or when you're ready), we'll implement:
    - Error handling
 
 **Expected deliverables**:
-- `src/empathy_os/meta_workflows/workflow.py` (~300 lines)
+- `src/attune/meta_workflows/workflow.py` (~300 lines)
 - `tests/unit/meta_workflows/test_workflow.py` (~200 lines)
 - Working end-to-end meta-workflow (with mocked agents)
 
@@ -355,7 +355,7 @@ Tomorrow (or when you're ready), we'll implement:
 Here's a complete example of what you can do right now:
 
 ```python
-from empathy_os.meta_workflows import (
+from attune.meta_workflows import (
     TemplateRegistry,
     DynamicAgentCreator,
     FormResponse,

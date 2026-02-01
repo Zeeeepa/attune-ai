@@ -17,8 +17,8 @@ import threading
 import time
 from datetime import datetime
 
-from empathy_os.telemetry import ApprovalGate
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.telemetry import ApprovalGate
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 
 def demo_basic_approval_request():

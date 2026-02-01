@@ -19,7 +19,7 @@ import json
 
 import pytest
 
-from empathy_os.workflows.dependency_check import (
+from attune.workflows.dependency_check import (
     KNOWN_VULNERABILITIES,
     DependencyCheckWorkflow,
     format_dependency_check_report,
@@ -429,7 +429,7 @@ class TestInventoryStage:
         """Test inventory stage with no dependency files."""
         monkeypatch.chdir(tmp_path)
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, input_tokens, output_tokens = await dependency_check_workflow._inventory(
             {"path": str(tmp_path)}, ModelTier.CHEAP
@@ -454,7 +454,7 @@ flask==2.0.0
 """,
         )
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._inventory(
             {"path": str(tmp_path)}, ModelTier.CHEAP
@@ -483,7 +483,7 @@ flask==2.0.0
             ),
         )
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._inventory(
             {"path": str(tmp_path)}, ModelTier.CHEAP
@@ -514,7 +514,7 @@ dependencies = ["flask>=2.0.0"]
             json.dumps({"dependencies": {"react": "^18.0.0"}}),
         )
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._inventory(
             {"path": str(tmp_path)}, ModelTier.CHEAP
@@ -536,7 +536,7 @@ dependencies = ["flask>=2.0.0"]
         (tmp_path / "requirements.txt").write_text("requests==2.25.0\n")
         (tmp_path / "requirements-dev.txt").write_text("requests==2.26.0\n")
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._inventory(
             {"path": str(tmp_path)}, ModelTier.CHEAP
@@ -554,7 +554,7 @@ dependencies = ["flask>=2.0.0"]
         monkeypatch.chdir(tmp_path)
         (tmp_path / "requirements.txt").write_text("requests==2.25.0\n")
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         # No path specified in input
         result, _, _ = await dependency_check_workflow._inventory({}, ModelTier.CHEAP)
@@ -583,7 +583,7 @@ class TestAssessStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._assess(input_data, ModelTier.CAPABLE)
 
@@ -611,7 +611,7 @@ class TestAssessStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._assess(input_data, ModelTier.CAPABLE)
 
@@ -632,7 +632,7 @@ class TestAssessStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._assess(input_data, ModelTier.CAPABLE)
 
@@ -647,7 +647,7 @@ class TestAssessStage:
         """Test assessment with no dependencies."""
         input_data = {"dependencies": {"python": [], "node": []}}
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._assess(input_data, ModelTier.CAPABLE)
 
@@ -667,7 +667,7 @@ class TestAssessStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._assess(input_data, ModelTier.CAPABLE)
 
@@ -701,7 +701,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -726,7 +726,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -750,7 +750,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -774,7 +774,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -811,7 +811,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -856,7 +856,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -896,7 +896,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -923,7 +923,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -949,7 +949,7 @@ class TestReportStage:
             },
         }
 
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow._report(input_data, ModelTier.CAPABLE)
 
@@ -1267,7 +1267,7 @@ class TestWorkflowConfiguration:
 
     def test_workflow_tier_map(self, dependency_check_workflow):
         """Test that workflow has correct tier assignments."""
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         assert dependency_check_workflow.tier_map["inventory"] == ModelTier.CHEAP
         assert dependency_check_workflow.tier_map["assess"] == ModelTier.CAPABLE
@@ -1299,7 +1299,7 @@ class TestRunStage:
     @pytest.mark.asyncio
     async def test_routes_to_inventory_stage(self, tmp_path, dependency_check_workflow):
         """Test that 'inventory' stage routes to _inventory method."""
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         result, _, _ = await dependency_check_workflow.run_stage(
             "inventory", ModelTier.CHEAP, {"path": str(tmp_path)}
@@ -1311,7 +1311,7 @@ class TestRunStage:
     @pytest.mark.asyncio
     async def test_routes_to_assess_stage(self, dependency_check_workflow):
         """Test that 'assess' stage routes to _assess method."""
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         input_data = {"dependencies": {"python": [], "node": []}}
         result, _, _ = await dependency_check_workflow.run_stage(
@@ -1323,7 +1323,7 @@ class TestRunStage:
     @pytest.mark.asyncio
     async def test_routes_to_report_stage(self, dependency_check_workflow):
         """Test that 'report' stage routes to _report method."""
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         input_data = {
             "path": ".",
@@ -1348,7 +1348,7 @@ class TestRunStage:
     @pytest.mark.asyncio
     async def test_raises_error_for_unknown_stage(self, dependency_check_workflow):
         """Test that unknown stage names raise ValueError."""
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         with pytest.raises(ValueError, match="Unknown stage"):
             await dependency_check_workflow.run_stage("invalid_stage", ModelTier.CHEAP, {})

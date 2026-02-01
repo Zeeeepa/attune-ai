@@ -166,7 +166,7 @@ This benchmark tests whether semantic caching (hybrid mode) can match similar pr
 Run this benchmark yourself:
 
 ```bash
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 python benchmark_semantic_cache.py
 ```
 

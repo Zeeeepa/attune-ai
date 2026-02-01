@@ -14,26 +14,26 @@ description: Pre-Release Checklist - v4.2.0: **Version:** 4.2.0 **Date:** 2026-0
 
 ### Meta-Workflow System
 
-- ✅ `src/empathy_os/meta_workflows/__init__.py` - Package exports
-- ✅ `src/empathy_os/meta_workflows/models.py` - Core data structures
-- ✅ `src/empathy_os/meta_workflows/form_engine.py` - Socratic form collection
-- ✅ `src/empathy_os/meta_workflows/agent_creator.py` - Dynamic agent generation
-- ✅ `src/empathy_os/meta_workflows/workflow.py` - MetaWorkflow orchestrator
-- ✅ `src/empathy_os/meta_workflows/pattern_learner.py` - Analytics and optimization
-- ✅ `src/empathy_os/meta_workflows/template_registry.py` - Template management
-- ✅ `src/empathy_os/meta_workflows/cli_meta_workflows.py` - CLI commands
-- ✅ `src/empathy_os/meta_workflows/session_context.py` - Session tracking (NEW)
+- ✅ `src/attune/meta_workflows/__init__.py` - Package exports
+- ✅ `src/attune/meta_workflows/models.py` - Core data structures
+- ✅ `src/attune/meta_workflows/form_engine.py` - Socratic form collection
+- ✅ `src/attune/meta_workflows/agent_creator.py` - Dynamic agent generation
+- ✅ `src/attune/meta_workflows/workflow.py` - MetaWorkflow orchestrator
+- ✅ `src/attune/meta_workflows/pattern_learner.py` - Analytics and optimization
+- ✅ `src/attune/meta_workflows/template_registry.py` - Template management
+- ✅ `src/attune/meta_workflows/cli_meta_workflows.py` - CLI commands
+- ✅ `src/attune/meta_workflows/session_context.py` - Session tracking (NEW)
 
 **Total**: 9 modules (~2,840 lines)
 
 ### Memory Search
 
-- ✅ `src/empathy_os/memory/unified.py` - search_patterns() implementation (+165 lines)
-- ✅ `src/empathy_os/memory/unified.py` - _get_all_patterns() helper method
+- ✅ `src/attune/memory/unified.py` - search_patterns() implementation (+165 lines)
+- ✅ `src/attune/memory/unified.py` - _get_all_patterns() helper method
 
 ### CLI Integration
 
-- ✅ `src/empathy_os/cli_unified.py` - meta-workflow command group integrated
+- ✅ `src/attune/cli_unified.py` - meta-workflow command group integrated
 
 ---
 

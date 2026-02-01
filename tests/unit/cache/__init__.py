@@ -1,1 +1,1 @@
-"""Unit tests for empathy_os.cache module."""
+"""Unit tests for attune.cache module."""

@@ -18,8 +18,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.orchestration.config_store import AgentConfiguration, ConfigurationStore
-from empathy_os.pattern_library import PatternLibrary
+from attune.orchestration.config_store import AgentConfiguration, ConfigurationStore
+from attune.pattern_library import PatternLibrary
 
 
 class TestAgentConfiguration:
@@ -274,7 +274,7 @@ class TestConfigurationStore:
 
         store = ConfigurationStore()
 
-        expected = Path(".empathy/orchestration/compositions")
+        expected = Path(".attune/orchestration/compositions")
         assert store.storage_dir == expected
         assert expected.exists()
 
@@ -808,7 +808,7 @@ class TestPathValidation:
 
     def test_validate_file_path_normal_path(self, tmp_path):
         """Test validation of normal file path."""
-        from empathy_os.orchestration.config_store import _validate_file_path
+        from attune.orchestration.config_store import _validate_file_path
 
         test_file = tmp_path / "test.json"
         result = _validate_file_path(str(test_file))
@@ -817,28 +817,28 @@ class TestPathValidation:
 
     def test_validate_file_path_null_bytes(self):
         """Test that null bytes in path are rejected."""
-        from empathy_os.orchestration.config_store import _validate_file_path
+        from attune.orchestration.config_store import _validate_file_path
 
         with pytest.raises(ValueError, match="contains null bytes"):
             _validate_file_path("test\x00file.json")
 
     def test_validate_file_path_empty_string(self):
         """Test that empty path is rejected."""
-        from empathy_os.orchestration.config_store import _validate_file_path
+        from attune.orchestration.config_store import _validate_file_path
 
         with pytest.raises(ValueError, match="path must be a non-empty string"):
             _validate_file_path("")
 
     def test_validate_file_path_non_string(self):
         """Test that non-string path is rejected."""
-        from empathy_os.orchestration.config_store import _validate_file_path
+        from attune.orchestration.config_store import _validate_file_path
 
         with pytest.raises(ValueError, match="path must be a non-empty string"):
             _validate_file_path(None)
 
     def test_validate_file_path_outside_allowed_dir(self, tmp_path):
         """Test that paths outside allowed directory are rejected."""
-        from empathy_os.orchestration.config_store import _validate_file_path
+        from attune.orchestration.config_store import _validate_file_path
 
         allowed_dir = tmp_path / "allowed"
         allowed_dir.mkdir()
@@ -852,7 +852,7 @@ class TestPathValidation:
     @pytest.mark.skipif(not Path("/proc").exists(), reason="Test requires Linux /proc filesystem")
     def test_validate_file_path_system_directory(self):
         """Test that system directories are blocked (Linux only)."""
-        from empathy_os.orchestration.config_store import _validate_file_path
+        from attune.orchestration.config_store import _validate_file_path
 
         # Test paths that exist on Linux and should be blocked
         # Note: On macOS, /etc is a symlink to /private/etc which complicates testing
@@ -864,7 +864,7 @@ class TestPathValidation:
 
     def test_validate_file_path_within_allowed_dir(self, tmp_path):
         """Test that paths within allowed directory are accepted."""
-        from empathy_os.orchestration.config_store import _validate_file_path
+        from attune.orchestration.config_store import _validate_file_path
 
         allowed_dir = tmp_path / "allowed"
         allowed_dir.mkdir()

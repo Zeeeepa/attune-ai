@@ -23,14 +23,14 @@ sys.modules["test_generator"] = MagicMock()
 sys.modules["patterns"] = MagicMock()
 sys.modules["patterns.core"] = MagicMock()
 
-from empathy_os.scaffolding.cli import cmd_create, cmd_list_patterns, main  # noqa: E402
+from attune.scaffolding.cli import cmd_create, cmd_list_patterns, main  # noqa: E402
 
 
 class TestCmdCreate:
     """Test cmd_create function for wizard creation."""
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_minimal_args(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with minimal arguments."""
         # Setup mocks
@@ -76,8 +76,8 @@ class TestCmdCreate:
         )
         mock_method.create_workflow.assert_called_once()
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_custom_domain(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with custom domain."""
         # Setup mocks
@@ -118,8 +118,8 @@ class TestCmdCreate:
             workflow_type="domain", domain="healthcare"
         )
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.TDDFirst")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.TDDFirst")
     def test_create_with_tdd_methodology(self, mock_tdd_first, mock_registry, capsys):
         """Test create command with TDD methodology."""
         # Setup mocks
@@ -163,8 +163,8 @@ class TestCmdCreate:
             pattern_ids=["tdd_pattern"],
         )
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_manual_patterns(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with manually specified patterns."""
         # Setup mocks
@@ -206,8 +206,8 @@ class TestCmdCreate:
         assert "pattern_one" in captured.out
         assert "pattern_two" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     @patch("builtins.input", return_value="all")
     def test_create_interactive_select_all(
         self, mock_input, mock_pattern_compose, mock_registry, capsys
@@ -254,8 +254,8 @@ class TestCmdCreate:
         assert "Using 2 patterns:" in captured.out
         mock_input.assert_called_once()
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     @patch("builtins.input", return_value="1,2")
     def test_create_interactive_select_specific(
         self, mock_input, mock_pattern_compose, mock_registry, capsys
@@ -299,8 +299,8 @@ class TestCmdCreate:
         assert "pattern_0" in captured.out
         assert "pattern_1" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     @patch("builtins.input", return_value="invalid")
     def test_create_interactive_invalid_selection(
         self, mock_input, mock_pattern_compose, mock_registry, capsys
@@ -339,8 +339,8 @@ class TestCmdCreate:
         captured = capsys.readouterr()
         assert "Invalid selection. Using all patterns." in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     @patch("builtins.input", return_value="10")
     def test_create_interactive_index_out_of_range(
         self, mock_input, mock_pattern_compose, mock_registry, capsys
@@ -382,7 +382,7 @@ class TestCmdCreate:
     def test_create_with_unknown_methodology(self, capsys):
         """Test create command with unknown methodology exits."""
         # Setup mocks
-        with patch("empathy_os.scaffolding.cli.get_pattern_registry") as mock_registry:
+        with patch("attune.scaffolding.cli.get_pattern_registry") as mock_registry:
             mock_reg = Mock()
             mock_pattern = Mock()
             mock_pattern.name = "Pattern"
@@ -409,8 +409,8 @@ class TestCmdCreate:
             captured = capsys.readouterr()
             assert "Unknown methodology: unknown_method" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_displays_all_result_info(self, mock_pattern_compose, mock_registry, capsys):
         """Test that create command displays all result information."""
         # Setup mocks
@@ -464,8 +464,8 @@ class TestCmdCreate:
         assert "2. Run tests" in captured.out
         assert "3. Deploy wizard" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_no_recommended_patterns(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command when no patterns are recommended."""
         # Setup mocks
@@ -498,8 +498,8 @@ class TestCmdCreate:
         assert "Recommended Patterns (0):" in captured.out
         assert "Using 0 patterns:" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_coach_type(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with coach wizard type."""
         # Setup mocks
@@ -536,8 +536,8 @@ class TestCmdCreate:
         assert "Type: coach" in captured.out
         mock_reg.recommend_for_workflow.assert_called_once_with(workflow_type="coach", domain="general")
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_ai_type(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with AI wizard type."""
         # Setup mocks
@@ -577,7 +577,7 @@ class TestCmdCreate:
 class TestCmdListPatterns:
     """Test cmd_list_patterns function."""
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
     def test_list_patterns_basic(self, mock_registry, capsys):
         """Test list-patterns command with basic patterns."""
         # Since PatternCategory is imported dynamically inside the function,
@@ -605,7 +605,7 @@ class TestCmdListPatterns:
         mock_registry.assert_called_once()
         mock_reg.get_statistics.assert_called_once()
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
     def test_list_patterns_empty_categories(self, mock_registry, capsys):
         """Test list-patterns command with empty categories."""
         # Setup mocks
@@ -628,7 +628,7 @@ class TestCmdListPatterns:
         assert "Total: 0 patterns" in captured.out
         assert "Average Reusability: 0.00" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
     def test_list_patterns_with_stats(self, mock_registry, capsys):
         """Test list-patterns displays statistics correctly."""
         mock_reg = Mock()
@@ -657,7 +657,7 @@ class TestMainFunction:
     """Test main CLI entry point."""
 
     @patch("sys.argv", ["scaffolding", "create", "test_wizard"])
-    @patch("empathy_os.scaffolding.cli.cmd_create")
+    @patch("attune.scaffolding.cli.cmd_create")
     def test_main_create_command(self, mock_cmd_create):
         """Test main function with create command."""
         # Execute
@@ -670,7 +670,7 @@ class TestMainFunction:
         assert args.command == "create"
 
     @patch("sys.argv", ["scaffolding", "list-patterns"])
-    @patch("empathy_os.scaffolding.cli.cmd_list_patterns")
+    @patch("attune.scaffolding.cli.cmd_list_patterns")
     def test_main_list_patterns_command(self, mock_cmd_list):
         """Test main function with list-patterns command."""
         # Execute
@@ -707,7 +707,7 @@ class TestMainFunction:
             "domain",
         ],
     )
-    @patch("empathy_os.scaffolding.cli.cmd_create")
+    @patch("attune.scaffolding.cli.cmd_create")
     def test_main_create_with_all_options(self, mock_cmd_create):
         """Test main function with all create options."""
         # Execute
@@ -731,7 +731,7 @@ class TestMainFunction:
             "p1,p2",
         ],
     )
-    @patch("empathy_os.scaffolding.cli.cmd_create")
+    @patch("attune.scaffolding.cli.cmd_create")
     def test_main_create_with_methodology_and_patterns(self, mock_cmd_create):
         """Test main function with methodology and patterns options."""
         # Execute
@@ -746,7 +746,7 @@ class TestMainFunction:
         "sys.argv",
         ["scaffolding", "create", "wizard", "--interactive"],
     )
-    @patch("empathy_os.scaffolding.cli.cmd_create")
+    @patch("attune.scaffolding.cli.cmd_create")
     def test_main_create_with_interactive_flag(self, mock_cmd_create):
         """Test main function with interactive flag."""
         # Execute
@@ -841,8 +841,8 @@ class TestArgumentParsing:
 class TestEdgeCases:
     """Test edge cases and error conditions."""
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_empty_pattern_names(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with empty pattern names."""
         # Setup mocks
@@ -878,8 +878,8 @@ class TestEdgeCases:
         captured = capsys.readouterr()
         assert "Workflow Created Successfully" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_very_long_wizard_name(self, mock_pattern_compose, mock_registry, capsys):
         """Test create command with very long wizard name."""
         # Setup mocks
@@ -912,8 +912,8 @@ class TestEdgeCases:
         captured = capsys.readouterr()
         assert long_name in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_special_characters_in_name(
         self, mock_pattern_compose, mock_registry, capsys
     ):
@@ -948,8 +948,8 @@ class TestEdgeCases:
         captured = capsys.readouterr()
         assert special_name in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     @patch("builtins.input", return_value="")
     def test_create_interactive_empty_input(
         self, mock_input, mock_pattern_compose, mock_registry, capsys
@@ -988,7 +988,7 @@ class TestEdgeCases:
         captured = capsys.readouterr()
         assert "Invalid selection" in captured.out or "Using 1 patterns:" in captured.out
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
     def test_list_patterns_formats_precision(self, mock_registry, capsys):
         """Test list-patterns formats reusability scores to 2 decimal places."""
         mock_reg = Mock()
@@ -1008,8 +1008,8 @@ class TestEdgeCases:
         captured = capsys.readouterr()
         assert "0.99" in captured.out  # Should be formatted to 2 decimal places
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_with_patterns_result_missing_key(
         self, mock_pattern_compose, mock_registry, capsys
     ):
@@ -1080,13 +1080,13 @@ class TestLoggingOutput:
         import logging
 
         # Get logger
-        logger = logging.getLogger("empathy_os.scaffolding.cli")
+        logger = logging.getLogger("attune.scaffolding.cli")
 
         # Should have handlers configured
         assert logger is not None
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_command_outputs_formatted_sections(
         self, mock_pattern_compose, mock_registry, capsys
     ):
@@ -1128,8 +1128,8 @@ class TestLoggingOutput:
 class TestErrorHandling:
     """Test error handling and edge cases."""
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.PatternCompose")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.PatternCompose")
     def test_create_when_pattern_compose_raises_exception(
         self, mock_pattern_compose, mock_registry
     ):
@@ -1156,8 +1156,8 @@ class TestErrorHandling:
         with pytest.raises(Exception, match="Failed to create wizard"):
             cmd_create(args)
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
-    @patch("empathy_os.scaffolding.cli.TDDFirst")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.TDDFirst")
     def test_create_when_tdd_first_raises_exception(self, mock_tdd_first, mock_registry):
         """Test create command when TDDFirst raises exception."""
         # Setup mocks
@@ -1182,7 +1182,7 @@ class TestErrorHandling:
         with pytest.raises(Exception, match="TDD failed"):
             cmd_create(args)
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
     def test_list_patterns_when_registry_raises_exception(self, mock_registry):
         """Test list-patterns command when registry raises exception."""
         # Setup mock to raise exception
@@ -1194,7 +1194,7 @@ class TestErrorHandling:
         with pytest.raises(Exception, match="Registry failed"):
             cmd_list_patterns(args)
 
-    @patch("empathy_os.scaffolding.cli.get_pattern_registry")
+    @patch("attune.scaffolding.cli.get_pattern_registry")
     def test_list_patterns_when_get_statistics_raises_exception(self, mock_registry):
         """Test list-patterns when get_statistics raises exception."""
         # Setup mock

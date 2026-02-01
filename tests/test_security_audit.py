@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/workflows/security_audit.py
+"""Tests for src/attune/workflows/security_audit.py
 
 Comprehensive tests covering:
 - SKIP_DIRECTORIES set
@@ -21,8 +21,8 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.security_audit import (
+from attune.workflows.base import ModelTier
+from attune.workflows.security_audit import (
     DETECTION_PATTERNS,
     FAKE_CREDENTIAL_PATTERNS,
     SECURITY_EXAMPLE_PATHS,

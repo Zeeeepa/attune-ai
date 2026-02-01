@@ -21,7 +21,7 @@ All agents coordinate through **shared short-term memory**, discovering and buil
 ## Step 1: Install
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ## Step 2: Run the Analyzer

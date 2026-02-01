@@ -12,7 +12,7 @@ class TestEditorNode:
 
     def test_create_node(self):
         """Test creating an editor node."""
-        from empathy_os.socratic.visual_editor import EditorNode
+        from attune.socratic.visual_editor import EditorNode
 
         node = EditorNode(
             node_id="node-001",
@@ -29,7 +29,7 @@ class TestEditorNode:
 
     def test_node_with_position_object(self):
         """Test creating node with Position object."""
-        from empathy_os.socratic.visual_editor import EditorNode, Position
+        from attune.socratic.visual_editor import EditorNode, Position
 
         pos = Position(x=50, y=100)
         node = EditorNode(
@@ -44,7 +44,7 @@ class TestEditorNode:
 
     def test_node_with_node_type_enum(self):
         """Test creating node with NodeType enum."""
-        from empathy_os.socratic.visual_editor import EditorNode, NodeType
+        from attune.socratic.visual_editor import EditorNode, NodeType
 
         node = EditorNode(
             node_id="node-003",
@@ -57,7 +57,7 @@ class TestEditorNode:
 
     def test_node_to_dict(self):
         """Test node serialization."""
-        from empathy_os.socratic.visual_editor import EditorNode
+        from attune.socratic.visual_editor import EditorNode
 
         node = EditorNode(
             node_id="node-001",
@@ -74,7 +74,7 @@ class TestEditorNode:
 
     def test_node_to_dict_with_enum(self):
         """Test node serialization with NodeType enum."""
-        from empathy_os.socratic.visual_editor import EditorNode, NodeType
+        from attune.socratic.visual_editor import EditorNode, NodeType
 
         node = EditorNode(
             node_id="node-001",
@@ -88,7 +88,7 @@ class TestEditorNode:
 
     def test_node_default_values(self):
         """Test node default values."""
-        from empathy_os.socratic.visual_editor import EditorNode
+        from attune.socratic.visual_editor import EditorNode
 
         node = EditorNode(
             node_id="node-001",
@@ -107,7 +107,7 @@ class TestEditorEdge:
 
     def test_create_edge(self):
         """Test creating an editor edge."""
-        from empathy_os.socratic.visual_editor import EditorEdge
+        from attune.socratic.visual_editor import EditorEdge
 
         edge = EditorEdge(
             edge_id="edge-001",
@@ -123,7 +123,7 @@ class TestEditorEdge:
 
     def test_edge_to_dict(self):
         """Test edge serialization."""
-        from empathy_os.socratic.visual_editor import EditorEdge
+        from attune.socratic.visual_editor import EditorEdge
 
         edge = EditorEdge(
             edge_id="edge-001",
@@ -139,7 +139,7 @@ class TestEditorEdge:
 
     def test_edge_default_values(self):
         """Test edge default values."""
-        from empathy_os.socratic.visual_editor import EditorEdge
+        from attune.socratic.visual_editor import EditorEdge
 
         edge = EditorEdge(
             edge_id="edge-001",
@@ -156,7 +156,7 @@ class TestPosition:
 
     def test_create_position(self):
         """Test creating a position."""
-        from empathy_os.socratic.visual_editor import Position
+        from attune.socratic.visual_editor import Position
 
         pos = Position(x=100, y=200)
 
@@ -165,7 +165,7 @@ class TestPosition:
 
     def test_position_to_dict(self):
         """Test position serialization."""
-        from empathy_os.socratic.visual_editor import Position
+        from attune.socratic.visual_editor import Position
 
         pos = Position(x=50, y=75)
         data = pos.to_dict()
@@ -178,7 +178,7 @@ class TestNodeType:
 
     def test_all_node_types_exist(self):
         """Test all expected node types exist."""
-        from empathy_os.socratic.visual_editor import NodeType
+        from attune.socratic.visual_editor import NodeType
 
         assert NodeType.AGENT.value == "agent"
         assert NodeType.STAGE.value == "stage"
@@ -192,7 +192,7 @@ class TestEditorState:
 
     def test_create_state(self):
         """Test creating an editor state."""
-        from empathy_os.socratic.visual_editor import EditorEdge, EditorNode, EditorState
+        from attune.socratic.visual_editor import EditorEdge, EditorNode, EditorState
 
         nodes = [
             EditorNode(
@@ -229,7 +229,7 @@ class TestEditorState:
 
     def test_state_default_values(self):
         """Test EditorState default values."""
-        from empathy_os.socratic.visual_editor import EditorState
+        from attune.socratic.visual_editor import EditorState
 
         state = EditorState()
 
@@ -243,7 +243,7 @@ class TestEditorState:
 
     def test_state_to_dict(self):
         """Test EditorState serialization."""
-        from empathy_os.socratic.visual_editor import EditorNode, EditorState
+        from attune.socratic.visual_editor import EditorNode, EditorState
 
         state = EditorState(
             workflow_id="wf-001",
@@ -268,7 +268,7 @@ class TestEditorState:
 
     def test_state_to_react_flow(self):
         """Test converting state to React Flow schema."""
-        from empathy_os.socratic.visual_editor import EditorNode, EditorState
+        from attune.socratic.visual_editor import EditorNode, EditorState
 
         state = EditorState(
             workflow_id="wf-001",
@@ -295,7 +295,7 @@ class TestWorkflowVisualizer:
 
     def test_create_visualizer(self):
         """Test creating a workflow visualizer."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer
+        from attune.socratic.visual_editor import WorkflowVisualizer
 
         visualizer = WorkflowVisualizer()
         assert visualizer is not None
@@ -304,7 +304,7 @@ class TestWorkflowVisualizer:
 
     def test_create_visualizer_custom_spacing(self):
         """Test creating visualizer with custom spacing."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer
+        from attune.socratic.visual_editor import WorkflowVisualizer
 
         visualizer = WorkflowVisualizer(node_spacing=300, stage_spacing=200)
 
@@ -313,7 +313,7 @@ class TestWorkflowVisualizer:
 
     def test_blueprint_to_editor_method_exists(self):
         """Test blueprint_to_editor method exists."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer
+        from attune.socratic.visual_editor import WorkflowVisualizer
 
         visualizer = WorkflowVisualizer()
         assert hasattr(visualizer, "blueprint_to_editor")
@@ -321,7 +321,7 @@ class TestWorkflowVisualizer:
 
     def test_from_blueprint_alias_exists(self):
         """Test from_blueprint alias method exists."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer
+        from attune.socratic.visual_editor import WorkflowVisualizer
 
         visualizer = WorkflowVisualizer()
         assert hasattr(visualizer, "from_blueprint")
@@ -329,7 +329,7 @@ class TestWorkflowVisualizer:
 
     def test_editor_to_blueprint_method_exists(self):
         """Test editor_to_blueprint method exists."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer
+        from attune.socratic.visual_editor import WorkflowVisualizer
 
         visualizer = WorkflowVisualizer()
         assert hasattr(visualizer, "editor_to_blueprint")
@@ -337,7 +337,7 @@ class TestWorkflowVisualizer:
 
     def test_to_blueprint_alias_exists(self):
         """Test to_blueprint alias method exists."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer
+        from attune.socratic.visual_editor import WorkflowVisualizer
 
         visualizer = WorkflowVisualizer()
         assert hasattr(visualizer, "to_blueprint")
@@ -345,7 +345,7 @@ class TestWorkflowVisualizer:
 
     def test_visualize_blueprint(self, sample_workflow_blueprint):
         """Test visualizing a workflow blueprint."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer
+        from attune.socratic.visual_editor import WorkflowVisualizer
 
         visualizer = WorkflowVisualizer()
         state = visualizer.blueprint_to_editor(sample_workflow_blueprint)
@@ -356,7 +356,7 @@ class TestWorkflowVisualizer:
 
     def test_state_has_start_end_nodes(self, sample_workflow_blueprint):
         """Test that state includes start and end nodes."""
-        from empathy_os.socratic.visual_editor import NodeType, WorkflowVisualizer
+        from attune.socratic.visual_editor import NodeType, WorkflowVisualizer
 
         visualizer = WorkflowVisualizer()
         state = visualizer.blueprint_to_editor(sample_workflow_blueprint)
@@ -371,7 +371,7 @@ class TestASCIIVisualizer:
 
     def test_create_ascii_visualizer(self):
         """Test creating an ASCII visualizer."""
-        from empathy_os.socratic.visual_editor import ASCIIVisualizer
+        from attune.socratic.visual_editor import ASCIIVisualizer
 
         visualizer = ASCIIVisualizer()
         assert visualizer is not None
@@ -379,14 +379,14 @@ class TestASCIIVisualizer:
 
     def test_create_ascii_visualizer_custom_width(self):
         """Test creating ASCII visualizer with custom width."""
-        from empathy_os.socratic.visual_editor import ASCIIVisualizer
+        from attune.socratic.visual_editor import ASCIIVisualizer
 
         visualizer = ASCIIVisualizer(width=100)
         assert visualizer.width == 100
 
     def test_render_method_exists(self):
         """Test render method exists."""
-        from empathy_os.socratic.visual_editor import ASCIIVisualizer
+        from attune.socratic.visual_editor import ASCIIVisualizer
 
         visualizer = ASCIIVisualizer()
         assert hasattr(visualizer, "render")
@@ -394,7 +394,7 @@ class TestASCIIVisualizer:
 
     def test_render_compact_method_exists(self):
         """Test render_compact method exists."""
-        from empathy_os.socratic.visual_editor import ASCIIVisualizer
+        from attune.socratic.visual_editor import ASCIIVisualizer
 
         visualizer = ASCIIVisualizer()
         assert hasattr(visualizer, "render_compact")
@@ -402,7 +402,7 @@ class TestASCIIVisualizer:
 
     def test_render_workflow(self, sample_workflow_blueprint):
         """Test rendering a workflow as ASCII art."""
-        from empathy_os.socratic.visual_editor import ASCIIVisualizer
+        from attune.socratic.visual_editor import ASCIIVisualizer
 
         visualizer = ASCIIVisualizer()
         ascii_art = visualizer.render(sample_workflow_blueprint)
@@ -415,7 +415,7 @@ class TestASCIIVisualizer:
 
     def test_render_compact(self, sample_workflow_blueprint):
         """Test compact rendering."""
-        from empathy_os.socratic.visual_editor import ASCIIVisualizer
+        from attune.socratic.visual_editor import ASCIIVisualizer
 
         visualizer = ASCIIVisualizer()
         compact = visualizer.render_compact(sample_workflow_blueprint)
@@ -429,14 +429,14 @@ class TestVisualWorkflowEditor:
 
     def test_create_editor(self):
         """Test creating a visual workflow editor."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         assert editor is not None
 
     def test_editor_has_visualizer(self):
         """Test editor has visualizer attribute."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         assert hasattr(editor, "visualizer")
@@ -444,7 +444,7 @@ class TestVisualWorkflowEditor:
 
     def test_create_editor_state(self, sample_workflow_blueprint):
         """Test creating editor state from blueprint."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         state = editor.create_editor_state(sample_workflow_blueprint)
@@ -454,7 +454,7 @@ class TestVisualWorkflowEditor:
 
     def test_apply_changes(self, sample_workflow_blueprint):
         """Test applying editor changes to blueprint."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         state = editor.create_editor_state(sample_workflow_blueprint)
@@ -467,7 +467,7 @@ class TestVisualWorkflowEditor:
 
     def test_render_ascii(self, sample_workflow_blueprint):
         """Test ASCII rendering via editor."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         ascii_art = editor.render_ascii(sample_workflow_blueprint)
@@ -477,7 +477,7 @@ class TestVisualWorkflowEditor:
 
     def test_render_compact(self, sample_workflow_blueprint):
         """Test compact rendering via editor."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         compact = editor.render_compact(sample_workflow_blueprint)
@@ -487,7 +487,7 @@ class TestVisualWorkflowEditor:
 
     def test_generate_html_editor(self, sample_workflow_blueprint):
         """Test generating HTML editor."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         html = editor.generate_html_editor(sample_workflow_blueprint)
@@ -498,7 +498,7 @@ class TestVisualWorkflowEditor:
 
     def test_generate_react_schema(self, sample_workflow_blueprint):
         """Test generating React schema."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         schema = editor.generate_react_schema(sample_workflow_blueprint)
@@ -509,7 +509,7 @@ class TestVisualWorkflowEditor:
 
     def test_validate_state_empty(self):
         """Test validating empty editor state."""
-        from empathy_os.socratic.visual_editor import EditorState, VisualWorkflowEditor
+        from attune.socratic.visual_editor import EditorState, VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         state = EditorState()
@@ -521,7 +521,7 @@ class TestVisualWorkflowEditor:
 
     def test_validate_state_valid(self, sample_workflow_blueprint):
         """Test validating a valid editor state."""
-        from empathy_os.socratic.visual_editor import VisualWorkflowEditor
+        from attune.socratic.visual_editor import VisualWorkflowEditor
 
         editor = VisualWorkflowEditor()
         state = editor.create_editor_state(sample_workflow_blueprint)
@@ -537,7 +537,7 @@ class TestGenerateReactFlowSchema:
 
     def test_generate_schema(self, sample_workflow_blueprint):
         """Test generating React Flow schema from editor state."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer, generate_react_flow_schema
+        from attune.socratic.visual_editor import WorkflowVisualizer, generate_react_flow_schema
 
         # First convert blueprint to editor state
         visualizer = WorkflowVisualizer()
@@ -555,7 +555,7 @@ class TestGenerateReactFlowSchema:
 
     def test_schema_is_json_serializable(self, sample_workflow_blueprint):
         """Test that schema can be serialized to JSON."""
-        from empathy_os.socratic.visual_editor import WorkflowVisualizer, generate_react_flow_schema
+        from attune.socratic.visual_editor import WorkflowVisualizer, generate_react_flow_schema
 
         visualizer = WorkflowVisualizer()
         state = visualizer.blueprint_to_editor(sample_workflow_blueprint)
@@ -575,7 +575,7 @@ class TestGenerateEditorHtml:
 
     def test_generate_html(self, sample_workflow_blueprint):
         """Test generating standalone HTML editor."""
-        from empathy_os.socratic.visual_editor import generate_editor_html
+        from attune.socratic.visual_editor import generate_editor_html
 
         html = generate_editor_html(sample_workflow_blueprint)
 
@@ -585,7 +585,7 @@ class TestGenerateEditorHtml:
 
     def test_html_contains_workflow_data(self, sample_workflow_blueprint):
         """Test that HTML contains workflow data."""
-        from empathy_os.socratic.visual_editor import generate_editor_html
+        from attune.socratic.visual_editor import generate_editor_html
 
         html = generate_editor_html(sample_workflow_blueprint)
 
@@ -594,7 +594,7 @@ class TestGenerateEditorHtml:
 
     def test_generate_html_with_title(self, sample_workflow_blueprint):
         """Test generating HTML with custom title."""
-        from empathy_os.socratic.visual_editor import generate_editor_html
+        from attune.socratic.visual_editor import generate_editor_html
 
         html = generate_editor_html(
             sample_workflow_blueprint,

@@ -94,7 +94,7 @@ session_status:
 ## Implementation Phases
 
 ### Phase 1: SessionStatusCollector Class
-**File**: `empathy_llm_toolkit/session_status.py`
+**File**: `attune_llm/session_status.py`
 
 ```python
 class SessionStatusCollector:

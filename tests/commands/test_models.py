@@ -5,7 +5,7 @@ Tests for CommandConfig, CommandMetadata, and CommandResult.
 
 from pathlib import Path
 
-from empathy_llm_toolkit.commands.models import (
+from attune_llm.commands.models import (
     CommandCategory,
     CommandConfig,
     CommandMetadata,

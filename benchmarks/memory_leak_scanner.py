@@ -11,7 +11,7 @@ Usage:
     python benchmarks/memory_leak_scanner.py
 
     # Scan specific directory
-    python benchmarks/memory_leak_scanner.py --path src/empathy_os/memory
+    python benchmarks/memory_leak_scanner.py --path src/attune/memory
 
     # Scan and profile top 5 hot files
     python benchmarks/memory_leak_scanner.py --profile --top 5

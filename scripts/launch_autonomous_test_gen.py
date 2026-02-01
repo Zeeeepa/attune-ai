@@ -30,7 +30,7 @@ def launch_batch(batch_num: int, modules: list[dict]) -> subprocess.Popen:
         [
             sys.executable,
             "-m",
-            "empathy_os.workflows.autonomous_test_gen",
+            "attune.workflows.autonomous_test_gen",
             str(batch_num),
             modules_json,
         ],

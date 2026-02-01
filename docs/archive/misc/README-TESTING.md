@@ -91,7 +91,7 @@ import pytest
 @pytest.mark.smoke
 def test_basic_import():
     """Critical smoke test - framework can import."""
-    from empathy_os import EmpathyConfig
+    from attune import EmpathyConfig
     assert EmpathyConfig is not None
 
 @pytest.mark.slow
@@ -541,8 +541,8 @@ def test_config_error():
 ## 🆘 Getting Help
 
 - **Documentation**: [docs/testing/](docs/testing/)
-- **Issues**: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- **Issues**: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 
 ---
 

@@ -49,7 +49,7 @@
               "details": "0 errors"
             },
             "types": {
-              "command": "mypy src/empathy_os/",
+              "command": "mypy src/attune/",
               "passed": true,
               "details": "0 type errors"
             }
@@ -59,8 +59,8 @@
               "file": "tests/integration/test_telemetry_integration.py",
               "line": 14,
               "change": "Fixed import statement to use correct package path",
-              "before": "from empathy_os.workflows.base import BaseWorkflow, ModelTier",
-              "after": "from empathy_os.workflows import BaseWorkflow, ModelTier",
+              "before": "from attune.workflows.base import BaseWorkflow, ModelTier",
+              "after": "from attune.workflows import BaseWorkflow, ModelTier",
               "rationale": "The workflows package exports BaseWorkflow from __init__.py, so direct import from .base module was incorrect"
             }
           ],

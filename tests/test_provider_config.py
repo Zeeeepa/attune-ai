@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/models/provider_config.py
+"""Tests for src/attune/models/provider_config.py
 
 Tests the provider configuration system including:
 - ProviderMode enum
@@ -19,7 +19,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.models.provider_config import (
+from attune.models.provider_config import (
     ProviderConfig,
     ProviderMode,
     configure_provider_cli,
@@ -142,7 +142,7 @@ class TestGetModelForTier:
 
     def test_get_model_with_enum_tier(self):
         """Test get_model_for_tier with ModelTier enum."""
-        from empathy_os.models.registry import ModelTier
+        from attune.models.registry import ModelTier
 
         config = ProviderConfig(mode=ProviderMode.SINGLE, primary_provider="anthropic")
         model = config.get_model_for_tier(ModelTier.CAPABLE)

@@ -12,7 +12,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.workflows.base import (
+from attune.workflows.base import (
     CostReport,
     ModelProvider,
     ModelTier,
@@ -291,7 +291,7 @@ class TestModelTier:
 
     def test_tier_to_unified(self):
         """Test tier converts to unified ModelTier."""
-        from empathy_os.models import ModelTier as UnifiedModelTier
+        from attune.models import ModelTier as UnifiedModelTier
 
         unified = ModelTier.CHEAP.to_unified()
         assert unified == UnifiedModelTier.CHEAP
@@ -329,7 +329,7 @@ class TestModelProvider:
         As of v5.0.0, framework is Claude-native.
         All providers map to ANTHROPIC.
         """
-        from empathy_os.models import ModelProvider as UnifiedModelProvider
+        from attune.models import ModelProvider as UnifiedModelProvider
 
         unified = ModelProvider.ANTHROPIC.to_unified()
         assert unified == UnifiedModelProvider.ANTHROPIC

@@ -15,7 +15,7 @@ description: Manual Testing Script - Empathy Framework v1.4.0: **Date Created:**
 
 ### ✅ Prerequisites
 - [ ] VSCode installed with Empathy extension
-- [ ] Python environment with `empathy_llm_toolkit` installed
+- [ ] Python environment with `attune_llm` installed
 - [ ] API key configured (ANTHROPIC_API_KEY or OPENAI_API_KEY in .env)
 - [ ] Sample project open in workspace
 - [ ] Extension activated (check status bar)

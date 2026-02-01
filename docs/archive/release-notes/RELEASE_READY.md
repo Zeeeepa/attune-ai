@@ -132,7 +132,7 @@ Standards: ✅ Follows .claude/CLAUDE.md guidelines
 ```bash
 python -m build
 # Creates: dist/empathy_framework-4.0.2-*.whl
-#          dist/empathy-framework-4.0.2.tar.gz
+#          dist/attune-ai-4.0.2.tar.gz
 ```
 
 ### 2. Test Locally (Optional but Recommended)
@@ -145,13 +145,13 @@ python scripts/verify_anthropic_optimizations.py
 ### 3. Upload to TestPyPI (Optional)
 ```bash
 python -m twine upload --repository testpypi dist/*
-# Test install: pip install --index-url https://test.pypi.org/simple/ empathy-framework==4.0.2
+# Test install: pip install --index-url https://test.pypi.org/simple/ attune-ai==4.0.2
 ```
 
 ### 4. Upload to PyPI (Production)
 ```bash
 python -m twine upload dist/*
-# Uploads to https://pypi.org/project/empathy-framework/
+# Uploads to https://pypi.org/project/attune-ai/
 ```
 
 ### 5. Create GitHub Release
@@ -184,18 +184,18 @@ python scripts/verify_anthropic_optimizations.py
 # Should show: 3/3 tests passed
 
 # Verify imports
-python -c "from empathy_llm_toolkit.utils.tokens import count_tokens; print('✅ OK')"
-python -c "from empathy_llm_toolkit.providers import AnthropicBatchProvider; print('✅ OK')"
-python -c "from src.empathy_os.workflows.batch_processing import BatchProcessingWorkflow; print('✅ OK')"
+python -c "from attune_llm.utils.tokens import count_tokens; print('✅ OK')"
+python -c "from attune_llm.providers import AnthropicBatchProvider; print('✅ OK')"
+python -c "from src.attune.workflows.batch_processing import BatchProcessingWorkflow; print('✅ OK')"
 ```
 
 ### After Release
 ```bash
 # Install from PyPI
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 
 # Verify version
-python -c "import empathy_os; print(empathy_os.__version__)"
+python -c "import attune; print(attune.__version__)"
 # Should show: 4.0.2
 
 # Run verification
@@ -242,7 +242,7 @@ python scripts/verify_anthropic_optimizations.py
 
 ## 📞 Support
 
-**Issues?** https://github.com/Smart-AI-Memory/empathy-framework/issues
+**Issues?** https://github.com/Smart-AI-Memory/attune-ai/issues
 **Questions?** See documentation links above
 **Feedback?** GitHub Discussions
 

@@ -20,7 +20,7 @@ Licensed under Fair Source License 0.9
 
 import asyncio
 
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.workflows import CodeReviewWorkflow
 
 
 async def review_simple_change():

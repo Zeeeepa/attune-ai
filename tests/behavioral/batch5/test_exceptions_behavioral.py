@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 import pytest
 
-from empathy_os.exceptions import (
+from attune.exceptions import (
     CollaborationStateError,
     ConfidenceThresholdError,
     EmpathyFrameworkError,

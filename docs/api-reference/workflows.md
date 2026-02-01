@@ -23,7 +23,7 @@ Workflows are reusable AI automation patterns that intelligently route tasks to 
 ## Quick Start
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 import asyncio
 
 async def audit_code():
@@ -82,7 +82,7 @@ asyncio.run(audit_code())
 Base class for all workflows.
 
 ```python
-from empathy_os.workflows import BaseWorkflow, WorkflowResult
+from attune.workflows import BaseWorkflow, WorkflowResult
 
 class MyWorkflow(BaseWorkflow):
     """Custom workflow implementation."""
@@ -140,7 +140,7 @@ class CostReport:
 Fluent API for building workflows programmatically.
 
 ```python
-from empathy_os.workflows import WorkflowBuilder
+from attune.workflows import WorkflowBuilder
 
 workflow = (
     WorkflowBuilder()
@@ -160,7 +160,7 @@ result = await workflow.execute(input="user request")
 Control how tasks are routed to model tiers.
 
 ```python
-from empathy_os.workflows import (
+from attune.workflows import (
     CostOptimizedRouting,
     PerformanceOptimizedRouting,
     BalancedRouting,
@@ -194,7 +194,7 @@ my-workflow = "my_package.workflows:MyWorkflow"
 ### Discovering Workflows
 
 ```python
-from empathy_os.workflows import discover_workflows
+from attune.workflows import discover_workflows
 
 workflows = discover_workflows()
 for name, workflow_cls in workflows.items():
@@ -208,7 +208,7 @@ for name, workflow_cls in workflows.items():
 ### WorkflowConfig
 
 ```python
-from empathy_os.workflows import WorkflowConfig, ModelConfig
+from attune.workflows import WorkflowConfig, ModelConfig
 
 config = WorkflowConfig(
     models={
@@ -257,7 +257,7 @@ Workflows provide real-time progress feedback during execution, optimized for ID
 Progress is shown automatically when running workflows. No configuration needed.
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 import asyncio
 
 async def run_with_progress():
@@ -296,7 +296,7 @@ Stage Summary:
 Subscribe to progress events programmatically.
 
 ```python
-from empathy_os.workflows.progress import ProgressUpdate
+from attune.workflows.progress import ProgressUpdate
 
 def my_callback(update: ProgressUpdate):
     print(f"Stage: {update.current_stage}")
@@ -317,7 +317,7 @@ Unified output components for consistent workflow results.
 Container for structured workflow output.
 
 ```python
-from empathy_os.workflows.output import WorkflowReport, Finding
+from attune.workflows.output import WorkflowReport, Finding
 
 report = WorkflowReport(
     title="Security Audit Report",
@@ -341,7 +341,7 @@ report.add_section("Recommendations", "Review all database queries for proper es
 Reports support both Rich (terminal) and plain text output.
 
 ```python
-from empathy_os.workflows.output import get_console
+from attune.workflows.output import get_console
 
 console = get_console()
 
@@ -358,7 +358,7 @@ else:
 Color-coded score display.
 
 ```python
-from empathy_os.workflows.output import MetricsPanel
+from attune.workflows.output import MetricsPanel
 
 # Render score as Rich Panel
 panel = MetricsPanel.render_score(score=85, label="Security Score")
@@ -381,7 +381,7 @@ print(text)  # "Security Score: [OK] 85/100 (EXCELLENT)"
 Render findings as tables.
 
 ```python
-from empathy_os.workflows.output import Finding, FindingsTable
+from attune.workflows.output import Finding, FindingsTable
 
 findings = [
     Finding(severity="high", file="auth.py", line=42, message="SQL injection"),

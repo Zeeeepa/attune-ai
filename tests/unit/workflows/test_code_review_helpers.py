@@ -17,7 +17,7 @@ This test suite demonstrates progressive complexity:
 
 import pytest
 
-from empathy_os.workflows.code_review import CodeReviewWorkflow
+from attune.workflows.code_review import CodeReviewWorkflow
 
 # ============================================================================
 # LESSON 1: Testing Context Gathering - Basic File Reading

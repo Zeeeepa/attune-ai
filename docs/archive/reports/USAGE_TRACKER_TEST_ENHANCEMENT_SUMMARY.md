@@ -1,12 +1,12 @@
 ---
-description: Usage Tracker Test Enhancement Summary: ## Executive Summary Successfully enhanced test coverage for `src/empathy_os/telemetry/usage_tracker.py` from **30.14% t
+description: Usage Tracker Test Enhancement Summary: ## Executive Summary Successfully enhanced test coverage for `src/attune/telemetry/usage_tracker.py` from **30.14% t
 ---
 
 # Usage Tracker Test Enhancement Summary
 
 ## Executive Summary
 
-Successfully enhanced test coverage for `src/empathy_os/telemetry/usage_tracker.py` from **30.14% to 100.00%** by adding 38 comprehensive tests, bringing the total from 14 to 52 tests.
+Successfully enhanced test coverage for `src/attune/telemetry/usage_tracker.py` from **30.14% to 100.00%** by adding 38 comprehensive tests, bringing the total from 14 to 52 tests.
 
 ## Coverage Metrics
 
@@ -19,8 +19,8 @@ Successfully enhanced test coverage for `src/empathy_os/telemetry/usage_tracker.
 
 ## Test File Location
 
-- **Source File:** `/Users/patrickroebuck/Documents/empathy1-11-2025-local/empathy-framework/src/empathy_os/telemetry/usage_tracker.py`
-- **Test File:** `/Users/patrickroebuck/Documents/empathy1-11-2025-local/empathy-framework/tests/unit/telemetry/test_usage_tracker.py`
+- **Source File:** `/Users/patrickroebuck/Documents/empathy1-11-2025-local/attune-ai/src/attune/telemetry/usage_tracker.py`
+- **Test File:** `/Users/patrickroebuck/Documents/empathy1-11-2025-local/attune-ai/tests/unit/telemetry/test_usage_tracker.py`
 
 ## New Test Categories Added
 
@@ -166,7 +166,7 @@ pytest tests/unit/telemetry/test_usage_tracker.py -v
 
 # Run with coverage report
 pytest tests/unit/telemetry/test_usage_tracker.py \
-  --cov=empathy_os.telemetry.usage_tracker \
+  --cov=attune.telemetry.usage_tracker \
   --cov-report=term-missing
 
 # Run specific test class
@@ -184,7 +184,7 @@ pytest tests/unit/telemetry/test_usage_tracker.py -n auto
 --------- coverage: platform darwin, python 3.10.11-final-0 ----------
 Name                                        Stmts   Miss Branch BrPart    Cover   Missing
 -----------------------------------------------------------------------------------------
-src/empathy_os/telemetry/usage_tracker.py     176      0     44      0  100.00%
+src/attune/telemetry/usage_tracker.py     176      0     44      0  100.00%
 -----------------------------------------------------------------------------------------
 TOTAL                                         176      0     44      0  100.00%
 
@@ -245,5 +245,5 @@ All 52 tests pass successfully with 100% code coverage, exceeding the target of 
 
 **Date:** 2026-01-15
 **Author:** Claude (Sonnet 4.5)
-**Module:** empathy_os.telemetry.usage_tracker
+**Module:** attune.telemetry.usage_tracker
 **Framework Version:** 3.9.2

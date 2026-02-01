@@ -38,8 +38,8 @@ description: Developer Guide - Empathy Framework: Step-by-step tutorial with exa
 
 ```bash
 # Clone the repository
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
-cd empathy-framework
+git clone https://github.com/Smart-AI-Memory/attune-ai.git
+cd attune-ai
 
 # Create virtual environment
 python3 -m venv venv
@@ -91,8 +91,8 @@ pre-commit run --all-files
 ## Project Structure
 
 ```
-empathy-framework/
-├── src/empathy_os/              # Core framework
+attune-ai/
+├── src/attune/              # Core framework
 │   ├── workflows/               # Built-in workflows
 │   ├── orchestration/           # Meta-orchestration system (v4.0)
 │   ├── models/                  # Multi-provider LLM interface
@@ -101,7 +101,7 @@ empathy-framework/
 │   ├── cache/                   # Response caching
 │   └── config/                  # Configuration management
 │
-├── empathy_llm_toolkit/         # Legacy wizard system
+├── attune_llm/         # Legacy wizard system
 │   └── wizards/                 # Base wizard classes + examples
 │
 ├── empathy_software_plugin/     # Software development wizards
@@ -131,7 +131,7 @@ empathy-framework/
 
 ### Key Directories Explained
 
-- **`src/empathy_os/`**: Core framework logic - most development happens here
+- **`src/attune/`**: Core framework logic - most development happens here
 - **`empathy_software_plugin/`**: Software development wizards (advanced debugging, testing, security)
 - **`tests/`**: Comprehensive test suite with 68% coverage (target: 80%+)
 - **`.claude/`**: Project-specific coding standards and patterns for AI assistants
@@ -161,7 +161,7 @@ result = ast.literal_eval(user_input)  # Safe for literals only
 **ALWAYS validate file paths** - Prevents path traversal (CWE-22)
 
 ```python
-from empathy_os.config import _validate_file_path
+from attune.config import _validate_file_path
 
 # ✅ REQUIRED
 validated_path = _validate_file_path(user_provided_path)
@@ -197,7 +197,7 @@ except FileNotFoundError as e:
 # ✅ ALLOWED - Version detection with fallback
 try:
     from importlib.metadata import version
-    return version("empathy-framework")
+    return version("attune-ai")
 except Exception:  # noqa: BLE001
     # INTENTIONAL: Fallback for dev installs without metadata
     return "dev"
@@ -343,8 +343,8 @@ def test_allows_valid_paths(tmp_path):
 ### Creating a Custom Wizard
 
 ```python
-from empathy_llm_toolkit.wizards import BaseWizard, WizardConfig
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm.wizards import BaseWizard, WizardConfig
+from attune_llm import EmpathyLLM
 
 class MyCustomWizard(BaseWizard):
     """Custom wizard for specific domain."""
@@ -389,7 +389,7 @@ class MyCustomWizard(BaseWizard):
 ### Creating a Custom Workflow
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, WorkflowConfig
+from attune.workflows.base import BaseWorkflow, WorkflowConfig
 from dataclasses import dataclass
 
 @dataclass
@@ -542,7 +542,7 @@ We follow **Semantic Versioning** (semver):
 
 1. **Update version numbers:**
    - `pyproject.toml`
-   - `src/empathy_os/__init__.py`
+   - `src/attune/__init__.py`
    - `README.md` version badge
 
 2. **Update CHANGELOG.md:**
@@ -584,7 +584,7 @@ We follow **Semantic Versioning** (semver):
 **Import Errors**
 
 ```python
-# Problem: ModuleNotFoundError: No module named 'empathy_os'
+# Problem: ModuleNotFoundError: No module named 'attune'
 # Solution: Install in development mode
 pip install -e .[dev]
 ```
@@ -614,7 +614,7 @@ ruff check . --fix
 ```bash
 # Problem: AuthenticationError from LLM provider
 # Solution: Check environment variables
-python -m empathy_os.models.cli provider --check
+python -m attune.models.cli provider --check
 
 # Solution: Set API keys
 export ANTHROPIC_API_KEY="sk-ant-..."
@@ -634,8 +634,8 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 
 ## Questions?
 
-- **Issues**: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- **Issues**: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 - **Security**: security@smartaimemory.com
 
 ---

@@ -1,11 +1,11 @@
 ---
-description: Security Scanner API Reference API reference: **Version:** 1.0 **Module:** `empathy_os.workflows.security_audit` and `empathy_os.workflows.securit
+description: Security Scanner API Reference API reference: **Version:** 1.0 **Module:** `attune.workflows.security_audit` and `attune.workflows.securit
 ---
 
 # Security Scanner API Reference
 
 **Version:** 1.0
-**Module:** `empathy_os.workflows.security_audit` and `empathy_os.workflows.security_audit_phase3`
+**Module:** `attune.workflows.security_audit` and `attune.workflows.security_audit_phase3`
 **Last Updated:** 2026-01-26
 
 ---
@@ -35,7 +35,7 @@ Main workflow class for running security audits.
 
 **Import:**
 ```python
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 ```
 
 #### Constructor
@@ -168,7 +168,7 @@ Advanced AST-based detection functions for command injection.
 
 **Import:**
 ```python
-from empathy_os.workflows.security_audit_phase3 import (
+from attune.workflows.security_audit_phase3 import (
     EvalExecDetector,
     analyze_file_for_eval_exec,
     is_scanner_implementation_file,
@@ -211,7 +211,7 @@ class EvalExecDetector(ast.NodeVisitor):
 
 ```python
 import ast
-from empathy_os.workflows.security_audit_phase3 import EvalExecDetector
+from attune.workflows.security_audit_phase3 import EvalExecDetector
 
 # Parse Python file
 with open("src/api/users.py") as f:
@@ -262,7 +262,7 @@ def analyze_file_for_eval_exec(file_path: str | Path) -> list[dict[str, Any]]:
         - No eval/exec calls found
 
     Example:
-        >>> from empathy_os.workflows.security_audit_phase3 import analyze_file_for_eval_exec
+        >>> from attune.workflows.security_audit_phase3 import analyze_file_for_eval_exec
         >>> findings = analyze_file_for_eval_exec("src/api/auth.py")
         >>> if findings:
         ...     print(f"Found {len(findings)} eval/exec calls")
@@ -420,7 +420,7 @@ def apply_phase3_filtering(findings: list[dict[str, Any]]) -> list[dict[str, Any
         Filtered list with false positives removed
 
     Example:
-        >>> from empathy_os.workflows.security_audit_phase3 import apply_phase3_filtering
+        >>> from attune.workflows.security_audit_phase3 import apply_phase3_filtering
         >>>
         >>> # Findings from Phase 1 regex detection
         >>> phase1_findings = [
@@ -552,7 +552,7 @@ class AuditMetadata(TypedDict):
 ### Basic Scan
 
 ```python
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 # Initialize workflow
 workflow = SecurityAuditWorkflow()
@@ -576,7 +576,7 @@ for finding in critical:
 
 ```python
 import sys
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 def main():
     """Run security audit in CI/CD pipeline."""
@@ -603,8 +603,8 @@ if __name__ == "__main__":
 ### Custom Analysis Pipeline
 
 ```python
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
-from empathy_os.workflows.security_audit_phase3 import (
+from attune.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit_phase3 import (
     analyze_file_for_eval_exec,
     is_scanner_implementation_file,
 )
@@ -647,7 +647,7 @@ def custom_security_scan(directory: str):
 ### Extending with Custom Patterns
 
 ```python
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 class CustomSecurityAudit(SecurityAuditWorkflow):
     """Extended security audit with custom patterns."""
@@ -816,7 +816,7 @@ tree = parse_python_file(file_path, file_hash)
 ## Error Handling
 
 ```python
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 try:
     workflow = SecurityAuditWorkflow()

@@ -40,7 +40,7 @@ pip install fastapi uvicorn[standard]
 pip install websockets
 ```
 
-**Alternative:** If you prefer Flask over FastAPI, you can create a Flask version by adapting the endpoints in `src/empathy_os/dashboard/app.py`.
+**Alternative:** If you prefer Flask over FastAPI, you can create a Flask version by adapting the endpoints in `src/attune/dashboard/app.py`.
 
 #### Core Requirements
 
@@ -64,7 +64,7 @@ redis-server
 #### 2. Run the Dashboard
 
 ```python
-from empathy_os.dashboard import run_dashboard
+from attune.dashboard import run_dashboard
 
 # Start dashboard on http://localhost:8000
 run_dashboard()
@@ -83,17 +83,17 @@ Navigate to: `http://localhost:8000`
 
 ```bash
 # Navigate to framework directory
-cd /path/to/empathy-framework
+cd /path/to/attune-ai
 
 # Start dashboard
-python -m empathy_os.dashboard.app
+python -m attune.dashboard.app
 ```
 
 #### Running as Background Service
 
 ```python
 import uvicorn
-from empathy_os.dashboard import app
+from attune.dashboard import app
 
 # Run as daemon
 uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
@@ -104,14 +104,14 @@ uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
 To populate the dashboard with test data for demonstration:
 
 ```python
-from empathy_os.telemetry import (
+from attune.telemetry import (
     HeartbeatCoordinator,
     CoordinationSignals,
     EventStreamer,
     ApprovalGate,
     FeedbackLoop
 )
-from empathy_os.telemetry.feedback_loop import ModelTier
+from attune.telemetry.feedback_loop import ModelTier
 import time
 
 # Create test heartbeat
@@ -271,7 +271,7 @@ The dashboard exposes RESTful APIs for programmatic access:
 
 #### Auto-Refresh Interval
 
-Edit `src/empathy_os/dashboard/static/app.js`:
+Edit `src/attune/dashboard/static/app.js`:
 
 ```javascript
 class Dashboard {
@@ -285,7 +285,7 @@ class Dashboard {
 #### Server Settings
 
 ```python
-from empathy_os.dashboard import run_dashboard
+from attune.dashboard import run_dashboard
 
 # Development mode (auto-reload on code changes)
 run_dashboard(host="127.0.0.1", port=8000)
@@ -318,13 +318,13 @@ app.add_middleware(
 #### Development
 
 ```bash
-python -m empathy_os.dashboard.app
+python -m attune.dashboard.app
 ```
 
 #### Production with Uvicorn
 
 ```bash
-uvicorn empathy_os.dashboard.app:app --host 0.0.0.0 --port 8000 --workers 4
+uvicorn attune.dashboard.app:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
 #### Docker (Example)
@@ -345,7 +345,7 @@ COPY src/ ./src/
 EXPOSE 8000
 
 # Run dashboard
-CMD ["uvicorn", "empathy_os.dashboard.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "attune.dashboard.app:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 #### Nginx Reverse Proxy (Example)
@@ -374,7 +374,7 @@ server {
 
 **Solution:**
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator
+from attune.telemetry import HeartbeatCoordinator
 
 # Start sending heartbeats
 coordinator = HeartbeatCoordinator(agent_id="my-agent")
@@ -399,7 +399,7 @@ empathy memory start
 **Cause:** Dashboard server not running or wrong URL
 
 **Solution:**
-- Ensure dashboard is running: `python -m empathy_os.dashboard.app`
+- Ensure dashboard is running: `python -m attune.dashboard.app`
 - Check URL: `http://localhost:8000` (not HTTPS)
 - Check firewall settings
 
@@ -473,4 +473,4 @@ Planned features:
 
 **Documentation:** Complete
 
-**Demo:** Run `python -m empathy_os.dashboard.app` and visit `http://localhost:8000`
+**Demo:** Run `python -m attune.dashboard.app` and visit `http://localhost:8000`

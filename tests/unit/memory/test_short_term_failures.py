@@ -22,7 +22,7 @@ import pytest
 # Skip all tests in this file - they require actual Redis integration
 pytestmark = pytest.mark.skip(reason="Integration tests requiring live Redis instance")
 
-from empathy_os.memory.short_term import (
+from attune.memory.short_term import (
     AccessTier,
     AgentCredentials,
     RedisConfig,
@@ -49,7 +49,7 @@ class TestRedisConnectionFailureGracefulDegradation:
         Critical: Application must not crash on startup if Redis is down.
         """
         # Simulate Redis being unavailable
-        with patch("empathy_os.memory.short_term.REDIS_AVAILABLE", False):
+        with patch("attune.memory.short_term.REDIS_AVAILABLE", False):
             memory = RedisShortTermMemory(use_mock=False)
 
             # Should automatically switch to mock mode
@@ -63,8 +63,8 @@ class TestRedisConnectionFailureGracefulDegradation:
 
             assert result == {"data": "value"}
 
-    @patch("empathy_os.memory.short_term.redis.Redis")
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
     def test_connection_failure_during_initialization_raises_error(self, mock_redis_class):
         """Test that connection failures during initialization are properly reported.
 
@@ -87,8 +87,8 @@ class TestRedisConnectionFailureGracefulDegradation:
         with pytest.raises((RedisConnectionError, ConnectionError)):
             RedisShortTermMemory(config=config)
 
-    @patch("empathy_os.memory.short_term.redis.Redis")
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
     def test_retry_with_exponential_backoff_on_connection_failure(self, mock_redis_class):
         """Test exponential backoff retry logic during connection failures.
 
@@ -138,7 +138,7 @@ class TestRedisConnectionFailureGracefulDegradation:
         assert memory.retrieve("key1", creds) == {"data": "test"}
 
         # Test pattern staging
-        from empathy_os.memory.short_term import StagedPattern
+        from attune.memory.short_term import StagedPattern
 
         pattern = StagedPattern(
             pattern_id="pat_001",
@@ -158,8 +158,8 @@ class TestRedisConnectionFailureGracefulDegradation:
         signals = memory.receive_signals(creds, signal_type="test_signal")
         assert len(signals) >= 0  # Mock mode should handle this
 
-    @patch("empathy_os.memory.short_term.redis.Redis")
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
     def test_operation_failure_is_handled_gracefully(self, mock_redis_class):
         """Test that operation failures are handled without crashing.
 
@@ -584,8 +584,8 @@ class TestConnectionPoolExhaustion:
             result = memory.retrieve(f"key_{i}", creds)
             assert result == {"data": i}
 
-    @patch("empathy_os.memory.short_term.redis.Redis")
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
     def test_connection_timeout_configuration(self, mock_redis_class):
         """Test that connection timeout is properly configured.
 
@@ -671,8 +671,8 @@ class TestConnectionPoolExhaustion:
         assert memory._pubsub_running is False
         assert len(memory._subscriptions) == 0
 
-    @patch("empathy_os.memory.short_term.redis.Redis")
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
     def test_close_with_real_client_cleanup(self, mock_redis_class):
         """Test that close() properly cleans up real Redis client.
 

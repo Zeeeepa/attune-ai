@@ -15,9 +15,9 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.config import EmpathyConfig
-from empathy_os.config.xml_config import EmpathyXMLConfig
-from empathy_os.workflows.config import WorkflowConfig
+from attune.config import EmpathyConfig
+from attune.config.xml_config import EmpathyXMLConfig
+from attune.workflows.config import WorkflowConfig
 
 
 class TestEmpathyConfigPathValidation:
@@ -171,8 +171,8 @@ class TestXMLConfigPathValidation:
         with tempfile.TemporaryDirectory() as tmpdir:
             os.chdir(tmpdir)
             # Use default path relative to current directory
-            config.save_to_file(".empathy/config.json")
-            assert Path(".empathy/config.json").exists()
+            config.save_to_file(".attune/config.json")
+            assert Path(".attune/config.json").exists()
 
 
 class TestCrossModuleConsistency:

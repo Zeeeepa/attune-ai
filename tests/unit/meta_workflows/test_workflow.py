@@ -15,9 +15,9 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.meta_workflows.models import FormResponse
-from empathy_os.meta_workflows.template_registry import TemplateRegistry
-from empathy_os.meta_workflows.workflow import (
+from attune.meta_workflows.models import FormResponse
+from attune.meta_workflows.template_registry import TemplateRegistry
+from attune.meta_workflows.workflow import (
     MetaWorkflow,
     list_execution_results,
     load_execution_result,
@@ -29,7 +29,7 @@ class TestMetaWorkflowInitialization:
 
     def test_init_with_template(self):
         """Test initialization with direct template."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template)
@@ -39,7 +39,7 @@ class TestMetaWorkflowInitialization:
 
     def test_init_with_template_id(self):
         """Test initialization with template_id (loads template)."""
-        with patch("empathy_os.meta_workflows.workflow.TemplateRegistry") as mock_registry:
+        with patch("attune.meta_workflows.workflow.TemplateRegistry") as mock_registry:
             mock_template = Mock()
             mock_template.template_id = "test_template"
             mock_registry.return_value.load_template.return_value = mock_template
@@ -56,7 +56,7 @@ class TestMetaWorkflowInitialization:
 
     def test_init_with_invalid_template_id_raises_error(self):
         """Test initialization with non-existent template_id raises error."""
-        with patch("empathy_os.meta_workflows.workflow.TemplateRegistry") as mock_registry:
+        with patch("attune.meta_workflows.workflow.TemplateRegistry") as mock_registry:
             mock_registry.return_value.load_template.return_value = None
 
             with pytest.raises(ValueError, match="Template not found"):
@@ -64,7 +64,7 @@ class TestMetaWorkflowInitialization:
 
     def test_init_with_custom_storage_dir(self, tmp_path):
         """Test initialization with custom storage directory."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         storage_dir = tmp_path / "custom_storage"
@@ -79,7 +79,7 @@ class TestMetaWorkflowExecution:
 
     def test_execute_with_provided_response(self, tmp_path):
         """Test execution with pre-provided form response."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -107,7 +107,7 @@ class TestMetaWorkflowExecution:
 
     def test_execute_mock_agents(self, tmp_path):
         """Test mock agent execution."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -142,7 +142,7 @@ class TestResultStorage:
 
     def test_result_saved_to_disk(self, tmp_path):
         """Test that result is saved to disk."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -164,7 +164,7 @@ class TestResultStorage:
 
     def test_config_file_content(self, tmp_path):
         """Test config file contains correct data."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -183,7 +183,7 @@ class TestResultStorage:
 
     def test_report_generation(self, tmp_path):
         """Test human-readable report is generated."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -213,7 +213,7 @@ class TestResultLoading:
 
     def test_load_execution_result(self, tmp_path):
         """Test loading a saved execution result."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -241,7 +241,7 @@ class TestResultLoading:
         """Test listing all execution results."""
         import time
 
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -276,7 +276,7 @@ class TestErrorHandling:
 
     def test_execution_error_creates_error_result(self, tmp_path):
         """Test that execution errors are captured in result."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(
@@ -310,7 +310,7 @@ class TestAgentExecution:
 
     def test_mock_execution_cost_by_tier(self, tmp_path):
         """Test mock execution assigns correct costs by tier."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         # Get full quality response to create all agents
@@ -345,7 +345,7 @@ class TestAgentExecution:
 
     def test_all_agents_executed(self, tmp_path):
         """Test that all created agents are executed."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         response = FormResponse(

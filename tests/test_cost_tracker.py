@@ -1,4 +1,4 @@
-"""Tests for empathy_os.cost_tracker module.
+"""Tests for attune.cost_tracker module.
 
 Tests cover:
 - CostTracker initialization and storage
@@ -16,7 +16,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.cost_tracker import (
+from attune.cost_tracker import (
     BASELINE_MODEL,
     MODEL_PRICING,
     CostTracker,
@@ -311,7 +311,7 @@ class TestGlobalTracker:
 
     def test_get_tracker_singleton(self, tmp_path):
         """Test that get_tracker returns same instance."""
-        import empathy_os.cost_tracker as ct
+        import attune.cost_tracker as ct
 
         # Reset singleton
         ct._tracker = None
@@ -326,7 +326,7 @@ class TestGlobalTracker:
 
     def test_log_request_convenience_function(self, tmp_path):
         """Test log_request convenience function."""
-        import empathy_os.cost_tracker as ct
+        import attune.cost_tracker as ct
 
         ct._tracker = None
 

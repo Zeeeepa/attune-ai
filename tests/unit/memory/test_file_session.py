@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.memory.file_session import (
+from attune.memory.file_session import (
     FileSessionConfig,
     FileSessionMemory,
     SessionState,
@@ -465,7 +465,7 @@ class TestFileFirstIntegration:
 
     def test_unified_memory_file_first(self, tmp_path):
         """Test UnifiedMemory with file-first configuration."""
-        from empathy_os.memory import MemoryConfig, UnifiedMemory
+        from attune.memory import MemoryConfig, UnifiedMemory
 
         config = MemoryConfig(
             file_session_enabled=True,
@@ -488,7 +488,7 @@ class TestFileFirstIntegration:
 
     def test_capabilities_without_redis(self, tmp_path):
         """Test capability detection without Redis."""
-        from empathy_os.memory import MemoryConfig, UnifiedMemory
+        from attune.memory import MemoryConfig, UnifiedMemory
 
         config = MemoryConfig(
             file_session_enabled=True,
@@ -511,7 +511,7 @@ class TestFileFirstIntegration:
 
     def test_compact_state_generation(self, tmp_path):
         """Test compact state generation."""
-        from empathy_os.memory import MemoryConfig, UnifiedMemory
+        from attune.memory import MemoryConfig, UnifiedMemory
 
         config = MemoryConfig(
             file_session_enabled=True,
@@ -543,7 +543,7 @@ class TestFileFirstIntegration:
 
     def test_export_to_claude_md(self, tmp_path):
         """Test exporting to Claude.md file."""
-        from empathy_os.memory import MemoryConfig, UnifiedMemory
+        from attune.memory import MemoryConfig, UnifiedMemory
 
         output_path = tmp_path / "claude" / "compact-state.md"
         config = MemoryConfig(

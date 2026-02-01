@@ -6,7 +6,7 @@ Verifies that the improved prompts generate comprehensive, production-ready docs
 import asyncio
 from pathlib import Path
 
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
+from attune.workflows.document_gen import DocumentGenerationWorkflow
 
 
 async def test_doc_generation():
@@ -14,7 +14,7 @@ async def test_doc_generation():
     print("📚 Testing Enhanced Documentation Generator\n")
 
     # Test on a small module
-    test_module = Path("src/empathy_os/platform_utils.py")
+    test_module = Path("src/attune/platform_utils.py")
 
     if not test_module.exists():
         print(f"❌ Test module not found: {test_module}")

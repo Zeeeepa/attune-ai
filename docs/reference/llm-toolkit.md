@@ -21,7 +21,7 @@ The LLM Toolkit provides:
 ### Multi-Provider Support
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 # Anthropic Claude (recommended)
 claude = EmpathyLLM(
@@ -54,7 +54,7 @@ local = EmpathyLLM(
 
 ### EmpathyLLM
 
-::: empathy_llm_toolkit.core.EmpathyLLM
+::: attune_llm.core.EmpathyLLM
     options:
       show_root_heading: false
       show_source: false
@@ -64,8 +64,8 @@ Main LLM interface with empathy integration.
 
 **Example:**
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_os import EmpathyOS
+from attune_llm import EmpathyLLM
+from attune import EmpathyOS
 
 # Initialize with security controls
 llm = EmpathyLLM(
@@ -106,7 +106,7 @@ Detect and scrub personally identifiable information.
 
 **Example:**
 ```python
-from empathy_llm_toolkit.security import PIIScrubber
+from attune_llm.security import PIIScrubber
 
 scrubber = PIIScrubber()
 
@@ -144,7 +144,7 @@ Detect API keys, tokens, and credentials.
 
 **Example:**
 ```python
-from empathy_llm_toolkit.security import SecretsDetector
+from attune_llm.security import SecretsDetector
 
 detector = SecretsDetector()
 
@@ -180,7 +180,7 @@ Compliance audit logging (HIPAA, GDPR, SOC2).
 
 **Example:**
 ```python
-from empathy_llm_toolkit.security import AuditLogger
+from attune_llm.security import AuditLogger
 
 logger = AuditLogger(
     log_path="logs/audit.jsonl",
@@ -216,7 +216,7 @@ logger.log_access(
 ### PII Scrubbing Patterns
 
 ```python
-from empathy_llm_toolkit.security import PIIScrubber
+from attune_llm.security import PIIScrubber
 
 # Default patterns
 scrubber = PIIScrubber()
@@ -244,7 +244,7 @@ print(scrubbed)
 ### Secrets Detection Configuration
 
 ```python
-from empathy_llm_toolkit.security import SecretsDetector
+from attune_llm.security import SecretsDetector
 
 detector = SecretsDetector(
     entropy_threshold=4.5,  # Lower = more sensitive
@@ -311,8 +311,8 @@ with open("config.py") as f:
 ### CLAUDE.md Support
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig
 
 # Configure Claude Memory
 memory_config = ClaudeMemoryConfig(
@@ -342,7 +342,7 @@ response = llm.interact(
 ### Long-Term Memory Pattern Storage
 
 ```python
-from empathy_llm_toolkit.secure_pattern-storage import SecureLong-Term MemoryIntegration
+from attune_llm.secure_pattern-storage import SecureLong-Term MemoryIntegration
 
 # Initialize with classification
 pattern-storage = SecureLong-Term MemoryIntegration(
@@ -377,7 +377,7 @@ print(f"Classification: {result['classification']}")
 ### Clinical Protocol Monitor
 
 ```python
-from empathy_llm_toolkit.wizards import ClinicalProtocolMonitor
+from attune_llm.wizards import ClinicalProtocolMonitor
 
 # Monitor clinical handoffs
 monitor = ClinicalProtocolMonitor(
@@ -411,7 +411,7 @@ if result.safety_flags:
 ### Healthcare Compliance Wizard
 
 ```python
-from empathy_llm_toolkit.wizards import HealthcareComplianceWizard
+from attune_llm.wizards import HealthcareComplianceWizard
 
 wizard = HealthcareComplianceWizard(
     frameworks=["HIPAA", "HITECH", "FDA_21CFR11"]
@@ -443,8 +443,8 @@ if result.violations:
 ### Complete Security Setup
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.security import (
+from attune_llm import EmpathyLLM
+from attune_llm.security import (
     PIIScrubber,
     SecretsDetector,
     AuditLogger
@@ -480,7 +480,7 @@ response = llm.interact(
 ### Multi-Provider Fallback
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 providers = [
     {"provider": "anthropic", "api_key": os.getenv("ANTHROPIC_API_KEY")},

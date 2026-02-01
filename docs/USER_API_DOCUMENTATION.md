@@ -28,13 +28,13 @@ description: Empathy Framework - User API Documentation API reference: **Version
 ### Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### Basic Usage
 
 ```python
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.workflows import CodeReviewWorkflow
 
 # Create workflow instance
 workflow = CodeReviewWorkflow()
@@ -60,7 +60,7 @@ Base class for all workflows with multi-tier LLM routing.
 #### BaseWorkflow
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 class CustomWorkflow(BaseWorkflow):
     """Custom workflow with adaptive routing."""
@@ -114,7 +114,7 @@ class CustomWorkflow(BaseWorkflow):
 **Model Tiers:**
 
 ```python
-from empathy_os.workflows.base import ModelTier
+from attune.workflows.base import ModelTier
 
 ModelTier.CHEAP      # claude-3-5-haiku-20241022 (~$0.001/call)
 ModelTier.CAPABLE    # claude-sonnet-4-5 (~$0.008/call)
@@ -130,7 +130,7 @@ Track LLM usage, costs, and performance metrics.
 #### UsageTracker
 
 ```python
-from empathy_os.telemetry import UsageTracker
+from attune.telemetry import UsageTracker
 
 # Get singleton instance
 tracker = UsageTracker.get_instance()
@@ -182,8 +182,8 @@ Automatically select optimal model based on historical performance.
 #### AdaptiveModelRouter
 
 ```python
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 # Initialize router
 tracker = UsageTracker.get_instance()
@@ -233,7 +233,7 @@ if should_upgrade:
 #### 1. Code Review Workflow
 
 ```python
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.workflows import CodeReviewWorkflow
 
 workflow = CodeReviewWorkflow()
 
@@ -259,7 +259,7 @@ result = await workflow.execute({
 #### 2. Test Generation Workflow
 
 ```python
-from empathy_os.workflows import TestGenerationWorkflow
+from attune.workflows import TestGenerationWorkflow
 
 workflow = TestGenerationWorkflow()
 
@@ -282,7 +282,7 @@ result = await workflow.execute({
 #### 3. Batch Processing Workflow (50% Cost Savings)
 
 ```python
-from empathy_os.workflows.batch_processing import (
+from attune.workflows.batch_processing import (
     BatchProcessingWorkflow,
     BatchRequest
 )
@@ -329,7 +329,7 @@ for result in results:
 Track agent lifecycle and heartbeats.
 
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator
+from attune.telemetry import HeartbeatCoordinator
 
 # Initialize coordinator
 coordinator = HeartbeatCoordinator(
@@ -364,7 +364,7 @@ coordinator.complete(
 Send signals between agents.
 
 ```python
-from empathy_os.telemetry import CoordinationSignals
+from attune.telemetry import CoordinationSignals
 
 # Initialize signals
 signals = CoordinationSignals(
@@ -398,7 +398,7 @@ received = signals.get_signals(
 Real-time event streaming with Redis Streams.
 
 ```python
-from empathy_os.telemetry import EventStreamer
+from attune.telemetry import EventStreamer
 
 streamer = EventStreamer()
 
@@ -432,7 +432,7 @@ recent = streamer.get_recent_events(
 Pause workflow execution for human approval.
 
 ```python
-from empathy_os.telemetry import ApprovalGate
+from attune.telemetry import ApprovalGate
 
 # In workflow: Request approval
 gate = ApprovalGate(agent_id="deployment-workflow")
@@ -471,7 +471,7 @@ for request in pending:
 Record quality ratings to improve model selection.
 
 ```python
-from empathy_os.telemetry import FeedbackLoop
+from attune.telemetry import FeedbackLoop
 
 feedback = FeedbackLoop()
 
@@ -524,7 +524,7 @@ Automatically enabled for all LLM calls. Track cache performance:
 empathy cache stats
 
 # Python API
-from empathy_os.telemetry import UsageTracker
+from attune.telemetry import UsageTracker
 
 tracker = UsageTracker.get_instance()
 stats = tracker.get_stats(days=7)
@@ -563,8 +563,8 @@ Automatically uses cheapest model that meets quality requirements:
 workflow = CodeReviewWorkflow(enable_adaptive_routing=True)
 
 # Or manually check recommendations
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 router = AdaptiveModelRouter(UsageTracker.get_instance())
 model = router.get_best_model(
@@ -579,7 +579,7 @@ model = router.get_best_model(
 Accurate cost estimation before API calls:
 
 ```python
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider()
 
@@ -725,7 +725,7 @@ redis:
 Load configuration:
 
 ```python
-from empathy_os.config import load_config
+from attune.config import load_config
 
 config = load_config("empathy.config.yml")
 ```
@@ -738,8 +738,8 @@ config = load_config("empathy.config.yml")
 
 ```python
 import asyncio
-from empathy_os.workflows import CodeReviewWorkflow
-from empathy_os.telemetry import UsageTracker
+from attune.workflows import CodeReviewWorkflow
+from attune.telemetry import UsageTracker
 
 async def review_codebase():
     """Review codebase with cost optimization."""
@@ -779,7 +779,7 @@ if __name__ == "__main__":
 
 ```python
 import asyncio
-from empathy_os.workflows.batch_processing import (
+from attune.workflows.batch_processing import (
     BatchProcessingWorkflow,
     BatchRequest
 )
@@ -829,7 +829,7 @@ if __name__ == "__main__":
 ### Example 3: Real-Time Dashboard
 
 ```python
-from empathy_os.telemetry import EventStreamer, HeartbeatCoordinator
+from attune.telemetry import EventStreamer, HeartbeatCoordinator
 import asyncio
 
 async def dashboard_monitor():
@@ -880,10 +880,10 @@ For complete API reference, see:
 
 ## Support
 
-- **Documentation:** https://empathy-framework.vercel.app
-- **GitHub:** https://github.com/Smart-AI-Memory/empathy-framework
-- **Issues:** https://github.com/Smart-AI-Memory/empathy-framework/issues
-- **Discussions:** https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- **Documentation:** https://attune-ai.vercel.app
+- **GitHub:** https://github.com/Smart-AI-Memory/attune-ai
+- **Issues:** https://github.com/Smart-AI-Memory/attune-ai/issues
+- **Discussions:** https://github.com/Smart-AI-Memory/attune-ai/discussions
 
 ---
 

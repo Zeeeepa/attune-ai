@@ -7,8 +7,8 @@ Module: workflow_patterns/output.py (99 lines)
 
 import pytest
 
-from empathy_os.workflow_patterns.core import CodeSection, PatternCategory, WorkflowComplexity
-from empathy_os.workflow_patterns.output import ResultDataclassPattern
+from attune.workflow_patterns.core import CodeSection, PatternCategory, WorkflowComplexity
+from attune.workflow_patterns.output import ResultDataclassPattern
 
 # ============================================================================
 # ResultDataclassPattern Attribute Tests

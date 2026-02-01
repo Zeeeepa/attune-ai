@@ -36,8 +36,8 @@ cp examples/claude_memory/project-CLAUDE.md ./.claude/CLAUDE.md
 
 ```python
 import os
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig
 
 # Load security policies from all levels
 config = ClaudeMemoryConfig(
@@ -233,8 +233,8 @@ cat /var/log/empathy/audit.jsonl | jq 'select(.status == "blocked")'
 ### Basic Memory Loading
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig
 
 # Simple configuration
 config = ClaudeMemoryConfig(enabled=True)
@@ -333,8 +333,8 @@ print(retrieved["metadata"]["classification"])  # "SENSITIVE"
 Complete HIPAA-compliant workflow:
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig
 from secure_memdocs import SecureMemDocsIntegration
 import os
 
@@ -399,8 +399,8 @@ export OLLAMA_HOST=http://localhost:11434
 
 ```python
 import os
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig
 
 # Verify air-gapped mode
 assert os.getenv("EMPATHY_AIR_GAPPED") == "true"
@@ -458,7 +458,7 @@ pytest -k "secrets" -v      # Secrets detection tests
 pytest -k "classification" -v  # Classification tests
 
 # Full test suite with coverage
-pytest --cov=empathy_llm_toolkit --cov=secure_memdocs --cov-report=html
+pytest --cov=attune_llm --cov=secure_memdocs --cov-report=html
 ```
 
 ### Manual Security Validation
@@ -466,7 +466,7 @@ pytest --cov=empathy_llm_toolkit --cov=secure_memdocs --cov-report=html
 ```python
 # Test script: test_manual_security.py
 from secure_memdocs import SecureMemDocsIntegration
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm.claude_memory import ClaudeMemoryConfig
 
 config = ClaudeMemoryConfig(enabled=True)
 integration = SecureMemDocsIntegration(config)
@@ -632,7 +632,7 @@ class SecureEmpathyFramework:
 ### Community
 - GitHub Issues: https://github.com/Smart-AI-Memory/empathy/issues
 - Discussions: https://github.com/Smart-AI-Memory/empathy/discussions
-- Email: empathy-framework@smartaimemory.com
+- Email: attune-ai@smartaimemory.com
 
 ### Security
 - Report vulnerabilities: security@smartaimemory.com

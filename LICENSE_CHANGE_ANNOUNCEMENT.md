@@ -61,7 +61,7 @@ We're doubling down on making Empathy Framework the best AI orchestration tool:
 
 Now that we're fully open source, we need **adoption and feedback**:
 
-- ⭐ **Star the repo** - https://github.com/Smart-AI-Memory/empathy-framework
+- ⭐ **Star the repo** - https://github.com/Smart-AI-Memory/attune-ai
 - 🐛 **Report bugs** - Help us improve quality
 - 💡 **Share ideas** - Feature requests welcome
 - 📝 **Write tutorials** - Show others how to use it
@@ -81,12 +81,12 @@ But **first, we need adoption**. And that means being fully open source.
 ## Get Started
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 Read the docs: https://smartaimemory.com/framework-docs/
 
-Join the community: https://github.com/Smart-AI-Memory/empathy-framework/discussions
+Join the community: https://github.com/Smart-AI-Memory/attune-ai/discussions
 
 ## Thank You
 

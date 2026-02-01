@@ -11,7 +11,7 @@ description: CLI Minimal Refactor Plan: **Goal:** Reduce CLI from ~4,000 lines t
 
 ---
 
-## Phase 1: Create New Minimal CLI (src/empathy_os/cli_minimal.py)
+## Phase 1: Create New Minimal CLI (src/attune/cli_minimal.py)
 
 ### Commands to Keep
 
@@ -38,7 +38,7 @@ empathy version                    # Show version
 ### File Structure
 
 ```
-src/empathy_os/
+src/attune/
 ├── cli_minimal.py          # NEW: ~500 lines
 ├── cli.py                  # DEPRECATED: Keep for backward compat, logs warning
 ├── cli_commands/
@@ -112,8 +112,8 @@ def cmd_review(args):
 ```toml
 # pyproject.toml
 [project.scripts]
-empathy = "empathy_os.cli_minimal:main"
-empathy-legacy = "empathy_os.cli:main"  # Keep for migration
+empathy = "attune.cli_minimal:main"
+empathy-legacy = "attune.cli:main"  # Keep for migration
 ```
 
 ### 3.3 Documentation Updates

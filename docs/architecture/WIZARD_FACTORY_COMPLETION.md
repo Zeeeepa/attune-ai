@@ -110,7 +110,7 @@ Enable wizard reloading without server restart for faster development.
 ```bash
 # Enable hot-reload
 export HOT_RELOAD_ENABLED=true
-export HOT_RELOAD_WATCH_DIRS="wizards,coach_wizards,empathy_llm_toolkit/wizards"
+export HOT_RELOAD_WATCH_DIRS="wizards,coach_wizards,attune_llm/wizards"
 export HOT_RELOAD_WS_PATH="/ws/hot-reload"
 export HOT_RELOAD_DELAY=0.5
 
@@ -284,19 +284,19 @@ INFO: Creating wizard 'test_intake' using Pattern-Compose methodology
 INFO: Using 10 patterns: empathy_level, user_guidance, linear_flow, structured_fields,
       step_validation, approval, educational_banner, ai_enhancement, config_validation,
       session_based
-INFO: ✓ Generated wizard file: empathy_llm_toolkit/wizards/test_intake_wizard.py
+INFO: ✓ Generated wizard file: attune_llm/wizards/test_intake_wizard.py
 INFO: Generating tests for test_intake...
 INFO: Risk analysis complete: 2 critical paths, 89% coverage recommended
 INFO: ✓ Generated unit tests: tests/unit/wizards/test_test_intake_wizard.py
 INFO: ✓ Generated fixtures: tests/unit/wizards/fixtures_test_intake.py
-INFO: ✓ Generated README: empathy_llm_toolkit/wizards/test_intake_README.md
+INFO: ✓ Generated README: attune_llm/wizards/test_intake_README.md
 INFO: ✓ Wizard 'test_intake' created successfully!
 
 Generated Files:
-  - empathy_llm_toolkit/wizards/test_intake_wizard.py (5.4K)
+  - attune_llm/wizards/test_intake_wizard.py (5.4K)
   - tests/unit/wizards/test_test_intake_wizard.py (5.6K)
   - tests/unit/wizards/fixtures_test_intake.py (561B)
-  - empathy_llm_toolkit/wizards/test_intake_README.md (1.5K)
+  - attune_llm/wizards/test_intake_README.md (1.5K)
 ```
 
 ---
@@ -333,7 +333,7 @@ Generated Files:
 ## File Structure
 
 ```
-empathy-framework/
+attune-ai/
 ├── patterns/                           # Phase 1: Pattern Library
 │   ├── __init__.py
 │   ├── core.py                        # BasePattern, PatternCategory
@@ -400,19 +400,19 @@ python -m scaffolding create soap_note --domain healthcare
 # Output:
 # ✅ Wizard Created Successfully!
 # Generated Files:
-#   - empathy_llm_toolkit/wizards/soap_note_wizard.py
+#   - attune_llm/wizards/soap_note_wizard.py
 #   - tests/unit/wizards/test_soap_note_wizard.py
 #   - tests/unit/wizards/fixtures_soap_note.py
-#   - empathy_llm_toolkit/wizards/soap_note_README.md
+#   - attune_llm/wizards/soap_note_README.md
 
 # Step 2: Review generated code
-cat empathy_llm_toolkit/wizards/soap_note_wizard.py
+cat attune_llm/wizards/soap_note_wizard.py
 
 # Step 3: Run generated tests
 pytest tests/unit/wizards/test_soap_note_wizard.py
 
 # Step 4: Register with API (add to backend/api/wizard_api.py)
-# from empathy_llm_toolkit.wizards.soap_note_wizard import router as soap_note_router
+# from attune_llm.wizards.soap_note_wizard import router as soap_note_router
 # app.include_router(soap_note_router, prefix="/api/wizard")
 
 # Step 5: Enable hot-reload and test
@@ -479,13 +479,13 @@ python -m scaffolding create custom_wizard --interactive --domain legal
 
 ```python
 # backend/api/wizard_api.py
-from empathy_llm_toolkit.wizards.soap_note_wizard import router as soap_note_router
+from attune_llm.wizards.soap_note_wizard import router as soap_note_router
 
 # Register FastAPI router
 app.include_router(soap_note_router, prefix="/api/wizard")
 
 # Register wizard class for hot-reload
-from empathy_llm_toolkit.wizards.soap_note_wizard import SOAPNoteWizard
+from attune_llm.wizards.soap_note_wizard import SOAPNoteWizard
 register_wizard("soap_note", SOAPNoteWizard)
 ```
 
@@ -516,7 +516,7 @@ async def shutdown():
 ```bash
 # .env
 HOT_RELOAD_ENABLED=true
-HOT_RELOAD_WATCH_DIRS=wizards,coach_wizards,empathy_llm_toolkit/wizards
+HOT_RELOAD_WATCH_DIRS=wizards,coach_wizards,attune_llm/wizards
 HOT_RELOAD_WS_PATH=/ws/hot-reload
 HOT_RELOAD_DELAY=0.5
 ```

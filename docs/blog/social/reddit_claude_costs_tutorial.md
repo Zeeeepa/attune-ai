@@ -163,7 +163,7 @@ Task 5/5: Document this function: def process_data(df, columns): r...
 If Sonnet works for you, implement automatic fallback:
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 Or build your own using the pattern above!
@@ -295,7 +295,7 @@ class SmartClaude:
 
 #### Full Implementation
 
-Complete working version: <https://github.com/Smart-AI-Memory/empathy-framework>
+Complete working version: <https://github.com/Smart-AI-Memory/attune-ai>
 
 ---
 

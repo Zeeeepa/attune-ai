@@ -122,7 +122,7 @@ Based on the test gap analysis showing 159 generated tests across 15 files, this
 
 ### 1.1 Memory Subsystem - Redis Integration
 
-**File**: `src/empathy_os/memory/short_term.py`
+**File**: `src/attune/memory/short_term.py`
 **Current Coverage**: ❌ Insufficient
 **Gaps Identified**:
 - No Redis connection/disconnection tests
@@ -204,7 +204,7 @@ Based on the test gap analysis showing 159 generated tests across 15 files, this
 
 ### 1.2 Long-Term Memory - Security & Persistence
 
-**File**: `src/empathy_os/memory/long_term.py`
+**File**: `src/attune/memory/long_term.py`
 **Current Coverage**: ❌ Insufficient
 **Gaps**: No security validation, encryption tests, pattern storage tests
 
@@ -267,7 +267,7 @@ Based on the test gap analysis showing 159 generated tests across 15 files, this
 
 ### 1.3 Project Scanner - File System Operations
 
-**File**: `src/empathy_os/project_index/scanner.py`
+**File**: `src/attune/project_index/scanner.py`
 **Current Coverage**: ❌ Insufficient (only 2 tests)
 **Gaps**: No traversal tests, ignore patterns, symlinks
 
@@ -484,7 +484,7 @@ Based on the test gap analysis showing 159 generated tests across 15 files, this
 
 ### 3.1 CLI Commands - Comprehensive Testing
 
-**File**: `src/empathy_os/cli.py`
+**File**: `src/attune/cli.py`
 **Current Coverage**: ⚠️ Adequate (basic tests only)
 **Gaps**: No argument parsing, error messages, help text
 
@@ -580,7 +580,7 @@ Based on the test gap analysis showing 159 generated tests across 15 files, this
 
 ### 3.2 Workflow Execution Tests
 
-**Files**: All workflow files in `src/empathy_os/workflows/`
+**Files**: All workflow files in `src/attune/workflows/`
 **Current Coverage**: ⚠️ Adequate (basic execution only)
 
 **Required Tests** (40-50 tests):
@@ -658,7 +658,7 @@ Based on the test gap analysis showing 159 generated tests across 15 files, this
 
 ### 4.1 Cache Performance Tests
 
-**File**: `src/empathy_os/cache/hybrid.py`
+**File**: `src/attune/cache/hybrid.py`
 **Current Coverage**: ⚠️ Adequate
 **Gaps**: No eviction tests, memory limits, concurrent access
 
@@ -905,7 +905,7 @@ tests/
 2. **Coverage Monitoring**
    ```bash
    # Run after each module completion
-   pytest tests/unit/memory/ --cov=empathy_os.memory --cov-report=term-missing
+   pytest tests/unit/memory/ --cov=attune.memory --cov-report=term-missing
 
    # Target: 90%+ per module
    ```
@@ -1044,7 +1044,7 @@ jobs:
       - name: Run tests
         run: |
           pytest tests/ \
-            --cov=empathy_os \
+            --cov=attune \
             --cov-report=xml \
             --cov-fail-under=85
 
@@ -1099,12 +1099,12 @@ Track in `.empathy/test_coverage_dashboard.json`:
   "tests_added_this_week": 120,
   "critical_gaps_remaining": 3,
   "modules_at_target": [
-    "empathy_os.cache",
-    "empathy_os.telemetry"
+    "attune.cache",
+    "attune.telemetry"
   ],
   "modules_below_target": [
-    "empathy_os.memory",
-    "empathy_os.project_index",
+    "attune.memory",
+    "attune.project_index",
     "backend.api"
   ]
 }
@@ -1118,7 +1118,7 @@ Track in `.empathy/test_coverage_dashboard.json`:
 
 ```python
 import pytest
-from empathy_os.memory.short_term import RedisShortTermMemory
+from attune.memory.short_term import RedisShortTermMemory
 
 class TestRedisIntegration:
     """Test Redis connection and basic operations."""
@@ -1163,7 +1163,7 @@ class TestRedisIntegration:
 ```python
 import pytest
 from pathlib import Path
-from empathy_os.project_index.scanner import ProjectScanner
+from attune.project_index.scanner import ProjectScanner
 
 class TestProjectScanner:
     """Test file system scanning operations."""

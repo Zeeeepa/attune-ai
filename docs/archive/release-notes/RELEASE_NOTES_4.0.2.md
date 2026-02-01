@@ -24,7 +24,7 @@ description: Release Notes: Empathy Framework v4.0.2: **Release Date:** January 
 - **Verified:** ✅ All components tested
 
 ```python
-from src.empathy_os.workflows.batch_processing import BatchProcessingWorkflow
+from src.attune.workflows.batch_processing import BatchProcessingWorkflow
 
 workflow = BatchProcessingWorkflow()
 results = await workflow.execute_batch(requests)
@@ -39,7 +39,7 @@ results = await workflow.execute_batch(requests)
 - **Verified:** ✅ Tracking 4,124 historical requests
 
 ```python
-from empathy_os.telemetry.usage_tracker import UsageTracker
+from attune.telemetry.usage_tracker import UsageTracker
 
 stats = UsageTracker.get_instance().get_cache_stats(days=7)
 print(f"Hit rate: {stats['hit_rate']:.1%}")
@@ -54,7 +54,7 @@ print(f"Savings: ${stats['savings']:.2f}")
 - **Verified:** ✅ All utilities functional
 
 ```python
-from empathy_llm_toolkit.utils.tokens import count_tokens, estimate_cost
+from attune_llm.utils.tokens import count_tokens, estimate_cost
 
 tokens = count_tokens("Your text", model="claude-sonnet-4-5")
 cost = estimate_cost(input_tokens=1000, output_tokens=500)
@@ -135,9 +135,9 @@ empathy orchestrate release-prep --min-coverage 80
 ## 📦 New Files Added
 
 ### Anthropic Optimizations (9 files):
-- `empathy_llm_toolkit/utils/tokens.py` - Token counting utilities
-- `empathy_llm_toolkit/utils/__init__.py` - Utils module
-- `src/empathy_os/workflows/batch_processing.py` - Batch workflow
+- `attune_llm/utils/tokens.py` - Token counting utilities
+- `attune_llm/utils/__init__.py` - Utils module
+- `src/attune/workflows/batch_processing.py` - Batch workflow
 - `docs/ANTHROPIC_OPTIMIZATION_PLAN.md` - Implementation plan (68 pages)
 - `ANTHROPIC_OPTIMIZATION_SUMMARY.md` - Executive summary
 - `QUICK_START_ANTHROPIC_OPTIMIZATIONS.md` - Quick start guide
@@ -145,10 +145,10 @@ empathy orchestrate release-prep --min-coverage 80
 - `.github/ISSUE_TEMPLATE/track*.md` - GitHub issue templates (3 files)
 
 ### Modified Files (4):
-- `empathy_llm_toolkit/providers.py` - Added `AnthropicBatchProvider` (+177 lines)
-- `src/empathy_os/models/tasks.py` - Added batch task classification (+50 lines)
-- `src/empathy_os/telemetry/usage_tracker.py` - Added cache stats (+95 lines)
-- `src/empathy_os/telemetry/cli.py` - Added cache monitoring command (+130 lines)
+- `attune_llm/providers.py` - Added `AnthropicBatchProvider` (+177 lines)
+- `src/attune/models/tasks.py` - Added batch task classification (+50 lines)
+- `src/attune/telemetry/usage_tracker.py` - Added cache stats (+95 lines)
+- `src/attune/telemetry/cli.py` - Added cache monitoring command (+130 lines)
 
 ---
 
@@ -165,7 +165,7 @@ empathy orchestrate release-prep --min-coverage 80
 
 - Complete Anthropic optimization guides (3 documents, 100+ pages)
 - Updated API documentation for new utilities
-- GitHub issues created: [#22](https://github.com/Smart-AI-Memory/empathy-framework/issues/22), [#23](https://github.com/Smart-AI-Memory/empathy-framework/issues/23), [#24](https://github.com/Smart-AI-Memory/empathy-framework/issues/24)
+- GitHub issues created: [#22](https://github.com/Smart-AI-Memory/attune-ai/issues/22), [#23](https://github.com/Smart-AI-Memory/attune-ai/issues/23), [#24](https://github.com/Smart-AI-Memory/attune-ai/issues/24)
 - Pre-release checklist and testing documentation
 
 ---
@@ -184,7 +184,7 @@ empathy orchestrate release-prep --min-coverage 80
 
 ### From 4.0.1:
 ```bash
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 ```
 
 **No code changes required** - all new features are opt-in or automatically enabled.
@@ -201,7 +201,7 @@ python scripts/verify_anthropic_optimizations.py
 
 1. **Check Your Cost Savings:**
    ```python
-   from empathy_os.telemetry.usage_tracker import UsageTracker
+   from attune.telemetry.usage_tracker import UsageTracker
    stats = UsageTracker.get_instance().get_cache_stats(days=7)
    print(f"Savings: ${stats['savings']:.2f}")
    ```
@@ -213,7 +213,7 @@ python scripts/verify_anthropic_optimizations.py
 
 3. **Try Batch Processing:**
    ```python
-   from src.empathy_os.workflows.batch_processing import *
+   from src.attune.workflows.batch_processing import *
    workflow = BatchProcessingWorkflow()
    # See QUICK_START_ANTHROPIC_OPTIMIZATIONS.md for examples
    ```
@@ -237,7 +237,7 @@ python scripts/verify_anthropic_optimizations.py
 ---
 
 **Questions or Issues?**
-- GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
+- GitHub Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
 - Documentation: See links throughout this release note
 - Quick Start: [QUICK_START_ANTHROPIC_OPTIMIZATIONS.md](QUICK_START_ANTHROPIC_OPTIMIZATIONS.md)
 

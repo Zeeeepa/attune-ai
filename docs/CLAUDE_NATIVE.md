@@ -179,7 +179,7 @@ provider:
 **If you're using WorkflowConfig:**
 
 ```python
-from empathy_os.workflows.config import WorkflowConfig
+from attune.workflows.config import WorkflowConfig
 
 # Before (deprecated)
 config = WorkflowConfig(
@@ -205,8 +205,8 @@ config = WorkflowConfig(
 **If you're using the Builder pattern:**
 
 ```python
-from empathy_os.workflows.builder import WorkflowBuilder
-from empathy_os.workflows.test_gen import TestGenerationWorkflow
+from attune.workflows.builder import WorkflowBuilder
+from attune.workflows.test_gen import TestGenerationWorkflow
 
 # Provider is automatically detected from config
 workflow = (
@@ -234,10 +234,10 @@ empathy provider show
 
 ```bash
 # Upgrade to v4.8.0+ to get deprecation warnings
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 
 # When v5.0.0 is released (February 2026)
-pip install --upgrade empathy-framework>=5.0.0
+pip install --upgrade attune-ai>=5.0.0
 ```
 
 ---
@@ -401,7 +401,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 If you encounter migration problems:
 
-1. Check [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+1. Check [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 2. Create new issue with:
    - Current configuration
    - Error messages
@@ -410,8 +410,8 @@ If you encounter migration problems:
 
 ### Community Support
 
-- **Discussions:** [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
-- **Documentation:** [docs.empathy-framework.dev](https://docs.empathy-framework.dev)
+- **Discussions:** [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
+- **Documentation:** [docs.attune-ai.dev](https://docs.attune-ai.dev)
 
 ### Migration Assistance
 

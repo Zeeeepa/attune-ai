@@ -10,7 +10,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-import empathy_os.workflows.builder as builder_module
+import attune.workflows.builder as builder_module
 
 WorkflowBuilder = builder_module.WorkflowBuilder
 workflow_builder = builder_module.workflow_builder

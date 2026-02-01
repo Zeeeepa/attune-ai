@@ -27,7 +27,7 @@ def test_phase_2_refinement():
 
     # Test on a workflow module (complex, likely to need refinement)
     test_module = {
-        "file": "src/empathy_os/workflows/test_gen/workflow.py",
+        "file": "src/attune/workflows/test_gen/workflow.py",
         "description": "Test generation workflow - validate refinement"
     }
 
@@ -45,7 +45,7 @@ def test_phase_2_refinement():
             [
                 sys.executable,
                 "-m",
-                "empathy_os.workflows.autonomous_test_gen",
+                "attune.workflows.autonomous_test_gen",
                 "100",  # batch100 for testing
                 modules_json,
                 # Phase 2 enabled by default, no coverage-guided
@@ -123,7 +123,7 @@ def test_phase_3_coverage_guided():
 
     # Test on a simpler utility module for faster coverage testing
     test_module = {
-        "file": "src/empathy_os/config.py",
+        "file": "src/attune/config.py",
         "description": "Configuration module - validate coverage improvement"
     }
 
@@ -141,7 +141,7 @@ def test_phase_3_coverage_guided():
             [
                 sys.executable,
                 "-m",
-                "empathy_os.workflows.autonomous_test_gen",
+                "attune.workflows.autonomous_test_gen",
                 "101",  # batch101 for testing
                 modules_json,
                 "--coverage-guided"  # Enable Phase 3

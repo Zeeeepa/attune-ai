@@ -206,7 +206,7 @@ pip-licenses --from=mixed --format=markdown
 
 If you notice a missing attribution or have questions about licensing:
 
-- **Open an issue:** [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- **Open an issue:** [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - **Email us:** admin@smartaimemory.com
 
 ---

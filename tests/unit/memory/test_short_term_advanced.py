@@ -16,14 +16,14 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from empathy_os.memory import (
+from attune.memory import (
     AccessTier,
     AgentCredentials,
     RedisShortTermMemory,
     StagedPattern,
     TTLStrategy,
 )
-from empathy_os.memory.types import PaginatedResult, TimeWindowQuery
+from attune.memory.types import PaginatedResult, TimeWindowQuery
 
 
 @pytest.fixture

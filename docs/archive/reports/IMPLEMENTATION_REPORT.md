@@ -16,7 +16,7 @@ Successfully implemented a privacy-first, local-only usage tracking system for t
 
 ### 1. Core UsageTracker Class
 
-**File**: `src/empathy_os/telemetry/usage_tracker.py`
+**File**: `src/attune/telemetry/usage_tracker.py`
 
 Features:
 - Thread-safe JSON Lines logging to `~/.empathy/telemetry/usage.jsonl`
@@ -36,7 +36,7 @@ Key methods:
 
 ### 2. BaseWorkflow Integration
 
-**File**: `src/empathy_os/workflows/base.py`
+**File**: `src/attune/workflows/base.py`
 
 Changes:
 - Added `_telemetry_tracker` singleton instance in `__init__`
@@ -56,7 +56,7 @@ Tracked data per call:
 
 ### 3. CLI Commands
 
-**File**: `src/empathy_os/telemetry/cli.py`
+**File**: `src/attune/telemetry/cli.py`
 
 Five new commands with rich console output:
 
@@ -66,7 +66,7 @@ Five new commands with rich console output:
 4. **`empathy telemetry reset`** - Clear all data
 5. **`empathy telemetry export`** - Export to JSON/CSV
 
-**File**: `src/empathy_os/cli.py`
+**File**: `src/attune/cli.py`
 
 - Added telemetry subcommand parser
 - Added wrapper functions for graceful fallback
@@ -98,7 +98,7 @@ Five new commands with rich console output:
 ## Files Created
 
 ```
-src/empathy_os/telemetry/
+src/attune/telemetry/
 ├── __init__.py                    # Package exports
 ├── usage_tracker.py               # Core tracking class (433 lines)
 └── cli.py                         # CLI commands (507 lines)
@@ -114,8 +114,8 @@ tests/integration/
 ## Files Modified
 
 ```
-src/empathy_os/workflows/base.py   # Added telemetry tracking
-src/empathy_os/cli.py              # Added telemetry commands
+src/attune/workflows/base.py   # Added telemetry tracking
+src/attune/cli.py              # Added telemetry commands
 README.md                          # Added usage section
 CHANGELOG.md                       # Added v3.9.0 release notes
 ```
@@ -372,7 +372,7 @@ workflow._enable_telemetry = False
 Just use workflows normally:
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 
 workflow = SecurityAuditWorkflow()
 result = await workflow.execute(files=["auth.py"])

@@ -2,7 +2,7 @@
   "mcpServers": {
     "empathy": {
       "command": "python",
-      "args": ["-m", "empathy_os.mcp.server"],
+      "args": ["-m", "attune.mcp.server"],
       "env": {
         "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
         "PYTHONPATH": "${workspaceFolder}/src"

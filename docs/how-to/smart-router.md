@@ -9,7 +9,7 @@ The Smart Router enables natural language wizard dispatch - instead of knowing w
 ## Quick Start
 
 ```python
-from empathy_os.routing import SmartRouter
+from attune.routing import SmartRouter
 
 router = SmartRouter()
 
@@ -132,7 +132,7 @@ for wizard in wizards:
 The Smart Router works seamlessly with auto-chaining:
 
 ```python
-from empathy_os.routing import SmartRouter, ChainExecutor
+from attune.routing import SmartRouter, ChainExecutor
 
 router = SmartRouter()
 executor = ChainExecutor()

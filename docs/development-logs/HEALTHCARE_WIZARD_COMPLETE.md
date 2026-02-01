@@ -17,9 +17,9 @@ Successfully created a comprehensive **HIPAA-compliant Healthcare Wizard** with 
 ### What Was Built
 
 **New Wizard Infrastructure:**
-1. `empathy_llm_toolkit/wizards/base_wizard.py` - Base wizard class for all domain-specific wizards
-2. `empathy_llm_toolkit/wizards/healthcare_wizard.py` - HIPAA-compliant healthcare assistant
-3. `empathy_llm_toolkit/wizards/__init__.py` - Module exports
+1. `attune_llm/wizards/base_wizard.py` - Base wizard class for all domain-specific wizards
+2. `attune_llm/wizards/healthcare_wizard.py` - HIPAA-compliant healthcare assistant
+3. `attune_llm/wizards/__init__.py` - Module exports
 4. `tests/test_healthcare_wizard.py` - Comprehensive test suite (13 tests)
 5. `examples/healthcare_wizard_example.py` - Full demonstration with 5 examples
 
@@ -195,8 +195,8 @@ def get_hipaa_compliance_status() -> dict
 
 ### Example 1: Basic Clinical Query
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm import EmpathyLLM
+from attune_llm.wizards import HealthcareWizard
 
 llm = EmpathyLLM(
     provider="anthropic",
@@ -263,7 +263,7 @@ else:
 
 ## Files Created
 
-1. **empathy_llm_toolkit/wizards/**
+1. **attune_llm/wizards/**
    - `__init__.py` (18 lines)
    - `base_wizard.py` (175 lines)
    - `healthcare_wizard.py` (327 lines)

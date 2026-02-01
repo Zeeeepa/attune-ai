@@ -10,7 +10,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from empathy_os.project_index import ParallelProjectScanner, ProjectIndex, ProjectScanner
+from attune.project_index import ParallelProjectScanner, ProjectIndex, ProjectScanner
 
 
 def example_1_quick_scan():

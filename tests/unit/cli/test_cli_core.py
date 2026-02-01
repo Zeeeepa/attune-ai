@@ -12,7 +12,7 @@ import pytest
 import typer
 from typer.testing import CliRunner
 
-from empathy_os.cli.core import console, get_empathy_version, version_callback
+from attune.cli.core import console, get_empathy_version, version_callback
 
 
 @pytest.mark.unit
@@ -28,11 +28,11 @@ class TestGetEmpathyVersion:
 
     def test_returns_dev_on_import_error(self):
         """Test get_empathy_version returns 'dev' on import error."""
-        with patch("empathy_os.cli.core.get_version") as mock_version:
+        with patch("attune.cli.core.get_version") as mock_version:
             mock_version.side_effect = Exception("Package not found")
 
             # Re-call to trigger exception
-            from empathy_os.cli.core import get_empathy_version
+            from attune.cli.core import get_empathy_version
 
             result = get_empathy_version()
 
@@ -74,28 +74,28 @@ class TestCLIAppStructure:
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_app_exists(self):
         """Test the main app exists and is a Typer app."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         assert isinstance(app, typer.Typer)
 
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_app_has_name(self):
         """Test the app has a name."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         # Typer stores info in info attribute
         assert app.info.name == "empathy"
 
     def test_memory_app_registered(self):
         """Test memory subcommand app is registered."""
-        from empathy_os.cli.commands.memory import memory_app
+        from attune.cli.commands.memory import memory_app
 
         assert isinstance(memory_app, typer.Typer)
 
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_provider_app_registered(self):
         """Test provider subcommand app is registered."""
-        from empathy_os.cli.commands.provider import provider_app
+        from attune.cli.commands.provider import provider_app
 
         assert isinstance(provider_app, typer.Typer)
 
@@ -107,7 +107,7 @@ class TestCLICommands:
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_scan_command_exists(self):
         """Test scan command is registered."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         runner = CliRunner()
         result = runner.invoke(app, ["scan", "--help"])
@@ -118,7 +118,7 @@ class TestCLICommands:
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_inspect_command_exists(self):
         """Test inspect command is registered."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         runner = CliRunner()
         result = runner.invoke(app, ["inspect", "--help"])
@@ -128,7 +128,7 @@ class TestCLICommands:
     @pytest.mark.skip(reason="cheatsheet command not implemented")
     def test_cheatsheet_command_exists(self):
         """Test cheatsheet command is registered."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         runner = CliRunner()
         result = runner.invoke(app, ["cheatsheet", "--help"])
@@ -138,7 +138,7 @@ class TestCLICommands:
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_version_option_exists(self):
         """Test --version option is available."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         runner = CliRunner()
         result = runner.invoke(app, ["--version"])
@@ -149,7 +149,7 @@ class TestCLICommands:
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_help_available(self):
         """Test --help shows command list."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         runner = CliRunner()
         result = runner.invoke(app, ["--help"])
@@ -166,7 +166,7 @@ class TestMemoryCommands:
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_memory_status_command_exists(self):
         """Test memory status command is registered."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         runner = CliRunner()
         result = runner.invoke(app, ["memory", "--help"])
@@ -176,7 +176,7 @@ class TestMemoryCommands:
 
     def test_memory_start_command_exists(self):
         """Test memory start command is registered."""
-        from empathy_os.cli.commands.memory import memory_app
+        from attune.cli.commands.memory import memory_app
 
         runner = CliRunner()
         result = runner.invoke(memory_app, ["--help"])
@@ -191,7 +191,7 @@ class TestProviderCommands:
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_provider_help(self):
         """Test provider help is available."""
-        from empathy_os.cli import app
+        from attune.cli import app
 
         runner = CliRunner()
         result = runner.invoke(app, ["provider", "--help"])
@@ -205,7 +205,7 @@ class TestUtilityFunctions:
 
     def test_cheatsheet_function(self):
         """Test cheatsheet function runs without error."""
-        from empathy_os.cli.commands.utilities import cheatsheet
+        from attune.cli.commands.utilities import cheatsheet
 
         # Should not raise
         cheatsheet()
@@ -213,7 +213,7 @@ class TestUtilityFunctions:
     @patch("subprocess.run")
     def test_sync_claude_calls_subprocess(self, mock_run):
         """Test sync_claude calls subprocess correctly."""
-        from empathy_os.cli.commands.utilities import sync_claude
+        from attune.cli.commands.utilities import sync_claude
 
         sync_claude("patterns")
 
@@ -224,7 +224,7 @@ class TestUtilityFunctions:
     @patch("subprocess.run")
     def test_dashboard_calls_subprocess(self, mock_run):
         """Test dashboard calls subprocess."""
-        from empathy_os.cli.commands.utilities import dashboard
+        from attune.cli.commands.utilities import dashboard
 
         dashboard()
 
@@ -233,7 +233,7 @@ class TestUtilityFunctions:
     @patch("subprocess.run")
     def test_costs_calls_subprocess(self, mock_run):
         """Test costs calls subprocess."""
-        from empathy_os.cli.commands.utilities import costs
+        from attune.cli.commands.utilities import costs
 
         costs()
 
@@ -242,7 +242,7 @@ class TestUtilityFunctions:
     @patch("subprocess.run")
     def test_init_calls_subprocess(self, mock_run):
         """Test init calls subprocess."""
-        from empathy_os.cli.commands.utilities import init
+        from attune.cli.commands.utilities import init
 
         init()
 
@@ -251,7 +251,7 @@ class TestUtilityFunctions:
     @patch("subprocess.run")
     def test_status_calls_subprocess(self, mock_run):
         """Test status calls subprocess."""
-        from empathy_os.cli.commands.utilities import status
+        from attune.cli.commands.utilities import status
 
         status()
 
@@ -265,7 +265,7 @@ class TestMemoryAppFunctions:
     @patch("subprocess.run")
     def test_memory_status_calls_subprocess(self, mock_run):
         """Test memory_status calls control panel."""
-        from empathy_os.cli.commands.memory import memory_status
+        from attune.cli.commands.memory import memory_status
 
         memory_status()
 
@@ -277,7 +277,7 @@ class TestMemoryAppFunctions:
     @patch("subprocess.run")
     def test_memory_start_calls_subprocess(self, mock_run):
         """Test memory_start calls control panel."""
-        from empathy_os.cli.commands.memory import memory_start
+        from attune.cli.commands.memory import memory_start
 
         memory_start()
 
@@ -289,7 +289,7 @@ class TestMemoryAppFunctions:
     @patch("subprocess.run")
     def test_memory_stop_calls_subprocess(self, mock_run):
         """Test memory_stop calls control panel."""
-        from empathy_os.cli.commands.memory import memory_stop
+        from attune.cli.commands.memory import memory_stop
 
         memory_stop()
 
@@ -300,7 +300,7 @@ class TestMemoryAppFunctions:
     @patch("subprocess.run")
     def test_memory_stats_calls_subprocess(self, mock_run):
         """Test memory_stats calls control panel."""
-        from empathy_os.cli.commands.memory import memory_stats
+        from attune.cli.commands.memory import memory_stats
 
         memory_stats()
 
@@ -311,7 +311,7 @@ class TestMemoryAppFunctions:
     @patch("subprocess.run")
     def test_memory_patterns_calls_subprocess(self, mock_run):
         """Test memory_patterns calls control panel."""
-        from empathy_os.cli.commands.memory import memory_patterns
+        from attune.cli.commands.memory import memory_patterns
 
         memory_patterns()
 
@@ -326,15 +326,15 @@ class TestCLIMain:
 
     def test_main_function_exists(self):
         """Test main function exists."""
-        from empathy_os.cli import main
+        from attune.cli import main
 
         assert callable(main)
 
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
-    @patch("empathy_os.cli.app")
+    @patch("attune.cli.app")
     def test_main_calls_app(self, mock_app):
         """Test main calls the app."""
-        from empathy_os.cli import main
+        from attune.cli import main
 
         main()
 

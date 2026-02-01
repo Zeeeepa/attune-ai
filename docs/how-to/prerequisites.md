@@ -97,7 +97,7 @@ For quick experiments without Redis:
 import os
 os.environ["EMPATHY_REDIS_MOCK"] = "true"
 
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 empathy = EmpathyOS(user_id="test")  # Uses in-memory mock
 ```
 
@@ -136,18 +136,18 @@ export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com/"
 
 ```bash
 # Core framework
-pip install empathy-framework
+pip install attune-ai
 
 # With Redis support (recommended)
-pip install empathy-framework[redis]
+pip install attune-ai[redis]
 
 # With all optional dependencies
-pip install empathy-framework[all]
+pip install attune-ai[all]
 ```
 
 **Verify installation**:
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 print("Empathy Framework installed successfully!")
 ```
 
@@ -224,12 +224,12 @@ def check_api_keys():
 
 def check_empathy():
     try:
-        from empathy_os import EmpathyOS
+        from attune import EmpathyOS
         print("[OK] Empathy Framework installed")
         return True
     except ImportError:
         print("[FAIL] Empathy Framework not installed")
-        print("       Run: pip install empathy-framework")
+        print("       Run: pip install attune-ai")
         return False
 
 if __name__ == "__main__":
@@ -272,11 +272,11 @@ sudo systemctl start redis
 docker run -d -p 6379:6379 redis:alpine
 ```
 
-### "No module named 'empathy_os'"
+### "No module named 'attune'"
 
 Install the framework:
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### "API key not found"

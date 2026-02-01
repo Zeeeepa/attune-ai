@@ -26,7 +26,7 @@ class TestSecurityAdapters:
 
     def test_check_crew_available_when_installed(self):
         """Test crew availability check when module exists."""
-        from empathy_os.workflows.security_adapters import _check_crew_available
+        from attune.workflows.security_adapters import _check_crew_available
 
         # Should return True since we have the module
         result = _check_crew_available()
@@ -34,7 +34,7 @@ class TestSecurityAdapters:
 
     def test_crew_report_to_workflow_format(self):
         """Test converting SecurityReport to workflow format."""
-        from empathy_os.workflows.security_adapters import crew_report_to_workflow_format
+        from attune.workflows.security_adapters import crew_report_to_workflow_format
 
         # Create mock report
         mock_report = MagicMock()
@@ -86,7 +86,7 @@ class TestSecurityAdapters:
 
     def test_workflow_findings_to_crew_format(self):
         """Test converting workflow findings to crew format."""
-        from empathy_os.workflows.security_adapters import workflow_findings_to_crew_format
+        from attune.workflows.security_adapters import workflow_findings_to_crew_format
 
         workflow_findings = [
             {
@@ -109,7 +109,7 @@ class TestSecurityAdapters:
 
     def test_merge_security_results(self):
         """Test merging crew and workflow results."""
-        from empathy_os.workflows.security_adapters import merge_security_results
+        from attune.workflows.security_adapters import merge_security_results
 
         crew_report = {
             "risk_score": 60.0,
@@ -150,7 +150,7 @@ class TestSecurityAdapters:
 
     def test_merge_security_results_crew_only(self):
         """Test merging with only crew results."""
-        from empathy_os.workflows.security_adapters import merge_security_results
+        from attune.workflows.security_adapters import merge_security_results
 
         crew_report = {
             "risk_score": 75.0,
@@ -167,7 +167,7 @@ class TestSecurityAdapters:
 
     def test_merge_security_results_workflow_only(self):
         """Test merging with only workflow results."""
-        from empathy_os.workflows.security_adapters import merge_security_results
+        from attune.workflows.security_adapters import merge_security_results
 
         workflow_findings = {
             "risk_score": 30.0,
@@ -192,7 +192,7 @@ class TestReleasePreparationCrewIntegration:
 
     def test_workflow_init_without_crew(self):
         """Test workflow initializes without crew by default."""
-        from empathy_os.workflows import ReleasePreparationWorkflow
+        from attune.workflows import ReleasePreparationWorkflow
 
         workflow = ReleasePreparationWorkflow()
 
@@ -201,7 +201,7 @@ class TestReleasePreparationCrewIntegration:
 
     def test_workflow_init_with_crew(self):
         """Test workflow initializes with crew when enabled."""
-        from empathy_os.workflows import ReleasePreparationWorkflow
+        from attune.workflows import ReleasePreparationWorkflow
 
         workflow = ReleasePreparationWorkflow(use_security_crew=True)
 
@@ -210,7 +210,7 @@ class TestReleasePreparationCrewIntegration:
 
     def test_workflow_stages_order_with_crew(self):
         """Test stages are in correct order when crew is enabled."""
-        from empathy_os.workflows import ReleasePreparationWorkflow
+        from attune.workflows import ReleasePreparationWorkflow
 
         workflow = ReleasePreparationWorkflow(use_security_crew=True)
 
@@ -222,13 +222,13 @@ class TestReleasePreparationCrewIntegration:
     @pytest.mark.asyncio
     async def test_crew_security_stage_fallback(self):
         """Test crew_security stage gracefully falls back when crew unavailable."""
-        from empathy_os.workflows import ReleasePreparationWorkflow
+        from attune.workflows import ReleasePreparationWorkflow
 
         workflow = ReleasePreparationWorkflow(use_security_crew=True)
 
         # Mock _check_crew_available to return False at the security_adapters level
         with patch(
-            "empathy_os.workflows.security_adapters._check_crew_available",
+            "attune.workflows.security_adapters._check_crew_available",
             return_value=False,
         ):
             input_data = {"path": "./src", "security": {"issues": []}}
@@ -245,7 +245,7 @@ class TestReleasePreparationCrewIntegration:
     @pytest.mark.asyncio
     async def test_crew_security_stage_with_mocked_crew(self):
         """Test crew_security stage with mocked crew results."""
-        from empathy_os.workflows import ReleasePreparationWorkflow
+        from attune.workflows import ReleasePreparationWorkflow
 
         workflow = ReleasePreparationWorkflow(use_security_crew=True)
 
@@ -261,11 +261,11 @@ class TestReleasePreparationCrewIntegration:
 
         with (
             patch(
-                "empathy_os.workflows.security_adapters._check_crew_available",
+                "attune.workflows.security_adapters._check_crew_available",
                 return_value=True,
             ),
             patch(
-                "empathy_os.workflows.security_adapters._get_crew_audit",
+                "attune.workflows.security_adapters._get_crew_audit",
                 new_callable=AsyncMock,
                 return_value=mock_report,
             ),
@@ -292,7 +292,7 @@ class TestCodeReviewExternalAudit:
 
     def test_scan_accepts_external_audit(self):
         """Test _scan method accepts external_audit_results."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow()
 
@@ -306,7 +306,7 @@ class TestCodeReviewExternalAudit:
 
     def test_merge_external_audit_method_exists(self):
         """Test _merge_external_audit helper exists."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow()
         assert hasattr(workflow, "_merge_external_audit")
@@ -314,7 +314,7 @@ class TestCodeReviewExternalAudit:
 
     def test_merge_external_audit(self):
         """Test merging external audit results."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow()
 
@@ -350,7 +350,7 @@ class TestCodeReviewExternalAudit:
 
     def test_merge_external_audit_no_critical(self):
         """Test merging with no critical findings."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow()
 
@@ -371,8 +371,8 @@ class TestCodeReviewExternalAudit:
     @pytest.mark.asyncio
     async def test_scan_with_external_audit(self):
         """Test full scan with external audit results."""
-        from empathy_os.workflows import CodeReviewWorkflow
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows import CodeReviewWorkflow
+        from attune.workflows.base import ModelTier
 
         workflow = CodeReviewWorkflow()
 
@@ -414,7 +414,7 @@ class TestSecureReleasePipeline:
 
     def test_pipeline_creation_modes(self):
         """Test pipeline creation with different modes."""
-        from empathy_os.workflows.secure_release import SecureReleasePipeline
+        from attune.workflows.secure_release import SecureReleasePipeline
 
         full = SecureReleasePipeline(mode="full")
         assert full.mode == "full"
@@ -426,7 +426,7 @@ class TestSecureReleasePipeline:
 
     def test_pipeline_factory_methods(self):
         """Test factory methods."""
-        from empathy_os.workflows.secure_release import SecureReleasePipeline
+        from attune.workflows.secure_release import SecureReleasePipeline
 
         pr = SecureReleasePipeline.for_pr_review(files_changed=5)
         assert pr.mode == "standard"
@@ -440,7 +440,7 @@ class TestSecureReleasePipeline:
 
     def test_result_dataclass(self):
         """Test SecureReleaseResult dataclass."""
-        from empathy_os.workflows.secure_release import SecureReleaseResult
+        from attune.workflows.secure_release import SecureReleaseResult
 
         result = SecureReleaseResult(
             success=True,
@@ -468,7 +468,7 @@ class TestSecureReleasePipeline:
 
     def test_determine_go_no_go_logic(self):
         """Test go/no-go decision logic."""
-        from empathy_os.workflows.secure_release import SecureReleasePipeline
+        from attune.workflows.secure_release import SecureReleasePipeline
 
         pipeline = SecureReleasePipeline()
 
@@ -490,7 +490,7 @@ class TestSecureReleasePipeline:
 
     def test_calculate_combined_risk(self):
         """Test combined risk calculation."""
-        from empathy_os.workflows.secure_release import SecureReleasePipeline
+        from attune.workflows.secure_release import SecureReleasePipeline
 
         pipeline = SecureReleasePipeline()
 
@@ -506,7 +506,7 @@ class TestSecureReleasePipeline:
     @pytest.mark.asyncio
     async def test_pipeline_execute_standard_mode(self):
         """Test pipeline execution in standard mode."""
-        from empathy_os.workflows.secure_release import SecureReleasePipeline
+        from attune.workflows.secure_release import SecureReleasePipeline
 
         pipeline = SecureReleasePipeline(mode="standard")
 
@@ -524,9 +524,9 @@ class TestSecureReleasePipeline:
             mock_release_result.cost_report = MagicMock(total_cost=0.02)
 
             with (
-                patch("empathy_os.workflows.security_audit.SecurityAuditWorkflow") as MockSecurity,
+                patch("attune.workflows.security_audit.SecurityAuditWorkflow") as MockSecurity,
                 patch(
-                    "empathy_os.workflows.release_prep.ReleasePreparationWorkflow",
+                    "attune.workflows.release_prep.ReleasePreparationWorkflow",
                 ) as MockRelease,
             ):
                 # Setup mocks
@@ -555,7 +555,7 @@ class TestSecurityAuditCrewRemediation:
 
     def test_workflow_init_without_crew_remediation(self):
         """Test workflow initializes without crew remediation by default."""
-        from empathy_os.workflows import SecurityAuditWorkflow
+        from attune.workflows import SecurityAuditWorkflow
 
         workflow = SecurityAuditWorkflow()
 
@@ -563,7 +563,7 @@ class TestSecurityAuditCrewRemediation:
 
     def test_workflow_init_with_crew_remediation(self):
         """Test workflow initializes with crew remediation when enabled."""
-        from empathy_os.workflows import SecurityAuditWorkflow
+        from attune.workflows import SecurityAuditWorkflow
 
         workflow = SecurityAuditWorkflow(use_crew_for_remediation=True)
 
@@ -571,7 +571,7 @@ class TestSecurityAuditCrewRemediation:
 
     def test_crew_config_passed(self):
         """Test crew config is passed correctly."""
-        from empathy_os.workflows import SecurityAuditWorkflow
+        from attune.workflows import SecurityAuditWorkflow
 
         config = {"scan_depth": "thorough", "timeout_seconds": 600}
         workflow = SecurityAuditWorkflow(use_crew_for_remediation=True, crew_config=config)
@@ -580,7 +580,7 @@ class TestSecurityAuditCrewRemediation:
 
     def test_get_crew_remediation_method_exists(self):
         """Test _get_crew_remediation helper exists."""
-        from empathy_os.workflows import SecurityAuditWorkflow
+        from attune.workflows import SecurityAuditWorkflow
 
         workflow = SecurityAuditWorkflow(use_crew_for_remediation=True)
         assert hasattr(workflow, "_get_crew_remediation")
@@ -588,7 +588,7 @@ class TestSecurityAuditCrewRemediation:
 
     def test_merge_crew_remediation_method_exists(self):
         """Test _merge_crew_remediation helper exists."""
-        from empathy_os.workflows import SecurityAuditWorkflow
+        from attune.workflows import SecurityAuditWorkflow
 
         workflow = SecurityAuditWorkflow(use_crew_for_remediation=True)
         assert hasattr(workflow, "_merge_crew_remediation")
@@ -597,8 +597,8 @@ class TestSecurityAuditCrewRemediation:
     @pytest.mark.asyncio
     async def test_remediate_fallback_without_crew(self):
         """Test remediation works without crew when disabled."""
-        from empathy_os.workflows import SecurityAuditWorkflow
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows import SecurityAuditWorkflow
+        from attune.workflows.base import ModelTier
 
         workflow = SecurityAuditWorkflow(use_crew_for_remediation=False)
 
@@ -640,7 +640,7 @@ class TestEndToEndIntegration:
     @pytest.mark.asyncio
     async def test_full_workflow_without_api_key(self):
         """Test workflows execute (with simulation) when no API key."""
-        from empathy_os.workflows import ReleasePreparationWorkflow
+        from attune.workflows import ReleasePreparationWorkflow
 
         # Without ANTHROPIC_API_KEY, workflow should use simulation mode
         workflow = ReleasePreparationWorkflow(use_security_crew=False)
@@ -656,8 +656,8 @@ class TestEndToEndIntegration:
 
     def test_imports_work(self):
         """Test all new exports are importable."""
-        from empathy_os.workflows.secure_release import SecureReleasePipeline, SecureReleaseResult
-        from empathy_os.workflows.security_adapters import _check_crew_available
+        from attune.workflows.secure_release import SecureReleasePipeline, SecureReleaseResult
+        from attune.workflows.security_adapters import _check_crew_available
 
         # All imports should succeed
         assert SecureReleasePipeline is not None
@@ -666,7 +666,7 @@ class TestEndToEndIntegration:
 
     def test_backward_compatibility(self):
         """Test existing workflows still work with default parameters."""
-        from empathy_os.workflows import (
+        from attune.workflows import (
             CodeReviewWorkflow,
             ReleasePreparationWorkflow,
             SecurityAuditWorkflow,

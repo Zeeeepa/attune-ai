@@ -54,7 +54,7 @@ description: Starts on http://localhost:8000: ### What Was Built **1.
 #### Option 1: Zero Dependencies (Recommended)
 
 ```python
-from empathy_os.dashboard import run_simple_dashboard
+from attune.dashboard import run_simple_dashboard
 
 # Starts on http://localhost:8000
 run_simple_dashboard()
@@ -76,7 +76,7 @@ python examples/dashboard_demo.py
 pip install fastapi uvicorn
 
 # Run FastAPI version
-python -m empathy_os.dashboard.app
+python -m attune.dashboard.app
 ```
 
 ### Dashboard Panels
@@ -150,7 +150,7 @@ python -m empathy_os.dashboard.app
 ### File Structure
 
 ```
-src/empathy_os/dashboard/
+src/attune/dashboard/
 ├── __init__.py              # Package exports
 ├── app.py                   # FastAPI server (optional)
 ├── simple_server.py         # Zero-dependency server ✨
@@ -234,7 +234,7 @@ def require_auth(handler):
 
 #### Development
 ```bash
-python -m empathy_os.dashboard.simple_server
+python -m attune.dashboard.simple_server
 ```
 
 #### Production with Systemd
@@ -247,7 +247,7 @@ After=network.target redis.service
 Type=simple
 User=empathy
 WorkingDirectory=/opt/empathy
-ExecStart=/opt/empathy/venv/bin/python -m empathy_os.dashboard.simple_server
+ExecStart=/opt/empathy/venv/bin/python -m attune.dashboard.simple_server
 Restart=always
 
 [Install]
@@ -260,7 +260,7 @@ FROM python:3.10-slim
 WORKDIR /app
 COPY src/ ./src/
 EXPOSE 8000
-CMD ["python", "-m", "empathy_os.dashboard.simple_server"]
+CMD ["python", "-m", "attune.dashboard.simple_server"]
 ```
 
 #### Nginx Reverse Proxy

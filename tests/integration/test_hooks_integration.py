@@ -5,14 +5,14 @@ Tests hook system integration with other framework components.
 
 import pytest
 
-from empathy_llm_toolkit.hooks.config import (
+from attune_llm.hooks.config import (
     HookConfig,
     HookDefinition,
     HookEvent,
     HookMatcher,
     HookType,
 )
-from empathy_llm_toolkit.hooks.registry import HookRegistry
+from attune_llm.hooks.registry import HookRegistry
 
 
 class TestHookRegistryIntegration:

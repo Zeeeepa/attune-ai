@@ -5,7 +5,7 @@ Tests LLMResponse, ExecutionContext, and LLM protocol interfaces.
 
 import pytest
 
-from empathy_os.models.executor import ExecutionContext, LLMResponse
+from attune.models.executor import ExecutionContext, LLMResponse
 
 
 @pytest.mark.unit
@@ -341,7 +341,7 @@ class TestMockLLMExecutor:
     @pytest.fixture
     def mock_executor(self):
         """Create a mock executor for testing"""
-        from empathy_os.models.executor import MockLLMExecutor
+        from attune.models.executor import MockLLMExecutor
 
         return MockLLMExecutor(
             default_response="Mocked response content",

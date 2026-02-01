@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/workflows/secure_release.py
+"""Tests for src/attune/workflows/secure_release.py
 
 Tests the SecureReleasePipeline including:
 - SecureReleaseResult dataclass
@@ -13,7 +13,7 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os.workflows.secure_release import SecureReleasePipeline, SecureReleaseResult
+from attune.workflows.secure_release import SecureReleasePipeline, SecureReleaseResult
 
 
 class TestSecureReleaseResult:

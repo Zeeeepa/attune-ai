@@ -11,8 +11,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.security_audit import SECURITY_PATTERNS, SecurityAuditWorkflow
+from attune.workflows.base import ModelTier
+from attune.workflows.security_audit import SECURITY_PATTERNS, SecurityAuditWorkflow
 
 
 class TestSecurityPatterns:

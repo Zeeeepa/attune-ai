@@ -6,14 +6,14 @@ Licensed under Fair Source 0.9
 
 from datetime import datetime
 
-from empathy_os import (
+from attune import (
     Level1Reactive,
     Level2Guided,
     Level3Proactive,
     Level4Anticipatory,
     Level5Systems,
 )
-from empathy_os.levels import EmpathyAction, get_level_class
+from attune.levels import EmpathyAction, get_level_class
 
 
 class TestLevel1Reactive:
@@ -219,7 +219,7 @@ class TestLevelProgression:
 
     def test_get_level_class_factory(self):
         """Test get_level_class factory function"""
-        from empathy_os.levels import get_level_class
+        from attune.levels import get_level_class
 
         # Test each level
         level1_class = get_level_class(1)

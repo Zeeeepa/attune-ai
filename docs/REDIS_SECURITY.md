@@ -44,7 +44,7 @@ The Redis short-term memory system includes several security features:
 ### RedisConfig Security Settings
 
 ```python
-from empathy_os.memory.short_term import RedisConfig, RedisShortTermMemory
+from attune.memory.short_term import RedisConfig, RedisShortTermMemory
 
 config = RedisConfig(
     host="localhost",
@@ -108,7 +108,7 @@ The PII scrubber automatically detects and replaces:
 ### Example
 
 ```python
-from empathy_os.memory.short_term import (
+from attune.memory.short_term import (
     RedisShortTermMemory,
     RedisConfig,
     AgentCredentials,
@@ -176,7 +176,7 @@ The secrets detector prevents storage of:
 When secrets are detected, a `SecurityError` is raised:
 
 ```python
-from empathy_os.memory.short_term import SecurityError
+from attune.memory.short_term import SecurityError
 
 try:
     memory.stash("config", {"api_key": "sk-real-secret-key"}, creds)
@@ -237,7 +237,7 @@ For cloud Redis services (Redis Cloud, AWS ElastiCache, etc.):
 ```python
 # Using REDIS_URL (auto-detects SSL from rediss://)
 import os
-from empathy_os.redis_config import get_redis_memory
+from attune.redis_config import get_redis_memory
 
 # Set REDIS_URL=rediss://user:pass@host:port
 memory = get_redis_memory()  # Auto-configures from env
@@ -261,7 +261,7 @@ The framework implements role-based access control:
 ### Usage
 
 ```python
-from empathy_os.memory.short_term import AgentCredentials, AccessTier
+from attune.memory.short_term import AgentCredentials, AccessTier
 
 # Read-only agent
 observer = AgentCredentials(agent_id="reader", tier=AccessTier.OBSERVER)
@@ -397,7 +397,7 @@ Use these metrics to:
 ### Connection Issues
 
 ```python
-from empathy_os.redis_config import check_redis_connection
+from attune.redis_config import check_redis_connection
 
 status = check_redis_connection()
 print(status)
@@ -422,5 +422,5 @@ print(status)
 
 **Questions or Issues?**
 
-- GitHub Issues: [Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- GitHub Issues: [Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - Security vulnerabilities: See [SECURITY.md](../SECURITY.md)

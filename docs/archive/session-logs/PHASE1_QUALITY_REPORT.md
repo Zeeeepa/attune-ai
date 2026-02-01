@@ -130,7 +130,7 @@ test_path = f"test_{source_path.stem}_generated.py"
 
 # After (good - unique names)
 test_path = f"test_{source_path.replace('/', '_').replace('.py', '')}_generated.py"
-# Example: src/empathy_os/telemetry/cli.py → test_empathy_os_telemetry_cli_generated.py
+# Example: src/attune/telemetry/cli.py → test_attune_telemetry_cli_generated.py
 ```
 
 ### Priority 2: Increase Token Limits

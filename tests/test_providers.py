@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_llm_toolkit.providers import (
+from attune_llm.providers import (
     AnthropicProvider,
     BaseLLMProvider,
     LLMResponse,

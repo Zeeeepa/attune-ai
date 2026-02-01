@@ -73,7 +73,7 @@ except Exception as e:  # noqa: BLE001
 
 ### Priority 1: Production Code
 
-#### 1. `empathy_llm_toolkit/contextual_patterns.py`
+#### 1. `attune_llm/contextual_patterns.py`
 
 **Location:** Lines 275-276
 **Issue:** Silent exception swallowing
@@ -98,7 +98,7 @@ except Exception:  # noqa: BLE001
 
 ---
 
-#### 2. `empathy_llm_toolkit/agent_factory/memory_integration.py`
+#### 2. `attune_llm/agent_factory/memory_integration.py`
 
 **Locations:** Lines 83-84, 195-196, 215, 254-255, 323-324
 
@@ -212,7 +212,7 @@ These files have `broad_exception` patterns but are properly documented:
 | `benchmarks/analyze_generator_candidates.py` | Analysis tool |
 | `wizards/incident_report_wizard.py` | User-facing error handling |
 | `wizards/discharge_summary_wizard.py` | User-facing error handling |
-| `empathy_llm_toolkit/git_pattern_extractor.py` | Git operation fallbacks |
+| `attune_llm/git_pattern_extractor.py` | Git operation fallbacks |
 
 ---
 

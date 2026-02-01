@@ -29,13 +29,13 @@ This guide explains how to choose and configure your authentication strategy.
 #### Option 1: CLI Command (Recommended)
 
 ```bash
-python -m empathy_os.models.auth_cli setup
+python -m attune.models.auth_cli setup
 ```
 
 #### Option 2: Python API
 
 ```python
-from empathy_os.models import configure_auth_interactive
+from attune.models import configure_auth_interactive
 
 strategy = configure_auth_interactive()
 ```
@@ -52,20 +52,20 @@ This will:
 #### View current configuration
 
 ```bash
-python -m empathy_os.models.auth_cli status
-python -m empathy_os.models.auth_cli status --json  # JSON output
+python -m attune.models.auth_cli status
+python -m attune.models.auth_cli status --json  # JSON output
 ```
 
 #### Get recommendation for a specific file
 
 ```bash
-python -m empathy_os.models.auth_cli recommend src/my_module.py
+python -m attune.models.auth_cli recommend src/my_module.py
 ```
 
 #### Reset configuration
 
 ```bash
-python -m empathy_os.models.auth_cli reset --confirm
+python -m attune.models.auth_cli reset --confirm
 ```
 
 ### Automatic Detection
@@ -283,7 +283,7 @@ After editing, restart your workflow for changes to take effect.
 ### AuthStrategy Class
 
 ```python
-from empathy_os.models import AuthStrategy, SubscriptionTier, AuthMode
+from attune.models import AuthStrategy, SubscriptionTier, AuthMode
 
 strategy = AuthStrategy(
     subscription_tier=SubscriptionTier.MAX,
@@ -306,7 +306,7 @@ print(f"Cost: ${cost['monetary_cost']}")
 ### Loading/Saving Configuration
 
 ```python
-from empathy_os.models import AuthStrategy
+from attune.models import AuthStrategy
 
 # Load from file (or create default)
 strategy = AuthStrategy.load()
@@ -326,8 +326,8 @@ strategy.save()  # Saves to ~/.empathy/auth_strategy.json
 The DocumentGenerationWorkflow automatically uses auth_strategy:
 
 ```python
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
-from empathy_os.models import get_auth_strategy, count_lines_of_code
+from attune.workflows.document_gen import DocumentGenerationWorkflow
+from attune.models import get_auth_strategy, count_lines_of_code
 
 # Get auth strategy (first-time setup if needed)
 strategy = get_auth_strategy()
@@ -357,7 +357,7 @@ result = await workflow.execute(
 **Solution:** Run interactive setup:
 
 ```python
-from empathy_os.models import configure_auth_interactive
+from attune.models import configure_auth_interactive
 strategy = configure_auth_interactive()
 ```
 
@@ -457,4 +457,4 @@ A: Set `default_mode=AuthMode.API` in your auth_strategy configuration.
 
 ---
 
-**Questions?** Open an issue at [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+**Questions?** Open an issue at [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)

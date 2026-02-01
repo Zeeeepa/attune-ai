@@ -1,4 +1,4 @@
-"""Tests for empathy_os.discovery module.
+"""Tests for attune.discovery module.
 
 Tests cover:
 - DiscoveryEngine initialization
@@ -12,7 +12,7 @@ Tests cover:
 import json
 from datetime import datetime, timedelta
 
-from empathy_os.discovery import (
+from attune.discovery import (
     DISCOVERY_TIPS,
     DiscoveryEngine,
     _days_since_sync,
@@ -305,7 +305,7 @@ class TestGlobalEngine:
 
     def test_get_engine_singleton(self, tmp_path):
         """Test get_engine returns same instance."""
-        import empathy_os.discovery as disc
+        import attune.discovery as disc
 
         disc._engine = None
 
@@ -322,7 +322,7 @@ class TestShowTipIfAvailable:
 
     def test_quiet_mode_no_output(self, tmp_path, capsys):
         """Test quiet mode suppresses output."""
-        import empathy_os.discovery as disc
+        import attune.discovery as disc
 
         disc._engine = None
         disc._engine = DiscoveryEngine(storage_dir=str(tmp_path / ".empathy"))
@@ -336,7 +336,7 @@ class TestShowTipIfAvailable:
 
     def test_shows_tips_when_available(self, tmp_path, capsys):
         """Test tips are shown when available."""
-        import empathy_os.discovery as disc
+        import attune.discovery as disc
 
         disc._engine = None
         disc._engine = DiscoveryEngine(storage_dir=str(tmp_path / ".empathy"))

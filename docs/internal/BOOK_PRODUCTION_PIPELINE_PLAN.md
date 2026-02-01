@@ -518,7 +518,7 @@ class BookProductionLearner:
 ### Empathy Framework Integration
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 from empathy_software_plugin.wizards import BookChapterWizard
 
 # Book production uses Level 4 Anticipatory Empathy
@@ -569,7 +569,7 @@ Reuse patterns from healthcare wizards:
 - **BookChapterWizard:** `empathy_software_plugin/wizards/book_chapter_wizard.py`
 - **Tests:** `tests/test_book_chapter_wizard.py`
 - **AI-Nurse-Florence Patterns:** `10_9_2025_ai_nurse_florence/`
-- **Empathy Framework:** `empathy_os/`
+- **Empathy Framework:** `attune/`
 - **Long-Term Memory:** [github.com/Smart-AI-Memory/pattern-storage](https://github.com/Smart-AI-Memory/pattern-storage)
 
 ---

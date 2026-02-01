@@ -10,8 +10,8 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import AgentTemplate
-from empathy_os.orchestration.meta_orchestrator import (
+from attune.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.meta_orchestrator import (
     CompositionPattern,
     MetaOrchestrator,
     TaskComplexity,
@@ -21,7 +21,7 @@ from empathy_os.orchestration.meta_orchestrator import (
 
 # Mock the tools module since it doesn't exist yet
 mock_tools = MagicMock()
-sys.modules['empathy_os.tools'] = mock_tools
+sys.modules['attune.tools'] = mock_tools
 
 
 # ============================================================================

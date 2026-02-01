@@ -18,7 +18,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.telemetry import CoordinationSignals
+from attune.telemetry import CoordinationSignals
 
 
 async def agent_producer(agent_id: str):

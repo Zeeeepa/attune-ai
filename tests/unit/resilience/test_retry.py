@@ -11,7 +11,7 @@ These tests cover:
 
 import pytest
 
-from empathy_os.resilience.retry import RetryConfig, retry, retry_with_backoff
+from attune.resilience.retry import RetryConfig, retry, retry_with_backoff
 
 
 @pytest.mark.unit

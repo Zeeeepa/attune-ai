@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import empathy_os.workflows.telemetry_mixin as telemetry_module
+import attune.workflows.telemetry_mixin as telemetry_module
 
 TelemetryMixin = telemetry_module.TelemetryMixin
 
@@ -31,9 +31,9 @@ class TestTelemetryMixinInitialization:
         assert mixin.name == "unknown"
         assert mixin._provider_str == "unknown"
 
-    @patch("empathy_os.models.get_telemetry_store")
-    @patch("empathy_os.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
-    @patch("empathy_os.workflows.telemetry_mixin.UsageTracker")
+    @patch("attune.models.get_telemetry_store")
+    @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
+    @patch("attune.workflows.telemetry_mixin.UsageTracker")
     def test_init_telemetry_with_defaults(
         self, mock_tracker_class, mock_get_store
     ):
@@ -50,7 +50,7 @@ class TestTelemetryMixinInitialization:
         assert mixin._telemetry_tracker is mock_tracker
         assert mixin._enable_telemetry is True
 
-    @patch("empathy_os.models.get_telemetry_store")
+    @patch("attune.models.get_telemetry_store")
     def test_init_telemetry_with_custom_backend(self, mock_get_store):
         """Test _init_telemetry with custom backend."""
         mixin = TelemetryMixin()
@@ -61,9 +61,9 @@ class TestTelemetryMixinInitialization:
         assert mixin._telemetry_backend is custom_backend
         mock_get_store.assert_not_called()
 
-    @patch("empathy_os.models.get_telemetry_store")
-    @patch("empathy_os.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
-    @patch("empathy_os.workflows.telemetry_mixin.UsageTracker")
+    @patch("attune.models.get_telemetry_store")
+    @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
+    @patch("attune.workflows.telemetry_mixin.UsageTracker")
     def test_init_telemetry_handles_os_error(
         self, mock_tracker_class, mock_get_store
     ):
@@ -77,9 +77,9 @@ class TestTelemetryMixinInitialization:
 
         assert mixin._enable_telemetry is False
 
-    @patch("empathy_os.models.get_telemetry_store")
-    @patch("empathy_os.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
-    @patch("empathy_os.workflows.telemetry_mixin.UsageTracker")
+    @patch("attune.models.get_telemetry_store")
+    @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
+    @patch("attune.workflows.telemetry_mixin.UsageTracker")
     def test_init_telemetry_handles_permission_error(
         self, mock_tracker_class, mock_get_store
     ):
@@ -95,9 +95,9 @@ class TestTelemetryMixinInitialization:
 
         assert mixin._enable_telemetry is False
 
-    @patch("empathy_os.models.get_telemetry_store")
-    @patch("empathy_os.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
-    @patch("empathy_os.workflows.telemetry_mixin.UsageTracker")
+    @patch("attune.models.get_telemetry_store")
+    @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
+    @patch("attune.workflows.telemetry_mixin.UsageTracker")
     def test_init_telemetry_handles_attribute_error(
         self, mock_tracker_class, mock_get_store
     ):
@@ -273,9 +273,9 @@ class TestTrackTelemetry:
 class TestEmitCallTelemetry:
     """Test _emit_call_telemetry method."""
 
-    @patch("empathy_os.workflows.telemetry_mixin.uuid.uuid4")
-    @patch("empathy_os.workflows.telemetry_mixin.datetime")
-    @patch("empathy_os.models.LLMCallRecord")
+    @patch("attune.workflows.telemetry_mixin.uuid.uuid4")
+    @patch("attune.workflows.telemetry_mixin.datetime")
+    @patch("attune.models.LLMCallRecord")
     def test_emit_call_telemetry_creates_record(
         self, mock_record_class, mock_datetime, mock_uuid
     ):
@@ -326,7 +326,7 @@ class TestEmitCallTelemetry:
             metadata={"run_id": "run-123"},
         )
 
-    @patch("empathy_os.models.LLMCallRecord")
+    @patch("attune.models.LLMCallRecord")
     def test_emit_call_telemetry_logs_to_backend(self, mock_record_class):
         """Test call telemetry is logged to backend."""
         mixin = TelemetryMixin()
@@ -369,7 +369,7 @@ class TestEmitCallTelemetry:
             latency_ms=100,
         )
 
-    @patch("empathy_os.models.LLMCallRecord")
+    @patch("attune.models.LLMCallRecord")
     def test_emit_call_telemetry_handles_backend_error(self, mock_record_class):
         """Test call telemetry handles backend errors gracefully."""
         mixin = TelemetryMixin()
@@ -391,7 +391,7 @@ class TestEmitCallTelemetry:
             latency_ms=100,
         )
 
-    @patch("empathy_os.models.LLMCallRecord")
+    @patch("attune.models.LLMCallRecord")
     def test_emit_call_telemetry_handles_os_error(self, mock_record_class):
         """Test call telemetry handles file system errors."""
         mixin = TelemetryMixin()
@@ -418,8 +418,8 @@ class TestEmitCallTelemetry:
 class TestEmitWorkflowTelemetry:
     """Test _emit_workflow_telemetry method."""
 
-    @patch("empathy_os.models.WorkflowRunRecord")
-    @patch("empathy_os.models.WorkflowStageRecord")
+    @patch("attune.models.WorkflowRunRecord")
+    @patch("attune.models.WorkflowStageRecord")
     def test_emit_workflow_telemetry_creates_records(
         self, mock_stage_record, mock_run_record
     ):
@@ -485,7 +485,7 @@ class TestEmitWorkflowTelemetry:
         # Should not raise error
         mixin._emit_workflow_telemetry(mock_result)
 
-    @patch("empathy_os.models.WorkflowRunRecord")
+    @patch("attune.models.WorkflowRunRecord")
     def test_emit_workflow_telemetry_handles_backend_error(
         self, mock_run_record
     ):
@@ -520,7 +520,7 @@ class TestEmitWorkflowTelemetry:
 class TestGenerateRunId:
     """Test _generate_run_id method."""
 
-    @patch("empathy_os.workflows.telemetry_mixin.uuid.uuid4")
+    @patch("attune.workflows.telemetry_mixin.uuid.uuid4")
     def test_generate_run_id_creates_uuid(self, mock_uuid):
         """Test run ID generation creates UUID."""
         mixin = TelemetryMixin()
@@ -554,9 +554,9 @@ class TestGenerateRunId:
 class TestIntegration:
     """Integration tests for TelemetryMixin."""
 
-    @patch("empathy_os.models.get_telemetry_store")
-    @patch("empathy_os.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
-    @patch("empathy_os.workflows.telemetry_mixin.UsageTracker")
+    @patch("attune.models.get_telemetry_store")
+    @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
+    @patch("attune.workflows.telemetry_mixin.UsageTracker")
     def test_full_telemetry_workflow(
         self, mock_tracker_class, mock_get_store
     ):

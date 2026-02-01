@@ -119,7 +119,7 @@ anthropic>=0.18.0
 
 ### 5. **Alignment with Rename Plan**
 
-You mentioned renaming from "empathy-framework" to something else.
+You mentioned renaming from "attune-ai" to something else.
 
 **Names that work with Anthropic-only:**
 - `claude-workflow-engine`
@@ -202,11 +202,11 @@ Going single-provider feels like a regression.
 **Implementation:**
 ```python
 # Core: Anthropic only
-from empathy_os.providers import AnthropicProvider  # Built-in
+from attune.providers import AnthropicProvider  # Built-in
 
 # Plugins: Other providers
-from empathy_os_openai import OpenAIProvider  # Separate package
-from empathy_os_google import GoogleProvider   # Separate package
+from attune_openai import OpenAIProvider  # Separate package
+from attune_google import GoogleProvider   # Separate package
 ```
 
 **Benefits:**
@@ -225,7 +225,7 @@ from empathy_os_google import GoogleProvider   # Separate package
 workflow = TestGenerationWorkflow(provider="anthropic")
 
 # Native mode: Direct Anthropic API access
-from empathy_os.anthropic import NativeAnthropicWorkflow
+from attune.anthropic import NativeAnthropicWorkflow
 workflow = NativeAnthropicWorkflow(
     prompt_caching=True,
     extended_thinking=True,
@@ -243,7 +243,7 @@ workflow = NativeAnthropicWorkflow(
 
 **Two separate packages:**
 ```
-empathy-framework (v4.x)
+attune-ai (v4.x)
 ├── Multi-provider support
 ├── Maintenance mode
 └── Community-driven
@@ -291,7 +291,7 @@ empathy-google-provider/
 empathy-local-provider/
 
 # Update main package
-pip install empathy-framework  # Anthropic only
+pip install attune-ai  # Anthropic only
 pip install empathy-openai-provider  # Opt-in OpenAI support
 ```
 
@@ -299,9 +299,9 @@ pip install empathy-openai-provider  # Opt-in OpenAI support
 
 ```python
 # Delete provider files
-rm src/empathy_os/providers/openai.py
-rm src/empathy_os/providers/google.py
-rm src/empathy_os/providers/local.py
+rm src/attune/providers/openai.py
+rm src/attune/providers/google.py
+rm src/attune/providers/local.py
 
 # Simplify base classes
 # No more provider abstraction
@@ -347,7 +347,7 @@ Keep abstraction, add "Native Mode" for Anthropic-specific features:
 workflow = TestGenerationWorkflow(provider="anthropic")
 
 # For users who want full Claude features
-from empathy_os.claude import ClaudeNativeWorkflow
+from attune.claude import ClaudeNativeWorkflow
 workflow = ClaudeNativeWorkflow(
     model="claude-3-5-sonnet-20241022",
     prompt_caching=True,
@@ -367,7 +367,7 @@ Based on data from v4.8-4.9, move others to plugins:
 
 ```python
 # Core: Anthropic (90%+ of usage)
-from empathy_os import Workflow
+from attune import Workflow
 
 # Plugins: Others (community-maintained)
 from empathy_openai import OpenAIWorkflow
@@ -385,7 +385,7 @@ If plugins see <1% usage, remove entirely:
 
 ```python
 # Just Anthropic
-from empathy_os import Workflow
+from attune import Workflow
 # That's it.
 ```
 

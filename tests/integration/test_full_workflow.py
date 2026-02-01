@@ -8,17 +8,17 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.commands import CommandContext, CommandExecutor, CommandRegistry
-from empathy_llm_toolkit.context.compaction import CompactState
-from empathy_llm_toolkit.context.manager import ContextManager
-from empathy_llm_toolkit.hooks.config import HookEvent
-from empathy_llm_toolkit.hooks.registry import HookRegistry
-from empathy_llm_toolkit.learning.evaluator import SessionEvaluator, SessionQuality
-from empathy_llm_toolkit.learning.extractor import (
+from attune_llm.commands import CommandContext, CommandExecutor, CommandRegistry
+from attune_llm.context.compaction import CompactState
+from attune_llm.context.manager import ContextManager
+from attune_llm.hooks.config import HookEvent
+from attune_llm.hooks.registry import HookRegistry
+from attune_llm.learning.evaluator import SessionEvaluator, SessionQuality
+from attune_llm.learning.extractor import (
     ExtractedPattern,
     PatternCategory,
 )
-from empathy_llm_toolkit.learning.storage import LearnedSkillsStorage
+from attune_llm.learning.storage import LearnedSkillsStorage
 
 
 class TestFullSessionWorkflow:
@@ -340,8 +340,8 @@ class TestModuleIntegration:
 
     def test_agents_and_commands_coexistence(self):
         """Test that agents and commands modules coexist."""
-        from empathy_llm_toolkit.agents_md import AgentRegistry as AgentReg
-        from empathy_llm_toolkit.commands import CommandRegistry as CmdReg
+        from attune_llm.agents_md import AgentRegistry as AgentReg
+        from attune_llm.commands import CommandRegistry as CmdReg
 
         # Both registries should work independently
         AgentReg.reset_instance()
@@ -395,7 +395,7 @@ class TestErrorHandling:
 
     def test_invalid_command_file_skipped(self, tmp_path):
         """Test that command files with content load correctly."""
-        from empathy_llm_toolkit.commands import CommandLoader
+        from attune_llm.commands import CommandLoader
 
         # Create valid and minimal files
         (tmp_path / "valid.md").write_text("Valid - Description\n\nBody content.")

@@ -41,7 +41,7 @@ def implement_pattern_library_test():
     pass''',
         '''def test_success_rate_basic():
     """Test success_rate with basic inputs."""
-    from empathy_os.pattern_library import success_rate
+    from attune.pattern_library import success_rate
     
     # Test with pattern that has 8/10 successes  
     pattern_id = "test_pattern"
@@ -63,7 +63,7 @@ def implement_pattern_library_test():
     pass''',
         '''def test_success_rate_edge_cases():
     """Test success_rate with edge cases."""
-    from empathy_os.pattern_library import success_rate
+    from attune.pattern_library import success_rate
     import pytest
     
     # Test with 100% success
@@ -103,7 +103,7 @@ def main():
             "1. Run the implemented tests:\n"
             "   [cyan]pytest tests/unit/test_pattern_library.py -v[/cyan]\n\n"
             "2. Check coverage:\n"
-            "   [cyan]pytest --cov=src/empathy_os/pattern_library --cov-report=html[/cyan]\n\n"
+            "   [cyan]pytest --cov=src/attune/pattern_library --cov-report=html[/cyan]\n\n"
             "3. View results:\n"
             "   [cyan]open htmlcov/index.html[/cyan]",
             border_style="green",

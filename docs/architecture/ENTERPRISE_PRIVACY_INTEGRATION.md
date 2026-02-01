@@ -340,9 +340,9 @@ EMPATHY_MAX_CONTEXT_SIZE=50000
 5. Add configuration validation and warnings
 
 **Files to Create:**
-- `/empathy_llm_toolkit/enterprise_privacy.py`
-- `/empathy_llm_toolkit/scrubbing.py`
-- `/empathy_llm_toolkit/audit.py`
+- `/attune_llm/enterprise_privacy.py`
+- `/attune_llm/scrubbing.py`
+- `/attune_llm/audit.py`
 - `/tests/test_enterprise_privacy.py`
 
 **Tests:**
@@ -361,8 +361,8 @@ EMPATHY_MAX_CONTEXT_SIZE=50000
 5. Implement local-only fallback
 
 **Files to Modify:**
-- `/empathy_llm_toolkit/providers.py` (add privacy controls)
-- `/src/empathy_os/pattern_library.py` (add sync options)
+- `/attune_llm/providers.py` (add privacy controls)
+- `/src/attune/pattern_library.py` (add sync options)
 - `/examples/coach/lsp/server.py` (add config loading)
 
 **Tests:**
@@ -555,7 +555,7 @@ AuditLog.export(
 
 **Step 1: Install Updated Framework**
 ```bash
-pip install empathy-framework>=1.8.0
+pip install attune-ai>=1.8.0
 ```
 
 **Step 2: Add Privacy Configuration**

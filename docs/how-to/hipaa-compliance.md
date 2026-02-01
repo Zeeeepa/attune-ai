@@ -73,8 +73,8 @@ Any of the 18 HIPAA identifiers when combined with health information:
 ### 1. Enable Healthcare Mode
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm import EmpathyLLM
+from attune_llm.wizards import HealthcareWizard
 
 # HIPAA-compliant configuration
 llm = EmpathyLLM(
@@ -115,7 +115,7 @@ HEALTHCARE_PII_PATTERNS = {
 All PHI must be encrypted at rest:
 
 ```python
-from empathy_llm_toolkit.security import encrypt_phi
+from attune_llm.security import encrypt_phi
 
 # Encrypt before storing
 encrypted_record = encrypt_phi(
@@ -174,7 +174,7 @@ Before using Empathy Framework in production:
 All access to ePHI must be logged:
 
 ```python
-from empathy_llm_toolkit.security import AuditLogger
+from attune_llm.security import AuditLogger
 
 logger = AuditLogger(
     log_file="/var/log/empathy/hipaa_audit.jsonl",
@@ -241,7 +241,7 @@ Review logs **at least weekly** for:
 Only access the **minimum necessary** PHI to accomplish the task:
 
 ```python
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm.wizards import HealthcareWizard
 
 wizard = HealthcareWizard(llm)
 
@@ -316,7 +316,7 @@ Unauthorized acquisition, access, use, or disclosure of PHI that compromises sec
 ### Response Plan
 
 ```python
-from empathy_llm_toolkit.security import BreachDetector
+from attune_llm.security import BreachDetector
 
 detector = BreachDetector()
 
@@ -352,7 +352,7 @@ if detector.detect_breach(event):
 
 ```python
 def test_phi_scrubbing_comprehensive():
-    from empathy_llm_toolkit.wizards import HealthcareWizard
+    from attune_llm.wizards import HealthcareWizard
 
     wizard = HealthcareWizard(llm)
 
@@ -388,7 +388,7 @@ def test_phi_scrubbing_comprehensive():
 
 ```python
 def test_encryption_aes_256_gcm():
-    from empathy_llm_toolkit.security import encrypt_phi, decrypt_phi
+    from attune_llm.security import encrypt_phi, decrypt_phi
 
     phi_data = {"patient_id": "PT123456", "diagnosis": "Diabetes"}
 

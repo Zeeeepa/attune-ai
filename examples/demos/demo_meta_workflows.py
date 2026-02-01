@@ -16,8 +16,8 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.meta_workflows import DynamicAgentCreator, FormResponse, TemplateRegistry
-from empathy_os.meta_workflows.agent_creator import (
+from attune.meta_workflows import DynamicAgentCreator, FormResponse, TemplateRegistry
+from attune.meta_workflows.agent_creator import (
     estimate_agent_costs,
     group_agents_by_tier_strategy,
     validate_agent_dependencies,
@@ -35,7 +35,7 @@ def demo_template_loading():
     """Demo 1: Template loading and inspection."""
     print_section("DEMO 1: Template Loading & Inspection")
 
-    registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+    registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
     templates = registry.list_templates()
 
     print(f"\nFound {len(templates)} template(s): {', '.join(templates)}")

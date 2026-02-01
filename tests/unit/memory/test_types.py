@@ -19,7 +19,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.memory.types import (
+from attune.memory.types import (
     AccessTier,
     AgentCredentials,
     ConflictContext,

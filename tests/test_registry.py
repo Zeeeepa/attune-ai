@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/models/registry.py
+"""Tests for src/attune/models/registry.py
 
 Tests the unified model registry including:
 - ModelTier enum
@@ -11,7 +11,7 @@ Tests the unified model registry including:
 
 import pytest
 
-from empathy_os.models.registry import MODEL_REGISTRY, ModelInfo, ModelProvider, ModelTier
+from attune.models.registry import MODEL_REGISTRY, ModelInfo, ModelProvider, ModelTier
 
 
 class TestModelTierEnum:

@@ -10,14 +10,14 @@ class TestDomain:
 
     def test_code_review_domain_exists(self):
         """Test CODE_REVIEW domain exists."""
-        from empathy_os.socratic.domain_templates import Domain
+        from attune.socratic.domain_templates import Domain
 
         assert hasattr(Domain, "CODE_REVIEW")
         assert Domain.CODE_REVIEW.value == "code_review"
 
     def test_security_domains_exist(self):
         """Test security-related domains exist."""
-        from empathy_os.socratic.domain_templates import Domain
+        from attune.socratic.domain_templates import Domain
 
         assert hasattr(Domain, "SECURITY_AUDIT")
         assert Domain.SECURITY_AUDIT.value == "security_audit"
@@ -26,14 +26,14 @@ class TestDomain:
 
     def test_testing_domain_exists(self):
         """Test TESTING domain exists."""
-        from empathy_os.socratic.domain_templates import Domain
+        from attune.socratic.domain_templates import Domain
 
         assert hasattr(Domain, "TESTING")
         assert Domain.TESTING.value == "testing"
 
     def test_devops_domains_exist(self):
         """Test DevOps-related domains exist."""
-        from empathy_os.socratic.domain_templates import Domain
+        from attune.socratic.domain_templates import Domain
 
         assert hasattr(Domain, "CI_CD")
         assert hasattr(Domain, "INFRASTRUCTURE")
@@ -42,14 +42,14 @@ class TestDomain:
 
     def test_performance_domain_exists(self):
         """Test PERFORMANCE domain exists."""
-        from empathy_os.socratic.domain_templates import Domain
+        from attune.socratic.domain_templates import Domain
 
         assert hasattr(Domain, "PERFORMANCE")
         assert Domain.PERFORMANCE.value == "performance"
 
     def test_general_domain_exists(self):
         """Test GENERAL domain exists."""
-        from empathy_os.socratic.domain_templates import Domain
+        from attune.socratic.domain_templates import Domain
 
         assert hasattr(Domain, "GENERAL")
         assert Domain.GENERAL.value == "general"
@@ -60,8 +60,8 @@ class TestAgentTemplate:
 
     def test_create_agent_template(self):
         """Test creating an agent template."""
-        from empathy_os.socratic.blueprint import AgentRole
-        from empathy_os.socratic.domain_templates import AgentTemplate
+        from attune.socratic.blueprint import AgentRole
+        from attune.socratic.domain_templates import AgentTemplate
 
         template = AgentTemplate(
             template_id="custom-reviewer",
@@ -79,8 +79,8 @@ class TestAgentTemplate:
 
     def test_agent_template_with_system_prompt(self):
         """Test agent template with system prompt."""
-        from empathy_os.socratic.blueprint import AgentRole
-        from empathy_os.socratic.domain_templates import AgentTemplate
+        from attune.socratic.blueprint import AgentRole
+        from attune.socratic.domain_templates import AgentTemplate
 
         template = AgentTemplate(
             template_id="test-agent",
@@ -95,8 +95,8 @@ class TestAgentTemplate:
 
     def test_agent_template_default_values(self):
         """Test agent template default values."""
-        from empathy_os.socratic.blueprint import AgentRole
-        from empathy_os.socratic.domain_templates import AgentTemplate
+        from attune.socratic.blueprint import AgentRole
+        from attune.socratic.domain_templates import AgentTemplate
 
         template = AgentTemplate(
             template_id="minimal",
@@ -114,8 +114,8 @@ class TestAgentTemplate:
 
     def test_agent_template_with_tags(self):
         """Test agent template with tags."""
-        from empathy_os.socratic.blueprint import AgentRole
-        from empathy_os.socratic.domain_templates import AgentTemplate
+        from attune.socratic.blueprint import AgentRole
+        from attune.socratic.domain_templates import AgentTemplate
 
         template = AgentTemplate(
             template_id="tagged-agent",
@@ -135,7 +135,7 @@ class TestWorkflowTemplate:
 
     def test_create_workflow_template(self):
         """Test creating a workflow template."""
-        from empathy_os.socratic.domain_templates import Domain, WorkflowTemplate
+        from attune.socratic.domain_templates import Domain, WorkflowTemplate
 
         workflow_template = WorkflowTemplate(
             template_id="review-workflow",
@@ -158,7 +158,7 @@ class TestWorkflowTemplate:
 
     def test_workflow_template_with_stages(self):
         """Test workflow template with multiple stages."""
-        from empathy_os.socratic.domain_templates import Domain, WorkflowTemplate
+        from attune.socratic.domain_templates import Domain, WorkflowTemplate
 
         workflow = WorkflowTemplate(
             template_id="multi-stage",
@@ -194,8 +194,8 @@ class TestDomainTemplate:
 
     def test_create_domain_template(self):
         """Test creating a domain template."""
-        from empathy_os.socratic.blueprint import AgentRole
-        from empathy_os.socratic.domain_templates import (
+        from attune.socratic.blueprint import AgentRole
+        from attune.socratic.domain_templates import (
             AgentTemplate,
             Domain,
             DomainTemplate,
@@ -245,14 +245,14 @@ class TestDomainTemplateRegistry:
 
     def test_create_registry(self):
         """Test creating a registry."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         assert registry is not None
 
     def test_get_agent(self):
         """Test getting an agent template by ID."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -263,7 +263,7 @@ class TestDomainTemplateRegistry:
 
     def test_get_agent_not_found(self):
         """Test getting non-existent agent returns None."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -272,7 +272,7 @@ class TestDomainTemplateRegistry:
 
     def test_get_workflow(self):
         """Test getting a workflow template by ID."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -282,7 +282,7 @@ class TestDomainTemplateRegistry:
 
     def test_get_domain(self):
         """Test getting a domain template."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -292,7 +292,7 @@ class TestDomainTemplateRegistry:
 
     def test_list_agents(self):
         """Test listing all agent templates."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -302,7 +302,7 @@ class TestDomainTemplateRegistry:
 
     def test_list_agents_by_domain(self):
         """Test listing agent templates filtered by domain."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -314,7 +314,7 @@ class TestDomainTemplateRegistry:
 
     def test_list_workflows(self):
         """Test listing all workflow templates."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -323,7 +323,7 @@ class TestDomainTemplateRegistry:
 
     def test_list_domains(self):
         """Test listing all supported domains."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -332,7 +332,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_code_review(self):
         """Test domain detection for code review goals."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -343,7 +343,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_security(self):
         """Test domain detection for security goals."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -354,7 +354,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_testing(self):
         """Test domain detection for testing goals."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -365,7 +365,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_performance(self):
         """Test domain detection for performance goals."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -376,7 +376,7 @@ class TestDomainTemplateRegistry:
 
     def test_detect_domain_unknown(self):
         """Test domain detection for unknown goals."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -388,7 +388,7 @@ class TestDomainTemplateRegistry:
 
     def test_get_default_workflow(self):
         """Test getting default workflow for a domain."""
-        from empathy_os.socratic.domain_templates import Domain, DomainTemplateRegistry
+        from attune.socratic.domain_templates import Domain, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -397,8 +397,8 @@ class TestDomainTemplateRegistry:
 
     def test_register_agent(self):
         """Test registering a custom agent template."""
-        from empathy_os.socratic.blueprint import AgentRole
-        from empathy_os.socratic.domain_templates import AgentTemplate, DomainTemplateRegistry
+        from attune.socratic.blueprint import AgentRole
+        from attune.socratic.domain_templates import AgentTemplate, DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
 
@@ -418,7 +418,7 @@ class TestDomainTemplateRegistry:
 
     def test_register_workflow(self):
         """Test registering a custom workflow template."""
-        from empathy_os.socratic.domain_templates import (
+        from attune.socratic.domain_templates import (
             Domain,
             DomainTemplateRegistry,
             WorkflowTemplate,
@@ -450,7 +450,7 @@ class TestBuiltInTemplates:
 
     def test_code_reviewer_template(self):
         """Test the code reviewer template."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         reviewer = registry.get_agent("code_reviewer")
@@ -461,7 +461,7 @@ class TestBuiltInTemplates:
 
     def test_security_scanner_template(self):
         """Test the security scanner template."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         scanner = registry.get_agent("security_scanner")
@@ -471,7 +471,7 @@ class TestBuiltInTemplates:
 
     def test_test_generator_template(self):
         """Test the test generator template."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         generator = registry.get_agent("test_generator")
@@ -481,7 +481,7 @@ class TestBuiltInTemplates:
 
     def test_result_synthesizer_template(self):
         """Test the result synthesizer template."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         synthesizer = registry.get_agent("result_synthesizer")
@@ -494,7 +494,7 @@ class TestGetRegistry:
 
     def test_get_registry_singleton(self):
         """Test that get_registry returns singleton."""
-        from empathy_os.socratic.domain_templates import get_registry
+        from attune.socratic.domain_templates import get_registry
 
         registry1 = get_registry()
         registry2 = get_registry()
@@ -503,7 +503,7 @@ class TestGetRegistry:
 
     def test_get_registry_has_templates(self):
         """Test that singleton registry has templates."""
-        from empathy_os.socratic.domain_templates import get_registry
+        from attune.socratic.domain_templates import get_registry
 
         registry = get_registry()
         templates = registry.list_agents()
@@ -516,7 +516,7 @@ class TestBuiltInWorkflows:
 
     def test_code_review_workflow_exists(self):
         """Test code review workflow exists."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         workflow = registry.get_workflow("code_review_standard")
@@ -525,7 +525,7 @@ class TestBuiltInWorkflows:
 
     def test_security_audit_workflow_exists(self):
         """Test security audit workflow exists."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         workflow = registry.get_workflow("security_audit_comprehensive")
@@ -534,7 +534,7 @@ class TestBuiltInWorkflows:
 
     def test_testing_workflow_exists(self):
         """Test testing workflow exists."""
-        from empathy_os.socratic.domain_templates import DomainTemplateRegistry
+        from attune.socratic.domain_templates import DomainTemplateRegistry
 
         registry = DomainTemplateRegistry()
         workflow = registry.get_workflow("test_generation_comprehensive")

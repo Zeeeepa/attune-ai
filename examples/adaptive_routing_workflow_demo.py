@@ -17,7 +17,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 
 class DemoWorkflow(BaseWorkflow):

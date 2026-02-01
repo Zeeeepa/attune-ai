@@ -3,8 +3,8 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "empathy-framework"
-version = "5.3.0"
+name = "attune-ai"
+version = "2.0.0"
 description = "AI collaboration framework with real LLM agent execution, AskUserQuestion tool integration, Socratic agent generation, progressive tier escalation (70-85% cost savings), meta-orchestration, dynamic agent composition (10 patterns including Anthropic-inspired), intelligent caching (85% hit rate), semantic workflow discovery, visual workflow editor, MCP integration for Claude Code, and multi-agent orchestration."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
@@ -60,7 +60,7 @@ dependencies = [
 ]
 # NOTE: CrewAI and LangChain moved to optional dependencies in v4.4.0
 # The "Crew" workflows use EmpathyLLMExecutor (Anthropic SDK) directly,
-# not the actual CrewAI library. Install with: pip install empathy-framework[crewai]
+# not the actual CrewAI library. Install with: pip install attune-ai[crewai]
 
 [project.optional-dependencies]
 # LLM providers (user chooses which they need)
@@ -323,15 +323,15 @@ all = [
 
 [project.scripts]
 # Primary minimal CLI (v4.7.1+) - streamlined for automation/CI
-empathy = "empathy_os.cli_minimal:main"
+attune = "attune.cli_minimal:main"
 
 # Legacy entry points (for backwards compatibility)
-empathy-legacy = "empathy_os.cli:main"
-empathy-unified = "empathy_os.cli_unified:main"  # Previous unified CLI
-empathy-scan = "empathy_software_plugin.cli:scan_command"
-empathy-memory = "empathy_os.memory.control_panel:main"
-empathy-inspect = "empathy_software_plugin.cli.inspect:main"
-empathy-sync-claude = "empathy_llm_toolkit.cli.sync_claude:main"
+empathy-legacy = "attune.cli:main"
+empathy-unified = "attune.cli_unified:main"  # Previous unified CLI
+attune-scan = "attune_software.cli:scan_command"
+empathy-memory = "attune.memory.control_panel:main"
+empathy-inspect = "attune_software.cli.inspect:main"
+empathy-sync-claude = "attune_llm.cli.sync_claude:main"
 
 [project.urls]
 Homepage = "https://www.smartaimemory.com"
@@ -339,32 +339,32 @@ Documentation = "https://www.smartaimemory.com/framework-docs/"
 "Getting Started" = "https://www.smartaimemory.com/framework-docs/tutorials/quickstart/"
 FAQ = "https://www.smartaimemory.com/framework-docs/reference/FAQ/"
 Book = "https://www.smartaimemory.com/book"
-Repository = "https://github.com/Smart-AI-Memory/empathy-framework"
-Issues = "https://github.com/Smart-AI-Memory/empathy-framework/issues"
-Discussions = "https://github.com/Smart-AI-Memory/empathy-framework/discussions"
-Changelog = "https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md"
+Repository = "https://github.com/Smart-AI-Memory/attune-ai"
+Issues = "https://github.com/Smart-AI-Memory/attune-ai/issues"
+Discussions = "https://github.com/Smart-AI-Memory/attune-ai/discussions"
+Changelog = "https://github.com/Smart-AI-Memory/attune-ai/blob/main/CHANGELOG.md"
 
 # Workflow plugin entry points for auto-discovery
 [project.entry-points."empathy.workflows"]
-code-review = "empathy_os.workflows.code_review:CodeReviewWorkflow"
-doc-gen = "empathy_os.workflows.document_gen:DocumentGenerationWorkflow"
-bug-predict = "empathy_os.workflows.bug_predict:BugPredictionWorkflow"
-security-audit = "empathy_os.workflows.security_audit:SecurityAuditWorkflow"
-perf-audit = "empathy_os.workflows.perf_audit:PerformanceAuditWorkflow"
-test-gen = "empathy_os.workflows.test_gen:TestGenerationWorkflow"
-refactor-plan = "empathy_os.workflows.refactor_plan:RefactorPlanWorkflow"
-dependency-check = "empathy_os.workflows.dependency_check:DependencyCheckWorkflow"
+code-review = "attune.workflows.code_review:CodeReviewWorkflow"
+doc-gen = "attune.workflows.document_gen:DocumentGenerationWorkflow"
+bug-predict = "attune.workflows.bug_predict:BugPredictionWorkflow"
+security-audit = "attune.workflows.security_audit:SecurityAuditWorkflow"
+perf-audit = "attune.workflows.perf_audit:PerformanceAuditWorkflow"
+test-gen = "attune.workflows.test_gen:TestGenerationWorkflow"
+refactor-plan = "attune.workflows.refactor_plan:RefactorPlanWorkflow"
+dependency-check = "attune.workflows.dependency_check:DependencyCheckWorkflow"
 # v4.0.0 CrewAI-based multi-agent workflows (production)
-release-prep = "empathy_os.workflows.release_prep_crew:ReleasePreparationCrew"
-health-check = "empathy_os.workflows.health_check_crew:HealthCheckCrew"
-test-coverage-boost = "empathy_os.workflows.test_coverage_boost_crew:TestCoverageBoostCrew"
+release-prep = "attune.workflows.release_prep_crew:ReleasePreparationCrew"
+health-check = "attune.workflows.health_check_crew:HealthCheckCrew"
+test-coverage-boost = "attune.workflows.test_coverage_boost_crew:TestCoverageBoostCrew"
 # Legacy single-agent versions
-release-prep-legacy = "empathy_os.workflows.release_prep:ReleasePreparationWorkflow"
-health-check-legacy = "empathy_os.workflows.health_check:HealthCheckWorkflow"
+release-prep-legacy = "attune.workflows.release_prep:ReleasePreparationWorkflow"
+health-check-legacy = "attune.workflows.health_check:HealthCheckWorkflow"
 # Other workflows
-secure-release = "empathy_os.workflows.secure_release:SecureReleasePipeline"
-pro-review = "empathy_os.workflows.code_review_pipeline:CodeReviewPipeline"
-pr-review = "empathy_os.workflows.pr_review:PRReviewWorkflow"
+secure-release = "attune.workflows.secure_release:SecureReleasePipeline"
+pro-review = "attune.workflows.code_review_pipeline:CodeReviewPipeline"
+pr-review = "attune.workflows.pr_review:PRReviewWorkflow"
 
 [tool.setuptools]
 # Automatic package discovery
@@ -374,10 +374,10 @@ namespaces = false
 exclude = ["tests*", "*.tests*", "examples*", "docs*", "*.archive*", "build*", "dist*", "archived_wizards*", "wizards_consolidated*", "*.mypy_cache*", "*.__pycache__*"]
 
 [tool.setuptools.package-dir]
-empathy_os = "src/empathy_os"
+attune = "src/attune"
 
 [tool.setuptools.package-data]
-"*" = ["*.yml", "*.yaml", "*.json", "*.txt", "*.md"]
+"*" = ["*.yml", "*.yaml", "*.json", "*.txt", "*.md", "*.jinja2"]
 
 # Black code formatter configuration
 [tool.black]
@@ -411,8 +411,8 @@ exclude = [
     "dashboard/",  # Dashboard code
     "deployments/",  # Deployment scripts
     ".archive/",  # Archived files
-    "src/empathy_os/workflows/new_sample_workflow1.py",  # Test workflow
-    "src/empathy_os/workflows/test5.py",  # Test workflow
+    "src/attune/workflows/new_sample_workflow1.py",  # Test workflow
+    "src/attune/workflows/test5.py",  # Test workflow
     "benchmarks/",  # Benchmark and test scripts
     "scaffolding/",  # Development scaffolding code
     "hot_reload/",  # Hot reload system
@@ -444,7 +444,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["services", "empathy_llm_toolkit", "empathy_software_plugin", "empathy_os", "coach_wizards"]
+known-first-party = ["services", "attune_llm", "attune_software", "attune", "coach_wizards"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # unused imports in __init__.py
@@ -455,14 +455,14 @@ known-first-party = ["services", "empathy_llm_toolkit", "empathy_software_plugin
 "backend/**/*.py" = ["BLE001", "E402"]  # Backend files need broad exception handling
 "*_wizard.py" = ["BLE001"]  # Wizard files need broad exception handling
 "*_agent.py" = ["BLE001"]  # Agent files need broad exception handling
-"empathy_llm_toolkit/**/*.py" = ["BLE001"]  # Toolkit needs broad exception handling
-"src/empathy_os/**/*.py" = ["BLE001"]  # Core framework needs broad exception handling
+"attune_llm/**/*.py" = ["BLE001"]  # Toolkit needs broad exception handling
+"src/attune/**/*.py" = ["BLE001"]  # Core framework needs broad exception handling
 "*_adapter.py" = ["BLE001"]  # Adapter files need broad exception handling
 "*_crew.py" = ["BLE001"]  # Crew files need broad exception handling
 "dashboard/**/*.py" = ["BLE001"]  # Dashboard needs broad exception handling
 "deployments/**/*.py" = ["BLE001"]  # Deployment scripts need broad exception handling
 "docs/archive/**/*.py" = ["BLE001"]  # Archived code
-"empathy_software_plugin/**/*.py" = ["BLE001"]  # Plugin needs broad exception handling
+"attune_software/**/*.py" = ["BLE001"]  # Plugin needs broad exception handling
 "examples/**/*.py" = ["BLE001"]  # Examples can use broad exception handling
 "demo_*.py" = ["BLE001"]  # Demo files can use broad exception handling
 "benchmark_*.py" = ["BLE001"]  # Benchmark scripts need broad exception handling for error reporting
@@ -535,10 +535,10 @@ norecursedirs = [
 ]
 addopts = [
     "--verbose",
-    "--cov=empathy_os",
-    "--cov=empathy_llm_toolkit",
-    "--cov=empathy_software_plugin",
-    "--cov=empathy_healthcare_plugin",
+    "--cov=attune",
+    "--cov=attune_llm",
+    "--cov=attune_software",
+    "--cov=attune_healthcare",
     "--cov-report=html",
     "--cov-report=term-missing",
     "--cov-report=xml",
@@ -563,7 +563,7 @@ filterwarnings = [
 
 # Coverage configuration
 [tool.coverage.run]
-source = ["empathy_os", "empathy_llm_toolkit", "empathy_software_plugin", "empathy_healthcare_plugin"]
+source = ["attune", "attune_llm", "attune_software", "attune_healthcare"]
 omit = [
     "*/tests/*",
     "*/test_*.py",

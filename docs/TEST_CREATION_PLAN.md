@@ -265,7 +265,7 @@ Licensed under Fair Source License 0.9
 import pytest
 from unittest.mock import Mock, patch
 
-from empathy_os.{module_path} import {class_or_function}
+from attune.{module_path} import {class_or_function}
 
 
 class Test{ClassName}:

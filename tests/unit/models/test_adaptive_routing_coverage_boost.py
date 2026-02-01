@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.models.adaptive_routing import (
+from attune.models.adaptive_routing import (
     AdaptiveModelRouter,
     ModelPerformance,
 )
@@ -749,7 +749,7 @@ class TestGetWorkflowStageEntries:
 class TestGetDefaultModel:
     """Test suite for _get_default_model method."""
 
-    @patch("empathy_os.models.adaptive_routing._get_registry")
+    @patch("attune.models.adaptive_routing._get_registry")
     def test_get_default_model_returns_from_registry(self, mock_get_registry):
         """Test that _get_default_model returns model from registry."""
         # Mock registry structure
@@ -767,7 +767,7 @@ class TestGetDefaultModel:
         model = router._get_default_model("CHEAP")
         assert model == "claude-3-5-haiku-20241022"
 
-    @patch("empathy_os.models.adaptive_routing._get_registry")
+    @patch("attune.models.adaptive_routing._get_registry")
     def test_get_default_model_falls_back_when_registry_missing(
         self, mock_get_registry
     ):
@@ -781,7 +781,7 @@ class TestGetDefaultModel:
         # Should fall back to hardcoded default
         assert model == "claude-3-5-haiku-20241022"
 
-    @patch("empathy_os.models.adaptive_routing._get_registry")
+    @patch("attune.models.adaptive_routing._get_registry")
     def test_get_default_model_handles_case_insensitive_tier(self, mock_get_registry):
         """Test that tier name is case-insensitive."""
         mock_registry = {

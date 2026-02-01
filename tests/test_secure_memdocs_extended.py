@@ -22,7 +22,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_llm_toolkit.security.secure_memdocs import (
+from attune_llm.security.secure_memdocs import (
     Classification,
     EncryptionManager,
     MemDocsStorage,
@@ -31,7 +31,7 @@ from empathy_llm_toolkit.security.secure_memdocs import (
     SecurePattern,
     SecurityError,
 )
-from empathy_llm_toolkit.security.secure_memdocs import PermissionError as CustomPermissionError
+from attune_llm.security.secure_memdocs import PermissionError as CustomPermissionError
 
 
 class TestEncryptionManager:
@@ -49,7 +49,7 @@ class TestEncryptionManager:
 
     def test_encryption_manager_disabled_without_library(self):
         """Test encryption manager handles missing cryptography library"""
-        with patch("empathy_llm_toolkit.security.secure_memdocs.HAS_ENCRYPTION", False):
+        with patch("attune_llm.security.secure_memdocs.HAS_ENCRYPTION", False):
             manager = EncryptionManager()
             assert manager.enabled is False
 
@@ -138,14 +138,14 @@ class TestEncryptionManager:
 
     def test_encrypt_without_library_raises_error(self):
         """Test encrypt raises SecurityError when library not available"""
-        with patch("empathy_llm_toolkit.security.secure_memdocs.HAS_ENCRYPTION", False):
+        with patch("attune_llm.security.secure_memdocs.HAS_ENCRYPTION", False):
             manager = EncryptionManager()
             with pytest.raises(SecurityError, match="Encryption not available"):
                 manager.encrypt("test content")
 
     def test_decrypt_without_library_raises_error(self):
         """Test decrypt raises SecurityError when library not available"""
-        with patch("empathy_llm_toolkit.security.secure_memdocs.HAS_ENCRYPTION", False):
+        with patch("attune_llm.security.secure_memdocs.HAS_ENCRYPTION", False):
             manager = EncryptionManager()
             with pytest.raises(SecurityError, match="Encryption not available"):
                 manager.decrypt("some-encrypted-data")
@@ -856,7 +856,7 @@ class TestEncryptionEdgeCases:
             # Mock AESGCM to raise an unexpected error
             with (
                 patch(
-                    "empathy_llm_toolkit.security.secure_memdocs.AESGCM",
+                    "attune_llm.security.secure_memdocs.AESGCM",
                     side_effect=RuntimeError("Unexpected crypto error"),
                 ),
                 pytest.raises(SecurityError, match="Encryption failed"),

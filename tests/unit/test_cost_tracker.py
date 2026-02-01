@@ -1,6 +1,6 @@
-"""Tests for empathy_os.cost_tracker"""
+"""Tests for attune.cost_tracker"""
 
-from empathy_os.cost_tracker import CostTracker, cmd_costs, get_tracker, log_request
+from attune.cost_tracker import CostTracker, cmd_costs, get_tracker, log_request
 
 
 class TestCostTracker:
@@ -219,9 +219,9 @@ class TestCostTracker:
 def test_get_tracker_singleton(tmp_path):
     """Test get_tracker returns singleton instance."""
     # Reset global tracker
-    import empathy_os.cost_tracker
+    import attune.cost_tracker
 
-    empathy_os.cost_tracker._tracker = None
+    attune.cost_tracker._tracker = None
 
     tracker1 = get_tracker(storage_dir=str(tmp_path))
     tracker2 = get_tracker(storage_dir=str(tmp_path))
@@ -233,9 +233,9 @@ def test_get_tracker_singleton(tmp_path):
 def test_log_request_convenience(tmp_path):
     """Test convenience log_request function."""
     # Reset global tracker
-    import empathy_os.cost_tracker
+    import attune.cost_tracker
 
-    empathy_os.cost_tracker._tracker = None
+    attune.cost_tracker._tracker = None
 
     # First call creates tracker
     request = log_request(

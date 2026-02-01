@@ -49,13 +49,13 @@
 
 ```bash
 # Phase 1 only (basic generation)
-python -m empathy_os.workflows.autonomous_test_gen <batch> <modules_json> --no-refinement
+python -m attune.workflows.autonomous_test_gen <batch> <modules_json> --no-refinement
 
 # Phase 1 + Phase 2 (default - with refinement)
-python -m empathy_os.workflows.autonomous_test_gen <batch> <modules_json>
+python -m attune.workflows.autonomous_test_gen <batch> <modules_json>
 
 # Phase 1 + Phase 2 + Phase 3 (full stack - slower but highest coverage)
-python -m empathy_os.workflows.autonomous_test_gen <batch> <modules_json> --coverage-guided
+python -m attune.workflows.autonomous_test_gen <batch> <modules_json> --coverage-guided
 ```
 
 ### Validation
@@ -72,7 +72,7 @@ python scripts/test_phases_2_3.py
 
 ### Autonomous Test Generation Workflow
 
-**Location:** [src/empathy_os/workflows/autonomous_test_gen.py](../src/empathy_os/workflows/autonomous_test_gen.py)
+**Location:** [src/attune/workflows/autonomous_test_gen.py](../src/attune/workflows/autonomous_test_gen.py)
 
 **How it works:**
 1. Reads source code (truncated to 3000 chars)

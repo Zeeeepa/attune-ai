@@ -396,7 +396,7 @@ curl http://localhost:8765/api/ping
 code --list-extensions | grep empathy
 
 # Test backend directly
-python3 -c "from empathy_os.memory import MemoryControlPanel; print('OK')"
+python3 -c "from attune.memory import MemoryControlPanel; print('OK')"
 ```
 
 ## Next Steps

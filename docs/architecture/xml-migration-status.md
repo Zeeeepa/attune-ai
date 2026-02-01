@@ -101,7 +101,7 @@ XML-enhanced prompts have been successfully implemented across **all high-priori
 
 ### BaseWorkflow XML Infrastructure ✅
 
-**File**: [src/empathy_os/workflows/base.py:1015+](src/empathy_os/workflows/base.py#L1015)
+**File**: [src/attune/workflows/base.py:1015+](src/attune/workflows/base.py#L1015)
 
 **Methods Added**:
 ```python
@@ -123,7 +123,7 @@ self.enforce_xml_response: bool = False
 
 ### BaseWizard XML Infrastructure ✅
 
-**File**: [empathy_llm_toolkit/wizards/base_wizard.py](empathy_llm_toolkit/wizards/base_wizard.py)
+**File**: [attune_llm/wizards/base_wizard.py](attune_llm/wizards/base_wizard.py)
 
 **Methods Added**:
 ```python
@@ -246,8 +246,8 @@ All critical components have XML support:
 
 ```bash
 # Test healthcare wizard with XML
-from empathy_llm_toolkit.wizards import HealthcareWizard
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm.wizards import HealthcareWizard
+from attune_llm import EmpathyLLM
 
 llm = EmpathyLLM(provider="anthropic", api_key="...")
 wizard = HealthcareWizard(llm)

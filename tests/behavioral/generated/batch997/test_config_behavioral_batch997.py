@@ -13,7 +13,7 @@ from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
-from empathy_os.config import (
+from attune.config import (
     YAML_AVAILABLE,
     EmpathyConfig,
     _validate_file_path,
@@ -268,29 +268,21 @@ class TestEmpathyConfigFromDict:
         assert not hasattr(config, "unknown_field")
 
     def test_handles_nested_model_config(self):
-        """Given dict with models, when creating, then converts to ModelConfig."""
-        # Given
+        """Given dict with models (with all required fields), when creating, then stores models list."""
+        # Given - ModelConfig requires tier, name, and provider
         data = {
             "user_id": "test",
-            "models": [{"name": "gpt-4", "provider": "openai"}],
+            "models": [{"name": "gpt-4", "provider": "openai", "tier": "premium"}],
         }
 
         # When
-        # Mock the ModelConfig import to avoid dependency issues
-        with patch.dict('sys.modules', {'empathy_os.workflows.config': Mock()}):
-            mock_model_config = Mock()
-            mock_model_config.return_value.name = "gpt-4"
+        config = EmpathyConfig.from_dict(data)
 
-            # Try to load - if ModelConfig is not available, it will fail during construction
-            try:
-                from empathy_os.workflows.config import ModelConfig
-                config = EmpathyConfig.from_dict(data)
-                # Then
-                assert len(config.models) == 1
-                assert config.models[0].name == "gpt-4"
-            except (ImportError, ModuleNotFoundError):
-                # If ModelConfig can't be imported, skip this test
-                pytest.skip("ModelConfig not available")
+        # Then
+        assert hasattr(config, "models")
+        assert len(config.models) == 1
+        assert config.models[0].name == "gpt-4"
+        assert config.models[0].provider == "openai"
 
 
 class TestEmpathyConfigFromJson:
@@ -431,37 +423,41 @@ class TestEmpathyConfigFromFile:
     """Tests for EmpathyConfig.from_file method."""
 
     @pytest.mark.skipif(not YAML_AVAILABLE, reason="PyYAML not available")
-    def test_loads_yaml_config_when_found(self):
+    def test_loads_yaml_config_when_found(self, tmp_path):
         """Given .empathy.yml exists, when loading, then uses it."""
         # Given
         yaml_content = "user_id: file_user\ntarget_level: 4\n"
-        m = mock_open(read_data=yaml_content)
+        config_file = tmp_path / ".empathy.yml"
+        config_file.write_text(yaml_content)
 
         # When
-        with patch("pathlib.Path.exists") as mock_exists:
-            def side_effect(self):
-                return str(self) == ".empathy.yml"
-            mock_exists.side_effect = side_effect
-            with patch("builtins.open", m):
-                config = EmpathyConfig.from_file()
+        import os
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(tmp_path)
+            config = EmpathyConfig.from_file()
+        finally:
+            os.chdir(original_cwd)
 
         # Then
         assert config.user_id == "file_user"
         assert config.target_level == 4
 
-    def test_loads_json_config_when_found(self):
+    def test_loads_json_config_when_found(self, tmp_path):
         """Given .empathy.json exists, when loading, then uses it."""
         # Given
         json_content = json.dumps({"user_id": "json_file_user", "target_level": 3})
-        m = mock_open(read_data=json_content)
+        config_file = tmp_path / ".empathy.json"
+        config_file.write_text(json_content)
 
         # When
-        with patch("pathlib.Path.exists") as mock_exists:
-            def side_effect(self):
-                return str(self) == ".empathy.json"
-            mock_exists.side_effect = side_effect
-            with patch("builtins.open", m):
-                config = EmpathyConfig.from_file()
+        import os
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(tmp_path)
+            config = EmpathyConfig.from_file()
+        finally:
+            os.chdir(original_cwd)
 
         # Then
         assert config.user_id == "json_file_user"
@@ -495,21 +491,22 @@ class TestEmpathyConfigToYaml:
     """Tests for EmpathyConfig.to_yaml method."""
 
     @pytest.mark.skipif(not YAML_AVAILABLE, reason="PyYAML not available")
-    def test_saves_config_to_yaml_file(self):
+    def test_saves_config_to_yaml_file(self, tmp_path):
         """Given config, when saving to YAML, then writes file."""
         # Given
         config = EmpathyConfig(user_id="save_user", target_level=4)
-        m = mock_open()
+        output_file = tmp_path / "output.yml"
 
         # When
-        with patch("builtins.open", m):
-            with patch("empathy_os.config._validate_file_path") as mock_validate:
-                mock_validate.return_value = Path("output.yml")
-                config.to_yaml("output.yml")
+        config.to_yaml(str(output_file))
 
         # Then
-        m.assert_called_once()
-        mock_validate.assert_called_once_with("output.yml")
+        assert output_file.exists()
+        import yaml
+        with open(output_file) as f:
+            data = yaml.safe_load(f)
+        assert data["user_id"] == "save_user"
+        assert data["target_level"] == 4
 
     @pytest.mark.skipif(YAML_AVAILABLE, reason="Test only when PyYAML not available")
     def test_raises_import_error_when_yaml_unavailable(self):
@@ -535,21 +532,22 @@ class TestEmpathyConfigToYaml:
 class TestEmpathyConfigToJson:
     """Tests for EmpathyConfig.to_json method."""
 
-    def test_saves_config_to_json_file(self):
+    def test_saves_config_to_json_file(self, tmp_path):
         """Given config, when saving to JSON, then writes file."""
         # Given
         config = EmpathyConfig(user_id="json_save", target_level=3)
-        m = mock_open()
+        output_file = tmp_path / "output.json"
 
         # When
-        with patch("builtins.open", m):
-            with patch("empathy_os.config._validate_file_path") as mock_validate:
-                mock_validate.return_value = Path("output.json")
-                config.to_json("output.json")
+        config.to_json(str(output_file))
 
         # Then
-        m.assert_called_once()
-        mock_validate.assert_called_once_with("output.json")
+        assert output_file.exists()
+        import json
+        with open(output_file) as f:
+            data = json.load(f)
+        assert data["user_id"] == "json_save"
+        assert data["target_level"] == 3
 
     def test_uses_custom_indent(self):
         """Given custom indent, when saving, then uses it."""
@@ -559,7 +557,7 @@ class TestEmpathyConfigToJson:
 
         # When
         with patch("builtins.open", m):
-            with patch("empathy_os.config._validate_file_path") as mock_validate:
+            with patch("attune.config._validate_file_path") as mock_validate:
                 mock_validate.return_value = Path("output.json")
                 with patch("json.dump") as mock_dump:
                     config.to_json("output.json", indent=4)
@@ -878,7 +876,7 @@ class TestLoadConfig:
         """Given file error, when loading, then falls back to defaults."""
         # Given/When
         with patch("pathlib.Path.exists", return_value=True):
-            with patch("empathy_os.config.EmpathyConfig.from_file", side_effect=FileNotFoundError):
+            with patch("attune.config.EmpathyConfig.from_file", side_effect=FileNotFoundError):
                 with patch.dict(os.environ, {}, clear=True):
                     config = load_config(use_env=False)
 
@@ -889,7 +887,7 @@ class TestLoadConfig:
         """Given invalid env vars, when loading, then falls back."""
         # Given/When
         with patch("pathlib.Path.exists", return_value=False):
-            with patch("empathy_os.config.EmpathyConfig.from_env", side_effect=ValueError):
+            with patch("attune.config.EmpathyConfig.from_env", side_effect=ValueError):
                 config = load_config(use_env=True)
 
         # Then
@@ -912,20 +910,22 @@ class TestLoadConfig:
         # Then
         assert config.user_id == "env_user"
 
-    def test_checks_default_config_locations(self):
+    def test_checks_default_config_locations(self, tmp_path):
         """Given no filepath, when loading, then checks default locations."""
         # Given
         json_content = json.dumps({"user_id": "found_user"})
-        m = mock_open(read_data=json_content)
+        config_file = tmp_path / ".empathy.json"
+        config_file.write_text(json_content)
 
         # When
-        with patch("pathlib.Path.exists") as mock_exists:
-            def side_effect(self):
-                return str(self) == ".empathy.json"
-            mock_exists.side_effect = side_effect
-            with patch("builtins.open", m):
-                with patch.dict(os.environ, {}, clear=True):
-                    config = load_config(use_env=False)
+        import os
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(tmp_path)
+            with patch.dict(os.environ, {}, clear=True):
+                config = load_config(use_env=False)
+        finally:
+            os.chdir(original_cwd)
 
         # Then
         assert config.user_id == "found_user"

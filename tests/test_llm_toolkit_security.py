@@ -8,8 +8,8 @@ Coverage target: 80%+
 
 import pytest
 
-from empathy_llm_toolkit.security.pii_scrubber import PIIDetection, PIIScrubber
-from empathy_llm_toolkit.security.secrets_detector import (
+from attune_llm.security.pii_scrubber import PIIDetection, PIIScrubber
+from attune_llm.security.secrets_detector import (
     SecretDetection,
     SecretsDetector,
     SecretType,

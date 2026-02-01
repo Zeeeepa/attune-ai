@@ -9,8 +9,8 @@ Created: 2026-01-29
 """
 import pytest
 
-from empathy_os.orchestration.agent_templates import AgentTemplate
-from empathy_os.orchestration.execution_strategies import (
+from attune.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.execution_strategies import (
     DelegationChainStrategy,
     PromptCachedSequentialStrategy,
     ToolEnhancedStrategy,
@@ -177,7 +177,7 @@ class TestAnthropicPatternsIntegration:
 
     def test_strategy_registry_includes_new_patterns(self):
         """Test that new patterns are registered."""
-        from empathy_os.orchestration.execution_strategies import STRATEGY_REGISTRY
+        from attune.orchestration.execution_strategies import STRATEGY_REGISTRY
 
         assert "tool_enhanced" in STRATEGY_REGISTRY
         assert "prompt_cached_sequential" in STRATEGY_REGISTRY
@@ -189,7 +189,7 @@ class TestAnthropicPatternsIntegration:
 
     def test_get_strategy_by_name(self):
         """Test getting strategies by name."""
-        from empathy_os.orchestration.execution_strategies import get_strategy
+        from attune.orchestration.execution_strategies import get_strategy
 
         strategy1 = get_strategy("tool_enhanced")
         assert isinstance(strategy1, ToolEnhancedStrategy)
@@ -202,7 +202,7 @@ class TestAnthropicPatternsIntegration:
 
     def test_all_patterns_implement_base_interface(self):
         """Test that all new patterns implement ExecutionStrategy interface."""
-        from empathy_os.orchestration.execution_strategies import ExecutionStrategy
+        from attune.orchestration.execution_strategies import ExecutionStrategy
 
         assert issubclass(ToolEnhancedStrategy, ExecutionStrategy)
         assert issubclass(PromptCachedSequentialStrategy, ExecutionStrategy)
@@ -210,7 +210,7 @@ class TestAnthropicPatternsIntegration:
 
     def test_pattern_count(self):
         """Test that we now have 13 total patterns (7 original + 3 nested + 3 new)."""
-        from empathy_os.orchestration.execution_strategies import STRATEGY_REGISTRY
+        from attune.orchestration.execution_strategies import STRATEGY_REGISTRY
 
         # Original 7 + 3 nested variants + 3 new Anthropic patterns = 13 total
         assert len(STRATEGY_REGISTRY) >= 10  # At least 10 patterns

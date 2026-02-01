@@ -31,7 +31,7 @@ By the end of this chapter, you will have:
 ## Prerequisites
 
 ```bash
-pip install empathy-framework redis
+pip install attune-ai redis
 ```
 
 For production: Redis server (local or Railway/cloud)
@@ -44,7 +44,7 @@ For development: Mock mode (automatic, no Redis needed)
 ### Step 1: Get Redis Memory
 
 ```python
-from empathy_os import get_redis_memory, check_redis_connection
+from attune import get_redis_memory, check_redis_connection
 
 # Automatic detection:
 # 1. Checks REDIS_URL environment variable
@@ -64,7 +64,7 @@ else:
 ### Step 2: Create an Agent with Memory
 
 ```python
-from empathy_os import EmpathyOS, AccessTier
+from attune import EmpathyOS, AccessTier
 
 # Create agent with short-term memory
 agent = EmpathyOS(
@@ -106,7 +106,7 @@ other_data = agent.retrieve("analysis_results", agent_id="security_agent")
 ### Step 4: Set Up a Team
 
 ```python
-from empathy_os import AgentCoordinator, AgentTask
+from attune import AgentCoordinator, AgentTask
 
 # Create coordinator (automatically gets Steward access)
 coordinator = AgentCoordinator(memory, team_id="review_team")
@@ -216,7 +216,7 @@ for sig in signals:
 ### Step 9: Team Session for Collaboration
 
 ```python
-from empathy_os import TeamSession
+from attune import TeamSession
 
 # Create collaborative session
 session = TeamSession(
@@ -257,7 +257,7 @@ print(f"Participants: {info.get('participants', [])}")
 ### Step 10: Discover and Stage a Pattern
 
 ```python
-from empathy_os import StagedPattern
+from attune import StagedPattern
 
 # Contributor discovers a useful pattern during work
 pattern = StagedPattern(
@@ -426,7 +426,7 @@ Complete multi-agent code review with short-term memory.
 Run this file to see all concepts in action.
 """
 import asyncio
-from empathy_os import (
+from attune import (
     EmpathyOS, get_redis_memory, AccessTier,
     AgentCoordinator, AgentTask, TeamSession, StagedPattern
 )
@@ -520,7 +520,7 @@ if __name__ == "__main__":
 
 ```python
 # Force mock mode for testing
-from empathy_os.redis_memory import RedisShortTermMemory
+from attune.redis_memory import RedisShortTermMemory
 memory = RedisShortTermMemory(use_mock=True)
 ```
 

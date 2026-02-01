@@ -9,7 +9,7 @@ Production-ready patterns for fault tolerance and reliability. These patterns he
 ## Overview
 
 ```python
-from empathy_os.resilience import (
+from attune.resilience import (
     retry,              # Retry failed operations
     circuit_breaker,    # Prevent cascading failures
     timeout,            # Prevent hanging operations
@@ -23,7 +23,7 @@ from empathy_os.resilience import (
 Automatically retry failed operations with increasing delays:
 
 ```python
-from empathy_os.resilience import retry, RetryConfig
+from attune.resilience import retry, RetryConfig
 
 @retry(max_attempts=3, initial_delay=1.0, backoff_factor=2.0)
 async def call_external_api():
@@ -73,7 +73,7 @@ async def call_api():
 Prevent cascading failures by failing fast when a service is down:
 
 ```python
-from empathy_os.resilience import circuit_breaker, CircuitOpenError
+from attune.resilience import circuit_breaker, CircuitOpenError
 
 @circuit_breaker(
     name="external_api",
@@ -130,7 +130,7 @@ async def get_data():
 ### Monitoring Circuit State
 
 ```python
-from empathy_os.resilience import get_circuit_breaker
+from attune.resilience import get_circuit_breaker
 
 cb = get_circuit_breaker("external_api")
 
@@ -146,7 +146,7 @@ print(f"Resets in: {cb.get_time_until_reset()}s")
 Prevent operations from hanging indefinitely:
 
 ```python
-from empathy_os.resilience import timeout, with_timeout, ResilienceTimeoutError
+from attune.resilience import timeout, with_timeout, ResilienceTimeoutError
 
 @timeout(30.0)  # 30 second timeout
 async def slow_operation():
@@ -164,7 +164,7 @@ async def quick_lookup():
 ### One-off Timeout
 
 ```python
-from empathy_os.resilience import with_timeout
+from attune.resilience import with_timeout
 
 result = await with_timeout(
     some_coroutine(),
@@ -180,7 +180,7 @@ result = await with_timeout(
 Graceful degradation with multiple fallback options:
 
 ```python
-from empathy_os.resilience import Fallback, fallback
+from attune.resilience import Fallback, fallback
 
 # Decorator approach
 @fallback(fallback_func=get_cached_data, default="No data available")
@@ -218,7 +218,7 @@ result = await fb.execute()
 Monitor system component health:
 
 ```python
-from empathy_os.resilience import HealthCheck, HealthStatus
+from attune.resilience import HealthCheck, HealthStatus
 
 health = HealthCheck(version="3.1.0")
 
@@ -286,7 +286,7 @@ async def error_check():
 Stack decorators for robust services:
 
 ```python
-from empathy_os.resilience import retry, circuit_breaker, timeout, fallback
+from attune.resilience import retry, circuit_breaker, timeout, fallback
 
 async def cached_fallback():
     return cache.get("last_known_good")
@@ -358,7 +358,7 @@ INFO  Circuit breaker 'api' CLOSED - service recovered
 
 ```python
 from fastapi import FastAPI
-from empathy_os.resilience import HealthCheck
+from attune.resilience import HealthCheck
 
 app = FastAPI()
 health = HealthCheck(version="3.1.0")

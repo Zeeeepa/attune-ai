@@ -12,7 +12,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.models import (
+from attune.models import (
     MODEL_REGISTRY,
     ModelInfo,
     ModelProvider,
@@ -21,7 +21,7 @@ from empathy_os.models import (
     get_model,
     get_pricing_for_model,
 )
-from empathy_os.models.registry import TIER_PRICING, get_supported_providers, get_tiers
+from attune.models.registry import TIER_PRICING, get_supported_providers, get_tiers
 
 
 class TestModelTierEnum:

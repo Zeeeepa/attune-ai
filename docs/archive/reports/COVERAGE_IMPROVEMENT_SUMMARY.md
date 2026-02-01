@@ -59,7 +59,7 @@ Using module-specific baseline coverage:
 
 ### Overall Project Coverage
 
-When running all 48 tests against entire `src/empathy_os`:
+When running all 48 tests against entire `src/attune`:
 - **Total Coverage**: 14.39%
 - **Files Covered**: 26,389 statements
 - **Files Missed**: 21,676 statements
@@ -77,7 +77,7 @@ When running all 48 tests against entire `src/empathy_os`:
 
 **Problem**: `cryptography.exceptions.InvalidTag` was not caught, so decryption failures weren't wrapped in `SecurityError`
 
-**Solution**: Added `InvalidTag` to exception handling in [long_term.py:260](src/empathy_os/memory/long_term.py#L260)
+**Solution**: Added `InvalidTag` to exception handling in [long_term.py:260](src/attune/memory/long_term.py#L260)
 
 ```python
 # Before:
@@ -119,7 +119,7 @@ Ran comprehensive coverage analysis on all modules:
 
 **Coverage Details**:
 ```
-src/empathy_os/project_index/scanner.py
+src/attune/project_index/scanner.py
   Statements: 280
   Missed: 45
   Branches: 142
@@ -140,7 +140,7 @@ src/empathy_os/project_index/scanner.py
 
 **Coverage Details**:
 ```
-src/empathy_os/memory/long_term.py
+src/attune/memory/long_term.py
   Statements: 466
   Missed: 257
   Branches: 136
@@ -165,7 +165,7 @@ src/empathy_os/memory/long_term.py
 
 **Coverage Details**:
 ```
-src/empathy_os/cli.py
+src/attune/cli.py
   Statements: 1,680
   Missed: 1,531
   Branches: 454
@@ -236,7 +236,7 @@ The **CLI module shows limitations of representative tests** on large files:
 
 4. **Create Cache Eviction Tests**
    - Specification ready: 38 tests
-   - Target module: `src/empathy_os/cache/`
+   - Target module: `src/attune/cache/`
    - Expected coverage: ~82%
 
 5. **Create API Integration Tests**

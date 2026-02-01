@@ -13,10 +13,10 @@ from pathlib import Path
 import pytest
 
 # Check if workflow_chains.yaml exists for chain executor tests
-CHAIN_CONFIG_EXISTS = Path(".empathy/workflow_chains.yaml").exists()
+CHAIN_CONFIG_EXISTS = Path(".attune/workflow_chains.yaml").exists()
 
-from empathy_os.memory import EdgeType, MemoryGraph  # noqa: E402
-from empathy_os.routing import (  # noqa: E402
+from attune.memory import EdgeType, MemoryGraph  # noqa: E402
+from attune.routing import (  # noqa: E402
     ChainExecutor,
     ClassificationResult,
     HaikuClassifier,
@@ -204,7 +204,7 @@ class TestMemoryGraphIntegration:
         assert stats["nodes_by_workflow"]["bug-predict"] == 1
 
 
-@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".empathy/workflow_chains.yaml not found")
+@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".attune/workflow_chains.yaml not found")
 class TestChainExecutorIntegration:
     """Integration tests for Chain Executor with routing."""
 
@@ -245,7 +245,7 @@ class TestChainExecutorIntegration:
     def test_chain_approval_workflow(self):
         """Test approval workflow for chain steps."""
         executor = ChainExecutor()
-        from empathy_os.routing import ChainStep
+        from attune.routing import ChainStep
 
         execution = executor.create_execution("test", [])
         execution.steps.append(

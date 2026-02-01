@@ -40,10 +40,10 @@ learning:
 ### 3. Verify
 
 ```python
-from empathy_llm_toolkit.hooks import HookRegistry
-from empathy_llm_toolkit.agents_md import AgentRegistry
-from empathy_llm_toolkit.context import ContextManager
-from empathy_llm_toolkit.learning import SessionEvaluator
+from attune_llm.hooks import HookRegistry
+from attune_llm.agents_md import AgentRegistry
+from attune_llm.context import ContextManager
+from attune_llm.learning import SessionEvaluator
 
 print("Migration successful!")
 ```
@@ -64,17 +64,17 @@ print("Migration successful!")
 
 ```python
 # Hooks
-from empathy_llm_toolkit.hooks import HookRegistry
-from empathy_llm_toolkit.hooks.config import HookEvent
+from attune_llm.hooks import HookRegistry
+from attune_llm.hooks.config import HookEvent
 
 # Markdown Agents
-from empathy_llm_toolkit.agents_md import AgentRegistry
+from attune_llm.agents_md import AgentRegistry
 
 # Context Management
-from empathy_llm_toolkit.context import ContextManager, CompactState
+from attune_llm.context import ContextManager, CompactState
 
 # Session Learning
-from empathy_llm_toolkit.learning import SessionEvaluator, PatternExtractor
+from attune_llm.learning import SessionEvaluator, PatternExtractor
 ```
 
 ## Directory Structure

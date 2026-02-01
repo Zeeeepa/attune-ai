@@ -20,7 +20,7 @@ This document outlines procedures for rolling back deployments when issues are d
 ### 1. Identify Last Known Good Deployment
 
 1. Navigate to Railway dashboard: https://railway.app
-2. Select the `empathy-framework` project
+2. Select the `attune-ai` project
 3. Click on the `website` service
 4. Go to the **Deployments** tab
 5. Identify the last successful deployment before the issue
@@ -195,7 +195,7 @@ git push --force origin main
 
 - **Primary**: Patrick Roebuck (repository owner)
 - **Railway Support**: https://railway.app/help
-- **GitHub Issues**: https://github.com/Smart-AI-Memory/empathy-framework/issues
+- **GitHub Issues**: https://github.com/Smart-AI-Memory/attune-ai/issues
 
 ---
 

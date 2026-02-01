@@ -15,8 +15,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 
 def analyze_savings_potential():

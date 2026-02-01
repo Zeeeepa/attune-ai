@@ -24,7 +24,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 90 days (HIPAA minimum)
 - **Classification:** SENSITIVE
 - **Features:** PHI de-identification, clinical domain knowledge, compliance verification
-- **File:** [healthcare_wizard.py](empathy_llm_toolkit/wizards/healthcare_wizard.py)
+- **File:** [healthcare_wizard.py](attune_llm/wizards/healthcare_wizard.py)
 
 ### 2. **FinanceWizard** - SOX/PCI-DSS Banking & Finance
 - **Compliance:** SOX §302, §404, §802, PCI-DSS v4.0
@@ -32,7 +32,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years (SOX §802)
 - **Classification:** SENSITIVE
 - **Features:** Financial data protection, 7-year audit trail, SOX compliance checks
-- **File:** [finance_wizard.py](empathy_llm_toolkit/wizards/finance_wizard.py)
+- **File:** [finance_wizard.py](attune_llm/wizards/finance_wizard.py)
 
 ### 3. **LegalWizard** - Attorney-Client Privilege
 - **Compliance:** Federal Rules of Evidence 502, ABA Model Rules 1.6
@@ -40,7 +40,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years
 - **Classification:** SENSITIVE
 - **Features:** Attorney-client privilege protection, legal research support
-- **File:** [legal_wizard.py](empathy_llm_toolkit/wizards/legal_wizard.py)
+- **File:** [legal_wizard.py](attune_llm/wizards/legal_wizard.py)
 
 ### 4. **EducationWizard** - FERPA-Compliant Academic
 - **Compliance:** FERPA 20 U.S.C. § 1232g, 34 CFR Part 99
@@ -48,7 +48,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 5 years
 - **Classification:** SENSITIVE
 - **Features:** Student privacy protection, academic support, IRB guidance
-- **File:** [education_wizard.py](empathy_llm_toolkit/wizards/education_wizard.py)
+- **File:** [education_wizard.py](attune_llm/wizards/education_wizard.py)
 
 ### 5. **CustomerSupportWizard** - Privacy-Compliant Help Desk
 - **Compliance:** General consumer privacy laws
@@ -57,7 +57,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Classification:** INTERNAL
 - **Empathy Level:** 4 (Anticipatory - predicts customer needs)
 - **Features:** Ticket tracking, customer PII protection, service excellence
-- **File:** [customer_support_wizard.py](empathy_llm_toolkit/wizards/customer_support_wizard.py)
+- **File:** [customer_support_wizard.py](attune_llm/wizards/customer_support_wizard.py)
 
 ### 6. **HRWizard** - Employee Privacy Compliant
 - **Compliance:** EEOC, employment privacy laws
@@ -65,7 +65,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years (employment records)
 - **Classification:** SENSITIVE
 - **Features:** Employee data protection, recruiting support, HR compliance
-- **File:** [hr_wizard.py](empathy_llm_toolkit/wizards/hr_wizard.py)
+- **File:** [hr_wizard.py](attune_llm/wizards/hr_wizard.py)
 
 ### 7. **SalesWizard** - CRM Privacy Compliant
 - **Compliance:** CAN-SPAM, GDPR (marketing)
@@ -74,7 +74,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Classification:** INTERNAL
 - **Empathy Level:** 4 (Anticipatory - sales forecasting)
 - **Features:** CRM data protection, sales support, campaign management
-- **File:** [sales_wizard.py](empathy_llm_toolkit/wizards/sales_wizard.py)
+- **File:** [sales_wizard.py](attune_llm/wizards/sales_wizard.py)
 
 ### 8. **RealEstateWizard** - Property Data Privacy
 - **Compliance:** Fair Housing Act, state real estate laws
@@ -82,7 +82,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years (transaction records)
 - **Classification:** INTERNAL
 - **Features:** MLS data protection, market analysis, transaction support
-- **File:** [real_estate_wizard.py](empathy_llm_toolkit/wizards/real_estate_wizard.py)
+- **File:** [real_estate_wizard.py](attune_llm/wizards/real_estate_wizard.py)
 
 ### 9. **InsuranceWizard** - Policy Data Privacy
 - **Compliance:** State insurance regulations
@@ -90,7 +90,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years (regulatory requirement)
 - **Classification:** SENSITIVE
 - **Features:** Policyholder data protection, claims support, underwriting assistance
-- **File:** [insurance_wizard.py](empathy_llm_toolkit/wizards/insurance_wizard.py)
+- **File:** [insurance_wizard.py](attune_llm/wizards/insurance_wizard.py)
 
 ### 10. **AccountingWizard** - SOX/IRS Compliant
 - **Compliance:** SOX §802, IRS record retention, AICPA standards
@@ -98,7 +98,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years (SOX/IRS)
 - **Classification:** SENSITIVE
 - **Features:** Financial data protection, tax compliance, audit support
-- **File:** [accounting_wizard.py](empathy_llm_toolkit/wizards/accounting_wizard.py)
+- **File:** [accounting_wizard.py](attune_llm/wizards/accounting_wizard.py)
 
 ### 11. **ResearchWizard** - IRB-Compliant Academic Research
 - **Compliance:** IRB regulations (45 CFR 46), HIPAA for research
@@ -106,7 +106,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years (research data requirements)
 - **Classification:** SENSITIVE
 - **Features:** Research participant protection, IRB compliance, grant support
-- **File:** [research_wizard.py](empathy_llm_toolkit/wizards/research_wizard.py)
+- **File:** [research_wizard.py](attune_llm/wizards/research_wizard.py)
 
 ### 12. **GovernmentWizard** - FISMA-Compliant Public Sector
 - **Compliance:** FISMA, Privacy Act of 1974, FedRAMP
@@ -114,7 +114,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 7 years (government records)
 - **Classification:** SENSITIVE
 - **Features:** Citizen data protection, regulatory compliance, policy analysis
-- **File:** [government_wizard.py](empathy_llm_toolkit/wizards/government_wizard.py)
+- **File:** [government_wizard.py](attune_llm/wizards/government_wizard.py)
 
 ### 13. **RetailWizard** - PCI-DSS E-commerce
 - **Compliance:** PCI-DSS v4.0, GDPR (e-commerce)
@@ -123,7 +123,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Classification:** SENSITIVE
 - **Empathy Level:** 4 (Anticipatory - demand forecasting)
 - **Features:** Payment data protection, customer insights, merchandising support
-- **File:** [retail_wizard.py](empathy_llm_toolkit/wizards/retail_wizard.py)
+- **File:** [retail_wizard.py](attune_llm/wizards/retail_wizard.py)
 
 ### 14. **ManufacturingWizard** - Production Data Privacy
 - **Compliance:** Trade secret protection, ISO standards
@@ -131,7 +131,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 5 years
 - **Classification:** INTERNAL
 - **Features:** Proprietary data protection, production optimization, quality control
-- **File:** [manufacturing_wizard.py](empathy_llm_toolkit/wizards/manufacturing_wizard.py)
+- **File:** [manufacturing_wizard.py](attune_llm/wizards/manufacturing_wizard.py)
 
 ### 15. **LogisticsWizard** - Shipment Data Privacy
 - **Compliance:** Transportation security regulations
@@ -139,7 +139,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 2 years
 - **Classification:** INTERNAL
 - **Features:** Shipment data protection, route optimization, supply chain support
-- **File:** [logistics_wizard.py](empathy_llm_toolkit/wizards/logistics_wizard.py)
+- **File:** [logistics_wizard.py](attune_llm/wizards/logistics_wizard.py)
 
 ### 16. **TechnologyWizard** - IT Security Compliant
 - **Compliance:** SOC2, ISO 27001, NIST frameworks
@@ -147,7 +147,7 @@ Successfully created **16 production-ready, security-integrated domain-specific 
 - **Retention:** 1 year (system logs)
 - **Classification:** INTERNAL
 - **Features:** Infrastructure data protection, enhanced secrets detection, DevOps support
-- **File:** [technology_wizard.py](empathy_llm_toolkit/wizards/technology_wizard.py)
+- **File:** [technology_wizard.py](attune_llm/wizards/technology_wizard.py)
 
 ---
 
@@ -194,8 +194,8 @@ WizardConfig(
 ## Usage Example
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import HealthcareWizard, FinanceWizard, LegalWizard
+from attune_llm import EmpathyLLM
+from attune_llm.wizards import HealthcareWizard, FinanceWizard, LegalWizard
 
 # Initialize LLM with security enabled
 llm = EmpathyLLM(
@@ -252,26 +252,26 @@ else:
 ## Files Created
 
 **Wizard Implementations (16 files):**
-1. `empathy_llm_toolkit/wizards/healthcare_wizard.py` (327 lines)
-2. `empathy_llm_toolkit/wizards/finance_wizard.py` (340 lines)
-3. `empathy_llm_toolkit/wizards/legal_wizard.py` (210 lines)
-4. `empathy_llm_toolkit/wizards/education_wizard.py` (210 lines)
-5. `empathy_llm_toolkit/wizards/customer_support_wizard.py` (200 lines)
-6. `empathy_llm_toolkit/wizards/hr_wizard.py` (220 lines)
-7. `empathy_llm_toolkit/wizards/sales_wizard.py` (200 lines)
-8. `empathy_llm_toolkit/wizards/real_estate_wizard.py` (210 lines)
-9. `empathy_llm_toolkit/wizards/insurance_wizard.py` (230 lines)
-10. `empathy_llm_toolkit/wizards/accounting_wizard.py` (220 lines)
-11. `empathy_llm_toolkit/wizards/research_wizard.py` (220 lines)
-12. `empathy_llm_toolkit/wizards/government_wizard.py` (220 lines)
-13. `empathy_llm_toolkit/wizards/retail_wizard.py` (230 lines)
-14. `empathy_llm_toolkit/wizards/manufacturing_wizard.py` (200 lines)
-15. `empathy_llm_toolkit/wizards/logistics_wizard.py` (200 lines)
-16. `empathy_llm_toolkit/wizards/technology_wizard.py` (220 lines)
+1. `attune_llm/wizards/healthcare_wizard.py` (327 lines)
+2. `attune_llm/wizards/finance_wizard.py` (340 lines)
+3. `attune_llm/wizards/legal_wizard.py` (210 lines)
+4. `attune_llm/wizards/education_wizard.py` (210 lines)
+5. `attune_llm/wizards/customer_support_wizard.py` (200 lines)
+6. `attune_llm/wizards/hr_wizard.py` (220 lines)
+7. `attune_llm/wizards/sales_wizard.py` (200 lines)
+8. `attune_llm/wizards/real_estate_wizard.py` (210 lines)
+9. `attune_llm/wizards/insurance_wizard.py` (230 lines)
+10. `attune_llm/wizards/accounting_wizard.py` (220 lines)
+11. `attune_llm/wizards/research_wizard.py` (220 lines)
+12. `attune_llm/wizards/government_wizard.py` (220 lines)
+13. `attune_llm/wizards/retail_wizard.py` (230 lines)
+14. `attune_llm/wizards/manufacturing_wizard.py` (200 lines)
+15. `attune_llm/wizards/logistics_wizard.py` (200 lines)
+16. `attune_llm/wizards/technology_wizard.py` (220 lines)
 
 **Infrastructure:**
-- `empathy_llm_toolkit/wizards/base_wizard.py` (175 lines) - Base class
-- `empathy_llm_toolkit/wizards/__init__.py` (69 lines) - Module exports
+- `attune_llm/wizards/base_wizard.py` (175 lines) - Base class
+- `attune_llm/wizards/__init__.py` (69 lines) - Module exports
 
 **Total Lines of Code:** ~3,500 lines across 18 files
 

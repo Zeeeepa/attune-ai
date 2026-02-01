@@ -4,7 +4,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-from empathy_os.trust_building import TrustBuildingBehaviors, TrustSignal
+from attune.trust_building import TrustBuildingBehaviors, TrustSignal
 
 
 class TestTrustSignal:

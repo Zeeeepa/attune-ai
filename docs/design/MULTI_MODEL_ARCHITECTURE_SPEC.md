@@ -104,7 +104,7 @@ This specification defines the architecture for multi-model support in the Empat
 
 ## 2. Core Components
 
-### 2.1 Model Registry (`empathy_os.models.registry`)
+### 2.1 Model Registry (`attune.models.registry`)
 
 **Purpose:** Single source of truth for all model definitions, pricing, and capabilities.
 
@@ -179,7 +179,7 @@ def get_tiers() -> list[str]
 
 ---
 
-### 2.2 Task Types (`empathy_os.models.tasks`)
+### 2.2 Task Types (`attune.models.tasks`)
 
 **Purpose:** Centralized task-to-tier mapping for consistent routing.
 
@@ -237,7 +237,7 @@ def is_known_task(task_type: str) -> bool
 
 ---
 
-### 2.3 LLM Executor (`empathy_os.models.executor`)
+### 2.3 LLM Executor (`attune.models.executor`)
 
 **Purpose:** Unified interface for all LLM calls with consistent context and response handling.
 
@@ -294,7 +294,7 @@ class EmpathyLLMExecutor(LLMExecutor):
 
 ---
 
-### 2.4 Resilience Layer (`empathy_os.models.fallback`)
+### 2.4 Resilience Layer (`attune.models.fallback`)
 
 **Purpose:** Automatic retry, fallback, and circuit-breaking for LLM calls.
 
@@ -368,7 +368,7 @@ class ResilientExecutor(LLMExecutor):
 
 ---
 
-### 2.5 Workflow Layer (`empathy_os.workflows`)
+### 2.5 Workflow Layer (`attune.workflows`)
 
 **Purpose:** Multi-step orchestration with consistent model selection and telemetry.
 
@@ -478,7 +478,7 @@ class ResearchSynthesisWorkflow(BaseWorkflow):
 
 ---
 
-### 2.6 Telemetry (`empathy_os.models.telemetry`)
+### 2.6 Telemetry (`attune.models.telemetry`)
 
 **Purpose:** Structured logging for analysis, debugging, and cost tracking.
 
@@ -634,7 +634,7 @@ empathy telemetry costs --by-task
 
 ### 4.1 Enum Unification
 
-**Decision:** Use `empathy_os.models.registry.ModelProvider` and `ModelTier` as canonical types everywhere.
+**Decision:** Use `attune.models.registry.ModelProvider` and `ModelTier` as canonical types everywhere.
 
 **Rationale:** Prevents subtle type mismatches and simplifies cross-component refactors.
 
@@ -910,7 +910,7 @@ Workflows register as plugins with `type="workflow"`:
 
 ```python
 # In workflow module
-from empathy_os.plugins import register_plugin
+from attune.plugins import register_plugin
 
 @register_plugin(
     name="research-synthesis",
@@ -923,7 +923,7 @@ class ResearchSynthesisWorkflow(BaseWorkflow):
     ...
 
 # Discovery
-from empathy_os.plugins import get_global_registry
+from attune.plugins import get_global_registry
 
 registry = get_global_registry()
 workflows = registry.get_plugins(type="workflow")
@@ -935,7 +935,7 @@ Keep `WORKFLOW_REGISTRY` but expose via plugin system:
 
 ```python
 # In workflows/__init__.py
-from empathy_os.plugins import PluginRegistry
+from attune.plugins import PluginRegistry
 
 def register_workflows_as_plugins(registry: PluginRegistry):
     """Bridge WORKFLOW_REGISTRY to plugin system."""
@@ -965,7 +965,7 @@ my-custom-workflow = "my_package.workflows:CustomWorkflow"
 ```
 
 ```python
-# Discovery in empathy_os
+# Discovery in attune
 from importlib.metadata import entry_points
 
 def discover_workflow_plugins():
@@ -989,15 +989,15 @@ def discover_workflow_plugins():
 
 | Component | Location |
 |-----------|----------|
-| Model Registry | `src/empathy_os/models/registry.py` |
-| Task Types | `src/empathy_os/models/tasks.py` |
-| Executor | `src/empathy_os/models/executor.py` |
-| EmpathyLLMExecutor | `src/empathy_os/models/empathy_executor.py` |
-| Fallback/Resilience | `src/empathy_os/models/fallback.py` |
-| Telemetry | `src/empathy_os/models/telemetry.py` |
-| CLI | `src/empathy_os/models/cli.py` |
-| ModelRouter | `empathy_llm_toolkit/routing/model_router.py` |
-| Workflows | `src/empathy_os/workflows/` |
+| Model Registry | `src/attune/models/registry.py` |
+| Task Types | `src/attune/models/tasks.py` |
+| Executor | `src/attune/models/executor.py` |
+| EmpathyLLMExecutor | `src/attune/models/empathy_executor.py` |
+| Fallback/Resilience | `src/attune/models/fallback.py` |
+| Telemetry | `src/attune/models/telemetry.py` |
+| CLI | `src/attune/models/cli.py` |
+| ModelRouter | `attune_llm/routing/model_router.py` |
+| Workflows | `src/attune/workflows/` |
 | Tests | `tests/test_model_registry.py`, `tests/test_model_router.py` |
 
 ---

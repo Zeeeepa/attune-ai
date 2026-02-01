@@ -28,7 +28,7 @@ description: Release Test Results - Empathy Framework v3.7.0: **Date**: 2026-01-
 - ✅ Customer Support & Technology wizards import successfully
 
 ### 2. CLI Tests (Development Environment)
-- ✅ Main CLI command works (`python -m empathy_os.cli --help`)
+- ✅ Main CLI command works (`python -m attune.cli --help`)
 - ✅ Workflow list command works
 - ✅ Shows all workflows: code-review, doc-gen, bug-predict, security-audit, perf-audit
 
@@ -53,7 +53,7 @@ description: Release Test Results - Empathy Framework v3.7.0: **Date**: 2026-01-
 ModuleNotFoundError: No module named 'yaml'
 ```
 
-**Location**: `empathy_os/workflows/bug_predict.py:23`
+**Location**: `attune/workflows/bug_predict.py:23`
 
 **Root Cause**: Dependencies not properly declared in pyproject.toml or not being installed with the package
 
@@ -75,7 +75,7 @@ ModuleNotFoundError: No module named 'yaml'
 **Status**: Not yet investigated
 
 **Next Steps**:
-1. Test `python -m empathy_os.cli sync-claude` command
+1. Test `python -m attune.cli sync-claude` command
 2. Identify what "form" is being opened
 3. Determine expected behavior vs actual behavior
 
@@ -133,7 +133,7 @@ Once blockers are resolved, the following are confirmed ready:
 python -m venv test_env
 source test_env/bin/activate
 pip install dist/empathy_framework-3.7.0-py3-none-any.whl
-python -c "from empathy_os.workflows import BaseWorkflow"
+python -c "from attune.workflows import BaseWorkflow"
 # Should work without errors
 ```
 

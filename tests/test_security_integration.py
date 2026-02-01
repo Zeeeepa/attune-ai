@@ -14,7 +14,7 @@ Licensed under Fair Source 0.9
 import pytest
 
 # Use new consolidated memory module
-from empathy_os.memory import (
+from attune.memory import (
     AuditLogger,
     ClaudeMemoryConfig,
     PIIScrubber,
@@ -384,7 +384,7 @@ class TestIntegrationWithClaudeMemory:
             load_project=True,
         )
 
-        from empathy_llm_toolkit.claude_memory import ClaudeMemoryLoader
+        from attune_llm.claude_memory import ClaudeMemoryLoader
 
         loader = ClaudeMemoryLoader(config)
         memory = loader.load_all_memory(str(tmp_path))

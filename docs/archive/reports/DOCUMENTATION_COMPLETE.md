@@ -95,19 +95,19 @@ You can now **safely make APIs public**! We've created comprehensive documentati
 
 ### Modified Code Files (3)
 
-1. **[empathy_llm_toolkit/wizards/healthcare_wizard.py](empathy_llm_toolkit/wizards/healthcare_wizard.py)**
+1. **[attune_llm/wizards/healthcare_wizard.py](attune_llm/wizards/healthcare_wizard.py)**
    - ⚠️ Added deprecation warning (runtime)
    - Updated docstring with migration path
    - Points to: `pip install empathy-healthcare-wizards`
    - Removal planned: v5.0
 
-2. **[empathy_llm_toolkit/wizards/technology_wizard.py](empathy_llm_toolkit/wizards/technology_wizard.py)**
+2. **[attune_llm/wizards/technology_wizard.py](attune_llm/wizards/technology_wizard.py)**
    - ⚠️ Added deprecation warning (runtime)
    - Updated docstring with migration path
    - Points to: `empathy_software_plugin` or `pip install empathy-software-wizards`
    - Removal planned: v5.0
 
-3. **[empathy_llm_toolkit/wizards/\_\_init\_\_.py](empathy_llm_toolkit/wizards/__init__.py)**
+3. **[attune_llm/wizards/\_\_init\_\_.py](attune_llm/wizards/__init__.py)**
    - Updated module docstring (1 active example, 2 deprecated)
    - Added deprecation comments on imports
    - Maintained backward compatibility (all classes still exported)
@@ -293,7 +293,7 @@ All future documentation should follow these patterns:
 # API Name
 
 **Stability:** 🟢 Stable
-**Module:** `empathy_os.module`
+**Module:** `attune.module`
 
 ## Overview
 [Brief description]
@@ -453,8 +453,8 @@ Documentation is designed to evolve:
 - What's missing from architecture docs?
 
 **Contact:**
-- GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
-- GitHub Discussions: https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- GitHub Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
+- GitHub Discussions: https://github.com/Smart-AI-Memory/attune-ai/discussions
 - Email: team@smartaimemory.com
 
 ---

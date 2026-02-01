@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.cli.commands.info import cmd_frameworks, cmd_info
+from attune.cli.commands.info import cmd_frameworks, cmd_info
 
 # ============================================================================
 # cmd_info Tests
@@ -18,7 +18,7 @@ from empathy_os.cli.commands.info import cmd_frameworks, cmd_info
 class TestCmdInfo:
     """Test suite for cmd_info command."""
 
-    @patch("empathy_os.cli.commands.info.load_config")
+    @patch("attune.cli.commands.info.load_config")
     def test_cmd_info_loads_default_config(self, mock_load_config):
         """Test that cmd_info loads default config when no file specified."""
         # Given
@@ -45,7 +45,7 @@ class TestCmdInfo:
         # Then
         mock_load_config.assert_called_once_with()
 
-    @patch("empathy_os.cli.commands.info.load_config")
+    @patch("attune.cli.commands.info.load_config")
     def test_cmd_info_loads_custom_config(self, mock_load_config):
         """Test that cmd_info loads custom config file when provided."""
         # Given
@@ -72,7 +72,7 @@ class TestCmdInfo:
         # Then
         mock_load_config.assert_called_once_with(filepath="/path/to/custom.yaml")
 
-    @patch("empathy_os.cli.commands.info.load_config")
+    @patch("attune.cli.commands.info.load_config")
     def test_cmd_info_returns_none(self, mock_load_config):
         """Test that cmd_info returns None."""
         # Given

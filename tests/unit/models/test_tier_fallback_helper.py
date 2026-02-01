@@ -4,7 +4,7 @@ This module tests the simple tier-based fallback helpers added for Sprint 1.
 The sophisticated FallbackPolicy is still the primary fallback mechanism.
 """
 
-from empathy_os.models import TierFallbackHelper
+from attune.models import TierFallbackHelper
 
 
 class TestTierProgression:
@@ -98,14 +98,14 @@ class TestIntegrationWithFallbackPolicy:
 
     def test_can_import_both_classes(self):
         """Test both FallbackPolicy and TierFallbackHelper can be imported."""
-        from empathy_os.models import FallbackPolicy, TierFallbackHelper
+        from attune.models import FallbackPolicy, TierFallbackHelper
 
         assert FallbackPolicy is not None
         assert TierFallbackHelper is not None
 
     def test_tier_progression_matches_fallback_policy_tiers(self):
         """Test tier progression matches FallbackPolicy tier names."""
-        from empathy_os.models import FallbackPolicy, FallbackStrategy
+        from attune.models import FallbackPolicy, FallbackStrategy
 
         # Use "capable" as primary so there are cheaper tiers available
         policy = FallbackPolicy(

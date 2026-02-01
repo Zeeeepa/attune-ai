@@ -13,7 +13,7 @@ The framework automatically handles:
 import asyncio
 import os
 
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 
 async def example_claude_usage():

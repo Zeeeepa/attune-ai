@@ -14,8 +14,8 @@ Licensed under Fair Source License 0.9
 
 import random
 import time
-from empathy_os.telemetry import FeedbackLoop
-from empathy_os.telemetry.feedback_loop import ModelTier
+from attune.telemetry import FeedbackLoop
+from attune.telemetry.feedback_loop import ModelTier
 
 
 def demo_record_feedback():

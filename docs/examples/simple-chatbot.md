@@ -59,7 +59,7 @@ Build a **Code Review Assistant** that demonstrates the two types of memory that
 
 ```bash
 # Install with Redis support (default)
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # Start Redis (required for short-term memory)
 docker run -d -p 6379:6379 redis:alpine
@@ -72,8 +72,8 @@ docker run -d -p 6379:6379 redis:alpine
 Short-term memory tracks state **within a session**. It's fast, shared between agents, and expires when done.
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.memory import ShortTermMemory
+from attune import EmpathyOS
+from attune.memory import ShortTermMemory
 
 # Connect to Redis for short-term memory
 short_term = ShortTermMemory(redis_url="redis://localhost:6379")
@@ -133,8 +133,8 @@ print(f"Session duration: {session_state['duration_seconds']}s")
 Long-term memory stores patterns **across sessions**. It learns from history and persists forever.
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.memory import LongTermMemory
+from attune import EmpathyOS
+from attune.memory import LongTermMemory
 
 # Connect to SQLite for long-term memory
 long_term = LongTermMemory(db_path=".empathy/review_history.db")
@@ -198,8 +198,8 @@ for pattern in history:
     **Redis is only required for short-term memory.** If you don't need session state tracking or multi-agent coordination, you can use long-term memory (SQLite) by itself:
 
     ```python
-    from empathy_os import EmpathyOS
-    from empathy_os.memory import LongTermMemory
+    from attune import EmpathyOS
+    from attune.memory import LongTermMemory
 
     # Persistent memory without Redis - no Docker required!
     long_term = LongTermMemory(db_path=".empathy/history.db")
@@ -224,8 +224,8 @@ for pattern in history:
 The real power comes from **combining** short-term and long-term memory:
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.memory import UnifiedMemory
+from attune import EmpathyOS
+from attune.memory import UnifiedMemory
 
 # Unified memory combines both
 memory = UnifiedMemory(
@@ -326,9 +326,9 @@ Continue to webhooks.py?
 Use multiple agents that **coordinate via short-term memory**:
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.memory import UnifiedMemory
-from empathy_os.coordination import TeamSession
+from attune import EmpathyOS
+from attune.memory import UnifiedMemory
+from attune.coordination import TeamSession
 import asyncio
 
 async def multi_agent_review(pr_number: int, files: list[str]):
@@ -426,8 +426,8 @@ Usage:
 
 import sys
 import asyncio
-from empathy_os import EmpathyOS
-from empathy_os.memory import UnifiedMemory
+from attune import EmpathyOS
+from attune.memory import UnifiedMemory
 
 async def main():
     if len(sys.argv) < 3:

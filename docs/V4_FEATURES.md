@@ -369,7 +369,7 @@ For the best UX:
 Create custom health check modes:
 
 ```python
-from empathy_os.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
+from attune.workflows.orchestrated_health_check import OrchestratedHealthCheckWorkflow
 
 # Custom mode with specific agents
 workflow = OrchestratedHealthCheckWorkflow()
@@ -387,7 +387,7 @@ print(f"Health Score: {result.overall_health}/100")
 Use in Python scripts:
 
 ```python
-from empathy_os.workflows import OrchestratedHealthCheckWorkflow
+from attune.workflows import OrchestratedHealthCheckWorkflow
 
 # Run health check
 workflow = OrchestratedHealthCheckWorkflow()
@@ -435,10 +435,10 @@ A: Disabled due to poor quality (0% pass rate). Being redesigned.
 
 ```bash
 # Install/upgrade
-pip install empathy-framework --upgrade
+pip install attune-ai --upgrade
 
 # Run your first health check
 empathy orchestrate health-check --mode daily
 ```
 
-**Questions?** Open an issue at [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+**Questions?** Open an issue at [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)

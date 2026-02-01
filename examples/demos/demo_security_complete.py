@@ -96,8 +96,8 @@ def measure_time(func):
 
 # Import security modules
 try:
-    from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
-    from empathy_llm_toolkit.security import (
+    from attune_llm.claude_memory import ClaudeMemoryConfig
+    from attune_llm.security import (
         AuditLogger,
         PIIScrubber,
         SecretsDetector,

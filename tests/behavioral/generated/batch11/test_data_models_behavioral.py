@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 from dataclasses import fields, is_dataclass
 
-from empathy_os.workflows.test_gen.data_models import (
+from attune.workflows.test_gen.data_models import (
     ClassSignature,
     FunctionSignature,
 )

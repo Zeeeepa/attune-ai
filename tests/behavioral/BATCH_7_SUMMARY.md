@@ -11,7 +11,7 @@ This batch implements comprehensive behavioral tests for 15 telemetry and monito
 ## Modules Tested
 
 ### 1. Usage Tracker (`test_usage_tracker_behavioral.py`)
-**Module:** `empathy_os/telemetry/usage_tracker.py`
+**Module:** `attune/telemetry/usage_tracker.py`
 **Test Classes:** 11
 **Key Features Tested:**
 - LLM call tracking with privacy hashing
@@ -25,7 +25,7 @@ This batch implements comprehensive behavioral tests for 15 telemetry and monito
 **Test Count:** 30+ tests
 
 ### 2. Alerts System (`test_alerts_behavioral.py`)
-**Module:** `empathy_os/monitoring/alerts.py`
+**Module:** `attune/monitoring/alerts.py`
 **Test Classes:** 10
 **Key Features Tested:**
 - Webhook URL validation (SSRF prevention)
@@ -40,7 +40,7 @@ This batch implements comprehensive behavioral tests for 15 telemetry and monito
 **Test Count:** 40+ tests
 
 ### 3. Agent Tracking (`test_agent_tracking_behavioral.py`)
-**Module:** `empathy_os/telemetry/agent_tracking.py`
+**Module:** `attune/telemetry/agent_tracking.py`
 **Test Classes:** 9
 **Key Features Tested:**
 - Heartbeat coordination
@@ -55,7 +55,7 @@ This batch implements comprehensive behavioral tests for 15 telemetry and monito
 **Test Count:** 25+ tests
 
 ### 4. Prompt Metrics (`test_prompt_metrics_behavioral.py`)
-**Module:** `empathy_os/metrics/prompt_metrics.py`
+**Module:** `attune/metrics/prompt_metrics.py`
 **Test Classes:** 9
 **Key Features Tested:**
 - Prompt performance tracking
@@ -70,20 +70,20 @@ This batch implements comprehensive behavioral tests for 15 telemetry and monito
 
 ### 5-15. Multiple Telemetry Modules (`test_telemetry_modules_behavioral.py`)
 **Modules Covered:**
-- `empathy_os/telemetry/event_streaming.py` - Event stream publishing/subscribing
-- `empathy_os/telemetry/agent_coordination.py` - Multi-agent coordination
-- `empathy_os/telemetry/feedback_loop.py` - User feedback collection
-- `empathy_os/telemetry/approval_gates.py` - Approval workflow management
-- `empathy_os/telemetry/cli.py` - CLI export functions
-- `empathy_os/monitoring/multi_backend.py` - Multi-backend monitoring
-- `empathy_os/monitoring/otel_backend.py` - OpenTelemetry integration
-- `empathy_os/metrics/collector.py` - Metrics collector (deprecated)
+- `attune/telemetry/event_streaming.py` - Event stream publishing/subscribing
+- `attune/telemetry/agent_coordination.py` - Multi-agent coordination
+- `attune/telemetry/feedback_loop.py` - User feedback collection
+- `attune/telemetry/approval_gates.py` - Approval workflow management
+- `attune/telemetry/cli.py` - CLI export functions
+- `attune/monitoring/multi_backend.py` - Multi-backend monitoring
+- `attune/monitoring/otel_backend.py` - OpenTelemetry integration
+- `attune/metrics/collector.py` - Metrics collector (deprecated)
 
 **Test Classes:** 10
 **Test Count:** 50+ tests
 
 ### 16. Alerts CLI (`test_alerts_cli_behavioral.py`)
-**Module:** `empathy_os/monitoring/alerts_cli.py`
+**Module:** `attune/monitoring/alerts_cli.py`
 **Test Classes:** 7
 **Key Features Tested:**
 - Interactive alert wizard
@@ -238,7 +238,7 @@ These tests integrate with:
 ## Next Steps
 
 1. Run full test suite: `pytest tests/behavioral/ -v`
-2. Verify coverage: `pytest tests/behavioral/ --cov=src/empathy_os`
+2. Verify coverage: `pytest tests/behavioral/ --cov=src/attune`
 3. Check for any failing tests and fix
 4. Update main test suite documentation
 

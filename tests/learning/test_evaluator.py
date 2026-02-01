@@ -2,13 +2,13 @@
 
 import pytest
 
-from empathy_llm_toolkit.learning.evaluator import (
+from attune_llm.learning.evaluator import (
     EvaluationResult,
     SessionEvaluator,
     SessionMetrics,
     SessionQuality,
 )
-from empathy_llm_toolkit.state import CollaborationState
+from attune_llm.state import CollaborationState
 
 
 class TestSessionMetrics:

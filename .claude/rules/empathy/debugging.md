@@ -67,7 +67,7 @@ When debugging similar issues, consider these historical fixes:
 ### import_error
 - **Root cause**: fix: Resolve import conflict between workflows.py and workflows/ package
 - **Fix**: See commit 1b928aec
-- **Files**: src/empathy_os/workflows/__init__.py
+- **Files**: src/attune/workflows/__init__.py
 
 ### configuration
 - **Root cause**: ci: Add workflow_dispatch to PyPI publish workflow

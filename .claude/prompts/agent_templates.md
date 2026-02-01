@@ -72,7 +72,7 @@ Use when: Fixing specific bugs with known symptoms
       Should calculate dynamic average from PREMIUM tier entries.
     </suspected_cause>
     <affected_files>
-      src/empathy_os/telemetry/usage_tracker.py
+      src/attune/telemetry/usage_tracker.py
     </affected_files>
   </context>
 
@@ -190,7 +190,7 @@ Use when: Building new functionality with acceptance criteria
       compromising user privacy. Enable cost analysis and tier optimization.
     </user_need>
     <existing_system>
-      BaseWorkflow class in src/empathy_os/workflows/base.py calls LLMs via
+      BaseWorkflow class in src/attune/workflows/base.py calls LLMs via
       _call_llm() method. No usage tracking currently exists.
     </existing_system>
     <integration_points>
@@ -335,7 +335,7 @@ Use when: Improving code health score by fixing lint/type/test issues
     <command>empathy health</command>
     <command>python -m pytest tests/ -v</command>
     <command>ruff check .</command>
-    <command>mypy src/empathy_os/</command>
+    <command>mypy src/attune/</command>
     <expected_result>
       - Health score ≥[target]/100
       - All tests passing
@@ -413,7 +413,7 @@ Use when: Improving code health score by fixing lint/type/test issues
     <command>empathy health</command>
     <command>python -m pytest tests/ -v --tb=short</command>
     <command>ruff check . --exclude benchmarks/</command>
-    <command>mypy src/empathy_os/</command>
+    <command>mypy src/attune/</command>
     <expected_result>
       - Health score ≥73/100 (+15 points)
       - All tests passing (no regressions)
@@ -541,7 +541,7 @@ Use when: Exploring codebase, understanding systems, or investigating bugs
     </background>
     <known_info>
       - BaseWorkflow._call_llm() should call usage_tracker.track_usage()
-      - Code appears correct in src/empathy_os/workflows/base.py
+      - Code appears correct in src/attune/workflows/base.py
       - Unit tests mock the tracking and pass
     </known_info>
     <unknown_info>

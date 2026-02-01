@@ -1,12 +1,12 @@
 ---
-description: Release Notes - Empathy Framework v4.0.3: **Release Date**: January 16, 2026 **Type**: Bug Fix Release **PyPI**: https://pypi.org/project/empathy-framework/4.0.
+description: Release Notes - Empathy Framework v4.0.3: **Release Date**: January 16, 2026 **Type**: Bug Fix Release **PyPI**: https://pypi.org/project/attune-ai/4.0.
 ---
 
 # Release Notes - Empathy Framework v4.0.3
 
 **Release Date**: January 16, 2026
 **Type**: Bug Fix Release
-**PyPI**: https://pypi.org/project/empathy-framework/4.0.3/
+**PyPI**: https://pypi.org/project/attune-ai/4.0.3/
 
 ---
 
@@ -43,7 +43,7 @@ if isinstance(cache_read, int) and cache_read > 0:  # ✅ Works with mocks
 ```
 
 **Impact**: All 10 Anthropic provider tests now pass
-**File**: [`empathy_llm_toolkit/providers.py:196-227`](empathy_llm_toolkit/providers.py#L196-L227)
+**File**: [`attune_llm/providers.py:196-227`](attune_llm/providers.py#L196-L227)
 
 ---
 
@@ -63,7 +63,7 @@ bandit -r src -f json -q -ll  # Added -q flag
 ```
 
 **Impact**: Health check now works correctly with all real analysis tools
-**File**: [`src/empathy_os/orchestration/real_tools.py:598`](src/empathy_os/orchestration/real_tools.py#L598)
+**File**: [`src/attune/orchestration/real_tools.py:598`](src/attune/orchestration/real_tools.py#L598)
 
 **Verification**:
 ```json
@@ -138,7 +138,7 @@ This release includes all features from v4.0.2:
 ### From v4.0.1 or Earlier
 
 ```bash
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 ```
 
 ### From v4.0.2
@@ -146,13 +146,13 @@ pip install --upgrade empathy-framework
 If you already have v4.0.2 (released separately), upgrade to get these bug fixes:
 
 ```bash
-pip install --upgrade empathy-framework==4.0.3
+pip install --upgrade attune-ai==4.0.3
 ```
 
 ### Verify Installation
 
 ```bash
-python -c "from empathy_os import __version__; print(__version__)"
+python -c "from attune import __version__; print(__version__)"
 # Should print: 4.0.3
 
 # Test health check
@@ -193,7 +193,7 @@ Same as v4.0.2:
 
 - [CHANGELOG.md](CHANGELOG.md) - Complete version history
 - [RELEASE_READY.md](RELEASE_READY.md) - Release checklist
-- [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues) - Bug reports and feature requests
+- [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues) - Bug reports and feature requests
 
 ---
 
@@ -206,14 +206,14 @@ Same as v4.0.2:
 
 ## 🔗 Links
 
-- **PyPI**: https://pypi.org/project/empathy-framework/4.0.3/
-- **GitHub**: https://github.com/Smart-AI-Memory/empathy-framework
+- **PyPI**: https://pypi.org/project/attune-ai/4.0.3/
+- **GitHub**: https://github.com/Smart-AI-Memory/attune-ai
 - **Documentation**: https://www.smartaimemory.com/framework-docs/
 - **Website**: https://www.smartaimemory.com
 
 ---
 
-**Questions?** Open an issue on [GitHub](https://github.com/Smart-AI-Memory/empathy-framework/issues) or visit our [discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions).
+**Questions?** Open an issue on [GitHub](https://github.com/Smart-AI-Memory/attune-ai/issues) or visit our [discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions).
 
 ---
 

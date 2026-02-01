@@ -1,7 +1,7 @@
 # Health Monitoring & Threshold Alerting Pattern
 
 **Source Domain:** Observability/Site Reliability Engineering
-**Location in Codebase:** `src/empathy_os/resilience/health.py`
+**Location in Codebase:** `src/attune/resilience/health.py`
 **Level:** 4 (Anticipatory)
 
 ## Overview
@@ -31,7 +31,7 @@ Continuously monitors component health with automatic status aggregation and thr
 ## Implementation
 
 ```python
-from empathy_os.resilience.health import HealthCheck, HealthStatus
+from attune.resilience.health import HealthCheck, HealthStatus
 
 health = HealthCheck(version="3.3.3")
 

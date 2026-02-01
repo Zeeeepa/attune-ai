@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in the Empathy
+description: Report a bug in Attune AI
 title: "[Bug]: "
 labels: ["bug", "triage"]
 body:
@@ -54,8 +54,8 @@ body:
       description: Minimal code sample that reproduces the issue
       render: python
       placeholder: |
-        from coach_wizards import SecurityWizard
-        wizard = SecurityWizard()
+        from attune.workflows import SecurityAuditWorkflow
+        workflow = SecurityAuditWorkflow()
         # Your code here
 
   - type: textarea
@@ -71,9 +71,11 @@ body:
       label: Component
       description: Which component is affected?
       options:
-        - Coach Wizards (Security, Performance, etc.)
-        - Healthcare Agents (Compliance, Trust Building)
-        - Clinical Wizards (SBAR, SOAP, etc.)
+        - Workflows (Security, Bug Prediction, Performance, etc.)
+        - Multi-Agent Orchestration
+        - Authentication Strategy
+        - Agent Coordination Dashboard
+        - Cost Optimization / Caching
         - Base Framework
         - Documentation
         - Examples
@@ -84,9 +86,9 @@ body:
   - type: input
     id: version
     attributes:
-      label: Empathy Version
+      label: Attune AI Version
       description: What version are you using?
-      placeholder: "1.0.0"
+      placeholder: "2.0.0"
     validations:
       required: true
 

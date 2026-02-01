@@ -12,8 +12,8 @@ Setup:
 import asyncio
 from pathlib import Path
 
-from empathy_os.coordination import InMemoryHeartbeatBackend
-from empathy_os.workflows import SEOOptimizationWorkflow
+from attune.coordination import InMemoryHeartbeatBackend
+from attune.workflows import SEOOptimizationWorkflow
 
 
 async def main():

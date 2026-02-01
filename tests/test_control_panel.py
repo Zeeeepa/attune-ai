@@ -21,7 +21,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.memory.control_panel import (
+from attune.memory.control_panel import (
     ControlPanelConfig,
     MemoryControlPanel,
     MemoryStats,
@@ -30,7 +30,7 @@ from empathy_os.memory.control_panel import (
     print_stats,
     print_status,
 )
-from empathy_os.memory.redis_bootstrap import RedisStartMethod, RedisStatus
+from attune.memory.redis_bootstrap import RedisStartMethod, RedisStatus
 
 
 class TestMemoryStats:
@@ -116,8 +116,8 @@ class TestMemoryControlPanelInit:
 class TestMemoryControlPanelStatus:
     """Test status() method"""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
-    @patch("empathy_os.memory.control_panel.Path")
+    @patch("attune.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel.Path")
     def test_status_redis_running(self, mock_path, mock_check):
         """Test status when Redis is running"""
         mock_check.return_value = True
@@ -135,8 +135,8 @@ class TestMemoryControlPanelStatus:
         assert status["redis"]["method"] == "homebrew"
         assert status["long_term"]["pattern_count"] == 10
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
-    @patch("empathy_os.memory.control_panel.Path")
+    @patch("attune.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel.Path")
     def test_status_redis_stopped(self, mock_path, mock_check):
         """Test status when Redis is stopped"""
         mock_check.return_value = False
@@ -150,8 +150,8 @@ class TestMemoryControlPanelStatus:
         assert status["redis"]["status"] == "stopped"
         assert status["long_term"]["status"] == "not_initialized"
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
-    @patch("empathy_os.memory.control_panel.Path")
+    @patch("attune.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel.Path")
     def test_status_includes_timestamp(self, mock_path, mock_check):
         """Test status includes timestamp"""
         mock_check.return_value = False
@@ -169,7 +169,7 @@ class TestMemoryControlPanelStatus:
 class TestMemoryControlPanelRedis:
     """Test Redis lifecycle management"""
 
-    @patch("empathy_os.memory.control_panel.ensure_redis")
+    @patch("attune.memory.control_panel.ensure_redis")
     def test_start_redis_success(self, mock_ensure):
         """Test successful Redis start"""
         mock_status = RedisStatus(
@@ -186,7 +186,7 @@ class TestMemoryControlPanelRedis:
         assert status.method == RedisStartMethod.HOMEBREW
         assert panel._redis_status == mock_status
 
-    @patch("empathy_os.memory.control_panel.ensure_redis")
+    @patch("attune.memory.control_panel.ensure_redis")
     def test_start_redis_failure(self, mock_ensure):
         """Test Redis start failure"""
         mock_status = RedisStatus(
@@ -202,7 +202,7 @@ class TestMemoryControlPanelRedis:
         assert status.available is False
         assert status.method == RedisStartMethod.MOCK
 
-    @patch("empathy_os.memory.control_panel.stop_redis")
+    @patch("attune.memory.control_panel.stop_redis")
     def test_stop_redis_success(self, mock_stop):
         """Test successful Redis stop"""
         mock_stop.return_value = True
@@ -214,7 +214,7 @@ class TestMemoryControlPanelRedis:
         assert result is True
         mock_stop.assert_called_once_with(RedisStartMethod.HOMEBREW)
 
-    @patch("empathy_os.memory.control_panel.stop_redis")
+    @patch("attune.memory.control_panel.stop_redis")
     def test_stop_redis_already_running(self, mock_stop):
         """Test stop Redis that was already running"""
         panel = MemoryControlPanel()
@@ -234,7 +234,7 @@ class TestMemoryControlPanelRedis:
 class TestMemoryControlPanelStatistics:
     """Test get_statistics() method"""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_get_statistics_redis_available(self, mock_check):
         """Test statistics with Redis available"""
         mock_check.return_value = True
@@ -267,7 +267,7 @@ class TestMemoryControlPanelStatistics:
         assert stats.patterns_total == 25
         assert stats.patterns_sensitive == 5
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_get_statistics_redis_unavailable(self, mock_check):
         """Test statistics with Redis unavailable"""
         mock_check.return_value = False
@@ -278,7 +278,7 @@ class TestMemoryControlPanelStatistics:
         assert stats.redis_available is False
         assert stats.redis_keys_total == 0
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_get_statistics_handles_redis_exception(self, mock_check):
         """Test statistics handles Redis exception gracefully"""
         mock_check.return_value = True
@@ -420,8 +420,8 @@ class TestMemoryControlPanelExport:
 class TestMemoryControlPanelHealthCheck:
     """Test health_check() method"""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
-    @patch("empathy_os.memory.control_panel.Path")
+    @patch("attune.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel.Path")
     def test_health_check_all_healthy(self, mock_path, mock_check):
         """Test health check when everything is healthy"""
         mock_check.return_value = True
@@ -452,8 +452,8 @@ class TestMemoryControlPanelHealthCheck:
         assert len(health["checks"]) > 0
         assert all(c["status"] in ["pass", "info"] for c in health["checks"])
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
-    @patch("empathy_os.memory.control_panel.Path")
+    @patch("attune.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel.Path")
     def test_health_check_redis_down(self, mock_path, mock_check):
         """Test health check when Redis is down"""
         mock_check.return_value = False
@@ -477,8 +477,8 @@ class TestMemoryControlPanelHealthCheck:
         assert any("redis" in c["name"] for c in health["checks"])
         assert len(health["recommendations"]) > 0
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
-    @patch("empathy_os.memory.control_panel.Path")
+    @patch("attune.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel.Path")
     def test_health_check_encryption_issue(self, mock_path, mock_check):
         """Test health check when sensitive patterns aren't encrypted"""
         mock_check.return_value = True
@@ -512,7 +512,7 @@ class TestMemoryControlPanelHealthCheck:
 class TestMemoryControlPanelInternalMethods:
     """Test internal/private methods"""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_get_short_term_creates_instance(self, mock_check):
         """Test _get_short_term creates instance on first call"""
         mock_check.return_value = True
@@ -524,7 +524,7 @@ class TestMemoryControlPanelInternalMethods:
         assert memory is not None
         assert panel._short_term is not None
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_get_short_term_reuses_instance(self, mock_check):
         """Test _get_short_term reuses existing instance"""
         mock_check.return_value = True
@@ -629,7 +629,7 @@ class TestPrintFunctions:
 class TestCLIMain:
     """Test CLI main function"""
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "status"])
     def test_cli_status_command(self, mock_panel_class):
         """Test CLI status command"""
@@ -651,11 +651,11 @@ class TestCLIMain:
         }
         mock_panel_class.return_value = mock_panel
 
-        with patch("empathy_os.memory.control_panel.print_status") as mock_print:
+        with patch("attune.memory.control_panel.print_status") as mock_print:
             main()
             mock_print.assert_called_once()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "status", "--json"])
     def test_cli_status_json_output(self, mock_panel_class, capsys):
         """Test CLI status command with JSON output"""
@@ -668,7 +668,7 @@ class TestCLIMain:
         data = json.loads(captured.out)
         assert "redis" in data
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "start"])
     def test_cli_start_command_success(self, mock_panel_class):
         """Test CLI start command"""
@@ -682,7 +682,7 @@ class TestCLIMain:
         main()
         mock_panel.start_redis.assert_called_once()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "start"])
     def test_cli_start_command_failure(self, mock_panel_class):
         """Test CLI start command failure"""
@@ -697,7 +697,7 @@ class TestCLIMain:
         with pytest.raises(SystemExit):
             main()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "stop"])
     def test_cli_stop_command(self, mock_panel_class):
         """Test CLI stop command"""
@@ -708,7 +708,7 @@ class TestCLIMain:
         main()
         mock_panel.stop_redis.assert_called_once()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "stats"])
     def test_cli_stats_command(self, mock_panel_class):
         """Test CLI stats command"""
@@ -716,11 +716,11 @@ class TestCLIMain:
         mock_panel.get_statistics.return_value = MemoryStats()
         mock_panel_class.return_value = mock_panel
 
-        with patch("empathy_os.memory.control_panel.print_stats") as mock_print:
+        with patch("attune.memory.control_panel.print_stats") as mock_print:
             main()
             mock_print.assert_called_once()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "health"])
     def test_cli_health_command(self, mock_panel_class):
         """Test CLI health command"""
@@ -728,11 +728,11 @@ class TestCLIMain:
         mock_panel.health_check.return_value = {"overall": "healthy", "checks": []}
         mock_panel_class.return_value = mock_panel
 
-        with patch("empathy_os.memory.control_panel.print_health") as mock_print:
+        with patch("attune.memory.control_panel.print_health") as mock_print:
             main()
             mock_print.assert_called_once()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "patterns"])
     def test_cli_patterns_command(self, mock_panel_class):
         """Test CLI patterns command"""
@@ -745,7 +745,7 @@ class TestCLIMain:
         main()
         mock_panel.list_patterns.assert_called_once()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "patterns", "-c", "PUBLIC"])
     def test_cli_patterns_with_filter(self, mock_panel_class):
         """Test CLI patterns command with classification filter"""
@@ -756,7 +756,7 @@ class TestCLIMain:
         main()
         mock_panel.list_patterns.assert_called_once_with(classification="PUBLIC")
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch("sys.argv", ["control_panel.py", "export", "-o", "test.json"])
     def test_cli_export_command(self, mock_panel_class):
         """Test CLI export command"""
@@ -767,7 +767,7 @@ class TestCLIMain:
         main()
         mock_panel.export_patterns.assert_called_once()
 
-    @patch("empathy_os.memory.control_panel.MemoryControlPanel")
+    @patch("attune.memory.control_panel.MemoryControlPanel")
     @patch(
         "sys.argv",
         [
@@ -792,7 +792,7 @@ class TestCLIMain:
         }
         mock_panel_class.return_value = mock_panel
 
-        with patch("empathy_os.memory.control_panel.print_status"):
+        with patch("attune.memory.control_panel.print_status"):
             main()
 
         # Verify config was created with custom values
@@ -812,7 +812,7 @@ class TestEdgeCases:
         panel = MemoryControlPanel(None)
         assert panel.config is not None
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_get_short_term_with_mock_fallback(self, mock_check):
         """Test _get_short_term falls back to mock when Redis unavailable"""
         mock_check.return_value = False
@@ -825,7 +825,7 @@ class TestEdgeCases:
 
     def test_get_statistics_with_partial_data(self):
         """Test get_statistics handles missing data gracefully"""
-        with patch("empathy_os.memory.control_panel._check_redis_running", return_value=True):
+        with patch("attune.memory.control_panel._check_redis_running", return_value=True):
             panel = MemoryControlPanel()
             mock_short_term = Mock()
             mock_short_term.get_stats.return_value = {}  # Empty stats

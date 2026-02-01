@@ -21,8 +21,8 @@ This guide identifies beta/experimental content to exclude or hide before releas
 ### ✅ INCLUDE - Production-Ready (Ship in v3.7.0)
 
 #### Core Framework
-- ✅ `src/empathy_os/` - Core workflow engine
-- ✅ `empathy_llm_toolkit/` - LLM toolkit with wizards
+- ✅ `src/attune/` - Core workflow engine
+- ✅ `attune_llm/` - LLM toolkit with wizards
 - ✅ `patterns/` - Pattern library
 - ✅ `tests/` - Test suite (exclude from package, keep in repo)
 
@@ -48,10 +48,10 @@ This guide identifies beta/experimental content to exclude or hide before releas
 
 | File | Status | Action |
 |------|--------|--------|
-| `src/empathy_os/workflows/test5.py` | Test workflow | 🔴 **EXCLUDE** from package |
-| `src/empathy_os/workflows/new_sample_workflow1.py` | Example template | 🔴 **EXCLUDE** or move to examples/ |
-| `src/empathy_os/workflows/test_lifecycle.py` | Beta utility | ⚠️ Mark as `@beta` |
-| `src/empathy_os/workflows/test_maintenance*.py` | Beta utilities | ⚠️ Mark as `@beta` |
+| `src/attune/workflows/test5.py` | Test workflow | 🔴 **EXCLUDE** from package |
+| `src/attune/workflows/new_sample_workflow1.py` | Example template | 🔴 **EXCLUDE** or move to examples/ |
+| `src/attune/workflows/test_lifecycle.py` | Beta utility | ⚠️ Mark as `@beta` |
+| `src/attune/workflows/test_maintenance*.py` | Beta utilities | ⚠️ Mark as `@beta` |
 
 #### 2. Beta Directories (Exclude from package)
 
@@ -179,14 +179,14 @@ dashboard/node_modules/
 
 ```toml
 [tool.poetry]
-name = "empathy-framework"
+name = "attune-ai"
 version = "3.7.0"
 description = "Multi-model AI framework with XML-enhanced prompts, CrewAI integration, and HIPAA compliance"
 
 # Include only production-ready code
 packages = [
-    { include = "empathy_os", from = "src" },
-    { include = "empathy_llm_toolkit" },
+    { include = "attune", from = "src" },
+    { include = "attune_llm" },
 ]
 
 # Exclude beta/experimental content
@@ -294,7 +294,7 @@ docs/
 
 ### Add `@beta` Decorator
 
-Create `src/empathy_os/_beta.py`:
+Create `src/attune/_beta.py`:
 
 ```python
 """Beta feature marking for Empathy Framework."""
@@ -334,14 +334,14 @@ def beta(message: str = "This feature is in beta and may change in future releas
 ### Mark Beta Workflows
 
 ```python
-# src/empathy_os/workflows/test_lifecycle.py
-from empathy_os._beta import beta
+# src/attune/workflows/test_lifecycle.py
+from attune._beta import beta
 
 @beta("Test lifecycle workflows are experimental and may change")
 class TestLifecycleWorkflow(BaseWorkflow):
     ...
 
-# src/empathy_os/workflows/test_maintenance.py
+# src/attune/workflows/test_maintenance.py
 @beta("Test maintenance workflows are in active development")
 class TestMaintenanceWorkflow(BaseWorkflow):
     ...
@@ -425,8 +425,8 @@ class TestMaintenanceWorkflow(BaseWorkflow):
 - [ ] **8. Run full test suite**
   ```bash
   pytest tests/ -v
-  python -m mypy src/empathy_os
-  ruff check src/ empathy_llm_toolkit/
+  python -m mypy src/attune
+  ruff check src/ attune_llm/
   ```
 
 - [ ] **9. Build and test package**
@@ -443,8 +443,8 @@ class TestMaintenanceWorkflow(BaseWorkflow):
   pip install dist/empathy_framework-3.7.0-py3-none-any.whl
 
   # Verify imports
-  python -c "from empathy_os.workflows import BaseWorkflow; print('✅ OK')"
-  python -c "from empathy_llm_toolkit.wizards import HealthcareWizard; print('✅ OK')"
+  python -c "from attune.workflows import BaseWorkflow; print('✅ OK')"
+  python -c "from attune_llm.wizards import HealthcareWizard; print('✅ OK')"
   ```
 
 - [ ] **10. Create git tag**

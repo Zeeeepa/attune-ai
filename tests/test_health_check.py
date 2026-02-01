@@ -10,7 +10,7 @@ Tests the health check crew including:
 - HealthCheckConfig dataclass
 """
 
-from empathy_llm_toolkit.agent_factory.crews.health_check import (
+from attune_llm.agent_factory.crews.health_check import (
     FixStatus,
     HealthCategory,
     HealthCheckConfig,

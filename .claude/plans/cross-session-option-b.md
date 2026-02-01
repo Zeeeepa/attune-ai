@@ -10,7 +10,7 @@ Add optional cross-session awareness to `BaseWorkflow` so long-running workflows
 
 ## Implementation Plan
 
-### 1. Modify `BaseWorkflow` in `src/empathy_os/workflows/base.py`
+### 1. Modify `BaseWorkflow` in `src/attune/workflows/base.py`
 
 ```python
 class BaseWorkflow:

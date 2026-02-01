@@ -9,7 +9,7 @@ Tests cover:
 
 import pytest
 
-from empathy_os.plugins.base import (
+from attune.plugins.base import (
     BasePlugin,
     BaseWorkflow,
     PluginError,

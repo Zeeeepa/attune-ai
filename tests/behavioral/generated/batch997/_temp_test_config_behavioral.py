@@ -13,7 +13,7 @@ from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
-from empathy_os.config import (
+from attune.config import (
     YAML_AVAILABLE,
     EmpathyConfig,
     _validate_file_path,
@@ -217,7 +217,7 @@ provider: openai
     def test_raises_import_error_when_yaml_not_available(self, monkeypatch):
         """Given PyYAML not installed, when loading YAML, then raises ImportError."""
         # Given
-        monkeypatch.setattr("empathy_os.config.YAML_AVAILABLE", False)
+        monkeypatch.setattr("attune.config.YAML_AVAILABLE", False)
 
         # When/Then
         with pytest.raises(ImportError, match="PyYAML is required"):
@@ -499,7 +499,7 @@ class TestEmpathyConfigToYaml:
 
         # When
         with patch("builtins.open", m):
-            with patch("empathy_os.config._validate_file_path") as mock_validate:
+            with patch("attune.config._validate_file_path") as mock_validate:
                 mock_validate.return_value = Path("output.yml")
                 config.to_yaml("output.yml")
 
@@ -511,7 +511,7 @@ class TestEmpathyConfigToYaml:
         """Given PyYAML not available, when saving to YAML, then raises ImportError."""
         # Given
         config = EmpathyConfig()
-        monkeypatch.setattr("empathy_os.config.YAML_AVAILABLE", False)
+        monkeypatch.setattr("attune.config.YAML_AVAILABLE", False)
 
         # When/Then
         with pytest.raises(ImportError, match="PyYAML is required"):
@@ -539,7 +539,7 @@ class TestEmpathyConfigToJson:
 
         # When
         with patch("builtins.open", m):
-            with patch("empathy_os.config._validate_file_path") as mock_validate:
+            with patch("attune.config._validate_file_path") as mock_validate:
                 mock_validate.return_value = Path("output.json")
                 config.to_json("output.json")
 
@@ -555,7 +555,7 @@ class TestEmpathyConfigToJson:
 
         # When
         with patch("builtins.open", m):
-            with patch("empathy_os.config._validate_file_path") as mock_validate:
+            with patch("attune.config._validate_file_path") as mock_validate:
                 mock_validate.return_value = Path("output.json")
                 with patch("json.dump") as mock_dump:
                     config.to_json("output.json", indent=4)
@@ -874,7 +874,7 @@ class TestLoadConfig:
         """Given file error, when loading, then falls back to defaults."""
         # Given/When
         with patch("pathlib.Path.exists", return_value=True):
-            with patch("empathy_os.config.EmpathyConfig.from_file", side_effect=FileNotFoundError):
+            with patch("attune.config.EmpathyConfig.from_file", side_effect=FileNotFoundError):
                 with patch.dict(os.environ, {}, clear=True):
                     config = load_config(use_env=False)
 
@@ -885,7 +885,7 @@ class TestLoadConfig:
         """Given invalid env vars, when loading, then falls back."""
         # Given/When
         with patch("pathlib.Path.exists", return_value=False):
-            with patch("empathy_os.config.EmpathyConfig.from_env", side_effect=ValueError):
+            with patch("attune.config.EmpathyConfig.from_env", side_effect=ValueError):
                 config = load_config(use_env=True)
 
         # Then

@@ -262,7 +262,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_llm_toolkit/__init__.py": {
+    "attune_llm/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -275,7 +275,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_llm_toolkit/core.py": {
+    "attune_llm/core.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -288,7 +288,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_llm_toolkit/levels.py": {
+    "attune_llm/levels.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -301,7 +301,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_llm_toolkit/providers.py": {
+    "attune_llm/providers.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -314,7 +314,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_llm_toolkit/state.py": {
+    "attune_llm/state.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -327,7 +327,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/__init__.py": {
+    "attune_software/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -340,7 +340,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/cli.py": {
+    "attune_software/cli.py": {
       "CONFIDENCE.HIGH": 5,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -353,7 +353,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/plugin.py": {
+    "attune_software/plugin.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -366,7 +366,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/__init__.py": {
+    "attune_software/wizards/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -379,7 +379,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/advanced_debugging_wizard.py": {
+    "attune_software/wizards/advanced_debugging_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -392,7 +392,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/agent_orchestration_wizard.py": {
+    "attune_software/wizards/agent_orchestration_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -405,7 +405,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/ai_collaboration_wizard.py": {
+    "attune_software/wizards/ai_collaboration_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -418,7 +418,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/ai_context_wizard.py": {
+    "attune_software/wizards/ai_context_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -431,7 +431,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/ai_documentation_wizard.py": {
+    "attune_software/wizards/ai_documentation_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -444,7 +444,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/base_wizard.py": {
+    "attune_software/wizards/base_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -457,7 +457,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/debugging/__init__.py": {
+    "attune_software/wizards/debugging/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -470,7 +470,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/debugging/bug_risk_analyzer.py": {
+    "attune_software/wizards/debugging/bug_risk_analyzer.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -483,7 +483,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/debugging/config_loaders.py": {
+    "attune_software/wizards/debugging/config_loaders.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -496,7 +496,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/debugging/fix_applier.py": {
+    "attune_software/wizards/debugging/fix_applier.py": {
       "CONFIDENCE.HIGH": 7,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -509,7 +509,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/debugging/language_patterns.py": {
+    "attune_software/wizards/debugging/language_patterns.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -522,7 +522,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/debugging/linter_parsers.py": {
+    "attune_software/wizards/debugging/linter_parsers.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -535,7 +535,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/debugging/verification.py": {
+    "attune_software/wizards/debugging/verification.py": {
       "CONFIDENCE.HIGH": 5,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -548,7 +548,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/enhanced_testing_wizard.py": {
+    "attune_software/wizards/enhanced_testing_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -561,7 +561,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/multi_model_wizard.py": {
+    "attune_software/wizards/multi_model_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -574,7 +574,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/performance/__init__.py": {
+    "attune_software/wizards/performance/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -587,7 +587,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/performance/bottleneck_detector.py": {
+    "attune_software/wizards/performance/bottleneck_detector.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -600,7 +600,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/performance/profiler_parsers.py": {
+    "attune_software/wizards/performance/profiler_parsers.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -613,7 +613,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/performance/trajectory_analyzer.py": {
+    "attune_software/wizards/performance/trajectory_analyzer.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -626,7 +626,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/performance_profiling_wizard.py": {
+    "attune_software/wizards/performance_profiling_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -639,7 +639,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/prompt_engineering_wizard.py": {
+    "attune_software/wizards/prompt_engineering_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -652,7 +652,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/rag_pattern_wizard.py": {
+    "attune_software/wizards/rag_pattern_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -665,7 +665,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/security/__init__.py": {
+    "attune_software/wizards/security/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -678,7 +678,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/security/exploit_analyzer.py": {
+    "attune_software/wizards/security/exploit_analyzer.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -691,7 +691,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/security/owasp_patterns.py": {
+    "attune_software/wizards/security/owasp_patterns.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -704,7 +704,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/security/vulnerability_scanner.py": {
+    "attune_software/wizards/security/vulnerability_scanner.py": {
       "CONFIDENCE.HIGH": 2,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 1,
@@ -717,7 +717,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/security_analysis_wizard.py": {
+    "attune_software/wizards/security_analysis_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -730,7 +730,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/testing/__init__.py": {
+    "attune_software/wizards/testing/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -743,7 +743,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/testing/coverage_analyzer.py": {
+    "attune_software/wizards/testing/coverage_analyzer.py": {
       "CONFIDENCE.HIGH": 1,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -756,7 +756,7 @@
       "nosec": 0,
       "skipped_tests": 1
     },
-    "empathy_software_plugin/wizards/testing/quality_analyzer.py": {
+    "attune_software/wizards/testing/quality_analyzer.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -769,7 +769,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/testing/test_suggester.py": {
+    "attune_software/wizards/testing/test_suggester.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -782,7 +782,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "empathy_software_plugin/wizards/testing_wizard.py": {
+    "attune_software/wizards/testing_wizard.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -795,7 +795,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/__init__.py": {
+    "src/attune/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -808,7 +808,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/cli.py": {
+    "src/attune/cli.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -821,7 +821,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/config.py": {
+    "src/attune/config.py": {
       "CONFIDENCE.HIGH": 1,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -834,7 +834,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/core.py": {
+    "src/attune/core.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -847,7 +847,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/emergence.py": {
+    "src/attune/emergence.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -860,7 +860,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/exceptions.py": {
+    "src/attune/exceptions.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -873,7 +873,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/feedback_loops.py": {
+    "src/attune/feedback_loops.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -886,7 +886,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/levels.py": {
+    "src/attune/levels.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -899,7 +899,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/leverage_points.py": {
+    "src/attune/leverage_points.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -912,7 +912,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/logging_config.py": {
+    "src/attune/logging_config.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -925,7 +925,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/pattern_library.py": {
+    "src/attune/pattern_library.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -938,7 +938,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/persistence.py": {
+    "src/attune/persistence.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -951,7 +951,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/plugins/__init__.py": {
+    "src/attune/plugins/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -964,7 +964,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/plugins/base.py": {
+    "src/attune/plugins/base.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -977,7 +977,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/plugins/registry.py": {
+    "src/attune/plugins/registry.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -990,7 +990,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/empathy_os/trust_building.py": {
+    "src/attune/trust_building.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,

@@ -11,8 +11,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.workflows.base import CostReport, ModelTier, WorkflowResult, WorkflowStage
-from empathy_os.workflows.history import WorkflowHistoryStore
+from attune.workflows.base import CostReport, ModelTier, WorkflowResult, WorkflowStage
+from attune.workflows.history import WorkflowHistoryStore
 
 
 @pytest.fixture

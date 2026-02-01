@@ -6,7 +6,7 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os import AgentMetrics, AgentMonitor, PatternLibrary
+from attune import AgentMetrics, AgentMonitor, PatternLibrary
 
 
 class TestAgentMetrics:
@@ -343,7 +343,7 @@ class TestAgentMonitor:
 
     def test_pattern_library_integration(self):
         """Test integration with pattern library"""
-        from empathy_os import Pattern
+        from attune import Pattern
 
         library = PatternLibrary()
         monitor = AgentMonitor(pattern_library=library)
@@ -384,7 +384,7 @@ class TestTeamMetrics:
 
     def test_metrics_creation(self):
         """Test creating team metrics"""
-        from empathy_os.monitoring import TeamMetrics
+        from attune.monitoring import TeamMetrics
 
         metrics = TeamMetrics(
             active_agents=3,
@@ -398,7 +398,7 @@ class TestTeamMetrics:
 
     def test_pattern_reuse_rate_empty(self):
         """Test reuse rate with no patterns"""
-        from empathy_os.monitoring import TeamMetrics
+        from attune.monitoring import TeamMetrics
 
         metrics = TeamMetrics()
 
@@ -406,7 +406,7 @@ class TestTeamMetrics:
 
     def test_pattern_reuse_rate_calculated(self):
         """Test reuse rate calculation"""
-        from empathy_os.monitoring import TeamMetrics
+        from attune.monitoring import TeamMetrics
 
         metrics = TeamMetrics(
             shared_patterns=10,
@@ -417,7 +417,7 @@ class TestTeamMetrics:
 
     def test_collaboration_efficiency_empty(self):
         """Test collaboration efficiency with no reuses"""
-        from empathy_os.monitoring import TeamMetrics
+        from attune.monitoring import TeamMetrics
 
         metrics = TeamMetrics()
 
@@ -425,7 +425,7 @@ class TestTeamMetrics:
 
     def test_collaboration_efficiency_calculated(self):
         """Test collaboration efficiency calculation"""
-        from empathy_os.monitoring import TeamMetrics
+        from attune.monitoring import TeamMetrics
 
         metrics = TeamMetrics(
             pattern_reuse_count=10,

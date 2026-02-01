@@ -20,7 +20,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 sys.path.insert(0, str(project_root / "src"))
 
-from empathy_os.project_index.scanner import ProjectScanner
+from attune.project_index.scanner import ProjectScanner
 
 
 def measure_cache_effectiveness():

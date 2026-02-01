@@ -1,12 +1,12 @@
 ---
-description: Test Coverage Report - January 20, 2026: ## Summary Test coverage improvement work completed for `empathy_llm_toolkit` and `empathy_healthcare_plugin`.
+description: Test Coverage Report - January 20, 2026: ## Summary Test coverage improvement work completed for `attune_llm` and `empathy_healthcare_plugin`.
 ---
 
 # Test Coverage Report - January 20, 2026
 
 ## Summary
 
-Test coverage improvement work completed for `empathy_llm_toolkit` and `empathy_healthcare_plugin`.
+Test coverage improvement work completed for `attune_llm` and `empathy_healthcare_plugin`.
 
 **Overall Result:** Core actively-used modules achieve **80%+ coverage**
 
@@ -85,7 +85,7 @@ The following modules are excluded from coverage requirements as per `pyproject.
 ```bash
 # Run all tests with coverage
 pytest tests/test_llm_toolkit_*.py tests/test_healthcare_plugin.py \
-  --cov=empathy_llm_toolkit --cov=empathy_healthcare_plugin \
+  --cov=attune_llm --cov=empathy_healthcare_plugin \
   --cov-report=term-missing
 
 # Quick check

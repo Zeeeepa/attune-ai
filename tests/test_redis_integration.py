@@ -20,8 +20,8 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os.memory import AccessTier, AgentCredentials, StagedPattern, TTLStrategy
-from empathy_os.redis_config import get_redis_memory
+from attune.memory import AccessTier, AgentCredentials, StagedPattern, TTLStrategy
+from attune.redis_config import get_redis_memory
 
 
 def redis_available() -> bool:

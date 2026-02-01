@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/project_index/scanner.py
+"""Tests for src/attune/project_index/scanner.py
 
 Tests the ProjectScanner class and its methods for scanning
 codebases and building file indexes.
@@ -8,14 +8,14 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-from empathy_os.project_index.models import (
+from attune.project_index.models import (
     FileCategory,
     FileRecord,
     IndexConfig,
     ProjectSummary,
     TestRequirement,
 )
-from empathy_os.project_index.scanner import ProjectScanner
+from attune.project_index.scanner import ProjectScanner
 
 
 class TestFileCategoryEnum:

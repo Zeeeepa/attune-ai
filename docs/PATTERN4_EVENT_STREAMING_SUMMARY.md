@@ -14,7 +14,7 @@ description: Pattern 4: Event Streaming Implementation Summary: **Date:** Januar
 
 ### 1. Core Event Streaming Module
 
-**File:** `src/empathy_os/telemetry/event_streaming.py`
+**File:** `src/attune/telemetry/event_streaming.py`
 
 **Classes:**
 - `StreamEvent` - Dataclass representing a stream event with metadata
@@ -37,7 +37,7 @@ description: Pattern 4: Event Streaming Implementation Summary: **Date:** Januar
 
 ### 2. Integration with Existing Components
 
-**File:** `src/empathy_os/telemetry/agent_tracking.py`
+**File:** `src/attune/telemetry/agent_tracking.py`
 
 **Changes:**
 - Added `enable_streaming` parameter to `HeartbeatCoordinator.__init__()`
@@ -45,7 +45,7 @@ description: Pattern 4: Event Streaming Implementation Summary: **Date:** Januar
 - Modified `_publish_heartbeat()` to publish events to Redis Streams when streaming is enabled
 - Automatic event publishing: heartbeat events are published to `empathy:events:agent_heartbeat` stream
 
-**File:** `src/empathy_os/telemetry/agent_coordination.py`
+**File:** `src/attune/telemetry/agent_coordination.py`
 
 **Changes:**
 - Added `enable_streaming` parameter to `CoordinationSignals.__init__()`
@@ -55,7 +55,7 @@ description: Pattern 4: Event Streaming Implementation Summary: **Date:** Januar
 
 ### 3. Module Exports
 
-**File:** `src/empathy_os/telemetry/__init__.py`
+**File:** `src/attune/telemetry/__init__.py`
 
 **Updated Exports:**
 ```python
@@ -141,7 +141,7 @@ event_id = redis.xadd(
         "event_type": "agent_heartbeat",
         "timestamp": "2026-01-27T12:00:00",
         "data": json.dumps({"agent_id": "test", "status": "running"}),
-        "source": "empathy_os",
+        "source": "attune",
     },
     maxlen=10000,  # Auto-trim to last 10K events
     approximate=True,  # Use ~ for performance
@@ -211,7 +211,7 @@ When Redis is unavailable or streaming is disabled:
 ### Example 1: Enable Streaming in HeartbeatCoordinator
 
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator
+from attune.telemetry import HeartbeatCoordinator
 
 # Enable streaming when creating coordinator
 coordinator = HeartbeatCoordinator(enable_streaming=True)
@@ -229,7 +229,7 @@ coordinator.beat(status="running", progress=0.5)
 ### Example 2: Enable Streaming in CoordinationSignals
 
 ```python
-from empathy_os.telemetry import CoordinationSignals
+from attune.telemetry import CoordinationSignals
 
 # Enable streaming when creating coordinator
 signals = CoordinationSignals(agent_id="orchestrator", enable_streaming=True)
@@ -246,7 +246,7 @@ signals.signal(
 ### Example 3: Consume Events in Real-Time
 
 ```python
-from empathy_os.telemetry import EventStreamer
+from attune.telemetry import EventStreamer
 
 streamer = EventStreamer()
 
@@ -262,7 +262,7 @@ for event in streamer.consume_events(
 ### Example 4: Retrieve Historical Events
 
 ```python
-from empathy_os.telemetry import EventStreamer
+from attune.telemetry import EventStreamer
 
 streamer = EventStreamer()
 
@@ -279,8 +279,8 @@ for event in events:
 ### Example 5: Workflow Integration
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
-from empathy_os.telemetry import EventStreamer
+from attune.workflows.base import BaseWorkflow, ModelTier
+from attune.telemetry import EventStreamer
 
 class MyWorkflow(BaseWorkflow):
     def __init__(self, **kwargs):
@@ -348,7 +348,7 @@ class MyWorkflow(BaseWorkflow):
 
 ### Created Files
 
-1. **src/empathy_os/telemetry/event_streaming.py** (~406 lines)
+1. **src/attune/telemetry/event_streaming.py** (~406 lines)
    - StreamEvent dataclass
    - EventStreamer class with Redis Streams integration
 
@@ -368,15 +368,15 @@ class MyWorkflow(BaseWorkflow):
 
 ### Modified Files
 
-1. **src/empathy_os/telemetry/__init__.py**
+1. **src/attune/telemetry/__init__.py**
    - Added EventStreamer and StreamEvent to exports
 
-2. **src/empathy_os/telemetry/agent_tracking.py**
+2. **src/attune/telemetry/agent_tracking.py**
    - Added `enable_streaming` parameter to HeartbeatCoordinator
    - Added `_get_event_streamer()` method
    - Modified `_publish_heartbeat()` to publish to stream
 
-3. **src/empathy_os/telemetry/agent_coordination.py**
+3. **src/attune/telemetry/agent_coordination.py**
    - Added `enable_streaming` parameter to CoordinationSignals
    - Added `_get_event_streamer()` method
    - Modified `signal()` to publish to stream
@@ -431,7 +431,7 @@ python examples/event_streaming_demo.py
 **Implementation:**
 ```python
 # Backend: WebSocket server
-from empathy_os.telemetry import EventStreamer
+from attune.telemetry import EventStreamer
 
 streamer = EventStreamer()
 
@@ -470,7 +470,7 @@ for event in events:
 **Implementation:**
 ```python
 # Consumer that writes events to database
-from empathy_os.telemetry import EventStreamer
+from attune.telemetry import EventStreamer
 
 streamer = EventStreamer()
 
@@ -509,7 +509,7 @@ for event in alerting_streamer.consume_events(["agent_error"]):
 
 **Implementation:**
 ```python
-from empathy_os.telemetry import EventStreamer
+from attune.telemetry import EventStreamer
 
 streamer = EventStreamer()
 

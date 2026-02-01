@@ -107,7 +107,7 @@ def scan_file(filepath: Path, result: ScanResult) -> None:
                             category="hardcoded_path",
                             message=message,
                             severity="warning",
-                            suggestion="Use empathy_os.platform_utils for platform-appropriate paths",
+                            suggestion="Use attune.platform_utils for platform-appropriate paths",
                         ),
                     )
 

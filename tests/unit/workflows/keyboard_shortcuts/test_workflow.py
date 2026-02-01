@@ -15,8 +15,8 @@ from unittest.mock import patch
 import pytest
 import yaml
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.keyboard_shortcuts.schema import (
+from attune.workflows.base import ModelTier
+from attune.workflows.keyboard_shortcuts.schema import (
     Category,
     Feature,
     FeatureManifest,
@@ -26,7 +26,7 @@ from empathy_os.workflows.keyboard_shortcuts.schema import (
     LayoutShortcuts,
     ShortcutAssignment,
 )
-from empathy_os.workflows.keyboard_shortcuts.workflow import KeyboardShortcutWorkflow
+from attune.workflows.keyboard_shortcuts.workflow import KeyboardShortcutWorkflow
 
 
 @pytest.fixture

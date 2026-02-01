@@ -18,13 +18,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from empathy_llm_toolkit.agents_md import AgentRegistry
-from empathy_llm_toolkit.context import (CompactState, ContextManager,
+from attune_llm.agents_md import AgentRegistry
+from attune_llm.context import (CompactState, ContextManager,
                                          SBARHandoff)
-from empathy_llm_toolkit.context.compaction import PatternSummary
-from empathy_llm_toolkit.hooks.config import HookEvent
-from empathy_llm_toolkit.hooks.registry import HookRegistry
-from empathy_llm_toolkit.learning import (ExtractedPattern,
+from attune_llm.context.compaction import PatternSummary
+from attune_llm.hooks.config import HookEvent
+from attune_llm.hooks.registry import HookRegistry
+from attune_llm.learning import (ExtractedPattern,
                                           LearnedSkillsStorage,
                                           PatternCategory, PatternExtractor,
                                           SessionEvaluator, SessionQuality)

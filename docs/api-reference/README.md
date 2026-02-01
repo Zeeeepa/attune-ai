@@ -50,7 +50,7 @@ This API reference documents the **actual implementation** of Empathy Framework 
 ### "I want to run a security audit"
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 
 workflow = SecurityAuditWorkflow()
 result = await workflow.execute(target_path="./src")
@@ -67,7 +67,7 @@ for finding in result.findings:
 ### "I want to use meta-orchestration"
 
 ```python
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 
@@ -90,10 +90,10 @@ else:
 
 ```python
 # CLI approach (recommended)
-# python -m empathy_os.models.cli provider --set hybrid
+# python -m attune.models.cli provider --set hybrid
 
 # Programmatic approach
-from empathy_os.models.registry import get_model
+from attune.models.registry import get_model
 
 model = get_model(provider="anthropic", tier="CAPABLE")
 print(f"Selected: {model.name} (${model.cost_per_1k_in:.4f}/1k tokens)")
@@ -106,7 +106,7 @@ print(f"Selected: {model.name} (${model.cost_per_1k_in:.4f}/1k tokens)")
 ### "I want to enable caching"
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 
 # Cache is auto-configured based on available dependencies
 workflow = SecurityAuditWorkflow(enable_cache=True)
@@ -140,8 +140,8 @@ empathy telemetry export --format csv --output usage.csv
 ### "I want to build a custom wizard"
 
 ```python
-from empathy_llm_toolkit.wizards import BaseWizard, WizardConfig
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm.wizards import BaseWizard, WizardConfig
+from attune_llm import EmpathyLLM
 
 class MyWizard(BaseWizard):
     def __init__(self, llm: EmpathyLLM | None = None):
@@ -260,7 +260,7 @@ workflow2 = TestGenerationWorkflow()
 # ... manual coordination
 
 # v4.0 - Automatic orchestration
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 workflow = OrchestratedReleasePrepWorkflow()
@@ -270,7 +270,7 @@ workflow = OrchestratedReleasePrepWorkflow()
 **Deprecated Wizards:**
 ```python
 # v3.x
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm.wizards import HealthcareWizard
 wizard = HealthcareWizard()  # DeprecationWarning in v4.0
 
 # v4.0 - Use specialized plugin
@@ -285,7 +285,7 @@ from empathy_healthcare_wizards import HealthcareWizard
 ### Pattern 1: Run Workflow with Caching
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 
 workflow = SecurityAuditWorkflow(enable_cache=True)
 result = await workflow.execute(target_path="./src")
@@ -299,7 +299,7 @@ if result.status == "success":
 ### Pattern 2: Custom Tier Routing
 
 ```python
-from empathy_os.workflows import BaseWorkflow, WorkflowConfig
+from attune.workflows import BaseWorkflow, WorkflowConfig
 
 class MyWorkflow(BaseWorkflow):
     def __init__(self):
@@ -313,8 +313,8 @@ class MyWorkflow(BaseWorkflow):
 ### Pattern 3: Error Handling
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
-from empathy_os.models.exceptions import ProviderUnavailableError
+from attune.workflows import SecurityAuditWorkflow
+from attune.models.exceptions import ProviderUnavailableError
 
 workflow = SecurityAuditWorkflow()
 
@@ -347,8 +347,8 @@ except ValueError as e:
 
 Found an API that's undocumented or behaves unexpectedly?
 
-- **Issues:** https://github.com/Smart-AI-Memory/empathy-framework/issues
-- **Discussions:** https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- **Issues:** https://github.com/Smart-AI-Memory/attune-ai/issues
+- **Discussions:** https://github.com/Smart-AI-Memory/attune-ai/discussions
 - **Email:** team@smartaimemory.com
 
 ---

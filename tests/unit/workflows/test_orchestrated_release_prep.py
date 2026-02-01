@@ -17,9 +17,9 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import get_template
-from empathy_os.orchestration.execution_strategies import AgentResult
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.orchestration.agent_templates import get_template
+from attune.orchestration.execution_strategies import AgentResult
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow,
     QualityGate,
     ReleaseReadinessReport,
@@ -567,7 +567,7 @@ class TestOrchestratedReleasePrepWorkflow:
         workflow = OrchestratedReleasePrepWorkflow()
 
         # Mock strategy result
-        from empathy_os.orchestration.execution_strategies import StrategyResult
+        from attune.orchestration.execution_strategies import StrategyResult
 
         agent_results = [
             AgentResult(
@@ -631,7 +631,7 @@ class TestOrchestratedReleasePrepWorkflow:
         """Test report creation with some failures."""
         workflow = OrchestratedReleasePrepWorkflow()
 
-        from empathy_os.orchestration.execution_strategies import StrategyResult
+        from attune.orchestration.execution_strategies import StrategyResult
 
         agent_results = [
             AgentResult(
@@ -686,7 +686,7 @@ class TestOrchestratedReleasePrepWorkflow:
         """Test report creation with warnings but approval."""
         workflow = OrchestratedReleasePrepWorkflow()
 
-        from empathy_os.orchestration.execution_strategies import StrategyResult
+        from attune.orchestration.execution_strategies import StrategyResult
 
         agent_results = [
             AgentResult(

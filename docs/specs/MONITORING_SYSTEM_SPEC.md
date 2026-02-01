@@ -29,7 +29,7 @@ Build a **zero-config monitoring system** for LLM usage with progressive enhance
 - **Zero-config default experience** - Works immediately after `pip install`
 - **Progressive enhancement** - Advanced features are opt-in
 - **No required configuration files** - Use CLI wizards or env vars
-- **Leverage existing infrastructure** - Built on [telemetry.py](../../src/empathy_os/models/telemetry.py)
+- **Leverage existing infrastructure** - Built on [telemetry.py](../../src/attune/models/telemetry.py)
 - **Privacy-first** - Local-first data storage, external export is opt-in
 
 ---
@@ -39,7 +39,7 @@ Build a **zero-config monitoring system** for LLM usage with progressive enhance
 ### Tier 1: Developer Install (Default - Zero Config)
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 empathy workflow run code-review
 ```
 
@@ -78,7 +78,7 @@ empathy alerts init  # Interactive 3-question wizard
 #### Enable OTEL Export
 ```bash
 export EMPATHY_OTEL_ENDPOINT=http://localhost:4317
-pip install empathy-framework[otel]
+pip install attune-ai[otel]
 ```
 
 **What happens:**
@@ -265,7 +265,7 @@ website/components/telemetry/
 5. Optional: Watch file for changes → auto-refresh
 
 **Integration Points:**
-- Reuse `TelemetryAnalytics` from [telemetry.py](../../src/empathy_os/models/telemetry.py:332-527)
+- Reuse `TelemetryAnalytics` from [telemetry.py](../../src/attune/models/telemetry.py:332-527)
 - Call Python analytics via VSCode extension bridge
 - Cache results in extension state (update every 30s)
 
@@ -344,7 +344,7 @@ alerts:
 ### 2.2 Alert Engine Architecture
 
 ```python
-# src/empathy_os/monitoring/alerts.py
+# src/attune/monitoring/alerts.py
 
 from dataclasses import dataclass
 from enum import Enum
@@ -452,7 +452,7 @@ empathy alerts trigger --rule high_daily_cost --test
 - Configurable OTLP endpoint
 - Batch export (performance optimization)
 - Attribute mapping (LLM-specific → OTEL semantic conventions)
-- Optional dependency (`pip install empathy-framework[otel]`)
+- Optional dependency (`pip install attune-ai[otel]`)
 
 **OTEL Semantic Conventions Mapping:**
 
@@ -472,7 +472,7 @@ empathy alerts trigger --rule high_daily_cost --test
 ### 3.2 Implementation
 
 ```python
-# src/empathy_os/monitoring/otel_backend.py
+# src/attune/monitoring/otel_backend.py
 
 from typing import Any
 from opentelemetry import trace
@@ -488,7 +488,7 @@ class OpenTelemetryBackend(TelemetryBackend):
     Usage:
         >>> backend = OpenTelemetryBackend(
         ...     endpoint="http://localhost:4317",
-        ...     service_name="empathy-framework"
+        ...     service_name="attune-ai"
         ... )
         >>> backend.log_call(llm_call_record)
 
@@ -502,7 +502,7 @@ class OpenTelemetryBackend(TelemetryBackend):
     def __init__(
         self,
         endpoint: str = "http://localhost:4317",
-        service_name: str = "empathy-framework",
+        service_name: str = "attune-ai",
         headers: dict[str, str] | None = None,
     ):
         self.endpoint = endpoint
@@ -628,7 +628,7 @@ class OpenTelemetryBackend(TelemetryBackend):
 otel:
   enabled: true
   endpoint: "http://localhost:4317"
-  service_name: "empathy-framework"
+  service_name: "attune-ai"
   headers:
     authorization: "Bearer YOUR_API_KEY"
 
@@ -663,7 +663,7 @@ backends:
 **Tasks:**
 1. **Setup** (2 hours)
    - [ ] Create `docs/specs/MONITORING_SYSTEM_SPEC.md`
-   - [ ] Create `src/empathy_os/monitoring/` package
+   - [ ] Create `src/attune/monitoring/` package
    - [ ] Add Sprint 1 tracking to project board
 
 2. **VSCode Panel Foundation** (1 day)
@@ -761,7 +761,7 @@ backends:
 
 **Tasks:**
 1. **Alert System Foundation** (2 days)
-   - [ ] Create `src/empathy_os/monitoring/alerts.py`
+   - [ ] Create `src/attune/monitoring/alerts.py`
    - [ ] Implement `AlertRule`, `AlertCondition`, `AlertAction` classes
    - [ ] Implement `AlertEngine` with rule evaluation
    - [ ] Create SQLite database for alert configuration
@@ -781,8 +781,8 @@ backends:
    - [ ] Add retry logic and error handling
 
 4. **OTEL Backend** (1.5 days)
-   - [ ] Add optional dependency: `pip install empathy-framework[otel]`
-   - [ ] Create `src/empathy_os/monitoring/otel_backend.py`
+   - [ ] Add optional dependency: `pip install attune-ai[otel]`
+   - [ ] Create `src/attune/monitoring/otel_backend.py`
    - [ ] Implement `OpenTelemetryBackend` class
    - [ ] Map LLMCallRecord → OTEL span attributes
    - [ ] Environment variable configuration (no YAML required)
@@ -839,7 +839,7 @@ monitoring = [
 ### File Structure
 
 ```
-src/empathy_os/monitoring/
+src/attune/monitoring/
 ├── __init__.py
 ├── alerts.py                    # Alert engine
 ├── otel_backend.py              # OpenTelemetry backend
@@ -908,7 +908,7 @@ tests/monitoring/
 
 ### Sprint 1
 - [ ] VSCode panel loads telemetry data
-- [ ] Overview stats match CLI output (`python -m empathy_os.models.cli telemetry`)
+- [ ] Overview stats match CLI output (`python -m attune.models.cli telemetry`)
 - [ ] Activity feed shows recent calls
 - [ ] Click-through to source files works
 

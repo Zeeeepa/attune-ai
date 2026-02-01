@@ -27,7 +27,7 @@ description: Meta-Orchestration API Reference API reference: **Version:** 3.12.0
 The meta-orchestration system consists of 5 main modules:
 
 ```
-empathy_os.orchestration/
+attune.orchestration/
 ├── agent_templates.py      # Agent archetypes and capabilities
 ├── meta_orchestrator.py    # Task analysis and agent selection
 ├── execution_strategies.py # 6 composition patterns
@@ -39,7 +39,7 @@ empathy_os.orchestration/
 
 ## Agent Templates
 
-**Module:** `empathy_os.orchestration.agent_templates`
+**Module:** `attune.orchestration.agent_templates`
 
 ### Classes
 
@@ -253,7 +253,7 @@ capable_templates = get_templates_by_tier("CAPABLE")
 
 ## Meta-Orchestrator
 
-**Module:** `empathy_os.orchestration.meta_orchestrator`
+**Module:** `attune.orchestration.meta_orchestrator`
 
 ### Enums
 
@@ -430,7 +430,7 @@ print(f"Duration: {plan.estimated_duration}s")
 
 ## Execution Strategies
 
-**Module:** `empathy_os.orchestration.execution_strategies`
+**Module:** `attune.orchestration.execution_strategies`
 
 ### Dataclasses
 
@@ -770,7 +770,7 @@ STRATEGY_REGISTRY = {
 
 ## Configuration Store
 
-**Module:** `empathy_os.orchestration.config_store`
+**Module:** `attune.orchestration.config_store`
 
 ### Dataclasses
 
@@ -1055,7 +1055,7 @@ for config in all_configs:
 
 ## Workflows
 
-**Module:** `empathy_os.workflows`
+**Module:** `attune.workflows`
 
 ### Release Preparation
 
@@ -1226,13 +1226,13 @@ print(f"New tests: {result['tests_generated']}")
 
 ```python
 import asyncio
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
-from empathy_os.orchestration.execution_strategies import get_strategy
-from empathy_os.orchestration.config_store import (
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.orchestration.execution_strategies import get_strategy
+from attune.orchestration.config_store import (
     ConfigurationStore,
     AgentConfiguration,
 )
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 
@@ -1328,8 +1328,8 @@ except ValueError as e:
 
 - **User Guide:** [ORCHESTRATION_USER_GUIDE.md](ORCHESTRATION_USER_GUIDE.md)
 - **Examples:** [examples/orchestration/](../examples/orchestration/)
-- **Source Code:** [src/empathy_os/orchestration/](../src/empathy_os/orchestration/)
+- **Source Code:** [src/attune/orchestration/](../src/attune/orchestration/)
 
 ---
 
-**Questions?** Open an issue on [GitHub](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+**Questions?** Open an issue on [GitHub](https://github.com/Smart-AI-Memory/attune-ai/issues)

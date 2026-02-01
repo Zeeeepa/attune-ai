@@ -10,8 +10,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_os.cache_monitor import CacheMonitor
-from empathy_os.pattern_cache import PatternMatchCache, cached_pattern_query
+from attune.cache_monitor import CacheMonitor
+from attune.pattern_cache import PatternMatchCache, cached_pattern_query
 
 
 class TestPatternMatchCache:

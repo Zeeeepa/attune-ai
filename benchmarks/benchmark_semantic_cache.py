@@ -13,9 +13,9 @@ import asyncio
 import time
 from pathlib import Path
 
-from empathy_os.cache import create_cache
-from empathy_os.workflows.code_review import CodeReviewWorkflow
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.cache import create_cache
+from attune.workflows.code_review import CodeReviewWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 # Test cases with semantic variations
 CODE_REVIEW_PROMPTS = {

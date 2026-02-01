@@ -56,8 +56,8 @@ Modules to Test:
 --------------------------------------------------------------------
 Module                                             Uncovered Lines
 --------------------------------------------------------------------
-src/empathy_os/config.py                                       120
-src/empathy_os/workflows/base.py                              200
+src/attune/config.py                                       120
+src/attune/workflows/base.py                              200
 ...
 --------------------------------------------------------------------
 TOTAL                                                        1,645
@@ -240,11 +240,11 @@ All scripts expect `/tmp/coverage_batches.json` with this format:
   "batch_10": {
     "modules": [
       {
-        "module": "src/empathy_os/config.py",
+        "module": "src/attune/config.py",
         "uncovered_lines": 120
       },
       {
-        "module": "src/empathy_os/workflows/base.py",
+        "module": "src/attune/workflows/base.py",
         "uncovered_lines": 200
       }
     ],
@@ -294,7 +294,7 @@ Then run with:
 
 **Solution**: Run from project root
 ```bash
-cd /path/to/empathy-framework
+cd /path/to/attune-ai
 python scripts/batch10_workflow.py
 ```
 
@@ -304,7 +304,7 @@ python scripts/batch10_workflow.py
 **Solution**: Generate coverage batches first or check path
 
 ### Module import errors
-**Problem**: `ModuleNotFoundError: No module named 'empathy_os'`
+**Problem**: `ModuleNotFoundError: No module named 'attune'`
 
 **Solution**: Install package in development mode
 ```bash

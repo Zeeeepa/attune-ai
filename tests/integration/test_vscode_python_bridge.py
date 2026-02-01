@@ -16,7 +16,7 @@ def test_workflow_discovery_via_cli():
     """Test that VSCode can discover workflows via Python CLI."""
     # This simulates what WorkflowDiscoveryService.discoverFromPythonCLI() does
     result = subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "workflow", "list", "--json"],
+        [sys.executable, "-m", "attune.cli", "workflow", "list", "--json"],
         check=False,
         capture_output=True,
         text=True,
@@ -40,7 +40,7 @@ def test_workflow_discovery_via_cli():
 def test_workflow_metadata_structure():
     """Test that workflow metadata has expected structure for VSCode."""
     result = subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "workflow", "list", "--json"],
+        [sys.executable, "-m", "attune.cli", "workflow", "list", "--json"],
         check=False,
         capture_output=True,
         text=True,
@@ -64,7 +64,7 @@ def test_workflow_metadata_structure():
 def test_workflow_names_match_expectations():
     """Test that discovered workflows match expected names."""
     result = subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "workflow", "list", "--json"],
+        [sys.executable, "-m", "attune.cli", "workflow", "list", "--json"],
         check=False,
         capture_output=True,
         text=True,
@@ -91,7 +91,7 @@ def test_workflow_names_match_expectations():
 def test_workflow_categorization_coverage():
     """Test that all workflows can be categorized."""
     result = subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "workflow", "list", "--json"],
+        [sys.executable, "-m", "attune.cli", "workflow", "list", "--json"],
         check=False,
         capture_output=True,
         text=True,
@@ -133,7 +133,7 @@ def test_workflow_categorization_coverage():
 def test_workflow_cli_json_format():
     """Test that CLI returns valid JSON format."""
     result = subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "workflow", "list", "--json"],
+        [sys.executable, "-m", "attune.cli", "workflow", "list", "--json"],
         check=False,
         capture_output=True,
         text=True,
@@ -152,7 +152,7 @@ def test_workflow_cli_json_format():
 def test_vscode_workflow_picker_data_format():
     """Test that workflow data is suitable for VSCode Quick Pick."""
     result = subprocess.run(
-        [sys.executable, "-m", "empathy_os.cli", "workflow", "list", "--json"],
+        [sys.executable, "-m", "attune.cli", "workflow", "list", "--json"],
         check=False,
         capture_output=True,
         text=True,

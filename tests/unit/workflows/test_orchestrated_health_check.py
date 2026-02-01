@@ -18,8 +18,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.orchestration.execution_strategies import AgentResult, StrategyResult
-from empathy_os.workflows.orchestrated_health_check import (
+from attune.orchestration.execution_strategies import AgentResult, StrategyResult
+from attune.workflows.orchestrated_health_check import (
     CategoryScore,
     HealthCheckReport,
     OrchestratedHealthCheckWorkflow,
@@ -197,7 +197,7 @@ class TestOrchestratedHealthCheckWorkflow:
 
         # Mock the strategy execution
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             # Create mock agent results
             mock_results = [
@@ -254,7 +254,7 @@ class TestOrchestratedHealthCheckWorkflow:
         workflow = OrchestratedHealthCheckWorkflow(mode="weekly", project_root=str(tmp_path))
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_results = [
                 AgentResult(
@@ -316,7 +316,7 @@ class TestOrchestratedHealthCheckWorkflow:
         workflow = OrchestratedHealthCheckWorkflow(mode="release", project_root=str(tmp_path))
 
         with patch(
-            "empathy_os.workflows.orchestrated_health_check.ParallelStrategy"
+            "attune.workflows.orchestrated_health_check.ParallelStrategy"
         ) as mock_strategy:
             mock_results = [
                 AgentResult(
@@ -643,7 +643,7 @@ async def test_health_check_integration(tmp_path):
     """Integration test for complete health check workflow."""
     workflow = OrchestratedHealthCheckWorkflow(mode="weekly", project_root=str(tmp_path))
 
-    with patch("empathy_os.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
+    with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
         # Create comprehensive mock results
         mock_results = [
             AgentResult(

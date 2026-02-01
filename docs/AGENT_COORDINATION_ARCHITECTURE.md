@@ -28,7 +28,7 @@ This document proposes innovative patterns for using TTL (Time-To-Live) and tele
 
 ### Existing TTL Strategies
 
-From [memory/types.py:39-56](../src/empathy_os/memory/types.py#L39-L56):
+From [memory/types.py:39-56](../src/attune/memory/types.py#L39-L56):
 
 ```python
 class TTLStrategy(Enum):
@@ -43,7 +43,7 @@ class TTLStrategy(Enum):
 
 ### Existing Telemetry Capabilities
 
-From [telemetry/usage_tracker.py](../src/empathy_os/telemetry/usage_tracker.py):
+From [telemetry/usage_tracker.py](../src/attune/telemetry/usage_tracker.py):
 
 - **LLM Call Tracking** - Workflow, stage, tier, model, cost, tokens, duration
 - **Cache Statistics** - Hit rates, reads, writes, savings
@@ -52,7 +52,7 @@ From [telemetry/usage_tracker.py](../src/empathy_os/telemetry/usage_tracker.py):
 
 ### Existing Redis Features
 
-From [memory/short_term.py](../src/empathy_os/memory/short_term.py):
+From [memory/short_term.py](../src/attune/memory/short_term.py):
 
 - **Pub/Sub** - Real-time message broadcasting
 - **Streams** - Append-only event log (Redis 5.0+)
@@ -71,13 +71,13 @@ From [memory/short_term.py](../src/empathy_os/memory/short_term.py):
 ### Implementation
 
 ```python
-# File: src/empathy_os/orchestration/heartbeat.py
+# File: src/attune/orchestration/heartbeat.py
 
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
-from empathy_os.memory import RedisShortTermMemory
-from empathy_os.memory.types import TTLStrategy
+from attune.memory import RedisShortTermMemory
+from attune.memory.types import TTLStrategy
 
 @dataclass
 class AgentHeartbeat:
@@ -289,7 +289,7 @@ class ParallelStrategy(ExecutionStrategy):
 ### Signal Types
 
 ```python
-# File: src/empathy_os/orchestration/signals.py
+# File: src/attune/orchestration/signals.py
 
 from enum import Enum
 from dataclasses import dataclass
@@ -471,10 +471,10 @@ for signal in signals:
 ### Adaptive Model Router
 
 ```python
-# File: src/empathy_os/models/adaptive_routing.py
+# File: src/attune/models/adaptive_routing.py
 
 from dataclasses import dataclass
-from empathy_os.telemetry import UsageTracker
+from attune.telemetry import UsageTracker
 
 @dataclass
 class ModelPerformance:
@@ -663,12 +663,12 @@ class BaseWorkflow:
 ### Event Stream Architecture
 
 ```python
-# File: src/empathy_os/monitoring/event_stream.py
+# File: src/attune/monitoring/event_stream.py
 
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
-from empathy_os.memory import RedisShortTermMemory
+from attune.memory import RedisShortTermMemory
 
 @dataclass
 class WorkflowEvent:
@@ -968,11 +968,11 @@ export async function GET(request: Request) {
 ### Approval Flow
 
 ```python
-# File: src/empathy_os/orchestration/approval.py
+# File: src/attune/orchestration/approval.py
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from empathy_os.memory import RedisShortTermMemory
+from attune.memory import RedisShortTermMemory
 
 @dataclass
 class ApprovalRequest:
@@ -1214,7 +1214,7 @@ async def execute(self, input_data: dict):
 ### Feedback System
 
 ```python
-# File: src/empathy_os/models/feedback.py
+# File: src/attune/models/feedback.py
 
 from dataclasses import dataclass
 from enum import Enum

@@ -45,14 +45,14 @@ repos:
   #     - id: mypy
   #       additional_dependencies: [types-pyyaml, types-requests]
   #       args: ['--ignore-missing-imports', '--no-strict-optional']
-  #       files: ^(src|empathy_software_plugin|empathy_llm_toolkit|coach_wizards)/
+  #       files: ^(src|attune_software|attune_llm|coach_wizards)/
 
   # Bandit - Security linter
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.6
     hooks:
       - id: bandit
-        args: ['-c', '.bandit', '-r', 'src/', 'empathy_software_plugin/', 'empathy_llm_toolkit/', 'coach_wizards/', '--severity-level', 'medium', '--confidence-level', 'medium']
+        args: ['-c', '.bandit', '-r', 'src/', 'attune_software/', 'attune_llm/', 'coach_wizards/', '--severity-level', 'medium', '--confidence-level', 'medium']
         pass_filenames: false
 
   # Detect-secrets - Prevent secrets from being committed
@@ -71,8 +71,8 @@ repos:
             dashboard/|
             website/|
             src/|
-            empathy_software_plugin/|
-            empathy_llm_toolkit/|
+            attune_software/|
+            attune_llm/|
             memdocs_storage/|
             demo_security_complete\.py$|
             test_memory_integration\.py$|
@@ -107,7 +107,7 @@ repos:
     hooks:
       - id: regenerate-patterns
         name: Regenerate Pattern Summary
-        entry: python -m empathy_llm_toolkit.pattern_summary
+        entry: python -m attune_llm.pattern_summary
         language: python
         pass_filenames: false
         files: ^patterns/.*\.json$
@@ -117,7 +117,7 @@ repos:
       # Reviews staged code against historical bug patterns
       - id: pattern-review
         name: Pattern-Based Code Review
-        entry: python -m empathy_os.cli review --staged --severity warning
+        entry: python -m attune.cli review --staged --severity warning
         language: python
         pass_filenames: false
         stages: [manual]  # Run manually with: pre-commit run pattern-review
@@ -127,7 +127,7 @@ repos:
       # Detects hardcoded paths, missing encoding, asyncio issues
       - id: platform-compat
         name: Cross-Platform Compatibility Check
-        entry: python scripts/check_platform_compat.py src/ empathy_llm_toolkit/ empathy_software_plugin/ coach_wizards/
+        entry: python scripts/check_platform_compat.py src/ attune_llm/ attune_software/ coach_wizards/
         language: python
         pass_filenames: false
         stages: [manual]  # Run manually with: pre-commit run platform-compat

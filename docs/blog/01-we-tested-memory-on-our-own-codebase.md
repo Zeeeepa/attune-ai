@@ -243,7 +243,7 @@ That's the fundamental insight. Scanning is easy. Learning is hard. And learning
 ## Try It Yourself
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 
 # Run the full repo test
 python examples/full_repo_test.py

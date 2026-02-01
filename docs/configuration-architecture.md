@@ -12,8 +12,8 @@ The framework uses **two distinct configuration classes** for different concerns
 
 | Config Class | Location | Purpose |
 |-------------|----------|---------|
-| `EmpathyConfig` | `src/empathy_os/config.py` | Core empathy-level settings |
-| `WorkflowConfig` | `src/empathy_os/workflows/config.py` | Model routing and workflow settings |
+| `EmpathyConfig` | `src/attune/config.py` | Core empathy-level settings |
+| `WorkflowConfig` | `src/attune/workflows/config.py` | Model routing and workflow settings |
 
 ## EmpathyConfig
 
@@ -68,7 +68,7 @@ class EmpathyConfig:
 ### Loading
 
 ```python
-from empathy_os.config import EmpathyConfig, load_config
+from attune.config import EmpathyConfig, load_config
 
 # Direct instantiation
 config = EmpathyConfig(user_id="alice", target_level=4)
@@ -113,7 +113,7 @@ class WorkflowConfig:
 ### Loading
 
 ```python
-from empathy_os.workflows.config import WorkflowConfig
+from attune.workflows.config import WorkflowConfig
 
 # Load from default locations
 config = WorkflowConfig.load()
@@ -182,13 +182,13 @@ If you encounter `TypeError: EmpathyConfig.__init__() got an unexpected keyword 
 
 | Class | Location | Purpose |
 |-------|----------|---------|
-| `WorkflowConfig` | `src/empathy_os/workflows/config.py` | Model routing settings (provider, tiers) |
-| `WorkflowConfig` | `empathy_llm_toolkit/config/unified.py` | Agent workflow execution settings |
+| `WorkflowConfig` | `src/attune/workflows/config.py` | Model routing settings (provider, tiers) |
+| `WorkflowConfig` | `attune_llm/config/unified.py` | Agent workflow execution settings |
 
 These are **completely different classes** with different fields:
 
 ```python
-# empathy_os.workflows.config.WorkflowConfig (dataclass)
+# attune.workflows.config.WorkflowConfig (dataclass)
 # Used for: Model routing and provider selection
 WorkflowConfig(
     default_provider="anthropic",
@@ -196,7 +196,7 @@ WorkflowConfig(
     custom_models={...}
 )
 
-# empathy_llm_toolkit.config.unified.WorkflowConfig (Pydantic)
+# attune_llm.config.unified.WorkflowConfig (Pydantic)
 # Used for: Agent workflow execution configuration
 WorkflowConfig(
     name="my_workflow",
@@ -208,14 +208,14 @@ WorkflowConfig(
 
 **Recommendation:** When importing, use explicit module paths:
 ```python
-from empathy_os.workflows.config import WorkflowConfig as ModelRoutingConfig
-from empathy_llm_toolkit.config.unified import WorkflowConfig as AgentWorkflowConfig
+from attune.workflows.config import WorkflowConfig as ModelRoutingConfig
+from attune_llm.config.unified import WorkflowConfig as AgentWorkflowConfig
 ```
 
 ## Related Files
 
-- `src/empathy_os/config.py` - EmpathyConfig implementation
-- `src/empathy_os/workflows/config.py` - WorkflowConfig (model routing)
-- `empathy_llm_toolkit/config/unified.py` - WorkflowConfig (agent workflows)
-- `src/empathy_os/models/registry.py` - Model registry (source of model IDs)
+- `src/attune/config.py` - EmpathyConfig implementation
+- `src/attune/workflows/config.py` - WorkflowConfig (model routing)
+- `attune_llm/config/unified.py` - WorkflowConfig (agent workflows)
+- `src/attune/models/registry.py` - Model registry (source of model IDs)
 - `empathy.config.yml` - Main configuration file

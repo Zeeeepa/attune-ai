@@ -206,10 +206,10 @@ docs/
 
 ### Week 1-2: Phase 3C - Developer Experience
 **Your focus**: Enhanced CLI commands
-- [ ] Implement `empathy-framework run` (interactive REPL)
-- [ ] Implement `empathy-framework inspect` (pattern/metrics inspection)
-- [ ] Implement `empathy-framework export` (pattern backup/sharing)
-- [ ] Implement `empathy-framework wizard` (interactive setup)
+- [ ] Implement `attune-ai run` (interactive REPL)
+- [ ] Implement `attune-ai inspect` (pattern/metrics inspection)
+- [ ] Implement `attune-ai export` (pattern backup/sharing)
+- [ ] Implement `attune-ai wizard` (interactive setup)
 
 **Patrick's focus**: MkDocs documentation
 - [ ] Setup MkDocs with Material theme

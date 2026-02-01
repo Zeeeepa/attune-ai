@@ -136,4 +136,4 @@ npm run watch
 
 - Full documentation: [README.md](./README.md)
 - API docs: http://localhost:8765/docs (when server is running)
-- Issues: https://github.com/your-org/empathy-framework/issues
+- Issues: https://github.com/your-org/attune-ai/issues

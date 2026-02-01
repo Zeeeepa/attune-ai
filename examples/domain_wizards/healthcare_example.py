@@ -16,8 +16,8 @@ Usage:
 import asyncio
 import os
 
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm import EmpathyLLM
+from attune_llm.wizards import HealthcareWizard
 
 
 def print_section(title: str):

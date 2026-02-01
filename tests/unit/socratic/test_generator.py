@@ -14,8 +14,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.socratic.blueprint import AgentBlueprint, AgentRole, StageSpec, WorkflowBlueprint
-from empathy_os.socratic.generator import (
+from attune.socratic.blueprint import AgentBlueprint, AgentRole, StageSpec, WorkflowBlueprint
+from attune.socratic.generator import (
     AGENT_TEMPLATES,
     TOOL_REGISTRY,
     AgentGenerator,
@@ -281,7 +281,7 @@ class TestAgentGeneratorInitialization:
 
     def test_register_tool(self):
         """Test registering a custom tool."""
-        from empathy_os.socratic.blueprint import ToolCategory, ToolSpec
+        from attune.socratic.blueprint import ToolCategory, ToolSpec
 
         generator = AgentGenerator()
         custom_tool = ToolSpec(
@@ -431,7 +431,7 @@ class TestAgentGeneratorWorkflow:
     def test_generate_workflow_success(self, generator, valid_blueprint):
         """Test successful workflow generation."""
         with patch(
-            "empathy_os.socratic.generator.AgentGenerator._create_xml_agent"
+            "attune.socratic.generator.AgentGenerator._create_xml_agent"
         ) as mock_create:
             mock_agent = MagicMock()
             mock_create.return_value = mock_agent

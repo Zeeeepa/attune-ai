@@ -15,8 +15,8 @@ import asyncio
 import time
 from datetime import datetime
 
-from empathy_os.telemetry import CoordinationSignals, HeartbeatCoordinator
-from empathy_os.telemetry.event_streaming import EventStreamer
+from attune.telemetry import CoordinationSignals, HeartbeatCoordinator
+from attune.telemetry.event_streaming import EventStreamer
 
 
 def demo_heartbeat_streaming():

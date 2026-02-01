@@ -10,14 +10,14 @@ Demonstrates:
 import asyncio
 from pathlib import Path
 
-from empathy_os.models import (
+from attune.models import (
     AuthMode,
     AuthStrategy,
     SubscriptionTier,
     count_lines_of_code,
     get_module_size_category,
 )
-from empathy_os.workflows.bug_predict import BugPredictionWorkflow
+from attune.workflows.bug_predict import BugPredictionWorkflow
 
 
 async def test_bug_predict_with_auth():
@@ -25,8 +25,8 @@ async def test_bug_predict_with_auth():
     print("🔍 Testing Bug Prediction + Auth Strategy Integration\n")
     print("=" * 60)
 
-    # Test on src/empathy_os directory
-    test_dir = Path("src/empathy_os")
+    # Test on src/attune directory
+    test_dir = Path("src/attune")
 
     if not test_dir.exists():
         print(f"❌ Test directory not found: {test_dir}")
@@ -53,7 +53,7 @@ async def test_bug_predict_with_auth():
         setup_completed=True,
     )
     max_strategy.save()
-    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.attune/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(codebase_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")
@@ -82,7 +82,7 @@ async def test_bug_predict_with_auth():
     print("   Auth strategy: ENABLED")
     print(f"   Expected recommendation: {recommended_mode.value}")
 
-    # Run workflow on src/empathy_os
+    # Run workflow on src/attune
     result = await workflow.execute(
         path=str(test_dir),
         file_types=[".py"],

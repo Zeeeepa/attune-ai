@@ -17,9 +17,9 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.models import ExecutionContext, LLMResponse, MockLLMExecutor, get_tier_for_task
-from empathy_os.models.fallback import CircuitBreaker, ResilientExecutor, RetryPolicy
-from empathy_os.models.telemetry import TelemetryStore
+from attune.models import ExecutionContext, LLMResponse, MockLLMExecutor, get_tier_for_task
+from attune.models.fallback import CircuitBreaker, ResilientExecutor, RetryPolicy
+from attune.models.telemetry import TelemetryStore
 
 
 class TestExecutionContext:
@@ -288,7 +288,7 @@ class TestTelemetryIntegration:
 
     def test_telemetry_log_call(self):
         """Test logging an LLM call."""
-        from empathy_os.models.telemetry import LLMCallRecord
+        from attune.models.telemetry import LLMCallRecord
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store = TelemetryStore(storage_dir=Path(tmpdir))
@@ -351,7 +351,7 @@ class TestEndToEndWorkflowExecutor:
     @pytest.mark.asyncio
     async def test_workflow_creates_default_executor(self):
         """Test workflow creates executor if none provided."""
-        from empathy_os.workflows.base import BaseWorkflow, ModelTier
+        from attune.workflows.base import BaseWorkflow, ModelTier
 
         class TestWorkflow(BaseWorkflow):
             name = "test-workflow"
@@ -373,7 +373,7 @@ class TestEndToEndWorkflowExecutor:
     @pytest.mark.asyncio
     async def test_workflow_execution_with_mock_executor(self):
         """Test workflow execution using mock executor."""
-        from empathy_os.workflows.base import BaseWorkflow, ModelTier
+        from attune.workflows.base import BaseWorkflow, ModelTier
 
         mock = MockLLMExecutor(default_response="Stage complete")
 
@@ -399,7 +399,7 @@ class TestEndToEndWorkflowExecutor:
 
     def test_workflow_context_creation(self):
         """Test workflow creates proper execution context."""
-        from empathy_os.workflows.base import BaseWorkflow
+        from attune.workflows.base import BaseWorkflow
 
         class TestWorkflow(BaseWorkflow):
             name = "context-test"
@@ -427,8 +427,8 @@ class TestEndToEndWorkflowExecutor:
 
     def test_default_executor_is_resilient(self):
         """Test that default executor is wrapped with ResilientExecutor."""
-        from empathy_os.models.fallback import ResilientExecutor
-        from empathy_os.workflows.base import BaseWorkflow
+        from attune.models.fallback import ResilientExecutor
+        from attune.workflows.base import BaseWorkflow
 
         class TestWorkflow(BaseWorkflow):
             name = "resilience-test"
@@ -455,8 +455,8 @@ class TestProviderModelsSync:
 
     def test_provider_models_derived_from_registry(self):
         """Verify PROVIDER_MODELS is populated from MODEL_REGISTRY."""
-        from empathy_os.models import MODEL_REGISTRY
-        from empathy_os.workflows.base import PROVIDER_MODELS, ModelProvider, ModelTier
+        from attune.models import MODEL_REGISTRY
+        from attune.workflows.base import PROVIDER_MODELS, ModelProvider, ModelTier
 
         # Check anthropic models match
         assert ModelProvider.ANTHROPIC in PROVIDER_MODELS
@@ -475,7 +475,7 @@ class TestProviderModelsSync:
 
     def test_provider_models_contains_all_providers(self):
         """Verify all known providers are in PROVIDER_MODELS (Anthropic-only architecture)."""
-        from empathy_os.workflows.base import PROVIDER_MODELS, ModelProvider
+        from attune.workflows.base import PROVIDER_MODELS, ModelProvider
 
         assert ModelProvider.ANTHROPIC in PROVIDER_MODELS
         # Only Anthropic in v5.0.0
@@ -483,7 +483,7 @@ class TestProviderModelsSync:
 
     def test_provider_models_contains_all_tiers(self):
         """Verify all tiers are present for Anthropic (Anthropic-only architecture)."""
-        from empathy_os.workflows.base import PROVIDER_MODELS, ModelProvider, ModelTier
+        from attune.workflows.base import PROVIDER_MODELS, ModelProvider, ModelTier
 
         # Only test Anthropic in v5.0.0
         assert ModelTier.CHEAP in PROVIDER_MODELS[ModelProvider.ANTHROPIC]

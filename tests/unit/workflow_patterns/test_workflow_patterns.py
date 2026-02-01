@@ -8,17 +8,17 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.workflow_patterns.behavior import (
+from attune.workflow_patterns.behavior import (
     CodeScannerPattern,
     ConditionalTierPattern,
     ConfigDrivenPattern,
 )
-from empathy_os.workflow_patterns.core import CodeSection, PatternCategory, WorkflowComplexity
-from empathy_os.workflow_patterns.registry import (
+from attune.workflow_patterns.core import CodeSection, PatternCategory, WorkflowComplexity
+from attune.workflow_patterns.registry import (
     WorkflowPatternRegistry,
     get_workflow_pattern_registry,
 )
-from empathy_os.workflow_patterns.structural import (
+from attune.workflow_patterns.structural import (
     CrewBasedPattern,
     MultiStagePattern,
     SingleStagePattern,
@@ -312,7 +312,7 @@ class TestConfigDrivenPattern:
         helper_section = next((s for s in sections if s.location == "helper_functions"), None)
         assert helper_section is not None
         assert "_load_my_workflow_config" in helper_section.code
-        assert "empathy.config.yml" in helper_section.code
+        assert "attune.config.yml" in helper_section.code
 
 
 @pytest.mark.unit

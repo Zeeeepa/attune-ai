@@ -11,12 +11,13 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import (
+from attune.workflows.base import (
     BaseWorkflow,
     CostReport,
     ModelProvider,
     ModelTier,
     WorkflowResult,
+    WorkflowStage,
     _build_provider_models,
     _get_history_store,
     _load_workflow_history,
@@ -38,7 +39,7 @@ class TestModelTier:
 
     def test_model_tier_to_unified(self):
         """Test conversion to unified ModelTier."""
-        from empathy_os.models import ModelTier as UnifiedModelTier
+        from attune.models import ModelTier as UnifiedModelTier
 
         cheap = ModelTier.CHEAP.to_unified()
         assert isinstance(cheap, UnifiedModelTier)
@@ -55,7 +56,7 @@ class TestModelProvider:
 
     def test_model_provider_to_unified(self):
         """Test conversion to unified ModelProvider."""
-        from empathy_os.models import ModelProvider as UnifiedModelProvider
+        from attune.models import ModelProvider as UnifiedModelProvider
 
         anthropic = ModelProvider.ANTHROPIC.to_unified()
         assert isinstance(anthropic, UnifiedModelProvider)
@@ -136,7 +137,7 @@ class TestWorkflowHistory:
         )
 
         # Use WorkflowHistoryStore directly with isolated db
-        from empathy_os.workflows.history import WorkflowHistoryStore
+        from attune.workflows.history import WorkflowHistoryStore
         store = WorkflowHistoryStore(str(db_path))
 
         # Save a run
@@ -161,7 +162,7 @@ class TestWorkflowHistory:
         db_path = tmp_path / "test_stats.db"
 
         # Use WorkflowHistoryStore directly
-        from empathy_os.workflows.history import WorkflowHistoryStore
+        from attune.workflows.history import WorkflowHistoryStore
         store = WorkflowHistoryStore(str(db_path))
 
         # Get stats from empty database
@@ -201,14 +202,15 @@ class SimpleTestWorkflow(BaseWorkflow):
         super().__init__(**kwargs)
 
     async def run_stage(
-        self, stage_name: str, tier: ModelTier, input_data: dict, context: dict
-    ) -> dict:
-        """Run a single workflow stage (implementation for abstract method)."""
+        self, stage_name: str, tier: ModelTier, input_data: dict
+    ) -> tuple[str, int, int]:
+        """Run a single workflow stage (implementation for abstract method).
+
+        Returns:
+            Tuple of (output_data, input_tokens, output_tokens)
+        """
         # Simple mock implementation for testing
-        return {
-            "content": f"Mock result for {stage_name}",
-            "usage": {"input_tokens": 10, "output_tokens": 20},
-        }
+        return (f"Mock result for {stage_name}", 10, 20)
 
 
 # =============================================================================
@@ -224,7 +226,7 @@ class TestBaseWorkflowInitialization:
         workflow = SimpleTestWorkflow()
 
         assert workflow.name == "test_workflow"
-        assert workflow.default_provider == ModelProvider.ANTHROPIC
+        assert workflow.provider == ModelProvider.ANTHROPIC
         assert "analyze" in workflow.stages
         assert "synthesize" in workflow.stages
 
@@ -232,10 +234,10 @@ class TestBaseWorkflowInitialization:
         """Test workflow initializes cost tracking."""
         workflow = SimpleTestWorkflow()
 
-        assert hasattr(workflow, "total_cost")
-        assert workflow.total_cost == 0.0
-        assert hasattr(workflow, "total_input_tokens")
-        assert hasattr(workflow, "total_output_tokens")
+        # Cost tracking is done via cost_tracker and _stages_run
+        assert hasattr(workflow, "cost_tracker")
+        assert hasattr(workflow, "_stages_run")
+        assert workflow._stages_run == []
 
 
 class TestWorkflowModelSelection:
@@ -270,48 +272,43 @@ class TestWorkflowStageExecution:
         """Test _call_llm makes LLM API request."""
         workflow = SimpleTestWorkflow()
 
-        # Mock the LLM executor
-        mock_executor = AsyncMock()
-        mock_executor.execute_with_caching = AsyncMock(
-            return_value={
-                "content": "test response",
-                "usage": {"input_tokens": 10, "output_tokens": 20},
-            }
-        )
-
-        with patch.object(workflow, "_get_executor", return_value=mock_executor):
-            result = await workflow._call_llm(
-                tier=ModelTier.CHEAP, user_prompt="test prompt", context={}
+        # Mock run_step_with_executor (which _call_llm uses internally)
+        with patch.object(
+            workflow,
+            "run_step_with_executor",
+            new=AsyncMock(
+                return_value=("test response", 10, 20, 0.001)  # content, in_tokens, out_tokens, cost
+            )
+        ):
+            content, input_tokens, output_tokens = await workflow._call_llm(
+                tier=ModelTier.CHEAP,
+                system="system prompt",
+                user_message="test prompt"
             )
 
-            assert result["content"] == "test response"
-            mock_executor.execute_with_caching.assert_called_once()
+            assert content == "test response"
+            assert input_tokens == 10
+            assert output_tokens == 20
 
     @pytest.mark.asyncio
     async def test_run_stage_executes_stage(self):
         """Test run_stage executes a workflow stage."""
         workflow = SimpleTestWorkflow()
 
-        # Mock _call_llm
-        with patch.object(
-            workflow,
-            "_call_llm",
-            new=AsyncMock(
-                return_value={
-                    "content": "stage result",
-                    "usage": {"input_tokens": 5, "output_tokens": 10},
-                }
-            ),
-        ):
-            result = await workflow.run_stage(
-                stage_name="analyze",
-                tier=ModelTier.CHEAP,
-                input_data={"text": "analyze this"},
-                context={},
-            )
+        # Call run_stage directly (it's a concrete implementation in SimpleTestWorkflow)
+        result = await workflow.run_stage(
+            stage_name="analyze",
+            tier=ModelTier.CHEAP,
+            input_data={"text": "analyze this"},
+        )
 
-            assert "content" in result
-            assert result["content"] == "stage result"
+        # Result is a tuple: (output_data, input_tokens, output_tokens)
+        assert isinstance(result, tuple)
+        assert len(result) == 3
+        output_data, input_tokens, output_tokens = result
+        assert "Mock result for analyze" in output_data
+        assert input_tokens == 10
+        assert output_tokens == 20
 
     def test_should_skip_stage_defaults_to_false(self):
         """Test should_skip_stage returns False by default."""
@@ -362,33 +359,43 @@ class TestWorkflowCostCalculation:
     def test_generate_cost_report_creates_report(self):
         """Test _generate_cost_report creates CostReport."""
         workflow = SimpleTestWorkflow()
-        workflow.total_cost = 1.23
-        workflow.total_input_tokens = 100
-        workflow.total_output_tokens = 50
+
+        # Add mock stage data to _stages_run
+        workflow._stages_run = [
+            WorkflowStage(
+                name="test_stage",
+                tier=ModelTier.CHEAP,
+                description="Test stage",
+                duration_ms=100,
+                input_tokens=100,
+                output_tokens=50,
+                cost=1.23,
+                skipped=False,
+            )
+        ]
 
         report = workflow._generate_cost_report()
 
         assert isinstance(report, CostReport)
         assert report.total_cost == 1.23
-        assert report.input_tokens == 100
-        assert report.output_tokens == 50
+        assert report.by_stage.get("test_stage") == 1.23
 
 
 class TestWorkflowComplexityAssessment:
     """Test complexity assessment."""
 
     def test_assess_complexity_returns_tier_str(self):
-        """Test _assess_complexity returns tier recommendation."""
+        """Test _assess_complexity returns complexity level."""
         workflow = SimpleTestWorkflow()
 
-        # Simple input
+        # _assess_complexity returns "simple", "moderate", or "complex"
+        # based on number of stages and tier requirements
         complexity = workflow._assess_complexity({"text": "short"})
-        assert complexity in ["cheap", "capable", "premium"]
+        assert complexity in ["simple", "moderate", "complex"]
 
-        # Complex input
-        long_text = "word " * 500  # Long input
-        complexity2 = workflow._assess_complexity({"text": long_text})
-        assert complexity2 in ["cheap", "capable", "premium"]
+        # For SimpleTestWorkflow with 2 stages and no premium stages,
+        # it should return "simple"
+        assert complexity == "simple"
 
 
 class TestWorkflowDescribe:
@@ -418,24 +425,18 @@ class TestFullWorkflowExecution:
         """Test execute() runs all stages and returns result."""
         workflow = SimpleTestWorkflow()
 
-        # Mock _call_llm to avoid real API calls
-        with patch.object(
-            workflow,
-            "_call_llm",
-            new=AsyncMock(
-                return_value={
-                    "content": "mock response",
-                    "usage": {"input_tokens": 10, "output_tokens": 20},
-                }
-            ),
-        ):
-            result = await workflow.execute(text="test input")
+        # execute() will call our SimpleTestWorkflow.run_stage() implementation
+        # which returns mock data
+        result = await workflow.execute(text="test input")
 
-            assert isinstance(result, WorkflowResult)
-            assert result.workflow_name == "test_workflow"
-            assert result.stages_executed  # List of executed stages
-            assert result.cost_report.total_cost >= 0
+        assert isinstance(result, WorkflowResult)
+        # WorkflowResult doesn't have workflow_name attribute
+        # Check stages instead
+        assert len(result.stages) == 2  # analyze and synthesize
+        assert result.stages[0].name == "analyze"
+        assert result.stages[1].name == "synthesize"
+        assert result.cost_report.total_cost >= 0
 
 
 # Run with:
-# pytest tests/behavioral/test_workflow_base_behavioral.py -v --cov=src/empathy_os/workflows/base.py --cov-report=term-missing -n 0
+# pytest tests/behavioral/test_workflow_base_behavioral.py -v --cov=src/attune/workflows/base.py --cov-report=term-missing -n 0

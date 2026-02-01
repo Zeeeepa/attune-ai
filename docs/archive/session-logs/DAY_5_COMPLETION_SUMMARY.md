@@ -87,20 +87,20 @@ $ pytest tests/integration/test_meta_workflow_e2e.py -v
 
 ### 2. Coverage Analysis ✅
 
-**Command**: `pytest --cov=src/empathy_os/meta_workflows --cov-report=term-missing`
+**Command**: `pytest --cov=src/attune/meta_workflows --cov-report=term-missing`
 
 **Results**:
 ```
 Name                                                  Stmts   Miss   Cover   Missing
 ------------------------------------------------------------------------------------
-src/empathy_os/meta_workflows/__init__.py                 8      0 100.00%
-src/empathy_os/meta_workflows/agent_creator.py           63      0 100.00%
-src/empathy_os/meta_workflows/cli_meta_workflows.py     324    298   8.02%  (CLI execution not tested)
-src/empathy_os/meta_workflows/form_engine.py             56      5  91.07%
-src/empathy_os/meta_workflows/models.py                 152      2  98.68%
-src/empathy_os/meta_workflows/pattern_learner.py        273    105  61.54%
-src/empathy_os/meta_workflows/template_registry.py       72     41  43.06%
-src/empathy_os/meta_workflows/workflow.py               201     14  93.03%
+src/attune/meta_workflows/__init__.py                 8      0 100.00%
+src/attune/meta_workflows/agent_creator.py           63      0 100.00%
+src/attune/meta_workflows/cli_meta_workflows.py     324    298   8.02%  (CLI execution not tested)
+src/attune/meta_workflows/form_engine.py             56      5  91.07%
+src/attune/meta_workflows/models.py                 152      2  98.68%
+src/attune/meta_workflows/pattern_learner.py        273    105  61.54%
+src/attune/meta_workflows/template_registry.py       72     41  43.06%
+src/attune/meta_workflows/workflow.py               201     14  93.03%
 ------------------------------------------------------------------------------------
 TOTAL                                                  1149    465  59.53%
 
@@ -283,7 +283,7 @@ A10 SSRF                        N/A
 **Future Integration Points**:
 ```python
 # workflow.py: Add telemetry tracking
-from empathy_os.telemetry.usage_tracker import UsageTracker
+from attune.telemetry.usage_tracker import UsageTracker
 
 def _execute_agents_real(self, agents: list[AgentSpec]):
     """Execute agents with real LLM calls + telemetry."""

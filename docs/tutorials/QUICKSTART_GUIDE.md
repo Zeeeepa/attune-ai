@@ -29,7 +29,7 @@ By the end of this 5-minute guide, you'll have:
 ### Option A: Install via pip (Recommended)
 
 ```bash
-pip install empathy-framework anthropic
+pip install attune-ai anthropic
 ```
 
 ### Option B: Install from source
@@ -43,7 +43,7 @@ pip install -r requirements.txt
 **Verify Installation:**
 
 ```bash
-python -c "from empathy_llm_toolkit import EmpathyLLM; print('Success!')"
+python -c "from attune_llm import EmpathyLLM; print('Success!')"
 ```
 
 ---
@@ -80,7 +80,7 @@ Create a file called `hello_empathy.py`:
 ```python
 import asyncio
 import os
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 async def main():
     # Initialize with Claude (Level 1: Reactive)
@@ -301,8 +301,8 @@ EOF
 **Use the config in your code:**
 
 ```python
-from empathy_os.config import load_config
-from empathy_llm_toolkit import EmpathyLLM
+from attune.config import load_config
+from attune_llm import EmpathyLLM
 
 # Load config from file (with env var override)
 config = load_config("empathy.config.yml", use_env=True)
@@ -373,7 +373,7 @@ print(f"Total predictions: {len(all_predictions)}")
 
 ```python
 import asyncio
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 async def improve_code_interactively():
     llm = EmpathyLLM(provider="anthropic", target_level=4)
@@ -447,14 +447,14 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.10'
-      - run: pip install empathy-framework
+      - run: pip install attune-ai
       - run: python ci_check.py src/app.py
 ```
 
 ### Pattern 4: Multi-Model Usage
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 # Use Claude for complex reasoning (Level 4)
 claude = EmpathyLLM(
@@ -492,7 +492,7 @@ async def handle_request(user_input, priority):
 
 ## Troubleshooting
 
-### Issue: ImportError for empathy_llm_toolkit
+### Issue: ImportError for attune_llm
 
 **Solution:**
 
@@ -568,7 +568,7 @@ llm = EmpathyLLM(
 )
 
 # Or enable prompt caching (Claude only)
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider(
     use_prompt_caching=True,  # 90% cost reduction on repeated prompts
@@ -582,7 +582,7 @@ provider = AnthropicProvider(
 
 ```python
 # Use Claude's 200K context window for large codebases
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider(
     model="claude-3-5-sonnet-20241022"  # 200K context
@@ -705,7 +705,7 @@ Learn more: [Pricing](/pricing)
 
 ```bash
 # Install
-pip install empathy-framework anthropic
+pip install attune-ai anthropic
 
 # Set API key
 export ANTHROPIC_API_KEY=sk-ant-...
@@ -721,7 +721,7 @@ python analyze_code.py
 
 ```python
 # Initialize
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 llm = EmpathyLLM(provider="anthropic", target_level=4)
 
 # Interact

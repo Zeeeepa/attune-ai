@@ -18,12 +18,12 @@
 
 ### Phase 1: long_term.py Refactoring
 
-**File:** `src/empathy_os/memory/long_term.py`
+**File:** `src/attune/memory/long_term.py`
 **Reduction:** 1,498 lines → 921 lines (38% reduction, 577 lines extracted)
 
 **Extracted Modules:**
 ```python
-src/empathy_os/memory/
+src/attune/memory/
 ├── long_term_types.py      (99 lines)   # Pure types, enums, dataclasses
 ├── encryption.py           (159 lines)  # AES-256-GCM encryption manager
 ├── storage_backend.py      (167 lines)  # MemDocs file-based storage
@@ -42,12 +42,12 @@ src/empathy_os/memory/
 
 ### Phase 2: unified.py Refactoring
 
-**File:** `src/empathy_os/memory/unified.py`
+**File:** `src/attune/memory/unified.py`
 **Reduction:** 1,281 lines → 197 lines (85% reduction, 1,084 lines extracted)
 
 **Extracted Mixins:**
 ```python
-src/empathy_os/memory/mixins/
+src/attune/memory/mixins/
 ├── capabilities_mixin.py   (206 lines)  # Health checks, feature detection
 ├── lifecycle_mixin.py      (51 lines)   # Resource cleanup, context manager
 ├── short_term_mixin.py     (195 lines)  # Stash/retrieve, pattern staging
@@ -153,7 +153,7 @@ Coverage Status:
 ```
 New Directory Structure:
 
-src/empathy_os/memory/
+src/attune/memory/
 ├── long_term_types.py        # NEW
 ├── encryption.py             # NEW
 ├── storage_backend.py        # NEW

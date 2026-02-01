@@ -330,7 +330,7 @@ I acknowledge all security controls from enterprise CLAUDE.md apply.
 ```markdown
 # Project Memory: Empathy Framework
 # Location: ./.claude/CLAUDE.md
-# Project: empathy-framework
+# Project: attune-ai
 # Team: AI Platform
 
 ## Project Context
@@ -374,8 +374,8 @@ In addition to enterprise PII rules:
 
 ## Code Organization
 ```
-empathy_llm_toolkit/    # Core LLM wrapper with memory
-empathy_os/             # OS layer
+attune_llm/    # Core LLM wrapper with memory
+attune/             # OS layer
 coach_wizards/          # 16 wizards
 memdocs_integration/    # MemDocs with privacy
 ```
@@ -405,7 +405,7 @@ All team members have completed security training.
 ### Pattern Storage with Security
 
 ```python
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
+from attune_llm.claude_memory import ClaudeMemoryConfig
 from memdocs import MemDocs
 import re
 import json
@@ -428,7 +428,7 @@ class SecureMemDocsIntegration:
 
     def _load_security_policies(self) -> dict:
         """Extract security policies from enterprise memory"""
-        from empathy_llm_toolkit.claude_memory import ClaudeMemoryLoader
+        from attune_llm.claude_memory import ClaudeMemoryLoader
 
         loader = ClaudeMemoryLoader(self.claude_memory_config)
         memory = loader.load_all_memory()

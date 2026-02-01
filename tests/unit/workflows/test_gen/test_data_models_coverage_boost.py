@@ -7,7 +7,7 @@ Module: workflows/test_gen/data_models.py (38 lines)
 
 import pytest
 
-from empathy_os.workflows.test_gen.data_models import ClassSignature, FunctionSignature
+from attune.workflows.test_gen.data_models import ClassSignature, FunctionSignature
 
 # ============================================================================
 # FunctionSignature Dataclass Tests

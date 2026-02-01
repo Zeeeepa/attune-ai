@@ -15,8 +15,8 @@ import os
 
 import pytest
 
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.wizards import HealthcareWizard
+from attune_llm import EmpathyLLM
+from attune_llm.wizards import HealthcareWizard
 
 
 class TestHealthcareWizardConfiguration:

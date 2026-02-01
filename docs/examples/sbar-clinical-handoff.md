@@ -39,7 +39,7 @@ This example demonstrates how the Empathy Framework can anticipate when nurses n
 
 ```bash
 # Install with healthcare support
-pip install empathy-framework[healthcare]
+pip install attune-ai[healthcare]
 
 # Required for EHR integration (optional)
 pip install fhirclient>=4.0.0
@@ -52,8 +52,8 @@ pip install fhirclient>=4.0.0
 ### Load Clinical Protocol
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.healthcare import ClinicalProtocol
+from attune import EmpathyOS
+from attune.healthcare import ClinicalProtocol
 
 # Load SBAR protocol template
 sbar_protocol = ClinicalProtocol.load("sbar")
@@ -209,8 +209,8 @@ Next Shift Priorities:
 Instead of nurse manually requesting SBAR, the system anticipates based on shift patterns.
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.healthcare import ClinicalProtocol, ShiftMonitor
+from attune import EmpathyOS
+from attune.healthcare import ClinicalProtocol, ShiftMonitor
 import datetime
 
 # Create empathy with shift awareness
@@ -280,7 +280,7 @@ if simulate_shift(hour=18, day_of_week="Monday", patient_census=4):
 All patient data interactions must be audited for HIPAA compliance.
 
 ```python
-from empathy_os.healthcare import HIPAACompliantEmpathy
+from attune.healthcare import HIPAACompliantEmpathy
 import os
 
 # Create HIPAA-compliant empathy instance
@@ -343,9 +343,9 @@ response = empathy.interact(
 ### Fetch Patient Data from Epic
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.integrations import EpicIntegration
-from empathy_os.healthcare import ClinicalProtocol
+from attune import EmpathyOS
+from attune.integrations import EpicIntegration
+from attune.healthcare import ClinicalProtocol
 import os
 
 # Connect to Epic FHIR API
@@ -408,8 +408,8 @@ print(f"✅ SBAR saved to Epic: {sbar_document.id}")
 ### Detect Critical Situations
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.healthcare import SafetyMonitor, ClinicalProtocol
+from attune import EmpathyOS
+from attune.healthcare import SafetyMonitor, ClinicalProtocol
 
 # Create safety monitor with critical alert rules
 safety = SafetyMonitor()
@@ -489,8 +489,8 @@ print(response.response)
 ### Monitor Multiple Patients
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.healthcare import PatientDashboard, ClinicalProtocol
+from attune import EmpathyOS
+from attune.healthcare import PatientDashboard, ClinicalProtocol
 
 # Create dashboard for nurse's assigned patients
 dashboard = PatientDashboard(
@@ -544,8 +544,8 @@ for priority in priorities:
 Over time, the system learns patterns specific to your hospital unit.
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.healthcare import ClinicalProtocol
+from attune import EmpathyOS
+from attune.healthcare import ClinicalProtocol
 
 empathy = EmpathyOS(
     user_id="cardiology_unit",  # Shared across unit

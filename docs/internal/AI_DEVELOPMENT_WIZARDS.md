@@ -233,7 +233,7 @@ These wizards contribute patterns to the Level 5 (Systems) pattern library:
 ## Usage Example
 
 ```python
-from empathy_os.plugins import get_global_registry
+from attune.plugins import get_global_registry
 
 # Get software plugin
 registry = get_global_registry()

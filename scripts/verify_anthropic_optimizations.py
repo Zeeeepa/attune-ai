@@ -17,7 +17,7 @@ def test_track_4_token_counting():
     print("=" * 60)
 
     try:
-        from empathy_llm_toolkit.utils.tokens import (
+        from attune_llm.utils.tokens import (
             calculate_cost_with_cache, count_message_tokens, count_tokens,
             estimate_cost)
 
@@ -63,7 +63,7 @@ def test_track_2_cache_stats():
     print("=" * 60)
 
     try:
-        from empathy_os.telemetry.usage_tracker import UsageTracker
+        from attune.telemetry.usage_tracker import UsageTracker
 
         # Test cache stats method exists
         tracker = UsageTracker.get_instance()
@@ -107,12 +107,12 @@ def test_track_1_batch_api():
 
     try:
         # Test provider import
-        from empathy_llm_toolkit.providers import AnthropicBatchProvider
+        from attune_llm.providers import AnthropicBatchProvider
 
         print(f"✓ AnthropicBatchProvider imported")
 
         # Test workflow import
-        from empathy_os.workflows.batch_processing import (
+        from attune.workflows.batch_processing import (
             BatchProcessingWorkflow, BatchRequest, BatchResult)
 
         print(f"✓ BatchProcessingWorkflow imported")
@@ -120,7 +120,7 @@ def test_track_1_batch_api():
         print(f"✓ BatchResult dataclass available")
 
         # Test task classification
-        from empathy_os.models.tasks import (BATCH_ELIGIBLE_TASKS,
+        from attune.models.tasks import (BATCH_ELIGIBLE_TASKS,
                                              REALTIME_REQUIRED_TASKS)
 
         print(f"✓ BATCH_ELIGIBLE_TASKS defined ({len(BATCH_ELIGIBLE_TASKS)} tasks)")

@@ -21,7 +21,7 @@ class TestCodeReviewAdapters:
 
     def test_check_crew_available(self):
         """Test CodeReviewCrew availability check."""
-        from empathy_os.workflows.code_review_adapters import _check_crew_available
+        from attune.workflows.code_review_adapters import _check_crew_available
 
         result = _check_crew_available()
         # Should return True if CodeReviewCrew is installed
@@ -29,7 +29,7 @@ class TestCodeReviewAdapters:
 
     def test_crew_report_to_workflow_format(self):
         """Test converting CodeReviewReport to workflow format."""
-        from empathy_os.workflows.code_review_adapters import crew_report_to_workflow_format
+        from attune.workflows.code_review_adapters import crew_report_to_workflow_format
 
         # Create mock report
         mock_report = MagicMock()
@@ -83,7 +83,7 @@ class TestCodeReviewAdapters:
 
     def test_merge_code_review_results(self):
         """Test merging crew and workflow results."""
-        from empathy_os.workflows.code_review_adapters import merge_code_review_results
+        from attune.workflows.code_review_adapters import merge_code_review_results
 
         crew_report = {
             "quality_score": 80.0,
@@ -126,7 +126,7 @@ class TestCodeReviewAdapters:
 
     def test_merge_code_review_results_crew_only(self):
         """Test merging with only crew results."""
-        from empathy_os.workflows.code_review_adapters import merge_code_review_results
+        from attune.workflows.code_review_adapters import merge_code_review_results
 
         crew_report = {
             "quality_score": 90.0,
@@ -144,7 +144,7 @@ class TestCodeReviewAdapters:
 
     def test_merge_code_review_results_workflow_only(self):
         """Test merging with only workflow results."""
-        from empathy_os.workflows.code_review_adapters import merge_code_review_results
+        from attune.workflows.code_review_adapters import merge_code_review_results
 
         workflow_findings = {
             "security_score": 85.0,
@@ -169,7 +169,7 @@ class TestCodeReviewWorkflowWithCrew:
 
     def test_workflow_init_with_crew_disabled(self):
         """Test workflow initialization with crew explicitly disabled."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow(use_crew=False)
 
@@ -179,7 +179,7 @@ class TestCodeReviewWorkflowWithCrew:
 
     def test_workflow_init_with_crew_enabled(self):
         """Test workflow initialization with crew enabled."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow(use_crew=True)
 
@@ -190,13 +190,13 @@ class TestCodeReviewWorkflowWithCrew:
     @pytest.mark.asyncio
     async def test_crew_review_stage_fallback(self):
         """Test crew_review stage gracefully falls back when crew unavailable."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow(use_crew=True)
 
         # Mock _check_crew_available to return False
         with patch(
-            "empathy_os.workflows.code_review_adapters._check_crew_available",
+            "attune.workflows.code_review_adapters._check_crew_available",
             return_value=False,
         ):
             input_data = {"diff": "test code", "files_changed": ["test.py"]}
@@ -213,7 +213,7 @@ class TestCodeReviewWorkflowWithCrew:
     @pytest.mark.asyncio
     async def test_crew_review_stage_with_mocked_crew(self):
         """Test crew_review stage with mocked crew results."""
-        from empathy_os.workflows import CodeReviewWorkflow
+        from attune.workflows import CodeReviewWorkflow
 
         workflow = CodeReviewWorkflow(use_crew=True)
 
@@ -231,11 +231,11 @@ class TestCodeReviewWorkflowWithCrew:
 
         with (
             patch(
-                "empathy_os.workflows.code_review_adapters._check_crew_available",
+                "attune.workflows.code_review_adapters._check_crew_available",
                 return_value=True,
             ),
             patch(
-                "empathy_os.workflows.code_review_adapters._get_crew_review",
+                "attune.workflows.code_review_adapters._get_crew_review",
                 new_callable=AsyncMock,
                 return_value=mock_report,
             ),
@@ -263,7 +263,7 @@ class TestCodeReviewPipeline:
 
     def test_pipeline_init_full_mode(self):
         """Test pipeline initialization in full mode."""
-        from empathy_os.workflows import CodeReviewPipeline
+        from attune.workflows import CodeReviewPipeline
 
         pipeline = CodeReviewPipeline(mode="full")
 
@@ -273,7 +273,7 @@ class TestCodeReviewPipeline:
 
     def test_pipeline_init_standard_mode(self):
         """Test pipeline initialization in standard mode."""
-        from empathy_os.workflows import CodeReviewPipeline
+        from attune.workflows import CodeReviewPipeline
 
         pipeline = CodeReviewPipeline(mode="standard")
 
@@ -282,7 +282,7 @@ class TestCodeReviewPipeline:
 
     def test_pipeline_init_quick_mode(self):
         """Test pipeline initialization in quick mode."""
-        from empathy_os.workflows import CodeReviewPipeline
+        from attune.workflows import CodeReviewPipeline
 
         pipeline = CodeReviewPipeline(mode="quick")
 
@@ -291,7 +291,7 @@ class TestCodeReviewPipeline:
 
     def test_for_pr_review_factory(self):
         """Test for_pr_review factory method."""
-        from empathy_os.workflows import CodeReviewPipeline
+        from attune.workflows import CodeReviewPipeline
 
         # Small PR should use standard mode
         pipeline = CodeReviewPipeline.for_pr_review(files_changed=3)
@@ -303,7 +303,7 @@ class TestCodeReviewPipeline:
 
     def test_for_quick_check_factory(self):
         """Test for_quick_check factory method."""
-        from empathy_os.workflows import CodeReviewPipeline
+        from attune.workflows import CodeReviewPipeline
 
         pipeline = CodeReviewPipeline.for_quick_check()
         assert pipeline.mode == "quick"
@@ -311,7 +311,7 @@ class TestCodeReviewPipeline:
     @pytest.mark.asyncio
     async def test_pipeline_execute_quick_mode(self):
         """Test pipeline execution in quick mode (basic verification)."""
-        from empathy_os.workflows import CodeReviewPipeline
+        from attune.workflows import CodeReviewPipeline
 
         pipeline = CodeReviewPipeline.for_quick_check()
 
@@ -321,7 +321,7 @@ class TestCodeReviewPipeline:
         assert pipeline.parallel_crew is False
 
         # Verify the result dataclass structure
-        from empathy_os.workflows.code_review_pipeline import CodeReviewPipelineResult
+        from attune.workflows.code_review_pipeline import CodeReviewPipelineResult
 
         assert hasattr(CodeReviewPipelineResult, "__dataclass_fields__")
         fields = CodeReviewPipelineResult.__dataclass_fields__
@@ -342,7 +342,7 @@ class TestPRReviewWorkflow:
 
     def test_workflow_init_default(self):
         """Test default workflow initialization."""
-        from empathy_os.workflows import PRReviewWorkflow
+        from attune.workflows import PRReviewWorkflow
 
         workflow = PRReviewWorkflow()
 
@@ -352,7 +352,7 @@ class TestPRReviewWorkflow:
 
     def test_for_comprehensive_review_factory(self):
         """Test for_comprehensive_review factory method."""
-        from empathy_os.workflows import PRReviewWorkflow
+        from attune.workflows import PRReviewWorkflow
 
         workflow = PRReviewWorkflow.for_comprehensive_review()
 
@@ -361,7 +361,7 @@ class TestPRReviewWorkflow:
 
     def test_for_security_focused_factory(self):
         """Test for_security_focused factory method."""
-        from empathy_os.workflows import PRReviewWorkflow
+        from attune.workflows import PRReviewWorkflow
 
         workflow = PRReviewWorkflow.for_security_focused()
 
@@ -370,7 +370,7 @@ class TestPRReviewWorkflow:
 
     def test_for_code_quality_focused_factory(self):
         """Test for_code_quality_focused factory method."""
-        from empathy_os.workflows import PRReviewWorkflow
+        from attune.workflows import PRReviewWorkflow
 
         workflow = PRReviewWorkflow.for_code_quality_focused()
 
@@ -380,18 +380,18 @@ class TestPRReviewWorkflow:
     @pytest.mark.asyncio
     async def test_workflow_execute_with_fallback(self):
         """Test workflow execution with crews unavailable (fallback)."""
-        from empathy_os.workflows import PRReviewWorkflow
+        from attune.workflows import PRReviewWorkflow
 
         workflow = PRReviewWorkflow()
 
         # Mock both crews as unavailable
         with (
             patch(
-                "empathy_os.workflows.code_review_adapters._check_crew_available",
+                "attune.workflows.code_review_adapters._check_crew_available",
                 return_value=False,
             ),
             patch(
-                "empathy_os.workflows.security_adapters._check_crew_available",
+                "attune.workflows.security_adapters._check_crew_available",
                 return_value=False,
             ),
         ):
@@ -420,7 +420,7 @@ class TestWorkflowRegistry:
         Note: WORKFLOW_REGISTRY is lazily populated, so we use get_workflow()
         which triggers initialization.
         """
-        from empathy_os.workflows import CodeReviewPipeline, get_workflow, list_workflows
+        from attune.workflows import CodeReviewPipeline, get_workflow, list_workflows
 
         # list_workflows triggers registry initialization
         workflows = list_workflows()
@@ -435,7 +435,7 @@ class TestWorkflowRegistry:
         Note: WORKFLOW_REGISTRY is lazily populated, so we use get_workflow()
         which triggers initialization.
         """
-        from empathy_os.workflows import PRReviewWorkflow, get_workflow, list_workflows
+        from attune.workflows import PRReviewWorkflow, get_workflow, list_workflows
 
         # list_workflows triggers registry initialization
         workflows = list_workflows()
@@ -446,7 +446,7 @@ class TestWorkflowRegistry:
 
     def test_get_workflow(self):
         """Test get_workflow function."""
-        from empathy_os.workflows import CodeReviewPipeline, PRReviewWorkflow, get_workflow
+        from attune.workflows import CodeReviewPipeline, PRReviewWorkflow, get_workflow
 
         assert get_workflow("pro-review") == CodeReviewPipeline
         assert get_workflow("pr-review") == PRReviewWorkflow
@@ -463,8 +463,8 @@ class TestEndToEndIntegration:
     @pytest.mark.asyncio
     async def test_crew_review_full_flow(self):
         """Test complete pro-review flow - verify structure and imports."""
-        from empathy_os.workflows import CodeReviewPipeline
-        from empathy_os.workflows.code_review_pipeline import CodeReviewPipelineResult
+        from attune.workflows import CodeReviewPipeline
+        from attune.workflows.code_review_pipeline import CodeReviewPipelineResult
 
         # Verify pipeline can be created with different modes
         full_pipeline = CodeReviewPipeline.for_full_review()
@@ -507,7 +507,7 @@ class TestEndToEndIntegration:
     @pytest.mark.asyncio
     async def test_pr_review_full_flow(self):
         """Test complete pr-review flow with mocked crews."""
-        from empathy_os.workflows import PRReviewWorkflow
+        from attune.workflows import PRReviewWorkflow
 
         workflow = PRReviewWorkflow(
             use_code_crew=True,
@@ -538,20 +538,20 @@ class TestEndToEndIntegration:
 
         with (
             patch(
-                "empathy_os.workflows.code_review_adapters._check_crew_available",
+                "attune.workflows.code_review_adapters._check_crew_available",
                 return_value=True,
             ),
             patch(
-                "empathy_os.workflows.code_review_adapters._get_crew_review",
+                "attune.workflows.code_review_adapters._get_crew_review",
                 new_callable=AsyncMock,
                 return_value=mock_code_report,
             ),
             patch(
-                "empathy_os.workflows.security_adapters._check_crew_available",
+                "attune.workflows.security_adapters._check_crew_available",
                 return_value=True,
             ),
             patch(
-                "empathy_os.workflows.security_adapters._get_crew_audit",
+                "attune.workflows.security_adapters._get_crew_audit",
                 new_callable=AsyncMock,
                 return_value=mock_security_report,
             ),

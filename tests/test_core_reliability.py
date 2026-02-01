@@ -23,7 +23,7 @@ class TestEmpathyConfig:
 
     def test_config_defaults(self):
         """Test default configuration values."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         config = EmpathyConfig()
 
@@ -35,7 +35,7 @@ class TestEmpathyConfig:
 
     def test_config_custom_values(self):
         """Test custom configuration values."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         config = EmpathyConfig(
             user_id="test_user",
@@ -49,7 +49,7 @@ class TestEmpathyConfig:
 
     def test_config_from_env_filters_unknown_fields(self):
         """Test from_env filters out unknown environment variables."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         # Set a valid and an invalid env var
         os.environ["EMPATHY_USER_ID"] = "env_user"
@@ -70,7 +70,7 @@ class TestEmpathyConfig:
 
     def test_config_from_env_type_conversion(self):
         """Test from_env correctly converts types."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         os.environ["EMPATHY_TARGET_LEVEL"] = "4"
         os.environ["EMPATHY_CONFIDENCE_THRESHOLD"] = "0.85"
@@ -88,14 +88,14 @@ class TestEmpathyConfig:
 
     def test_config_validate_valid(self):
         """Test validation passes for valid config."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         config = EmpathyConfig(target_level=3, confidence_threshold=0.8)
         assert config.validate() is True
 
     def test_config_validate_invalid_level(self):
         """Test validation fails for invalid target level."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         config = EmpathyConfig(target_level=10)
         with pytest.raises(ValueError, match="target_level must be 1-5"):
@@ -103,7 +103,7 @@ class TestEmpathyConfig:
 
     def test_config_validate_invalid_confidence(self):
         """Test validation fails for invalid confidence threshold."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         config = EmpathyConfig(confidence_threshold=1.5)
         with pytest.raises(ValueError, match="confidence_threshold must be 0.0-1.0"):
@@ -111,7 +111,7 @@ class TestEmpathyConfig:
 
     def test_config_to_dict(self):
         """Test conversion to dictionary."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         config = EmpathyConfig(user_id="dict_test")
         d = config.to_dict()
@@ -123,7 +123,7 @@ class TestEmpathyConfig:
 
     def test_config_merge(self):
         """Test merging two configurations."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
 
         base = EmpathyConfig(user_id="base", target_level=2)
         override = EmpathyConfig(target_level=4)
@@ -144,7 +144,7 @@ class TestModelRegistry:
 
     def test_get_all_models(self):
         """Test getting all registered models (Anthropic-only architecture)."""
-        from empathy_os.models import get_all_models
+        from attune.models import get_all_models
 
         models = get_all_models()
 
@@ -155,7 +155,7 @@ class TestModelRegistry:
 
     def test_anthropic_models_have_tiers(self):
         """Test Anthropic provider has all required tiers."""
-        from empathy_os.models import get_all_models
+        from attune.models import get_all_models
 
         models = get_all_models()
         anthropic = models.get("anthropic", {})
@@ -166,7 +166,7 @@ class TestModelRegistry:
 
     def test_model_info_has_required_fields(self):
         """Test model info has all required fields."""
-        from empathy_os.models import get_all_models
+        from attune.models import get_all_models
 
         models = get_all_models()
 
@@ -188,7 +188,7 @@ class TestWorkflowRegistry:
 
     def test_workflow_registry_exists(self):
         """Test workflow registry is populated."""
-        from empathy_os.workflows import list_workflows
+        from attune.workflows import list_workflows
 
         workflows = list_workflows()  # Triggers initialization
         assert isinstance(workflows, list)
@@ -196,7 +196,7 @@ class TestWorkflowRegistry:
 
     def test_key_workflows_registered(self):
         """Test key workflows are registered."""
-        from empathy_os.workflows import get_workflow, list_workflows
+        from attune.workflows import get_workflow, list_workflows
 
         # Trigger initialization
         workflows = list_workflows()
@@ -216,7 +216,7 @@ class TestWorkflowRegistry:
 
     def test_workflow_entries_are_valid(self):
         """Test workflow entries are valid workflow classes or dicts."""
-        from empathy_os.workflows import list_workflows
+        from attune.workflows import list_workflows
 
         workflows = list_workflows()
 
@@ -237,14 +237,14 @@ class TestCostTracker:
 
     def test_model_pricing_exists(self):
         """Test MODEL_PRICING dictionary is populated."""
-        from empathy_os.cost_tracker import MODEL_PRICING
+        from attune.cost_tracker import MODEL_PRICING
 
         assert isinstance(MODEL_PRICING, dict)
         assert len(MODEL_PRICING) > 0
 
     def test_tier_pricing_exists(self):
         """Test tier pricing aliases exist."""
-        from empathy_os.cost_tracker import MODEL_PRICING
+        from attune.cost_tracker import MODEL_PRICING
 
         assert "cheap" in MODEL_PRICING
         assert "capable" in MODEL_PRICING
@@ -252,7 +252,7 @@ class TestCostTracker:
 
     def test_tier_pricing_has_input_output(self):
         """Test tier pricing has input and output costs."""
-        from empathy_os.cost_tracker import MODEL_PRICING
+        from attune.cost_tracker import MODEL_PRICING
 
         for tier in ["cheap", "capable", "premium"]:
             assert "input" in MODEL_PRICING[tier]
@@ -262,7 +262,7 @@ class TestCostTracker:
 
     def test_premium_costs_more_than_cheap(self):
         """Test pricing tiers are ordered correctly."""
-        from empathy_os.cost_tracker import MODEL_PRICING
+        from attune.cost_tracker import MODEL_PRICING
 
         assert MODEL_PRICING["premium"]["input"] > MODEL_PRICING["cheap"]["input"]
         assert MODEL_PRICING["premium"]["output"] > MODEL_PRICING["cheap"]["output"]
@@ -278,7 +278,7 @@ class TestHealthCheckCrewStructure:
 
     def test_health_category_enum(self):
         """Test HealthCategory enum values."""
-        from empathy_llm_toolkit.agent_factory.crews.health_check import HealthCategory
+        from attune_llm.agent_factory.crews.health_check import HealthCategory
 
         assert HealthCategory.LINT.value == "lint"
         assert HealthCategory.TYPES.value == "types"
@@ -287,7 +287,7 @@ class TestHealthCheckCrewStructure:
 
     def test_issue_severity_enum(self):
         """Test IssueSeverity enum values."""
-        from empathy_llm_toolkit.agent_factory.crews.health_check import IssueSeverity
+        from attune_llm.agent_factory.crews.health_check import IssueSeverity
 
         assert IssueSeverity.CRITICAL.value == "critical"
         assert IssueSeverity.HIGH.value == "high"
@@ -297,7 +297,7 @@ class TestHealthCheckCrewStructure:
 
     def test_health_issue_dataclass(self):
         """Test HealthIssue dataclass structure."""
-        from empathy_llm_toolkit.agent_factory.crews.health_check import (
+        from attune_llm.agent_factory.crews.health_check import (
             HealthCategory,
             HealthIssue,
             IssueSeverity,
@@ -322,7 +322,7 @@ class TestHealthCheckCrewStructure:
 
     def test_health_score_calculation(self):
         """Test health score calculation with category caps."""
-        from empathy_llm_toolkit.agent_factory.crews.health_check import (
+        from attune_llm.agent_factory.crews.health_check import (
             HealthCategory,
             HealthCheckCrew,
             HealthIssue,
@@ -358,9 +358,9 @@ class TestImports:
 
     def test_empathy_os_imports(self):
         """Test main empathy_os imports work."""
-        from empathy_os import EmpathyOS
-        from empathy_os.config import EmpathyConfig
-        from empathy_os.models import get_all_models
+        from attune import EmpathyOS
+        from attune.config import EmpathyConfig
+        from attune.models import get_all_models
 
         assert EmpathyOS is not None
         assert EmpathyConfig is not None
@@ -368,7 +368,7 @@ class TestImports:
 
     def test_crew_imports(self):
         """Test crew imports work."""
-        from empathy_llm_toolkit.agent_factory.crews import (
+        from attune_llm.agent_factory.crews import (
             CodeReviewCrew,
             HealthCheckCrew,
             SecurityAuditCrew,
@@ -380,8 +380,8 @@ class TestImports:
 
     def test_workflow_imports(self):
         """Test workflow imports work."""
-        from empathy_os.workflows import WORKFLOW_REGISTRY
-        from empathy_os.workflows.base import BaseWorkflow
+        from attune.workflows import WORKFLOW_REGISTRY
+        from attune.workflows.base import BaseWorkflow
 
         assert WORKFLOW_REGISTRY is not None
         assert BaseWorkflow is not None

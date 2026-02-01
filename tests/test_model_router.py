@@ -5,7 +5,7 @@ Tests the smart model routing for cost optimization.
 
 import pytest
 
-from empathy_llm_toolkit.routing import ModelRouter, ModelTier, TaskRouting
+from attune_llm.routing import ModelRouter, ModelTier, TaskRouting
 
 
 class TestModelTier:

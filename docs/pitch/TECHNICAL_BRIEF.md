@@ -72,7 +72,7 @@ Routes requests to the optimal model based on task complexity:
 **Result:** 80-96% cost reduction vs. always using premium models.
 
 ```python
-from empathy_os.routing import SmartRouter
+from attune.routing import SmartRouter
 
 router = SmartRouter()
 result = router.route(
@@ -87,7 +87,7 @@ result = router.route(
 Creates optimized agent configurations through guided questions:
 
 ```python
-from empathy_os.socratic import SocraticWorkflowBuilder
+from attune.socratic import SocraticWorkflowBuilder
 
 builder = SocraticWorkflowBuilder()
 session = builder.start_session("Automate security reviews")
@@ -130,7 +130,7 @@ Automatically composes agent teams using 6 composition patterns:
 - Semantic search for relevant history
 
 ```python
-from empathy_os.memory import UnifiedMemory
+from attune.memory import UnifiedMemory
 
 memory = UnifiedMemory()
 
@@ -188,7 +188,7 @@ relevant = memory.search("authentication approach")
 
 ```python
 # Native integration with Claude Code workflows
-from empathy_os.claude import ClaudeCodeIntegration
+from attune.claude import ClaudeCodeIntegration
 
 integration = ClaudeCodeIntegration()
 integration.register_wizards()  # Adds all 10 wizards
@@ -199,7 +199,7 @@ integration.enable_memory()     # Persistent context
 
 ```python
 # Model Context Protocol server for IDE integration
-from empathy_os.mcp import EmpathyMCPServer
+from attune.mcp import EmpathyMCPServer
 
 server = EmpathyMCPServer()
 server.expose_tools([
@@ -249,13 +249,13 @@ server.expose_tools([
 
 ### 1. PyPI Installation
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### 2. Docker
 ```dockerfile
 FROM python:3.11-slim
-RUN pip install empathy-framework
+RUN pip install attune-ai
 ```
 
 ### 3. On-Premises
@@ -267,7 +267,7 @@ Full source available under Fair Source License for enterprise deployment.
 
 ### Run a Workflow
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 empathy = EmpathyOS()
 result = empathy.workflow.run(
@@ -279,7 +279,7 @@ print(result.findings)
 
 ### Create Custom Agent
 ```python
-from empathy_os.socratic import SocraticWorkflowBuilder
+from attune.socratic import SocraticWorkflowBuilder
 
 builder = SocraticWorkflowBuilder()
 session = builder.start_session("I need an agent for code reviews")
@@ -290,7 +290,7 @@ workflow.execute({"files": ["main.py"]})
 
 ### Cost Tracking
 ```python
-from empathy_os.telemetry import CostTracker
+from attune.telemetry import CostTracker
 
 tracker = CostTracker()
 print(tracker.summary())
@@ -301,7 +301,7 @@ print(tracker.summary())
 
 ## Source Code
 
-**Repository:** [github.com/Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework)
+**Repository:** [github.com/Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
 
 **License:** Fair Source License 0.9
 - Free for teams ≤5 employees

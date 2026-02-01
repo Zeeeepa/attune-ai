@@ -10,13 +10,13 @@ Tests cover:
 Created: 2026-01-17
 """
 
-from empathy_os.meta_workflows.agent_creator import (
+from attune.meta_workflows.agent_creator import (
     DynamicAgentCreator,
     estimate_agent_costs,
     group_agents_by_tier_strategy,
     validate_agent_dependencies,
 )
-from empathy_os.meta_workflows.models import (
+from attune.meta_workflows.models import (
     AgentCompositionRule,
     AgentSpec,
     FormResponse,

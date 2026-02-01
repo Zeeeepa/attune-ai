@@ -18,7 +18,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.telemetry import UsageTracker
+from attune.telemetry import UsageTracker
 
 
 @pytest.fixture
@@ -1047,7 +1047,7 @@ class TestEdgeCases:
         test_file.write_text('{"test": "data"}\n')
 
         # Mock fromtimestamp to raise ValueError
-        with patch("empathy_os.telemetry.usage_tracker.datetime") as mock_dt:
+        with patch("attune.telemetry.usage_tracker.datetime") as mock_dt:
             mock_dt.now.return_value = datetime.now()
             mock_dt.fromtimestamp.side_effect = ValueError("Invalid timestamp")
             # Should not raise exception

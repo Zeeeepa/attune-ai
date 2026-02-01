@@ -39,7 +39,7 @@ This change will delegate all the complexity of preparing and executing the LLM 
 
 I will perform the following steps to refactor the workflow:
 
-1. **Remove Redundant Code:** Delete the `_call_llm`, `_get_client`, and `_get_model_for_tier` methods from `src/empathy_os/workflows/test_gen.py`.
+1. **Remove Redundant Code:** Delete the `_call_llm`, `_get_client`, and `_get_model_for_tier` methods from `src/attune/workflows/test_gen.py`.
 2. **Simplify `__init__`:** Remove the `_client` and `_api_key` attributes and the call to `_load_bug_hotspots` from the constructor. The bug hotspots logic is already handled elsewhere or is not essential for the core test generation.
 3. **Refactor the `_review` Method:** This is the core of the change. The method will be rewritten to:
     a.  Prepare the `test_context` from the `generated_tests` data, as we discovered was necessary.

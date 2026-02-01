@@ -34,7 +34,7 @@ description: Remaining Features Implementation Plan: **Version**: 4.2.0 → 4.3.
 
 **Implementation Plan**:
 ```python
-# File: src/empathy_os/memory/unified.py
+# File: src/attune/memory/unified.py
 def search_patterns(self, query, pattern_type, classification, limit):
     """Search with keyword matching and relevance scoring."""
     # 1. Get all patterns from storage
@@ -55,7 +55,7 @@ def search_patterns(self, query, pattern_type, classification, limit):
 
 **Implementation Plan**:
 ```python
-# File: src/empathy_os/meta_workflows/pattern_learner.py
+# File: src/attune/meta_workflows/pattern_learner.py
 class SessionContext:
     """Track session-level patterns and preferences."""
 
@@ -91,7 +91,7 @@ class SessionContext:
 
 **Implementation Plan**:
 ```python
-# File: src/empathy_os/meta_workflows/pattern_learner.py
+# File: src/attune/meta_workflows/pattern_learner.py
 def analyze_cross_template_patterns(self, min_confidence=0.7):
     """Analyze patterns across all templates."""
     # 1. Load executions from all templates

@@ -11,7 +11,7 @@ These tests cover:
 
 import pytest
 
-from empathy_os.memory.short_term import AccessTier, AgentCredentials, RedisShortTermMemory
+from attune.memory.short_term import AccessTier, AgentCredentials, RedisShortTermMemory
 
 
 @pytest.mark.unit

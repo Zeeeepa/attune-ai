@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 # Import using module approach to avoid package initialization issues
-import empathy_os.workflows.code_review_pipeline as code_review_pipeline_module
+import attune.workflows.code_review_pipeline as code_review_pipeline_module
 
 CodeReviewPipeline = code_review_pipeline_module.CodeReviewPipeline
 CodeReviewPipelineResult = code_review_pipeline_module.CodeReviewPipelineResult

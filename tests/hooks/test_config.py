@@ -1,6 +1,6 @@
 """Tests for hook configuration models."""
 
-from empathy_llm_toolkit.hooks.config import (
+from attune_llm.hooks.config import (
     HookConfig,
     HookDefinition,
     HookEvent,

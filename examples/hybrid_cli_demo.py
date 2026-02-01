@@ -19,7 +19,7 @@ from pathlib import Path
 # Add project to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.cli_router import HybridRouter
+from attune.cli_router import HybridRouter
 
 
 def print_section(title: str):

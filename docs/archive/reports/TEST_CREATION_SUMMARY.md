@@ -105,7 +105,7 @@ Since the agent outputs contain complete test code but couldn't write files:
 2. **Extract test content** from agent output files:
    ```bash
    # Agent outputs are in:
-   /private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-empathy-framework/tasks/*.output
+   /private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-attune-ai/tasks/*.output
    ```
 
 3. **Create test files** using IDE or text editor
@@ -170,4 +170,4 @@ Once test files are created:
 
 - Original plan: `docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md`
 - Project standards: `.claude/rules/empathy/coding-standards-index.md`
-- Agent outputs: `/private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-empathy-framework/tasks/*.output`
+- Agent outputs: `/private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-attune-ai/tasks/*.output`

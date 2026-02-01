@@ -597,16 +597,16 @@ export EMPATHY_TEMPLATE_DIR="$HOME/.empathy/meta_workflows/templates"
 pip install -e .
 
 # Or reinstall from PyPI
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 ```
 
 ### Memory Not Available
 ```bash
 # Check if memory module is installed
-python -c "from empathy_os.memory.unified import UnifiedMemory"
+python -c "from attune.memory.unified import UnifiedMemory"
 
 # If error, reinstall with memory support
-pip install empathy-framework[memory]
+pip install attune-ai[memory]
 ```
 
 ### Template Not Found

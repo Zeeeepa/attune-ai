@@ -14,7 +14,7 @@ Successfully integrated Phase 2 security modules (PII Scrubbing, Secrets Detecti
 
 ## Changes Made
 
-### 1. Core Module Updates (`empathy_llm_toolkit/core.py`)
+### 1. Core Module Updates (`attune_llm/core.py`)
 
 #### New Imports
 ```python
@@ -243,7 +243,7 @@ except SecurityError as e:
 
 | File | Changes | Lines Added | Status |
 |------|---------|-------------|--------|
-| `empathy_llm_toolkit/core.py` | Security integration | ~100 | ✅ Complete |
+| `attune_llm/core.py` | Security integration | ~100 | ✅ Complete |
 | `tests/test_empathy_llm_security.py` | Comprehensive tests | ~670 | ✅ Complete |
 | `examples/security_integration_example.py` | Usage examples | ~450 | ✅ Complete |
 
@@ -322,7 +322,7 @@ llm = EmpathyLLM(
 ## Documentation Updates
 
 ### Updated Files
-- ✅ `empathy_llm_toolkit/core.py` - Class and method docstrings
+- ✅ `attune_llm/core.py` - Class and method docstrings
 - ✅ `tests/test_empathy_llm_security.py` - Comprehensive test documentation
 - ✅ `examples/security_integration_example.py` - Usage examples
 

@@ -7,7 +7,7 @@ Licensed under Apache 2.0
 """
 
 
-from empathy_os.validation.xml_validator import (
+from attune.validation.xml_validator import (
     ValidationResult,
     XMLValidator,
     validate_xml_response,

@@ -40,7 +40,7 @@ This strategy provides:
 The framework automatically uses Sonnet 4.5 for CAPABLE tier tasks:
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
 
 executor = EmpathyLLMExecutor(provider="anthropic")
 
@@ -61,8 +61,8 @@ When you enable fallback, the system:
 3. Tracks which model succeeded for analytics
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import (
+from attune.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.fallback import (
     ResilientExecutor,
     SONNET_TO_OPUS_FALLBACK,
 )
@@ -98,10 +98,10 @@ The framework includes a dedicated CLI command to track Sonnet → Opus fallback
 
 ```bash
 # View last 30 days of fallback data
-python -m empathy_os.telemetry.cli sonnet-opus-analysis
+python -m attune.telemetry.cli sonnet-opus-analysis
 
 # Custom time period
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 7
+python -m attune.telemetry.cli sonnet-opus-analysis --days 7
 ```
 
 **Sample Output:**
@@ -134,7 +134,7 @@ python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 7
 ### Programmatic Access
 
 ```python
-from empathy_os.models.telemetry import TelemetryAnalytics, get_telemetry_store
+from attune.models.telemetry import TelemetryAnalytics, get_telemetry_store
 from datetime import datetime, timedelta
 
 store = get_telemetry_store()
@@ -180,7 +180,7 @@ The fallback mechanism triggers on:
 Create your own fallback chain:
 
 ```python
-from empathy_os.models.fallback import FallbackPolicy, FallbackStrategy, FallbackStep
+from attune.models.fallback import FallbackPolicy, FallbackStrategy, FallbackStep
 
 # Custom: Sonnet → Opus → OpenAI o1 (cross-provider)
 custom_policy = FallbackPolicy(
@@ -207,7 +207,7 @@ custom_policy = FallbackPolicy(
 Adjust retry behavior:
 
 ```python
-from empathy_os.models.fallback import RetryPolicy
+from attune.models.fallback import RetryPolicy
 
 retry_policy = RetryPolicy(
     max_retries=3,  # Retry up to 3 times per model
@@ -258,7 +258,7 @@ executor = EmpathyLLMExecutor(provider="anthropic", default_tier="premium")
 
 ```bash
 # Weekly check
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 7
+python -m attune.telemetry.cli sonnet-opus-analysis --days 7
 ```
 
 If fallback rate is consistently high, consider:
@@ -297,7 +297,7 @@ print(model_info.id)  # "claude-sonnet-4-5"
 Pre-configured fallback policy for Sonnet → Opus escalation.
 
 ```python
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK
 
 # Policy details
 SONNET_TO_OPUS_FALLBACK.primary_provider  # "anthropic"
@@ -374,7 +374,7 @@ print(executor.fallback_policy.custom_chain)
 **Solution:**
 ```python
 # Verify telemetry is working
-from empathy_os.models.telemetry import get_telemetry_store
+from attune.models.telemetry import get_telemetry_store
 
 store = get_telemetry_store()
 calls = store.get_calls(limit=10)
@@ -398,7 +398,7 @@ print(f"Found {len(calls)} calls")
 - Updated CAPABLE tier to use Claude Sonnet 4.5 (`claude-sonnet-4-5`)
 - Added `SONNET_TO_OPUS_FALLBACK` policy
 - Added `TelemetryAnalytics.sonnet_opus_fallback_analysis()`
-- Added `empathy_os.telemetry.cli sonnet-opus-analysis` command
+- Added `attune.telemetry.cli sonnet-opus-analysis` command
 - Maintained pricing at $3/$15 per million tokens (same as Sonnet 4.0)
 
 **v3.9.1** (December 2025)
@@ -408,6 +408,6 @@ print(f"Found {len(calls)} calls")
 
 ## Questions?
 
-- **GitHub Discussions:** [Empathy Framework Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
-- **Issues:** [Report a Bug](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- **GitHub Discussions:** [Empathy Framework Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
+- **Issues:** [Report a Bug](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - **Documentation:** [Full Docs](https://empathyframework.com/docs)

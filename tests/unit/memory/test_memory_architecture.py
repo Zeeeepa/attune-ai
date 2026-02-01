@@ -35,9 +35,9 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.memory.long_term import LongTermMemory
-from empathy_os.memory.short_term import RedisShortTermMemory, TTLStrategy
-from empathy_os.memory.unified import MemoryConfig, UnifiedMemory
+from attune.memory.long_term import LongTermMemory
+from attune.memory.short_term import RedisShortTermMemory, TTLStrategy
+from attune.memory.unified import MemoryConfig, UnifiedMemory
 
 # ============================================================================
 # Test Category 1: Unified Memory Interface

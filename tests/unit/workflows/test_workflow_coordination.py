@@ -9,7 +9,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 
 class SimpleWorkflow(BaseWorkflow):

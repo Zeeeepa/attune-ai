@@ -23,14 +23,14 @@ try:
 except ImportError:
     pass  # dotenv not installed, will use system environment
 
-from empathy_os.telemetry import (
+from attune.telemetry import (
     ApprovalGate,
     CoordinationSignals,
     EventStreamer,
     FeedbackLoop,
     HeartbeatCoordinator,
 )
-from empathy_os.telemetry.feedback_loop import ModelTier
+from attune.telemetry.feedback_loop import ModelTier
 
 
 def keep_agents_alive(memory):
@@ -82,7 +82,7 @@ def generate_test_data():
 
     # Initialize Redis memory backend for all patterns
     try:
-        from empathy_os.memory.short_term import RedisShortTermMemory
+        from attune.memory.short_term import RedisShortTermMemory
 
         memory = RedisShortTermMemory()
         print("✅ Connected to Redis memory backend")
@@ -273,7 +273,7 @@ def run_dashboard_demo():
     # Import and run dashboard
     try:
         # Try simple server first (no dependencies)
-        from empathy_os.dashboard import run_simple_dashboard
+        from attune.dashboard import run_simple_dashboard
 
         run_simple_dashboard(host="127.0.0.1", port=8000)
 

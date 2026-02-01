@@ -9,7 +9,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.prompts.parser import (
+from attune.prompts.parser import (
     Finding,
     ParsedResponse,
     XmlResponseParser,

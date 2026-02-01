@@ -6,7 +6,7 @@ Module: workflow_patterns/core.py (76 lines)
 import pytest
 from pydantic import ValidationError
 
-from empathy_os.workflow_patterns.core import (
+from attune.workflow_patterns.core import (
     CodeSection,
     PatternCategory,
     WorkflowComplexity,

@@ -6,7 +6,7 @@ description: Production-ready AI framework with Level 4 Anticipatory Intelligenc
 
 **Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration**
 
-[![PyPI version](https://badge.fury.io/py/empathy-framework.svg)](https://pypi.org/project/empathy-framework/)
+[![PyPI version](https://badge.fury.io/py/attune-ai.svg)](https://pypi.org/project/attune-ai/)
 [![License: Fair Source 0.9](https://img.shields.io/badge/License-Fair%20Source%200.9-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
@@ -33,13 +33,13 @@ The Empathy Framework is a **5-level maturity model** for AI-human collaboration
 ### Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### 5-Minute Example
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Create Level 4 (Anticipatory) chatbot
 empathy = EmpathyOS(
@@ -98,7 +98,7 @@ The Empathy Framework underwent extensive security hardening in v3.9.0:
 - Null byte injection: `config\x00.json` → `ValueError`
 - System directory writes: `/etc`, `/sys`, `/proc`, `/dev` → All blocked
 
-See [SECURITY.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/SECURITY.md) for complete documentation.
+See [SECURITY.md](https://github.com/Smart-AI-Memory/attune-ai/blob/main/SECURITY.md) for complete documentation.
 
 ---
 
@@ -129,7 +129,7 @@ See [SECURITY.md](https://github.com/Smart-AI-Memory/empathy-framework/blob/main
     **Live demo coming soon** - See the [SBAR Example](tutorials/examples/sbar-clinical-handoff.md) for complete code
 
     ```python
-    from empathy_os import EmpathyOS
+    from attune import EmpathyOS
 
     empathy = EmpathyOS(
         user_id="hospital_001",
@@ -251,7 +251,7 @@ Organized using the [Diátaxis framework](https://diataxis.fr/) for better disco
 ## Community
 
 - **GitHub**: [Smart-AI-Memory/empathy](https://github.com/Smart-AI-Memory/empathy)
-- **PyPI**: [empathy-framework](https://pypi.org/project/empathy-framework/)
+- **PyPI**: [attune-ai](https://pypi.org/project/attune-ai/)
 - **Issues**: [Report bugs or request features](https://github.com/Smart-AI-Memory/empathy/issues)
 - **Discussions**: [Ask questions](https://github.com/Smart-AI-Memory/empathy/discussions)
 

@@ -15,7 +15,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from empathy_os.meta_workflows import FormResponse, MetaWorkflow, PatternLearner, TemplateRegistry
+from attune.meta_workflows import FormResponse, MetaWorkflow, PatternLearner, TemplateRegistry
 
 
 class TestPatternLearnerInitialization:
@@ -52,7 +52,7 @@ class TestPatternAnalysis:
     @pytest.fixture
     def sample_executions(self, tmp_path):
         """Create sample execution results for testing."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -177,7 +177,7 @@ class TestRecommendations:
     @pytest.fixture
     def sample_executions(self, tmp_path):
         """Create sample execution results for testing."""
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -242,7 +242,7 @@ class TestAnalyticsReport:
         """Create sample execution results for testing."""
         import time
 
-        registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+        registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -298,7 +298,7 @@ class TestMemoryIntegration:
         learner = PatternLearner(executions_dir=str(tmp_path))
 
         # Create a mock result
-        from empathy_os.meta_workflows.models import MetaWorkflowResult
+        from attune.meta_workflows.models import MetaWorkflowResult
 
         result = MetaWorkflowResult(
             run_id="test-run",
@@ -323,7 +323,7 @@ class TestMemoryIntegration:
         learner = PatternLearner(executions_dir=str(tmp_path), memory=mock_memory)
 
         # Create a mock result with agent results
-        from empathy_os.meta_workflows.models import (
+        from attune.meta_workflows.models import (
             AgentExecutionResult,
             AgentSpec,
             MetaWorkflowResult,

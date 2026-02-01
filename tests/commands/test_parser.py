@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.commands.models import CommandCategory
-from empathy_llm_toolkit.commands.parser import CommandParser
+from attune_llm.commands.models import CommandCategory
+from attune_llm.commands.parser import CommandParser
 
 
 class TestCommandParser:

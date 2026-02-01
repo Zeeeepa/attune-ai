@@ -3,7 +3,7 @@
 import tempfile
 from pathlib import Path
 
-from empathy_llm_toolkit.context.compaction import (
+from attune_llm.context.compaction import (
     CompactionStateManager,
     CompactState,
     PatternSummary,

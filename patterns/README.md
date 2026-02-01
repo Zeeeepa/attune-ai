@@ -13,7 +13,7 @@ This catalog serves three goals:
 ## Pattern Categories
 
 ### Reliability Patterns
-*Source: `src/empathy_os/resilience/`*
+*Source: `src/attune/resilience/`*
 
 | Pattern | Level | Key Insight |
 |---------|-------|-------------|
@@ -22,7 +22,7 @@ This catalog serves three goals:
 | [Retry with Backoff](reliability/retry-with-backoff.md) | 3 | Transient failures are recoverable |
 
 ### Observability Patterns
-*Source: `src/empathy_os/models/telemetry.py`, `src/empathy_os/resilience/health.py`*
+*Source: `src/attune/models/telemetry.py`, `src/attune/resilience/health.py`*
 
 | Pattern | Level | Key Insight |
 |---------|-------|-------------|
@@ -42,7 +42,7 @@ This catalog serves three goals:
 
 | Transfer | Implementation | Guide |
 |----------|----------------|-------|
-| Circuit Breaker → Trust | [`src/empathy_os/trust/`](../src/empathy_os/trust/) | [Trust Circuit Breaker Guide](../docs/guides/trust-circuit-breaker.md) |
+| Circuit Breaker → Trust | [`src/attune/trust/`](../src/attune/trust/) | [Trust Circuit Breaker Guide](../docs/guides/trust-circuit-breaker.md) |
 
 ## Capability Level Reference
 

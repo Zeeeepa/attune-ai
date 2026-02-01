@@ -20,7 +20,7 @@ on their own detection code or test fixtures.
 
 import pytest
 
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 # ============================================================================
 # LESSON 1: Meta-Detection - Identifying Detection Code

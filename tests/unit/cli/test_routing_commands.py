@@ -91,13 +91,13 @@ class TestRoutingCommands:
 
     def test_routing_stats_command(self, mock_telemetry, mock_router, capsys):
         """Test routing stats command output."""
-        from src.empathy_os.cli.commands.routing import cmd_routing_stats
+        from src.attune.cli.commands.routing import cmd_routing_stats
 
         # Mock dependencies
-        with patch("src.empathy_os.cli.commands.routing.UsageTracker") as mock_tracker_class:
+        with patch("src.attune.cli.commands.routing.UsageTracker") as mock_tracker_class:
             mock_tracker_class.get_instance.return_value = mock_telemetry
 
-            with patch("src.empathy_os.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
+            with patch("src.attune.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
                 mock_router_class.return_value = mock_router
 
                 # Create mock args
@@ -126,7 +126,7 @@ class TestRoutingCommands:
 
     def test_routing_stats_no_data(self, mock_telemetry, mock_router, capsys):
         """Test routing stats with no data."""
-        from src.empathy_os.cli.commands.routing import cmd_routing_stats
+        from src.attune.cli.commands.routing import cmd_routing_stats
 
         # Mock router to return no data
         mock_router.get_routing_stats.return_value = {
@@ -140,10 +140,10 @@ class TestRoutingCommands:
             "avg_success_rate": 0.0,
         }
 
-        with patch("src.empathy_os.cli.commands.routing.UsageTracker") as mock_tracker_class:
+        with patch("src.attune.cli.commands.routing.UsageTracker") as mock_tracker_class:
             mock_tracker_class.get_instance.return_value = mock_telemetry
 
-            with patch("src.empathy_os.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
+            with patch("src.attune.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
                 mock_router_class.return_value = mock_router
 
                 args = MagicMock()
@@ -161,12 +161,12 @@ class TestRoutingCommands:
 
     def test_routing_check_no_upgrade_needed(self, mock_telemetry, mock_router, capsys):
         """Test routing check when no upgrade is needed."""
-        from src.empathy_os.cli.commands.routing import cmd_routing_check
+        from src.attune.cli.commands.routing import cmd_routing_check
 
-        with patch("src.empathy_os.cli.commands.routing.UsageTracker") as mock_tracker_class:
+        with patch("src.attune.cli.commands.routing.UsageTracker") as mock_tracker_class:
             mock_tracker_class.get_instance.return_value = mock_telemetry
 
-            with patch("src.empathy_os.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
+            with patch("src.attune.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
                 mock_router_class.return_value = mock_router
 
                 args = MagicMock()
@@ -185,7 +185,7 @@ class TestRoutingCommands:
 
     def test_routing_check_upgrade_needed(self, mock_telemetry, mock_router, capsys):
         """Test routing check when upgrade is recommended."""
-        from src.empathy_os.cli.commands.routing import cmd_routing_check
+        from src.attune.cli.commands.routing import cmd_routing_check
 
         # Mock router to recommend upgrade
         mock_router.recommend_tier_upgrade.return_value = (
@@ -193,10 +193,10 @@ class TestRoutingCommands:
             "High failure rate: 25.0% (5/20 failed in recent calls)",
         )
 
-        with patch("src.empathy_os.cli.commands.routing.UsageTracker") as mock_tracker_class:
+        with patch("src.attune.cli.commands.routing.UsageTracker") as mock_tracker_class:
             mock_tracker_class.get_instance.return_value = mock_telemetry
 
-            with patch("src.empathy_os.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
+            with patch("src.attune.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
                 mock_router_class.return_value = mock_router
 
                 args = MagicMock()
@@ -215,12 +215,12 @@ class TestRoutingCommands:
 
     def test_routing_check_all_workflows(self, mock_telemetry, mock_router, capsys):
         """Test routing check for all workflows."""
-        from src.empathy_os.cli.commands.routing import cmd_routing_check
+        from src.attune.cli.commands.routing import cmd_routing_check
 
-        with patch("src.empathy_os.cli.commands.routing.UsageTracker") as mock_tracker_class:
+        with patch("src.attune.cli.commands.routing.UsageTracker") as mock_tracker_class:
             mock_tracker_class.get_instance.return_value = mock_telemetry
 
-            with patch("src.empathy_os.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
+            with patch("src.attune.cli.commands.routing.AdaptiveModelRouter") as mock_router_class:
                 mock_router_class.return_value = mock_router
 
                 args = MagicMock()
@@ -240,9 +240,9 @@ class TestRoutingCommands:
 
     def test_routing_models_command(self, mock_telemetry, capsys):
         """Test routing models command."""
-        from src.empathy_os.cli.commands.routing import cmd_routing_models
+        from src.attune.cli.commands.routing import cmd_routing_models
 
-        with patch("src.empathy_os.cli.commands.routing.UsageTracker") as mock_tracker_class:
+        with patch("src.attune.cli.commands.routing.UsageTracker") as mock_tracker_class:
             mock_tracker_class.get_instance.return_value = mock_telemetry
 
             args = MagicMock()

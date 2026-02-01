@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.logging_config import (
+from attune.logging_config import (
     LoggingConfig,
     StructuredFormatter,
     create_logger,

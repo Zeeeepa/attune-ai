@@ -16,8 +16,8 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.memory.short_term import RedisConfig
-from empathy_os.redis_config import (
+from attune.memory.short_term import RedisConfig
+from attune.redis_config import (
     check_redis_connection,
     get_railway_redis,
     get_redis_config,
@@ -250,7 +250,7 @@ class TestGetRailwayRedis:
 
     def test_with_redis_url(self):
         """Test Railway with REDIS_URL set - just verify URL is parsed"""
-        from empathy_os.redis_config import parse_redis_url
+        from attune.redis_config import parse_redis_url
 
         # Test that the URL would be parsed correctly
         url = "redis://railway-redis:6379/0"

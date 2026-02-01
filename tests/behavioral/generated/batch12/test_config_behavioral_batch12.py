@@ -8,8 +8,9 @@ Licensed under Apache 2.0
 
 
 # Import config module to access DOC_GEN_STEPS and TOKEN_COSTS
-import empathy_os.workflows.document_gen.config as config_module
-from empathy_os.workflows import ModelTier, WorkflowStepConfig
+import attune.workflows.document_gen.config as config_module
+from attune.workflows.base import ModelTier
+from attune.workflows.step_config import WorkflowStepConfig
 
 DOC_GEN_STEPS = config_module.DOC_GEN_STEPS
 TOKEN_COSTS = config_module.TOKEN_COSTS
@@ -334,7 +335,7 @@ class TestConfigurationMetadata:
         Then it should have a module docstring
         """
         # Given
-        import empathy_os.workflows.document_gen.config as config_module
+        import attune.workflows.document_gen.config as config_module
 
         # When / Then
         assert config_module.__doc__ is not None
@@ -347,7 +348,7 @@ class TestConfigurationMetadata:
         Then it should note these are estimates
         """
         # Given
-        import empathy_os.workflows.document_gen.config as config_module
+        import attune.workflows.document_gen.config as config_module
 
         # When / Then
         docstring = config_module.__doc__

@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.documentation_orchestrator import (
+from attune.workflows.documentation_orchestrator import (
     DocumentationItem,
     DocumentationOrchestrator,
     OrchestratorResult,
@@ -198,7 +198,7 @@ class TestExclusionPatterns:
 
     def test_should_exclude_empathy_internal(self, orchestrator):
         """Test exclusion of empathy internal directories."""
-        assert orchestrator._should_exclude(".empathy/data.json") is True
+        assert orchestrator._should_exclude(".attune/data.json") is True
         assert orchestrator._should_exclude(".claude/rules.md") is True
         assert orchestrator._should_exclude(".empathy_index/cache") is True
 
@@ -225,7 +225,7 @@ class TestExclusionPatterns:
         reason = orchestrator._get_exclusion_reason("*.png")
         assert reason == "Binary/asset file"
 
-        reason = orchestrator._get_exclusion_reason(".empathy/**")
+        reason = orchestrator._get_exclusion_reason(".attune/**")
         assert reason == "Framework internal file"
 
         reason = orchestrator._get_exclusion_reason("book/**")
@@ -600,7 +600,7 @@ class TestItemsFromIndex:
         items = orchestrator._items_from_index()
         assert items == []
 
-    @patch("empathy_os.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
+    @patch("attune.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
     def test_items_from_index_missing_docstrings(self, orchestrator):
         """Test extracting missing docstring items from index."""
         mock_index = MagicMock()
@@ -620,7 +620,7 @@ class TestItemsFromIndex:
         assert items[0].severity == "medium"
         assert items[0].loc == 500
 
-    @patch("empathy_os.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
+    @patch("attune.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
     def test_items_from_index_stale_docs(self, orchestrator):
         """Test extracting stale doc items from index."""
         mock_index = MagicMock()
@@ -644,7 +644,7 @@ class TestItemsFromIndex:
         assert items[0].severity == "high"
         assert items[0].days_stale == 15
 
-    @patch("empathy_os.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
+    @patch("attune.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
     def test_items_from_index_respects_include_settings(self, tmp_path):
         """Test items extraction respects include_stale and include_missing."""
         orchestrator = DocumentationOrchestrator(
@@ -672,7 +672,7 @@ class TestItemsFromIndex:
         assert len(items) == 1
         assert items[0].issue_type == "missing_docstring"
 
-    @patch("empathy_os.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
+    @patch("attune.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
     def test_items_from_index_excludes_filtered_files(self, orchestrator):
         """Test items extraction excludes files matching exclude patterns."""
         mock_index = MagicMock()
@@ -961,7 +961,7 @@ class TestUpdateProjectIndex:
         # Should not raise error
         orchestrator._update_project_index(["a.py"], ["b.py"])
 
-    @patch("empathy_os.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
+    @patch("attune.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
     def test_update_project_index_success(self, orchestrator):
         """Test successful project index update."""
         mock_record = MagicMock()
@@ -977,7 +977,7 @@ class TestUpdateProjectIndex:
         assert mock_record.has_docstring is True
         mock_index.save.assert_called_once()
 
-    @patch("empathy_os.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
+    @patch("attune.workflows.documentation_orchestrator.HAS_PROJECT_INDEX", True)
     def test_update_project_index_handles_errors(self, orchestrator):
         """Test update handles errors gracefully."""
         mock_index = MagicMock()
@@ -1075,7 +1075,7 @@ class TestExecuteWorkflow:
         )
         orchestrator._writer = None
 
-        with patch("empathy_os.workflows.documentation_orchestrator.HAS_WRITER", False):
+        with patch("attune.workflows.documentation_orchestrator.HAS_WRITER", False):
             result = await orchestrator.execute()
 
         assert result.success is False

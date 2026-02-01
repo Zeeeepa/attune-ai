@@ -45,11 +45,11 @@ The Empathy Framework has achieved **exceptional quality metrics** through syste
 
 | Module | Before | After | Change | Status |
 |--------|--------|-------|--------|--------|
-| **empathy_os/core.py** | 42.1% | 100% | +57.9 pp | ✅ Complete |
-| **empathy_os/persistence.py** | 38.7% | 100% | +61.3 pp | ✅ Complete |
-| **empathy_llm_toolkit/core.py** | 56.3% | 100% | +43.7 pp | ✅ Complete |
-| **empathy_llm_toolkit/levels.py** | 41.2% | 100% | +58.8 pp | ✅ Complete |
-| **empathy_llm_toolkit/providers.py** | 63.4% | 98.2% | +34.8 pp | ✅ Excellent |
+| **attune/core.py** | 42.1% | 100% | +57.9 pp | ✅ Complete |
+| **attune/persistence.py** | 38.7% | 100% | +61.3 pp | ✅ Complete |
+| **attune_llm/core.py** | 56.3% | 100% | +43.7 pp | ✅ Complete |
+| **attune_llm/levels.py** | 41.2% | 100% | +58.8 pp | ✅ Complete |
+| **attune_llm/providers.py** | 63.4% | 98.2% | +34.8 pp | ✅ Excellent |
 | **empathy_software_plugin/plugin.py** | 67.2% | 95.71% | +28.5 pp | ✅ Excellent |
 | **Software Wizards (16 total)** | 0% | 99.96% | +99.96 pp | ✅ Complete |
 | **Healthcare Plugin** | 19.3% | 98.72% | +79.4 pp | ✅ Excellent |
@@ -454,7 +454,7 @@ This framework was built using **Claude Code** (CLI + VS Code extension), demons
 | **GitHub Releases** | ✅ Active | 1.6.8 | N/A |
 | **Docker Hub** | ⚙️ Planned | N/A | N/A |
 
-**Package**: `pip install empathy-framework`
+**Package**: `pip install attune-ai`
 
 ### Marketing Readiness
 
@@ -610,11 +610,11 @@ The Empathy Framework is **production-ready** for:
 ```
 Name                                                Stmts   Miss  Cover
 -----------------------------------------------------------------------
-empathy_os/core.py                                    142      0   100%
-empathy_os/persistence.py                              98      0   100%
-empathy_llm_toolkit/core.py                           187      0   100%
-empathy_llm_toolkit/levels.py                         156      0   100%
-empathy_llm_toolkit/providers.py                      234     12    98%
+attune/core.py                                    142      0   100%
+attune/persistence.py                              98      0   100%
+attune_llm/core.py                           187      0   100%
+attune_llm/levels.py                         156      0   100%
+attune_llm/providers.py                      234     12    98%
 empathy_software_plugin/plugin.py                     412     18    96%
 empathy_software_plugin/wizards/base_wizard.py        156      1   100%
 empathy_software_plugin/wizards/security_*.py         234      1   100%

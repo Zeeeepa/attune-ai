@@ -14,7 +14,7 @@ class TestSocraticMCPServer:
 
     def test_create_server(self):
         """Test creating an MCP server."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         # Constructor takes no arguments
         server = SocraticMCPServer()
@@ -23,7 +23,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_start_session_tool(self):
         """Test socratic_start_session tool."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -36,7 +36,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_set_goal_tool(self):
         """Test socratic_set_goal tool."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -59,7 +59,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_get_questions_tool(self):
         """Test socratic_get_questions tool."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -86,7 +86,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_submit_answers_tool(self):
         """Test socratic_submit_answers tool."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -116,7 +116,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_list_sessions_tool(self):
         """Test socratic_list_sessions tool."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -132,7 +132,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_get_session_tool(self):
         """Test socratic_get_session tool."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -151,7 +151,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_invalid_tool_call(self):
         """Test calling non-existent tool."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -162,7 +162,7 @@ class TestSocraticMCPServer:
     @pytest.mark.asyncio
     async def test_tool_with_invalid_session(self):
         """Test tool with invalid session ID."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -179,14 +179,14 @@ class TestSocraticTools:
 
     def test_tools_defined(self):
         """Test that SOCRATIC_TOOLS is defined."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         assert SOCRATIC_TOOLS is not None
         assert isinstance(SOCRATIC_TOOLS, list)
 
     def test_tools_have_required_fields(self):
         """Test that all tools have required fields."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         for tool in SOCRATIC_TOOLS:
             assert "name" in tool
@@ -196,7 +196,7 @@ class TestSocraticTools:
 
     def test_expected_tools_exist(self):
         """Test that expected tools exist."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool_names = [t["name"] for t in SOCRATIC_TOOLS]
 
@@ -218,7 +218,7 @@ class TestMCPServerAsync:
     @pytest.mark.asyncio
     async def test_async_handle_tool_call(self):
         """Test async handle_tool_call."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
 
@@ -228,7 +228,7 @@ class TestMCPServerAsync:
     @pytest.mark.asyncio
     async def test_ensure_initialized(self):
         """Test lazy initialization."""
-        from empathy_os.socratic.mcp_server import SocraticMCPServer
+        from attune.socratic.mcp_server import SocraticMCPServer
 
         server = SocraticMCPServer()
         assert server._initialized is False
@@ -243,7 +243,7 @@ class TestMCPToolSchemas:
 
     def test_start_session_schema(self):
         """Test socratic_start_session schema."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool = next(t for t in SOCRATIC_TOOLS if t["name"] == "socratic_start_session")
         schema = tool["inputSchema"]
@@ -254,7 +254,7 @@ class TestMCPToolSchemas:
 
     def test_set_goal_schema(self):
         """Test socratic_set_goal schema."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool = next(t for t in SOCRATIC_TOOLS if t["name"] == "socratic_set_goal")
         schema = tool["inputSchema"]
@@ -266,7 +266,7 @@ class TestMCPToolSchemas:
 
     def test_schema_valid_json(self):
         """Test all schemas are valid JSON."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         for tool in SOCRATIC_TOOLS:
             # Should be JSON serializable
@@ -276,7 +276,7 @@ class TestMCPToolSchemas:
 
     def test_get_questions_schema(self):
         """Test socratic_get_questions schema."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool = next(t for t in SOCRATIC_TOOLS if t["name"] == "socratic_get_questions")
         schema = tool["inputSchema"]
@@ -286,7 +286,7 @@ class TestMCPToolSchemas:
 
     def test_submit_answers_schema(self):
         """Test socratic_submit_answers schema."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool = next(t for t in SOCRATIC_TOOLS if t["name"] == "socratic_submit_answers")
         schema = tool["inputSchema"]
@@ -298,7 +298,7 @@ class TestMCPToolSchemas:
 
     def test_generate_workflow_schema(self):
         """Test socratic_generate_workflow schema."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool = next(t for t in SOCRATIC_TOOLS if t["name"] == "socratic_generate_workflow")
         schema = tool["inputSchema"]
@@ -312,35 +312,35 @@ class TestMCPToolsList:
 
     def test_list_sessions_tool_exists(self):
         """Test socratic_list_sessions tool exists."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool_names = [t["name"] for t in SOCRATIC_TOOLS]
         assert "socratic_list_sessions" in tool_names
 
     def test_get_session_tool_exists(self):
         """Test socratic_get_session tool exists."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool_names = [t["name"] for t in SOCRATIC_TOOLS]
         assert "socratic_get_session" in tool_names
 
     def test_list_blueprints_tool_exists(self):
         """Test socratic_list_blueprints tool exists."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool_names = [t["name"] for t in SOCRATIC_TOOLS]
         assert "socratic_list_blueprints" in tool_names
 
     def test_analyze_goal_tool_exists(self):
         """Test socratic_analyze_goal tool exists."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool_names = [t["name"] for t in SOCRATIC_TOOLS]
         assert "socratic_analyze_goal" in tool_names
 
     def test_recommend_agents_tool_exists(self):
         """Test socratic_recommend_agents tool exists."""
-        from empathy_os.socratic.mcp_server import SOCRATIC_TOOLS
+        from attune.socratic.mcp_server import SOCRATIC_TOOLS
 
         tool_names = [t["name"] for t in SOCRATIC_TOOLS]
         assert "socratic_recommend_agents" in tool_names

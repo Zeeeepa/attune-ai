@@ -38,7 +38,7 @@ The meta-workflow system has been reviewed against the Empathy Framework securit
 
 **Files Reviewed**:
 ```
-src/empathy_os/meta_workflows/
+src/attune/meta_workflows/
 ├── __init__.py          ✅
 ├── models.py            ✅
 ├── workflow.py          ✅
@@ -214,14 +214,14 @@ classification="INTERNAL",  # Workflow metadata is internal
 #### PII Scrubbing
 ```python
 # Memory system automatically scrubs PII before storage
-# See: empathy_os.memory.long_term
+# See: attune.memory.long_term
 ```
 ✅ PII scrubbing enabled by default
 
 #### Encryption Support
 ```python
 # Memory system supports encryption
-# See: empathy_os.memory.unified.MemoryConfig
+# See: attune.memory.unified.MemoryConfig
 ```
 ✅ Encryption available (requires master key)
 

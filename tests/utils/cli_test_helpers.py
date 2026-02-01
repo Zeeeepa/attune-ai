@@ -113,7 +113,7 @@ def mock_workflow_execution() -> dict[str, Any]:
     }
 
     return {
-        "empathy_os.workflows.base.BaseWorkflow.execute": MagicMock(
+        "attune.workflows.base.BaseWorkflow.execute": MagicMock(
             return_value=mock_result
         ),
     }
@@ -135,7 +135,7 @@ def mock_memory_backend() -> dict[str, Any]:
     mock_memory.search_patterns.return_value = []
 
     return {
-        "empathy_os.memory.unified.UnifiedMemory": MagicMock(return_value=mock_memory),
+        "attune.memory.unified.UnifiedMemory": MagicMock(return_value=mock_memory),
     }
 
 
@@ -163,7 +163,7 @@ def mock_template_registry() -> dict[str, Any]:
     }
 
     return {
-        "empathy_os.meta_workflows.template_registry.TEMPLATE_REGISTRY": mock_registry,
+        "attune.meta_workflows.template_registry.TEMPLATE_REGISTRY": mock_registry,
     }
 
 
@@ -193,7 +193,7 @@ def mock_analytics_backend() -> dict[str, Any]:
     ]
 
     return {
-        "empathy_os.meta_workflows.execution_tracker.get_recent_runs": MagicMock(
+        "attune.meta_workflows.execution_tracker.get_recent_runs": MagicMock(
             return_value=mock_runs
         ),
     }
