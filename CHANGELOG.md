@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-02-01
+
+### Added
+
+- **Unified `/attune` command**: Single entry point with Socratic discovery for all workflows
+- **Interactive workflow navigation**: Question-based flow guides users to the right tool
+
+### Changed
+
+- **Consolidated command hubs**: Removed 9 separate hub commands in favor of unified `/attune`
+- **Performance audit**: Removed `large_list_copy` false positive detection
+
+### Fixed
+
+- **perf_audit.py**: No longer flags intentional patterns like `dirs[:]` for os.walk or defensive list copies
+
 ## [2.0.0] - 2026-02-01
 
 ### BREAKING CHANGES 🚨

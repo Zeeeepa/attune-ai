@@ -97,6 +97,12 @@ test_env/
 test*.json
 !tests/**/*.json
 
+# Root-level test files (should be in tests/)
+/test_*.py
+
+# Redis dumps (with spaces)
+dump*.rdb
+
 # Site builds
 site/
 
