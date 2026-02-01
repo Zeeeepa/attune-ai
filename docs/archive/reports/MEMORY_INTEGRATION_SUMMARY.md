@@ -36,7 +36,7 @@ Enhanced Querying & Recommendations
 
 ### 1. PatternLearner with Memory Integration
 
-**File**: `src/empathy_os/meta_workflows/pattern_learner.py`
+**File**: `src/attune/meta_workflows/pattern_learner.py`
 
 **Key Changes**:
 - Added optional `memory: UnifiedMemory | None` parameter to `__init__()`
@@ -47,8 +47,8 @@ Enhanced Querying & Recommendations
 
 **Example Usage**:
 ```python
-from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import PatternLearner
+from attune.memory.unified import UnifiedMemory
+from attune.meta_workflows import PatternLearner
 
 # Initialize with memory
 memory = UnifiedMemory(user_id="agent@company.com")
@@ -72,7 +72,7 @@ recommendations = learner.get_smart_recommendations(
 
 ### 2. MetaWorkflow with Memory Support
 
-**File**: `src/empathy_os/meta_workflows/workflow.py`
+**File**: `src/attune/meta_workflows/workflow.py`
 
 **Key Changes**:
 - Added optional `pattern_learner: PatternLearner | None` parameter to `__init__()`
@@ -81,8 +81,8 @@ recommendations = learner.get_smart_recommendations(
 
 **Example Usage**:
 ```python
-from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import MetaWorkflow, PatternLearner
+from attune.memory.unified import UnifiedMemory
+from attune.meta_workflows import MetaWorkflow, PatternLearner
 
 # Setup
 memory = UnifiedMemory(user_id="agent")
@@ -272,15 +272,15 @@ recommendations = learner.get_smart_recommendations(
 ## Files Modified/Created
 
 ### Modified:
-1. `src/empathy_os/meta_workflows/pattern_learner.py` (+298 lines)
+1. `src/attune/meta_workflows/pattern_learner.py` (+298 lines)
    - Added memory integration
    - 3 new methods for memory operations
 
-2. `src/empathy_os/meta_workflows/workflow.py` (+20 lines)
+2. `src/attune/meta_workflows/workflow.py` (+20 lines)
    - Added pattern_learner parameter
    - Automatic memory storage after execution
 
-3. `src/empathy_os/meta_workflows/__init__.py` (+2 lines)
+3. `src/attune/meta_workflows/__init__.py` (+2 lines)
    - Export PatternLearner class
 
 ### Created:

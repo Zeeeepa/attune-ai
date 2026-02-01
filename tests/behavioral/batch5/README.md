@@ -6,7 +6,7 @@ This batch implements behavioral tests for 20 utility and helper modules followi
 ## Test Files Created
 
 ### 1. test_exceptions_behavioral.py
-**Module:** `empathy_os/exceptions.py`
+**Module:** `attune/exceptions.py`
 **Test Count:** 30+ tests
 **Coverage:**
 - EmpathyFrameworkError (base exception)
@@ -26,7 +26,7 @@ This batch implements behavioral tests for 20 utility and helper modules followi
 - Exception inheritance verification
 
 ### 2. test_helpers_cli_behavioral.py
-**Module:** `empathy_os/cli/utils/helpers.py`
+**Module:** `attune/cli/utils/helpers.py`
 **Test Count:** 25+ tests
 **Coverage:**
 - `_file_exists()` - File existence checker
@@ -53,7 +53,7 @@ This batch implements behavioral tests for 20 utility and helper modules followi
 - Monthly Maven (30+ days)
 
 ### 3. test_data_cli_behavioral.py
-**Module:** `empathy_os/cli/utils/data.py`
+**Module:** `attune/cli/utils/data.py`
 **Test Count:** 20+ tests
 **Coverage:**
 - CHEATSHEET dictionary structure
@@ -66,7 +66,7 @@ This batch implements behavioral tests for 20 utility and helper modules followi
 - Section-specific content verification
 
 ### 4. test_platform_utils_behavioral.py
-**Module:** `empathy_os/platform_utils.py`
+**Module:** `attune/platform_utils.py`
 **Test Count:** 40+ tests
 **Coverage:**
 - Platform detection (is_windows, is_macos, is_linux)
@@ -84,7 +84,7 @@ This batch implements behavioral tests for 20 utility and helper modules followi
 - Platform info structure validation
 
 ### 5. test_xml_validator_behavioral.py
-**Module:** `empathy_os/validation/xml_validator.py`
+**Module:** `attune/validation/xml_validator.py`
 **Test Count:** 25+ tests
 **Coverage:**
 - ValidationResult dataclass
@@ -100,7 +100,7 @@ This batch implements behavioral tests for 20 utility and helper modules followi
 - Empty/invalid XML handling
 
 ### 6. test_prompts_parser_behavioral.py
-**Module:** `empathy_os/prompts/parser.py`
+**Module:** `attune/prompts/parser.py`
 **Test Count:** 40+ tests
 **Coverage:**
 - Finding dataclass
@@ -169,7 +169,7 @@ pytest tests/behavioral/batch5/ -v
 pytest tests/behavioral/batch5/test_exceptions_behavioral.py -v
 
 # Run with coverage
-pytest tests/behavioral/batch5/ --cov=empathy_os --cov-report=term-missing -v
+pytest tests/behavioral/batch5/ --cov=attune --cov-report=term-missing -v
 ```
 
 ## Test Categories

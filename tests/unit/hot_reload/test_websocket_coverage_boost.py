@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.hot_reload.websocket import (
+from attune.hot_reload.websocket import (
     ReloadNotificationManager,
     create_notification_callback,
     get_notification_manager,
@@ -302,7 +302,7 @@ class TestGetNotificationManager:
     def test_get_notification_manager_creates_on_first_call(self):
         """Test that get_notification_manager creates manager on first call."""
         # Clear global state
-        import empathy_os.hot_reload.websocket as ws_module
+        import attune.hot_reload.websocket as ws_module
 
         ws_module._notification_manager = None
 
@@ -322,8 +322,8 @@ class TestCreateNotificationCallback:
 
         assert callable(callback)
 
-    @patch("empathy_os.hot_reload.websocket.get_notification_manager")
-    @patch("empathy_os.hot_reload.websocket.asyncio.get_event_loop")
+    @patch("attune.hot_reload.websocket.get_notification_manager")
+    @patch("attune.hot_reload.websocket.asyncio.get_event_loop")
     def test_callback_broadcasts_message_with_running_loop(
         self, mock_get_loop, mock_get_manager
     ):
@@ -340,15 +340,15 @@ class TestCreateNotificationCallback:
         callback = create_notification_callback()
         message = {"event": "reload", "workflow": "test"}
 
-        with patch("empathy_os.hot_reload.websocket.asyncio.create_task") as mock_create_task:
+        with patch("attune.hot_reload.websocket.asyncio.create_task") as mock_create_task:
             callback(message)
 
             # Should create task for broadcast
             mock_create_task.assert_called_once()
 
-    @patch("empathy_os.hot_reload.websocket.get_notification_manager")
-    @patch("empathy_os.hot_reload.websocket.asyncio.get_event_loop")
-    @patch("empathy_os.hot_reload.websocket.asyncio.run")
+    @patch("attune.hot_reload.websocket.get_notification_manager")
+    @patch("attune.hot_reload.websocket.asyncio.get_event_loop")
+    @patch("attune.hot_reload.websocket.asyncio.run")
     def test_callback_broadcasts_with_non_running_loop(
         self, mock_run, mock_get_loop, mock_get_manager
     ):
@@ -370,8 +370,8 @@ class TestCreateNotificationCallback:
         # Should use asyncio.run
         mock_run.assert_called_once()
 
-    @patch("empathy_os.hot_reload.websocket.get_notification_manager")
-    @patch("empathy_os.hot_reload.websocket.asyncio.get_event_loop")
+    @patch("attune.hot_reload.websocket.get_notification_manager")
+    @patch("attune.hot_reload.websocket.asyncio.get_event_loop")
     def test_callback_handles_runtime_error(self, mock_get_loop, mock_get_manager):
         """Test that callback handles RuntimeError gracefully."""
         # Setup mocks
@@ -387,8 +387,8 @@ class TestCreateNotificationCallback:
         # Should not raise - logs warning instead
         callback(message)
 
-    @patch("empathy_os.hot_reload.websocket.get_notification_manager")
-    @patch("empathy_os.hot_reload.websocket.asyncio.get_event_loop")
+    @patch("attune.hot_reload.websocket.get_notification_manager")
+    @patch("attune.hot_reload.websocket.asyncio.get_event_loop")
     def test_callback_handles_general_exception(self, mock_get_loop, mock_get_manager):
         """Test that callback handles general exceptions gracefully."""
         # Setup manager to return normally

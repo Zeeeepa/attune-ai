@@ -19,10 +19,10 @@
 
   "empathy_framework_project": {
     "path": "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework",
-    "package_name": "empathy-framework",
+    "package_name": "attune-ai",
     "version": "2.0.0",
     "status": "published",
-    "pypi_url": "https://pypi.org/project/empathy-framework/2.0.0/"
+    "pypi_url": "https://pypi.org/project/attune-ai/2.0.0/"
   },
 
   "memdocs_project": {

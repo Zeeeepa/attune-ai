@@ -83,8 +83,8 @@ After publishing, verify the package:
 1. **Check PyPI page**: https://pypi.org/project/empathy/
 2. **Install and test**:
    ```bash
-   pip install empathy-framework
-   python -c "from empathy_os import EmpathyOS; print('Success!')"
+   pip install attune-ai
+   python -c "from attune import EmpathyOS; print('Success!')"
    ```
 
 ## Version Numbering
@@ -131,7 +131,7 @@ Examples:
 ## Package Contents
 
 The published package includes:
-- Core framework code (`empathy_os/`, `empathy_llm_toolkit/`)
+- Core framework code (`attune/`, `attune_llm/`)
 - All wizards (`wizards/`, `coach_wizards/`)
 - Plugins (`empathy_healthcare_plugin/`, `empathy_software_plugin/`)
 - Documentation (`README.md`, `LICENSE`, etc.)

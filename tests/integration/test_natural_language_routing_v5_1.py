@@ -5,8 +5,8 @@ new v5.1.0 features: authentication strategy, agent dashboard, and batch test ge
 """
 import pytest
 
-from empathy_os.cli_router import HybridRouter
-from empathy_os.meta_workflows.intent_detector import IntentDetector
+from attune.cli_router import HybridRouter
+from attune.meta_workflows.intent_detector import IntentDetector
 
 
 class TestIntentDetectorV5_1:
@@ -208,7 +208,7 @@ class TestEndToEndRoutingV5_1:
 # Summary test to verify all patterns are registered
 def test_all_v5_1_patterns_registered():
     """Verify that all v5.1.0 patterns are registered in the intent detector."""
-    from empathy_os.meta_workflows.intent_detector import INTENT_PATTERNS
+    from attune.meta_workflows.intent_detector import INTENT_PATTERNS
 
     # Check that new patterns exist
     assert "auth-strategy" in INTENT_PATTERNS, "auth-strategy pattern not registered"

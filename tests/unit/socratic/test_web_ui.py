@@ -15,15 +15,15 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_os.socratic.forms import (
+from attune.socratic.forms import (
     FieldOption,
     FieldType,
     FieldValidation,
     Form,
     FormField,
 )
-from empathy_os.socratic.session import SessionState, SocraticSession
-from empathy_os.socratic.web_ui import (
+from attune.socratic.session import SessionState, SocraticSession
+from attune.socratic.web_ui import (
     FORM_CSS,
     FORM_JS,
     APIResponse,
@@ -165,7 +165,7 @@ def mock_session():
 @pytest.fixture
 def mock_blueprint():
     """Create a mock WorkflowBlueprint for testing."""
-    from empathy_os.socratic.blueprint import (
+    from attune.socratic.blueprint import (
         AgentBlueprint,
         AgentRole,
         AgentSpec,
@@ -174,7 +174,7 @@ def mock_blueprint():
         ToolSpec,
         WorkflowBlueprint,
     )
-    from empathy_os.socratic.success import MetricType, SuccessCriteria, SuccessMetric
+    from attune.socratic.success import MetricType, SuccessCriteria, SuccessMetric
 
     agent_spec = AgentSpec(
         id="reviewer-001",

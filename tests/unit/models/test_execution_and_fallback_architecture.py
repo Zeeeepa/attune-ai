@@ -32,12 +32,12 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.models.executor import LLMExecutor
-from empathy_os.models.registry import MODEL_REGISTRY, ModelRegistry
+from attune.models.executor import LLMExecutor
+from attune.models.registry import MODEL_REGISTRY, ModelRegistry
 
 # NOTE: FallbackPolicy may not exist or have different API - Gap 3.2
-# from empathy_os.models.fallback import FallbackPolicy, FallbackTier
-from empathy_os.models.tasks import TASK_TIER_MAP, TaskType
+# from attune.models.fallback import FallbackPolicy, FallbackTier
+from attune.models.tasks import TASK_TIER_MAP, TaskType
 
 # Placeholders for architectural gaps that still exist
 FallbackPolicy = None
@@ -356,7 +356,7 @@ class TestLLMExecutorInterface:
         executor = LLMExecutor()
         assert executor is not None
 
-    @patch("empathy_os.models.executor.get_model_client")
+    @patch("attune.models.executor.get_model_client")
     def test_execute_calls_correct_provider(self, mock_get_client):
         """Test that execute routes to correct model provider."""
         mock_client = Mock()
@@ -387,7 +387,7 @@ class TestLLMExecutorInterface:
                 messages=[{"role": "user", "content": "Test"}],
             )
 
-    @patch("empathy_os.models.executor.get_model_client")
+    @patch("attune.models.executor.get_model_client")
     def test_executor_tracks_token_usage(self, mock_get_client):
         """Test that executor tracks token usage for cost calculation."""
         mock_client = Mock()
@@ -488,7 +488,7 @@ class TestCircuitBreakerLogic:
 
     def test_circuit_breaker_opens_after_threshold_failures(self):
         """Test that circuit breaker opens after N consecutive failures."""
-        from empathy_os.trust.circuit_breaker import CircuitBreaker
+        from attune.trust.circuit_breaker import CircuitBreaker
 
         breaker = CircuitBreaker(failure_threshold=3, timeout=60)
 
@@ -501,7 +501,7 @@ class TestCircuitBreakerLogic:
 
     def test_circuit_breaker_blocks_requests_when_open(self):
         """Test that open circuit blocks requests."""
-        from empathy_os.trust.circuit_breaker import CircuitBreaker
+        from attune.trust.circuit_breaker import CircuitBreaker
 
         breaker = CircuitBreaker(failure_threshold=2, timeout=60)
 
@@ -517,7 +517,7 @@ class TestCircuitBreakerLogic:
 
     def test_circuit_breaker_half_open_after_timeout(self):
         """Test that circuit enters half-open state after timeout."""
-        from empathy_os.trust.circuit_breaker import CircuitBreaker
+        from attune.trust.circuit_breaker import CircuitBreaker
 
         breaker = CircuitBreaker(failure_threshold=2, timeout=1)  # 1 second timeout
 
@@ -536,7 +536,7 @@ class TestCircuitBreakerLogic:
 
     def test_circuit_breaker_closes_on_success(self):
         """Test that circuit closes after successful call in half-open."""
-        from empathy_os.trust.circuit_breaker import CircuitBreaker
+        from attune.trust.circuit_breaker import CircuitBreaker
 
         breaker = CircuitBreaker(failure_threshold=2, timeout=1)
 
@@ -564,7 +564,7 @@ class TestCostTrackingAccuracy:
 
     def test_cost_calculation_formula_correct(self):
         """Test that cost = tokens * cost_per_million / 1_000_000."""
-        from empathy_os.models.registry import get_model_by_id
+        from attune.models.registry import get_model_by_id
 
         model_info = get_model_by_id("gpt-4o")
         tokens_used = 1_000_000
@@ -577,7 +577,7 @@ class TestCostTrackingAccuracy:
 
     def test_cost_precision_six_decimals(self):
         """Test that costs are tracked with 6 decimal precision."""
-        from empathy_os.telemetry.usage_tracker import UsageTracker
+        from attune.telemetry.usage_tracker import UsageTracker
 
         tracker = UsageTracker(use_test_mode=True)
 
@@ -599,7 +599,7 @@ class TestCostTrackingAccuracy:
 
     def test_cost_aggregation_across_requests(self):
         """Test that costs are correctly aggregated across multiple requests."""
-        from empathy_os.cost_tracker import CostTracker
+        from attune.cost_tracker import CostTracker
 
         tracker = CostTracker()
 
@@ -615,7 +615,7 @@ class TestCostTrackingAccuracy:
     def test_cost_tracking_handles_free_models(self):
         """Test that free/mock models have zero cost."""
         # Mock models should have 0 cost
-        from empathy_os.models.registry import get_model_by_id
+        from attune.models.registry import get_model_by_id
 
         # Check if there are any mock/free models
         for model_id in ["mock", "test-model", "free-model"]:
@@ -638,11 +638,11 @@ class TestRoutingDecisions:
 
     def test_routing_decision_logged(self):
         """Test that routing decisions are logged for audit."""
-        from empathy_os.routing.smart_router import SmartRouter
+        from attune.routing.smart_router import SmartRouter
 
         router = SmartRouter()
 
-        with patch("empathy_os.routing.smart_router.logger") as mock_logger:
+        with patch("attune.routing.smart_router.logger") as mock_logger:
             # Make routing decision
             task = "Classify user sentiment"
             router.route(task)
@@ -653,7 +653,7 @@ class TestRoutingDecisions:
 
     def test_routing_returns_valid_tier(self):
         """Test that routing always returns a valid tier."""
-        from empathy_os.routing.smart_router import SmartRouter
+        from attune.routing.smart_router import SmartRouter
 
         router = SmartRouter()
 
@@ -671,7 +671,7 @@ class TestRoutingDecisions:
 
     def test_routing_consistent_for_same_task(self):
         """Test that same task consistently routes to same tier."""
-        from empathy_os.routing.smart_router import SmartRouter
+        from attune.routing.smart_router import SmartRouter
 
         router = SmartRouter()
 
@@ -692,7 +692,7 @@ class TestRoutingDecisions:
 class TestProviderSwitching:
     """Test seamless switching between providers."""
 
-    @patch("empathy_os.models.executor.get_model_client")
+    @patch("attune.models.executor.get_model_client")
     def test_switch_from_openai_to_anthropic_seamless(self, mock_get_client):
         """Test that switching providers maintains functionality."""
         executor = LLMExecutor()
@@ -729,7 +729,7 @@ class TestProviderSwitching:
 
     def test_provider_credentials_isolated(self):
         """Test that provider credentials don't leak across providers."""
-        from empathy_os.models.provider_config import get_provider_config
+        from attune.models.provider_config import get_provider_config
 
         openai_config = get_provider_config("openai")
         anthropic_config = get_provider_config("anthropic")
@@ -747,8 +747,8 @@ class TestProviderSwitching:
 class TestTelemetryAndLogging:
     """Test that execution is properly logged for audit."""
 
-    @patch("empathy_os.models.executor.get_model_client")
-    @patch("empathy_os.models.telemetry.TelemetryBackend")
+    @patch("attune.models.executor.get_model_client")
+    @patch("attune.models.telemetry.TelemetryBackend")
     def test_all_requests_logged_to_telemetry(self, mock_telemetry, mock_get_client):
         """Test that all LLM requests are logged."""
         mock_client = Mock()
@@ -768,12 +768,12 @@ class TestTelemetryAndLogging:
 
     def test_failures_logged_with_error_details(self):
         """Test that failures are logged with sufficient detail."""
-        from empathy_os.models.executor import LLMExecutor
+        from attune.models.executor import LLMExecutor
 
         executor = LLMExecutor()
 
-        with patch("empathy_os.models.executor.logger") as mock_logger:
-            with patch("empathy_os.models.executor.get_model_client") as mock_client:
+        with patch("attune.models.executor.logger") as mock_logger:
+            with patch("attune.models.executor.get_model_client") as mock_client:
                 mock_client.side_effect = Exception("API Error")
 
                 try:
@@ -793,7 +793,7 @@ class TestTelemetryAndLogging:
 class TestExecutionAndFallbackIntegration:
     """Integration tests for complete execution pipeline."""
 
-    @patch("empathy_os.models.executor.get_model_client")
+    @patch("attune.models.executor.get_model_client")
     def test_end_to_end_execution_with_fallback(self, mock_get_client):
         """Test complete flow: execute → fail → fallback → succeed."""
         # Setup: Primary fails, fallback succeeds
@@ -829,7 +829,7 @@ class TestExecutionAndFallbackIntegration:
 
     def test_cost_tracked_across_fallback_chain(self):
         """Test that costs are tracked correctly when fallback happens."""
-        from empathy_os.cost_tracker import CostTracker
+        from attune.cost_tracker import CostTracker
 
         tracker = CostTracker()
 
@@ -897,7 +897,7 @@ class TestEdgeCasesAndRobustness:
         results = []
         lock = threading.Lock()
 
-        @patch("empathy_os.models.executor.get_model_client")
+        @patch("attune.models.executor.get_model_client")
         def execute_concurrent(mock_get_client):
             mock_client = Mock()
             mock_client.chat.completions.create = Mock(

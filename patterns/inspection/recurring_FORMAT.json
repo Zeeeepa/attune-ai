@@ -9,9 +9,9 @@
     "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/tests/test_all_wizards.py",
     "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/tests/test_book_production/test_learning.py",
     "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/tests/test_security_scan.py",
-    "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/empathy_software_plugin/cli.py",
+    "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/attune_software/cli.py",
     "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/tests/test_wizard_site_comprehensive.py",
-    "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/empathy_software_plugin/wizards/code_review_wizard.py"
+    "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/attune_software/wizards/code_review_wizard.py"
   ],
   "severity": "medium",
   "description": "File needs reformatting",

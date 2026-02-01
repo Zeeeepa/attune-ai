@@ -119,7 +119,7 @@ Transform the Empathy Framework from an innovative prototype into a production-r
 | Task | Hours | Status | Deliverable |
 |------|-------|--------|-------------|
 | Fix integration test failures | 8h | ✅ Done | 10/10 tests passing |
-| Integrate security into interact() | 12h | ✅ Done | empathy_llm_toolkit/core.py |
+| Integrate security into interact() | 12h | ✅ Done | attune_llm/core.py |
 | Create security integration tests | 12h | ✅ Done | 23 new tests |
 | Verify backward compatibility | 4h | ✅ Done | 35 legacy tests passing |
 | Write security integration examples | 8h | ✅ Done | examples/ directory |
@@ -418,7 +418,7 @@ docs/
 | PyPI package build & publish | 2h | P0 | empathy-llm-toolkit 1.8.0 |
 | VSCode marketplace publish | 2h | P0 | VSCode extension 1.8.0 |
 | JetBrains marketplace publish | 2h | P0 | JetBrains plugin 1.8.0 |
-| Documentation site update | 2h | P1 | docs.empathy-framework.dev |
+| Documentation site update | 2h | P1 | docs.attune-ai.dev |
 | Blog post and announcements | 4h | P1 | Launch blog post |
 | Customer communications | 2h | P1 | Email campaigns |
 
@@ -468,7 +468,7 @@ docs/
 | CI/CD Pipeline (GitHub Actions) | Automated testing | $200/mo | DevOps |
 | Test Environment (AWS) | Integration/load testing | $500/mo | DevOps |
 | Security Audit (External) | SOC2/HIPAA compliance | $15K one-time | Security |
-| Documentation Hosting | docs.empathy-framework.dev | $50/mo | DevOps |
+| Documentation Hosting | docs.attune-ai.dev | $50/mo | DevOps |
 | Video Production Tools | Tutorial creation | $200 one-time | Marketing |
 
 **Total Budget:** ~$16,150 one-time + $750/month

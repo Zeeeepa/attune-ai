@@ -11,9 +11,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.memory.redis_bootstrap import RedisStartMethod
-from empathy_os.memory.short_term import AccessTier
-from empathy_os.memory.unified import Environment, MemoryConfig, UnifiedMemory
+from attune.memory.redis_bootstrap import RedisStartMethod
+from attune.memory.short_term import AccessTier
+from attune.memory.unified import Environment, MemoryConfig, UnifiedMemory
 
 
 @pytest.mark.unit
@@ -169,9 +169,9 @@ class TestMemoryConfig:
 class TestUnifiedMemoryInit:
     """Tests for UnifiedMemory initialization."""
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_init_with_mock_redis(self, mock_ltm, mock_secure, mock_redis):
         """Test initialization with mock Redis."""
         config = MemoryConfig(redis_mock=True)
@@ -183,9 +183,9 @@ class TestUnifiedMemoryInit:
         # After refactoring, check actual behavior not mock call signature
         assert memory._redis_status.method == RedisStartMethod.MOCK
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_init_with_redis_url(self, mock_ltm, mock_secure, mock_redis):
         """Test initialization with Redis URL (uses mock mode in tests)."""
         # After refactoring, initialization uses resilient approach with mock fallback
@@ -196,9 +196,9 @@ class TestUnifiedMemoryInit:
         assert memory._short_term is not None
         assert memory._redis_status.method == RedisStartMethod.MOCK
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_init_with_auto_start(self, mock_ltm, mock_secure, mock_redis):
         """Test initialization with auto-start uses mock fallback."""
         # After refactoring, auto-start with mock mode enabled uses mock
@@ -208,9 +208,9 @@ class TestUnifiedMemoryInit:
         assert memory._redis_status.available is False  # Mock doesn't count as "available"
         assert memory._redis_status.method == RedisStartMethod.MOCK
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_credentials_property(self, mock_ltm, mock_secure, mock_redis):
         """Test credentials property returns AgentCredentials."""
         config = MemoryConfig(redis_mock=True)
@@ -225,9 +225,9 @@ class TestUnifiedMemoryInit:
         assert creds.agent_id == "agent@company.com"
         assert creds.tier == AccessTier.STEWARD
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_init_long_term_memory_failure(self, mock_ltm, mock_secure, mock_redis):
         """Test long-term memory initialization is resilient (refactored behavior)."""
         mock_secure.side_effect = Exception("Storage unavailable")
@@ -246,9 +246,9 @@ class TestUnifiedMemoryInit:
 class TestUnifiedMemoryBackendStatus:
     """Tests for get_backend_status method."""
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_get_backend_status_with_mock_redis(self, mock_ltm, mock_secure, mock_redis):
         """Test backend status with mock Redis."""
         config = MemoryConfig(redis_mock=True)
@@ -261,9 +261,9 @@ class TestUnifiedMemoryBackendStatus:
         assert status["short_term"]["mock"] is True
         assert status["short_term"]["method"] == "mock"
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_get_backend_status_long_term_info(self, mock_ltm, mock_secure, mock_redis):
         """Test backend status includes long-term memory info."""
         config = MemoryConfig(
@@ -482,9 +482,9 @@ class TestUnifiedMemoryLongTermOps:
             assert result is not None
             assert result["content"] == "Pattern content"
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_recall_pattern_not_found(self, mock_ltm, mock_secure_cls, mock_redis):
         """Test recall_pattern handles not found gracefully."""
         mock_secure = MagicMock()
@@ -516,9 +516,9 @@ class TestUnifiedMemorySearch:
             # Search returns list (may be empty or have patterns from this test's storage)
             assert isinstance(result, list)
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_search_patterns_with_query(self, mock_ltm, mock_secure_cls, mock_redis):
         """Test search_patterns with text query."""
         mock_secure = MagicMock()
@@ -542,9 +542,9 @@ class TestUnifiedMemorySearch:
         assert len(result) == 2
         assert all("algorithm" in p["content"] for p in result)
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_search_patterns_with_type_filter(self, mock_ltm, mock_secure_cls, mock_redis):
         """Test search_patterns with pattern_type filter."""
         mock_secure = MagicMock()
@@ -566,9 +566,9 @@ class TestUnifiedMemorySearch:
         assert len(result) == 1
         assert result[0]["pattern_type"] == "algorithm"
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_search_patterns_with_limit(self, mock_ltm, mock_secure_cls, mock_redis):
         """Test search_patterns respects limit parameter."""
         mock_secure = MagicMock()
@@ -621,9 +621,9 @@ class TestUnifiedMemoryPromotion:
             assert "pattern_id" in result
             assert result["pattern_id"].startswith("pat_")
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_promote_pattern_not_found(self, mock_ltm, mock_secure_cls, mock_redis_cls):
         """Test promote_pattern when staged pattern doesn't exist."""
         mock_redis = MagicMock()
@@ -639,9 +639,9 @@ class TestUnifiedMemoryPromotion:
 
         assert result is None
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_promote_pattern_no_backends(self, mock_ltm, mock_secure_cls, mock_redis_cls):
         """Test promote_pattern when backends unavailable."""
         mock_secure_cls.side_effect = Exception("Unavailable")
@@ -660,9 +660,9 @@ class TestUnifiedMemoryPromotion:
 class TestUnifiedMemoryProperties:
     """Tests for UnifiedMemory properties."""
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_has_short_term_true(self, mock_ltm, mock_secure, mock_redis):
         """Test has_short_term returns True when initialized."""
         config = MemoryConfig(redis_mock=True)
@@ -670,9 +670,9 @@ class TestUnifiedMemoryProperties:
 
         assert memory.has_short_term is True
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_has_short_term_false(self, mock_ltm, mock_secure, mock_redis):
         """Test has_short_term returns False when not initialized."""
         config = MemoryConfig(redis_mock=True)
@@ -681,9 +681,9 @@ class TestUnifiedMemoryProperties:
 
         assert memory.has_short_term is False
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_has_long_term_true(self, mock_ltm, mock_secure, mock_redis):
         """Test has_long_term returns True when initialized."""
         config = MemoryConfig(redis_mock=True)
@@ -691,9 +691,9 @@ class TestUnifiedMemoryProperties:
 
         assert memory.has_long_term is True
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_using_real_redis_false_when_mock(self, mock_ltm, mock_secure, mock_redis):
         """Test using_real_redis returns False in mock mode."""
         config = MemoryConfig(redis_mock=True)
@@ -701,9 +701,9 @@ class TestUnifiedMemoryProperties:
 
         assert memory.using_real_redis is False
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_short_term_property_raises_when_none(self, mock_ltm, mock_secure, mock_redis):
         """Test short_term property raises RuntimeError when not initialized."""
         config = MemoryConfig(redis_mock=True)
@@ -729,9 +729,9 @@ class TestUnifiedMemoryProperties:
 class TestUnifiedMemoryHealthCheck:
     """Tests for health_check method."""
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_health_check_structure(self, mock_ltm, mock_secure, mock_redis):
         """Test health_check returns expected structure."""
         config = MemoryConfig(redis_mock=True)
@@ -764,9 +764,9 @@ class TestUnifiedMemoryHealthCheck:
             # Check encryption status (key name might vary)
             assert ("encryption" in health["long_term"]) or ("encryption_enabled" in health["long_term"])
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
-    @patch("empathy_os.memory.unified.SecureMemDocsIntegration")
-    @patch("empathy_os.memory.unified.LongTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.SecureMemDocsIntegration")
+    @patch("attune.memory.unified.LongTermMemory")
     def test_health_check_environment(self, mock_ltm, mock_secure, mock_redis):
         """Test health_check reflects environment setting."""
         config = MemoryConfig(

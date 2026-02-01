@@ -204,7 +204,7 @@ Early adopters report:
 
 ```bash
 # Install
-pip install empathy-framework
+pip install attune-ai
 
 # Run your first inspection
 empathy-inspect .
@@ -230,7 +230,7 @@ This release lays the foundation for:
 The code inspection pipeline is available now in Empathy Framework v2.2.9. Install it, run it, and let us know what you think.
 
 ```bash
-pip install --upgrade empathy-framework
+pip install --upgrade attune-ai
 empathy-inspect .
 ```
 

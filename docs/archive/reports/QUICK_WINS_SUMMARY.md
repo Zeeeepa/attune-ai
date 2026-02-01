@@ -67,11 +67,11 @@ Successfully implemented 5 quick-win data structure optimizations to convert O(n
 
 | File | Changes | Status |
 |------|---------|--------|
-| `src/empathy_os/project_index/scanner.py` | 5 frozensets, refactored categorization | ✅ |
-| `src/empathy_os/workflows/code_review_adapters.py` | Dict lookup for verdict merging | ✅ |
-| `src/empathy_os/workflows/progress.py` | Stage index map in __init__ | ✅ |
-| `src/empathy_os/models/fallback.py` | Cached tier index | ✅ |
-| `src/empathy_os/memory/security/audit_logger.py` | Set for operator validation | ✅ |
+| `src/attune/project_index/scanner.py` | 5 frozensets, refactored categorization | ✅ |
+| `src/attune/workflows/code_review_adapters.py` | Dict lookup for verdict merging | ✅ |
+| `src/attune/workflows/progress.py` | Stage index map in __init__ | ✅ |
+| `src/attune/models/fallback.py` | Cached tier index | ✅ |
+| `src/attune/memory/security/audit_logger.py` | Set for operator validation | ✅ |
 | `benchmarks/test_lookup_optimization.py` | NEW - 11 benchmark tests | ✅ |
 | `docs/DATA_STRUCTURE_OPTIMIZATION_PLAN.md` | NEW - Full optimization plan | ✅ |
 

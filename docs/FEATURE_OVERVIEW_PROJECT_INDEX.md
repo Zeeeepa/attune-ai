@@ -39,7 +39,7 @@ The **Project Index** is the codebase intelligence layer that tracks metadata ab
 
 ### 1. ProjectIndex
 
-**Location:** `src/empathy_os/project_index/index.py:23`
+**Location:** `src/attune/project_index/index.py:23`
 
 Central coordinator that manages file metadata with JSON persistence and optional Redis sync.
 
@@ -52,7 +52,7 @@ Central coordinator that manages file metadata with JSON persistence and optiona
 
 **Example Usage:**
 ```python
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 index = ProjectIndex(project_root=".")
 if not index.load():
@@ -65,7 +65,7 @@ print(f"Found {len(stale)} files needing test updates")
 
 ### 2. FileRecord
 
-**Location:** `src/empathy_os/project_index/models.py:38`
+**Location:** `src/attune/project_index/models.py:38`
 
 Metadata record for a single file with 30+ tracked attributes.
 
@@ -84,7 +84,7 @@ Metadata record for a single file with 30+ tracked attributes.
 
 ### 3. ProjectScanner
 
-**Location:** `src/empathy_os/project_index/scanner.py:22`
+**Location:** `src/attune/project_index/scanner.py:22`
 
 Scans filesystem, parses Python AST, calculates metrics.
 
@@ -105,7 +105,7 @@ def _parse_python_cached(file_path: str, file_hash: str) -> ast.Module: ...
 
 ### 4. ReportGenerator
 
-**Location:** `src/empathy_os/project_index/reports.py`
+**Location:** `src/attune/project_index/reports.py`
 
 Generates human-readable reports from index data.
 
@@ -117,7 +117,7 @@ Generates human-readable reports from index data.
 
 ### 5. FileCategory Enum
 
-**Location:** `src/empathy_os/project_index/models.py:15`
+**Location:** `src/attune/project_index/models.py:15`
 
 ```python
 class FileCategory(str, Enum):

@@ -106,7 +106,7 @@ def test_cli_basics():
     # Test version
     print_test("CLI version")
     success, output = run_command(
-        [sys.executable, "-m", "empathy_os.cli_unified", "--version"],
+        [sys.executable, "-m", "attune.cli_unified", "--version"],
         check_output="Empathy Framework",
     )
     if success:
@@ -158,7 +158,7 @@ def test_provider_commands():
     # Provider config
     print_test("Provider configuration")
     success, output = run_command(
-        [sys.executable, "-m", "empathy_os.models.cli", "provider"],
+        [sys.executable, "-m", "attune.models.cli", "provider"],
         check_output="PROVIDER CONFIGURATION",
     )
     if success:
@@ -173,7 +173,7 @@ def test_provider_commands():
     # Registry
     print_test("Model registry")
     success, output = run_command(
-        [sys.executable, "-m", "empathy_os.models.cli", "registry"],
+        [sys.executable, "-m", "attune.models.cli", "registry"],
         check_output="MODEL REGISTRY",
     )
     if success:
@@ -184,7 +184,7 @@ def test_provider_commands():
     # Tasks
     print_test("Task-to-tier mappings")
     success, output = run_command(
-        [sys.executable, "-m", "empathy_os.models.cli", "tasks"], check_output="TASK-TO-TIER"
+        [sys.executable, "-m", "attune.models.cli", "tasks"], check_output="TASK-TO-TIER"
     )
     if success:
         print_success("Task mappings work")
@@ -194,7 +194,7 @@ def test_provider_commands():
     # Costs
     print_test("Cost estimates")
     success, output = run_command(
-        [sys.executable, "-m", "empathy_os.models.cli", "costs"], check_output="COST ESTIMATES"
+        [sys.executable, "-m", "attune.models.cli", "costs"], check_output="COST ESTIMATES"
     )
     if success:
         print_success("Cost estimates work")
@@ -204,7 +204,7 @@ def test_provider_commands():
     # JSON format
     print_test("Registry JSON format")
     success, output = run_command(
-        [sys.executable, "-m", "empathy_os.models.cli", "registry", "--format", "json"]
+        [sys.executable, "-m", "attune.models.cli", "registry", "--format", "json"]
     )
     if success:
         try:
@@ -229,7 +229,7 @@ def test_telemetry_commands():
 
     for name, args in commands:
         print_test(name)
-        success, output = run_command([sys.executable, "-m", "empathy_os.models.cli"] + args)
+        success, output = run_command([sys.executable, "-m", "attune.models.cli"] + args)
         if success or "TELEMETRY" in output or "Total" in output:
             print_success(f"{name} works")
         else:
@@ -242,7 +242,7 @@ def test_token_estimation():
 
     print_test("Token estimation module")
     code = """
-from empathy_os.models.token_estimator import estimate_tokens
+from attune.models.token_estimator import estimate_tokens
 result = estimate_tokens('Hello world')
 print(f'Tokens: {result}')
 assert result > 0, 'Token count should be positive'
@@ -256,7 +256,7 @@ assert result > 0, 'Token count should be positive'
 
     print_test("Workflow cost estimation")
     code = """
-from empathy_os.models.token_estimator import estimate_workflow_cost
+from attune.models.token_estimator import estimate_workflow_cost
 result = estimate_workflow_cost('code-review', 'def test(): pass', 'anthropic')
 print(f'Stages: {len(result["stages"])}')
 assert 'total_min' in result, 'Should have total_min'

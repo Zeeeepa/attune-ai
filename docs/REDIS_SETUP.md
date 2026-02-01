@@ -44,8 +44,8 @@ REDIS_DB=0
 ### 3. Test Your Setup
 
 ```python
-from empathy_os.memory.short_term import RedisShortTermMemory
-from empathy_os.memory.types import AgentCredentials, AccessTier
+from attune.memory.short_term import RedisShortTermMemory
+from attune.memory.types import AgentCredentials, AccessTier
 
 # Initialize Redis
 memory = RedisShortTermMemory()
@@ -75,8 +75,8 @@ print(f"Retrieved: {data}")
 ### Programmatic Configuration
 
 ```python
-from empathy_os.memory.short_term import RedisShortTermMemory
-from empathy_os.memory.types import RedisConfig
+from attune.memory.short_term import RedisShortTermMemory
+from attune.memory.types import RedisConfig
 
 # Option 1: Using environment variables (recommended)
 memory = RedisShortTermMemory()
@@ -102,7 +102,7 @@ memory = RedisShortTermMemory(use_mock=True)
 ### 1. Role-Based Access Control
 
 ```python
-from empathy_os.memory.types import AccessTier
+from attune.memory.types import AccessTier
 
 # Different access tiers
 reader = AgentCredentials("agent_reader", AccessTier.READER)
@@ -113,7 +113,7 @@ coordinator = AgentCredentials("agent_coordinator", AccessTier.COORDINATOR)
 ### 2. TTL-Based Expiration
 
 ```python
-from empathy_os.memory.types import TTLStrategy
+from attune.memory.types import TTLStrategy
 
 # Data expires after 1 hour
 memory.stash("temp_data", {"value": 42}, creds, ttl_seconds=3600)
@@ -286,4 +286,4 @@ redis-cli GET empathy:working:my_key
 - **Production Ready**: SSL, retries, high availability support
 - **Well Tested**: 4 of 5 Redis initialization tests passing
 
-For questions or issues, see: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+For questions or issues, see: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)

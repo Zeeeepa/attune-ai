@@ -16,8 +16,8 @@ Requirements:
 import asyncio
 from typing import Any
 
-from empathy_os.workflows import BaseWorkflow
-from empathy_os.models import LLMClient
+from attune.workflows import BaseWorkflow
+from attune.models import LLMClient
 
 
 # ============================================================================

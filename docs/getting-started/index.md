@@ -28,7 +28,7 @@ If you're in a hurry:
 
 ```bash
 # Install
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 
 # Set API key
 export ANTHROPIC_API_KEY="sk-ant-..."

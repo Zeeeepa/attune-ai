@@ -28,7 +28,7 @@ from datetime import datetime
 # Add src to path for imports
 sys.path.insert(0, "src")
 
-from empathy_os import (AccessTier, AgentCredentials, RedisShortTermMemory,
+from attune import (AccessTier, AgentCredentials, RedisShortTermMemory,
                         StagedPattern, check_redis_connection,
                         get_redis_memory)
 

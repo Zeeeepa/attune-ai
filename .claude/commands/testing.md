@@ -160,7 +160,7 @@ AI-powered batch test generation to rapidly achieve high coverage.
 
 ```bash
 # Generate tests for a specific module
-/testing generate --module src/empathy_os/config.py
+/testing generate --module src/attune/config.py
 
 # Batch generate for top 200 low-coverage modules
 /testing generate --batch --top 200 --parallel 10

@@ -166,8 +166,8 @@ deactivate
    ```
 
 4. **Verify on PyPI**
-   - Check https://pypi.org/project/empathy-framework/4.0.2/
-   - Test install: `pip install empathy-framework==4.0.2`
+   - Check https://pypi.org/project/attune-ai/4.0.2/
+   - Test install: `pip install attune-ai==4.0.2`
 
 5. **Announce**
    - GitHub Release with CHANGELOG excerpt
@@ -188,7 +188,7 @@ deactivate
 
 **v4.0.2 is successful if:**
 1. ✅ Zero bug reports in first 48 hours after release
-2. ✅ Users can upgrade without issues: `pip install --upgrade empathy-framework`
+2. ✅ Users can upgrade without issues: `pip install --upgrade attune-ai`
 3. ✅ All workflows from v4.0.1 still work
 4. ✅ PyPI listing shows v4.0.2 as latest (not v4.0.0)
 5. ✅ GitHub issues trend down (not up)

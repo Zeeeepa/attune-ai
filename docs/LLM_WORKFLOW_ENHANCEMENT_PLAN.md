@@ -49,7 +49,7 @@ def generate_test_with_llm(self, module_info: ModuleInfo, output_path: Path) -> 
 
 **Effort:** 2-3 hours
 **Impact:** High - eliminates "TODO" placeholders
-**File:** `src/empathy_os/workflows/test_gen_behavioral.py`
+**File:** `src/attune/workflows/test_gen_behavioral.py`
 
 ---
 
@@ -79,8 +79,8 @@ def generate_test_with_llm(self, module_info: ModuleInfo, output_path: Path) -> 
 **Effort:** 1 day
 **Impact:** High - better onboarding, fewer support questions
 **Files:**
-- `src/empathy_os/workflows/documentation_orchestrator.py`
-- New: `src/empathy_os/workflows/doc_llm_generator.py`
+- `src/attune/workflows/documentation_orchestrator.py`
+- New: `src/attune/workflows/doc_llm_generator.py`
 
 **Example Prompt:**
 ```python
@@ -136,7 +136,7 @@ Format as Markdown suitable for MkDocs.
 
 **Effort:** 1.5 days
 **Impact:** High - fewer false positives, better suggestions
-**File:** `src/empathy_os/workflows/code_review.py`
+**File:** `src/attune/workflows/code_review.py`
 
 **Example Prompt:**
 ```python
@@ -196,7 +196,7 @@ Return as JSON array of findings.
 
 **Effort:** 2 days
 **Impact:** Medium-High - safer, more intelligent refactoring
-**File:** `src/empathy_os/workflows/refactor.py`
+**File:** `src/attune/workflows/refactor.py`
 
 ---
 
@@ -227,7 +227,7 @@ Return as JSON array of findings.
 
 **Effort:** 1 day
 **Impact:** Medium - better bug detection, fewer false positives
-**File:** `src/empathy_os/workflows/bug_predict.py`
+**File:** `src/attune/workflows/bug_predict.py`
 
 ---
 
@@ -384,7 +384,7 @@ test_code = generator.generate(
 
 ### Week 1: Foundation
 - [ ] Extract `LLMWorkflowGenerator` base class
-- [ ] Add to `src/empathy_os/workflows/llm_base.py`
+- [ ] Add to `src/attune/workflows/llm_base.py`
 - [ ] Implement caching layer
 - [ ] Add quality validation framework
 - [ ] Write comprehensive tests
@@ -489,10 +489,10 @@ class LLMWorkflowMetrics:
 
 ## References
 
-- **Implementation Example**: `src/empathy_os/workflows/autonomous_test_gen.py`
+- **Implementation Example**: `src/attune/workflows/autonomous_test_gen.py`
 - **Base Pattern**: Lines 168-263 (`_generate_with_llm`)
 - **Success Metrics**: Test generation achieving 90% coverage
-- **Dashboard Integration**: `src/empathy_os/telemetry/`
+- **Dashboard Integration**: `src/attune/telemetry/`
 
 ---
 

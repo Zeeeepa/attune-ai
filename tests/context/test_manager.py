@@ -3,9 +3,9 @@
 import tempfile
 from datetime import datetime
 
-from empathy_llm_toolkit.context.compaction import CompactState
-from empathy_llm_toolkit.context.manager import ContextManager
-from empathy_llm_toolkit.state import CollaborationState, PatternType, UserPattern
+from attune_llm.context.compaction import CompactState
+from attune_llm.context.manager import ContextManager
+from attune_llm.state import CollaborationState, PatternType, UserPattern
 
 
 class TestContextManager:

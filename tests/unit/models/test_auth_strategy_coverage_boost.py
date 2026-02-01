@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.models.auth_strategy import (
+from attune.models.auth_strategy import (
     AuthMode,
     AuthStrategy,
     SubscriptionTier,
@@ -454,7 +454,7 @@ class TestGetAuthStrategy:
 
     def test_get_auth_strategy_loads_from_home(self):
         """Test that get_auth_strategy loads from home directory."""
-        # This will load from ~/.empathy/auth_strategy.json if it exists
+        # This will load from ~/.attune/auth_strategy.json if it exists
         # or return default if it doesn't
         strategy = get_auth_strategy()
 

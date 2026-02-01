@@ -8,8 +8,8 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.test5 import Test5Workflow
+from attune.workflows.base import ModelTier
+from attune.workflows.test5 import Test5Workflow
 
 
 class TestTest5Workflow:

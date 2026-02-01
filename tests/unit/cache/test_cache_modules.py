@@ -12,8 +12,8 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 
-from empathy_os.cache.base import CacheEntry, CacheStats
-from empathy_os.cache.hash_only import HashOnlyCache
+from attune.cache.base import CacheEntry, CacheStats
+from attune.cache.hash_only import HashOnlyCache
 
 
 @pytest.mark.unit
@@ -334,10 +334,10 @@ class TestHybridCacheBasics:
     """Tests for HybridCache basic functionality (mocked)."""
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_hybrid_cache_initialization(self, mock_storage, mock_model):
         """Test HybridCache initialization with mocked dependencies."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.zeros(384)
@@ -355,10 +355,10 @@ class TestHybridCacheBasics:
         assert cache.similarity_threshold == 0.95
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_hybrid_cache_hash_hit(self, mock_storage, mock_model):
         """Test HybridCache hash-based cache hit."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.zeros(384)
@@ -372,10 +372,10 @@ class TestHybridCacheBasics:
         assert cache.stats.hits == 1
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_hybrid_cache_miss(self, mock_storage, mock_model):
         """Test HybridCache miss."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.zeros(384)
@@ -388,10 +388,10 @@ class TestHybridCacheBasics:
         assert cache.stats.misses == 1
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_hybrid_cache_clear(self, mock_storage, mock_model):
         """Test HybridCache clear."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_storage.return_value.clear.return_value = 0
@@ -406,10 +406,10 @@ class TestHybridCacheBasics:
         assert len(cache._semantic_cache) == 0
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_hybrid_cache_size_info(self, mock_storage, mock_model):
         """Test HybridCache size_info."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.zeros(384)
@@ -426,10 +426,10 @@ class TestHybridCacheBasics:
         assert "total_size_mb" in info
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_hybrid_cache_evict_expired(self, mock_storage, mock_model):
         """Test HybridCache evict_expired."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.zeros(384)
@@ -452,7 +452,7 @@ class TestCosineSimilarity:
 
     def test_identical_vectors(self):
         """Test cosine similarity of identical vectors."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         a = np.array([1.0, 2.0, 3.0])
         b = np.array([1.0, 2.0, 3.0])
@@ -463,7 +463,7 @@ class TestCosineSimilarity:
 
     def test_orthogonal_vectors(self):
         """Test cosine similarity of orthogonal vectors."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         a = np.array([1.0, 0.0])
         b = np.array([0.0, 1.0])
@@ -474,7 +474,7 @@ class TestCosineSimilarity:
 
     def test_opposite_vectors(self):
         """Test cosine similarity of opposite vectors."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         a = np.array([1.0, 2.0, 3.0])
         b = np.array([-1.0, -2.0, -3.0])
@@ -485,7 +485,7 @@ class TestCosineSimilarity:
 
     def test_similar_vectors(self):
         """Test cosine similarity of similar vectors."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         a = np.array([1.0, 2.0, 3.0])
         b = np.array([1.1, 2.1, 3.1])
@@ -500,10 +500,10 @@ class TestHybridCacheSemanticMatching:
     """Tests for HybridCache semantic similarity matching."""
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_semantic_cache_populated_on_put(self, mock_storage, mock_model):
         """Test semantic cache is populated when putting entries."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.random.rand(384)
@@ -515,10 +515,10 @@ class TestHybridCacheSemanticMatching:
         assert len(cache._semantic_cache) == 1
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_semantic_lookup_finds_similar(self, mock_storage, mock_model):
         """Test semantic lookup finds similar prompts."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
 
@@ -544,10 +544,10 @@ class TestHybridCacheSemanticMatching:
             assert similarity >= cache.similarity_threshold
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_semantic_lookup_respects_workflow_filter(self, mock_storage, mock_model):
         """Test semantic lookup only matches same workflow/stage/model."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.random.rand(384)
@@ -562,10 +562,10 @@ class TestHybridCacheSemanticMatching:
         assert result is None
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_semantic_lookup_empty_cache(self, mock_storage, mock_model):
         """Test semantic lookup with empty cache returns None."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.random.rand(384)
@@ -582,11 +582,11 @@ class TestHybridCachePersistence:
     """Tests for HybridCache persistent storage."""
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_loads_from_storage_on_init(self, mock_storage_cls, mock_model):
         """Test HybridCache loads entries from storage on initialization."""
-        from empathy_os.cache.base import CacheEntry
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.base import CacheEntry
+        from attune.cache.hybrid import HybridCache
 
         mock_entry = CacheEntry(
             key="existing_key",
@@ -610,10 +610,10 @@ class TestHybridCachePersistence:
         assert "existing_key" in cache._hash_cache
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_persists_on_put(self, mock_storage_cls, mock_model):
         """Test HybridCache persists entries to storage on put."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage = MagicMock()
         mock_storage.get_all.return_value = []
@@ -628,10 +628,10 @@ class TestHybridCachePersistence:
         mock_storage.put.assert_called_once()
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_clears_storage_on_clear(self, mock_storage_cls, mock_model):
         """Test HybridCache clears storage when clear() is called."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage = MagicMock()
         mock_storage.get_all.return_value = []
@@ -651,10 +651,10 @@ class TestHybridCacheLRUEviction:
     """Tests for HybridCache LRU eviction."""
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_lru_eviction_triggered(self, mock_storage, mock_model):
         """Test LRU eviction is triggered when cache exceeds max size."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.zeros(384)
@@ -668,10 +668,10 @@ class TestHybridCacheLRUEviction:
         assert cache.stats.evictions > 0
 
     @patch("sentence_transformers.SentenceTransformer")
-    @patch("empathy_os.cache.hybrid.CacheStorage")
+    @patch("attune.cache.hybrid.CacheStorage")
     def test_evict_entry_removes_from_both_caches(self, mock_storage, mock_model):
         """Test _evict_entry removes entry from both hash and semantic caches."""
-        from empathy_os.cache.hybrid import HybridCache
+        from attune.cache.hybrid import HybridCache
 
         mock_storage.return_value.get_all.return_value = []
         mock_model.return_value.encode.return_value = np.zeros(384)

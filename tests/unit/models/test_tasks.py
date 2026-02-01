@@ -9,8 +9,8 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.models.registry import ModelTier
-from empathy_os.models.tasks import (
+from attune.models.registry import ModelTier
+from attune.models.tasks import (
     BATCH_ELIGIBLE_TASKS,
     CAPABLE_TASKS,
     CHEAP_TASKS,

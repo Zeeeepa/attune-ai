@@ -8,7 +8,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-import empathy_os.workflows.test_gen.report_formatter as formatter_module
+import attune.workflows.test_gen.report_formatter as formatter_module
 
 format_test_gen_report = formatter_module.format_test_gen_report
 

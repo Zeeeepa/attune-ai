@@ -4,14 +4,14 @@
 
 Run code review, debugging, testing, and release workflows from your terminal or Claude Code. Smart tier routing saves 34-86% on LLM costs.
 
-[![PyPI](https://img.shields.io/pypi/v/empathy-framework?color=blue)](https://pypi.org/project/empathy-framework/)
-[![Tests](https://img.shields.io/badge/tests-7%2C168%20passing%20(99.9%25)-brightgreen)](https://github.com/Smart-AI-Memory/empathy-framework/actions)
+[![PyPI](https://img.shields.io/pypi/v/attune-ai?color=blue)](https://pypi.org/project/attune-ai/)
+[![Tests](https://img.shields.io/badge/tests-7%2C168%20passing%20(99.9%25)-brightgreen)](https://github.com/Smart-AI-Memory/attune-ai/actions)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
-[![Performance](https://img.shields.io/badge/performance-18x%20faster-success)](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/CHANGELOG.md)
+[![Performance](https://img.shields.io/badge/performance-18x%20faster-success)](https://github.com/Smart-AI-Memory/attune-ai/blob/main/CHANGELOG.md)
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 ---
@@ -79,13 +79,13 @@ pip install empathy-framework[developer]
 
 ```bash
 # Interactive setup
-python -m empathy_os.models.auth_cli setup
+python -m attune.models.auth_cli setup
 
 # View current configuration
-python -m empathy_os.models.auth_cli status
+python -m attune.models.auth_cli status
 
 # Get recommendation for a file
-python -m empathy_os.models.auth_cli recommend src/module.py
+python -m attune.models.auth_cli recommend src/module.py
 ```
 
 **💰 Automatic Cost Optimization** - Workflows choose the best auth method:
@@ -206,17 +206,17 @@ empathy routing models --provider anthropic  # Compare models
 ### 1. Install
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 ### 2. Configure
 
 ```bash
 # Auto-detect API keys
-python -m empathy_os.models.cli provider
+python -m attune.models.cli provider
 
 # Or set explicitly
-python -m empathy_os.models.cli provider --set anthropic
+python -m attune.models.cli provider --set anthropic
 ```
 
 ### 3. Use
@@ -257,7 +257,7 @@ To verify MCP integration:
 
 ```bash
 # Check server is running
-echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m empathy_os.mcp.server
+echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m attune.mcp.server
 
 # Restart Claude Code to load the MCP server
 # Tools will appear in Claude's tool list automatically
@@ -276,7 +276,7 @@ empathy telemetry show  # View cost savings
 **Python:**
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 async with EmpathyOS() as empathy:
     result = await empathy.level_2_guided(
@@ -411,7 +411,7 @@ empathy orchestrate test-coverage --target 90
 Up to 57% cache hit rate on similar prompts. Zero config needed.
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 
 workflow = SecurityAuditWorkflow(enable_cache=True)
 result = await workflow.execute(target_path="./src")
@@ -423,7 +423,7 @@ print(f"Cache hit rate: {result.cost_report.cache_hit_rate:.1f}%")
 Workflows learn from outcomes and improve over time:
 
 ```python
-from empathy_os.orchestration.config_store import ConfigurationStore
+from attune.orchestration.config_store import ConfigurationStore
 
 store = ConfigurationStore()
 best = store.get_best_for_task("release_prep")
@@ -433,7 +433,7 @@ print(f"Success rate: {best.success_rate:.1%}")
 ### Multi-Provider Support
 
 ```python
-from empathy_llm_toolkit.providers import (
+from attune_llm.providers import (
     AnthropicProvider,  # Claude
     OpenAIProvider,     # GPT-4
     GeminiProvider,     # Gemini
@@ -447,8 +447,8 @@ from empathy_llm_toolkit.providers import (
 
 ```bash
 # Provider configuration
-python -m empathy_os.models.cli provider
-python -m empathy_os.models.cli provider --set hybrid
+python -m attune.models.cli provider
+python -m attune.models.cli provider --set hybrid
 
 # Workflows
 empathy workflow list
@@ -474,23 +474,23 @@ empathy meta-workflow run release-prep --real
 
 ```bash
 # Individual developers (recommended)
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 
 # All LLM providers
-pip install empathy-framework[llm]
+pip install attune-ai[llm]
 
 # With caching (semantic similarity)
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 
 # Enterprise (auth, rate limiting)
-pip install empathy-framework[enterprise]
+pip install attune-ai[enterprise]
 
 # Healthcare (HIPAA compliance)
-pip install empathy-framework[healthcare]
+pip install attune-ai[healthcare]
 
 # Development
-git clone https://github.com/Smart-AI-Memory/empathy-framework.git
-cd empathy-framework && pip install -e .[dev]
+git clone https://github.com/Smart-AI-Memory/attune-ai.git
+cd attune-ai && pip install -e .[dev]
 ```
 
 ---
@@ -600,4 +600,4 @@ Want to contribute? See [CONTRIBUTORS.md](CONTRIBUTORS.md)
 
 ---
 
-**Built by [Smart AI Memory](https://smartaimemory.com)** · [Docs](https://smartaimemory.com/framework-docs/) · [Examples](examples/) · [Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+**Built by [Smart AI Memory](https://smartaimemory.com)** · [Docs](https://smartaimemory.com/framework-docs/) · [Examples](examples/) · [Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)

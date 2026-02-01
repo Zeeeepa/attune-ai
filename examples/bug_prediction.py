@@ -17,7 +17,7 @@ Licensed under Fair Source 0.9
 
 from typing import Any
 
-from empathy_os import (EmpathyOS, FeedbackLoopDetector, Level4Anticipatory,
+from attune import (EmpathyOS, FeedbackLoopDetector, Level4Anticipatory,
                         LeveragePointAnalyzer, Pattern, PatternLibrary)
 
 

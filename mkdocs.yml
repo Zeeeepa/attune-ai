@@ -213,7 +213,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/Smart-AI-Memory/empathy
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/empathy-framework/
+      link: https://pypi.org/project/attune-ai/
 
   # Plausible Analytics is added via docs/overrides/main.html
 

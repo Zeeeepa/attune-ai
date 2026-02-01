@@ -17,7 +17,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.project_index.cli import (
+from attune.project_index.cli import (
     cmd_file,
     cmd_query,
     cmd_refresh,
@@ -25,7 +25,7 @@ from empathy_os.project_index.cli import (
     cmd_summary,
     main,
 )
-from empathy_os.project_index.models import (
+from attune.project_index.models import (
     FileCategory,
     FileRecord,
     ProjectSummary,
@@ -132,7 +132,7 @@ def mock_index(sample_summary, sample_file_record, sample_file_record_stale, sam
     """Create a mock ProjectIndex."""
     index = MagicMock()
     index.project_root = Path("/test/project")
-    index._index_path = Path("/test/project/.empathy/project_index.json")
+    index._index_path = Path("/test/project/.attune/project_index.json")
     index.load.return_value = True
     index.get_summary.return_value = sample_summary
     index.get_all_files.return_value = [sample_file_record, sample_file_record_stale, sample_file_record_no_tests]
@@ -166,7 +166,7 @@ class TestMain:
         """Test main with refresh command."""
         monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "refresh"])
 
-        with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls:
+        with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_index = MagicMock()
             mock_index.project_root = tmp_path
             mock_index._index_path = tmp_path / ".empathy" / "project_index.json"
@@ -184,7 +184,7 @@ class TestMain:
         """Test main with summary command."""
         monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "summary"])
 
-        with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls:
+        with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_index = MagicMock()
             mock_index.load.return_value = True
             mock_index.get_summary.return_value = sample_summary
@@ -198,8 +198,8 @@ class TestMain:
         """Test main with report command."""
         monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "report", "health"])
 
-        with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls, \
-             patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ProjectIndex") as mock_cls, \
+             patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_index = MagicMock()
             mock_index.load.return_value = True
             mock_index.get_summary.return_value = sample_summary
@@ -218,7 +218,7 @@ class TestMain:
         """Test main with query command."""
         monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "query", "needing_tests"])
 
-        with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls:
+        with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_cls.return_value = mock_index
 
             result = main()
@@ -229,7 +229,7 @@ class TestMain:
         """Test main with file command."""
         monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "file", "src/module.py"])
 
-        with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls:
+        with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_cls.return_value = mock_index
 
             result = main()
@@ -240,7 +240,7 @@ class TestMain:
         """Test main with --json flag."""
         monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "--json", "summary"])
 
-        with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls:
+        with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_cls.return_value = mock_index
 
             result = main()
@@ -264,7 +264,7 @@ class TestCmdRefresh:
         """Test successful refresh."""
         mock_index = MagicMock()
         mock_index.project_root = Path("/test/project")
-        mock_index._index_path = Path("/test/project/.empathy/project_index.json")
+        mock_index._index_path = Path("/test/project/.attune/project_index.json")
         mock_index.get_summary.return_value = ProjectSummary(
             total_files=50,
             source_files=30,
@@ -399,7 +399,7 @@ class TestCmdReport:
 
         args = argparse.Namespace(report_type="health", markdown=True, json=False)
 
-        with patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_gen = MagicMock()
             mock_gen.to_markdown.return_value = "# Health Report\n\nScore: A"
             mock_gen_cls.return_value = mock_gen
@@ -420,7 +420,7 @@ class TestCmdReport:
 
         args = argparse.Namespace(report_type="health", markdown=False, json=True)
 
-        with patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_gen = MagicMock()
             mock_gen.health_report.return_value = {"score": "A", "health": 95}
             mock_gen_cls.return_value = mock_gen
@@ -442,7 +442,7 @@ class TestCmdReport:
 
         args = argparse.Namespace(report_type="test_gap", markdown=False, json=True)
 
-        with patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_gen = MagicMock()
             mock_gen.test_gap_report.return_value = {"files_without_tests": 5}
             mock_gen_cls.return_value = mock_gen
@@ -461,7 +461,7 @@ class TestCmdReport:
 
         args = argparse.Namespace(report_type="staleness", markdown=False, json=True)
 
-        with patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_gen = MagicMock()
             mock_gen.staleness_report.return_value = {"stale_files": 3}
             mock_gen_cls.return_value = mock_gen
@@ -480,7 +480,7 @@ class TestCmdReport:
 
         args = argparse.Namespace(report_type="coverage", markdown=False, json=True)
 
-        with patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_gen = MagicMock()
             mock_gen.coverage_report.return_value = {"avg_coverage": 78.5}
             mock_gen_cls.return_value = mock_gen
@@ -499,7 +499,7 @@ class TestCmdReport:
 
         args = argparse.Namespace(report_type="sprint", markdown=False, json=True)
 
-        with patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_gen = MagicMock()
             mock_gen.sprint_planning_report.return_value = {"priority_files": []}
             mock_gen_cls.return_value = mock_gen
@@ -519,7 +519,7 @@ class TestCmdReport:
         # Neither markdown nor json specified
         args = argparse.Namespace(report_type="health", markdown=False, json=False)
 
-        with patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
             mock_gen = MagicMock()
             mock_gen.to_markdown.return_value = "# Report"
             mock_gen_cls.return_value = mock_gen
@@ -806,7 +806,7 @@ class TestCLIIntegration:
         src_dir.mkdir()
         (src_dir / "module.py").write_text("def foo(): pass")
 
-        with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls:
+        with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_index = MagicMock()
             mock_index.project_root = tmp_path
             mock_index._index_path = tmp_path / ".empathy" / "project_index.json"
@@ -837,8 +837,8 @@ class TestCLIIntegration:
         report_types = ["health", "test_gap", "staleness", "coverage", "sprint"]
 
         for report_type in report_types:
-            with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls, \
-                 patch("empathy_os.project_index.cli.ReportGenerator") as mock_gen_cls:
+            with patch("attune.project_index.cli.ProjectIndex") as mock_cls, \
+                 patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
                 mock_index = MagicMock()
                 mock_index.load.return_value = True
                 mock_index.get_summary.return_value = sample_summary
@@ -863,7 +863,7 @@ class TestCLIIntegration:
         query_types = ["needing_tests", "stale", "high_impact", "attention", "all"]
 
         for query_type in query_types:
-            with patch("empathy_os.project_index.cli.ProjectIndex") as mock_cls:
+            with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
                 mock_cls.return_value = mock_index
 
                 monkeypatch.setattr("sys.argv", ["cli", "--project", str(tmp_path), "query", query_type])

@@ -9,7 +9,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.pr_review import PRReviewResult, PRReviewWorkflow
+from attune.workflows.pr_review import PRReviewResult, PRReviewWorkflow
 
 
 class TestPRReviewResult:

@@ -105,7 +105,7 @@ pytest tests/behavioral/generated/test_workflow_utilities_behavioral.py -v
 pytest tests/behavioral/generated/test_workflow_utilities_behavioral.py::TestWorkflowConfig -v
 
 # Run with coverage
-pytest tests/behavioral/generated/test_workflow_utilities_behavioral.py --cov=src/empathy_os/workflows --cov-report=term-missing -v
+pytest tests/behavioral/generated/test_workflow_utilities_behavioral.py --cov=src/attune/workflows --cov-report=term-missing -v
 ```
 
 ## File Location
@@ -166,12 +166,12 @@ Proper use of pytest fixtures (tmp_path) for temporary file operations.
 
 - `tests/behavioral/generated/test_retry_behavioral.py` - Reference implementation
 - `tests/behavioral/generated/test_helpers_behavioral.py` - Reference implementation
-- `src/empathy_os/workflows/config.py` - Module under test
-- `src/empathy_os/workflows/security_adapters.py` - Module under test
-- `src/empathy_os/workflows/code_review_adapters.py` - Module under test
-- `src/empathy_os/workflows/step_config.py` - Module under test
-- `src/empathy_os/workflows/tier_tracking.py` - Module under test
-- `src/empathy_os/workflows/output.py` - Module under test
-- `src/empathy_os/workflows/caching.py` - Module under test
-- `src/empathy_os/workflows/telemetry_mixin.py` - Module under test
-- `src/empathy_os/workflows/history.py` - Module under test
+- `src/attune/workflows/config.py` - Module under test
+- `src/attune/workflows/security_adapters.py` - Module under test
+- `src/attune/workflows/code_review_adapters.py` - Module under test
+- `src/attune/workflows/step_config.py` - Module under test
+- `src/attune/workflows/tier_tracking.py` - Module under test
+- `src/attune/workflows/output.py` - Module under test
+- `src/attune/workflows/caching.py` - Module under test
+- `src/attune/workflows/telemetry_mixin.py` - Module under test
+- `src/attune/workflows/history.py` - Module under test

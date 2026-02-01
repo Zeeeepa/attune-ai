@@ -15,27 +15,27 @@ class TestCoreImports:
 
     def test_import_empathy_os(self):
         """Test main package import."""
-        import empathy_os
+        import attune
         assert empathy_os is not None
 
     def test_import_workflows(self):
         """Test workflows import."""
-        from empathy_os import workflows
+        from attune import workflows
         assert workflows is not None
 
     def test_import_cache(self):
         """Test cache import."""
-        from empathy_os import cache
+        from attune import cache
         assert cache is not None
 
     def test_import_meta_workflows(self):
         """Test meta workflows import."""
-        from empathy_os import meta_workflows
+        from attune import meta_workflows
         assert meta_workflows is not None
 
     def test_import_memory(self):
         """Test memory import."""
-        from empathy_os import memory
+        from attune import memory
         assert memory is not None
 
 
@@ -44,26 +44,26 @@ class TestCoreClasses:
 
     def test_cache_creation(self):
         """Test cache can be created."""
-        from empathy_os.cache import create_cache
+        from attune.cache import create_cache
         cache = create_cache(cache_type="hash")
         assert cache is not None
 
     def test_workflow_base_import(self):
         """Test workflow base classes."""
-        from empathy_os.workflows.base import WorkflowResult
+        from attune.workflows.base import WorkflowResult
         # WorkflowResult has a different signature - just verify import
         assert WorkflowResult is not None
 
     def test_template_registry(self):
         """Test template registry loads built-in templates."""
-        from empathy_os.meta_workflows import TemplateRegistry
+        from attune.meta_workflows import TemplateRegistry
         registry = TemplateRegistry()
         templates = registry.list_templates()
         assert len(templates) >= 5  # Should have built-in templates
 
     def test_pattern_library(self):
         """Test pattern library instantiation."""
-        from empathy_os.pattern_library import PatternLibrary
+        from attune.pattern_library import PatternLibrary
         library = PatternLibrary()
         assert library is not None
 
@@ -73,12 +73,12 @@ class TestCLI:
 
     def test_cli_import(self):
         """Test CLI module import."""
-        from empathy_os import cli
+        from attune import cli
         assert cli is not None
 
     def test_cli_app_exists(self):
         """Test CLI app exists."""
-        from empathy_os.cli_unified import app
+        from attune.cli_unified import app
         assert app is not None
 
 
@@ -87,7 +87,7 @@ class TestConfig:
 
     def test_validate_file_path(self):
         """Test path validation function exists."""
-        from empathy_os.config import _validate_file_path
+        from attune.config import _validate_file_path
         # Function exists and works
         assert _validate_file_path is not None
         # Null bytes should be blocked
@@ -96,7 +96,7 @@ class TestConfig:
 
     def test_config_dataclass(self):
         """Test config dataclass."""
-        from empathy_os.config import EmpathyConfig
+        from attune.config import EmpathyConfig
         config = EmpathyConfig(user_id="test")
         assert config.user_id == "test"
 
@@ -106,13 +106,13 @@ class TestLLMToolkit:
 
     def test_hooks_import(self):
         """Test hooks module."""
-        from empathy_llm_toolkit.hooks import HookRegistry
+        from attune_llm.hooks import HookRegistry
         registry = HookRegistry()
         assert registry is not None
 
     def test_commands_import(self):
         """Test commands module."""
-        from empathy_llm_toolkit.commands import CommandRegistry
+        from attune_llm.commands import CommandRegistry
         CommandRegistry.reset_instance()
         registry = CommandRegistry.get_instance()
         assert registry is not None
@@ -120,13 +120,13 @@ class TestLLMToolkit:
 
     def test_learning_import(self):
         """Test learning module."""
-        from empathy_llm_toolkit.learning import PatternExtractor
+        from attune_llm.learning import PatternExtractor
         extractor = PatternExtractor()
         assert extractor is not None
 
     def test_context_import(self):
         """Test context module."""
-        from empathy_llm_toolkit.context import ContextManager
+        from attune_llm.context import ContextManager
         # Should be able to import without error
         assert ContextManager is not None
 
@@ -136,19 +136,19 @@ class TestModelsAndCosts:
 
     def test_model_registry(self):
         """Test model registry has models defined."""
-        from empathy_os.models.registry import ModelRegistry
+        from attune.models.registry import ModelRegistry
         registry = ModelRegistry()
         assert registry is not None
 
     def test_cost_tracker_import(self):
         """Test cost tracker."""
-        from empathy_os.cost_tracker import CostTracker
+        from attune.cost_tracker import CostTracker
         tracker = CostTracker()
         assert tracker is not None
 
     def test_token_estimator(self):
         """Test token estimation."""
-        from empathy_os.models.token_estimator import estimate_tokens
+        from attune.models.token_estimator import estimate_tokens
         tokens = estimate_tokens("Hello, world!")
         assert tokens > 0
 

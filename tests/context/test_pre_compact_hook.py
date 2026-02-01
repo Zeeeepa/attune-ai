@@ -4,12 +4,12 @@ import tempfile
 from datetime import datetime
 from unittest.mock import patch
 
-from empathy_llm_toolkit.context.manager import ContextManager
-from empathy_llm_toolkit.hooks.scripts.pre_compact import (
+from attune_llm.context.manager import ContextManager
+from attune_llm.hooks.scripts.pre_compact import (
     generate_compaction_summary,
     run_pre_compact,
 )
-from empathy_llm_toolkit.state import CollaborationState, PatternType, UserPattern
+from attune_llm.state import CollaborationState, PatternType, UserPattern
 
 
 class TestRunPreCompact:
@@ -139,7 +139,7 @@ class TestRunPreCompact:
 
             # Patch the default storage dir
             with patch(
-                "empathy_llm_toolkit.context.manager.ContextManager.__init__",
+                "attune_llm.context.manager.ContextManager.__init__",
                 return_value=None,
             ) as mock_init:
                 mock_init.return_value = None

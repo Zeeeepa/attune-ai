@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.metrics.prompt_metrics import MetricsTracker, PromptMetrics
+from attune.metrics.prompt_metrics import MetricsTracker, PromptMetrics
 
 
 @pytest.fixture

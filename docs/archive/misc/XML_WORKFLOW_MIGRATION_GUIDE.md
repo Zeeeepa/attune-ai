@@ -16,9 +16,9 @@ This guide demonstrates how to migrate existing workflows to use XML-enhanced pr
 ## Existing XML Support
 
 The `code_review.py` workflow already has XML infrastructure:
-- `_is_xml_enabled()` - Feature flag check ([code_review.py:654](src/empathy_os/workflows/code_review.py#L654))
-- `_render_xml_prompt()` - XML prompt generation ([code_review.py:655](src/empathy_os/workflows/code_review.py#L655-L674))
-- `_parse_xml_response()` - XML response parsing ([code_review.py:729](src/empathy_os/workflows/code_review.py#L729))
+- `_is_xml_enabled()` - Feature flag check ([code_review.py:654](src/attune/workflows/code_review.py#L654))
+- `_render_xml_prompt()` - XML prompt generation ([code_review.py:655](src/attune/workflows/code_review.py#L655-L674))
+- `_parse_xml_response()` - XML response parsing ([code_review.py:729](src/attune/workflows/code_review.py#L729))
 
 ## Migration Pattern
 
@@ -43,8 +43,8 @@ user_message = f"""Perform an architectural review:
 
 ### After (XML-Enhanced with Metrics)
 ```python
-from empathy_os.workflows.xml_enhanced_crew import XMLAgent, XMLTask, parse_xml_response
-from empathy_os.metrics import MetricsTracker
+from attune.workflows.xml_enhanced_crew import XMLAgent, XMLTask, parse_xml_response
+from attune.metrics import MetricsTracker
 
 # Initialize metrics tracking
 metrics = MetricsTracker() if config.metrics.enable_tracking else None

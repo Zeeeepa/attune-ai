@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from empathy_os.workflows.progressive.core import (
+from attune.workflows.progressive.core import (
     EscalationConfig,
     FailureAnalysis,
     ProgressiveWorkflowResult,

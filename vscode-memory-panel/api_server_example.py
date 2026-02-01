@@ -29,7 +29,7 @@ except ImportError:
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 try:
-    from empathy_os.memory import ControlPanelConfig, MemoryControlPanel
+    from attune.memory import ControlPanelConfig, MemoryControlPanel
 except ImportError:
     print("Error: Could not import MemoryControlPanel.")
     print("Make sure you're running from the Empathy Framework directory.")

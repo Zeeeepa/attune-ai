@@ -236,4 +236,4 @@ When your composed workflows should be a single optimized pipeline:
 4. **Configure defaults** in `empathy.config.yml`
 5. **Override per-workflow** with `--base` or `--compose` flags
 
-Questions? See the implementation examples in `src/empathy_os/workflows/`.
+Questions? See the implementation examples in `src/attune/workflows/`.

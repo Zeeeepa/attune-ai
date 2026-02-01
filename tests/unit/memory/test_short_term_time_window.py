@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from empathy_os.memory.short_term import TimeWindowQuery
+from attune.memory.short_term import TimeWindowQuery
 
 
 @pytest.mark.unit

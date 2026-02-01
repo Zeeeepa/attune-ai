@@ -1,16 +1,16 @@
 ---
-description: TierFallbackHelper Extension Summary: ## Overview Extended `src/empathy_os/models/fallback.py` to add Sprint 1 convenience methods for simple tier-based fallbac
+description: TierFallbackHelper Extension Summary: ## Overview Extended `src/attune/models/fallback.py` to add Sprint 1 convenience methods for simple tier-based fallbac
 ---
 
 # TierFallbackHelper Extension Summary
 
 ## Overview
-Extended `src/empathy_os/models/fallback.py` to add Sprint 1 convenience methods for simple tier-based fallback logic while preserving all existing sophisticated FallbackPolicy functionality.
+Extended `src/attune/models/fallback.py` to add Sprint 1 convenience methods for simple tier-based fallback logic while preserving all existing sophisticated FallbackPolicy functionality.
 
 ## Changes Made
 
 ### 1. Added TierFallbackHelper Class
-**Location:** `/src/empathy_os/models/fallback.py` (lines 690-763)
+**Location:** `/src/attune/models/fallback.py` (lines 690-763)
 
 A new helper class with two simple class methods:
 
@@ -39,7 +39,7 @@ class TierFallbackHelper:
 ```
 
 ### 2. Updated Module Exports
-**Location:** `/src/empathy_os/models/__init__.py`
+**Location:** `/src/attune/models/__init__.py`
 
 - Added `TierFallbackHelper` to imports from `.fallback`
 - Added `TierFallbackHelper` to `__all__` export list
@@ -59,7 +59,7 @@ Created 17 tests covering:
 
 ### Import
 ```python
-from empathy_os.models import TierFallbackHelper
+from attune.models import TierFallbackHelper
 ```
 
 ### Get Next Tier
@@ -119,8 +119,8 @@ False
 
 ## Files Modified
 
-1. `/src/empathy_os/models/fallback.py` - Added TierFallbackHelper class
-2. `/src/empathy_os/models/__init__.py` - Added export
+1. `/src/attune/models/fallback.py` - Added TierFallbackHelper class
+2. `/src/attune/models/__init__.py` - Added export
 3. `/tests/unit/models/test_tier_fallback_helper.py` - New test file (17 tests)
 
 ## Testing
@@ -140,7 +140,7 @@ python -m pytest tests/unit/models/test_registry.py -v
 ### Integration Verification
 ```python
 # Verified both classes can be imported and used together
-from empathy_os.models import FallbackPolicy, TierFallbackHelper
+from attune.models import FallbackPolicy, TierFallbackHelper
 
 # FallbackPolicy still works
 policy = FallbackPolicy(

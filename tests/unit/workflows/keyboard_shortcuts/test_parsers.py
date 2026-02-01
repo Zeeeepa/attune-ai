@@ -13,14 +13,14 @@ import json
 import pytest
 import yaml
 
-from empathy_os.workflows.keyboard_shortcuts.parsers import (
+from attune.workflows.keyboard_shortcuts.parsers import (
     CompositeParser,
     LLMFeatureAnalyzer,
     PyProjectParser,
     VSCodeCommandParser,
     YAMLManifestParser,
 )
-from empathy_os.workflows.keyboard_shortcuts.schema import Feature, FrequencyTier
+from attune.workflows.keyboard_shortcuts.schema import Feature, FrequencyTier
 
 
 class TestVSCodeCommandParser:
@@ -322,8 +322,8 @@ class TestPyProjectParser:
 
         pyproject_content = """
 [project.scripts]
-empathy = "empathy_os.cli:main"
-empathy-morning = "empathy_os.cli:morning"
+empathy = "attune.cli:main"
+empathy-morning = "attune.cli:morning"
 """
         pyproject_file.write_text(pyproject_content)
 
@@ -347,8 +347,8 @@ empathy-morning = "empathy_os.cli:morning"
 
         pyproject_content = """
 [project.entry-points."empathy.workflows"]
-morning = "empathy_os.workflows.morning:MorningWorkflow"
-ship = "empathy_os.workflows.ship:ShipWorkflow"
+morning = "attune.workflows.morning:MorningWorkflow"
+ship = "attune.workflows.ship:ShipWorkflow"
 """
         pyproject_file.write_text(pyproject_content)
 

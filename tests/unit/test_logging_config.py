@@ -1,8 +1,8 @@
-"""Tests for empathy_os.logging_config"""
+"""Tests for attune.logging_config"""
 
 import logging
 
-from empathy_os.logging_config import (
+from attune.logging_config import (
     LoggingConfig,
     StructuredFormatter,
     create_logger,

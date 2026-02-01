@@ -60,7 +60,7 @@ Add to Claude Desktop config:
     "mcpServers": {
         "socratic": {
             "command": "python",
-            "args": ["-m", "empathy_os.socratic.mcp_server"],
+            "args": ["-m", "attune.socratic.mcp_server"],
             "env": {"ANTHROPIC_API_KEY": "your-key"}
         }
     }
@@ -85,7 +85,7 @@ Use the Python API to run and build workflows.
 ### Using Built-in Workflows
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 import asyncio
 
 async def audit():
@@ -110,7 +110,7 @@ asyncio.run(audit())
 Describe what you want and let the framework compose agent teams.
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 plan = orchestrator.analyze_and_compose(

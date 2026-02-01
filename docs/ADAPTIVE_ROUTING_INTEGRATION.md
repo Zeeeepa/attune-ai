@@ -15,7 +15,7 @@ description: Adaptive Routing Integration Guide integration guide. Connect exter
 
 ### 1. AdaptiveModelRouter Class
 
-**Location:** [src/empathy_os/models/adaptive_routing.py](../src/empathy_os/models/adaptive_routing.py)
+**Location:** [src/attune/models/adaptive_routing.py](../src/attune/models/adaptive_routing.py)
 
 **Key Features:**
 - ✅ Analyzes historical telemetry per model/workflow/stage
@@ -104,8 +104,8 @@ Per-Model Performance:
 Add to any workflow's `execute()` method:
 
 ```python
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 class MyWorkflow(BaseWorkflow):
     def __init__(self):
@@ -144,7 +144,7 @@ class MyWorkflow(BaseWorkflow):
 Modify `BaseWorkflow` to automatically use adaptive routing:
 
 ```python
-# In src/empathy_os/workflows/base.py
+# In src/attune/workflows/base.py
 
 class BaseWorkflow:
     def __init__(self, enable_adaptive_routing: bool = True):
@@ -218,8 +218,8 @@ If you don't have telemetry yet, generate some:
 ```python
 # tests/test_adaptive_routing.py
 
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 from datetime import datetime
 
 def test_adaptive_routing_with_mock_data():
@@ -282,8 +282,8 @@ pytest tests/test_adaptive_routing.py -v
 **Goal:** Make adaptive routing automatic for all workflows
 
 **Files to modify:**
-- `src/empathy_os/workflows/base.py` - Add router initialization
-- `src/empathy_os/workflows/base.py` - Modify `_execute_stage()` method
+- `src/attune/workflows/base.py` - Add router initialization
+- `src/attune/workflows/base.py` - Modify `_execute_stage()` method
 
 **Estimated time:** 2-3 hours
 
@@ -304,7 +304,7 @@ empathy telemetry routing-check --all
 ```
 
 **Files to create:**
-- `src/empathy_os/telemetry/routing_cli.py` - CLI commands
+- `src/attune/telemetry/routing_cli.py` - CLI commands
 
 **Estimated time:** 2-3 hours
 

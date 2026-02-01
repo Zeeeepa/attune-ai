@@ -45,7 +45,7 @@ graph TB
 ## Quick Start
 
 ```python
-from empathy_os import (
+from attune import (
     EmpathyOS,
     PatternLibrary,
     ConflictResolver,
@@ -86,7 +86,7 @@ Resolves conflicts between patterns from different agents.
 
 ### Class Reference
 
-::: empathy_os.coordination.ConflictResolver
+::: attune.coordination.ConflictResolver
     options:
       show_root_heading: false
       show_source: false
@@ -105,7 +105,7 @@ Resolves conflicts between patterns from different agents.
 ### Example: Resolving Pattern Conflicts
 
 ```python
-from empathy_os import Pattern, ConflictResolver, ResolutionStrategy
+from attune import Pattern, ConflictResolver, ResolutionStrategy
 
 resolver = ConflictResolver()
 
@@ -146,7 +146,7 @@ print(f"Reasoning: {resolution.reasoning}")
 ### Example: Custom Team Priorities
 
 ```python
-from empathy_os import ConflictResolver, TeamPriorities
+from attune import ConflictResolver, TeamPriorities
 
 # Configure team priorities
 priorities = TeamPriorities(
@@ -187,7 +187,7 @@ Tracks agent performance and team collaboration metrics.
 
 ### Class Reference
 
-::: empathy_os.monitoring.AgentMonitor
+::: attune.monitoring.AgentMonitor
     options:
       show_root_heading: false
       show_source: false
@@ -196,7 +196,7 @@ Tracks agent performance and team collaboration metrics.
 ### Recording Agent Activity
 
 ```python
-from empathy_os import AgentMonitor, PatternLibrary
+from attune import AgentMonitor, PatternLibrary
 
 library = PatternLibrary()
 monitor = AgentMonitor(pattern_library=library)
@@ -278,7 +278,7 @@ print(f"Recent alerts: {health['recent_alerts']}")
 
 ### ResolutionResult
 
-::: empathy_os.coordination.ResolutionResult
+::: attune.coordination.ResolutionResult
     options:
       show_root_heading: false
       show_source: false
@@ -299,7 +299,7 @@ print(result.factors)                # Score breakdown
 
 ### AgentMetrics
 
-::: empathy_os.monitoring.AgentMetrics
+::: attune.monitoring.AgentMetrics
     options:
       show_root_heading: false
       show_source: false
@@ -320,7 +320,7 @@ print(metrics.pattern_contribution_rate)  # Property
 
 ### TeamMetrics
 
-::: empathy_os.monitoring.TeamMetrics
+::: attune.monitoring.TeamMetrics
     options:
       show_root_heading: false
       show_source: false
@@ -329,7 +329,7 @@ print(metrics.pattern_contribution_rate)  # Property
 Team-wide aggregated metrics:
 
 ```python
-from empathy_os.monitoring import TeamMetrics
+from attune.monitoring import TeamMetrics
 
 metrics = TeamMetrics(
     active_agents=3,
@@ -350,7 +350,7 @@ print(metrics.collaboration_efficiency)  # 0.6 (30/50)
 EmpathyOS includes built-in support for shared pattern libraries:
 
 ```python
-from empathy_os import EmpathyOS, PatternLibrary, Pattern
+from attune import EmpathyOS, PatternLibrary, Pattern
 
 # Create shared library
 library = PatternLibrary()

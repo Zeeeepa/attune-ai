@@ -13,8 +13,8 @@ import asyncio
 import os
 from pathlib import Path
 
-from empathy_llm_toolkit.core import EmpathyLLM
-from empathy_llm_toolkit.security import SecurityError
+from attune_llm.core import EmpathyLLM
+from attune_llm.security import SecurityError
 
 
 async def example_1_basic_security():

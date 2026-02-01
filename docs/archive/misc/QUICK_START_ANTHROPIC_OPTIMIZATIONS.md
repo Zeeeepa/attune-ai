@@ -35,7 +35,7 @@ Expected output: `3/3 tests passed` ✅
 ### 2. Use Precise Token Counting
 
 ```python
-from empathy_llm_toolkit.utils.tokens import count_tokens, estimate_cost
+from attune_llm.utils.tokens import count_tokens, estimate_cost
 
 # Count tokens accurately
 text = "Your prompt here"
@@ -57,7 +57,7 @@ print(f"Estimated cost: ${cost:.4f}")
 ### 3. Monitor Cache Performance
 
 ```python
-from empathy_os.telemetry.usage_tracker import UsageTracker
+from attune.telemetry.usage_tracker import UsageTracker
 
 # Get cache statistics
 tracker = UsageTracker.get_instance()
@@ -81,7 +81,7 @@ print(f"Reads: {stats['total_reads']:,} tokens")
 
 ```python
 import asyncio
-from src.empathy_os.workflows.batch_processing import (
+from src.attune.workflows.batch_processing import (
     BatchProcessingWorkflow,
     BatchRequest
 )
@@ -128,7 +128,7 @@ asyncio.run(run_batch())
 - Report generation (`generate_report`)
 - Documentation generation (`generate_docs`)
 - Test generation (`generate_tests`)
-- And 17 more... (see [tasks.py](src/empathy_os/models/tasks.py))
+- And 17 more... (see [tasks.py](src/attune/models/tasks.py))
 
 **NOT for Batch:**
 - Interactive chat
@@ -149,7 +149,7 @@ asyncio.run(run_batch())
 ```python
 # Create batch requests for 100 log files
 import asyncio
-from src.empathy_os.workflows.batch_processing import BatchProcessingWorkflow, BatchRequest
+from src.attune.workflows.batch_processing import BatchProcessingWorkflow, BatchRequest
 
 requests = [
     BatchRequest(
@@ -174,7 +174,7 @@ print(f"{sum(r.success for r in results)}/100 logs analyzed")
 
 ```python
 # Same system prompt reused → cache hit!
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider(use_prompt_caching=True)  # Already default
 
@@ -214,7 +214,7 @@ for file in files:
 ### View Cache Performance
 
 ```python
-from empathy_os.telemetry.usage_tracker import UsageTracker
+from attune.telemetry.usage_tracker import UsageTracker
 
 stats = UsageTracker.get_instance().get_cache_stats(days=7)
 print(f"Hit Rate: {stats['hit_rate']:.1%}")
@@ -228,7 +228,7 @@ print(f"Hit Rate: {stats['hit_rate']:.1%}")
 ### Check Token Usage
 
 ```python
-from empathy_llm_toolkit.utils.tokens import count_message_tokens
+from attune_llm.utils.tokens import count_message_tokens
 
 # Before making API call
 messages = [{"role": "user", "content": "Your message"}]
@@ -245,7 +245,7 @@ if counts['total'] > 50000:
 ### Disable Caching (if needed)
 
 ```python
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider(use_prompt_caching=False)  # Disable
 ```
@@ -253,7 +253,7 @@ provider = AnthropicProvider(use_prompt_caching=False)  # Disable
 ### Batch API Settings
 
 ```python
-from src.empathy_os.workflows.batch_processing import BatchProcessingWorkflow
+from src.attune.workflows.batch_processing import BatchProcessingWorkflow
 
 workflow = BatchProcessingWorkflow()
 
@@ -270,7 +270,7 @@ results = await workflow.execute_batch(
 
 - **Full Plan:** [docs/ANTHROPIC_OPTIMIZATION_PLAN.md](docs/ANTHROPIC_OPTIMIZATION_PLAN.md) (68 pages)
 - **Summary:** [ANTHROPIC_OPTIMIZATION_SUMMARY.md](ANTHROPIC_OPTIMIZATION_SUMMARY.md)
-- **GitHub Issues:** [#22](https://github.com/Smart-AI-Memory/empathy-framework/issues/22), [#23](https://github.com/Smart-AI-Memory/empathy-framework/issues/23), [#24](https://github.com/Smart-AI-Memory/empathy-framework/issues/24)
+- **GitHub Issues:** [#22](https://github.com/Smart-AI-Memory/attune-ai/issues/22), [#23](https://github.com/Smart-AI-Memory/attune-ai/issues/23), [#24](https://github.com/Smart-AI-Memory/attune-ai/issues/24)
 
 ---
 
@@ -280,7 +280,7 @@ results = await workflow.execute_batch(
 A: Yes! It's enabled by default. You're already saving 20-30% on repeated context.
 
 **Q: How do I know if my task can use Batch API?**
-A: Check if it's in `BATCH_ELIGIBLE_TASKS` (see [tasks.py](src/empathy_os/models/tasks.py)) or if it can wait 24 hours.
+A: Check if it's in `BATCH_ELIGIBLE_TASKS` (see [tasks.py](src/attune/models/tasks.py)) or if it can wait 24 hours.
 
 **Q: Will this break existing code?**
 A: No! All changes are backward compatible. Existing code works unchanged.
@@ -307,4 +307,4 @@ Start using these optimizations today:
 **Need Help?**
 - Run: `python scripts/verify_anthropic_optimizations.py`
 - Check: [ANTHROPIC_OPTIMIZATION_SUMMARY.md](ANTHROPIC_OPTIMIZATION_SUMMARY.md)
-- Issues: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- Issues: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)

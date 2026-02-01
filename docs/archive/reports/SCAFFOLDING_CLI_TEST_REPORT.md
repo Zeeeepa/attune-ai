@@ -1,12 +1,12 @@
 ---
-description: Scaffolding CLI Test Report: ## Summary **File:** `src/empathy_os/scaffolding/cli.py` (241 lines total, 101 SLOC) **Test File:** `tests/unit/scaffolding/test_sc
+description: Scaffolding CLI Test Report: ## Summary **File:** `src/attune/scaffolding/cli.py` (241 lines total, 101 SLOC) **Test File:** `tests/unit/scaffolding/test_sc
 ---
 
 # Scaffolding CLI Test Report
 
 ## Summary
 
-**File:** `src/empathy_os/scaffolding/cli.py` (241 lines total, 101 SLOC)
+**File:** `src/attune/scaffolding/cli.py` (241 lines total, 101 SLOC)
 **Test File:** `tests/unit/scaffolding/test_scaffolding_cli.py` (1236 lines)
 **Tests Created:** 42 comprehensive tests
 **Status:** ✅ All 42 tests passing

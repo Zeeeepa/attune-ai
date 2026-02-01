@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.agents_md.loader import AgentLoader, load_agents_from_paths
+from attune_llm.agents_md.loader import AgentLoader, load_agents_from_paths
 
 
 class TestAgentLoader:

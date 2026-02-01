@@ -26,7 +26,7 @@ This example shows how the Empathy Framework adapts and learns over time:
 ## Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ---
@@ -36,7 +36,7 @@ pip install empathy-framework
 ### Problem: Fixed Thresholds Don't Work for Everyone
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Traditional approach: Fixed threshold
 empathy_fixed = EmpathyOS(
@@ -56,7 +56,7 @@ empathy_fixed = EmpathyOS(
 ### Solution: Adaptive Thresholds
 
 ```python
-from empathy_os.adaptive import AdaptiveLearning
+from attune.adaptive import AdaptiveLearning
 
 # Create adaptive system
 empathy = EmpathyOS(
@@ -125,7 +125,7 @@ print(f"\nPersonalized threshold after 50 interactions: {final_threshold:.2f}")
 ### Different Patterns Need Different Confidence Levels
 
 ```python
-from empathy_os.adaptive import PatternThresholds
+from attune.adaptive import PatternThresholds
 
 adaptive = AdaptiveLearning(empathy)
 
@@ -172,7 +172,7 @@ for pattern, threshold in thresholds.items():
 ### Stale Patterns Lose Confidence Over Time
 
 ```python
-from empathy_os.adaptive import PatternDecay
+from attune.adaptive import PatternDecay
 import datetime
 
 # Create pattern with decay enabled
@@ -214,7 +214,7 @@ if current_confidence < 0.65:
 ### Auto-Refresh Stale Patterns
 
 ```python
-from empathy_os.adaptive import PatternRefresh
+from attune.adaptive import PatternRefresh
 
 refresh = PatternRefresh(empathy)
 
@@ -266,7 +266,7 @@ print(f"   Confidence: {refresh_result['confidence']:.2f}")
 ### Adapt Patterns from One Domain to Another
 
 ```python
-from empathy_os.adaptive import TransferLearning
+from attune.adaptive import TransferLearning
 
 transfer = TransferLearning(empathy)
 
@@ -331,7 +331,7 @@ print(f"  Expected success rate: {adapted_pattern['expected_success']:.0%}")
 ### Domain Embeddings for Better Transfer
 
 ```python
-from empathy_os.adaptive import DomainEmbeddings
+from attune.adaptive import DomainEmbeddings
 
 embeddings = DomainEmbeddings()
 
@@ -377,7 +377,7 @@ transfer_confidence_finance = 0.88     # Higher confidence (58% similarity)
 ### Learn User's Working Style
 
 ```python
-from empathy_os.adaptive import PreferenceLearning
+from attune.adaptive import PreferenceLearning
 
 preferences = PreferenceLearning(empathy)
 
@@ -463,7 +463,7 @@ print(response.response)
 ### Track Adaptation Performance
 
 ```python
-from empathy_os.adaptive import AdaptationMetrics
+from attune.adaptive import AdaptationMetrics
 
 metrics = AdaptationMetrics(empathy)
 
@@ -538,8 +538,8 @@ print(report.to_markdown())
 
 ```python
 import asyncio
-from empathy_os import EmpathyOS
-from empathy_os.adaptive import AdaptiveLearning, PreferenceLearning, TransferLearning
+from attune import EmpathyOS
+from attune.adaptive import AdaptiveLearning, PreferenceLearning, TransferLearning
 
 async def adaptive_learning_demo():
     """

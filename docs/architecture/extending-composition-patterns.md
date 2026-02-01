@@ -12,7 +12,7 @@ description: Extending Agent Composition Patterns with Anthropic Guidelines: Sys
 
 ## Current Composition Patterns (7)
 
-**Location:** `src/empathy_os/orchestration/execution_strategies.py`
+**Location:** `src/attune/orchestration/execution_strategies.py`
 
 1. **Sequential** (A → B → C) - Linear pipeline
 2. **Parallel** (A || B || C) - Concurrent execution
@@ -40,7 +40,7 @@ Based on Anthropic's agent guidelines, we can add three powerful patterns:
 **Implementation:**
 
 ```python
-from empathy_os.orchestration.execution_strategies import ExecutionStrategy
+from attune.orchestration.execution_strategies import ExecutionStrategy
 from typing import Any
 
 class ToolEnhancedStrategy(ExecutionStrategy):
@@ -120,7 +120,7 @@ class ToolEnhancedStrategy(ExecutionStrategy):
         tools: list[dict[str, Any]]
     ) -> dict[str, Any]:
         """Execute agent with tool use enabled."""
-        from empathy_os.models import LLMClient
+        from attune.models import LLMClient
 
         client = LLMClient()
 
@@ -249,7 +249,7 @@ class PromptCachedSequentialStrategy(ExecutionStrategy):
         Returns:
             Result with cumulative outputs
         """
-        from empathy_os.models import LLMClient
+        from attune.models import LLMClient
         import time
 
         client = LLMClient()
@@ -437,7 +437,7 @@ class DelegationChainStrategy(ExecutionStrategy):
         specialists: list[AgentTemplate],
     ) -> dict[str, Any]:
         """Coordinator plans delegation strategy."""
-        from empathy_os.models import LLMClient
+        from attune.models import LLMClient
 
         client = LLMClient()
 
@@ -476,7 +476,7 @@ Return JSON:
         context: dict[str, Any],
     ) -> AgentResult:
         """Execute specialist agent."""
-        from empathy_os.models import LLMClient
+        from attune.models import LLMClient
 
         client = LLMClient()
 
@@ -513,7 +513,7 @@ Return JSON:
         original_task: str,
     ) -> dict[str, Any]:
         """Coordinator synthesizes specialist results."""
-        from empathy_os.models import LLMClient
+        from attune.models import LLMClient
 
         client = LLMClient()
 
@@ -610,13 +610,13 @@ result = await strategy.execute(
 
 ### 1. Add New Strategies to codebase
 
-**File:** `src/empathy_os/orchestration/execution_strategies.py`
+**File:** `src/attune/orchestration/execution_strategies.py`
 
 Add the three new strategy classes after the existing 7 patterns.
 
 ### 2. Register in Strategy Factory
 
-**File:** `src/empathy_os/orchestration/strategy_factory.py`
+**File:** `src/attune/orchestration/strategy_factory.py`
 
 ```python
 STRATEGY_MAP = {
@@ -650,7 +650,7 @@ description = "AI collaboration framework... dynamic agent composition (10 patte
 
 ```python
 import pytest
-from empathy_os.orchestration.execution_strategies import (
+from attune.orchestration.execution_strategies import (
     ToolEnhancedStrategy,
     PromptCachedSequentialStrategy,
     DelegationChainStrategy,

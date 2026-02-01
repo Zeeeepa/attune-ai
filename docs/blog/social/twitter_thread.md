@@ -90,7 +90,7 @@ None of them learn from it.
 Try it yourself:
 
 ```
-pip install empathy-framework
+pip install attune-ai
 python examples/full_repo_test.py
 ```
 

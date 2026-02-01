@@ -729,7 +729,7 @@ Companies that will benefit most from Empathy Framework:
 
 **Website**: https://github.com/Smart-AI-Memory/empathy
 **Documentation**: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
-**Get Started**: `pip install empathy-framework`
+**Get Started**: `pip install attune-ai`
 **Pricing**: Free for ≤5 employees, contact us for pricing commercial
 **Contact**: patrick.roebuck1955@gmail.com
 

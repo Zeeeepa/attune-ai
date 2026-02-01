@@ -28,7 +28,7 @@ empathy dashboard start --help
 ## 📜 Method 2: Bash Script
 
 ```bash
-cd /path/to/empathy-framework
+cd /path/to/attune-ai
 ./scripts/start_dashboard.sh
 ```
 
@@ -39,7 +39,7 @@ cd /path/to/empathy-framework
 ## 🐍 Method 3: Python Import
 
 ```python
-from empathy_os.dashboard import run_standalone_dashboard
+from attune.dashboard import run_standalone_dashboard
 
 # Default settings
 run_standalone_dashboard()
@@ -56,10 +56,10 @@ run_standalone_dashboard(host="0.0.0.0", port=8080)
 
 ```bash
 # Standalone version (direct Redis)
-python -m empathy_os.dashboard.standalone_server
+python -m attune.dashboard.standalone_server
 
 # Simple version (uses telemetry API)
-python -m empathy_os.dashboard.simple_server
+python -m attune.dashboard.simple_server
 ```
 
 **When to use:** Testing different implementations, development
@@ -70,10 +70,10 @@ python -m empathy_os.dashboard.simple_server
 
 ```bash
 # From project root
-python -c "from empathy_os.dashboard import run_standalone_dashboard; run_standalone_dashboard()"
+python -c "from attune.dashboard import run_standalone_dashboard; run_standalone_dashboard()"
 
 # With custom port
-python -c "from empathy_os.dashboard import run_standalone_dashboard; run_standalone_dashboard(port=8080)"
+python -c "from attune.dashboard import run_standalone_dashboard; run_standalone_dashboard(port=8080)"
 ```
 
 **When to use:** One-liners, automation scripts
@@ -115,7 +115,7 @@ Or if you changed the host/port:
 
 ```bash
 # Terminal 1: Populate data
-cd /path/to/empathy-framework
+cd /path/to/attune-ai
 python scripts/populate_redis_direct.py
 
 # Terminal 2: Start dashboard
@@ -147,7 +147,7 @@ nohup empathy dashboard start --host 0.0.0.0 --port 8080 > dashboard.log 2>&1 &
 
 ```python
 # In your Python application
-from empathy_os.dashboard import run_standalone_dashboard
+from attune.dashboard import run_standalone_dashboard
 import threading
 
 # Run dashboard in background thread
@@ -318,7 +318,7 @@ sudo empathy dashboard start --port 80
 | **CLI** | `empathy dashboard start` | Production, recommended |
 | **Script** | `./scripts/start_dashboard.sh` | Development, testing |
 | **Python** | `run_standalone_dashboard()` | Integration, custom apps |
-| **Module** | `python -m empathy_os.dashboard.standalone_server` | Direct execution |
+| **Module** | `python -m attune.dashboard.standalone_server` | Direct execution |
 
 **Default URL:** http://localhost:8000
 

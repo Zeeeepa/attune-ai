@@ -10,7 +10,7 @@ class TestParticipantRole:
 
     def test_all_roles_exist(self):
         """Test all expected roles exist."""
-        from empathy_os.socratic.collaboration import ParticipantRole
+        from attune.socratic.collaboration import ParticipantRole
 
         assert hasattr(ParticipantRole, "OWNER")
         assert hasattr(ParticipantRole, "EDITOR")
@@ -19,7 +19,7 @@ class TestParticipantRole:
 
     def test_role_values(self):
         """Test role values."""
-        from empathy_os.socratic.collaboration import ParticipantRole
+        from attune.socratic.collaboration import ParticipantRole
 
         assert ParticipantRole.OWNER.value == "owner"
         assert ParticipantRole.EDITOR.value == "editor"
@@ -30,7 +30,7 @@ class TestVoteType:
 
     def test_all_vote_types_exist(self):
         """Test all expected vote types exist."""
-        from empathy_os.socratic.collaboration import VoteType
+        from attune.socratic.collaboration import VoteType
 
         assert hasattr(VoteType, "APPROVE")
         assert hasattr(VoteType, "REJECT")
@@ -42,7 +42,7 @@ class TestChangeType:
 
     def test_all_change_types_exist(self):
         """Test all expected change types exist."""
-        from empathy_os.socratic.collaboration import ChangeType
+        from attune.socratic.collaboration import ChangeType
 
         # Test actual enum values
         assert hasattr(ChangeType, "GOAL_SET")
@@ -57,7 +57,7 @@ class TestChangeType:
 
     def test_change_type_values(self):
         """Test change type values."""
-        from empathy_os.socratic.collaboration import ChangeType
+        from attune.socratic.collaboration import ChangeType
 
         assert ChangeType.AGENT_ADDED.value == "agent_added"
         assert ChangeType.AGENT_REMOVED.value == "agent_removed"
@@ -68,7 +68,7 @@ class TestParticipant:
 
     def test_create_participant(self):
         """Test creating a participant."""
-        from empathy_os.socratic.collaboration import Participant, ParticipantRole
+        from attune.socratic.collaboration import Participant, ParticipantRole
 
         participant = Participant(
             user_id="user-001",
@@ -83,7 +83,7 @@ class TestParticipant:
 
     def test_participant_default_role(self):
         """Test participant default role is viewer."""
-        from empathy_os.socratic.collaboration import Participant, ParticipantRole
+        from attune.socratic.collaboration import Participant, ParticipantRole
 
         participant = Participant(
             user_id="user-002",
@@ -94,7 +94,7 @@ class TestParticipant:
 
     def test_participant_serialization(self):
         """Test participant serialization."""
-        from empathy_os.socratic.collaboration import Participant, ParticipantRole
+        from attune.socratic.collaboration import Participant, ParticipantRole
 
         participant = Participant(
             user_id="user-001",
@@ -110,7 +110,7 @@ class TestParticipant:
 
     def test_participant_deserialization(self):
         """Test participant deserialization."""
-        from empathy_os.socratic.collaboration import Participant
+        from attune.socratic.collaboration import Participant
 
         data = {
             "user_id": "user-001",
@@ -133,7 +133,7 @@ class TestChange:
 
     def test_create_change(self):
         """Test creating a change."""
-        from empathy_os.socratic.collaboration import Change, ChangeType
+        from attune.socratic.collaboration import Change, ChangeType
 
         change = Change(
             change_id="change-001",
@@ -148,7 +148,7 @@ class TestChange:
 
     def test_change_with_before_after(self):
         """Test change with before and after values."""
-        from empathy_os.socratic.collaboration import Change, ChangeType
+        from attune.socratic.collaboration import Change, ChangeType
 
         change = Change(
             change_id="change-002",
@@ -164,7 +164,7 @@ class TestChange:
 
     def test_change_serialization(self):
         """Test change serialization."""
-        from empathy_os.socratic.collaboration import Change, ChangeType
+        from attune.socratic.collaboration import Change, ChangeType
 
         change = Change(
             change_id="change-001",
@@ -185,7 +185,7 @@ class TestVotingResult:
 
     def test_create_voting_result(self):
         """Test creating a voting result."""
-        from empathy_os.socratic.collaboration import VotingResult
+        from attune.socratic.collaboration import VotingResult
 
         result = VotingResult(
             target_id="change-001",
@@ -203,7 +203,7 @@ class TestVotingResult:
 
     def test_voting_result_approval_rate(self):
         """Test voting result approval rate calculation."""
-        from empathy_os.socratic.collaboration import VotingResult
+        from attune.socratic.collaboration import VotingResult
 
         result = VotingResult(
             target_id="change-001",
@@ -223,7 +223,7 @@ class TestCollaborativeSession:
 
     def test_create_session(self):
         """Test creating a collaborative session."""
-        from empathy_os.socratic.collaboration import CollaborativeSession
+        from attune.socratic.collaboration import CollaborativeSession
 
         session = CollaborativeSession(
             session_id="collab-001",
@@ -237,7 +237,7 @@ class TestCollaborativeSession:
 
     def test_session_serialization(self):
         """Test session serialization."""
-        from empathy_os.socratic.collaboration import CollaborativeSession
+        from attune.socratic.collaboration import CollaborativeSession
 
         session = CollaborativeSession(
             session_id="collab-001",
@@ -254,7 +254,7 @@ class TestCollaborativeSession:
 
     def test_session_with_participants(self):
         """Test session with participants."""
-        from empathy_os.socratic.collaboration import (
+        from attune.socratic.collaboration import (
             CollaborativeSession,
             Participant,
             ParticipantRole,
@@ -282,7 +282,7 @@ class TestCollaborationManager:
 
     def test_create_manager(self, temp_dir):
         """Test creating a collaboration manager."""
-        from empathy_os.socratic.collaboration import CollaborationManager
+        from attune.socratic.collaboration import CollaborationManager
 
         manager = CollaborationManager(storage_path=temp_dir / "collaboration")
 
@@ -291,7 +291,7 @@ class TestCollaborationManager:
 
     def test_create_session(self, temp_dir):
         """Test creating a collaborative session via manager."""
-        from empathy_os.socratic.collaboration import CollaborationManager
+        from attune.socratic.collaboration import CollaborationManager
 
         manager = CollaborationManager(storage_path=temp_dir / "collaboration")
 
@@ -308,7 +308,7 @@ class TestCollaborationManager:
 
     def test_get_session(self, temp_dir):
         """Test getting a session."""
-        from empathy_os.socratic.collaboration import CollaborationManager
+        from attune.socratic.collaboration import CollaborationManager
 
         manager = CollaborationManager(storage_path=temp_dir / "collaboration")
 
@@ -330,7 +330,7 @@ class TestSyncAdapter:
 
     def test_create_sync_adapter(self):
         """Test creating a sync adapter."""
-        from empathy_os.socratic.collaboration import SyncAdapter
+        from attune.socratic.collaboration import SyncAdapter
 
         adapter = SyncAdapter(session_id="session-001")
 
@@ -339,7 +339,7 @@ class TestSyncAdapter:
 
     def test_register_event_handler(self):
         """Test registering an event handler."""
-        from empathy_os.socratic.collaboration import SyncAdapter
+        from attune.socratic.collaboration import SyncAdapter
 
         adapter = SyncAdapter(session_id="session-001")
 
@@ -354,7 +354,7 @@ class TestInvitationManager:
 
     def test_create_manager(self, temp_dir):
         """Test creating an invitation manager."""
-        from empathy_os.socratic.collaboration import CollaborationManager, InvitationManager
+        from attune.socratic.collaboration import CollaborationManager, InvitationManager
 
         collab_manager = CollaborationManager(storage_path=temp_dir / "collaboration")
         invitation_manager = InvitationManager(collab_manager)

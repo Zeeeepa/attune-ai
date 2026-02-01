@@ -7,7 +7,7 @@ description: In workflow: Request approval: ### What Was Built **1.
 ### What Was Built
 
 **1. Core Approval Gates Module**
-- [approval_gates.py](../src/empathy_os/telemetry/approval_gates.py) - Human approval workflow control (~597 lines)
+- [approval_gates.py](../src/attune/telemetry/approval_gates.py) - Human approval workflow control (~597 lines)
   - `ApprovalRequest` dataclass for approval requests
   - `ApprovalResponse` dataclass for approval decisions
   - `ApprovalGate` class for approval workflow management
@@ -35,7 +35,7 @@ description: In workflow: Request approval: ### What Was Built **1.
 ### Usage Example
 
 ```python
-from empathy_os.telemetry import ApprovalGate
+from attune.telemetry import ApprovalGate
 
 # In workflow: Request approval
 gate = ApprovalGate(agent_id="deployment-workflow")
@@ -109,8 +109,8 @@ for request in pending:
 ### Integration with Workflows
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
-from empathy_os.telemetry import ApprovalGate
+from attune.workflows.base import BaseWorkflow, ModelTier
+from attune.telemetry import ApprovalGate
 
 class DeploymentWorkflow(BaseWorkflow):
     name = "deployment"

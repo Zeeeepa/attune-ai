@@ -17,7 +17,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.meta_workflows import (
+from attune.meta_workflows import (
     FormResponse,
     MetaWorkflow,
     TemplateRegistry,
@@ -40,7 +40,7 @@ def main():
     print("STEP 1: Load Template")
     print("=" * 70)
 
-    registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+    registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
     templates = registry.list_templates()
 
     print(f"\nAvailable templates: {', '.join(templates)}")

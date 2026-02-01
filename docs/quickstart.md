@@ -43,7 +43,7 @@ pip install -e ".[dev,examples]"
 ### Verify Installation
 
 ```bash
-python -c "from empathy_os import EmpathyOS; print('✓ Empathy Framework installed')"
+python -c "from attune import EmpathyOS; print('✓ Empathy Framework installed')"
 ```
 
 ---
@@ -57,7 +57,7 @@ The easiest way to use Empathy Framework - just interact with it!
 ```python
 import asyncio
 import os
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 async def quick_demo():
     # Create an instance (uses Claude by default)
@@ -99,7 +99,7 @@ python examples/simple_usage.py
 See all five empathy levels in action:
 
 ```python
-from empathy_os import (
+from attune import (
     EmpathyOS,
     Level1Reactive,
     Level2Guided,
@@ -159,7 +159,7 @@ python examples/quickstart.py
 Switch between different AI providers based on your needs:
 
 ```python
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 # Use Claude for complex reasoning (Level 4 Anticipatory)
 claude = EmpathyLLM(
@@ -227,7 +227,7 @@ print(empathy.collaboration_state.trust_level)  # 0.6
 AI agents share patterns for better collaboration:
 
 ```python
-from empathy_os import PatternLibrary, Pattern
+from attune import PatternLibrary, Pattern
 
 library = PatternLibrary()
 
@@ -258,14 +258,14 @@ library.record_pattern_outcome("pat_001", success=True)
 ## Project Structure
 
 ```
-empathy-framework/
-├── src/empathy_os/          # Core framework
+attune-ai/
+├── src/attune/          # Core framework
 │   ├── core.py              # EmpathyOS main class
 │   ├── levels.py            # Five empathy levels
 │   ├── pattern_library.py   # Pattern sharing (Level 5)
 │   ├── feedback_loops.py    # System dynamics
 │   └── plugins/             # Plugin architecture
-├── empathy_llm_toolkit/     # LLM integration layer
+├── attune_llm/     # LLM integration layer
 │   ├── core.py              # EmpathyLLM wrapper
 │   └── providers.py         # Claude, GPT-4, Ollama, etc.
 ├── examples/                # Runnable examples
@@ -284,7 +284,7 @@ empathy-framework/
 ### 1. Code Review Assistant
 
 ```python
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 llm = EmpathyLLM(provider="anthropic", target_level=3)
 
@@ -298,7 +298,7 @@ response = await llm.interact(
 ### 2. Bug Prediction
 
 ```python
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 llm = EmpathyLLM(provider="anthropic", target_level=4)
 
@@ -312,7 +312,7 @@ response = await llm.interact(
 ### 3. Documentation Generation
 
 ```python
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 llm = EmpathyLLM(provider="openai", target_level=2)
 
@@ -363,7 +363,7 @@ EMPATHY_LOG_LEVEL=INFO
 
 **Error:**
 ```
-ImportError: No module named 'empathy_os'
+ImportError: No module named 'attune'
 ```
 
 **Solution:**
@@ -372,7 +372,7 @@ ImportError: No module named 'empathy_os'
 pip install -e .
 
 # Or add to PYTHONPATH
-export PYTHONPATH="${PYTHONPATH}:/path/to/empathy-framework"
+export PYTHONPATH="${PYTHONPATH}:/path/to/attune-ai"
 ```
 
 ### Issue: API Key Not Found
@@ -496,13 +496,13 @@ python examples/multi_llm_usage.py   # Multiple providers
 
 ```python
 # Core framework
-from empathy_os import EmpathyOS, Level1Reactive, Level2Guided
+from attune import EmpathyOS, Level1Reactive, Level2Guided
 
 # LLM toolkit (easiest)
-from empathy_llm_toolkit.core import EmpathyLLM
+from attune_llm.core import EmpathyLLM
 
 # Advanced features
-from empathy_os import PatternLibrary, FeedbackLoopDetector
+from attune import PatternLibrary, FeedbackLoopDetector
 ```
 
 ---

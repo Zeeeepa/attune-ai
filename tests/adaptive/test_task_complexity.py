@@ -4,7 +4,7 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from empathy_os.adaptive.task_complexity import TaskComplexity, TaskComplexityScorer
+from attune.adaptive.task_complexity import TaskComplexity, TaskComplexityScorer
 
 
 def test_simple_task_scoring():

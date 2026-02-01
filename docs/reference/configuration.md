@@ -11,7 +11,7 @@ Learn how to configure the Empathy Framework for your needs.
 ### 1. Direct Instantiation
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 empathy = EmpathyOS(
     user_id="user_123",
@@ -37,7 +37,7 @@ persistence_path: ".empathy"
 Load it:
 
 ```python
-from empathy_os import load_config
+from attune import load_config
 
 config = load_config(filepath="empathy.config.yml")
 empathy = EmpathyOS.from_config(config)

@@ -14,7 +14,7 @@ description: Workflow Integration Summary - Pattern 1 & 2 integration guide. Con
 
 ### 1. BaseWorkflow Integration
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 **New Parameters:**
 - `enable_heartbeat_tracking: bool = False` - Enable automatic heartbeat tracking
@@ -193,7 +193,7 @@ Runs 3 demonstrations:
 ### Basic Heartbeat Tracking
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 class MyWorkflow(BaseWorkflow):
     name = "my-workflow"
@@ -267,7 +267,7 @@ empathy memory status
 ### TTL Configuration
 
 ```python
-from empathy_os.telemetry import HeartbeatCoordinator, CoordinationSignals
+from attune.telemetry import HeartbeatCoordinator, CoordinationSignals
 
 # Heartbeat TTL (default: 30 seconds)
 HeartbeatCoordinator.HEARTBEAT_TTL = 60
@@ -290,7 +290,7 @@ workflow.send_signal(
 
 ### Modified Files
 
-1. **src/empathy_os/workflows/base.py**
+1. **src/attune/workflows/base.py**
    - Added 3 new parameters to `__init__`
    - Added 3 coordination helper methods
    - Added heartbeat tracking at 4 execution points

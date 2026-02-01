@@ -12,8 +12,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import AgentTemplate
-from empathy_os.orchestration.execution_strategies import (
+from attune.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.execution_strategies import (
     WORKFLOW_REGISTRY,
     InlineWorkflow,
     NestedStrategy,
@@ -228,7 +228,7 @@ class TestNestedStrategy:
         ref = WorkflowReference(workflow_id="test-workflow")
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,
@@ -254,7 +254,7 @@ class TestNestedStrategy:
         ref = WorkflowReference(inline=inline)
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,
@@ -308,7 +308,7 @@ class TestNestedStrategy:
             "config": {"setting": True},
         }
 
-        with patch("empathy_os.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,
@@ -370,7 +370,7 @@ class TestNestedIntegration:
 
     def test_strategy_registry_includes_nested(self):
         """Test that nested strategies are in registry."""
-        from empathy_os.orchestration.execution_strategies import STRATEGY_REGISTRY
+        from attune.orchestration.execution_strategies import STRATEGY_REGISTRY
 
         assert "nested" in STRATEGY_REGISTRY
         assert "nested_sequential" in STRATEGY_REGISTRY

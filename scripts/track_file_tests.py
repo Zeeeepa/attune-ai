@@ -36,8 +36,8 @@ def main():
     parser.add_argument(
         "--source-dir",
         type=str,
-        default="src/empathy_os",
-        help="Source directory to scan (default: src/empathy_os)",
+        default="src/attune",
+        help="Source directory to scan (default: src/attune)",
     )
     parser.add_argument(
         "--verbose",
@@ -48,7 +48,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        from empathy_os.workflows.test_runner import track_file_tests
+        from attune.workflows.test_runner import track_file_tests
     except ImportError as e:
         print(f"Error importing empathy_os: {e}")
         print("Make sure the package is installed: pip install -e .")

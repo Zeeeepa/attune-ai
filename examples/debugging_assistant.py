@@ -15,7 +15,7 @@ Licensed under Fair Source 0.9
 
 from typing import Any
 
-from empathy_os import (EmpathyOS, FeedbackLoopDetector, Level3Proactive,
+from attune import (EmpathyOS, FeedbackLoopDetector, Level3Proactive,
                         Pattern, PatternLibrary, TrustBuildingBehaviors)
 
 

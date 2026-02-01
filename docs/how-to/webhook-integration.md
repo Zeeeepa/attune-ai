@@ -41,8 +41,8 @@ Connect Empathy Framework to external services via webhooks for real-time notifi
 ### Basic Webhook
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.webhooks import WebhookConfig
+from attune import EmpathyOS
+from attune.webhooks import WebhookConfig
 
 # Configure webhook
 webhook = WebhookConfig(
@@ -84,7 +84,7 @@ response = await empathy.interact(
 ### Configuration
 
 ```python
-from empathy_os.webhooks import SlackWebhook
+from attune.webhooks import SlackWebhook
 
 slack = SlackWebhook(
     webhook_url=os.getenv("SLACK_WEBHOOK_URL"),
@@ -143,7 +143,7 @@ empathy = EmpathyOS(
 ### Auto-Create Issues
 
 ```python
-from empathy_os.webhooks import JiraWebhook
+from attune.webhooks import JiraWebhook
 
 jira = JiraWebhook(
     url=os.getenv("JIRA_URL"),
@@ -210,7 +210,7 @@ bug_report = await empathy.interact(
 ### Metrics & Events
 
 ```python
-from empathy_os.webhooks import DatadogWebhook
+from attune.webhooks import DatadogWebhook
 
 datadog = DatadogWebhook(
     api_key=os.getenv("DATADOG_API_KEY"),
@@ -260,7 +260,7 @@ datadog.send_metric(
 ### PR Comments
 
 ```python
-from empathy_os.webhooks import GitHubWebhook
+from attune.webhooks import GitHubWebhook
 
 github = GitHubWebhook(
     token=os.getenv("GITHUB_TOKEN"),
@@ -306,7 +306,7 @@ Confidence: 92%
 ### Define Custom Endpoint
 
 ```python
-from empathy_os.webhooks import CustomWebhook
+from attune.webhooks import CustomWebhook
 
 custom = CustomWebhook(
     url="https://your-service.com/webhooks/empathy",
@@ -523,7 +523,7 @@ webhook = CustomWebhook(
 ### Webhook Performance
 
 ```python
-from empathy_os.webhooks import WebhookMonitor
+from attune.webhooks import WebhookMonitor
 
 monitor = WebhookMonitor()
 

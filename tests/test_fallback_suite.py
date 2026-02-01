@@ -29,8 +29,8 @@ import time
 from dataclasses import asdict, dataclass
 from datetime import datetime
 
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
 
 try:
     from rich.console import Console

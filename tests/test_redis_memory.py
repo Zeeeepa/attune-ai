@@ -14,7 +14,7 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os.redis_memory import (
+from attune.redis_memory import (
     AccessTier,
     AgentCredentials,
     ConflictContext,

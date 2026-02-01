@@ -30,11 +30,11 @@ Following completion of Phase 1-3 performance optimizations (1,300x cost tracker
 - **Gap:** 16.6% (needs ~3,900 additional lines covered)
 
 **Critical Low-Coverage Modules:**
-- `src/empathy_os/scaffolding/cli.py` - **0.00%** (101 lines)
-- `src/empathy_os/test_generator/` - **0.00%** (256 lines across 3 files)
-- `src/empathy_os/workflow_commands.py` - **15.68%** (408 lines)
-- `src/empathy_os/telemetry/cli.py` - **32.49%** (531 lines)
-- `src/empathy_os/wizard_factory_cli.py` - **38.16%** (58 lines)
+- `src/attune/scaffolding/cli.py` - **0.00%** (101 lines)
+- `src/attune/test_generator/` - **0.00%** (256 lines across 3 files)
+- `src/attune/workflow_commands.py` - **15.68%** (408 lines)
+- `src/attune/telemetry/cli.py` - **32.49%** (531 lines)
+- `src/attune/wizard_factory_cli.py` - **38.16%** (58 lines)
 
 ---
 
@@ -164,7 +164,7 @@ Following completion of Phase 1-3 performance optimizations (1,300x cost tracker
 
 ### 2.1 Zero Vector Tests (15 minutes)
 
-**File:** `src/empathy_os/embeddings.py`
+**File:** `src/attune/embeddings.py`
 **Test:** `tests/unit/test_embeddings.py::test_cosine_similarity_zero_vector`
 
 ```python
@@ -184,7 +184,7 @@ def test_cosine_similarity_zero_vector():
 
 ### 2.2 HTTP Status Code Tests (15 minutes)
 
-**File:** `src/empathy_os/wizards/wizard_api.py`
+**File:** `src/attune/wizards/wizard_api.py`
 **Test:** `tests/unit/test_wizard_api.py::test_http_error_handling`
 
 ```python
@@ -208,7 +208,7 @@ def test_http_error_handling():
 
 ### 2.3 File Permission Tests (15 minutes)
 
-**File:** `src/empathy_os/project_index/scanner.py`
+**File:** `src/attune/project_index/scanner.py`
 **Test:** `tests/unit/test_scanner_permissions.py::test_scanner_handles_permission_denied`
 
 ```python
@@ -259,7 +259,7 @@ def test_scanner_handles_permission_denied(tmp_path):
 
 ### 3.2 Telemetry & Analytics Tests
 
-**File:** `src/empathy_os/telemetry/cli.py` (32.49% coverage)
+**File:** `src/attune/telemetry/cli.py` (32.49% coverage)
 
 **Test Cases:**
 ```python
@@ -276,7 +276,7 @@ def test_scanner_handles_permission_denied(tmp_path):
 
 ### 3.3 Workflow Command Tests
 
-**File:** `src/empathy_os/workflow_commands.py` (15.68% coverage)
+**File:** `src/attune/workflow_commands.py` (15.68% coverage)
 
 **Test Cases:**
 ```python
@@ -292,7 +292,7 @@ def test_scanner_handles_permission_denied(tmp_path):
 
 ### 3.4 XML Configuration Tests
 
-**File:** `src/empathy_os/validation/xml_validator.py` (73.50% coverage)
+**File:** `src/attune/validation/xml_validator.py` (73.50% coverage)
 
 **Test Cases:**
 ```python
@@ -472,7 +472,7 @@ Coverage:
     Current: [X]%
 
 Related:
-    - Source: src/empathy_os/[module].py
+    - Source: src/attune/[module].py
     - Docs: docs/[MODULE].md
 """
 ```
@@ -513,11 +513,11 @@ pytest --nf  # New first
 
 ```bash
 # Check coverage for specific module
-pytest --cov=src/empathy_os/cost_tracker --cov-report=term-missing
+pytest --cov=src/attune/cost_tracker --cov-report=term-missing
 
 # Generate coverage JSON for analysis
 pytest --cov=src --cov-report=json
-jq '.files."src/empathy_os/cost_tracker.py".summary' coverage.json
+jq '.files."src/attune/cost_tracker.py".summary' coverage.json
 ```
 
 ---

@@ -90,15 +90,15 @@ quick reference materials for when you need to look something up.
 ## Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 For LLM support:
 ```bash
-pip install empathy-framework[llm]
+pip install attune-ai[llm]
 ```
 
 For healthcare applications:
 ```bash
-pip install empathy-framework[healthcare]
+pip install attune-ai[healthcare]
 ```

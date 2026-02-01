@@ -22,8 +22,8 @@ After the initial review, the user reconsidered the "keep as-is" decision due to
 
 **Files created/modified:**
 
-- **NEW**: `src/empathy_os/workflows/caching.py` - CachingMixin class
-- **MODIFIED**: `src/empathy_os/workflows/base.py` - Now inherits from CachingMixin
+- **NEW**: `src/attune/workflows/caching.py` - CachingMixin class
+- **MODIFIED**: `src/attune/workflows/base.py` - Now inherits from CachingMixin
 
 **What was extracted:**
 
@@ -53,8 +53,8 @@ tests/unit/workflows/test_workflow_execution.py: 40 passed
 
 **Files created/modified:**
 
-- **NEW**: `src/empathy_os/workflows/telemetry_mixin.py` - TelemetryMixin class
-- **MODIFIED**: `src/empathy_os/workflows/base.py` - Now inherits from TelemetryMixin
+- **NEW**: `src/attune/workflows/telemetry_mixin.py` - TelemetryMixin class
+- **MODIFIED**: `src/attune/workflows/base.py` - Now inherits from TelemetryMixin
 
 **What was extracted:**
 
@@ -84,7 +84,7 @@ tests/unit/workflows/test_workflow_execution.py: 40 passed
 
 ## Context
 
-The Empathy Framework workflow engine (`src/empathy_os/workflows/`) was reviewed for architectural health. The review focused on:
+The Empathy Framework workflow engine (`src/attune/workflows/`) was reviewed for architectural health. The review focused on:
 
 - **BaseWorkflow** class complexity (2300+ lines)
 - **Workflow registry** and discovery system
@@ -116,8 +116,8 @@ After Socratic exploration, the following architectural decisions were made:
 ### 2. Dual Enum Definitions
 
 **Issue:** `ModelTier` is defined in both:
-- `src/empathy_os/models/registry.py:20` (canonical)
-- `src/empathy_os/workflows/base.py:83` (backward compatibility)
+- `src/attune/models/registry.py:20` (canonical)
+- `src/attune/workflows/base.py:83` (backward compatibility)
 
 **Decision:** Document as technical debt; add deprecation warning to `workflows.base.ModelTier`.
 
@@ -195,8 +195,8 @@ JSON (current) → SQLite (single-user scale) → PostgreSQL (team/production)
 ## Related Documents
 
 - [ARCHITECTURE.md](../ARCHITECTURE.md) - Overall system architecture
-- [workflows/base.py](../../src/empathy_os/workflows/base.py) - BaseWorkflow implementation
-- [models/registry.py](../../src/empathy_os/models/registry.py) - Canonical ModelTier definition
+- [workflows/base.py](../../src/attune/workflows/base.py) - BaseWorkflow implementation
+- [models/registry.py](../../src/attune/models/registry.py) - Canonical ModelTier definition
 
 ## Review Notes
 

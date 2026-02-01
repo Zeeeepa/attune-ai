@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import empathy_os.workflows.caching as caching_module
+import attune.workflows.caching as caching_module
 
 CachedResponse = caching_module.CachedResponse
 CacheAwareWorkflow = caching_module.CacheAwareWorkflow
@@ -209,8 +209,8 @@ class TestMaybeSetupCache:
         assert mixin._cache is existing_cache
         assert mixin._cache_setup_attempted is True
 
-    @patch("empathy_os.cache.auto_setup_cache")
-    @patch("empathy_os.cache.create_cache")
+    @patch("attune.cache.auto_setup_cache")
+    @patch("attune.cache.create_cache")
     def test_maybe_setup_cache_creates_cache(self, mock_create, mock_auto):
         """Test that cache is created when not provided."""
         mixin = CachingMixin()
@@ -225,8 +225,8 @@ class TestMaybeSetupCache:
         mock_create.assert_called_once()
         assert mixin._cache is mock_cache
 
-    @patch("empathy_os.cache.auto_setup_cache")
-    @patch("empathy_os.cache.create_cache")
+    @patch("attune.cache.auto_setup_cache")
+    @patch("attune.cache.create_cache")
     def test_maybe_setup_cache_falls_back_to_hash_on_import_error(
         self, mock_create, mock_auto
     ):
@@ -244,7 +244,7 @@ class TestMaybeSetupCache:
         mock_create.assert_called_once_with(cache_type="hash")
         assert mixin._cache is mock_hash_cache
 
-    @patch("empathy_os.cache.auto_setup_cache")
+    @patch("attune.cache.auto_setup_cache")
     def test_maybe_setup_cache_disables_on_os_error(self, mock_auto):
         """Test cache is disabled on file system errors."""
         mixin = CachingMixin()
@@ -257,7 +257,7 @@ class TestMaybeSetupCache:
         assert mixin._enable_cache is False
         assert mixin._cache is None
 
-    @patch("empathy_os.cache.auto_setup_cache")
+    @patch("attune.cache.auto_setup_cache")
     def test_maybe_setup_cache_disables_on_permission_error(self, mock_auto):
         """Test cache is disabled on permission errors."""
         mixin = CachingMixin()
@@ -269,7 +269,7 @@ class TestMaybeSetupCache:
 
         assert mixin._enable_cache is False
 
-    @patch("empathy_os.cache.auto_setup_cache")
+    @patch("attune.cache.auto_setup_cache")
     def test_maybe_setup_cache_disables_on_value_error(self, mock_auto):
         """Test cache is disabled on configuration errors."""
         mixin = CachingMixin()

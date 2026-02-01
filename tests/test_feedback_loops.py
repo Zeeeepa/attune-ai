@@ -6,7 +6,7 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os.feedback_loops import FeedbackLoop, FeedbackLoopDetector, LoopPolarity, LoopType
+from attune.feedback_loops import FeedbackLoop, FeedbackLoopDetector, LoopPolarity, LoopType
 
 
 class TestFeedbackLoop:

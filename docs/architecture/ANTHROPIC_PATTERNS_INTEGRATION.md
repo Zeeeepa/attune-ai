@@ -18,7 +18,7 @@ The three new Anthropic-inspired composition patterns are now **fully integrated
 
 ### 1. Core Strategy Implementation ✅
 
-**Location:** [execution_strategies.py](../../src/empathy_os/orchestration/execution_strategies.py)
+**Location:** [execution_strategies.py](../../src/attune/orchestration/execution_strategies.py)
 
 Three new strategy classes added (~500 lines):
 - `ToolEnhancedStrategy` - Single agent with comprehensive tool access
@@ -29,7 +29,7 @@ All strategies registered in `STRATEGY_REGISTRY` and accessible via `get_strateg
 
 ### 2. Meta-Orchestrator Integration ✅
 
-**Location:** [meta_orchestrator.py](../../src/empathy_os/orchestration/meta_orchestrator.py)
+**Location:** [meta_orchestrator.py](../../src/attune/orchestration/meta_orchestrator.py)
 
 **Changes:**
 - Added 3 new patterns to `CompositionPattern` enum
@@ -54,12 +54,12 @@ if complexity == COMPLEX and has_coordinator and num_agents >= 2:
 
 ### 3. Package Exports ✅
 
-**Location:** [orchestration/__init__.py](../../src/empathy_os/orchestration/__init__.py)
+**Location:** [orchestration/__init__.py](../../src/attune/orchestration/__init__.py)
 
 All new strategies exported for easy import:
 
 ```python
-from empathy_os.orchestration import (
+from attune.orchestration import (
     ToolEnhancedStrategy,
     PromptCachedSequentialStrategy,
     DelegationChainStrategy,
@@ -92,7 +92,7 @@ Updated with:
 ### Scenario 1: Single Agent with Tools
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 # User request: "Analyze files in directory"
 orchestrator = MetaOrchestrator()
@@ -368,7 +368,7 @@ When creating agent teams:
 ### Example 1: Using via Meta-Orchestrator (Recommended)
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 
@@ -388,7 +388,7 @@ print(f"Estimated duration: {plan.estimated_duration}s")
 ### Example 2: Using Strategy Directly
 
 ```python
-from empathy_os.orchestration import (
+from attune.orchestration import (
     get_strategy,
     ToolEnhancedStrategy,
     AgentTemplate
@@ -467,7 +467,7 @@ All patterns follow Anthropic's guidelines:
 plan = orchestrator.analyze_and_compose(task="...")
 
 # New way (explicit pattern)
-from empathy_os.orchestration import get_strategy
+from attune.orchestration import get_strategy
 
 strategy = get_strategy("tool_enhanced")
 result = await strategy.execute(agents=[agent], context={...})
@@ -479,7 +479,7 @@ result = await strategy.execute(agents=[agent], context={...})
 
 ```python
 # Import new patterns
-from empathy_os.orchestration import (
+from attune.orchestration import (
     CompositionPattern,
     ToolEnhancedStrategy,
     PromptCachedSequentialStrategy,

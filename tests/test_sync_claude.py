@@ -14,7 +14,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from empathy_llm_toolkit.cli.sync_claude import (
+from attune_llm.cli.sync_claude import (
     CLAUDE_RULES_DIR,
     PATTERN_SOURCES,
     format_bug_patterns_markdown,

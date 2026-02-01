@@ -146,7 +146,7 @@ class CostTracker:
 ```
 
 **Files Modified:**
-- [`src/empathy_os/cost_tracker.py`](../src/empathy_os/cost_tracker.py) - Batch writes + JSONL
+- [`src/attune/cost_tracker.py`](../src/attune/cost_tracker.py) - Batch writes + JSONL
 - [`tests/test_cost_tracker.py`](../tests/test_cost_tracker.py) - Updated tests
 - [`docs/PHASE2_PERFORMANCE_RESULTS.md`](./PHASE2_PERFORMANCE_RESULTS.md) - Full report
 
@@ -171,7 +171,7 @@ Query time: ~96 microseconds per query
 **Status:** ✅ Already optimal, no further optimization needed
 
 **Files Modified:**
-- [`src/empathy_os/pattern_library.py`](../src/empathy_os/pattern_library.py) - Index structures
+- [`src/attune/pattern_library.py`](../src/attune/pattern_library.py) - Index structures
 
 ---
 
@@ -214,7 +214,7 @@ Speedup: 1.54x (35% faster)
 | **Total** | **3,000 entries** | **~20MB** | **100%** | **1.54x speedup** |
 
 **Files Modified:**
-- [`src/empathy_os/project_index/scanner.py`](../src/empathy_os/project_index/scanner.py) - Increased cache size
+- [`src/attune/project_index/scanner.py`](../src/attune/project_index/scanner.py) - Increased cache size
 - [`docs/PHASE2_IMPLEMENTATION_SUMMARY.md`](./PHASE2_IMPLEMENTATION_SUMMARY.md) - Updated with measurements
 
 #### Track 2: Generator Migration Analysis ✅
@@ -320,10 +320,10 @@ matches = (pattern for pattern in patterns if self._is_relevant(pattern, context
 
 | File | Changes | Purpose |
 |------|---------|---------|
-| `src/empathy_os/cost_tracker.py` | +150 lines | Batch writes + JSONL |
-| `src/empathy_os/project_index/scanner.py` | +68 lines | Hash + AST caching (increased size) |
-| `src/empathy_os/pattern_library.py` | +60 lines | Index structures |
-| `src/empathy_os/workflows/test_runner.py` | +4 lines | TYPE_CHECKING fix |
+| `src/attune/cost_tracker.py` | +150 lines | Batch writes + JSONL |
+| `src/attune/project_index/scanner.py` | +68 lines | Hash + AST caching (increased size) |
+| `src/attune/pattern_library.py` | +60 lines | Index structures |
+| `src/attune/workflows/test_runner.py` | +4 lines | TYPE_CHECKING fix |
 | `tests/test_cost_tracker.py` | +3 lines | Test updates |
 | **Total** | **+285 lines** | **Core Optimizations** |
 

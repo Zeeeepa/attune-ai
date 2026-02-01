@@ -55,7 +55,7 @@ The skill file contains structured instructions. Claude knows exactly what to do
 After `/debug`, `/refactor`, or `/review` workflows complete, Empathy automatically saves what was learned:
 
 ```bash
-python -m empathy_os.cli learn --quiet &
+python -m attune.cli learn --quiet &
 ```
 
 Next time you hit a similar issue, Claude has context. You're not burning tokens re-explaining the same codebase patterns every session.
@@ -116,7 +116,7 @@ All providers use async clients. All providers work with workflows. The differen
 
 ```python
 # Still works fine
-from empathy_llm_toolkit.providers import OpenAIProvider, GeminiProvider, LocalProvider
+from attune_llm.providers import OpenAIProvider, GeminiProvider, LocalProvider
 ```
 
 ## The Skills System
@@ -139,7 +139,7 @@ You can read these. You can customize them. They're just markdown files that Cla
 ## Getting Started
 
 ```bash
-pip install empathy-framework --upgrade
+pip install attune-ai --upgrade
 
 # In Claude Code
 /debug
@@ -157,8 +157,8 @@ Or click any button in the VSCode dashboard - it'll route to the right skill.
 
 The goal was simple: make Empathy Framework work better where I use it most (Claude Code) while keeping everything else working. The bonus: it costs less to run.
 
-**Try it:** `pip install empathy-framework --upgrade`
+**Try it:** `pip install attune-ai --upgrade`
 
-**Source:** [github.com/Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework)
+**Source:** [github.com/Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
 
 *Claude-first, but never Claude-only.*

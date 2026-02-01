@@ -392,7 +392,7 @@ Based on feedback, refine your patterns and add new ones. Build your own pattern
 
 Our complete pattern library (22 patterns with copy-paste examples) is available open source:
 
-📚 **[Pattern Library Documentation](https://github.com/your-org/empathy-framework/docs/TESTING_PATTERNS.md)**
+📚 **[Pattern Library Documentation](https://github.com/your-org/attune-ai/docs/TESTING_PATTERNS.md)**
 
 Includes:
 - 22 reusable patterns
@@ -444,7 +444,7 @@ Share your experiences:
 
 ## Further Reading
 
-- [Our Pattern Library (GitHub)](https://github.com/your-org/empathy-framework/docs/TESTING_PATTERNS.md)
-- [Team Onboarding Guide](https://github.com/your-org/empathy-framework/docs/TESTING_ONBOARDING.md)
+- [Our Pattern Library (GitHub)](https://github.com/your-org/attune-ai/docs/TESTING_PATTERNS.md)
+- [Team Onboarding Guide](https://github.com/your-org/attune-ai/docs/TESTING_ONBOARDING.md)
 - [Pytest Documentation](https://docs.pytest.org/)
 - [Testing Best Practices](https://testdriven.io/blog/testing-best-practices/)

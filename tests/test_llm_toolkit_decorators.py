@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_llm_toolkit.agent_factory.decorators import (
+from attune_llm.agent_factory.decorators import (
     graceful_degradation,
     log_performance,
     retry_on_failure,
@@ -47,7 +47,7 @@ class TestSafeAgentOperation:
     @pytest.mark.asyncio
     async def test_operation_failure_raises_agent_error(self):
         """Test that failures raise AgentOperationError."""
-        from empathy_llm_toolkit.config.unified import AgentOperationError
+        from attune_llm.config.unified import AgentOperationError
 
         class TestAgent:
             @safe_agent_operation("failing_op")
@@ -78,7 +78,7 @@ class TestSafeAgentOperation:
     @pytest.mark.asyncio
     async def test_adds_audit_entry_on_failure(self):
         """Test that audit entry is added on failure."""
-        from empathy_llm_toolkit.config.unified import AgentOperationError
+        from attune_llm.config.unified import AgentOperationError
 
         class TestAgent:
             name = "AuditedAgent"
@@ -111,7 +111,7 @@ class TestSafeAgentOperation:
     @pytest.mark.asyncio
     async def test_extracts_state_from_args(self):
         """Test state extraction from positional args."""
-        from empathy_llm_toolkit.config.unified import AgentOperationError
+        from attune_llm.config.unified import AgentOperationError
 
         class TestAgent:
             name = "ArgAgent"
@@ -135,7 +135,7 @@ class TestSafeAgentOperation:
     @pytest.mark.asyncio
     async def test_audit_entry_failure_is_silent(self):
         """Test that audit entry failures don't break the decorator."""
-        from empathy_llm_toolkit.config.unified import AgentOperationError
+        from attune_llm.config.unified import AgentOperationError
 
         class TestAgent:
             name = "BrokenAuditAgent"
@@ -250,7 +250,7 @@ class TestLogPerformance:
         async def fast_operation():
             return "quick"
 
-        with patch("empathy_llm_toolkit.agent_factory.decorators.logger") as mock_logger:
+        with patch("attune_llm.agent_factory.decorators.logger") as mock_logger:
             result = await fast_operation()
 
             assert result == "quick"
@@ -265,7 +265,7 @@ class TestLogPerformance:
             await asyncio.sleep(0.02)
             return "slow"
 
-        with patch("empathy_llm_toolkit.agent_factory.decorators.logger") as mock_logger:
+        with patch("attune_llm.agent_factory.decorators.logger") as mock_logger:
             result = await slow_operation()
 
             assert result == "slow"
@@ -492,7 +492,7 @@ class TestGracefulDegradation:
         async def operation():
             raise ValueError("Test error")
 
-        with patch("empathy_llm_toolkit.agent_factory.decorators.logger") as mock_logger:
+        with patch("attune_llm.agent_factory.decorators.logger") as mock_logger:
             await operation()
             mock_logger.error.assert_called_once()
 
@@ -504,7 +504,7 @@ class TestGracefulDegradation:
         async def operation():
             raise ValueError("Test error")
 
-        with patch("empathy_llm_toolkit.agent_factory.decorators.logger") as mock_logger:
+        with patch("attune_llm.agent_factory.decorators.logger") as mock_logger:
             await operation()
             mock_logger.warning.assert_called_once()
 

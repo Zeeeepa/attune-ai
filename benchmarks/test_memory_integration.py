@@ -21,8 +21,8 @@ Licensed under Fair Source License 0.9
 import os
 from pathlib import Path
 
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
+from attune_llm import EmpathyLLM
+from attune_llm.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
 
 
 def test_basic_memory_loading() -> None:

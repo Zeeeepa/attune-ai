@@ -5,7 +5,7 @@ Provides shared fixtures for workflow testing with proper isolation.
 
 import pytest
 
-from empathy_os.cost_tracker import CostTracker
+from attune.cost_tracker import CostTracker
 
 
 @pytest.fixture
@@ -35,7 +35,7 @@ def security_audit_workflow(cost_tracker):
     Returns:
         SecurityAuditWorkflow instance ready for testing
     """
-    from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+    from attune.workflows.security_audit import SecurityAuditWorkflow
 
     return SecurityAuditWorkflow(cost_tracker=cost_tracker)
 
@@ -50,7 +50,7 @@ def code_review_workflow(cost_tracker):
     Returns:
         CodeReviewWorkflow instance ready for testing
     """
-    from empathy_os.workflows.code_review import CodeReviewWorkflow
+    from attune.workflows.code_review import CodeReviewWorkflow
 
     return CodeReviewWorkflow(cost_tracker=cost_tracker)
 
@@ -65,7 +65,7 @@ def bug_predict_workflow(cost_tracker):
     Returns:
         BugPredictWorkflow instance ready for testing
     """
-    from empathy_os.workflows.bug_predict import BugPredictionWorkflow
+    from attune.workflows.bug_predict import BugPredictionWorkflow
 
     return BugPredictionWorkflow(cost_tracker=cost_tracker)
 
@@ -80,6 +80,6 @@ def dependency_check_workflow(cost_tracker):
     Returns:
         DependencyCheckWorkflow instance ready for testing
     """
-    from empathy_os.workflows.dependency_check import DependencyCheckWorkflow
+    from attune.workflows.dependency_check import DependencyCheckWorkflow
 
     return DependencyCheckWorkflow(cost_tracker=cost_tracker)

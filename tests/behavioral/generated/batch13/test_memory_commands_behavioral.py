@@ -12,7 +12,7 @@ import pytest
 from typer import Typer
 from typer.testing import CliRunner
 
-from empathy_os.meta_workflows.cli_commands.memory_commands import (
+from attune.meta_workflows.cli_commands.memory_commands import (
     meta_workflow_app,
     search_memory,
 )
@@ -27,14 +27,14 @@ def cli_runner():
 @pytest.fixture
 def mock_console():
     """Fixture providing a mocked Rich console."""
-    with patch("empathy_os.meta_workflows.cli_commands.memory_commands.console") as mock:
+    with patch("attune.meta_workflows.cli_commands.memory_commands.console") as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_unified_memory():
     """Fixture providing a mocked UnifiedMemory class."""
-    with patch("empathy_os.meta_workflows.cli_commands.memory_commands.UnifiedMemory") as mock:
+    with patch("attune.memory.unified.UnifiedMemory") as mock:
         yield mock
 
 
@@ -75,8 +75,8 @@ class TestSearchMemoryBasicFunctionality:
         mock_memory_instance.search_patterns.return_value = sample_pattern_results
         mock_unified_memory.return_value = mock_memory_instance
 
-        # When
-        search_memory(query="successful workflow")
+        # When - Must pass all parameters explicitly when calling Typer command directly
+        search_memory(query="successful workflow", pattern_type=None, limit=10, user_id="cli_user")
 
         # Then
         mock_unified_memory.assert_called_once_with(user_id="cli_user")
@@ -104,7 +104,9 @@ class TestSearchMemoryBasicFunctionality:
         # When
         search_memory(
             query="test query",
-            pattern_type="meta_workflow_execution"
+            pattern_type="meta_workflow_execution",
+            limit=10,
+            user_id="cli_user"
         )
 
         # Then
@@ -128,7 +130,7 @@ class TestSearchMemoryBasicFunctionality:
         mock_unified_memory.return_value = mock_memory_instance
 
         # When
-        search_memory(query="test", limit=20)
+        search_memory(query="test", pattern_type=None, limit=20, user_id="cli_user")
 
         # Then
         mock_memory_instance.search_patterns.assert_called_once_with(
@@ -311,10 +313,11 @@ class TestSearchMemoryErrorHandling:
         Then: Displays error message and exits with code 1
         """
         # Given
-        with patch("empathy_os.meta_workflows.cli_commands.memory_commands.UnifiedMemory", side_effect=ImportError):
-            # When/Then
-            with pytest.raises(SystemExit) as exc_info:
-                search_memory(query="test")
+        with patch("attune.memory.unified.UnifiedMemory", side_effect=ImportError):
+            # When/Then - Typer raises typer.Exit, not SystemExit
+            from typer import Exit
+            with pytest.raises(Exit) as exc_info:
+                search_memory(query="test", pattern_type=None, limit=10, user_id="cli_user")
 
             # Verify error message was printed
             print_calls = [str(call) for call in mock_console.print.call_args_list]
@@ -409,7 +412,7 @@ class TestSearchMemoryEdgeCases:
         mock_unified_memory.return_value = mock_memory_instance
 
         # When
-        search_memory(query="")
+        search_memory(query="", pattern_type=None, limit=10, user_id="cli_user")
 
         # Then
         mock_memory_instance.search_patterns.assert_called_once_with(
@@ -433,7 +436,7 @@ class TestSearchMemoryEdgeCases:
         special_query = "test@#$%^&*()_+-=[]{}|;:',.<>?/~`"
 
         # When
-        search_memory(query=special_query)
+        search_memory(query=special_query, pattern_type=None, limit=10, user_id="cli_user")
 
         # Then
         mock_memory_instance.search_patterns.assert_called_once_with(
@@ -456,7 +459,7 @@ class TestSearchMemoryEdgeCases:
         mock_unified_memory.return_value = mock_memory_instance
 
         # When
-        search_memory(query="test", limit=999999)
+        search_memory(query="test", pattern_type=None, limit=999999, user_id="cli_user")
 
         # Then
         mock_memory_instance.search_patterns.assert_called_once_with(

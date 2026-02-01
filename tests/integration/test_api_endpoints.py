@@ -39,7 +39,7 @@ def cmd_wizard_factory_list_patterns(*args, **kwargs): pass
 @pytest.fixture
 def mock_subprocess():
     """Provide mocked subprocess for command execution tests."""
-    with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
+    with patch("attune.wizard_factory_cli.subprocess") as mock_sub:
         mock_result = Mock()
         mock_result.returncode = 0
         mock_sub.run.return_value = mock_result
@@ -340,7 +340,7 @@ class TestRequestResponseValidation:
             interactive=False,
         )
 
-        with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
+        with patch("attune.wizard_factory_cli.subprocess") as mock_sub:
             mock_result = Mock()
             mock_result.returncode = 1  # Failure
             mock_sub.run.return_value = mock_result
@@ -380,7 +380,7 @@ class TestRequestResponseValidation:
             output=None,
         )
 
-        with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
+        with patch("attune.wizard_factory_cli.subprocess") as mock_sub:
             mock_result = Mock()
             mock_result.returncode = 1
             mock_sub.run.return_value = mock_result
@@ -398,7 +398,7 @@ class TestRequestResponseValidation:
             json=False,
         )
 
-        with patch("empathy_os.wizard_factory_cli.subprocess") as mock_sub:
+        with patch("attune.wizard_factory_cli.subprocess") as mock_sub:
             mock_result = Mock()
             mock_result.returncode = 1
             mock_sub.run.return_value = mock_result

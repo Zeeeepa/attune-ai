@@ -52,7 +52,7 @@ class TestPlatformCompatibility:
     def test_platform_utils_available(self):
         """Ensure platform_utils module is importable."""
         try:
-            from empathy_os.platform_utils import (
+            from attune.platform_utils import (
                 get_default_data_dir,
                 get_default_log_dir,
                 is_linux,
@@ -73,7 +73,7 @@ class TestPlatformCompatibility:
 
     def test_platform_detection_consistent(self):
         """Ensure platform detection is consistent."""
-        from empathy_os.platform_utils import is_linux, is_macos, is_windows
+        from attune.platform_utils import is_linux, is_macos, is_windows
 
         # At most one should be True
         platforms = [is_windows(), is_macos(), is_linux()]
@@ -83,7 +83,7 @@ class TestPlatformCompatibility:
 
     def test_default_directories_are_paths(self):
         """Ensure directory functions return Path objects."""
-        from empathy_os.platform_utils import (
+        from attune.platform_utils import (
             get_default_cache_dir,
             get_default_config_dir,
             get_default_data_dir,
@@ -97,7 +97,7 @@ class TestPlatformCompatibility:
 
     def test_asyncio_policy_runs_without_error(self):
         """Ensure asyncio policy setup doesn't raise."""
-        from empathy_os.platform_utils import setup_asyncio_policy
+        from attune.platform_utils import setup_asyncio_policy
 
         # Should not raise on any platform
         setup_asyncio_policy()

@@ -348,7 +348,7 @@ progressive_escalation:
 ### Core Classes
 
 ```python
-# src/empathy_os/workflows/progressive/__init__.py
+# src/attune/workflows/progressive/__init__.py
 
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -644,8 +644,8 @@ empathy workflow run test-gen --progressive --dry-run --show-escalation-plan
 **3. Python API (Decorator):**
 
 ```python
-from empathy_os.workflows.progressive import progressive_escalation
-from empathy_os.workflows import BaseWorkflow
+from attune.workflows.progressive import progressive_escalation
+from attune.workflows import BaseWorkflow
 
 @progressive_escalation(
     tiers=["cheap", "capable", "premium"],
@@ -671,7 +671,7 @@ result = workflow.execute(
 **4. Programmatic Control:**
 
 ```python
-from empathy_os.workflows.progressive import (
+from attune.workflows.progressive import (
     ProgressiveWorkflow,
     EscalationConfig,
     Tier
@@ -707,7 +707,7 @@ print(report)
 ### Phase 1: Core Infrastructure (Week 1)
 
 **Tasks:**
-1. Create `src/empathy_os/workflows/progressive/` module structure
+1. Create `src/attune/workflows/progressive/` module structure
 2. Implement core classes:
    - `FailureAnalysis` with CQS calculation
    - `TierResult` and `ProgressiveWorkflowResult`
@@ -1709,7 +1709,7 @@ empathy config validate
 **Common usage patterns:**
 
 ```python
-from empathy_os.workflows.progressive import (
+from attune.workflows.progressive import (
     ProgressiveTestGenWorkflow,
     EscalationConfig,
     Tier
@@ -1731,7 +1731,7 @@ workflow = ProgressiveTestGenWorkflow(config)
 result = workflow.execute(target_file="complex_module.py")
 
 # Example 3: Decorator usage
-from empathy_os.workflows.progressive import progressive_escalation
+from attune.workflows.progressive import progressive_escalation
 
 @progressive_escalation(
     failure_threshold=0.25,

@@ -27,7 +27,7 @@ Empathy Framework includes `.claude/mcp.json` configuration. Claude Code automat
 1. **Install Empathy Framework:**
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 2. **Open project in Claude Code**
@@ -39,7 +39,7 @@ The MCP server is automatically configured via `.claude/mcp.json`:
   "mcpServers": {
     "empathy": {
       "command": "python",
-      "args": ["-m", "empathy_os.mcp.server"],
+      "args": ["-m", "attune.mcp.server"],
       "env": {
         "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
         "PYTHONPATH": "${workspaceFolder}/src"
@@ -74,10 +74,10 @@ Add to your Claude Desktop config file:
     "mcpServers": {
         "empathy": {
             "command": "python",
-            "args": ["-m", "empathy_os.mcp.server"],
+            "args": ["-m", "attune.mcp.server"],
             "env": {
                 "ANTHROPIC_API_KEY": "your-api-key-here",
-                "PYTHONPATH": "/path/to/empathy-framework/src"
+                "PYTHONPATH": "/path/to/attune-ai/src"
             }
         }
     }
@@ -137,7 +137,7 @@ Claude: [Invokes security_audit tool with path="src/auth/"]
 **Test Generation:**
 ```
 User: "Generate tests for the config module"
-Claude: [Invokes test_generation tool with module="src/empathy_os/config.py"]
+Claude: [Invokes test_generation tool with module="src/attune/config.py"]
 ```
 
 **Cost Optimization:**
@@ -175,17 +175,17 @@ Direct tool invocation or natural language:
 
 ```bash
 # Test tool listing
-echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m empathy_os.mcp.server
+echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m attune.mcp.server
 
 # Test tool execution
-echo '{"method":"tools/call","params":{"name":"auth_status","arguments":{}}}' | PYTHONPATH=./src python -m empathy_os.mcp.server
+echo '{"method":"tools/call","params":{"name":"auth_status","arguments":{}}}' | PYTHONPATH=./src python -m attune.mcp.server
 ```
 
 ### Verify Integration
 
 ```bash
 # Check server starts without errors
-python -m empathy_os.mcp.server --help
+python -m attune.mcp.server --help
 
 # View comprehensive test results
 cat .claude/MCP_TEST_RESULTS.md
@@ -220,7 +220,7 @@ Configuration in `.claude/settings.local.json` (automatically set up).
 
 **Check Python environment:**
 ```bash
-python -c "import empathy_os.mcp.server; print('OK')"
+python -c "import attune.mcp.server; print('OK')"
 ```
 
 **Check PYTHONPATH:**
@@ -240,7 +240,7 @@ echo $PYTHONPATH
 
 1. **Verify config path** is correct for your OS
 2. **Check JSON syntax** - use a validator
-3. **Set PYTHONPATH** to absolute path of empathy-framework/src
+3. **Set PYTHONPATH** to absolute path of attune-ai/src
 4. **Restart Claude Desktop** fully (quit and reopen)
 
 ### Tool Execution Fails
@@ -252,7 +252,7 @@ echo $ANTHROPIC_API_KEY
 
 **Check workflow dependencies:**
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 **Review error logs:**
@@ -296,4 +296,4 @@ The MCP server works with any MCP-compatible client:
 
 ## Legacy: Socratic MCP Server
 
-**Note:** The Socratic workflow builder MCP server (`empathy_os.socratic.mcp_server`) is deprecated in v5.1.1+. Use the production Empathy MCP server (`empathy_os.mcp.server`) instead, which exposes all workflows directly.
+**Note:** The Socratic workflow builder MCP server (`attune.socratic.mcp_server`) is deprecated in v5.1.1+. Use the production Empathy MCP server (`attune.mcp.server`) instead, which exposes all workflows directly.

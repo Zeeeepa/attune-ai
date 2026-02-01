@@ -15,7 +15,7 @@ Choose your installation option:
 === "Recommended (Developer)"
 
     ```bash
-    pip install empathy-framework[developer]
+    pip install attune-ai[developer]
     ```
 
     Includes: CLI tools, VSCode extension support, all workflows, local telemetry.
@@ -23,7 +23,7 @@ Choose your installation option:
 === "Minimal"
 
     ```bash
-    pip install empathy-framework
+    pip install attune-ai
     ```
 
     Core functionality only. Add extras later as needed.
@@ -31,7 +31,7 @@ Choose your installation option:
 === "Full"
 
     ```bash
-    pip install empathy-framework[full]
+    pip install attune-ai[full]
     ```
 
     Everything: LLM providers, healthcare support, webhooks, caching.
@@ -39,7 +39,7 @@ Choose your installation option:
 === "Healthcare"
 
     ```bash
-    pip install empathy-framework[healthcare]
+    pip install attune-ai[healthcare]
     ```
 
     Includes: FHIR client, HL7 parsing, HIPAA audit logging.
@@ -47,7 +47,7 @@ Choose your installation option:
 ### Verify Installation
 
 ```bash
-python -c "import empathy_os; print(f'Empathy Framework v{empathy_os.__version__}')"
+python -c "import attune; print(f'Empathy Framework v{attune.__version__}')"
 ```
 
 ---
@@ -83,13 +83,13 @@ The framework auto-detects `.env` files.
 ### Option C: Interactive Setup
 
 ```bash
-python -m empathy_os.models.cli provider --interactive
+python -m attune.models.cli provider --interactive
 ```
 
 ### Verify Provider
 
 ```bash
-python -m empathy_os.models.cli provider
+python -m attune.models.cli provider
 ```
 
 Expected output:
@@ -145,14 +145,14 @@ env | grep API_KEY
 export ANTHROPIC_API_KEY="sk-ant-..."
 
 # Verify
-python -m empathy_os.models.cli provider --check
+python -m attune.models.cli provider --check
 ```
 
-### "ModuleNotFoundError: empathy_os"
+### "ModuleNotFoundError: attune"
 
 ```bash
 # Reinstall
-pip install --upgrade empathy-framework[developer]
+pip install --upgrade attune-ai[developer]
 
 # Or for development
 pip install -e .[dev]

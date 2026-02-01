@@ -7,7 +7,7 @@ description: Feature Overview: Meta-Workflow System: **Generated:** 2026-01-19 *
 **Generated:** 2026-01-19
 **Modules Analyzed:** 11 files (5,871 lines)
 **Target Audience:** Architects
-**Path:** `src/empathy_os/meta_workflows/`
+**Path:** `src/attune/meta_workflows/`
 
 ---
 
@@ -78,7 +78,7 @@ The **Meta-Workflow System** is a dynamic agent orchestration framework that ena
 
 ## Core Components
 
-### 1. Data Models ([models.py](../src/empathy_os/meta_workflows/models.py))
+### 1. Data Models ([models.py](../src/attune/meta_workflows/models.py))
 
 **Lines:** 568 | **Purpose:** Foundation data structures
 
@@ -97,7 +97,7 @@ The **Meta-Workflow System** is a dynamic agent orchestration framework that ena
 
 ---
 
-### 2. Socratic Form Engine ([form_engine.py](../src/empathy_os/meta_workflows/form_engine.py))
+### 2. Socratic Form Engine ([form_engine.py](../src/attune/meta_workflows/form_engine.py))
 
 **Lines:** 305 | **Purpose:** Interactive requirements gathering through guided questioning.
 
@@ -122,7 +122,7 @@ class SocraticFormEngine:
 
 ---
 
-### 3. Dynamic Agent Creator ([agent_creator.py](../src/empathy_os/meta_workflows/agent_creator.py))
+### 3. Dynamic Agent Creator ([agent_creator.py](../src/attune/meta_workflows/agent_creator.py))
 
 **Lines:** 255 | **Purpose:** Transform templates + form responses → agent teams.
 
@@ -152,7 +152,7 @@ for each rule in template.agent_composition_rules:
 
 ---
 
-### 4. Workflow Orchestrator ([workflow.py](../src/empathy_os/meta_workflows/workflow.py))
+### 4. Workflow Orchestrator ([workflow.py](../src/attune/meta_workflows/workflow.py))
 
 **Lines:** 989 | **Purpose:** End-to-end workflow execution with progressive tier escalation.
 
@@ -179,7 +179,7 @@ Stage 5: Persistence        ─► Files + Memory
 
 ---
 
-### 5. Template Registry ([template_registry.py](../src/empathy_os/meta_workflows/template_registry.py))
+### 5. Template Registry ([template_registry.py](../src/attune/meta_workflows/template_registry.py))
 
 **Lines:** 230 | **Purpose:** Manage built-in and user-defined templates.
 
@@ -199,7 +199,7 @@ Stage 5: Persistence        ─► Files + Memory
 
 ---
 
-### 6. Pattern Learner ([pattern_learner.py](../src/empathy_os/meta_workflows/pattern_learner.py))
+### 6. Pattern Learner ([pattern_learner.py](../src/attune/meta_workflows/pattern_learner.py))
 
 **Lines:** 755 | **Purpose:** Self-optimization through historical analysis.
 
@@ -347,7 +347,7 @@ empathy meta-workflow list-runs
 ### Programmatic
 
 ```python
-from empathy_os.meta_workflows import MetaWorkflow, FormResponse
+from attune.meta_workflows import MetaWorkflow, FormResponse
 
 # Create workflow from template
 workflow = MetaWorkflow(template_id="feature-overview")
@@ -357,7 +357,7 @@ result = workflow.execute(
     form_response=FormResponse(
         template_id="feature-overview",
         responses={
-            "target_path": "src/empathy_os/memory/",
+            "target_path": "src/attune/memory/",
             "target_audience": "Engineers",
             "include_blog_summary": "Yes",
             "include_diagrams": "Yes",

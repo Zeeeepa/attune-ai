@@ -6,7 +6,7 @@ Licensed under Fair Source License 0.9
 
 import tempfile
 
-from empathy_os.validation import ValidationResult, XMLValidator, validate_xml_response
+from attune.validation import ValidationResult, XMLValidator, validate_xml_response
 
 
 class TestWellFormednessValidation:

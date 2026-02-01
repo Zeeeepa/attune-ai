@@ -321,7 +321,7 @@ async def develop_with_cascading(task: Task, plan: Plan) -> Result:
   <self_verification>
     <command>python -m pytest tests/ -v</command>
     <command>ruff check . --exclude benchmarks/</command>
-    <command>mypy src/empathy_os/</command>
+    <command>mypy src/attune/</command>
   </self_verification>
 
   <output>
@@ -374,7 +374,7 @@ async def develop_with_cascading(task: Task, plan: Plan) -> Result:
     </check>
 
     <check id="types" priority="high" blocking="false">
-      <command>mypy src/empathy_os/</command>
+      <command>mypy src/attune/</command>
       <pass_criteria>0 errors</pass_criteria>
       <on_failure>
         <extract_errors>Type error messages</extract_errors>

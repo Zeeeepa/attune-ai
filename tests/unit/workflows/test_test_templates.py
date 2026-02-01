@@ -4,7 +4,7 @@ Tests template generation for functions and classes.
 """
 
 
-from empathy_os.workflows.test_gen.test_templates import (
+from attune.workflows.test_gen.test_templates import (
     generate_test_cases_for_params,
     generate_test_for_class,
     generate_test_for_function,

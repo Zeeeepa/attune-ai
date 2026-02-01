@@ -16,14 +16,14 @@ tests:
 core:
   - changed-files:
       - any-glob-to-any-file:
-          - 'src/empathy_os/**/*'
-          - 'empathy_llm_toolkit/**/*'
+          - 'src/attune/**/*'
+          - 'attune_llm/**/*'
 
 plugins:
   - changed-files:
       - any-glob-to-any-file:
-          - 'empathy_software_plugin/**/*'
-          - 'empathy_healthcare_plugin/**/*'
+          - 'attune_software/**/*'
+          - 'attune_healthcare/**/*'
 
 wizards:
   - changed-files:
@@ -34,8 +34,8 @@ wizards:
 cli:
   - changed-files:
       - any-glob-to-any-file:
-          - 'src/empathy_os/cli*.py'
-          - 'empathy_llm_toolkit/cli/**/*'
+          - 'src/attune/cli*.py'
+          - 'attune_llm/cli/**/*'
 
 ci:
   - changed-files:
@@ -51,7 +51,7 @@ dependencies:
 security:
   - changed-files:
       - any-glob-to-any-file:
-          - 'empathy_llm_toolkit/security/**/*'
+          - 'attune_llm/security/**/*'
           - '.bandit'
           - '.github/workflows/security.yml'
 

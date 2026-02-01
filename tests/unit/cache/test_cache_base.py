@@ -10,7 +10,7 @@ import time
 
 import pytest
 
-from empathy_os.cache.base import BaseCache, CacheEntry, CacheStats
+from attune.cache.base import BaseCache, CacheEntry, CacheStats
 
 
 @pytest.mark.unit

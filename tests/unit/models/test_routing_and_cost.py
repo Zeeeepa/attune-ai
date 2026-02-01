@@ -52,8 +52,8 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from empathy_os.cost_tracker import MODEL_PRICING, CostTracker
-from empathy_os.models.fallback import (
+from attune.cost_tracker import MODEL_PRICING, CostTracker
+from attune.models.fallback import (
     AllProvidersFailedError,
     CircuitBreaker,
     FallbackPolicy,
@@ -61,8 +61,8 @@ from empathy_os.models.fallback import (
     ResilientExecutor,
     RetryPolicy,
 )
-from empathy_os.models.registry import ModelTier
-from empathy_os.models.tasks import TASK_TIER_MAP, TaskType, get_tier_for_task
+from attune.models.registry import ModelTier
+from attune.models.tasks import TASK_TIER_MAP, TaskType, get_tier_for_task
 
 # ============================================================================
 # Test Category 1: Task-Tier Mapping (8 tests)

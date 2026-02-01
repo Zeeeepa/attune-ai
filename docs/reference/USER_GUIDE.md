@@ -305,7 +305,7 @@ Would you like details on any of these, or should I prepare the PR review commen
 llm = EmpathyLLM(provider="anthropic", target_level=3)
 
 # Define a pattern
-from empathy_llm_toolkit import UserPattern, PatternType
+from attune_llm import UserPattern, PatternType
 
 pattern = UserPattern(
     pattern_type=PatternType.SEQUENTIAL,
@@ -343,7 +343,7 @@ The framework automatically detects patterns through:
 **Manual Pattern Addition:**
 
 ```python
-from empathy_llm_toolkit import UserPattern, PatternType
+from attune_llm import UserPattern, PatternType
 
 # Add custom pattern
 pattern = UserPattern(
@@ -620,7 +620,7 @@ See [QUICKSTART_GUIDE.md](QUICKSTART_GUIDE.md) for detailed installation instruc
 **Quick Install:**
 
 ```bash
-pip install empathy-framework anthropic
+pip install attune-ai anthropic
 export ANTHROPIC_API_KEY=sk-ant-your-key-here
 ```
 
@@ -1019,7 +1019,7 @@ Version 3.1.0 introduces intelligent routing and cross-wizard learning:
 Route requests using natural language instead of knowing wizard names:
 
 ```python
-from empathy_os.routing import SmartRouter
+from attune.routing import SmartRouter
 
 router = SmartRouter()
 
@@ -1041,7 +1041,7 @@ suggestions = router.suggest_for_error("NullReferenceException")
 Connect findings across wizards and sessions:
 
 ```python
-from empathy_os.memory import MemoryGraph, EdgeType
+from attune.memory import MemoryGraph, EdgeType
 
 graph = MemoryGraph()
 
@@ -1099,7 +1099,7 @@ templates:
 ```
 
 ```python
-from empathy_os.routing import ChainExecutor
+from attune.routing import ChainExecutor
 
 executor = ChainExecutor()
 
@@ -1148,7 +1148,7 @@ Production-ready patterns for fault tolerance and reliability:
 #### Retry with Exponential Backoff
 
 ```python
-from empathy_os.resilience import retry, RetryConfig
+from attune.resilience import retry, RetryConfig
 
 @retry(max_attempts=3, initial_delay=1.0, backoff_factor=2.0)
 async def call_external_api():
@@ -1170,7 +1170,7 @@ config = RetryConfig(
 Prevent cascading failures by stopping calls to failing services:
 
 ```python
-from empathy_os.resilience import circuit_breaker, get_circuit_breaker, CircuitOpenError
+from attune.resilience import circuit_breaker, get_circuit_breaker, CircuitOpenError
 
 @circuit_breaker(
     name="external_api",
@@ -1197,7 +1197,7 @@ print(f"Stats: {cb.get_stats()}")
 Prevent hanging operations:
 
 ```python
-from empathy_os.resilience import timeout, with_timeout, ResilienceTimeoutError
+from attune.resilience import timeout, with_timeout, ResilienceTimeoutError
 
 @timeout(30.0)  # 30 second timeout
 async def slow_operation():
@@ -1221,7 +1221,7 @@ result = await with_timeout(
 Graceful degradation with multiple fallback options:
 
 ```python
-from empathy_os.resilience import Fallback, fallback
+from attune.resilience import Fallback, fallback
 
 # Decorator approach
 @fallback(fallback_func=get_cached_data, default="No data available")
@@ -1251,7 +1251,7 @@ result = await fb.execute()  # Tries each in order
 Monitor system component health:
 
 ```python
-from empathy_os.resilience import HealthCheck, HealthStatus
+from attune.resilience import HealthCheck, HealthStatus
 
 health = HealthCheck(version="3.1.0")
 
@@ -1287,7 +1287,7 @@ return system_health.to_dict()
 Stack decorators for robust services:
 
 ```python
-from empathy_os.resilience import retry, circuit_breaker, timeout, fallback
+from attune.resilience import retry, circuit_breaker, timeout, fallback
 
 async def cached_fallback():
     return cache.get("last_known_good")
@@ -1403,7 +1403,7 @@ metadata:
 **Load in code:**
 
 ```python
-from empathy_os.config import load_config
+from attune.config import load_config
 
 config = load_config("empathy.config.yml", use_env=True)
 llm = EmpathyLLM(
@@ -1433,7 +1433,7 @@ llm = EmpathyLLM(
 ### Programmatic Configuration
 
 ```python
-from empathy_os.config import EmpathyConfig
+from attune.config import EmpathyConfig
 
 config = EmpathyConfig(
     user_id="alice",
@@ -1454,7 +1454,7 @@ config.to_yaml("my_config.yml")
 ### Configuration Precedence
 
 ```python
-from empathy_os.config import load_config
+from attune.config import load_config
 
 # Loads in this order (highest to lowest priority):
 # 1. Environment variables (EMPATHY_*)
@@ -1672,7 +1672,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.10'
-      - run: pip install empathy-framework
+      - run: pip install attune-ai
       - run: |
           python -c "
           from coach_wizards import SecurityWizard
@@ -1696,7 +1696,7 @@ jobs:
 **Use Prompt Caching (Claude):**
 
 ```python
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 # Prompt caching reduces cost by 90% for repeated prompts
 provider = AnthropicProvider(
@@ -1817,7 +1817,7 @@ print(result.to_json())
 ```python
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 from coach_wizards import SecurityWizard
 import os
 
@@ -1904,7 +1904,7 @@ async def provide_feedback(user_id: str, outcome: str):
 
 ```python
 from slack_bolt import App
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 import os
 
 app = App(
@@ -2048,7 +2048,7 @@ llm = EmpathyLLM(
 )
 
 # Enable prompt caching (Claude)
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 provider = AnthropicProvider(
     use_prompt_caching=True,  # 90% faster on repeated calls
     model="claude-3-5-sonnet-20241022"
@@ -2210,7 +2210,7 @@ result = wizard.run_full_analysis(code, file_path, language, context)
 Create plugins for new domains:
 
 ```python
-from empathy_os.plugins import BasePlugin, PluginMetadata
+from attune.plugins import BasePlugin, PluginMetadata
 
 class MyDomainPlugin(BasePlugin):
     def get_metadata(self):
@@ -2249,7 +2249,7 @@ class MyDomainPlugin(BasePlugin):
 Support multiple teams/users:
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 class MultiTenantEmpathy:
     def __init__(self):
@@ -2286,7 +2286,7 @@ Track framework performance:
 
 ```python
 import time
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 class MonitoredEmpathyLLM(EmpathyLLM):
     def __init__(self, *args, **kwargs):

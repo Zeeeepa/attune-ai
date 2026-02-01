@@ -2,7 +2,7 @@
 Replace rough token estimates with Anthropic's official token counter for accurate cost tracking.
 
 ## Implementation Tasks
-- [ ] Create `empathy_llm_toolkit/utils/tokens.py` with token counting utilities
+- [ ] Create `attune_llm/utils/tokens.py` with token counting utilities
 - [ ] Add `count_tokens()` and `count_message_tokens()` functions
 - [ ] Update `AnthropicProvider` with `estimate_tokens()` and `calculate_actual_cost()`
 - [ ] Add pre-request validation in workflow base

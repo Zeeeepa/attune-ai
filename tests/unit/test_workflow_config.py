@@ -14,7 +14,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.workflows.config import ModelConfig, WorkflowConfig, get_model
+from attune.workflows.config import ModelConfig, WorkflowConfig, get_model
 
 # Skip YAML tests if PyYAML not available
 try:
@@ -152,10 +152,10 @@ workflow_providers:
                 assert config.custom_models["env"]["capable"] == "claude-sonnet-4"
 
     def test_load_from_empathy_config_yaml(self):
-        """Test loading from empathy.config.yaml format."""
+        """Test loading from attune.config.yaml format."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_path = Path(tmpdir) / "empathy.config.yaml"
-            # empathy.config.yaml has root provider and model_preferences
+            config_path = Path(tmpdir) / "attune.config.yaml"
+            # attune.config.yaml has root provider and model_preferences
             config_path.write_text(
                 """
 provider: openai

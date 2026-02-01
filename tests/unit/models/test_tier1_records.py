@@ -16,7 +16,7 @@ Tests cover:
 
 import json
 
-from empathy_os.models import (
+from attune.models import (
     AgentAssignmentRecord,
     CoverageRecord,
     TaskRoutingRecord,

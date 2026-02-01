@@ -8,8 +8,8 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.new_sample_workflow1 import NewSampleWorkflow1Workflow
+from attune.workflows.base import ModelTier
+from attune.workflows.new_sample_workflow1 import NewSampleWorkflow1Workflow
 
 
 class TestNewSampleWorkflow1Workflow:

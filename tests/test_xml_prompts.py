@@ -8,7 +8,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.prompts import (
+from attune.prompts import (
     Finding,
     ParsedResponse,
     PlainTextPromptTemplate,

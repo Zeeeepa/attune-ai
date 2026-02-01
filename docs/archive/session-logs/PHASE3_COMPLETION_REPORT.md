@@ -29,9 +29,9 @@ Phase 3 successfully regenerated 3 broken test files with bug fixes applied. The
 
 | File | Tests | Lines Covered | Status |
 |------|-------|---------------|--------|
-| [test_src_empathy_os_cli_generated.py](tests/llm_generated/test_src_empathy_os_cli_generated.py) | 87 tests | ~1,187 lines | ✅ Generated |
-| [test_src_empathy_os_telemetry_cli_generated.py](tests/llm_generated/test_src_empathy_os_telemetry_cli_generated.py) | 47 tests | ~506 lines | ✅ Generated |
-| [test_src_empathy_os_workflows_document_gen_generated.py](tests/llm_generated/test_src_empathy_os_workflows_document_gen_generated.py) | 51 tests | ~363 lines | ✅ Generated |
+| [test_src_attune_cli_generated.py](tests/llm_generated/test_src_attune_cli_generated.py) | 87 tests | ~1,187 lines | ✅ Generated |
+| [test_src_attune_telemetry_cli_generated.py](tests/llm_generated/test_src_attune_telemetry_cli_generated.py) | 47 tests | ~506 lines | ✅ Generated |
+| [test_src_attune_workflows_document_gen_generated.py](tests/llm_generated/test_src_attune_workflows_document_gen_generated.py) | 51 tests | ~363 lines | ✅ Generated |
 | **TOTAL** | **185 new tests** | **~2,056 lines** | **✅ Success** |
 
 ### Combined Test Suite
@@ -41,9 +41,9 @@ Phase 3 successfully regenerated 3 broken test files with bug fixes applied. The
 | test_short_term_generated.py | 64 | 64 | 0 | 100% ✅ |
 | test_workflow_commands_generated.py | 45 | 45 | 0 | 100% ✅ |
 | test_cache_stats_generated.py | 18 | 10 | 8 | 55.6% ⚠️ |
-| test_src_empathy_os_cli_generated.py | 87 | 73 | 14 | 83.9% ✅ |
-| test_src_empathy_os_telemetry_cli_generated.py | 47 | 35 | 12 | 74.5% ⚠️ |
-| test_src_empathy_os_workflows_document_gen_generated.py | 51 | 50 | 1 | 98.0% ✅ |
+| test_src_attune_cli_generated.py | 87 | 73 | 14 | 83.9% ✅ |
+| test_src_attune_telemetry_cli_generated.py | 47 | 35 | 12 | 74.5% ⚠️ |
+| test_src_attune_workflows_document_gen_generated.py | 51 | 50 | 1 | 98.0% ✅ |
 | **TOTAL** | **312** | **277** | **35** | **88.8%** ✅ |
 
 ---
@@ -56,8 +56,8 @@ Phase 3 successfully regenerated 3 broken test files with bug fixes applied. The
 
 **Error:**
 ```
-ValueError: 'src/empathy_os/cli.py' is not in the subpath of
-'/Users/.../empathy-framework' OR one path is relative and the other is absolute.
+ValueError: 'src/attune/cli.py' is not in the subpath of
+'/Users/.../attune-ai' OR one path is relative and the other is absolute.
 ```
 
 **Fix Applied:**
@@ -89,16 +89,16 @@ test_name = f"test_{source_path.stem}_generated.py"
 # After:
 relative_path = str(source_path.relative_to(self.project_root))
 test_name = f"test_{relative_path.replace('/', '_').replace('.py', '')}_generated.py"
-# Result: cli.py → test_src_empathy_os_cli_generated.py
-# Result: telemetry/cli.py → test_src_empathy_os_telemetry_cli_generated.py  ✅
+# Result: cli.py → test_src_attune_cli_generated.py
+# Result: telemetry/cli.py → test_src_attune_telemetry_cli_generated.py  ✅
 ```
 
 **Validation:** ✅ No file naming collisions in Phase 3 generation
 
 **Files Generated:**
-- ✅ `test_src_empathy_os_cli_generated.py` (unique)
-- ✅ `test_src_empathy_os_telemetry_cli_generated.py` (unique)
-- ✅ `test_src_empathy_os_workflows_document_gen_generated.py` (unique)
+- ✅ `test_src_attune_cli_generated.py` (unique)
+- ✅ `test_src_attune_telemetry_cli_generated.py` (unique)
+- ✅ `test_src_attune_workflows_document_gen_generated.py` (unique)
 
 ---
 
@@ -118,9 +118,9 @@ max_tokens=12000  # Handles ~3000 lines of test code
 **Validation:** ✅ All 3 files generated completely (no truncation)
 
 **File Sizes:**
-- test_src_empathy_os_cli_generated.py: Complete (87 tests, no truncation)
-- test_src_empathy_os_telemetry_cli_generated.py: Complete (47 tests)
-- test_src_empathy_os_workflows_document_gen_generated.py: Complete (51 tests)
+- test_src_attune_cli_generated.py: Complete (87 tests, no truncation)
+- test_src_attune_telemetry_cli_generated.py: Complete (47 tests)
+- test_src_attune_workflows_document_gen_generated.py: Complete (51 tests)
 
 ---
 
@@ -155,13 +155,13 @@ max_tokens=12000  # Handles ~3000 lines of test code
 
 ---
 
-#### 2. test_src_empathy_os_telemetry_cli_generated.py (12 failures)
+#### 2. test_src_attune_telemetry_cli_generated.py (12 failures)
 
 **Issue:** Hallucinated `TelemetryAnalytics` class that doesn't exist
 
 **Error:**
 ```python
-AttributeError: <module 'src.empathy_os.telemetry.cli'> does not have
+AttributeError: <module 'src.attune.telemetry.cli'> does not have
 the attribute 'TelemetryAnalytics'
 ```
 
@@ -181,7 +181,7 @@ the attribute 'TelemetryAnalytics'
 
 ---
 
-#### 3. test_src_empathy_os_cli_generated.py (14 failures)
+#### 3. test_src_attune_cli_generated.py (14 failures)
 
 **Issue:** Various API mismatches and missing attributes
 
@@ -200,7 +200,7 @@ the attribute 'TelemetryAnalytics'
 
 ---
 
-#### 4. test_src_empathy_os_workflows_document_gen_generated.py (1 failure)
+#### 4. test_src_attune_workflows_document_gen_generated.py (1 failure)
 
 **Issue:** Display chunking test expects different behavior
 
@@ -305,7 +305,7 @@ the attribute 'TelemetryAnalytics'
 ### Immediate Actions (Optional)
 
 1. **Fix High-Value Failures** (4-6 hours)
-   - Priority: test_src_empathy_os_cli_generated.py (14 failures)
+   - Priority: test_src_attune_cli_generated.py (14 failures)
    - Impact: Would bring pass rate to ~93%
    - Effort: Review actual CLI functions, remove/fix tests
 
@@ -351,34 +351,34 @@ the attribute 'TelemetryAnalytics'
 
 ### New Test Files (Phase 3)
 
-1. **tests/llm_generated/test_src_empathy_os_cli_generated.py**
+1. **tests/llm_generated/test_src_attune_cli_generated.py**
    - 87 tests (73 passing, 14 failing)
-   - Covers: src/empathy_os/cli.py
+   - Covers: src/attune/cli.py
    - Target: 1,187 missing lines
 
-2. **tests/llm_generated/test_src_empathy_os_telemetry_cli_generated.py**
+2. **tests/llm_generated/test_src_attune_telemetry_cli_generated.py**
    - 47 tests (35 passing, 12 failing)
-   - Covers: src/empathy_os/telemetry/cli.py
+   - Covers: src/attune/telemetry/cli.py
    - Target: 506 missing lines
 
-3. **tests/llm_generated/test_src_empathy_os_workflows_document_gen_generated.py**
+3. **tests/llm_generated/test_src_attune_workflows_document_gen_generated.py**
    - 51 tests (50 passing, 1 failing)
-   - Covers: src/empathy_os/workflows/document_gen.py
+   - Covers: src/attune/workflows/document_gen.py
    - Target: 363 missing lines
 
 ### Existing Test Files (Phase 1)
 
 4. **tests/llm_generated/test_short_term_generated.py**
    - 64 tests (100% passing)
-   - Covers: src/empathy_os/memory/short_term.py
+   - Covers: src/attune/memory/short_term.py
 
 5. **tests/llm_generated/test_workflow_commands_generated.py**
    - 45 tests (100% passing)
-   - Covers: src/empathy_os/workflow_commands.py
+   - Covers: src/attune/workflow_commands.py
 
 6. **tests/llm_generated/test_cache_stats_generated.py**
    - 18 tests (10 passing, 8 failing)
-   - Covers: src/empathy_os/cache_stats.py
+   - Covers: src/attune/cache_stats.py
 
 ---
 
@@ -433,7 +433,7 @@ When you're ready to continue:
 
 ```bash
 # Priority 1: Fix cli tests (highest impact)
-# Manually review and fix test_src_empathy_os_cli_generated.py
+# Manually review and fix test_src_attune_cli_generated.py
 
 # Priority 2: Fix telemetry tests
 # Check actual telemetry/cli.py for class names

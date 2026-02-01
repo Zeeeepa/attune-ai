@@ -289,7 +289,7 @@ Add to your GitHub Actions:
 ```yaml
 - name: Health Check
   run: |
-    pip install empathy-framework
+    pip install attune-ai
     empathy health --deep --json > health.json
 
 - name: Upload Health Report
@@ -328,7 +328,7 @@ Fail the build if health drops below threshold:
 ## Try It Now
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 
 # Quick check
 empathy health
@@ -357,7 +357,7 @@ empathy health --trends 30
 
 - **CLI Guide:** [docs/CLI_GUIDE.md](../CLI_GUIDE.md#code-health-assistant-new-in-v220)
 - **GitHub:** [github.com/Smart-AI-Memory/empathy](https://github.com/Smart-AI-Memory/empathy)
-- **PyPI:** [pypi.org/project/empathy-framework](https://pypi.org/project/empathy-framework/)
+- **PyPI:** [pypi.org/project/attune-ai](https://pypi.org/project/attune-ai/)
 
 ---
 

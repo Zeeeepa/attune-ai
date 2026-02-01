@@ -4,7 +4,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-from empathy_os.emergence import EmergenceDetector, EmergentProperty
+from attune.emergence import EmergenceDetector, EmergentProperty
 
 
 class TestEmergentProperty:

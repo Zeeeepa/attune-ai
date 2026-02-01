@@ -13,13 +13,13 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.workflows.keyboard_shortcuts.generators import (
+from attune.workflows.keyboard_shortcuts.generators import (
     CLIAliasGenerator,
     ComprehensiveGenerator,
     MarkdownDocGenerator,
     VSCodeKeybindingsGenerator,
 )
-from empathy_os.workflows.keyboard_shortcuts.schema import (
+from attune.workflows.keyboard_shortcuts.schema import (
     Category,
     Feature,
     FeatureManifest,

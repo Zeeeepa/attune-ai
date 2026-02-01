@@ -153,7 +153,7 @@ description: Summary: Orchestrated Health Check Workflow Test Coverage: ## Achie
 
 ```bash
 $ python -m pytest tests/unit/workflows/test_orchestrated_health_check*.py \
-    --cov=empathy_os.workflows.orchestrated_health_check \
+    --cov=attune.workflows.orchestrated_health_check \
     --cov-report=term-missing -v
 
 ============================== test session starts ==============================
@@ -167,7 +167,7 @@ tests/unit/workflows/test_orchestrated_health_check_comprehensive.py .. [100%]
 ---------- coverage: platform darwin, python 3.10.11-final-0 ----------
 Name                                                    Stmts   Miss Branch BrPart   Cover
 -----------------------------------------------------------------------------------------
-src/empathy_os/workflows/orchestrated_health_check.py     304      4     98      1  98.26%
+src/attune/workflows/orchestrated_health_check.py     304      4     98      1  98.26%
 -----------------------------------------------------------------------------------------
 TOTAL                                                     304      4     98      1  98.26%
 
@@ -217,7 +217,7 @@ The 4 uncovered lines (1.74%) are non-critical and acceptable:
 
 ## Files Reference
 
-1. **Source File:** `src/empathy_os/workflows/orchestrated_health_check.py` (304 lines)
+1. **Source File:** `src/attune/workflows/orchestrated_health_check.py` (304 lines)
 2. **Base Tests:** `tests/unit/workflows/test_orchestrated_health_check.py` (719 lines, 30 tests)
 3. **Comprehensive Tests:** `tests/unit/workflows/test_orchestrated_health_check_comprehensive.py` (850 lines, 32 tests)
 4. **Coverage Report:** `TEST_COVERAGE_REPORT_ORCHESTRATED_HEALTH_CHECK.md` (detailed analysis)
@@ -226,7 +226,7 @@ The 4 uncovered lines (1.74%) are non-critical and acceptable:
 ---
 
 **Generated:** January 15, 2026
-**Module:** `empathy_os.workflows.orchestrated_health_check`
+**Module:** `attune.workflows.orchestrated_health_check`
 **Coverage Tool:** pytest-cov 4.1.0
 **Python:** 3.10.11
 **Platform:** darwin (macOS)

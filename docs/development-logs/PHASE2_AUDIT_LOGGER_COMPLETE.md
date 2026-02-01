@@ -8,7 +8,7 @@ description: Development guidelines for Phase 2: Audit Logging Framework - Imple
 
 Phase 2 of the Empathy Framework enterprise privacy integration is **COMPLETE and PRODUCTION READY**.
 
-The audit logging framework has been successfully implemented at `/empathy_llm_toolkit/security/audit_logger.py` with full SOC2, HIPAA, and GDPR compliance capabilities.
+The audit logging framework has been successfully implemented at `/attune_llm/security/audit_logger.py` with full SOC2, HIPAA, and GDPR compliance capabilities.
 
 ---
 
@@ -17,7 +17,7 @@ The audit logging framework has been successfully implemented at `/empathy_llm_t
 ### Core Implementation Files
 
 ```
-empathy_llm_toolkit/security/
+attune_llm/security/
 ├── audit_logger.py              910 lines - Core implementation
 ├── test_audit_logger.py         471 lines - 21 comprehensive tests
 ├── audit_logger_example.py      160 lines - Usage demonstrations
@@ -171,7 +171,7 @@ events = logger.query(
 ### Basic Logging
 
 ```python
-from empathy_llm_toolkit.security import AuditLogger
+from attune_llm.security import AuditLogger
 
 logger = AuditLogger(log_dir="/var/log/empathy")
 
@@ -240,8 +240,8 @@ for v in violations:
 ### With EmpathyLLM (Ready)
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.security import AuditLogger
+from attune_llm import EmpathyLLM
+from attune_llm.security import AuditLogger
 
 audit_logger = AuditLogger()
 llm = EmpathyLLM(provider="anthropic", target_level=3)
@@ -282,7 +282,7 @@ def store_pattern_with_audit(user_id, pattern, classification):
 ### With PII Scrubber (Phase 1 - Ready)
 
 ```python
-from empathy_llm_toolkit.security import PIIScrubber, AuditLogger
+from attune_llm.security import PIIScrubber, AuditLogger
 
 pii_scrubber = PIIScrubber()
 audit_logger = AuditLogger()
@@ -299,7 +299,7 @@ audit_logger.log_llm_request(
 ### With Secrets Detector (Phase 1 - Ready)
 
 ```python
-from empathy_llm_toolkit.security import SecretsDetector, AuditLogger
+from attune_llm.security import SecretsDetector, AuditLogger
 
 secrets_detector = SecretsDetector()
 audit_logger = AuditLogger()
@@ -323,21 +323,21 @@ if detections:
 ### Run Tests
 
 ```bash
-cd empathy_llm_toolkit/security
+cd attune_llm/security
 python3 -m pytest test_audit_logger.py -v
 ```
 
 ### Run Example
 
 ```bash
-cd empathy_llm_toolkit/security
+cd attune_llm/security
 python3 audit_logger_example.py
 ```
 
 ### Verify Installation
 
 ```bash
-python3 -c "from empathy_llm_toolkit.security import AuditLogger; print('✓ OK')"
+python3 -c "from attune_llm.security import AuditLogger; print('✓ OK')"
 ```
 
 ---
@@ -415,11 +415,11 @@ python3 -c "from empathy_llm_toolkit.security import AuditLogger; print('✓ OK'
 
 ## Reference Files
 
-- **Implementation**: `/empathy_llm_toolkit/security/audit_logger.py`
-- **Tests**: `/empathy_llm_toolkit/security/test_audit_logger.py`
-- **Documentation**: `/empathy_llm_toolkit/security/README.md`
-- **Quick Reference**: `/empathy_llm_toolkit/security/QUICK_REFERENCE.md`
-- **Status**: `/empathy_llm_toolkit/security/PHASE2_COMPLETE.md`
+- **Implementation**: `/attune_llm/security/audit_logger.py`
+- **Tests**: `/attune_llm/security/test_audit_logger.py`
+- **Documentation**: `/attune_llm/security/README.md`
+- **Quick Reference**: `/attune_llm/security/QUICK_REFERENCE.md`
+- **Status**: `/attune_llm/security/PHASE2_COMPLETE.md`
 - **Architecture**: `/SECURE_MEMORY_ARCHITECTURE.md`
 - **Enterprise Policy**: `/examples/claude_memory/enterprise-CLAUDE-secure.md`
 

@@ -42,7 +42,7 @@ A five-level maturity model for AI-human collaboration that progresses from reac
 
 ## Proof of Concept: Built With Claude Code
 
-**Both empathy-framework and pattern-storage were created in consultation with Claude Sonnet 4.5 using Claude Code**, demonstrating transformative productivity with Anthropic's official developer tool:
+**Both attune-ai and pattern-storage were created in consultation with Claude Sonnet 4.5 using Claude Code**, demonstrating transformative productivity with Anthropic's official developer tool:
 
 ### Development Speed (Measured):
 - **Traditional development**: Days to weeks per specialized wizard
@@ -285,7 +285,7 @@ We seek a **technical partnership with promotional benefits**, NOT exclusivity:
 ### Current Claude Features Used:
 
 ```python
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 # Enhanced provider with Claude-specific features
 claude = AnthropicProvider(
@@ -410,7 +410,7 @@ Website: https://smartaimemory.com
 *(Available upon request: Detailed revenue projections)*
 
 ### E. Code Samples
-- Enhanced Anthropic Provider: `/empathy_llm_toolkit/providers.py`
+- Enhanced Anthropic Provider: `/attune_llm/providers.py`
 - Example Wizard: `/coach_wizards/security_wizard.py`
 - Integration Tests: `/tests/test_anthropic_provider.py`
 

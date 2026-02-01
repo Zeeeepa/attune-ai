@@ -7,7 +7,7 @@
   "icon": "media/memory-icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Smart-AI-Memory/empathy-framework"
+    "url": "https://github.com/Smart-AI-Memory/attune-ai"
   },
   "engines": {
     "vscode": "^1.85.0"

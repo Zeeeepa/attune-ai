@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from empathy_os.telemetry.commands.dashboard_commands import cmd_telemetry_dashboard
+from attune.telemetry.commands.dashboard_commands import cmd_telemetry_dashboard
 
 
 class TestCmdTelemetryDashboard:
@@ -27,29 +27,38 @@ class TestCmdTelemetryDashboard:
         """Create sample telemetry entries for testing."""
         return [
             {
-                "timestamp": "2025-01-01T10:00:00",
+                "ts": "2025-01-01T10:00:00",
+                "workflow": "test-workflow",
+                "stage": "execution",
                 "tier": "BASIC",
                 "cost": 0.001,
                 "duration_ms": 100,
                 "tokens": {"input": 100, "output": 50},
+                "cache": {"hit": False},
                 "model": "model-basic",
                 "success": True,
             },
             {
-                "timestamp": "2025-01-01T11:00:00",
+                "ts": "2025-01-01T11:00:00",
+                "workflow": "test-workflow",
+                "stage": "execution",
                 "tier": "PREMIUM",
                 "cost": 0.005,
                 "duration_ms": 200,
                 "tokens": {"input": 200, "output": 100},
+                "cache": {"hit": False},
                 "model": "model-premium",
                 "success": True,
             },
             {
-                "timestamp": "2025-01-01T12:00:00",
+                "ts": "2025-01-01T12:00:00",
+                "workflow": "test-workflow",
+                "stage": "execution",
                 "tier": "BASIC",
                 "cost": 0.002,
                 "duration_ms": 150,
                 "tokens": {"input": 150, "output": 75},
+                "cache": {"hit": True},
                 "model": "model-basic",
                 "success": False,
             },
@@ -75,7 +84,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = []
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class:
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -101,7 +110,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = sample_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open") as mock_browser, \
@@ -150,7 +159,7 @@ class TestCmdTelemetryDashboard:
         expected_avg_duration = 150.0  # (100 + 200 + 150) / 3
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile"), \
              patch("webbrowser.open"), \
@@ -177,7 +186,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = sample_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -213,7 +222,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = sample_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -246,14 +255,14 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         incomplete_entries = [
-            {"timestamp": "2025-01-01T10:00:00", "tier": "BASIC"},
-            {"timestamp": "2025-01-01T11:00:00", "cost": 0.001},
-            {"timestamp": "2025-01-01T12:00:00", "tokens": {}},
+            {"ts": "2025-01-01T10:00:00", "workflow": "test", "tier": "BASIC"},
+            {"ts": "2025-01-01T11:00:00", "workflow": "test", "cost": 0.001},
+            {"ts": "2025-01-01T12:00:00", "workflow": "test", "tokens": {}},
         ]
         mock_tracker.export_to_dict.return_value = incomplete_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -287,7 +296,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = sample_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -322,7 +331,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = sample_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -354,17 +363,20 @@ class TestCmdTelemetryDashboard:
         # Given
         single_entry = [
             {
-                "timestamp": "2025-01-01T10:00:00",
+                "ts": "2025-01-01T10:00:00",
+                "workflow": "test-workflow",
+                "stage": "execution",
                 "tier": "BASIC",
                 "cost": 0.001,
                 "duration_ms": 250,
                 "tokens": {"input": 100, "output": 50},
+                "cache": {"hit": False},
             }
         ]
         mock_tracker.export_to_dict.return_value = single_entry
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -394,14 +406,14 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         entries_with_unknown = [
-            {"tier": "BASIC", "cost": 0.001, "duration_ms": 100, "tokens": {}},
-            {"cost": 0.002, "duration_ms": 150, "tokens": {}},  # Missing tier
-            {"tier": None, "cost": 0.003, "duration_ms": 200, "tokens": {}},
+            {"ts": "2025-01-01T10:00:00", "workflow": "test", "stage": "execution", "tier": "BASIC", "cost": 0.001, "duration_ms": 100, "tokens": {}, "cache": {"hit": False}},
+            {"ts": "2025-01-01T11:00:00", "workflow": "test", "stage": "execution", "cost": 0.002, "duration_ms": 150, "tokens": {}, "cache": {"hit": False}},  # Missing tier - will default to "UNKNOWN"
+            {"ts": "2025-01-01T12:00:00", "workflow": "test", "stage": "execution", "tier": "UNKNOWN", "cost": 0.003, "duration_ms": 200, "tokens": {}, "cache": {"hit": False}},
         ]
         mock_tracker.export_to_dict.return_value = entries_with_unknown
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -432,16 +444,20 @@ class TestCmdTelemetryDashboard:
         # Given
         zero_token_entries = [
             {
+                "ts": "2025-01-01T10:00:00",
+                "workflow": "test-workflow",
+                "stage": "execution",
                 "tier": "BASIC",
                 "cost": 0.001,
                 "duration_ms": 100,
                 "tokens": {"input": 0, "output": 0},
+                "cache": {"hit": False},
             }
         ]
         mock_tracker.export_to_dict.return_value = zero_token_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -473,7 +489,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = sample_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -510,18 +526,21 @@ class TestCmdTelemetryDashboard:
         # Given
         large_entries = [
             {
-                "timestamp": f"2025-01-01T{i%24:02d}:00:00",
+                "ts": f"2025-01-01T{i%24:02d}:00:00",
+                "workflow": "test-workflow",
+                "stage": "execution",
                 "tier": "BASIC" if i % 2 == 0 else "PREMIUM",
                 "cost": 0.001 * (i % 10 + 1),
                 "duration_ms": 100 + (i % 100),
                 "tokens": {"input": 100 + i, "output": 50 + i},
+                "cache": {"hit": i % 3 == 0},
             }
             for i in range(1000)
         ]
         mock_tracker.export_to_dict.return_value = large_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -551,13 +570,13 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         negative_cost_entries = [
-            {"tier": "BASIC", "cost": -0.001, "duration_ms": 100, "tokens": {"input": 100, "output": 50}},
-            {"tier": "BASIC", "cost": 0.005, "duration_ms": 150, "tokens": {"input": 150, "output": 75}},
+            {"ts": "2025-01-01T10:00:00", "workflow": "test", "stage": "execution", "tier": "BASIC", "cost": -0.001, "duration_ms": 100, "tokens": {"input": 100, "output": 50}, "cache": {"hit": False}},
+            {"ts": "2025-01-01T11:00:00", "workflow": "test", "stage": "execution", "tier": "BASIC", "cost": 0.005, "duration_ms": 150, "tokens": {"input": 150, "output": 75}, "cache": {"hit": False}},
         ]
         mock_tracker.export_to_dict.return_value = negative_cost_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \
@@ -589,7 +608,7 @@ class TestCmdTelemetryDashboard:
         mock_tracker.export_to_dict.return_value = sample_entries
 
         with patch(
-            "empathy_os.telemetry.commands.dashboard_commands.UsageTracker"
+            "attune.telemetry.commands.dashboard_commands.UsageTracker"
         ) as mock_usage_tracker_class, \
              patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
              patch("webbrowser.open"), \

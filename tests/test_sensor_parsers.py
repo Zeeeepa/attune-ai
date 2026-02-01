@@ -12,7 +12,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_healthcare_plugin.monitors.monitoring.sensor_parsers import (
+from attune_healthcare.monitors.monitoring.sensor_parsers import (
     BaseSensorParser,
     FHIRObservationParser,
     SensorParserFactory,

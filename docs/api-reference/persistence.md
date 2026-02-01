@@ -29,7 +29,7 @@ The persistence layer provides storage and retrieval for:
 
 ### PatternPersistence
 
-::: empathy_os.persistence.PatternPersistence
+::: attune.persistence.PatternPersistence
     options:
       show_root_heading: false
       show_source: false
@@ -45,8 +45,8 @@ Save and load pattern libraries.
 
 **Example:**
 ```python
-from empathy_os.pattern_library import PatternLibrary
-from empathy_os.persistence import PatternPersistence
+from attune.pattern_library import PatternLibrary
+from attune.persistence import PatternPersistence
 
 # Create and populate library
 library = PatternLibrary()
@@ -68,7 +68,7 @@ print(f"Loaded {len(sqlite_library.patterns)} patterns from SQLite")
 
 ### StateManager
 
-::: empathy_os.persistence.StateManager
+::: attune.persistence.StateManager
     options:
       show_root_heading: false
       show_source: false
@@ -84,8 +84,8 @@ Manage user collaboration states.
 
 **Example:**
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.persistence import StateManager
+from attune import EmpathyOS
+from attune.persistence import StateManager
 
 # Initialize state manager
 state_manager = StateManager(state_dir=".empathy/state")
@@ -110,7 +110,7 @@ print(f"Users with saved states: {users}")
 
 ### MetricsCollector
 
-::: empathy_os.persistence.MetricsCollector
+::: attune.persistence.MetricsCollector
     options:
       show_root_heading: false
       show_source: false
@@ -126,7 +126,7 @@ Track usage metrics and performance.
 
 **Example:**
 ```python
-from empathy_os.persistence import MetricsCollector
+from attune.persistence import MetricsCollector
 import time
 
 # Initialize collector
@@ -165,9 +165,9 @@ print(f"Total interactions: {global_stats['total_interactions']}")
 ### Complete Persistence Setup
 
 ```python
-from empathy_os import EmpathyOS, EmpathyConfig
-from empathy_os.pattern_library import PatternLibrary
-from empathy_os.persistence import (
+from attune import EmpathyOS, EmpathyConfig
+from attune.pattern_library import PatternLibrary
+from attune.persistence import (
     PatternPersistence,
     StateManager,
     MetricsCollector
@@ -234,7 +234,7 @@ print("All data persisted successfully")
 ### JSON Pattern Export/Import
 
 ```python
-from empathy_os.persistence import PatternPersistence
+from attune.persistence import PatternPersistence
 
 # Export for backup or sharing
 library = PatternPersistence.load_from_sqlite("patterns.db")
@@ -250,7 +250,7 @@ print(f"Migrated {len(imported.patterns)} patterns")
 ### Metrics Dashboard
 
 ```python
-from empathy_os.persistence import MetricsCollector
+from attune.persistence import MetricsCollector
 
 collector = MetricsCollector(db_path="metrics.db")
 
@@ -288,7 +288,7 @@ print(f"  Overall success rate: {global_stats['success_rate']:.0%}")
 ### State Migration
 
 ```python
-from empathy_os.persistence import StateManager
+from attune.persistence import StateManager
 
 # Migrate states between systems
 old_manager = StateManager(state_dir="/old/system/.empathy/state")
@@ -416,7 +416,7 @@ CREATE INDEX idx_interactions_timestamp ON interactions(timestamp);
 ```python
 import schedule
 from datetime import datetime
-from empathy_os.persistence import PatternPersistence
+from attune.persistence import PatternPersistence
 
 def backup_patterns():
     """Daily backup of pattern library"""

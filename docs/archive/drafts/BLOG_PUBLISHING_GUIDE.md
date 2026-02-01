@@ -134,7 +134,7 @@ New way: System analyzes → spawns coverage_analyzer, test_generator, validator
 
 Read here: [LINK]
 
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### LinkedIn Post

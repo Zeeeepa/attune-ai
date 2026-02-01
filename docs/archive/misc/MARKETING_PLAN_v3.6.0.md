@@ -220,7 +220,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 - Conversion: GitHub visitors → Starred → Installed → Created Issue/PR
 
 ### Tools
-- PyPI Stats: https://pypistats.org/packages/empathy-framework
+- PyPI Stats: https://pypistats.org/packages/attune-ai
 - GitHub Insights: Repository > Insights > Traffic
 - Twitter Analytics: analytics.twitter.com
 - Reddit: Track comment karma, post upvotes
@@ -267,7 +267,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 ## Key Talking Points (Memorize These)
 
 1. **"Finally! Error messages that actually help you"** - Lead with developer pain
-2. **"Lightweight install: `pip install empathy-framework[developer]`"** - Remove friction
+2. **"Lightweight install: `pip install attune-ai[developer]`"** - Remove friction
 3. **"5,941 tests passing, 0 high-severity security issues"** - Build trust
 4. **"Production-ready when you need it"** - Enterprise credibility
 5. **"Built on LangChain, CrewAI, and Claude"** - Standing on shoulders of giants
@@ -281,7 +281,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 A: "Yes! Authentication is fully deployed in the backend API. Compliance and notifications are production-ready infrastructure with documented integration points. 5,941 tests passing."
 
 **Q: "What's the learning curve?"**
-A: "2 minutes to get started. `pip install empathy-framework[developer]` → configure provider → run your first workflow. We optimize for time-to-first-value."
+A: "2 minutes to get started. `pip install attune-ai[developer]` → configure provider → run your first workflow. We optimize for time-to-first-value."
 
 **Q: "How much does it cost?"**
 A: "Free and open source for teams ≤5 employees (Fair Source 0.9). You pay for the LLM API calls (Claude, GPT-4, etc.), but our smart tier routing saves you 80-96% on those costs."

@@ -14,7 +14,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.workflows.autonomous_test_gen import AutonomousTestGenerator
+from attune.workflows.autonomous_test_gen import AutonomousTestGenerator
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
 
     # Test on test_gen workflow (currently 8.57% coverage)
     test_module = {
-        "file": "src/empathy_os/workflows/test_gen/workflow.py",
+        "file": "src/attune/workflows/test_gen/workflow.py",
         "description": "Test generation workflow - validate enhanced mocking"
     }
 
@@ -78,7 +78,7 @@ def main():
         has_llm_mock = "mock_llm" in content or "mocker.patch('anthropic" in content
         has_async = "@pytest.mark.asyncio" in content
         has_tier_test = "tier" in content.lower()
-        has_proper_imports = "from empathy_os.workflows.test_gen" in content
+        has_proper_imports = "from attune.workflows.test_gen" in content
 
         print(f"   {'✅' if has_llm_mock else '❌'} LLM mocking present")
         print(f"   {'✅' if has_async else '❌'} Async test markers")
@@ -90,7 +90,7 @@ def main():
         print(f"\n📊 Test functions: {test_count}")
 
         print("\n✨ Next step: Run coverage to validate improvement")
-        print(f"   pytest {test_file} --cov=src/empathy_os/workflows/test_gen/workflow.py")
+        print(f"   pytest {test_file} --cov=src/attune/workflows/test_gen/workflow.py")
 
     print("=" * 70)
 

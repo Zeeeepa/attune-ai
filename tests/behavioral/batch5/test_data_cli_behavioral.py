@@ -7,7 +7,7 @@ Licensed under Apache 2.0
 """
 
 
-from empathy_os.cli.utils.data import CHEATSHEET, EXPLAIN_CONTENT
+from attune.cli.utils.data import CHEATSHEET, EXPLAIN_CONTENT
 
 
 class TestCheatsheet:

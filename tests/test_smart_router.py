@@ -9,9 +9,9 @@ from pathlib import Path
 import pytest
 
 # Check if workflow_chains.yaml exists for chain executor tests
-CHAIN_CONFIG_EXISTS = Path(".empathy/workflow_chains.yaml").exists()
+CHAIN_CONFIG_EXISTS = Path(".attune/workflow_chains.yaml").exists()
 
-from empathy_os.routing import (  # noqa: E402
+from attune.routing import (  # noqa: E402
     ChainExecutor,
     HaikuClassifier,
     RoutingDecision,
@@ -236,20 +236,20 @@ class TestSmartRouter:
         assert hasattr(decision, "context")
 
 
-@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".empathy/workflow_chains.yaml not found")
+@pytest.mark.skipif(not CHAIN_CONFIG_EXISTS, reason=".attune/workflow_chains.yaml not found")
 class TestChainExecutor:
     """Tests for ChainExecutor."""
 
     def test_load_config(self):
         """Test loading chain configuration."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
         templates = executor.list_templates()
 
         assert len(templates) >= 1
 
     def test_get_triggered_chains(self):
         """Test getting triggered chains based on results."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
 
         result = {"high_severity_count": 5}
         triggers = executor.get_triggered_chains("security-audit", result)
@@ -259,7 +259,7 @@ class TestChainExecutor:
 
     def test_condition_evaluation_greater_than(self):
         """Test condition evaluation with greater than."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
 
         result = {"count": 10}
         assert executor._evaluate_condition("count > 5", result) is True
@@ -267,7 +267,7 @@ class TestChainExecutor:
 
     def test_condition_evaluation_equals(self):
         """Test condition evaluation with equals."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
 
         result = {"status": "critical"}
         assert executor._evaluate_condition("status == 'critical'", result) is True
@@ -275,7 +275,7 @@ class TestChainExecutor:
 
     def test_condition_evaluation_boolean(self):
         """Test condition evaluation with booleans."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
 
         result = {"has_issues": True}
         assert executor._evaluate_condition("has_issues == true", result) is True
@@ -283,7 +283,7 @@ class TestChainExecutor:
 
     def test_should_trigger_chain(self):
         """Test should_trigger_chain helper."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
 
         should, triggers = executor.should_trigger_chain(
             "bug-predict",
@@ -295,7 +295,7 @@ class TestChainExecutor:
 
     def test_get_chain_config(self):
         """Test getting chain config for a wizard."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
         config = executor.get_chain_config("security-audit")
 
         assert config is not None
@@ -304,7 +304,7 @@ class TestChainExecutor:
 
     def test_get_template(self):
         """Test getting a chain template."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
         template = executor.get_template("full-security-review")
 
         assert template is not None
@@ -312,7 +312,7 @@ class TestChainExecutor:
 
     def test_create_execution(self):
         """Test creating a chain execution."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
 
         triggers = executor.get_triggered_chains(
             "security-audit",
@@ -326,11 +326,11 @@ class TestChainExecutor:
 
     def test_approve_step(self):
         """Test approving a chain step."""
-        executor = ChainExecutor(".empathy/workflow_chains.yaml")
+        executor = ChainExecutor(".attune/workflow_chains.yaml")
         execution = executor.create_execution("test", [])
 
         # Add a step that needs approval
-        from empathy_os.routing import ChainStep
+        from attune.routing import ChainStep
 
         execution.steps.append(
             ChainStep(

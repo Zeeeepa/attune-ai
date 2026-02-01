@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 import yaml
 
-from empathy_os.cache.dependency_manager import DependencyManager
+from attune.cache.dependency_manager import DependencyManager
 
 
 class TestDependencyManager:
@@ -30,7 +30,7 @@ class TestDependencyManager:
         # Should be True since we installed it
         assert manager.is_cache_installed() is True
 
-    @patch("empathy_os.cache.dependency_manager.DependencyManager.is_cache_installed")
+    @patch("attune.cache.dependency_manager.DependencyManager.is_cache_installed")
     def test_is_cache_installed_false(self, mock_check):
         """Test detection when sentence-transformers is not installed."""
         mock_check.return_value = False

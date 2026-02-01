@@ -440,7 +440,7 @@ def test_{sig.name}_parameter_variations(test_name, value):
 
 import pytest
 from unittest.mock import AsyncMock, patch, MagicMock
-from src.empathy_os.workflows.code_review import CodeReviewWorkflow
+from src.attune.workflows.code_review import CodeReviewWorkflow
 from tests.base_workflow_test import BaseWorkflowTest
 
 class TestCodeReviewWorkflow(BaseWorkflowTest):

@@ -32,7 +32,7 @@ This document outlines the data structure optimization work for Phase 2 of the E
 
 ### 1. File Categorization (scanner.py) - HIGH PRIORITY
 
-**Location:** `src/empathy_os/project_index/scanner.py:22-34`
+**Location:** `src/attune/project_index/scanner.py:22-34`
 
 **Problem:** Called on EVERY file during project scan (thousands of times)
 ```python
@@ -56,7 +56,7 @@ if suffix in self.CONFIG_SUFFIXES:
 - **Backward compatibility:** ✅ 100% compatible
 
 **Files Modified:**
-- `src/empathy_os/project_index/scanner.py` (lines 28-34, 298-310)
+- `src/attune/project_index/scanner.py` (lines 28-34, 298-310)
 
 **Tests:**
 - ✅ `tests/unit/test_scanner_module.py` - All 16 tests pass
@@ -76,7 +76,7 @@ if suffix in self.CONFIG_SUFFIXES:
 
 ### 2. Verdict Merging (code_review_adapters.py) - MEDIUM PRIORITY
 
-**Location:** `src/empathy_os/workflows/code_review_adapters.py:275-289`
+**Location:** `src/attune/workflows/code_review_adapters.py:275-289`
 
 **Problem:** Called during crew code review result merging, uses O(n) .index() lookup
 ```python
@@ -99,7 +99,7 @@ idx1 = severity_map.get(v1, 3)
 - **Backward compatibility:** ✅ 100% compatible
 
 **Files Modified:**
-- `src/empathy_os/workflows/code_review_adapters.py` (lines 277-289)
+- `src/attune/workflows/code_review_adapters.py` (lines 277-289)
 
 **Tests:**
 - ✅ `tests/test_code_review_crew_integration.py` - 68+ tests pass
@@ -126,7 +126,7 @@ severity_map = {
 
 ### 3. Progress Tracking (progress.py) - HIGH PRIORITY
 
-**Location:** `src/empathy_os/workflows/progress.py:127-137, 172-210`
+**Location:** `src/attune/workflows/progress.py:127-137, 172-210`
 
 **Problem:** Workflow stage lookup in start/complete methods uses O(n) .index()
 ```python
@@ -148,7 +148,7 @@ self.current_index = self._stage_index_map.get(stage_name, 0)
 - **Backward compatibility:** ✅ 100% compatible (internal optimization)
 
 **Files Modified:**
-- `src/empathy_os/workflows/progress.py` (lines 136-137, 181-182, 209-210)
+- `src/attune/workflows/progress.py` (lines 136-137, 181-182, 209-210)
 
 **Tests:**
 - ✅ `benchmarks/test_lookup_optimization.py::test_progress_tracker_*` (3 tests)
@@ -170,7 +170,7 @@ self.current_index = self._stage_index_map.get(stage_name, 0) + 1
 
 ### 4. Fallback Tier Lookup (fallback.py) - LOW PRIORITY
 
-**Location:** `src/empathy_os/models/fallback.py:84-146`
+**Location:** `src/attune/models/fallback.py:84-146`
 
 **Problem:** Repeated .index() lookups on tier list in fallback chain generation
 ```python
@@ -194,7 +194,7 @@ tier_index = tier_index_map.get(self.primary_tier, 1)
 - **Backward compatibility:** ✅ 100% compatible
 
 **Files Modified:**
-- `src/empathy_os/models/fallback.py` (lines 97-99, 112-137)
+- `src/attune/models/fallback.py` (lines 97-99, 112-137)
 
 **Data Model:**
 
@@ -211,7 +211,7 @@ tier_index_map = {
 
 ### 5. Security Audit Filter (audit_logger.py) - LOW PRIORITY
 
-**Location:** `src/empathy_os/memory/security/audit_logger.py:728-732`
+**Location:** `src/attune/memory/security/audit_logger.py:728-732`
 
 **Problem:** O(n) list membership test for operator validation
 ```python
@@ -233,7 +233,7 @@ if len(parts) > 1 and parts[-1] in valid_operators:
 - **Backward compatibility:** ✅ 100% compatible
 
 **Files Modified:**
-- `src/empathy_os/memory/security/audit_logger.py` (lines 728-732)
+- `src/attune/memory/security/audit_logger.py` (lines 728-732)
 
 ---
 
@@ -267,7 +267,7 @@ The following patterns were identified for post-release optimization:
 #### Pattern 1: Nested Loop Dependency Analysis (scanner.py:446-476)
 
 **Severity:** HIGH
-**Location:** `src/empathy_os/project_index/scanner.py:446-476`
+**Location:** `src/attune/project_index/scanner.py:446-476`
 
 **Current Code:**
 ```python
@@ -313,8 +313,8 @@ def _analyze_dependencies(self, records):
 
 **Severity:** MEDIUM
 **Locations:**
-- `src/empathy_os/memory/security/audit_logger.py:728` - Environment validation
-- `src/empathy_os/workflows/progress.py` - Stage collection membership
+- `src/attune/memory/security/audit_logger.py:728` - Environment validation
+- `src/attune/workflows/progress.py` - Stage collection membership
 
 **Current Code:**
 ```python

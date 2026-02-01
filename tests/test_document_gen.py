@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/workflows/document_gen.py
+"""Tests for src/attune/workflows/document_gen.py
 
 Tests the document generation workflow including:
 - TOKEN_COSTS configuration
@@ -12,8 +12,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.document_gen import DOC_GEN_STEPS, TOKEN_COSTS, DocumentGenerationWorkflow
+from attune.workflows.base import ModelTier
+from attune.workflows.document_gen import DOC_GEN_STEPS, TOKEN_COSTS, DocumentGenerationWorkflow
 
 
 class TestTokenCosts:
@@ -452,7 +452,7 @@ class TestWorkflowInheritance:
 
     def test_is_base_workflow_subclass(self):
         """Test DocumentGenerationWorkflow inherits from BaseWorkflow."""
-        from empathy_os.workflows.base import BaseWorkflow
+        from attune.workflows.base import BaseWorkflow
 
         assert issubclass(DocumentGenerationWorkflow, BaseWorkflow)
 

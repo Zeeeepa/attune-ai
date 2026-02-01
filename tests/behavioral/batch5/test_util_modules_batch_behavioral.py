@@ -28,12 +28,12 @@ Licensed under Apache 2.0
 # Module 1: models/validation.py - Config Validation
 # ============================================================================
 
-from empathy_os.models.validation import (
+from attune.models.validation import (
     ConfigValidator,
     ValidationResult,
     validate_config,
 )
-from empathy_os.models.validation import (
+from attune.models.validation import (
     ValidationError as ConfigValidationError,
 )
 
@@ -194,8 +194,8 @@ class TestValidationResult:
 # ============================================================================
 
 try:
-    from empathy_os.memory.security.pii_scrubber import PIIScrubber
-    from empathy_os.memory.security.secrets_detector import SecretsDetector
+    from attune.memory.security.pii_scrubber import PIIScrubber
+    from attune.memory.security.secrets_detector import SecretsDetector
 
     class TestPIIScrubber:
         """Behavioral tests for PIIScrubber utility."""
@@ -233,10 +233,11 @@ try:
             text = "This is a normal sentence without PII"
 
             # When
-            result = scrubber.scrub(text)
+            scrubbed_text, detections = scrubber.scrub(text)
 
             # Then
-            assert "normal sentence" in result
+            assert "normal sentence" in scrubbed_text
+            assert len(detections) == 0  # No PII detected
 
     class TestSecretsDetector:
         """Behavioral tests for SecretsDetector utility."""
@@ -253,31 +254,31 @@ try:
 
         def test_secrets_detector_finds_api_key_pattern(self):
             """Given: Text with API key pattern
-            When: Scanning for secrets
+            When: Detecting secrets
             Then: API key is detected."""
             # Given
             detector = SecretsDetector()
             text = "API_KEY=sk_live_abc123xyz789"
 
             # When
-            secrets = detector.scan(text)
+            secrets = detector.detect(text)
 
             # Then
-            assert len(secrets) > 0 or detector.has_secrets(text)
+            assert len(secrets) > 0  # Should detect the API key
 
         def test_secrets_detector_clears_on_no_secrets(self):
             """Given: Text without secrets
-            When: Scanning
+            When: Detecting secrets
             Then: No secrets detected."""
             # Given
             detector = SecretsDetector()
             text = "This is plain text with no secrets"
 
             # When
-            has_secrets = detector.has_secrets(text)
+            secrets = detector.detect(text)
 
             # Then
-            assert has_secrets is False
+            assert len(secrets) == 0  # No secrets should be found
 
 except ImportError:
     # Modules may not exist, skip gracefully
@@ -289,9 +290,9 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.resilience.fallback import with_fallback
-    from empathy_os.resilience.retry import retry
-    from empathy_os.resilience.timeout import timeout
+    from attune.resilience.fallback import with_fallback
+    from attune.resilience.retry import retry
+    from attune.resilience.timeout import timeout
 
     class TestTimeoutDecorator:
         """Behavioral tests for timeout decorator."""
@@ -346,7 +347,7 @@ try:
             When: Applied with max_attempts parameter
             Then: Parameter is accepted."""
             # Given/When
-            @retry(max_attempts=5, delay=0.1)
+            @retry(max_attempts=5, initial_delay=0.1)
             def test_func():
                 pass
 
@@ -356,32 +357,38 @@ try:
     class TestFallbackDecorator:
         """Behavioral tests for fallback decorator."""
 
-        def test_fallback_decorator_applies_to_function(self):
+        async def test_fallback_decorator_applies_to_function(self):
             """Given: Function with fallback decorator
-            When: Calling function
+            When: Calling async function
             Then: Decorator is applied."""
             # Given
-            @with_fallback(default="fallback_value")
-            def may_fail():
+            async def primary():
                 return "primary"
 
+            async def fallback():
+                return "fallback_value"
+
+            wrapped = with_fallback(primary, [fallback], default="fallback_value")
+
             # When
-            result = may_fail()
+            result = await wrapped()
 
             # Then
             assert result in ("primary", "fallback_value")
 
         def test_fallback_decorator_has_default_parameter(self):
-            """Given: Fallback decorator
-            When: Applied with default parameter
+            """Given: Fallback decorator with default parameter
+            When: Creating wrapped function
             Then: Parameter is accepted."""
-            # Given/When
-            @with_fallback(default=None)
-            def test_func():
+            # Given
+            async def primary():
                 pass
 
+            # When
+            wrapped = with_fallback(primary, [], default=None)
+
             # Then
-            assert test_func is not None
+            assert wrapped is not None
 
 except ImportError:
     # Resilience modules may not exist
@@ -393,8 +400,8 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.workflow_patterns.core import WorkflowPattern
-    from empathy_os.workflow_patterns.output import OutputFormatter, format_output
+    from attune.workflow_patterns.core import WorkflowPattern
+    from attune.workflow_patterns.output import OutputFormatter, format_output
 
     class TestWorkflowPattern:
         """Behavioral tests for WorkflowPattern base class."""
@@ -436,7 +443,7 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.cache.base import BaseCache
+    from attune.cache.base import BaseCache
 
     class TestBaseCache:
         """Behavioral tests for BaseCache class."""
@@ -458,10 +465,11 @@ try:
 
         def test_base_cache_has_set_method(self):
             """Given: BaseCache class
-            When: Checking for set method
+            When: Checking for put method (cache storage method)
             Then: Method exists."""
             # Given/When/Then
-            assert hasattr(BaseCache, "set")
+            # BaseCache uses 'put' instead of 'set'
+            assert hasattr(BaseCache, "put")
 
 except ImportError:
     pass
@@ -472,7 +480,7 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.memory.config import MemoryConfig
+    from attune.memory.config import MemoryConfig
 
     class TestMemoryConfig:
         """Behavioral tests for MemoryConfig class."""
@@ -506,47 +514,56 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.prompts.context import PromptContext
-    from empathy_os.prompts.templates import PromptTemplate
+    from attune.prompts.context import PromptContext
+    from attune.prompts.templates import PlainTextPromptTemplate, XmlPromptTemplate
 
     class TestPromptContext:
         """Behavioral tests for PromptContext utility."""
 
         def test_prompt_context_initializes(self):
-            """Given: PromptContext class
+            """Given: PromptContext class with required parameters
             When: Creating instance
             Then: Initializes successfully."""
             # Given/When
-            context = PromptContext()
+            # PromptContext requires role and goal parameters
+            context = PromptContext(role="security analyst", goal="identify vulnerabilities")
 
             # Then
             assert context is not None
+            assert context.role == "security analyst"
+            assert context.goal == "identify vulnerabilities"
 
     class TestPromptTemplate:
-        """Behavioral tests for PromptTemplate utility."""
+        """Behavioral tests for PromptTemplate implementations."""
 
         def test_prompt_template_initializes(self):
-            """Given: PromptTemplate class
-            When: Creating instance with template string
+            """Given: XmlPromptTemplate (concrete implementation)
+            When: Creating instance with name
             Then: Initializes successfully."""
             # Given/When
-            template = PromptTemplate(template="Test: {var}")
+            # PromptTemplate is a Protocol (abstract), use concrete impl
+            template = XmlPromptTemplate(name="test_template")
 
             # Then
             assert template is not None
 
         def test_prompt_template_renders_variables(self):
-            """Given: Template with variable
-            When: Rendering with data
+            """Given: PlainTextPromptTemplate with context
+            When: Rendering template
             Then: Variables are substituted."""
             # Given
-            template = PromptTemplate(template="Hello {name}")
+            template = PlainTextPromptTemplate(name="test", include_role=True)
+            context = PromptContext(
+                role="code reviewer",
+                goal="review code quality",
+                input_payload="def hello(): pass"
+            )
 
             # When
-            result = template.render(name="World")
+            result = template.render(context)
 
             # Then
-            assert "World" in result
+            assert "code reviewer" in result
 
 except ImportError:
     pass
@@ -557,7 +574,7 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.models.executor import ModelExecutor
+    from attune.models.executor import ModelExecutor
 
     class TestModelExecutor:
         """Behavioral tests for ModelExecutor class."""
@@ -591,7 +608,7 @@ except ImportError:
 # ============================================================================
 
 try:
-    from empathy_os.memory.security.audit_logger import AuditLogger
+    from attune.memory.security.audit_logger import AuditLogger
 
     class TestAuditLogger:
         """Behavioral tests for AuditLogger utility."""
@@ -608,13 +625,18 @@ try:
 
         def test_audit_logger_has_log_method(self):
             """Given: AuditLogger instance
-            When: Checking for log method
-            Then: Method exists."""
+            When: Checking for logging methods
+            Then: Methods exist."""
             # Given/When
             logger = AuditLogger()
 
             # Then
-            assert hasattr(logger, "log") or hasattr(logger, "audit")
+            # AuditLogger has specific logging methods like log_llm_request
+            assert (
+                hasattr(logger, "log_llm_request")
+                or hasattr(logger, "log_pattern_store")
+                or hasattr(logger, "log_security_violation")
+            )
 
         def test_audit_logger_logs_event_without_error(self):
             """Given: AuditLogger instance
@@ -667,8 +689,8 @@ class TestUtilModulesIntegration:
         When: Attempting imports
         Then: No import errors for core modules."""
         # Given/When/Then - Main modules should import
-        from empathy_os.exceptions import EmpathyFrameworkError
-        from empathy_os.models.validation import ConfigValidator
+        from attune.exceptions import EmpathyFrameworkError
+        from attune.models.validation import ConfigValidator
 
         assert ConfigValidator is not None
         assert EmpathyFrameworkError is not None

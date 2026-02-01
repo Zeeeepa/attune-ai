@@ -11,13 +11,13 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_os.models.telemetry import (
+from attune.models.telemetry import (
     LLMCallRecord,
     TelemetryStore,
     WorkflowRunRecord,
     WorkflowStageRecord,
 )
-from empathy_os.monitoring.multi_backend import MultiBackend, get_multi_backend, reset_multi_backend
+from attune.monitoring.multi_backend import MultiBackend, get_multi_backend, reset_multi_backend
 
 
 @pytest.mark.unit

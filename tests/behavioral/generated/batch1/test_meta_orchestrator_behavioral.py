@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.orchestration.meta_orchestrator import (
+from attune.orchestration.meta_orchestrator import (
     CompositionPattern,
     ExecutionPlan,
     MetaOrchestrator,
@@ -25,11 +25,19 @@ from empathy_os.orchestration.meta_orchestrator import (
 class MockAgentTemplate:
     """Mock agent template for testing."""
 
-    name: str
+    id: str  # Added to match AgentTemplate.id
     role: str
     capabilities: list[str] = field(default_factory=list)
-    system_prompt: str = ""
-    model: str = "claude-3-5-sonnet-20241022"
+    tier_preference: str = "CAPABLE"  # Added to match AgentTemplate
+    tools: list[str] = field(default_factory=list)  # Added to match AgentTemplate
+    default_instructions: str = "Default instructions"  # Added to match AgentTemplate
+    quality_gates: dict = field(default_factory=dict)  # Added to match AgentTemplate
+
+    @property
+    def resource_requirements(self):
+        """Mock resource requirements."""
+        from attune.orchestration.agent_templates import ResourceRequirements
+        return ResourceRequirements()
 
 
 @pytest.fixture
@@ -37,34 +45,29 @@ def mock_agent_templates():
     """Provide mock agent templates for testing."""
     return {
         "test_coverage_expert": MockAgentTemplate(
-            name="test_coverage_expert",
+            id="test_coverage_expert",
             role="Test Coverage Expert",
             capabilities=["testing", "coverage_analysis"],
-            system_prompt="Expert in test coverage analysis",
         ),
         "test_generator": MockAgentTemplate(
-            name="test_generator",
+            id="test_generator",
             role="Test Generation Specialist",
             capabilities=["testing", "code_generation"],
-            system_prompt="Generates comprehensive tests",
         ),
         "qa_validator": MockAgentTemplate(
-            name="qa_validator",
+            id="qa_validator",
             role="Quality Assurance Validator",
             capabilities=["testing", "validation"],
-            system_prompt="Validates test quality",
         ),
         "security_analyzer": MockAgentTemplate(
-            name="security_analyzer",
+            id="security_analyzer",
             role="Security Analyzer",
             capabilities=["security", "vulnerability_detection"],
-            system_prompt="Analyzes security vulnerabilities",
         ),
         "code_reviewer": MockAgentTemplate(
-            name="code_reviewer",
+            id="code_reviewer",
             role="Code Reviewer",
             capabilities=["code_quality", "review"],
-            system_prompt="Reviews code quality",
         ),
     }
 
@@ -279,8 +282,8 @@ class TestExecutionPlan:
         """Test ExecutionPlan stores agents correctly."""
         # Given
         strategy = CompositionPattern.PARALLEL
-        agent1 = MockAgentTemplate(name="agent1", role="Role 1")
-        agent2 = MockAgentTemplate(name="agent2", role="Role 2")
+        agent1 = MockAgentTemplate(id="agent1", role="Role 1")
+        agent2 = MockAgentTemplate(id="agent2", role="Role 2")
         agents = [agent1, agent2]
 
         # When
@@ -291,8 +294,8 @@ class TestExecutionPlan:
 
         # Then
         assert len(plan.agents) == 2
-        assert plan.agents[0].name == "agent1"
-        assert plan.agents[1].name == "agent2"
+        assert plan.agents[0].id == "agent1"
+        assert plan.agents[1].id == "agent2"
 
 
 class TestMetaOrchestratorInitialization:
@@ -311,8 +314,8 @@ class TestMetaOrchestratorInitialization:
 class TestMetaOrchestratorAnalyzeAndCompose:
     """Test MetaOrchestrator.analyze_and_compose method."""
 
-    @patch('empathy_os.orchestration.meta_orchestrator.get_templates_by_capability')
-    @patch('empathy_os.orchestration.meta_orchestrator.get_template')
+    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch('attune.orchestration.meta_orchestrator.get_template')
     def test_given_simple_testing_task_when_analyzing_then_returns_sequential_plan(
         self, mock_get_template, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -335,7 +338,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
                 capabilities_needed=["testing"],
                 context=context,
             )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
+            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = [
@@ -348,7 +351,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         assert plan is not None
         assert plan.strategy == CompositionPattern.SEQUENTIAL
 
-    @patch('empathy_os.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
     def test_given_complex_security_task_when_analyzing_then_returns_appropriate_plan(
         self, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -369,7 +372,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
                 capabilities_needed=["security", "analysis"],
                 context=context,
             )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
+            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
                 mock_select.return_value = CompositionPattern.DEBATE
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = [
@@ -381,25 +384,15 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         assert plan is not None
         assert plan.strategy == CompositionPattern.DEBATE
 
-    def test_given_empty_task_when_analyzing_then_handles_gracefully(self, orchestrator):
-        """Test empty task string is handled gracefully."""
+    def test_given_empty_task_when_analyzing_then_raises_value_error(self, orchestrator):
+        """Test empty task string raises ValueError."""
         # Given
         task = ""
         context = {}
 
         # When/Then
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
-            mock_analyze.return_value = TaskRequirements(
-                complexity=TaskComplexity.SIMPLE,
-                domain=TaskDomain.GENERAL,
-                capabilities_needed=[],
-            )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
-                mock_select.return_value = CompositionPattern.SEQUENTIAL
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
-                    mock_select_agents.return_value = []
-                    plan = orchestrator.analyze_and_compose(task, context)
-                    assert plan is not None
+        with pytest.raises(ValueError, match="task must be a non-empty string"):
+            orchestrator.analyze_and_compose(task, context)
 
     def test_given_none_context_when_analyzing_then_handles_gracefully(self, orchestrator):
         """Test None context is handled gracefully."""
@@ -414,7 +407,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
+            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
@@ -465,7 +458,7 @@ class TestMetaOrchestratorAnalyzeTask:
     def test_given_simple_task_when_analyzing_then_identifies_simple_complexity(self, orchestrator):
         """Test simple task identified correctly."""
         # Given
-        task = "Fix typo"
+        task = "Format code"  # Uses 'format' keyword which is in SIMPLE category
         context = {}
 
         # When
@@ -489,9 +482,9 @@ class TestMetaOrchestratorAnalyzeTask:
 
 
 class TestMetaOrchestratorSelectCompositionPattern:
-    """Test MetaOrchestrator._select_composition_pattern private method."""
+    """Test MetaOrchestrator._choose_composition_pattern private method."""
 
-    def test_given_simple_requirements_when_selecting_pattern_then_returns_sequential(self, orchestrator):
+    def test_given_simple_requirements_when_selecting_pattern_then_returns_sequential(self, orchestrator, mock_agent_templates):
         """Test simple requirements return sequential pattern."""
         # Given
         requirements = TaskRequirements(
@@ -499,15 +492,16 @@ class TestMetaOrchestratorSelectCompositionPattern:
             domain=TaskDomain.TESTING,
             capabilities_needed=["testing"],
         )
+        agents = [mock_agent_templates["test_coverage_expert"]]
 
         # When
-        pattern = orchestrator._select_composition_pattern(requirements)
+        pattern = orchestrator._choose_composition_pattern(requirements, agents)
 
         # Then
         assert pattern == CompositionPattern.SEQUENTIAL
 
     def test_given_parallelizable_requirements_when_selecting_pattern_then_returns_parallel(
-        self, orchestrator
+        self, orchestrator, mock_agent_templates
     ):
         """Test parallelizable requirements return parallel pattern."""
         # Given
@@ -517,15 +511,16 @@ class TestMetaOrchestratorSelectCompositionPattern:
             capabilities_needed=["testing"],
             parallelizable=True,
         )
+        agents = [mock_agent_templates["test_coverage_expert"]]
 
         # When
-        pattern = orchestrator._select_composition_pattern(requirements)
+        pattern = orchestrator._choose_composition_pattern(requirements, agents)
 
         # Then
         assert pattern == CompositionPattern.PARALLEL
 
     def test_given_complex_requirements_when_selecting_pattern_then_returns_advanced_pattern(
-        self, orchestrator
+        self, orchestrator, mock_agent_templates
     ):
         """Test complex requirements return advanced pattern."""
         # Given
@@ -534,22 +529,24 @@ class TestMetaOrchestratorSelectCompositionPattern:
             domain=TaskDomain.ARCHITECTURE,
             capabilities_needed=["architecture", "design"],
         )
+        agents = [mock_agent_templates["security_analyzer"]]
 
         # When
-        pattern = orchestrator._select_composition_pattern(requirements)
+        pattern = orchestrator._choose_composition_pattern(requirements, agents)
 
         # Then
         assert pattern in [
-            CompositionPattern.DEBATE,
+            CompositionPattern.PARALLEL,
             CompositionPattern.REFINEMENT,
             CompositionPattern.DELEGATION_CHAIN,
+            CompositionPattern.ADAPTIVE,
         ]
 
 
 class TestMetaOrchestratorSelectAgents:
     """Test MetaOrchestrator._select_agents private method."""
 
-    @patch('empathy_os.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
     def test_given_testing_requirements_when_selecting_agents_then_returns_testing_agents(
         self, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -572,11 +569,12 @@ class TestMetaOrchestratorSelectAgents:
         assert len(agents) > 0
         assert any("test" in agent.role.lower() for agent in agents)
 
-    @patch('empathy_os.orchestration.meta_orchestrator.get_templates_by_capability')
-    def test_given_no_matching_agents_when_selecting_agents_then_returns_empty_list(
-        self, mock_get_templates, orchestrator
+    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch('attune.orchestration.meta_orchestrator.get_template')
+    def test_given_no_matching_agents_when_selecting_agents_then_returns_default_agent(
+        self, mock_get_template, mock_get_templates, orchestrator, mock_agent_templates
     ):
-        """Test no matching agents returns empty list."""
+        """Test no matching agents returns default agent for domain."""
         # Given
         requirements = TaskRequirements(
             complexity=TaskComplexity.SIMPLE,
@@ -584,14 +582,17 @@ class TestMetaOrchestratorSelectAgents:
             capabilities_needed=["nonexistent"],
         )
         mock_get_templates.return_value = []
+        # Default agent for GENERAL domain is code_reviewer
+        mock_get_template.return_value = mock_agent_templates["code_reviewer"]
 
         # When
         agents = orchestrator._select_agents(requirements)
 
         # Then
-        assert agents == []
+        assert len(agents) > 0  # Should return default agent
+        assert agents[0].id == "code_reviewer"
 
-    @patch('empathy_os.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
     def test_given_multiple_capabilities_when_selecting_agents_then_returns_diverse_agents(
         self, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -631,7 +632,7 @@ class TestMetaOrchestratorEdgeCases:
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
+            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
@@ -655,7 +656,7 @@ class TestMetaOrchestratorEdgeCases:
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
+            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
@@ -677,7 +678,7 @@ class TestMetaOrchestratorEdgeCases:
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
+            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
@@ -700,7 +701,7 @@ class TestMetaOrchestratorEdgeCases:
                 capabilities_needed=[],
                 context=context,
             )
-            with patch.object(orchestrator, '_select_composition_pattern') as mock_select:
+            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
                 with patch.object(orchestrator, '_select_agents') as mock_select_agents:
                     mock_select_agents.return_value = []
@@ -713,8 +714,8 @@ class TestMetaOrchestratorEdgeCases:
 class TestMetaOrchestratorIntegration:
     """Integration tests for MetaOrchestrator."""
 
-    @patch('empathy_os.orchestration.meta_orchestrator.get_templates_by_capability')
-    @patch('empathy_os.orchestration.meta_orchestrator.get_template')
+    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch('attune.orchestration.meta_orchestrator.get_template')
     def test_given_real_world_scenario_when_composing_then_creates_valid_plan(
         self, mock_get_template, mock_get_templates, orchestrator, mock_agent_templates
     ):

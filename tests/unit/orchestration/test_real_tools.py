@@ -20,7 +20,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.orchestration.real_tools import (
+from attune.orchestration.real_tools import (
     REAL_TOOLS,
     CoverageReport,
     DocumentationReport,

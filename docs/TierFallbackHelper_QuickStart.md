@@ -11,7 +11,7 @@ description: TierFallbackHelper Quick Start: ## Overview `TierFallbackHelper` pr
 ## Import
 
 ```python
-from empathy_os.models import TierFallbackHelper
+from attune.models import TierFallbackHelper
 ```
 
 ## Core Methods
@@ -61,7 +61,7 @@ TierFallbackHelper.should_fallback(TimeoutError(), "premium")
 ### Simple Fallback Loop
 
 ```python
-from empathy_os.models import TierFallbackHelper
+from attune.models import TierFallbackHelper
 
 def call_with_fallback(prompt: str) -> str:
     """Call LLM with automatic tier fallback on network errors."""
@@ -101,7 +101,7 @@ def call_with_fallback(prompt: str) -> str:
 
 ```python
 import pytest
-from empathy_os.models import TierFallbackHelper
+from attune.models import TierFallbackHelper
 
 def test_tier_fallback_progression():
     """Test that tier fallback follows correct progression."""
@@ -175,7 +175,7 @@ def test_logic_error_does_not_trigger_fallback():
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│ empathy_os.models                                   │
+│ attune.models                                   │
 │                                                     │
 │  ┌────────────────────┐   ┌──────────────────────┐ │
 │  │ TierFallbackHelper │   │ FallbackPolicy       │ │
@@ -221,7 +221,7 @@ Run the comprehensive test suite:
 python -m pytest tests/unit/models/test_tier_fallback_helper.py -v
 
 # Run with coverage
-python -m pytest tests/unit/models/test_tier_fallback_helper.py --cov=empathy_os.models.fallback --cov-report=term-missing
+python -m pytest tests/unit/models/test_tier_fallback_helper.py --cov=attune.models.fallback --cov-report=term-missing
 ```
 
 Expected output:
@@ -255,7 +255,7 @@ TierFallbackHelper.should_fallback(MyCustomTimeout(), "cheap")  # True
 
 ## See Also
 
-- [Full Documentation](../src/empathy_os/models/fallback.py) - Complete implementation
+- [Full Documentation](../src/attune/models/fallback.py) - Complete implementation
 - [Test Suite](../tests/unit/models/test_tier_fallback_helper.py) - 17 comprehensive tests
 - [FallbackPolicy Guide](./FallbackPolicy.md) - Advanced fallback strategies
 - [Model Registry](./ModelRegistry.md) - Available models and tiers

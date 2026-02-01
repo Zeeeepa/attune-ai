@@ -7,7 +7,7 @@ Licensed under Apache 2.0
 """
 
 
-from empathy_os.prompts.parser import Finding, ParsedResponse
+from attune.prompts.parser import Finding, ParsedResponse
 
 
 class TestFinding:
@@ -362,9 +362,9 @@ class TestParsedResponse:
         assert "XML parse failed" in response.errors
 
     def test_parsed_response_from_raw_handles_none_errors(self):
-        """Given: Raw text without errors list
+        """Given: Raw text without XML content
         When: Creating ParsedResponse from raw
-        Then: Errors default to empty list."""
+        Then: Errors contains XML parsing error."""
         # Given
         raw_text = "Some text"
 
@@ -372,4 +372,5 @@ class TestParsedResponse:
         response = ParsedResponse.from_raw(raw_text)
 
         # Then
-        assert response.errors == []
+        # When no XML content is found, the parser adds an error
+        assert response.errors == ['No XML content found']

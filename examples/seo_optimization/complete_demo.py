@@ -13,7 +13,7 @@ import asyncio
 from pathlib import Path
 from typing import Any
 
-from empathy_os.workflows import SEOOptimizationWorkflow
+from attune.workflows import SEOOptimizationWorkflow
 
 
 def print_section(title: str, char: str = "="):
@@ -218,7 +218,7 @@ async def demonstrate_dashboard_setup():
     print("Quick setup for local testing:\n")
     print("```python")
     print("# In your dashboard startup (examples/dashboard_demo.py)")
-    print("from empathy_os.coordination import InMemoryHeartbeatBackend")
+    print("from attune.coordination import InMemoryHeartbeatBackend")
     print()
     print("# Initialize backend")
     print("backend = InMemoryHeartbeatBackend()")

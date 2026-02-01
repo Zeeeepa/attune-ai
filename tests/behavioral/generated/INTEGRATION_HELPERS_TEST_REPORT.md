@@ -99,7 +99,7 @@ assert result.findings_by_severity == {...}
 ```
 
 **Integration Points:**
-- Wraps `HealthCheckRunner` from `empathy_llm_toolkit.code_health`
+- Wraps `HealthCheckRunner` from `attune_llm.code_health`
 - Converts findings to `ToolResult` format
 - Filters findings by file path
 

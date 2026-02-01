@@ -7,7 +7,7 @@ description: Initialize feedback loop: ### What Was Built **1.
 ### What Was Built
 
 **1. Core Feedback Loop Module**
-- [feedback_loop.py](../src/empathy_os/telemetry/feedback_loop.py) - Quality-based learning system (~580 lines)
+- [feedback_loop.py](../src/attune/telemetry/feedback_loop.py) - Quality-based learning system (~580 lines)
   - `FeedbackEntry` dataclass for quality ratings (0.0-1.0 scale)
   - `QualityStats` dataclass for statistical analysis
   - `TierRecommendation` dataclass for routing recommendations
@@ -40,8 +40,8 @@ description: Initialize feedback loop: ### What Was Built **1.
 ### Usage Example
 
 ```python
-from empathy_os.telemetry import FeedbackLoop
-from empathy_os.telemetry.feedback_loop import ModelTier
+from attune.telemetry import FeedbackLoop
+from attune.telemetry.feedback_loop import ModelTier
 
 # Initialize feedback loop
 feedback = FeedbackLoop()
@@ -173,8 +173,8 @@ confidence = min(sample_count / (MIN_SAMPLES * 2), 1.0)
 ### Integration with Workflows
 
 ```python
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
-from empathy_os.telemetry import FeedbackLoop
+from attune.workflows.base import BaseWorkflow, ModelTier
+from attune.telemetry import FeedbackLoop
 
 class AdaptiveWorkflow(BaseWorkflow):
     name = "adaptive-code-review"

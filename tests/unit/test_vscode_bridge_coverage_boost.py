@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-import empathy_os.vscode_bridge as vscode_module
+import attune.vscode_bridge as vscode_module
 
 ReviewFinding = vscode_module.ReviewFinding
 CodeReviewResult = vscode_module.CodeReviewResult
@@ -217,7 +217,7 @@ class TestWriteCodeReviewResults:
 
         output_path = write_code_review_results()
 
-        assert output_path == Path(".empathy/code-review-results.json")
+        assert output_path == Path(".attune/code-review-results.json")
         assert output_path.exists()
 
         # Read and verify
@@ -518,11 +518,11 @@ class TestSendToVSCode:
         result = send_to_vscode("Review complete")
 
         assert "Results written to" in result
-        assert ".empathy/code-review-results.json" in result
+        assert ".attune/code-review-results.json" in result
         assert "VS Code will update automatically" in result
 
         # Verify file was created
-        output_path = Path(".empathy/code-review-results.json")
+        output_path = Path(".attune/code-review-results.json")
         assert output_path.exists()
 
         with open(output_path) as f:
@@ -554,7 +554,7 @@ class TestSendToVSCode:
         assert "Results written to" in result
 
         # Verify file
-        output_path = Path(".empathy/code-review-results.json")
+        output_path = Path(".attune/code-review-results.json")
         with open(output_path) as f:
             data = json.load(f)
 
@@ -570,7 +570,7 @@ class TestSendToVSCode:
         result = send_to_vscode("All good", findings=[], verdict="approve")
 
         # Verify file
-        output_path = Path(".empathy/code-review-results.json")
+        output_path = Path(".attune/code-review-results.json")
         with open(output_path) as f:
             data = json.load(f)
 

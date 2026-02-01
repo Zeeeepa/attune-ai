@@ -22,7 +22,7 @@ class TestCosineSimilarityZeroVector:
 
     def test_handles_zero_vector_a(self):
         """Test cosine_similarity handles zero first vector without division by zero."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         zero_vec = np.array([0.0, 0.0, 0.0])
         normal_vec = np.array([1.0, 2.0, 3.0])
@@ -35,7 +35,7 @@ class TestCosineSimilarityZeroVector:
 
     def test_handles_zero_vector_b(self):
         """Test cosine_similarity handles zero second vector without division by zero."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         normal_vec = np.array([1.0, 2.0, 3.0])
         zero_vec = np.array([0.0, 0.0, 0.0])
@@ -46,7 +46,7 @@ class TestCosineSimilarityZeroVector:
 
     def test_handles_both_zero_vectors(self):
         """Test cosine_similarity handles both vectors being zero."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         zero_vec_a = np.array([0.0, 0.0, 0.0])
         zero_vec_b = np.array([0.0, 0.0, 0.0])
@@ -57,7 +57,7 @@ class TestCosineSimilarityZeroVector:
 
     def test_normal_vectors_work_correctly(self):
         """Test that normal vectors still work correctly."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         vec_a = np.array([1.0, 2.0, 3.0])
         vec_b = np.array([1.0, 2.0, 3.0])
@@ -69,7 +69,7 @@ class TestCosineSimilarityZeroVector:
 
     def test_orthogonal_vectors(self):
         """Test cosine similarity of orthogonal vectors is zero."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         vec_a = np.array([1.0, 0.0, 0.0])
         vec_b = np.array([0.0, 1.0, 0.0])
@@ -81,7 +81,7 @@ class TestCosineSimilarityZeroVector:
 
     def test_opposite_vectors(self):
         """Test cosine similarity of opposite vectors is -1."""
-        from empathy_os.cache.hybrid import cosine_similarity
+        from attune.cache.hybrid import cosine_similarity
 
         vec_a = np.array([1.0, 2.0, 3.0])
         vec_b = np.array([-1.0, -2.0, -3.0])
@@ -97,7 +97,7 @@ class TestFilePermissionHandling:
 
     def test_scanner_handles_permission_denied(self, tmp_path):
         """Test scanner handles permission denied errors gracefully."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         # Create a Python file
         test_file = tmp_path / "test.py"
@@ -121,7 +121,7 @@ class TestFilePermissionHandling:
 
     def test_scanner_handles_unreadable_directory(self, tmp_path):
         """Test scanner handles unreadable directories gracefully."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         # Create a directory with a Python file
         subdir = tmp_path / "subdir"
@@ -147,7 +147,7 @@ class TestFilePermissionHandling:
 
     def test_scanner_continues_after_permission_error(self, tmp_path):
         """Test scanner continues scanning after encountering permission errors."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         # Create readable file
         good_file = tmp_path / "good.py"
@@ -309,7 +309,7 @@ class TestScannerPerformanceEdgeCases:
 
     def test_empty_directory_scan(self, tmp_path):
         """Test scanning an empty directory."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         scanner = ProjectScanner(project_root=str(tmp_path))
         records, summary = scanner.scan()
@@ -319,7 +319,7 @@ class TestScannerPerformanceEdgeCases:
 
     def test_directory_with_only_non_python_files(self, tmp_path):
         """Test scanning directory with only non-Python files."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         # Create some non-Python files
         (tmp_path / "readme.txt").write_text("Hello")
@@ -335,7 +335,7 @@ class TestScannerPerformanceEdgeCases:
 
     def test_deeply_nested_directory(self, tmp_path):
         """Test scanning deeply nested directory structure."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         # Create deeply nested structure
         current = tmp_path
@@ -358,7 +358,7 @@ class TestMemorySafety:
 
     def test_large_file_doesnt_crash(self, tmp_path):
         """Test that processing large files doesn't crash."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         # Create a large Python file (1MB)
         large_file = tmp_path / "large.py"
@@ -373,7 +373,7 @@ class TestMemorySafety:
 
     def test_many_small_files(self, tmp_path):
         """Test processing many small files doesn't exhaust memory."""
-        from empathy_os.project_index.scanner import ProjectScanner
+        from attune.project_index.scanner import ProjectScanner
 
         # Create 100 small Python files
         for i in range(100):

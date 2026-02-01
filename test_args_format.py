@@ -3,7 +3,7 @@
 import asyncio
 from pathlib import Path
 
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
+from attune.workflows.document_gen import DocumentGenerationWorkflow
 
 
 async def test_args_format():
@@ -11,7 +11,7 @@ async def test_args_format():
     print("📚 Testing Args/Returns/Raises Format\n")
 
     # Use a simple module with functions that have parameters
-    test_module = Path("src/empathy_os/cache_stats.py")
+    test_module = Path("src/attune/cache_stats.py")
 
     if not test_module.exists():
         print(f"❌ Test module not found: {test_module}")

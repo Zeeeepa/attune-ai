@@ -17,7 +17,7 @@ Licensed under Fair Source License 0.9
 
 import asyncio
 
-from empathy_os.workflows import DocumentGenerationWorkflow
+from attune.workflows import DocumentGenerationWorkflow
 
 
 async def generate_api_docs():
@@ -82,7 +82,7 @@ async def generate_tutorial():
     source_code = """
 # Getting started with Empathy Framework
 
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Initialize
 os = EmpathyOS(user_id="demo_user")

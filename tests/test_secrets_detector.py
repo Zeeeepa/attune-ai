@@ -13,7 +13,7 @@ Version: 1.8.0-beta
 
 import pytest
 
-from empathy_llm_toolkit.security.secrets_detector import (
+from attune_llm.security.secrets_detector import (
     SecretDetection,
     SecretsDetector,
     SecretType,

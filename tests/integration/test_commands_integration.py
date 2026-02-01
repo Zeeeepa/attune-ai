@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.commands import (
+from attune_llm.commands import (
     CommandCategory,
     CommandConfig,
     CommandContext,
@@ -189,8 +189,8 @@ class TestCommandExecutorIntegration:
 
     def test_execute_with_hooks_configured(self):
         """Test execution with hook configuration."""
-        from empathy_llm_toolkit.hooks.config import HookEvent
-        from empathy_llm_toolkit.hooks.registry import HookRegistry
+        from attune_llm.hooks.config import HookEvent
+        from attune_llm.hooks.registry import HookRegistry
 
         hook_registry = HookRegistry()
         hooks_fired = []

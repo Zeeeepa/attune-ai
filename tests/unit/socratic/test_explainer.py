@@ -10,7 +10,7 @@ class TestAudienceLevel:
 
     def test_all_levels_exist(self):
         """Test all expected audience levels exist."""
-        from empathy_os.socratic.explainer import AudienceLevel
+        from attune.socratic.explainer import AudienceLevel
 
         assert hasattr(AudienceLevel, "TECHNICAL")
         assert hasattr(AudienceLevel, "BUSINESS")
@@ -18,7 +18,7 @@ class TestAudienceLevel:
 
     def test_level_values(self):
         """Test audience level values."""
-        from empathy_os.socratic.explainer import AudienceLevel
+        from attune.socratic.explainer import AudienceLevel
 
         assert AudienceLevel.TECHNICAL.value == "technical"
         assert AudienceLevel.BUSINESS.value == "business"
@@ -30,7 +30,7 @@ class TestDetailLevel:
 
     def test_all_levels_exist(self):
         """Test all expected detail levels exist."""
-        from empathy_os.socratic.explainer import DetailLevel
+        from attune.socratic.explainer import DetailLevel
 
         assert hasattr(DetailLevel, "BRIEF")
         assert hasattr(DetailLevel, "STANDARD")
@@ -42,7 +42,7 @@ class TestOutputFormat:
 
     def test_all_formats_exist(self):
         """Test all expected output formats exist."""
-        from empathy_os.socratic.explainer import OutputFormat
+        from attune.socratic.explainer import OutputFormat
 
         assert hasattr(OutputFormat, "TEXT")
         assert hasattr(OutputFormat, "MARKDOWN")
@@ -55,7 +55,7 @@ class TestExplanation:
 
     def test_create_explanation(self):
         """Test creating an explanation."""
-        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
+        from attune.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Code Review Workflow",
@@ -74,7 +74,7 @@ class TestExplanation:
 
     def test_explanation_to_text(self):
         """Test converting explanation to text."""
-        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
+        from attune.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Code Review",
@@ -93,7 +93,7 @@ class TestExplanation:
 
     def test_explanation_to_markdown(self):
         """Test converting explanation to markdown."""
-        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
+        from attune.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Technical Explanation",
@@ -112,7 +112,7 @@ class TestExplanation:
 
     def test_explanation_to_html(self):
         """Test converting explanation to HTML."""
-        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
+        from attune.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Simple Guide",
@@ -129,7 +129,7 @@ class TestExplanation:
 
     def test_explanation_to_dict(self):
         """Test converting explanation to dict."""
-        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, Explanation
+        from attune.socratic.explainer import AudienceLevel, DetailLevel, Explanation
 
         explanation = Explanation(
             title="Test Workflow",
@@ -151,14 +151,14 @@ class TestWorkflowExplainer:
 
     def test_create_explainer(self):
         """Test creating a workflow explainer."""
-        from empathy_os.socratic.explainer import WorkflowExplainer
+        from attune.socratic.explainer import WorkflowExplainer
 
         explainer = WorkflowExplainer()
         assert explainer is not None
 
     def test_create_explainer_with_options(self):
         """Test creating explainer with options."""
-        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, WorkflowExplainer
+        from attune.socratic.explainer import AudienceLevel, DetailLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(
             audience=AudienceLevel.BUSINESS,
@@ -170,7 +170,7 @@ class TestWorkflowExplainer:
 
     def test_explain_workflow_for_technical(self, sample_workflow_blueprint):
         """Test explaining workflow for technical audience."""
-        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
+        from attune.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(audience=AudienceLevel.TECHNICAL)
 
@@ -182,7 +182,7 @@ class TestWorkflowExplainer:
 
     def test_explain_workflow_for_business(self, sample_workflow_blueprint):
         """Test explaining workflow for business audience."""
-        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
+        from attune.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(audience=AudienceLevel.BUSINESS)
 
@@ -193,7 +193,7 @@ class TestWorkflowExplainer:
 
     def test_explain_workflow_for_beginner(self, sample_workflow_blueprint):
         """Test explaining workflow for beginner audience."""
-        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
+        from attune.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(audience=AudienceLevel.BEGINNER)
 
@@ -204,7 +204,7 @@ class TestWorkflowExplainer:
 
     def test_explain_agent(self, sample_agent_spec):
         """Test explaining individual agent."""
-        from empathy_os.socratic.explainer import WorkflowExplainer
+        from attune.socratic.explainer import WorkflowExplainer
 
         explainer = WorkflowExplainer()
 
@@ -219,14 +219,14 @@ class TestLLMExplanationGenerator:
 
     def test_create_generator(self):
         """Test creating an LLM explanation generator."""
-        from empathy_os.socratic.explainer import LLMExplanationGenerator
+        from attune.socratic.explainer import LLMExplanationGenerator
 
         generator = LLMExplanationGenerator()
         assert generator is not None
 
     def test_create_generator_with_api_key(self):
         """Test creating generator with API key."""
-        from empathy_os.socratic.explainer import LLMExplanationGenerator
+        from attune.socratic.explainer import LLMExplanationGenerator
 
         generator = LLMExplanationGenerator(api_key="test-api-key")
         assert generator.api_key == "test-api-key"
@@ -237,7 +237,7 @@ class TestExplainWorkflowFunction:
 
     def test_explain_workflow_returns_string(self, sample_workflow_blueprint):
         """Test the explain_workflow function returns string."""
-        from empathy_os.socratic.explainer import explain_workflow
+        from attune.socratic.explainer import explain_workflow
 
         result = explain_workflow(sample_workflow_blueprint)
 
@@ -247,7 +247,7 @@ class TestExplainWorkflowFunction:
 
     def test_explain_workflow_with_audience(self, sample_workflow_blueprint):
         """Test explain_workflow with audience parameter."""
-        from empathy_os.socratic.explainer import AudienceLevel, explain_workflow
+        from attune.socratic.explainer import AudienceLevel, explain_workflow
 
         result = explain_workflow(
             sample_workflow_blueprint,
@@ -258,7 +258,7 @@ class TestExplainWorkflowFunction:
 
     def test_explain_workflow_with_format(self, sample_workflow_blueprint):
         """Test explain_workflow with output format."""
-        from empathy_os.socratic.explainer import OutputFormat, explain_workflow
+        from attune.socratic.explainer import OutputFormat, explain_workflow
 
         result = explain_workflow(
             sample_workflow_blueprint,
@@ -273,7 +273,7 @@ class TestExplanationContent:
 
     def test_technical_includes_details(self, sample_workflow_blueprint):
         """Test technical explanation includes technical details."""
-        from empathy_os.socratic.explainer import AudienceLevel, DetailLevel, WorkflowExplainer
+        from attune.socratic.explainer import AudienceLevel, DetailLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(
             audience=AudienceLevel.TECHNICAL,
@@ -289,7 +289,7 @@ class TestExplanationContent:
 
     def test_business_explanation_works(self, sample_workflow_blueprint):
         """Test business explanation generates valid output."""
-        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
+        from attune.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(audience=AudienceLevel.BUSINESS)
 
@@ -299,7 +299,7 @@ class TestExplanationContent:
 
     def test_beginner_explanation_works(self, sample_workflow_blueprint):
         """Test beginner explanation generates valid output."""
-        from empathy_os.socratic.explainer import AudienceLevel, WorkflowExplainer
+        from attune.socratic.explainer import AudienceLevel, WorkflowExplainer
 
         explainer = WorkflowExplainer(audience=AudienceLevel.BEGINNER)
 
@@ -313,13 +313,13 @@ class TestRoleDescriptions:
 
     def test_role_descriptions_exist(self):
         """Test role descriptions are configured."""
-        from empathy_os.socratic.explainer import ROLE_DESCRIPTIONS
+        from attune.socratic.explainer import ROLE_DESCRIPTIONS
 
         assert len(ROLE_DESCRIPTIONS) > 0
 
     def test_role_descriptions_for_all_audiences(self):
         """Test role descriptions exist for all audience levels."""
-        from empathy_os.socratic.explainer import ROLE_DESCRIPTIONS, AudienceLevel
+        from attune.socratic.explainer import ROLE_DESCRIPTIONS, AudienceLevel
 
         for audience in AudienceLevel:
             assert audience in ROLE_DESCRIPTIONS

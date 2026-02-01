@@ -4,7 +4,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-from empathy_os.routing.classifier import ClassificationResult, HaikuClassifier
+from attune.routing.classifier import ClassificationResult, HaikuClassifier
 
 
 class TestClassificationResultDataClass:

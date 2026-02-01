@@ -21,7 +21,7 @@ No more spending 30 minutes debugging cryptic `NotImplementedError`. Now you get
 ✅ Which class to extend
 ✅ Real examples to copy
 
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 
 🧵 1/7
 ```
@@ -46,7 +46,7 @@ After v3.6.0 (helpful 🎯):
 ```
 Installation is stupid simple:
 
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 
 Lightweight install:
 • CLI tools
@@ -63,7 +63,7 @@ Lightweight install:
 ```
 When you're ready to scale:
 
-pip install empathy-framework[enterprise]
+pip install attune-ai[enterprise]
 
 Gets you:
 🔐 Production auth (bcrypt + JWT)
@@ -110,8 +110,8 @@ Free for teams ≤5 employees (Fair Source 0.9)
 ```
 Try it today:
 
-📦 PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-⭐ GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+📦 PyPI: https://pypi.org/project/attune-ai/3.6.0/
+⭐ GitHub: https://github.com/Smart-AI-Memory/attune-ai
 📖 Docs: [link to docs]
 
 Built with ❤️ on top of Claude, LangChain, and CrewAI
@@ -151,14 +151,14 @@ For enterprises: HIPAA compliance infrastructure ready to integrate
 
 **Easy to Start:**
 ```
-pip install empathy-framework[developer]  # Lightweight
-pip install empathy-framework[enterprise]  # Full-featured
+pip install attune-ai[developer]  # Lightweight
+pip install attune-ai[enterprise]  # Full-featured
 ```
 
 Built on proven technologies: Claude, LangChain, CrewAI
 Free for small teams (≤5 employees) under Fair Source 0.9
 
-Try it today: https://pypi.org/project/empathy-framework/3.6.0/
+Try it today: https://pypi.org/project/attune-ai/3.6.0/
 
 #AI #MachineLearning #Python #DevOps #EnterpriseAI #OpenSource
 ```
@@ -211,13 +211,13 @@ An AI collaboration framework built on top of Claude, LangChain, and CrewAI. It 
 **Install:**
 
 ```bash
-pip install empathy-framework[developer]  # Lightweight for individuals
-pip install empathy-framework[enterprise]  # Backend + auth for teams
+pip install attune-ai[developer]  # Lightweight for individuals
+pip install attune-ai[enterprise]  # Backend + auth for teams
 ```
 
 **Links:**
-- PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - Docs: [link]
 
 **Stats:**
@@ -269,7 +269,7 @@ Persistent Memory
 
 **Install:**
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 **Built On:**
@@ -284,8 +284,8 @@ pip install empathy-framework[developer]
 - Research: Multi-model experimentation
 - Individuals: Lightweight AI tooling
 
-GitHub: https://github.com/Smart-AI-Memory/empathy-framework
-PyPI: https://pypi.org/project/empathy-framework/3.6.0/
+GitHub: https://github.com/Smart-AI-Memory/attune-ai
+PyPI: https://pypi.org/project/attune-ai/3.6.0/
 
 AMA!
 ```
@@ -343,15 +343,15 @@ An AI collaboration framework for Python developers. Think LangChain + persisten
 
 **Install:**
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 **License:**
 Fair Source 0.9 (free for teams ≤5 employees)
 
 Links:
-- PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 
 Questions welcome!
 ```
@@ -408,13 +408,13 @@ Features:
 
 **Try It:**
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 Free for learning and small projects!
 
 Links:
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - Docs: [link]
 
 Happy to answer beginner questions! We built this to be accessible.
@@ -468,15 +468,15 @@ An AI collaboration framework built on LangChain, CrewAI, and Claude. Key featur
 
 **Install:**
 ```bash
-pip install empathy-framework[developer]  # Lightweight
-pip install empathy-framework[enterprise]  # Full-featured
+pip install attune-ai[developer]  # Lightweight
+pip install attune-ai[enterprise]  # Full-featured
 ```
 
 **License:** Fair Source 0.9 (free for teams ≤5 employees)
 
 Links:
-- PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 
 We're a small team (just shipped after an all-nighter!), so feedback is hugely valuable. What would make this more useful for you?
 ```
@@ -535,13 +535,13 @@ Key features:
 ## Quick Start
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 
 # Configure your provider
-python -m empathy_os.models.cli provider --set anthropic
+python -m attune.models.cli provider --set anthropic
 
 # Run your first workflow
-python -m empathy_os.workflows.cli run bug-predict
+python -m attune.workflows.cli run bug-predict
 ```
 
 ## What's New in v3.6.0
@@ -563,8 +563,8 @@ python -m empathy_os.workflows.cli run bug-predict
 
 ## Try It
 
-- 📦 PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- ⭐ GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- 📦 PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- ⭐ GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - 📖 Docs: [link]
 
 Free for teams ≤5 employees (Fair Source 0.9)
@@ -605,17 +605,17 @@ v3.6.0 - Security & Compliance Infrastructure
 
 **Individual Developers (Recommended):**
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 **Teams/Enterprises:**
 ```bash
-pip install empathy-framework[enterprise]
+pip install attune-ai[enterprise]
 ```
 
 **Healthcare Organizations:**
 ```bash
-pip install empathy-framework[healthcare]
+pip install attune-ai[healthcare]
 ```
 
 ## 🔐 Security
@@ -693,8 +693,8 @@ Both come with documented integration points and working examples.
 ## Easy to Get Started
 
 ```bash
-pip install empathy-framework[developer]  # Lightweight for individuals
-pip install empathy-framework[enterprise]  # Full-featured for teams
+pip install attune-ai[developer]  # Lightweight for individuals
+pip install attune-ai[enterprise]  # Full-featured for teams
 ```
 
 2 minutes from install to your first workflow.
@@ -708,8 +708,8 @@ pip install empathy-framework[enterprise]  # Full-featured for teams
 
 ## Try It Today
 
-- 📦 PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- ⭐ GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- 📦 PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- ⭐ GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - 📖 Docs: [link]
 
 Free for teams ≤5 employees (Fair Source 0.9)
@@ -721,7 +721,7 @@ Your feedback makes us better. Reply to this email with questions, ideas, or jus
 Happy coding,
 [Your Name]
 
-P.S. Want to contribute? We made it easier than ever with our new error messages. Check out our [Good First Issues](https://github.com/Smart-AI-Memory/empathy-framework/labels/good%20first%20issue).
+P.S. Want to contribute? We made it easier than ever with our new error messages. Check out our [Good First Issues](https://github.com/Smart-AI-Memory/attune-ai/labels/good%20first%20issue).
 ```
 
 ---
@@ -749,12 +749,12 @@ P.S. Want to contribute? We made it easier than ever with our new error messages
 
 **Try it:**
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 **Links:**
-📦 PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-⭐ GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+📦 PyPI: https://pypi.org/project/attune-ai/3.6.0/
+⭐ GitHub: https://github.com/Smart-AI-Memory/attune-ai
 
 Questions? Drop them in #support!
 ```

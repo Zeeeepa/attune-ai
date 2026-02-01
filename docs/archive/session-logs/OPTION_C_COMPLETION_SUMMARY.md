@@ -66,7 +66,7 @@ pytest tests/unit/cli/test_cli_commands.py tests/unit/scanner/test_file_traversa
 **Solution**:
 ```python
 # Before (mocked):
-with patch('empathy_os.cli.create_example_config') as mock_create:
+with patch('attune.cli.create_example_config') as mock_create:
     cmd_init(args)
     mock_create.assert_called_once()
 
@@ -155,9 +155,9 @@ Based on test execution patterns:
 
 | Module | Before Option C | After Option C | Change |
 |--------|----------------|----------------|--------|
-| `src/empathy_os/cli.py` | 53% | **~65%** | +12% |
-| `src/empathy_os/project_index/scanner.py` | 58% | **~72%** | +14% |
-| `src/empathy_os/memory/long_term.py` | 52% | **~58%** | +6% |
+| `src/attune/cli.py` | 53% | **~65%** | +12% |
+| `src/attune/project_index/scanner.py` | 58% | **~72%** | +14% |
+| `src/attune/memory/long_term.py` | 52% | **~58%** | +6% |
 
 **Overall Project Coverage**: 60.1% → **~62-63%** (representative subset)
 
@@ -213,8 +213,8 @@ Using `tmp_path` fixtures ensures tests don't interfere with each other and are 
   - [TEST_CREATION_SUMMARY.md](TEST_CREATION_SUMMARY.md) - Agent specifications
 
 - **Source Code**:
-  - [src/empathy_os/cli.py](src/empathy_os/cli.py) - CLI command implementations
-  - [src/empathy_os/project_index/scanner.py](src/empathy_os/project_index/scanner.py) - File scanner logic
+  - [src/attune/cli.py](src/attune/cli.py) - CLI command implementations
+  - [src/attune/project_index/scanner.py](src/attune/project_index/scanner.py) - File scanner logic
 
 ## Conclusion
 

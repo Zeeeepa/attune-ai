@@ -440,7 +440,7 @@ RESULTS:
 
 IMPLEMENTATION:
 ```python
-from empathy_os.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
+from attune.models import ResilientExecutor, SONNET_TO_OPUS_FALLBACK
 
 executor = ResilientExecutor(
     base_executor,

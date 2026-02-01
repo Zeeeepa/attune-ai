@@ -31,7 +31,7 @@ Completed major reorganization of both CLI commands and Claude Code slash comman
    - `/workflow` - plan, tdd, review, refactor
 
 **Files modified:**
-- `src/empathy_os/cli_unified.py` - refactored helpers, constants
+- `src/attune/cli_unified.py` - refactored helpers, constants
 - `vscode-extension/src/panels/WorkflowReportPanel.ts` - new CLI commands
 - `vscode-extension/src/extension.ts` - uses WorkflowReportPanel
 - `.claude/commands/*.md` - consolidated to 9 hubs

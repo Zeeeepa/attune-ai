@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.cli.commands.batch import (
+from attune.cli.commands.batch import (
     cmd_batch_results,
     cmd_batch_status,
     cmd_batch_submit,

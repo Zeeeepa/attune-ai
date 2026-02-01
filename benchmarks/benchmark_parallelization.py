@@ -8,8 +8,8 @@ import tempfile
 import time
 from pathlib import Path
 
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
-from empathy_llm_toolkit.security import SecureMemDocsIntegration
+from attune_llm.claude_memory import ClaudeMemoryConfig
+from attune_llm.security import SecureMemDocsIntegration
 
 
 def benchmark_pipeline(iterations=100):

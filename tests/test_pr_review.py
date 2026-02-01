@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/workflows/pr_review.py
+"""Tests for src/attune/workflows/pr_review.py
 
 Tests the PRReviewWorkflow and PRReviewResult classes.
 """
@@ -8,7 +8,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.workflows.pr_review import PRReviewResult, PRReviewWorkflow, format_pr_review_report
+from attune.workflows.pr_review import PRReviewResult, PRReviewWorkflow, format_pr_review_report
 
 
 class TestPRReviewResult:

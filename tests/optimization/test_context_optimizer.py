@@ -4,7 +4,7 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from empathy_os.optimization import CompressionLevel, ContextOptimizer, optimize_xml_prompt
+from attune.optimization import CompressionLevel, ContextOptimizer, optimize_xml_prompt
 
 
 class TestCompressionLevels:

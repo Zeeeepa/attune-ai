@@ -1,8 +1,8 @@
 ---
-description: Reliability Review and Recommendations for empathy-framework: **Date:** 2025-12-28 ## Checklist - [x] Review core reliability surfaces (workflows, executor, tel
+description: Reliability Review and Recommendations for attune-ai: **Date:** 2025-12-28 ## Checklist - [x] Review core reliability surfaces (workflows, executor, tel
 ---
 
-# Reliability Review and Recommendations for empathy-framework
+# Reliability Review and Recommendations for attune-ai
 
 **Date:** 2025-12-28
 
@@ -14,7 +14,7 @@ description: Reliability Review and Recommendations for empathy-framework: **Dat
 
 ---
 
-## 1. Workflow Engine Reliability (`src/empathy_os/workflows`)
+## 1. Workflow Engine Reliability (`src/attune/workflows`)
 
 ### 1.1 What’s already strong
 
@@ -48,7 +48,7 @@ This is a solid base; the main risks now are around **configuration**, **timeout
      - This makes it harder to react programmatically (e.g., auto-retry on transient provider error vs. fail fast on config error).
 
 4. **Agent-based workflows and pipelines**
-   - `empathy_llm_toolkit/agent_factory/factory.py` has:
+   - `attune_llm/agent_factory/factory.py` has:
      - `timeout_seconds`, `checkpointing`, `retry_on_error`, `max_retries` parameters.
    - But reliability depends on:
      - How strictly those are enforced.
@@ -147,7 +147,7 @@ You have a strong design in `docs/design/MULTI_MODEL_ARCHITECTURE_SPEC.md` and t
      - `SECURITY_AUDIT` → more conservative: cross‑provider fallback, lower `max_retries` to avoid repeated unsafe decisions.
      - `SUMMARIZE` → tolerant: more retries, cheaper fallbacks.
    - Wire this via:
-     - `TaskType` → `FallbackPolicy` mapping in `empathy_os.models.tasks` or a new config.
+     - `TaskType` → `FallbackPolicy` mapping in `attune.models.tasks` or a new config.
    - Ensure `ResilientExecutor`:
      - Logs each fallback attempt in telemetry with provider/tier, error, and final outcome.
 
@@ -161,7 +161,7 @@ You have a strong design in `docs/design/MULTI_MODEL_ARCHITECTURE_SPEC.md` and t
 
 ---
 
-## 3. Telemetry & Durability (`src/empathy_os/models/telemetry.py`)
+## 3. Telemetry & Durability (`src/attune/models/telemetry.py`)
 
 Telemetry is crucial to reliability: without good observability, it’s hard to know what’s breaking.
 

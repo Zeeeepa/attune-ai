@@ -19,7 +19,7 @@ The Universal Agent Factory allows you to create AI agents and workflows using y
 ## Quick Start
 
 ```python
-from empathy_llm_toolkit.agent_factory import AgentFactory, Framework
+from attune_llm.agent_factory import AgentFactory, Framework
 
 # Create factory with your preferred framework
 factory = AgentFactory(framework=Framework.LANGGRAPH)
@@ -68,7 +68,7 @@ empathy frameworks --recommend multi_agent
 ### Programmatic
 
 ```python
-from empathy_llm_toolkit.agent_factory import AgentFactory
+from attune_llm.agent_factory import AgentFactory
 
 # Auto-select based on use case
 factory = AgentFactory(use_case="rag")  # Will use Haystack if installed
@@ -179,7 +179,7 @@ review = factory.create_code_review_pipeline()
 Built-in roles with optimized prompts:
 
 ```python
-from empathy_llm_toolkit.agent_factory import AgentRole
+from attune_llm.agent_factory import AgentRole
 
 # Standard roles
 AgentRole.RESEARCHER    # Gathers information
@@ -290,7 +290,7 @@ agent = factory.create_agent(
 ## Example: Code Review Pipeline
 
 ```python
-from empathy_llm_toolkit.agent_factory import AgentFactory, AgentRole
+from attune_llm.agent_factory import AgentFactory, AgentRole
 
 factory = AgentFactory(framework="langgraph")
 

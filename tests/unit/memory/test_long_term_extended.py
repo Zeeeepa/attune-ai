@@ -11,7 +11,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.memory.long_term import (
+from attune.memory.long_term import (
     HAS_ENCRYPTION,
     Classification,
     EncryptionManager,

@@ -54,7 +54,7 @@ description: Empathy Framework for Healthcare: ## HIPAA-Ready AI Development Too
 ## Built-in PII Protection
 
 ```python
-from empathy_os.security import PIIScrubber
+from attune.security import PIIScrubber
 
 scrubber = PIIScrubber()
 
@@ -176,12 +176,12 @@ Healthcare organizations face unique AI cost pressures:
 
 ### 1. Install
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### 2. Configure for HIPAA
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 empathy = EmpathyOS(
     hipaa_mode=True,

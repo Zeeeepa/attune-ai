@@ -12,13 +12,13 @@ Requirements:
 """
 import asyncio
 
-from empathy_os.orchestration import (
+from attune.orchestration import (
     DelegationChainStrategy,
     PromptCachedSequentialStrategy,
     ToolEnhancedStrategy,
     get_strategy,
 )
-from empathy_os.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.agent_templates import AgentTemplate
 
 
 # ============================================================================
@@ -266,7 +266,7 @@ async def main():
         print("=" * 60)
         print("\nNext steps:")
         print("  1. Read docs/architecture/anthropic-agent-patterns.md")
-        print("  2. Try: python -c 'from empathy_os.orchestration import get_strategy; print(get_strategy(\"tool_enhanced\"))'")
+        print("  2. Try: python -c 'from attune.orchestration import get_strategy; print(get_strategy(\"tool_enhanced\"))'")
         print("  3. Run tests: pytest tests/unit/test_anthropic_patterns.py -v")
 
     except Exception as e:

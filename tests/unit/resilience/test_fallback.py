@@ -11,7 +11,7 @@ import asyncio
 
 import pytest
 
-from empathy_os.resilience.fallback import Fallback, fallback, with_fallback
+from attune.resilience.fallback import Fallback, fallback, with_fallback
 
 
 @pytest.mark.unit

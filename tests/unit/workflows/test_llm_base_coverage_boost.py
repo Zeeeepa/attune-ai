@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import pytest
 
-import empathy_os.workflows.llm_base as llm_base_module
+import attune.workflows.llm_base as llm_base_module
 
 LLMWorkflowGenerator = llm_base_module.LLMWorkflowGenerator
 TestGeneratorLLM = llm_base_module.TestGeneratorLLM

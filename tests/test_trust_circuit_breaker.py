@@ -6,7 +6,7 @@ to trust management.
 
 from datetime import datetime, timedelta
 
-from empathy_os.trust import (
+from attune.trust import (
     TrustCircuitBreaker,
     TrustConfig,
     TrustDamageEvent,

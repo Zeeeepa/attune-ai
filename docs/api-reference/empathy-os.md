@@ -19,7 +19,7 @@ The main entry point for the Empathy Framework. `EmpathyOS` orchestrates empathy
 ## Basic Usage
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Initialize with Level 4 target
 empathy = EmpathyOS(
@@ -43,7 +43,7 @@ print(response.confidence)  # Confidence score
 
 ## Class Reference
 
-::: empathy_os.core.EmpathyOS
+::: attune.core.EmpathyOS
     options:
       show_root_heading: false
       show_source: false

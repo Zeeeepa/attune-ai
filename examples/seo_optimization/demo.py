@@ -3,7 +3,7 @@
 import asyncio
 from pathlib import Path
 
-from empathy_os.workflows import SEOOptimizationWorkflow
+from attune.workflows import SEOOptimizationWorkflow
 
 
 async def main():

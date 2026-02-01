@@ -112,8 +112,8 @@ Research → Write → Edit → Review
 **New Files Created:**
 | File | Lines | Purpose |
 |------|-------|---------|
-| `src/empathy_os/coordination.py` | ~380 | ConflictResolver, ResolutionStrategy, TeamPriorities |
-| `src/empathy_os/monitoring.py` | ~420 | AgentMonitor, AgentMetrics, TeamMetrics |
+| `src/attune/coordination.py` | ~380 | ConflictResolver, ResolutionStrategy, TeamPriorities |
+| `src/attune/monitoring.py` | ~420 | AgentMonitor, AgentMetrics, TeamMetrics |
 | `tests/test_coordination.py` | ~250 | 23 tests for ConflictResolver |
 | `tests/test_monitoring.py` | ~280 | 35 tests for AgentMonitor |
 

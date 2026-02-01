@@ -170,7 +170,7 @@ No error handling if theme context is unavailable. However, this is acceptable s
 
 ---
 
-### 5. src/empathy_os/cli.py ✅
+### 5. src/attune/cli.py ✅
 **Status:** PASS
 **Changes:** Fixed misleading --interactive message
 

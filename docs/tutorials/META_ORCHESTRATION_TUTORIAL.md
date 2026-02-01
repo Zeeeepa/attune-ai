@@ -80,7 +80,7 @@ With meta-orchestration, you describe **what you want**, and the system figures 
 
 ```python
 # Meta-orchestration approach: Declarative
-from empathy_os.orchestration import MetaOrchestrator
+from attune.orchestration import MetaOrchestrator
 
 orchestrator = MetaOrchestrator()
 
@@ -111,7 +111,7 @@ plan = orchestrator.analyze_and_compose(
 ### Prerequisites
 
 ```bash
-pip install empathy-framework[developer]==4.0.0
+pip install attune-ai[developer]==4.0.0
 ```
 
 ### Example 1: Release Preparation (5 minutes)
@@ -280,7 +280,7 @@ Agent templates are **reusable archetypes** with specific capabilities. Think of
 ### Exploring Templates (Python)
 
 ```python
-from empathy_os.orchestration import get_all_templates, get_template
+from attune.orchestration import get_all_templates, get_template
 
 # List all templates
 templates = get_all_templates()
@@ -315,7 +315,7 @@ Meta-orchestration provides six **"grammar rules"** for combining agents:
 **Example:** Test coverage boost (Analyze → Generate → Validate)
 
 ```python
-from empathy_os.orchestration.execution_strategies import SequentialStrategy
+from attune.orchestration.execution_strategies import SequentialStrategy
 
 strategy = SequentialStrategy()
 result = await strategy.execute(agents, context)
@@ -336,7 +336,7 @@ result = await strategy.execute(agents, context)
 **Example:** Release prep (Security ‖ Coverage ‖ Quality ‖ Docs)
 
 ```python
-from empathy_os.orchestration.execution_strategies import ParallelStrategy
+from attune.orchestration.execution_strategies import ParallelStrategy
 
 strategy = ParallelStrategy()
 result = await strategy.execute(agents, context)
@@ -357,7 +357,7 @@ result = await strategy.execute(agents, context)
 **Example:** Architecture decisions, design reviews
 
 ```python
-from empathy_os.orchestration.execution_strategies import DebateStrategy
+from attune.orchestration.execution_strategies import DebateStrategy
 
 strategy = DebateStrategy()
 result = await strategy.execute(agents, context)
@@ -378,7 +378,7 @@ result = await strategy.execute(agents, context)
 **Example:** Documentation (cheap agent tries, expert validates)
 
 ```python
-from empathy_os.orchestration.execution_strategies import TeachingStrategy
+from attune.orchestration.execution_strategies import TeachingStrategy
 
 strategy = TeachingStrategy()
 result = await strategy.execute([junior_agent, expert_agent], context)
@@ -399,7 +399,7 @@ result = await strategy.execute([junior_agent, expert_agent], context)
 **Example:** Documentation refinement, code polishing
 
 ```python
-from empathy_os.orchestration.execution_strategies import RefinementStrategy
+from attune.orchestration.execution_strategies import RefinementStrategy
 
 strategy = RefinementStrategy()
 result = await strategy.execute(agents, context)
@@ -421,7 +421,7 @@ result = await strategy.execute(agents, context)
 **Example:** Bug fixes (simple bugs get cheap agent, complex get expert)
 
 ```python
-from empathy_os.orchestration.execution_strategies import AdaptiveStrategy
+from attune.orchestration.execution_strategies import AdaptiveStrategy
 
 strategy = AdaptiveStrategy()
 result = await strategy.execute(agents, context)
@@ -444,8 +444,8 @@ result = await strategy.execute(agents, context)
 Let's build a workflow that uses **Debate** pattern for security analysis:
 
 ```python
-from empathy_os.orchestration import MetaOrchestrator, get_template
-from empathy_os.orchestration.execution_strategies import DebateStrategy
+from attune.orchestration import MetaOrchestrator, get_template
+from attune.orchestration.execution_strategies import DebateStrategy
 
 class SecurityDeepDiveWorkflow:
     """Multi-perspective security analysis with debate."""
@@ -488,8 +488,8 @@ result = await workflow.execute("./my-project")
 Using **Teaching** pattern to minimize costs:
 
 ```python
-from empathy_os.orchestration import get_template
-from empathy_os.orchestration.execution_strategies import TeachingStrategy
+from attune.orchestration import get_template
+from attune.orchestration.execution_strategies import TeachingStrategy
 
 class CostOptimizedDocWorkflow:
     """Documentation with cost optimization."""
@@ -523,7 +523,7 @@ class CostOptimizedDocWorkflow:
 Using **Refinement** pattern for iterative improvement:
 
 ```python
-from empathy_os.orchestration.execution_strategies import RefinementStrategy
+from attune.orchestration.execution_strategies import RefinementStrategy
 
 class ContentRefinementWorkflow:
     """Progressive quality improvement for content."""
@@ -560,8 +560,8 @@ class ContentRefinementWorkflow:
 The system **saves successful compositions** and **reuses them** for similar tasks:
 
 ```python
-from empathy_os.orchestration.config_store import ConfigurationStore
-from empathy_os.pattern_library import PatternLibrary
+from attune.orchestration.config_store import ConfigurationStore
+from attune.pattern_library import PatternLibrary
 
 # Initialize store
 store = ConfigurationStore(pattern_library=PatternLibrary())
@@ -688,7 +688,7 @@ class HybridWorkflow:
 Create your own specialized agents:
 
 ```python
-from empathy_os.orchestration.agent_templates import (
+from attune.orchestration.agent_templates import (
     AgentTemplate,
     AgentCapability,
     ResourceRequirements
@@ -722,7 +722,7 @@ api_optimizer = AgentTemplate(
 )
 
 # Register template
-from empathy_os.orchestration.agent_templates import AGENT_REGISTRY
+from attune.orchestration.agent_templates import AGENT_REGISTRY
 AGENT_REGISTRY[api_optimizer.id] = api_optimizer
 ```
 
@@ -791,7 +791,7 @@ plan = orchestrator.analyze_and_compose(
 **Solution:** Customize thresholds
 
 ```python
-from empathy_os.workflows.orchestrated_release_prep import (
+from attune.workflows.orchestrated_release_prep import (
     OrchestratedReleasePrepWorkflow
 )
 
@@ -853,7 +853,7 @@ plan = orchestrator.analyze_and_compose(
 **Solution:** Ensure you're recording outcomes
 
 ```python
-from empathy_os.orchestration.config_store import ConfigurationStore
+from attune.orchestration.config_store import ConfigurationStore
 
 store = ConfigurationStore()
 

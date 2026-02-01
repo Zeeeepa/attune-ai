@@ -9,20 +9,20 @@ Coverage target: 80%+
 
 import pytest
 
-from empathy_llm_toolkit.agent_factory.adapters.native import (
+from attune_llm.agent_factory.adapters.native import (
     NativeAdapter,
     NativeAgent,
     NativeWorkflow,
 )
-from empathy_llm_toolkit.agent_factory.base import (
+from attune_llm.agent_factory.base import (
     AgentCapability,
     AgentConfig,
     AgentRole,
     WorkflowConfig,
 )
-from empathy_llm_toolkit.agent_factory.factory import AgentFactory
-from empathy_llm_toolkit.agent_factory.framework import Framework
-from empathy_llm_toolkit.routing.model_router import (
+from attune_llm.agent_factory.factory import AgentFactory
+from attune_llm.agent_factory.framework import Framework
+from attune_llm.routing.model_router import (
     ModelConfig,
     ModelRouter,
     ModelTier,

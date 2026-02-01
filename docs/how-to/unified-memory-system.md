@@ -26,7 +26,7 @@ The `UnifiedMemory` class provides a single interface to both tiers, with automa
 ### Basic Usage
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Create an agent with unified memory (auto-configured)
 empathy = EmpathyOS(user_id="analyst@company.com")
@@ -65,7 +65,7 @@ The memory system auto-detects its environment and configures storage accordingl
 ### Automatic Detection
 
 ```python
-from empathy_os.memory import UnifiedMemory, MemoryConfig
+from attune.memory import UnifiedMemory, MemoryConfig
 
 # Auto-detect from environment variables
 memory = UnifiedMemory(user_id="agent@company.com")
@@ -75,7 +75,7 @@ memory = UnifiedMemory(user_id="agent@company.com")
 ### Manual Configuration
 
 ```python
-from empathy_os.memory import UnifiedMemory, MemoryConfig, Environment
+from attune.memory import UnifiedMemory, MemoryConfig, Environment
 
 # Development (mock Redis, local storage)
 dev_config = MemoryConfig(
@@ -200,7 +200,7 @@ Patterns are automatically classified based on content:
 | `SENSITIVE` | Healthcare/PII patterns | **Required** (AES-256) | 90 days |
 
 ```python
-from empathy_os.memory import Classification
+from attune.memory import Classification
 
 # Auto-classification (recommended)
 result = empathy.persist_pattern(
@@ -240,7 +240,7 @@ The pattern promotion workflow moves validated patterns from short-term to long-
 ### Example Workflow
 
 ```python
-from empathy_os import EmpathyOS, AccessTier
+from attune import EmpathyOS, AccessTier
 
 # 1. Contributor discovers a pattern
 contributor = EmpathyOS(
@@ -320,7 +320,7 @@ All operations are logged for compliance:
 # - Security violations
 
 # View audit events programmatically
-from empathy_os.memory import AuditLogger
+from attune.memory import AuditLogger
 logger = AuditLogger(log_file="/var/log/empathy/audit.jsonl")
 ```
 
@@ -333,7 +333,7 @@ logger = AuditLogger(log_file="/var/log/empathy/audit.jsonl")
 Multi-agent system where agents discover and share patterns.
 """
 import asyncio
-from empathy_os import EmpathyOS, AccessTier, get_redis_memory
+from attune import EmpathyOS, AccessTier, get_redis_memory
 
 async def knowledge_building_demo():
     # Shared memory for all agents
@@ -418,7 +418,7 @@ if __name__ == "__main__":
 
 ```python
 # OLD (still works, but deprecated)
-from empathy_os import EmpathyOS, get_redis_memory
+from attune import EmpathyOS, get_redis_memory
 empathy = EmpathyOS(
     user_id="agent",
     short_term_memory=get_redis_memory()  # Manual setup
@@ -431,15 +431,15 @@ empathy.stash(...)  # Convenience method
 empathy.memory.stash(...)  # Or via unified interface
 ```
 
-### From `empathy_llm_toolkit.security`
+### From `attune_llm.security`
 
 ```python
 # OLD (still works via re-exports)
-from empathy_llm_toolkit.security import PIIScrubber, SecretsDetector
+from attune_llm.security import PIIScrubber, SecretsDetector
 
 # NEW (recommended)
-from empathy_os.memory import PIIScrubber, SecretsDetector
-from empathy_os.memory.security import AuditLogger
+from attune.memory import PIIScrubber, SecretsDetector
+from attune.memory.security import AuditLogger
 ```
 
 ---

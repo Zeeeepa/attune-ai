@@ -11,12 +11,12 @@ Created: 2026-01-17
 
 from unittest.mock import Mock
 
-from empathy_os.meta_workflows.form_engine import (
+from attune.meta_workflows.form_engine import (
     SocraticFormEngine,
     convert_ask_user_response_to_form_response,
     create_header_from_question,
 )
-from empathy_os.meta_workflows.models import FormQuestion, FormSchema, QuestionType
+from attune.meta_workflows.models import FormQuestion, FormSchema, QuestionType
 
 
 class TestSocraticFormEngine:

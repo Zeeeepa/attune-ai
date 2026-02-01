@@ -7,7 +7,7 @@ Licensed under Fair Source 0.9
 import json
 from datetime import datetime
 
-from empathy_os import workflow_commands
+from attune import workflow_commands
 
 
 class TestLoadPatterns:
@@ -719,7 +719,7 @@ class TestShipWorkflow:
 
         mock_module = MagicMock()
         mock_module.sync_patterns = mock_sync_patterns
-        sys.modules["empathy_llm_toolkit.cli.sync_claude"] = mock_module
+        sys.modules["attune_llm.cli.sync_claude"] = mock_module
 
         result = workflow_commands.ship_workflow(project_root=str(tmp_path), skip_sync=False)
 

@@ -6,7 +6,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_healthcare_plugin.monitors.monitoring.trajectory_analyzer import (
+from attune_healthcare.monitors.monitoring.trajectory_analyzer import (
     TrajectoryAnalyzer,
     TrajectoryPrediction,
     VitalTrend,
@@ -1043,7 +1043,7 @@ class TestMissingLineCoverage:
 
         # Create a prediction and manually test the _generate_assessment method
         # with an unexpected state (though this shouldn't happen in normal operation)
-        from empathy_healthcare_plugin.monitors.monitoring.trajectory_analyzer import VitalTrend
+        from attune_healthcare.monitors.monitoring.trajectory_analyzer import VitalTrend
 
         trend = VitalTrend(
             parameter="hr",

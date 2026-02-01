@@ -5,7 +5,7 @@ Module: exceptions.py (123 lines)
 
 import pytest
 
-from empathy_os.exceptions import (
+from attune.exceptions import (
     CollaborationStateError,
     ConfidenceThresholdError,
     EmpathyFrameworkError,

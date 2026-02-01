@@ -3,7 +3,7 @@
 
 import sys
 
-from empathy_llm_toolkit.wizards.healthcare_wizard import HealthcareWizard
+from attune_llm.wizards.healthcare_wizard import HealthcareWizard
 
 
 def test_healthcare_wizard_xml():

@@ -21,7 +21,7 @@ Successfully implemented LLM-enhanced workflow generation, replacing template-ba
 ### 1. Foundation Infrastructure ✅
 
 #### `llm_base.py` - Reusable LLM Generator Base Class
-**Location:** `src/empathy_os/workflows/llm_base.py`
+**Location:** `src/attune/workflows/llm_base.py`
 
 **Features:**
 - Hybrid LLM + template generation
@@ -60,7 +60,7 @@ class LLMWorkflowGenerator(ABC):
 ### 2. Autonomous Test Generation ✅
 
 #### `autonomous_test_gen.py` - LLM-Based Batch Test Generation
-**Location:** `src/empathy_os/workflows/autonomous_test_gen.py`
+**Location:** `src/attune/workflows/autonomous_test_gen.py`
 
 **Achievement:**
 - Generated **255 test files** for 259 modules
@@ -79,7 +79,7 @@ class LLMWorkflowGenerator(ABC):
 ### 3. Enhanced Test Generation Workflow ✅
 
 #### `test_gen_behavioral.py` - LLM-Enhanced Behavioral Tests
-**Location:** `src/empathy_os/workflows/test_gen_behavioral.py`
+**Location:** `src/attune/workflows/test_gen_behavioral.py`
 
 **Before (Template):**
 ```python
@@ -227,7 +227,7 @@ class BehavioralTestLLMGenerator(LLMWorkflowGenerator):
 ```
 🧪 Testing LLM-Enhanced Test Generator
 
-📝 Generating tests for: src/empathy_os/platform_utils.py
+📝 Generating tests for: src/attune/platform_utils.py
 🤖 LLM Tier: capable (Claude Sonnet 4.5)
 
 ✅ Test Generation Complete!
@@ -359,15 +359,15 @@ class BehavioralTestLLMGenerator(LLMWorkflowGenerator):
 ## Files Created/Modified
 
 ### New Files
-- ✅ `src/empathy_os/workflows/llm_base.py` (LLMWorkflowGenerator base class)
+- ✅ `src/attune/workflows/llm_base.py` (LLMWorkflowGenerator base class)
 - ✅ `docs/LLM_WORKFLOW_ENHANCEMENT_PLAN.md` (Strategic roadmap)
 - ✅ `test_llm_enhancement.py` (Verification script)
 - ✅ `docs/LLM_ENHANCEMENTS_SUMMARY.md` (This document)
 - ✅ 255 test files in `tests/behavioral/generated/batch*/`
 
 ### Modified Files
-- ✅ `src/empathy_os/workflows/autonomous_test_gen.py` (Added LLM generation)
-- ✅ `src/empathy_os/workflows/test_gen_behavioral.py` (Enhanced with LLM)
+- ✅ `src/attune/workflows/autonomous_test_gen.py` (Added LLM generation)
+- ✅ `src/attune/workflows/test_gen_behavioral.py` (Enhanced with LLM)
 
 ---
 

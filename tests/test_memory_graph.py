@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.memory import Edge, EdgeType, MemoryGraph, Node, NodeType
+from attune.memory import Edge, EdgeType, MemoryGraph, Node, NodeType
 
 
 @pytest.fixture

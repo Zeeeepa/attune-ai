@@ -9,9 +9,10 @@ Licensed under Apache 2.0
 from unittest.mock import MagicMock, patch
 
 import pytest
+import typer
 from typer.testing import CliRunner
 
-from empathy_os.meta_workflows.cli_commands.analytics_commands import show_analytics
+from attune.meta_workflows.cli_commands.analytics_commands import show_analytics
 
 
 @pytest.fixture
@@ -23,14 +24,14 @@ def cli_runner():
 @pytest.fixture
 def mock_console():
     """Provide a mocked Rich console."""
-    with patch("empathy_os.meta_workflows.cli_commands.analytics_commands.console") as mock:
+    with patch("attune.meta_workflows.cli_commands.analytics_commands.console") as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_pattern_learner():
     """Provide a mocked PatternLearner instance."""
-    with patch("empathy_os.meta_workflows.cli_commands.analytics_commands.PatternLearner") as mock_class:
+    with patch("attune.meta_workflows.cli_commands.analytics_commands.PatternLearner") as mock_class:
         mock_instance = MagicMock()
         mock_class.return_value = mock_instance
         yield mock_instance
@@ -145,7 +146,7 @@ class TestShowAnalyticsMemoryIntegration:
     """Test memory-enhanced analytics functionality."""
 
     def test_given_use_memory_flag_when_show_analytics_called_then_initializes_unified_memory(
-        self, mock_console, mock_pattern_learner, sample_analytics_report
+        self, mock_console, sample_analytics_report
     ):
         """
         Given: use_memory flag is set to True
@@ -153,20 +154,16 @@ class TestShowAnalyticsMemoryIntegration:
         Then: UnifiedMemory is initialized and used
         """
         # Given
-        mock_pattern_learner.generate_analytics_report.return_value = sample_analytics_report
-
         with patch(
-            "empathy_os.meta_workflows.cli_commands.analytics_commands.UnifiedMemory"
-        ) as mock_unified_memory:
-            mock_memory_instance = MagicMock()
-            mock_unified_memory.return_value = mock_memory_instance
+            "attune.meta_workflows.cli_commands.analytics_commands.PatternLearner"
+        ) as mock_pl_class:
+            mock_pl_instance = MagicMock()
+            mock_pl_class.return_value = mock_pl_instance
+            mock_pl_instance.generate_analytics_report.return_value = sample_analytics_report
 
-            with patch(
-                "empathy_os.meta_workflows.cli_commands.analytics_commands.PatternLearner"
-            ) as mock_pl_class:
-                mock_pl_instance = MagicMock()
-                mock_pl_class.return_value = mock_pl_instance
-                mock_pl_instance.generate_analytics_report.return_value = sample_analytics_report
+            with patch("attune.memory.unified.UnifiedMemory") as mock_unified_memory:
+                mock_memory_instance = MagicMock()
+                mock_unified_memory.return_value = mock_memory_instance
 
                 # When
                 show_analytics(template_id=None, use_memory=True)
@@ -189,9 +186,7 @@ class TestShowAnalyticsMemoryIntegration:
         # Given
         mock_pattern_learner.generate_analytics_report.return_value = sample_analytics_report
 
-        with patch(
-            "empathy_os.meta_workflows.cli_commands.analytics_commands.UnifiedMemory"
-        ) as mock_unified_memory:
+        with patch("attune.memory.unified.UnifiedMemory") as mock_unified_memory:
             # When
             show_analytics(template_id=None, use_memory=False)
 
@@ -272,16 +267,17 @@ class TestShowAnalyticsErrorHandling:
         """
         Given: PatternLearner raises an exception
         When: show_analytics is called
-        Then: Exception is propagated
+        Then: Exception is caught and converted to typer.Exit
         """
         # Given
         mock_pattern_learner.generate_analytics_report.side_effect = Exception("Pattern learner error")
 
         # When/Then
-        with pytest.raises(Exception) as exc_info:
+        with pytest.raises(typer.Exit) as exc_info:
             show_analytics(template_id=None)
 
-        assert "Pattern learner error" in str(exc_info.value)
+        # The exception is caught and converted to typer.Exit with code 1
+        assert exc_info.value.exit_code == 1
 
     def test_given_memory_initialization_error_when_use_memory_true_then_raises_exception(
         self, mock_console, mock_pattern_learner
@@ -289,19 +285,17 @@ class TestShowAnalyticsErrorHandling:
         """
         Given: UnifiedMemory initialization fails
         When: show_analytics is called with use_memory=True
-        Then: Exception is raised
+        Then: Exception is caught and converted to typer.Exit
         """
         # Given
-        with patch(
-            "empathy_os.meta_workflows.cli_commands.analytics_commands.UnifiedMemory"
-        ) as mock_unified_memory:
+        with patch("attune.memory.unified.UnifiedMemory") as mock_unified_memory:
             mock_unified_memory.side_effect = ImportError("Memory module not found")
 
             # When/Then
-            with pytest.raises(ImportError) as exc_info:
+            with pytest.raises(typer.Exit) as exc_info:
                 show_analytics(template_id=None, use_memory=True)
 
-            assert "Memory module not found" in str(exc_info.value)
+            assert exc_info.value.exit_code == 1
 
     def test_given_invalid_report_structure_when_displayed_then_handles_gracefully(
         self, mock_console, mock_pattern_learner
@@ -309,15 +303,17 @@ class TestShowAnalyticsErrorHandling:
         """
         Given: Analytics report has missing or invalid structure
         When: Report is displayed
-        Then: Error is handled gracefully
+        Then: Error is caught and converted to typer.Exit
         """
         # Given
         invalid_report = {"summary": {}}  # Missing required fields
         mock_pattern_learner.generate_analytics_report.return_value = invalid_report
 
         # When/Then
-        with pytest.raises(KeyError):
+        with pytest.raises(typer.Exit) as exc_info:
             show_analytics(template_id=None)
+
+        assert exc_info.value.exit_code == 1
 
 
 class TestShowAnalyticsEdgeCases:
@@ -511,7 +507,7 @@ class TestShowAnalyticsIntegration:
     """Test integration scenarios."""
 
     def test_given_all_parameters_when_show_analytics_called_then_works_correctly(
-        self, mock_console, mock_pattern_learner, sample_analytics_report
+        self, mock_console, sample_analytics_report
     ):
         """
         Given: All optional parameters are provided
@@ -519,20 +515,16 @@ class TestShowAnalyticsIntegration:
         Then: Command executes successfully with all parameters
         """
         # Given
-        mock_pattern_learner.generate_analytics_report.return_value = sample_analytics_report
-
         with patch(
-            "empathy_os.meta_workflows.cli_commands.analytics_commands.UnifiedMemory"
-        ) as mock_unified_memory:
-            mock_memory_instance = MagicMock()
-            mock_unified_memory.return_value = mock_memory_instance
+            "attune.meta_workflows.cli_commands.analytics_commands.PatternLearner"
+        ) as mock_pl_class:
+            mock_pl_instance = MagicMock()
+            mock_pl_class.return_value = mock_pl_instance
+            mock_pl_instance.generate_analytics_report.return_value = sample_analytics_report
 
-            with patch(
-                "empathy_os.meta_workflows.cli_commands.analytics_commands.PatternLearner"
-            ) as mock_pl_class:
-                mock_pl_instance = MagicMock()
-                mock_pl_class.return_value = mock_pl_instance
-                mock_pl_instance.generate_analytics_report.return_value = sample_analytics_report
+            with patch("attune.memory.unified.UnifiedMemory") as mock_unified_memory:
+                mock_memory_instance = MagicMock()
+                mock_unified_memory.return_value = mock_memory_instance
 
                 # When
                 show_analytics(
@@ -550,20 +542,21 @@ class TestShowAnalyticsIntegration:
     ):
         """
         Given: PatternLearner needs to be initialized
-        When: show_analytics is called
-        Then: PatternLearner instance is created
+        When: show_analytics is called (without use_memory)
+        Then: PatternLearner instance is created once
         """
         # Given
         with patch(
-            "empathy_os.meta_workflows.cli_commands.analytics_commands.PatternLearner"
+            "attune.meta_workflows.cli_commands.analytics_commands.PatternLearner"
         ) as mock_pl_class:
             mock_pl_instance = MagicMock()
             mock_pl_class.return_value = mock_pl_instance
             mock_pl_instance.generate_analytics_report.return_value = sample_analytics_report
 
             # When
-            show_analytics(template_id=None)
+            show_analytics(template_id=None, use_memory=False)
 
             # Then
+            # PatternLearner is called once when use_memory=False
             assert mock_pl_class.call_count == 1
             mock_pl_instance.generate_analytics_report.assert_called_once()

@@ -1,6 +1,6 @@
-"""Tests for empathy_os.discovery"""
+"""Tests for attune.discovery"""
 
-from empathy_os.discovery import (
+from attune.discovery import (
     DiscoveryEngine,
     format_tips_for_cli,
     get_engine,
@@ -162,9 +162,9 @@ class TestDiscoveryEngine:
 def test_get_engine_singleton(tmp_path):
     """Test get_engine returns singleton instance."""
     # Reset global engine
-    import empathy_os.discovery
+    import attune.discovery
 
-    empathy_os.discovery._engine = None
+    attune.discovery._engine = None
 
     engine1 = get_engine(storage_dir=str(tmp_path))
     engine2 = get_engine(storage_dir=str(tmp_path))
@@ -176,9 +176,9 @@ def test_get_engine_singleton(tmp_path):
 def test_show_tip_if_available(tmp_path, capsys):
     """Test show_tip_if_available displays tips."""
     # Reset global engine
-    import empathy_os.discovery
+    import attune.discovery
 
-    empathy_os.discovery._engine = None
+    attune.discovery._engine = None
 
     # This should create global engine and record command
     show_tip_if_available("inspect", quiet=False)
@@ -190,9 +190,9 @@ def test_show_tip_if_available(tmp_path, capsys):
 def test_show_tip_if_available_quiet_mode(tmp_path, capsys):
     """Test show_tip_if_available with quiet mode."""
     # Reset global engine
-    import empathy_os.discovery
+    import attune.discovery
 
-    empathy_os.discovery._engine = None
+    attune.discovery._engine = None
 
     # Quiet mode should not print anything
     show_tip_if_available("inspect", quiet=True)

@@ -11,7 +11,7 @@ import tempfile
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from empathy_os.workflows.progress import (
+from attune.workflows.progress import (
     ConsoleProgressReporter,
     JsonLinesProgressReporter,
     ProgressStatus,

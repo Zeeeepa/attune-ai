@@ -138,7 +138,7 @@ except (ValueError, SyntaxError) as e:
 - ✅ Shows both bad and good patterns
 - ✅ Explains WHY (not just what)
 - ✅ Includes enforcement details (pre-commit hooks, linters)
-- ✅ Links to actual implementation (`src/empathy_os/config.py:29-68`)
+- ✅ Links to actual implementation (`src/attune/config.py:29-68`)
 
 ---
 
@@ -738,7 +738,7 @@ Copy-paste templates for your team:
 **Questions?**
 - See [How to Read This Book](./how-to-read-this-book.md) for more guides
 - Check [CODING_STANDARDS.md](../CODING_STANDARDS.md) for our complete standards
-- Report issues: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- Report issues: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 
 ---
 

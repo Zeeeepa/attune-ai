@@ -92,7 +92,7 @@ A 5-level maturity model that progresses AI from reactive responses to predictin
 
 ### Traction
 
-- **Open source:** GitHub at [Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework)
+- **Open source:** GitHub at [Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
 - **Production-ready:** v4.4.0 stable release
 - **Documentation:** Full MkDocs site + tutorials
 - **VSCode Extension:** Real-time dashboard integration
@@ -122,7 +122,7 @@ A 5-level maturity model that progresses AI from reactive responses to predictin
 ### Contact
 
 **Website:** [smartaimemory.com](https://smartaimemory.com)
-**GitHub:** [Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework)
+**GitHub:** [Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
 **Email:** Contact via website
 
 ---

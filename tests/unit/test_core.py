@@ -1,9 +1,9 @@
-"""Tests for empathy_os.core"""
+"""Tests for attune.core"""
 
 import pytest
 
-from empathy_os.core import CollaborationState, EmpathyOS
-from empathy_os.redis_memory import AccessTier
+from attune.core import CollaborationState, EmpathyOS
+from attune.redis_memory import AccessTier
 
 
 class TestCollaborationState:
@@ -200,7 +200,7 @@ class TestEmpathyOS:
 
     def test_has_shared_library_with_library(self):
         """Test has_shared_library returns True when library is configured."""
-        from empathy_os.pattern_library import PatternLibrary
+        from attune.pattern_library import PatternLibrary
 
         library = PatternLibrary()
         empathy = EmpathyOS(user_id="test_user", shared_library=library)
@@ -215,7 +215,7 @@ class TestEmpathyOS:
 
     def test_contribute_pattern(self):
         """Test contributing a pattern to shared library."""
-        from empathy_os.pattern_library import Pattern, PatternLibrary
+        from attune.pattern_library import Pattern, PatternLibrary
 
         library = PatternLibrary()
         empathy = EmpathyOS(user_id="test_agent", shared_library=library)
@@ -236,7 +236,7 @@ class TestEmpathyOS:
 
     def test_contribute_pattern_no_library_raises(self):
         """Test contributing pattern without shared library raises RuntimeError."""
-        from empathy_os.pattern_library import Pattern
+        from attune.pattern_library import Pattern
 
         empathy = EmpathyOS(user_id="test_agent")  # No shared library
 
@@ -253,7 +253,7 @@ class TestEmpathyOS:
 
     def test_query_patterns(self):
         """Test querying patterns from shared library."""
-        from empathy_os.pattern_library import Pattern, PatternLibrary
+        from attune.pattern_library import Pattern, PatternLibrary
 
         library = PatternLibrary()
         empathy = EmpathyOS(user_id="test_agent", shared_library=library)
@@ -343,7 +343,7 @@ class TestEmpathyOS:
         """Test Level 1 with empty request raises ValidationError."""
         import asyncio
 
-        from empathy_os.exceptions import ValidationError
+        from attune.exceptions import ValidationError
 
         empathy = EmpathyOS(user_id="test_user")
 
@@ -357,7 +357,7 @@ class TestEmpathyOS:
         """Test Level 1 with non-string request raises ValidationError."""
         import asyncio
 
-        from empathy_os.exceptions import ValidationError
+        from attune.exceptions import ValidationError
 
         empathy = EmpathyOS(user_id="test_user")
 
@@ -386,7 +386,7 @@ class TestEmpathyOS:
         """Test Level 2 input validation."""
         import asyncio
 
-        from empathy_os.exceptions import ValidationError
+        from attune.exceptions import ValidationError
 
         empathy = EmpathyOS(user_id="test_user")
 

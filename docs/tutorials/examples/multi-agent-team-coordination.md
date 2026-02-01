@@ -29,7 +29,7 @@ This example demonstrates how multiple AI agents can coordinate through shared p
 ## Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ---
@@ -39,8 +39,8 @@ pip install empathy-framework
 ### Create Team of Agents
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.coordination import CoordinationManager
+from attune import EmpathyOS
+from attune.coordination import CoordinationManager
 
 # Create three specialized agents
 frontend_agent = EmpathyOS(
@@ -155,7 +155,7 @@ print(f"Pattern source: {response.pattern_source}")
 ### Detect When Agents are Working on Same Resource
 
 ```python
-from empathy_os.coordination import ConflictDetector
+from attune.coordination import ConflictDetector
 
 # Create conflict detector
 conflict_detector = ConflictDetector(coordinator)
@@ -216,7 +216,7 @@ coordinator.request_coordination(
 ### Handoff Protocol
 
 ```python
-from empathy_os.coordination import HandoffProtocol
+from attune.coordination import HandoffProtocol
 
 # Frontend completes UI, hands off to backend for API integration
 handoff = HandoffProtocol(
@@ -279,7 +279,7 @@ print(backend_response.response)
 ### Broadcast Protocol
 
 ```python
-from empathy_os.coordination import BroadcastProtocol
+from attune.coordination import BroadcastProtocol
 
 # DevOps agent discovers infrastructure change affecting all agents
 broadcast = BroadcastProtocol(
@@ -336,7 +336,7 @@ for agent in [frontend_agent, backend_agent]:
 ### Agents Learn from Each Other's Successes
 
 ```python
-from empathy_os.coordination import CollectiveLearning
+from attune.coordination import CollectiveLearning
 
 # Track success rates across agents
 collective = CollectiveLearning(coordinator)
@@ -406,7 +406,7 @@ print(f"  Most successful agent: {metrics['top_contributor']}")
 ### Monitor Team Performance
 
 ```python
-from empathy_os.coordination import TeamDashboard
+from attune.coordination import TeamDashboard
 
 # Create team dashboard
 dashboard = TeamDashboard(coordinator)
@@ -468,8 +468,8 @@ print(report.to_markdown())
 
 ```python
 import asyncio
-from empathy_os import EmpathyOS
-from empathy_os.coordination import CoordinationManager, WorkflowOrchestrator
+from attune import EmpathyOS
+from attune.coordination import CoordinationManager, WorkflowOrchestrator
 
 async def microservice_development_workflow():
     """
@@ -609,7 +609,7 @@ print(f"   Team learned {len(result['patterns_learned'])} new patterns")
 Track task dependencies across agents.
 
 ```python
-from empathy_os.coordination import DependencyGraph
+from attune.coordination import DependencyGraph
 
 graph = DependencyGraph(coordinator)
 

@@ -83,7 +83,7 @@ Your task:
 
 Configuration:
 - Minimum threshold: 80%
-- Focus on src/empathy_os/ directory
+- Focus on src/attune/ directory
 
 Success Criteria:
 - [ ] Coverage meets 80% threshold
@@ -160,7 +160,7 @@ Your task:
 4. Verify any API changes are documented
 
 Focus areas:
-- src/empathy_os/*.py - public modules
+- src/attune/*.py - public modules
 - README.md - feature list accuracy
 - CHANGELOG.md - recent entries
 - docs/ directory - guide accuracy

@@ -62,8 +62,8 @@ description: Comprehensive Release Summary - Empathy Framework v3.7.0: **Date**:
 ## 📦 FINAL PACKAGE CONTENTS
 
 ### Included
-- ✅ empathy_os + 20 subpackages (workflows, memory, models, etc.)
-- ✅ empathy_llm_toolkit (XML-enhanced wizards)
+- ✅ attune + 20 subpackages (workflows, memory, models, etc.)
+- ✅ attune_llm (XML-enhanced wizards)
 - ✅ coach_wizards (pattern-based coaching)
 - ✅ wizards (healthcare wizards)
 - ✅ agents (compliance, notifications)
@@ -81,7 +81,7 @@ description: Comprehensive Release Summary - Empathy Framework v3.7.0: **Date**:
 - ✅ .archive/ directory
 
 ### Note on Beta Workflows
-⚠️ test5.py and new_sample_workflow1.py are included in empathy_os.workflows but clearly marked as examples. This is acceptable for v3.7.0.
+⚠️ test5.py and new_sample_workflow1.py are included in attune.workflows but clearly marked as examples. This is acceptable for v3.7.0.
 
 ---
 
@@ -111,7 +111,7 @@ ls -lh dist/
 # 2. Test installation one more time (optional)
 python -m venv /tmp/final_test
 /tmp/final_test/bin/pip install dist/empathy_framework-3.7.0-py3-none-any.whl
-/tmp/final_test/bin/python -c "from empathy_os.workflows import BaseWorkflow; print('✅ Works')"
+/tmp/final_test/bin/python -c "from attune.workflows import BaseWorkflow; print('✅ Works')"
 
 # 3. Upload to PyPI
 python -m twine upload dist/*
@@ -192,7 +192,7 @@ All blockers resolved:
 ## 🙏 POST-RELEASE
 
 After publishing:
-1. Test installation from PyPI: `pip install empathy-framework==3.7.0`
+1. Test installation from PyPI: `pip install attune-ai==3.7.0`
 2. Update documentation site with v3.7.0 changes
 3. Announce release on GitHub, Twitter, LinkedIn
 4. Monitor PyPI download stats and GitHub issues

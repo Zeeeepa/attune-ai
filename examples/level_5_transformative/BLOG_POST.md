@@ -179,7 +179,7 @@ Powered by:
 
 ```bash
 # Install the Empathy Framework
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # Run the Level 5 demo
 python examples/level_5_transformative/run_full_demo.py
@@ -246,8 +246,8 @@ Want to contribute? The framework needs:
 
 ## Learn More
 
-- **GitHub**: [empathy-framework](https://github.com/DeepStudyAI/empathy-framework)
-- **Docs**: [Full documentation](https://empathy-framework.readthedocs.io)
+- **GitHub**: [attune-ai](https://github.com/DeepStudyAI/attune-ai)
+- **Docs**: [Full documentation](https://attune-ai.readthedocs.io)
 - **Demo**: [Run Level 5 example](examples/level_5_transformative/)
 - **Discord**: [Join the community](#) (coming soon)
 

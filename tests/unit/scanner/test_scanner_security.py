@@ -17,8 +17,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.project_index.models import IndexConfig
-from empathy_os.project_index.scanner import ProjectScanner
+from attune.project_index.models import IndexConfig
+from attune.project_index.scanner import ProjectScanner
 
 
 @pytest.mark.unit

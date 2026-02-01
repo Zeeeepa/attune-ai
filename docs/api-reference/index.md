@@ -90,23 +90,23 @@ LLM provider integration with security controls.
 ## Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 For LLM support:
 ```bash
-pip install empathy-framework[llm]
+pip install attune-ai[llm]
 ```
 
 For healthcare applications:
 ```bash
-pip install empathy-framework[healthcare]
+pip install attune-ai[healthcare]
 ```
 
 ## Basic Usage
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Create Level 4 (Anticipatory) system
 empathy = EmpathyOS(

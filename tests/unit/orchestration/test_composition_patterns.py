@@ -47,8 +47,8 @@ import time
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import get_template
-from empathy_os.orchestration.execution_strategies import (
+from attune.orchestration.agent_templates import get_template
+from attune.orchestration.execution_strategies import (
     AdaptiveStrategy,
     AgentResult,
     DebateStrategy,

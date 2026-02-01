@@ -16,8 +16,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.cost_tracker import CostTracker
-from empathy_os.workflows.base import (
+from attune.cost_tracker import CostTracker
+from attune.workflows.base import (
     PROVIDER_MODELS,
     BaseWorkflow,
     CostReport,
@@ -513,7 +513,7 @@ class TestWorkflowHistory:
     def test_save_workflow_run_creates_file(self):
         """Test saving workflow run creates file."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            history_file = f"{tmpdir}/.empathy/workflow_runs.json"
+            history_file = f"{tmpdir}/.attune/workflow_runs.json"
 
             now = datetime.now()
             result = WorkflowResult(
@@ -552,7 +552,7 @@ class TestWorkflowHistory:
     def test_save_workflow_run_appends(self):
         """Test saving multiple runs appends to history."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            history_file = f"{tmpdir}/.empathy/workflow_runs.json"
+            history_file = f"{tmpdir}/.attune/workflow_runs.json"
             now = datetime.now()
 
             for i in range(3):
@@ -580,7 +580,7 @@ class TestWorkflowHistory:
     def test_save_workflow_run_trims_history(self):
         """Test history is trimmed to max size."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            history_file = f"{tmpdir}/.empathy/workflow_runs.json"
+            history_file = f"{tmpdir}/.attune/workflow_runs.json"
             now = datetime.now()
 
             # Save more than max_history runs

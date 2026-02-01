@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os import EmpathyConfig, load_config
+from attune import EmpathyConfig, load_config
 
 
 @pytest.fixture
@@ -432,7 +432,7 @@ class TestConfigErrorHandling:
         # Mock YAML_AVAILABLE at the function execution level
         from unittest.mock import patch
 
-        import empathy_os.config as config_module
+        import attune.config as config_module
 
         with patch.object(config_module, "YAML_AVAILABLE", False):
             with pytest.raises(ImportError, match="PyYAML is required"):
@@ -445,7 +445,7 @@ class TestConfigErrorHandling:
         """Test to_yaml raises ImportError without PyYAML"""
         from unittest.mock import patch
 
-        import empathy_os.config as config_module
+        import attune.config as config_module
 
         config = EmpathyConfig()
         filepath = Path(temp_dir) / "test.yml"

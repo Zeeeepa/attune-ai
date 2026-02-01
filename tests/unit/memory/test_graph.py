@@ -13,9 +13,9 @@ Copyright 2025 Smart AI Memory, LLC
 
 import pytest
 
-from empathy_os.memory.edges import EdgeType
-from empathy_os.memory.graph import MemoryGraph
-from empathy_os.memory.nodes import NodeType
+from attune.memory.edges import EdgeType
+from attune.memory.graph import MemoryGraph
+from attune.memory.nodes import NodeType
 
 # =============================================================================
 # FIXTURES

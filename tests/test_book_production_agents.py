@@ -66,8 +66,8 @@ Enable multiple AI agents to work together on complex tasks.
 ## Quick Start
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.pattern_library import PatternLibrary
+from attune import EmpathyOS
+from attune.pattern_library import PatternLibrary
 
 # Shared pattern library for all agents
 shared_library = PatternLibrary(name="team_library")

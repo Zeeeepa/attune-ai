@@ -43,7 +43,7 @@ def show_implementation_example():
     # Example AFTER (what AI would generate)
     after_code = '''def test_success_rate_basic():
     """Test success_rate with basic inputs."""
-    from empathy_os.pattern_library import success_rate
+    from attune.pattern_library import success_rate
 
     # Test with pattern that has 8/10 successes
     pattern_id = "test_pattern"

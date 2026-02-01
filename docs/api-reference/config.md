@@ -20,7 +20,7 @@ The configuration system provides flexible options for customizing Empathy Frame
 ### Direct Configuration
 
 ```python
-from empathy_os import EmpathyConfig, EmpathyOS
+from attune import EmpathyConfig, EmpathyOS
 
 # Option 1: Configure EmpathyOS directly
 empathy = EmpathyOS(
@@ -56,7 +56,7 @@ metrics_enabled: true
 Load it:
 
 ```python
-from empathy_os import load_config, EmpathyOS
+from attune import load_config, EmpathyOS
 
 config = load_config(filepath="empathy.config.yml")
 empathy = EmpathyOS.from_config(config)
@@ -71,7 +71,7 @@ export EMPATHY_CONFIDENCE_THRESHOLD=0.75
 ```
 
 ```python
-from empathy_os import load_config
+from attune import load_config
 
 # Automatically loads from environment
 config = load_config(use_env=True)
@@ -79,7 +79,7 @@ config = load_config(use_env=True)
 
 ## Class Reference
 
-::: empathy_os.config.EmpathyConfig
+::: attune.config.EmpathyConfig
     options:
       show_root_heading: false
       show_source: false
@@ -254,7 +254,7 @@ config = EmpathyConfig(pattern_confidence_threshold=0.80)
 Load configuration from file or environment.
 
 ```python
-from empathy_os import load_config
+from attune import load_config
 
 # Load from YAML file
 config = load_config(filepath="empathy.config.yml")

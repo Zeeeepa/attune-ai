@@ -5,7 +5,7 @@ Tests the RefactoringCrew and its supporting dataclasses and enums.
 
 from unittest.mock import patch
 
-from empathy_llm_toolkit.agent_factory.crews.refactoring import (
+from attune_llm.agent_factory.crews.refactoring import (
     XML_PROMPT_TEMPLATES,
     CodeCheckpoint,
     Impact,

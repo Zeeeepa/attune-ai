@@ -9,7 +9,7 @@ Licensed under Apache 2.0
 
 import pytest
 
-from empathy_os.memory.long_term_types import (
+from attune.memory.long_term_types import (
     DEFAULT_CLASSIFICATION_RULES,
     Classification,
     ClassificationRules,

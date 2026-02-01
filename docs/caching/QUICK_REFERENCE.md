@@ -22,7 +22,7 @@ workflow = CodeReviewWorkflow(enable_cache=True)
 **Goal:** Cache test runs, zero dependencies
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 cache = create_cache(cache_type="hash", ttl_hours=1)
 workflow = TestGenerationWorkflow(cache=cache, enable_cache=True)
@@ -37,11 +37,11 @@ workflow = TestGenerationWorkflow(cache=cache, enable_cache=True)
 
 ```bash
 # Install ML dependencies once
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 ```
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 cache = create_cache(cache_type="hybrid", similarity_threshold=0.95)
 workflow = SecurityAuditWorkflow(cache=cache, enable_cache=True)
@@ -55,7 +55,7 @@ workflow = SecurityAuditWorkflow(cache=cache, enable_cache=True)
 **Goal:** Process 100 similar files efficiently
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 cache = create_cache(cache_type="hybrid")
 workflow = DocumentGenerationWorkflow(cache=cache, enable_cache=True)
@@ -81,7 +81,7 @@ workflow = CodeReviewWorkflow(enable_cache=False)
 **Goal:** Isolated cache, easy cleanup
 
 ```python
-from empathy_os.cache import HashOnlyCache
+from attune.cache import HashOnlyCache
 
 test_cache = HashOnlyCache(ttl_hours=1)
 workflow = BugPredictionWorkflow(cache=test_cache, enable_cache=True)
@@ -102,13 +102,13 @@ test_cache.clear()
 | **Lookup speed** | ~5μs | ~100ms |
 | **Memory** | <1MB | ~500MB |
 | **Dependencies** | None | sentence-transformers |
-| **Install** | Built-in | `pip install empathy-framework[cache]` |
+| **Install** | Built-in | `pip install attune-ai[cache]` |
 | **Best for** | CI/CD, testing | Development, production |
 
 ## Configuration Cheat Sheet
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 # Hash-only (default)
 cache = create_cache(cache_type="hash")
@@ -205,7 +205,7 @@ With hash-only cache (100% hit rate after first run):
 | 0% hit rate | Verify `enable_cache=True`, prompts are identical/similar |
 | Low hit rate (<50%) | Lower similarity threshold to 0.90, or use hash-only |
 | High memory | Switch to hash-only cache |
-| ImportError | Install ML dependencies: `pip install empathy-framework[cache]` |
+| ImportError | Install ML dependencies: `pip install attune-ai[cache]` |
 | Stale results | Lower TTL, or clear cache: `cache.clear()` |
 
 ## File Locations
@@ -225,7 +225,7 @@ rm ~/.empathy/cache/responses.json
 
 ```python
 # Create cache
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 cache = create_cache(cache_type="hash")  # or "hybrid"
 
 # Use with workflow
@@ -292,4 +292,4 @@ print(f"Entries: {info['entries']}, Size: {info['estimated_mb']:.2f} MB")
 
 - 📖 Full docs: [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md)
 - 🧪 Examples: `tests/integration/test_cache_integration.py`
-- 🐛 Issues: [GitHub](https://github.com/empathy-ai/empathy-framework/issues)
+- 🐛 Issues: [GitHub](https://github.com/empathy-ai/attune-ai/issues)

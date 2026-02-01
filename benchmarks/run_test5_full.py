@@ -4,7 +4,7 @@ import asyncio
 import sys
 from pathlib import Path
 
-from empathy_os.workflows import get_workflow
+from attune.workflows import get_workflow
 
 
 async def main():
@@ -22,7 +22,7 @@ async def main():
     print(f"🎯 Tier Map: {workflow.tier_map}")
 
     # Sample code to analyze
-    code_path = Path("src/empathy_os/workflows")
+    code_path = Path("src/attune/workflows")
 
     print(f"\n📂 Analyzing code in: {code_path}")
     print("\n⏳ Starting workflow execution...")

@@ -25,7 +25,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from empathy_os.memory.short_term import (
+from attune.memory.short_term import (
     AccessTier,
     AgentCredentials,
     ConflictContext,
@@ -69,7 +69,7 @@ class TestMockModeBasics:
         This allows the code to work even without optional dependencies.
         """
         # Mock REDIS_AVAILABLE as False
-        with patch("empathy_os.memory.short_term.REDIS_AVAILABLE", False):
+        with patch("attune.memory.short_term.REDIS_AVAILABLE", False):
             memory = RedisShortTermMemory()  # use_mock=False, but Redis unavailable
 
             assert memory.use_mock is True  # Automatically switched to mock mode
@@ -429,8 +429,8 @@ class TestConnectionRetry:
         assert config.retry_base_delay == 0.5
         assert config.retry_max_delay == 10.0
 
-    @patch("empathy_os.memory.short_term.redis.Redis")
-    @patch("empathy_os.memory.short_term.logger")
+    @patch("attune.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.logger")
     def test_connection_retry_on_failure(self, mock_logger, mock_redis_class):
         """Teaching Pattern: Testing retry logic with mock failures.
 
@@ -457,7 +457,7 @@ class TestConnectionRetry:
         config = RedisConfig(use_mock=False, retry_max_attempts=3)
 
         # This should succeed after retries
-        with patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True):
+        with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
             memory = RedisShortTermMemory(config=config)
 
             # Should have called ping 3 times (2 failures + 1 success)

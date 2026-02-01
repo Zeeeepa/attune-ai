@@ -12,8 +12,8 @@ import os
 import pytest
 import yaml
 
-from empathy_os import EmpathyConfig, load_config
-from empathy_os.config import _validate_file_path
+from attune import EmpathyConfig, load_config
+from attune.config import _validate_file_path
 
 
 class TestConfigToYAML:
@@ -40,7 +40,7 @@ class TestConfigToYAML:
         # NOTE: This test is skipped because we can't reliably mock YAML_AVAILABLE
         # after the config module has been imported. The check happens at module
         # level and mocking it doesn't affect the already-imported function.
-        import empathy_os.config as config_module
+        import attune.config as config_module
         monkeypatch.setattr(config_module, "YAML_AVAILABLE", False)
 
         config = EmpathyConfig(user_id="test")
@@ -304,4 +304,4 @@ class TestConfigUpdateEdgeCases:
 
 
 # Run these tests with:
-# pytest tests/behavioral/test_config_comprehensive.py -v --cov=src/empathy_os/config.py --cov-report=term-missing -n 0
+# pytest tests/behavioral/test_config_comprehensive.py -v --cov=src/attune/config.py --cov-report=term-missing -n 0

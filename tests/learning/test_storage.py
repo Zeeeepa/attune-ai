@@ -5,8 +5,8 @@ from datetime import datetime
 
 import pytest
 
-from empathy_llm_toolkit.learning.extractor import ExtractedPattern, PatternCategory
-from empathy_llm_toolkit.learning.storage import LearnedSkill, LearnedSkillsStorage
+from attune_llm.learning.extractor import ExtractedPattern, PatternCategory
+from attune_llm.learning.storage import LearnedSkill, LearnedSkillsStorage
 
 
 class TestLearnedSkill:

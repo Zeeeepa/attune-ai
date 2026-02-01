@@ -17,8 +17,8 @@ description: CLI Refactoring Progress Update: **Date:** 2026-01-26 (Continued Se
 - `cmd_patterns_resolve` - Resolve bug patterns
 
 **Files Created:**
-- `src/empathy_os/cli/commands/patterns.py` (205 lines)
-- `src/empathy_os/cli/parsers/patterns.py` (57 lines)
+- `src/attune/cli/commands/patterns.py` (205 lines)
+- `src/attune/cli/parsers/patterns.py` (57 lines)
 
 ---
 

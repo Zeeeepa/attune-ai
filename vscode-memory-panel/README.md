@@ -44,7 +44,7 @@ Enterprise-grade memory system control panel for the Empathy Framework. Monitor 
 
 ```bash
 # Clone the repository
-cd /path/to/empathy-framework/vscode-memory-panel
+cd /path/to/attune-ai/vscode-memory-panel
 
 # Install dependencies
 npm install
@@ -67,10 +67,10 @@ The extension requires the Memory Control Panel API server running on your machi
 
 ```bash
 # Navigate to Empathy Framework
-cd /path/to/empathy-framework
+cd /path/to/attune-ai
 
 # Start the API server (default port 8765)
-python -m empathy_os.memory.api_server
+python -m attune.memory.api_server
 ```
 
 Or create a simple API server wrapper:
@@ -78,7 +78,7 @@ Or create a simple API server wrapper:
 ```python
 # api_server.py
 from fastapi import FastAPI
-from empathy_os.memory import MemoryControlPanel, ControlPanelConfig
+from attune.memory import MemoryControlPanel, ControlPanelConfig
 
 app = FastAPI()
 panel = MemoryControlPanel()
@@ -348,7 +348,7 @@ npm test
 - Check extension settings for correct host/port
 
 ### Redis Won't Start
-- Run `python -m empathy_os.memory.control_panel start` manually
+- Run `python -m attune.memory.control_panel start` manually
 - Check Redis installation: `redis-cli ping`
 - Review health check recommendations
 - Check logs in backend console
@@ -373,8 +373,8 @@ Licensed under Fair Source 0.9
 
 ## Support
 
-- Documentation: [Empathy Framework Docs](https://github.com/your-org/empathy-framework)
-- Issues: [GitHub Issues](https://github.com/your-org/empathy-framework/issues)
+- Documentation: [Empathy Framework Docs](https://github.com/your-org/attune-ai)
+- Issues: [GitHub Issues](https://github.com/your-org/attune-ai/issues)
 - Email: support@empathyframework.com
 
 ## Changelog

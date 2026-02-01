@@ -18,10 +18,10 @@ import os
 import tempfile
 from unittest.mock import patch
 
-from empathy_os.memory.long_term import Classification
-from empathy_os.memory.redis_bootstrap import RedisStartMethod, RedisStatus
-from empathy_os.memory.short_term import AccessTier
-from empathy_os.memory.unified import Environment, MemoryConfig, UnifiedMemory
+from attune.memory.long_term import Classification
+from attune.memory.redis_bootstrap import RedisStartMethod, RedisStatus
+from attune.memory.short_term import AccessTier
+from attune.memory.unified import Environment, MemoryConfig, UnifiedMemory
 
 
 class TestEnvironment:
@@ -726,7 +726,7 @@ class TestUnifiedMemoryEdgeCases:
             assert memory._short_term is short_term_ref
             assert memory._long_term is long_term_ref
 
-    @patch("empathy_os.memory.unified.RedisShortTermMemory")
+    @patch("attune.memory.unified.RedisShortTermMemory")
     def test_short_term_init_exception_uses_file_first(self, mock_redis):
         """Test file-first fallback when Redis init fails.
 

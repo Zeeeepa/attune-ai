@@ -259,7 +259,7 @@ def format_api_docs(classes: list[ClassSignature], functions: list[FunctionSigna
 
 if __name__ == "__main__":
     # Test with cache_stats.py
-    test_file = Path("src/empathy_os/cache_stats.py")
+    test_file = Path("src/attune/cache_stats.py")
     if test_file.exists():
         source = test_file.read_text()
         classes, functions = extract_api_signatures(source)

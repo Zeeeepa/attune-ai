@@ -29,7 +29,7 @@ Successfully refactored the monolithic 3,957-line `cli.py` into a clean, maintai
 ## 📂 New Structure
 
 ```
-src/empathy_os/cli/
+src/attune/cli/
 ├── __init__.py (148 lines)           # Modular main() entry point
 ├── __main__.py (13 lines)            # Python -m execution
 │
@@ -119,29 +119,29 @@ src/empathy_os/cli/
 
 ```bash
 # Core commands
-python -m empathy_os.cli version              ✅ Working
-python -m empathy_os.cli cheatsheet           ✅ Working
+python -m attune.cli version              ✅ Working
+python -m attune.cli cheatsheet           ✅ Working
 
 # Workflow commands
-python -m empathy_os.cli workflow list        ✅ Working
-python -m empathy_os.cli workflow describe code-review  ✅ Working
+python -m attune.cli workflow list        ✅ Working
+python -m attune.cli workflow describe code-review  ✅ Working
 
 # Setup commands
-python -m empathy_os.cli init --help          ✅ Working
-python -m empathy_os.cli validate --help      ✅ Working
+python -m attune.cli init --help          ✅ Working
+python -m attune.cli validate --help      ✅ Working
 
 # Orchestration
-python -m empathy_os.cli orchestrate --help   ✅ Working
+python -m attune.cli orchestrate --help   ✅ Working
 
 # Sync
-python -m empathy_os.cli sync-claude --help   ✅ Working
+python -m attune.cli sync-claude --help   ✅ Working
 
 # Provider
-python -m empathy_os.cli provider --help      ✅ Working
+python -m attune.cli provider --help      ✅ Working
 
 # Metrics
-python -m empathy_os.cli metrics --help       ✅ Working
-python -m empathy_os.cli state --help         ✅ Working
+python -m attune.cli metrics --help       ✅ Working
+python -m attune.cli state --help         ✅ Working
 ```
 
 ### Test Results
@@ -187,7 +187,7 @@ python -m empathy_os.cli state --help         ✅ Working
 ## 📋 File Manifest
 
 ### Archived
-- `src/empathy_os/cli_legacy.py` - Original monolithic CLI (kept for reference)
+- `src/attune/cli_legacy.py` - Original monolithic CLI (kept for reference)
 
 ### Active Modules
 

@@ -39,11 +39,11 @@ def code_review_workflow(code: str):
 
 ### Empathy Framework Implementation
 
-**File:** `src/empathy_os/workflows/base.py`
+**File:** `src/attune/workflows/base.py`
 
 ```python
-from empathy_os.workflows import WorkflowBase
-from empathy_os.models import TierConfig
+from attune.workflows import WorkflowBase
+from attune.models import TierConfig
 
 class CodeReviewWorkflow(WorkflowBase):
     """Sequential workflow following Anthropic's pattern"""
@@ -121,11 +121,11 @@ def orchestrator_agent(task: str):
 
 ### Empathy Framework Implementation
 
-**File:** `src/empathy_os/orchestrator.py`
+**File:** `src/attune/orchestrator.py`
 
 ```python
-from empathy_os.workflows import WorkflowRegistry
-from empathy_os.semantic_search import SemanticMatcher
+from attune.workflows import WorkflowRegistry
+from attune.semantic_search import SemanticMatcher
 
 class WorkflowOrchestrator:
     """Intelligent routing to specialist workflows"""
@@ -245,7 +245,7 @@ def agent_with_evaluator(task: str):
 
 ### Empathy Framework Implementation
 
-**File:** `src/empathy_os/workflows/test_gen.py`
+**File:** `src/attune/workflows/test_gen.py`
 
 ```python
 class TestGenerationWorkflow(WorkflowBase):
@@ -440,7 +440,7 @@ def analyze_code(code: str) -> dict:
 **After (Empathy Framework):**
 
 ```python
-from empathy_os.workflows import WorkflowBase
+from attune.workflows import WorkflowBase
 
 class CodeAnalysisWorkflow(WorkflowBase):
     def __init__(self):
@@ -526,7 +526,7 @@ response = await self.llm_client.call(
 ### 4. Monitor Costs
 
 ```python
-from empathy_os.telemetry import TelemetryClient
+from attune.telemetry import TelemetryClient
 
 telemetry = TelemetryClient()
 
@@ -549,8 +549,8 @@ print(f"Cache hit rate: {stats['cache_hit_rate']:.1%}")
 Demonstrates Anthropic's agent patterns in Empathy Framework
 """
 import asyncio
-from empathy_os.workflows import WorkflowBase
-from empathy_os.orchestrator import WorkflowOrchestrator
+from attune.workflows import WorkflowBase
+from attune.orchestrator import WorkflowOrchestrator
 
 # Pattern 1: Sequential Workflow
 class AnalysisPipeline(WorkflowBase):

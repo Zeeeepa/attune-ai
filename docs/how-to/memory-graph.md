@@ -9,7 +9,7 @@ The Memory Graph provides cross-wizard knowledge sharing by connecting findings,
 ## Quick Start
 
 ```python
-from empathy_os.memory import MemoryGraph, EdgeType
+from attune.memory import MemoryGraph, EdgeType
 
 graph = MemoryGraph()
 
@@ -52,7 +52,7 @@ The graph is stored as JSON in `patterns/memory_graph.json` and persists across 
 ## Node Types
 
 ```python
-from empathy_os.memory import NodeType
+from attune.memory import NodeType
 
 class NodeType(Enum):
     FILE = "file"
@@ -69,7 +69,7 @@ class NodeType(Enum):
 ## Edge Types
 
 ```python
-from empathy_os.memory import EdgeType
+from attune.memory import EdgeType
 
 class EdgeType(Enum):
     CAUSES = "causes"           # Bug A causes Bug B

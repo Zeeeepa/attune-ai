@@ -20,18 +20,18 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from empathy_os.orchestration.agent_templates import (AgentTemplate,
+from attune.orchestration.agent_templates import (AgentTemplate,
                                                       ResourceRequirements,
                                                       get_template)
-from empathy_os.orchestration.config_store import ConfigurationStore
-from empathy_os.orchestration.execution_strategies import (AdaptiveStrategy,
+from attune.orchestration.config_store import ConfigurationStore
+from attune.orchestration.execution_strategies import (AdaptiveStrategy,
                                                            DebateStrategy,
                                                            ParallelStrategy,
                                                            RefinementStrategy,
                                                            SequentialStrategy,
                                                            TeachingStrategy,
                                                            get_strategy)
-from empathy_os.orchestration.meta_orchestrator import MetaOrchestrator
+from attune.orchestration.meta_orchestrator import MetaOrchestrator
 
 # =============================================================================
 # Example 1: Custom Agent Template

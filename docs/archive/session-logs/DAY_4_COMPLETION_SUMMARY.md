@@ -16,7 +16,7 @@ description: Day 4 Completion Summary: ## Meta-Workflow System: Pattern Learning
 
 ### 1. Pattern Learning Analytics Engine ✅
 
-**File**: `src/empathy_os/meta_workflows/pattern_learner.py` (738 lines)
+**File**: `src/attune/meta_workflows/pattern_learner.py` (738 lines)
 
 **Core Features**:
 - Analyzes historical workflow executions to generate insights
@@ -85,8 +85,8 @@ Enhanced Querying & Recommendations
 
 **Usage**:
 ```python
-from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import PatternLearner, MetaWorkflow
+from attune.memory.unified import UnifiedMemory
+from attune.meta_workflows import PatternLearner, MetaWorkflow
 
 # Initialize memory
 memory = UnifiedMemory(user_id="agent")
@@ -121,7 +121,7 @@ recommendations = learner.get_smart_recommendations(
 
 ### 3. Comprehensive CLI ✅
 
-**File**: `src/empathy_os/meta_workflows/cli_meta_workflows.py` (900+ lines)
+**File**: `src/attune/meta_workflows/cli_meta_workflows.py` (900+ lines)
 
 **Commands Implemented**:
 
@@ -256,12 +256,12 @@ DRY RUN - No files deleted
 
 ### 4. CLI Integration with Main Empathy CLI ✅
 
-**File Modified**: `src/empathy_os/cli_unified.py`
+**File Modified**: `src/attune/cli_unified.py`
 
 **Integration**:
 ```python
 try:
-    from empathy_os.meta_workflows.cli_meta_workflows import meta_workflow_app
+    from attune.meta_workflows.cli_meta_workflows import meta_workflow_app
     app.add_typer(meta_workflow_app, name="meta-workflow")
 except ImportError as e:
     # Meta-workflow system is optional/experimental
@@ -407,17 +407,17 @@ DEMO 1: Hybrid Storage - File + Memory
 ## Files Modified/Created
 
 ### Created:
-1. `src/empathy_os/meta_workflows/pattern_learner.py` (738 lines)
-2. `src/empathy_os/meta_workflows/cli_meta_workflows.py` (900+ lines)
+1. `src/attune/meta_workflows/pattern_learner.py` (738 lines)
+2. `src/attune/meta_workflows/cli_meta_workflows.py` (900+ lines)
 3. `tests/unit/meta_workflows/test_pattern_learner.py` (400+ lines)
 4. `demo_memory_integration.py` (305 lines)
 5. `MEMORY_INTEGRATION_SUMMARY.md` (documentation)
 6. `DAY_4_COMPLETION_SUMMARY.md` (this file)
 
 ### Modified:
-1. `src/empathy_os/meta_workflows/workflow.py` (+20 lines)
-2. `src/empathy_os/meta_workflows/__init__.py` (+2 exports)
-3. `src/empathy_os/cli_unified.py` (+9 lines for integration)
+1. `src/attune/meta_workflows/workflow.py` (+20 lines)
+2. `src/attune/meta_workflows/__init__.py` (+2 exports)
+3. `src/attune/cli_unified.py` (+9 lines for integration)
 
 ---
 
@@ -440,8 +440,8 @@ DEMO 1: Hybrid Storage - File + Memory
 
 ### 1. With Empathy Framework Memory
 ```python
-from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import PatternLearner
+from attune.memory.unified import UnifiedMemory
+from attune.meta_workflows import PatternLearner
 
 memory = UnifiedMemory(user_id="agent")
 learner = PatternLearner(memory=memory)
@@ -454,7 +454,7 @@ empathy meta-workflow <command>
 
 ### 3. With Template Registry
 ```python
-from empathy_os.meta_workflows import TemplateRegistry
+from attune.meta_workflows import TemplateRegistry
 
 registry = TemplateRegistry()
 templates = registry.list_templates()
@@ -462,7 +462,7 @@ templates = registry.list_templates()
 
 ### 4. With Workflow Execution
 ```python
-from empathy_os.meta_workflows import MetaWorkflow, PatternLearner
+from attune.meta_workflows import MetaWorkflow, PatternLearner
 
 learner = PatternLearner(memory=memory)
 workflow = MetaWorkflow(template=template, pattern_learner=learner)

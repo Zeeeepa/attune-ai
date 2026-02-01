@@ -46,7 +46,7 @@ count = sum(1 for item in items if condition)
 
 ### Files Modified
 
-#### 1. [src/empathy_os/project_index/scanner.py](../src/empathy_os/project_index/scanner.py)
+#### 1. [src/attune/project_index/scanner.py](../src/attune/project_index/scanner.py)
 
 **Line 473-475:** Lines of code counting
 ```python
@@ -66,7 +66,7 @@ metrics["lines_of_code"] = sum(
 
 ---
 
-#### 2. [src/empathy_os/workflows/test_gen.py](../src/empathy_os/workflows/test_gen.py)
+#### 2. [src/attune/workflows/test_gen.py](../src/attune/workflows/test_gen.py)
 
 **Line 600-601:** Test candidate counting
 ```python
@@ -110,7 +110,7 @@ medium_findings = sum(1 for f in xml_findings if f["severity"] == "medium")
 
 ---
 
-#### 3. [src/empathy_os/workflows/bug_predict.py](../src/empathy_os/workflows/bug_predict.py)
+#### 3. [src/attune/workflows/bug_predict.py](../src/attune/workflows/bug_predict.py)
 
 **Line 698:** High-confidence correlation counting
 ```python
@@ -135,7 +135,7 @@ medium_findings = sum(1 for f in xml_findings if f["severity"] == "medium")
 
 ---
 
-#### 4. [src/empathy_os/workflows/perf_audit.py](../src/empathy_os/workflows/perf_audit.py)
+#### 4. [src/attune/workflows/perf_audit.py](../src/attune/workflows/perf_audit.py)
 
 **Line 273-275:** Finding impact counting
 ```python
@@ -155,7 +155,7 @@ low_count = sum(1 for f in file_findings if f["impact"] == "low")
 
 ---
 
-#### 5. [src/empathy_os/workflow_commands.py](../src/empathy_os/workflow_commands.py)
+#### 5. [src/attune/workflow_commands.py](../src/attune/workflow_commands.py)
 
 **Line 140:** Resolved bug counting
 ```python

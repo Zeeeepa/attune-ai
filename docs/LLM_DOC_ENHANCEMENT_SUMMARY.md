@@ -27,7 +27,7 @@ Successfully enhanced the Documentation Generation Workflow with improved LLM pr
 
 ### Documentation Generation Workflow Improvements
 
-**File:** `src/empathy_os/workflows/document_gen.py`
+**File:** `src/attune/workflows/document_gen.py`
 
 **Enhancement Approach:** Enhanced existing LLM prompts (not template-based, so no need for base class pattern)
 
@@ -222,7 +222,7 @@ Polish and improve this documentation with focus on:
 **Generated for `platform_utils.py`:**
 
 ```python
-from empathy_os.platform_utils import (
+from attune.platform_utils import (
     get_default_log_dir,
     get_default_data_dir,
     setup_asyncio_policy,
@@ -347,14 +347,14 @@ print(result)  # Output: "Complete"
 The framework now has two production-ready LLM-enhanced workflows:
 
 1. **Phase 1: Test Generation**
-   - File: `src/empathy_os/workflows/test_gen_behavioral.py`
+   - File: `src/attune/workflows/test_gen_behavioral.py`
    - Uses: `LLMWorkflowGenerator` base class
    - Output: Comprehensive behavioral tests with Given/When/Then
    - Cost: $0.056 per module
    - Success: 5,405 tests generated for 255 modules
 
 2. **Phase 2: Documentation Generation**
-   - File: `src/empathy_os/workflows/document_gen.py`
+   - File: `src/attune/workflows/document_gen.py`
    - Uses: Enhanced prompts in existing 3-tier pipeline
    - Output: Production-ready API docs with real examples
    - Cost: $0.11 per module
@@ -384,7 +384,7 @@ The framework now has two production-ready LLM-enhanced workflows:
 
 #### 3.1 Code Review Enhancement
 
-**Target:** `src/empathy_os/workflows/code_review.py`
+**Target:** `src/attune/workflows/code_review.py`
 
 **Goal:** Deep code understanding, contextual suggestions
 
@@ -401,7 +401,7 @@ The framework now has two production-ready LLM-enhanced workflows:
 
 #### 3.2 Refactoring Assistant
 
-**Target:** `src/empathy_os/workflows/refactor.py`
+**Target:** `src/attune/workflows/refactor.py`
 
 **Goal:** Intent-aware, safe refactoring
 
@@ -422,7 +422,7 @@ The framework now has two production-ready LLM-enhanced workflows:
 
 #### Bug Prediction Enhancement
 
-**Target:** `src/empathy_os/workflows/bug_predict.py`
+**Target:** `src/attune/workflows/bug_predict.py`
 
 **Goal:** Understand code flow, predict subtle bugs
 
@@ -479,7 +479,7 @@ The framework now has two production-ready LLM-enhanced workflows:
 
 ### Enhanced Files
 
-- ✅ `src/empathy_os/workflows/document_gen.py` (Enhanced prompts in 3 stages)
+- ✅ `src/attune/workflows/document_gen.py` (Enhanced prompts in 3 stages)
   - `_outline()` - Enhanced to plan comprehensive coverage
   - `_write()` - Enhanced to generate real examples
   - `_write_chunked()` - Enhanced for consistency
@@ -587,7 +587,7 @@ Instead of one-time auth choice, implemented **intelligent module-size-based rou
 ### Implementation Details
 
 **New Files Created:**
-1. `src/empathy_os/models/auth_strategy.py` (410 lines)
+1. `src/attune/models/auth_strategy.py` (410 lines)
    - `AuthStrategy` class - Core configuration and routing logic
    - `SubscriptionTier` enum - Free, Pro, Max, Enterprise, API_ONLY
    - `AuthMode` enum - Subscription, API, Auto
@@ -601,7 +601,7 @@ Instead of one-time auth choice, implemented **intelligent module-size-based rou
 3. `docs/AUTH_STRATEGY_GUIDE.md` (Comprehensive user documentation)
 
 **Integration Points:**
-- Updated `src/empathy_os/models/__init__.py` - Exported auth_strategy functions
+- Updated `src/attune/models/__init__.py` - Exported auth_strategy functions
 - Ready for integration in `DocumentGenerationWorkflow` (future PR)
 
 ### First-Time User Experience
@@ -844,12 +844,12 @@ Created comprehensive guide: `docs/AUTH_STRATEGY_GUIDE.md` (320+ lines)
 ### Files Modified/Created Summary
 
 **New Files (3):**
-- ✅ `src/empathy_os/models/auth_strategy.py` (410 lines) - Core implementation
+- ✅ `src/attune/models/auth_strategy.py` (410 lines) - Core implementation
 - ✅ `test_auth_strategy.py` (125 lines) - Test suite
 - ✅ `docs/AUTH_STRATEGY_GUIDE.md` (320+ lines) - User documentation
 
 **Modified Files (1):**
-- ✅ `src/empathy_os/models/__init__.py` - Exported auth_strategy functions
+- ✅ `src/attune/models/__init__.py` - Exported auth_strategy functions
 
 ### Conclusion
 

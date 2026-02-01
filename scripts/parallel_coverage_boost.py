@@ -23,11 +23,11 @@ from typing import Any
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.orchestration.execution_strategies import ParallelStrategy
-from empathy_os.orchestration.meta_orchestrator import (CompositionPattern,
+from attune.orchestration.execution_strategies import ParallelStrategy
+from attune.orchestration.meta_orchestrator import (CompositionPattern,
                                                         ExecutionPlan,
                                                         MetaOrchestrator)
-from empathy_os.orchestration.real_tools import (RealCoverageAnalyzer,
+from attune.orchestration.real_tools import (RealCoverageAnalyzer,
                                                  RealTestGenerator,
                                                  RealTestValidator)
 
@@ -66,7 +66,7 @@ async def analyze_and_plan(target_coverage: float = 100.0) -> CoverageBoostPlan:
 
     # Run coverage analysis
     analyzer = RealCoverageAnalyzer(project_root=".")
-    report = analyzer.analyze(target_package="src/empathy_os")
+    report = analyzer.analyze(target_package="src/attune")
 
     print(f"✓ Current Coverage: {report.total_coverage:.2f}%")
     print(f"✓ Target Coverage: {target_coverage:.2f}%")
@@ -235,7 +235,7 @@ async def execute_parallel_coverage_boost(plan: CoverageBoostPlan) -> dict[str, 
     print("=" * 80)
 
     analyzer = RealCoverageAnalyzer(project_root=".")
-    new_report = analyzer.analyze(target_package="src/empathy_os")
+    new_report = analyzer.analyze(target_package="src/attune")
 
     improvement = new_report.total_coverage - plan.current_coverage
     remaining = plan.target_coverage - new_report.total_coverage

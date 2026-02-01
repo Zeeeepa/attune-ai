@@ -31,7 +31,7 @@ By analyzing healthcare protocols with the Empathy Framework, we discover patter
 
 ```bash
 # Install Empathy Framework with MemDocs integration
-pip install empathy-framework[full]
+pip install attune-ai[full]
 ```
 
 ### Run the Demo

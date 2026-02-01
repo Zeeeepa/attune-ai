@@ -16,8 +16,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.socratic.forms import FieldType
-from empathy_os.socratic.llm_analyzer import (
+from attune.socratic.forms import FieldType
+from attune.socratic.llm_analyzer import (
     GOAL_ANALYSIS_PROMPT,
     LLMAgentRecommendation,
     LLMAnalysisResult,
@@ -26,7 +26,7 @@ from empathy_os.socratic.llm_analyzer import (
     MockLLMExecutor,
     llm_questions_to_form,
 )
-from empathy_os.socratic.session import SocraticSession
+from attune.socratic.session import SocraticSession
 
 # =============================================================================
 # FIXTURES
@@ -304,7 +304,7 @@ class TestGetClient:
         # Ensure no API key from environment
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
         # Create a fresh analyzer without API key
-        from src.empathy_os.socratic.llm_analyzer import LLMGoalAnalyzer
+        from src.attune.socratic.llm_analyzer import LLMGoalAnalyzer
 
         analyzer_no_key = LLMGoalAnalyzer(api_key=None)
         client = analyzer_no_key._get_client()

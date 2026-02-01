@@ -50,7 +50,7 @@ python examples/workflows/doc_gen_example.py
 ## Creating Custom Workflows
 
 ```python
-from empathy_os.workflows import BaseWorkflow, ModelTier
+from attune.workflows import BaseWorkflow, ModelTier
 
 class MyWorkflow(BaseWorkflow):
     name = "my-workflow"

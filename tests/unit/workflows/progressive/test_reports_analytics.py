@@ -7,13 +7,13 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_os.workflows.progressive.core import (
+from attune.workflows.progressive.core import (
     FailureAnalysis,
     ProgressiveWorkflowResult,
     Tier,
     TierResult,
 )
-from empathy_os.workflows.progressive.reports import (
+from attune.workflows.progressive.reports import (
     _format_duration,
     cleanup_old_results,
     format_cost_analytics_report,
@@ -422,7 +422,7 @@ class TestCLI:
 
     def test_cli_list_results_empty(self, tmp_path, capsys):
         """Test CLI list command with no results."""
-        from empathy_os.workflows.progressive.cli import cmd_list_results
+        from attune.workflows.progressive.cli import cmd_list_results
 
         args = MagicMock()
         args.storage_path = str(tmp_path / "progressive_runs")
@@ -435,7 +435,7 @@ class TestCLI:
 
     def test_cli_show_report_nonexistent(self, tmp_path, capsys):
         """Test CLI show command with nonexistent task."""
-        from empathy_os.workflows.progressive.cli import cmd_show_report
+        from attune.workflows.progressive.cli import cmd_show_report
 
         args = MagicMock()
         args.task_id = "nonexistent"
@@ -450,7 +450,7 @@ class TestCLI:
 
     def test_cli_analytics_no_results(self, tmp_path, capsys):
         """Test CLI analytics command with no results."""
-        from empathy_os.workflows.progressive.cli import cmd_analytics
+        from attune.workflows.progressive.cli import cmd_analytics
 
         args = MagicMock()
         args.storage_path = str(tmp_path / "progressive_runs")
@@ -464,7 +464,7 @@ class TestCLI:
 
     def test_cli_cleanup_dry_run(self, tmp_path, capsys):
         """Test CLI cleanup command in dry-run mode."""
-        from empathy_os.workflows.progressive.cli import cmd_cleanup
+        from attune.workflows.progressive.cli import cmd_cleanup
 
         # Create old result
         storage_path = tmp_path / "progressive_runs"

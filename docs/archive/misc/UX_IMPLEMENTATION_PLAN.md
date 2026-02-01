@@ -23,7 +23,7 @@ This plan delivers interactive workflow experiences through three focused initia
 
 **Files to Modify:**
 
-1. **[code_review.py:421-530](src/empathy_os/workflows/code_review.py)** - `_scan()` method
+1. **[code_review.py:421-530](src/attune/workflows/code_review.py)** - `_scan()` method
    ```python
    # After LLM call, extract structured findings
    findings = self._extract_findings_from_response(
@@ -40,7 +40,7 @@ This plan delivers interactive workflow experiences through three focused initia
    }
    ```
 
-2. **[base.py](src/empathy_os/workflows/base.py)** - Add helper method
+2. **[base.py](src/attune/workflows/base.py)** - Add helper method
    ```python
    def _extract_findings_from_response(
        self,
@@ -613,4 +613,4 @@ Use VSCode's native Settings Contribution instead of custom webview:
 3. ⏸️ **CodeReviewPanelProvider** - BLOCKED on step 2
 4. ⏸️ **Navigation command** - BLOCKED on step 2
 
-**Starting Point:** Begin with Phase 1A, Step 2 - Backend finding extraction in [code_review.py](src/empathy_os/workflows/code_review.py).
+**Starting Point:** Begin with Phase 1A, Step 2 - Backend finding extraction in [code_review.py](src/attune/workflows/code_review.py).

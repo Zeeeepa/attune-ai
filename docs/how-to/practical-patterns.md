@@ -26,7 +26,7 @@ This chapter provides copy-paste patterns for common multi-agent scenarios. Each
 **Measured Benefit**: 3x faster total review time vs. sequential human review
 
 ```python
-from empathy_os import (
+from attune import (
     EmpathyOS, get_redis_memory, AccessTier,
     TeamSession, StagedPattern
 )
@@ -135,7 +135,7 @@ print(f"Aggregated from {len(all_findings)} reviewers")
 **Measured Benefit**: 68% of conflicts resolve without human escalation
 
 ```python
-from empathy_os import ConflictResolver, ResolutionStrategy, TeamPriorities
+from attune import ConflictResolver, ResolutionStrategy, TeamPriorities
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -245,7 +245,7 @@ print(f"Solution: {result['solution']}")
 **Measured Benefit**: 45% pattern reuse rate across sessions (vs. 0% without accumulation)
 
 ```python
-from empathy_os import EmpathyOS, get_redis_memory, AccessTier, StagedPattern
+from attune import EmpathyOS, get_redis_memory, AccessTier, StagedPattern
 from typing import Optional
 import hashlib
 
@@ -393,7 +393,7 @@ print(f"Unique patterns: {accumulator.get_stats()['unique_patterns']}")
 **Measured Benefit**: 99.5% task completion rate (vs. 87% without monitoring)
 
 ```python
-from empathy_os import EmpathyOS, get_redis_memory, AccessTier, AgentCoordinator
+from attune import EmpathyOS, get_redis_memory, AccessTier, AgentCoordinator
 from datetime import datetime, timedelta
 from typing import Dict, List
 import time
@@ -504,7 +504,7 @@ if unresponsive:
 **Measured Benefit**: 0 incidents from untrusted agent actions (vs. 3 per month without)
 
 ```python
-from empathy_os import EmpathyOS, get_redis_memory, AccessTier
+from attune import EmpathyOS, get_redis_memory, AccessTier
 from dataclasses import dataclass
 from typing import Optional
 

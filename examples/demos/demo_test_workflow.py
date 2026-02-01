@@ -10,7 +10,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.meta_workflows import FormResponse, MetaWorkflow, TemplateRegistry
+from attune.meta_workflows import FormResponse, MetaWorkflow, TemplateRegistry
 
 
 def main():
@@ -123,7 +123,7 @@ def main():
         print()
 
         print("📁 Results Saved To:")
-        print(f"   .empathy/meta_workflows/executions/{result.run_id}/")
+        print(f"   .attune/meta_workflows/executions/{result.run_id}/")
         print()
 
         print("🔍 View Details:")

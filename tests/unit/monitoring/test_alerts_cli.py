@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
+from attune.monitoring.alerts import AlertChannel, AlertEngine, AlertMetric
 
 
 @pytest.mark.unit

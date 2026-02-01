@@ -125,7 +125,7 @@ MODEL_REGISTRY = {
 Create a policy that tries Sonnet first, then Opus:
 
 ```python
-from empathy_os.models.fallback import FallbackPolicy, FallbackStep
+from attune.models.fallback import FallbackPolicy, FallbackStep
 
 SONNET_TO_OPUS_FALLBACK = FallbackPolicy(
     primary_provider="anthropic",
@@ -147,8 +147,8 @@ SONNET_TO_OPUS_FALLBACK = FallbackPolicy(
 Add intelligent fallback to your existing code:
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
 import os
 
 # Your existing executor
@@ -212,7 +212,7 @@ def sonnet_opus_fallback_analysis(self, since=None):
 Add a command to view your savings:
 
 ```bash
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 30
+python -m attune.telemetry.cli sonnet-opus-analysis --days 30
 ```
 
 ---
@@ -530,7 +530,7 @@ Sonnet handles 100% of tasks.
 
 ```bash
 # 1. Install dependencies
-pip install empathy-framework
+pip install attune-ai
 
 # 2. Set API key
 export ANTHROPIC_API_KEY="your-key-here"
@@ -539,14 +539,14 @@ export ANTHROPIC_API_KEY="your-key-here"
 ./run_fallback_tests.sh
 
 # 4. Check savings
-python -m empathy_os.telemetry.cli sonnet-opus-analysis
+python -m attune.telemetry.cli sonnet-opus-analysis
 ```
 
 ### Integration Example
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
 import os
 
 # Setup
@@ -602,7 +602,7 @@ By implementing intelligent Sonnet → Opus fallback, I achieved:
 
 **The key insight:** Most coding tasks don't need your most powerful model. With intelligent routing, you can have both quality and cost efficiency.
 
-**Want to try it?** All code is open source in the [Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework).
+**Want to try it?** All code is open source in the [Empathy Framework](https://github.com/Smart-AI-Memory/attune-ai).
 
 ---
 
@@ -612,7 +612,7 @@ By implementing intelligent Sonnet → Opus fallback, I achieved:
 - **Complete Documentation:** [SONNET_OPUS_FALLBACK_GUIDE.md](../SONNET_OPUS_FALLBACK_GUIDE.md)
 - **Code Examples:** [examples/sonnet_opus_fallback_example.py](../../examples/sonnet_opus_fallback_example.py)
 - **Test Suite:** [tests/test_fallback_suite.py](../../tests/test_fallback_suite.py)
-- **GitHub Repo:** [Empathy Framework](https://github.com/Smart-AI-Memory/empathy-framework)
+- **GitHub Repo:** [Empathy Framework](https://github.com/Smart-AI-Memory/attune-ai)
 
 ---
 

@@ -7,7 +7,7 @@ Licensed under Fair Source License 0.9
 from datetime import datetime
 from unittest.mock import Mock
 
-from empathy_os.telemetry.feedback_loop import (
+from attune.telemetry.feedback_loop import (
     FeedbackEntry,
     FeedbackLoop,
     ModelTier,
@@ -639,7 +639,7 @@ class TestFeedbackLoop:
 
         # Should only return stage2 (quality 0.55 < 0.7)
         assert len(underperforming) == 1
-        assert underperforming[0][0] == "stage2"
+        assert underperforming[0][0] == "stage2/cheap"  # Stage name includes tier
         assert underperforming[0][1].avg_quality < 0.7
 
     def test_clear_feedback_no_stage(self):

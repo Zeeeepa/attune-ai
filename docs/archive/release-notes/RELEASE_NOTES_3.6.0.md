@@ -72,7 +72,7 @@ Making plugin development easier:
 ### Installation
 
 ```bash
-pip install empathy-framework==3.6.0
+pip install attune-ai==3.6.0
 ```
 
 ### Using the New Security Features
@@ -126,7 +126,7 @@ service.send_compliance_alert(
 
 1. **Add bcrypt dependency** (if using backend extras):
    ```bash
-   pip install empathy-framework[backend]
+   pip install attune-ai[backend]
    ```
 
 2. **Review new examples**:
@@ -199,10 +199,10 @@ This release represents a major step toward making Empathy Framework production-
 
 ## 💬 Questions or Issues?
 
-- **GitHub Issues**: https://github.com/Smart-AI-Memory/empathy-framework/issues
+- **GitHub Issues**: https://github.com/Smart-AI-Memory/attune-ai/issues
 - **Email**: admin@smartaimemory.com
 - **Documentation**: https://www.smartaimemory.com/framework-docs/
 
 ---
 
-**Full Changelog**: [v3.5.5...v3.6.0](https://github.com/Smart-AI-Memory/empathy-framework/compare/v3.5.5...v3.6.0)
+**Full Changelog**: [v3.5.5...v3.6.0](https://github.com/Smart-AI-Memory/attune-ai/compare/v3.5.5...v3.6.0)

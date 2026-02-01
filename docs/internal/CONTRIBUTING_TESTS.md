@@ -135,7 +135,7 @@ LLM calls are expensive and non-deterministic. Always mock them in tests unless 
 ```python
 from unittest.mock import patch, Mock
 
-@patch('empathy_llm_toolkit.providers.LLMProvider.call')
+@patch('attune_llm.providers.LLMProvider.call')
 def test_feature_with_llm(mock_llm):
     # Configure the mock to return specific response
     mock_llm.return_value = {
@@ -156,7 +156,7 @@ def test_feature_with_llm(mock_llm):
 
 #### Advanced LLM Mocking with Multiple Calls
 ```python
-@patch('empathy_llm_toolkit.providers.LLMProvider.call')
+@patch('attune_llm.providers.LLMProvider.call')
 def test_multiple_llm_calls(mock_llm):
     # Mock returns different values for each call
     mock_llm.side_effect = [
@@ -173,7 +173,7 @@ def test_multiple_llm_calls(mock_llm):
 
 #### Mocking LLM Errors
 ```python
-@patch('empathy_llm_toolkit.providers.LLMProvider.call')
+@patch('attune_llm.providers.LLMProvider.call')
 def test_llm_error_handling(mock_llm):
     # Simulate LLM API error
     mock_llm.side_effect = Exception("API Error")
@@ -295,8 +295,8 @@ async def test_with_async_fixture(async_wizard):
 
 #### Run Tests with Coverage
 ```bash
-pytest --cov=empathy_os \
-       --cov=empathy_llm_toolkit \
+pytest --cov=attune \
+       --cov=attune_llm \
        --cov=empathy_software_plugin \
        --cov=empathy_healthcare_plugin \
        --cov=coach_wizards \

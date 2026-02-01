@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.security.secure_memdocs import (
+from attune_llm.security.secure_memdocs import (
     DEFAULT_CLASSIFICATION_RULES,
     Classification,
     ClassificationRules,

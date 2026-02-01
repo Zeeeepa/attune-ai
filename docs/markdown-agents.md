@@ -50,7 +50,7 @@ You are an expert code reviewer focused on:
 ### 2. Load the Agent
 
 ```python
-from empathy_llm_toolkit.agents_md import AgentRegistry
+from attune_llm.agents_md import AgentRegistry
 
 registry = AgentRegistry.get_instance()
 registry.load_from_directory("agents/")
@@ -149,7 +149,7 @@ The framework includes these agents in `agents_md/`:
 ### From Directory
 
 ```python
-from empathy_llm_toolkit.agents_md import AgentRegistry
+from attune_llm.agents_md import AgentRegistry
 
 registry = AgentRegistry.get_instance()
 count = registry.load_from_directory("agents/", recursive=True)
@@ -165,7 +165,7 @@ config = registry.load_from_file("agents/custom-agent.md")
 ### Programmatic Registration
 
 ```python
-from empathy_llm_toolkit.config.unified import UnifiedAgentConfig
+from attune_llm.config.unified import UnifiedAgentConfig
 
 config = UnifiedAgentConfig(
     name="my-agent",
@@ -197,7 +197,7 @@ for name in registry.list_agents():
 Validate agent files before loading:
 
 ```python
-from empathy_llm_toolkit.agents_md import AgentLoader
+from attune_llm.agents_md import AgentLoader
 
 loader = AgentLoader()
 errors = loader.validate_directory("agents/")
@@ -233,7 +233,7 @@ Socratic patterns:
 ### With Commands
 
 ```python
-from empathy_llm_toolkit.commands import CommandContext
+from attune_llm.commands import CommandContext
 
 ctx = CommandContext(
     user_id="user123",

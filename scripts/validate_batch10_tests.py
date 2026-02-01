@@ -89,9 +89,9 @@ class TestValidator:
             )
 
         # Check for module under test import
-        if "from empathy_os" not in content:
+        if "from attune" not in content:
             self.warnings.append(
-                f"{test_file.name}: No imports from empathy_os (is module imported?)"
+                f"{test_file.name}: No imports from attune (is module imported?)"
             )
 
     def _check_given_when_then(self, content: str, test_file: Path):

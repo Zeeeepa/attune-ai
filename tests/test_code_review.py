@@ -8,7 +8,7 @@ Tests the code review crew including:
 - CodeReviewReport dataclass
 """
 
-from empathy_llm_toolkit.agent_factory.crews.code_review import (
+from attune_llm.agent_factory.crews.code_review import (
     CodeReviewReport,
     FindingCategory,
     ReviewFinding,

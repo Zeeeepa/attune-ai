@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_llm_toolkit.session_status import (
+from attune_llm.session_status import (
     DEFAULT_CONFIG,
     PRIORITY_WEIGHTS,
     SessionStatus,

@@ -14,7 +14,7 @@ This ADR extends [ADR-001: Workflow Engine Architecture Review](001-workflow-eng
 
 ## Context
 
-The `BaseWorkflow` class in `src/empathy_os/workflows/base.py` remains a complex class at 2,300+ lines despite recent mixin extractions (CachingMixin, TelemetryMixin). While the public API is simple (subclasses only override `run_stage`), internal complexity creates maintenance challenges:
+The `BaseWorkflow` class in `src/attune/workflows/base.py` remains a complex class at 2,300+ lines despite recent mixin extractions (CachingMixin, TelemetryMixin). While the public API is simple (subclasses only override `run_stage`), internal complexity creates maintenance challenges:
 
 ### Current Architecture Problems
 
@@ -71,7 +71,7 @@ def _call_llm(self, system: str, user_message: str, tier: ModelTier):
 ### Solution: Strategy Pattern
 
 ```python
-# New file: src/empathy_os/workflows/routing.py
+# New file: src/attune/workflows/routing.py
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
@@ -247,7 +247,7 @@ Current file-based history (`workflow_runs.json`):
 ### Solution: SQLite with Structured Storage
 
 ```python
-# New file: src/empathy_os/workflows/history.py
+# New file: src/attune/workflows/history.py
 import sqlite3
 from dataclasses import asdict, dataclass
 from datetime import datetime
@@ -502,8 +502,8 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-from empathy_os.workflows.history import WorkflowHistoryStore
-from empathy_os.workflows.base import WORKFLOW_HISTORY_FILE
+from attune.workflows.history import WorkflowHistoryStore
+from attune.workflows.base import WORKFLOW_HISTORY_FILE
 
 def migrate():
     """Migrate JSON history to SQLite."""
@@ -529,7 +529,7 @@ def migrate():
 
         # Create minimal WorkflowResult-like structure
         from dataclasses import dataclass
-        from empathy_os.workflows.base import WorkflowResult, WorkflowStage, CostReport, ModelTier
+        from attune.workflows.base import WorkflowResult, WorkflowStage, CostReport, ModelTier
 
         stages = [
             WorkflowStage(
@@ -729,31 +729,31 @@ workflow = (
 ### Problem
 
 `ModelTier` defined in two places:
-- `src/empathy_os/models/registry.py:20` (canonical)
-- `src/empathy_os/workflows/base.py:83` (backward compatibility)
+- `src/attune/models/registry.py:20` (canonical)
+- `src/attune/workflows/base.py:83` (backward compatibility)
 
 ### Solution: Deprecate and Remove
 
 ```python
 # Phase 1 (v4.8): Add deprecation warning
 class ModelTier(Enum):
-    """DEPRECATED: Use empathy_os.models.ModelTier instead.
+    """DEPRECATED: Use attune.models.ModelTier instead.
 
     This enum will be removed in v5.0.
 
     Migration:
         # Old:
-        from empathy_os.workflows.base import ModelTier
+        from attune.workflows.base import ModelTier
 
         # New:
-        from empathy_os.models import ModelTier
+        from attune.models import ModelTier
     """
 
     def __init__(self, value):
         import warnings
         warnings.warn(
             "workflows.base.ModelTier is deprecated. "
-            "Use empathy_os.models.ModelTier instead. "
+            "Use attune.models.ModelTier instead. "
             "This will be removed in v5.0.",
             DeprecationWarning,
             stacklevel=3,
@@ -762,7 +762,7 @@ class ModelTier(Enum):
 
 # Phase 2 (v5.0): Remove local enum entirely
 # Just import from models:
-from empathy_os.models import ModelTier
+from attune.models import ModelTier
 ```
 
 ---
@@ -880,8 +880,8 @@ from empathy_os.models import ModelTier
 
 - [ADR-001: Workflow Engine Architecture Review](001-workflow-engine-architecture.md)
 - [ARCHITECTURE.md](../ARCHITECTURE.md)
-- [BaseWorkflow Implementation](../../src/empathy_os/workflows/base.py)
-- [Model Registry](../../src/empathy_os/models/registry.py)
+- [BaseWorkflow Implementation](../../src/attune/workflows/base.py)
+- [Model Registry](../../src/attune/models/registry.py)
 
 ---
 

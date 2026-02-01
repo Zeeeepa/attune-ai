@@ -1,7 +1,7 @@
 # Graceful Degradation Pattern
 
 **Source Domain:** Reliability Engineering
-**Location in Codebase:** `src/empathy_os/resilience/fallback.py`, `src/empathy_os/models/fallback.py`
+**Location in Codebase:** `src/attune/resilience/fallback.py`, `src/attune/models/fallback.py`
 **Level:** 4 (Anticipatory)
 
 ## Overview
@@ -20,7 +20,7 @@ When primary functionality fails, the system automatically falls back to alterna
 ## Implementation
 
 ```python
-from empathy_os.resilience.fallback import Fallback, fallback
+from attune.resilience.fallback import Fallback, fallback
 
 # Decorator with default value
 @fallback(get_from_cache, default=None)

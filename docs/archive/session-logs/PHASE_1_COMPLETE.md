@@ -123,7 +123,7 @@ Successfully completed Phase 1 of test coverage improvement initiative:
 
 ## Code Fixes Applied
 
-### src/empathy_os/memory/long_term.py
+### src/attune/memory/long_term.py
 **Fix**: Added `InvalidTag` exception handling
 
 **Problem**: Cryptography library throws `InvalidTag` on decryption failures (tampering, wrong key), but code only caught `ValueError, TypeError, UnicodeDecodeError, binascii.Error`

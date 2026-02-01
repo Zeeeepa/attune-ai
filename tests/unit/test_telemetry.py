@@ -9,7 +9,7 @@ import pytest
 @pytest.mark.unit
 def test_costs_file_structure():
     """Test that costs.json has expected structure if it exists."""
-    costs_file = Path(".empathy/costs.json")
+    costs_file = Path(".attune/costs.json")
 
     if costs_file.exists():
         with open(costs_file) as f:
@@ -32,7 +32,7 @@ def test_costs_file_structure():
 @pytest.mark.unit
 def test_health_file_structure():
     """Test that health.json has expected structure if it exists."""
-    health_file = Path(".empathy/health.json")
+    health_file = Path(".attune/health.json")
 
     if health_file.exists():
         with open(health_file) as f:
@@ -53,7 +53,7 @@ def test_health_file_structure():
 @pytest.mark.unit
 def test_workflow_runs_structure():
     """Test that workflow_runs.json has expected structure if it exists."""
-    runs_file = Path(".empathy/workflow_runs.json")
+    runs_file = Path(".attune/workflow_runs.json")
 
     if runs_file.exists():
         with open(runs_file) as f:

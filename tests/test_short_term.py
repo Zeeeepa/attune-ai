@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/memory/short_term.py
+"""Tests for src/attune/memory/short_term.py
 
 Tests the Redis-backed short-term memory system including:
 - AccessTier enum and role-based permissions
@@ -13,7 +13,7 @@ Tests the Redis-backed short-term memory system including:
 
 from datetime import datetime
 
-from empathy_os.memory.short_term import (
+from attune.memory.short_term import (
     AccessTier,
     AgentCredentials,
     ConflictContext,

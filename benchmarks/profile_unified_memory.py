@@ -1,4 +1,4 @@
-"""Memory profiling for UnifiedMemory (src/empathy_os/memory/unified.py)
+"""Memory profiling for UnifiedMemory (src/attune/memory/unified.py)
 
 Run with:
     python -m memory_profiler benchmarks/profile_unified_memory.py
@@ -52,7 +52,7 @@ def create_test_patterns(storage_dir: str, count: int = 100) -> None:
 @profile
 def profile_initialization():
     """Profile UnifiedMemory initialization."""
-    from empathy_os.memory.unified import Environment, MemoryConfig, UnifiedMemory
+    from attune.memory.unified import Environment, MemoryConfig, UnifiedMemory
 
     config = MemoryConfig(
         environment=Environment.DEVELOPMENT,

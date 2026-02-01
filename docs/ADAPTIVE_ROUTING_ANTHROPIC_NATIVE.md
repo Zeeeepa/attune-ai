@@ -133,7 +133,7 @@ Biggest opportunities:
 The router now dynamically fetches Anthropic models from `MODEL_REGISTRY`:
 
 ```python
-# File: src/empathy_os/models/registry.py
+# File: src/attune/models/registry.py
 
 MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
     "anthropic": {
@@ -170,8 +170,8 @@ MODEL_REGISTRY: dict[str, dict[str, ModelInfo]] = {
 ### Basic Usage
 
 ```python
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 router = AdaptiveModelRouter(UsageTracker.get_instance())
 
@@ -262,8 +262,8 @@ All tests passing with Anthropic-native implementation:
 
 ```bash
 $ PYTHONPATH="./src:$PYTHONPATH" python -c "
-from empathy_os.models import AdaptiveModelRouter
-from empathy_os.telemetry import UsageTracker
+from attune.models import AdaptiveModelRouter
+from attune.telemetry import UsageTracker
 
 router = AdaptiveModelRouter(UsageTracker.get_instance())
 

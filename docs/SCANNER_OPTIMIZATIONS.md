@@ -25,7 +25,7 @@ The Empathy Framework project scanner has been optimized for **3.65x faster** pe
 ### Fast Scan (Recommended for Development)
 
 ```python
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 # Create index with parallel scanning (default)
 index = ProjectIndex(project_root=".")
@@ -42,7 +42,7 @@ print(f"Updated {updated} files in <1 second!")
 ### Full Scan (Recommended for CI/CD)
 
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 # Scan with all features enabled
 scanner = ParallelProjectScanner(project_root=".", workers=4)
@@ -86,7 +86,7 @@ Uses multiple CPU cores to analyze files concurrently, achieving near-linear sca
 ### API
 
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 # Auto-detect CPU cores
 scanner = ParallelProjectScanner(project_root=".")
@@ -140,7 +140,7 @@ Uses git diff to identify changed files and only re-scans those, dramatically re
 ### API
 
 ```python
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 # Create index
 index = ProjectIndex(project_root=".")
@@ -234,7 +234,7 @@ Skip expensive dependency graph analysis when not needed, saving ~27% scan time.
 ### API
 
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 scanner = ParallelProjectScanner(project_root=".")
 
@@ -277,7 +277,7 @@ records, summary = scanner.scan(analyze_dependencies=True)
 `ProjectIndex` uses parallel scanning by default:
 
 ```python
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 # Automatically uses ParallelProjectScanner
 index = ProjectIndex(project_root=".")
@@ -327,7 +327,7 @@ print(f"Found {len(stale_files)} stale files")
 ```bash
 # Using Python API
 python -c "
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 index = ProjectIndex('.')
 index.refresh()
 print(f'Scanned {len(index._records)} files')
@@ -339,7 +339,7 @@ print(f'Scanned {len(index._records)} files')
 ```bash
 # Using Python API
 python -c "
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 index = ProjectIndex('.')
 index.load()
 updated, removed = index.refresh_incremental()
@@ -478,7 +478,7 @@ except RuntimeError:
 
 **Before:**
 ```python
-from empathy_os.project_index import ProjectScanner
+from attune.project_index import ProjectScanner
 
 scanner = ProjectScanner(".")
 records, summary = scanner.scan()
@@ -486,7 +486,7 @@ records, summary = scanner.scan()
 
 **After:**
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 scanner = ParallelProjectScanner(".")  # Auto worker count
 records, summary = scanner.scan()
@@ -564,7 +564,7 @@ else:
 ## Support
 
 **Questions or issues?**
-- GitHub Issues: [Smart-AI-Memory/empathy-framework/issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- GitHub Issues: [Smart-AI-Memory/attune-ai/issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - Documentation: [smartaimemory.com/framework-docs](https://smartaimemory.com/framework-docs/)
 
 ---

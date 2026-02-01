@@ -160,7 +160,7 @@ empathy workflow run test-coverage-boost
 empathy workflow run test-coverage-boost --input '{"target_coverage": 85}'
 
 # From Python
-python -m empathy_os.cli workflow run test-coverage-boost --input '{"target_coverage": 85}'
+python -m attune.cli workflow run test-coverage-boost --input '{"target_coverage": 85}'
 ```
 
 ---

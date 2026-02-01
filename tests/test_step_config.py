@@ -6,8 +6,8 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from empathy_os.models import FallbackPolicy, ModelTier, RetryPolicy
-from empathy_os.workflows.step_config import (
+from attune.models import FallbackPolicy, ModelTier, RetryPolicy
+from attune.workflows.step_config import (
     WorkflowStepConfig,
     steps_from_tier_map,
     validate_step_config,
@@ -443,7 +443,7 @@ class TestStepsFromTierMap:
 
     def test_handles_enum_tier_values(self):
         """Test conversion handles ModelTier enum values."""
-        from empathy_os.workflows.base import ModelTier as LocalModelTier
+        from attune.workflows.base import ModelTier as LocalModelTier
 
         stages = ["step1", "step2"]
         tier_map = {

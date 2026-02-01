@@ -10,7 +10,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.project_index.models import (
+from attune.project_index.models import (
     FileCategory,
     FileRecord,
     IndexConfig,
@@ -86,7 +86,7 @@ class TestFileRecord:
         """Test creating a FileRecord with all fields."""
         now = datetime.now()
         record = FileRecord(
-            path="src/empathy_os/core.py",
+            path="src/attune/core.py",
             name="core.py",
             category=FileCategory.SOURCE,
             language="python",

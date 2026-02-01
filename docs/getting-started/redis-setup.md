@@ -78,7 +78,7 @@ python -c "from wizards_consolidated.redis_config import redis_health_check; pri
 ### Basic Usage
 
 ```python
-from empathy_os import get_redis_memory
+from attune import get_redis_memory
 
 # Auto-detects REDIS_URL, falls back to localhost, then mock mode
 memory = get_redis_memory()
@@ -93,7 +93,7 @@ data = memory.get("my_key")
 ### With EmpathyOS
 
 ```python
-from empathy_os import EmpathyOS, get_redis_memory
+from attune import EmpathyOS, get_redis_memory
 
 memory = get_redis_memory()
 

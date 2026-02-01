@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/memory/long_term.py
+"""Tests for src/attune/memory/long_term.py
 
 Tests the secure MemDocs integration including:
 - Classification enum (PUBLIC, INTERNAL, SENSITIVE)
@@ -16,7 +16,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.memory.long_term import (
+from attune.memory.long_term import (
     DEFAULT_CLASSIFICATION_RULES,
     HAS_ENCRYPTION,
     Classification,
@@ -286,7 +286,7 @@ class TestEncryptionManager:
 
     def test_init_without_encryption(self):
         """Test initialization when encryption not available."""
-        with patch("empathy_os.memory.long_term.HAS_ENCRYPTION", False):
+        with patch("attune.memory.long_term.HAS_ENCRYPTION", False):
             # Re-import won't work, so we test the class behavior
             manager = EncryptionManager.__new__(EncryptionManager)
             manager.enabled = False

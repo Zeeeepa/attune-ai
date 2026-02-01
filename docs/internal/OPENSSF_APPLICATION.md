@@ -102,7 +102,7 @@ Met: Via semantic versioning (MAJOR.MINOR.PATCH)
 Users can obtain specific versions through:
 
 1. PyPI package manager:
-   pip install empathy-framework==1.6.8
+   pip install attune-ai==1.6.8
 
 2. Git tags:
    git clone https://github.com/Smart-AI-Memory/empathy
@@ -221,7 +221,7 @@ Coverage details:
 - All tests passing: 100%
 
 Coverage by module:
-- Core framework: 100% (empathy_os/core.py, persistence.py)
+- Core framework: 100% (attune/core.py, persistence.py)
 - LLM toolkit: 98.6% average
 - Software wizards (16 total): 99.96% average
 - Healthcare plugin: 98.72%
@@ -720,14 +720,14 @@ Installation documented in multiple places:
 1. README.md (Quick Start):
    ```bash
    # Install from PyPI
-   pip install empathy-framework
+   pip install attune-ai
 
    # Install with full features
-   pip install empathy-framework[full]
+   pip install attune-ai[full]
 
    # Development installation
    git clone https://github.com/Smart-AI-Memory/empathy.git
-   cd empathy-framework
+   cd attune-ai
    pip install -e .[dev]
    ```
 
@@ -870,7 +870,7 @@ Met: Dual licensing model
 2. Commercial License (for 6+ employees):
    - contact us for pricing
    - Includes support and updates
-   - Purchase at: https://smartaimemory.com/empathy-framework/pricing
+   - Purchase at: https://smartaimemory.com/attune-ai/pricing
 
 License files:
 - LICENSE (Fair Source 0.9)
@@ -1253,7 +1253,7 @@ Reproduce any metric with these commands:
 ```bash
 # Clone repository
 git clone https://github.com/Smart-AI-Memory/empathy.git
-cd empathy-framework
+cd attune-ai
 
 # Install dependencies
 pip install -e .[dev]
@@ -1293,7 +1293,7 @@ pre-commit run --all-files
 
 - Repository: https://github.com/Smart-AI-Memory/empathy
 - Documentation: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
-- PyPI Package: https://pypi.org/project/empathy-framework/
+- PyPI Package: https://pypi.org/project/attune-ai/
 - Security Policy: SECURITY.md
 - Contributing Guide: CONTRIBUTING.md
 - Governance: docs/GOVERNANCE.md

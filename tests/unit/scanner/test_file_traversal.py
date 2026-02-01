@@ -1,4 +1,4 @@
-"""File scanner traversal tests for src/empathy_os/project_index/scanner.py.
+"""File scanner traversal tests for src/attune/project_index/scanner.py.
 
 Tests comprehensive file system scanning including:
 - Basic traversal (20 tests)
@@ -11,7 +11,7 @@ Agent: a7ea2ab - Created 40 comprehensive scanner tests
 
 import pytest
 
-from empathy_os.project_index.scanner import FileCategory, IndexConfig, ProjectScanner
+from attune.project_index.scanner import FileCategory, IndexConfig, ProjectScanner
 
 # =============================================================================
 # Fixtures

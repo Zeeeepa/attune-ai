@@ -6,7 +6,7 @@ Licensed under Fair Source License 0.9
 
 import json
 
-from empathy_os.config import (
+from attune.config import (
     AdaptiveConfig,
     EmpathyXMLConfig,
     I18nConfig,
@@ -24,7 +24,7 @@ def test_xml_config_defaults():
 
     assert config.use_xml_structure is True
     assert config.validate_schemas is False
-    assert config.schema_dir == ".empathy/schemas"
+    assert config.schema_dir == ".attune/schemas"
     assert config.strict_validation is False
 
 
@@ -65,7 +65,7 @@ def test_metrics_config_defaults():
     config = MetricsConfig()
 
     assert config.enable_tracking is True
-    assert config.metrics_file == ".empathy/prompt_metrics.json"
+    assert config.metrics_file == ".attune/prompt_metrics.json"
     assert config.track_token_usage is True
     assert config.track_latency is True
 

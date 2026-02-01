@@ -17,7 +17,7 @@ Licensed under Apache 2.0
 
 import pytest
 
-from empathy_os.models.validation import (
+from attune.models.validation import (
     ConfigValidator,
     ValidationError,
     ValidationResult,

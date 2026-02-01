@@ -12,9 +12,9 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 ## Pre-Launch (Do Tonight or Early Morning)
 
 ### 1. Verify Package
-- [ ] Check PyPI page: https://pypi.org/project/empathy-framework/3.6.0/
+- [ ] Check PyPI page: https://pypi.org/project/attune-ai/3.6.0/
 - [ ] Verify README renders correctly on PyPI
-- [ ] Test installation: `pip install empathy-framework[developer]==3.6.0`
+- [ ] Test installation: `pip install attune-ai[developer]==3.6.0`
 - [ ] Run quick smoke test
 
 ### 2. Prepare Accounts
@@ -26,7 +26,7 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 - [ ] Log into GitHub
 
 ### 3. Set Up Analytics
-- [ ] Bookmark PyPI Stats: https://pypistats.org/packages/empathy-framework
+- [ ] Bookmark PyPI Stats: https://pypistats.org/packages/attune-ai
 - [ ] Open GitHub Insights: Repository > Insights > Traffic
 - [ ] Open Twitter Analytics dashboard
 - [ ] Create tracking spreadsheet for metrics
@@ -52,8 +52,8 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 - [ ] Post
 
 **Links to Include:**
-- PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 
 **After Posting:**
 - [ ] Pin post to your profile
@@ -67,7 +67,7 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 **Action:**
 - [ ] Go to https://news.ycombinator.com/submit
 - [ ] Title: "Show HN: Empathy Framework v3.6.0 – Error messages that show you exactly what to implement"
-- [ ] URL: https://github.com/Smart-AI-Memory/empathy-framework
+- [ ] URL: https://github.com/Smart-AI-Memory/attune-ai
 - [ ] OR use text post with description from SOCIAL_MEDIA_POSTS.md
 
 **Critical:**
@@ -93,8 +93,8 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 - [ ] Continue threading (7 tweets total)
 
 **Links to Include:**
-- PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 
 **After Posting:**
 - [ ] Pin thread to profile
@@ -137,7 +137,7 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 ### 11:00am - GitHub Discussions
 
 **Action:**
-- [ ] Go to https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- [ ] Go to https://github.com/Smart-AI-Memory/attune-ai/discussions
 - [ ] Create new discussion in "Announcements" category
 - [ ] Copy content from SOCIAL_MEDIA_POSTS.md (GitHub section)
 - [ ] Post
@@ -213,7 +213,7 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 ### 6:00pm - Metrics Recap
 
 **Action:**
-- [ ] Check PyPI downloads: https://pypistats.org/packages/empathy-framework
+- [ ] Check PyPI downloads: https://pypistats.org/packages/attune-ai
 - [ ] Check GitHub stars/traffic
 - [ ] Check Reddit karma/comments
 - [ ] Check HN points/comments
@@ -367,13 +367,13 @@ Tomorrow: Blog post on building HIPAA-compliant AI systems 🏥
 ## Tools & Links
 
 ### Analytics
-- PyPI Stats: https://pypistats.org/packages/empathy-framework
+- PyPI Stats: https://pypistats.org/packages/attune-ai
 - GitHub Insights: [Repo] > Insights > Traffic
 - Twitter Analytics: https://analytics.twitter.com
 
 ### Quick Links
-- PyPI: https://pypi.org/project/empathy-framework/3.6.0/
-- GitHub: https://github.com/Smart-AI-Memory/empathy-framework
+- PyPI: https://pypi.org/project/attune-ai/3.6.0/
+- GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - Docs: [Your docs URL]
 
 ### Assets

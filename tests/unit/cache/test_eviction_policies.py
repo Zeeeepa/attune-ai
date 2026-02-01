@@ -1,4 +1,4 @@
-"""Cache eviction policy tests for src/empathy_os/cache/.
+"""Cache eviction policy tests for src/attune/cache/.
 
 Tests comprehensive cache functionality including:
 - Eviction policies (15 tests)
@@ -13,8 +13,8 @@ import time
 
 import pytest
 
-from empathy_os.cache.base import CacheEntry, CacheStats
-from empathy_os.cache.storage import CacheStorage
+from attune.cache.base import CacheEntry, CacheStats
+from attune.cache.storage import CacheStorage
 
 # =============================================================================
 # Fixtures

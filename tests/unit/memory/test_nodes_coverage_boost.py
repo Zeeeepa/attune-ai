@@ -12,7 +12,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.memory.nodes import (
+from attune.memory.nodes import (
     BugNode,
     Node,
     NodeType,

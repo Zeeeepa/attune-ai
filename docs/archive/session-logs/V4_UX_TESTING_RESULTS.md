@@ -32,7 +32,7 @@ description: v4.0 Experimental Branch - UX Testing Results: **Date:** Monday, Ja
 
 **Test Command:**
 ```bash
-python -m empathy_os.cli orchestrate health-check --mode weekly
+python -m attune.cli orchestrate health-check --mode weekly
 ```
 
 **Console Output Quality:** ✅ EXCELLENT
@@ -91,7 +91,7 @@ CATEGORY BREAKDOWN
 
 **Test Command:**
 ```bash
-python -m empathy_os.cli orchestrate release-prep --path .
+python -m attune.cli orchestrate release-prep --path .
 ```
 
 **Console Output Quality:** ✅ GOOD
@@ -185,7 +185,7 @@ empathy workflow run test-coverage-boost
 
 ### The Smoking Gun
 
-**File:** `src/empathy_os/orchestration/execution_strategies.py` (lines 102-132)
+**File:** `src/attune/orchestration/execution_strategies.py` (lines 102-132)
 
 ```python
 async def _execute_agent(self, agent: AgentTemplate, context: dict[str, Any]) -> AgentResult:
@@ -469,16 +469,16 @@ project health monitoring.
 ## 📁 Files Analyzed
 
 ### Workflows
-- `src/empathy_os/workflows/orchestrated_health_check.py` - Main health check (900 lines)
-- `src/empathy_os/workflows/orchestrated_release_prep.py` - Release prep (800 lines)
-- `src/empathy_os/workflows/test_coverage_boost_crew.py` - Coverage boost (600 lines)
-- `src/empathy_os/workflows/health_check_crew.py` - Duplicate? (800 lines)
-- `src/empathy_os/workflows/health_check.py` - Legacy? (1000+ lines)
+- `src/attune/workflows/orchestrated_health_check.py` - Main health check (900 lines)
+- `src/attune/workflows/orchestrated_release_prep.py` - Release prep (800 lines)
+- `src/attune/workflows/test_coverage_boost_crew.py` - Coverage boost (600 lines)
+- `src/attune/workflows/health_check_crew.py` - Duplicate? (800 lines)
+- `src/attune/workflows/health_check.py` - Legacy? (1000+ lines)
 
 ### Orchestration Core
-- `src/empathy_os/orchestration/execution_strategies.py` - **THE PROBLEM** (stub implementations)
-- `src/empathy_os/orchestration/agent_templates.py` - Agent definitions (good architecture)
-- `src/empathy_os/orchestration/meta_orchestrator.py` - Orchestration logic
+- `src/attune/orchestration/execution_strategies.py` - **THE PROBLEM** (stub implementations)
+- `src/attune/orchestration/agent_templates.py` - Agent definitions (good architecture)
+- `src/attune/orchestration/meta_orchestrator.py` - Orchestration logic
 
 ### VSCode Extension
 - `vscode-extension/src/panels/EmpathyDashboardPanel.ts` - Dashboard UI
@@ -486,8 +486,8 @@ project health monitoring.
 - `vscode-extension/src/panels/WorkflowReportPanel.ts` - Report UI
 
 ### CLI
-- `src/empathy_os/cli.py` - Command interface (lines 767-995 for orchestrate command)
-- `src/empathy_os/workflows/__init__.py` - Workflow registry
+- `src/attune/cli.py` - Command interface (lines 767-995 for orchestrate command)
+- `src/attune/workflows/__init__.py` - Workflow registry
 
 ---
 

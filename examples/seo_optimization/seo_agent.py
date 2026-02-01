@@ -17,8 +17,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from empathy_os.orchestration import MetaOrchestrator
-from empathy_os.orchestration.composition_patterns import CompositionPattern
+from attune.orchestration import MetaOrchestrator
+from attune.orchestration.composition_patterns import CompositionPattern
 
 from utils import (
     SEOAuditor,

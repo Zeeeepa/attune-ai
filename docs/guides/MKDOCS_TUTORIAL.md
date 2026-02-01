@@ -123,7 +123,7 @@ site_name: My Docs
 site_name: Empathy Framework
 site_description: Production-ready Level 4 Anticipatory Intelligence
 site_author: Patrick Roebuck
-site_url: https://empathy-framework.readthedocs.io
+site_url: https://attune-ai.readthedocs.io
 
 # Repository
 repo_name: Smart-AI-Memory/empathy
@@ -160,7 +160,7 @@ Create this file at the root of your project:
 site_name: Empathy Framework
 site_description: Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration
 site_author: Patrick Roebuck
-site_url: https://empathy-framework.readthedocs.io
+site_url: https://attune-ai.readthedocs.io
 
 # Repository
 repo_name: Smart-AI-Memory/empathy
@@ -282,7 +282,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/Smart-AI-Memory/empathy
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/empathy-framework/
+      link: https://pypi.org/project/attune-ai/
 
   version:
     provider: mike
@@ -339,7 +339,7 @@ docs/
 
 **Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration**
 
-[![PyPI version](https://badge.fury.io/py/empathy-framework.svg)](https://pypi.org/project/empathy-framework/)
+[![PyPI version](https://badge.fury.io/py/attune-ai.svg)](https://pypi.org/project/attune-ai/)
 [![Tests](https://github.com/Smart-AI-Memory/empathy/workflows/tests/badge.svg)](https://github.com/Smart-AI-Memory/empathy/actions)
 
 ---
@@ -365,13 +365,13 @@ The Empathy Framework is a **5-level maturity model** for AI-human collaboration
 ### Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ### 5-Minute Example
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 # Create Level 4 (Anticipatory) chatbot
 empathy = EmpathyOS(
@@ -527,7 +527,7 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 ### Core Framework
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 This installs the core Empathy Framework with basic functionality.
@@ -537,7 +537,7 @@ This installs the core Empathy Framework with basic functionality.
 ### With LLM Support
 
 ```bash
-pip install empathy-framework[llm]
+pip install attune-ai[llm]
 ```
 
 Includes:
@@ -547,7 +547,7 @@ Includes:
 ### With Healthcare Support
 
 ```bash
-pip install empathy-framework[healthcare]
+pip install attune-ai[healthcare]
 ```
 
 Includes:
@@ -558,7 +558,7 @@ Includes:
 ### With Webhooks
 
 ```bash
-pip install empathy-framework[webhooks]
+pip install attune-ai[webhooks]
 ```
 
 Includes:
@@ -568,7 +568,7 @@ Includes:
 ### Full Installation (Recommended)
 
 ```bash
-pip install empathy-framework[full]
+pip install attune-ai[full]
 ```
 
 Includes everything: LLM providers, healthcare, webhooks.
@@ -578,7 +578,7 @@ Includes everything: LLM providers, healthcare, webhooks.
 ```bash
 # Clone repository
 git clone https://github.com/Smart-AI-Memory/empathy.git
-cd empathy-framework
+cd attune-ai
 
 # Install in editable mode with dev dependencies
 pip install -e .[dev]
@@ -589,14 +589,14 @@ pip install -e .[dev]
 Verify installation:
 
 ```bash
-python -c "import empathy_os; print(empathy_os.__version__)"
+python -c "import attune; print(attune.__version__)"
 # Output: 1.8.0
 ```
 
 Or use the CLI:
 
 ```bash
-empathy-framework version
+attune-ai version
 # Output: Empathy v1.8.0
 ```
 
@@ -632,7 +632,7 @@ empathy-framework version
 
 ````markdown
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 empathy = EmpathyOS(user_id="user_123")
 ```
@@ -680,14 +680,14 @@ The `EmpathyOS` class is the main entry point for the Empathy Framework.
 
 ## Class Documentation
 
-::: empathy_os.core.EmpathyOS
+::: attune.core.EmpathyOS
     options:
       show_source: true
       heading_level: 3
 ```
 
 **What this does**:
-- Automatically extracts docstrings from `empathy_os.core.EmpathyOS`
+- Automatically extracts docstrings from `attune.core.EmpathyOS`
 - Formats them as beautiful documentation
 - Includes method signatures, parameters, return types
 
@@ -813,7 +813,7 @@ mkdocstrings[python]>=0.24.0
 
 **Done!** Your docs will auto-deploy on every commit to `main`.
 
-**Your URL**: https://empathy-framework.readthedocs.io
+**Your URL**: https://attune-ai.readthedocs.io
 
 ---
 
@@ -841,7 +841,7 @@ mike deploy --push
 ### Custom Domain
 
 In Read the Docs settings:
-- Add custom domain: `docs.empathy-framework.com`
+- Add custom domain: `docs.attune-ai.com`
 - Update DNS CNAME record
 
 ---

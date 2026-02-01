@@ -33,13 +33,13 @@ from dashboard.backend.schemas import (
     TestExecutionStatsResponse,
     Tier1SummaryResponse,
 )
-from empathy_os.models import (
+from attune.models import (
     AgentAssignmentRecord,
     CoverageRecord,
     TaskRoutingRecord,
     TestExecutionRecord,
 )
-from empathy_os.models.telemetry import TelemetryStore
+from attune.models.telemetry import TelemetryStore
 
 
 @pytest.fixture
@@ -154,13 +154,13 @@ def populated_store(temp_dir):
 def test_client(populated_store, monkeypatch):
     """Create a FastAPI test client with populated telemetry store."""
     # Reset global telemetry store singleton
-    import empathy_os.models.telemetry
+    import attune.models.telemetry
 
-    empathy_os.models.telemetry._telemetry_store = None
+    attune.models.telemetry._telemetry_store = None
 
     # Mock get_telemetry_store in both places:
     # 1. In the telemetry module itself
-    monkeypatch.setattr("empathy_os.models.telemetry.get_telemetry_store", lambda: populated_store)
+    monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
     # 2. In the monitoring API module (where it's imported)
     monkeypatch.setattr(
         "dashboard.backend.api.monitoring.get_telemetry_store", lambda: populated_store

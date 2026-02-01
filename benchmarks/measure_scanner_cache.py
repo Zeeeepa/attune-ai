@@ -21,7 +21,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.project_index.scanner import ProjectScanner
+from attune.project_index.scanner import ProjectScanner
 
 
 def get_cache_stats():

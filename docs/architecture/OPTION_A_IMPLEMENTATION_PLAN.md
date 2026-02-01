@@ -57,21 +57,21 @@ description: Option A: Complete Framework Implementation Plan: System architectu
 
 ### 3C.1: Enhanced CLI Commands (5-6 hours)
 
-**Current CLI** (in `src/empathy_os/cli.py`):
+**Current CLI** (in `src/attune/cli.py`):
 ```bash
-empathy-framework version    # ✅ Works
-empathy-framework init       # ✅ Works (creates config)
-empathy-framework validate   # ✅ Works (validates config)
+attune-ai version    # ✅ Works
+attune-ai init       # ✅ Works (creates config)
+attune-ai validate   # ✅ Works (validates config)
 ```
 
 **Add these commands**:
 
-#### Command: `empathy-framework run`
+#### Command: `attune-ai run`
 **Purpose**: Interactive REPL for testing empathy interactions
 **Effort**: 2 hours
 
 ```bash
-empathy-framework run [--config empathy.config.yml] [--level 4]
+attune-ai run [--config empathy.config.yml] [--level 4]
 
 # Interactive session:
 > Enter request: Help me debug this authentication bug
@@ -90,14 +90,14 @@ Would you like me to review your auth module for common patterns?
 - Show empathy level transitions
 - Log interactions to metrics
 
-#### Command: `empathy-framework inspect`
+#### Command: `attune-ai inspect`
 **Purpose**: Inspect pattern library, metrics, and state
 **Effort**: 2 hours
 
 ```bash
-empathy-framework inspect patterns [--user-id USER]
-empathy-framework inspect metrics [--since DAYS]
-empathy-framework inspect state [--user-id USER]
+attune-ai inspect patterns [--user-id USER]
+attune-ai inspect metrics [--since DAYS]
+attune-ai inspect state [--user-id USER]
 
 # Example output:
 Patterns for user: developer_123
@@ -117,24 +117,24 @@ Least used: deployment_pattern (2 uses)
 - Format output as tables (use `tabulate` library)
 - Support JSON output for scripting
 
-#### Command: `empathy-framework export`
+#### Command: `attune-ai export`
 **Purpose**: Export patterns for sharing/backup
 **Effort**: 1.5 hours
 
 ```bash
-empathy-framework export patterns --output patterns.json
-empathy-framework export metrics --output metrics.csv --since 30
-empathy-framework import patterns --input patterns.json
+attune-ai export patterns --output patterns.json
+attune-ai export metrics --output metrics.csv --since 30
+attune-ai import patterns --input patterns.json
 ```
 
 **Use case**: Share successful patterns across team members
 
-#### Command: `empathy-framework wizard`
+#### Command: `attune-ai wizard`
 **Purpose**: Interactive wizard for framework setup
 **Effort**: 1.5 hours
 
 ```bash
-empathy-framework wizard
+attune-ai wizard
 
 Welcome to Empathy Framework Setup!
 
@@ -163,7 +163,7 @@ Creating configuration...
 
 Next steps:
   1. Set ANTHROPIC_API_KEY in .env
-  2. Run: empathy-framework run
+  2. Run: attune-ai run
   3. See: examples/healthcare/ for sample code
 ```
 
@@ -232,7 +232,7 @@ docs/
 **Tutorial 1: Building a Code Review Assistant (2 hours)**
 
 Step-by-step guide showing:
-1. Install empathy-framework
+1. Install attune-ai
 2. Create configuration file
 3. Build basic code review bot (Level 2 - Guided)
 4. Add proactive suggestions (Level 3)
@@ -306,7 +306,7 @@ patterns = empathy_backend.retrieve_patterns("react_best_practices")
 #### 2. Coordination Protocols (4 hours)
 
 ```python
-from empathy_os.coordination import CoordinationManager
+from attune.coordination import CoordinationManager
 
 coord = CoordinationManager(agents=[
     {"agent_id": "frontend", "role": "ui_development"},
@@ -371,7 +371,7 @@ empathy_backend.interact(
 #### 4. Team Metrics Dashboard (2 hours)
 
 ```bash
-empathy-framework inspect team --shared-library team_patterns.db
+attune-ai inspect team --shared-library team_patterns.db
 
 Team Coordination Metrics:
   Active Agents: 3 (frontend, backend, devops)
@@ -403,7 +403,7 @@ Coordination Efficiency:
 Instead of fixed `confidence_threshold = 0.75`, adapt based on outcomes:
 
 ```python
-from empathy_os.adaptive import AdaptiveLearning
+from attune.adaptive import AdaptiveLearning
 
 adaptive = AdaptiveLearning()
 
@@ -518,7 +518,7 @@ pattern_healthcare = {
 #### 1. Event Bus (3 hours)
 
 ```python
-from empathy_os.events import EventBus, Event
+from attune.events import EventBus, Event
 
 bus = EventBus()
 
@@ -558,7 +558,7 @@ bus.emit(Event(
 #### 2. Webhook System (3 hours)
 
 ```python
-from empathy_os.webhooks import WebhookManager
+from attune.webhooks import WebhookManager
 
 webhooks = WebhookManager()
 
@@ -594,7 +594,7 @@ bus.emit(Event(
 **Goal**: Not just send events, but receive triggers
 
 ```python
-from empathy_os.integrations import GitHubIntegration
+from attune.integrations import GitHubIntegration
 
 gh = GitHubIntegration(repo="Smart-AI-Memory/empathy")
 
@@ -643,7 +643,7 @@ async def analyze_pr(pr):
 - PHI scrubbing in logs
 
 ```python
-from empathy_os.healthcare import HIPAACompliantEmpathy
+from attune.healthcare import HIPAACompliantEmpathy
 
 empathy = HIPAACompliantEmpathy(
     user_id="nurse_jane",
@@ -678,7 +678,7 @@ empathy.interact(
 **Pre-built templates for common healthcare workflows**:
 
 ```python
-from empathy_os.healthcare.protocols import ClinicalProtocol
+from attune.healthcare.protocols import ClinicalProtocol
 
 # SBAR (Situation, Background, Assessment, Recommendation)
 sbar = ClinicalProtocol.load("sbar")
@@ -717,7 +717,7 @@ empathy.interact(
 - Custom HL7 v2.x
 
 ```python
-from empathy_os.integrations import EpicIntegration
+from attune.integrations import EpicIntegration
 
 epic = EpicIntegration(
     base_url="https://fhir.epic.com",
@@ -751,7 +751,7 @@ analysis = empathy.interact(
 **Healthcare-specific safety features**:
 
 ```python
-from empathy_os.healthcare import SafetyMonitor
+from attune.healthcare import SafetyMonitor
 
 monitor = SafetyMonitor()
 
@@ -800,7 +800,7 @@ empathy.interact(
 
 ```toml
 [project]
-name = "empathy-framework"
+name = "attune-ai"
 version = "1.8.0"
 description = "Production-ready Level 4 Anticipatory Intelligence framework for AI-human collaboration"
 readme = "README.md"
@@ -839,18 +839,18 @@ dev = [
     "mypy>=1.8.0"
 ]
 full = [
-    "empathy-framework[llm,healthcare,webhooks]"
+    "attune-ai[llm,healthcare,webhooks]"
 ]
 all = [
-    "empathy-framework[full,docs,dev]"
+    "attune-ai[full,docs,dev]"
 ]
 
 [project.scripts]
-empathy-framework = "empathy_os.cli:main"
+attune-ai = "attune.cli:main"
 
 [project.urls]
-Homepage = "https://empathy-framework.readthedocs.io"
-Documentation = "https://empathy-framework.readthedocs.io"
+Homepage = "https://attune-ai.readthedocs.io"
+Documentation = "https://attune-ai.readthedocs.io"
 Repository = "https://github.com/Smart-AI-Memory/empathy"
 Changelog = "https://github.com/Smart-AI-Memory/empathy/blob/main/CHANGELOG.md"
 ```
@@ -1073,7 +1073,7 @@ jobs:
 **After v1.8.0 release**, integrate with Florence:
 
 ### Phase 1: Foundation Integration (Week 9-10)
-1. Add `empathy-framework>=1.8.0` to Florence requirements
+1. Add `attune-ai>=1.8.0` to Florence requirements
 2. Create `services/empathy_service.py` wrapper
 3. Add trust tracking to user sessions
 4. Create basic anticipatory SBAR endpoint
@@ -1135,8 +1135,8 @@ jobs:
 4. 🚀 **Start Phase 3C**: Enhanced CLI commands
 
 **Week 1 Deliverable**:
-- `empathy-framework run` command working
-- `empathy-framework inspect` command working
+- `attune-ai run` command working
+- `attune-ai inspect` command working
 - MkDocs structure created
 - Getting Started guide drafted
 

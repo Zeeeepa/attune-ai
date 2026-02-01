@@ -103,7 +103,7 @@ Every AI tool can scan your code. None of them learn from it.
 ## Links
 
 - GitHub: https://github.com/Smart-AI-Memory/empathy
-- Demo: `pip install empathy-framework && python examples/full_repo_test.py`
+- Demo: `pip install attune-ai && python examples/full_repo_test.py`
 
 ## Discussion
 

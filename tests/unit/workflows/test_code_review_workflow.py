@@ -13,8 +13,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.code_review import CodeReviewWorkflow
+from attune.workflows.base import ModelTier
+from attune.workflows.code_review import CodeReviewWorkflow
 
 # ============================================================================
 # Test Fixtures
@@ -357,13 +357,13 @@ class TestReportFormatting:
 
     def test_format_code_review_report_exists(self):
         """Test that report formatting function exists."""
-        from empathy_os.workflows.code_review import format_code_review_report
+        from attune.workflows.code_review import format_code_review_report
 
         assert callable(format_code_review_report)
 
     def test_format_empty_results(self):
         """Test formatting with minimal results."""
-        from empathy_os.workflows.code_review import format_code_review_report
+        from attune.workflows.code_review import format_code_review_report
 
         # Function takes (results: dict, input_data: dict)
         report = format_code_review_report({}, {})

@@ -5,8 +5,8 @@ tracking auth mode and providing intelligent routing recommendations.
 """
 import pytest
 
-from empathy_os.models import AuthMode, AuthStrategy, SubscriptionTier
-from empathy_os.workflows.release_prep import ReleasePreparationWorkflow
+from attune.models import AuthMode, AuthStrategy, SubscriptionTier
+from attune.workflows.release_prep import ReleasePreparationWorkflow
 
 
 @pytest.mark.asyncio
@@ -29,8 +29,8 @@ async def test_release_prep_with_auth():
     assert workflow.enable_auth_strategy is True
     assert workflow._auth_mode_used is None  # Not set until execution
 
-    # Step 3: Execute workflow on src/empathy_os (large codebase)
-    result = await workflow.execute(path="src/empathy_os")
+    # Step 3: Execute workflow on src/attune (large codebase)
+    result = await workflow.execute(path="src/attune")
 
     # Step 4: Verify workflow completed successfully
     assert result.success is True
@@ -42,7 +42,7 @@ async def test_release_prep_with_auth():
     assert auth_mode in ["subscription", "api"], f"Auth mode should be subscription or api, got: {auth_mode}"
 
     # Step 6: For large codebase, should recommend API mode
-    # src/empathy_os has ~100K LOC, which exceeds medium threshold (2000)
+    # src/attune has ~100K LOC, which exceeds medium threshold (2000)
     assert auth_mode == "api", "Large codebase should use API mode"
 
     # Step 7: Verify workflow output structure
@@ -81,7 +81,7 @@ async def test_release_prep_with_api_mode():
         enable_auth_strategy=True,
     )
 
-    result = await workflow.execute(path="src/empathy_os")
+    result = await workflow.execute(path="src/attune")
 
     assert result.success is True
     auth_mode = result.final_output.get("auth_mode_used")
@@ -98,7 +98,7 @@ async def test_release_prep_with_auth_disabled():
         enable_auth_strategy=False,
     )
 
-    result = await workflow.execute(path="src/empathy_os")
+    result = await workflow.execute(path="src/attune")
 
     assert result.success is True
     auth_mode = result.final_output.get("auth_mode_used")

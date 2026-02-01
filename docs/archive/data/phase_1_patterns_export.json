@@ -234,7 +234,7 @@
         "validation",
         "security"
       ],
-      "code": "def cmd_init(args):\n    '''Initialize project with validated arguments.\n\n    Raises:\n        ValueError: If output path is invalid or unsafe\n    '''\n    config_format = args.format\n    output_path = args.output or f\"empathy.config.{config_format}\"\n\n    # Validate output path to prevent path traversal attacks\n    validated_path = _validate_file_path(output_path)\n\n    logger.info(f\"Initializing project with format: {config_format}\")\n\n    config = EmpathyConfig()\n    if config_format == \"yaml\":\n        config.to_yaml(str(validated_path))\n    elif config_format == \"json\":\n        config.to_json(str(validated_path))",
+      "code": "def cmd_init(args):\n    '''Initialize project with validated arguments.\n\n    Raises:\n        ValueError: If output path is invalid or unsafe\n    '''\n    config_format = args.format\n    output_path = args.output or f\"attune.config.{config_format}\"\n\n    # Validate output path to prevent path traversal attacks\n    validated_path = _validate_file_path(output_path)\n\n    logger.info(f\"Initializing project with format: {config_format}\")\n\n    config = EmpathyConfig()\n    if config_format == \"yaml\":\n        config.to_yaml(str(validated_path))\n    elif config_format == \"json\":\n        config.to_json(str(validated_path))",
       "confidence": 1.0,
       "success_rate": 0.0
     },

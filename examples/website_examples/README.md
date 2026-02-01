@@ -7,7 +7,7 @@ These standalone examples demonstrate what persistent memory enables for develop
 ## Quick Start
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 cd examples/website_examples
 python 01_bug_correlation.py
 ```
@@ -146,7 +146,7 @@ empathy-memory serve  # Auto-starts Redis
 ## Installation
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 ```
 
 ---

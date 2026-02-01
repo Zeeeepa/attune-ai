@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.models.cli import (
+from attune.models.cli import (
     configure_provider,
     main,
     print_costs,
@@ -26,15 +26,15 @@ from empathy_os.models.cli import (
     print_telemetry_summary,
     validate_file,
 )
-from empathy_os.models.registry import ModelInfo
-from empathy_os.models.tasks import ModelTier
+from attune.models.registry import ModelInfo
+from attune.models.tasks import ModelTier
 
 
 @pytest.mark.unit
 class TestPrintRegistry:
     """Test print_registry function."""
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_registry_table_format(self, mock_get_all_models, capsys):
         """Test printing registry in table format."""
         mock_get_all_models.return_value = {
@@ -70,7 +70,7 @@ class TestPrintRegistry:
         assert "claude-3-sonnet" in captured.out
         assert "$0.25" in captured.out
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_registry_json_format(self, mock_get_all_models, capsys):
         """Test printing registry in JSON format."""
         mock_get_all_models.return_value = {
@@ -96,7 +96,7 @@ class TestPrintRegistry:
         assert "cheap" in output["anthropic"]
         assert output["anthropic"]["cheap"]["id"] == "claude-3-haiku-20240307"
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_registry_with_provider_filter(self, mock_get_all_models, capsys):
         """Test printing registry with provider filter."""
         mock_get_all_models.return_value = {
@@ -128,7 +128,7 @@ class TestPrintRegistry:
         captured = capsys.readouterr()
         assert "ANTHROPIC" in captured.out
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_registry_unknown_provider(self, mock_get_all_models, capsys):
         """Test printing registry with unknown provider."""
         mock_get_all_models.return_value = {"anthropic": {}, "openai": {}}
@@ -145,7 +145,7 @@ class TestPrintRegistry:
 class TestPrintTasks:
     """Test print_tasks function."""
 
-    @patch("empathy_os.models.cli.get_all_tasks")
+    @patch("attune.models.cli.get_all_tasks")
     def test_print_tasks_table_format(self, mock_get_all_tasks, capsys):
         """Test printing tasks in table format."""
         mock_get_all_tasks.return_value = {
@@ -162,7 +162,7 @@ class TestPrintTasks:
         assert "fix_bug" in captured.out
         assert "coordinate" in captured.out
 
-    @patch("empathy_os.models.cli.get_all_tasks")
+    @patch("attune.models.cli.get_all_tasks")
     def test_print_tasks_json_format(self, mock_get_all_tasks, capsys):
         """Test printing tasks in JSON format."""
         mock_get_all_tasks.return_value = {
@@ -177,7 +177,7 @@ class TestPrintTasks:
         assert "cheap" in output
         assert "summarize" in output["cheap"]
 
-    @patch("empathy_os.models.cli.get_all_tasks")
+    @patch("attune.models.cli.get_all_tasks")
     def test_print_tasks_with_tier_filter(self, mock_get_all_tasks, capsys):
         """Test printing tasks with tier filter."""
         mock_get_all_tasks.return_value = {
@@ -193,7 +193,7 @@ class TestPrintTasks:
         # Should not show capable tasks
         assert "fix_bug" not in captured.out
 
-    @patch("empathy_os.models.cli.get_all_tasks")
+    @patch("attune.models.cli.get_all_tasks")
     def test_print_tasks_unknown_tier(self, mock_get_all_tasks, capsys):
         """Test printing tasks with unknown tier."""
         mock_get_all_tasks.return_value = {"cheap": [], "capable": []}
@@ -210,7 +210,7 @@ class TestPrintTasks:
 class TestPrintCosts:
     """Test print_costs function."""
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_costs_table_format(self, mock_get_all_models, capsys):
         """Test printing costs in table format."""
         mock_get_all_models.return_value = {
@@ -235,7 +235,7 @@ class TestPrintCosts:
         assert "10,000 input / 2,000 output tokens" in captured.out
         assert "$" in captured.out
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_costs_json_format(self, mock_get_all_models, capsys):
         """Test printing costs in JSON format."""
         mock_get_all_models.return_value = {
@@ -261,7 +261,7 @@ class TestPrintCosts:
         assert "cheap" in output["anthropic"]
         assert "total_cost" in output["anthropic"]["cheap"]
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_costs_with_provider_filter(self, mock_get_all_models, capsys):
         """Test printing costs with provider filter."""
         mock_get_all_models.return_value = {
@@ -284,7 +284,7 @@ class TestPrintCosts:
         captured = capsys.readouterr()
         assert "ANTHROPIC" in captured.out
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_costs_unknown_provider(self, mock_get_all_models, capsys):
         """Test printing costs with unknown provider."""
         mock_get_all_models.return_value = {"anthropic": {}}
@@ -299,7 +299,7 @@ class TestPrintCosts:
 class TestValidateFile:
     """Test validate_file function."""
 
-    @patch("empathy_os.models.cli.validate_yaml_file")
+    @patch("attune.models.cli.validate_yaml_file")
     def test_validate_file_valid(self, mock_validate, capsys):
         """Test validating a valid file."""
         mock_result = MagicMock()
@@ -314,7 +314,7 @@ class TestValidateFile:
         captured = capsys.readouterr()
         assert "Validating: test.yaml" in captured.out
 
-    @patch("empathy_os.models.cli.validate_yaml_file")
+    @patch("attune.models.cli.validate_yaml_file")
     def test_validate_file_invalid(self, mock_validate, capsys):
         """Test validating an invalid file."""
         mock_result = MagicMock()
@@ -330,7 +330,7 @@ class TestValidateFile:
 
         assert result == 1
 
-    @patch("empathy_os.models.cli.validate_yaml_file")
+    @patch("attune.models.cli.validate_yaml_file")
     def test_validate_file_json_format(self, mock_validate, capsys):
         """Test validating file with JSON output."""
         mock_result = MagicMock()
@@ -352,8 +352,8 @@ class TestValidateFile:
 class TestPrintEffectiveConfig:
     """Test print_effective_config function."""
 
-    @patch("empathy_os.models.cli.get_all_models")
-    @patch("empathy_os.models.cli.get_tier_for_task")
+    @patch("attune.models.cli.get_all_models")
+    @patch("attune.models.cli.get_tier_for_task")
     def test_print_effective_config(self, mock_get_tier, mock_get_all_models, capsys):
         """Test printing effective configuration."""
         mock_get_all_models.return_value = {
@@ -400,7 +400,7 @@ class TestPrintEffectiveConfig:
         assert "claude-haiku" in captured.out
         assert "Task Routing Examples" in captured.out
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_effective_config_unknown_provider(self, mock_get_all_models, capsys):
         """Test effective config with unknown provider."""
         mock_get_all_models.return_value = {"anthropic": {}}
@@ -415,8 +415,8 @@ class TestPrintEffectiveConfig:
 class TestPrintTelemetrySummary:
     """Test print_telemetry_summary function."""
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_summary_table(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing telemetry summary in table format."""
         mock_store = MagicMock()
@@ -441,8 +441,8 @@ class TestPrintTelemetrySummary:
         assert "Total LLM calls: 2" in captured.out
         assert "Total workflows: 1" in captured.out
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_summary_json(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing telemetry summary in JSON format."""
         mock_store = MagicMock()
@@ -468,8 +468,8 @@ class TestPrintTelemetrySummary:
 class TestPrintTelemetryCosts:
     """Test print_telemetry_costs function."""
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_costs_table(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing telemetry costs in table format."""
         mock_store = MagicMock()
@@ -497,8 +497,8 @@ class TestPrintTelemetryCosts:
         assert "$1.5000" in captured.out
         assert "85.0%" in captured.out
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_costs_json(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing telemetry costs in JSON format."""
         mock_store = MagicMock()
@@ -522,8 +522,8 @@ class TestPrintTelemetryCosts:
 class TestPrintTelemetryProviders:
     """Test print_telemetry_providers function."""
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_providers_table(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing provider usage in table format."""
         mock_store = MagicMock()
@@ -549,8 +549,8 @@ class TestPrintTelemetryProviders:
         assert "Calls: 100" in captured.out
         assert "$2.5000" in captured.out
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_providers_json(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing provider usage in JSON format."""
         mock_store = MagicMock()
@@ -573,8 +573,8 @@ class TestPrintTelemetryProviders:
 class TestPrintTelemetryFallbacks:
     """Test print_telemetry_fallbacks function."""
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_fallbacks_table(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing fallback stats in table format."""
         mock_store = MagicMock()
@@ -599,8 +599,8 @@ class TestPrintTelemetryFallbacks:
         assert "Fallback count: 5" in captured.out
         assert "5.00%" in captured.out
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_fallbacks_json(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test printing fallback stats in JSON format."""
         mock_store = MagicMock()
@@ -625,7 +625,7 @@ class TestPrintTelemetryFallbacks:
 class TestPrintProviderConfig:
     """Test print_provider_config function."""
 
-    @patch("empathy_os.models.cli.get_provider_config")
+    @patch("attune.models.cli.get_provider_config")
     def test_print_provider_config_table(self, mock_get_config, capsys):
         """Test printing provider config in table format."""
         mock_config = MagicMock()
@@ -653,7 +653,7 @@ class TestPrintProviderConfig:
         assert "Mode: hybrid" in captured.out
         assert "anthropic" in captured.out
 
-    @patch("empathy_os.models.cli.get_provider_config")
+    @patch("attune.models.cli.get_provider_config")
     def test_print_provider_config_json(self, mock_get_config, capsys):
         """Test printing provider config in JSON format."""
         mock_config = MagicMock()
@@ -676,7 +676,7 @@ class TestPrintProviderConfig:
 class TestConfigureProvider:
     """Test configure_provider function."""
 
-    @patch("empathy_os.models.cli.configure_provider_interactive")
+    @patch("attune.models.cli.configure_provider_interactive")
     def test_configure_provider_interactive(self, mock_configure_interactive):
         """Test interactive configuration."""
         result = configure_provider(interactive=True)
@@ -684,8 +684,8 @@ class TestConfigureProvider:
         assert result == 0
         mock_configure_interactive.assert_called_once()
 
-    @patch("empathy_os.models.cli.configure_provider_cli")
-    @patch("empathy_os.models.cli.print_provider_config")
+    @patch("attune.models.cli.configure_provider_cli")
+    @patch("attune.models.cli.print_provider_config")
     def test_configure_provider_set(self, mock_print_config, mock_configure_cli, capsys):
         """Test setting provider via CLI."""
         mock_config = MagicMock()
@@ -703,7 +703,7 @@ class TestConfigureProvider:
         captured = capsys.readouterr()
         assert "Provider configuration updated" in captured.out
 
-    @patch("empathy_os.models.cli.print_provider_config")
+    @patch("attune.models.cli.print_provider_config")
     def test_configure_provider_show_current(self, mock_print_config):
         """Test showing current configuration."""
         result = configure_provider()
@@ -716,7 +716,7 @@ class TestConfigureProvider:
 class TestMainCLI:
     """Test main CLI entry point."""
 
-    @patch("empathy_os.models.cli.print_registry")
+    @patch("attune.models.cli.print_registry")
     def test_main_registry_command(self, mock_print_registry):
         """Test registry command."""
         with patch.object(sys, "argv", ["cli", "registry"]):
@@ -725,7 +725,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_registry.assert_called_once_with(None, "table")
 
-    @patch("empathy_os.models.cli.print_tasks")
+    @patch("attune.models.cli.print_tasks")
     def test_main_tasks_command(self, mock_print_tasks):
         """Test tasks command."""
         with patch.object(sys, "argv", ["cli", "tasks"]):
@@ -734,7 +734,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_tasks.assert_called_once_with(None, "table")
 
-    @patch("empathy_os.models.cli.print_costs")
+    @patch("attune.models.cli.print_costs")
     def test_main_costs_command(self, mock_print_costs):
         """Test costs command."""
         with patch.object(sys, "argv", ["cli", "costs"]):
@@ -743,7 +743,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_costs.assert_called_once()
 
-    @patch("empathy_os.models.cli.validate_file")
+    @patch("attune.models.cli.validate_file")
     def test_main_validate_command(self, mock_validate):
         """Test validate command."""
         mock_validate.return_value = 0
@@ -754,7 +754,7 @@ class TestMainCLI:
         assert result == 0
         mock_validate.assert_called_once_with("test.yaml", "table")
 
-    @patch("empathy_os.models.cli.print_effective_config")
+    @patch("attune.models.cli.print_effective_config")
     def test_main_effective_command(self, mock_print_effective):
         """Test effective command."""
         with patch.object(sys, "argv", ["cli", "effective"]):
@@ -763,7 +763,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_effective.assert_called_once_with("anthropic")
 
-    @patch("empathy_os.models.cli.print_telemetry_summary")
+    @patch("attune.models.cli.print_telemetry_summary")
     def test_main_telemetry_summary(self, mock_print_summary):
         """Test telemetry summary command."""
         with patch.object(sys, "argv", ["cli", "telemetry"]):
@@ -772,7 +772,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_summary.assert_called_once()
 
-    @patch("empathy_os.models.cli.print_telemetry_costs")
+    @patch("attune.models.cli.print_telemetry_costs")
     def test_main_telemetry_costs(self, mock_print_costs):
         """Test telemetry costs command."""
         with patch.object(sys, "argv", ["cli", "telemetry", "--costs"]):
@@ -781,7 +781,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_costs.assert_called_once()
 
-    @patch("empathy_os.models.cli.print_telemetry_providers")
+    @patch("attune.models.cli.print_telemetry_providers")
     def test_main_telemetry_providers(self, mock_print_providers):
         """Test telemetry providers command."""
         with patch.object(sys, "argv", ["cli", "telemetry", "--providers"]):
@@ -790,7 +790,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_providers.assert_called_once()
 
-    @patch("empathy_os.models.cli.print_telemetry_fallbacks")
+    @patch("attune.models.cli.print_telemetry_fallbacks")
     def test_main_telemetry_fallbacks(self, mock_print_fallbacks):
         """Test telemetry fallbacks command."""
         with patch.object(sys, "argv", ["cli", "telemetry", "--fallbacks"]):
@@ -799,7 +799,7 @@ class TestMainCLI:
         assert result == 0
         mock_print_fallbacks.assert_called_once()
 
-    @patch("empathy_os.models.cli.print_provider_config")
+    @patch("attune.models.cli.print_provider_config")
     def test_main_provider_command(self, mock_print_provider):
         """Test provider command without arguments shows current config."""
         with patch.object(sys, "argv", ["cli", "provider"]):
@@ -820,7 +820,7 @@ class TestMainCLI:
 class TestCLIEdgeCases:
     """Test CLI edge cases and error handling."""
 
-    @patch("empathy_os.models.cli.get_all_models")
+    @patch("attune.models.cli.get_all_models")
     def test_print_costs_with_zero_tokens(self, mock_get_all_models, capsys):
         """Test printing costs with zero tokens."""
         mock_get_all_models.return_value = {
@@ -843,8 +843,8 @@ class TestCLIEdgeCases:
         captured = capsys.readouterr()
         assert "$0.0000" in captured.out
 
-    @patch("empathy_os.models.cli.TelemetryAnalytics")
-    @patch("empathy_os.models.cli.TelemetryStore")
+    @patch("attune.models.cli.TelemetryAnalytics")
+    @patch("attune.models.cli.TelemetryStore")
     def test_print_telemetry_summary_no_calls(self, mock_store_cls, mock_analytics_cls, capsys):
         """Test telemetry summary with no calls."""
         mock_store = MagicMock()
@@ -861,7 +861,7 @@ class TestCLIEdgeCases:
         captured = capsys.readouterr()
         assert "Total LLM calls: 0" in captured.out
 
-    @patch("empathy_os.models.cli.print_registry")
+    @patch("attune.models.cli.print_registry")
     def test_main_registry_with_json_format(self, mock_print_registry):
         """Test registry command with JSON format."""
         with patch.object(sys, "argv", ["cli", "registry", "--format", "json"]):
@@ -870,7 +870,7 @@ class TestCLIEdgeCases:
         assert result == 0
         mock_print_registry.assert_called_once_with(None, "json")
 
-    @patch("empathy_os.models.cli.print_costs")
+    @patch("attune.models.cli.print_costs")
     def test_main_costs_with_custom_tokens(self, mock_print_costs):
         """Test costs command with custom token counts."""
         with patch.object(
@@ -886,7 +886,7 @@ class TestCLIEdgeCases:
         assert args[0] == 50000  # input_tokens
         assert args[1] == 10000  # output_tokens
 
-    @patch("empathy_os.models.cli.configure_provider")
+    @patch("attune.models.cli.configure_provider")
     def test_main_provider_set_hybrid(self, mock_configure):
         """Test provider command with --set hybrid."""
         mock_configure.return_value = 0

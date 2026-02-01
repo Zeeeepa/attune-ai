@@ -19,7 +19,7 @@ Successfully built a complete Workflow Factory system that enables creating work
 ## ✅ Completed Phases (8/8)
 
 ### Phase 1: Pattern Extraction ✅
-- Analyzed all 17 workflows in `src/empathy_os/workflows/`
+- Analyzed all 17 workflows in `src/attune/workflows/`
 - Identified 9 core patterns across 5 categories
 - Documented pattern usage statistics and combinations
 - **Output:** [WORKFLOW_FACTORY_PATTERN_ANALYSIS.md](WORKFLOW_FACTORY_PATTERN_ANALYSIS.md)
@@ -46,7 +46,7 @@ Successfully built a complete Workflow Factory system that enables creating work
 - Integrated with empathy CLI (`empathy workflow create`)
 - Added 3 new commands to workflow_app
 - Updated cheatsheet
-- **Modified:** `src/empathy_os/cli_unified.py`
+- **Modified:** `src/attune/cli_unified.py`
 
 ### Phase 6: Documentation ✅
 - Created quickstart guide
@@ -349,7 +349,7 @@ ALL TESTS PASSED ✓
 - test_workflow_factory_manual.py
 
 ### Modified Files (1 total)
-- src/empathy_os/cli_unified.py (added workflow create commands)
+- src/attune/cli_unified.py (added workflow create commands)
 
 ---
 

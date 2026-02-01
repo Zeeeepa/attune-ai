@@ -49,7 +49,7 @@ When facing a new problem:
 # Read cross-domain → circuit-breaker-to-trust.md
 # Result: Use TrustCircuitBreaker instead of inventing new solution
 
-from empathy_os.trust import TrustCircuitBreaker
+from attune.trust import TrustCircuitBreaker
 breaker = TrustCircuitBreaker(user_id="user_123")
 ```
 
@@ -142,22 +142,22 @@ Ask these questions:
 
 | Pattern | Key Insight | Implementation |
 |---------|-------------|----------------|
-| [Circuit Breaker](../../patterns/reliability/circuit-breaker.md) | Fail fast to prevent cascade | `src/empathy_os/resilience/circuit_breaker.py` |
-| [Graceful Degradation](../../patterns/reliability/graceful-degradation.md) | Partial value beats failure | `src/empathy_os/resilience/fallback.py` |
-| [Retry with Backoff](../../patterns/reliability/retry-with-backoff.md) | Transient failures recover | `src/empathy_os/resilience/retry.py` |
+| [Circuit Breaker](../../patterns/reliability/circuit-breaker.md) | Fail fast to prevent cascade | `src/attune/resilience/circuit_breaker.py` |
+| [Graceful Degradation](../../patterns/reliability/graceful-degradation.md) | Partial value beats failure | `src/attune/resilience/fallback.py` |
+| [Retry with Backoff](../../patterns/reliability/retry-with-backoff.md) | Transient failures recover | `src/attune/resilience/retry.py` |
 
 ### Observability Patterns
 
 | Pattern | Key Insight | Implementation |
 |---------|-------------|----------------|
-| [Health Monitoring](../../patterns/observability/health-monitoring.md) | Degraded predicts failure | `src/empathy_os/resilience/health.py` |
-| [Telemetry Tracking](../../patterns/observability/telemetry-tracking.md) | Failures are learning data | `src/empathy_os/models/telemetry.py` |
+| [Health Monitoring](../../patterns/observability/health-monitoring.md) | Degraded predicts failure | `src/attune/resilience/health.py` |
+| [Telemetry Tracking](../../patterns/observability/telemetry-tracking.md) | Failures are learning data | `src/attune/models/telemetry.py` |
 
 ### Cross-Domain Transfers (Implemented)
 
 | Transfer | From → To | Implementation |
 |----------|-----------|----------------|
-| [Circuit Breaker → Trust](../../patterns/cross-domain/circuit-breaker-to-trust.md) | Reliability → Trust | `src/empathy_os/trust/circuit_breaker.py` |
+| [Circuit Breaker → Trust](../../patterns/cross-domain/circuit-breaker-to-trust.md) | Reliability → Trust | `src/attune/trust/circuit_breaker.py` |
 
 ### Cross-Domain Transfers (Documented, Not Yet Implemented)
 

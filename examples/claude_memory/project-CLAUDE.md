@@ -21,8 +21,8 @@ This is the Empathy Framework - a five-level AI collaboration system with antici
 
 ## Code Organization
 ```
-empathy_llm_toolkit/    # Core LLM wrapper with levels
-empathy_os/             # Operating system layer
+attune_llm/    # Core LLM wrapper with levels
+attune/             # Operating system layer
 coach_wizards/          # 16 specialized AI wizards
 examples/               # Usage examples and demos
 tests/                  # Comprehensive test suite

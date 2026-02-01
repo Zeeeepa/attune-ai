@@ -16,8 +16,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.bug_predict import (
+from attune.workflows.base import ModelTier
+from attune.workflows.bug_predict import (
     BUG_PREDICT_STEPS,
     BugPredictionWorkflow,
     format_bug_predict_report,

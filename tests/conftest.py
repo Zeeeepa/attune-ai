@@ -20,23 +20,21 @@ import pytest
 # 1. Calling discover_workflows() to trigger lazy loading of registered workflows
 # 2. Explicitly importing non-registered workflow modules used by tests
 try:
-    import empathy_os.workflows
+    import attune.workflows
     # Force all lazy workflows to load by discovering them
-    empathy_os.workflows.discover_workflows()
+    attune.workflows.discover_workflows()
 
     # Import additional workflow modules not in lazy registry
-    import empathy_os.workflows.batch_processing  # noqa: F401
-    import empathy_os.workflows.history  # noqa: F401
-    import empathy_os.workflows.manage_docs  # noqa: F401
-    import empathy_os.workflows.new_sample_workflow1  # noqa: F401
-    import empathy_os.workflows.progressive.core  # noqa: F401
-    import empathy_os.workflows.progressive.cost_telemetry  # noqa: F401
-    import empathy_os.workflows.progressive.orchestrator  # noqa: F401
-    import empathy_os.workflows.progressive.reports_analytics  # noqa: F401
-    import empathy_os.workflows.progressive.test_gen  # noqa: F401
-    import empathy_os.workflows.security_adapters  # noqa: F401
-    import empathy_os.workflows.security_audit_phase3  # noqa: F401
-except ImportError:
+    import attune.workflows.batch_processing  # noqa: F401
+    import attune.workflows.history  # noqa: F401
+    import attune.workflows.manage_docs  # noqa: F401
+    import attune.workflows.new_sample_workflow1  # noqa: F401
+    import attune.workflows.progressive.core  # noqa: F401
+    import attune.workflows.progressive.orchestrator  # noqa: F401
+    import attune.workflows.progressive.test_gen  # noqa: F401
+    import attune.workflows.security_adapters  # noqa: F401
+    import attune.workflows.security_audit_phase3  # noqa: F401
+except ImportError as e:
     pass  # Package might not be available in minimal test environments
 
 # Load test environment variables from .env.test
@@ -72,9 +70,9 @@ def _map_test_to_source(test_file: str) -> str | None:
     """Map a test file path to its corresponding source file.
 
     Examples:
-        tests/test_config.py -> src/empathy_os/config.py
-        tests/unit/models/test_registry.py -> src/empathy_os/models/registry.py
-        tests/unit/cli/test_cli_commands.py -> src/empathy_os/cli.py
+        tests/test_config.py -> src/attune/config.py
+        tests/unit/models/test_registry.py -> src/attune/models/registry.py
+        tests/unit/cli/test_cli_commands.py -> src/attune/cli.py
     """
     test_path = Path(test_file)
 
@@ -96,7 +94,7 @@ def _map_test_to_source(test_file: str) -> str | None:
 
         if module_parts:
             # Try 1: Direct file in module (e.g., models/registry.py)
-            source_path = Path("src/empathy_os") / "/".join(module_parts) / f"{source_name}.py"
+            source_path = Path("src/attune") / "/".join(module_parts) / f"{source_name}.py"
             if source_path.exists():
                 return str(source_path)
 
@@ -105,18 +103,18 @@ def _map_test_to_source(test_file: str) -> str | None:
             module_name = module_parts[0]  # e.g., "cli"
             if source_name.startswith(f"{module_name}_"):
                 # test_cli_commands -> try cli.py first
-                source_path = Path("src/empathy_os") / f"{module_name}.py"
+                source_path = Path("src/attune") / f"{module_name}.py"
                 if source_path.exists():
                     return str(source_path)
                 # Then try cli/__init__.py
-                source_path = Path("src/empathy_os") / module_name / "__init__.py"
+                source_path = Path("src/attune") / module_name / "__init__.py"
                 if source_path.exists():
                     return str(source_path)
 
     # Handle tests/test_*.py pattern (direct tests)
     if "tests" in parts and parts[-1].startswith("test_"):
-        # Try direct mapping to src/empathy_os/
-        source_path = Path("src/empathy_os") / f"{source_name}.py"
+        # Try direct mapping to src/attune/
+        source_path = Path("src/attune") / f"{source_name}.py"
         if source_path.exists():
             return str(source_path)
 
@@ -251,7 +249,7 @@ def pytest_sessionfinish(session, exitstatus):
         return  # No results to store
 
     try:
-        from empathy_os.models.telemetry import FileTestRecord, get_telemetry_store
+        from attune.models.telemetry import FileTestRecord, get_telemetry_store
 
         store = get_telemetry_store()
         timestamp = datetime.utcnow().isoformat() + "Z"

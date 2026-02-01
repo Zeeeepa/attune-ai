@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_llm_toolkit.claude_memory import (
+from attune_llm.claude_memory import (
     ClaudeMemoryConfig,
     ClaudeMemoryLoader,
     MemoryFile,

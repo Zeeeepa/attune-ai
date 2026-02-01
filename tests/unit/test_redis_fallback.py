@@ -18,7 +18,7 @@ from unittest.mock import Mock, patch
 import pytest
 import redis
 
-from empathy_os.memory.short_term import (
+from attune.memory.short_term import (
     AccessTier,
     AgentCredentials,
     RedisConfig,
@@ -30,8 +30,8 @@ from empathy_os.memory.short_term import (
 class TestRedisFallbackBehavior:
     """Test that RedisShortTermMemory gracefully falls back to mock when Redis unavailable."""
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_falls_back_to_mock_on_connection_failure(self, mock_redis_cls):
         """Test graceful fallback to mock storage when Redis connection fails."""
         # Mock Redis connection failure
@@ -44,8 +44,8 @@ class TestRedisFallbackBehavior:
         # Verify it attempted to connect
         assert mock_redis_cls.called
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_falls_back_to_mock_on_auth_failure(self, mock_redis_cls):
         """Test graceful fallback when Redis authentication fails."""
         mock_client = Mock()
@@ -56,8 +56,8 @@ class TestRedisFallbackBehavior:
         with pytest.raises(redis.AuthenticationError):
             _ = RedisShortTermMemory(host="localhost", port=6379, password="wrong")
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_retries_connection_with_exponential_backoff(self, mock_redis_cls):
         """Test that connection retries use exponential backoff."""
         mock_client = Mock()
@@ -80,7 +80,7 @@ class TestRedisFallbackBehavior:
         assert call_count == 3
         assert memory._metrics.retries_total >= 2  # At least 2 retries before success
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", False)
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", False)
     def test_uses_mock_when_redis_not_installed(self):
         """Test that mock storage is used when Redis package not available."""
         memory = RedisShortTermMemory(host="localhost", port=6379)
@@ -136,7 +136,7 @@ class TestMockStorageFunctionality:
         memory = RedisShortTermMemory(use_mock=True)
         creds = AgentCredentials("test_agent", AccessTier.CONTRIBUTOR)
 
-        from empathy_os.memory.short_term import StagedPattern
+        from attune.memory.short_term import StagedPattern
 
         pattern = StagedPattern(
             pattern_id="test_pattern",
@@ -178,8 +178,8 @@ class TestMockStorageFunctionality:
 class TestDataConsistencyDuringFailover:
     """Test data consistency when failing over between Redis and mock."""
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_stash_fails_on_connection_loss(self, mock_redis_cls):
         """Test that stash operations fail gracefully on connection loss."""
         mock_client = Mock()
@@ -200,8 +200,8 @@ class TestDataConsistencyDuringFailover:
 class TestConnectionRecovery:
     """Test automatic recovery when Redis connection is restored."""
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_connection_recovery_after_failure(self, mock_redis_cls):
         """Test that connection recovers automatically after transient failure."""
         mock_client = Mock()
@@ -225,8 +225,8 @@ class TestConnectionRecovery:
         # Should have recovered and ping should work
         assert memory.ping() is True
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_tracks_retry_metrics(self, mock_redis_cls):
         """Test that retry attempts are tracked in metrics."""
         mock_client = Mock()
@@ -261,8 +261,8 @@ class TestErrorHandlingEdgeCases:
         result = memory.retrieve("key", creds)
         assert result == {"data": "value"}
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_handles_redis_out_of_memory(self, mock_redis_cls):
         """Test handling of Redis OOM errors."""
         mock_client = Mock()
@@ -277,8 +277,8 @@ class TestErrorHandlingEdgeCases:
         with pytest.raises(redis.ResponseError):
             memory.stash("key", {"data": "value"}, creds, ttl=TTLStrategy.WORKING_RESULTS)
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_handles_max_clients_exceeded(self, mock_redis_cls):
         """Test handling when Redis max clients exceeded."""
         mock_redis_cls.side_effect = redis.ConnectionError("max number of clients reached")
@@ -339,8 +339,8 @@ class TestConfigurationValidation:
 class TestMetricsTracking:
     """Test that metrics are properly tracked during fallback scenarios."""
 
-    @patch("empathy_os.memory.short_term.REDIS_AVAILABLE", True)
-    @patch("empathy_os.memory.short_term.redis.Redis")
+    @patch("attune.memory.short_term.REDIS_AVAILABLE", True)
+    @patch("attune.memory.short_term.redis.Redis")
     def test_tracks_retries_in_metrics(self, mock_redis_cls):
         """Test that retry attempts increment metrics counter."""
         mock_client = Mock()

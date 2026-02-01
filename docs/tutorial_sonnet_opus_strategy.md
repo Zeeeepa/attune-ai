@@ -89,7 +89,7 @@ Instead of always using the most powerful (and expensive) model, implement a sma
 First, ensure you're using the latest Anthropic models:
 
 ```python
-# File: src/empathy_os/models/registry.py
+# File: src/attune/models/registry.py
 
 MODEL_REGISTRY = {
     "anthropic": {
@@ -122,7 +122,7 @@ MODEL_REGISTRY = {
 Create a policy that tries Sonnet first, then Opus:
 
 ```python
-# File: src/empathy_os/models/fallback.py
+# File: src/attune/models/fallback.py
 
 SONNET_TO_OPUS_FALLBACK = FallbackPolicy(
     primary_provider="anthropic",
@@ -144,7 +144,7 @@ SONNET_TO_OPUS_FALLBACK = FallbackPolicy(
 **Basic Usage (Automatic):**
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
 import os
 
 # Your code now automatically uses Sonnet 4.5
@@ -163,8 +163,8 @@ response = await executor.run(
 **With Intelligent Fallback:**
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
 import os
 
 # Base executor
@@ -198,7 +198,7 @@ else:
 Track your savings with built-in analytics:
 
 ```python
-# File: src/empathy_os/models/telemetry.py
+# File: src/attune/models/telemetry.py
 
 def sonnet_opus_fallback_analysis(self, since: datetime | None = None) -> dict:
     """Analyze Sonnet → Opus fallback performance and cost savings."""
@@ -240,7 +240,7 @@ Add a command to view your savings:
 
 ```bash
 # Check your cost savings
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 30
+python -m attune.telemetry.cli sonnet-opus-analysis --days 30
 ```
 
 **Output:**
@@ -408,7 +408,7 @@ else:
 After a week, analyze which task types trigger fallbacks:
 
 ```bash
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 7
+python -m attune.telemetry.cli sonnet-opus-analysis --days 7
 ```
 
 If certain tasks always fail on Sonnet, route them directly to Opus.
@@ -458,7 +458,7 @@ With intelligent fallback, you get both quality and savings.
 For multi-provider setups, create custom chains:
 
 ```python
-from empathy_os.models.fallback import FallbackPolicy, FallbackStep
+from attune.models.fallback import FallbackPolicy, FallbackStep
 
 # Sonnet → Opus → OpenAI o1 (cross-provider)
 MULTI_PROVIDER_FALLBACK = FallbackPolicy(
@@ -601,7 +601,7 @@ By implementing intelligent Sonnet → Opus fallback, I achieved:
 
 ```bash
 # 1. Clone the implementation
-git clone https://github.com/Smart-AI-Memory/empathy-framework
+git clone https://github.com/Smart-AI-Memory/attune-ai
 
 # 2. Set your API key
 export ANTHROPIC_API_KEY="your-key-here"
@@ -610,7 +610,7 @@ export ANTHROPIC_API_KEY="your-key-here"
 ./run_fallback_tests.sh
 
 # 4. Check your savings
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 30
+python -m attune.telemetry.cli sonnet-opus-analysis --days 30
 ```
 
 ### Full Documentation
@@ -625,8 +625,8 @@ python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 30
 
 I'd love to hear how this strategy works for you! Share your results:
 
-- **GitHub Discussions:** [Share your savings](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
-- **Issues:** [Report problems](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+- **GitHub Discussions:** [Share your savings](https://github.com/Smart-AI-Memory/attune-ai/discussions)
+- **Issues:** [Report problems](https://github.com/Smart-AI-Memory/attune-ai/issues)
 
 ---
 
@@ -634,10 +634,10 @@ I'd love to hear how this strategy works for you! Share your results:
 
 All code from this tutorial is available in the Empathy Framework:
 
-- [Model Registry](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/src/empathy_os/models/registry.py)
-- [Fallback Policy](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/src/empathy_os/models/fallback.py)
-- [Telemetry Analytics](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/src/empathy_os/models/telemetry.py)
-- [Test Suite](https://github.com/Smart-AI-Memory/empathy-framework/blob/main/tests/test_fallback_suite.py)
+- [Model Registry](https://github.com/Smart-AI-Memory/attune-ai/blob/main/src/attune/models/registry.py)
+- [Fallback Policy](https://github.com/Smart-AI-Memory/attune-ai/blob/main/src/attune/models/fallback.py)
+- [Telemetry Analytics](https://github.com/Smart-AI-Memory/attune-ai/blob/main/src/attune/models/telemetry.py)
+- [Test Suite](https://github.com/Smart-AI-Memory/attune-ai/blob/main/tests/test_fallback_suite.py)
 
 **License:** Fair Source License 0.9
 

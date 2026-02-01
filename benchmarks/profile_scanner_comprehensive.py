@@ -28,7 +28,7 @@ import pstats  # noqa: E402
 
 def clear_caches():
     """Clear LRU caches to ensure fresh profiling."""
-    from empathy_os.project_index.scanner import ProjectScanner
+    from attune.project_index.scanner import ProjectScanner
 
     # Clear cached functions
     if hasattr(ProjectScanner._hash_file, 'cache_clear'):
@@ -39,7 +39,7 @@ def clear_caches():
 
 def profile_scanner_cpu():
     """Profile CPU time for scanner operations."""
-    from empathy_os.project_index.scanner import ProjectScanner
+    from attune.project_index.scanner import ProjectScanner
 
     print("\n" + "=" * 70)
     print("CPU PROFILING - Project Scanner")
@@ -94,7 +94,7 @@ def profile_scanner_memory():
         print("   Install with: pip install memory_profiler")
         return None
 
-    from empathy_os.project_index.scanner import ProjectScanner
+    from attune.project_index.scanner import ProjectScanner
 
     print("\n" + "=" * 70)
     print("MEMORY PROFILING - Project Scanner")
@@ -141,7 +141,7 @@ def profile_cache_effectiveness():
     """Profile cache hit rates and performance impact."""
     import time
 
-    from empathy_os.project_index.scanner import ProjectScanner
+    from attune.project_index.scanner import ProjectScanner
 
     print("\n" + "=" * 70)
     print("CACHE EFFECTIVENESS ANALYSIS")

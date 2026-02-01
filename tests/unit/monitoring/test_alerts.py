@@ -17,7 +17,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.monitoring.alerts import (
+from attune.monitoring.alerts import (
     AlertChannel,
     AlertConfig,
     AlertEngine,

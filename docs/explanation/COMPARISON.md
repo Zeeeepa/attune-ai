@@ -551,7 +551,7 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 curl -u token: https://sonarqube.example.com/api/qualitygates/show > sonar_rules.json
 
 # 2. Install Empathy Framework
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # 3. Import rules (Empathy Framework auto-maps SonarQube rules)
 empathy import-rules --from sonarqube --file sonar_rules.json
@@ -569,7 +569,7 @@ empathy compare --sonarqube sonar_rules.json --empathy report.json
 codeclimate engines:list > cc_engines.json
 
 # 2. Install Empathy Framework
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # 3. Run parallel analysis (compare results)
 codeclimate analyze && empathy analyze --path ./src
@@ -584,7 +584,7 @@ codeclimate analyze && empathy analyze --path ./src
 # Empathy: Analysis, prediction, prevention
 
 # Add Empathy Framework to your workflow:
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # Run pre-commit analysis
 empathy analyze --path ./src --level 4  # Anticipatory mode
@@ -666,7 +666,7 @@ The Empathy Framework represents a **paradigm shift** from reactive code analysi
 
 ```bash
 # Install (free for ≤5 employees)
-pip install empathy-framework[full]
+pip install attune-ai[full]
 
 # Run your first analysis
 empathy analyze --path ./src --level 4

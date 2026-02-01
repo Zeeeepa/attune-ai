@@ -18,7 +18,7 @@ The context management system handles:
 ## Quick Start
 
 ```python
-from empathy_llm_toolkit.context import ContextManager
+from attune_llm.context import ContextManager
 
 # Initialize
 manager = ContextManager(storage_dir=".empathy/compact_states")
@@ -93,7 +93,7 @@ handoff = manager.set_handoff(
 path = manager.save_for_compaction(collaboration_state)
 
 # Or create manually
-from empathy_llm_toolkit.context import CompactState, CompactionStateManager
+from attune_llm.context import CompactState, CompactionStateManager
 
 state = CompactState(
     user_id="user123",
@@ -178,7 +178,7 @@ implementation
 ### Pre-Compact Hook
 
 ```python
-from empathy_llm_toolkit.hooks import HookRegistry, HookEvent
+from attune_llm.hooks import HookRegistry, HookEvent
 
 registry = HookRegistry()
 
@@ -220,7 +220,7 @@ def session_start_handler(context):
 The `/compact` command uses context management:
 
 ```python
-from empathy_llm_toolkit.commands import CommandContext
+from attune_llm.commands import CommandContext
 
 ctx = CommandContext(
     user_id="user123",

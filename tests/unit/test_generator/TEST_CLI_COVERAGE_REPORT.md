@@ -1,7 +1,7 @@
 # Test Coverage Report: test_generator/cli.py
 
 **Date:** 2026-01-15
-**Target File:** `src/empathy_os/test_generator/cli.py` (100 lines)
+**Target File:** `src/attune/test_generator/cli.py` (100 lines)
 **Test File:** `tests/unit/test_generator/test_cli.py` (1,091 lines)
 **Coverage Achieved:** **97.54%** (38 tests)
 
@@ -150,7 +150,7 @@ Only 2 lines (2%) remain uncovered:
 Comprehensive mocking of dependencies to isolate CLI logic:
 
 ```python
-with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
     mock_generator = MagicMock()
     mock_generator.generate_tests.return_value = mock_tests
     mock_gen_class.return_value = mock_generator

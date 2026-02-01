@@ -194,7 +194,7 @@ $0.785512 (savings) / $1.824838 (Run 1 cost) = 43.0%
 
 **Enable:**
 ```python
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.workflows import CodeReviewWorkflow
 
 workflow = CodeReviewWorkflow()  # Routing enabled by default
 result = await workflow.execute(diff=my_diff)
@@ -217,12 +217,12 @@ result = await workflow.execute(diff=my_diff)
 ### Feature 3: Hybrid Cache (Semantic Matching)
 **Gradual impact:** 30-70% additional savings (depends on similarity)
 **Works on:** Similar prompts ("find bugs" vs "analyze for issues")
-**Requires:** `pip install empathy-framework[cache]`
+**Requires:** `pip install attune-ai[cache]`
 **Downside:** ~100ms lookup time (vs 5μs for hash)
 
 **Enable:**
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 cache = create_cache(cache_type="hybrid")
 workflow = CodeReviewWorkflow(cache=cache, enable_cache=True)

@@ -6,7 +6,7 @@ with automatic tier upgrades when quality gates fail.
 
 import pytest
 
-from empathy_os.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows.base import BaseWorkflow, ModelTier
 
 
 class MockTierFallbackWorkflow(BaseWorkflow):

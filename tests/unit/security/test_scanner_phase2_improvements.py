@@ -9,7 +9,7 @@ Related: docs/SECURITY_REMEDIATION_PLAN.md (Phase 2)
 
 import pytest
 
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 
 class TestSQLInjectionDetection:
@@ -104,7 +104,7 @@ is_compliant = random.random() < 0.90
     def test_random_in_ab_testing_is_safe(self):
         """Test that random in A/B testing is safe."""
         line = "variant = random.choice(['A', 'B'])"
-        file_path = "src/empathy_os/socratic/ab_testing.py"
+        file_path = "src/attune/socratic/ab_testing.py"
         content = "variant = random.choice(['A', 'B'])"
 
         result = self.workflow._is_safe_random_usage(line, file_path, content)
@@ -239,7 +239,7 @@ class TestPhase2Improvements:
         workflow = SecurityAuditWorkflow()
 
         result_dict, _, _ = await workflow._triage(
-            {"path": "src/empathy_os/workflows/history.py"},
+            {"path": "src/attune/workflows/history.py"},
             workflow.tier_map["triage"]
         )
 
@@ -273,7 +273,7 @@ class TestPhase2Improvements:
         workflow = SecurityAuditWorkflow()
 
         result_dict, _, _ = await workflow._triage(
-            {"path": "src/empathy_os/workflows/bug_predict.py"},
+            {"path": "src/attune/workflows/bug_predict.py"},
             workflow.tier_map["triage"]
         )
 

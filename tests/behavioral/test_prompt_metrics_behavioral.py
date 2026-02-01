@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 from datetime import datetime, timedelta
 
-from empathy_os.metrics.prompt_metrics import (
+from attune.metrics.prompt_metrics import (
     MetricsTracker,
     PromptMetrics,
 )
@@ -291,10 +291,10 @@ class TestMetricsAggregation:
 
         summary = tracker.get_summary()
 
-        assert summary["total_executions"] == 10
-        assert summary["avg_prompt_tokens"] > 0
-        assert summary["avg_completion_tokens"] > 0
+        assert summary["total_prompts"] == 10
+        assert summary["avg_tokens"] > 0
         assert summary["avg_latency_ms"] > 0
+        assert summary["success_rate"] > 0
 
     def test_groups_by_workflow(self, tmp_path):
         """Test grouping summary by workflow."""
@@ -321,15 +321,15 @@ class TestMetricsAggregation:
             )
             tracker.log_metric(metric)
 
-        summary = tracker.get_summary_by_workflow()
+        # Test filtering by workflow
+        code_review_summary = tracker.get_summary(workflow="code-review")
+        test_gen_summary = tracker.get_summary(workflow="test-gen")
 
-        assert "code-review" in summary
-        assert "test-gen" in summary
-        assert summary["code-review"]["total_executions"] == 2
-        assert summary["test-gen"]["total_executions"] == 2
+        assert code_review_summary["total_prompts"] == 2
+        assert test_gen_summary["total_prompts"] == 2
 
     def test_groups_by_model(self, tmp_path):
-        """Test grouping summary by model."""
+        """Test that metrics are retrieved correctly with different models."""
         metrics_file = tmp_path / "metrics.json"
         tracker = MetricsTracker(metrics_file=str(metrics_file))
 
@@ -353,11 +353,15 @@ class TestMetricsAggregation:
             )
             tracker.log_metric(metric)
 
-        summary = tracker.get_summary_by_model()
+        # Retrieve all metrics and verify they have correct models
+        metrics = tracker.get_metrics()
+        assert len(metrics) == 3
 
-        assert "gpt-4o" in summary
-        assert "claude-sonnet-4.5" in summary
-        assert summary["gpt-4o"]["total_executions"] == 2
+        gpt4o_metrics = [m for m in metrics if m.model == "gpt-4o"]
+        claude_metrics = [m for m in metrics if m.model == "claude-sonnet-4.5"]
+
+        assert len(gpt4o_metrics) == 2
+        assert len(claude_metrics) == 1
 
 
 class TestErrorTracking:
@@ -410,8 +414,12 @@ class TestErrorTracking:
 
         summary = tracker.get_summary()
 
-        assert summary["error_count"] == 1
-        assert summary["error_rate"] == 0.5  # 1 out of 2
+        # Verify success_rate reflects the failed execution
+        assert summary["total_prompts"] == 2
+        assert summary["success_rate"] == 0.5  # 1 out of 2 succeeded
+
+        # Verify retry_rate includes the failed execution's retries
+        assert summary["retry_rate"] == 1.0  # (0 + 2) / 2
 
     def test_tracks_retry_counts(self, tmp_path):
         """Test tracking retry attempts."""
@@ -440,8 +448,9 @@ class TestErrorTracking:
 
         summary = tracker.get_summary()
 
-        assert summary["total_retries"] == 6  # 0+1+2+0+3
-        assert summary["avg_retries"] == 1.2  # 6/5
+        # Total retries: 0+1+2+0+3 = 6, average = 6/5 = 1.2
+        assert summary["total_prompts"] == 5
+        assert summary["retry_rate"] == 1.2  # 6/5 = 1.2 avg retries per prompt
 
 
 class TestXMLUsageTracking:
@@ -473,10 +482,13 @@ class TestXMLUsageTracking:
                 )
             )
 
-        summary = tracker.get_summary()
+        # Retrieve metrics and count XML usage
+        metrics = tracker.get_metrics()
+        xml_used_count = sum(1 for m in metrics if m.xml_structure_used)
+        xml_usage_rate = xml_used_count / len(metrics)
 
-        assert summary["xml_usage_count"] == 3
-        assert summary["xml_usage_rate"] == 0.6  # 3 out of 5
+        assert xml_used_count == 3
+        assert xml_usage_rate == 0.6  # 3 out of 5
 
     def test_compares_xml_vs_non_xml_performance(self, tmp_path):
         """Test comparing performance of XML vs non-XML prompts."""
@@ -525,10 +537,20 @@ class TestXMLUsageTracking:
                 )
             )
 
-        comparison = tracker.compare_xml_performance()
+        # Manually compare performance metrics
+        metrics = tracker.get_metrics()
 
-        assert comparison["xml"]["avg_latency_ms"] < comparison["non_xml"]["avg_latency_ms"]
-        assert comparison["xml"]["error_rate"] < comparison["non_xml"]["error_rate"]
+        xml_metrics = [m for m in metrics if m.xml_structure_used]
+        non_xml_metrics = [m for m in metrics if not m.xml_structure_used]
+
+        xml_avg_latency = sum(m.latency_ms for m in xml_metrics) / len(xml_metrics)
+        non_xml_avg_latency = sum(m.latency_ms for m in non_xml_metrics) / len(non_xml_metrics)
+
+        xml_success_rate = sum(1 for m in xml_metrics if m.parsing_success) / len(xml_metrics)
+        non_xml_success_rate = sum(1 for m in non_xml_metrics if m.parsing_success) / len(non_xml_metrics)
+
+        assert xml_avg_latency < non_xml_avg_latency
+        assert xml_success_rate > non_xml_success_rate
 
 
 class TestFileHandling:

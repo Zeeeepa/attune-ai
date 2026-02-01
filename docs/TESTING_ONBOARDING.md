@@ -25,7 +25,7 @@ cd /path/to/Empathy-framework
 pytest tests/unit/ -v
 
 # Run with coverage report
-pytest tests/unit/ --cov=src/empathy_os --cov-report=term-missing
+pytest tests/unit/ --cov=src/attune --cov-report=term-missing
 ```
 
 **Expected Results**:
@@ -247,7 +247,7 @@ pytest tests/unit/path/to/test_file.py::TestClass::test_my_feature -v
 
 # Verify it passes
 # Add to coverage report
-pytest tests/unit/ --cov=src/empathy_os --cov-report=term-missing
+pytest tests/unit/ --cov=src/attune --cov-report=term-missing
 ```
 
 ---
@@ -524,7 +524,7 @@ def test_expensive_operation():
 pytest tests/unit/
 
 # With coverage
-pytest tests/unit/ --cov=src/empathy_os --cov-report=html
+pytest tests/unit/ --cov=src/attune --cov-report=html
 
 # Specific file
 pytest tests/unit/memory/security/test_pii_scrubber.py

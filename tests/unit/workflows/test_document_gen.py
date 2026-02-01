@@ -12,8 +12,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.document_gen import (
+from attune.workflows.base import ModelTier
+from attune.workflows.document_gen import (
     DOC_GEN_STEPS,
     TOKEN_COSTS,
     DocumentGenerationWorkflow,

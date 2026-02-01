@@ -20,10 +20,10 @@ except ImportError:
 import asyncio
 from datetime import datetime, timedelta
 
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import (SONNET_TO_OPUS_FALLBACK,
+from attune.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.fallback import (SONNET_TO_OPUS_FALLBACK,
                                         ResilientExecutor)
-from empathy_os.models.telemetry import TelemetryAnalytics, get_telemetry_store
+from attune.models.telemetry import TelemetryAnalytics, get_telemetry_store
 
 
 async def example_basic_fallback():
@@ -120,7 +120,7 @@ async def example_custom_retry():
 
     import os
 
-    from empathy_os.models.fallback import RetryPolicy
+    from attune.models.fallback import RetryPolicy
 
     # Get API key
     api_key = os.getenv("ANTHROPIC_API_KEY")
@@ -217,7 +217,7 @@ async def main():
     print("💡 Pro Tips:")
     print("=" * 60)
     print("1. Check fallback analytics weekly:")
-    print("   python -m empathy_os.telemetry.cli sonnet-opus-analysis")
+    print("   python -m attune.telemetry.cli sonnet-opus-analysis")
     print()
     print("2. Aim for < 5% fallback rate for optimal savings")
     print()

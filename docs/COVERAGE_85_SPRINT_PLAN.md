@@ -73,7 +73,7 @@ description: Sprint Series: Achieving 85%+ Test Coverage: **Version:** 1.0 **Cre
 ### Week 1: ModelRegistry & Routing
 
 #### Day 1-2: Create ModelRegistry Class (P1)
-**File:** `src/empathy_os/models/registry.py`
+**File:** `src/attune/models/registry.py`
 
 ```python
 class ModelRegistry:
@@ -121,7 +121,7 @@ def get_model(provider: str, tier: str) -> ModelInfo | None:
 ---
 
 #### Day 3-4: Create FallbackPolicy Class (P1)
-**File:** `src/empathy_os/models/fallback.py` (new)
+**File:** `src/attune/models/fallback.py` (new)
 
 ```python
 class FallbackTier(Enum):
@@ -205,7 +205,7 @@ memory = UnifiedMemory(user_id="test_user", config=config)
 ### Week 2: Meta-Orchestrator & Integration Tests
 
 #### Day 6-7: Extract Testable Methods (Gap 1.3)
-**File:** `src/empathy_os/orchestration/meta_orchestrator.py`
+**File:** `src/attune/orchestration/meta_orchestrator.py`
 
 Make key methods public for testing:
 
@@ -257,7 +257,7 @@ def test_complete_health_check_workflow():
 
     # User journey: Request health check
     plan = orchestrator.analyze_and_compose(
-        task="Run comprehensive health check on empathy-framework",
+        task="Run comprehensive health check on attune-ai",
         context={"project_root": "."}
     )
 
@@ -575,7 +575,7 @@ class TestSecurityFeatures:
 
     def test_path_traversal_prevention(self):
         """Test all path traversal attack vectors."""
-        from empathy_os.config import _validate_file_path
+        from attune.config import _validate_file_path
 
         attack_vectors = [
             "../../../etc/passwd",
@@ -591,7 +591,7 @@ class TestSecurityFeatures:
 
     def test_pii_scrubbing_comprehensive(self):
         """Test PII detection and scrubbing."""
-        from empathy_os.memory.security.pii_scrubber import PIIScrubber
+        from attune.memory.security.pii_scrubber import PIIScrubber
 
         scrubber = PIIScrubber()
 
@@ -609,7 +609,7 @@ class TestSecurityFeatures:
 
     def test_audit_logging_complete(self):
         """Test that all security events are logged."""
-        from empathy_os.memory.security.audit_logger import AuditLogger
+        from attune.memory.security.audit_logger import AuditLogger
 
         logger = AuditLogger()
 
@@ -907,7 +907,7 @@ def test_end_to_end_workflow():
 pytest --cov=src --cov-report=html --cov-report=term-missing
 
 # Run specific module coverage
-pytest tests/unit/orchestration/ --cov=src/empathy_os/orchestration
+pytest tests/unit/orchestration/ --cov=src/attune/orchestration
 
 # Generate coverage badge
 coverage-badge -o coverage.svg

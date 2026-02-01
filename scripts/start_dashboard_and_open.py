@@ -59,7 +59,7 @@ def start_dashboard_and_open(host: str = "127.0.0.1", port: int = 8000, max_wait
     # Start dashboard in background
     cmd = [
         sys.executable,
-        "-m", "empathy_os.cli_minimal",
+        "-m", "attune.cli_minimal",
         "dashboard", "start",
         "--host", host,
         "--port", str(port)
@@ -164,7 +164,7 @@ def main():
         print("Starting dashboard without opening browser...")
         subprocess.run([
             sys.executable,
-            "-m", "empathy_os.cli_minimal",
+            "-m", "attune.cli_minimal",
             "dashboard", "start",
             "--host", args.host,
             "--port", str(args.port)

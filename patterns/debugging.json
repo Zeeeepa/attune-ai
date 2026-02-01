@@ -584,7 +584,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2025-12-25",
       "files_affected": [
-        "src/empathy_os/workflows/__init__.py"
+        "src/attune/workflows/__init__.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -1863,7 +1863,7 @@
       "resolved_by": "@y",
       "resolved_at": "GeneAI",
       "files_affected": [
-        "src/empathy_os/workflows/test_gen.py"
+        "src/attune/workflows/test_gen.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -1913,8 +1913,8 @@
       "resolved_by": "@y",
       "resolved_at": "GeneAI",
       "files_affected": [
-        "src/empathy_os/memory/short_term.py",
-        "src/empathy_os/project_index/scanner.py"
+        "src/attune/memory/short_term.py",
+        "src/attune/project_index/scanner.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -2172,7 +2172,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2025-12-30",
       "files_affected": [
-        "src/empathy_os/workflows/bug_predict.py"
+        "src/attune/workflows/bug_predict.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -2222,7 +2222,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2025-12-31",
       "files_affected": [
-        "src/empathy_os/workflows/test_gen.py"
+        "src/attune/workflows/test_gen.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -2430,8 +2430,8 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-06",
       "files_affected": [
-        "src/empathy_os/workflows/base.py",
-        "src/empathy_os/workflows/security_audit.py",
+        "src/attune/workflows/base.py",
+        "src/attune/workflows/security_audit.py",
         ".../src/panels/EmpathyDashboardPanel.ts"
       ],
       "source": "git_history",
@@ -2596,7 +2596,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-05",
       "files_affected": [
-        "src/empathy_os/workflows/manage_documentation.py"
+        "src/attune/workflows/manage_documentation.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -2702,7 +2702,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-06",
       "files_affected": [
-        "src/empathy_os/workflows/refactor_plan.py"
+        "src/attune/workflows/refactor_plan.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -2758,7 +2758,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-06",
       "files_affected": [
-        "src/empathy_os/cli.py",
+        "src/attune/cli.py",
         "tests/test_cli.py",
         "tests/test_code_review_crew_integration.py"
       ],
@@ -2962,7 +2962,7 @@
       "resolved_at": "2026-01-06",
       "files_affected": [
         "pyproject.toml",
-        "src/empathy_os/workflows/health_check.py"
+        "src/attune/workflows/health_check.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -3062,7 +3062,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-06",
       "files_affected": [
-        "src/empathy_os/workflows/health_check.py"
+        "src/attune/workflows/health_check.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -3164,7 +3164,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-07",
       "files_affected": [
-        "src/empathy_os/memory/long_term.py"
+        "src/attune/memory/long_term.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -3214,8 +3214,8 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-07",
       "files_affected": [
-        "src/empathy_os/cache/dependency_manager.py",
-        "src/empathy_os/cache/hybrid.py"
+        "src/attune/cache/dependency_manager.py",
+        "src/attune/cache/hybrid.py"
       ],
       "source": "git_history",
       "tier_progression": {
@@ -3414,7 +3414,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-09",
       "files_affected": [
-        "src/empathy_os/models/telemetry.py",
+        "src/attune/models/telemetry.py",
         "tests/test_fallback_suite.py",
         "tests/unit/telemetry/test_tier1_cli.py"
       ],
@@ -3429,7 +3429,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-09",
       "files_affected": [
-        "src/empathy_os/workflows/new_sample_workflow1.py"
+        "src/attune/workflows/new_sample_workflow1.py"
       ],
       "source": "git_history"
     },
@@ -3443,7 +3443,7 @@
       "resolved_at": "2026-01-09",
       "files_affected": [
         "dashboard/backend/config.py",
-        "src/empathy_os/cache/hybrid.py",
+        "src/attune/cache/hybrid.py",
         "tests/unit/cache/test_hybrid_cache.py"
       ],
       "source": "git_history"
@@ -3517,8 +3517,8 @@
       "resolved_at": "2026-01-15",
       "files_affected": [
         ".../agent_factory/adapters/crewai_adapter.py",
-        "src/empathy_os/models/executor.py",
-        "src/empathy_os/workflows/security_audit.py"
+        "src/attune/models/executor.py",
+        "src/attune/workflows/security_audit.py"
       ],
       "source": "git_history"
     },
@@ -3531,8 +3531,8 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-15",
       "files_affected": [
-        "src/empathy_os/orchestration/real_tools.py",
-        "src/empathy_os/workflows/release_prep_crew.py"
+        "src/attune/orchestration/real_tools.py",
+        "src/attune/workflows/release_prep_crew.py"
       ],
       "source": "git_history"
     },
@@ -3575,7 +3575,7 @@
       "files_affected": [
         "patterns/debugging/all_patterns.json",
         "patterns/refactoring_memory.json",
-        "src/empathy_os/cli.py"
+        "src/attune/cli.py"
       ],
       "source": "git_history"
     },
@@ -3716,7 +3716,7 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-20",
       "files_affected": [
-        "src/empathy_os/project_index/models.py",
+        "src/attune/project_index/models.py",
         ".../orchestration/test_composition_patterns.py",
         "tests/unit/routing/test_classifier.py"
       ],
@@ -3745,9 +3745,9 @@
       "resolved_by": "@geneai",
       "resolved_at": "2026-01-20",
       "files_affected": [
-        "src/empathy_os/socratic/explainer.py",
-        "src/empathy_os/socratic/mcp_server.py",
-        "src/empathy_os/socratic/visual_editor.py"
+        "src/attune/socratic/explainer.py",
+        "src/attune/socratic/mcp_server.py",
+        "src/attune/socratic/visual_editor.py"
       ],
       "source": "git_history"
     }

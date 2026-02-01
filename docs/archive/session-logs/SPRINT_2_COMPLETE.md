@@ -28,7 +28,7 @@ Successfully completed Sprint 2 security hardening by applying Pattern 6 (File P
 
 ### 1. Config File Security (Pattern 6 Applied)
 
-#### File 1: [src/empathy_os/config.py](src/empathy_os/config.py:29-68)
+#### File 1: [src/attune/config.py](src/attune/config.py:29-68)
 
 **Methods Secured:**
 - `EmpathyConfig.to_yaml(filepath: str)` - Line 345
@@ -50,7 +50,7 @@ ValueError: Cannot write to system directory: /etc
 ValueError: Cannot write to system directory: /sys
 ```
 
-#### File 2: [src/empathy_os/workflows/config.py](src/empathy_os/workflows/config.py:41-80)
+#### File 2: [src/attune/workflows/config.py](src/attune/workflows/config.py:41-80)
 
 **Methods Secured:**
 - `WorkflowConfig.save(path: str | Path)` - Lines 437, 443
@@ -71,7 +71,7 @@ ValueError: Cannot write to system directory: /proc
 ValueError: Cannot write to system directory: /dev
 ```
 
-#### File 3: [src/empathy_os/config/xml_config.py](src/empathy_os/config/xml_config.py:21-60)
+#### File 3: [src/attune/config/xml_config.py](src/attune/config/xml_config.py:21-60)
 
 **Methods Secured:**
 - `EmpathyXMLConfig.save_to_file(config_file: str)` - Line 219
@@ -224,9 +224,9 @@ ValueError: path contains null bytes
 From Phase 2 scan, **14 additional files** have write operations:
 
 **Priority for Sprint 3:**
-- `src/empathy_os/persistence.py` - Pattern database (low risk)
-- `src/empathy_os/cost_tracker.py` - Cost metrics (low risk)
-- `src/empathy_os/templates.py` - Template generation (review needed)
+- `src/attune/persistence.py` - Pattern database (low risk)
+- `src/attune/cost_tracker.py` - Cost metrics (low risk)
+- `src/attune/templates.py` - Template generation (review needed)
 
 **Medium-Low Priority:**
 - Internal library files with controlled paths (11 files)
@@ -446,13 +446,13 @@ python -m pytest tests/unit/test_config_path_security.py -v
 
 ### Verify Path Validation Coverage
 ```bash
-grep -r "_validate_file_path" src/empathy_os/
+grep -r "_validate_file_path" src/attune/
 # Expected: config.py, workflows/config.py, config/xml_config.py, telemetry/cli.py, cli.py, memory/control_panel.py
 ```
 
 ### Check for Remaining Unsafe File Operations
 ```bash
-grep -r "open.*\"w" src/empathy_os/ | grep -v "_validate_file_path"
+grep -r "open.*\"w" src/attune/ | grep -v "_validate_file_path"
 # Expected: Only internal library files (low risk)
 ```
 

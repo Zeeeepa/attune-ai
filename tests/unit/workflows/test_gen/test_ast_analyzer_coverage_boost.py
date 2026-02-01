@@ -9,8 +9,8 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-import empathy_os.workflows.test_gen.ast_analyzer as ast_analyzer_module
-import empathy_os.workflows.test_gen.data_models as data_models_module
+import attune.workflows.test_gen.ast_analyzer as ast_analyzer_module
+import attune.workflows.test_gen.data_models as data_models_module
 
 ASTFunctionAnalyzer = ast_analyzer_module.ASTFunctionAnalyzer
 FunctionSignature = data_models_module.FunctionSignature

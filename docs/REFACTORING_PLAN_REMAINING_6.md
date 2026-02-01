@@ -54,7 +54,7 @@ cmd_telemetry_export         102 lines (5%)
 
 1. **Remove duplicate validation**
    - Delete _validate_file_path (lines 30-69)
-   - Import from empathy_os.config instead
+   - Import from attune.config instead
 
 2. **telemetry/commands/core_commands.py** (~250 lines)
    - cmd_telemetry_show
@@ -525,7 +525,7 @@ core/
 
 1. **Import Validation:**
    ```bash
-   python -c "from empathy_os.[module] import *; print('✅ Imports work')"
+   python -c "from attune.[module] import *; print('✅ Imports work')"
    ```
 
 2. **Run Existing Tests:**
@@ -536,14 +536,14 @@ core/
 
 3. **Generate New Tests:**
    ```bash
-   python -c "from empathy_os.workflows.autonomous_test_gen import AutonomousTestGenerator; \
+   python -c "from attune.workflows.autonomous_test_gen import AutonomousTestGenerator; \
        gen = AutonomousTestGenerator('phase', 1, [{'file': 'path/to/new/module.py'}]); \
        gen.generate_all()"
    ```
 
 4. **Line Count Verification:**
    ```bash
-   wc -l src/empathy_os/[module]/**/*.py | sort -n
+   wc -l src/attune/[module]/**/*.py | sort -n
    ```
 
 ---
@@ -590,10 +590,10 @@ core/
 
 ```bash
 # Restore original file
-git restore src/empathy_os/[module]/[file].py
+git restore src/attune/[module]/[file].py
 
 # Remove extracted modules
-rm -rf src/empathy_os/[module]/[extracted_dir]/
+rm -rf src/attune/[module]/[extracted_dir]/
 
 # Re-run tests to verify
 pytest tests/unit/[module]/ -v

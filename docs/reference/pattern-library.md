@@ -58,7 +58,7 @@ When one agent discovers a useful pattern, all agents learn from it.
 
 ### PatternLibrary
 
-::: empathy_os.pattern_library.PatternLibrary
+::: attune.pattern_library.PatternLibrary
     options:
       show_root_heading: false
       show_source: false
@@ -68,7 +68,7 @@ Central repository for discovered patterns.
 
 **Example:**
 ```python
-from empathy_os.pattern_library import PatternLibrary, Pattern
+from attune.pattern_library import PatternLibrary, Pattern
 
 # Create library
 library = PatternLibrary()
@@ -101,7 +101,7 @@ for match in matches:
 
 ### Pattern
 
-::: empathy_os.pattern_library.Pattern
+::: attune.pattern_library.Pattern
     options:
       show_root_heading: false
       show_source: false
@@ -131,7 +131,7 @@ Individual pattern with metadata and confidence tracking.
 
 **Example:**
 ```python
-from empathy_os.pattern_library import Pattern
+from attune.pattern_library import Pattern
 from datetime import datetime
 
 pattern = Pattern(
@@ -161,7 +161,7 @@ print(f"Confidence: {new_confidence:.0%}")
 
 ### PatternMatch
 
-::: empathy_os.pattern_library.PatternMatch
+::: attune.pattern_library.PatternMatch
     options:
       show_root_heading: false
       show_source: false
@@ -194,8 +194,8 @@ for match in matches:
 ### Single-Agent Pattern Learning
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.pattern_library import PatternLibrary
+from attune import EmpathyOS
+from attune.pattern_library import PatternLibrary
 
 # Create agent with pattern learning
 library = PatternLibrary()
@@ -226,8 +226,8 @@ for pattern in patterns:
 ### Multi-Agent Pattern Sharing
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.pattern_library import PatternLibrary
+from attune import EmpathyOS
+from attune.pattern_library import PatternLibrary
 
 # Shared library for team coordination
 shared_library = PatternLibrary()
@@ -273,8 +273,8 @@ print("Backend agent used pattern discovered by frontend agent!")
 ### Pattern Persistence
 
 ```python
-from empathy_os.pattern_library import PatternLibrary
-from empathy_os.persistence import PatternPersistence
+from attune.pattern_library import PatternLibrary
+from attune.persistence import PatternPersistence
 
 # Create and populate library
 library = PatternLibrary()
@@ -295,7 +295,7 @@ loaded_library = PatternPersistence.load_from_sqlite("patterns.db")
 ### Pattern Discovery
 
 ```python
-from empathy_os.pattern_library import PatternLibrary, Pattern
+from attune.pattern_library import PatternLibrary, Pattern
 
 library = PatternLibrary()
 
@@ -336,7 +336,7 @@ if pattern:
 ### Pattern Decay (Adaptive Learning)
 
 ```python
-from empathy_os.pattern_library import PatternLibrary
+from attune.pattern_library import PatternLibrary
 from datetime import datetime, timedelta
 
 library = PatternLibrary()

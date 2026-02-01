@@ -54,7 +54,7 @@ Successfully completed Options 1 & 2:
 **Configuration**:
 ```ini
 [run]
-source = src/empathy_os
+source = src/attune
 omit = */tests/*, */__pycache__/*, */venv/*
 
 [report]
@@ -223,16 +223,16 @@ Instead of expanding all 107 → 298 tests (massive effort), I strategically exp
 ### Coverage Enforcement:
 ```bash
 # In CI/CD
-pytest --cov=src/empathy_os --cov-report=xml --cov-fail-under=53
+pytest --cov=src/attune --cov-report=xml --cov-fail-under=53
 
 # Locally
-pytest --cov=src/empathy_os --cov-report=html
+pytest --cov=src/attune --cov-report=html
 open htmlcov/index.html  # View detailed report
 ```
 
 ### Badge Available:
 ```markdown
-[![codecov](https://codecov.io/gh/Smart-AI-Memory/empathy-framework/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/empathy-framework)
+[![codecov](https://codecov.io/gh/Smart-AI-Memory/attune-ai/branch/main/graph/badge.svg)](https://codecov.io/gh/Smart-AI-Memory/attune-ai)
 ```
 
 ---
@@ -315,7 +315,7 @@ pytest tests/
 
 ### Run With Coverage
 ```bash
-pytest --cov=src/empathy_os --cov-report=html
+pytest --cov=src/attune --cov-report=html
 open htmlcov/index.html
 ```
 
@@ -331,7 +331,7 @@ pytest tests/unit/memory/test_long_term_security.py \
 
 ### Check Coverage Threshold
 ```bash
-pytest --cov=src/empathy_os --cov-fail-under=53
+pytest --cov=src/attune --cov-fail-under=53
 ```
 
 ---

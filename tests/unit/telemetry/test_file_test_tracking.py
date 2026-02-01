@@ -11,8 +11,8 @@ import tempfile
 
 import pytest
 
-from empathy_os.models import FileTestRecord
-from empathy_os.models.telemetry import TelemetryStore
+from attune.models import FileTestRecord
+from attune.models.telemetry import TelemetryStore
 
 
 class TestFileTestRecord:
@@ -21,7 +21,7 @@ class TestFileTestRecord:
     def test_create_basic_record(self):
         """Test creating a basic FileTestRecord."""
         record = FileTestRecord(
-            file_path="src/empathy_os/config.py",
+            file_path="src/attune/config.py",
             timestamp="2026-01-22T10:00:00Z",
             last_test_result="passed",
             test_count=10,
@@ -29,7 +29,7 @@ class TestFileTestRecord:
             failed=0,
         )
 
-        assert record.file_path == "src/empathy_os/config.py"
+        assert record.file_path == "src/attune/config.py"
         assert record.last_test_result == "passed"
         assert record.test_count == 10
         assert record.passed == 10
@@ -78,7 +78,7 @@ class TestFileTestRecord:
     def test_to_dict_and_from_dict(self):
         """Test serialization roundtrip."""
         original = FileTestRecord(
-            file_path="src/empathy_os/config.py",
+            file_path="src/attune/config.py",
             timestamp="2026-01-22T10:00:00Z",
             last_test_result="passed",
             test_count=10,
@@ -292,7 +292,7 @@ class TestTestRunnerFileTracking:
     def test_find_test_file_standard_pattern(self, tmp_path):
         """Test finding test file with standard naming."""
         # Create source file
-        src_dir = tmp_path / "src" / "empathy_os"
+        src_dir = tmp_path / "src" / "attune"
         src_dir.mkdir(parents=True)
         source_file = src_dir / "config.py"
         source_file.write_text("# config module")
@@ -307,12 +307,12 @@ class TestTestRunnerFileTracking:
         # Need to change to tmp_path for relative path resolution
         import os
 
-        from empathy_os.workflows.test_runner import _find_test_file
+        from attune.workflows.test_runner import _find_test_file
 
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)
-            found = _find_test_file("src/empathy_os/config.py")
+            found = _find_test_file("src/attune/config.py")
             # Should find the test file
             assert found is not None
             assert "test_config.py" in found
@@ -321,7 +321,7 @@ class TestTestRunnerFileTracking:
 
     def test_get_file_test_status_no_record(self):
         """Test getting status for a file with no records."""
-        from empathy_os.workflows.test_runner import get_file_test_status
+        from attune.workflows.test_runner import get_file_test_status
 
         # Non-existent file should return None
         status = get_file_test_status("nonexistent_file_xyz.py")

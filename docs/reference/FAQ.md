@@ -37,7 +37,7 @@ Empathy Framework is an open-source Python framework that gives AI assistants pe
 
 **Quick start:**
 ```bash
-pip install empathy-framework
+pip install attune-ai
 empathy-memory serve
 ```
 
@@ -488,7 +488,7 @@ def validate_output(self, stage_output: dict) -> tuple[bool, str | None]:
     return True, None
 ```
 
-**See code:** [src/empathy_os/workflows/base.py:156-187](../../src/empathy_os/workflows/base.py#L156-L187)
+**See code:** [src/attune/workflows/base.py:156-187](../../src/attune/workflows/base.py#L156-L187)
 
 ---
 
@@ -503,7 +503,7 @@ empathy workflow run health-check --use-recommended-tier --health-score-threshol
 
 **2. Use Python API for full control:**
 ```python
-from empathy_os.workflows import get_workflow
+from attune.workflows import get_workflow
 
 workflow_cls = get_workflow("health-check")
 workflow = workflow_cls(
@@ -863,8 +863,8 @@ git push
 
 ### Community
 
-- **GitHub Issues:** [Report bugs or request features](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- **GitHub Discussions:** [Ask questions, share ideas](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- **GitHub Issues:** [Report bugs or request features](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- **GitHub Discussions:** [Ask questions, share ideas](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 - **Twitter:** [@your_handle] - Follow for updates
 
 ### Commercial Support
@@ -874,6 +874,6 @@ git push
 
 ---
 
-**Contributing:** Found an error or have a question not covered here? [Open an issue](https://github.com/Smart-AI-Memory/empathy-framework/issues) or [start a discussion](https://github.com/Smart-AI-Memory/empathy-framework/discussions).
+**Contributing:** Found an error or have a question not covered here? [Open an issue](https://github.com/Smart-AI-Memory/attune-ai/issues) or [start a discussion](https://github.com/Smart-AI-Memory/attune-ai/discussions).
 
 **Last Updated:** January 7, 2026

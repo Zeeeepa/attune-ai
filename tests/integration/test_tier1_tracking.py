@@ -15,10 +15,10 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.models import get_telemetry_store
-from empathy_os.models.telemetry import TelemetryAnalytics
-from empathy_os.workflows.base import BaseWorkflow
-from empathy_os.workflows.test_runner import run_tests_with_tracking, track_coverage
+from attune.models import get_telemetry_store
+from attune.models.telemetry import TelemetryAnalytics
+from attune.workflows.base import BaseWorkflow
+from attune.workflows.test_runner import run_tests_with_tracking, track_coverage
 
 
 @pytest.fixture
@@ -32,11 +32,11 @@ def temp_dir():
 def mock_telemetry_dir(temp_dir, monkeypatch):
     """Mock the telemetry directory for testing."""
     # Reset the global telemetry store singleton
-    import empathy_os.models.telemetry
-    from empathy_os.models.telemetry import TelemetryStore
+    import attune.models.telemetry
+    from attune.models.telemetry import TelemetryStore
 
     # Create a fresh telemetry store with the temp directory
-    empathy_os.models.telemetry._telemetry_store = TelemetryStore(storage_dir=str(temp_dir))
+    attune.models.telemetry._telemetry_store = TelemetryStore(storage_dir=str(temp_dir))
 
     monkeypatch.setenv("EMPATHY_TELEMETRY_DIR", str(temp_dir))
     return temp_dir
@@ -382,7 +382,7 @@ class TestCoverageTracking:
         store = get_telemetry_store()
 
         # Track first coverage (manually create with lower percentage)
-        from empathy_os.models import CoverageRecord
+        from attune.models import CoverageRecord
 
         old_record = CoverageRecord(
             record_id="cov-old",

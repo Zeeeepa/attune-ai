@@ -72,7 +72,7 @@ Is the result used for:
 
 ### Quick Win #1: Scanner._build_summary() Optimization
 
-**File:** `/src/empathy_os/project_index/scanner.py`
+**File:** `/src/attune/project_index/scanner.py`
 **Lines:** 509-606
 **Impact:** HIGH (processes 2,000+ files per scan)
 
@@ -110,7 +110,7 @@ summary.files_requiring_tests = len(requiring_tests_list)
 
 ### Quick Win #2: PatternLibrary.query_patterns() Optimization
 
-**File:** `/src/empathy_os/pattern_library.py`
+**File:** `/src/attune/pattern_library.py`
 **Lines:** 232-242
 **Impact:** MEDIUM (queries 100-1,000 patterns)
 
@@ -142,7 +142,7 @@ patterns_to_check = (self.patterns[pid] for pid in pattern_ids)  # Generator
 
 ### Quick Win #3: FeedbackLoops Optimization
 
-**File:** `/src/empathy_os/feedback_loops.py`
+**File:** `/src/attune/feedback_loops.py`
 **Lines:** 162-167, 232-241, 280-289
 **Impact:** MEDIUM (called 50-100 times per session analysis)
 
@@ -178,7 +178,7 @@ success_rate = success_count / len(session_history) if session_history else 0.5
 
 ### Quick Win #4: Memory.short_term._keys() Documentation
 
-**File:** `/src/empathy_os/memory/short_term.py`
+**File:** `/src/attune/memory/short_term.py`
 **Lines:** 611-622
 **Status:** Intentional pattern (no change needed)
 
@@ -196,7 +196,7 @@ success_rate = success_count / len(session_history) if session_history else 0.5
 
 #### 3.1 Graph Node Lookups (Memory Impact: HIGH)
 
-**File:** `/src/empathy_os/memory/graph.py`
+**File:** `/src/attune/memory/graph.py`
 **Functions:** `find_by_type()`, `find_by_wizard()`, `find_by_file()`
 **Lines:** 399-412
 
@@ -220,7 +220,7 @@ def find_by_type(self, node_type: NodeType) -> list[Node]:
 
 #### 3.2 Memory Control Panel Operations (Memory Impact: MEDIUM)
 
-**File:** `/src/empathy_os/memory/control_panel.py`
+**File:** `/src/attune/memory/control_panel.py`
 **Lines:** 239, 254, 1372, 1403
 
 **Pattern 1: Time-window filtering**
@@ -244,7 +244,7 @@ self._requests[client_ip] = [ts for ts in self._requests[client_ip] if ts > wind
 
 #### 3.3 Test Generator Pattern Lookups (Memory Impact: MEDIUM)
 
-**File:** `/src/empathy_os/test_generator/generator.py`
+**File:** `/src/attune/test_generator/generator.py`
 **Line:** 148
 
 **Current:**
@@ -282,7 +282,7 @@ patterns = _get_valid_patterns()
 
 #### 3.4 Long-Term Memory Serialization (Memory Impact: MEDIUM)
 
-**File:** `/src/empathy_os/memory/long_term.py`
+**File:** `/src/attune/memory/long_term.py`
 **Lines:** 596, 601, 710
 
 **Pattern:**
@@ -304,7 +304,7 @@ secret_types = [s.secret_type.value for s in secrets_found]
 
 #### 3.5 Short-Term Memory Key Filtering (Memory Impact: LOW)
 
-**File:** `/src/empathy_os/memory/short_term.py`
+**File:** `/src/attune/memory/short_term.py`
 **Lines:** 1200-1206, 1410, 1478, etc.
 
 **Pattern:**
@@ -324,7 +324,7 @@ working_keys = [k for k in self._mock_storage if k.startswith(self.PREFIX_WORKIN
 
 #### 3.6 Persistence Layer Operations (Complex)
 
-**File:** `/src/empathy_os/persistence.py`
+**File:** `/src/attune/persistence.py`
 **Line:** 360
 
 ```python
@@ -341,7 +341,7 @@ return [p.stem for p in self.storage_path.glob("*.json")]
 
 #### 3.7 Config and Import Handling (Compatibility risk)
 
-**File:** `/src/empathy_os/config.py`
+**File:** `/src/attune/config.py`
 **Line:** 187
 
 ```python
@@ -705,4 +705,4 @@ Total:              195+ tests passing ✅
 **Next Review:** January 17, 2026
 **Maintained By:** Engineering Team
 
-For questions or updates, file an issue at: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
+For questions or updates, file an issue at: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)

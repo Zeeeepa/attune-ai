@@ -16,7 +16,7 @@ Licensed under Apache 2.0
 
 import pytest
 
-from empathy_os.models.registry import MODEL_REGISTRY, ModelInfo, ModelRegistry
+from attune.models.registry import MODEL_REGISTRY, ModelInfo, ModelRegistry
 
 
 @pytest.mark.unit

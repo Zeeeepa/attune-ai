@@ -4,7 +4,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-from empathy_os.test_generator.risk_analyzer import RiskAnalysis, RiskAnalyzer
+from attune.test_generator.risk_analyzer import RiskAnalysis, RiskAnalyzer
 
 
 class TestRiskAnalysisDataClass:

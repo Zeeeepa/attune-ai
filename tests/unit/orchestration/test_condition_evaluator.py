@@ -12,7 +12,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from empathy_os.orchestration.execution_strategies import (
+from attune.orchestration.execution_strategies import (
     Branch,
     Condition,
     ConditionalStrategy,
@@ -420,7 +420,7 @@ class TestConditionalStrategyExecute:
     @pytest.fixture
     def mock_strategy_result(self):
         """Create a mock strategy result."""
-        from empathy_os.orchestration.execution_strategies import StrategyResult
+        from attune.orchestration.execution_strategies import StrategyResult
 
         return StrategyResult(
             success=True,
@@ -450,7 +450,7 @@ class TestConditionalStrategyExecute:
         context = {"success": True}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -480,7 +480,7 @@ class TestConditionalStrategyExecute:
         context = {"success": False}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -529,7 +529,7 @@ class TestConditionalStrategyExecute:
         context = {"count": 5}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             await strategy.execute([], context)
@@ -568,7 +568,7 @@ class TestConditionalStrategyExecute:
         context = {"coverage": 85, "tests_passing": True}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -583,7 +583,7 @@ class TestMultiConditionalStrategyExecute:
     @pytest.fixture
     def mock_strategy_result(self):
         """Create a mock strategy result."""
-        from empathy_os.orchestration.execution_strategies import StrategyResult
+        from attune.orchestration.execution_strategies import StrategyResult
 
         return StrategyResult(
             success=True,
@@ -616,7 +616,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "premium"}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -648,7 +648,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "capable"}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -680,7 +680,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "cheap"}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -735,7 +735,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"score": 75}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -770,7 +770,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "capable", "priority": "high"}
 
         with patch(
-            "empathy_os.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration.execution_strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)

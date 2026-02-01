@@ -13,7 +13,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.resilience.health import (
+from attune.resilience.health import (
     HealthCheck,
     HealthCheckResult,
     HealthStatus,

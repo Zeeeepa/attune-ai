@@ -137,7 +137,7 @@ Licensed under Fair Source 0.9
 """
 
 import pytest
-from empathy_os.your_module import YourClass
+from attune.your_module import YourClass
 
 
 class TestYourClass:
@@ -169,7 +169,7 @@ class TestYourClass:
 pytest tests/
 
 # Run with coverage
-pytest tests/ --cov=src/empathy_os --cov-report=term-missing
+pytest tests/ --cov=src/attune --cov-report=term-missing
 
 # Run specific test file
 pytest tests/test_your_module.py
@@ -364,7 +364,7 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 def main():
     """Demonstrate anticipatory trust building"""
@@ -385,7 +385,7 @@ if __name__ == "__main__":
 
 ### Before Submitting
 
-1. **Run all tests**: `pytest tests/ --cov=src/empathy_os`
+1. **Run all tests**: `pytest tests/ --cov=src/attune`
 2. **Check coverage**: Ensure 70%+ coverage
 3. **Update documentation**: Add/update relevant docs
 4. **Add examples**: If adding features, add example

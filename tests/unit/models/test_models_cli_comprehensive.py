@@ -14,7 +14,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.models.cli import (
+from attune.models.cli import (
     configure_provider,
     main,
     print_costs,
@@ -28,10 +28,10 @@ from empathy_os.models.cli import (
     print_telemetry_summary,
     validate_file,
 )
-from empathy_os.models.provider_config import ProviderConfig, ProviderMode
-from empathy_os.models.registry import get_all_models
-from empathy_os.models.tasks import get_all_tasks, get_tier_for_task
-from empathy_os.models.telemetry import (
+from attune.models.provider_config import ProviderConfig, ProviderMode
+from attune.models.registry import get_all_models
+from attune.models.tasks import get_all_tasks, get_tier_for_task
+from attune.models.telemetry import (
     LLMCallRecord,
     TelemetryStore,
     WorkflowRunRecord,
@@ -574,7 +574,7 @@ class TestProviderConfigRealData:
 
         # Save config to temp path and load from there
         config.save(config_path)
-        with patch("empathy_os.models.provider_config.ProviderConfig.load") as mock_load:
+        with patch("attune.models.provider_config.ProviderConfig.load") as mock_load:
             mock_load.return_value = config
             print_provider_config()
 

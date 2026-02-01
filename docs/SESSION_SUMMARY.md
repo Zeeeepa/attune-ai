@@ -57,7 +57,7 @@ description: Session Summary: Quality Review & CLI Refactoring: **Date:** 2026-0
 
 **Architecture Created:**
 ```
-src/empathy_os/cli/
+src/attune/cli/
 ├── __init__.py (152 lines)      - New modular main()
 ├── __main__.py (10 lines)        - Module execution support
 ├── commands/
@@ -194,10 +194,10 @@ src/empathy_os/cli/
 **Fix Circular Imports (15 min):**
 ```bash
 # Find circular imports
-grep -r "from empathy_os import" src/empathy_os --include="*.py" | grep -v "__init__"
+grep -r "from attune import" src/attune --include="*.py" | grep -v "__init__"
 
 # Convert to relative imports
-# from empathy_os.module import X  →  from .module import X
+# from attune.module import X  →  from .module import X
 ```
 
 **Add Coverage Measurement (15 min):**
@@ -225,7 +225,7 @@ grep -r "from empathy_os import" src/empathy_os --include="*.py" | grep -v "__in
 # 2. Create commands/<group>.py
 # 3. Create parsers/<group>.py
 # 4. Update parsers/__init__.py
-# 5. Test: python -m empathy_os.cli <command>
+# 5. Test: python -m attune.cli <command>
 # 6. Move to next group
 ```
 
@@ -253,7 +253,7 @@ grep -r "from empathy_os import" src/empathy_os --include="*.py" | grep -v "__in
 
 ```bash
 # 1. Verify current state
-ls src/empathy_os/cli/commands/
+ls src/attune/cli/commands/
 # Should show: help.py, info.py, patterns.py, status.py, tier.py
 
 # 2. Read the roadmap

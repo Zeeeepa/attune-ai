@@ -50,7 +50,7 @@ The Meta-Workflow System is an intelligent workflow orchestration framework that
 ### 1. Install Empathy Framework
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 ### 2. Run Your First Meta-Workflow
@@ -368,7 +368,7 @@ Validation checks:
 ### Basic Usage
 
 ```python
-from empathy_os.meta_workflows import (
+from attune.meta_workflows import (
     TemplateRegistry,
     MetaWorkflow,
     FormResponse,
@@ -409,7 +409,7 @@ for agent_result in result.agent_results:
 ### Pattern Learning API
 
 ```python
-from empathy_os.meta_workflows import PatternLearner
+from attune.meta_workflows import PatternLearner
 
 # Initialize learner
 learner = PatternLearner()
@@ -468,7 +468,7 @@ A workflow template consists of:
 ### Step 1: Define Form Schema
 
 ```python
-from empathy_os.meta_workflows import FormSchema, FormQuestion, QuestionType
+from attune.meta_workflows import FormSchema, FormQuestion, QuestionType
 
 schema = FormSchema(
     questions=[
@@ -501,7 +501,7 @@ schema = FormSchema(
 ### Step 2: Define Agent Composition Rules
 
 ```python
-from empathy_os.meta_workflows import AgentCompositionRule, TierStrategy
+from attune.meta_workflows import AgentCompositionRule, TierStrategy
 
 rules = [
     AgentCompositionRule(
@@ -534,7 +534,7 @@ rules = [
 ### Step 3: Create Template
 
 ```python
-from empathy_os.meta_workflows import MetaWorkflowTemplate
+from attune.meta_workflows import MetaWorkflowTemplate
 
 template = MetaWorkflowTemplate(
     template_id="my_custom_workflow",
@@ -546,7 +546,7 @@ template = MetaWorkflowTemplate(
 )
 
 # Save template
-from empathy_os.meta_workflows import TemplateRegistry
+from attune.meta_workflows import TemplateRegistry
 
 registry = TemplateRegistry()
 registry.save_template(template)
@@ -579,8 +579,8 @@ Memory integration enables:
 ### Setup
 
 ```python
-from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import PatternLearner, MetaWorkflow
+from attune.memory.unified import UnifiedMemory
+from attune.meta_workflows import PatternLearner, MetaWorkflow
 
 # 1. Initialize memory system
 memory = UnifiedMemory(user_id="agent@company.com")
@@ -739,7 +739,7 @@ report = learner.generate_analytics_report("python_package_publish")
 Create custom base templates for agents:
 
 ```python
-from empathy_os.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.agent_templates import AgentTemplate
 
 custom_template = AgentTemplate(
     role="custom_validator",
@@ -1076,8 +1076,8 @@ Use skills for rapid development tasks; use meta-workflows for production pipeli
 
 **Questions or Issues?**
 
-- GitHub Issues: https://github.com/Smart-AI-Memory/empathy-framework/issues
-- GitHub Discussions: https://github.com/Smart-AI-Memory/empathy-framework/discussions
+- GitHub Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
+- GitHub Discussions: https://github.com/Smart-AI-Memory/attune-ai/discussions
 - Documentation: https://empathyframework.com/framework-docs/
 
 **Contributing:**

@@ -24,7 +24,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.memory.control_panel import (
+from attune.memory.control_panel import (
     PATTERN_ID_ALT_REGEX,
     PATTERN_ID_REGEX,
     APIKeyAuth,
@@ -528,7 +528,7 @@ class TestMemoryControlPanelInitialization:
 class TestMemoryControlPanelStatus:
     """Test status() method."""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_status_redis_running(self, mock_check):
         """Test status when Redis is running."""
         mock_check.return_value = True
@@ -540,7 +540,7 @@ class TestMemoryControlPanelStatus:
         assert status["redis"]["host"] == "localhost"
         assert status["redis"]["port"] == 6379
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_status_redis_stopped(self, mock_check):
         """Test status when Redis is stopped."""
         mock_check.return_value = False
@@ -549,7 +549,7 @@ class TestMemoryControlPanelStatus:
 
         assert status["redis"]["status"] == "stopped"
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_status_long_term_not_initialized(self, mock_check, tmp_path):
         """Test status when long-term storage not initialized."""
         mock_check.return_value = False
@@ -559,7 +559,7 @@ class TestMemoryControlPanelStatus:
 
         assert status["long_term"]["status"] == "not_initialized"
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_status_long_term_available(self, mock_check, tmp_path):
         """Test status when long-term storage is available."""
         mock_check.return_value = False
@@ -692,7 +692,7 @@ class TestMemoryControlPanelExportPatterns:
 class TestMemoryControlPanelHealthCheck:
     """Test health_check() method."""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_health_check_all_healthy(self, mock_check, tmp_path):
         """Test health check when all systems are healthy."""
         mock_check.return_value = True
@@ -719,7 +719,7 @@ class TestMemoryControlPanelHealthCheck:
             check["name"] == "redis" and check["status"] == "pass" for check in health["checks"]
         )
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_health_check_redis_not_running(self, mock_check):
         """Test health check when Redis is not running."""
         mock_check.return_value = False
@@ -732,7 +732,7 @@ class TestMemoryControlPanelHealthCheck:
         assert health["overall"] == "degraded"
         assert any("Start Redis" in rec for rec in health["recommendations"])
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_health_check_unencrypted_sensitive_patterns(self, mock_check):
         """Test health check with unencrypted sensitive patterns."""
         mock_check.return_value = True
@@ -759,7 +759,7 @@ class TestMemoryControlPanelHealthCheck:
 class TestPrintStatus:
     """Test print_status() function."""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_print_status_output(self, mock_check, capsys):
         """Test print_status produces expected output."""
         mock_check.return_value = True
@@ -798,7 +798,7 @@ class TestPrintStats:
 class TestPrintHealth:
     """Test print_health() function."""
 
-    @patch("empathy_os.memory.control_panel._check_redis_running")
+    @patch("attune.memory.control_panel._check_redis_running")
     def test_print_health_output(self, mock_check, capsys):
         """Test print_health produces expected output."""
         mock_check.return_value = True

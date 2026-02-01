@@ -10,8 +10,8 @@ import json
 
 import pytest
 
-from empathy_os.memory.long_term import Classification
-from empathy_os.memory.unified import UnifiedMemory
+from attune.memory.long_term import Classification
+from attune.memory.unified import UnifiedMemory
 
 
 class TestMemorySearchBasics:

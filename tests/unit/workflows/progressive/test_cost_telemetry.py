@@ -5,15 +5,15 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.workflows.progressive.core import (
+from attune.workflows.progressive.core import (
     EscalationConfig,
     FailureAnalysis,
     ProgressiveWorkflowResult,
     Tier,
     TierResult,
 )
-from empathy_os.workflows.progressive.telemetry import ProgressiveTelemetry
-from empathy_os.workflows.progressive.workflow import BudgetExceededError, ProgressiveWorkflow
+from attune.workflows.progressive.telemetry import ProgressiveTelemetry
+from attune.workflows.progressive.workflow import BudgetExceededError, ProgressiveWorkflow
 
 
 class TestCostEstimation:
@@ -388,7 +388,7 @@ class TestProgressiveTelemetry:
 class TestTelemetryIntegration:
     """Test telemetry integration in workflow execution."""
 
-    @patch("empathy_os.workflows.progressive.telemetry.UsageTracker")
+    @patch("attune.workflows.progressive.telemetry.UsageTracker")
     def test_telemetry_initialized_on_execute(self, mock_tracker):
         """Test telemetry is initialized when workflow executes."""
         workflow = ProgressiveWorkflow(user_id="test-user")

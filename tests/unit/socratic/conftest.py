@@ -62,7 +62,7 @@ def sample_answers() -> dict[str, Any]:
 @pytest.fixture
 def sample_session():
     """Create a sample SocraticSession for testing."""
-    from empathy_os.socratic.session import SessionState, SocraticSession
+    from attune.socratic.session import SessionState, SocraticSession
 
     session = SocraticSession(session_id="test-session-001")
     session.goal = "Automate code reviews for Python"
@@ -78,7 +78,7 @@ def sample_session():
 @pytest.fixture
 def completed_session(sample_session):
     """Create a completed session for testing."""
-    from empathy_os.socratic.session import SessionState
+    from attune.socratic.session import SessionState
 
     sample_session.state = SessionState.COMPLETED
     return sample_session
@@ -92,7 +92,7 @@ def completed_session(sample_session):
 @pytest.fixture
 def sample_agent_spec():
     """Create a sample AgentSpec for testing."""
-    from empathy_os.socratic.blueprint import AgentRole, AgentSpec, ToolCategory, ToolSpec
+    from attune.socratic.blueprint import AgentRole, AgentSpec, ToolCategory, ToolSpec
 
     return AgentSpec(
         id="test-agent-001",
@@ -120,7 +120,7 @@ def sample_agent_spec():
 @pytest.fixture
 def sample_workflow_blueprint(sample_agent_spec):
     """Create a sample WorkflowBlueprint for testing."""
-    from empathy_os.socratic.blueprint import (
+    from attune.socratic.blueprint import (
         AgentBlueprint,
         AgentRole,
         AgentSpec,
@@ -183,7 +183,7 @@ def sample_workflow_blueprint(sample_agent_spec):
 @pytest.fixture
 def sample_form():
     """Create a sample Form for testing."""
-    from empathy_os.socratic.forms import FieldOption, FieldType, FieldValidation, Form, FormField
+    from attune.socratic.forms import FieldOption, FieldType, FieldValidation, Form, FormField
 
     return Form(
         id="test-form-001",
@@ -231,7 +231,7 @@ def sample_form():
 @pytest.fixture
 def sample_success_criteria():
     """Create sample SuccessCriteria for testing."""
-    from empathy_os.socratic.success import (
+    from attune.socratic.success import (
         MetricDirection,
         MetricType,
         SuccessCriteria,
@@ -328,7 +328,7 @@ def mock_llm_executor():
 @pytest.fixture
 def sample_participant():
     """Create a sample Participant for testing."""
-    from empathy_os.socratic.collaboration import Participant, ParticipantRole
+    from attune.socratic.collaboration import Participant, ParticipantRole
 
     return Participant(
         user_id="user-001",
@@ -341,7 +341,7 @@ def sample_participant():
 @pytest.fixture
 def sample_collaborative_session(sample_participant, storage_path):
     """Create a sample CollaborativeSession for testing."""
-    from empathy_os.socratic.collaboration import CollaborativeSession
+    from attune.socratic.collaboration import CollaborativeSession
 
     return CollaborativeSession(
         session_id="collab-session-001",
@@ -360,7 +360,7 @@ def sample_collaborative_session(sample_participant, storage_path):
 @pytest.fixture
 def sample_embedded_goal():
     """Create a sample EmbeddedGoal for testing."""
-    from empathy_os.socratic.embeddings import EmbeddedGoal
+    from attune.socratic.embeddings import EmbeddedGoal
 
     return EmbeddedGoal(
         goal_id="goal-001",
@@ -375,7 +375,7 @@ def sample_embedded_goal():
 @pytest.fixture
 def vector_store(storage_path):
     """Create a VectorStore for testing."""
-    from empathy_os.socratic.embeddings import TFIDFEmbeddingProvider, VectorStore
+    from attune.socratic.embeddings import TFIDFEmbeddingProvider, VectorStore
 
     return VectorStore(
         provider=TFIDFEmbeddingProvider(dimension=64),
@@ -391,7 +391,7 @@ def vector_store(storage_path):
 @pytest.fixture
 def sample_experiment(storage_path):
     """Create a sample Experiment for testing."""
-    from empathy_os.socratic.ab_testing import AllocationStrategy, ExperimentManager
+    from attune.socratic.ab_testing import AllocationStrategy, ExperimentManager
 
     manager = ExperimentManager(storage_path=storage_path / "experiments.json")
 
@@ -416,7 +416,7 @@ def sample_experiment(storage_path):
 
 def create_test_session_with_goal(goal: str):
     """Helper to create a session with a specific goal."""
-    from empathy_os.socratic.session import SessionState, SocraticSession
+    from attune.socratic.session import SessionState, SocraticSession
 
     session = SocraticSession()
     session.goal = goal

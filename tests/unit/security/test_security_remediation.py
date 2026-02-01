@@ -23,7 +23,7 @@ class TestSQLParameterization:
     @pytest.mark.skip(reason="WorkflowHistoryStore methods not yet implemented")
     def test_history_cleanup_uses_parameterized_queries(self):
         """Test that cleanup_old_runs() uses parameterized queries correctly."""
-        from empathy_os.workflows.history import WorkflowHistoryStore
+        from attune.workflows.history import WorkflowHistoryStore
 
         # Create in-memory database for testing
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
@@ -63,7 +63,7 @@ class TestSQLParameterization:
     @pytest.mark.skip(reason="WorkflowHistoryStore methods not yet implemented")
     def test_sql_injection_attempt_fails_safely(self):
         """Test that SQL injection attempts fail safely with parameterized queries."""
-        from empathy_os.workflows.history import WorkflowHistoryStore
+        from attune.workflows.history import WorkflowHistoryStore
 
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = f.name
@@ -113,7 +113,7 @@ class TestRandomUsageDocumentation:
 
     def test_ab_testing_has_security_comment(self):
         """Test that ab_testing.py documents random usage for simulation."""
-        ab_testing_path = Path(__file__).parent.parent.parent.parent / "src" / "empathy_os" / "socratic" / "ab_testing.py"
+        ab_testing_path = Path(__file__).parent.parent.parent.parent / "src" / "attune" / "socratic" / "ab_testing.py"
 
         if not ab_testing_path.exists():
             pytest.skip(f"ab_testing.py not found at {ab_testing_path}")
@@ -169,7 +169,7 @@ class TestNoActualVulnerabilities:
 
     def test_sql_queries_use_parameterization(self):
         """Test that cursor.execute() calls use parameterization."""
-        history_path = Path(__file__).parent.parent.parent.parent / "src" / "empathy_os" / "workflows" / "history.py"
+        history_path = Path(__file__).parent.parent.parent.parent / "src" / "attune" / "workflows" / "history.py"
 
         if not history_path.exists():
             pytest.skip("history.py not found")
@@ -294,7 +294,7 @@ class TestSecurityAuditAccuracy:
 
         # For now, skip if workflow not available
         try:
-            from empathy_os.workflows import SecurityAuditWorkflow
+            from attune.workflows import SecurityAuditWorkflow
         except ImportError:
             pytest.skip("SecurityAuditWorkflow not available")
 
@@ -323,7 +323,7 @@ class TestNoRegressions:
     @pytest.mark.skip(reason="WorkflowHistoryStore.save_run/get_run not implemented yet")
     def test_history_store_basic_operations(self):
         """Test that history store still works after security fixes."""
-        from empathy_os.workflows.history import WorkflowHistoryStore
+        from attune.workflows.history import WorkflowHistoryStore
 
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = f.name

@@ -1,7 +1,7 @@
 # Retry with Exponential Backoff Pattern
 
 **Source Domain:** Reliability Engineering
-**Location in Codebase:** `src/empathy_os/resilience/retry.py`, `src/empathy_os/models/fallback.py`
+**Location in Codebase:** `src/attune/resilience/retry.py`, `src/attune/models/fallback.py`
 **Level:** 3 (Proactive)
 
 ## Overview
@@ -26,7 +26,7 @@ Example with defaults (initial=1s, factor=2x):
 ## Implementation
 
 ```python
-from empathy_os.resilience.retry import retry, RetryConfig
+from attune.resilience.retry import retry, RetryConfig
 
 @retry(max_attempts=3, backoff_factor=2.0)
 async def call_llm(prompt: str) -> str:

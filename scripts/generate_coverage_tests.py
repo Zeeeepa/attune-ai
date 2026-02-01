@@ -49,7 +49,7 @@ def get_current_coverage() -> dict[str, float]:
 
 def find_untested_files() -> list[Path]:
     """Find Python files with low or no test coverage."""
-    src_dir = Path("src/empathy_os")
+    src_dir = Path("src/attune")
 
     untested = []
 
@@ -226,7 +226,7 @@ def main():
 
         for file_path, targets in targets_by_file.items():
             # Generate test file path
-            rel_path = file_path.relative_to(Path("src/empathy_os"))
+            rel_path = file_path.relative_to(Path("src/attune"))
             test_path = Path("tests/unit") / rel_path.parent / f"test_{file_path.name}"
 
             # Generate test content
@@ -265,7 +265,7 @@ def main():
     # Show example test file
     if tests_created > 0:
         example_file = list(targets_by_file.keys())[0]
-        rel_path = example_file.relative_to(Path("src/empathy_os"))
+        rel_path = example_file.relative_to(Path("src/attune"))
         test_path = Path("tests/unit") / rel_path.parent / f"test_{example_file.name}"
 
         console.print(

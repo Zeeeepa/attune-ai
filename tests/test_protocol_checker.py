@@ -8,13 +8,13 @@ Licensed under Fair Source License 0.9
 
 from datetime import datetime, timedelta
 
-from empathy_healthcare_plugin.monitors.monitoring.protocol_checker import (
+from attune_healthcare.monitors.monitoring.protocol_checker import (
     ComplianceStatus,
     ProtocolChecker,
     ProtocolCheckResult,
     ProtocolDeviation,
 )
-from empathy_healthcare_plugin.monitors.monitoring.protocol_loader import (
+from attune_healthcare.monitors.monitoring.protocol_loader import (
     ClinicalProtocol,
     ProtocolCriterion,
     ProtocolIntervention,

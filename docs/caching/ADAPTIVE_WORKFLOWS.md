@@ -143,7 +143,7 @@ Extra value: $0.03 cost → Prevented security breach
 If you need deterministic behavior for an adaptive workflow:
 
 ```python
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 
 # Standard adaptive behavior
 workflow = SecurityAuditWorkflow(

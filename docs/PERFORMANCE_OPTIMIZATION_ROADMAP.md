@@ -224,10 +224,10 @@ pip install memory_profiler line_profiler py-spy snakeviz pytest-benchmark
 
 ## 🔗 Quick Links
 
-- [Phase 1 Commit (f928d9aa)](https://github.com/Smart-AI-Memory/empathy-framework/commit/f928d9aa)
+- [Phase 1 Commit (f928d9aa)](https://github.com/Smart-AI-Memory/attune-ai/commit/f928d9aa)
 - [List Copy Guidelines](./../.claude/rules/empathy/list-copy-guidelines.md)
 - [Advanced Optimization Plan](./../.claude/rules/empathy/advanced-optimization-plan.md)
-- [GitHub Issues - Performance Tag](https://github.com/Smart-AI-Memory/empathy-framework/labels/performance)
+- [GitHub Issues - Performance Tag](https://github.com/Smart-AI-Memory/attune-ai/labels/performance)
 
 ---
 

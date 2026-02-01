@@ -10,8 +10,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from empathy_os.telemetry import UsageTracker
-from empathy_os.workflows import BaseWorkflow, ModelTier
+from attune.telemetry import UsageTracker
+from attune.workflows import BaseWorkflow, ModelTier
 
 
 class TestWorkflow(BaseWorkflow):

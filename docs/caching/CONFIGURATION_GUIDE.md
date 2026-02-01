@@ -48,7 +48,7 @@ Do you want caching at all?
 
 **Example:**
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 # Explicit hash-only cache
 cache = create_cache(cache_type="hash")
@@ -86,7 +86,7 @@ result3 = await workflow.execute(diff=other_diff)  # $0.0048 - Cache miss
 
 **Example:**
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 # Hybrid cache with semantic matching
 cache = create_cache(cache_type="hybrid", similarity_threshold=0.95)
@@ -109,7 +109,7 @@ result3 = await workflow.execute(prompt="Implement OAuth flow")  # $0.10 - Miss
 **Installation:**
 ```bash
 # Install with cache dependencies
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 
 # Or install dependencies separately
 pip install sentence-transformers torch
@@ -176,7 +176,7 @@ Controls how long cached responses remain valid.
 
 **Example:**
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 # Short TTL for CI/CD
 cache = create_cache(cache_type="hash", ttl_hours=1)
@@ -228,7 +228,7 @@ cache = create_cache(cache_type="hybrid", similarity_threshold=0.98)
 You can enable/disable caching per workflow instance:
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 # Shared cache instance
 cache = create_cache(cache_type="hybrid")
@@ -278,7 +278,7 @@ result = await workflow.execute(diff=my_diff)
 ### Pattern 2: Shared Cache Across Workflows
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 # Create cache once
 cache = create_cache(cache_type="hash")
@@ -294,7 +294,7 @@ health_check = HealthCheckWorkflow(cache=cache, enable_cache=True)
 ### Pattern 3: Testing with Isolated Cache
 
 ```python
-from empathy_os.cache import HashOnlyCache
+from attune.cache import HashOnlyCache
 
 # Create temporary cache for testing
 test_cache = HashOnlyCache(ttl_hours=1)
@@ -311,7 +311,7 @@ test_cache.clear()
 ### Pattern 4: Production with Hybrid Cache
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 # Production setup with hybrid cache
 cache = create_cache(
@@ -368,7 +368,7 @@ Cache automatically removes expired entries on load.
 
 ```python
 # Manual cleanup (if needed)
-from empathy_os.cache.storage import CacheStorage
+from attune.cache.storage import CacheStorage
 
 storage = CacheStorage()
 storage.load()  # Automatically removes expired entries
@@ -449,4 +449,4 @@ Hybrid cache (similar prompts):
 If you have questions about caching configuration:
 1. Check benchmarks: `python benchmark_caching_simple.py`
 2. Review examples: `tests/integration/test_cache_integration.py`
-3. File issue: [GitHub Issues](https://github.com/empathy-ai/empathy-framework/issues)
+3. File issue: [GitHub Issues](https://github.com/empathy-ai/attune-ai/issues)

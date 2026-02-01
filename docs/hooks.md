@@ -18,7 +18,7 @@ Hooks allow you to execute custom code at specific points in the session lifecyc
 ## Quick Start
 
 ```python
-from empathy_llm_toolkit.hooks import HookRegistry, HookEvent
+from attune_llm.hooks import HookRegistry, HookEvent
 
 # Create registry
 registry = HookRegistry()
@@ -67,7 +67,7 @@ hooks:
         match_all: true
       hooks:
         - type: python
-          command: empathy_llm_toolkit.hooks.scripts.session_start:main
+          command: attune_llm.hooks.scripts.session_start:main
           description: Restore previous context
 
   PostToolUse:
@@ -86,7 +86,7 @@ log_executions: true
 ### Loading Configuration
 
 ```python
-from empathy_llm_toolkit.hooks import HookConfig
+from attune_llm.hooks import HookConfig
 
 config = HookConfig.from_yaml("hooks.yaml")
 registry = HookRegistry(config=config)
@@ -97,7 +97,7 @@ registry = HookRegistry(config=config)
 Matchers determine when hooks fire:
 
 ```python
-from empathy_llm_toolkit.hooks import HookMatcher
+from attune_llm.hooks import HookMatcher
 
 # Match specific tool
 tool_matcher = HookMatcher(tool="Edit")

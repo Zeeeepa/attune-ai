@@ -9,7 +9,7 @@ Licensed under Apache 2.0
 
 import pytest
 
-from empathy_os.workflows import get_workflow, list_workflows
+from attune.workflows import get_workflow, list_workflows
 
 
 class TestWorkflowRegistry:

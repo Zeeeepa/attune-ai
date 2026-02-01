@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_llm_toolkit.agents_md.registry import AgentRegistry
-from empathy_llm_toolkit.config.unified import ModelTier, UnifiedAgentConfig
+from attune_llm.agents_md.registry import AgentRegistry
+from attune_llm.config.unified import ModelTier, UnifiedAgentConfig
 
 
 class TestAgentRegistry:

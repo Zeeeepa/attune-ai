@@ -53,7 +53,7 @@ def test_workflow_plugin_discovery():
     header("Phase 5: Workflow Plugin Discovery")
 
     try:
-        from empathy_os.workflows import (WORKFLOW_REGISTRY,
+        from attune.workflows import (WORKFLOW_REGISTRY,
                                           discover_workflows,
                                           refresh_workflow_registry)
 
@@ -136,7 +136,7 @@ def test_workflow_executor_migrations():
 
     for module_name, steps_var, expected_steps in workflows_to_check:
         try:
-            module = __import__(f"empathy_os.workflows.{module_name}", fromlist=[steps_var])
+            module = __import__(f"attune.workflows.{module_name}", fromlist=[steps_var])
             steps = getattr(module, steps_var, None)
 
             if steps is None:
@@ -298,7 +298,7 @@ def manual_testing_checklist():
   Run a workflow to generate cost data, then refresh the dashboard:
 
     {CYAN}python -c "
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.workflows import SecurityAuditWorkflow
 import asyncio
 
 async def test():
@@ -323,7 +323,7 @@ for ep in eps:
 {BOLD}Test Workflow Executor Pattern:{RESET}
 
     {CYAN}python -c "
-from empathy_os.workflows.security_audit import SECURITY_STEPS
+from attune.workflows.security_audit import SECURITY_STEPS
 print('Security audit steps:')
 for name, step in SECURITY_STEPS.items():
     print(f'  {{name}}: task={{step.task_type}}, tier={{step.tier_hint}}')"

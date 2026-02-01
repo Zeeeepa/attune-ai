@@ -30,7 +30,7 @@ Short-term memory enables:
 ## Quick Start (No Redis Required)
 
 ```python
-from empathy_os.memory import UnifiedMemory
+from attune.memory import UnifiedMemory
 
 # Works without Redis - uses file-based storage
 memory = UnifiedMemory(user_id="developer")
@@ -50,7 +50,7 @@ print(caps)  # {'file_session': True, 'redis': False, 'persistence': True, ...}
 ## Quick Start (With Redis)
 
 ```python
-from empathy_os import EmpathyOS, get_redis_memory, AccessTier
+from attune import EmpathyOS, get_redis_memory, AccessTier
 
 # Get Redis memory (auto-detects Railway, fallback to localhost/mock)
 memory = get_redis_memory()
@@ -88,7 +88,7 @@ export REDIS_URL=""
 ### Programmatic Configuration
 
 ```python
-from empathy_os import get_redis_memory, get_railway_redis, check_redis_connection
+from attune import get_redis_memory, get_railway_redis, check_redis_connection
 
 # Auto-detect (checks REDIS_URL, falls back to localhost, then mock)
 memory = get_redis_memory()
@@ -117,7 +117,7 @@ Role-based access control for data integrity:
 | STEWARD | 4 | ✅ | ✅ | ✅ | ✅ |
 
 ```python
-from empathy_os import AccessTier
+from attune import AccessTier
 
 # Observer: Can only read (monitoring dashboards)
 empathy = EmpathyOS(user_id="monitor", access_tier=AccessTier.OBSERVER)
@@ -152,7 +152,7 @@ other_data = empathy.retrieve("analysis", agent_id="other_agent")
 Stage discovered patterns for validation before promotion:
 
 ```python
-from empathy_os import StagedPattern
+from attune import StagedPattern
 
 # Discover and stage a pattern
 pattern = StagedPattern(
@@ -220,7 +220,7 @@ print(empathy.collaboration_state.trust_level)  # 0.8
 Coordinate tasks across a team of agents:
 
 ```python
-from empathy_os import AgentCoordinator, AgentTask, get_redis_memory
+from attune import AgentCoordinator, AgentTask, get_redis_memory
 
 memory = get_redis_memory()
 coordinator = AgentCoordinator(memory, team_id="code_review_team")
@@ -254,7 +254,7 @@ print(f"Completed: {results['total_completed']}")
 Collaborative sessions for multi-agent work:
 
 ```python
-from empathy_os import TeamSession, get_redis_memory
+from attune import TeamSession, get_redis_memory
 
 memory = get_redis_memory()
 
@@ -285,7 +285,7 @@ session.signal("review_complete", {"agent": "security_agent", "passed": True})
 Workflows can use short-term memory for caching and coordination:
 
 ```python
-from empathy_os.memory.short_term import RedisShortTermMemory
+from attune.memory.short_term import RedisShortTermMemory
 
 memory = RedisShortTermMemory()
 
@@ -322,7 +322,7 @@ Data expires based on type:
 For testing without Redis:
 
 ```python
-from empathy_os.redis_memory import RedisShortTermMemory
+from attune.redis_memory import RedisShortTermMemory
 
 # Explicit mock mode
 memory = RedisShortTermMemory(use_mock=True)
@@ -358,7 +358,7 @@ memory = get_redis_memory()
 ## Example: Multi-Agent Code Review
 
 ```python
-from empathy_os import (
+from attune import (
     EmpathyOS, get_redis_memory, AccessTier,
     AgentCoordinator, AgentTask, TeamSession
 )

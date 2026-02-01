@@ -9,7 +9,7 @@ This module tests the MetaOrchestrator class, including:
 
 import pytest
 
-from empathy_os.orchestration.meta_orchestrator import (
+from attune.orchestration.meta_orchestrator import (
     CompositionPattern,
     ExecutionPlan,
     MetaOrchestrator,

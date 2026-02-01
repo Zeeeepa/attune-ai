@@ -26,10 +26,10 @@ All Phase 2 tasks have been implemented and tested:
 | 2.5 Integration Tests | ✅ Complete | 28 new tests in `test_executor_integration.py` |
 
 **Key Files Modified:**
-- `src/empathy_os/models/executor.py` - ExecutionContext, LLMResponse, LLMExecutor protocol
-- `src/empathy_os/models/empathy_executor.py` - EmpathyLLMExecutor with telemetry
-- `src/empathy_os/models/fallback.py` - CircuitBreaker, ResilientExecutor
-- `src/empathy_os/workflows/base.py` - `_get_executor()`, `_create_default_executor()`
+- `src/attune/models/executor.py` - ExecutionContext, LLMResponse, LLMExecutor protocol
+- `src/attune/models/empathy_executor.py` - EmpathyLLMExecutor with telemetry
+- `src/attune/models/fallback.py` - CircuitBreaker, ResilientExecutor
+- `src/attune/workflows/base.py` - `_get_executor()`, `_create_default_executor()`
 - `tests/test_executor_integration.py` - Integration tests
 
 ### Phase 3 Completed (2025-12-25)
@@ -44,16 +44,16 @@ All Phase 3 Wave 1 tasks have been implemented:
 | 3.3 Telemetry CLI | ✅ Complete | Already implemented in `cli.py` |
 
 **Key Files Modified:**
-- `src/empathy_os/workflows/security_audit.py` - Added `SECURITY_STEPS`, executor integration
-- `src/empathy_os/workflows/bug_predict.py` - Added `BUG_PREDICT_STEPS`, executor integration
-- `src/empathy_os/workflows/perf_audit.py` - Added `PERF_AUDIT_STEPS`, executor integration
+- `src/attune/workflows/security_audit.py` - Added `SECURITY_STEPS`, executor integration
+- `src/attune/workflows/bug_predict.py` - Added `BUG_PREDICT_STEPS`, executor integration
+- `src/attune/workflows/perf_audit.py` - Added `PERF_AUDIT_STEPS`, executor integration
 
 **CLI Commands Available:**
-- `python -m empathy_os.models.cli registry` - Show model registry
-- `python -m empathy_os.models.cli tasks` - Show task-to-tier mappings
-- `python -m empathy_os.models.cli telemetry` - Show telemetry summary
-- `python -m empathy_os.models.cli telemetry --costs` - Show cost savings
-- `python -m empathy_os.models.cli telemetry --providers` - Show provider usage
+- `python -m attune.models.cli registry` - Show model registry
+- `python -m attune.models.cli tasks` - Show task-to-tier mappings
+- `python -m attune.models.cli telemetry` - Show telemetry summary
+- `python -m attune.models.cli telemetry --costs` - Show cost savings
+- `python -m attune.models.cli telemetry --providers` - Show provider usage
 
 ---
 
@@ -91,7 +91,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.0.3 Verify TASK_TIER_MAP
 
-- **File:** `src/empathy_os/models/tasks.py`
+- **File:** `src/attune/models/tasks.py`
 - **TODOs:**
   - [ ] Confirm all task types in TASK_TIER_MAP
   - [ ] Verify `get_tier_for_task()` returns correct tiers
@@ -104,7 +104,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.1.1 Define Protocol
 
-- **File:** `src/empathy_os/models/executor.py`
+- **File:** `src/attune/models/executor.py`
 - **TODOs:**
   - [ ] Define `ExecutionContext` dataclass with fields:
     - `user_id: str | None`
@@ -146,7 +146,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.2.1 Implement Executor
 
-- **File:** `src/empathy_os/models/empathy_executor.py`
+- **File:** `src/attune/models/empathy_executor.py`
 - **TODOs:**
   - [ ] Implement `EmpathyLLMExecutor(LLMExecutor)`:
     ```python
@@ -189,7 +189,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.3.1 Implement Policies
 
-- **File:** `src/empathy_os/models/fallback.py`
+- **File:** `src/attune/models/fallback.py`
 - **TODOs:**
   - [ ] Define/confirm `RetryPolicy`:
     ```python
@@ -227,7 +227,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.3.2 Implement ResilientExecutor
 
-- **File:** `src/empathy_os/models/fallback.py`
+- **File:** `src/attune/models/fallback.py`
 - **TODOs:**
   - [ ] Implement `ResilientExecutor`:
     ```python
@@ -272,7 +272,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.4.1 Update BaseWorkflow
 
-- **File:** `src/empathy_os/workflows/base.py`
+- **File:** `src/attune/workflows/base.py`
 - **TODOs:**
   - [ ] Add `executor: LLMExecutor | None` to `__init__`
   - [ ] Implement `_create_default_executor()`:
@@ -289,7 +289,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.4.2 Proof of Concept: SecurityAuditWorkflow
 
-- **File:** `src/empathy_os/workflows/security_audit.py`
+- **File:** `src/attune/workflows/security_audit.py`
 - **TODOs:**
   - [ ] Update to use `await self.executor.run(prompt, context)`
   - [ ] Create `ExecutionContext` with workflow_name and step_name
@@ -297,7 +297,7 @@ This plan implements the execution layer and workflow enhancements from the Mult
 
 ### 2.4.3 Backwards Compatibility
 
-- **File:** `empathy_llm_toolkit/core.py`
+- **File:** `attune_llm/core.py`
 - **TODOs:**
   - [ ] Add deprecation warning to direct `EmpathyLLM.interact()` calls:
     ```python

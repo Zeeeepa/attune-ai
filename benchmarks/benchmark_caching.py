@@ -15,19 +15,19 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from empathy_os.cache import create_cache
-from empathy_os.workflows.bug_predict import BugPredictionWorkflow
-from empathy_os.workflows.code_review import CodeReviewWorkflow
-from empathy_os.workflows.dependency_check import DependencyCheckWorkflow
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
-from empathy_os.workflows.health_check import HealthCheckWorkflow
-from empathy_os.workflows.keyboard_shortcuts.workflow import KeyboardShortcutWorkflow
-from empathy_os.workflows.perf_audit import PerformanceAuditWorkflow
-from empathy_os.workflows.refactor_plan import RefactorPlanWorkflow
-from empathy_os.workflows.release_prep import ReleasePreparationWorkflow
-from empathy_os.workflows.research_synthesis import ResearchSynthesisWorkflow
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
-from empathy_os.workflows.test_gen import TestGenerationWorkflow
+from attune.cache import create_cache
+from attune.workflows.bug_predict import BugPredictionWorkflow
+from attune.workflows.code_review import CodeReviewWorkflow
+from attune.workflows.dependency_check import DependencyCheckWorkflow
+from attune.workflows.document_gen import DocumentGenerationWorkflow
+from attune.workflows.health_check import HealthCheckWorkflow
+from attune.workflows.keyboard_shortcuts.workflow import KeyboardShortcutWorkflow
+from attune.workflows.perf_audit import PerformanceAuditWorkflow
+from attune.workflows.refactor_plan import RefactorPlanWorkflow
+from attune.workflows.release_prep import ReleasePreparationWorkflow
+from attune.workflows.research_synthesis import ResearchSynthesisWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.test_gen import TestGenerationWorkflow
 
 
 class BenchmarkResult:
@@ -973,7 +973,7 @@ Based on these benchmarks:
 **Cache Lookup Performance:**
 - Hash cache: ~5μs per lookup
 - Memory overhead: Minimal (<1MB for typical usage)
-- Persistence: Responses cached to disk (~/.empathy/cache/)
+- Persistence: Responses cached to disk (~/.attune/cache/)
 
 ### 4. Recommendations
 

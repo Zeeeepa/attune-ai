@@ -26,7 +26,7 @@ The Empathy Framework's **Project Index** is a codebase intelligence layer that 
 ### How It Works
 
 ```python
-from empathy_os.project_index import ProjectIndex
+from attune.project_index import ProjectIndex
 
 # Initialize and scan
 index = ProjectIndex(project_root=".")
@@ -41,9 +41,9 @@ for f in stale_files:
 
 **Output:**
 ```
-src/empathy_os/workflows/base.py: 14 days stale, impact=8.5
-src/empathy_os/memory/graph.py: 7 days stale, impact=6.2
-src/empathy_os/cli.py: 3 days stale, impact=4.1
+src/attune/workflows/base.py: 14 days stale, impact=8.5
+src/attune/memory/graph.py: 7 days stale, impact=6.2
+src/attune/cli.py: 3 days stale, impact=4.1
 ```
 
 ### The Magic: Staleness Detection
@@ -112,7 +112,7 @@ Every `FileRecord` captures 30+ attributes:
 
 ```bash
 # Install Empathy Framework
-pip install empathy-framework
+pip install attune-ai
 
 # Initialize in your project
 empathy init
@@ -130,9 +130,9 @@ Stop hoping your tests catch everything. Start *knowing* what needs attention.
 
 ---
 
-**Try it:** `pip install empathy-framework` and run `empathy index scan` in your project.
+**Try it:** `pip install attune-ai` and run `empathy index scan` in your project.
 
-**Learn more:** [github.com/Smart-AI-Memory/empathy-framework](https://github.com/Smart-AI-Memory/empathy-framework)
+**Learn more:** [github.com/Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
 
 ---
 

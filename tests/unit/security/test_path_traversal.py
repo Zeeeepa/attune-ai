@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.config import _validate_file_path
+from attune.config import _validate_file_path
 
 
 class TestPathTraversalPrevention:

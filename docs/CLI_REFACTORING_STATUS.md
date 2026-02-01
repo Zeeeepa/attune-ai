@@ -1,12 +1,12 @@
 ---
-description: CLI Refactoring Status: **Date:** 2026-01-26 **Status:** Phase 1 Complete (30% of full refactoring) **Original File:** `src/empathy_os/cli.py` (3,957 lines) ---
+description: CLI Refactoring Status: **Date:** 2026-01-26 **Status:** Phase 1 Complete (30% of full refactoring) **Original File:** `src/attune/cli.py` (3,957 lines) ---
 ---
 
 # CLI Refactoring Status
 
 **Date:** 2026-01-26
 **Status:** Phase 1 Complete (30% of full refactoring)
-**Original File:** `src/empathy_os/cli.py` (3,957 lines)
+**Original File:** `src/attune/cli.py` (3,957 lines)
 
 ---
 
@@ -16,7 +16,7 @@ description: CLI Refactoring Status: **Date:** 2026-01-26 **Status:** Phase 1 Co
 
 **Directory Structure Created:**
 ```
-src/empathy_os/cli/
+src/attune/cli/
 ├── __init__.py              # New main() entry point (152 lines)
 ├── __main__.py              # Python -m execution support
 ├── commands/                # Extracted command implementations
@@ -63,19 +63,19 @@ src/empathy_os/cli/
 
 **Test 1: Version Command**
 ```bash
-python -m empathy_os.cli version
-# ✅ Works! Logger shows: empathy_os.cli.commands.help:cmd_version
+python -m attune.cli version
+# ✅ Works! Logger shows: attune.cli.commands.help:cmd_version
 ```
 
 **Test 2: Cheatsheet Command**
 ```bash
-python -m empathy_os.cli cheatsheet --compact
+python -m attune.cli cheatsheet --compact
 # ✅ Works! Displays formatted cheatsheet correctly
 ```
 
 **Test 3: Import Structure**
 ```python
-from empathy_os.cli.commands.help import cmd_version
+from attune.cli.commands.help import cmd_version
 # ✅ Works! New modular structure is importable
 ```
 
@@ -88,7 +88,7 @@ from empathy_os.cli.commands.help import cmd_version
 **Each command module follows:**
 ```python
 # commands/help.py
-from empathy_os.logging_config import get_logger
+from attune.logging_config import get_logger
 from ..utils.data import CHEATSHEET  # Relative imports
 from ..utils.helpers import _show_achievements
 
@@ -162,14 +162,14 @@ Pick from remaining commands. Example: patterns commands
 Read from original `cli.py` and create new module:
 ```bash
 # Read lines for patterns commands
-# Create: src/empathy_os/cli/commands/patterns.py
+# Create: src/attune/cli/commands/patterns.py
 ```
 
 ### Step 3: Create Parser
 
 Create corresponding parser file:
 ```bash
-# Create: src/empathy_os/cli/parsers/patterns.py
+# Create: src/attune/cli/parsers/patterns.py
 ```
 
 ### Step 4: Register Parser
@@ -188,7 +188,7 @@ def register_all_parsers(subparsers):
 ### Step 5: Test
 
 ```bash
-python -m empathy_os.cli patterns list
+python -m attune.cli patterns list
 ```
 
 ### Step 6: Repeat
@@ -208,7 +208,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-from empathy_os.logging_config import get_logger
+from attune.logging_config import get_logger
 # Add other imports as needed
 
 logger = get_logger(__name__)
@@ -271,7 +271,7 @@ def cmd_<name>(args):
 
 - [Refactoring Plan](../.claude/plans/ancient-dancing-candle.md) - Full implementation plan
 - [Coding Standards](../docs/CODING_STANDARDS.md) - Project standards
-- [Original cli.py](../src/empathy_os/cli.py) - Source file (3,957 lines)
+- [Original cli.py](../src/attune/cli.py) - Source file (3,957 lines)
 
 ---
 

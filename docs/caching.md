@@ -32,13 +32,13 @@ Caching is **enabled by default** in v3.8.0. On first workflow run, you'll see a
 
 **Hash-only cache (always available):**
 ```bash
-pip install empathy-framework
+pip install attune-ai
 # No additional dependencies required
 ```
 
 **Hybrid cache with semantic matching:**
 ```bash
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 # Installs: sentence-transformers, torch, numpy
 ```
 
@@ -123,8 +123,8 @@ cache_key = SHA256(workflow + "|" + stage + "|" + prompt + "|" + model)
 ### Programmatic Configuration
 
 ```python
-from empathy_os.cache import create_cache
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.cache import create_cache
+from attune.workflows import CodeReviewWorkflow
 
 # Option 1: Use auto-configured cache (recommended)
 workflow = CodeReviewWorkflow(enable_cache=True)  # Default
@@ -205,7 +205,7 @@ response = await workflow._call_llm(
 
 ```python
 import asyncio
-from empathy_os.workflows import CodeReviewWorkflow
+from attune.workflows import CodeReviewWorkflow
 
 async def main():
     workflow = CodeReviewWorkflow(enable_cache=True)
@@ -233,8 +233,8 @@ asyncio.run(main())
 ### Custom Cache Configuration
 
 ```python
-from empathy_os.cache import create_cache
-from empathy_os.workflows import SecurityAuditWorkflow
+from attune.cache import create_cache
+from attune.workflows import SecurityAuditWorkflow
 
 # Create strict cache for security workflows
 cache = create_cache(
@@ -290,7 +290,7 @@ empathy cache enable-prompts
 ### Programmatic Management
 
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 cache = create_cache()
 
@@ -372,7 +372,7 @@ Cache Metrics:
 **Debug:**
 ```python
 import logging
-logging.getLogger("empathy_os.cache").setLevel(logging.DEBUG)
+logging.getLogger("attune.cache").setLevel(logging.DEBUG)
 
 # Will show:
 # DEBUG: Cache hit for code-review:scan
@@ -386,7 +386,7 @@ logging.getLogger("empathy_os.cache").setLevel(logging.DEBUG)
 **Solution:**
 ```bash
 # Install semantic dependencies
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 
 # Or manually
 pip install sentence-transformers torch numpy
@@ -394,7 +394,7 @@ pip install sentence-transformers torch numpy
 
 **Verify installation:**
 ```python
-from empathy_os.cache import create_cache
+from attune.cache import create_cache
 
 cache = create_cache()
 info = cache.size_info()
@@ -416,7 +416,7 @@ print(info.get("model"))  # Should show "all-MiniLM-L6-v2"
 
 **Debug semantic matching:**
 ```python
-from empathy_os.cache.hybrid import cosine_similarity
+from attune.cache.hybrid import cosine_similarity
 import numpy as np
 
 # Get embeddings for two prompts
@@ -469,7 +469,7 @@ chmod 644 ~/.empathy/cache/responses.json
 
 ```python
 # ✅ Recommended: Full hybrid caching
-pip install empathy-framework[cache]
+pip install attune-ai[cache]
 cache = create_cache(cache_type="hybrid")
 
 # ⚠️ Fallback: Hash-only (30% hit rate vs 70%)
@@ -585,7 +585,7 @@ empathy cache disable-prompts
 
 Or in code:
 ```python
-from empathy_os.cache.dependency_manager import DependencyManager
+from attune.cache.dependency_manager import DependencyManager
 
 manager = DependencyManager()
 manager.disable_prompts()
@@ -632,4 +632,4 @@ workflow = CodeReviewWorkflow(enable_cache=False)
 
 - **Issues:** [GitHub Issues](https://github.com/Smart-AI-Memory/Empathy-framework/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/Smart-AI-Memory/Empathy-framework/discussions)
-- **Docs:** [Full Documentation](https://empathy-framework.dev/docs/)
+- **Docs:** [Full Documentation](https://attune-ai.dev/docs/)

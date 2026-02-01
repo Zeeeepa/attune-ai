@@ -16,7 +16,7 @@ import re
 
 import pytest
 
-from empathy_llm_toolkit.security.pii_scrubber import PIIScrubber
+from attune_llm.security.pii_scrubber import PIIScrubber
 
 
 class TestCustomPatternManagement:

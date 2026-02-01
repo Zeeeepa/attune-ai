@@ -78,7 +78,7 @@ Like a "linting system" for patient care - compares real-time patient data again
 #### Example: Sepsis Protocol
 
 ```python
-from empathy_llm_toolkit.wizards import ClinicalProtocolMonitor
+from attune_llm.wizards import ClinicalProtocolMonitor
 
 # Initialize with sepsis protocol
 monitor = ClinicalProtocolMonitor(
@@ -216,7 +216,7 @@ Reduces handoff time from 45 minutes to 5 minutes while improving completeness a
 #### Quick Example
 
 ```python
-from empathy_llm_toolkit.wizards import SBARHandoffWizard
+from attune_llm.wizards import SBARHandoffWizard
 
 wizard = SBARHandoffWizard(
     enable_security=True,  # Scrub PHI before LLM processing
@@ -294,7 +294,7 @@ Checks for drug interactions, allergies, dosing errors, and contraindications.
 #### Example: Drug Interaction Check
 
 ```python
-from empathy_llm_toolkit.wizards import MedicationSafetyWizard
+from attune_llm.wizards import MedicationSafetyWizard
 
 wizard = MedicationSafetyWizard(enable_security=True)
 
@@ -347,7 +347,7 @@ Tracks Enhanced Recovery After Surgery (ERAS) protocols and early warning scores
 #### Example: Post-Op Day 2 Assessment
 
 ```python
-from empathy_llm_toolkit.wizards import PostOperativeMonitoringWizard
+from attune_llm.wizards import PostOperativeMonitoringWizard
 
 wizard = PostOperativeMonitoringWizard(
     protocol="colorectal_surgery_eras",
@@ -419,7 +419,7 @@ Uses Morse Fall Scale and trajectory analysis to identify high-risk patients bef
 #### Example Implementation
 
 ```python
-from empathy_llm_toolkit.wizards import FallRiskWizard
+from attune_llm.wizards import FallRiskWizard
 
 wizard = FallRiskWizard(enable_security=True)
 
@@ -466,7 +466,7 @@ Uses Braden Scale and turning protocol compliance to reduce pressure injuries.
 #### Quick Example
 
 ```python
-from empathy_llm_toolkit.wizards import PressureInjuryWizard
+from attune_llm.wizards import PressureInjuryWizard
 
 wizard = PressureInjuryWizard(enable_security=True)
 
@@ -532,8 +532,8 @@ Helps manage diabetic patients with safe insulin dosing and trend analysis.
 ### HL7 FHIR Integration
 
 ```python
-from empathy_llm_toolkit.wizards import HealthcareWizard
-from empathy_llm_toolkit.integrations import FHIRIntegration
+from attune_llm.wizards import HealthcareWizard
+from attune_llm.integrations import FHIRIntegration
 
 # Connect to FHIR server
 fhir = FHIRIntegration(
@@ -557,7 +557,7 @@ result = await monitor.evaluate_fhir(patient, vitals)
 ### Epic Integration
 
 ```python
-from empathy_llm_toolkit.integrations import EpicIntegration
+from attune_llm.integrations import EpicIntegration
 
 epic = EpicIntegration(
     client_id=os.getenv("EPIC_CLIENT_ID"),

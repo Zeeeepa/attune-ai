@@ -63,7 +63,7 @@ description: 🌅 Morning Status Report - Test Generation Project: **Date:** Mon
 - **Was:** 44/44 passing tests for main cli.py
 - **Now:** Broken tests for telemetry/cli.py
 - **Root cause:** Both generated `test_cli_generated.py`
-- **Fix applied:** Generator now uses full path (test_empathy_os_telemetry_cli_generated.py)
+- **Fix applied:** Generator now uses full path (test_attune_telemetry_cli_generated.py)
 
 **Action needed:** Regenerate both files with fixed naming
 
@@ -91,8 +91,8 @@ test_name = f"test_{source_path.stem}_generated.py"
 # After
 relative_path = str(source_path.relative_to(self.project_root))
 test_name = f"test_{relative_path.replace('/', '_').replace('.py', '')}_generated.py"
-# Result: cli.py → test_src_empathy_os_cli_generated.py
-# Result: telemetry/cli.py → test_src_empathy_os_telemetry_cli_generated.py  ✅ UNIQUE!
+# Result: cli.py → test_src_attune_cli_generated.py
+# Result: telemetry/cli.py → test_src_attune_telemetry_cli_generated.py  ✅ UNIQUE!
 ```
 
 ### Critical Bug #2: Token Truncation ✅ FIXED
@@ -221,14 +221,14 @@ Phase 2C: Generate 5 more:
 ```bash
 # Step 1: Regenerate the 3 broken files
 python << 'EOF'
-from empathy_os.orchestration.real_tools import RealTestGenerator
+from attune.orchestration.real_tools import RealTestGenerator
 
 gen = RealTestGenerator(project_root=".", output_dir="tests/llm_generated", use_llm=True)
 
 files = [
-    ("src/empathy_os/cli.py", 1187),
-    ("src/empathy_os/telemetry/cli.py", 506),
-    ("src/empathy_os/workflows/document_gen.py", 363),
+    ("src/attune/cli.py", 1187),
+    ("src/attune/telemetry/cli.py", 506),
+    ("src/attune/workflows/document_gen.py", 363),
 ]
 
 for source_file, missing_count in files:

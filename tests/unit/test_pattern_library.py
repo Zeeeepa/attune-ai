@@ -1,8 +1,8 @@
-"""Tests for empathy_os.pattern_library"""
+"""Tests for attune.pattern_library"""
 
 import pytest
 
-from empathy_os.pattern_library import Pattern, PatternLibrary, PatternMatch
+from attune.pattern_library import Pattern, PatternLibrary, PatternMatch
 
 # Tests are implemented in the class-based tests below
 

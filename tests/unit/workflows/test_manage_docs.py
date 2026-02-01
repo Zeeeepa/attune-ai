@@ -8,8 +8,8 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.manage_docs import ManageDocsWorkflow
+from attune.workflows.base import ModelTier
+from attune.workflows.manage_docs import ManageDocsWorkflow
 
 
 class TestManageDocsWorkflow:

@@ -11,13 +11,13 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from empathy_llm_toolkit.agent_factory.adapters.langgraph_adapter import (
+from attune_llm.agent_factory.adapters.langgraph_adapter import (
     LangGraphAdapter,
     LangGraphAgent,
     LangGraphWorkflow,
     _check_langgraph,
 )
-from empathy_llm_toolkit.agent_factory.base import AgentConfig, AgentRole, WorkflowConfig
+from attune_llm.agent_factory.base import AgentConfig, AgentRole, WorkflowConfig
 
 # =============================================================================
 # _check_langgraph Tests
@@ -29,7 +29,7 @@ class TestCheckLangGraph:
 
     def test_check_langgraph_available(self):
         """Test when langgraph is available."""
-        import empathy_llm_toolkit.agent_factory.adapters.langgraph_adapter as module
+        import attune_llm.agent_factory.adapters.langgraph_adapter as module
 
         # Reset global state
         module._langgraph_available = None
@@ -40,7 +40,7 @@ class TestCheckLangGraph:
 
     def test_check_langgraph_not_available(self):
         """Test when langgraph is not available."""
-        import empathy_llm_toolkit.agent_factory.adapters.langgraph_adapter as module
+        import attune_llm.agent_factory.adapters.langgraph_adapter as module
 
         # Reset global state
         module._langgraph_available = None

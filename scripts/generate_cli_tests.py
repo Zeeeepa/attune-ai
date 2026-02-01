@@ -9,7 +9,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.orchestration.real_tools import RealTestGenerator
+from attune.orchestration.real_tools import RealTestGenerator
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
     )
 
     # Generate tests for cli.py
-    source_file = "src/empathy_os/cli.py"
+    source_file = "src/attune/cli.py"
     missing_lines = list(range(1, 1187))  # Placeholder - will be read from coverage
 
     print(f"\n📊 Target: {source_file}")
@@ -40,7 +40,7 @@ def main():
         print(f"  1. Review: cat {test_path} | head -100")
         print(f"  2. Fix any API errors (5-10 min)")
         print(f"  3. Run: pytest {test_path} -v")
-        print(f"  4. Check coverage: pytest --cov=src/empathy_os/cli.py")
+        print(f"  4. Check coverage: pytest --cov=src/attune/cli.py")
 
     except Exception as e:
         print(f"\n❌ FAILED: {e}")

@@ -51,7 +51,7 @@ All new features should include tests:
 pytest
 
 # Run with coverage
-pytest --cov=empathy_os
+pytest --cov=attune
 
 # Run specific test
 pytest tests/test_core.py::test_specific_function

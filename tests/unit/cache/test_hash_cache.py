@@ -5,7 +5,7 @@ Tests exact-match hash-based caching with TTL, LRU eviction, and persistence.
 
 import time
 
-from empathy_os.cache.hash_only import HashOnlyCache
+from attune.cache.hash_only import HashOnlyCache
 
 
 class TestHashOnlyCache:

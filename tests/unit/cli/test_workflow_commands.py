@@ -14,7 +14,7 @@ class TestWorkflowListCommand:
 
     def test_list_workflows_basic(self, capsys):
         """Test listing workflows doesn't crash."""
-        from empathy_os.cli.commands.workflow import cmd_workflow
+        from attune.cli.commands.workflow import cmd_workflow
 
         # Create mock args
         args = MagicMock()
@@ -29,7 +29,7 @@ class TestWorkflowListCommand:
 
     def test_list_workflows_json_output(self, capsys):
         """Test listing workflows in JSON format."""
-        from empathy_os.cli.commands.workflow import cmd_workflow
+        from attune.cli.commands.workflow import cmd_workflow
 
         # Create mock args
         args = MagicMock()
@@ -48,7 +48,7 @@ class TestWorkflowDescribeCommand:
 
     def test_describe_without_name_shows_error(self):
         """Test that describe without workflow name shows error."""
-        from empathy_os.cli.commands.workflow import cmd_workflow
+        from attune.cli.commands.workflow import cmd_workflow
 
         # Create mock args with no name
         args = MagicMock()
@@ -61,10 +61,10 @@ class TestWorkflowDescribeCommand:
         # Verify error
         assert result == 1
 
-    @patch("empathy_os.cli.commands.workflow.get_workflow")
+    @patch("attune.cli.commands.workflow.get_workflow")
     def test_describe_nonexistent_workflow_shows_error(self, mock_get_workflow):
         """Test that describing non-existent workflow shows helpful error."""
-        from empathy_os.cli.commands.workflow import cmd_workflow
+        from attune.cli.commands.workflow import cmd_workflow
 
         # Mock KeyError for missing workflow
         mock_get_workflow.side_effect = KeyError("workflow-not-found")
@@ -87,7 +87,7 @@ class TestWorkflowRunCommand:
 
     def test_run_without_name_shows_error(self):
         """Test that run without workflow name shows error."""
-        from empathy_os.cli.commands.workflow import cmd_workflow
+        from attune.cli.commands.workflow import cmd_workflow
 
         # Create mock args with no name
         args = MagicMock()
@@ -100,10 +100,10 @@ class TestWorkflowRunCommand:
         # Verify error
         assert result == 1
 
-    @patch("empathy_os.cli.commands.workflow.get_workflow")
+    @patch("attune.cli.commands.workflow.get_workflow")
     def test_run_with_invalid_json_shows_helpful_error(self, mock_get_workflow):
         """Test that invalid JSON input shows helpful error message."""
-        from empathy_os.cli.commands.workflow import cmd_workflow
+        from attune.cli.commands.workflow import cmd_workflow
 
         # Mock workflow class
         mock_workflow_cls = MagicMock()
@@ -128,7 +128,7 @@ class TestWorkflowCommandEdgeCases:
 
     def test_invalid_action_returns_error(self):
         """Test that invalid action returns error code."""
-        from empathy_os.cli.commands.workflow import cmd_workflow
+        from attune.cli.commands.workflow import cmd_workflow
 
         # Create mock args with invalid action
         args = MagicMock()

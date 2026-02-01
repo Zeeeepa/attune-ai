@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.memory.long_term import (
+from attune.memory.long_term import (
     Classification,
     EncryptionManager,
     PermissionError,

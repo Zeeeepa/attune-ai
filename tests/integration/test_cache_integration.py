@@ -11,8 +11,8 @@ import os
 
 import pytest
 
-from empathy_os.cache import create_cache
-from empathy_os.workflows.code_review import CodeReviewWorkflow
+from attune.cache import create_cache
+from attune.workflows.code_review import CodeReviewWorkflow
 
 # Skip tests if no API key available
 pytestmark = pytest.mark.skipif(

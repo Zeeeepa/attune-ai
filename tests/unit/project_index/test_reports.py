@@ -10,13 +10,13 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.project_index.models import (
+from attune.project_index.models import (
     FileCategory,
     FileRecord,
     ProjectSummary,
     TestRequirement,
 )
-from empathy_os.project_index.reports import ReportGenerator
+from attune.project_index.reports import ReportGenerator
 
 
 def create_test_record(

@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 # Import using module approach to avoid package initialization issues
-import empathy_os.workflows.code_review_pipeline as code_review_pipeline_module
+import attune.workflows.code_review_pipeline as code_review_pipeline_module
 
 CodeReviewPipeline = code_review_pipeline_module.CodeReviewPipeline
 CodeReviewPipelineResult = code_review_pipeline_module.CodeReviewPipelineResult
@@ -521,7 +521,7 @@ class TestPipelineExecution:
         mock_workflow_result.final_output = {"security_score": 85}
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("attune.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="def hello(): pass")
@@ -534,7 +534,7 @@ class TestPipelineExecution:
         """Test execute handles errors gracefully."""
         pipeline = CodeReviewPipeline(mode="standard")
 
-        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("attune.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(side_effect=Exception("Review failed"))
 
             result = await pipeline.execute(diff="def hello(): pass")
@@ -558,7 +558,7 @@ class TestPipelineExecution:
         }
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("attune.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="code here")
@@ -581,7 +581,7 @@ class TestPipelineExecution:
         }
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("attune.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="code here")
@@ -598,7 +598,7 @@ class TestPipelineExecution:
         mock_workflow_result.final_output = {"security_score": 90}
         mock_workflow_result.cost_report.total_cost = 0.05
 
-        with patch("empathy_os.workflows.code_review.CodeReviewWorkflow") as mock_cls:
+        with patch("attune.workflows.code_review.CodeReviewWorkflow") as mock_cls:
             mock_cls.return_value.execute = AsyncMock(return_value=mock_workflow_result)
 
             result = await pipeline.execute(diff="code")

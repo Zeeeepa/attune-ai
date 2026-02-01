@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os import (
+from attune import (
     EmpathyOS,
     MetricsCollector,
     Pattern,

@@ -15,7 +15,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from empathy_os.models.fallback import (
+from attune.models.fallback import (
     DEFAULT_FALLBACK_POLICY,
     DEFAULT_RETRY_POLICY,
     CircuitBreaker,

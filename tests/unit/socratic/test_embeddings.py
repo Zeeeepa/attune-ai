@@ -12,7 +12,7 @@ class TestTFIDFEmbeddingProvider:
 
     def test_create_provider(self):
         """Test creating a TF-IDF provider."""
-        from empathy_os.socratic.embeddings import TFIDFEmbeddingProvider
+        from attune.socratic.embeddings import TFIDFEmbeddingProvider
 
         provider = TFIDFEmbeddingProvider(dimension=128)
 
@@ -20,7 +20,7 @@ class TestTFIDFEmbeddingProvider:
 
     def test_embed_text(self):
         """Test embedding text."""
-        from empathy_os.socratic.embeddings import TFIDFEmbeddingProvider
+        from attune.socratic.embeddings import TFIDFEmbeddingProvider
 
         provider = TFIDFEmbeddingProvider(dimension=64)
         embedding = provider.embed("I want to automate code reviews")
@@ -30,7 +30,7 @@ class TestTFIDFEmbeddingProvider:
 
     def test_embed_normalizes_vector(self):
         """Test that embeddings are normalized."""
-        from empathy_os.socratic.embeddings import TFIDFEmbeddingProvider
+        from attune.socratic.embeddings import TFIDFEmbeddingProvider
 
         provider = TFIDFEmbeddingProvider(dimension=64)
         embedding = provider.embed("Test text for normalization")
@@ -41,7 +41,7 @@ class TestTFIDFEmbeddingProvider:
 
     def test_embed_batch(self):
         """Test batch embedding."""
-        from empathy_os.socratic.embeddings import TFIDFEmbeddingProvider
+        from attune.socratic.embeddings import TFIDFEmbeddingProvider
 
         provider = TFIDFEmbeddingProvider(dimension=64)
         texts = ["Code review", "Security scan", "Testing"]
@@ -53,7 +53,7 @@ class TestTFIDFEmbeddingProvider:
 
     def test_fit_idf(self):
         """Test fitting IDF weights."""
-        from empathy_os.socratic.embeddings import TFIDFEmbeddingProvider
+        from attune.socratic.embeddings import TFIDFEmbeddingProvider
 
         provider = TFIDFEmbeddingProvider(dimension=64)
 
@@ -76,7 +76,7 @@ class TestVectorStore:
 
     def test_create_store(self, storage_path):
         """Test creating a vector store."""
-        from empathy_os.socratic.embeddings import VectorStore
+        from attune.socratic.embeddings import VectorStore
 
         store = VectorStore(storage_path=storage_path / "test_store.json")
         assert len(store) == 0
@@ -155,7 +155,7 @@ class TestSemanticGoalMatcher:
 
     def test_create_matcher(self, storage_path):
         """Test creating a semantic goal matcher."""
-        from empathy_os.socratic.embeddings import SemanticGoalMatcher
+        from attune.socratic.embeddings import SemanticGoalMatcher
 
         matcher = SemanticGoalMatcher(
             provider="tfidf",
@@ -166,7 +166,7 @@ class TestSemanticGoalMatcher:
 
     def test_index_goal(self, storage_path):
         """Test indexing a goal."""
-        from empathy_os.socratic.embeddings import SemanticGoalMatcher
+        from attune.socratic.embeddings import SemanticGoalMatcher
 
         matcher = SemanticGoalMatcher(storage_path=storage_path / "matcher.json")
 
@@ -182,7 +182,7 @@ class TestSemanticGoalMatcher:
 
     def test_find_similar(self, storage_path):
         """Test finding similar goals."""
-        from empathy_os.socratic.embeddings import SemanticGoalMatcher
+        from attune.socratic.embeddings import SemanticGoalMatcher
 
         matcher = SemanticGoalMatcher(storage_path=storage_path / "matcher.json")
 
@@ -198,7 +198,7 @@ class TestSemanticGoalMatcher:
 
     def test_suggest_workflow(self, storage_path):
         """Test workflow suggestion."""
-        from empathy_os.socratic.embeddings import SemanticGoalMatcher
+        from attune.socratic.embeddings import SemanticGoalMatcher
 
         matcher = SemanticGoalMatcher(storage_path=storage_path / "matcher.json")
 
@@ -230,7 +230,7 @@ class TestEmbeddedGoal:
 
     def test_serialization(self, sample_embedded_goal):
         """Test embedded goal serialization."""
-        from empathy_os.socratic.embeddings import EmbeddedGoal
+        from attune.socratic.embeddings import EmbeddedGoal
 
         data = sample_embedded_goal.to_dict()
         restored = EmbeddedGoal.from_dict(data)

@@ -17,8 +17,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.refactor_plan import (
+from attune.workflows.base import ModelTier
+from attune.workflows.refactor_plan import (
     DEBT_MARKERS,
     RefactorPlanWorkflow,
     format_refactor_plan_report,

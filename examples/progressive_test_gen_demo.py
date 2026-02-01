@@ -12,7 +12,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.workflows.progressive import (EscalationConfig,
+from attune.workflows.progressive import (EscalationConfig,
                                               ProgressiveTestGenWorkflow, Tier)
 
 

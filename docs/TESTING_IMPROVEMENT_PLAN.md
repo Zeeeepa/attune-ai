@@ -15,7 +15,7 @@ Enhance test coverage, quality, and maintainability for the refactored codebase 
 ## ✅ Completed Today (Afternoon)
 
 1. **Bug Fixes**
-   - Fixed None handling in [report_formatter.py:115](../src/empathy_os/workflows/document_gen/report_formatter.py#L115)
+   - Fixed None handling in [report_formatter.py:115](../src/attune/workflows/document_gen/report_formatter.py#L115)
    - Fixed audience formatting (underscore → space conversion)
    - Result: All 50 batch12 tests passing (100%)
 
@@ -111,7 +111,7 @@ def mock_file_operations():
 def mock_workflow_execution():
     """Mock workflow execution for CLI tests."""
     return {
-        'empathy_os.workflows.base.BaseWorkflow.execute': MagicMock(
+        'attune.workflows.base.BaseWorkflow.execute': MagicMock(
             return_value={"status": "success", "result": "mock result"}
         ),
     }
@@ -163,9 +163,9 @@ def test_list_templates_command():
 pytest --cov=src --cov-report=term-missing --cov-report=html
 
 # Refactored modules specifically
-pytest --cov=src/empathy_os/workflows/test_gen \
-       --cov=src/empathy_os/workflows/document_gen \
-       --cov=src/empathy_os/meta_workflows/cli_commands \
+pytest --cov=src/attune/workflows/test_gen \
+       --cov=src/attune/workflows/document_gen \
+       --cov=src/attune/meta_workflows/cli_commands \
        --cov-report=html
 ```
 
@@ -183,7 +183,7 @@ Create targeted tests for uncovered code paths using the test generator:
 
 ```python
 # For specific uncovered modules
-from empathy_os.workflows.autonomous_test_gen import AutonomousTestGenerator
+from attune.workflows.autonomous_test_gen import AutonomousTestGenerator
 
 modules_to_cover = [
     {"file": "path/to/uncovered.py", "description": "..."}
@@ -323,8 +323,8 @@ def mock_workflow_config():
 """Performance tests for refactored modules."""
 
 import pytest
-from empathy_os.workflows.test_gen import TestGenerationWorkflow
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
+from attune.workflows.test_gen import TestGenerationWorkflow
+from attune.workflows.document_gen import DocumentGenerationWorkflow
 
 
 @pytest.mark.benchmark
@@ -350,7 +350,7 @@ class TestRefactoredModulePerformance:
     def test_cli_commands_registration_speed(self, benchmark):
         """Test CLI command registration speed."""
         def register():
-            from empathy_os.meta_workflows.cli_meta_workflows import meta_workflow_app
+            from attune.meta_workflows.cli_meta_workflows import meta_workflow_app
             return meta_workflow_app
 
         result = benchmark(register)
@@ -420,7 +420,7 @@ pytest tests/performance/ --benchmark-only
 
 **For tomorrow or next session:**
 1. Generate tests for any remaining uncovered code
-2. Consider refactoring [core.py](../src/empathy_os/core.py) (1,511 lines) using mixin pattern
+2. Consider refactoring [core.py](../src/attune/core.py) (1,511 lines) using mixin pattern
 3. Add integration tests for full workflow pipelines
 4. Set up CI/CD test automation
 

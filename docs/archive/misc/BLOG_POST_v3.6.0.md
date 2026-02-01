@@ -40,7 +40,7 @@ In Empathy Framework v3.6.0, we completely rewrote error messages across 5 base 
 ### Before (Frustrating 😤)
 
 ```python
->>> from empathy_llm_toolkit.linter_parsers import BaseLinterParser
+>>> from attune_llm.linter_parsers import BaseLinterParser
 >>> parser = BaseLinterParser()
 >>> parser.parse(output)
 
@@ -54,7 +54,7 @@ Now you're stuck. What method? Which class? Where are the examples?
 ### After (Helpful 🎯)
 
 ```python
->>> from empathy_llm_toolkit.linter_parsers import BaseLinterParser
+>>> from attune_llm.linter_parsers import BaseLinterParser
 >>> parser = BaseLinterParser()
 >>> parser.parse(output)
 
@@ -263,7 +263,7 @@ We restructured installation to minimize the hurdle for individual developers:
 ### Individual Developers (Recommended)
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 Includes:
@@ -277,7 +277,7 @@ Includes:
 ### Teams/Enterprises
 
 ```bash
-pip install empathy-framework[enterprise]
+pip install attune-ai[enterprise]
 ```
 
 Everything in `[developer]` plus:
@@ -288,7 +288,7 @@ Everything in `[developer]` plus:
 ### Healthcare Organizations
 
 ```bash
-pip install empathy-framework[healthcare]
+pip install attune-ai[healthcare]
 ```
 
 Everything in `[enterprise]` plus:
@@ -303,24 +303,24 @@ Everything in `[enterprise]` plus:
 ### 1. Install
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 ### 2. Configure Provider
 
 ```bash
 # Auto-detect your API keys
-python -m empathy_os.models.cli provider
+python -m attune.models.cli provider
 
 # Or set explicitly
-python -m empathy_os.models.cli provider --set anthropic
+python -m attune.models.cli provider --set anthropic
 ```
 
 ### 3. Run Your First Workflow
 
 ```bash
 # Predict bugs in your code
-python -m empathy_os.workflows.cli run bug-predict
+python -m attune.workflows.cli run bug-predict
 ```
 
 That's it! You're up and running.
@@ -426,7 +426,7 @@ db.record_audit(
 ### 2. Enterprise: Production Deployments with Cost Controls
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 
 os = EmpathyOS(
     provider="hybrid",  # Use best model for each task
@@ -445,7 +445,7 @@ result = await os.collaborate(
 ### 3. Research: Multi-Model Experimentation
 
 ```python
-from empathy_os.models import ModelManager
+from attune.models import ModelManager
 
 manager = ModelManager()
 
@@ -477,7 +477,7 @@ for model, response in results.items():
 - Advanced pattern learning with reinforcement learning
 - Enterprise admin dashboard
 
-**Want to influence the roadmap?** Join the discussion on [GitHub](https://github.com/Smart-AI-Memory/empathy-framework/discussions).
+**Want to influence the roadmap?** Join the discussion on [GitHub](https://github.com/Smart-AI-Memory/attune-ai/discussions).
 
 ---
 
@@ -486,26 +486,26 @@ for model, response in results.items():
 We're building Empathy Framework in the open with a focus on community:
 
 **Contribute:**
-- 🐛 [Report bugs](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- 💡 [Request features](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
-- 🔧 [Good first issues](https://github.com/Smart-AI-Memory/empathy-framework/labels/good%20first%20issue)
+- 🐛 [Report bugs](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- 💡 [Request features](https://github.com/Smart-AI-Memory/attune-ai/discussions)
+- 🔧 [Good first issues](https://github.com/Smart-AI-Memory/attune-ai/labels/good%20first%20issue)
 
 **Connect:**
-- ⭐ [Star on GitHub](https://github.com/Smart-AI-Memory/empathy-framework)
+- ⭐ [Star on GitHub](https://github.com/Smart-AI-Memory/attune-ai)
 - 🐦 [Follow on Twitter](https://twitter.com/smartaimemory)
-- 💬 [Join Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- 💬 [Join Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 
 ---
 
 ## Try It Today
 
 ```bash
-pip install empathy-framework[developer]
+pip install attune-ai[developer]
 ```
 
 **Links:**
-- 📦 [PyPI](https://pypi.org/project/empathy-framework/3.6.0/)
-- ⭐ [GitHub](https://github.com/Smart-AI-Memory/empathy-framework)
+- 📦 [PyPI](https://pypi.org/project/attune-ai/3.6.0/)
+- ⭐ [GitHub](https://github.com/Smart-AI-Memory/attune-ai)
 - 📖 [Documentation](https://docs.smartaimemory.com)
 
 **License:** Fair Source 0.9 (free for teams ≤5 employees)

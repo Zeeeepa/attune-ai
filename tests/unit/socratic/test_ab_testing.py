@@ -10,7 +10,7 @@ class TestExperiment:
 
     def test_create_experiment(self):
         """Test creating an experiment with required fields."""
-        from empathy_os.socratic.ab_testing import (
+        from attune.socratic.ab_testing import (
             AllocationStrategy,
             Experiment,
             ExperimentStatus,
@@ -48,7 +48,7 @@ class TestExperiment:
 
     def test_experiment_with_custom_allocation(self):
         """Test experiment with custom allocation strategy."""
-        from empathy_os.socratic.ab_testing import AllocationStrategy, Experiment, Variant
+        from attune.socratic.ab_testing import AllocationStrategy, Experiment, Variant
 
         variant = Variant(
             variant_id="control",
@@ -75,7 +75,7 @@ class TestVariant:
 
     def test_create_variant(self):
         """Test creating a variant."""
-        from empathy_os.socratic.ab_testing import Variant
+        from attune.socratic.ab_testing import Variant
 
         variant = Variant(
             variant_id="var-001",
@@ -92,7 +92,7 @@ class TestVariant:
 
     def test_variant_conversion_rate(self):
         """Test variant conversion rate calculation."""
-        from empathy_os.socratic.ab_testing import Variant
+        from attune.socratic.ab_testing import Variant
 
         variant = Variant(
             variant_id="var-001",
@@ -107,7 +107,7 @@ class TestVariant:
 
     def test_variant_zero_impressions(self):
         """Test conversion rate with zero impressions."""
-        from empathy_os.socratic.ab_testing import Variant
+        from attune.socratic.ab_testing import Variant
 
         variant = Variant(
             variant_id="var-001",
@@ -124,25 +124,25 @@ class TestAllocationStrategy:
 
     def test_fixed_allocation(self):
         """Test fixed weight allocation."""
-        from empathy_os.socratic.ab_testing import AllocationStrategy
+        from attune.socratic.ab_testing import AllocationStrategy
 
         assert AllocationStrategy.FIXED.value == "fixed"
 
     def test_epsilon_greedy(self):
         """Test epsilon-greedy strategy exists."""
-        from empathy_os.socratic.ab_testing import AllocationStrategy
+        from attune.socratic.ab_testing import AllocationStrategy
 
         assert AllocationStrategy.EPSILON_GREEDY.value == "epsilon_greedy"
 
     def test_thompson_sampling(self):
         """Test Thompson sampling strategy exists."""
-        from empathy_os.socratic.ab_testing import AllocationStrategy
+        from attune.socratic.ab_testing import AllocationStrategy
 
         assert AllocationStrategy.THOMPSON_SAMPLING.value == "thompson_sampling"
 
     def test_ucb(self):
         """Test UCB strategy exists."""
-        from empathy_os.socratic.ab_testing import AllocationStrategy
+        from attune.socratic.ab_testing import AllocationStrategy
 
         assert AllocationStrategy.UCB.value == "ucb"
 
@@ -152,7 +152,7 @@ class TestExperimentStatus:
 
     def test_all_statuses_exist(self):
         """Test all experiment statuses exist."""
-        from empathy_os.socratic.ab_testing import ExperimentStatus
+        from attune.socratic.ab_testing import ExperimentStatus
 
         assert ExperimentStatus.DRAFT.value == "draft"
         assert ExperimentStatus.RUNNING.value == "running"
@@ -166,7 +166,7 @@ class TestExperimentManager:
 
     def test_create_manager(self, storage_path):
         """Test creating an experiment manager."""
-        from empathy_os.socratic.ab_testing import ExperimentManager
+        from attune.socratic.ab_testing import ExperimentManager
 
         manager = ExperimentManager(storage_path=storage_path / "experiments.json")
 
@@ -174,7 +174,7 @@ class TestExperimentManager:
 
     def test_create_experiment(self, storage_path):
         """Test creating an experiment via manager."""
-        from empathy_os.socratic.ab_testing import ExperimentManager
+        from attune.socratic.ab_testing import ExperimentManager
 
         manager = ExperimentManager(storage_path=storage_path / "experiments.json")
 
@@ -196,7 +196,7 @@ class TestExperimentManager:
 
     def test_get_experiment(self, storage_path):
         """Test retrieving an experiment."""
-        from empathy_os.socratic.ab_testing import ExperimentManager
+        from attune.socratic.ab_testing import ExperimentManager
 
         manager = ExperimentManager(storage_path=storage_path / "experiments.json")
 
@@ -219,7 +219,7 @@ class TestStatisticalAnalyzer:
 
     def test_z_test_proportions(self):
         """Test z-test for proportions returns tuple."""
-        from empathy_os.socratic.ab_testing import StatisticalAnalyzer
+        from attune.socratic.ab_testing import StatisticalAnalyzer
 
         # Control: 100/1000 = 10% conversion
         # Treatment: 150/1000 = 15% conversion
@@ -236,7 +236,7 @@ class TestStatisticalAnalyzer:
 
     def test_confidence_interval(self):
         """Test Wilson score confidence interval."""
-        from empathy_os.socratic.ab_testing import StatisticalAnalyzer
+        from attune.socratic.ab_testing import StatisticalAnalyzer
 
         lower, upper = StatisticalAnalyzer.confidence_interval(
             n=1000,
@@ -251,7 +251,7 @@ class TestStatisticalAnalyzer:
 
     def test_t_test_means(self):
         """Test t-test for means."""
-        from empathy_os.socratic.ab_testing import StatisticalAnalyzer
+        from attune.socratic.ab_testing import StatisticalAnalyzer
 
         t_score, p_value = StatisticalAnalyzer.t_test_means(
             n1=100,
@@ -271,7 +271,7 @@ class TestWorkflowABTester:
 
     def test_create_tester(self, storage_path):
         """Test creating a workflow A/B tester."""
-        from empathy_os.socratic.ab_testing import WorkflowABTester
+        from attune.socratic.ab_testing import WorkflowABTester
 
         tester = WorkflowABTester(storage_path=storage_path / "ab_tests.json")
 
@@ -279,7 +279,7 @@ class TestWorkflowABTester:
 
     def test_create_workflow_experiment(self, storage_path):
         """Test creating a workflow A/B experiment."""
-        from empathy_os.socratic.ab_testing import WorkflowABTester
+        from attune.socratic.ab_testing import WorkflowABTester
 
         tester = WorkflowABTester(storage_path=storage_path / "ab_tests.json")
 
@@ -301,7 +301,7 @@ class TestExperimentResult:
 
     def test_create_result(self):
         """Test creating an experiment result."""
-        from empathy_os.socratic.ab_testing import Experiment, ExperimentResult, Variant
+        from attune.socratic.ab_testing import Experiment, ExperimentResult, Variant
 
         # Create experiment and variants first
         control = Variant(

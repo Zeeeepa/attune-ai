@@ -11,14 +11,14 @@ Demonstrates:
 import asyncio
 from pathlib import Path
 
-from empathy_os.models import (
+from attune.models import (
     AuthMode,
     AuthStrategy,
     SubscriptionTier,
     count_lines_of_code,
     get_module_size_category,
 )
-from empathy_os.workflows.security_audit import SecurityAuditWorkflow
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 
 async def test_security_audit_with_auth():
@@ -26,8 +26,8 @@ async def test_security_audit_with_auth():
     print("🔒 Testing Security Audit + Auth Strategy Integration\n")
     print("=" * 60)
 
-    # Test on src/empathy_os directory
-    test_target = Path("src/empathy_os")
+    # Test on src/attune directory
+    test_target = Path("src/attune")
 
     if not test_target.exists():
         print(f"❌ Test target not found: {test_target}")
@@ -62,7 +62,7 @@ async def test_security_audit_with_auth():
         setup_completed=True,
     )
     max_strategy.save()
-    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.attune/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(codebase_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")

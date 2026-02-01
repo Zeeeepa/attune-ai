@@ -13,7 +13,7 @@ from unittest.mock import MagicMock, Mock, patch
 import pytest
 from watchdog.events import FileSystemEvent
 
-from empathy_os.hot_reload.watcher import WorkflowFileHandler, WorkflowFileWatcher
+from attune.hot_reload.watcher import WorkflowFileHandler, WorkflowFileWatcher
 
 
 @pytest.mark.unit
@@ -235,7 +235,7 @@ class TestWorkflowFileHandlerExtractWorkflowId:
         handler = WorkflowFileHandler(reload_callback=callback)
 
         workflow_id = handler._extract_workflow_id(
-            "/home/user/project/src/empathy_os/workflows/test_gen.py"
+            "/home/user/project/src/attune/workflows/test_gen.py"
         )
 
         assert workflow_id == "test_gen"

@@ -10,7 +10,7 @@ Usage:
 import time
 from datetime import datetime
 
-from empathy_os.telemetry import ApprovalGate
+from attune.telemetry import ApprovalGate
 
 
 def create_test_approvals():

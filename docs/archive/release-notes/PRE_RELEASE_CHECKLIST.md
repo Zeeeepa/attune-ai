@@ -53,9 +53,9 @@ description: Pre-Release Checklist - v4.0.0: **Release Date:** January 16, 2026 
 ## 📦 Deliverables
 
 ### New Files (9)
-- [x] `empathy_llm_toolkit/utils/tokens.py` - Token counting utilities
-- [x] `empathy_llm_toolkit/utils/__init__.py` - Utils module init
-- [x] `src/empathy_os/workflows/batch_processing.py` - Batch workflow
+- [x] `attune_llm/utils/tokens.py` - Token counting utilities
+- [x] `attune_llm/utils/__init__.py` - Utils module init
+- [x] `src/attune/workflows/batch_processing.py` - Batch workflow
 - [x] `docs/ANTHROPIC_OPTIMIZATION_PLAN.md` - Implementation plan (68 pages)
 - [x] `ANTHROPIC_OPTIMIZATION_SUMMARY.md` - Executive summary
 - [x] `QUICK_START_ANTHROPIC_OPTIMIZATIONS.md` - Quick start guide
@@ -64,10 +64,10 @@ description: Pre-Release Checklist - v4.0.0: **Release Date:** January 16, 2026 
 - [x] `.github/ISSUE_TEMPLATE/track2-prompt-caching.md` - GitHub issue template
 
 ### Modified Files (4)
-- [x] `empathy_llm_toolkit/providers.py` (+177 lines) - Added AnthropicBatchProvider
-- [x] `src/empathy_os/models/tasks.py` (+50 lines) - Added batch task classification
-- [x] `src/empathy_os/telemetry/usage_tracker.py` (+95 lines) - Added cache stats
-- [x] `src/empathy_os/telemetry/cli.py` (+130 lines) - Added cache stats CLI
+- [x] `attune_llm/providers.py` (+177 lines) - Added AnthropicBatchProvider
+- [x] `src/attune/models/tasks.py` (+50 lines) - Added batch task classification
+- [x] `src/attune/telemetry/usage_tracker.py` (+95 lines) - Added cache stats
+- [x] `src/attune/telemetry/cli.py` (+130 lines) - Added cache stats CLI
 
 ---
 

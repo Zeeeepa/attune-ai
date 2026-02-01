@@ -80,7 +80,7 @@ def create_cache():
             if prompt_user("Install cache dependencies for 70% savings? (y/n)"):
                 install_dependencies()
                 return HybridCache()
-        logger.info("Using hash-only cache (install empathy-framework[cache] for hybrid)")
+        logger.info("Using hash-only cache (install attune-ai[cache] for hybrid)")
         return HashOnlyCache()
 ```
 
@@ -288,8 +288,8 @@ class Feature:
 ```
 
 **Examples in codebase**:
-- `_maybe_setup_cache()` - [base.py:455](src/empathy_os/workflows/base.py#L455)
-- `_get_executor()` - [base.py:960](src/empathy_os/workflows/base.py#L960)
+- `_maybe_setup_cache()` - [base.py:455](src/attune/workflows/base.py#L455)
+- `_get_executor()` - [base.py:960](src/attune/workflows/base.py#L960)
 
 ---
 
@@ -370,8 +370,8 @@ class LongOperation:
 ```
 
 **Examples in codebase**:
-- Progress tracking - [base.py:717](src/empathy_os/workflows/base.py#L717)
-- Telemetry emission - [base.py:1033](src/empathy_os/workflows/base.py#L1033)
+- Progress tracking - [base.py:717](src/attune/workflows/base.py#L717)
+- Telemetry emission - [base.py:1033](src/attune/workflows/base.py#L1033)
 
 ---
 
@@ -422,7 +422,7 @@ def classify_error(error: Exception) -> ErrorInfo:
 ```
 
 **Examples in codebase**:
-- Workflow error classification - [base.py:828](src/empathy_os/workflows/base.py#L828)
+- Workflow error classification - [base.py:828](src/attune/workflows/base.py#L828)
 
 ---
 
@@ -465,7 +465,7 @@ if api_key is None:
 if api_key is None:
     raise ConfigurationError(
         "API key required. Set ANTHROPIC_API_KEY environment variable "
-        "or add to .env file. See: docs.empathy-framework.com/setup"
+        "or add to .env file. See: docs.attune-ai.com/setup"
     )
 ```
 
@@ -747,25 +747,25 @@ Map out:
 
 **Excellent Level 3 implementations in codebase**:
 
-1. **Cache auto-setup** - [base.py:455](src/empathy_os/workflows/base.py#L455)
+1. **Cache auto-setup** - [base.py:455](src/attune/workflows/base.py#L455)
    - Lazy initialization
    - Dependency detection
    - User prompting (interactive sessions)
    - Fallback chain (hybrid → hash → disabled)
 
-2. **Resilient executor** - [base.py:937](src/empathy_os/workflows/base.py#L937)
+2. **Resilient executor** - [base.py:937](src/attune/workflows/base.py#L937)
    - Automatic retry with exponential backoff
    - Fallback providers
    - Circuit breaker
    - Built-in by default
 
-3. **Progress tracking** - [base.py:717](src/empathy_os/workflows/base.py#L717)
+3. **Progress tracking** - [base.py:717](src/attune/workflows/base.py#L717)
    - Proactive event emission
    - Optional (no overhead if unused)
    - Rich event data
    - Real-time updates
 
-4. **Error classification** - [base.py:828](src/empathy_os/workflows/base.py#L828)
+4. **Error classification** - [base.py:828](src/attune/workflows/base.py#L828)
    - Transient detection
    - User guidance
    - Observable (error_type field)
@@ -787,4 +787,4 @@ When in doubt:
 
 **Last updated**: 2026-01-06
 **Maintainer**: Patrick Roebuck
-**Feedback**: [GitHub Issues](https://github.com/empathy-ai/empathy-framework/issues)
+**Feedback**: [GitHub Issues](https://github.com/empathy-ai/attune-ai/issues)

@@ -1,6 +1,6 @@
 """Code Health Adapter
 
-Wraps empathy_llm_toolkit.code_health.HealthCheckRunner and converts
+Wraps attune_llm.code_health.HealthCheckRunner and converts
 its output to the unified ToolResult format.
 
 Copyright 2025 Smart AI Memory, LLC
@@ -49,7 +49,7 @@ class CodeHealthAdapter:
 
         try:
             # Import here to handle optional dependency
-            from empathy_llm_toolkit.code_health import HealthCheckRunner
+            from attune_llm.code_health import HealthCheckRunner
 
             runner = HealthCheckRunner(
                 project_root=self.project_root,

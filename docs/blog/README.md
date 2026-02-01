@@ -41,7 +41,7 @@ With persistent memory:
 ## Quick Start
 
 ```bash
-pip install empathy-framework
+pip install attune-ai
 
 # Check your code health (new in v2.2)
 empathy health

@@ -6,8 +6,8 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os.core import CollaborationState, EmpathyOS
-from empathy_os.exceptions import ValidationError
+from attune.core import CollaborationState, EmpathyOS
+from attune.exceptions import ValidationError
 
 
 class TestCollaborationState:
@@ -1033,7 +1033,7 @@ class TestSharedPatternLibrary:
 
     def test_initialization_with_shared_library(self):
         """Test EmpathyOS initializes with shared library"""
-        from empathy_os import PatternLibrary
+        from attune import PatternLibrary
 
         library = PatternLibrary()
         empathy = EmpathyOS(user_id="test_agent", shared_library=library)
@@ -1043,7 +1043,7 @@ class TestSharedPatternLibrary:
 
     def test_contribute_pattern_without_library(self):
         """Test contribute_pattern raises error without library"""
-        from empathy_os import Pattern
+        from attune import Pattern
 
         empathy = EmpathyOS(user_id="test_agent")
 
@@ -1067,7 +1067,7 @@ class TestSharedPatternLibrary:
 
     def test_contribute_pattern_with_library(self):
         """Test contributing pattern through EmpathyOS"""
-        from empathy_os import Pattern, PatternLibrary
+        from attune import Pattern, PatternLibrary
 
         library = PatternLibrary()
         empathy = EmpathyOS(user_id="code_reviewer", shared_library=library)
@@ -1089,7 +1089,7 @@ class TestSharedPatternLibrary:
 
     def test_query_patterns_with_library(self):
         """Test querying patterns through EmpathyOS"""
-        from empathy_os import Pattern, PatternLibrary
+        from attune import Pattern, PatternLibrary
 
         library = PatternLibrary()
 
@@ -1115,7 +1115,7 @@ class TestSharedPatternLibrary:
 
     def test_multi_agent_pattern_sharing(self):
         """Test Chapter 23 scenario: multiple agents sharing patterns"""
-        from empathy_os import Pattern, PatternLibrary
+        from attune import Pattern, PatternLibrary
 
         # Create shared library (as in Chapter 23)
         shared_library = PatternLibrary()

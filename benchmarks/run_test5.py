@@ -2,7 +2,7 @@
 
 import asyncio
 
-from empathy_os.workflows import get_workflow
+from attune.workflows import get_workflow
 
 
 async def main():
@@ -19,7 +19,7 @@ async def main():
     # For now, this will show the workflow structure
 
     print("\n✅ Workflow registered and ready!")
-    print("\n⚠️ Note: Edit src/empathy_os/workflows/test5.py")
+    print("\n⚠️ Note: Edit src/attune/workflows/test5.py")
     print("   Change 'MyCrew' to 'RefactoringCrew' to use the refactoring agents")
 
 

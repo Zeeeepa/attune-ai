@@ -113,24 +113,24 @@ def profile_memory(func: Callable) -> Callable:
 
 **High-priority targets** (frequently used, user-facing):
 
-1. **Project Index Scanner** (`src/empathy_os/project_index/scanner.py`)
+1. **Project Index Scanner** (`src/attune/project_index/scanner.py`)
    - `scan()` method - Scans entire codebase
    - `_build_summary()` - Aggregates metrics
    - Expected bottleneck: File I/O and AST parsing
 
-2. **Workflow Execution** (`src/empathy_os/workflows/base.py`)
+2. **Workflow Execution** (`src/attune/workflows/base.py`)
    - `execute()` method - Runs multi-tier workflows
    - Expected bottleneck: LLM API calls, JSON parsing
 
-3. **Pattern Matching** (`src/empathy_os/pattern_library.py`)
+3. **Pattern Matching** (`src/attune/pattern_library.py`)
    - `match()` method - Pattern recognition
    - Expected bottleneck: Regex operations, list iterations
 
-4. **Memory Operations** (`src/empathy_os/memory/unified.py`)
+4. **Memory Operations** (`src/attune/memory/unified.py`)
    - `recall()` method - Retrieves from memory graph
    - Expected bottleneck: Graph traversal, deserialization
 
-5. **Test Generator** (`src/empathy_os/workflows/test_gen.py`)
+5. **Test Generator** (`src/attune/workflows/test_gen.py`)
    - `_generate_test_cases()` - Generates parametrized tests
    - Expected bottleneck: AST parsing, template rendering
 
@@ -147,9 +147,9 @@ from scripts.profile_utils import profile_function, time_function
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.project_index import ProjectIndex
-from empathy_os.pattern_library import PatternLibrary
-from empathy_os.workflows.test_gen import TestGenerationWorkflow
+from attune.project_index import ProjectIndex
+from attune.pattern_library import PatternLibrary
+from attune.workflows.test_gen import TestGenerationWorkflow
 
 
 @profile_function(output_file="profiles/scanner_scan.prof")
@@ -449,7 +449,7 @@ grep -r "for .* in .*:" src/ --include="*.py" -A 5 | grep "for .* in"
 
 **Priority 1: High-frequency lookups**
 
-1. **Pattern Registry** (`src/empathy_os/pattern_library.py`)
+1. **Pattern Registry** (`src/attune/pattern_library.py`)
    ```python
    # Current: List of patterns, O(n) lookup
    self.patterns: list[Pattern] = []
@@ -465,7 +465,7 @@ grep -r "for .* in .*:" src/ --include="*.py" -A 5 | grep "for .* in"
        return self._patterns_by_tag.get(tag, [])  # O(1) vs O(n)
    ```
 
-2. **File Index** (`src/empathy_os/project_index/scanner.py`)
+2. **File Index** (`src/attune/project_index/scanner.py`)
    ```python
    # Current: List of FileRecord, O(n) for path lookup
    records: list[FileRecord] = []
@@ -482,7 +482,7 @@ grep -r "for .* in .*:" src/ --include="*.py" -A 5 | grep "for .* in"
        return self._by_category.get(category, [])  # O(1)
    ```
 
-3. **Model Registry** (`src/empathy_os/models/registry.py`)
+3. **Model Registry** (`src/attune/models/registry.py`)
    ```python
    # Already uses dict - verify no linear scans in callers
    MODEL_REGISTRY: dict[str, ModelInfo] = {...}

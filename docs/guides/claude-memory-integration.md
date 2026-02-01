@@ -8,7 +8,7 @@ description: Claude Memory Integration Guide integration guide. Connect external
 
 ### Purpose
 
-The Claude Memory Integration system within `empathy_llm_toolkit` provides hierarchical memory loading capabilities that enable AI systems to maintain context across sessions. The `test_memory_integration.py` script validates the core functionality.
+The Claude Memory Integration system within `attune_llm` provides hierarchical memory loading capabilities that enable AI systems to maintain context across sessions. The `test_memory_integration.py` script validates the core functionality.
 
 ### Key Features
 
@@ -26,13 +26,13 @@ The Claude Memory Integration system within `empathy_llm_toolkit` provides hiera
 | Requirement | Version | Notes |
 |-------------|---------|-------|
 | Python | 3.10+ | Required for compatibility |
-| `empathy_llm_toolkit` | Latest | Core package containing Claude Memory functionality |
+| `attune_llm` | Latest | Core package containing Claude Memory functionality |
 | Write access | - | Required for `.claude/` directory |
 
 ### Installation
 
 ```bash
-pip install empathy_llm_toolkit
+pip install attune_llm
 ```
 
 ### Directory Structure
@@ -62,13 +62,13 @@ project_root/
 2. **Install dependencies:**
 
    ```bash
-   pip install empathy_llm_toolkit
+   pip install attune_llm
    ```
 
 3. **Verify installation:**
 
    ```python
-   from empathy_llm_toolkit.claude_memory import ClaudeMemoryLoader
+   from attune_llm.claude_memory import ClaudeMemoryLoader
    print("Installation successful!")
    ```
 
@@ -81,7 +81,7 @@ Load project memory from the `.claude/CLAUDE.md` file and retrieve content for u
 ### Usage
 
 ```python
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
+from attune_llm.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
 
 # Initialize configuration and loader
 config = ClaudeMemoryConfig(enabled=True)
@@ -158,7 +158,7 @@ Memory integration test
 #### Step 3: Verify Import Resolution
 
 ```python
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
+from attune_llm.claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
 
 config = ClaudeMemoryConfig(enabled=True)
 loader = ClaudeMemoryLoader(config)
@@ -178,7 +178,7 @@ Demonstrate how loaded memory integrates with the EmpathyLLM class for generatin
 ### Usage
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 # Create an EmpathyLLM instance
 llm = EmpathyLLM()
@@ -233,7 +233,7 @@ Enable debug logging to troubleshoot issues:
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryLoader
+from attune_llm.claude_memory import ClaudeMemoryLoader
 # Loader will now output debug information
 ```
 

@@ -12,7 +12,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.workflows.autonomous_test_gen import AutonomousTestGenerator
+from attune.workflows.autonomous_test_gen import AutonomousTestGenerator
 
 
 def main():
@@ -28,11 +28,11 @@ def main():
 
     doc_gen_modules = [
         {
-            "file": "src/empathy_os/workflows/document_gen/config.py",
+            "file": "src/attune/workflows/document_gen/config.py",
             "description": "Token costs and document generation step configuration"
         },
         {
-            "file": "src/empathy_os/workflows/document_gen/report_formatter.py",
+            "file": "src/attune/workflows/document_gen/report_formatter.py",
             "description": "Document generation report formatting"
         },
     ]
@@ -53,27 +53,27 @@ def main():
 
     cli_modules = [
         {
-            "file": "src/empathy_os/meta_workflows/cli_commands/template_commands.py",
+            "file": "src/attune/meta_workflows/cli_commands/template_commands.py",
             "description": "CLI commands for template operations"
         },
         {
-            "file": "src/empathy_os/meta_workflows/cli_commands/workflow_commands.py",
+            "file": "src/attune/meta_workflows/cli_commands/workflow_commands.py",
             "description": "CLI commands for workflow execution"
         },
         {
-            "file": "src/empathy_os/meta_workflows/cli_commands/analytics_commands.py",
+            "file": "src/attune/meta_workflows/cli_commands/analytics_commands.py",
             "description": "CLI commands for analytics and execution history"
         },
         {
-            "file": "src/empathy_os/meta_workflows/cli_commands/memory_commands.py",
+            "file": "src/attune/meta_workflows/cli_commands/memory_commands.py",
             "description": "CLI commands for memory operations"
         },
         {
-            "file": "src/empathy_os/meta_workflows/cli_commands/config_commands.py",
+            "file": "src/attune/meta_workflows/cli_commands/config_commands.py",
             "description": "CLI commands for configuration management"
         },
         {
-            "file": "src/empathy_os/meta_workflows/cli_commands/agent_commands.py",
+            "file": "src/attune/meta_workflows/cli_commands/agent_commands.py",
             "description": "CLI commands for agent creation"
         },
     ]

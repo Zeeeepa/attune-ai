@@ -5,8 +5,8 @@ Tests the routing strategy pattern and integration with BaseWorkflow.
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.routing import (
+from attune.workflows.base import ModelTier
+from attune.workflows.routing import (
     BalancedRouting,
     CostOptimizedRouting,
     PerformanceOptimizedRouting,

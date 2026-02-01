@@ -47,7 +47,7 @@ The memory leak scanner flags `dirs[:]` as "large_list_copy" but this is a **fal
 
 ## Examples in Codebase
 
-- `src/empathy_os/project_index/scanner.py:163`
-- `src/empathy_os/workflows/code_review.py:195`
+- `src/attune/project_index/scanner.py:163`
+- `src/attune/workflows/code_review.py:195`
 
 Both correctly use `dirs[:]` to filter excluded directories during traversal.

@@ -21,8 +21,8 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 sys.path.insert(0, str(project_root / "src"))
 
-from empathy_os.project_index.scanner import ProjectScanner  # noqa: E402
-from empathy_os.project_index.scanner_parallel import ParallelProjectScanner  # noqa: E402
+from attune.project_index.scanner import ProjectScanner  # noqa: E402
+from attune.project_index.scanner_parallel import ParallelProjectScanner  # noqa: E402
 
 
 def clear_all_caches():

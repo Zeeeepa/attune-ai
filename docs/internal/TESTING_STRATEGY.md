@@ -21,8 +21,8 @@ The Empathy Framework maintains a high standard of test coverage with an overall
 |--------|----------|--------|
 | coach_wizards | 99.96% | Excellent |
 | empathy_healthcare_plugin | 98.72% | Excellent |
-| empathy_llm_toolkit | 97.47% | Excellent |
-| src/empathy_os | 98.45% | Excellent |
+| attune_llm | 97.47% | Excellent |
+| src/attune | 98.45% | Excellent |
 | empathy_software_plugin | 72.89% | Needs Attention |
 
 ## Testing Approach
@@ -57,8 +57,8 @@ Our testing strategy employs multiple levels:
 We use `pytest-cov` to track code coverage across all modules:
 
 ```bash
-pytest --cov=empathy_os \
-       --cov=empathy_llm_toolkit \
+pytest --cov=attune \
+       --cov=attune_llm \
        --cov=empathy_software_plugin \
        --cov=empathy_healthcare_plugin \
        --cov=coach_wizards \
@@ -323,7 +323,7 @@ Since LLM calls are expensive and non-deterministic, we mock them in tests:
 ```python
 from unittest.mock import patch, Mock
 
-@patch('empathy_llm_toolkit.providers.LLMProvider.call')
+@patch('attune_llm.providers.LLMProvider.call')
 def test_wizard_with_mocked_llm(mock_llm_call):
     # Configure mock response
     mock_llm_call.return_value = {

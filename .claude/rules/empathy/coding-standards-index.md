@@ -69,7 +69,7 @@ def save_config(user_path: str, data: dict):
         json.dump(data, f)
 
 # ✅ REQUIRED - Validate before writing
-from empathy_os.config import _validate_file_path
+from attune.config import _validate_file_path
 
 def save_config(user_path: str, data: dict):
     validated_path = _validate_file_path(user_path)
@@ -83,12 +83,12 @@ def save_config(user_path: str, data: dict):
 - `/etc/cron.d/backdoor` - System directory write
 
 **Files Secured (v3.9.0):**
-1. `src/empathy_os/config.py` - Configuration exports
-2. `src/empathy_os/workflows/config.py` - Workflow saves
-3. `src/empathy_os/config/xml_config.py` - XML exports
-4. `src/empathy_os/telemetry/cli.py` - CSV/JSON exports
-5. `src/empathy_os/cli.py` - Pattern exports
-6. `src/empathy_os/memory/control_panel.py` - Memory operations
+1. `src/attune/config.py` - Configuration exports
+2. `src/attune/workflows/config.py` - Workflow saves
+3. `src/attune/config/xml_config.py` - XML exports
+4. `src/attune/telemetry/cli.py` - CSV/JSON exports
+5. `src/attune/cli.py` - Pattern exports
+6. `src/attune/memory/control_panel.py` - Memory operations
 
 **See:** [File Path Validation Implementation](#file-path-validation-implementation) below
 
@@ -145,7 +145,7 @@ def get_package_version() -> str:
     """Get package version with graceful fallback."""
     try:
         from importlib.metadata import version
-        return version("empathy-framework")
+        return version("attune-ai")
     except Exception:  # noqa: BLE001
         # INTENTIONAL: Fallback for dev installs without metadata
         return "dev"
@@ -247,7 +247,7 @@ except IOError as e:
 
 ### The _validate_file_path() Function
 
-**Location:** `src/empathy_os/config.py:29-68`
+**Location:** `src/attune/config.py:29-68`
 
 ```python
 def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
@@ -308,7 +308,7 @@ def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
 ### Usage Pattern
 
 ```python
-from empathy_os.config import _validate_file_path
+from attune.config import _validate_file_path
 from pathlib import Path
 import json
 import logging
@@ -453,7 +453,7 @@ open htmlcov/index.html
 
 ```python
 import pytest
-from empathy_os.config import EmpathyConfig
+from attune.config import EmpathyConfig
 
 
 def test_save_prevents_path_traversal():
@@ -710,7 +710,7 @@ with open(user_path, 'w') as f:
     f.write(data)
 
 # After:
-from empathy_os.config import _validate_file_path
+from attune.config import _validate_file_path
 
 validated_path = _validate_file_path(user_path)
 with validated_path.open('w') as f:
@@ -857,7 +857,7 @@ except Exception:  # noqa: BLE001
 
 ### Example 1: Configuration Export (config.py)
 
-**File:** `src/empathy_os/config.py:195-215`
+**File:** `src/attune/config.py:195-215`
 
 ```python
 def to_yaml(self, output_path: str) -> Path:
@@ -905,7 +905,7 @@ def to_yaml(self, output_path: str) -> Path:
 
 ### Example 2: Telemetry Export (telemetry/cli.py)
 
-**File:** `src/empathy_os/telemetry/cli.py:280-310`
+**File:** `src/attune/telemetry/cli.py:280-310`
 
 ```python
 def export_csv(output_path: str):
@@ -914,7 +914,7 @@ def export_csv(output_path: str):
     Args:
         output_path: Path where CSV should be saved (user-controlled)
     """
-    from empathy_os.config import _validate_file_path
+    from attune.config import _validate_file_path
 
     # Validate path to prevent attacks
     validated_path = _validate_file_path(output_path)
@@ -950,7 +950,7 @@ def export_csv(output_path: str):
 ```python
 import pytest
 from pathlib import Path
-from empathy_os.config import EmpathyConfig
+from attune.config import EmpathyConfig
 
 
 class TestPathTraversalProtection:
@@ -1143,14 +1143,14 @@ pre-commit run <hook-id>               # Run specific hook
 
 ### Path Validation Examples
 
-- `src/empathy_os/config.py` - Configuration exports (YAML, JSON)
-- `src/empathy_os/workflows/config.py` - Workflow configuration
-- `src/empathy_os/telemetry/cli.py` - Telemetry exports (CSV, JSON)
+- `src/attune/config.py` - Configuration exports (YAML, JSON)
+- `src/attune/workflows/config.py` - Workflow configuration
+- `src/attune/telemetry/cli.py` - Telemetry exports (CSV, JSON)
 
 ### Exception Handling Examples
 
-- `src/empathy_os/workflows/base.py` - Workflow execution with proper error handling
-- `src/empathy_os/cli.py` - CLI with specific exception handling
+- `src/attune/workflows/base.py` - Workflow execution with proper error handling
+- `src/attune/cli.py` - CLI with specific exception handling
 
 ### Security Test Examples
 
@@ -1163,8 +1163,8 @@ pre-commit run <hook-id>               # Run specific hook
 **Questions?**
 
 - See full documentation in [docs/CODING_STANDARDS.md](../../../docs/CODING_STANDARDS.md)
-- Report issues: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- Ask in discussions: [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- Report issues: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- Ask in discussions: [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 
 ---
 

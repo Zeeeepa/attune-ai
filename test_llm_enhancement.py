@@ -6,7 +6,7 @@ Quick verification that the enhanced generator works.
 import ast
 from pathlib import Path
 
-from empathy_os.workflows.test_gen_behavioral import (
+from attune.workflows.test_gen_behavioral import (
     BehavioralTestLLMGenerator,
     ModuleAnalyzer,
     ModuleInfo,
@@ -21,7 +21,7 @@ def test_llm_generation():
     generator = BehavioralTestLLMGenerator(use_llm=True, model_tier="capable")
 
     # Test on a small module
-    test_module = Path("src/empathy_os/platform_utils.py")
+    test_module = Path("src/attune/platform_utils.py")
 
     if not test_module.exists():
         print(f"❌ Test module not found: {test_module}")

@@ -22,7 +22,7 @@ Successfully integrated intelligent authentication strategy into DocumentGenerat
 
 ## What Was Implemented
 
-### 1. Core Authentication Strategy (`src/empathy_os/models/auth_strategy.py`)
+### 1. Core Authentication Strategy (`src/attune/models/auth_strategy.py`)
 
 **Features:**
 - `AuthStrategy` class with tiered recommendations
@@ -51,7 +51,7 @@ def get_recommended_mode(self, module_lines: int) -> AuthMode:
 
 ---
 
-### 2. Workflow Integration (`src/empathy_os/workflows/document_gen.py`)
+### 2. Workflow Integration (`src/attune/workflows/document_gen.py`)
 
 **Changes:**
 1. Added `enable_auth_strategy` parameter to `__init__` (default: True)
@@ -150,15 +150,15 @@ Auth Strategy:
 ## Files Created/Modified
 
 ### New Files (5)
-1. ✅ `src/empathy_os/models/auth_strategy.py` (410 lines) - Core implementation
+1. ✅ `src/attune/models/auth_strategy.py` (410 lines) - Core implementation
 2. ✅ `test_auth_strategy.py` (125 lines) - Unit tests for auth strategy
 3. ✅ `test_doc_with_auth.py` (180 lines) - Integration test
 4. ✅ `docs/AUTH_STRATEGY_GUIDE.md` (320+ lines) - User documentation
 5. ✅ `docs/AUTH_INTEGRATION_COMPLETE.md` (This file)
 
 ### Modified Files (3)
-1. ✅ `src/empathy_os/models/__init__.py` - Exported auth_strategy functions
-2. ✅ `src/empathy_os/workflows/document_gen.py` - Integrated auth detection
+1. ✅ `src/attune/models/__init__.py` - Exported auth_strategy functions
+2. ✅ `src/attune/workflows/document_gen.py` - Integrated auth detection
 3. ✅ `docs/LLM_DOC_ENHANCEMENT_SUMMARY.md` - Added Phase 2.5
 
 ---
@@ -168,7 +168,7 @@ Auth Strategy:
 ### Basic Usage (Auto-detection)
 
 ```python
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
+from attune.workflows.document_gen import DocumentGenerationWorkflow
 
 # Create workflow (auth strategy enabled by default)
 workflow = DocumentGenerationWorkflow(
@@ -191,7 +191,7 @@ print(f"Auth mode: {result.final_output['auth_mode_used']}")
 ### Explicit Auth Strategy
 
 ```python
-from empathy_os.models import AuthStrategy, SubscriptionTier, AuthMode
+from attune.models import AuthStrategy, SubscriptionTier, AuthMode
 
 # Configure strategy
 strategy = AuthStrategy(
@@ -210,7 +210,7 @@ strategy.save()  # Saves to ~/.empathy/auth_strategy.json
 ### First-Time Interactive Setup
 
 ```python
-from empathy_os.models import configure_auth_interactive
+from attune.models import configure_auth_interactive
 
 # Runs interactive wizard (shows pros/cons)
 strategy = configure_auth_interactive()

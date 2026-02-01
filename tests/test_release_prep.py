@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/workflows/release_prep.py
+"""Tests for src/attune/workflows/release_prep.py
 
 Comprehensive tests for the release preparation workflow including:
 - RELEASE_PREP_STEPS configuration
@@ -20,13 +20,13 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.release_prep import (
+from attune.workflows.base import ModelTier
+from attune.workflows.release_prep import (
     RELEASE_PREP_STEPS,
     ReleasePreparationWorkflow,
     format_release_prep_report,
 )
-from empathy_os.workflows.step_config import WorkflowStepConfig
+from attune.workflows.step_config import WorkflowStepConfig
 
 # =============================================================================
 # TestReleaseStepsConfig - RELEASE_PREP_STEPS configuration
@@ -1051,7 +1051,7 @@ class TestCrewSecurityStage:
         workflow = ReleasePreparationWorkflow(use_security_crew=True)
 
         with patch(
-            "empathy_os.workflows.security_adapters._check_crew_available",
+            "attune.workflows.security_adapters._check_crew_available",
         ) as mock_check:
             mock_check.return_value = False
 
@@ -1066,9 +1066,9 @@ class TestCrewSecurityStage:
         workflow = ReleasePreparationWorkflow(use_security_crew=True)
 
         with (
-            patch("empathy_os.workflows.security_adapters._check_crew_available") as mock_check,
+            patch("attune.workflows.security_adapters._check_crew_available") as mock_check,
             patch(
-                "empathy_os.workflows.security_adapters._get_crew_audit",
+                "attune.workflows.security_adapters._get_crew_audit",
                 new_callable=AsyncMock,
             ) as mock_audit,
         ):

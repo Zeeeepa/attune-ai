@@ -10,7 +10,7 @@ import asyncio
 from pathlib import Path
 from unittest.mock import patch
 
-from empathy_os.platform_utils import (
+from attune.platform_utils import (
     PLATFORM_INFO,
     ensure_dir,
     get_default_cache_dir,

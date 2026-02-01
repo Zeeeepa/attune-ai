@@ -12,8 +12,8 @@ Run code review, debugging, testing, and release workflows from your terminal or
 
 ### Authentication Strategy
 ```bash
-python -m empathy_os.models.auth_cli setup    # Interactive configuration
-python -m empathy_os.models.auth_cli status   # View current settings
+python -m attune.models.auth_cli setup    # Interactive configuration
+python -m attune.models.auth_cli status   # View current settings
 ```
 
 ### Agent Coordination Dashboard
@@ -87,7 +87,7 @@ Use `/hub-name` to access organized workflows:
 ## Project Structure
 
 ```
-src/empathy_os/
+src/attune/
 ├── workflows/          # AI-powered workflows (7 integrated with auth strategy)
 ├── models/            # Authentication strategy and LLM providers
 ├── dashboard/         # Agent Coordination Dashboard (6 patterns)
@@ -111,4 +111,4 @@ src/empathy_os/
 
 **Version:** 5.1.1 (2026-01-29)
 **License:** Apache 2.0 - Free and open source
-**Repository:** https://github.com/Smart-AI-Memory/empathy-framework
+**Repository:** https://github.com/Smart-AI-Memory/attune-ai

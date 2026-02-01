@@ -27,7 +27,7 @@ sys.path.insert(0, str(parent_dir))
 
 # Import the config.py module directly
 
-config_path = parent_dir / "empathy_os" / "config.py"
+config_path = parent_dir / "attune" / "config.py"
 spec = importlib.util.spec_from_file_location("empathy_config", config_path)
 if spec and spec.loader:
     config_module = importlib.util.module_from_spec(spec)

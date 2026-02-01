@@ -13,7 +13,7 @@ import io
 import pstats
 from pstats import SortKey
 
-from empathy_llm_toolkit.security import SecretsDetector
+from attune_llm.security import SecretsDetector
 
 
 def profile_secrets_detection():

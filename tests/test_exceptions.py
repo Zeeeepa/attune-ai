@@ -8,7 +8,7 @@ Licensed under Fair Source 0.9
 
 import pytest
 
-from empathy_os.exceptions import (
+from attune.exceptions import (
     CollaborationStateError,
     ConfidenceThresholdError,
     EmpathyFrameworkError,

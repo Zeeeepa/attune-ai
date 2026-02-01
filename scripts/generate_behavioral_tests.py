@@ -5,7 +5,7 @@ Analyzes Python modules and generates behavioral test templates automatically.
 Helps achieve 99.9% coverage systematically.
 
 Usage:
-    python scripts/generate_behavioral_tests.py --module src/empathy_os/memory/short_term.py
+    python scripts/generate_behavioral_tests.py --module src/attune/memory/short_term.py
     python scripts/generate_behavioral_tests.py --batch --top 50
     python scripts/generate_behavioral_tests.py --report
 
@@ -390,7 +390,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate behavioral test templates")
 
     parser.add_argument(
-        "--module", help="Generate test for specific module (e.g., src/empathy_os/config.py)"
+        "--module", help="Generate test for specific module (e.g., src/attune/config.py)"
     )
     parser.add_argument(
         "--batch", action="store_true", help="Batch generate tests for low-coverage modules"

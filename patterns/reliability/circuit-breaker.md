@@ -1,7 +1,7 @@
 # Circuit Breaker Pattern
 
 **Source Domain:** Reliability Engineering
-**Location in Codebase:** `src/empathy_os/resilience/circuit_breaker.py`, `src/empathy_os/models/fallback.py`
+**Location in Codebase:** `src/attune/resilience/circuit_breaker.py`, `src/attune/models/fallback.py`
 **Level:** 4 (Anticipatory)
 
 ## Overview
@@ -27,7 +27,7 @@ Prevents cascading failures by temporarily disabling failing components. The cir
 ## Implementation
 
 ```python
-from empathy_os.resilience.circuit_breaker import circuit_breaker, CircuitBreaker
+from attune.resilience.circuit_breaker import circuit_breaker, CircuitBreaker
 
 # Decorator usage
 @circuit_breaker(failure_threshold=5, reset_timeout=60)

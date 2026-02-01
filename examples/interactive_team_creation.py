@@ -19,8 +19,8 @@ Requirements:
 """
 import asyncio
 import argparse
-from empathy_os.orchestration import MetaOrchestrator
-from empathy_os.tools import set_ask_user_question_handler
+from attune.orchestration import MetaOrchestrator
+from attune.tools import set_ask_user_question_handler
 
 
 def cli_handler(questions):

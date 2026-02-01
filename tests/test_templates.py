@@ -1,4 +1,4 @@
-"""Tests for empathy_os.templates module.
+"""Tests for attune.templates module.
 
 Tests cover:
 - Template definitions and structure
@@ -12,7 +12,7 @@ Tests cover:
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from empathy_os.templates import TEMPLATES, cmd_new, list_templates, scaffold_project
+from attune.templates import TEMPLATES, cmd_new, list_templates, scaffold_project
 
 
 class TestTemplateDefinitions:
@@ -29,7 +29,7 @@ class TestTemplateDefinitions:
     def test_minimal_template_exists(self):
         """Test minimal template is defined."""
         assert "minimal" in TEMPLATES
-        assert "empathy.config.yml" in TEMPLATES["minimal"]["files"]
+        assert "attune.config.yml" in TEMPLATES["minimal"]["files"]
 
     def test_python_cli_template_exists(self):
         """Test python-cli template is defined."""
@@ -119,7 +119,7 @@ class TestScaffoldProject:
         )
 
         assert result["success"] is True
-        assert (target / "empathy.config.yml").exists()
+        assert (target / "attune.config.yml").exists()
         assert (target / ".claude" / "CLAUDE.md").exists()
 
     def test_replaces_project_name_placeholder(self, tmp_path):
@@ -131,7 +131,7 @@ class TestScaffoldProject:
             target_dir=str(target),
         )
 
-        config_content = (target / "empathy.config.yml").read_text()
+        config_content = (target / "attune.config.yml").read_text()
         assert "my_project" in config_content
         assert "{{project_name}}" not in config_content
 
@@ -347,13 +347,13 @@ class TestTemplateContent:
     """Test template content is valid."""
 
     def test_empathy_config_is_valid_yaml(self, tmp_path):
-        """Test empathy.config.yml is valid YAML."""
+        """Test attune.config.yml is valid YAML."""
         import yaml
 
         target = tmp_path / "test"
         scaffold_project("minimal", "test", str(target))
 
-        config_path = target / "empathy.config.yml"
+        config_path = target / "attune.config.yml"
         content = config_path.read_text()
 
         # Should not raise

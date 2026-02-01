@@ -23,7 +23,7 @@ def verify_phase_2_methods():
     print("PHASE 2: MULTI-TURN REFINEMENT VERIFICATION")
     print("=" * 70)
 
-    from empathy_os.workflows.autonomous_test_gen import (
+    from attune.workflows.autonomous_test_gen import (
         AutonomousTestGenerator,
         ValidationResult,
     )
@@ -90,7 +90,7 @@ def verify_phase_3_methods():
     print("PHASE 3: COVERAGE-GUIDED GENERATION VERIFICATION")
     print("=" * 70)
 
-    from empathy_os.workflows.autonomous_test_gen import (
+    from attune.workflows.autonomous_test_gen import (
         AutonomousTestGenerator,
         CoverageResult,
     )
@@ -158,10 +158,10 @@ def verify_integration():
     print("INTEGRATION VERIFICATION")
     print("=" * 70)
 
-    from empathy_os.workflows.autonomous_test_gen import AutonomousTestGenerator
+    from attune.workflows.autonomous_test_gen import AutonomousTestGenerator
 
     # Read the source to verify integration
-    source_file = Path(__file__).parent.parent / "src" / "empathy_os" / "workflows" / "autonomous_test_gen.py"
+    source_file = Path(__file__).parent.parent / "src" / "attune" / "workflows" / "autonomous_test_gen.py"
     source_code = source_file.read_text()
 
     print("\n✓ Checking Phase 2 integration in _generate_module_tests...")

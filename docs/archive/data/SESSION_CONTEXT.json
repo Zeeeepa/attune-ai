@@ -6,7 +6,7 @@
     "empathy_framework": {
       "path": "/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework",
       "version": "1.9.7",
-      "pypi": "empathy-framework",
+      "pypi": "attune-ai",
       "monthly_downloads": 1440,
       "test_count": 1489,
       "coverage": "76%"

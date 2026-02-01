@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 
 import pytest
 
-from empathy_os.cli.parsers.sync import register_parsers
+from attune.cli.parsers.sync import register_parsers
 
 # ============================================================================
 # register_parsers Tests

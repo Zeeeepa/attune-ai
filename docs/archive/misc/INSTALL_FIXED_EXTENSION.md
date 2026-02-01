@@ -13,10 +13,10 @@ description: Install Fixed VSCode Extension: ## The Fix "Generate Docs" and "Syn
 
 ```bash
 # 1. Uninstall old version (if installed)
-code --uninstall-extension smartaimemory.empathy-framework
+code --uninstall-extension smartaimemory.attune-ai
 
 # 2. Install new version with fix
-code --install-extension /Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/vscode-extension/empathy-framework-1.3.1.vsix
+code --install-extension /Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/vscode-extension/attune-ai-1.3.1.vsix
 
 # 3. Reload VSCode window
 # Press Cmd+Shift+P → type "Developer: Reload Window" → Enter
@@ -27,7 +27,7 @@ code --install-extension /Users/patrickroebuck/empathy_11_6_2025/Empathy-framewo
 1. Open VSCode
 2. Press `Cmd+Shift+P` (or `Ctrl+Shift+P` on Windows/Linux)
 3. Type "Extensions: Install from VSIX"
-4. Select: `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/vscode-extension/empathy-framework-1.3.1.vsix`
+4. Select: `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/vscode-extension/attune-ai-1.3.1.vsix`
 5. Click "Reload Window" when prompted
 
 ## Verify the Fix

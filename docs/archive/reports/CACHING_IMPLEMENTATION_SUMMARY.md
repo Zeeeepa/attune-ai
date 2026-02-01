@@ -34,7 +34,7 @@ Successfully implemented strategic caching for expensive operations in the Empat
 
 ### 1. Enhanced Cache Monitoring
 
-**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/empathy_os/cache_monitor.py`
+**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/cache_monitor.py`
 
 **Enhancements Added:**
 ```python
@@ -67,12 +67,12 @@ print(monitor.get_size_report())
 
 ### 2. AST Cache Monitoring Integration
 
-**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/empathy_os/project_index/scanner.py`
+**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/project_index/scanner.py`
 
 **Changes Made:**
 ```python
 # Line 19: Import CacheMonitor
-from empathy_os.cache_monitor import CacheMonitor
+from attune.cache_monitor import CacheMonitor
 
 # Lines 30-32: Class variables for tracking
 _ast_cache_hits = 0
@@ -97,7 +97,7 @@ monitor.register_cache("file_hash", max_size=1000)
 
 ### 3. Pattern Match Cache Module
 
-**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/empathy_os/pattern_cache.py`
+**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/pattern_cache.py`
 
 **New Module Features:**
 ```python
@@ -122,7 +122,7 @@ def cached_pattern_query(cache: PatternMatchCache) -> Callable:
 
 **Usage Example:**
 ```python
-from empathy_os.pattern_cache import PatternMatchCache
+from attune.pattern_cache import PatternMatchCache
 
 cache = PatternMatchCache(max_size=1000)
 context = {"domain": "testing", "language": "python"}
@@ -141,7 +141,7 @@ matches = cache.get_or_compute(
 
 ### 4. Cache Health Analysis Module
 
-**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/empathy_os/cache_stats.py`
+**File:** `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/cache_stats.py`
 
 **Components:**
 
@@ -188,7 +188,7 @@ class CacheReporter:
 
 **Usage Example:**
 ```python
-from empathy_os.cache_stats import CacheReporter, CacheAnalyzer
+from attune.cache_stats import CacheReporter, CacheAnalyzer
 
 # Individual cache analysis
 analyzer = CacheAnalyzer()
@@ -329,15 +329,15 @@ python -m pytest tests/test_pattern_library.py -v
 # Result: 37 passed in 0.17s
 
 # Cache monitor functionality verified
-python -c "from empathy_os.cache_monitor import CacheMonitor; ..."
+python -c "from attune.cache_monitor import CacheMonitor; ..."
 # Verified: Register, record hit/miss, size updates, reporting
 
 # Pattern cache functionality verified
-python -c "from empathy_os.pattern_cache import PatternMatchCache; ..."
+python -c "from attune.pattern_cache import PatternMatchCache; ..."
 # Verified: Set/get, cache hit detection, LRU eviction
 
 # Cache stats analysis verified
-python -c "from empathy_os.cache_stats import CacheAnalyzer; ..."
+python -c "from attune.cache_stats import CacheAnalyzer; ..."
 # Verified: Health scoring, reports, optimization suggestions
 ```
 
@@ -357,7 +357,7 @@ python -c "from empathy_os.cache_stats import CacheAnalyzer; ..."
 **To integrate PatternMatchCache into PatternLibrary:**
 ```python
 # In pattern_library.py
-from empathy_os.pattern_cache import PatternMatchCache
+from attune.pattern_cache import PatternMatchCache
 
 class PatternLibrary:
     def __init__(self):
@@ -375,7 +375,7 @@ class PatternLibrary:
 **To monitor AST cache in CI/CD:**
 ```python
 # In test_cache_performance.py
-from empathy_os.cache_stats import CacheReporter
+from attune.cache_stats import CacheReporter
 
 def test_cache_health():
     """Verify caches are healthy."""
@@ -516,9 +516,9 @@ All documentation is inline and comprehensive:
 
 ### Related Files
 - `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/docs/CACHING_STRATEGY_PLAN.md` - Full strategy
-- `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/empathy_os/cache_monitor.py` - Monitor implementation
-- `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/empathy_os/pattern_cache.py` - Pattern cache
-- `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/empathy_os/cache_stats.py` - Health analysis
+- `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/cache_monitor.py` - Monitor implementation
+- `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/pattern_cache.py` - Pattern cache
+- `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/cache_stats.py` - Health analysis
 
 ### Framework Standards
 - Follow `.claude/rules/empathy/coding-standards-index.md`

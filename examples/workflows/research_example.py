@@ -15,7 +15,7 @@ Licensed under Fair Source License 0.9
 
 import asyncio
 
-from empathy_os.workflows import ResearchSynthesisWorkflow
+from attune.workflows import ResearchSynthesisWorkflow
 
 
 async def main():

@@ -16,7 +16,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.workflows.xml_enhanced_crew import XMLAgent, XMLTask, parse_xml_response
+from attune.workflows.xml_enhanced_crew import XMLAgent, XMLTask, parse_xml_response
 
 
 def main():
@@ -91,7 +91,7 @@ def main():
                 "timeline": "Today (4-6 hours)",
                 "migration_strategy": "Migrate all workflows, use_xml_structure=True by default, allow opt-out",
                 "workflow_priority": "All equally important",
-                "metrics_storage": ".empathy/prompt_metrics.json (local file)",
+                "metrics_storage": ".attune/prompt_metrics.json (local file)",
                 "metrics_tracked": ["token_usage", "retry_rates", "parsing_success"],
                 "optimization_level": "Balance readability and efficiency (moderate compression)",
                 "task_complexity_scoring": "Simple heuristic (token count, LOC)",
@@ -116,7 +116,7 @@ Option 2: XML Schema Validation
 
 Option 3: Prompt Performance Tracking
 - Add PromptMetrics dataclass
-- Log to .empathy/prompt_metrics.json
+- Log to .attune/prompt_metrics.json
 - Dashboard integration
 - A/B testing framework
 

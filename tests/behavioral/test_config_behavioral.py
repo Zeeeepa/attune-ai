@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os import EmpathyConfig
+from attune import EmpathyConfig
 
 
 class TestEmpathyConfigBehavior:
@@ -148,7 +148,7 @@ class TestValidateFilePathBehavior:
 
     def test_validate_file_path_allows_valid_paths(self):
         """Test that _validate_file_path allows valid paths."""
-        from empathy_os.config import _validate_file_path
+        from attune.config import _validate_file_path
 
         with tempfile.TemporaryDirectory() as tmpdir:
             test_path = Path(tmpdir) / "valid.txt"
@@ -162,7 +162,7 @@ class TestValidateFilePathBehavior:
 
     def test_validate_file_path_blocks_system_directories(self):
         """Test that _validate_file_path blocks dangerous system paths."""
-        from empathy_os.config import _validate_file_path
+        from attune.config import _validate_file_path
 
         # Test paths that are reliably blocked across all operating systems
         # Note: /etc may resolve to /private/etc on macOS and not be blocked
@@ -176,7 +176,7 @@ class TestValidateFilePathBehavior:
 
     def test_validate_file_path_blocks_null_bytes(self):
         """Test that _validate_file_path blocks null byte injection."""
-        from empathy_os.config import _validate_file_path
+        from attune.config import _validate_file_path
 
         # BEHAVIORAL: Actually call with null byte
         with pytest.raises(ValueError, match="contains null bytes"):
@@ -184,7 +184,7 @@ class TestValidateFilePathBehavior:
 
     def test_validate_file_path_blocks_empty_paths(self):
         """Test that _validate_file_path blocks empty paths."""
-        from empathy_os.config import _validate_file_path
+        from attune.config import _validate_file_path
 
         # BEHAVIORAL: Actually call with empty string
         with pytest.raises(ValueError, match="must be a non-empty string"):
@@ -192,7 +192,7 @@ class TestValidateFilePathBehavior:
 
     def test_validate_file_path_enforces_allowed_dir(self):
         """Test that _validate_file_path enforces allowed_dir restriction."""
-        from empathy_os.config import _validate_file_path
+        from attune.config import _validate_file_path
 
         with tempfile.TemporaryDirectory() as tmpdir:
             allowed_dir = Path(tmpdir) / "allowed"

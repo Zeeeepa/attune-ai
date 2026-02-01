@@ -12,7 +12,7 @@ import platform
 
 import pytest
 
-from empathy_os.resilience.timeout import TimeoutError, timeout, with_timeout
+from attune.resilience.timeout import TimeoutError, timeout, with_timeout
 
 
 @pytest.mark.unit

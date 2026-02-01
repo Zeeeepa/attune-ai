@@ -15,8 +15,8 @@ import tempfile
 import time
 from pstats import SortKey
 
-from empathy_llm_toolkit.claude_memory import ClaudeMemoryConfig
-from empathy_llm_toolkit.security import SecureMemDocsIntegration
+from attune_llm.claude_memory import ClaudeMemoryConfig
+from attune_llm.security import SecureMemDocsIntegration
 
 
 def profile_complete_pipeline():

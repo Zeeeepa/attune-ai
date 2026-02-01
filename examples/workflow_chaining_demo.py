@@ -15,7 +15,7 @@ from pathlib import Path
 # Add project to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from empathy_os.routing import ChainExecutor
+from attune.routing import ChainExecutor
 
 
 def demo_chain_config():
@@ -127,7 +127,7 @@ def demo_configuration_tips():
     print("=" * 70)
 
     print("""
-✅ Chain Configuration Loaded: .empathy/workflow_chains.yaml
+✅ Chain Configuration Loaded: .attune/workflow_chains.yaml
 
 📝 Key Features:
 
@@ -151,7 +151,7 @@ def demo_configuration_tips():
    - rate_limits: Maximum 20 chains/hour
 
 🔧 Configuration File:
-   .empathy/workflow_chains.yaml
+   .attune/workflow_chains.yaml
 
 📊 Usage:
    # Run workflow - chains trigger automatically
@@ -160,7 +160,7 @@ def demo_configuration_tips():
    # Execute template
    empathy workflow template full-security-review
 
-   # Enable auto-approval (edit .empathy/workflow_chains.yaml)
+   # Enable auto-approval (edit .attune/workflow_chains.yaml)
    global:
      auto_approve: true  # Set to true for fully automatic
 
@@ -207,7 +207,7 @@ def demo_real_world_scenario():
    ✅ Full security review complete!
 
 6. Results saved:
-   📊 .empathy/chain_history.jsonl
+   📊 .attune/chain_history.jsonl
    📁 Individual workflow outputs
 
 💰 Cost Impact:
@@ -235,7 +235,7 @@ def main():
         print("✅ DEMO COMPLETE")
         print("=" * 70)
         print("\nNext Steps:")
-        print("1. Review: .empathy/workflow_chains.yaml")
+        print("1. Review: .attune/workflow_chains.yaml")
         print("2. Try: empathy workflow run security-audit")
         print("3. Watch: Chains trigger automatically based on results")
         print("\n")

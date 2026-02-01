@@ -1,11 +1,11 @@
 ---
-description: Telemetry CLI Test Coverage Enhancement Report: **Date**: 2026-01-15 **Target Module**: `src/empathy_os/telemetry/cli.py` (1,198 lines) **Test File**: `tests/un
+description: Telemetry CLI Test Coverage Enhancement Report: **Date**: 2026-01-15 **Target Module**: `src/attune/telemetry/cli.py` (1,198 lines) **Test File**: `tests/un
 ---
 
 # Telemetry CLI Test Coverage Enhancement Report
 
 **Date**: 2026-01-15
-**Target Module**: `src/empathy_os/telemetry/cli.py` (1,198 lines)
+**Target Module**: `src/attune/telemetry/cli.py` (1,198 lines)
 **Test File**: `tests/unit/telemetry/test_telemetry_cli.py`
 **Previous Test Count**: ~60 tests
 **New Test Count**: 100+ comprehensive tests
@@ -342,7 +342,7 @@ class TestGroup:
 pytest tests/unit/telemetry/test_telemetry_cli.py -v
 
 # Run with coverage
-pytest tests/unit/telemetry/test_telemetry_cli.py --cov=src/empathy_os/telemetry/cli --cov-report=term-missing
+pytest tests/unit/telemetry/test_telemetry_cli.py --cov=src/attune/telemetry/cli --cov-report=term-missing
 
 # Run specific test class
 pytest tests/unit/telemetry/test_telemetry_cli.py::TestValidateFilePath -v
@@ -404,7 +404,7 @@ Examples:
 ### Required Packages
 - `pytest` - Test framework
 - `pytest-cov` - Coverage reporting
-- `empathy_os` - Main package
+- `attune` - Main package
 
 ### Optional Packages (for manual testing)
 - `rich` - Formatted output (tested with fallback)
@@ -418,7 +418,7 @@ Examples:
 - name: Run telemetry CLI tests
   run: |
     pytest tests/unit/telemetry/test_telemetry_cli.py \
-      --cov=src/empathy_os/telemetry/cli \
+      --cov=src/attune/telemetry/cli \
       --cov-report=xml \
       --cov-fail-under=70
 ```
@@ -455,7 +455,7 @@ The `telemetry/cli.py` module now has **production-ready test coverage** with:
 ## Next Steps
 
 1. **Run tests**: `pytest tests/unit/telemetry/test_telemetry_cli.py -v`
-2. **Check coverage**: `pytest tests/unit/telemetry/test_telemetry_cli.py --cov=src/empathy_os/telemetry/cli --cov-report=html`
+2. **Check coverage**: `pytest tests/unit/telemetry/test_telemetry_cli.py --cov=src/attune/telemetry/cli --cov-report=html`
 3. **Review coverage report**: `open htmlcov/index.html`
 4. **Address any gaps**: Add tests for uncovered lines if needed
 5. **Commit changes**: Add comprehensive test suite to repository
@@ -463,6 +463,6 @@ The `telemetry/cli.py` module now has **production-ready test coverage** with:
 ---
 
 **Report Generated**: 2026-01-15
-**Module**: `src/empathy_os/telemetry/cli.py`
+**Module**: `src/attune/telemetry/cli.py`
 **Test File**: `tests/unit/telemetry/test_telemetry_cli.py`
 **Status**: ✅ COMPLETE - Ready for production

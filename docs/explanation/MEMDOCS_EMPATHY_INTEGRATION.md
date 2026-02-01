@@ -356,14 +356,14 @@ Shall I proceed with GOVERNANCE.md?"
 
 ```bash
 # Install Empathy Framework with MemDocs integration
-pip install empathy-framework[memdocs]
+pip install attune-ai[memdocs]
 
 # Or install separately
-pip install empathy-framework
+pip install attune-ai
 pip install memdocs
 
 # Development setup
-pip install empathy-framework[dev]  # Includes testing, linting, docs
+pip install attune-ai[dev]  # Includes testing, linting, docs
 ```
 
 ### Configuration
@@ -400,11 +400,11 @@ collections:
 ### Integration Code
 
 ```python
-from empathy_os import EmpathyOS
+from attune import EmpathyOS
 from memdocs import MemDocsClient
 
 # Initialize MemDocs for long-term context
-memdocs = MemDocsClient(project="empathy-framework")
+memdocs = MemDocsClient(project="attune-ai")
 
 # Initialize Empathy OS with Level 4 configuration
 empathy = EmpathyOS(
@@ -458,11 +458,11 @@ npm install -g @anthropic-ai/claude-code
 # Install from VS Code marketplace: "Claude Code"
 
 # Empathy Framework + MemDocs
-pip install empathy-framework[memdocs,dev]
+pip install attune-ai[memdocs,dev]
 
 # Verify installations
 claude-code --version
-python -c "import empathy_os, memdocs; print('Stack ready!')"
+python -c "import attune, memdocs; print('Stack ready!')"
 ```
 
 ### 2. Initialize Project Context
@@ -483,7 +483,7 @@ memdocs search "testing patterns"
 
 ```python
 # config.py
-from empathy_os import EmpathyOS, EmpathyLevel
+from attune import EmpathyOS, EmpathyLevel
 
 # Development assistant: Level 4 (Anticipatory)
 dev_assistant = EmpathyOS(

@@ -138,7 +138,7 @@ From Anthropic's documentation:
 
 ## Part 3: Current Implementation Analysis
 
-### File: `src/empathy_os/workflows/manage_documentation.py`
+### File: `src/attune/workflows/manage_documentation.py`
 
 **Current Agent Prompt Structure:**
 
@@ -498,7 +498,7 @@ Follow the format shown in the examples above.
 **Goal:** Extract common patterns into reusable templates
 
 ```python
-# src/empathy_os/workflows/crew_templates.py
+# src/attune/workflows/crew_templates.py
 
 class XMLEnhancedAgent(Agent):
     """Agent with XML-enhanced prompting built-in."""

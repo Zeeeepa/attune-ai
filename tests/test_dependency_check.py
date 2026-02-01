@@ -1,4 +1,4 @@
-"""Tests for src/empathy_os/workflows/dependency_check.py
+"""Tests for src/attune/workflows/dependency_check.py
 
 Tests the DependencyCheckWorkflow and its supporting constants:
 - DEPENDENCY_CHECK_STEPS configuration
@@ -12,8 +12,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from empathy_os.workflows.base import ModelTier
-from empathy_os.workflows.dependency_check import (
+from attune.workflows.base import ModelTier
+from attune.workflows.dependency_check import (
     DEPENDENCY_CHECK_STEPS,
     KNOWN_VULNERABILITIES,
     DependencyCheckWorkflow,
@@ -156,7 +156,7 @@ class TestDependencyCheckWorkflowInit:
         """Test initialization with provider."""
         workflow = DependencyCheckWorkflow(provider="openai")
         # Provider is stored as ModelProvider enum
-        from empathy_os.workflows.base import ModelProvider
+        from attune.workflows.base import ModelProvider
 
         assert workflow.provider == ModelProvider.OPENAI
         # String form is in _provider_str
@@ -164,7 +164,7 @@ class TestDependencyCheckWorkflowInit:
 
     def test_init_inherits_base(self):
         """Test workflow inherits from BaseWorkflow."""
-        from empathy_os.workflows.base import BaseWorkflow
+        from attune.workflows.base import BaseWorkflow
 
         workflow = DependencyCheckWorkflow()
         assert isinstance(workflow, BaseWorkflow)

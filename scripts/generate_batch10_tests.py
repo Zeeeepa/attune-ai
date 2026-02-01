@@ -45,7 +45,7 @@ def generate_test_class_name(module_path: str) -> str:
     """Generate test class name from module path.
 
     Args:
-        module_path: e.g., "src/empathy_os/config.py"
+        module_path: e.g., "src/attune/config.py"
 
     Returns:
         e.g., "TestConfigBehavior"
@@ -67,13 +67,13 @@ def generate_import_statement(module_path: str) -> str:
     """Generate import statement for module under test.
 
     Args:
-        module_path: e.g., "src/empathy_os/config.py"
+        module_path: e.g., "src/attune/config.py"
 
     Returns:
         Import statement
     """
     # Convert path to module notation
-    # src/empathy_os/config.py -> empathy_os.config
+    # src/attune/config.py -> attune.config
     path_obj = Path(module_path)
 
     # Remove src/ prefix if present
@@ -282,7 +282,7 @@ class {class_name}:
     # Mock/Integration Tests
     # ==========================================
 
-    @patch("empathy_os.{module_name}.logger")
+    @patch("attune.{module_name}.logger")
     def test_logs_info_on_success(self, mock_logger):
         """GIVEN successful operation
         WHEN operation completes
@@ -297,7 +297,7 @@ class {class_name}:
         # Then: Info logged
         mock_logger.info.assert_called()
 
-    @patch("empathy_os.{module_name}.logger")
+    @patch("attune.{module_name}.logger")
     def test_logs_error_on_failure(self, mock_logger):
         """GIVEN operation that fails
         WHEN error occurs

@@ -19,8 +19,8 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from empathy_os.test_generator.cli import cmd_analyze, cmd_generate, main
-from empathy_os.test_generator.risk_analyzer import RiskAnalysis
+from attune.test_generator.cli import cmd_analyze, cmd_generate, main
+from attune.test_generator.risk_analyzer import RiskAnalysis
 
 
 @pytest.mark.unit
@@ -56,7 +56,7 @@ class TestCommandParsing:
         ]
 
         with patch("sys.argv", test_args):
-            with patch("empathy_os.test_generator.cli.cmd_generate") as mock_cmd:
+            with patch("attune.test_generator.cli.cmd_generate") as mock_cmd:
                 main()
 
                 # Verify command was called
@@ -81,7 +81,7 @@ class TestCommandParsing:
         ]
 
         with patch("sys.argv", test_args):
-            with patch("empathy_os.test_generator.cli.cmd_generate") as mock_cmd:
+            with patch("attune.test_generator.cli.cmd_generate") as mock_cmd:
                 main()
 
                 args = mock_cmd.call_args[0][0]
@@ -115,7 +115,7 @@ class TestCommandParsing:
         ]
 
         with patch("sys.argv", test_args):
-            with patch("empathy_os.test_generator.cli.cmd_analyze") as mock_cmd:
+            with patch("attune.test_generator.cli.cmd_analyze") as mock_cmd:
                 main()
 
                 mock_cmd.assert_called_once()
@@ -136,7 +136,7 @@ class TestCommandParsing:
         ]
 
         with patch("sys.argv", test_args):
-            with patch("empathy_os.test_generator.cli.cmd_analyze") as mock_cmd:
+            with patch("attune.test_generator.cli.cmd_analyze") as mock_cmd:
                 main()
 
                 args = mock_cmd.call_args[0][0]
@@ -181,7 +181,7 @@ class TestGenerateCommand:
             "fixtures": "# Fixtures\n@pytest.fixture\ndef example(): return {}",
         }
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -215,7 +215,7 @@ class TestGenerateCommand:
             "fixtures": "# Fixtures",
         }
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -245,7 +245,7 @@ class TestGenerateCommand:
             "fixtures": "# Fixtures",
         }
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -273,7 +273,7 @@ class TestGenerateCommand:
             "fixtures": "# Fixtures",
         }
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -297,7 +297,7 @@ class TestGenerateCommand:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -325,7 +325,7 @@ class TestGenerateCommand:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -352,7 +352,7 @@ class TestGenerateCommand:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -374,7 +374,7 @@ class TestGenerateCommand:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -414,7 +414,7 @@ class TestAnalyzeCommand:
             },
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -455,7 +455,7 @@ class TestAnalyzeCommand:
             },
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -488,7 +488,7 @@ class TestAnalyzeCommand:
             validation_points=[f"validation_{i}" for i in range(15)],
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -529,7 +529,7 @@ class TestAnalyzeCommand:
         mock_analysis.test_priorities = {}
         mock_analysis.to_dict.return_value = mock_analysis_dict
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -568,7 +568,7 @@ class TestAnalyzeCommand:
             pattern_ids=["pattern1", "pattern2", "pattern3"],
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -602,7 +602,7 @@ class TestFileOperations:
             "fixtures": "# Fixtures: café naïve résumé",
         }
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -641,7 +641,7 @@ class TestFileOperations:
             "fixtures": "# Fixtures",
         }
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -664,7 +664,7 @@ class TestFileOperations:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -689,7 +689,7 @@ class TestErrorHandling:
             output=str(tmp_path),
         )
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.side_effect = ValueError("Template not found")
             mock_gen_class.return_value = mock_generator
@@ -705,7 +705,7 @@ class TestErrorHandling:
             json=False,
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.side_effect = KeyError("Pattern not found")
             mock_analyzer_class.return_value = mock_analyzer
@@ -728,7 +728,7 @@ class TestErrorHandling:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -756,7 +756,7 @@ class TestErrorHandling:
 
         mock_analysis = RiskAnalysis(workflow_id="test_wizard", pattern_ids=["linear_flow"])
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -785,7 +785,7 @@ class TestEdgeCases:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -808,7 +808,7 @@ class TestEdgeCases:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -833,7 +833,7 @@ class TestEdgeCases:
             test_priorities={},  # Empty priorities
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -861,7 +861,7 @@ class TestEdgeCases:
             test_priorities={},
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -887,7 +887,7 @@ class TestEdgeCases:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -915,7 +915,7 @@ class TestIntegrationWithDependencies:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -944,7 +944,7 @@ class TestIntegrationWithDependencies:
 
         mock_analysis = RiskAnalysis(workflow_id="my_wizard", pattern_ids=["pattern1", "pattern2"])
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -974,7 +974,7 @@ class TestLogging:
 
         mock_tests = {"unit": "# Tests", "integration": "", "fixtures": "# Fixtures"}
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -998,7 +998,7 @@ class TestLogging:
 
         mock_analysis = RiskAnalysis(workflow_id="test_wizard", pattern_ids=["linear_flow"])
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer
@@ -1032,7 +1032,7 @@ class TestOutputFormatting:
             "fixtures": "# Fixtures",
         }
 
-        with patch("empathy_os.test_generator.cli.TestGenerator") as mock_gen_class:
+        with patch("attune.test_generator.cli.TestGenerator") as mock_gen_class:
             mock_generator = MagicMock()
             mock_generator.generate_tests.return_value = mock_tests
             mock_gen_class.return_value = mock_generator
@@ -1066,7 +1066,7 @@ class TestOutputFormatting:
             },
         )
 
-        with patch("empathy_os.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
+        with patch("attune.test_generator.cli.RiskAnalyzer") as mock_analyzer_class:
             mock_analyzer = MagicMock()
             mock_analyzer.analyze.return_value = mock_analysis
             mock_analyzer_class.return_value = mock_analyzer

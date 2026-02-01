@@ -12,8 +12,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.models import ModelTier
-from empathy_os.workflows.step_config import (
+from attune.models import ModelTier
+from attune.workflows.step_config import (
     WorkflowStepConfig,
     steps_from_tier_map,
     validate_step_config,
@@ -48,7 +48,7 @@ class TestWorkflowStepConfigCreation:
 class TestEffectiveTier:
     """Test suite for effective_tier property."""
 
-    @patch("empathy_os.workflows.step_config.get_tier_for_task")
+    @patch("attune.workflows.step_config.get_tier_for_task")
     def test_effective_tier_uses_tier_hint_when_specified(
         self, mock_get_tier_for_task
     ):
@@ -63,7 +63,7 @@ class TestEffectiveTier:
         # Should not call get_tier_for_task when tier_hint is set
         mock_get_tier_for_task.assert_not_called()
 
-    @patch("empathy_os.workflows.step_config.get_tier_for_task")
+    @patch("attune.workflows.step_config.get_tier_for_task")
     def test_effective_tier_derives_from_task_type_when_no_hint(
         self, mock_get_tier_for_task
     ):
@@ -80,7 +80,7 @@ class TestEffectiveTier:
         assert step.effective_tier == "capable"
         mock_get_tier_for_task.assert_called_once_with("fix_bug")
 
-    @patch("empathy_os.workflows.step_config.get_tier_for_task")
+    @patch("attune.workflows.step_config.get_tier_for_task")
     def test_effective_tier_enum_returns_model_tier(self, mock_get_tier_for_task):
         """Test that effective_tier_enum returns ModelTier enum."""
         mock_tier = MagicMock()
@@ -207,7 +207,7 @@ class TestToDict:
         assert result["description"] == "Test step"
         assert result["metadata"] == {"key": "value"}
 
-    @patch("empathy_os.workflows.step_config.get_tier_for_task")
+    @patch("attune.workflows.step_config.get_tier_for_task")
     def test_to_dict_includes_effective_tier(self, mock_get_tier_for_task):
         """Test that to_dict includes effective_tier."""
         mock_tier = MagicMock()

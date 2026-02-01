@@ -9,8 +9,8 @@ Licensed under Fair Source 0.9
 
 import time
 
-from empathy_os.meta_workflows.models import FormQuestion, FormSchema, QuestionType
-from empathy_os.meta_workflows.session_context import (
+from attune.meta_workflows.models import FormQuestion, FormSchema, QuestionType
+from attune.meta_workflows.session_context import (
     SessionContext,
     create_session_context,
     get_session_defaults,
@@ -22,7 +22,7 @@ class TestSessionContextInitialization:
 
     def test_init_with_memory(self):
         """Test initialization with memory instance."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -59,7 +59,7 @@ class TestRecordChoice:
 
     def test_record_choice_with_memory(self):
         """Test recording choice when memory is available."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -89,7 +89,7 @@ class TestRecordChoice:
 
     def test_record_multiple_choices(self):
         """Test recording multiple choices."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -112,7 +112,7 @@ class TestRecordChoice:
 
     def test_record_choice_with_custom_ttl(self):
         """Test recording choice with custom TTL."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -132,7 +132,7 @@ class TestGetRecentChoice:
 
     def test_get_recent_choice_recorded(self):
         """Test getting a recently recorded choice."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -157,7 +157,7 @@ class TestGetRecentChoice:
 
     def test_get_recent_choice_not_found(self):
         """Test getting a choice that doesn't exist."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -194,7 +194,7 @@ class TestSuggestDefaults:
 
     def test_suggest_defaults_with_schema(self):
         """Test suggesting defaults with form schema validation."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -235,7 +235,7 @@ class TestRecordExecution:
 
     def test_record_execution_success(self):
         """Test recording successful execution."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -252,7 +252,7 @@ class TestRecordExecution:
 
     def test_record_execution_failure(self):
         """Test recording failed execution."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -287,7 +287,7 @@ class TestGetSessionStats:
 
     def test_get_session_stats_with_memory(self):
         """Test getting stats when memory is available."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -315,7 +315,7 @@ class TestClearSession:
 
     def test_clear_session_with_memory(self):
         """Test clearing session when memory is available."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -404,7 +404,7 @@ class TestConvenienceFunctions:
 
     def test_create_session_context_with_memory(self):
         """Test create_session_context with memory."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = create_session_context(memory=memory)
@@ -423,7 +423,7 @@ class TestIntegrationScenarios:
 
     def test_workflow_with_session_context(self):
         """Test complete workflow with session context."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -456,7 +456,7 @@ class TestIntegrationScenarios:
 
     def test_multiple_templates_same_session(self):
         """Test using same session for multiple templates."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory)
@@ -471,7 +471,7 @@ class TestIntegrationScenarios:
 
     def test_session_ttl_behavior(self):
         """Test TTL expiration behavior."""
-        from empathy_os.memory.unified import UnifiedMemory
+        from attune.memory.unified import UnifiedMemory
 
         memory = UnifiedMemory(user_id="test_user")
         session = SessionContext(memory=memory, default_ttl=1)  # 1 second TTL

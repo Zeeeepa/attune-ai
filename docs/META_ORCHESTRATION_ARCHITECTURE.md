@@ -145,7 +145,7 @@ User runs: empathy orchestrate "prepare for release"
 
 **Purpose**: Reusable agent archetypes that can be customized for specific tasks
 
-**Location**: `src/empathy_os/orchestration/agent_templates.py`
+**Location**: `src/attune/orchestration/agent_templates.py`
 
 ```python
 @dataclass
@@ -178,7 +178,7 @@ TEMPLATES = {
 
 **Purpose**: Analyzes tasks and dynamically composes agent teams
 
-**Location**: `src/empathy_os/orchestration/meta_orchestrator.py`
+**Location**: `src/attune/orchestration/meta_orchestrator.py`
 
 ```python
 class MetaOrchestrator:
@@ -217,7 +217,7 @@ class MetaOrchestrator:
 
 **Purpose**: Spawns and customizes agents from templates
 
-**Location**: `src/empathy_os/orchestration/agent_factory.py`
+**Location**: `src/attune/orchestration/agent_factory.py`
 
 ```python
 class AgentFactory:
@@ -249,7 +249,7 @@ class AgentFactory:
 
 **Purpose**: Define composition patterns for agent coordination
 
-**Location**: `src/empathy_os/orchestration/strategies/`
+**Location**: `src/attune/orchestration/strategies/`
 
 ```python
 # Sequential Strategy (A → B → C)
@@ -283,7 +283,7 @@ class ParallelStrategy(ExecutionStrategy):
 
 **Purpose**: Persist and retrieve successful agent compositions
 
-**Location**: `src/empathy_os/orchestration/config_store.py`
+**Location**: `src/attune/orchestration/config_store.py`
 
 ```python
 @dataclass
@@ -319,7 +319,7 @@ class AgentConfigurationStore:
 
 **Purpose**: Enable learning from execution outcomes
 
-**Location**: Integration with existing `src/empathy_os/pattern_library.py`
+**Location**: Integration with existing `src/attune/pattern_library.py`
 
 ```python
 # When orchestration completes:
@@ -547,7 +547,7 @@ classifier(CHEAP) → route(simple|moderate|complex) → specialist(appropriate_
 ## 📦 File Structure
 
 ```
-src/empathy_os/orchestration/
+src/attune/orchestration/
 ├── __init__.py
 ├── meta_orchestrator.py         # Main orchestrator
 ├── agent_templates.py            # Template definitions

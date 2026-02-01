@@ -26,10 +26,10 @@ memory:
 review:
   include_patterns:
     - "src/**/*.py"
-    - "empathy_software_plugin/**/*.py"
-    - "empathy_llm_toolkit/**/*.py"
+    - "attune_software/**/*.py"
+    - "attune_llm/**/*.py"
     - "coach_wizards/**/*.py"
-    - "empathy_healthcare_plugin/**/*.py"
+    - "attune_healthcare/**/*.py"
     - "tests/**/*.py"
 
   exclude_patterns:

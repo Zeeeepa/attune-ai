@@ -12,7 +12,7 @@ class TestFormField:
 
     def test_create_text_field(self):
         """Test creating a text field."""
-        from empathy_os.socratic.forms import FieldType, FieldValidation, FormField
+        from attune.socratic.forms import FieldType, FieldValidation, FormField
 
         field = FormField(
             id="name",
@@ -27,7 +27,7 @@ class TestFormField:
 
     def test_create_select_field_with_options(self):
         """Test creating a select field with options."""
-        from empathy_os.socratic.forms import FieldOption, FieldType, FormField
+        from attune.socratic.forms import FieldOption, FieldType, FormField
 
         field = FormField(
             id="language",
@@ -44,7 +44,7 @@ class TestFormField:
 
     def test_field_with_validation(self):
         """Test field with validation rules."""
-        from empathy_os.socratic.forms import FieldType, FieldValidation, FormField
+        from attune.socratic.forms import FieldType, FieldValidation, FormField
 
         field = FormField(
             id="email",
@@ -62,7 +62,7 @@ class TestFormField:
 
     def test_field_with_show_when(self):
         """Test conditional field visibility using dict format."""
-        from empathy_os.socratic.forms import FieldType, FormField
+        from attune.socratic.forms import FieldType, FormField
 
         # Note: show_when uses dict format, not ShowWhen object
         field = FormField(
@@ -100,7 +100,7 @@ class TestForm:
     @pytest.mark.skip(reason="Form.from_dict() not implemented - only to_dict() available")
     def test_form_deserialization(self, sample_form):
         """Test form deserialization from dict."""
-        from empathy_os.socratic.forms import Form
+        from attune.socratic.forms import Form
 
         data = sample_form.to_dict()
         restored = Form.from_dict(data)
@@ -114,7 +114,7 @@ class TestFormResponse:
 
     def test_create_form_response(self, sample_form):
         """Test creating a form response."""
-        from empathy_os.socratic.forms import FormResponse
+        from attune.socratic.forms import FormResponse
 
         response = FormResponse(
             form_id=sample_form.id,
@@ -134,7 +134,7 @@ class TestValidationResult:
 
     def test_valid_result(self):
         """Test valid validation result."""
-        from empathy_os.socratic.forms import ValidationResult
+        from attune.socratic.forms import ValidationResult
 
         result = ValidationResult(is_valid=True)
 
@@ -145,7 +145,7 @@ class TestValidationResult:
 
     def test_invalid_result_with_field_errors(self):
         """Test invalid validation result with field errors."""
-        from empathy_os.socratic.forms import ValidationResult
+        from attune.socratic.forms import ValidationResult
 
         result = ValidationResult(
             is_valid=False,
@@ -160,7 +160,7 @@ class TestValidationResult:
 
     def test_invalid_result_with_form_errors(self):
         """Test invalid validation result with form-level errors."""
-        from empathy_os.socratic.forms import ValidationResult
+        from attune.socratic.forms import ValidationResult
 
         result = ValidationResult(
             is_valid=False,
@@ -172,7 +172,7 @@ class TestValidationResult:
 
     def test_all_errors_property(self):
         """Test the all_errors property aggregates errors."""
-        from empathy_os.socratic.forms import ValidationResult
+        from attune.socratic.forms import ValidationResult
 
         result = ValidationResult(
             is_valid=False,
@@ -189,7 +189,7 @@ class TestFieldType:
 
     def test_all_field_types(self):
         """Test all field types exist."""
-        from empathy_os.socratic.forms import FieldType
+        from attune.socratic.forms import FieldType
 
         assert FieldType.TEXT.value == "text"
         assert FieldType.TEXT_AREA.value == "text_area"

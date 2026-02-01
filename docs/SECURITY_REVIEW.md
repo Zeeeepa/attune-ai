@@ -23,7 +23,7 @@ The Bandit static analysis tool flagged 2 security issues, but upon manual revie
 **Status:** ✅ FALSE POSITIVE
 **Severity:** Medium
 **Confidence:** Medium
-**Location:** `src/empathy_os/monitoring/alerts.py:88`
+**Location:** `src/attune/monitoring/alerts.py:88`
 
 ### Bandit Report
 ```
@@ -76,7 +76,7 @@ blocked_hosts = {
 **Status:** ✅ FALSE POSITIVE (with proper validation)
 **Severity:** Medium
 **Confidence:** High
-**Location:** `src/empathy_os/monitoring/alerts.py:777`
+**Location:** `src/attune/monitoring/alerts.py:777`
 
 ### Bandit Report
 ```
@@ -177,7 +177,7 @@ The `alerts.py` module demonstrates strong security practices:
 
 ## Related Files
 
-- Security implementation: `src/empathy_os/monitoring/alerts.py`
+- Security implementation: `src/attune/monitoring/alerts.py`
 - Security standards: `.claude/rules/empathy/coding-standards-index.md`
 - Security policy: `SECURITY.md`
 

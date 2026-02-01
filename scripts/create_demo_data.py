@@ -7,7 +7,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.workflows.progressive.core import (
+from attune.workflows.progressive.core import (
     FailureAnalysis,
     ProgressiveWorkflowResult,
     Tier,

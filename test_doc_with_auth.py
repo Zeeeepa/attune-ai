@@ -10,14 +10,14 @@ Demonstrates:
 import asyncio
 from pathlib import Path
 
-from empathy_os.models import (
+from attune.models import (
     AuthMode,
     AuthStrategy,
     SubscriptionTier,
     count_lines_of_code,
     get_module_size_category,
 )
-from empathy_os.workflows.document_gen import DocumentGenerationWorkflow
+from attune.workflows.document_gen import DocumentGenerationWorkflow
 
 
 async def test_doc_with_auth():
@@ -26,7 +26,7 @@ async def test_doc_with_auth():
     print("=" * 60)
 
     # Test on a small module
-    test_module = Path("src/empathy_os/cache_stats.py")
+    test_module = Path("src/attune/cache_stats.py")
 
     if not test_module.exists():
         print(f"❌ Test module not found: {test_module}")
@@ -56,7 +56,7 @@ async def test_doc_with_auth():
 
     # Save strategy so workflow can load it
     max_strategy.save()
-    print("   ✓ Saved auth strategy to ~/.empathy/auth_strategy.json\n")
+    print("   ✓ Saved auth strategy to ~/.attune/auth_strategy.json\n")
 
     recommended_mode = max_strategy.get_recommended_mode(module_lines)
     print(f"   Subscription tier: {max_strategy.subscription_tier.value}")

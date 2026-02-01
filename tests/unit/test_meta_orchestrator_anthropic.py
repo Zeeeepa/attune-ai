@@ -7,8 +7,8 @@ Created: 2026-01-29
 """
 import pytest
 
-from empathy_os.orchestration.agent_templates import AgentTemplate
-from empathy_os.orchestration.meta_orchestrator import (
+from attune.orchestration.agent_templates import AgentTemplate
+from attune.orchestration.meta_orchestrator import (
     CompositionPattern,
     MetaOrchestrator,
     TaskComplexity,

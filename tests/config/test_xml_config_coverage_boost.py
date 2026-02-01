@@ -18,13 +18,13 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.config import (
+from attune.config import (
     EmpathyXMLConfig,
     MetricsConfig,
     OptimizationConfig,
     XMLConfig,
 )
-from empathy_os.config.xml_config import _validate_file_path
+from attune.config.xml_config import _validate_file_path
 
 
 @pytest.mark.unit

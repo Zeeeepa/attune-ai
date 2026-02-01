@@ -4,7 +4,7 @@ Validates that AST-based detection correctly distinguishes actual eval/exec
 calls from mentions in comments, docstrings, and documentation.
 
 Created: 2026-01-26
-Related: docs/SECURITY_PHASE2_COMPLETE.md, src/empathy_os/workflows/security_audit_phase3.py
+Related: docs/SECURITY_PHASE2_COMPLETE.md, src/attune/workflows/security_audit_phase3.py
 """
 
 import ast
@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.workflows.security_audit_phase3 import (
+from attune.workflows.security_audit_phase3 import (
     EvalExecDetector,
     analyze_file_for_eval_exec,
     enhanced_command_injection_detection,
@@ -185,22 +185,22 @@ class TestScannerImplementationFileDetection:
 
     def test_recognizes_bug_predict_as_scanner_file(self):
         """Test that bug_predict files are recognized as scanner files."""
-        assert is_scanner_implementation_file("src/empathy_os/workflows/bug_predict.py")
+        assert is_scanner_implementation_file("src/attune/workflows/bug_predict.py")
         assert is_scanner_implementation_file("tests/test_bug_predict_helpers.py")
 
     def test_recognizes_security_audit_as_scanner_file(self):
         """Test that security_audit files are recognized as scanner files."""
-        assert is_scanner_implementation_file("src/empathy_os/workflows/security_audit.py")
+        assert is_scanner_implementation_file("src/attune/workflows/security_audit.py")
         assert is_scanner_implementation_file("tests/test_security_scan.py")
 
     def test_recognizes_owasp_patterns_as_scanner_file(self):
         """Test that OWASP pattern files are recognized as scanner files."""
-        assert is_scanner_implementation_file("src/empathy_os/security/owasp_patterns.py")
+        assert is_scanner_implementation_file("src/attune/security/owasp_patterns.py")
 
     def test_does_not_recognize_regular_source_files(self):
         """Test that regular source files are not scanner files."""
-        assert not is_scanner_implementation_file("src/empathy_os/models/registry.py")
-        assert not is_scanner_implementation_file("src/empathy_os/workflows/base.py")
+        assert not is_scanner_implementation_file("src/attune/models/registry.py")
+        assert not is_scanner_implementation_file("src/attune/workflows/base.py")
 
     def test_does_not_recognize_regular_test_files(self):
         """Test that regular test files are not scanner files."""
@@ -250,7 +250,7 @@ class TestEnhancedCommandInjectionDetection:
         findings = [
             {
                 "type": "command_injection",
-                "file": "src/empathy_os/workflows/bug_predict.py",
+                "file": "src/attune/workflows/bug_predict.py",
                 "line": 233,
                 "match": "eval(",
                 "severity": "critical",
@@ -259,7 +259,7 @@ class TestEnhancedCommandInjectionDetection:
         ]
 
         result = enhanced_command_injection_detection(
-            "src/empathy_os/workflows/bug_predict.py",
+            "src/attune/workflows/bug_predict.py",
             findings
         )
 
@@ -332,7 +332,7 @@ class TestPhase3Integration:
 
     def test_execution_strategies_no_findings(self):
         """Test that execution_strategies.py has no findings (only security docs)."""
-        file_path = "src/empathy_os/orchestration/execution_strategies.py"
+        file_path = "src/attune/orchestration/execution_strategies.py"
 
         if not Path(file_path).exists():
             pytest.skip(f"{file_path} not found")
@@ -342,7 +342,7 @@ class TestPhase3Integration:
 
     def test_bug_predict_filtered_as_scanner_file(self):
         """Test that bug_predict.py is filtered as scanner implementation."""
-        file_path = "src/empathy_os/workflows/bug_predict.py"
+        file_path = "src/attune/workflows/bug_predict.py"
 
         assert is_scanner_implementation_file(file_path), "bug_predict.py should be recognized as scanner file"
 
@@ -363,7 +363,7 @@ class TestPhase3Integration:
         """Test that Phase 3 reduces false positives by >90%."""
         # This would require running full audit, which is tested in the main workflow
         # Just verify the functions exist and are callable
-        from empathy_os.workflows.security_audit_phase3 import apply_phase3_filtering
+        from attune.workflows.security_audit_phase3 import apply_phase3_filtering
 
         assert callable(apply_phase3_filtering)
 

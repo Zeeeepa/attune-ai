@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.cache.hash_only import HashOnlyCache
+from attune.cache.hash_only import HashOnlyCache
 
 
 @pytest.mark.unit
@@ -342,7 +342,7 @@ class TestHashOnlyCachePutOperations:
         assert cache_key in cache._access_times
         assert cache._access_times[cache_key] > 0
 
-    @patch("empathy_os.cache.hash_only.HashOnlyCache._maybe_evict_lru")
+    @patch("attune.cache.hash_only.HashOnlyCache._maybe_evict_lru")
     def test_put_triggers_lru_eviction_check(self, mock_evict):
         """Test that put triggers LRU eviction check."""
         cache = HashOnlyCache()

@@ -283,7 +283,7 @@ We're exploring additional Redis capabilities:
 
 ```bash
 # Install
-pip install empathy-framework
+pip install attune-ai
 
 # Start memory server (auto-starts Redis)
 empathy-memory serve

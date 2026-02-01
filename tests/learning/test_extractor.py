@@ -2,12 +2,12 @@
 
 from datetime import datetime
 
-from empathy_llm_toolkit.learning.extractor import (
+from attune_llm.learning.extractor import (
     ExtractedPattern,
     PatternCategory,
     PatternExtractor,
 )
-from empathy_llm_toolkit.state import CollaborationState
+from attune_llm.state import CollaborationState
 
 
 class TestExtractedPattern:

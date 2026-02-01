@@ -1,6 +1,6 @@
-"""Tests for empathy_os.pattern_cache"""
+"""Tests for attune.pattern_cache"""
 
-from empathy_os.pattern_cache import PatternMatchCache, cached_pattern_query
+from attune.pattern_cache import PatternMatchCache, cached_pattern_query
 
 
 class TestPatternMatchCache:

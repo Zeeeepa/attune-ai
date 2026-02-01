@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.workflows.progressive.core import EscalationConfig, Tier
-from empathy_os.workflows.progressive.test_gen import (
+from attune.workflows.progressive.core import EscalationConfig, Tier
+from attune.workflows.progressive.test_gen import (
     ProgressiveTestGenWorkflow,
     calculate_coverage,
     execute_test_file,

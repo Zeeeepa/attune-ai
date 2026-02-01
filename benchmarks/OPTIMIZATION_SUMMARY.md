@@ -21,7 +21,7 @@ Successfully implemented and benchmarked three optimization strategies for the P
 
 ### 1. Skip AST Analysis for Test Files
 
-**Implementation:** [scanner.py:429-488](../src/empathy_os/project_index/scanner.py#L429-L488)
+**Implementation:** [scanner.py:429-488](../src/attune/project_index/scanner.py#L429-L488)
 
 **Changes:**
 - Added `category` parameter to `_analyze_code_metrics()`
@@ -59,7 +59,7 @@ def _analyze_code_metrics(
 
 ### 2. Optional Dependency Analysis
 
-**Implementation:** [scanner.py:122-155](../src/empathy_os/project_index/scanner.py#L122-L155)
+**Implementation:** [scanner.py:122-155](../src/attune/project_index/scanner.py#L122-L155)
 
 **Changes:**
 - Added `analyze_dependencies` parameter to `scan()` method (default: True)
@@ -84,7 +84,7 @@ def scan(self, analyze_dependencies: bool = True) -> tuple[list[FileRecord], Pro
 
 ### 3. Parallel Processing
 
-**Implementation:** [scanner_parallel.py](../src/empathy_os/project_index/scanner_parallel.py)
+**Implementation:** [scanner_parallel.py](../src/attune/project_index/scanner_parallel.py)
 
 **Architecture:**
 - Uses `multiprocessing.Pool` to distribute file analysis
@@ -202,7 +202,7 @@ Parallel processing achieved 3.65x speedup because:
 
 **Example:**
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 scanner = ParallelProjectScanner(project_root=".")
 records, summary = scanner.scan(analyze_dependencies=False)
@@ -222,7 +222,7 @@ print(f"Scanned {summary.total_files} files in <1 second")
 
 **Example:**
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 scanner = ParallelProjectScanner(project_root=".", workers=4)  # Fixed for CI
 records, summary = scanner.scan(analyze_dependencies=True)
@@ -271,7 +271,7 @@ for record in records:
 #### 1. Quick Scan (No Dependencies)
 
 ```python
-from empathy_os.project_index import ProjectScanner
+from attune.project_index import ProjectScanner
 
 scanner = ProjectScanner(project_root=".")
 records, summary = scanner.scan(analyze_dependencies=False)
@@ -288,7 +288,7 @@ records, summary = scanner.scan(analyze_dependencies=False)
 #### 2. Parallel Scan (Fast)
 
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 scanner = ParallelProjectScanner(project_root=".", workers=4)
 records, summary = scanner.scan()
@@ -304,7 +304,7 @@ records, summary = scanner.scan()
 #### 3. Full Analysis (Comprehensive)
 
 ```python
-from empathy_os.project_index import ParallelProjectScanner
+from attune.project_index import ParallelProjectScanner
 
 scanner = ParallelProjectScanner(project_root=".")
 records, summary = scanner.scan(analyze_dependencies=True)
@@ -387,7 +387,7 @@ python benchmarks/benchmark_scanner_optimizations.py
 python benchmarks/profile_scanner_comprehensive.py
 
 # Parallel vs sequential comparison
-python -m empathy_os.project_index.scanner_parallel
+python -m attune.project_index.scanner_parallel
 ```
 
 ### Viewing Profile Data
@@ -406,7 +406,7 @@ snakeviz benchmarks/profiles/scanner_cpu.prof
 
 ### New Files
 
-1. **[scanner_parallel.py](../src/empathy_os/project_index/scanner_parallel.py)** (330 lines)
+1. **[scanner_parallel.py](../src/attune/project_index/scanner_parallel.py)** (330 lines)
    - Parallel implementation using multiprocessing
    - Worker function for file analysis
    - Benchmark comparison utility
@@ -433,13 +433,13 @@ snakeviz benchmarks/profiles/scanner_cpu.prof
 
 ### Modified Files
 
-1. **[scanner.py](../src/empathy_os/project_index/scanner.py)**
+1. **[scanner.py](../src/attune/project_index/scanner.py)**
    - Added `category` parameter to `_analyze_code_metrics()`
    - Skip AST analysis for test files (lines 467-488)
    - Added `analyze_dependencies` parameter to `scan()` (line 122)
    - Conditional dependency analysis (lines 143-147)
 
-2. **[__init__.py](../src/empathy_os/project_index/__init__.py)**
+2. **[__init__.py](../src/attune/project_index/__init__.py)**
    - Exported `ParallelProjectScanner`
 
 ---

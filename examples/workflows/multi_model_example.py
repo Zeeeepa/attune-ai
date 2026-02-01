@@ -16,7 +16,7 @@ import tempfile
 from datetime import datetime
 
 # Model Registry imports
-from empathy_os.models import (  # Registry; Validation; Fallback; Telemetry; Executor; Tasks
+from attune.models import (  # Registry; Validation; Fallback; Telemetry; Executor; Tasks
     CircuitBreaker, ConfigValidator, ExecutionContext, FallbackPolicy,
     FallbackStrategy, LLMCallRecord, MockLLMExecutor, ResilientExecutor,
     RetryPolicy, TelemetryAnalytics, TelemetryStore, WorkflowRunRecord,

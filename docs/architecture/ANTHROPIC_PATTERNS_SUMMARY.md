@@ -21,7 +21,7 @@ Successfully extended the Empathy Framework's agent composition patterns with th
 **Key Principle:** Use tools over multiple agents when possible
 
 ```python
-from empathy_os.orchestration import ToolEnhancedStrategy
+from attune.orchestration import ToolEnhancedStrategy
 
 strategy = ToolEnhancedStrategy(tools=[
     {
@@ -44,7 +44,7 @@ result = await strategy.execute(agents=[agent], context={"task": "..."})
 **Key Principle:** Cache large unchanging contexts across agent calls
 
 ```python
-from empathy_os.orchestration import PromptCachedSequentialStrategy
+from attune.orchestration import PromptCachedSequentialStrategy
 
 cached_context = """
 [Large documentation, codebase context, or requirements that don't change]
@@ -68,7 +68,7 @@ result = await strategy.execute(agents=[agent1, agent2, agent3], context={"task"
 **Key Principle:** Keep hierarchies shallow (≤3 levels)
 
 ```python
-from empathy_os.orchestration import DelegationChainStrategy
+from attune.orchestration import DelegationChainStrategy
 
 strategy = DelegationChainStrategy(max_depth=3)
 
@@ -89,12 +89,12 @@ result = await strategy.execute(
 
 ### Files Added/Modified
 
-1. **src/empathy_os/orchestration/execution_strategies.py** (+500 lines)
+1. **src/attune/orchestration/execution_strategies.py** (+500 lines)
    - Added 3 new strategy classes
    - Registered in `STRATEGY_REGISTRY`
    - Full docstrings following Anthropic guidelines
 
-2. **src/empathy_os/orchestration/__init__.py** (modified)
+2. **src/attune/orchestration/__init__.py** (modified)
    - Exported new strategies for easy import
    - Updated package docstring with example
 
@@ -159,7 +159,7 @@ $ python -m pytest tests/unit/test_anthropic_patterns.py -v
 ### Quick Start
 
 ```python
-from empathy_os.orchestration import (
+from attune.orchestration import (
     ToolEnhancedStrategy,
     PromptCachedSequentialStrategy,
     DelegationChainStrategy,
@@ -179,7 +179,7 @@ result = await strategy.execute(agents=[agent], context={"task": "..."})
 ### Integration with Existing Patterns
 
 ```python
-from empathy_os.orchestration import get_strategy
+from attune.orchestration import get_strategy
 
 # Use alongside original 7 patterns
 sequential = get_strategy("sequential")
@@ -253,13 +253,13 @@ No breaking changes! All existing code continues to work. The 7 original pattern
 
 ```python
 # Old approach (still works)
-from empathy_os.orchestration.execution_strategies import ToolEnhancedStrategy
+from attune.orchestration.execution_strategies import ToolEnhancedStrategy
 
 # New approach (recommended)
-from empathy_os.orchestration import ToolEnhancedStrategy
+from attune.orchestration import ToolEnhancedStrategy
 
 # Or use factory
-from empathy_os.orchestration import get_strategy
+from attune.orchestration import get_strategy
 strategy = get_strategy("tool_enhanced")
 ```
 

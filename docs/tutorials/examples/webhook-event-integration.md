@@ -31,7 +31,7 @@ This example shows how to integrate the Empathy Framework with external systems 
 ## Installation
 
 ```bash
-pip install empathy-framework[webhooks]
+pip install attune-ai[webhooks]
 ```
 
 ---
@@ -41,8 +41,8 @@ pip install empathy-framework[webhooks]
 ### Subscribe to Framework Events
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.events import EventBus, Event
+from attune import EmpathyOS
+from attune.events import EventBus, Event
 
 # Create event bus
 bus = EventBus()
@@ -98,8 +98,8 @@ response = empathy.interact(
 ### Send Events to External Services
 
 ```python
-from empathy_os.webhooks import WebhookManager
-from empathy_os.events import EventBus
+from attune.webhooks import WebhookManager
+from attune.events import EventBus
 
 bus = EventBus()
 webhooks = WebhookManager(bus)
@@ -154,8 +154,8 @@ response = empathy.interact(
 ### Notify Multiple Services
 
 ```python
-from empathy_os.webhooks import WebhookManager
-from empathy_os.events import EventBus
+from attune.webhooks import WebhookManager
+from attune.events import EventBus
 import os
 
 bus = EventBus()
@@ -230,7 +230,7 @@ response = empathy.interact(
 ### Fire Webhooks Based on Conditions
 
 ```python
-from empathy_os.webhooks import ConditionalWebhook
+from attune.webhooks import ConditionalWebhook
 
 # Only notify for HIGH confidence predictions (>85%)
 webhooks.register_conditional(
@@ -275,8 +275,8 @@ webhooks.register_conditional(
 ### Create Issues from Predictions
 
 ```python
-from empathy_os.integrations import GitHubIntegration
-from empathy_os.events import EventBus
+from attune.integrations import GitHubIntegration
+from attune.events import EventBus
 
 # Setup GitHub integration
 github = GitHubIntegration(
@@ -341,8 +341,8 @@ response = empathy.interact(
 ### Trigger Empathy from External Events
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.integrations import GitHubIntegration
+from attune import EmpathyOS
+from attune.integrations import GitHubIntegration
 
 github = GitHubIntegration(
     token=os.getenv("GITHUB_TOKEN"),
@@ -415,8 +415,8 @@ async def analyze_pr(pr_data):
 ### Slash Commands
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.integrations import SlackIntegration
+from attune import EmpathyOS
+from attune.integrations import SlackIntegration
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -489,7 +489,7 @@ def handle_slack_command():
 ### Proactive Slack Notifications
 
 ```python
-from empathy_os.integrations import SlackIntegration
+from attune.integrations import SlackIntegration
 import asyncio
 
 slack = SlackIntegration(bot_token=os.getenv("SLACK_BOT_TOKEN"))
@@ -540,7 +540,7 @@ This pattern is now available for the whole team! 🎉
 ### Auto-Create Tickets from Predictions
 
 ```python
-from empathy_os.integrations import JIRAIntegration
+from attune.integrations import JIRAIntegration
 
 jira = JIRAIntegration(
     url="https://company.atlassian.net",
@@ -780,7 +780,7 @@ EVENT_TYPES = {
 
 **Webhook Security**:
 ```python
-from empathy_os.webhooks import SecureWebhook
+from attune.webhooks import SecureWebhook
 
 # Add HMAC signature verification
 webhooks.register(

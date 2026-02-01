@@ -10,7 +10,7 @@ Test coverage:
 
 import pytest
 
-from empathy_os.orchestration.agent_templates import (
+from attune.orchestration.agent_templates import (
     AgentCapability,
     AgentTemplate,
     ResourceRequirements,

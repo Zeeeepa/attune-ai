@@ -17,7 +17,7 @@ from datetime import datetime
 
 import pytest
 
-from empathy_os.meta_workflows.models import (
+from attune.meta_workflows.models import (
     AgentCompositionRule,
     AgentExecutionResult,
     AgentSpec,

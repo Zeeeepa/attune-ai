@@ -12,7 +12,7 @@ import pytest
 import typer
 from typer.testing import CliRunner
 
-from empathy_os.meta_workflows.cli_commands.template_commands import (
+from attune.meta_workflows.cli_commands.template_commands import (
     console,
     list_templates,
     meta_workflow_app,
@@ -29,7 +29,7 @@ def cli_runner():
 def mock_registry():
     """Provide a mock TemplateRegistry."""
     with patch(
-        "empathy_os.meta_workflows.cli_commands.template_commands.TemplateRegistry"
+        "attune.meta_workflows.cli_commands.template_commands.TemplateRegistry"
     ) as mock:
         yield mock
 
@@ -38,7 +38,7 @@ def mock_registry():
 def mock_console():
     """Provide a mock Console."""
     with patch(
-        "empathy_os.meta_workflows.cli_commands.template_commands.console"
+        "attune.meta_workflows.cli_commands.template_commands.console"
     ) as mock:
         yield mock
 
@@ -53,9 +53,10 @@ def sample_template():
     template.version = "1.0.0"
     template.author = "Test Author"
     template.tags = ["test", "sample"]
+    template.estimated_duration_minutes = 10
     template.form_schema.questions = [Mock(), Mock()]
     template.agent_composition_rules = [Mock(), Mock(), Mock()]
-    template.estimated_cost_range = {"min": 0.10, "max": 0.50}
+    template.estimated_cost_range = [0.10, 0.50]  # List, not dict - accessed with [0] and [1]
     return template
 
 
@@ -144,8 +145,15 @@ class TestListTemplates:
 
         # Then
         registry_instance.is_builtin.assert_called_with("builtin-template")
-        print_calls = [str(call) for call in mock_console.print.call_args_list]
-        assert any("📦 BUILT-IN" in call for call in print_calls)
+        # Check that console.print was called with Panel containing the badge
+        call_args = mock_console.print.call_args_list
+        from rich.panel import Panel
+        panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
+        assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
+        # Access the Panel's renderable content
+        panel = panel_calls[0][0][0]
+        panel_content = str(panel.renderable)
+        assert "📦 BUILT-IN" in panel_content or "BUILT-IN" in panel_content
 
     def test_given_user_templates_when_list_called_then_shows_user_badge(
         self, mock_registry, mock_console, sample_template
@@ -165,8 +173,14 @@ class TestListTemplates:
         list_templates()
 
         # Then
-        print_calls = [str(call) for call in mock_console.print.call_args_list]
-        assert any("👤 USER" in call for call in print_calls)
+        # Check that console.print was called with Panel containing the user badge
+        call_args = mock_console.print.call_args_list
+        from rich.panel import Panel
+        panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
+        assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
+        panel = panel_calls[0][0][0]
+        panel_content = str(panel.renderable)
+        assert "👤 USER" in panel_content or "USER" in panel_content
 
     def test_given_mixed_templates_when_list_called_then_counts_correctly(
         self, mock_registry, mock_console, sample_template
@@ -212,9 +226,15 @@ class TestListTemplates:
         list_templates()
 
         # Then
-        print_calls = [str(call) for call in mock_console.print.call_args_list]
-        # Should display cost range
-        assert any("0.10" in call or "0.50" in call for call in print_calls)
+        # Cost information is displayed in a Panel
+        call_args = mock_console.print.call_args_list
+        from rich.panel import Panel
+        panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
+        assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
+        panel = panel_calls[0][0][0]
+        panel_content = str(panel.renderable)
+        # Should display cost range formatted as $0.10-$0.50
+        assert "0.10" in panel_content or "0.50" in panel_content
 
     def test_given_template_load_fails_when_list_called_then_skips_template(
         self, mock_registry, mock_console
@@ -250,9 +270,10 @@ class TestListTemplates:
         template1.version = "1.0.0"
         template1.author = "Author 1"
         template1.tags = ["test"]
+        template1.estimated_duration_minutes = 10
         template1.form_schema.questions = [Mock()]
         template1.agent_composition_rules = [Mock()]
-        template1.estimated_cost_range = {"min": 0.10, "max": 0.50}
+        template1.estimated_cost_range = [0.10, 0.50]
 
         template2 = Mock()
         template2.template_id = "template-2"
@@ -261,9 +282,10 @@ class TestListTemplates:
         template2.version = "2.0.0"
         template2.author = "Author 2"
         template2.tags = ["prod"]
+        template2.estimated_duration_minutes = 20
         template2.form_schema.questions = [Mock(), Mock()]
         template2.agent_composition_rules = [Mock(), Mock()]
-        template2.estimated_cost_range = {"min": 0.20, "max": 1.00}
+        template2.estimated_cost_range = [0.20, 1.00]
 
         registry_instance = Mock()
         registry_instance.list_templates.return_value = ["template-1", "template-2"]
@@ -319,8 +341,14 @@ class TestListTemplates:
         list_templates()
 
         # Then
-        print_calls = [str(call) for call in mock_console.print.call_args_list]
-        assert any("Questions: 0" in call for call in print_calls)
+        # Questions count is displayed in a Panel
+        call_args = mock_console.print.call_args_list
+        from rich.panel import Panel
+        panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
+        assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
+        panel = panel_calls[0][0][0]
+        panel_content = str(panel.renderable)
+        assert "Questions: 0" in panel_content
 
     def test_given_template_with_no_rules_when_list_called_then_shows_zero(
         self, mock_registry, mock_console, sample_template
@@ -341,8 +369,14 @@ class TestListTemplates:
         list_templates()
 
         # Then
-        print_calls = [str(call) for call in mock_console.print.call_args_list]
-        assert any("Agent Rules: 0" in call for call in print_calls)
+        # Agent rules count is displayed in a Panel
+        call_args = mock_console.print.call_args_list
+        from rich.panel import Panel
+        panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
+        assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
+        panel = panel_calls[0][0][0]
+        panel_content = str(panel.renderable)
+        assert "Agent Rules: 0" in panel_content
 
     def test_given_builtin_templates_when_list_called_then_shows_migration_hint(
         self, mock_registry, mock_console, sample_template
@@ -378,11 +412,13 @@ class TestListTemplates:
         mock_registry.return_value = registry_instance
 
         # When
-        list_templates()
+        # Note: When no argument is provided, typer passes the default value from the Option
+        # We need to call with the explicit default value
+        list_templates(storage_dir=".attune/meta_workflows/templates")
 
         # Then
         mock_registry.assert_called_once_with(
-            storage_dir=".empathy/meta_workflows/templates"
+            storage_dir=".attune/meta_workflows/templates"
         )
 
     def test_given_registry_error_when_list_called_then_raises_exception(
@@ -396,8 +432,10 @@ class TestListTemplates:
         mock_registry.side_effect = Exception("Registry error")
 
         # When/Then
-        with pytest.raises(Exception, match="Registry error"):
+        # The function catches exceptions and raises typer.Exit instead
+        with pytest.raises(typer.Exit) as exc_info:
             list_templates()
+        assert exc_info.value.exit_code == 1
 
     def test_given_template_with_special_characters_when_list_called_then_displays(
         self, mock_registry, mock_console, sample_template
@@ -461,8 +499,14 @@ class TestListTemplates:
         list_templates()
 
         # Then
-        print_calls = [str(call) for call in mock_console.print.call_args_list]
-        assert any("tag1, tag2, tag3, tag4" in call for call in print_calls)
+        # Tags are displayed in a Panel
+        call_args = mock_console.print.call_args_list
+        from rich.panel import Panel
+        panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
+        assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
+        panel = panel_calls[0][0][0]
+        panel_content = str(panel.renderable)
+        assert "tag1, tag2, tag3, tag4" in panel_content
 
     def test_given_no_templates_when_list_called_then_shows_storage_dir(
         self, mock_registry, mock_console
@@ -524,8 +568,8 @@ class TestConsoleObject:
 class TestIntegration:
     """Integration tests for template commands."""
 
-    @patch("empathy_os.meta_workflows.cli_commands.template_commands.TemplateRegistry")
-    @patch("empathy_os.meta_workflows.cli_commands.template_commands.console")
+    @patch("attune.meta_workflows.cli_commands.template_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.template_commands.console")
     def test_given_real_scenario_when_list_templates_then_complete_workflow(
         self, mock_console, mock_registry, sample_template
     ):
@@ -541,9 +585,10 @@ class TestIntegration:
         builtin_template.version = "1.0.0"
         builtin_template.author = "System"
         builtin_template.tags = ["builtin"]
+        builtin_template.estimated_duration_minutes = 10
         builtin_template.form_schema.questions = [Mock()]
         builtin_template.agent_composition_rules = [Mock()]
-        builtin_template.estimated_cost_range = {"min": 0.10, "max": 0.50}
+        builtin_template.estimated_cost_range = [0.10, 0.50]
 
         user_template = Mock()
         user_template.template_id = "user-1"
@@ -552,9 +597,10 @@ class TestIntegration:
         user_template.version = "1.0.0"
         user_template.author = "User"
         user_template.tags = ["custom"]
+        user_template.estimated_duration_minutes = 20
         user_template.form_schema.questions = [Mock(), Mock()]
         user_template.agent_composition_rules = [Mock(), Mock()]
-        user_template.estimated_cost_range = {"min": 0.20, "max": 1.00}
+        user_template.estimated_cost_range = [0.20, 1.00]
 
         registry_instance = Mock()
         registry_instance.list_templates.return_value = ["builtin-1", "user-1"]
@@ -571,8 +617,8 @@ class TestIntegration:
         assert registry_instance.load_template.call_count == 2
         assert mock_console.print.call_count > 0
 
-    @patch("empathy_os.meta_workflows.cli_commands.template_commands.TemplateRegistry")
-    @patch("empathy_os.meta_workflows.cli_commands.template_commands.console")
+    @patch("attune.meta_workflows.cli_commands.template_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.template_commands.console")
     def test_given_empty_registry_when_list_templates_then_helpful_message(
         self, mock_console, mock_registry
     ):

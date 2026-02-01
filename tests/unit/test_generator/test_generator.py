@@ -6,8 +6,8 @@ Licensed under Fair Source 0.9
 
 from pathlib import Path
 
-from empathy_os.test_generator.generator import TestGenerator
-from empathy_os.test_generator.risk_analyzer import RiskAnalyzer
+from attune.test_generator.generator import TestGenerator
+from attune.test_generator.risk_analyzer import RiskAnalyzer
 
 
 class TestTestGeneratorInitialization:

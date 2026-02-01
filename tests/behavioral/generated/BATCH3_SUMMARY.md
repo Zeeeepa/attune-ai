@@ -115,14 +115,14 @@ None required for these modules (all synchronous).
 ## Module Coverage
 
 ### Tested Modules:
-1. `empathy_os.memory.nodes` (Node, NodeType)
-2. `empathy_os.memory.edges` (Edge, EdgeType)
-3. `empathy_os.memory.types` (RedisConfig, RedisMetrics, AccessTier, TTLStrategy)
-4. `empathy_os.cache.base` (BaseCache, CacheEntry, CacheStats)
-5. `empathy_os.cache.storage` (CacheStorage)
-6. `empathy_os.cache.hash_only` (HashOnlyCache)
-7. `empathy_os.persistence` (PatternPersistence)
-8. `empathy_os.pattern_library` (PatternLibrary, Pattern)
+1. `attune.memory.nodes` (Node, NodeType)
+2. `attune.memory.edges` (Edge, EdgeType)
+3. `attune.memory.types` (RedisConfig, RedisMetrics, AccessTier, TTLStrategy)
+4. `attune.cache.base` (BaseCache, CacheEntry, CacheStats)
+5. `attune.cache.storage` (CacheStorage)
+6. `attune.cache.hash_only` (HashOnlyCache)
+7. `attune.persistence` (PatternPersistence)
+8. `attune.pattern_library` (PatternLibrary, Pattern)
 
 ### Not Included (Out of Scope):
 - `memory.unified` - Complex integration requiring Redis
@@ -141,7 +141,7 @@ pytest tests/behavioral/generated/test_memory_storage_batch3_behavioral.py -v
 pytest tests/behavioral/generated/test_memory_storage_batch3_behavioral.py::TestNode -v
 
 # Run with coverage
-pytest tests/behavioral/generated/test_memory_storage_batch3_behavioral.py --cov=empathy_os.memory --cov=empathy_os.cache
+pytest tests/behavioral/generated/test_memory_storage_batch3_behavioral.py --cov=attune.memory --cov=attune.cache
 
 # Run with verbose output
 pytest tests/behavioral/generated/test_memory_storage_batch3_behavioral.py -vv
@@ -188,7 +188,7 @@ To extend coverage:
 
 **Required:**
 - pytest
-- empathy_os (all modules installed)
+- attune (all modules installed)
 
 **Optional (for extended tests):**
 - redis (for Redis integration tests)

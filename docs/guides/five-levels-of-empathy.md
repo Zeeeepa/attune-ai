@@ -578,7 +578,7 @@ result = ast.literal_eval(user_input)
 
 ### Rule 2: ALWAYS Validate File Paths
 
-**Implementation:** `src/empathy_os/config.py:29-68`
+**Implementation:** `src/attune/config.py:29-68`
 
 ```python
 def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
@@ -635,12 +635,12 @@ def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
 Created `_validate_file_path()` function and applied to ALL file operations:
 
 **Secured modules:**
-1. `src/empathy_os/config.py` - Configuration exports
-2. `src/empathy_os/workflows/config.py` - Workflow saves
-3. `src/empathy_os/config/xml_config.py` - XML exports
-4. `src/empathy_os/telemetry/cli.py` - CSV/JSON exports
-5. `src/empathy_os/cli.py` - Pattern exports
-6. `src/empathy_os/memory/control_panel.py` - Memory operations
+1. `src/attune/config.py` - Configuration exports
+2. `src/attune/workflows/config.py` - Workflow saves
+3. `src/attune/config/xml_config.py` - XML exports
+4. `src/attune/telemetry/cli.py` - CSV/JSON exports
+5. `src/attune/cli.py` - Pattern exports
+6. `src/attune/memory/control_panel.py` - Memory operations
 
 **Security tests created:** 174 (up from 14)
 
@@ -683,7 +683,7 @@ _validate_file_path("/etc/cron.d/backdoor")    # System directory write
 query = f"SELECT * FROM users WHERE id = {user_id}"  # Vulnerable!
 
 # ✅ Level 5: Design system where SQL injection is impossible
-from empathy_os.db import QueryBuilder
+from attune.db import QueryBuilder
 
 # API design prevents raw SQL
 users = (QueryBuilder('users')
@@ -990,8 +990,8 @@ cursor.execute(query, (user_name,))
 ---
 
 **Questions?**
-- Report issues: [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- Discuss: [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- Report issues: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- Discuss: [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 
 ---
 

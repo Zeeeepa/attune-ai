@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 import pytest
 
-from empathy_os.meta_workflows.models import (
+from attune.meta_workflows.models import (
     AgentCompositionRule,
     FormQuestion,
     FormSchema,
@@ -20,7 +20,7 @@ from empathy_os.meta_workflows.models import (
     QuestionType,
     TierStrategy,
 )
-from empathy_os.meta_workflows.template_registry import TemplateRegistry, get_default_registry
+from attune.meta_workflows.template_registry import TemplateRegistry, get_default_registry
 
 
 def create_test_template(template_id: str = "test-template") -> MetaWorkflowTemplate:

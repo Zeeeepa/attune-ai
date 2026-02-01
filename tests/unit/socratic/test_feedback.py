@@ -16,7 +16,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from empathy_os.socratic.feedback import (
+from attune.socratic.feedback import (
     AdaptiveAgentGenerator,
     AgentPerformance,
     FeedbackCollector,

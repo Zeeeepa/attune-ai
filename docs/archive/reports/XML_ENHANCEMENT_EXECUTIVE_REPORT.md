@@ -64,7 +64,7 @@ We have successfully implemented XML-enhanced prompting across the Empathy Frame
    - Updated `format_manage_docs_report()` to display thinking/answer separately
    - Visual indicators (💭 Thinking, ✅ Answer, 🔬 XML-Structured)
 
-**File:** [src/empathy_os/workflows/manage_documentation.py](src/empathy_os/workflows/manage_documentation.py)
+**File:** [src/attune/workflows/manage_documentation.py](src/attune/workflows/manage_documentation.py)
 **Commit:** `f97ba3a`
 
 **Backward Compatibility:** ✅ Preserved via `use_xml_structure=False` flag
@@ -116,7 +116,7 @@ We have successfully implemented XML-enhanced prompting across the Empathy Frame
    Task = XMLTask
    ```
 
-**File:** [src/empathy_os/workflows/xml_enhanced_crew.py](src/empathy_os/workflows/xml_enhanced_crew.py)
+**File:** [src/attune/workflows/xml_enhanced_crew.py](src/attune/workflows/xml_enhanced_crew.py)
 **Commit:** `49e4691`
 
 **Documentation:** Complete docstrings with usage examples
@@ -137,15 +137,15 @@ We have successfully implemented XML-enhanced prompting across the Empathy Frame
 2. **`health_check.py`** - ✅ **Already using XML prompts**
    - Workflow wrapper for `HealthCheckCrew`
    - Uses `xml_prompts_enabled=True` flag
-   - Delegates to `empathy_llm_toolkit.agent_factory.crews.health_check`
+   - Delegates to `attune_llm.agent_factory.crews.health_check`
 
-3. **`empathy_llm_toolkit/agent_factory/crews/security_audit.py`** - ✅ **Already using XML prompts**
+3. **`attune_llm/agent_factory/crews/security_audit.py`** - ✅ **Already using XML prompts**
    - Has `XML_PROMPT_TEMPLATES` dict with fully structured XML prompts
    - Uses `xml_prompts_enabled=True` in config
    - Already follows Anthropic best practices
 
 4. **Other crews examined:**
-   - `code_review.py`, `refactoring.py` in `empathy_llm_toolkit/agent_factory/crews/`
+   - `code_review.py`, `refactoring.py` in `attune_llm/agent_factory/crews/`
    - All use XML prompts or don't use LLM-based agents
 
 **Conclusion:**
@@ -174,7 +174,7 @@ We have successfully implemented XML-enhanced prompting across the Empathy Frame
 ### XML Enhancement Coverage
 
 - **Direct implementations:** 1 workflow (`manage_documentation.py`)
-- **Crews using XML natively:** 4+ crews in `empathy_llm_toolkit`
+- **Crews using XML natively:** 4+ crews in `attune_llm`
 - **Reusable library available:** Yes (`xml_enhanced_crew.py`)
 
 **Coverage:** ✅ **100%** of LLM-based agents use XML prompts
@@ -255,7 +255,7 @@ Always structure your response as:
 **Description:** Migrate all remaining workflows to use `xml_enhanced_crew.py` when they're refactored or updated.
 
 **Scope:**
-- Workflows in `src/empathy_os/workflows/` that use LLM calls
+- Workflows in `src/attune/workflows/` that use LLM calls
 - Replace ad-hoc prompts with XMLAgent/XMLTask
 - Maintain backward compatibility
 
@@ -272,7 +272,7 @@ Always structure your response as:
 response = llm.call(f"Analyze this code: {code}")
 
 # New pattern (XML-enhanced)
-from empathy_os.workflows.xml_enhanced_crew import XMLAgent, XMLTask
+from attune.workflows.xml_enhanced_crew import XMLAgent, XMLTask
 
 agent = XMLAgent(
     role="Code Analyst",
@@ -599,7 +599,7 @@ class MultilingualXMLAgent(XMLAgent):
 
 ### Created
 
-1. `src/empathy_os/workflows/xml_enhanced_crew.py` (283 lines)
+1. `src/attune/workflows/xml_enhanced_crew.py` (283 lines)
    - XMLAgent class
    - XMLTask class
    - parse_xml_response() utility
@@ -617,7 +617,7 @@ class MultilingualXMLAgent(XMLAgent):
 
 ### Modified
 
-1. `src/empathy_os/workflows/manage_documentation.py`
+1. `src/attune/workflows/manage_documentation.py`
    - Enhanced Agent class with XML prompts (+60 lines)
    - Enhanced Task class with XML prompts (+45 lines)
    - Added parse_xml_response() (+20 lines)

@@ -14,8 +14,8 @@ Thank you for your interest in contributing to the Empathy Memory Panel extensio
 
 ```bash
 # Clone repository
-git clone https://github.com/your-org/empathy-framework.git
-cd empathy-framework/vscode-memory-panel
+git clone https://github.com/your-org/attune-ai.git
+cd attune-ai/vscode-memory-panel
 
 # Install dependencies
 npm install

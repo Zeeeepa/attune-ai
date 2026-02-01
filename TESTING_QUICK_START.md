@@ -11,7 +11,7 @@
 ### File Locations
 ```
 Templates:  tests/behavioral/generated/test_*_behavioral.py
-Source:     src/empathy_os/*.py
+Source:     src/attune/*.py
 Patterns:   tests/behavioral/generated/ (batches 1-4 examples)
 Docs:       BEHAVIORAL_TEST_FINAL_REPORT.md
 ```
@@ -26,7 +26,7 @@ pytest tests/behavioral/generated/test_pattern_library_behavioral.py -v
 
 # Run with coverage
 pytest tests/behavioral/generated/test_pattern_library_behavioral.py \
-  --cov=src/empathy_os/pattern_library --cov-report=term-missing -v
+  --cov=src/attune/pattern_library --cov-report=term-missing -v
 
 # Run quick (skip slow tests)
 pytest tests/behavioral/ -v -m "not slow"
@@ -100,7 +100,7 @@ def test_feature_raises_error_for_invalid_input(self):
 ### Pattern 3: Mocking External Dependencies
 
 ```python
-@patch('empathy_os.pattern_library.redis_client')
+@patch('attune.pattern_library.redis_client')
 def test_feature_with_redis_mock(self, mock_redis):
     """Test feature uses Redis correctly."""
     # Given
@@ -165,7 +165,7 @@ def test_feature_with_fixture(self, sample_config):
 ```python
 from unittest.mock import patch, MagicMock
 
-@patch('empathy_os.module_name.redis_client')
+@patch('attune.module_name.redis_client')
 def test_with_redis(self, mock_redis):
     # Setup Redis mock
     mock_redis.get.return_value = b'{"key": "value"}'
@@ -293,13 +293,13 @@ Lower priority:    50%+
 
 ```python
 # Problem
-from empathy_os.my_module import MyClass  # ModuleNotFoundError
+from attune.my_module import MyClass  # ModuleNotFoundError
 
 # Solution: Check sys.path or use relative imports
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-from empathy_os.my_module import MyClass
+from attune.my_module import MyClass
 ```
 
 ### Issue: Async Tests Not Running
@@ -340,7 +340,7 @@ def test_with_mock(mock_fn):
 # Problem: Tests try to connect to real Redis
 
 # Solution 1: Mock Redis client
-@patch('empathy_os.module.redis_client')
+@patch('attune.module.redis_client')
 def test_with_mock_redis(mock_redis):
     # Redis is mocked
     pass
@@ -412,7 +412,7 @@ Here's a full example showing before/after:
 ```python
 """Behavioral tests for pattern_library.py - AUTO-GENERATED TEMPLATE."""
 import pytest
-from empathy_os.pattern_library import PatternLibrary
+from attune.pattern_library import PatternLibrary
 
 class TestPatternLibrary:
     def test_match(self):
@@ -427,7 +427,7 @@ class TestPatternLibrary:
 """Behavioral tests for pattern_library.py."""
 import pytest
 from unittest.mock import patch, MagicMock
-from empathy_os.pattern_library import PatternLibrary, Pattern
+from attune.pattern_library import PatternLibrary, Pattern
 
 
 class TestPatternLibrary:
@@ -493,7 +493,7 @@ class TestPatternLibrary:
         with pytest.raises(ValueError, match="input cannot be None"):
             library.match(None)
 
-    @patch('empathy_os.pattern_library.redis_client')
+    @patch('attune.pattern_library.redis_client')
     def test_caches_patterns_in_redis(self, mock_redis):
         """Test pattern matching results are cached in Redis."""
         # Given
@@ -594,7 +594,7 @@ pytest tests/behavioral/generated/test_pattern_library_behavioral.py::TestPatter
 
 # Run with coverage
 pytest tests/behavioral/generated/test_pattern_library_behavioral.py \
-  --cov=src/empathy_os/pattern_library \
+  --cov=src/attune/pattern_library \
   --cov-report=html \
   --cov-report=term-missing
 

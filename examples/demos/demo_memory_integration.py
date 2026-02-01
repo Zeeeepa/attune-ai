@@ -19,8 +19,8 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from empathy_os.memory.unified import UnifiedMemory
-from empathy_os.meta_workflows import FormResponse, MetaWorkflow, PatternLearner, TemplateRegistry
+from attune.memory.unified import UnifiedMemory
+from attune.meta_workflows import FormResponse, MetaWorkflow, PatternLearner, TemplateRegistry
 
 
 def print_section(title: str):
@@ -52,7 +52,7 @@ def demo_hybrid_storage():
     learner = PatternLearner(memory=memory)
 
     # Load template (using built-in release-prep template)
-    registry = TemplateRegistry(storage_dir=".empathy/meta_workflows/templates")
+    registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
     template = registry.load_template("release-prep")  # Built-in template
 
     # Create workflow with pattern learner

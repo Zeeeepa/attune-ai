@@ -50,7 +50,7 @@ GET https://api.github.com/repos/{owner}/{repo}
 
 **Example:**
 ```bash
-curl https://api.github.com/repos/Smart-AI-Memory/empathy-framework
+curl https://api.github.com/repos/Smart-AI-Memory/attune-ai
 ```
 
 **Rate limit:** 60 requests/hour (unauthenticated), 5000/hour (authenticated)
@@ -71,7 +71,7 @@ GET https://pypistats.org/api/packages/{package}/recent
 
 **Example:**
 ```bash
-curl https://pypistats.org/api/packages/empathy-framework/recent
+curl https://pypistats.org/api/packages/attune-ai/recent
 ```
 
 **Rate limit:** Reasonable usage (don't hammer it)
@@ -490,7 +490,7 @@ print(f"Released: {data['releases'][version][0]['upload_time']}")
 4. **Set up automation** - Add GitHub Actions workflow
 5. **Track for 30 days** - See what works
 
-**Questions?** [Open an issue](https://github.com/Smart-AI-Memory/empathy-framework/issues) or [start a discussion](https://github.com/Smart-AI-Memory/empathy-framework/discussions).
+**Questions?** [Open an issue](https://github.com/Smart-AI-Memory/attune-ai/issues) or [start a discussion](https://github.com/Smart-AI-Memory/attune-ai/discussions).
 
 ---
 

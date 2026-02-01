@@ -8,8 +8,8 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.prompts.context import PromptContext
-from empathy_os.prompts.parser import Finding, ParsedResponse, XmlResponseParser
+from attune.prompts.context import PromptContext
+from attune.prompts.parser import Finding, ParsedResponse, XmlResponseParser
 
 
 @pytest.mark.unit

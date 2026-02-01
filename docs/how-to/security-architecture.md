@@ -105,8 +105,8 @@ For Healthcare Wizards (HIPAA compliance):
 ### Implementation Example
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
-from empathy_llm_toolkit.security import PIIScrubber
+from attune_llm import EmpathyLLM
+from attune_llm.security import PIIScrubber
 
 # Initialize with security enabled
 llm = EmpathyLLM(
@@ -150,7 +150,7 @@ response = await llm.interact(
 ### Implementation Example
 
 ```python
-from empathy_llm_toolkit.security import SecretsDetector
+from attune_llm.security import SecretsDetector
 
 detector = SecretsDetector()
 
@@ -214,7 +214,7 @@ for secret in detections:
 ### Implementation Example
 
 ```python
-from empathy_llm_toolkit.security import AuditLogger
+from attune_llm.security import AuditLogger
 
 logger = AuditLogger(
     log_file="/var/log/empathy/audit.jsonl",
@@ -250,7 +250,7 @@ print(f"Total PII scrubbed: {sum(log['security']['pii_scrubbed'] for log in logs
 AES-256-GCM encryption for sensitive data:
 
 ```python
-from empathy_llm_toolkit.security import encrypt_sensitive_data
+from attune_llm.security import encrypt_sensitive_data
 
 # Encrypt PHI before storing
 encrypted_data = encrypt_sensitive_data(
@@ -289,8 +289,8 @@ llm = EmpathyLLM(
 ### Role-Based Access Control (RBAC)
 
 ```python
-from empathy_llm_toolkit.wizards import HealthcareWizard
-from empathy_llm_toolkit.security import AccessControl
+from attune_llm.wizards import HealthcareWizard
+from attune_llm.security import AccessControl
 
 # Define roles
 access_control = AccessControl()
@@ -338,7 +338,7 @@ if access_control.has_permission(user_role="nurse", permission="read_phi"):
 
 ```python
 import pytest
-from empathy_llm_toolkit.security import PIIScrubber
+from attune_llm.security import PIIScrubber
 
 def test_pii_scrubbing():
     scrubber = PIIScrubber()

@@ -26,8 +26,8 @@ print("\n1️⃣  Testing CLI Import Fix (StateManager)")
 print("-" * 70)
 
 try:
-    from empathy_os.cli.commands.inspect import cmd_inspect
-    from empathy_os.cli.commands.metrics import cmd_metrics_show
+    from attune.cli.commands.inspect import cmd_inspect
+    from attune.cli.commands.metrics import cmd_metrics_show
     print("✅ inspect.py imports successfully")
     print("✅ metrics.py imports successfully")
     print("✅ StateManager import fix verified")
@@ -40,7 +40,7 @@ print("\n2️⃣  Testing Routing CLI Commands")
 print("-" * 70)
 
 try:
-    from empathy_os.cli.commands.routing import (
+    from attune.cli.commands.routing import (
         cmd_routing_check,
         cmd_routing_models,
         cmd_routing_stats,
@@ -58,8 +58,8 @@ print("\n3️⃣  Testing Adaptive Routing")
 print("-" * 70)
 
 try:
-    from empathy_os.models import AdaptiveModelRouter
-    from empathy_os.telemetry import UsageTracker
+    from attune.models import AdaptiveModelRouter
+    from attune.telemetry import UsageTracker
 
     # Create instances
     tracker = UsageTracker.get_instance()
@@ -120,7 +120,7 @@ print("\n5️⃣  Testing Batch Processing")
 print("-" * 70)
 
 try:
-    from empathy_os.workflows.batch_processing import (
+    from attune.workflows.batch_processing import (
         BatchProcessingWorkflow,
         BatchRequest,
         BatchResult,
@@ -148,7 +148,7 @@ print("\n6️⃣  Testing CLI Parser Registration")
 print("-" * 70)
 
 try:
-    from empathy_os.cli.parsers import batch, cache, routing
+    from attune.cli.parsers import batch, cache, routing
 
     print("✅ routing parser module imported")
     print("✅ batch parser module imported")
@@ -175,8 +175,8 @@ print("=" * 70)
 
 print("\n💡 Next Steps:")
 print("  • Run unit tests: pytest tests/unit/cli/test_routing_commands.py -v")
-print("  • Test CLI directly: python -m empathy_os.cli --help")
-print("  • Check routing stats: python -m empathy_os.cli routing --help")
+print("  • Test CLI directly: python -m attune.cli --help")
+print("  • Check routing stats: python -m attune.cli routing --help")
 print("  • View API docs: open docs/USER_API_DOCUMENTATION.md")
 
 print("\n📚 Documentation Created:")
@@ -186,8 +186,8 @@ print("  • docs/BATCH_API_GUIDE.md - Batch processing guide")
 
 print("\n🐛 Bugs Fixed:")
 print("  • StateManager import path corrected (CLI now functional)")
-print("  • inspect.py: empathy_os.state_manager → empathy_os.persistence")
-print("  • metrics.py: empathy_os.state_manager → empathy_os.persistence")
+print("  • inspect.py: attune.state_manager → attune.persistence")
+print("  • metrics.py: attune.state_manager → attune.persistence")
 
 print("\n🎯 Features Added:")
 print("  • Routing CLI commands (stats, check, models)")

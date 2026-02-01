@@ -8,8 +8,8 @@ from textwrap import dedent
 
 import pytest
 
-from empathy_llm_toolkit.agents_md import AgentLoader, AgentRegistry, MarkdownAgentParser
-from empathy_llm_toolkit.config.unified import UnifiedAgentConfig
+from attune_llm.agents_md import AgentLoader, AgentRegistry, MarkdownAgentParser
+from attune_llm.config.unified import UnifiedAgentConfig
 
 
 class TestMarkdownAgentParserIntegration:
@@ -361,8 +361,8 @@ class TestAgentRegistryWithHooks:
 
     def test_hook_on_agent_loaded(self):
         """Test that agents can be loaded with hook notification."""
-        from empathy_llm_toolkit.hooks.config import HookEvent
-        from empathy_llm_toolkit.hooks.registry import HookRegistry
+        from attune_llm.hooks.config import HookEvent
+        from attune_llm.hooks.registry import HookRegistry
 
         hook_registry = HookRegistry()
         loaded_agents = []

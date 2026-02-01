@@ -5,7 +5,7 @@ description: Workflow Factory Pattern Analysis: System architecture overview wit
 # Workflow Factory Pattern Analysis
 
 **Date:** 2025-01-05
-**Analyzed:** 17 workflows in `src/empathy_os/workflows/`
+**Analyzed:** 17 workflows in `src/attune/workflows/`
 
 ---
 
@@ -73,7 +73,7 @@ class MyCrewWorkflow(BaseWorkflow):
         self._crew = None
 
     async def _initialize_crew(self):
-        from empathy_llm_toolkit.agent_factory.crews import MyCrew
+        from attune_llm.agent_factory.crews import MyCrew
         self._crew = MyCrew(...)
 ```
 
@@ -220,7 +220,7 @@ Common combinations:
 
 All workflows follow:
 ```
-src/empathy_os/workflows/
+src/attune/workflows/
   my_workflow.py         # Main workflow class
   base.py                # BaseWorkflow parent
   config.py              # WorkflowConfig

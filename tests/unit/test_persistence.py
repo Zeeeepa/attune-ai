@@ -1,4 +1,4 @@
-"""Tests for empathy_os.persistence"""
+"""Tests for attune.persistence"""
 
 import json
 import sqlite3
@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.core import CollaborationState
-from empathy_os.pattern_library import Pattern, PatternLibrary
-from empathy_os.persistence import MetricsCollector, PatternPersistence, StateManager
+from attune.core import CollaborationState
+from attune.pattern_library import Pattern, PatternLibrary
+from attune.persistence import MetricsCollector, PatternPersistence, StateManager
 
 
 class TestPatternPersistence:

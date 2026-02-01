@@ -9,9 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.project_index.scanner import ProjectScanner
-from empathy_os.workflows.code_review_adapters import _merge_verdicts
-from empathy_os.workflows.progress import ProgressTracker
+from attune.project_index.scanner import ProjectScanner
+from attune.workflows.code_review_adapters import _merge_verdicts
+from attune.workflows.progress import ProgressTracker
 
 
 class TestFileCategorizationOptimization:
@@ -48,7 +48,7 @@ class TestFileCategorizationOptimization:
 
     def test_categorization_uses_frozensets(self):
         """Test that file categorization actually uses the frozensets."""
-        from empathy_os.project_index.models import FileCategory
+        from attune.project_index.models import FileCategory
 
         scanner = ProjectScanner(".")
 

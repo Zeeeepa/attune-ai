@@ -4,8 +4,8 @@ import asyncio
 
 import pytest
 
-from empathy_llm_toolkit.hooks.config import HookDefinition, HookType
-from empathy_llm_toolkit.hooks.executor import HookExecutor, HookExecutorSync
+from attune_llm.hooks.config import HookDefinition, HookType
+from attune_llm.hooks.executor import HookExecutor, HookExecutorSync
 
 
 class TestHookExecutor:

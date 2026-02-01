@@ -174,7 +174,7 @@ def _calculate_confidence(requirements, agents, pattern):
 
 ### Current Status
 
-`empathy_os/tools.py` exists with a placeholder implementation:
+`attune/tools.py` exists with a placeholder implementation:
 
 ```python
 def AskUserQuestion(questions: list[dict]) -> dict[str, Any]:
@@ -195,7 +195,7 @@ All interactive methods have try-except blocks:
 
 ```python
 try:
-    from empathy_os.tools import AskUserQuestion
+    from attune.tools import AskUserQuestion
     response = AskUserQuestion(questions=[...])
     # Handle user choice
 except (ImportError, NotImplementedError):
@@ -359,7 +359,7 @@ plan = orchestrator.analyze_and_compose(
 - [Anthropic Patterns Guide](./anthropic-agent-patterns.md)
 - [Anthropic Patterns Integration](./ANTHROPIC_PATTERNS_INTEGRATION.md)
 - [Agent Hub Documentation](../../.claude/commands/agent.md)
-- [Meta-Orchestrator Source](../../src/empathy_os/orchestration/meta_orchestrator.py)
+- [Meta-Orchestrator Source](../../src/attune/orchestration/meta_orchestrator.py)
 
 ---
 

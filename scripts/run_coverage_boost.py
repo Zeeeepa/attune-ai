@@ -21,7 +21,7 @@ from rich.panel import Panel
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
-from empathy_os.meta_workflows import FormResponse, TemplateRegistry
+from attune.meta_workflows import FormResponse, TemplateRegistry
 
 console = Console()
 

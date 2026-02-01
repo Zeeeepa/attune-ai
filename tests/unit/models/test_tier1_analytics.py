@@ -21,13 +21,13 @@ from pathlib import Path
 
 import pytest
 
-from empathy_os.models import (
+from attune.models import (
     AgentAssignmentRecord,
     CoverageRecord,
     TaskRoutingRecord,
     TestExecutionRecord,
 )
-from empathy_os.models.telemetry import TelemetryAnalytics, TelemetryStore
+from attune.models.telemetry import TelemetryAnalytics, TelemetryStore
 
 
 @pytest.fixture

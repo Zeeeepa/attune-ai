@@ -14,7 +14,7 @@ def test_workflow_listing():
 
     try:
         result = subprocess.run(
-            ["python", "-m", "empathy_os.cli", "workflow", "list"],
+            ["python", "-m", "attune.cli", "workflow", "list"],
             capture_output=True,
             text=True,
             timeout=10,
@@ -63,12 +63,12 @@ def test_workflow_imports():
     print("=" * 70)
 
     workflows_to_test = [
-        ("BaseWorkflow", "empathy_os.workflows", "BaseWorkflow"),
-        ("CodeReviewWorkflow", "empathy_os.workflows.code_review", "CodeReviewWorkflow"),
-        ("BugPredictionWorkflow", "empathy_os.workflows.bug_predict", "BugPredictionWorkflow"),
-        ("SecurityAuditWorkflow", "empathy_os.workflows.security_audit", "SecurityAuditWorkflow"),
-        ("HealthCheckWorkflow", "empathy_os.workflows.health_check", "HealthCheckWorkflow"),
-        ("TestGenerationWorkflow", "empathy_os.workflows.test_gen", "TestGenerationWorkflow"),
+        ("BaseWorkflow", "attune.workflows", "BaseWorkflow"),
+        ("CodeReviewWorkflow", "attune.workflows.code_review", "CodeReviewWorkflow"),
+        ("BugPredictionWorkflow", "attune.workflows.bug_predict", "BugPredictionWorkflow"),
+        ("SecurityAuditWorkflow", "attune.workflows.security_audit", "SecurityAuditWorkflow"),
+        ("HealthCheckWorkflow", "attune.workflows.health_check", "HealthCheckWorkflow"),
+        ("TestGenerationWorkflow", "attune.workflows.test_gen", "TestGenerationWorkflow"),
     ]
 
     passed = 0
@@ -94,7 +94,7 @@ def test_workflow_structure():
     print("=" * 70)
 
     try:
-        from empathy_os.workflows import BaseWorkflow
+        from attune.workflows import BaseWorkflow
 
         # Check for XML methods
         xml_methods = ["_is_xml_enabled", "_render_xml_prompt", "_parse_xml_response"]
@@ -138,10 +138,10 @@ def test_crewai_workflows():
     print("=" * 70)
 
     crews = [
-        ("SecurityAuditCrew", "empathy_llm_toolkit.agent_factory.crews.security_audit"),
-        ("CodeReviewCrew", "empathy_llm_toolkit.agent_factory.crews.code_review"),
-        ("RefactoringCrew", "empathy_llm_toolkit.agent_factory.crews.refactoring"),
-        ("HealthCheckCrew", "empathy_llm_toolkit.agent_factory.crews.health_check"),
+        ("SecurityAuditCrew", "attune_llm.agent_factory.crews.security_audit"),
+        ("CodeReviewCrew", "attune_llm.agent_factory.crews.code_review"),
+        ("RefactoringCrew", "attune_llm.agent_factory.crews.refactoring"),
+        ("HealthCheckCrew", "attune_llm.agent_factory.crews.health_check"),
     ]
 
     passed = 0
@@ -168,7 +168,7 @@ def test_workflow_describe():
 
     try:
         result = subprocess.run(
-            ["python", "-m", "empathy_os.cli", "workflow", "describe", "code-review"],
+            ["python", "-m", "attune.cli", "workflow", "describe", "code-review"],
             capture_output=True,
             text=True,
             timeout=10,
@@ -199,13 +199,13 @@ def test_workflow_files_structure():
     print("=" * 70)
 
     workflow_files = [
-        "src/empathy_os/workflows/__init__.py",
-        "src/empathy_os/workflows/base.py",
-        "src/empathy_os/workflows/code_review.py",
-        "src/empathy_os/workflows/bug_predict.py",
-        "src/empathy_os/workflows/security_audit.py",
-        "src/empathy_os/workflows/health_check.py",
-        "src/empathy_os/workflows/test_gen.py",
+        "src/attune/workflows/__init__.py",
+        "src/attune/workflows/base.py",
+        "src/attune/workflows/code_review.py",
+        "src/attune/workflows/bug_predict.py",
+        "src/attune/workflows/security_audit.py",
+        "src/attune/workflows/health_check.py",
+        "src/attune/workflows/test_gen.py",
     ]
 
     found = 0
@@ -231,7 +231,7 @@ def test_workflow_config():
     print("=" * 70)
 
     try:
-        from empathy_os.workflows.config import ModelConfig
+        from attune.workflows.config import ModelConfig
 
         print("  ✅ ModelConfig imports successfully")
 
@@ -260,7 +260,7 @@ def test_xml_enhanced_workflows():
     print("=" * 70)
 
     try:
-        from empathy_os.workflows.code_review import CodeReviewWorkflow
+        from attune.workflows.code_review import CodeReviewWorkflow
 
         # Check if workflow has XML methods
         xml_features = [

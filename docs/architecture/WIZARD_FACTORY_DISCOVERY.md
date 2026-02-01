@@ -42,7 +42,7 @@ Located in: `wizards/`
 - Incident Reporting
 
 #### Domain Wizards (16 wizards)
-Located in: `empathy_llm_toolkit/wizards/`
+Located in: `attune_llm/wizards/`
 
 Base: `BaseWizard` class using `WizardConfig` dataclass
 
@@ -1460,7 +1460,7 @@ class PatternCompose:
 ### C. References
 
 - [Backend Wizard API](../../backend/api/wizard_api.py)
-- [Base Wizard](../../empathy_llm_toolkit/wizards/base_wizard.py)
+- [Base Wizard](../../attune_llm/wizards/base_wizard.py)
 - [SOAP Note Wizard](../../wizards/soap_note_wizard.py)
 - [Advanced Debugging Wizard](../../empathy_software_plugin/wizards/advanced_debugging_wizard.py)
 - [Testing Wizard](../../coach_wizards/testing_wizard.py)

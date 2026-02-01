@@ -59,10 +59,10 @@ After running workflows, check your cost savings:
 
 ```bash
 # View last 30 days
-python -m empathy_os.telemetry.cli sonnet-opus-analysis
+python -m attune.telemetry.cli sonnet-opus-analysis
 
 # Custom time period
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 7
+python -m attune.telemetry.cli sonnet-opus-analysis --days 7
 ```
 
 **Sample Output:**
@@ -91,7 +91,7 @@ python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 7
 The framework automatically uses Sonnet 4.5 - no changes needed:
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
 
 executor = EmpathyLLMExecutor(provider="anthropic")
 
@@ -107,8 +107,8 @@ response = await executor.run(
 To automatically upgrade to Opus when needed:
 
 ```python
-from empathy_os.models.empathy_executor import EmpathyLLMExecutor
-from empathy_os.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
+from attune.models.empathy_executor import EmpathyLLMExecutor
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
 
 # Base executor
 base_executor = EmpathyLLMExecutor(provider="anthropic")
@@ -147,7 +147,7 @@ empathy workflow run test-gen --input '{"target":"src/utils.py"}'
 empathy workflow run refactor-plan --input '{"target":"src/models/", "complexity":"high"}'
 
 # Check which model was used
-python -m empathy_os.telemetry.cli show --limit 5
+python -m attune.telemetry.cli show --limit 5
 ```
 
 ---
@@ -198,7 +198,7 @@ empathy workflow run refactor-plan --input '{
 }'
 
 # Check results
-python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 1
+python -m attune.telemetry.cli sonnet-opus-analysis --days 1
 ```
 
 ### Run Example Script
@@ -220,7 +220,7 @@ python examples/sonnet_opus_fallback_example.py
 ```bash
 # Verify telemetry is enabled
 python -c "
-from empathy_os.models.telemetry import get_telemetry_store
+from attune.models.telemetry import get_telemetry_store
 store = get_telemetry_store()
 calls = store.get_calls(limit=10)
 print(f'Found {len(calls)} calls')
@@ -230,7 +230,7 @@ print(f'Found {len(calls)} calls')
 empathy workflow run code-review --input '{"file":"src/models/registry.py"}'
 
 # Check again
-python -m empathy_os.telemetry.cli sonnet-opus-analysis
+python -m attune.telemetry.cli sonnet-opus-analysis
 ```
 
 ### High Fallback Rate
@@ -241,7 +241,7 @@ python -m empathy_os.telemetry.cli sonnet-opus-analysis
 
 1. **Check which workflows trigger fallback:**
 ```python
-from empathy_os.models.telemetry import get_telemetry_store
+from attune.models.telemetry import get_telemetry_store
 
 store = get_telemetry_store()
 calls = store.get_calls(limit=1000)
@@ -263,7 +263,7 @@ executor = EmpathyLLMExecutor(provider="anthropic", default_tier="premium")
 
 **Solution:**
 ```python
-from empathy_os.models.fallback import ResilientExecutor
+from attune.models.fallback import ResilientExecutor
 
 executor = ResilientExecutor()
 
@@ -300,7 +300,7 @@ executor.circuit_breaker.reset("anthropic", "capable")
 
 3. **Check savings after a week:**
    ```bash
-   python -m empathy_os.telemetry.cli sonnet-opus-analysis --days 7
+   python -m attune.telemetry.cli sonnet-opus-analysis --days 7
    ```
 
 4. **Adjust strategy based on results** - see docs for details
@@ -311,19 +311,19 @@ executor.circuit_breaker.reset("anthropic", "capable")
 
 ### What Was Updated
 
-✅ **Model Registry** ([src/empathy_os/models/registry.py](../src/empathy_os/models/registry.py))
+✅ **Model Registry** ([src/attune/models/registry.py](../src/attune/models/registry.py))
 - CAPABLE tier now uses `claude-sonnet-4-5` (was `claude-sonnet-4-20250514`)
 - Pricing unchanged: $3/$15 per million tokens
 
-✅ **Fallback Policy** ([src/empathy_os/models/fallback.py](../src/empathy_os/models/fallback.py))
+✅ **Fallback Policy** ([src/attune/models/fallback.py](../src/attune/models/fallback.py))
 - Added `SONNET_TO_OPUS_FALLBACK` policy
 - Intelligent Sonnet → Opus escalation
 
-✅ **Telemetry Analytics** ([src/empathy_os/models/telemetry.py](../src/empathy_os/models/telemetry.py))
+✅ **Telemetry Analytics** ([src/attune/models/telemetry.py](../src/attune/models/telemetry.py))
 - Added `sonnet_opus_fallback_analysis()` method
 - Tracks success rates and cost savings
 
-✅ **CLI Command** ([src/empathy_os/telemetry/cli.py](../src/empathy_os/telemetry/cli.py))
+✅ **CLI Command** ([src/attune/telemetry/cli.py](../src/attune/telemetry/cli.py))
 - New `sonnet-opus-analysis` command
 - Visual dashboard with recommendations
 
@@ -340,8 +340,8 @@ executor.circuit_breaker.reset("anthropic", "capable")
 
 - **Full Documentation:** [SONNET_OPUS_FALLBACK_GUIDE.md](./SONNET_OPUS_FALLBACK_GUIDE.md)
 - **Examples:** [examples/sonnet_opus_fallback_example.py](../examples/sonnet_opus_fallback_example.py)
-- **Issues:** [GitHub Issues](https://github.com/Smart-AI-Memory/empathy-framework/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/Smart-AI-Memory/empathy-framework/discussions)
+- **Issues:** [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 
 ---
 

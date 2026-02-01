@@ -59,8 +59,8 @@ Enable multiple AI agents to work together on complex tasks through shared patte
 ### Create Agent Team
 
 ```python
-from empathy_os import EmpathyOS
-from empathy_os.pattern_library import PatternLibrary
+from attune import EmpathyOS
+from attune.pattern_library import PatternLibrary
 
 # Shared pattern library for all agents
 shared_library = PatternLibrary(name="team_library")
@@ -139,7 +139,7 @@ async def process_pull_request(pr_number):
 ### Example: Code Pattern
 
 ```python
-from empathy_os.pattern_library import Pattern
+from attune.pattern_library import Pattern
 
 # Code Review Agent discovers pattern
 pattern = Pattern(
@@ -460,7 +460,7 @@ resolution = resolver.resolve_patterns(
 ### Agent Performance
 
 ```python
-from empathy_os.monitoring import AgentMonitor
+from attune.monitoring import AgentMonitor
 
 monitor = AgentMonitor()
 

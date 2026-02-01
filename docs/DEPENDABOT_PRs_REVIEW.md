@@ -120,14 +120,14 @@ After rebase, wait for CI to complete. Expected results:
 
 **Test locations:**
 - `tests/unit/models/test_empathy_executor_new.py`
-- `src/empathy_os/models/registry.py` (OpenAI models)
+- `src/attune/models/registry.py` (OpenAI models)
 - Any workflows using OpenAI provider
 
 **Manual test:**
 ```bash
 # After merging PR #17
 export OPENAI_API_KEY="your-key"
-python -c "from empathy_os.models import get_model; print(get_model('openai', 'cheap'))"
+python -c "from attune.models import get_model; print(get_model('openai', 'cheap'))"
 ```
 
 ### mkdocstrings v2.0 (PR #20)

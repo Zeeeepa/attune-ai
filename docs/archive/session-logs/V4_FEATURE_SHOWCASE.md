@@ -309,8 +309,8 @@ Duration: 0.43s
 $ empathy orchestrate health-check --mode daily
 
 INCREMENTAL SCAN: 2 changed files
-  • src/empathy_os/orchestration/real_tools.py
-  • src/empathy_os/workflows/__init__.py
+  • src/attune/orchestration/real_tools.py
+  • src/attune/workflows/__init__.py
 
 Duration: 0.43s
 ```

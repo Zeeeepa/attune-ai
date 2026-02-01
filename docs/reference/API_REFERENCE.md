@@ -71,7 +71,7 @@ Main class that wraps any LLM provider with Empathy Framework levels.
 #### Constructor
 
 ```python
-from empathy_llm_toolkit import EmpathyLLM
+from attune_llm import EmpathyLLM
 
 llm = EmpathyLLM(
     provider: str = "anthropic",
@@ -236,7 +236,7 @@ def add_pattern(
 **Example:**
 
 ```python
-from empathy_llm_toolkit import UserPattern, PatternType
+from attune_llm import UserPattern, PatternType
 
 pattern = UserPattern(
     pattern_type=PatternType.SEQUENTIAL,
@@ -340,7 +340,7 @@ Returns human-readable description of level.
 **Example:**
 
 ```python
-from empathy_llm_toolkit import EmpathyLevel
+from attune_llm import EmpathyLevel
 
 desc = EmpathyLevel.get_description(4)
 # Returns: "Anticipatory - Predicts future needs based on trajectory"
@@ -382,7 +382,7 @@ Returns recommended max_tokens for the level.
 Routes developer requests to appropriate wizard(s) using natural language understanding.
 
 ```python
-from empathy_os.routing import SmartRouter
+from attune.routing import SmartRouter
 
 router = SmartRouter()
 ```
@@ -415,7 +415,7 @@ class RoutingDecision:
 Knowledge graph for cross-wizard intelligence sharing.
 
 ```python
-from empathy_os.memory import MemoryGraph, NodeType, EdgeType
+from attune.memory import MemoryGraph, NodeType, EdgeType
 
 graph = MemoryGraph(path="patterns/memory_graph.json")
 ```
@@ -448,7 +448,7 @@ class EdgeType(Enum):
 Executes wizard chains and manages auto-chaining rules.
 
 ```python
-from empathy_os.routing import ChainExecutor
+from attune.routing import ChainExecutor
 
 executor = ChainExecutor(config_path=".empathy/wizard_chains.yaml")
 ```
@@ -466,14 +466,14 @@ executor = ChainExecutor(config_path=".empathy/wizard_chains.yaml")
 
 ## Resilience Patterns
 
-Production-ready patterns for fault tolerance. Import from `empathy_os.resilience`.
+Production-ready patterns for fault tolerance. Import from `attune.resilience`.
 
 ### retry decorator
 
 Retry failed operations with exponential backoff.
 
 ```python
-from empathy_os.resilience import retry, RetryConfig
+from attune.resilience import retry, RetryConfig
 
 @retry(max_attempts=3, initial_delay=1.0, backoff_factor=2.0, jitter=True)
 async def flaky_operation():
@@ -496,7 +496,7 @@ async def flaky_operation():
 Prevent cascading failures by failing fast when a service is down.
 
 ```python
-from empathy_os.resilience import circuit_breaker, get_circuit_breaker, CircuitOpenError
+from attune.resilience import circuit_breaker, get_circuit_breaker, CircuitOpenError
 
 @circuit_breaker(name="api", failure_threshold=5, reset_timeout=60.0)
 async def external_call():
@@ -529,7 +529,7 @@ print(cb.state)  # CircuitState.CLOSED, OPEN, or HALF_OPEN
 Prevent operations from hanging indefinitely.
 
 ```python
-from empathy_os.resilience import timeout, with_timeout, ResilienceTimeoutError
+from attune.resilience import timeout, with_timeout, ResilienceTimeoutError
 
 @timeout(30.0)
 async def slow_operation():
@@ -556,7 +556,7 @@ result = await with_timeout(coro, timeout_seconds=10.0, fallback_value="default"
 Graceful degradation when primary operations fail.
 
 ```python
-from empathy_os.resilience import fallback, Fallback
+from attune.resilience import fallback, Fallback
 
 @fallback(fallback_func=get_cached, default="unavailable")
 async def get_live_data():
@@ -575,7 +575,7 @@ result = await fb.execute()
 Monitor system component health.
 
 ```python
-from empathy_os.resilience import HealthCheck, HealthStatus
+from attune.resilience import HealthCheck, HealthStatus
 
 health = HealthCheck(version="3.1.0")
 
@@ -628,7 +628,7 @@ Provider for Anthropic's Claude models with advanced features.
 #### Constructor
 
 ```python
-from empathy_llm_toolkit.providers import AnthropicProvider
+from attune_llm.providers import AnthropicProvider
 
 provider = AnthropicProvider(
     api_key: Optional[str] = None,
@@ -737,7 +737,7 @@ Provider for OpenAI's GPT models.
 #### Constructor
 
 ```python
-from empathy_llm_toolkit.providers import OpenAIProvider
+from attune_llm.providers import OpenAIProvider
 
 provider = OpenAIProvider(
     api_key: Optional[str] = None,
@@ -767,7 +767,7 @@ Provider for local models (Ollama, LM Studio, etc.).
 #### Constructor
 
 ```python
-from empathy_llm_toolkit.providers import LocalProvider
+from attune_llm.providers import LocalProvider
 
 provider = LocalProvider(
     endpoint: str = "http://localhost:11434",
@@ -810,7 +810,7 @@ Comprehensive configuration management supporting YAML, JSON, and environment va
 #### Constructor
 
 ```python
-from empathy_os.config import EmpathyConfig
+from attune.config import EmpathyConfig
 
 config = EmpathyConfig(
     user_id: str = "default_user",
@@ -1200,7 +1200,7 @@ from coach_wizards import (
 Abstract base class for domain plugins.
 
 ```python
-from empathy_os.plugins import BasePlugin, PluginMetadata
+from attune.plugins import BasePlugin, PluginMetadata
 
 class MyPlugin(BasePlugin):
     def get_metadata(self) -> PluginMetadata:
@@ -1305,7 +1305,7 @@ result = WizardResult(
 Standardized response from any LLM provider.
 
 ```python
-from empathy_llm_toolkit.providers import LLMResponse
+from attune_llm.providers import LLMResponse
 
 response = LLMResponse(
     content: str,               # Response content
@@ -1321,7 +1321,7 @@ response = LLMResponse(
 Represents a detected user pattern for Level 3 Proactive behavior.
 
 ```python
-from empathy_llm_toolkit import UserPattern, PatternType
+from attune_llm import UserPattern, PatternType
 
 pattern = UserPattern(
     pattern_type: PatternType,  # SEQUENTIAL, CONDITIONAL, ADAPTIVE
@@ -1398,7 +1398,7 @@ software_patterns = {
 Flexible configuration loading with precedence.
 
 ```python
-from empathy_os.config import load_config
+from attune.config import load_config
 
 config = load_config(
     filepath: Optional[str] = None,
@@ -1437,8 +1437,8 @@ Here's a comprehensive example using multiple APIs:
 
 ```python
 import asyncio
-from empathy_llm_toolkit import EmpathyLLM, UserPattern, PatternType
-from empathy_os.config import load_config
+from attune_llm import EmpathyLLM, UserPattern, PatternType
+from attune.config import load_config
 from coach_wizards import SecurityWizard, PerformanceWizard
 
 async def main():

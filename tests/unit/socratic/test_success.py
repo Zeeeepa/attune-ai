@@ -12,7 +12,7 @@ Licensed under Fair Source License 0.9
 
 import pytest
 
-from empathy_os.socratic.success import (
+from attune.socratic.success import (
     MetricDirection,
     MetricResult,
     MetricType,

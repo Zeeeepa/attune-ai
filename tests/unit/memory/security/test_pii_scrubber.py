@@ -14,7 +14,7 @@ Key Patterns:
 
 import pytest
 
-from empathy_os.memory.security.pii_scrubber import PIIScrubber
+from attune.memory.security.pii_scrubber import PIIScrubber
 
 
 @pytest.mark.unit

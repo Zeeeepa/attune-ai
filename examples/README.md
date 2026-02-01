@@ -75,13 +75,13 @@ The examples are designed to show increasing empathy levels:
 pip3 install -e .
 
 # Or install from PyPI (when published)
-pip3 install empathy-framework
+pip3 install attune-ai
 ```
 
 ### Run Examples
 
 ```bash
-cd empathy-framework
+cd attune-ai
 
 # Run quickstart
 python3 examples/quickstart.py
