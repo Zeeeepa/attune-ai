@@ -77,14 +77,11 @@ PERF_PATTERNS = {
         "description": "Wildcard import may slow startup",
         "impact": "low",
     },
-    "large_list_copy": {
-        "patterns": [
-            r"list\(\w+\)",
-            r"\w+\[:\]",
-        ],
-        "description": "Full list copy (may be inefficient for large lists)",
-        "impact": "low",
-    },
+    # REMOVED: large_list_copy - too many false positives
+    # - list(x) is often intentional defensive copying or type conversion
+    # - dirs[:] is REQUIRED for os.walk directory filtering (see os-walk-dirs-pattern.md)
+    # - Low impact even when not intentional
+    # See: .claude/rules/attune/list-copy-guidelines.md
     "repeated_regex": {
         "patterns": [
             r're\.(search|match|findall)\s*\(["\'][^"\']+["\']',
@@ -110,10 +107,13 @@ PERF_PATTERNS = {
 #   - Now correctly excludes: generator expressions inside any(), all(), etc.
 #   - Sequential string building (code += "line1"; code += "line2") correctly ignored
 #
-# FALSE POSITIVE: large_list_copy
+# REMOVED: large_list_copy (v2.1.0)
 #   - list(x) or x[:] used for defensive copying or type conversion
+#   - dirs[:] is REQUIRED for os.walk directory filtering
 #   - Often intentional to avoid mutating original data
-#   - Verdict: OK - usually intentional, low impact
+#   - Verdict: REMOVED - too many false positives, low impact even when real
+#   - See: .claude/rules/attune/list-copy-guidelines.md
+#   - See: .claude/rules/attune/os-walk-dirs-pattern.md
 #
 # FALSE POSITIVE: repeated_regex (edge cases)
 #   - Single-use regex in rarely-called functions
@@ -591,11 +591,7 @@ Provide detailed optimization strategies."""
                 "description": "Create the list once before the loop",
                 "estimated_impact": "medium",
             },
-            "large_list_copy": {
-                "action": "Use iterators",
-                "description": "Consider using iterators instead of copying entire lists",
-                "estimated_impact": "low",
-            },
+            # large_list_copy removed - too many false positives
             "global_import": {
                 "action": "Use specific imports",
                 "description": "Import only needed names to reduce memory and startup time",
