@@ -6,13 +6,12 @@ We release patches for security vulnerabilities in the following versions:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 3.9.x   | :white_check_mark: |
-| 3.8.x   | :x:                |
-| < 3.8   | :x:                |
+| 2.0.x   | :white_check_mark: |
+| < 2.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-The Empathy Framework team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings.
+The Attune AI team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings.
 
 ### How to Report
 
@@ -20,7 +19,7 @@ The Empathy Framework team takes security vulnerabilities seriously. We apprecia
 
 Instead, please report security vulnerabilities to:
 - **Email**: security@smartaimemory.com
-- **Subject Line**: `[SECURITY] Empathy Framework Vulnerability Report`
+- **Subject Line**: `[SECURITY] Attune AI Vulnerability Report`
 
 ### What to Include
 

@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest a new feature or enhancement for the Empathy
+description: Suggest a new feature or enhancement for Attune AI
 title: "[Feature]: "
 labels: ["enhancement", "triage"]
 body:
@@ -39,8 +39,10 @@ body:
       label: Feature Category
       description: What type of feature is this?
       options:
-        - New Wizard (Coach/Software Development)
-        - New Agent (Healthcare/Clinical)
+        - New Workflow (Security, Testing, Performance, etc.)
+        - Multi-Agent Orchestration
+        - Authentication Strategy
+        - Cost Optimization
         - Framework Enhancement
         - IDE Integration Improvement
         - Documentation
@@ -70,9 +72,9 @@ body:
       description: Show how you'd like to use this feature
       render: python
       placeholder: |
-        from coach_wizards import NewWizard
-        wizard = NewWizard()
-        result = wizard.analyze(...)
+        from attune.workflows import NewWorkflow
+        workflow = NewWorkflow()
+        result = workflow.execute(...)
 
   - type: textarea
     id: use_case
@@ -106,5 +108,5 @@ body:
       options:
         - label: I have searched existing issues and this feature hasn't been requested
           required: true
-        - label: This feature aligns with the Empathy's philosophy
+        - label: This feature aligns with Attune AI's philosophy
           required: true
