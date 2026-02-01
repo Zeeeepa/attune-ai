@@ -1,0 +1,150 @@
+# Empathy Framework - eBook Configuration
+# Full book with PDF/ePub export
+# Build: mkdocs build -f mkdocs-ebook.yml
+
+site_name: "Empathy: A Framework for AI-Human Collaboration"
+site_description: The complete guide to building anticipatory AI systems
+site_author: Patrick Roebuck
+site_url: https://attune-ai.readthedocs.io
+
+repo_name: Smart-AI-Memory/empathy
+repo_url: https://github.com/Smart-AI-Memory/empathy
+
+copyright: Copyright &copy; 2025 Patrick Roebuck. All rights reserved.
+
+# Book-style linear navigation
+nav:
+  - Cover: book-cover.md
+  - Front Matter:
+      - How to Read This Book: guides/how-to-read-this-book.md
+      - Preface: guides/preface.md
+      - Foreword by Claude: guides/foreword.md
+  - Part 1 - Philosophy:
+      - 1.1 Multi-Agent Coordination: guides/multi-agent-philosophy.md
+      - 1.2 The Empathy Philosophy: EMPATHY_PHILOSOPHY.md
+  - Part 2 - Implementation:
+      - 2.1 Prerequisites: guides/prerequisites.md
+      - 2.2 Unified Memory System: guides/unified-memory-system.md
+      - 2.3 Short-Term Memory: guides/short-term-memory-implementation.md
+      - 2.4 Practical Patterns: guides/practical-patterns.md
+  - Part 3 - Examples:
+      - 3.1 Code Review Assistant: examples/simple-chatbot.md
+      - 3.2 SBAR Clinical Handoff: examples/sbar-clinical-handoff.md
+      - 3.3 Multi-Agent Coordination: examples/multi-agent-team-coordination.md
+      - 3.4 Adaptive Learning: examples/adaptive-learning-system.md
+  - Part 4 - Reference:
+      - 4.1 API Overview: api-reference/index.md
+      - 4.2 EmpathyOS API: api-reference/empathy-os.md
+      - 4.3 Configuration: api-reference/config.md
+      - 4.4 Core Systems: api-reference/core.md
+      - 4.5 Pattern Library: api-reference/pattern-library.md
+      - 4.6 Multi-Agent Coordination: api-reference/multi-agent.md
+      - 4.7 Persistence Layer: api-reference/persistence.md
+      - 4.8 LLM Toolkit: api-reference/llm-toolkit.md
+      - 4.9 Industry Wizards: api-reference/wizards.md
+  - Appendix:
+      - A. Short-Term Memory Reference: SHORT_TERM_MEMORY.md
+      - B. Glossary: guides/glossary.md
+      - C. Contributing: contributing.md
+      - About the Author: about-the-author.md
+
+# Theme for eBook (clean, print-friendly)
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+  features:
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - content.code.copy
+  logo: assets/images/empathy-brain-logo.png
+  favicon: assets/images/empathy-brain-logo.png
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+# Plugins including PDF export
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: false
+            show_root_heading: true
+  # PDF Export Plugin
+  - with-pdf:
+      author: Patrick Roebuck
+      copyright: Copyright © 2025 Smart-AI-Memory
+      cover: true
+      cover_title: "Empathy"
+      cover_subtitle: A Framework for AI-Human Collaboration
+      cover_logo: null
+      toc_title: Table of Contents
+      heading_shift: false
+      toc_level: 3
+      ordered_chapter_level: 2
+      excludes_children:
+        - 'release-notes'
+      exclude_pages:
+        - 'contributing'
+      convert_iframe:
+        - src: https://www.youtube.com
+          img: https://img.youtube.com/vi/{id}/0.jpg
+      two_columns_level: 3
+      render_js: false
+      headless_chrome_path: null
+      output_path: ../dist/empathy-book.pdf
+      enabled_if_env: ENABLE_PDF_EXPORT
+      debug_html: false
+      show_anchors: false
+      verbose: false
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.arithmatex:
+      generic: true
+  - footnotes
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Smart-AI-Memory/empathy
+
+extra_css:
+  - stylesheets/pdf-extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

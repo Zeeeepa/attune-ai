@@ -1,0 +1,14 @@
+{
+  "daily_totals": {
+    "2026-02-01": {
+      "requests": 8,
+      "input_tokens": 4169,
+      "output_tokens": 2454,
+      "actual_cost": 0.031435,
+      "baseline_cost": 0.246585,
+      "savings": 0.21515
+    }
+  },
+  "created_at": "2026-02-01T16:12:03.612091",
+  "last_updated": "2026-02-01T16:16:05.214671"
+}

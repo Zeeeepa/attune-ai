@@ -1,0 +1,10 @@
+{
+  "name": "attune-ai",
+  "version": "2.0.0",
+  "description": "AI-powered developer workflows with cost optimization and pattern learning. Run code review, debugging, testing, security audits, and release workflows. Smart tier routing saves 34-86% on LLM costs.",
+  "author": {
+    "name": "Patrick Roebuck"
+  },
+  "homepage": "https://attune-ai.org",
+  "repository": "https://github.com/Smart-AI-Memory/attune-ai"
+}

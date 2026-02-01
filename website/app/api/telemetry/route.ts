@@ -1,0 +1,72 @@
+/**
+ * Telemetry API Route
+ *
+ * Serves telemetry data from `.empathy/*.jsonl` files.
+ *
+ * **Endpoints:**
+ * - GET /api/telemetry - Get aggregated telemetry statistics
+ * - GET /api/telemetry?since=ISO_DATE - Filter by date
+ * - GET /api/telemetry?workflow=NAME - Filter by workflow
+ * - GET /api/telemetry?provider=NAME - Filter by provider
+ *
+ * **Implementation Status:** Sprint 1 (Week 1)
+ *
+ * Copyright 2025 Smart-AI-Memory
+ * Licensed under Fair Source License 0.9
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import path from 'path';
+import { loadTelemetryData } from '@/lib/telemetry/parser';
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+
+    // Parse query parameters
+    const sinceParam = searchParams.get('since');
+    const workflowName = searchParams.get('workflow');
+    const provider = searchParams.get('provider');
+    const limitParam = searchParams.get('limit');
+
+    const since = sinceParam ? new Date(sinceParam) : undefined;
+    const limit = limitParam ? parseInt(limitParam, 10) : 1000;
+
+    // Determine .empathy directory path
+    // In production, this should be configurable via environment variable
+    const empathyDir = process.env.EMPATHY_DIR || path.join(process.cwd(), '..', '.empathy');
+
+    // Load telemetry data
+    const stats = loadTelemetryData(empathyDir, {
+      since,
+      workflowName: workflowName || undefined,
+      provider: provider || undefined,
+      limit,
+    });
+
+    return NextResponse.json(stats);
+  } catch (error) {
+    console.error('Failed to load telemetry data:', error);
+
+    return NextResponse.json(
+      {
+        error: 'Failed to load telemetry data',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    }
+  );
+}

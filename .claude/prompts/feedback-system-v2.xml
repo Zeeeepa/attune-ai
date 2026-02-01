@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Empathy Framework: Intelligent Feedback System v2
+  XML-Enhanced Prompt for Implementation
+
+  Developed via Socratic refinement:
+  - Trigger: Hybrid (predefined + LLM context-aware)
+  - Webview feedback: None needed (content IS feedback)
+  - LLM forms: Context-dependent (plan, customize, learn)
+  - Chain config: All sources merged (config + settings + learned)
+  - UI: Webview panels + inline ghost text (both modes)
+  - Timing: After command + on cursor idle (both modes)
+-->
+
+<feature name="intelligent-feedback-system" version="2.0">
+
+  <goal>
+    Create a dual-mode feedback system where:
+    - Power users get minimal interruption with inline hints
+    - New users get rich webview guidance with training dialogs
+    - Both modes share contextual "next command" suggestions
+  </goal>
+
+  <modes>
+    <mode name="power" target="experienced-users">
+      <feedback-philosophy>
+        Content IS feedback. When a command opens a webview, file, or panel,
+        no additional indicator is needed - the result speaks for itself.
+      </feedback-philosophy>
+
+      <inline-feedback>
+        <trigger>after-command-completion</trigger>
+        <duration>1.5 seconds</duration>
+        <style>ghost-text near cursor or status-bar fallback</style>
+        <content>Brief confirmation (e.g., "✓ DVORAK")</content>
+      </inline-feedback>
+
+      <next-command-hints>
+        <trigger>after-command-completion</trigger>
+        <trigger>cursor-idle-2-seconds</trigger>
+        <duration>3-5 seconds</duration>
+        <style>ghost-text in editor gutter or inline</style>
+        <content>Next: Ctrl+Shift+E S → Ship</content>
+      </next-command-hints>
+    </mode>
+
+    <mode name="guided" target="new-users">
+      <feedback-philosophy>
+        Training dialogs that educate while executing. Each action is
+        an opportunity to teach the framework and suggest next steps.
+      </feedback-philosophy>
+
+      <webview-panels>
+        <purpose>Rich information display after workflows</purpose>
+        <content>
+          <section name="summary">What just happened</section>
+          <section name="results">Detailed output/report</section>
+          <section name="next-steps">Recommended follow-up commands with buttons</section>
+          <section name="keyboard-hint">The keyboard shortcut for muscle memory</section>
+        </content>
+      </webview-panels>
+
+      <next-command-hints>
+        <!-- Same as power mode - shared experience -->
+        <trigger>after-command-completion</trigger>
+        <trigger>cursor-idle-2-seconds</trigger>
+        <duration>3-5 seconds</duration>
+        <style>ghost-text in editor gutter or inline</style>
+        <content>Next: Ctrl+Shift+E S → Ship</content>
+      </next-command-hints>
+    </mode>
+  </modes>
+
+  <recommendation-engine>
+    <name>WorkflowChainAdvisor</name>
+    <description>
+      Hybrid system that suggests next commands based on:
+      1. Predefined workflow chains (config)
+      2. User's learned patterns (history)
+      3. LLM context analysis (current code state)
+    </description>
+
+    <sources priority="merge-all">
+      <source name="empathy.config.yml" priority="1">
+        Project-level predefined chains, version controlled
+      </source>
+      <source name="vscode-settings" priority="2">
+        User preferences, syncs across machines
+      </source>
+      <source name="learned-patterns" priority="3">
+        Auto-generated from command history over time
+      </source>
+      <source name="llm-context" priority="4">
+        Real-time analysis of current code state
+      </source>
+    </sources>
+
+    <default-chains>
+      <chain name="morning-routine">
+        <step order="1">morning</step>
+        <step order="2">ship</step>
+        <step order="3">fix</step>
+      </chain>
+      <chain name="code-review">
+        <step order="1">review-file</step>
+        <step order="2">fix-lint</step>
+        <step order="3">run-tests</step>
+      </chain>
+      <chain name="pre-commit">
+        <step order="1">ship</step>
+        <step order="2">fix-all</step>
+        <step order="3">dashboard</step>
+      </chain>
+    </default-chains>
+  </recommendation-engine>
+
+  <llm-forms>
+    <description>
+      Context-dependent LLM-powered forms that use a Socratic approach
+      to refine user intent before execution.
+    </description>
+
+    <form-types>
+      <form name="plan-refinement">
+        <trigger>Complex implementation tasks</trigger>
+        <approach>socratic</approach>
+        <output>XML-enhanced implementation plan</output>
+        <questions>
+          What are you trying to build?
+          What constraints should we consider?
+          Which approach do you prefer? [options]
+        </questions>
+      </form>
+
+      <form name="workflow-customization">
+        <trigger>User wants to modify command chains</trigger>
+        <approach>guided-selection</approach>
+        <output>Updated empathy.config.yml</output>
+        <questions>
+          Which workflow do you want to customize?
+          What commands should follow [X]?
+          Should this be project-specific or global?
+        </questions>
+      </form>
+
+      <form name="learning-mode">
+        <trigger>New user or explicit /learn command</trigger>
+        <approach>tutorial</approach>
+        <output>Progressive skill building</output>
+        <questions>
+          Have you used [feature] before?
+          Would you like to see a demo?
+          Ready to try it yourself?
+        </questions>
+      </form>
+    </form-types>
+  </llm-forms>
+
+  <implementation-components>
+    <component name="FeedbackService" status="implemented">
+      <file>src/services/FeedbackService.ts</file>
+      <responsibility>Mode-aware feedback dispatch</responsibility>
+    </component>
+
+    <component name="NextCommandHintService" status="to-implement">
+      <file>src/services/NextCommandHintService.ts</file>
+      <responsibility>
+        - Track command history
+        - Query recommendation engine
+        - Display ghost text hints
+        - Handle cursor idle detection
+      </responsibility>
+    </component>
+
+    <component name="WorkflowChainAdvisor" status="to-implement">
+      <file>src/services/WorkflowChainAdvisor.ts</file>
+      <responsibility>
+        - Merge config sources
+        - Learn from user patterns
+        - Query LLM for context-aware suggestions
+      </responsibility>
+    </component>
+
+    <component name="GuidedPanelProvider" status="to-implement">
+      <file>src/panels/GuidedPanelProvider.ts</file>
+      <responsibility>
+        - Rich webview for guided mode
+        - Action summary
+        - Next step buttons
+        - Keyboard shortcut hints
+      </responsibility>
+    </component>
+
+    <component name="SocraticFormService" status="to-implement">
+      <file>src/services/SocraticFormService.ts</file>
+      <responsibility>
+        - LLM-powered question generation
+        - Progressive form refinement
+        - XML-enhanced plan output
+      </responsibility>
+    </component>
+  </implementation-components>
+
+  <success-criteria>
+    <criterion>Power mode: Commands with output (webview/file) need no extra feedback</criterion>
+    <criterion>Power mode: Simple commands show inline badge for 1.5s</criterion>
+    <criterion>Both modes: Ghost text hints appear after commands and on idle</criterion>
+    <criterion>Guided mode: Webview panels with summary + next steps + shortcuts</criterion>
+    <criterion>Recommendations: Hybrid engine merges config + history + LLM</criterion>
+    <criterion>LLM forms: Socratic approach for plan/customize/learn contexts</criterion>
+  </success-criteria>
+
+</feature>

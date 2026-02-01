@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "attune-ai": {
+      "command": "python",
+      "args": ["-m", "attune.mcp.server"],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "disabled": false
+    }
+  }
+}

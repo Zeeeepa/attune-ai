@@ -1,0 +1,211 @@
+{
+  "pattern_id": "bug_20260107_telemetry_fix",
+  "bug_type": "integration_error",
+  "status": "resolved",
+  "root_cause": "Stale package installation preventing proper module imports - telemetry integration wasn't triggering due to corrupt site-packages",
+  "fix": "Cleaned site-packages and reinstalled with pip install -e ., fixed import path in integration test",
+  "resolved_by": "agent_a06b424",
+  "resolved_at": "2026-01-07T05:30:00Z",
+  "files_affected": [
+    "tests/integration/test_telemetry_integration.py"
+  ],
+  "source": "cascading_workflow",
+
+  "tier_progression": {
+    "methodology": "AI-ADDIE",
+    "workflow_phase": "DEVELOP",
+    "starting_tier": "CHEAP",
+    "successful_tier": "CHEAP",
+    "total_attempts": 1,
+    "total_duration_ms": 125000,
+
+    "tier_history": [
+      {
+        "tier": "CHEAP",
+        "model": "claude-haiku-3.5",
+        "attempts": 1,
+        "phase": "DEVELOP",
+        "success": {
+          "attempt": 1,
+          "duration_ms": 125000,
+          "quality_gates_passed": [
+            "tests",
+            "lint",
+            "types"
+          ],
+          "quality_gate_results": {
+            "tests": {
+              "command": "python -m pytest tests/unit/telemetry/ tests/integration/test_telemetry_integration.py -v",
+              "passed": true,
+              "details": {
+                "unit_tests": "14 passed",
+                "integration_tests": "6 passed",
+                "total": "20 passed, 0 failed"
+              }
+            },
+            "lint": {
+              "command": "ruff check .",
+              "passed": true,
+              "details": "0 errors"
+            },
+            "types": {
+              "command": "mypy src/attune/",
+              "passed": true,
+              "details": "0 type errors"
+            }
+          },
+          "changes_made": [
+            {
+              "file": "tests/integration/test_telemetry_integration.py",
+              "line": 14,
+              "change": "Fixed import statement to use correct package path",
+              "before": "from attune.workflows.base import BaseWorkflow, ModelTier",
+              "after": "from attune.workflows import BaseWorkflow, ModelTier",
+              "rationale": "The workflows package exports BaseWorkflow from __init__.py, so direct import from .base module was incorrect"
+            }
+          ],
+          "root_cause_discovered": {
+            "initial_hypothesis": "Bugs in calculate_savings and BaseWorkflow integration",
+            "actual_cause": "Stale/corrupt package installation in site-packages",
+            "investigation_steps": [
+              "Read telemetry source code (calculate_savings already correct)",
+              "Read BaseWorkflow integration code (already correct)",
+              "Run unit tests (all passing)",
+              "Run integration tests (failing due to import error)",
+              "Identified module import issue",
+              "Cleaned site-packages and reinstalled",
+              "Fixed import path in test file",
+              "Verified all tests pass"
+            ]
+          }
+        }
+      }
+    ],
+
+    "cost_breakdown": {
+      "analyze_phase": {
+        "tier": "CHEAP",
+        "cost": 0.0075,
+        "duration_ms": 15000
+      },
+      "design_phase": {
+        "tier": "CHEAP",
+        "cost": 0.0075,
+        "duration_ms": 10000
+      },
+      "develop_phase": {
+        "cheap_attempts": 1,
+        "cheap_cost": 0.015,
+        "capable_attempts": 0,
+        "capable_cost": 0.000,
+        "premium_attempts": 0,
+        "premium_cost": 0.000
+      },
+      "evaluate_phase": {
+        "review": false,
+        "cost": 0.000
+      },
+      "total_cost": 0.030,
+      "cost_if_always_premium": 0.930,
+      "savings_percent": 96.8,
+      "cost_comparison": {
+        "cheap_only": 0.030,
+        "if_needed_capable": 0.135,
+        "if_needed_premium": 0.585,
+        "always_premium": 0.930
+      }
+    },
+
+    "quality_metrics": {
+      "tests_passed": true,
+      "test_count": {
+        "unit": 14,
+        "integration": 6,
+        "total": 20
+      },
+      "lint_clean": true,
+      "types_clean": true,
+      "health_score_before": 73,
+      "health_score_after": 73,
+      "health_maintained": true,
+      "regression_free": true
+    },
+
+    "xml_protocol_compliance": {
+      "prompt_used_xml": true,
+      "response_used_xml": true,
+      "all_sections_present": true,
+      "test_evidence_provided": true,
+      "verification_commands_run": true,
+      "false_complete_avoided": true,
+      "protocol_effectiveness": "100%"
+    },
+
+    "learnings": {
+      "pattern": "integration_test_failures due to stale package installation",
+      "complexity_score": 5,
+      "complexity_assessment": "moderate",
+      "recommended_tier": "CHEAP",
+      "confidence": "high",
+      "reasoning": [
+        "Initial hypothesis was wrong (suspected code bugs, actual cause was environment)",
+        "Agent successfully investigated deeper than initial analysis",
+        "Proper diagnostic workflow led to root cause discovery",
+        "Simple fix once root cause identified"
+      ],
+      "similar_patterns": [
+        "Any integration test failure with passing unit tests suggests environment issue",
+        "Import errors with 'module has no attribute' often indicate stale packages",
+        "When source code looks correct but tests fail, check installation"
+      ],
+      "prevention_strategies": [
+        "Add CI step to verify pip install -e . works correctly",
+        "Document correct import patterns in tests/README.md",
+        "Add pre-test hook to detect stale installations"
+      ],
+      "tags": [
+        "integration_testing",
+        "package_management",
+        "import_errors",
+        "environment_issues",
+        "python_packaging"
+      ]
+    },
+
+    "agent_performance": {
+      "agent_id": "a06b424",
+      "agent_type": "general-purpose",
+      "xml_protocol": "v1.0",
+      "investigation_thoroughness": "excellent",
+      "root_cause_accuracy": "100%",
+      "false_complete_rate": "0%",
+      "test_verification": "complete",
+      "cost_efficiency": "excellent",
+      "notes": [
+        "Agent went beyond surface-level fixes",
+        "Discovered real root cause through systematic investigation",
+        "Provided comprehensive evidence in XML format",
+        "Did not claim complete until all tests verified"
+      ]
+    },
+
+    "feedback_to_system": {
+      "workflow_improvements": [
+        "XML protocol pilot test: SUCCESSFUL",
+        "Agent followed template exactly",
+        "Quality gates caught initial hypothesis errors",
+        "Feedback loop enabled deeper investigation"
+      ],
+      "documentation_updates": [
+        "Add package installation troubleshooting guide",
+        "Document import patterns for test files",
+        "Create pre-flight checklist for integration tests"
+      ],
+      "future_optimizations": [
+        "Consider starting tier CHEAP for environment/integration issues",
+        "Pattern match: 'tests pass unit but fail integration' → environment check first",
+        "Add automated stale package detection"
+      ]
+    }
+  }
+}

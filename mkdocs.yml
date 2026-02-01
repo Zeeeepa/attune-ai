@@ -1,0 +1,241 @@
+# Empathy Framework Documentation
+# MkDocs configuration file
+
+# Site Information
+site_name: Empathy Framework
+site_description: Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration. Build AI systems that predict problems before they happen.
+site_author: Patrick Roebuck
+site_url: https://smartaimemory.com/framework-docs/
+
+# Repository
+repo_name: Smart-AI-Memory/empathy
+repo_url: https://github.com/Smart-AI-Memory/empathy
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2025 Smart-AI-Memory
+
+# Navigation Structure - Diátaxis Framework
+# Tutorials (learning), How-to (tasks), Explanation (understanding), Reference (information)
+nav:
+  - Home: index.md
+
+  # Onboarding - Clear path for new users
+  - Getting Started:
+      - getting-started/index.md
+      - Installation: getting-started/installation.md
+      - First Steps: getting-started/first-steps.md
+      - Choose Your Path: getting-started/choose-your-path.md
+      - Redis Setup: getting-started/redis-setup.md
+      - MCP Integration: getting-started/mcp-integration.md
+
+  # Learning-oriented - Deeper tutorials after onboarding
+  - Tutorials:
+      - tutorials/index.md
+      - Multi-Agent Team: tutorials/quickstart.md
+      - Interactive Agent Creation: blog/interactive-agent-creation-tutorial.md
+      - Examples:
+          - Code Review Assistant: tutorials/examples/simple-chatbot.md
+          - SBAR Clinical Handoff: tutorials/examples/sbar-clinical-handoff.md
+          - Multi-Agent Team: tutorials/examples/multi-agent-team-coordination.md
+          - Adaptive Learning: tutorials/examples/adaptive-learning-system.md
+          - Webhook Integration: tutorials/examples/webhook-event-integration.md
+
+  # Task-oriented
+  - How-to:
+      - how-to/index.md
+      - Memory System:
+          - Unified Memory: how-to/unified-memory-system.md
+          - Short-Term Memory: how-to/short-term-memory-implementation.md
+          - Memory Graph: how-to/memory-graph.md
+      - AI Agents:
+          - Agent Factory: how-to/agent-factory.md
+          - Smart Router: how-to/smart-router.md
+          - Auto-Chaining: how-to/auto-chaining.md
+      - Integration:
+          - Claude Code: integration/claude-code-integration.md
+          - Webhooks: how-to/webhook-integration.md
+          - Security: how-to/security-architecture.md
+          - HIPAA Compliance: how-to/hipaa-compliance.md
+      - Patterns:
+          - Practical Patterns: how-to/practical-patterns.md
+          - Resilience Patterns: how-to/resilience-patterns.md
+      - Prerequisites: how-to/prerequisites.md
+
+  # Security - Critical cross-cutting concern
+  - Security:
+      - Overview: SECURITY.md
+      - Security Scanning:
+          - Developer Workflow: DEVELOPER_SECURITY_WORKFLOW.md
+          - CI/CD Integration: CI_SECURITY_SCANNING.md
+          - Scanner Architecture: SECURITY_SCANNER_ARCHITECTURE.md
+          - Remediation Process: SECURITY_REMEDIATION_PROCESS.md
+          - API Reference: api-reference/security-scanner.md
+      - Implementation Journey:
+          - Complete Summary: SECURITY_COMPLETE_SUMMARY.md
+          - Phase 2 Details: SECURITY_PHASE2_COMPLETE.md
+          - Phase 3 Details: SECURITY_PHASE3_COMPLETE.md
+      - Standards:
+          - Coding Standards: CODING_STANDARDS.md
+          - Exception Handling: EXCEPTION_HANDLING_GUIDE.md
+
+  # Understanding-oriented
+  - Explanation:
+      - explanation/index.md
+      - Philosophy:
+          - The Empathy Philosophy: explanation/EMPATHY_PHILOSOPHY.md
+          - Multi-Agent Philosophy: explanation/multi-agent-philosophy.md
+          - How Claude Learns: explanation/HOW_CLAUDE_LEARNS.md
+      - Concepts:
+          - Teaching AI Your Philosophy: explanation/TEACHING_AI_YOUR_PHILOSOPHY.md
+          - Adaptive Learning: explanation/adaptive-learning.md
+          - Comparison: explanation/COMPARISON.md
+      - Integration:
+          - Using with LLMs: explanation/USING_EMPATHY_WITH_LLMS.md
+          - MemDocs Integration: explanation/MEMDOCS_EMPATHY_INTEGRATION.md
+      - Non-Technical Guide: explanation/EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md
+
+  # Information-oriented
+  - Reference:
+      - reference/index.md
+      - CLI:
+          - CLI Guide: reference/CLI_GUIDE.md
+          - CLI Cheatsheet: reference/CLI_CHEATSHEET.md
+      - API:
+          - Overview: reference/API_REFERENCE.md
+          - EmpathyOS: reference/empathy-os.md
+          - Configuration: reference/configuration.md
+          - Core: reference/core.md
+          - Config: reference/config.md
+          - Pattern Library: reference/pattern-library.md
+          - Multi-Agent: reference/multi-agent.md
+          - Persistence: reference/persistence.md
+          - LLM Toolkit: reference/llm-toolkit.md
+      - Wizards:
+          - Industry Wizards: reference/wizards.md
+          - Software Wizards: reference/software-wizards.md
+          - AI Wizards: reference/ai-wizards.md
+      - Help:
+          - FAQ: reference/FAQ.md
+          - Troubleshooting: reference/TROUBLESHOOTING.md
+          - Glossary: reference/glossary.md
+          - User Guide: reference/USER_GUIDE.md
+          - Short-Term Memory: reference/SHORT_TERM_MEMORY.md
+
+  - Contributing: contributing.md
+
+  # Book section (separate from main docs)
+  - Book:
+      - Get the Book: get-the-book.md
+      - Cover: book-cover.md
+      - How to Read: guides/how-to-read-this-book.md
+      - Preface: guides/preface.md
+      - Foreword by Claude: guides/foreword.md
+
+# Theme Configuration (Material)
+theme:
+  name: material
+  custom_dir: docs/overrides
+
+  # Color scheme
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  # Features
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+  # Logo and favicon
+  logo: assets/images/empathy-brain-logo.png
+  favicon: assets/images/empathy-brain-logo.png
+
+  # Font
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+# Plugins
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+
+# Markdown Extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Smart-AI-Memory/empathy
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/attune-ai/
+
+  # Plausible Analytics is added via docs/overrides/main.html
+
+  # Open Graph / Social sharing
+  meta:
+    - property: og:type
+      content: website
+    - property: og:title
+      content: Empathy Framework - Level 4 Anticipatory AI
+    - property: og:description
+      content: Build AI systems that predict problems before they happen. Production-ready framework for AI-human collaboration.
+    - property: og:image
+      content: https://smartaimemory.com/assets/images/empathy-brain-logo.png
+    - property: og:url
+      content: https://smartaimemory.com
+    - name: twitter:card
+      content: summary_large_image
+    - name: twitter:title
+      content: Empathy Framework - Level 4 Anticipatory AI
+    - name: twitter:description
+      content: Build AI systems that predict problems before they happen.
+    - name: twitter:image
+      content: https://smartaimemory.com/assets/images/empathy-brain-logo.png
+    - name: keywords
+      content: AI framework, anticipatory AI, machine learning, multi-agent systems, healthcare AI, HIPAA compliant, Python AI library

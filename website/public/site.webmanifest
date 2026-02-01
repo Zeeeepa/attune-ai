@@ -1,0 +1,9 @@
+{
+  "name": "Empathy",
+  "short_name": "Empathy",
+  "description": "Level 4 Anticipatory Intelligence for AI-human collaboration",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#6366f1",
+  "background_color": "#ffffff"
+}

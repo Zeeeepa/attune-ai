@@ -1,0 +1,97 @@
+---
+title: "Empathy Framework v4.4.0: Native Agent Orchestration for Claude Code"
+date: "2026-01-19"
+author: "Patrick Roebuck"
+excerpt: "Introducing native composition patterns, 10 smart wizards, and seamless Claude Code integration. No external dependencies required."
+tags: ["release", "claude-code", "agents", "orchestration", "v4.4.0"]
+published: true
+---
+
+**Empathy Framework v4.4.0** is here with native agent orchestration designed specifically for Claude Code users.
+
+## What's New in v4.4.0
+
+### Native Composition Patterns
+
+We've replaced external dependencies with 6 built-in composition patterns:
+
+- **Sequential** - Tasks executed in order (A then B then C)
+- **Parallel** - Independent tasks run simultaneously
+- **Debate** - Multiple perspectives synthesized into consensus
+- **Teaching** - Cost-effective generation with expert validation
+- **Refinement** - Iterative improvement through draft/review cycles
+- **Adaptive** - Smart routing based on task complexity
+
+No CrewAI. No LangGraph. Just native Python patterns that work out of the box.
+
+### 10 Smart Wizards
+
+Production-ready wizards for software development:
+
+| Wizard | Domain | Description |
+|--------|--------|-------------|
+| `security-audit` | Security | Vulnerability scanning, injection risks, compliance |
+| `code-review` | Quality | Best practices, maintainability, bug detection |
+| `bug-predict` | Debugging | Pattern-based bug prediction |
+| `perf-audit` | Performance | Bottleneck identification, optimization |
+| `refactor-plan` | Architecture | Safe refactoring strategies |
+| `test-gen` | Testing | Test case generation, coverage improvement |
+| `doc-gen` | Documentation | API docs, READMEs, guides |
+| `dependency-check` | Dependencies | Vulnerability and license auditing |
+| `release-prep` | Release | Pre-release quality gates |
+| `research` | Research | Information synthesis |
+
+### 14 Integrated Workflows
+
+10 base workflows plus 4 new meta-workflows:
+
+- **release-prep** - Automated release preparation with health checks
+- **test-coverage-boost** - Intelligent test generation to hit coverage targets
+- **test-maintenance** - Keep tests healthy and relevant
+- **manage-docs** - Documentation quality management
+
+## Claude Code Integration
+
+**Agent and team creation features require Claude Code.** This includes:
+
+- Socratic agent builder (guided agent creation)
+- Dynamic agent composition
+- Custom team orchestration
+- Real-time agent spawning
+
+Core workflows work with any provider (OpenAI, Gemini, Ollama), but the agent creation magic requires Claude.
+
+## Getting Started
+
+```bash
+# Install
+pip install empathy-framework
+
+# Run a wizard
+empathy workflow run security-audit
+
+# Run with context
+empathy workflow run test-gen --input '{"path": "./src"}'
+
+# Check project health
+empathy workflow run release-prep
+```
+
+## Why Native Patterns?
+
+1. **Zero Dependencies** - No pip install of external frameworks
+2. **Faster Startup** - No heavy framework initialization
+3. **Better Debugging** - Clear Python stack traces
+4. **Full Control** - Customize patterns without fighting abstractions
+
+## Upgrade from v4.3
+
+```bash
+pip install --upgrade empathy-framework
+```
+
+If you were using CrewAI integration, see our [migration guide](/framework-docs/guides/CREWAI_MIGRATION/) for the native pattern equivalents.
+
+---
+
+*Questions? Join the discussion on [GitHub](https://github.com/Smart-AI-Memory/empathy-framework/discussions).*
