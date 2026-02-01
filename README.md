@@ -35,6 +35,30 @@ pip install empathy-framework[developer]
 
 ---
 
+## What's New in v5.3.0
+
+**🎨 Dashboard Enhancements** - Improved usability and clarity:
+
+- **Agent Display Names** - Human-readable labels for agents in dashboard (e.g., "Code Analyzer" instead of UUID)
+- **Comprehensive Help Panel** - 5-section accordion explaining dashboard features, use cases, and Redis setup
+- **UX Improvements** - "Source Agent:" label clarity, "Redis Requires Enabling" status message
+- **Browser Cache Busting** - Date-based versioning ensures updates appear immediately
+
+**📚 Documentation Improvements**:
+
+- Clarified flexible context strategy (200K subscription + 1M API routing)
+- Added Redis requirement documentation for dashboard
+- Root directory cleanup (8 archived files)
+
+**🧪 Test Infrastructure**:
+
+- Sequential test execution to fix import timing issues
+- All agent tracking tests passing (19/19)
+
+[See Full Changelog](CHANGELOG.md#530---2026-01-31)
+
+---
+
 ## What's New in v5.1.0
 
 **🤖 Multi-Agent Orchestration** - Full support for custom agents and Anthropic LLM agents:
