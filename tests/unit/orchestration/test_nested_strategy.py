@@ -228,7 +228,7 @@ class TestNestedStrategy:
         ref = WorkflowReference(workflow_id="test-workflow")
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration._strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,
@@ -254,7 +254,7 @@ class TestNestedStrategy:
         ref = WorkflowReference(inline=inline)
         strategy = NestedStrategy(workflow_ref=ref)
 
-        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration._strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,
@@ -308,7 +308,7 @@ class TestNestedStrategy:
             "config": {"setting": True},
         }
 
-        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration._strategies.get_strategy") as mock_get:
             mock_inner = AsyncMock()
             mock_inner.execute.return_value = StrategyResult(
                 success=True,

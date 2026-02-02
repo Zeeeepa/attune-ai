@@ -235,7 +235,7 @@ class TestConditionalStrategy:
         )
 
         # Mock the branch strategy execution
-        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration._strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True,
@@ -262,7 +262,7 @@ class TestConditionalStrategy:
             condition=condition, then_branch=then_branch, else_branch=else_branch
         )
 
-        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration._strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True,
@@ -318,7 +318,7 @@ class TestMultiConditionalStrategy:
 
         strategy = MultiConditionalStrategy(conditions=conditions)
 
-        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration._strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True, outputs=[], aggregated_output={}, total_duration=1.0
@@ -340,7 +340,7 @@ class TestMultiConditionalStrategy:
 
         strategy = MultiConditionalStrategy(conditions=conditions, default_branch=default)
 
-        with patch("attune.orchestration.execution_strategies.get_strategy") as mock_get:
+        with patch("attune.orchestration._strategies.get_strategy") as mock_get:
             mock_branch_strategy = AsyncMock()
             mock_branch_strategy.execute.return_value = StrategyResult(
                 success=True, outputs=[], aggregated_output={}, total_duration=0.5

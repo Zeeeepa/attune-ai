@@ -450,7 +450,7 @@ class TestConditionalStrategyExecute:
         context = {"success": True}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -480,7 +480,7 @@ class TestConditionalStrategyExecute:
         context = {"success": False}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -529,7 +529,7 @@ class TestConditionalStrategyExecute:
         context = {"count": 5}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             await strategy.execute([], context)
@@ -568,7 +568,7 @@ class TestConditionalStrategyExecute:
         context = {"coverage": 85, "tests_passing": True}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -616,7 +616,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "premium"}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -648,7 +648,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "capable"}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -680,7 +680,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "cheap"}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -735,7 +735,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"score": 75}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
@@ -770,7 +770,7 @@ class TestMultiConditionalStrategyExecute:
         context = {"tier": "capable", "priority": "high"}
 
         with patch(
-            "attune.orchestration.execution_strategies.get_strategy",
+            "attune.orchestration._strategies.get_strategy",
             return_value=mock_branch_strategy,
         ):
             result = await strategy.execute([], context)
