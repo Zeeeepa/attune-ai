@@ -39,21 +39,20 @@ import asyncio
 import logging
 from typing import Any
 
-from .agent_templates import AgentTemplate
-
-# Import from submodule for modular organization
-from ._strategies.data_classes import AgentResult, StrategyResult
-from ._strategies.conditions import Branch, Condition, ConditionEvaluator, ConditionType
-from ._strategies.nesting import (
-    WORKFLOW_REGISTRY,
-    InlineWorkflow,
-    NestingContext,
-    WorkflowDefinition,
-    WorkflowReference,
-    get_workflow,
-    register_workflow,
-)
 from ._strategies.base import ExecutionStrategy
+from ._strategies.conditional_strategies import (
+    ConditionalStrategy,
+    MultiConditionalStrategy,
+    NestedSequentialStrategy,
+    NestedStrategy,
+    StepDefinition,  # noqa: F401 - re-exported
+)
+from ._strategies.conditions import (
+    Branch,  # noqa: F401 - re-exported
+    Condition,  # noqa: F401 - re-exported
+    ConditionEvaluator,  # noqa: F401 - re-exported
+    ConditionType,  # noqa: F401 - re-exported
+)
 from ._strategies.core_strategies import (
     AdaptiveStrategy,
     DebateStrategy,
@@ -62,14 +61,19 @@ from ._strategies.core_strategies import (
     SequentialStrategy,
     TeachingStrategy,
 )
-from ._strategies.conditional_strategies import (
-    ConditionalStrategy,
-    MultiConditionalStrategy,
-    NestedSequentialStrategy,
-    NestedStrategy,
-    StepDefinition,
+from ._strategies.nesting import (
+    WORKFLOW_REGISTRY,  # noqa: F401 - re-exported
+    InlineWorkflow,  # noqa: F401 - re-exported
+    NestingContext,  # noqa: F401 - re-exported
+    WorkflowDefinition,  # noqa: F401 - re-exported
+    WorkflowReference,  # noqa: F401 - re-exported
+    get_workflow,  # noqa: F401 - re-exported
+    register_workflow,  # noqa: F401 - re-exported
 )
-from ._strategies import register_strategy
+
+# Import from submodule for modular organization
+from ._strategies.data_classes import AgentResult, StrategyResult
+from .agent_templates import AgentTemplate
 
 logger = logging.getLogger(__name__)
 

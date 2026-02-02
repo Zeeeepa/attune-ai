@@ -21,9 +21,7 @@ import sys
 import time
 import uuid
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -42,7 +40,7 @@ except ImportError:
 # Import caching infrastructure
 from attune.cache import BaseCache
 from attune.config import _validate_file_path
-from attune.cost_tracker import MODEL_PRICING, CostTracker
+from attune.cost_tracker import CostTracker
 
 # Import unified types from attune.models
 from attune.models import (
@@ -51,11 +49,32 @@ from attune.models import (
     TaskRoutingRecord,
     TelemetryBackend,
 )
-from attune.models import ModelProvider as UnifiedModelProvider
-from attune.models import ModelTier as UnifiedModelTier
 
 # Import mixins (extracted for maintainability)
 from .caching import CachedResponse, CachingMixin
+
+# Import deprecated enums from compat module (extracted for maintainability)
+# These are re-exported for backward compatibility
+from .compat import (
+    PROVIDER_MODELS,  # noqa: F401 - re-exported
+    ModelProvider,
+    ModelTier,
+    _build_provider_models,  # noqa: F401 - re-exported
+)
+
+# Import cost tracking mixin (extracted for maintainability)
+from .cost_mixin import CostTrackingMixin
+
+# Import data classes (extracted for maintainability)
+from .data_classes import (
+    CostReport,  # noqa: F401 - re-exported
+    StageQualityMetrics,  # noqa: F401 - re-exported
+    WorkflowResult,
+    WorkflowStage,
+)
+
+# Import parsing mixin (extracted for maintainability)
+from .parsing_mixin import ResponseParsingMixin
 
 # Import progress tracking
 from .progress import (
@@ -84,185 +103,9 @@ logger = logging.getLogger(__name__)
 # Default path for workflow run history
 WORKFLOW_HISTORY_FILE = ".attune/workflow_runs.json"
 
-
-# Local enums for backward compatibility - DEPRECATED
-# New code should use attune.models.ModelTier/ModelProvider
-class ModelTier(Enum):
-    """DEPRECATED: Model tier for cost optimization.
-
-    This enum is deprecated and will be removed in v5.0.
-    Use attune.models.ModelTier instead.
-
-    Migration:
-        # Old:
-        from attune.workflows.base import ModelTier
-
-        # New:
-        from attune.models import ModelTier
-
-    Why deprecated:
-        - Creates confusion with dual definitions
-        - attune.models.ModelTier is the canonical location
-        - Simplifies imports and reduces duplication
-    """
-
-    CHEAP = "cheap"  # Haiku/GPT-4o-mini - $0.25-1.25/M tokens
-    CAPABLE = "capable"  # Sonnet/GPT-4o - $3-15/M tokens
-    PREMIUM = "premium"  # Opus/o1 - $15-75/M tokens
-
-    def __init__(self, value: str):
-        """Initialize with deprecation warning."""
-        # Only warn once per process, not per instance
-        import warnings
-
-        # Use self.__class__ instead of ModelTier (class not yet defined during creation)
-        if not hasattr(self.__class__, "_deprecation_warned"):
-            warnings.warn(
-                "workflows.base.ModelTier is deprecated and will be removed in v5.0. "
-                "Use attune.models.ModelTier instead. "
-                "Update imports: from attune.models import ModelTier",
-                DeprecationWarning,
-                stacklevel=4,
-            )
-            self.__class__._deprecation_warned = True
-
-    def to_unified(self) -> UnifiedModelTier:
-        """Convert to unified ModelTier from attune.models."""
-        return UnifiedModelTier(self.value)
-
-
-class ModelProvider(Enum):
-    """Supported model providers."""
-
-    ANTHROPIC = "anthropic"
-    OPENAI = "openai"
-    GOOGLE = "google"  # Google Gemini models
-    OLLAMA = "ollama"
-    HYBRID = "hybrid"  # Mix of best models from different providers
-    CUSTOM = "custom"  # User-defined custom models
-
-    def to_unified(self) -> UnifiedModelProvider:
-        """Convert to unified ModelProvider from attune.models.
-
-        As of v5.0.0, framework is Claude-native. All providers map to ANTHROPIC.
-        """
-        # v5.0.0: Framework is Claude-native, only ANTHROPIC supported
-        return UnifiedModelProvider.ANTHROPIC
-
-
-# Import unified MODEL_REGISTRY as single source of truth
-# This import is placed here intentionally to avoid circular imports
-from attune.models import MODEL_REGISTRY  # noqa: E402
-
-
-def _build_provider_models() -> dict[ModelProvider, dict[ModelTier, str]]:
-    """Build PROVIDER_MODELS from MODEL_REGISTRY.
-
-    This ensures PROVIDER_MODELS stays in sync with the single source of truth.
-    """
-    result: dict[ModelProvider, dict[ModelTier, str]] = {}
-
-    # Map string provider names to ModelProvider enum
-    provider_map = {
-        "anthropic": ModelProvider.ANTHROPIC,
-        "openai": ModelProvider.OPENAI,
-        "google": ModelProvider.GOOGLE,
-        "ollama": ModelProvider.OLLAMA,
-        "hybrid": ModelProvider.HYBRID,
-    }
-
-    # Map string tier names to ModelTier enum
-    tier_map = {
-        "cheap": ModelTier.CHEAP,
-        "capable": ModelTier.CAPABLE,
-        "premium": ModelTier.PREMIUM,
-    }
-
-    for provider_str, tiers in MODEL_REGISTRY.items():
-        if provider_str not in provider_map:
-            continue  # Skip custom providers
-        provider_enum = provider_map[provider_str]
-        result[provider_enum] = {}
-        for tier_str, model_info in tiers.items():
-            if tier_str in tier_map:
-                result[provider_enum][tier_map[tier_str]] = model_info.id
-
-    return result
-
-
-# Model mappings by provider and tier (derived from MODEL_REGISTRY)
-PROVIDER_MODELS: dict[ModelProvider, dict[ModelTier, str]] = _build_provider_models()
-
-
-@dataclass
-class WorkflowStage:
-    """Represents a single stage in a workflow."""
-
-    name: str
-    tier: ModelTier
-    description: str
-    input_tokens: int = 0
-    output_tokens: int = 0
-    cost: float = 0.0
-    result: Any = None
-    duration_ms: int = 0
-    skipped: bool = False
-    skip_reason: str | None = None
-
-
-@dataclass
-class CostReport:
-    """Cost breakdown for a workflow execution."""
-
-    total_cost: float
-    baseline_cost: float  # If all stages used premium
-    savings: float
-    savings_percent: float
-    by_stage: dict[str, float] = field(default_factory=dict)
-    by_tier: dict[str, float] = field(default_factory=dict)
-    # Cache metrics
-    cache_hits: int = 0
-    cache_misses: int = 0
-    cache_hit_rate: float = 0.0
-    estimated_cost_without_cache: float = 0.0
-    savings_from_cache: float = 0.0
-
-
-@dataclass
-class StageQualityMetrics:
-    """Quality metrics for stage output validation."""
-
-    execution_succeeded: bool
-    output_valid: bool
-    quality_improved: bool  # Workflow-specific (e.g., health score improved)
-    error_type: str | None
-    validation_error: str | None
-
-
-@dataclass
-class WorkflowResult:
-    """Result of a workflow execution."""
-
-    success: bool
-    stages: list[WorkflowStage]
-    final_output: Any
-    cost_report: CostReport
-    started_at: datetime
-    completed_at: datetime
-    total_duration_ms: int
-    provider: str = "unknown"
-    error: str | None = None
-    # Structured error taxonomy for reliability
-    error_type: str | None = None  # "config" | "runtime" | "provider" | "timeout" | "validation"
-    transient: bool = False  # True if retry is reasonable (e.g., provider timeout)
-    # Optional metadata and summary for extended reporting
-    metadata: dict[str, Any] = field(default_factory=dict)
-    summary: str | None = None
-
-    @property
-    def duration_seconds(self) -> float:
-        """Get duration in seconds (computed from total_duration_ms)."""
-        return self.total_duration_ms / 1000.0
+# Data classes moved to data_classes.py for improved import performance
+# WorkflowStage, CostReport, StageQualityMetrics, WorkflowResult are now
+# imported from .data_classes and re-exported for backward compatibility
 
 
 # Global singleton for workflow history store (lazy-initialized)
@@ -522,10 +365,11 @@ def get_workflow_stats(history_file: str = WORKFLOW_HISTORY_FILE) -> dict:
     }
 
 
-class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
+class BaseWorkflow(CachingMixin, TelemetryMixin, ResponseParsingMixin, CostTrackingMixin, ABC):
     """Base class for multi-model workflows.
 
-    Inherits from CachingMixin and TelemetryMixin (extracted for maintainability).
+    Inherits from CachingMixin, TelemetryMixin, ResponseParsingMixin, and
+    CostTrackingMixin (extracted for maintainability).
 
     Subclasses define stages and tier mappings:
 
@@ -1192,73 +1036,8 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
             return f"Error calling LLM: {type(e).__name__}", 0, 0
 
     # Note: _track_telemetry is inherited from TelemetryMixin
-
-    def _calculate_cost(self, tier: ModelTier, input_tokens: int, output_tokens: int) -> float:
-        """Calculate cost for a stage."""
-        tier_name = tier.value
-        pricing = MODEL_PRICING.get(tier_name, MODEL_PRICING["capable"])
-        input_cost = (input_tokens / 1_000_000) * pricing["input"]
-        output_cost = (output_tokens / 1_000_000) * pricing["output"]
-        return input_cost + output_cost
-
-    def _calculate_baseline_cost(self, input_tokens: int, output_tokens: int) -> float:
-        """Calculate what the cost would be using premium tier."""
-        pricing = MODEL_PRICING["premium"]
-        input_cost = (input_tokens / 1_000_000) * pricing["input"]
-        output_cost = (output_tokens / 1_000_000) * pricing["output"]
-        return input_cost + output_cost
-
-    def _generate_cost_report(self) -> CostReport:
-        """Generate cost report from completed stages."""
-        total_cost = 0.0
-        baseline_cost = 0.0
-        by_stage: dict[str, float] = {}
-        by_tier: dict[str, float] = {}
-
-        for stage in self._stages_run:
-            if stage.skipped:
-                continue
-
-            total_cost += stage.cost
-            by_stage[stage.name] = stage.cost
-
-            tier_name = stage.tier.value
-            by_tier[tier_name] = by_tier.get(tier_name, 0.0) + stage.cost
-
-            # Calculate what this would cost at premium tier
-            baseline_cost += self._calculate_baseline_cost(stage.input_tokens, stage.output_tokens)
-
-        savings = baseline_cost - total_cost
-        savings_percent = (savings / baseline_cost * 100) if baseline_cost > 0 else 0.0
-
-        # Calculate cache metrics using CachingMixin
-        cache_stats = self._get_cache_stats()
-        cache_hits = cache_stats["hits"]
-        cache_misses = cache_stats["misses"]
-        cache_hit_rate = cache_stats["hit_rate"]
-        estimated_cost_without_cache = total_cost
-        savings_from_cache = 0.0
-
-        # Estimate cost without cache (assumes cache hits would have incurred full cost)
-        if cache_hits > 0:
-            avg_cost_per_call = total_cost / cache_misses if cache_misses > 0 else 0.0
-            estimated_additional_cost = cache_hits * avg_cost_per_call
-            estimated_cost_without_cache = total_cost + estimated_additional_cost
-            savings_from_cache = estimated_additional_cost
-
-        return CostReport(
-            total_cost=total_cost,
-            baseline_cost=baseline_cost,
-            savings=savings,
-            savings_percent=savings_percent,
-            by_stage=by_stage,
-            by_tier=by_tier,
-            cache_hits=cache_hits,
-            cache_misses=cache_misses,
-            cache_hit_rate=cache_hit_rate,
-            estimated_cost_without_cache=estimated_cost_without_cache,
-            savings_from_cache=savings_from_cache,
-        )
+    # Note: _calculate_cost, _calculate_baseline_cost, and _generate_cost_report
+    #       are inherited from CostTrackingMixin
 
     @abstractmethod
     async def run_stage(
@@ -2270,403 +2049,3 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
             parts.append(input_payload)
 
         return "\n".join(parts)
-
-    def _parse_xml_response(self, response: str) -> dict[str, Any]:
-        """Parse an XML response if XML enforcement is enabled.
-
-        Args:
-            response: The LLM response text.
-
-        Returns:
-            Dictionary with parsed fields or raw response data.
-
-        """
-        from attune.prompts import XmlResponseParser
-
-        config = self._get_xml_config()
-
-        if not config.get("enforce_response_xml", False):
-            # No parsing needed, return as-is
-            return {
-                "_parsed_response": None,
-                "_raw": response,
-            }
-
-        fallback = config.get("fallback_on_parse_error", True)
-        parser = XmlResponseParser(fallback_on_error=fallback)
-        parsed = parser.parse(response)
-
-        return {
-            "_parsed_response": parsed,
-            "_raw": response,
-            "summary": parsed.summary,
-            "findings": [f.to_dict() for f in parsed.findings],
-            "checklist": parsed.checklist,
-            "xml_parsed": parsed.success,
-            "parse_errors": parsed.errors,
-        }
-
-    def _extract_findings_from_response(
-        self,
-        response: str,
-        files_changed: list[str],
-        code_context: str = "",
-    ) -> list[dict[str, Any]]:
-        """Extract structured findings from LLM response.
-
-        Tries multiple strategies in order:
-        1. XML parsing (if XML tags present)
-        2. Regex-based extraction for file:line patterns
-        3. Returns empty list if no findings extractable
-
-        Args:
-            response: Raw LLM response text
-            files_changed: List of files being analyzed (for context)
-            code_context: Original code being reviewed (optional)
-
-        Returns:
-            List of findings matching WorkflowFinding schema:
-            [
-                {
-                    "id": "unique-id",
-                    "file": "relative/path.py",
-                    "line": 42,
-                    "column": 10,
-                    "severity": "high",
-                    "category": "security",
-                    "message": "Brief message",
-                    "details": "Extended explanation",
-                    "recommendation": "Fix suggestion"
-                }
-            ]
-
-        """
-        import re
-        import uuid
-
-        findings: list[dict[str, Any]] = []
-
-        # Strategy 1: Try XML parsing first
-        response_lower = response.lower()
-        if (
-            "<finding>" in response_lower
-            or "<issue>" in response_lower
-            or "<findings>" in response_lower
-        ):
-            # Parse XML directly (bypass config checks)
-            from attune.prompts import XmlResponseParser
-
-            parser = XmlResponseParser(fallback_on_error=True)
-            parsed = parser.parse(response)
-
-            if parsed.success and parsed.findings:
-                for raw_finding in parsed.findings:
-                    enriched = self._enrich_finding_with_location(
-                        raw_finding.to_dict(),
-                        files_changed,
-                    )
-                    findings.append(enriched)
-                return findings
-
-        # Strategy 2: Regex-based extraction for common patterns
-        # Match patterns like:
-        # - "src/auth.py:42: SQL injection found"
-        # - "In file src/auth.py line 42"
-        # - "auth.py (line 42, column 10)"
-        patterns = [
-            # Pattern 1: file.py:line:column: message
-            r"([^\s:]+\.(?:py|ts|tsx|js|jsx|java|go|rb|php)):(\d+):(\d+):\s*(.+)",
-            # Pattern 2: file.py:line: message
-            r"([^\s:]+\.(?:py|ts|tsx|js|jsx|java|go|rb|php)):(\d+):\s*(.+)",
-            # Pattern 3: in file X line Y
-            r"(?:in file|file)\s+([^\s]+\.(?:py|ts|tsx|js|jsx|java|go|rb|php))\s+line\s+(\d+)",
-            # Pattern 4: file.py (line X)
-            r"([^\s]+\.(?:py|ts|tsx|js|jsx|java|go|rb|php))\s*\(line\s+(\d+)(?:,\s*col(?:umn)?\s+(\d+))?\)",
-        ]
-
-        for pattern in patterns:
-            matches = re.findall(pattern, response, re.IGNORECASE)
-            for match in matches:
-                if len(match) >= 2:
-                    file_path = match[0]
-                    line = int(match[1])
-
-                    # Handle different pattern formats
-                    if len(match) == 4 and match[2].isdigit():
-                        # Pattern 1: file:line:col:message
-                        column = int(match[2])
-                        message = match[3]
-                    elif len(match) == 3 and match[2] and not match[2].isdigit():
-                        # Pattern 2: file:line:message
-                        column = 1
-                        message = match[2]
-                    elif len(match) == 3 and match[2].isdigit():
-                        # Pattern 4: file (line col)
-                        column = int(match[2])
-                        message = ""
-                    else:
-                        # Pattern 3: in file X line Y (no message)
-                        column = 1
-                        message = ""
-
-                    # Determine severity from keywords in message
-                    severity = self._infer_severity(message)
-                    category = self._infer_category(message)
-
-                    findings.append(
-                        {
-                            "id": str(uuid.uuid4())[:8],
-                            "file": file_path,
-                            "line": line,
-                            "column": column,
-                            "severity": severity,
-                            "category": category,
-                            "message": message.strip() if message else "",
-                            "details": "",
-                            "recommendation": "",
-                        },
-                    )
-
-        # Deduplicate by file:line
-        seen = set()
-        unique_findings = []
-        for finding in findings:
-            key = (finding["file"], finding["line"])
-            if key not in seen:
-                seen.add(key)
-                unique_findings.append(finding)
-
-        return unique_findings
-
-    def _enrich_finding_with_location(
-        self,
-        raw_finding: dict[str, Any],
-        files_changed: list[str],
-    ) -> dict[str, Any]:
-        """Enrich a finding from XML parser with file/line/column fields.
-
-        Args:
-            raw_finding: Finding dict from XML parser (has 'location' string field)
-            files_changed: List of files being analyzed
-
-        Returns:
-            Enriched finding dict with file, line, column fields
-
-        """
-        import uuid
-
-        location_str = raw_finding.get("location", "")
-        file_path, line, column = self._parse_location_string(location_str, files_changed)
-
-        # Map category from severity or title keywords
-        category = self._infer_category(
-            raw_finding.get("title", "") + " " + raw_finding.get("details", ""),
-        )
-
-        return {
-            "id": str(uuid.uuid4())[:8],
-            "file": file_path,
-            "line": line,
-            "column": column,
-            "severity": raw_finding.get("severity", "medium"),
-            "category": category,
-            "message": raw_finding.get("title", ""),
-            "details": raw_finding.get("details", ""),
-            "recommendation": raw_finding.get("fix", ""),
-        }
-
-    def _parse_location_string(
-        self,
-        location: str,
-        files_changed: list[str],
-    ) -> tuple[str, int, int]:
-        """Parse a location string to extract file, line, column.
-
-        Handles formats like:
-        - "src/auth.py:42:10"
-        - "src/auth.py:42"
-        - "auth.py line 42"
-        - "line 42 in auth.py"
-
-        Args:
-            location: Location string from finding
-            files_changed: List of files being analyzed (for fallback)
-
-        Returns:
-            Tuple of (file_path, line_number, column_number)
-            Defaults: ("", 1, 1) if parsing fails
-
-        """
-        import re
-
-        if not location:
-            # Fallback: use first file if available
-            return (files_changed[0] if files_changed else "", 1, 1)
-
-        # Try colon-separated format: file.py:line:col
-        match = re.search(
-            r"([^\s:]+\.(?:py|ts|tsx|js|jsx|java|go|rb|php)):(\d+)(?::(\d+))?",
-            location,
-        )
-        if match:
-            file_path = match.group(1)
-            line = int(match.group(2))
-            column = int(match.group(3)) if match.group(3) else 1
-            return (file_path, line, column)
-
-        # Try "line X in file.py" format
-        match = re.search(
-            r"line\s+(\d+)\s+(?:in|of)\s+([^\s]+\.(?:py|ts|tsx|js|jsx|java|go|rb|php))",
-            location,
-            re.IGNORECASE,
-        )
-        if match:
-            line = int(match.group(1))
-            file_path = match.group(2)
-            return (file_path, line, 1)
-
-        # Try "file.py line X" format
-        match = re.search(
-            r"([^\s]+\.(?:py|ts|tsx|js|jsx|java|go|rb|php))\s+line\s+(\d+)",
-            location,
-            re.IGNORECASE,
-        )
-        if match:
-            file_path = match.group(1)
-            line = int(match.group(2))
-            return (file_path, line, 1)
-
-        # Extract just line number if present
-        match = re.search(r"line\s+(\d+)", location, re.IGNORECASE)
-        if match:
-            line = int(match.group(1))
-            # Use first file from files_changed as fallback
-            file_path = files_changed[0] if files_changed else ""
-            return (file_path, line, 1)
-
-        # Couldn't parse - return defaults
-        return (files_changed[0] if files_changed else "", 1, 1)
-
-    def _infer_severity(self, text: str) -> str:
-        """Infer severity from keywords in text.
-
-        Args:
-            text: Message or title text
-
-        Returns:
-            Severity level: critical, high, medium, low, or info
-
-        """
-        text_lower = text.lower()
-
-        if any(
-            word in text_lower
-            for word in [
-                "critical",
-                "severe",
-                "exploit",
-                "vulnerability",
-                "injection",
-                "remote code execution",
-                "rce",
-            ]
-        ):
-            return "critical"
-
-        if any(
-            word in text_lower
-            for word in [
-                "high",
-                "security",
-                "unsafe",
-                "dangerous",
-                "xss",
-                "csrf",
-                "auth",
-                "password",
-                "secret",
-            ]
-        ):
-            return "high"
-
-        if any(
-            word in text_lower
-            for word in [
-                "warning",
-                "issue",
-                "problem",
-                "bug",
-                "error",
-                "deprecated",
-                "leak",
-            ]
-        ):
-            return "medium"
-
-        if any(word in text_lower for word in ["low", "minor", "style", "format", "typo"]):
-            return "low"
-
-        return "info"
-
-    def _infer_category(self, text: str) -> str:
-        """Infer finding category from keywords.
-
-        Args:
-            text: Message or title text
-
-        Returns:
-            Category: security, performance, maintainability, style, or correctness
-
-        """
-        text_lower = text.lower()
-
-        if any(
-            word in text_lower
-            for word in [
-                "security",
-                "vulnerability",
-                "injection",
-                "xss",
-                "csrf",
-                "auth",
-                "encrypt",
-                "password",
-                "secret",
-                "unsafe",
-            ]
-        ):
-            return "security"
-
-        if any(
-            word in text_lower
-            for word in [
-                "performance",
-                "slow",
-                "memory",
-                "leak",
-                "inefficient",
-                "optimization",
-                "cache",
-            ]
-        ):
-            return "performance"
-
-        if any(
-            word in text_lower
-            for word in [
-                "complex",
-                "refactor",
-                "duplicate",
-                "maintainability",
-                "readability",
-                "documentation",
-            ]
-        ):
-            return "maintainability"
-
-        if any(
-            word in text_lower for word in ["style", "format", "lint", "convention", "whitespace"]
-        ):
-            return "style"
-
-        return "correctness"
