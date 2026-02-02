@@ -43,10 +43,13 @@ class CodeReviewResult:
 
 
 def get_empathy_dir() -> Path:
-    """Get the .empathy directory, creating if needed."""
-    empathy_dir = Path(".empathy")
-    empathy_dir.mkdir(exist_ok=True)
-    return empathy_dir
+    """Get the .attune directory, creating if needed.
+
+    Note: Function retains 'empathy' name for backward compatibility.
+    """
+    attune_dir = Path(".attune")
+    attune_dir.mkdir(exist_ok=True)
+    return attune_dir
 
 
 def write_code_review_results(
