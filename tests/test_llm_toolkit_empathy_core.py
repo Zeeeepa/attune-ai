@@ -96,7 +96,7 @@ class TestEmpathyLLMProviderCreation:
         mock_provider = MagicMock()
         mock_provider_class.return_value = mock_provider
 
-        llm = EmpathyLLM(provider="openai", api_key="test-key")
+        EmpathyLLM(provider="openai", api_key="test-key")
 
         mock_provider_class.assert_called_once()
 
@@ -108,7 +108,7 @@ class TestEmpathyLLMProviderCreation:
         mock_provider = MagicMock()
         mock_provider_class.return_value = mock_provider
 
-        llm = EmpathyLLM(provider="gemini", api_key="test-key")
+        EmpathyLLM(provider="gemini", api_key="test-key")
 
         mock_provider_class.assert_called_once()
 
@@ -120,7 +120,7 @@ class TestEmpathyLLMProviderCreation:
         mock_provider = MagicMock()
         mock_provider_class.return_value = mock_provider
 
-        llm = EmpathyLLM(provider="google", api_key="test-key")
+        EmpathyLLM(provider="google", api_key="test-key")
 
         mock_provider_class.assert_called_once()
 
@@ -132,7 +132,7 @@ class TestEmpathyLLMProviderCreation:
         mock_provider = MagicMock()
         mock_provider_class.return_value = mock_provider
 
-        llm = EmpathyLLM(provider="local")
+        EmpathyLLM(provider="local")
 
         mock_provider_class.assert_called_once()
 
@@ -152,7 +152,7 @@ class TestEmpathyLLMProviderCreation:
 
         mock_provider_class.return_value = MagicMock()
 
-        llm = EmpathyLLM(provider="anthropic")
+        EmpathyLLM(provider="anthropic")
 
         # Check that environment key was used
         call_kwargs = mock_provider_class.call_args[1]
@@ -907,7 +907,7 @@ class TestProviderEnvVariables:
 
         mock_openai_class.return_value = MagicMock()
 
-        llm = EmpathyLLM(api_key=None, provider="openai")
+        EmpathyLLM(api_key=None, provider="openai")
 
         # Verify OpenAI provider was created with env key
         mock_openai_class.assert_called_once()
@@ -922,7 +922,7 @@ class TestProviderEnvVariables:
 
         mock_gemini_class.return_value = MagicMock()
 
-        llm = EmpathyLLM(api_key=None, provider="gemini")
+        EmpathyLLM(api_key=None, provider="gemini")
 
         mock_gemini_class.assert_called_once()
         call_kwargs = mock_gemini_class.call_args[1]
@@ -942,7 +942,7 @@ class TestProviderEnvVariables:
 
         mock_gemini_class.return_value = MagicMock()
 
-        llm = EmpathyLLM(api_key=None, provider="google")
+        EmpathyLLM(api_key=None, provider="google")
 
         mock_gemini_class.assert_called_once()
 

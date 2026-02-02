@@ -106,5 +106,5 @@ class TestTestGenSteps:
 
     def test_all_steps_have_max_tokens(self):
         """Test that all steps have max_tokens configured."""
-        for step_name, step_config in TEST_GEN_STEPS.items():
+        for _step_name, step_config in TEST_GEN_STEPS.items():
             assert step_config.max_tokens > 0

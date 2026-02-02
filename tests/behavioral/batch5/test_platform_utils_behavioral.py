@@ -306,7 +306,7 @@ class TestPathUtilities:
         assert not new_dir.exists()
 
         # When
-        result = ensure_dir(new_dir)
+        ensure_dir(new_dir)
 
         # Then
         assert new_dir.exists()
@@ -320,7 +320,7 @@ class TestPathUtilities:
         nested_dir = tmp_path / "a" / "b" / "c"
 
         # When
-        result = ensure_dir(nested_dir)
+        ensure_dir(nested_dir)
 
         # Then
         assert nested_dir.exists()
@@ -336,7 +336,7 @@ class TestPathUtilities:
         test_dir.mkdir()
 
         # When
-        result = ensure_dir(test_dir)
+        ensure_dir(test_dir)
 
         # Then
         assert test_dir.exists()

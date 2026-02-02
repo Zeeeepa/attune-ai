@@ -287,7 +287,7 @@ class TestRunStage:
         mock_analyze = mocker.patch.object(workflow, "_analyze", return_value=({}, 10, 20))
 
         # When
-        result = await workflow.run_stage("analyze", ModelTier.CAPABLE, {})
+        await workflow.run_stage("analyze", ModelTier.CAPABLE, {})
 
         # Then
         mock_analyze.assert_called_once()
@@ -301,7 +301,7 @@ class TestRunStage:
         mock_generate = mocker.patch.object(workflow, "_generate", return_value=({}, 10, 20))
 
         # When
-        result = await workflow.run_stage("generate", ModelTier.CAPABLE, {})
+        await workflow.run_stage("generate", ModelTier.CAPABLE, {})
 
         # Then
         mock_generate.assert_called_once()
@@ -315,7 +315,7 @@ class TestRunStage:
         mock_review = mocker.patch.object(workflow, "_review", return_value=({}, 10, 20))
 
         # When
-        result = await workflow.run_stage("review", ModelTier.PREMIUM, {})
+        await workflow.run_stage("review", ModelTier.PREMIUM, {})
 
         # Then
         mock_review.assert_called_once()
@@ -1156,7 +1156,7 @@ class TestGenerateStage:
         # Given
         from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
+        mocker.patch("attune.workflows.test_gen.workflow.Path")
 
         input_data = {
             "analysis": [

@@ -105,7 +105,7 @@ async def test_release_prep_with_auth_disabled():
     result = await workflow.execute(path="src/attune")
 
     assert result.success is True
-    auth_mode = result.final_output.get("auth_mode_used")
+    result.final_output.get("auth_mode_used")
     # Auth mode should not be tracked when disabled
     # (It might be None or missing)
 

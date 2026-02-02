@@ -15,7 +15,6 @@ Licensed under Fair Source 0.9
 import asyncio
 import logging
 from datetime import datetime
-from typing import Any
 
 from ..state import CodeInspectionState, InspectionPhase, add_audit_entry
 
@@ -41,13 +40,12 @@ async def run_dynamic_analysis(state: CodeInspectionState) -> CodeInspectionStat
     state["current_phase"] = InspectionPhase.DYNAMIC_ANALYSIS.value
     add_audit_entry(state, "dynamic_analysis", "Starting Phase 2: Dynamic Analysis")
 
-    project_path = state["project_path"]
+    state["project_path"]
     enabled_tools = state["enabled_tools"]
 
     # Get security context from Phase 1 for informed review
-    security_context: list[dict[str, Any]] = []
     if state.get("security_scan_result"):
-        security_context = state["security_scan_result"].get("findings", [])
+        state["security_scan_result"].get("findings", [])
 
     # Build list of tasks
     tasks = []
@@ -155,7 +153,7 @@ async def run_deep_dive_analysis(state: CodeInspectionState) -> CodeInspectionSt
     state["deep_dive_reason"] = "Historical pattern matches found"
     add_audit_entry(state, "deep_dive", "Starting deep-dive analysis")
 
-    project_path = state["project_path"]
+    state["project_path"]
 
     # NOTE: DebuggingAdapter has been deprecated.
     # Advanced debugging is now available through CLI workflows.

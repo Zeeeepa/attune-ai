@@ -6,7 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import json
 import time
 from datetime import datetime
 from unittest.mock import MagicMock
@@ -500,7 +499,7 @@ class TestConcurrentAccess:
         coordinators = []
         mock_memory = None
 
-        for i in range(5):
+        for _ in range(5):
             coord = create_mock_coordinator()
             if mock_memory is None:
                 mock_memory = coord.memory

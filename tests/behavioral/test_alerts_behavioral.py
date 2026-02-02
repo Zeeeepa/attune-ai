@@ -116,14 +116,14 @@ class TestAlertEngineInitialization:
     def test_creates_database(self, tmp_path):
         """Test that database is created on initialization."""
         db_path = tmp_path / "alerts.db"
-        engine = AlertEngine(db_path=db_path)
+        AlertEngine(db_path=db_path)
 
         assert db_path.exists()
 
     def test_creates_parent_directory(self, tmp_path):
         """Test that parent directory is created if missing."""
         db_path = tmp_path / "subdir" / "alerts.db"
-        engine = AlertEngine(db_path=db_path)
+        AlertEngine(db_path=db_path)
 
         assert db_path.exists()
         assert db_path.parent.exists()

@@ -191,7 +191,7 @@ class TestEndToEndWorkflow:
 
         # Should have multiple types of insights
         if len(insights) > 0:
-            insight_types = {i.insight_type for i in insights}
+            {i.insight_type for i in insights}
             # May have various insight types
 
         # Get recommendations

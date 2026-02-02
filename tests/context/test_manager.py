@@ -328,7 +328,7 @@ class TestContextManager:
             manager = ContextManager(storage_dir=tmpdir)
 
             # Save some states
-            for i in range(3):
+            for _i in range(3):
                 collab = CollaborationState(user_id="clear_user")
                 manager.save_for_compaction(collab)
 

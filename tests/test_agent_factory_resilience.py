@@ -341,9 +341,9 @@ class TestResilientAgentCircuitBreaker:
     @pytest.mark.asyncio
     async def test_circuit_breaker_opens(self):
         """Test circuit breaker opens after failures."""
+        from attune.resilience import CircuitOpenError
         from attune_llm.agent_factory.base import AgentConfig, BaseAgent
         from attune_llm.agent_factory.resilient import ResilienceConfig, ResilientAgent
-        from attune.resilience import CircuitOpenError
 
         class AlwaysFailingAgent(BaseAgent):
             async def invoke(self, input_data, context=None):

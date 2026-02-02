@@ -386,7 +386,7 @@ class TestWorkflowEdgePatterns:
 
     def test_all_workflow_patterns_use_valid_edge_types(self):
         """Test that all workflow patterns use valid EdgeType values."""
-        for workflow, patterns in WORKFLOW_EDGE_PATTERNS.items():
+        for _workflow, patterns in WORKFLOW_EDGE_PATTERNS.items():
             for edge_type, description in patterns:
                 # Should be valid EdgeType enum
                 assert isinstance(edge_type, EdgeType)

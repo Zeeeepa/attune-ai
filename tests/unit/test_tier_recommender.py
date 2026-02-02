@@ -5,13 +5,12 @@ historical patterns, bug types, and file analysis.
 """
 
 import json
+
 import pytest
-from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 from attune.tier_recommender import (
-    TierRecommender,
     TierRecommendationResult,
+    TierRecommender,
 )
 
 

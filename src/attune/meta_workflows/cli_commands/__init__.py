@@ -6,6 +6,9 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+# ruff: noqa: E402
+# Typer app must be created before importing commands that use it
+
 import typer
 
 # Create Typer app for meta-workflow commands

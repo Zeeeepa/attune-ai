@@ -316,7 +316,7 @@ class TestSearchMemoryErrorHandling:
             # When/Then - Typer raises typer.Exit, not SystemExit
             from typer import Exit
 
-            with pytest.raises(Exit) as exc_info:
+            with pytest.raises(Exit):
                 search_memory(query="test", pattern_type=None, limit=10, user_id="cli_user")
 
             # Verify error message was printed

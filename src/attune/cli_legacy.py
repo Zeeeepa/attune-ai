@@ -29,6 +29,9 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+# ruff: noqa: E402
+# Deprecation warning must be shown before other imports
+
 import warnings
 
 warnings.warn(

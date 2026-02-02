@@ -128,7 +128,7 @@ class TestProviderConfigEdgeCases:
         )
 
         # Should fall back to primary_provider
-        result = config.get_model_for_tier("cheap")
+        config.get_model_for_tier("cheap")
         # Result depends on registry state
 
     def test_invalid_mode_from_dict(self):
@@ -222,7 +222,7 @@ class TestGlobalConfigManagement:
         reset_provider_config()
 
         # After reset, should get a fresh config
-        config2 = get_provider_config()
+        get_provider_config()
         # The fresh config may be different if auto-detected
 
 

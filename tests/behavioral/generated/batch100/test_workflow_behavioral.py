@@ -8,7 +8,7 @@ Licensed under Fair Source License 0.9
 
 import json
 from pathlib import Path
-from unittest.mock import Mock, MagicMock, mock_open
+from unittest.mock import MagicMock, Mock, mock_open
 
 import pytest
 
@@ -312,7 +312,7 @@ class TestRunStage:
         mock_analyze = mocker.patch.object(workflow, "_analyze", return_value=({}, 10, 20))
 
         # When
-        result = await workflow.run_stage("analyze", ModelTier.CAPABLE, {})
+        await workflow.run_stage("analyze", ModelTier.CAPABLE, {})
 
         # Then
         mock_analyze.assert_called_once()
@@ -326,7 +326,7 @@ class TestRunStage:
         mock_generate = mocker.patch.object(workflow, "_generate", return_value=({}, 10, 20))
 
         # When
-        result = await workflow.run_stage("generate", ModelTier.CAPABLE, {})
+        await workflow.run_stage("generate", ModelTier.CAPABLE, {})
 
         # Then
         mock_generate.assert_called_once()
@@ -1168,7 +1168,7 @@ class TestGenerateStage:
         # Given
         from attune.workflows.base import ModelTier
 
-        mock_path = mocker.patch("attune.workflows.test_gen.workflow.Path")
+        mocker.patch("attune.workflows.test_gen.workflow.Path")
 
         input_data = {
             "analysis": [

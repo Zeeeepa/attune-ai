@@ -738,7 +738,7 @@ class TestPermissionError:
         permission_error = PermissionError("permission")
 
         # Then
-        assert type(security_error) != type(permission_error)
+        assert type(security_error) is not type(permission_error)
         assert not isinstance(security_error, PermissionError)
         assert not isinstance(permission_error, SecurityError)
 

@@ -57,7 +57,7 @@ class TestWorkflowHeartbeatIntegration:
 
         # Mock the stage execution to avoid actual LLM calls
         with patch.object(workflow, "run_stage", return_value=({"result": "test"}, 10, 5)):
-            result = await workflow.execute()
+            await workflow.execute()
 
         # Agent ID should be auto-generated during execute
         assert workflow._agent_id is not None

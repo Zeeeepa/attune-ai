@@ -335,7 +335,7 @@ def configure_auth_interactive(module_lines: int = 1000) -> AuthStrategy:
 
     comparison = strategy.get_pros_cons(module_lines)
 
-    for mode_key, mode_data in comparison.items():
+    for _mode_key, mode_data in comparison.items():
         print(f"\n### {mode_data['name']}")
         print(f"Cost: {mode_data['cost']}")
         print("\nPros:")

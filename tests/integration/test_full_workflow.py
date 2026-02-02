@@ -87,7 +87,7 @@ class TestFullSessionWorkflow:
         assert restored_state is None
 
         # === DURING SESSION: Commands ===
-        cmd_ctx = CommandContext(
+        CommandContext(
             user_id=user_id,
             hook_registry=hook_registry,
             context_manager=context_manager,

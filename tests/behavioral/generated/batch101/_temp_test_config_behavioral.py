@@ -6,6 +6,9 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
+# ruff: noqa: E402
+# Imports must come after module mocking fixtures
+
 import json
 import sys
 from pathlib import Path

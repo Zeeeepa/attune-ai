@@ -50,7 +50,7 @@ class TestEmpathyConfigBehavior:
             output_path = Path(tmpdir) / "test_config.json"
 
             # BEHAVIORAL: Actually call the method
-            result_path = config.to_json(str(output_path))
+            config.to_json(str(output_path))
 
             # Verify file was created
             assert output_path.exists()

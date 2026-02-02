@@ -17,7 +17,7 @@ class TestCoreImports:
         """Test main package import."""
         import attune
 
-        assert empathy_os is not None
+        assert attune is not None
 
     def test_import_workflows(self):
         """Test workflows import."""

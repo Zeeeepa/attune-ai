@@ -3,8 +3,9 @@
 This conftest ensures proper cleanup between tests to prevent test pollution.
 """
 
-import pytest
 from unittest.mock import patch
+
+import pytest
 
 
 @pytest.fixture(autouse=True)

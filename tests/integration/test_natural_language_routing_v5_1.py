@@ -114,7 +114,7 @@ class TestKeywordRoutingV5_1:
             "auth": "auth_cli status",  # Default to status
         }
 
-        for keyword, expected_command in auth_keywords.items():
+        for keyword, _expected_command in auth_keywords.items():
             result = await router.route(keyword)
             # Router converts keywords to skill invocations, so type is "skill"
             assert result["type"] == "skill", f"Should route {keyword} to skill"

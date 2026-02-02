@@ -128,7 +128,7 @@ class TestRedisStreams:
         assert len(entries) == 5
 
         # Verify each entry has an ID
-        for entry_id, data in entries:
+        for entry_id, _data in entries:
             assert entry_id is not None
 
     def test_stream_read_with_start_id_filters_entries(self, memory, contributor_creds):

@@ -12,6 +12,9 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+# ruff: noqa: E402
+# Imports must come after pytest.mark.skip marker
+
 import threading
 import time
 from datetime import datetime

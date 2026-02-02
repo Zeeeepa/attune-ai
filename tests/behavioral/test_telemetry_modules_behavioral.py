@@ -418,8 +418,9 @@ class TestTelemetryCLI:
 
     def test_exports_telemetry_to_csv(self, tmp_path, capsys):
         """Test exporting telemetry data to CSV."""
-        from attune.telemetry.cli import cmd_telemetry_export
         from argparse import Namespace
+
+        from attune.telemetry.cli import cmd_telemetry_export
 
         output_file = tmp_path / "telemetry.csv"
 
@@ -437,8 +438,9 @@ class TestTelemetryCLI:
 
     def test_shows_telemetry_stats(self, capsys):
         """Test displaying telemetry statistics."""
-        from attune.telemetry.cli import cmd_telemetry_show
         from argparse import Namespace
+
+        from attune.telemetry.cli import cmd_telemetry_show
 
         # Create args namespace
         args = Namespace()
@@ -451,8 +453,9 @@ class TestTelemetryCLI:
 
     def test_lists_recent_workflows(self, capsys):
         """Test listing recent workflow stats."""
-        from attune.telemetry.cli import cmd_telemetry_show
         from argparse import Namespace
+
+        from attune.telemetry.cli import cmd_telemetry_show
 
         # Show telemetry includes workflow info
         args = Namespace()
@@ -493,8 +496,9 @@ class TestMultiBackendMonitoring:
 
     def test_sends_metrics_to_all_backends(self):
         """Test sending metrics to all registered backends."""
-        from attune.monitoring.multi_backend import get_multi_backend, LLMCallRecord
         from datetime import datetime
+
+        from attune.monitoring.multi_backend import LLMCallRecord, get_multi_backend
 
         monitor = get_multi_backend()
 
@@ -527,8 +531,9 @@ class TestMultiBackendMonitoring:
 
     def test_handles_backend_failure_gracefully(self):
         """Test graceful handling of backend failures."""
-        from attune.monitoring.multi_backend import get_multi_backend, LLMCallRecord
         from datetime import datetime
+
+        from attune.monitoring.multi_backend import LLMCallRecord, get_multi_backend
 
         monitor = get_multi_backend()
 
@@ -586,8 +591,9 @@ class TestOTelBackend:
 
     def test_emits_metrics(self):
         """Test recording LLM call metrics."""
-        from attune.monitoring.otel_backend import OTELBackend, LLMCallRecord
         from datetime import datetime
+
+        from attune.monitoring.otel_backend import LLMCallRecord, OTELBackend
 
         backend = OTELBackend()
 
@@ -611,8 +617,9 @@ class TestOTelBackend:
 
     def test_emits_traces(self):
         """Test recording workflow traces."""
-        from attune.monitoring.otel_backend import OTELBackend, WorkflowRunRecord
         from datetime import datetime
+
+        from attune.monitoring.otel_backend import OTELBackend, WorkflowRunRecord
 
         backend = OTELBackend()
 

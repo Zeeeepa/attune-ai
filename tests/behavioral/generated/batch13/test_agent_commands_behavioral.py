@@ -231,7 +231,7 @@ class TestCreateAgentQuickMode:
 
         # When
         with patch("builtins.open", create=True):
-            with patch("json.dump") as mock_json_dump:
+            with patch("json.dump"):
                 create_agent(
                     interactive=False,
                     name=agent_name,
@@ -621,7 +621,6 @@ class TestCreateAgentFileOperations:
         # Given
         output_file = tmp_path / "agent.json"
         mock_typer_prompt.side_effect = ["p", "t", "c", "tools", "TestAgent"]
-        agent_data = {"name": "TestAgent", "role": "test", "tier": "capable"}
 
         # When
         with patch("builtins.open", create=True) as mock_open:
@@ -660,7 +659,7 @@ class TestCreateAgentFileOperations:
         ]
 
         # When
-        with patch("builtins.open", create=True) as mock_open:
+        with patch("builtins.open", create=True):
             create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
 
             # Then - open should not be called for agent file (may be called for other reasons)

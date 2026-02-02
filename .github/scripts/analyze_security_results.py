@@ -44,7 +44,8 @@ def parse_security_results(results_file: Path) -> dict:
 
         return data
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
+        # INTENTIONAL: Script needs graceful error handling for CI
         return {"error": str(e), "findings": []}
 
 

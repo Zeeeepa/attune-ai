@@ -427,7 +427,7 @@ class StandaloneDashboardHandler(BaseHTTPRequestHandler):
 
             # Calculate stats
             result = []
-            for group_key, group in feedback_groups.items():
+            for _group_key, group in feedback_groups.items():
                 qualities = group["qualities"]
                 if qualities:
                     avg_quality = sum(qualities) / len(qualities)
@@ -480,7 +480,7 @@ class StandaloneDashboardHandler(BaseHTTPRequestHandler):
 
             # Find underperforming stages
             result = []
-            for group_key, group in feedback_groups.items():
+            for _group_key, group in feedback_groups.items():
                 qualities = group["qualities"]
                 if qualities:
                     avg_quality = sum(qualities) / len(qualities)

@@ -646,7 +646,7 @@ MIIEpAIBAAKCAQEA...
         content = "secret = 'aK7bN2cX9dY3eZ4fW5gV6hU8iT1jS0kR'"
         detections = detector.detect(content)
 
-        entropy_detections = [
+        [
             d for d in detections if d.secret_type == SecretType.HIGH_ENTROPY_STRING
         ]
         # May or may not detect based on exact entropy

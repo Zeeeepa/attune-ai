@@ -195,7 +195,7 @@ class TestAgentPerformanceRecordUse:
         """Test that recent scores are trimmed to 100."""
         perf = AgentPerformance(template_id="test")
 
-        for i in range(110):
+        for _i in range(110):
             perf.record_use(success=True, score=0.8)
 
         assert len(perf.recent_scores) == 100

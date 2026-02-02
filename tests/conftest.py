@@ -35,7 +35,7 @@ try:
     import attune.workflows.progressive.test_gen  # noqa: F401
     import attune.workflows.security_adapters  # noqa: F401
     import attune.workflows.security_audit_phase3  # noqa: F401
-except ImportError as e:
+except ImportError:
     pass  # Package might not be available in minimal test environments
 
 # Load test environment variables from .env.test

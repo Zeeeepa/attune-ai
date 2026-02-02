@@ -16,10 +16,8 @@ from attune.memory.short_term import RedisShortTermMemory
 from attune.memory.types import (
     AccessTier,
     AgentCredentials,
-    ConflictContext,
     PaginatedResult,
     RedisConfig,
-    RedisMetrics,
     SecurityError,
     StagedPattern,
     TimeWindowQuery,
@@ -1272,7 +1270,7 @@ class TestEdgeCases:
         """Given large data, when stashing, then handles correctly."""
         # Given
         key = "test_key"
-        data = {"values": [i for i in range(10000)]}
+        data = {"values": list(range(10000))}
         mock_redis_client.set.return_value = True
 
         # When

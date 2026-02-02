@@ -4,9 +4,9 @@ Tests HybridRouter class for routing user input to skill invocations.
 Covers slash commands, keyword mapping, natural language routing, and preference learning.
 """
 
-import pytest
-from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from attune.cli_router import (
     HybridRouter,

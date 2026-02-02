@@ -139,7 +139,7 @@ class TestMemDocsStorageInitialization:
         Then it should log the initialization event.
         """
         # Given / When
-        storage = MemDocsStorage(storage_dir=str(temp_storage_dir))
+        MemDocsStorage(storage_dir=str(temp_storage_dir))
 
         # Then
         mock_logger.info.assert_called_once_with(

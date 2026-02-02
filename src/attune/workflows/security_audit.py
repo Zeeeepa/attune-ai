@@ -944,7 +944,8 @@ class SecurityAuditWorkflow(BaseWorkflow):
             adapters_available = True
         except ImportError:
             adapters_available = False
-            _check_crew_available = lambda: False
+            def _check_crew_available():
+                return False
 
         assessment = input_data.get("assessment", {})
         critical = assessment.get("critical_findings", [])

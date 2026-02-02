@@ -35,7 +35,7 @@ class TestCheckLangGraph:
         module._langgraph_available = None
 
         with patch.dict("sys.modules", {"langgraph": MagicMock()}):
-            result = _check_langgraph()
+            _check_langgraph()
             # Result depends on actual availability
 
     def test_check_langgraph_not_available(self):
@@ -509,7 +509,7 @@ class TestLangGraphAdapter:
             "sys.modules", {"langchain_anthropic": MagicMock(ChatAnthropic=mock_chat_class)}
         ):
             try:
-                llm = adapter._get_llm(config)
+                adapter._get_llm(config)
             except ImportError:
                 # LangChain not installed, which is fine
                 pass

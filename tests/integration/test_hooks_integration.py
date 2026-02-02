@@ -111,7 +111,6 @@ class TestHookRegistryIntegration:
     def test_multiple_hooks_priority_order(self):
         """Test that hooks fire in priority order."""
         config = HookConfig()
-        execution_order = []
 
         # Add hooks with different priorities
         for priority, name in [(10, "high"), (0, "normal"), (5, "medium")]:

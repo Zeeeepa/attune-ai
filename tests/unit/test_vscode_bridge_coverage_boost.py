@@ -561,7 +561,7 @@ class TestSendToVSCode:
         """Test send_to_vscode with empty findings list."""
         monkeypatch.chdir(tmp_path)
 
-        result = send_to_vscode("All good", findings=[], verdict="approve")
+        send_to_vscode("All good", findings=[], verdict="approve")
 
         # Verify file
         output_path = Path(".attune/code-review-results.json")

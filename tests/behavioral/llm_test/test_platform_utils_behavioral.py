@@ -8,7 +8,7 @@ Licensed under Apache 2.0
 
 import os
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from attune import platform_utils
 

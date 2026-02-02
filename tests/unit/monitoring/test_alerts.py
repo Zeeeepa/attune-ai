@@ -113,7 +113,7 @@ class TestAlertEngine:
 
     def test_init_creates_database(self, temp_db):
         """Test that initialization creates the database."""
-        engine = AlertEngine(db_path=temp_db)
+        AlertEngine(db_path=temp_db)
 
         assert temp_db.exists()
 

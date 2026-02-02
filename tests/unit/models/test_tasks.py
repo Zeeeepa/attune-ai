@@ -134,7 +134,7 @@ class TestTaskInfo:
 
     def test_task_info_has_descriptions(self):
         """Test that all TaskInfo entries have descriptions."""
-        for task_type, task_info in TASK_INFO.items():
+        for _task_type, task_info in TASK_INFO.items():
             assert task_info.description
             assert len(task_info.description) > 5
 
@@ -300,7 +300,7 @@ class TestGetAllTasks:
         """Test that tier values are lists."""
         result = get_all_tasks()
 
-        for tier, tasks in result.items():
+        for _tier, tasks in result.items():
             assert isinstance(tasks, list)
 
 
@@ -379,7 +379,7 @@ class TestTaskTypeCompleteness:
 
     def test_tier_mapping_values_are_model_tiers(self):
         """Test that all tier mapping values are ModelTier enums."""
-        for task, tier in TASK_TIER_MAP.items():
+        for _task, tier in TASK_TIER_MAP.items():
             assert isinstance(tier, ModelTier)
 
     @pytest.mark.parametrize(

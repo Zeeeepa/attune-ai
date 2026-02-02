@@ -366,9 +366,9 @@ class TestFeatureManifest:
         assert manifest.categories == []
         # __post_init__ should create default layouts
         assert len(manifest.layouts) == 3
-        assert any(l.layout == KeyboardLayout.QWERTY for l in manifest.layouts)
-        assert any(l.layout == KeyboardLayout.DVORAK for l in manifest.layouts)
-        assert any(l.layout == KeyboardLayout.COLEMAK for l in manifest.layouts)
+        assert any(lay.layout == KeyboardLayout.QWERTY for lay in manifest.layouts)
+        assert any(lay.layout == KeyboardLayout.DVORAK for lay in manifest.layouts)
+        assert any(lay.layout == KeyboardLayout.COLEMAK for lay in manifest.layouts)
 
     def test_create_manifest_with_vscode_project_type(self):
         """Test creating manifest for VSCode extension."""

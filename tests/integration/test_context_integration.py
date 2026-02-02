@@ -520,7 +520,7 @@ class TestEdgeCases:
 
         manager = CompactionStateManager(storage_dir=storage_dir)
         # Should handle gracefully
-        state = manager.load_latest_state("corrupt_user")
+        manager.load_latest_state("corrupt_user")
         # Either returns None or raises appropriate error
         # depending on implementation
 

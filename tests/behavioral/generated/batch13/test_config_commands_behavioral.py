@@ -223,7 +223,7 @@ class TestSuggestDefaultsCommand:
         with (
             patch(
                 "attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory
-            ) as mock_memory_cls,
+            ),
             patch(
                 "attune.meta_workflows.session_context.SessionContext",
                 return_value=mock_session_context,

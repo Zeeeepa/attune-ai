@@ -202,7 +202,7 @@ class TestASTFunctionAnalyzerClassAnalysis:
 class Calculator:
     def add(self, a: int, b: int) -> int:
         return a + b
-    
+
     def subtract(self, a: int, b: int) -> int:
         return a - b
 """
@@ -295,11 +295,11 @@ class Utility:
     @staticmethod
     def static_method(x: int) -> int:
         return x * 2
-    
+
     @classmethod
     def class_method(cls, y: int) -> int:
         return y * 3
-    
+
     def instance_method(self, z: int) -> int:
         return z * 4
 """
@@ -323,7 +323,7 @@ class Outer:
     class Inner:
         def inner_method(self) -> None:
             pass
-    
+
     def outer_method(self) -> None:
         pass
 """
@@ -522,7 +522,7 @@ class DerivedClass(BaseClass):
     def __init__(self, name: str, age: int):
         super().__init__(name)
         self.age = age
-    
+
     def describe(self) -> str:
         return f"{self.name} is {self.age}"
 
@@ -623,7 +623,7 @@ class PropertyClass:
     @property
     def value(self) -> int:
         return 42
-    
+
     @value.setter
     def value(self, v: int) -> None:
         pass

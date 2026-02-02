@@ -206,7 +206,7 @@ class TestTestGenSteps:
         Then: All values are WorkflowStepConfig instances
         """
         # Then
-        for step_name, step_config in TEST_GEN_STEPS.items():
+        for _step_name, step_config in TEST_GEN_STEPS.items():
             assert isinstance(step_config, WorkflowStepConfig)
 
     def test_given_identify_step_when_checking_config_then_has_correct_attributes(self):
@@ -294,7 +294,7 @@ class TestTestGenSteps:
         Then: All max_tokens are positive integers
         """
         # Then
-        for step_name, step_config in TEST_GEN_STEPS.items():
+        for _step_name, step_config in TEST_GEN_STEPS.items():
             assert isinstance(step_config.max_tokens, int)
             assert step_config.max_tokens > 0
 
@@ -305,7 +305,7 @@ class TestTestGenSteps:
         Then: All descriptions are non-empty strings
         """
         # Then
-        for step_name, step_config in TEST_GEN_STEPS.items():
+        for _step_name, step_config in TEST_GEN_STEPS.items():
             assert isinstance(step_config.description, str)
             assert len(step_config.description) > 0
 
@@ -316,7 +316,7 @@ class TestTestGenSteps:
         Then: All task_types are non-empty strings
         """
         # Then
-        for step_name, step_config in TEST_GEN_STEPS.items():
+        for _step_name, step_config in TEST_GEN_STEPS.items():
             assert isinstance(step_config.task_type, str)
             assert len(step_config.task_type) > 0
 
@@ -431,7 +431,7 @@ class TestStepConfigIntegration:
         )
 
         # Then
-        assert type(test_config) == type(TEST_GEN_STEPS["identify"])
+        assert type(test_config) is type(TEST_GEN_STEPS["identify"])
         assert isinstance(test_config, WorkflowStepConfig)
 
     def test_given_all_step_configs_when_checking_attributes_then_all_have_required_fields(
@@ -443,7 +443,7 @@ class TestStepConfigIntegration:
         Then: All configs have name, task_type, tier_hint, description, max_tokens
         """
         # Then
-        for step_name, step_config in TEST_GEN_STEPS.items():
+        for _step_name, step_config in TEST_GEN_STEPS.items():
             assert hasattr(step_config, "name")
             assert hasattr(step_config, "task_type")
             assert hasattr(step_config, "tier_hint")

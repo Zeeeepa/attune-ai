@@ -534,7 +534,7 @@ class TestDataReset:
         tracker = UsageTracker(telemetry_dir=tmp_path / "telemetry")
 
         # Track some calls
-        for i in range(10):
+        for _i in range(10):
             tracker.track_llm_call(
                 workflow="test",
                 stage=None,

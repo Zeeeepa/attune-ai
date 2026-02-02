@@ -83,7 +83,7 @@ class TestLongTermMemoryInit:
         with patch("attune.memory.simple_storage.Path") as mock_path:
             mock_path_instance = MagicMock()
             mock_path.return_value = mock_path_instance
-            memory = LongTermMemory()
+            LongTermMemory()
 
         # Then
         mock_path.assert_called_once_with("./long_term_storage")

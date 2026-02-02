@@ -4,9 +4,9 @@ Tests AdaptiveModelRouter class for intelligent model selection based on
 historical telemetry performance data.
 """
 
-import pytest
 from unittest.mock import MagicMock, patch
-from datetime import datetime, timedelta
+
+import pytest
 
 from attune.models.adaptive_routing import (
     AdaptiveModelRouter,
@@ -138,7 +138,7 @@ class TestGetBestModel:
         mock_telemetry = MagicMock()
         # 5 successes + 10 failures = 33% success rate
         entries = []
-        for i in range(5):
+        for _i in range(5):
             entries.append(
                 {
                     "workflow": "test",
@@ -150,7 +150,7 @@ class TestGetBestModel:
                     "duration_ms": 100,
                 }
             )
-        for i in range(10):
+        for _i in range(10):
             entries.append(
                 {
                     "workflow": "test",
@@ -461,7 +461,7 @@ class TestAnalyzeModelPerformance:
         mock_telemetry = MagicMock()
         # 8 successes, 2 failures = 80% success rate
         entries = []
-        for i in range(8):
+        for _i in range(8):
             entries.append(
                 {
                     "workflow": "test",
@@ -473,7 +473,7 @@ class TestAnalyzeModelPerformance:
                     "duration_ms": 100,
                 }
             )
-        for i in range(2):
+        for _i in range(2):
             entries.append(
                 {
                     "workflow": "test",

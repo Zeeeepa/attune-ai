@@ -150,7 +150,7 @@ class TestCoordinationSignalsWithMemory:
 
     def test_signal_uses_default_source(self, coordinator, mock_memory):
         """Test signal uses coordinator's agent_id as default source."""
-        signal_id = coordinator.signal(
+        coordinator.signal(
             signal_type="ready",
             target_agent="orchestrator",
             payload={},
@@ -437,7 +437,7 @@ class TestCoordinationSignalsWithMemory:
         mock_memory._client.setex.side_effect = Exception("Redis error")
 
         # Should not raise, just log error
-        signal_id = coordinator.signal(signal_type="test", payload={})
+        coordinator.signal(signal_type="test", payload={})
 
         # Should return empty signal_id on error
         # (The current implementation doesn't return empty on error, but logs it)

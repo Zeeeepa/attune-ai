@@ -257,7 +257,7 @@ class TestShowAnalyticsReportDisplay:
         show_analytics(template_id=None)
 
         # Then
-        all_calls = "\n".join([str(call) for call in mock_console.print.call_args_list])
+        "\n".join([str(call) for call in mock_console.print.call_args_list])
         # Verify key metrics are present in some form
         assert mock_console.print.call_count > 5  # Multiple print calls for report
 

@@ -114,9 +114,9 @@ class TestCmdTelemetryDashboard:
                 "attune.telemetry.commands.dashboard_commands.UsageTracker"
             ) as mock_usage_tracker_class,
             patch("tempfile.NamedTemporaryFile") as mock_tempfile,
-            patch("webbrowser.open") as mock_browser,
+            patch("webbrowser.open"),
             patch("socketserver.TCPServer") as mock_tcp_server,
-            patch("builtins.print") as mock_print,
+            patch("builtins.print"),
         ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
@@ -156,9 +156,6 @@ class TestCmdTelemetryDashboard:
         """
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
-        expected_total_cost = 0.008  # 0.001 + 0.005 + 0.002
-        expected_total_calls = 3
-        expected_avg_duration = 150.0  # (100 + 200 + 150) / 3
 
         with (
             patch(

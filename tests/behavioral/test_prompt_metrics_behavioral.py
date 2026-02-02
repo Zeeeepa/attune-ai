@@ -96,14 +96,14 @@ class TestMetricsTracker:
     def test_creates_metrics_file(self, tmp_path):
         """Test that metrics file is created."""
         metrics_file = tmp_path / "metrics.json"
-        tracker = MetricsTracker(metrics_file=str(metrics_file))
+        MetricsTracker(metrics_file=str(metrics_file))
 
         assert metrics_file.exists()
 
     def test_creates_parent_directory(self, tmp_path):
         """Test that parent directory is created if missing."""
         metrics_file = tmp_path / "subdir" / "metrics.json"
-        tracker = MetricsTracker(metrics_file=str(metrics_file))
+        MetricsTracker(metrics_file=str(metrics_file))
 
         assert metrics_file.exists()
         assert metrics_file.parent.exists()
@@ -170,7 +170,7 @@ class TestMetricsTracker:
         tracker = MetricsTracker(metrics_file=str(metrics_file))
 
         # Log some metrics
-        for i in range(3):
+        for _i in range(3):
             metric = PromptMetrics(
                 timestamp=datetime.now().isoformat(),
                 workflow="test",

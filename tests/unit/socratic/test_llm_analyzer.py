@@ -321,7 +321,7 @@ class TestGetClient:
         with patch.dict("sys.modules", {"anthropic": None}):
             with patch("importlib.import_module", side_effect=ImportError):
                 # This shouldn't raise, just return None
-                client = analyzer_with_key._get_client()
+                analyzer_with_key._get_client()
                 # May or may not be None depending on if anthropic is installed
 
     def test_get_client_caches_client(self, analyzer_with_key):

@@ -98,7 +98,7 @@ class TestSSRFPrevention:
             ("http://ssh-server:22", "SSH"),
         ]
 
-        for url, service_name in internal_ports:
+        for url, _service_name in internal_ports:
             with pytest.raises(ValueError, match="port"):
                 _validate_webhook_url(url)
 

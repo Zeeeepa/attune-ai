@@ -70,7 +70,7 @@ class TestTemplateRegistryInit:
         storage_dir = tmp_path / "new" / "templates"
         assert not storage_dir.exists()
 
-        registry = TemplateRegistry(storage_dir=str(storage_dir))
+        TemplateRegistry(storage_dir=str(storage_dir))
 
         assert storage_dir.exists()
 

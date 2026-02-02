@@ -134,7 +134,7 @@ class TestRunPreCompact:
 
     def test_run_creates_context_manager_if_missing(self):
         """Test that context manager is created if not provided."""
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory():
             collab = CollaborationState(user_id="auto_manager_user")
 
             # Patch the default storage dir
@@ -147,7 +147,7 @@ class TestRunPreCompact:
                 # This will fail because we mocked __init__, but it demonstrates
                 # the context manager creation path is taken
                 try:
-                    result = run_pre_compact(
+                    run_pre_compact(
                         {
                             "collaboration_state": collab,
                         }

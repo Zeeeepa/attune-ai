@@ -393,7 +393,7 @@ class TestCompactionStateManager:
             manager = CompactionStateManager(storage_dir=tmpdir)
 
             # Save states
-            for i in range(3):
+            for _i in range(3):
                 state = CompactState(
                     user_id="clear_user",
                     trust_level=0.5,

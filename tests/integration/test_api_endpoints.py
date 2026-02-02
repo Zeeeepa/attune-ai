@@ -13,6 +13,9 @@ was removed during codebase cleanup. Tests should be re-enabled when the
 module is restored or tests should be deleted if the module is permanently removed.
 """
 
+# ruff: noqa: E402
+# Imports must come after pytest.mark.skip marker
+
 import pytest
 
 # Skip entire module - wizard_factory_cli module was removed
