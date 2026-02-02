@@ -47,8 +47,10 @@ from typing import TYPE_CHECKING, Any
 
 import structlog
 
-from attune.memory.short_term.base import REDIS_AVAILABLE  # noqa: F401 - re-exported
-from attune.memory.short_term.base import BaseOperations
+from attune.memory.short_term.base import (
+    REDIS_AVAILABLE,  # noqa: F401 - re-exported
+    BaseOperations,
+)
 from attune.memory.short_term.batch import BatchOperations
 from attune.memory.short_term.caching import CacheManager
 from attune.memory.short_term.conflicts import ConflictNegotiation

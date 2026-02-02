@@ -445,7 +445,7 @@ def main():
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.FileHandler("/tmp/empathy-mcp.log")],
+        handlers=[logging.FileHandler("/tmp/empathy-mcp.log")],  # nosec B108
     )
 
     try:

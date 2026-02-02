@@ -6,22 +6,20 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import json
-import os
+from unittest.mock import patch
+
 import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 from attune.workflows.migration import (
-    MigrationConfig,
-    WORKFLOW_ALIASES,
-    MIGRATION_MODE_PROMPT,
     MIGRATION_MODE_AUTO,
     MIGRATION_MODE_LEGACY,
-    is_interactive,
-    resolve_workflow_migration,
+    MIGRATION_MODE_PROMPT,
+    WORKFLOW_ALIASES,
+    MigrationConfig,
     get_canonical_workflow_name,
+    is_interactive,
     list_migrations,
+    resolve_workflow_migration,
 )
 
 

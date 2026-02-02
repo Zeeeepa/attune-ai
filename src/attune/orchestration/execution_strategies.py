@@ -61,6 +61,9 @@ from ._strategies.core_strategies import (
     SequentialStrategy,
     TeachingStrategy,
 )
+
+# Import from submodule for modular organization
+from ._strategies.data_classes import AgentResult, StrategyResult
 from ._strategies.nesting import (
     WORKFLOW_REGISTRY,  # noqa: F401 - re-exported
     InlineWorkflow,  # noqa: F401 - re-exported
@@ -70,9 +73,6 @@ from ._strategies.nesting import (
     get_workflow,  # noqa: F401 - re-exported
     register_workflow,  # noqa: F401 - re-exported
 )
-
-# Import from submodule for modular organization
-from ._strategies.data_classes import AgentResult, StrategyResult
 from .agent_templates import AgentTemplate
 
 logger = logging.getLogger(__name__)

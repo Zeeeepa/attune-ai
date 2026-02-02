@@ -85,7 +85,7 @@ def _validate_webhook_url(url: str) -> str:
     blocked_hosts = {
         "localhost",
         "127.0.0.1",
-        "0.0.0.0",
+        "0.0.0.0",  # nosec B104 - blocklist, not a bind
         "::1",
         "[::1]",
         "169.254.169.254",  # AWS metadata
@@ -770,7 +770,7 @@ class AlertEngine:
         )
 
         try:
-            with urllib.request.urlopen(req, timeout=10) as response:
+            with urllib.request.urlopen(req, timeout=10) as response:  # nosec B310
                 if response.status == 200:
                     logger.info("webhook_delivered", url=validated_url)
                     return True

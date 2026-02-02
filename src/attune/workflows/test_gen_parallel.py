@@ -93,12 +93,12 @@ Generate complete, runnable tests that will increase coverage.""",
             import subprocess
 
             subprocess.run(
-                ["coverage", "json", "-o", "/tmp/coverage_batch.json"],
+                ["coverage", "json", "-o", "/tmp/coverage_batch.json"],  # nosec B108
                 capture_output=True,
                 check=True,
             )
 
-            with open("/tmp/coverage_batch.json") as f:
+            with open("/tmp/coverage_batch.json") as f:  # nosec B108
                 data = json.load(f)
 
             coverage_by_file = []

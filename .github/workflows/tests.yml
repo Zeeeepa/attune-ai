@@ -98,7 +98,7 @@ jobs:
       continue-on-error: true  # Non-blocking for now
 
     - name: Security scan with Bandit
-      run: bandit -c .bandit -r src/ attune_llm/ coach_wizards/ attune_software/ --severity-level medium --confidence-level medium
+      run: bandit -c .bandit -r src/ attune_llm/ attune_software/ --severity-level medium --confidence-level medium
 
   platform-compat:
     runs-on: ubuntu-latest

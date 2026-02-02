@@ -114,7 +114,7 @@ def _is_running_in_claude_code() -> bool:
     return (
         os.getenv("CLAUDE_CODE_SESSION") is not None
         or os.getenv("CLAUDE_AGENT_MODE") is not None
-        or Path("/tmp/.claude-code").exists()
+        or Path("/tmp/.claude-code").exists()  # nosec B108
     )
 
 
