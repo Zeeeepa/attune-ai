@@ -56,9 +56,7 @@ class TestBuiltinTemplatesDict:
     def test_all_builtin_templates_are_xml_prompt_template_instances(self):
         """Test that all template values are XmlPromptTemplate instances."""
         for name, template in BUILTIN_TEMPLATES.items():
-            assert isinstance(
-                template, XmlPromptTemplate
-            ), f"{name} is not an XmlPromptTemplate"
+            assert isinstance(template, XmlPromptTemplate), f"{name} is not an XmlPromptTemplate"
 
     def test_all_builtin_templates_have_name(self):
         """Test that all templates have a name field."""
@@ -69,17 +67,13 @@ class TestBuiltinTemplatesDict:
     def test_all_builtin_templates_have_schema_version(self):
         """Test that all templates have a schema_version."""
         for name, template in BUILTIN_TEMPLATES.items():
-            assert hasattr(
-                template, "schema_version"
-            ), f"{name} missing schema_version"
+            assert hasattr(template, "schema_version"), f"{name} missing schema_version"
             assert template.schema_version == "1.0"
 
     def test_all_builtin_templates_have_response_format(self):
         """Test that all templates have a response_format."""
         for name, template in BUILTIN_TEMPLATES.items():
-            assert hasattr(
-                template, "response_format"
-            ), f"{name} missing response_format"
+            assert hasattr(template, "response_format"), f"{name} missing response_format"
             assert isinstance(template.response_format, str)
             assert len(template.response_format) > 0
 

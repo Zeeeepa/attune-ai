@@ -6,7 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-
 # Import config module to access DOC_GEN_STEPS and TOKEN_COSTS
 import attune.workflows.document_gen.config as config_module
 from attune.workflows.base import ModelTier
@@ -52,10 +51,8 @@ class TestTokenCostsStructure:
         """
         # Given / When / Then
         for tier, costs in TOKEN_COSTS.items():
-            assert isinstance(costs["input"], (int, float)), \
-                f"{tier} input cost is not numeric"
-            assert isinstance(costs["output"], (int, float)), \
-                f"{tier} output cost is not numeric"
+            assert isinstance(costs["input"], (int, float)), f"{tier} input cost is not numeric"
+            assert isinstance(costs["output"], (int, float)), f"{tier} output cost is not numeric"
             assert costs["input"] > 0, f"{tier} input cost must be positive"
             assert costs["output"] > 0, f"{tier} output cost must be positive"
 
@@ -67,8 +64,7 @@ class TestTokenCostsStructure:
         """
         # Given / When / Then
         for tier, costs in TOKEN_COSTS.items():
-            assert costs["output"] > costs["input"], \
-                f"{tier} output cost should exceed input cost"
+            assert costs["output"] > costs["input"], f"{tier} output cost should exceed input cost"
 
     def test_token_costs_tier_pricing_hierarchy(self):
         """
@@ -287,8 +283,9 @@ class TestConfigurationIntegration:
 
         # When / Then
         for step_name, step_config in DOC_GEN_STEPS.items():
-            assert step_config.tier_hint in valid_tiers, \
-                f"Step {step_name} has invalid tier hint: {step_config.tier_hint}"
+            assert (
+                step_config.tier_hint in valid_tiers
+            ), f"Step {step_name} has invalid tier hint: {step_config.tier_hint}"
 
     def test_configuration_can_estimate_costs(self):
         """

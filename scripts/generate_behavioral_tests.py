@@ -70,8 +70,7 @@ class ModuleAnalyzer(ast.NodeVisitor):
         """Extract class information."""
         methods = []
         is_abstract = any(
-            isinstance(base, ast.Name) and base.id in ("ABC", "ABCMeta")
-            for base in node.bases
+            isinstance(base, ast.Name) and base.id in ("ABC", "ABCMeta") for base in node.bases
         )
 
         for item in node.body:
@@ -234,7 +233,9 @@ def generate_test_template(module_info: ModuleInfo, output_path: Path) -> str:
             lines.append(f"        # obj = {class_info.name}(...)")
 
             if method.is_async:
-                lines.append(f"        # result = await obj.{method.name}({', '.join(method.args)})")
+                lines.append(
+                    f"        # result = await obj.{method.name}({', '.join(method.args)})"
+                )
             else:
                 lines.append(f"        # result = obj.{method.name}({', '.join(method.args)})")
 

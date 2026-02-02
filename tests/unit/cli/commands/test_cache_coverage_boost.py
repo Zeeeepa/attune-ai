@@ -120,7 +120,11 @@ class TestCollectCacheStats:
         assert stats["days_analyzed"] == 7
         assert stats["total_requests"] >= 0
 
-    @patch("builtins.open", new_callable=mock_open, read_data="2026-01-30 10:00:00 - Cache HIT: 1,000 tokens read, saved $0.50\n")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="2026-01-30 10:00:00 - Cache HIT: 1,000 tokens read, saved $0.50\n",
+    )
     @patch("pathlib.Path.exists", return_value=True)
     def test_collect_stats_with_cache_hit(self, mock_exists, mock_file):
         """Test _collect_cache_stats parses cache hit correctly."""
@@ -145,10 +149,7 @@ class TestDisplayCacheReport:
     def test_display_report_with_error(self):
         """Test _display_cache_report handles error stats."""
         # Given
-        stats = {
-            "error": "No log file found",
-            "message": "Enable logging"
-        }
+        stats = {"error": "No log file found", "message": "Enable logging"}
 
         # When
         result = _display_cache_report(stats, verbose=False)
@@ -169,7 +170,7 @@ class TestDisplayCacheReport:
             "total_cache_read_tokens": 10000,
             "total_cache_write_tokens": 5000,
             "total_savings": 12.50,
-            "avg_savings_per_hit": 0.25
+            "avg_savings_per_hit": 0.25,
         }
 
         # When
@@ -191,7 +192,7 @@ class TestDisplayCacheReport:
             "total_cache_read_tokens": 10000,
             "total_cache_write_tokens": 5000,
             "total_savings": 12.50,
-            "avg_savings_per_hit": 0.25
+            "avg_savings_per_hit": 0.25,
         }
 
         # When
@@ -209,4 +210,3 @@ class TestDisplayCacheReport:
 @pytest.mark.unit
 class TestCacheEdgeCases:
     """Test suite for edge cases."""
-

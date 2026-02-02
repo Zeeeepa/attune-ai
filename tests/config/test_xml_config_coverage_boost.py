@@ -328,7 +328,9 @@ class TestConfigRoundTrip:
         assert loaded.optimization.compression_level == original.optimization.compression_level
         assert loaded.optimization.use_short_tags == original.optimization.use_short_tags
         assert loaded.optimization.strip_whitespace == original.optimization.strip_whitespace
-        assert loaded.optimization.cache_system_prompts == original.optimization.cache_system_prompts
+        assert (
+            loaded.optimization.cache_system_prompts == original.optimization.cache_system_prompts
+        )
         assert loaded.optimization.max_context_tokens == original.optimization.max_context_tokens
 
         # Verify all metrics fields

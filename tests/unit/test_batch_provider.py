@@ -174,7 +174,9 @@ class TestAnthropicBatchProvider:
         provider.client.messages.batches.retrieve = MagicMock(side_effect=get_status_side_effect)
 
         # Mock results
-        mock_results = [{"custom_id": f"task_{i}", "result": {"type": "succeeded"}} for i in range(10)]
+        mock_results = [
+            {"custom_id": f"task_{i}", "result": {"type": "succeeded"}} for i in range(10)
+        ]
         provider.client.messages.batches.results = MagicMock(return_value=iter(mock_results))
 
         # Wait for batch (short poll interval for testing)

@@ -6,7 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-
 from attune.cli.utils.data import CHEATSHEET, EXPLAIN_CONTENT
 
 

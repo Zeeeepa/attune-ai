@@ -6,7 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-
 from attune.prompts.parser import Finding, ParsedResponse
 
 
@@ -75,7 +74,9 @@ class TestFinding:
         When: Accessing fix
         Then: Fix suggestion is stored."""
         # Given/When
-        finding = Finding(severity="medium", title="Code smell", fix="Refactor using factory pattern")
+        finding = Finding(
+            severity="medium", title="Code smell", fix="Refactor using factory pattern"
+        )
 
         # Then
         assert "factory pattern" in finding.fix
@@ -373,4 +374,4 @@ class TestParsedResponse:
 
         # Then
         # When no XML content is found, the parser adds an error
-        assert response.errors == ['No XML content found']
+        assert response.errors == ["No XML content found"]

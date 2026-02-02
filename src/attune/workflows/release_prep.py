@@ -153,6 +153,7 @@ class ReleasePreparationWorkflow(BaseWorkflow):
                     get_auth_strategy,
                     get_module_size_category,
                 )
+
                 logger = logging.getLogger(__name__)
 
                 # Calculate total LOC for project/directory
@@ -173,7 +174,9 @@ class ReleasePreparationWorkflow(BaseWorkflow):
                     self._auth_mode_used = recommended_mode.value
 
                     size_category = get_module_size_category(total_lines)
-                    logger.info(f"Release prep target: {target_path} ({total_lines:,} LOC, {size_category})")
+                    logger.info(
+                        f"Release prep target: {target_path} ({total_lines:,} LOC, {size_category})"
+                    )
                     logger.info(f"Recommended auth mode: {recommended_mode.value}")
 
                     cost_estimate = strategy.estimate_cost(total_lines, recommended_mode)
@@ -184,6 +187,7 @@ class ReleasePreparationWorkflow(BaseWorkflow):
 
             except Exception as e:
                 import logging
+
                 logger = logging.getLogger(__name__)
                 logger.warning(f"Auth strategy detection failed: {e}")
 

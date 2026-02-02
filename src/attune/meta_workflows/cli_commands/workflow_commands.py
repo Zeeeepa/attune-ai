@@ -6,7 +6,6 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-
 import typer
 from rich.console import Console
 from rich.panel import Panel
@@ -208,7 +207,6 @@ def run_workflow(
         raise typer.Exit(code=1)
 
 
-
 @meta_workflow_app.command("ask")
 def natural_language_run(
     request: str = typer.Argument(..., help="Natural language description of what you need"),
@@ -317,7 +315,6 @@ def natural_language_run(
         raise typer.Exit(code=1)
 
 
-
 @meta_workflow_app.command("detect")
 def detect_intent(
     request: str = typer.Argument(..., help="Natural language request to analyze"),
@@ -377,6 +374,3 @@ def detect_intent(
 # =============================================================================
 # Analytics Commands
 # =============================================================================
-
-
-

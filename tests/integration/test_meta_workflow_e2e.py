@@ -453,9 +453,10 @@ class TestSecurityValidation:
             for node in ast.walk(tree):
                 if isinstance(node, ast.Call):
                     if isinstance(node.func, ast.Name):
-                        assert node.func.id not in ["eval", "exec"], (
-                            f"Found {node.func.id}() call in {file_path}"
-                        )
+                        assert node.func.id not in [
+                            "eval",
+                            "exec",
+                        ], f"Found {node.func.id}() call in {file_path}"
 
 
 if __name__ == "__main__":

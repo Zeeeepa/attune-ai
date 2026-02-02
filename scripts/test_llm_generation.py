@@ -14,9 +14,11 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from attune.orchestration.real_tools import (RealCoverageAnalyzer,
-                                                 RealTestGenerator,
-                                                 RealTestValidator)
+from attune.orchestration.real_tools import (
+    RealCoverageAnalyzer,
+    RealTestGenerator,
+    RealTestValidator,
+)
 
 
 async def main():
@@ -52,9 +54,7 @@ async def main():
     )
 
     try:
-        test_file = generator.generate_tests_for_file(
-            target["path"], target["missing_lines"][:20]
-        )
+        test_file = generator.generate_tests_for_file(target["path"], target["missing_lines"][:20])
         print(f"✓ Generated: {test_file}")
         print()
 

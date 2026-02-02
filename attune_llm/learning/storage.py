@@ -73,9 +73,11 @@ class LearnedSkill:
             confidence=data.get("confidence", 0.5),
             usage_count=data.get("usage_count", 0),
             last_used=datetime.fromisoformat(data["last_used"]) if data.get("last_used") else None,
-            created_at=datetime.fromisoformat(data["created_at"])
-            if "created_at" in data
-            else datetime.now(),
+            created_at=(
+                datetime.fromisoformat(data["created_at"])
+                if "created_at" in data
+                else datetime.now()
+            ),
             tags=data.get("tags", []),
             metadata=data.get("metadata", {}),
         )

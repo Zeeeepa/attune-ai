@@ -111,9 +111,7 @@ class TestEventStreamer:
         """Test publish_event returns empty string when no memory backend."""
         streamer = EventStreamer()
 
-        event_id = streamer.publish_event(
-            event_type="test_event", data={"test": "data"}
-        )
+        event_id = streamer.publish_event(event_type="test_event", data={"test": "data"})
 
         assert event_id == ""
 
@@ -152,9 +150,7 @@ class TestEventStreamer:
 
         streamer = EventStreamer(memory=mock_memory)
 
-        event_id = streamer.publish_event(
-            event_type="test_event", data={"test": "data"}
-        )
+        event_id = streamer.publish_event(event_type="test_event", data={"test": "data"})
 
         assert event_id == ""
 

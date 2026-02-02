@@ -377,7 +377,9 @@ async def get_underperforming_stages(threshold: float = 0.7):
         all_underperforming = []
 
         for workflow in workflows:
-            underperforming = feedback.get_underperforming_stages(workflow, quality_threshold=threshold)
+            underperforming = feedback.get_underperforming_stages(
+                workflow, quality_threshold=threshold
+            )
             for stage_name, stats in underperforming:
                 all_underperforming.append(
                     {

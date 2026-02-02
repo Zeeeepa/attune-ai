@@ -780,15 +780,17 @@ class TestParserEdgeCases:
         subparsers = parser.add_subparsers()
         workflow.register_parsers(subparsers)
 
-        args = parser.parse_args([
-            "workflow",
-            "run",
-            "test",
-            "--provider",
-            "openai",
-            "--json",
-            "--use-recommended-tier",
-        ])
+        args = parser.parse_args(
+            [
+                "workflow",
+                "run",
+                "test",
+                "--provider",
+                "openai",
+                "--json",
+                "--use-recommended-tier",
+            ]
+        )
         assert args.provider == "openai"
         assert args.json is True
         assert args.use_recommended_tier is True
@@ -872,18 +874,22 @@ class TestParserIntegration:
         subparsers = parser.add_subparsers()
         workflow.register_parsers(subparsers)
 
-        complex_json = json.dumps({
-            "files": ["a.py", "b.py"],
-            "options": {"strict": True, "level": 3},
-        })
+        complex_json = json.dumps(
+            {
+                "files": ["a.py", "b.py"],
+                "options": {"strict": True, "level": 3},
+            }
+        )
 
-        args = parser.parse_args([
-            "workflow",
-            "run",
-            "code-review",
-            "--input",
-            complex_json,
-        ])
+        args = parser.parse_args(
+            [
+                "workflow",
+                "run",
+                "code-review",
+                "--input",
+                complex_json,
+            ]
+        )
 
         # Should be able to parse JSON input
         input_data = json.loads(args.input)

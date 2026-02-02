@@ -6,7 +6,6 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-
 import typer
 from rich.console import Console
 from rich.panel import Panel
@@ -149,7 +148,6 @@ def create_agent(
     console.print(f"\n[dim]Agent tier '{tier}' will cost approximately:")
     costs = {"cheap": "$0.001-0.01", "capable": "$0.01-0.05", "premium": "$0.05-0.20"}
     console.print(f"   {costs.get(tier, costs['capable'])} per execution[/dim]\n")
-
 
 
 @meta_workflow_app.command("create-team")
@@ -317,5 +315,3 @@ def create_team(
 
 if __name__ == "__main__":
     meta_workflow_app()
-
-

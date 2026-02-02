@@ -22,10 +22,10 @@ class TestSQLInjectionDetection:
     def test_safe_sql_with_placeholders_recognized(self):
         """Test that safe placeholder pattern is recognized."""
         line = 'cursor.execute(f"DELETE FROM table WHERE id IN ({placeholders})", run_ids)'
-        content = '''
+        content = """
 placeholders = ",".join("?" * len(run_ids))
 cursor.execute(f"DELETE FROM table WHERE id IN ({placeholders})", run_ids)
-'''
+"""
 
         result = self.workflow._is_safe_sql_parameterization(line, line, content)
         assert result is True, "Should recognize safe placeholder pattern"
@@ -49,10 +49,10 @@ cursor.execute(f"DELETE FROM table WHERE id IN ({placeholders})", run_ids)
     def test_safe_sql_with_multiple_placeholders(self):
         """Test safe SQL with multiple placeholder groups."""
         line = 'cursor.execute(f"DELETE FROM table WHERE id IN ({placeholders})", ids)'
-        content = '''
+        content = """
 placeholders = ",".join("?" * len(ids))
 cursor.execute(f"DELETE FROM table WHERE id IN ({placeholders})", ids)
-'''
+"""
 
         result = self.workflow._is_safe_sql_parameterization(line, line, content)
         assert result is True, "Should recognize multiple placeholder pattern"
@@ -69,12 +69,12 @@ class TestRandomUsageDetection:
         """Test that random in test files with security notes is safe."""
         line = "random.seed(42)"
         file_path = "tests/unit/cache/conftest.py"
-        content = '''
+        content = """
 # Security Note: Using random (not secrets) for deterministic test fixtures
 # NOT used for cryptographic operations
 random.seed(42)
 return [random.random() for _ in range(384)]
-'''
+"""
 
         result = self.workflow._is_safe_random_usage(line, file_path, content)
         assert result is True, "Should recognize documented test fixture random usage"
@@ -92,11 +92,11 @@ return [random.random() for _ in range(384)]
         """Test that random in simulation code is safe."""
         line = "is_compliant = random.random() < 0.90"
         file_path = "agents/compliance_simulation.py"
-        content = '''
+        content = """
 # Simulation: 90% compliant
 import random
 is_compliant = random.random() < 0.90
-'''
+"""
 
         result = self.workflow._is_safe_random_usage(line, file_path, content)
         assert result is True, "Should recognize simulation random usage"
@@ -138,15 +138,15 @@ class TestDetectionCodeRecognition:
     def test_regex_pattern_not_flagged(self):
         """Test that regex patterns for detection are not flagged."""
         line = 'pattern = r"eval\\("'
-        match_text = 'eval\\('
+        match_text = "eval\\("
 
         result = self.workflow._is_detection_code(line, match_text)
         assert result is True, "Should recognize regex pattern"
 
     def test_actual_eval_usage_flagged(self):
         """Test that actual eval usage is flagged."""
-        line = 'result = eval(user_input)'
-        match_text = 'eval(user_input)'
+        line = "result = eval(user_input)"
+        match_text = "eval(user_input)"
 
         result = self.workflow._is_detection_code(line, match_text)
         assert result is False, "Should flag actual eval usage"
@@ -239,16 +239,15 @@ class TestPhase2Improvements:
         workflow = SecurityAuditWorkflow()
 
         result_dict, _, _ = await workflow._triage(
-            {"path": "src/attune/workflows/history.py"},
-            workflow.tier_map["triage"]
+            {"path": "src/attune/workflows/history.py"}, workflow.tier_map["triage"]
         )
 
         findings = result_dict.get("findings", [])
         sql_findings = [f for f in findings if f["type"] == "sql_injection"]
 
-        assert len(sql_findings) == 0, (
-            f"Should have 0 SQL injection findings in history.py, found {len(sql_findings)}"
-        )
+        assert (
+            len(sql_findings) == 0
+        ), f"Should have 0 SQL injection findings in history.py, found {len(sql_findings)}"
 
     @pytest.mark.asyncio
     async def test_conftest_py_no_insecure_random_findings(self):
@@ -256,16 +255,15 @@ class TestPhase2Improvements:
         workflow = SecurityAuditWorkflow()
 
         result_dict, _, _ = await workflow._triage(
-            {"path": "tests/unit/cache/conftest.py"},
-            workflow.tier_map["triage"]
+            {"path": "tests/unit/cache/conftest.py"}, workflow.tier_map["triage"]
         )
 
         findings = result_dict.get("findings", [])
         random_findings = [f for f in findings if f["type"] == "insecure_random"]
 
-        assert len(random_findings) == 0, (
-            f"Should have 0 insecure_random findings in conftest.py, found {len(random_findings)}"
-        )
+        assert (
+            len(random_findings) == 0
+        ), f"Should have 0 insecure_random findings in conftest.py, found {len(random_findings)}"
 
     @pytest.mark.asyncio
     async def test_bug_predict_py_no_command_injection_findings(self):
@@ -273,35 +271,31 @@ class TestPhase2Improvements:
         workflow = SecurityAuditWorkflow()
 
         result_dict, _, _ = await workflow._triage(
-            {"path": "src/attune/workflows/bug_predict.py"},
-            workflow.tier_map["triage"]
+            {"path": "src/attune/workflows/bug_predict.py"}, workflow.tier_map["triage"]
         )
 
         findings = result_dict.get("findings", [])
         cmd_findings = [f for f in findings if f["type"] == "command_injection"]
 
         # Should have 0 or very few (only if there's actual dangerous code)
-        assert len(cmd_findings) == 0, (
-            f"Should have 0 command_injection findings in bug_predict.py, found {len(cmd_findings)}"
-        )
+        assert (
+            len(cmd_findings) == 0
+        ), f"Should have 0 command_injection findings in bug_predict.py, found {len(cmd_findings)}"
 
     @pytest.mark.asyncio
     async def test_full_scan_reduced_false_positives(self):
         """Test that full codebase scan has dramatically reduced false positives."""
         workflow = SecurityAuditWorkflow()
 
-        result_dict, _, _ = await workflow._triage(
-            {"path": "."},
-            workflow.tier_map["triage"]
-        )
+        result_dict, _, _ = await workflow._triage({"path": "."}, workflow.tier_map["triage"])
 
         findings = result_dict.get("findings", [])
 
         # Before Phase 2: 350 findings
         # After Phase 2: Should be < 30 findings
-        assert len(findings) < 50, (
-            f"Should have < 50 findings after Phase 2 improvements, found {len(findings)}"
-        )
+        assert (
+            len(findings) < 50
+        ), f"Should have < 50 findings after Phase 2 improvements, found {len(findings)}"
 
         # Check breakdown by type
         by_type = {}
@@ -314,19 +308,19 @@ class TestPhase2Improvements:
             print(f"  {typ}: {count}")
 
         # SQL injection should be nearly eliminated
-        assert by_type.get("sql_injection", 0) < 5, (
-            f"Should have < 5 SQL injection findings, found {by_type.get('sql_injection', 0)}"
-        )
+        assert (
+            by_type.get("sql_injection", 0) < 5
+        ), f"Should have < 5 SQL injection findings, found {by_type.get('sql_injection', 0)}"
 
         # Command injection (eval/exec) should be dramatically reduced
-        assert by_type.get("command_injection", 0) < 10, (
-            f"Should have < 10 command_injection findings, found {by_type.get('command_injection', 0)}"
-        )
+        assert (
+            by_type.get("command_injection", 0) < 10
+        ), f"Should have < 10 command_injection findings, found {by_type.get('command_injection', 0)}"
 
         # Insecure random should be dramatically reduced
-        assert by_type.get("insecure_random", 0) < 20, (
-            f"Should have < 20 insecure_random findings, found {by_type.get('insecure_random', 0)}"
-        )
+        assert (
+            by_type.get("insecure_random", 0) < 20
+        ), f"Should have < 20 insecure_random findings, found {by_type.get('insecure_random', 0)}"
 
 
 class TestPhase2Documentation:
@@ -343,6 +337,7 @@ class TestPhase2Documentation:
     def test_triage_method_has_phase2_comments(self):
         """Test that _triage method has Phase 2 comments."""
         import inspect
+
         workflow = SecurityAuditWorkflow()
 
         source = inspect.getsource(workflow._triage)

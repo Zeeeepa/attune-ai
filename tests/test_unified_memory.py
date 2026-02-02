@@ -213,7 +213,9 @@ class TestUnifiedMemoryBackendInit:
     def test_init_with_redis_url(self):
         """Test initialization with Redis URL (uses mock mode)"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config = MemoryConfig(storage_dir=tmpdir, redis_url="redis://localhost:6379", redis_mock=True)
+            config = MemoryConfig(
+                storage_dir=tmpdir, redis_url="redis://localhost:6379", redis_mock=True
+            )
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             # With mock mode, short-term memory is initialized
@@ -672,7 +674,10 @@ class TestUnifiedMemoryUtilities:
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             # Check if real Redis is available
-            if memory._redis_status.available and memory._redis_status.method != RedisStartMethod.MOCK:
+            if (
+                memory._redis_status.available
+                and memory._redis_status.method != RedisStartMethod.MOCK
+            ):
                 assert memory.using_real_redis is True
             else:
                 # Fall back to file-first - this is expected

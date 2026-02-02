@@ -34,9 +34,7 @@ class TestTelemetryMixinInitialization:
     @patch("attune.models.get_telemetry_store")
     @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
     @patch("attune.workflows.telemetry_mixin.UsageTracker")
-    def test_init_telemetry_with_defaults(
-        self, mock_tracker_class, mock_get_store
-    ):
+    def test_init_telemetry_with_defaults(self, mock_tracker_class, mock_get_store):
         """Test _init_telemetry with default backend."""
         mixin = TelemetryMixin()
         mock_backend = MagicMock()
@@ -64,9 +62,7 @@ class TestTelemetryMixinInitialization:
     @patch("attune.models.get_telemetry_store")
     @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
     @patch("attune.workflows.telemetry_mixin.UsageTracker")
-    def test_init_telemetry_handles_os_error(
-        self, mock_tracker_class, mock_get_store
-    ):
+    def test_init_telemetry_handles_os_error(self, mock_tracker_class, mock_get_store):
         """Test _init_telemetry handles file system errors gracefully."""
         mixin = TelemetryMixin()
         mock_backend = MagicMock()
@@ -80,16 +76,12 @@ class TestTelemetryMixinInitialization:
     @patch("attune.models.get_telemetry_store")
     @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
     @patch("attune.workflows.telemetry_mixin.UsageTracker")
-    def test_init_telemetry_handles_permission_error(
-        self, mock_tracker_class, mock_get_store
-    ):
+    def test_init_telemetry_handles_permission_error(self, mock_tracker_class, mock_get_store):
         """Test _init_telemetry handles permission errors gracefully."""
         mixin = TelemetryMixin()
         mock_backend = MagicMock()
         mock_get_store.return_value = mock_backend
-        mock_tracker_class.get_instance.side_effect = PermissionError(
-            "Permission denied"
-        )
+        mock_tracker_class.get_instance.side_effect = PermissionError("Permission denied")
 
         mixin._init_telemetry()
 
@@ -98,16 +90,12 @@ class TestTelemetryMixinInitialization:
     @patch("attune.models.get_telemetry_store")
     @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
     @patch("attune.workflows.telemetry_mixin.UsageTracker")
-    def test_init_telemetry_handles_attribute_error(
-        self, mock_tracker_class, mock_get_store
-    ):
+    def test_init_telemetry_handles_attribute_error(self, mock_tracker_class, mock_get_store):
         """Test _init_telemetry handles configuration errors."""
         mixin = TelemetryMixin()
         mock_backend = MagicMock()
         mock_get_store.return_value = mock_backend
-        mock_tracker_class.get_instance.side_effect = AttributeError(
-            "Missing attribute"
-        )
+        mock_tracker_class.get_instance.side_effect = AttributeError("Missing attribute")
 
         mixin._init_telemetry()
 
@@ -276,9 +264,7 @@ class TestEmitCallTelemetry:
     @patch("attune.workflows.telemetry_mixin.uuid.uuid4")
     @patch("attune.workflows.telemetry_mixin.datetime")
     @patch("attune.models.LLMCallRecord")
-    def test_emit_call_telemetry_creates_record(
-        self, mock_record_class, mock_datetime, mock_uuid
-    ):
+    def test_emit_call_telemetry_creates_record(self, mock_record_class, mock_datetime, mock_uuid):
         """Test call telemetry creates LLMCallRecord."""
         mixin = TelemetryMixin()
         mixin.name = "test-workflow"
@@ -420,9 +406,7 @@ class TestEmitWorkflowTelemetry:
 
     @patch("attune.models.WorkflowRunRecord")
     @patch("attune.models.WorkflowStageRecord")
-    def test_emit_workflow_telemetry_creates_records(
-        self, mock_stage_record, mock_run_record
-    ):
+    def test_emit_workflow_telemetry_creates_records(self, mock_stage_record, mock_run_record):
         """Test workflow telemetry creates WorkflowRunRecord."""
         mixin = TelemetryMixin()
         mixin.name = "test-workflow"
@@ -443,7 +427,7 @@ class TestEmitWorkflowTelemetry:
             savings_percent=50.0,
             by_tier={"cheap": 0.01, "capable": 0.04},
         )
-        mock_result.total_duration_ms=60000
+        mock_result.total_duration_ms = 60000
         mock_result.success = True
         mock_result.error = None
 
@@ -486,9 +470,7 @@ class TestEmitWorkflowTelemetry:
         mixin._emit_workflow_telemetry(mock_result)
 
     @patch("attune.models.WorkflowRunRecord")
-    def test_emit_workflow_telemetry_handles_backend_error(
-        self, mock_run_record
-    ):
+    def test_emit_workflow_telemetry_handles_backend_error(self, mock_run_record):
         """Test workflow telemetry handles backend errors gracefully."""
         mixin = TelemetryMixin()
         mixin.name = "test"
@@ -557,9 +539,7 @@ class TestIntegration:
     @patch("attune.models.get_telemetry_store")
     @patch("attune.workflows.telemetry_mixin.TELEMETRY_AVAILABLE", True)
     @patch("attune.workflows.telemetry_mixin.UsageTracker")
-    def test_full_telemetry_workflow(
-        self, mock_tracker_class, mock_get_store
-    ):
+    def test_full_telemetry_workflow(self, mock_tracker_class, mock_get_store):
         """Test complete telemetry workflow."""
 
         class TestWorkflow(TelemetryMixin):

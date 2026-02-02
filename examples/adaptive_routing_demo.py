@@ -43,9 +43,7 @@ def demo_adaptive_routing():
     print("\n⚠️  Example 2: Check for Tier Upgrade Recommendations")
     print("-" * 70)
 
-    should_upgrade, reason = router.recommend_tier_upgrade(
-        workflow="code-review", stage="analysis"
-    )
+    should_upgrade, reason = router.recommend_tier_upgrade(workflow="code-review", stage="analysis")
 
     if should_upgrade:
         print(f"🔴 UPGRADE RECOMMENDED: {reason}")
@@ -102,12 +100,16 @@ def demo_adaptive_routing():
 
     print("\nCost by tier:")
     for tier, cost in telemetry_stats["by_tier"].items():
-        pct = (cost / telemetry_stats["total_cost"] * 100) if telemetry_stats["total_cost"] > 0 else 0
+        pct = (
+            (cost / telemetry_stats["total_cost"] * 100) if telemetry_stats["total_cost"] > 0 else 0
+        )
         print(f"  {tier}: ${cost:.2f} ({pct:.1f}%)")
 
     print("\nCost by workflow:")
     for workflow_name, cost in list(telemetry_stats["by_workflow"].items())[:5]:
-        pct = (cost / telemetry_stats["total_cost"] * 100) if telemetry_stats["total_cost"] > 0 else 0
+        pct = (
+            (cost / telemetry_stats["total_cost"] * 100) if telemetry_stats["total_cost"] > 0 else 0
+        )
         print(f"  {workflow_name}: ${cost:.2f} ({pct:.1f}%)")
 
     print("\n" + "=" * 70)
@@ -126,7 +128,7 @@ if __name__ == "__main__":
     except FileNotFoundError:
         print("⚠️  No telemetry data found.")
         print("Run some workflows first to generate telemetry:")
-        print("  empathy workflow run code-review --input '{\"path\": \".\"}'")
+        print('  empathy workflow run code-review --input \'{"path": "."}\'')
         print("  empathy workflow run bug-predict")
         print("\nThen run this demo again.")
     except Exception as e:

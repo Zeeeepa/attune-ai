@@ -35,9 +35,7 @@ class TestBatchRequest:
 
     def test_batch_request_default_tier(self):
         """Test that model_tier defaults to 'capable'."""
-        req = BatchRequest(
-            task_id="task_1", task_type="analyze_logs", input_data={}
-        )
+        req = BatchRequest(task_id="task_1", task_type="analyze_logs", input_data={})
 
         assert req.model_tier == "capable"
 
@@ -190,9 +188,7 @@ class TestBatchProcessingWorkflow:
     @pytest.mark.asyncio
     async def test_execute_batch_timeout(self, workflow):
         """Test batch execution timeout handling."""
-        requests = [
-            BatchRequest(task_id="task_1", task_type="analyze_logs", input_data={})
-        ]
+        requests = [BatchRequest(task_id="task_1", task_type="analyze_logs", input_data={})]
 
         workflow.batch_provider.create_batch.return_value = "msgbatch_test123"
         workflow.batch_provider.wait_for_batch = AsyncMock(side_effect=TimeoutError("Timeout"))
@@ -356,8 +352,12 @@ class TestBatchProcessingCostSavings:
                 # Create requests with different tiers
                 requests = [
                     BatchRequest(task_id="t1", task_type="test", input_data={}, model_tier="cheap"),
-                    BatchRequest(task_id="t2", task_type="test", input_data={}, model_tier="capable"),
-                    BatchRequest(task_id="t3", task_type="test", input_data={}, model_tier="premium"),
+                    BatchRequest(
+                        task_id="t2", task_type="test", input_data={}, model_tier="capable"
+                    ),
+                    BatchRequest(
+                        task_id="t3", task_type="test", input_data={}, model_tier="premium"
+                    ),
                 ]
 
                 await workflow.execute_batch(requests)

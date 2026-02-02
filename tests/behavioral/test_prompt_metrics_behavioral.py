@@ -547,7 +547,9 @@ class TestXMLUsageTracking:
         non_xml_avg_latency = sum(m.latency_ms for m in non_xml_metrics) / len(non_xml_metrics)
 
         xml_success_rate = sum(1 for m in xml_metrics if m.parsing_success) / len(xml_metrics)
-        non_xml_success_rate = sum(1 for m in non_xml_metrics if m.parsing_success) / len(non_xml_metrics)
+        non_xml_success_rate = sum(1 for m in non_xml_metrics if m.parsing_success) / len(
+            non_xml_metrics
+        )
 
         assert xml_avg_latency < non_xml_avg_latency
         assert xml_success_rate > non_xml_success_rate

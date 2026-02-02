@@ -95,8 +95,7 @@ class TestLongTermMemoryInit:
 
         # Then
         mock_logger.info.assert_called_with(
-            "long_term_memory_initialized",
-            storage_path=str(memory.storage_path)
+            "long_term_memory_initialized", storage_path=str(memory.storage_path)
         )
 
 
@@ -199,7 +198,7 @@ class TestLongTermMemoryStore:
             "string": "text",
             "number": 42,
             "boolean": True,
-            "null": None
+            "null": None,
         }
 
         # When
@@ -479,9 +478,7 @@ class TestLongTermMemoryListKeys:
         # Then
         assert result == ["internal_key"]
 
-    def test_given_classification_enum_when_list_keys_then_filters_correctly(
-        self, memory_instance
-    ):
+    def test_given_classification_enum_when_list_keys_then_filters_correctly(self, memory_instance):
         """Given a Classification enum, when listing keys, then filters correctly."""
         # Given
         memory_instance.store("public_key", {"value": "public"}, Classification.PUBLIC)
@@ -519,9 +516,7 @@ class TestLongTermMemoryListKeys:
         # Then
         assert result == ["valid_key"]
 
-    def test_given_corrupted_json_when_list_keys_then_skips_corrupted_files(
-        self, memory_instance
-    ):
+    def test_given_corrupted_json_when_list_keys_then_skips_corrupted_files(self, memory_instance):
         """Given corrupted JSON files, when listing keys, then skips them."""
         # Given
         memory_instance.store("valid_key", {"value": "test"})
@@ -562,7 +557,9 @@ class TestLongTermMemoryListKeys:
 class TestLongTermMemoryExists:
     """Test LongTermMemory existence checking via retrieve behavior."""
 
-    def test_given_existing_key_when_checking_existence_then_retrieve_returns_data(self, memory_instance):
+    def test_given_existing_key_when_checking_existence_then_retrieve_returns_data(
+        self, memory_instance
+    ):
         """Given an existing key, when checking existence via retrieve, then returns data."""
         # Given
         key = "exists_key"
@@ -576,7 +573,9 @@ class TestLongTermMemoryExists:
         assert result is not None
         assert result == data
 
-    def test_given_nonexistent_key_when_checking_existence_then_retrieve_returns_none(self, memory_instance):
+    def test_given_nonexistent_key_when_checking_existence_then_retrieve_returns_none(
+        self, memory_instance
+    ):
         """Given a nonexistent key, when checking existence via retrieve, then returns None."""
         # Given
         key = "nonexistent_key"
@@ -596,9 +595,7 @@ class TestLongTermMemoryExists:
         with pytest.raises(ValueError, match="key cannot be empty"):
             memory_instance.retrieve(key)
 
-    def test_given_invalid_key_when_checking_existence_then_returns_none(
-        self, memory_instance
-    ):
+    def test_given_invalid_key_when_checking_existence_then_returns_none(self, memory_instance):
         """Given an invalid key, when checking existence via retrieve, then returns None."""
         # Given
         key = "../../../etc/passwd"
@@ -628,9 +625,7 @@ class TestLongTermMemoryGetClassification:
         # Then
         assert key in result
 
-    def test_given_nonexistent_key_when_listing_keys_then_not_found(
-        self, memory_instance
-    ):
+    def test_given_nonexistent_key_when_listing_keys_then_not_found(self, memory_instance):
         """Given a nonexistent key, when listing keys, then not found."""
         # Given
         key = "nonexistent_key"
@@ -674,9 +669,7 @@ class TestLongTermMemoryGetClassification:
         assert "public_key" not in internal_keys
         assert "public_key" not in sensitive_keys
 
-    def test_given_corrupted_file_when_listing_keys_then_skips_it(
-        self, memory_instance
-    ):
+    def test_given_corrupted_file_when_listing_keys_then_skips_it(self, memory_instance):
         """Given a corrupted file, when listing keys, then skips it."""
         # Given
         key = "corrupted_key"
@@ -693,9 +686,7 @@ class TestLongTermMemoryGetClassification:
 class TestLongTermMemoryIntegration:
     """Integration tests for LongTermMemory."""
 
-    def test_given_full_workflow_when_executed_then_all_operations_succeed(
-        self, memory_instance
-    ):
+    def test_given_full_workflow_when_executed_then_all_operations_succeed(self, memory_instance):
         """Given a full workflow, when executed, then all operations succeed."""
         # Given
         key = "workflow_key"

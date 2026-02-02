@@ -31,12 +31,12 @@ Licensed under Fair Source License 0.9
 """
 
 from attune_llm.agent_factory.base import (
-                                                    AgentCapability,
-                                                    AgentConfig,
-                                                    AgentRole,
-                                                    BaseAdapter,
-                                                    BaseAgent,
-                                                    WorkflowConfig,
+    AgentCapability,
+    AgentConfig,
+    AgentRole,
+    BaseAdapter,
+    BaseAgent,
+    WorkflowConfig,
 )
 from attune_llm.agent_factory.factory import AgentFactory
 from attune_llm.agent_factory.framework import Framework

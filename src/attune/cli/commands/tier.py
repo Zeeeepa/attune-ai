@@ -109,9 +109,7 @@ def cmd_tier_stats(args):
 
     print("  BUG TYPE DISTRIBUTION")
     print("  " + "-" * 40)
-    sorted_types = sorted(
-        stats["bug_type_distribution"].items(), key=lambda x: x[1], reverse=True
-    )
+    sorted_types = sorted(stats["bug_type_distribution"].items(), key=lambda x: x[1], reverse=True)
     for bug_type, count in sorted_types[:10]:
         percent = (count / stats["total_patterns"]) * 100
         print(f"  {bug_type:20} {count:3} ({percent:5.1f}%)")

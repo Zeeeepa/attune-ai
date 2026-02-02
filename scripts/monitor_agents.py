@@ -21,7 +21,9 @@ from pathlib import Path
 from typing import Dict, List, Any
 
 
-AGENT_OUTPUT_DIR = Path("/private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-empathy-framework/tasks/")
+AGENT_OUTPUT_DIR = Path(
+    "/private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-empathy-framework/tasks/"
+)
 
 
 def parse_agent_output(output_file: Path) -> Dict[str, Any]:
@@ -99,7 +101,7 @@ def get_all_agent_status() -> Dict[str, Any]:
                 "total_modules": 0,
                 "total_tests": 0,
                 "total_errors": 0,
-            }
+            },
         }
 
     agents = {}
@@ -170,11 +172,17 @@ def print_dashboard_view(status: Dict[str, Any]):
                 "not_found": "⚪",
             }.get(agent_status["status"], "❓")
 
-            batch_info = f"Batch {agent_status.get('batch_num', '?')}" if agent_status.get('batch_num') else ""
-            focus = agent_status.get('focus_area', 'Unknown')
+            batch_info = (
+                f"Batch {agent_status.get('batch_num', '?')}"
+                if agent_status.get("batch_num")
+                else ""
+            )
+            focus = agent_status.get("focus_area", "Unknown")
 
-            print(f"  {status_icon} {agent_id[:8]}... | {batch_info:8} | {focus[:30]:30} | "
-                  f"Modules: {agent_status['modules_completed']:2} | Tests: {agent_status['tests_added']:3}")
+            print(
+                f"  {status_icon} {agent_id[:8]}... | {batch_info:8} | {focus[:30]:30} | "
+                f"Modules: {agent_status['modules_completed']:2} | Tests: {agent_status['tests_added']:3}"
+            )
 
     print("=" * 80)
     print()

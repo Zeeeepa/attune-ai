@@ -112,4 +112,3 @@ class TestCmdFrameworks:
     def test_cmd_frameworks_function_exists(self):
         """Test that cmd_frameworks function exists."""
         assert callable(cmd_frameworks)
-

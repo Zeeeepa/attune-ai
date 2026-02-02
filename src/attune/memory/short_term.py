@@ -151,7 +151,10 @@ class RedisShortTermMemory:
             # If Redis is not enabled via env var, force mock mode
             if not redis_enabled and not use_mock:
                 use_mock = True
-                logger.info("redis_disabled_via_env", message="Redis not enabled in environment, using mock mode")
+                logger.info(
+                    "redis_disabled_via_env",
+                    message="Redis not enabled in environment, using mock mode",
+                )
 
             self._config = RedisConfig(
                 host=env_host,
@@ -183,7 +186,9 @@ class RedisShortTermMemory:
         # Reduces network I/O from 37ms to <0.001ms for frequently accessed keys
         self._local_cache_enabled = self._config.local_cache_enabled
         self._local_cache_max_size = self._config.local_cache_size
-        self._local_cache: dict[str, tuple[str, float, float]] = {}  # key -> (value, timestamp, last_access)
+        self._local_cache: dict[str, tuple[str, float, float]] = (
+            {}
+        )  # key -> (value, timestamp, last_access)
         self._local_cache_hits = 0
         self._local_cache_misses = 0
 

@@ -144,7 +144,10 @@ async def test_perf_audit_with_auth():
         ("✅" if perf_level else "❌", "Performance level assigned"),
         ("✅" if optimization_plan else "❌", "Optimization plan generated"),
         ("✅" if auth_mode_used else "❌", "Auth mode tracked"),
-        ("✅" if auth_mode_used == recommended_mode.value else "❌", "Auth mode matches recommendation"),
+        (
+            "✅" if auth_mode_used == recommended_mode.value else "❌",
+            "Auth mode matches recommendation",
+        ),
     ]
 
     for icon, check in checks:

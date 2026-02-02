@@ -143,7 +143,7 @@ class TestEmpathyConfigInit:
         """Given default_model not in models, when initializing, then raises ValueError."""
         # Given
         # ModelConfig is only used for type hints at runtime, create compatible object
-        Model = type('Model', (), {})
+        Model = type("Model", (), {})
         model = Model()
         model.name = "model1"
         models = [model]
@@ -157,7 +157,7 @@ class TestEmpathyConfigInit:
         """Given default_model in models, when initializing, then succeeds."""
         # Given
         # ModelConfig is only used for type hints at runtime, create compatible object
-        Model = type('Model', (), {})
+        Model = type("Model", (), {})
         model = Model()
         model.name = "model1"
         models = [model]
@@ -295,11 +295,13 @@ class TestEmpathyConfigFromJson:
     def test_loads_config_from_json_file(self):
         """Given valid JSON file, when loading, then returns config."""
         # Given
-        json_content = json.dumps({
-            "user_id": "json_user",
-            "target_level": 2,
-            "confidence_threshold": 0.6,
-        })
+        json_content = json.dumps(
+            {
+                "user_id": "json_user",
+                "target_level": 2,
+                "confidence_threshold": 0.6,
+            }
+        )
         m = mock_open(read_data=json_content)
 
         # When
@@ -314,11 +316,13 @@ class TestEmpathyConfigFromJson:
     def test_ignores_unknown_fields_in_json(self):
         """Given JSON with unknown fields, when loading, then ignores them."""
         # Given
-        json_content = json.dumps({
-            "user_id": "test",
-            "extra_field": "ignored",
-            "workflows": {"key": "value"},
-        })
+        json_content = json.dumps(
+            {
+                "user_id": "test",
+                "extra_field": "ignored",
+                "workflows": {"key": "value"},
+            }
+        )
         m = mock_open(read_data=json_content)
 
         # When
@@ -435,8 +439,10 @@ class TestEmpathyConfigFromFile:
 
         # When
         with patch("pathlib.Path.exists") as mock_exists:
+
             def side_effect(self):
                 return str(self) == ".empathy.yml"
+
             mock_exists.side_effect = side_effect
             with patch("builtins.open", m):
                 config = EmpathyConfig.from_file()
@@ -453,8 +459,10 @@ class TestEmpathyConfigFromFile:
 
         # When
         with patch("pathlib.Path.exists") as mock_exists:
+
             def side_effect(self):
                 return str(self) == ".empathy.json"
+
             mock_exists.side_effect = side_effect
             with patch("builtins.open", m):
                 config = EmpathyConfig.from_file()
@@ -916,8 +924,10 @@ class TestLoadConfig:
 
         # When
         with patch("pathlib.Path.exists") as mock_exists:
+
             def side_effect(self):
                 return str(self) == ".empathy.json"
+
             mock_exists.side_effect = side_effect
             with patch("builtins.open", m):
                 with patch.dict(os.environ, {}, clear=True):

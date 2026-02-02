@@ -265,9 +265,7 @@ class TestGenerateTestForFunctionParametrization:
         # Then
         assert "@pytest.mark.parametrize" in result
 
-    def test_parametrize_includes_param_names(
-        self, function_with_multiple_params, monkeypatch
-    ):
+    def test_parametrize_includes_param_names(self, function_with_multiple_params, monkeypatch):
         """
         Given: A function with multiple parameters
         When: Generating parametrized test
@@ -322,15 +320,15 @@ class TestGenerateTestForFunctionParametrization:
         result = generate_test_for_function(module, basic_function_metadata)
 
         # Then
-        assert "@pytest.mark.parametrize" not in result or result.count("@pytest.mark.parametrize") < 2
+        assert (
+            "@pytest.mark.parametrize" not in result or result.count("@pytest.mark.parametrize") < 2
+        )
 
 
 class TestGenerateTestForFunctionEdgeCases:
     """Test edge case generation in generate_test_for_function."""
 
-    def test_edge_cases_generate_separate_test(
-        self, basic_function_metadata, monkeypatch
-    ):
+    def test_edge_cases_generate_separate_test(self, basic_function_metadata, monkeypatch):
         """
         Given: A function with edge cases defined
         When: Generating test code
@@ -466,9 +464,7 @@ class TestGenerateTestForFunctionErrorHandling:
 class TestGenerateTestForFunctionComplexScenarios:
     """Test complex scenarios and combinations."""
 
-    def test_async_function_with_parametrization(
-        self, async_function_metadata, monkeypatch
-    ):
+    def test_async_function_with_parametrization(self, async_function_metadata, monkeypatch):
         """
         Given: An async function with multiple test cases
         When: Generating test code

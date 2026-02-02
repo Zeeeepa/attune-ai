@@ -54,7 +54,9 @@ def demo_heartbeat_streaming():
     for event in events:
         data = event.data
         timestamp = event.timestamp.strftime("%H:%M:%S")
-        print(f"  [{timestamp}] {data.get('agent_id')}: {data.get('status')} ({data.get('progress', 0)*100:.0f}%)")
+        print(
+            f"  [{timestamp}] {data.get('agent_id')}: {data.get('status')} ({data.get('progress', 0)*100:.0f}%)"
+        )
 
     print()
 

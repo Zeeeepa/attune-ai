@@ -17,8 +17,14 @@ Licensed under Fair Source 0.9
 
 from typing import Any
 
-from attune import (EmpathyOS, FeedbackLoopDetector, Level4Anticipatory,
-                        LeveragePointAnalyzer, Pattern, PatternLibrary)
+from attune import (
+    EmpathyOS,
+    FeedbackLoopDetector,
+    Level4Anticipatory,
+    LeveragePointAnalyzer,
+    Pattern,
+    PatternLibrary,
+)
 
 
 class BugPredictor:

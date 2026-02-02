@@ -93,14 +93,10 @@ def _collect_cache_stats(days: int = 7) -> dict[str, Any]:
             for line in f:
                 # Try to extract timestamp
                 # Common format: 2026-01-27 21:30:45,123
-                timestamp_match = re.match(
-                    r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", line
-                )
+                timestamp_match = re.match(r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", line)
                 if timestamp_match:
                     try:
-                        log_time = datetime.strptime(
-                            timestamp_match.group(1), "%Y-%m-%d %H:%M:%S"
-                        )
+                        log_time = datetime.strptime(timestamp_match.group(1), "%Y-%m-%d %H:%M:%S")
                         if log_time < cutoff_date:
                             continue  # Skip old entries
                     except ValueError:
@@ -140,9 +136,7 @@ def _collect_cache_stats(days: int = 7) -> dict[str, Any]:
         }
 
     # Calculate metrics
-    cache_hit_rate = (
-        (cache_hits / total_requests * 100) if total_requests > 0 else 0.0
-    )
+    cache_hit_rate = (cache_hits / total_requests * 100) if total_requests > 0 else 0.0
 
     return {
         "days_analyzed": days,
@@ -154,9 +148,7 @@ def _collect_cache_stats(days: int = 7) -> dict[str, Any]:
         "total_cache_read_tokens": total_cache_read_tokens,
         "total_cache_write_tokens": total_cache_write_tokens,
         "total_savings": round(total_savings, 4),
-        "avg_savings_per_hit": (
-            round(total_savings / cache_hits, 4) if cache_hits > 0 else 0.0
-        ),
+        "avg_savings_per_hit": (round(total_savings / cache_hits, 4) if cache_hits > 0 else 0.0),
     }
 
 
@@ -193,7 +185,7 @@ def _display_cache_report(stats: dict[str, Any], verbose: bool = False):
     # Cost savings
     print("💰 Cost Savings:")
     print(f"  Total Saved: ${stats['total_savings']:.4f}")
-    if stats['cache_hits'] > 0:
+    if stats["cache_hits"] > 0:
         print(f"  Avg Savings per Hit: ${stats['avg_savings_per_hit']:.4f}")
     print()
 
@@ -205,7 +197,7 @@ def _display_cache_report(stats: dict[str, Any], verbose: bool = False):
         print()
 
     # Performance assessment
-    hit_rate = stats['cache_hit_rate']
+    hit_rate = stats["cache_hit_rate"]
     print("📈 Performance Assessment:")
     if hit_rate >= 50:
         print("  ✅ EXCELLENT - Cache is working effectively")
@@ -222,7 +214,7 @@ def _display_cache_report(stats: dict[str, Any], verbose: bool = False):
     print()
 
     # Recommendations
-    if stats['total_requests'] < 10:
+    if stats["total_requests"] < 10:
         print("ℹ️  Note: Limited data available. Run more workflows for accurate stats.")
     elif hit_rate < 30:
         print("💡 Recommendations:")

@@ -57,13 +57,15 @@ class EvalExecDetector(ast.NodeVisitor):
 
         if func_name in ("eval", "exec"):
             # Found a real eval/exec call!
-            self.findings.append({
-                "type": "command_injection",
-                "function": func_name,
-                "line": node.lineno,
-                "col": node.col_offset,
-                "context": self._current_function,
-            })
+            self.findings.append(
+                {
+                    "type": "command_injection",
+                    "function": func_name,
+                    "line": node.lineno,
+                    "col": node.col_offset,
+                    "context": self._current_function,
+                }
+            )
 
         self.generic_visit(node)
 
@@ -125,12 +127,10 @@ def is_scanner_implementation_file(file_path: str) -> bool:
         "owasp",
         "secrets_detector",
         "pii_scrubber",
-
         # Pattern/rule definition files
         "patterns.py",
         "rules.py",
         "checks.py",
-
         # Test files for security scanners
         "test_bug_predict",
         "test_security",
@@ -161,7 +161,11 @@ def is_in_docstring_or_comment(line_content: str, file_content: str, line_num: i
         return True
 
     # Check for inline comments
-    if "#" in line_content and line_content.index("#") < line_content.find("eval") if "eval" in line_content else True:
+    if (
+        "#" in line_content and line_content.index("#") < line_content.find("eval")
+        if "eval" in line_content
+        else True
+    ):
         return True
 
     # Parse file as AST to find docstrings
@@ -206,8 +210,7 @@ def is_in_docstring_or_comment(line_content: str, file_content: str, line_num: i
 
 
 def enhanced_command_injection_detection(
-    file_path: str,
-    original_findings: list[dict[str, Any]]
+    file_path: str, original_findings: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
     """Enhanced command injection detection with AST-based filtering.
 
@@ -248,21 +251,24 @@ def enhanced_command_injection_detection(
 
             # Check if this is a test file (downgrade severity)
             from .security_audit import TEST_FILE_PATTERNS
+
             is_test_file = any(re.search(pat, file_path) for pat in TEST_FILE_PATTERNS)
 
             # Convert AST findings to format compatible with original
             filtered = []
             for finding in ast_findings:
-                filtered.append({
-                    "type": "command_injection",
-                    "file": file_path,
-                    "line": finding["line"],
-                    "match": f"{finding['function']}(",
-                    "severity": "low" if is_test_file else "critical",
-                    "owasp": "A03:2021 Injection",
-                    "context": finding.get("context", ""),
-                    "is_test": is_test_file,
-                })
+                filtered.append(
+                    {
+                        "type": "command_injection",
+                        "file": file_path,
+                        "line": finding["line"],
+                        "match": f"{finding['function']}(",
+                        "severity": "low" if is_test_file else "critical",
+                        "owasp": "A03:2021 Injection",
+                        "context": finding.get("context", ""),
+                        "is_test": is_test_file,
+                    }
+                )
 
             # Keep subprocess/os.system findings (not filtered by AST)
             filtered.extend(subprocess_findings)

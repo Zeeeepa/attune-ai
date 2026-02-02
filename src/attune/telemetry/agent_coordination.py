@@ -71,7 +71,11 @@ class CoordinationSignal:
             "source_agent": self.source_agent,
             "target_agent": self.target_agent,
             "payload": self.payload,
-            "timestamp": self.timestamp.isoformat() if isinstance(self.timestamp, datetime) else self.timestamp,
+            "timestamp": (
+                self.timestamp.isoformat()
+                if isinstance(self.timestamp, datetime)
+                else self.timestamp
+            ),
             "ttl_seconds": self.ttl_seconds,
         }
 
@@ -303,7 +307,9 @@ class CoordinationSignals:
 
         while time.time() - start_time < timeout:
             # Check for signal
-            signal = self.check_signal(signal_type=signal_type, source_agent=source_agent, consume=True)
+            signal = self.check_signal(
+                signal_type=signal_type, source_agent=source_agent, consume=True
+            )
 
             if signal:
                 return signal
@@ -335,7 +341,7 @@ class CoordinationSignals:
             # Check broadcast signals: empathy:signal:*:{type}:*
             patterns = [
                 f"{self.KEY_PREFIX}{self.agent_id}:{signal_type}:*",
-                f"{self.KEY_PREFIX}{self.BROADCAST_TARGET}:{signal_type}:*"
+                f"{self.KEY_PREFIX}{self.BROADCAST_TARGET}:{signal_type}:*",
             ]
 
             for pattern in patterns:

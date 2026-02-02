@@ -141,9 +141,7 @@ def print_progress_report(stats: dict, detailed: bool = False):
     print("Overall Progress:")
     print(f"  Modules in Batch: {stats['total_modules']}")
     print(f"  Modules Tested: {stats['modules_tested']}")
-    print(
-        f"  Modules Not Started: {stats['total_modules'] - stats['modules_tested']}"
-    )
+    print(f"  Modules Not Started: {stats['total_modules'] - stats['modules_tested']}")
     print()
 
     # Coverage statistics
@@ -192,9 +190,7 @@ def print_progress_report(stats: dict, detailed: bool = False):
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Check batch 10 test coverage progress"
-    )
+    parser = argparse.ArgumentParser(description="Check batch 10 test coverage progress")
     parser.add_argument(
         "--detailed",
         action="store_true",
@@ -203,9 +199,7 @@ def main():
     args = parser.parse_args()
 
     # Paths
-    test_path = (
-        Path(__file__).parent.parent / "tests" / "behavioral" / "generated" / "batch10"
-    )
+    test_path = Path(__file__).parent.parent / "tests" / "behavioral" / "generated" / "batch10"
 
     # Check if test directory exists
     if not test_path.exists():

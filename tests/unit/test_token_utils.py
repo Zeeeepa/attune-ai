@@ -48,10 +48,10 @@ class TestCountTokens:
 
     def test_code_text(self):
         """Test token counting with code."""
-        code = '''def hello():
+        code = """def hello():
     print("Hello, world!")
     return 42
-'''
+"""
         result = count_tokens(code, use_api=False)
 
         # Code should tokenize to 10-15 tokens

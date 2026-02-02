@@ -396,12 +396,14 @@ class TestMockLLMExecutorIntegration:
         response4 = await executor.run(task_type="final_review", prompt="Review output")
 
         # All should succeed
-        assert all([
-            response1.success,
-            response2.success,
-            response3.success,
-            response4.success,
-        ])
+        assert all(
+            [
+                response1.success,
+                response2.success,
+                response3.success,
+                response4.success,
+            ]
+        )
 
         # History should be complete
         assert len(executor.call_history) == 4

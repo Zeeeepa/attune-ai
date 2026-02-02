@@ -49,8 +49,8 @@ def print_seo_results_detailed(result: Any):
         print(f"   🌐 Site URL: {scan_data.get('site_url', 'N/A')}")
 
     if analysis_data:
-        total_issues = analysis_data.get('total_issues', 0)
-        files_analyzed = analysis_data.get('files_analyzed', 0)
+        total_issues = analysis_data.get("total_issues", 0)
+        files_analyzed = analysis_data.get("files_analyzed", 0)
         print(f"   ⚠️  Total SEO issues: {total_issues}")
         print(f"   📊 Files analyzed: {files_analyzed}")
 
@@ -63,8 +63,8 @@ def print_seo_results_detailed(result: Any):
     print(f"   ⏱️  Duration: {result.total_duration_ms / 1000:.2f}s")
 
     # 2. Issues Breakdown by Type
-    if analysis_data and 'issues' in analysis_data:
-        issues = analysis_data['issues']
+    if analysis_data and "issues" in analysis_data:
+        issues = analysis_data["issues"]
 
         print(f"\n📋 Issues by Type")
         print("-" * 70)
@@ -72,14 +72,14 @@ def print_seo_results_detailed(result: Any):
         # Group by element type
         issues_by_type: dict[str, list] = {}
         for issue in issues:
-            element = issue.get('element', 'unknown')
+            element = issue.get("element", "unknown")
             if element not in issues_by_type:
                 issues_by_type[element] = []
             issues_by_type[element].append(issue)
 
         for element, element_issues in sorted(issues_by_type.items()):
             count = len(element_issues)
-            severity = element_issues[0].get('severity', 'unknown')
+            severity = element_issues[0].get("severity", "unknown")
 
             # Emoji by severity
             emoji = "🔴" if severity == "critical" else "🟡" if severity == "warning" else "🔵"
@@ -91,10 +91,10 @@ def print_seo_results_detailed(result: Any):
         print("-" * 70)
 
         for i, issue in enumerate(issues[:5], 1):
-            file_name = Path(issue['file']).name
-            element = issue.get('element', 'unknown').replace('_', ' ').title()
-            message = issue.get('message', 'No description')
-            severity = issue.get('severity', 'unknown')
+            file_name = Path(issue["file"]).name
+            element = issue.get("element", "unknown").replace("_", " ").title()
+            message = issue.get("message", "No description")
+            severity = issue.get("severity", "unknown")
 
             print(f"   {i}. [{severity.upper()}] {file_name}")
             print(f"      Issue: {element}")
@@ -108,7 +108,9 @@ def print_seo_results_detailed(result: Any):
 
     print(f"\n   Total:          ${result.cost_report.total_cost:.4f}")
     print(f"   Baseline:       ${result.cost_report.baseline_cost:.4f}")
-    print(f"   Savings:        ${result.cost_report.savings:.4f} ({result.cost_report.savings_percent:.1f}%)")
+    print(
+        f"   Savings:        ${result.cost_report.savings:.4f} ({result.cost_report.savings_percent:.1f}%)"
+    )
 
 
 async def demonstrate_socratic_flow():

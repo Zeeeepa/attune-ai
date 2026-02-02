@@ -2,6 +2,7 @@
 
 Exposes Empathy workflows as MCP tools for Claude Code integration.
 """
+
 import asyncio
 import json
 import logging
@@ -39,11 +40,11 @@ class EmpathyMCPServer:
                     "properties": {
                         "path": {
                             "type": "string",
-                            "description": "Path to directory or file to audit"
+                            "description": "Path to directory or file to audit",
                         }
                     },
-                    "required": ["path"]
-                }
+                    "required": ["path"],
+                },
             },
             "bug_predict": {
                 "name": "bug_predict",
@@ -53,11 +54,11 @@ class EmpathyMCPServer:
                     "properties": {
                         "path": {
                             "type": "string",
-                            "description": "Path to directory or file to analyze"
+                            "description": "Path to directory or file to analyze",
                         }
                     },
-                    "required": ["path"]
-                }
+                    "required": ["path"],
+                },
             },
             "code_review": {
                 "name": "code_review",
@@ -67,11 +68,11 @@ class EmpathyMCPServer:
                     "properties": {
                         "path": {
                             "type": "string",
-                            "description": "Path to directory or file to review"
+                            "description": "Path to directory or file to review",
                         }
                     },
-                    "required": ["path"]
-                }
+                    "required": ["path"],
+                },
             },
             "test_generation": {
                 "name": "test_generation",
@@ -79,18 +80,15 @@ class EmpathyMCPServer:
                 "input_schema": {
                     "type": "object",
                     "properties": {
-                        "module": {
-                            "type": "string",
-                            "description": "Path to Python module"
-                        },
+                        "module": {"type": "string", "description": "Path to Python module"},
                         "batch": {
                             "type": "boolean",
                             "description": "Enable batch mode for parallel generation",
-                            "default": False
-                        }
+                            "default": False,
+                        },
                     },
-                    "required": ["module"]
-                }
+                    "required": ["module"],
+                },
             },
             "performance_audit": {
                 "name": "performance_audit",
@@ -100,11 +98,11 @@ class EmpathyMCPServer:
                     "properties": {
                         "path": {
                             "type": "string",
-                            "description": "Path to directory or file to audit"
+                            "description": "Path to directory or file to audit",
                         }
                     },
-                    "required": ["path"]
-                }
+                    "required": ["path"],
+                },
             },
             "release_prep": {
                 "name": "release_prep",
@@ -115,18 +113,15 @@ class EmpathyMCPServer:
                         "path": {
                             "type": "string",
                             "description": "Path to project root",
-                            "default": "."
+                            "default": ".",
                         }
-                    }
-                }
+                    },
+                },
             },
             "auth_status": {
                 "name": "auth_status",
                 "description": "Get authentication strategy status. Shows current configuration, subscription tier, and default mode.",
-                "input_schema": {
-                    "type": "object",
-                    "properties": {}
-                }
+                "input_schema": {"type": "object", "properties": {}},
             },
             "auth_recommend": {
                 "name": "auth_recommend",
@@ -134,13 +129,10 @@ class EmpathyMCPServer:
                 "input_schema": {
                     "type": "object",
                     "properties": {
-                        "file_path": {
-                            "type": "string",
-                            "description": "Path to file to analyze"
-                        }
+                        "file_path": {"type": "string", "description": "Path to file to analyze"}
                     },
-                    "required": ["file_path"]
-                }
+                    "required": ["file_path"],
+                },
             },
             "telemetry_stats": {
                 "name": "telemetry_stats",
@@ -151,19 +143,16 @@ class EmpathyMCPServer:
                         "days": {
                             "type": "integer",
                             "description": "Number of days to analyze",
-                            "default": 30
+                            "default": 30,
                         }
-                    }
-                }
+                    },
+                },
             },
             "dashboard_status": {
                 "name": "dashboard_status",
                 "description": "Get agent coordination dashboard status. Shows active agents, pending approvals, recent signals.",
-                "input_schema": {
-                    "type": "object",
-                    "properties": {}
-                }
-            }
+                "input_schema": {"type": "object", "properties": {}},
+            },
         }
 
     def _register_resources(self) -> dict[str, dict[str, Any]]:
@@ -177,20 +166,20 @@ class EmpathyMCPServer:
                 "uri": "empathy://workflows",
                 "name": "Available Workflows",
                 "description": "List of all available Empathy workflows",
-                "mime_type": "application/json"
+                "mime_type": "application/json",
             },
             "auth_config": {
                 "uri": "empathy://auth/config",
                 "name": "Authentication Configuration",
                 "description": "Current authentication strategy configuration",
-                "mime_type": "application/json"
+                "mime_type": "application/json",
             },
             "telemetry": {
                 "uri": "empathy://telemetry",
                 "name": "Telemetry Data",
                 "description": "Cost tracking and performance metrics",
-                "mime_type": "application/json"
-            }
+                "mime_type": "application/json",
+            },
         }
 
     async def call_tool(self, tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
@@ -225,16 +214,10 @@ class EmpathyMCPServer:
             elif tool_name == "dashboard_status":
                 return await self._get_dashboard_status()
             else:
-                return {
-                    "success": False,
-                    "error": f"Unknown tool: {tool_name}"
-                }
+                return {"success": False, "error": f"Unknown tool: {tool_name}"}
         except Exception as e:
             logger.exception(f"Tool execution failed: {tool_name}")
-            return {
-                "success": False,
-                "error": str(e)
-            }
+            return {"success": False, "error": str(e)}
 
     async def _run_security_audit(self, args: dict[str, Any]) -> dict[str, Any]:
         """Run security audit workflow."""
@@ -248,7 +231,7 @@ class EmpathyMCPServer:
             "score": result.final_output.get("health_score"),
             "findings": result.final_output.get("findings", []),
             "cost": result.cost_report.total_cost,
-            "provider": result.provider
+            "provider": result.provider,
         }
 
     async def _run_bug_predict(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -261,7 +244,7 @@ class EmpathyMCPServer:
         return {
             "success": result.success,
             "predictions": result.final_output.get("predictions", []),
-            "cost": result.cost_report.total_cost
+            "cost": result.cost_report.total_cost,
         }
 
     async def _run_code_review(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -275,7 +258,7 @@ class EmpathyMCPServer:
             "success": result.success,
             "feedback": result.final_output.get("feedback"),
             "score": result.final_output.get("quality_score"),
-            "cost": result.cost_report.total_cost
+            "cost": result.cost_report.total_cost,
         }
 
     async def _run_test_generation(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -289,7 +272,7 @@ class EmpathyMCPServer:
             "success": result.success,
             "tests_generated": result.final_output.get("tests_generated", 0),
             "output_path": result.final_output.get("output_path"),
-            "cost": result.cost_report.total_cost
+            "cost": result.cost_report.total_cost,
         }
 
     async def _run_performance_audit(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -303,7 +286,7 @@ class EmpathyMCPServer:
             "success": result.success,
             "findings": result.final_output.get("findings", []),
             "score": result.final_output.get("score"),
-            "cost": result.cost_report.total_cost
+            "cost": result.cost_report.total_cost,
         }
 
     async def _run_release_prep(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -318,7 +301,7 @@ class EmpathyMCPServer:
             "approved": result.final_output.get("approved"),
             "health_score": result.final_output.get("health_score"),
             "recommendation": result.final_output.get("recommendation"),
-            "cost": result.cost_report.total_cost
+            "cost": result.cost_report.total_cost,
         }
 
     async def _get_auth_status(self) -> dict[str, Any]:
@@ -331,7 +314,7 @@ class EmpathyMCPServer:
             "success": True,
             "subscription_tier": strategy.subscription_tier.value,
             "default_mode": strategy.default_mode.value,
-            "setup_completed": strategy.setup_completed
+            "setup_completed": strategy.setup_completed,
         }
 
     async def _get_auth_recommend(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -356,7 +339,7 @@ class EmpathyMCPServer:
             "file_path": str(file_path),
             "lines_of_code": lines,
             "category": category,
-            "recommended_mode": recommended.value
+            "recommended_mode": recommended.value,
         }
 
     async def _get_telemetry_stats(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -367,18 +350,13 @@ class EmpathyMCPServer:
             "days": args.get("days", 30),
             "total_cost": 0.0,
             "savings": 0.0,
-            "cache_hit_rate": 0.0
+            "cache_hit_rate": 0.0,
         }
 
     async def _get_dashboard_status(self) -> dict[str, Any]:
         """Get dashboard status."""
         # Placeholder - would integrate with actual dashboard
-        return {
-            "success": True,
-            "active_agents": 0,
-            "pending_approvals": 0,
-            "recent_signals": 0
-        }
+        return {"success": True, "active_agents": 0, "pending_approvals": 0, "recent_signals": 0}
 
     def get_tool_list(self) -> list[dict[str, Any]]:
         """Get list of available tools.
@@ -411,32 +389,16 @@ async def handle_request(server: EmpathyMCPServer, request: dict[str, Any]) -> d
     params = request.get("params", {})
 
     if method == "tools/list":
-        return {
-            "tools": server.get_tool_list()
-        }
+        return {"tools": server.get_tool_list()}
     elif method == "tools/call":
         tool_name = params.get("name")
         arguments = params.get("arguments", {})
         result = await server.call_tool(tool_name, arguments)
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": json.dumps(result, indent=2)
-                }
-            ]
-        }
+        return {"content": [{"type": "text", "text": json.dumps(result, indent=2)}]}
     elif method == "resources/list":
-        return {
-            "resources": server.get_resource_list()
-        }
+        return {"resources": server.get_resource_list()}
     else:
-        return {
-            "error": {
-                "code": -32601,
-                "message": f"Method not found: {method}"
-            }
-        }
+        return {"error": {"code": -32601, "message": f"Method not found: {method}"}}
 
 
 async def main_loop():
@@ -461,21 +423,11 @@ async def main_loop():
 
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON: {e}")
-            error_response = {
-                "error": {
-                    "code": -32700,
-                    "message": "Parse error"
-                }
-            }
+            error_response = {"error": {"code": -32700, "message": "Parse error"}}
             print(json.dumps(error_response), flush=True)
         except Exception as e:
             logger.exception("Error handling request")
-            error_response = {
-                "error": {
-                    "code": -32603,
-                    "message": str(e)
-                }
-            }
+            error_response = {"error": {"code": -32603, "message": str(e)}}
             print(json.dumps(error_response), flush=True)
 
 
@@ -492,8 +444,8 @@ def main():
     """Entry point for MCP server."""
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[logging.FileHandler('/tmp/empathy-mcp.log')]
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[logging.FileHandler("/tmp/empathy-mcp.log")],
     )
 
     try:

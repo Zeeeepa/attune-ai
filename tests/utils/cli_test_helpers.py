@@ -113,9 +113,7 @@ def mock_workflow_execution() -> dict[str, Any]:
     }
 
     return {
-        "attune.workflows.base.BaseWorkflow.execute": MagicMock(
-            return_value=mock_result
-        ),
+        "attune.workflows.base.BaseWorkflow.execute": MagicMock(return_value=mock_result),
     }
 
 

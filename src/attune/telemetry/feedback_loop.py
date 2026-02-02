@@ -80,7 +80,11 @@ class FeedbackEntry:
             "stage_name": self.stage_name,
             "tier": self.tier,
             "quality_score": self.quality_score,
-            "timestamp": self.timestamp.isoformat() if isinstance(self.timestamp, datetime) else self.timestamp,
+            "timestamp": (
+                self.timestamp.isoformat()
+                if isinstance(self.timestamp, datetime)
+                else self.timestamp
+            ),
             "metadata": self.metadata,
         }
 
@@ -252,7 +256,11 @@ class FeedbackLoop:
         return feedback_id
 
     def get_feedback_history(
-        self, workflow_name: str, stage_name: str, tier: str | ModelTier | None = None, limit: int = 100
+        self,
+        workflow_name: str,
+        stage_name: str,
+        tier: str | ModelTier | None = None,
+        limit: int = 100,
     ) -> list[FeedbackEntry]:
         """Get feedback history for a workflow stage.
 

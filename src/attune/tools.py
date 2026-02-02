@@ -11,6 +11,7 @@ Integration with Claude Code:
 
 Created: 2026-01-29
 """
+
 import json
 import logging
 import os

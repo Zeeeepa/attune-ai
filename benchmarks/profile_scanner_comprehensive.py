@@ -31,9 +31,9 @@ def clear_caches():
     from attune.project_index.scanner import ProjectScanner
 
     # Clear cached functions
-    if hasattr(ProjectScanner._hash_file, 'cache_clear'):
+    if hasattr(ProjectScanner._hash_file, "cache_clear"):
         ProjectScanner._hash_file.cache_clear()
-    if hasattr(ProjectScanner._parse_python_cached, 'cache_clear'):
+    if hasattr(ProjectScanner._parse_python_cached, "cache_clear"):
         ProjectScanner._parse_python_cached.cache_clear()
 
 
@@ -112,12 +112,7 @@ def profile_scanner_memory():
     print("\n⏳ Running memory profiler (this may take a moment)...\n")
 
     mem_usage = memory_usage(
-        run_scanner,
-        interval=0.1,
-        timeout=None,
-        max_usage=True,
-        retval=True,
-        include_children=True
+        run_scanner, interval=0.1, timeout=None, max_usage=True, retval=True, include_children=True
     )
 
     if isinstance(mem_usage, tuple):
@@ -132,7 +127,11 @@ def profile_scanner_memory():
     if summary:
         files_per_mb = summary.total_files / max_memory if max_memory > 0 else 0
         print(f"  Files/MB: {files_per_mb:.1f}")
-        print(f"  Memory per 1000 files: {1000 / files_per_mb:.2f} MB" if files_per_mb > 0 else "  N/A")
+        print(
+            f"  Memory per 1000 files: {1000 / files_per_mb:.2f} MB"
+            if files_per_mb > 0
+            else "  N/A"
+        )
 
     return max_memory
 
@@ -211,11 +210,11 @@ def analyze_hotspots():
     stats.print_stats(10)
 
     output = s.getvalue()
-    lines = output.split('\n')
+    lines = output.split("\n")
 
     # Parse and analyze
     for line in lines:
-        if 'scanner.py' in line or 'models.py' in line:
+        if "scanner.py" in line or "models.py" in line:
             print(f"  {line}")
 
     print("\n💡 OPTIMIZATION RECOMMENDATIONS:")
@@ -304,6 +303,7 @@ def main():
     except Exception as e:
         print(f"\n❌ Error during profiling: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

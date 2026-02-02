@@ -227,7 +227,9 @@ class TestWorkflowBothFeaturesEnabled:
         mock_coordination = Mock()
 
         with patch.object(workflow, "_get_heartbeat_coordinator", return_value=mock_heartbeat):
-            with patch.object(workflow, "_get_coordination_signals", return_value=mock_coordination):
+            with patch.object(
+                workflow, "_get_coordination_signals", return_value=mock_coordination
+            ):
                 with patch.object(workflow, "run_stage", return_value=({"result": "test"}, 10, 5)):
                     result = await workflow.execute()
 

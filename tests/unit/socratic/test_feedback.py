@@ -543,9 +543,7 @@ class TestFeedbackCollectorQueries:
         Note: There's a recursion bug in _generate_recommendations that calls
         get_insights(). We mock it to avoid the recursion.
         """
-        with patch.object(
-            populated_collector, "_generate_recommendations", return_value=[]
-        ):
+        with patch.object(populated_collector, "_generate_recommendations", return_value=[]):
             insights = populated_collector.get_insights()
 
         assert "total_agents_tracked" in insights
@@ -696,9 +694,7 @@ class TestFeedbackLoop:
 
         Note: There's a recursion bug in _generate_recommendations. We mock it.
         """
-        with patch.object(
-            feedback_loop.collector, "_generate_recommendations", return_value=[]
-        ):
+        with patch.object(feedback_loop.collector, "_generate_recommendations", return_value=[]):
             insights = feedback_loop.get_insights()
 
         assert "total_agents_tracked" in insights
@@ -723,9 +719,7 @@ class TestFeedbackLoop:
 
     def test_explain_recommendations(self, feedback_loop):
         """Test explaining recommendations."""
-        explanation = feedback_loop.explain_recommendations(
-            requirements={"domain": "code_review"}
-        )
+        explanation = feedback_loop.explain_recommendations(requirements={"domain": "code_review"})
 
         assert "context" in explanation
         assert "recommended_agents" in explanation

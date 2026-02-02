@@ -22,10 +22,8 @@ from datetime import datetime
 from typing import Any
 
 from attune.orchestration.agent_templates import get_template
-from attune.orchestration.config_store import (AgentConfiguration,
-                                                   ConfigurationStore)
-from attune.orchestration.execution_strategies import (StrategyResult,
-                                                           get_strategy)
+from attune.orchestration.config_store import AgentConfiguration, ConfigurationStore
+from attune.orchestration.execution_strategies import StrategyResult, get_strategy
 from attune.orchestration.meta_orchestrator import MetaOrchestrator
 
 # =============================================================================

@@ -167,9 +167,7 @@ class TestResultStorage:
         registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
-        response = FormResponse(
-            template_id="release-prep", responses={"coverage_threshold": "80%"}
-        )
+        response = FormResponse(template_id="release-prep", responses={"coverage_threshold": "80%"})
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
         result = workflow.execute(form_response=response, mock_execution=True)
@@ -216,9 +214,7 @@ class TestResultLoading:
         registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
-        response = FormResponse(
-            template_id="release-prep", responses={"coverage_threshold": "80%"}
-        )
+        response = FormResponse(template_id="release-prep", responses={"coverage_threshold": "80%"})
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
         original_result = workflow.execute(form_response=response, mock_execution=True)
@@ -244,9 +240,7 @@ class TestResultLoading:
         registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
-        response = FormResponse(
-            template_id="release-prep", responses={"coverage_threshold": "80%"}
-        )
+        response = FormResponse(template_id="release-prep", responses={"coverage_threshold": "80%"})
 
         # Create multiple executions
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
@@ -279,9 +273,7 @@ class TestErrorHandling:
         registry = TemplateRegistry(storage_dir=".attune/meta_workflows/templates")
         template = registry.load_template("release-prep")
 
-        response = FormResponse(
-            template_id="release-prep", responses={"coverage_threshold": "80%"}
-        )
+        response = FormResponse(template_id="release-prep", responses={"coverage_threshold": "80%"})
 
         workflow = MetaWorkflow(template=template, storage_dir=str(tmp_path))
 

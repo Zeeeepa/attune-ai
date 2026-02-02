@@ -649,7 +649,9 @@ def create_perf_audit_workflow_report(result: dict, input_data: dict) -> Workflo
     top_issues = result.get("top_issues", [])
     if top_issues:
         issues_content = {
-            issue.get("type", "unknown").replace("_", " ").title(): f"{issue.get('count', 0)} occurrences"
+            issue.get("type", "unknown")
+            .replace("_", " ")
+            .title(): f"{issue.get('count', 0)} occurrences"
             for issue in top_issues
         }
         report.add_section("Top Performance Issues", issues_content)

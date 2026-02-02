@@ -377,8 +377,7 @@ class DocumentGenerationWorkflow(BaseWorkflow):
                         )
                     else:  # API
                         logger.info(
-                            f"Cost: ~${cost_estimate['monetary_cost']:.4f} "
-                            f"(1M context window)"
+                            f"Cost: ~${cost_estimate['monetary_cost']:.4f} " f"(1M context window)"
                         )
 
             except Exception as e:
@@ -1257,13 +1256,15 @@ Make all code examples complete and executable."""
                 # Extract docstring
                 docstring = ast.get_docstring(node) or ""
 
-                functions.append({
-                    "name": node.name,
-                    "args": args_list,
-                    "return_type": return_type,
-                    "docstring": docstring,
-                    "lineno": node.lineno,
-                })
+                functions.append(
+                    {
+                        "name": node.name,
+                        "args": args_list,
+                        "return_type": return_type,
+                        "docstring": docstring,
+                        "lineno": node.lineno,
+                    }
+                )
 
         return functions
 
@@ -1407,9 +1408,7 @@ None
             func_name = func_info["name"]
             logger.debug(f"Generating API reference for {func_name}()")
 
-            api_section = await self._generate_api_section_for_function(
-                func_info, tier
-            )
+            api_section = await self._generate_api_section_for_function(func_info, tier)
             api_sections.append(api_section)
 
         # Append API reference section to narrative doc
@@ -1422,5 +1421,3 @@ None
         logger.info(f"Added {len(api_sections)} API reference sections")
 
         return full_doc
-
-

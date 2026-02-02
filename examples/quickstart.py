@@ -10,10 +10,19 @@ Copyright 2025 Deep Study AI, LLC
 Licensed under Fair Source 0.9
 """
 
-from attune import (EmpathyFrameworkError, EmpathyOS, FeedbackLoopDetector,
-                        Level1Reactive, Level2Guided, Level3Proactive,
-                        Level4Anticipatory, Level5Systems, Pattern,
-                        PatternLibrary, ValidationError)
+from attune import (
+    EmpathyFrameworkError,
+    EmpathyOS,
+    FeedbackLoopDetector,
+    Level1Reactive,
+    Level2Guided,
+    Level3Proactive,
+    Level4Anticipatory,
+    Level5Systems,
+    Pattern,
+    PatternLibrary,
+    ValidationError,
+)
 
 
 def main():

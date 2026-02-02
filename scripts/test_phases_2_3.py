@@ -28,7 +28,7 @@ def test_phase_2_refinement():
     # Test on a workflow module (complex, likely to need refinement)
     test_module = {
         "file": "src/attune/workflows/test_gen/workflow.py",
-        "description": "Test generation workflow - validate refinement"
+        "description": "Test generation workflow - validate refinement",
     }
 
     modules_json = json.dumps([test_module])
@@ -52,7 +52,7 @@ def test_phase_2_refinement():
             ],
             timeout=600,  # 10 min timeout
             capture_output=True,
-            text=True
+            text=True,
         )
 
         print("STDOUT:")
@@ -124,7 +124,7 @@ def test_phase_3_coverage_guided():
     # Test on a simpler utility module for faster coverage testing
     test_module = {
         "file": "src/attune/config.py",
-        "description": "Configuration module - validate coverage improvement"
+        "description": "Configuration module - validate coverage improvement",
     }
 
     modules_json = json.dumps([test_module])
@@ -144,11 +144,11 @@ def test_phase_3_coverage_guided():
                 "attune.workflows.autonomous_test_gen",
                 "101",  # batch101 for testing
                 modules_json,
-                "--coverage-guided"  # Enable Phase 3
+                "--coverage-guided",  # Enable Phase 3
             ],
             timeout=900,  # 15 min timeout (coverage is slower)
             capture_output=True,
-            text=True
+            text=True,
         )
 
         print("STDOUT:")
@@ -193,14 +193,16 @@ def test_phase_3_coverage_guided():
             try:
                 coverage_result = subprocess.run(
                     [
-                        sys.executable, "-m", "pytest",
+                        sys.executable,
+                        "-m",
+                        "pytest",
                         str(test_file),
                         f"--cov={test_module['file']}",
-                        "--cov-report=term-missing"
+                        "--cov-report=term-missing",
                     ],
                     capture_output=True,
                     text=True,
-                    timeout=120
+                    timeout=120,
                 )
 
                 # Extract coverage percentage
@@ -237,6 +239,7 @@ def main():
     print("\n⚠️  Requires ANTHROPIC_API_KEY environment variable")
 
     import os
+
     if not os.getenv("ANTHROPIC_API_KEY"):
         print("\n❌ ERROR: ANTHROPIC_API_KEY not set")
         print("   Set it with: export ANTHROPIC_API_KEY=your_key_here")
@@ -254,7 +257,9 @@ def main():
     print("\n" + "=" * 70)
     print("TEST SUMMARY")
     print("=" * 70)
-    print(f"\nPhase 2 (Multi-Turn Refinement):     {'✅ PASSED' if phase_2_passed else '❌ FAILED'}")
+    print(
+        f"\nPhase 2 (Multi-Turn Refinement):     {'✅ PASSED' if phase_2_passed else '❌ FAILED'}"
+    )
     print(f"Phase 3 (Coverage-Guided Generation): {'✅ PASSED' if phase_3_passed else '❌ FAILED'}")
 
     if phase_2_passed and phase_3_passed:

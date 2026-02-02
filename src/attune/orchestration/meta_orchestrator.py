@@ -700,9 +700,7 @@ class MetaOrchestrator:
         except ImportError:
             logger.warning("AskUserQuestion not available, using defaults")
             suggested_pattern = self._choose_composition_pattern(requirements, suggested_agents)
-            return self.create_execution_plan(
-                requirements, suggested_agents, suggested_pattern
-            )
+            return self.create_execution_plan(requirements, suggested_agents, suggested_pattern)
 
         # Present all patterns with descriptions
         pattern_response = AskUserQuestion(

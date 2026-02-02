@@ -24,30 +24,26 @@ def main():
     print()
 
     # Initialize generator with LLM support
-    generator = RealTestGenerator(
-        project_root=".",
-        output_dir="tests/llm_generated",
-        use_llm=True
-    )
+    generator = RealTestGenerator(project_root=".", output_dir="tests/llm_generated", use_llm=True)
 
     files_to_regenerate = [
         {
             "source": "src/attune/cli.py",
             "missing": 1187,
             "description": "Main CLI (highest impact)",
-            "expected_name": "test_src_empathy_os_cli_generated.py"
+            "expected_name": "test_src_empathy_os_cli_generated.py",
         },
         {
             "source": "src/attune/telemetry/cli.py",
             "missing": 506,
             "description": "Telemetry CLI",
-            "expected_name": "test_src_empathy_os_telemetry_cli_generated.py"
+            "expected_name": "test_src_empathy_os_telemetry_cli_generated.py",
         },
         {
             "source": "src/attune/workflows/document_gen.py",
             "missing": 363,
             "description": "Document generation workflow",
-            "expected_name": "test_src_empathy_os_workflows_document_gen_generated.py"
+            "expected_name": "test_src_empathy_os_workflows_document_gen_generated.py",
         },
     ]
 
@@ -60,27 +56,24 @@ def main():
         print("-" * 80)
 
         try:
-            missing_lines = list(range(1, file_info['missing'] + 1))
+            missing_lines = list(range(1, file_info["missing"] + 1))
 
-            test_path = generator.generate_tests_for_file(
-                file_info['source'],
-                missing_lines
-            )
+            test_path = generator.generate_tests_for_file(file_info["source"], missing_lines)
 
             # Verify filename is correct
-            if test_path.name == file_info['expected_name']:
+            if test_path.name == file_info["expected_name"]:
                 print(f"✅ SUCCESS: {test_path}")
                 print(f"   ✓ Filename is unique (no collision)")
-                results.append((file_info['source'], test_path, "success"))
+                results.append((file_info["source"], test_path, "success"))
             else:
                 print(f"⚠️  WARNING: Unexpected filename")
                 print(f"   Expected: {file_info['expected_name']}")
                 print(f"   Got: {test_path.name}")
-                results.append((file_info['source'], test_path, f"warning: unexpected name"))
+                results.append((file_info["source"], test_path, f"warning: unexpected name"))
 
         except Exception as e:
             print(f"❌ FAILED: {e}")
-            results.append((file_info['source'], None, f"error: {e}"))
+            results.append((file_info["source"], None, f"error: {e}"))
 
     # Summary
     print("\n" + "=" * 80)
@@ -107,6 +100,7 @@ def main():
     print("\n" + "=" * 80)
     print(f"Cost: ~${success_count * 1.5:.2f} estimated")
     print("=" * 80)
+
 
 if __name__ == "__main__":
     main()

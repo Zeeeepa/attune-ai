@@ -44,31 +44,31 @@ def main():
             "source": "src/attune/workflows/base.py",
             "missing": 606,
             "description": "Workflow base class (highest impact)",
-            "expected_name": "test_src_empathy_os_workflows_base_generated.py"
+            "expected_name": "test_src_empathy_os_workflows_base_generated.py",
         },
         {
             "source": "src/attune/memory/control_panel.py",
             "missing": 523,
             "description": "Memory control panel (high impact)",
-            "expected_name": "test_src_empathy_os_memory_control_panel_generated.py"
+            "expected_name": "test_src_empathy_os_memory_control_panel_generated.py",
         },
         {
             "source": "src/attune/orchestration/documentation_orchestrator.py",
             "missing": 355,
             "description": "Documentation orchestrator",
-            "expected_name": "test_src_empathy_os_orchestration_documentation_orchestrator_generated.py"
+            "expected_name": "test_src_empathy_os_orchestration_documentation_orchestrator_generated.py",
         },
         {
             "source": "src/attune/cli_unified.py",
             "missing": 342,
             "description": "Unified CLI interface",
-            "expected_name": "test_src_empathy_os_cli_unified_generated.py"
+            "expected_name": "test_src_empathy_os_cli_unified_generated.py",
         },
         {
             "source": "src/attune/workflows/code_review.py",
             "missing": 341,
             "description": "Code review workflow",
-            "expected_name": "test_src_empathy_os_workflows_code_review_generated.py"
+            "expected_name": "test_src_empathy_os_workflows_code_review_generated.py",
         },
     ]
 
@@ -76,7 +76,7 @@ def main():
     generator = RealTestGenerator(
         project_root=str(project_root),
         output_dir=str(project_root / "tests" / "llm_generated"),
-        use_llm=True
+        use_llm=True,
     )
 
     results = []
@@ -93,7 +93,7 @@ def main():
             # Generate tests
             test_file = generator.generate_tests_for_file(
                 source_file=file_info["source"],
-                missing_lines=list(range(1, file_info["missing"] + 1))
+                missing_lines=list(range(1, file_info["missing"] + 1)),
             )
 
             # Validate result
@@ -101,29 +101,35 @@ def main():
             if test_path.exists():
                 print(f"✅ SUCCESS: {test_path}")
                 print(f"   ✓ Filename is unique (no collision)")
-                results.append({
-                    "source": file_info["source"].split("/")[-1],
-                    "test_file": test_path.name,
-                    "status": "success",
-                    "error": None
-                })
+                results.append(
+                    {
+                        "source": file_info["source"].split("/")[-1],
+                        "test_file": test_path.name,
+                        "status": "success",
+                        "error": None,
+                    }
+                )
             else:
                 print(f"❌ FAILED: File not created")
-                results.append({
-                    "source": file_info["source"].split("/")[-1],
-                    "test_file": file_info["expected_name"],
-                    "status": "error",
-                    "error": "File not created"
-                })
+                results.append(
+                    {
+                        "source": file_info["source"].split("/")[-1],
+                        "test_file": file_info["expected_name"],
+                        "status": "error",
+                        "error": "File not created",
+                    }
+                )
 
         except Exception as e:
             print(f"❌ FAILED: {e}")
-            results.append({
-                "source": file_info["source"].split("/")[-1],
-                "test_file": file_info["expected_name"],
-                "status": "error",
-                "error": str(e)
-            })
+            results.append(
+                {
+                    "source": file_info["source"].split("/")[-1],
+                    "test_file": file_info["expected_name"],
+                    "status": "error",
+                    "error": str(e),
+                }
+            )
 
         print()
 

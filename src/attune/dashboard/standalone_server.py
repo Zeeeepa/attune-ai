@@ -305,7 +305,11 @@ class StandaloneDashboardHandler(BaseHTTPRequestHandler):
 
                         result.append(
                             {
-                                "event_id": entry_id.decode("utf-8") if isinstance(entry_id, bytes) else entry_id,
+                                "event_id": (
+                                    entry_id.decode("utf-8")
+                                    if isinstance(entry_id, bytes)
+                                    else entry_id
+                                ),
                                 "event_type": event_type,
                                 "timestamp": timestamp,
                                 "data": data,

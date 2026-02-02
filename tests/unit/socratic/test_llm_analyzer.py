@@ -73,64 +73,70 @@ def mock_session():
 @pytest.fixture
 def sample_llm_response():
     """Sample LLM analysis response."""
-    return json.dumps({
-        "intent": "Automate code reviews",
-        "domain": "code_review",
-        "confidence": 0.85,
-        "ambiguities": ["Which languages?"],
-        "assumptions": ["Python codebase"],
-        "constraints": ["Fast execution"],
-        "keywords": ["code", "review", "python"],
-        "suggested_agents": ["code_quality_reviewer", "security_reviewer"],
-        "suggested_questions": [
-            {
-                "id": "q1",
-                "question": "Which languages?",
-                "type": "multi_select",
-                "options": ["Python", "JavaScript"],
-            }
-        ],
-    })
+    return json.dumps(
+        {
+            "intent": "Automate code reviews",
+            "domain": "code_review",
+            "confidence": 0.85,
+            "ambiguities": ["Which languages?"],
+            "assumptions": ["Python codebase"],
+            "constraints": ["Fast execution"],
+            "keywords": ["code", "review", "python"],
+            "suggested_agents": ["code_quality_reviewer", "security_reviewer"],
+            "suggested_questions": [
+                {
+                    "id": "q1",
+                    "question": "Which languages?",
+                    "type": "multi_select",
+                    "options": ["Python", "JavaScript"],
+                }
+            ],
+        }
+    )
 
 
 @pytest.fixture
 def sample_question_response():
     """Sample LLM question generation response."""
-    return json.dumps({
-        "questions": [
-            {
-                "id": "q1",
-                "question": "What testing framework?",
-                "type": "single_select",
-                "options": ["pytest", "unittest"],
-                "category": "technical",
-                "priority": 5,
-            }
-        ],
-        "confidence_after_answers": 0.9,
-        "ready_to_generate": True,
-        "reasoning": "All key information gathered",
-    })
+    return json.dumps(
+        {
+            "questions": [
+                {
+                    "id": "q1",
+                    "question": "What testing framework?",
+                    "type": "single_select",
+                    "options": ["pytest", "unittest"],
+                    "category": "technical",
+                    "priority": 5,
+                }
+            ],
+            "confidence_after_answers": 0.9,
+            "ready_to_generate": True,
+            "reasoning": "All key information gathered",
+        }
+    )
 
 
 @pytest.fixture
 def sample_agent_response():
     """Sample LLM agent recommendation response."""
-    return json.dumps({
-        "agents": [
-            {
-                "template_id": "code_quality_reviewer",
-                "priority": 1,
-                "customizations": {"focus_areas": ["style"]},
-                "reasoning": "Needed for quality",
-            }
-        ],
-        "workflow_stages": [
-            {"name": "Analysis", "agents": ["code_quality_reviewer"], "parallel": False}
-        ],
-        "estimated_cost_tier": "cheap",
-        "estimated_duration": "fast",
-    })
+    return json.dumps(
+        {
+            "agents": [
+                {
+                    "template_id": "code_quality_reviewer",
+                    "priority": 1,
+                    "customizations": {"focus_areas": ["style"]},
+                    "reasoning": "Needed for quality",
+                }
+            ],
+            "workflow_stages": [
+                {"name": "Analysis", "agents": ["code_quality_reviewer"], "parallel": False}
+            ],
+            "estimated_cost_tier": "cheap",
+            "estimated_duration": "fast",
+        }
+    )
 
 
 # =============================================================================
@@ -380,10 +386,12 @@ That's the JSON."""
 
     def test_parse_nested_json(self, analyzer):
         """Test parsing nested JSON structure."""
-        content = json.dumps({
-            "outer": {"inner": [1, 2, 3]},
-            "list": [{"a": 1}, {"b": 2}],
-        })
+        content = json.dumps(
+            {
+                "outer": {"inner": [1, 2, 3]},
+                "list": [{"a": 1}, {"b": 2}],
+            }
+        )
         result = analyzer._parse_json_response(content)
 
         assert result["outer"]["inner"] == [1, 2, 3]
@@ -402,9 +410,7 @@ class TestAnalyzeGoal:
     @pytest.mark.asyncio
     async def test_analyze_goal_with_mock_llm(self, analyzer, sample_llm_response):
         """Test analyze_goal with mocked LLM response."""
-        with patch.object(
-            analyzer, "_call_llm", new_callable=AsyncMock
-        ) as mock_call:
+        with patch.object(analyzer, "_call_llm", new_callable=AsyncMock) as mock_call:
             mock_call.return_value = sample_llm_response
 
             result = await analyzer.analyze_goal("Automate code reviews")
@@ -417,9 +423,7 @@ class TestAnalyzeGoal:
     @pytest.mark.asyncio
     async def test_analyze_goal_uses_fallback_on_error(self, analyzer):
         """Test analyze_goal falls back on LLM error."""
-        with patch.object(
-            analyzer, "_call_llm", new_callable=AsyncMock
-        ) as mock_call:
+        with patch.object(analyzer, "_call_llm", new_callable=AsyncMock) as mock_call:
             mock_call.side_effect = Exception("LLM error")
 
             result = await analyzer.analyze_goal("Check security vulnerabilities")
@@ -431,9 +435,7 @@ class TestAnalyzeGoal:
     @pytest.mark.asyncio
     async def test_analyze_goal_prompt_formatting(self, analyzer):
         """Test goal is properly formatted in prompt."""
-        with patch.object(
-            analyzer, "_call_llm", new_callable=AsyncMock
-        ) as mock_call:
+        with patch.object(analyzer, "_call_llm", new_callable=AsyncMock) as mock_call:
             mock_call.return_value = "{}"
 
             await analyzer.analyze_goal("Test goal")
@@ -457,9 +459,7 @@ class TestGenerateQuestions:
         self, analyzer, mock_session, sample_question_response
     ):
         """Test successful question generation."""
-        with patch.object(
-            analyzer, "_call_llm", new_callable=AsyncMock
-        ) as mock_call:
+        with patch.object(analyzer, "_call_llm", new_callable=AsyncMock) as mock_call:
             mock_call.return_value = sample_question_response
 
             result = await analyzer.generate_questions(mock_session)
@@ -471,9 +471,7 @@ class TestGenerateQuestions:
     @pytest.mark.asyncio
     async def test_generate_questions_on_error(self, analyzer, mock_session):
         """Test question generation handles errors."""
-        with patch.object(
-            analyzer, "_call_llm", new_callable=AsyncMock
-        ) as mock_call:
+        with patch.object(analyzer, "_call_llm", new_callable=AsyncMock) as mock_call:
             mock_call.side_effect = Exception("LLM error")
 
             result = await analyzer.generate_questions(mock_session)
@@ -493,13 +491,9 @@ class TestRecommendAgents:
     """Tests for recommend_agents method."""
 
     @pytest.mark.asyncio
-    async def test_recommend_agents_success(
-        self, analyzer, mock_session, sample_agent_response
-    ):
+    async def test_recommend_agents_success(self, analyzer, mock_session, sample_agent_response):
         """Test successful agent recommendation."""
-        with patch.object(
-            analyzer, "_call_llm", new_callable=AsyncMock
-        ) as mock_call:
+        with patch.object(analyzer, "_call_llm", new_callable=AsyncMock) as mock_call:
             mock_call.return_value = sample_agent_response
 
             result = await analyzer.recommend_agents(mock_session)
@@ -511,9 +505,7 @@ class TestRecommendAgents:
     @pytest.mark.asyncio
     async def test_recommend_agents_fallback(self, analyzer, mock_session):
         """Test agent recommendation falls back on error."""
-        with patch.object(
-            analyzer, "_call_llm", new_callable=AsyncMock
-        ) as mock_call:
+        with patch.object(analyzer, "_call_llm", new_callable=AsyncMock) as mock_call:
             mock_call.side_effect = Exception("LLM error")
 
             result = await analyzer.recommend_agents(mock_session)
@@ -537,7 +529,10 @@ class TestFallbackAnalysis:
         result = analyzer._fallback_analysis("Check for security vulnerabilities")
 
         assert result.domain in ["security", "code_review"]
-        assert "security_reviewer" in result.suggested_agents or "code_quality_reviewer" in result.suggested_agents
+        assert (
+            "security_reviewer" in result.suggested_agents
+            or "code_quality_reviewer" in result.suggested_agents
+        )
 
     def test_fallback_testing_domain(self, analyzer):
         """Test fallback detects testing domain."""
@@ -867,9 +862,7 @@ class TestCallLlm:
         mock_response.content = '{"test": true}'
         mock_executor.run.return_value = mock_response
 
-        with patch.object(
-            analyzer, "_get_executor", new_callable=AsyncMock
-        ) as mock_get:
+        with patch.object(analyzer, "_get_executor", new_callable=AsyncMock) as mock_get:
             mock_get.return_value = mock_executor
 
             result = await analyzer._call_llm("prompt", "system")
@@ -882,9 +875,7 @@ class TestCallLlm:
         mock_executor = AsyncMock()
         mock_executor.run.return_value = "string response"
 
-        with patch.object(
-            analyzer, "_get_executor", new_callable=AsyncMock
-        ) as mock_get:
+        with patch.object(analyzer, "_get_executor", new_callable=AsyncMock) as mock_get:
             mock_get.return_value = mock_executor
 
             result = await analyzer._call_llm("prompt", "system")

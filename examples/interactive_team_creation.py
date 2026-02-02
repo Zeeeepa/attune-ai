@@ -17,6 +17,7 @@ Usage:
 Requirements:
     pip install empathy-framework
 """
+
 import asyncio
 import argparse
 from attune.orchestration import MetaOrchestrator
@@ -34,26 +35,26 @@ def cli_handler(questions):
     for q in questions:
         print(f"\n{q['question']}\n")
 
-        options = q['options']
+        options = q["options"]
         for i, opt in enumerate(options, 1):
             print(f"  {i}. {opt['label']}")
-            if opt['description']:
+            if opt["description"]:
                 # Wrap description
-                desc = opt['description']
+                desc = opt["description"]
                 print(f"     {desc}")
 
         print()
-        if q['multiSelect']:
+        if q["multiSelect"]:
             print("Select multiple (comma-separated numbers) or press Enter for all:")
             choice = input("> ").strip()
 
             if not choice:
-                selected = [opt['label'] for opt in options]
+                selected = [opt["label"] for opt in options]
             else:
-                indices = [int(i.strip())-1 for i in choice.split(',')]
-                selected = [options[i]['label'] for i in indices]
+                indices = [int(i.strip()) - 1 for i in choice.split(",")]
+                selected = [options[i]["label"] for i in indices]
 
-            answers[q['header']] = selected
+            answers[q["header"]] = selected
         else:
             print("Select one (enter number):")
             while True:
@@ -61,7 +62,7 @@ def cli_handler(questions):
                     choice = input("> ").strip()
                     idx = int(choice) - 1
                     if 0 <= idx < len(options):
-                        answers[q['header']] = options[idx]['label']
+                        answers[q["header"]] = options[idx]["label"]
                         break
                     print("Invalid choice, try again:")
                 except (ValueError, IndexError):
@@ -83,7 +84,7 @@ def demo_interactive_simple():
     plan = orchestrator.analyze_and_compose(
         task="Run tests and report coverage",
         context={},
-        interactive=True  # Won't prompt - confidence is high
+        interactive=True,  # Won't prompt - confidence is high
     )
 
     print(f"\nResult: {plan.strategy.value}")
@@ -105,7 +106,7 @@ def demo_interactive_complex():
         plan = orchestrator.analyze_and_compose(
             task="Prepare comprehensive system architecture redesign",
             context={},
-            interactive=True  # Will prompt user
+            interactive=True,  # Will prompt user
         )
 
         print(f"\nResult: {plan.strategy.value}")
@@ -117,9 +118,7 @@ def demo_interactive_complex():
         print("\nFalling back to automatic mode...")
 
         plan = orchestrator.analyze_and_compose(
-            task="Prepare comprehensive system architecture redesign",
-            context={},
-            interactive=False
+            task="Prepare comprehensive system architecture redesign", context={}, interactive=False
         )
 
         print(f"\nResult: {plan.strategy.value}")
@@ -140,10 +139,10 @@ def demo_interactive_with_tools():
         context={
             "tools": [
                 {"name": "read_file", "description": "Read file contents"},
-                {"name": "analyze_ast", "description": "Parse Python AST"}
+                {"name": "analyze_ast", "description": "Parse Python AST"},
             ]
         },
-        interactive=True
+        interactive=True,
     )
 
     print(f"\nResult: {plan.strategy.value}")
@@ -153,20 +152,18 @@ def demo_interactive_with_tools():
 
 def main():
     """Main demo runner."""
-    parser = argparse.ArgumentParser(
-        description="Interactive agent team creation demo"
-    )
+    parser = argparse.ArgumentParser(description="Interactive agent team creation demo")
     parser.add_argument(
         "--mode",
         choices=["cli", "ipc", "auto"],
         default="ipc",
-        help="Integration mode (cli=CLI prompts, ipc=Claude Code IPC, auto=automatic)"
+        help="Integration mode (cli=CLI prompts, ipc=Claude Code IPC, auto=automatic)",
     )
     parser.add_argument(
         "--demo",
         choices=["1", "2", "3", "all"],
         default="all",
-        help="Which demo to run (1=simple, 2=complex, 3=tools, all=all demos)"
+        help="Which demo to run (1=simple, 2=complex, 3=tools, all=all demos)",
     )
 
     args = parser.parse_args()

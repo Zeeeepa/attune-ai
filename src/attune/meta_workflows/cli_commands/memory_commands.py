@@ -6,7 +6,6 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-
 import typer
 from rich.console import Console
 from rich.panel import Panel
@@ -103,7 +102,6 @@ def search_memory(
 # =============================================================================
 
 
-
 @meta_workflow_app.command("session-stats")
 def show_session_stats(
     session_id: str | None = typer.Option(
@@ -177,6 +175,3 @@ def show_session_stats(
     except Exception as e:
         console.print(f"[red]Error:[/red] {e}")
         raise typer.Exit(code=1)
-
-
-

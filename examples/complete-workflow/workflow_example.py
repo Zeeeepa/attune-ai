@@ -19,15 +19,18 @@ from pathlib import Path
 from typing import Any
 
 from attune_llm.agents_md import AgentRegistry
-from attune_llm.context import (CompactState, ContextManager,
-                                         SBARHandoff)
+from attune_llm.context import CompactState, ContextManager, SBARHandoff
 from attune_llm.context.compaction import PatternSummary
 from attune_llm.hooks.config import HookEvent
 from attune_llm.hooks.registry import HookRegistry
-from attune_llm.learning import (ExtractedPattern,
-                                          LearnedSkillsStorage,
-                                          PatternCategory, PatternExtractor,
-                                          SessionEvaluator, SessionQuality)
+from attune_llm.learning import (
+    ExtractedPattern,
+    LearnedSkillsStorage,
+    PatternCategory,
+    PatternExtractor,
+    SessionEvaluator,
+    SessionQuality,
+)
 
 
 class EmpathyWorkflow:
@@ -104,20 +107,24 @@ class EmpathyWorkflow:
 
     def record_interaction(self, user_input: str, response: str):
         """Record an interaction."""
-        self.interactions.append({
-            "timestamp": datetime.now().isoformat(),
-            "user_input": user_input,
-            "response": response,
-        })
+        self.interactions.append(
+            {
+                "timestamp": datetime.now().isoformat(),
+                "user_input": user_input,
+                "response": response,
+            }
+        )
         print(f"\n[INTERACTION] Recorded: {user_input[:50]}...")
 
     def record_correction(self, original: str, corrected: str, reason: str):
         """Record a user correction (valuable for learning)."""
-        self.corrections.append({
-            "original": original,
-            "corrected": corrected,
-            "reason": reason,
-        })
+        self.corrections.append(
+            {
+                "original": original,
+                "corrected": corrected,
+                "reason": reason,
+            }
+        )
         print(f"\n[CORRECTION] Recorded: '{original}' → '{corrected}'")
 
     def save_state(self, trust_level: float = 0.75, empathy_level: int = 3):

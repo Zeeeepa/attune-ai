@@ -106,9 +106,7 @@ class TestBatchOperations:
         """Test batch retrieval with some missing keys."""
         memory.stash("existing_key", {"data": "exists"}, contributor_creds)
 
-        results = memory.retrieve_batch(
-            ["existing_key", "nonexistent_key"], contributor_creds
-        )
+        results = memory.retrieve_batch(["existing_key", "nonexistent_key"], contributor_creds)
 
         assert "existing_key" in results
         assert "nonexistent_key" not in results
@@ -122,9 +120,7 @@ class TestBatchOperations:
         """Test batch stash respects TTL strategy."""
         items = [("ttl_key", {"data": "value"})]
 
-        count = memory.stash_batch(
-            items, contributor_creds, ttl=TTLStrategy.SESSION
-        )
+        count = memory.stash_batch(items, contributor_creds, ttl=TTLStrategy.SESSION)
 
         assert count == 1
 
@@ -144,9 +140,7 @@ class TestPubSubOperations:
         memory.subscribe("test_channel", lambda msg: received_messages.append(msg))
 
         # Publish
-        count = memory.publish(
-            "test_channel", {"event": "test_event"}, contributor_creds
-        )
+        count = memory.publish("test_channel", {"event": "test_event"}, contributor_creds)
 
         assert count >= 0  # Mock returns handler count
 
@@ -232,12 +226,8 @@ class TestStreamOperations:
     def test_stream_read_returns_entries(self, memory, contributor_creds):
         """Test stream read returns appended entries."""
         # Append entries
-        memory.stream_append(
-            "read_test", {"action": "action1"}, contributor_creds
-        )
-        memory.stream_append(
-            "read_test", {"action": "action2"}, contributor_creds
-        )
+        memory.stream_append("read_test", {"action": "action1"}, contributor_creds)
+        memory.stream_append("read_test", {"action": "action2"}, contributor_creds)
 
         # Read entries
         entries = memory.stream_read("read_test", contributor_creds)
@@ -251,9 +241,7 @@ class TestStreamOperations:
 
         # Read from after first entry - with mock, filtering may not work
         # but we verify the interface accepts start_id parameter
-        entries = memory.stream_read(
-            "filter_test", contributor_creds, start_id=id1
-        )
+        entries = memory.stream_read("filter_test", contributor_creds, start_id=id1)
 
         # With mock Redis, just verify it returns a list (filtering is Redis-level)
         assert isinstance(entries, list)
@@ -297,9 +285,7 @@ class TestQueueOperations:
     def test_queue_push_priority(self, memory, contributor_creds):
         """Test priority push adds to front of queue."""
         memory.queue_push("priority_test", {"order": 1}, contributor_creds)
-        memory.queue_push(
-            "priority_test", {"order": 2}, contributor_creds, priority=True
-        )
+        memory.queue_push("priority_test", {"order": 2}, contributor_creds, priority=True)
 
         # Pop should return priority item first
         task = memory.queue_pop("priority_test", contributor_creds)
@@ -469,9 +455,7 @@ class TestAtomicOperations:
         memory.stage_pattern(pattern, contributor_creds)
 
         # Atomically promote
-        success, promoted, message = memory.atomic_promote_pattern(
-            "atomic_test", validator_creds
-        )
+        success, promoted, message = memory.atomic_promote_pattern("atomic_test", validator_creds)
 
         assert success is True
         assert promoted is not None
@@ -479,9 +463,7 @@ class TestAtomicOperations:
 
     def test_atomic_promote_requires_validator(self, memory, contributor_creds):
         """Test atomic promote requires VALIDATOR tier."""
-        success, pattern, message = memory.atomic_promote_pattern(
-            "test_id", contributor_creds
-        )
+        success, pattern, message = memory.atomic_promote_pattern("test_id", contributor_creds)
 
         assert success is False
         assert "VALIDATOR" in message
@@ -552,9 +534,7 @@ class TestPaginatedOperations:
             memory.stage_pattern(pattern, contributor_creds)
 
         # Get first page
-        result = memory.list_staged_patterns_paginated(
-            contributor_creds, cursor="0", count=2
-        )
+        result = memory.list_staged_patterns_paginated(contributor_creds, cursor="0", count=2)
 
         assert isinstance(result, PaginatedResult)
         assert len(result.items) <= 2

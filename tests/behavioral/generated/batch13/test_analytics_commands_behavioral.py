@@ -31,7 +31,9 @@ def mock_console():
 @pytest.fixture
 def mock_pattern_learner():
     """Provide a mocked PatternLearner instance."""
-    with patch("attune.meta_workflows.cli_commands.analytics_commands.PatternLearner") as mock_class:
+    with patch(
+        "attune.meta_workflows.cli_commands.analytics_commands.PatternLearner"
+    ) as mock_class:
         mock_instance = MagicMock()
         mock_class.return_value = mock_instance
         yield mock_instance
@@ -119,7 +121,9 @@ class TestShowAnalyticsBasicFunctionality:
         show_analytics(template_id=template_id)
 
         # Then
-        mock_pattern_learner.generate_analytics_report.assert_called_once_with(template_id=template_id)
+        mock_pattern_learner.generate_analytics_report.assert_called_once_with(
+            template_id=template_id
+        )
         calls = [str(call) for call in mock_console.print.call_args_list]
         assert any("test_template_123" in str(call) for call in calls)
 
@@ -270,7 +274,9 @@ class TestShowAnalyticsErrorHandling:
         Then: Exception is caught and converted to typer.Exit
         """
         # Given
-        mock_pattern_learner.generate_analytics_report.side_effect = Exception("Pattern learner error")
+        mock_pattern_learner.generate_analytics_report.side_effect = Exception(
+            "Pattern learner error"
+        )
 
         # When/Then
         with pytest.raises(typer.Exit) as exc_info:

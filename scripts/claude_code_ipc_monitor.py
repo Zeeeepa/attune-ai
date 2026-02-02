@@ -136,9 +136,7 @@ def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Monitor for Claude Code IPC requests"
-    )
+    parser = argparse.ArgumentParser(description="Monitor for Claude Code IPC requests")
     parser.add_argument(
         "--ipc-dir",
         type=Path,

@@ -149,9 +149,7 @@ class SEOOptimizationTeam:
         else:
             return self._implement_all(suggestions)
 
-    def _implement_with_approval(
-        self, suggestions: list[dict[str, Any]]
-    ) -> dict[str, Any]:
+    def _implement_with_approval(self, suggestions: list[dict[str, Any]]) -> dict[str, Any]:
         """Implement fixes with user approval for each one.
 
         Uses MetaOrchestrator's interactive mode for approval workflow.
@@ -186,9 +184,7 @@ class SEOOptimizationTeam:
                     approved_fixes.append(suggestion)
                     print("   ✅ Applied")
                 else:
-                    rejected_fixes.append(
-                        {**suggestion, "reason": "Implementation failed"}
-                    )
+                    rejected_fixes.append({**suggestion, "reason": "Implementation failed"})
                     print("   ❌ Failed to apply")
             else:
                 rejected_fixes.append({**suggestion, "reason": "User rejected"})
@@ -343,9 +339,7 @@ def main():
     else:  # fix
         audit_results = team.audit()
         suggestions = team.suggest_fixes(audit_results)
-        results = team.implement_fixes(
-            suggestions, interactive=not args.no_interactive
-        )
+        results = team.implement_fixes(suggestions, interactive=not args.no_interactive)
 
     # Save results if output file specified
     if args.output:

@@ -29,19 +29,15 @@ def main():
     doc_gen_modules = [
         {
             "file": "src/attune/workflows/document_gen/config.py",
-            "description": "Token costs and document generation step configuration"
+            "description": "Token costs and document generation step configuration",
         },
         {
             "file": "src/attune/workflows/document_gen/report_formatter.py",
-            "description": "Document generation report formatting"
+            "description": "Document generation report formatting",
         },
     ]
 
-    doc_gen = AutonomousTestGenerator(
-        agent_id="batch12",
-        batch_num=12,
-        modules=doc_gen_modules
-    )
+    doc_gen = AutonomousTestGenerator(agent_id="batch12", batch_num=12, modules=doc_gen_modules)
 
     print(f"Generating tests for {len(doc_gen_modules)} modules...")
     doc_result = doc_gen.generate_all()
@@ -54,35 +50,31 @@ def main():
     cli_modules = [
         {
             "file": "src/attune/meta_workflows/cli_commands/template_commands.py",
-            "description": "CLI commands for template operations"
+            "description": "CLI commands for template operations",
         },
         {
             "file": "src/attune/meta_workflows/cli_commands/workflow_commands.py",
-            "description": "CLI commands for workflow execution"
+            "description": "CLI commands for workflow execution",
         },
         {
             "file": "src/attune/meta_workflows/cli_commands/analytics_commands.py",
-            "description": "CLI commands for analytics and execution history"
+            "description": "CLI commands for analytics and execution history",
         },
         {
             "file": "src/attune/meta_workflows/cli_commands/memory_commands.py",
-            "description": "CLI commands for memory operations"
+            "description": "CLI commands for memory operations",
         },
         {
             "file": "src/attune/meta_workflows/cli_commands/config_commands.py",
-            "description": "CLI commands for configuration management"
+            "description": "CLI commands for configuration management",
         },
         {
             "file": "src/attune/meta_workflows/cli_commands/agent_commands.py",
-            "description": "CLI commands for agent creation"
+            "description": "CLI commands for agent creation",
         },
     ]
 
-    cli_gen = AutonomousTestGenerator(
-        agent_id="batch13",
-        batch_num=13,
-        modules=cli_modules
-    )
+    cli_gen = AutonomousTestGenerator(agent_id="batch13", batch_num=13, modules=cli_modules)
 
     print(f"Generating tests for {len(cli_modules)} modules...")
     cli_result = cli_gen.generate_all()

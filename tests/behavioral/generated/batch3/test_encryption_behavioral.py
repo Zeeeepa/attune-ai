@@ -52,9 +52,7 @@ class TestEncryptionManagerInitialization:
             manager = EncryptionManager()
             assert manager.enabled is False
 
-    def test_given_master_key_provided_when_initialized_then_uses_provided_key(
-        self, master_key
-    ):
+    def test_given_master_key_provided_when_initialized_then_uses_provided_key(self, master_key):
         """GIVEN a master key is provided
         WHEN EncryptionManager is initialized
         THEN it should use the provided key
@@ -127,9 +125,7 @@ class TestLoadOrGenerateKey:
 
         with patch.dict(os.environ, {}, clear=True):
             with patch("attune.memory.encryption.Path.home") as mock_home:
-                mock_home.return_value.__truediv__.return_value.__truediv__.return_value = (
-                    mock_path
-                )
+                mock_home.return_value.__truediv__.return_value.__truediv__.return_value = mock_path
                 manager = EncryptionManager()
                 assert manager.master_key == test_key
 
@@ -147,9 +143,7 @@ class TestLoadOrGenerateKey:
 
         with patch.dict(os.environ, {}, clear=True):
             with patch("attune.memory.encryption.Path.home") as mock_home:
-                mock_home.return_value.__truediv__.return_value.__truediv__.return_value = (
-                    mock_path
-                )
+                mock_home.return_value.__truediv__.return_value.__truediv__.return_value = mock_path
                 manager = EncryptionManager()
                 assert manager.enabled is True
                 assert len(manager.master_key) == 32
@@ -167,9 +161,7 @@ class TestLoadOrGenerateKey:
 
         with patch.dict(os.environ, {}, clear=True):
             with patch("attune.memory.encryption.Path.home") as mock_home:
-                mock_home.return_value.__truediv__.return_value.__truediv__.return_value = (
-                    mock_path
-                )
+                mock_home.return_value.__truediv__.return_value.__truediv__.return_value = mock_path
                 manager = EncryptionManager()
                 assert manager.enabled is True
                 assert len(manager.master_key) == 32
@@ -208,9 +200,7 @@ class TestEncryptMethod:
         assert isinstance(ciphertext, str)
         assert len(ciphertext) > 0
 
-    def test_given_unicode_text_when_encrypted_then_handles_correctly(
-        self, encryption_manager
-    ):
+    def test_given_unicode_text_when_encrypted_then_handles_correctly(self, encryption_manager):
         """GIVEN text with unicode characters
         WHEN encrypt is called
         THEN it should handle encoding correctly
@@ -246,9 +236,7 @@ class TestEncryptMethod:
 
         assert ciphertext1 != ciphertext2
 
-    def test_given_large_plaintext_when_encrypted_then_handles_correctly(
-        self, encryption_manager
-    ):
+    def test_given_large_plaintext_when_encrypted_then_handles_correctly(self, encryption_manager):
         """GIVEN a large plaintext
         WHEN encrypt is called
         THEN it should handle it correctly
@@ -443,9 +431,7 @@ class TestRoundTripEncryption:
 class TestSecurityBehavior:
     """Tests for security-related behaviors."""
 
-    def test_given_manager_when_inspecting_key_then_key_not_in_repr(
-        self, encryption_manager
-    ):
+    def test_given_manager_when_inspecting_key_then_key_not_in_repr(self, encryption_manager):
         """GIVEN an EncryptionManager instance
         WHEN converting to string representation
         THEN the master key should not be exposed
@@ -491,9 +477,7 @@ class TestEdgeCases:
 
         assert decrypted == plaintext
 
-    def test_given_binary_like_text_when_encrypted_then_handles_correctly(
-        self, encryption_manager
-    ):
+    def test_given_binary_like_text_when_encrypted_then_handles_correctly(self, encryption_manager):
         """GIVEN text that looks like binary data
         WHEN encrypted and decrypted
         THEN it should preserve the content
@@ -572,9 +556,7 @@ class TestCryptographyIntegration:
         else:
             pytest.skip("cryptography library not available")
 
-    def test_given_aesgcm_when_encrypting_then_uses_correct_nonce_size(
-        self, encryption_manager
-    ):
+    def test_given_aesgcm_when_encrypting_then_uses_correct_nonce_size(self, encryption_manager):
         """GIVEN AES-GCM encryption
         WHEN encrypting data
         THEN it should use proper nonce size (12 bytes for GCM)

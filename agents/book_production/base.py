@@ -64,8 +64,7 @@ class AgentConfig:
 
     def __post_init__(self):
         warnings.warn(
-            "AgentConfig is deprecated. Use UnifiedAgentConfig from "
-            "attune_llm.config instead.",
+            "AgentConfig is deprecated. Use UnifiedAgentConfig from " "attune_llm.config instead.",
             DeprecationWarning,
             stacklevel=2,
         )

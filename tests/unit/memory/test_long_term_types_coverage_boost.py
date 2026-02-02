@@ -322,9 +322,7 @@ class TestSecurePattern:
             secrets_detected=0,
         )
 
-        pattern = SecurePattern(
-            pattern_id="pat_456", content="Debug pattern", metadata=metadata
-        )
+        pattern = SecurePattern(pattern_id="pat_456", content="Debug pattern", metadata=metadata)
 
         assert pattern.metadata.classification == "PUBLIC"
         assert pattern.metadata.pattern_type == "debugging_pattern"

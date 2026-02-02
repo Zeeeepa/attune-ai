@@ -39,11 +39,21 @@ def keep_agents_alive(memory):
     Runs in background thread, updating agent heartbeats every 3 seconds.
     """
     agent_configs = {
-        "Code Analyzer": {"tasks": ["Analyzing code quality", "Running static analysis", "Checking dependencies"]},
-        "Test Generator": {"tasks": ["Generating unit tests", "Creating test fixtures", "Validating coverage"]},
-        "Refactoring Agent": {"tasks": ["Refactoring code", "Optimizing performance", "Improving readability"]},
-        "CI/CD Pipeline": {"tasks": ["Running CI/CD pipeline", "Deploying to staging", "Idle - awaiting tasks"]},
-        "System Monitor": {"tasks": ["Monitoring system health", "Processing metrics", "Generating reports"]},
+        "Code Analyzer": {
+            "tasks": ["Analyzing code quality", "Running static analysis", "Checking dependencies"]
+        },
+        "Test Generator": {
+            "tasks": ["Generating unit tests", "Creating test fixtures", "Validating coverage"]
+        },
+        "Refactoring Agent": {
+            "tasks": ["Refactoring code", "Optimizing performance", "Improving readability"]
+        },
+        "CI/CD Pipeline": {
+            "tasks": ["Running CI/CD pipeline", "Deploying to staging", "Idle - awaiting tasks"]
+        },
+        "System Monitor": {
+            "tasks": ["Monitoring system health", "Processing metrics", "Generating reports"]
+        },
     }
 
     coordinators = {}
@@ -52,7 +62,7 @@ def keep_agents_alive(memory):
         coordinator.start_heartbeat(
             agent_id=f"agent-{list(agent_configs.keys()).index(agent_id) + 1}",  # Internal ID
             display_name=agent_id,  # Display name for dashboard
-            metadata={"demo": True, "persistent": True}
+            metadata={"demo": True, "persistent": True},
         )
         coordinators[agent_id] = coordinator
 
@@ -60,15 +70,13 @@ def keep_agents_alive(memory):
         for agent_id, config in agent_configs.items():
             coordinator = coordinators[agent_id]
             # Randomly vary status and progress for realistic simulation
-            status = random.choice(["running", "running", "running", "idle"])  # Bias toward "running"
+            status = random.choice(
+                ["running", "running", "running", "idle"]
+            )  # Bias toward "running"
             progress = random.random()
             current_task = random.choice(config["tasks"])
 
-            coordinator.beat(
-                status=status,
-                progress=progress,
-                current_task=current_task
-            )
+            coordinator.beat(status=status, progress=progress, current_task=current_task)
 
         time.sleep(3)  # Update heartbeats every 3 seconds
 
@@ -96,7 +104,9 @@ def generate_test_data():
     # Pattern 1: Agent Heartbeats (continuous in background)
     print("📊 Pattern 1: Setting up continuous agent heartbeats...")
     print("  ✓ 5 agents will publish heartbeats every 3 seconds")
-    print("  ✓ Agents: Code Analyzer, Test Generator, Refactoring Agent, CI/CD Pipeline, System Monitor")
+    print(
+        "  ✓ Agents: Code Analyzer, Test Generator, Refactoring Agent, CI/CD Pipeline, System Monitor"
+    )
     print()
 
     # Pattern 2: Coordination Signals
@@ -157,12 +167,14 @@ def generate_test_data():
         request_id = f"approval_{uuid4().hex[:8]}"
         approval_data = {
             "request_id": request_id,
-            "approval_type": random.choice(["deploy_to_staging", "delete_old_data", "refactor_module"]),
+            "approval_type": random.choice(
+                ["deploy_to_staging", "delete_old_data", "refactor_module"]
+            ),
             "agent_id": "demo-workflow",
-            "context": {"version": "1.0.0", "demo": True, "number": i+1},
+            "context": {"version": "1.0.0", "demo": True, "number": i + 1},
             "timestamp": datetime.utcnow().isoformat(),
             "timeout_seconds": 300.0,
-            "status": "pending"
+            "status": "pending",
         }
 
         # Store in Redis (without empathy: prefix for approval gates)

@@ -28,18 +28,14 @@ def cli_runner():
 @pytest.fixture
 def mock_registry():
     """Provide a mock TemplateRegistry."""
-    with patch(
-        "attune.meta_workflows.cli_commands.template_commands.TemplateRegistry"
-    ) as mock:
+    with patch("attune.meta_workflows.cli_commands.template_commands.TemplateRegistry") as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_console():
     """Provide a mock Console."""
-    with patch(
-        "attune.meta_workflows.cli_commands.template_commands.console"
-    ) as mock:
+    with patch("attune.meta_workflows.cli_commands.template_commands.console") as mock:
         yield mock
 
 
@@ -81,8 +77,7 @@ class TestListTemplates:
         # Then
         mock_console.print.assert_any_call("[yellow]No templates found.[/yellow]")
         assert any(
-            "Create templates" in str(call_args)
-            for call_args in mock_console.print.call_args_list
+            "Create templates" in str(call_args) for call_args in mock_console.print.call_args_list
         )
 
     def test_given_templates_exist_when_list_called_then_displays_templates(
@@ -148,6 +143,7 @@ class TestListTemplates:
         # Check that console.print was called with Panel containing the badge
         call_args = mock_console.print.call_args_list
         from rich.panel import Panel
+
         panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
         assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
         # Access the Panel's renderable content
@@ -176,6 +172,7 @@ class TestListTemplates:
         # Check that console.print was called with Panel containing the user badge
         call_args = mock_console.print.call_args_list
         from rich.panel import Panel
+
         panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
         assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
         panel = panel_calls[0][0][0]
@@ -229,6 +226,7 @@ class TestListTemplates:
         # Cost information is displayed in a Panel
         call_args = mock_console.print.call_args_list
         from rich.panel import Panel
+
         panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
         assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
         panel = panel_calls[0][0][0]
@@ -344,6 +342,7 @@ class TestListTemplates:
         # Questions count is displayed in a Panel
         call_args = mock_console.print.call_args_list
         from rich.panel import Panel
+
         panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
         assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
         panel = panel_calls[0][0][0]
@@ -372,6 +371,7 @@ class TestListTemplates:
         # Agent rules count is displayed in a Panel
         call_args = mock_console.print.call_args_list
         from rich.panel import Panel
+
         panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
         assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
         panel = panel_calls[0][0][0]
@@ -417,13 +417,9 @@ class TestListTemplates:
         list_templates(storage_dir=".attune/meta_workflows/templates")
 
         # Then
-        mock_registry.assert_called_once_with(
-            storage_dir=".attune/meta_workflows/templates"
-        )
+        mock_registry.assert_called_once_with(storage_dir=".attune/meta_workflows/templates")
 
-    def test_given_registry_error_when_list_called_then_raises_exception(
-        self, mock_registry
-    ):
+    def test_given_registry_error_when_list_called_then_raises_exception(self, mock_registry):
         """Given registry initialization fails,
         When list_templates is called,
         Then it raises an exception.
@@ -502,6 +498,7 @@ class TestListTemplates:
         # Tags are displayed in a Panel
         call_args = mock_console.print.call_args_list
         from rich.panel import Panel
+
         panel_calls = [call for call in call_args if call[0] and isinstance(call[0][0], Panel)]
         assert len(panel_calls) > 0, "Expected at least one Panel to be printed"
         panel = panel_calls[0][0][0]

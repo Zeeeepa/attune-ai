@@ -344,9 +344,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
                             for match in matches:
                                 # Find line number and get the line content
                                 line_num = content[: match.start()].count("\n") + 1
-                                line_content = (
-                                    lines[line_num - 1] if line_num <= len(lines) else ""
-                                )
+                                line_content = lines[line_num - 1] if line_num <= len(lines) else ""
 
                                 # Skip if file is a security example/test file
                                 file_name = str(file_path)
@@ -471,9 +469,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
                     size_category = get_module_size_category(codebase_lines)
 
                     # Log recommendation
-                    logger.info(
-                        f"Codebase: {target} ({codebase_lines} LOC, {size_category})"
-                    )
+                    logger.info(f"Codebase: {target} ({codebase_lines} LOC, {size_category})")
                     logger.info(f"Recommended auth mode: {recommended_mode.value}")
 
                     # Get cost estimate
@@ -486,8 +482,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
                         )
                     else:  # API
                         logger.info(
-                            f"Cost: ~${cost_estimate['monetary_cost']:.4f} "
-                            f"(1M context window)"
+                            f"Cost: ~${cost_estimate['monetary_cost']:.4f} " f"(1M context window)"
                         )
 
             except Exception as e:
@@ -619,7 +614,12 @@ class SecurityAuditWorkflow(BaseWorkflow):
         line = line_content.strip()
 
         # Check if line is a comment or documentation
-        if line.startswith("#") or line.startswith("//") or line.startswith("*") or line.startswith("-"):
+        if (
+            line.startswith("#")
+            or line.startswith("//")
+            or line.startswith("*")
+            or line.startswith("-")
+        ):
             return True
 
         # Check if inside a docstring (triple quotes)
@@ -655,7 +655,9 @@ class SecurityAuditWorkflow(BaseWorkflow):
 
         return False
 
-    def _is_safe_sql_parameterization(self, line_content: str, match_text: str, file_content: str) -> bool:
+    def _is_safe_sql_parameterization(
+        self, line_content: str, match_text: str, file_content: str
+    ) -> bool:
         """Check if SQL query uses safe parameterization despite f-string usage.
 
         Phase 2 Enhancement: Detects safe patterns like:
@@ -682,7 +684,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
                 return False
 
         # Extract a larger context (next 200 chars after match)
-        context = file_content[match_pos:match_pos + 200]
+        context = file_content[match_pos : match_pos + 200]
 
         # Also get lines before the match for placeholder detection
         lines_before = file_content[:match_pos].split("\n")
@@ -701,12 +703,14 @@ class SecurityAuditWorkflow(BaseWorkflow):
                 if "placeholders" in prev_line and '"?"' in prev_line and "join" in prev_line:
                     # Found placeholder construction
                     # Now check if the execute has separate parameters
-                    if "," in context and any(param in context for param in ["run_ids", "ids", "params", "values", ")"]):
+                    if "," in context and any(
+                        param in context for param in ["run_ids", "ids", "params", "values", ")"]
+                    ):
                         return True
 
         # Pattern 2: Check if f-string only builds SQL structure with constants
         # Example: f"SELECT * FROM {TABLE_NAME}" where TABLE_NAME is a constant
-        f_string_vars = re.findall(r'\{(\w+)\}', context)
+        f_string_vars = re.findall(r"\{(\w+)\}", context)
         if f_string_vars:
             # Check if all variables are constants (UPPERCASE or table/column names)
             all_constants = all(

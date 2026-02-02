@@ -23,7 +23,7 @@ def main():
     # Test on test_gen workflow (currently 8.57% coverage)
     test_module = {
         "file": "src/attune/workflows/test_gen/workflow.py",
-        "description": "Test generation workflow - validate enhanced mocking"
+        "description": "Test generation workflow - validate enhanced mocking",
     }
 
     print("=" * 70)
@@ -45,9 +45,7 @@ def main():
     batch_num = 99  # Use batch 99 for validation
 
     generator = AutonomousTestGenerator(
-        agent_id=agent_id,
-        batch_num=batch_num,
-        modules=[test_module]
+        agent_id=agent_id, batch_num=batch_num, modules=[test_module]
     )
 
     print(f"\nAgent ID: {agent_id}")
@@ -66,8 +64,8 @@ def main():
     print(f"Tests generated: {results['tests_generated']}")
     print(f"Files created: {results['files_created']}")
 
-    if results['completed'] > 0:
-        test_file = Path(results['files_created'][0])
+    if results["completed"] > 0:
+        test_file = Path(results["files_created"][0])
         print(f"\n📄 Test file: {test_file}")
         print(f"   Size: {test_file.stat().st_size:,} bytes")
 
@@ -94,7 +92,7 @@ def main():
 
     print("=" * 70)
 
-    return 0 if results['completed'] > 0 else 1
+    return 0 if results["completed"] > 0 else 1
 
 
 if __name__ == "__main__":

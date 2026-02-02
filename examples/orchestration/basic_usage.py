@@ -14,11 +14,13 @@ Licensed under Fair Source License 0.9
 import asyncio
 
 from attune.orchestration.agent_templates import (
-    get_all_templates, get_template, get_templates_by_capability)
+    get_all_templates,
+    get_template,
+    get_templates_by_capability,
+)
 from attune.orchestration.execution_strategies import get_strategy
 from attune.orchestration.meta_orchestrator import MetaOrchestrator
-from attune.workflows.orchestrated_release_prep import \
-    OrchestratedReleasePrepWorkflow
+from attune.workflows.orchestrated_release_prep import OrchestratedReleasePrepWorkflow
 from attune.workflows.test_coverage_boost import TestCoverageBoostWorkflow
 
 # =============================================================================

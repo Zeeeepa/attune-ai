@@ -296,6 +296,7 @@ class TestExceptionHierarchy:
 
     def test_can_catch_all_with_base_exception(self):
         """Test that all custom exceptions can be caught with base exception."""
+
         # Given
         def raise_validation():
             raise ValidationError("test")

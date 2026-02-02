@@ -244,29 +244,35 @@ class SEOOptimizationWorkflow(BaseWorkflow):
 
                 # Check for missing meta description
                 if "description:" not in content and "# " in content:
-                    issues.append({
-                        "file": file_path,
-                        "element": "meta_description",
-                        "severity": "critical",
-                        "message": "Missing meta description"
-                    })
+                    issues.append(
+                        {
+                            "file": file_path,
+                            "element": "meta_description",
+                            "severity": "critical",
+                            "message": "Missing meta description",
+                        }
+                    )
 
                 # Check for H1 count
                 h1_count = content.count("# ")
                 if h1_count == 0:
-                    issues.append({
-                        "file": file_path,
-                        "element": "h1_count",
-                        "severity": "warning",
-                        "message": "No H1 heading found"
-                    })
+                    issues.append(
+                        {
+                            "file": file_path,
+                            "element": "h1_count",
+                            "severity": "warning",
+                            "message": "No H1 heading found",
+                        }
+                    )
                 elif h1_count > 1:
-                    issues.append({
-                        "file": file_path,
-                        "element": "h1_count",
-                        "severity": "warning",
-                        "message": f"Multiple H1 headings ({h1_count})"
-                    })
+                    issues.append(
+                        {
+                            "file": file_path,
+                            "element": "h1_count",
+                            "severity": "warning",
+                            "message": f"Multiple H1 headings ({h1_count})",
+                        }
+                    )
             except Exception:
                 pass  # Skip files that can't be read
 
@@ -310,15 +316,11 @@ class SEOOptimizationWorkflow(BaseWorkflow):
                 recommendations.append(recommendation)
             else:
                 # Low confidence - flag for user clarification
-                recommendation["question"] = self._generate_clarifying_question(
-                    issue, confidence
-                )
+                recommendation["question"] = self._generate_clarifying_question(issue, confidence)
                 needs_clarification.append(recommendation)
 
         # Sort recommendations by priority and confidence
-        recommendations.sort(
-            key=lambda r: (r["priority"] == "high", r["confidence"]), reverse=True
-        )
+        recommendations.sort(key=lambda r: (r["priority"] == "high", r["confidence"]), reverse=True)
 
         return {
             "total_recommendations": len(recommendations),
@@ -328,9 +330,7 @@ class SEOOptimizationWorkflow(BaseWorkflow):
             "clarification_needed": needs_clarification,
         }
 
-    def _generate_clarifying_question(
-        self, issue: dict[str, Any], confidence: float
-    ) -> str:
+    def _generate_clarifying_question(self, issue: dict[str, Any], confidence: float) -> str:
         """Generate clarifying question for low-confidence issues.
 
         Args:

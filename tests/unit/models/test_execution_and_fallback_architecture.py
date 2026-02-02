@@ -107,17 +107,17 @@ class TestModelRegistryAndSelection:
         """Test that all models have cost information."""
         for provider_name, provider_models in MODEL_REGISTRY.items():
             for tier, model_info in provider_models.items():
-                assert hasattr(model_info, "input_cost_per_million"), (
-                    f"Model {provider_name}/{tier} missing input cost"
-                )
-                assert hasattr(model_info, "output_cost_per_million"), (
-                    f"Model {provider_name}/{tier} missing output cost"
-                )
+                assert hasattr(
+                    model_info, "input_cost_per_million"
+                ), f"Model {provider_name}/{tier} missing input cost"
+                assert hasattr(
+                    model_info, "output_cost_per_million"
+                ), f"Model {provider_name}/{tier} missing output cost"
                 # Ollama models are free (cost = 0), others should cost > 0
                 if provider_name != "ollama":
-                    assert model_info.input_cost_per_million > 0, (
-                        f"Model {provider_name}/{tier} has invalid input cost"
-                    )
+                    assert (
+                        model_info.input_cost_per_million > 0
+                    ), f"Model {provider_name}/{tier} has invalid input cost"
 
     def test_cheap_tier_actually_cheaper(self):
         """Test that CHEAP tier models cost less than CAPABLE/PREMIUM."""

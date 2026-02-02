@@ -192,9 +192,7 @@ class BatchProcessingWorkflow:
                 )
 
             elif result_type == "expired":
-                results.append(
-                    BatchResult(task_id=task_id, success=False, error="Request expired")
-                )
+                results.append(BatchResult(task_id=task_id, success=False, error="Request expired"))
 
             elif result_type == "canceled":
                 results.append(

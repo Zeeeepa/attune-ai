@@ -63,6 +63,7 @@ def mock_telemetry_backend():
 def execution_context(mock_llm_executor, mock_cache, mock_telemetry_backend):
     """Given workflow dependencies (executor, cache, telemetry backend)."""
     from types import SimpleNamespace
+
     return SimpleNamespace(
         executor=mock_llm_executor,
         cache=mock_cache,

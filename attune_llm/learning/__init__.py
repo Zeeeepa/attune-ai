@@ -13,9 +13,9 @@ Licensed under Fair Source 0.9
 
 from attune_llm.learning.evaluator import SessionEvaluator, SessionQuality
 from attune_llm.learning.extractor import (
-                                                    ExtractedPattern,
-                                                    PatternCategory,
-                                                    PatternExtractor,
+    ExtractedPattern,
+    PatternCategory,
+    PatternExtractor,
 )
 from attune_llm.learning.storage import LearnedSkill, LearnedSkillsStorage
 

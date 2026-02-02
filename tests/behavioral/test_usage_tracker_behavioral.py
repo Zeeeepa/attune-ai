@@ -207,6 +207,7 @@ class TestLogRotation:
         # Set modification time to 10 days ago
         old_time = time.time() - (10 * 24 * 60 * 60)
         import os
+
         os.utime(old_file, (old_time, old_time))
 
         # Trigger cleanup

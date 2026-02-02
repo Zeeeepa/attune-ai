@@ -276,7 +276,7 @@ class MemoryLeakScanner:
         # Regex-based pattern matching
         for pattern_name, pattern_info in MEMORY_PATTERNS.items():
             for match in re.finditer(pattern_info["pattern"], content, re.MULTILINE):
-                line_num = content[:match.start()].count("\n") + 1
+                line_num = content[: match.start()].count("\n") + 1
                 code_line = lines[line_num - 1].strip() if line_num <= len(lines) else ""
 
                 issue = MemoryIssue(
@@ -309,9 +309,7 @@ class MemoryLeakScanner:
 
         return analysis
 
-    def _analyze_ast(
-        self, tree: ast.AST, analysis: FileAnalysis, lines: list[str]
-    ) -> None:
+    def _analyze_ast(self, tree: ast.AST, analysis: FileAnalysis, lines: list[str]) -> None:
         """AST-based analysis for complex patterns."""
         for node in ast.walk(tree):
             # Check for mutable default arguments
@@ -319,9 +317,7 @@ class MemoryLeakScanner:
                 for default in node.args.defaults + node.args.kw_defaults:
                     if default and isinstance(default, (ast.List, ast.Dict, ast.Set)):
                         code_line = (
-                            lines[node.lineno - 1].strip()
-                            if node.lineno <= len(lines)
-                            else ""
+                            lines[node.lineno - 1].strip() if node.lineno <= len(lines) else ""
                         )
                         issue = MemoryIssue(
                             file_path=analysis.file_path,
@@ -338,14 +334,10 @@ class MemoryLeakScanner:
             # Check for while True without break/return (potential infinite loop)
             if isinstance(node, ast.While):
                 if isinstance(node.test, ast.Constant) and node.test.value is True:
-                    has_exit = any(
-                        isinstance(n, (ast.Break, ast.Return)) for n in ast.walk(node)
-                    )
+                    has_exit = any(isinstance(n, (ast.Break, ast.Return)) for n in ast.walk(node))
                     if not has_exit:
                         code_line = (
-                            lines[node.lineno - 1].strip()
-                            if node.lineno <= len(lines)
-                            else ""
+                            lines[node.lineno - 1].strip() if node.lineno <= len(lines) else ""
                         )
                         issue = MemoryIssue(
                             file_path=analysis.file_path,
@@ -390,9 +382,7 @@ class MemoryLeakScanner:
         for issue in analysis.issues:
             # Check get_all_* patterns for iterator variants
             if issue.issue_type == "get_all_pattern":
-                mitigation = self._check_get_all_mitigation(
-                    content, lines, issue.line_number
-                )
+                mitigation = self._check_get_all_mitigation(content, lines, issue.line_number)
                 if mitigation:
                     issue.mitigated = True
                     issue.mitigation_note = mitigation
@@ -407,7 +397,9 @@ class MemoryLeakScanner:
             elif issue.issue_type == "list_append_loop":
                 if self._check_append_is_bounded(content, lines, issue.line_number):
                     issue.mitigated = True
-                    issue.mitigation_note = "Append loop is bounded (serialization or fixed iteration)"
+                    issue.mitigation_note = (
+                        "Append loop is bounded (serialization or fixed iteration)"
+                    )
 
             # Check list comprehensions in mock/test code
             elif issue.issue_type == "list_comprehension_large":
@@ -432,7 +424,9 @@ class MemoryLeakScanner:
         method_name = match.group(1)
 
         # Check for iterator variant (iter_all_* or iter_*)
-        base_name = method_name.replace("get_all_", "").replace("load_all_", "").replace("fetch_all_", "")
+        base_name = (
+            method_name.replace("get_all_", "").replace("load_all_", "").replace("fetch_all_", "")
+        )
         iter_patterns = [
             f"def iter_all_{base_name}",
             f"def iter_{base_name}",
@@ -486,9 +480,7 @@ class MemoryLeakScanner:
 
         return False
 
-    def _check_append_is_bounded(
-        self, content: str, lines: list[str], line_num: int
-    ) -> bool:
+    def _check_append_is_bounded(self, content: str, lines: list[str], line_num: int) -> bool:
         """Check if list append loop is bounded."""
         if line_num > len(lines):
             return False
@@ -585,7 +577,11 @@ class MemoryLeakScanner:
         for analysis in self.analyses:
             for issue in analysis.issues:
                 if issue.issue_type not in type_counts:
-                    type_counts[issue.issue_type] = {"active": 0, "mitigated": 0, "severity": issue.severity}
+                    type_counts[issue.issue_type] = {
+                        "active": 0,
+                        "mitigated": 0,
+                        "severity": issue.severity,
+                    }
                 if issue.mitigated:
                     type_counts[issue.issue_type]["mitigated"] += 1
                 else:
@@ -765,8 +761,7 @@ def main():
         min_level = severity_order[args.min_severity]
         for analysis in scanner.analyses:
             analysis.issues = [
-                i for i in analysis.issues
-                if severity_order.get(i.severity, 0) >= min_level
+                i for i in analysis.issues if severity_order.get(i.severity, 0) >= min_level
             ]
 
     # Generate report

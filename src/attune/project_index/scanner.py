@@ -483,9 +483,7 @@ class ProjectScanner:
                 import re
 
                 test_func_pattern = re.compile(r"^\s*def\s+test_\w+\(")
-                metrics["test_count"] = sum(
-                    1 for line in lines if test_func_pattern.match(line)
-                )
+                metrics["test_count"] = sum(1 for line in lines if test_func_pattern.match(line))
                 # Mark as having test functions (for test file records)
                 if metrics["test_count"] > 0:
                     metrics["lines_of_test"] = metrics["lines_of_code"]

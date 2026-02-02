@@ -180,7 +180,10 @@ class TestGenerateCodeSectionsCustomContext:
 
         dataclass_section = [s for s in sections if s.location == "dataclasses"][0]
         # When no custom fields, should show placeholder comment
-        assert "# Add custom fields here" in dataclass_section.code or "success: bool" in dataclass_section.code
+        assert (
+            "# Add custom fields here" in dataclass_section.code
+            or "success: bool" in dataclass_section.code
+        )
 
     def test_generate_with_empty_result_fields(self):
         """Test code generation with empty result_fields list."""

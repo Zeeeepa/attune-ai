@@ -335,6 +335,7 @@ def main():
         print("    Make sure Redis is running: redis-server")
         print("    Or run: empathy memory start")
         import traceback
+
         traceback.print_exc()
         return
 

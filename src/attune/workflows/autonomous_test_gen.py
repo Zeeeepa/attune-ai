@@ -43,6 +43,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ValidationResult:
     """Result of pytest validation."""
+
     passed: bool
     failures: str
     error_count: int
@@ -52,6 +53,7 @@ class ValidationResult:
 @dataclass
 class CoverageResult:
     """Result of coverage analysis."""
+
     coverage: float
     missing_lines: list[int]
     total_statements: int
@@ -69,7 +71,7 @@ class AutonomousTestGenerator:
         enable_refinement: bool = True,
         max_refinement_iterations: int = 3,
         enable_coverage_guided: bool = False,
-        target_coverage: float = 0.80
+        target_coverage: float = 0.80,
     ):
         """Initialize generator.
 
@@ -107,7 +109,9 @@ class AutonomousTestGenerator:
         self.output_dir = Path(f"tests/behavioral/generated/batch{batch_num}")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        logger.info(f"Generator initialized: refinement={enable_refinement}, coverage_guided={enable_coverage_guided}")
+        logger.info(
+            f"Generator initialized: refinement={enable_refinement}, coverage_guided={enable_coverage_guided}"
+        )
 
     def generate_all(self) -> dict[str, Any]:
         """Generate tests for all modules with progress tracking.
@@ -122,7 +126,7 @@ class AutonomousTestGenerator:
                 "batch": self.batch_num,
                 "total_modules": len(self.modules),
                 "workflow": "autonomous_test_generation",
-            }
+            },
         )
 
         try:
@@ -143,7 +147,7 @@ class AutonomousTestGenerator:
                 self.coordinator.beat(
                     status="running",
                     progress=progress,
-                    current_task=f"Generating tests for {module_name}"
+                    current_task=f"Generating tests for {module_name}",
                 )
 
                 try:
@@ -162,8 +166,8 @@ class AutonomousTestGenerator:
                                     "agent_id": self.agent_id,
                                     "module": module_name,
                                     "test_file": str(test_file),
-                                    "batch": self.batch_num
-                                }
+                                    "batch": self.batch_num,
+                                },
                             )
 
                         # Record quality feedback
@@ -173,7 +177,11 @@ class AutonomousTestGenerator:
                                 stage_name="generation",
                                 tier="capable",
                                 quality_score=1.0,  # Success
-                                metadata={"module": module_name, "status": "success", "batch": self.batch_num}
+                                metadata={
+                                    "module": module_name,
+                                    "status": "success",
+                                    "batch": self.batch_num,
+                                },
                             )
                     else:
                         results["failed"] += 1
@@ -186,7 +194,11 @@ class AutonomousTestGenerator:
                                 stage_name="validation",
                                 tier="capable",
                                 quality_score=0.0,  # Failure
-                                metadata={"module": module_name, "status": "validation_failed", "batch": self.batch_num}
+                                metadata={
+                                    "module": module_name,
+                                    "status": "validation_failed",
+                                    "batch": self.batch_num,
+                                },
                             )
 
                 except Exception as e:
@@ -201,8 +213,8 @@ class AutonomousTestGenerator:
                                 "agent_id": self.agent_id,
                                 "module": module_name,
                                 "error": str(e),
-                                "batch": self.batch_num
-                            }
+                                "batch": self.batch_num,
+                            },
                         )
 
             # Count total tests
@@ -212,18 +224,14 @@ class AutonomousTestGenerator:
             self.coordinator.beat(
                 status="completed",
                 progress=1.0,
-                current_task=f"Completed: {results['completed']}/{results['total_modules']} modules"
+                current_task=f"Completed: {results['completed']}/{results['total_modules']} modules",
             )
 
             return results
 
         except Exception as e:
             # Error tracking
-            self.coordinator.beat(
-                status="failed",
-                progress=0.0,
-                current_task=f"Failed: {str(e)}"
-            )
+            self.coordinator.beat(status="failed", progress=0.0, current_task=f"Failed: {str(e)}")
             raise
 
         finally:
@@ -269,10 +277,14 @@ class AutonomousTestGenerator:
 
         if self.enable_refinement:
             logger.info(f"🔄 Using Phase 2: Multi-turn refinement for {module_name}")
-            test_content = self._generate_with_refinement(module_name, module_path, source_file, source_code, test_file)
+            test_content = self._generate_with_refinement(
+                module_name, module_path, source_file, source_code, test_file
+            )
         else:
             logger.info(f"📝 Using Phase 1: Basic generation for {module_name}")
-            test_content = self._generate_with_llm(module_name, module_path, source_file, source_code)
+            test_content = self._generate_with_llm(
+                module_name, module_path, source_file, source_code
+            )
 
         if not test_content:
             logger.warning(f"LLM generation failed for {module_name}")
@@ -290,7 +302,9 @@ class AutonomousTestGenerator:
                 test_content = improved_content
                 logger.info(f"✅ Coverage-guided improvement complete for {module_name}")
             else:
-                logger.warning(f"⚠️  Coverage-guided improvement failed, using previous version for {module_name}")
+                logger.warning(
+                    f"⚠️  Coverage-guided improvement failed, using previous version for {module_name}"
+                )
 
         # Write final test file
         test_file.write_text(test_content)
@@ -322,7 +336,7 @@ class AutonomousTestGenerator:
             r"TelemetryCollector",
             r"from\s+anthropic\s+import",
             r"messages\.create",
-            r"client\.messages"
+            r"client\.messages",
         ]
 
         return any(re.search(pattern, source_code) for pattern in indicators)
@@ -405,7 +419,9 @@ class TestMyWorkflow:
 ```
 """
 
-    def _get_workflow_specific_prompt(self, module_name: str, module_path: str, source_code: str) -> str:
+    def _get_workflow_specific_prompt(
+        self, module_name: str, module_path: str, source_code: str
+    ) -> str:
         """Get workflow-specific test generation prompt with comprehensive mocking guidance."""
         return f"""Generate comprehensive tests for this WORKFLOW module.
 
@@ -453,7 +469,9 @@ Generate a complete test file with:
 
 Return ONLY the complete Python test file, no explanations."""
 
-    def _generate_with_llm(self, module_name: str, module_path: str, source_file: Path, source_code: str) -> str | None:
+    def _generate_with_llm(
+        self, module_name: str, module_path: str, source_file: Path, source_code: str
+    ) -> str | None:
         """Generate comprehensive tests using LLM with Anthropic best practices.
 
         ENHANCEMENTS (Phase 1):
@@ -487,11 +505,15 @@ Return ONLY the complete Python test file, no explanations."""
 
         # Detect if this is a workflow module
         is_workflow = self._is_workflow_module(source_code, module_path)
-        logger.info(f"Module {module_name}: workflow={is_workflow}, size={len(source_code)} bytes (FULL)")
+        logger.info(
+            f"Module {module_name}: workflow={is_workflow}, size={len(source_code)} bytes (FULL)"
+        )
 
         # Build appropriate prompt based on module type
         if is_workflow:
-            generation_prompt = self._get_workflow_specific_prompt(module_name, module_path, source_code)
+            generation_prompt = self._get_workflow_specific_prompt(
+                module_name, module_path, source_code
+            )
         else:
             generation_prompt = f"""Generate comprehensive behavioral tests for this Python module.
 
@@ -537,31 +559,30 @@ Return ONLY the complete Python test file content, no explanations."""
                     {
                         "type": "text",
                         "text": "You are an expert Python test engineer. Here are examples of excellent tests:",
-                        "cache_control": {"type": "ephemeral"}
+                        "cache_control": {"type": "ephemeral"},
                     },
                     {
                         "type": "text",
                         "text": self._get_example_tests(),
-                        "cache_control": {"type": "ephemeral"}
+                        "cache_control": {"type": "ephemeral"},
                     },
-                    {
-                        "type": "text",
-                        "text": generation_prompt
-                    }
-                ]
+                    {"type": "text", "text": generation_prompt},
+                ],
             }
         ]
 
         try:
             # Call Anthropic API with extended thinking and caching
-            logger.info(f"Calling LLM with extended thinking for {module_name} (workflow={is_workflow})")
+            logger.info(
+                f"Calling LLM with extended thinking for {module_name} (workflow={is_workflow})"
+            )
             client = anthropic.Anthropic(api_key=api_key)
             response = client.messages.create(
                 model="claude-sonnet-4-5",  # capable tier
                 max_tokens=40000,  # Very generous total budget for comprehensive tests
                 thinking={
                     "type": "enabled",
-                    "budget_tokens": 20000  # Generous thinking budget for thorough planning
+                    "budget_tokens": 20000,  # Generous thinking budget for thorough planning
                 },
                 messages=messages,
                 timeout=900.0,  # 15 minutes timeout for extended thinking + generation
@@ -590,7 +611,7 @@ Return ONLY the complete Python test file content, no explanations."""
 
             # Clean up response (remove markdown fences if present)
             if test_content.startswith("```python"):
-                test_content = test_content[len("```python"):].strip()
+                test_content = test_content[len("```python") :].strip()
             if test_content.endswith("```"):
                 test_content = test_content[:-3].strip()
 
@@ -602,10 +623,13 @@ Return ONLY the complete Python test file content, no explanations."""
             # Quick syntax pre-check before returning
             try:
                 import ast
+
                 ast.parse(test_content)
                 logger.info(f"✓ Quick syntax check passed for {module_name}")
             except SyntaxError as e:
-                logger.error(f"❌ LLM generated invalid syntax for {module_name}: {e.msg} at line {e.lineno}")
+                logger.error(
+                    f"❌ LLM generated invalid syntax for {module_name}: {e.msg} at line {e.lineno}"
+                )
                 return None
 
             logger.info(f"Test content cleaned, final size: {len(test_content)} bytes")
@@ -657,10 +681,7 @@ Return ONLY the complete Python test file content, no explanations."""
             logger.info(f"Pytest validation: passed={passed}, errors={error_count}")
 
             return ValidationResult(
-                passed=passed,
-                failures=failures,
-                error_count=error_count,
-                output=output
+                passed=passed, failures=failures, error_count=error_count, output=output
             )
 
         except subprocess.TimeoutExpired:
@@ -669,21 +690,16 @@ Return ONLY the complete Python test file content, no explanations."""
                 passed=False,
                 failures="Validation timeout after 60 seconds",
                 error_count=1,
-                output="Timeout"
+                output="Timeout",
             )
         except Exception as e:
             logger.error(f"Pytest validation exception: {e}")
             return ValidationResult(
-                passed=False,
-                failures=f"Validation exception: {e}",
-                error_count=1,
-                output=str(e)
+                passed=False, failures=f"Validation exception: {e}", error_count=1, output=str(e)
             )
 
     def _call_llm_with_history(
-        self,
-        conversation_history: list[dict[str, Any]],
-        api_key: str
+        self, conversation_history: list[dict[str, Any]], api_key: str
     ) -> str | None:
         """Call LLM with conversation history for refinement.
 
@@ -703,7 +719,7 @@ Return ONLY the complete Python test file content, no explanations."""
                 max_tokens=40000,  # Very generous total budget for iterative refinement
                 thinking={
                     "type": "enabled",
-                    "budget_tokens": 20000  # Generous thinking budget for thorough analysis
+                    "budget_tokens": 20000,  # Generous thinking budget for thorough analysis
                 },
                 messages=conversation_history,
                 timeout=900.0,  # 15 minutes timeout for refinement iterations
@@ -726,7 +742,7 @@ Return ONLY the complete Python test file content, no explanations."""
 
             # Clean up response
             if test_content.startswith("```python"):
-                test_content = test_content[len("```python"):].strip()
+                test_content = test_content[len("```python") :].strip()
             if test_content.endswith("```"):
                 test_content = test_content[:-3].strip()
 
@@ -742,7 +758,7 @@ Return ONLY the complete Python test file content, no explanations."""
         module_path: str,
         source_file: Path,
         source_code: str,
-        test_file: Path
+        test_file: Path,
     ) -> str | None:
         """Generate tests with iterative refinement (Phase 2).
 
@@ -769,7 +785,9 @@ Return ONLY the complete Python test file content, no explanations."""
             logger.error("ANTHROPIC_API_KEY not set")
             return None
 
-        logger.info(f"🔄 Phase 2: Multi-turn refinement enabled for {module_name} (max {self.max_refinement_iterations} iterations)")
+        logger.info(
+            f"🔄 Phase 2: Multi-turn refinement enabled for {module_name} (max {self.max_refinement_iterations} iterations)"
+        )
 
         # Step 1: Generate initial tests
         test_content = self._generate_with_llm(module_name, module_path, source_file, source_code)
@@ -782,7 +800,9 @@ Return ONLY the complete Python test file content, no explanations."""
 
         # Initial prompt (for history tracking)
         if is_workflow:
-            initial_prompt = self._get_workflow_specific_prompt(module_name, module_path, source_code)
+            initial_prompt = self._get_workflow_specific_prompt(
+                module_name, module_path, source_code
+            )
         else:
             initial_prompt = f"""Generate comprehensive behavioral tests for {module_name}.
 
@@ -795,20 +815,27 @@ SOURCE CODE:
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "You are an expert Python test engineer. Examples:", "cache_control": {"type": "ephemeral"}},
-                    {"type": "text", "text": self._get_example_tests(), "cache_control": {"type": "ephemeral"}},
-                    {"type": "text", "text": initial_prompt}
-                ]
+                    {
+                        "type": "text",
+                        "text": "You are an expert Python test engineer. Examples:",
+                        "cache_control": {"type": "ephemeral"},
+                    },
+                    {
+                        "type": "text",
+                        "text": self._get_example_tests(),
+                        "cache_control": {"type": "ephemeral"},
+                    },
+                    {"type": "text", "text": initial_prompt},
+                ],
             },
-            {
-                "role": "assistant",
-                "content": test_content
-            }
+            {"role": "assistant", "content": test_content},
         ]
 
         # Step 2: Iterative refinement loop
         for iteration in range(self.max_refinement_iterations):
-            logger.info(f"📝 Refinement iteration {iteration + 1}/{self.max_refinement_iterations} for {module_name}")
+            logger.info(
+                f"📝 Refinement iteration {iteration + 1}/{self.max_refinement_iterations} for {module_name}"
+            )
 
             # Write current version to temp file
             temp_test_file = test_file.parent / f"_temp_{test_file.name}"
@@ -823,7 +850,9 @@ SOURCE CODE:
                 return test_content
 
             # Tests failed - ask Claude to fix
-            logger.warning(f"⚠️  Tests failed on iteration {iteration + 1}: {validation_result.error_count} errors")
+            logger.warning(
+                f"⚠️  Tests failed on iteration {iteration + 1}: {validation_result.error_count} errors"
+            )
 
             refinement_prompt = f"""The tests you generated have failures. Please fix these specific issues:
 
@@ -840,10 +869,7 @@ Requirements:
 Return ONLY the complete Python test file, no explanations."""
 
             # Add to conversation history
-            conversation_history.append({
-                "role": "user",
-                "content": refinement_prompt
-            })
+            conversation_history.append({"role": "user", "content": refinement_prompt})
 
             # Call LLM for refinement
             refined_content = self._call_llm_with_history(conversation_history, api_key)
@@ -855,15 +881,14 @@ Return ONLY the complete Python test file, no explanations."""
 
             # Update content and history
             test_content = refined_content
-            conversation_history.append({
-                "role": "assistant",
-                "content": test_content
-            })
+            conversation_history.append({"role": "assistant", "content": test_content})
 
             logger.info(f"🔄 Refinement iteration {iteration + 1} complete, retrying validation...")
 
         # Max iterations reached
-        logger.warning(f"⚠️  Max refinement iterations reached for {module_name} - returning best attempt")
+        logger.warning(
+            f"⚠️  Max refinement iterations reached for {module_name} - returning best attempt"
+        )
         return test_content
 
     def _run_coverage_analysis(self, test_file: Path, source_file: Path) -> CoverageResult:
@@ -880,17 +905,19 @@ Return ONLY the complete Python test file, no explanations."""
             # Run pytest with coverage (result intentionally unused - we read coverage from file)
             subprocess.run(
                 [
-                    sys.executable, "-m", "pytest",
+                    sys.executable,
+                    "-m",
+                    "pytest",
                     str(test_file),
                     f"--cov={source_file.parent}",
                     "--cov-report=term-missing",
                     "--cov-report=json",
-                    "-v"
+                    "-v",
                 ],
                 capture_output=True,
                 text=True,
                 timeout=120,
-                cwd=Path.cwd()
+                cwd=Path.cwd(),
             )
 
             # Parse coverage from JSON report
@@ -898,10 +925,7 @@ Return ONLY the complete Python test file, no explanations."""
             if not coverage_json_path.exists():
                 logger.warning("Coverage JSON not generated")
                 return CoverageResult(
-                    coverage=0.0,
-                    missing_lines=[],
-                    total_statements=0,
-                    covered_statements=0
+                    coverage=0.0, missing_lines=[], total_statements=0, covered_statements=0
                 )
 
             with open(coverage_json_path) as f:
@@ -918,10 +942,7 @@ Return ONLY the complete Python test file, no explanations."""
             if not file_coverage:
                 logger.warning(f"No coverage data found for {source_file}")
                 return CoverageResult(
-                    coverage=0.0,
-                    missing_lines=[],
-                    total_statements=0,
-                    covered_statements=0
+                    coverage=0.0, missing_lines=[], total_statements=0, covered_statements=0
                 )
 
             # Extract metrics
@@ -930,21 +951,27 @@ Return ONLY the complete Python test file, no explanations."""
             coverage_pct = file_coverage["summary"]["percent_covered"] / 100.0
             missing_lines = file_coverage["missing_lines"]
 
-            logger.info(f"Coverage: {coverage_pct:.1%} ({covered_statements}/{total_statements} statements)")
+            logger.info(
+                f"Coverage: {coverage_pct:.1%} ({covered_statements}/{total_statements} statements)"
+            )
 
             return CoverageResult(
                 coverage=coverage_pct,
                 missing_lines=missing_lines,
                 total_statements=total_statements,
-                covered_statements=covered_statements
+                covered_statements=covered_statements,
             )
 
         except subprocess.TimeoutExpired:
             logger.error("Coverage analysis timeout")
-            return CoverageResult(coverage=0.0, missing_lines=[], total_statements=0, covered_statements=0)
+            return CoverageResult(
+                coverage=0.0, missing_lines=[], total_statements=0, covered_statements=0
+            )
         except Exception as e:
             logger.error(f"Coverage analysis error: {e}", exc_info=True)
-            return CoverageResult(coverage=0.0, missing_lines=[], total_statements=0, covered_statements=0)
+            return CoverageResult(
+                coverage=0.0, missing_lines=[], total_statements=0, covered_statements=0
+            )
 
     def _extract_uncovered_lines(self, source_file: Path, missing_lines: list[int]) -> str:
         """Extract source code for uncovered lines.
@@ -1003,7 +1030,7 @@ Return ONLY the complete Python test file, no explanations."""
         source_file: Path,
         source_code: str,
         test_file: Path,
-        initial_test_content: str
+        initial_test_content: str,
     ) -> str | None:
         """Generate tests iteratively until coverage target met (Phase 3).
 
@@ -1032,13 +1059,17 @@ Return ONLY the complete Python test file, no explanations."""
             logger.error("ANTHROPIC_API_KEY not set")
             return None
 
-        logger.info(f"📊 Phase 3: Coverage-guided generation enabled (target: {self.target_coverage:.0%})")
+        logger.info(
+            f"📊 Phase 3: Coverage-guided generation enabled (target: {self.target_coverage:.0%})"
+        )
 
         test_content = initial_test_content
         max_coverage_iterations = 5
 
         for iteration in range(max_coverage_iterations):
-            logger.info(f"📈 Coverage iteration {iteration + 1}/{max_coverage_iterations} for {module_name}")
+            logger.info(
+                f"📈 Coverage iteration {iteration + 1}/{max_coverage_iterations} for {module_name}"
+            )
 
             # Write current tests
             test_file.write_text(test_content)
@@ -1046,7 +1077,9 @@ Return ONLY the complete Python test file, no explanations."""
             # Run coverage analysis
             coverage_result = self._run_coverage_analysis(test_file, source_file)
 
-            logger.info(f"Current coverage: {coverage_result.coverage:.1%}, target: {self.target_coverage:.0%}")
+            logger.info(
+                f"Current coverage: {coverage_result.coverage:.1%}, target: {self.target_coverage:.0%}"
+            )
 
             # Check if target reached
             if coverage_result.coverage >= self.target_coverage:
@@ -1059,7 +1092,9 @@ Return ONLY the complete Python test file, no explanations."""
                 break
 
             # Identify uncovered code
-            uncovered_code = self._extract_uncovered_lines(source_file, coverage_result.missing_lines)
+            uncovered_code = self._extract_uncovered_lines(
+                source_file, coverage_result.missing_lines
+            )
 
             # Ask Claude to add tests for uncovered lines
             refinement_prompt = f"""Current coverage: {coverage_result.coverage:.1%}
@@ -1083,23 +1118,39 @@ Return ONLY the complete Python test file with additions, no explanations."""
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "You are an expert Python test engineer. Examples:", "cache_control": {"type": "ephemeral"}},
-                        {"type": "text", "text": self._get_example_tests(), "cache_control": {"type": "ephemeral"}},
-                        {"type": "text", "text": f"Source code:\n```python\n{source_code}\n```", "cache_control": {"type": "ephemeral"}},
+                        {
+                            "type": "text",
+                            "text": "You are an expert Python test engineer. Examples:",
+                            "cache_control": {"type": "ephemeral"},
+                        },
+                        {
+                            "type": "text",
+                            "text": self._get_example_tests(),
+                            "cache_control": {"type": "ephemeral"},
+                        },
+                        {
+                            "type": "text",
+                            "text": f"Source code:\n```python\n{source_code}\n```",
+                            "cache_control": {"type": "ephemeral"},
+                        },
                         {"type": "text", "text": f"Current tests:\n```python\n{test_content}\n```"},
-                        {"type": "text", "text": refinement_prompt}
-                    ]
+                        {"type": "text", "text": refinement_prompt},
+                    ],
                 }
             ]
 
             # Call LLM for coverage improvement
             try:
                 import anthropic
+
                 client = anthropic.Anthropic(api_key=api_key)
                 response = client.messages.create(
                     model="claude-sonnet-4-5",
                     max_tokens=40000,  # Very generous total budget for coverage improvement
-                    thinking={"type": "enabled", "budget_tokens": 20000},  # Thorough thinking for coverage gaps
+                    thinking={
+                        "type": "enabled",
+                        "budget_tokens": 20000,
+                    },  # Thorough thinking for coverage gaps
                     messages=messages,
                     timeout=900.0,  # 15 minutes timeout for coverage-guided iterations
                 )
@@ -1116,7 +1167,7 @@ Return ONLY the complete Python test file with additions, no explanations."""
 
                 # Clean up
                 if refined_content.startswith("```python"):
-                    refined_content = refined_content[len("```python"):].strip()
+                    refined_content = refined_content[len("```python") :].strip()
                 if refined_content.endswith("```"):
                     refined_content = refined_content[:-3].strip()
 
@@ -1128,7 +1179,9 @@ Return ONLY the complete Python test file with additions, no explanations."""
                 break
 
         # Return best attempt
-        logger.info(f"Coverage-guided generation complete: final coverage ~{coverage_result.coverage:.1%}")
+        logger.info(
+            f"Coverage-guided generation complete: final coverage ~{coverage_result.coverage:.1%}"
+        )
         return test_content
 
     def _validate_test_file(self, test_file: Path) -> bool:
@@ -1143,6 +1196,7 @@ Return ONLY the complete Python test file with additions, no explanations."""
         # Step 1: Check for syntax errors with ast.parse (fast)
         try:
             import ast
+
             content = test_file.read_text()
             ast.parse(content)
             logger.info(f"✓ Syntax check passed for {test_file.name}")
@@ -1203,7 +1257,7 @@ def run_batch_generation(
     batch_num: int,
     modules_json: str,
     enable_refinement: bool = True,
-    enable_coverage_guided: bool = False
+    enable_coverage_guided: bool = False,
 ) -> None:
     """Run test generation for a batch.
 
@@ -1223,7 +1277,7 @@ def run_batch_generation(
         batch_num,
         modules,
         enable_refinement=enable_refinement,
-        enable_coverage_guided=enable_coverage_guided
+        enable_coverage_guided=enable_coverage_guided,
     )
 
     # Generate tests
@@ -1252,7 +1306,9 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) < 3:
-        print("Usage: python -m attune.workflows.autonomous_test_gen <batch_num> <modules_json> [--no-refinement] [--coverage-guided]")
+        print(
+            "Usage: python -m attune.workflows.autonomous_test_gen <batch_num> <modules_json> [--no-refinement] [--coverage-guided]"
+        )
         print("\nOptions:")
         print("  --no-refinement     Disable Phase 2 multi-turn refinement")
         print("  --coverage-guided   Enable Phase 3 coverage-guided generation (slower)")

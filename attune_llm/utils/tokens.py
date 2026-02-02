@@ -94,7 +94,9 @@ def _count_tokens_heuristic(text: str) -> int:
     return max(1, len(text) // 4)
 
 
-def count_tokens(text: str, model: str = "claude-sonnet-4-5-20250929", use_api: bool = False) -> int:
+def count_tokens(
+    text: str, model: str = "claude-sonnet-4-5-20250929", use_api: bool = False
+) -> int:
     """Count tokens using best available method.
 
     By default, uses tiktoken for fast local estimation (~98% accurate).

@@ -21,8 +21,7 @@ import asyncio
 from datetime import datetime, timedelta
 
 from attune.models.empathy_executor import EmpathyLLMExecutor
-from attune.models.fallback import (SONNET_TO_OPUS_FALLBACK,
-                                        ResilientExecutor)
+from attune.models.fallback import SONNET_TO_OPUS_FALLBACK, ResilientExecutor
 from attune.models.telemetry import TelemetryAnalytics, get_telemetry_store
 
 

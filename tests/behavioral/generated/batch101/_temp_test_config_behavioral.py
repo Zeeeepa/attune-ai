@@ -30,27 +30,27 @@ def mock_workflows_module():
     This fixture ensures proper cleanup of sys.modules to prevent pollution.
     """
     # Save original modules if they exist
-    original_workflows = sys.modules.get('attune.workflows')
-    original_workflows_config = sys.modules.get('attune.workflows.config')
+    original_workflows = sys.modules.get("attune.workflows")
+    original_workflows_config = sys.modules.get("attune.workflows.config")
 
     # Mock the workflows.config module to provide ModelConfig
     workflows_config = MagicMock()
     workflows_config.ModelConfig = ModelConfig
-    sys.modules['attune.workflows'] = MagicMock()
-    sys.modules['attune.workflows.config'] = workflows_config
+    sys.modules["attune.workflows"] = MagicMock()
+    sys.modules["attune.workflows.config"] = workflows_config
 
     yield
 
     # Cleanup: restore original modules
     if original_workflows is not None:
-        sys.modules['attune.workflows'] = original_workflows
+        sys.modules["attune.workflows"] = original_workflows
     else:
-        sys.modules.pop('attune.workflows', None)
+        sys.modules.pop("attune.workflows", None)
 
     if original_workflows_config is not None:
-        sys.modules['attune.workflows.config'] = original_workflows_config
+        sys.modules["attune.workflows.config"] = original_workflows_config
     else:
-        sys.modules.pop('attune.workflows.config', None)
+        sys.modules.pop("attune.workflows.config", None)
 
 
 from attune.config import (
@@ -131,7 +131,7 @@ class TestValidateFilePath:
     def test_rejects_dangerous_system_paths(self):
         """Given a dangerous system path, when validating, then raises ValueError."""
         # Given
-        with patch('attune.config.Path') as MockPath:
+        with patch("attune.config.Path") as MockPath:
             mock_instance = MagicMock()
             mock_resolved = MagicMock()
             mock_resolved.__str__ = MagicMock(return_value="/etc/passwd")
@@ -527,6 +527,7 @@ class TestEmpathyConfigToYaml:
         # Then
         assert output_file.exists()
         import yaml
+
         with open(output_file) as f:
             data = yaml.safe_load(f)
         assert data["user_id"] == "save_user"

@@ -136,9 +136,7 @@ Generate complete, runnable tests that will increase coverage.""",
                         for n in node.body
                         if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
                     ]
-                    classes.append(
-                        {"name": node.name, "methods": methods, "line": node.lineno}
-                    )
+                    classes.append({"name": node.name, "methods": methods, "line": node.lineno})
                 elif isinstance(node, ast.FunctionDef) and node.col_offset == 0:
                     functions.append({"name": node.name, "line": node.lineno})
 
@@ -278,7 +276,11 @@ Output the COMPLETE test file, no TODOs remaining."""
         return content
 
     async def execute(
-        self, top: int = 200, batch_size: int = 10, output_dir: str = "tests/behavioral/generated", **kwargs
+        self,
+        top: int = 200,
+        batch_size: int = 10,
+        output_dir: str = "tests/behavioral/generated",
+        **kwargs,
     ) -> WorkflowResult:
         """Execute parallel test generation workflow.
 

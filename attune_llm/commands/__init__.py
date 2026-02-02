@@ -12,20 +12,20 @@ Licensed under Fair Source 0.9
 """
 
 from attune_llm.commands.context import (
-                                                  CommandContext,
-                                                  CommandExecutor,
-                                                  create_command_context,
+    CommandContext,
+    CommandExecutor,
+    create_command_context,
 )
 from attune_llm.commands.loader import (
-                                                  CommandLoader,
-                                                  get_default_commands_directory,
-                                                  load_commands_from_paths,
+    CommandLoader,
+    get_default_commands_directory,
+    load_commands_from_paths,
 )
 from attune_llm.commands.models import (
-                                                  CommandCategory,
-                                                  CommandConfig,
-                                                  CommandMetadata,
-                                                  CommandResult,
+    CommandCategory,
+    CommandConfig,
+    CommandMetadata,
+    CommandResult,
 )
 from attune_llm.commands.parser import CommandParser
 from attune_llm.commands.registry import CommandRegistry

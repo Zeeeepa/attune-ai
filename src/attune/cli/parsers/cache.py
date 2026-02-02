@@ -15,6 +15,7 @@ def register_parsers(subparsers):
         None: Adds cache subparser with stats and clear subcommands
     """
     from ..commands.cache import cmd_cache_clear, cmd_cache_stats
+
     # Main cache command
     cache_parser = subparsers.add_parser(
         "cache",

@@ -22,8 +22,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-
-
 # ============================================================================
 # Module 1: models/validation.py - Config Validation
 # ============================================================================
@@ -301,6 +299,7 @@ try:
             """Given: Function with timeout decorator
             When: Calling function
             Then: Decorator is applied."""
+
             # Given
             @timeout(seconds=5)
             def fast_function():
@@ -316,6 +315,7 @@ try:
             """Given: Timeout decorator
             When: Applied with seconds parameter
             Then: Parameter is accepted."""
+
             # Given/When
             @timeout(seconds=1)
             def test_func():
@@ -331,6 +331,7 @@ try:
             """Given: Function with retry decorator
             When: Calling function
             Then: Decorator is applied."""
+
             # Given
             @retry(max_attempts=3)
             def reliable_function():
@@ -346,6 +347,7 @@ try:
             """Given: Retry decorator
             When: Applied with max_attempts parameter
             Then: Parameter is accepted."""
+
             # Given/When
             @retry(max_attempts=5, initial_delay=0.1)
             def test_func():
@@ -361,6 +363,7 @@ try:
             """Given: Function with fallback decorator
             When: Calling async function
             Then: Decorator is applied."""
+
             # Given
             async def primary():
                 return "primary"
@@ -380,6 +383,7 @@ try:
             """Given: Fallback decorator with default parameter
             When: Creating wrapped function
             Then: Parameter is accepted."""
+
             # Given
             async def primary():
                 pass
@@ -554,9 +558,7 @@ try:
             # Given
             template = PlainTextPromptTemplate(name="test", include_role=True)
             context = PromptContext(
-                role="code reviewer",
-                goal="review code quality",
-                input_payload="def hello(): pass"
+                role="code reviewer", goal="review code quality", input_payload="def hello(): pass"
             )
 
             # When
@@ -664,6 +666,7 @@ except ImportError:
 # ============================================================================
 # Integration Test
 # ============================================================================
+
 
 class TestUtilModulesIntegration:
     """Integration tests verifying modules work together."""

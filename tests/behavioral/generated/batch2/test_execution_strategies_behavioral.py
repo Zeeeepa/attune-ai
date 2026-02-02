@@ -43,7 +43,7 @@ def create_test_agent(agent_id: str, role: str, tier: str = "CAPABLE"):
         tier_preference=tier,
         tools=[],
         default_instructions=f"You are {role}",
-        quality_gates={}
+        quality_gates={},
     )
 
 
@@ -64,7 +64,7 @@ def mock_agent():
         tier_preference="CAPABLE",
         tools=[],
         default_instructions="You are a test agent",
-        quality_gates={}
+        quality_gates={},
     )
     return agent
 
@@ -81,7 +81,7 @@ def mock_agent_2():
         tier_preference="CAPABLE",
         tools=[],
         default_instructions="You are test agent 2",
-        quality_gates={}
+        quality_gates={},
     )
     return agent
 
@@ -98,7 +98,7 @@ def mock_agent_3():
         tier_preference="CAPABLE",
         tools=[],
         default_instructions="You are test agent 3",
-        quality_gates={}
+        quality_gates={},
     )
     return agent
 
@@ -115,7 +115,7 @@ def failing_agent():
         tier_preference="CHEAP",
         tools=[],
         default_instructions="You are a failing agent",
-        quality_gates={}
+        quality_gates={},
     )
     return agent
 
@@ -127,7 +127,7 @@ def context():
         "user_id": "user123",
         "request_id": "req456",
         "input": "test input data",
-        "metadata": {"source": "test"}
+        "metadata": {"source": "test"},
     }
 
 
@@ -140,7 +140,7 @@ def agent_result():
         output={"result": "test"},
         confidence=0.9,
         duration_seconds=1.5,
-        error=""
+        error="",
     )
 
 
@@ -152,7 +152,7 @@ def strategy_result(agent_result):
         outputs=[agent_result],
         aggregated_output={"final": "result"},
         total_duration=2.5,
-        errors=[]
+        errors=[],
     )
 
 
@@ -184,7 +184,7 @@ class TestAgentResult:
             output=output,
             confidence=confidence,
             duration_seconds=duration,
-            error=error
+            error=error,
         )
 
         # Then
@@ -204,12 +204,7 @@ class TestAgentResult:
         error_msg = "Connection timeout"
 
         # When
-        result = AgentResult(
-            agent_id="agent2",
-            success=False,
-            output={},
-            error=error_msg
-        )
+        result = AgentResult(agent_id="agent2", success=False, output={}, error=error_msg)
 
         # Then
         assert not result.success
@@ -222,11 +217,7 @@ class TestAgentResult:
         Then it should use appropriate default values
         """
         # When
-        result = AgentResult(
-            agent_id="agent3",
-            success=True,
-            output={"data": "test"}
-        )
+        result = AgentResult(agent_id="agent3", success=True, output={"data": "test"})
 
         # Then
         assert result.confidence == 0.0
@@ -253,10 +244,7 @@ class TestStrategyResult:
 
         # When
         result = StrategyResult(
-            success=True,
-            outputs=outputs,
-            aggregated_output=aggregated,
-            total_duration=3.5
+            success=True, outputs=outputs, aggregated_output=aggregated, total_duration=3.5
         )
 
         # Then
@@ -276,10 +264,7 @@ class TestStrategyResult:
 
         # When
         result = StrategyResult(
-            success=False,
-            outputs=[agent_result],
-            aggregated_output={},
-            errors=errors
+            success=False, outputs=[agent_result], aggregated_output={}, errors=errors
         )
 
         # Then
@@ -292,12 +277,7 @@ class TestStrategyResult:
         Then it should initialize errors as empty list
         """
         # When
-        result = StrategyResult(
-            success=True,
-            outputs=[],
-            aggregated_output={},
-            errors=None
-        )
+        result = StrategyResult(success=True, outputs=[], aggregated_output={}, errors=None)
 
         # Then
         assert result.errors == []
@@ -318,9 +298,9 @@ class TestConditionType:
         Then it should contain expected types
         """
         # Then
-        assert hasattr(ConditionType, 'JSON_PREDICATE')
-        assert hasattr(ConditionType, 'NATURAL_LANGUAGE')
-        assert hasattr(ConditionType, 'COMPOSITE')
+        assert hasattr(ConditionType, "JSON_PREDICATE")
+        assert hasattr(ConditionType, "NATURAL_LANGUAGE")
+        assert hasattr(ConditionType, "COMPOSITE")
 
 
 class TestCondition:
@@ -335,10 +315,7 @@ class TestCondition:
         predicate = {"confidence": {"$gt": 0.8}}
 
         # When
-        condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate=predicate
-        )
+        condition = Condition(condition_type=ConditionType.JSON_PREDICATE, predicate=predicate)
 
         # Then
         assert condition.condition_type == ConditionType.JSON_PREDICATE
@@ -353,8 +330,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"confidence": {"$gt": 0.7}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"confidence": {"$gt": 0.7}}
         )
         context = {"confidence": 0.85}
         evaluator = ConditionEvaluator()
@@ -374,8 +350,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"confidence": {"$lt": 0.5}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"confidence": {"$lt": 0.5}}
         )
         context = {"confidence": 0.85}
         evaluator = ConditionEvaluator()
@@ -395,8 +370,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"status": {"$eq": "active"}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"status": {"$eq": "active"}}
         )
         context = {"status": "active"}
         evaluator = ConditionEvaluator()
@@ -416,8 +390,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"score": {"$gte": 90}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"score": {"$gte": 90}}
         )
         context = {"score": 90}
         evaluator = ConditionEvaluator()
@@ -437,8 +410,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"count": {"$lte": 10}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"count": {"$lte": 10}}
         )
         context = {"count": 5}
         evaluator = ConditionEvaluator()
@@ -458,8 +430,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"status": {"$ne": "failed"}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"status": {"$ne": "failed"}}
         )
         context = {"status": "success"}
         evaluator = ConditionEvaluator()
@@ -479,8 +450,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"missing_field": {"$gt": 0}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"missing_field": {"$gt": 0}}
         )
         context = {"other_field": 100}
         evaluator = ConditionEvaluator()
@@ -503,8 +473,7 @@ class TestCondition:
         # Given/When/Then - Should raise ValueError during __post_init__
         with pytest.raises(ValueError, match="Invalid operator"):
             Condition(
-                condition_type=ConditionType.JSON_PREDICATE,
-                predicate={"field": {"$invalid": 10}}
+                condition_type=ConditionType.JSON_PREDICATE, predicate={"field": {"$invalid": 10}}
             )
 
     def test_condition_evaluate_natural_language_unsupported(self):
@@ -516,8 +485,7 @@ class TestCondition:
         from attune.orchestration.execution_strategies import ConditionEvaluator
 
         condition = Condition(
-            condition_type=ConditionType.NATURAL_LANGUAGE,
-            predicate="confidence is high"
+            condition_type=ConditionType.NATURAL_LANGUAGE, predicate="confidence is high"
         )
         context = {"confidence": 0.9}
         evaluator = ConditionEvaluator()
@@ -587,7 +555,9 @@ class TestSequentialStrategy:
         assert result.outputs[0].agent_id == "test_agent_1"
         assert result.outputs[1].agent_id == "failing_agent"
 
-    async def test_sequential_passes_context_between_agents(self, mock_agent, mock_agent_2, context):
+    async def test_sequential_passes_context_between_agents(
+        self, mock_agent, mock_agent_2, context
+    ):
         """Given sequential agents
         When executing
         Then each agent should execute in sequence
@@ -615,7 +585,9 @@ class TestSequentialStrategy:
 class TestParallelStrategy:
     """Behavioral tests for ParallelStrategy (Pattern 2: A || B || C)."""
 
-    async def test_parallel_execution_success(self, mock_agent, mock_agent_2, mock_agent_3, context):
+    async def test_parallel_execution_success(
+        self, mock_agent, mock_agent_2, mock_agent_3, context
+    ):
         """Given multiple agents
         When executing in parallel
         Then all agents should execute concurrently
@@ -646,7 +618,9 @@ class TestParallelStrategy:
         with pytest.raises(ValueError, match="agents list cannot be empty"):
             await strategy.execute(agents, context)
 
-    async def test_parallel_execution_partial_failure(self, mock_agent, failing_agent, mock_agent_2, context):
+    async def test_parallel_execution_partial_failure(
+        self, mock_agent, failing_agent, mock_agent_2, context
+    ):
         """Given agents where some fail
         When executing in parallel
         Then it should continue and report all results
@@ -798,7 +772,9 @@ class TestTeachingStrategy:
 class TestRefinementStrategy:
     """Behavioral tests for RefinementStrategy (Pattern 5: Draft → Review → Polish)."""
 
-    async def test_refinement_execution_success(self, mock_agent, mock_agent_2, mock_agent_3, context):
+    async def test_refinement_execution_success(
+        self, mock_agent, mock_agent_2, mock_agent_3, context
+    ):
         """Given draft, review, and polish agents
         When executing refinement strategy
         Then output should be progressively refined
@@ -904,8 +880,7 @@ class TestConditionalStrategy:
         """
         # Given
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"confidence": {"$gt": 0.5}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"confidence": {"$gt": 0.5}}
         )
         context["confidence"] = 0.8
 
@@ -913,9 +888,7 @@ class TestConditionalStrategy:
         else_branch = Branch(agents=[mock_agent_2], strategy="sequential")
 
         strategy = ConditionalStrategy(
-            condition=condition,
-            then_branch=then_branch,
-            else_branch=else_branch
+            condition=condition, then_branch=then_branch, else_branch=else_branch
         )
 
         # When
@@ -933,8 +906,7 @@ class TestConditionalStrategy:
         """
         # Given
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"confidence": {"$gt": 0.9}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"confidence": {"$gt": 0.9}}
         )
         context["confidence"] = 0.5
 
@@ -942,9 +914,7 @@ class TestConditionalStrategy:
         else_branch = Branch(agents=[mock_agent_2], strategy="sequential")
 
         strategy = ConditionalStrategy(
-            condition=condition,
-            then_branch=then_branch,
-            else_branch=else_branch
+            condition=condition, then_branch=then_branch, else_branch=else_branch
         )
 
         # When
@@ -962,17 +932,14 @@ class TestConditionalStrategy:
         """
         # Given
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"confidence": {"$gt": 0.9}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"confidence": {"$gt": 0.9}}
         )
         context["confidence"] = 0.5
 
         then_branch = Branch(agents=[mock_agent], strategy="sequential")
 
         strategy = ConditionalStrategy(
-            condition=condition,
-            then_branch=then_branch,
-            else_branch=None
+            condition=condition, then_branch=then_branch, else_branch=None
         )
 
         # When
@@ -989,8 +956,7 @@ class TestConditionalStrategy:
         """
         # Given
         condition = Condition(
-            condition_type=ConditionType.JSON_PREDICATE,
-            predicate={"level": {"$gt": 0}}
+            condition_type=ConditionType.JSON_PREDICATE, predicate={"level": {"$gt": 0}}
         )
 
         context["level"] = 2
@@ -998,9 +964,7 @@ class TestConditionalStrategy:
         then_branch = Branch(agents=[mock_agent], strategy="sequential")
 
         strategy = ConditionalStrategy(
-            condition=condition,
-            then_branch=then_branch,
-            else_branch=None
+            condition=condition, then_branch=then_branch, else_branch=None
         )
 
         # When
@@ -1032,6 +996,7 @@ class TestExecutionStrategy:
         When trying to instantiate
         Then it should raise TypeError
         """
+
         # Given
         class IncompleteStrategy(ExecutionStrategy):
             pass
@@ -1079,11 +1044,9 @@ class TestStrategyIntegration:
 
         fast_agent = Mock()
         fast_agent.id = "fast"
-        fast_agent.execute = AsyncMock(return_value={
-            "status": "success",
-            "data": {"result": "fast"},
-            "confidence": 0.9
-        })
+        fast_agent.execute = AsyncMock(
+            return_value={"status": "success", "data": {"result": "fast"}, "confidence": 0.9}
+        )
 
         strategy = ParallelStrategy()
 
@@ -1187,11 +1150,13 @@ class TestEdgeCases:
         for i in range(50):
             agent = Mock()
             agent.id = f"agent_{i}"
-            agent.execute = AsyncMock(return_value={
-                "status": "success",
-                "data": {"result": f"output_{i}"},
-                "confidence": 0.8
-            })
+            agent.execute = AsyncMock(
+                return_value={
+                    "status": "success",
+                    "data": {"result": f"output_{i}"},
+                    "confidence": 0.8,
+                }
+            )
             agents.append(agent)
 
         strategy = ParallelStrategy()
@@ -1247,8 +1212,7 @@ class TestEdgeCases:
 
         # When
         results = await asyncio.gather(
-            strategy1.execute([mock_agent], context),
-            strategy2.execute([mock_agent], context)
+            strategy1.execute([mock_agent], context), strategy2.execute([mock_agent], context)
         )
 
         # Then

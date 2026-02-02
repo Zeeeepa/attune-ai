@@ -17,7 +17,7 @@ from attune.workflows.code_review import CodeReviewWorkflow
 # Skip tests if no API key available
 pytestmark = pytest.mark.skipif(
     not os.environ.get("ANTHROPIC_API_KEY"),
-    reason="ANTHROPIC_API_KEY required for cache integration tests"
+    reason="ANTHROPIC_API_KEY required for cache integration tests",
 )
 
 

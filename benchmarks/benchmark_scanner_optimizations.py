@@ -28,9 +28,9 @@ from attune.project_index.scanner_parallel import ParallelProjectScanner  # noqa
 def clear_all_caches():
     """Clear LRU caches for fair benchmarking."""
     # Clear scanner caches
-    if hasattr(ProjectScanner._hash_file, 'cache_clear'):
+    if hasattr(ProjectScanner._hash_file, "cache_clear"):
         ProjectScanner._hash_file.cache_clear()
-    if hasattr(ProjectScanner._parse_python_cached, 'cache_clear'):
+    if hasattr(ProjectScanner._parse_python_cached, "cache_clear"):
         ProjectScanner._parse_python_cached.cache_clear()
 
 
@@ -303,7 +303,9 @@ def print_recommendations(results: list[dict]):
     print(f"\n🏆 Best configuration: {best_result['name']}")
     print(f"   Time: {best_result['avg_time']:.4f}s")
     print(f"   Speedup: {best_speedup:.2f}x")
-    print(f"   Improvement: {((baseline_time - best_result['avg_time']) / baseline_time * 100):.1f}%")
+    print(
+        f"   Improvement: {((baseline_time - best_result['avg_time']) / baseline_time * 100):.1f}%"
+    )
 
     print("\n💡 Recommendations by use case:")
 

@@ -7,6 +7,7 @@ Tests the three new patterns:
 
 Created: 2026-01-29
 """
+
 import pytest
 
 from attune.orchestration.agent_templates import AgentTemplate

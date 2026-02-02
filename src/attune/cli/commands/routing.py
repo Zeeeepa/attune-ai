@@ -82,7 +82,9 @@ def cmd_routing_stats(args: Any) -> int:
         )
 
         print(f"  Best model: {best_model[0]}")
-        print(f"    ({best_model[1]['success_rate']:.1%} success, ${best_model[1]['avg_cost']:.4f}/call)")
+        print(
+            f"    ({best_model[1]['success_rate']:.1%} success, ${best_model[1]['avg_cost']:.4f}/call)"
+        )
 
         # Cost savings potential
         if len(stats["models_used"]) > 1:

@@ -42,7 +42,7 @@ def create_test_patterns(storage_dir: str, count: int = 100) -> None:
                 "created_by": "profiler",
                 "index": i,
                 "tags": [f"tag_{j}" for j in range(10)],
-            }
+            },
         }
         pattern_file = patterns_dir / f"pattern_{i:04d}.json"
         with pattern_file.open("w") as f:
@@ -71,11 +71,7 @@ def profile_stash_retrieve(memory):
     """Profile short-term memory stash and retrieve operations."""
     # Stash 100 items
     for i in range(100):
-        data = {
-            "key": f"item_{i}",
-            "value": "x" * 1000,  # 1KB per item
-            "metadata": {"index": i}
-        }
+        data = {"key": f"item_{i}", "value": "x" * 1000, "metadata": {"index": i}}  # 1KB per item
         memory.stash(f"test_key_{i}", data)
 
     # Retrieve 100 items
@@ -123,11 +119,7 @@ def profile_search_patterns(memory):
     results.append(("by_query", len(r2)))
 
     # Search 3: Combined filters
-    r3 = memory.search_patterns(
-        query="pattern",
-        pattern_type="algorithm",
-        limit=100
-    )
+    r3 = memory.search_patterns(query="pattern", pattern_type="algorithm", limit=100)
     results.append(("combined", len(r3)))
 
     return results

@@ -18,11 +18,7 @@ def main():
     print("=" * 80)
 
     # Initialize generator with LLM support
-    generator = RealTestGenerator(
-        project_root=".",
-        output_dir="tests/llm_generated",
-        use_llm=True
-    )
+    generator = RealTestGenerator(project_root=".", output_dir="tests/llm_generated", use_llm=True)
 
     # Generate tests for cli.py
     source_file = "src/attune/cli.py"
@@ -45,8 +41,10 @@ def main():
     except Exception as e:
         print(f"\n❌ FAILED: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

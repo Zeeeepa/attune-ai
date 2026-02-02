@@ -7,7 +7,6 @@ Licensed under Fair Source License 0.9
 """
 
 
-
 def generate_test_for_function(module: str, func: dict) -> str:
     """Generate executable tests for a function based on AST analysis."""
     name = func["name"]
@@ -215,9 +214,7 @@ def generate_test_cases_for_params(params: list) -> dict:
     return {
         "valid_args": valid_args,
         "parametrize_cases": parametrize_cases[:5],  # Limit cases
-        "edge_cases": list(dict.fromkeys(edge_cases))[
-            :5
-        ],  # Unique edge cases (preserves order)
+        "edge_cases": list(dict.fromkeys(edge_cases))[:5],  # Unique edge cases (preserves order)
     }
 
 

@@ -291,7 +291,7 @@ class TestRetrieve:
         payload = {
             "data": stored_data,
             "agent_id": "reader_agent",
-            "stashed_at": datetime.now().isoformat()
+            "stashed_at": datetime.now().isoformat(),
         }
         mock_redis_client.get.return_value = json.dumps(payload)
 
@@ -507,9 +507,7 @@ class TestBatchOperations:
 class TestPagination:
     """Test suite for pagination operations."""
 
-    def test_given_keys_when_scan_keys_then_returns_page(
-        self, memory_instance, mock_redis_client
-    ):
+    def test_given_keys_when_scan_keys_then_returns_page(self, memory_instance, mock_redis_client):
         """Given keys, when scanning paginated, then returns correct page."""
         # Given
         pattern = "test:*"
@@ -551,9 +549,7 @@ class TestPagination:
         memory_instance.scan_keys(pattern, count=page_size)
 
         # Then
-        mock_redis_client.scan.assert_called_once_with(
-            cursor=0, match=pattern, count=page_size
-        )
+        mock_redis_client.scan.assert_called_once_with(cursor=0, match=pattern, count=page_size)
 
 
 # ============================================================================
@@ -709,7 +705,9 @@ class TestTimeWindow:
         mock_redis_client.zadd.return_value = 1
 
         # When
-        result = memory_instance.timeline_add(timeline_name, event_id, data, contributor_credentials)
+        result = memory_instance.timeline_add(
+            timeline_name, event_id, data, contributor_credentials
+        )
 
         # Then
         assert result is True
@@ -779,7 +777,11 @@ class TestTaskQueue:
         """Given queue, when popping, then removes and returns task."""
         # Given
         queue_name = "tasks_pending"
-        task_data = {"task": {"task_id": "123", "action": "process"}, "queued_by": "agent", "queued_at": "2024-01-01T00:00:00"}
+        task_data = {
+            "task": {"task_id": "123", "action": "process"},
+            "queued_by": "agent",
+            "queued_at": "2024-01-01T00:00:00",
+        }
         mock_redis_client.lpop.return_value = json.dumps(task_data)
 
         # When
@@ -836,7 +838,7 @@ class TestPatternStaging:
             agent_id="contributor_agent",
             pattern_type="code_review",
             name="test_pattern",
-            description="Test pattern"
+            description="Test pattern",
         )
         mock_redis_client.setex.return_value = True
 
@@ -862,7 +864,7 @@ class TestPatternStaging:
             "context": {},
             "confidence": 0.5,
             "staged_at": datetime.now().isoformat(),
-            "interests": []
+            "interests": [],
         }
         mock_redis_client.get.return_value = json.dumps(pattern_dict)
 
@@ -889,7 +891,7 @@ class TestPatternStaging:
             "context": {},
             "confidence": 0.5,
             "staged_at": datetime.now().isoformat(),
-            "interests": []
+            "interests": [],
         }
         mock_redis_client.get.return_value = json.dumps(pattern_dict)
         mock_redis_client.delete.return_value = 1
@@ -966,7 +968,7 @@ class TestConflictContext:
             "batna": None,
             "created_at": datetime.now().isoformat(),
             "resolved": False,
-            "resolution": None
+            "resolution": None,
         }
         mock_redis_client.get.return_value = json.dumps(context_dict)
 
@@ -1011,7 +1013,7 @@ class TestAgentWorkingMemory:
         payload = {
             "data": state,
             "agent_id": "reader_agent",
-            "stashed_at": datetime.now().isoformat()
+            "stashed_at": datetime.now().isoformat(),
         }
         mock_redis_client.get.return_value = json.dumps(payload)
 
@@ -1044,9 +1046,7 @@ class TestAgentWorkingMemory:
 class TestMetrics:
     """Test suite for metrics operations."""
 
-    def test_given_operations_when_get_metrics_then_returns_metrics(
-        self, memory_instance
-    ):
+    def test_given_operations_when_get_metrics_then_returns_metrics(self, memory_instance):
         """Given operations, when getting metrics, then returns metrics."""
         # Given
         memory_instance._metrics.operations_total = 100
@@ -1058,9 +1058,7 @@ class TestMetrics:
         assert isinstance(result, dict)
         assert result["operations_total"] == 100
 
-    def test_given_metrics_when_reset_metrics_then_clears_metrics(
-        self, memory_instance
-    ):
+    def test_given_metrics_when_reset_metrics_then_clears_metrics(self, memory_instance):
         """Given metrics, when resetting, then clears metrics."""
         # Given
         memory_instance._metrics.operations_total = 100
@@ -1096,7 +1094,7 @@ class TestTransactions:
             "context": {},
             "confidence": 0.8,
             "staged_at": datetime.now().isoformat(),
-            "interests": []
+            "interests": [],
         }
         mock_redis_client.get.return_value = json.dumps(pattern_dict)
         mock_pipeline = MagicMock()
@@ -1128,7 +1126,7 @@ class TestTransactions:
             "context": {},
             "confidence": 0.3,
             "staged_at": datetime.now().isoformat(),
-            "interests": []
+            "interests": [],
         }
         mock_redis_client.get.return_value = json.dumps(pattern_dict)
 
@@ -1150,9 +1148,7 @@ class TestTransactions:
 class TestConnectionRetry:
     """Test suite for connection retry logic."""
 
-    def test_given_connection_timeout_when_retry_then_reconnects(
-        self, redis_config
-    ):
+    def test_given_connection_timeout_when_retry_then_reconnects(self, redis_config):
         """Given connection timeout, when retrying, then reconnects."""
         # Given
         mock_redis_client = MagicMock()

@@ -324,9 +324,7 @@ class TestCreateNotificationCallback:
 
     @patch("attune.hot_reload.websocket.get_notification_manager")
     @patch("attune.hot_reload.websocket.asyncio.get_event_loop")
-    def test_callback_broadcasts_message_with_running_loop(
-        self, mock_get_loop, mock_get_manager
-    ):
+    def test_callback_broadcasts_message_with_running_loop(self, mock_get_loop, mock_get_manager):
         """Test that callback broadcasts when event loop is running."""
         # Setup mocks
         mock_manager = MagicMock()

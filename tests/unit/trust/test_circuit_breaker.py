@@ -600,9 +600,7 @@ class TestManualControls:
         """Test reset returns to full autonomy."""
         breaker = TrustCircuitBreaker(user_id="user123")
         breaker._state = TrustState.REDUCED_AUTONOMY
-        breaker._damage_events.append(
-            TrustDamageEvent(event_type=TrustDamageType.WRONG_ANSWER)
-        )
+        breaker._damage_events.append(TrustDamageEvent(event_type=TrustDamageType.WRONG_ANSWER))
 
         breaker.reset()
 

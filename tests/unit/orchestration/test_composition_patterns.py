@@ -125,9 +125,7 @@ class TestParallelComposition:
         assert result.total_duration <= max_individual * 1.5
 
     @pytest.mark.asyncio
-    async def test_parallel_result_aggregation(
-        self, mock_agents, test_context, mock_execute_agent
-    ):
+    async def test_parallel_result_aggregation(self, mock_agents, test_context, mock_execute_agent):
         """Test that results from all agents are properly aggregated."""
         strategy = ParallelStrategy()
         strategy._execute_agent = mock_execute_agent
@@ -618,9 +616,7 @@ class TestDebateComposition:
         assert len(opinions) == len(mock_agents[:3])
 
     @pytest.mark.asyncio
-    async def test_debate_consensus_building(
-        self, mock_agents, test_context, mock_execute_agent
-    ):
+    async def test_debate_consensus_building(self, mock_agents, test_context, mock_execute_agent):
         """Test that consensus is built from multiple viewpoints."""
         strategy = DebateStrategy()
         strategy._execute_agent = mock_execute_agent
@@ -660,9 +656,7 @@ class TestDebateComposition:
         )
 
     @pytest.mark.asyncio
-    async def test_debate_voting_mechanism(
-        self, mock_agents, test_context, mock_execute_agent
-    ):
+    async def test_debate_voting_mechanism(self, mock_agents, test_context, mock_execute_agent):
         """Test voting mechanism for consensus."""
         strategy = DebateStrategy()
         strategy._execute_agent = mock_execute_agent
@@ -742,9 +736,7 @@ class TestVotingComposition:
             assert opinion is not None
 
     @pytest.mark.asyncio
-    async def test_voting_vote_aggregation(
-        self, mock_agents, test_context, mock_execute_agent
-    ):
+    async def test_voting_vote_aggregation(self, mock_agents, test_context, mock_execute_agent):
         """Test aggregation of votes from all agents."""
         strategy = DebateStrategy()
         strategy._execute_agent = mock_execute_agent
@@ -782,9 +774,7 @@ class TestVotingComposition:
         assert consensus["consensus_reached"] == consensus_reached
 
     @pytest.mark.asyncio
-    async def test_voting_tie_breaking(
-        self, mock_agents, test_context, mock_execute_agent
-    ):
+    async def test_voting_tie_breaking(self, mock_agents, test_context, mock_execute_agent):
         """Test tie-breaking mechanism in voting."""
         strategy = DebateStrategy()
         strategy._execute_agent = mock_execute_agent
@@ -806,9 +796,7 @@ class TestVotingComposition:
             assert consensus["consensus_reached"]
 
     @pytest.mark.asyncio
-    async def test_voting_confidence_weighting(
-        self, mock_agents, test_context, mock_execute_agent
-    ):
+    async def test_voting_confidence_weighting(self, mock_agents, test_context, mock_execute_agent):
         """Test confidence weighting in voting."""
         strategy = DebateStrategy()
         strategy._execute_agent = mock_execute_agent
@@ -875,9 +863,7 @@ class TestCompositionPatternInvariants:
             assert hasattr(result, "errors")
 
     @pytest.mark.asyncio
-    async def test_all_patterns_track_duration(
-        self, mock_agents, test_context, mock_execute_agent
-    ):
+    async def test_all_patterns_track_duration(self, mock_agents, test_context, mock_execute_agent):
         """Test that all patterns track execution duration."""
         strategies = [
             (ParallelStrategy(), mock_agents[:3]),

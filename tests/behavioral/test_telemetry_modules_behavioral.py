@@ -34,10 +34,7 @@ class TestEventStreaming:
         }
 
         # Should not crash even without Redis backend
-        event_id = streamer.publish_event(
-            event_type="workflow_started",
-            data=event_data
-        )
+        event_id = streamer.publish_event(event_type="workflow_started", data=event_data)
 
         # Without Redis backend, returns empty string
         assert isinstance(event_id, str)
@@ -74,10 +71,7 @@ class TestEventStreaming:
         streamer = EventStreamer()
 
         # Publish event (will be no-op without Redis)
-        event_id = streamer.publish_event(
-            event_type="test_event",
-            data={"data": "test"}
-        )
+        event_id = streamer.publish_event(event_type="test_event", data={"data": "test"})
 
         # Should handle gracefully
         assert isinstance(event_id, str)

@@ -16,9 +16,11 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from attune.orchestration.real_tools import (RealCoverageAnalyzer,
-                                                 RealTestGenerator,
-                                                 RealTestValidator)
+from attune.orchestration.real_tools import (
+    RealCoverageAnalyzer,
+    RealTestGenerator,
+    RealTestValidator,
+)
 
 
 async def main():
@@ -41,9 +43,7 @@ async def main():
         print()
 
         # Show top 5 lowest coverage files
-        sorted_files = sorted(
-            report.uncovered_files, key=lambda x: x["coverage"]
-        )[:5]
+        sorted_files = sorted(report.uncovered_files, key=lambda x: x["coverage"])[:5]
         print("  Top 5 Files Needing Coverage:")
         for file in sorted_files:
             print(f"    • {file['path']}: {file['coverage']:.1f}%")
@@ -57,9 +57,7 @@ async def main():
     print("🔨 Step 2: Generating tests for lowest coverage file...")
     print("-" * 60)
 
-    generator = RealTestGenerator(
-        project_root=".", output_dir="tests/generated_experimental"
-    )
+    generator = RealTestGenerator(project_root=".", output_dir="tests/generated_experimental")
 
     try:
         # Generate tests for the file with lowest coverage

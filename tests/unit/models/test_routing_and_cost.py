@@ -92,9 +92,9 @@ class TestTaskTierMapping:
 
         for task in simple_tasks:
             tier = get_tier_for_task(task)
-            assert tier == ModelTier.CHEAP, (
-                f"Simple task {task.value} should use CHEAP tier, got {tier}"
-            )
+            assert (
+                tier == ModelTier.CHEAP
+            ), f"Simple task {task.value} should use CHEAP tier, got {tier}"
 
     def test_complex_reasoning_maps_to_premium_tier(self):
         """Complex reasoning tasks should use premium tier.
@@ -114,9 +114,9 @@ class TestTaskTierMapping:
 
         for task in complex_tasks:
             tier = get_tier_for_task(task)
-            assert tier == ModelTier.PREMIUM, (
-                f"Complex task {task.value} should use PREMIUM tier, got {tier}"
-            )
+            assert (
+                tier == ModelTier.PREMIUM
+            ), f"Complex task {task.value} should use PREMIUM tier, got {tier}"
 
     def test_code_generation_maps_to_capable_tier(self):
         """Code generation tasks should use capable tier.
@@ -138,9 +138,9 @@ class TestTaskTierMapping:
 
         for task in code_tasks:
             tier = get_tier_for_task(task)
-            assert tier == ModelTier.CAPABLE, (
-                f"Code task {task.value} should use CAPABLE tier, got {tier}"
-            )
+            assert (
+                tier == ModelTier.CAPABLE
+            ), f"Code task {task.value} should use CAPABLE tier, got {tier}"
 
     def test_task_tier_map_correctness(self):
         """TASK_TIER_MAP should have all task types correctly mapped.
@@ -149,9 +149,9 @@ class TestTaskTierMapping:
         """
         # All task types should be in the map
         for task_type in TaskType:
-            assert task_type.value in TASK_TIER_MAP, (
-                f"TaskType {task_type.value} missing from TASK_TIER_MAP"
-            )
+            assert (
+                task_type.value in TASK_TIER_MAP
+            ), f"TaskType {task_type.value} missing from TASK_TIER_MAP"
 
         # Map should only contain valid tiers
         valid_tiers = {ModelTier.CHEAP, ModelTier.CAPABLE, ModelTier.PREMIUM}
@@ -168,9 +168,9 @@ class TestTaskTierMapping:
         # Call multiple times - should always return same tier
         results = [get_tier_for_task(task) for _ in range(10)]
 
-        assert all(tier == ModelTier.CAPABLE for tier in results), (
-            "Tier selection should be deterministic"
-        )
+        assert all(
+            tier == ModelTier.CAPABLE for tier in results
+        ), "Tier selection should be deterministic"
 
     def test_context_influences_tier_selection(self):
         """Context metadata should be able to override tier selection.
@@ -224,9 +224,9 @@ class TestTaskTierMapping:
 
         for task in unknown_tasks:
             tier = get_tier_for_task(task)
-            assert tier == ModelTier.CAPABLE, (
-                f"Unknown task {task} should default to CAPABLE tier, got {tier}"
-            )
+            assert (
+                tier == ModelTier.CAPABLE
+            ), f"Unknown task {task} should default to CAPABLE tier, got {tier}"
 
 
 # ============================================================================
@@ -377,9 +377,9 @@ class TestFallbackActivation:
         # (Actually should be empty or only same-tier different providers)
         for step in chain:
             # Should not go to cheaper tiers from premium
-            assert step.tier in ["premium"], (
-                f"Premium tier should not fallback to cheaper tier {step.tier}"
-            )
+            assert step.tier in [
+                "premium"
+            ], f"Premium tier should not fallback to cheaper tier {step.tier}"
 
     def test_max_retries_respected(self):
         """Retry policy max_retries should be respected.
@@ -775,9 +775,7 @@ class TestRoutingDecisions:
 
         assert not breaker.is_available("anthropic", "capable")
 
-    @pytest.mark.skip(
-        reason="Anthropic-only architecture - no multi-provider load balancing"
-    )
+    @pytest.mark.skip(reason="Anthropic-only architecture - no multi-provider load balancing")
     def test_load_balancing_across_providers(self):
         """Fallback policy should enable load balancing (requires multiple providers).
 

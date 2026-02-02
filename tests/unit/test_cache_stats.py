@@ -468,8 +468,10 @@ class TestCacheReporterOptimizationReport:
             reasons=[],
         )
 
-        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls, \
-             patch.object(CacheAnalyzer, "analyze_cache", return_value=health_score):
+        with (
+            patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls,
+            patch.object(CacheAnalyzer, "analyze_cache", return_value=health_score),
+        ):
             mock_monitor = MagicMock()
             mock_monitor.get_underperformers.return_value = [low_stats]
             mock_monitor.get_high_performers.return_value = []
@@ -508,8 +510,10 @@ class TestCacheReporterFullReport:
 
     def test_full_report_structure(self):
         """Test full report has all sections."""
-        with patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls, \
-             patch.object(CacheAnalyzer, "analyze_all", return_value={}):
+        with (
+            patch("attune.cache_stats.CacheMonitor") as mock_monitor_cls,
+            patch.object(CacheAnalyzer, "analyze_all", return_value={}),
+        ):
             mock_monitor = MagicMock()
             mock_monitor.get_report.return_value = "Cache Report"
             mock_monitor.get_size_report.return_value = "Size Report"
@@ -614,10 +618,10 @@ class TestIntegration:
         health_levels_seen = set()
 
         test_cases = [
-            (90, 10),    # 90% hit rate
-            (70, 30),    # 70% hit rate
-            (40, 60),    # 40% hit rate
-            (10, 90),    # 10% hit rate
+            (90, 10),  # 90% hit rate
+            (70, 30),  # 70% hit rate
+            (40, 60),  # 40% hit rate
+            (10, 90),  # 10% hit rate
         ]
 
         for hits, misses in test_cases:

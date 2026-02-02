@@ -485,5 +485,3 @@ class TelemetryStore:
             results.append(record)
 
         return results
-
-

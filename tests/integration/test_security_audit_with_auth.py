@@ -174,7 +174,10 @@ async def test_security_audit_with_auth():
     checks = [
         ("✅" if files_scanned > 0 else "❌", "Files were scanned"),
         ("✅" if auth_mode_used else "❌", "Auth mode tracked"),
-        ("✅" if auth_mode_used == recommended_mode.value else "❌", "Auth mode matches recommendation"),
+        (
+            "✅" if auth_mode_used == recommended_mode.value else "❌",
+            "Auth mode matches recommendation",
+        ),
         ("✅" if assessment else "❌", "Assessment generated"),
         ("✅" if "risk_score" in assessment else "❌", "Risk score calculated"),
         ("✅" if "severity_breakdown" in assessment else "❌", "Severity breakdown included"),
@@ -189,7 +192,9 @@ async def test_security_audit_with_auth():
         print("-" * 60)
 
         print(f"   Total cost: ${result.cost_report.total_cost:.4f}")
-        print(f"   Savings: ${result.cost_report.savings:.4f} ({result.cost_report.savings_percent:.1f}%)")
+        print(
+            f"   Savings: ${result.cost_report.savings:.4f} ({result.cost_report.savings_percent:.1f}%)"
+        )
         print(f"   Stages with costs: {len(result.cost_report.by_stage)}")
 
         if result.cost_report.by_stage:

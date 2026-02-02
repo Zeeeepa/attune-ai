@@ -427,9 +427,7 @@ def ship_workflow(
     print("4. Checking git status...")
     success, output = _run_command(["git", "status", "--porcelain"])
     if success:
-        staged = sum(
-            1 for line in output.split("\n") if line.startswith(("A ", "M ", "D ", "R "))
-        )
+        staged = sum(1 for line in output.split("\n") if line.startswith(("A ", "M ", "D ", "R ")))
         unstaged = sum(1 for line in output.split("\n") if line.startswith((" M", " D", "??")))
         if staged > 0:
             print(f"   INFO - {staged} staged, {unstaged} unstaged")

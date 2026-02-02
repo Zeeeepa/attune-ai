@@ -108,7 +108,6 @@ def list_templates(
         raise typer.Exit(code=1)
 
 
-
 @meta_workflow_app.command("inspect")
 def inspect_template(
     template_id: str = typer.Argument(..., help="Template ID to inspect"),
@@ -205,7 +204,6 @@ def inspect_template(
 # =============================================================================
 # Plan Generation Commands (Claude Code Integration)
 # =============================================================================
-
 
 
 @meta_workflow_app.command("plan")
@@ -349,6 +347,3 @@ def generate_plan_cmd(
 # =============================================================================
 # Execution Commands
 # =============================================================================
-
-
-

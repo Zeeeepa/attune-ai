@@ -3,6 +3,7 @@
 Tests that the intent detector and CLI router properly recognize and route
 new v5.1.0 features: authentication strategy, agent dashboard, and batch test generation.
 """
+
 import pytest
 
 from attune.cli_router import HybridRouter

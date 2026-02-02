@@ -5,6 +5,7 @@ added to support user choice when automatic selection has low confidence.
 
 Created: 2026-01-29
 """
+
 import sys
 from unittest.mock import MagicMock, Mock, patch
 
@@ -21,7 +22,7 @@ from attune.orchestration.meta_orchestrator import (
 
 # Mock the tools module since it doesn't exist yet
 mock_tools = MagicMock()
-sys.modules['attune.tools'] = mock_tools
+sys.modules["attune.tools"] = mock_tools
 
 
 # ============================================================================
@@ -143,7 +144,9 @@ class TestConfidenceScoring:
 
         assert confidence < 0.9, "Complex task should reduce confidence"
 
-    def test_confidence_boost_anthropic_patterns(self, orchestrator, simple_requirements, test_agent):
+    def test_confidence_boost_anthropic_patterns(
+        self, orchestrator, simple_requirements, test_agent
+    ):
         """Test confidence boost for Anthropic patterns."""
         # Test tool-enhanced pattern
         confidence_tool = orchestrator._calculate_confidence(
@@ -255,9 +258,7 @@ class TestInteractiveMode:
     def test_analyze_and_compose_with_interactive_flag(self, orchestrator):
         """Test that analyze_and_compose respects interactive flag."""
         with patch.object(orchestrator, "analyze_and_compose_interactive") as mock_interactive:
-            orchestrator.analyze_and_compose(
-                task="Test task", context={}, interactive=True
-            )
+            orchestrator.analyze_and_compose(task="Test task", context={}, interactive=True)
 
             mock_interactive.assert_called_once_with("Test task", {})
 
@@ -377,18 +378,20 @@ class TestPatternDescriptions:
             assert len(description) > 0
             # All descriptions should contain meaningful content
             # (arrows, parallel markers, or descriptive text)
-            assert any([
-                "→" in description,
-                "||" in description,
-                "⇄" in description,
-                "pattern" in description.lower(),
-                "routing" in description.lower(),
-                "sequential" in description.lower(),
-                "parallel" in description.lower(),
-                "agent" in description.lower(),
-                "branching" in description.lower(),
-                "if" in description.lower()
-            ]), f"Pattern {pattern.value} has insufficient description: {description}"
+            assert any(
+                [
+                    "→" in description,
+                    "||" in description,
+                    "⇄" in description,
+                    "pattern" in description.lower(),
+                    "routing" in description.lower(),
+                    "sequential" in description.lower(),
+                    "parallel" in description.lower(),
+                    "agent" in description.lower(),
+                    "branching" in description.lower(),
+                    "if" in description.lower(),
+                ]
+            ), f"Pattern {pattern.value} has insufficient description: {description}"
 
     def test_anthropic_patterns_descriptions(self, orchestrator):
         """Test that Anthropic patterns have clear descriptions."""
@@ -400,9 +403,7 @@ class TestPatternDescriptions:
         )
         assert "cached" in cached_desc.lower() or "cache" in cached_desc.lower()
 
-        delegation_desc = orchestrator._get_pattern_description(
-            CompositionPattern.DELEGATION_CHAIN
-        )
+        delegation_desc = orchestrator._get_pattern_description(CompositionPattern.DELEGATION_CHAIN)
         assert "delegation" in delegation_desc.lower() or "hierarchical" in delegation_desc.lower()
 
 
@@ -414,9 +415,7 @@ class TestPatternDescriptions:
 class TestInteractiveIntegration:
     """Integration tests for complete interactive workflows."""
 
-    def test_full_interactive_workflow_high_confidence(
-        self, orchestrator
-    ):
+    def test_full_interactive_workflow_high_confidence(self, orchestrator):
         """Test that high confidence proceeds automatically without prompting.
 
         When confidence >= 0.8, should execute automatically without
@@ -431,9 +430,7 @@ class TestInteractiveIntegration:
         assert isinstance(plan.strategy, CompositionPattern)
         assert len(plan.agents) > 0
 
-    def test_full_interactive_workflow_low_confidence_fallback(
-        self, orchestrator
-    ):
+    def test_full_interactive_workflow_low_confidence_fallback(self, orchestrator):
         """Test that low confidence falls back gracefully when tool unavailable.
 
         When confidence < 0.8 but AskUserQuestion is not available,
@@ -450,9 +447,7 @@ class TestInteractiveIntegration:
             assert isinstance(plan.strategy, CompositionPattern)
             assert len(plan.agents) > 0
 
-    def test_interactive_with_tool_enhanced_context(
-        self, orchestrator
-    ):
+    def test_interactive_with_tool_enhanced_context(self, orchestrator):
         """Test interactive mode completes successfully with tools in context.
 
         Tool-enhanced pattern is selected when exactly 1 agent is chosen AND

@@ -128,18 +128,27 @@ def sample_file_record_no_tests():
 
 
 @pytest.fixture
-def mock_index(sample_summary, sample_file_record, sample_file_record_stale, sample_file_record_no_tests):
+def mock_index(
+    sample_summary, sample_file_record, sample_file_record_stale, sample_file_record_no_tests
+):
     """Create a mock ProjectIndex."""
     index = MagicMock()
     index.project_root = Path("/test/project")
     index._index_path = Path("/test/project/.attune/project_index.json")
     index.load.return_value = True
     index.get_summary.return_value = sample_summary
-    index.get_all_files.return_value = [sample_file_record, sample_file_record_stale, sample_file_record_no_tests]
+    index.get_all_files.return_value = [
+        sample_file_record,
+        sample_file_record_stale,
+        sample_file_record_no_tests,
+    ]
     index.get_files_needing_tests.return_value = [sample_file_record_no_tests]
     index.get_stale_files.return_value = [sample_file_record_stale]
     index.get_high_impact_files.return_value = [sample_file_record]
-    index.get_files_needing_attention.return_value = [sample_file_record_stale, sample_file_record_no_tests]
+    index.get_files_needing_attention.return_value = [
+        sample_file_record_stale,
+        sample_file_record_no_tests,
+    ]
     index.get_file.return_value = sample_file_record
     return index
 
@@ -164,7 +173,9 @@ class TestMain:
 
     def test_main_refresh_command(self, monkeypatch, tmp_path):
         """Test main with refresh command."""
-        monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "refresh"])
+        monkeypatch.setattr(
+            "sys.argv", ["project_index_cli", "--project", str(tmp_path), "refresh"]
+        )
 
         with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_index = MagicMock()
@@ -182,7 +193,9 @@ class TestMain:
 
     def test_main_summary_command(self, monkeypatch, tmp_path, sample_summary):
         """Test main with summary command."""
-        monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "summary"])
+        monkeypatch.setattr(
+            "sys.argv", ["project_index_cli", "--project", str(tmp_path), "summary"]
+        )
 
         with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_index = MagicMock()
@@ -196,10 +209,14 @@ class TestMain:
 
     def test_main_report_command(self, monkeypatch, tmp_path, sample_summary, sample_file_record):
         """Test main with report command."""
-        monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "report", "health"])
+        monkeypatch.setattr(
+            "sys.argv", ["project_index_cli", "--project", str(tmp_path), "report", "health"]
+        )
 
-        with patch("attune.project_index.cli.ProjectIndex") as mock_cls, \
-             patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
+        with (
+            patch("attune.project_index.cli.ProjectIndex") as mock_cls,
+            patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls,
+        ):
             mock_index = MagicMock()
             mock_index.load.return_value = True
             mock_index.get_summary.return_value = sample_summary
@@ -216,7 +233,9 @@ class TestMain:
 
     def test_main_query_command(self, monkeypatch, tmp_path, mock_index):
         """Test main with query command."""
-        monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "query", "needing_tests"])
+        monkeypatch.setattr(
+            "sys.argv", ["project_index_cli", "--project", str(tmp_path), "query", "needing_tests"]
+        )
 
         with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_cls.return_value = mock_index
@@ -227,7 +246,9 @@ class TestMain:
 
     def test_main_file_command(self, monkeypatch, tmp_path, mock_index):
         """Test main with file command."""
-        monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "file", "src/module.py"])
+        monkeypatch.setattr(
+            "sys.argv", ["project_index_cli", "--project", str(tmp_path), "file", "src/module.py"]
+        )
 
         with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_cls.return_value = mock_index
@@ -238,7 +259,9 @@ class TestMain:
 
     def test_main_json_flag(self, monkeypatch, tmp_path, mock_index, capsys):
         """Test main with --json flag."""
-        monkeypatch.setattr("sys.argv", ["project_index_cli", "--project", str(tmp_path), "--json", "summary"])
+        monkeypatch.setattr(
+            "sys.argv", ["project_index_cli", "--project", str(tmp_path), "--json", "summary"]
+        )
 
         with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
             mock_cls.return_value = mock_index
@@ -837,8 +860,10 @@ class TestCLIIntegration:
         report_types = ["health", "test_gap", "staleness", "coverage", "sprint"]
 
         for report_type in report_types:
-            with patch("attune.project_index.cli.ProjectIndex") as mock_cls, \
-                 patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls:
+            with (
+                patch("attune.project_index.cli.ProjectIndex") as mock_cls,
+                patch("attune.project_index.cli.ReportGenerator") as mock_gen_cls,
+            ):
                 mock_index = MagicMock()
                 mock_index.load.return_value = True
                 mock_index.get_summary.return_value = sample_summary
@@ -854,7 +879,9 @@ class TestCLIIntegration:
                 mock_gen.sprint_planning_report.return_value = {}
                 mock_gen_cls.return_value = mock_gen
 
-                monkeypatch.setattr("sys.argv", ["cli", "--project", str(tmp_path), "report", report_type])
+                monkeypatch.setattr(
+                    "sys.argv", ["cli", "--project", str(tmp_path), "report", report_type]
+                )
                 result = main()
                 assert result == 0, f"Report type {report_type} failed"
 
@@ -866,7 +893,9 @@ class TestCLIIntegration:
             with patch("attune.project_index.cli.ProjectIndex") as mock_cls:
                 mock_cls.return_value = mock_index
 
-                monkeypatch.setattr("sys.argv", ["cli", "--project", str(tmp_path), "query", query_type])
+                monkeypatch.setattr(
+                    "sys.argv", ["cli", "--project", str(tmp_path), "query", query_type]
+                )
                 result = main()
                 assert result == 0, f"Query type {query_type} failed"
 

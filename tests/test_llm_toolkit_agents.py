@@ -6,7 +6,6 @@ Created: 2026-01-20
 Coverage target: 80%+
 """
 
-
 import pytest
 
 from attune_llm.agent_factory.adapters.native import (

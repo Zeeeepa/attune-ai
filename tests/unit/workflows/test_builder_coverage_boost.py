@@ -380,18 +380,12 @@ class TestWorkflowBuilderChaining:
 
         # Order 1
         workflow1 = (
-            WorkflowBuilder(MockWorkflow)
-            .with_cache_enabled(False)
-            .with_config(mock_config)
-            .build()
+            WorkflowBuilder(MockWorkflow).with_cache_enabled(False).with_config(mock_config).build()
         )
 
         # Order 2 (reversed)
         workflow2 = (
-            WorkflowBuilder(MockWorkflow)
-            .with_config(mock_config)
-            .with_cache_enabled(False)
-            .build()
+            WorkflowBuilder(MockWorkflow).with_config(mock_config).with_cache_enabled(False).build()
         )
 
         # Both should have same configuration
@@ -416,9 +410,7 @@ class TestWorkflowBuilderFactory:
         """Test workflow_builder() result is chainable."""
         mock_config = MagicMock()
 
-        workflow = (
-            workflow_builder(MockWorkflow).with_config(mock_config).build()
-        )
+        workflow = workflow_builder(MockWorkflow).with_config(mock_config).build()
 
         assert isinstance(workflow, MockWorkflow)
         assert workflow.kwargs["config"] is mock_config

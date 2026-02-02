@@ -20,17 +20,17 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from attune.orchestration.agent_templates import (AgentTemplate,
-                                                      ResourceRequirements,
-                                                      get_template)
+from attune.orchestration.agent_templates import AgentTemplate, ResourceRequirements, get_template
 from attune.orchestration.config_store import ConfigurationStore
-from attune.orchestration.execution_strategies import (AdaptiveStrategy,
-                                                           DebateStrategy,
-                                                           ParallelStrategy,
-                                                           RefinementStrategy,
-                                                           SequentialStrategy,
-                                                           TeachingStrategy,
-                                                           get_strategy)
+from attune.orchestration.execution_strategies import (
+    AdaptiveStrategy,
+    DebateStrategy,
+    ParallelStrategy,
+    RefinementStrategy,
+    SequentialStrategy,
+    TeachingStrategy,
+    get_strategy,
+)
 from attune.orchestration.meta_orchestrator import MetaOrchestrator
 
 # =============================================================================

@@ -14,7 +14,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-
 import pytest
 
 from attune.models.validation import (

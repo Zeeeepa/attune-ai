@@ -13,6 +13,7 @@ Usage:
 Requirements:
     pip install empathy-framework[developer]
 """
+
 import asyncio
 from typing import Any
 
@@ -109,9 +110,7 @@ Identify: anti-patterns, bugs, security issues"""
 
         return {"findings": response["content"]}
 
-    async def _generate_recommendations(
-        self, analysis: dict, code: str
-    ) -> dict[str, Any]:
+    async def _generate_recommendations(self, analysis: dict, code: str) -> dict[str, Any]:
         """Stage 3: Generate strategic recommendations (premium tier)."""
         prompt = f"""Given this analysis, provide strategic recommendations:
 

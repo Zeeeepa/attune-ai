@@ -631,8 +631,6 @@ class TestGenerationWorkflow(BaseWorkflow):
         )
 
 
-
-
 def main():
     """CLI entry point for test generation workflow."""
     import asyncio

@@ -488,9 +488,7 @@ class TestCountLinesOfCode:
 
     def test_count_lines_simple_file(self):
         """Test counting lines in simple file (excludes comments and blank lines)."""
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".py", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
             f.write("# Comment\n")  # EXCLUDED (comment)
             f.write("print('hello')\n")  # COUNTED
             f.write("\n")  # EXCLUDED (blank)
@@ -507,9 +505,7 @@ class TestCountLinesOfCode:
 
     def test_count_lines_accepts_path_object(self):
         """Test that count_lines_of_code accepts Path objects."""
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".py", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
             f.write("line 1\n")
             f.write("line 2\n")
             filepath = Path(f.name)

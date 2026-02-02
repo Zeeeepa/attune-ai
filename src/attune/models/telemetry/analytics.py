@@ -590,5 +590,3 @@ class TelemetryAnalytics:
 
 # Singleton for global telemetry
 _telemetry_store: TelemetryStore | None = None
-
-

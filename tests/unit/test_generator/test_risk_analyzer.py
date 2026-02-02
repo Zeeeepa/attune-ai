@@ -227,7 +227,8 @@ class TestRiskAnalyzer:
         analyzer = RiskAnalyzer()
 
         result = analyzer.analyze(
-            workflow_id="complex_wizard", pattern_ids=["linear_flow", "phased_processing", "approval"]
+            workflow_id="complex_wizard",
+            pattern_ids=["linear_flow", "phased_processing", "approval"],
         )
 
         # Should handle multiple patterns

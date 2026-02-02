@@ -94,7 +94,6 @@ class TestCodeSection:
 class TestWorkflowPattern:
     """Test suite for WorkflowPattern Pydantic model."""
 
-
     def test_create_pattern_with_all_fields(self):
         """Test creating WorkflowPattern with all fields."""
         # When

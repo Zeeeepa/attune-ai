@@ -12,8 +12,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from attune.workflows.progressive import (EscalationConfig,
-                                              ProgressiveTestGenWorkflow, Tier)
+from attune.workflows.progressive import EscalationConfig, ProgressiveTestGenWorkflow, Tier
 
 
 def create_sample_file() -> Path:
@@ -107,7 +106,7 @@ def main():
         capable_max_attempts=6,
         max_cost=5.00,
         auto_approve_under=2.00,  # Auto-approve under $2
-        save_tier_results=True
+        save_tier_results=True,
     )
 
     print("Progressive Escalation Configuration:")
@@ -159,8 +158,9 @@ def main():
         if result.final_result.generated_items:
             print("Generated Tests (sample):")
             for item in result.final_result.generated_items[:3]:
-                print(f"  - test_{item['function_name']}() "
-                      f"(quality: {item['quality_score']:.1f})")
+                print(
+                    f"  - test_{item['function_name']}() " f"(quality: {item['quality_score']:.1f})"
+                )
 
         print()
 

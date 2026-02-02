@@ -374,9 +374,7 @@ def configure_auth_interactive(module_lines: int = 1000) -> AuthStrategy:
     # Show recommendation
     print(f"\n✓ Using {default_mode.value} mode")
     if default_mode == AuthMode.AUTO:
-        print(
-            f"   Small/medium modules (< {strategy.medium_module_threshold} LOC) → Subscription"
-        )
+        print(f"   Small/medium modules (< {strategy.medium_module_threshold} LOC) → Subscription")
         print(f"   Large modules (> {strategy.medium_module_threshold} LOC) → API")
 
     return strategy

@@ -131,9 +131,7 @@ class TestRunSilent:
     @patch("subprocess.run")
     def test_returns_success_and_output(self, mock_run):
         """Test returns success and output for successful command."""
-        mock_run.return_value = MagicMock(
-            returncode=0, stdout="output", stderr=""
-        )
+        mock_run.return_value = MagicMock(returncode=0, stdout="output", stderr="")
 
         success, output = _run_silent(["echo", "test"])
 
@@ -143,9 +141,7 @@ class TestRunSilent:
     @patch("subprocess.run")
     def test_returns_failure_for_failed_command(self, mock_run):
         """Test returns failure for failed command."""
-        mock_run.return_value = MagicMock(
-            returncode=1, stdout="", stderr="error"
-        )
+        mock_run.return_value = MagicMock(returncode=1, stdout="", stderr="error")
 
         success, output = _run_silent(["false"])
 

@@ -33,7 +33,7 @@ class TestConfigToYAML:
 
     @pytest.mark.skipif(
         condition=True,  # Skip this test - can't mock YAML_AVAILABLE after import
-        reason="Cannot reliably test PyYAML unavailability when it's installed"
+        reason="Cannot reliably test PyYAML unavailability when it's installed",
     )
     def test_to_yaml_without_pyyaml_raises(self, tmp_path, monkeypatch):
         """Test to_yaml raises ImportError if PyYAML not available."""
@@ -41,6 +41,7 @@ class TestConfigToYAML:
         # after the config module has been imported. The check happens at module
         # level and mocking it doesn't affect the already-imported function.
         import attune.config as config_module
+
         monkeypatch.setattr(config_module, "YAML_AVAILABLE", False)
 
         config = EmpathyConfig(user_id="test")
@@ -60,7 +61,7 @@ class TestConfigFromJSON:
             "user_id": "json_user",
             "target_level": 5,
             "confidence_threshold": 0.95,
-            "metrics_enabled": False
+            "metrics_enabled": False,
         }
         config_file.write_text(json.dumps(data))
 
@@ -74,11 +75,7 @@ class TestConfigFromJSON:
     def test_from_json_ignores_unknown_fields(self, tmp_path):
         """Test from_json silently ignores unknown fields."""
         config_file = tmp_path / "config.json"
-        data = {
-            "user_id": "test",
-            "unknown_field": "should_be_ignored",
-            "another_unknown": 123
-        }
+        data = {"user_id": "test", "unknown_field": "should_be_ignored", "another_unknown": 123}
         config_file.write_text(json.dumps(data))
 
         # Should not raise, should ignore unknown fields
@@ -245,15 +242,8 @@ class TestConfigMergeEdgeCases:
 
     def test_merge_preserves_all_fields(self):
         """Test merge preserves all fields from both configs."""
-        config1 = EmpathyConfig(
-            user_id="user1",
-            target_level=3,
-            confidence_threshold=0.7
-        )
-        config2 = EmpathyConfig(
-            user_id="user2",  # Override
-            trust_building_rate=0.08  # New value
-        )
+        config1 = EmpathyConfig(user_id="user1", target_level=3, confidence_threshold=0.7)
+        config2 = EmpathyConfig(user_id="user2", trust_building_rate=0.08)  # Override  # New value
 
         merged = config1.merge(config2)
 

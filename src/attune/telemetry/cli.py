@@ -599,7 +599,6 @@ def cmd_telemetry_export(args: Any) -> int:
 # ==============================================================================
 
 
-
 # ==============================================================================
 # Dashboard Commands (Extracted to Separate Module)
 # ==============================================================================
@@ -607,6 +606,7 @@ def cmd_telemetry_export(args: Any) -> int:
 # src/attune/telemetry/commands/dashboard_commands.py
 # Imported at top of file for backward compatibility.
 # ==============================================================================
+
 
 def cmd_tier1_status(args: Any) -> int:
     """Show comprehensive Tier 1 automation status.
@@ -1229,5 +1229,3 @@ def cmd_file_test_status(args: Any) -> int:
                     print(f"    - {test.get('name', 'unknown')}: {test.get('error', '')[:40]}")
 
     return 0
-
-

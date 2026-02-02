@@ -25,11 +25,25 @@ from unittest.mock import Mock, patch
 
 
 # Stub imports to prevent import errors when module is skipped
-def add_wizard_factory_commands(*args, **kwargs): pass
-def cmd_wizard_factory_analyze(*args, **kwargs): pass
-def cmd_wizard_factory_create(*args, **kwargs): pass
-def cmd_wizard_factory_generate_tests(*args, **kwargs): pass
-def cmd_wizard_factory_list_patterns(*args, **kwargs): pass
+def add_wizard_factory_commands(*args, **kwargs):
+    pass
+
+
+def cmd_wizard_factory_analyze(*args, **kwargs):
+    pass
+
+
+def cmd_wizard_factory_create(*args, **kwargs):
+    pass
+
+
+def cmd_wizard_factory_generate_tests(*args, **kwargs):
+    pass
+
+
+def cmd_wizard_factory_list_patterns(*args, **kwargs):
+    pass
+
 
 # =============================================================================
 # Fixtures

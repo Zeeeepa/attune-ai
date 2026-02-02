@@ -161,7 +161,9 @@ def verify_integration():
     from attune.workflows.autonomous_test_gen import AutonomousTestGenerator
 
     # Read the source to verify integration
-    source_file = Path(__file__).parent.parent / "src" / "attune" / "workflows" / "autonomous_test_gen.py"
+    source_file = (
+        Path(__file__).parent.parent / "src" / "attune" / "workflows" / "autonomous_test_gen.py"
+    )
     source_code = source_file.read_text()
 
     print("\n✓ Checking Phase 2 integration in _generate_module_tests...")
@@ -251,6 +253,7 @@ def main():
     except Exception as e:
         print(f"\n❌ ERROR during verification: {e}")
         import traceback
+
         traceback.print_exc()
         return 1
 

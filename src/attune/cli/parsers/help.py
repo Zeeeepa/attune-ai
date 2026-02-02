@@ -20,9 +20,7 @@ def register_parsers(subparsers):
     # cheatsheet command
     parser_cheatsheet = subparsers.add_parser("cheatsheet", help="Quick reference guide")
     parser_cheatsheet.add_argument("--category", help="Specific category to show")
-    parser_cheatsheet.add_argument(
-        "--compact", action="store_true", help="Show commands only"
-    )
+    parser_cheatsheet.add_argument("--compact", action="store_true", help="Show commands only")
     parser_cheatsheet.set_defaults(func=help_commands.cmd_cheatsheet)
 
     # onboard command

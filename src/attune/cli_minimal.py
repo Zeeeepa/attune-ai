@@ -1073,8 +1073,12 @@ Documentation: https://smartaimemory.com/framework-docs/
 
     # dashboard start
     start_parser = dashboard_sub.add_parser("start", help="Start dashboard web server")
-    start_parser.add_argument("--host", default="127.0.0.1", help="Host to bind to (default: 127.0.0.1)")
-    start_parser.add_argument("--port", type=int, default=8000, help="Port to bind to (default: 8000)")
+    start_parser.add_argument(
+        "--host", default="127.0.0.1", help="Host to bind to (default: 127.0.0.1)"
+    )
+    start_parser.add_argument(
+        "--port", type=int, default=8000, help="Port to bind to (default: 8000)"
+    )
 
     # --- Utility commands ---
     subparsers.add_parser("validate", help="Validate configuration")
@@ -1125,7 +1129,9 @@ def main(argv: list[str] | None = None) -> int:
         elif args.telemetry_command == "signals":
             return cmd_telemetry_signals(args)
         else:
-            print("Usage: attune telemetry {show|savings|export|routing-stats|routing-check|models|agents|signals}")
+            print(
+                "Usage: attune telemetry {show|savings|export|routing-stats|routing-check|models|agents|signals}"
+            )
             return 1
 
     elif args.command == "provider":

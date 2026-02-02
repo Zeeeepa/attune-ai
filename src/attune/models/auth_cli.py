@@ -123,9 +123,7 @@ def cmd_auth_status(args: Any) -> int:
                 "✅ Yes\n" if strategy.setup_completed else "❌ No (run 'empathy auth setup')\n"
             )
 
-            console.print(
-                Panel(config_text, title="Authentication Strategy", border_style="blue")
-            )
+            console.print(Panel(config_text, title="Authentication Strategy", border_style="blue"))
 
             # Module size thresholds
             threshold_table = Table(title="Module Size Thresholds", show_header=True)
@@ -353,9 +351,7 @@ def cmd_auth_recommend(args: Any) -> int:
             if cost_estimate["mode"] == "subscription":
                 print("Monetary Cost: $0.00")
                 print(f"Quota Cost: {cost_estimate['quota_cost']}")
-                print(
-                    f"Fits in 200K: {'Yes' if cost_estimate['fits_in_context'] else 'No'}"
-                )
+                print(f"Fits in 200K: {'Yes' if cost_estimate['fits_in_context'] else 'No'}")
             else:
                 print(f"Monetary Cost: ${cost_estimate['monetary_cost']:.4f}")
                 print("Quota Cost: None")
@@ -396,9 +392,7 @@ Examples:
     subparsers.add_parser("setup", help="Run interactive authentication strategy setup")
 
     # Status command
-    status_parser = subparsers.add_parser(
-        "status", help="Show current authentication strategy"
-    )
+    status_parser = subparsers.add_parser("status", help="Show current authentication strategy")
     status_parser.add_argument(
         "--json", action="store_true", help="Output as JSON instead of formatted table"
     )

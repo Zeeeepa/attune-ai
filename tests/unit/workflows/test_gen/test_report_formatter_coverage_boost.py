@@ -414,9 +414,7 @@ class TestReportFormatterWrittenFilesSection:
     def test_written_files_section(self):
         """Test display of written test files."""
         result = {"total_tests": 5, "files_covered": 2}
-        input_data = {
-            "written_files": ["tests/test_module1.py", "tests/test_module2.py"]
-        }
+        input_data = {"written_files": ["tests/test_module1.py", "tests/test_module2.py"]}
 
         report = format_test_gen_report(result, input_data)
 

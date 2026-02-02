@@ -138,9 +138,7 @@ def example_4_worker_count_tuning():
 
         files_per_sec = summary.total_files / duration if duration > 0 else 0
 
-        results.append(
-            {"workers": workers, "time": duration, "rate": files_per_sec}
-        )
+        results.append({"workers": workers, "time": duration, "rate": files_per_sec})
 
         print(f"   Time: {duration:.4f}s")
         print(f"   Rate: {files_per_sec:.0f} files/sec")

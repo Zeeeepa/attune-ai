@@ -70,12 +70,8 @@ class TestEmpathyConfigBehavior:
             config_path = Path(tmpdir) / "load_test.yaml"
 
             # Create a YAML file
-            test_data = {
-                "user_id": "loaded_user",
-                "target_level": 5,
-                "confidence_threshold": 0.9
-            }
-            with config_path.open('w') as f:
+            test_data = {"user_id": "loaded_user", "target_level": 5, "confidence_threshold": 0.9}
+            with config_path.open("w") as f:
                 yaml.safe_dump(test_data, f)
 
             # BEHAVIORAL: Actually call from_yaml
@@ -87,11 +83,7 @@ class TestEmpathyConfigBehavior:
 
     def test_config_from_dict_converts_correctly(self):
         """Test that from_dict() actually converts dictionary to config."""
-        test_dict = {
-            "user_id": "dict_user",
-            "target_level": 2,
-            "metrics_enabled": False
-        }
+        test_dict = {"user_id": "dict_user", "target_level": 2, "metrics_enabled": False}
 
         # BEHAVIORAL: Actually call from_dict
         config = EmpathyConfig.from_dict(test_dict)

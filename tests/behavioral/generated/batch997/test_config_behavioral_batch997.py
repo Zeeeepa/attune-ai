@@ -143,7 +143,7 @@ class TestEmpathyConfigInit:
         """Given default_model not in models, when initializing, then raises ValueError."""
         # Given
         # ModelConfig is only used for type hints at runtime, create compatible object
-        Model = type('Model', (), {})
+        Model = type("Model", (), {})
         model = Model()
         model.name = "model1"
         models = [model]
@@ -157,7 +157,7 @@ class TestEmpathyConfigInit:
         """Given default_model in models, when initializing, then succeeds."""
         # Given
         # ModelConfig is only used for type hints at runtime, create compatible object
-        Model = type('Model', (), {})
+        Model = type("Model", (), {})
         model = Model()
         model.name = "model1"
         models = [model]
@@ -291,11 +291,13 @@ class TestEmpathyConfigFromJson:
     def test_loads_config_from_json_file(self):
         """Given valid JSON file, when loading, then returns config."""
         # Given
-        json_content = json.dumps({
-            "user_id": "json_user",
-            "target_level": 2,
-            "confidence_threshold": 0.6,
-        })
+        json_content = json.dumps(
+            {
+                "user_id": "json_user",
+                "target_level": 2,
+                "confidence_threshold": 0.6,
+            }
+        )
         m = mock_open(read_data=json_content)
 
         # When
@@ -310,11 +312,13 @@ class TestEmpathyConfigFromJson:
     def test_ignores_unknown_fields_in_json(self):
         """Given JSON with unknown fields, when loading, then ignores them."""
         # Given
-        json_content = json.dumps({
-            "user_id": "test",
-            "extra_field": "ignored",
-            "workflows": {"key": "value"},
-        })
+        json_content = json.dumps(
+            {
+                "user_id": "test",
+                "extra_field": "ignored",
+                "workflows": {"key": "value"},
+            }
+        )
         m = mock_open(read_data=json_content)
 
         # When
@@ -432,6 +436,7 @@ class TestEmpathyConfigFromFile:
 
         # When
         import os
+
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)
@@ -452,6 +457,7 @@ class TestEmpathyConfigFromFile:
 
         # When
         import os
+
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)
@@ -503,6 +509,7 @@ class TestEmpathyConfigToYaml:
         # Then
         assert output_file.exists()
         import yaml
+
         with open(output_file) as f:
             data = yaml.safe_load(f)
         assert data["user_id"] == "save_user"
@@ -544,6 +551,7 @@ class TestEmpathyConfigToJson:
         # Then
         assert output_file.exists()
         import json
+
         with open(output_file) as f:
             data = json.load(f)
         assert data["user_id"] == "json_save"
@@ -919,6 +927,7 @@ class TestLoadConfig:
 
         # When
         import os
+
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)

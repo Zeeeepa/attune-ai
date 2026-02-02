@@ -3,6 +3,7 @@
 Tests that auth strategy properly integrates with release preparation workflow,
 tracking auth mode and providing intelligent routing recommendations.
 """
+
 import pytest
 
 from attune.models import AuthMode, AuthStrategy, SubscriptionTier
@@ -39,7 +40,10 @@ async def test_release_prep_with_auth():
     # Step 5: Verify auth mode was tracked
     auth_mode = result.final_output.get("auth_mode_used")
     assert auth_mode is not None, "Auth mode should be tracked in output"
-    assert auth_mode in ["subscription", "api"], f"Auth mode should be subscription or api, got: {auth_mode}"
+    assert auth_mode in [
+        "subscription",
+        "api",
+    ], f"Auth mode should be subscription or api, got: {auth_mode}"
 
     # Step 6: For large codebase, should recommend API mode
     # src/attune has ~100K LOC, which exceeds medium threshold (2000)

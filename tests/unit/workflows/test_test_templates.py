@@ -3,7 +3,6 @@
 Tests template generation for functions and classes.
 """
 
-
 from attune.workflows.test_gen.test_templates import (
     generate_test_cases_for_params,
     generate_test_for_class,
@@ -365,8 +364,18 @@ class TestGenerateTestForClass:
             "name": "Calculator",
             "init_params": [("initial_value", "int", 0)],
             "methods": [
-                {"name": "add", "params": [("self",), ("value", "int", None)], "is_async": False, "raises": []},
-                {"name": "subtract", "params": [("self",), ("value", "int", None)], "is_async": False, "raises": []},
+                {
+                    "name": "add",
+                    "params": [("self",), ("value", "int", None)],
+                    "is_async": False,
+                    "raises": [],
+                },
+                {
+                    "name": "subtract",
+                    "params": [("self",), ("value", "int", None)],
+                    "is_async": False,
+                    "raises": [],
+                },
             ],
             "required_init_params": 0,
             "docstring": "A simple calculator.",

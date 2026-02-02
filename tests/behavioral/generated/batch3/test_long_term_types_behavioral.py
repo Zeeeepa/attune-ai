@@ -6,7 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-
 import pytest
 
 from attune.memory.long_term_types import (
@@ -747,7 +746,9 @@ class TestPermissionError:
 class TestIntegration:
     """Integration tests combining multiple types."""
 
-    def test_given_classification_when_creating_full_pattern_workflow_then_all_components_work(self):
+    def test_given_classification_when_creating_full_pattern_workflow_then_all_components_work(
+        self,
+    ):
         """
         Given: Classification level
         When: Creating a complete pattern with rules and metadata
@@ -828,6 +829,7 @@ class TestIntegration:
         When: Attempting to access sensitive pattern
         Then: Raises PermissionError
         """
+
         # Given
         def validate_access(user_role: str, required_level: str):
             if user_role != required_level:
@@ -848,6 +850,7 @@ class TestIntegration:
         When: Validating security requirements
         Then: Raises SecurityError
         """
+
         # Given
         def validate_security(metadata: PatternMetadata, rules: ClassificationRules):
             if rules.encryption_required and not metadata.encrypted:

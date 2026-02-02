@@ -1612,9 +1612,7 @@ class ToolEnhancedStrategy(ExecutionStrategy):
         """
         self.tools = tools or []
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute single agent with tool access.
 
         Args:
@@ -1716,9 +1714,7 @@ class PromptCachedSequentialStrategy(ExecutionStrategy):
         self.cached_context = cached_context
         self.cache_ttl = cache_ttl
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute agents sequentially with shared cache.
 
         Args:
@@ -1825,9 +1821,7 @@ class DelegationChainStrategy(ExecutionStrategy):
         """
         self.max_depth = min(max_depth, self.MAX_DEPTH)
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute delegation chain with depth tracking.
 
         Args:
@@ -1844,7 +1838,9 @@ class DelegationChainStrategy(ExecutionStrategy):
                 success=False,
                 outputs=[],
                 aggregated_output={},
-                errors=[f"Max delegation depth ({self.max_depth}) exceeded at depth {current_depth}"],
+                errors=[
+                    f"Max delegation depth ({self.max_depth}) exceeded at depth {current_depth}"
+                ],
             )
 
         if not agents:
@@ -1922,9 +1918,7 @@ class DelegationChainStrategy(ExecutionStrategy):
 
         client = LLMClient()
 
-        specialist_descriptions = "\n".join(
-            [f"- {s.agent_id}: {s.role}" for s in specialists]
-        )
+        specialist_descriptions = "\n".join([f"- {s.agent_id}: {s.role}" for s in specialists])
 
         prompt = f"""Break down this task and assign to specialists:
 
@@ -1952,7 +1946,14 @@ Return JSON:
             return json.loads(response.get("content", "{}"))
         except json.JSONDecodeError:
             logger.warning("Failed to parse delegation plan, using fallback")
-            return {"sub_tasks": [{"specialist_id": specialists[0].agent_id if specialists else "unknown", "task": task}]}
+            return {
+                "sub_tasks": [
+                    {
+                        "specialist_id": specialists[0].agent_id if specialists else "unknown",
+                        "task": task,
+                    }
+                ]
+            }
 
     async def _execute_specialist(
         self, specialist: AgentTemplate, context: dict[str, Any]

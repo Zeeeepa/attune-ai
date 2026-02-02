@@ -16,7 +16,7 @@ import redis
 def generate_test_data():
     """Generate test data directly in Redis."""
     # Connect to Redis
-    r = redis.Redis(host='localhost', port=6379, decode_responses=False)
+    r = redis.Redis(host="localhost", port=6379, decode_responses=False)
 
     print("=" * 60)
     print("POPULATING REDIS DIRECTLY (NO API)")
@@ -58,8 +58,8 @@ def generate_test_data():
             "timestamp": datetime.utcnow().isoformat(),
             "metadata": {
                 "demo": True,
-                "type": "workflow" if agent_name in [a[0] for a in WORKFLOW_AGENTS] else "role"
-            }
+                "type": "workflow" if agent_name in [a[0] for a in WORKFLOW_AGENTS] else "role",
+            },
         }
 
         key = f"heartbeat:{agent_id}".encode()
@@ -92,7 +92,7 @@ def generate_test_data():
             "target_agent": target,
             "timestamp": datetime.utcnow().isoformat(),
             "ttl_seconds": 300,
-            "payload": {"message": message, "demo": True}
+            "payload": {"message": message, "demo": True},
         }
 
         # Key format matches CoordinationSignals API: empathy:signal:{target}:{type}:{id}
@@ -101,8 +101,8 @@ def generate_test_data():
         r.setex(key, 300, value)  # 5 minute TTL
 
         # Show short names for readability
-        source_short = source.split('-')[0]
-        target_short = target.split('-')[0]
+        source_short = source.split("-")[0]
+        target_short = target.split("-")[0]
         print(f"  ✓ Signal: {source_short} → {target_short} ({signal_type})")
         time.sleep(0.01)  # Small delay for unique timestamps
 
@@ -113,15 +113,17 @@ def generate_test_data():
     for i in range(15):
         event_data = {
             "event_id": f"event-{int(time.time() * 1000)}-{i}",
-            "event_type": random.choice(["workflow_progress", "agent_heartbeat", "coordination_signal"]),
+            "event_type": random.choice(
+                ["workflow_progress", "agent_heartbeat", "coordination_signal"]
+            ),
             "timestamp": datetime.utcnow().isoformat(),
             "data": {
                 "workflow": random.choice(["code-review", "test-generation", "refactoring"]),
                 "stage": random.choice(["analysis", "generation", "validation"]),
                 "progress": random.random(),
-                "demo": True
+                "demo": True,
             },
-            "source": f"agent-{random.randint(1, 5)}"
+            "source": f"agent-{random.randint(1, 5)}",
         }
 
         # Add to stream
@@ -138,11 +140,13 @@ def generate_test_data():
         request_id = f"approval-{int(time.time() * 1000)}-{i}"
         approval_data = {
             "request_id": request_id,
-            "approval_type": random.choice(["deploy_to_staging", "delete_old_data", "refactor_module"]),
+            "approval_type": random.choice(
+                ["deploy_to_staging", "delete_old_data", "refactor_module"]
+            ),
             "agent_id": "demo-workflow",
             "context": {"version": "1.0.0", "demo": True},
             "timestamp": datetime.utcnow().isoformat(),
-            "timeout_seconds": 300.0
+            "timeout_seconds": 300.0,
         }
 
         key = f"approval:pending:{request_id}".encode()
@@ -186,7 +190,7 @@ def generate_test_data():
                         "tier": tier,
                         "quality_score": quality,
                         "timestamp": datetime.utcnow().isoformat(),
-                        "metadata": {"demo": True, "tokens": random.randint(50, 300)}
+                        "metadata": {"demo": True, "tokens": random.randint(50, 300)},
                     }
 
                     key = f"feedback:{workflow}:{stage}:{tier}:{feedback_id}".encode()

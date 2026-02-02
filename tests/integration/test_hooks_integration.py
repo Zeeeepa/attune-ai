@@ -246,6 +246,7 @@ class TestHookEventTypes:
             def handler(**kwargs):
                 executed.append(evt.value)
                 return {"success": True}
+
             return handler
 
         registry.register(

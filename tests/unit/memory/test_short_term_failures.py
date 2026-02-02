@@ -433,9 +433,9 @@ class TestConcurrentWriteThreadSafety:
 
         # Verify data consistency - all reads should return correct values
         for thread_id, key_index, result in read_results:
-            assert result == {"value": key_index}, (
-                f"Thread {thread_id} got incorrect data for key {key_index}"
-            )
+            assert result == {
+                "value": key_index
+            }, f"Thread {thread_id} got incorrect data for key {key_index}"
 
     def test_concurrent_stash_and_retrieve_mixed_operations(self):
         """Test mixed concurrent reads and writes don't cause race conditions.

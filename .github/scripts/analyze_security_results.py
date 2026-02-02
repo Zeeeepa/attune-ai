@@ -35,6 +35,7 @@ def parse_security_results(results_file: Path) -> dict:
             # Output might be mixed with logs, try to extract JSON
             # Look for WorkflowResult pattern
             import re
+
             json_match = re.search(r'\{[^}]*"findings":\s*\[[^\]]*\][^}]*\}', content, re.DOTALL)
             if json_match:
                 data = json.loads(json_match.group())
@@ -220,10 +221,12 @@ These should be reviewed but won't block the PR:
 """
         # Group by type
         for finding_type, count in sorted(
-            [(t, len([f for f in findings if f.get("severity") == "low"]))
-             for t, findings in categorized["by_type"].items()],
+            [
+                (t, len([f for f in findings if f.get("severity") == "low"]))
+                for t, findings in categorized["by_type"].items()
+            ],
             key=lambda x: x[1],
-            reverse=True
+            reverse=True,
         ):
             if count > 0:
                 type_name = finding_type.replace("_", " ").title()
@@ -284,7 +287,8 @@ def main():
 
         # Create error comment
         with open("pr_comment.md", "w") as f:
-            f.write(f"""## 🔒 Security Scan Results
+            f.write(
+                f"""## 🔒 Security Scan Results
 
 ⚠️ **Error:** Could not complete security scan
 
@@ -293,7 +297,8 @@ def main():
 ```
 
 Please check the workflow logs for details.
-""")
+"""
+            )
 
         if args.github_output:
             with open(args.github_output, "a") as f:

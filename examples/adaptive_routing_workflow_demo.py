@@ -66,9 +66,7 @@ class DemoWorkflow(BaseWorkflow):
             if router:
                 # Show routing stats for this workflow/stage
                 try:
-                    stats = router.get_routing_stats(
-                        workflow=self.name, stage=stage_name, days=7
-                    )
+                    stats = router.get_routing_stats(workflow=self.name, stage=stage_name, days=7)
 
                     if stats["total_calls"] > 0:
                         print(

@@ -23,15 +23,24 @@ import asyncio
 import os
 
 from attune_llm import EmpathyLLM
-from attune_llm.wizards import (AccountingWizard,
-                                         CustomerSupportWizard,
-                                         EducationWizard, FinanceWizard,
-                                         GovernmentWizard, HealthcareWizard,
-                                         HRWizard, InsuranceWizard,
-                                         LegalWizard, LogisticsWizard,
-                                         ManufacturingWizard, RealEstateWizard,
-                                         ResearchWizard, RetailWizard,
-                                         SalesWizard, TechnologyWizard)
+from attune_llm.wizards import (
+    AccountingWizard,
+    CustomerSupportWizard,
+    EducationWizard,
+    FinanceWizard,
+    GovernmentWizard,
+    HealthcareWizard,
+    HRWizard,
+    InsuranceWizard,
+    LegalWizard,
+    LogisticsWizard,
+    ManufacturingWizard,
+    RealEstateWizard,
+    ResearchWizard,
+    RetailWizard,
+    SalesWizard,
+    TechnologyWizard,
+)
 
 
 def print_section(title: str, subtitle: str = ""):

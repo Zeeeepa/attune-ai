@@ -15,8 +15,14 @@ Licensed under Fair Source 0.9
 
 from typing import Any
 
-from attune import (EmpathyOS, FeedbackLoopDetector, Level3Proactive,
-                        Pattern, PatternLibrary, TrustBuildingBehaviors)
+from attune import (
+    EmpathyOS,
+    FeedbackLoopDetector,
+    Level3Proactive,
+    Pattern,
+    PatternLibrary,
+    TrustBuildingBehaviors,
+)
 
 
 class DebuggingAssistant:

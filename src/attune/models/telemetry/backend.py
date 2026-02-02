@@ -42,7 +42,6 @@ def _parse_timestamp(timestamp_str: str) -> datetime:
     return dt
 
 
-
 class TelemetryBackend(Protocol):
     """Protocol for telemetry storage backends.
 
@@ -192,5 +191,3 @@ def _parse_timestamp(timestamp_str: str) -> datetime:
         dt = dt.replace(tzinfo=None)
 
     return dt
-
-

@@ -14,7 +14,7 @@ from attune.dashboard import run_simple_dashboard
 
 def start_server():
     """Start dashboard server."""
-    run_simple_dashboard(host='127.0.0.1', port=8888)
+    run_simple_dashboard(host="127.0.0.1", port=8888)
 
 
 def test_server():
@@ -28,8 +28,8 @@ def test_server():
 
     # Test API endpoints
     endpoints = [
-        '/api/health',
-        '/api/agents',
+        "/api/health",
+        "/api/agents",
     ]
 
     print("=" * 60)
@@ -40,7 +40,7 @@ def test_server():
     all_ok = True
     for endpoint in endpoints:
         try:
-            url = f'http://127.0.0.1:8888{endpoint}'
+            url = f"http://127.0.0.1:8888{endpoint}"
             response = urllib.request.urlopen(url, timeout=2)
             status = response.status
             data = response.read().decode()

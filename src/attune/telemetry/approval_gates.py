@@ -71,7 +71,11 @@ class ApprovalRequest:
             "approval_type": self.approval_type,
             "agent_id": self.agent_id,
             "context": self.context,
-            "timestamp": self.timestamp.isoformat() if isinstance(self.timestamp, datetime) else self.timestamp,
+            "timestamp": (
+                self.timestamp.isoformat()
+                if isinstance(self.timestamp, datetime)
+                else self.timestamp
+            ),
             "timeout_seconds": self.timeout_seconds,
             "status": self.status,
         }
@@ -116,7 +120,11 @@ class ApprovalResponse:
             "approved": self.approved,
             "responder": self.responder,
             "reason": self.reason,
-            "timestamp": self.timestamp.isoformat() if isinstance(self.timestamp, datetime) else self.timestamp,
+            "timestamp": (
+                self.timestamp.isoformat()
+                if isinstance(self.timestamp, datetime)
+                else self.timestamp
+            ),
         }
 
     @classmethod
@@ -240,13 +248,18 @@ class ApprovalGate:
             if hasattr(self.memory, "_client") and self.memory._client:
                 import json
 
-                self.memory._client.setex(request_key, int(timeout) + 60, json.dumps(request.to_dict()))
+                self.memory._client.setex(
+                    request_key, int(timeout) + 60, json.dumps(request.to_dict())
+                )
             else:
                 logger.warning("Cannot store approval request: no Redis backend available")
         except Exception as e:
             logger.error(f"Failed to store approval request: {e}")
             return ApprovalResponse(
-                request_id=request_id, approved=False, responder="system", reason=f"Storage error: {e}"
+                request_id=request_id,
+                approved=False,
+                responder="system",
+                reason=f"Storage error: {e}",
             )
 
         # Send approval_request signal (for notifications)
@@ -363,7 +376,11 @@ class ApprovalGate:
             return False
 
         response = ApprovalResponse(
-            request_id=request_id, approved=approved, responder=responder, reason=reason, timestamp=datetime.utcnow()
+            request_id=request_id,
+            approved=approved,
+            responder=responder,
+            reason=reason,
+            timestamp=datetime.utcnow(),
         )
 
         # Store approval response (for workflow to retrieve)

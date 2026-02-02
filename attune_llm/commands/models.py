@@ -153,9 +153,9 @@ class CommandConfig:
             body=data.get("body", ""),
             metadata=CommandMetadata.from_dict(data.get("metadata", {})),
             source_file=Path(data["source_file"]) if data.get("source_file") else None,
-            loaded_at=datetime.fromisoformat(data["loaded_at"])
-            if "loaded_at" in data
-            else datetime.now(),
+            loaded_at=(
+                datetime.fromisoformat(data["loaded_at"]) if "loaded_at" in data else datetime.now()
+            ),
         )
 
     def format_for_display(self) -> str:

@@ -43,15 +43,12 @@ class TestWorkflowStepConfigCreation:
         assert step.metadata == {}
 
 
-
 @pytest.mark.unit
 class TestEffectiveTier:
     """Test suite for effective_tier property."""
 
     @patch("attune.workflows.step_config.get_tier_for_task")
-    def test_effective_tier_uses_tier_hint_when_specified(
-        self, mock_get_tier_for_task
-    ):
+    def test_effective_tier_uses_tier_hint_when_specified(self, mock_get_tier_for_task):
         """Test that effective_tier uses tier_hint when specified."""
         step = WorkflowStepConfig(
             name="test",
@@ -64,9 +61,7 @@ class TestEffectiveTier:
         mock_get_tier_for_task.assert_not_called()
 
     @patch("attune.workflows.step_config.get_tier_for_task")
-    def test_effective_tier_derives_from_task_type_when_no_hint(
-        self, mock_get_tier_for_task
-    ):
+    def test_effective_tier_derives_from_task_type_when_no_hint(self, mock_get_tier_for_task):
         """Test that effective_tier derives from task_type when no tier_hint."""
         mock_tier = MagicMock()
         mock_tier.value = "capable"
@@ -222,7 +217,6 @@ class TestToDict:
         result = step.to_dict()
         assert "effective_tier" in result
         assert result["effective_tier"] == "capable"
-
 
     def test_to_dict_handles_none_policies(self):
         """Test that to_dict correctly reports missing policies."""

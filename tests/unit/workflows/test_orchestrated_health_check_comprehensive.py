@@ -209,9 +209,7 @@ class TestExecuteEdgeCases:
         """Test execute maps 'target' parameter to 'project_root' (VSCode compatibility)."""
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=".")
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             mock_results = [
                 AgentResult(
                     agent_id="security_auditor",
@@ -253,9 +251,7 @@ class TestExecuteEdgeCases:
         """Test execute passes context to agents."""
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
                 outputs=[
@@ -305,9 +301,7 @@ class TestExecuteEdgeCases:
 
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(init_path))
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
                 outputs=[
@@ -681,9 +675,7 @@ class TestCLIIntegration:
         # Change to tmp directory
         monkeypatch.chdir(tmp_path)
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
                 outputs=[
@@ -730,9 +722,7 @@ class TestCLIIntegration:
     @pytest.mark.asyncio
     async def test_main_with_custom_args(self, tmp_path, monkeypatch):
         """Test main function with custom mode and project_root."""
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             mock_strategy_result = StrategyResult(
                 success=True,
                 outputs=[
@@ -800,9 +790,7 @@ class TestRobustnessAndEdgeCases:
         """Test execute handles agent failures gracefully."""
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             # Mix of successful and failed agents
             mock_results = [
                 AgentResult(
@@ -881,9 +869,7 @@ class TestRobustnessAndEdgeCases:
         """Test execute tracks execution time accurately."""
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
 
             async def slow_execute(*args, **kwargs):
                 await asyncio.sleep(0.1)  # Simulate work

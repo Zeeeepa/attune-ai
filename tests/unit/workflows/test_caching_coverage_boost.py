@@ -227,9 +227,7 @@ class TestMaybeSetupCache:
 
     @patch("attune.cache.auto_setup_cache")
     @patch("attune.cache.create_cache")
-    def test_maybe_setup_cache_falls_back_to_hash_on_import_error(
-        self, mock_create, mock_auto
-    ):
+    def test_maybe_setup_cache_falls_back_to_hash_on_import_error(self, mock_create, mock_auto):
         """Test fallback to hash cache when hybrid dependencies missing."""
         mixin = CachingMixin()
         mixin.name = "test"
@@ -355,9 +353,7 @@ class TestTryCacheLookup:
             model="model-x",
         )
 
-        mock_cache.get.assert_called_once_with(
-            "workflow", "stage1", "sys\n\nuser", "model-x"
-        )
+        mock_cache.get.assert_called_once_with("workflow", "stage1", "sys\n\nuser", "model-x")
 
     def test_try_cache_lookup_handles_key_error(self):
         """Test cache lookup handles malformed cache data gracefully."""

@@ -139,7 +139,6 @@ def show_analytics(
 # =============================================================================
 
 
-
 @meta_workflow_app.command("list-runs")
 def list_runs(
     template_id: str | None = typer.Option(
@@ -233,7 +232,6 @@ def list_runs(
         raise typer.Exit(code=1)
 
 
-
 @meta_workflow_app.command("show")
 def show_execution(
     run_id: str = typer.Argument(..., help="Run ID to display"),
@@ -320,7 +318,6 @@ def show_execution(
 # =============================================================================
 # Maintenance Commands
 # =============================================================================
-
 
 
 @meta_workflow_app.command("cleanup")
@@ -437,6 +434,3 @@ def cleanup_executions(
 # =============================================================================
 # Memory Search Commands
 # =============================================================================
-
-
-

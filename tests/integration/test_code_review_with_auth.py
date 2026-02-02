@@ -127,7 +127,11 @@ async def test_code_review_with_auth():
     has_critical_issues = output.get("has_critical_issues", False)
 
     print("\n   Review Results:")
-    print(f"      Classification: {classification[:80]}..." if classification else "      Classification: None")
+    print(
+        f"      Classification: {classification[:80]}..."
+        if classification
+        else "      Classification: None"
+    )
     print(f"      Verdict: {verdict.upper()}")
     print(f"      Security score: {security_score}/100")
     print(f"      Critical issues: {'Yes' if has_critical_issues else 'No'}")
@@ -148,10 +152,24 @@ async def test_code_review_with_auth():
     checks = [
         ("✅" if classification else "❌", "Classification completed"),
         ("✅" if scan_results else "❌", "Security scan completed"),
-        ("✅" if verdict in ["approve", "approve_with_suggestions", "request_changes", "reject"] else "❌", "Valid verdict"),
+        (
+            (
+                "✅"
+                if verdict in ["approve", "approve_with_suggestions", "request_changes", "reject"]
+                else "❌"
+            ),
+            "Valid verdict",
+        ),
         ("✅" if security_score > 0 else "❌", "Security score calculated"),
         ("✅" if auth_mode_used else "❌", "Auth mode tracked"),
-        ("✅" if "security" in scan_results.lower() or "quality" in scan_results.lower() else "❌", "Scan includes security/quality analysis"),
+        (
+            (
+                "✅"
+                if "security" in scan_results.lower() or "quality" in scan_results.lower()
+                else "❌"
+            ),
+            "Scan includes security/quality analysis",
+        ),
     ]
 
     for icon, check in checks:

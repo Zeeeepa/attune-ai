@@ -183,8 +183,6 @@ class TestModelRegistry:
         assert premium.input_cost_per_million == 15.00
 
 
-
-
 class TestHelperFunctions:
     """Tests for registry helper functions."""
 

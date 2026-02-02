@@ -28,9 +28,14 @@ from datetime import datetime
 # Add src to path for imports
 sys.path.insert(0, "src")
 
-from attune import (AccessTier, AgentCredentials, RedisShortTermMemory,
-                        StagedPattern, check_redis_connection,
-                        get_redis_memory)
+from attune import (
+    AccessTier,
+    AgentCredentials,
+    RedisShortTermMemory,
+    StagedPattern,
+    check_redis_connection,
+    get_redis_memory,
+)
 
 
 def print_header(title: str):

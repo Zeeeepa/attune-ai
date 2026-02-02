@@ -136,7 +136,9 @@ class TestFunctionSignature:
         # Then
         assert signature.return_type is None
 
-    def test_given_empty_raises_set_when_creating_function_signature_then_no_exceptions_raised(self):
+    def test_given_empty_raises_set_when_creating_function_signature_then_no_exceptions_raised(
+        self,
+    ):
         """Given an empty set of raised exceptions.
         When creating a FunctionSignature instance.
         Then raises is an empty set.
@@ -156,7 +158,9 @@ class TestFunctionSignature:
         assert signature.raises == set()
         assert len(signature.raises) == 0
 
-    def test_given_multiple_raises_when_creating_function_signature_then_all_exceptions_stored(self):
+    def test_given_multiple_raises_when_creating_function_signature_then_all_exceptions_stored(
+        self,
+    ):
         """Given multiple exception types that can be raised.
         When creating a FunctionSignature instance.
         Then all exception types are stored in raises set.
@@ -322,8 +326,15 @@ class TestFunctionSignature:
         """
         # Given
         expected_fields = {
-            "name", "params", "return_type", "is_async", "raises",
-            "has_side_effects", "docstring", "complexity", "decorators"
+            "name",
+            "params",
+            "return_type",
+            "is_async",
+            "raises",
+            "has_side_effects",
+            "docstring",
+            "complexity",
+            "decorators",
         }
 
         # When
@@ -641,8 +652,14 @@ class TestClassSignature:
         """
         # Given
         expected_fields = {
-            "name", "methods", "init_params", "base_classes", "docstring",
-            "is_enum", "is_dataclass", "required_init_params"
+            "name",
+            "methods",
+            "init_params",
+            "base_classes",
+            "docstring",
+            "is_enum",
+            "is_dataclass",
+            "required_init_params",
         }
 
         # When
@@ -688,7 +705,9 @@ class TestClassSignature:
 class TestDataModelsIntegration:
     """Integration tests for data models working together."""
 
-    def test_given_class_with_complex_methods_when_creating_signature_then_full_structure_captured(self):
+    def test_given_class_with_complex_methods_when_creating_signature_then_full_structure_captured(
+        self,
+    ):
         """Given a class with complex method signatures.
         When creating a ClassSignature with those methods.
         Then the full structure is correctly captured.
@@ -767,7 +786,9 @@ class TestDataModelsIntegration:
         assert "BaseClass" in derived_sig.base_classes
         assert len(derived_sig.init_params) > len(base_sig.init_params)
 
-    def test_given_dataclass_signature_when_checking_attributes_then_matches_dataclass_pattern(self):
+    def test_given_dataclass_signature_when_checking_attributes_then_matches_dataclass_pattern(
+        self,
+    ):
         """Given a ClassSignature representing a dataclass.
         When checking its attributes.
         Then it matches expected dataclass patterns.

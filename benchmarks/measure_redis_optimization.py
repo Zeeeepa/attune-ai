@@ -156,9 +156,7 @@ def measure_redis_performance():
     # Read Pass 2 comparison (where cache makes biggest difference)
     pass2_speedup = read_duration1_pass2 / read_duration2_pass2 if read_duration2_pass2 > 0 else 0
     pass2_saved = read_duration1_pass2 - read_duration2_pass2
-    pass2_saved_pct = (
-        (pass2_saved / read_duration1_pass2 * 100) if read_duration1_pass2 > 0 else 0
-    )
+    pass2_saved_pct = (pass2_saved / read_duration1_pass2 * 100) if read_duration1_pass2 > 0 else 0
 
     print(f"\n🎯 Cache Impact (Read Pass 3 - fully cached):")
     print(f"  Without cache: {read_duration1_pass2:.3f}s")

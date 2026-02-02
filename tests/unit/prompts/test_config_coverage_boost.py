@@ -40,7 +40,7 @@ class TestXmlPromptConfigCreation:
             fallback_on_parse_error=False,
             template_name="test_template",
             custom_template="<xml>test</xml>",
-            extra={"key": "value"}
+            extra={"key": "value"},
         )
 
         # Then
@@ -142,7 +142,7 @@ class TestFromDict:
             "fallback_on_parse_error": False,
             "template_name": "test",
             "custom_template": "<xml/>",
-            "extra": {"key": "val"}
+            "extra": {"key": "val"},
         }
 
         # When
@@ -200,7 +200,7 @@ class TestToDict:
             "fallback_on_parse_error": True,
             "template_name": None,
             "custom_template": None,
-            "extra": {}
+            "extra": {},
         }
 
     def test_to_dict_with_custom_values(self):
@@ -213,7 +213,7 @@ class TestToDict:
             fallback_on_parse_error=False,
             template_name="test",
             custom_template="<xml/>",
-            extra={"key": "value"}
+            extra={"key": "value"},
         )
 
         # When
@@ -248,7 +248,7 @@ class TestRoundTrip:
             "fallback_on_parse_error": False,
             "template_name": "test",
             "custom_template": "<xml/>",
-            "extra": {"key": "value"}
+            "extra": {"key": "value"},
         }
 
         # When

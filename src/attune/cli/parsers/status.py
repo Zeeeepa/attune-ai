@@ -36,9 +36,7 @@ def register_parsers(subparsers):
     parser_health.add_argument("--deep", action="store_true", help="Run all checks")
     parser_health.add_argument("--fix", action="store_true", help="Auto-fix issues")
     parser_health.add_argument("--dry-run", action="store_true", help="Preview fixes only")
-    parser_health.add_argument(
-        "--interactive", action="store_true", help="Interactive fix mode"
-    )
+    parser_health.add_argument("--interactive", action="store_true", help="Interactive fix mode")
     parser_health.add_argument("--project-root", default=".", help="Project root")
     parser_health.add_argument("--details", action="store_true", help="Show details")
     parser_health.add_argument("--full", action="store_true", help="Show all details")

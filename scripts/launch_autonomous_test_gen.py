@@ -45,9 +45,9 @@ def launch_batch(batch_num: int, modules: list[dict]) -> subprocess.Popen:
 
 def main():
     """Launch all test generation batches."""
-    print("="*60)
+    print("=" * 60)
     print("Autonomous Test Generation with Dashboard Integration")
-    print("="*60)
+    print("=" * 60)
     print()
 
     # Load batch plan
@@ -105,9 +105,9 @@ def main():
 
     # All complete
     print()
-    print("="*60)
+    print("=" * 60)
     print("🎉 All batches complete!")
-    print("="*60)
+    print("=" * 60)
 
     # Show results
     for batch_num, process in processes:

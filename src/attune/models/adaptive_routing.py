@@ -30,6 +30,7 @@ def _get_registry():
     global _model_registry
     if _model_registry is None:
         from .registry import MODEL_REGISTRY
+
         _model_registry = MODEL_REGISTRY
     return _model_registry
 
@@ -241,9 +242,7 @@ class AdaptiveModelRouter:
 
         return best.model_id
 
-    def recommend_tier_upgrade(
-        self, workflow: str, stage: str
-    ) -> tuple[bool, str]:
+    def recommend_tier_upgrade(self, workflow: str, stage: str) -> tuple[bool, str]:
         """Check if tier should be upgraded based on failure rate.
 
         Analyzes recent telemetry (last 20 calls) for this workflow/stage.
@@ -335,8 +334,7 @@ class AdaptiveModelRouter:
             performance_by_model[model] = {
                 "calls": len(model_entries),
                 "success_rate": model_successes / len(model_entries),
-                "avg_cost": sum(e.get("cost", 0.0) for e in model_entries)
-                / len(model_entries),
+                "avg_cost": sum(e.get("cost", 0.0) for e in model_entries) / len(model_entries),
                 "avg_latency_ms": sum(e.get("duration_ms", 0) for e in model_entries)
                 / len(model_entries),
             }
@@ -385,9 +383,7 @@ class AdaptiveModelRouter:
             successes = sum(1 for e in model_entries if e.get("success", True))
             success_rate = successes / total
 
-            avg_latency = (
-                sum(e.get("duration_ms", 0) for e in model_entries) / total
-            )
+            avg_latency = sum(e.get("duration_ms", 0) for e in model_entries) / total
             avg_cost = sum(e.get("cost", 0.0) for e in model_entries) / total
 
             # Analyze recent failures (last 20 calls)

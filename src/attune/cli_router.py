@@ -195,9 +195,7 @@ class HybridRouter:
         with open(self.preferences_path, "w") as f:
             yaml.dump(data, f, default_flow_style=False)
 
-    async def route(
-        self, user_input: str, context: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    async def route(self, user_input: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
         """Route user input to appropriate command or workflow.
 
         Args:
@@ -242,7 +240,8 @@ class HybridRouter:
             "args": args,
             "original": command,
             "confidence": 1.0,
-            "instruction": f"Use Skill tool with skill='{skill}'" + (f", args='{args}'" if args else ""),
+            "instruction": f"Use Skill tool with skill='{skill}'"
+            + (f", args='{args}'" if args else ""),
         }
 
     def _infer_command(self, keyword: str) -> dict[str, Any] | None:
@@ -271,7 +270,8 @@ class HybridRouter:
                 "original": keyword,
                 "confidence": pref.confidence,
                 "source": "learned",
-                "instruction": f"Use Skill tool with skill='{pref.skill}'" + (f", args='{pref.args}'" if pref.args else ""),
+                "instruction": f"Use Skill tool with skill='{pref.skill}'"
+                + (f", args='{pref.args}'" if pref.args else ""),
             }
 
         # Check built-in keyword map
@@ -284,7 +284,8 @@ class HybridRouter:
                 "original": keyword,
                 "confidence": 0.9,
                 "source": "builtin",
-                "instruction": f"Use Skill tool with skill='{skill}'" + (f", args='{args}'" if args else ""),
+                "instruction": f"Use Skill tool with skill='{skill}'"
+                + (f", args='{args}'" if args else ""),
             }
 
         # Check for hub names (show hub menu)
@@ -329,7 +330,8 @@ class HybridRouter:
             "reasoning": decision.reasoning,
             "original": text,
             "source": "natural_language",
-            "instruction": f"Use Skill tool with skill='{skill}'" + (f", args='{args}'" if args else ""),
+            "instruction": f"Use Skill tool with skill='{skill}'"
+            + (f", args='{args}'" if args else ""),
         }
 
     def _workflow_to_skill(self, workflow: str) -> tuple[str, str]:

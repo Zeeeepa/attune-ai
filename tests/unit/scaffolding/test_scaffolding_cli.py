@@ -534,7 +534,9 @@ class TestCmdCreate:
         # Verify
         captured = capsys.readouterr()
         assert "Type: coach" in captured.out
-        mock_reg.recommend_for_workflow.assert_called_once_with(workflow_type="coach", domain="general")
+        mock_reg.recommend_for_workflow.assert_called_once_with(
+            workflow_type="coach", domain="general"
+        )
 
     @patch("attune.scaffolding.cli.get_pattern_registry")
     @patch("attune.scaffolding.cli.PatternCompose")

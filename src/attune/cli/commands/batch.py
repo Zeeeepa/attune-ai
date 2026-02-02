@@ -184,12 +184,8 @@ def cmd_batch_results(args):
         print(f"   Total: {len(results)} results")
 
         # Summary
-        succeeded = sum(
-            1 for r in results if r.get("result", {}).get("type") == "succeeded"
-        )
-        errored = sum(
-            1 for r in results if r.get("result", {}).get("type") == "errored"
-        )
+        succeeded = sum(1 for r in results if r.get("result", {}).get("type") == "succeeded")
+        errored = sum(1 for r in results if r.get("result", {}).get("type") == "errored")
 
         print(f"   Succeeded: {succeeded}")
         print(f"   Errored: {errored}")
@@ -242,12 +238,8 @@ def cmd_batch_wait(args):
         print(f"   Total: {len(results)} results")
 
         # Summary
-        succeeded = sum(
-            1 for r in results if r.get("result", {}).get("type") == "succeeded"
-        )
-        errored = sum(
-            1 for r in results if r.get("result", {}).get("type") == "errored"
-        )
+        succeeded = sum(1 for r in results if r.get("result", {}).get("type") == "succeeded")
+        errored = sum(1 for r in results if r.get("result", {}).get("type") == "errored")
 
         print(f"   Succeeded: {succeeded}")
         print(f"   Errored: {errored}")

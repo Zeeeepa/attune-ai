@@ -707,13 +707,13 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     logger.debug(
                         "adaptive_routing_initialized",
                         workflow=self.name,
-                        message="Adaptive routing enabled for cost optimization"
+                        message="Adaptive routing enabled for cost optimization",
                     )
                 else:
                     logger.warning(
                         "adaptive_routing_unavailable",
                         workflow=self.name,
-                        message="Telemetry not available, adaptive routing disabled"
+                        message="Telemetry not available, adaptive routing disabled",
                     )
                     self._enable_adaptive_routing = False
             except ImportError as e:
@@ -721,7 +721,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     "adaptive_routing_import_error",
                     workflow=self.name,
                     error=str(e),
-                    message="Failed to import AdaptiveModelRouter"
+                    message="Failed to import AdaptiveModelRouter",
                 )
                 self._enable_adaptive_routing = False
 
@@ -745,14 +745,14 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     "heartbeat_tracking_initialized",
                     workflow=self.name,
                     agent_id=self._agent_id,
-                    message="Heartbeat tracking enabled for agent liveness monitoring"
+                    message="Heartbeat tracking enabled for agent liveness monitoring",
                 )
             except ImportError as e:
                 logger.warning(
                     "heartbeat_tracking_import_error",
                     workflow=self.name,
                     error=str(e),
-                    message="Failed to import HeartbeatCoordinator"
+                    message="Failed to import HeartbeatCoordinator",
                 )
                 self._enable_heartbeat_tracking = False
             except Exception as e:
@@ -760,7 +760,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     "heartbeat_tracking_init_error",
                     workflow=self.name,
                     error=str(e),
-                    message="Failed to initialize HeartbeatCoordinator (Redis unavailable?)"
+                    message="Failed to initialize HeartbeatCoordinator (Redis unavailable?)",
                 )
                 self._enable_heartbeat_tracking = False
 
@@ -784,14 +784,14 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     "coordination_initialized",
                     workflow=self.name,
                     agent_id=self._agent_id,
-                    message="Coordination signals enabled for inter-agent communication"
+                    message="Coordination signals enabled for inter-agent communication",
                 )
             except ImportError as e:
                 logger.warning(
                     "coordination_import_error",
                     workflow=self.name,
                     error=str(e),
-                    message="Failed to import CoordinationSignals"
+                    message="Failed to import CoordinationSignals",
                 )
                 self._enable_coordination = False
             except Exception as e:
@@ -799,7 +799,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     "coordination_init_error",
                     workflow=self.name,
                     error=str(e),
-                    message="Failed to initialize CoordinationSignals (Redis unavailable?)"
+                    message="Failed to initialize CoordinationSignals (Redis unavailable?)",
                 )
                 self._enable_coordination = False
 
@@ -823,10 +823,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
             return current_tier
 
         # Check if tier upgrade is recommended
-        should_upgrade, reason = router.recommend_tier_upgrade(
-            workflow=self.name,
-            stage=stage_name
-        )
+        should_upgrade, reason = router.recommend_tier_upgrade(workflow=self.name, stage=stage_name)
 
         if should_upgrade:
             # Upgrade to next tier: CHEAP → CAPABLE → PREMIUM
@@ -843,7 +840,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                 stage=stage_name,
                 old_tier=current_tier.value,
                 new_tier=new_tier.value,
-                reason=reason
+                reason=reason,
             )
 
             return new_tier
@@ -1429,13 +1426,13 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                         "run_id": self._run_id,
                         "provider": getattr(self, "_provider_str", "unknown"),
                         "stages": len(self.stages),
-                    }
+                    },
                 )
                 logger.debug(
                     "heartbeat_started",
                     workflow=self.name,
                     agent_id=self._agent_id,
-                    message="Agent heartbeat tracking started"
+                    message="Agent heartbeat tracking started",
                 )
             except Exception as e:
                 logger.warning(f"Failed to start heartbeat tracking: {e}")
@@ -1534,7 +1531,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                                 heartbeat_coordinator.beat(
                                     status="running",
                                     progress=progress,
-                                    current_task=f"Running stage: {stage_name} ({tier.value})"
+                                    current_task=f"Running stage: {stage_name} ({tier.value})",
                                 )
                             except Exception as e:
                                 logger.debug(f"Heartbeat update failed: {e}")
@@ -1590,7 +1587,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                                         heartbeat_coordinator.beat(
                                             status="running",
                                             progress=progress,
-                                            current_task=f"Completed stage: {stage_name}"
+                                            current_task=f"Completed stage: {stage_name}",
                                         )
                                     except Exception as e:
                                         logger.debug(f"Heartbeat update failed: {e}")
@@ -1868,7 +1865,7 @@ class BaseWorkflow(CachingMixin, TelemetryMixin, ABC):
                     workflow=self.name,
                     agent_id=self._agent_id,
                     status=final_status,
-                    message="Agent heartbeat tracking stopped"
+                    message="Agent heartbeat tracking stopped",
                 )
             except Exception as e:
                 logger.warning(f"Failed to stop heartbeat tracking: {e}")

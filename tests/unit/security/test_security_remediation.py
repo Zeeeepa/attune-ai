@@ -86,7 +86,9 @@ class TestSQLParameterization:
             assert result["workflow_id"] == malicious_input
 
             # Verify table wasn't dropped
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='workflow_runs'")
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='workflow_runs'"
+            )
             assert cursor.fetchone() is not None
 
             store.close()
@@ -108,12 +110,21 @@ class TestRandomUsageDocumentation:
 
         # Check for security note in docstring
         assert "Security Note" in content or "security note" in content.lower()
-        assert "NOT used for cryptographic" in content or "not used for cryptographic" in content.lower()
+        assert (
+            "NOT used for cryptographic" in content
+            or "not used for cryptographic" in content.lower()
+        )
         assert "reproducible test" in content or "deterministic" in content
 
     def test_ab_testing_has_security_comment(self):
         """Test that ab_testing.py documents random usage for simulation."""
-        ab_testing_path = Path(__file__).parent.parent.parent.parent / "src" / "attune" / "socratic" / "ab_testing.py"
+        ab_testing_path = (
+            Path(__file__).parent.parent.parent.parent
+            / "src"
+            / "attune"
+            / "socratic"
+            / "ab_testing.py"
+        )
 
         if not ab_testing_path.exists():
             pytest.skip(f"ab_testing.py not found at {ab_testing_path}")
@@ -125,7 +136,7 @@ class TestRandomUsageDocumentation:
         for i, line in enumerate(lines):
             if "import random" in line:
                 # Check surrounding lines for security note
-                context = "\n".join(lines[max(0, i-2):min(len(lines), i+3)])
+                context = "\n".join(lines[max(0, i - 2) : min(len(lines), i + 3)])
                 assert "Security Note" in context or "not cryptographic" in context.lower()
                 break
         else:
@@ -169,7 +180,13 @@ class TestNoActualVulnerabilities:
 
     def test_sql_queries_use_parameterization(self):
         """Test that cursor.execute() calls use parameterization."""
-        history_path = Path(__file__).parent.parent.parent.parent / "src" / "attune" / "workflows" / "history.py"
+        history_path = (
+            Path(__file__).parent.parent.parent.parent
+            / "src"
+            / "attune"
+            / "workflows"
+            / "history.py"
+        )
 
         if not history_path.exists():
             pytest.skip("history.py not found")
@@ -177,34 +194,34 @@ class TestNoActualVulnerabilities:
         content = history_path.read_text()
 
         # Find all cursor.execute calls
-        execute_pattern = r'cursor\.execute\s*\('
+        execute_pattern = r"cursor\.execute\s*\("
         matches = list(re.finditer(execute_pattern, content))
 
         # Check for dangerous patterns - f-strings with variable interpolation in SQL
         dangerous_count = 0
         for match in matches:
             # Get more context to see the full statement
-            snippet = content[match.start():match.start() + 300]
+            snippet = content[match.start() : match.start() + 300]
 
             # Dangerous pattern: f"SELECT * FROM table WHERE id = {user_input}"
             # Safe pattern: f"DELETE FROM table WHERE id IN ({placeholders})", values
             # Look for f-strings with variable interpolation (not placeholder ?)
             if 'f"' in snippet or "f'" in snippet:
                 # Check if it has variable interpolation
-                if '{' in snippet:
+                if "{" in snippet:
                     # Skip safe patterns:
                     # 1. {placeholders} pattern for IN clauses
                     # 2. Table name formatting like f"table_{name}"
                     # 3. Has ? in the query string
-                    if 'placeholders' in snippet:
+                    if "placeholders" in snippet:
                         continue  # Safe pattern for IN clauses
-                    if '?' in snippet.split('\n')[0]:
+                    if "?" in snippet.split("\n")[0]:
                         continue  # Has ? placeholders
 
                     # Check if it's in a WHERE/SET clause (potential danger)
-                    if 'WHERE' in snippet.upper() or 'SET' in snippet.upper():
+                    if "WHERE" in snippet.upper() or "SET" in snippet.upper():
                         # Check if followed by a tuple of values (parameterized)
-                        if '), ' not in snippet and '),' not in snippet:
+                        if "), " not in snippet and ")," not in snippet:
                             dangerous_count += 1
 
         # Should have 0 dangerous SQL patterns (f-strings with direct variable interpolation)
@@ -226,7 +243,9 @@ class TestCodeSecurity:
         security_files = []
         for py_file in src_path.rglob("*.py"):
             content = py_file.read_text()
-            if any(keyword in content.lower() for keyword in ["token", "secret", "password", "api_key"]):
+            if any(
+                keyword in content.lower() for keyword in ["token", "secret", "password", "api_key"]
+            ):
                 # Check if they're generating these values
                 if "random" in content and "secrets" not in content:
                     security_files.append(py_file)
@@ -265,7 +284,10 @@ class TestCodeSecurity:
                 for match in matches:
                     # Exclude obvious test/example values
                     matched_text = match.group()
-                    if any(safe in matched_text.lower() for safe in ["test", "example", "fake", "demo", "xxx"]):
+                    if any(
+                        safe in matched_text.lower()
+                        for safe in ["test", "example", "fake", "demo", "xxx"]
+                    ):
                         continue
 
                     found_secrets.append((py_file, match.group()))
@@ -285,7 +307,9 @@ class TestCodeSecurity:
 class TestSecurityAuditAccuracy:
     """Test that security audit produces accurate results after improvements."""
 
-    @pytest.mark.skip(reason="Integration test - requires API credentials and full workflow execution")
+    @pytest.mark.skip(
+        reason="Integration test - requires API credentials and full workflow execution"
+    )
     @pytest.mark.asyncio
     async def test_reduced_false_positive_rate(self):
         """Test that false positive rate is significantly reduced."""

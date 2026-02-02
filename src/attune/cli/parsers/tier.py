@@ -18,9 +18,7 @@ def register_parsers(subparsers):
     tier_subparsers = tier_parser.add_subparsers(dest="tier_command")
 
     # tier recommend
-    parser_recommend = tier_subparsers.add_parser(
-        "recommend", help="Get tier recommendation"
-    )
+    parser_recommend = tier_subparsers.add_parser("recommend", help="Get tier recommendation")
     parser_recommend.add_argument("description", help="Bug or task description")
     parser_recommend.add_argument("--files", help="Comma-separated list of files")
     parser_recommend.add_argument(

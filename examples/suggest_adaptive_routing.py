@@ -98,9 +98,7 @@ def analyze_savings_potential():
         recommendations.sort(key=lambda x: x["potential_savings"], reverse=True)
 
         for i, rec in enumerate(recommendations[:5], 1):
-            print(
-                f"{i}. {rec['workflow']}: ${rec['potential_savings']:.2f} potential savings"
-            )
+            print(f"{i}. {rec['workflow']}: ${rec['potential_savings']:.2f} potential savings")
             print(
                 f"   ({rec['calls']} calls @ ${rec['current_cost']:.4f} avg, "
                 f"could use cheaper models)"
@@ -123,12 +121,8 @@ def analyze_savings_potential():
             print(f"   Potential savings: ${annual_savings:.2f}/year")
             print(f"\n   How to enable:")
             print(f"   1. Add to workflow: enable_adaptive_routing=True")
-            print(
-                f"   2. Or set env var: export EMPATHY_ADAPTIVE_ROUTING=true"
-            )
-            print(
-                f"   3. Or add to config: adaptive_routing.enabled = true"
-            )
+            print(f"   2. Or set env var: export EMPATHY_ADAPTIVE_ROUTING=true")
+            print(f"   3. Or add to config: adaptive_routing.enabled = true")
         else:
             print(f"\n📊 Current routing is fairly optimal.")
             print(f"   Adaptive routing would save ~${annual_savings:.2f}/year")

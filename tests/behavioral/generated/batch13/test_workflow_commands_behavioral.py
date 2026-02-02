@@ -89,10 +89,15 @@ def mock_unified_memory():
 class TestRunWorkflowBasicExecution:
     """Test basic workflow execution scenarios."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_valid_template_when_run_with_defaults_then_executes_successfully(
-        self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow, mock_workflow_result
+        self,
+        mock_workflow_class,
+        mock_registry_class,
+        mock_template,
+        mock_meta_workflow,
+        mock_workflow_result,
     ):
         """
         Given: A valid template ID exists in the registry
@@ -104,14 +109,14 @@ class TestRunWorkflowBasicExecution:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print') as mock_print:
+        with patch.object(console, "print") as mock_print:
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
@@ -119,10 +124,8 @@ class TestRunWorkflowBasicExecution:
         mock_meta_workflow.execute.assert_called_once()
         assert mock_print.call_count > 0
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    def test_given_invalid_template_when_run_then_exits_with_error(
-        self, mock_registry_class
-    ):
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    def test_given_invalid_template_when_run_then_exits_with_error(self, mock_registry_class):
         """
         Given: An invalid template ID is provided
         When: Running the workflow
@@ -133,20 +136,20 @@ class TestRunWorkflowBasicExecution:
 
         # When/Then
         with pytest.raises(typer.Exit) as exc_info:
-            with patch.object(console, 'print'):
+            with patch.object(console, "print"):
                 run_workflow(
                     template_id="invalid-template",
                     mock=True,
                     use_memory=False,
                     use_defaults=True,
                     user_id="cli_user",
-                    json_output=False
+                    json_output=False,
                 )
 
         assert exc_info.value.exit_code == 1
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_mock_flag_true_when_run_then_uses_mock_execution(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -160,21 +163,21 @@ class TestRunWorkflowBasicExecution:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
         mock_meta_workflow.execute.assert_called_once()
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_mock_flag_false_when_run_then_uses_real_execution(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -188,14 +191,14 @@ class TestRunWorkflowBasicExecution:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=False,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
@@ -205,14 +208,20 @@ class TestRunWorkflowBasicExecution:
 class TestRunWorkflowMemoryIntegration:
     """Test workflow execution with memory integration."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
-    @patch('attune.memory.unified.UnifiedMemory')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.PatternLearner')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
+    @patch("attune.memory.unified.UnifiedMemory")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.PatternLearner")
     def test_given_use_memory_flag_when_run_then_initializes_memory_integration(
-        self, mock_learner_class, mock_memory_class, mock_workflow_class,
-        mock_registry_class, mock_template, mock_meta_workflow, mock_pattern_learner,
-        mock_unified_memory
+        self,
+        mock_learner_class,
+        mock_memory_class,
+        mock_workflow_class,
+        mock_registry_class,
+        mock_template,
+        mock_meta_workflow,
+        mock_pattern_learner,
+        mock_unified_memory,
     ):
         """
         Given: use_memory flag is True
@@ -226,22 +235,22 @@ class TestRunWorkflowMemoryIntegration:
         mock_learner_class.return_value = mock_pattern_learner
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=True,
                 use_defaults=True,
                 user_id="test_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
         mock_memory_class.assert_called_once_with(user_id="test_user")
         mock_learner_class.assert_called_once_with(memory=mock_unified_memory)
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_use_memory_false_when_run_then_no_memory_initialization(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -255,26 +264,30 @@ class TestRunWorkflowMemoryIntegration:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
-            with patch('attune.memory.unified.UnifiedMemory') as mock_mem:
+        with patch.object(console, "print"):
+            with patch("attune.memory.unified.UnifiedMemory") as mock_mem:
                 run_workflow(
                     template_id="test-template",
                     mock=True,
                     use_memory=False,
                     use_defaults=True,
                     user_id="test_user",
-                    json_output=False
+                    json_output=False,
                 )
 
         # Then - UnifiedMemory should not be imported/called
         mock_mem.assert_not_called()
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
-    @patch('attune.memory.unified.UnifiedMemory')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
+    @patch("attune.memory.unified.UnifiedMemory")
     def test_given_memory_initialization_fails_when_run_then_handles_gracefully(
-        self, mock_memory_class, mock_workflow_class, mock_registry_class,
-        mock_template, mock_meta_workflow
+        self,
+        mock_memory_class,
+        mock_workflow_class,
+        mock_registry_class,
+        mock_template,
+        mock_meta_workflow,
     ):
         """
         Given: Memory initialization raises an exception
@@ -287,14 +300,14 @@ class TestRunWorkflowMemoryIntegration:
         mock_memory_class.side_effect = Exception("Memory initialization failed")
 
         # When - Should NOT raise exception, should continue without memory
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=True,
                 use_defaults=True,
                 user_id="test_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then - Workflow should still execute
@@ -304,12 +317,17 @@ class TestRunWorkflowMemoryIntegration:
 class TestRunWorkflowJsonOutput:
     """Test JSON output mode for programmatic use."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
-    @patch('builtins.print')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
+    @patch("builtins.print")
     def test_given_json_output_flag_when_run_successfully_then_outputs_json(
-        self, mock_print, mock_workflow_class, mock_registry_class,
-        mock_template, mock_meta_workflow, mock_workflow_result
+        self,
+        mock_print,
+        mock_workflow_class,
+        mock_registry_class,
+        mock_template,
+        mock_meta_workflow,
+        mock_workflow_result,
     ):
         """
         Given: json_output flag is True and workflow succeeds
@@ -327,7 +345,7 @@ class TestRunWorkflowJsonOutput:
             use_memory=False,
             use_defaults=True,
             user_id="cli_user",
-            json_output=True
+            json_output=True,
         )
 
         # Then
@@ -335,10 +353,10 @@ class TestRunWorkflowJsonOutput:
         assert mock_print.called
         # Check that JSON was printed (contains run_id, template_id, etc.)
         json_output = str(mock_print.call_args_list)
-        assert 'run_id' in json_output or 'test-run-123' in json_output
+        assert "run_id" in json_output or "test-run-123" in json_output
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('builtins.print')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("builtins.print")
     def test_given_invalid_template_and_json_output_when_run_then_outputs_error_json(
         self, mock_print, mock_registry_class
     ):
@@ -358,18 +376,17 @@ class TestRunWorkflowJsonOutput:
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=True
+                json_output=True,
             )
 
         # Then - Should output JSON error
         json_output_calls = [
-            call for call in mock_print.call_args_list
-            if call[0] and isinstance(call[0][0], str)
+            call for call in mock_print.call_args_list if call[0] and isinstance(call[0][0], str)
         ]
         assert len(json_output_calls) > 0
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_json_output_false_when_run_then_uses_console_output(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -383,14 +400,14 @@ class TestRunWorkflowJsonOutput:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print') as mock_console_print:
+        with patch.object(console, "print") as mock_console_print:
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
@@ -400,8 +417,8 @@ class TestRunWorkflowJsonOutput:
 class TestRunWorkflowInteractiveMode:
     """Test interactive vs non-interactive mode."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_use_defaults_true_when_run_then_non_interactive_mode(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -415,21 +432,21 @@ class TestRunWorkflowInteractiveMode:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
         mock_meta_workflow.execute.assert_called_once()
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_use_defaults_false_when_run_then_interactive_mode(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -443,14 +460,14 @@ class TestRunWorkflowInteractiveMode:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=False,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
@@ -460,13 +477,18 @@ class TestRunWorkflowInteractiveMode:
 class TestRunWorkflowUserIdParameter:
     """Test user ID parameter handling."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
-    @patch('attune.memory.unified.UnifiedMemory')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.PatternLearner')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
+    @patch("attune.memory.unified.UnifiedMemory")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.PatternLearner")
     def test_given_custom_user_id_when_run_with_memory_then_uses_custom_user_id(
-        self, mock_learner_class, mock_memory_class, mock_workflow_class,
-        mock_registry_class, mock_template, mock_meta_workflow
+        self,
+        mock_learner_class,
+        mock_memory_class,
+        mock_workflow_class,
+        mock_registry_class,
+        mock_template,
+        mock_meta_workflow,
     ):
         """
         Given: A custom user_id is provided
@@ -479,21 +501,21 @@ class TestRunWorkflowUserIdParameter:
         custom_user_id = "custom_user_123"
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=True,
                 use_defaults=True,
                 user_id=custom_user_id,
-                json_output=False
+                json_output=False,
             )
 
         # Then
         mock_memory_class.assert_called_once_with(user_id=custom_user_id)
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_default_user_id_when_run_without_memory_then_no_impact(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -507,14 +529,14 @@ class TestRunWorkflowUserIdParameter:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
@@ -524,10 +546,8 @@ class TestRunWorkflowUserIdParameter:
 class TestRunWorkflowErrorHandling:
     """Test error handling scenarios."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    def test_given_registry_fails_when_run_then_handles_exception(
-        self, mock_registry_class
-    ):
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    def test_given_registry_fails_when_run_then_handles_exception(self, mock_registry_class):
         """
         Given: TemplateRegistry raises an exception
         When: Running the workflow
@@ -544,11 +564,11 @@ class TestRunWorkflowErrorHandling:
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_workflow_execution_fails_when_run_then_handles_exception(
         self, mock_workflow_class, mock_registry_class, mock_template
     ):
@@ -565,20 +585,18 @@ class TestRunWorkflowErrorHandling:
 
         # When/Then
         with pytest.raises(Exception):
-            with patch.object(console, 'print'):
+            with patch.object(console, "print"):
                 run_workflow(
                     template_id="test-template",
                     mock=True,
                     use_memory=False,
                     use_defaults=True,
                     user_id="cli_user",
-                    json_output=False
+                    json_output=False,
                 )
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    def test_given_none_template_when_run_then_exits_with_error_code(
-        self, mock_registry_class
-    ):
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    def test_given_none_template_when_run_then_exits_with_error_code(self, mock_registry_class):
         """
         Given: Template registry returns None
         When: Running the workflow
@@ -589,14 +607,14 @@ class TestRunWorkflowErrorHandling:
 
         # When/Then
         with pytest.raises(typer.Exit) as exc_info:
-            with patch.object(console, 'print'):
+            with patch.object(console, "print"):
                 run_workflow(
                     template_id="nonexistent",
                     mock=True,
                     use_memory=False,
                     use_defaults=True,
                     user_id="cli_user",
-                    json_output=False
+                    json_output=False,
                 )
 
         assert exc_info.value.exit_code == 1
@@ -605,8 +623,8 @@ class TestRunWorkflowErrorHandling:
 class TestRunWorkflowTemplateLoading:
     """Test template loading behavior."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_template_id_when_run_then_loads_correct_template(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -621,21 +639,21 @@ class TestRunWorkflowTemplateLoading:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id=template_id,
                 mock=True,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then
         mock_registry_class.return_value.load_template.assert_called_once_with(template_id)
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_valid_template_when_run_then_displays_template_name(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -649,35 +667,42 @@ class TestRunWorkflowTemplateLoading:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print') as mock_print:
+        with patch.object(console, "print") as mock_print:
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=True,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then - Should display template name
-        assert any(
-            mock_template.name in str(call)
-            for call in mock_print.call_args_list
-        ) or mock_print.called
+        assert (
+            any(mock_template.name in str(call) for call in mock_print.call_args_list)
+            or mock_print.called
+        )
 
 
 class TestRunWorkflowComplexScenarios:
     """Test complex multi-flag scenarios."""
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
-    @patch('attune.memory.unified.UnifiedMemory')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.PatternLearner')
-    @patch('builtins.print')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
+    @patch("attune.memory.unified.UnifiedMemory")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.PatternLearner")
+    @patch("builtins.print")
     def test_given_all_flags_enabled_when_run_then_executes_with_all_features(
-        self, mock_print, mock_learner_class, mock_memory_class,
-        mock_workflow_class, mock_registry_class, mock_template,
-        mock_meta_workflow, mock_pattern_learner, mock_unified_memory
+        self,
+        mock_print,
+        mock_learner_class,
+        mock_memory_class,
+        mock_workflow_class,
+        mock_registry_class,
+        mock_template,
+        mock_meta_workflow,
+        mock_pattern_learner,
+        mock_unified_memory,
     ):
         """
         Given: All optional flags are enabled
@@ -697,7 +722,7 @@ class TestRunWorkflowComplexScenarios:
             use_memory=True,
             use_defaults=True,
             user_id="test_user",
-            json_output=True
+            json_output=True,
         )
 
         # Then
@@ -706,8 +731,8 @@ class TestRunWorkflowComplexScenarios:
         mock_learner_class.assert_called_once()
         mock_meta_workflow.execute.assert_called_once()
 
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry')
-    @patch('attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow')
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.TemplateRegistry")
+    @patch("attune.meta_workflows.cli_commands.workflow_commands.MetaWorkflow")
     def test_given_minimal_flags_when_run_then_executes_basic_workflow(
         self, mock_workflow_class, mock_registry_class, mock_template, mock_meta_workflow
     ):
@@ -721,14 +746,14 @@ class TestRunWorkflowComplexScenarios:
         mock_workflow_class.return_value = mock_meta_workflow
 
         # When
-        with patch.object(console, 'print'):
+        with patch.object(console, "print"):
             run_workflow(
                 template_id="test-template",
                 mock=True,
                 use_memory=False,
                 use_defaults=False,
                 user_id="cli_user",
-                json_output=False
+                json_output=False,
             )
 
         # Then

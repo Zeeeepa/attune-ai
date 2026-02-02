@@ -50,8 +50,10 @@ class APIExtractor(ast.NodeVisitor):
         """Extract class signature."""
         # Check if dataclass
         is_dataclass = any(
-            isinstance(dec, ast.Name) and dec.id == "dataclass"
-            or isinstance(dec, ast.Attribute) and dec.attr == "dataclass"
+            isinstance(dec, ast.Name)
+            and dec.id == "dataclass"
+            or isinstance(dec, ast.Attribute)
+            and dec.attr == "dataclass"
             for dec in node.decorator_list
         )
 
@@ -95,11 +97,7 @@ class APIExtractor(ast.NodeVisitor):
 
                     # Track __init__ params
                     if item.name == "__init__":
-                        init_params = [
-                            arg.arg
-                            for arg in item.args.args
-                            if arg.arg != "self"
-                        ]
+                        init_params = [arg.arg for arg in item.args.args if arg.arg != "self"]
 
         # Get docstring
         docstring = ast.get_docstring(node)
@@ -130,18 +128,14 @@ class APIExtractor(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def _extract_function(
-        self, node: ast.FunctionDef, is_method: bool
-    ) -> FunctionSignature:
+    def _extract_function(self, node: ast.FunctionDef, is_method: bool) -> FunctionSignature:
         """Extract function/method signature details."""
         # Check decorators
         is_static = any(
-            isinstance(dec, ast.Name) and dec.id == "staticmethod"
-            for dec in node.decorator_list
+            isinstance(dec, ast.Name) and dec.id == "staticmethod" for dec in node.decorator_list
         )
         is_classmethod = any(
-            isinstance(dec, ast.Name) and dec.id == "classmethod"
-            for dec in node.decorator_list
+            isinstance(dec, ast.Name) and dec.id == "classmethod" for dec in node.decorator_list
         )
 
         # Extract parameters
@@ -179,7 +173,9 @@ class APIExtractor(ast.NodeVisitor):
         )
 
 
-def extract_api_signatures(source_code: str) -> tuple[list[ClassSignature], list[FunctionSignature]]:
+def extract_api_signatures(
+    source_code: str,
+) -> tuple[list[ClassSignature], list[FunctionSignature]]:
     """Extract API signatures from Python source code.
 
     Args:
@@ -230,7 +226,9 @@ def format_api_docs(classes: list[ClassSignature], functions: list[FunctionSigna
             if cls.attributes:
                 docs.append("\n**Attributes:**")
                 for name, typ in cls.attributes.items():
-                    is_property = " (COMPUTED - don't pass to __init__)" if name in cls.properties else ""
+                    is_property = (
+                        " (COMPUTED - don't pass to __init__)" if name in cls.properties else ""
+                    )
                     docs.append(f"  - {name}: {typ}{is_property}")
 
             # Example usage
@@ -246,9 +244,7 @@ def format_api_docs(classes: list[ClassSignature], functions: list[FunctionSigna
     if functions:
         docs.append("\n## Functions\n")
         for func in functions:
-            params_str = ", ".join(
-                f"{p}: {func.param_types.get(p, 'Any')}" for p in func.params
-            )
+            params_str = ", ".join(f"{p}: {func.param_types.get(p, 'Any')}" for p in func.params)
             return_str = f" -> {func.return_type}" if func.return_type else ""
             docs.append(f"- `{func.name}({params_str}){return_str}`")
 

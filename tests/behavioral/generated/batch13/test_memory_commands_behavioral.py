@@ -103,10 +103,7 @@ class TestSearchMemoryBasicFunctionality:
 
         # When
         search_memory(
-            query="test query",
-            pattern_type="meta_workflow_execution",
-            limit=10,
-            user_id="cli_user"
+            query="test query", pattern_type="meta_workflow_execution", limit=10, user_id="cli_user"
         )
 
         # Then
@@ -260,13 +257,15 @@ class TestSearchMemoryResultDisplay:
         Then: Content is truncated to 200 characters
         """
         # Given
-        long_content_result = [{
-            "pattern_id": "test_123",
-            "pattern_type": "test",
-            "classification": "info",
-            "content": "x" * 500,  # 500 characters
-            "metadata": {},
-        }]
+        long_content_result = [
+            {
+                "pattern_id": "test_123",
+                "pattern_type": "test",
+                "classification": "info",
+                "content": "x" * 500,  # 500 characters
+                "metadata": {},
+            }
+        ]
         mock_memory_instance = Mock()
         mock_memory_instance.search_patterns.return_value = long_content_result
         mock_unified_memory.return_value = mock_memory_instance
@@ -316,6 +315,7 @@ class TestSearchMemoryErrorHandling:
         with patch("attune.memory.unified.UnifiedMemory", side_effect=ImportError):
             # When/Then - Typer raises typer.Exit, not SystemExit
             from typer import Exit
+
             with pytest.raises(Exit) as exc_info:
                 search_memory(query="test", pattern_type=None, limit=10, user_id="cli_user")
 
@@ -363,7 +363,9 @@ class TestSearchMemoryErrorHandling:
 class TestSearchMemoryIntegrationWithTyperApp:
     """Tests for integration with Typer app."""
 
-    def test_given_meta_workflow_app_when_search_memory_command_exists_then_command_is_registered(self):
+    def test_given_meta_workflow_app_when_search_memory_command_exists_then_command_is_registered(
+        self,
+    ):
         """
         Given: meta_workflow_app Typer application
         When: Checking registered commands
@@ -477,13 +479,15 @@ class TestSearchMemoryEdgeCases:
         Then: Handles None metadata gracefully
         """
         # Given
-        result_with_none_metadata = [{
-            "pattern_id": "test",
-            "pattern_type": "test",
-            "classification": "test",
-            "content": "test content",
-            "metadata": None,
-        }]
+        result_with_none_metadata = [
+            {
+                "pattern_id": "test",
+                "pattern_type": "test",
+                "classification": "test",
+                "content": "test content",
+                "metadata": None,
+            }
+        ]
         mock_memory_instance = Mock()
         mock_memory_instance.search_patterns.return_value = result_with_none_metadata
         mock_unified_memory.return_value = mock_memory_instance
@@ -504,13 +508,15 @@ class TestSearchMemoryEdgeCases:
         Then: Displays unicode correctly
         """
         # Given
-        unicode_result = [{
-            "pattern_id": "unicode_test",
-            "pattern_type": "test",
-            "classification": "info",
-            "content": "Test with unicode: 你好世界 🚀 émojis",
-            "metadata": {"lang": "multi"},
-        }]
+        unicode_result = [
+            {
+                "pattern_id": "unicode_test",
+                "pattern_type": "test",
+                "classification": "info",
+                "content": "Test with unicode: 你好世界 🚀 émojis",
+                "metadata": {"lang": "multi"},
+            }
+        ]
         mock_memory_instance = Mock()
         mock_memory_instance.search_patterns.return_value = unicode_result
         mock_unified_memory.return_value = mock_memory_instance

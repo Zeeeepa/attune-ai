@@ -6,7 +6,6 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-
 # Import using module approach to avoid package initialization issues
 import attune.workflows.document_gen.report_formatter as report_formatter_module
 

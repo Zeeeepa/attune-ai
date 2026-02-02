@@ -188,9 +188,7 @@ class TestGetBestModel:
         ]
 
         router = AdaptiveModelRouter(mock_telemetry)
-        model = router.get_best_model(
-            workflow="test", stage="analysis", min_success_rate=0.8
-        )
+        model = router.get_best_model(workflow="test", stage="analysis", min_success_rate=0.8)
 
         # model2 should win (same success rate, lower cost)
         assert model == "model2"
@@ -314,15 +312,10 @@ class TestGetBestModel:
         ]
 
         router = AdaptiveModelRouter(mock_telemetry)
-        model = router.get_best_model(
-            workflow="test", stage="analysis", min_success_rate=0.9
-        )
+        model = router.get_best_model(workflow="test", stage="analysis", min_success_rate=0.9)
 
         # Should select reliable model (unreliable fails min_success_rate)
         assert model == "reliable"
-
-
-
 
 
 @pytest.mark.unit
@@ -334,10 +327,7 @@ class TestRecommendTierUpgrade:
         mock_telemetry = MagicMock()
 
         # 25 calls with 6 failures in last 20 (30% failure rate)
-        entries = [
-            {"workflow": "test", "stage": "analysis", "success": i < 19}
-            for i in range(25)
-        ]
+        entries = [{"workflow": "test", "stage": "analysis", "success": i < 19} for i in range(25)]
         mock_telemetry.get_recent_entries.return_value = entries
 
         router = AdaptiveModelRouter(mock_telemetry)
@@ -352,10 +342,7 @@ class TestRecommendTierUpgrade:
         mock_telemetry = MagicMock()
 
         # 25 calls with only 2 failures in last 20 (10% failure rate)
-        entries = [
-            {"workflow": "test", "stage": "analysis", "success": i < 23}
-            for i in range(25)
-        ]
+        entries = [{"workflow": "test", "stage": "analysis", "success": i < 23} for i in range(25)]
         mock_telemetry.get_recent_entries.return_value = entries
 
         router = AdaptiveModelRouter(mock_telemetry)
@@ -385,10 +372,7 @@ class TestRecommendTierUpgrade:
         mock_telemetry = MagicMock()
 
         # Exactly 4 failures in 20 calls = 20% (at threshold)
-        entries = [
-            {"workflow": "test", "stage": "analysis", "success": i < 16}
-            for i in range(20)
-        ]
+        entries = [{"workflow": "test", "stage": "analysis", "success": i < 16} for i in range(20)]
         mock_telemetry.get_recent_entries.return_value = entries
 
         router = AdaptiveModelRouter(mock_telemetry)
@@ -768,9 +752,7 @@ class TestGetDefaultModel:
         assert model == "claude-3-5-haiku-20241022"
 
     @patch("attune.models.adaptive_routing._get_registry")
-    def test_get_default_model_falls_back_when_registry_missing(
-        self, mock_get_registry
-    ):
+    def test_get_default_model_falls_back_when_registry_missing(self, mock_get_registry):
         """Test fallback when tier not in registry."""
         mock_get_registry.return_value = {"anthropic": {}}
 

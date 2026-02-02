@@ -37,6 +37,7 @@ class MockAgentTemplate:
     def resource_requirements(self):
         """Mock resource requirements."""
         from attune.orchestration.agent_templates import ResourceRequirements
+
         return ResourceRequirements()
 
 
@@ -129,8 +130,14 @@ class TestTaskDomainEnum:
         """Test all expected domains are present."""
         # Given
         expected_domains = {
-            "testing", "security", "code_quality", "documentation",
-            "performance", "architecture", "refactoring", "general"
+            "testing",
+            "security",
+            "code_quality",
+            "documentation",
+            "performance",
+            "architecture",
+            "refactoring",
+            "general",
         }
 
         # When
@@ -314,8 +321,8 @@ class TestMetaOrchestratorInitialization:
 class TestMetaOrchestratorAnalyzeAndCompose:
     """Test MetaOrchestrator.analyze_and_compose method."""
 
-    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
-    @patch('attune.orchestration.meta_orchestrator.get_template')
+    @patch("attune.orchestration.meta_orchestrator.get_templates_by_capability")
+    @patch("attune.orchestration.meta_orchestrator.get_template")
     def test_given_simple_testing_task_when_analyzing_then_returns_sequential_plan(
         self, mock_get_template, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -331,16 +338,16 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         context = {"current_coverage": 75}
 
         # When
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
+        with patch.object(orchestrator, "_analyze_task") as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
                 complexity=TaskComplexity.SIMPLE,
                 domain=TaskDomain.TESTING,
                 capabilities_needed=["testing"],
                 context=context,
             )
-            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
+            with patch.object(orchestrator, "_choose_composition_pattern") as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
+                with patch.object(orchestrator, "_select_agents") as mock_select_agents:
                     mock_select_agents.return_value = [
                         mock_agent_templates["test_coverage_expert"],
                         mock_agent_templates["test_generator"],
@@ -351,7 +358,7 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         assert plan is not None
         assert plan.strategy == CompositionPattern.SEQUENTIAL
 
-    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch("attune.orchestration.meta_orchestrator.get_templates_by_capability")
     def test_given_complex_security_task_when_analyzing_then_returns_appropriate_plan(
         self, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -365,16 +372,16 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         context = {"scope": "full_codebase"}
 
         # When
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
+        with patch.object(orchestrator, "_analyze_task") as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
                 complexity=TaskComplexity.COMPLEX,
                 domain=TaskDomain.SECURITY,
                 capabilities_needed=["security", "analysis"],
                 context=context,
             )
-            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
+            with patch.object(orchestrator, "_choose_composition_pattern") as mock_select:
                 mock_select.return_value = CompositionPattern.DEBATE
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
+                with patch.object(orchestrator, "_select_agents") as mock_select_agents:
                     mock_select_agents.return_value = [
                         mock_agent_templates["security_analyzer"],
                     ]
@@ -401,15 +408,15 @@ class TestMetaOrchestratorAnalyzeAndCompose:
         context = None
 
         # When/Then
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
+        with patch.object(orchestrator, "_analyze_task") as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
                 complexity=TaskComplexity.SIMPLE,
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
+            with patch.object(orchestrator, "_choose_composition_pattern") as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
+                with patch.object(orchestrator, "_select_agents") as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context or {})
                     assert plan is not None
@@ -418,20 +425,24 @@ class TestMetaOrchestratorAnalyzeAndCompose:
 class TestMetaOrchestratorAnalyzeTask:
     """Test MetaOrchestrator._analyze_task private method."""
 
-    def test_given_testing_keywords_when_analyzing_then_identifies_testing_domain(self, orchestrator):
+    def test_given_testing_keywords_when_analyzing_then_identifies_testing_domain(
+        self, orchestrator
+    ):
         """Test task with testing keywords identified as testing domain."""
         # Given
         task = "Improve test coverage and add unit tests"
         context = {}
 
         # When
-        with patch.object(orchestrator, '_analyze_task', wraps=orchestrator._analyze_task):
+        with patch.object(orchestrator, "_analyze_task", wraps=orchestrator._analyze_task):
             requirements = orchestrator._analyze_task(task, context)
 
         # Then
         assert requirements.domain == TaskDomain.TESTING
 
-    def test_given_security_keywords_when_analyzing_then_identifies_security_domain(self, orchestrator):
+    def test_given_security_keywords_when_analyzing_then_identifies_security_domain(
+        self, orchestrator
+    ):
         """Test task with security keywords identified as security domain."""
         # Given
         task = "Audit security vulnerabilities and fix exploits"
@@ -443,7 +454,9 @@ class TestMetaOrchestratorAnalyzeTask:
         # Then
         assert requirements.domain == TaskDomain.SECURITY
 
-    def test_given_complex_task_when_analyzing_then_identifies_complex_complexity(self, orchestrator):
+    def test_given_complex_task_when_analyzing_then_identifies_complex_complexity(
+        self, orchestrator
+    ):
         """Test complex task identified correctly."""
         # Given
         task = "Refactor entire architecture, improve performance, add security, and update documentation"
@@ -484,7 +497,9 @@ class TestMetaOrchestratorAnalyzeTask:
 class TestMetaOrchestratorSelectCompositionPattern:
     """Test MetaOrchestrator._choose_composition_pattern private method."""
 
-    def test_given_simple_requirements_when_selecting_pattern_then_returns_sequential(self, orchestrator, mock_agent_templates):
+    def test_given_simple_requirements_when_selecting_pattern_then_returns_sequential(
+        self, orchestrator, mock_agent_templates
+    ):
         """Test simple requirements return sequential pattern."""
         # Given
         requirements = TaskRequirements(
@@ -546,7 +561,7 @@ class TestMetaOrchestratorSelectCompositionPattern:
 class TestMetaOrchestratorSelectAgents:
     """Test MetaOrchestrator._select_agents private method."""
 
-    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch("attune.orchestration.meta_orchestrator.get_templates_by_capability")
     def test_given_testing_requirements_when_selecting_agents_then_returns_testing_agents(
         self, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -569,8 +584,8 @@ class TestMetaOrchestratorSelectAgents:
         assert len(agents) > 0
         assert any("test" in agent.role.lower() for agent in agents)
 
-    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
-    @patch('attune.orchestration.meta_orchestrator.get_template')
+    @patch("attune.orchestration.meta_orchestrator.get_templates_by_capability")
+    @patch("attune.orchestration.meta_orchestrator.get_template")
     def test_given_no_matching_agents_when_selecting_agents_then_returns_default_agent(
         self, mock_get_template, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -592,7 +607,7 @@ class TestMetaOrchestratorSelectAgents:
         assert len(agents) > 0  # Should return default agent
         assert agents[0].id == "code_reviewer"
 
-    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
+    @patch("attune.orchestration.meta_orchestrator.get_templates_by_capability")
     def test_given_multiple_capabilities_when_selecting_agents_then_returns_diverse_agents(
         self, mock_get_templates, orchestrator, mock_agent_templates
     ):
@@ -626,15 +641,15 @@ class TestMetaOrchestratorEdgeCases:
         context = {}
 
         # When
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
+        with patch.object(orchestrator, "_analyze_task") as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
                 complexity=TaskComplexity.SIMPLE,
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
+            with patch.object(orchestrator, "_choose_composition_pattern") as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
+                with patch.object(orchestrator, "_select_agents") as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
 
@@ -646,19 +661,19 @@ class TestMetaOrchestratorEdgeCases:
     ):
         """Test special characters in task are handled."""
         # Given
-        task = "Test @#$% special <>&\" characters"
+        task = 'Test @#$% special <>&" characters'
         context = {}
 
         # When
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
+        with patch.object(orchestrator, "_analyze_task") as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
                 complexity=TaskComplexity.SIMPLE,
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
+            with patch.object(orchestrator, "_choose_composition_pattern") as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
+                with patch.object(orchestrator, "_select_agents") as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
 
@@ -672,15 +687,15 @@ class TestMetaOrchestratorEdgeCases:
         context = {}
 
         # When
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
+        with patch.object(orchestrator, "_analyze_task") as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
                 complexity=TaskComplexity.SIMPLE,
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
             )
-            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
+            with patch.object(orchestrator, "_choose_composition_pattern") as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
+                with patch.object(orchestrator, "_select_agents") as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
 
@@ -694,16 +709,16 @@ class TestMetaOrchestratorEdgeCases:
         context = {f"key_{i}": f"value_{i}" for i in range(1000)}
 
         # When
-        with patch.object(orchestrator, '_analyze_task') as mock_analyze:
+        with patch.object(orchestrator, "_analyze_task") as mock_analyze:
             mock_analyze.return_value = TaskRequirements(
                 complexity=TaskComplexity.SIMPLE,
                 domain=TaskDomain.GENERAL,
                 capabilities_needed=[],
                 context=context,
             )
-            with patch.object(orchestrator, '_choose_composition_pattern') as mock_select:
+            with patch.object(orchestrator, "_choose_composition_pattern") as mock_select:
                 mock_select.return_value = CompositionPattern.SEQUENTIAL
-                with patch.object(orchestrator, '_select_agents') as mock_select_agents:
+                with patch.object(orchestrator, "_select_agents") as mock_select_agents:
                     mock_select_agents.return_value = []
                     plan = orchestrator.analyze_and_compose(task, context)
 
@@ -714,8 +729,8 @@ class TestMetaOrchestratorEdgeCases:
 class TestMetaOrchestratorIntegration:
     """Integration tests for MetaOrchestrator."""
 
-    @patch('attune.orchestration.meta_orchestrator.get_templates_by_capability')
-    @patch('attune.orchestration.meta_orchestrator.get_template')
+    @patch("attune.orchestration.meta_orchestrator.get_templates_by_capability")
+    @patch("attune.orchestration.meta_orchestrator.get_template")
     def test_given_real_world_scenario_when_composing_then_creates_valid_plan(
         self, mock_get_template, mock_get_templates, orchestrator, mock_agent_templates
     ):

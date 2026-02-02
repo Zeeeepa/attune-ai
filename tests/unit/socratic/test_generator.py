@@ -339,18 +339,22 @@ class TestAgentGeneratorForRequirements:
 
     def test_generates_security_agent_for_security_focus(self, generator):
         """Test that security focus generates security reviewer."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["security"],
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["security"],
+            }
+        )
 
         template_ids = [a.template_id for a in agents]
         assert "security_reviewer" in template_ids
 
     def test_generates_performance_agent_for_performance_focus(self, generator):
         """Test that performance focus generates performance analyzer."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["performance"],
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["performance"],
+            }
+        )
 
         template_ids = [a.template_id for a in agents]
         assert "performance_analyzer" in template_ids
@@ -364,19 +368,23 @@ class TestAgentGeneratorForRequirements:
 
     def test_adds_synthesizer_for_multiple_agents(self, generator):
         """Test that synthesizer is added when multiple agents needed."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["security", "performance"],
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["security", "performance"],
+            }
+        )
 
         template_ids = [a.template_id for a in agents]
         assert "result_synthesizer" in template_ids
 
     def test_applies_automation_level_fully_auto(self, generator):
         """Test that fully_auto automation adds appropriate instructions."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["security"],
-            "automation_level": "fully_auto",
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["security"],
+                "automation_level": "fully_auto",
+            }
+        )
 
         agent = next(a for a in agents if a.template_id == "security_reviewer")
         instructions = agent.spec.custom_instructions
@@ -385,10 +393,12 @@ class TestAgentGeneratorForRequirements:
 
     def test_applies_automation_level_advisory(self, generator):
         """Test that advisory automation adds appropriate instructions."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["security"],
-            "automation_level": "advisory",
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["security"],
+                "automation_level": "advisory",
+            }
+        )
 
         agent = next(a for a in agents if a.template_id == "security_reviewer")
         instructions = agent.spec.custom_instructions
@@ -408,9 +418,11 @@ class TestAgentGeneratorWorkflow:
     @pytest.fixture
     def valid_blueprint(self, generator):
         """Create a valid workflow blueprint."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["security"],
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["security"],
+            }
+        )
 
         return WorkflowBlueprint(
             id="test-workflow",
@@ -430,9 +442,7 @@ class TestAgentGeneratorWorkflow:
 
     def test_generate_workflow_success(self, generator, valid_blueprint):
         """Test successful workflow generation."""
-        with patch(
-            "attune.socratic.generator.AgentGenerator._create_xml_agent"
-        ) as mock_create:
+        with patch("attune.socratic.generator.AgentGenerator._create_xml_agent") as mock_create:
             mock_agent = MagicMock()
             mock_create.return_value = mock_agent
 
@@ -466,9 +476,11 @@ class TestAgentGeneratorCreateWorkflowBlueprint:
 
     def test_creates_blueprint_with_stages(self, generator):
         """Test that blueprint is created with automatic staging."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["security", "maintainability"],
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["security", "maintainability"],
+            }
+        )
 
         blueprint = generator.create_workflow_blueprint(
             name="Test Workflow",
@@ -483,9 +495,11 @@ class TestAgentGeneratorCreateWorkflowBlueprint:
 
     def test_groups_agents_by_role(self, generator):
         """Test that agents are grouped by role into stages."""
-        agents = generator.generate_agents_for_requirements({
-            "quality_focus": ["security", "testability"],
-        })
+        agents = generator.generate_agents_for_requirements(
+            {
+                "quality_focus": ["security", "testability"],
+            }
+        )
 
         blueprint = generator.create_workflow_blueprint(
             name="Test",

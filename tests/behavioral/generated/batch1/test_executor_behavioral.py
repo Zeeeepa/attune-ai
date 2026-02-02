@@ -381,8 +381,8 @@ class TestLLMExecutorProtocol:
         # When/Then - Test that the Protocol interface works
         # Note: isinstance() with runtime_checkable Protocol is unreliable
         # Instead, verify that the executor has the required method
-        assert hasattr(executor, 'run')
-        assert callable(getattr(executor, 'run'))
+        assert hasattr(executor, "run")
+        assert callable(getattr(executor, "run"))
 
     def test_given_non_executor_class_when_checked_then_not_recognized_as_protocol(self):
         """Given a non-executor class, when checked, then it is not recognized as LLMExecutor protocol."""
@@ -603,11 +603,7 @@ class TestLLMResponseEdgeCases:
         """Given nested metadata, when response is created, then nested structure is preserved."""
         # Given
         metadata = {
-            "level1": {
-                "level2": {
-                    "level3": "value"
-                }
-            },
+            "level1": {"level2": {"level3": "value"}},
             "list": [1, 2, 3],
         }
 

@@ -25,7 +25,7 @@ def cli_runner():
 @pytest.fixture
 def mock_console():
     """Provide a mocked Rich console."""
-    with patch('attune.meta_workflows.cli_commands.config_commands.console') as mock:
+    with patch("attune.meta_workflows.cli_commands.config_commands.console") as mock:
         yield mock
 
 
@@ -78,8 +78,13 @@ class TestSuggestDefaultsCommand:
     """Test suite for suggest_defaults_cmd function."""
 
     def test_given_valid_template_when_no_history_then_shows_no_suggestions(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN a valid template ID with no history
@@ -87,21 +92,22 @@ class TestSuggestDefaultsCommand:
         THEN it should display a message indicating no suggestions are available
         """
         # GIVEN
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = {}
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="test_user"
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id="test_user")
 
             # THEN
             assert mock_template_registry.load_template.called
@@ -112,8 +118,13 @@ class TestSuggestDefaultsCommand:
             )
 
     def test_given_valid_template_when_suggestions_exist_then_displays_table(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN a valid template ID with existing suggestions
@@ -121,32 +132,31 @@ class TestSuggestDefaultsCommand:
         THEN it should display suggestions in a formatted table
         """
         # GIVEN
-        suggestions = {
-            "question_1": "John Doe",
-            "question_2": ["option1", "option2"]
-        }
+        suggestions = {"question_1": "John Doe", "question_2": ["option1", "option2"]}
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = suggestions
 
             # WHEN
             suggest_defaults_cmd(
-                template_id="test_template",
-                session_id="test_session",
-                user_id="test_user"
+                template_id="test_template", session_id="test_session", user_id="test_user"
             )
 
             # THEN
             mock_template_registry.load_template.assert_called_once_with("test_template")
             mock_session_context.suggest_defaults.assert_called_once_with(
-                template_id="test_template",
-                form_schema=mock_template.form_schema
+                template_id="test_template", form_schema=mock_template.form_schema
             )
 
             # Verify console print calls
@@ -155,8 +165,12 @@ class TestSuggestDefaultsCommand:
             assert any("Found 2 suggested default(s)" in call for call in print_calls)
 
     def test_given_invalid_template_when_loading_fails_then_exits_with_error(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
     ):
         """
         GIVEN an invalid template ID
@@ -166,29 +180,37 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         from click.exceptions import Exit
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_template_registry.load_template.return_value = None
 
             # WHEN/THEN
             with pytest.raises(Exit):
                 suggest_defaults_cmd(
-                    template_id="invalid_template",
-                    session_id=None,
-                    user_id="test_user"
+                    template_id="invalid_template", session_id=None, user_id="test_user"
                 )
 
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("Error" in call and "Template not found" in call for call in print_calls)
 
     def test_given_session_id_when_provided_then_uses_specific_session(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN a specific session ID
@@ -198,31 +220,40 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         session_id = "custom_session_123"
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context) as mock_session_cls, \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch(
+                "attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory
+            ) as mock_memory_cls,
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ) as mock_session_cls,
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = {}
 
             # WHEN
             suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=session_id,
-                user_id="test_user"
+                template_id="test_template", session_id=session_id, user_id="test_user"
             )
 
             # THEN
             mock_session_cls.assert_called_once_with(
-                memory=mock_unified_memory,
-                session_id=session_id
+                memory=mock_unified_memory, session_id=session_id
             )
 
     def test_given_custom_user_id_when_provided_then_uses_custom_user(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN a custom user ID
@@ -232,28 +263,36 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         user_id = "custom_user_456"
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch(
+                "attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory
+            ) as mock_memory_cls,
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = {}
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id=user_id
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id=user_id)
 
             # THEN
             mock_memory_cls.assert_called_once_with(user_id=user_id)
 
     def test_given_list_value_when_displaying_then_formats_as_comma_separated(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN suggestions containing list values
@@ -261,33 +300,37 @@ class TestSuggestDefaultsCommand:
         THEN list values should be formatted as comma-separated strings
         """
         # GIVEN
-        suggestions = {
-            "question_2": ["option1", "option2", "option3"]
-        }
+        suggestions = {"question_2": ["option1", "option2", "option3"]}
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = suggestions
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="test_user"
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id="test_user")
 
             # THEN
             # Verify table creation (list should be comma-separated)
             assert mock_console.print.called
 
     def test_given_question_without_match_when_displaying_then_uses_question_id(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN suggestions for a question ID not in the schema
@@ -295,32 +338,36 @@ class TestSuggestDefaultsCommand:
         THEN it should use the question ID as fallback text
         """
         # GIVEN
-        suggestions = {
-            "unknown_question": "some value"
-        }
+        suggestions = {"unknown_question": "some value"}
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = suggestions
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="test_user"
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id="test_user")
 
             # THEN
             assert mock_console.print.called
 
     def test_given_template_name_when_displaying_then_shows_template_info(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN a template with a name
@@ -330,21 +377,22 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         mock_template.name = "My Awesome Template"
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = {}
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="test_user"
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id="test_user")
 
             # THEN
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
@@ -352,8 +400,13 @@ class TestSuggestDefaultsCommand:
             assert any("Template ID: test_template" in call for call in print_calls)
 
     def test_given_multiple_suggestions_when_displaying_then_shows_count(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN multiple suggestions
@@ -361,35 +414,36 @@ class TestSuggestDefaultsCommand:
         THEN it should show the correct count of suggestions
         """
         # GIVEN
-        suggestions = {
-            "question_1": "value1",
-            "question_2": "value2",
-            "question_3": "value3"
-        }
+        suggestions = {"question_1": "value1", "question_2": "value2", "question_3": "value3"}
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = suggestions
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="test_user"
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id="test_user")
 
             # THEN
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("Found 3 suggested default(s)" in call for call in print_calls)
 
     def test_given_exception_during_execution_when_called_then_propagates_error(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
     ):
         """
         GIVEN an unexpected exception during execution
@@ -399,15 +453,14 @@ class TestSuggestDefaultsCommand:
         # GIVEN
         from click.exceptions import Exit
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   side_effect=Exception("Unexpected error")):
+        with patch(
+            "attune.memory.unified.UnifiedMemory", side_effect=Exception("Unexpected error")
+        ):
 
             # WHEN/THEN - The function catches exceptions and converts them to Exit
             with pytest.raises(Exit):
                 suggest_defaults_cmd(
-                    template_id="test_template",
-                    session_id=None,
-                    user_id="test_user"
+                    template_id="test_template", session_id=None, user_id="test_user"
                 )
 
             # Verify error was printed to console
@@ -415,8 +468,13 @@ class TestSuggestDefaultsCommand:
             assert any("Error" in call and "Unexpected error" in call for call in print_calls)
 
     def test_given_empty_suggestions_dict_when_displaying_then_shows_no_suggestions(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN an empty suggestions dictionary
@@ -424,29 +482,35 @@ class TestSuggestDefaultsCommand:
         THEN it should show the no suggestions message
         """
         # GIVEN
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = {}
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="test_user"
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id="test_user")
 
             # THEN
             print_calls = [str(call_args) for call_args in mock_console.print.call_args_list]
             assert any("No suggestions available" in call for call in print_calls)
 
     def test_given_default_user_id_when_not_provided_then_uses_cli_user(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN no custom user ID
@@ -454,28 +518,38 @@ class TestSuggestDefaultsCommand:
         THEN it should use 'cli_user' as default
         """
         # GIVEN
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory) as mock_memory_cls, \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch(
+                "attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory
+            ) as mock_memory_cls,
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = {}
 
             # WHEN
             suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="cli_user"  # default value
+                template_id="test_template", session_id=None, user_id="cli_user"  # default value
             )
 
             # THEN
             mock_memory_cls.assert_called_once_with(user_id="cli_user")
 
     def test_given_string_value_when_displaying_then_converts_to_string(
-        self, cli_runner, mock_console, mock_unified_memory, mock_session_context,
-        mock_template_registry, mock_template
+        self,
+        cli_runner,
+        mock_console,
+        mock_unified_memory,
+        mock_session_context,
+        mock_template_registry,
+        mock_template,
     ):
         """
         GIVEN suggestions with various value types
@@ -483,26 +557,24 @@ class TestSuggestDefaultsCommand:
         THEN all values should be converted to strings
         """
         # GIVEN
-        suggestions = {
-            "question_1": 123,
-            "question_2": True
-        }
+        suggestions = {"question_1": 123, "question_2": True}
 
-        with patch('attune.memory.unified.UnifiedMemory',
-                   return_value=mock_unified_memory), \
-             patch('attune.meta_workflows.session_context.SessionContext',
-                   return_value=mock_session_context), \
-             patch('attune.meta_workflows.cli_commands.config_commands.TemplateRegistry',
-                   return_value=mock_template_registry):
+        with (
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
+            patch(
+                "attune.meta_workflows.session_context.SessionContext",
+                return_value=mock_session_context,
+            ),
+            patch(
+                "attune.meta_workflows.cli_commands.config_commands.TemplateRegistry",
+                return_value=mock_template_registry,
+            ),
+        ):
 
             mock_session_context.suggest_defaults.return_value = suggestions
 
             # WHEN
-            suggest_defaults_cmd(
-                template_id="test_template",
-                session_id=None,
-                user_id="test_user"
-            )
+            suggest_defaults_cmd(template_id="test_template", session_id=None, user_id="test_user")
 
             # THEN
             assert mock_console.print.called

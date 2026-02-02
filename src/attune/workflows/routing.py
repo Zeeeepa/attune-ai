@@ -164,5 +164,3 @@ class BalancedRouting(TierRoutingStrategy):
     def can_fallback(self, tier: ModelTier) -> bool:
         """Allow fallback when budget-constrained."""
         return True
-
-

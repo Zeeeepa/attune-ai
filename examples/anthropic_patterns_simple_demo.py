@@ -10,6 +10,7 @@ Usage:
 Requirements:
     pip install empathy-framework
 """
+
 import asyncio
 
 from attune.orchestration import (
@@ -131,9 +132,7 @@ async def demo_prompt_cached_sequential():
     """
 
     # Create strategy with cached context
-    strategy = PromptCachedSequentialStrategy(
-        cached_context=cached_context, cache_ttl=3600
-    )
+    strategy = PromptCachedSequentialStrategy(cached_context=cached_context, cache_ttl=3600)
 
     print(f"\n✓ Created strategy: {strategy.__class__.__name__}")
     print(f"✓ Agents: {len(agents)} agents will share cached context")
@@ -266,7 +265,9 @@ async def main():
         print("=" * 60)
         print("\nNext steps:")
         print("  1. Read docs/architecture/anthropic-agent-patterns.md")
-        print("  2. Try: python -c 'from attune.orchestration import get_strategy; print(get_strategy(\"tool_enhanced\"))'")
+        print(
+            "  2. Try: python -c 'from attune.orchestration import get_strategy; print(get_strategy(\"tool_enhanced\"))'"
+        )
         print("  3. Run tests: pytest tests/unit/test_anthropic_patterns.py -v")
 
     except Exception as e:

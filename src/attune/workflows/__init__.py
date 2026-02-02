@@ -140,7 +140,10 @@ _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {
     "TestCoverageBoostCrew": (".test_coverage_boost_crew", "TestCoverageBoostCrew"),
     "TestCoverageBoostCrewResult": (".test_coverage_boost_crew", "TestCoverageBoostCrewResult"),
     "TestGenerationWorkflow": (".test_gen", "TestGenerationWorkflow"),
-    "BehavioralTestGenerationWorkflow": (".test_gen_behavioral", "BehavioralTestGenerationWorkflow"),
+    "BehavioralTestGenerationWorkflow": (
+        ".test_gen_behavioral",
+        "BehavioralTestGenerationWorkflow",
+    ),
     "ParallelTestGenerationWorkflow": (".test_gen_parallel", "ParallelTestGenerationWorkflow"),
     "XMLAgent": (".xml_enhanced_crew", "XMLAgent"),
     "XMLTask": (".xml_enhanced_crew", "XMLTask"),

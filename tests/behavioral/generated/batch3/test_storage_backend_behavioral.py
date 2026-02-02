@@ -18,10 +18,10 @@ from attune.memory.storage_backend import MemDocsStorage
 @pytest.fixture
 def temp_storage_dir(tmp_path):
     """Create a temporary storage directory for testing.
-    
+
     Args:
         tmp_path: pytest temporary directory fixture
-        
+
     Returns:
         Path to temporary storage directory
     """
@@ -33,10 +33,10 @@ def temp_storage_dir(tmp_path):
 @pytest.fixture
 def storage_backend(temp_storage_dir):
     """Create a MemDocsStorage instance with temporary directory.
-    
+
     Args:
         temp_storage_dir: Temporary storage directory fixture
-        
+
     Returns:
         Initialized MemDocsStorage instance
     """
@@ -46,7 +46,7 @@ def storage_backend(temp_storage_dir):
 @pytest.fixture
 def sample_pattern_data():
     """Provide sample pattern data for testing.
-    
+
     Returns:
         Dictionary with pattern_id, content, and metadata
     """
@@ -57,15 +57,15 @@ def sample_pattern_data():
             "classification": "emotional",
             "creator": "user_456",
             "timestamp": "2025-01-15T10:30:00Z",
-            "tags": ["test", "sample"]
-        }
+            "tags": ["test", "sample"],
+        },
     }
 
 
 @pytest.fixture
 def encrypted_pattern_data():
     """Provide encrypted pattern data for testing.
-    
+
     Returns:
         Dictionary with encrypted content
     """
@@ -76,8 +76,8 @@ def encrypted_pattern_data():
             "classification": "sensitive",
             "creator": "user_789",
             "encrypted": True,
-            "encryption_method": "AES-256"
-        }
+            "encryption_method": "AES-256",
+        },
     }
 
 
@@ -132,7 +132,7 @@ class TestMemDocsStorageInitialization:
         assert nested_path.exists()
         assert storage.storage_dir == nested_path
 
-    @patch('attune.memory.storage_backend.logger')
+    @patch("attune.memory.storage_backend.logger")
     def test_init_logs_initialization(self, mock_logger, temp_storage_dir):
         """Given a storage directory path
         When initializing MemDocsStorage
@@ -143,8 +143,7 @@ class TestMemDocsStorageInitialization:
 
         # Then
         mock_logger.info.assert_called_once_with(
-            "memdocs_storage_initialized",
-            storage_dir=str(temp_storage_dir)
+            "memdocs_storage_initialized", storage_dir=str(temp_storage_dir)
         )
 
     def test_init_with_default_directory(self):
@@ -153,7 +152,7 @@ class TestMemDocsStorageInitialization:
         Then it should use the default directory.
         """
         # Given / When
-        with patch('pathlib.Path.mkdir'):
+        with patch("pathlib.Path.mkdir"):
             storage = MemDocsStorage()
 
         # Then
@@ -163,7 +162,9 @@ class TestMemDocsStorageInitialization:
 class TestMemDocsStorageStore:
     """Test suite for MemDocsStorage.store method."""
 
-    def test_store_pattern_successfully(self, storage_backend, sample_pattern_data, temp_storage_dir):
+    def test_store_pattern_successfully(
+        self, storage_backend, sample_pattern_data, temp_storage_dir
+    ):
         """Given valid pattern data
         When storing a pattern
         Then the pattern should be saved to a JSON file.
@@ -187,7 +188,9 @@ class TestMemDocsStorageStore:
             assert saved_data["content"] == content
             assert saved_data["metadata"] == metadata
 
-    def test_store_encrypted_pattern(self, storage_backend, encrypted_pattern_data, temp_storage_dir):
+    def test_store_encrypted_pattern(
+        self, storage_backend, encrypted_pattern_data, temp_storage_dir
+    ):
         """Given encrypted pattern data
         When storing the pattern
         Then the encrypted content should be preserved.
@@ -273,7 +276,7 @@ class TestMemDocsStorageStore:
         assert result is True
         assert non_existent_dir.exists()
 
-    @patch('attune.memory.storage_backend._validate_file_path')
+    @patch("attune.memory.storage_backend._validate_file_path")
     def test_store_validates_file_path(self, mock_validate, storage_backend):
         """Given a pattern to store
         When storing the pattern
@@ -290,7 +293,7 @@ class TestMemDocsStorageStore:
         # Then
         mock_validate.assert_called_once_with(str(expected_path))
 
-    @patch('attune.memory.storage_backend.logger')
+    @patch("attune.memory.storage_backend.logger")
     def test_store_logs_success(self, mock_logger, storage_backend):
         """Given a successful pattern storage
         When storing a pattern
@@ -302,7 +305,7 @@ class TestMemDocsStorageStore:
         # Then
         mock_logger.debug.assert_called_with("pattern_stored", pattern_id="test_id")
 
-    @patch('builtins.open', side_effect=OSError("Disk full"))
+    @patch("builtins.open", side_effect=OSError("Disk full"))
     def test_store_raises_on_os_error(self, mock_file, storage_backend):
         """Given a file system error
         When attempting to store a pattern
@@ -312,7 +315,7 @@ class TestMemDocsStorageStore:
         with pytest.raises(OSError, match="Disk full"):
             storage_backend.store("test_id", "content", {})
 
-    @patch('builtins.open', side_effect=PermissionError("Access denied"))
+    @patch("builtins.open", side_effect=PermissionError("Access denied"))
     def test_store_raises_on_permission_error(self, mock_file, storage_backend):
         """Given insufficient permissions
         When attempting to store a pattern
@@ -322,8 +325,8 @@ class TestMemDocsStorageStore:
         with pytest.raises(PermissionError, match="Access denied"):
             storage_backend.store("test_id", "content", {})
 
-    @patch('attune.memory.storage_backend.logger')
-    @patch('builtins.open', side_effect=OSError("Write failed"))
+    @patch("attune.memory.storage_backend.logger")
+    @patch("builtins.open", side_effect=OSError("Write failed"))
     def test_store_logs_error_on_failure(self, mock_file, mock_logger, storage_backend):
         """Given a storage failure
         When attempting to store a pattern
@@ -369,14 +372,10 @@ class TestMemDocsStorageStore:
         pattern_id = "complex_metadata"
         content = "Content"
         metadata = {
-            "nested": {
-                "level1": {
-                    "level2": ["item1", "item2"]
-                }
-            },
+            "nested": {"level1": {"level2": ["item1", "item2"]}},
             "list": [1, 2, 3],
             "boolean": True,
-            "null": None
+            "null": None,
         }
 
         # When
@@ -403,9 +402,7 @@ class TestMemDocsStorageRetrieve:
         # Given
         pattern_id = sample_pattern_data["pattern_id"]
         storage_backend.store(
-            pattern_id,
-            sample_pattern_data["content"],
-            sample_pattern_data["metadata"]
+            pattern_id, sample_pattern_data["content"], sample_pattern_data["metadata"]
         )
 
         # When
@@ -439,9 +436,7 @@ class TestMemDocsStorageRetrieve:
         # Given
         pattern_id = encrypted_pattern_data["pattern_id"]
         storage_backend.store(
-            pattern_id,
-            encrypted_pattern_data["content"],
-            encrypted_pattern_data["metadata"]
+            pattern_id, encrypted_pattern_data["content"], encrypted_pattern_data["metadata"]
         )
 
         # When
@@ -452,7 +447,7 @@ class TestMemDocsStorageRetrieve:
         assert result["content"].startswith("ENCRYPTED:")
         assert result["metadata"]["encrypted"] is True
 
-    @patch('attune.memory.storage_backend.logger')
+    @patch("attune.memory.storage_backend.logger")
     def test_retrieve_logs_warning_for_missing_pattern(self, mock_logger, storage_backend):
         """Given a non-existent pattern ID
         When retrieving the pattern
@@ -466,10 +461,7 @@ class TestMemDocsStorageRetrieve:
 
         # Then
         assert result is None
-        mock_logger.warning.assert_called_once_with(
-            "pattern_not_found",
-            pattern_id=missing_id
-        )
+        mock_logger.warning.assert_called_once_with("pattern_not_found", pattern_id=missing_id)
 
     def test_retrieve_handles_special_characters(self, storage_backend):
         """Given a pattern with special characters
@@ -489,8 +481,8 @@ class TestMemDocsStorageRetrieve:
         assert result is not None
         assert result["content"] == content
 
-    @patch('builtins.open', side_effect=OSError("Read error"))
-    @patch('attune.memory.storage_backend.logger')
+    @patch("builtins.open", side_effect=OSError("Read error"))
+    @patch("attune.memory.storage_backend.logger")
     def test_retrieve_logs_error_on_read_failure(self, mock_logger, mock_file, storage_backend):
         """Given a file read error
         When retrieving a pattern
@@ -518,7 +510,7 @@ class TestMemDocsStorageRetrieve:
         patterns = [
             ("pattern1", "content1", {"key": "value1"}),
             ("pattern2", "content2", {"key": "value2"}),
-            ("pattern3", "content3", {"key": "value3"})
+            ("pattern3", "content3", {"key": "value3"}),
         ]
 
         for pid, content, metadata in patterns:
@@ -531,8 +523,8 @@ class TestMemDocsStorageRetrieve:
             assert result["content"] == content
             assert result["metadata"] == metadata
 
-    @patch('builtins.open', side_effect=json.JSONDecodeError("Invalid JSON", "", 0))
-    @patch('attune.memory.storage_backend.logger')
+    @patch("builtins.open", side_effect=json.JSONDecodeError("Invalid JSON", "", 0))
+    @patch("attune.memory.storage_backend.logger")
     def test_retrieve_handles_corrupted_json(self, mock_logger, mock_file, storage_backend):
         """Given a corrupted JSON file
         When retrieving the pattern
@@ -582,7 +574,7 @@ class TestMemDocsStorageIntegration:
         metadata = {
             "classification": "test",
             "creator": "integration_test",
-            "timestamp": "2025-01-15T12:00:00Z"
+            "timestamp": "2025-01-15T12:00:00Z",
         }
 
         # When
@@ -665,7 +657,7 @@ class TestMemDocsStorageIntegration:
             "pattern_1": "content_1",
             "pattern_2": "content_2",
             "pattern_11": "content_11",
-            "pattern_21": "content_21"
+            "pattern_21": "content_21",
         }
 
         # When
@@ -763,6 +755,7 @@ class TestMemDocsStorageEdgeCases:
         """
         # Given
         import os
+
         original_cwd = os.getcwd()
         os.chdir(tmp_path)
 
@@ -811,7 +804,7 @@ class TestMemDocsStorageEdgeCases:
             "boolean": True,
             "null": None,
             "array": [1, 2, 3],
-            "object": {"nested": "value"}
+            "object": {"nested": "value"},
         }
 
         # When

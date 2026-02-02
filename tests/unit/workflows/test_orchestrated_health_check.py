@@ -196,9 +196,7 @@ class TestOrchestratedHealthCheckWorkflow:
         workflow = OrchestratedHealthCheckWorkflow(mode="daily", project_root=str(tmp_path))
 
         # Mock the strategy execution
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             # Create mock agent results
             mock_results = [
                 AgentResult(
@@ -253,9 +251,7 @@ class TestOrchestratedHealthCheckWorkflow:
         """Test executing health check in weekly mode."""
         workflow = OrchestratedHealthCheckWorkflow(mode="weekly", project_root=str(tmp_path))
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             mock_results = [
                 AgentResult(
                     agent_id="security_auditor",
@@ -315,9 +311,7 @@ class TestOrchestratedHealthCheckWorkflow:
         """Test executing health check in release mode."""
         workflow = OrchestratedHealthCheckWorkflow(mode="release", project_root=str(tmp_path))
 
-        with patch(
-            "attune.workflows.orchestrated_health_check.ParallelStrategy"
-        ) as mock_strategy:
+        with patch("attune.workflows.orchestrated_health_check.ParallelStrategy") as mock_strategy:
             mock_results = [
                 AgentResult(
                     agent_id="security_auditor",

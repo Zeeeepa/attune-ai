@@ -15,10 +15,12 @@ from pathlib import Path
 
 try:
     import requests
+
     HAS_REQUESTS = True
 except ImportError:
     # Fallback to urllib if requests not available
     import urllib.request
+
     HAS_REQUESTS = False
 
 
@@ -59,20 +61,20 @@ def start_dashboard_and_open(host: str = "127.0.0.1", port: int = 8000, max_wait
     # Start dashboard in background
     cmd = [
         sys.executable,
-        "-m", "attune.cli_minimal",
-        "dashboard", "start",
-        "--host", host,
-        "--port", str(port)
+        "-m",
+        "attune.cli_minimal",
+        "dashboard",
+        "start",
+        "--host",
+        host,
+        "--port",
+        str(port),
     ]
 
     try:
         # Start process
         process = subprocess.Popen(
-            cmd,
-            cwd=project_root,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
+            cmd, cwd=project_root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
 
         print(f"✅ Dashboard process started (PID: {process.pid})")
@@ -103,7 +105,7 @@ def start_dashboard_and_open(host: str = "127.0.0.1", port: int = 8000, max_wait
 
             # Progress indicator
             if attempt % 4 == 0:
-                print(f"   Still waiting... ({attempt//2}s)", end='\r')
+                print(f"   Still waiting... ({attempt//2}s)", end="\r")
 
         if not ready:
             print(f"\n❌ Dashboard did not start within {max_wait}s")
@@ -162,13 +164,19 @@ def main():
     if args.no_open:
         # Just start without opening
         print("Starting dashboard without opening browser...")
-        subprocess.run([
-            sys.executable,
-            "-m", "attune.cli_minimal",
-            "dashboard", "start",
-            "--host", args.host,
-            "--port", str(args.port)
-        ])
+        subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "attune.cli_minimal",
+                "dashboard",
+                "start",
+                "--host",
+                args.host,
+                "--port",
+                str(args.port),
+            ]
+        )
     else:
         # Start and open
         process = start_dashboard_and_open(args.host, args.port, args.max_wait)

@@ -15,7 +15,7 @@ from attune.dashboard import run_standalone_dashboard
 
 def start_server():
     """Start dashboard server."""
-    run_standalone_dashboard(host='127.0.0.1', port=8888)
+    run_standalone_dashboard(host="127.0.0.1", port=8888)
 
 
 def test_endpoints():
@@ -33,19 +33,19 @@ def test_endpoints():
     print()
 
     endpoints = [
-        ('/api/health', 'System Health'),
-        ('/api/agents', 'Active Agents'),
-        ('/api/signals?limit=5', 'Coordination Signals'),
-        ('/api/events?limit=5', 'Event Stream'),
-        ('/api/approvals', 'Pending Approvals'),
-        ('/api/feedback/workflows', 'Quality Metrics'),
-        ('/api/feedback/underperforming?threshold=0.7', 'Underperforming Stages'),
+        ("/api/health", "System Health"),
+        ("/api/agents", "Active Agents"),
+        ("/api/signals?limit=5", "Coordination Signals"),
+        ("/api/events?limit=5", "Event Stream"),
+        ("/api/approvals", "Pending Approvals"),
+        ("/api/feedback/workflows", "Quality Metrics"),
+        ("/api/feedback/underperforming?threshold=0.7", "Underperforming Stages"),
     ]
 
     all_ok = True
     for endpoint, description in endpoints:
         try:
-            url = f'http://127.0.0.1:8888{endpoint}'
+            url = f"http://127.0.0.1:8888{endpoint}"
             response = urllib.request.urlopen(url, timeout=3)
             status = response.status
             data_raw = response.read().decode()
@@ -88,8 +88,9 @@ def test_endpoints():
 if __name__ == "__main__":
     # Check Redis has data first
     import redis
+
     try:
-        r = redis.Redis(host='localhost', port=6379)
+        r = redis.Redis(host="localhost", port=6379)
         key_count = r.dbsize()
         print()
         print(f"📊 Redis has {key_count} keys")

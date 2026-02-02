@@ -62,7 +62,11 @@ class AgentHeartbeat:
             "status": self.status,
             "progress": self.progress,
             "current_task": self.current_task,
-            "last_beat": self.last_beat.isoformat() if isinstance(self.last_beat, datetime) else self.last_beat,
+            "last_beat": (
+                self.last_beat.isoformat()
+                if isinstance(self.last_beat, datetime)
+                else self.last_beat
+            ),
             "metadata": self.metadata,
             "display_name": self.display_name,
         }
@@ -210,7 +214,12 @@ class HeartbeatCoordinator:
         self.agent_id = None
 
     def _publish_heartbeat(
-        self, status: str, progress: float, current_task: str, metadata: dict[str, Any], display_name: str | None = None
+        self,
+        status: str,
+        progress: float,
+        current_task: str,
+        metadata: dict[str, Any],
+        display_name: str | None = None,
     ) -> None:
         """Publish heartbeat to Redis with TTL and optionally to event stream."""
         if not self.memory or not self.agent_id:
@@ -361,7 +370,11 @@ class HeartbeatCoordinator:
 
         for agent in active:
             time_since_beat = (now - agent.last_beat).total_seconds()
-            if time_since_beat > threshold_seconds and agent.status not in ("completed", "failed", "cancelled"):
+            if time_since_beat > threshold_seconds and agent.status not in (
+                "completed",
+                "failed",
+                "cancelled",
+            ):
                 stale.append(agent)
 
         return stale

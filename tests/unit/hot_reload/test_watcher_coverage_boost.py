@@ -175,9 +175,7 @@ class TestWorkflowFileHandlerOnModified:
         handler = WorkflowFileHandler(reload_callback=callback)
 
         # Patch _extract_workflow_id to raise exception
-        with patch.object(
-            handler, "_extract_workflow_id", side_effect=Exception("Extract error")
-        ):
+        with patch.object(handler, "_extract_workflow_id", side_effect=Exception("Extract error")):
             event = Mock(spec=FileSystemEvent)
             event.is_directory = False
             event.src_path = "/workflows/workflow.py"
@@ -322,9 +320,7 @@ class TestWorkflowFileWatcherStart:
         dir1.mkdir()
         dir2.mkdir()
 
-        watcher = WorkflowFileWatcher(
-            workflow_dirs=[dir1, dir2], reload_callback=callback
-        )
+        watcher = WorkflowFileWatcher(workflow_dirs=[dir1, dir2], reload_callback=callback)
 
         with patch.object(watcher.observer, "schedule") as mock_schedule:
             with patch.object(watcher.observer, "start") as mock_start:
@@ -382,9 +378,7 @@ class TestWorkflowFileWatcherStart:
     def test_start_does_nothing_with_no_valid_directories(self):
         """Test that start does nothing if no valid directories."""
         callback = MagicMock()
-        watcher = WorkflowFileWatcher(
-            workflow_dirs=["/nonexistent"], reload_callback=callback
-        )
+        watcher = WorkflowFileWatcher(workflow_dirs=["/nonexistent"], reload_callback=callback)
 
         with patch.object(watcher.observer, "start") as mock_start:
             watcher.start()

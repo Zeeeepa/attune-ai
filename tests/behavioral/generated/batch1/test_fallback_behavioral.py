@@ -65,9 +65,7 @@ class TestFallbackStep:
         description = "Primary fallback"
 
         # When
-        step = FallbackStep(
-            provider=provider, tier=tier, description=description
-        )
+        step = FallbackStep(provider=provider, tier=tier, description=description)
 
         # Then
         assert step.provider == provider
@@ -129,9 +127,7 @@ class TestFallbackPolicy:
         # Then
         assert policy.primary_provider == "anthropic"
         assert policy.primary_tier == "capable"
-        assert (
-            policy.strategy == FallbackStrategy.SAME_TIER_DIFFERENT_PROVIDER
-        )
+        assert policy.strategy == FallbackStrategy.SAME_TIER_DIFFERENT_PROVIDER
         assert policy.custom_chain == []
         assert policy.max_retries == 2
         assert policy.retry_delay_ms == 1000
@@ -177,9 +173,7 @@ class TestFallbackPolicy:
             FallbackStep("anthropic", "premium", "First"),
             FallbackStep("anthropic", "capable", "Second"),
         ]
-        policy = FallbackPolicy(
-            strategy=FallbackStrategy.CUSTOM, custom_chain=custom_chain
-        )
+        policy = FallbackPolicy(strategy=FallbackStrategy.CUSTOM, custom_chain=custom_chain)
 
         # When
         chain = policy.get_fallback_chain()
@@ -258,9 +252,7 @@ class TestFallbackPolicy:
     ):
         """Verify get_fallback_chain returns empty list for empty custom chain."""
         # Given
-        policy = FallbackPolicy(
-            strategy=FallbackStrategy.CUSTOM, custom_chain=[]
-        )
+        policy = FallbackPolicy(strategy=FallbackStrategy.CUSTOM, custom_chain=[])
 
         # When
         chain = policy.get_fallback_chain()
@@ -349,12 +341,7 @@ class TestCircuitBreakerState:
         now = datetime.now()
 
         # When
-        state = CircuitBreakerState(
-            failure_count=5,
-            last_failure=now,
-            is_open=True,
-            opened_at=now
-        )
+        state = CircuitBreakerState(failure_count=5, last_failure=now, is_open=True, opened_at=now)
 
         # Then
         assert state.failure_count == 5
@@ -647,9 +634,7 @@ class TestRetryPolicy:
         """Verify exponential backoff is applied correctly."""
         # Given
         policy = RetryPolicy(
-            initial_delay_ms=1000,
-            backoff_multiplier=2.0,
-            exponential_backoff=True
+            initial_delay_ms=1000, backoff_multiplier=2.0, exponential_backoff=True
         )
 
         # When
@@ -739,9 +724,7 @@ class TestRetryPolicy:
     ):
         """Verify retry delays are applied between attempts."""
         # Given
-        policy = RetryPolicy(
-            max_retries=3, initial_delay_ms=1000, exponential_backoff=False
-        )
+        policy = RetryPolicy(max_retries=3, initial_delay_ms=1000, exponential_backoff=False)
 
         # When
         for attempt in range(1, 3):
@@ -758,9 +741,7 @@ class TestRetryPolicy:
         """Verify custom backoff multiplier is used."""
         # Given
         policy = RetryPolicy(
-            initial_delay_ms=1000,
-            backoff_multiplier=3.0,
-            exponential_backoff=True
+            initial_delay_ms=1000, backoff_multiplier=3.0, exponential_backoff=True
         )
 
         # When
@@ -776,11 +757,7 @@ class TestRetryPolicy:
     ):
         """Verify handling of very large attempt numbers."""
         # Given
-        policy = RetryPolicy(
-            initial_delay_ms=1000,
-            max_delay_ms=30000,
-            exponential_backoff=True
-        )
+        policy = RetryPolicy(initial_delay_ms=1000, max_delay_ms=30000, exponential_backoff=True)
 
         # When
         delay = policy.get_delay_ms(attempt=1000)
@@ -862,9 +839,7 @@ class TestIntegration:
     ):
         """Verify complete fallback scenario with retries and circuit breaker."""
         # Given
-        retry_policy = RetryPolicy(
-            max_retries=5, initial_delay_ms=100, exponential_backoff=False
-        )
+        retry_policy = RetryPolicy(max_retries=5, initial_delay_ms=100, exponential_backoff=False)
         fallback_policy = FallbackPolicy(
             strategy=FallbackStrategy.CUSTOM,
             custom_chain=[
@@ -881,7 +856,9 @@ class TestIntegration:
         for step in chain:
             attempt = 0
 
-            while retry_policy.should_retry("rate_limit", attempt) and cb.is_available(step.provider, step.tier):
+            while retry_policy.should_retry("rate_limit", attempt) and cb.is_available(
+                step.provider, step.tier
+            ):
                 attempt += 1
                 # Simulate failure
                 cb.record_failure(step.provider, step.tier)

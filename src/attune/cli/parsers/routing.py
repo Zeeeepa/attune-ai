@@ -28,9 +28,7 @@ def register_parsers(subparsers):
     )
 
     # Routing subcommands
-    routing_subparsers = routing_parser.add_subparsers(
-        dest="routing_command", required=True
-    )
+    routing_subparsers = routing_parser.add_subparsers(dest="routing_command", required=True)
 
     # routing stats command
     stats_parser = routing_subparsers.add_parser(

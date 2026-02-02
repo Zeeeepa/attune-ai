@@ -84,15 +84,11 @@ class TestValidator:
 
         # Check for mock imports if patches are used
         if "@patch" in content and "from unittest.mock import" not in content:
-            self.issues.append(
-                f"{test_file.name}: Uses @patch but missing mock imports"
-            )
+            self.issues.append(f"{test_file.name}: Uses @patch but missing mock imports")
 
         # Check for module under test import
         if "from attune" not in content:
-            self.warnings.append(
-                f"{test_file.name}: No imports from attune (is module imported?)"
-            )
+            self.warnings.append(f"{test_file.name}: No imports from attune (is module imported?)")
 
     def _check_given_when_then(self, content: str, test_file: Path):
         """Check for Given/When/Then pattern in tests."""
@@ -125,9 +121,7 @@ class TestValidator:
 
         if methods_without_docstring:
             for method in methods_without_docstring:
-                self.warnings.append(
-                    f"{test_file.name}::{method}: Missing docstring"
-                )
+                self.warnings.append(f"{test_file.name}::{method}: Missing docstring")
 
         # Check for generic docstrings
         generic_patterns = [
@@ -138,9 +132,7 @@ class TestValidator:
 
         for pattern in generic_patterns:
             if re.search(pattern, content):
-                self.warnings.append(
-                    f"{test_file.name}: Contains generic/TODO docstrings"
-                )
+                self.warnings.append(f"{test_file.name}: Contains generic/TODO docstrings")
 
     def _check_test_count(self, content: str, test_file: Path):
         """Check for minimum test count."""
@@ -165,9 +157,7 @@ class TestValidator:
                 method_body = match.group(1)
 
                 # Check for assertions or pytest.raises
-                has_assert = (
-                    "assert " in method_body or "pytest.raises" in method_body
-                )
+                has_assert = "assert " in method_body or "pytest.raises" in method_body
 
                 # Check for just 'pass'
                 has_only_pass = method_body.strip().endswith("pass")
@@ -198,9 +188,7 @@ class TestValidator:
             )
 
 
-def validate_all_tests(
-    test_dir: Path, strict: bool = False
-) -> Tuple[int, int, List[str]]:
+def validate_all_tests(test_dir: Path, strict: bool = False) -> Tuple[int, int, List[str]]:
     """Validate all test files in directory.
 
     Args:
@@ -309,9 +297,7 @@ def print_summary(valid_count: int, total_count: int, all_issues: List[str]):
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Validate batch 10 behavioral test files"
-    )
+    parser = argparse.ArgumentParser(description="Validate batch 10 behavioral test files")
     parser.add_argument(
         "--strict",
         action="store_true",
@@ -319,9 +305,7 @@ def main():
     )
     args = parser.parse_args()
 
-    test_dir = (
-        Path(__file__).parent.parent / "tests" / "behavioral" / "generated" / "batch10"
-    )
+    test_dir = Path(__file__).parent.parent / "tests" / "behavioral" / "generated" / "batch10"
 
     if not test_dir.exists():
         print(f"Error: Test directory not found: {test_dir}", file=sys.stderr)

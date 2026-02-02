@@ -35,9 +35,7 @@ def mock_path_for_init(mocker):
 @pytest.fixture
 def mock_ast_analyzer(mocker):
     """Mock ASTFunctionAnalyzer."""
-    mock_class = mocker.patch(
-        "attune.workflows.test_gen.workflow.ASTFunctionAnalyzer"
-    )
+    mock_class = mocker.patch("attune.workflows.test_gen.workflow.ASTFunctionAnalyzer")
     mock_instance = Mock()
     mock_instance.analyze.return_value = ([], [])
     mock_instance.last_error = None
@@ -48,12 +46,8 @@ def mock_ast_analyzer(mocker):
 @pytest.fixture
 def mock_test_templates(mocker):
     """Mock test template generation functions."""
-    mock_func = mocker.patch(
-        "attune.workflows.test_gen.workflow.generate_test_for_function"
-    )
-    mock_class = mocker.patch(
-        "attune.workflows.test_gen.workflow.generate_test_for_class"
-    )
+    mock_func = mocker.patch("attune.workflows.test_gen.workflow.generate_test_for_function")
+    mock_class = mocker.patch("attune.workflows.test_gen.workflow.generate_test_for_class")
     mock_func.return_value = "def test_function():\n    pass"
     mock_class.return_value = "def test_class():\n    pass"
     return {"function": mock_func, "class": mock_class}
@@ -300,9 +294,7 @@ class TestRunStage:
         # Given
         from attune.workflows.base import ModelTier
 
-        mock_identify = mocker.patch.object(
-            workflow, "_identify", return_value=({}, 10, 20)
-        )
+        mock_identify = mocker.patch.object(workflow, "_identify", return_value=({}, 10, 20))
 
         # When
         result = await workflow.run_stage("identify", ModelTier.CHEAP, {})
@@ -317,9 +309,7 @@ class TestRunStage:
         # Given
         from attune.workflows.base import ModelTier
 
-        mock_analyze = mocker.patch.object(
-            workflow, "_analyze", return_value=({}, 10, 20)
-        )
+        mock_analyze = mocker.patch.object(workflow, "_analyze", return_value=({}, 10, 20))
 
         # When
         result = await workflow.run_stage("analyze", ModelTier.CAPABLE, {})
@@ -333,9 +323,7 @@ class TestRunStage:
         # Given
         from attune.workflows.base import ModelTier
 
-        mock_generate = mocker.patch.object(
-            workflow, "_generate", return_value=({}, 10, 20)
-        )
+        mock_generate = mocker.patch.object(workflow, "_generate", return_value=({}, 10, 20))
 
         # When
         result = await workflow.run_stage("generate", ModelTier.CAPABLE, {})
@@ -388,9 +376,7 @@ class TestIdentifyStage:
         input_data = {"path": ".", "file_types": [".py"]}
 
         # When
-        result, input_tokens, output_tokens = await workflow._identify(
-            input_data, ModelTier.CHEAP
-        )
+        result, input_tokens, output_tokens = await workflow._identify(input_data, ModelTier.CHEAP)
 
         # Then
         assert "candidates" in result
@@ -563,9 +549,7 @@ class TestIdentifyStage:
 
         mock_path.return_value = mock_target
 
-        mock_count_loc = mocker.patch(
-            "attune.models.count_lines_of_code"
-        )
+        mock_count_loc = mocker.patch("attune.models.count_lines_of_code")
         mock_count_loc.return_value = 1000
 
         mock_strategy = Mock()
@@ -1063,12 +1047,8 @@ class TestGenerateSuggestions:
     def test_limits_suggestions(self, workflow):
         """Given many items, when generating suggestions, then limits output."""
         # Given
-        functions = [
-            {"name": f"func{i}", "params": [], "is_async": False} for i in range(10)
-        ]
-        classes = [
-            {"name": f"Class{i}", "init_params": [], "methods": []} for i in range(5)
-        ]
+        functions = [{"name": f"func{i}", "params": [], "is_async": False} for i in range(10)]
+        classes = [{"name": f"Class{i}", "init_params": [], "methods": []} for i in range(5)]
 
         # When
         suggestions = workflow._generate_suggestions(functions, classes)
@@ -1081,9 +1061,7 @@ class TestGenerateStage:
     """Test test generation stage."""
 
     @pytest.mark.asyncio
-    async def test_generates_function_tests(
-        self, workflow, mock_test_templates, mocker
-    ):
+    async def test_generates_function_tests(self, workflow, mock_test_templates, mocker):
         """Given functions, when generating, then creates test code."""
         # Given
         from attune.workflows.base import ModelTier
@@ -1185,9 +1163,7 @@ class TestGenerateStage:
         mock_file.write_text.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_skips_writing_when_disabled(
-        self, workflow, mock_test_templates, mocker
-    ):
+    async def test_skips_writing_when_disabled(self, workflow, mock_test_templates, mocker):
         """Given write_tests disabled, when generating, then does not write files."""
         # Given
         from attune.workflows.base import ModelTier
@@ -1215,9 +1191,7 @@ class TestGenerateStage:
         assert len(result["written_files"]) == 0
 
     @pytest.mark.asyncio
-    async def test_respects_generation_limits(
-        self, workflow, mock_test_templates, mocker
-    ):
+    async def test_respects_generation_limits(self, workflow, mock_test_templates, mocker):
         """Given generation limits, when generating, then respects them."""
         # Given
         from attune.workflows.base import ModelTier
@@ -1248,9 +1222,7 @@ class TestGenerateStage:
         assert result["total_tests_generated"] == 7
 
     @pytest.mark.asyncio
-    async def test_combines_imports_in_output(
-        self, workflow, mock_test_templates, mocker
-    ):
+    async def test_combines_imports_in_output(self, workflow, mock_test_templates, mocker):
         """Given multiple tests, when writing, then deduplicates imports."""
         # Given
         from attune.workflows.base import ModelTier
@@ -1305,9 +1277,7 @@ class TestMainFunction:
             provider="test",
             success=True,
             final_output={"total_tests": 5},
-            cost_report=Mock(
-                total_cost=0.10, savings=0.05, savings_percent=50.0
-            ),
+            cost_report=Mock(total_cost=0.10, savings=0.05, savings_percent=50.0),
         )
 
         mock_execute = mocker.patch.object(

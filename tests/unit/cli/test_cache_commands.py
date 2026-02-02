@@ -40,13 +40,12 @@ class TestCacheStatsCollection:
         log_file.write_text(log_content)
 
         # Patch the log file search
-        with patch(
-            "attune.cli.commands.cache.Path.cwd", return_value=tmp_path
-        ), patch("attune.cli.commands.cache.Path.exists", return_value=True):
+        with (
+            patch("attune.cli.commands.cache.Path.cwd", return_value=tmp_path),
+            patch("attune.cli.commands.cache.Path.exists", return_value=True),
+        ):
             # Override log path detection
-            with patch(
-                "attune.cli.commands.cache._collect_cache_stats"
-            ) as mock_collect:
+            with patch("attune.cli.commands.cache._collect_cache_stats") as mock_collect:
                 # Manually parse the log
                 cache_hits = 2
                 cache_writes = 1
@@ -59,9 +58,7 @@ class TestCacheStatsCollection:
                     "total_requests": total_requests,
                     "cache_hits": cache_hits,
                     "cache_writes": cache_writes,
-                    "cache_hit_rate": round(
-                        (cache_hits / total_requests * 100), 1
-                    ),
+                    "cache_hit_rate": round((cache_hits / total_requests * 100), 1),
                     "total_cache_read_tokens": 15000,
                     "total_cache_write_tokens": 2000,
                     "total_savings": round(total_savings, 4),
@@ -103,19 +100,19 @@ class TestCacheStatsCommand:
         captured = capsys.readouterr()
 
         # Find the JSON part of the output (everything after the analyzing line)
-        lines = captured.out.split('\n')
+        lines = captured.out.split("\n")
 
         # Find where JSON starts (line with just '{')
         json_start_idx = None
         for i, line in enumerate(lines):
-            if line.strip() == '{':
+            if line.strip() == "{":
                 json_start_idx = i
                 break
 
         assert json_start_idx is not None, "No JSON output found"
 
         # Join all lines from the start of JSON to the end
-        json_text = '\n'.join(lines[json_start_idx:]).strip()
+        json_text = "\n".join(lines[json_start_idx:]).strip()
 
         # Should output valid JSON
         try:

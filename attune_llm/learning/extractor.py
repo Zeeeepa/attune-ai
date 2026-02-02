@@ -84,9 +84,11 @@ class ExtractedPattern:
             resolution=data["resolution"],
             confidence=data.get("confidence", 0.5),
             source_session=data.get("source_session", ""),
-            extracted_at=datetime.fromisoformat(data["extracted_at"])
-            if "extracted_at" in data
-            else datetime.now(),
+            extracted_at=(
+                datetime.fromisoformat(data["extracted_at"])
+                if "extracted_at" in data
+                else datetime.now()
+            ),
             tags=data.get("tags", []),
             metadata=data.get("metadata", {}),
         )

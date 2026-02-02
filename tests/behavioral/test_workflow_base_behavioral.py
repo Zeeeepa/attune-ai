@@ -138,6 +138,7 @@ class TestWorkflowHistory:
 
         # Use WorkflowHistoryStore directly with isolated db
         from attune.workflows.history import WorkflowHistoryStore
+
         store = WorkflowHistoryStore(str(db_path))
 
         # Save a run
@@ -163,6 +164,7 @@ class TestWorkflowHistory:
 
         # Use WorkflowHistoryStore directly
         from attune.workflows.history import WorkflowHistoryStore
+
         store = WorkflowHistoryStore(str(db_path))
 
         # Get stats from empty database
@@ -277,13 +279,16 @@ class TestWorkflowStageExecution:
             workflow,
             "run_step_with_executor",
             new=AsyncMock(
-                return_value=("test response", 10, 20, 0.001)  # content, in_tokens, out_tokens, cost
-            )
+                return_value=(
+                    "test response",
+                    10,
+                    20,
+                    0.001,
+                )  # content, in_tokens, out_tokens, cost
+            ),
         ):
             content, input_tokens, output_tokens = await workflow._call_llm(
-                tier=ModelTier.CHEAP,
-                system="system prompt",
-                user_message="test prompt"
+                tier=ModelTier.CHEAP, system="system prompt", user_message="test prompt"
             )
 
             assert content == "test response"
@@ -336,9 +341,7 @@ class TestWorkflowCostCalculation:
         """Test _calculate_cost returns cost for tier."""
         workflow = SimpleTestWorkflow()
 
-        cost = workflow._calculate_cost(
-            tier=ModelTier.CHEAP, input_tokens=100, output_tokens=50
-        )
+        cost = workflow._calculate_cost(tier=ModelTier.CHEAP, input_tokens=100, output_tokens=50)
 
         assert isinstance(cost, float)
         assert cost > 0

@@ -60,7 +60,9 @@ async def run_dynamic_analysis(state: CodeInspectionState) -> CodeInspectionStat
         logger.warning("code_review tool is deprecated - use 'empathy workflow run bug-predict'")
 
     if enabled_tools.get("memory_debugging", True):
-        logger.warning("memory_debugging tool is deprecated - use 'empathy workflow run bug-predict'")
+        logger.warning(
+            "memory_debugging tool is deprecated - use 'empathy workflow run bug-predict'"
+        )
 
     if not tasks:
         logger.warning("No dynamic analysis tools enabled")

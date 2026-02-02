@@ -142,9 +142,7 @@ class WorkflowReport:
         }.get(section.style, "blue")
 
         if isinstance(section.content, str):
-            console.print(
-                Panel(section.content, title=section.title, border_style=border_style)
-            )
+            console.print(Panel(section.content, title=section.title, border_style=border_style))
         elif isinstance(section.content, list) and all(
             isinstance(f, Finding) for f in section.content
         ):
@@ -325,10 +323,7 @@ class MetricsPanel:
             Rich Panel with formatted score
         """
         if not RICH_AVAILABLE or Panel is None:
-            raise RuntimeError(
-                "Rich library not available. "
-                "Install with: pip install rich"
-            )
+            raise RuntimeError("Rich library not available. " "Install with: pip install rich")
 
         style = cls.get_style(score)
         icon = cls.get_icon(score)

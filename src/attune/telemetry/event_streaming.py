@@ -55,7 +55,11 @@ class StreamEvent:
         return {
             "event_id": self.event_id,
             "event_type": self.event_type,
-            "timestamp": self.timestamp.isoformat() if isinstance(self.timestamp, datetime) else self.timestamp,
+            "timestamp": (
+                self.timestamp.isoformat()
+                if isinstance(self.timestamp, datetime)
+                else self.timestamp
+            ),
             "data": self.data,
             "source": self.source,
         }
@@ -235,7 +239,9 @@ class EventStreamer:
         else:
             # Subscribe to all event streams (expensive - requires KEYS scan)
             all_streams = self.memory._client.keys(f"{self.STREAM_PREFIX}*")
-            streams = {s.decode("utf-8") if isinstance(s, bytes) else s: start_id for s in all_streams}
+            streams = {
+                s.decode("utf-8") if isinstance(s, bytes) else s: start_id for s in all_streams
+            }
 
         if not streams:
             logger.debug("No streams to consume")

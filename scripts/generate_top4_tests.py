@@ -32,11 +32,7 @@ def main():
     print(f"{'TOTAL':<40} {'1,874':<15} {'+6-8%'}\n")
 
     # Initialize generator with LLM support
-    generator = RealTestGenerator(
-        project_root=".",
-        output_dir="tests/llm_generated",
-        use_llm=True
-    )
+    generator = RealTestGenerator(project_root=".", output_dir="tests/llm_generated", use_llm=True)
 
     target_files = [
         ("src/attune/memory/short_term.py", 619),
@@ -91,6 +87,7 @@ def main():
         print(f"  4. Expected final coverage: ~32-34% (current: 26.46%)")
 
     print("\n" + "=" * 80)
+
 
 if __name__ == "__main__":
     main()

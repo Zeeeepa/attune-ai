@@ -86,7 +86,9 @@ def demo_get_quality_stats():
         print(f"  Average Quality: {cheap_stats.avg_quality:.2f}")
         print(f"  Quality Range: {cheap_stats.min_quality:.2f} - {cheap_stats.max_quality:.2f}")
         print(f"  Sample Count: {cheap_stats.sample_count}")
-        print(f"  Recent Trend: {cheap_stats.recent_trend:+.2f} ({'📈 improving' if cheap_stats.recent_trend > 0 else '📉 declining'})")
+        print(
+            f"  Recent Trend: {cheap_stats.recent_trend:+.2f} ({'📈 improving' if cheap_stats.recent_trend > 0 else '📉 declining'})"
+        )
     else:
         print("No stats available for cheap tier")
 
@@ -100,7 +102,9 @@ def demo_get_quality_stats():
         print(f"  Average Quality: {capable_stats.avg_quality:.2f}")
         print(f"  Quality Range: {capable_stats.min_quality:.2f} - {capable_stats.max_quality:.2f}")
         print(f"  Sample Count: {capable_stats.sample_count}")
-        print(f"  Recent Trend: {capable_stats.recent_trend:+.2f} ({'📈 improving' if capable_stats.recent_trend > 0 else '📉 declining'})")
+        print(
+            f"  Recent Trend: {capable_stats.recent_trend:+.2f} ({'📈 improving' if capable_stats.recent_trend > 0 else '📉 declining'})"
+        )
     else:
         print("No stats available for capable tier")
 
@@ -131,7 +135,9 @@ def demo_tier_recommendation():
 
     if recommendation.recommended_tier != recommendation.current_tier:
         print()
-        print(f"✅ Action: Upgrade to {recommendation.recommended_tier.upper()} tier for better quality")
+        print(
+            f"✅ Action: Upgrade to {recommendation.recommended_tier.upper()} tier for better quality"
+        )
     else:
         print()
         print("✅ Action: Continue using current tier")
@@ -306,7 +312,9 @@ def demo_adaptive_routing():
             # Apply recommendation
             if recommendation.recommended_tier != current_tier:
                 print()
-                print(f"⬆️  Upgrading: {current_tier.upper()} → {recommendation.recommended_tier.upper()}")
+                print(
+                    f"⬆️  Upgrading: {current_tier.upper()} → {recommendation.recommended_tier.upper()}"
+                )
                 current_tier = recommendation.recommended_tier
 
         time.sleep(0.5)

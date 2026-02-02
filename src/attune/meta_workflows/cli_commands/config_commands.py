@@ -6,7 +6,6 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-
 import typer
 from rich.console import Console
 from rich.table import Table
@@ -113,7 +112,6 @@ def suggest_defaults_cmd(
 # =============================================================================
 # Migration Commands
 # =============================================================================
-
 
 
 @meta_workflow_app.command("migrate")
@@ -227,6 +225,3 @@ def show_migration_guide(
 # =============================================================================
 # Dynamic Agent/Team Creation Commands (v4.4)
 # =============================================================================
-
-
-

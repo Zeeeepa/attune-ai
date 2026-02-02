@@ -21,6 +21,7 @@ import pytest
 # 2. Explicitly importing non-registered workflow modules used by tests
 try:
     import attune.workflows
+
     # Force all lazy workflows to load by discovering them
     attune.workflows.discover_workflows()
 
@@ -407,6 +408,7 @@ def mock_llm_response():
         >>> response = mock_llm_response(content="test response")
         >>> assert response["content"] == "test response"
     """
+
     def _mock_response(content: str = "mock response", model: str = "claude-3-5-sonnet"):
         return {
             "content": content,

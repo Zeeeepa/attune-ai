@@ -359,7 +359,8 @@ def cmd_file_test_dashboard(args: Any) -> int:
             </tr>
             """
 
-        return """<!DOCTYPE html>
+        return (
+            """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -515,23 +516,33 @@ def cmd_file_test_dashboard(args: Any) -> int:
 
         <div class="stats">
             <div class="stat-card total">
-                <div class="stat-value">""" + str(total) + """</div>
+                <div class="stat-value">"""
+            + str(total)
+            + """</div>
                 <div class="stat-label">Total Files</div>
             </div>
             <div class="stat-card passed">
-                <div class="stat-value">""" + str(passed) + """</div>
+                <div class="stat-value">"""
+            + str(passed)
+            + """</div>
                 <div class="stat-label">Passed</div>
             </div>
             <div class="stat-card failed">
-                <div class="stat-value">""" + str(failed) + """</div>
+                <div class="stat-value">"""
+            + str(failed)
+            + """</div>
                 <div class="stat-label">Failed</div>
             </div>
             <div class="stat-card no-tests">
-                <div class="stat-value">""" + str(no_tests) + """</div>
+                <div class="stat-value">"""
+            + str(no_tests)
+            + """</div>
                 <div class="stat-label">No Tests</div>
             </div>
             <div class="stat-card stale">
-                <div class="stat-value">""" + str(stale) + """</div>
+                <div class="stat-value">"""
+            + str(stale)
+            + """</div>
                 <div class="stat-label">Stale</div>
             </div>
         </div>
@@ -558,12 +569,16 @@ def cmd_file_test_dashboard(args: Any) -> int:
                 </tr>
             </thead>
             <tbody>
-                """ + rows_html + """
+                """
+            + rows_html
+            + """
             </tbody>
         </table>
 
         <div class="last-updated">
-            Last updated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + """
+            Last updated: """
+            + datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            + """
         </div>
     </div>
 
@@ -618,6 +633,7 @@ def cmd_file_test_dashboard(args: Any) -> int:
     </script>
 </body>
 </html>"""
+        )
 
     def _generate_empty_dashboard() -> str:
         """Generate dashboard HTML when no data available."""

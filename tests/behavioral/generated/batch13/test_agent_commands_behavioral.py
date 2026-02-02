@@ -26,21 +26,21 @@ def cli_runner():
 @pytest.fixture
 def mock_console():
     """Mock the rich Console."""
-    with patch('attune.meta_workflows.cli_commands.agent_commands.console') as mock:
+    with patch("attune.meta_workflows.cli_commands.agent_commands.console") as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_typer_prompt():
     """Mock typer.prompt for interactive input."""
-    with patch('typer.prompt') as mock:
+    with patch("typer.prompt") as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_validate_file_path():
     """Mock the _validate_file_path function."""
-    with patch('attune.meta_workflows.cli_commands.agent_commands._validate_file_path') as mock:
+    with patch("attune.meta_workflows.cli_commands.agent_commands._validate_file_path") as mock:
         yield mock
 
 
@@ -66,16 +66,12 @@ class TestCreateAgentInteractiveMode:
         ]
 
         # When
-        with patch('builtins.open', create=True) as mock_open:
+        with patch("builtins.open", create=True) as mock_open:
             mock_file = MagicMock()
             mock_open.return_value.__enter__.return_value = mock_file
 
             create_agent(
-                interactive=True,
-                name=None,
-                role=None,
-                tier="capable",
-                output_file=str(output_file)
+                interactive=True, name=None, role=None, tier="capable", output_file=str(output_file)
             )
 
         # Then
@@ -132,7 +128,10 @@ class TestCreateAgentInteractiveMode:
         # Then
         calls = [str(call) for call in mock_console.print.call_args_list]
         assert any("premium" in str(call).lower() for call in calls)
-        assert any("highest quality" in str(call).lower() or "complex reasoning" in str(call).lower() for call in calls)
+        assert any(
+            "highest quality" in str(call).lower() or "complex reasoning" in str(call).lower()
+            for call in calls
+        )
 
     def test_given_interactive_mode_when_all_prompts_answered_then_agent_spec_contains_all_fields(
         self, mock_console, mock_typer_prompt
@@ -151,15 +150,17 @@ class TestCreateAgentInteractiveMode:
             "TestAgent",
         ]
 
-        with patch('builtins.open', create=True):
-            with patch('json.dump') as mock_json_dump:
+        with patch("builtins.open", create=True):
+            with patch("json.dump") as mock_json_dump:
                 # When
-                create_agent(interactive=True, name=None, role=None, tier="capable", output_file="test.json")
+                create_agent(
+                    interactive=True, name=None, role=None, tier="capable", output_file="test.json"
+                )
 
                 # Then
                 if mock_json_dump.called:
                     agent_spec = mock_json_dump.call_args[0][0]
-                    assert 'name' in agent_spec or isinstance(agent_spec, dict)
+                    assert "name" in agent_spec or isinstance(agent_spec, dict)
 
     def test_given_interactive_mode_when_output_file_specified_then_file_saved(
         self, mock_console, mock_typer_prompt, tmp_path
@@ -180,11 +181,13 @@ class TestCreateAgentInteractiveMode:
         ]
 
         # When
-        with patch('builtins.open', create=True) as mock_open:
+        with patch("builtins.open", create=True) as mock_open:
             mock_file = MagicMock()
             mock_open.return_value.__enter__.return_value = mock_file
 
-            create_agent(interactive=True, name=None, role=None, tier="capable", output_file=str(output_file))
+            create_agent(
+                interactive=True, name=None, role=None, tier="capable", output_file=str(output_file)
+            )
 
             # Then
             if mock_open.called:
@@ -208,7 +211,7 @@ class TestCreateAgentQuickMode:
             name="QuickBot",
             role="Quick testing agent",
             tier="cheap",
-            output_file=None
+            output_file=None,
         )
 
         # Then
@@ -227,23 +230,21 @@ class TestCreateAgentQuickMode:
         agent_role = "Scan for vulnerabilities"
 
         # When
-        with patch('builtins.open', create=True):
-            with patch('json.dump') as mock_json_dump:
+        with patch("builtins.open", create=True):
+            with patch("json.dump") as mock_json_dump:
                 create_agent(
                     interactive=False,
                     name=agent_name,
                     role=agent_role,
                     tier="capable",
-                    output_file=None
+                    output_file=None,
                 )
 
                 # Then - verify console output or json dump contains the data
                 # Check if agent details were processed
                 assert mock_console.print.called
 
-    def test_given_quick_mode_when_tier_specified_then_correct_tier_used(
-        self, mock_console
-    ):
+    def test_given_quick_mode_when_tier_specified_then_correct_tier_used(self, mock_console):
         """
         Given: Quick mode with specific tier
         When: Agent is created with premium tier
@@ -255,7 +256,7 @@ class TestCreateAgentQuickMode:
             name="PremiumAgent",
             role="Complex analysis",
             tier="premium",
-            output_file=None
+            output_file=None,
         )
 
         # Then
@@ -273,7 +274,7 @@ class TestCreateAgentQuickMode:
         output_file = tmp_path / "quick_agent.json"
 
         # When
-        with patch('builtins.open', create=True) as mock_open:
+        with patch("builtins.open", create=True) as mock_open:
             mock_file = MagicMock()
             mock_open.return_value.__enter__.return_value = mock_file
 
@@ -282,7 +283,7 @@ class TestCreateAgentQuickMode:
                 name="FileAgent",
                 role="Save to file",
                 tier="capable",
-                output_file=str(output_file)
+                output_file=str(output_file),
             )
 
             # Then
@@ -312,12 +313,11 @@ class TestCreateAgentEdgeCases:
 
         # When / Then - raises IndexError because empty purpose can't be split
         import pytest
+
         with pytest.raises(IndexError):
             create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
 
-    def test_given_quick_mode_when_name_is_none_then_handled_gracefully(
-        self, mock_console
-    ):
+    def test_given_quick_mode_when_name_is_none_then_handled_gracefully(self, mock_console):
         """
         Given: Quick mode without name
         When: create_agent is called
@@ -325,20 +325,17 @@ class TestCreateAgentEdgeCases:
         """
         # Given / When / Then - should raise Exit
         import pytest
+
         with pytest.raises(Exception):  # typer.Exit is actually a Click exception
             create_agent(
-                interactive=False,
-                name=None,
-                role="Some role",
-                tier="capable",
-                output_file=None
+                interactive=False, name=None, role="Some role", tier="capable", output_file=None
             )
         # Verify error message was printed
-        assert any("--name and --role required" in str(call) for call in mock_console.print.call_args_list)
+        assert any(
+            "--name and --role required" in str(call) for call in mock_console.print.call_args_list
+        )
 
-    def test_given_quick_mode_when_role_is_none_then_handled_gracefully(
-        self, mock_console
-    ):
+    def test_given_quick_mode_when_role_is_none_then_handled_gracefully(self, mock_console):
         """
         Given: Quick mode without role
         When: create_agent is called
@@ -346,16 +343,15 @@ class TestCreateAgentEdgeCases:
         """
         # Given / When / Then - should raise Exit
         import pytest
+
         with pytest.raises(Exception):  # typer.Exit is actually a Click exception
             create_agent(
-                interactive=False,
-                name="NamedAgent",
-                role=None,
-                tier="capable",
-                output_file=None
+                interactive=False, name="NamedAgent", role=None, tier="capable", output_file=None
             )
         # Verify error message was printed
-        assert any("--name and --role required" in str(call) for call in mock_console.print.call_args_list)
+        assert any(
+            "--name and --role required" in str(call) for call in mock_console.print.call_args_list
+        )
 
     def test_given_interactive_mode_when_invalid_tier_provided_then_uses_default(
         self, mock_console, mock_typer_prompt
@@ -391,13 +387,14 @@ class TestCreateAgentEdgeCases:
 
         # When / Then - should raise ValueError from path validation
         import pytest
+
         with pytest.raises(ValueError, match="Invalid path"):
             create_agent(
                 interactive=False,
                 name="Agent",
                 role="Role",
                 tier="capable",
-                output_file="/invalid/path/file.json"
+                output_file="/invalid/path/file.json",
             )
 
     def test_given_interactive_mode_when_comma_separated_tasks_provided_then_parsed_correctly(
@@ -459,18 +456,16 @@ class TestCreateAgentIntegration:
         Then: Command executes without errors
         """
         # Given / When
-        with patch('attune.meta_workflows.cli_commands.agent_commands.console'):
+        with patch("attune.meta_workflows.cli_commands.agent_commands.console"):
             result = cli_runner.invoke(
                 meta_workflow_app,
-                ["create-agent", "--quick", "--name", "TestBot", "--role", "Testing"]
+                ["create-agent", "--quick", "--name", "TestBot", "--role", "Testing"],
             )
 
         # Then
         assert result.exit_code == 0 or result.exit_code is None
 
-    def test_given_create_agent_when_help_requested_then_shows_documentation(
-        self, cli_runner
-    ):
+    def test_given_create_agent_when_help_requested_then_shows_documentation(self, cli_runner):
         """
         Given: create-agent command
         When: --help flag is used
@@ -519,7 +514,13 @@ class TestCreateAgentConsoleOutput:
         Then: Welcome banner is displayed
         """
         # Given - 5 prompts: purpose, tasks, tier, tools, success_criteria
-        mock_typer_prompt.side_effect = ["Test purpose", "task1, task2", "capable", "tools", "success metric"]
+        mock_typer_prompt.side_effect = [
+            "Test purpose",
+            "task1, task2",
+            "capable",
+            "tools",
+            "success metric",
+        ]
 
         # When
         create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
@@ -538,7 +539,13 @@ class TestCreateAgentConsoleOutput:
         Then: Question text is displayed to console
         """
         # Given - 5 prompts: purpose, tasks, tier, tools, success_criteria
-        mock_typer_prompt.side_effect = ["Test purpose", "task1, task2", "capable", "tools", "success metric"]
+        mock_typer_prompt.side_effect = [
+            "Test purpose",
+            "task1, task2",
+            "capable",
+            "tools",
+            "success metric",
+        ]
 
         # When
         create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
@@ -556,7 +563,13 @@ class TestCreateAgentConsoleOutput:
         Then: All tier options (cheap, capable, premium) are shown
         """
         # Given - 5 prompts: purpose, tasks, tier, tools, success_criteria
-        mock_typer_prompt.side_effect = ["Test purpose", "task1, task2", "capable", "tools", "success metric"]
+        mock_typer_prompt.side_effect = [
+            "Test purpose",
+            "task1, task2",
+            "capable",
+            "tools",
+            "success metric",
+        ]
 
         # When
         create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
@@ -577,7 +590,13 @@ class TestCreateAgentConsoleOutput:
         Then: Shows example tools
         """
         # Given - 5 prompts: purpose, tasks, tier, tools, success_criteria
-        mock_typer_prompt.side_effect = ["Test purpose", "task1, task2", "capable", "tools", "success metric"]
+        mock_typer_prompt.side_effect = [
+            "Test purpose",
+            "task1, task2",
+            "capable",
+            "tools",
+            "success metric",
+        ]
 
         # When
         create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
@@ -605,13 +624,19 @@ class TestCreateAgentFileOperations:
         agent_data = {"name": "TestAgent", "role": "test", "tier": "capable"}
 
         # When
-        with patch('builtins.open', create=True) as mock_open:
-            with patch('json.dump') as mock_json_dump:
+        with patch("builtins.open", create=True) as mock_open:
+            with patch("json.dump") as mock_json_dump:
                 mock_file = MagicMock()
                 mock_open.return_value.__enter__.return_value = mock_file
                 mock_json_dump.return_value = None
 
-                create_agent(interactive=True, name=None, role=None, tier="capable", output_file=str(output_file))
+                create_agent(
+                    interactive=True,
+                    name=None,
+                    role=None,
+                    tier="capable",
+                    output_file=str(output_file),
+                )
 
                 # Then
                 if mock_json_dump.called:
@@ -626,10 +651,16 @@ class TestCreateAgentFileOperations:
         Then: Result is only displayed to console
         """
         # Given - 5 prompts: purpose, tasks, tier, tools, success_criteria
-        mock_typer_prompt.side_effect = ["Test purpose", "task1, task2", "capable", "tools", "success metric"]
+        mock_typer_prompt.side_effect = [
+            "Test purpose",
+            "task1, task2",
+            "capable",
+            "tools",
+            "success metric",
+        ]
 
         # When
-        with patch('builtins.open', create=True) as mock_open:
+        with patch("builtins.open", create=True) as mock_open:
             create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
 
             # Then - open should not be called for agent file (may be called for other reasons)
@@ -655,7 +686,7 @@ class TestCreateAgentFileOperations:
             name="DirAgent",
             role="Test",
             tier="capable",
-            output_file=str(output_file)
+            output_file=str(output_file),
         )
 
         # Then - verify file was created in the correct directory
@@ -666,9 +697,7 @@ class TestCreateAgentFileOperations:
 class TestCreateAgentParameterValidation:
     """Tests for parameter validation and defaults."""
 
-    def test_given_no_tier_specified_when_created_then_uses_default_capable(
-        self, mock_console
-    ):
+    def test_given_no_tier_specified_when_created_then_uses_default_capable(self, mock_console):
         """
         Given: No tier parameter specified
         When: Agent is created
@@ -680,15 +709,13 @@ class TestCreateAgentParameterValidation:
             name="DefaultTierAgent",
             role="Test",
             tier="capable",  # Must specify tier when calling directly
-            output_file=None
+            output_file=None,
         )
 
         # Then
         assert mock_console.print.called
 
-    def test_given_all_optional_parameters_none_when_quick_mode_then_handled(
-        self, mock_console
-    ):
+    def test_given_all_optional_parameters_none_when_quick_mode_then_handled(self, mock_console):
         """
         Given: All optional parameters as None in quick mode
         When: Agent creation is attempted
@@ -696,16 +723,13 @@ class TestCreateAgentParameterValidation:
         """
         # Given / When / Then - should raise Exit because name and role are required
         import pytest
+
         with pytest.raises(Exception):  # typer.Exit is actually a Click exception
-            create_agent(
-                interactive=False,
-                name=None,
-                role=None,
-                tier="capable",
-                output_file=None
-            )
+            create_agent(interactive=False, name=None, role=None, tier="capable", output_file=None)
         # Verify error message was printed
-        assert any("--name and --role required" in str(call) for call in mock_console.print.call_args_list)
+        assert any(
+            "--name and --role required" in str(call) for call in mock_console.print.call_args_list
+        )
 
     def test_given_boolean_interactive_flag_when_toggled_then_behavior_changes(
         self, mock_console, mock_typer_prompt
@@ -716,7 +740,13 @@ class TestCreateAgentParameterValidation:
         Then: Behavior changes appropriately
         """
         # Given - True - 5 prompts: purpose, tasks, tier, tools, success_criteria
-        mock_typer_prompt.side_effect = ["Test purpose", "task1, task2", "capable", "tools", "success metric"]
+        mock_typer_prompt.side_effect = [
+            "Test purpose",
+            "task1, task2",
+            "capable",
+            "tools",
+            "success metric",
+        ]
         create_agent(interactive=True, name=None, role=None, tier="capable", output_file=None)
         interactive_calls = mock_typer_prompt.call_count
 

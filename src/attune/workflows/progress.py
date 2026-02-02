@@ -483,7 +483,9 @@ class ConsoleProgressReporter:
             tokens_str = f" | {update.tokens_so_far:,} tokens"
 
         # Format: [100%] ✓ Completed optimize [PREMIUM] ($0.0279) [12.3s]
-        output = f"[{percent}] {status_icon} {update.message}{tier_info} ({cost}{tokens_str}){elapsed}"
+        output = (
+            f"[{percent}] {status_icon} {update.message}{tier_info} ({cost}{tokens_str}){elapsed}"
+        )
         print(output)
 
         # Verbose output
@@ -508,7 +510,9 @@ class ConsoleProgressReporter:
         for stage in update.stages:
             if stage.status == ProgressStatus.COMPLETED:
                 duration_ms = stage.duration_ms or self._stage_times.get(stage.name, 0)
-                duration_str = f"{duration_ms}ms" if duration_ms < 1000 else f"{duration_ms/1000:.1f}s"
+                duration_str = (
+                    f"{duration_ms}ms" if duration_ms < 1000 else f"{duration_ms/1000:.1f}s"
+                )
                 cost_str = f"${stage.cost:.4f}" if stage.cost > 0 else "—"
                 print(f"  {stage.name}: {duration_str} | {cost_str}")
             elif stage.status == ProgressStatus.SKIPPED:
@@ -590,8 +594,7 @@ class RichProgressReporter:
         """
         if not RICH_AVAILABLE:
             raise RuntimeError(
-                "Rich library required for RichProgressReporter. "
-                "Install with: pip install rich"
+                "Rich library required for RichProgressReporter. " "Install with: pip install rich"
             )
 
         self.workflow_name = workflow_name
@@ -652,9 +655,7 @@ class RichProgressReporter:
 
         # Update progress bar
         if self._progress is not None and self._task_id is not None:
-            completed = sum(
-                1 for s in update.stages if s.status == ProgressStatus.COMPLETED
-            )
+            completed = sum(1 for s in update.stages if s.status == ProgressStatus.COMPLETED)
             self._progress.update(
                 self._task_id,
                 completed=completed,
@@ -676,10 +677,7 @@ class RichProgressReporter:
             Rich Panel containing progress information
         """
         if not RICH_AVAILABLE or Panel is None or Table is None:
-            raise RuntimeError(
-                "Rich library not available. "
-                "Install with: pip install rich"
-            )
+            raise RuntimeError("Rich library not available. " "Install with: pip install rich")
 
         # Build metrics table
         metrics = Table(show_header=False, box=None, padding=(0, 2))

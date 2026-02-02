@@ -223,9 +223,7 @@ class Batch10Workflow:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Batch 10 testing workflow orchestrator"
-    )
+    parser = argparse.ArgumentParser(description="Batch 10 testing workflow orchestrator")
     parser.add_argument(
         "--all",
         action="store_true",

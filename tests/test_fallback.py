@@ -345,9 +345,7 @@ class TestResilientExecutor:
         assert metadata["attempts"] == 1
 
     @pytest.mark.asyncio
-    @pytest.mark.skip(
-        reason="Anthropic-only architecture - no multi-provider fallback available"
-    )
+    @pytest.mark.skip(reason="Anthropic-only architecture - no multi-provider fallback available")
     async def test_fallback_on_primary_failure(self, executor):
         """Test fallback when primary fails (requires multiple providers)."""
         call_count = 0

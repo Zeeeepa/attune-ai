@@ -290,8 +290,11 @@ class TestUnifiedMemoryShortTermOps:
     def test_stash_success(self):
         """Test stash stores data successfully using file session."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
-            config = MemoryConfig(file_session_enabled=True, file_session_dir=tmpdir, redis_mock=True)
+            config = MemoryConfig(
+                file_session_enabled=True, file_session_dir=tmpdir, redis_mock=True
+            )
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             result = memory.stash("test_key", {"data": "value"})
@@ -302,8 +305,11 @@ class TestUnifiedMemoryShortTermOps:
     def test_stash_with_custom_ttl(self):
         """Test stash with custom TTL."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
-            config = MemoryConfig(file_session_enabled=True, file_session_dir=tmpdir, redis_mock=True)
+            config = MemoryConfig(
+                file_session_enabled=True, file_session_dir=tmpdir, redis_mock=True
+            )
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             # Use a TTL that maps to SESSION strategy
@@ -315,6 +321,7 @@ class TestUnifiedMemoryShortTermOps:
     def test_stash_no_file_session(self):
         """Test stash returns False when file session unavailable."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(file_session_enabled=False, redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -328,8 +335,11 @@ class TestUnifiedMemoryShortTermOps:
     def test_retrieve_success(self):
         """Test retrieve returns stored data from file session."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
-            config = MemoryConfig(file_session_enabled=True, file_session_dir=tmpdir, redis_mock=True)
+            config = MemoryConfig(
+                file_session_enabled=True, file_session_dir=tmpdir, redis_mock=True
+            )
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             # First stash some data
@@ -343,6 +353,7 @@ class TestUnifiedMemoryShortTermOps:
     def test_retrieve_no_file_session(self):
         """Test retrieve returns None when no memory available."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(file_session_enabled=False, redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -361,6 +372,7 @@ class TestUnifiedMemoryStagedPatterns:
     def test_stage_pattern_success(self):
         """Test staging a pattern for validation."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -381,6 +393,7 @@ class TestUnifiedMemoryStagedPatterns:
     def test_stage_pattern_no_short_term(self):
         """Test stage_pattern returns None when short-term unavailable."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -393,6 +406,7 @@ class TestUnifiedMemoryStagedPatterns:
     def test_get_staged_patterns(self):
         """Test retrieving staged patterns."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -416,6 +430,7 @@ class TestUnifiedMemoryStagedPatterns:
     def test_get_staged_patterns_empty(self):
         """Test get_staged_patterns returns empty list when none staged."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -433,6 +448,7 @@ class TestUnifiedMemoryLongTermOps:
     def test_persist_pattern_success(self):
         """Test persisting a pattern to long-term storage."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -451,6 +467,7 @@ class TestUnifiedMemoryLongTermOps:
     def test_persist_pattern_no_long_term(self):
         """Test persist_pattern is resilient (returns pattern even with errors)."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -464,6 +481,7 @@ class TestUnifiedMemoryLongTermOps:
     def test_recall_pattern_success(self):
         """Test recalling a pattern from long-term storage."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -506,6 +524,7 @@ class TestUnifiedMemorySearch:
     def test_search_patterns_no_long_term(self):
         """Test search_patterns is resilient (works even if patterns exist from other tests)."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -530,11 +549,13 @@ class TestUnifiedMemorySearch:
 
         # Mock _iter_all_patterns to return test data (generator)
         memory._iter_all_patterns = MagicMock(
-            return_value=iter([
-                {"content": "algorithm for sorting", "pattern_type": "algorithm"},
-                {"content": "protocol for messaging", "pattern_type": "protocol"},
-                {"content": "algorithm for searching", "pattern_type": "algorithm"},
-            ])
+            return_value=iter(
+                [
+                    {"content": "algorithm for sorting", "pattern_type": "algorithm"},
+                    {"content": "protocol for messaging", "pattern_type": "protocol"},
+                    {"content": "algorithm for searching", "pattern_type": "algorithm"},
+                ]
+            )
         )
 
         result = memory.search_patterns(query="algorithm")
@@ -555,10 +576,12 @@ class TestUnifiedMemorySearch:
         memory = UnifiedMemory(user_id="test_user", config=config)
 
         memory._iter_all_patterns = MagicMock(
-            return_value=iter([
-                {"content": "test content", "pattern_type": "algorithm"},
-                {"content": "test content", "pattern_type": "protocol"},
-            ])
+            return_value=iter(
+                [
+                    {"content": "test content", "pattern_type": "algorithm"},
+                    {"content": "test content", "pattern_type": "protocol"},
+                ]
+            )
         )
 
         result = memory.search_patterns(pattern_type="algorithm")
@@ -579,13 +602,15 @@ class TestUnifiedMemorySearch:
         memory = UnifiedMemory(user_id="test_user", config=config)
 
         memory._iter_all_patterns = MagicMock(
-            return_value=iter([
-                {"content": "pattern 1"},
-                {"content": "pattern 2"},
-                {"content": "pattern 3"},
-                {"content": "pattern 4"},
-                {"content": "pattern 5"},
-            ])
+            return_value=iter(
+                [
+                    {"content": "pattern 1"},
+                    {"content": "pattern 2"},
+                    {"content": "pattern 3"},
+                    {"content": "pattern 4"},
+                    {"content": "pattern 5"},
+                ]
+            )
         )
 
         result = memory.search_patterns(limit=3)
@@ -600,6 +625,7 @@ class TestUnifiedMemoryPromotion:
     def test_promote_pattern_success(self):
         """Test promoting a staged pattern to long-term storage."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -716,6 +742,7 @@ class TestUnifiedMemoryProperties:
     def test_long_term_property_resilient_after_refactoring(self):
         """Test long-term memory is resilient after refactoring."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(redis_mock=True, storage_dir=tmpdir)
             memory = UnifiedMemory(user_id="test_user", config=config)
@@ -748,6 +775,7 @@ class TestUnifiedMemoryHealthCheck:
     def test_health_check_long_term_info(self):
         """Test health_check includes long-term memory info."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             config = MemoryConfig(
                 redis_mock=True,
@@ -762,7 +790,9 @@ class TestUnifiedMemoryHealthCheck:
             assert health["long_term"]["available"] is True
             assert "storage_dir" in health["long_term"]
             # Check encryption status (key name might vary)
-            assert ("encryption" in health["long_term"]) or ("encryption_enabled" in health["long_term"])
+            assert ("encryption" in health["long_term"]) or (
+                "encryption_enabled" in health["long_term"]
+            )
 
     @patch("attune.memory.unified.RedisShortTermMemory")
     @patch("attune.memory.unified.SecureMemDocsIntegration")
@@ -793,8 +823,11 @@ class TestUnifiedMemoryTTLStrategy:
     def test_ttl_with_short_duration(self):
         """Test stash with short TTL (60s) succeeds."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
-            config = MemoryConfig(redis_mock=True, file_session_enabled=True, file_session_dir=tmpdir)
+            config = MemoryConfig(
+                redis_mock=True, file_session_enabled=True, file_session_dir=tmpdir
+            )
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             # Stash with short TTL - uses SESSION strategy internally
@@ -805,8 +838,11 @@ class TestUnifiedMemoryTTLStrategy:
     def test_ttl_with_session_duration(self):
         """Test stash with medium TTL (1800s) succeeds."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
-            config = MemoryConfig(redis_mock=True, file_session_enabled=True, file_session_dir=tmpdir)
+            config = MemoryConfig(
+                redis_mock=True, file_session_enabled=True, file_session_dir=tmpdir
+            )
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             # Stash with medium TTL - uses SESSION strategy
@@ -817,8 +853,11 @@ class TestUnifiedMemoryTTLStrategy:
     def test_ttl_with_long_duration(self):
         """Test stash with very long TTL (1000000s) succeeds."""
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
-            config = MemoryConfig(redis_mock=True, file_session_enabled=True, file_session_dir=tmpdir)
+            config = MemoryConfig(
+                redis_mock=True, file_session_enabled=True, file_session_dir=tmpdir
+            )
             memory = UnifiedMemory(user_id="test_user", config=config)
 
             # Stash with very long TTL - uses CONFLICT_CONTEXT strategy

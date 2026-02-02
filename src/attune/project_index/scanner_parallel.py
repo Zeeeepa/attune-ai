@@ -253,9 +253,11 @@ def compare_sequential_vs_parallel(project_root: str = ".", workers: int = 4) ->
         "sequential_time": sequential_time,
         "parallel_time": parallel_time,
         "speedup": speedup,
-        "improvement_pct": ((sequential_time - parallel_time) / sequential_time * 100)
-        if sequential_time > 0
-        else 0,
+        "improvement_pct": (
+            ((sequential_time - parallel_time) / sequential_time * 100)
+            if sequential_time > 0
+            else 0
+        ),
         "files_scanned": summary_seq.total_files,
         "workers": workers,
     }
@@ -281,9 +283,9 @@ if __name__ == "__main__":
     print(f"\nSpeedup: {results['speedup']:.2f}x")
     print(f"Improvement: {results['improvement_pct']:.1f}%")
 
-    if results['speedup'] >= 2.0:
+    if results["speedup"] >= 2.0:
         print("\n✅ Parallel processing is highly effective!")
-    elif results['speedup'] >= 1.5:
+    elif results["speedup"] >= 1.5:
         print("\n✅ Parallel processing provides moderate benefit")
     else:
         print("\n⚠️  Parallel processing may not be worth the overhead")

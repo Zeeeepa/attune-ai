@@ -316,9 +316,7 @@ class TestWriteCodeReviewResults:
         assert summary["by_category"] == {"security": 2, "performance": 1}
         assert set(summary["files_affected"]) == {"app.py", "utils.py"}
 
-    def test_write_code_review_results_with_custom_summary(
-        self, tmp_path, monkeypatch
-    ):
+    def test_write_code_review_results_with_custom_summary(self, tmp_path, monkeypatch):
         """Test that custom summary is used when provided."""
         monkeypatch.chdir(tmp_path)
 
@@ -340,9 +338,7 @@ class TestWriteCodeReviewResults:
         assert data["summary"]["total_findings"] == 999
         assert data["summary"]["custom_field"] == "custom_value"
 
-    def test_write_code_review_results_handles_missing_fields(
-        self, tmp_path, monkeypatch
-    ):
+    def test_write_code_review_results_handles_missing_fields(self, tmp_path, monkeypatch):
         """Test that missing fields in findings are handled gracefully."""
         monkeypatch.chdir(tmp_path)
 
@@ -366,9 +362,7 @@ class TestWriteCodeReviewResults:
         assert "info" in summary["by_severity"]  # Default severity
         assert "correctness" in summary["by_category"]  # Default category
 
-    def test_write_code_review_results_different_model_tiers(
-        self, tmp_path, monkeypatch
-    ):
+    def test_write_code_review_results_different_model_tiers(self, tmp_path, monkeypatch):
         """Test writing results with different model tiers."""
         monkeypatch.chdir(tmp_path)
 

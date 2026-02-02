@@ -483,15 +483,14 @@ class TestCoordinationSignalsPermissions:
     def test_signal_without_credentials_logs_warning(self, mock_memory, caplog):
         """Test that sending signal without credentials logs security warning."""
         import logging
+
         caplog.set_level(logging.WARNING)
 
         coordinator = CoordinationSignals(memory=mock_memory, agent_id="test-agent")
 
         # Send signal without credentials (backward compatibility mode)
         signal_id = coordinator.signal(
-            signal_type="test",
-            payload={"data": "test"},
-            credentials=None
+            signal_type="test", payload={"data": "test"}, credentials=None
         )
 
         # Should succeed but log warning
@@ -505,9 +504,7 @@ class TestCoordinationSignalsPermissions:
 
         # Should succeed
         signal_id = coordinator.signal(
-            signal_type="test",
-            payload={"data": "test"},
-            credentials=credentials
+            signal_type="test", payload={"data": "test"}, credentials=credentials
         )
 
         assert signal_id != ""
@@ -521,9 +518,7 @@ class TestCoordinationSignalsPermissions:
 
         # Should succeed (VALIDATOR > CONTRIBUTOR)
         signal_id = coordinator.signal(
-            signal_type="test",
-            payload={"data": "test"},
-            credentials=credentials
+            signal_type="test", payload={"data": "test"}, credentials=credentials
         )
 
         assert signal_id != ""
@@ -536,9 +531,7 @@ class TestCoordinationSignalsPermissions:
 
         # Should succeed (STEWARD > CONTRIBUTOR)
         signal_id = coordinator.signal(
-            signal_type="test",
-            payload={"data": "test"},
-            credentials=credentials
+            signal_type="test", payload={"data": "test"}, credentials=credentials
         )
 
         assert signal_id != ""
@@ -552,9 +545,7 @@ class TestCoordinationSignalsPermissions:
         # Should raise PermissionError
         with pytest.raises(PermissionError) as exc_info:
             coordinator.signal(
-                signal_type="test",
-                payload={"data": "test"},
-                credentials=credentials
+                signal_type="test", payload={"data": "test"}, credentials=credentials
             )
 
         assert "CONTRIBUTOR" in str(exc_info.value)
@@ -569,9 +560,7 @@ class TestCoordinationSignalsPermissions:
         # Should raise PermissionError
         with pytest.raises(PermissionError) as exc_info:
             coordinator.broadcast(
-                signal_type="test",
-                payload={"data": "test"},
-                credentials=credentials
+                signal_type="test", payload={"data": "test"}, credentials=credentials
             )
 
         assert "CONTRIBUTOR" in str(exc_info.value)
@@ -584,9 +573,7 @@ class TestCoordinationSignalsPermissions:
 
         # Should succeed
         signal_id = coordinator.broadcast(
-            signal_type="test",
-            payload={"data": "test"},
-            credentials=credentials
+            signal_type="test", payload={"data": "test"}, credentials=credentials
         )
 
         assert signal_id != ""

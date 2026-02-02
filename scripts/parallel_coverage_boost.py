@@ -24,12 +24,16 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from attune.orchestration.execution_strategies import ParallelStrategy
-from attune.orchestration.meta_orchestrator import (CompositionPattern,
-                                                        ExecutionPlan,
-                                                        MetaOrchestrator)
-from attune.orchestration.real_tools import (RealCoverageAnalyzer,
-                                                 RealTestGenerator,
-                                                 RealTestValidator)
+from attune.orchestration.meta_orchestrator import (
+    CompositionPattern,
+    ExecutionPlan,
+    MetaOrchestrator,
+)
+from attune.orchestration.real_tools import (
+    RealCoverageAnalyzer,
+    RealTestGenerator,
+    RealTestValidator,
+)
 
 
 @dataclass
@@ -125,7 +129,9 @@ async def analyze_and_plan(target_coverage: float = 100.0) -> CoverageBoostPlan:
         print(f"  {assignment.agent_id.upper()}")
         print(f"    Priority:    {assignment.priority.upper()}")
         print(f"    Files:       {len(assignment.files)}")
-        print(f"    Avg Coverage: {sum(f['coverage'] for f in assignment.files) / len(assignment.files):.1f}%")
+        print(
+            f"    Avg Coverage: {sum(f['coverage'] for f in assignment.files) / len(assignment.files):.1f}%"
+        )
         print()
 
     print(f"⏱️  Estimated Time: {estimated_time // 60} minutes {estimated_time % 60} seconds")
@@ -154,7 +160,14 @@ async def execute_agent_task(
     validator = RealTestValidator(project_root=".")
 
     generated_tests = []
-    results = {"agent_id": agent_id, "priority": priority, "files_processed": 0, "tests_generated": 0, "tests_passed": 0, "tests_failed": 0}
+    results = {
+        "agent_id": agent_id,
+        "priority": priority,
+        "files_processed": 0,
+        "tests_generated": 0,
+        "tests_passed": 0,
+        "tests_failed": 0,
+    }
 
     for file_info in files:
         try:
@@ -203,9 +216,7 @@ async def execute_parallel_coverage_boost(plan: CoverageBoostPlan) -> dict[str, 
 
     # Create tasks for all agents (they run in parallel)
     tasks = [
-        execute_agent_task(
-            assignment.agent_id, assignment.files, assignment.priority
-        )
+        execute_agent_task(assignment.agent_id, assignment.files, assignment.priority)
         for assignment in plan.agent_assignments
     ]
 
@@ -297,8 +308,12 @@ async def main():
         print("  🎉 PARALLEL COVERAGE BOOST COMPLETE!")
         print("=" * 80)
         print()
-        print(f"  Coverage: {results['previous_coverage']:.2f}% → {results['current_coverage']:.2f}% ({results['improvement']:+.2f}%)")
-        print(f"  Generated: {results['tests_generated']} tests across {results['files_processed']} files")
+        print(
+            f"  Coverage: {results['previous_coverage']:.2f}% → {results['current_coverage']:.2f}% ({results['improvement']:+.2f}%)"
+        )
+        print(
+            f"  Generated: {results['tests_generated']} tests across {results['files_processed']} files"
+        )
         print(f"  Passed: {results['tests_passed']} | Failed: {results['tests_failed']}")
         print(f"  Remaining to {target_coverage:.0f}%: {results['remaining']:.2f}%")
         print()

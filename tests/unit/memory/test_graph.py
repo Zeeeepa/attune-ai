@@ -10,7 +10,6 @@ Covers:
 Copyright 2025 Smart AI Memory, LLC
 """
 
-
 import pytest
 
 from attune.memory.edges import EdgeType
@@ -274,18 +273,14 @@ class TestEdgeOperations:
 
     def test_add_edge_raises_for_invalid_source(self, graph):
         """Test adding edge with invalid source raises ValueError."""
-        node_id = graph.add_finding(
-            workflow="test", finding={"type": "bug", "name": "Test"}
-        )
+        node_id = graph.add_finding(workflow="test", finding={"type": "bug", "name": "Test"})
 
         with pytest.raises(ValueError, match="Source node not found"):
             graph.add_edge("nonexistent", node_id, EdgeType.RELATED_TO)
 
     def test_add_edge_raises_for_invalid_target(self, graph):
         """Test adding edge with invalid target raises ValueError."""
-        node_id = graph.add_finding(
-            workflow="test", finding={"type": "bug", "name": "Test"}
-        )
+        node_id = graph.add_finding(workflow="test", finding={"type": "bug", "name": "Test"})
 
         with pytest.raises(ValueError, match="Target node not found"):
             graph.add_edge(node_id, "nonexistent", EdgeType.RELATED_TO)
@@ -295,9 +290,7 @@ class TestEdgeOperations:
         graph, bug_id, fix_id, _ = populated_graph
         initial_edges = len(graph.edges)
 
-        graph.add_edge(
-            bug_id, fix_id, EdgeType.RELATED_TO, bidirectional=True
-        )
+        graph.add_edge(bug_id, fix_id, EdgeType.RELATED_TO, bidirectional=True)
 
         # Should create two edges
         assert len(graph.edges) >= initial_edges + 2
@@ -343,15 +336,11 @@ class TestGraphTraversal:
         graph, bug_id, fix_id, _ = populated_graph
 
         # Should find with FIXED_BY
-        related = graph.find_related(
-            bug_id, edge_types=[EdgeType.FIXED_BY], direction="outgoing"
-        )
+        related = graph.find_related(bug_id, edge_types=[EdgeType.FIXED_BY], direction="outgoing")
         assert any(n.id == fix_id for n in related)
 
         # Should not find with CAUSES
-        related = graph.find_related(
-            bug_id, edge_types=[EdgeType.CAUSES], direction="outgoing"
-        )
+        related = graph.find_related(bug_id, edge_types=[EdgeType.CAUSES], direction="outgoing")
         assert not any(n.id == fix_id for n in related)
 
     def test_find_related_max_depth(self, graph):
@@ -424,9 +413,7 @@ class TestPathFinding:
         # Create long chain
         nodes = []
         for i in range(10):
-            n = graph.add_finding(
-                workflow="test", finding={"type": "bug", "name": f"Node{i}"}
-            )
+            n = graph.add_finding(workflow="test", finding={"type": "bug", "name": f"Node{i}"})
             nodes.append(n)
             if i > 0:
                 graph.add_edge(nodes[i - 1], n, EdgeType.CAUSES)
@@ -469,9 +456,7 @@ class TestSimilaritySearch:
         """Test finding similar nodes by description."""
         graph, bug_id, _, _ = populated_graph
 
-        similar = graph.find_similar(
-            {"description": "null check user object"}, threshold=0.2
-        )
+        similar = graph.find_similar({"description": "null check user object"}, threshold=0.2)
 
         assert len(similar) >= 1
 
@@ -480,9 +465,7 @@ class TestSimilaritySearch:
         graph, bug_id, _, vuln_id = populated_graph
 
         # Search for vulnerability type
-        similar = graph.find_similar(
-            {"type": "vulnerability", "name": "injection"}, threshold=0.1
-        )
+        similar = graph.find_similar({"type": "vulnerability", "name": "injection"}, threshold=0.1)
 
         # Vulnerability should rank higher due to type match
         for node, score in similar:
@@ -494,9 +477,7 @@ class TestSimilaritySearch:
         """Test file matching boosts similarity."""
         graph, bug_id, fix_id, _ = populated_graph
 
-        similar = graph.find_similar(
-            {"name": "test", "file": "src/auth.py"}, threshold=0.0
-        )
+        similar = graph.find_similar({"name": "test", "file": "src/auth.py"}, threshold=0.0)
 
         # Should find nodes related to auth.py
         auth_nodes = [n for n, s in similar if n.source_file == "src/auth.py"]

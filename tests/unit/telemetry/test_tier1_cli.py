@@ -162,9 +162,7 @@ class TestTier1StatusCommand:
     def test_command_with_data(self, populated_store, monkeypatch):
         """Test tier1 command with populated data."""
         # Mock get_telemetry_store to return our populated store
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         # Create args namespace
         args = argparse.Namespace(hours=24)
@@ -208,9 +206,7 @@ class TestTier1StatusCommand:
 
     def test_command_with_custom_hours(self, populated_store, monkeypatch):
         """Test tier1 command with custom time window."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         # Test with 168 hours (7 days)
         args = argparse.Namespace(hours=168)
@@ -226,9 +222,7 @@ class TestTaskRoutingReportCommand:
 
     def test_command_with_data(self, populated_store, monkeypatch):
         """Test tasks command with populated data."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -246,9 +240,7 @@ class TestTaskRoutingReportCommand:
 
     def test_command_shows_task_types(self, populated_store, monkeypatch):
         """Test that command shows breakdown by task type."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -289,9 +281,7 @@ class TestTestStatusCommand:
 
     def test_command_with_data(self, populated_store, monkeypatch):
         """Test tests command with populated data."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -313,9 +303,7 @@ class TestTestStatusCommand:
 
     def test_command_shows_failing_tests(self, populated_store, monkeypatch):
         """Test that command shows most failing tests."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -357,9 +345,7 @@ class TestAgentPerformanceCommand:
 
     def test_command_with_data(self, populated_store, monkeypatch):
         """Test agents command with populated data."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=168)
 
@@ -381,9 +367,7 @@ class TestAgentPerformanceCommand:
 
     def test_command_shows_agent_names(self, populated_store, monkeypatch):
         """Test that command shows agent names and stats."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=168)
 
@@ -503,9 +487,7 @@ class TestRichFormatting:
 
     def test_tier1_uses_rich_when_available(self, populated_store, monkeypatch):
         """Test that tier1 command uses Rich for formatting when available."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=24)
 
@@ -520,9 +502,7 @@ class TestRichFormatting:
 
     def test_fallback_to_plain_text(self, populated_store, monkeypatch):
         """Test that commands fall back to plain text if Rich unavailable."""
-        monkeypatch.setattr(
-            "attune.models.telemetry.get_telemetry_store", lambda: populated_store
-        )
+        monkeypatch.setattr("attune.models.telemetry.get_telemetry_store", lambda: populated_store)
 
         args = argparse.Namespace(hours=24)
 

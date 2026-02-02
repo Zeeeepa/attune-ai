@@ -45,9 +45,7 @@ from attune.workflows.history import WorkflowHistoryStore
 
 def parse_args():
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Migrate workflow history from JSON to SQLite"
-    )
+    parser = argparse.ArgumentParser(description="Migrate workflow history from JSON to SQLite")
     parser.add_argument(
         "--json-path",
         default=WORKFLOW_HISTORY_FILE,
@@ -164,9 +162,7 @@ def migrate_run(run: dict, run_id: str) -> WorkflowResult:
     for stage in stages:
         if not stage.skipped:
             tier_key = stage.tier.value
-            cost_report.by_tier[tier_key] = (
-                cost_report.by_tier.get(tier_key, 0.0) + stage.cost
-            )
+            cost_report.by_tier[tier_key] = cost_report.by_tier.get(tier_key, 0.0) + stage.cost
 
     # Create WorkflowResult
     result = WorkflowResult(
@@ -289,9 +285,7 @@ def migrate(
     store.close()
 
     if total_in_db != migrated:
-        print(
-            f"⚠️  Warning: Expected {migrated} runs, found {total_in_db} in database"
-        )
+        print(f"⚠️  Warning: Expected {migrated} runs, found {total_in_db} in database")
 
     # Create backup
     if not no_backup:
@@ -315,11 +309,11 @@ def migrate(
         print(f"  Backup: {backup_path}")
     print()
     print("Next steps:")
-    print("  1. Verify migration: python -c 'from attune.workflows.history import WorkflowHistoryStore; store = WorkflowHistoryStore(); print(store.get_stats())'")
-    print("  2. Update your code to use WorkflowHistoryStore")
     print(
-        "  3. Delete backup after confidence period: rm .attune/workflow_runs.json.backup"
+        "  1. Verify migration: python -c 'from attune.workflows.history import WorkflowHistoryStore; store = WorkflowHistoryStore(); print(store.get_stats())'"
     )
+    print("  2. Update your code to use WorkflowHistoryStore")
+    print("  3. Delete backup after confidence period: rm .attune/workflow_runs.json.backup")
     print()
 
     return migrated

@@ -262,9 +262,7 @@ class LLMWorkflowGenerator(ABC):
         # Calculate rates
         total_requests = stats["llm_requests"]
         if total_requests > 0:
-            stats["llm_success_rate"] = (
-                total_requests - stats["llm_failures"]
-            ) / total_requests
+            stats["llm_success_rate"] = (total_requests - stats["llm_failures"]) / total_requests
             stats["template_fallback_rate"] = stats["template_fallbacks"] / total_requests
         else:
             stats["llm_success_rate"] = 0.0

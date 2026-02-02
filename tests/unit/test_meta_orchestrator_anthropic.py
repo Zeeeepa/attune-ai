@@ -5,6 +5,7 @@ Anthropic-inspired patterns when appropriate conditions are met.
 
 Created: 2026-01-29
 """
+
 import pytest
 
 from attune.orchestration.agent_templates import AgentTemplate
@@ -77,9 +78,7 @@ def specialist_agent():
 class TestToolEnhancedPatternSelection:
     """Tests for tool-enhanced pattern selection."""
 
-    def test_selects_tool_enhanced_for_single_agent_with_tools(
-        self, orchestrator, sample_agent
-    ):
+    def test_selects_tool_enhanced_for_single_agent_with_tools(self, orchestrator, sample_agent):
         """Test that tool-enhanced pattern is selected when tools are provided."""
         requirements = TaskRequirements(
             complexity=TaskComplexity.SIMPLE,
@@ -92,9 +91,7 @@ class TestToolEnhancedPatternSelection:
 
         assert pattern == CompositionPattern.TOOL_ENHANCED
 
-    def test_does_not_select_tool_enhanced_without_tools(
-        self, orchestrator, sample_agent
-    ):
+    def test_does_not_select_tool_enhanced_without_tools(self, orchestrator, sample_agent):
         """Test that tool-enhanced is NOT selected without tools in context."""
         requirements = TaskRequirements(
             complexity=TaskComplexity.SIMPLE,
@@ -108,9 +105,7 @@ class TestToolEnhancedPatternSelection:
         # Should fall back to sequential for single agent
         assert pattern == CompositionPattern.SEQUENTIAL
 
-    def test_does_not_select_tool_enhanced_for_multiple_agents(
-        self, orchestrator, sample_agent
-    ):
+    def test_does_not_select_tool_enhanced_for_multiple_agents(self, orchestrator, sample_agent):
         """Test that tool-enhanced is NOT selected with multiple agents."""
         requirements = TaskRequirements(
             complexity=TaskComplexity.MODERATE,
@@ -220,9 +215,7 @@ class TestDelegationChainPatternSelection:
 
         assert pattern == CompositionPattern.DELEGATION_CHAIN
 
-    def test_does_not_select_delegation_without_coordinator(
-        self, orchestrator
-    ):
+    def test_does_not_select_delegation_without_coordinator(self, orchestrator):
         """Test delegation NOT selected without coordinator agent."""
         requirements = TaskRequirements(
             complexity=TaskComplexity.COMPLEX,
@@ -374,9 +367,7 @@ class TestAnthropicPatternsMetaOrchestratorIntegration:
 class TestPatternSelectionPriority:
     """Tests for pattern selection priority and fallback logic."""
 
-    def test_tool_enhanced_takes_priority_over_sequential(
-        self, orchestrator, sample_agent
-    ):
+    def test_tool_enhanced_takes_priority_over_sequential(self, orchestrator, sample_agent):
         """Test that tool-enhanced is chosen over sequential when tools present."""
         requirements = TaskRequirements(
             complexity=TaskComplexity.SIMPLE,
@@ -407,9 +398,7 @@ class TestPatternSelectionPriority:
         # Should prefer delegation over adaptive when coordinator present
         assert pattern == CompositionPattern.DELEGATION_CHAIN
 
-    def test_cached_takes_priority_over_sequential(
-        self, orchestrator, sample_agent
-    ):
+    def test_cached_takes_priority_over_sequential(self, orchestrator, sample_agent):
         """Test that cached sequential chosen over regular sequential with large context."""
         large_context = "x" * 3000
         requirements = TaskRequirements(

@@ -75,7 +75,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args
     ):
         """Test dashboard with no telemetry data available.
-        
+
         Given: No telemetry entries exist
         When: cmd_telemetry_dashboard is called
         Then: Should print message and return 0
@@ -101,7 +101,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args, sample_entries
     ):
         """Test successful dashboard generation with valid entries.
-        
+
         Given: Valid telemetry entries exist
         When: cmd_telemetry_dashboard is called
         Then: Should generate HTML, start server, and open browser
@@ -109,13 +109,15 @@ class TestCmdTelemetryDashboard:
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open") as mock_browser, \
-             patch("socketserver.TCPServer") as mock_tcp_server, \
-             patch("builtins.print") as mock_print:
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open") as mock_browser,
+            patch("socketserver.TCPServer") as mock_tcp_server,
+            patch("builtins.print") as mock_print,
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -147,7 +149,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args, sample_entries
     ):
         """Test statistical calculations from telemetry entries.
-        
+
         Given: Sample telemetry entries with known values
         When: Dashboard processes the entries
         Then: Should calculate correct total cost, calls, and average duration
@@ -158,12 +160,14 @@ class TestCmdTelemetryDashboard:
         expected_total_calls = 3
         expected_avg_duration = 150.0  # (100 + 200 + 150) / 3
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile"), \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile"),
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -177,7 +181,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args, sample_entries
     ):
         """Test tier distribution calculation.
-        
+
         Given: Entries with different tiers (2 BASIC, 1 PREMIUM)
         When: Dashboard calculates tier distribution
         Then: Should return correct percentages (66.67% BASIC, 33.33% PREMIUM)
@@ -185,12 +189,14 @@ class TestCmdTelemetryDashboard:
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -213,7 +219,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args, sample_entries
     ):
         """Test cost savings calculation against premium baseline.
-        
+
         Given: Entries with mixed tiers and costs
         When: Dashboard calculates savings
         Then: Should compare actual cost to premium baseline cost
@@ -221,12 +227,14 @@ class TestCmdTelemetryDashboard:
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -248,7 +256,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args
     ):
         """Test handling of entries with missing fields.
-        
+
         Given: Entries with missing cost, duration, or token fields
         When: Dashboard processes entries
         Then: Should use default values and not crash
@@ -261,12 +269,14 @@ class TestCmdTelemetryDashboard:
         ]
         mock_tracker.export_to_dict.return_value = incomplete_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -286,7 +296,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, sample_entries
     ):
         """Test default days parameter when not specified.
-        
+
         Given: Arguments without days attribute
         When: cmd_telemetry_dashboard is called
         Then: Should use default value of 30 days
@@ -295,12 +305,14 @@ class TestCmdTelemetryDashboard:
         args_without_days = Mock(spec=[])
         mock_tracker.export_to_dict.return_value = sample_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -320,7 +332,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, sample_entries
     ):
         """Test custom days parameter.
-        
+
         Given: Arguments with custom days value (e.g., 7)
         When: cmd_telemetry_dashboard is called
         Then: Should use the custom days value
@@ -330,12 +342,14 @@ class TestCmdTelemetryDashboard:
         args.days = 7
         mock_tracker.export_to_dict.return_value = sample_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -355,7 +369,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args
     ):
         """Test average calculation with single entry.
-        
+
         Given: Only one telemetry entry
         When: Dashboard calculates average duration
         Then: Should return that entry's duration (no division by zero)
@@ -375,12 +389,14 @@ class TestCmdTelemetryDashboard:
         ]
         mock_tracker.export_to_dict.return_value = single_entry
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -399,25 +415,53 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args
     ):
         """Test handling of unknown tier values.
-        
+
         Given: Entries with missing or unknown tier values
         When: Dashboard calculates tier distribution
         Then: Should count them as UNKNOWN tier
         """
         # Given
         entries_with_unknown = [
-            {"ts": "2025-01-01T10:00:00", "workflow": "test", "stage": "execution", "tier": "BASIC", "cost": 0.001, "duration_ms": 100, "tokens": {}, "cache": {"hit": False}},
-            {"ts": "2025-01-01T11:00:00", "workflow": "test", "stage": "execution", "cost": 0.002, "duration_ms": 150, "tokens": {}, "cache": {"hit": False}},  # Missing tier - will default to "UNKNOWN"
-            {"ts": "2025-01-01T12:00:00", "workflow": "test", "stage": "execution", "tier": "UNKNOWN", "cost": 0.003, "duration_ms": 200, "tokens": {}, "cache": {"hit": False}},
+            {
+                "ts": "2025-01-01T10:00:00",
+                "workflow": "test",
+                "stage": "execution",
+                "tier": "BASIC",
+                "cost": 0.001,
+                "duration_ms": 100,
+                "tokens": {},
+                "cache": {"hit": False},
+            },
+            {
+                "ts": "2025-01-01T11:00:00",
+                "workflow": "test",
+                "stage": "execution",
+                "cost": 0.002,
+                "duration_ms": 150,
+                "tokens": {},
+                "cache": {"hit": False},
+            },  # Missing tier - will default to "UNKNOWN"
+            {
+                "ts": "2025-01-01T12:00:00",
+                "workflow": "test",
+                "stage": "execution",
+                "tier": "UNKNOWN",
+                "cost": 0.003,
+                "duration_ms": 200,
+                "tokens": {},
+                "cache": {"hit": False},
+            },
         ]
         mock_tracker.export_to_dict.return_value = entries_with_unknown
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -436,7 +480,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args
     ):
         """Test savings calculation when baseline cost is zero.
-        
+
         Given: Entries with no tokens (baseline cost = 0)
         When: Dashboard calculates savings percentage
         Then: Should handle division by zero gracefully
@@ -456,12 +500,14 @@ class TestCmdTelemetryDashboard:
         ]
         mock_tracker.export_to_dict.return_value = zero_token_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -480,7 +526,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args, sample_entries
     ):
         """Test that generated HTML includes all required statistics.
-        
+
         Given: Valid telemetry entries
         When: Dashboard generates HTML
         Then: Should include cost, calls, duration, tiers, and savings
@@ -488,12 +534,14 @@ class TestCmdTelemetryDashboard:
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -518,7 +566,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args
     ):
         """Test dashboard with large dataset.
-        
+
         Given: Large number of telemetry entries (1000+)
         When: Dashboard processes entries
         Then: Should complete without errors
@@ -539,12 +587,14 @@ class TestCmdTelemetryDashboard:
         ]
         mock_tracker.export_to_dict.return_value = large_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -563,24 +613,44 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args
     ):
         """Test handling of negative cost values.
-        
+
         Given: Entries with negative costs (edge case/error scenario)
         When: Dashboard calculates total cost
         Then: Should include negative values in calculation
         """
         # Given
         negative_cost_entries = [
-            {"ts": "2025-01-01T10:00:00", "workflow": "test", "stage": "execution", "tier": "BASIC", "cost": -0.001, "duration_ms": 100, "tokens": {"input": 100, "output": 50}, "cache": {"hit": False}},
-            {"ts": "2025-01-01T11:00:00", "workflow": "test", "stage": "execution", "tier": "BASIC", "cost": 0.005, "duration_ms": 150, "tokens": {"input": 150, "output": 75}, "cache": {"hit": False}},
+            {
+                "ts": "2025-01-01T10:00:00",
+                "workflow": "test",
+                "stage": "execution",
+                "tier": "BASIC",
+                "cost": -0.001,
+                "duration_ms": 100,
+                "tokens": {"input": 100, "output": 50},
+                "cache": {"hit": False},
+            },
+            {
+                "ts": "2025-01-01T11:00:00",
+                "workflow": "test",
+                "stage": "execution",
+                "tier": "BASIC",
+                "cost": 0.005,
+                "duration_ms": 150,
+                "tokens": {"input": 150, "output": 75},
+                "cache": {"hit": False},
+            },
         ]
         mock_tracker.export_to_dict.return_value = negative_cost_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
@@ -599,7 +669,7 @@ class TestCmdTelemetryDashboard:
         self, mock_tracker, mock_args, sample_entries
     ):
         """Test that HTML file is written in correct mode.
-        
+
         Given: Valid telemetry entries
         When: Dashboard creates temporary file
         Then: Should write in text mode with delete=False
@@ -607,12 +677,14 @@ class TestCmdTelemetryDashboard:
         # Given
         mock_tracker.export_to_dict.return_value = sample_entries
 
-        with patch(
-            "attune.telemetry.commands.dashboard_commands.UsageTracker"
-        ) as mock_usage_tracker_class, \
-             patch("tempfile.NamedTemporaryFile") as mock_tempfile, \
-             patch("webbrowser.open"), \
-             patch("socketserver.TCPServer"):
+        with (
+            patch(
+                "attune.telemetry.commands.dashboard_commands.UsageTracker"
+            ) as mock_usage_tracker_class,
+            patch("tempfile.NamedTemporaryFile") as mock_tempfile,
+            patch("webbrowser.open"),
+            patch("socketserver.TCPServer"),
+        ):
 
             mock_usage_tracker_class.get_instance.return_value = mock_tracker
 
