@@ -13,8 +13,8 @@ import pytest
 
 np = pytest.importorskip("numpy", reason="numpy required for cache tests")
 
-from attune.cache.base import CacheEntry, CacheStats
-from attune.cache.hash_only import HashOnlyCache
+from attune.cache.base import CacheEntry, CacheStats  # noqa: E402
+from attune.cache.hash_only import HashOnlyCache  # noqa: E402
 
 
 @pytest.mark.unit
