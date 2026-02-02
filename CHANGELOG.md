@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-02-02
+
+### Changed
+
+- **Memory system refactor**: Extracted `memory/short_term.py` (2,197 lines) into 16 focused modules with better separation of concerns
+  - New package structure: `base`, `sessions`, `caching`, `transactions`, `pubsub`, `queues`, `streams`, `timelines`, etc.
+  - Improved testability and maintainability
+
+- **Workflow refactor**: Extracted shared functionality into reusable mixins
+  - Added `compat.py`, `cost_mixin.py`, `data_classes.py`, `parsing_mixin.py`
+  - Consolidated workflows from 31 to 26 with migration system
+
+- **Orchestration refactor**: Extracted `execution_strategies.py` into modular `_strategies/` subpackage
+
+### Removed
+
+- **Legacy CLI cleanup**: Deleted `cli_legacy.py` (3,981 lines of deprecated code)
+- **Monolith removal**: Deleted `memory/short_term.py` monolith (replaced by modular package)
+- **Orphaned tests**: Removed tests for deleted code
+
+### Fixed
+
+- **Import errors**: Resolved import conflicts after refactoring
+- **README badge**: Fixed tests workflow badge URL (`test.yml` → `tests.yml`)
+- **Gitignore**: Added `.attune/` runtime data patterns to prevent session data commits
+
 ## [2.1.5] - 2026-02-02
 
 ### Fixed
