@@ -1,6 +1,6 @@
-"""Empathy Framework CLI - Refactored modular structure.
+"""Attune AI CLI - Refactored modular structure.
 
-Entry point for the empathy command-line interface.
+Entry point for the attune command-line interface.
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
@@ -125,7 +125,11 @@ def _register_legacy_commands(subparsers, old_cli):
     # Import command functions that haven't been extracted yet
     try:
         # Patterns commands
-        from attune.cli import cmd_patterns_export, cmd_patterns_list, cmd_patterns_resolve
+        from attune.cli.commands.patterns import (
+            cmd_patterns_export,
+            cmd_patterns_list,
+            cmd_patterns_resolve,
+        )
 
         patterns_parser = subparsers.add_parser("patterns", help="Pattern management")
         patterns_sub = patterns_parser.add_subparsers(dest="patterns_command")

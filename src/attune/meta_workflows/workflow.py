@@ -41,7 +41,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from attune_llm.routing.model_router import ModelRouter, ModelTier
 from attune.config import _validate_file_path
 from attune.meta_workflows.agent_creator import DynamicAgentCreator
 from attune.meta_workflows.form_engine import SocraticFormEngine
@@ -56,6 +55,7 @@ from attune.meta_workflows.models import (
 from attune.meta_workflows.template_registry import TemplateRegistry
 from attune.orchestration.agent_templates import get_template
 from attune.telemetry.usage_tracker import UsageTracker
+from attune_llm.routing.model_router import ModelRouter, ModelTier
 
 if TYPE_CHECKING:
     from attune.meta_workflows.pattern_learner import PatternLearner

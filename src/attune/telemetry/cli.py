@@ -25,6 +25,8 @@ except ImportError:
 
 from attune.config import _validate_file_path
 
+# Import dashboard commands for backward compatibility (re-exported)
+from .commands import cmd_file_test_dashboard, cmd_telemetry_dashboard  # noqa: F401
 from .usage_tracker import UsageTracker
 
 # _validate_file_path is now imported from attune.config

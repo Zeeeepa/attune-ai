@@ -472,7 +472,7 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             # Receive ping to keep connection alive
-            data = await websocket.receive_text()
+            _ = await websocket.receive_text()
 
             # Send updates (in production, this would stream from Redis)
             coordinator = HeartbeatCoordinator()

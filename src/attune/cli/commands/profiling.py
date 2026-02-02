@@ -1,4 +1,4 @@
-"""Profiling commands for Empathy Framework CLI.
+"""Profiling commands for Attune AI CLI.
 
 Performance profiling and memory analysis commands.
 

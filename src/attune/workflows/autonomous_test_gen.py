@@ -877,8 +877,8 @@ Return ONLY the complete Python test file, no explanations."""
             CoverageResult with coverage metrics and missing lines
         """
         try:
-            # Run pytest with coverage
-            result = subprocess.run(
+            # Run pytest with coverage (result intentionally unused - we read coverage from file)
+            subprocess.run(
                 [
                     sys.executable, "-m", "pytest",
                     str(test_file),

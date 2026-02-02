@@ -331,7 +331,7 @@ class TestGeneratorLLM(LLMWorkflowGenerator):
             Template test file
         """
         module_name = context.get("module_name", "unknown")
-        module_path = context.get("module_path", "unknown")
+        # module_path available in context but not used in basic template
 
         return f'''"""Behavioral tests for {module_name}.
 

@@ -1,33 +1,33 @@
 #!/usr/bin/env python3
-"""Empathy Framework CLI.
+"""Attune AI CLI.
 
 IMPORTANT: This CLI is for automation only (git hooks, scripts, CI/CD).
 For interactive use, use Claude Code skills in VSCode or Claude Desktop.
 
 Automation commands:
-    empathy workflow list              List available workflows
-    empathy workflow run <name>        Execute a workflow
-    empathy workflow info <name>       Show workflow details
+    attune workflow list              List available workflows
+    attune workflow run <name>        Execute a workflow
+    attune workflow info <name>       Show workflow details
 
 Monitoring commands:
-    empathy dashboard start            Start agent coordination dashboard
-                                       (opens web UI at http://localhost:8000)
+    attune dashboard start            Start agent coordination dashboard
+                                      (opens web UI at http://localhost:8000)
 
 Utility commands:
-    empathy telemetry show             Display usage summary
-    empathy telemetry savings          Show cost savings
-    empathy telemetry export           Export to CSV/JSON
-    empathy telemetry routing-stats    Show adaptive routing statistics
-    empathy telemetry routing-check    Check for tier upgrade recommendations
-    empathy telemetry models           Show model performance by provider
-    empathy telemetry agents           Show active agents and their status
-    empathy telemetry signals          Show coordination signals for an agent
+    attune telemetry show             Display usage summary
+    attune telemetry savings          Show cost savings
+    attune telemetry export           Export to CSV/JSON
+    attune telemetry routing-stats    Show adaptive routing statistics
+    attune telemetry routing-check    Check for tier upgrade recommendations
+    attune telemetry models           Show model performance by provider
+    attune telemetry agents           Show active agents and their status
+    attune telemetry signals          Show coordination signals for an agent
 
-    empathy provider show              Show current provider config
-    empathy provider set <name>        Set provider (anthropic, openai, hybrid)
+    attune provider show              Show current provider config
+    attune provider set <name>        Set provider (anthropic, openai, hybrid)
 
-    empathy validate                   Validate configuration
-    empathy version                    Show version
+    attune validate                   Validate configuration
+    attune version                    Show version
 
 For interactive development, use Claude Code skills:
     /dev        Developer tools (commit, review, debug, refactor)
@@ -58,7 +58,7 @@ def get_version() -> str:
     try:
         from importlib.metadata import version
 
-        return version("empathy-framework")
+        return version("attune-ai")
     except Exception:  # noqa: BLE001
         # INTENTIONAL: Fallback for dev installs without metadata
         return "dev"
@@ -90,7 +90,7 @@ def cmd_workflow_list(args: Namespace) -> int:
 
     print("-" * 60)
     print(f"\nTotal: {len(workflows)} workflows")
-    print("\nRun a workflow: empathy workflow run <name>")
+    print("\nRun a workflow: attune workflow run <name>")
     return 0
 
 
@@ -429,7 +429,7 @@ def cmd_telemetry_routing_stats(args: Namespace) -> int:
 
     except ImportError as e:
         print(f"❌ Adaptive routing not available: {e}")
-        print("   Ensure empathy-framework is installed with telemetry support")
+        print("   Ensure attune-ai is installed with telemetry support")
         return 1
     except Exception as e:  # noqa: BLE001
         # INTENTIONAL: CLI commands should catch all errors and report gracefully
@@ -920,7 +920,7 @@ def cmd_validate(args: Namespace) -> int:
 def cmd_version(args: Namespace) -> int:
     """Show version information."""
     version = get_version()
-    print(f"empathy-framework {version}")
+    print(f"attune-ai {version}")
 
     if args.verbose:
         print(f"\nPython: {sys.version}")
@@ -930,7 +930,7 @@ def cmd_version(args: Namespace) -> int:
         try:
             from importlib.metadata import requires
 
-            reqs = requires("empathy-framework") or []
+            reqs = requires("attune-ai") or []
             print(f"\nDependencies: {len(reqs)}")
         except Exception:  # noqa: BLE001
             pass
@@ -948,8 +948,8 @@ def cmd_version(args: Namespace) -> int:
 def create_parser() -> argparse.ArgumentParser:
     """Create the argument parser."""
     parser = argparse.ArgumentParser(
-        prog="empathy",
-        description="Empathy Framework CLI (automation interface - for git hooks, scripts, CI/CD)",
+        prog="attune",
+        description="Attune AI CLI (automation interface - for git hooks, scripts, CI/CD)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 NOTE: This CLI is for automation only. For interactive development,
@@ -1104,7 +1104,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.workflow_command == "run":
             return cmd_workflow_run(args)
         else:
-            print("Usage: empathy workflow {list|info|run}")
+            print("Usage: attune workflow {list|info|run}")
             return 1
 
     elif args.command == "telemetry":
@@ -1125,7 +1125,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.telemetry_command == "signals":
             return cmd_telemetry_signals(args)
         else:
-            print("Usage: empathy telemetry {show|savings|export|routing-stats|routing-check|models|agents|signals}")
+            print("Usage: attune telemetry {show|savings|export|routing-stats|routing-check|models|agents|signals}")
             return 1
 
     elif args.command == "provider":
@@ -1134,14 +1134,14 @@ def main(argv: list[str] | None = None) -> int:
         elif args.provider_command == "set":
             return cmd_provider_set(args)
         else:
-            print("Usage: empathy provider {show|set}")
+            print("Usage: attune provider {show|set}")
             return 1
 
     elif args.command == "dashboard":
         if args.dashboard_command == "start":
             return cmd_dashboard_start(args)
         else:
-            print("Usage: empathy dashboard start [--host HOST] [--port PORT]")
+            print("Usage: attune dashboard start [--host HOST] [--port PORT]")
             return 1
 
     elif args.command == "validate":

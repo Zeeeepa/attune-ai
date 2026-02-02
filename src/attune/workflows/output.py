@@ -120,8 +120,7 @@ class WorkflowReport:
 
     def _render_rich(self, console: ConsoleType) -> None:
         """Render report using Rich."""
-        # Header with score
-        header_parts = [f"[bold]{self.title}[/bold]"]
+        # Score panel (title shown via score panel)
         if self.score is not None:
             score_panel = MetricsPanel.render_score(self.score)
             console.print(score_panel)

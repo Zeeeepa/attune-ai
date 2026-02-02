@@ -22,6 +22,7 @@ class ProviderMode(str, Enum):
     """Provider selection mode (Anthropic-only as of v5.0.0)."""
 
     SINGLE = "single"  # Anthropic for all tiers
+    HYBRID = "hybrid"  # Deprecated: kept for backward compatibility
 
 
 @dataclass
@@ -150,7 +151,7 @@ class ProviderConfig:
         if path is None:
             path = Path.home() / ".empathy" / "provider_config.json"
         path.parent.mkdir(parents=True, exist_ok=True)
-        validated_path = _validate_file_path(str(path))
+        validated_path = _validate_file_path(str(path))  # type: ignore[misc]
         with open(validated_path, "w") as f:
             json.dump(self.to_dict(), f, indent=2)
 
@@ -280,3 +281,21 @@ def reset_provider_config() -> None:
     """Reset the global provider configuration (forces reload)."""
     global _global_config
     _global_config = None
+
+
+def configure_hybrid_interactive() -> ProviderConfig:
+    """Interactive hybrid provider configuration (DEPRECATED in v5.0.0).
+
+    Hybrid mode is no longer supported as of v5.0.0 (Claude-native).
+    This function now configures Anthropic as the sole provider.
+
+    Returns:
+        ProviderConfig configured for Anthropic
+    """
+    print("\n" + "=" * 60)
+    print("NOTE: Hybrid mode is deprecated (v5.0.0)")
+    print("=" * 60)
+    print("\nAttune AI is now Claude-native and uses Anthropic exclusively.")
+    print("Configuring Anthropic as your provider...\n")
+
+    return configure_provider_interactive()

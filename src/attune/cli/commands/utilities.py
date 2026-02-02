@@ -1,4 +1,4 @@
-"""Utility commands for Empathy Framework CLI.
+"""Utility commands for Attune AI CLI.
 
 General-purpose utility commands (sync, cheatsheet, dashboard, etc.).
 

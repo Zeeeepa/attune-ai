@@ -386,7 +386,7 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
         return ModuleInfo(
             file_path=str(file_path),
             classes=[asdict(c) for c in analyzer.classes],
-            functions=[asdict(f) for c in analyzer.functions],
+            functions=[asdict(f) for f in analyzer.functions],
             imports=analyzer.imports,
             total_lines=len(source_code.splitlines()),
         )

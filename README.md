@@ -1,6 +1,6 @@
-# Empathy Framework
+# Attune AI
 
-**AI-powered developer workflows with cost optimization and pattern learning.**
+**AI-powered developer workflows with cost optimization and intelligent routing.**
 
 Run code review, debugging, testing, and release workflows from your terminal or Claude Code. Smart tier routing saves 34-86% on LLM costs.
 
@@ -8,7 +8,6 @@ Run code review, debugging, testing, and release workflows from your terminal or
 [![Tests](https://img.shields.io/badge/tests-7%2C168%20passing%20(99.9%25)-brightgreen)](https://github.com/Smart-AI-Memory/attune-ai/actions)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
-[![Performance](https://img.shields.io/badge/performance-18x%20faster-success)](https://github.com/Smart-AI-Memory/attune-ai/blob/main/CHANGELOG.md)
 
 ```bash
 pip install attune-ai[developer]
@@ -16,188 +15,38 @@ pip install attune-ai[developer]
 
 ---
 
-## 🎯 Transitioning to Claude-Native Architecture
+## Key Features
 
-**Empathy Framework is evolving to focus exclusively on Anthropic/Claude** to unlock features impossible with multi-provider abstraction:
+### Claude-Native Architecture
 
-- **📦 Prompt Caching:** 90% cost reduction on repeated prompts
-- **📖 Flexible Context:** 200K via subscription for most tasks, up to 1M via API for large codebases
-- **🧠 Extended Thinking:** See Claude's internal reasoning process
-- **🔧 Advanced Tool Use:** Optimized for agentic workflows
+Attune AI is built exclusively for Anthropic/Claude, unlocking features impossible with multi-provider abstraction:
 
-**Timeline:**
+- **Prompt Caching** - 90% cost reduction on repeated prompts
+- **Flexible Context** - 200K via subscription, up to 1M via API for large codebases
+- **Extended Thinking** - Access Claude's internal reasoning process
+- **Advanced Tool Use** - Optimized for agentic workflows
 
-- ✅ **v4.8.0 (Jan 2026):** Deprecation warnings for OpenAI/Google/Ollama providers
-- ✅ **v5.0.0 (Jan 26, 2026):** Non-Anthropic providers removed (BREAKING - COMPLETE)
-- ✅ **v5.0.2 (Jan 28, 2026):** Cost optimization suite with batch processing and caching monitoring
+### Multi-Agent Orchestration
 
-**Migration Guide:** [docs/CLAUDE_NATIVE.md](docs/CLAUDE_NATIVE.md)
+Full support for custom agents and Anthropic LLM agents:
 
----
-
-## What's New in v5.3.0
-
-**🎨 Dashboard Enhancements** - Improved usability and clarity:
-
-- **Agent Display Names** - Human-readable labels for agents in dashboard (e.g., "Code Analyzer" instead of UUID)
-- **Comprehensive Help Panel** - 5-section accordion explaining dashboard features, use cases, and Redis setup
-- **UX Improvements** - "Source Agent:" label clarity, "Redis Requires Enabling" status message
-- **Browser Cache Busting** - Date-based versioning ensures updates appear immediately
-
-**📚 Documentation Improvements**:
-
-- Clarified flexible context strategy (200K subscription + 1M API routing)
-- Added Redis requirement documentation for dashboard
-- Root directory cleanup (8 archived files)
-
-**🧪 Test Infrastructure**:
-
-- Sequential test execution to fix import timing issues
-- All agent tracking tests passing (19/19)
-
-[See Full Changelog](CHANGELOG.md#530---2026-01-31)
-
----
-
-## What's New in v5.1.0
-
-**🤖 Multi-Agent Orchestration** - Full support for custom agents and Anthropic LLM agents:
-
-- **Agent Coordination Dashboard** - Real-time monitoring with 6 coordination patterns:
-  - Agent heartbeats and status tracking
-  - Inter-agent coordination signals
-  - Event streaming across agent workflows
-  - Approval gates for human-in-the-loop
-  - Quality feedback and performance metrics
-  - Demo mode with test data generation
-
+- **Agent Coordination Dashboard** - Real-time monitoring with 6 coordination patterns
 - **Custom Agents** - Build specialized agents for your workflow needs
-- **LLM Agents from Anthropic** - Leverage Claude's advanced capabilities
-- Dashboard accessible at `http://localhost:8000` with `python examples/dashboard_demo.py` **(Requires Redis)**
+- **Inter-Agent Communication** - Heartbeats, signals, events, and approval gates
 
-**🔐 Authentication Strategy System** - Intelligent routing between Claude subscriptions and Anthropic API:
+### Intelligent Cost Optimization
 
-```bash
-# Interactive setup
-python -m attune.models.auth_cli setup
+- **$0 in Claude Code** - Workflows run as skills through Claude's Task tool
+- **Smart Tier Routing** - Automatically selects the right model for each task
+- **Authentication Strategy** - Routes between subscription and API based on codebase size
 
-# View current configuration
-python -m attune.models.auth_cli status
+### Socratic Workflows
 
-# Get recommendation for a file
-python -m attune.models.auth_cli recommend src/module.py
-```
+Workflows guide you through discovery instead of requiring upfront configuration:
 
-**💰 Automatic Cost Optimization** - Workflows choose the best auth method:
-
-- Small/medium modules (<2000 LOC) → Claude subscription (free)
-- Large modules (>2000 LOC) → Anthropic API (pay for what you need)
-- 7 workflows integrated: document-gen, test-gen, code-review, bug-predict, security-audit, perf-audit, release-prep
-- Auth mode tracking in all workflow outputs for telemetry
-
-**🧪 Comprehensive Testing** - 7 new integration tests for auth strategy:
-
-- All workflows tested with auth enabled/disabled
-- API and subscription mode verification
-- Cost tracking validation
-
-**📖 Documentation** - 950+ lines across 3 guides:
-
-- [AUTH_STRATEGY_GUIDE.md](docs/AUTH_STRATEGY_GUIDE.md) - User guide for configuration
-- [AUTH_CLI_IMPLEMENTATION.md](docs/AUTH_CLI_IMPLEMENTATION.md) - CLI command reference
-- [AUTH_WORKFLOW_INTEGRATIONS.md](docs/AUTH_WORKFLOW_INTEGRATIONS.md) - Integration patterns
-
-[See Full Changelog](CHANGELOG.md#510---2026-01-29)
-
----
-
-## What's New in v5.0.2
-
-**💰 50% Cost Savings with Batch API** - Process non-urgent tasks asynchronously:
-
-```bash
-empathy batch submit batch_requests.json  # Submit batch job
-empathy batch status msgbatch_abc123      # Check progress
-empathy batch results msgbatch_abc123 output.json  # Download results
-```
-
-Perfect for: log analysis, report generation, bulk classification, test generation
-
-**📊 Precise Token Counting** - >98% accurate cost tracking:
-
-- Integrated Anthropic's `count_tokens()` API for billing-accurate measurements
-- 3-tier fallback: API → tiktoken (local) → heuristic
-- Cache-aware cost calculation (25% write markup, 90% read discount)
-
-**📈 Cache Performance Monitoring** - Track your 20-30% caching savings:
-
-```bash
-empathy cache stats           # Show hit rates and cost savings
-empathy cache stats --verbose # Detailed token metrics
-empathy cache stats --format json  # Machine-readable output
-```
-
-**🧭 Adaptive Routing Analytics** - Intelligent tier recommendations:
-
-```bash
-empathy routing stats <workflow>    # Performance metrics
-empathy routing check --all         # Tier upgrade recommendations
-empathy routing models --provider anthropic  # Compare models
-```
-
-**🔧 Dashboard Fixes** - All 6 agent coordination patterns now operational:
-- Agent heartbeats displaying correctly
-- Event streaming functional
-- Coordination signals working
-- Approval gates operational
-
-[See Full Changelog](CHANGELOG.md#502---2026-01-28) | [Batch API Guide](docs/BATCH_API_GUIDE.md) | [User API Docs](docs/USER_API_DOCUMENTATION.md)
-
----
-
-## What's New in v4.9.0
-
-**⚡ 18x Faster Performance** - Massive performance gains through Phase 2 optimizations:
-
-- **Redis Two-Tier Caching:** 2x faster memory operations (37,000x for cached keys)
-- **Generator Expressions:** 99.9% memory reduction across 27 optimizations
-- **Parallel Scanning:** Multi-core processing enabled by default (2-4x faster)
-- **Incremental Scanning:** Git diff-based updates (10x faster)
-
-**🧭 Natural Language Workflows** - Use plain English instead of workflow names:
-
-```bash
-/workflows "find security vulnerabilities"  # → security-audit
-/workflows "check code performance"         # → perf-audit
-/workflows "predict bugs"                   # → bug-predict
-/plan "review my code"                      # → code-review
-```
-
-**📊 Real-World Performance:**
-
-- Combined workflow: 3.59s → 0.2s (**18x faster**)
-- Full scan: 3,472 files in 0.98s (was 3.59s)
-- Redis cached operations: 37ms → 0.001ms
-
-**🎯 Improved Navigation:**
-
-- Split `/workflow` into `/workflows` (automated analysis) and `/plan` (planning/review)
-- Clearer hub organization with better categorization
-- Natural language routing matches intent to workflow
-
-[See CHANGELOG.md](CHANGELOG.md) | [Performance Docs](docs/REDIS_OPTIMIZATION_SUMMARY.md)
-
----
-
-## What's New in v4.7.0
-
-**$0 Workflows via Skills** - Multi-agent workflows run through Claude Code's Task tool instead of API calls. No additional cost with your Claude subscription.
-
-**Socratic Workflows** - Interactive discovery through guided questions. Workflows ask what you need rather than requiring upfront configuration.
-
-**Security Hardened** - Fixed critical vulnerabilities (path traversal, JWT, SSRF).
-
-**Hub-Based Commands** - Organized workflows into intuitive command hubs.
+- **Interactive Discovery** - Asks targeted questions to understand your needs
+- **Context Gathering** - Collects relevant code, errors, and constraints
+- **Dynamic Agent Creation** - Assembles the right team based on your answers
 
 ---
 
@@ -215,74 +64,31 @@ pip install attune-ai[developer]
 # Auto-detect API keys
 python -m attune.models.cli provider
 
-# Or set explicitly
-python -m attune.models.cli provider --set anthropic
+# Or configure authentication strategy
+python -m attune.models.auth_cli setup
 ```
 
-### 3. Use
-
-**In Claude Code:**
+### 3. Use in Claude Code
 
 ```bash
 /dev           # Developer tools (debug, commit, PR, review)
-/testing       # Run tests, coverage, benchmarks
+/testing       # Run tests, coverage analysis, benchmarks
 /workflows     # Automated analysis (security, bugs, perf)
-/plan          # Planning, TDD, code review
+/plan          # Planning, TDD, code review, refactoring
 /docs          # Documentation generation
 /release       # Release preparation
 
 # Natural language support:
 /workflows "find security issues"
 /plan "review my code"
-
-# Direct tool access via MCP (v5.1.1+):
-# Claude Code automatically discovers Empathy tools through the MCP server
-# Just describe what you need in natural language:
-"Run a security audit on src/"          → Invokes security_audit tool
-"Generate tests for config.py"          → Invokes test_generation tool
-"Check my auth configuration"           → Invokes auth_status tool
-"Analyze performance bottlenecks"       → Invokes performance_audit tool
 ```
 
-**MCP Server Integration (v5.1.1+):**
-
-Empathy Framework now includes a Model Context Protocol (MCP) server that exposes all workflows as native Claude Code tools:
-
-- **10 Tools Available:** security_audit, bug_predict, code_review, test_generation, performance_audit, release_prep, auth_status, auth_recommend, telemetry_stats, dashboard_status
-- **Automatic Discovery:** No manual configuration needed - Claude Code finds tools via `.claude/mcp.json`
-- **Natural Language Access:** Describe your need and Claude invokes the appropriate tool
-- **Verification Hooks:** Automatic validation of Python/JSON files and workflow outputs
-
-To verify MCP integration:
+### 4. Use via CLI
 
 ```bash
-# Check server is running
-echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m attune.mcp.server
-
-# Restart Claude Code to load the MCP server
-# Tools will appear in Claude's tool list automatically
-```
-
-See [.claude/MCP_TEST_RESULTS.md](.claude/MCP_TEST_RESULTS.md) for full integration details.
-
-**CLI:**
-
-```bash
-empathy workflow run security-audit --path ./src
-empathy workflow run test-coverage --target 90
-empathy telemetry show  # View cost savings
-```
-
-**Python:**
-
-```python
-from attune import EmpathyOS
-
-async with EmpathyOS() as empathy:
-    result = await empathy.level_2_guided(
-        "Review this code for security issues"
-    )
-    print(result["response"])
+attune workflow run security-audit --path ./src
+attune workflow run test-coverage --target 90
+attune telemetry show  # View cost savings
 ```
 
 ---
@@ -299,67 +105,14 @@ Workflows are organized into hubs for easy discovery:
 | **Release**       | `/release`    | Release prep, security scan, publishing      |
 | **Workflows**     | `/workflows`  | Automated analysis (security, bugs, perf)    |
 | **Plan**          | `/plan`       | Planning, TDD, code review, refactoring      |
-| **Utilities**     | `/utilities`  | Project init, dependencies, profiling        |
-| **Learning**      | `/learning`   | Pattern learning and session evaluation      |
-| **Context**       | `/context`    | State management and memory                  |
 | **Agent**         | `/agent`      | Create and manage custom agents              |
 
-**Natural Language Support:**
+**Natural Language Routing:**
 
 ```bash
-# Use plain English - intelligent routing matches your intent
 /workflows "find security vulnerabilities"  # → security-audit
 /workflows "check code performance"         # → perf-audit
-/workflows "predict bugs"                   # → bug-predict
 /plan "review my code"                      # → code-review
-/plan "help me plan this feature"           # → planning
-
-# Or use traditional workflow names
-/workflows security-audit
-/plan code-review
-```
-
-**Interactive menus:**
-
-```bash
-/dev                    # Show interactive menu
-/dev "debug auth error" # Jump directly to debugging
-/testing "run coverage" # Run coverage analysis
-/release                # Start release preparation
-```
-
----
-
-## Socratic Method
-
-Workflows guide you through discovery instead of requiring upfront configuration:
-
-```text
-You: /dev
-
-Claude: What development task do you need?
-  1. Debug issue
-  2. Create commit
-  3. PR workflow
-  4. Quality check
-
-You: 1
-
-Claude: What error or unexpected behavior are you seeing?
-```
-
-**How it works:**
-
-1. **Discovery** - Workflow asks targeted questions to understand your needs
-2. **Context gathering** - Collects relevant code, errors, and constraints
-3. **Dynamic agent creation** - Assembles the right team based on your answers
-4. **Execution** - Runs with appropriate tier selection
-
-**Create custom agents with Socratic guidance:**
-
-```bash
-/agent create    # Guided agent creation
-/agent team      # Build multi-agent teams interactively
 ```
 
 ---
@@ -374,119 +127,92 @@ When using Claude Code, workflows run as skills through the Task tool - **no API
 /dev           # $0 - uses your Claude subscription
 /testing       # $0
 /release       # $0
-/agent create  # $0
 ```
 
 ### API Mode (CI/CD, Automation)
 
 For programmatic use, smart tier routing saves 34-86%:
 
-| Tier    | Model               | Use Case                    | Cost        |
-| ------- | ------------------- | --------------------------- | ----------- |
-| CHEAP   | Haiku / GPT-4o-mini | Formatting, simple tasks    | ~$0.005     |
-| CAPABLE | Sonnet / GPT-4o     | Bug fixes, code review      | ~$0.08      |
-| PREMIUM | Opus / o1           | Architecture, complex design | ~$0.45      |
+| Tier    | Model         | Use Case                     | Cost    |
+| ------- | ------------- | ---------------------------- | ------- |
+| CHEAP   | Haiku         | Formatting, simple tasks     | ~$0.005 |
+| CAPABLE | Sonnet        | Bug fixes, code review       | ~$0.08  |
+| PREMIUM | Opus          | Architecture, complex design | ~$0.45  |
 
 ```bash
 # Track API usage and savings
-empathy telemetry savings --days 30
+attune telemetry savings --days 30
 ```
 
 ---
 
-## Key Features
+## MCP Server Integration
 
-### Multi-Agent Workflows
+Attune AI includes a Model Context Protocol (MCP) server that exposes all workflows as native Claude Code tools:
+
+- **10 Tools Available** - security_audit, bug_predict, code_review, test_generation, performance_audit, release_prep, and more
+- **Automatic Discovery** - Claude Code finds tools via `.claude/mcp.json`
+- **Natural Language Access** - Describe your need and Claude invokes the appropriate tool
 
 ```bash
-# 4 parallel agents check release readiness
-empathy orchestrate release-prep
-
-# Sequential coverage improvement
-empathy orchestrate test-coverage --target 90
-```
-
-### Response Caching
-
-Up to 57% cache hit rate on similar prompts. Zero config needed.
-
-```python
-from attune.workflows import SecurityAuditWorkflow
-
-workflow = SecurityAuditWorkflow(enable_cache=True)
-result = await workflow.execute(target_path="./src")
-print(f"Cache hit rate: {result.cost_report.cache_hit_rate:.1f}%")
-```
-
-### Pattern Learning
-
-Workflows learn from outcomes and improve over time:
-
-```python
-from attune.orchestration.config_store import ConfigurationStore
-
-store = ConfigurationStore()
-best = store.get_best_for_task("release_prep")
-print(f"Success rate: {best.success_rate:.1%}")
-```
-
-### Multi-Provider Support
-
-```python
-from attune_llm.providers import (
-    AnthropicProvider,  # Claude
-    OpenAIProvider,     # GPT-4
-    GeminiProvider,     # Gemini
-    LocalProvider,      # Ollama, LM Studio
-)
+# Verify MCP integration
+echo '{"method":"tools/list","params":{}}' | PYTHONPATH=./src python -m attune.mcp.server
 ```
 
 ---
 
-## CLI Reference
+## Agent Coordination Dashboard
+
+Real-time monitoring with 6 coordination patterns:
+
+- Agent heartbeats and status tracking
+- Inter-agent coordination signals
+- Event streaming across agent workflows
+- Approval gates for human-in-the-loop
+- Quality feedback and performance metrics
+- Demo mode with test data generation
 
 ```bash
-# Provider configuration
-python -m attune.models.cli provider
-python -m attune.models.cli provider --set hybrid
-
-# Workflows
-empathy workflow list
-empathy workflow run <workflow-name>
-
-# Cost tracking
-empathy telemetry show
-empathy telemetry savings --days 30
-empathy telemetry export --format csv
-
-# Orchestration
-empathy orchestrate release-prep
-empathy orchestrate test-coverage --target 90
-
-# Meta-workflows
-empathy meta-workflow list
-empathy meta-workflow run release-prep --real
+# Launch dashboard (requires Redis)
+python examples/dashboard_demo.py
+# Open http://localhost:8000
 ```
 
 ---
 
-## Install Options
+## Authentication Strategy
+
+Intelligent routing between Claude subscription and Anthropic API:
+
+```bash
+# Interactive setup
+python -m attune.models.auth_cli setup
+
+# View current configuration
+python -m attune.models.auth_cli status
+
+# Get recommendation for a file
+python -m attune.models.auth_cli recommend src/module.py
+```
+
+**Automatic routing:**
+
+- Small/medium modules (<2000 LOC) → Claude subscription (free)
+- Large modules (>2000 LOC) → Anthropic API (pay for what you need)
+
+---
+
+## Installation Options
 
 ```bash
 # Individual developers (recommended)
 pip install attune-ai[developer]
-
-# All LLM providers
-pip install attune-ai[llm]
 
 # With caching (semantic similarity)
 pip install attune-ai[cache]
 
 # Enterprise (auth, rate limiting)
 pip install attune-ai[enterprise]
-
-# Healthcare (HIPAA compliance)
-pip install attune-ai[healthcare]
 
 # Development
 git clone https://github.com/Smart-AI-Memory/attune-ai.git
@@ -498,35 +224,12 @@ cd attune-ai && pip install -e .[dev]
 ## Environment Setup
 
 ```bash
-# At least one provider required
+# Required: Anthropic API key
 export ANTHROPIC_API_KEY="sk-ant-..."
-export OPENAI_API_KEY="sk-..."
-export GOOGLE_API_KEY="..."
 
-# Optional (but required for Agent Dashboard): Redis for memory
+# Optional: Redis for Agent Dashboard and memory
 export REDIS_URL="redis://localhost:6379"
 ```
-
----
-
-## VSCode Extension
-
-Install the Empathy VSCode extension for:
-
-- **Dashboard** - Health score, costs, patterns
-- **One-Click Workflows** - Run from command palette
-- **Memory Panel** - Manage Redis and patterns
-- **Cost Tracking** - Real-time savings display
-
----
-
-## Documentation
-
-- [Quick Start Guide](docs/quickstart.md)
-- [CLI Reference](docs/cli-reference.md)
-- [Testing Guide](docs/testing-guide.md)
-- [Keyboard Shortcuts](docs/keyboard-shortcuts.md)
-- [Full Documentation](https://smartaimemory.com/framework-docs/)
 
 ---
 
@@ -536,36 +239,23 @@ Install the Empathy VSCode extension for:
 - JWT authentication with rate limiting
 - PII scrubbing in telemetry
 - HIPAA/GDPR compliance options
-- **Automated security scanning** with 82% accuracy (Phase 3 AST-based detection)
+- Automated security scanning with 82% accuracy
+
+```bash
+# Run security audit
+attune workflow run security-audit --path ./src
+```
 
 See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 
-### Security Scanning
+---
 
-**Automated security scanning in CI/CD** - 82% accuracy, blocks critical issues:
+## Documentation
 
-```bash
-# Run security audit locally
-empathy workflow run security-audit
-
-# Scan specific directory
-empathy workflow run security-audit --input '{"path":"./src"}'
-```
-
-**Documentation:**
-
-- **[Developer Workflow Guide](docs/DEVELOPER_SECURITY_WORKFLOW.md)** - Quick reference for handling security findings (all developers)
-- **[CI/CD Integration Guide](docs/CI_SECURITY_SCANNING.md)** - Complete setup and troubleshooting (DevOps, developers)
-- **[Scanner Architecture](docs/SECURITY_SCANNER_ARCHITECTURE.md)** - Technical implementation details (engineers, architects)
-- **[Remediation Process](docs/SECURITY_REMEDIATION_PROCESS.md)** - 3-phase methodology for improving scanners (security teams, leadership)
-- **[API Reference](docs/api-reference/security-scanner.md)** - Complete API documentation (developers extending scanner)
-
-**Key achievements:**
-
-- 82.3% reduction in false positives (350 → 62 findings)
-- 16x improvement in scanner accuracy
-- <15 minute average fix time for critical issues
-- Zero critical vulnerabilities in production code
+- [Quick Start Guide](docs/quickstart.md)
+- [CLI Reference](docs/cli-reference.md)
+- [Authentication Strategy Guide](docs/AUTH_STRATEGY_GUIDE.md)
+- [Full Documentation](https://smartaimemory.com/framework-docs/)
 
 ---
 
@@ -577,27 +267,20 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
-**Apache License 2.0** - Free and open source for everyone. Use it, modify it, build commercial products with it. [Details →](LICENSE)
+**Apache License 2.0** - Free and open source. Use it, modify it, build commercial products with it. [Details →](LICENSE)
 
 ---
 
 ## Acknowledgements
 
-This project stands on the shoulders of giants. We are deeply grateful to the open source community and all the amazing projects that make this framework possible.
-
-**[View Full Acknowledgements →](ACKNOWLEDGEMENTS.md)**
-
 Special thanks to:
 
 - **[Anthropic](https://www.anthropic.com/)** - For Claude AI and the Model Context Protocol
-- **[LangChain](https://github.com/langchain-ai/langchain)** - Agent framework powering our meta-orchestration
+- **[LangChain](https://github.com/langchain-ai/langchain)** - Agent framework powering our orchestration
 - **[FastAPI](https://github.com/tiangolo/fastapi)** - Modern Python web framework
-- **[pytest](https://github.com/pytest-dev/pytest)** - Testing framework making quality assurance effortless
 
-And to all 50+ open source projects we depend on. [See the complete list →](ACKNOWLEDGEMENTS.md)
-
-Want to contribute? See [CONTRIBUTORS.md](CONTRIBUTORS.md)
+[View Full Acknowledgements →](ACKNOWLEDGEMENTS.md)
 
 ---
 
-**Built by [Smart AI Memory](https://smartaimemory.com)** · [Docs](https://smartaimemory.com/framework-docs/) · [Examples](examples/) · [Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+**Built by [Smart AI Memory](https://smartaimemory.com)** · [Docs](https://smartaimemory.com/framework-docs/) · [Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)

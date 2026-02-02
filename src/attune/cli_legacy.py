@@ -83,6 +83,19 @@ try:
     TELEMETRY_CLI_AVAILABLE = True
 except ImportError:
     TELEMETRY_CLI_AVAILABLE = False
+    # Define stubs to satisfy type checker - these will never be called
+    # because TELEMETRY_CLI_AVAILABLE guards all usages
+    cmd_agent_performance = None  # type: ignore[assignment]
+    cmd_file_test_dashboard = None  # type: ignore[assignment]
+    cmd_file_test_status = None  # type: ignore[assignment]
+    cmd_task_routing_report = None  # type: ignore[assignment]
+    cmd_telemetry_compare = None  # type: ignore[assignment]
+    cmd_telemetry_export = None  # type: ignore[assignment]
+    cmd_telemetry_reset = None  # type: ignore[assignment]
+    cmd_telemetry_savings = None  # type: ignore[assignment]
+    cmd_telemetry_show = None  # type: ignore[assignment]
+    cmd_test_status = None  # type: ignore[assignment]
+    cmd_tier1_status = None  # type: ignore[assignment]
 
 # Import progressive workflow CLI commands
 try:
@@ -96,6 +109,12 @@ try:
     PROGRESSIVE_CLI_AVAILABLE = True
 except ImportError:
     PROGRESSIVE_CLI_AVAILABLE = False
+    # Define stubs to satisfy type checker - these will never be called
+    # because PROGRESSIVE_CLI_AVAILABLE guards all usages
+    cmd_analytics = None  # type: ignore[assignment]
+    cmd_cleanup = None  # type: ignore[assignment]
+    cmd_list_results = None  # type: ignore[assignment]
+    cmd_show_report = None  # type: ignore[assignment]
 
 logger = get_logger(__name__)
 
@@ -1019,12 +1038,12 @@ def cmd_init(args):
     output_path = args.output or f"attune.config.{config_format}"
 
     # Validate output path to prevent path traversal attacks
-    validated_path = _validate_file_path(output_path)
+    validated_path = _validate_file_path(output_path)  # type: ignore[misc]
 
     logger.info(f"Initializing new Empathy Framework project with format: {config_format}")
 
     # Create default config
-    config = EmpathyConfig()
+    config = EmpathyConfig()  # type: ignore[misc]
 
     # Save to file
     if config_format == "yaml":
@@ -1057,7 +1076,7 @@ def cmd_validate(args):
     logger.info(f"Validating configuration file: {filepath}")
 
     try:
-        config = load_config(filepath=filepath, use_env=False)
+        config = load_config(filepath=filepath, use_env=False)  # type: ignore[misc]
         config.validate()
         logger.info(f"Configuration validation successful: {filepath}")
         logger.info(f"✓ Configuration valid: {filepath}")
@@ -1100,10 +1119,10 @@ def cmd_info(args):
 
     if config_file:
         logger.debug(f"Loading config from file: {config_file}")
-        config = load_config(filepath=config_file)
+        config = load_config(filepath=config_file)  # type: ignore[misc]
     else:
         logger.debug("Loading default configuration")
-        config = load_config()
+        config = load_config()  # type: ignore[misc]
 
     logger.info("=== Empathy Framework Info ===\n")
     logger.info("Configuration:")
@@ -1221,7 +1240,7 @@ def cmd_patterns_export(args):
         sys.exit(1)
 
     # Validate output path
-    validated_output = _validate_file_path(output_file)
+    validated_output = _validate_file_path(output_file)  # type: ignore[misc]
 
     # Save to output format
     try:
@@ -1649,10 +1668,10 @@ def cmd_run(args):
 
     # Load configuration
     if config_file:
-        config = load_config(filepath=config_file)
+        config = load_config(filepath=config_file)  # type: ignore[misc]
         print(f"✓ Loaded config from: {config_file}")
     else:
-        config = EmpathyConfig(user_id=user_id, target_level=level)
+        config = EmpathyConfig(user_id=user_id, target_level=level)  # type: ignore[misc]
         print("✓ Using default configuration")
 
     print(f"\nUser ID: {config.user_id}")
@@ -1931,7 +1950,7 @@ def cmd_export(args):
         print(f"  Found {len(patterns)} patterns")
 
         # Validate output path
-        validated_output = _validate_file_path(output_file)
+        validated_output = _validate_file_path(output_file)  # type: ignore[misc]
 
         if format_type == "json":
             # Create filtered library if user_id specified
@@ -2044,7 +2063,7 @@ def cmd_import(args):
     print()
 
 
-def cmd_workflow(args):
+def cmd_setup(args):
     """Interactive setup workflow.
 
     Guides user through initial framework configuration step by step.
@@ -2163,7 +2182,7 @@ metrics_enabled: {str(config["metrics_enabled"]).lower()}
 llm_provider: "{llm_provider}"
 """
 
-    validated_output = _validate_file_path(output_file)
+    validated_output = _validate_file_path(output_file)  # type: ignore[misc]
     with open(validated_output, "w") as f:
         f.write(yaml_content)
 
@@ -2272,7 +2291,7 @@ def cmd_provider_set(args):
 
     config["default_provider"] = provider
 
-    validated_workflows_path = _validate_file_path(str(workflows_path))
+    validated_workflows_path = _validate_file_path(str(workflows_path))  # type: ignore[misc]
     with open(validated_workflows_path, "w") as f:
         yaml.dump(config, f, default_flow_style=False, sort_keys=False)
 
@@ -2303,7 +2322,7 @@ def cmd_sync_claude(args):
 
     patterns_dir = Path(args.patterns_dir)
     # Validate output directory path
-    validated_output_dir = _validate_file_path(args.output_dir)
+    validated_output_dir = _validate_file_path(args.output_dir)  # type: ignore[misc]
     output_dir = validated_output_dir
 
     print("=" * 60)
@@ -2341,7 +2360,7 @@ def cmd_sync_claude(args):
             # Write rule file
             rule_file = output_dir / f"{category}.md"
             # Validate rule file path before writing
-            validated_rule_file = _validate_file_path(str(rule_file), allowed_dir=str(output_dir))
+            validated_rule_file = _validate_file_path(str(rule_file), allowed_dir=str(output_dir))  # type: ignore[misc]
             with open(validated_rule_file, "w") as f:
                 f.write(rule_content)
 
@@ -2806,6 +2825,8 @@ def cmd_workflow(args):
         # Generate or show workflow configuration
         from pathlib import Path
 
+        from attune.workflows.config import WorkflowConfig
+
         config_path = Path(".attune/workflows.yaml")
 
         if config_path.exists() and not getattr(args, "force", False):
@@ -2825,7 +2846,7 @@ def cmd_workflow(args):
 
         # Create config directory and file
         config_path.parent.mkdir(parents=True, exist_ok=True)
-        validated_config_path = _validate_file_path(str(config_path))
+        validated_config_path = _validate_file_path(str(config_path))  # type: ignore[misc]
         validated_config_path.write_text(create_example_config())
         print(f"✓ Created workflow config: {validated_config_path}")
         print("\nEdit this file to customize:")
@@ -2889,7 +2910,7 @@ def cmd_frameworks(args):
             )
         else:
             print(f"\nRecommended framework for '{recommend_use_case}': {info['name']}")
-            print(f"  Best for: {', '.join(info['best_for'])}")
+            print(f"  Best for: {', '.join(info['best_for'])}")  # type: ignore[arg-type]
             if info.get("install_command"):
                 print(f"  Install: {info['install_command']}")
             print()
@@ -2945,7 +2966,7 @@ def _cmd_telemetry_show(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Telemetry commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_telemetry_show(args)
+    return cmd_telemetry_show(args)  # type: ignore[misc]
 
 
 def _cmd_telemetry_savings(args):
@@ -2953,7 +2974,7 @@ def _cmd_telemetry_savings(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Telemetry commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_telemetry_savings(args)
+    return cmd_telemetry_savings(args)  # type: ignore[misc]
 
 
 def _cmd_telemetry_compare(args):
@@ -2961,7 +2982,7 @@ def _cmd_telemetry_compare(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Telemetry commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_telemetry_compare(args)
+    return cmd_telemetry_compare(args)  # type: ignore[misc]
 
 
 def _cmd_telemetry_reset(args):
@@ -2969,7 +2990,7 @@ def _cmd_telemetry_reset(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Telemetry commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_telemetry_reset(args)
+    return cmd_telemetry_reset(args)  # type: ignore[misc]
 
 
 def _cmd_telemetry_export(args):
@@ -2977,7 +2998,7 @@ def _cmd_telemetry_export(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Telemetry commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_telemetry_export(args)
+    return cmd_telemetry_export(args)  # type: ignore[misc]
 
 
 def _cmd_tier1_status(args):
@@ -2985,7 +3006,7 @@ def _cmd_tier1_status(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_tier1_status(args)
+    return cmd_tier1_status(args)  # type: ignore[misc]
 
 
 def _cmd_task_routing_report(args):
@@ -2993,7 +3014,7 @@ def _cmd_task_routing_report(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_task_routing_report(args)
+    return cmd_task_routing_report(args)  # type: ignore[misc]
 
 
 def _cmd_test_status(args):
@@ -3001,7 +3022,7 @@ def _cmd_test_status(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_test_status(args)
+    return cmd_test_status(args)  # type: ignore[misc]
 
 
 def _cmd_file_test_status(args):
@@ -3009,7 +3030,7 @@ def _cmd_file_test_status(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_file_test_status(args)
+    return cmd_file_test_status(args)  # type: ignore[misc]
 
 
 def _cmd_file_test_dashboard(args):
@@ -3017,7 +3038,7 @@ def _cmd_file_test_dashboard(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_file_test_dashboard(args)
+    return cmd_file_test_dashboard(args)  # type: ignore[misc]
 
 
 def _cmd_agent_performance(args):
@@ -3025,7 +3046,7 @@ def _cmd_agent_performance(args):
     if not TELEMETRY_CLI_AVAILABLE:
         print("Tier 1 monitoring commands not available. Install telemetry dependencies.")
         return 1
-    return cmd_agent_performance(args)
+    return cmd_agent_performance(args)  # type: ignore[misc]
 
 
 def main():
@@ -3537,7 +3558,7 @@ def main():
         "--storage-path",
         help="Path to progressive workflow storage (default: .attune/progressive_runs)",
     )
-    parser_progressive_list.set_defaults(func=lambda args: cmd_list_results(args))
+    parser_progressive_list.set_defaults(func=lambda args: cmd_list_results(args))  # type: ignore[misc]
 
     # Progressive show command
     parser_progressive_show = progressive_subparsers.add_parser(
@@ -3558,7 +3579,7 @@ def main():
         action="store_true",
         help="Output in JSON format",
     )
-    parser_progressive_show.set_defaults(func=lambda args: cmd_show_report(args))
+    parser_progressive_show.set_defaults(func=lambda args: cmd_show_report(args))  # type: ignore[misc]
 
     # Progressive analytics command
     parser_progressive_analytics = progressive_subparsers.add_parser(
@@ -3574,7 +3595,7 @@ def main():
         action="store_true",
         help="Output in JSON format",
     )
-    parser_progressive_analytics.set_defaults(func=lambda args: cmd_analytics(args))
+    parser_progressive_analytics.set_defaults(func=lambda args: cmd_analytics(args))  # type: ignore[misc]
 
     # Progressive cleanup command
     parser_progressive_cleanup = progressive_subparsers.add_parser(
@@ -3596,7 +3617,7 @@ def main():
         action="store_true",
         help="Show what would be deleted without actually deleting",
     )
-    parser_progressive_cleanup.set_defaults(func=lambda args: cmd_cleanup(args))
+    parser_progressive_cleanup.set_defaults(func=lambda args: cmd_cleanup(args))  # type: ignore[misc]
 
     # Tier 1 automation monitoring commands
 

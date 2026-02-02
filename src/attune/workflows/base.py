@@ -255,6 +255,14 @@ class WorkflowResult:
     # Structured error taxonomy for reliability
     error_type: str | None = None  # "config" | "runtime" | "provider" | "timeout" | "validation"
     transient: bool = False  # True if retry is reasonable (e.g., provider timeout)
+    # Optional metadata and summary for extended reporting
+    metadata: dict[str, Any] = field(default_factory=dict)
+    summary: str | None = None
+
+    @property
+    def duration_seconds(self) -> float:
+        """Get duration in seconds (computed from total_duration_ms)."""
+        return self.total_duration_ms / 1000.0
 
 
 # Global singleton for workflow history store (lazy-initialized)

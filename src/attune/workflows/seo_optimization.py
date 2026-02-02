@@ -413,8 +413,8 @@ class SEOOptimizationWorkflow(BaseWorkflow):
         # Note: This method would use the AskUserQuestion tool when called from Claude Code
         # The actual implementation is handled by the Claude Code agent invoking this workflow
 
-        # Discovery question structure for agent to use
-        discovery_question = {
+        # Discovery question structure for agent to use (returned via self._discovery_questions)
+        _ = {
             "question": "What's most important to you right now with your documentation SEO?",
             "header": "Goal",
             "multiSelect": False,

@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.5] - 2026-02-02
+
+### Fixed
+
+- **CLI branding**: Updated all remaining "empathy" references to "attune" in CLI docstrings, usage messages, and help text
+- **Bug fix**: Fixed undefined variable `f` in `test_gen_behavioral.py` (was `for c in` but referenced `f`)
+- **Bug fix**: Fixed duplicate `cmd_workflow` function definition in `cli_legacy.py` (renamed first one to `cmd_setup`)
+- **Import fix**: Added backward-compatible import for `cmd_file_test_dashboard` in `telemetry/cli.py`
+- **Type errors**: Fixed 15 Pyright/Pylance "reportOptionalCall" errors across codebase caused by lazy import system returning `object` type
+
+## [2.1.4] - 2026-02-02
+
+### Changed
+
+- **CLI rebrand**: Updated CLI help text from "Empathy Framework CLI" to "Attune AI CLI"
+- **CLI program name**: Changed `prog="empathy"` to `prog="attune"` in argparse
+
+## [2.1.3] - 2026-02-02
+
+### Changed
+
+- **README rebrand**: Complete rewrite from "Empathy Framework" to "Attune AI" branding
+- **Cleaner documentation**: Streamlined README focusing on key features without legacy version history
+
 ## [2.1.2] - 2026-02-02
 
 ### Fixed

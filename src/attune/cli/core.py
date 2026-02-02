@@ -1,4 +1,4 @@
-"""Core utilities for Empathy Framework CLI.
+"""Core utilities for Attune AI CLI.
 
 Shared utilities, console configuration, and helper functions used across
 all CLI command modules.

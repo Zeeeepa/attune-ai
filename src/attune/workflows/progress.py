@@ -459,14 +459,13 @@ class ConsoleProgressReporter:
 
         # Get current tier from running stage
         tier_info = ""
-        model_info = ""
         if update.current_stage and update.stages:
             for stage in update.stages:
                 if stage.name == update.current_stage:
                     if stage.status == ProgressStatus.RUNNING:
                         tier_info = f" [{stage.tier.upper()}]"
                         if stage.model:
-                            model_info = f" ({stage.model})"
+                            tier_info += f" ({stage.model})"
                     # Track stage duration
                     if stage.duration_ms > 0:
                         self._stage_times[stage.name] = stage.duration_ms
