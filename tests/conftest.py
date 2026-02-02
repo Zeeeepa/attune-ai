@@ -338,7 +338,10 @@ def pytest_configure(config):
 def pytest_collection_modifyitems(config, items):
     """Modify test collection to handle coverage properly."""
     # If running with coverage, only run unit tests unless explicitly requested
-    if config.option.cov_source and not config.option.markexpr:
+    # Use getattr to safely check for cov_source (only exists if pytest-cov is installed)
+    cov_source = getattr(config.option, "cov_source", None)
+    markexpr = getattr(config.option, "markexpr", None)
+    if cov_source and not markexpr:
         skip_integration = pytest.mark.skip(reason="Integration tests don't provide coverage")
         for item in items:
             if "integration" in item.keywords:

@@ -165,7 +165,8 @@ jobs:
 
       - name: Run analysis script tests
         run: |
-          python -m pytest tests/unit/test_analyze_tier_patterns.py -v
+          # Override addopts from pytest.ini to avoid requiring pytest-xdist
+          python -m pytest tests/unit/test_analyze_tier_patterns.py -v --override-ini="addopts="
 
       - name: Verify script runs without errors
         run: |
