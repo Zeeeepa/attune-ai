@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.2] - 2026-02-02
+
+### Fixed
+
+- **PyPI packaging**: Re-release to include `.attune` branding fix (2.1.1 was built before the fix was merged)
+
 ## [2.1.1] - 2026-02-02
 
 ### Fixed
