@@ -64,7 +64,6 @@ if TYPE_CHECKING:
     from .security_audit import SecurityAuditWorkflow
     from .seo_optimization import SEOOptimizationWorkflow
     from .step_config import WorkflowStepConfig
-    from .test5 import Test5Workflow
     from .test_coverage_boost_crew import TestCoverageBoostCrew, TestCoverageBoostCrewResult
     from .test_gen import TestGenerationWorkflow
     from .test_gen_behavioral import BehavioralTestGenerationWorkflow
@@ -82,6 +81,10 @@ from .base import (
     WorkflowStage,
     get_workflow_stats,
 )
+
+# Mixins for workflow composition (extracted for maintainability)
+from .cost_mixin import CostTrackingMixin
+from .parsing_mixin import ResponseParsingMixin
 
 # Builder pattern for workflow construction
 from .builder import WorkflowBuilder, workflow_builder
@@ -136,7 +139,6 @@ _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {
     "SecureReleaseResult": (".secure_release", "SecureReleaseResult"),
     "SecurityAuditWorkflow": (".security_audit", "SecurityAuditWorkflow"),
     "SEOOptimizationWorkflow": (".seo_optimization", "SEOOptimizationWorkflow"),
-    "Test5Workflow": (".test5", "Test5Workflow"),
     "TestCoverageBoostCrew": (".test_coverage_boost_crew", "TestCoverageBoostCrew"),
     "TestCoverageBoostCrewResult": (".test_coverage_boost_crew", "TestCoverageBoostCrewResult"),
     "TestGenerationWorkflow": (".test_gen", "TestGenerationWorkflow"),
@@ -145,6 +147,11 @@ _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {
         "BehavioralTestGenerationWorkflow",
     ),
     "ParallelTestGenerationWorkflow": (".test_gen_parallel", "ParallelTestGenerationWorkflow"),
+    # Additional workflows (restored to registry)
+    "TestMaintenanceWorkflow": (".test_maintenance", "TestMaintenanceWorkflow"),
+    "BatchProcessingWorkflow": (".batch_processing", "BatchProcessingWorkflow"),
+    "ProgressiveTestGenWorkflow": (".progressive.test_gen", "ProgressiveTestGenWorkflow"),
+    "AutonomousTestGenerator": (".autonomous_test_gen", "AutonomousTestGenerator"),
     "XMLAgent": (".xml_enhanced_crew", "XMLAgent"),
     "XMLTask": (".xml_enhanced_crew", "XMLTask"),
     "parse_xml_response": (".xml_enhanced_crew", "parse_xml_response"),
@@ -229,7 +236,7 @@ _DEFAULT_WORKFLOW_NAMES: dict[str, str] = {
     "refactor-plan": "RefactorPlanWorkflow",
     # Operational workflows
     "dependency-check": "DependencyCheckWorkflow",
-    "release-prep-legacy": "ReleasePreparationWorkflow",
+    # release-prep-legacy removed - handled by migration system (use release-prep instead)
     # Composite security pipeline (v3.0)
     "secure-release": "SecureReleasePipeline",
     # Code review crew integration (v3.1)
@@ -237,19 +244,26 @@ _DEFAULT_WORKFLOW_NAMES: dict[str, str] = {
     "pr-review": "PRReviewWorkflow",
     # Documentation management (v3.5)
     "doc-orchestrator": "DocumentationOrchestrator",
-    "manage-docs": "DocumentationOrchestrator",  # Points to orchestrator (crew deprecated)
+    # manage-docs removed - handled by migration system (was deprecated)
     # Keyboard Conductor (v3.6)
     "keyboard-shortcuts": "KeyboardShortcutWorkflow",
-    # User-generated workflows
+    # User-generated workflows (document-manager kept for backward compat, handled by migration)
     "document-manager": "DocumentManagerWorkflow",
-    "test5": "Test5Workflow",
     # Meta-orchestration workflows (v4.0.0 - CANONICAL)
     "orchestrated-health-check": "OrchestratedHealthCheckWorkflow",
     "orchestrated-release-prep": "OrchestratedReleasePrepWorkflow",
     # Backward compatibility aliases (point to orchestrated versions)
     "release-prep": "OrchestratedReleasePrepWorkflow",
-    "orchestrated-health-check-experimental": "OrchestratedHealthCheckWorkflow",
-    "orchestrated-release-prep-experimental": "OrchestratedReleasePrepWorkflow",
+    # Experimental aliases removed (use production versions instead)
+    # Research and synthesis workflows
+    "research-synthesis": "ResearchSynthesisWorkflow",
+    # Test management workflows
+    "test-coverage-boost": "TestCoverageBoostCrew",
+    "test-maintenance": "TestMaintenanceWorkflow",
+    "autonomous-test-gen": "AutonomousTestGenerator",
+    # Batch and progressive workflows
+    "batch-processing": "BatchProcessingWorkflow",
+    "progressive-test-gen": "ProgressiveTestGenWorkflow",
 }
 
 # Opt-in workflows - class names for lazy loading
@@ -443,6 +457,18 @@ def __getattr__(name: str) -> object:
         _load_cli_commands()
         return globals().get(name)
 
+    # Handle migration module exports
+    _MIGRATION_EXPORTS = {
+        "resolve_workflow_migration",
+        "MigrationConfig",
+        "WORKFLOW_ALIASES",
+        "show_migration_tip",
+        "list_migrations",
+    }
+    if name in _MIGRATION_EXPORTS:
+        from attune.workflows import migration
+        return getattr(migration, name)
+
     raise AttributeError(f"module 'attune.workflows' has no attribute '{name}'")
 
 
@@ -451,8 +477,10 @@ __all__ = [
     "PROVIDER_MODELS",
     # Registry and discovery
     "WORKFLOW_REGISTRY",
-    # Base classes
+    # Base classes and mixins
     "BaseWorkflow",
+    "CostTrackingMixin",
+    "ResponseParsingMixin",
     # Routing strategies
     "TierRoutingStrategy",
     "RoutingContext",
@@ -535,8 +563,20 @@ __all__ = [
     "OrchestratedReleasePrepWorkflow",
     "HealthCheckReport",
     "ReleaseReadinessReport",
+    # Additional workflows (added for completeness)
+    # Test5Workflow removed - test artifact
+    "TestMaintenanceWorkflow",
+    "BatchProcessingWorkflow",
+    "ProgressiveTestGenWorkflow",
+    "AutonomousTestGenerator",
     # XML-enhanced prompting
     "XMLAgent",
     "XMLTask",
     "parse_xml_response",
+    # Workflow migration system
+    "resolve_workflow_migration",
+    "MigrationConfig",
+    "WORKFLOW_ALIASES",
+    "show_migration_tip",
+    "list_migrations",
 ]
