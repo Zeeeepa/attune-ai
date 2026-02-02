@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-02-02
+
+### Fixed
+
+- **vscode_bridge.py**: Updated `get_empathy_dir()` to use `.attune` directory (completes branding migration from `.empathy`)
+- **test_vscode_bridge_coverage_boost.py**: Aligned test expectations with `.attune` directory naming
+
 ## [2.1.0] - 2026-02-01
 
 ### Added

@@ -183,13 +183,13 @@ class TestGetEmpathyDir:
     """Test get_empathy_dir function."""
 
     def test_get_empathy_dir_creates_directory(self, tmp_path, monkeypatch):
-        """Test that get_empathy_dir creates .empathy directory."""
+        """Test that get_empathy_dir creates .attune directory."""
         # Change to temp directory
         monkeypatch.chdir(tmp_path)
 
         empathy_dir = get_empathy_dir()
 
-        assert empathy_dir == Path(".empathy")
+        assert empathy_dir == Path(".attune")
         assert empathy_dir.exists()
         assert empathy_dir.is_dir()
 
@@ -199,11 +199,11 @@ class TestGetEmpathyDir:
         monkeypatch.chdir(tmp_path)
 
         # Create directory first
-        (tmp_path / ".empathy").mkdir()
+        (tmp_path / ".attune").mkdir()
 
         empathy_dir = get_empathy_dir()
 
-        assert empathy_dir == Path(".empathy")
+        assert empathy_dir == Path(".attune")
         assert empathy_dir.exists()
 
 
@@ -584,7 +584,7 @@ class TestSendToVSCode:
         result = send_to_vscode("Test message")
 
         # Extract path from message
-        assert ".empathy" in result
+        assert ".attune" in result
         assert "code-review-results.json" in result
 
         # Verify path exists
