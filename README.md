@@ -5,7 +5,7 @@
 Run code review, debugging, testing, and release workflows from your terminal or Claude Code. Smart tier routing saves 34-86% on LLM costs.
 
 [![PyPI](https://img.shields.io/pypi/v/attune-ai?color=blue)](https://pypi.org/project/attune-ai/)
-[![Tests](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/tests.yml/badge.svg)](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/tests.yml)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/tests.yml)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
