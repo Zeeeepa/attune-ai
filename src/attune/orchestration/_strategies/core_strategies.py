@@ -47,9 +47,7 @@ class SequentialStrategy(ExecutionStrategy):
         Coverage Analyzer → Test Generator → Quality Validator
     """
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute agents sequentially.
 
         Args:
@@ -117,9 +115,7 @@ class ParallelStrategy(ExecutionStrategy):
         Security Audit || Performance Check || Code Quality || Docs Check
     """
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute agents in parallel.
 
         Args:
@@ -187,9 +183,7 @@ class DebateStrategy(ExecutionStrategy):
         Architect(scale) || Architect(cost) || Architect(simplicity) → Synthesizer
     """
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute debate pattern.
 
         Args:
@@ -273,9 +267,7 @@ class TeachingStrategy(ExecutionStrategy):
         """
         self.quality_threshold = quality_threshold
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute teaching pattern.
 
         Args:
@@ -346,9 +338,7 @@ class RefinementStrategy(ExecutionStrategy):
         Drafter(CHEAP) → Reviewer(CAPABLE) → Polisher(PREMIUM)
     """
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute refinement pattern.
 
         Args:
@@ -414,9 +404,7 @@ class AdaptiveStrategy(ExecutionStrategy):
         Classifier(CHEAP) → route(simple|moderate|complex) → Specialist(tier)
     """
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute adaptive routing pattern.
 
         Args:

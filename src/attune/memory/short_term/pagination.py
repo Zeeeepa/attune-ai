@@ -111,9 +111,7 @@ class Pagination:
         if self._base.use_mock:
             import fnmatch
 
-            all_keys = [
-                k for k in self._base._mock_storage.keys() if fnmatch.fnmatch(k, pattern)
-            ]
+            all_keys = [k for k in self._base._mock_storage.keys() if fnmatch.fnmatch(k, pattern)]
             start_idx = int(cursor)
             end_idx = start_idx + count
             page_keys = all_keys[start_idx:end_idx]
@@ -142,9 +140,7 @@ class Pagination:
             return PaginatedResult(items=[], cursor="0", has_more=False)
 
         # Use SCAN for efficient iteration
-        new_cursor, keys = self._base._client.scan(
-            cursor=int(cursor), match=pattern, count=count
-        )
+        new_cursor, keys = self._base._client.scan(cursor=int(cursor), match=pattern, count=count)
 
         patterns = []
         for key in keys:
@@ -191,9 +187,7 @@ class Pagination:
         if self._base.use_mock:
             import fnmatch
 
-            all_keys = [
-                k for k in self._base._mock_storage.keys() if fnmatch.fnmatch(k, pattern)
-            ]
+            all_keys = [k for k in self._base._mock_storage.keys() if fnmatch.fnmatch(k, pattern)]
             start_idx = int(cursor)
             end_idx = start_idx + count
             page_keys = all_keys[start_idx:end_idx]
@@ -205,9 +199,7 @@ class Pagination:
         if self._base._client is None:
             return PaginatedResult(items=[], cursor="0", has_more=False)
 
-        new_cursor, keys = self._base._client.scan(
-            cursor=int(cursor), match=pattern, count=count
-        )
+        new_cursor, keys = self._base._client.scan(cursor=int(cursor), match=pattern, count=count)
         return PaginatedResult(
             items=[str(k) for k in keys],
             cursor=str(new_cursor),

@@ -170,8 +170,10 @@ class SecureReleasePipeline:
             adapters_available = True
         except ImportError:
             adapters_available = False
+
             def _check_crew_available():
                 return False
+
             _get_crew_audit = None
             crew_report_to_workflow_format = None
 

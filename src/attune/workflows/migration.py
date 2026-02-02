@@ -50,10 +50,16 @@ WORKFLOW_ALIASES: dict[str, tuple[str, dict[str, Any]]] = {
     "release-prep-legacy": ("release-prep", {"mode": "standard", "_deprecated": True}),
     "document-manager": ("doc-gen", {"_deprecated": True}),
     # Removed (show error with migration path)
-    "test5": (None, {"_removed": True, "_message": "test5 was a test artifact and has been removed"}),
+    "test5": (
+        None,
+        {"_removed": True, "_message": "test5 was a test artifact and has been removed"},
+    ),
     "manage-docs": (
         None,
-        {"_removed": True, "_message": "manage-docs was incomplete. Use doc-gen or doc-orchestrator"},
+        {
+            "_removed": True,
+            "_message": "manage-docs was incomplete. Use doc-gen or doc-orchestrator",
+        },
     ),
 }
 
@@ -148,7 +154,9 @@ def is_interactive() -> bool:
     return sys.stdin.isatty()
 
 
-def show_migration_dialog(old_name: str, new_name: str, kwargs: dict[str, Any]) -> tuple[str, dict[str, Any], bool]:
+def show_migration_dialog(
+    old_name: str, new_name: str, kwargs: dict[str, Any]
+) -> tuple[str, dict[str, Any], bool]:
     """Show interactive migration dialog to user.
 
     Args:
@@ -338,7 +346,9 @@ def resolve_workflow_migration(
 
     else:  # MIGRATION_MODE_PROMPT
         # Show interactive dialog
-        chosen_name, chosen_kwargs, remember = show_migration_dialog(workflow_name, new_name, kwargs)
+        chosen_name, chosen_kwargs, remember = show_migration_dialog(
+            workflow_name, new_name, kwargs
+        )
 
         if remember:
             if chosen_name == new_name:

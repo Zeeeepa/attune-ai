@@ -309,9 +309,7 @@ class RedisShortTermMemory:
         topic: str = "",
     ) -> ConflictContext | None:
         """Create a conflict negotiation context."""
-        return self._conflicts.create_conflict_context(
-            conflict_id, agents, credentials, topic
-        )
+        return self._conflicts.create_conflict_context(conflict_id, agents, credentials, topic)
 
     def get_conflict_context(
         self,
@@ -599,9 +597,7 @@ class RedisShortTermMemory:
         min_confidence: float = 0.0,
     ) -> tuple[bool, StagedPattern | None, str]:
         """Atomically promote a pattern with validation."""
-        return self._transactions.atomic_promote_pattern(
-            pattern_id, credentials, min_confidence
-        )
+        return self._transactions.atomic_promote_pattern(pattern_id, credentials, min_confidence)
 
     # =========================================================================
     # Cross-Session Operations - delegate to CrossSessionManager

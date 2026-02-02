@@ -467,6 +467,7 @@ def __getattr__(name: str) -> object:
     }
     if name in _MIGRATION_EXPORTS:
         from attune.workflows import migration
+
         return getattr(migration, name)
 
     raise AttributeError(f"module 'attune.workflows' has no attribute '{name}'")

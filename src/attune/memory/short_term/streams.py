@@ -139,9 +139,7 @@ class StreamManager:
             self._mock_streams[full_stream].append((entry_id, entry))
             # Trim to max_len
             if len(self._mock_streams[full_stream]) > max_len:
-                self._mock_streams[full_stream] = self._mock_streams[full_stream][
-                    -max_len:
-                ]
+                self._mock_streams[full_stream] = self._mock_streams[full_stream][-max_len:]
             latency_ms = (time.perf_counter() - start_time) * 1000
             self._base._metrics.record_operation("stream_append", latency_ms)
             return entry_id
@@ -195,10 +193,7 @@ class StreamManager:
             return []
 
         result = self._base._client.xrange(full_stream, min=start_id, count=count)
-        return [
-            (str(entry_id), {str(k): v for k, v in data.items()})
-            for entry_id, data in result
-        ]
+        return [(str(entry_id), {str(k): v for k, v in data.items()}) for entry_id, data in result]
 
     def read_new(
         self,
@@ -235,9 +230,7 @@ class StreamManager:
         if self._base._client is None:
             return []
 
-        result = self._base._client.xread(
-            {full_stream: "$"}, block=block_ms, count=count
-        )
+        result = self._base._client.xread({full_stream: "$"}, block=block_ms, count=count)
         if not result:
             return []
 

@@ -11,6 +11,9 @@ from pathlib import Path
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
+
+pytest.importorskip("watchdog", reason="watchdog required for hot-reload tests")
+
 from watchdog.events import FileSystemEvent
 
 from attune.hot_reload.watcher import WorkflowFileHandler, WorkflowFileWatcher

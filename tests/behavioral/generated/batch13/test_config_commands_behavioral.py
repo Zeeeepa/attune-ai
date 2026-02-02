@@ -221,9 +221,7 @@ class TestSuggestDefaultsCommand:
         session_id = "custom_session_123"
 
         with (
-            patch(
-                "attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory
-            ),
+            patch("attune.memory.unified.UnifiedMemory", return_value=mock_unified_memory),
             patch(
                 "attune.meta_workflows.session_context.SessionContext",
                 return_value=mock_session_context,

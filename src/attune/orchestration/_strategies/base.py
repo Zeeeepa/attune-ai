@@ -34,9 +34,7 @@ class ExecutionStrategy(ABC):
     """
 
     @abstractmethod
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute agents using this strategy.
 
         Args:
@@ -52,9 +50,7 @@ class ExecutionStrategy(ABC):
         """
         pass
 
-    async def _execute_agent(
-        self, agent: AgentTemplate, context: dict[str, Any]
-    ) -> AgentResult:
+    async def _execute_agent(self, agent: AgentTemplate, context: dict[str, Any]) -> AgentResult:
         """Execute a single agent with real analysis tools.
 
         Maps agent capabilities to real tool implementations and executes them.

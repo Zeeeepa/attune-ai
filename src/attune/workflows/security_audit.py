@@ -944,6 +944,7 @@ class SecurityAuditWorkflow(BaseWorkflow):
             adapters_available = True
         except ImportError:
             adapters_available = False
+
             def _check_crew_available():
                 return False
 

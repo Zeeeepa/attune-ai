@@ -4,6 +4,10 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import pytest
+
+pytest.importorskip("jinja2", reason="jinja2 required for test_generator tests")
+
 from attune.test_generator.risk_analyzer import RiskAnalysis, RiskAnalyzer
 
 

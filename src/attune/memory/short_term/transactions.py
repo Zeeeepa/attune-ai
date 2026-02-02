@@ -115,9 +115,7 @@ class TransactionManager:
 
         # Pattern 4: Range validation
         if not 0.0 <= min_confidence <= 1.0:
-            raise ValueError(
-                f"min_confidence must be between 0.0 and 1.0, got {min_confidence}"
-            )
+            raise ValueError(f"min_confidence must be between 0.0 and 1.0, got {min_confidence}")
 
         if not credentials.can_validate():
             return False, None, "Requires VALIDATOR tier or higher"

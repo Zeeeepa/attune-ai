@@ -154,9 +154,7 @@ class TestResolveWorkflowMigration:
 
         config = MigrationConfig(remembered_choices={"pro-review": "new"})
 
-        name, kwargs, was_migrated = resolve_workflow_migration(
-            "pro-review", config=config
-        )
+        name, kwargs, was_migrated = resolve_workflow_migration("pro-review", config=config)
 
         assert name == "code-review"
         assert kwargs.get("mode") == "premium"
@@ -168,9 +166,7 @@ class TestResolveWorkflowMigration:
 
         config = MigrationConfig(remembered_choices={"pro-review": "legacy"})
 
-        name, kwargs, was_migrated = resolve_workflow_migration(
-            "pro-review", config=config
-        )
+        name, kwargs, was_migrated = resolve_workflow_migration("pro-review", config=config)
 
         assert name == "pro-review"
         assert kwargs == {}
@@ -194,9 +190,7 @@ class TestResolveWorkflowMigration:
         # Default config (prompt mode) should still auto-migrate in CI
         config = MigrationConfig(mode=MIGRATION_MODE_PROMPT)
 
-        name, kwargs, was_migrated = resolve_workflow_migration(
-            "secure-release", config=config
-        )
+        name, kwargs, was_migrated = resolve_workflow_migration("secure-release", config=config)
 
         assert name == "release-prep"
         assert kwargs.get("mode") == "secure"

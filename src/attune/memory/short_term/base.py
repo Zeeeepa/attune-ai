@@ -249,9 +249,7 @@ class BaseOperations:
         )
         raise last_error if last_error else ConnectionError("Failed to connect to Redis")
 
-    def _execute_with_retry(
-        self, operation: Callable[[], Any], op_name: str = "operation"
-    ) -> Any:
+    def _execute_with_retry(self, operation: Callable[[], Any], op_name: str = "operation") -> Any:
         """Execute a Redis operation with retry logic.
 
         Args:

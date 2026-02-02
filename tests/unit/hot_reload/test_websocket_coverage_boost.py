@@ -13,6 +13,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+pytest.importorskip("watchdog", reason="watchdog required for hot-reload tests")
+
 from attune.hot_reload.websocket import (
     ReloadNotificationManager,
     create_notification_callback,

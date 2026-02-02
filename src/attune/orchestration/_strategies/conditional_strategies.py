@@ -63,9 +63,7 @@ class ConditionalStrategy(ExecutionStrategy):
         self.else_branch = else_branch
         self.evaluator = ConditionEvaluator()
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute conditional branching."""
         # Import here to avoid circular import
         from . import get_strategy
@@ -116,9 +114,7 @@ class MultiConditionalStrategy(ExecutionStrategy):
         self.default_branch = default_branch
         self.evaluator = ConditionEvaluator()
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute multi-conditional branching."""
         # Import here to avoid circular import
         from . import get_strategy
@@ -193,9 +189,7 @@ class NestedStrategy(ExecutionStrategy):
         self.workflow_ref = workflow_ref
         self.max_depth = max_depth
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute nested workflow.
 
         Args:
@@ -316,9 +310,7 @@ class NestedSequentialStrategy(ExecutionStrategy):
         self.steps = steps
         self.max_depth = max_depth
 
-    async def execute(
-        self, agents: list[AgentTemplate], context: dict[str, Any]
-    ) -> StrategyResult:
+    async def execute(self, agents: list[AgentTemplate], context: dict[str, Any]) -> StrategyResult:
         """Execute steps sequentially, handling both agents and nested workflows."""
         if not self.steps:
             raise ValueError("steps list cannot be empty")

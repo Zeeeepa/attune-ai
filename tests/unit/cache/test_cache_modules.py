@@ -9,8 +9,9 @@ Licensed under Fair Source License 0.9
 import time
 from unittest.mock import MagicMock, patch
 
-import numpy as np
 import pytest
+
+np = pytest.importorskip("numpy", reason="numpy required for cache tests")
 
 from attune.cache.base import CacheEntry, CacheStats
 from attune.cache.hash_only import HashOnlyCache

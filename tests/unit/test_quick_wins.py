@@ -13,8 +13,9 @@ Licensed under Fair Source 0.9
 
 from unittest.mock import Mock, patch
 
-import numpy as np
 import pytest
+
+np = pytest.importorskip("numpy", reason="numpy required for quick wins tests")
 
 
 class TestCosineSimilarityZeroVector:
