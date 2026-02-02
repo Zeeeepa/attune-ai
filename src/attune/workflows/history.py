@@ -205,8 +205,9 @@ class WorkflowHistoryStore:
                         else 0
                     ),
                     (
-                        result.final_output.get("summary")
+                        str(result.final_output.get("summary"))
                         if isinstance(result.final_output, dict)
+                        and result.final_output.get("summary") is not None
                         else None
                     ),
                 ),

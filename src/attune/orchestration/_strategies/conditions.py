@@ -151,7 +151,7 @@ class Branch:
         label: Human-readable branch label
     """
 
-    agents: list["AgentTemplate"]
+    agents: list[AgentTemplate]
     strategy: str = "sequential"
     label: str = ""
 

@@ -38,3 +38,10 @@ def register_parsers(subparsers):
         help="Provider name (anthropic only)",
     )
     p_set.set_defaults(func=provider.cmd_provider_set)
+
+    # Provider hybrid command (deprecated)
+    p_hybrid = provider_sub.add_parser(
+        "hybrid",
+        help="Configure hybrid mode (DEPRECATED - now Anthropic only)",
+    )
+    p_hybrid.set_defaults(func=provider.cmd_provider_hybrid)

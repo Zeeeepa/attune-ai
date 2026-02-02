@@ -60,21 +60,9 @@ def main() -> int:
 
     register_all_parsers(subparsers)
 
-    # TODO: Import and register remaining commands from cli.py
-    # This is a partial refactoring - additional commands still in cli.py
-    # For now, if command not found in new structure, fall back to old cli.py
-    #
-    # NOTE: Temporarily disabled to avoid conflicts with extracted commands.
-    # Commands that have been extracted:
-    #   - help, tier, info, patterns, status (Phase 1)
-    #   - workflow, inspect (run, inspect, export, import) (Phase 2)
-    # Once all commands are extracted, the old cli.py will be removed entirely.
-    #
-    # try:
-    #     from attune import cli as old_cli
-    #     _register_legacy_commands(subparsers, old_cli)
-    # except ImportError:
-    #     pass  # Old cli.py not available or already moved
+    # NOTE: CLI refactoring is COMPLETE (v2.1.5)
+    # All 30 commands have been extracted from the monolithic cli_legacy.py
+    # to the new modular structure in cli/commands/ and cli/parsers/.
 
     # Parse arguments
     args = parser.parse_args()
@@ -105,50 +93,6 @@ def main() -> int:
     # No command specified
     parser.print_help()
     return 0
-
-
-def _register_legacy_commands(subparsers, old_cli):
-    """Temporarily register commands not yet extracted from old cli.py.
-
-    This function provides backward compatibility during the refactoring process.
-    As commands are extracted into the new structure, they should be removed
-    from this registration.
-
-    Args:
-        subparsers: ArgumentParser subparsers object
-        old_cli: Reference to old cli module
-
-    Note:
-        This is a TEMPORARY function that will be removed once all commands
-        are extracted from the monolithic cli.py file.
-    """
-    # Import command functions that haven't been extracted yet
-    try:
-        # Patterns commands
-        from attune.cli.commands.patterns import (
-            cmd_patterns_export,
-            cmd_patterns_list,
-            cmd_patterns_resolve,
-        )
-
-        patterns_parser = subparsers.add_parser("patterns", help="Pattern management")
-        patterns_sub = patterns_parser.add_subparsers(dest="patterns_command")
-
-        p_list = patterns_sub.add_parser("list", help="List patterns")
-        p_list.set_defaults(func=cmd_patterns_list)
-
-        p_export = patterns_sub.add_parser("export", help="Export patterns")
-        p_export.add_argument("output", help="Output file")
-        p_export.set_defaults(func=cmd_patterns_export)
-
-        p_resolve = patterns_sub.add_parser("resolve", help="Resolve pattern")
-        p_resolve.add_argument("pattern_id", help="Pattern ID")
-        p_resolve.set_defaults(func=cmd_patterns_resolve)
-    except (ImportError, AttributeError):
-        pass  # Commands not available
-
-    # Add other legacy commands as needed...
-    # This list will shrink as commands are extracted
 
 
 # Preserve backward compatibility

@@ -35,7 +35,7 @@ class ExecutionStrategy(ABC):
 
     @abstractmethod
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute agents using this strategy.
 
@@ -53,7 +53,7 @@ class ExecutionStrategy(ABC):
         pass
 
     async def _execute_agent(
-        self, agent: "AgentTemplate", context: dict[str, Any]
+        self, agent: AgentTemplate, context: dict[str, Any]
     ) -> AgentResult:
         """Execute a single agent with real analysis tools.
 

@@ -96,3 +96,20 @@ def cmd_provider_set(args):
 
     print(f"✓ Default provider set to: {provider}")
     print(f"  Saved to: {validated_workflows_path}")
+
+
+def cmd_provider_hybrid(args):
+    """Configure hybrid mode (DEPRECATED in v5.0.0).
+
+    Hybrid mode is no longer supported. This command now configures
+    Anthropic as the sole provider.
+
+    Args:
+        args: Namespace object from argparse (no additional attributes used).
+
+    Returns:
+        None: Launches interactive Anthropic configuration.
+    """
+    from attune.models.provider_config import configure_hybrid_interactive
+
+    configure_hybrid_interactive()

@@ -40,3 +40,10 @@ def register_parsers(subparsers):
         help="Path to configuration file to validate",
     )
     parser_validate.set_defaults(func=setup.cmd_validate)
+
+    # Setup wizard command
+    parser_setup = subparsers.add_parser(
+        "setup",
+        help="Interactive setup workflow for first-time configuration",
+    )
+    parser_setup.set_defaults(func=setup.cmd_setup)

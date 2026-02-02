@@ -48,7 +48,7 @@ class SequentialStrategy(ExecutionStrategy):
     """
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute agents sequentially.
 
@@ -118,7 +118,7 @@ class ParallelStrategy(ExecutionStrategy):
     """
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute agents in parallel.
 
@@ -188,7 +188,7 @@ class DebateStrategy(ExecutionStrategy):
     """
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute debate pattern.
 
@@ -274,7 +274,7 @@ class TeachingStrategy(ExecutionStrategy):
         self.quality_threshold = quality_threshold
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute teaching pattern.
 
@@ -347,7 +347,7 @@ class RefinementStrategy(ExecutionStrategy):
     """
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute refinement pattern.
 
@@ -415,7 +415,7 @@ class AdaptiveStrategy(ExecutionStrategy):
     """
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute adaptive routing pattern.
 

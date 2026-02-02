@@ -82,15 +82,15 @@ from .base import (
     get_workflow_stats,
 )
 
-# Mixins for workflow composition (extracted for maintainability)
-from .cost_mixin import CostTrackingMixin
-from .parsing_mixin import ResponseParsingMixin
-
 # Builder pattern for workflow construction
 from .builder import WorkflowBuilder, workflow_builder
 
 # Config is small and frequently needed
 from .config import DEFAULT_MODELS, ModelConfig, WorkflowConfig, create_example_config, get_model
+
+# Mixins for workflow composition (extracted for maintainability)
+from .cost_mixin import CostTrackingMixin
+from .parsing_mixin import ResponseParsingMixin
 
 # Routing strategies (small, frequently needed for builder pattern)
 from .routing import (

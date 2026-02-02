@@ -28,7 +28,6 @@ from .base import ExecutionStrategy
 from .conditions import Condition, ConditionEvaluator
 from .data_classes import AgentResult, StrategyResult
 from .nesting import (
-    InlineWorkflow,
     NestingContext,
     WorkflowReference,
     get_workflow,
@@ -55,8 +54,8 @@ class ConditionalStrategy(ExecutionStrategy):
     def __init__(
         self,
         condition: Condition,
-        then_branch: "Branch",
-        else_branch: "Branch | None" = None,
+        then_branch: Branch,
+        else_branch: Branch | None = None,
     ):
         """Initialize conditional strategy."""
         self.condition = condition
@@ -65,7 +64,7 @@ class ConditionalStrategy(ExecutionStrategy):
         self.evaluator = ConditionEvaluator()
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute conditional branching."""
         # Import here to avoid circular import
@@ -109,8 +108,8 @@ class MultiConditionalStrategy(ExecutionStrategy):
 
     def __init__(
         self,
-        conditions: list[tuple[Condition, "Branch"]],
-        default_branch: "Branch | None" = None,
+        conditions: list[tuple[Condition, Branch]],
+        default_branch: Branch | None = None,
     ):
         """Initialize multi-conditional strategy."""
         self.conditions = conditions
@@ -118,7 +117,7 @@ class MultiConditionalStrategy(ExecutionStrategy):
         self.evaluator = ConditionEvaluator()
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute multi-conditional branching."""
         # Import here to avoid circular import
@@ -195,7 +194,7 @@ class NestedStrategy(ExecutionStrategy):
         self.max_depth = max_depth
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute nested workflow.
 
@@ -278,7 +277,7 @@ class StepDefinition:
         workflow_ref: Nested workflow to execute
     """
 
-    agent: "AgentTemplate | None" = None
+    agent: AgentTemplate | None = None
     workflow_ref: WorkflowReference | None = None
 
     def __post_init__(self):
@@ -318,7 +317,7 @@ class NestedSequentialStrategy(ExecutionStrategy):
         self.max_depth = max_depth
 
     async def execute(
-        self, agents: list["AgentTemplate"], context: dict[str, Any]
+        self, agents: list[AgentTemplate], context: dict[str, Any]
     ) -> StrategyResult:
         """Execute steps sequentially, handling both agents and nested workflows."""
         if not self.steps:

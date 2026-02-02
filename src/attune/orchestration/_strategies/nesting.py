@@ -65,7 +65,7 @@ class WorkflowReference:
     """
 
     workflow_id: str = ""
-    inline: "InlineWorkflow | None" = None
+    inline: InlineWorkflow | None = None
     context_mapping: dict[str, str] = field(default_factory=dict)
     result_key: str = "nested_result"
 
@@ -95,7 +95,7 @@ class InlineWorkflow:
         ... )
     """
 
-    agents: list["AgentTemplate"]
+    agents: list[AgentTemplate]
     strategy: str = "sequential"
     description: str = ""
 
@@ -123,7 +123,7 @@ class NestingContext:
         self.workflow_stack: list[str] = []
 
     @classmethod
-    def from_context(cls, context: dict[str, Any]) -> "NestingContext":
+    def from_context(cls, context: dict[str, Any]) -> NestingContext:
         """Extract or create NestingContext from execution context.
 
         Args:
@@ -151,7 +151,7 @@ class NestingContext:
             return False  # Cycle detected
         return True
 
-    def enter(self, workflow_id: str = "") -> "NestingContext":
+    def enter(self, workflow_id: str = "") -> NestingContext:
         """Create a child context for nested execution.
 
         Args:
@@ -182,7 +182,7 @@ class NestingContext:
 
 
 # Registry for named workflows (populated at runtime)
-WORKFLOW_REGISTRY: dict[str, "WorkflowDefinition"] = {}
+WORKFLOW_REGISTRY: dict[str, WorkflowDefinition] = {}
 
 
 @dataclass
@@ -199,7 +199,7 @@ class WorkflowDefinition:
     """
 
     id: str
-    agents: list["AgentTemplate"]
+    agents: list[AgentTemplate]
     strategy: str = "sequential"
     description: str = ""
 

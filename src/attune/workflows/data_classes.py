@@ -1,0 +1,92 @@
+"""Data classes for workflow execution.
+
+This module contains the core data structures used across all workflows:
+- WorkflowStage: Represents a single stage in a workflow
+- CostReport: Cost breakdown for a workflow execution
+- StageQualityMetrics: Quality metrics for stage output validation
+- WorkflowResult: Result of a workflow execution
+
+Copyright 2025 Smart-AI-Memory
+Licensed under Fair Source License 0.9
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    # Use unified ModelTier for type hints (avoids circular imports)
+    from attune.models import ModelTier
+
+
+@dataclass
+class WorkflowStage:
+    """Represents a single stage in a workflow."""
+
+    name: str
+    tier: ModelTier
+    description: str
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cost: float = 0.0
+    result: Any = None
+    duration_ms: int = 0
+    skipped: bool = False
+    skip_reason: str | None = None
+
+
+@dataclass
+class CostReport:
+    """Cost breakdown for a workflow execution."""
+
+    total_cost: float
+    baseline_cost: float  # If all stages used premium
+    savings: float
+    savings_percent: float
+    by_stage: dict[str, float] = field(default_factory=dict)
+    by_tier: dict[str, float] = field(default_factory=dict)
+    # Cache metrics
+    cache_hits: int = 0
+    cache_misses: int = 0
+    cache_hit_rate: float = 0.0
+    estimated_cost_without_cache: float = 0.0
+    savings_from_cache: float = 0.0
+
+
+@dataclass
+class StageQualityMetrics:
+    """Quality metrics for stage output validation."""
+
+    execution_succeeded: bool
+    output_valid: bool
+    quality_improved: bool  # Workflow-specific (e.g., health score improved)
+    error_type: str | None
+    validation_error: str | None
+
+
+@dataclass
+class WorkflowResult:
+    """Result of a workflow execution."""
+
+    success: bool
+    stages: list[WorkflowStage]
+    final_output: Any
+    cost_report: CostReport
+    started_at: datetime
+    completed_at: datetime
+    total_duration_ms: int
+    provider: str = "unknown"
+    error: str | None = None
+    # Structured error taxonomy for reliability
+    error_type: str | None = None  # "config" | "runtime" | "provider" | "timeout" | "validation"
+    transient: bool = False  # True if retry is reasonable (e.g., provider timeout)
+    # Optional metadata and summary for extended reporting
+    metadata: dict[str, Any] = field(default_factory=dict)
+    summary: str | None = None
+
+    @property
+    def duration_seconds(self) -> float:
+        """Get duration in seconds (computed from total_duration_ms)."""
+        return self.total_duration_ms / 1000.0

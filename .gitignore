@@ -191,3 +191,21 @@ metrics.db
 benchmarks/profiles/*.prof
 benchmarks/profiles/*.dat
 .env.test
+
+# Attune runtime data (session state, not source code)
+.attune/socratic/sessions/
+.attune/history.db
+.attune/patterns*.db
+.attune/*.jsonl
+.attune/health_history/
+.attune/health_tracking/
+.attune/progressive_runs/
+
+# macOS Finder duplicate files (additional patterns)
+* 3.json
+* 3.md
+* 3.yaml
+* 3.yml
+* 3.py
+* 3.txt
+* 4.template

@@ -14,6 +14,11 @@ from attune.logging_config import get_logger
 from attune.workflows import get_workflow
 from attune.workflows import list_workflows as get_workflow_list
 from attune.workflows.config import WorkflowConfig, create_example_config
+from attune.workflows.migration import (
+    WORKFLOW_ALIASES,
+    resolve_workflow_migration,
+    show_migration_tip,
+)
 
 logger = get_logger(__name__)
 
@@ -127,6 +132,13 @@ def cmd_workflow(args):
             return 1
 
         try:
+            # Check for workflow migration (describe still works with old names)
+            if name in WORKFLOW_ALIASES:
+                resolved_name, migration_kwargs, _ = resolve_workflow_migration(name)
+                if resolved_name and resolved_name != name:
+                    print(f"ℹ️  '{name}' is now '{resolved_name}'")
+                    name = resolved_name
+
             workflow_cls = get_workflow(name)
             provider = getattr(args, "provider", None)
             workflow = workflow_cls(provider=provider)
@@ -165,6 +177,16 @@ def cmd_workflow(args):
             return 1
 
         try:
+            # Check for workflow migration (environment-aware)
+            original_name = name
+            migration_kwargs = {}
+            was_migrated = False
+
+            if name in WORKFLOW_ALIASES:
+                name, migration_kwargs, was_migrated = resolve_workflow_migration(name)
+                if was_migrated:
+                    logger.info(f"Migrated '{original_name}' -> '{name}' with {migration_kwargs}")
+
             workflow_cls = get_workflow(name)
 
             # Get provider from CLI arg, or fall back to config's default_provider
@@ -196,6 +218,11 @@ def cmd_workflow(args):
             if name == "health-check" and "health_score_threshold" in init_params:
                 health_score_threshold = getattr(args, "health_score_threshold", 100)
                 workflow_kwargs["health_score_threshold"] = health_score_threshold
+
+            # Merge migration kwargs (from workflow consolidation)
+            for key, value in migration_kwargs.items():
+                if not key.startswith("_") and key in init_params:
+                    workflow_kwargs[key] = value
 
             workflow = workflow_cls(**workflow_kwargs)
 
@@ -366,6 +393,10 @@ def cmd_workflow(args):
                             )
                     error_msg = error_msg or "Unknown error"
                     print(f"\n✗ Workflow failed: {error_msg}\n")
+
+            # Show migration tip if workflow was migrated (helps users learn new syntax)
+            if was_migrated and original_name != name:
+                show_migration_tip(original_name, name, migration_kwargs)
 
         except KeyError:
             print(f"Error: Workflow '{name}' not found")

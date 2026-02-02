@@ -24,25 +24,20 @@ Licensed under Fair Source License 0.9
 
 from __future__ import annotations
 
-# Data classes
-from .data_classes import AgentResult, StrategyResult
+# Base strategy class
+from .base import ExecutionStrategy
+
+# Conditional and nested strategies
+from .conditional_strategies import (
+    ConditionalStrategy,
+    MultiConditionalStrategy,
+    NestedSequentialStrategy,
+    NestedStrategy,
+    StepDefinition,
+)
 
 # Condition types and evaluator
 from .conditions import Branch, Condition, ConditionEvaluator, ConditionType
-
-# Nesting support
-from .nesting import (
-    WORKFLOW_REGISTRY,
-    InlineWorkflow,
-    NestingContext,
-    WorkflowDefinition,
-    WorkflowReference,
-    get_workflow,
-    register_workflow,
-)
-
-# Base strategy class
-from .base import ExecutionStrategy
 
 # Core strategies
 from .core_strategies import (
@@ -54,15 +49,19 @@ from .core_strategies import (
     TeachingStrategy,
 )
 
-# Conditional and nested strategies
-from .conditional_strategies import (
-    ConditionalStrategy,
-    MultiConditionalStrategy,
-    NestedSequentialStrategy,
-    NestedStrategy,
-    StepDefinition,
-)
+# Data classes
+from .data_classes import AgentResult, StrategyResult
 
+# Nesting support
+from .nesting import (
+    WORKFLOW_REGISTRY,
+    InlineWorkflow,
+    NestingContext,
+    WorkflowDefinition,
+    WorkflowReference,
+    get_workflow,
+    register_workflow,
+)
 
 # Strategy registry for lookup by name (partial - advanced strategies added in main module)
 _STRATEGY_REGISTRY: dict[str, type[ExecutionStrategy]] = {
