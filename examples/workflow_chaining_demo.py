@@ -126,8 +126,7 @@ def demo_configuration_tips():
     print("DEMO 4: Configuration Tips")
     print("=" * 70)
 
-    print(
-        """
+    print("""
 ✅ Chain Configuration Loaded: .attune/workflow_chains.yaml
 
 📝 Key Features:
@@ -170,8 +169,7 @@ def demo_configuration_tips():
    2. Test chains with small codebases first
    3. Monitor chain_history.jsonl for patterns
    4. Adjust triggers based on your workflow
-    """
-    )
+    """)
 
 
 def demo_real_world_scenario():
@@ -180,8 +178,7 @@ def demo_real_world_scenario():
     print("DEMO 5: Real-World Scenario")
     print("=" * 70)
 
-    print(
-        """
+    print("""
 📖 Scenario: Developer commits security-sensitive code
 
 1. Developer runs:
@@ -217,8 +214,7 @@ def demo_real_world_scenario():
    - Without chaining: $0.015 (single workflow)
    - With chaining: $0.032 (3 workflows)
    - Value: Comprehensive security review ✨
-    """
-    )
+    """)
 
 
 def main():

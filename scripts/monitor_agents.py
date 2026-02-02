@@ -20,7 +20,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any
 
-
 AGENT_OUTPUT_DIR = Path(
     "/private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-empathy-framework/tasks/"
 )

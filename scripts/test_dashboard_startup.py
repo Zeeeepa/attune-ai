@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Quick test to verify dashboard starts correctly."""
+
 import sys
 import threading
 import time

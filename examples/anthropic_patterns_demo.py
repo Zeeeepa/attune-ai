@@ -20,7 +20,6 @@ from typing import Any
 from attune.workflows import BaseWorkflow
 from attune.models import LLMClient
 
-
 # ============================================================================
 # Pattern 1: Sequential Workflow (Anthropic Pattern)
 # ============================================================================

@@ -4,6 +4,7 @@
 This script bypasses the telemetry API and writes directly to Redis,
 useful for testing the dashboard without initializing the full framework.
 """
+
 import json
 import random
 import time

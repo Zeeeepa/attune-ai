@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Test standalone dashboard server with Redis data."""
+
 import sys
 import threading
 import time

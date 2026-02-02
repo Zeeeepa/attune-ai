@@ -492,8 +492,7 @@ class TestSessionStatusCollectorCollect:
         docs_dir.mkdir()
 
         plan_file = docs_dir / "PLAN_v3.md"
-        plan_file.write_text(
-            """
+        plan_file.write_text("""
 # Plan v3
 
 ## Tasks
@@ -501,8 +500,7 @@ class TestSessionStatusCollectorCollect:
 - [ ] Unchecked task 1
 - [ ] Unchecked task 2
 - [x] Another completed
-"""
-        )
+""")
 
         collector = SessionStatusCollector(
             patterns_dir=str(tmp_path / "patterns"),

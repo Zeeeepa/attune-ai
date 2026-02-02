@@ -13,6 +13,7 @@ creates response files with user selections.
 
 Created: 2026-01-29
 """
+
 import json
 import logging
 import sys

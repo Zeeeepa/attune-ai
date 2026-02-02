@@ -21,7 +21,6 @@ from attune.orchestration import (
 )
 from attune.orchestration.agent_templates import AgentTemplate
 
-
 # ============================================================================
 # Demo: Pattern 8 - Tool-Enhanced Strategy
 # ============================================================================
