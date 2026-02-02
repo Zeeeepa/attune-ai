@@ -484,10 +484,14 @@ class WorkflowHistoryStore:
         # Security Note: f-string builds placeholder list only ("?, ?, ?")
         # Actual data (run_ids) passed as parameters - SQL injection safe
         placeholders = ",".join("?" * len(run_ids))
-        cursor.execute(f"DELETE FROM workflow_stages WHERE run_id IN ({placeholders})", run_ids)  # nosec B608
+        cursor.execute(  # nosec B608
+            f"DELETE FROM workflow_stages WHERE run_id IN ({placeholders})", run_ids
+        )
 
         # Delete runs (same safe parameterization pattern)
-        cursor.execute(f"DELETE FROM workflow_runs WHERE run_id IN ({placeholders})", run_ids)  # nosec B608
+        cursor.execute(  # nosec B608
+            f"DELETE FROM workflow_runs WHERE run_id IN ({placeholders})", run_ids
+        )
 
         self.conn.commit()
         logger.info(f"Cleaned up {len(run_ids)} runs older than {keep_days} days")
