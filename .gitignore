@@ -209,3 +209,23 @@ benchmarks/profiles/*.dat
 * 3.py
 * 3.txt
 * 4.template
+
+# Profiling output (root level)
+/profiles/
+*.prof
+
+# Generated local files
+/aliases.sh
+/KEYBOARD_SHORTCUTS.md
+
+# Local plugin configuration
+/plugin/
+
+# Duplicate rules (use .claude/rules/empathy/)
+.claude/rules/attune/
+
+# UV lock file (use pip-tools or poetry for prod)
+uv.lock
+
+# Dev scripts (local only)
+/scripts/profile_workflows.py
