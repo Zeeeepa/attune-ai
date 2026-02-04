@@ -102,7 +102,7 @@ class EmpathyLLM:
         pattern_library: dict | None = None,
         claude_memory_config: ClaudeMemoryConfig | None = None,
         project_root: str | None = None,
-        enable_security: bool = False,
+        enable_security: bool | None = None,
         security_config: dict | None = None,
         enable_model_routing: bool = False,
         **kwargs,
@@ -117,7 +117,10 @@ class EmpathyLLM:
             pattern_library: Shared pattern library (Level 5)
             claude_memory_config: Configuration for Claude memory integration (v1.8.0+)
             project_root: Project root directory for loading .claude/CLAUDE.md
-            enable_security: Enable Phase 2 security controls (default: False)
+            enable_security: Enable Phase 2 security controls.
+                - If None (default): Check ATTUNE_ENABLE_SECURITY env var
+                - If env var not set: Defaults to False (disabled)
+                - In production environments, a warning is logged if security is disabled
             security_config: Security configuration dictionary with options:
                 - audit_log_dir: Directory for audit logs (default: "./logs")
                 - block_on_secrets: Block requests with detected secrets (default: True)
@@ -133,11 +136,32 @@ class EmpathyLLM:
             **kwargs: Provider-specific options
 
         """
+        import os
+        import warnings
+
         self.target_level = target_level
         self.pattern_library = pattern_library or {}
         self.project_root = project_root
         self._provider_name = provider
         self._explicit_model = model  # Track if user explicitly set a model
+
+        # Resolve enable_security from env var if not explicitly set
+        if enable_security is None:
+            env_security = os.getenv("ATTUNE_ENABLE_SECURITY", "").lower()
+            enable_security = env_security in ("1", "true", "yes", "on")
+
+        # Production environment detection
+        is_production = self._detect_production_environment()
+
+        # Warn if security disabled in production
+        if not enable_security and is_production:
+            warning_msg = (
+                "SECURITY WARNING: Security controls are disabled in a production environment. "
+                "This exposes your application to PII leakage and credential exposure risks. "
+                "Enable security by setting ATTUNE_ENABLE_SECURITY=true or passing enable_security=True."
+            )
+            logger.warning(warning_msg)
+            warnings.warn(warning_msg, UserWarning, stacklevel=2)
 
         # Initialize provider
         self.provider = self._create_provider(provider, api_key, model, **kwargs)
@@ -211,6 +235,58 @@ class EmpathyLLM:
                 enable_console_logging=enable_console_logging,
             )
             logger.info(f"Audit Logger initialized: {audit_log_dir}")
+
+    def _detect_production_environment(self) -> bool:
+        """Detect if running in a production environment.
+
+        Checks common environment indicators:
+        - NODE_ENV=production
+        - ENVIRONMENT=production or ENVIRONMENT=prod
+        - FLASK_ENV=production
+        - DJANGO_ENV=production
+        - RAILWAY_ENVIRONMENT=production (Railway)
+        - VERCEL_ENV=production (Vercel)
+        - AWS_EXECUTION_ENV (Lambda)
+        - KUBERNETES_SERVICE_HOST (K8s)
+        - DYNO (Heroku)
+
+        Returns:
+            True if production indicators are detected
+        """
+        import os
+
+        # Explicit production indicators
+        production_vars = {
+            "NODE_ENV": "production",
+            "ENVIRONMENT": ("production", "prod"),
+            "FLASK_ENV": "production",
+            "DJANGO_ENV": "production",
+            "RAILWAY_ENVIRONMENT": "production",
+            "VERCEL_ENV": "production",
+        }
+
+        for var, expected in production_vars.items():
+            value = os.getenv(var, "").lower()
+            if isinstance(expected, tuple):
+                if value in expected:
+                    return True
+            elif value == expected:
+                return True
+
+        # Platform-specific indicators (presence implies production)
+        production_platform_vars = [
+            "AWS_EXECUTION_ENV",  # AWS Lambda
+            "KUBERNETES_SERVICE_HOST",  # Kubernetes
+            "DYNO",  # Heroku
+            "RENDER_SERVICE_ID",  # Render
+            "FLY_APP_NAME",  # Fly.io
+        ]
+
+        for var in production_platform_vars:
+            if os.getenv(var):
+                return True
+
+        return False
 
     def _create_provider(
         self,

@@ -6,9 +6,14 @@ Created: 2026-01-20
 Coverage target: 80%+
 """
 
+import importlib.util
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
+# Check for optional dependencies
+_openai_available = importlib.util.find_spec("openai") is not None
+_aiohttp_available = importlib.util.find_spec("aiohttp") is not None
 
 from attune_llm.providers import (
     AnthropicBatchProvider,
@@ -286,7 +291,7 @@ class TestAnthropicBatchProvider:
         mock_batch.id = "batch_123"
 
         mock_client = MagicMock()
-        mock_client.batches.create.return_value = mock_batch
+        mock_client.messages.batches.create.return_value = mock_batch
         mock_anthropic_class.return_value = mock_client
 
         provider = AnthropicBatchProvider(api_key="sk-test")
@@ -308,44 +313,44 @@ class TestAnthropicBatchProvider:
     def test_get_batch_status(self, mock_anthropic_class):
         """Test getting batch status."""
         mock_batch = MagicMock()
-        mock_batch.status = "processing"
+        mock_batch.processing_status = "in_progress"
 
         mock_client = MagicMock()
-        mock_client.batches.retrieve.return_value = mock_batch
+        mock_client.messages.batches.retrieve.return_value = mock_batch
         mock_anthropic_class.return_value = mock_client
 
         provider = AnthropicBatchProvider(api_key="sk-test")
 
         status = provider.get_batch_status("batch_123")
 
-        assert status.status == "processing"
+        assert status.processing_status == "in_progress"
 
     @patch("anthropic.Anthropic")
     def test_get_batch_results_not_completed(self, mock_anthropic_class):
         """Test getting results when batch not completed."""
         mock_batch = MagicMock()
-        mock_batch.status = "processing"
+        mock_batch.processing_status = "in_progress"
 
         mock_client = MagicMock()
-        mock_client.batches.retrieve.return_value = mock_batch
+        mock_client.messages.batches.retrieve.return_value = mock_batch
         mock_anthropic_class.return_value = mock_client
 
         provider = AnthropicBatchProvider(api_key="sk-test")
 
-        with pytest.raises(ValueError, match="not completed"):
+        with pytest.raises(ValueError, match="not ended"):
             provider.get_batch_results("batch_123")
 
     @patch("anthropic.Anthropic")
     def test_get_batch_results_success(self, mock_anthropic_class):
         """Test getting results from completed batch."""
         mock_batch = MagicMock()
-        mock_batch.status = "completed"
+        mock_batch.processing_status = "ended"
 
         mock_results = [{"custom_id": "task_1", "response": {"content": "Result"}}]
 
         mock_client = MagicMock()
-        mock_client.batches.retrieve.return_value = mock_batch
-        mock_client.batches.results.return_value = mock_results
+        mock_client.messages.batches.retrieve.return_value = mock_batch
+        mock_client.messages.batches.results.return_value = iter(mock_results)
         mock_anthropic_class.return_value = mock_client
 
         provider = AnthropicBatchProvider(api_key="sk-test")
@@ -361,6 +366,10 @@ class TestAnthropicBatchProvider:
 # =============================================================================
 
 
+@pytest.mark.skipif(
+    not _openai_available,
+    reason="openai not installed (optional dependency)",
+)
 class TestOpenAIProvider:
     """Tests for OpenAIProvider class."""
 
@@ -570,6 +579,10 @@ class TestGeminiProvider:
 # =============================================================================
 
 
+@pytest.mark.skipif(
+    not _aiohttp_available,
+    reason="aiohttp not installed (optional dependency)",
+)
 class TestLocalProvider:
     """Tests for LocalProvider class."""
 

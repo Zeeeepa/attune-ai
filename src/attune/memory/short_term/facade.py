@@ -121,6 +121,7 @@ class RedisShortTermMemory:
     PREFIX_WORKING = "empathy:working:"
     PREFIX_STAGED = "empathy:staged:"
     PREFIX_CONFLICT = "empathy:conflict:"
+    PREFIX_COORDINATION = "empathy:coordination:"
     PREFIX_SESSION = "empathy:session:"
     PREFIX_PUBSUB = "empathy:pubsub:"
     PREFIX_STREAM = "empathy:stream:"
@@ -218,6 +219,21 @@ class RedisShortTermMemory:
     def client(self) -> Any:
         """Get the Redis client instance."""
         return self._base.client
+
+    @property
+    def _client(self) -> Any:
+        """Get the Redis client instance (backward compatibility alias)."""
+        return self._base._client
+
+    @property
+    def _config(self) -> Any:
+        """Get the RedisConfig instance (for testing/debugging)."""
+        return self._base._config
+
+    @property
+    def metrics(self) -> Any:
+        """Get Redis metrics instance."""
+        return self._base.metrics
 
     @property
     def _subscriptions(self) -> dict:
@@ -651,3 +667,31 @@ class RedisShortTermMemory:
     def _metrics(self) -> Any:
         """Access metrics for testing."""
         return self._base._metrics
+
+    @property
+    def _pii_scrubber(self) -> Any:
+        """Access PII scrubber for testing."""
+        return self._security._pii_scrubber
+
+    @_pii_scrubber.setter
+    def _pii_scrubber(self, value: Any) -> None:
+        """Set PII scrubber for testing."""
+        self._security._pii_scrubber = value
+
+    @property
+    def _secrets_detector(self) -> Any:
+        """Access secrets detector for testing."""
+        return self._security._secrets_detector
+
+    @_secrets_detector.setter
+    def _secrets_detector(self, value: Any) -> None:
+        """Set secrets detector for testing."""
+        self._security._secrets_detector = value
+
+    def _delete(self, key: str) -> bool:
+        """Delete a key from Redis (internal method for testing)."""
+        return self._base._delete(key)
+
+    def _keys(self, pattern: str) -> list[str]:
+        """List keys matching pattern (internal method for testing)."""
+        return self._base._keys(pattern)

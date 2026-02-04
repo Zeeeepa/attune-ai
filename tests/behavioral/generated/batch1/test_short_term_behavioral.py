@@ -88,8 +88,8 @@ def mock_redis_client():
 @pytest.fixture
 def memory_instance(mock_redis_client, redis_config):
     """Given a RedisShortTermMemory instance with mocked Redis."""
-    with patch("attune.memory.short_term.redis.Redis", return_value=mock_redis_client):
-        with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
+    with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_redis_client):
+        with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
             memory = RedisShortTermMemory(config=redis_config)
             yield memory
 
@@ -122,15 +122,15 @@ class TestRedisShortTermMemoryInitialization:
         self, mock_redis_client, redis_config
     ):
         """Given Redis is available, when initializing, then connects successfully."""
-        with patch("attune.memory.short_term.redis.Redis", return_value=mock_redis_client):
-            with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
+        with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_redis_client):
+            with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
                 memory = RedisShortTermMemory(config=redis_config)
                 assert memory.client is not None
                 mock_redis_client.ping.assert_called_once()
 
     def test_given_redis_unavailable_when_init_then_uses_mock_mode(self):
         """Given Redis is unavailable, when initializing, then uses mock mode."""
-        with patch("attune.memory.short_term.REDIS_AVAILABLE", False):
+        with patch("attune.memory.short_term.base.REDIS_AVAILABLE", False):
             memory = RedisShortTermMemory()
             assert memory.use_mock is True
 
@@ -139,8 +139,8 @@ class TestRedisShortTermMemoryInitialization:
         mock_client = MagicMock()
         mock_client.ping.side_effect = Exception("Connection failed")
 
-        with patch("attune.memory.short_term.redis.Redis", return_value=mock_client):
-            with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
+        with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_client):
+            with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
                 with pytest.raises(Exception, match="Connection failed"):
                     RedisShortTermMemory(config=redis_config)
 
@@ -150,15 +150,15 @@ class TestRedisShortTermMemoryInitialization:
         mock_client = MagicMock()
         mock_client.ping.return_value = True
 
-        with patch("attune.memory.short_term.redis.Redis", return_value=mock_client) as mock_redis:
-            with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
+        with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_client) as mock_redis:
+            with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
                 RedisShortTermMemory(config=redis_config)
                 assert mock_redis.call_args[1]["ssl"] is True
 
     def test_given_default_config_when_init_then_uses_defaults(self, mock_redis_client):
         """Given default configuration, when initializing, then uses default values."""
-        with patch("attune.memory.short_term.redis.Redis", return_value=mock_redis_client):
-            with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
+        with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_redis_client):
+            with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
                 memory = RedisShortTermMemory()
                 assert memory.metrics.total_requests == 0
 
@@ -1154,8 +1154,8 @@ class TestConnectionRetry:
         mock_redis_client.ping.side_effect = [True]
 
         # When
-        with patch("attune.memory.short_term.redis.Redis", return_value=mock_redis_client):
-            with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
+        with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_redis_client):
+            with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
                 memory = RedisShortTermMemory(config=redis_config)
 
         # Then
@@ -1168,8 +1168,8 @@ class TestConnectionRetry:
         mock_client.ping.side_effect = Exception("Connection failed")
 
         # When/Then
-        with patch("attune.memory.short_term.redis.Redis", return_value=mock_client):
-            with patch("attune.memory.short_term.REDIS_AVAILABLE", True):
+        with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_client):
+            with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
                 with patch("time.sleep"):
                     with pytest.raises(Exception, match="Connection failed"):
                         RedisShortTermMemory(config=redis_config)

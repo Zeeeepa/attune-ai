@@ -6,10 +6,16 @@ Created: 2026-01-20
 Coverage target: 80%+
 """
 
+import importlib.util
 import json
 from datetime import datetime, timedelta
 
 import pytest
+
+# Skip entire module if attune_healthcare not installed
+_healthcare_available = importlib.util.find_spec("attune_healthcare") is not None
+if not _healthcare_available:
+    pytest.skip("attune_healthcare not installed (optional plugin)", allow_module_level=True)
 
 from attune_healthcare import ClinicalProtocolMonitor
 from attune_healthcare.monitors.monitoring.protocol_checker import (

@@ -11,6 +11,20 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+# Check if opentelemetry is available before importing OTELBackend
+# OTELBackend's _check_otel_installed() uses importlib.util.find_spec which can raise
+_otel_available = False
+try:
+    # Try to import opentelemetry to check availability
+    import opentelemetry  # noqa: F401
+
+    _otel_available = True
+except (ImportError, ModuleNotFoundError):
+    pass
+
+if not _otel_available:
+    pytest.skip("opentelemetry not installed (optional dependency)", allow_module_level=True)
+
 from attune.models.telemetry import LLMCallRecord, WorkflowRunRecord, WorkflowStageRecord
 from attune.monitoring.otel_backend import OTELBackend
 

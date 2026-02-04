@@ -4,8 +4,8 @@ Audits dependencies for vulnerabilities, updates, and licensing issues.
 Parses lockfiles and checks against known vulnerability patterns.
 
 Stages:
-1. inventory (CHEAP) - Parse requirements.txt, package.json, etc.
-2. assess (CAPABLE) - Check for known vulnerabilities and updates
+1. inventory (CHEAP) - Parse requirements.txt, package.json, pyproject.toml, lockfiles
+2. assess (CAPABLE) - Check for known vulnerabilities using pip-audit/npm audit
 3. report (CAPABLE) - Generate risk assessment and recommendations
 
 Copyright 2025 Smart-AI-Memory
@@ -13,12 +13,17 @@ Licensed under Fair Source License 0.9
 """
 
 import json
+import logging
 import re
+import subprocess
+import time
 from pathlib import Path
 from typing import Any
 
 from .base import BaseWorkflow, ModelTier
 from .step_config import WorkflowStepConfig
+
+logger = logging.getLogger(__name__)
 
 # Define step configurations for executor-based execution
 DEPENDENCY_CHECK_STEPS = {
@@ -31,16 +36,169 @@ DEPENDENCY_CHECK_STEPS = {
     ),
 }
 
-# Known vulnerable package patterns (simulated CVE database)
-KNOWN_VULNERABILITIES = {
-    "requests": {"affected_versions": ["<2.25.0"], "severity": "medium", "cve": "CVE-2021-XXXX"},
-    "urllib3": {"affected_versions": ["<1.26.5"], "severity": "high", "cve": "CVE-2021-XXXX"},
-    "pyyaml": {"affected_versions": ["<5.4"], "severity": "critical", "cve": "CVE-2020-XXXX"},
-    "django": {"affected_versions": ["<3.2.4"], "severity": "high", "cve": "CVE-2021-XXXX"},
-    "flask": {"affected_versions": ["<2.0.0"], "severity": "medium", "cve": "CVE-2021-XXXX"},
-    "lodash": {"affected_versions": ["<4.17.21"], "severity": "high", "cve": "CVE-2021-XXXX"},
-    "axios": {"affected_versions": ["<0.21.1"], "severity": "medium", "cve": "CVE-2021-XXXX"},
-}
+# Cache directory for offline advisory data
+CACHE_DIR = Path.home() / ".attune" / "advisory_cache"
+
+
+def _get_cache_path() -> Path:
+    """Get path to advisory cache file."""
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    return CACHE_DIR / "pip_audit_cache.json"
+
+
+def _load_cached_advisories() -> dict[str, list[dict]]:
+    """Load cached advisories for offline mode.
+
+    Returns:
+        Dict mapping package names to list of vulnerability dicts.
+    """
+    cache_path = _get_cache_path()
+    if not cache_path.exists():
+        return {}
+
+    try:
+        age_days = (time.time() - cache_path.stat().st_mtime) / 86400
+        if age_days > 7:
+            logger.warning(f"Advisory cache is {age_days:.0f} days old - consider updating")
+
+        return json.loads(cache_path.read_text())
+    except Exception as e:
+        logger.warning(f"Could not load advisory cache: {e}")
+        return {}
+
+
+def _save_advisory_cache(advisories: dict[str, list[dict]]) -> None:
+    """Save advisories to cache for offline use."""
+    try:
+        cache_path = _get_cache_path()
+        cache_path.write_text(json.dumps(advisories, indent=2))
+        logger.info(f"Advisory cache updated: {len(advisories)} packages")
+    except Exception as e:
+        logger.warning(f"Could not save advisory cache: {e}")
+
+
+def _run_pip_audit(target_path: Path) -> list[dict]:
+    """Run pip-audit for real vulnerability data.
+
+    Args:
+        target_path: Directory containing requirements files
+
+    Returns:
+        List of vulnerability dicts from pip-audit
+    """
+    # Check for requirements file
+    req_file = target_path / "requirements.txt"
+    if not req_file.exists():
+        # Try pyproject.toml
+        pyproject = target_path / "pyproject.toml"
+        if pyproject.exists():
+            req_file = pyproject
+        else:
+            logger.info("No requirements.txt or pyproject.toml found for pip-audit")
+            return []
+
+    try:
+        cmd = [
+            "pip-audit",
+            "--format=json",
+            "--desc=on",
+            "-r" if req_file.suffix == ".txt" else "--requirement",
+            str(req_file),
+        ]
+
+        # For pyproject.toml, pip-audit needs different handling
+        if req_file.suffix == ".toml":
+            cmd = ["pip-audit", "--format=json", "--desc=on", "--local"]
+
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=target_path,
+        )
+
+        if result.stdout:
+            data = json.loads(result.stdout)
+            vulnerabilities = data.get("dependencies", [])
+
+            # Update cache with results
+            cache_update = {}
+            for vuln in vulnerabilities:
+                pkg_name = vuln.get("name", "").lower()
+                if pkg_name and vuln.get("vulns"):
+                    cache_update[pkg_name] = vuln.get("vulns", [])
+            if cache_update:
+                existing = _load_cached_advisories()
+                existing.update(cache_update)
+                _save_advisory_cache(existing)
+
+            return vulnerabilities
+
+    except FileNotFoundError:
+        logger.warning(
+            "pip-audit not installed. Install with: pip install pip-audit. "
+            "Falling back to cached advisories."
+        )
+    except subprocess.TimeoutExpired:
+        logger.warning("pip-audit timed out after 120s")
+    except json.JSONDecodeError as e:
+        logger.warning(f"pip-audit returned invalid JSON: {e}")
+    except Exception as e:
+        logger.warning(f"pip-audit failed: {e}")
+
+    return []
+
+
+def _run_npm_audit(target_path: Path) -> list[dict]:
+    """Run npm audit for Node.js vulnerability data.
+
+    Args:
+        target_path: Directory containing package.json
+
+    Returns:
+        List of vulnerability dicts from npm audit
+    """
+    package_json = target_path / "package.json"
+    if not package_json.exists():
+        return []
+
+    try:
+        result = subprocess.run(
+            ["npm", "audit", "--json"],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=target_path,
+        )
+
+        # npm audit returns non-zero if vulnerabilities found
+        if result.stdout:
+            data = json.loads(result.stdout)
+            vulnerabilities = []
+
+            # Parse npm audit format
+            for vuln_id, vuln_data in data.get("vulnerabilities", {}).items():
+                vulnerabilities.append(
+                    {
+                        "name": vuln_data.get("name", vuln_id),
+                        "severity": vuln_data.get("severity", "unknown"),
+                        "via": vuln_data.get("via", []),
+                        "range": vuln_data.get("range", ""),
+                        "fixAvailable": vuln_data.get("fixAvailable", False),
+                    }
+                )
+
+            return vulnerabilities
+
+    except FileNotFoundError:
+        logger.debug("npm not installed, skipping npm audit")
+    except subprocess.TimeoutExpired:
+        logger.warning("npm audit timed out")
+    except Exception as e:
+        logger.warning(f"npm audit failed: {e}")
+
+    return []
 
 
 class DependencyCheckWorkflow(BaseWorkflow):
@@ -121,6 +279,20 @@ class DependencyCheckWorkflow(BaseWorkflow):
             deps = self._parse_package_json(package_json)
             dependencies["node"].extend(deps)
 
+        # Parse lockfiles for exact versions (more reliable for vuln checking)
+        poetry_lock = target / "poetry.lock"
+        if poetry_lock.exists():
+            files_found.append(str(poetry_lock))
+            lockfile_deps = self._parse_poetry_lock(poetry_lock)
+            # Lockfile deps have pinned=True and override manifest versions
+            dependencies["python"].extend(lockfile_deps)
+
+        package_lock = target / "package-lock.json"
+        if package_lock.exists():
+            files_found.append(str(package_lock))
+            lockfile_deps = self._parse_package_lock_json(package_lock)
+            dependencies["node"].extend(lockfile_deps)
+
         # Deduplicate
         for ecosystem in dependencies:
             seen = set()
@@ -151,7 +323,57 @@ class DependencyCheckWorkflow(BaseWorkflow):
         )
 
     def _parse_requirements(self, path: Path) -> list[dict]:
-        """Parse requirements.txt format."""
+        """Parse requirements.txt format using packaging library.
+
+        Properly handles:
+        - Version specifiers (>=, ==, ~=, etc.)
+        - Extras ([dev], [test], etc.)
+        - Environment markers (; python_version >= "3.8")
+        - Comments and blank lines
+        """
+        deps = []
+        try:
+            from packaging.requirements import Requirement
+        except ImportError:
+            logger.warning("packaging library not installed, using fallback parser")
+            return self._parse_requirements_fallback(path)
+
+        try:
+            content = path.read_text()
+            for line in content.splitlines():
+                line = line.strip()
+
+                # Skip empty lines, comments, and options
+                if not line or line.startswith("#") or line.startswith("-"):
+                    continue
+
+                # Skip URLs and local paths
+                if line.startswith("http://") or line.startswith("https://"):
+                    continue
+                if line.startswith(".") or line.startswith("/"):
+                    continue
+
+                try:
+                    req = Requirement(line)
+                    deps.append(
+                        {
+                            "name": req.name,
+                            "version": str(req.specifier) if req.specifier else "any",
+                            "extras": list(req.extras) if req.extras else [],
+                            "source": str(path),
+                            "ecosystem": "python",
+                        },
+                    )
+                except Exception as e:
+                    logger.debug(f"Skipping unparseable requirement '{line}': {e}")
+
+        except OSError as e:
+            logger.warning(f"Cannot read {path}: {e}")
+
+        return deps
+
+    def _parse_requirements_fallback(self, path: Path) -> list[dict]:
+        """Fallback parser if packaging library not available."""
         deps = []
         try:
             content = path.read_text()
@@ -160,7 +382,7 @@ class DependencyCheckWorkflow(BaseWorkflow):
                 if not line or line.startswith("#") or line.startswith("-"):
                     continue
 
-                # Parse version specifiers
+                # Basic regex parsing
                 match = re.match(r"^([a-zA-Z0-9_-]+)\s*([<>=!~]+\s*[\d.]+)?", line)
                 if match:
                     name = match.group(1)
@@ -178,11 +400,108 @@ class DependencyCheckWorkflow(BaseWorkflow):
         return deps
 
     def _parse_pyproject(self, path: Path) -> list[dict]:
-        """Parse pyproject.toml for dependencies."""
+        """Parse pyproject.toml for dependencies using tomllib.
+
+        Supports:
+        - PEP 621 [project.dependencies]
+        - Poetry [tool.poetry.dependencies]
+        - Optional dependencies
+        """
+        deps = []
+
+        # Try tomllib (Python 3.11+) or tomli as fallback
+        try:
+            import tomllib
+        except ImportError:
+            try:
+                import tomli as tomllib  # type: ignore
+            except ImportError:
+                logger.warning("tomllib/tomli not available, using fallback parser")
+                return self._parse_pyproject_fallback(path)
+
+        try:
+            from packaging.requirements import Requirement
+        except ImportError:
+            Requirement = None  # type: ignore
+
+        try:
+            with path.open("rb") as f:
+                data = tomllib.load(f)
+
+            # PEP 621: [project.dependencies]
+            for dep_str in data.get("project", {}).get("dependencies", []):
+                if Requirement:
+                    try:
+                        req = Requirement(dep_str)
+                        deps.append(
+                            {
+                                "name": req.name,
+                                "version": str(req.specifier) if req.specifier else "any",
+                                "source": str(path),
+                                "ecosystem": "python",
+                            },
+                        )
+                    except Exception as e:
+                        logger.debug(f"Skipping unparseable dependency '{dep_str}': {e}")
+                else:
+                    # Basic extraction without packaging
+                    match = re.match(r"^([a-zA-Z0-9_-]+)", dep_str)
+                    if match:
+                        deps.append(
+                            {
+                                "name": match.group(1),
+                                "version": "any",
+                                "source": str(path),
+                                "ecosystem": "python",
+                            },
+                        )
+
+            # Poetry: [tool.poetry.dependencies]
+            poetry_deps = data.get("tool", {}).get("poetry", {}).get("dependencies", {})
+            for name, spec in poetry_deps.items():
+                if name == "python":
+                    continue  # Skip Python version constraint
+
+                if isinstance(spec, str):
+                    version = spec
+                elif isinstance(spec, dict):
+                    version = spec.get("version", "any")
+                else:
+                    version = "any"
+
+                deps.append(
+                    {
+                        "name": name,
+                        "version": version,
+                        "source": str(path),
+                        "ecosystem": "python",
+                    },
+                )
+
+            # Poetry dev dependencies
+            poetry_dev = data.get("tool", {}).get("poetry", {}).get("dev-dependencies", {})
+            for name, spec in poetry_dev.items():
+                version = spec if isinstance(spec, str) else spec.get("version", "any")
+                deps.append(
+                    {
+                        "name": name,
+                        "version": version,
+                        "source": str(path),
+                        "ecosystem": "python",
+                        "dev": True,
+                    },
+                )
+
+        except Exception as e:
+            logger.warning(f"Cannot parse {path}: {e}")
+
+        return deps
+
+    def _parse_pyproject_fallback(self, path: Path) -> list[dict]:
+        """Fallback parser if tomllib not available."""
         deps = []
         try:
             content = path.read_text()
-            # Simple TOML parsing for dependencies
             in_deps = False
             for line in content.splitlines():
                 if "dependencies" in line and "=" in line:
@@ -230,50 +549,180 @@ class DependencyCheckWorkflow(BaseWorkflow):
             pass
         return deps
 
-    async def _assess(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
-        """Check dependencies for vulnerabilities.
+    def _parse_poetry_lock(self, path: Path) -> list[dict]:
+        """Parse poetry.lock for pinned dependency versions.
 
-        Compares against known vulnerability database and
-        identifies outdated packages.
+        Lockfiles provide exact versions for reproducible vulnerability findings.
         """
+        deps = []
+
+        try:
+            import tomllib
+        except ImportError:
+            try:
+                import tomli as tomllib  # type: ignore
+            except ImportError:
+                logger.debug("tomllib/tomli not available for poetry.lock parsing")
+                return deps
+
+        try:
+            with path.open("rb") as f:
+                data = tomllib.load(f)
+
+            for pkg in data.get("package", []):
+                deps.append(
+                    {
+                        "name": pkg.get("name", ""),
+                        "version": f"=={pkg.get('version', '')}",  # Pinned version
+                        "source": str(path),
+                        "ecosystem": "python",
+                        "pinned": True,
+                    },
+                )
+
+        except Exception as e:
+            logger.warning(f"Cannot parse poetry.lock: {e}")
+
+        return deps
+
+    def _parse_package_lock_json(self, path: Path) -> list[dict]:
+        """Parse package-lock.json for pinned Node.js versions."""
+        deps = []
+        try:
+            with open(path) as f:
+                data = json.load(f)
+
+            # npm v7+ format (packages)
+            packages = data.get("packages", {})
+            for pkg_path, pkg_data in packages.items():
+                if not pkg_path or pkg_path == "":  # Root package
+                    continue
+
+                name = pkg_path.replace("node_modules/", "").split("/")[-1]
+                version = pkg_data.get("version", "")
+                if name and version:
+                    deps.append(
+                        {
+                            "name": name,
+                            "version": f"=={version}",
+                            "source": str(path),
+                            "ecosystem": "node",
+                            "pinned": True,
+                        },
+                    )
+
+            # npm v6 format (dependencies)
+            if not packages:
+                for name, pkg_data in data.get("dependencies", {}).items():
+                    version = pkg_data.get("version", "")
+                    deps.append(
+                        {
+                            "name": name,
+                            "version": f"=={version}",
+                            "source": str(path),
+                            "ecosystem": "node",
+                            "pinned": True,
+                        },
+                    )
+
+        except (OSError, json.JSONDecodeError) as e:
+            logger.warning(f"Cannot parse package-lock.json: {e}")
+
+        return deps
+
+    async def _assess(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
+        """Check dependencies for vulnerabilities using real advisory sources.
+
+        Uses pip-audit for Python and npm audit for Node.js packages.
+        Falls back to cached advisories if tools are unavailable.
+        """
+        target_path = Path(input_data.get("path", "."))
         dependencies = input_data.get("dependencies", {})
 
         vulnerabilities: list[dict] = []
         outdated: list[dict] = []
+        data_source = "none"
 
-        for ecosystem, deps in dependencies.items():
-            for dep in deps:
-                name = dep["name"].lower()
-
-                # Check known vulnerabilities
-                if name in KNOWN_VULNERABILITIES:
-                    vuln_info = KNOWN_VULNERABILITIES[name]
+        # Run pip-audit for Python vulnerabilities
+        pip_audit_results = _run_pip_audit(target_path)
+        if pip_audit_results:
+            data_source = "pip-audit"
+            for result in pip_audit_results:
+                for vuln in result.get("vulns", []):
                     vulnerabilities.append(
                         {
-                            "package": dep["name"],
-                            "current_version": dep["version"],
-                            "affected_versions": vuln_info["affected_versions"],
-                            "severity": vuln_info["severity"],
-                            "cve": vuln_info["cve"],
-                            "ecosystem": ecosystem,
+                            "package": result.get("name", "unknown"),
+                            "current_version": result.get("version", "unknown"),
+                            "fixed_versions": vuln.get("fix_versions", []),
+                            "severity": self._map_severity(vuln.get("id", "")),
+                            "cve": vuln.get("id", ""),
+                            "description": vuln.get("description", "")[:200],
+                            "ecosystem": "python",
+                            "source": "pip-audit",
                         },
                     )
 
-                # Check for outdated (simulate version check)
-                if dep["version"].startswith("<") or dep["version"].startswith("^0."):
+        # Run npm audit for Node.js vulnerabilities
+        npm_audit_results = _run_npm_audit(target_path)
+        if npm_audit_results:
+            data_source = "pip-audit+npm" if data_source == "pip-audit" else "npm-audit"
+            for vuln in npm_audit_results:
+                severity = vuln.get("severity", "unknown")
+                vulnerabilities.append(
+                    {
+                        "package": vuln.get("name", "unknown"),
+                        "current_version": vuln.get("range", "unknown"),
+                        "fixed_versions": [],
+                        "severity": severity,
+                        "cve": "",
+                        "description": str(vuln.get("via", []))[:200],
+                        "ecosystem": "node",
+                        "source": "npm-audit",
+                        "fixAvailable": vuln.get("fixAvailable", False),
+                    },
+                )
+
+        # If no real audit data, try cached advisories
+        if not vulnerabilities:
+            cached = _load_cached_advisories()
+            if cached:
+                data_source = "cached"
+                for ecosystem, deps in dependencies.items():
+                    for dep in deps:
+                        name_lower = dep["name"].lower()
+                        if name_lower in cached:
+                            for vuln in cached[name_lower]:
+                                vulnerabilities.append(
+                                    {
+                                        "package": dep["name"],
+                                        "current_version": dep["version"],
+                                        "severity": self._map_severity(vuln.get("id", "")),
+                                        "cve": vuln.get("id", ""),
+                                        "ecosystem": ecosystem,
+                                        "source": "cached",
+                                    },
+                                )
+
+        # Check for potentially outdated packages (heuristic)
+        for ecosystem, deps in dependencies.items():
+            for dep in deps:
+                version = dep.get("version", "")
+                # Flag pre-release and very old-looking versions
+                if version.startswith("^0.") or version.startswith("~0."):
                     outdated.append(
                         {
                             "package": dep["name"],
-                            "current_version": dep["version"],
+                            "current_version": version,
                             "status": "potentially_outdated",
                             "ecosystem": ecosystem,
                         },
                     )
 
         # Categorize by severity
-        critical = [v for v in vulnerabilities if v["severity"] == "critical"]
-        high = [v for v in vulnerabilities if v["severity"] == "high"]
-        medium = [v for v in vulnerabilities if v["severity"] == "medium"]
+        critical = [v for v in vulnerabilities if v.get("severity") == "critical"]
+        high = [v for v in vulnerabilities if v.get("severity") == "high"]
+        medium = [v for v in vulnerabilities if v.get("severity") == "medium"]
+        low = [v for v in vulnerabilities if v.get("severity") == "low"]
 
         assessment = {
             "vulnerabilities": vulnerabilities,
@@ -282,7 +731,9 @@ class DependencyCheckWorkflow(BaseWorkflow):
             "critical_count": len(critical),
             "high_count": len(high),
             "medium_count": len(medium),
+            "low_count": len(low),
             "outdated_count": len(outdated),
+            "data_source": data_source,
         }
 
         input_tokens = len(str(input_data)) // 4
@@ -296,6 +747,26 @@ class DependencyCheckWorkflow(BaseWorkflow):
             input_tokens,
             output_tokens,
         )
+
+    def _map_severity(self, vuln_id: str) -> str:
+        """Map vulnerability ID to severity level.
+
+        Uses heuristics based on CVE/GHSA patterns.
+        """
+        vuln_id_lower = vuln_id.lower()
+
+        # GHSA typically includes severity in metadata, but we can't get it from ID alone
+        # CVEs don't encode severity in the ID
+        # Default to "medium" as a conservative estimate
+        # In practice, pip-audit provides severity in the response
+
+        if "critical" in vuln_id_lower:
+            return "critical"
+        if "high" in vuln_id_lower:
+            return "high"
+
+        # Default to medium - actual severity should come from the audit tool
+        return "medium"
 
     async def _report(self, input_data: dict, tier: ModelTier) -> tuple[dict, int, int]:
         """Generate risk assessment and recommendations using LLM.

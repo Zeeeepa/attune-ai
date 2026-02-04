@@ -1,4 +1,15 @@
 #!/bin/bash
-# Run workflow utilities behavioral tests
-cd /Users/patrickroebuck/Documents/empathy1-11-2025-local/empathy-framework
-python -m pytest tests/behavioral/generated/test_workflow_utilities_behavioral.py -v --tb=short -n 0
+# Run workflow behavioral tests for attune-ai
+# Updated: 2026-02-04
+
+cd /Users/patrickroebuck/attune-ai
+
+echo "Running workflow behavioral tests..."
+uv run pytest tests/behavioral/test_workflow_base_behavioral.py \
+    tests/behavioral/generated/batch100/test_workflow_behavioral.py \
+    tests/behavioral/generated/batch13/test_workflow_commands_behavioral.py \
+    -v --tb=short
+
+echo ""
+echo "To run ALL behavioral tests:"
+echo "  uv run pytest tests/behavioral/ -v --tb=short"
