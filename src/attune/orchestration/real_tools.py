@@ -451,6 +451,9 @@ Return ONLY the Python test code, starting with imports. No markdown, no explana
     ) -> str:
         """Generate basic test template.
 
+        IMPORTANT: Placeholder tests use pytest.skip() to prevent false greens.
+        Tests must be implemented before they will pass.
+
         Args:
             source_file: Source file path
             source_code: Source file content
@@ -461,13 +464,24 @@ Return ONLY the Python test code, starting with imports. No markdown, no explana
         """
         # Extract module name
         module_path = source_file.replace("/", ".").replace(".py", "")
+        first_line = missing_lines[0] if missing_lines else 0
 
         template = f'''"""Auto-generated tests for {source_file}.
 
 Coverage gaps on lines: {missing_lines[:10]}
+
+WARNING: This file contains placeholder tests that are skipped by default.
+You must implement the actual test logic before they will run.
+
+To allow placeholder tests temporarily, set ATTUNE_ALLOW_PLACEHOLDER_TESTS=1
 """
 
+import os
 import pytest
+
+
+# Check if placeholder tests are allowed (for development only)
+ALLOW_PLACEHOLDERS = os.getenv("ATTUNE_ALLOW_PLACEHOLDER_TESTS", "").lower() in ("1", "true")
 
 
 class TestGeneratedCoverage:
@@ -477,17 +491,23 @@ class TestGeneratedCoverage:
         """Test that module can be imported."""
         try:
             import {module_path}
-            assert True
+            assert {module_path} is not None
         except ImportError as e:
             pytest.fail(f"Module import failed: {{e}}")
 
-    def test_placeholder_for_lines_{missing_lines[0] if missing_lines else 0}(self):
+    @pytest.mark.skipif(not ALLOW_PLACEHOLDERS, reason="Placeholder test - implement actual logic")
+    def test_placeholder_for_lines_{first_line}(self):
         """Placeholder test for uncovered code.
 
         TODO: Implement actual test logic for lines {missing_lines[:5]}
+
+        This test is SKIPPED by default to prevent false positive coverage.
+        Implement the test logic, then remove the @pytest.mark.skipif decorator.
         """
-        # This is a placeholder - connect to LLM for real test generation
-        assert True, "Placeholder test - needs implementation"
+        pytest.fail(
+            "PLACEHOLDER: Implement test logic for lines {missing_lines[:5]}. "
+            "Remove @pytest.mark.skipif when done."
+        )
 '''
         return template
 

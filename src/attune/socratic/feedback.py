@@ -21,6 +21,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from ..config import _validate_file_path
 from .blueprint import AgentBlueprint, WorkflowBlueprint
 from .success import SuccessEvaluation
 
@@ -292,13 +293,15 @@ class FeedbackCollector:
         # Save agent performance
         perf_file = self.storage_path / "agent_performance.json"
         perf_data = {k: v.to_dict() for k, v in self._agent_performance.items()}
-        with perf_file.open("w") as f:
+        validated_perf = _validate_file_path(str(perf_file))
+        with validated_perf.open("w") as f:
             json.dump(perf_data, f, indent=2)
 
         # Save workflow patterns
         patterns_file = self.storage_path / "workflow_patterns.json"
         patterns_data = {k: v.to_dict() for k, v in self._workflow_patterns.items()}
-        with patterns_file.open("w") as f:
+        validated_patterns = _validate_file_path(str(patterns_file))
+        with validated_patterns.open("w") as f:
             json.dump(patterns_data, f, indent=2)
 
     def record_execution(

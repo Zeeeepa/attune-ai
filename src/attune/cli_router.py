@@ -15,6 +15,7 @@ from typing import Any
 
 import yaml
 
+from attune.config import _validate_file_path
 from attune.routing import SmartRouter
 
 
@@ -192,7 +193,8 @@ class HybridRouter:
             }
         }
 
-        with open(self.preferences_path, "w") as f:
+        validated_path = _validate_file_path(str(self.preferences_path))
+        with open(validated_path, "w") as f:
             yaml.dump(data, f, default_flow_style=False)
 
     async def route(self, user_input: str, context: dict[str, Any] | None = None) -> dict[str, Any]:

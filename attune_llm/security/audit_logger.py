@@ -30,6 +30,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -175,7 +177,8 @@ class AuditLogger:
                     self._rotate_log()
 
             # Write event as single line JSON
-            with open(self.log_path, "a", encoding="utf-8") as f:
+            validated_path = _validate_file_path(str(self.log_path))
+            with open(validated_path, "a", encoding="utf-8") as f:
                 json.dump(event.to_dict(), f, ensure_ascii=False)
                 f.write("\n")
 

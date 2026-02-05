@@ -706,7 +706,8 @@ def learn_workflow(
         existing["patterns"].extend(new_patterns)
         existing["last_updated"] = datetime.now().isoformat()
 
-        with open(debugging_file, "w") as f:
+        validated_path = _validate_file_path(str(debugging_file))
+        with validated_path.open("w") as f:
             json.dump(existing, f, indent=2)
 
     # Summary

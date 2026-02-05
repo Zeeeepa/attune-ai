@@ -13,6 +13,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
+
 
 @dataclass
 class ReviewFinding:
@@ -107,8 +109,9 @@ def write_code_review_results(
     )
 
     output_path = get_empathy_dir() / "code-review-results.json"
+    validated_path = _validate_file_path(str(output_path))
 
-    with open(output_path, "w") as f:
+    with open(validated_path, "w") as f:
         json.dump(asdict(result), f, indent=2)
 
     return output_path

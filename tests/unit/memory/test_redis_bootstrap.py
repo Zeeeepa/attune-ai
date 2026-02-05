@@ -499,18 +499,21 @@ class TestStopRedis:
 class TestGetRedisOrMock:
     """Test get_redis_or_mock convenience function."""
 
+    @patch("attune.memory.short_term.RedisShortTermMemory")
     @patch("attune.memory.redis_bootstrap.ensure_redis")
-    def test_returns_status_when_available(self, mock_ensure):
+    def test_returns_status_when_available(self, mock_ensure, mock_memory_cls):
         """Test returns status indicating Redis availability."""
         mock_ensure.return_value = RedisStatus(
             available=True,
             method=RedisStartMethod.ALREADY_RUNNING,
         )
+        mock_memory = mock_memory_cls.return_value
 
         memory, status = get_redis_or_mock()
 
         assert status.available is True
-        assert memory is not None
+        assert memory is mock_memory
+        mock_memory_cls.assert_called_once_with(host="localhost", port=6379, use_mock=False)
 
     @patch("attune.memory.redis_bootstrap.ensure_redis")
     def test_returns_mock_status_when_unavailable(self, mock_ensure):

@@ -20,7 +20,6 @@ import json
 import pytest
 
 from attune.workflows.dependency_check import (
-    KNOWN_VULNERABILITIES,
     DependencyCheckWorkflow,
     format_dependency_check_report,
 )

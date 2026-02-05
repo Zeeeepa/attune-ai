@@ -94,14 +94,14 @@ class TestValidateFilePath:
             _validate_file_path(str(outside_file), allowed_dir=str(allowed_dir))
 
     def test_validate_file_path_rejects_path_traversal(self, tmp_path):
-        """Test validation handles path traversal attempts."""
-        # Path traversal may not reach system directories depending on cwd
-        # Test just verifies it doesn't crash and returns a valid resolved path
-        result = _validate_file_path("../../../etc/passwd")
-        assert isinstance(result, Path)
-        assert result.is_absolute()
-        # Should NOT allow writing to actual system /etc
-        assert not str(result).startswith("/etc/") and not str(result).startswith("/private/etc/")
+        """Test validation handles path traversal attempts.
+
+        On macOS, ../../../etc/passwd from the project root resolves to
+        /private/etc/passwd, which is correctly blocked as a system directory.
+        """
+        # Path traversal to /etc is blocked (resolves to /private/etc on macOS)
+        with pytest.raises(ValueError, match="Cannot write to system directory"):
+            _validate_file_path("../../../etc/passwd")
 
     def test_validate_file_path_resolves_relative_paths(self, tmp_path):
         """Test validation resolves relative paths to absolute."""

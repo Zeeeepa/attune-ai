@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-02T11:15:29.959974",
-  "node_count": 143,
+  "updated_at": "2026-02-04T16:29:56.460429",
+  "node_count": 146,
   "edge_count": 0,
   "nodes": [
     {
@@ -2290,6 +2290,54 @@
       "tags": [],
       "created_at": "2026-02-02T11:15:29.957726",
       "updated_at": "2026-02-02T11:15:29.957726",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260204143110_c921e2cfb45e",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmp1dq4lscs/app.py",
+      "description": "No refactoring opportunities identified.",
+      "source_workflow": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-02-04T14:31:10.028624",
+      "updated_at": "2026-02-04T14:31:10.028625",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260204150748_fb311642d1f8",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmpcjkfsodq/app.py",
+      "description": "No refactoring opportunities identified.",
+      "source_workflow": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-02-04T15:07:48.276970",
+      "updated_at": "2026-02-04T15:07:48.276971",
+      "status": "open"
+    },
+    {
+      "id": "refactoring_analysis_20260204162956_91e86ebdcf88",
+      "type": "pattern",
+      "name": "refactor:/var/folders/5t/bzsz5qd17pd7h_wwwd5qjbnw0000gn/T/tmplgc_pj4n/app.py",
+      "description": "No refactoring opportunities identified.",
+      "source_workflow": "refactoring_crew",
+      "source_file": "",
+      "source_line": null,
+      "severity": "",
+      "confidence": 1.0,
+      "metadata": {},
+      "tags": [],
+      "created_at": "2026-02-04T16:29:56.457666",
+      "updated_at": "2026-02-04T16:29:56.457667",
       "status": "open"
     }
   ],

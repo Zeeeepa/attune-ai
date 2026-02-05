@@ -15,7 +15,6 @@ import pytest
 from attune.workflows.base import ModelTier
 from attune.workflows.dependency_check import (
     DEPENDENCY_CHECK_STEPS,
-    KNOWN_VULNERABILITIES,
     DependencyCheckWorkflow,
 )
 
@@ -52,64 +51,6 @@ class TestDependencyCheckSteps:
         """Test report step max tokens."""
         step = DEPENDENCY_CHECK_STEPS["report"]
         assert step.max_tokens == 3000
-
-
-class TestKnownVulnerabilities:
-    """Tests for KNOWN_VULNERABILITIES database."""
-
-    def test_has_requests(self):
-        """Test requests package is in database."""
-        assert "requests" in KNOWN_VULNERABILITIES
-
-    def test_has_urllib3(self):
-        """Test urllib3 package is in database."""
-        assert "urllib3" in KNOWN_VULNERABILITIES
-
-    def test_has_pyyaml(self):
-        """Test pyyaml package is in database."""
-        assert "pyyaml" in KNOWN_VULNERABILITIES
-
-    def test_has_django(self):
-        """Test django package is in database."""
-        assert "django" in KNOWN_VULNERABILITIES
-
-    def test_has_flask(self):
-        """Test flask package is in database."""
-        assert "flask" in KNOWN_VULNERABILITIES
-
-    def test_has_lodash(self):
-        """Test lodash package is in database."""
-        assert "lodash" in KNOWN_VULNERABILITIES
-
-    def test_has_axios(self):
-        """Test axios package is in database."""
-        assert "axios" in KNOWN_VULNERABILITIES
-
-    def test_vulnerability_has_affected_versions(self):
-        """Test vulnerability entries have affected_versions."""
-        for _pkg, vuln in KNOWN_VULNERABILITIES.items():
-            assert "affected_versions" in vuln
-            assert isinstance(vuln["affected_versions"], list)
-
-    def test_vulnerability_has_severity(self):
-        """Test vulnerability entries have severity."""
-        for _pkg, vuln in KNOWN_VULNERABILITIES.items():
-            assert "severity" in vuln
-            assert vuln["severity"] in ["low", "medium", "high", "critical"]
-
-    def test_vulnerability_has_cve(self):
-        """Test vulnerability entries have CVE identifier."""
-        for _pkg, vuln in KNOWN_VULNERABILITIES.items():
-            assert "cve" in vuln
-            assert vuln["cve"].startswith("CVE-")
-
-    def test_pyyaml_is_critical(self):
-        """Test pyyaml has critical severity (known issue)."""
-        assert KNOWN_VULNERABILITIES["pyyaml"]["severity"] == "critical"
-
-    def test_urllib3_is_high(self):
-        """Test urllib3 has high severity."""
-        assert KNOWN_VULNERABILITIES["urllib3"]["severity"] == "high"
 
 
 class TestDependencyCheckWorkflowClassAttributes:
@@ -364,21 +305,6 @@ class TestDependencyCheckWorkflowIntegration:
 
         # Verify cost tracker is available
         assert hasattr(workflow, "cost_tracker") or hasattr(workflow, "_cost_tracker")
-
-
-class TestVulnerabilityVersionChecking:
-    """Tests for version comparison logic."""
-
-    def test_version_in_affected_range(self):
-        """Test version comparison for affected ranges."""
-        # pyyaml < 5.4 is vulnerable
-        vuln = KNOWN_VULNERABILITIES["pyyaml"]
-        assert "<5.4" in vuln["affected_versions"][0]
-
-    def test_requests_affected_versions(self):
-        """Test requests affected versions."""
-        vuln = KNOWN_VULNERABILITIES["requests"]
-        assert "<2.25.0" in vuln["affected_versions"][0]
 
 
 class TestDependencyCheckWorkflowErrorHandling:

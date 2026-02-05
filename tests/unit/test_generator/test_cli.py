@@ -39,7 +39,7 @@ class TestCommandParsing:
 
             # Check help was printed
             captured = capsys.readouterr()
-            assert "Test Generator for Empathy Workflow Factory" in captured.out
+            assert "Test Generator for Attune Workflow Factory" in captured.out
 
     def test_generate_command_parsing(self):
         """Test parsing generate command with all arguments."""

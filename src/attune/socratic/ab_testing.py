@@ -28,6 +28,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
+from ..config import _validate_file_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -796,7 +798,8 @@ class ExperimentManager:
             "experiments": [e.to_dict() for e in self._experiments.values()],
         }
 
-        with self.storage_path.open("w") as f:
+        validated_path = _validate_file_path(str(self.storage_path))
+        with validated_path.open("w") as f:
             json.dump(data, f, indent=2)
 
     def _load(self):

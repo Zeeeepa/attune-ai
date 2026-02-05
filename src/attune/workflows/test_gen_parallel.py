@@ -23,6 +23,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..config import _validate_file_path
 from ..workflows.base import BaseWorkflow, ModelTier, WorkflowResult, WorkflowStage
 
 
@@ -257,7 +258,8 @@ Output the COMPLETE test file, no TODOs remaining."""
                 code = self._extract_code(completed_test)
 
                 # Save to file
-                Path(task.output_path).write_text(code)
+                validated_path = _validate_file_path(task.output_path)
+                validated_path.write_text(code)
                 task.status = "completed"
 
                 self.logger.info(f"✅ Generated: {task.output_path}")

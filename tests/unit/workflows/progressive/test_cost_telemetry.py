@@ -76,8 +76,9 @@ class TestCostEstimation:
 class TestApprovalPrompts:
     """Test approval prompt logic."""
 
+    @patch("attune.workflows.progressive.workflow._is_interactive", return_value=True)
     @patch("builtins.input", return_value="y")
-    def test_request_approval_user_accepts(self, mock_input):
+    def test_request_approval_user_accepts(self, mock_input, mock_interactive):
         """Test approval prompt when user accepts."""
         workflow = ProgressiveWorkflow()
 
@@ -87,8 +88,9 @@ class TestApprovalPrompts:
         assert approved is True
         mock_input.assert_called_once()
 
+    @patch("attune.workflows.progressive.workflow._is_interactive", return_value=True)
     @patch("builtins.input", return_value="n")
-    def test_request_approval_user_declines(self, mock_input):
+    def test_request_approval_user_declines(self, mock_input, mock_interactive):
         """Test approval prompt when user declines."""
         workflow = ProgressiveWorkflow()
 
@@ -119,8 +121,9 @@ class TestApprovalPrompts:
         # Should auto-approve
         assert approved is True
 
+    @patch("attune.workflows.progressive.workflow._is_interactive", return_value=True)
     @patch("builtins.input", return_value="Y")  # uppercase Y
-    def test_request_escalation_approval_uppercase(self, mock_input):
+    def test_request_escalation_approval_uppercase(self, mock_input, mock_interactive):
         """Test escalation approval accepts uppercase Y."""
         workflow = ProgressiveWorkflow()
         workflow.tier_results = []  # Empty for cost calculation
@@ -134,8 +137,9 @@ class TestApprovalPrompts:
 
         assert approved is True
 
+    @patch("attune.workflows.progressive.workflow._is_interactive", return_value=True)
     @patch("builtins.input", return_value="n")
-    def test_request_escalation_approval_declined(self, mock_input):
+    def test_request_escalation_approval_declined(self, mock_input, mock_interactive):
         """Test escalation approval when user declines."""
         workflow = ProgressiveWorkflow()
         workflow.tier_results = []

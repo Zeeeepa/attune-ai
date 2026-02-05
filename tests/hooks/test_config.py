@@ -21,6 +21,9 @@ class TestHookEvent:
             "SessionStart",
             "SessionEnd",
             "PreCompact",
+            "PostCompact",
+            "PreCommand",
+            "PostCommand",
             "Stop",
         ]
         actual = [e.value for e in HookEvent]

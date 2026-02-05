@@ -68,8 +68,8 @@ class TestMockModeBasics:
         If Redis is not installed, mock mode is automatically enabled.
         This allows the code to work even without optional dependencies.
         """
-        # Mock REDIS_AVAILABLE as False
-        with patch("attune.memory.short_term.REDIS_AVAILABLE", False):
+        # Mock REDIS_AVAILABLE as False in base module where it's checked
+        with patch("attune.memory.short_term.base.REDIS_AVAILABLE", False):
             memory = RedisShortTermMemory()  # use_mock=False, but Redis unavailable
 
             assert memory.use_mock is True  # Automatically switched to mock mode

@@ -612,7 +612,7 @@ def cmd_export(args: argparse.Namespace) -> int:
 def create_parser() -> argparse.ArgumentParser:
     """Create the argument parser."""
     parser = argparse.ArgumentParser(
-        prog="empathy socratic",
+        prog="attune socratic",
         description="Socratic Workflow Builder - Generate agent workflows through guided questioning",
     )
 

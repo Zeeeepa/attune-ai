@@ -210,7 +210,7 @@ class TestCLIParser:
 
         parser = create_parser()
         assert parser is not None
-        assert parser.prog == "empathy socratic"
+        assert parser.prog == "attune socratic"
 
     def test_parser_start_command(self):
         """Test start command parsing."""

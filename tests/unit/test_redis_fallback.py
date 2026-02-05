@@ -80,7 +80,7 @@ class TestRedisFallbackBehavior:
         assert call_count == 3
         assert memory._metrics.retries_total >= 2  # At least 2 retries before success
 
-    @patch("attune.memory.short_term.REDIS_AVAILABLE", False)
+    @patch("attune.memory.short_term.base.REDIS_AVAILABLE", False)
     def test_uses_mock_when_redis_not_installed(self):
         """Test that mock storage is used when Redis package not available."""
         memory = RedisShortTermMemory(host="localhost", port=6379)

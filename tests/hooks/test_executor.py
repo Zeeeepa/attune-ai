@@ -126,7 +126,7 @@ class TestHookExecutorAsync:
         result = await executor.execute(hook, {})
 
         assert result["success"] is False
-        assert "timeout" in result["error"].lower()
+        assert "timed out" in result["error"].lower()
 
     async def test_execute_async_mode(self):
         """Test async (fire-and-forget) execution."""
