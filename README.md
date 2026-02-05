@@ -71,6 +71,12 @@ python -m attune.models.auth_cli setup
 ### 3. Use in Claude Code
 
 ```bash
+/attune        # Primary command - Socratic discovery guides you to the right workflow
+```
+
+Or use specific hubs directly:
+
+```bash
 /dev           # Developer tools (debug, commit, PR, review)
 /testing       # Run tests, coverage analysis, benchmarks
 /workflows     # Automated analysis (security, bugs, perf)
@@ -79,6 +85,7 @@ python -m attune.models.auth_cli setup
 /release       # Release preparation
 
 # Natural language support:
+/attune "I need to fix a bug"
 /workflows "find security issues"
 /plan "review my code"
 ```
