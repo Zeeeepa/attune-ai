@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.4] - 2026-02-05
+
+### Changed
+
+- **GitHub sync**: Synchronized PyPI package with GitHub repository
+- **Redis 8.4 support**: Updated redis-py dependency to `>=5.0.0,<8.0.0` for full Redis server 8.4 compatibility (includes RediSearch, RedisJSON, RedisTimeSeries, RedisBloom, VectorSet modules)
+
 ## [2.3.3] - 2026-02-05
 
 ### Added
