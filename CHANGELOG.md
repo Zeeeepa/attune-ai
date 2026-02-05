@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.3] - 2026-02-05
+
+### Added
+
+- **`attune setup` command**: Installs `/attune` slash command to `~/.claude/commands/` for Claude Code
+- **Package includes command files**: The `attune.md` command file is now bundled with the pip package
+
+### Changed
+
+- **Lightweight base install**: Removed redis from core dependencies - now optional via `[memory]` extra
+- **Simplified Quick Start**: Clear 3-step install: `pip install` → `attune setup` → use `/attune`
+- **Clearer installation options**: Added table showing what each extra provides
+
+### Fixed
+
+- **Optional redis import**: Made redis import optional in `transactions.py` to prevent ImportError on base install
+- **Slash commands actually work after pip install**: Previously, `/attune` was only available if you cloned the repo
+
+## [2.3.2] - 2026-02-05
+
+### Changed
+
+- **README**: Added `/attune` as primary command in Quick Start section
+
+## [2.3.1] - 2026-02-05
+
+### Security
+
+- **Path validation (CWE-22)**: Added `_validate_file_path()` to all 22 file write operations across:
+  - `config.py` - Configuration exports
+  - `workflows/config.py` - Workflow saves
+  - `config/xml_config.py` - XML exports
+  - `telemetry/cli.py` - CSV/JSON exports
+  - `cli.py` - Pattern exports
+  - `memory/control_panel.py` - Memory operations
+
+## [2.3.0] - 2026-02-04
+
+### Added
+
+- **Version 2.3.0 release**: Consolidated security and stability improvements
+
 ## [2.2.0] - 2026-02-02
 
 ### Changed

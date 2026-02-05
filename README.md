@@ -55,48 +55,54 @@ Workflows guide you through discovery instead of requiring upfront configuration
 ### 1. Install
 
 ```bash
-pip install attune-ai[developer]
+pip install attune-ai
 ```
 
-### 2. Configure
+### 2. Setup Slash Commands
 
 ```bash
-# Auto-detect API keys
-python -m attune.models.cli provider
-
-# Or configure authentication strategy
-python -m attune.models.auth_cli setup
+attune setup
 ```
+
+This installs `/attune` to `~/.claude/commands/` for Claude Code.
 
 ### 3. Use in Claude Code
 
-```bash
-/attune        # Primary command - Socratic discovery guides you to the right workflow
-```
-
-Or use specific hubs directly:
+Just type:
 
 ```bash
-/dev           # Developer tools (debug, commit, PR, review)
-/testing       # Run tests, coverage analysis, benchmarks
-/workflows     # Automated analysis (security, bugs, perf)
-/plan          # Planning, TDD, code review, refactoring
-/docs          # Documentation generation
-/release       # Release preparation
-
-# Natural language support:
-/attune "I need to fix a bug"
-/workflows "find security issues"
-/plan "review my code"
+/attune
 ```
 
-### 4. Use via CLI
+Socratic discovery guides you to the right workflow.
+
+**Or use shortcuts:**
+
+```bash
+/attune debug      # Debug an issue
+/attune test       # Run tests
+/attune security   # Security audit
+/attune commit     # Create commit
+/attune pr         # Create pull request
+```
+
+### CLI Usage
+
+Run workflows directly from terminal:
 
 ```bash
 attune workflow run security-audit --path ./src
-attune workflow run test-coverage --target 90
-attune telemetry show  # View cost savings
+attune workflow run test-gen --path ./src
+attune telemetry show
 ```
+
+### Need all features?
+
+```bash
+pip install attune-ai[developer]
+```
+
+This adds multi-LLM support, agents, and memory features.
 
 ---
 
@@ -212,13 +218,16 @@ python -m attune.models.auth_cli recommend src/module.py
 ## Installation Options
 
 ```bash
-# Individual developers (recommended)
+# Base install (CLI + workflows)
+pip install attune-ai
+
+# Full developer experience (multi-LLM, agents, memory)
 pip install attune-ai[developer]
 
-# With caching (semantic similarity)
+# With semantic caching (70% cost reduction)
 pip install attune-ai[cache]
 
-# Enterprise (auth, rate limiting)
+# Enterprise (auth, rate limiting, telemetry)
 pip install attune-ai[enterprise]
 
 # Development
@@ -226,16 +235,26 @@ git clone https://github.com/Smart-AI-Memory/attune-ai.git
 cd attune-ai && pip install -e .[dev]
 ```
 
+**What's in each option:**
+
+| Option         | What You Get                                   |
+| -------------- | ---------------------------------------------- |
+| Base           | CLI, workflows, Anthropic SDK                  |
+| `[developer]`  | + OpenAI, Google AI, LangChain agents, memory  |
+| `[cache]`      | + Semantic similarity caching                  |
+| `[enterprise]` | + JWT auth, rate limiting, OpenTelemetry       |
+
 ---
 
 ## Environment Setup
 
-```bash
-# Required: Anthropic API key
-export ANTHROPIC_API_KEY="sk-ant-..."
+**In Claude Code:** No setup needed - uses your Claude subscription.
 
-# Optional: Redis for Agent Dashboard and memory
-export REDIS_URL="redis://localhost:6379"
+**For CLI/API usage:**
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."  # Required for CLI workflows
+export REDIS_URL="redis://localhost:6379"  # Optional: for memory features
 ```
 
 ---

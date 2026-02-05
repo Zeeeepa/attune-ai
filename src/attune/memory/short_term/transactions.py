@@ -29,8 +29,16 @@ import json
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-import redis
 import structlog
+
+# Redis is optional - check availability
+try:
+    import redis
+
+    REDIS_AVAILABLE = True
+except ImportError:
+    redis = None  # type: ignore[assignment]
+    REDIS_AVAILABLE = False
 
 from attune.memory.types import (
     AgentCredentials,
