@@ -11,32 +11,10 @@ from pathlib import Path
 import pytest
 
 from attune.workflows.base import ModelTier
-from attune.workflows.dependency_check import KNOWN_VULNERABILITIES, DependencyCheckWorkflow
+from attune.workflows.dependency_check import DependencyCheckWorkflow
 
-
-class TestKnownVulnerabilities:
-    """Tests for known vulnerability patterns."""
-
-    def test_vulnerabilities_defined(self):
-        """Test that known vulnerabilities are defined."""
-        assert len(KNOWN_VULNERABILITIES) > 0
-        assert "requests" in KNOWN_VULNERABILITIES
-        assert "pyyaml" in KNOWN_VULNERABILITIES
-        assert "lodash" in KNOWN_VULNERABILITIES
-
-    def test_vulnerability_structure(self):
-        """Test vulnerability entry structure."""
-        for package, info in KNOWN_VULNERABILITIES.items():
-            assert "affected_versions" in info, f"{package} missing affected_versions"
-            assert "severity" in info, f"{package} missing severity"
-            assert "cve" in info, f"{package} missing cve"
-            assert isinstance(info["affected_versions"], list)
-
-    def test_severity_values(self):
-        """Test that severities are valid."""
-        valid_severities = {"critical", "high", "medium", "low"}
-        for info in KNOWN_VULNERABILITIES.values():
-            assert info["severity"] in valid_severities
+# Note: TestKnownVulnerabilities removed - simulated CVE database was replaced
+# with real pip-audit integration. See src/attune/workflows/dependency_check.py
 
 
 class TestDependencyCheckWorkflowInit:

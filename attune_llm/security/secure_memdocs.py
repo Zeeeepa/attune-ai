@@ -40,6 +40,8 @@ from typing import Any
 
 import structlog
 
+from attune.config import _validate_file_path
+
 from .audit_logger import AuditEvent, AuditLogger
 from .pii_scrubber import PIIScrubber
 from .secrets_detector import SecretsDetector
@@ -301,7 +303,8 @@ class MemDocsStorage:
 
             pattern_data = {"pattern_id": pattern_id, "content": content, "metadata": metadata}
 
-            with open(pattern_file, "w", encoding="utf-8") as f:
+            validated_path = _validate_file_path(str(pattern_file))
+            with open(validated_path, "w", encoding="utf-8") as f:
                 json.dump(pattern_data, f, indent=2)
 
             logger.debug("pattern_stored", pattern_id=pattern_id)

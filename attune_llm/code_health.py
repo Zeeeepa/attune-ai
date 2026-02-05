@@ -18,6 +18,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -1116,7 +1118,8 @@ class HealthTrendTracker:
             },
         )
 
-        filepath.write_text(json.dumps(history, indent=2))
+        validated_path = _validate_file_path(str(filepath))
+        validated_path.write_text(json.dumps(history, indent=2))
 
     def get_trends(self, days: int = 30) -> dict[str, Any]:
         """Analyze health trends over time."""

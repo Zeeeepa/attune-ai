@@ -27,6 +27,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from ..config import _validate_file_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -560,7 +562,8 @@ class VectorStore:
             "goals": [g.to_dict() for g in self._goals.values()],
         }
 
-        with self.storage_path.open("w") as f:
+        validated_path = _validate_file_path(str(self.storage_path))
+        with validated_path.open("w") as f:
             json.dump(data, f, indent=2)
 
     def _load(self):

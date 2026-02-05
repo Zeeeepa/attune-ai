@@ -26,6 +26,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from ..config import _validate_file_path
 from .blueprint import WorkflowBlueprint
 from .session import SessionState, SocraticSession
 from .success import SuccessEvaluation
@@ -139,7 +140,8 @@ class JSONFileStorage(StorageBackend):
         path = self.sessions_dir / f"{session.session_id}.json"
         data = session.to_dict()
 
-        with path.open("w") as f:
+        validated_path = _validate_file_path(str(path))
+        with validated_path.open("w") as f:
             json.dump(data, f, indent=2, default=str)
 
         logger.debug(f"Saved session {session.session_id}")
@@ -207,7 +209,8 @@ class JSONFileStorage(StorageBackend):
         path = self.blueprints_dir / f"{blueprint.id}.json"
         data = blueprint.to_dict()
 
-        with path.open("w") as f:
+        validated_path = _validate_file_path(str(path))
+        with validated_path.open("w") as f:
             json.dump(data, f, indent=2, default=str)
 
         logger.debug(f"Saved blueprint {blueprint.id}")
@@ -274,7 +277,8 @@ class JSONFileStorage(StorageBackend):
         path = eval_dir / f"{timestamp}.json"
 
         data = evaluation.to_dict()
-        with path.open("w") as f:
+        validated_path = _validate_file_path(str(path))
+        with validated_path.open("w") as f:
             json.dump(data, f, indent=2, default=str)
 
     def get_evaluations(

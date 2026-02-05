@@ -52,6 +52,8 @@ import typer
 from rich.console import Console
 from rich.panel import Panel
 
+from attune.config import _validate_file_path
+
 # =============================================================================
 # CONSTANTS
 # =============================================================================
@@ -101,7 +103,8 @@ def _load_tier_config() -> dict:
 def _save_tier_config(config: dict) -> None:
     """Save tier configuration to .attune/tier_config.json."""
     TIER_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    TIER_CONFIG_PATH.write_text(json.dumps(config, indent=2))
+    validated_path = _validate_file_path(str(TIER_CONFIG_PATH))
+    validated_path.write_text(json.dumps(config, indent=2))
 
 
 def _auto_sync_patterns() -> None:

@@ -145,8 +145,10 @@ class TestXMLConfigPathValidation:
         """Test that save_to_file blocks path traversal attacks."""
         config = EmpathyXMLConfig()
 
+        # Use /dev/test.json as the test path (valid path structure, but in /dev)
+        # Note: /dev/null/empathy.json fails on macOS because /dev/null is a file, not a dir
         with pytest.raises(ValueError, match="Cannot write to system directory"):
-            config.save_to_file("/dev/null/empathy.json")
+            config.save_to_file("/dev/test.json")
 
     def test_save_to_file_prevents_null_bytes(self):
         """Test that save_to_file blocks null byte injection."""

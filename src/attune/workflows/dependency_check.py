@@ -20,6 +20,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from ..config import _validate_file_path
 from .base import BaseWorkflow, ModelTier
 from .step_config import WorkflowStepConfig
 
@@ -71,7 +72,8 @@ def _save_advisory_cache(advisories: dict[str, list[dict]]) -> None:
     """Save advisories to cache for offline use."""
     try:
         cache_path = _get_cache_path()
-        cache_path.write_text(json.dumps(advisories, indent=2))
+        validated_path = _validate_file_path(str(cache_path))
+        validated_path.write_text(json.dumps(advisories, indent=2))
         logger.info(f"Advisory cache updated: {len(advisories)} packages")
     except Exception as e:
         logger.warning(f"Could not save advisory cache: {e}")

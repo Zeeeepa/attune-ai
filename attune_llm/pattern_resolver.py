@@ -35,6 +35,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -153,7 +155,8 @@ class PatternResolver:
 
         # Write updated pattern back to file
         try:
-            with open(file_path, "w", encoding="utf-8") as f:
+            validated_path = _validate_file_path(str(file_path))
+            with open(validated_path, "w", encoding="utf-8") as f:
                 json.dump(pattern, f, indent=2, default=str)
 
             logger.info("Resolved bug %s in %s", bug_id, file_path)

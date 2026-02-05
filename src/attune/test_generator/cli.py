@@ -149,15 +149,16 @@ def cmd_analyze(args):
     if args.json:
         json_output = analysis.to_dict()
         json_file = Path(f"{workflow_id}_risk_analysis.json")
-        with open(json_file, "w") as f:
+        validated_json = _validate_file_path(str(json_file))
+        with open(validated_json, "w") as f:
             json.dump(json_output, f, indent=2)
-        print(f"\n✓ JSON output written to: {json_file}")
+        print(f"\n✓ JSON output written to: {validated_json}")
 
 
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Test Generator for Empathy Workflow Factory",
+        description="Test Generator for Attune Workflow Factory",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

@@ -25,6 +25,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from ..config import _validate_file_path
 from ..project_index import ProjectIndex
 from ..project_index.reports import ReportGenerator
 from .test_maintenance import TestAction, TestMaintenanceWorkflow, TestPlanItem, TestPriority
@@ -290,8 +291,9 @@ class TestGeneratorAgent:
 
         # Write test file
         try:
-            full_test_path.parent.mkdir(parents=True, exist_ok=True)
-            full_test_path.write_text(test_code, encoding="utf-8")
+            validated_path = _validate_file_path(str(full_test_path))
+            validated_path.parent.mkdir(parents=True, exist_ok=True)
+            validated_path.write_text(test_code, encoding="utf-8")
         except Exception as e:
             return {
                 "file": item.file_path,

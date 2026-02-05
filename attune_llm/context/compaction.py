@@ -20,6 +20,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -281,7 +283,8 @@ class CompactionStateManager:
         filepath = user_dir / filename
 
         # Save state
-        with open(filepath, "w", encoding="utf-8") as f:
+        validated_path = _validate_file_path(str(filepath))
+        with open(validated_path, "w", encoding="utf-8") as f:
             json.dump(state.to_dict(), f, indent=2, default=str)
 
         logger.info(f"Saved compact state to {filepath}")

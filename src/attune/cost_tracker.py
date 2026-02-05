@@ -249,10 +249,13 @@ class CostTracker:
         **Note:** This is only used for backward compatibility.
         New data is written to JSONL format via flush().
         """
-        self.data["last_updated"] = datetime.now().isoformat()
-        validated_path = _validate_file_path(str(self.costs_file))
-        with open(validated_path, "w") as f:
-            json.dump(self.data, f, indent=2)
+        try:
+            self.data["last_updated"] = datetime.now().isoformat()
+            validated_path = _validate_file_path(str(self.costs_file))
+            with open(validated_path, "w") as f:
+                json.dump(self.data, f, indent=2)
+        except (OSError, ValueError):
+            pass  # Best effort - cost tracking shouldn't crash the app
 
     def _save_summary(self) -> None:
         """Save summary data (daily_totals) to separate file for fast loading.
@@ -284,7 +287,8 @@ class CostTracker:
 
         # Append buffered requests to JSONL file
         try:
-            with open(self.costs_jsonl, "a") as f:
+            validated_path = _validate_file_path(str(self.costs_jsonl))
+            with open(validated_path, "a") as f:
                 for request in self._buffer:
                     f.write(json.dumps(request) + "\n")
 

@@ -7,8 +7,14 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
+import importlib.util
 from datetime import datetime
 from unittest.mock import Mock
+
+import pytest
+
+# Check if opentelemetry is available
+_otel_available = importlib.util.find_spec("opentelemetry") is not None
 
 
 class TestEventStreaming:
@@ -567,6 +573,10 @@ class TestMultiBackendMonitoring:
         working_backend.log_call.assert_called_once()
 
 
+@pytest.mark.skipif(
+    not _otel_available,
+    reason="opentelemetry not installed (optional dependency)",
+)
 class TestOTelBackend:
     """Test OpenTelemetry backend functionality."""
 

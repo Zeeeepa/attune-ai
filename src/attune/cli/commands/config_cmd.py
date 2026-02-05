@@ -14,7 +14,6 @@ from argparse import Namespace
 from attune.config import (
     ConfigLoader,
     UnifiedConfig,
-    ValidationError,
     get_loader,
     load_unified_config,
     save_unified_config,
@@ -277,7 +276,7 @@ def cmd_config_reset(args: Namespace) -> int:
 
     try:
         saved_path = save_unified_config(config)
-        print(f"Configuration reset to defaults.")
+        print("Configuration reset to defaults.")
         print(f"Saved to: {saved_path}")
     except (ValueError, PermissionError, OSError) as e:
         print(f"Failed to save configuration: {e}", file=sys.stderr)

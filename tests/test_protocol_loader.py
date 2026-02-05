@@ -159,9 +159,9 @@ class TestProtocolLoader:
         """Test loader with default protocol directory"""
         loader = ProtocolLoader()
 
-        # Should default to empathy_healthcare_plugin/protocols
+        # Should default to attune_healthcare/protocols
         assert loader.protocol_dir.name == "protocols"
-        assert "empathy_healthcare_plugin" in str(loader.protocol_dir)
+        assert "attune_healthcare" in str(loader.protocol_dir)
 
     def test_loader_custom_directory(self, temp_protocol_dir):
         """Test loader with custom protocol directory"""

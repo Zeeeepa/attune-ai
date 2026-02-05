@@ -32,6 +32,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
 from attune.memory.short_term import RedisShortTermMemory
 from attune.telemetry.agent_tracking import HeartbeatCoordinator
 from attune.telemetry.event_streaming import EventStreamer
@@ -307,8 +308,9 @@ class AutonomousTestGenerator:
                 )
 
         # Write final test file
-        test_file.write_text(test_content)
-        logger.info(f"Wrote test file: {test_file}")
+        validated_path = _validate_file_path(str(test_file))
+        validated_path.write_text(test_content)
+        logger.info(f"Wrote test file: {validated_path}")
 
         # Validate it can be imported
         if not self._validate_test_file(test_file):
@@ -839,7 +841,8 @@ SOURCE CODE:
 
             # Write current version to temp file
             temp_test_file = test_file.parent / f"_temp_{test_file.name}"
-            temp_test_file.write_text(test_content)
+            validated_temp = _validate_file_path(str(temp_test_file))
+            validated_temp.write_text(test_content)
 
             # Validate with pytest
             validation_result = self._run_pytest_validation(temp_test_file)
@@ -1072,7 +1075,8 @@ Return ONLY the complete Python test file, no explanations."""
             )
 
             # Write current tests
-            test_file.write_text(test_content)
+            validated_test = _validate_file_path(str(test_file))
+            validated_test.write_text(test_content)
 
             # Run coverage analysis
             coverage_result = self._run_coverage_analysis(test_file, source_file)

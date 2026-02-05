@@ -20,6 +20,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
 from attune_llm.learning.extractor import ExtractedPattern, PatternCategory
 
 logger = logging.getLogger(__name__)
@@ -320,7 +321,8 @@ class LearnedSkillsStorage:
         """Save patterns to storage."""
         patterns_file = self._get_patterns_file(user_id)
 
-        with open(patterns_file, "w", encoding="utf-8") as f:
+        validated_path = _validate_file_path(str(patterns_file))
+        with open(validated_path, "w", encoding="utf-8") as f:
             json.dump(patterns, f, indent=2, default=str)
 
     # Skill operations
@@ -461,7 +463,8 @@ class LearnedSkillsStorage:
         """Save skills to storage."""
         skills_file = self._get_skills_file(user_id)
 
-        with open(skills_file, "w", encoding="utf-8") as f:
+        validated_path = _validate_file_path(str(skills_file))
+        with open(validated_path, "w", encoding="utf-8") as f:
             json.dump(skills, f, indent=2, default=str)
 
     # Summary operations

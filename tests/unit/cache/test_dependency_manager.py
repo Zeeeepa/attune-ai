@@ -3,13 +3,21 @@
 Tests dependency detection, user prompts, and installation management.
 """
 
+import importlib.util
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
 import yaml
 
 from attune.cache.dependency_manager import DependencyManager
+
+# Check if cache dependencies are available
+_cache_deps_available = (
+    importlib.util.find_spec("sentence_transformers") is not None
+    and importlib.util.find_spec("torch") is not None
+)
 
 
 class TestDependencyManager:
@@ -23,11 +31,15 @@ class TestDependencyManager:
 
             assert manager.config_path == config_path
 
+    @pytest.mark.skipif(
+        not _cache_deps_available,
+        reason="sentence-transformers/torch not installed (optional dependency)",
+    )
     def test_is_cache_installed_true(self):
         """Test detection when sentence-transformers is installed."""
         manager = DependencyManager()
 
-        # Should be True since we installed it
+        # Should be True when sentence-transformers is installed
         assert manager.is_cache_installed() is True
 
     @patch("attune.cache.dependency_manager.DependencyManager.is_cache_installed")
@@ -48,11 +60,15 @@ class TestDependencyManager:
             with patch.object(manager, "is_cache_installed", return_value=False):
                 assert manager.should_prompt_cache_install() is True
 
+    @pytest.mark.skipif(
+        not _cache_deps_available,
+        reason="sentence-transformers/torch not installed (optional dependency)",
+    )
     def test_should_not_prompt_when_already_installed(self):
         """Test that we don't prompt when cache already installed."""
         manager = DependencyManager()
 
-        # Cache is installed
+        # Cache is installed - should not prompt
         assert manager.should_prompt_cache_install() is False
 
     def test_should_not_prompt_when_declined(self):

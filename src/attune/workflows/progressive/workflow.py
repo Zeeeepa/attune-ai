@@ -6,6 +6,8 @@ and approval prompts.
 """
 
 import logging
+import os
+import sys
 from datetime import datetime
 from typing import Any
 
@@ -20,6 +22,57 @@ from attune.workflows.progressive.orchestrator import MetaOrchestrator
 from attune.workflows.progressive.telemetry import ProgressiveTelemetry
 
 logger = logging.getLogger(__name__)
+
+
+def _is_interactive() -> bool:
+    """Check if running interactively (not in CI).
+
+    Returns:
+        True if interactive terminal, False if CI or non-interactive.
+    """
+    # CI environments typically set these
+    if os.getenv("CI") or os.getenv("ATTUNE_NON_INTERACTIVE"):
+        return False
+    # Check if stdin is a TTY
+    return sys.stdin.isatty()
+
+
+def _load_model_config() -> dict[str, str]:
+    """Load model configuration from config/env.
+
+    Environment variables take precedence over config file.
+
+    Returns:
+        Dict mapping tier names to model names.
+    """
+    # Default models
+    defaults = {
+        "cheap": "gpt-4o-mini",
+        "capable": "claude-3-5-sonnet",
+        "premium": "claude-opus-4",
+    }
+
+    # Try to load from unified config
+    try:
+        from attune.config.loader import load_config
+
+        config = load_config()
+        if hasattr(config, "routing"):
+            if config.routing.cheap_model:
+                defaults["cheap"] = config.routing.cheap_model
+            if config.routing.capable_model:
+                defaults["capable"] = config.routing.capable_model
+            if config.routing.premium_model:
+                defaults["premium"] = config.routing.premium_model
+    except Exception as e:
+        logger.debug(f"Could not load config, using defaults: {e}")
+
+    # Environment overrides (highest priority)
+    return {
+        "cheap": os.getenv("ATTUNE_MODEL_CHEAP", defaults["cheap"]),
+        "capable": os.getenv("ATTUNE_MODEL_CAPABLE", defaults["capable"]),
+        "premium": os.getenv("ATTUNE_MODEL_PREMIUM", defaults["premium"]),
+    }
 
 
 class BudgetExceededError(Exception):
@@ -466,23 +519,46 @@ class ProgressiveWorkflow:
 
         return COST_PER_ITEM[tier] * item_count
 
-    def _calculate_tier_cost(self, tier: Tier, item_count: int) -> float:
-        """Calculate actual cost for tier execution.
+    def _calculate_tier_cost(
+        self, tier: Tier, item_count: int, actual_tokens: int | None = None
+    ) -> float:
+        """Calculate cost for tier execution.
 
-        TODO: Implement based on actual token usage.
+        Logs whether cost is actual (from API response) or estimated.
 
         Args:
             tier: Which tier
             item_count: Number of items processed
+            actual_tokens: Actual token count from API response (if available)
 
         Returns:
-            Actual cost in USD
+            Cost in USD (actual or estimated)
         """
-        # For now, use estimate
-        return self._estimate_tier_cost(tier, item_count)
+        # Cost per 1K tokens (approximate, based on 2024-2025 pricing)
+        COST_PER_1K_TOKENS = {
+            Tier.CHEAP: 0.00015,  # gpt-4o-mini input
+            Tier.CAPABLE: 0.003,  # claude-3-5-sonnet
+            Tier.PREMIUM: 0.015,  # claude-opus-4
+        }
+
+        if actual_tokens is not None:
+            cost = (actual_tokens / 1000) * COST_PER_1K_TOKENS.get(tier, 0.003)
+            logger.info(f"Cost: ${cost:.4f} (actual, tokens: {actual_tokens:,})")
+            return cost
+
+        # Estimate: ~1500 tokens per item
+        estimated_tokens = item_count * 1500
+        cost = (estimated_tokens / 1000) * COST_PER_1K_TOKENS.get(tier, 0.003)
+        logger.info(f"Cost: ${cost:.4f} (estimated, ~{estimated_tokens:,} tokens)")
+        return cost
 
     def _request_approval(self, message: str, estimated_cost: float) -> bool:
         """Request user approval for execution.
+
+        Supports non-interactive mode for CI environments via:
+        - ATTUNE_NON_INTERACTIVE=1 env var
+        - ATTUNE_AUTO_APPROVE_MAX=<amount> env var (default $1.00)
+        - CI=true env var (common in CI systems)
 
         Args:
             message: Description of what will be executed
@@ -491,19 +567,29 @@ class ProgressiveWorkflow:
         Returns:
             True if approved, False if declined
         """
-        # Check auto-approve threshold
+        # Check auto-approve threshold from config
         if self.config.auto_approve_under and estimated_cost <= self.config.auto_approve_under:
             logger.info(
                 f"Auto-approved: ${estimated_cost:.2f} <= ${self.config.auto_approve_under:.2f}"
             )
             return True
 
-        # Check if under default threshold ($1.00)
-        threshold = 1.00
+        # Default threshold
+        threshold = float(os.getenv("ATTUNE_AUTO_APPROVE_MAX", "1.00"))
         if estimated_cost <= threshold:
+            logger.info(f"Auto-approved: ${estimated_cost:.2f} <= ${threshold:.2f} threshold")
             return True
 
-        # Prompt user
+        # Non-interactive mode: use policy-based approval
+        if not _is_interactive():
+            logger.warning(
+                f"Non-interactive mode: cost ${estimated_cost:.2f} exceeds "
+                f"auto-approve threshold ${threshold:.2f}. Set ATTUNE_AUTO_APPROVE_MAX "
+                f"to a higher value to auto-approve, or run interactively."
+            )
+            return False
+
+        # Interactive prompt
         print("\n⚠️  Cost Estimate:")
         print(f"   {message}")
         print(f"   Estimated total: ${estimated_cost:.2f}")
@@ -518,6 +604,8 @@ class ProgressiveWorkflow:
     ) -> bool:
         """Request approval for tier escalation.
 
+        Supports non-interactive mode for CI environments.
+
         Args:
             from_tier: Current tier
             to_tier: Target tier
@@ -527,13 +615,30 @@ class ProgressiveWorkflow:
         Returns:
             True if approved, False if declined
         """
-        # Check auto-approve
         total_cost = sum(r.cost for r in self.tier_results) + additional_cost
+
+        # Check auto-approve from config
         if self.config.auto_approve_under and total_cost <= self.config.auto_approve_under:
             logger.info(f"Auto-approved escalation: total ${total_cost:.2f}")
             return True
 
-        # Prompt user
+        # Check auto-approve from env
+        threshold = float(os.getenv("ATTUNE_AUTO_APPROVE_MAX", "1.00"))
+        if total_cost <= threshold:
+            logger.info(
+                f"Auto-approved escalation: ${total_cost:.2f} <= ${threshold:.2f} threshold"
+            )
+            return True
+
+        # Non-interactive mode
+        if not _is_interactive():
+            logger.warning(
+                f"Non-interactive mode: escalation cost ${total_cost:.2f} exceeds "
+                f"threshold ${threshold:.2f}. Declining escalation."
+            )
+            return False
+
+        # Interactive prompt
         print("\n⚠️  Escalation needed:")
         print(f"   {item_count} items from {from_tier.value} → {to_tier.value}")
         print(f"   Additional cost: ~${additional_cost:.2f}")
@@ -573,17 +678,17 @@ class ProgressiveWorkflow:
     def _get_model_for_tier(self, tier: Tier) -> str:
         """Get model name for specific tier.
 
+        Model selection priority:
+        1. Environment variables (ATTUNE_MODEL_CHEAP, etc.)
+        2. Unified config file (routing section)
+        3. Built-in defaults
+
         Args:
             tier: Which tier
 
         Returns:
             Model name (e.g., "gpt-4o-mini")
         """
-        # TODO: Make this configurable
-        MODEL_MAP = {
-            Tier.CHEAP: "gpt-4o-mini",
-            Tier.CAPABLE: "claude-3-5-sonnet",
-            Tier.PREMIUM: "claude-opus-4",
-        }
-
-        return MODEL_MAP.get(tier, "claude-3-5-sonnet")
+        model_config = _load_model_config()
+        tier_key = tier.value.lower()  # "cheap", "capable", "premium"
+        return model_config.get(tier_key, "claude-3-5-sonnet")

@@ -35,6 +35,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
+from attune.config import _validate_file_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -849,7 +851,8 @@ Return the refactored code as after_code."""
         self._user_profile.updated_at = datetime.now().isoformat()
 
         try:
-            with open(profile_path, "w") as f:
+            validated_path = _validate_file_path(str(profile_path))
+            with open(validated_path, "w") as f:
                 json.dump(self._user_profile.to_dict(), f, indent=2)
         except (OSError, PermissionError) as e:
             # File system errors writing profile
