@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "attune-ai"
-version = "2.3.3"
+version = "2.3.4"
 description = "AI-powered developer workflows for Claude with cost optimization, multi-agent orchestration, and workflow automation."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
@@ -65,9 +65,9 @@ dependencies = [
 # not the actual CrewAI library. Install with: pip install attune-ai[crewai]
 
 [project.optional-dependencies]
-# Memory subsystem (requires Redis server)
+# Memory subsystem (requires Redis server 8.4+ recommended)
 memory = [
-    "redis>=4.0.0,<6.0.0",  # For short-term memory and transactions
+    "redis>=5.0.0,<8.0.0",  # redis-py 5.x-7.x for Redis server 8.4 support
 ]
 
 # LLM providers (user chooses which they need)
@@ -140,7 +140,7 @@ healthcare = [
     "opentelemetry-sdk>=1.20.0,<2.0.0",
     "opentelemetry-exporter-otlp-proto-grpc>=1.20.0,<2.0.0",
     # Healthcare-specific dependencies
-    "redis>=5.0.0,<6.0.0",  # For session management and real-time alerts
+    "redis>=5.0.0,<8.0.0",  # For session management (Redis server 8.4+ recommended)
 ]
 
 software = [
@@ -223,8 +223,8 @@ developer = [
     # Software development plugins
     "python-docx>=0.8.11,<1.0.0",
     "pyyaml>=6.0,<7.0",
-    # Memory subsystem
-    "redis>=4.0.0,<6.0.0",
+    # Memory subsystem (Redis server 8.4+ recommended)
+    "redis>=5.0.0,<8.0.0",
 ]
 
 # Teams/enterprises - backend + authentication + compliance (excludes healthcare)

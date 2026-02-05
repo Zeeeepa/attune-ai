@@ -51,7 +51,13 @@ The Empathy Framework stands on the shoulders of giants. This project would not 
 ## Memory & Storage
 
 - **[MemDocs](https://pypi.org/project/memdocs/)** - Long-term memory system for AI agents. Provides persistent context across sessions.
-- **[Redis](https://github.com/redis/redis-py)** - Python client for Redis. Powers our short-term memory and agent coordination.
+- **[Redis Server](https://github.com/redis/redis)** - Open source in-memory data structure store. Redis 8.4+ provides the foundation for our memory subsystem with built-in modules:
+  - **RediSearch** - Full-text search and secondary indexing
+  - **RedisJSON** - Native JSON data type support
+  - **RedisTimeSeries** - Time series data management
+  - **RedisBloom** - Probabilistic data structures
+  - **VectorSet** - Vector similarity search
+- **[redis-py](https://github.com/redis/redis-py)** - Official Python client for Redis. Connects our application to Redis Server.
 
 ---
 
@@ -140,6 +146,7 @@ We extend our deepest gratitude to:
 
 - **[Python Software Foundation](https://www.python.org/)** - For creating and maintaining the Python programming language.
 - **[Anthropic](https://www.anthropic.com/)** - For Claude AI and the Model Context Protocol (MCP) specification.
+- **[Redis Ltd.](https://redis.io/)** - For Redis 8.4 Open Source with RediSearch, RedisJSON, RedisTimeSeries, RedisBloom, and VectorSet modules.
 - **[OpenAI](https://openai.com/)** - For pioneering work in large language models and API standards.
 - **[The Rust Foundation](https://foundation.rust-lang.org/)** - For Rust, which powers Ruff and many performance-critical tools.
 
@@ -211,8 +218,8 @@ If you notice a missing attribution or have questions about licensing:
 
 ---
 
-**Last Updated:** January 29, 2026
-**Empathy Framework Version:** 5.1.1
+**Last Updated:** February 5, 2026
+**Attune AI Version:** 2.3.4
 
 ---
 
