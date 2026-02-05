@@ -843,6 +843,101 @@ def cmd_dashboard_start(args: Namespace) -> int:
 
 
 # =============================================================================
+# Setup Command
+# =============================================================================
+
+
+def cmd_setup(args: Namespace) -> int:
+    """Install Attune slash commands for Claude Code."""
+    import shutil
+
+    # Determine source directory (package data)
+    try:
+        import importlib.resources as pkg_resources
+
+        # For Python 3.9+
+        try:
+            from importlib.resources import files
+
+            source_dir = files("attune") / "commands"
+        except (ImportError, TypeError):
+            # Fallback for older Python
+            source_dir = None
+    except ImportError:
+        source_dir = None
+
+    # If package resources don't work, try to find commands relative to this file
+    if source_dir is None or not hasattr(source_dir, "iterdir"):
+        # Look for commands directory relative to the package
+        package_dir = Path(__file__).parent
+        potential_paths = [
+            package_dir / "commands",
+            package_dir.parent / ".claude" / "commands",
+            Path.cwd() / ".claude" / "commands",
+        ]
+
+        source_dir = None
+        for p in potential_paths:
+            if p.exists() and p.is_dir():
+                source_dir = p
+                break
+
+    if source_dir is None:
+        print("❌ Could not find Attune command files.")
+        print("\n   If you installed from git, run from the repository root:")
+        print("   cd /path/to/attune-ai && attune setup")
+        return 1
+
+    # Target directory
+    target_dir = Path.home() / ".claude" / "commands"
+
+    print("\n🔧 Attune Setup\n")
+    print("-" * 60)
+    print(f"  Source:      {source_dir}")
+    print(f"  Target:      {target_dir}")
+
+    # Create target directory
+    target_dir.mkdir(parents=True, exist_ok=True)
+    print(f"\n  ✅ Created {target_dir}")
+
+    # Copy command files
+    copied = 0
+    if hasattr(source_dir, "iterdir"):
+        # Path object
+        for src_file in source_dir.iterdir():
+            if src_file.suffix == ".md":
+                dst_file = target_dir / src_file.name
+                shutil.copy2(src_file, dst_file)
+                print(f"  ✅ Installed: {src_file.name}")
+                copied += 1
+    else:
+        # importlib.resources Traversable
+        for item in source_dir.iterdir():
+            if item.name.endswith(".md"):
+                dst_file = target_dir / item.name
+                content = item.read_text()
+                dst_file.write_text(content)
+                print(f"  ✅ Installed: {item.name}")
+                copied += 1
+
+    print("-" * 60)
+
+    if copied == 0:
+        print("\n⚠️  No command files found to install.")
+        print("   Make sure you're running from the attune-ai directory.")
+        return 1
+
+    print(f"\n✅ Installed {copied} command(s)")
+    print("\n📝 You can now use in Claude Code:")
+    print("   /attune           - Main entry point")
+    print("   /attune debug     - Debug an issue")
+    print("   /attune test      - Run tests")
+    print("   /attune security  - Security audit")
+
+    return 0
+
+
+# =============================================================================
 # Utility Commands
 # =============================================================================
 
@@ -1080,6 +1175,9 @@ Documentation: https://smartaimemory.com/framework-docs/
         "--port", type=int, default=8000, help="Port to bind to (default: 8000)"
     )
 
+    # --- Setup command ---
+    subparsers.add_parser("setup", help="Install slash commands to ~/.claude/commands/")
+
     # --- Utility commands ---
     subparsers.add_parser("validate", help="Validate configuration")
 
@@ -1149,6 +1247,9 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print("Usage: attune dashboard start [--host HOST] [--port PORT]")
             return 1
+
+    elif args.command == "setup":
+        return cmd_setup(args)
 
     elif args.command == "validate":
         return cmd_validate(args)

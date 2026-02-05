@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "attune-ai"
-version = "2.3.0"
+version = "2.3.3"
 description = "AI-powered developer workflows for Claude with cost optimization, multi-agent orchestration, and workflow automation."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
@@ -47,6 +47,7 @@ classifiers = [
 ]
 
 # Core dependencies - minimal required for framework to function
+# DESIGN: Keep core lightweight for fast installs. Heavy deps are optional.
 dependencies = [
     "pydantic>=2.0.0,<3.0.0",
     "typing-extensions>=4.0.0,<5.0.0",
@@ -57,13 +58,18 @@ dependencies = [
     "typer>=0.9.0,<1.0.0",  # Better CLI commands
     "pyyaml>=6.0,<7.0",  # Required by workflows (bug_predict, etc.)
     "anthropic>=0.25.0,<1.0.0",  # Core LLM provider (direct SDK usage)
-    "redis>=4.0.0,<6.0.0",  # Required by memory subsystem (short_term/transactions)
+    # NOTE: redis moved to [memory] optional - not needed for CLI/skill usage
 ]
 # NOTE: CrewAI and LangChain moved to optional dependencies in v4.4.0
 # The "Crew" workflows use EmpathyLLMExecutor (Anthropic SDK) directly,
 # not the actual CrewAI library. Install with: pip install attune-ai[crewai]
 
 [project.optional-dependencies]
+# Memory subsystem (requires Redis server)
+memory = [
+    "redis>=4.0.0,<6.0.0",  # For short-term memory and transactions
+]
+
 # LLM providers (user chooses which they need)
 anthropic = ["anthropic>=0.25.0,<1.0.0"]
 openai = ["openai>=1.12.0,<2.0.0"]
@@ -217,6 +223,8 @@ developer = [
     # Software development plugins
     "python-docx>=0.8.11,<1.0.0",
     "pyyaml>=6.0,<7.0",
+    # Memory subsystem
+    "redis>=4.0.0,<6.0.0",
 ]
 
 # Teams/enterprises - backend + authentication + compliance (excludes healthcare)
@@ -378,6 +386,7 @@ attune = "src/attune"
 
 [tool.setuptools.package-data]
 "*" = ["*.yml", "*.yaml", "*.json", "*.txt", "*.md", "*.jinja2"]
+"attune.commands" = ["*.md"]
 
 # Black code formatter configuration
 [tool.black]
