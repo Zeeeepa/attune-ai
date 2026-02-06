@@ -30,7 +30,7 @@ from pathlib import Path
 from typing import Any
 
 from ..config import _validate_file_path
-from ..workflows.base import BaseWorkflow, ModelTier, WorkflowStage
+from ..workflows.base import BaseWorkflow, ModelTier
 from ..workflows.llm_base import LLMWorkflowGenerator
 
 logger = logging.getLogger(__name__)
@@ -376,6 +376,14 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
     Now enhanced with LLM generation for comprehensive, runnable tests!
     """
 
+    name = "behavioral-test-generation"
+    description = "Generate behavioral test templates for modules"
+    stages = ["analyze", "generate"]
+    tier_map = {
+        "analyze": ModelTier.CHEAP,
+        "generate": ModelTier.CAPABLE,
+    }
+
     def __init__(self, use_llm: bool = True, model_tier: str = "capable"):
         """Initialize workflow.
 
@@ -383,26 +391,7 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
             use_llm: Whether to use LLM generation (default: True)
             model_tier: Model tier for LLM (cheap, capable, premium)
         """
-        super().__init__(
-            name="behavioral-test-generation",
-            description="Generate behavioral test templates for modules",
-            stages={
-                "analyze": WorkflowStage(
-                    name="analyze",
-                    description="Analyze module structure",
-                    tier_hint=ModelTier.CHEAP,
-                    system_prompt="Analyze Python module structure",
-                    task_type="analysis",
-                ),
-                "generate": WorkflowStage(
-                    name="generate",
-                    description="Generate comprehensive behavioral tests",
-                    tier_hint=ModelTier.CAPABLE,
-                    system_prompt="Generate comprehensive behavioral tests using LLM",
-                    task_type="code_generation",
-                ),
-            },
-        )
+        super().__init__()
         self.llm_generator = BehavioralTestLLMGenerator(model_tier=model_tier, use_llm=use_llm)
 
     def analyze_module(self, file_path: Path) -> ModuleInfo:
@@ -442,6 +431,40 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
         return self.llm_generator.generate_test_file(
             module_info=module_info, output_path=output_path, source_code=source_code
         )
+
+    async def run_stage(
+        self,
+        stage_name: str,
+        tier: ModelTier,
+        input_data: Any,
+    ) -> tuple[Any, int, int]:
+        """Execute a single workflow stage.
+
+        This workflow uses execute() directly rather than the stage pipeline,
+        so run_stage delegates to analyze or generate based on stage name.
+
+        Args:
+            stage_name: Name of the stage to run ('analyze' or 'generate').
+            tier: Model tier to use.
+            input_data: Input for this stage.
+
+        Returns:
+            Tuple of (output_data, input_tokens, output_tokens).
+        """
+        if stage_name == "analyze":
+            module_path = input_data.get("module_path", "")
+            module_info = self.analyze_module(Path(module_path))
+            return asdict(module_info), 0, 0
+
+        if stage_name == "generate":
+            module_info_dict = input_data.get("module_info", {})
+            module_info = ModuleInfo(**module_info_dict)
+            output_path = Path(input_data.get("output_path", "test_output.py"))
+            source_code = input_data.get("source_code", "")
+            template = self.generate_test_template(module_info, output_path, source_code)
+            return {"test_content": template}, 0, 0
+
+        raise ValueError(f"Unknown stage: {stage_name}")
 
     def _discover_source_modules(
         self, source_dir: str = "src", min_lines: int = 50
