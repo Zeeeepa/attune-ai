@@ -24,13 +24,16 @@ Licensed under Apache 2.0
 """
 
 import ast
+import logging
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
 from ..config import _validate_file_path
-from ..workflows.base import BaseWorkflow, ModelTier, WorkflowStage
+from ..workflows.base import BaseWorkflow, ModelTier
 from ..workflows.llm_base import LLMWorkflowGenerator
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -373,6 +376,14 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
     Now enhanced with LLM generation for comprehensive, runnable tests!
     """
 
+    name = "behavioral-test-generation"
+    description = "Generate behavioral test templates for modules"
+    stages = ["analyze", "generate"]
+    tier_map = {
+        "analyze": ModelTier.CHEAP,
+        "generate": ModelTier.CAPABLE,
+    }
+
     def __init__(self, use_llm: bool = True, model_tier: str = "capable"):
         """Initialize workflow.
 
@@ -380,26 +391,7 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
             use_llm: Whether to use LLM generation (default: True)
             model_tier: Model tier for LLM (cheap, capable, premium)
         """
-        super().__init__(
-            name="behavioral-test-generation",
-            description="Generate behavioral test templates for modules",
-            stages={
-                "analyze": WorkflowStage(
-                    name="analyze",
-                    description="Analyze module structure",
-                    tier_hint=ModelTier.CHEAP,
-                    system_prompt="Analyze Python module structure",
-                    task_type="analysis",
-                ),
-                "generate": WorkflowStage(
-                    name="generate",
-                    description="Generate comprehensive behavioral tests",
-                    tier_hint=ModelTier.CAPABLE,
-                    system_prompt="Generate comprehensive behavioral tests using LLM",
-                    task_type="code_generation",
-                ),
-            },
-        )
+        super().__init__()
         self.llm_generator = BehavioralTestLLMGenerator(model_tier=model_tier, use_llm=use_llm)
 
     def analyze_module(self, file_path: Path) -> ModuleInfo:
@@ -440,11 +432,89 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
             module_info=module_info, output_path=output_path, source_code=source_code
         )
 
+    async def run_stage(
+        self,
+        stage_name: str,
+        tier: ModelTier,
+        input_data: Any,
+    ) -> tuple[Any, int, int]:
+        """Execute a single workflow stage.
+
+        This workflow uses execute() directly rather than the stage pipeline,
+        so run_stage delegates to analyze or generate based on stage name.
+
+        Args:
+            stage_name: Name of the stage to run ('analyze' or 'generate').
+            tier: Model tier to use.
+            input_data: Input for this stage.
+
+        Returns:
+            Tuple of (output_data, input_tokens, output_tokens).
+        """
+        if stage_name == "analyze":
+            module_path = input_data.get("module_path", "")
+            module_info = self.analyze_module(Path(module_path))
+            return asdict(module_info), 0, 0
+
+        if stage_name == "generate":
+            module_info_dict = input_data.get("module_info", {})
+            module_info = ModuleInfo(**module_info_dict)
+            output_path = Path(input_data.get("output_path", "test_output.py"))
+            source_code = input_data.get("source_code", "")
+            template = self.generate_test_template(module_info, output_path, source_code)
+            return {"test_content": template}, 0, 0
+
+        raise ValueError(f"Unknown stage: {stage_name}")
+
+    def _discover_source_modules(
+        self, source_dir: str = "src", min_lines: int = 50
+    ) -> list[Path]:
+        """Discover Python source modules eligible for test generation.
+
+        Finds .py files under the source directory, filtering out test files,
+        __init__.py stubs, and files below the minimum line threshold.
+
+        Args:
+            source_dir: Root directory to scan for source files.
+            min_lines: Minimum number of lines for a file to be included.
+
+        Returns:
+            List of Paths sorted by line count descending (largest first).
+        """
+        source_root = Path(source_dir)
+        if not source_root.is_dir():
+            logger.warning(f"Source directory does not exist: {source_dir}")
+            return []
+
+        candidates: list[tuple[Path, int]] = []
+        for py_file in source_root.rglob("*.py"):
+            # Skip test files
+            if py_file.name.startswith("test_") or "/tests/" in str(py_file):
+                continue
+            # Skip __init__.py stubs (often nearly empty)
+            if py_file.name == "__init__.py":
+                continue
+
+            try:
+                line_count = len(py_file.read_text().splitlines())
+            except OSError as e:
+                logger.warning(f"Cannot read {py_file}: {e}")
+                continue
+
+            if line_count >= min_lines:
+                candidates.append((py_file, line_count))
+
+        # Sort by line count descending so the largest modules are processed first
+        candidates.sort(key=lambda item: item[1], reverse=True)
+        return [path for path, _ in candidates]
+
     async def execute(
         self,
         module_path: str | None = None,
         batch: bool = False,
         top_n: int = 50,
+        min_lines: int = 50,
+        source_dir: str = "src",
         output_dir: str = "tests/behavioral/generated",
         **kwargs,
     ) -> dict[str, Any]:
@@ -454,6 +524,8 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
             module_path: Path to module to generate tests for
             batch: If True, generate tests for multiple low-coverage modules
             top_n: Number of modules to process in batch mode
+            min_lines: Minimum line count for modules in batch mode
+            source_dir: Root source directory to scan in batch mode
             output_dir: Where to save generated tests
 
         Returns:
@@ -463,11 +535,50 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
         output_path.mkdir(exist_ok=True, parents=True)
 
         generated_files = []
+        errors: list[dict[str, str]] = []
 
         if batch:
-            # Batch mode: find low-coverage modules
-            # TODO: Implement batch processing
-            pass
+            # Batch mode: discover source modules and generate tests
+            modules = self._discover_source_modules(
+                source_dir=source_dir, min_lines=min_lines
+            )[:top_n]
+            logger.info(
+                f"Batch mode: discovered {len(modules)} modules "
+                f"(top_n={top_n}, min_lines={min_lines})"
+            )
+
+            for src_path in modules:
+                try:
+                    source_code = src_path.read_text()
+                    module_info = self.analyze_module(src_path)
+
+                    test_filename = f"test_{src_path.stem}_behavioral.py"
+                    test_path = output_path / test_filename
+
+                    template = self.generate_test_template(
+                        module_info, test_path, source_code=source_code
+                    )
+                    validated = _validate_file_path(str(test_path))
+                    validated.write_text(template)
+                    generated_files.append(str(test_path))
+                    logger.info(f"Generated: {test_path}")
+                except SyntaxError as e:
+                    logger.warning(f"Skipping {src_path} (syntax error): {e}")
+                    errors.append({"file": str(src_path), "error": str(e)})
+                except OSError as e:
+                    logger.warning(f"Skipping {src_path} (IO error): {e}")
+                    errors.append({"file": str(src_path), "error": str(e)})
+
+            # Print batch stats
+            stats = self.llm_generator.get_stats()
+            print(f"\n📊 Batch Generation Stats ({len(generated_files)}/{len(modules)} modules):")
+            print(f"  LLM Success Rate: {stats['llm_success_rate']:.1%}")
+            print(f"  Template Fallback Rate: {stats['template_fallback_rate']:.1%}")
+            print(f"  Cache Hit Rate: {stats['cache_hit_rate']:.1%}")
+            print(f"  Estimated Cost: ${stats['total_cost_usd']:.4f}")
+            if errors:
+                print(f"  Errors: {len(errors)}")
+
         elif module_path:
             # Single module mode
             src_path = Path(module_path)
@@ -492,11 +603,14 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
             print(f"  Cache Hit Rate: {stats['cache_hit_rate']:.1%}")
             print(f"  Estimated Cost: ${stats['total_cost_usd']:.4f}")
 
-        return {
+        result: dict[str, Any] = {
             "generated_files": generated_files,
             "count": len(generated_files),
             "output_dir": str(output_path),
         }
+        if errors:
+            result["errors"] = errors
+        return result
 
 
 # Export for discovery
