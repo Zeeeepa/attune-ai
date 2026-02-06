@@ -363,8 +363,8 @@ perf-audit = "attune.workflows.perf_audit:PerformanceAuditWorkflow"
 test-gen = "attune.workflows.test_gen:TestGenerationWorkflow"
 refactor-plan = "attune.workflows.refactor_plan:RefactorPlanWorkflow"
 dependency-check = "attune.workflows.dependency_check:DependencyCheckWorkflow"
-# v4.0.0 CrewAI-based multi-agent workflows (production)
-release-prep = "attune.workflows.release_prep_crew:ReleasePreparationCrew"
+# v5.2 Agent team (replaces CrewAI-based crew)
+release-prep = "attune.agents.release.release_prep_team:ReleasePrepTeamWorkflow"
 health-check = "attune.workflows.health_check_crew:HealthCheckCrew"
 test-coverage-boost = "attune.workflows.test_coverage_boost_crew:TestCoverageBoostCrew"
 # Legacy entry points removed - handled by migration system

@@ -155,6 +155,11 @@ _LAZY_WORKFLOW_IMPORTS: dict[str, tuple[str, str]] = {
     "XMLAgent": (".xml_enhanced_crew", "XMLAgent"),
     "XMLTask": (".xml_enhanced_crew", "XMLTask"),
     "parse_xml_response": (".xml_enhanced_crew", "parse_xml_response"),
+    # Release agent team (v5.2)
+    "ReleasePrepTeamWorkflow": (
+        "attune.agents.release.release_prep_team",
+        "ReleasePrepTeamWorkflow",
+    ),
 }
 
 # Cache for loaded workflow classes
@@ -252,8 +257,8 @@ _DEFAULT_WORKFLOW_NAMES: dict[str, str] = {
     # Meta-orchestration workflows (v4.0.0 - CANONICAL)
     "orchestrated-health-check": "OrchestratedHealthCheckWorkflow",
     "orchestrated-release-prep": "OrchestratedReleasePrepWorkflow",
-    # Backward compatibility aliases (point to orchestrated versions)
-    "release-prep": "OrchestratedReleasePrepWorkflow",
+    # Release preparation (v5.2 — agent team replaces orchestrated version)
+    "release-prep": "ReleasePrepTeamWorkflow",
     # Experimental aliases removed (use production versions instead)
     # Research and synthesis workflows
     "research-synthesis": "ResearchSynthesisWorkflow",

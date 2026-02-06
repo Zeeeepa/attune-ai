@@ -48,7 +48,7 @@ except ImportError:
 
 # Optional: Attune auth strategy
 try:
-    from attune.models import get_auth_strategy, AuthMode
+    from attune.models import AuthMode, get_auth_strategy
     from attune.models.registry import ModelRegistry
     ATTUNE_AUTH_AVAILABLE = True
 except ImportError:
@@ -1143,7 +1143,7 @@ async def demo():
     print("\n" + "=" * 70)
     print("DEMO COMPLETE")
     print("=" * 70)
-    print(f"\nTo enable real LLM calls, set: CDS_LLM_MODE=real")
+    print("\nTo enable real LLM calls, set: CDS_LLM_MODE=real")
     print(f"Current mode: {LLM_MODE}")
 
 

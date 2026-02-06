@@ -1,5 +1,9 @@
 """Orchestrated Release Preparation Workflow
 
+.. deprecated:: 5.2.0
+    This module is deprecated. Use ``attune workflow run release-prep`` which now
+    uses ReleasePrepTeamWorkflow from attune.agents.release. Remove in v6.0.
+
 Uses the meta-orchestration system to coordinate multiple validation agents
 in parallel for comprehensive release readiness assessment.
 
@@ -33,6 +37,15 @@ Example:
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
+
+import warnings
+
+warnings.warn(
+    "orchestrated_release_prep is deprecated. Use 'attune workflow run release-prep' "
+    "which now uses ReleasePrepTeamWorkflow. Remove in v6.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 import asyncio
 import logging
