@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Comprehensive Workflow Testing for Empathy Framework v3.7.0."""
 
+import importlib
 import subprocess
 import sys
 from pathlib import Path
@@ -76,7 +77,8 @@ def test_workflow_imports():
 
     for name, module, class_name in workflows_to_test:
         try:
-            exec(f"from {module} import {class_name}")
+            mod = importlib.import_module(module)
+            getattr(mod, class_name)
             print(f"  ✅ {name}")
             passed += 1
         except Exception as e:
@@ -149,7 +151,8 @@ def test_crewai_workflows():
 
     for crew_name, module in crews:
         try:
-            exec(f"from {module} import {crew_name}")
+            mod = importlib.import_module(module)
+            getattr(mod, crew_name)
             print(f"  ✅ {crew_name}")
             passed += 1
         except Exception as e:

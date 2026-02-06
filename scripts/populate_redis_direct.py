@@ -6,7 +6,8 @@ useful for testing the dashboard without initializing the full framework.
 """
 
 import json
-import random
+import os
+import secrets
 import time
 import uuid
 from datetime import datetime, timedelta
@@ -53,8 +54,8 @@ def generate_test_data():
 
         heartbeat_data = {
             "agent_id": agent_id,
-            "status": random.choice(["running", "idle", "running", "running"]),
-            "progress": random.random(),
+            "status": secrets.choice(["running", "idle", "running", "running"]),
+            "progress": int.from_bytes(os.urandom(4), "big") / (2**32),
             "current_task": default_task,
             "timestamp": datetime.utcnow().isoformat(),
             "metadata": {
@@ -82,9 +83,9 @@ def generate_test_data():
     ]
 
     for i in range(10):
-        source = random.choice(agent_ids)
-        target = random.choice(agent_ids)
-        signal_type, message = random.choice(signal_types_with_context)
+        source = secrets.choice(agent_ids)
+        target = secrets.choice(agent_ids)
+        signal_type, message = secrets.choice(signal_types_with_context)
 
         signal_data = {
             "signal_id": f"signal_{uuid.uuid4().hex[:8]}",
@@ -114,17 +115,17 @@ def generate_test_data():
     for i in range(15):
         event_data = {
             "event_id": f"event-{int(time.time() * 1000)}-{i}",
-            "event_type": random.choice(
+            "event_type": secrets.choice(
                 ["workflow_progress", "agent_heartbeat", "coordination_signal"]
             ),
             "timestamp": datetime.utcnow().isoformat(),
             "data": {
-                "workflow": random.choice(["code-review", "test-generation", "refactoring"]),
-                "stage": random.choice(["analysis", "generation", "validation"]),
-                "progress": random.random(),
+                "workflow": secrets.choice(["code-review", "test-generation", "refactoring"]),
+                "stage": secrets.choice(["analysis", "generation", "validation"]),
+                "progress": int.from_bytes(os.urandom(4), "big") / (2**32),
                 "demo": True,
             },
-            "source": f"agent-{random.randint(1, 5)}",
+            "source": f"agent-{secrets.randbelow(5) + 1}",
         }
 
         # Add to stream
@@ -141,7 +142,7 @@ def generate_test_data():
         request_id = f"approval-{int(time.time() * 1000)}-{i}"
         approval_data = {
             "request_id": request_id,
-            "approval_type": random.choice(
+            "approval_type": secrets.choice(
                 ["deploy_to_staging", "delete_old_data", "refactor_module"]
             ),
             "agent_id": "demo-workflow",
@@ -169,7 +170,7 @@ def generate_test_data():
         for stage in stages:
             for tier in tiers:
                 # Generate 10-15 samples per combination
-                num_samples = random.randint(10, 15)
+                num_samples = secrets.randbelow(6) + 10
 
                 for j in range(num_samples):
                     # Vary quality by tier
@@ -181,7 +182,7 @@ def generate_test_data():
                         base_quality = 0.90
 
                     # Add some randomness
-                    quality = base_quality + (random.random() * 0.15 - 0.075)
+                    quality = base_quality + (int.from_bytes(os.urandom(4), "big") / (2**32) * 0.15 - 0.075)
                     quality = max(0.0, min(1.0, quality))  # Clamp to 0-1
 
                     feedback_id = f"fb-{int(time.time() * 1000)}-{feedback_count}"
@@ -191,7 +192,7 @@ def generate_test_data():
                         "tier": tier,
                         "quality_score": quality,
                         "timestamp": datetime.utcnow().isoformat(),
-                        "metadata": {"demo": True, "tokens": random.randint(50, 300)},
+                        "metadata": {"demo": True, "tokens": secrets.randbelow(251) + 50},
                     }
 
                     key = f"feedback:{workflow}:{stage}:{tier}:{feedback_id}".encode()

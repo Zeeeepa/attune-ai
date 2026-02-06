@@ -9,6 +9,7 @@ Licensed under Fair Source License 0.9
 
 import json
 import logging
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -141,12 +142,51 @@ def main(**context: Any) -> dict[str, Any]:
             f"[SessionStart] {len(learned_skills)} learned skill(s) available"
         )
 
-    # Count patterns
-    pattern_files = list(patterns_dir.glob("*.json"))
+    # Count and load patterns with quality gates
+    pattern_files = find_recent_files(patterns_dir, "*.json", max_age_days=90)
     result["patterns_count"] = len(pattern_files)
 
     if pattern_files:
-        result["messages"].append(f"[SessionStart] {len(pattern_files)} pattern file(s) loaded")
+        result["messages"].append(f"[SessionStart] {len(pattern_files)} pattern file(s) found")
+
+        # Inject high-confidence pattern content (quality gates)
+        injected_patterns = []
+        for pf in pattern_files[:5]:  # Cap at 5 most recent
+            try:
+                with open(pf) as f:
+                    pattern_data = json.load(f)
+                confidence = pattern_data.get("confidence", 0.0)
+                if confidence < 0.7:
+                    continue  # Skip low-confidence patterns
+                injected_patterns.append({
+                    "source": pf.stem,
+                    "patterns": pattern_data.get("patterns", []),
+                    "confidence": confidence,
+                })
+            except (json.JSONDecodeError, OSError) as e:
+                logger.debug("Skipping pattern file %s: %s", pf, e)
+
+        if injected_patterns:
+            result["injected_patterns"] = injected_patterns
+            result["messages"].append(
+                f"[Learning] Injected {len(injected_patterns)} high-confidence pattern set(s)"
+            )
+
+    # Load learned skill summaries
+    if learned_skills:
+        skill_summaries = []
+        for sf in learned_skills[:10]:  # Cap at 10
+            try:
+                content = sf.read_text()
+                first_line = content.strip().split("\n")[0].lstrip("# ")
+                skill_summaries.append({"name": sf.stem, "summary": first_line})
+            except OSError:
+                pass
+        if skill_summaries:
+            result["learned_skills"] = skill_summaries
+
+    # Cleanup expired pattern files (older than 90 days)
+    _cleanup_expired_patterns(patterns_dir, max_age_days=90)
 
     # Log summary
     for msg in result["messages"]:
@@ -155,9 +195,59 @@ def main(**context: Any) -> dict[str, Any]:
     return result
 
 
-if __name__ == "__main__":
-    # Allow running as a script for testing
+def _cleanup_expired_patterns(patterns_dir: Path, max_age_days: int = 90) -> int:
+    """Remove pattern files older than max_age_days.
 
+    Args:
+        patterns_dir: Directory containing pattern files.
+        max_age_days: Maximum age before deletion.
+
+    Returns:
+        Number of files removed.
+
+    """
+    if not patterns_dir.exists():
+        return 0
+
+    cutoff = datetime.now() - timedelta(days=max_age_days)
+    removed = 0
+
+    for pf in patterns_dir.glob("*.json"):
+        try:
+            mtime = datetime.fromtimestamp(pf.stat().st_mtime)
+            if mtime < cutoff:
+                pf.unlink()
+                removed += 1
+                logger.debug("Removed expired pattern file: %s", pf)
+        except OSError as e:
+            logger.debug("Could not remove %s: %s", pf, e)
+
+    return removed
+
+
+def _read_stdin_context() -> dict[str, Any]:
+    """Read hook context from stdin (Claude Code protocol).
+
+    Claude Code passes JSON on stdin with session_id, cwd, transcript_path, etc.
+    Handles empty stdin, malformed JSON, and missing fields gracefully.
+
+    Returns:
+        Parsed context dict, or empty dict if stdin is empty/invalid.
+
+    """
+    if sys.stdin.isatty():
+        return {}
+    try:
+        raw = sys.stdin.read().strip()
+        if raw:
+            return json.loads(raw)
+    except (json.JSONDecodeError, ValueError) as e:
+        logger.debug("Could not parse stdin JSON: %s", e)
+    return {}
+
+
+if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-    result = main()
+    context = _read_stdin_context()
+    result = main(**context)
     print(json.dumps(result, indent=2))

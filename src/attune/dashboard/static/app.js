@@ -67,6 +67,37 @@ class Dashboard {
         }
     }
 
+    // DOM element builder: el('div', {className: 'foo'}, [children...])
+    el(tag, attrs, children) {
+        const elem = document.createElement(tag);
+        if (attrs) {
+            for (const [key, value] of Object.entries(attrs)) {
+                if (key === 'className') elem.className = value;
+                else if (key === 'textContent') elem.textContent = value;
+                else if (key === 'style') elem.setAttribute('style', value);
+                else if (key.startsWith('on')) elem.addEventListener(key.slice(2), value);
+                else elem.setAttribute(key, value);
+            }
+        }
+        if (children) {
+            for (const child of children) {
+                if (typeof child === 'string') {
+                    elem.appendChild(document.createTextNode(child));
+                } else if (child) {
+                    elem.appendChild(child);
+                }
+            }
+        }
+        return elem;
+    }
+
+    renderList(container, items, renderFn) {
+        container.textContent = '';
+        for (const item of items) {
+            container.appendChild(renderFn(item));
+        }
+    }
+
     async loadAgents() {
         try {
             const response = await fetch('/api/agents');
@@ -77,7 +108,7 @@ class Dashboard {
             const container = document.getElementById('agents-list');
 
             if (agents.length === 0) {
-                container.innerHTML = '<div class="empty-state">No active agents</div>';
+                this.setEmptyState(container, 'No active agents');
                 return;
             }
 
@@ -87,23 +118,21 @@ class Dashboard {
                 this.agentDisplayNames[agent.agent_id] = agent.display_name || agent.agent_id;
             });
 
-            container.innerHTML = agents.map(agent => {
+            this.renderList(container, agents, (agent) => {
                 const displayValue = agent.display_name || agent.agent_id;
                 console.log(`DEBUG: Agent ${agent.agent_id} - display_name: "${agent.display_name}", showing: "${displayValue}"`);
 
-                return `
-                    <div class="agent-item ${agent.status}">
-                        <div class="agent-header">
-                            <span class="agent-id">${this.truncate(displayValue, 40)}</span>
-                            <span class="agent-status">${agent.status}</span>
-                        </div>
-                        <div class="agent-task">${agent.current_task || 'Idle'}</div>
-                        <div class="agent-progress">
-                            <div class="agent-progress-bar" style="width: ${agent.progress * 100}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                return this.el('div', {className: `agent-item ${agent.status}`}, [
+                    this.el('div', {className: 'agent-header'}, [
+                        this.el('span', {className: 'agent-id', textContent: this.truncate(displayValue, 40)}),
+                        this.el('span', {className: 'agent-status', textContent: agent.status})
+                    ]),
+                    this.el('div', {className: 'agent-task', textContent: agent.current_task || 'Idle'}),
+                    this.el('div', {className: 'agent-progress'}, [
+                        this.el('div', {className: 'agent-progress-bar', style: `width: ${agent.progress * 100}%`})
+                    ])
+                ]);
+            });
 
         } catch (error) {
             console.error('Failed to load agents:', error);
@@ -118,29 +147,35 @@ class Dashboard {
             const container = document.getElementById('approvals-list');
 
             if (approvals.length === 0) {
-                container.innerHTML = '<div class="empty-state">No pending approvals</div>';
+                this.setEmptyState(container, 'No pending approvals');
                 return;
             }
 
-            container.innerHTML = approvals.map(approval => `
-                <div class="approval-item">
-                    <div class="approval-header">
-                        <span class="approval-type">${approval.approval_type}</span>
-                    </div>
-                    <div class="approval-context">
-                        Agent: ${this.truncate(approval.agent_id, 30)}<br>
-                        Context: ${JSON.stringify(approval.context)}
-                    </div>
-                    <div class="approval-actions">
-                        <button class="btn btn-approve" onclick="dashboard.approveRequest('${approval.request_id}')">
-                            ✓ Approve
-                        </button>
-                        <button class="btn btn-reject" onclick="dashboard.rejectRequest('${approval.request_id}')">
-                            ✗ Reject
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+            this.renderList(container, approvals, (approval) => {
+                const approveBtn = this.el('button', {
+                    className: 'btn btn-approve',
+                    textContent: '\u2713 Approve',
+                    onclick: () => this.approveRequest(approval.request_id)
+                });
+                const rejectBtn = this.el('button', {
+                    className: 'btn btn-reject',
+                    textContent: '\u2717 Reject',
+                    onclick: () => this.rejectRequest(approval.request_id)
+                });
+
+                const contextDiv = this.el('div', {className: 'approval-context'});
+                contextDiv.appendChild(document.createTextNode('Agent: ' + this.truncate(approval.agent_id, 30)));
+                contextDiv.appendChild(this.el('br'));
+                contextDiv.appendChild(document.createTextNode('Context: ' + JSON.stringify(approval.context)));
+
+                return this.el('div', {className: 'approval-item'}, [
+                    this.el('div', {className: 'approval-header'}, [
+                        this.el('span', {className: 'approval-type', textContent: approval.approval_type})
+                    ]),
+                    contextDiv,
+                    this.el('div', {className: 'approval-actions'}, [approveBtn, rejectBtn])
+                ]);
+            });
 
         } catch (error) {
             console.error('Failed to load approvals:', error);
@@ -189,30 +224,25 @@ class Dashboard {
             const container = document.getElementById('signals-list');
 
             if (signals.length === 0) {
-                container.innerHTML = '<div class="empty-state">No recent signals</div>';
+                this.setEmptyState(container, 'No recent signals');
                 document.getElementById('recent-signals').textContent = '0';
                 return;
             }
 
             document.getElementById('recent-signals').textContent = signals.length;
 
-            container.innerHTML = signals.map(signal => {
-                // Look up display names for signal source and target
+            this.renderList(container, signals, (signal) => {
                 const sourceDisplay = this.agentDisplayNames[signal.source_agent] || signal.source_agent;
                 const targetDisplay = this.agentDisplayNames[signal.target_agent] || signal.target_agent;
 
-                return `
-                    <div class="signal-item">
-                        <div class="signal-header">
-                            <span class="signal-type">${signal.signal_type}</span>
-                            <span class="signal-time">${this.formatTime(signal.timestamp)}</span>
-                        </div>
-                        <div class="signal-route">
-                            ${this.truncate(sourceDisplay, 20)} → ${this.truncate(targetDisplay, 20)}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                return this.el('div', {className: 'signal-item'}, [
+                    this.el('div', {className: 'signal-header'}, [
+                        this.el('span', {className: 'signal-type', textContent: signal.signal_type}),
+                        this.el('span', {className: 'signal-time', textContent: this.formatTime(signal.timestamp)})
+                    ]),
+                    this.el('div', {className: 'signal-route', textContent: `${this.truncate(sourceDisplay, 20)} \u2192 ${this.truncate(targetDisplay, 20)}`})
+                ]);
+            });
 
         } catch (error) {
             console.error('Failed to load signals:', error);
@@ -227,29 +257,24 @@ class Dashboard {
             const container = document.getElementById('events-list');
 
             if (events.length === 0) {
-                container.innerHTML = '<div class="empty-state">No recent events</div>';
+                this.setEmptyState(container, 'No recent events');
                 document.getElementById('event-streams').textContent = '0';
                 return;
             }
 
             document.getElementById('event-streams').textContent = events.length;
 
-            container.innerHTML = events.map(event => {
-                // Look up display name for event source
+            this.renderList(container, events, (event) => {
                 const sourceDisplay = this.agentDisplayNames[event.source] || event.source;
 
-                return `
-                    <div class="event-item">
-                        <div class="event-header">
-                            <span class="event-type">${event.event_type}</span>
-                            <span class="event-time">${this.formatTime(event.timestamp)}</span>
-                        </div>
-                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">
-                            Source Agent: ${sourceDisplay}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                return this.el('div', {className: 'event-item'}, [
+                    this.el('div', {className: 'event-header'}, [
+                        this.el('span', {className: 'event-type', textContent: event.event_type}),
+                        this.el('span', {className: 'event-time', textContent: this.formatTime(event.timestamp)})
+                    ]),
+                    this.el('div', {style: 'font-size: 12px; color: #94a3b8; margin-top: 2px;', textContent: `Source Agent: ${sourceDisplay}`})
+                ]);
+            });
 
         } catch (error) {
             console.error('Failed to load events:', error);
@@ -264,54 +289,47 @@ class Dashboard {
             const container = document.getElementById('quality-metrics');
 
             if (metrics.length === 0) {
-                container.innerHTML = '<div class="empty-state">No quality data</div>';
+                this.setEmptyState(container, 'No quality data');
                 return;
             }
 
             // Sort by quality (worst first)
             metrics.sort((a, b) => a.avg_quality - b.avg_quality);
 
-            container.innerHTML = metrics.slice(0, 10).map(metric => {
+            this.renderList(container, metrics.slice(0, 10), (metric) => {
                 const qualityClass = metric.avg_quality >= 0.8 ? 'good' :
                                    metric.avg_quality >= 0.6 ? 'warning' : 'poor';
-                
-                // Larger, more visible trend indicators
+
                 let trendIcon, trendClass, trendLabel;
                 if (metric.trend > 0.01) {
-                    trendIcon = '▲';
+                    trendIcon = '\u25B2';
                     trendClass = 'trend-up';
                     trendLabel = 'Improving';
                 } else if (metric.trend < -0.01) {
-                    trendIcon = '▼';
+                    trendIcon = '\u25BC';
                     trendClass = 'trend-down';
                     trendLabel = 'Declining';
                 } else {
-                    trendIcon = '━';
+                    trendIcon = '\u2501';
                     trendClass = 'trend-flat';
                     trendLabel = 'Stable';
                 }
 
-                return `
-                    <div class="quality-item">
-                        <div class="quality-header">
-                            <span class="quality-name">
-                                ${metric.workflow_name}/${metric.stage_name}
-                            </span>
-                            <span class="quality-score ${qualityClass}">
-                                ${(metric.avg_quality * 100).toFixed(0)}%
-                            </span>
-                        </div>
-                        <div class="quality-details">
-                            <span class="detail-tier">Tier: ${metric.tier}</span>
-                            <span class="detail-samples">Samples: ${metric.sample_count}</span>
-                            <span class="trend-indicator ${trendClass}">
-                                <span class="trend-icon">${trendIcon}</span>
-                                <span class="trend-label">${trendLabel}</span>
-                            </span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                return this.el('div', {className: 'quality-item'}, [
+                    this.el('div', {className: 'quality-header'}, [
+                        this.el('span', {className: 'quality-name', textContent: `${metric.workflow_name}/${metric.stage_name}`}),
+                        this.el('span', {className: `quality-score ${qualityClass}`, textContent: `${(metric.avg_quality * 100).toFixed(0)}%`})
+                    ]),
+                    this.el('div', {className: 'quality-details'}, [
+                        this.el('span', {className: 'detail-tier', textContent: `Tier: ${metric.tier}`}),
+                        this.el('span', {className: 'detail-samples', textContent: `Samples: ${metric.sample_count}`}),
+                        this.el('span', {className: `trend-indicator ${trendClass}`}, [
+                            this.el('span', {className: 'trend-icon', textContent: trendIcon}),
+                            this.el('span', {className: 'trend-label', textContent: trendLabel})
+                        ])
+                    ])
+                ]);
+            });
 
         } catch (error) {
             console.error('Failed to load quality metrics:', error);
@@ -326,42 +344,42 @@ class Dashboard {
             const container = document.getElementById('underperforming-list');
 
             if (stages.length === 0) {
-                container.innerHTML = '<div class="empty-state">All tiers performing well ✓</div>';
+                this.setEmptyState(container, 'All tiers performing well \u2713');
                 return;
             }
 
-            container.innerHTML = stages.map(stage => {
-                // Parse stage_name which now contains "stage/tier" format
+            this.renderList(container, stages, (stage) => {
                 const [stageName, tier] = stage.stage_name.split('/');
-                const tierBadge = tier ? `<span class="tier-badge tier-${tier}">${tier.toUpperCase()}</span>` : '';
 
-                return `
-                    <div class="underperforming-item">
-                        <div class="underperforming-header">
-                            <span class="workflow-name">${stage.workflow_name}</span>
-                            <span class="stage-separator">/</span>
-                            <span class="stage-name">${stageName}</span>
-                            ${tierBadge}
-                        </div>
-                        <div class="underperforming-details">
-                            <div class="detail-item">
-                                <span class="detail-label">Avg Quality:</span>
-                                <span class="detail-value quality-poor">${(stage.avg_quality * 100).toFixed(0)}%</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Samples:</span>
-                                <span class="detail-value">${stage.sample_count}</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Range:</span>
-                                <span class="detail-value">
-                                    ${(stage.min_quality * 100).toFixed(0)}% - ${(stage.max_quality * 100).toFixed(0)}%
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                const headerChildren = [
+                    this.el('span', {className: 'workflow-name', textContent: stage.workflow_name}),
+                    this.el('span', {className: 'stage-separator', textContent: '/'}),
+                    this.el('span', {className: 'stage-name', textContent: stageName})
+                ];
+                if (tier) {
+                    headerChildren.push(
+                        this.el('span', {className: `tier-badge tier-${tier}`, textContent: tier.toUpperCase()})
+                    );
+                }
+
+                return this.el('div', {className: 'underperforming-item'}, [
+                    this.el('div', {className: 'underperforming-header'}, headerChildren),
+                    this.el('div', {className: 'underperforming-details'}, [
+                        this.el('div', {className: 'detail-item'}, [
+                            this.el('span', {className: 'detail-label', textContent: 'Avg Quality:'}),
+                            this.el('span', {className: 'detail-value quality-poor', textContent: `${(stage.avg_quality * 100).toFixed(0)}%`})
+                        ]),
+                        this.el('div', {className: 'detail-item'}, [
+                            this.el('span', {className: 'detail-label', textContent: 'Samples:'}),
+                            this.el('span', {className: 'detail-value', textContent: `${stage.sample_count}`})
+                        ]),
+                        this.el('div', {className: 'detail-item'}, [
+                            this.el('span', {className: 'detail-label', textContent: 'Range:'}),
+                            this.el('span', {className: 'detail-value', textContent: `${(stage.min_quality * 100).toFixed(0)}% - ${(stage.max_quality * 100).toFixed(0)}%`})
+                        ])
+                    ])
+                ]);
+            });
 
         } catch (error) {
             console.error('Failed to load underperforming stages:', error);
@@ -387,6 +405,14 @@ class Dashboard {
         if (!str) return '';
         if (str.length <= maxLen) return str;
         return str.substring(0, maxLen - 3) + '...';
+    }
+
+    setEmptyState(container, message) {
+        container.textContent = '';
+        const div = document.createElement('div');
+        div.className = 'empty-state';
+        div.textContent = message;
+        container.appendChild(div);
     }
 
     updateLastUpdate() {

@@ -48,23 +48,41 @@ Use conversational language to access features:
 
 Use `/hub-name` to access organized workflows:
 
-- `/dev` - Developer tools (debug, commit, PR, code review, refactoring)
-- `/testing` - Run tests, coverage analysis, batch test generation, benchmarks
-- `/workflows` - Automated analysis (security-audit, bug-predict, perf-audit)
-- `/plan` - Planning, TDD, code review, refactoring strategies
-- `/docs` - Documentation generation and management
-- `/release` - Release preparation, security scanning, publishing
-- `/learning` - Session evaluation and pattern learning
-- `/context` - Memory and state management
-- `/agent` - Create and manage custom agents
+| Hub | Key Routes | Description |
+| --- | ---------- | ----------- |
+| `/attune` | Socratic discovery | Natural language routing to all workflows |
+| `/dev` | debug, review, commit, pr, refactor, quality | Developer tools |
+| `/testing` | run, coverage, generate, tdd | Test runner and generation |
+| `/workflows` | security, bugs, perf, review, list | Automated analysis |
+| `/plan` | feature, tdd, refactor, architecture | Planning and strategy |
+| `/docs` | generate, readme, changelog, explain | Documentation |
+| `/release` | prep, security, health, publish | Release preparation |
+| `/agent` | create, list, run, cds | Agent management |
 
 **Examples:**
+
 ```bash
 /dev debug "authentication fails on login"
-/testing coverage --target 90
-/workflows "find security vulnerabilities"
+/testing coverage
+/workflows security
 /release prep
+/agent cds
 ```
+
+---
+
+## Lifecycle Hooks
+
+Registered in `.claude/settings.json`, these hooks run automatically:
+
+| Event | Script | Purpose |
+| ----- | ------ | ------- |
+| SessionStart | `session_start.py` | Loads previous context, patterns, and learned skills |
+| Stop | `session_end.py` | Saves session state and triggers cleanup |
+| PreToolUse (Bash) | `security_guard.py` | Blocks eval/exec, __import__, rm -rf / |
+| PreToolUse (Edit/Write) | `security_guard.py` | Validates file paths, blocks system directory writes |
+
+Hook scripts live in `attune_llm/hooks/scripts/` and follow the Claude Code stdin JSON protocol.
 
 ---
 

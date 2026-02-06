@@ -44,6 +44,7 @@ class LLMWorkflowGenerator(ABC):
         model_tier: str = "capable",
         enable_cache: bool = True,
         cache_ttl_hours: int = 24,
+        max_tokens: int = 4000,
     ):
         """Initialize LLM workflow generator.
 
@@ -51,10 +52,12 @@ class LLMWorkflowGenerator(ABC):
             model_tier: Model tier to use (cheap, capable, premium)
             enable_cache: Whether to cache LLM responses
             cache_ttl_hours: Cache time-to-live in hours
+            max_tokens: Maximum output tokens for LLM responses
         """
         self.model_tier = model_tier
         self.enable_cache = enable_cache
         self.cache_ttl = timedelta(hours=cache_ttl_hours)
+        self.max_tokens = max_tokens
         self._cache: dict[str, tuple[str, datetime]] = {}
         self._stats = {
             "llm_requests": 0,
@@ -144,7 +147,7 @@ class LLMWorkflowGenerator(ABC):
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
             model=model_id,
-            max_tokens=4000,
+            max_tokens=self.max_tokens,
             messages=[{"role": "user", "content": prompt}],
         )
 

@@ -24,6 +24,7 @@ class EmpathyMCPServer:
         """Initialize the MCP server."""
         self.tools = self._register_tools()
         self.resources = self._register_resources()
+        self.prompts = self._register_prompts()
 
     def _register_tools(self) -> dict[str, dict[str, Any]]:
         """Register available MCP tools.
@@ -181,6 +182,149 @@ class EmpathyMCPServer:
                 "mime_type": "application/json",
             },
         }
+
+    def _register_prompts(self) -> dict[str, dict[str, Any]]:
+        """Register available MCP prompts.
+
+        Prompts are pre-built templates that appear as auto-discovered
+        commands in Claude Code, providing guided workflows.
+
+        Returns:
+            Dictionary of prompt definitions
+        """
+        return {
+            "security-scan": {
+                "name": "security-scan",
+                "description": "Run a comprehensive security scan on a directory. Checks for eval/exec usage, path traversal, hardcoded secrets, and broad exception handling.",
+                "arguments": [
+                    {
+                        "name": "path",
+                        "description": "Directory or file to scan",
+                        "required": True,
+                    }
+                ],
+            },
+            "test-gen": {
+                "name": "test-gen",
+                "description": "Generate behavioral tests for a Python module. Creates pytest test files with Given/When/Then structure.",
+                "arguments": [
+                    {
+                        "name": "module",
+                        "description": "Path to Python module to generate tests for",
+                        "required": True,
+                    },
+                    {
+                        "name": "batch",
+                        "description": "Set to 'true' to generate tests for all modules",
+                        "required": False,
+                    },
+                ],
+            },
+            "cost-report": {
+                "name": "cost-report",
+                "description": "Generate a cost optimization report. Shows LLM spend by workflow, cache hit rates, and savings from tier routing.",
+                "arguments": [
+                    {
+                        "name": "days",
+                        "description": "Number of days to analyze (default: 30)",
+                        "required": False,
+                    }
+                ],
+            },
+        }
+
+    def get_prompt_list(self) -> list[dict[str, Any]]:
+        """Get list of available prompts.
+
+        Returns:
+            List of prompt definitions
+        """
+        return list(self.prompts.values())
+
+    def get_prompt_messages(self, prompt_name: str, arguments: dict[str, str]) -> list[dict[str, Any]]:
+        """Get messages for a specific prompt.
+
+        Args:
+            prompt_name: Name of the prompt to retrieve
+            arguments: Prompt arguments provided by the caller
+
+        Returns:
+            List of messages for the prompt
+
+        Raises:
+            ValueError: If prompt_name is not found
+        """
+        if prompt_name not in self.prompts:
+            raise ValueError(f"Unknown prompt: {prompt_name}")
+
+        if prompt_name == "security-scan":
+            path = arguments.get("path", "src/")
+            return [
+                {
+                    "role": "user",
+                    "content": {
+                        "type": "text",
+                        "text": (
+                            f"Run a comprehensive security audit on `{path}`. "
+                            "Check for: eval/exec usage (CWE-95), path traversal (CWE-22), "
+                            "hardcoded secrets, broad exception handling (BLE001), "
+                            "and shell injection risks (B602). "
+                            "Report findings in a severity-sorted table with file:line, CWE, "
+                            "and recommended fix."
+                        ),
+                    },
+                }
+            ]
+        elif prompt_name == "test-gen":
+            module = arguments.get("module", "")
+            batch = arguments.get("batch", "false").lower() == "true"
+            if batch:
+                return [
+                    {
+                        "role": "user",
+                        "content": {
+                            "type": "text",
+                            "text": (
+                                "Generate behavioral tests in batch mode for all untested modules. "
+                                "Use Given/When/Then structure, pytest fixtures, and target 80%+ coverage. "
+                                "Run: `uv run attune workflow run test-gen-behavioral --batch`"
+                            ),
+                        },
+                    }
+                ]
+            return [
+                {
+                    "role": "user",
+                    "content": {
+                        "type": "text",
+                        "text": (
+                            f"Generate behavioral tests for `{module}`. "
+                            "Use Given/When/Then structure, pytest fixtures, and test naming convention "
+                            "`test_{{function}}_{{scenario}}_{{expected}}()`. "
+                            f"Run: `uv run attune workflow run test-gen-behavioral --path {module}`"
+                        ),
+                    },
+                }
+            ]
+        elif prompt_name == "cost-report":
+            days = arguments.get("days", "30")
+            return [
+                {
+                    "role": "user",
+                    "content": {
+                        "type": "text",
+                        "text": (
+                            f"Generate a cost optimization report for the last {days} days. "
+                            "Show: total LLM spend by workflow, cache hit rates, "
+                            "savings from tier routing (cheap vs capable vs premium), "
+                            "and recommendations for further optimization. "
+                            "Run: `uv run attune telemetry report`"
+                        ),
+                    },
+                }
+            ]
+        else:
+            raise ValueError(f"Unknown prompt: {prompt_name}")
 
     async def call_tool(self, tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """Execute a tool call.
@@ -397,6 +541,16 @@ async def handle_request(server: EmpathyMCPServer, request: dict[str, Any]) -> d
         return {"content": [{"type": "text", "text": json.dumps(result, indent=2)}]}
     elif method == "resources/list":
         return {"resources": server.get_resource_list()}
+    elif method == "prompts/list":
+        return {"prompts": server.get_prompt_list()}
+    elif method == "prompts/get":
+        prompt_name = params.get("name")
+        arguments = params.get("arguments", {})
+        try:
+            messages = server.get_prompt_messages(prompt_name, arguments)
+            return {"messages": messages}
+        except ValueError as e:
+            return {"error": {"code": -32602, "message": str(e)}}
     else:
         return {"error": {"code": -32601, "message": f"Method not found: {method}"}}
 

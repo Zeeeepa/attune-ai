@@ -2352,7 +2352,7 @@ print(llm.get_metrics_summary())
 ### Contact
 
 **Developer:** Patrick Roebuck
-**Email:** patrick.roebuck@deepstudyai.com
+**Email:** patrick.roebuck@smartaimemory.com
 **Organization:** Smart AI Memory, LLC
 
 ---

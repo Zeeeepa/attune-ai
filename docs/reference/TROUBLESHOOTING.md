@@ -1145,7 +1145,7 @@ For priority support with guaranteed response times:
 - Architecture consultation
 - Upgrade assistance
 
-**Contact:** patrick.roebuck@deepstudyai.com
+**Contact:** patrick.roebuck@smartaimemory.com
 
 ---
 

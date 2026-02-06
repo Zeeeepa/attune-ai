@@ -22,7 +22,7 @@ The **Empathy Framework** is an open-source project providing a five-level matur
 The Empathy Framework currently operates under a **single maintainer model** for rapid development and clear decision-making authority:
 
 - **Maintainer**: Patrick Roebuck (Smart AI Memory, LLC)
-  - Email: patrick.roebuck@deepstudyai.com
+  - Email: patrick.roebuck@smartaimemory.com
   - GitHub: @silversurfer562
   - Role: Final decision authority, release management, security response
 
@@ -105,7 +105,7 @@ As the project grows and attracts more contributors, the governance model may ev
 ### Security Issues
 
 **Process**:
-- Reported privately to patrick.roebuck@deepstudyai.com
+- Reported privately to patrick.roebuck@smartaimemory.com
 - Maintainer acknowledgment within 48 hours
 - Fix developed privately
 - Coordinated disclosure after fix available
@@ -196,7 +196,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 - **GitHub Issues**: Bug reports, feature requests
 - **GitHub Discussions**: General questions, ideas
 - **Pull Requests**: Code contributions
-- **Security Email**: patrick.roebuck@deepstudyai.com (private security reports)
+- **Security Email**: patrick.roebuck@smartaimemory.com (private security reports)
 
 ### Future
 
@@ -262,10 +262,10 @@ This governance document may be updated by the maintainer with:
 
 ## Quick Reference
 
-- **Maintainer**: Patrick Roebuck (patrick.roebuck@deepstudyai.com)
+- **Maintainer**: Patrick Roebuck (patrick.roebuck@smartaimemory.com)
 - **License**: Fair Source 0.9
 - **Code of Conduct**: Respectful, professional, inclusive
-- **Security**: Report privately to patrick.roebuck@deepstudyai.com
+- **Security**: Report privately to patrick.roebuck@smartaimemory.com
 - **Contributions**: Welcome via pull requests
 - **Releases**: Semantic versioning, regular cadence
 - **Community**: GitHub Issues/Discussions

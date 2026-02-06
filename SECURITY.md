@@ -264,7 +264,7 @@ When adding new file write operations:
 
 We publish security advisories at:
 - **GitHub Security Advisories**: https://github.com/Deep-Study-AI/Empathy/security/advisories
-- **Email Notifications**: Subscribe at patrick.roebuck@deepstudyai.com
+- **Email Notifications**: Subscribe at patrick.roebuck@smartaimemory.com
 
 ## Bug Bounty Program
 
@@ -286,7 +286,7 @@ See our [Compliance Documentation](docs/) for detailed guidance.
 ## Contact
 
 For security concerns, contact:
-- **Email**: patrick.roebuck@deepstudyai.com
+- **Email**: patrick.roebuck@smartaimemory.com
 - **GitHub**: https://github.com/Deep-Study-AI/Empathy/security
 - **Organization**: Smart AI Memory, LLC
 

@@ -900,25 +900,63 @@ def cmd_setup(args: Namespace) -> int:
     target_dir.mkdir(parents=True, exist_ok=True)
     print(f"\n  ✅ Created {target_dir}")
 
-    # Copy command files
+    # Copy command files (hub commands)
     copied = 0
-    if hasattr(source_dir, "iterdir"):
-        # Path object
-        for src_file in source_dir.iterdir():
-            if src_file.suffix == ".md":
-                dst_file = target_dir / src_file.name
-                shutil.copy2(src_file, dst_file)
-                print(f"  ✅ Installed: {src_file.name}")
-                copied += 1
-    else:
-        # importlib.resources Traversable
-        for item in source_dir.iterdir():
-            if item.name.endswith(".md"):
-                dst_file = target_dir / item.name
-                content = item.read_text()
-                dst_file.write_text(content)
-                print(f"  ✅ Installed: {item.name}")
-                copied += 1
+
+    def _copy_md_files(src: Path, dst: Path) -> int:
+        """Copy .md files from src to dst, return count."""
+        count = 0
+        if hasattr(src, "iterdir"):
+            for item in src.iterdir():
+                if hasattr(item, "is_file") and item.is_file() and str(item.name).endswith(".md"):
+                    dst_file = dst / item.name
+                    shutil.copy2(item, dst_file)
+                    print(f"  ✅ Installed: {item.name}")
+                    count += 1
+                elif hasattr(item, "read_text") and str(item.name).endswith(".md"):
+                    dst_file = dst / item.name
+                    dst_file.write_text(item.read_text())
+                    print(f"  ✅ Installed: {item.name}")
+                    count += 1
+        return count
+
+    # Install hub commands
+    print("\n  Hub Commands:")
+    copied += _copy_md_files(source_dir, target_dir)
+
+    # Install subagent definitions from agents/ subdirectory
+    agents_copied = 0
+    agents_src = None
+    if hasattr(source_dir, "__truediv__"):
+        # Path-like object
+        candidate = source_dir / "agents"
+        if hasattr(candidate, "exists") and candidate.exists():
+            agents_src = candidate
+        elif hasattr(candidate, "iterdir"):
+            agents_src = candidate
+    if agents_src is not None:
+        agents_dst = target_dir / "agents"
+        agents_dst.mkdir(parents=True, exist_ok=True)
+        print("\n  Subagent Definitions:")
+        agents_copied = _copy_md_files(agents_src, agents_dst)
+        if agents_copied > 0:
+            print(f"  ✅ Installed {agents_copied} subagent(s)")
+
+    # Install config files (never overwrite existing)
+    print("\n  Configuration Files:")
+    project_claude_dir = Path.cwd() / ".claude"
+    config_files = ["settings.json", "mcp.json"]
+    configs_copied = 0
+    for config_name in config_files:
+        src_config = project_claude_dir / config_name
+        dst_config = Path.home() / ".claude" / config_name
+        if src_config.exists():
+            if dst_config.exists():
+                print(f"  ⏭️  Skipped: {config_name} (already exists)")
+            else:
+                shutil.copy2(src_config, dst_config)
+                print(f"  ✅ Installed: {config_name}")
+                configs_copied += 1
 
     print("-" * 60)
 
@@ -927,12 +965,16 @@ def cmd_setup(args: Namespace) -> int:
         print("   Make sure you're running from the attune-ai directory.")
         return 1
 
-    print(f"\n✅ Installed {copied} command(s)")
+    total = copied + agents_copied + configs_copied
+    print(f"\n✅ Installed {total} file(s) ({copied} commands, {agents_copied} subagents, {configs_copied} configs)")
     print("\n📝 You can now use in Claude Code:")
-    print("   /attune           - Main entry point")
-    print("   /attune debug     - Debug an issue")
-    print("   /attune test      - Run tests")
-    print("   /attune security  - Security audit")
+    print("   /dev              - Developer tools (debug, commit, PR)")
+    print("   /testing          - Run tests, coverage, test generation")
+    print("   /workflows        - Security audit, bug prediction, perf")
+    print("   /plan             - Planning, TDD, architecture review")
+    print("   /docs             - Documentation generation")
+    print("   /release          - Release preparation and publishing")
+    print("   /agent            - Custom agent management")
 
     return 0
 

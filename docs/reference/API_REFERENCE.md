@@ -1583,7 +1583,7 @@ except Exception as e:
 - **Documentation:** https://github.com/Deep-Study-AI/Empathy/tree/main/docs
 - **Issues:** https://github.com/Deep-Study-AI/Empathy/issues
 - **Discussions:** https://github.com/Deep-Study-AI/Empathy/discussions
-- **Email:** patrick.roebuck@deepstudyai.com
+- **Email:** patrick.roebuck@smartaimemory.com
 
 **Commercial Support:**
 - Priority bug fixes and feature requests
