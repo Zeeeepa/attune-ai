@@ -4,7 +4,7 @@ description: AI-powered developer workflows with Socratic discovery
 category: primary
 aliases: [a]
 tags: [navigation, discovery, socratic]
-version: "2.1.0"
+version: "2.2.0"
 question:
   header: "What brings you here?"
   question: "What are you trying to accomplish right now?"
@@ -24,126 +24,89 @@ question:
 
 Your AI-powered developer workflow assistant with Socratic discovery.
 
-**One command. Every workflow.**
+**One command. Every workflow.** Type `/attune` to browse, or jump straight to any workflow below.
 
-## How It Works
+## Workflow Directory
 
-Type `/attune` and I'll guide you through questions to find the right workflow.
+### Developer Tools — [/dev](src/attune/commands/dev.md)
 
-```bash
-/attune                              # Start Socratic discovery
-/attune "I need to fix a bug"        # Natural language
-/attune debug                        # Direct shortcut
-```
+| Command | Description |
+| ------- | ----------- |
+| [Debug](src/attune/commands/dev.md) `/dev debug` | Investigate errors, trace execution, find root causes |
+| [Code Review](src/attune/commands/dev.md) `/dev review` | Quality analysis, security review, performance review |
+| [Commit](src/attune/commands/dev.md) `/dev commit` | Stage and commit with conventional commit messages |
+| [Pull Request](src/attune/commands/dev.md) `/dev pr` | Push branch, create PR with summary and test plan |
+| [Refactor](src/attune/commands/dev.md) `/dev refactor` | Analyze structure, suggest and apply improvements |
+| [Bug Predict](src/attune/commands/dev.md) `/dev quality` | Detect patterns likely to produce bugs |
 
-## Workflows by Goal
+### Testing — [/testing](src/attune/commands/testing.md)
 
-### 🔧 Fix or Improve Something
+| Command | Description |
+| ------- | ----------- |
+| [Run Tests](src/attune/commands/testing.md) `/testing run` | Execute pytest test suite |
+| [Coverage](src/attune/commands/testing.md) `/testing coverage` | Run tests with coverage report and gap analysis |
+| [Generate Tests](src/attune/commands/testing.md) `/testing generate` | Auto-generate behavioral tests for a module |
+| [TDD](src/attune/commands/testing.md) `/testing tdd` | Test-driven development: write test first, then implement |
 
-**Debugging:**
+### Analysis Workflows — [/workflows](src/attune/commands/workflows.md)
 
-- Investigate errors and exceptions
-- Trace execution flow
-- Identify root causes
+| Command | Description |
+| ------- | ----------- |
+| [Security Audit](src/attune/commands/workflows.md) `/workflows security` | Scan for eval, path traversal, secrets, injection risks |
+| [Bug Prediction](src/attune/commands/workflows.md) `/workflows bugs` | Detect broad exceptions, incomplete code, risky patterns |
+| [Performance Audit](src/attune/commands/workflows.md) `/workflows perf` | Find bottlenecks, memory issues, optimization opportunities |
+| [Code Review](src/attune/commands/workflows.md) `/workflows review` | Comprehensive quality and style analysis |
+| [List Workflows](src/attune/commands/workflows.md) `/workflows list` | Show all available analysis workflows |
 
-**Code Review:**
+### Planning — [/plan](src/attune/commands/plan.md)
 
-- Quality and pattern analysis
-- Security review
-- Performance review
+| Command | Description |
+| ------- | ----------- |
+| [Plan Feature](src/attune/commands/plan.md) `/plan feature` | Break down a feature into tasks, files, deps, and risks |
+| [TDD Scaffolding](src/attune/commands/plan.md) `/plan tdd` | Design test cases first, then plan implementation |
+| [Refactoring Strategy](src/attune/commands/plan.md) `/plan refactor` | Plan safe incremental refactoring steps |
+| [Architecture Review](src/attune/commands/plan.md) `/plan architecture` | Evaluate architecture, propose improvements |
 
-**Refactoring:**
+### Documentation — [/docs](src/attune/commands/docs.md)
 
-- Improve structure and organization
-- Extract functions/classes
-- Simplify complex code
+| Command | Description |
+| ------- | ----------- |
+| [Generate Docs](src/attune/commands/docs.md) `/docs generate` | Create or update Google-style docstrings for a module |
+| [Update README](src/attune/commands/docs.md) `/docs readme` | Review and improve README.md |
+| [Update Changelog](src/attune/commands/docs.md) `/docs changelog` | Draft CHANGELOG entries from recent commits |
+| [Explain Code](src/attune/commands/docs.md) `/docs explain` | Produce clear human-readable explanation of code |
+| [Architecture Overview](src/attune/commands/docs.md) `/docs architecture` | Generate architecture docs with component relationships |
 
-### ✅ Validate My Work
+### Release — [/release](src/attune/commands/release.md)
 
-**Testing:**
+| Command | Description |
+| ------- | ----------- |
+| [Prepare Release](src/attune/commands/release.md) `/release prep` | Version bump, changelog, pre-flight checks |
+| [Security Scan](src/attune/commands/release.md) `/release security` | Pre-release vulnerability audit |
+| [Health Check](src/attune/commands/release.md) `/release health` | Full project health: tests + coverage + lint + bandit |
+| [Publish](src/attune/commands/release.md) `/release publish` | Build and publish to PyPI |
 
-- Run test suites
-- Generate new tests
-- TDD workflow
+### Agents — [/agent](src/attune/commands/agent.md)
 
-**Coverage:**
+| Command | Description |
+| ------- | ----------- |
+| [Create Agent](src/attune/commands/agent.md) `/agent create` | Define a new specialized agent with role and tools |
+| [List Agents](src/attune/commands/agent.md) `/agent list` | Show all available agents and capabilities |
+| [Run Agent Team](src/attune/commands/agent.md) `/agent run` | Execute a multi-agent collaboration |
+| [Healthcare CDS](src/attune/commands/agent.md) `/agent cds` | Clinical decision support multi-agent system |
 
-- Analyze test coverage
-- Identify gaps
-- Boost coverage
+### Deep Review — [/deep-review](src/attune/commands/deep-review.md)
 
-**Security Audit:**
-
-- Vulnerability scanning
-- Dependency analysis
-- Code security review
-
-**Performance Audit:**
-
-- Identify bottlenecks
-- Memory analysis
-- Optimization recommendations
-
-### 🚀 Ship My Changes
-
-**Commit:**
-
-- Stage and commit changes
-- Generate commit messages
-- Follow conventional commits
-
-**Pull Request:**
-
-- Create PR with description
-- Review checklist
-- Link to issues
-
-**Release:**
-
-- Version bump
-- Changelog generation
-- Security pre-checks
-- Publish to registry
-
-### 📚 Understand or Document
-
-**Explain Code:**
-
-- Understand how code works
-- Trace through logic
-- Learn patterns used
-
-**Generate Docs:**
-
-- API documentation
-- README updates
-- Architecture docs
-
-**Feature Overview:**
-
-- High-level summaries
-- Component relationships
-- Usage examples
-
-## Quick Shortcuts
-
-| Shortcut | Action |
-| -------- | ------ |
-| `/attune debug` | Start debugging session |
-| `/attune review` | Code review |
-| `/attune refactor` | Refactoring session |
-| `/attune test` | Run tests |
-| `/attune coverage` | Coverage analysis |
-| `/attune security` | Security audit |
-| `/attune commit` | Create commit |
-| `/attune pr` | Create pull request |
-| `/attune release` | Prepare release |
-| `/attune docs` | Documentation |
-| `/attune explain` | Explain code |
+| Command | Description |
+| ------- | ----------- |
+| [Full Review](src/attune/commands/deep-review.md) `/deep-review <path>` | Security + quality + test gap analysis |
+| [Security Only](src/attune/commands/deep-review.md) `/deep-review security` | CWE-focused vulnerability scan |
+| [Quality Only](src/attune/commands/deep-review.md) `/deep-review quality` | Code quality and style analysis |
+| [Test Gaps Only](src/attune/commands/deep-review.md) `/deep-review tests` | Coverage analysis and missing test detection |
 
 ## Natural Language
 
-Just describe what you need:
+Just describe what you need — no need to memorize commands:
 
 - "find security vulnerabilities"
 - "why is this test failing"
@@ -156,6 +119,31 @@ Just describe what you need:
 ## CRITICAL: Workflow Execution Instructions
 
 **When this command is invoked with arguments, you MUST execute the workflow via CLI, not answer ad-hoc.**
+
+### No-Argument Behavior: Socratic Funnel
+
+**When invoked without arguments (`/attune` alone), use AskUserQuestion to present a clickable 2-step discovery flow.**
+
+**Step 1 — Goal Discovery:** Present this AskUserQuestion:
+
+- Header: `"Attune"`
+- Question: `"What are you trying to accomplish?"`
+- Options (4 max):
+  1. **Fix or improve code** — "/dev - Debug, review, refactor, commit, PR"
+  2. **Validate my work** — "/testing + /workflows - Tests, coverage, security, perf"
+  3. **Ship my changes** — "/release + /plan - Plan features, prepare release, publish"
+  4. **Understand or document** — "/docs + /agent - Explain code, generate docs, manage agents"
+
+**Step 2 — Hub Selection:** Based on their choice, present a second AskUserQuestion with the specific hubs:
+
+- "Fix or improve code" → Options: `/dev`, `/deep-review`
+- "Validate my work" → Options: `/testing run`, `/testing coverage`, `/workflows security`, `/workflows perf`
+- "Ship my changes" → Options: `/release prep`, `/release health`, `/plan feature`, `/plan architecture`
+- "Understand or document" → Options: `/docs generate`, `/docs explain`, `/docs changelog`, `/agent list`
+
+**Step 3 — Execute:** Invoke the selected hub skill via the Skill tool.
+
+**Do NOT dump the full Workflow Directory tables.** The tables above are reference documentation — the primary interface is the clickable AskUserQuestion funnel.
 
 ### Shortcut Routing (EXECUTE THESE)
 
@@ -214,9 +202,3 @@ uv run pytest -k "test_name"
 # Telemetry
 uv run attune telemetry show
 ```
-
-## Philosophy
-
-**Socratic over menus.** I ask "What are you trying to accomplish?" not "Which tool do you want?" This helps you think about your actual goal.
-
-**Teaching over telling.** I help you understand *why*, not just *what*.

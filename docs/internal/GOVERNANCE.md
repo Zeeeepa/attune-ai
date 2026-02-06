@@ -19,7 +19,7 @@ The Empathy Framework follows a **Benevolent Dictator** governance model during 
 ### Core Team
 
 **Primary Maintainer** (Current):
-- Patrick Roebuck (patrick.roebuck@deepstudyai.com)
+- Patrick Roebuck (patrick.roebuck@smartaimemory.com)
   - Final decision authority on feature acceptance
   - Architecture and design direction
   - Release management and versioning
@@ -121,7 +121,7 @@ The Empathy Framework follows a **Benevolent Dictator** governance model during 
    - Document reasoning for transparency
 
 2. **Code of Conduct Violations**:
-   - Report to patrick.roebuck@deepstudyai.com
+   - Report to patrick.roebuck@smartaimemory.com
    - Maintainer investigates
    - Actions: warning → temporary ban → permanent ban
    - Appeals allowed within 30 days
@@ -181,7 +181,7 @@ This governance document can be amended by:
 ## Contact
 
 **Questions about governance?**
-- Email: patrick.roebuck@deepstudyai.com
+- Email: patrick.roebuck@smartaimemory.com
 - GitHub Discussions: https://github.com/Deep-Study-AI/Empathy/discussions
 
 **Want to contribute?**

@@ -8,7 +8,7 @@ Licensed under Fair Source 0.9
 
 import asyncio
 import logging
-import random
+import os
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from functools import wraps
@@ -37,7 +37,7 @@ class RetryConfig:
 
         if self.jitter:
             # Add up to 25% jitter
-            delay = delay * (0.75 + random.random() * 0.5)
+            delay = delay * (0.75 + int.from_bytes(os.urandom(4), "big") / (2**32) * 0.5)
 
         return delay
 

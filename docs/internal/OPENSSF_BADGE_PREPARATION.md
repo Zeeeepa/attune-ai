@@ -226,7 +226,7 @@ A: Yes. All linting and static analysis tools report clean builds. We use strict
 ### Security Questions
 
 **Q: How do you handle vulnerability reports?**
-A: Security vulnerabilities should be reported privately to patrick.roebuck@deepstudyai.com with subject line "[SECURITY]". We commit to 48-hour acknowledgment and 5-day initial assessment. See SECURITY.md.
+A: Security vulnerabilities should be reported privately to patrick.roebuck@smartaimemory.com with subject line "[SECURITY]". We commit to 48-hour acknowledgment and 5-day initial assessment. See SECURITY.md.
 
 **Q: Do you use static analysis tools?**
 A: Yes. We use:
@@ -323,9 +323,9 @@ Gold badge requires:
 
 ## Key Contacts
 
-- **Primary Maintainer**: Patrick Roebuck (patrick.roebuck@deepstudyai.com)
+- **Primary Maintainer**: Patrick Roebuck (patrick.roebuck@smartaimemory.com)
 - **Organization**: Smart AI Memory, LLC
-- **Security Contact**: patrick.roebuck@deepstudyai.com
+- **Security Contact**: patrick.roebuck@smartaimemory.com
 - **Repository**: https://github.com/Deep-Study-AI/Empathy
 
 ---

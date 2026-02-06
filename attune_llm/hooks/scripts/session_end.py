@@ -9,6 +9,7 @@ Licensed under Fair Source License 0.9
 
 import json
 import logging
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -155,7 +156,10 @@ def main(**context: Any) -> dict[str, Any]:
                 f"interactions - evaluate for pattern extraction"
             )
 
-    except Exception as e:
+        # Chain evaluation into Stop hook for automatic learning
+        _try_evaluate_session(context, result)
+
+    except OSError as e:
         logger.error("Failed to save session state: %s", e)
         result["messages"].append(f"[SessionEnd] Error: {e}")
 
@@ -166,18 +170,56 @@ def main(**context: Any) -> dict[str, Any]:
     return result
 
 
+def _try_evaluate_session(context: dict[str, Any], result: dict[str, Any]) -> None:
+    """Attempt to evaluate session for learning patterns.
+
+    Chains evaluate_session into the Stop hook for automatic learning.
+    Fails gracefully if the learning module is not available.
+
+    Args:
+        context: Hook context from Claude Code.
+        result: Mutable result dict to update with evaluation data.
+
+    """
+    try:
+        from attune_llm.hooks.scripts.evaluate_session import run_evaluate_session
+
+        eval_result = run_evaluate_session(context)
+        result["evaluation"] = eval_result
+        patterns_extracted = eval_result.get("patterns_extracted", 0)
+        if patterns_extracted > 0:
+            result["messages"].append(
+                f"[Learning] Extracted {patterns_extracted} pattern(s)"
+            )
+    except ImportError:
+        logger.debug("evaluate_session or learning module not available — skipping")
+    except (TypeError, KeyError, ValueError) as e:
+        logger.warning("Session evaluation failed: %s", e)
+
+
+def _read_stdin_context() -> dict[str, Any]:
+    """Read hook context from stdin (Claude Code protocol).
+
+    Claude Code passes JSON on stdin with session_id, cwd, transcript_path, etc.
+    Handles empty stdin, malformed JSON, and missing fields gracefully.
+
+    Returns:
+        Parsed context dict, or empty dict if stdin is empty/invalid.
+
+    """
+    if sys.stdin.isatty():
+        return {}
+    try:
+        raw = sys.stdin.read().strip()
+        if raw:
+            return json.loads(raw)
+    except (json.JSONDecodeError, ValueError) as e:
+        logger.debug("Could not parse stdin JSON: %s", e)
+    return {}
+
+
 if __name__ == "__main__":
-    # Allow running as a script for testing
-
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-
-    # Simulate some context
-    test_context = {
-        "session_id": "test_session",
-        "trust_level": 0.75,
-        "interaction_count": 15,
-        "detected_patterns": [{"type": "preference", "value": "concise responses"}],
-    }
-
-    result = main(**test_context)
+    context = _read_stdin_context()
+    result = main(**context)
     print(json.dumps(result, indent=2))

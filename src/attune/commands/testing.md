@@ -1,0 +1,103 @@
+---
+name: testing
+description: Test runner, coverage analysis, and test generation
+category: hub
+aliases: [test, t]
+tags: [testing, coverage, generation, pytest]
+version: "1.0.0"
+question:
+  header: "Testing Hub"
+  question: "What testing task do you need?"
+  multiSelect: false
+  options:
+    - label: "Run tests"
+      description: "Execute pytest test suite"
+    - label: "Check coverage"
+      description: "Run tests with coverage report"
+    - label: "Generate tests"
+      description: "Auto-generate behavioral tests for a module"
+    - label: "TDD workflow"
+      description: "Test-driven development: write test first, then implement"
+---
+
+# testing
+
+Test runner, coverage analysis, and test generation hub.
+
+## Quick Shortcuts
+
+| Shortcut | Action |
+| -------- | ------ |
+| `/testing run` | Run full test suite |
+| `/testing run <path>` | Run tests at specific path |
+| `/testing coverage` | Run tests with coverage report |
+| `/testing generate <module>` | Generate behavioral tests for module |
+| `/testing tdd` | Start TDD workflow |
+
+## Natural Language
+
+Describe what you need:
+
+- "run the tests"
+- "check coverage for the config module"
+- "generate tests for src/attune/workflows/base.py"
+- "I want to do TDD for this feature"
+- "what's my test coverage?"
+
+## CRITICAL: Workflow Execution Instructions
+
+**When this command is invoked with arguments, you MUST execute the workflow, not answer ad-hoc.**
+
+### Context Gathering (ALWAYS DO FIRST)
+
+Before executing any action below, gather current project context:
+
+1. Run: `git status --short`
+2. Run: `git log --oneline -5`
+3. Run: `git branch --show-current`
+4. Run: `uv run pytest --co -q 2>/dev/null | tail -5` (test count)
+
+Use this context to inform your actions (e.g., which files changed, how many tests exist).
+
+### Shortcut Routing (EXECUTE THESE)
+
+| Input | Action |
+| ----- | ------ |
+| `/testing run` | `uv run pytest -v` |
+| `/testing run <path>` | `uv run pytest <path> -v` |
+| `/testing run -k <pattern>` | `uv run pytest -k "<pattern>" -v` |
+| `/testing coverage` | `uv run pytest --cov=src --cov-report=term-missing` |
+| `/testing coverage <target>` | `uv run pytest --cov=<target> --cov-report=term-missing` |
+| `/testing generate <module>` | `uv run attune workflow run test-gen-behavioral --path <module>` |
+| `/testing generate batch` | `uv run attune workflow run test-gen-behavioral --batch` |
+| `/testing tdd` | Guide TDD cycle: write failing test, implement, refactor |
+
+### Natural Language Routing (EXECUTE THESE)
+
+| Pattern | Action |
+| ------- | ------ |
+| "run tests", "pytest", "test suite" | `uv run pytest -v` |
+| "coverage", "how much is covered" | `uv run pytest --cov=src --cov-report=term-missing` |
+| "generate tests", "write tests for" | `uv run attune workflow run test-gen-behavioral --path <target>` |
+| "tdd", "test first", "red green refactor" | Guide TDD workflow |
+| "failing", "broken test", "why does this fail" | Debug the failing test |
+
+**IMPORTANT:** When arguments are provided, DO NOT just display documentation. EXECUTE the command.
+
+### CLI Reference
+
+```bash
+# Test execution
+uv run pytest
+uv run pytest -v
+uv run pytest <path> -v
+uv run pytest -k "test_name"
+
+# Coverage
+uv run pytest --cov=src --cov-report=term-missing
+uv run pytest --cov=src --cov-report=html
+
+# Test generation
+uv run attune workflow run test-gen-behavioral --path <module>
+uv run attune workflow run test-gen-behavioral --batch
+```

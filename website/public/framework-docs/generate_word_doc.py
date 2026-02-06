@@ -378,7 +378,7 @@ def create_empathy_framework_doc():
     links = [
         "Technical documentation: https://github.com/Deep-Study-AI/Empathy",
         "AI Nurse Florence demo: https://github.com/Deep-Study-AI/ai-nurse-florence",
-        "Contact: patrick.roebuck@deepstudyai.com",
+        "Contact: patrick.roebuck@smartaimemory.com",
     ]
     for link in links:
         doc.add_paragraph(link, style="List Bullet")

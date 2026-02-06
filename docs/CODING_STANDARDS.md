@@ -659,7 +659,7 @@ pytest --cov=src --cov-report=term-missing
 
 - **Slack:** #engineering-best-practices
 - **GitHub:** [Report an issue](https://github.com/Smart-AI-Memory/attune-ai/issues)
-- **Email:** patrick.roebuck@deepstudyai.com
+- **Email:** patrick.roebuck@smartaimemory.com
 
 ---
 

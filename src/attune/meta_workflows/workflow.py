@@ -697,7 +697,7 @@ class MetaWorkflow:
         Returns:
             Dict with cost, tokens, success, and output
         """
-        import random
+        import os
 
         # Estimate tokens (rough: ~4 chars per token)
         prompt_tokens = len(prompt) // 4
@@ -711,11 +711,11 @@ class MetaWorkflow:
         # Simulate success rate based on tier
         # cheap: 80%, capable: 95%, premium: 99%
         if tier == ModelTier.CHEAP:
-            success = random.random() < 0.80
+            success = int.from_bytes(os.urandom(4), "big") / (2**32) < 0.80
         elif tier == ModelTier.CAPABLE:
-            success = random.random() < 0.95
+            success = int.from_bytes(os.urandom(4), "big") / (2**32) < 0.95
         else:  # PREMIUM
-            success = random.random() < 0.99
+            success = int.from_bytes(os.urandom(4), "big") / (2**32) < 0.99
 
         return {
             "cost": cost,

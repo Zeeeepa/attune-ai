@@ -182,7 +182,7 @@ All run in pre-commit hooks and CI pipeline.
 **Q: Do you have a documented security vulnerability reporting process?**
 ```
 Met: Yes. SECURITY.md documents:
-- Private email reporting: patrick.roebuck@deepstudyai.com with [SECURITY] subject
+- Private email reporting: patrick.roebuck@smartaimemory.com with [SECURITY] subject
 - 48-hour acknowledgment commitment
 - 5-day initial assessment timeline
 - Coordinated disclosure process
@@ -325,7 +325,7 @@ Roadmap includes:
 ```
 Met: Yes. CODE_OF_CONDUCT.md based on Contributor Covenant:
 - Expected behavior standards
-- Reporting process (patrick.roebuck@deepstudyai.com)
+- Reporting process (patrick.roebuck@smartaimemory.com)
 - Enforcement procedures
 - Scope and attribution
 
@@ -472,7 +472,7 @@ See docs/COVERAGE_ANALYSIS.md for detailed plan.
 ## Key Contacts
 
 - **Primary Maintainer**: Patrick Roebuck
-- **Email**: patrick.roebuck@deepstudyai.com
+- **Email**: patrick.roebuck@smartaimemory.com
 - **Organization**: Smart AI Memory, LLC
 - **Repository**: https://github.com/Deep-Study-AI/Empathy
 

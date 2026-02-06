@@ -33,7 +33,7 @@ This Code of Conduct applies within all project spaces and when an individual is
 
 Instances of unacceptable behavior may be reported by contacting:
 
-**Email**: patrick.roebuck@deepstudyai.com
+**Email**: patrick.roebuck@smartaimemory.com
 
 All complaints will be reviewed and investigated promptly and fairly. The project team is obligated to maintain confidentiality regarding the reporter.
 

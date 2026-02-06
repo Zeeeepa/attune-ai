@@ -683,7 +683,7 @@ class MyWizard(BaseCoachWizard):
 - **GitHub:** https://github.com/Deep-Study-AI/Empathy
 - **Discussions:** https://github.com/Deep-Study-AI/Empathy/discussions
 - **Issues:** https://github.com/Deep-Study-AI/Empathy/issues
-- **Email:** patrick.roebuck@deepstudyai.com
+- **Email:** patrick.roebuck@smartaimemory.com
 
 ### 6. Consider Commercial Support
 

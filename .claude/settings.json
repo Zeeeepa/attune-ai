@@ -1,0 +1,52 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python attune_llm/hooks/scripts/session_start.py",
+            "timeout": 10,
+            "statusMessage": "Loading session context..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python attune_llm/hooks/scripts/session_end.py",
+            "timeout": 10,
+            "statusMessage": "Saving session state..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python attune_llm/hooks/scripts/security_guard.py",
+            "timeout": 5,
+            "statusMessage": "Security check..."
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python attune_llm/hooks/scripts/security_guard.py",
+            "timeout": 5,
+            "statusMessage": "Path validation..."
+          }
+        ]
+      }
+    ]
+  }
+}

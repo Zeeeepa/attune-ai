@@ -261,7 +261,7 @@ report = sbar.generate_report(
 - **Full Examples**: [examples/coach/](../coach/)
 - **Issues**: https://github.com/Deep-Study-AI/Empathy/issues
 - **Discussions**: https://github.com/Deep-Study-AI/Empathy/discussions
-- **Email**: patrick.roebuck@deepstudyai.com
+- **Email**: patrick.roebuck@smartaimemory.com
 
 ## What Makes This Different?
 
