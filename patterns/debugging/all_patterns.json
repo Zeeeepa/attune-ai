@@ -1,72 +1,6 @@
 {
   "patterns": [
     {
-      "pattern_id": "workflow_20260204_2cced148",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test_workflow - Simple test workflow",
-      "fix": "Completed via test_workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-04",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.0,
-          "cost_if_always_premium": 0.002,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test_workflow",
-        "workflow_id": "2cced148-1859-40bf-8a68-f3204057fd34",
-        "duration_seconds": 0.06,
-        "started_at": "2026-02-04T14:11:01.152687",
-        "completed_at": "2026-02-04T14:11:01.211938"
-      }
-    },
-    {
       "pattern_id": "workflow_20260204_49c6bd56",
       "bug_type": "bug_prediction",
       "status": "resolved",
@@ -7248,6 +7182,85 @@
         "duration_seconds": 0.02,
         "started_at": "2026-02-04T17:19:45.601358",
         "completed_at": "2026-02-04T17:19:45.619642"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260206_3f103b58",
+      "bug_type": "code_quality",
+      "status": "resolved",
+      "root_cause": "Workflow: code-review - Tiered code analysis with conditional premium review",
+      "fix": "Completed via code-review workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-06",
+      "files_affected": [
+        "/home/user/attune-ai/.claude/CLAUDE.md"
+      ],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "PREMIUM",
+        "starting_tier": "PREMIUM",
+        "successful_tier": "PREMIUM",
+        "total_attempts": 3,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 2,
+            "success": {
+              "attempt": 2,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "PREMIUM",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.0,
+          "cost_if_always_premium": 0.0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "code-review",
+        "workflow_id": "3f103b58-7103-48d5-a7dc-9299ecfeef8d",
+        "duration_seconds": 0.13,
+        "started_at": "2026-02-06T16:59:32.484233",
+        "completed_at": "2026-02-06T16:59:32.617404"
       }
     }
   ]
