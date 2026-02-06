@@ -229,3 +229,4 @@ uv.lock
 
 # Dev scripts (local only)
 /scripts/profile_workflows.py
+planning/
