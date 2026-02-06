@@ -1,26 +1,21 @@
 """Release Preparation Crew - Multi-Agent Workflow
 
-.. deprecated:: 4.3.0
-    This workflow is deprecated in favor of the meta-workflow system.
-    Use ``empathy meta-workflow run release-prep`` instead.
-    See docs/CREWAI_MIGRATION.md for migration guide.
-
-Comprehensive release readiness assessment using a multi-agent crew.
-
-Pattern: Crew
-- Multiple specialized AI agents collaborate on the task
-- Process Type: parallel (agents run simultaneously)
-- Agents: 4
-
-Agents:
-- Security Agent: Vulnerability scanning and security audit
-- Testing Agent: Test coverage analysis and quality validation
-- Quality Agent: Code quality review and best practices check
-- Documentation Agent: Documentation completeness verification
+.. deprecated:: 5.2.0
+    This module is deprecated. Use ``attune workflow run release-prep`` which now
+    uses ReleasePrepTeamWorkflow from attune.agents.release. Remove in v6.0.
 
 Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
+
+import warnings
+
+warnings.warn(
+    "release_prep_crew is deprecated. Use 'attune workflow run release-prep' "
+    "which now uses ReleasePrepTeamWorkflow. Remove in v6.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 import asyncio
 import os
