@@ -15,7 +15,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-redis = pytest.importorskip("redis")
+pytest.importorskip("redis")
+import redis  # noqa: E402
 
 
 class TestRedisConnectionFailures:

@@ -13,10 +13,12 @@ from unittest.mock import Mock
 
 import pytest
 
-redis = pytest.importorskip("redis")
+pytest.importorskip("redis")
 
-from attune.memory.short_term.streams import StreamManager
-from attune.memory.types import AccessTier, AgentCredentials
+import redis  # noqa: E402
+
+from attune.memory.short_term.streams import StreamManager  # noqa: E402
+from attune.memory.types import AccessTier, AgentCredentials  # noqa: E402
 
 if TYPE_CHECKING:
     pass

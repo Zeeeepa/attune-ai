@@ -17,9 +17,11 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-redis = pytest.importorskip("redis")
+pytest.importorskip("redis")
 
-from attune.memory.short_term import (
+import redis  # noqa: E402
+
+from attune.memory.short_term import (  # noqa: E402
     AccessTier,
     AgentCredentials,
     RedisConfig,
