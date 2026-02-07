@@ -33,8 +33,9 @@ Attune AI is built exclusively for Anthropic/Claude, unlocking features impossib
 
 Full support for custom agents and Anthropic LLM agents:
 
+- **Agent Teams** - Pre-built teams for release prep (4 agents) and healthcare CDS (6 agents)
 - **Agent Coordination Dashboard** - Real-time monitoring with 6 coordination patterns
-- **Custom Agents** - Build specialized agents for your workflow needs
+- **Progressive Tier Escalation** - Agents start cheap and escalate only when needed
 - **Inter-Agent Communication** - Heartbeats, signals, events, and approval gates
 
 ### Intelligent Cost Optimization
@@ -94,6 +95,7 @@ Socratic discovery guides you to the right workflow.
 Run workflows directly from terminal:
 
 ```bash
+attune workflow run release-prep           # 4-agent release readiness check
 attune workflow run security-audit --path ./src
 attune workflow run test-gen --path ./src
 attune telemetry show
