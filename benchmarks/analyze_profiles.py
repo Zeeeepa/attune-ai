@@ -135,8 +135,7 @@ def main():
     print("\n" + "=" * 80)
     print("OPTIMIZATION RECOMMENDATIONS")
     print("=" * 80)
-    print(
-        """
+    print("""
 Based on profiling results, prioritize these optimizations:
 
 1. **AST Parsing Caching** (HIGH IMPACT)
@@ -169,8 +168,7 @@ Next Steps:
 2. Implement LRU caching for AST parsing
 3. Add file hash caching with mtime tracking
 4. Convert file scanning to generators
-    """
-    )
+    """)
 
 
 if __name__ == "__main__":
