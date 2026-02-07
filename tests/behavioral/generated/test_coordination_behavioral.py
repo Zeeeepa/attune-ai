@@ -402,8 +402,8 @@ class TestConflictResolver:
         self, conflict_resolver, sample_pattern, another_pattern
     ):
         """Verify reasoning generation."""
-        # Given
-        result = ResolutionResult(
+        # Given (result used to verify ResolutionResult can be created)
+        _result = ResolutionResult(
             winning_pattern=sample_pattern,
             losing_patterns=[another_pattern],
             strategy_used=ResolutionStrategy.HIGHEST_CONFIDENCE,
@@ -463,10 +463,10 @@ class TestAgentTask:
     def test_given_task_data_when_creating_agent_task_then_initializes_correctly(self):
         """Verify AgentTask initialization."""
         # Given
-        task_id = "task_1"
-        agent_id = "agent_1"
-        task_type = "code_review"
-        priority = 5
-        data = {"file": "test.py"}
+        _task_id = "task_1"
+        _agent_id = "agent_1"
+        _task_type = "code_review"
+        _priority = 5
+        _data = {"file": "test.py"}
 
         # When
