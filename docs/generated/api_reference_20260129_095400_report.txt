@@ -26,9 +26,9 @@ GENERATED DOCUMENTATION
 
 # Empathy Framework - Cross-Platform Utilities API Reference
 
-**Version:** 1.0  
-**Module:** `empathy_os.platform_utils`  
-**License:** Fair Source License 0.9  
+**Version:** 1.0
+**Module:** `empathy_os.platform_utils`
+**License:** Fair Source License 0.9
 **Copyright:** 2025 Smart-AI-Memory
 
 ---
@@ -216,7 +216,7 @@ def is_windows() -> bool:
     return platform.system() == "Windows"
 ```
 
-**Description:**  
+**Description:**
 Detects if the current platform is Windows by checking the system
 
 ------------------------------------------------------------

@@ -4,8 +4,8 @@ description: Batch API Integration Guide API reference: **Version:** 5.0.2 **Las
 
 # Batch API Integration Guide
 
-**Version:** 5.0.2  
-**Last Updated:** January 27, 2026  
+**Version:** 5.0.2
+**Last Updated:** January 27, 2026
 **Cost Savings:** 50% off standard pricing
 
 ---
@@ -274,7 +274,7 @@ async def main():
         poll_interval=300,  # Check every 5 minutes
         timeout=86400,      # Max 24 hours
     )
-    
+
     # Process results
     for result in results:
         if result.success:
@@ -340,7 +340,7 @@ results = await provider.wait_for_batch(
 for result in results:
     custom_id = result["custom_id"]
     result_data = result["result"]
-    
+
     if result_data["type"] == "succeeded":
         message = result_data["message"]
         content = message["content"][0]["text"]
@@ -448,17 +448,17 @@ Always check result types:
 ```python
 for result in results:
     result_type = result["result"]["type"]
-    
+
     if result_type == "succeeded":
         # Process successful result
         message = result["result"]["message"]
         content = message["content"][0]["text"]
-        
+
     elif result_type == "errored":
         # Log error and retry if needed
         error = result["result"]["error"]
         logger.error(f"Request failed: {error['message']}")
-        
+
     elif result_type == "expired":
         # Resubmit expired requests
         logger.warning(f"Request expired, consider resubmitting")
@@ -589,22 +589,22 @@ results = await workflow.execute_batch(requests)
 
 ## FAQ
 
-**Q: Can I cancel a batch after submission?**  
+**Q: Can I cancel a batch after submission?**
 A: Yes, use `provider.cancel_batch(batch_id)`. Batches in "in_progress" status may complete before cancellation takes effect.
 
-**Q: What's the maximum batch size?**  
+**Q: What's the maximum batch size?**
 A: 10,000 requests per batch. For larger workloads, split into multiple batches.
 
-**Q: How long are results available?**  
+**Q: How long are results available?**
 A: Results are available for 24 hours after batch completion. Download promptly.
 
-**Q: Can I use prompt caching with Batch API?**  
+**Q: Can I use prompt caching with Batch API?**
 A: Yes! Batch API supports all standard Message API features including prompt caching, which provides additional savings.
 
-**Q: What happens if a request fails?**  
+**Q: What happens if a request fails?**
 A: Failed requests are marked as "errored" in results with error details. Other requests in the batch continue processing.
 
-**Q: Can I mix different models in one batch?**  
+**Q: Can I mix different models in one batch?**
 A: Yes, each request can specify its own model. However, grouping similar models may improve processing efficiency.
 
 ---
@@ -631,6 +631,6 @@ A: Yes, each request can specify its own model. However, grouping similar models
 
 ---
 
-**Last Updated:** January 27, 2026  
-**Version:** 5.0.2  
+**Last Updated:** January 27, 2026
+**Version:** 5.0.2
 **Maintainer:** Empathy Framework Team

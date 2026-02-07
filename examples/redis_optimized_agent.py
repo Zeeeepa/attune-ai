@@ -4,20 +4,45 @@ Demonstrates how to build an agent that leverages Redis features
 for coordination, heartbeats, and messaging.
 
 Run with: python examples/redis_optimized_agent.py
+
+Prerequisites:
+    Configure Redis via .env file:
+        REDIS_ENABLED=true
+        REDIS_MODE=cloud        # or "local" for localhost
+        REDIS_HOST=your-host
+        REDIS_PORT=your-port
+        REDIS_PASSWORD=your-password
 """
 
+import sys
 import time
 from dataclasses import dataclass
+from pathlib import Path
 
-# Redis connection for standalone testing
+# Load .env from project root
+try:
+    from dotenv import load_dotenv
+
+    env_path = Path(__file__).parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(env_path, override=True)
+except ImportError:
+    pass
+
+# Add src to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
 import redis
 
-REDIS_CONFIG = {
-    "host": "redis-15667.c284.us-east1-2.gce.cloud.redislabs.com",
-    "port": 15667,
-    "password": "UdVaDTqTZbTVcM72U1ZACTc901oSY05a",
-    "decode_responses": True,
-}
+from attune.redis_config import get_redis_config
+
+
+def _get_redis_kwargs() -> dict:
+    """Get Redis connection kwargs from environment configuration."""
+    config = get_redis_config()
+    kwargs = config.to_redis_kwargs()
+    kwargs["decode_responses"] = True
+    return kwargs
 
 
 @dataclass
@@ -31,7 +56,7 @@ class RedisOptimizedAgent:
 
     def __init__(self, agent_id: str):
         self.agent_id = agent_id
-        self.redis = redis.Redis(**REDIS_CONFIG)
+        self.redis = redis.Redis(**_get_redis_kwargs())
 
         # Verify connection
         self.redis.ping()

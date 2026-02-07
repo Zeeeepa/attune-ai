@@ -26,9 +26,9 @@ GENERATED DOCUMENTATION
 
 # Cache Statistics and Performance Reporting - API Reference Documentation
 
-> **Module:** `empathy_os.cache_analyzer`  
-> **Version:** 1.0  
-> **License:** Fair Source 0.9  
+> **Module:** `empathy_os.cache_analyzer`
+> **Version:** 1.0
+> **License:** Fair Source 0.9
 > **Copyright:** 2025 Smart AI Memory, LLC
 
 ---
@@ -72,7 +72,7 @@ if health:
     print(f"Status: {health.health} ({health.confidence} confidence)")
     print(f"Hit Rate: {health.hit_rate:.2%}")
     print(f"Action: {health.recommendation}")
-    
+
     # Access detailed reasons
     for reason in health.reasons:
         print(f"  - {reason}")

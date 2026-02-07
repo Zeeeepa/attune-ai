@@ -26,8 +26,8 @@ GENERATED DOCUMENTATION
 
 # Cache Statistics and Performance Reporting - API Reference
 
-**Version:** 1.0  
-**Copyright:** 2025 Smart AI Memory, LLC  
+**Version:** 1.0
+**Copyright:** 2025 Smart AI Memory, LLC
 **License:** Fair Source 0.9
 
 ---
@@ -175,7 +175,7 @@ from typing import Any
 @dataclass
 class CacheHealthScore:
     """Health assessment for a cache."""
-    
+
     cache_name: str
     hit_rate: float
     health: str

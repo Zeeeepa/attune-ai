@@ -1,5 +1,5 @@
 ---
-description: Session Summary: Framework Redesign Phase 1: **Date:** January 26, 2026 **Duration:** ~3 hours **Focus:** BaseWorkflow refactoring + Anthropic alignment --- ## 
+description: Session Summary: Framework Redesign Phase 1: **Date:** January 26, 2026 **Duration:** ~3 hours **Focus:** BaseWorkflow refactoring + Anthropic alignment --- ##
 ---
 
 # Session Summary: Framework Redesign Phase 1

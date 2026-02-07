@@ -19,7 +19,7 @@ try:
     # Load .env from project root
     env_path = Path(__file__).parent.parent / ".env"
     if env_path.exists():
-        load_dotenv(env_path)
+        load_dotenv(env_path, override=True)
 except ImportError:
     pass  # dotenv not installed, will use system environment
 

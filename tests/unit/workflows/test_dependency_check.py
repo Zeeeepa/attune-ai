@@ -1272,7 +1272,9 @@ class TestWorkflowConfiguration:
         assert dependency_check_workflow.tier_map["assess"] == ModelTier.CAPABLE
         assert dependency_check_workflow.tier_map["report"] == ModelTier.CAPABLE
 
-    @pytest.mark.skip(reason="KNOWN_VULNERABILITIES constant was removed; vuln detection uses pip-audit")
+    @pytest.mark.skip(
+        reason="KNOWN_VULNERABILITIES constant was removed; vuln detection uses pip-audit"
+    )
     def test_known_vulnerabilities_database(self):
         """Test that KNOWN_VULNERABILITIES is populated."""
         pass
