@@ -383,50 +383,41 @@ class ApprovalGate:
             timestamp=datetime.utcnow(),
         )
 
-        # Store approval response (for workflow to retrieve)
+        # Store approval response and update request status
         response_key = f"approval_response:{request_id}"
-        try:
-            # Use direct Redis access
-            if hasattr(self.memory, "_client") and self.memory._client:
-                import json
+        request_key = f"approval_request:{request_id}"
 
-                self.memory._client.setex(response_key, 300, json.dumps(response.to_dict()))
-            else:
-                logger.warning("Cannot store approval response: no Redis backend available")
-                return False
-        except Exception as e:
-            logger.error(f"Failed to store approval response: {e}")
+        if not hasattr(self.memory, "_client") or not self.memory._client:
+            logger.warning("Cannot store approval response: no Redis backend available")
             return False
 
-        # Update request status
-        request_key = f"approval_request:{request_id}"
+        import json
+
         try:
+            # Read current request data first
+            request_data = None
             if hasattr(self.memory, "retrieve"):
                 request_data = self.memory.retrieve(request_key, credentials=None)
-            elif hasattr(self.memory, "_client"):
-                import json
-
+            else:
                 raw_data = self.memory._client.get(request_key)
                 if raw_data:
                     if isinstance(raw_data, bytes):
                         raw_data = raw_data.decode("utf-8")
                     request_data = json.loads(raw_data)
-                else:
-                    request_data = None
-            else:
-                request_data = None
+
+            # Pipeline both writes to reduce round trips
+            pipe = self.memory._client.pipeline()
+            pipe.setex(response_key, 300, json.dumps(response.to_dict()))
 
             if request_data:
                 request = ApprovalRequest.from_dict(request_data)
                 request.status = "approved" if approved else "rejected"
+                pipe.setex(request_key, 300, json.dumps(request.to_dict()))
 
-                # Use direct Redis access
-                if hasattr(self.memory, "_client") and self.memory._client:
-                    import json
-
-                    self.memory._client.setex(request_key, 300, json.dumps(request.to_dict()))
+            pipe.execute()
         except Exception as e:
-            logger.debug(f"Failed to update request status: {e}")
+            logger.error(f"Failed to store approval response: {e}")
+            return False
 
         # Send approval_response signal (for notifications)
         try:
@@ -468,7 +459,7 @@ class ApprovalGate:
 
         try:
             # Scan for approval_request:* keys
-            keys = self.memory._client.keys("approval_request:*")
+            keys = list(self.memory._client.scan_iter(match="approval_request:*", count=100))
 
             requests = []
             for key in keys:
@@ -519,7 +510,7 @@ class ApprovalGate:
             return 0
 
         try:
-            keys = self.memory._client.keys("approval_request:*")
+            keys = list(self.memory._client.scan_iter(match="approval_request:*", count=100))
             now = datetime.utcnow()
             cleared = 0
 

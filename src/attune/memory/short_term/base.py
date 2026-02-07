@@ -132,12 +132,6 @@ class BaseOperations:
                 "yes",
             )
 
-            # Use environment variables for configuration if available
-            env_host = os.getenv("REDIS_HOST", host)
-            env_port = int(os.getenv("REDIS_PORT", str(port)))
-            env_db = int(os.getenv("REDIS_DB", str(db)))
-            env_password = os.getenv("REDIS_PASSWORD", password)
-
             # If Redis is not enabled via env var, force mock mode
             if not redis_enabled and not use_mock:
                 use_mock = True
@@ -146,13 +140,26 @@ class BaseOperations:
                     message="Redis not enabled in environment, using mock mode",
                 )
 
-            self._config = RedisConfig(
-                host=env_host,
-                port=env_port,
-                db=env_db,
-                password=env_password if env_password else None,
-                use_mock=use_mock,
-            )
+            if use_mock:
+                self._config = RedisConfig(use_mock=True)
+            else:
+                # Check if caller provided non-default args (backward compatibility)
+                caller_overrode = (
+                    host != "localhost" or port != 6379 or db != 0 or password is not None
+                )
+                if caller_overrode:
+                    self._config = RedisConfig(
+                        host=host,
+                        port=port,
+                        db=db,
+                        password=password,
+                        use_mock=False,
+                    )
+                else:
+                    # Delegate to centralized config (respects REDIS_MODE)
+                    from attune.redis_config import get_redis_config
+
+                    self._config = get_redis_config()
 
         self.use_mock = self._config.use_mock or not REDIS_AVAILABLE
 
@@ -318,20 +325,27 @@ class BaseOperations:
         result = self._client.get(key)
         return str(result) if result else None
 
+    # Default TTL for keys without an explicit TTL (24 hours).
+    # Prevents unbounded key growth in Redis when callers omit TTL.
+    DEFAULT_TTL: int = 86400
+
     def _set(self, key: str, value: str, ttl: int | None = None) -> bool:
         """Set value in Redis or mock storage.
 
         Args:
             key: Key to set
             value: Value to store
-            ttl: Time-to-live in seconds (optional)
+            ttl: Time-to-live in seconds. Defaults to DEFAULT_TTL (24h)
+                if not specified, to prevent unbounded key growth.
 
         Returns:
             True if successful
         """
+        effective_ttl = ttl if ttl is not None else self.DEFAULT_TTL
+
         # Mock mode path
         if self.use_mock:
-            expires = datetime.now().timestamp() + ttl if ttl else None
+            expires = datetime.now().timestamp() + effective_ttl
             self._mock_storage[key] = (value, expires)
             return True
 
@@ -339,14 +353,8 @@ class BaseOperations:
         if self._client is None:
             return False
 
-        # Set in Redis
-        if ttl:
-            self._client.setex(key, ttl, value)
-        else:
-            result = self._client.set(key, value)
-            if not result:
-                return False
-
+        # Always set with TTL to prevent unbounded key growth
+        self._client.setex(key, effective_ttl, value)
         return True
 
     def _delete(self, key: str) -> bool:
@@ -389,7 +397,8 @@ class BaseOperations:
         if self._client is None:
             return []
 
-        keys = self._client.keys(pattern)
+        # Use scan_iter instead of keys() to avoid blocking Redis with O(n) scan
+        keys = list(self._client.scan_iter(match=pattern, count=100))
         # Convert bytes to strings - needed for API return type
         return [k.decode() if isinstance(k, bytes) else str(k) for k in keys]
 

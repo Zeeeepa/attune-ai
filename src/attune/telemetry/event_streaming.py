@@ -238,7 +238,7 @@ class EventStreamer:
             streams = {self._get_stream_key(et): start_id for et in event_types}
         else:
             # Subscribe to all event streams (expensive - requires KEYS scan)
-            all_streams = self.memory._client.keys(f"{self.STREAM_PREFIX}*")
+            all_streams = list(self.memory._client.scan_iter(match=f"{self.STREAM_PREFIX}*", count=100))
             streams = {
                 s.decode("utf-8") if isinstance(s, bytes) else s: start_id for s in all_streams
             }

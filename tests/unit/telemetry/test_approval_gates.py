@@ -244,8 +244,11 @@ class TestApprovalGate:
         )
 
         assert success is True
-        # Should have stored response
-        assert mock_client.setex.called
+        # Should have stored response via pipeline
+        assert mock_client.pipeline.called
+        pipe = mock_client.pipeline.return_value
+        assert pipe.setex.called
+        assert pipe.execute.called
 
     def test_respond_to_approval_without_memory(self):
         """Test respond_to_approval returns False when no memory."""
@@ -262,7 +265,7 @@ class TestApprovalGate:
     def test_get_pending_approvals_empty(self):
         """Test get_pending_approvals returns empty list when no requests."""
         mock_client = Mock()
-        mock_client.keys.return_value = []
+        mock_client.scan_iter.return_value = []
 
         mock_memory = Mock()
         mock_memory._client = mock_client
@@ -279,7 +282,7 @@ class TestApprovalGate:
 
         # Return list of keys
         keys_list = [b"approval_request:approval_abc123", b"approval_request:approval_xyz789"]
-        mock_client.keys.return_value = keys_list
+        mock_client.scan_iter.return_value = keys_list
 
         # Mock request data
         request1_data = {
@@ -333,7 +336,7 @@ class TestApprovalGate:
         mock_client = Mock()
 
         keys_list = [b"approval_request:approval_abc123", b"approval_request:approval_xyz789"]
-        mock_client.keys.return_value = keys_list
+        mock_client.scan_iter.return_value = keys_list
 
         # Mock request data
         request1_data = {
@@ -384,7 +387,7 @@ class TestApprovalGate:
     def test_get_pending_approvals_excludes_non_pending(self):
         """Test get_pending_approvals excludes approved/rejected/timeout requests."""
         mock_client = Mock()
-        mock_client.keys.return_value = [b"approval_request:approval_abc123"]
+        mock_client.scan_iter.return_value = [b"approval_request:approval_abc123"]
 
         # Mock approved request (should be excluded)
         request_data = {
@@ -415,7 +418,7 @@ class TestApprovalGate:
         mock_client = Mock()
 
         keys_list = [b"approval_request:approval_abc123"]
-        mock_client.keys.return_value = keys_list
+        mock_client.scan_iter.return_value = keys_list
 
         # Mock expired request
         request_data = {
@@ -463,6 +466,12 @@ class TestApprovalGateIntegration:
 
         mock_client.setex.side_effect = mock_setex
         mock_client.get.side_effect = mock_get
+
+        # Pipeline mock: respond_to_approval() uses pipeline for batching
+        mock_pipe = Mock()
+        mock_pipe.setex.side_effect = mock_setex
+        mock_pipe.execute.return_value = [True]
+        mock_client.pipeline.return_value = mock_pipe
 
         mock_memory = Mock(spec=["_client"])
         mock_memory._client = mock_client

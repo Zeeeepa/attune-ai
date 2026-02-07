@@ -79,6 +79,7 @@ class PubSubManager:
         """
         self._base = base
         self._pubsub: PubSub | None = None
+        self._pubsub_client = None  # Dedicated Redis connection for Pub/Sub
         self._pubsub_thread: threading.Thread | None = None
         self._subscriptions: dict[str, list[Callable[[dict], None]]] = {}
         self._pubsub_running: bool = False
@@ -191,9 +192,17 @@ class PubSubManager:
             self._subscriptions[full_channel] = []
         self._subscriptions[full_channel].append(handler)
 
-        # Create pubsub if needed
+        # Create dedicated Pub/Sub connection (separate from main pool)
         if self._pubsub is None:
-            self._pubsub = self._base._client.pubsub()
+            try:
+                import redis
+
+                kwargs = self._base._config.to_redis_kwargs()
+                self._pubsub_client = redis.Redis(**kwargs)
+                self._pubsub = self._pubsub_client.pubsub()
+            except Exception as e:
+                logger.error("pubsub_connection_failed", error=str(e))
+                return False
 
         # Subscribe with internal handler
         self._pubsub.subscribe(**{full_channel: self._pubsub_message_handler})
@@ -233,11 +242,71 @@ class PubSubManager:
                 logger.warning("pubsub_handler_error", channel=channel, error=str(e))
 
     def _pubsub_listener(self) -> None:
-        """Background thread for listening to pubsub messages."""
-        while self._pubsub_running and self._pubsub:
+        """Background thread for listening to pubsub messages.
+
+        Includes reconnection logic with exponential backoff on
+        connection failures. Re-subscribes to all channels after
+        reconnecting.
+        """
+        reconnect_attempts = 0
+        max_reconnect_attempts = 5
+        base_delay = 1.0
+
+        while self._pubsub_running:
+            if self._pubsub is None:
+                break
             try:
                 self._pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
-            except Exception as e:
+                reconnect_attempts = 0  # Reset on success
+            except (ConnectionError, TimeoutError, OSError) as e:
+                reconnect_attempts += 1
+                if reconnect_attempts > max_reconnect_attempts:
+                    logger.error(
+                        "pubsub_reconnect_exhausted",
+                        attempts=reconnect_attempts,
+                        error=str(e),
+                    )
+                    self._pubsub_running = False
+                    break
+
+                delay = min(base_delay * (2 ** (reconnect_attempts - 1)), 30.0)
+                logger.warning(
+                    "pubsub_reconnecting",
+                    attempt=reconnect_attempts,
+                    delay=delay,
+                    error=str(e),
+                )
+                time.sleep(delay)
+
+                # Attempt to reconnect and resubscribe
+                try:
+                    import redis
+
+                    if self._pubsub_client:
+                        try:
+                            self._pubsub_client.close()
+                        except Exception:  # noqa: BLE001
+                            # INTENTIONAL: Best-effort cleanup before reconnect
+                            pass
+
+                    kwargs = self._base._config.to_redis_kwargs()
+                    self._pubsub_client = redis.Redis(**kwargs)
+                    self._pubsub = self._pubsub_client.pubsub()
+
+                    # Re-subscribe to all channels
+                    for channel in self._subscriptions:
+                        self._pubsub.subscribe(
+                            **{channel: self._pubsub_message_handler}
+                        )
+                    logger.info("pubsub_reconnected", channels=list(self._subscriptions.keys()))
+                except Exception as reconnect_err:
+                    logger.warning(
+                        "pubsub_reconnect_failed",
+                        attempt=reconnect_attempts,
+                        error=str(reconnect_err),
+                    )
+            except Exception as e:  # noqa: BLE001
+                # INTENTIONAL: Listener thread must not crash on unexpected errors
                 logger.warning("pubsub_listener_error", error=str(e))
                 time.sleep(1)
 
@@ -282,5 +351,8 @@ class PubSubManager:
         if self._pubsub:
             self._pubsub.close()
             self._pubsub = None
+        if self._pubsub_client:
+            self._pubsub_client.close()
+            self._pubsub_client = None
         self._subscriptions.clear()
         self._mock_pubsub_handlers.clear()

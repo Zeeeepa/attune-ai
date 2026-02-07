@@ -262,7 +262,8 @@ class RedisShortTermMemory:
             return [k for k in self._mock_storage.keys() if fnmatch.fnmatch(k, pattern)]
         if self._client is None:
             return []
-        keys = self._client.keys(pattern)
+        # Use scan_iter instead of keys() to avoid blocking Redis with O(n) scan
+        keys = list(self._client.scan_iter(match=pattern, count=100))
         return [k.decode() if isinstance(k, bytes) else str(k) for k in keys]
 
     # === Working Memory (Stash/Retrieve) ===
