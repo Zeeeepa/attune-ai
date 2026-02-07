@@ -6,21 +6,19 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import json
-from datetime import datetime, timedelta
-from unittest.mock import MagicMock, Mock, patch, PropertyMock
+from datetime import datetime
+from unittest.mock import MagicMock, patch
 
 import pytest
 
+from attune.memory.short_term import AccessTier
 from attune.redis_memory import (
-    TTLStrategy,
     AgentCredentials,
-    StagedPattern,
     ConflictContext,
     RedisShortTermMemory,
-    REDIS_AVAILABLE,
+    StagedPattern,
+    TTLStrategy,
 )
-from attune.memory.short_term import AccessTier
 
 # ============================================================================
 # FIXTURES

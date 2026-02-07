@@ -24,26 +24,34 @@ def test_auth_strategy():
 
     # Test different subscription tiers
     print("\n1. Testing Pro User (Recommended → API)")
-    pro_strategy = AuthStrategy(
-        subscription_tier=SubscriptionTier.PRO, default_mode=AuthMode.AUTO
-    )
+    pro_strategy = AuthStrategy(subscription_tier=SubscriptionTier.PRO, default_mode=AuthMode.AUTO)
 
     small_module = 300  # 300 LOC
     medium_module = 1000  # 1000 LOC
     large_module = 3000  # 3000 LOC
 
-    print(f"   Small module ({small_module} LOC): {pro_strategy.get_recommended_mode(small_module).value}")
-    print(f"   Medium module ({medium_module} LOC): {pro_strategy.get_recommended_mode(medium_module).value}")
-    print(f"   Large module ({large_module} LOC): {pro_strategy.get_recommended_mode(large_module).value}")
-
-    print("\n2. Testing Max User (Recommended → Dynamic)")
-    max_strategy = AuthStrategy(
-        subscription_tier=SubscriptionTier.MAX, default_mode=AuthMode.AUTO
+    print(
+        f"   Small module ({small_module} LOC): {pro_strategy.get_recommended_mode(small_module).value}"
+    )
+    print(
+        f"   Medium module ({medium_module} LOC): {pro_strategy.get_recommended_mode(medium_module).value}"
+    )
+    print(
+        f"   Large module ({large_module} LOC): {pro_strategy.get_recommended_mode(large_module).value}"
     )
 
-    print(f"   Small module ({small_module} LOC): {max_strategy.get_recommended_mode(small_module).value}")
-    print(f"   Medium module ({medium_module} LOC): {max_strategy.get_recommended_mode(medium_module).value}")
-    print(f"   Large module ({large_module} LOC): {max_strategy.get_recommended_mode(large_module).value}")
+    print("\n2. Testing Max User (Recommended → Dynamic)")
+    max_strategy = AuthStrategy(subscription_tier=SubscriptionTier.MAX, default_mode=AuthMode.AUTO)
+
+    print(
+        f"   Small module ({small_module} LOC): {max_strategy.get_recommended_mode(small_module).value}"
+    )
+    print(
+        f"   Medium module ({medium_module} LOC): {max_strategy.get_recommended_mode(medium_module).value}"
+    )
+    print(
+        f"   Large module ({large_module} LOC): {max_strategy.get_recommended_mode(large_module).value}"
+    )
 
     # Test cost estimation
     print("\n3. Cost Estimation Comparison (1000 LOC module)")
@@ -118,7 +126,9 @@ def test_auth_strategy():
 
     print("\n   Module Size Thresholds:")
     print(f"      Small: < {max_strategy.small_module_threshold} LOC")
-    print(f"      Medium: {max_strategy.small_module_threshold}-{max_strategy.medium_module_threshold} LOC")
+    print(
+        f"      Medium: {max_strategy.small_module_threshold}-{max_strategy.medium_module_threshold} LOC"
+    )
     print(f"      Large: > {max_strategy.medium_module_threshold} LOC")
 
     print("\n" + "=" * 60)

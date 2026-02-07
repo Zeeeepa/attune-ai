@@ -7,9 +7,7 @@ Licensed under Apache 2.0
 """
 
 import json
-from datetime import datetime
-from typing import Any
-from unittest.mock import MagicMock, Mock, call, patch
+from unittest.mock import Mock
 
 import pytest
 

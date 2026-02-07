@@ -6,17 +6,12 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import os
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import patch
 
 import pytest
 
 from attune.redis_config import (
-    check_redis_connection,
-    get_railway_redis,
     get_redis_config,
-    get_redis_config_dict,
-    get_redis_memory,
     parse_redis_url,
 )
 

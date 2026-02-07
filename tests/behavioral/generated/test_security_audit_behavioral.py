@@ -6,14 +6,13 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
 import json
-import logging
-from unittest.mock import Mock, patch, AsyncMock, mock_open
-from pathlib import Path
+from unittest.mock import AsyncMock, patch
 
-from attune.workflows.security_audit import SecurityAuditWorkflow
+import pytest
+
 from attune.workflows.base import ModelTier
+from attune.workflows.security_audit import SecurityAuditWorkflow
 
 
 @pytest.fixture

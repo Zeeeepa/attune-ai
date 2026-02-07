@@ -8,9 +8,8 @@ Licensed under Apache 2.0
 
 from __future__ import annotations
 
-from datetime import datetime
 from typing import TYPE_CHECKING
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock
 
 import pytest
 
@@ -20,7 +19,7 @@ from attune.memory.short_term.streams import StreamManager
 from attune.memory.types import AccessTier, AgentCredentials
 
 if TYPE_CHECKING:
-    from attune.memory.short_term.base import BaseOperations
+    pass
 
 
 # Fixtures

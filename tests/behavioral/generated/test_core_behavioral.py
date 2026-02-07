@@ -6,14 +6,14 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
+from unittest.mock import Mock, PropertyMock, patch
+
 import pytest
-from datetime import datetime, timedelta
-from unittest.mock import Mock, patch, PropertyMock
 
 from attune.core import (
-    InteractionResponse,
     CollaborationState,
     EmpathyOS,
+    InteractionResponse,
 )
 
 

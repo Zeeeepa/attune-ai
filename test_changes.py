@@ -28,6 +28,7 @@ print("-" * 70)
 try:
     from attune.cli.commands.inspect import cmd_inspect
     from attune.cli.commands.metrics import cmd_metrics_show
+
     print("✅ inspect.py imports successfully")
     print("✅ metrics.py imports successfully")
     print("✅ StateManager import fix verified")
@@ -45,6 +46,7 @@ try:
         cmd_routing_models,
         cmd_routing_stats,
     )
+
     print("✅ cmd_routing_stats imported")
     print("✅ cmd_routing_check imported")
     print("✅ cmd_routing_models imported")
@@ -70,11 +72,7 @@ try:
 
     # Test get_best_model (should not fail even with no data)
     try:
-        model = router.get_best_model(
-            workflow="test-workflow",
-            stage="test-stage",
-            max_cost=0.01
-        )
+        model = router.get_best_model(workflow="test-workflow", stage="test-stage", max_cost=0.01)
         print(f"✅ get_best_model() returned: {model}")
     except Exception as e:
         print(f"⚠️  get_best_model() warning: {e}")
@@ -82,8 +80,7 @@ try:
     # Test recommend_tier_upgrade (should not fail even with no data)
     try:
         should_upgrade, reason = router.recommend_tier_upgrade(
-            workflow="test-workflow",
-            stage="test-stage"
+            workflow="test-workflow", stage="test-stage"
         )
         print(f"✅ recommend_tier_upgrade() returned: {should_upgrade}, {reason}")
     except Exception as e:
@@ -135,7 +132,7 @@ try:
         task_id="test_1",
         task_type="analyze_logs",
         input_data={"logs": "test log"},
-        model_tier="capable"
+        model_tier="capable",
     )
     print(f"✅ Created BatchRequest: {request.task_id}")
 
@@ -155,9 +152,9 @@ try:
     print("✅ cache parser module imported")
 
     # Check register_parsers function exists
-    assert hasattr(routing, 'register_parsers'), "routing.register_parsers not found"
-    assert hasattr(batch, 'register_parsers'), "batch.register_parsers not found"
-    assert hasattr(cache, 'register_parsers'), "cache.register_parsers not found"
+    assert hasattr(routing, "register_parsers"), "routing.register_parsers not found"
+    assert hasattr(batch, "register_parsers"), "batch.register_parsers not found"
+    assert hasattr(cache, "register_parsers"), "cache.register_parsers not found"
 
     print("✅ All parser registration functions exist")
 

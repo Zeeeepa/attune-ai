@@ -6,18 +6,16 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
 from datetime import datetime, timedelta
-from unittest.mock import Mock, patch, MagicMock
-from enum import Enum
+
+import pytest
 
 from attune.coordination import (
-    ResolutionStrategy,
-    ResolutionResult,
-    TeamPriorities,
-    ConflictResolver,
-    AgentTask,
     AgentCoordinator,
+    ConflictResolver,
+    ResolutionResult,
+    ResolutionStrategy,
+    TeamPriorities,
     TeamSession,
 )
 from attune.pattern_library import Pattern

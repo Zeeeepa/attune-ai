@@ -42,14 +42,14 @@ def implement_pattern_library_test():
         '''def test_success_rate_basic():
     """Test success_rate with basic inputs."""
     from attune.pattern_library import success_rate
-    
-    # Test with pattern that has 8/10 successes  
+
+    # Test with pattern that has 8/10 successes
     pattern_id = "test_pattern"
     total_uses = 10
     successful_uses = 8
-    
+
     result = success_rate(pattern_id, total_uses, successful_uses)
-    
+
     assert result == 0.8, "Success rate should be 80%"
     assert isinstance(result, float), "Should return float"
     assert 0.0 <= result <= 1.0, "Rate should be between 0 and 1"''',
@@ -65,13 +65,13 @@ def implement_pattern_library_test():
     """Test success_rate with edge cases."""
     from attune.pattern_library import success_rate
     import pytest
-    
+
     # Test with 100% success
     assert success_rate("test", 10, 10) == 1.0
-    
-    # Test with 0% success  
+
+    # Test with 0% success
     assert success_rate("test", 10, 0) == 0.0
-    
+
     # Test with single use
     assert success_rate("test", 1, 1) == 1.0''',
     )

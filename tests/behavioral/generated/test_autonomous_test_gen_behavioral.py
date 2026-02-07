@@ -6,15 +6,15 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
-import json
-from unittest.mock import Mock, patch
 from pathlib import Path
+from unittest.mock import patch
+
+import pytest
 
 from attune.workflows.autonomous_test_gen import (
     AutonomousTestGenerator,
-    ValidationResult,
     CoverageResult,
+    ValidationResult,
 )
 
 
