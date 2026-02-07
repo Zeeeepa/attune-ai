@@ -80,7 +80,7 @@ def execute_command(user_input):
     os.system(f"echo {user_input}")
 
 def retrieve_secret():
-    password = "admin123"  # Hardcoded credentials
+    password = "admin123"  # pragma: allowlist secret
     return password
 """,
     "very_similar": """
@@ -91,7 +91,7 @@ def run_command(user_input):
     os.system(f"echo {user_input}")
 
 def get_secret():
-    pwd = "admin123"  # Hardcoded password
+    pwd = "admin123"  # Hardcoded password  # pragma: allowlist secret
     return pwd
 """,
 }
