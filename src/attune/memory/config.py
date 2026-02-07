@@ -54,37 +54,27 @@ def parse_redis_url(url: str) -> dict:
 
 
 def get_redis_config() -> dict:
-    """Get Redis configuration from environment variables.
+    """Get Redis configuration from environment variables (legacy dict API).
 
-    Priority:
-    1. REDIS_URL (full URL, used by Railway)
-    2. Individual env vars (REDIS_HOST, REDIS_PORT, etc.)
-    3. Defaults (localhost:6379)
+    Delegates to attune.redis_config.get_redis_config() and converts
+    to dict format for backward compatibility.
 
     Returns:
         Dict with connection parameters or {"use_mock": True}
 
     """
-    # Check for mock mode
-    if os.getenv("EMPATHY_REDIS_MOCK", "").lower() == "true":
+    from attune.redis_config import get_redis_config as _canonical_get_redis_config
+
+    config = _canonical_get_redis_config()
+
+    if config.use_mock:
         return {"use_mock": True}
 
-    # Check for full URL (Railway, Heroku, etc.)
-    # Priority: REDIS_URL > REDIS_PUBLIC_URL > REDIS_PRIVATE_URL
-    redis_url = (
-        os.getenv("REDIS_URL") or os.getenv("REDIS_PUBLIC_URL") or os.getenv("REDIS_PRIVATE_URL")
-    )
-    if redis_url:
-        config = parse_redis_url(redis_url)
-        config["use_mock"] = False
-        return config
-
-    # Fall back to individual env vars
     return {
-        "host": os.getenv("REDIS_HOST", "localhost"),
-        "port": int(os.getenv("REDIS_PORT", "6379")),
-        "password": os.getenv("REDIS_PASSWORD"),
-        "db": int(os.getenv("REDIS_DB", "0")),
+        "host": config.host,
+        "port": config.port,
+        "password": config.password,
+        "db": config.db,
         "use_mock": False,
     }
 

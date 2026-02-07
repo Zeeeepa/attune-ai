@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-02-07
+
+### Added
+
+- **Phase 2 Code Refactoring** - 13 files exceeding 1,000 lines decomposed into 48 smaller mixin/module files (57% line reduction, 16,063 -> 6,946 lines). All backward-compatible via re-exports
+- **Redis Production Best Practices** - `scan_iter()` for safe key enumeration, pipeline batching for bulk operations, pub/sub reconnection with exponential backoff
+- **Redis 8.4 Support** - Updated redis-py dependency to `>=5.0.0,<8.0.0` with support for RediSearch, RedisJSON, RedisTimeSeries, RedisBloom, VectorSet modules
+
+### Changed
+
+- **`base.py` (2,051 -> 400 lines)** - Extracted 7 mixins: ExecutionMixin, CoordinationMixin, TierRoutingMixin, LLMMixin, PromptMixin, ExecutorMixin, and history_utils module
+- **`core.py` (1,701 -> 300 lines)** - Extracted 7 core_modules: EmpathyLevelsMixin, EmpathyHelpersMixin, MemoryInterfaceMixin, SharedLibraryMixin, FeedbackManagementMixin, ShortTermMemoryMixin, InteractionMixin
+- **`telemetry/cli.py` (1,480 -> 303 lines)** - Extracted cli_core, cli_analysis, cli_automation modules
+- **`control_panel.py` (1,063 -> 497 lines)** - Extracted control_panel_api, control_panel_display, control_panel_validation modules
+- **`meta_orchestrator.py` (1,109 -> 191 lines)** - Extracted meta_orch_analysis, meta_orch_estimation, meta_orch_interactive modules
+- **5 additional workflow files refactored** - bug_predict, code_review, dependency_check, document_gen, documentation_orchestrator, autonomous_test_gen, collaboration, cli_minimal, release_prep_team
+
+### Fixed
+
+- **CI lint alignment** - Pinned black==24.10.0 in CI to match pre-commit config
+- **Time-sensitive test fix** - Dynamic date in cache stats test prevents failures across day boundaries
+- **Ruff violations in branch files** - E402 (module-level imports), F841 (unused variables)
+
 ## [2.4.0] - 2026-02-06
 
 ### Added
@@ -2188,7 +2211,7 @@ print(result.generate_report())
 - **🚀 Batch API Integration (50% cost savings)**
   - New `AnthropicBatchProvider` class for asynchronous batch processing
   - `BatchProcessingWorkflow` with JSON I/O for bulk operations
-  - 22 batch-eligible tasks classified  
+  - 22 batch-eligible tasks classified
   - Verified: ✅ All components tested
 
 - **💾 Enhanced Prompt Caching Monitoring (20-30% savings)**
@@ -2213,7 +2236,7 @@ print(result.generate_report())
   - 7 agent templates, 6 composition patterns production-ready
   - Real analysis tools validated (Bandit, Ruff, MyPy, pytest-cov)
   - 481x speedup maintained with incremental analysis
-  
+
 - Prompt caching enabled by default with monitoring
 - Batch task classification added to model registry
 

@@ -49,7 +49,9 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 return cls._memory
             except Exception:  # noqa: BLE001
                 # INTENTIONAL: Connection lost, recreate below
-                logger.warning("dashboard_memory_reconnect", message="Redis connection lost, recreating")
+                logger.warning(
+                    "dashboard_memory_reconnect", message="Redis connection lost, recreating"
+                )
                 cls._memory = None
 
         with cls._memory_lock:

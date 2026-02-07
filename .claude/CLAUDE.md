@@ -127,6 +127,6 @@ src/attune/
 
 ---
 
-**Version:** 2.4.0 (2026-02-06)
+**Version:** 2.5.0 (2026-02-07)
 **License:** Apache 2.0 - Free and open source
 **Repository:** https://github.com/Smart-AI-Memory/attune-ai

@@ -87,6 +87,7 @@ class RedisConfig:
 
     # Connection pool settings
     max_connections: int = 10
+    health_check_interval: int = 30  # Seconds between background PING on idle connections
     socket_timeout: float = 5.0
     socket_connect_timeout: float = 5.0
 
@@ -112,6 +113,8 @@ class RedisConfig:
             "db": self.db,
             "password": self.password,
             "decode_responses": True,
+            "max_connections": self.max_connections,
+            "health_check_interval": self.health_check_interval,
             "socket_timeout": self.socket_timeout,
             "socket_connect_timeout": self.socket_connect_timeout,
             "retry_on_timeout": self.retry_on_timeout,
