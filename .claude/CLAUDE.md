@@ -1,4 +1,4 @@
-# Empathy Framework v5.1.1
+# Empathy Framework v2.4.0
 
 **AI-powered developer workflows with cost optimization and multi-agent orchestration.**
 
@@ -38,7 +38,7 @@ Use conversational language to access features:
 
 **💰 Cost Optimization** - Smart tier routing (cheap/capable/premium) with automatic model selection saves 34-86% on costs.
 
-**📊 Natural Language Routing** - Intent detection and keyword mapping allow conversational access to all features (v5.1.1).
+**📊 Natural Language Routing** - Intent detection and keyword mapping allow conversational access to all features.
 
 **🧪 Comprehensive Testing** - 7,168+ tests passing (99.9% success rate) with auth strategy integration tests.
 
@@ -127,6 +127,6 @@ src/attune/
 
 ---
 
-**Version:** 5.1.1 (2026-01-29)
+**Version:** 2.4.0 (2026-02-06)
 **License:** Apache 2.0 - Free and open source
 **Repository:** https://github.com/Smart-AI-Memory/attune-ai
