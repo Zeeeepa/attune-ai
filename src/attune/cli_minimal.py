@@ -853,8 +853,6 @@ def cmd_setup(args: Namespace) -> int:
 
     # Determine source directory (package data)
     try:
-        import importlib.resources as pkg_resources
-
         # For Python 3.9+
         try:
             from importlib.resources import files

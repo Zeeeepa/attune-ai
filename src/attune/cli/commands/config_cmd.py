@@ -203,7 +203,7 @@ def cmd_config_path(args: Namespace) -> int:
 
     # Show search paths
     print("\nSearch paths (in priority order):")
-    for path in ConfigLoader.discover_config_path.__doc__.split("1.")[1:]:
+    for _path in ConfigLoader.discover_config_path.__doc__.split("1.")[1:]:
         # Just show the paths from the docstring
         pass
 
