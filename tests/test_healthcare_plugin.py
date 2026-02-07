@@ -17,20 +17,20 @@ _healthcare_available = importlib.util.find_spec("attune_healthcare") is not Non
 if not _healthcare_available:
     pytest.skip("attune_healthcare not installed (optional plugin)", allow_module_level=True)
 
-from attune_healthcare import ClinicalProtocolMonitor
-from attune_healthcare.monitors.monitoring.protocol_checker import (
+from attune_healthcare import ClinicalProtocolMonitor  # noqa: E402
+from attune_healthcare.monitors.monitoring.protocol_checker import (  # noqa: E402
     ComplianceStatus,
     ProtocolChecker,
     ProtocolCheckResult,
     ProtocolDeviation,
 )
-from attune_healthcare.monitors.monitoring.protocol_loader import (
+from attune_healthcare.monitors.monitoring.protocol_loader import (  # noqa: E402
     ClinicalProtocol,
     ProtocolCriterion,
     ProtocolIntervention,
     ProtocolLoader,
 )
-from attune_healthcare.monitors.monitoring.sensor_parsers import (
+from attune_healthcare.monitors.monitoring.sensor_parsers import (  # noqa: E402
     FHIRObservationParser,
     SensorParserFactory,
     SimpleJSONParser,

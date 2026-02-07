@@ -25,8 +25,12 @@ except (ImportError, ModuleNotFoundError):
 if not _otel_available:
     pytest.skip("opentelemetry not installed (optional dependency)", allow_module_level=True)
 
-from attune.models.telemetry import LLMCallRecord, WorkflowRunRecord, WorkflowStageRecord
-from attune.monitoring.otel_backend import OTELBackend
+from attune.models.telemetry import (  # noqa: E402
+    LLMCallRecord,
+    WorkflowRunRecord,
+    WorkflowStageRecord,
+)
+from attune.monitoring.otel_backend import OTELBackend  # noqa: E402
 
 
 @pytest.mark.unit

@@ -412,19 +412,17 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 All wizards extend the `BaseWizard` class with common functionality:
 
-::: attune_llm.wizards.BaseWizard
-    options:
-      show_root_heading: false
-      show_source: false
-      heading_level: 3
+### BaseWizard
+
+Base class for all industry wizards. Provides common functionality including security checks, PII scrubbing, audit logging, and LLM interaction.
+
+**Methods:**
+
+- `process(user_input, user_id)` - Process user input with security and compliance checks
+- `configure(config)` - Update wizard configuration
+- `get_audit_log()` - Retrieve audit trail for compliance
 
 ### WizardConfig
-
-::: attune_llm.wizards.WizardConfig
-    options:
-      show_root_heading: false
-      show_source: true
-      heading_level: 4
 
 **Configuration options:**
 

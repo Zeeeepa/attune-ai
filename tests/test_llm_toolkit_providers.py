@@ -15,7 +15,7 @@ import pytest
 _openai_available = importlib.util.find_spec("openai") is not None
 _aiohttp_available = importlib.util.find_spec("aiohttp") is not None
 
-from attune_llm.providers import (
+from attune_llm.providers import (  # noqa: E402
     AnthropicBatchProvider,
     AnthropicProvider,
     BaseLLMProvider,

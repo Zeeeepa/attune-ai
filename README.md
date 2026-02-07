@@ -43,9 +43,9 @@ Full support for custom agents and Anthropic LLM agents:
 
 Clean, maintainable codebase built for extensibility:
 
-- **48 Focused Modules** - No file exceeds 900 lines; logic extracted into mixins and utilities
-- **Backward-Compatible Re-exports** - All public APIs importable from their original paths
-- **6,200+ Tests** - 99.9% pass rate with security, unit, and behavioral test coverage
+- **Small, Focused Files** - No file exceeds 1,000 lines; logic extracted into mixins and utilities
+- **Cross-Platform CI** - Tested on Ubuntu, macOS, and Windows with Python 3.10-3.13
+- **13,600+ Tests** - Security, unit, integration, and behavioral test coverage
 
 ### Intelligent Cost Optimization
 
