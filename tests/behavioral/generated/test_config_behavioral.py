@@ -6,12 +6,12 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
+import json
 import os
-import pytest
 import tempfile
 from pathlib import Path
-import yaml
-import json
+
+import pytest
 
 from attune.config import EmpathyConfig, _validate_file_path
 
@@ -80,7 +80,7 @@ class TestEmpathyConfig:
 
         config.to_json(str(json_file))
 
-        with open(json_file, "r") as f:
+        with open(json_file) as f:
             loaded_data = json.load(f)
 
         assert loaded_data["user_id"] == "json_export"

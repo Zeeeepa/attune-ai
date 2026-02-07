@@ -10,9 +10,8 @@ from __future__ import annotations
 
 import json
 import threading
-import time
 from typing import TYPE_CHECKING
-from unittest.mock import MagicMock, Mock, PropertyMock, call, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -20,7 +19,7 @@ from attune.memory.short_term.pubsub import PubSubManager
 from attune.memory.types import AccessTier, AgentCredentials
 
 if TYPE_CHECKING:
-    from attune.memory.short_term.base import BaseOperations
+    pass
 
 
 @pytest.fixture

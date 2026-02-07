@@ -8,14 +8,11 @@ Licensed under Apache 2.0
 
 from __future__ import annotations
 
-import time
-from datetime import datetime
-from typing import Any
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from attune.memory.short_term.base import REDIS_AVAILABLE, BaseOperations
+from attune.memory.short_term.base import BaseOperations
 from attune.memory.types import RedisConfig, RedisMetrics
 
 # ============================================================================

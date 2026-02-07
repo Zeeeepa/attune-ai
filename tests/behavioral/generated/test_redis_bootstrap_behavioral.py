@@ -6,29 +6,18 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import platform
-import shutil
 import subprocess
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
 from attune.memory.redis_bootstrap import (
-    IS_LINUX,
-    IS_MACOS,
-    IS_WINDOWS,
     RedisStartMethod,
     RedisStatus,
     _check_redis_running,
     _find_command,
     _run_silent,
-    _start_via_chocolatey,
-    _start_via_direct,
-    _start_via_docker,
     _start_via_homebrew,
-    _start_via_scoop,
-    _start_via_systemd,
-    _start_via_windows_service,
 )
 
 # ============================================================================

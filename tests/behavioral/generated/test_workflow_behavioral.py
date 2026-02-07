@@ -6,13 +6,13 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import pytest
-import asyncio
 from pathlib import Path
-from unittest.mock import AsyncMock, patch, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from attune.workflows.document_gen.workflow import DocumentGenerationWorkflow
+import pytest
+
 from attune.workflows.base import ModelTier
+from attune.workflows.document_gen.workflow import DocumentGenerationWorkflow
 
 
 @pytest.fixture

@@ -13,8 +13,9 @@ from unittest.mock import Mock, patch
 
 import pytest
 
+from attune.memory.security.secrets_detector import SecretType
+from attune.memory.security.secrets_detector import Severity as SecretSeverity
 from attune.memory.short_term.security import DataSanitizer
-from attune.memory.security.secrets_detector import SecretType, Severity as SecretSeverity
 from attune.memory.types import RedisMetrics, SecurityError
 
 # Fixtures

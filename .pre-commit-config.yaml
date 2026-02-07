@@ -9,6 +9,7 @@ exclude: |
     website/public/|
     examples/wizard-dashboard/node_modules/|
     \.venv/|
+    test_env/|
     build/|
     dist/|
     .*\.egg-info/|
