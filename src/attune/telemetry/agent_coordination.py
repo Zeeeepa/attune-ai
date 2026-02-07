@@ -346,7 +346,7 @@ class CoordinationSignals:
 
             for pattern in patterns:
                 if hasattr(self.memory, "_client"):
-                    keys = self.memory._client.keys(pattern)
+                    keys = list(self.memory._client.scan_iter(match=pattern, count=100))
                 else:
                     continue
 
@@ -398,7 +398,7 @@ class CoordinationSignals:
             signals = []
             for pattern in patterns:
                 if hasattr(self.memory, "_client"):
-                    keys = self.memory._client.keys(pattern)
+                    keys = list(self.memory._client.scan_iter(match=pattern, count=100))
                 else:
                     continue
 

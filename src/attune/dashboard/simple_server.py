@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import threading
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
@@ -29,6 +30,33 @@ logger = logging.getLogger(__name__)
 
 class DashboardHandler(BaseHTTPRequestHandler):
     """HTTP request handler for dashboard."""
+
+    _memory = None
+    _memory_lock = threading.Lock()
+
+    @classmethod
+    def get_memory(cls):
+        """Get or create shared RedisShortTermMemory instance.
+
+        Uses lazy initialization with thread-safe locking. Recreates
+        the instance if the connection is lost.
+        """
+        from attune.memory.short_term import RedisShortTermMemory
+
+        if cls._memory is not None:
+            try:
+                cls._memory.ping()
+                return cls._memory
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Connection lost, recreate below
+                logger.warning("dashboard_memory_reconnect", message="Redis connection lost, recreating")
+                cls._memory = None
+
+        with cls._memory_lock:
+            # Double-check after acquiring lock
+            if cls._memory is None:
+                cls._memory = RedisShortTermMemory()
+            return cls._memory
 
     def do_GET(self):
         """Handle GET requests."""
@@ -134,9 +162,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_health(self):
         """System health endpoint."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             has_redis = memory._client is not None
 
             coordinator = HeartbeatCoordinator(memory=memory)
@@ -160,9 +186,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_agents(self):
         """List active agents."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             coordinator = HeartbeatCoordinator(memory=memory)
             active_agents = coordinator.get_active_agents()
 
@@ -187,9 +211,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_agent_detail(self, agent_id: str):
         """Get specific agent details."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             coordinator = HeartbeatCoordinator(memory=memory)
             heartbeat = coordinator.get_agent_status(agent_id)
 
@@ -213,9 +235,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_signals(self, limit: int):
         """Get recent coordination signals."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             # Use broadcast target to get all signals (not just for dashboard)
             signals = CoordinationSignals(memory=memory, agent_id="*")
             recent = signals.get_pending_signals()[:limit]
@@ -239,9 +259,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_events(self, event_type: str | None, limit: int):
         """Get recent events."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             streamer = EventStreamer(memory=memory)
 
             if event_type:
@@ -275,9 +293,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_approvals(self):
         """Get pending approvals."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             gate = ApprovalGate(memory=memory)
             pending = gate.get_pending_approvals()
 
@@ -301,9 +317,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_approve(self, request_id: str, reason: str):
         """Approve request."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             gate = ApprovalGate(memory=memory)
             success = gate.respond_to_approval(
                 request_id=request_id, approved=True, responder="dashboard", reason=reason
@@ -319,9 +333,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_reject(self, request_id: str, reason: str):
         """Reject request."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             gate = ApprovalGate(memory=memory)
             success = gate.respond_to_approval(
                 request_id=request_id, approved=False, responder="dashboard", reason=reason
@@ -337,9 +349,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_feedback_workflows(self):
         """Get workflow quality metrics."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             feedback = FeedbackLoop(memory=memory)
 
             workflows = ["code-review", "test-generation", "refactoring"]
@@ -369,9 +379,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def api_underperforming(self, threshold: float):
         """Get underperforming stages."""
         try:
-            from attune.memory.short_term import RedisShortTermMemory
-
-            memory = RedisShortTermMemory()
+            memory = self.get_memory()
             feedback = FeedbackLoop(memory=memory)
 
             workflows = ["code-review", "test-generation", "refactoring"]

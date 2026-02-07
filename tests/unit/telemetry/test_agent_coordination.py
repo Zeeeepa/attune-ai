@@ -182,7 +182,7 @@ class TestCoordinationSignalsWithMemory:
         import json
 
         # Mock Redis keys and get
-        mock_memory._client.keys.return_value = [b"signal:test-agent:task_complete:sig123"]
+        mock_memory._client.scan_iter.return_value = [b"signal:test-agent:task_complete:sig123"]
 
         signal_data = {
             "signal_id": "sig123",
@@ -211,7 +211,7 @@ class TestCoordinationSignalsWithMemory:
         """Test checking and consuming signal."""
         import json
 
-        mock_memory._client.keys.return_value = [b"signal:test-agent:ready:sig456"]
+        mock_memory._client.scan_iter.return_value = [b"signal:test-agent:ready:sig456"]
 
         signal_data = {
             "signal_id": "sig456",
@@ -238,7 +238,7 @@ class TestCoordinationSignalsWithMemory:
         """Test checking signal with source filter."""
         import json
 
-        mock_memory._client.keys.return_value = [b"signal:test-agent:checkpoint:sig789"]
+        mock_memory._client.scan_iter.return_value = [b"signal:test-agent:checkpoint:sig789"]
 
         signal_data = {
             "signal_id": "sig789",
@@ -267,7 +267,7 @@ class TestCoordinationSignalsWithMemory:
         import json
 
         # Mock both targeted and broadcast keys
-        mock_memory._client.keys.return_value = [b"signal:*:abort:sig_broadcast"]
+        mock_memory._client.scan_iter.return_value = [b"signal:*:abort:sig_broadcast"]
 
         signal_data = {
             "signal_id": "sig_broadcast",
@@ -291,7 +291,7 @@ class TestCoordinationSignalsWithMemory:
         """Test getting all pending signals."""
         import json
 
-        mock_memory._client.keys.side_effect = [
+        mock_memory._client.scan_iter.side_effect = [
             [b"signal:test-agent:task1:sig1", b"signal:test-agent:task2:sig2"],
             [b"signal:*:broadcast:sig3"],
         ]
@@ -337,7 +337,7 @@ class TestCoordinationSignalsWithMemory:
         """Test getting pending signals filtered by type."""
         import json
 
-        mock_memory._client.keys.side_effect = [
+        mock_memory._client.scan_iter.side_effect = [
             [b"signal:test-agent:checkpoint:sig1", b"signal:test-agent:ready:sig2"],
             [],
         ]
@@ -373,7 +373,7 @@ class TestCoordinationSignalsWithMemory:
         """Test clearing signals."""
         import json
 
-        mock_memory._client.keys.side_effect = [[b"signal:test-agent:test:sig1"], []]
+        mock_memory._client.scan_iter.side_effect = [[b"signal:test-agent:test:sig1"], []]
 
         signal_data = {
             "signal_id": "sig1",
@@ -395,7 +395,7 @@ class TestCoordinationSignalsWithMemory:
 
     def test_wait_for_signal_timeout(self, coordinator, mock_memory):
         """Test wait_for_signal with timeout."""
-        mock_memory._client.keys.return_value = []
+        mock_memory._client.scan_iter.return_value = []
 
         # Wait should timeout quickly
         start = time.time()
@@ -412,7 +412,7 @@ class TestCoordinationSignalsWithMemory:
 
         # First check: no signal
         # Second check: signal arrives
-        mock_memory._client.keys.side_effect = [[], [b"signal:test-agent:ready:sig1"]]
+        mock_memory._client.scan_iter.side_effect = [[], [b"signal:test-agent:ready:sig1"]]
 
         signal_data = {
             "signal_id": "sig1",

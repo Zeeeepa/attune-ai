@@ -226,7 +226,7 @@ class TestFeedbackLoop:
     def test_get_feedback_history_empty(self):
         """Test get_feedback_history returns empty list when no data."""
         mock_client = Mock()
-        mock_client.keys.return_value = []
+        mock_client.scan_iter.return_value = []
 
         mock_memory = Mock(spec=["_client"])
         mock_memory._client = mock_client
@@ -247,15 +247,15 @@ class TestFeedbackLoop:
         ]
 
         # Mock keys() to filter based on pattern
-        def mock_keys(pattern):
-            if "cheap" in pattern:
+        def mock_scan_iter(match="", count=100):
+            if "cheap" in match:
                 return [k for k in all_keys if b"cheap" in k]
-            elif "capable" in pattern:
+            elif "capable" in match:
                 return [k for k in all_keys if b"capable" in k]
             else:
                 return all_keys
 
-        mock_client.keys.side_effect = mock_keys
+        mock_client.scan_iter.side_effect = mock_scan_iter
 
         import json
 
@@ -306,7 +306,7 @@ class TestFeedbackLoop:
     def test_get_quality_stats_no_data(self):
         """Test get_quality_stats returns None when no data."""
         mock_client = Mock()
-        mock_client.keys.return_value = []
+        mock_client.scan_iter.return_value = []
 
         mock_memory = Mock(spec=["_client"])
         mock_memory._client = mock_client
@@ -325,12 +325,12 @@ class TestFeedbackLoop:
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(10)]
 
         # Mock keys() to return all_keys when pattern matches
-        def mock_keys(pattern):
-            if "cheap" in pattern:
+        def mock_scan_iter(match="", count=100):
+            if "cheap" in match:
                 return all_keys
             return []
 
-        mock_client.keys.side_effect = mock_keys
+        mock_client.scan_iter.side_effect = mock_scan_iter
 
         import json
 
@@ -370,7 +370,7 @@ class TestFeedbackLoop:
     def test_recommend_tier_no_data(self):
         """Test recommend_tier with no feedback data."""
         mock_client = Mock()
-        mock_client.keys.return_value = []
+        mock_client.scan_iter.return_value = []
 
         mock_memory = Mock(spec=["_client"])
         mock_memory._client = mock_client
@@ -392,12 +392,12 @@ class TestFeedbackLoop:
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(5)]
 
         # Mock keys() to return based on pattern
-        def mock_keys(pattern):
-            if "cheap" in pattern:
+        def mock_scan_iter(match="", count=100):
+            if "cheap" in match:
                 return all_keys
             return []
 
-        mock_client.keys.side_effect = mock_keys
+        mock_client.scan_iter.side_effect = mock_scan_iter
 
         import json
 
@@ -437,12 +437,12 @@ class TestFeedbackLoop:
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(15)]
 
         # Mock keys() to return based on pattern
-        def mock_keys(pattern):
-            if "cheap" in pattern:
+        def mock_scan_iter(match="", count=100):
+            if "cheap" in match:
                 return all_keys
             return []
 
-        mock_client.keys.side_effect = mock_keys
+        mock_client.scan_iter.side_effect = mock_scan_iter
 
         import json
 
@@ -481,12 +481,12 @@ class TestFeedbackLoop:
         all_keys = [f"feedback:test:analysis:cheap:id{i}".encode() for i in range(15)]
 
         # Mock keys() to return based on pattern
-        def mock_keys(pattern):
-            if "cheap" in pattern:
+        def mock_scan_iter(match="", count=100):
+            if "cheap" in match:
                 return all_keys
             return []
 
-        mock_client.keys.side_effect = mock_keys
+        mock_client.scan_iter.side_effect = mock_scan_iter
 
         import json
 
@@ -525,12 +525,12 @@ class TestFeedbackLoop:
         all_keys = [f"feedback:test:analysis:premium:id{i}".encode() for i in range(15)]
 
         # Mock keys() to return based on pattern
-        def mock_keys(pattern):
-            if "premium" in pattern:
+        def mock_scan_iter(match="", count=100):
+            if "premium" in match:
                 return all_keys
             return []
 
-        mock_client.keys.side_effect = mock_keys
+        mock_client.scan_iter.side_effect = mock_scan_iter
 
         import json
 
@@ -564,7 +564,7 @@ class TestFeedbackLoop:
     def test_get_underperforming_stages_no_stages(self):
         """Test get_underperforming_stages returns empty when no stages."""
         mock_client = Mock()
-        mock_client.keys.return_value = []
+        mock_client.scan_iter.return_value = []
 
         mock_memory = Mock(spec=["_client"])
         mock_memory._client = mock_client
@@ -588,16 +588,16 @@ class TestFeedbackLoop:
         ]
 
         # Mock keys() to return all keys for workflow pattern, or specific stage keys
-        def mock_keys(pattern):
-            if pattern == "feedback:test:*":
+        def mock_scan_iter(match="", count=100):
+            if match == "feedback:test:*":
                 return all_keys
-            elif "stage1" in pattern:
+            elif "stage1" in match:
                 return [k for k in all_keys if b"stage1" in k]
-            elif "stage2" in pattern:
+            elif "stage2" in match:
                 return [k for k in all_keys if b"stage2" in k]
             return []
 
-        mock_client.keys.side_effect = mock_keys
+        mock_client.scan_iter.side_effect = mock_scan_iter
 
         import json
 
@@ -645,7 +645,7 @@ class TestFeedbackLoop:
     def test_clear_feedback_no_stage(self):
         """Test clear_feedback clears all stages for workflow."""
         mock_client = Mock()
-        mock_client.keys.return_value = [
+        mock_client.scan_iter.return_value = [
             b"feedback:test:stage1:cheap:id1",
             b"feedback:test:stage2:cheap:id2",
         ]
@@ -664,7 +664,7 @@ class TestFeedbackLoop:
     def test_clear_feedback_specific_stage(self):
         """Test clear_feedback clears only specified stage."""
         mock_client = Mock()
-        mock_client.keys.return_value = [b"feedback:test:stage1:cheap:id1"]
+        mock_client.scan_iter.return_value = [b"feedback:test:stage1:cheap:id1"]
         mock_client.delete.return_value = 1
 
         mock_memory = Mock(spec=["_client"])
@@ -677,5 +677,4 @@ class TestFeedbackLoop:
         assert cleared == 1
 
         # Verify pattern includes stage name
-        call_args = mock_client.keys.call_args[0]
-        assert call_args[0] == "feedback:test:stage1:*"
+        mock_client.scan_iter.assert_called_with(match="feedback:test:stage1:*", count=100)

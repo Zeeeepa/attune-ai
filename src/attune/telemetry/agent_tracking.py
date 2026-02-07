@@ -273,7 +273,7 @@ class HeartbeatCoordinator:
         try:
             # Scan for empathy:heartbeat:* keys
             if hasattr(self.memory, "_client") and self.memory._client:
-                keys = self.memory._client.keys("empathy:heartbeat:*")
+                keys = list(self.memory._client.scan_iter(match="empathy:heartbeat:*", count=100))
             else:
                 logger.warning("Cannot scan for heartbeats: no Redis access")
                 return []
@@ -304,7 +304,7 @@ class HeartbeatCoordinator:
         if not self.memory:
             return False
 
-        key = f"heartbeat:{agent_id}"
+        key = f"empathy:heartbeat:{agent_id}"
         data = self._retrieve_heartbeat(key)
         return data is not None
 
@@ -320,7 +320,7 @@ class HeartbeatCoordinator:
         if not self.memory:
             return None
 
-        key = f"heartbeat:{agent_id}"
+        key = f"empathy:heartbeat:{agent_id}"
         data = self._retrieve_heartbeat(key)
 
         if data:
@@ -330,7 +330,7 @@ class HeartbeatCoordinator:
     def _retrieve_heartbeat(self, key: str) -> dict[str, Any] | None:
         """Retrieve heartbeat data from memory.
 
-        Heartbeat keys are stored directly as 'heartbeat:{agent_id}' and must be
+        Heartbeat keys are stored directly as 'empathy:heartbeat:{agent_id}' and must be
         retrieved via direct Redis access, not through the standard retrieve() method
         which expects keys with 'working:{agent_id}:{key}' format.
         """

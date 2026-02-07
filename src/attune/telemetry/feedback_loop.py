@@ -287,7 +287,7 @@ class FeedbackLoop:
             else:
                 pattern = f"feedback:{workflow_name}:{stage_name}:*"
 
-            keys = self.memory._client.keys(pattern)
+            keys = list(self.memory._client.scan_iter(match=pattern, count=100))
 
             entries = []
             for key in keys:
@@ -514,7 +514,7 @@ class FeedbackLoop:
         try:
             # Find all feedback keys for this workflow
             pattern = f"feedback:{workflow_name}:*"
-            keys = self.memory._client.keys(pattern)
+            keys = list(self.memory._client.scan_iter(match=pattern, count=100))
 
             # Extract unique stage/tier combinations
             stage_tier_combos = set()
@@ -564,7 +564,7 @@ class FeedbackLoop:
             else:
                 pattern = f"feedback:{workflow_name}:*"
 
-            keys = self.memory._client.keys(pattern)
+            keys = list(self.memory._client.scan_iter(match=pattern, count=100))
             if not keys:
                 return 0
 

@@ -168,7 +168,7 @@ class TestHeartbeatCoordinatorWithMemory:
     def test_get_active_agents(self, coordinator, mock_memory):
         """Test getting active agents."""
         # Mock Redis keys response
-        mock_memory._client.keys.return_value = [b"heartbeat:agent-1", b"heartbeat:agent-2"]
+        mock_memory._client.scan_iter.return_value = [b"heartbeat:agent-1", b"heartbeat:agent-2"]
 
         # Mock Redis get responses
         import json
@@ -252,7 +252,7 @@ class TestHeartbeatCoordinatorWithMemory:
         fresh_time = now - timedelta(seconds=10)
         stale_time = now - timedelta(seconds=120)
 
-        mock_memory._client.keys.return_value = [b"heartbeat:agent-fresh", b"heartbeat:agent-stale"]
+        mock_memory._client.scan_iter.return_value = [b"heartbeat:agent-fresh", b"heartbeat:agent-stale"]
 
         import json
 
