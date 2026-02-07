@@ -120,16 +120,18 @@ class TestCollectCacheStats:
         assert stats["days_analyzed"] == 7
         assert stats["total_requests"] >= 0
 
-    @patch(
-        "builtins.open",
-        new_callable=mock_open,
-        read_data="2026-01-30 10:00:00 - Cache HIT: 1,000 tokens read, saved $0.50\n",
-    )
     @patch("pathlib.Path.exists", return_value=True)
-    def test_collect_stats_with_cache_hit(self, mock_exists, mock_file):
+    def test_collect_stats_with_cache_hit(self, mock_exists):
         """Test _collect_cache_stats parses cache hit correctly."""
+        # Use a recent date so it always falls within the 7-day window
+        from datetime import datetime
+
+        recent_date = datetime.now().strftime("%Y-%m-%d")
+        log_line = f"{recent_date} 10:00:00 - Cache HIT: 1,000 tokens read, saved $0.50\n"
+
         # When
-        stats = _collect_cache_stats(days=7)
+        with patch("builtins.open", mock_open(read_data=log_line)):
+            stats = _collect_cache_stats(days=7)
 
         # Then
         assert stats["cache_hits"] >= 1
