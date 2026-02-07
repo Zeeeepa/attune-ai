@@ -57,7 +57,7 @@ Use `/hub-name` to access organized workflows:
 | `/plan` | feature, tdd, refactor, architecture | Planning and strategy |
 | `/docs` | generate, readme, changelog, explain | Documentation |
 | `/release` | prep, security, health, publish | Release preparation |
-| `/agent` | create, list, run, cds | Agent management |
+| `/agent` | create, list, run, release-prep | Agent management |
 
 **Examples:**
 
@@ -66,7 +66,7 @@ Use `/hub-name` to access organized workflows:
 /testing coverage
 /workflows security
 /release prep
-/agent cds
+/agent release-prep
 ```
 
 ---

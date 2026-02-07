@@ -93,7 +93,7 @@ Your AI-powered developer workflow assistant with Socratic discovery.
 | [Create Agent](src/attune/commands/agent.md) `/agent create` | Define a new specialized agent with role and tools |
 | [List Agents](src/attune/commands/agent.md) `/agent list` | Show all available agents and capabilities |
 | [Run Agent Team](src/attune/commands/agent.md) `/agent run` | Execute a multi-agent collaboration |
-| [Healthcare CDS](src/attune/commands/agent.md) `/agent cds` | Clinical decision support multi-agent system |
+| [Release Prep](src/attune/commands/agent.md) `/agent release-prep` | Run the release readiness agent team (4 agents) |
 
 ### Deep Review — [/deep-review](src/attune/commands/deep-review.md)
 
