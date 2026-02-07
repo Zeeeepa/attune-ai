@@ -18,6 +18,7 @@ import pytest
 
 from attune.memory.short_term import RedisConfig
 from attune.redis_config import (
+    _resolve_redis_mode,
     check_redis_connection,
     get_railway_redis,
     get_redis_config,
@@ -259,3 +260,107 @@ class TestGetRailwayRedis:
         assert result["host"] == "railway-redis"
         assert result["port"] == 6379
         assert result["db"] == 0
+
+
+class TestRedisMode:
+    """Tests for REDIS_MODE support (cloud/local)."""
+
+    # --- _resolve_redis_mode() ---
+
+    def test_explicit_cloud_mode(self):
+        """Test explicit REDIS_MODE=cloud returns cloud."""
+        with patch.dict(os.environ, {"REDIS_MODE": "cloud"}, clear=False):
+            assert _resolve_redis_mode() == "cloud"
+
+    def test_explicit_local_mode(self):
+        """Test explicit REDIS_MODE=local returns local."""
+        with patch.dict(os.environ, {"REDIS_MODE": "local"}, clear=False):
+            assert _resolve_redis_mode() == "local"
+
+    def test_invalid_mode_raises(self):
+        """Test that invalid REDIS_MODE raises ValueError."""
+        with patch.dict(os.environ, {"REDIS_MODE": "invalid"}, clear=False):
+            with pytest.raises(ValueError, match="Invalid REDIS_MODE"):
+                _resolve_redis_mode()
+
+    def test_infer_cloud_from_nonlocal_host(self):
+        """Test mode inferred as cloud from non-localhost REDIS_HOST."""
+        env = {"REDIS_MODE": "", "REDIS_HOST": "redis-cloud.example.com"}
+        with patch.dict(os.environ, env, clear=False):
+            assert _resolve_redis_mode() == "cloud"
+
+    def test_infer_local_from_localhost(self):
+        """Test mode inferred as local when REDIS_HOST is localhost."""
+        env = {"REDIS_MODE": "", "REDIS_HOST": "localhost"}
+        with patch.dict(os.environ, env, clear=False):
+            assert _resolve_redis_mode() == "local"
+
+    def test_infer_local_when_no_host(self):
+        """Test mode inferred as local when REDIS_HOST not set."""
+        env = {"REDIS_MODE": "", "REDIS_HOST": ""}
+        with patch.dict(os.environ, env, clear=False):
+            assert _resolve_redis_mode() == "local"
+
+    # --- get_redis_config() with REDIS_MODE ---
+
+    def test_cloud_mode_uses_env_credentials(self):
+        """Test cloud mode reads host/password from env."""
+        env = {
+            "REDIS_MODE": "cloud",
+            "REDIS_HOST": "my-cloud.redislabs.com",
+            "REDIS_PORT": "15667",
+            "REDIS_PASSWORD": "secretpass",
+            "REDIS_DB": "2",
+            "REDIS_URL": "",
+            "REDIS_PRIVATE_URL": "",
+            "EMPATHY_REDIS_MOCK": "",
+        }
+        with patch.dict(os.environ, env, clear=False):
+            config = get_redis_config()
+            assert config.host == "my-cloud.redislabs.com"
+            assert config.port == 15667
+            assert config.password == "secretpass"
+            assert config.db == 2
+            assert config.use_mock is False
+
+    def test_local_mode_ignores_password(self):
+        """Test local mode uses localhost and ignores REDIS_PASSWORD."""
+        env = {
+            "REDIS_MODE": "local",
+            "REDIS_HOST": "should-be-ignored.com",
+            "REDIS_PASSWORD": "should-be-ignored",
+            "REDIS_URL": "",
+            "REDIS_PRIVATE_URL": "",
+            "EMPATHY_REDIS_MOCK": "",
+        }
+        with patch.dict(os.environ, env, clear=False):
+            config = get_redis_config()
+            assert config.host == "localhost"
+            assert config.password is None
+            assert config.use_mock is False
+
+    def test_url_takes_precedence_over_mode(self):
+        """Test REDIS_URL overrides REDIS_MODE."""
+        env = {
+            "REDIS_URL": "redis://url-host:6380/3",
+            "REDIS_MODE": "local",
+            "REDIS_HOST": "mode-host.com",
+            "EMPATHY_REDIS_MOCK": "",
+        }
+        with patch.dict(os.environ, env, clear=False):
+            config = get_redis_config()
+            assert config.host == "url-host"
+            assert config.port == 6380
+            assert config.db == 3
+
+    def test_mock_takes_precedence_over_mode(self):
+        """Test EMPATHY_REDIS_MOCK=true overrides REDIS_MODE."""
+        env = {
+            "EMPATHY_REDIS_MOCK": "true",
+            "REDIS_MODE": "cloud",
+            "REDIS_HOST": "cloud-host.com",
+            "REDIS_PASSWORD": "secret",
+        }
+        with patch.dict(os.environ, env, clear=False):
+            config = get_redis_config()
+            assert config.use_mock is True

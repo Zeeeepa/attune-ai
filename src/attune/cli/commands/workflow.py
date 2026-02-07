@@ -114,7 +114,13 @@ def cmd_workflow(args):
 
             for wf in workflows:
                 print(f"  {wf['name']:15} {wf['description']}")
-                stages = " → ".join(f"{s}({wf['tier_map'][s]})" for s in wf["stages"])
+                tier_map = wf.get("tier_map", {})
+                if tier_map:
+                    stages = " → ".join(
+                        f"{s}({tier_map[s]})" for s in wf["stages"] if s in tier_map
+                    )
+                else:
+                    stages = " → ".join(wf["stages"])
                 print(f"    Stages: {stages}")
                 print()
 

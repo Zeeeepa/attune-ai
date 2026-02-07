@@ -492,7 +492,7 @@ class TestRichFormatting:
         args = argparse.Namespace(hours=24)
 
         # Mock Rich to verify it's called
-        with patch("attune.telemetry.cli.Console") as mock_console:
+        with patch("attune.telemetry.cli_automation.Console") as mock_console:
             mock_console_instance = mock_console.return_value
 
             result = cmd_tier1_status(args)
@@ -507,7 +507,7 @@ class TestRichFormatting:
         args = argparse.Namespace(hours=24)
 
         # Mock Rich as unavailable by patching RICH_AVAILABLE
-        with patch("attune.telemetry.cli.RICH_AVAILABLE", False):
+        with patch("attune.telemetry.cli_automation.RICH_AVAILABLE", False):
             with patch("sys.stdout", new=StringIO()) as mock_stdout:
                 result = cmd_tier1_status(args)
 

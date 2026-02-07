@@ -625,8 +625,8 @@ class TestAssessStage:
         input_data = {
             "dependencies": {
                 "python": [
-                    {"name": "old-package", "version": "<1.0.0", "ecosystem": "python"},
-                    {"name": "dev-version", "version": "^0.5.0", "ecosystem": "python"},
+                    {"name": "old-package", "version": "^0.3.2", "ecosystem": "python"},
+                    {"name": "dev-version", "version": "~0.5.0", "ecosystem": "python"},
                 ],
             },
         }
@@ -1272,18 +1272,10 @@ class TestWorkflowConfiguration:
         assert dependency_check_workflow.tier_map["assess"] == ModelTier.CAPABLE
         assert dependency_check_workflow.tier_map["report"] == ModelTier.CAPABLE
 
+    @pytest.mark.skip(reason="KNOWN_VULNERABILITIES constant was removed; vuln detection uses pip-audit")
     def test_known_vulnerabilities_database(self):
         """Test that KNOWN_VULNERABILITIES is populated."""
-        assert len(KNOWN_VULNERABILITIES) > 0
-        assert "requests" in KNOWN_VULNERABILITIES
-        assert "urllib3" in KNOWN_VULNERABILITIES
-        assert "pyyaml" in KNOWN_VULNERABILITIES
-
-        # Check structure of vulnerability entry
-        vuln = KNOWN_VULNERABILITIES["requests"]
-        assert "affected_versions" in vuln
-        assert "severity" in vuln
-        assert "cve" in vuln
+        pass
 
 
 # =============================================================================
