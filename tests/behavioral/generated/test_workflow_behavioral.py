@@ -41,7 +41,7 @@ async def test_document_generation_workflow_custom_initialization():
         max_sections=5,
         max_write_tokens=2000,
         section_focus=["API", "Examples"],
-        max_cost=3.0
+        max_cost=3.0,
     )
 
     assert workflow.skip_polish_threshold == 500
@@ -65,7 +65,7 @@ async def test_document_generation_workflow_execute_with_valid_input(doc_workflo
         pass
     """
 
-    with patch.object(doc_workflow, 'run_stage', new_callable=AsyncMock) as mock_run_stage:
+    with patch.object(doc_workflow, "run_stage", new_callable=AsyncMock) as mock_run_stage:
         # run_stage must return (output, input_tokens, output_tokens)
         mock_run_stage.return_value = (
             {"document": "Generated Documentation", "doc_type": "api_reference"},
@@ -74,9 +74,7 @@ async def test_document_generation_workflow_execute_with_valid_input(doc_workflo
         )
 
         result = await doc_workflow.execute(
-            source_code=mock_source_code,
-            doc_type="api_reference",
-            audience="developers"
+            source_code=mock_source_code, doc_type="api_reference", audience="developers"
         )
 
         assert mock_run_stage.called
@@ -110,9 +108,9 @@ async def test_document_generation_workflow_auto_scale_tokens(doc_workflow):
     """
     test_cases = [
         # (max_write_tokens init, num_sections, expected_tokens)
-        (None, 5, 16000),   # Auto-scale: max(16000, min(64000, 5*2000=10000)) = 16000
-        (2000, 5, 2000),    # Custom token limit preserved (user override)
-        (None, 2, 16000),   # Auto-scale: max(16000, min(64000, 2*2000=4000)) = 16000
+        (None, 5, 16000),  # Auto-scale: max(16000, min(64000, 5*2000=10000)) = 16000
+        (2000, 5, 2000),  # Custom token limit preserved (user override)
+        (None, 2, 16000),  # Auto-scale: max(16000, min(64000, 2*2000=4000)) = 16000
         (None, 10, 20000),  # Auto-scale: max(16000, min(64000, 10*2000=20000)) = 20000
         (None, 40, 64000),  # Auto-scale: max(16000, min(64000, 40*2000=80000)) = 64000
     ]
@@ -128,10 +126,13 @@ async def test_document_generation_workflow_auto_scale_tokens(doc_workflow):
         )
 
 
-@pytest.mark.parametrize("export_path,should_export", [
-    (Path("/tmp/test_attune_docs"), True),
-    (None, False),
-])
+@pytest.mark.parametrize(
+    "export_path,should_export",
+    [
+        (Path("/tmp/test_attune_docs"), True),
+        (None, False),
+    ],
+)
 def test_document_generation_workflow_export(doc_workflow, export_path, should_export, tmp_path):
     """Test document export with various path configurations.
 
@@ -167,14 +168,10 @@ async def test_document_generation_workflow_edge_cases(doc_workflow):
     BaseWorkflow.execute() catches all exceptions and returns a WorkflowResult
     with success=False rather than raising. Verify graceful failure handling.
     """
-    with patch.object(doc_workflow, 'run_stage', new_callable=AsyncMock) as mock_run_stage:
+    with patch.object(doc_workflow, "run_stage", new_callable=AsyncMock) as mock_run_stage:
         mock_run_stage.side_effect = ValueError("Invalid input data")
 
-        result = await doc_workflow.execute(
-            source_code=None,
-            doc_type=None,
-            audience=None
-        )
+        result = await doc_workflow.execute(source_code=None, doc_type=None, audience=None)
 
         assert result is not None
         assert result.success is False

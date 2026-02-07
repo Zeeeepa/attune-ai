@@ -182,7 +182,9 @@ def generate_test_data():
                         base_quality = 0.90
 
                     # Add some randomness
-                    quality = base_quality + (int.from_bytes(os.urandom(4), "big") / (2**32) * 0.15 - 0.075)
+                    quality = base_quality + (
+                        int.from_bytes(os.urandom(4), "big") / (2**32) * 0.15 - 0.075
+                    )
                     quality = max(0.0, min(1.0, quality))  # Clamp to 0-1
 
                     feedback_id = f"fb-{int(time.time() * 1000)}-{feedback_count}"

@@ -158,11 +158,13 @@ def main(**context: Any) -> dict[str, Any]:
                 confidence = pattern_data.get("confidence", 0.0)
                 if confidence < 0.7:
                     continue  # Skip low-confidence patterns
-                injected_patterns.append({
-                    "source": pf.stem,
-                    "patterns": pattern_data.get("patterns", []),
-                    "confidence": confidence,
-                })
+                injected_patterns.append(
+                    {
+                        "source": pf.stem,
+                        "patterns": pattern_data.get("patterns", []),
+                        "confidence": confidence,
+                    }
+                )
             except (json.JSONDecodeError, OSError) as e:
                 logger.debug("Skipping pattern file %s: %s", pf, e)
 

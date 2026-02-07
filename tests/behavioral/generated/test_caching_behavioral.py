@@ -188,10 +188,10 @@ class TestCacheManagerGet:
         """
         mock_time.return_value = 1000.0
         cache_enabled.add("key1", "value1")
-        
+
         mock_time.return_value = 2000.0
         cache_enabled.get("key1")
-        
+
         # Verify last access was updated
         _, _, last_access = cache_enabled._cache["key1"]
         assert last_access == 2000.0
@@ -267,18 +267,18 @@ class TestCacheManagerAdd:
         with patch("attune.memory.short_term.caching.time.time") as mock_time:
             mock_time.return_value = 1000.0
             small_cache.add("key1", "value1")
-            
+
             mock_time.return_value = 1001.0
             small_cache.add("key2", "value2")
-            
+
             mock_time.return_value = 1002.0
             # Access key2 to make key1 the LRU
             small_cache.get("key2")
-            
+
             mock_time.return_value = 1003.0
             # Adding key3 should evict key1
             small_cache.add("key3", "value3")
-            
+
             assert "key1" not in small_cache._cache
             assert "key2" in small_cache._cache
             assert "key3" in small_cache._cache
@@ -291,7 +291,7 @@ class TestCacheManagerAdd:
         """
         for i in range(10):
             cache_enabled.add(f"key{i}", f"value{i}")
-        
+
         assert len(cache_enabled._cache) == 10
         for i in range(10):
             assert cache_enabled.get(f"key{i}") == f"value{i}"
@@ -339,10 +339,10 @@ class TestCacheManagerRemove:
         cache_enabled.add("key1", "value1")
         cache_enabled.add("key2", "value2")
         cache_enabled.add("key3", "value3")
-        
+
         cache_enabled.remove("key1")
         cache_enabled.remove("key2")
-        
+
         assert "key1" not in cache_enabled._cache
         assert "key2" not in cache_enabled._cache
         assert "key3" in cache_enabled._cache
@@ -427,4 +427,3 @@ class TestCacheManagerContains:
         Then: Returns False
         """
         assert cache_disabled.contains("key1") is False
-

@@ -28,6 +28,7 @@ LOG_FILE = Path(__file__).resolve().parent.parent / "logs" / "download_stats.csv
 
 # ── data sources ──────────────────────────────────────────────────
 
+
 def fetch_json(url: str, timeout: int = 10) -> dict | None:
     """GET a JSON endpoint, return parsed dict or None on failure."""
     try:
@@ -66,8 +67,7 @@ def get_pepy(package: str) -> dict:
     return {
         "pepy_total": data.get("total_downloads", 0),
         "pepy_versions": {
-            v: info.get("downloads", 0)
-            for v, info in (data.get("versions", {}) or {}).items()
+            v: info.get("downloads", 0) for v, info in (data.get("versions", {}) or {}).items()
         },
     }
 
@@ -83,13 +83,13 @@ def get_pypi_meta(package: str) -> dict:
         "current_version": info.get("version", "?"),
         "release_count": len(releases),
         "yanked_count": sum(
-            1 for files in releases.values()
-            for f in files if f.get("yanked", False)
+            1 for files in releases.values() for f in files if f.get("yanked", False)
         ),
     }
 
 
 # ── display ───────────────────────────────────────────────────────
+
 
 def fmt(n: int | None) -> str:
     if n is None or n < 0:
@@ -108,7 +108,9 @@ def print_report(stats: dict) -> None:
     print(f"  ║  attune-ai download stats  ·  {ts[:16]}  ║")
     print(f"  ╠══════════════════════════════════════════════╣")
     print(f"  ║  Version      │ {ver:<27} ║")
-    print(f"  ║  Releases     │ {releases} ({yanked} yanked){' ' * (22 - len(str(releases)) - len(str(yanked)))}║")
+    print(
+        f"  ║  Releases     │ {releases} ({yanked} yanked){' ' * (22 - len(str(releases)) - len(str(yanked)))}║"
+    )
     print(f"  ╠══════════════════════════════════════════════╣")
     print(f"  ║  pypistats.org (BigQuery)                    ║")
     print(f"  ║    Last day   │ {fmt(stats.get('last_day')):<27} ║")
@@ -133,12 +135,20 @@ def print_report(stats: dict) -> None:
 
 # ── CSV logging ───────────────────────────────────────────────────
 
+
 def log_to_csv(stats: dict) -> None:
     LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     exists = LOG_FILE.exists()
     fields = [
-        "timestamp", "current_version", "release_count", "yanked_count",
-        "last_day", "last_week", "last_month", "total_overall", "pepy_total",
+        "timestamp",
+        "current_version",
+        "release_count",
+        "yanked_count",
+        "last_day",
+        "last_week",
+        "last_month",
+        "total_overall",
+        "pepy_total",
     ]
     with open(LOG_FILE, "a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
@@ -149,6 +159,7 @@ def log_to_csv(stats: dict) -> None:
 
 
 # ── main ──────────────────────────────────────────────────────────
+
 
 def collect() -> dict:
     stats: dict = {"timestamp": datetime.now(timezone.utc).isoformat()}

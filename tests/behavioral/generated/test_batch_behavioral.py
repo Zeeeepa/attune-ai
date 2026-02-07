@@ -210,9 +210,7 @@ class TestStashBatch:
         mock_base_operations._client.pipeline.return_value = mock_pipeline
 
         # When
-        batch_operations.stash_batch(
-            items, agent_credentials, ttl=TTLStrategy.STAGED_PATTERNS
-        )
+        batch_operations.stash_batch(items, agent_credentials, ttl=TTLStrategy.STAGED_PATTERNS)
 
         # Then
         call_args = mock_pipeline.setex.call_args[0]
@@ -269,9 +267,7 @@ class TestStashBatch:
         # Then
         assert result == 2
 
-    def test_stash_batch_checks_access_permissions(
-        self, batch_operations, mock_base_operations
-    ):
+    def test_stash_batch_checks_access_permissions(self, batch_operations, mock_base_operations):
         """
         GIVEN: Credentials that lack write access
         WHEN: stash_batch is called
@@ -358,9 +354,7 @@ class TestStashBatch:
 class TestRetrieveBatch:
     """Tests for retrieve_batch method."""
 
-    def test_retrieve_batch_with_empty_list(
-        self, batch_operations, agent_credentials
-    ):
+    def test_retrieve_batch_with_empty_list(self, batch_operations, agent_credentials):
         """
         GIVEN: An empty list of keys
         WHEN: retrieve_batch is called

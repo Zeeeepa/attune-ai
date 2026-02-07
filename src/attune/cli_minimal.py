@@ -964,7 +964,9 @@ def cmd_setup(args: Namespace) -> int:
         return 1
 
     total = copied + agents_copied + configs_copied
-    print(f"\n✅ Installed {total} file(s) ({copied} commands, {agents_copied} subagents, {configs_copied} configs)")
+    print(
+        f"\n✅ Installed {total} file(s) ({copied} commands, {agents_copied} subagents, {configs_copied} configs)"
+    )
     print("\n📝 You can now use in Claude Code:")
     print("   /dev              - Developer tools (debug, commit, PR)")
     print("   /testing          - Run tests, coverage, test generation")

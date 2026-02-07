@@ -13,16 +13,14 @@ from pathlib import Path
 import yaml
 import json
 
-from attune.config import (
-    EmpathyConfig, 
-    _validate_file_path
-)
+from attune.config import EmpathyConfig, _validate_file_path
+
 
 class TestEmpathyConfig:
     def test_default_config_initialization(self):
         """Verify default configuration values are set correctly."""
         config = EmpathyConfig()
-        
+
         assert config.user_id == "default_user"
         assert config.target_level == 3
         assert config.confidence_threshold == 0.75
@@ -31,12 +29,8 @@ class TestEmpathyConfig:
 
     def test_custom_config_initialization(self):
         """Verify custom configuration values override defaults."""
-        config = EmpathyConfig(
-            user_id="test_user", 
-            target_level=5, 
-            confidence_threshold=0.9
-        )
-        
+        config = EmpathyConfig(user_id="test_user", target_level=5, confidence_threshold=0.9)
+
         assert config.user_id == "test_user"
         assert config.target_level == 5
         assert config.confidence_threshold == 0.9
@@ -48,29 +42,25 @@ class TestEmpathyConfig:
         target_level: 4
         confidence_threshold: 0.8
         """
-        
+
         yaml_file = tmp_path / "config.yaml"
         yaml_file.write_text(yaml_content)
-        
+
         config = EmpathyConfig.from_yaml(str(yaml_file))
-        
+
         assert config.user_id == "yaml_user"
         assert config.target_level == 4
         assert config.confidence_threshold == 0.8
 
     def test_from_json_valid_configuration(self, tmp_path):
         """Test loading configuration from a valid JSON file."""
-        json_content = {
-            "user_id": "json_user",
-            "target_level": 2,
-            "confidence_threshold": 0.6
-        }
-        
+        json_content = {"user_id": "json_user", "target_level": 2, "confidence_threshold": 0.6}
+
         json_file = tmp_path / "config.json"
         json_file.write_text(json.dumps(json_content))
-        
+
         config = EmpathyConfig.from_json(str(json_file))
-        
+
         assert config.user_id == "json_user"
         assert config.target_level == 2
         assert config.confidence_threshold == 0.6
@@ -79,21 +69,22 @@ class TestEmpathyConfig:
         """Verify dictionary conversion preserves all attributes."""
         config = EmpathyConfig(user_id="convert_user")
         config_dict = config.to_dict()
-        
+
         assert isinstance(config_dict, dict)
-        assert config_dict['user_id'] == "convert_user"
+        assert config_dict["user_id"] == "convert_user"
 
     def test_to_json_conversion(self, tmp_path):
         """Test JSON serialization of configuration."""
         config = EmpathyConfig(user_id="json_export")
         json_file = tmp_path / "export.json"
-        
+
         config.to_json(str(json_file))
-        
-        with open(json_file, 'r') as f:
+
+        with open(json_file, "r") as f:
             loaded_data = json.load(f)
-        
-        assert loaded_data['user_id'] == "json_export"
+
+        assert loaded_data["user_id"] == "json_export"
+
 
 def test_validate_file_path_success():
     """Test successful file path validation."""
@@ -104,10 +95,12 @@ def test_validate_file_path_success():
         assert isinstance(validated_path, Path)
         assert str(validated_path) == test_file
 
+
 def test_validate_file_path_dangerous_path_raises_error():
     """Verify validation prevents writes to system directories."""
     with pytest.raises(ValueError):
         _validate_file_path("/etc/passwd")
+
 
 def test_validate_file_path_null_bytes_raises_error():
     """Test that null bytes in path raise a ValueError."""

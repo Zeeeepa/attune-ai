@@ -47,8 +47,10 @@ def cmd_config_show(args: Namespace) -> int:
         section = getattr(config, section_name, None)
         if section is None:
             print(f"Unknown section: {section_name}", file=sys.stderr)
-            print("Available sections: auth, routing, workflows, analysis, "
-                  "persistence, telemetry, environment")
+            print(
+                "Available sections: auth, routing, workflows, analysis, "
+                "persistence, telemetry, environment"
+            )
             return 1
         data = {section_name: section.to_dict()}
     else:
@@ -209,6 +211,7 @@ def cmd_config_path(args: Namespace) -> int:
 
     # Manually list search paths
     from attune.config.loader import CONFIG_SEARCH_PATHS
+
     for i, path in enumerate(CONFIG_SEARCH_PATHS, 1):
         print(f"  {i}. {path}")
 

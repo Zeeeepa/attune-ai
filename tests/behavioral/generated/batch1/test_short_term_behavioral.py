@@ -150,7 +150,9 @@ class TestRedisShortTermMemoryInitialization:
         mock_client = MagicMock()
         mock_client.ping.return_value = True
 
-        with patch("attune.memory.short_term.base.redis.Redis", return_value=mock_client) as mock_redis:
+        with patch(
+            "attune.memory.short_term.base.redis.Redis", return_value=mock_client
+        ) as mock_redis:
             with patch("attune.memory.short_term.base.REDIS_AVAILABLE", True):
                 RedisShortTermMemory(config=redis_config)
                 assert mock_redis.call_args[1]["ssl"] is True

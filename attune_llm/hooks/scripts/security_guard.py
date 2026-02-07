@@ -25,10 +25,19 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 # Directories that must never be written to (includes macOS /private/* symlinks)
-SYSTEM_DIRECTORIES = frozenset({
-    "/etc", "/sys", "/proc", "/dev", "/boot", "/sbin", "/usr/sbin",
-    "/private/etc", "/private/var",
-})
+SYSTEM_DIRECTORIES = frozenset(
+    {
+        "/etc",
+        "/sys",
+        "/proc",
+        "/dev",
+        "/boot",
+        "/sbin",
+        "/usr/sbin",
+        "/private/etc",
+        "/private/var",
+    }
+)
 
 # Dangerous patterns in Bash commands
 DANGEROUS_BASH_PATTERNS: list[tuple[re.Pattern[str], str]] = [
@@ -55,9 +64,17 @@ DANGEROUS_BASH_PATTERNS: list[tuple[re.Pattern[str], str]] = [
 ]
 
 # Commands that search for dangerous patterns (not executing them)
-SEARCH_COMMAND_PREFIXES = frozenset({
-    "grep", "rg", "ack", "ag", "git grep", "git log", "git diff",
-})
+SEARCH_COMMAND_PREFIXES = frozenset(
+    {
+        "grep",
+        "rg",
+        "ack",
+        "ag",
+        "git grep",
+        "git log",
+        "git diff",
+    }
+)
 
 
 def _is_search_command(command: str) -> bool:

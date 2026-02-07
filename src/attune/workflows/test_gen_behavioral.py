@@ -179,9 +179,7 @@ class BehavioralTestLLMGenerator(LLMWorkflowGenerator):
             Formatted prompt for LLM
         """
         module_name = Path(module_info.file_path).stem
-        import_path = (
-            module_info.file_path.replace("src/", "").replace(".py", "").replace("/", ".")
-        )
+        import_path = module_info.file_path.replace("src/", "").replace(".py", "").replace("/", ".")
 
         # Extract complete API skeleton (all signatures, enum values, fields)
         api_surface = self._extract_api_surface(source_code)
@@ -527,9 +525,7 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
 
         raise ValueError(f"Unknown stage: {stage_name}")
 
-    def _discover_source_modules(
-        self, source_dir: str = "src", min_lines: int = 50
-    ) -> list[Path]:
+    def _discover_source_modules(self, source_dir: str = "src", min_lines: int = 50) -> list[Path]:
         """Discover Python source modules eligible for test generation.
 
         Finds .py files under the source directory, filtering out test files,
@@ -619,7 +615,10 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
                 results["files"][test_file] = file_result
 
             except subprocess.TimeoutExpired:
-                results["files"][test_file] = {"status": "timeout", "output": "Test timed out (60s)"}
+                results["files"][test_file] = {
+                    "status": "timeout",
+                    "output": "Test timed out (60s)",
+                }
                 results["errors"] += 1
             except FileNotFoundError as e:
                 logger.error(f"pytest not found: {e}")
@@ -778,9 +777,9 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
 
         elif batch:
             # Batch mode: discover source modules and generate tests
-            modules = self._discover_source_modules(
-                source_dir=source_dir, min_lines=min_lines
-            )[:top_n]
+            modules = self._discover_source_modules(source_dir=source_dir, min_lines=min_lines)[
+                :top_n
+            ]
             logger.info(
                 f"Batch mode: discovered {len(modules)} modules "
                 f"(top_n={top_n}, min_lines={min_lines})"
@@ -800,9 +799,7 @@ class BehavioralTestGenerationWorkflow(BaseWorkflow):
 
         elif module_path:
             # Single module mode (shorthand for paths=[module_path])
-            generated_files, gen_errors = self._generate_for_paths(
-                [Path(module_path)], output_path
-            )
+            generated_files, gen_errors = self._generate_for_paths([Path(module_path)], output_path)
             errors.extend(gen_errors)
 
             stats = self.llm_generator.get_stats()

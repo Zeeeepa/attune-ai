@@ -14,7 +14,8 @@ Licensed under Fair Source 0.9
 from unittest.mock import Mock, patch
 
 import pytest
-import redis
+
+redis = pytest.importorskip("redis")
 
 
 class TestRedisConnectionFailures:

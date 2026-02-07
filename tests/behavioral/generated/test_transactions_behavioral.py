@@ -50,7 +50,7 @@ def mock_caching_ops():
 @pytest.fixture
 def transaction_manager(mock_base_ops, mock_caching_ops):
     """Create a TransactionManager instance with mocked dependencies.
-    
+
     Returns:
         TransactionManager instance for testing.
     """
@@ -60,7 +60,7 @@ def transaction_manager(mock_base_ops, mock_caching_ops):
 @pytest.fixture
 def agent_credentials():
     """Create agent credentials for testing.
-    
+
     Returns:
         AgentCredentials with VALIDATOR access tier.
     """
@@ -115,23 +115,21 @@ class TestTransactionManagerInit:
         self, mock_base_ops, mock_caching_ops
     ):
         """Verify that initialization stores references to dependencies.
-        
+
         Given: BaseOperations and CachingOperations instances
         When: TransactionManager is initialized
         Then: It stores references to both dependencies
         """
         # When
         manager = TransactionManager(mock_base_ops, mock_caching_ops)
-        
+
         # Then
         assert manager._base is mock_base_ops
         assert manager._caching is mock_caching_ops
 
-    def test_given_valid_ops_when_init_then_has_prefix_staged_constant(
-        self, transaction_manager
-    ):
+    def test_given_valid_ops_when_init_then_has_prefix_staged_constant(self, transaction_manager):
         """Verify that PREFIX_STAGED constant is set correctly.
-        
+
         Given: A TransactionManager instance
         When: Checking the PREFIX_STAGED attribute
         Then: It should be set to the correct namespace
@@ -160,9 +158,7 @@ class TestAtomicPromotePatternSuccess:
         mock_pipeline.delete.return_value = None
         mock_pipeline.execute.return_value = [1]  # Successful delete
 
-        transaction_manager._base._client.get.return_value = json.dumps(
-            staged_pattern_data
-        )
+        transaction_manager._base._client.get.return_value = json.dumps(staged_pattern_data)
         transaction_manager._base._client.pipeline.return_value = mock_pipeline
 
         # When
@@ -196,9 +192,7 @@ class TestAtomicPromotePatternSuccess:
         mock_pipeline.delete.return_value = None
         mock_pipeline.execute.return_value = [1]
 
-        transaction_manager._base._client.get.return_value = json.dumps(
-            staged_pattern_data
-        )
+        transaction_manager._base._client.get.return_value = json.dumps(staged_pattern_data)
         transaction_manager._base._client.pipeline.return_value = mock_pipeline
 
         # When
@@ -232,9 +226,7 @@ class TestAtomicPromotePatternSuccess:
         mock_pipeline.delete.return_value = None
         mock_pipeline.execute.return_value = [1]
 
-        transaction_manager._base._client.get.return_value = json.dumps(
-            staged_pattern_data
-        )
+        transaction_manager._base._client.get.return_value = json.dumps(staged_pattern_data)
         transaction_manager._base._client.pipeline.return_value = mock_pipeline
 
         # When
@@ -287,9 +279,7 @@ class TestAtomicPromotePatternFailure:
         pattern_id = "pat_123"
         staged_pattern_data["confidence"] = 0.5
 
-        transaction_manager._base._client.get.return_value = json.dumps(
-            staged_pattern_data
-        )
+        transaction_manager._base._client.get.return_value = json.dumps(staged_pattern_data)
 
         # When
         success, pattern, message = transaction_manager.atomic_promote_pattern(
@@ -319,9 +309,7 @@ class TestAtomicPromotePatternFailure:
         mock_pipeline.delete.return_value = None
         mock_pipeline.execute.side_effect = redis_lib.WatchError("Watched key changed")
 
-        transaction_manager._base._client.get.return_value = json.dumps(
-            staged_pattern_data
-        )
+        transaction_manager._base._client.get.return_value = json.dumps(staged_pattern_data)
         transaction_manager._base._client.pipeline.return_value = mock_pipeline
 
         # When
@@ -351,9 +339,7 @@ class TestAtomicPromotePatternFailure:
         # The source doesn't catch JSONDecodeError explicitly, so it propagates
         # through the finally block. Since it's not a WatchError, it re-raises.
         with pytest.raises(json.JSONDecodeError):
-            transaction_manager.atomic_promote_pattern(
-                pattern_id, agent_credentials
-            )
+            transaction_manager.atomic_promote_pattern(pattern_id, agent_credentials)
 
     def test_given_redis_connection_error_when_promote_then_raises(
         self, transaction_manager, agent_credentials
@@ -366,15 +352,11 @@ class TestAtomicPromotePatternFailure:
         """
         # Given
         pattern_id = "pat_123"
-        transaction_manager._base._client.watch.side_effect = ConnectionError(
-            "Connection error"
-        )
+        transaction_manager._base._client.watch.side_effect = ConnectionError("Connection error")
 
         # When/Then - ConnectionError is not redis.WatchError, so it propagates
         with pytest.raises(ConnectionError, match="Connection error"):
-            transaction_manager.atomic_promote_pattern(
-                pattern_id, agent_credentials
-            )
+            transaction_manager.atomic_promote_pattern(pattern_id, agent_credentials)
 
     def test_given_zero_confidence_when_promote_with_min_confidence_then_fails(
         self, transaction_manager, agent_credentials, staged_pattern_data
@@ -389,9 +371,7 @@ class TestAtomicPromotePatternFailure:
         pattern_id = "pat_123"
         staged_pattern_data["confidence"] = 0.0
 
-        transaction_manager._base._client.get.return_value = json.dumps(
-            staged_pattern_data
-        )
+        transaction_manager._base._client.get.return_value = json.dumps(staged_pattern_data)
 
         # When
         success, pattern, message = transaction_manager.atomic_promote_pattern(
@@ -424,9 +404,7 @@ class TestAtomicPromotePatternEdgeCases:
         mock_pipeline.delete.return_value = None
         mock_pipeline.execute.return_value = [1]
 
-        transaction_manager._base._client.get.return_value = json.dumps(
-            staged_pattern_data
-        )
+        transaction_manager._base._client.get.return_value = json.dumps(staged_pattern_data)
         transaction_manager._base._client.pipeline.return_value = mock_pipeline
 
         # When
@@ -450,4 +428,3 @@ class TestAtomicPromotePatternEdgeCases:
         # When/Then
         with pytest.raises(ValueError, match="pattern_id cannot be empty"):
             transaction_manager.atomic_promote_pattern("", agent_credentials)
-

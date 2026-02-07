@@ -250,7 +250,9 @@ class ResilientAgent(BaseAgent):
                     if attempt < max_attempts - 1:
                         actual_delay = delay
                         if jitter:
-                            actual_delay = delay * (0.5 + int.from_bytes(os.urandom(4), "big") / (2**32))
+                            actual_delay = delay * (
+                                0.5 + int.from_bytes(os.urandom(4), "big") / (2**32)
+                            )
                         actual_delay = min(actual_delay, max_delay)
                         logger.debug(
                             f"Agent {self.name} attempt {attempt + 1} failed, "
