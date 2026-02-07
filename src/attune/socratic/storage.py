@@ -337,8 +337,7 @@ class SQLiteStorage(StorageBackend):
     def _init_database(self) -> None:
         """Initialize database schema."""
         with self._get_connection() as conn:
-            conn.executescript(
-                """
+            conn.executescript("""
                 CREATE TABLE IF NOT EXISTS sessions (
                     session_id TEXT PRIMARY KEY,
                     state TEXT NOT NULL,
@@ -379,8 +378,7 @@ class SQLiteStorage(StorageBackend):
                 );
 
                 CREATE INDEX IF NOT EXISTS idx_evaluations_blueprint ON evaluations(blueprint_id);
-            """
-            )
+            """)
 
     def save_session(self, session: SocraticSession) -> None:
         """Save session to database."""

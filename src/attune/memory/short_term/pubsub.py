@@ -295,9 +295,7 @@ class PubSubManager:
 
                     # Re-subscribe to all channels
                     for channel in self._subscriptions:
-                        self._pubsub.subscribe(
-                            **{channel: self._pubsub_message_handler}
-                        )
+                        self._pubsub.subscribe(**{channel: self._pubsub_message_handler})
                     logger.info("pubsub_reconnected", channels=list(self._subscriptions.keys()))
                 except Exception as reconnect_err:
                     logger.warning(

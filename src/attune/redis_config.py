@@ -1,13 +1,16 @@
 """Redis Configuration for Empathy Framework
 
 Handles connection to Redis from environment variables.
-Supports Railway, redis.com, local Docker, managed Redis, or mock mode.
+Supports Redis Cloud, Railway, local Docker, managed Redis, or mock mode.
 
 Environment Variables:
-    REDIS_URL: Full Redis URL (redis://user:pass@host:port)
-    REDIS_HOST: Redis host (default: localhost)
+    REDIS_MODE: "cloud" or "local" (inferred from REDIS_HOST if not set)
+        - cloud: Uses REDIS_HOST, REDIS_PORT, REDIS_PASSWORD (for managed services)
+        - local: Uses localhost:6379, no password (for local Redis OSS / Docker)
+    REDIS_URL: Full Redis URL (redis://user:pass@host:port) - overrides REDIS_MODE
+    REDIS_HOST: Redis host (used in cloud mode)
     REDIS_PORT: Redis port (default: 6379)
-    REDIS_PASSWORD: Redis password (optional)
+    REDIS_PASSWORD: Redis password (used in cloud mode, ignored in local mode)
     REDIS_DB: Redis database number (default: 0)
     EMPATHY_REDIS_MOCK: Set to "true" to use mock mode
 
@@ -53,10 +56,53 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Fair Source 0.9
 """
 
+import logging
 import os
 from urllib.parse import urlparse
 
 from .memory.short_term import RedisConfig, RedisShortTermMemory
+
+logger = logging.getLogger(__name__)
+
+# Valid REDIS_MODE values
+REDIS_MODE_CLOUD = "cloud"
+REDIS_MODE_LOCAL = "local"
+_VALID_REDIS_MODES = {REDIS_MODE_CLOUD, REDIS_MODE_LOCAL}
+_LOCAL_HOSTS = {"localhost", "127.0.0.1", ""}
+
+
+def _resolve_redis_mode() -> str:
+    """Resolve the effective Redis mode from environment.
+
+    Priority:
+    1. Explicit REDIS_MODE env var ("cloud" or "local")
+    2. Inference from REDIS_HOST:
+       - Non-localhost host -> "cloud"
+       - localhost/127.0.0.1 or missing -> "local"
+
+    Returns:
+        "cloud" or "local"
+
+    Raises:
+        ValueError: If REDIS_MODE has an invalid value
+
+    """
+    explicit_mode = os.getenv("REDIS_MODE", "").strip().lower()
+
+    if explicit_mode:
+        if explicit_mode not in _VALID_REDIS_MODES:
+            raise ValueError(
+                f"Invalid REDIS_MODE='{explicit_mode}'. "
+                f"Valid values: {', '.join(sorted(_VALID_REDIS_MODES))}"
+            )
+        return explicit_mode
+
+    # Infer from REDIS_HOST
+    redis_host = os.getenv("REDIS_HOST", "").strip()
+    if redis_host and redis_host not in _LOCAL_HOSTS:
+        return REDIS_MODE_CLOUD
+
+    return REDIS_MODE_LOCAL
 
 
 def parse_redis_url(url: str) -> dict:
@@ -87,16 +133,40 @@ def parse_redis_url(url: str) -> dict:
     }
 
 
+def _get_common_connection_kwargs() -> dict:
+    """Read common connection/retry env vars shared by all modes.
+
+    Returns:
+        Dict of connection settings for RedisConfig constructor.
+
+    """
+    return {
+        "socket_timeout": float(os.getenv("REDIS_SOCKET_TIMEOUT", "5.0")),
+        "socket_connect_timeout": float(os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", "5.0")),
+        "max_connections": int(os.getenv("REDIS_MAX_CONNECTIONS", "10")),
+        "retry_on_timeout": os.getenv("REDIS_RETRY_ON_TIMEOUT", "true").lower() == "true",
+        "retry_max_attempts": int(os.getenv("REDIS_RETRY_MAX_ATTEMPTS", "3")),
+        "retry_base_delay": float(os.getenv("REDIS_RETRY_BASE_DELAY", "0.1")),
+        "retry_max_delay": float(os.getenv("REDIS_RETRY_MAX_DELAY", "2.0")),
+    }
+
+
 def get_redis_config() -> RedisConfig:
     """Get Redis configuration from environment variables.
 
     Priority:
-    1. REDIS_URL (full URL, used by Railway/Heroku/managed services)
-    2. Individual env vars (REDIS_HOST, REDIS_PORT, etc.)
-    3. Defaults (localhost:6379)
+    1. EMPATHY_REDIS_MOCK=true -> mock mode
+    2. REDIS_URL (full URL, used by Railway/Heroku/managed services)
+    3. REDIS_MODE + individual env vars:
+       - "cloud": uses REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
+       - "local": uses localhost:6379, no password (ignores REDIS_PASSWORD)
+       - If REDIS_MODE not set, inferred from REDIS_HOST
 
     Returns:
         RedisConfig with all connection parameters
+
+    Raises:
+        ValueError: If REDIS_MODE has an invalid value
 
     """
     # Check for mock mode
@@ -114,19 +184,45 @@ def get_redis_config() -> RedisConfig:
             db=url_config["db"],
             ssl=url_config.get("ssl", False),
             use_mock=False,
-            # Apply additional env var overrides
-            socket_timeout=float(os.getenv("REDIS_SOCKET_TIMEOUT", "5.0")),
-            max_connections=int(os.getenv("REDIS_MAX_CONNECTIONS", "10")),
-            retry_max_attempts=int(os.getenv("REDIS_RETRY_MAX_ATTEMPTS", "3")),
-            retry_base_delay=float(os.getenv("REDIS_RETRY_BASE_DELAY", "0.1")),
-            retry_max_delay=float(os.getenv("REDIS_RETRY_MAX_DELAY", "2.0")),
+            **_get_common_connection_kwargs(),
         )
 
-    # Build config from individual env vars
+    # Resolve mode (explicit REDIS_MODE or inferred from REDIS_HOST)
+    mode = _resolve_redis_mode()
+    common = _get_common_connection_kwargs()
+
+    if mode == REDIS_MODE_LOCAL:
+        # Local mode: localhost, no password, ignore REDIS_PASSWORD
+        return RedisConfig(
+            host="localhost",
+            port=int(os.getenv("REDIS_PORT", "6379")),
+            password=None,
+            db=int(os.getenv("REDIS_DB", "0")),
+            use_mock=False,
+            ssl=False,
+            **common,
+        )
+
+    # Cloud mode: use REDIS_HOST, REDIS_PORT, REDIS_PASSWORD from env
+    host = os.getenv("REDIS_HOST", "")
+    password = os.getenv("REDIS_PASSWORD")
+
+    if not host:
+        logger.warning(
+            "REDIS_MODE=cloud but REDIS_HOST not set. "
+            "Set REDIS_HOST to your Redis Cloud endpoint."
+        )
+
+    if not password:
+        logger.warning(
+            "REDIS_MODE=cloud but REDIS_PASSWORD not set. "
+            "Most cloud Redis services require a password."
+        )
+
     return RedisConfig(
-        host=os.getenv("REDIS_HOST", "localhost"),
+        host=host or "localhost",
         port=int(os.getenv("REDIS_PORT", "6379")),
-        password=os.getenv("REDIS_PASSWORD"),
+        password=password,
         db=int(os.getenv("REDIS_DB", "0")),
         use_mock=False,
         # SSL settings
@@ -135,15 +231,7 @@ def get_redis_config() -> RedisConfig:
         ssl_ca_certs=os.getenv("REDIS_SSL_CA_CERTS"),
         ssl_certfile=os.getenv("REDIS_SSL_CERTFILE"),
         ssl_keyfile=os.getenv("REDIS_SSL_KEYFILE"),
-        # Connection settings
-        socket_timeout=float(os.getenv("REDIS_SOCKET_TIMEOUT", "5.0")),
-        socket_connect_timeout=float(os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", "5.0")),
-        max_connections=int(os.getenv("REDIS_MAX_CONNECTIONS", "10")),
-        # Retry settings
-        retry_on_timeout=os.getenv("REDIS_RETRY_ON_TIMEOUT", "true").lower() == "true",
-        retry_max_attempts=int(os.getenv("REDIS_RETRY_MAX_ATTEMPTS", "3")),
-        retry_base_delay=float(os.getenv("REDIS_RETRY_BASE_DELAY", "0.1")),
-        retry_max_delay=float(os.getenv("REDIS_RETRY_MAX_DELAY", "2.0")),
+        **common,
     )
 
 
@@ -241,8 +329,15 @@ def check_redis_connection() -> dict:
     """
     config = get_redis_config()
 
+    # Resolve mode for reporting
+    try:
+        redis_mode = _resolve_redis_mode()
+    except ValueError:
+        redis_mode = "unknown"
+
     result = {
         "config_source": "environment",
+        "redis_mode": redis_mode,
         "use_mock": config.use_mock,
         "host": config.host,
         "port": config.port,
@@ -257,6 +352,8 @@ def check_redis_connection() -> dict:
         result["config_source"] = "REDIS_URL"
     elif os.getenv("REDIS_PRIVATE_URL"):
         result["config_source"] = "REDIS_PRIVATE_URL"
+    elif os.getenv("REDIS_MODE"):
+        result["config_source"] = f"REDIS_MODE={os.getenv('REDIS_MODE')}"
     elif os.getenv("REDIS_HOST"):
         result["config_source"] = "REDIS_HOST"
 
