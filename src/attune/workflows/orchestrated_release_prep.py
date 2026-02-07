@@ -38,17 +38,9 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
-import warnings
-
-warnings.warn(
-    "orchestrated_release_prep is deprecated. Use 'attune workflow run release-prep' "
-    "which now uses ReleasePrepTeamWorkflow. Remove in v6.0.",
-    DeprecationWarning,
-    stacklevel=2,
-)
-
 import asyncio
 import logging
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -56,6 +48,13 @@ from typing import Any
 from ..orchestration.agent_templates import AgentTemplate, get_template
 from ..orchestration.execution_strategies import ParallelStrategy, StrategyResult
 from ..orchestration.meta_orchestrator import MetaOrchestrator
+
+warnings.warn(
+    "orchestrated_release_prep is deprecated. Use 'attune workflow run release-prep' "
+    "which now uses ReleasePrepTeamWorkflow. Remove in v6.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 logger = logging.getLogger(__name__)
 

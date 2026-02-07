@@ -48,8 +48,7 @@ except ImportError:
 
 # Optional: Attune auth strategy
 try:
-    from attune.models import AuthMode, get_auth_strategy
-    from attune.models.registry import ModelRegistry
+    from attune.models import get_auth_strategy
     ATTUNE_AUTH_AVAILABLE = True
 except ImportError:
     ATTUNE_AUTH_AVAILABLE = False

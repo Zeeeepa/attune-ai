@@ -8,7 +8,12 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import asyncio
+import os
 import warnings
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Any
 
 warnings.warn(
     "release_prep_crew is deprecated. Use 'attune workflow run release-prep' "
@@ -16,13 +21,6 @@ warnings.warn(
     DeprecationWarning,
     stacklevel=2,
 )
-
-import asyncio
-import os
-import warnings
-from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Any
 
 # Try to import the LLM executor for actual AI calls
 EmpathyLLMExecutor = None
