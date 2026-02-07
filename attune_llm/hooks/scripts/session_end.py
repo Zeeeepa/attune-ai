@@ -188,9 +188,7 @@ def _try_evaluate_session(context: dict[str, Any], result: dict[str, Any]) -> No
         result["evaluation"] = eval_result
         patterns_extracted = eval_result.get("patterns_extracted", 0)
         if patterns_extracted > 0:
-            result["messages"].append(
-                f"[Learning] Extracted {patterns_extracted} pattern(s)"
-            )
+            result["messages"].append(f"[Learning] Extracted {patterns_extracted} pattern(s)")
     except ImportError:
         logger.debug("evaluate_session or learning module not available — skipping")
     except (TypeError, KeyError, ValueError) as e:

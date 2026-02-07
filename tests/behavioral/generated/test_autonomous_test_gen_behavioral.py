@@ -13,80 +13,83 @@ from pathlib import Path
 
 from attune.workflows.autonomous_test_gen import (
     AutonomousTestGenerator,
-    ValidationResult, 
-    CoverageResult
+    ValidationResult,
+    CoverageResult,
 )
+
 
 @pytest.fixture
 def mock_generator_config():
     """Fixture providing standard configuration for AutonomousTestGenerator."""
     return {
-        'agent_id': 'test-agent-001',
-        'batch_num': 1,
-        'modules': [{'file': 'src/attune/test_module.py', 'total': 10, 'missing': 5}],
-        'enable_refinement': True,
-        'max_refinement_iterations': 3,
-        'enable_coverage_guided': False,
-        'target_coverage': 0.80
+        "agent_id": "test-agent-001",
+        "batch_num": 1,
+        "modules": [{"file": "src/attune/test_module.py", "total": 10, "missing": 5}],
+        "enable_refinement": True,
+        "max_refinement_iterations": 3,
+        "enable_coverage_guided": False,
+        "target_coverage": 0.80,
     }
+
 
 def test_autonomous_test_generator_initialization(mock_generator_config):
     """Test successful initialization of AutonomousTestGenerator.
-    
-    Scenario: 
+
+    Scenario:
     - When valid configuration is provided
     - Then object is created with correct attributes
     """
     generator = AutonomousTestGenerator(**mock_generator_config)
-    
-    assert generator.agent_id == 'test-agent-001'
+
+    assert generator.agent_id == "test-agent-001"
     assert generator.batch_num == 1
     assert generator.enable_refinement is True
     assert generator.max_refinement_iterations == 3
     assert generator.enable_coverage_guided is False
     assert generator.target_coverage == 0.80
 
+
 def test_validation_result_creation():
     """Test ValidationResult dataclass creation."""
     result = ValidationResult(
-        passed=False, 
-        failures='Test failures occurred', 
+        passed=False,
+        failures="Test failures occurred",
         error_count=2,
-        output='Detailed test output'
+        output="Detailed test output",
     )
-    
+
     assert result.passed is False
-    assert result.failures == 'Test failures occurred'
+    assert result.failures == "Test failures occurred"
     assert result.error_count == 2
-    assert result.output == 'Detailed test output'
+    assert result.output == "Detailed test output"
+
 
 def test_coverage_result_creation():
     """Test CoverageResult dataclass creation."""
     result = CoverageResult(
-        coverage=0.75,
-        missing_lines=[10, 15, 20],
-        total_statements=100,
-        covered_statements=75
+        coverage=0.75, missing_lines=[10, 15, 20], total_statements=100, covered_statements=75
     )
-    
+
     assert result.coverage == 0.75
     assert result.missing_lines == [10, 15, 20]
     assert result.total_statements == 100
     assert result.covered_statements == 75
 
-@patch('attune.workflows.autonomous_test_gen.AutonomousTestGenerator._generate_module_tests')
+
+@patch("attune.workflows.autonomous_test_gen.AutonomousTestGenerator._generate_module_tests")
 def test_generate_all_method(mock_generate_module_tests, mock_generator_config):
     """Test generate_all method behavior.
-    
+
     Scenario:
     - When generate_all is called
     - Then _generate_module_tests is called for each module
     """
     generator = AutonomousTestGenerator(**mock_generator_config)
-    
+
     generator.generate_all()
-    
-    assert mock_generate_module_tests.call_count == len(mock_generator_config['modules'])
+
+    assert mock_generate_module_tests.call_count == len(mock_generator_config["modules"])
+
 
 def test_is_workflow_module():
     """Test _is_workflow_module method logic.
@@ -97,22 +100,19 @@ def test_is_workflow_module():
     - When source code has no workflow indicators
     - Then returns False
     """
-    generator = AutonomousTestGenerator(
-        agent_id='test',
-        batch_num=1,
-        modules=[]
-    )
+    generator = AutonomousTestGenerator(agent_id="test", batch_num=1, modules=[])
 
     workflow_source = "class MyWorkflow:\n    pass\n"
-    assert generator._is_workflow_module(workflow_source, 'attune.workflows.my_workflow') is True
+    assert generator._is_workflow_module(workflow_source, "attune.workflows.my_workflow") is True
 
     plain_source = "def helper():\n    return 42\n"
-    assert generator._is_workflow_module(plain_source, 'attune.utils.helper') is False
+    assert generator._is_workflow_module(plain_source, "attune.utils.helper") is False
 
-@patch('attune.workflows.autonomous_test_gen.AutonomousTestGenerator._run_pytest_validation')
-@patch('attune.workflows.autonomous_test_gen.AutonomousTestGenerator._generate_with_llm')
-@patch('attune.workflows.autonomous_test_gen._validate_file_path')
-@patch.dict('os.environ', {'ANTHROPIC_API_KEY': 'fake-key'})
+
+@patch("attune.workflows.autonomous_test_gen.AutonomousTestGenerator._run_pytest_validation")
+@patch("attune.workflows.autonomous_test_gen.AutonomousTestGenerator._generate_with_llm")
+@patch("attune.workflows.autonomous_test_gen._validate_file_path")
+@patch.dict("os.environ", {"ANTHROPIC_API_KEY": "fake-key"})
 def test_generate_with_refinement(
     mock_validate_path, mock_generate_with_llm, mock_run_pytest, mock_generator_config, tmp_path
 ):
@@ -137,14 +137,14 @@ def test_generate_with_refinement(
 
     # Mock pytest validation to pass on first iteration
     mock_run_pytest.return_value = ValidationResult(
-        passed=True, failures='', error_count=0, output='all passed'
+        passed=True, failures="", error_count=0, output="all passed"
     )
 
     result = generator._generate_with_refinement(
-        module_name='test_module',
-        module_path='attune.test_module',
-        source_file=Path('/mock/src/attune/test_module.py'),
-        source_code='def hello(): pass',
+        module_name="test_module",
+        module_path="attune.test_module",
+        source_file=Path("/mock/src/attune/test_module.py"),
+        source_code="def hello(): pass",
         test_file=test_file,
     )
 

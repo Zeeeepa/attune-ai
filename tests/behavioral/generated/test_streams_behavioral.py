@@ -13,7 +13,8 @@ from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
-import redis
+
+redis = pytest.importorskip("redis")
 
 from attune.memory.short_term.streams import StreamManager
 from attune.memory.types import AccessTier, AgentCredentials
@@ -109,9 +110,7 @@ class TestStreamManagerInit:
 class TestStreamManagerAppend:
     """Test StreamManager.append method."""
 
-    def test_append_success_with_contributor(
-        self, stream_manager, contributor_creds
-    ):
+    def test_append_success_with_contributor(self, stream_manager, contributor_creds):
         """
         GIVEN a stream manager with contributor credentials
         WHEN appending data to a stream
@@ -198,9 +197,7 @@ class TestStreamManagerAppend:
         with pytest.raises(Exception, match="Unexpected error"):
             stream_manager.append("audit", data, contributor_creds)
 
-    def test_append_mocked_mode_success(
-        self, stream_manager_mocked, contributor_creds
-    ):
+    def test_append_mocked_mode_success(self, stream_manager_mocked, contributor_creds):
         """
         GIVEN a stream manager in mocked mode
         WHEN appending data to a stream
@@ -218,9 +215,7 @@ class TestStreamManagerAppend:
         assert stored_entry[1]["agent_id"] == "agent_1"
         assert stored_entry[1]["action"] == "test"
 
-    def test_append_mocked_mode_multiple_entries(
-        self, stream_manager_mocked, contributor_creds
-    ):
+    def test_append_mocked_mode_multiple_entries(self, stream_manager_mocked, contributor_creds):
         """
         GIVEN a stream manager in mocked mode
         WHEN appending multiple entries
@@ -345,9 +340,7 @@ class TestStreamManagerRead:
         WHEN Redis raises an error during xrange
         THEN the error propagates
         """
-        stream_manager._base._client.xrange.side_effect = redis.RedisError(
-            "Connection error"
-        )
+        stream_manager._base._client.xrange.side_effect = redis.RedisError("Connection error")
 
         with pytest.raises(redis.RedisError):
             stream_manager.read("audit", observer_creds)
@@ -399,9 +392,7 @@ class TestStreamManagerRead:
         assert entries[1][0] == "1234567891-0"
         assert entries[1][1]["action"] == "test2"
 
-    def test_read_mocked_mode_with_start_id(
-        self, stream_manager_mocked, observer_creds
-    ):
+    def test_read_mocked_mode_with_start_id(self, stream_manager_mocked, observer_creds):
         """
         GIVEN a stream manager in mocked mode with multiple entries
         WHEN reading from a specific start ID

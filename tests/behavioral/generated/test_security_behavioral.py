@@ -17,7 +17,6 @@ from attune.memory.short_term.security import DataSanitizer
 from attune.memory.security.secrets_detector import SecretType, Severity as SecretSeverity
 from attune.memory.types import RedisMetrics, SecurityError
 
-
 # Fixtures
 
 
@@ -189,7 +188,9 @@ class TestDataSanitizerInit:
 class TestDataSanitizerMetrics:
     """Test DataSanitizer metrics property."""
 
-    def test_metrics_property_returns_metrics_instance(self, sanitizer_with_all_enabled, mock_metrics):
+    def test_metrics_property_returns_metrics_instance(
+        self, sanitizer_with_all_enabled, mock_metrics
+    ):
         """Given a sanitizer with metrics, when accessing metrics property, then it returns the metrics instance."""
         # When
         result = sanitizer_with_all_enabled.metrics
@@ -429,4 +430,3 @@ class TestDataSanitizerSanitize:
         # Then
         assert result == []
         assert count == 0
-

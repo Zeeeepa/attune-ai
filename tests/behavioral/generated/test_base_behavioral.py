@@ -18,7 +18,6 @@ import pytest
 from attune.memory.short_term.base import REDIS_AVAILABLE, BaseOperations
 from attune.memory.types import RedisConfig, RedisMetrics
 
-
 # ============================================================================
 # FIXTURES
 # ============================================================================
@@ -465,4 +464,3 @@ class TestGetOperation:
 
         # Then
         assert result is None
-

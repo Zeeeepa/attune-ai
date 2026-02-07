@@ -342,7 +342,9 @@ def _parse_response(text: str) -> dict[str, Any]:
         result["coverage_percent"] = float(cov_match.group(1))
 
     # Try to find issue count patterns
-    issues_match = re.search(r"(\d+)\s+(?:critical|high)\s+(?:issue|finding|vuln)", text, re.IGNORECASE)
+    issues_match = re.search(
+        r"(\d+)\s+(?:critical|high)\s+(?:issue|finding|vuln)", text, re.IGNORECASE
+    )
     if issues_match:
         result["critical_issues"] = int(issues_match.group(1))
 
@@ -427,9 +429,7 @@ class ReleaseAgent:
                 "agent_id": self.agent_id,
                 "role": self.role,
                 "result_summary": {
-                    k: v
-                    for k, v in result.items()
-                    if isinstance(v, (str, int, float, bool))
+                    k: v for k, v in result.items() if isinstance(v, (str, int, float, bool))
                 },
                 "tier_used": self.current_tier.value,
                 "timestamp": time.time(),
@@ -550,9 +550,7 @@ class ReleaseAgent:
             escalated=escalated,
         )
 
-    def _execute_tier(
-        self, codebase_path: str, tier: Tier
-    ) -> tuple[bool, dict[str, Any]]:
+    def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
         """Execute at specific tier. Override in subclasses.
 
         Args:
@@ -617,9 +615,7 @@ class SecurityAuditorAgent(ReleaseAgent):
             redis_client=redis_client,
         )
 
-    def _execute_tier(
-        self, codebase_path: str, tier: Tier
-    ) -> tuple[bool, dict[str, Any]]:
+    def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
         """Run security analysis."""
         try:
             # Run bandit
@@ -707,12 +703,14 @@ class SecurityAuditorAgent(ReleaseAgent):
 
         top_findings = []
         for r in results[:5]:
-            top_findings.append({
-                "file": r.get("filename", "unknown"),
-                "line": r.get("line_number", 0),
-                "issue": r.get("issue_text", ""),
-                "severity": r.get("issue_severity", "LOW"),
-            })
+            top_findings.append(
+                {
+                    "file": r.get("filename", "unknown"),
+                    "line": r.get("line_number", 0),
+                    "issue": r.get("issue_text", ""),
+                    "severity": r.get("issue_severity", "LOW"),
+                }
+            )
 
         return {
             "critical_issues": severity_counts["CRITICAL"] + severity_counts["HIGH"],
@@ -740,9 +738,7 @@ class TestCoverageAgent(ReleaseAgent):
             redis_client=redis_client,
         )
 
-    def _execute_tier(
-        self, codebase_path: str, tier: Tier
-    ) -> tuple[bool, dict[str, Any]]:
+    def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
         """Run test coverage analysis."""
         try:
             # Step 1: Quick test count (--collect-only is fast)
@@ -765,9 +761,15 @@ class TestCoverageAgent(ReleaseAgent):
             # Step 2: Try actual coverage (with short timeout)
             cov_returncode, cov_stdout, _cov_stderr = _run_command(
                 [
-                    "uv", "run", "pytest",
-                    "--cov=src", "--cov-report=term-missing",
-                    "-x", "-q", "--no-header", "--timeout=30",
+                    "uv",
+                    "run",
+                    "pytest",
+                    "--cov=src",
+                    "--cov-report=term-missing",
+                    "-x",
+                    "-q",
+                    "--no-header",
+                    "--timeout=30",
                 ],
                 cwd=codebase_path,
             )
@@ -862,9 +864,7 @@ class CodeQualityAgent(ReleaseAgent):
             redis_client=redis_client,
         )
 
-    def _execute_tier(
-        self, codebase_path: str, tier: Tier
-    ) -> tuple[bool, dict[str, Any]]:
+    def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
         """Run code quality analysis."""
         try:
             # Run ruff check
@@ -983,9 +983,7 @@ class DocumentationAgent(ReleaseAgent):
             redis_client=redis_client,
         )
 
-    def _execute_tier(
-        self, codebase_path: str, tier: Tier
-    ) -> tuple[bool, dict[str, Any]]:
+    def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
         """Run documentation analysis."""
         try:
             src_path = Path(codebase_path) / "src"
@@ -1121,7 +1119,8 @@ class ReleasePrepTeam:
         return sum(agent.total_cost for agent in self.agents)
 
     async def assess_readiness(
-        self, codebase_path: str = ".",
+        self,
+        codebase_path: str = ".",
     ) -> ReleaseReadinessReport:
         """Assess release readiness with all agents in parallel.
 
@@ -1136,10 +1135,7 @@ class ReleasePrepTeam:
 
         # Execute all agents in parallel
         loop = asyncio.get_event_loop()
-        tasks = [
-            loop.run_in_executor(None, agent.process, codebase_path)
-            for agent in self.agents
-        ]
+        tasks = [loop.run_in_executor(None, agent.process, codebase_path) for agent in self.agents]
         results: list[ReleaseAgentResult] = await asyncio.gather(*tasks)
 
         elapsed = time.time() - start
@@ -1176,9 +1172,7 @@ class ReleasePrepTeam:
             total_cost=self.get_total_cost(),
         )
 
-    def _evaluate_quality_gates(
-        self, results: list[ReleaseAgentResult]
-    ) -> list[QualityGate]:
+    def _evaluate_quality_gates(self, results: list[ReleaseAgentResult]) -> list[QualityGate]:
         """Evaluate quality gates based on agent results.
 
         Args:
@@ -1230,7 +1224,9 @@ class ReleasePrepTeam:
         # Quality gate
         quality_score = 0.0
         if quality:
-            quality_score = quality.findings.get("quality_score", quality.findings.get("score", 0.0))
+            quality_score = quality.findings.get(
+                "quality_score", quality.findings.get("score", 0.0)
+            )
 
         gates.append(
             QualityGate(
@@ -1323,7 +1319,9 @@ class ReleasePrepTeam:
         if failed_gates:
             lines.append("Failed gates:")
             for gate in failed_gates:
-                lines.append(f"  - {gate.name}: {gate.actual:.1f} vs threshold {gate.threshold:.1f}")
+                lines.append(
+                    f"  - {gate.name}: {gate.actual:.1f} vs threshold {gate.threshold:.1f}"
+                )
 
         lines.append("")
         lines.append(f"Agents: {len(results)} executed")

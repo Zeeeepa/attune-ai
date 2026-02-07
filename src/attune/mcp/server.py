@@ -241,7 +241,9 @@ class EmpathyMCPServer:
         """
         return list(self.prompts.values())
 
-    def get_prompt_messages(self, prompt_name: str, arguments: dict[str, str]) -> list[dict[str, Any]]:
+    def get_prompt_messages(
+        self, prompt_name: str, arguments: dict[str, str]
+    ) -> list[dict[str, Any]]:
         """Get messages for a specific prompt.
 
         Args:

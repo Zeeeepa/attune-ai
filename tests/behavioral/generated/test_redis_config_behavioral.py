@@ -184,9 +184,7 @@ class TestParseRedisUrl:
 class TestGetRedisConfig:
     """Behavioral tests for get_redis_config function."""
 
-    def test_given_redis_url_env_when_called_then_parses_url(
-        self, clean_env, mock_redis_config
-    ):
+    def test_given_redis_url_env_when_called_then_parses_url(self, clean_env, mock_redis_config):
         """
         GIVEN: REDIS_URL environment variable is set
         WHEN: get_redis_config is called
@@ -231,9 +229,7 @@ class TestGetRedisConfig:
         assert call_kwargs["password"] == "secret"
         assert call_kwargs["db"] == 3
 
-    def test_given_no_env_vars_when_called_then_uses_defaults(
-        self, clean_env, mock_redis_config
-    ):
+    def test_given_no_env_vars_when_called_then_uses_defaults(self, clean_env, mock_redis_config):
         """
         GIVEN: No Redis environment variables are set
         WHEN: get_redis_config is called
@@ -249,9 +245,7 @@ class TestGetRedisConfig:
         assert call_kwargs["port"] == 6379
         assert call_kwargs["db"] == 0
 
-    def test_given_ssl_enabled_env_when_called_then_enables_ssl(
-        self, clean_env, mock_redis_config
-    ):
+    def test_given_ssl_enabled_env_when_called_then_enables_ssl(self, clean_env, mock_redis_config):
         """
         GIVEN: REDIS_SSL environment variable is set to "true"
         WHEN: get_redis_config is called
@@ -404,4 +398,3 @@ class TestGetRedisConfig:
         assert call_kwargs["retry_max_attempts"] == 5
         assert call_kwargs["retry_base_delay"] == 0.2
         assert call_kwargs["retry_max_delay"] == 3.0
-

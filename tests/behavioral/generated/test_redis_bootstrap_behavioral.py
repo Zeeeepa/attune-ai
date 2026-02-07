@@ -31,7 +31,6 @@ from attune.memory.redis_bootstrap import (
     _start_via_windows_service,
 )
 
-
 # ============================================================================
 # Fixtures
 # ============================================================================
@@ -176,9 +175,7 @@ class TestRedisStatus:
 class TestCheckRedisRunning:
     """Tests for _check_redis_running function."""
 
-    def test_given_redis_responds_when_checking_then_returns_true(
-        self, mock_redis_client
-    ):
+    def test_given_redis_responds_when_checking_then_returns_true(self, mock_redis_client):
         """Verify returns True when Redis responds to ping."""
         # Given
         mock_redis_client.ping.return_value = True
@@ -190,9 +187,7 @@ class TestCheckRedisRunning:
         assert result is True
         mock_redis_client.ping.assert_called_once()
 
-    def test_given_redis_not_responding_when_checking_then_returns_false(
-        self, mock_redis_client
-    ):
+    def test_given_redis_not_responding_when_checking_then_returns_false(self, mock_redis_client):
         """Verify returns False when Redis doesn't respond."""
         # Given
         mock_redis_client.ping.side_effect = Exception("Connection refused")
@@ -259,9 +254,7 @@ class TestCheckRedisRunning:
 class TestFindCommand:
     """Tests for _find_command function."""
 
-    def test_given_command_exists_when_finding_then_returns_path(
-        self, mock_shutil_which
-    ):
+    def test_given_command_exists_when_finding_then_returns_path(self, mock_shutil_which):
         """Verify returns path when command exists."""
         # Given
         mock_shutil_which.return_value = "/usr/bin/redis-server"
@@ -273,9 +266,7 @@ class TestFindCommand:
         assert result == "/usr/bin/redis-server"
         mock_shutil_which.assert_called_once_with("redis-server")
 
-    def test_given_command_not_exists_when_finding_then_returns_none(
-        self, mock_shutil_which
-    ):
+    def test_given_command_not_exists_when_finding_then_returns_none(self, mock_shutil_which):
         """Verify returns None when command doesn't exist."""
         # Given
         mock_shutil_which.return_value = None
@@ -324,9 +315,7 @@ class TestRunSilent:
         assert success is True
         assert "Success output" in output
 
-    def test_given_failed_command_when_running_then_returns_false_and_output(
-        self, mock_subprocess
-    ):
+    def test_given_failed_command_when_running_then_returns_false_and_output(self, mock_subprocess):
         """Verify returns failure for failed command execution."""
         # Given
         mock_result = Mock()
@@ -347,9 +336,7 @@ class TestRunSilent:
     ):
         """Verify handles command timeout gracefully."""
         # Given
-        mock_subprocess.side_effect = subprocess.TimeoutExpired(
-            cmd=["sleep", "100"], timeout=5
-        )
+        mock_subprocess.side_effect = subprocess.TimeoutExpired(cmd=["sleep", "100"], timeout=5)
 
         # When
         success, output = _run_silent(["sleep", "100"], timeout=5)
@@ -358,9 +345,7 @@ class TestRunSilent:
         assert success is False
         assert output == "timeout"
 
-    def test_given_exception_when_running_then_returns_false_and_error(
-        self, mock_subprocess
-    ):
+    def test_given_exception_when_running_then_returns_false_and_error(self, mock_subprocess):
         """Verify handles general exceptions gracefully."""
         # Given
         mock_subprocess.side_effect = Exception("Something went wrong")
@@ -372,9 +357,7 @@ class TestRunSilent:
         assert success is False
         assert "Something went wrong" in output
 
-    def test_given_custom_timeout_when_running_then_uses_correct_timeout(
-        self, mock_subprocess
-    ):
+    def test_given_custom_timeout_when_running_then_uses_correct_timeout(self, mock_subprocess):
         """Verify custom timeout is used."""
         # Given
         mock_result = Mock()
@@ -395,9 +378,7 @@ class TestRunSilent:
             timeout=10,
         )
 
-    def test_given_stdout_and_stderr_when_running_then_combines_output(
-        self, mock_subprocess
-    ):
+    def test_given_stdout_and_stderr_when_running_then_combines_output(self, mock_subprocess):
         """Verify stdout and stderr are combined in output."""
         # Given
         mock_result = Mock()
@@ -422,9 +403,7 @@ class TestRunSilent:
 class TestStartViaHomebrew:
     """Tests for _start_via_homebrew function."""
 
-    def test_given_brew_not_found_when_starting_then_returns_false(
-        self, mock_shutil_which
-    ):
+    def test_given_brew_not_found_when_starting_then_returns_false(self, mock_shutil_which):
         """Verify returns False when brew command is not available."""
         # Given
         mock_shutil_which.return_value = None
@@ -510,5 +489,3 @@ class TestStartViaHomebrew:
 # ============================================================================
 # Tests for _start_via_systemd
 # ============================================================================
-
-

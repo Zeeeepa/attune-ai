@@ -173,19 +173,13 @@ class ConfigValidator:
 
         # Check model IDs are non-empty
         if not routing.cheap_model:
-            errors.append(
-                ValidationError("routing.cheap_model", "Model ID cannot be empty")
-            )
+            errors.append(ValidationError("routing.cheap_model", "Model ID cannot be empty"))
 
         if not routing.capable_model:
-            errors.append(
-                ValidationError("routing.capable_model", "Model ID cannot be empty")
-            )
+            errors.append(ValidationError("routing.capable_model", "Model ID cannot be empty"))
 
         if not routing.premium_model:
-            errors.append(
-                ValidationError("routing.premium_model", "Model ID cannot be empty")
-            )
+            errors.append(ValidationError("routing.premium_model", "Model ID cannot be empty"))
 
         # Check max_tokens are positive
         for tier in ["cheap", "capable", "premium"]:

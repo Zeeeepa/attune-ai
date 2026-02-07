@@ -156,7 +156,15 @@ class UnifiedConfig:
             List of all configuration keys.
         """
         keys = []
-        sections = ["auth", "routing", "workflows", "analysis", "persistence", "telemetry", "environment"]
+        sections = [
+            "auth",
+            "routing",
+            "workflows",
+            "analysis",
+            "persistence",
+            "telemetry",
+            "environment",
+        ]
 
         for section_name in sections:
             section = getattr(self, section_name)

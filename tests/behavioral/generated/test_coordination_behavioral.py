@@ -235,9 +235,7 @@ class TestTeamPriorities:
 class TestConflictResolver:
     """Test ConflictResolver class."""
 
-    def test_given_resolver_when_initialized_then_has_correct_attributes(
-        self, team_priorities
-    ):
+    def test_given_resolver_when_initialized_then_has_correct_attributes(self, team_priorities):
         """Verify ConflictResolver initialization."""
         # Given/When
         resolver = ConflictResolver(team_priorities=team_priorities)
@@ -298,9 +296,7 @@ class TestConflictResolver:
         strategy = ResolutionStrategy.BEST_CONTEXT_MATCH
 
         # When
-        result = conflict_resolver.resolve_patterns(
-            patterns, strategy=strategy, context=context
-        )
+        result = conflict_resolver.resolve_patterns(patterns, strategy=strategy, context=context)
 
         # Then
         assert result.winning_pattern in patterns
@@ -350,9 +346,7 @@ class TestConflictResolver:
         with pytest.raises(ValueError, match="at least 2 patterns"):
             conflict_resolver.resolve_patterns(patterns)
 
-    def test_given_empty_patterns_when_resolving_then_raises_error(
-        self, conflict_resolver
-    ):
+    def test_given_empty_patterns_when_resolving_then_raises_error(self, conflict_resolver):
         """Verify resolution with empty patterns raises error."""
         # Given
         patterns = []
@@ -386,9 +380,7 @@ class TestConflictResolver:
         context = {"language": "python", "file_type": "module"}
 
         # When
-        match_score = conflict_resolver._calculate_context_match(
-            sample_pattern, context
-        )
+        match_score = conflict_resolver._calculate_context_match(sample_pattern, context)
 
         # Then
         assert isinstance(match_score, (float, int))

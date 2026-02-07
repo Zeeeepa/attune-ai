@@ -21,10 +21,7 @@ class TestInteractionResponse:
     def test_interaction_response_creation(self):
         """Verify InteractionResponse can be created with default and custom parameters."""
         response = InteractionResponse(
-            level=3,
-            response="Hello",
-            confidence=0.85,
-            predictions=["prediction1"]
+            level=3, response="Hello", confidence=0.85, predictions=["prediction1"]
         )
 
         assert response.level == 3
@@ -103,7 +100,7 @@ class TestEmpathyOS:
         mem = empathy_os.memory
         assert mem is not None
 
-    @patch.object(EmpathyOS, 'memory', new_callable=PropertyMock)
+    @patch.object(EmpathyOS, "memory", new_callable=PropertyMock)
     def test_persist_pattern(self, mock_memory):
         """Test persist_pattern delegates to memory."""
         mock_mem = Mock()
@@ -116,7 +113,7 @@ class TestEmpathyOS:
         mock_mem.persist_pattern.assert_called_once()
         assert result == {"pattern_id": "pat_123"}
 
-    @patch.object(EmpathyOS, 'memory', new_callable=PropertyMock)
+    @patch.object(EmpathyOS, "memory", new_callable=PropertyMock)
     def test_recall_pattern(self, mock_memory):
         """Test recall_pattern delegates to memory."""
         mock_mem = Mock()
@@ -129,7 +126,7 @@ class TestEmpathyOS:
         mock_mem.recall_pattern.assert_called_once_with("pat_123")
         assert result == {"content": "test"}
 
-    @patch.object(EmpathyOS, 'memory', new_callable=PropertyMock)
+    @patch.object(EmpathyOS, "memory", new_callable=PropertyMock)
     def test_stash_method(self, mock_memory):
         """Test stash delegates to memory."""
         mock_mem = Mock()
@@ -142,7 +139,7 @@ class TestEmpathyOS:
         mock_mem.stash.assert_called_once_with("my_key", {"data": "value"}, 3600)
         assert result is True
 
-    @patch.object(EmpathyOS, 'memory', new_callable=PropertyMock)
+    @patch.object(EmpathyOS, "memory", new_callable=PropertyMock)
     def test_retrieve_method(self, mock_memory):
         """Test retrieve delegates to memory."""
         mock_mem = Mock()

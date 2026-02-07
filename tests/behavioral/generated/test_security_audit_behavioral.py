@@ -25,16 +25,21 @@ def mock_workflow():
 def test_security_audit_workflow_initialization(mock_workflow):
     """Verify SecurityAuditWorkflow can be initialized correctly."""
     assert mock_workflow is not None
-    assert hasattr(mock_workflow, '_team_decisions')
-    assert hasattr(mock_workflow, '_crew')
+    assert hasattr(mock_workflow, "_team_decisions")
+    assert hasattr(mock_workflow, "_crew")
 
 
-@pytest.mark.parametrize("stage_name,input_data,expected_skip", [
-    ('remediate', {"findings": []}, True),
-    ('triage', {"path": "."}, False),
-    ('analyze', {"findings": []}, False),
-])
-def test_should_skip_stage_with_directory_rules(mock_workflow, stage_name, input_data, expected_skip):
+@pytest.mark.parametrize(
+    "stage_name,input_data,expected_skip",
+    [
+        ("remediate", {"findings": []}, True),
+        ("triage", {"path": "."}, False),
+        ("analyze", {"findings": []}, False),
+    ],
+)
+def test_should_skip_stage_with_directory_rules(
+    mock_workflow, stage_name, input_data, expected_skip
+):
     """Test stage skipping logic works as expected."""
     # should_skip_stage returns a tuple (should_skip, reason)
     # remediate is skipped when _has_critical is False (default)
@@ -52,41 +57,32 @@ def test_is_detection_code_identifies_detection_patterns():
 
     # _is_detection_code takes (line_content, match_text) - two arguments
     detection_samples = [
-        ('print("eval(" in code)', 'eval('),
-        ('def test_regex(): re.compile(pattern)', 'eval('),
-        ('check = ".search(" in text', '.search('),
+        ('print("eval(" in code)', "eval("),
+        ("def test_regex(): re.compile(pattern)", "eval("),
+        ('check = ".search(" in text', ".search("),
     ]
     non_detection_samples = [
-        ('result = eval(dangerous_code)', 'eval(dangerous_code)'),
-        ('execute_command(input)', 'execute_command(input)'),
-        ('normal_function()', 'normal_function()'),
+        ("result = eval(dangerous_code)", "eval(dangerous_code)"),
+        ("execute_command(input)", "execute_command(input)"),
+        ("normal_function()", "normal_function()"),
     ]
 
     for line_content, match_text in detection_samples:
-        assert workflow._is_detection_code(line_content, match_text), (
-            f"Failed to detect: {line_content}"
-        )
+        assert workflow._is_detection_code(
+            line_content, match_text
+        ), f"Failed to detect: {line_content}"
 
     for line_content, match_text in non_detection_samples:
-        assert not workflow._is_detection_code(line_content, match_text), (
-            f"Incorrectly detected: {line_content}"
-        )
+        assert not workflow._is_detection_code(
+            line_content, match_text
+        ), f"Incorrectly detected: {line_content}"
 
 
 def test_is_fake_credential_identifies_test_credentials():
     """Verify fake credential detection works correctly."""
     workflow = SecurityAuditWorkflow()
-    fake_credentials = [
-        '"EXAMPLE_KEY"',
-        '"your-key-here"',
-        '"mock_secret"',
-        '"TEST_PASSWORD"'
-    ]
-    real_credentials = [
-        '"actual_aws_access_key"',
-        '"production_db_password"',
-        '"real_secret_key"'
-    ]
+    fake_credentials = ['"EXAMPLE_KEY"', '"your-key-here"', '"mock_secret"', '"TEST_PASSWORD"']
+    real_credentials = ['"actual_aws_access_key"', '"production_db_password"', '"real_secret_key"']
 
     for cred in fake_credentials:
         assert workflow._is_fake_credential(cred), f"Failed to detect fake: {cred}"
@@ -95,7 +91,7 @@ def test_is_fake_credential_identifies_test_credentials():
         assert not workflow._is_fake_credential(cred), f"Incorrectly detected real: {cred}"
 
 
-@pytest.mark.parametrize("stage", ['triage', 'analyze', 'assess', 'remediate'])
+@pytest.mark.parametrize("stage", ["triage", "analyze", "assess", "remediate"])
 @pytest.mark.asyncio
 async def test_run_stage_handles_different_workflow_stages(mock_workflow, stage):
     """Test run_stage handles different workflow stages."""
@@ -103,7 +99,9 @@ async def test_run_stage_handles_different_workflow_stages(mock_workflow, stage)
     tier = ModelTier.CHEAP
     mock_return = ({"result": "ok"}, 10, 10)
 
-    with patch.object(mock_workflow, f'_{stage}', new_callable=AsyncMock, return_value=mock_return) as mock_stage:
+    with patch.object(
+        mock_workflow, f"_{stage}", new_callable=AsyncMock, return_value=mock_return
+    ) as mock_stage:
         result = await mock_workflow.run_stage(stage, tier, mock_context)
         mock_stage.assert_called_once_with(mock_context, tier)
         assert result == mock_return
@@ -123,17 +121,9 @@ def test_load_team_decisions_parses_security_configuration(tmp_path):
     security_dir.mkdir()
 
     mock_config = {
-        'decisions': [
-            {
-                'finding_hash': 'test_hash_1',
-                'decision': 'false_positive',
-                'reason': 'Test pattern'
-            },
-            {
-                'finding_hash': 'test_hash_2',
-                'decision': 'accepted',
-                'reason': 'Accepted risk'
-            }
+        "decisions": [
+            {"finding_hash": "test_hash_1", "decision": "false_positive", "reason": "Test pattern"},
+            {"finding_hash": "test_hash_2", "decision": "accepted", "reason": "Accepted risk"},
         ]
     }
 
@@ -143,18 +133,23 @@ def test_load_team_decisions_parses_security_configuration(tmp_path):
     # Create workflow with patterns_dir pointing to tmp_path
     workflow = SecurityAuditWorkflow(patterns_dir=str(tmp_path))
 
-    assert 'test_hash_1' in workflow._team_decisions
-    assert workflow._team_decisions['test_hash_1']['decision'] == 'false_positive'
-    assert 'test_hash_2' in workflow._team_decisions
-    assert workflow._team_decisions['test_hash_2']['decision'] == 'accepted'
+    assert "test_hash_1" in workflow._team_decisions
+    assert workflow._team_decisions["test_hash_1"]["decision"] == "false_positive"
+    assert "test_hash_2" in workflow._team_decisions
+    assert workflow._team_decisions["test_hash_2"]["decision"] == "accepted"
 
 
-@pytest.mark.parametrize("input_data,expected_substring", [
-    ({"type": "sql_injection"}, "SQL injection"),
-    ({"type": "xss"}, "XSS"),
-    ({"type": "unknown_type"}, "Review for security implications"),
-])
-def test_analyze_finding_handles_different_severity_levels(mock_workflow, input_data, expected_substring):
+@pytest.mark.parametrize(
+    "input_data,expected_substring",
+    [
+        ({"type": "sql_injection"}, "SQL injection"),
+        ({"type": "xss"}, "XSS"),
+        ({"type": "unknown_type"}, "Review for security implications"),
+    ],
+)
+def test_analyze_finding_handles_different_severity_levels(
+    mock_workflow, input_data, expected_substring
+):
     """Test analysis of security findings returns appropriate analysis strings."""
     # _analyze_finding returns a string, not a boolean
     result = mock_workflow._analyze_finding(input_data)
@@ -167,7 +162,7 @@ async def test_triage_identifies_potential_vulnerabilities(mock_workflow, tmp_pa
     """Verify triage stage identifies potential security issues."""
     # Create a test file with a known vulnerability pattern
     test_file = tmp_path / "vulnerable.py"
-    test_file.write_text('result = eval(user_input)\n')
+    test_file.write_text("result = eval(user_input)\n")
 
     input_data = {"path": str(tmp_path), "file_types": [".py"]}
     tier = ModelTier.CHEAP
