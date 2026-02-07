@@ -1,5 +1,5 @@
 ---
-description: Book Production Pipeline: Multi-Agent + Long-Term Memory Architecture: **Status:** Implementation Plan **Created:** December 2025 **Author:** Patrick Roebuck + 
+description: Book Production Pipeline: Multi-Agent + Long-Term Memory Architecture: **Status:** Implementation Plan **Created:** December 2025 **Author:** Patrick Roebuck +
 ---
 
 # Book Production Pipeline: Multi-Agent + Long-Term Memory Architecture

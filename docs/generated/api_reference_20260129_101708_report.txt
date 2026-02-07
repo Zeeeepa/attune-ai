@@ -26,9 +26,9 @@ GENERATED DOCUMENTATION
 
 # Cache Statistics and Performance Reporting - API Reference Documentation
 
-> **Version:** 1.0  
-> **Module:** `empathy_os.cache_analyzer`  
-> **License:** Fair Source 0.9  
+> **Version:** 1.0
+> **Module:** `empathy_os.cache_analyzer`
+> **License:** Fair Source 0.9
 > **Copyright:** 2025 Smart AI Memory, LLC
 
 ---
@@ -194,7 +194,7 @@ hit_rate = cache_hits / (cache_hits + cache_misses)
 
 ## 2. API Reference
 
-### 
+###
 
 ------------------------------------------------------------
 STATISTICS

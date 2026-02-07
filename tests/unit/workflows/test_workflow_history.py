@@ -112,12 +112,10 @@ class TestWorkflowHistoryStore:
         cursor = store.conn.cursor()
 
         # Check tables exist
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT name FROM sqlite_master
             WHERE type='table'
-        """
-        )
+        """)
         tables = {row["name"] for row in cursor.fetchall()}
 
         assert "workflow_runs" in tables
@@ -127,12 +125,10 @@ class TestWorkflowHistoryStore:
         """Test that initialization creates indexes."""
         cursor = store.conn.cursor()
 
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT name FROM sqlite_master
             WHERE type='index' AND name LIKE 'idx_%'
-        """
-        )
+        """)
         indexes = {row["name"] for row in cursor.fetchall()}
 
         assert "idx_workflow_name" in indexes

@@ -252,7 +252,10 @@ class TestHeartbeatCoordinatorWithMemory:
         fresh_time = now - timedelta(seconds=10)
         stale_time = now - timedelta(seconds=120)
 
-        mock_memory._client.scan_iter.return_value = [b"heartbeat:agent-fresh", b"heartbeat:agent-stale"]
+        mock_memory._client.scan_iter.return_value = [
+            b"heartbeat:agent-fresh",
+            b"heartbeat:agent-stale",
+        ]
 
         import json
 

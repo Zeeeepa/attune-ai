@@ -26,9 +26,9 @@ GENERATED DOCUMENTATION
 
 # Cache Statistics and Performance Reporting - API Reference
 
-**Version:** 1.0  
-**Module:** `empathy_os.cache_analyzer`  
-**Copyright:** 2025 Smart AI Memory, LLC  
+**Version:** 1.0
+**Module:** `empathy_os.cache_analyzer`
+**Copyright:** 2025 Smart AI Memory, LLC
 **License:** Fair Source 0.9
 
 ---

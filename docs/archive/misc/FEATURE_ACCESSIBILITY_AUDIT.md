@@ -1,5 +1,5 @@
 ---
-description: Feature Accessibility Audit: **Date:** 2026-01-01 **Purpose:** Ensure all Empathy Framework features have BOTH UI and CLI entry points --- ## Executive Summary 
+description: Feature Accessibility Audit: **Date:** 2026-01-01 **Purpose:** Ensure all Empathy Framework features have BOTH UI and CLI entry points --- ## Executive Summary
 ---
 
 # Feature Accessibility Audit
