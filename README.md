@@ -33,7 +33,7 @@ Attune AI is built exclusively for Anthropic/Claude, unlocking features impossib
 
 Full support for custom agents and Anthropic LLM agents:
 
-- **Agent Teams** - Pre-built teams for release prep (4 agents) and healthcare CDS (6 agents)
+- **Agent Teams** - Pre-built teams for release prep (4 agents) with extensible agent framework
 - **Agent Coordination Dashboard** - Real-time monitoring with 6 coordination patterns
 - **Progressive Tier Escalation** - Agents start cheap and escalate only when needed
 - **Inter-Agent Communication** - Heartbeats, signals, events, and approval gates

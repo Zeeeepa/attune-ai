@@ -16,8 +16,8 @@ question:
       description: "Show all available agents and their capabilities"
     - label: "Run agent team"
       description: "Execute a multi-agent collaboration"
-    - label: "Healthcare CDS"
-      description: "Run the clinical decision support agent team"
+    - label: "Release prep"
+      description: "Run the release readiness agent team (4 agents)"
 ---
 
 # agent
@@ -31,7 +31,7 @@ Create and manage custom AI agents and multi-agent teams.
 | `/agent create <name>` | Create a new agent definition |
 | `/agent list` | List all available agents |
 | `/agent run <name>` | Execute an agent or agent team |
-| `/agent cds` | Run healthcare CDS multi-agent system |
+| `/agent release-prep` | Run the release readiness agent team |
 
 ## Natural Language
 
@@ -39,7 +39,7 @@ Describe what you need:
 
 - "create a code review agent"
 - "what agents are available?"
-- "run the healthcare CDS team"
+- "run the release prep team"
 - "I need a specialized agent for testing"
 
 ## CRITICAL: Workflow Execution Instructions
@@ -63,7 +63,7 @@ Use this context to inform agent operations (e.g., current branch, recent change
 | `/agent create <name>` | Guide through agent definition: role, tools, model tier, coordination pattern |
 | `/agent list` | Scan `src/attune/agents/` directory, list agents with descriptions and capabilities |
 | `/agent run <name>` | Execute the named agent or agent team |
-| `/agent cds` | Run healthcare CDS multi-agent system with Redis coordination |
+| `/agent release-prep` | Run release readiness agent team |
 
 ### Natural Language Routing (EXECUTE THESE)
 
@@ -72,7 +72,7 @@ Use this context to inform agent operations (e.g., current branch, recent change
 | "create", "new agent", "define" | Guide agent creation |
 | "list", "available", "what agents" | List available agents |
 | "run", "execute", "start" | Run specified agent |
-| "cds", "healthcare", "clinical" | Run healthcare CDS system |
+| "release", "release-prep", "readiness" | Run release-prep agent team |
 
 **IMPORTANT:** When arguments are provided, DO NOT just display documentation. EXECUTE the action.
 
@@ -92,7 +92,7 @@ When creating agents, use this structure in `src/attune/agents/<name>/`:
 
 | Team | Description | Location |
 | ---- | ----------- | -------- |
-| Healthcare CDS | Clinical decision support with multi-agent coordination | `src/attune/agents/healthcare/` |
+| Release Prep | 4-agent release readiness check (security, tests, quality, docs) | `src/attune/agents/release/` |
 
 ### Coordination Patterns
 

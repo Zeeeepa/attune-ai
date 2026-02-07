@@ -12,7 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Release-Prep Agent Team** - New 4-agent team (Security Auditor, Test Coverage, Code Quality, Documentation) replaces broken CrewAI-based crew. Features progressive tier escalation, multi-strategy response parsing, and parallel execution via `asyncio.gather()`
-- **Healthcare CDS Agent Team** - 6 specialized agents for clinical decision support with Redis coordination, heartbeat monitoring, and signal-based communication
 - **Behavioral Test Generation** - Batch processing for automated behavioral test generation across modules
 
 ### Changed
