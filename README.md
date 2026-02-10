@@ -20,14 +20,13 @@ pip install attune-ai[developer]
 
 ---
 
-## What's New in v2.4.0
+## What's New in v2.4.1
 
-- **Healthcare CDS Agents** - Multi-agent clinical decision support with Redis-coordinated communication and HIPAA-compliant data handling
-- **Anthropic Best Practices** - SDK >=0.40.0 with Batch API, tier routing aligned with Anthropic model guidance, prompt caching, and extended thinking
-- **Massive Refactoring** - 13 files over 1,000 lines decomposed into 48 focused modules (57% line reduction) with zero breaking changes
-- **Release-Prep Agent Team** - 4-agent team (Security, Coverage, Quality, Docs) with progressive tier escalation replaces legacy CrewAI crew
-- **80%+ Test Coverage** - 13,800+ tests passing with strategic coverage enforcement and 0 security findings
-- **Redis 8.4 Support** - Full compatibility with RediSearch, RedisJSON, RedisTimeSeries, RedisBloom, and VectorSet modules
+- **Security: macOS path validation bypass (CWE-22)** - Fixed `_validate_file_path()` in 5 modules where `/etc` -> `/private/etc` symlink bypassed system directory checks
+- **Healthcare Domain Plugin** - Clinical decision support agents with FHIR resources, waveform analysis, audit logging, and SMART on FHIR auth
+- **Redis pubsub thread leak fix** - `PubSubManager.close()` now joins listener threads, preventing daemon thread leaks
+- **Rebranding to Attune AI** - Removed legacy "Empathy Framework" references, deleted wizard-based CLI
+- **Windows CI stability** - Fixed timestamp collisions, encoding, case sensitivity, and PowerShell compatibility
 
 ---
 

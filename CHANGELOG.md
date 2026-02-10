@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.1] - 2026-02-10
+
+### Security
+
+- **macOS path validation bypass (CWE-22)**: Fixed `_validate_file_path()` in 5 modules where macOS symlink resolution (`/etc` -> `/private/etc`) bypassed system directory checks. Added `/private/etc`, `/private/var/root`, `/usr/bin`, `/usr/sbin`, `/bin`, `/sbin` to blocked paths in `workflows/config.py`, `config/xml_config.py`, `orchestration/real_tools.py`, `orchestration/config_store.py`, `memory/control_panel_validation.py`
+- **PBKDF2 for API key hashing**: Replaced weak hashing with PBKDF2, CRC32 for A/B bucketing
+- **CodeQL security alerts resolved**: Fixed alerts blocking PR merge
+
+### Fixed
+
+- **Redis pubsub thread leak**: `PubSubManager.close()` now joins the listener thread before cleanup, preventing leaked `redis-pubsub-listener` daemon threads across tests
+- **Broken `uv run` commands**: Removed unpublished `attune-healthcare` and `attune-software` package references from pyproject.toml optional extras
+- **Test fixture teardown**: `test_pubsub_behavioral.py` fixture now properly yields and calls `close()` on teardown
+- **Windows CI stability**: Fixed timestamp collisions, encoding issues, case sensitivity, and PowerShell compatibility across multiple test files
+
+### Added
+
+- **Healthcare domain plugin**: Clinical decision support agents with FHIR resource handling, waveform analysis, audit logging, dashboard API, and SMART on FHIR authentication (`attune-healthcare-plugin/`, `src/attune/healthcare/`, `src/attune/agents/healthcare/`)
+- **Agent SDK evaluation**: Documentation for Anthropic Agent SDK evaluation and MCP SDK migration planning
+- **Software plugin tests**: Integration tests for `SoftwarePlugin` metadata, workflow registration, and pattern registration
+
+### Changed
+
+- **Rebranding**: Renamed "Empathy Framework" references to "Attune AI" across `CLAUDE.md`, `attune_software/__init__.py`, CLI modules
+- **Legacy CLI removed**: Deleted wizard-based `attune_software/cli.py` and its backwards-compatibility re-export shim
+- **Test improvements**: Replaced fragile `sys.modules` hack with `monkeypatch` fixture in `test_cache_modules.py`
+
 ## [2.4.0] - 2026-02-08
 
 ### Added
