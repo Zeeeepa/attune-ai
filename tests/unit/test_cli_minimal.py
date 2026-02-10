@@ -40,9 +40,9 @@ class TestGetVersion:
 
     def test_returns_version_from_metadata(self) -> None:
         """get_version should return the version from importlib.metadata."""
-        with patch("importlib.metadata.version", return_value="2.5.1"):
+        with patch("importlib.metadata.version", return_value="2.5.0"):
             result = get_version()
-        assert result == "2.5.1"
+        assert result == "2.5.0"
 
 
 # ---------------------------------------------------------------------------

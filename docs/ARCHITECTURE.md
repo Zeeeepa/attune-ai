@@ -18,7 +18,7 @@ description: Attune AI - Architecture Overview: System architecture overview wit
 4. [Multi-Provider LLM System](#multi-provider-llm-system)
 5. [Memory Architecture](#memory-architecture)
 6. [Workflow System](#workflow-system)
-7. [Agent State & Dynamic Teams (v2.5.1)](#agent-state--dynamic-teams-v251)
+7. [Agent State & Dynamic Teams (v2.5.0)](#agent-state--dynamic-teams-v250)
 8. [Caching Strategy](#caching-strategy)
 9. [Security Model](#security-model)
 10. [Deployment Architecture](#deployment-architecture)
@@ -376,7 +376,7 @@ class BaseWorkflow:
 
 ---
 
-## Agent State & Dynamic Teams (v2.5.1)
+## Agent State & Dynamic Teams (v2.5.0)
 
 ### Agent State Persistence
 
@@ -421,7 +421,7 @@ MetaOrchestrator.compose_team(task)
 ### Workflow Integration Mixins
 
 ```text
-BaseWorkflow MRO (v2.5.1):
+BaseWorkflow MRO (v2.5.0):
   BaseWorkflow
   ├── ExecutionMixin        # Core execute() loop
   ├── TierMixin             # CHEAP → CAPABLE → PREMIUM escalation

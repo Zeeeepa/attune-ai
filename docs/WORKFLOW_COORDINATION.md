@@ -16,9 +16,9 @@ Attune AI supports agent tracking and coordination in BaseWorkflow, enabling wor
 
 - **Track agent liveness** via TTL-based heartbeat updates (Pattern 1)
 - **Coordinate between agents** via TTL-based ephemeral signals (Pattern 2)
-- **Persist state across sessions** via AgentStateStore with checkpoints and recovery (Pattern 3 - NEW in v2.5.1)
-- **Delegate stages to multi-agent teams** via MultiAgentStageMixin (Pattern 4 - NEW in v2.5.1)
-- **Compose workflows into teams** via WorkflowComposer and WorkflowAgentAdapter (Pattern 5 - NEW in v2.5.1)
+- **Persist state across sessions** via AgentStateStore with checkpoints and recovery (Pattern 3 - NEW in v2.5.0)
+- **Delegate stages to multi-agent teams** via MultiAgentStageMixin (Pattern 4 - NEW in v2.5.0)
+- **Compose workflows into teams** via WorkflowComposer and WorkflowAgentAdapter (Pattern 5 - NEW in v2.5.0)
 
 These features integrate seamlessly with the existing workflow infrastructure, requiring only optional flags to enable.
 
@@ -603,7 +603,7 @@ async def test_producer_consumer_coordination():
 
 ---
 
-## State Persistence Integration (v2.5.1)
+## State Persistence Integration (v2.5.0)
 
 ### StatePersistenceMixin
 
@@ -639,7 +639,7 @@ All state store calls are wrapped in try/except - persistence errors never crash
 
 ---
 
-## Multi-Agent Stage Delegation (v2.5.1)
+## Multi-Agent Stage Delegation (v2.5.0)
 
 ### MultiAgentStageMixin
 
@@ -675,7 +675,7 @@ class MyAdvancedWorkflow(BaseWorkflow):
 
 ---
 
-## Workflow Composition (v2.5.1)
+## Workflow Composition (v2.5.0)
 
 ### WorkflowComposer
 

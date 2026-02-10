@@ -20,7 +20,7 @@ pip install attune-ai[developer]
 
 ---
 
-## What's New in v2.5.1
+## What's New in v2.5.0
 
 - **Agent State Persistence** - `AgentStateStore` records agent lifecycle events and saves checkpoints for recovery. Integrated into all workflows via `state_store=` parameter
 - **Anthropic Agent SDK Integration** - `SDKAgent` wraps `claude_agent_sdk.query()` with progressive tier escalation (CHEAP -> CAPABLE -> PREMIUM), Redis heartbeats, and cost tracking. Graceful fallback when SDK is unavailable

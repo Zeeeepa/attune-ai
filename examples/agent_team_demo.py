@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Agent Team Creation Demo — Illustrates v2.5.1 Phase 1-4 Features.
+"""Agent Team Creation Demo — Illustrates v2.5.0 Phase 1-4 Features.
 
 This script demonstrates the new agent orchestration capabilities:
 
@@ -337,7 +337,7 @@ def demo_recovery(store: "AgentStateStore") -> None:
 
 def print_summary() -> None:
     """Print what was demonstrated."""
-    section("Summary: v2.5.1 Agent Orchestration")
+    section("Summary: v2.5.0 Agent Orchestration")
 
     features = [
         ("AgentStateStore", "Persistent JSON state, checkpoints, history trimming, recovery"),
@@ -364,7 +364,7 @@ def print_summary() -> None:
 def main() -> None:
     """Run the full demo."""
     print("\n" + "=" * 60)
-    print("  Attune AI v2.5.1 — Agent Team Creation Demo")
+    print("  Attune AI v2.5.0 — Agent Team Creation Demo")
     print("=" * 60)
 
     # Use a temporary directory for state files

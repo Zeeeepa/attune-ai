@@ -431,9 +431,9 @@ if stats["most_used_strategy"] == "highest_confidence":
 
 ---
 
-## Dynamic Team Composition (v2.5.1)
+## Dynamic Team Composition (v2.5.0)
 
-Attune AI v2.5.1 introduces dynamic team composition with persistent state and workflow integration.
+Attune AI v2.5.0 introduces dynamic team composition with persistent state and workflow integration.
 
 ### DynamicTeam
 
