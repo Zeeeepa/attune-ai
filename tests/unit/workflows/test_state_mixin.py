@@ -21,7 +21,6 @@ from attune.cost_tracker import CostTracker
 from attune.workflows.base import BaseWorkflow
 from attune.workflows.compat import ModelTier
 
-
 # ---------------------------------------------------------------------------
 # Minimal concrete workflow for testing
 # ---------------------------------------------------------------------------
@@ -232,9 +231,7 @@ class TestStatePersistenceEnabled:
 class TestStatePersistenceErrorIsolation:
     """Verify that state store errors don't crash the workflow."""
 
-    async def test_broken_state_store_does_not_crash_workflow(
-        self, tmp_path: Path
-    ) -> None:
+    async def test_broken_state_store_does_not_crash_workflow(self, tmp_path: Path) -> None:
         """A state store that throws on every call doesn't break the workflow."""
         broken_store = MagicMock(spec=AgentStateStore)
         broken_store.record_start.side_effect = OSError("Disk full")
@@ -251,9 +248,7 @@ class TestStatePersistenceErrorIsolation:
         assert result.success is True
         assert len(result.stages) == 2
 
-    async def test_state_store_exception_logged(
-        self, tmp_path: Path
-    ) -> None:
+    async def test_state_store_exception_logged(self, tmp_path: Path) -> None:
         """State store errors are logged at debug level."""
         broken_store = MagicMock(spec=AgentStateStore)
         broken_store.record_start.side_effect = RuntimeError("test error")
@@ -285,9 +280,7 @@ class TestStatePersistenceRecovery:
 
         assert wf._state_get_recovery_checkpoint() is None
 
-    async def test_get_recovery_checkpoint_after_execution(
-        self, tmp_path: Path
-    ) -> None:
+    async def test_get_recovery_checkpoint_after_execution(self, tmp_path: Path) -> None:
         """Returns checkpoint data after workflow has run."""
         state_store = AgentStateStore(storage_dir=str(tmp_path / "state"))
         cost_tracker = CostTracker(storage_dir=str(tmp_path / ".empathy"))

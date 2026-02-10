@@ -21,7 +21,6 @@ from attune.orchestration.dynamic_team import DynamicTeamResult
 from attune.workflows.base import BaseWorkflow
 from attune.workflows.compat import ModelTier
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -117,9 +116,7 @@ class TestMultiAgentStage:
         """Looks up config from self._multi_agent_configs."""
         team_result = _make_team_result()
 
-        with patch(
-            "attune.orchestration.team_builder.DynamicTeamBuilder"
-        ) as MockBuilder:
+        with patch("attune.orchestration.team_builder.DynamicTeamBuilder") as MockBuilder:
             mock_team = MagicMock()
             mock_team.execute = AsyncMock(return_value=team_result)
             MockBuilder.return_value.build_from_plan.return_value = mock_team
@@ -145,9 +142,7 @@ class TestMultiAgentStage:
         """Uses team_config parameter over stored config."""
         team_result = _make_team_result()
 
-        with patch(
-            "attune.orchestration.team_builder.DynamicTeamBuilder"
-        ) as MockBuilder:
+        with patch("attune.orchestration.team_builder.DynamicTeamBuilder") as MockBuilder:
             mock_team = MagicMock()
             mock_team.execute = AsyncMock(return_value=team_result)
             MockBuilder.return_value.build_from_plan.return_value = mock_team
@@ -171,9 +166,7 @@ class TestMultiAgentStage:
         """Returns (dict, int, int) tuple."""
         team_result = _make_team_result(total_cost=0.03)
 
-        with patch(
-            "attune.orchestration.team_builder.DynamicTeamBuilder"
-        ) as MockBuilder:
+        with patch("attune.orchestration.team_builder.DynamicTeamBuilder") as MockBuilder:
             mock_team = MagicMock()
             mock_team.execute = AsyncMock(return_value=team_result)
             MockBuilder.return_value.build_from_plan.return_value = mock_team
@@ -200,16 +193,12 @@ class TestMultiAgentStage:
         state_store = AgentStateStore(storage_dir=str(tmp_path / "state"))
         team_result = _make_team_result()
 
-        with patch(
-            "attune.orchestration.team_builder.DynamicTeamBuilder"
-        ) as MockBuilder:
+        with patch("attune.orchestration.team_builder.DynamicTeamBuilder") as MockBuilder:
             mock_team = MagicMock()
             mock_team.execute = AsyncMock(return_value=team_result)
             MockBuilder.return_value.build_from_plan.return_value = mock_team
 
-            wf = _MultiAgentWorkflow(
-                cost_tracker=cost_tracker, state_store=state_store
-            )
+            wf = _MultiAgentWorkflow(cost_tracker=cost_tracker, state_store=state_store)
 
             await wf._run_multi_agent_stage(
                 "stage_b",

@@ -126,12 +126,10 @@ class TestAnalyzeFileForEvalExec:
     def test_analyze_file_with_actual_eval(self):
         """Test analysis of file with actual eval call."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
-            f.write(
-                """
+            f.write("""
 def dangerous_func(user_input):
     return eval(user_input)
-"""
-            )
+""")
             f.flush()
             temp_path = f.name
 
@@ -145,8 +143,7 @@ def dangerous_func(user_input):
     def test_analyze_file_with_only_documentation(self):
         """Test analysis of file with only documentation mentions."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
-            f.write(
-                """
+            f.write("""
 def check_security(code):
     '''Check if code contains eval() or exec().
 
@@ -154,8 +151,7 @@ def check_security(code):
     '''
     # Never use eval() on user input
     return "eval(" in code
-"""
-            )
+""")
             f.flush()
             temp_path = f.name
 
@@ -272,13 +268,11 @@ class TestEnhancedCommandInjectionDetection:
         """Test that AST-based detection is used for Python files."""
         # Create temp file with only documentation
         with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
-            f.write(
-                """
+            f.write("""
 def check_eval(code):
     '''Check for eval() usage.'''
     return "eval(" in code
-"""
-            )
+""")
             f.flush()
             temp_path = f.name
 
@@ -304,12 +298,10 @@ def check_eval(code):
         """Test that actual eval calls are still detected."""
         # Create temp file with actual eval
         with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
-            f.write(
-                """
+            f.write("""
 def unsafe_func(x):
     return eval(x)  # Actual vulnerability!
-"""
-            )
+""")
             f.flush()
             temp_path = f.name
 
