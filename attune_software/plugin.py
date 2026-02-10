@@ -1,163 +1,88 @@
-"""Software Development Plugin for Empathy Framework
+"""Software Development Plugin for Attune AI Framework.
 
-This plugin provides 16+ Coach wizards for code analysis,
-demonstrating Level 4 Anticipatory Empathy in software development.
+Registers software development workflows as a plugin that can be
+auto-discovered via entry points.
 
-Based on real-world experience developing AI systems where the framework
-transformed productivity with higher quality code developed many times faster.
+Requires attune-ai core for BasePlugin, BaseWorkflow, and PluginMetadata.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under Apache-2.0
 """
 
+import importlib
 import logging
-import os
 
-# Import from core framework
-import sys
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-
-from attune.plugins import BasePlugin, BaseWizard, PluginMetadata
+from attune.plugins import BasePlugin, BaseWorkflow, PluginMetadata
 
 logger = logging.getLogger(__name__)
 
+# ---------------------------------------------------------------------------
+# Map of workflow IDs to (module_path, class_name) for lazy importing.
+# Each workflow is imported on demand so missing optional deps don't
+# prevent the plugin from loading.
+# ---------------------------------------------------------------------------
+
+_WORKFLOW_MAP: dict[str, tuple[str, str]] = {
+    "code-review": ("attune.workflows.code_review", "CodeReviewWorkflow"),
+    "bug-predict": ("attune.workflows.bug_predict", "BugPredictionWorkflow"),
+    "security-audit": ("attune.workflows.security_audit", "SecurityAuditWorkflow"),
+    "perf-audit": ("attune.workflows.perf_audit", "PerformanceAuditWorkflow"),
+    "test-gen": ("attune.workflows.test_gen", "TestGenerationWorkflow"),
+    "refactor-plan": ("attune.workflows.refactor_plan", "RefactorPlanWorkflow"),
+    "dependency-check": ("attune.workflows.dependency_check", "DependencyCheckWorkflow"),
+}
+
 
 class SoftwarePlugin(BasePlugin):
-    """Software Development Domain Plugin
+    """Software Development Domain Plugin.
 
-    Provides wizards for:
-    - Security analysis
-    - Performance optimization
-    - Architecture review
-    - Testing strategy
-    - Code quality assessment
-    - And more...
-
-    All wizards operate at Level 3 (Proactive) or Level 4 (Anticipatory)
-    empathy levels.
+    Provides workflows for code review, bug prediction, security audit,
+    performance audit, test generation, refactoring, and dependency
+    checking.
     """
 
     def get_metadata(self) -> PluginMetadata:
-        """Return plugin metadata"""
+        """Return plugin metadata."""
         return PluginMetadata(
-            name="Empathy Framework - Software Development",
+            name="Attune Software Development",
             version="1.0.0",
             domain="software",
             description=(
-                "16+ Coach wizards for code analysis and anticipatory "
-                "software development. Alerts you to bottlenecks, security "
-                "vulnerabilities, and architectural issues before they "
-                "become critical."
+                "Software development workflows for code analysis and "
+                "anticipatory issue detection. Includes code review, bug "
+                "prediction, security audit, performance audit, test "
+                "generation, refactoring, and dependency checking."
             ),
             author="Smart AI Memory, LLC",
             license="Apache-2.0",
-            requires_core_version="1.0.0",
-            dependencies=[],  # Add any domain-specific deps
+            requires_core_version="2.4.0",
+            dependencies=[],
         )
 
-    def register_wizards(self) -> dict[str, type[BaseWizard]]:
-        """Register all software development wizards.
+    def register_workflows(self) -> dict[str, type[BaseWorkflow]]:
+        """Register software development workflows.
 
-        In our experience building these wizards, we found that the framework
-        enables a fundamental shift: instead of reactive debugging, the system
-        alerts you to emerging issues that would surface weeks later.
+        Each workflow is imported lazily so a missing optional dependency
+        (e.g. ``anthropic``) only disables that one workflow instead of
+        the entire plugin.
         """
-        wizards = {}
+        workflows: dict[str, type[BaseWorkflow]] = {}
 
-        # Import wizards with graceful degradation
-        # (some wizards may have optional dependencies)
+        for wf_id, (module_path, class_name) in _WORKFLOW_MAP.items():
+            try:
+                mod = importlib.import_module(module_path)
+                wf_class = getattr(mod, class_name)
+                workflows[wf_id] = wf_class
+            except (ImportError, AttributeError) as e:
+                logger.warning("Workflow %s not available: %s", wf_id, e)
 
-        try:
-            from .wizards.security_wizard import SecurityWizard
-
-            wizards["security"] = SecurityWizard
-        except ImportError as e:
-            logger.warning(f"SecurityWizard not available: {e}")
-
-        try:
-            from .wizards.performance_wizard import PerformanceWizard
-
-            wizards["performance"] = PerformanceWizard
-        except ImportError as e:
-            logger.warning(f"PerformanceWizard not available: {e}")
-
-        try:
-            from .wizards.testing_wizard import TestingWizard
-
-            wizards["testing"] = TestingWizard
-        except ImportError as e:
-            logger.warning(f"TestingWizard not available: {e}")
-
-        try:
-            from .wizards.architecture_wizard import ArchitectureWizard
-
-            wizards["architecture"] = ArchitectureWizard
-        except ImportError as e:
-            logger.warning(f"ArchitectureWizard not available: {e}")
-
-        # AI Development Wizards (Level 4 Anticipatory)
-        try:
-            from .wizards.prompt_engineering_wizard import PromptEngineeringWizard
-
-            wizards["prompt_engineering"] = PromptEngineeringWizard
-        except ImportError as e:
-            logger.warning(f"PromptEngineeringWizard not available: {e}")
-
-        try:
-            from .wizards.ai_context_wizard import AIContextWindowWizard
-
-            wizards["context_window"] = AIContextWindowWizard
-        except ImportError as e:
-            logger.warning(f"AIContextWindowWizard not available: {e}")
-
-        try:
-            from .wizards.ai_collaboration_wizard import AICollaborationWizard
-
-            wizards["collaboration_pattern"] = AICollaborationWizard
-        except ImportError as e:
-            logger.warning(f"AICollaborationWizard not available: {e}")
-
-        try:
-            from .wizards.ai_documentation_wizard import AIDocumentationWizard
-
-            wizards["ai_documentation"] = AIDocumentationWizard
-        except ImportError as e:
-            logger.warning(f"AIDocumentationWizard not available: {e}")
-
-        try:
-            from .wizards.agent_orchestration_wizard import AgentOrchestrationWizard
-
-            wizards["agent_orchestration"] = AgentOrchestrationWizard
-        except ImportError as e:
-            logger.warning(f"AgentOrchestrationWizard not available: {e}")
-
-        try:
-            from .wizards.rag_pattern_wizard import RAGPatternWizard
-
-            wizards["rag_pattern"] = RAGPatternWizard
-        except ImportError as e:
-            logger.warning(f"RAGPatternWizard not available: {e}")
-
-        try:
-            from .wizards.multi_model_wizard import MultiModelWizard
-
-            wizards["multi_model"] = MultiModelWizard
-        except ImportError as e:
-            logger.warning(f"MultiModelWizard not available: {e}")
-
-        # Add remaining wizards...
-        # In production, you'd import all 16+ wizards
-
-        logger.info(f"Software plugin registered {len(wizards)} wizards")
-
-        return wizards
+        logger.info("Software plugin registered %d workflows", len(workflows))
+        return workflows
 
     def register_patterns(self) -> dict:
         """Register software development patterns.
 
-        These patterns were learned from real-world usage and enable
-        cross-domain learning (Level 5 Systems Empathy).
+        These patterns enable cross-domain learning (Level 5 Systems Empathy).
         """
         return {
             "domain": "software",
@@ -168,7 +93,11 @@ class SoftwarePlugin(BasePlugin):
                         "Alert: When test count > 25 or test time > 15min, "
                         "recommend automation framework."
                     ),
-                    "indicators": ["test_count_growth_rate", "manual_test_time", "wizard_count"],
+                    "indicators": [
+                        "test_count_growth_rate",
+                        "manual_test_time",
+                        "wizard_count",
+                    ],
                     "threshold": "test_time > 900 seconds",
                     "recommendation": "Implement test automation framework",
                 },

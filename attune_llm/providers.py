@@ -237,8 +237,10 @@ class AnthropicProvider(BaseLLMProvider):
                 # Cache reads cost 90% less than regular input tokens
                 # Cache writes cost 25% more than regular input tokens
                 if cache_read > 0:
-                    # Sonnet 4.5 input: $3/M tokens, cache read: $0.30/M tokens (90% discount)
-                    savings_per_token = 0.003 / 1000 * 0.9  # 90% of regular cost
+                    # Cache reads cost 90% less than regular input tokens
+                    # TODO: Pull per-model rate from config when multi-model support lands
+                    input_cost_per_token = 3.00 / 1_000_000  # Sonnet 4.5: $3/M input tokens
+                    savings_per_token = input_cost_per_token * 0.9
                     total_savings = cache_read * savings_per_token
                     logger.info(
                         f"Cache HIT: {cache_read:,} tokens read from cache "

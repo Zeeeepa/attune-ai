@@ -346,6 +346,9 @@ class PubSubManager:
             >>> pubsub.close()
         """
         self._pubsub_running = False
+        if self._pubsub_thread is not None:
+            self._pubsub_thread.join(timeout=3.0)
+            self._pubsub_thread = None
         if self._pubsub:
             self._pubsub.close()
             self._pubsub = None

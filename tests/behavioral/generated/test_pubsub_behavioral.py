@@ -57,13 +57,18 @@ def mock_base_ops() -> Mock:
 def pubsub_manager(mock_base_ops: Mock) -> PubSubManager:
     """Provide a PubSubManager instance with mocked base operations.
 
+    Automatically closes the manager after each test to prevent
+    leaked redis-pubsub-listener daemon threads.
+
     Args:
         mock_base_ops: Mocked BaseOperations instance
 
-    Returns:
+    Yields:
         PubSubManager instance for testing
     """
-    return PubSubManager(mock_base_ops)
+    manager = PubSubManager(mock_base_ops)
+    yield manager
+    manager.close()
 
 
 @pytest.fixture

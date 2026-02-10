@@ -89,7 +89,19 @@ def _validate_file_path(path: str, allowed_dir: str | None = None) -> Path:
             if marker in resolved_lower or resolved_lower.endswith(marker.rstrip("\\")):
                 raise ValueError(f"Cannot write to system directory: {marker.strip(chr(92))}")
     else:
-        dangerous_paths = ["/etc", "/sys", "/proc", "/dev"]
+        # Note: On macOS, /etc is a symlink to /private/etc, so check both
+        dangerous_paths = [
+            "/etc",
+            "/sys",
+            "/proc",
+            "/dev",
+            "/private/etc",
+            "/private/var/root",
+            "/usr/bin",
+            "/usr/sbin",
+            "/bin",
+            "/sbin",
+        ]
         for dangerous in dangerous_paths:
             if resolved_str.startswith(dangerous + "/") or resolved_str == dangerous:
                 raise ValueError(f"Cannot write to system directory: {dangerous}")

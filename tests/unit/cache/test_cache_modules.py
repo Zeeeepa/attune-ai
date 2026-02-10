@@ -6,12 +6,26 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import sys
 import time
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 np = pytest.importorskip("numpy", reason="numpy required for cache tests")
+
+
+@pytest.fixture(autouse=True)
+def _mock_sentence_transformers(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Ensure sentence_transformers is importable even when not installed.
+
+    Uses monkeypatch so the mock is automatically cleaned up after each test,
+    avoiding pollution of sys.modules across the test suite.
+    """
+    if "sentence_transformers" not in sys.modules:
+        _st_mock = MagicMock()
+        monkeypatch.setitem(sys.modules, "sentence_transformers", _st_mock)
+
 
 from attune.cache.base import CacheEntry, CacheStats  # noqa: E402
 from attune.cache.hash_only import HashOnlyCache  # noqa: E402
