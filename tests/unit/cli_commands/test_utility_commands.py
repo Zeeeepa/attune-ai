@@ -688,17 +688,17 @@ class TestCmdVersion:
         args = self._make_args(verbose=False)
 
         with patch("attune.cli_commands.utility_commands.get_version", create=True):
-            with patch("attune.cli_minimal.get_version", return_value="2.5.0"):
+            with patch("attune.cli_minimal.get_version", return_value="2.5.1"):
                 # Need to patch at the import site inside the function
                 with patch.dict("sys.modules", {}):
                     mock_cli_minimal = MagicMock()
-                    mock_cli_minimal.get_version.return_value = "2.5.0"
+                    mock_cli_minimal.get_version.return_value = "2.5.1"
                     with patch.dict("sys.modules", {"attune.cli_minimal": mock_cli_minimal}):
                         result = cmd_version(args)
 
         assert result == 0
         captured = capsys.readouterr()
-        assert "attune-ai 2.5.0" in captured.out
+        assert "attune-ai 2.5.1" in captured.out
 
     def test_non_verbose_does_not_show_python_info(
         self, capsys: pytest.CaptureFixture[str]
@@ -720,13 +720,13 @@ class TestCmdVersion:
         args = self._make_args(verbose=True)
 
         mock_cli_minimal = MagicMock()
-        mock_cli_minimal.get_version.return_value = "2.5.0"
+        mock_cli_minimal.get_version.return_value = "2.5.1"
         with patch.dict("sys.modules", {"attune.cli_minimal": mock_cli_minimal}):
             result = cmd_version(args)
 
         assert result == 0
         captured = capsys.readouterr()
-        assert "attune-ai 2.5.0" in captured.out
+        assert "attune-ai 2.5.1" in captured.out
         assert "Python:" in captured.out
         assert "Platform:" in captured.out
 
@@ -735,7 +735,7 @@ class TestCmdVersion:
         args = self._make_args(verbose=True)
 
         mock_cli_minimal = MagicMock()
-        mock_cli_minimal.get_version.return_value = "2.5.0"
+        mock_cli_minimal.get_version.return_value = "2.5.1"
 
         mock_requires = MagicMock(return_value=["dep1", "dep2", "dep3"])
 
@@ -754,7 +754,7 @@ class TestCmdVersion:
         args = self._make_args(verbose=True)
 
         mock_cli_minimal = MagicMock()
-        mock_cli_minimal.get_version.return_value = "2.5.0"
+        mock_cli_minimal.get_version.return_value = "2.5.1"
 
         with patch.dict("sys.modules", {"attune.cli_minimal": mock_cli_minimal}):
             with patch(
@@ -766,7 +766,7 @@ class TestCmdVersion:
         # Should still return 0 -- failure is gracefully swallowed
         assert result == 0
         captured = capsys.readouterr()
-        assert "attune-ai 2.5.0" in captured.out
+        assert "attune-ai 2.5.1" in captured.out
         # Should NOT contain Dependencies since the call failed
         assert "Dependencies:" not in captured.out
 
@@ -775,7 +775,7 @@ class TestCmdVersion:
         args = self._make_args(verbose=True)
 
         mock_cli_minimal = MagicMock()
-        mock_cli_minimal.get_version.return_value = "2.5.0"
+        mock_cli_minimal.get_version.return_value = "2.5.1"
 
         with patch.dict("sys.modules", {"attune.cli_minimal": mock_cli_minimal}):
             with patch("importlib.metadata.requires", return_value=None):

@@ -421,4 +421,4 @@ Effective Claude memory management follows these principles:
 ---
 
 *Last updated: 2025-12-20*
-*Empathy Framework v2.5.0*
+*Empathy Framework v2.5.1*

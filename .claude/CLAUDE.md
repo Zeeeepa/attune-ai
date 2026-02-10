@@ -1,4 +1,4 @@
-# Attune AI Framework v2.4.0
+# Attune AI Framework v2.5.1
 
 AI-powered developer workflows with cost optimization and multi-agent orchestration.
 
@@ -48,15 +48,18 @@ Use `/hub-name` to access organized workflows:
 
 ```text
 src/attune/
-├── workflows/          # AI-powered workflows (7 integrated with auth strategy)
+├── agents/            # Agent SDK, state persistence, recovery
+│   ├── sdk/           # SDKAgent, SDKAgentTeam, adapters
+│   └── state/         # AgentStateStore, AgentRecoveryManager
+├── workflows/         # AI-powered workflows with state & multi-agent mixins
 ├── models/            # Authentication strategy and LLM providers
 ├── dashboard/         # Agent Coordination Dashboard (6 patterns)
 ├── meta_workflows/    # Intent detection and natural language routing
-├── orchestration/     # Multi-agent coordination and pattern learning
+├── orchestration/     # Dynamic teams, workflow composition, pattern learning
 ├── telemetry/         # Cost tracking and cache monitoring
 └── cli_router.py      # Natural language command routing
 ```
 
 ---
 
-**Version:** 2.4.0 | **License:** Apache 2.0 | **Repo:** [attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
+**Version:** 2.5.1 | **License:** Apache 2.0 | **Repo:** [attune-ai](https://github.com/Smart-AI-Memory/attune-ai)

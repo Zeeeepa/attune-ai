@@ -21,10 +21,14 @@ from attune.orchestration.agent_templates import (
     AgentTemplate,
     ResourceRequirements,
     get_all_templates,
+    get_registry,
     get_template,
     get_templates_by_capability,
     get_templates_by_tier,
+    register_custom_template,
+    unregister_template,
 )
+from attune.orchestration.dynamic_team import DynamicTeam, DynamicTeamResult
 from attune.orchestration.execution_strategies import (
     DelegationChainStrategy,
     ExecutionStrategy,
@@ -40,6 +44,10 @@ from attune.orchestration.meta_orchestrator import (
     TaskDomain,
     TaskRequirements,
 )
+from attune.orchestration.team_builder import DynamicTeamBuilder
+from attune.orchestration.team_store import TeamSpecification, TeamStore
+from attune.orchestration.workflow_agent_adapter import WorkflowAgentAdapter
+from attune.orchestration.workflow_composer import WorkflowComposer
 
 __all__ = [
     # Agent Templates
@@ -48,8 +56,20 @@ __all__ = [
     "ResourceRequirements",
     "get_template",
     "get_all_templates",
+    "get_registry",
     "get_templates_by_capability",
     "get_templates_by_tier",
+    "register_custom_template",
+    "unregister_template",
+    # Dynamic Teams
+    "DynamicTeam",
+    "DynamicTeamBuilder",
+    "DynamicTeamResult",
+    "TeamSpecification",
+    "TeamStore",
+    # Workflow Composition
+    "WorkflowAgentAdapter",
+    "WorkflowComposer",
     # Execution Strategies
     "ExecutionStrategy",
     "get_strategy",

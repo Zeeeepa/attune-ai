@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "attune-ai"
-version = "2.4.1"
+version = "2.5.1"
 description = "AI-powered developer workflows for Claude with cost optimization, multi-agent orchestration, and workflow automation."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
@@ -49,15 +49,15 @@ classifiers = [
 # Core dependencies - minimal required for framework to function
 # DESIGN: Keep core lightweight for fast installs. Heavy deps are optional.
 dependencies = [
-    "pydantic>=2.0.0,<3.0.0",
+    "pydantic>=2.0.0,<2.11.0",
     "typing-extensions>=4.0.0,<5.0.0",
     "python-dotenv>=1.0.0,<2.0.0",
-    "structlog>=23.0.0,<26.0.0",
+    "structlog>=23.0.0,<25.0.0",
     "defusedxml>=0.7.0,<1.0.0",
     "rich>=13.0.0,<14.0.0",  # Beautiful CLI output
     "typer>=0.9.0,<1.0.0",  # Better CLI commands
     "pyyaml>=6.0,<7.0",  # Required by workflows (bug_predict, etc.)
-    "anthropic>=0.40.0",  # Core LLM provider (direct SDK usage)
+    "anthropic>=0.40.0,<1.0.0",  # Core LLM provider (direct SDK usage)
     # NOTE: redis moved to [memory] optional - not needed for CLI/skill usage
 ]
 # NOTE: CrewAI and LangChain moved to optional dependencies in v4.4.0
@@ -114,45 +114,9 @@ cache = [
     "numpy>=1.24.0,<3.0.0",
 ]
 
-# Healthcare plugin (lightweight - zero-dep clinical protocol monitoring)
-# NOTE: attune-healthcare is a local package; install with:
-#   pip install -e ./attune-healthcare-plugin
-healthcare = []
-
-# Healthcare enterprise - full compliance stack (HIPAA/GDPR + enterprise deps)
-healthcare-enterprise = [
-    # Everything in enterprise
-    "anthropic>=0.40.0",
-    "openai>=1.12.0,<2.0.0",
-    "google-generativeai>=0.3.0,<1.0.0",
-    "memdocs>=1.0.0",
-    "langchain>=1.0.0,<2.0.0",
-    "langchain-core>=1.2.5,<2.0.0",
-    "langchain-text-splitters>=0.3.9,<0.4.0",
-    "langgraph>=1.0.0,<2.0.0",
-    "langgraph-checkpoint>=3.0.0,<4.0.0",
-    "marshmallow>=4.1.2,<5.0.0",
-    "python-docx>=0.8.11,<1.0.0",
-    "pyyaml>=6.0,<7.0",
-    "fastapi>=0.109.1,<1.0.0",
-    "uvicorn>=0.20.0,<1.0.0",
-    "starlette>=0.40.0,<1.0.0",
-    "bcrypt>=4.0.0,<5.0.0",
-    "PyJWT[crypto]>=2.8.0",
-    # OpenTelemetry for enterprise telemetry
-    "opentelemetry-api>=1.20.0,<2.0.0",
-    "opentelemetry-sdk>=1.20.0,<2.0.0",
-    "opentelemetry-exporter-otlp-proto-grpc>=1.20.0,<2.0.0",
-    # Healthcare-specific dependencies
-    "redis>=5.0.0,<8.0.0",  # For session management (Redis server 8.4+ recommended)
-    # Waveform analysis (ECG signal processing)
-    "numpy>=1.24.0,<3.0.0",
-    "scipy>=1.10.0,<2.0.0",
-]
-
-# Healthcare FHIR validation (optional — plain-dict builders work without this)
-healthcare-fhir = [
-    "fhir.resources>=7.0.0,<8.0.0",
+# Anthropic Agent SDK (optional SDK integration for SDKAgent)
+agent-sdk = [
+    "claude-agent-sdk>=0.1.0",
 ]
 
 # Software development plugin (code review, bug prediction, etc.)
@@ -561,7 +525,6 @@ addopts = [
     "--cov=attune",
     "--cov=attune_llm",
     "--cov=attune_software",
-    "--cov=attune_healthcare",
     "--cov-report=html",
     "--cov-report=term-missing",
     "--cov-report=xml",
@@ -586,7 +549,7 @@ filterwarnings = [
 
 # Coverage configuration
 [tool.coverage.run]
-source = ["attune", "attune_llm", "attune_software", "attune_healthcare"]
+source = ["attune", "attune_llm", "attune_software"]
 omit = [
     "*/tests/*",
     "*/test_*.py",
@@ -613,8 +576,6 @@ omit = [
     "*/git_pattern_extractor.py",
     "*/code_health.py",  # Optional code health analysis
     # Wizard examples (not core functionality)
-    "*/wizards/patient_assessment_wizard.py",  # Healthcare-specific
-    "*/wizards/healthcare_wizard.py",  # Healthcare-specific
     "*/wizards/technology_wizard.py",  # Example wizard
     "*/wizards/customer_support_wizard.py",  # Example wizard
     # Infrastructure servers (require HTTP/WebSocket clients, not unit-testable)

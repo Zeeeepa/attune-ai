@@ -705,3 +705,49 @@ _register_template(_GENERIC_AGENT)
 
 
 logger.info(f"Registered {len(_TEMPLATE_REGISTRY)} agent templates")
+
+
+# ---------------------------------------------------------------------------
+# Public API for custom template registration
+# ---------------------------------------------------------------------------
+
+
+def register_custom_template(template: AgentTemplate) -> None:
+    """Register a user-defined template at runtime.
+
+    Unlike the internal ``_register_template``, this function allows
+    overwriting an existing template (useful for customization).
+
+    Args:
+        template: Template to register.
+
+    Raises:
+        ValueError: If template validation fails.
+    """
+    _TEMPLATE_REGISTRY[template.id] = template
+    logger.info(f"Registered custom template: {template.id}")
+
+
+def unregister_template(template_id: str) -> bool:
+    """Remove a template from the registry.
+
+    Args:
+        template_id: ID of the template to remove.
+
+    Returns:
+        True if removed, False if not found.
+    """
+    if template_id in _TEMPLATE_REGISTRY:
+        del _TEMPLATE_REGISTRY[template_id]
+        logger.info(f"Unregistered template: {template_id}")
+        return True
+    return False
+
+
+def get_registry() -> dict[str, AgentTemplate]:
+    """Return a read-only snapshot of the template registry.
+
+    Returns:
+        Dict mapping template IDs to templates.
+    """
+    return dict(_TEMPLATE_REGISTRY)

@@ -21,16 +21,20 @@ const faqData: FAQCategory[] = [
     category: 'General',
     questions: [
       {
-        question: 'What is Empathy?',
-        answer: 'Empathy is a production-ready 5-level maturity model for AI-human collaboration. It progresses from reactive responses (Level 1) to Level 4 Anticipatory Intelligence that predicts problems before they happen. It includes 10 smart wizards and 14 integrated workflows for software development.',
+        question: 'What is Attune AI?',
+        answer: 'Attune AI is a production-ready framework for AI-powered developer workflows with cost optimization and multi-agent orchestration. It includes 13 agent templates, dynamic team composition, persistent agent state, 10+ integrated workflows, and a tier-based LLM routing system that saves 34-86% on API costs.',
       },
       {
-        question: 'What are the 5 levels of AI empathy?',
-        answer: 'Level 1: Reactive - Responds only when asked. Level 2: Guided - Asks clarifying questions. Level 3: Proactive - Notices patterns and offers improvements. Level 4: Anticipatory - Predicts future problems before they happen. Level 5: Transformative - Reshapes workflows to prevent entire classes of problems.',
+        question: 'What is multi-agent orchestration?',
+        answer: 'Multi-agent orchestration lets you compose teams of specialized AI agents that collaborate on complex tasks. Attune AI supports parallel, sequential, two-phase, and delegation strategies with quality gates to ensure results meet your standards. The MetaOrchestrator analyzes tasks and automatically selects optimal agent teams.',
       },
       {
-        question: 'What is Long-Term Memory?',
-        answer: 'Long-Term Memory is the built-in pattern storage system in Empathy. It enables AI to remember context, decisions, and patterns across sessions, creating true continuity in your AI-human collaboration and enabling Level 5 Transformative Intelligence.',
+        question: 'What is Agent State Persistence?',
+        answer: 'Agent State Persistence stores execution history, checkpoints, and accumulated metrics for each agent across sessions. This enables recovery from interruptions, performance tracking over time, and pattern learning. State is stored locally in JSON files under .attune/agents/state/.',
+      },
+      {
+        question: 'What is Dynamic Team Composition?',
+        answer: 'Dynamic Team Composition allows you to build agent teams at runtime from 13 pre-built templates or custom configurations. Teams can execute with different strategies (parallel, sequential, two-phase, delegation) and enforce quality gates. You can also compose entire workflows into teams using the WorkflowComposer.',
       },
     ],
   },
@@ -38,16 +42,16 @@ const faqData: FAQCategory[] = [
     category: 'Licensing & Pricing',
     questions: [
       {
-        question: 'How much does Empathy cost?',
-        answer: 'Empathy Framework is completely free and open source under the Apache License 2.0. Use it in personal projects, startups, or large enterprises at no cost. No license keys, no restrictions, no hidden fees.',
+        question: 'How much does Attune AI cost?',
+        answer: 'Attune AI is completely free and open source under the Apache License 2.0. Use it in personal projects, startups, or large enterprises at no cost. No license keys, no restrictions, no hidden fees.',
       },
       {
         question: 'What is the Apache 2.0 License?',
-        answer: 'Apache 2.0 is a permissive open source license approved by the OSI. It allows you to use, modify, distribute, and sell products built with Empathy Framework. It includes patent protection and is approved by most enterprise legal teams.',
+        answer: 'Apache 2.0 is a permissive open source license approved by the OSI. It allows you to use, modify, distribute, and sell products built with Attune AI. It includes patent protection and is approved by most enterprise legal teams.',
       },
       {
-        question: 'Can I use Empathy for commercial projects?',
-        answer: 'Yes! Apache 2.0 explicitly permits commercial use. Build and sell products using Empathy Framework without any licensing fees or restrictions.',
+        question: 'Can I use Attune AI for commercial projects?',
+        answer: 'Yes! Apache 2.0 explicitly permits commercial use. Build and sell products using Attune AI without any licensing fees or restrictions.',
       },
     ],
   },
@@ -56,19 +60,19 @@ const faqData: FAQCategory[] = [
     questions: [
       {
         question: 'Which LLM providers are supported?',
-        answer: 'Core workflows support multiple LLM providers including Anthropic Claude, OpenAI GPT-4, Google Gemini, and local models via Ollama. Note: Agent and team creation features (Socratic agent builder, dynamic composition) require Anthropic Claude Code specifically.',
+        answer: 'Core workflows support multiple LLM providers including Anthropic Claude, OpenAI GPT-4, Google Gemini, and local models via Ollama. Agent and team creation features (dynamic composition, SDK integration) work with the optional Anthropic Agent SDK for enhanced capabilities.',
       },
       {
-        question: 'What are wizards?',
-        answer: 'Wizards are specialized AI agents in Empathy that anticipate needs and predict problems in specific domains. The framework includes 10 smart wizards: security audit, code review, bug prediction, performance analysis, refactoring, test generation, documentation, dependency checks, release prep, and research.',
+        question: 'What are agent templates?',
+        answer: 'Agent templates are pre-built agent archetypes with defined roles, capabilities, tier preferences, and quality gates. Attune AI includes 13 templates: security auditor, code reviewer, test coverage analyzer, documentation writer, performance optimizer, architecture analyst, refactoring specialist, dependency checker, bug predictor, release coordinator, integration tester, API designer, and DevOps engineer.',
       },
       {
         question: 'How is the framework tested?',
-        answer: 'Empathy has 11,000+ comprehensive tests covering unit tests, integration tests, and cross-platform compatibility. Core modules are rigorously tested for security, memory systems, orchestration patterns, and meta-workflow functionality.',
+        answer: 'Attune AI has 7,400+ comprehensive tests covering unit tests, integration tests, and cross-platform compatibility. Core modules are rigorously tested for security, agent state persistence, dynamic team orchestration, workflow coordination, and meta-workflow functionality.',
       },
       {
         question: 'What platforms are supported?',
-        answer: 'The framework is cross-platform and runs on macOS, Linux, and Windows. It requires Python 3.8+ and works with all major development environments including VS Code, JetBrains IDEs, and terminal-based workflows.',
+        answer: 'The framework is cross-platform and runs on macOS, Linux, and Windows. It requires Python 3.10+ and works with all major development environments including VS Code, JetBrains IDEs, and terminal-based workflows.',
       },
     ],
   },
@@ -76,8 +80,8 @@ const faqData: FAQCategory[] = [
     category: 'Use Cases',
     questions: [
       {
-        question: 'What can I build with Empathy?',
-        answer: 'You can build anticipatory AI systems for software development (bug prediction, security scanning, test generation), healthcare (patient monitoring, clinical decision support), and any domain where predicting problems before they happen adds value.',
+        question: 'What can I build with Attune AI?',
+        answer: 'You can build AI-powered developer workflows for software development (bug prediction, security scanning, test generation, code review), orchestrate multi-agent teams for complex analysis tasks, and compose workflows into coordinated pipelines. The framework also supports healthcare use cases with clinical decision support.',
       },
       {
         question: 'What happened to the Fair Source License?',
@@ -85,7 +89,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'Is the framework production-ready?',
-        answer: 'Yes! The framework is v4.6.6 Production/Stable with 11,000+ comprehensive tests, extensive documentation, and is being used in production software development tools and AI workflows.',
+        answer: 'Yes! The framework is v2.5.0 Production/Stable with 7,400+ comprehensive tests, extensive documentation, persistent agent state, dynamic team composition, and is being used in production software development tools and AI workflows.',
       },
     ],
   },
@@ -94,20 +98,20 @@ const faqData: FAQCategory[] = [
     questions: [
       {
         question: 'Where can I get help?',
-        answer: 'Free users get community support via GitHub Discussions. Commercial users get email support and priority bug fixes. Enterprise users get dedicated support with SLA guarantees.',
+        answer: 'Get community support via GitHub Discussions. Report bugs via GitHub Issues. Enterprise users can reach out for dedicated support options.',
       },
       {
         question: 'How do I report bugs?',
         answer: (
           <>
             Report bugs via{' '}
-            <Link href="https://github.com/Smart-AI-Memory/empathy-framework/issues" className="text-[var(--primary)] hover:underline" target="_blank" rel="noopener noreferrer">
+            <Link href="https://github.com/Smart-AI-Memory/attune-ai/issues" className="text-[var(--primary)] hover:underline" target="_blank" rel="noopener noreferrer">
               GitHub Issues
             </Link>
             . Include your environment details, steps to reproduce, and expected vs actual behavior.
           </>
         ),
-        answerText: 'Report bugs via GitHub Issues at https://github.com/Smart-AI-Memory/empathy-framework/issues. Include your environment details, steps to reproduce, and expected vs actual behavior.',
+        answerText: 'Report bugs via GitHub Issues at https://github.com/Smart-AI-Memory/attune-ai/issues. Include your environment details, steps to reproduce, and expected vs actual behavior.',
       },
       {
         question: 'Can I contribute to the project?',
@@ -119,7 +123,7 @@ const faqData: FAQCategory[] = [
 
 export const metadata: Metadata = generateMetadata({
   title: 'FAQ',
-  description: 'Frequently asked questions about Empathy, open source licensing, and technical details.',
+  description: 'Frequently asked questions about Attune AI, open source licensing, and technical details.',
   url: 'https://smartaimemory.com/faq',
 });
 
@@ -151,7 +155,7 @@ export default function FAQPage() {
                 Frequently Asked Questions
               </h1>
               <p className="text-2xl mb-8 opacity-90">
-                Everything you need to know about Empathy
+                Everything you need to know about Attune AI
               </p>
             </div>
           </div>
@@ -211,7 +215,7 @@ export default function FAQPage() {
                   Contact Us
                 </a>
                 <a
-                  href="https://github.com/Smart-AI-Memory/empathy-framework/discussions"
+                  href="https://github.com/Smart-AI-Memory/attune-ai/discussions"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline text-lg px-8 py-4"

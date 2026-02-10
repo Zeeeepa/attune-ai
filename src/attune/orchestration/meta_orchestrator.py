@@ -254,3 +254,46 @@ class MetaOrchestrator(TaskAnalysisMixin, InteractiveModeMixin, EstimationMixin)
         plan = self.create_execution_plan(requirements, agents, strategy)
 
         return plan
+
+    def compose_team(
+        self,
+        task: str,
+        context: dict[str, Any] | None = None,
+        state_store: Any | None = None,
+        redis_client: Any | None = None,
+    ) -> Any:
+        """Analyze a task, compose agents, and return a runnable DynamicTeam.
+
+        Combines ``analyze_and_compose()`` with ``DynamicTeamBuilder.build_from_plan()``
+        to produce a team that can be executed immediately.
+
+        Args:
+            task: Natural language task description.
+            context: Optional context dict.
+            state_store: Optional ``AgentStateStore`` for persistent state.
+            redis_client: Optional Redis client for coordination.
+
+        Returns:
+            A ``DynamicTeam`` instance ready to call ``execute()``.
+        """
+        from attune.orchestration.team_builder import DynamicTeamBuilder
+
+        plan = self.analyze_and_compose(task, context)
+
+        # Convert ExecutionPlan into the dict format DynamicTeamBuilder expects
+        plan_dict: dict[str, Any] = {
+            "name": f"team-{plan.strategy.value}",
+            "strategy": plan.strategy.value,
+            "agents": [
+                {"template_id": t.id, "role": t.role}
+                for t in plan.agents
+            ],
+            "quality_gates": plan.quality_gates,
+            "phases": plan.phases,
+        }
+
+        builder = DynamicTeamBuilder(
+            state_store=state_store,
+            redis_client=redis_client,
+        )
+        return builder.build_from_plan(plan_dict)

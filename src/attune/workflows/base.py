@@ -92,10 +92,14 @@ from .progress import (
     ProgressTracker,  # noqa: F401 - re-exported for backward compat
 )
 from .prompt_mixin import PromptMixin
+from .multi_agent_mixin import MultiAgentStageMixin
+from .state_mixin import StatePersistenceMixin
 from .telemetry_mixin import TelemetryMixin
 from .tier_routing_mixin import TierRoutingMixin
 
 if TYPE_CHECKING:
+    from attune.agents.state.store import AgentStateStore
+
     from .config import WorkflowConfig
 
 logger = logging.getLogger(__name__)
@@ -105,6 +109,8 @@ class BaseWorkflow(
     ExecutionMixin,
     LLMMixin,
     CoordinationMixin,
+    StatePersistenceMixin,
+    MultiAgentStageMixin,
     PromptMixin,
     ExecutorMixin,
     TierRoutingMixin,
@@ -159,6 +165,8 @@ class BaseWorkflow(
         enable_heartbeat_tracking: bool = False,
         enable_coordination: bool = False,
         agent_id: str | None = None,
+        state_store: AgentStateStore | None = None,
+        multi_agent_configs: dict[str, dict[str, Any]] | None = None,
     ):
         """Initialize workflow with optional cost tracker, provider, and config.
 
@@ -205,6 +213,15 @@ class BaseWorkflow(
             agent_id: Optional agent ID for heartbeat tracking and coordination.
                      If None, auto-generates ID from workflow name and run ID.
                      Used as identifier in Redis keys (heartbeat:{agent_id}, signal:{agent_id}:...).
+            state_store: Optional AgentStateStore for persistent state tracking.
+                     When provided, records workflow start/completion/failure and saves
+                     stage-level checkpoints for observability and recovery.
+                     Default None = no persistence (backwards-compatible).
+            multi_agent_configs: Optional per-stage DynamicTeam configurations.
+                     Dict mapping stage names to team config dicts. Workflow stages
+                     can then call ``self._run_multi_agent_stage()`` to delegate to
+                     a multi-agent team instead of a single LLM call.
+                     Default None = no multi-agent stages.
 
         """
         from .config import WorkflowConfig
@@ -248,6 +265,16 @@ class BaseWorkflow(
         self._agent_id = agent_id  # Will be set during execute() if None
         self._heartbeat_coordinator = None  # Lazy initialization on first use
         self._coordination_signals = None  # Lazy initialization on first use
+
+        # State persistence (Phase 4 - AgentStateStore integration)
+        self._state_store = state_store
+        self._state_exec_id: str | None = None
+        self._state_completed_stages: list[str] = []
+        self._state_stage_costs: dict[str, float] = {}
+        self._state_last_output: Any = None
+
+        # Multi-agent stage configs (Phase 4 - DynamicTeam integration)
+        self._multi_agent_configs = multi_agent_configs
 
         # Telemetry tracking (uses TelemetryMixin)
         self._init_telemetry(telemetry_backend)

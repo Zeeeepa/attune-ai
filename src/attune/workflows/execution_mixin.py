@@ -101,6 +101,9 @@ class ExecutionMixin:
         # Set run ID for telemetry correlation
         self._run_id = str(uuid.uuid4())
 
+        # Record workflow start in state store (Phase 4 - state persistence)
+        self._state_record_workflow_start()
+
         # Log task routing (Tier 1 automation monitoring)
         routing_id = f"routing-{self._run_id}"
         routing_record = TaskRoutingRecord(
@@ -297,6 +300,9 @@ class ExecutionMixin:
 
                 continue
 
+            # Record stage start in state store (Phase 4)
+            self._state_record_stage_start(stage_name)
+
             # Try each tier in fallback chain
             stage_succeeded = False
             tier_index = 0
@@ -408,6 +414,11 @@ class ExecutionMixin:
                         self._tier_progression.append((stage_name, tier.value, True))
                         stage_succeeded = True
 
+                        # Record stage completion in state store (Phase 4)
+                        self._state_record_stage_complete(
+                            stage_name, cost, duration_ms, tier.value
+                        )
+
                         # Pass output to next stage
                         current_data = stage_output
                         break  # Success - move to next stage
@@ -503,6 +514,9 @@ class ExecutionMixin:
             if self._progress_tracker:
                 self._progress_tracker.start_stage(stage_name, tier.value, model_id)
 
+            # Record stage start in state store (Phase 4)
+            self._state_record_stage_start(stage_name)
+
             # Run the stage
             output, input_tokens, output_tokens = await self.run_stage(
                 stage_name,
@@ -513,6 +527,9 @@ class ExecutionMixin:
             stage_end = datetime.now()
             duration_ms = int((stage_end - stage_start).total_seconds() * 1000)
             cost = self._calculate_cost(tier, input_tokens, output_tokens)
+
+            # Record stage completion in state store (Phase 4)
+            self._state_record_stage_complete(stage_name, cost, duration_ms, tier.value)
 
             # Update budget spent for routing decisions
             budget_spent += cost
@@ -661,6 +678,15 @@ class ExecutionMixin:
 
         # Emit workflow telemetry to backend
         self._emit_workflow_telemetry(result)
+
+        # Record workflow completion in state store (Phase 4)
+        total_cost = sum(s.cost for s in self._stages_run if not s.skipped)
+        self._state_record_workflow_complete(
+            success=result.success,
+            total_cost=total_cost,
+            execution_time_ms=float(total_duration_ms),
+            error=error,
+        )
 
         # Stop heartbeat tracking (Pattern 1)
         if heartbeat_coordinator:

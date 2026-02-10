@@ -1,11 +1,11 @@
 ---
-description: Empathy Framework - Architecture Overview: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+description: Attune AI - Architecture Overview: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
 ---
 
-# Empathy Framework - Architecture Overview
+# Attune AI - Architecture Overview
 
-**Version:** 4.0.0
-**Last Updated:** January 16, 2026
+**Version:** 5.0.0
+**Last Updated:** February 10, 2026
 **Status:** Living Document
 
 ---
@@ -18,20 +18,22 @@ description: Empathy Framework - Architecture Overview: System architecture over
 4. [Multi-Provider LLM System](#multi-provider-llm-system)
 5. [Memory Architecture](#memory-architecture)
 6. [Workflow System](#workflow-system)
-7. [Caching Strategy](#caching-strategy)
-8. [Security Model](#security-model)
-9. [Deployment Architecture](#deployment-architecture)
-10. [Performance Characteristics](#performance-characteristics)
+7. [Agent State & Dynamic Teams (v2.5.1)](#agent-state--dynamic-teams-v251)
+8. [Caching Strategy](#caching-strategy)
+9. [Security Model](#security-model)
+10. [Deployment Architecture](#deployment-architecture)
+11. [Performance Characteristics](#performance-characteristics)
 
 ---
 
 ## System Overview
 
-Empathy Framework is a meta-orchestration system for AI agent collaboration. The framework enables:
+Attune AI is a meta-orchestration system for AI agent collaboration. The framework enables:
 
 - **Dynamic agent team composition** - Automatically selects and coordinates optimal agents for tasks
 - **Multi-provider LLM routing** - Intelligent routing across Anthropic, OpenAI, Google, and Ollama
-- **Persistent memory** - Cross-session knowledge sharing via Redis and encrypted patterns
+- **Agent state persistence** - Execution history, checkpoints, and recovery across sessions
+- **Workflow composition** - Compose workflows into multi-agent teams with quality gates
 - **Cost optimization** - 34-86% savings through intelligent tier routing
 - **Production-ready security** - Path validation, audit logging, HIPAA compliance options
 
@@ -142,15 +144,21 @@ The meta-orchestration system is the framework's breakthrough feature - it analy
 
 ### Pre-Built Agent Templates
 
-The framework includes 7 specialized agent templates:
+The framework includes 13 specialized agent templates:
 
 1. **Security Auditor** - Vulnerability scanning, OWASP checks, dependency audits
 2. **Test Coverage Analyzer** - Gap analysis, edge case detection, assertion suggestions
 3. **Code Quality Reviewer** - Best practices, anti-patterns, refactoring suggestions
 4. **Documentation Writer** - Completeness checks, clarity improvements, API docs
-5. **Performance Profiler** - Bottleneck detection, optimization recommendations
-6. **Dependency Checker** - CVE scanning, license compliance, update recommendations
-7. **Architecture Reviewer** - Design patterns, SOLID principles, scalability analysis
+5. **Performance Optimizer** - Bottleneck detection, optimization recommendations
+6. **Architecture Analyst** - Design patterns, SOLID principles, scalability analysis
+7. **Refactoring Specialist** - Code restructuring, extract method, simplification
+8. **Dependency Checker** - CVE scanning, license compliance, update recommendations
+9. **Bug Predictor** - Predictive analysis, risk scoring, prevention steps
+10. **Release Coordinator** - Version management, changelog, release validation
+11. **Integration Tester** - API testing, contract verification, compatibility checks
+12. **API Designer** - REST/GraphQL design, schema validation, documentation
+13. **DevOps Engineer** - CI/CD, infrastructure, deployment automation
 
 ### Composition Patterns
 
@@ -368,6 +376,69 @@ class BaseWorkflow:
 
 ---
 
+## Agent State & Dynamic Teams (v2.5.1)
+
+### Agent State Persistence
+
+```text
+attune.agents.state/
+├── models.py        # AgentExecutionRecord, AgentStateRecord
+├── store.py         # AgentStateStore - JSON-based persistent storage
+├── recovery.py      # AgentRecoveryManager - interrupted agent recovery
+└── __init__.py
+```
+
+**Storage:** `.attune/agents/state/{agent_id}.json`
+
+- Execution history (max 100 entries per agent, trims oldest)
+- Checkpoints for recovery support
+- Accumulated metrics (success rate, cost, timing)
+- Uses `_validate_file_path()` with `allowed_dir` for security
+
+### Dynamic Team Composition
+
+```text
+attune.orchestration/
+├── dynamic_team.py           # DynamicTeam - 4 execution strategies
+├── team_builder.py           # DynamicTeamBuilder - build from specs/plans/configs
+├── team_store.py             # TeamStore - persistent team configurations
+├── workflow_agent_adapter.py # Wrap workflows as agents
+├── workflow_composer.py      # Compose workflows into teams
+└── ...existing modules...
+```
+
+**Execution flow:**
+
+```text
+MetaOrchestrator.compose_team(task)
+  → DynamicTeamBuilder.build_from_plan(plan)
+    → DynamicTeam(agents, strategy, quality_gates)
+      → team.execute(input_data) → DynamicTeamResult
+```
+
+**Strategies:** parallel, sequential, two_phase, delegation
+
+### Workflow Integration Mixins
+
+```text
+BaseWorkflow MRO (v2.5.1):
+  BaseWorkflow
+  ├── ExecutionMixin        # Core execute() loop
+  ├── TierMixin             # CHEAP → CAPABLE → PREMIUM escalation
+  ├── CoordinationMixin     # Heartbeat & signal coordination
+  ├── StatePersistenceMixin # NEW: Stage-level checkpoints
+  ├── MultiAgentStageMixin  # NEW: Delegate stages to DynamicTeam
+  ├── PromptMixin           # Prompt building
+  └── CacheMixin            # Response caching
+```
+
+**Opt-in via constructor parameters:**
+
+- `state_store=AgentStateStore(...)` enables state persistence
+- `multi_agent_configs={...}` enables multi-agent stage delegation
+
+---
+
 ## Caching Strategy
 
 The framework uses a hybrid caching approach: hash-only (fast, exact matches) and semantic (similar prompts).
@@ -566,6 +637,6 @@ wizard = HealthcareWizard()
 
 ---
 
-**Last Updated:** January 16, 2026
+**Last Updated:** February 10, 2026
 **Maintained By:** Engineering Team
-**License:** Fair Source 0.9
+**License:** Apache 2.0

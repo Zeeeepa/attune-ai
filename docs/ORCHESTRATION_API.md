@@ -4,8 +4,8 @@ description: Meta-Orchestration API Reference API reference: **Version:** 3.12.0
 
 # Meta-Orchestration API Reference
 
-**Version:** 3.12.0
-**Last Updated:** January 10, 2026
+**Version:** 4.0.0
+**Last Updated:** February 10, 2026
 
 ---
 
@@ -16,7 +16,10 @@ description: Meta-Orchestration API Reference API reference: **Version:** 3.12.0
 3. [Meta-Orchestrator](#meta-orchestrator)
 4. [Execution Strategies](#execution-strategies)
 5. [Configuration Store](#configuration-store)
-6. [Workflows](#workflows)
+6. [Dynamic Teams](#dynamic-teams)
+7. [Workflow Composition](#workflow-composition)
+8. [Agent State Persistence](#agent-state-persistence)
+9. [Workflows](#workflows)
 
 ---
 
@@ -24,14 +27,19 @@ description: Meta-Orchestration API Reference API reference: **Version:** 3.12.0
 
 ### Overview
 
-The meta-orchestration system consists of 5 main modules:
+The meta-orchestration system consists of 10 main modules:
 
-```
+```text
 attune.orchestration/
-├── agent_templates.py      # Agent archetypes and capabilities
-├── meta_orchestrator.py    # Task analysis and agent selection
-├── execution_strategies.py # 6 composition patterns
-├── config_store.py         # Learning and memory system
+├── agent_templates.py           # Agent archetypes and capabilities (13 templates)
+├── meta_orchestrator.py         # Task analysis and agent selection
+├── execution_strategies.py      # 6 composition patterns
+├── config_store.py              # Learning and memory system
+├── dynamic_team.py              # Dynamic team execution (parallel/sequential/two_phase/delegation)
+├── team_builder.py              # Build teams from specs, plans, or saved configs
+├── team_store.py                # Persistent team configuration storage
+├── workflow_agent_adapter.py    # Wrap workflows as agents for team composition
+├── workflow_composer.py         # Compose workflows into DynamicTeam instances
 └── __init__.py
 ```
 
@@ -239,7 +247,7 @@ capable_templates = get_templates_by_tier("CAPABLE")
 
 ### Pre-built Templates
 
-**7 templates available:**
+**13 templates available:**
 
 1. `test_coverage_analyzer` (CAPABLE)
 2. `security_auditor` (PREMIUM)
@@ -248,6 +256,12 @@ capable_templates = get_templates_by_tier("CAPABLE")
 5. `performance_optimizer` (CAPABLE)
 6. `architecture_analyst` (PREMIUM)
 7. `refactoring_specialist` (CAPABLE)
+8. `dependency_checker` (CHEAP)
+9. `bug_predictor` (CAPABLE)
+10. `release_coordinator` (CAPABLE)
+11. `integration_tester` (CAPABLE)
+12. `api_designer` (CAPABLE)
+13. `devops_engineer` (CAPABLE)
 
 ---
 
@@ -1049,6 +1063,253 @@ print(f"Deleted: {deleted}")
 all_configs = store.list_all()
 for config in all_configs:
     print(f"{config.id}: used {config.usage_count} times")
+```
+
+---
+
+## Dynamic Teams
+
+**Module:** `attune.orchestration.dynamic_team`
+
+### Classes
+
+#### `DynamicTeam`
+
+**Executes a team of agents with configurable strategy and quality gates.**
+
+```python
+class DynamicTeam:
+    def __init__(
+        self,
+        team_name: str,
+        agents: list[SDKAgent | WorkflowAgentAdapter],
+        strategy: str = "parallel",
+        quality_gates: list[QualityGate] | None = None,
+        phases: list[dict[str, Any]] | None = None,
+    ) -> None: ...
+
+    async def execute(self, input_data: dict[str, Any]) -> DynamicTeamResult: ...
+```
+
+**Parameters:**
+
+- `team_name` (str): Human-readable team name
+- `agents` (list): SDKAgent or WorkflowAgentAdapter instances
+- `strategy` (str): Execution strategy (`parallel`, `sequential`, `two_phase`, `delegation`)
+- `quality_gates` (list[QualityGate]): Quality thresholds to enforce
+- `phases` (list[dict]): Phase definitions for `two_phase` strategy
+
+**Strategies:**
+
+| Strategy | Description |
+|----------|-------------|
+| `parallel` | Execute all agents concurrently via `asyncio.gather()` |
+| `sequential` | Execute agents one after another, passing results forward |
+| `two_phase` | Split agents into phases with gate checks between them |
+| `delegation` | Lead agent delegates subtasks to specialist agents |
+
+**Example:**
+
+```python
+from attune.orchestration import DynamicTeam, DynamicTeamBuilder
+
+builder = DynamicTeamBuilder(state_store=state_store)
+team = builder.build_from_spec(spec)
+result = await team.execute({"target": "src/"})
+
+print(f"Success: {result.success}")
+print(f"Quality gates passed: {result.quality_gates_passed}")
+```
+
+---
+
+#### `DynamicTeamResult`
+
+**Aggregated result from team execution.**
+
+```python
+@dataclass
+class DynamicTeamResult:
+    success: bool
+    agent_results: list[SDKAgentResult]
+    quality_gates_passed: bool
+    gate_results: list[dict[str, Any]]
+    execution_time_ms: float
+    total_cost: float
+    strategy_used: str
+```
+
+---
+
+### `DynamicTeamBuilder`
+
+**Module:** `attune.orchestration.team_builder`
+
+**Builds runnable `DynamicTeam` instances from various sources.**
+
+```python
+class DynamicTeamBuilder:
+    def __init__(
+        self,
+        state_store: AgentStateStore | None = None,
+        redis_client: Any | None = None,
+    ) -> None: ...
+
+    def build_from_spec(self, spec: TeamSpecification) -> DynamicTeam: ...
+    def build_from_plan(self, plan: dict[str, Any]) -> DynamicTeam: ...
+    def build_from_config(self, config: AgentConfiguration) -> DynamicTeam: ...
+```
+
+**Methods:**
+
+- `build_from_spec()` - Build from a `TeamSpecification` dataclass
+- `build_from_plan()` - Build from a `MetaOrchestrator` execution plan dict
+- `build_from_config()` - Build from a saved `AgentConfiguration`
+
+---
+
+### `TeamStore`
+
+**Module:** `attune.orchestration.team_store`
+
+**Persistent storage for team specifications.**
+
+```python
+class TeamStore:
+    def __init__(self, storage_dir: str | None = None) -> None: ...
+
+    def save(self, spec: TeamSpecification) -> Path: ...
+    def load(self, name: str) -> TeamSpecification | None: ...
+    def list_all(self) -> list[TeamSpecification]: ...
+    def delete(self, name: str) -> bool: ...
+```
+
+Storage location: `.attune/orchestration/teams/{name}.json`
+
+---
+
+## Workflow Composition
+
+**Module:** `attune.orchestration.workflow_composer`
+
+### `WorkflowComposer`
+
+**Composes `BaseWorkflow` subclasses into a `DynamicTeam`.**
+
+Each workflow is wrapped via `WorkflowAgentAdapter` so that the `DynamicTeam` executor can call `adapter.process(input_data)` uniformly for both SDK agents and workflows.
+
+```python
+class WorkflowComposer:
+    def __init__(self, state_store: Any | None = None) -> None: ...
+
+    def compose(
+        self,
+        team_name: str,
+        workflows: list[dict[str, Any]],
+        strategy: str = "parallel",
+        quality_gates: dict[str, Any] | None = None,
+        phases: list[dict[str, Any]] | None = None,
+    ) -> DynamicTeam: ...
+```
+
+**Parameters (compose):**
+
+- `team_name` (str): Human-readable name for the composed team
+- `workflows` (list[dict]): Workflow specifications. Each dict must have:
+  - `workflow`: A `BaseWorkflow` subclass (type)
+  - `kwargs` (optional): Dict of keyword arguments for the workflow constructor
+  - `role` (optional): Human-readable role name
+  - `agent_id` (optional): Unique agent identifier
+- `strategy` (str): Execution strategy (`parallel`, `sequential`, `two_phase`, `delegation`)
+- `quality_gates` (dict): Quality gate specifications
+- `phases` (list[dict]): Phase definitions for `two_phase` strategy
+
+**Raises:**
+
+- `ValueError`: If `workflows` is empty
+
+**Example:**
+
+```python
+from attune.orchestration import WorkflowComposer
+
+composer = WorkflowComposer(state_store=state_store)
+team = composer.compose(
+    team_name="comprehensive-review",
+    workflows=[
+        {"workflow": SecurityAuditWorkflow, "kwargs": {"cost_tracker": ct}},
+        {"workflow": CodeReviewWorkflow, "kwargs": {"cost_tracker": ct}},
+    ],
+    strategy="parallel",
+    quality_gates={"min_score": 70},
+)
+result = await team.execute({"target": "src/"})
+```
+
+---
+
+### `WorkflowAgentAdapter`
+
+**Module:** `attune.orchestration.workflow_agent_adapter`
+
+**Adapts a `BaseWorkflow` to the `SDKAgent.process()` interface.**
+
+```python
+class WorkflowAgentAdapter:
+    def __init__(
+        self,
+        workflow_class: type,
+        workflow_kwargs: dict[str, Any] | None = None,
+        agent_id: str | None = None,
+        role: str | None = None,
+        state_store: Any | None = None,
+    ) -> None: ...
+
+    def process(self, input_data: dict[str, Any]) -> SDKAgentResult: ...
+```
+
+Bridges the async/sync boundary using `asyncio.run()` in a thread when called from an existing event loop (same pattern as `DynamicTeam._execute_parallel()`).
+
+---
+
+## Agent State Persistence
+
+**Module:** `attune.agents.state`
+
+### `AgentStateStore`
+
+**Persistent storage for agent execution history and checkpoints.**
+
+```python
+class AgentStateStore:
+    def __init__(self, storage_dir: str | None = None) -> None: ...
+
+    def record_start(self, agent_id: str, role: str, tier: str) -> str: ...
+    def record_completion(
+        self, execution_id: str, agent_id: str, findings: dict, score: float, cost: float
+    ) -> None: ...
+    def record_failure(self, execution_id: str, agent_id: str, error: str) -> None: ...
+    def save_checkpoint(self, agent_id: str, checkpoint_data: dict) -> None: ...
+    def get_last_checkpoint(self, agent_id: str) -> dict | None: ...
+    def get_agent_state(self, agent_id: str) -> AgentStateRecord | None: ...
+    def search_history(
+        self, agent_id: str | None = None, status: str | None = None, limit: int = 50
+    ) -> list[AgentExecutionRecord]: ...
+```
+
+Storage location: `.attune/agents/state/{agent_id}.json`
+
+### `AgentRecoveryManager`
+
+**Finds and recovers interrupted agent executions.**
+
+```python
+class AgentRecoveryManager:
+    def __init__(self, state_store: AgentStateStore) -> None: ...
+
+    def find_interrupted_agents(self) -> list[str]: ...
+    def recover_agent(self, agent_id: str) -> dict | None: ...
+    def mark_abandoned(self, agent_id: str) -> None: ...
 ```
 
 ---

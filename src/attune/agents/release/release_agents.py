@@ -21,6 +21,8 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from attune.agents.state.store import AgentStateStore
+
 from .release_models import (
     ANTHROPIC_AVAILABLE,
     DEFAULT_QUALITY_GATES,
@@ -90,10 +92,12 @@ class ReleaseAgent:
         agent_id: str,
         role: str,
         redis_client: Any | None = None,
+        state_store: AgentStateStore | None = None,
     ) -> None:
         self.agent_id = agent_id
         self.role = role
         self.redis = redis_client
+        self.state_store = state_store
         self.current_tier = Tier.CHEAP
         self.llm_client: Any | None = None
         self.total_cost = 0.0
@@ -222,6 +226,13 @@ class ReleaseAgent:
         start = time.time()
         escalated = False
 
+        # Record execution start in persistent state
+        exec_id: str | None = None
+        if self.state_store is not None:
+            exec_id = self.state_store.record_start(
+                self.agent_id, self.role, input_summary=codebase_path,
+            )
+
         # Try CHEAP first
         self.current_tier = Tier.CHEAP
         self._register_heartbeat(status="running", task="Analyzing")
@@ -246,6 +257,27 @@ class ReleaseAgent:
         # Signal completion
         self._signal_completion(findings)
         self._register_heartbeat(status="idle", task="")
+
+        # Record completion in persistent state
+        if self.state_store is not None and exec_id is not None:
+            if success:
+                self.state_store.record_completion(
+                    self.agent_id,
+                    exec_id,
+                    success=success,
+                    findings=findings,
+                    score=findings.get("score", 0.0),
+                    cost=self.total_cost,
+                    execution_time_ms=execution_time,
+                    tier_used=self.current_tier.value,
+                    confidence=findings.get("confidence", 0.8),
+                )
+            else:
+                self.state_store.record_failure(
+                    self.agent_id,
+                    exec_id,
+                    error=findings.get("error", "Execution failed after tier escalation"),
+                )
 
         return ReleaseAgentResult(
             agent_id=self.agent_id,
@@ -293,11 +325,16 @@ class SecurityAuditorAgent(ReleaseAgent):
         '"top_findings": [{"file": "...", "issue": "...", "severity": "..."}]}'
     )
 
-    def __init__(self, redis_client: Any | None = None) -> None:
+    def __init__(
+        self,
+        redis_client: Any | None = None,
+        state_store: AgentStateStore | None = None,
+    ) -> None:
         super().__init__(
             agent_id=f"security-auditor-{uuid4().hex[:8]}",
             role="Security Auditor",
             redis_client=redis_client,
+            state_store=state_store,
         )
 
     def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
@@ -416,11 +453,16 @@ class TestCoverageAgent(ReleaseAgent):
     LLM-enhanced: Sends coverage gaps to LLM for gap analysis.
     """
 
-    def __init__(self, redis_client: Any | None = None) -> None:
+    def __init__(
+        self,
+        redis_client: Any | None = None,
+        state_store: AgentStateStore | None = None,
+    ) -> None:
         super().__init__(
             agent_id=f"test-coverage-{uuid4().hex[:8]}",
             role="Test Coverage",
             redis_client=redis_client,
+            state_store=state_store,
         )
 
     def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
@@ -542,11 +584,16 @@ class CodeQualityAgent(ReleaseAgent):
         '"recommendations": ["..."]}'
     )
 
-    def __init__(self, redis_client: Any | None = None) -> None:
+    def __init__(
+        self,
+        redis_client: Any | None = None,
+        state_store: AgentStateStore | None = None,
+    ) -> None:
         super().__init__(
             agent_id=f"code-quality-{uuid4().hex[:8]}",
             role="Code Quality",
             redis_client=redis_client,
+            state_store=state_store,
         )
 
     def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:
@@ -661,11 +708,16 @@ class DocumentationAgent(ReleaseAgent):
     Rule-based: Walks Python files, counts functions with/without docstrings.
     """
 
-    def __init__(self, redis_client: Any | None = None) -> None:
+    def __init__(
+        self,
+        redis_client: Any | None = None,
+        state_store: AgentStateStore | None = None,
+    ) -> None:
         super().__init__(
             agent_id=f"documentation-{uuid4().hex[:8]}",
             role="Documentation",
             redis_client=redis_client,
+            state_store=state_store,
         )
 
     def _execute_tier(self, codebase_path: str, tier: Tier) -> tuple[bool, dict[str, Any]]:

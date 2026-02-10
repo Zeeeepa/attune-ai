@@ -105,7 +105,7 @@ class RealCoverageAnalyzer:
         """Run coverage analysis on all project packages.
 
         Analyzes coverage for: empathy_os, empathy_llm_toolkit,
-        empathy_software_plugin, empathy_healthcare_plugin
+        empathy_software_plugin
 
         Args:
             use_existing: Use existing coverage.json if available (default: True)
@@ -142,7 +142,6 @@ class RealCoverageAnalyzer:
                     "attune",
                     "empathy_llm_toolkit",
                     "empathy_software_plugin",
-                    "empathy_healthcare_plugin",
                 ]
 
                 cmd = [

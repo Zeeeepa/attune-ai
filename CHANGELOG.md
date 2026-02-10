@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.1] - 2026-02-10
+
+### Added
+
+- **Agent State Persistence** (`src/attune/agents/state/`): `AgentStateStore` with JSON file-backed storage, `AgentExecutionRecord` and `AgentStateRecord` data models, `AgentRecoveryManager` for interrupted agent detection and checkpoint recovery. Max 100 history entries per agent with automatic trimming. Path security via `_validate_file_path()` with `allowed_dir`
+- **Anthropic Agent SDK Integration** (`src/attune/agents/sdk/`): `SDKAgent` wrapping `claude_agent_sdk.query()` with progressive CHEAP -> CAPABLE -> PREMIUM tier escalation, Redis heartbeats, and cost tracking. `SDKAgentResult` dataclass, `SDKAgentTeam` with quality gates, `SDKToolsMixin` for file/shell operations. Graceful fallback to Messages API when SDK unavailable. Optional dependency: `pip install attune-ai[agent-sdk]`
+- **Dynamic Team Composition** (`src/attune/orchestration/`): `DynamicTeamBuilder` creates runnable teams from user specs, MetaOrchestrator plans, or saved configurations. `DynamicTeam` executor supports 4 strategies: parallel (`asyncio.gather`), sequential, two-phase (gather-then-reason), and delegation. `TeamStore` for persisting team configurations. `TeamSpecification` dataclass
+- **13 Agent Templates** (`src/attune/orchestration/agent_templates.py`): Pre-built archetypes including `security_auditor`, `code_reviewer`, `test_coverage_analyzer`, `performance_profiler`, `documentation_writer`, `dependency_auditor`, `architecture_reviewer`, `refactoring_advisor`, `release_manager`, `bug_triager`, `api_designer`, `devops_engineer`, `accessibility_auditor`. Custom template registration via `register_custom_template()`
+- **Workflow State Persistence Mixin** (`src/attune/workflows/state_mixin.py`): `StatePersistenceMixin` records workflow start/completion/failure and saves stage-level checkpoints via `AgentStateStore`. All methods no-op when `state_store=None`. Error-isolated: state store failures never crash the workflow
+- **Multi-Agent Workflow Stages** (`src/attune/workflows/multi_agent_mixin.py`): `MultiAgentStageMixin` enables any workflow stage to delegate to a `DynamicTeam` via `_run_multi_agent_stage()`. Per-stage team configuration via `multi_agent_configs=` parameter. Overridable `_merge_team_results()` for domain-specific result aggregation
+- **Workflow Composition** (`src/attune/orchestration/workflow_composer.py`): `WorkflowComposer` composes `BaseWorkflow` subclasses into `DynamicTeam` instances. `WorkflowAgentAdapter` wraps workflows to the `SDKAgent.process()` interface, bridging async/sync boundaries with automatic event loop detection
+- **MetaOrchestrator `compose_team()`**: New method builds runnable `DynamicTeam` from task analysis via `analyze_and_compose()` + `DynamicTeamBuilder.build_from_plan()`
+
+### Changed
+
+- **BaseWorkflow** now inherits from `StatePersistenceMixin` and `MultiAgentStageMixin`. New optional parameters: `state_store: AgentStateStore | None`, `multi_agent_configs: dict | None`. Fully backward-compatible (both default to `None`)
+- **ExecutionMixin** calls state persistence hooks at workflow start, stage start/complete, and workflow finalize. Zero behavioral change when `state_store=None`
+- **`attune.orchestration.__init__`** exports `WorkflowAgentAdapter` and `WorkflowComposer`
+- **7,440 unit tests passing** (up from 7,398) with 0 failures
+
 ## [2.4.1] - 2026-02-10
 
 ### Security

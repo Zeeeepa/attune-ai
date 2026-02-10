@@ -4,17 +4,21 @@ description: Workflow Coordination & Agent Tracking: **Date:** January 27, 2026 
 
 # Workflow Coordination & Agent Tracking
 
-**Date:** January 27, 2026
-**Version:** 4.8.2
+**Date:** February 10, 2026
+**Version:** 5.0.0
 **Status:** ✅ Complete and Ready for Use
 
 ---
 
 ## Overview
 
-The Empathy Framework now supports agent tracking and coordination in BaseWorkflow, enabling workflows to:
+Attune AI supports agent tracking and coordination in BaseWorkflow, enabling workflows to:
+
 - **Track agent liveness** via TTL-based heartbeat updates (Pattern 1)
 - **Coordinate between agents** via TTL-based ephemeral signals (Pattern 2)
+- **Persist state across sessions** via AgentStateStore with checkpoints and recovery (Pattern 3 - NEW in v2.5.1)
+- **Delegate stages to multi-agent teams** via MultiAgentStageMixin (Pattern 4 - NEW in v2.5.1)
+- **Compose workflows into teams** via WorkflowComposer and WorkflowAgentAdapter (Pattern 5 - NEW in v2.5.1)
 
 These features integrate seamlessly with the existing workflow infrastructure, requiring only optional flags to enable.
 
@@ -599,6 +603,105 @@ async def test_producer_consumer_coordination():
 
 ---
 
+## State Persistence Integration (v2.5.1)
+
+### StatePersistenceMixin
+
+BaseWorkflow now includes `StatePersistenceMixin` which records workflow lifecycle events when a `state_store` is provided:
+
+```python
+from attune.agents.state.store import AgentStateStore
+from attune.workflows.base import BaseWorkflow, ModelTier
+
+state_store = AgentStateStore(storage_dir=".attune/agents/state")
+
+workflow = MyWorkflow(
+    cost_tracker=cost_tracker,
+    state_store=state_store,  # Enables state persistence
+)
+
+result = await workflow.execute(input_data)
+
+# State store now contains:
+# - Workflow start/complete records
+# - Per-stage checkpoints with cost and duration
+# - Recovery checkpoints for interrupted workflows
+```
+
+**Lifecycle hooks (automatic when state_store is set):**
+
+- `_state_record_workflow_start()` - Called at execution start
+- `_state_record_stage_start(stage_name)` - Before each stage
+- `_state_record_stage_complete(stage_name, cost, duration_ms, tier)` - After each stage
+- `_state_record_workflow_complete(success, total_cost, execution_time_ms, error)` - At completion
+
+All state store calls are wrapped in try/except - persistence errors never crash the workflow.
+
+---
+
+## Multi-Agent Stage Delegation (v2.5.1)
+
+### MultiAgentStageMixin
+
+Workflow stages can delegate to a `DynamicTeam` instead of a single LLM call:
+
+```python
+class MyAdvancedWorkflow(BaseWorkflow):
+    name = "advanced-review"
+    stages = ["triage", "multi_agent_review", "report"]
+    tier_map = {
+        "triage": ModelTier.CHEAP,
+        "multi_agent_review": ModelTier.CAPABLE,
+        "report": ModelTier.CHEAP,
+    }
+
+    async def run_stage(self, stage_name, tier, input_data):
+        if stage_name == "multi_agent_review":
+            # Delegate to a team of agents
+            return await self._run_multi_agent_stage(
+                stage_name=stage_name,
+                input_data=input_data,
+                team_config={
+                    "agents": [
+                        {"template_id": "security_auditor"},
+                        {"template_id": "code_reviewer"},
+                    ],
+                    "strategy": "parallel",
+                    "quality_gates": {"min_score": 70},
+                },
+            )
+        # ... other stages use single LLM call
+```
+
+---
+
+## Workflow Composition (v2.5.1)
+
+### WorkflowComposer
+
+Compose entire workflows into a `DynamicTeam`:
+
+```python
+from attune.orchestration import WorkflowComposer
+
+composer = WorkflowComposer(state_store=state_store)
+team = composer.compose(
+    team_name="comprehensive-review",
+    workflows=[
+        {"workflow": SecurityAuditWorkflow, "kwargs": {"cost_tracker": ct}},
+        {"workflow": CodeReviewWorkflow, "kwargs": {"cost_tracker": ct}},
+    ],
+    strategy="parallel",
+    quality_gates={"min_score": 70},
+)
+
+result = await team.execute({"target": "src/"})
+```
+
+Each workflow is wrapped via `WorkflowAgentAdapter` which bridges the async/sync boundary and converts `WorkflowResult` to `SDKAgentResult`.
+
+---
+
 ## Related Documentation
 
 - [AGENT_TRACKING_AND_COORDINATION.md](./AGENT_TRACKING_AND_COORDINATION.md) - Pattern 1 & 2 detailed docs
@@ -612,15 +715,18 @@ async def test_producer_consumer_coordination():
 
 ### Remaining Patterns
 
-**Pattern 4: Real-Time Event Streaming** (not yet implemented)
+**Pattern 6: Real-Time Event Streaming** (not yet implemented)
+
 - Redis Streams + WebSocket for live updates
 - Real-time dashboard integration
 
-**Pattern 5: Human Approval Gates** (not yet implemented)
+**Pattern 7: Human Approval Gates** (not yet implemented)
+
 - Pause workflow for human decisions
 - Approval signal integration
 
-**Pattern 6: Agent-to-LLM Feedback Loop** (not yet implemented)
+**Pattern 8: Agent-to-LLM Feedback Loop** (not yet implemented)
+
 - Quality ratings inform routing
 - Automatic tier selection based on feedback
 
@@ -666,6 +772,6 @@ Or build a custom dashboard using the Python API from `HeartbeatCoordinator` and
 ---
 
 **Status:** ✅ Ready for Production Use
-**Version:** 4.8.2
-**Last Updated:** January 27, 2026
-**Dependencies:** Redis 5.0+ (optional)
+**Version:** 5.0.0
+**Last Updated:** February 10, 2026
+**Dependencies:** Redis 5.0+ (optional for heartbeats/signals)

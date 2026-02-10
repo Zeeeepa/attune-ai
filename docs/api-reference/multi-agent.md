@@ -95,7 +95,7 @@ Resolves conflicts between patterns from different agents.
 ### Resolution Strategies
 
 | Strategy | Description | Best For |
-|----------|-------------|----------|
+| -------- | ----------- | -------- |
 | `HIGHEST_CONFIDENCE` | Pick pattern with highest confidence score | When accuracy is paramount |
 | `MOST_RECENT` | Pick most recently discovered pattern | Fast-changing domains |
 | `BEST_CONTEXT_MATCH` | Pick best match for current context | Context-sensitive decisions |
@@ -243,6 +243,7 @@ print(f"Collaboration efficiency: {team_stats['collaboration_efficiency']:.0%}")
 ```
 
 **Collaboration Efficiency** measures how effectively agents learn from each other:
+
 - 0% = Agents only use their own patterns
 - 100% = All pattern reuse is cross-agent
 
@@ -430,9 +431,113 @@ if stats["most_used_strategy"] == "highest_confidence":
 
 ---
 
+## Dynamic Team Composition (v2.5.1)
+
+Attune AI v2.5.1 introduces dynamic team composition with persistent state and workflow integration.
+
+### DynamicTeam
+
+Execute teams of agents with configurable strategies and quality gates:
+
+```python
+from attune.orchestration import DynamicTeamBuilder, DynamicTeam
+from attune.agents.state.store import AgentStateStore
+
+state_store = AgentStateStore(storage_dir=".attune/agents/state")
+builder = DynamicTeamBuilder(state_store=state_store)
+
+# Build from specification
+team = builder.build_from_spec(TeamSpecification(
+    name="review-team",
+    agents=[
+        {"template_id": "security_auditor", "role": "Security"},
+        {"template_id": "code_reviewer", "role": "Quality"},
+    ],
+    strategy="parallel",
+    quality_gates={"min_score": {"threshold": 70}},
+))
+
+result = await team.execute({"target": "src/"})
+print(f"Success: {result.success}")
+print(f"Gates passed: {result.quality_gates_passed}")
+```
+
+### Execution Strategies
+
+| Strategy | Pattern | Use Case |
+| -------- | ------- | -------- |
+| `parallel` | All agents run concurrently | Independent validations |
+| `sequential` | Agent A then B then C | Pipeline processing |
+| `two_phase` | Phase 1 agents, gate check, Phase 2 | Staged validation |
+| `delegation` | Lead delegates to specialists | Complex analysis |
+
+### Agent Templates
+
+13 pre-built agent templates available:
+
+```python
+from attune.orchestration.agent_templates import get_all_templates, get_template
+
+# List all templates
+templates = get_all_templates()
+for t in templates:
+    print(f"{t.id}: {t.role} ({t.tier_preference})")
+
+# Get specific template
+security = get_template("security_auditor")
+```
+
+### WorkflowComposer
+
+Compose entire workflows into teams:
+
+```python
+from attune.orchestration import WorkflowComposer
+
+composer = WorkflowComposer()
+team = composer.compose(
+    team_name="comprehensive-review",
+    workflows=[
+        {"workflow": SecurityAuditWorkflow, "kwargs": {"cost_tracker": ct}},
+        {"workflow": CodeReviewWorkflow, "kwargs": {"cost_tracker": ct}},
+    ],
+    strategy="parallel",
+    quality_gates={"min_score": 70},
+)
+result = await team.execute({"target": "src/"})
+```
+
+### Agent State Persistence
+
+Track agent execution history and recover from interruptions:
+
+```python
+from attune.agents.state.store import AgentStateStore
+from attune.agents.state.recovery import AgentRecoveryManager
+
+store = AgentStateStore()
+
+# Record execution lifecycle
+exec_id = store.record_start("agent-1", role="Security", tier="CAPABLE")
+store.record_completion(exec_id, "agent-1", findings={...}, score=85.0, cost=0.05)
+
+# Check history
+state = store.get_agent_state("agent-1")
+print(f"Success rate: {state.success_rate:.0%}")
+
+# Recover interrupted agents
+recovery = AgentRecoveryManager(store)
+interrupted = recovery.find_interrupted_agents()
+for agent_id in interrupted:
+    checkpoint = recovery.recover_agent(agent_id)
+```
+
+---
+
 ## See Also
 
 - [Pattern Library](pattern-library.md) - Pattern storage and retrieval
-- [EmpathyOS](empathy-os.md) - Core agent API
+- [Orchestration API](../ORCHESTRATION_API.md) - Full orchestration reference
+- [Workflow Coordination](../WORKFLOW_COORDINATION.md) - Agent tracking and coordination
 - [Multi-Agent Coordination Example](../examples/multi-agent-team-coordination.md)
 - See the Memory System chapter for distributed memory concepts

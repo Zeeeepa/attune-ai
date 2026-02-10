@@ -8,9 +8,9 @@ Run code review, debugging, testing, and release workflows from your terminal or
 [![Downloads](https://static.pepy.tech/badge/attune-ai)](https://pepy.tech/projects/attune-ai)
 [![Downloads/month](https://static.pepy.tech/badge/attune-ai/month)](https://pepy.tech/projects/attune-ai)
 [![Downloads/week](https://static.pepy.tech/badge/attune-ai/week)](https://pepy.tech/projects/attune-ai)
-[![Tests](https://img.shields.io/badge/tests-13%2C828%20passing-brightgreen)](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/tests.yml)
-[![Coverage](https://img.shields.io/badge/coverage-80%25-green)](https://github.com/Smart-AI-Memory/attune-ai)
-[![Security](https://img.shields.io/badge/security-0%20findings-brightgreen)](https://github.com/Smart-AI-Memory/attune-ai)
+[![Tests](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/tests.yml/badge.svg)](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/tests.yml)
+[![CodeQL](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/codeql.yml/badge.svg)](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/codeql.yml)
+[![Security](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/security.yml/badge.svg)](https://github.com/Smart-AI-Memory/attune-ai/actions/workflows/security.yml)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
@@ -20,13 +20,14 @@ pip install attune-ai[developer]
 
 ---
 
-## What's New in v2.4.1
+## What's New in v2.5.1
 
-- **Security: macOS path validation bypass (CWE-22)** - Fixed `_validate_file_path()` in 5 modules where `/etc` -> `/private/etc` symlink bypassed system directory checks
-- **Healthcare Domain Plugin** - Clinical decision support agents with FHIR resources, waveform analysis, audit logging, and SMART on FHIR auth
-- **Redis pubsub thread leak fix** - `PubSubManager.close()` now joins listener threads, preventing daemon thread leaks
-- **Rebranding to Attune AI** - Removed legacy "Empathy Framework" references, deleted wizard-based CLI
-- **Windows CI stability** - Fixed timestamp collisions, encoding, case sensitivity, and PowerShell compatibility
+- **Agent State Persistence** - `AgentStateStore` records agent lifecycle events and saves checkpoints for recovery. Integrated into all workflows via `state_store=` parameter
+- **Anthropic Agent SDK Integration** - `SDKAgent` wraps `claude_agent_sdk.query()` with progressive tier escalation (CHEAP -> CAPABLE -> PREMIUM), Redis heartbeats, and cost tracking. Graceful fallback when SDK is unavailable
+- **Dynamic Team Composition** - `DynamicTeamBuilder` creates agent teams from specs, plans, or saved configs. `DynamicTeam` supports parallel, sequential, two-phase, and delegation strategies with quality gates
+- **Workflow Composition** - `WorkflowComposer` wraps any `BaseWorkflow` as a `DynamicTeam` participant via `WorkflowAgentAdapter`, enabling orchestrated execution of entire workflows in parallel or sequence
+- **Multi-Agent Workflow Stages** - Any workflow stage can now delegate to a `DynamicTeam` via `_run_multi_agent_stage()`, configurable per-stage with `multi_agent_configs=`
+- **13 Agent Templates** - Pre-built templates for security auditor, code reviewer, test coverage analyzer, performance profiler, documentation writer, and more
 
 ---
 
@@ -43,13 +44,16 @@ Attune AI is built exclusively for Anthropic/Claude, unlocking features impossib
 
 ### Multi-Agent Orchestration
 
-Full support for custom agents and Anthropic LLM agents:
+Full support for custom agents, dynamic teams, and Anthropic Agent SDK:
 
-- **Agent Teams** - Pre-built teams for release prep (4 agents) with extensible agent framework
+- **Dynamic Team Composition** - Build agent teams from templates, specs, or MetaOrchestrator plans with 4 execution strategies (parallel, sequential, two-phase, delegation)
+- **13 Agent Templates** - Pre-built archetypes (security auditor, code reviewer, test coverage, etc.) with custom template registration
+- **Agent State Persistence** - `AgentStateStore` records execution history, saves checkpoints, and enables recovery from interruptions
+- **Workflow Composition** - Compose entire workflows into `DynamicTeam` instances for orchestrated parallel/sequential execution
+- **Progressive Tier Escalation** - Agents start cheap and escalate only when needed (CHEAP -> CAPABLE -> PREMIUM)
 - **Agent Coordination Dashboard** - Real-time monitoring with 6 coordination patterns
-- **Progressive Tier Escalation** - Agents start cheap and escalate only when needed
 - **Inter-Agent Communication** - Heartbeats, signals, events, and approval gates
-- **Redis Production Patterns** - `scan_iter()` for safe key enumeration, pipeline batching, pub/sub reconnection with exponential backoff
+- **Quality Gates** - Per-agent and cross-team quality thresholds with required/optional gate enforcement
 
 ### Modular Architecture
 
@@ -57,7 +61,7 @@ Clean, maintainable codebase built for extensibility:
 
 - **Small, Focused Files** - No file exceeds 1,000 lines; logic extracted into mixins and utilities
 - **Cross-Platform CI** - Tested on Ubuntu, macOS, and Windows with Python 3.10-3.13
-- **13,800+ Tests** - Security, unit, integration, and behavioral test coverage at 80%+ coverage
+- **7,400+ Unit Tests** - Security, unit, integration, and behavioral test coverage at 80%+ coverage
 
 ### Intelligent Cost Optimization
 
@@ -309,6 +313,9 @@ See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 - [Quick Start Guide](docs/quickstart.md)
 - [CLI Reference](docs/cli-reference.md)
 - [Authentication Strategy Guide](docs/AUTH_STRATEGY_GUIDE.md)
+- [Orchestration API Reference](docs/ORCHESTRATION_API.md)
+- [Workflow Coordination Guide](docs/WORKFLOW_COORDINATION.md)
+- [Architecture Overview](docs/ARCHITECTURE.md)
 - [Full Documentation](https://smartaimemory.com/framework-docs/)
 
 ---

@@ -234,8 +234,15 @@ uv.lock
 /scripts/profile_workflows.py
 planning/
 
-# Healthcare examples (demo files with simulated patient data)
-attune_healthcare/examples/
+# Healthcare plugin (moved to separate fork - attune-healthcare-fork/)
+attune_healthcare/
+attune-healthcare-plugin/
+attune-healthcare-fork/
+src/attune/healthcare/
+src/attune/agents/healthcare/
+tests/unit/healthcare/
+tests/unit/agents/healthcare/
+tests/integration/healthcare/
 
 # VS Code memory panel (separate project)
 vscode-memory-panel/
