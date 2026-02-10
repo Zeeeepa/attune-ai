@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "attune-healthcare": {
+      "command": "python",
+      "args": ["mcp/healthcare_server.py"]
+    }
+  }
+}

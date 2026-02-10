@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Decision Support Monitor</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- ================================================================= -->
+    <!-- Header                                                            -->
+    <!-- ================================================================= -->
+    <header class="app-header">
+        <div class="header-left">
+            <h1>Clinical Decision Support Monitor</h1>
+            <span class="version-badge">v2.5.0</span>
+        </div>
+        <div class="header-right">
+            <span id="connectionStatus" class="connection-status disconnected">
+                <span class="status-dot"></span>
+                <span class="status-text">Disconnected</span>
+            </span>
+            <button id="btnToggleTheme" class="btn btn-icon" title="Toggle dark mode"
+                    aria-label="Toggle dark mode">
+                <span class="theme-icon">&#9790;</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ================================================================= -->
+    <!-- Alert Banner                                                      -->
+    <!-- ================================================================= -->
+    <div id="alertBanner" class="alert-banner hidden" role="alert" aria-live="assertive">
+        <div class="alert-content">
+            <span class="alert-icon">&#9888;</span>
+            <div id="alertMessages" class="alert-messages"></div>
+        </div>
+        <button id="btnDismissAlerts" class="btn btn-dismiss" aria-label="Dismiss alerts">
+            &#10005;
+        </button>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- Tab Navigation                                                    -->
+    <!-- ================================================================= -->
+    <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" data-tab="monitor" role="tab"
+                aria-selected="true" aria-controls="panelMonitor">
+            Monitor
+        </button>
+        <button class="tab-btn" data-tab="assess" role="tab"
+                aria-selected="false" aria-controls="panelAssess">
+            New Assessment
+        </button>
+        <button class="tab-btn" data-tab="audit" role="tab"
+                aria-selected="false" aria-controls="panelAudit">
+            Audit Log
+        </button>
+    </nav>
+
+    <!-- ================================================================= -->
+    <!-- Main Content Area                                                 -->
+    <!-- ================================================================= -->
+    <main class="main-content">
+
+        <!-- ============================================================= -->
+        <!-- Monitor Tab                                                   -->
+        <!-- ============================================================= -->
+        <section id="panelMonitor" class="tab-panel active" role="tabpanel">
+            <div class="monitor-layout">
+                <!-- Patient Grid -->
+                <div class="patient-grid-container">
+                    <div class="section-header">
+                        <h2>Monitored Patients</h2>
+                        <div class="add-patient-inline">
+                            <input type="text" id="inlinePatientId"
+                                   placeholder="Patient ID (e.g. P001)"
+                                   aria-label="Patient ID to add">
+                            <button id="btnAddPatient" class="btn btn-primary btn-sm">
+                                + Add Patient
+                            </button>
+                        </div>
+                    </div>
+                    <div id="patientGrid" class="patient-grid">
+                        <div class="empty-state">
+                            <p>No patients being monitored.</p>
+                            <p>Enter a Patient ID above to begin.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Panel -->
+                <aside id="detailPanel" class="detail-panel hidden">
+                    <div class="detail-header">
+                        <h2 id="detailPatientId">Patient Details</h2>
+                        <button id="btnCloseDetail" class="btn btn-icon"
+                                aria-label="Close detail panel">&#10005;</button>
+                    </div>
+
+                    <div class="detail-body">
+                        <!-- Risk Summary -->
+                        <div class="detail-section">
+                            <h3>Risk Assessment</h3>
+                            <div class="risk-summary">
+                                <div class="risk-badge-large" id="detailRiskBadge">--</div>
+                                <div class="risk-meta">
+                                    <span>Confidence: <strong id="detailConfidence">--</strong></span>
+                                    <span>Protocol: <strong id="detailProtocol">--</strong></span>
+                                    <span>Cost: <strong id="detailCost">--</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vitals Summary -->
+                        <div class="detail-section">
+                            <h3>Vitals Summary</h3>
+                            <div id="detailVitals" class="vitals-grid">
+                                <span class="no-data">No vitals data available</span>
+                            </div>
+                        </div>
+
+                        <!-- ECG Waveform -->
+                        <div class="detail-section">
+                            <h3>ECG Waveform</h3>
+                            <div class="ecg-container">
+                                <canvas id="ecgCanvas" width="600" height="200"></canvas>
+                                <div id="ecgNoData" class="no-data">No ECG data available</div>
+                            </div>
+                        </div>
+
+                        <!-- Protocol Compliance -->
+                        <div class="detail-section">
+                            <h3>Quality Gates</h3>
+                            <div id="detailQualityGates" class="quality-gates">
+                                <span class="no-data">No quality gate data</span>
+                            </div>
+                        </div>
+
+                        <!-- Clinical Reasoning -->
+                        <div class="detail-section">
+                            <h3>Clinical Reasoning</h3>
+                            <div id="detailReasoning" class="reasoning-block">
+                                <span class="no-data">No clinical reasoning available</span>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations -->
+                        <div class="detail-section">
+                            <h3>Recommendations</h3>
+                            <ul id="detailRecommendations" class="recommendations-list">
+                                <li class="no-data">No recommendations available</li>
+                            </ul>
+                        </div>
+
+                        <!-- Alerts -->
+                        <div class="detail-section">
+                            <h3>Active Alerts</h3>
+                            <ul id="detailAlerts" class="alerts-list">
+                                <li class="no-data">No active alerts</li>
+                            </ul>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="detail-actions">
+                            <button id="btnRunAssessment" class="btn btn-primary">
+                                Run New Assessment
+                            </button>
+                            <button id="btnViewHistory" class="btn btn-secondary">
+                                View History
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- Assessment Tab                                                -->
+        <!-- ============================================================= -->
+        <section id="panelAssess" class="tab-panel" role="tabpanel">
+            <div class="assess-container">
+                <h2>Run Patient Assessment</h2>
+                <form id="assessForm" class="assess-form" novalidate>
+                    <!-- Patient ID -->
+                    <div class="form-group">
+                        <label for="assessPatientId">Patient ID</label>
+                        <input type="text" id="assessPatientId" required
+                               placeholder="e.g. P001">
+                    </div>
+
+                    <!-- Protocol Selection -->
+                    <div class="form-group">
+                        <label for="assessProtocol">Protocol</label>
+                        <select id="assessProtocol" required>
+                            <option value="">Select a protocol...</option>
+                            <option value="cardiac">Cardiac Monitoring</option>
+                            <option value="sepsis">Sepsis Screening</option>
+                            <option value="respiratory">Respiratory Distress</option>
+                            <option value="post_operative">Post-Operative Care</option>
+                        </select>
+                    </div>
+
+                    <!-- Vital Signs -->
+                    <fieldset class="form-fieldset">
+                        <legend>Vital Signs</legend>
+                        <div class="vitals-inputs">
+                            <div class="form-group">
+                                <label for="vitalHR">Heart Rate (bpm)</label>
+                                <input type="number" id="vitalHR" min="20" max="300"
+                                       placeholder="72" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="vitalSBP">Systolic BP (mmHg)</label>
+                                <input type="number" id="vitalSBP" min="50" max="300"
+                                       placeholder="120" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="vitalDBP">Diastolic BP (mmHg)</label>
+                                <input type="number" id="vitalDBP" min="20" max="200"
+                                       placeholder="80" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="vitalRR">Resp. Rate (breaths/min)</label>
+                                <input type="number" id="vitalRR" min="4" max="60"
+                                       placeholder="16" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="vitalSpO2">SpO2 (%)</label>
+                                <input type="number" id="vitalSpO2" min="50" max="100"
+                                       placeholder="98" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="vitalTemp">Temp (&deg;F)</label>
+                                <input type="number" id="vitalTemp" min="90" max="110"
+                                       placeholder="98.6" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="vitalPain">Pain Score (0-10)</label>
+                                <input type="number" id="vitalPain" min="0" max="10"
+                                       placeholder="0" step="1">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ECG Metrics (optional) -->
+                    <fieldset class="form-fieldset">
+                        <legend>ECG Metrics (optional)</legend>
+                        <div class="vitals-inputs">
+                            <div class="form-group">
+                                <label for="ecgHR">ECG Heart Rate (bpm)</label>
+                                <input type="number" id="ecgHR" min="20" max="300"
+                                       placeholder="" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="ecgHRV">HRV SDNN (ms)</label>
+                                <input type="number" id="ecgHRV" min="0" max="500"
+                                       placeholder="" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="ecgRhythm">Rhythm Classification</label>
+                                <select id="ecgRhythm">
+                                    <option value="">N/A</option>
+                                    <option value="normal_sinus">Normal Sinus</option>
+                                    <option value="sinus_bradycardia">Sinus Bradycardia</option>
+                                    <option value="sinus_tachycardia">Sinus Tachycardia</option>
+                                    <option value="atrial_fibrillation">Atrial Fibrillation</option>
+                                    <option value="ventricular_tachycardia">Ventricular Tachycardia</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Submit Assessment
+                        </button>
+                        <button type="reset" class="btn btn-secondary btn-lg">
+                            Clear Form
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Assessment Result -->
+                <div id="assessResult" class="assess-result hidden">
+                    <h3>Assessment Result</h3>
+                    <div id="assessResultContent"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- Audit Log Tab                                                 -->
+        <!-- ============================================================= -->
+        <section id="panelAudit" class="tab-panel" role="tabpanel">
+            <div class="audit-container">
+                <div class="section-header">
+                    <h2>Audit Log</h2>
+                    <button id="btnRefreshAudit" class="btn btn-secondary btn-sm">
+                        Refresh
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table id="auditTable" class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Decision ID</th>
+                                <th>Patient (hash)</th>
+                                <th>Risk</th>
+                                <th>Confidence</th>
+                                <th>Cost</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditTableBody">
+                            <tr>
+                                <td colspan="7" class="no-data">No audit entries yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- Notification Toast Container                                      -->
+    <!-- ================================================================= -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

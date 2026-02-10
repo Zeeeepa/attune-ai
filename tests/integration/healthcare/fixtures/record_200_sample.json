@@ -1,0 +1,30 @@
+{
+  "patient_id": "mitbih_200",
+  "timestamp": "2026-02-08T08:00:00",
+  "vitals": {
+    "hr": 75,
+    "systolic_bp": 120,
+    "diastolic_bp": 80,
+    "respiratory_rate": 16,
+    "o2_sat": 98,
+    "temp_f": 98.6
+  },
+  "ecg_metrics": {
+    "hr_mean": 74.8,
+    "hr_min": 62,
+    "hr_max": 88,
+    "total_beats": 445,
+    "arrhythmia_events": 5,
+    "pvc_burden_pct": 1.12,
+    "rr_mean_ms": 802,
+    "rr_std_ms": 78
+  },
+  "patient_context": {
+    "age": 45,
+    "sex": "M",
+    "medications": [],
+    "leads": ["MLII", "V1"],
+    "source": "MIT-BIH Arrhythmia Database",
+    "record_id": "200"
+  }
+}
