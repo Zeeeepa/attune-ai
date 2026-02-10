@@ -230,7 +230,9 @@ class ReleaseAgent:
         exec_id: str | None = None
         if self.state_store is not None:
             exec_id = self.state_store.record_start(
-                self.agent_id, self.role, input_summary=codebase_path,
+                self.agent_id,
+                self.role,
+                input_summary=codebase_path,
             )
 
         # Try CHEAP first

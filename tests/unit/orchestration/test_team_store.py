@@ -62,7 +62,9 @@ class TestTeamSpecification:
     def test_invalid_strategy_raises(self) -> None:
         with pytest.raises(ValueError, match="strategy must be"):
             TeamSpecification(
-                name="Team", agents=[{"role": "A"}], strategy="invalid",
+                name="Team",
+                agents=[{"role": "A"}],
+                strategy="invalid",
             )
 
     def test_to_dict_round_trip(self) -> None:
@@ -130,9 +132,13 @@ class TestTeamStore:
     def test_persistence_across_instances(self, tmp_path: Path) -> None:
         """Test that data persists across store instances."""
         store1 = TeamStore(storage_dir=str(tmp_path))
-        store1.save(TeamSpecification(
-            name="persistent", agents=[{"role": "A"}], strategy="sequential",
-        ))
+        store1.save(
+            TeamSpecification(
+                name="persistent",
+                agents=[{"role": "A"}],
+                strategy="sequential",
+            )
+        )
 
         store2 = TeamStore(storage_dir=str(tmp_path))
         loaded = store2.load("persistent")
@@ -147,15 +153,19 @@ class TestTeamStorePathSecurity:
         """Test that null bytes in name are rejected."""
         store = TeamStore(storage_dir=str(tmp_path))
         with pytest.raises(ValueError, match="null bytes"):
-            store.save(TeamSpecification(
-                name="team\x00evil", agents=[{"role": "A"}],
-            ))
+            store.save(
+                TeamSpecification(
+                    name="team\x00evil",
+                    agents=[{"role": "A"}],
+                )
+            )
 
     def test_sanitizes_path_traversal(self, tmp_path: Path) -> None:
         """Test that path traversal in name is sanitized."""
         store = TeamStore(storage_dir=str(tmp_path))
         spec = TeamSpecification(
-            name="../../etc/passwd", agents=[{"role": "A"}],
+            name="../../etc/passwd",
+            agents=[{"role": "A"}],
         )
         path = store.save(spec)
         # File should be within the storage directory

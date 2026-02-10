@@ -94,9 +94,7 @@ class SDKToolsMixin:
             logger.warning(f"Glob failed for {pattern}: {e}")
             return []
 
-    def _sdk_bash(
-        self, cmd: list[str], cwd: str = ".", timeout: int = 120
-    ) -> tuple[int, str, str]:
+    def _sdk_bash(self, cmd: list[str], cwd: str = ".", timeout: int = 120) -> tuple[int, str, str]:
         """Run a command using SDK tools or subprocess fallback.
 
         Args:
@@ -112,7 +110,9 @@ class SDKToolsMixin:
                 import claude_agent_sdk  # type: ignore[import-untyped]
 
                 result = claude_agent_sdk.tools.bash(
-                    " ".join(cmd), cwd=cwd, timeout=timeout * 1000,
+                    " ".join(cmd),
+                    cwd=cwd,
+                    timeout=timeout * 1000,
                 )
                 return 0, str(result), ""
             except Exception as e:  # noqa: BLE001
@@ -121,7 +121,11 @@ class SDKToolsMixin:
 
         try:
             result = subprocess.run(
-                cmd, capture_output=True, text=True, timeout=timeout, cwd=cwd,
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                cwd=cwd,
             )
             return result.returncode, result.stdout, result.stderr
         except FileNotFoundError:

@@ -18,7 +18,6 @@ from attune.agents.sdk.sdk_models import SDKAgentResult
 from attune.agents.sdk.sdk_team import QualityGate
 from attune.orchestration.dynamic_team import DynamicTeam, DynamicTeamResult
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -156,9 +155,7 @@ class TestDynamicTeamSequential:
 
     async def test_sequential_preserves_order(self) -> None:
         """Test that results are in agent order."""
-        agents = [
-            _make_mock_agent(f"agent-{i}", f"Role-{i}") for i in range(3)
-        ]
+        agents = [_make_mock_agent(f"agent-{i}", f"Role-{i}") for i in range(3)]
         team = DynamicTeam(
             team_name="order-team",
             agents=agents,
@@ -224,9 +221,7 @@ class TestDynamicTeamTwoPhase:
 
     async def test_two_phase_enriches_input_for_phase2(self) -> None:
         """Test that phase 2 agents receive phase 1 findings."""
-        phase1_agent = _make_mock_agent(
-            "gather", "Gatherer", findings={"issues": ["bug-1"]}
-        )
+        phase1_agent = _make_mock_agent("gather", "Gatherer", findings={"issues": ["bug-1"]})
         phase2_agent = _make_mock_agent("reason", "Reasoner")
         phases = [
             {"agent_indices": [0]},
@@ -256,9 +251,7 @@ class TestDynamicTeamDelegation:
 
     async def test_delegation_coordinator_runs_first(self) -> None:
         """Test that first agent runs before delegates."""
-        coordinator = _make_mock_agent(
-            "coord", "Coordinator", findings={"plan": "do X"}
-        )
+        coordinator = _make_mock_agent("coord", "Coordinator", findings={"plan": "do X"})
         delegate = _make_mock_agent("del-1", "Delegate-1")
         team = DynamicTeam(
             team_name="delegation-team",
@@ -274,9 +267,7 @@ class TestDynamicTeamDelegation:
 
     async def test_delegation_passes_coordinator_findings(self) -> None:
         """Test that delegates receive coordinator findings."""
-        coordinator = _make_mock_agent(
-            "coord", "Coordinator", findings={"plan": "review code"}
-        )
+        coordinator = _make_mock_agent("coord", "Coordinator", findings={"plan": "review code"})
         delegate = _make_mock_agent("del", "Delegate")
         team = DynamicTeam(
             team_name="delegate-team",

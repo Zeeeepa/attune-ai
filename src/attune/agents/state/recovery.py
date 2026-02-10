@@ -51,9 +51,7 @@ class AgentRecoveryManager:
         """
         interrupted = []
         for record in self._store.get_all_agents():
-            has_running = any(
-                e.status == "running" for e in record.execution_history
-            )
+            has_running = any(e.status == "running" for e in record.execution_history)
             if has_running:
                 interrupted.append(record)
         return interrupted

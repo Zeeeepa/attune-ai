@@ -284,10 +284,7 @@ class MetaOrchestrator(TaskAnalysisMixin, InteractiveModeMixin, EstimationMixin)
         plan_dict: dict[str, Any] = {
             "name": f"team-{plan.strategy.value}",
             "strategy": plan.strategy.value,
-            "agents": [
-                {"template_id": t.id, "role": t.role}
-                for t in plan.agents
-            ],
+            "agents": [{"template_id": t.id, "role": t.role} for t in plan.agents],
             "quality_gates": plan.quality_gates,
             "phases": plan.phases,
         }

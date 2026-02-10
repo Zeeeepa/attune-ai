@@ -109,9 +109,7 @@ class SDKAgent:
     # SDK query wrapper
     # ------------------------------------------------------------------
 
-    def _call_sdk_query(
-        self, prompt: str, tier: Tier
-    ) -> tuple[str, dict[str, Any]]:
+    def _call_sdk_query(self, prompt: str, tier: Tier) -> tuple[str, dict[str, Any]]:
         """Call the Agent SDK (or fallback to Messages API).
 
         Args:
@@ -194,9 +192,7 @@ class SDKAgent:
     # Tier execution
     # ------------------------------------------------------------------
 
-    def _execute_tier(
-        self, input_data: dict[str, Any], tier: Tier
-    ) -> tuple[bool, dict[str, Any]]:
+    def _execute_tier(self, input_data: dict[str, Any], tier: Tier) -> tuple[bool, dict[str, Any]]:
         """Execute the agent at a specific tier.
 
         Subclasses can override this for domain-specific logic. The default
@@ -246,7 +242,8 @@ class SDKAgent:
         exec_id: str | None = None
         if self.state_store is not None:
             exec_id = self.state_store.record_start(
-                self.agent_id, self.role,
+                self.agent_id,
+                self.role,
                 input_summary=str(list(input_data.keys())),
             )
 

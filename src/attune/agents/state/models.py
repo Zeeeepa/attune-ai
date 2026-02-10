@@ -164,10 +164,7 @@ class AgentStateRecord:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AgentStateRecord:
         """Create from dictionary."""
-        history = [
-            AgentExecutionRecord.from_dict(e)
-            for e in data.get("execution_history", [])
-        ]
+        history = [AgentExecutionRecord.from_dict(e) for e in data.get("execution_history", [])]
         return cls(
             agent_id=data["agent_id"],
             role=data["role"],

@@ -26,7 +26,6 @@ load_dotenv()
 from attune.workflows import get_workflow, list_workflows
 from attune.workflows.base import BaseWorkflow, ModelTier
 
-
 # ---------------------------------------------------------------------------
 # Workflow classification constants
 # ---------------------------------------------------------------------------
@@ -116,16 +115,12 @@ class TestWorkflowRegistry:
 
         for workflow_info in workflows:
             workflow_class = get_workflow(workflow_info["name"])
-            assert workflow_class is not None, (
-                f"{workflow_info['name']} resolved to None"
-            )
+            assert workflow_class is not None, f"{workflow_info['name']} resolved to None"
 
     def test_minimum_workflow_count(self):
         """Test that at least 20 workflows are registered."""
         workflows = list_workflows()
-        assert len(workflows) >= 20, (
-            f"Expected >= 20 workflows, got {len(workflows)}"
-        )
+        assert len(workflows) >= 20, f"Expected >= 20 workflows, got {len(workflows)}"
 
 
 # ===========================================================================
@@ -225,9 +220,7 @@ class TestWorkflowDescribeMethod:
         if hasattr(workflow, "describe"):
             description = workflow.describe()
             assert isinstance(description, str)
-            assert len(description) > 0, (
-                f"{workflow_name}.describe() returned empty string"
-            )
+            assert len(description) > 0, f"{workflow_name}.describe() returned empty string"
 
 
 # ===========================================================================
@@ -441,15 +434,23 @@ class TestAgentStatePersistence:
 
             exec1 = store.record_start("sec-01", "Security Auditor")
             store.record_completion(
-                "sec-01", exec1, success=True,
-                findings={}, score=90.0, cost=0.01,
+                "sec-01",
+                exec1,
+                success=True,
+                findings={},
+                score=90.0,
+                cost=0.01,
                 execution_time_ms=500.0,
             )
 
             exec2 = store.record_start("rev-01", "Code Reviewer")
             store.record_completion(
-                "rev-01", exec2, success=True,
-                findings={}, score=85.0, cost=0.02,
+                "rev-01",
+                exec2,
+                success=True,
+                findings={},
+                score=85.0,
+                cost=0.02,
                 execution_time_ms=700.0,
             )
 
@@ -533,9 +534,7 @@ class TestAgentRecovery:
 
             state = store.get_agent_state("abandon-01")
             assert state is not None
-            assert any(
-                e.status == "interrupted" for e in state.execution_history
-            )
+            assert any(e.status == "interrupted" for e in state.execution_history)
 
 
 # ===========================================================================
@@ -828,13 +827,15 @@ class TestDynamicTeam:
         from attune.orchestration.dynamic_team import DynamicTeam
 
         agents = [SDKAgent(agent_id="qg1", role="Gated Agent")]
-        gates = [QualityGate(
-            name="min_score",
-            agent_role="",
-            metric="score",
-            threshold=50.0,
-            required=True,
-        )]
+        gates = [
+            QualityGate(
+                name="min_score",
+                agent_role="",
+                metric="score",
+                threshold=50.0,
+                required=True,
+            )
+        ]
         team = DynamicTeam(
             team_name="gated-test",
             agents=agents,
@@ -989,18 +990,22 @@ class TestTeamStore:
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             store = TeamStore(storage_dir=tmp_dir)
-            store.save(TeamSpecification(
-                name="team-a",
-                agents=[{"template_id": "generic_agent"}],
-                strategy="parallel",
-                quality_gates={},
-            ))
-            store.save(TeamSpecification(
-                name="team-b",
-                agents=[{"template_id": "code_reviewer"}],
-                strategy="sequential",
-                quality_gates={},
-            ))
+            store.save(
+                TeamSpecification(
+                    name="team-a",
+                    agents=[{"template_id": "generic_agent"}],
+                    strategy="parallel",
+                    quality_gates={},
+                )
+            )
+            store.save(
+                TeamSpecification(
+                    name="team-b",
+                    agents=[{"template_id": "code_reviewer"}],
+                    strategy="sequential",
+                    quality_gates={},
+                )
+            )
 
             all_teams = store.list_all()
             assert len(all_teams) == 2
@@ -1011,12 +1016,14 @@ class TestTeamStore:
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             store = TeamStore(storage_dir=tmp_dir)
-            store.save(TeamSpecification(
-                name="to-delete",
-                agents=[{"template_id": "generic_agent"}],
-                strategy="parallel",
-                quality_gates={},
-            ))
+            store.save(
+                TeamSpecification(
+                    name="to-delete",
+                    agents=[{"template_id": "generic_agent"}],
+                    strategy="parallel",
+                    quality_gates={},
+                )
+            )
 
             assert store.delete("to-delete") is True
             assert store.load("to-delete") is None

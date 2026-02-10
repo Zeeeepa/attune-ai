@@ -105,9 +105,7 @@ class TestAgentStateStore:
         restored = store.get_last_checkpoint("agent-04")
         assert restored == checkpoint
 
-    def test_get_last_checkpoint_returns_none_for_unknown(
-        self, tmp_path: Path
-    ) -> None:
+    def test_get_last_checkpoint_returns_none_for_unknown(self, tmp_path: Path) -> None:
         """Test that get_last_checkpoint returns None for unknown agents."""
         store = AgentStateStore(storage_dir=str(tmp_path))
         assert store.get_last_checkpoint("nonexistent") is None
@@ -141,8 +139,12 @@ class TestAgentStateStore:
         # Agent with good success rate
         exec_id = store.record_start("good-agent", "Auditor")
         store.record_completion(
-            "good-agent", exec_id,
-            success=True, findings={}, score=90.0, cost=0.01,
+            "good-agent",
+            exec_id,
+            success=True,
+            findings={},
+            score=90.0,
+            cost=0.01,
             execution_time_ms=100.0,
         )
 
@@ -172,9 +174,13 @@ class TestAgentStateStore:
         store1 = AgentStateStore(storage_dir=str(tmp_path))
         exec_id = store1.record_start("persist-agent", "Auditor")
         store1.record_completion(
-            "persist-agent", exec_id,
-            success=True, findings={"key": "value"}, score=95.0,
-            cost=0.05, execution_time_ms=2000.0,
+            "persist-agent",
+            exec_id,
+            success=True,
+            findings={"key": "value"},
+            score=95.0,
+            cost=0.05,
+            execution_time_ms=2000.0,
         )
 
         # Create new store instance (simulates restart)
@@ -184,17 +190,19 @@ class TestAgentStateStore:
         assert state.successful_executions == 1
         assert state.execution_history[0].findings == {"key": "value"}
 
-    def test_record_completion_for_unknown_execution_warns(
-        self, tmp_path: Path
-    ) -> None:
+    def test_record_completion_for_unknown_execution_warns(self, tmp_path: Path) -> None:
         """Test that completing an unknown execution logs a warning."""
         store = AgentStateStore(storage_dir=str(tmp_path))
         store.record_start("agent-warn", "Auditor")
 
         # Try to complete with wrong execution_id
         store.record_completion(
-            "agent-warn", "nonexistent-exec-id",
-            success=True, findings={}, score=50.0, cost=0.0,
+            "agent-warn",
+            "nonexistent-exec-id",
+            success=True,
+            findings={},
+            score=50.0,
+            cost=0.0,
             execution_time_ms=0.0,
         )
         # Should not crash, state should still be loadable

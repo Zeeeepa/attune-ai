@@ -105,9 +105,7 @@ class StatePersistenceMixin:
                         execution_id=exec_id,
                         success=True,
                         findings={
-                            "completed_stages": getattr(
-                                self, "_state_completed_stages", []
-                            ),
+                            "completed_stages": getattr(self, "_state_completed_stages", []),
                         },
                         score=100.0 if success else 0.0,
                         cost=total_cost,
@@ -146,9 +144,7 @@ class StatePersistenceMixin:
                 "workflow_name": self.name,
                 "run_id": self._run_id,
                 "current_stage": stage_name,
-                "completed_stages": list(
-                    getattr(self, "_state_completed_stages", [])
-                ),
+                "completed_stages": list(getattr(self, "_state_completed_stages", [])),
                 "stage_costs": dict(getattr(self, "_state_stage_costs", {})),
                 "started_at": datetime.now().isoformat(),
             }

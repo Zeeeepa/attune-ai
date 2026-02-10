@@ -22,7 +22,6 @@ from attune.orchestration.workflow_composer import WorkflowComposer
 from attune.workflows.base import BaseWorkflow
 from attune.workflows.compat import ModelTier
 
-
 # ---------------------------------------------------------------------------
 # Stub workflows
 # ---------------------------------------------------------------------------
@@ -142,9 +141,7 @@ class TestWorkflowComposer:
         assert team.quality_gates[0].name == "min_score"
         assert team.quality_gates[0].threshold == 70.0
 
-    def test_compose_with_detailed_quality_gates(
-        self, cost_tracker: CostTracker
-    ) -> None:
+    def test_compose_with_detailed_quality_gates(self, cost_tracker: CostTracker) -> None:
         """Detailed quality gate format is supported."""
         composer = WorkflowComposer()
 

@@ -152,9 +152,7 @@ class SDKAgentTeam:
             execution_time_ms=execution_time,
         )
 
-    async def _execute_parallel(
-        self, input_data: dict[str, Any]
-    ) -> list[SDKAgentResult]:
+    async def _execute_parallel(self, input_data: dict[str, Any]) -> list[SDKAgentResult]:
         """Run agents concurrently with asyncio.gather.
 
         Args:
@@ -164,16 +162,11 @@ class SDKAgentTeam:
             List of agent results.
         """
         loop = asyncio.get_event_loop()
-        tasks = [
-            loop.run_in_executor(None, agent.process, input_data)
-            for agent in self.agents
-        ]
+        tasks = [loop.run_in_executor(None, agent.process, input_data) for agent in self.agents]
         results: list[SDKAgentResult] = list(await asyncio.gather(*tasks))
         return results
 
-    async def _execute_sequential(
-        self, input_data: dict[str, Any]
-    ) -> list[SDKAgentResult]:
+    async def _execute_sequential(self, input_data: dict[str, Any]) -> list[SDKAgentResult]:
         """Run agents one-at-a-time in order.
 
         Args:
@@ -192,9 +185,7 @@ class SDKAgentTeam:
     # Quality gates
     # ------------------------------------------------------------------
 
-    def _evaluate_quality_gates(
-        self, results: list[SDKAgentResult]
-    ) -> dict[str, bool]:
+    def _evaluate_quality_gates(self, results: list[SDKAgentResult]) -> dict[str, bool]:
         """Evaluate quality gates against agent results.
 
         Args:
@@ -210,8 +201,7 @@ class SDKAgentTeam:
             agent_result = results_by_role.get(gate.agent_role)
             if agent_result is None:
                 logger.warning(
-                    f"Quality gate '{gate.name}' references unknown role "
-                    f"'{gate.agent_role}'"
+                    f"Quality gate '{gate.name}' references unknown role " f"'{gate.agent_role}'"
                 )
                 gate_results[gate.name] = False
                 continue

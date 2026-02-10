@@ -119,16 +119,22 @@ class TestSDKAgentTeamQualityGates:
         ]
         gates = [
             QualityGate(
-                name="min_security", agent_role="Security",
-                metric="score", threshold=80.0,
+                name="min_security",
+                agent_role="Security",
+                metric="score",
+                threshold=80.0,
             ),
             QualityGate(
-                name="min_coverage", agent_role="Coverage",
-                metric="score", threshold=80.0,
+                name="min_coverage",
+                agent_role="Coverage",
+                metric="score",
+                threshold=80.0,
             ),
         ]
         team = SDKAgentTeam(
-            team_name="Gate Team", agents=agents, quality_gates=gates,
+            team_name="Gate Team",
+            agents=agents,
+            quality_gates=gates,
         )
         result = await team.execute({"query": "test"})
 
@@ -145,16 +151,24 @@ class TestSDKAgentTeamQualityGates:
         ]
         gates = [
             QualityGate(
-                name="min_security", agent_role="Security",
-                metric="score", threshold=80.0, required=True,
+                name="min_security",
+                agent_role="Security",
+                metric="score",
+                threshold=80.0,
+                required=True,
             ),
             QualityGate(
-                name="min_coverage", agent_role="Coverage",
-                metric="score", threshold=80.0, required=True,
+                name="min_coverage",
+                agent_role="Coverage",
+                metric="score",
+                threshold=80.0,
+                required=True,
             ),
         ]
         team = SDKAgentTeam(
-            team_name="Failing Gate Team", agents=agents, quality_gates=gates,
+            team_name="Failing Gate Team",
+            agents=agents,
+            quality_gates=gates,
         )
         result = await team.execute({"query": "test"})
 
@@ -171,16 +185,24 @@ class TestSDKAgentTeamQualityGates:
         ]
         gates = [
             QualityGate(
-                name="min_security", agent_role="Security",
-                metric="score", threshold=80.0, required=True,
+                name="min_security",
+                agent_role="Security",
+                metric="score",
+                threshold=80.0,
+                required=True,
             ),
             QualityGate(
-                name="min_docs", agent_role="Documentation",
-                metric="score", threshold=80.0, required=False,
+                name="min_docs",
+                agent_role="Documentation",
+                metric="score",
+                threshold=80.0,
+                required=False,
             ),
         ]
         team = SDKAgentTeam(
-            team_name="Optional Gate Team", agents=agents, quality_gates=gates,
+            team_name="Optional Gate Team",
+            agents=agents,
+            quality_gates=gates,
         )
         result = await team.execute({"query": "test"})
 
@@ -194,12 +216,17 @@ class TestSDKAgentTeamQualityGates:
         agents = [_make_mock_agent("Security", score=90.0)]
         gates = [
             QualityGate(
-                name="min_phantom", agent_role="Phantom",
-                metric="score", threshold=80.0, required=True,
+                name="min_phantom",
+                agent_role="Phantom",
+                metric="score",
+                threshold=80.0,
+                required=True,
             ),
         ]
         team = SDKAgentTeam(
-            team_name="Missing Role Team", agents=agents, quality_gates=gates,
+            team_name="Missing Role Team",
+            agents=agents,
+            quality_gates=gates,
         )
         result = await team.execute({"query": "test"})
 
@@ -211,7 +238,9 @@ class TestSDKAgentTeamQualityGates:
         """Test that team succeeds when no gates are defined."""
         agents = [_make_mock_agent("Solo", score=50.0)]
         team = SDKAgentTeam(
-            team_name="No Gates Team", agents=agents, quality_gates=[],
+            team_name="No Gates Team",
+            agents=agents,
+            quality_gates=[],
         )
         result = await team.execute({"query": "test"})
 

@@ -83,9 +83,7 @@ class WorkflowAgentAdapter:
                 asyncio.get_running_loop()
                 # Already inside a loop - run in a separate thread
                 with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-                    result = pool.submit(
-                        asyncio.run, workflow.execute(**input_data)
-                    ).result()
+                    result = pool.submit(asyncio.run, workflow.execute(**input_data)).result()
             except RuntimeError:
                 # No running loop - safe to call asyncio.run() directly
                 result = asyncio.run(workflow.execute(**input_data))

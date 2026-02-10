@@ -114,9 +114,7 @@ class WorkflowComposer:
             state_store=self.state_store,
         )
 
-    def _build_quality_gates(
-        self, gates_spec: dict[str, Any]
-    ) -> list[QualityGate]:
+    def _build_quality_gates(self, gates_spec: dict[str, Any]) -> list[QualityGate]:
         """Build ``QualityGate`` objects from a spec dict.
 
         Uses the same format as ``DynamicTeamBuilder._build_quality_gates()``.

@@ -23,7 +23,6 @@ from attune.orchestration.dynamic_team import DynamicTeam
 from attune.orchestration.team_builder import DynamicTeamBuilder
 from attune.orchestration.team_store import TeamSpecification
 
-
 # ---------------------------------------------------------------------------
 # build_from_spec
 # ---------------------------------------------------------------------------
@@ -273,10 +272,12 @@ class TestInstantiateAgent:
     def test_agent_with_unknown_template(self) -> None:
         """Test that unknown template_id falls back gracefully."""
         builder = DynamicTeamBuilder()
-        agent = builder._instantiate_agent({
-            "template_id": "nonexistent_template",
-            "role": "Fallback",
-        })
+        agent = builder._instantiate_agent(
+            {
+                "template_id": "nonexistent_template",
+                "role": "Fallback",
+            }
+        )
 
         # Should still create agent with the provided role
         assert agent.role == "Fallback"
@@ -284,39 +285,47 @@ class TestInstantiateAgent:
     def test_agent_with_valid_template(self) -> None:
         """Test agent picks up template defaults."""
         builder = DynamicTeamBuilder()
-        agent = builder._instantiate_agent({
-            "template_id": "code_reviewer",
-        })
+        agent = builder._instantiate_agent(
+            {
+                "template_id": "code_reviewer",
+            }
+        )
 
         assert agent.role == "Code Quality Reviewer"
 
     def test_agent_mode_parsing(self) -> None:
         """Test that mode string is parsed to SDKExecutionMode."""
         builder = DynamicTeamBuilder()
-        agent = builder._instantiate_agent({
-            "role": "SDK Agent",
-            "mode": "full_sdk",
-        })
+        agent = builder._instantiate_agent(
+            {
+                "role": "SDK Agent",
+                "mode": "full_sdk",
+            }
+        )
 
         assert agent.mode == SDKExecutionMode.FULL_SDK
 
     def test_agent_invalid_mode_defaults(self) -> None:
         """Test that invalid mode defaults to TOOLS_ONLY."""
         builder = DynamicTeamBuilder()
-        agent = builder._instantiate_agent({
-            "role": "Agent",
-            "mode": "invalid_mode",
-        })
+        agent = builder._instantiate_agent(
+            {
+                "role": "Agent",
+                "mode": "invalid_mode",
+            }
+        )
 
         assert agent.mode == SDKExecutionMode.TOOLS_ONLY
 
     def test_agent_id_from_spec(self) -> None:
         """Test that explicit agent_id is preserved."""
         builder = DynamicTeamBuilder()
-        agent = builder._instantiate_agent({
-            "agent_id": "my-custom-id",
-            "role": "Agent",
-        })
+        agent = builder._instantiate_agent(
+            {
+                "agent_id": "my-custom-id",
+                "role": "Agent",
+            }
+        )
 
         assert agent.agent_id == "my-custom-id"
 
@@ -350,14 +359,16 @@ class TestBuildQualityGates:
     def test_detailed_spec(self) -> None:
         """Test detailed gate specification."""
         builder = DynamicTeamBuilder()
-        gates = builder._build_quality_gates({
-            "security_gate": {
-                "agent_role": "Security Auditor",
-                "metric": "vulnerability_score",
-                "threshold": 95.0,
-                "required": False,
-            },
-        })
+        gates = builder._build_quality_gates(
+            {
+                "security_gate": {
+                    "agent_role": "Security Auditor",
+                    "metric": "vulnerability_score",
+                    "threshold": 95.0,
+                    "required": False,
+                },
+            }
+        )
 
         assert len(gates) == 1
         gate = gates[0]
@@ -370,14 +381,16 @@ class TestBuildQualityGates:
     def test_mixed_specs(self) -> None:
         """Test mix of shorthand and detailed specs."""
         builder = DynamicTeamBuilder()
-        gates = builder._build_quality_gates({
-            "simple_gate": 70.0,
-            "detailed_gate": {
-                "agent_role": "Reviewer",
-                "metric": "quality",
-                "threshold": 85.0,
-            },
-        })
+        gates = builder._build_quality_gates(
+            {
+                "simple_gate": 70.0,
+                "detailed_gate": {
+                    "agent_role": "Reviewer",
+                    "metric": "quality",
+                    "threshold": 85.0,
+                },
+            }
+        )
 
         assert len(gates) == 2
         names = {g.name for g in gates}

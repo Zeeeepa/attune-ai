@@ -21,7 +21,6 @@ from attune.orchestration.workflow_agent_adapter import WorkflowAgentAdapter
 from attune.workflows.base import BaseWorkflow
 from attune.workflows.compat import ModelTier
 
-
 # ---------------------------------------------------------------------------
 # Stub workflows
 # ---------------------------------------------------------------------------

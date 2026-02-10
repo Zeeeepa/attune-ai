@@ -39,6 +39,7 @@ def section(title: str) -> None:
 # Phase 1: Agent State Persistence
 # ---------------------------------------------------------------------------
 
+
 def demo_state_persistence(tmp_dir: str) -> None:
     """Demonstrate AgentStateStore: record, checkpoint, recover."""
     section("Phase 1: Agent State Persistence")
@@ -106,6 +107,7 @@ def demo_state_persistence(tmp_dir: str) -> None:
 # Phase 2: SDK Agent with Tier Escalation
 # ---------------------------------------------------------------------------
 
+
 def demo_sdk_agent(store: "AgentStateStore") -> None:
     """Demonstrate SDKAgent with progressive tier escalation."""
     section("Phase 2: SDK Agent — Tier Escalation")
@@ -132,11 +134,13 @@ def demo_sdk_agent(store: "AgentStateStore") -> None:
     print(f"    Tier:  {agent.current_tier.value} (starts CHEAP)")
 
     # Process some input (uses rule-based fallback without API key)
-    result = agent.process({
-        "task": "review",
-        "code": "def add(x, y): return x + y",
-        "language": "python",
-    })
+    result = agent.process(
+        {
+            "task": "review",
+            "code": "def add(x, y): return x + y",
+            "language": "python",
+        }
+    )
 
     print(f"\n  Execution Result:")
     print(f"    Success:    {result.success}")
@@ -158,6 +162,7 @@ def demo_sdk_agent(store: "AgentStateStore") -> None:
 # ---------------------------------------------------------------------------
 # Phase 3: Dynamic Team Composition
 # ---------------------------------------------------------------------------
+
 
 def demo_dynamic_team(store: "AgentStateStore") -> None:
     """Demonstrate DynamicTeamBuilder with templates and strategies."""
@@ -203,11 +208,15 @@ def demo_dynamic_team(store: "AgentStateStore") -> None:
 
     # Execute the team
     print(f"\n  Executing team (parallel strategy)...")
-    result = asyncio.run(team.execute({
-        "task": "Review code quality",
-        "path": "src/attune/",
-        "language": "python",
-    }))
+    result = asyncio.run(
+        team.execute(
+            {
+                "task": "Review code quality",
+                "path": "src/attune/",
+                "language": "python",
+            }
+        )
+    )
 
     print(f"\n  Team Result:")
     print(f"    Success:     {result.success}")
@@ -216,8 +225,10 @@ def demo_dynamic_team(store: "AgentStateStore") -> None:
     print(f"    Time:        {result.execution_time_ms:.1f}ms")
     print(f"    Agent results:")
     for ar in result.agent_results:
-        print(f"      - {ar.role}: success={ar.success}, tier={ar.tier_used}, "
-              f"escalated={ar.escalated}")
+        print(
+            f"      - {ar.role}: success={ar.success}, tier={ar.tier_used}, "
+            f"escalated={ar.escalated}"
+        )
     if result.quality_gate_results:
         print(f"    Quality gates:")
         for gate_name, passed in result.quality_gate_results.items():
@@ -226,17 +237,21 @@ def demo_dynamic_team(store: "AgentStateStore") -> None:
 
     # Build team from MetaOrchestrator plan format
     print(f"\n  Building team from execution plan...")
-    plan_team = builder.build_from_plan({
-        "name": "security-deep-dive",
-        "agents": [
-            {"template_id": "security_auditor"},
-            {"template_id": "architecture_analyst"},
-        ],
-        "strategy": "two_phase",
-        "quality_gates": {"security_score": 80},
-    })
-    print(f"    Built '{plan_team.team_name}' with {len(plan_team.agents)} agents "
-          f"({plan_team.strategy} strategy)")
+    plan_team = builder.build_from_plan(
+        {
+            "name": "security-deep-dive",
+            "agents": [
+                {"template_id": "security_auditor"},
+                {"template_id": "architecture_analyst"},
+            ],
+            "strategy": "two_phase",
+            "quality_gates": {"security_score": 80},
+        }
+    )
+    print(
+        f"    Built '{plan_team.team_name}' with {len(plan_team.agents)} agents "
+        f"({plan_team.strategy} strategy)"
+    )
 
     # Show tier distribution
     for tier in ["CHEAP", "CAPABLE", "PREMIUM"]:
@@ -247,6 +262,7 @@ def demo_dynamic_team(store: "AgentStateStore") -> None:
 # ---------------------------------------------------------------------------
 # Phase 4: Workflow Composition
 # ---------------------------------------------------------------------------
+
 
 def demo_workflow_composition(store: "AgentStateStore") -> None:
     """Demonstrate WorkflowComposer wrapping workflows as team agents."""
@@ -286,6 +302,7 @@ def demo_workflow_composition(store: "AgentStateStore") -> None:
 # ---------------------------------------------------------------------------
 # State Recovery Demo
 # ---------------------------------------------------------------------------
+
 
 def demo_recovery(store: "AgentStateStore") -> None:
     """Demonstrate agent crash recovery."""
@@ -335,6 +352,7 @@ def demo_recovery(store: "AgentStateStore") -> None:
 # Summary
 # ---------------------------------------------------------------------------
 
+
 def print_summary() -> None:
     """Print what was demonstrated."""
     section("Summary: v2.5.0 Agent Orchestration")
@@ -360,6 +378,7 @@ def print_summary() -> None:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     """Run the full demo."""

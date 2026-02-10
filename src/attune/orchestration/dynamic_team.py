@@ -169,10 +169,7 @@ class DynamicTeam:
             Tuple of (results, phase_results).
         """
         loop = asyncio.get_running_loop()
-        tasks = [
-            loop.run_in_executor(None, agent.process, input_data)
-            for agent in self.agents
-        ]
+        tasks = [loop.run_in_executor(None, agent.process, input_data) for agent in self.agents]
         results: list[SDKAgentResult] = list(await asyncio.gather(*tasks))
         return results, []
 
@@ -219,10 +216,7 @@ class DynamicTeam:
         # Phase 1: Gather (parallel)
         phase1_agents = [self.agents[i] for i in phase1_indices if i < len(self.agents)]
         loop = asyncio.get_running_loop()
-        phase1_tasks = [
-            loop.run_in_executor(None, a.process, input_data)
-            for a in phase1_agents
-        ]
+        phase1_tasks = [loop.run_in_executor(None, a.process, input_data) for a in phase1_agents]
         phase1_results: list[SDKAgentResult] = list(await asyncio.gather(*phase1_tasks))
 
         # Merge Phase 1 findings into input for Phase 2
@@ -285,9 +279,7 @@ class DynamicTeam:
     # Quality gates
     # ------------------------------------------------------------------
 
-    def _evaluate_quality_gates(
-        self, results: list[SDKAgentResult]
-    ) -> dict[str, bool]:
+    def _evaluate_quality_gates(self, results: list[SDKAgentResult]) -> dict[str, bool]:
         """Evaluate quality gates against agent results.
 
         Args:
@@ -303,8 +295,7 @@ class DynamicTeam:
             if not gate.agent_role:
                 # Gate applies to all agents
                 all_pass = all(
-                    r.findings.get(gate.metric, r.score) >= gate.threshold
-                    for r in results
+                    r.findings.get(gate.metric, r.score) >= gate.threshold for r in results
                 )
                 gate_results[gate.name] = all_pass
                 continue

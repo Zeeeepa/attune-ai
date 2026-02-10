@@ -152,9 +152,7 @@ class AgentStateStore:
         record = self._load_or_create(agent_id, "")
         execution = self._find_execution(record, execution_id)
         if execution is None:
-            logger.warning(
-                "Execution %s not found for agent %s", execution_id, agent_id
-            )
+            logger.warning("Execution %s not found for agent %s", execution_id, agent_id)
             return
 
         execution.completed_at = datetime.now().isoformat()
@@ -193,9 +191,7 @@ class AgentStateStore:
         record = self._load_or_create(agent_id, "")
         execution = self._find_execution(record, execution_id)
         if execution is None:
-            logger.warning(
-                "Execution %s not found for agent %s", execution_id, agent_id
-            )
+            logger.warning("Execution %s not found for agent %s", execution_id, agent_id)
             return
 
         execution.completed_at = datetime.now().isoformat()
@@ -328,9 +324,7 @@ class AgentStateStore:
         """Save agent state to disk with path validation."""
         safe_id = _sanitize_agent_id(record.agent_id)
         file_path = str(self._storage_dir / f"{safe_id}.json")
-        validated_path = _validate_file_path(
-            file_path, allowed_dir=str(self._storage_dir)
-        )
+        validated_path = _validate_file_path(file_path, allowed_dir=str(self._storage_dir))
 
         validated_path.parent.mkdir(parents=True, exist_ok=True)
         validated_path.write_text(json.dumps(record.to_dict(), indent=2))
@@ -341,9 +335,7 @@ class AgentStateStore:
     def _trim_history(self, record: AgentStateRecord) -> None:
         """Trim execution history to MAX_HISTORY_PER_AGENT entries."""
         if len(record.execution_history) > MAX_HISTORY_PER_AGENT:
-            record.execution_history = record.execution_history[
-                -MAX_HISTORY_PER_AGENT:
-            ]
+            record.execution_history = record.execution_history[-MAX_HISTORY_PER_AGENT:]
 
     def _find_execution(
         self, record: AgentStateRecord, execution_id: str

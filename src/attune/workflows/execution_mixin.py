@@ -415,9 +415,7 @@ class ExecutionMixin:
                         stage_succeeded = True
 
                         # Record stage completion in state store (Phase 4)
-                        self._state_record_stage_complete(
-                            stage_name, cost, duration_ms, tier.value
-                        )
+                        self._state_record_stage_complete(stage_name, cost, duration_ms, tier.value)
 
                         # Pass output to next stage
                         current_data = stage_output
