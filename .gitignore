@@ -242,3 +242,6 @@ vscode-memory-panel/
 
 # Workflow scaffolding (code generation templates)
 workflow_scaffolding/
+
+# PhysioNet / clinical data (large binary datasets, not for VCS)
+data/
