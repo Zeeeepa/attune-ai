@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from attune.agents.sdk.sdk_agent import SDKAgent
 from attune.agents.sdk.sdk_models import SDKAgentResult, SDKExecutionMode
@@ -72,7 +72,6 @@ class TestSDKAgentTierEscalation:
         agent = SDKAgent(role="Quick Agent")
 
         # Mock _execute_tier to succeed on first call
-        original_execute = agent._execute_tier
         call_count = 0
 
         def mock_execute(input_data: dict, tier: Any) -> tuple[bool, dict]:

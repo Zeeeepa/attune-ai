@@ -23,8 +23,7 @@ from dotenv import load_dotenv
 # Load API key from .env for tests that require it
 load_dotenv()
 
-from attune.workflows import get_workflow, list_workflows
-from attune.workflows.base import BaseWorkflow, ModelTier
+from attune.workflows import get_workflow, list_workflows  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Workflow classification constants
@@ -472,12 +471,12 @@ class TestAgentStatePersistence:
 
     def test_state_store_history_trimming(self):
         """Test that history trims to MAX_HISTORY_PER_AGENT."""
-        from attune.agents.state.store import AgentStateStore, MAX_HISTORY_PER_AGENT
+        from attune.agents.state.store import MAX_HISTORY_PER_AGENT, AgentStateStore
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             store = AgentStateStore(storage_dir=tmp_dir)
 
-            for i in range(MAX_HISTORY_PER_AGENT + 20):
+            for _i in range(MAX_HISTORY_PER_AGENT + 20):
                 store.record_start("trim-test", "Trimmer")
 
             state = store.get_agent_state("trim-test")

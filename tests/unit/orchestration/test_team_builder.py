@@ -11,13 +11,10 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import MagicMock
 
 from attune.agents.sdk.sdk_agent import SDKAgent
 from attune.agents.sdk.sdk_models import SDKExecutionMode
-from attune.agents.sdk.sdk_team import QualityGate
 from attune.orchestration.config_store import AgentConfiguration
 from attune.orchestration.dynamic_team import DynamicTeam
 from attune.orchestration.team_builder import DynamicTeamBuilder

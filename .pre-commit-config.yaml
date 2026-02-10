@@ -68,6 +68,7 @@ repos:
             .*\.md$|
             .*\.json$|
             .*_audit.*\.py$|
+            .*\.html$|
             tests/|
             dashboard/|
             website/|

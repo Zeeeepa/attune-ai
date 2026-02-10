@@ -12,7 +12,6 @@ import pytest
 
 from attune.orchestration.agent_templates import (
     AgentTemplate,
-    ResourceRequirements,
     get_registry,
     get_template,
     register_custom_template,

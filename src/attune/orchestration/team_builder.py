@@ -12,7 +12,10 @@ Licensed under Apache 2.0
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from .dynamic_team import DynamicTeam
 
 from attune.agents.sdk.sdk_agent import SDKAgent
 from attune.agents.sdk.sdk_models import SDKExecutionMode
@@ -46,7 +49,7 @@ class DynamicTeamBuilder:
     # Build from specification
     # ------------------------------------------------------------------
 
-    def build_from_spec(self, spec: TeamSpecification) -> "DynamicTeam":
+    def build_from_spec(self, spec: TeamSpecification) -> DynamicTeam:
         """Build a DynamicTeam from a TeamSpecification.
 
         Args:
@@ -72,7 +75,7 @@ class DynamicTeamBuilder:
     # Build from MetaOrchestrator plan
     # ------------------------------------------------------------------
 
-    def build_from_plan(self, plan: dict[str, Any]) -> "DynamicTeam":
+    def build_from_plan(self, plan: dict[str, Any]) -> DynamicTeam:
         """Build a DynamicTeam from a MetaOrchestrator execution plan.
 
         Args:
@@ -99,7 +102,7 @@ class DynamicTeamBuilder:
     # Build from saved configuration
     # ------------------------------------------------------------------
 
-    def build_from_config(self, config: AgentConfiguration) -> "DynamicTeam":
+    def build_from_config(self, config: AgentConfiguration) -> DynamicTeam:
         """Build a DynamicTeam from a saved AgentConfiguration.
 
         Args:

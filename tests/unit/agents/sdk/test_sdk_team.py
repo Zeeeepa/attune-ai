@@ -9,13 +9,12 @@ Licensed under Apache 2.0
 
 from __future__ import annotations
 
-import asyncio
 from typing import Any
 
 import pytest
 
 from attune.agents.sdk.sdk_agent import SDKAgent
-from attune.agents.sdk.sdk_models import SDKAgentResult, SDKExecutionMode
+from attune.agents.sdk.sdk_models import SDKAgentResult
 from attune.agents.sdk.sdk_team import QualityGate, SDKAgentTeam, SDKTeamResult
 
 

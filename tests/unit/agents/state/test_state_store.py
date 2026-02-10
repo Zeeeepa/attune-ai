@@ -6,12 +6,10 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import json
 from pathlib import Path
 
 import pytest
 
-from attune.agents.state.models import AgentStateRecord
 from attune.agents.state.store import (
     MAX_HISTORY_PER_AGENT,
     AgentStateStore,

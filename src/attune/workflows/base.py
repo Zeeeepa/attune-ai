@@ -82,6 +82,7 @@ from .history_utils import (
     get_workflow_stats,  # noqa: F401 - re-exported
 )
 from .llm_mixin import LLMMixin
+from .multi_agent_mixin import MultiAgentStageMixin
 
 # Import parsing mixin (extracted for maintainability)
 from .parsing_mixin import ResponseParsingMixin
@@ -92,7 +93,6 @@ from .progress import (
     ProgressTracker,  # noqa: F401 - re-exported for backward compat
 )
 from .prompt_mixin import PromptMixin
-from .multi_agent_mixin import MultiAgentStageMixin
 from .state_mixin import StatePersistenceMixin
 from .telemetry_mixin import TelemetryMixin
 from .tier_routing_mixin import TierRoutingMixin
