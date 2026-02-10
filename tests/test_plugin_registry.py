@@ -96,17 +96,18 @@ class MockPlugin(BasePlugin):
         return None
 
 
+@patch("attune.plugins.registry.entry_points", return_value=[])
 class TestPluginRegistryBasics:
     """Test basic registry operations"""
 
-    def test_registry_initialization(self):
+    def test_registry_initialization(self, _mock_ep):
         """Test registry can be created"""
         registry = PluginRegistry()
         assert registry is not None
         assert registry._plugins == {}
         assert registry._auto_discovered is False
 
-    def test_register_plugin(self):
+    def test_register_plugin(self, _mock_ep):
         """Test manual plugin registration"""
         registry = PluginRegistry()
         plugin = MockPlugin(name="test", domain="software")
@@ -116,7 +117,7 @@ class TestPluginRegistryBasics:
         assert "test" in registry._plugins
         assert registry._plugins["test"] == plugin
 
-    def test_register_plugin_without_name(self):
+    def test_register_plugin_without_name(self, _mock_ep):
         """Test registering plugin with invalid metadata raises error"""
         registry = PluginRegistry()
         plugin = MockPlugin(name="", domain="software")  # Empty name
@@ -124,7 +125,7 @@ class TestPluginRegistryBasics:
         with pytest.raises(PluginValidationError, match="missing 'name'"):
             registry.register_plugin("test", plugin)
 
-    def test_register_plugin_without_domain(self):
+    def test_register_plugin_without_domain(self, _mock_ep):
         """Test registering plugin without domain raises error"""
         registry = PluginRegistry()
         plugin = MockPlugin(name="test", domain="")  # Empty domain
@@ -132,7 +133,7 @@ class TestPluginRegistryBasics:
         with pytest.raises(PluginValidationError, match="missing 'domain'"):
             registry.register_plugin("test", plugin)
 
-    def test_get_plugin(self):
+    def test_get_plugin(self, _mock_ep):
         """Test retrieving a registered plugin"""
         registry = PluginRegistry()
         plugin = MockPlugin(name="test", domain="software")
@@ -143,7 +144,7 @@ class TestPluginRegistryBasics:
         assert retrieved == plugin
         assert retrieved._initialized is True  # Should be initialized on retrieval
 
-    def test_get_nonexistent_plugin(self):
+    def test_get_nonexistent_plugin(self, _mock_ep):
         """Test retrieving non-existent plugin returns None"""
         registry = PluginRegistry()
 
@@ -151,7 +152,7 @@ class TestPluginRegistryBasics:
 
         assert result is None
 
-    def test_list_plugins(self):
+    def test_list_plugins(self, _mock_ep):
         """Test listing all registered plugins"""
         registry = PluginRegistry()
         plugin1 = MockPlugin(name="plugin1", domain="software")
@@ -227,10 +228,11 @@ class TestPluginRegistryAutoDiscovery:
         assert mock_entry_points.call_count == 1
 
 
+@patch("attune.plugins.registry.entry_points", return_value=[])
 class TestPluginRegistryWizards:
     """Test wizard-related functionality"""
 
-    def test_list_all_workflows(self):
+    def test_list_all_workflows(self, _mock_ep):
         """Test listing all wizards from all plugins"""
         registry = PluginRegistry()
 
@@ -252,7 +254,7 @@ class TestPluginRegistryWizards:
         assert len(all_workflows["plugin1"]) == 2
         assert len(all_workflows["plugin2"]) == 1
 
-    def test_get_workflow(self):
+    def test_get_workflow(self, _mock_ep):
         """Test retrieving a specific wizard"""
         registry = PluginRegistry()
 
@@ -266,7 +268,7 @@ class TestPluginRegistryWizards:
 
         assert retrieved == wizard
 
-    def test_get_workflow_from_nonexistent_plugin(self):
+    def test_get_workflow_from_nonexistent_plugin(self, _mock_ep):
         """Test getting wizard from non-existent plugin returns None"""
         registry = PluginRegistry()
 
@@ -274,7 +276,7 @@ class TestPluginRegistryWizards:
 
         assert result is None
 
-    def test_get_workflow_info(self):
+    def test_get_workflow_info(self, _mock_ep):
         """Test retrieving wizard information"""
         registry = PluginRegistry()
 
@@ -290,7 +292,7 @@ class TestPluginRegistryWizards:
         assert info["id"] == "test_wizard"
         assert info["empathy_level"] == 4
 
-    def test_find_workflows_by_level(self):
+    def test_find_workflows_by_level(self, _mock_ep):
         """Test finding wizards by empathy level"""
         registry = PluginRegistry()
 
@@ -311,7 +313,7 @@ class TestPluginRegistryWizards:
             assert wizard_info["empathy_level"] == 4
             assert "plugin" in wizard_info
 
-    def test_find_workflows_by_domain(self):
+    def test_find_workflows_by_domain(self, _mock_ep):
         """Test finding wizards by domain"""
         registry = PluginRegistry()
 
@@ -336,10 +338,11 @@ class TestPluginRegistryWizards:
             assert "plugin" in wizard_info
 
 
+@patch("attune.plugins.registry.entry_points", return_value=[])
 class TestPluginRegistryStatistics:
     """Test statistics functionality"""
 
-    def test_get_statistics_empty_registry(self):
+    def test_get_statistics_empty_registry(self, _mock_ep):
         """Test statistics for empty registry"""
         registry = PluginRegistry()
 
@@ -349,7 +352,7 @@ class TestPluginRegistryStatistics:
         assert stats["total_workflows"] == 0
         assert "workflows_by_level" in stats
 
-    def test_get_statistics_with_plugins(self):
+    def test_get_statistics_with_plugins(self, _mock_ep):
         """Test statistics with registered plugins"""
         registry = PluginRegistry()
 
@@ -401,10 +404,11 @@ class TestGlobalRegistry:
             assert registry._auto_discovered is True
 
 
+@patch("attune.plugins.registry.entry_points", return_value=[])
 class TestPluginRegistryEdgeCases:
     """Test edge cases and error conditions"""
 
-    def test_register_plugin_with_get_metadata_error(self):
+    def test_register_plugin_with_get_metadata_error(self, _mock_ep):
         """Test registering plugin that raises error in get_metadata"""
         registry = PluginRegistry()
 
@@ -414,31 +418,25 @@ class TestPluginRegistryEdgeCases:
         with pytest.raises(PluginValidationError, match="Invalid plugin metadata"):
             registry.register_plugin("broken", plugin)
 
-    def test_list_plugins_triggers_auto_discover(self):
+    def test_list_plugins_triggers_auto_discover(self, _mock_ep):
         """Test that list_plugins triggers auto-discovery"""
-        with patch("attune.plugins.registry.entry_points") as mock_ep:
-            mock_ep.return_value = []
+        registry = PluginRegistry()
+        assert registry._auto_discovered is False
 
-            registry = PluginRegistry()
-            assert registry._auto_discovered is False
+        registry.list_plugins()
 
-            registry.list_plugins()
+        assert registry._auto_discovered is True
 
-            assert registry._auto_discovered is True
-
-    def test_get_plugin_triggers_auto_discover(self):
+    def test_get_plugin_triggers_auto_discover(self, _mock_ep):
         """Test that get_plugin triggers auto-discovery"""
-        with patch("attune.plugins.registry.entry_points") as mock_ep:
-            mock_ep.return_value = []
+        registry = PluginRegistry()
+        assert registry._auto_discovered is False
 
-            registry = PluginRegistry()
-            assert registry._auto_discovered is False
+        registry.get_plugin("test")
 
-            registry.get_plugin("test")
+        assert registry._auto_discovered is True
 
-            assert registry._auto_discovered is True
-
-    def test_find_workflows_with_none_info(self):
+    def test_find_workflows_with_none_info(self, _mock_ep):
         """Test finding wizards when get_workflow_info returns None"""
         registry = PluginRegistry()
 
@@ -455,7 +453,7 @@ class TestPluginRegistryEdgeCases:
         results = registry.find_workflows_by_level(4)
         assert results == []
 
-    def test_get_workflow_info_from_nonexistent_plugin(self):
+    def test_get_workflow_info_from_nonexistent_plugin(self, _mock_ep):
         """Test get_workflow_info from non-existent plugin returns None"""
         registry = PluginRegistry()
 
