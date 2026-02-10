@@ -1,10 +1,10 @@
-"""Empathy Framework - Software Development Plugin
+"""Attune Software Development Plugin.
 
-Primary domain plugin demonstrating Level 4 Anticipatory Empathy
-for software development teams.
+Provides software development workflows (code review, bug prediction,
+security audit, etc.) through the Attune AI plugin registry.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under Apache-2.0
 """
 
 from .plugin import SoftwarePlugin
