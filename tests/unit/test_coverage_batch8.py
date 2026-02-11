@@ -11,12 +11,8 @@ Copyright 2026 Smart-AI-Memory
 Licensed under Apache 2.0
 """
 
-import asyncio
 import json
-import logging
 import subprocess
-import sys
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
@@ -38,8 +34,8 @@ except ImportError:
     format_code_review_pipeline_report = None
 
 try:
-    from attune.workflows.code_review import CodeReviewWorkflow
     from attune.workflows.base import ModelTier
+    from attune.workflows.code_review import CodeReviewWorkflow
 except ImportError:
     CodeReviewWorkflow = None
     ModelTier = None
@@ -82,24 +78,24 @@ skip_if_no_testgen = pytest.mark.skipif(
 
 def _make_pipeline_result(**overrides: Any) -> "CodeReviewPipelineResult":
     """Build a CodeReviewPipelineResult with sensible defaults."""
-    defaults = dict(
-        success=True,
-        verdict="approve",
-        quality_score=95.0,
-        crew_report=None,
-        workflow_result=None,
-        combined_findings=[],
-        critical_count=0,
-        high_count=0,
-        medium_count=0,
-        agents_used=[],
-        recommendations=[],
-        blockers=[],
-        mode="full",
-        duration_seconds=1.23,
-        cost=0.005,
-        metadata={"files_reviewed": 2, "total_findings": 0},
-    )
+    defaults = {
+        "success": True,
+        "verdict": "approve",
+        "quality_score": 95.0,
+        "crew_report": None,
+        "workflow_result": None,
+        "combined_findings": [],
+        "critical_count": 0,
+        "high_count": 0,
+        "medium_count": 0,
+        "agents_used": [],
+        "recommendations": [],
+        "blockers": [],
+        "mode": "full",
+        "duration_seconds": 1.23,
+        "cost": 0.005,
+        "metadata": {"files_reviewed": 2, "total_findings": 0},
+    }
     defaults.update(overrides)
     return CodeReviewPipelineResult(**defaults)
 
@@ -455,9 +451,7 @@ class TestPipelineExecute:
         """Test execute in standard mode."""
         pipeline = CodeReviewPipeline(mode="standard")
 
-        with patch.object(
-            pipeline, "_run_standard_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_standard_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = mock_workflow_result
 
             result = await pipeline.execute(
@@ -474,9 +468,7 @@ class TestPipelineExecute:
         """Test execute in quick mode."""
         pipeline = CodeReviewPipeline(mode="quick")
 
-        with patch.object(
-            pipeline, "_run_quick_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_quick_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = mock_workflow_result
 
             result = await pipeline.execute(diff="x = 1")
@@ -489,9 +481,7 @@ class TestPipelineExecute:
         """Test execute in full mode."""
         pipeline = CodeReviewPipeline(mode="full")
 
-        with patch.object(
-            pipeline, "_run_full_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_full_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = (None, mock_workflow_result)
 
             result = await pipeline.execute(
@@ -508,7 +498,13 @@ class TestPipelineExecute:
         pipeline = CodeReviewPipeline(mode="full")
         crew_report = {
             "findings": [
-                {"severity": "high", "suggestion": "Fix this", "file": "a.py", "line": 1, "type": "security"},
+                {
+                    "severity": "high",
+                    "suggestion": "Fix this",
+                    "file": "a.py",
+                    "line": 1,
+                    "type": "security",
+                },
             ],
             "agents_used": ["SecurityAnalyst", "QualityReviewer"],
             "quality_score": 75,
@@ -518,9 +514,7 @@ class TestPipelineExecute:
         wf.cost_report = Mock()
         wf.cost_report.total_cost = 0.01
 
-        with patch.object(
-            pipeline, "_run_full_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_full_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = (crew_report, wf)
 
             result = await pipeline.execute(diff="code here")
@@ -547,9 +541,7 @@ class TestPipelineExecute:
             "quality_score": 40,
         }
 
-        with patch.object(
-            pipeline, "_run_full_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_full_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = (crew_report, None)
 
             result = await pipeline.execute(diff="code")
@@ -565,9 +557,7 @@ class TestPipelineExecute:
         """Test that execute handles exceptions gracefully."""
         pipeline = CodeReviewPipeline(mode="full")
 
-        with patch.object(
-            pipeline, "_run_full_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_full_mode", new_callable=AsyncMock) as mock_run:
             mock_run.side_effect = RuntimeError("LLM unavailable")
 
             result = await pipeline.execute(diff="code")
@@ -582,12 +572,10 @@ class TestPipelineExecute:
         """Test that execute uses target when diff is empty."""
         pipeline = CodeReviewPipeline(mode="standard")
 
-        with patch.object(
-            pipeline, "_run_standard_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_standard_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = None
 
-            result = await pipeline.execute(target="src/main.py")
+            await pipeline.execute(target="src/main.py")
 
             # Verify code_to_review used target
             call_args = mock_run.call_args
@@ -600,9 +588,7 @@ class TestPipelineExecute:
         """Test that metadata includes formatted report."""
         pipeline = CodeReviewPipeline(mode="standard")
 
-        with patch.object(
-            pipeline, "_run_standard_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_standard_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = mock_workflow_result
 
             result = await pipeline.execute(diff="x = 1")
@@ -616,16 +602,20 @@ class TestPipelineExecute:
         pipeline = CodeReviewPipeline(mode="full")
         crew_report = {
             "findings": [
-                {"suggestion": f"Fix issue {i}", "severity": "low", "file": f"f{i}.py", "line": i, "type": f"t{i}"}
+                {
+                    "suggestion": f"Fix issue {i}",
+                    "severity": "low",
+                    "file": f"f{i}.py",
+                    "line": i,
+                    "type": f"t{i}",
+                }
                 for i in range(15)
             ],
             "agents_used": [],
             "quality_score": 50,
         }
 
-        with patch.object(
-            pipeline, "_run_full_mode", new_callable=AsyncMock
-        ) as mock_run:
+        with patch.object(pipeline, "_run_full_mode", new_callable=AsyncMock) as mock_run:
             mock_run.return_value = (crew_report, None)
 
             result = await pipeline.execute(diff="code")
@@ -657,9 +647,7 @@ class TestRunFullMode:
             "attune.workflows.code_review.CodeReviewWorkflow",
             return_value=mock_wf_instance,
         ):
-            crew_report, wf_result = await pipeline._run_full_mode(
-                "code", ["file.py"], {}
-            )
+            crew_report, wf_result = await pipeline._run_full_mode("code", ["file.py"], {})
 
             # Should have no crew report since adapters are unavailable by default
             assert wf_result is not None
@@ -725,7 +713,7 @@ class TestRunStandardAndQuickModes:
             "attune.workflows.code_review.CodeReviewWorkflow",
             return_value=mock_wf_instance,
         ) as MockWorkflow:
-            result = await pipeline._run_quick_mode("diff", ["file.py"], {})
+            await pipeline._run_quick_mode("diff", ["file.py"], {})
 
             # Verify high threshold was set
             call_kwargs = MockWorkflow.call_args[1]
@@ -785,9 +773,7 @@ class TestFormatCodeReviewPipelineReport:
     def test_report_with_crew_report_summary(self) -> None:
         """Test report includes crew summary when provided."""
         result = _make_pipeline_result(
-            crew_report={
-                "summary": "The code has some quality issues that need attention."
-            },
+            crew_report={"summary": "The code has some quality issues that need attention."},
         )
         report = format_code_review_pipeline_report(result)
 
@@ -943,9 +929,7 @@ class TestCodeReviewWorkflowAdditional:
         with patch.object(wf, "_classify", new_callable=AsyncMock) as mock_classify:
             mock_classify.return_value = ({"classification": "test"}, 100, 50)
 
-            result, it, ot = await wf.run_stage(
-                "classify", ModelTier.CHEAP, {"diff": "code"}
-            )
+            result, it, ot = await wf.run_stage("classify", ModelTier.CHEAP, {"diff": "code"})
 
             mock_classify.assert_called_once()
             assert result["classification"] == "test"
@@ -958,9 +942,7 @@ class TestCodeReviewWorkflowAdditional:
         with patch.object(wf, "_scan", new_callable=AsyncMock) as mock_scan:
             mock_scan.return_value = ({"scan_results": "clean"}, 150, 80)
 
-            result, _, _ = await wf.run_stage(
-                "scan", ModelTier.CAPABLE, {"code_to_review": "x"}
-            )
+            result, _, _ = await wf.run_stage("scan", ModelTier.CAPABLE, {"code_to_review": "x"})
 
             mock_scan.assert_called_once()
 
@@ -969,9 +951,7 @@ class TestCodeReviewWorkflowAdditional:
         """Test run_stage dispatches to _architect_review."""
         wf = CodeReviewWorkflow(cost_tracker=cost_tracker, use_crew=False)
 
-        with patch.object(
-            wf, "_architect_review", new_callable=AsyncMock
-        ) as mock_arch:
+        with patch.object(wf, "_architect_review", new_callable=AsyncMock) as mock_arch:
             mock_arch.return_value = ({"verdict": "approve"}, 200, 100)
 
             result, _, _ = await wf.run_stage(
@@ -1066,9 +1046,7 @@ class TestCodeReviewWorkflowAdditional:
                     pass
 
     @pytest.mark.asyncio
-    async def test_architect_review_request_changes_verdict(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_architect_review_request_changes_verdict(self, cost_tracker: Any) -> None:
         """Test architect review parses REQUEST_CHANGES verdict from response."""
         wf = CodeReviewWorkflow(cost_tracker=cost_tracker, use_crew=False)
 
@@ -1086,16 +1064,12 @@ class TestCodeReviewWorkflowAdditional:
                         "classification": "security",
                     }
 
-                    result, _, _ = await wf._architect_review(
-                        input_data, ModelTier.PREMIUM
-                    )
+                    result, _, _ = await wf._architect_review(input_data, ModelTier.PREMIUM)
 
                     assert result["verdict"] == "request_changes"
 
     @pytest.mark.asyncio
-    async def test_architect_review_approve_verdict(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_architect_review_approve_verdict(self, cost_tracker: Any) -> None:
         """Test architect review parses APPROVE verdict from response."""
         wf = CodeReviewWorkflow(cost_tracker=cost_tracker, use_crew=False)
 
@@ -1113,9 +1087,7 @@ class TestCodeReviewWorkflowAdditional:
                         "classification": "feature",
                     }
 
-                    result, _, _ = await wf._architect_review(
-                        input_data, ModelTier.PREMIUM
-                    )
+                    result, _, _ = await wf._architect_review(input_data, ModelTier.PREMIUM)
 
                     assert result["verdict"] == "approve"
 
@@ -1132,9 +1104,7 @@ class TestCodeReviewWorkflowAdditional:
         assert findings == []
         assert has_critical is False
 
-    def test_merge_external_audit_with_critical_findings(
-        self, cost_tracker: Any
-    ) -> None:
+    def test_merge_external_audit_with_critical_findings(self, cost_tracker: Any) -> None:
         """Test _merge_external_audit with critical findings."""
         wf = CodeReviewWorkflow(cost_tracker=cost_tracker, use_crew=False)
 
@@ -1203,7 +1173,6 @@ class TestAutonomousTestGeneratorInit:
         tmp_path: Path,
     ) -> None:
         """Test initialization with Redis available."""
-        mock_redis_instance = mock_redis.return_value
 
         gen = AutonomousTestGenerator(
             agent_id="test-agent",
@@ -1285,12 +1254,10 @@ class TestAutonomousTestGeneratorValidation:
         gen = AutonomousTestGenerator("agent", 1, [])
 
         test_file = tmp_path / "test_example.py"
-        test_file.write_text('def test_hello():\n    assert True\n')
+        test_file.write_text("def test_hello():\n    assert True\n")
 
         with patch("subprocess.run") as mock_run:
-            mock_run.return_value = Mock(
-                returncode=0, stdout="1 test collected", stderr=""
-            )
+            mock_run.return_value = Mock(returncode=0, stdout="1 test collected", stderr="")
             assert gen._validate_test_file(test_file) is True
 
     @patch("attune.workflows.autonomous_test_gen.RedisShortTermMemory")
@@ -1332,9 +1299,7 @@ class TestAutonomousTestGeneratorValidation:
         test_file.write_text("from nonexistent_module import something\n")
 
         with patch("subprocess.run") as mock_run:
-            mock_run.return_value = Mock(
-                returncode=1, stdout="", stderr="ImportError"
-            )
+            mock_run.return_value = Mock(returncode=1, stdout="", stderr="ImportError")
             assert gen._validate_test_file(test_file) is False
 
     @patch("attune.workflows.autonomous_test_gen.RedisShortTermMemory")
@@ -1402,9 +1367,7 @@ class TestAutonomousTestGeneratorCountTests:
         gen = AutonomousTestGenerator("agent", 1, [])
 
         with patch("subprocess.run") as mock_run:
-            mock_run.return_value = Mock(
-                returncode=1, stdout="no tests ran", stderr=""
-            )
+            mock_run.return_value = Mock(returncode=1, stdout="no tests ran", stderr="")
             assert gen._count_tests() == 0
 
     @patch("attune.workflows.autonomous_test_gen.RedisShortTermMemory")
@@ -1497,7 +1460,7 @@ class TestAutonomousTestGeneratorGenerate:
         source_file = tmp_path / "module.py"
         source_file.write_text("def hello(): return 'world'\n")
 
-        test_content = 'def test_hello():\n    assert True\n'
+        test_content = "def test_hello():\n    assert True\n"
 
         with patch.object(gen, "_generate_with_llm", return_value=test_content):
             with patch.object(gen, "_validate_test_file", return_value=False):
@@ -1528,7 +1491,7 @@ class TestAutonomousTestGeneratorGenerate:
         source_file = tmp_path / "module.py"
         source_file.write_text("def hello(): return 'world'\n")
 
-        test_content = 'def test_hello():\n    assert True\n'
+        test_content = "def test_hello():\n    assert True\n"
 
         with patch.object(gen, "_generate_with_llm", return_value=test_content):
             with patch.object(gen, "_validate_test_file", return_value=True):
@@ -1560,7 +1523,7 @@ class TestAutonomousTestGeneratorGenerate:
         source_file = tmp_path / "module.py"
         source_file.write_text("def hello(): return 'world'\n")
 
-        test_content = 'def test_hello():\n    assert True\n'
+        test_content = "def test_hello():\n    assert True\n"
 
         with patch.object(gen, "_generate_with_refinement", return_value=test_content):
             with patch.object(gen, "_validate_test_file", return_value=True):
@@ -1591,13 +1554,11 @@ class TestAutonomousTestGeneratorGenerate:
         source_file = tmp_path / "module.py"
         source_file.write_text("def hello(): return 'world'\n")
 
-        initial_content = 'def test_hello():\n    assert True\n'
-        improved_content = 'def test_hello():\n    assert True\ndef test_hello2():\n    pass\n'
+        initial_content = "def test_hello():\n    assert True\n"
+        improved_content = "def test_hello():\n    assert True\ndef test_hello2():\n    pass\n"
 
         with patch.object(gen, "_generate_with_llm", return_value=initial_content):
-            with patch.object(
-                gen, "_generate_with_coverage_target", return_value=improved_content
-            ):
+            with patch.object(gen, "_generate_with_coverage_target", return_value=improved_content):
                 with patch.object(gen, "_validate_test_file", return_value=True):
                     result = gen._generate_module_tests(
                         {"file": str(source_file), "total": 10, "missing": 5}
@@ -1626,12 +1587,10 @@ class TestAutonomousTestGeneratorGenerate:
         source_file = tmp_path / "module.py"
         source_file.write_text("def hello(): return 'world'\n")
 
-        initial_content = 'def test_hello():\n    assert True\n'
+        initial_content = "def test_hello():\n    assert True\n"
 
         with patch.object(gen, "_generate_with_llm", return_value=initial_content):
-            with patch.object(
-                gen, "_generate_with_coverage_target", return_value=None
-            ):
+            with patch.object(gen, "_generate_with_coverage_target", return_value=None):
                 with patch.object(gen, "_validate_test_file", return_value=True):
                     result = gen._generate_module_tests(
                         {"file": str(source_file), "total": 10, "missing": 5}
@@ -1732,9 +1691,7 @@ class TestAutonomousTestGeneratorGenerateAll:
         gen.event_streamer = Mock()
         gen.feedback_loop = Mock()
 
-        with patch.object(
-            gen, "_generate_module_tests", side_effect=RuntimeError("boom")
-        ):
+        with patch.object(gen, "_generate_module_tests", side_effect=RuntimeError("boom")):
             with patch.object(gen, "_count_tests", return_value=0):
                 results = gen.generate_all()
 
@@ -1812,15 +1769,15 @@ class TestAutonomousTestGeneratorLLM:
 
         # Content must be > 100 chars to pass length check
         test_code = (
-            'import pytest\n\n\n'
-            'class TestModule:\n'
+            "import pytest\n\n\n"
+            "class TestModule:\n"
             '    """Tests for module."""\n\n'
-            '    def test_foo_returns_correct_value(self):\n'
+            "    def test_foo_returns_correct_value(self):\n"
             '        """Test that foo returns expected result."""\n'
-            '        assert True\n\n'
-            '    def test_foo_edge_case(self):\n'
+            "        assert True\n\n"
+            "    def test_foo_edge_case(self):\n"
             '        """Test foo edge case."""\n'
-            '        assert 1 + 1 == 2\n'
+            "        assert 1 + 1 == 2\n"
         )
         mock_text_block = MagicMock()
         mock_text_block.type = "text"
@@ -1926,15 +1883,15 @@ class TestAutonomousTestGeneratorLLM:
 
         # Content must be > 100 chars to pass length check
         code = (
-            'import pytest\n\n\n'
-            'class TestExample:\n'
+            "import pytest\n\n\n"
+            "class TestExample:\n"
             '    """Comprehensive tests for example module."""\n\n'
-            '    def test_example_basic(self):\n'
+            "    def test_example_basic(self):\n"
             '        """Test basic example functionality."""\n'
-            '        assert 1 + 1 == 2\n\n'
-            '    def test_example_edge_case(self):\n'
+            "        assert 1 + 1 == 2\n\n"
+            "    def test_example_edge_case(self):\n"
             '        """Test edge case."""\n'
-            '        assert True\n'
+            "        assert True\n"
         )
         fenced_code = f"```python\n{code}\n```"
 
@@ -2043,7 +2000,9 @@ class TestAutonomousTestGeneratorLLM:
 
         mock_text_block = MagicMock()
         mock_text_block.type = "text"
-        mock_text_block.text = 'import pytest\n\ndef test_workflow():\n    """Test workflow."""\n    assert True\n'
+        mock_text_block.text = (
+            'import pytest\n\ndef test_workflow():\n    """Test workflow."""\n    assert True\n'
+        )
 
         mock_response = MagicMock()
         mock_response.content = [mock_text_block]
@@ -2061,7 +2020,7 @@ class MyWorkflow(BaseWorkflow):
                 with patch.object(
                     gen, "_get_workflow_specific_prompt", return_value="Generate tests"
                 ):
-                    result = gen._generate_with_llm(
+                    gen._generate_with_llm(
                         "my_workflow",
                         "attune.workflows.my_workflow",
                         Path("src/module.py"),
@@ -2082,9 +2041,7 @@ class TestDataclasses:
 
     def test_validation_result(self) -> None:
         """Test ValidationResult dataclass."""
-        vr = ValidationResult(
-            passed=True, failures="", error_count=0, output="all tests pass"
-        )
+        vr = ValidationResult(passed=True, failures="", error_count=0, output="all tests pass")
         assert vr.passed is True
         assert vr.error_count == 0
 
@@ -2137,10 +2094,12 @@ class TestRunBatchGeneration:
             "files_created": ["test1.py", "test2.py"],
         }
 
-        modules_json = json.dumps([
-            {"file": "src/attune/mod1.py"},
-            {"file": "src/attune/mod2.py"},
-        ])
+        modules_json = json.dumps(
+            [
+                {"file": "src/attune/mod1.py"},
+                {"file": "src/attune/mod2.py"},
+            ]
+        )
 
         run_batch_generation(
             batch_num=1,
@@ -2200,9 +2159,7 @@ class TestGatherProjectContext:
         context = wf._gather_project_context()
         assert isinstance(context, str)
 
-    def test_gather_context_includes_project_structure(
-        self, cost_tracker: Any
-    ) -> None:
+    def test_gather_context_includes_project_structure(self, cost_tracker: Any) -> None:
         """Test that context includes project structure section."""
         wf = CodeReviewWorkflow(cost_tracker=cost_tracker, use_crew=False)
         context = wf._gather_project_context()
@@ -2225,7 +2182,15 @@ class TestInitializeCrew:
         """Test crew initialization handles ImportError gracefully."""
         wf = CodeReviewWorkflow(cost_tracker=cost_tracker, use_crew=True)
 
-        with patch.dict("sys.modules", {"attune_llm": None, "attune_llm.agent_factory": None, "attune_llm.agent_factory.crews": None, "attune_llm.agent_factory.crews.code_review": None}):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune_llm": None,
+                "attune_llm.agent_factory": None,
+                "attune_llm.agent_factory.crews": None,
+                "attune_llm.agent_factory.crews.code_review": None,
+            },
+        ):
             try:
                 await wf._initialize_crew()
             except (ImportError, TypeError):
@@ -2235,9 +2200,7 @@ class TestInitializeCrew:
             assert wf._crew is None or wf._crew_available is False
 
     @pytest.mark.asyncio
-    async def test_initialize_crew_already_initialized(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_initialize_crew_already_initialized(self, cost_tracker: Any) -> None:
         """Test that crew initialization is idempotent."""
         wf = CodeReviewWorkflow(cost_tracker=cost_tracker, use_crew=True)
         wf._crew = Mock()  # Already initialized
@@ -2259,9 +2222,7 @@ class TestAuthStrategyIntegration:
     """Tests for auth strategy in classify stage."""
 
     @pytest.mark.asyncio
-    async def test_classify_with_auth_strategy_disabled(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_classify_with_auth_strategy_disabled(self, cost_tracker: Any) -> None:
         """Test classify works with auth strategy disabled."""
         wf = CodeReviewWorkflow(
             cost_tracker=cost_tracker, use_crew=False, enable_auth_strategy=False
@@ -2280,9 +2241,7 @@ class TestAuthStrategyIntegration:
             assert "classification" in result
 
     @pytest.mark.asyncio
-    async def test_classify_auth_strategy_exception(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_classify_auth_strategy_exception(self, cost_tracker: Any) -> None:
         """Test classify handles auth strategy exceptions gracefully."""
         wf = CodeReviewWorkflow(
             cost_tracker=cost_tracker, use_crew=False, enable_auth_strategy=True
@@ -2308,9 +2267,7 @@ class TestAuthStrategyIntegration:
                 assert "classification" in result
 
     @pytest.mark.asyncio
-    async def test_classify_detects_high_complexity(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_classify_detects_high_complexity(self, cost_tracker: Any) -> None:
         """Test that classify detects high complexity in LLM response."""
         wf = CodeReviewWorkflow(
             cost_tracker=cost_tracker, use_crew=False, enable_auth_strategy=False
@@ -2329,9 +2286,7 @@ class TestAuthStrategyIntegration:
             assert result["needs_architect_review"] is True
 
     @pytest.mark.asyncio
-    async def test_classify_is_core_module_input(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_classify_is_core_module_input(self, cost_tracker: Any) -> None:
         """Test that is_core_module input flag triggers architect review."""
         wf = CodeReviewWorkflow(
             cost_tracker=cost_tracker,

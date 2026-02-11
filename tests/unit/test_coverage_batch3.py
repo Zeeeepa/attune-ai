@@ -369,8 +369,12 @@ class TestConflictResolver:
 
     def test_resolve_weighted_score_explicit(self, resolver: ConflictResolver) -> None:
         """Explicit WEIGHTED_SCORE strategy."""
-        p1 = _make_pattern(id="a", name="A", confidence=0.9, usage_count=10, success_count=9, failure_count=1)
-        p2 = _make_pattern(id="b", name="B", confidence=0.3, usage_count=10, success_count=2, failure_count=8)
+        p1 = _make_pattern(
+            id="a", name="A", confidence=0.9, usage_count=10, success_count=9, failure_count=1
+        )
+        p2 = _make_pattern(
+            id="b", name="B", confidence=0.3, usage_count=10, success_count=2, failure_count=8
+        )
         result = resolver.resolve_patterns(
             [p1, p2],
             strategy=ResolutionStrategy.WEIGHTED_SCORE,
@@ -452,7 +456,9 @@ class TestConflictResolver:
     def test_team_alignment_performance_priority(self) -> None:
         """Performance priority boosts performance/optimization types."""
         cr = ConflictResolver()
-        perf = _make_pattern(id="perf", name="Perf", pattern_type="performance", tags=["optimization"])
+        perf = _make_pattern(
+            id="perf", name="Perf", pattern_type="performance", tags=["optimization"]
+        )
         other = _make_pattern(id="other", name="Other", pattern_type="documentation", tags=[])
         result = cr.resolve_patterns(
             [perf, other],
@@ -466,9 +472,7 @@ class TestConflictResolver:
     def test_pattern_score_zero_usage(self, resolver: ConflictResolver) -> None:
         """Zero usage_count gives 0.5 default success_rate."""
         p = _make_pattern(usage_count=0, success_count=0, failure_count=0)
-        score = resolver._calculate_pattern_score(
-            p, {}, ResolutionStrategy.WEIGHTED_SCORE
-        )
+        score = resolver._calculate_pattern_score(p, {}, ResolutionStrategy.WEIGHTED_SCORE)
         assert score["success_rate"] == 0.5
 
     # ---------- Recency score ----------
@@ -476,18 +480,14 @@ class TestConflictResolver:
     def test_recency_score_old_pattern(self, resolver: ConflictResolver) -> None:
         """Very old pattern gets low recency score."""
         old = _make_pattern(discovered_at=datetime.now() - timedelta(days=400))
-        score = resolver._calculate_pattern_score(
-            old, {}, ResolutionStrategy.WEIGHTED_SCORE
-        )
+        score = resolver._calculate_pattern_score(old, {}, ResolutionStrategy.WEIGHTED_SCORE)
         # 400 / 365 > 1, so max(0, 1 - 1.09) = 0
         assert score["recency"] == 0.0
 
     def test_recency_score_new_pattern(self, resolver: ConflictResolver) -> None:
         """Very new pattern gets high recency score."""
         new = _make_pattern(discovered_at=datetime.now())
-        score = resolver._calculate_pattern_score(
-            new, {}, ResolutionStrategy.WEIGHTED_SCORE
-        )
+        score = resolver._calculate_pattern_score(new, {}, ResolutionStrategy.WEIGHTED_SCORE)
         assert score["recency"] >= 0.99
 
     # ---------- Resolution history ----------
@@ -501,9 +501,7 @@ class TestConflictResolver:
         resolver.resolve_patterns(two_patterns)
         assert len(resolver.resolution_history) == 2
 
-    def test_clear_history(
-        self, resolver: ConflictResolver, two_patterns: list[Pattern]
-    ) -> None:
+    def test_clear_history(self, resolver: ConflictResolver, two_patterns: list[Pattern]) -> None:
         """clear_history empties the list."""
         resolver.resolve_patterns(two_patterns)
         resolver.clear_history()
@@ -522,15 +520,9 @@ class TestConflictResolver:
         self, resolver: ConflictResolver, two_patterns: list[Pattern]
     ) -> None:
         """Stats reflect accumulated resolutions."""
-        resolver.resolve_patterns(
-            two_patterns, strategy=ResolutionStrategy.HIGHEST_CONFIDENCE
-        )
-        resolver.resolve_patterns(
-            two_patterns, strategy=ResolutionStrategy.HIGHEST_CONFIDENCE
-        )
-        resolver.resolve_patterns(
-            two_patterns, strategy=ResolutionStrategy.MOST_RECENT
-        )
+        resolver.resolve_patterns(two_patterns, strategy=ResolutionStrategy.HIGHEST_CONFIDENCE)
+        resolver.resolve_patterns(two_patterns, strategy=ResolutionStrategy.HIGHEST_CONFIDENCE)
+        resolver.resolve_patterns(two_patterns, strategy=ResolutionStrategy.MOST_RECENT)
         stats = resolver.get_resolution_stats()
         assert stats["total_resolutions"] == 3
         assert stats["strategies_used"]["highest_confidence"] == 2
@@ -590,9 +582,7 @@ class TestConflictResolver:
             _make_pattern(id="b", name="B", confidence=0.7),
             _make_pattern(id="c", name="C", confidence=0.5),
         ]
-        result = resolver.resolve_patterns(
-            patterns, strategy=ResolutionStrategy.HIGHEST_CONFIDENCE
-        )
+        result = resolver.resolve_patterns(patterns, strategy=ResolutionStrategy.HIGHEST_CONFIDENCE)
         assert result.winning_pattern.id == "a"
         assert len(result.losing_patterns) == 2
 
@@ -668,12 +658,8 @@ class TestAgentCoordinator:
     ) -> None:
         """Custom ConflictResolver is used when provided."""
         mock_tier.STEWARD = "steward"
-        custom_resolver = ConflictResolver(
-            default_strategy=ResolutionStrategy.MOST_RECENT
-        )
-        coord = AgentCoordinator(
-            mock_memory, team_id="t", conflict_resolver=custom_resolver
-        )
+        custom_resolver = ConflictResolver(default_strategy=ResolutionStrategy.MOST_RECENT)
+        coord = AgentCoordinator(mock_memory, team_id="t", conflict_resolver=custom_resolver)
         assert coord.conflict_resolver is custom_resolver
 
     @patch("attune.redis_memory.AgentCredentials")
@@ -1460,39 +1446,43 @@ class TestReleasePreparationWorkflowRunStage:
     async def test_run_stage_health(self, release_workflow: ReleasePreparationWorkflow) -> None:
         """run_stage routes 'health' to _health."""
         release_workflow._health = AsyncMock(return_value=({"health": {}}, 10, 20))
-        result = await release_workflow.run_stage("health", MagicMock(), {"path": "."})
+        await release_workflow.run_stage("health", MagicMock(), {"path": "."})
         release_workflow._health.assert_called_once()
 
     @pytest.mark.asyncio()
     async def test_run_stage_security(self, release_workflow: ReleasePreparationWorkflow) -> None:
         """run_stage routes 'security' to _security."""
         release_workflow._security = AsyncMock(return_value=({"security": {}}, 10, 20))
-        result = await release_workflow.run_stage("security", MagicMock(), {"path": "."})
+        await release_workflow.run_stage("security", MagicMock(), {"path": "."})
         release_workflow._security.assert_called_once()
 
     @pytest.mark.asyncio()
-    async def test_run_stage_crew_security(self, release_workflow: ReleasePreparationWorkflow) -> None:
+    async def test_run_stage_crew_security(
+        self, release_workflow: ReleasePreparationWorkflow
+    ) -> None:
         """run_stage routes 'crew_security' to _crew_security."""
         release_workflow._crew_security = AsyncMock(return_value=({"crew_security": {}}, 0, 0))
-        result = await release_workflow.run_stage("crew_security", MagicMock(), {"path": "."})
+        await release_workflow.run_stage("crew_security", MagicMock(), {"path": "."})
         release_workflow._crew_security.assert_called_once()
 
     @pytest.mark.asyncio()
     async def test_run_stage_changelog(self, release_workflow: ReleasePreparationWorkflow) -> None:
         """run_stage routes 'changelog' to _changelog."""
         release_workflow._changelog = AsyncMock(return_value=({"changelog": {}}, 10, 20))
-        result = await release_workflow.run_stage("changelog", MagicMock(), {"path": "."})
+        await release_workflow.run_stage("changelog", MagicMock(), {"path": "."})
         release_workflow._changelog.assert_called_once()
 
     @pytest.mark.asyncio()
     async def test_run_stage_approve(self, release_workflow: ReleasePreparationWorkflow) -> None:
         """run_stage routes 'approve' to _approve."""
         release_workflow._approve = AsyncMock(return_value=({"approved": True}, 100, 200))
-        result = await release_workflow.run_stage("approve", MagicMock(), {"path": "."})
+        await release_workflow.run_stage("approve", MagicMock(), {"path": "."})
         release_workflow._approve.assert_called_once()
 
     @pytest.mark.asyncio()
-    async def test_run_stage_unknown_raises(self, release_workflow: ReleasePreparationWorkflow) -> None:
+    async def test_run_stage_unknown_raises(
+        self, release_workflow: ReleasePreparationWorkflow
+    ) -> None:
         """Unknown stage raises ValueError."""
         with pytest.raises(ValueError, match="Unknown stage"):
             await release_workflow.run_stage("invalid", MagicMock(), {})
@@ -1575,7 +1565,7 @@ class TestReleasePreparationWorkflowHealth:
         result, _, _ = await release_workflow._health({"path": "."}, MagicMock())
         health = result["health"]
         # All checks should be skipped=True and passed=True
-        for check_name, check_data in health["checks"].items():
+        for _check_name, check_data in health["checks"].items():
             assert check_data["skipped"] is True
 
     @pytest.mark.asyncio()
@@ -1653,26 +1643,28 @@ class TestReleasePreparationWorkflowSecurity:
         release_workflow: ReleasePreparationWorkflow,
     ) -> None:
         """Security stage with high and medium issues."""
-        bandit_output = json.dumps({
-            "results": [
-                {
-                    "test_id": "B105",
-                    "filename": "src/app.py",
-                    "line_number": 42,
-                    "issue_severity": "HIGH",
-                    "issue_text": "Hardcoded password",
-                    "issue_confidence": "HIGH",
-                },
-                {
-                    "test_id": "B101",
-                    "filename": "src/util.py",
-                    "line_number": 10,
-                    "issue_severity": "MEDIUM",
-                    "issue_text": "Assert usage",
-                    "issue_confidence": "HIGH",
-                },
-            ]
-        })
+        bandit_output = json.dumps(
+            {
+                "results": [
+                    {
+                        "test_id": "B105",
+                        "filename": "src/app.py",
+                        "line_number": 42,
+                        "issue_severity": "HIGH",
+                        "issue_text": "Hardcoded password",
+                        "issue_confidence": "HIGH",
+                    },
+                    {
+                        "test_id": "B101",
+                        "filename": "src/util.py",
+                        "line_number": 10,
+                        "issue_severity": "MEDIUM",
+                        "issue_text": "Assert usage",
+                        "issue_confidence": "HIGH",
+                    },
+                ]
+            }
+        )
         mock_run.return_value = MagicMock(returncode=1, stdout=bandit_output, stderr="")
 
         result, _, _ = await release_workflow._security({"path": "."}, MagicMock())
@@ -1792,7 +1784,6 @@ class TestReleasePreparationWorkflowCrewSecurity:
                 pass
 
         # Test the ImportError fallback path directly by mocking
-        original_crew_security = release_workflow._crew_security.__func__
 
         async def patched_crew_security(self, input_data, tier):
             """Simulate ImportError in crew_security."""
@@ -1891,15 +1882,17 @@ class TestReleasePreparationWorkflowChangelog:
         release_workflow: ReleasePreparationWorkflow,
     ) -> None:
         """Changelog stage parses git log output."""
-        git_output = "\n".join([
-            "abc1234 feat: Add new feature",
-            "def5678 fix: Fix auth bug",
-            "ghi9012 docs: Update README",
-            "jkl3456 refactor: Clean up utils",
-            "mno7890 test: Add auth tests",
-            "pqr1234 chore: Update deps",
-            "stu5678 other commit message",
-        ])
+        git_output = "\n".join(
+            [
+                "abc1234 feat: Add new feature",
+                "def5678 fix: Fix auth bug",
+                "ghi9012 docs: Update README",
+                "jkl3456 refactor: Clean up utils",
+                "mno7890 test: Add auth tests",
+                "pqr1234 chore: Update deps",
+                "stu5678 other commit message",
+            ]
+        )
         mock_run.return_value = MagicMock(returncode=0, stdout=git_output, stderr="")
 
         result, _, _ = await release_workflow._changelog({"path": "."}, MagicMock())
@@ -2028,7 +2021,9 @@ class TestReleasePreparationWorkflowApprove:
         assert "formatted_report" in result
 
     @pytest.mark.asyncio()
-    async def test_approve_with_blockers(self, release_workflow: ReleasePreparationWorkflow) -> None:
+    async def test_approve_with_blockers(
+        self, release_workflow: ReleasePreparationWorkflow
+    ) -> None:
         """Approve stage with blockers returns not approved."""
         release_workflow._call_llm = AsyncMock(return_value=("Issues found", 100, 200))
         release_workflow._parse_xml_response = MagicMock(return_value={})
@@ -2063,7 +2058,9 @@ class TestReleasePreparationWorkflowApprove:
         assert any("Security" in b for b in result["blockers"])
 
     @pytest.mark.asyncio()
-    async def test_approve_with_warnings(self, release_workflow: ReleasePreparationWorkflow) -> None:
+    async def test_approve_with_warnings(
+        self, release_workflow: ReleasePreparationWorkflow
+    ) -> None:
         """Approve stage with warnings but no blockers returns medium confidence."""
         release_workflow._call_llm = AsyncMock(return_value=("OK with warnings", 100, 200))
         release_workflow._parse_xml_response = MagicMock(return_value={})
@@ -2106,8 +2103,18 @@ class TestReleasePreparationWorkflowApprove:
 
         input_data = {
             "path": ".",
-            "health": {"passed": True, "health_score": 100, "failed_checks": [], "checks": {"tests": {"test_count": 50}}},
-            "security": {"passed": True, "total_issues": 0, "high_severity": 0, "medium_severity": 0},
+            "health": {
+                "passed": True,
+                "health_score": 100,
+                "failed_checks": [],
+                "checks": {"tests": {"test_count": 50}},
+            },
+            "security": {
+                "passed": True,
+                "total_issues": 0,
+                "high_severity": 0,
+                "medium_severity": 0,
+            },
             "changelog": {"total_commits": 0, "by_category": {}},
         }
         tier = MagicMock(value="premium")
@@ -2122,15 +2129,30 @@ class TestReleasePreparationWorkflowApprove:
         """Approve stage with XML prompts enabled."""
         release_workflow._call_llm = AsyncMock(return_value=("XML response", 100, 200))
         release_workflow._parse_xml_response = MagicMock(
-            return_value={"xml_parsed": True, "summary": "All good", "findings": [], "checklist": []}
+            return_value={
+                "xml_parsed": True,
+                "summary": "All good",
+                "findings": [],
+                "checklist": [],
+            }
         )
         release_workflow._is_xml_enabled = MagicMock(return_value=True)
         release_workflow._render_xml_prompt = MagicMock(return_value="<xml>prompt</xml>")
 
         input_data = {
             "path": ".",
-            "health": {"passed": True, "health_score": 100, "failed_checks": [], "checks": {"tests": {"test_count": 50}}},
-            "security": {"passed": True, "total_issues": 0, "high_severity": 0, "medium_severity": 0},
+            "health": {
+                "passed": True,
+                "health_score": 100,
+                "failed_checks": [],
+                "checks": {"tests": {"test_count": 50}},
+            },
+            "security": {
+                "passed": True,
+                "total_issues": 0,
+                "high_severity": 0,
+                "medium_severity": 0,
+            },
             "changelog": {"total_commits": 5, "by_category": {}},
         }
         tier = MagicMock(value="premium")
@@ -2154,8 +2176,18 @@ class TestReleasePreparationWorkflowApprove:
 
         input_data = {
             "path": ".",
-            "health": {"passed": True, "health_score": 100, "failed_checks": [], "checks": {"tests": {"test_count": 50}}},
-            "security": {"passed": True, "total_issues": 0, "high_severity": 0, "medium_severity": 0},
+            "health": {
+                "passed": True,
+                "health_score": 100,
+                "failed_checks": [],
+                "checks": {"tests": {"test_count": 50}},
+            },
+            "security": {
+                "passed": True,
+                "total_issues": 0,
+                "high_severity": 0,
+                "medium_severity": 0,
+            },
             "changelog": {"total_commits": 5, "by_category": {}},
         }
         tier = MagicMock(value="premium")
@@ -2170,15 +2202,27 @@ class TestReleasePreparationWorkflowApprove:
     ) -> None:
         """Approve stage falls back to _call_llm when executor fails."""
         release_workflow._executor = MagicMock()
-        release_workflow.run_step_with_executor = AsyncMock(side_effect=RuntimeError("executor failed"))
+        release_workflow.run_step_with_executor = AsyncMock(
+            side_effect=RuntimeError("executor failed")
+        )
         release_workflow._call_llm = AsyncMock(return_value=("Fallback response", 100, 200))
         release_workflow._parse_xml_response = MagicMock(return_value={})
         release_workflow._is_xml_enabled = MagicMock(return_value=False)
 
         input_data = {
             "path": ".",
-            "health": {"passed": True, "health_score": 100, "failed_checks": [], "checks": {"tests": {"test_count": 50}}},
-            "security": {"passed": True, "total_issues": 0, "high_severity": 0, "medium_severity": 0},
+            "health": {
+                "passed": True,
+                "health_score": 100,
+                "failed_checks": [],
+                "checks": {"tests": {"test_count": 50}},
+            },
+            "security": {
+                "passed": True,
+                "total_issues": 0,
+                "high_severity": 0,
+                "medium_severity": 0,
+            },
             "changelog": {"total_commits": 5, "by_category": {}},
         }
         tier = MagicMock(value="premium")
@@ -2188,9 +2232,7 @@ class TestReleasePreparationWorkflowApprove:
         assert result["assessment"] == "Fallback response"
 
     @pytest.mark.asyncio()
-    async def test_approve_api_key_path(
-        self, release_workflow: ReleasePreparationWorkflow
-    ) -> None:
+    async def test_approve_api_key_path(self, release_workflow: ReleasePreparationWorkflow) -> None:
         """Approve stage uses executor path when _api_key is set."""
         release_workflow._api_key = "sk-test-123"
         release_workflow.run_step_with_executor = AsyncMock(
@@ -2201,8 +2243,18 @@ class TestReleasePreparationWorkflowApprove:
 
         input_data = {
             "path": ".",
-            "health": {"passed": True, "health_score": 100, "failed_checks": [], "checks": {"tests": {"test_count": 50}}},
-            "security": {"passed": True, "total_issues": 0, "high_severity": 0, "medium_severity": 0},
+            "health": {
+                "passed": True,
+                "health_score": 100,
+                "failed_checks": [],
+                "checks": {"tests": {"test_count": 50}},
+            },
+            "security": {
+                "passed": True,
+                "total_issues": 0,
+                "high_severity": 0,
+                "medium_severity": 0,
+            },
             "changelog": {"total_commits": 5, "by_category": {}},
         }
         tier = MagicMock(value="premium")
@@ -2222,8 +2274,18 @@ class TestReleasePreparationWorkflowApprove:
 
         input_data = {
             "path": ".",
-            "health": {"passed": True, "health_score": 100, "failed_checks": [], "checks": {"tests": {"test_count": 50}}},
-            "security": {"passed": True, "total_issues": 0, "high_severity": 0, "medium_severity": 0},
+            "health": {
+                "passed": True,
+                "health_score": 100,
+                "failed_checks": [],
+                "checks": {"tests": {"test_count": 50}},
+            },
+            "security": {
+                "passed": True,
+                "total_issues": 0,
+                "high_severity": 0,
+                "medium_severity": 0,
+            },
             "changelog": {"total_commits": 5, "by_category": {}},
         }
         tier = MagicMock(value="premium")
@@ -2242,8 +2304,18 @@ class TestReleasePreparationWorkflowApprove:
 
         input_data = {
             "path": ".",
-            "health": {"passed": True, "health_score": 100, "failed_checks": [], "checks": {"tests": {"test_count": 3}}},
-            "security": {"passed": True, "total_issues": 0, "high_severity": 0, "medium_severity": 0},
+            "health": {
+                "passed": True,
+                "health_score": 100,
+                "failed_checks": [],
+                "checks": {"tests": {"test_count": 3}},
+            },
+            "security": {
+                "passed": True,
+                "total_issues": 0,
+                "high_severity": 0,
+                "medium_severity": 0,
+            },
             "changelog": {"total_commits": 5, "by_category": {}},
         }
         tier = MagicMock(value="premium")
@@ -2518,10 +2590,12 @@ class TestReleasePreparationWorkflowHealthAuthStrategy:
         mock_strategy.get_recommended_mode.return_value = MagicMock(value="api_key")
         mock_strategy.estimate_cost.return_value = {"monetary_cost": 0.001}
 
-        with patch("attune.models.count_lines_of_code", return_value=500) as mock_count, \
-             patch("attune.models.get_auth_strategy", return_value=mock_strategy), \
-             patch("attune.models.get_module_size_category", return_value="small"), \
-             patch("pathlib.Path") as mock_path_cls:
+        with (
+            patch("attune.models.count_lines_of_code", return_value=500),
+            patch("attune.models.get_auth_strategy", return_value=mock_strategy),
+            patch("attune.models.get_module_size_category", return_value="small"),
+            patch("pathlib.Path") as mock_path_cls,
+        ):
             mock_path = MagicMock()
             mock_path.is_file.return_value = True
             mock_path.is_dir.return_value = False
@@ -2548,10 +2622,12 @@ class TestReleasePreparationWorkflowHealthAuthStrategy:
         mock_strategy.get_recommended_mode.return_value = MagicMock(value="subscription")
         mock_strategy.estimate_cost.return_value = {"quota_cost": "free tier"}
 
-        with patch("attune.models.count_lines_of_code", return_value=100) as mock_count, \
-             patch("attune.models.get_auth_strategy", return_value=mock_strategy), \
-             patch("attune.models.get_module_size_category", return_value="medium"), \
-             patch("pathlib.Path") as mock_path_cls:
+        with (
+            patch("attune.models.count_lines_of_code", return_value=100),
+            patch("attune.models.get_auth_strategy", return_value=mock_strategy),
+            patch("attune.models.get_module_size_category", return_value="medium"),
+            patch("pathlib.Path") as mock_path_cls,
+        ):
             mock_path = MagicMock()
             mock_path.is_file.return_value = False
             mock_path.is_dir.return_value = True
@@ -2593,7 +2669,9 @@ class TestReleasePreparationWorkflowCrewSecurityDirect:
         # The actual _crew_security method does `from .security_adapters import ...`
         # We need to make that import fail by patching the import mechanism
 
-        original_import = __builtins__.__import__ if hasattr(__builtins__, '__import__') else __import__
+        original_import = (
+            __builtins__.__import__ if hasattr(__builtins__, "__import__") else __import__
+        )
 
         def mock_import(name, *args, **kwargs):
             if "security_adapters" in str(name):
@@ -2601,7 +2679,9 @@ class TestReleasePreparationWorkflowCrewSecurityDirect:
             return original_import(name, *args, **kwargs)
 
         with patch("builtins.__import__", side_effect=mock_import):
-            result, in_tok, out_tok = await release_workflow._crew_security({"path": "."}, MagicMock())
+            result, in_tok, out_tok = await release_workflow._crew_security(
+                {"path": "."}, MagicMock()
+            )
             assert result["crew_security"]["available"] is False
             assert result["crew_security"]["fallback"] is True
             assert "not installed" in result["crew_security"]["reason"]
@@ -2614,7 +2694,9 @@ class TestReleasePreparationWorkflowCrewSecurityDirect:
         mock_adapters = MagicMock()
         mock_adapters._check_crew_available.return_value = False
 
-        original_import = __builtins__.__import__ if hasattr(__builtins__, '__import__') else __import__
+        original_import = (
+            __builtins__.__import__ if hasattr(__builtins__, "__import__") else __import__
+        )
 
         def mock_import(name, *args, **kwargs):
             if "security_adapters" in str(name):
@@ -2673,9 +2755,7 @@ class TestReleasePreparationWorkflowCrewSecurityDirect:
 
         with patch.dict(sys.modules, {"attune.workflows.security_adapters": mock_adapters}):
             input_data = {"path": ".", "security": {"issues": []}}
-            result, in_tok, out_tok = await release_workflow._crew_security(
-                input_data, MagicMock()
-            )
+            result, in_tok, out_tok = await release_workflow._crew_security(input_data, MagicMock())
             crew = result["crew_security"]
             assert crew["available"] is True
             assert crew["fallback"] is False
@@ -2746,7 +2826,11 @@ class TestReleasePreparationWorkflowMain:
                 return await coro
 
             # Just test that main() is callable
-            mock_asyncio_run.side_effect = lambda coro: asyncio.get_event_loop().run_until_complete(coro) if hasattr(asyncio, '_get_running_loop') and asyncio._get_running_loop() is None else None
+            mock_asyncio_run.side_effect = lambda coro: (
+                asyncio.get_event_loop().run_until_complete(coro)
+                if hasattr(asyncio, "_get_running_loop") and asyncio._get_running_loop() is None
+                else None
+            )
 
             # Simpler approach: just verify main is callable and uses asyncio.run
             with patch("builtins.print"):

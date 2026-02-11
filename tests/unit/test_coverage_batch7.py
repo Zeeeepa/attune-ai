@@ -614,10 +614,13 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_decision_event(self, index: Any) -> None:
         """Test update_summary with a decision event."""
-        result = index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use JWT for authentication",
-        })
+        result = index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use JWT for authentication",
+            },
+        )
         assert result is True
 
         # Verify summary stored
@@ -628,10 +631,13 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_started_event(self, index: Any) -> None:
         """Test update_summary with a started event sets working_on."""
-        index.update_summary("sess-1", {
-            "type": "started",
-            "content": "Building login page",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "started",
+                "content": "Building login page",
+            },
+        )
 
         summary_key = f"{index.PREFIX_SUMMARY}sess-1"
         summary = index._hgetall(summary_key)
@@ -639,10 +645,13 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_in_progress_event(self, index: Any) -> None:
         """Test update_summary with in_progress event sets working_on."""
-        index.update_summary("sess-1", {
-            "type": "in_progress",
-            "content": "Implementing middleware",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "in_progress",
+                "content": "Implementing middleware",
+            },
+        )
 
         summary_key = f"{index.PREFIX_SUMMARY}sess-1"
         summary = index._hgetall(summary_key)
@@ -650,10 +659,13 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_question_event(self, index: Any) -> None:
         """Test update_summary with a question event."""
-        index.update_summary("sess-1", {
-            "type": "question",
-            "content": "Should we use OAuth2?",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "question",
+                "content": "Should we use OAuth2?",
+            },
+        )
 
         summary_key = f"{index.PREFIX_SUMMARY}sess-1"
         summary = index._hgetall(summary_key)
@@ -663,15 +675,21 @@ class TestConversationSummaryIndex:
     def test_update_summary_answered_event(self, index: Any) -> None:
         """Test update_summary answered event removes matching question."""
         # First add a question
-        index.update_summary("sess-1", {
-            "type": "question",
-            "content": "Should we use OAuth2?",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "question",
+                "content": "Should we use OAuth2?",
+            },
+        )
         # Then answer it
-        index.update_summary("sess-1", {
-            "type": "answered",
-            "content": "oauth2",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "answered",
+                "content": "oauth2",
+            },
+        )
 
         summary_key = f"{index.PREFIX_SUMMARY}sess-1"
         summary = index._hgetall(summary_key)
@@ -680,10 +698,13 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_file_modified_event(self, index: Any) -> None:
         """Test update_summary with file_modified event."""
-        index.update_summary("sess-1", {
-            "type": "file_modified",
-            "content": "src/auth.py",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "file_modified",
+                "content": "src/auth.py",
+            },
+        )
 
         summary_key = f"{index.PREFIX_SUMMARY}sess-1"
         summary = index._hgetall(summary_key)
@@ -692,14 +713,20 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_file_modified_no_duplicates(self, index: Any) -> None:
         """Test update_summary does not duplicate file entries."""
-        index.update_summary("sess-1", {
-            "type": "file_modified",
-            "content": "src/auth.py",
-        })
-        index.update_summary("sess-1", {
-            "type": "file_modified",
-            "content": "src/auth.py",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "file_modified",
+                "content": "src/auth.py",
+            },
+        )
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "file_modified",
+                "content": "src/auth.py",
+            },
+        )
 
         summary_key = f"{index.PREFIX_SUMMARY}sess-1"
         summary = index._hgetall(summary_key)
@@ -708,10 +735,13 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_topic_extraction(self, index: Any) -> None:
         """Test update_summary extracts and indexes topics."""
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Implement authentication with JWT tokens",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Implement authentication with JWT tokens",
+            },
+        )
 
         summary_key = f"{index.PREFIX_SUMMARY}sess-1"
         summary = index._hgetall(summary_key)
@@ -724,10 +754,13 @@ class TestConversationSummaryIndex:
 
     def test_update_summary_generic_event(self, index: Any) -> None:
         """Test update_summary with unknown event type."""
-        result = index.update_summary("sess-1", {
-            "type": "custom_type",
-            "content": "Some generic event",
-        })
+        result = index.update_summary(
+            "sess-1",
+            {
+                "type": "custom_type",
+                "content": "Some generic event",
+            },
+        )
         assert result is True
 
     def test_update_summary_missing_type_and_content(self, index: Any) -> None:
@@ -741,14 +774,20 @@ class TestConversationSummaryIndex:
         """Test get_context_for_agent returns AgentContext."""
         from attune.memory.summary_index import AgentContext
 
-        index.update_summary("sess-1", {
-            "type": "started",
-            "content": "Building auth module",
-        })
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use JWT for authentication",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "started",
+                "content": "Building auth module",
+            },
+        )
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use JWT for authentication",
+            },
+        )
 
         ctx = index.get_context_for_agent("sess-1")
         assert isinstance(ctx, AgentContext)
@@ -767,14 +806,20 @@ class TestConversationSummaryIndex:
 
     def test_get_context_for_agent_with_focus_topics(self, index: Any) -> None:
         """Test get_context_for_agent filters by focus_topics."""
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use JWT for authentication",
-        })
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use PostgreSQL database for storage",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use JWT for authentication",
+            },
+        )
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use PostgreSQL database for storage",
+            },
+        )
 
         ctx = index.get_context_for_agent("sess-1", focus_topics=["auth"])
         # Only auth-related decisions should remain
@@ -796,10 +841,13 @@ class TestConversationSummaryIndex:
     def test_recall_decisions_finds_matching(self, index: Any) -> None:
         """Test recall_decisions returns decisions matching topic."""
         # update_summary extracts topic "auth" from "authentication"
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use JWT authentication tokens",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use JWT authentication tokens",
+            },
+        )
 
         # recall_decisions("auth") searches for topic key "auth"
         # and then filters decisions containing "auth" (case-insensitive)
@@ -810,20 +858,26 @@ class TestConversationSummaryIndex:
 
     def test_recall_decisions_no_matching(self, index: Any) -> None:
         """Test recall_decisions returns empty when no match."""
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use PostgreSQL database",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use PostgreSQL database",
+            },
+        )
 
         results = index.recall_decisions("kubernetes")
         assert results == []
 
     def test_recall_decisions_respects_days_back(self, index: Any) -> None:
         """Test recall_decisions filters by time window."""
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use database caching for performance",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use database caching for performance",
+            },
+        )
 
         # Should find with large window
         results = index.recall_decisions("database", days_back=30)
@@ -842,11 +896,14 @@ class TestConversationSummaryIndex:
         """Test recall_decisions handles invalid updated_at timestamps."""
         # Add session with invalid timestamp
         summary_key = f"{index.PREFIX_SUMMARY}sess-bad"
-        index._hset(summary_key, {
-            "decisions": json.dumps(["testing decision"]),
-            "updated_at": "not-a-date",
-            "topics": json.dumps(["testing"]),
-        })
+        index._hset(
+            summary_key,
+            {
+                "decisions": json.dumps(["testing decision"]),
+                "updated_at": "not-a-date",
+                "topics": json.dumps(["testing"]),
+            },
+        )
         topic_key = f"{index.PREFIX_TOPIC}testing"
         index._sadd(topic_key, "sess-bad")
 
@@ -858,10 +915,13 @@ class TestConversationSummaryIndex:
 
     def test_get_sessions_by_topic(self, index: Any) -> None:
         """Test get_sessions_by_topic returns session IDs."""
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Improve performance with caching",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Improve performance with caching",
+            },
+        )
 
         sessions = index.get_sessions_by_topic("performance")
         assert "sess-1" in sessions
@@ -875,10 +935,13 @@ class TestConversationSummaryIndex:
 
     def test_clear_session(self, index: Any) -> None:
         """Test clear_session removes all session data."""
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use JWT for authentication",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use JWT for authentication",
+            },
+        )
 
         result = index.clear_session("sess-1")
         assert result is True
@@ -888,10 +951,13 @@ class TestConversationSummaryIndex:
 
     def test_clear_session_cleans_topic_indexes(self, index: Any) -> None:
         """Test clear_session removes session from topic indexes."""
-        index.update_summary("sess-1", {
-            "type": "decision",
-            "content": "Use JWT for authentication",
-        })
+        index.update_summary(
+            "sess-1",
+            {
+                "type": "decision",
+                "content": "Use JWT for authentication",
+            },
+        )
 
         # Verify session is in topic index before clearing
         auth_sessions = index._smembers(f"{index.PREFIX_TOPIC}auth")
@@ -917,9 +983,7 @@ class TestConversationSummaryIndex:
 
         result = idx.clear_session("sess-1")
         assert result is True
-        mock_mem._client.srem.assert_called_once_with(
-            f"{idx.PREFIX_TOPIC}auth", "sess-1"
-        )
+        mock_mem._client.srem.assert_called_once_with(f"{idx.PREFIX_TOPIC}auth", "sess-1")
 
     # --- Topic extraction ---
 
@@ -1020,12 +1084,16 @@ class TestMigrationConfig:
         config_dir = tmp_path / ".attune"
         config_dir.mkdir()
         config_file = config_dir / "migration.json"
-        config_file.write_text(json.dumps({
-            "mode": "auto",
-            "remembered_choices": {"old-wf": "new"},
-            "show_tips": False,
-            "last_prompted": {"old-wf": "2026-01-01"},
-        }))
+        config_file.write_text(
+            json.dumps(
+                {
+                    "mode": "auto",
+                    "remembered_choices": {"old-wf": "new"},
+                    "show_tips": False,
+                    "last_prompted": {"old-wf": "2026-01-01"},
+                }
+            )
+        )
 
         with patch("attune.workflows.migration.Path.cwd", return_value=tmp_path):
             config = MigrationConfig.load()
@@ -1112,8 +1180,12 @@ class TestIsInteractive:
         from attune.workflows.migration import is_interactive
 
         env_clean = {
-            "CI": "", "GITHUB_ACTIONS": "", "GITLAB_CI": "",
-            "JENKINS_URL": "", "CIRCLECI": "", "TRAVIS": "",
+            "CI": "",
+            "GITHUB_ACTIONS": "",
+            "GITLAB_CI": "",
+            "JENKINS_URL": "",
+            "CIRCLECI": "",
+            "TRAVIS": "",
             "ATTUNE_NO_INTERACTIVE": "",
         }
         with patch.dict("os.environ", env_clean, clear=False):
@@ -1134,9 +1206,7 @@ class TestShowMigrationDialog:
         from attune.workflows.migration import show_migration_dialog
 
         with patch("builtins.input", return_value="1"):
-            name, kwargs, remember = show_migration_dialog(
-                "old-wf", "new-wf", {"mode": "premium"}
-            )
+            name, kwargs, remember = show_migration_dialog("old-wf", "new-wf", {"mode": "premium"})
         assert name == "new-wf"
         assert kwargs == {"mode": "premium"}
         assert remember is False
@@ -1146,9 +1216,7 @@ class TestShowMigrationDialog:
         from attune.workflows.migration import show_migration_dialog
 
         with patch("builtins.input", return_value="2"):
-            name, kwargs, remember = show_migration_dialog(
-                "old-wf", "new-wf", {"mode": "premium"}
-            )
+            name, kwargs, remember = show_migration_dialog("old-wf", "new-wf", {"mode": "premium"})
         assert name == "old-wf"
         assert kwargs == {}
         assert remember is False
@@ -1158,9 +1226,7 @@ class TestShowMigrationDialog:
         from attune.workflows.migration import show_migration_dialog
 
         with patch("builtins.input", return_value="3"):
-            name, kwargs, remember = show_migration_dialog(
-                "old-wf", "new-wf", {"mode": "premium"}
-            )
+            name, kwargs, remember = show_migration_dialog("old-wf", "new-wf", {"mode": "premium"})
         assert name == "new-wf"
         assert remember is True
 
@@ -1169,9 +1235,7 @@ class TestShowMigrationDialog:
         from attune.workflows.migration import show_migration_dialog
 
         with patch("builtins.input", return_value="4"):
-            name, kwargs, remember = show_migration_dialog(
-                "old-wf", "new-wf", {"mode": "premium"}
-            )
+            name, kwargs, remember = show_migration_dialog("old-wf", "new-wf", {"mode": "premium"})
         assert name == "old-wf"
         assert kwargs == {}
         assert remember is True
@@ -1181,9 +1245,7 @@ class TestShowMigrationDialog:
         from attune.workflows.migration import show_migration_dialog
 
         with patch("builtins.input", side_effect=["x", "1"]):
-            name, kwargs, remember = show_migration_dialog(
-                "old-wf", "new-wf", {"mode": "premium"}
-            )
+            name, kwargs, remember = show_migration_dialog("old-wf", "new-wf", {"mode": "premium"})
         assert name == "new-wf"
 
     def test_dialog_eof_defaults_to_new(self) -> None:
@@ -1191,9 +1253,7 @@ class TestShowMigrationDialog:
         from attune.workflows.migration import show_migration_dialog
 
         with patch("builtins.input", side_effect=EOFError):
-            name, kwargs, remember = show_migration_dialog(
-                "old-wf", "new-wf", {"mode": "premium"}
-            )
+            name, kwargs, remember = show_migration_dialog("old-wf", "new-wf", {"mode": "premium"})
         assert name == "new-wf"
         assert remember is False
 
@@ -1202,9 +1262,7 @@ class TestShowMigrationDialog:
         from attune.workflows.migration import show_migration_dialog
 
         with patch("builtins.input", side_effect=KeyboardInterrupt):
-            name, kwargs, remember = show_migration_dialog(
-                "old-wf", "new-wf", {"mode": "premium"}
-            )
+            name, kwargs, remember = show_migration_dialog("old-wf", "new-wf", {"mode": "premium"})
         assert name == "new-wf"
 
     def test_dialog_shows_bool_flags(self) -> None:
@@ -1388,9 +1446,7 @@ class TestResolveWorkflowMigration:
                 return_value=("code-review", {"mode": "premium"}, True),
             ):
                 with patch.object(config, "remember_choice") as mock_remember:
-                    name, kwargs, migrated = resolve_workflow_migration(
-                        "pro-review", config=config
-                    )
+                    name, kwargs, migrated = resolve_workflow_migration("pro-review", config=config)
                     mock_remember.assert_called_once_with("pro-review", "new")
         assert name == "code-review"
         assert migrated is True
@@ -1406,9 +1462,7 @@ class TestResolveWorkflowMigration:
                 return_value=("pro-review", {}, True),
             ):
                 with patch.object(config, "remember_choice") as mock_remember:
-                    name, kwargs, migrated = resolve_workflow_migration(
-                        "pro-review", config=config
-                    )
+                    name, kwargs, migrated = resolve_workflow_migration("pro-review", config=config)
                     mock_remember.assert_called_once_with("pro-review", "legacy")
         assert name == "pro-review"
         assert migrated is False
@@ -1423,9 +1477,7 @@ class TestResolveWorkflowMigration:
                 "attune.workflows.migration.show_migration_dialog",
                 return_value=("code-review", {"mode": "premium"}, False),
             ):
-                name, kwargs, migrated = resolve_workflow_migration(
-                    "pro-review", config=config
-                )
+                name, kwargs, migrated = resolve_workflow_migration("pro-review", config=config)
         assert name == "code-review"
         assert migrated is True
 
@@ -1436,6 +1488,7 @@ class TestResolveWorkflowMigration:
         with patch("attune.workflows.migration.is_interactive", return_value=False):
             with patch("attune.workflows.migration.MigrationConfig.load") as mock_load:
                 from attune.workflows.migration import MigrationConfig
+
                 mock_load.return_value = MigrationConfig(mode="auto")
                 name, kwargs, migrated = resolve_workflow_migration("pro-review")
                 mock_load.assert_called_once()
@@ -1467,9 +1520,7 @@ class TestShowMigrationTip:
             with patch("attune.workflows.migration.is_interactive", return_value=False):
                 show_migration_tip("old-wf", "new-wf", {})
 
-    def test_show_migration_tip_interactive(
-        self, capsys: pytest.CaptureFixture[str]
-    ) -> None:
+    def test_show_migration_tip_interactive(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test show_migration_tip prints tip when interactive and enabled."""
         from attune.workflows.migration import MigrationConfig, show_migration_tip
 
@@ -1483,9 +1534,7 @@ class TestShowMigrationTip:
         assert "Tip" in output
         assert "new-wf" in output
 
-    def test_show_migration_tip_bool_flags(
-        self, capsys: pytest.CaptureFixture[str]
-    ) -> None:
+    def test_show_migration_tip_bool_flags(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test show_migration_tip handles boolean flags in command."""
         from attune.workflows.migration import MigrationConfig, show_migration_tip
 
@@ -1672,7 +1721,9 @@ class TestXMLTask:
 
         agent = XMLAgent(role="A", goal="G", backstory="B")
         task = XMLTask(
-            description="Desc", expected_output="Output", agent=agent,
+            description="Desc",
+            expected_output="Output",
+            agent=agent,
         )
         prompt = task.get_user_prompt({"filled": "data", "empty": "", "none": None})
         assert "<filled>" in prompt
@@ -1876,11 +1927,14 @@ class TestCheckCrewAvailable:
         mock_crews = MagicMock()
         mock_module.agent_factory.crews = mock_crews
 
-        with patch.dict("sys.modules", {
-            "attune_llm": mock_module,
-            "attune_llm.agent_factory": mock_module.agent_factory,
-            "attune_llm.agent_factory.crews": mock_crews,
-        }):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune_llm": mock_module,
+                "attune_llm.agent_factory": mock_module.agent_factory,
+                "attune_llm.agent_factory.crews": mock_crews,
+            },
+        ):
             result = _check_crew_available()
             assert isinstance(result, bool)
 
@@ -1922,14 +1976,17 @@ class TestGetCrewAudit:
             "attune.workflows.security_adapters._check_crew_available",
             return_value=True,
         ):
-            with patch.dict("sys.modules", {
-                "attune_llm": MagicMock(),
-                "attune_llm.agent_factory": MagicMock(),
-                "attune_llm.agent_factory.crews": MagicMock(
-                    SecurityAuditCrew=mock_crew_class,
-                    SecurityAuditConfig=mock_config_class,
-                ),
-            }):
+            with patch.dict(
+                "sys.modules",
+                {
+                    "attune_llm": MagicMock(),
+                    "attune_llm.agent_factory": MagicMock(),
+                    "attune_llm.agent_factory.crews": MagicMock(
+                        SecurityAuditCrew=mock_crew_class,
+                        SecurityAuditConfig=mock_config_class,
+                    ),
+                },
+            ):
                 result = await _get_crew_audit("/path", timeout=0.01)
         assert result is None
 
@@ -2659,7 +2716,7 @@ class TestTierRoutingMixinGetTierWithRouting:
         mock_strategy.route.return_value = mock_tier
         wf._routing_strategy = mock_strategy
 
-        with patch("attune.workflows.routing.RoutingContext") as MockRC:
+        with patch("attune.workflows.routing.RoutingContext"):
             tier = wf._get_tier_with_routing("analyze", {"code": "x"}, budget_remaining=50.0)
         assert tier.value == "premium"
         mock_strategy.route.assert_called_once()
@@ -2775,7 +2832,7 @@ class TestTierRoutingMixinGetTierWithRouting:
         wf._enable_adaptive_routing = False
         wf._check_adaptive_tier_upgrade = MagicMock()
 
-        tier = wf._get_tier_with_routing("analyze", {"code": "x"})
+        wf._get_tier_with_routing("analyze", {"code": "x"})
         wf._check_adaptive_tier_upgrade.assert_not_called()
 
     def test_adaptive_routing_with_strategy(self) -> None:

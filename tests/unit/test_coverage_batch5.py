@@ -80,9 +80,9 @@ def _make_cost_report(
         total_cost=total_cost,
         baseline_cost=baseline_cost,
         savings=baseline_cost - total_cost,
-        savings_percent=((baseline_cost - total_cost) / baseline_cost * 100)
-        if baseline_cost
-        else 0.0,
+        savings_percent=(
+            ((baseline_cost - total_cost) / baseline_cost * 100) if baseline_cost else 0.0
+        ),
     )
 
 
@@ -542,9 +542,7 @@ class TestPRReviewWorkflowExecute:
             new_callable=AsyncMock,
             return_value=mock_security_audit,
         ):
-            result = await workflow.execute(
-                diff="security diff", files_changed=["auth.py"]
-            )
+            result = await workflow.execute(diff="security diff", files_changed=["auth.py"])
 
         assert result.success is True
         assert result.security_audit is not None
@@ -553,9 +551,7 @@ class TestPRReviewWorkflowExecute:
     @pytest.mark.asyncio
     async def test_execute_parallel_both_crews(self) -> None:
         """Test execute with both crews in parallel (mocked)."""
-        workflow = PRReviewWorkflow(
-            use_code_crew=True, use_security_crew=True, parallel=True
-        )
+        workflow = PRReviewWorkflow(use_code_crew=True, use_security_crew=True, parallel=True)
         mock_code = {
             "verdict": "approve_with_suggestions",
             "quality_score": 75.0,
@@ -681,18 +677,19 @@ class TestPRReviewWorkflowExecute:
     @pytest.mark.asyncio
     async def test_execute_warnings_when_crews_unavailable(self) -> None:
         """Test execute adds warnings when enabled crews return None."""
-        workflow = PRReviewWorkflow(
-            use_code_crew=True, use_security_crew=True, parallel=False
-        )
+        workflow = PRReviewWorkflow(use_code_crew=True, use_security_crew=True, parallel=False)
 
-        with patch(
-            "attune.workflows.pr_review.PRReviewWorkflow._run_code_review",
-            new_callable=AsyncMock,
-            return_value=None,
-        ), patch(
-            "attune.workflows.pr_review.PRReviewWorkflow._run_security_audit",
-            new_callable=AsyncMock,
-            return_value=None,
+        with (
+            patch(
+                "attune.workflows.pr_review.PRReviewWorkflow._run_code_review",
+                new_callable=AsyncMock,
+                return_value=None,
+            ),
+            patch(
+                "attune.workflows.pr_review.PRReviewWorkflow._run_security_audit",
+                new_callable=AsyncMock,
+                return_value=None,
+            ),
         ):
             result = await workflow.execute(diff="diff")
 
@@ -712,7 +709,7 @@ class TestPRReviewWorkflowCrews:
     @pytest.mark.asyncio
     async def test_run_code_review_import_error(self) -> None:
         """Test _run_code_review handles ImportError gracefully."""
-        workflow = PRReviewWorkflow()
+        PRReviewWorkflow()
 
         with patch.dict(
             "sys.modules",
@@ -730,7 +727,7 @@ class TestPRReviewWorkflowCrews:
     @pytest.mark.asyncio
     async def test_run_security_audit_import_error(self) -> None:
         """Test _run_security_audit handles ImportError gracefully."""
-        workflow = PRReviewWorkflow()
+        PRReviewWorkflow()
 
         with patch(
             "attune.workflows.pr_review.PRReviewWorkflow._run_security_audit",
@@ -751,14 +748,11 @@ class TestPRReviewWorkflowCrews:
         async def successful_security_audit(path: str) -> dict:
             return {"risk_score": 10.0, "findings": [], "agents_used": []}
 
-        with patch.object(
-            workflow, "_run_code_review", side_effect=failing_code_review
-        ), patch.object(
-            workflow, "_run_security_audit", side_effect=successful_security_audit
+        with (
+            patch.object(workflow, "_run_code_review", side_effect=failing_code_review),
+            patch.object(workflow, "_run_security_audit", side_effect=successful_security_audit),
         ):
-            code_result, sec_result = await workflow._run_parallel(
-                "diff", ["file.py"], "."
-            )
+            code_result, sec_result = await workflow._run_parallel("diff", ["file.py"], ".")
 
         assert code_result is None  # Failed, returns None
         assert sec_result == {"risk_score": 10.0, "findings": [], "agents_used": []}
@@ -774,14 +768,11 @@ class TestPRReviewWorkflowCrews:
         async def security_audit(path: str) -> dict:
             return {"risk_score": 5, "findings": [], "agents_used": []}
 
-        with patch.object(
-            workflow, "_run_code_review", side_effect=code_review
-        ), patch.object(
-            workflow, "_run_security_audit", side_effect=security_audit
+        with (
+            patch.object(workflow, "_run_code_review", side_effect=code_review),
+            patch.object(workflow, "_run_security_audit", side_effect=security_audit),
         ):
-            code_result, sec_result = await workflow._run_parallel(
-                "diff", ["f.py"], "."
-            )
+            code_result, sec_result = await workflow._run_parallel("diff", ["f.py"], ".")
 
         assert code_result is not None
         assert sec_result is not None
@@ -805,27 +796,27 @@ class TestFormatPRReviewReport:
         Returns:
             PRReviewResult instance
         """
-        defaults = dict(
-            success=True,
-            verdict="approve",
-            code_quality_score=85.0,
-            security_risk_score=20.0,
-            combined_score=82.0,
-            code_review=None,
-            security_audit=None,
-            all_findings=[],
-            code_findings=[],
-            security_findings=[],
-            critical_count=0,
-            high_count=0,
-            blockers=[],
-            warnings=[],
-            recommendations=[],
-            summary="Everything looks good.",
-            agents_used=[],
-            duration_seconds=0.5,
-            cost=0.01,
-        )
+        defaults = {
+            "success": True,
+            "verdict": "approve",
+            "code_quality_score": 85.0,
+            "security_risk_score": 20.0,
+            "combined_score": 82.0,
+            "code_review": None,
+            "security_audit": None,
+            "all_findings": [],
+            "code_findings": [],
+            "security_findings": [],
+            "critical_count": 0,
+            "high_count": 0,
+            "blockers": [],
+            "warnings": [],
+            "recommendations": [],
+            "summary": "Everything looks good.",
+            "agents_used": [],
+            "duration_seconds": 0.5,
+            "cost": 0.01,
+        }
         defaults.update(overrides)
         return PRReviewResult(**defaults)
 
@@ -859,9 +850,7 @@ class TestFormatPRReviewReport:
 
     def test_report_with_blockers(self) -> None:
         """Test report includes blocker section."""
-        result = self._make_result(
-            blockers=["Critical SQL injection", "Missing auth check"]
-        )
+        result = self._make_result(blockers=["Critical SQL injection", "Missing auth check"])
         report = format_pr_review_report(result)
         assert "BLOCKERS" in report
         assert "Critical SQL injection" in report
@@ -903,9 +892,7 @@ class TestFormatPRReviewReport:
 
     def test_report_with_many_critical_findings(self) -> None:
         """Test report with more than 5 critical findings."""
-        findings = [
-            {"severity": "critical", "title": f"Issue {i}"} for i in range(8)
-        ]
+        findings = [{"severity": "critical", "title": f"Issue {i}"} for i in range(8)]
         result = self._make_result(
             all_findings=findings,
             critical_count=8,
@@ -1103,12 +1090,8 @@ class TestSecureReleasePipelineHelpers:
         """Test combined risk calculation with crew report."""
         pipeline = SecureReleasePipeline()
         crew_report = {"risk_score": 60}
-        security_result = _make_workflow_result(
-            final_output={"assessment": {"risk_score": 40}}
-        )
-        score = pipeline._calculate_combined_risk(
-            crew_report, security_result, None, None
-        )
+        security_result = _make_workflow_result(final_output={"assessment": {"risk_score": 40}})
+        score = pipeline._calculate_combined_risk(crew_report, security_result, None, None)
         # crew: 60 * 1.5 = 90, security: 40 * 1.0 = 40
         # total_weight = 2.5, weighted_sum = 130
         # result = 130 / 2.5 = 52.0
@@ -1123,9 +1106,7 @@ class TestSecureReleasePipelineHelpers:
     def test_calculate_combined_risk_with_code_review(self) -> None:
         """Test combined risk with code review results."""
         pipeline = SecureReleasePipeline()
-        code_review = _make_workflow_result(
-            final_output={"security_score": 80}
-        )
+        code_review = _make_workflow_result(final_output={"security_score": 80})
         score = pipeline._calculate_combined_risk(None, None, code_review, None)
         # security_score=80 -> risk = 100 - 80 = 20
         # 20 * 0.8 / 0.8 = 20.0
@@ -1135,12 +1116,8 @@ class TestSecureReleasePipelineHelpers:
         """Test combined risk never exceeds 100."""
         pipeline = SecureReleasePipeline()
         crew_report = {"risk_score": 100}
-        security_result = _make_workflow_result(
-            final_output={"assessment": {"risk_score": 100}}
-        )
-        score = pipeline._calculate_combined_risk(
-            crew_report, security_result, None, None
-        )
+        security_result = _make_workflow_result(final_output={"assessment": {"risk_score": 100}})
+        score = pipeline._calculate_combined_risk(crew_report, security_result, None, None)
         assert score <= 100.0
 
     def test_aggregate_findings_with_crew(self) -> None:
@@ -1163,9 +1140,7 @@ class TestSecureReleasePipelineHelpers:
         pipeline = SecureReleasePipeline()
         security_result = _make_workflow_result(
             final_output={
-                "assessment": {
-                    "severity_breakdown": {"critical": 2, "high": 3, "medium": 5}
-                }
+                "assessment": {"severity_breakdown": {"critical": 2, "high": 3, "medium": 5}}
             }
         )
         findings = pipeline._aggregate_findings(None, security_result, None)
@@ -1176,9 +1151,7 @@ class TestSecureReleasePipelineHelpers:
     def test_aggregate_findings_with_code_review_critical(self) -> None:
         """Test finding aggregation marks critical when code review has them."""
         pipeline = SecureReleasePipeline()
-        code_review = _make_workflow_result(
-            final_output={"has_critical_issues": True}
-        )
+        code_review = _make_workflow_result(final_output={"has_critical_issues": True})
         findings = pipeline._aggregate_findings(None, None, code_review)
         assert findings["critical"] >= 1
 
@@ -1231,9 +1204,7 @@ class TestSecureReleasePipelineHelpers:
     def test_determine_go_no_go_conditional_release_not_approved(self) -> None:
         """Test CONDITIONAL when release is not approved."""
         pipeline = SecureReleasePipeline()
-        release_result = _make_workflow_result(
-            final_output={"approved": False}
-        )
+        release_result = _make_workflow_result(final_output={"approved": False})
         result = pipeline._determine_go_no_go(
             risk_score=10.0,
             findings={"critical": 0, "high": 0, "total": 0},
@@ -1254,9 +1225,7 @@ class TestSecureReleasePipelineHelpers:
     def test_generate_recommendations_all_clear(self) -> None:
         """Test recommendations when all checks pass."""
         pipeline = SecureReleasePipeline()
-        blockers, warnings, recs = pipeline._generate_recommendations(
-            None, None, None, None
-        )
+        blockers, warnings, recs = pipeline._generate_recommendations(None, None, None, None)
         assert blockers == []
         assert warnings == []
         assert "All checks passed" in recs[0]
@@ -1273,9 +1242,7 @@ class TestSecureReleasePipelineHelpers:
                 "high_findings": [{"title": "XSS"}],
             }
         }
-        blockers, warnings, recs = pipeline._generate_recommendations(
-            crew_report, None, None, None
-        )
+        blockers, warnings, recs = pipeline._generate_recommendations(crew_report, None, None, None)
         assert len(blockers) == 2
         assert any("SQL Injection" in b for b in blockers)
         assert len(warnings) == 1
@@ -1294,9 +1261,7 @@ class TestSecureReleasePipelineHelpers:
     def test_generate_recommendations_security_high_risk(self) -> None:
         """Test recommendations with high risk level."""
         pipeline = SecureReleasePipeline()
-        security_result = _make_workflow_result(
-            final_output={"assessment": {"risk_level": "high"}}
-        )
+        security_result = _make_workflow_result(final_output={"assessment": {"risk_level": "high"}})
         blockers, warnings, recs = pipeline._generate_recommendations(
             None, security_result, None, None
         )
@@ -1305,23 +1270,15 @@ class TestSecureReleasePipelineHelpers:
     def test_generate_recommendations_code_review_reject(self) -> None:
         """Test recommendations when code review rejects."""
         pipeline = SecureReleasePipeline()
-        code_review = _make_workflow_result(
-            final_output={"verdict": "reject"}
-        )
-        blockers, warnings, recs = pipeline._generate_recommendations(
-            None, None, code_review, None
-        )
+        code_review = _make_workflow_result(final_output={"verdict": "reject"})
+        blockers, warnings, recs = pipeline._generate_recommendations(None, None, code_review, None)
         assert any("rejected" in b.lower() for b in blockers)
 
     def test_generate_recommendations_code_review_request_changes(self) -> None:
         """Test recommendations when code review requests changes."""
         pipeline = SecureReleasePipeline()
-        code_review = _make_workflow_result(
-            final_output={"verdict": "request_changes"}
-        )
-        blockers, warnings, recs = pipeline._generate_recommendations(
-            None, None, code_review, None
-        )
+        code_review = _make_workflow_result(final_output={"verdict": "request_changes"})
+        blockers, warnings, recs = pipeline._generate_recommendations(None, None, code_review, None)
         assert any("changes requested" in w.lower() for w in warnings)
 
     def test_generate_recommendations_release_blockers(self) -> None:
@@ -1342,9 +1299,7 @@ class TestSecureReleasePipelineHelpers:
     def test_generate_recommendations_with_warnings_only(self) -> None:
         """Test recommendations when only warnings present."""
         pipeline = SecureReleasePipeline()
-        security_result = _make_workflow_result(
-            final_output={"assessment": {"risk_level": "high"}}
-        )
+        security_result = _make_workflow_result(final_output={"assessment": {"risk_level": "high"}})
         blockers, warnings, recs = pipeline._generate_recommendations(
             None, security_result, None, None
         )
@@ -1449,9 +1404,7 @@ class TestFormatSecureReleaseReport:
             success=True,
             go_no_go="GO",
             security_audit=_make_workflow_result(
-                final_output={
-                    "assessment": {"risk_score": 30, "risk_level": "medium"}
-                }
+                final_output={"assessment": {"risk_score": 30, "risk_level": "medium"}}
             ),
             total_cost=0.02,
             total_duration_ms=2000,
@@ -1465,9 +1418,7 @@ class TestFormatSecureReleaseReport:
         result = SecureReleaseResult(
             success=True,
             go_no_go="GO",
-            code_review=_make_workflow_result(
-                final_output={"verdict": "approve"}
-            ),
+            code_review=_make_workflow_result(final_output={"verdict": "approve"}),
             total_cost=0.02,
             total_duration_ms=2000,
         )
@@ -1891,9 +1842,7 @@ class TestFormatWorkflowResult:
             {"severity": "high", "file": "auth.py", "line": 10, "message": "Issue"},
             {"severity": "low", "file": "utils.py", "message": "Minor"},
         ]
-        report = format_workflow_result(
-            title="Scan", findings=findings, score=75
-        )
+        report = format_workflow_result(title="Scan", findings=findings, score=75)
         assert report.score == 75
         assert len(report.sections) == 1
         assert report.sections[0].title == "Findings"
@@ -2101,34 +2050,26 @@ class TestResponseParsingMixinParseLocation:
 
     def test_colon_format_file_line_col(self) -> None:
         """Test 'file.py:42:10' format."""
-        file, line, col = self.parser._parse_location_string(
-            "src/auth.py:42:10", []
-        )
+        file, line, col = self.parser._parse_location_string("src/auth.py:42:10", [])
         assert file == "src/auth.py"
         assert line == 42
         assert col == 10
 
     def test_line_in_file_format(self) -> None:
         """Test 'line 42 in auth.py' format."""
-        file, line, col = self.parser._parse_location_string(
-            "line 42 in auth.py", []
-        )
+        file, line, col = self.parser._parse_location_string("line 42 in auth.py", [])
         assert file == "auth.py"
         assert line == 42
 
     def test_file_line_format(self) -> None:
         """Test 'auth.py line 42' format."""
-        file, line, col = self.parser._parse_location_string(
-            "auth.py line 42", []
-        )
+        file, line, col = self.parser._parse_location_string("auth.py line 42", [])
         assert file == "auth.py"
         assert line == 42
 
     def test_just_line_number(self) -> None:
         """Test 'line 42' with fallback to first file."""
-        file, line, col = self.parser._parse_location_string(
-            "line 42", ["main.py"]
-        )
+        file, line, col = self.parser._parse_location_string("line 42", ["main.py"])
         assert file == "main.py"
         assert line == 42
 
@@ -2149,9 +2090,7 @@ class TestResponseParsingMixinParseLocation:
 
     def test_typescript_file(self) -> None:
         """Test parsing location with TypeScript file extension."""
-        file, line, col = self.parser._parse_location_string(
-            "src/app.tsx:100", []
-        )
+        file, line, col = self.parser._parse_location_string("src/app.tsx:100", [])
         assert file == "src/app.tsx"
         assert line == 100
 
@@ -2167,9 +2106,7 @@ class TestResponseParsingMixinExtractFindings:
     def test_extract_from_file_line_pattern(self) -> None:
         """Test extraction from 'file.py:line: message' pattern."""
         response = "src/auth.py:42: SQL injection vulnerability detected"
-        findings = self.parser._extract_findings_from_response(
-            response, ["src/auth.py"]
-        )
+        findings = self.parser._extract_findings_from_response(response, ["src/auth.py"])
         assert len(findings) == 1
         assert findings[0]["file"] == "src/auth.py"
         assert findings[0]["line"] == 42
@@ -2261,9 +2198,7 @@ class TestResponseParsingMixinExtractFindings:
 
         with patch("attune.prompts.XmlResponseParser", return_value=mock_parser):
             response = "<findings></findings>\nsrc/auth.py:42: Issue here"
-            findings = self.parser._extract_findings_from_response(
-                response, ["src/auth.py"]
-            )
+            findings = self.parser._extract_findings_from_response(response, ["src/auth.py"])
 
         assert len(findings) == 1
         assert findings[0]["file"] == "src/auth.py"
@@ -2406,9 +2341,7 @@ class TestResponseParsingMixinParseXml:
         mock_parser = MagicMock()
         mock_parser.parse.return_value = mock_parsed
 
-        parser = MockParsingWorkflow(
-            xml_config={"enforce_response_xml": True}
-        )
+        parser = MockParsingWorkflow(xml_config={"enforce_response_xml": True})
 
         with patch(
             "attune.prompts.XmlResponseParser",
@@ -2451,21 +2384,20 @@ class TestSecureReleasePipelineExecute:
         )
 
         mock_security_cls = MagicMock()
-        mock_security_cls.return_value.execute = AsyncMock(
-            return_value=mock_security_result
-        )
+        mock_security_cls.return_value.execute = AsyncMock(return_value=mock_security_result)
 
         mock_release_cls = MagicMock()
-        mock_release_cls.return_value.execute = AsyncMock(
-            return_value=mock_release_result
-        )
+        mock_release_cls.return_value.execute = AsyncMock(return_value=mock_release_result)
 
-        with patch(
-            "attune.workflows.security_audit.SecurityAuditWorkflow",
-            mock_security_cls,
-        ), patch(
-            "attune.workflows.release_prep.ReleasePreparationWorkflow",
-            mock_release_cls,
+        with (
+            patch(
+                "attune.workflows.security_audit.SecurityAuditWorkflow",
+                mock_security_cls,
+            ),
+            patch(
+                "attune.workflows.release_prep.ReleasePreparationWorkflow",
+                mock_release_cls,
+            ),
         ):
             result = await pipeline.execute(path="./src")
 
@@ -2493,29 +2425,27 @@ class TestSecureReleasePipelineExecute:
         )
 
         mock_security_cls = MagicMock()
-        mock_security_cls.return_value.execute = AsyncMock(
-            return_value=mock_security_result
-        )
+        mock_security_cls.return_value.execute = AsyncMock(return_value=mock_security_result)
 
         mock_code_cls = MagicMock()
-        mock_code_cls.return_value.execute = AsyncMock(
-            return_value=mock_code_review_result
-        )
+        mock_code_cls.return_value.execute = AsyncMock(return_value=mock_code_review_result)
 
         mock_release_cls = MagicMock()
-        mock_release_cls.return_value.execute = AsyncMock(
-            return_value=mock_release_result
-        )
+        mock_release_cls.return_value.execute = AsyncMock(return_value=mock_release_result)
 
-        with patch(
-            "attune.workflows.security_audit.SecurityAuditWorkflow",
-            mock_security_cls,
-        ), patch(
-            "attune.workflows.code_review.CodeReviewWorkflow",
-            mock_code_cls,
-        ), patch(
-            "attune.workflows.release_prep.ReleasePreparationWorkflow",
-            mock_release_cls,
+        with (
+            patch(
+                "attune.workflows.security_audit.SecurityAuditWorkflow",
+                mock_security_cls,
+            ),
+            patch(
+                "attune.workflows.code_review.CodeReviewWorkflow",
+                mock_code_cls,
+            ),
+            patch(
+                "attune.workflows.release_prep.ReleasePreparationWorkflow",
+                mock_release_cls,
+            ),
         ):
             result = await pipeline.execute(
                 path="./src", diff="some diff", files_changed=["auth.py"]
@@ -2573,9 +2503,12 @@ class TestPRReviewWorkflowCrewIntegration:
         mock_adapters._get_crew_review = mock_get_review
         mock_adapters.crew_report_to_workflow_format = mock_format
 
-        with patch.dict("sys.modules", {
-            "attune.workflows.code_review_adapters": mock_adapters,
-        }):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune.workflows.code_review_adapters": mock_adapters,
+            },
+        ):
             result = await workflow._run_code_review("diff text", ["file.py"])
 
         assert result == mock_formatted
@@ -2588,9 +2521,12 @@ class TestPRReviewWorkflowCrewIntegration:
         mock_adapters = MagicMock()
         mock_adapters._check_crew_available = MagicMock(return_value=False)
 
-        with patch.dict("sys.modules", {
-            "attune.workflows.code_review_adapters": mock_adapters,
-        }):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune.workflows.code_review_adapters": mock_adapters,
+            },
+        ):
             result = await workflow._run_code_review("diff", [])
 
         assert result is None
@@ -2604,9 +2540,12 @@ class TestPRReviewWorkflowCrewIntegration:
         mock_adapters._check_crew_available = MagicMock(return_value=True)
         mock_adapters._get_crew_review = AsyncMock(return_value=None)
 
-        with patch.dict("sys.modules", {
-            "attune.workflows.code_review_adapters": mock_adapters,
-        }):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune.workflows.code_review_adapters": mock_adapters,
+            },
+        ):
             result = await workflow._run_code_review("diff", [])
 
         assert result is None
@@ -2622,13 +2561,14 @@ class TestPRReviewWorkflowCrewIntegration:
         mock_adapters = MagicMock()
         mock_adapters._check_crew_available = MagicMock(return_value=True)
         mock_adapters._get_crew_audit = AsyncMock(return_value=mock_report)
-        mock_adapters.crew_report_to_workflow_format = MagicMock(
-            return_value=mock_formatted
-        )
+        mock_adapters.crew_report_to_workflow_format = MagicMock(return_value=mock_formatted)
 
-        with patch.dict("sys.modules", {
-            "attune.workflows.security_adapters": mock_adapters,
-        }):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune.workflows.security_adapters": mock_adapters,
+            },
+        ):
             result = await workflow._run_security_audit("./src")
 
         assert result == mock_formatted
@@ -2641,9 +2581,12 @@ class TestPRReviewWorkflowCrewIntegration:
         mock_adapters = MagicMock()
         mock_adapters._check_crew_available = MagicMock(return_value=False)
 
-        with patch.dict("sys.modules", {
-            "attune.workflows.security_adapters": mock_adapters,
-        }):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune.workflows.security_adapters": mock_adapters,
+            },
+        ):
             result = await workflow._run_security_audit("./src")
 
         assert result is None
@@ -2657,9 +2600,12 @@ class TestPRReviewWorkflowCrewIntegration:
         mock_adapters._check_crew_available = MagicMock(return_value=True)
         mock_adapters._get_crew_audit = AsyncMock(return_value=None)
 
-        with patch.dict("sys.modules", {
-            "attune.workflows.security_adapters": mock_adapters,
-        }):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune.workflows.security_adapters": mock_adapters,
+            },
+        ):
             result = await workflow._run_security_audit("./src")
 
         assert result is None

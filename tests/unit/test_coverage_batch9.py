@@ -15,13 +15,10 @@ Licensed under Fair Source License 0.9
 from __future__ import annotations
 
 import json
-import math
-import os
-import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock, PropertyMock, mock_open, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -39,7 +36,6 @@ try:
         AllocationStrategy,
         Experiment,
         ExperimentManager,
-        ExperimentResult,
         ExperimentStatus,
         StatisticalAnalyzer,
         TrafficAllocator,
@@ -881,12 +877,18 @@ class TestExperimentManager:
         """Test listing all experiments."""
         manager = ExperimentManager(storage_path=tmp_storage)
         manager.create_experiment(
-            name="E1", description="d", hypothesis="h",
-            control_config={}, treatment_configs=[{"config": {}}],
+            name="E1",
+            description="d",
+            hypothesis="h",
+            control_config={},
+            treatment_configs=[{"config": {}}],
         )
         manager.create_experiment(
-            name="E2", description="d", hypothesis="h",
-            control_config={}, treatment_configs=[{"config": {}}],
+            name="E2",
+            description="d",
+            hypothesis="h",
+            control_config={},
+            treatment_configs=[{"config": {}}],
         )
         exps = manager.list_experiments()
         assert len(exps) == 2
@@ -1095,37 +1097,43 @@ class TestRedisShortTermMemoryMock:
         assert observer_creds.can_read() is True
 
     def test_agent_credentials_observer_cannot_stage(
-        self, observer_creds: AgentCredentials,
+        self,
+        observer_creds: AgentCredentials,
     ) -> None:
         """Test observer cannot stage."""
         assert observer_creds.can_stage() is False
 
     def test_agent_credentials_contributor_can_stage(
-        self, contributor_creds: AgentCredentials,
+        self,
+        contributor_creds: AgentCredentials,
     ) -> None:
         """Test contributor can stage."""
         assert contributor_creds.can_stage() is True
 
     def test_agent_credentials_contributor_cannot_validate(
-        self, contributor_creds: AgentCredentials,
+        self,
+        contributor_creds: AgentCredentials,
     ) -> None:
         """Test contributor cannot validate."""
         assert contributor_creds.can_validate() is False
 
     def test_agent_credentials_validator_can_validate(
-        self, validator_creds: AgentCredentials,
+        self,
+        validator_creds: AgentCredentials,
     ) -> None:
         """Test validator can validate."""
         assert validator_creds.can_validate() is True
 
     def test_agent_credentials_steward_can_administer(
-        self, steward_creds: AgentCredentials,
+        self,
+        steward_creds: AgentCredentials,
     ) -> None:
         """Test steward can administer."""
         assert steward_creds.can_administer() is True
 
     def test_agent_credentials_validator_cannot_administer(
-        self, validator_creds: AgentCredentials,
+        self,
+        validator_creds: AgentCredentials,
     ) -> None:
         """Test validator cannot administer."""
         assert validator_creds.can_administer() is False
@@ -2227,9 +2235,7 @@ class TestMetaWorkflowHelpers:
 
     def test_list_execution_results_nonexistent_dir(self, tmp_path: Path) -> None:
         """Test listing from nonexistent directory returns empty list."""
-        results = list_execution_results(
-            storage_dir=str(tmp_path / "nonexistent")
-        )
+        results = list_execution_results(storage_dir=str(tmp_path / "nonexistent"))
         assert results == []
 
 
@@ -2688,7 +2694,7 @@ class TestCLIWorkflowCommands:
         with patch(
             "attune.meta_workflows.cli_commands.workflow_commands.UnifiedMemory",
             create=True,
-        ) as mock_um:
+        ):
             # We need to mock the import inside the function
             with patch.dict("sys.modules", {"attune.memory.unified": MagicMock()}):
                 rw(
@@ -2732,7 +2738,9 @@ class TestCLIWorkflowCommands:
         mock_unified = MagicMock()
         mock_unified.side_effect = RuntimeError("Redis not available")
 
-        with patch.dict("sys.modules", {"attune.memory.unified": MagicMock(UnifiedMemory=mock_unified)}):
+        with patch.dict(
+            "sys.modules", {"attune.memory.unified": MagicMock(UnifiedMemory=mock_unified)}
+        ):
             rw(
                 template_id="test",
                 mock=True,

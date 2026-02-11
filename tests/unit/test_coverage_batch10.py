@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import json
 import textwrap
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, mock_open, patch
@@ -67,9 +66,7 @@ class TestExtractWorkflowContent:
         """Test recursive extraction when content key has a dict value."""
         from attune.cli.commands.workflow import _extract_workflow_content
 
-        result = _extract_workflow_content(
-            {"result": {"answer": "nested answer"}}
-        )
+        result = _extract_workflow_content({"result": {"answer": "nested answer"}})
         assert result == "nested answer"
 
     def test_dict_with_long_string_value(self) -> None:
@@ -107,10 +104,12 @@ class TestExtractWorkflowContent:
         """Test that formatted_report has priority over answer."""
         from attune.cli.commands.workflow import _extract_workflow_content
 
-        result = _extract_workflow_content({
-            "answer": "the answer",
-            "formatted_report": "the report",
-        })
+        result = _extract_workflow_content(
+            {
+                "answer": "the answer",
+                "formatted_report": "the report",
+            }
+        )
         assert result == "the report"
 
 
@@ -601,7 +600,7 @@ class TestCmdWorkflowRun:
         mock_inspect.signature.return_value = mock_sig
         mock_get_wf.return_value = mock_wf_cls
 
-        mock_result = MagicMock(spec=[])
+        MagicMock(spec=[])
 
         class FakeResult:
             """Fake result with metadata dict."""
@@ -875,7 +874,7 @@ class TestCmdWorkflowRun:
 
         assert result == 0
         # Verify execute was called with write_tests and output_dir
-        call_kwargs = mock_asyncio.run.call_args[0][0]
+        mock_asyncio.run.call_args[0][0]
 
 
 class TestCmdWorkflowConfig:
@@ -1009,9 +1008,7 @@ class TestCmdSonnetOpusAnalysis:
         mock_analytics.sonnet_opus_fallback_analysis.return_value = {"total_calls": 0}
 
         with (
-            patch(
-                "attune.models.telemetry.get_telemetry_store"
-            ) as mock_store_fn,
+            patch("attune.models.telemetry.get_telemetry_store") as mock_store_fn,
             patch(
                 "attune.models.telemetry.TelemetryAnalytics",
                 return_value=mock_analytics,
@@ -1487,9 +1484,7 @@ class TestCmdFileTestStatusRich:
 
     @patch("attune.telemetry.cli_analysis.RICH_AVAILABLE", True)
     @patch("attune.telemetry.cli_analysis.Console")
-    def test_rich_output_with_records(
-        self, mock_console_cls: MagicMock
-    ) -> None:
+    def test_rich_output_with_records(self, mock_console_cls: MagicMock) -> None:
         """Test Rich output with file test records including failed."""
         from attune.telemetry.cli_analysis import cmd_file_test_status
 
@@ -1548,7 +1543,10 @@ class TestCmdFileTestStatusRich:
 
         mock_store = MagicMock()
         mock_store.get_file_tests.return_value = [
-            record_passed, record_failed, record_no_tests, record_unknown
+            record_passed,
+            record_failed,
+            record_no_tests,
+            record_unknown,
         ]
 
         with patch(
@@ -2326,9 +2324,7 @@ class TestPatternLearnerAnalyzePatterns:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_no_results_returns_empty(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_no_results_returns_empty(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test analyze_patterns returns empty list when no results exist."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2340,9 +2336,7 @@ class TestPatternLearnerAnalyzePatterns:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_analyze_generates_insights(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_analyze_generates_insights(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test analyze_patterns generates insights from results."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2363,9 +2357,7 @@ class TestPatternLearnerAnalyzePatterns:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_analyze_with_template_filter(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_analyze_with_template_filter(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test analyze_patterns filters by template_id."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2382,9 +2374,7 @@ class TestPatternLearnerAnalyzePatterns:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_analyze_confidence_filter(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_analyze_confidence_filter(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test that high min_confidence filters out low-confidence insights."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2400,9 +2390,7 @@ class TestPatternLearnerAnalyzePatterns:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_analyze_handles_load_error(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_analyze_handles_load_error(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test that load errors are logged and skipped."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2424,9 +2412,7 @@ class TestPatternLearnerAnalyzeFailures:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_failure_insight_generated(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_failure_insight_generated(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test that failure analysis generates insights for failing agents."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2537,9 +2523,7 @@ class TestPatternLearnerAnalyticsReport:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_analytics_report_structure(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_analytics_report_structure(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test that analytics report has expected structure."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2560,9 +2544,7 @@ class TestPatternLearnerMemoryIntegration:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_store_execution_no_memory(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_store_execution_no_memory(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test store_execution_in_memory returns None when no memory."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2572,9 +2554,7 @@ class TestPatternLearnerMemoryIntegration:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_store_execution_with_memory(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_store_execution_with_memory(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test store_execution_in_memory stores to memory and returns pattern_id."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2589,9 +2569,7 @@ class TestPatternLearnerMemoryIntegration:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_store_execution_memory_error(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_store_execution_memory_error(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test store_execution_in_memory handles memory errors gracefully."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2623,9 +2601,7 @@ class TestPatternLearnerMemoryIntegration:
 
     @patch("attune.meta_workflows.pattern_learner.load_execution_result")
     @patch("attune.meta_workflows.pattern_learner.list_execution_results")
-    def test_search_with_memory(
-        self, mock_list: MagicMock, mock_load: MagicMock
-    ) -> None:
+    def test_search_with_memory(self, mock_list: MagicMock, mock_load: MagicMock) -> None:
         """Test search via memory with results."""
         from attune.meta_workflows.pattern_learner import PatternLearner
 
@@ -2731,12 +2707,8 @@ class TestPrintAnalyticsReport:
                         "sample_size": 10,
                     }
                 ],
-                "cost_analysis": [
-                    {"description": "Average workflow cost $0.15"}
-                ],
-                "failure_analysis": [
-                    {"description": "reviewer fails 20% of the time"}
-                ],
+                "cost_analysis": [{"description": "Average workflow cost $0.15"}],
+                "failure_analysis": [{"description": "reviewer fails 20% of the time"}],
             },
         }
 
@@ -2806,9 +2778,7 @@ class TestParseRequirements(TestDependencyParserMixin):
     def test_basic_requirements(self, tmp_path: Path) -> None:
         """Test parsing a standard requirements.txt."""
         req_file = tmp_path / "requirements.txt"
-        req_file.write_text(
-            "requests>=2.28.0\nflask==2.3.0\npytest\n"
-        )
+        req_file.write_text("requests>=2.28.0\nflask==2.3.0\npytest\n")
 
         parser = self._make_parser()
         deps = parser._parse_requirements(req_file)
@@ -2823,9 +2793,7 @@ class TestParseRequirements(TestDependencyParserMixin):
     def test_skips_comments_and_blank_lines(self, tmp_path: Path) -> None:
         """Test that comments and blank lines are skipped."""
         req_file = tmp_path / "requirements.txt"
-        req_file.write_text(
-            "# This is a comment\n\nrequests>=2.28.0\n\n# Another comment\n"
-        )
+        req_file.write_text("# This is a comment\n\nrequests>=2.28.0\n\n# Another comment\n")
 
         parser = self._make_parser()
         deps = parser._parse_requirements(req_file)
@@ -2994,16 +2962,20 @@ class TestParsePackageJson(TestDependencyParserMixin):
     def test_basic_package_json(self, tmp_path: Path) -> None:
         """Test parsing package.json with both dep types."""
         pkg = tmp_path / "package.json"
-        pkg.write_text(json.dumps({
-            "name": "my-app",
-            "dependencies": {
-                "express": "^4.18.0",
-                "lodash": "~4.17.21",
-            },
-            "devDependencies": {
-                "jest": "^29.0.0",
-            },
-        }))
+        pkg.write_text(
+            json.dumps(
+                {
+                    "name": "my-app",
+                    "dependencies": {
+                        "express": "^4.18.0",
+                        "lodash": "~4.17.21",
+                    },
+                    "devDependencies": {
+                        "jest": "^29.0.0",
+                    },
+                }
+            )
+        )
 
         parser = self._make_parser()
         deps = parser._parse_package_json(pkg)
@@ -3073,7 +3045,7 @@ class TestParsePoetryLock(TestDependencyParserMixin):
 
     def test_poetry_lock_no_tomllib(self, tmp_path: Path) -> None:
         """Test poetry.lock parsing when tomllib is not available."""
-        parser = self._make_parser()
+        self._make_parser()
         lock_file = tmp_path / "poetry.lock"
         lock_file.write_text("[[package]]\nname = 'x'\nversion = '1.0'\n")
 
@@ -3102,13 +3074,17 @@ class TestParsePackageLockJson(TestDependencyParserMixin):
     def test_npm_v7_format(self, tmp_path: Path) -> None:
         """Test parsing npm v7+ package-lock.json format."""
         lock_file = tmp_path / "package-lock.json"
-        lock_file.write_text(json.dumps({
-            "packages": {
-                "": {"name": "root", "version": "1.0.0"},
-                "node_modules/express": {"version": "4.18.2"},
-                "node_modules/lodash": {"version": "4.17.21"},
-            }
-        }))
+        lock_file.write_text(
+            json.dumps(
+                {
+                    "packages": {
+                        "": {"name": "root", "version": "1.0.0"},
+                        "node_modules/express": {"version": "4.18.2"},
+                        "node_modules/lodash": {"version": "4.17.21"},
+                    }
+                }
+            )
+        )
 
         parser = self._make_parser()
         deps = parser._parse_package_lock_json(lock_file)
@@ -3122,12 +3098,16 @@ class TestParsePackageLockJson(TestDependencyParserMixin):
     def test_npm_v6_format(self, tmp_path: Path) -> None:
         """Test parsing npm v6 package-lock.json format."""
         lock_file = tmp_path / "package-lock.json"
-        lock_file.write_text(json.dumps({
-            "dependencies": {
-                "express": {"version": "4.18.2"},
-                "lodash": {"version": "4.17.21"},
-            }
-        }))
+        lock_file.write_text(
+            json.dumps(
+                {
+                    "dependencies": {
+                        "express": {"version": "4.18.2"},
+                        "lodash": {"version": "4.17.21"},
+                    }
+                }
+            )
+        )
 
         parser = self._make_parser()
         deps = parser._parse_package_lock_json(lock_file)
@@ -3150,11 +3130,15 @@ class TestParsePackageLockJson(TestDependencyParserMixin):
     def test_empty_packages_section(self, tmp_path: Path) -> None:
         """Test parsing when packages section has only root entry."""
         lock_file = tmp_path / "package-lock.json"
-        lock_file.write_text(json.dumps({
-            "packages": {
-                "": {"name": "root", "version": "1.0.0"},
-            }
-        }))
+        lock_file.write_text(
+            json.dumps(
+                {
+                    "packages": {
+                        "": {"name": "root", "version": "1.0.0"},
+                    }
+                }
+            )
+        )
 
         parser = self._make_parser()
         deps = parser._parse_package_lock_json(lock_file)

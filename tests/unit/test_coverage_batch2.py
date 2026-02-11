@@ -15,9 +15,12 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-# =============================================================================
-# MODULE 1: trust_building.py
-# =============================================================================
+from attune.templates import (
+    TEMPLATES,
+    cmd_new,
+    list_templates,
+    scaffold_project,
+)
 from attune.trust_building import (
     COORDINATION_ROLES,
     EXECUTIVE_ROLES,
@@ -68,9 +71,7 @@ class TestTrustSignalDataclass:
 
     def test_eroding_signal_type(self) -> None:
         """Test creating a TrustSignal with eroding type."""
-        signal = TrustSignal(
-            signal_type="eroding", behavior="ignored_warning", impact=0.9
-        )
+        signal = TrustSignal(signal_type="eroding", behavior="ignored_warning", impact=0.9)
         assert signal.signal_type == "eroding"
         assert signal.impact == 0.9
 
@@ -300,9 +301,7 @@ class TestClarifyBeforeActing:
     def test_records_trust_signal_with_count(self) -> None:
         """Test that clarify_before_acting records trust signal with ambiguity count."""
         behaviors = TrustBuildingBehaviors()
-        behaviors.clarify_before_acting(
-            instruction="Test", detected_ambiguities=["a", "b", "c"]
-        )
+        behaviors.clarify_before_acting(instruction="Test", detected_ambiguities=["a", "b", "c"])
         assert len(behaviors.trust_signals) == 1
         assert behaviors.trust_signals[0].behavior == "clarify_ambiguity"
         assert "3 ambiguities" in behaviors.trust_signals[0].evidence
@@ -310,25 +309,19 @@ class TestClarifyBeforeActing:
     def test_empty_ambiguities_list(self) -> None:
         """Test clarification with empty ambiguities list generates no questions."""
         behaviors = TrustBuildingBehaviors()
-        result = behaviors.clarify_before_acting(
-            instruction="Something", detected_ambiguities=[]
-        )
+        result = behaviors.clarify_before_acting(instruction="Something", detected_ambiguities=[])
         assert len(result["clarifying_questions"]) == 0
 
     def test_has_timestamp(self) -> None:
         """Test result contains a timestamp."""
         behaviors = TrustBuildingBehaviors()
-        result = behaviors.clarify_before_acting(
-            instruction="Test", detected_ambiguities=["a"]
-        )
+        result = behaviors.clarify_before_acting(instruction="Test", detected_ambiguities=["a"])
         assert "timestamp" in result
 
     def test_reasoning_explains_clarification(self) -> None:
         """Test the reasoning field explains why clarification is needed."""
         behaviors = TrustBuildingBehaviors()
-        result = behaviors.clarify_before_acting(
-            instruction="Test", detected_ambiguities=["x"]
-        )
+        result = behaviors.clarify_before_acting(instruction="Test", detected_ambiguities=["x"])
         assert "ambiguities" in result["reasoning"].lower()
 
 
@@ -559,13 +552,9 @@ class TestGetTrustTrajectory:
         """Test >70% building signals returns strongly_building trajectory."""
         behaviors = TrustBuildingBehaviors()
         for _ in range(8):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="building", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="building", behavior="test"))
         for _ in range(2):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="eroding", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="eroding", behavior="test"))
         result = behaviors.get_trust_trajectory()
         assert result["status"] == "active"
         assert result["trajectory"] == "strongly_building"
@@ -577,13 +566,9 @@ class TestGetTrustTrajectory:
         """Test 51-70% building signals returns building trajectory."""
         behaviors = TrustBuildingBehaviors()
         for _ in range(6):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="building", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="building", behavior="test"))
         for _ in range(4):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="eroding", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="eroding", behavior="test"))
         result = behaviors.get_trust_trajectory()
         assert result["trajectory"] == "building"
 
@@ -591,13 +576,9 @@ class TestGetTrustTrajectory:
         """Test 31-50% building signals returns mixed trajectory."""
         behaviors = TrustBuildingBehaviors()
         for _ in range(4):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="building", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="building", behavior="test"))
         for _ in range(6):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="eroding", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="eroding", behavior="test"))
         result = behaviors.get_trust_trajectory()
         assert result["trajectory"] == "mixed"
 
@@ -605,13 +586,9 @@ class TestGetTrustTrajectory:
         """Test <=30% building signals returns eroding trajectory."""
         behaviors = TrustBuildingBehaviors()
         for _ in range(2):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="building", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="building", behavior="test"))
         for _ in range(8):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="eroding", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="eroding", behavior="test"))
         result = behaviors.get_trust_trajectory()
         assert result["trajectory"] == "eroding"
 
@@ -619,9 +596,7 @@ class TestGetTrustTrajectory:
         """Test 100% building signals returns strongly_building."""
         behaviors = TrustBuildingBehaviors()
         for _ in range(5):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="building", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="building", behavior="test"))
         result = behaviors.get_trust_trajectory()
         assert result["trajectory"] == "strongly_building"
         assert result["building_ratio"] == 1.0
@@ -630,9 +605,7 @@ class TestGetTrustTrajectory:
         """Test 0% building signals returns eroding."""
         behaviors = TrustBuildingBehaviors()
         for _ in range(5):
-            behaviors.trust_signals.append(
-                TrustSignal(signal_type="eroding", behavior="test")
-            )
+            behaviors.trust_signals.append(TrustSignal(signal_type="eroding", behavior="test"))
         result = behaviors.get_trust_trajectory()
         assert result["trajectory"] == "eroding"
         assert result["building_ratio"] == 0.0
@@ -656,9 +629,7 @@ class TestGetTrustTrajectory:
     def test_single_signal(self) -> None:
         """Test trajectory with single building signal."""
         behaviors = TrustBuildingBehaviors()
-        behaviors.trust_signals.append(
-            TrustSignal(signal_type="building", behavior="test")
-        )
+        behaviors.trust_signals.append(TrustSignal(signal_type="building", behavior="test"))
         result = behaviors.get_trust_trajectory()
         assert result["signal_count"] == 1
         assert result["trajectory"] == "strongly_building"
@@ -725,9 +696,9 @@ class TestAssessStressLevel:
     def test_five_indicators_returns_critical(self) -> None:
         """Test 5+ indicators still returns critical."""
         behaviors = TrustBuildingBehaviors()
-        assert behaviors._assess_stress_level(
-            {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
-        ) == "critical"
+        assert (
+            behaviors._assess_stress_level({"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}) == "critical"
+        )
 
 
 class TestClassifyStruggle:
@@ -751,9 +722,9 @@ class TestClassifyStruggle:
     def test_repeated_errors_precedence(self) -> None:
         """Test repeated_errors takes precedence over time_on_task."""
         behaviors = TrustBuildingBehaviors()
-        assert behaviors._classify_struggle(
-            {"repeated_errors": 3, "time_on_task": 60}
-        ) == "execution"
+        assert (
+            behaviors._classify_struggle({"repeated_errors": 3, "time_on_task": 60}) == "execution"
+        )
 
     def test_empty_indicators_returns_general(self) -> None:
         """Test empty indicators dict returns general."""
@@ -840,9 +811,7 @@ class TestReset:
     def test_reset_clears_signals(self) -> None:
         """Test reset clears all trust signals."""
         behaviors = TrustBuildingBehaviors()
-        behaviors.trust_signals.append(
-            TrustSignal(signal_type="building", behavior="test")
-        )
+        behaviors.trust_signals.append(TrustSignal(signal_type="building", behavior="test"))
         assert len(behaviors.trust_signals) == 1
         behaviors.reset()
         assert len(behaviors.trust_signals) == 0
@@ -882,13 +851,6 @@ class TestRecordTrustSignal:
 # =============================================================================
 # MODULE 2: templates.py
 # =============================================================================
-
-from attune.templates import (
-    TEMPLATES,
-    cmd_new,
-    list_templates,
-    scaffold_project,
-)
 
 
 class TestTemplatesConstant:
@@ -1113,9 +1075,7 @@ class TestCmdNew:
 
     def test_list_only_prints_templates(self, capsys) -> None:
         """Test cmd_new with list=True prints templates and returns 0."""
-        args = SimpleNamespace(
-            template=None, name=None, output=None, force=False, list=True
-        )
+        args = SimpleNamespace(template=None, name=None, output=None, force=False, list=True)
         result = cmd_new(args)
         assert result == 0
         captured = capsys.readouterr()
@@ -1123,9 +1083,7 @@ class TestCmdNew:
 
     def test_no_template_or_name_returns_1(self, capsys) -> None:
         """Test cmd_new without template or name returns 1."""
-        args = SimpleNamespace(
-            template=None, name=None, output=None, force=False, list=False
-        )
+        args = SimpleNamespace(template=None, name=None, output=None, force=False, list=False)
         result = cmd_new(args)
         assert result == 1
         captured = capsys.readouterr()
@@ -1133,9 +1091,7 @@ class TestCmdNew:
 
     def test_template_without_name_returns_1(self, capsys) -> None:
         """Test cmd_new with template but no name returns 1."""
-        args = SimpleNamespace(
-            template="minimal", name=None, output=None, force=False, list=False
-        )
+        args = SimpleNamespace(template="minimal", name=None, output=None, force=False, list=False)
         result = cmd_new(args)
         assert result == 1
 
@@ -1178,9 +1134,7 @@ class TestCmdNew:
 
     def test_list_only_shows_all_template_ids(self, capsys) -> None:
         """Test listing shows template IDs for each known template."""
-        args = SimpleNamespace(
-            template=None, name=None, output=None, force=False, list=True
-        )
+        args = SimpleNamespace(template=None, name=None, output=None, force=False, list=True)
         cmd_new(args)
         captured = capsys.readouterr()
         assert "minimal" in captured.out
@@ -1199,9 +1153,18 @@ class TestCheckCrewAvailable:
         """Test _check_crew_available returns False when crew can't be imported."""
         from attune.workflows.code_review_adapters import _check_crew_available
 
-        with patch.dict("sys.modules", {"attune_llm": None, "attune_llm.agent_factory": None, "attune_llm.agent_factory.crews": None}):
+        with patch.dict(
+            "sys.modules",
+            {
+                "attune_llm": None,
+                "attune_llm.agent_factory": None,
+                "attune_llm.agent_factory.crews": None,
+            },
+        ):
             # Force an ImportError by patching builtins.__import__
-            original_import = __builtins__.__import__ if hasattr(__builtins__, '__import__') else __import__
+            original_import = (
+                __builtins__.__import__ if hasattr(__builtins__, "__import__") else __import__
+            )
 
             def mock_import(name, *args, **kwargs):
                 if "attune_llm" in name:
@@ -1735,10 +1698,7 @@ class TestMergeVerdicts:
         """Test approve_with_suggestions + approve returns approve_with_suggestions."""
         from attune.workflows.code_review_adapters import _merge_verdicts
 
-        assert (
-            _merge_verdicts("approve_with_suggestions", "approve")
-            == "approve_with_suggestions"
-        )
+        assert _merge_verdicts("approve_with_suggestions", "approve") == "approve_with_suggestions"
 
     def test_reject_request_changes(self) -> None:
         """Test reject is more severe than request_changes."""
@@ -1879,17 +1839,13 @@ class TestMergeCodeReviewResults:
             "verdict": "approve",
             "summary": "",
             "agents_used": [],
-            "assessment": {
-                "severity_breakdown": {"critical": 1, "high": 0, "medium": 2, "low": 0}
-            },
+            "assessment": {"severity_breakdown": {"critical": 1, "high": 0, "medium": 2, "low": 0}},
         }
         wf = {
             "findings": [],
             "security_score": 90,
             "verdict": "approve",
-            "assessment": {
-                "severity_breakdown": {"critical": 0, "high": 3, "medium": 1, "low": 5}
-            },
+            "assessment": {"severity_breakdown": {"critical": 0, "high": 3, "medium": 1, "low": 5}},
         }
         result = merge_code_review_results(crew, wf)
         severity = result["assessment"]["severity_breakdown"]
@@ -1908,9 +1864,7 @@ class TestMergeCodeReviewResults:
             "verdict": "approve",
             "summary": "",
             "agents_used": [],
-            "assessment": {
-                "severity_breakdown": {"critical": 1, "high": 0, "medium": 0, "low": 0}
-            },
+            "assessment": {"severity_breakdown": {"critical": 1, "high": 0, "medium": 0, "low": 0}},
         }
         wf = {
             "findings": [],
@@ -1931,9 +1885,7 @@ class TestMergeCodeReviewResults:
             "verdict": "approve",
             "summary": "",
             "agents_used": [],
-            "assessment": {
-                "severity_breakdown": {"critical": 0, "high": 4, "medium": 0, "low": 0}
-            },
+            "assessment": {"severity_breakdown": {"critical": 0, "high": 4, "medium": 0, "low": 0}},
         }
         wf = {
             "findings": [],
@@ -1954,9 +1906,7 @@ class TestMergeCodeReviewResults:
             "verdict": "approve",
             "summary": "",
             "agents_used": [],
-            "assessment": {
-                "severity_breakdown": {"critical": 0, "high": 2, "medium": 3, "low": 5}
-            },
+            "assessment": {"severity_breakdown": {"critical": 0, "high": 2, "medium": 3, "low": 5}},
         }
         wf = {
             "findings": [],

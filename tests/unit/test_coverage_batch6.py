@@ -34,6 +34,17 @@ from attune.workflows.manage_documentation import (
     format_manage_docs_report,
     parse_xml_response,
 )
+from attune.workflows.research_synthesis import (
+    ANALYZE_STEP,
+    SUMMARIZE_STEP,
+    SYNTHESIZE_STEP,
+    SYNTHESIZE_STEP_CAPABLE,
+    ResearchSynthesisWorkflow,
+)
+from attune.workflows.seo_optimization import (
+    SEOOptimizationConfig,
+    SEOOptimizationWorkflow,
+)
 
 
 class TestManageDocumentationCrewResult:
@@ -464,31 +475,23 @@ class TestManageDocumentationCrew:
         # Test analyst mock
         agent = crew.analyst
         task = crew.define_tasks()[0]
-        response, in_tok, out_tok, cost = crew._mock_response(
-            agent, task, {"path": "."}, "testing"
-        )
+        response, in_tok, out_tok, cost = crew._mock_response(agent, task, {"path": "."}, "testing")
         assert "Mock Analysis" in response
         assert in_tok == 0
         assert out_tok == 0
         assert cost == 0.0
 
         # Test reviewer mock
-        response, _, _, _ = crew._mock_response(
-            crew.reviewer, task, {"path": "."}, "testing"
-        )
+        response, _, _, _ = crew._mock_response(crew.reviewer, task, {"path": "."}, "testing")
         assert "Mock Review" in response
 
         # Test synthesizer mock
-        response, _, _, _ = crew._mock_response(
-            crew.synthesizer, task, {"path": "."}, "testing"
-        )
+        response, _, _, _ = crew._mock_response(crew.synthesizer, task, {"path": "."}, "testing")
         assert "Mock Synthesis" in response
 
         # Test unknown agent - falls back to default
         unknown_agent = Agent(role="Unknown Role", goal="g", backstory="b")
-        response, _, _, _ = crew._mock_response(
-            unknown_agent, task, {"path": "."}, "testing"
-        )
+        response, _, _, _ = crew._mock_response(unknown_agent, task, {"path": "."}, "testing")
         assert "Mock response for Unknown Role" in response
 
     def test_scan_directory_nonexistent(self, crew: ManageDocumentationCrew) -> None:
@@ -522,9 +525,7 @@ class TestManageDocumentationCrew:
         result = crew._get_index_context()
         assert result == {}
 
-    def test_get_index_context_with_exception(
-        self, crew: ManageDocumentationCrew
-    ) -> None:
+    def test_get_index_context_with_exception(self, crew: ManageDocumentationCrew) -> None:
         """Test _get_index_context when ProjectIndex raises an exception."""
         mock_index = MagicMock()
         mock_index.get_context_for_workflow.side_effect = RuntimeError("broken")
@@ -539,17 +540,13 @@ class TestManageDocumentationCrew:
         agent = crew.analyst
         task = crew.define_tasks()[0]
         context = {"path": "."}
-        response, in_tok, out_tok, cost = await crew._call_llm(
-            agent, task, context
-        )
+        response, in_tok, out_tok, cost = await crew._call_llm(agent, task, context)
         assert "Mock Analysis" in response
         assert in_tok == 0
         assert cost == 0.0
 
     @pytest.mark.asyncio
-    async def test_call_llm_with_executor_success(
-        self, crew: ManageDocumentationCrew
-    ) -> None:
+    async def test_call_llm_with_executor_success(self, crew: ManageDocumentationCrew) -> None:
         """Test _call_llm with a working executor."""
         # Mock the executor
         mock_response = MagicMock()
@@ -564,16 +561,13 @@ class TestManageDocumentationCrew:
 
         # Mock ExecutionContext
         mock_ec = MagicMock()
-        with patch(
-            "attune.workflows.manage_documentation.ExecutionContext", mock_ec
-        ), patch(
-            "attune.workflows.manage_documentation.HAS_EXECUTOR", True
+        with (
+            patch("attune.workflows.manage_documentation.ExecutionContext", mock_ec),
+            patch("attune.workflows.manage_documentation.HAS_EXECUTOR", True),
         ):
             agent = crew.analyst
             task = crew.define_tasks()[0]
-            response, in_tok, out_tok, cost = await crew._call_llm(
-                agent, task, {"path": "."}
-            )
+            response, in_tok, out_tok, cost = await crew._call_llm(agent, task, {"path": "."})
             assert response == "Real LLM response"
             assert in_tok == 100
             assert out_tok == 50
@@ -589,24 +583,19 @@ class TestManageDocumentationCrew:
         crew._executor = mock_executor
 
         mock_ec = MagicMock()
-        with patch(
-            "attune.workflows.manage_documentation.ExecutionContext", mock_ec
-        ), patch(
-            "attune.workflows.manage_documentation.HAS_EXECUTOR", True
+        with (
+            patch("attune.workflows.manage_documentation.ExecutionContext", mock_ec),
+            patch("attune.workflows.manage_documentation.HAS_EXECUTOR", True),
         ):
             agent = crew.analyst
             task = crew.define_tasks()[0]
-            response, in_tok, out_tok, cost = await crew._call_llm(
-                agent, task, {"path": "."}
-            )
+            response, in_tok, out_tok, cost = await crew._call_llm(agent, task, {"path": "."})
             # Should fall back to mock
             assert "Mock" in response
             assert in_tok == 0
 
     @pytest.mark.asyncio
-    async def test_execute_with_path_error(
-        self, crew: ManageDocumentationCrew
-    ) -> None:
+    async def test_execute_with_path_error(self, crew: ManageDocumentationCrew) -> None:
         """Test execute with a path that does not exist (fallback scanning)."""
         crew._project_index = None  # Force fallback path
         result = await crew.execute(path="/nonexistent/path/xyz123")
@@ -628,9 +617,7 @@ class TestManageDocumentationCrew:
 
         # Mock _call_llm to avoid actual async LLM calls / timeouts
         mock_llm_return = ("Mock response text", 0, 0, 0.0)
-        with patch.object(
-            crew, "_call_llm", new_callable=AsyncMock, return_value=mock_llm_return
-        ):
+        with patch.object(crew, "_call_llm", new_callable=AsyncMock, return_value=mock_llm_return):
             result = await crew.execute(path=str(tmp_path))
         assert result.success is True
         assert result.files_analyzed >= 0
@@ -640,9 +627,7 @@ class TestManageDocumentationCrew:
         assert result.confidence == 0.3  # No executor => low confidence
 
     @pytest.mark.asyncio
-    async def test_execute_with_index_context(
-        self, crew: ManageDocumentationCrew
-    ) -> None:
+    async def test_execute_with_index_context(self, crew: ManageDocumentationCrew) -> None:
         """Test execute uses ProjectIndex context when available."""
         mock_index = MagicMock()
         mock_index.get_context_for_workflow.return_value = {
@@ -679,24 +664,21 @@ class TestManageDocumentationCrew:
 
         # Mock _call_llm to avoid actual async LLM calls / timeouts
         mock_llm_return = ("Mock response text", 0, 0, 0.0)
-        with patch.object(
-            crew, "_call_llm", new_callable=AsyncMock, return_value=mock_llm_return
-        ):
+        with patch.object(crew, "_call_llm", new_callable=AsyncMock, return_value=mock_llm_return):
             result = await crew.execute(path=".")
         assert result.success is True
         assert result.files_analyzed == 100  # From index stats
 
     @pytest.mark.asyncio
-    async def test_execute_task_type_routing(
-        self, crew: ManageDocumentationCrew
-    ) -> None:
+    async def test_execute_task_type_routing(self, crew: ManageDocumentationCrew) -> None:
         """Test that task types are routed correctly based on agent role."""
         crew._project_index = None
         # Create a minimal valid directory
         # We just need to verify the code path handles different task types
         mock_llm_return = ("Mock response text", 0, 0, 0.0)
-        with patch.object(crew, "_scan_directory") as mock_scan, patch.object(
-            crew, "_call_llm", new_callable=AsyncMock, return_value=mock_llm_return
+        with (
+            patch.object(crew, "_scan_directory") as mock_scan,
+            patch.object(crew, "_call_llm", new_callable=AsyncMock, return_value=mock_llm_return),
         ):
             mock_scan.return_value = {
                 "python_files": [],
@@ -942,9 +924,7 @@ class TestOrchestratedReleasePrepWorkflowExtended:
                 "attune.workflows.orchestrated_release_prep.ParallelStrategy"
             ) as MockStrategy:
                 mock_instance = AsyncMock()
-                mock_instance.execute = AsyncMock(
-                    return_value=mock_strategy_result
-                )
+                mock_instance.execute = AsyncMock(return_value=mock_strategy_result)
                 MockStrategy.return_value = mock_instance
 
                 # Use target= instead of path=
@@ -992,11 +972,6 @@ class TestOrchestratedReleasePrepWorkflowExtended:
 # Module 3: seo_optimization.py
 # ============================================================================
 
-from attune.workflows.seo_optimization import (
-    SEOOptimizationConfig,
-    SEOOptimizationWorkflow,
-)
-
 
 class TestSEOOptimizationConfig:
     """Tests for SEOOptimizationConfig dataclass."""
@@ -1043,9 +1018,7 @@ class TestSEOOptimizationWorkflow:
         assert workflow.tier_map["recommend"].value == "premium"
         assert workflow.tier_map["implement"].value == "capable"
 
-    def test_should_skip_stage_audit_mode(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_should_skip_stage_audit_mode(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test stage skipping in audit mode."""
         workflow._mode = "audit"
         skip, reason = workflow.should_skip_stage("recommend", None)
@@ -1060,9 +1033,7 @@ class TestSEOOptimizationWorkflow:
         assert skip is False
         assert reason is None
 
-    def test_should_skip_stage_suggest_mode(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_should_skip_stage_suggest_mode(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test stage skipping in suggest mode."""
         workflow._mode = "suggest"
         skip, reason = workflow.should_skip_stage("recommend", None)
@@ -1072,9 +1043,7 @@ class TestSEOOptimizationWorkflow:
         assert skip is True
         assert "suggest" in reason
 
-    def test_should_skip_stage_fix_mode(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_should_skip_stage_fix_mode(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test stage skipping in fix mode."""
         workflow._mode = "fix"
         skip, reason = workflow.should_skip_stage("scan", None)
@@ -1087,9 +1056,7 @@ class TestSEOOptimizationWorkflow:
         assert skip is False
 
     @pytest.mark.asyncio
-    async def test_scan_files(
-        self, workflow: SEOOptimizationWorkflow, tmp_path: Path
-    ) -> None:
+    async def test_scan_files(self, workflow: SEOOptimizationWorkflow, tmp_path: Path) -> None:
         """Test _scan_files stage."""
         # Create test markdown files
         (tmp_path / "index.md").write_text("# Home\n")
@@ -1155,9 +1122,7 @@ class TestSEOOptimizationWorkflow:
         assert "h1_count" in issue_types  # multi.md has multiple H1s
 
     @pytest.mark.asyncio
-    async def test_analyze_seo_unreadable_file(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_analyze_seo_unreadable_file(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _analyze_seo handles unreadable files gracefully."""
         config = SEOOptimizationConfig(
             docs_path=Path("/tmp"),
@@ -1171,9 +1136,7 @@ class TestSEOOptimizationWorkflow:
         assert result["total_issues"] == 0
 
     @pytest.mark.asyncio
-    async def test_generate_recommendations(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_generate_recommendations(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _generate_recommendations creates prioritized recommendations."""
         config = SEOOptimizationConfig(
             docs_path=Path("/tmp"),
@@ -1205,9 +1168,7 @@ class TestSEOOptimizationWorkflow:
         assert total == 2
 
     @pytest.mark.asyncio
-    async def test_implement_fixes_interactive(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_implement_fixes_interactive(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _implement_fixes in interactive mode skips all fixes."""
         config = SEOOptimizationConfig(
             docs_path=Path("/tmp"),
@@ -1227,9 +1188,7 @@ class TestSEOOptimizationWorkflow:
         assert result["total"] == 2
 
     @pytest.mark.asyncio
-    async def test_implement_fixes_non_interactive(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_implement_fixes_non_interactive(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _implement_fixes in non-interactive mode applies fixes."""
         config = SEOOptimizationConfig(
             docs_path=Path("/tmp"),
@@ -1247,9 +1206,7 @@ class TestSEOOptimizationWorkflow:
         assert result["skipped"] == 0
 
     @pytest.mark.asyncio
-    async def test_ask_initial_discovery(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_ask_initial_discovery(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _ask_initial_discovery returns default goal."""
         goal = await workflow._ask_initial_discovery()
         assert goal == "health"
@@ -1263,44 +1220,34 @@ class TestSEOOptimizationWorkflow:
         # best_practice (+0.3) + critical (+0.3) = 0.6
         assert confidence == 0.6
 
-    def test_calculate_confidence_sitemap(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_calculate_confidence_sitemap(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test confidence for sitemap issue."""
         issue = {"element": "sitemap", "severity": "critical"}
         confidence = workflow._calculate_confidence(issue)
         # best_practice (+0.3) + critical (+0.3) + technical (+0.2) = 0.8
         assert confidence == 0.8
 
-    def test_calculate_confidence_keyword_density(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_calculate_confidence_keyword_density(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test confidence for content-related issue is lower."""
         issue = {"element": "keyword_density", "severity": "warning"}
         confidence = workflow._calculate_confidence(issue)
         # content_fix (-0.1) = -0.1, clamped to 0.0
         assert confidence == 0.0
 
-    def test_calculate_confidence_h1_count(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_calculate_confidence_h1_count(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test confidence for H1 count issue."""
         issue = {"element": "h1_count", "severity": "warning"}
         confidence = workflow._calculate_confidence(issue)
         # best_practice (+0.3) = 0.3
         assert confidence == 0.3
 
-    def test_calculate_confidence_unknown_element(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_calculate_confidence_unknown_element(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test confidence for unknown element type."""
         issue = {"element": "unknown_thing", "severity": "info"}
         confidence = workflow._calculate_confidence(issue)
         assert confidence == 0.0
 
-    def test_calculate_confidence_clamped(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_calculate_confidence_clamped(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test confidence is clamped between 0.0 and 1.0."""
         # Create an issue that could theoretically push above 1.0
         issue = {"element": "sitemap", "severity": "critical"}
@@ -1327,9 +1274,7 @@ class TestSEOOptimizationWorkflow:
         assert "Medium" in explanation["impact"]
         assert "50%" in explanation["confidence"]
 
-    def test_format_educational_explanation_info(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_format_educational_explanation_info(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test educational explanation for info severity."""
         issue = {"element": "broken_link", "severity": "info"}
         explanation = workflow._format_educational_explanation(issue, 0.7)
@@ -1345,9 +1290,7 @@ class TestSEOOptimizationWorkflow:
         assert "Variable impact" in explanation["impact"]
         assert "5-15 minutes" in explanation["time"]
 
-    def test_get_reasoning_known_elements(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_get_reasoning_known_elements(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _get_reasoning for all known element types."""
         known_elements = [
             "meta_description",
@@ -1361,9 +1304,7 @@ class TestSEOOptimizationWorkflow:
             reasoning = workflow._get_reasoning({"element": element})
             assert len(reasoning) > 20  # Should be a meaningful explanation
 
-    def test_get_reasoning_unknown_element(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_get_reasoning_unknown_element(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _get_reasoning for unknown element returns default."""
         reasoning = workflow._get_reasoning({"element": "unknown_xyz"})
         assert "search engines" in reasoning.lower()
@@ -1388,9 +1329,7 @@ class TestSEOOptimizationWorkflow:
         assert "60%" in question
         assert "test.md" in question
 
-    def test_create_clarification_question_empty(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    def test_create_clarification_question_empty(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test _create_clarification_question with empty list."""
         result = workflow._create_clarification_question([])
         assert result is None
@@ -1417,9 +1356,7 @@ class TestSEOOptimizationWorkflow:
         assert len(result["options"]) == 4
 
     @pytest.mark.asyncio
-    async def test_run_stage_scan(
-        self, workflow: SEOOptimizationWorkflow, tmp_path: Path
-    ) -> None:
+    async def test_run_stage_scan(self, workflow: SEOOptimizationWorkflow, tmp_path: Path) -> None:
         """Test run_stage dispatches to scan correctly."""
         from attune.workflows.base import ModelTier
 
@@ -1429,9 +1366,7 @@ class TestSEOOptimizationWorkflow:
             target_keywords=[],
         )
         (tmp_path / "test.md").write_text("# Test\n")
-        result, in_tok, out_tok = await workflow.run_stage(
-            "scan", ModelTier.CHEAP, {}
-        )
+        result, in_tok, out_tok = await workflow.run_stage("scan", ModelTier.CHEAP, {})
         assert result["file_count"] == 1
         assert in_tok == 0
         assert workflow._scan_result is not None
@@ -1451,17 +1386,13 @@ class TestSEOOptimizationWorkflow:
         )
         workflow._scan_result = {"files": [str(tmp_path / "page.md")]}
 
-        result, in_tok, out_tok = await workflow.run_stage(
-            "analyze", ModelTier.CAPABLE, {}
-        )
+        result, in_tok, out_tok = await workflow.run_stage("analyze", ModelTier.CAPABLE, {})
         assert "issues" in result
         assert in_tok == 1000
         assert out_tok == 500
 
     @pytest.mark.asyncio
-    async def test_run_stage_recommend(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_run_stage_recommend(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test run_stage dispatches to recommend correctly."""
         from attune.workflows.base import ModelTier
 
@@ -1471,16 +1402,12 @@ class TestSEOOptimizationWorkflow:
             target_keywords=[],
         )
         workflow._analyze_result = {"issues": []}
-        result, in_tok, out_tok = await workflow.run_stage(
-            "recommend", ModelTier.PREMIUM, {}
-        )
+        result, in_tok, out_tok = await workflow.run_stage("recommend", ModelTier.PREMIUM, {})
         assert "recommendations" in result
         assert in_tok == 2000
 
     @pytest.mark.asyncio
-    async def test_run_stage_implement_fix_mode(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_run_stage_implement_fix_mode(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test run_stage dispatches to implement in fix mode."""
         from attune.workflows.base import ModelTier
 
@@ -1492,9 +1419,7 @@ class TestSEOOptimizationWorkflow:
             interactive=False,
         )
         workflow._recommend_result = {"recommendations": []}
-        result, in_tok, out_tok = await workflow.run_stage(
-            "implement", ModelTier.CAPABLE, {}
-        )
+        result, in_tok, out_tok = await workflow.run_stage("implement", ModelTier.CAPABLE, {})
         assert "applied" in result
         assert in_tok == 1500
 
@@ -1511,16 +1436,12 @@ class TestSEOOptimizationWorkflow:
             site_url="https://example.com",
             target_keywords=[],
         )
-        result, in_tok, out_tok = await workflow.run_stage(
-            "implement", ModelTier.CAPABLE, {}
-        )
+        result, in_tok, out_tok = await workflow.run_stage("implement", ModelTier.CAPABLE, {})
         assert result["skipped"] is True
         assert in_tok == 0
 
     @pytest.mark.asyncio
-    async def test_run_stage_unknown(
-        self, workflow: SEOOptimizationWorkflow
-    ) -> None:
+    async def test_run_stage_unknown(self, workflow: SEOOptimizationWorkflow) -> None:
         """Test run_stage raises ValueError for unknown stage."""
         from attune.workflows.base import ModelTier
 
@@ -1531,14 +1452,6 @@ class TestSEOOptimizationWorkflow:
 # ============================================================================
 # Module 4: research_synthesis.py
 # ============================================================================
-
-from attune.workflows.research_synthesis import (
-    ANALYZE_STEP,
-    SUMMARIZE_STEP,
-    SYNTHESIZE_STEP,
-    SYNTHESIZE_STEP_CAPABLE,
-    ResearchSynthesisWorkflow,
-)
 
 
 class TestWorkflowStepConfigs:
@@ -1596,29 +1509,21 @@ class TestResearchSynthesisWorkflow:
         wf = ResearchSynthesisWorkflow(complexity_threshold=0.5)
         assert wf.complexity_threshold == 0.5
 
-    def test_validate_sources_valid(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    def test_validate_sources_valid(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test validate_sources with sufficient sources."""
         workflow.validate_sources(["source1", "source2"])  # Should not raise
 
-    def test_validate_sources_empty(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    def test_validate_sources_empty(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test validate_sources with empty list."""
         with pytest.raises(ValueError, match="at least 2"):
             workflow.validate_sources([])
 
-    def test_validate_sources_one(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    def test_validate_sources_one(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test validate_sources with only one source."""
         with pytest.raises(ValueError, match="at least 2"):
             workflow.validate_sources(["only_one"])
 
-    def test_validate_sources_none(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    def test_validate_sources_none(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test validate_sources with None."""
         with pytest.raises(ValueError, match="at least 2"):
             workflow.validate_sources(None)
@@ -1644,18 +1549,14 @@ class TestResearchSynthesisWorkflow:
         assert skip is False
         assert wf.tier_map["synthesize"].value == "premium"
 
-    def test_should_skip_stage_non_synthesize(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    def test_should_skip_stage_non_synthesize(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test should_skip_stage does not affect non-synthesize stages."""
         skip, reason = workflow.should_skip_stage("summarize", {})
         assert skip is False
         assert reason is None
 
     @pytest.mark.asyncio
-    async def test_run_stage_summarize(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_run_stage_summarize(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test run_stage dispatches to summarize."""
         from attune.workflows.base import ModelTier
 
@@ -1677,9 +1578,7 @@ class TestResearchSynthesisWorkflow:
             assert out_tok == 60
 
     @pytest.mark.asyncio
-    async def test_run_stage_analyze(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_run_stage_analyze(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test run_stage dispatches to analyze."""
         from attune.workflows.base import ModelTier
 
@@ -1705,21 +1604,19 @@ class TestResearchSynthesisWorkflow:
             assert workflow._detected_complexity > 0
 
     @pytest.mark.asyncio
-    async def test_run_stage_synthesize_no_xml(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_run_stage_synthesize_no_xml(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test run_stage dispatches to synthesize without XML."""
         from attune.workflows.base import ModelTier
 
         mock_response = ("Synthesized insights.", 300, 200)
-        with patch.object(
-            workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response
-        ), patch.object(
-            workflow, "_is_xml_enabled", return_value=False
-        ), patch.object(
-            workflow,
-            "_parse_xml_response",
-            return_value={"_parsed_response": None, "_raw": "Synthesized insights."},
+        with (
+            patch.object(workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response),
+            patch.object(workflow, "_is_xml_enabled", return_value=False),
+            patch.object(
+                workflow,
+                "_parse_xml_response",
+                return_value={"_parsed_response": None, "_raw": "Synthesized insights."},
+            ),
         ):
             input_data = {
                 "patterns": [{"pattern": "test", "sources": [], "confidence": 0.85}],
@@ -1736,9 +1633,7 @@ class TestResearchSynthesisWorkflow:
             assert result["complexity_score"] == 0.8
 
     @pytest.mark.asyncio
-    async def test_run_stage_synthesize_with_xml(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_run_stage_synthesize_with_xml(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test run_stage synthesize with XML-enhanced prompts."""
         from attune.workflows.base import ModelTier
 
@@ -1746,22 +1641,21 @@ class TestResearchSynthesisWorkflow:
         mock_parsed = MagicMock()
         mock_parsed.extra = {"key_insights": ["Insight 1", "Insight 2"]}
 
-        with patch.object(
-            workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response
-        ), patch.object(
-            workflow, "_is_xml_enabled", return_value=True
-        ), patch.object(
-            workflow, "_render_xml_prompt", return_value="rendered xml prompt"
-        ), patch.object(
-            workflow,
-            "_parse_xml_response",
-            return_value={
-                "xml_parsed": True,
-                "summary": "Parsed summary",
-                "findings": ["finding1"],
-                "checklist": ["check1"],
-                "_parsed_response": mock_parsed,
-            },
+        with (
+            patch.object(workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response),
+            patch.object(workflow, "_is_xml_enabled", return_value=True),
+            patch.object(workflow, "_render_xml_prompt", return_value="rendered xml prompt"),
+            patch.object(
+                workflow,
+                "_parse_xml_response",
+                return_value={
+                    "xml_parsed": True,
+                    "summary": "Parsed summary",
+                    "findings": ["finding1"],
+                    "checklist": ["check1"],
+                    "_parsed_response": mock_parsed,
+                },
+            ),
         ):
             input_data = {
                 "patterns": [],
@@ -1785,18 +1679,18 @@ class TestResearchSynthesisWorkflow:
         from attune.workflows.base import ModelTier
 
         mock_response = ("result", 300, 200)
-        with patch.object(
-            workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response
-        ), patch.object(
-            workflow, "_is_xml_enabled", return_value=False
-        ), patch.object(
-            workflow,
-            "_parse_xml_response",
-            return_value={
-                "xml_parsed": True,
-                "summary": "S",
-                "_parsed_response": None,  # No parsed response object
-            },
+        with (
+            patch.object(workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response),
+            patch.object(workflow, "_is_xml_enabled", return_value=False),
+            patch.object(
+                workflow,
+                "_parse_xml_response",
+                return_value={
+                    "xml_parsed": True,
+                    "summary": "S",
+                    "_parsed_response": None,  # No parsed response object
+                },
+            ),
         ):
             input_data = {
                 "patterns": [],
@@ -1812,9 +1706,7 @@ class TestResearchSynthesisWorkflow:
             assert result["key_insights"] == []
 
     @pytest.mark.asyncio
-    async def test_run_stage_unknown(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_run_stage_unknown(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test run_stage raises ValueError for unknown stage."""
         from attune.workflows.base import ModelTier
 
@@ -1822,25 +1714,19 @@ class TestResearchSynthesisWorkflow:
             await workflow.run_stage("nonexistent", ModelTier.CHEAP, {})
 
     @pytest.mark.asyncio
-    async def test_execute_validates_sources(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_execute_validates_sources(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test execute raises ValueError if sources are insufficient."""
         with pytest.raises(ValueError, match="at least 2"):
             await workflow.execute(sources=["only_one"], question="Q")
 
     @pytest.mark.asyncio
-    async def test_execute_no_sources(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_execute_no_sources(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test execute raises ValueError if no sources provided."""
         with pytest.raises(ValueError, match="at least 2"):
             await workflow.execute(question="Q")
 
     @pytest.mark.asyncio
-    async def test_call_with_step_no_executor(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_call_with_step_no_executor(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test _call_with_step falls back to _call_llm when no executor."""
         workflow._executor = None
         mock_response = ("response text", 100, 50)
@@ -1857,9 +1743,7 @@ class TestResearchSynthesisWorkflow:
             assert out_tok == 50
 
     @pytest.mark.asyncio
-    async def test_call_with_step_with_executor(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_call_with_step_with_executor(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test _call_with_step uses executor when available."""
         workflow._executor = MagicMock()  # Non-None executor
         mock_return = ("executor response", 200, 80, 0.01)
@@ -1899,9 +1783,7 @@ class TestResearchSynthesisWorkflow:
             assert content == "response"
 
     @pytest.mark.asyncio
-    async def test_summarize_stage(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_summarize_stage(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test the _summarize method directly."""
         from attune.workflows.base import ModelTier
 
@@ -1923,9 +1805,7 @@ class TestResearchSynthesisWorkflow:
                 assert s["key_points"] == []
 
     @pytest.mark.asyncio
-    async def test_analyze_stage(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_analyze_stage(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test the _analyze method directly."""
         from attune.workflows.base import ModelTier
 
@@ -1950,9 +1830,7 @@ class TestResearchSynthesisWorkflow:
             assert workflow._detected_complexity == result["complexity"]
 
     @pytest.mark.asyncio
-    async def test_analyze_stage_high_complexity(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_analyze_stage_high_complexity(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test analyze detects high complexity from long response."""
         from attune.workflows.base import ModelTier
 
@@ -1969,21 +1847,19 @@ class TestResearchSynthesisWorkflow:
             assert result["complexity"] == 1.0
 
     @pytest.mark.asyncio
-    async def test_synthesize_stage_no_xml(
-        self, workflow: ResearchSynthesisWorkflow
-    ) -> None:
+    async def test_synthesize_stage_no_xml(self, workflow: ResearchSynthesisWorkflow) -> None:
         """Test _synthesize without XML enabled."""
         from attune.workflows.base import ModelTier
 
         mock_response = ("Final synthesis answer.", 300, 200)
-        with patch.object(
-            workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response
-        ), patch.object(
-            workflow, "_is_xml_enabled", return_value=False
-        ), patch.object(
-            workflow,
-            "_parse_xml_response",
-            return_value={"_parsed_response": None, "_raw": "raw"},
+        with (
+            patch.object(workflow, "_call_llm", new_callable=AsyncMock, return_value=mock_response),
+            patch.object(workflow, "_is_xml_enabled", return_value=False),
+            patch.object(
+                workflow,
+                "_parse_xml_response",
+                return_value={"_parsed_response": None, "_raw": "raw"},
+            ),
         ):
             result, in_tok, out_tok = await workflow._synthesize(
                 {

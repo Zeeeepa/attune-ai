@@ -112,9 +112,11 @@ class TestPerfAuditConstants:
             assert "patterns" in pattern_info, f"{name} missing patterns"
             assert "description" in pattern_info, f"{name} missing description"
             assert "impact" in pattern_info, f"{name} missing impact"
-            assert pattern_info["impact"] in {"high", "medium", "low"}, (
-                f"{name} has invalid impact: {pattern_info['impact']}"
-            )
+            assert pattern_info["impact"] in {
+                "high",
+                "medium",
+                "low",
+            }, f"{name} has invalid impact: {pattern_info['impact']}"
 
 
 @pytest.mark.unit
@@ -156,9 +158,7 @@ class TestPerfAuditShouldSkipStage:
 
     def test_optimize_downgrade_few_hotspots(self, cost_tracker: Any) -> None:
         """Test optimize stage downgrades to CAPABLE with few hotspots."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, min_hotspots_for_premium=3
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, min_hotspots_for_premium=3)
         wf._hotspot_count = 2
         should_skip, reason = wf.should_skip_stage("optimize", {})
         assert should_skip is False
@@ -171,9 +171,7 @@ class TestPerfAuditShouldSkipStage:
         Note: tier_map is a class-level dict, so prior tests may have mutated it.
         We explicitly set it back to PREMIUM to test the 'enough hotspots' path.
         """
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, min_hotspots_for_premium=3
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, min_hotspots_for_premium=3)
         # Reset to PREMIUM since class-level dict may have been mutated
         wf.tier_map["optimize"] = ModelTier.PREMIUM
         wf._hotspot_count = 5
@@ -200,9 +198,7 @@ class TestPerfAuditRunStage:
     @pytest.mark.asyncio
     async def test_run_stage_dispatches_to_profile(self, cost_tracker: Any) -> None:
         """Test run_stage routes to _profile."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         with patch.object(wf, "_profile", new_callable=AsyncMock) as mock_profile:
             mock_profile.return_value = ({"result": "profile"}, 10, 20)
             result = await wf.run_stage("profile", ModelTier.CHEAP, {"path": "."})
@@ -212,9 +208,7 @@ class TestPerfAuditRunStage:
     @pytest.mark.asyncio
     async def test_run_stage_dispatches_to_analyze(self, cost_tracker: Any) -> None:
         """Test run_stage routes to _analyze."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         with patch.object(wf, "_analyze", new_callable=AsyncMock) as mock:
             mock.return_value = ({"result": "analyze"}, 10, 20)
             result = await wf.run_stage("analyze", ModelTier.CAPABLE, {})
@@ -224,9 +218,7 @@ class TestPerfAuditRunStage:
     @pytest.mark.asyncio
     async def test_run_stage_dispatches_to_hotspots(self, cost_tracker: Any) -> None:
         """Test run_stage routes to _hotspots."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         with patch.object(wf, "_hotspots", new_callable=AsyncMock) as mock:
             mock.return_value = ({"result": "hotspots"}, 10, 20)
             result = await wf.run_stage("hotspots", ModelTier.CAPABLE, {})
@@ -236,9 +228,7 @@ class TestPerfAuditRunStage:
     @pytest.mark.asyncio
     async def test_run_stage_dispatches_to_optimize(self, cost_tracker: Any) -> None:
         """Test run_stage routes to _optimize."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         with patch.object(wf, "_optimize", new_callable=AsyncMock) as mock:
             mock.return_value = ({"result": "optimize"}, 10, 20)
             result = await wf.run_stage("optimize", ModelTier.PREMIUM, {})
@@ -246,13 +236,9 @@ class TestPerfAuditRunStage:
             assert result[0]["result"] == "optimize"
 
     @pytest.mark.asyncio
-    async def test_run_stage_unknown_raises_value_error(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_run_stage_unknown_raises_value_error(self, cost_tracker: Any) -> None:
         """Test run_stage raises ValueError for unknown stage."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         with pytest.raises(ValueError, match="Unknown stage: nonexistent"):
             await wf.run_stage("nonexistent", ModelTier.CHEAP, {})
 
@@ -262,13 +248,9 @@ class TestPerfAuditProfile:
     """Tests for the _profile stage (static analysis)."""
 
     @pytest.mark.asyncio
-    async def test_profile_empty_directory(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_profile_empty_directory(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test profiling an empty directory returns no findings."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, in_tokens, out_tokens = await wf._profile(
             {"path": str(tmp_path), "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -278,9 +260,7 @@ class TestPerfAuditProfile:
         assert result["by_impact"] == {"high": 0, "medium": 0, "low": 0}
 
     @pytest.mark.asyncio
-    async def test_profile_detects_global_import(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_profile_detects_global_import(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test profiling detects wildcard import."""
         # Place file in a subdirectory so rglob finds it
         sub = scan_dir / "src"
@@ -288,43 +268,31 @@ class TestPerfAuditProfile:
         py_file = sub / "mod.py"
         py_file.write_text("from os import *\n")
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._profile(
             {"path": str(scan_dir), "file_types": [".py"]}, ModelTier.CHEAP
         )
-        global_findings = [
-            f for f in result["findings"] if f["type"] == "global_import"
-        ]
+        global_findings = [f for f in result["findings"] if f["type"] == "global_import"]
         assert len(global_findings) >= 1
         assert global_findings[0]["impact"] == "low"
 
     @pytest.mark.asyncio
-    async def test_profile_detects_repeated_regex(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_profile_detects_repeated_regex(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test profiling detects non-compiled regex."""
         sub = scan_dir / "src"
         sub.mkdir()
         py_file = sub / "util.py"
         py_file.write_text('import re\nre.search("pattern", text)\n')
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._profile(
             {"path": str(scan_dir), "file_types": [".py"]}, ModelTier.CHEAP
         )
-        regex_findings = [
-            f for f in result["findings"] if f["type"] == "repeated_regex"
-        ]
+        regex_findings = [f for f in result["findings"] if f["type"] == "repeated_regex"]
         assert len(regex_findings) >= 1
 
     @pytest.mark.asyncio
-    async def test_profile_detects_n_plus_one(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_profile_detects_n_plus_one(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test profiling detects N+1 query pattern."""
         sub = scan_dir / "src"
         sub.mkdir()
@@ -332,31 +300,23 @@ class TestPerfAuditProfile:
         # The n_plus_one pattern regex requires ".get(" on the SAME line as "for x in y:"
         py_file.write_text("for item in items: result = db.get(item.id)\n")
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._profile(
             {"path": str(scan_dir), "file_types": [".py"]}, ModelTier.CHEAP
         )
         assert result["files_scanned"] >= 1
-        n_plus_one_findings = [
-            f for f in result["findings"] if f["type"] == "n_plus_one"
-        ]
+        n_plus_one_findings = [f for f in result["findings"] if f["type"] == "n_plus_one"]
         assert len(n_plus_one_findings) >= 1
 
     @pytest.mark.asyncio
-    async def test_profile_skips_excluded_dirs(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_profile_skips_excluded_dirs(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test profiling skips .git, node_modules, venv, etc."""
         venv_dir = scan_dir / "src" / "venv"
         venv_dir.mkdir(parents=True)
         venv_file = venv_dir / "lib.py"
         venv_file.write_text("from os import *\n")
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._profile(
             {"path": str(scan_dir), "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -365,9 +325,7 @@ class TestPerfAuditProfile:
     @pytest.mark.asyncio
     async def test_profile_nonexistent_path(self, cost_tracker: Any) -> None:
         """Test profiling a non-existent path returns empty results."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._profile(
             {"path": "/nonexistent/path/xyz", "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -384,9 +342,7 @@ class TestPerfAuditProfile:
         py_file = sub / "sample.py"
         py_file.write_text("x = 1\n")
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=True
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=True)
 
         mock_strategy = MagicMock()
         mock_mode = MagicMock()
@@ -429,9 +385,7 @@ class TestPerfAuditProfile:
         py_file = sub / "sample.py"
         py_file.write_text("x = 1\n")
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=True
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=True)
 
         mock_strategy = MagicMock()
         mock_mode = MagicMock()
@@ -470,9 +424,7 @@ class TestPerfAuditProfile:
         py_file = sub / "sample.py"
         py_file.write_text("x = 1\n")
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=True
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=True)
 
         # Make ``from attune.models import count_lines_of_code, …`` raise
         # ImportError by injecting a mock with spec=[] (no attributes).
@@ -498,9 +450,7 @@ class TestPerfAuditProfile:
         assert wf._auth_mode_used is None
 
     @pytest.mark.asyncio
-    async def test_profile_groups_by_impact(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_profile_groups_by_impact(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test profile correctly groups findings by impact level."""
         sub = scan_dir / "src"
         sub.mkdir()
@@ -509,9 +459,7 @@ class TestPerfAuditProfile:
         py_file = sub / "multi.py"
         py_file.write_text(code)
 
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._profile(
             {"path": str(scan_dir), "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -531,9 +479,7 @@ class TestPerfAuditAnalyze:
     @pytest.mark.asyncio
     async def test_analyze_empty_findings(self, cost_tracker: Any) -> None:
         """Test analyze with no findings produces empty analysis."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._analyze({"findings": []}, ModelTier.CAPABLE)
         assert result["analysis"] == []
         assert result["analyzed_files"] == 0
@@ -546,12 +492,8 @@ class TestPerfAuditAnalyze:
             {"file": "a.py", "type": "sync_in_async", "impact": "high"},
             {"file": "b.py", "type": "global_import", "impact": "low"},
         ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
-        result, _, _ = await wf._analyze(
-            {"findings": findings}, ModelTier.CAPABLE
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
+        result, _, _ = await wf._analyze({"findings": findings}, ModelTier.CAPABLE)
         analysis = result["analysis"]
         assert len(analysis) == 2
         assert result["analyzed_files"] == 2
@@ -572,12 +514,8 @@ class TestPerfAuditAnalyze:
             {"file": "low.py", "type": "global_import", "impact": "low"},
             {"file": "high.py", "type": "n_plus_one", "impact": "high"},
         ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
-        result, _, _ = await wf._analyze(
-            {"findings": findings}, ModelTier.CAPABLE
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
+        result, _, _ = await wf._analyze({"findings": findings}, ModelTier.CAPABLE)
         analysis = result["analysis"]
         assert analysis[0]["file"] == "high.py"
         assert analysis[1]["file"] == "low.py"
@@ -585,16 +523,9 @@ class TestPerfAuditAnalyze:
     @pytest.mark.asyncio
     async def test_analyze_concerns_limited_to_5(self, cost_tracker: Any) -> None:
         """Test analyze limits concerns per file to 5."""
-        findings = [
-            {"file": "a.py", "type": f"type_{i}", "impact": "medium"}
-            for i in range(8)
-        ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
-        result, _, _ = await wf._analyze(
-            {"findings": findings}, ModelTier.CAPABLE
-        )
+        findings = [{"file": "a.py", "type": f"type_{i}", "impact": "medium"} for i in range(8)]
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
+        result, _, _ = await wf._analyze({"findings": findings}, ModelTier.CAPABLE)
         for a in result["analysis"]:
             assert len(a["concerns"]) <= 5
 
@@ -606,9 +537,7 @@ class TestPerfAuditHotspots:
     @pytest.mark.asyncio
     async def test_hotspots_empty_analysis(self, cost_tracker: Any) -> None:
         """Test hotspots with empty analysis."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._hotspots({"analysis": []}, ModelTier.CAPABLE)
         hr = result["hotspot_result"]
         assert hr["hotspot_count"] == 0
@@ -618,13 +547,26 @@ class TestPerfAuditHotspots:
     async def test_hotspots_identifies_critical(self, cost_tracker: Any) -> None:
         """Test hotspots identifies critical (score >= 20) files."""
         analysis = [
-            {"file": "critical.py", "complexity_score": 25, "high_impact": 3, "concerns": ["n_plus_one"]},
-            {"file": "moderate.py", "complexity_score": 15, "high_impact": 2, "concerns": ["regex"]},
-            {"file": "ok.py", "complexity_score": 5, "high_impact": 0, "concerns": ["global_import"]},
+            {
+                "file": "critical.py",
+                "complexity_score": 25,
+                "high_impact": 3,
+                "concerns": ["n_plus_one"],
+            },
+            {
+                "file": "moderate.py",
+                "complexity_score": 15,
+                "high_impact": 2,
+                "concerns": ["regex"],
+            },
+            {
+                "file": "ok.py",
+                "complexity_score": 5,
+                "high_impact": 0,
+                "concerns": ["global_import"],
+            },
         ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._hotspots({"analysis": analysis}, ModelTier.CAPABLE)
         hr = result["hotspot_result"]
         assert hr["hotspot_count"] == 2
@@ -638,9 +580,7 @@ class TestPerfAuditHotspots:
             {"file": f"file_{i}.py", "complexity_score": 20, "high_impact": 2, "concerns": []}
             for i in range(5)
         ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._hotspots({"analysis": analysis}, ModelTier.CAPABLE)
         hr = result["hotspot_result"]
         assert hr["perf_score"] < 50
@@ -652,9 +592,7 @@ class TestPerfAuditHotspots:
         analysis = [
             {"file": "ok.py", "complexity_score": 2, "high_impact": 0, "concerns": []},
         ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._hotspots({"analysis": analysis}, ModelTier.CAPABLE)
         hr = result["hotspot_result"]
         assert hr["perf_score"] >= 75
@@ -667,9 +605,7 @@ class TestPerfAuditHotspots:
             {"file": f"file_{i}.py", "complexity_score": 10, "high_impact": 1, "concerns": []}
             for i in range(3)
         ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         result, _, _ = await wf._hotspots({"analysis": analysis}, ModelTier.CAPABLE)
         hr = result["hotspot_result"]
         # total_score = 30, max_score = 90 => 33% => perf_score = 67
@@ -682,9 +618,7 @@ class TestPerfAuditHotspots:
         analysis = [
             {"file": "a.py", "complexity_score": 15, "high_impact": 2, "concerns": []},
         ]
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         await wf._hotspots({"analysis": analysis}, ModelTier.CAPABLE)
         assert wf._hotspot_count == 1
 
@@ -696,9 +630,7 @@ class TestPerfAuditOptimize:
     @pytest.mark.asyncio
     async def test_optimize_legacy_path(self, cost_tracker: Any) -> None:
         """Test optimize uses legacy _call_llm path."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         wf._executor = None
         wf._api_key = None
 
@@ -711,7 +643,13 @@ class TestPerfAuditOptimize:
                 "perf_level": "warning",
             },
             "findings": [
-                {"type": "n_plus_one", "file": "a.py", "line": 10, "description": "N+1", "impact": "high"},
+                {
+                    "type": "n_plus_one",
+                    "file": "a.py",
+                    "line": 10,
+                    "description": "N+1",
+                    "impact": "high",
+                },
             ],
             "target": "test-project",
             "files_scanned": 5,
@@ -729,9 +667,7 @@ class TestPerfAuditOptimize:
             patch.object(wf, "_parse_xml_response", return_value={}),
             patch.object(wf, "_is_xml_enabled", return_value=False),
         ):
-            result, in_tokens, out_tokens = await wf._optimize(
-                input_data, ModelTier.PREMIUM
-            )
+            result, in_tokens, out_tokens = await wf._optimize(input_data, ModelTier.PREMIUM)
 
         assert result["optimization_plan"] == "Optimize batch queries"
         assert result["perf_score"] == 70
@@ -745,9 +681,7 @@ class TestPerfAuditOptimize:
     @pytest.mark.asyncio
     async def test_optimize_with_xml_enabled(self, cost_tracker: Any) -> None:
         """Test optimize uses XML-enhanced prompts."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         wf._executor = None
         wf._api_key = None
 
@@ -786,9 +720,7 @@ class TestPerfAuditOptimize:
     @pytest.mark.asyncio
     async def test_optimize_executor_path(self, cost_tracker: Any) -> None:
         """Test optimize uses executor when available."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         wf._executor = MagicMock()
         wf._api_key = "test-key"
 
@@ -808,22 +740,16 @@ class TestPerfAuditOptimize:
             patch.object(wf, "_parse_xml_response", return_value={}),
             patch.object(wf, "_is_xml_enabled", return_value=False),
         ):
-            result, in_tokens, out_tokens = await wf._optimize(
-                input_data, ModelTier.PREMIUM
-            )
+            result, in_tokens, out_tokens = await wf._optimize(input_data, ModelTier.PREMIUM)
 
         assert result["optimization_plan"] == "Executor response"
         assert in_tokens == 30
         assert out_tokens == 60
 
     @pytest.mark.asyncio
-    async def test_optimize_executor_fallback_to_legacy(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_optimize_executor_fallback_to_legacy(self, cost_tracker: Any) -> None:
         """Test optimize falls back to _call_llm when executor fails."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         wf._executor = MagicMock()
         wf._api_key = "test-key"
 
@@ -849,9 +775,7 @@ class TestPerfAuditOptimize:
             patch.object(wf, "_parse_xml_response", return_value={}),
             patch.object(wf, "_is_xml_enabled", return_value=False),
         ):
-            result, in_tokens, out_tokens = await wf._optimize(
-                input_data, ModelTier.PREMIUM
-            )
+            result, in_tokens, out_tokens = await wf._optimize(input_data, ModelTier.PREMIUM)
 
         assert result["optimization_plan"] == "Fallback response"
         assert in_tokens == 40
@@ -863,9 +787,7 @@ class TestPerfAuditGetOptimizationAction:
 
     def test_known_concerns(self, cost_tracker: Any) -> None:
         """Test known concern types return action dicts."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         known = [
             "n_plus_one",
             "sync_in_async",
@@ -884,9 +806,7 @@ class TestPerfAuditGetOptimizationAction:
 
     def test_unknown_concern_returns_none(self, cost_tracker: Any) -> None:
         """Test unknown concern type returns None."""
-        wf = PerformanceAuditWorkflow(
-            cost_tracker=cost_tracker, enable_auth_strategy=False
-        )
+        wf = PerformanceAuditWorkflow(cost_tracker=cost_tracker, enable_auth_strategy=False)
         assert wf._get_optimization_action("unknown_pattern") is None
 
 
@@ -1112,9 +1032,7 @@ class TestRefactorPlanWorkflowInit:
 
     def test_default_initialization(self, cost_tracker: Any) -> None:
         """Test default workflow initialization."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         assert wf.name == "refactor-plan"
         assert wf.min_debt_for_premium == 50
         assert wf._total_debt == 0
@@ -1136,9 +1054,7 @@ class TestRefactorPlanWorkflowInit:
 
     def test_stages_and_tier_map(self, cost_tracker: Any) -> None:
         """Verify stages and tier mappings."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         assert wf.stages == ["scan", "analyze", "prioritize", "plan"]
         assert wf.tier_map["scan"] == ModelTier.CHEAP
         assert wf.tier_map["analyze"] == ModelTier.CAPABLE
@@ -1166,9 +1082,7 @@ class TestRefactorPlanWorkflowInit:
         )
         assert len(wf._debt_history) == 2
 
-    def test_load_debt_history_missing_file(
-        self, tmp_path: Path, cost_tracker: Any
-    ) -> None:
+    def test_load_debt_history_missing_file(self, tmp_path: Path, cost_tracker: Any) -> None:
         """Test missing debt history file is handled gracefully."""
         wf = RefactorPlanWorkflow(
             cost_tracker=cost_tracker,
@@ -1176,9 +1090,7 @@ class TestRefactorPlanWorkflowInit:
         )
         assert wf._debt_history == []
 
-    def test_load_debt_history_invalid_json(
-        self, tmp_path: Path, cost_tracker: Any
-    ) -> None:
+    def test_load_debt_history_invalid_json(self, tmp_path: Path, cost_tracker: Any) -> None:
         """Test invalid JSON in debt history is handled gracefully."""
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
@@ -1225,9 +1137,7 @@ class TestRefactorPlanShouldSkipStage:
 
     def test_non_plan_stage_not_skipped(self, cost_tracker: Any) -> None:
         """Test non-plan stages are never skipped."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         for stage in ["scan", "analyze", "prioritize"]:
             should_skip, reason = wf.should_skip_stage(stage, {})
             assert should_skip is False
@@ -1240,20 +1150,14 @@ class TestRefactorPlanRunStage:
     @pytest.mark.asyncio
     async def test_run_stage_unknown_raises(self, cost_tracker: Any) -> None:
         """Test run_stage raises ValueError for unknown stage."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         with pytest.raises(ValueError, match="Unknown stage: bogus"):
             await wf.run_stage("bogus", ModelTier.CHEAP, {})
 
     @pytest.mark.asyncio
-    async def test_run_stage_dispatches_to_all_stages(
-        self, cost_tracker: Any
-    ) -> None:
+    async def test_run_stage_dispatches_to_all_stages(self, cost_tracker: Any) -> None:
         """Test run_stage dispatches to all four stages."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         for stage_name, method_name in [
             ("scan", "_scan"),
             ("analyze", "_analyze"),
@@ -1271,13 +1175,9 @@ class TestRefactorPlanScan:
     """Tests for the _scan stage."""
 
     @pytest.mark.asyncio
-    async def test_scan_empty_directory(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_scan_empty_directory(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test scanning empty directory."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         result, _, _ = await wf._scan(
             {"path": str(tmp_path), "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -1286,9 +1186,7 @@ class TestRefactorPlanScan:
         assert result["files_scanned"] == 0
 
     @pytest.mark.asyncio
-    async def test_scan_detects_todo_fixme_hack(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_scan_detects_todo_fixme_hack(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test scanning detects TODO, FIXME, HACK markers."""
         sub = tmp_path / "src"
         sub.mkdir()
@@ -1301,9 +1199,7 @@ x = 1
         py_file = sub / "code.py"
         py_file.write_text(code)
 
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         result, _, _ = await wf._scan(
             {"path": str(tmp_path), "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -1327,9 +1223,7 @@ x = 1
         file_b = sub / "b.py"
         file_b.write_text("# FIXME: item3\n")
 
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         result, _, _ = await wf._scan(
             {"path": str(tmp_path), "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -1341,18 +1235,14 @@ x = 1
         assert by_marker.get("FIXME", 0) == 1
 
     @pytest.mark.asyncio
-    async def test_scan_skips_excluded_dirs(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_scan_skips_excluded_dirs(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test scan skips venv, node_modules, etc."""
         venv_dir = tmp_path / "src" / "venv"
         venv_dir.mkdir(parents=True)
         venv_file = venv_dir / "lib.py"
         venv_file.write_text("# TODO: should be skipped\n")
 
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         result, _, _ = await wf._scan(
             {"path": str(tmp_path), "file_types": [".py"]}, ModelTier.CHEAP
         )
@@ -1361,30 +1251,22 @@ x = 1
     @pytest.mark.asyncio
     async def test_scan_nonexistent_path(self, cost_tracker: Any) -> None:
         """Test scanning nonexistent path returns empty results."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         result, _, _ = await wf._scan(
             {"path": "/nonexistent/xyz", "file_types": [".py"]}, ModelTier.CHEAP
         )
         assert result["total_debt"] == 0
 
     @pytest.mark.asyncio
-    async def test_scan_updates_total_debt(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_scan_updates_total_debt(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test scan updates self._total_debt."""
         sub = tmp_path / "src"
         sub.mkdir()
         py_file = sub / "a.py"
         py_file.write_text("# TODO: item\n# FIXME: item2\n")
 
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
-        await wf._scan(
-            {"path": str(tmp_path), "file_types": [".py"]}, ModelTier.CHEAP
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
+        await wf._scan({"path": str(tmp_path), "file_types": [".py"]}, ModelTier.CHEAP)
         assert wf._total_debt == 2
 
 
@@ -1395,9 +1277,7 @@ class TestRefactorPlanAnalyze:
     @pytest.mark.asyncio
     async def test_analyze_trajectory_stable(self, cost_tracker: Any) -> None:
         """Test trajectory is stable with no history."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         result, _, _ = await wf._analyze(
             {"total_debt": 10, "by_file": {"a.py": 5}}, ModelTier.CAPABLE
         )
@@ -1406,19 +1286,13 @@ class TestRefactorPlanAnalyze:
         assert analysis["velocity"] == 0.0
 
     @pytest.mark.asyncio
-    async def test_analyze_trajectory_increasing(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_analyze_trajectory_increasing(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test trajectory is increasing with growing debt history."""
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
         debt_file = patterns_dir / "tech_debt.json"
-        debt_file.write_text(
-            json.dumps({"snapshots": [{"total_items": 10}, {"total_items": 30}]})
-        )
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir=str(patterns_dir)
-        )
+        debt_file.write_text(json.dumps({"snapshots": [{"total_items": 10}, {"total_items": 30}]}))
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir=str(patterns_dir))
         result, _, _ = await wf._analyze(
             {"total_debt": 30, "by_file": {"a.py": 10}}, ModelTier.CAPABLE
         )
@@ -1426,30 +1300,20 @@ class TestRefactorPlanAnalyze:
         assert result["analysis"]["velocity"] > 0
 
     @pytest.mark.asyncio
-    async def test_analyze_trajectory_decreasing(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_analyze_trajectory_decreasing(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test trajectory is decreasing with shrinking debt history."""
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
         debt_file = patterns_dir / "tech_debt.json"
-        debt_file.write_text(
-            json.dumps({"snapshots": [{"total_items": 50}, {"total_items": 20}]})
-        )
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir=str(patterns_dir)
-        )
-        result, _, _ = await wf._analyze(
-            {"total_debt": 20, "by_file": {}}, ModelTier.CAPABLE
-        )
+        debt_file.write_text(json.dumps({"snapshots": [{"total_items": 50}, {"total_items": 20}]}))
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir=str(patterns_dir))
+        result, _, _ = await wf._analyze({"total_debt": 20, "by_file": {}}, ModelTier.CAPABLE)
         assert result["analysis"]["trajectory"] == "decreasing"
 
     @pytest.mark.asyncio
     async def test_analyze_hotspots(self, cost_tracker: Any) -> None:
         """Test analyze identifies hotspot files."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         result, _, _ = await wf._analyze(
             {"total_debt": 20, "by_file": {"a.py": 10, "b.py": 5, "c.py": 3}},
             ModelTier.CAPABLE,
@@ -1518,7 +1382,12 @@ class TestRefactorPlanPrioritize:
         )
         debt_items = [
             {"file": "a.py", "marker": "HACK", "severity": "high", "weight": 5},  # 5*3=15 (high)
-            {"file": "b.py", "marker": "FIXME", "severity": "medium", "weight": 3},  # 3*2=6 (medium)
+            {
+                "file": "b.py",
+                "marker": "FIXME",
+                "severity": "medium",
+                "weight": 3,
+            },  # 3*2=6 (medium)
             {"file": "c.py", "marker": "TODO", "severity": "low", "weight": 1},  # 1*1=1 (low)
         ]
         result, _, _ = await wf._prioritize(
@@ -1576,9 +1445,7 @@ class TestRefactorPlanPlan:
     @pytest.mark.asyncio
     async def test_plan_legacy_path(self, cost_tracker: Any) -> None:
         """Test plan uses legacy _call_llm path."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         wf._executor = None
         wf._api_key = None
 
@@ -1602,9 +1469,7 @@ class TestRefactorPlanPlan:
             patch.object(wf, "_parse_xml_response", return_value={}),
             patch.object(wf, "_is_xml_enabled", return_value=False),
         ):
-            result, in_tokens, out_tokens = await wf._plan(
-                input_data, ModelTier.PREMIUM
-            )
+            result, in_tokens, out_tokens = await wf._plan(input_data, ModelTier.PREMIUM)
 
         assert result["refactoring_plan"] == "Phase 1: Fix hacks..."
         assert result["summary"]["total_debt"] == 5
@@ -1615,9 +1480,7 @@ class TestRefactorPlanPlan:
     @pytest.mark.asyncio
     async def test_plan_with_xml_enabled(self, cost_tracker: Any) -> None:
         """Test plan uses XML-enhanced prompts."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         wf._executor = None
         wf._api_key = None
 
@@ -1656,9 +1519,7 @@ class TestRefactorPlanPlan:
     @pytest.mark.asyncio
     async def test_plan_executor_fallback(self, cost_tracker: Any) -> None:
         """Test plan falls back to _call_llm when executor fails."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         wf._executor = MagicMock()
         wf._api_key = "test-key"
 
@@ -1828,9 +1689,7 @@ class TestRefactorPlanInitializeCrew:
     @pytest.mark.asyncio
     async def test_crew_already_initialized(self, cost_tracker: Any) -> None:
         """Test crew initialization skips if already initialized."""
-        wf = RefactorPlanWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = RefactorPlanWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         existing_crew = MagicMock()
         wf._crew = existing_crew
 
@@ -1850,9 +1709,7 @@ class TestTestGenWorkflowInit:
 
     def test_default_initialization(self, cost_tracker: Any) -> None:
         """Test default workflow initialization."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         assert wf.name == "test-gen"
         assert wf.min_tests_for_review == 10
         assert wf.write_tests is False
@@ -1878,18 +1735,14 @@ class TestTestGenWorkflowInit:
 
     def test_stages_and_tier_map(self, cost_tracker: Any) -> None:
         """Verify stages and tier mappings."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         assert wf.stages == ["identify", "analyze", "generate", "review"]
         assert wf.tier_map["identify"] == ModelTier.CHEAP
         assert wf.tier_map["analyze"] == ModelTier.CAPABLE
         assert wf.tier_map["generate"] == ModelTier.CAPABLE
         assert wf.tier_map["review"] == ModelTier.PREMIUM
 
-    def test_load_bug_hotspots_from_file(
-        self, tmp_path: Path, cost_tracker: Any
-    ) -> None:
+    def test_load_bug_hotspots_from_file(self, tmp_path: Path, cost_tracker: Any) -> None:
         """Test loading bug hotspots from debugging.json."""
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
@@ -1911,18 +1764,12 @@ class TestTestGenWorkflowInit:
         assert "src/auth.py" in wf._bug_hotspots
         assert "src/db.py" in wf._bug_hotspots
 
-    def test_load_bug_hotspots_missing_file(
-        self, tmp_path: Path, cost_tracker: Any
-    ) -> None:
+    def test_load_bug_hotspots_missing_file(self, tmp_path: Path, cost_tracker: Any) -> None:
         """Test missing debugging.json is handled gracefully."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir=str(tmp_path)
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir=str(tmp_path))
         assert wf._bug_hotspots == []
 
-    def test_load_bug_hotspots_invalid_json(
-        self, tmp_path: Path, cost_tracker: Any
-    ) -> None:
+    def test_load_bug_hotspots_invalid_json(self, tmp_path: Path, cost_tracker: Any) -> None:
         """Test invalid JSON in debugging.json is handled gracefully."""
         patterns_dir = tmp_path / "patterns"
         patterns_dir.mkdir()
@@ -1968,9 +1815,7 @@ class TestTestGenShouldSkipStage:
 
     def test_non_review_stage_not_skipped(self, cost_tracker: Any) -> None:
         """Test non-review stages are never skipped."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         for stage in ["identify", "analyze", "generate"]:
             should_skip, reason = wf.should_skip_stage(stage, {})
             assert should_skip is False
@@ -1983,9 +1828,7 @@ class TestTestGenRunStage:
     @pytest.mark.asyncio
     async def test_run_stage_unknown_raises(self, cost_tracker: Any) -> None:
         """Test run_stage raises ValueError for unknown stage."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         with pytest.raises(ValueError, match="Unknown stage: bogus"):
             await wf.run_stage("bogus", ModelTier.CHEAP, {})
 
@@ -2054,9 +1897,7 @@ class TestTestGenIdentify:
     """
 
     @pytest.mark.asyncio
-    async def test_identify_empty_directory(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_identify_empty_directory(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test identifying files in empty directory."""
         wf = TestGenerationWorkflow(
             cost_tracker=cost_tracker,
@@ -2072,9 +1913,7 @@ class TestTestGenIdentify:
         assert result["candidates"] == []
 
     @pytest.mark.asyncio
-    async def test_identify_finds_untested_files(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_identify_finds_untested_files(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test identify finds files without tests."""
         sub = scan_dir / "src"
         sub.mkdir()
@@ -2097,9 +1936,7 @@ class TestTestGenIdentify:
         assert candidate["has_tests"] is False
 
     @pytest.mark.asyncio
-    async def test_identify_skips_test_files(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_identify_skips_test_files(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test identify skips existing test files."""
         sub = scan_dir / "src"
         sub.mkdir()
@@ -2123,9 +1960,7 @@ class TestTestGenIdentify:
             assert "test_" not in Path(f).name
 
     @pytest.mark.asyncio
-    async def test_identify_bug_hotspot_priority(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_identify_bug_hotspot_priority(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test identify gives higher priority to bug hotspots."""
         sub = scan_dir / "src"
         sub.mkdir()
@@ -2195,9 +2030,7 @@ class TestTestGenIdentify:
         assert scan_summary["early_exit_reason"] is not None
 
     @pytest.mark.asyncio
-    async def test_identify_skips_large_files(
-        self, cost_tracker: Any, scan_dir: Path
-    ) -> None:
+    async def test_identify_skips_large_files(self, cost_tracker: Any, scan_dir: Path) -> None:
         """Test identify skips files larger than max_file_size_kb."""
         sub = scan_dir / "src"
         sub.mkdir()
@@ -2233,9 +2066,7 @@ class TestTestGenIdentify:
         assert result["total_candidates"] == 0
 
     @pytest.mark.asyncio
-    async def test_identify_config_passthrough(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_identify_config_passthrough(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test identify passes config through to subsequent stages."""
         wf = TestGenerationWorkflow(
             cost_tracker=cost_tracker,
@@ -2260,25 +2091,19 @@ class TestTestGenIdentify:
 class TestTestGenFindTestFile:
     """Tests for _find_test_file helper."""
 
-    def test_find_existing_test_file(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    def test_find_existing_test_file(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test finding an existing test file."""
         src_file = tmp_path / "module.py"
         src_file.write_text("x = 1\n")
         test_file = tmp_path / "test_module.py"
         test_file.write_text("def test_x(): pass\n")
 
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         found = wf._find_test_file(src_file)
         assert found is not None
         assert found.exists()
 
-    def test_find_test_file_in_tests_subdir(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    def test_find_test_file_in_tests_subdir(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test finding test file in tests/ subdirectory."""
         src_file = tmp_path / "module.py"
         src_file.write_text("x = 1\n")
@@ -2287,9 +2112,7 @@ class TestTestGenFindTestFile:
         test_file = tests_dir / "test_module.py"
         test_file.write_text("def test_x(): pass\n")
 
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         found = wf._find_test_file(src_file)
         assert found is not None
         assert found.exists()
@@ -2301,9 +2124,7 @@ class TestTestGenFindTestFile:
         src_file = tmp_path / "module.py"
         src_file.write_text("x = 1\n")
 
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         found = wf._find_test_file(src_file)
         assert found is not None
         assert found.name == "test_module.py"
@@ -2321,17 +2142,13 @@ class TestTestGenAnalyze:
             patterns_dir="/nonexistent",
             enable_auth_strategy=False,
         )
-        result, _, _ = await wf._analyze(
-            {"candidates": [], "config": {}}, ModelTier.CAPABLE
-        )
+        result, _, _ = await wf._analyze({"candidates": [], "config": {}}, ModelTier.CAPABLE)
         assert result["analysis"] == []
         assert result["total_functions"] == 0
         assert result["total_classes"] == 0
 
     @pytest.mark.asyncio
-    async def test_analyze_extracts_functions(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_analyze_extracts_functions(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test analyze extracts functions from Python files."""
         code = '''
 def add(a: int, b: int) -> int:
@@ -2358,9 +2175,7 @@ def multiply(x: float, y: float) -> float:
         assert result["total_functions"] >= 2
 
     @pytest.mark.asyncio
-    async def test_analyze_extracts_classes(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_analyze_extracts_classes(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test analyze extracts classes from Python files."""
         code = '''
 class Calculator:
@@ -2388,9 +2203,7 @@ class Calculator:
         assert result["total_classes"] >= 1
 
     @pytest.mark.asyncio
-    async def test_analyze_handles_syntax_errors(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_analyze_handles_syntax_errors(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test analyze handles files with syntax errors."""
         src_file = tmp_path / "broken.py"
         src_file.write_text("def broken(:\n    pass\n")
@@ -2435,10 +2248,7 @@ class Calculator:
             patterns_dir="/nonexistent",
             enable_auth_strategy=False,
         )
-        candidates = [
-            {"file": str(tmp_path / f"mod_{i}.py"), "priority": 50}
-            for i in range(5)
-        ]
+        candidates = [{"file": str(tmp_path / f"mod_{i}.py"), "priority": 50} for i in range(5)]
         result, _, _ = await wf._analyze(
             {"candidates": candidates, "config": {"max_files_to_analyze": 2}},
             ModelTier.CAPABLE,
@@ -2452,9 +2262,7 @@ class TestTestGenGenerateSuggestions:
 
     def test_suggestions_for_functions(self, cost_tracker: Any) -> None:
         """Test suggestion generation for functions."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         functions = [
             {"name": "add", "params": [("a", "int", None)], "is_async": False},
             {"name": "fetch", "params": [("url", "str", None)], "is_async": True},
@@ -2465,18 +2273,14 @@ class TestTestGenGenerateSuggestions:
 
     def test_suggestions_for_classes(self, cost_tracker: Any) -> None:
         """Test suggestion generation for classes."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         classes = [{"name": "Calculator", "methods": []}]
         suggestions = wf._generate_suggestions([], classes)
         assert any("Calculator" in s for s in suggestions)
 
     def test_suggestions_empty_input(self, cost_tracker: Any) -> None:
         """Test suggestion generation with empty input."""
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         suggestions = wf._generate_suggestions([], [])
         assert suggestions == []
 
@@ -2493,9 +2297,7 @@ class TestTestGenGenerate:
             patterns_dir="/nonexistent",
             enable_auth_strategy=False,
         )
-        result, _, _ = await wf._generate(
-            {"analysis": [], "config": {}}, ModelTier.CAPABLE
-        )
+        result, _, _ = await wf._generate({"analysis": [], "config": {}}, ModelTier.CAPABLE)
         assert result["generated_tests"] == []
         assert result["total_tests_generated"] == 0
         assert result["written_files"] == []
@@ -2528,9 +2330,7 @@ class TestTestGenGenerate:
                 "classes": [],
             },
         ]
-        result, _, _ = await wf._generate(
-            {"analysis": analysis, "config": {}}, ModelTier.CAPABLE
-        )
+        result, _, _ = await wf._generate({"analysis": analysis, "config": {}}, ModelTier.CAPABLE)
         assert len(result["generated_tests"]) == 1
         assert result["total_tests_generated"] >= 1
         assert result["generated_tests"][0]["test_file"] == "test_math_utils.py"
@@ -2553,7 +2353,12 @@ class TestTestGenGenerate:
                         "name": "Calculator",
                         "init_params": [],
                         "methods": [
-                            {"name": "add", "params": [("x", "int", None)], "is_async": False, "raises": []},
+                            {
+                                "name": "add",
+                                "params": [("x", "int", None)],
+                                "is_async": False,
+                                "raises": [],
+                            },
                         ],
                         "base_classes": [],
                         "docstring": "Calculator class.",
@@ -2563,18 +2368,14 @@ class TestTestGenGenerate:
                 ],
             },
         ]
-        result, _, _ = await wf._generate(
-            {"analysis": analysis, "config": {}}, ModelTier.CAPABLE
-        )
+        result, _, _ = await wf._generate({"analysis": analysis, "config": {}}, ModelTier.CAPABLE)
         assert result["total_tests_generated"] >= 1
         tests = result["generated_tests"][0]["tests"]
         class_tests = [t for t in tests if t["type"] == "class"]
         assert len(class_tests) >= 1
 
     @pytest.mark.asyncio
-    async def test_generate_writes_test_files(
-        self, cost_tracker: Any, tmp_path: Path
-    ) -> None:
+    async def test_generate_writes_test_files(self, cost_tracker: Any, tmp_path: Path) -> None:
         """Test generate writes tests to disk when write_tests=True."""
         wf = TestGenerationWorkflow(
             cost_tracker=cost_tracker,
@@ -2603,9 +2404,7 @@ class TestTestGenGenerate:
                 "classes": [],
             },
         ]
-        result, _, _ = await wf._generate(
-            {"analysis": analysis, "config": {}}, ModelTier.CAPABLE
-        )
+        result, _, _ = await wf._generate({"analysis": analysis, "config": {}}, ModelTier.CAPABLE)
         assert result["tests_written"] is True
         assert len(result["written_files"]) >= 1
         written_path = Path(result["written_files"][0])
@@ -2668,9 +2467,7 @@ def public_func(x: int) -> int:
 def __dunder_func__():
     pass
 '''
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         functions, error = wf._extract_functions(code)
         names = [f["name"] for f in functions]
         assert "public_func" in names
@@ -2680,9 +2477,7 @@ def __dunder_func__():
     def test_extract_functions_syntax_error(self, cost_tracker: Any) -> None:
         """Test extracting functions from invalid code returns empty list."""
         code = "def broken(:\n    pass\n"
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         functions, error = wf._extract_functions(code, "broken.py")
         assert functions == []
         assert error is not None
@@ -2691,9 +2486,7 @@ def __dunder_func__():
     def test_extract_functions_respects_max(self, cost_tracker: Any) -> None:
         """Test function extraction respects max limit."""
         code = "\n".join([f"def func_{i}(): pass" for i in range(50)])
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         functions, _ = wf._extract_functions(code, max_functions=5)
         assert len(functions) <= 5
 
@@ -2714,9 +2507,7 @@ class MyClass:
     def get_x(self) -> int:
         return self.x
 '''
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         classes, error = wf._extract_classes(code)
         assert len(classes) == 1
         assert classes[0]["name"] == "MyClass"
@@ -2725,9 +2516,7 @@ class MyClass:
     def test_extract_classes_syntax_error(self, cost_tracker: Any) -> None:
         """Test extracting classes from invalid code returns empty list."""
         code = "class Broken(:\n    pass\n"
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         classes, error = wf._extract_classes(code, "broken.py")
         assert classes == []
         assert error is not None
@@ -2735,24 +2524,20 @@ class MyClass:
     def test_extract_classes_respects_max(self, cost_tracker: Any) -> None:
         """Test class extraction respects max limit."""
         code = "\n".join([f"class Cls{i}:\n    pass\n" for i in range(20)])
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         classes, _ = wf._extract_classes(code, max_classes=3)
         assert len(classes) <= 3
 
     def test_extract_skips_enums(self, cost_tracker: Any) -> None:
         """Test that enum classes are skipped."""
-        code = '''
+        code = """
 from enum import Enum
 
 class Color(Enum):
     RED = 1
     GREEN = 2
     BLUE = 3
-'''
-        wf = TestGenerationWorkflow(
-            cost_tracker=cost_tracker, patterns_dir="/nonexistent"
-        )
+"""
+        wf = TestGenerationWorkflow(cost_tracker=cost_tracker, patterns_dir="/nonexistent")
         classes, _ = wf._extract_classes(code)
         assert len(classes) == 0
