@@ -1,8 +1,8 @@
-# Empathy Framework - PyPI/GitHub Documentation
+# Attune AI - PyPI/GitHub Documentation
 # Minimal documentation for package distribution
 # Build: mkdocs build -f mkdocs-pypi.yml
 
-site_name: Empathy Framework
+site_name: Attune AI
 site_description: Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration
 site_author: Patrick Roebuck
 site_url: https://attune-ai.readthedocs.io

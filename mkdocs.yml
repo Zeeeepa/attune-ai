@@ -1,19 +1,170 @@
-# Empathy Framework Documentation
+# Attune AI Documentation
 # MkDocs configuration file
 
 # Site Information
-site_name: Empathy Framework
+site_name: Attune AI
 site_description: Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration. Build AI systems that predict problems before they happen.
 site_author: Patrick Roebuck
 site_url: https://smartaimemory.com/framework-docs/
 
 # Repository
-repo_name: Smart-AI-Memory/empathy
-repo_url: https://github.com/Smart-AI-Memory/empathy
+repo_name: Smart-AI-Memory/attune-ai
+repo_url: https://github.com/Smart-AI-Memory/attune-ai
 edit_uri: edit/main/docs/
 
 # Copyright
 copyright: Copyright &copy; 2025 Smart-AI-Memory
+
+# Strict mode for links, but allow griffe type annotation warnings
+strict: false
+validation:
+  nav:
+    omitted_files: info
+    not_found: warn
+    absolute_links: info
+  links:
+    not_found: warn
+    anchors: info
+    absolute_links: info
+    unrecognized_links: info
+
+# Exclude orphaned docs that aren't in the navigation
+# These are internal dev docs, session logs, and archived content
+exclude_docs: |
+  # --- Pure orphaned directories ---
+  internal/
+  archive/
+  generated/
+  architecture/
+  development-logs/
+  development/
+  specs/
+  implementation/
+  pitch/
+  philosophy/
+  caching/
+  refactoring/
+  design/
+  cost-analysis/
+  conversations/
+  adr/
+  plans/
+  marketing/
+  features/
+  blog-posts/
+  quickstart/
+  api-reference/
+  examples/
+
+  # --- Orphaned files in mixed directories ---
+  # blog/ (keep only interactive-agent-creation-tutorial.md)
+  blog/social/
+  blog/reddit/
+  blog/0*.md
+  blog/PUBLISHING_PLAN.md
+  blog/README.md
+  blog/announcing-attune-ai.md
+  blog/perf-audit-case-study.md
+
+  # guides/ (keep how-to-read-this-book.md, preface.md, foreword.md)
+  guides/DISTRIBUTION_POLICY.md
+  guides/MCP_PUBLISH_INSTRUCTIONS.md
+  guides/MKDOCS_TUTORIAL.md
+  guides/PUBLISHING.md
+  guides/RELEASE_PREPARATION.md
+  guides/WORKFLOW_PATTERNS.md
+  guides/claude-memory-integration.md
+  guides/five-levels-of-empathy.md
+  guides/multi-model-workflows.md
+  guides/pattern-catalog.md
+  guides/signoz-integration.md
+  guides/teaching-ai-your-standards.md
+  guides/trust-circuit-breaker.md
+  guides/xml-enhanced-prompts.md
+
+  # tutorials/ (keep index.md, quickstart.md, examples/)
+  tutorials/META_ORCHESTRATION_TUTORIAL.md
+  tutorials/QUICKSTART_GUIDE.md
+  tutorials/campaign-metrics-tracking.md
+  tutorials/installation.md
+
+  # reference/ and how-to/ orphans
+  reference/cli-reference.md
+  how-to/multi-agent-coordination.md
+
+  # --- Top-level orphaned files ---
+  ADAPTIVE_ROUTING_*.md
+  AGENT_*.md
+  ANTHROPIC_*.md
+  ARCH*.md
+  AUTH_*.md
+  BATCH_*.md
+  BLOG_*.md
+  BUG_*.md
+  CACHING_*.md
+  CLAUDE_*.md
+  CLI_*.md
+  COST_*.md
+  COVERAGE_*.md
+  CRITICAL_*.md
+  DASHBOARD_*.md
+  DATA_*.md
+  DEPENDABOT_*.md
+  DEVELOPER_*.md
+  DOCUMENTATION_*.md
+  FAQ_*.md
+  FEATURE_*.md
+  FOREWORD_*.md
+  GENERATOR_*.md
+  IMPLEMENTATION_*.md
+  INTEGRATION_*.md
+  ISSUE_*.md
+  LLM_*.md
+  META_*.md
+  OOP_*.md
+  ORCHESTRATION_*.md
+  PATTERN*.md
+  PERFORMANCE_*.md
+  PROFILING_*.md
+  QUICK_START.md
+  REDIS_*.md
+  REFACTORING_*.md
+  RELEASE_*.md
+  SCANNER_*.md
+  SECURITY_AUDIT_*.md
+  SESSION_*.md
+  SETUP_*.md
+  SKILLS_*.md
+  SONNET_*.md
+  SQLITE_*.md
+  TESTING_*.md
+  TEST_*.md
+  TierFallbackHelper_*.md
+  USER_API_*.md
+  V4*.md
+  WORKFLOW_*.md
+  about-the-author.md
+  caching.md
+  cli-reference.md
+  commands.md
+  comparison.md
+  configuration-architecture.md
+  context-management.md
+  continuous-learning.md
+  dashboard-costs-by-tier.md
+  experimental_assessment.md
+  feature-overview-meta-workflows.md
+  governance.md
+  hooks.md
+  keyboard-shortcuts.md
+  known-issues.md
+  markdown-agents.md
+  migration-guide.md
+  quickstart.md
+  reliability_improvements_report.md
+  testing-guide.md
+  testing-strategy.md
+  tutorial_sonnet_opus_strategy.md
 
 # Navigation Structure - Diátaxis Framework
 # Tutorials (learning), How-to (tasks), Explanation (understanding), Reference (information)
@@ -65,16 +216,7 @@ nav:
   # Security - Critical cross-cutting concern
   - Security:
       - Overview: SECURITY.md
-      - Security Scanning:
-          - Developer Workflow: DEVELOPER_SECURITY_WORKFLOW.md
-          - CI/CD Integration: CI_SECURITY_SCANNING.md
-          - Scanner Architecture: SECURITY_SCANNER_ARCHITECTURE.md
-          - Remediation Process: SECURITY_REMEDIATION_PROCESS.md
-          - API Reference: api-reference/security-scanner.md
-      - Implementation Journey:
-          - Complete Summary: SECURITY_COMPLETE_SUMMARY.md
-          - Phase 2 Details: SECURITY_PHASE2_COMPLETE.md
-          - Phase 3 Details: SECURITY_PHASE3_COMPLETE.md
+      - Security Review: SECURITY_REVIEW.md
       - Standards:
           - Coding Standards: CODING_STANDARDS.md
           - Exception Handling: EXCEPTION_HANDLING_GUIDE.md
@@ -83,7 +225,7 @@ nav:
   - Explanation:
       - explanation/index.md
       - Philosophy:
-          - The Empathy Philosophy: explanation/EMPATHY_PHILOSOPHY.md
+          - The Attune Philosophy: explanation/ATTUNE_PHILOSOPHY.md
           - Multi-Agent Philosophy: explanation/multi-agent-philosophy.md
           - How Claude Learns: explanation/HOW_CLAUDE_LEARNS.md
       - Concepts:
@@ -91,9 +233,9 @@ nav:
           - Adaptive Learning: explanation/adaptive-learning.md
           - Comparison: explanation/COMPARISON.md
       - Integration:
-          - Using with LLMs: explanation/USING_EMPATHY_WITH_LLMS.md
-          - MemDocs Integration: explanation/MEMDOCS_EMPATHY_INTEGRATION.md
-      - Non-Technical Guide: explanation/EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md
+          - Using with LLMs: explanation/USING_ATTUNE_WITH_LLMS.md
+          - MemDocs Integration: explanation/MEMDOCS_ATTUNE_INTEGRATION.md
+      - Non-Technical Guide: explanation/ATTUNE_AI_NON_TECHNICAL_GUIDE.md
 
   # Information-oriented
   - Reference:
@@ -114,7 +256,6 @@ nav:
       - Wizards:
           - Industry Wizards: reference/wizards.md
           - Software Wizards: reference/software-wizards.md
-          - AI Wizards: reference/ai-wizards.md
       - Help:
           - FAQ: reference/FAQ.md
           - Troubleshooting: reference/TROUBLESHOOTING.md
@@ -184,6 +325,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
+          paths: [src, .]
           options:
             docstring_style: google
             show_source: true
@@ -211,7 +353,7 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Smart-AI-Memory/empathy
+      link: https://github.com/Smart-AI-Memory/attune-ai
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/attune-ai/
 
@@ -222,7 +364,7 @@ extra:
     - property: og:type
       content: website
     - property: og:title
-      content: Empathy Framework - Level 4 Anticipatory AI
+      content: Attune AI - Level 4 Anticipatory AI
     - property: og:description
       content: Build AI systems that predict problems before they happen. Production-ready framework for AI-human collaboration.
     - property: og:image
@@ -232,7 +374,7 @@ extra:
     - name: twitter:card
       content: summary_large_image
     - name: twitter:title
-      content: Empathy Framework - Level 4 Anticipatory AI
+      content: Attune AI - Level 4 Anticipatory AI
     - name: twitter:description
       content: Build AI systems that predict problems before they happen.
     - name: twitter:image
