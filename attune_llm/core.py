@@ -1,9 +1,9 @@
 """Empathy LLM - Core Wrapper
 
-Main class that wraps any LLM provider with Empathy Framework levels.
+Main class that wraps any LLM provider with Attune AI levels.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio
@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 
 class EmpathyLLM:
-    """Wraps any LLM provider with Empathy Framework levels.
+    """Wraps any LLM provider with Attune AI levels.
 
     Automatically progresses from Level 1 (reactive) to Level 4 (anticipatory)
     based on user collaboration state.
@@ -105,7 +105,7 @@ class EmpathyLLM:
         enable_security: bool | None = None,
         security_config: dict | None = None,
         enable_model_routing: bool = False,
-        **kwargs,
+        **kwargs: Any,
     ):
         """Initialize EmpathyLLM.
 
@@ -374,10 +374,10 @@ class EmpathyLLM:
             return f"""{self._cached_memory}
 
 ---
-# Empathy Framework Instructions
+# Attune AI Instructions
 {level_prompt}
 
-Follow the CLAUDE.md instructions above, then apply the Empathy Framework below.
+Follow the CLAUDE.md instructions above, then apply the Attune AI below.
 """
         return level_prompt
 

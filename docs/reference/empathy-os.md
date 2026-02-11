@@ -1,10 +1,10 @@
 ---
-description: EmpathyOS API reference: The main entry point for the Empathy Framework. `EmpathyOS` orchestrates empathy level progression,
+description: EmpathyOS API reference: The main entry point for the Attune AI. `EmpathyOS` orchestrates empathy level progression,
 ---
 
 # EmpathyOS
 
-The main entry point for the Empathy Framework. `EmpathyOS` orchestrates empathy level progression, trust management, and interaction handling.
+The main entry point for the Attune AI. `EmpathyOS` orchestrates empathy level progression, trust management, and interaction handling.
 
 ## Overview
 
@@ -218,4 +218,4 @@ See [Configuration API](config.md) for detailed configuration options.
 - [Configuration Reference](config.md)
 - [Core Data Structures](core.md)
 - [Pattern Library](pattern-library.md)
-- [Simple Chatbot Example](../tutorials/tutorials/examples/simple-chatbot.md)
+- [Simple Chatbot Example](../tutorials/examples/simple-chatbot.md)

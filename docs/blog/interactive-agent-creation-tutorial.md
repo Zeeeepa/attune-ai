@@ -8,7 +8,7 @@ description: Intelligent Agent Team Creation - Right in Your IDE: Step-by-step t
 > Interactive mode with Claude Code: Get prompted when AI needs your input
 
 **Published:** January 29, 2026
-**Author:** Empathy Framework Team
+**Author:** Attune AI Team
 **Reading Time:** 8 minutes
 **Level:** Beginner to Intermediate
 
@@ -16,7 +16,7 @@ description: Intelligent Agent Team Creation - Right in Your IDE: Step-by-step t
 
 ## TL;DR (2-minute read)
 
-The Empathy Framework now has **intelligent interactive mode** for agent team creation:
+The Attune AI now has **intelligent interactive mode** for agent team creation:
 
 - 🎯 **Smart branching**: High confidence (≥80%) → automatic, low confidence → asks you
 - 💬 **IDE-native prompts**: Questions appear right in Claude Code's interface
@@ -87,7 +87,7 @@ This is the **easiest way** to use interactive mode. Zero configuration needed!
 **You say to Claude:**
 
 ```text
-"Use the Empathy Framework to redesign our authentication system with interactive mode"
+"Use the Attune AI to redesign our authentication system with interactive mode"
 ```
 
 **Claude writes and runs:**
@@ -605,7 +605,7 @@ plan = orchestrator.analyze_and_compose(
 # → Coordinator agent analyzes and delegates to specialists
 ```
 
-[Full pattern guide →](../architecture/composition-patterns.md)
+[Full pattern guide →](../how-to/practical-patterns.md)
 
 ---
 
@@ -790,7 +790,7 @@ with patch.object(orchestrator, '_calculate_confidence', return_value=0.7):
 Just ask Claude:
 
 ```text
-"Use the Empathy Framework to [your task] with interactive mode"
+"Use the Attune AI to [your task] with interactive mode"
 ```
 
 Or write your own:
@@ -813,7 +813,7 @@ Run this in Claude Code and see the magic happen!
 
 - 📖 [Full technical docs](../architecture/interactive-agent-creation.md)
 - 🔧 [Claude Code integration guide](../integration/claude-code-integration.md)
-- 🎯 [Pattern selection guide](../architecture/composition-patterns.md)
+- 🎯 [Pattern selection guide](../how-to/practical-patterns.md)
 - 💬 [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 
 ---

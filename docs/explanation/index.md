@@ -1,11 +1,11 @@
 ---
-description: Explanation: Understanding-oriented content that explains the concepts and philosophy behind Empathy Framework.
+description: Explanation: Understanding-oriented content that explains the concepts and philosophy behind Attune AI.
 ---
 
 # Explanation
 
 Understanding-oriented content that explains the concepts and philosophy
-behind Empathy Framework.
+behind Attune AI.
 
 This section helps you understand *why* things work the way they do and
 provides deeper context for the design decisions.
@@ -14,7 +14,7 @@ provides deeper context for the design decisions.
 
 <div class="grid cards" markdown>
 
-- :material-heart: **[The Empathy Philosophy](EMPATHY_PHILOSOPHY.md)**
+- :material-heart: **[The Attune Philosophy](ATTUNE_PHILOSOPHY.md)**
 
     The five levels of AI-human collaboration
 
@@ -50,11 +50,11 @@ provides deeper context for the design decisions.
 
 <div class="grid cards" markdown>
 
-- :material-connection: **[Using Empathy with LLMs](USING_EMPATHY_WITH_LLMS.md)**
+- :material-connection: **[Using Attune with LLMs](USING_ATTUNE_WITH_LLMS.md)**
 
     Integrate with different LLM providers
 
-- :material-memory: **[MemDocs Integration](MEMDOCS_EMPATHY_INTEGRATION.md)**
+- :material-memory: **[MemDocs Integration](MEMDOCS_ATTUNE_INTEGRATION.md)**
 
     Using MemDocs for long-term memory
 
@@ -64,8 +64,8 @@ provides deeper context for the design decisions.
 
 <div class="grid cards" markdown>
 
-- :material-book: **[Non-Technical Guide](EMPATHY_FRAMEWORK_NON_TECHNICAL_GUIDE.md)**
+- :material-book: **[Non-Technical Guide](ATTUNE_AI_NON_TECHNICAL_GUIDE.md)**
 
-    Understanding Empathy without the code
+    Understanding Attune AI without the code
 
 </div>

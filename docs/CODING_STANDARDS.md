@@ -12,7 +12,7 @@ description: Coding Standards: **Version:** 3.9.1 **Last Updated:** January 7, 2
 
 ## Purpose
 
-This document establishes coding standards for the Empathy Framework to ensure security, maintainability, and code quality across all contributions.
+This document establishes coding standards for the Attune AI to ensure security, maintainability, and code quality across all contributions.
 
 ---
 
@@ -83,7 +83,7 @@ def save_config(user_path: str, data: dict):
 
 **Rationale:** User-controlled file paths enable path traversal attacks (CWE-22), allowing attackers to write to system directories.
 
-**See Also:** [Pattern 6 Implementation](../SECURITY.md#security-hardening-pattern-6-implementation)
+**See Also:** [Pattern 6 Implementation](SECURITY.md#security-hardening-pattern-6-implementation)
 
 ---
 
@@ -383,7 +383,7 @@ def test_save_prevents_null_bytes():
         config.to_yaml("config\x00.yml")
 ```
 
-**See Also:** [test_config_path_security.py](../tests/unit/test_config_path_security.py)
+**See Also:** `tests/unit/test_config_path_security.py`
 
 ---
 
@@ -649,8 +649,8 @@ pytest --cov=src --cov-report=term-missing
 ## Additional Resources
 
 - [Exception Handling Guide](./EXCEPTION_HANDLING_GUIDE.md)
-- [Security Policy](../SECURITY.md)
-- [Contributing Guide](../CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
+- [Contributing Guide](contributing.md)
 - [API Reference](./reference/index.md)
 
 ---

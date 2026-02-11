@@ -1,5 +1,5 @@
 ---
-description: Choose your learning path for Empathy Framework. Quick Start, Tutorial, or Deep Dive approaches based on your experience level.
+description: Choose your learning path for Attune AI. Quick Start, Tutorial, or Deep Dive approaches based on your experience level.
 ---
 
 # Choose Your Path
@@ -8,7 +8,7 @@ You've installed the framework and run your first workflow. Now choose the appro
 
 ---
 
-## Four Ways to Use Empathy Framework
+## Four Ways to Use Attune AI
 
 | Path | Best For | Complexity |
 |------|----------|------------|
@@ -72,7 +72,7 @@ Then ask Claude to help you build workflows conversationally.
 ### Next Steps
 
 - [MCP Integration Guide](mcp-integration.md) - Full setup instructions
-- [Socratic Tutorial](../tutorials/socratic-tutorial.md) - Guided workflow building
+- [Tutorials](../tutorials/index.md) - Guided workflow building
 
 ---
 

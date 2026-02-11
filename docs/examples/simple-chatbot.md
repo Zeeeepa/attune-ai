@@ -12,7 +12,7 @@ description: Example: Code Review Assistant with Memory: **Difficulty**: Beginne
 
 ## Overview
 
-Build a **Code Review Assistant** that demonstrates the two types of memory that make Empathy Framework powerful:
+Build a **Code Review Assistant** that demonstrates the two types of memory that make Attune AI powerful:
 
 | Memory Type | Storage | Purpose | Example |
 |-------------|---------|---------|---------|
@@ -643,4 +643,4 @@ memory = UnifiedMemory(redis_url=None)
 
 ---
 
-**Need help?** See the [API Reference](../api-reference/index.md) or [Short-Term Memory Reference](../SHORT_TERM_MEMORY.md).
+**Need help?** See the [API Reference](../api-reference/index.md) or [Short-Term Memory Reference](../reference/SHORT_TERM_MEMORY.md).

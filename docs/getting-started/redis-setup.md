@@ -1,10 +1,10 @@
 ---
-description: Configure Redis for Empathy Framework. Docker setup, persistence, monitoring. Production and development configurations included.
+description: Configure Redis for Attune AI. Docker setup, persistence, monitoring. Production and development configurations included.
 ---
 
 # Redis Setup Guide
 
-Redis provides **short-term memory** for the Empathy Framework, enabling:
+Redis provides **short-term memory** for the Attune AI, enabling:
 - Multi-agent coordination and state sharing
 - Session persistence across requests
 - Pattern staging before long-term storage
@@ -192,6 +192,6 @@ print(f"Connected clients: {health.get('connected_clients')}")
 
 ## Next Steps
 
-- [Short-Term Memory Guide](../SHORT_TERM_MEMORY.md) - Deep dive into memory patterns
-- [Multi-Agent Coordination](../guides/multi-agent-coordination.md) - Team coordination with Redis
-- [Configuration Reference](configuration.md) - All configuration options
+- [Short-Term Memory Guide](../reference/SHORT_TERM_MEMORY.md) - Deep dive into memory patterns
+- [Multi-Agent Philosophy](../explanation/multi-agent-philosophy.md) - Team coordination with Redis
+- [Configuration Reference](../reference/configuration.md) - All configuration options

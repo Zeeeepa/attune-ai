@@ -1,10 +1,10 @@
 ---
-description: Core API reference: Core data structures and state management for the Empathy Framework. ## Overview The core module pro
+description: Core API reference: Core data structures and state management for the Attune AI. ## Overview The core module pro
 ---
 
 # Core
 
-Core data structures and state management for the Empathy Framework.
+Core data structures and state management for the Attune AI.
 
 ## Overview
 
@@ -347,4 +347,4 @@ elif response.level >= 4:
 - [EmpathyOS API](empathy-os.md)
 - [Configuration API](config.md)
 - [Pattern Library](pattern-library.md)
-- [Simple Chatbot Example](../tutorials/tutorials/examples/simple-chatbot.md)
+- [Simple Chatbot Example](../tutorials/examples/simple-chatbot.md)

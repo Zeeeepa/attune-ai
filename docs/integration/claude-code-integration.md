@@ -1,5 +1,5 @@
 ---
-description: Claude Code Integration Guide integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Claude Code Integration Guide integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Claude Code Integration Guide
@@ -12,7 +12,7 @@ description: Claude Code Integration Guide integration guide. Connect external t
 
 ## Overview
 
-The Empathy Framework integrates with Claude Code to provide interactive agent team creation. When users choose `interactive=True`, the meta-orchestrator can prompt them with questions in the IDE.
+The Attune AI integrates with Claude Code to provide interactive agent team creation. When users choose `interactive=True`, the meta-orchestrator can prompt them with questions in the IDE.
 
 ---
 
@@ -374,7 +374,7 @@ Current API is **stable** and will be maintained:
 
 - [Interactive Agent Creation](../architecture/interactive-agent-creation.md)
 - [Anthropic Patterns Integration](../architecture/ANTHROPIC_PATTERNS_INTEGRATION.md)
-- [Meta-Orchestrator API](../api/meta-orchestrator.md)
+- [Meta-Orchestrator API](../api-reference/meta-orchestration.md)
 
 ---
 
@@ -390,4 +390,4 @@ Questions or issues with Claude Code integration?
 
 **Version:** 1.0
 **Last Updated:** January 29, 2026
-**Maintained By:** Empathy Framework Team
+**Maintained By:** Attune AI Team

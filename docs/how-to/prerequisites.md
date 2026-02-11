@@ -1,10 +1,10 @@
 ---
-description: Prerequisites: *What you need before building with the Empathy Framework* --- ## Quick Checklist Before you begin, ensure you have: - [ ] **Python 3.9+** instal
+description: Prerequisites: *What you need before building with the Attune AI* --- ## Quick Checklist Before you begin, ensure you have: - [ ] **Python 3.9+** instal
 ---
 
 # Prerequisites
 
-*What you need before building with the Empathy Framework*
+*What you need before building with the Attune AI*
 
 ---
 
@@ -148,7 +148,7 @@ pip install attune-ai[all]
 **Verify installation**:
 ```python
 from attune import EmpathyOS
-print("Empathy Framework installed successfully!")
+print("Attune AI installed successfully!")
 ```
 
 ---
@@ -178,7 +178,7 @@ Run this script to verify your environment:
 
 ```python
 #!/usr/bin/env python3
-"""Verify Empathy Framework prerequisites."""
+"""Verify Attune AI prerequisites."""
 
 import sys
 import os
@@ -225,15 +225,15 @@ def check_api_keys():
 def check_empathy():
     try:
         from attune import EmpathyOS
-        print("[OK] Empathy Framework installed")
+        print("[OK] Attune AI installed")
         return True
     except ImportError:
-        print("[FAIL] Empathy Framework not installed")
+        print("[FAIL] Attune AI not installed")
         print("       Run: pip install attune-ai")
         return False
 
 if __name__ == "__main__":
-    print("=== Empathy Framework Prerequisites Check ===\n")
+    print("=== Attune AI Prerequisites Check ===\n")
 
     results = [
         check_python(),
@@ -306,7 +306,7 @@ pyenv local 3.11.0
 Once prerequisites are met:
 
 1. **Quick start**: [Unified Memory System](./unified-memory-system.md)
-2. **Understand the philosophy**: [Multi-Agent Philosophy](./multi-agent-philosophy.md)
+2. **Understand the philosophy**: [Multi-Agent Philosophy](../explanation/multi-agent-philosophy.md)
 3. **See patterns**: [Practical Patterns](./practical-patterns.md)
 
 ---

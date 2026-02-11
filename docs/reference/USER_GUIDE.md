@@ -1,13 +1,13 @@
 ---
-description: Empathy Framework User Guide API reference: **Transform your development workflow with Level 4 Anticipatory AI collaboration** **Version:** 3.1.
+description: Attune AI User Guide API reference: **Transform your development workflow with Level 4 Anticipatory AI collaboration** **Version:** 3.1.
 ---
 
-# Empathy Framework User Guide
+# Attune AI User Guide
 
 **Transform your development workflow with Level 4 Anticipatory AI collaboration**
 
 **Version:** 3.1.0
-**License:** Fair Source 0.9
+**License:** Apache License 2.0
 **Copyright:** 2025 Smart AI Memory, LLC
 
 ---
@@ -30,9 +30,9 @@ description: Empathy Framework User Guide API reference: **Transform your develo
 
 ## Introduction
 
-### What is the Empathy Framework?
+### What is the Attune AI?
 
-The Empathy Framework is a systematic approach to building AI systems that progress from reactive responses (Level 1) to anticipatory problem prevention (Level 4) and systems-level design (Level 5). It transforms AI from a simple question-answering tool into a collaborative partner that learns your patterns, predicts future needs, and prevents problems before they occur.
+The Attune AI is a systematic approach to building AI systems that progress from reactive responses (Level 1) to anticipatory problem prevention (Level 4) and systems-level design (Level 5). It transforms AI from a simple question-answering tool into a collaborative partner that learns your patterns, predicts future needs, and prevents problems before they occur.
 
 ### Why "Empathy"?
 
@@ -64,13 +64,13 @@ In this context, empathy is not about feelings - it's about:
 
 ### What Makes It Different?
 
-| Traditional Tools | Empathy Framework |
+| Traditional Tools | Attune AI |
 |------------------|-------------------|
 | Reactive: Find bugs after they're written | **Anticipatory**: Predict bugs before they manifest |
 | Static rules: Same analysis for everyone | **Adaptive**: Learns your patterns and context |
 | Single-domain: Security OR performance | **Multi-domain**: 16+ wizards working together |
 | Level 1: Simple Q&A | **Level 4**: Trajectory prediction and prevention |
-| Proprietary, expensive | **Open source, free forever** (Fair Source 0.9) |
+| Proprietary, expensive | **Open source, free forever** (Apache License 2.0) |
 
 ---
 
@@ -80,7 +80,7 @@ In this context, empathy is not about feelings - it's about:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Empathy Framework                         │
+│                    Attune AI                         │
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
@@ -615,7 +615,7 @@ Level 5 applies Donella Meadows' leverage points:
 
 ### Installation
 
-See [QUICKSTART_GUIDE.md](QUICKSTART_GUIDE.md) for detailed installation instructions.
+See [Quick Start Guide](../tutorials/QUICKSTART_GUIDE.md) for detailed installation instructions.
 
 **Quick Install:**
 
@@ -638,7 +638,7 @@ export ANTHROPIC_API_KEY=sk-ant-your-key-here
 
 ## Wizard Catalog
 
-The Empathy Framework includes 16+ specialized Coach wizards for software development. Each wizard implements Level 4 Anticipatory Empathy.
+The Attune AI includes 16+ specialized Coach wizards for software development. Each wizard implements Level 4 Anticipatory Empathy.
 
 ### Security & Compliance
 
@@ -1660,7 +1660,7 @@ if __name__ == "__main__":
 
 ```yaml
 # .github/workflows/empathy-check.yml
-name: Empathy Framework Checks
+name: Attune AI Checks
 
 on: [push, pull_request]
 
@@ -1878,7 +1878,7 @@ async def analyze_code(request: CodeAnalysisRequest):
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
-    """Chat with Empathy Framework"""
+    """Chat with Attune AI"""
     result = await llm.interact(
         user_id=request.user_id,
         user_input=request.message,
@@ -2326,16 +2326,16 @@ print(llm.get_metrics_summary())
 
 ### Documentation
 
-- **Quick Start Guide:** [QUICKSTART_GUIDE.md](QUICKSTART_GUIDE.md)
+- **Quick Start Guide:** [Quick Start Guide](../tutorials/QUICKSTART_GUIDE.md)
 - **API Reference:** [API_REFERENCE.md](API_REFERENCE.md)
 - **User Guide:** This document
 - **CLI Guide:** [CLI_GUIDE.md](CLI_GUIDE.md)
 
 ### Community
 
-- **GitHub:** https://github.com/Deep-Study-AI/Empathy
-- **Discussions:** https://github.com/Deep-Study-AI/Empathy/discussions
-- **Issues:** https://github.com/Deep-Study-AI/Empathy/issues
+- **GitHub:** https://github.com/Smart-AI-Memory/attune-ai
+- **Discussions:** https://github.com/Smart-AI-Memory/attune-ai/discussions
+- **Issues:** https://github.com/Smart-AI-Memory/attune-ai/issues
 
 ### Commercial Support
 
@@ -2359,18 +2359,18 @@ print(llm.get_metrics_summary())
 
 ## Conclusion
 
-The Empathy Framework transforms AI from a simple tool into a collaborative partner that learns, predicts, and prevents problems before they occur. With Level 4 Anticipatory Empathy, you can:
+The Attune AI transforms AI from a simple tool into a collaborative partner that learns, predicts, and prevents problems before they occur. With Level 4 Anticipatory Empathy, you can:
 
 - **Catch bugs before they manifest**
 - **Predict bottlenecks weeks in advance**
 - **Build trust through consistent collaboration**
 - **Scale development velocity 4-6x**
 
-All at zero cost (Fair Source 0.9 open source) with infinite ROI.
+All at zero cost (Apache License 2.0 open source) with infinite ROI.
 
 **Welcome to the future of AI-human collaboration!**
 
 ---
 
 **Copyright 2025 Smart AI Memory, LLC**
-**Licensed under Fair Source 0.9**
+**Licensed under the Apache License, Version 2.0**

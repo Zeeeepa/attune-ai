@@ -1,10 +1,10 @@
 ---
-description: Reference API reference: Information-oriented technical reference for Empathy Framework. This section provides detailed speci
+description: Reference API reference: Information-oriented technical reference for Attune AI. This section provides detailed speci
 ---
 
 # Reference
 
-Information-oriented technical reference for Empathy Framework.
+Information-oriented technical reference for Attune AI.
 
 This section provides detailed specifications, API documentation, and
 quick reference materials for when you need to look something up.
@@ -55,7 +55,7 @@ quick reference materials for when you need to look something up.
 
 - [Industry Wizards](wizards.md) - Domain-specific wizards
 - [Software Wizards](software-wizards.md) - Software development wizards
-- [AI Wizards](ai-wizards.md) - AI-powered analysis wizards
+- [Wizards Reference](wizards.md) - All wizard documentation
 
 ## Help
 

@@ -41,7 +41,7 @@ Most AI systems today operate on a troubling model: your interactions, patterns,
 - Delete specific memories
 - Move to a different provider
 
-The Empathy Framework rejects this model entirely.
+The Attune AI rejects this model entirely.
 
 ### What You Control
 
@@ -495,10 +495,10 @@ session.signal("review_complete", {
 
 ## Next Steps
 
-- **[Short-Term Memory Reference](../SHORT_TERM_MEMORY.md)**: Complete API documentation
+- **[Short-Term Memory Reference](../reference/SHORT_TERM_MEMORY.md)**: Complete API documentation
 - **[API Reference: Multi-Agent](../reference/multi-agent.md)**: Detailed class documentation
 - **[Example: Team Coordination](../tutorials/examples/multi-agent-team-coordination.md)**: Full working example
 
 ---
 
-*This chapter documents the philosophical work that preceded the technical implementation of multi-agent coordination in the Empathy Framework. The principles described here are codified in [EMPATHY_PHILOSOPHY.md](../EMPATHY_PHILOSOPHY.md), the living document that governs all Empathy projects.*
+*This chapter documents the philosophical work that preceded the technical implementation of multi-agent coordination in the Attune AI. The principles described here are codified in [ATTUNE_PHILOSOPHY.md](ATTUNE_PHILOSOPHY.md), the living document that governs all Attune projects.*

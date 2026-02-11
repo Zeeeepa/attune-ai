@@ -10,7 +10,7 @@ System-level learning that improves AI responses over time based on user feedbac
 
 ## Overview
 
-Empathy Framework's **Adaptive Learning** system learns from:
+Attune AI's **Adaptive Learning** system learns from:
 
 1. **User feedback** (thumbs up/down, corrections)
 2. **Acceptance patterns** (which suggestions users accept)
@@ -423,7 +423,7 @@ See the complete [Adaptive Learning System Example](../tutorials/examples/adapti
 
 ## See Also
 
-- [Multi-Agent Coordination](multi-agent-coordination.md) - Team patterns
+- [Multi-Agent Philosophy](multi-agent-philosophy.md) - Team patterns
 - [Adaptive Learning Example](../tutorials/examples/adaptive-learning-system.md) - Full implementation
 - [Pattern Library API](../reference/pattern-library.md) - Pattern management
 - [EmpathyOS API](../reference/empathy-os.md) - Core configuration

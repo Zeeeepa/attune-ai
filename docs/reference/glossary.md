@@ -1,10 +1,10 @@
 ---
-description: Glossary API reference: *Key terms and definitions for the Empathy Framework* --- ## A ### Access Tier A permission level th
+description: Glossary API reference: *Key terms and definitions for the Attune AI* --- ## A ### Access Tier A permission level th
 ---
 
 # Glossary
 
-*Key terms and definitions for the Empathy Framework*
+*Key terms and definitions for the Attune AI*
 
 ---
 
@@ -17,13 +17,13 @@ A permission level that determines what an agent can do within the system. There
 - **Validator** (Level 3): Can promote patterns to permanent storage
 - **Steward** (Level 4): Full administrative access
 
-See: [Multi-Agent Philosophy](./multi-agent-philosophy.md#the-access-tier-system)
+See: [Multi-Agent Philosophy](../explanation/multi-agent-philosophy.md#the-access-tier-system)
 
 ### Agent
 An AI instance that participates in the Empathy system. Agents can be specialized (security reviewer, performance analyst) or general-purpose. Multiple agents can coordinate through shared memory.
 
 ### Anticipatory Empathy
-The ability to predict and address needs before they're expressed. Level 4 in the Empathy Framework's five-level model. Anticipatory systems don't just respond to problems—they prevent them.
+The ability to predict and address needs before they're expressed. Level 4 in the Attune AI's five-level model. Anticipatory systems don't just respond to problems—they prevent them.
 
 ---
 
@@ -48,7 +48,7 @@ A numeric score (0.0 to 1.0) indicating how certain an agent is about a recommen
 ### Conflict Resolution
 The process of finding a synthesis when two agents make conflicting recommendations. The framework extracts the underlying *interests* behind each position and generates options that serve both.
 
-See: [Practical Patterns - Conflict Synthesizer](./practical-patterns.md#pattern-2-the-conflict-synthesizer)
+See: [Practical Patterns - Conflict Synthesizer](../how-to/practical-patterns.md#pattern-2-the-conflict-synthesizer)
 
 ### Contributor
 Access Tier Level 2. Can read patterns and propose new ones, but cannot validate or promote patterns to permanent storage. Most AI agents operate at this level.
@@ -58,7 +58,7 @@ Access Tier Level 2. Can read patterns and propose new ones, but cannot validate
 ## D
 
 ### Data Sovereignty
-The principle that users and enterprises own, version, and control all memories associated with their projects. A foundational value of the Empathy Framework—not a feature, but a constraint that shapes all design decisions.
+The principle that users and enterprises own, version, and control all memories associated with their projects. A foundational value of the Attune AI—not a feature, but a constraint that shapes all design decisions.
 
 ---
 
@@ -68,7 +68,7 @@ The principle that users and enterprises own, version, and control all memories 
 Patterns that weren't explicitly taught but arise from collective agent operation. The framework treats emergent patterns as valuable and surfaces them for validation rather than filtering them out.
 
 ### EmpathyOS
-The main interface class for interacting with the Empathy Framework. Provides methods for memory operations, pattern management, and agent coordination.
+The main interface class for interacting with the Attune AI. Provides methods for memory operations, pattern management, and agent coordination.
 
 ```python
 from attune import EmpathyOS
@@ -89,7 +89,7 @@ A hash-based identifier used to detect duplicate patterns. Prevents the same pat
 ### Heartbeat
 A periodic signal sent by agents to indicate they're still functioning. Used by the monitoring system to detect unresponsive agents and reassign their work.
 
-See: [Practical Patterns - Heartbeat Monitor](./practical-patterns.md#pattern-4-the-heartbeat-monitor)
+See: [Practical Patterns - Heartbeat Monitor](../how-to/practical-patterns.md#pattern-4-the-heartbeat-monitor)
 
 ---
 
@@ -107,7 +107,7 @@ Example:
 ## L
 
 ### Level (Empathy Level)
-The Empathy Framework defines five levels of AI capability:
+The Attune AI defines five levels of AI capability:
 - **Level 1 - Reactive**: Responds to explicit requests
 - **Level 2 - Informed**: Remembers context within a session
 - **Level 3 - Contextual**: Applies patterns from similar situations
@@ -142,7 +142,7 @@ Access Tier Level 1. Read-only access to patterns and shared state. New agents t
 ## P
 
 ### Pattern
-A reusable piece of knowledge—a best practice, code snippet, workflow, or insight—that can be applied across contexts. Patterns are the core unit of knowledge in the Empathy Framework.
+A reusable piece of knowledge—a best practice, code snippet, workflow, or insight—that can be applied across contexts. Patterns are the core unit of knowledge in the Attune AI.
 
 ### Pattern Library
 A collection of validated patterns available to all agents. Patterns enter the library through the staging and promotion workflow.
@@ -215,7 +215,7 @@ session.add_agent("performance_agent")
 ### Trust Escalator
 A system for managing agent permissions based on demonstrated reliability. Agents start at Observer level and are promoted as they accumulate successful tasks and validated patterns.
 
-See: [Practical Patterns - Trust Escalator](./practical-patterns.md#pattern-5-the-trust-escalator)
+See: [Practical Patterns - Trust Escalator](../how-to/practical-patterns.md#pattern-5-the-trust-escalator)
 
 ### TTL
 **T**ime **T**o **L**ive. The duration before data in short-term memory expires automatically. Different data types have different TTLs:
@@ -275,4 +275,4 @@ Short-term storage for intermediate results during task execution. Expires after
 
 ---
 
-*This glossary covers terms as of Empathy Framework v1.10.0*
+*This glossary covers terms as of Attune AI v1.10.0*

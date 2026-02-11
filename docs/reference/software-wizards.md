@@ -537,6 +537,6 @@ jobs:
 
 ## See Also
 
-- [AI Development Wizards](ai-wizards.md) - LLM/ML specialized wizards
+- [Wizards Reference](wizards.md) - LLM/ML and domain-specific wizards
 - [Industry Wizards](wizards.md) - Domain-specific wizards
 - [Configuration](config.md) - Wizard configuration

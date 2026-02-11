@@ -1,10 +1,10 @@
 ---
-description: Configure Empathy Framework with Python, YAML, JSON, or environment variables. Flexible configuration with validation and defaults.
+description: Configure Attune AI with Python, YAML, JSON, or environment variables. Flexible configuration with validation and defaults.
 ---
 
 # Configuration
 
-Learn how to configure the Empathy Framework for your needs.
+Learn how to configure the Attune AI for your needs.
 
 ## Configuration Methods
 
@@ -77,5 +77,5 @@ export EMPATHY_CONFIDENCE_THRESHOLD=0.75
 
 ## Next Steps
 
-- **[Examples](../tutorials/tutorials/examples/simple-chatbot.md)**: See configuration in action
+- **[Examples](../tutorials/examples/simple-chatbot.md)**: See configuration in action
 - **[API Reference](../reference/empathy-os.md)**: Complete API documentation

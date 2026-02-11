@@ -24,9 +24,9 @@ description: Frequently Asked Questions API reference: **Last Updated:** January
 
 ## Getting Started
 
-### What is the Empathy Framework?
+### What is the Attune AI?
 
-Empathy Framework is an open-source Python framework that gives AI assistants persistent memory, multi-agent coordination, and anticipatory intelligence.
+Attune AI is an open-source Python framework that gives AI assistants persistent memory, multi-agent coordination, and anticipatory intelligence.
 
 **Core capabilities:**
 - 🧠 **Persistent Memory**: Pattern library that survives sessions (git-based + optional Redis)
@@ -41,7 +41,7 @@ pip install attune-ai
 empathy-memory serve
 ```
 
-**Learn more:** [Getting Started Guide](./guides/getting-started.md)
+**Learn more:** [Getting Started Guide](../getting-started/index.md)
 
 ---
 
@@ -55,7 +55,7 @@ The framework defines five levels of AI-human collaboration:
 4. **Level 4 (Anticipatory):** Predicts problems before they happen
 5. **Level 5 (Transformative):** Reshapes workflows to prevent problem classes
 
-**Learn more:** [Five Levels of Empathy Guide](./guides/five-levels-of-empathy.md) (15,000 words with real examples)
+**Learn more:** Five Levels of Empathy Guide (15,000 words with real examples)
 
 ---
 
@@ -92,7 +92,7 @@ except (ValueError, SyntaxError) as e:
 - GitHub Copilot: `.github/copilot-instructions.md`
 - Cursor: `.cursorrules`
 
-**Learn more:** [Teaching AI Your Standards Guide](./guides/teaching-ai-your-standards.md) (11,000 words)
+**Learn more:** [Teaching AI Your Standards](../explanation/TEACHING_AI_YOUR_PHILOSOPHY.md) (11,000 words)
 
 ---
 
@@ -121,7 +121,7 @@ except (ValueError, SyntaxError) as e:
 
 Yes! Our production standards file is available:
 
-**Location:** [.claude/rules/empathy/coding-standards-index.md](.claude/rules/empathy/coding-standards-index.md)
+**Location:** `.claude/rules/attune/coding-standards-index.md`
 
 **Contents:**
 - Security rules (eval, path validation, SQL injection)
@@ -416,7 +416,7 @@ empathy workflow run health-check --use-recommended-tier
 
 **Expected savings:** 30-50% on average workflow execution
 
-**Learn more:** [CHANGELOG.md v3.10.0](../CHANGELOG.md#3100---2026-01-09)
+**Learn more:** CHANGELOG.md v3.10.0
 
 ---
 
@@ -461,7 +461,7 @@ empathy workflow run health-check --use-recommended-tier
 empathy telemetry savings --days 30
 ```
 
-**See detailed breakdown:** [TIER_FALLBACK_TEST_REPORT.md](../TIER_FALLBACK_TEST_REPORT.md)
+**See detailed breakdown:** TIER_FALLBACK_TEST_REPORT.md
 
 ---
 
@@ -488,7 +488,7 @@ def validate_output(self, stage_output: dict) -> tuple[bool, str | None]:
     return True, None
 ```
 
-**See code:** [src/attune/workflows/base.py:156-187](../../src/attune/workflows/base.py#L156-L187)
+**See code:** `src/attune/workflows/base.py:156-187`
 
 ---
 
@@ -523,7 +523,7 @@ class MyWorkflow(BaseWorkflow):
         pass
 ```
 
-**See examples:** [CHANGELOG.md Migration Guide](../CHANGELOG.md#migration-guide)
+**See examples:** CHANGELOG.md Migration Guide
 
 ---
 
@@ -545,7 +545,7 @@ class MyWorkflow(BaseWorkflow):
 - ✅ CHANGELOG.md entry added
 - ✅ Migration guide available
 
-**See full validation:** [TIER_FALLBACK_TEST_REPORT.md](../TIER_FALLBACK_TEST_REPORT.md)
+**See full validation:** TIER_FALLBACK_TEST_REPORT.md
 
 ---
 
@@ -856,10 +856,10 @@ git push
 
 ### Resources
 
-- **Getting Started:** [Getting Started Guide](./guides/getting-started.md)
-- **Five Levels:** [Five Levels of Empathy Guide](./guides/five-levels-of-empathy.md)
-- **Teaching AI:** [Teaching AI Your Standards](./guides/teaching-ai-your-standards.md)
-- **Coding Standards:** [Our Standards Reference](.claude/rules/empathy/coding-standards-index.md)
+- **Getting Started:** [Getting Started Guide](../getting-started/index.md)
+- **Five Levels:** Five Levels of Empathy Guide
+- **Teaching AI:** [Teaching AI Your Standards](../explanation/TEACHING_AI_YOUR_PHILOSOPHY.md)
+- **Coding Standards:** [Our Standards Reference](../CODING_STANDARDS.md)
 
 ### Community
 

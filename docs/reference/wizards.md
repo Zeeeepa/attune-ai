@@ -8,7 +8,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 ## Overview
 
-**Empathy Framework includes industry-specific wizards** that provide:
+**Attune AI includes industry-specific wizards** that provide:
 
 - :material-shield-check: **Built-in Security** - PII scrubbing, secrets detection, audit logging
 - :material-file-document: **Domain Knowledge** - Industry-specific prompts and workflows
@@ -111,7 +111,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
         4. ✅ Implement access controls
         5. ✅ Sign Business Associate Agreement with LLM provider
 
-    **See Also:** [SBAR Clinical Handoff Example](../tutorials/tutorials/examples/sbar-clinical-handoff.md)
+    **See Also:** [SBAR Clinical Handoff Example](../tutorials/examples/sbar-clinical-handoff.md)
 
 === ":fontawesome-solid-building-columns: Finance"
 
@@ -412,19 +412,31 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 All wizards extend the `BaseWizard` class with common functionality:
 
-::: attune_llm.wizards.BaseWizard
-    options:
-      show_root_heading: false
-      show_source: false
-      heading_level: 3
+### BaseWizard
+
+```python
+class BaseWizard:
+    """Base class for all industry wizards.
+
+    Provides common wizard lifecycle: start -> collect steps -> preview -> approve -> save.
+    """
+    def start(self) -> dict: ...
+    def submit_step(self, wizard_id: str, data: dict) -> dict: ...
+    def preview(self, wizard_id: str) -> dict: ...
+    def save(self, wizard_id: str, approval: dict) -> dict: ...
+```
 
 ### WizardConfig
 
-::: attune_llm.wizards.WizardConfig
-    options:
-      show_root_heading: false
-      show_source: true
-      heading_level: 4
+```python
+@dataclass
+class WizardConfig:
+    """Configuration for wizard instances."""
+    name: str
+    industry: str
+    steps: list[str]
+    security_level: str = "standard"
+```
 
 **Configuration options:**
 
@@ -525,6 +537,6 @@ result = await wizard.process(
 ## See Also
 
 - [LLM Toolkit](llm-toolkit.md) - Core LLM functionality
-- [Security Architecture](../guides/security-architecture.md) - Security implementation details
-- [SBAR Example](../tutorials/tutorials/examples/sbar-clinical-handoff.md) - Healthcare wizard in action
+- [Security Architecture](../how-to/security-architecture.md) - Security implementation details
+- [SBAR Example](../tutorials/examples/sbar-clinical-handoff.md) - Healthcare wizard in action
 - [Configuration](config.md) - Wizard configuration options

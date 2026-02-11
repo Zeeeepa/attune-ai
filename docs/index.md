@@ -2,19 +2,19 @@
 description: Production-ready AI framework with Level 4 Anticipatory Intelligence. Multi-agent orchestration, cost optimization, and pattern learning.
 ---
 
-# Empathy Framework
+# Attune AI
 
 **Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration**
 
 [![PyPI version](https://badge.fury.io/py/attune-ai.svg)](https://pypi.org/project/attune-ai/)
-[![License: Fair Source 0.9](https://img.shields.io/badge/License-Fair%20Source%200.9-blue.svg)](LICENSE)
+[![License: Apache License 2.0](https://img.shields.io/badge/License-Fair%20Source%200.9-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 ---
 
-## What is Empathy Framework?
+## What is Attune AI?
 
-The Empathy Framework is a **5-level maturity model** for AI-human collaboration that progresses from reactive responses (Level 1) to **Level 4 Anticipatory Intelligence** that predicts problems before they happen.
+The Attune AI is a **5-level maturity model** for AI-human collaboration that progresses from reactive responses (Level 1) to **Level 4 Anticipatory Intelligence** that predicts problems before they happen.
 
 ### The 5 Levels
 
@@ -86,7 +86,7 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 
 **Production-ready security with comprehensive file path validation.**
 
-The Empathy Framework underwent extensive security hardening in v3.9.0:
+The Attune AI underwent extensive security hardening in v3.9.0:
 
 - ✅ **6 modules secured** with Pattern 6 (File Path Validation)
 - ✅ **13 file write operations** validated to prevent path traversal (CWE-22)
@@ -178,7 +178,7 @@ Organized using the [Diátaxis framework](https://diataxis.fr/) for better disco
 |---------|---------|------------|
 | **[Tutorials](tutorials/index.md)** | Learn by doing | [Quick Start](tutorials/quickstart.md) |
 | **[How-to](how-to/index.md)** | Solve specific tasks | [Agent Factory](how-to/agent-factory.md) |
-| **[Explanation](explanation/index.md)** | Understand concepts | [Philosophy](explanation/EMPATHY_PHILOSOPHY.md) |
+| **[Explanation](explanation/index.md)** | Understand concepts | [Philosophy](explanation/ATTUNE_PHILOSOPHY.md) |
 | **[Reference](reference/index.md)** | Look up details | [API Reference](reference/API_REFERENCE.md) |
 
 ---
@@ -199,7 +199,7 @@ Organized using the [Diátaxis framework](https://diataxis.fr/) for better disco
 
 ## License
 
-**Fair Source License 0.9**
+**Apache License 2.0 0.9**
 - ✅ Free for students, educators, teams ≤5 employees
 - 💰 contact us for pricing for teams 6+ employees
 - 🔄 Auto-converts to Apache 2.0 on January 1, 2029

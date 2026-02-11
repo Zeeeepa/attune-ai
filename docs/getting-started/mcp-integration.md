@@ -1,10 +1,10 @@
 ---
-description: Connect Empathy Framework to Claude Code via MCP. Enable AI workflows, agent coordination, and pattern learning in your IDE.
+description: Connect Attune AI to Claude Code via MCP. Enable AI workflows, agent coordination, and pattern learning in your IDE.
 ---
 
 # MCP Integration (v5.1.1+)
 
-Connect Empathy Framework workflows directly to Claude Code or Claude Desktop using the Model Context Protocol.
+Connect Attune AI workflows directly to Claude Code or Claude Desktop using the Model Context Protocol.
 
 **New in v5.1.1:** Empathy MCP server exposes all production workflows as native tools - security audits, test generation, performance analysis, and more.
 
@@ -12,7 +12,7 @@ Connect Empathy Framework workflows directly to Claude Code or Claude Desktop us
 
 ## What is MCP?
 
-The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open standard for connecting AI applications to external tools and data sources. Empathy Framework exposes its workflows, authentication system, and telemetry as MCP tools.
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open standard for connecting AI applications to external tools and data sources. Attune AI exposes its workflows, authentication system, and telemetry as MCP tools.
 
 ---
 
@@ -22,9 +22,9 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open s
 
 **Best for:** Development workflows in VSCode
 
-Empathy Framework includes `.claude/mcp.json` configuration. Claude Code automatically discovers the MCP server when you open the project.
+Attune AI includes `.claude/mcp.json` configuration. Claude Code automatically discovers the MCP server when you open the project.
 
-1. **Install Empathy Framework:**
+1. **Install Attune AI:**
 
 ```bash
 pip install attune-ai[developer]
@@ -287,10 +287,9 @@ The MCP server works with any MCP-compatible client:
 
 ## Next Steps
 
-- **[MCP Test Results](../../.claude/MCP_TEST_RESULTS.md)** - Full integration test report
 - **[CLI Reference](../reference/CLI_CHEATSHEET.md)** - Command-line interface
 - **[Python API](../api-reference/index.md)** - Programmatic access
-- **[Workflows Guide](../how-to/run-workflows.md)** - Workflow documentation
+- **[How-to Guides](../how-to/index.md)** - Workflow documentation
 
 ---
 

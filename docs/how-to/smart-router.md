@@ -149,4 +149,4 @@ for wizard_name in decision.suggested_chain:
 
 - [Memory Graph](memory-graph.md) - Cross-wizard knowledge sharing
 - [Auto-Chaining](auto-chaining.md) - Automatic wizard sequencing
-- [API Reference](../API_REFERENCE.md#smartrouter) - Full API documentation
+- [API Reference](../reference/API_REFERENCE.md#smartrouter) - Full API documentation

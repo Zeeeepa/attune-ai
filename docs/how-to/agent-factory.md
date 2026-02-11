@@ -55,14 +55,14 @@ print(result["output"])
 
 ```bash
 # List installed frameworks
-empathy frameworks
+Attune AIs
 
 # Show all frameworks (including uninstalled)
-empathy frameworks --all
+Attune AIs --all
 
 # Get recommendation for a use case
-empathy frameworks --recommend rag
-empathy frameworks --recommend multi_agent
+Attune AIs --recommend rag
+Attune AIs --recommend multi_agent
 ```
 
 ### Programmatic
@@ -338,19 +338,18 @@ print(result["output"])
 
 ```bash
 # List frameworks
-empathy frameworks
-empathy frameworks --all
-empathy frameworks --json
+Attune AIs
+Attune AIs --all
+Attune AIs --json
 
 # Get recommendation
-empathy frameworks --recommend general
-empathy frameworks --recommend rag
-empathy frameworks --recommend multi_agent
-empathy frameworks --recommend code_analysis
+Attune AIs --recommend general
+Attune AIs --recommend rag
+Attune AIs --recommend multi_agent
+Attune AIs --recommend code_analysis
 ```
 
 ## Next Steps
 
-- [CLI Cheatsheet](../CLI_CHEATSHEET.md) - Quick reference
-- [Cost Tracking](../guides/cost-optimization.md) - Monitor savings
-- [Pattern Learning](../guides/pattern-learning.md) - Automatic improvements
+- [CLI Cheatsheet](../reference/CLI_CHEATSHEET.md) - Quick reference
+- [Reference](../reference/index.md) - Full API documentation

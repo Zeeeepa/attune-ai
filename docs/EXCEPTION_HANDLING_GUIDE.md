@@ -5,7 +5,7 @@ description: Exception Handling Best Practices: Step-by-step tutorial with examp
 # Exception Handling Best Practices
 
 **Version:** 3.9.0
-**Purpose:** This guide establishes exception handling patterns for the Empathy Framework to ensure errors are properly caught, logged, and handled.
+**Purpose:** This guide establishes exception handling patterns for the Attune AI to ensure errors are properly caught, logged, and handled.
 
 **Enforcement:** The `BLE` (Blind Exception) linting rule is enabled in `pyproject.toml` to prevent bare `except:` clauses.
 
@@ -286,7 +286,7 @@ Create custom exceptions for domain-specific errors:
 # src/attune/exceptions.py
 
 class EmpathyError(Exception):
-    """Base exception for all Empathy Framework errors."""
+    """Base exception for all Attune AI errors."""
     pass
 
 class AuthenticationError(EmpathyError):
@@ -624,11 +624,11 @@ Is this an optional feature (wizard, plugin, tip)?
 - [Python Exception Handling](https://docs.python.org/3/tutorial/errors.html)
 - [Ruff BLE Rules](https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble)
 - Codebase Examples:
-  - [auth_db.py](backend/services/database/auth_db.py) - Database patterns
-  - [wizard_api.py](backend/api/wizard_api.py) - Graceful degradation
-  - [security_adapter.py](agents/code_inspection/adapters/security_adapter.py) - Fail-secure
-  - [code_health.py](attune_llm/code_health.py) - Health checks
-  - [cli.py](src/attune/cli.py) - CLI error handling
+  - `backend/services/database/auth_db.py` - Database patterns
+  - `backend/api/wizard_api.py` - Graceful degradation
+  - `agents/code_inspection/adapters/security_adapter.py` - Fail-secure
+  - `attune_llm/code_health.py` - Health checks
+  - `src/attune/cli.py` - CLI error handling
 
 ---
 

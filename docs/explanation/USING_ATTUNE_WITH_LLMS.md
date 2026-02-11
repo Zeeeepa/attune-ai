@@ -1,8 +1,8 @@
 ---
-description: Using the Empathy Framework with LLMs: ## Overview This guide shows you how to implement the 5 empathy levels using Large Language Models (OpenAI, Anthropic, et
+description: Using the Attune AI with LLMs: ## Overview This guide shows you how to implement the 5 empathy levels using Large Language Models (OpenAI, Anthropic, et
 ---
 
-# Using the Empathy Framework with LLMs
+# Using the Attune AI with LLMs
 
 ## Overview
 
@@ -472,7 +472,7 @@ Return:
 
     async def _call_llm(self, prompt: str) -> str:
         """Call LLM with anticipatory prompt"""
-        # Include Empathy Framework context in system prompt
+        # Include Attune AI context in system prompt
         system_prompt = """
 You are an AI assistant operating at Level 4 (Anticipatory) Empathy.
 
@@ -807,16 +807,16 @@ if prediction.impact == "critical":
 
 1. **Start with Level 2**: Implement calibrated questions in your current LLM integration
 2. **Add CollaborationState**: Track user interactions and build trust
-3. **Study our wizards**: See Level 4 in action ([AI_DEVELOPMENT_WIZARDS.md](AI_DEVELOPMENT_WIZARDS.md))
+3. **Study our wizards**: See Level 4 in action in the [Reference section](../reference/wizards.md)
 4. **Build your first anticipatory feature**: Pick one bottleneck to predict
 
 ---
 
 ## Related Resources
 
-- **[Empathy Framework Philosophy](guides/multi-agent-philosophy.md)** - Complete framework documentation
-- **[AI Development Wizards](AI_DEVELOPMENT_WIZARDS.md)** - 7 Level 4 examples
-- **[API Reference](api-reference/index.md)** - Full API documentation
+- **[Attune AI Philosophy](multi-agent-philosophy.md)** - Complete framework documentation
+- **[Wizards Reference](../reference/wizards.md)** - 7 Level 4 examples
+- **[API Reference](../reference/index.md)** - Full API documentation
 
 ---
 
