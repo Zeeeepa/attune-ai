@@ -1,8 +1,8 @@
 ---
-description: Developer Guide - Empathy Framework: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+description: Developer Guide - Attune AI: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
 ---
 
-# Developer Guide - Empathy Framework
+# Developer Guide - Attune AI
 
 **Version:** 4.0.0
 **Last Updated:** January 16, 2026
@@ -126,7 +126,7 @@ attune-ai/
 ├── website/                     # Next.js marketing site
 ├── benchmarks/                  # Performance benchmarks
 └── .claude/                     # Claude Code project instructions
-    └── rules/empathy/           # Coding standards and patterns
+    └── rules/attune/           # Coding standards and patterns
 ```
 
 ### Key Directories Explained
@@ -141,7 +141,7 @@ attune-ai/
 
 ## Coding Standards
 
-**Full Reference:** [`.claude/rules/empathy/coding-standards-index.md`](../.claude/rules/empathy/coding-standards-index.md)
+**Full Reference:** [`.claude/rules/attune/coding-standards-index.md`](../.claude/rules/attune/coding-standards-index.md)
 
 ### Critical Rules (MUST FOLLOW)
 
@@ -624,7 +624,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 
 ## Additional Resources
 
-- **[Coding Standards](../.claude/rules/empathy/coding-standards-index.md)** - Complete coding standards reference
+- **[Coding Standards](../.claude/rules/attune/coding-standards-index.md)** - Complete coding standards reference
 - **[Exception Handling Guide](./EXCEPTION_HANDLING_GUIDE.md)** - Pattern examples
 - **[Testing Patterns](./TESTING_PATTERNS.md)** - Test examples and best practices
 - **[Architecture Overview](./ARCHITECTURE.md)** - System design and components
@@ -642,4 +642,4 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 
 **Last Updated:** January 16, 2026
 **Maintained By:** Engineering Team
-**License:** Fair Source 0.9
+**License:** Apache License 2.0

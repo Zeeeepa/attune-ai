@@ -1,8 +1,8 @@
 ---
-description: Social Media Posts - Empathy Framework v3.6.0: Copy-paste ready content for all platforms.
+description: Social Media Posts - Attune AI v3.6.0: Copy-paste ready content for all platforms.
 ---
 
-# Social Media Posts - Empathy Framework v3.6.0
+# Social Media Posts - Attune AI v3.6.0
 
 Copy-paste ready content for all platforms. Customize as needed.
 
@@ -12,7 +12,7 @@ Copy-paste ready content for all platforms. Customize as needed.
 
 ### Tweet 1 (Main Announcement)
 ```
-🎉 Empathy Framework v3.6.0 is live!
+🎉 Attune AI v3.6.0 is live!
 
 Finally! Error messages that actually help you.
 
@@ -101,7 +101,7 @@ By the numbers:
 🏥 Used in production by healthcare orgs
 🏢 Enterprise deployments
 
-Free for teams ≤5 employees (Fair Source 0.9)
+Free for teams ≤5 employees (Apache License 2.0)
 
 6/7
 ```
@@ -126,9 +126,9 @@ Your feedback makes us better. Let's build together! 🚀
 ## LinkedIn Post (Professional Tone)
 
 ```
-🎯 Empathy Framework v3.6.0: Production-Ready AI Infrastructure
+🎯 Attune AI v3.6.0: Production-Ready AI Infrastructure
 
-I'm excited to announce v3.6.0 of Empathy Framework - a major step forward in developer experience and enterprise readiness.
+I'm excited to announce v3.6.0 of Attune AI - a major step forward in developer experience and enterprise readiness.
 
 **What's New:**
 
@@ -156,7 +156,7 @@ pip install attune-ai[enterprise]  # Full-featured
 ```
 
 Built on proven technologies: Claude, LangChain, CrewAI
-Free for small teams (≤5 employees) under Fair Source 0.9
+Free for small teams (≤5 employees) under Apache License 2.0
 
 Try it today: https://pypi.org/project/attune-ai/3.6.0/
 
@@ -171,14 +171,14 @@ Try it today: https://pypi.org/project/attune-ai/3.6.0/
 
 **Title:**
 ```
-[Release] Empathy Framework v3.6.0 - Error messages that show you exactly what to implement
+[Release] Attune AI v3.6.0 - Error messages that show you exactly what to implement
 ```
 
 **Body:**
 ```
 Hey r/Python!
 
-We just released v3.6.0 of Empathy Framework, and I'm particularly excited about the developer experience improvements.
+We just released v3.6.0 of Attune AI, and I'm particularly excited about the developer experience improvements.
 
 **The Problem We Solved:**
 
@@ -200,7 +200,7 @@ Create a subclass of BaseLinterParser and implement the parse() method.
 See ESLintParser, PylintParser, or MyPyParser for examples.
 ```
 
-**What's Empathy Framework?**
+**What's Attune AI?**
 
 An AI collaboration framework built on top of Claude, LangChain, and CrewAI. It adds:
 - Persistent memory across sessions
@@ -223,7 +223,7 @@ pip install attune-ai[enterprise]  # Backend + auth for teams
 **Stats:**
 - 5,941 tests passing
 - 0 high-severity security issues
-- Free for teams ≤5 employees (Fair Source 0.9)
+- Free for teams ≤5 employees (Apache License 2.0)
 
 Happy to answer any questions!
 ```
@@ -234,12 +234,12 @@ Happy to answer any questions!
 
 **Title:**
 ```
-[P] Empathy Framework v3.6.0 - Multi-model AI framework with 80-96% cost savings via smart tier routing
+[P] Attune AI v3.6.0 - Multi-model AI framework with 80-96% cost savings via smart tier routing
 ```
 
 **Body:**
 ```
-Released v3.6.0 of Empathy Framework - an AI collaboration framework that optimizes for cost and developer experience.
+Released v3.6.0 of Attune AI - an AI collaboration framework that optimizes for cost and developer experience.
 
 **Key Features:**
 
@@ -296,7 +296,7 @@ AMA!
 
 **Title:**
 ```
-Empathy Framework v3.6.0: Open-source AI framework with actually helpful error messages
+Attune AI v3.6.0: Open-source AI framework with actually helpful error messages
 ```
 
 **Body:**
@@ -319,7 +319,7 @@ Create a subclass of BaseLinterParser and implement the parse() method.
 See ESLintParser, PylintParser, or MyPyParser for examples.
 ```
 
-**What is Empathy Framework?**
+**What is Attune AI?**
 
 An AI collaboration framework for Python developers. Think LangChain + persistent memory + cost optimization + production security.
 
@@ -347,7 +347,7 @@ pip install attune-ai[developer]
 ```
 
 **License:**
-Fair Source 0.9 (free for teams ≤5 employees)
+Apache License 2.0 (free for teams ≤5 employees)
 
 Links:
 - PyPI: https://pypi.org/project/attune-ai/3.6.0/
@@ -383,7 +383,7 @@ That's it. No hint about what you need to implement or how to do it. So you spen
 
 **What We Built:**
 
-In v3.6.0 of Empathy Framework, we rewrote all our error messages to be actually helpful:
+In v3.6.0 of Attune AI, we rewrote all our error messages to be actually helpful:
 
 ```python
 NotImplementedError: BaseLinterParser.parse() must be implemented.
@@ -396,7 +396,7 @@ Now you know:
 - What class to extend (`BaseLinterParser`)
 - Where to find examples (`ESLintParser`, `PylintParser`, `MyPyParser`)
 
-**What's Empathy Framework?**
+**What's Attune AI?**
 
 It's an AI framework for Python that helps you build AI-powered tools. Think of it as a helpful assistant for your code.
 
@@ -426,14 +426,14 @@ Happy to answer beginner questions! We built this to be accessible.
 
 **Title:**
 ```
-Show HN: Empathy Framework v3.6.0 – Error messages that show you exactly what to implement
+Show HN: Attune AI v3.6.0 – Error messages that show you exactly what to implement
 ```
 
 **Description:**
 ```
 Hey HN!
 
-We just released v3.6.0 of Empathy Framework with a focus on developer experience. The headline feature: error messages that actually help you.
+We just released v3.6.0 of Attune AI with a focus on developer experience. The headline feature: error messages that actually help you.
 
 **Before:**
 ```
@@ -449,7 +449,7 @@ See ESLintParser, PylintParser, or MyPyParser for examples.
 
 This applies across 5 base classes in the framework. The goal: onboard contributors in minutes instead of hours.
 
-**What's Empathy Framework?**
+**What's Attune AI?**
 
 An AI collaboration framework built on LangChain, CrewAI, and Claude. Key features:
 
@@ -472,7 +472,7 @@ pip install attune-ai[developer]  # Lightweight
 pip install attune-ai[enterprise]  # Full-featured
 ```
 
-**License:** Fair Source 0.9 (free for teams ≤5 employees)
+**License:** Apache License 2.0 (free for teams ≤5 employees)
 
 Links:
 - PyPI: https://pypi.org/project/attune-ai/3.6.0/
@@ -487,7 +487,7 @@ We're a small team (just shipped after an all-nighter!), so feedback is hugely v
 
 **Title:**
 ```
-Empathy Framework v3.6.0: Error Messages That Actually Help You 🎯
+Attune AI v3.6.0: Error Messages That Actually Help You 🎯
 ```
 
 **Tags:** `#python` `#ai` `#opensource` `#devex`
@@ -506,7 +506,7 @@ And then spent 30 minutes reading source code to figure out what you need to imp
 
 ## We Fixed It
 
-In Empathy Framework v3.6.0, we completely rewrote error messages to show you exactly what to do:
+In Attune AI v3.6.0, we completely rewrote error messages to show you exactly what to do:
 
 ```python
 NotImplementedError: BaseLinterParser.parse() must be implemented.
@@ -519,7 +519,7 @@ Now you know:
 - ✅ Which class to extend
 - ✅ Where to find working examples
 
-## What's Empathy Framework?
+## What's Attune AI?
 
 An AI collaboration framework for Python developers. Built on top of:
 - Claude (Anthropic)
@@ -567,7 +567,7 @@ python -m attune.workflows.cli run bug-predict
 - ⭐ GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - 📖 Docs: [link]
 
-Free for teams ≤5 employees (Fair Source 0.9)
+Free for teams ≤5 employees (Apache License 2.0)
 
 ---
 
@@ -585,7 +585,7 @@ v3.6.0 - Security & Compliance Infrastructure
 
 **Body:**
 ```
-# Empathy Framework v3.6.0
+# Attune AI v3.6.0
 
 **Release Date:** January 4, 2026
 
@@ -647,7 +647,7 @@ Built with ❤️ using Claude, LangChain, and CrewAI.
 ## Email Newsletter (If Applicable)
 
 **Subject Line Options:**
-1. "Empathy Framework v3.6.0: Error Messages That Actually Help 🎯"
+1. "Attune AI v3.6.0: Error Messages That Actually Help 🎯"
 2. "New Release: Production-Ready Security + Better Developer Experience"
 3. "v3.6.0 is Live: Onboard Contributors in Minutes Instead of Hours"
 
@@ -655,7 +655,7 @@ Built with ❤️ using Claude, LangChain, and CrewAI.
 ```
 Hi there,
 
-We just shipped Empathy Framework v3.6.0, and I'm excited to share what's new!
+We just shipped Attune AI v3.6.0, and I'm excited to share what's new!
 
 ## Finally! Error Messages That Actually Help You
 
@@ -712,7 +712,7 @@ pip install attune-ai[enterprise]  # Full-featured for teams
 - ⭐ GitHub: https://github.com/Smart-AI-Memory/attune-ai
 - 📖 Docs: [link]
 
-Free for teams ≤5 employees (Fair Source 0.9)
+Free for teams ≤5 employees (Apache License 2.0)
 
 ---
 
@@ -729,7 +729,7 @@ P.S. Want to contribute? We made it easier than ever with our new error messages
 ## Discord/Slack Announcement (If Applicable)
 
 ```
-🎉 **Empathy Framework v3.6.0 is Live!**
+🎉 **Attune AI v3.6.0 is Live!**
 
 **What's New:**
 

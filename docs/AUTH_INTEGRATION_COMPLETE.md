@@ -1,5 +1,5 @@
 ---
-description: Authentication Strategy Integration - Complete integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Authentication Strategy Integration - Complete integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Authentication Strategy Integration - Complete

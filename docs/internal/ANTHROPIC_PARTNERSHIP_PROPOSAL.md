@@ -1,9 +1,9 @@
 ---
-description: Anthropic Partnership Proposal: ## Empathy Framework x Claude **Date:** December 2025 **From:** Patrick Roebuck, Founder - Smart AI Memory, LLC **To:** Anthropi
+description: Anthropic Partnership Proposal: ## Attune AI x Claude **Date:** December 2025 **From:** Patrick Roebuck, Founder - Smart AI Memory, LLC **To:** Anthropi
 ---
 
 # Anthropic Partnership Proposal
-## Empathy Framework x Claude
+## Attune AI x Claude
 
 **Date:** December 2025
 **From:** Patrick Roebuck, Founder - Smart AI Memory, LLC
@@ -14,13 +14,13 @@ description: Anthropic Partnership Proposal: ## Empathy Framework x Claude **Dat
 
 ## Executive Summary
 
-The **Empathy Framework** is an open-source AI collaboration framework that demonstrates Level 4 Anticipatory AI in production. **Created in consultation with Claude Sonnet 4.5 using Claude Code** (Anthropic's official developer tool), it showcases Claude Code's capabilities in code analysis, anticipatory reasoning, and developer productivity.
+The **Attune AI** is an open-source AI collaboration framework that demonstrates Level 4 Anticipatory AI in production. **Created in consultation with Claude Sonnet 4.5 using Claude Code** (Anthropic's official developer tool), it showcases Claude Code's capabilities in code analysis, anticipatory reasoning, and developer productivity.
 
-**Partnership Opportunity:** Establish Empathy Framework as a flagship example of Claude Code's enterprise capabilities while maintaining a non-exclusive, mutually beneficial relationship.
+**Partnership Opportunity:** Establish Attune AI as a flagship example of Claude Code's enterprise capabilities while maintaining a non-exclusive, mutually beneficial relationship.
 
 ---
 
-## What is the Empathy Framework?
+## What is the Attune AI?
 
 A five-level maturity model for AI-human collaboration that progresses from reactive responses to anticipatory problem prevention:
 
@@ -34,7 +34,7 @@ A five-level maturity model for AI-human collaboration that progresses from reac
 
 **Current Status:**
 - 46+ specialized wizards (software + healthcare + AI development)
-- Fair Source 0.9 open source core
+- Apache License 2.0 open source core
 - Production-ready with one-click deployment
 - Commercial IDE extensions (JetBrains, VS Code)
 
@@ -66,14 +66,14 @@ A five-level maturity model for AI-human collaboration that progresses from reac
 
 ### 1. Enterprise Showcase
 **Problem:** Enterprises need proof that Claude Code can handle production workloads
-**Solution:** Empathy Framework demonstrates:
+**Solution:** Attune AI demonstrates:
 - 200K context windows for large codebase analysis
 - Prompt caching reducing costs by 90%
 - Level 4 Anticipatory reasoning in production
 - Healthcare + software domains (regulated industries)
 
 ### 2. Developer Adoption
-**Empathy Framework reaches developers where they work:**
+**Attune AI reaches developers where they work:**
 - JetBrains Marketplace (IntelliJ, PyCharm, WebStorm users)
 - VS Code Marketplace (largest developer community)
 - Pre-commit hooks (automatic daily usage)
@@ -92,7 +92,7 @@ A five-level maturity model for AI-human collaboration that progresses from reac
 | Multi-turn conversations | Iterative code refinement | "Collaborative debugging sessions" |
 
 ### 4. Open Source Halo Effect
-**Framework is Fair Source 0.9 with commercial extensions:**
+**Framework is Apache License 2.0 with commercial extensions:**
 - Developers adopt free tier (builds Claude mindshare)
 - Upgrade to Pro tier (ongoing Claude API usage)
 - Enterprises buy Business tier (high-value accounts)
@@ -166,12 +166,12 @@ We seek a **technical partnership with promotional benefits**, NOT exclusivity:
 
 ## Revenue Model (Framework, Not Partnership)
 
-**Empathy Framework has sustainable business model:**
+**Attune AI has sustainable business model:**
 
 ### Tier Structure:
 
 **Free Tier** (Open Source):
-- Complete framework (Fair Source 0.9)
+- Complete framework (Apache License 2.0)
 - All 46 wizards
 - Supports all LLM providers
 - Community support
@@ -213,7 +213,7 @@ We seek a **technical partnership with promotional benefits**, NOT exclusivity:
 
 ## Competitive Landscape
 
-### How Empathy Framework Positions Claude:
+### How Attune AI Positions Claude:
 
 | Competitor | Their Approach | Claude + Empathy Advantage |
 |------------|---------------|---------------------------|
@@ -275,7 +275,7 @@ We seek a **technical partnership with promotional benefits**, NOT exclusivity:
 
 ### Win-Win Scenario:
 - **Anthropic gets:** Flagship showcase, developer adoption, enterprise validation
-- **Empathy Framework gets:** Technical support, promotional lift, API credits
+- **Attune AI gets:** Technical support, promotional lift, API credits
 - **Developers get:** Best-in-class tools regardless of LLM choice
 
 ---
@@ -338,7 +338,7 @@ result = await claude.analyze_large_codebase(
 - Compliance requirements (HIPAA, SOC 2) demand quality
 - Clinical documentation is regulated ($$$ value)
 
-**Empathy Framework's Healthcare Components:**
+**Attune AI's Healthcare Components:**
 1. **18 Clinical Documentation Wizards**
    - SBAR, SOAP, Care Plans, Compliance
    - Integrated with Epic EHR systems
@@ -355,7 +355,7 @@ result = await claude.analyze_large_codebase(
 - Complex reasoning for clinical decision support
 - Constitutional AI for ethical healthcare applications
 
-**Partnership angle:** "Claude + Empathy Framework for Healthcare AI"
+**Partnership angle:** "Claude + Attune AI for Healthcare AI"
 
 ---
 
@@ -418,7 +418,7 @@ Website: https://smartaimemory.com
 
 ## Conclusion
 
-The Empathy Framework and Claude share a vision: **AI that anticipates needs and prevents problems, not just responds to requests.**
+The Attune AI and Claude share a vision: **AI that anticipates needs and prevents problems, not just responds to requests.**
 
 This partnership offers Anthropic:
 - ✅ Enterprise showcase for Claude's capabilities

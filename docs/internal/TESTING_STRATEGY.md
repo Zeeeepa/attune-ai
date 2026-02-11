@@ -1,12 +1,12 @@
 ---
-description: Testing Strategy for Empathy Framework: ## Overview The Empathy Framework maintains a high standard of test coverage with an overall coverage rate of **90.71%**
+description: Testing Strategy for Attune AI: ## Overview The Attune AI maintains a high standard of test coverage with an overall coverage rate of **90.71%**
 ---
 
-# Testing Strategy for Empathy Framework
+# Testing Strategy for Attune AI
 
 ## Overview
 
-The Empathy Framework maintains a high standard of test coverage with an overall coverage rate of **90.71%**. This document outlines our testing approach, goals, types, and best practices.
+The Attune AI maintains a high standard of test coverage with an overall coverage rate of **90.71%**. This document outlines our testing approach, goals, types, and best practices.
 
 ## Coverage Goals
 

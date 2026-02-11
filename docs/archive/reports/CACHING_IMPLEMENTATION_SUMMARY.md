@@ -13,7 +13,7 @@ description: Caching Implementation Summary - Track 4, Phase 2: **Date:** Januar
 
 ## Executive Summary
 
-Successfully implemented strategic caching for expensive operations in the Empathy Framework. This quick win implementation provides immediate performance gains (~46% scan time reduction) while laying groundwork for future optimizations.
+Successfully implemented strategic caching for expensive operations in the Attune AI. This quick win implementation provides immediate performance gains (~46% scan time reduction) while laying groundwork for future optimizations.
 
 **Key Achievements:**
 - ✅ Enhanced CacheMonitor with health analysis capabilities
@@ -521,7 +521,7 @@ All documentation is inline and comprehensive:
 - `/Users/patrickroebuck/empathy_11_6_2025/Empathy-framework/src/attune/cache_stats.py` - Health analysis
 
 ### Framework Standards
-- Follow `.claude/rules/empathy/coding-standards-index.md`
+- Follow `.claude/rules/attune/coding-standards-index.md`
 - Use `_validate_file_path()` for file operations
 - Maintain 80%+ test coverage
 - Type hints required on all public APIs

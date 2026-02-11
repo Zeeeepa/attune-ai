@@ -1,6 +1,6 @@
 # Acknowledgments
 
-## Empathy Framework Enhancement Contributors
+## Attune AI Enhancement Contributors
 
 ### Hook System & Markdown Agent Format
 
@@ -24,7 +24,7 @@ Affaan's repository represents 10+ months of battle-tested Claude Code configura
 | Context compaction | CompactionStateManager with SBAR handoff preservation |
 | Continuous learning | SessionEvaluator and PatternExtractor for knowledge retention |
 
-Our implementation is original Python code designed to integrate with Empathy Framework's existing architecture (LangGraph, Pydantic, multi-tier model routing), but the conceptual patterns we learned from Affaan's work were invaluable.
+Our implementation is original Python code designed to integrate with Attune AI's existing architecture (LangGraph, Pydantic, multi-tier model routing), but the conceptual patterns we learned from Affaan's work were invaluable.
 
 #### License
 

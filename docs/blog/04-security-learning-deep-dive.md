@@ -159,7 +159,7 @@ SCAN WITH LEARNING:
 
 ## Real Results From Our Codebase
 
-We ran security learning on the Empathy Framework repository:
+We ran security learning on the Attune AI repository:
 
 ```
 --- Scan WITHOUT Learning ---

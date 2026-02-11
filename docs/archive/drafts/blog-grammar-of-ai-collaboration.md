@@ -250,8 +250,8 @@ This is Part 1 of a 4-part series on the Grammar of AI Collaboration:
 
 ---
 
-*The code for this article is available in [Empathy Framework v4.4.0](https://github.com/Smart-AI-Memory/empathy) on GitHub.*
+*The code for this article is available in [Attune AI v4.4.0](https://github.com/Smart-AI-Memory/empathy) on GitHub.*
 
-*Patrick Roebuck is the creator of the Empathy Framework. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
+*Patrick Roebuck is the creator of the Attune AI. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
 
 **Tags:** ai-agents, multi-agent-systems, orchestration, dynamic-composition, llm

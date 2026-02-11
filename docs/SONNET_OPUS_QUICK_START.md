@@ -1,15 +1,15 @@
 ---
-description: Sonnet 4.5 → Opus 4.5 Quick Start Guide: **Updated:** January 9, 2026 **Empathy Framework v3.9.2+** ## What Changed? The Empathy Framework now uses **Claude Son
+description: Sonnet 4.5 → Opus 4.5 Quick Start Guide: **Updated:** January 9, 2026 **Attune AI v3.9.2+** ## What Changed? The Attune AI now uses **Claude Son
 ---
 
 # Sonnet 4.5 → Opus 4.5 Quick Start Guide
 
 **Updated:** January 9, 2026
-**Empathy Framework v3.9.2+**
+**Attune AI v3.9.2+**
 
 ## What Changed?
 
-The Empathy Framework now uses **Claude Sonnet 4.5** as the default CAPABLE tier model with intelligent fallback to **Opus 4.5** when needed.
+The Attune AI now uses **Claude Sonnet 4.5** as the default CAPABLE tier model with intelligent fallback to **Opus 4.5** when needed.
 
 **Result:** Up to **80% cost savings** while maintaining high quality.
 

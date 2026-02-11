@@ -3,7 +3,7 @@
 Code Analysis Wizard - Interactive Setup and Usage Guide
 
 A friendly, step-by-step wizard to help new users get started with
-the Deep Study AI code analysis system.
+the Smart AI Memory code analysis system.
 """
 
 import os
@@ -83,7 +83,7 @@ class CodeAnalysisWizard:
 
     def welcome(self):
         """Display welcome message"""
-        self.print_header("🚀 Welcome to Deep Study AI Code Analysis Wizard")
+        self.print_header("🚀 Welcome to Smart AI Memory Code Analysis Wizard")
 
         print(f"{Colors.BOLD}What can this wizard do for you?{Colors.ENDC}\n")
         print("  • Analyze your code for bugs and security issues")
@@ -352,7 +352,7 @@ class CodeAnalysisWizard:
         print("   • ./venv/bin/python analyze_code.py <file>")
         print("   • ./venv/bin/python cleanup_code.py <directory>\n")
 
-        print("3. 🎓 Learn about Layer 5 Empathy Framework:")
+        print("3. 🎓 Learn about Layer 5 Attune AI:")
         print("   • LAYER5_EMPATHY_FRAMEWORK.md - Personalized learning\n")
 
         print("4. ⚡ Create shortcuts:")

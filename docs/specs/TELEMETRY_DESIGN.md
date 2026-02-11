@@ -148,7 +148,7 @@ Each line is a JSON object representing one LLM call:
 
 **Output**:
 ```
-Empathy Framework Telemetry Report
+Attune AI Telemetry Report
 Period: Last 7 days (Jan 1-7, 2026)
 
 📊 Usage Summary

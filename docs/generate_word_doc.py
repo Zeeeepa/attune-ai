@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Word document from the non-technical Empathy Framework guide"""
+"""Generate Word document from the non-technical Attune AI guide"""
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -17,7 +17,7 @@ def create_empathy_framework_doc():
     font.size = Pt(11)
 
     # Title Page
-    title = doc.add_heading("The Empathy Framework for AI Systems", 0)
+    title = doc.add_heading("The Attune AI for AI Systems", 0)
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     subtitle = doc.add_paragraph("A Guide for Non-Technical Readers")
@@ -62,7 +62,7 @@ def create_empathy_framework_doc():
     doc.add_heading("The Big Idea in One Sentence", 1)
     doc.add_paragraph(
         "Most AI tools are like a vending machine—you put in a request, you get back an answer. "
-        "The Empathy Framework teaches AI to act more like a great teaching assistant who "
+        "The Attune AI teaches AI to act more like a great teaching assistant who "
         "anticipates what you need before you ask.",
     )
 
@@ -86,7 +86,7 @@ def create_empathy_framework_doc():
     p.add_run("You have to ask for everything. Every. Single. Time.")
 
     # Assistant B
-    doc.add_heading("Assistant B (What's possible with the Empathy Framework)", 2)
+    doc.add_heading("Assistant B (What's possible with the Attune AI)", 2)
     p = doc.add_paragraph()
     p.add_run("You walk into the classroom").italic = True
 
@@ -202,7 +202,7 @@ def create_empathy_framework_doc():
 
     doc.add_heading("The Fundamental Difference", 2)
     doc.add_paragraph("Traditional AI: Makes work faster")
-    doc.add_paragraph("Empathy Framework (Level 4): Makes work unnecessary")
+    doc.add_paragraph("Attune AI (Level 4): Makes work unnecessary")
     doc.add_paragraph()
     doc.add_paragraph("Not 20-30% improvement → 200-400% improvement")
 
@@ -225,7 +225,7 @@ def create_empathy_framework_doc():
     p.add_run("Time per patient: ").bold = True
     p.add_run("5-7 minutes of clicking and requesting")
 
-    doc.add_heading("Empathy Framework Way (Level 3-4)", 2)
+    doc.add_heading("Attune AI Way (Level 3-4)", 2)
 
     p = doc.add_paragraph()
     p.add_run("Level 3:").bold = True
@@ -292,7 +292,7 @@ def create_empathy_framework_doc():
         ),
         (
             "This sounds expensive or complicated",
-            "The Empathy Framework is open source and free to use. It's a design philosophy, not a "
+            "The Attune AI is open source and free to use. It's a design philosophy, not a "
             "proprietary product—like teaching musical theory.",
         ),
         (
@@ -321,7 +321,7 @@ def create_empathy_framework_doc():
     doc.add_heading("What most AI does:", 2)
     doc.add_paragraph("Answers questions faster")
 
-    doc.add_heading("What the Empathy Framework does:", 2)
+    doc.add_heading("What the Attune AI does:", 2)
     bullets = [
         "Predicts the questions you'll have tomorrow",
         "Solves the problems you haven't encountered yet",
@@ -362,7 +362,7 @@ def create_empathy_framework_doc():
     doc.add_heading("About This Document", 1)
 
     about_items = [
-        ("Purpose", "Explain the Empathy Framework to non-technical readers"),
+        ("Purpose", "Explain the Attune AI to non-technical readers"),
         ("Target Audience", "College-educated professionals without programming background"),
         ("License", "Apache License 2.0"),
         ("Copyright", "© 2025 Smart AI Memory, LLC"),
@@ -376,8 +376,8 @@ def create_empathy_framework_doc():
     doc.add_paragraph()
     doc.add_heading("For More Information:", 2)
     links = [
-        "Technical documentation: https://github.com/Deep-Study-AI/Empathy",
-        "AI Nurse Florence demo: https://github.com/Deep-Study-AI/ai-nurse-florence",
+        "Technical documentation: https://github.com/Smart-AI-Memory/attune-ai",
+        "AI Nurse Florence demo: https://github.com/Smart-AI-Memory/ai-nurse-florence",
         "Contact: patrick.roebuck@smartaimemory.com",
     ]
     for link in links:

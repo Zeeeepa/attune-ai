@@ -1,10 +1,10 @@
 ---
-description: Empathy Framework CLI Guide API reference: The Empathy Framework includes a command-line tool for managing configurations, pattern libraries, m
+description: Attune AI CLI Guide API reference: The Attune AI includes a command-line tool for managing configurations, pattern libraries, m
 ---
 
-# Empathy Framework CLI Guide
+# Attune AI CLI Guide
 
-The Empathy Framework includes a command-line tool for managing configurations, pattern libraries, metrics, and state.
+The Attune AI includes a command-line tool for managing configurations, pattern libraries, metrics, and state.
 
 ## Installation
 
@@ -15,7 +15,7 @@ pip install attune-ai
 Or for development:
 
 ```bash
-git clone https://github.com/Deep-Study-AI/Empathy.git
+git clone https://github.com/Smart-AI-Memory/attune-ai.git
 cd Empathy
 pip install -e .
 ```
@@ -32,9 +32,9 @@ attune-ai version
 
 Output:
 ```
-Empathy Framework v1.0.0
+Attune AI v1.0.0
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 ```
 
 ---
@@ -100,7 +100,7 @@ attune-ai info --config my-config.yml
 
 Output:
 ```
-=== Empathy Framework Info ===
+=== Attune AI Info ===
 
 Configuration:
   User ID: alice
@@ -979,7 +979,7 @@ empathy-sync-claude --verbose
 **Output structure:**
 
 ```
-.claude/rules/empathy/
+.claude/rules/attune/
 ├── bug-patterns.md          # From patterns/debugging/
 ├── security-decisions.md    # From patterns/security/
 ├── tech-debt-hotspots.md    # From patterns/tech_debt/
@@ -1025,7 +1025,7 @@ empathy patterns list             # List patterns
 empathy patterns resolve <id>     # Mark bug as resolved
 
 # Claude Code Sync
-empathy-sync-claude               # Sync to .claude/rules/empathy/
+empathy-sync-claude               # Sync to .claude/rules/attune/
 empathy-sync-claude --watch       # Auto-sync on changes
 ```
 

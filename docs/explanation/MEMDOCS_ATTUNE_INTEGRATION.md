@@ -1,18 +1,18 @@
 ---
-description: MemDocs + Empathy Framework Integration: Transformative Development Showcase integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: MemDocs + Attune AI Integration: Transformative Development Showcase integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
-# MemDocs + Empathy Framework Integration: Transformative Development Showcase
+# MemDocs + Attune AI Integration: Transformative Development Showcase
 
 **Date**: January 2025
-**Project**: Empathy Framework v1.6.1
-**Development Stack**: Claude Code + MemDocs + Empathy Framework
+**Project**: Attune AI v1.6.1
+**Development Stack**: Claude Code + MemDocs + Attune AI
 
 ---
 
 ## Executive Summary
 
-This document showcases how **MemDocs** (intelligent document memory) and the **Empathy Framework** (5-level AI maturity model) work together to create **Level 4-5 Anticipatory Development**. Using **Claude Code** as the AI development environment, this stack demonstrates **200-400% productivity gains** through context preservation, pattern learning, and anticipatory assistance.
+This document showcases how **MemDocs** (intelligent document memory) and the **Attune AI** (5-level AI maturity model) work together to create **Level 4-5 Anticipatory Development**. Using **Claude Code** as the AI development environment, this stack demonstrates **200-400% productivity gains** through context preservation, pattern learning, and anticipatory assistance.
 
 **Key Achievements from This Project**:
 - **32.19% → 83.13% test coverage** in systematic phases (2.6x increase)
@@ -56,8 +56,8 @@ This document showcases how **MemDocs** (intelligent document memory) and the **
 - Semantic search and retrieval
 - Decision history tracking
 
-### Empathy Framework
-The **[Empathy Framework](https://github.com/Smart-AI-Memory/empathy)** is a 5-level maturity model for AI-human collaboration:
+### Attune AI
+The **[Attune AI](https://github.com/Smart-AI-Memory/empathy)** is a 5-level maturity model for AI-human collaboration:
 - **Level 1 (Reactive)**: Help after being asked
 - **Level 2 (Guided)**: Collaborative exploration with clarifying questions
 - **Level 3 (Proactive)**: Act before being asked based on patterns
@@ -67,7 +67,7 @@ The **[Empathy Framework](https://github.com/Smart-AI-Memory/empathy)** is a 5-l
 ### The Transformative Stack
 
 ```
-Claude Code + MemDocs + Empathy Framework = Level 4-5 Development
+Claude Code + MemDocs + Attune AI = Level 4-5 Development
 
 Claude Code:     Provides Level 4 anticipatory AI assistance
 MemDocs:         Maintains architectural context across sessions
@@ -167,7 +167,7 @@ Result: Structured path instead of ad-hoc scrambling
 
 ## Real Measured Results
 
-### This Project: Empathy Framework v1.6.1
+### This Project: Attune AI v1.6.1
 
 **Timeline**: Phase 5 Comprehensive Testing (Weeks 4-8, Q1 2025)
 
@@ -355,7 +355,7 @@ Shall I proceed with GOVERNANCE.md?"
 ### Installation
 
 ```bash
-# Install Empathy Framework with MemDocs integration
+# Install Attune AI with MemDocs integration
 pip install attune-ai[memdocs]
 
 # Or install separately
@@ -368,7 +368,7 @@ pip install attune-ai[dev]  # Includes testing, linting, docs
 
 ### Configuration
 
-**pyproject.toml** - Empathy Framework:
+**pyproject.toml** - Attune AI:
 ```toml
 [project]
 name = "empathy"
@@ -384,7 +384,7 @@ memdocs = [
 **MemDocs Configuration**:
 ```python
 # .memdocs/config.yaml
-project_name: "Empathy Framework"
+project_name: "Attune AI"
 memory_type: "persistent"
 embedding_model: "text-embedding-3-small"
 
@@ -457,7 +457,7 @@ npm install -g @anthropic-ai/claude-code
 # Claude Code (VS Code Extension)
 # Install from VS Code marketplace: "Claude Code"
 
-# Empathy Framework + MemDocs
+# Attune AI + MemDocs
 pip install attune-ai[memdocs,dev]
 
 # Verify installations
@@ -544,7 +544,8 @@ Result: 50.94pp gain in ~47 hours vs. 105+ hours traditional
 ```
 
 **Files**:
-- Plan: [docs/COVERAGE_ANALYSIS.md](COVERAGE_ANALYSIS.md)
+
+- Plan: [Coverage Analysis](../internal/COVERAGE_ANALYSIS.md)
 - Progress: MemDocs tracks each phase completion
 - Tests: 360 comprehensive tests added
 
@@ -611,7 +612,7 @@ Traditional AI tools (Copilot, ChatGPT) provide **linear productivity improvemen
 - 10 tasks → saves 10X minutes
 - **Gain: 20-30%**
 
-Empathy Framework + MemDocs provides **exponential productivity improvements**:
+Attune AI + MemDocs provides **exponential productivity improvements**:
 - AI prevents bottleneck → saves weeks of future pain
 - AI designs framework (Level 5) → saves infinite future effort
 - **Gain: 200-400%**
@@ -752,7 +753,7 @@ memdocs archive --older-than 30days
 
 1. **MemDocs Multi-Project Learning**
    - Share patterns across projects
-   - "Trajectory testing pattern from Empathy Framework applied to Project X"
+   - "Trajectory testing pattern from Attune AI applied to Project X"
 
 2. **Enhanced Claude Code Integration**
    - Direct MemDocs API calls from Claude Code
@@ -776,14 +777,14 @@ memdocs archive --older-than 30days
 
 6. **Enterprise Integration**
    - MemDocs as team knowledge base
-   - Empathy Framework for organization-wide AI governance
+   - Attune AI for organization-wide AI governance
    - Consistent development patterns across teams
 
 ---
 
 ## Conclusion
 
-The **Claude Code + MemDocs + Empathy Framework** stack represents a fundamental shift from **transactional AI assistance** (Level 1-2) to **anticipatory AI collaboration** (Level 4-5).
+The **Claude Code + MemDocs + Attune AI** stack represents a fundamental shift from **transactional AI assistance** (Level 1-2) to **anticipatory AI collaboration** (Level 4-5).
 
 **Key Takeaways**:
 
@@ -806,16 +807,15 @@ The **Claude Code + MemDocs + Empathy Framework** stack represents a fundamental
 
 ## Resources
 
-- **Empathy Framework**: [https://github.com/Smart-AI-Memory/empathy](https://github.com/Smart-AI-Memory/empathy)
+- **Attune AI**: [https://github.com/Smart-AI-Memory/empathy](https://github.com/Smart-AI-Memory/empathy)
 - **MemDocs**: [https://github.com/Smart-AI-Memory/memdocs](https://github.com/Smart-AI-Memory/memdocs)
 - **Claude Code**: [https://claude.ai/claude-code](https://claude.ai/claude-code)
-- **Book**: [Get the Book](get-the-book.md)
-- **Coverage Analysis**: [COVERAGE_ANALYSIS.md](COVERAGE_ANALYSIS.md)
-- **OpenSSF Preparation**: [OPENSSF_BADGE_PREPARATION.md](OPENSSF_BADGE_PREPARATION.md)
+- **Coverage Analysis**: [Coverage Analysis](../internal/COVERAGE_ANALYSIS.md)
+- **OpenSSF Preparation**: [OpenSSF Badge Preparation](../internal/OPENSSF_BADGE_PREPARATION.md)
 
 ---
 
 **Generated**: January 2025
 **Version**: 1.0
 **Maintained By**: Smart AI Memory, LLC
-**License**: Fair Source 0.9 (Documentation: CC BY 4.0)
+**License**: Apache License 2.0 (Documentation: CC BY 4.0)

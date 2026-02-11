@@ -8,7 +8,7 @@ The Session Status Assistant solves this problem by proactively briefing you whe
 
 ## The Philosophy Behind It
 
-The Session Status Assistant embodies a core principle of the Empathy Framework: **anticipatory collaboration**. Rather than waiting for you to ask "what should I work on?", the system proactively surfaces what matters most.
+The Session Status Assistant embodies a core principle of the Attune AI: **anticipatory collaboration**. Rather than waiting for you to ask "what should I work on?", the system proactively surfaces what matters most.
 
 This represents Level 4 empathy in action - the system:
 1. **Remembers** your last interaction
@@ -192,4 +192,4 @@ The goal is not to replace developer judgment, but to augment it - handling the 
 
 ---
 
-*The Session Status Assistant was introduced in Empathy Framework v2.1.5*
+*The Session Status Assistant was introduced in Attune AI v2.1.5*

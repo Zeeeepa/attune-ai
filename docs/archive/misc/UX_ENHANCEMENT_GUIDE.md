@@ -4,7 +4,7 @@ description: Developer Guide: User Experience Enhancements: Step-by-step tutoria
 
 # Developer Guide: User Experience Enhancements
 
-This document outlines the technical implementation plan for the proposed user experience enhancements to the Empathy Framework.
+This document outlines the technical implementation plan for the proposed user experience enhancements to the Attune AI.
 
 ## 1. Command-Line Interface (CLI) Enhancements
 
@@ -41,7 +41,7 @@ This document outlines the technical implementation plan for the proposed user e
     import yaml
 
     # ... inside the init command ...
-    typer.echo("Welcome to Empathy Framework! Let's set up your configuration.")
+    typer.echo("Welcome to Attune AI! Let's set up your configuration.")
 
     provider = typer.prompt(
         "Which model provider will you use primarily?",
@@ -164,7 +164,7 @@ This document outlines the technical implementation plan for the proposed user e
     *   **Extension to WebView:** The extension sends the initial data (e.g., list of functions from the `test-gen` `analyze` stage) to the WebView using `webview.postMessage()`.
     *   **WebView to Extension:** The WebView sends user actions (e.g., button clicks) back to the extension using the `acquireVsCodeApi()` and listening for messages in `webview.onDidReceiveMessage()`.
 
-4. **Trigger Workflow:** When the extension receives the 'generate' message from the WebView, it executes the Empathy Framework workflow with the selected targets.
+4. **Trigger Workflow:** When the extension receives the 'generate' message from the WebView, it executes the Attune AI workflow with the selected targets.
 
 ### 2.2. Deeper Editor Integration with Diagnostics
 

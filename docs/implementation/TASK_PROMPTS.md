@@ -467,7 +467,7 @@ Each prompt is self-contained and can be given to Claude Code to execute.
   </objective>
 
   <context>
-    <security-policies source=".claude/rules/empathy/coding-standards-index.md">
+    <security-policies source=".claude/rules/attune/coding-standards-index.md">
       CRITICAL rules to enforce:
       1. NEVER use eval() or exec() — CWE-95
       2. NEVER write to /etc, /sys, /proc, /dev — CWE-22
@@ -867,7 +867,7 @@ Each prompt is self-contained and can be given to Claude Code to execute.
       </focus>
       <tools>Read, Grep, Glob only — no write access</tools>
       <context-injection>
-        Include content from .claude/rules/empathy/coding-standards-index.md
+        Include content from .claude/rules/attune/coding-standards-index.md
         so the agent knows the project's specific security rules.
       </context-injection>
     </file>

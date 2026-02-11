@@ -1031,8 +1031,8 @@ def test_memory_batch_stash_performance():
 
 ## References
 
-- [Advanced Optimization Plan](.claude/rules/empathy/advanced-optimization-plan.md)
-- [List Copy Guidelines](.claude/rules/empathy/list-copy-guidelines.md)
+- [Advanced Optimization Plan](.claude/rules/attune/advanced-optimization-plan.md)
+- [List Copy Guidelines](.claude/rules/attune/list-copy-guidelines.md)
 - [Python Performance Tips](https://wiki.python.org/moin/PythonSpeed/PerformanceTips)
 - [functools.lru_cache Documentation](https://docs.python.org/3/library/functools.html#functools.lru_cache)
 - [Redis Pipelining](https://redis.io/docs/manual/pipelining/)

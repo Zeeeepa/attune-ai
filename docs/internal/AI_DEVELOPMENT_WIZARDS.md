@@ -6,7 +6,7 @@ description: Development guidelines for AI Development Wizards - Level 4 Anticip
 
 ## Overview
 
-These wizards demonstrate **Level 4 Anticipatory Empathy specifically for programmers training and working with AI**. They embody the core insight from our experience developing the Empathy Framework:
+These wizards demonstrate **Level 4 Anticipatory Empathy specifically for programmers training and working with AI**. They embody the core insight from our experience developing the Attune AI:
 
 > "I had a theory: what if AI collaboration could progress through empathy levels? When it worked, the impact was more profound than anticipated."
 
@@ -274,7 +274,7 @@ for prediction in result['predictions']:
 - **Concrete examples**: Shows Level 4 empathy in action
 - **Relatable domain**: Every programmer trains/uses AI
 - **Immediate value**: Readers can apply today
-- **Meta-demonstration**: Using Empathy Framework to improve AI collaboration
+- **Meta-demonstration**: Using Attune AI to improve AI collaboration
 
 ---
 
@@ -293,7 +293,7 @@ They honestly share:
 
 ---
 
-## Integration with Empathy Framework
+## Integration with Attune AI
 
 These wizards are **meta-applications** of the framework:
 
@@ -324,7 +324,7 @@ All four will implement `BaseWizard` interface and operate at **Level 4 (Anticip
 
 ## Next Steps
 
-1. **Test on real projects**: Run these wizards on the Empathy Framework codebase itself
+1. **Test on real projects**: Run these wizards on the Attune AI codebase itself
 2. **Gather metrics**: Track how often alerts prove accurate
 3. **Refine thresholds**: Adjust based on real-world feedback
 4. **Add more wizards**: Agent orchestration, multi-model coordination, RAG patterns

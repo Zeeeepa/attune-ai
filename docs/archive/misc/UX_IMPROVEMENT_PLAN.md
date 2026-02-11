@@ -186,7 +186,7 @@ $ empathy meta-workflow run test_creation_management_workflow --stream
 
 #### Option A: Web Dashboard (Best UX)
 ```
-┌─ Empathy Framework - Meta-Workflows ──────────────────┐
+┌─ Attune AI - Meta-Workflows ──────────────────┐
 │                                                        │
 │  📋 Available Templates                                │
 │  ┌──────────────────────────────────────────────────┐ │

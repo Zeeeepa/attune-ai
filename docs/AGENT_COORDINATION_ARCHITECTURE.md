@@ -12,7 +12,7 @@ description: Agent Coordination Architecture - TTL & Telemetry Patterns: System 
 
 ## Executive Summary
 
-This document proposes innovative patterns for using TTL (Time-To-Live) and telemetry to enhance coordination and communication between agents, LLMs, and humans in the Empathy Framework.
+This document proposes innovative patterns for using TTL (Time-To-Live) and telemetry to enhance coordination and communication between agents, LLMs, and humans in the Attune AI.
 
 **Key Innovation:** Treat Redis memory as a **communication bus** rather than just storage, using TTL-based keys as ephemeral signals and telemetry as real-time coordination feedback.
 

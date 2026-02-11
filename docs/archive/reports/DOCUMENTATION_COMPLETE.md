@@ -355,7 +355,7 @@ Before considering documentation "done":
 
 ### Announcement
 
-**Blog Post Title:** "Empathy Framework v4.0: Now with Public APIs and Comprehensive Documentation"
+**Blog Post Title:** "Attune AI v4.0: Now with Public APIs and Comprehensive Documentation"
 
 **Key Messages:**
 1. Meta-orchestration system fully documented

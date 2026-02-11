@@ -4,9 +4,9 @@ description: XML-Enhanced Prompts Implementation Guide: Step-by-step tutorial wi
 
 # XML-Enhanced Prompts Implementation Guide
 
-**Empathy Framework v3.7.0 - XML Schema v1.0**
+**Attune AI v3.7.0 - XML Schema v1.0**
 
-This guide shows how to use XML-enhanced prompts across Empathy Framework components for improved reliability, clarity, and performance with Claude API.
+This guide shows how to use XML-enhanced prompts across Attune AI components for improved reliability, clarity, and performance with Claude API.
 
 ---
 
@@ -703,13 +703,13 @@ instructions=[
 ## References
 
 - [Claude API Extended Thinking](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags)
-- [Empathy Framework Workflows](src/attune/workflows/)
+- [Attune AI Workflows](src/attune/workflows/)
 - [CrewAI Integration Guide](CREW_INTEGRATION_GUIDE.md)
 - [XML Enhancement Status](XML_ENHANCEMENT_STATUS.md)
 
 ---
 
 **Last Updated**: 2026-01-05
-**Empathy Framework Version**: v3.7.0
+**Attune AI Version**: v3.7.0
 **XML Schema Version**: 1.0
-**Maintainer**: Empathy Framework Team
+**Maintainer**: Attune AI Team

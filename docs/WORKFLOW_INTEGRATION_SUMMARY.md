@@ -1,5 +1,5 @@
 ---
-description: Workflow Integration Summary - Pattern 1 & 2 integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Workflow Integration Summary - Pattern 1 & 2 integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Workflow Integration Summary - Pattern 1 & 2

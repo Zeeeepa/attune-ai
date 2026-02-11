@@ -1,10 +1,10 @@
 ---
-description: Caching Documentation: Complete guide to Empathy Framework's intelligent response caching system (v3.8.0+).
+description: Caching Documentation: Complete guide to Attune AI's intelligent response caching system (v3.8.0+).
 ---
 
 # Caching Documentation
 
-Complete guide to Empathy Framework's intelligent response caching system (v3.8.0+).
+Complete guide to Attune AI's intelligent response caching system (v3.8.0+).
 
 ## 📚 Documentation Index
 
@@ -161,7 +161,7 @@ cp ~/.empathy/cache/responses.json ~/.empathy/cache/responses.backup
 
 ### Hash-Only Cache (Default)
 
-No additional installation required - included with Empathy Framework.
+No additional installation required - included with Attune AI.
 
 ```bash
 pip install attune-ai
@@ -260,7 +260,7 @@ Key educational topics covered:
 
 ## 🔄 Version
 
-This documentation is for **Empathy Framework v3.8.0+**.
+This documentation is for **Attune AI v3.8.0+**.
 
 For earlier versions, upgrade to v3.8.0:
 ```bash

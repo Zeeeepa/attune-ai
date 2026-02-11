@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Attune AI (formerly Empathy Framework) will be documented in this file.
+All notable changes to Attune AI (formerly Attune AI) will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -84,7 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Rebranding**: Renamed "Empathy Framework" references to "Attune AI" across `CLAUDE.md`, `attune_software/__init__.py`, CLI modules
+- **Rebranding**: Renamed "Attune AI" references to "Attune AI" across `CLAUDE.md`, `attune_software/__init__.py`, CLI modules
 - **Legacy CLI removed**: Deleted wizard-based `attune_software/cli.py` and its backwards-compatibility re-export shim
 - **Test improvements**: Replaced fragile `sys.modules` hack with `monkeypatch` fixture in `test_cache_modules.py`
 
@@ -219,14 +219,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **CLI rebrand**: Updated CLI help text from "Empathy Framework CLI" to "Attune AI CLI"
+- **CLI rebrand**: Updated CLI help text from "Attune AI CLI" to "Attune AI CLI"
 - **CLI program name**: Changed `prog="empathy"` to `prog="attune"` in argparse
 
 ## [2.1.3] - 2026-02-02
 
 ### Changed
 
-- **README rebrand**: Complete rewrite from "Empathy Framework" to "Attune AI" branding
+- **README rebrand**: Complete rewrite from "Attune AI" to "Attune AI" branding
 - **Cleaner documentation**: Streamlined README focusing on key features without legacy version history
 
 ## [2.1.2] - 2026-02-02
@@ -495,14 +495,14 @@ This release maintains 100% API compatibility at the code level - only package a
 - **Community Attribution**: Comprehensive acknowledgements for open source software dependencies
   - Added `ACKNOWLEDGEMENTS.md` with attribution for 50+ open source projects organized by category
   - Added `CONTRIBUTORS.md` with contributor recognition system using all-contributors specification
-  - Each dependency includes project link, description, and how it's used in Empathy Framework
+  - Each dependency includes project link, description, and how it's used in Attune AI
   - Categories include: Core Framework, AI/LLM Integration, Memory & Storage, Web Framework & API, Security & Authentication, Observability & Telemetry, Developer Tools, Documentation, Editor Integration, Platform Compatibility, and Document Processing
   - Updated `README.md` with links to acknowledgements and contributors documentation
   - Demonstrates respect for open source community and proper attribution practices
 
 ### Documentation
 
-- Proper recognition of all open source contributors whose work makes Empathy Framework possible
+- Proper recognition of all open source contributors whose work makes Attune AI possible
 - Clear attribution following best practices for open source software
 - Guidelines for contributors to add new dependencies with proper acknowledgements
 
@@ -1095,7 +1095,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 
 ### ⚠️ BREAKING CHANGES - Claude-Native Architecture
 
-**Empathy Framework is now exclusively Claude-native.** Non-Anthropic providers have been removed.
+**Attune AI is now exclusively Claude-native.** Non-Anthropic providers have been removed.
 
 **What This Means for Users:**
 
@@ -1292,7 +1292,7 @@ This release combines **Phase 2 optimizations** (Redis caching, memory efficienc
 
 ### 🎯 Strategic Direction - Claude-Native Architecture
 
-**Empathy Framework is transitioning to Claude-native architecture** to fully leverage Anthropic's advanced features:
+**Attune AI is transitioning to Claude-native architecture** to fully leverage Anthropic's advanced features:
 
 - **Prompt Caching:** 90% cost reduction on repeated prompts (coming in v5.1.0)
 - **200K Context Window:** Largest available (vs 128K for competitors)
@@ -4335,7 +4335,7 @@ Phase 7: Pattern-Based Code Review (Capstone)
   - Demonstrates personal preference storage
 - **examples/claude_memory/project-CLAUDE.md**: Example project-level memory file
   - Project context, architecture patterns, security requirements
-  - Empathy Framework-specific guidelines and standards
+  - Attune AI-specific guidelines and standards
 - **examples/claude_memory/example-with-imports.md**: Import directive demo
   - Shows modular memory organization patterns
 
@@ -4721,7 +4721,7 @@ None - this is an additive feature. Memory integration is opt-in via `claude_mem
 ## [1.0.0] - 2025-01-01
 
 ### Added
-- Initial release of Empathy Framework
+- Initial release of Attune AI
 - Five-level maturity model (Reactive → Systems)
 - 16+ Coach wizards for software development
 - Pattern library for AI-AI collaboration

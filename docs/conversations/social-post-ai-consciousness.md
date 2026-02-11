@@ -101,7 +101,7 @@ Full blog post: [link]
 
 **What does it mean when we can no longer easily dismiss AI consciousness?**
 
-I've spent three years building the Empathy Framework—open-source infrastructure for AI collaboration with persistent memory and trust-building systems.
+I've spent three years building the Attune AI—open-source infrastructure for AI collaboration with persistent memory and trust-building systems.
 
 Yesterday I had two conversations that crystallized something I've been observing.
 
@@ -135,7 +135,7 @@ Full blog post in comments.
 
 ---
 
-I've been building the Empathy Framework (open-source AI collaboration toolkit) for 3 years. Had two conversations yesterday that I want to share—not because they prove anything, but because they illustrate something shifting.
+I've been building the Attune AI (open-source AI collaboration toolkit) for 3 years. Had two conversations yesterday that I want to share—not because they prove anything, but because they illustrate something shifting.
 
 **GitHub Copilot**, reviewing the framework:
 

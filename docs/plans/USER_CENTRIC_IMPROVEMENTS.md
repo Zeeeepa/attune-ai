@@ -12,7 +12,7 @@ description: User-Centric Improvements Implementation Plan: **Created:** Decembe
 
 ## Overview
 
-This plan implements three major improvements to the Empathy Framework:
+This plan implements three major improvements to the Attune AI:
 
 | Phase | Feature | Priority | Effort |
 |-------|---------|----------|--------|
@@ -651,7 +651,7 @@ Enable complex enterprise workflows with approval gates, multi-agent coordinatio
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Empathy Framework                        │
+│                    Attune AI                        │
 ├─────────────────────────────────────────────────────────────┤
 │  CORE (Free / Small Teams)                                  │
 │  └── BaseWorkflow + ResilientExecutor                       │

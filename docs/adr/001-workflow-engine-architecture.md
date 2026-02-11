@@ -84,7 +84,7 @@ tests/unit/workflows/test_workflow_execution.py: 40 passed
 
 ## Context
 
-The Empathy Framework workflow engine (`src/attune/workflows/`) was reviewed for architectural health. The review focused on:
+The Attune AI workflow engine (`src/attune/workflows/`) was reviewed for architectural health. The review focused on:
 
 - **BaseWorkflow** class complexity (2300+ lines)
 - **Workflow registry** and discovery system
@@ -210,6 +210,6 @@ This ADR was created through an interactive Socratic architecture review session
 
 ---
 
-**Author:** Architect Agent (Empathy Framework)
+**Author:** Architect Agent (Attune AI)
 **Reviewed:** January 25, 2026
 **Next Review:** When deployment scenario changes or maintenance pain increases

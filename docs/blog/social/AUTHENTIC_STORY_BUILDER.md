@@ -18,7 +18,7 @@ Think back to when you first decided to track Claude API costs. What was the rea
 
 Pick the one that's TRUE (or write your own):
 
-- [ ] A. I was working on Empathy Framework and noticed the API calls piling up
+- [ ] A. I was working on Attune AI and noticed the API calls piling up
 - [ ] B. I just got curious about where the money was going
 - [ ] C. Someone (co-founder/friend/partner) asked "what are we paying for?"
 - [ ] D. I saw the bill and thought "huh, is this optimized?"

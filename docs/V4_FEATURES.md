@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework v4.0.0 - Meta-Orchestration Features: **Release Date:** January 2026 **Status:** Production Ready **Breaking Changes:** None (fully backward c
+description: Attune AI v4.0.0 - Meta-Orchestration Features: **Release Date:** January 2026 **Status:** Production Ready **Breaking Changes:** None (fully backward c
 ---
 
-# Empathy Framework v4.0.0 - Meta-Orchestration Features
+# Attune AI v4.0.0 - Meta-Orchestration Features
 
 **Release Date:** January 2026
 **Status:** Production Ready
@@ -283,7 +283,7 @@ pip install bandit
 
 ## 📊 Performance
 
-### Execution Times (Measured on Empathy Framework - 63,690 LOC)
+### Execution Times (Measured on Attune AI - 63,690 LOC)
 
 | Workflow | Mode | First Run | Cached Run | Speedup | Agents |
 |----------|------|-----------|------------|---------|--------|
@@ -356,7 +356,7 @@ git push --tags
 ### 3. Use VSCode Extension
 
 For the best UX:
-- Install Empathy Framework VSCode extension
+- Install Attune AI VSCode extension
 - Click buttons instead of typing commands
 - Results open in dedicated panels with rich formatting
 

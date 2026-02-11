@@ -48,9 +48,9 @@ Please include the following information in your report:
 
 ## Security Best Practices for Users
 
-### When Using Empathy Framework
+### When Using Attune AI
 
-1. **Keep Dependencies Updated**: Regularly update the Empathy Framework and all dependencies
+1. **Keep Dependencies Updated**: Regularly update the Attune AI and all dependencies
    ```bash
    pip install --upgrade attune-ai
    pip install --upgrade -r requirements.txt
@@ -77,7 +77,7 @@ Please include the following information in your report:
    - Use on-premises deployment for sensitive environments
    - Implement audit logging for all AI interactions
 
-### When Integrating Empathy Framework
+### When Integrating Attune AI
 
 1. **Input Validation**: Always validate and sanitize user input before passing to wizards
 2. **Rate Limiting**: Implement rate limiting to prevent abuse of AI services
@@ -87,7 +87,7 @@ Please include the following information in your report:
 
 ## Security Features
 
-The Empathy Framework includes several security features:
+The Attune AI includes several security features:
 
 1. **Path Traversal Protection (Pattern 6)**: All file write operations validated to prevent path traversal attacks (CWE-22)
 2. **Input Sanitization**: All code inputs are sanitized before analysis
@@ -263,7 +263,7 @@ When adding new file write operations:
 ## Security Updates
 
 We publish security advisories at:
-- **GitHub Security Advisories**: https://github.com/Deep-Study-AI/Empathy/security/advisories
+- **GitHub Security Advisories**: https://github.com/Smart-AI-Memory/attune-ai/security/advisories
 - **Email Notifications**: Subscribe at patrick.roebuck@smartaimemory.com
 
 ## Bug Bounty Program
@@ -275,7 +275,7 @@ Currently, we do not offer a paid bug bounty program. However:
 
 ## Compliance
 
-The Empathy Framework is designed to support:
+The Attune AI is designed to support:
 - **HIPAA** compliance for healthcare applications
 - **GDPR** compliance for European users
 - **SOC 2** requirements for enterprise customers
@@ -287,11 +287,11 @@ See our [Compliance Documentation](docs/) for detailed guidance.
 
 For security concerns, contact:
 - **Email**: patrick.roebuck@smartaimemory.com
-- **GitHub**: https://github.com/Deep-Study-AI/Empathy/security
+- **GitHub**: https://github.com/Smart-AI-Memory/attune-ai/security
 - **Organization**: Smart AI Memory, LLC
 
 ---
 
 **Last Updated**: January 2025
 
-Thank you for helping keep Empathy Framework and our users safe!
+Thank you for helping keep Attune AI and our users safe!

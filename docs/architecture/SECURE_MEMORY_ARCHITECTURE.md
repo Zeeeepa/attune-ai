@@ -3,7 +3,7 @@ description: Secure Memory Architecture for Enterprise Deployment: System archit
 ---
 
 # Secure Memory Architecture for Enterprise Deployment
-**Empathy Framework v1.8.0-alpha**
+**Attune AI v1.8.0-alpha**
 
 Integration of Claude Memory (CLAUDE.md) + MemDocs with enterprise security controls.
 
@@ -328,13 +328,13 @@ I acknowledge all security controls from enterprise CLAUDE.md apply.
 ### Project Level Template
 
 ```markdown
-# Project Memory: Empathy Framework
+# Project Memory: Attune AI
 # Location: ./.claude/CLAUDE.md
 # Project: attune-ai
 # Team: AI Platform
 
 ## Project Context
-Empathy Framework - Five-level AI collaboration system with anticipatory empathy.
+Attune AI - Five-level AI collaboration system with anticipatory empathy.
 
 **Security Classification:** INTERNAL (some SENSITIVE patterns for healthcare)
 
@@ -871,5 +871,5 @@ This architecture provides:
 
 **Document Version:** 1.0.0
 **Last Updated:** 2025-11-24
-**Author:** Empathy Framework Team
-**License:** Fair Source 0.9
+**Author:** Attune AI Team
+**License:** Apache License 2.0

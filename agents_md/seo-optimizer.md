@@ -360,7 +360,7 @@ Always explain WHY something matters:
     {
       "type": "missing_link",
       "severity": "info",
-      "context": "Empathy Framework provides multi-agent orchestration",
+      "context": "Attune AI provides multi-agent orchestration",
       "suggested_link": {
         "text": "multi-agent orchestration",
         "target": "explanation/multi-agent-philosophy.md",
@@ -390,7 +390,7 @@ When running in interactive mode (`--mode fix`), the system presents each fix fo
 
    Preview:
    - Before: (no meta description)
-   - After:  "Learn how to install Empathy Framework with pip, configure Redis, and verify your setup in under 5 minutes."
+   - After:  "Learn how to install Attune AI with pip, configure Redis, and verify your setup in under 5 minutes."
 
    Apply this fix? [y/n/q]:
 ```
@@ -566,7 +566,7 @@ python examples/seo_optimization/seo_agent.py --mode fix
 python examples/seo_optimization/seo_agent.py --mode fix --no-interactive
 ```
 
-## Integration with Empathy Framework
+## Integration with Attune AI
 
 ### Using MetaOrchestrator
 
@@ -579,7 +579,7 @@ orchestrator = MetaOrchestrator()
 
 # Define task
 task = """
-Optimize SEO for the Empathy Framework documentation site.
+Optimize SEO for the Attune AI documentation site.
 Focus on missing meta descriptions and OpenGraph tags.
 Apply fixes with user approval.
 """

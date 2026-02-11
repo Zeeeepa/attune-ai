@@ -1,12 +1,12 @@
 ---
-description: Memory Integration Summary integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Memory Integration Summary integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Memory Integration Summary
 
 ## What We Built
 
-Successfully integrated the Empathy Framework's **UnifiedMemory** system with the **Meta-Workflow Pattern Learner**, creating a hybrid architecture that combines the best of file-based and memory-based storage.
+Successfully integrated the Attune AI's **UnifiedMemory** system with the **Meta-Workflow Pattern Learner**, creating a hybrid architecture that combines the best of file-based and memory-based storage.
 
 ## Architecture Overview
 

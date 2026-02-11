@@ -1,10 +1,10 @@
 ---
-description: OpenSSF Best Practices Badge - Application Draft: **Project**: Empathy Framework **Version**: 1.6.8 **Application Date**: November 2025 **Status**: Draft - Read
+description: OpenSSF Best Practices Badge - Application Draft: **Project**: Attune AI **Version**: 1.6.8 **Application Date**: November 2025 **Status**: Draft - Read
 ---
 
 # OpenSSF Best Practices Badge - Application Draft
 
-**Project**: Empathy Framework
+**Project**: Attune AI
 **Version**: 1.6.8
 **Application Date**: November 2025
 **Status**: Draft - Ready for Submission
@@ -13,7 +13,7 @@ description: OpenSSF Best Practices Badge - Application Draft: **Project**: Empa
 
 ## Application Overview
 
-This document contains the **completed answers** for the Empathy Framework's OpenSSF Best Practices Badge application. Use this as a reference when filling out the online form at https://bestpractices.coreinfrastructure.org/
+This document contains the **completed answers** for the Attune AI's OpenSSF Best Practices Badge application. Use this as a reference when filling out the online form at https://bestpractices.coreinfrastructure.org/
 
 **Current Readiness**: ~90% (excellent starting position)
 
@@ -27,7 +27,7 @@ This document contains the **completed answers** for the Empathy Framework's Ope
 
 **Q: What is the human-readable name of the project?**
 ```
-Empathy Framework
+Attune AI
 ```
 
 **Q: What is the project homepage URL?**
@@ -47,7 +47,7 @@ Python (primary), with plans for JavaScript/TypeScript support in Q1 2025
 
 **Q: What is the project description?**
 ```
-The Empathy Framework is an AI-assisted development platform featuring a five-level
+The Attune AI is an AI-assisted development platform featuring a five-level
 maturity model for AI-human collaboration. It provides Level 4 Anticipatory Intelligence
 (predicting issues 30-90 days before they occur) and Level 5 Cross-Domain Pattern
 Transfer (learning from healthcare to prevent software failures and vice versa).
@@ -57,7 +57,7 @@ Key capabilities:
 - Healthcare monitoring plugin for clinical applications
 - Native LLM integration (Claude Sonnet 4.5, GPT-4, custom providers)
 - 90.71% test coverage with 1,489 comprehensive tests
-- Fair Source licensed (free for ≤5 employees, contact us for pricing commercial)
+- Apache 2.0 licensed (fully open source)
 - Converts to Apache 2.0 on January 1, 2029
 
 Built with Claude Code, demonstrating 200-400% productivity gains through
@@ -860,7 +860,7 @@ URL: https://github.com/Smart-AI-Memory/empathy/blob/main/CONTRIBUTING.md
 ```
 Met: Dual licensing model
 
-1. Fair Source License 0.9 (primary):
+1. Apache License 2.0 0.9 (primary):
    - Free for ≤5 employees (unlimited use)
    - Free for students and educators
    - Free for evaluation (30 days)
@@ -873,7 +873,7 @@ Met: Dual licensing model
    - Purchase at: https://smartaimemory.com/attune-ai/pricing
 
 License files:
-- LICENSE (Fair Source 0.9)
+- LICENSE (Apache License 2.0)
 - LICENSE-COMMERCIAL.md (commercial terms)
 
 License characteristics:
@@ -882,7 +882,7 @@ License characteristics:
 - Future open source (Apache 2.0 in 2029)
 - Legally reviewed and clear
 
-Note: Fair Source is not OSI-approved, but is a recognized ethical license
+Note: Apache 2.0 is an OSI-approved open source license
 for sustainable commercial open source. Project prioritizes ethical business
 model and future open source conversion over pure OSS classification.
 
@@ -890,7 +890,7 @@ All source code includes license headers (201 files).
 
 URLs:
 - https://github.com/Smart-AI-Memory/empathy/blob/main/LICENSE
-- https://fair.io/ (Fair Source information)
+- https://www.apache.org/licenses/LICENSE-2.0 (Apache 2.0 license)
 ```
 
 ### 5.2 Governance
@@ -1194,7 +1194,7 @@ Location: https://github.com/Smart-AI-Memory/empathy/security/advisories
 - ✅ Build/install documentation (README, guides)
 - ✅ Usage examples (extensive)
 - ✅ Contribution documentation (CONTRIBUTING.md)
-- ✅ License (Fair Source 0.9, clearly documented)
+- ✅ License (Apache License 2.0, clearly documented)
 - ✅ Governance (GOVERNANCE.md)
 - ✅ Code of conduct (Contributor Covenant)
 - ✅ Roadmap (multiple documents)

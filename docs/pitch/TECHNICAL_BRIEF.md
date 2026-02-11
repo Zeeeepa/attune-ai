@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework — Technical Brief: **For:** Technical due diligence, engineering leadership, architecture review --- ## Architecture Overview ┌───────────────
+description: Attune AI — Technical Brief: **For:** Technical due diligence, engineering leadership, architecture review --- ## Architecture Overview ┌───────────────
 ---
 
-# Empathy Framework — Technical Brief
+# Attune AI — Technical Brief
 
 **For:** Technical due diligence, engineering leadership, architecture review
 
@@ -12,7 +12,7 @@ description: Empathy Framework — Technical Brief: **For:** Technical due dilig
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                     Empathy Framework v4.4.0                     │
+│                     Attune AI v4.4.0                     │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
 │  │  CLI/API    │  │  VSCode     │  │  MCP Server             │  │
@@ -259,7 +259,7 @@ RUN pip install attune-ai
 ```
 
 ### 3. On-Premises
-Full source available under Fair Source License for enterprise deployment.
+Full source available under Apache License 2.0 for enterprise deployment.
 
 ---
 
@@ -303,7 +303,7 @@ print(tracker.summary())
 
 **Repository:** [github.com/Smart-AI-Memory/attune-ai](https://github.com/Smart-AI-Memory/attune-ai)
 
-**License:** Fair Source License 0.9
+**License:** Apache License 2.0 0.9
 - Free for teams ≤5 employees
 - Commercial license required for 6+
 - Full source access for modification

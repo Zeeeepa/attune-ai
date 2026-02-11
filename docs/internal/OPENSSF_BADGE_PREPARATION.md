@@ -4,14 +4,14 @@ description: OpenSSF Best Practices Badge - Preparation & Application: This docu
 
 # OpenSSF Best Practices Badge - Preparation & Application
 
-This document tracks our progress toward achieving the OpenSSF Best Practices Badge for the Empathy Framework.
+This document tracks our progress toward achieving the OpenSSF Best Practices Badge for the Attune AI.
 
 ## Application Link
 **Apply at**: https://bestpractices.coreinfrastructure.org/
 
 ## Current Project Status
 
-- **Project Name**: Empathy Framework
+- **Project Name**: Attune AI
 - **Current Version**: 1.6.1
 - **Development Status**: Beta → Strong Beta+ (Development Status :: 4)
 - **Test Coverage**: **83.13%** (2,770/3,333 lines) - **EXCEEDED 70% target**, targeting 90%
@@ -27,7 +27,7 @@ This document tracks our progress toward achieving the OpenSSF Best Practices Ba
 
 | Criterion | Status | Evidence |
 |-----------|--------|----------|
-| Public version-controlled source repository | ✅ | https://github.com/Deep-Study-AI/Empathy |
+| Public version-controlled source repository | ✅ | https://github.com/Smart-AI-Memory/attune-ai |
 | Unique version number for each release | ✅ | Semantic versioning in pyproject.toml |
 | Release notes for each version | ✅ | CHANGELOG.md maintained |
 | Project website uses HTTPS | ✅ | https://docs.empathyframework.com |
@@ -248,7 +248,7 @@ A: Yes. CONTRIBUTING.md provides guidelines for:
 - Running tests
 - Code style requirements
 - Pull request process
-- Licensing (Fair Source 0.9)
+- Licensing (Apache License 2.0)
 
 **Q: Are there usage examples?**
 A: Yes. The examples/ directory contains real-world usage examples for both healthcare and software development wizards. Each wizard class also includes docstrings with usage examples.
@@ -257,11 +257,11 @@ A: Yes. The examples/ directory contains real-world usage examples for both heal
 
 **Q: What is your license?**
 A: Dual licensing:
-1. **Fair Source 0.9** (LICENSE): Free for ≤5 employees, students, educators
+1. **Apache License 2.0** (LICENSE): Free for ≤5 employees, students, educators
 2. **Commercial License** (LICENSE-COMMERCIAL.md): contact us for pricing for 6+ employees
 
 **Q: Is the license OSI-approved?**
-A: Fair Source 0.9 is not OSI-approved (it's source-available, not fully open source). However, it's a recognized ethical license for sustainable commercial open source.
+A: Apache License 2.0 is not OSI-approved (it's source-available, not fully open source). However, it's a recognized ethical license for sustainable commercial open source.
 
 ---
 
@@ -326,7 +326,7 @@ Gold badge requires:
 - **Primary Maintainer**: Patrick Roebuck (patrick.roebuck@smartaimemory.com)
 - **Organization**: Smart AI Memory, LLC
 - **Security Contact**: patrick.roebuck@smartaimemory.com
-- **Repository**: https://github.com/Deep-Study-AI/Empathy
+- **Repository**: https://github.com/Smart-AI-Memory/attune-ai
 
 ---
 

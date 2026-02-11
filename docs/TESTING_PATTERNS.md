@@ -1,11 +1,11 @@
 ---
-description: Testing Patterns Library: ## Reusable Patterns from Educational Test Suite **Source**: Empathy Framework Test Suite (307 tests, 17.64% coverage) **Version**: 1.
+description: Testing Patterns Library: ## Reusable Patterns from Educational Test Suite **Source**: Attune AI Test Suite (307 tests, 17.64% coverage) **Version**: 1.
 ---
 
 # Testing Patterns Library
 ## Reusable Patterns from Educational Test Suite
 
-**Source**: Empathy Framework Test Suite (307 tests, 17.64% coverage)
+**Source**: Attune AI Test Suite (307 tests, 17.64% coverage)
 **Version**: 1.0.0
 **Last Updated**: 2026-01-04
 

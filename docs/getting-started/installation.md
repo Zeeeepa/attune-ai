@@ -1,10 +1,10 @@
 ---
-description: Install Empathy Framework with pip in 2 minutes. Choose from developer, minimal, or full packages. Includes CLI tools, VSCode extension, and workflow support.
+description: Install Attune AI with pip in 2 minutes. Choose from developer, minimal, or full packages. Includes CLI tools, VSCode extension, and workflow support.
 ---
 
 # Installation
 
-Get Empathy Framework installed and configured in about 2 minutes.
+Get Attune AI installed and configured in about 2 minutes.
 
 ---
 
@@ -47,7 +47,7 @@ Choose your installation option:
 ### Verify Installation
 
 ```bash
-python -c "import attune; print(f'Empathy Framework v{attune.__version__}')"
+python -c "import attune; print(f'Attune AI v{attune.__version__}')"
 ```
 
 ---

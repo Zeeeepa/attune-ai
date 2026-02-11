@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework — Competitive Analysis: **For:** Investor due diligence, strategic positioning, sales enablement --- ## Market Landscape The AI developer tool
+description: Attune AI — Competitive Analysis: **For:** Investor due diligence, strategic positioning, sales enablement --- ## Market Landscape The AI developer tool
 ---
 
-# Empathy Framework — Competitive Analysis
+# Attune AI — Competitive Analysis
 
 **For:** Investor due diligence, strategic positioning, sales enablement
 
@@ -17,7 +17,7 @@ The AI developer tools market includes several categories:
 3. **Enterprise AI Platforms** — AWS Bedrock, Azure AI, Google Vertex
 4. **Specialized Security Tools** — Snyk, SonarQube, Checkmarx
 
-**Empathy Framework occupies a unique position:** Anticipatory intelligence + multi-agent orchestration + enterprise compliance in a single integrated platform.
+**Attune AI occupies a unique position:** Anticipatory intelligence + multi-agent orchestration + enterprise compliance in a single integrated platform.
 
 ---
 
@@ -33,7 +33,7 @@ The AI developer tools market includes several categories:
 | **Security Scanning** | Built-in | No | No | No | No |
 | **HIPAA-Ready** | Yes | No | DIY | No | No |
 | **Audit Logging** | Built-in | No | Manual | No | No |
-| **Open Source** | Fair Source | No | Yes | No | Yes |
+| **Open Source** | Apache 2.0 | No | Yes | No | Yes |
 | **Claude-Optimized** | Native | No | Partial | No | Partial |
 
 ---
@@ -42,7 +42,7 @@ The AI developer tools market includes several categories:
 
 ### vs. GitHub Copilot
 
-| Aspect | GitHub Copilot | Empathy Framework |
+| Aspect | GitHub Copilot | Attune AI |
 |--------|----------------|-------------------|
 | **Model** | OpenAI (fixed) | Multi-model (Claude, GPT, Gemini, Ollama) |
 | **Approach** | Reactive autocomplete | Anticipatory intelligence |
@@ -68,7 +68,7 @@ The AI developer tools market includes several categories:
 
 ### vs. LangChain
 
-| Aspect | LangChain | Empathy Framework |
+| Aspect | LangChain | Attune AI |
 |--------|-----------|-------------------|
 | **Purpose** | General LLM framework | AI development productivity |
 | **Learning curve** | Steep | Gentle (guided wizards) |
@@ -93,7 +93,7 @@ The AI developer tools market includes several categories:
 
 ### vs. Cursor
 
-| Aspect | Cursor | Empathy Framework |
+| Aspect | Cursor | Attune AI |
 |--------|--------|-------------------|
 | **Type** | IDE | Framework/CLI/Extension |
 | **Intelligence** | Reactive | Anticipatory (5 levels) |
@@ -119,7 +119,7 @@ The AI developer tools market includes several categories:
 
 ### vs. CrewAI
 
-| Aspect | CrewAI | Empathy Framework |
+| Aspect | CrewAI | Attune AI |
 |--------|--------|-------------------|
 | **Focus** | Multi-agent orchestration | Full development platform |
 | **Agent creation** | Code-based | Socratic guided builder |
@@ -144,11 +144,11 @@ The AI developer tools market includes several categories:
 
 ### vs. Enterprise Platforms (AWS Bedrock, Azure AI)
 
-| Aspect | Enterprise Platforms | Empathy Framework |
+| Aspect | Enterprise Platforms | Attune AI |
 |--------|---------------------|-------------------|
 | **Deployment** | Cloud-locked | Anywhere (cloud, on-prem, local) |
 | **Cost** | Pay-per-token (full price) | 80-96% optimized routing |
-| **Lock-in** | High | None (Fair Source) |
+| **Lock-in** | High | None (Apache 2.0) |
 | **Security** | Platform-provided | Application-level + platform |
 | **Customization** | Limited | Full source access |
 | **Compliance** | Platform-certified | Application-certified |
@@ -266,7 +266,7 @@ Level               │                                         │
 - PII scrubbing infrastructure
 
 ### 4. Community Moat
-- Fair Source License enables adoption
+- Apache License 2.0 enables adoption
 - GitHub presence and contributions
 - Documentation and tutorials
 
@@ -304,7 +304,7 @@ Level               │                                         │
 
 ## Conclusion
 
-Empathy Framework occupies a unique market position with:
+Attune AI occupies a unique market position with:
 - **No direct competitor** for anticipatory intelligence
 - **Significant cost advantage** via smart routing
 - **Enterprise-ready compliance** that others lack

@@ -179,7 +179,7 @@ src/attune/dashboard/
 
 **Required:**
 - Python 3.10+
-- Empathy Framework telemetry modules
+- Attune AI telemetry modules
 
 **Optional:**
 - Redis 5.0+ (for data persistence)

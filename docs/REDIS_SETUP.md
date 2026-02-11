@@ -2,7 +2,7 @@
 
 ## Overview
 
-Redis provides enhanced features for Empathy Framework:
+Redis provides enhanced features for Attune AI:
 - **Session Management**: Fast, TTL-based working memory for agent coordination
 - **Real-time Coordination**: Pub/Sub messaging between agents
 - **Caching**: Two-tier caching (memory + Redis) for performance
@@ -28,7 +28,7 @@ brew services start redis
 redis-cli ping  # Should return: PONG
 ```
 
-### 2. Enable Redis in Empathy Framework
+### 2. Enable Redis in Attune AI
 
 Add to your `.env` file:
 
@@ -156,7 +156,7 @@ results = memory.retrieve_batch(keys, creds)
 
 ## For New Users (Redis Disabled by Default)
 
-If you download Empathy Framework for the first time:
+If you download Attune AI for the first time:
 
 1. **Redis is NOT required** - The framework works out of the box
 2. **Mock mode is automatic** - In-memory storage is used by default
@@ -280,7 +280,7 @@ redis-cli GET empathy:working:my_key
 
 ## Summary
 
-- **Optional**: Redis is NOT required for Empathy Framework
+- **Optional**: Redis is NOT required for Attune AI
 - **Easy Setup**: 3 steps to enable on macOS
 - **Automatic Fallback**: Mock mode when Redis is disabled
 - **Production Ready**: SSL, retries, high availability support

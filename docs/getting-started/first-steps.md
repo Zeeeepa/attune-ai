@@ -1,5 +1,5 @@
 ---
-description: Run your first Empathy Framework AI workflow in 5 minutes. Security audit, bug prediction, and code review with CLI or Python. See immediate results.
+description: Run your first Attune AI AI workflow in 5 minutes. Security audit, bug prediction, and code review with CLI or Python. See immediate results.
 ---
 
 # First Steps
@@ -69,7 +69,7 @@ asyncio.run(audit())
 
 ## Try More Workflows
 
-Empathy Framework includes 10+ built-in workflows:
+Attune AI includes 10+ built-in workflows:
 
 | Workflow | Command | What It Does |
 |----------|---------|--------------|

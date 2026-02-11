@@ -1,10 +1,10 @@
 ---
-description: Short-Term Memory: File-First Architecture with Optional Redis API reference: The Empathy Framework provides a **file-first memory system** that works without R
+description: Short-Term Memory: File-First Architecture with Optional Redis API reference: The Attune AI provides a **file-first memory system** that works without R
 ---
 
 # Short-Term Memory: File-First Architecture with Optional Redis
 
-The Empathy Framework provides a **file-first memory system** that works without Redis, with optional Redis enhancement for real-time multi-agent coordination.
+The Attune AI provides a **file-first memory system** that works without Redis, with optional Redis enhancement for real-time multi-agent coordination.
 
 ## Overview
 
@@ -405,4 +405,4 @@ See the full API documentation:
 
 ---
 
-*Copyright 2025 Smart AI Memory, LLC. Licensed under Fair Source 0.9.*
+*Copyright 2025 Smart AI Memory, LLC. Licensed under the Apache License, Version 2.0.*

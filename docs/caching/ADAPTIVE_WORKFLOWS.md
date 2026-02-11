@@ -1,12 +1,12 @@
 ---
-description: Adaptive Workflows and Caching Behavior: ## Overview The Empathy Framework uses two types of workflow execution strategies: **Deterministic** and **Adaptive**.
+description: Adaptive Workflows and Caching Behavior: ## Overview The Attune AI uses two types of workflow execution strategies: **Deterministic** and **Adaptive**.
 ---
 
 # Adaptive Workflows and Caching Behavior
 
 ## Overview
 
-The Empathy Framework uses two types of workflow execution strategies: **Deterministic** and **Adaptive**. Understanding the difference is crucial for predicting costs and interpreting cache performance.
+The Attune AI uses two types of workflow execution strategies: **Deterministic** and **Adaptive**. Understanding the difference is crucial for predicting costs and interpreting cache performance.
 
 ## Workflow Types
 

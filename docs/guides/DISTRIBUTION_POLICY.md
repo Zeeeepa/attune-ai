@@ -6,7 +6,7 @@ description: Distribution Policy: Step-by-step tutorial with examples, best prac
 
 **Version:** 1.0
 **Last Updated:** December 15, 2025
-**Applies to:** Empathy Framework v2.2.5+
+**Applies to:** Attune AI v2.2.5+
 
 ---
 

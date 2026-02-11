@@ -62,7 +62,7 @@ nav:
 **Approach:** **Excerpt key sections**, link to full MkDocs FAQ
 
 **What to include (short versions):**
-- What is Empathy Framework? (3 sentences + link)
+- What is Attune AI? (3 sentences + link)
 - What are the 5 Levels? (table + link)
 - How do I get started? (code snippet + link)
 - Does it work with [tool]? (yes/no + links)

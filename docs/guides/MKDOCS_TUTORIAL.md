@@ -5,7 +5,7 @@ description: MkDocs Tutorial - Complete Beginner's Guide: Step-by-step tutorial 
 # MkDocs Tutorial - Complete Beginner's Guide
 
 **For**: Patrick (never used MkDocs before)
-**Goal**: Create professional documentation website for Empathy Framework v1.8.0
+**Goal**: Create professional documentation website for Attune AI v1.8.0
 **Time**: 30-45 minutes to get fully productive
 
 ---
@@ -20,7 +20,7 @@ description: MkDocs Tutorial - Complete Beginner's Guide: Step-by-step tutorial 
 - Automatic **navigation**, **search**, **mobile-responsive**
 - Deploy to **Read the Docs** (free hosting for open source)
 
-**Why MkDocs for Empathy Framework?**
+**Why MkDocs for Attune AI?**
 - ✅ Python-based (fits our ecosystem)
 - ✅ Simple (just write Markdown)
 - ✅ Beautiful (Material theme = modern, professional)
@@ -118,9 +118,9 @@ This is where ALL configuration happens. Think of it as your website's "settings
 site_name: My Docs
 ```
 
-**Basic Empathy Framework `mkdocs.yml`**:
+**Basic Attune AI `mkdocs.yml`**:
 ```yaml
-site_name: Empathy Framework
+site_name: Attune AI
 site_description: Production-ready Level 4 Anticipatory Intelligence
 site_author: Patrick Roebuck
 site_url: https://attune-ai.readthedocs.io
@@ -157,7 +157,7 @@ Create this file at the root of your project:
 
 ```yaml
 # Site Information
-site_name: Empathy Framework
+site_name: Attune AI
 site_description: Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration
 site_author: Patrick Roebuck
 site_url: https://attune-ai.readthedocs.io
@@ -335,7 +335,7 @@ docs/
 ### Step 3: Write the Homepage (`docs/index.md`)
 
 ```markdown
-# Empathy Framework
+# Attune AI
 
 **Production-ready Level 4 Anticipatory Intelligence for AI-human collaboration**
 
@@ -344,9 +344,9 @@ docs/
 
 ---
 
-## What is Empathy Framework?
+## What is Attune AI?
 
-The Empathy Framework is a **5-level maturity model** for AI-human collaboration that progresses from reactive responses (Level 1) to **Level 4 Anticipatory Intelligence** that predicts problems before they happen.
+The Attune AI is a **5-level maturity model** for AI-human collaboration that progresses from reactive responses (Level 1) to **Level 4 Anticipatory Intelligence** that predicts problems before they happen.
 
 ### The 5 Levels
 
@@ -464,7 +464,7 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 
 ## License
 
-**Fair Source License 0.9**
+**Apache License 2.0 0.9**
 - ✅ Free for students, educators, teams ≤5 employees
 - 💰 contact us for pricing for teams 6+ employees
 - 🔄 Auto-converts to Apache 2.0 on January 1, 2029
@@ -530,7 +530,7 @@ Webhooks for Slack, GitHub, JIRA, Datadog, and custom services.
 pip install attune-ai
 ```
 
-This installs the core Empathy Framework with basic functionality.
+This installs the core Attune AI with basic functionality.
 
 ## Installation Options
 
@@ -676,7 +676,7 @@ empathy = EmpathyOS(user_id="user_123")
 
 ## Overview
 
-The `EmpathyOS` class is the main entry point for the Empathy Framework.
+The `EmpathyOS` class is the main entry point for the Attune AI.
 
 ## Class Documentation
 
@@ -696,7 +696,7 @@ The `EmpathyOS` class is the main entry point for the Empathy Framework.
 ```python
 class EmpathyOS:
     """
-    Main Empathy Framework class for Level 1-5 AI collaboration.
+    Main Attune AI class for Level 1-5 AI collaboration.
 
     Args:
         user_id: Unique identifier for the user
@@ -846,7 +846,7 @@ In Read the Docs settings:
 
 ---
 
-## Workflow for Empathy Framework Docs
+## Workflow for Attune AI Docs
 
 ### Your Daily Workflow
 
@@ -1034,7 +1034,7 @@ A: Yes! Material theme has 50+ customization options in `mkdocs.yml`.
 
 ## Ready to Start!
 
-You now know everything you need to create professional documentation for Empathy Framework!
+You now know everything you need to create professional documentation for Attune AI!
 
 **Your first command**:
 ```bash

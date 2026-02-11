@@ -47,7 +47,7 @@ The Meta-Workflow System is an intelligent workflow orchestration framework that
 
 ## Quick Start
 
-### 1. Install Empathy Framework
+### 1. Install Attune AI
 
 ```bash
 pip install attune-ai[developer]
@@ -939,7 +939,7 @@ if learner.memory:
 
 ## Claude Code Skills Integration (v4.6+)
 
-Starting with v4.6, Empathy Framework integrates directly with Claude Code through slash command skills. These skills provide $0 cost execution using your Claude Max subscription.
+Starting with v4.6, Attune AI integrates directly with Claude Code through slash command skills. These skills provide $0 cost execution using your Claude Max subscription.
 
 ### Available Skills
 
@@ -956,7 +956,7 @@ Starting with v4.6, Empathy Framework integrates directly with Claude Code throu
 | Test | `/test` | Run test suite and report results |
 | Status | `/status` | Show project status summary |
 | Publish | `/publish` | Guide package publishing to PyPI |
-| Init | `/init` | Initialize new Empathy Framework project |
+| Init | `/init` | Initialize new Attune AI project |
 | Memory | `/memory` | Manage the memory system |
 
 ### Using Skills in Claude Code
@@ -1088,4 +1088,4 @@ We welcome contributions! See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelin
 
 **Version:** 4.6.2
 **Last Updated:** 2026-01-21
-**Maintained By:** Empathy Framework Team
+**Maintained By:** Attune AI Team

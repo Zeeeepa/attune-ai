@@ -135,7 +135,7 @@ RECOMMENDED FIX:
 
 ## Real Results From Our Codebase
 
-We ran this against the Empathy Framework repository with 4 seeded historical patterns:
+We ran this against the Attune AI repository with 4 seeded historical patterns:
 
 | Test Bug | Matches | Best Match | Recommended Fix |
 |----------|---------|------------|-----------------|

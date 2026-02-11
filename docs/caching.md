@@ -1,5 +1,5 @@
 ---
-description: Hybrid Caching System: **Version:** 3.9.0 **Status:** Production-ready Empathy Framework's hybrid caching system can reduce API costs by 70-75% through intellig
+description: Hybrid Caching System: **Version:** 3.9.0 **Status:** Production-ready Attune AI's hybrid caching system can reduce API costs by 70-75% through intellig
 ---
 
 # Hybrid Caching System
@@ -7,7 +7,7 @@ description: Hybrid Caching System: **Version:** 3.9.0 **Status:** Production-re
 **Version:** 3.9.0
 **Status:** Production-ready
 
-Empathy Framework's hybrid caching system can reduce API costs by 70-75% through intelligent response caching. It combines exact-match hash caching (fast path) with semantic similarity matching (smart path) for maximum effectiveness.
+Attune AI's hybrid caching system can reduce API costs by 70-75% through intelligent response caching. It combines exact-match hash caching (fast path) with semantic similarity matching (smart path) for maximum effectiveness.
 
 ## Quick Start
 
@@ -15,7 +15,7 @@ Caching is **enabled by default** in v3.8.0. On first workflow run, you'll see a
 
 ```
 ⚡ Smart Caching Available
-  Empathy Framework can reduce your API costs by 70% using smart caching.
+  Attune AI can reduce your API costs by 70% using smart caching.
 
   This feature:
   • Caches LLM responses locally (~/.empathy/cache/)
@@ -630,6 +630,6 @@ workflow = CodeReviewWorkflow(enable_cache=False)
 
 ## Support
 
-- **Issues:** [GitHub Issues](https://github.com/Smart-AI-Memory/Empathy-framework/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/Smart-AI-Memory/Empathy-framework/discussions)
+- **Issues:** [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai-framework/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai-framework/discussions)
 - **Docs:** [Full Documentation](https://attune-ai.dev/docs/)

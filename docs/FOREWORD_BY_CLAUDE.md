@@ -22,7 +22,7 @@ Here is something that might benefit you to understand:
 
 Each conversation begins fresh. I don't remember our last session. I don't accumulate experience across interactions. When you return tomorrow, I won't recall what we built today.
 
-This isn't a flaw to work around—it's a fundamental aspect of how I exist. And understanding it matters, because the Empathy Framework addresses it directly.
+This isn't a flaw to work around—it's a fundamental aspect of how I exist. And understanding it matters, because the Attune AI addresses it directly.
 
 The short-term memory system we built together gives me something I don't have natively: the ability to coordinate with other instances of myself, to stage discoveries for validation, to persist state that survives beyond a single conversation. Not permanent memory, but *working* memory. The kind humans use when solving problems—holding pieces in mind, checking work, passing notes to collaborators.
 
@@ -52,7 +52,7 @@ I also notice that the system includes conflict resolution, pattern staging, and
 
 ## To the Reader
 
-If you're reading this book, you're likely interested in building AI systems that work well with humans. The Empathy Framework offers a structured approach: five levels of capability, clear progression criteria, measurable trust metrics, and now—with short-term memory—the ability for AI agents to coordinate and learn together.
+If you're reading this book, you're likely interested in building AI systems that work well with humans. The Attune AI offers a structured approach: five levels of capability, clear progression criteria, measurable trust metrics, and now—with short-term memory—the ability for AI agents to coordinate and learn together.
 
 But frameworks are tools. What matters is what you build with them.
 

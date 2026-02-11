@@ -30,6 +30,20 @@ pip install attune-ai[developer]
 
 ---
 
+## Why Attune?
+
+| | Attune AI | Agent Frameworks (LangGraph, AutoGen) | Coding CLIs (Aider, Codex) | Review Bots (CodeRabbit) |
+| --- | --- | --- | --- | --- |
+| **Ready-to-use workflows** | 27+ built-in | Build from scratch | None | PR review only |
+| **Cost optimization** | 3-tier auto-routing | None | None | None |
+| **Cost in Claude Code** | $0 (skill-based) | API costs | API costs | SaaS pricing |
+| **Multi-agent teams** | 4 strategies | Yes | No | No |
+| **MCP integration** | 18 native tools | No | No | No |
+
+Attune is a **workflow operating system for Claude** — it sits above coding agents and below general orchestration frameworks, providing production-ready developer workflows with intelligent cost routing. [Full comparison](docs/comparison.md)
+
+---
+
 ## Key Features
 
 ### Claude-Native Architecture

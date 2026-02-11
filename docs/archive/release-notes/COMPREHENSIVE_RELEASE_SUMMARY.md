@@ -1,8 +1,8 @@
 ---
-description: Comprehensive Release Summary - Empathy Framework v3.7.0: **Date**: 2026-01-06 **Status**: ✅ **READY TO PUBLISH** **Final Package**: dist/empathy_framework-3.7.
+description: Comprehensive Release Summary - Attune AI v3.7.0: **Date**: 2026-01-06 **Status**: ✅ **READY TO PUBLISH** **Final Package**: dist/empathy_framework-3.7.
 ---
 
-# Comprehensive Release Summary - Empathy Framework v3.7.0
+# Comprehensive Release Summary - Attune AI v3.7.0
 
 **Date**: 2026-01-06
 **Status**: ✅ **READY TO PUBLISH**
@@ -51,7 +51,7 @@ description: Comprehensive Release Summary - Empathy Framework v3.7.0: **Date**:
 | **XML Wizards** | ✅ PASS | Healthcare, CustomerSupport, Technology wizards have XML methods |
 | **CrewAI Integration** | ✅ PASS | SecurityAudit, CodeReview, Refactoring, HealthCheck crews import |
 | **Developer Tools** | ✅ PASS | scaffolding, workflow_scaffolding, test_generator, hot_reload |
-| **sync-claude Command** | ✅ PASS | Syncs 45 patterns to .claude/rules/empathy/ |
+| **sync-claude Command** | ✅ PASS | Syncs 45 patterns to .claude/rules/attune/ |
 | **VSCode Extension** | ✅ FIXED | Docs buttons now run workflows directly |
 | **Package Size** | ✅ PASS | 1.1MB wheel, 2.1MB sdist (reasonable for framework) |
 
@@ -143,7 +143,7 @@ gh release create v3.7.0 \
 
 ## 🎯 RELEASE HIGHLIGHTS
 
-This release delivers transformative improvements to the Empathy Framework:
+This release delivers transformative improvements to the Attune AI:
 
 ### Core Features
 - **53% reduction in hallucinations** through XML-enhanced prompts

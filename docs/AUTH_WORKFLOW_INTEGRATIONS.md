@@ -1,5 +1,5 @@
 ---
-description: Authentication Strategy - All Workflow Integrations integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Authentication Strategy - All Workflow Integrations integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Authentication Strategy - All Workflow Integrations
@@ -11,7 +11,7 @@ description: Authentication Strategy - All Workflow Integrations integration gui
 
 ## Summary
 
-Successfully integrated authentication strategy into **ALL** major workflows in the Empathy Framework. Each workflow now intelligently routes between Claude subscriptions and Anthropic API based on codebase/module size.
+Successfully integrated authentication strategy into **ALL** major workflows in the Attune AI. Each workflow now intelligently routes between Claude subscriptions and Anthropic API based on codebase/module size.
 
 ---
 

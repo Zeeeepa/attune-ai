@@ -197,7 +197,7 @@ Hotspots tell you where to focus cleanup efforts for maximum impact.
 
 ## Real Results From Our Codebase
 
-We ran trajectory analysis on the Empathy Framework repository:
+We ran trajectory analysis on the Attune AI repository:
 
 ```
 CURRENT DEBT:

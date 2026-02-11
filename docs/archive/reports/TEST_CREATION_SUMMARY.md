@@ -169,5 +169,5 @@ Once test files are created:
 ## References
 
 - Original plan: `docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md`
-- Project standards: `.claude/rules/empathy/coding-standards-index.md`
+- Project standards: `.claude/rules/attune/coding-standards-index.md`
 - Agent outputs: `/private/tmp/claude/-Users-patrickroebuck-Documents-empathy1-11-2025-local-attune-ai/tasks/*.output`

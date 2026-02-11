@@ -1,8 +1,8 @@
 ---
-description: Marketing Plan: Empathy Framework v3.6.0 Launch: **Release Date:** January 5, 2026 **Target:** Individual developers, small teams, enterprise DevOps **Hook:** D
+description: Marketing Plan: Attune AI v3.6.0 Launch: **Release Date:** January 5, 2026 **Target:** Individual developers, small teams, enterprise DevOps **Hook:** D
 ---
 
-# Marketing Plan: Empathy Framework v3.6.0 Launch
+# Marketing Plan: Attune AI v3.6.0 Launch
 
 **Release Date:** January 5, 2026
 **Target:** Individual developers, small teams, enterprise DevOps
@@ -32,7 +32,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 
 ### 2. **Hacker News** (Show HN)
 - Best time: Tuesday-Thursday, 8-10am PT
-- Title: "Show HN: Empathy Framework v3.6.0 – Error messages that show you exactly what to implement"
+- Title: "Show HN: Attune AI v3.6.0 – Error messages that show you exactly what to implement"
 
 ### 3. **Twitter/X**
 - Developer community
@@ -121,7 +121,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 ### Response Templates
 
 **For "How is this different from X?"**
-> "Great question! The key difference is [feature]. While X focuses on [their strength], Empathy Framework is built for [our strength]. Both are great tools - it depends on your use case."
+> "Great question! The key difference is [feature]. While X focuses on [their strength], Attune AI is built for [our strength]. Both are great tools - it depends on your use case."
 
 **For "Does this support Y?"**
 > "Not yet, but that's a great idea! We have it on our roadmap for [version]. In the meantime, you can [workaround]. Want to contribute? Here's the issue: [link]"
@@ -130,7 +130,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 > "Security is our top priority. v3.6.0 includes: bcrypt password hashing (cost factor 12), JWT auth, rate limiting, and 0 high-severity issues from bandit. Full audit: [link to security scan results]"
 
 **For "Why not just use X?"**
-> "X is excellent for [their use case]. Empathy Framework shines when you need [our differentiator]. We're complementary - many users run both."
+> "X is excellent for [their use case]. Attune AI shines when you need [our differentiator]. We're complementary - many users run both."
 
 ---
 
@@ -162,11 +162,11 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 - Focus: Developer experience
 
 ### Day 2 (Monday): Enterprise Features
-- Blog post: "Building HIPAA-Compliant AI Systems with Empathy Framework"
+- Blog post: "Building HIPAA-Compliant AI Systems with Attune AI"
 - LinkedIn deep dive on security
 
 ### Day 3 (Tuesday): Tutorial
-- Dev.to: "Your First Empathy Framework Plugin in 10 Minutes"
+- Dev.to: "Your First Attune AI Plugin in 10 Minutes"
 - Reddit r/learnprogramming
 
 ### Day 4 (Wednesday): Community
@@ -178,7 +178,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 - Hacker News re-engagement
 
 ### Day 6 (Friday): Integration Guide
-- Blog post: "Integrating Empathy Framework with Your Existing Codebase"
+- Blog post: "Integrating Attune AI with Your Existing Codebase"
 - Reddit r/programming
 
 ### Day 7 (Saturday): Week Recap
@@ -198,7 +198,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 ### Outreach Template
 > "Hi [Name],
 >
-> We just launched v3.6.0 of Empathy Framework, which integrates deeply with [their product]. We'd love to showcase this integration with a joint blog post / tweet / example.
+> We just launched v3.6.0 of Attune AI, which integrates deeply with [their product]. We'd love to showcase this integration with a joint blog post / tweet / example.
 >
 > Key integration: [specific feature]
 > Benefit to your users: [value prop]
@@ -237,7 +237,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 
 ### Month 1
 - Case study: Feature a user's implementation
-- Webinar: "Building with Empathy Framework"
+- Webinar: "Building with Attune AI"
 - Update comparison table based on competitor moves
 
 ---
@@ -271,7 +271,7 @@ v3.6.0 is positioned as a **developer experience upgrade** first, with enterpris
 3. **"5,941 tests passing, 0 high-severity security issues"** - Build trust
 4. **"Production-ready when you need it"** - Enterprise credibility
 5. **"Built on LangChain, CrewAI, and Claude"** - Standing on shoulders of giants
-6. **"Open source, Fair Source 0.9 license"** - Free for small teams
+6. **"Open source, Apache License 2.0 license"** - Free for small teams
 
 ---
 
@@ -284,7 +284,7 @@ A: "Yes! Authentication is fully deployed in the backend API. Compliance and not
 A: "2 minutes to get started. `pip install attune-ai[developer]` → configure provider → run your first workflow. We optimize for time-to-first-value."
 
 **Q: "How much does it cost?"**
-A: "Free and open source for teams ≤5 employees (Fair Source 0.9). You pay for the LLM API calls (Claude, GPT-4, etc.), but our smart tier routing saves you 80-96% on those costs."
+A: "Free and open source for teams ≤5 employees (Apache License 2.0). You pay for the LLM API calls (Claude, GPT-4, etc.), but our smart tier routing saves you 80-96% on those costs."
 
 **Q: "Can I use my own LLM?"**
 A: "Yes! Supports Anthropic, OpenAI, Google Gemini, Ollama (local), or hybrid mode. Mix and match based on your needs."

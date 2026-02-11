@@ -27,7 +27,7 @@ This document defines the shared philosophy that governs the Empathy ecosystem â
 ## What Is Empathy?
 
 **Empathy** refers collectively to:
-- The Empathy Framework (five-level AI collaboration system)
+- The Attune AI (five-level AI collaboration system)
 - Long-Term Memory (persistent memory layer)
 - SmartAIMemory.com and associated products
 - The book and educational materials
@@ -88,7 +88,7 @@ When designing a feature:
   NOT: "What problems does this solve?"
 ```
 
-**Origin**: Core thesis of the Empathy Framework, validated through healthcare wizard implementations where anticipatory alerts reduced incidents.
+**Origin**: Core thesis of the Attune AI, validated through healthcare wizard implementations where anticipatory alerts reduced incidents.
 
 ---
 
@@ -617,7 +617,7 @@ def handle_agent_disagreement(conflict: Conflict) -> Resolution:
 ## References
 
 - Fisher, R., & Ury, W. (1981). *Getting to Yes: Negotiating Agreement Without Giving In*. Penguin Books.
-- Chapter 23: Distributed Memory Networks (Empathy Framework Book)
+- Chapter 23: Distributed Memory Networks (Attune AI Book)
 - Redis Documentation: Data Structures and Pub/Sub
 
 ---

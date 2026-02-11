@@ -14,10 +14,10 @@ description: XML-Enhanced Agent Communication Protocol: **Version**: 1.0 **Creat
 
 When Claude Code spawns autonomous agents (via Task tool), both parties should use XML-enhanced prompts to:
 
-1. **Reduce token usage by 15-35%** (proven in Empathy Framework)
+1. **Reduce token usage by 15-35%** (proven in Attune AI)
 2. **Improve structure and clarity** (explicit sections reduce ambiguity)
 3. **Enable better parsing** (agents can extract specific sections)
-4. **Model what we preach** (Empathy Framework promotes XML prompts)
+4. **Model what we preach** (Attune AI promotes XML prompts)
 
 This document defines templates, implementation strategy, and enforcement mechanisms.
 
@@ -334,7 +334,7 @@ The system is ready for release.
 - 15-35% token reduction (less repetition, more structure)
 - Explicit verification requirements prevent "complete" claims without testing
 - Structured responses enable automated validation
-- Models what Empathy Framework preaches (XML-enhanced prompts)
+- Models what Attune AI preaches (XML-enhanced prompts)
 
 **Quote to Remember**: "are you using xml-enhanced prompts when your sending prompts autonomously?" - Always use XML when spawning agents.
 ```
@@ -619,7 +619,7 @@ XML-enhanced agent communication is not just about token efficiency—it's about
 
 1. **Quality gates**: Explicit verification requirements prevent premature "complete" claims
 2. **Traceability**: Structured responses enable validation and auditing
-3. **Modeling best practices**: Empathy Framework promotes XML prompts—we should use them
+3. **Modeling best practices**: Attune AI promotes XML prompts—we should use them
 4. **Reducing cognitive load**: Both Claude Code and agents benefit from clear structure
 
 **Next Steps**:
@@ -635,4 +635,4 @@ XML-enhanced agent communication is not just about token efficiency—it's about
 
 ---
 
-*Document created as part of Empathy Framework v3.8.3 quality initiative*
+*Document created as part of Attune AI v3.8.3 quality initiative*

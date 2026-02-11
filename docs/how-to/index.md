@@ -1,10 +1,10 @@
 ---
-description: How-to Guides: Task-oriented guides for accomplishing specific goals with Empathy Framework.
+description: How-to Guides: Task-oriented guides for accomplishing specific goals with Attune AI.
 ---
 
 # How-to Guides
 
-Task-oriented guides for accomplishing specific goals with Empathy Framework.
+Task-oriented guides for accomplishing specific goals with Attune AI.
 
 Unlike tutorials, these guides assume you have a basic understanding of the
 framework and need to accomplish something specific.

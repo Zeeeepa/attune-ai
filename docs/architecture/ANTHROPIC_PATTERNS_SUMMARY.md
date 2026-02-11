@@ -12,7 +12,7 @@ description: Anthropic-Inspired Patterns Implementation Summary: System architec
 
 ## Overview
 
-Successfully extended the Empathy Framework's agent composition patterns with three new Anthropic-inspired strategies, bringing the total from 7 to 10 patterns.
+Successfully extended the Attune AI's agent composition patterns with three new Anthropic-inspired strategies, bringing the total from 7 to 10 patterns.
 
 ## What Was Added
 
@@ -108,7 +108,7 @@ result = await strategy.execute(
 
 5. **docs/architecture/anthropic-agent-patterns.md** (new, 400+ lines)
    - Complete guide to Anthropic's 3 core patterns
-   - Shows how to implement in Empathy Framework
+   - Shows how to implement in Attune AI
    - Migration guide from direct Anthropic SDK
 
 6. **examples/anthropic_patterns_demo.py** (new, 300+ lines)
@@ -280,5 +280,5 @@ strategy = get_strategy("tool_enhanced")
 ## Credits
 
 - **Anthropic Guidelines:** [Building effective agents](https://www.anthropic.com/research/building-effective-agents)
-- **Implementation:** Empathy Framework v4.7.0
+- **Implementation:** Attune AI v4.7.0
 - **Date:** January 29, 2026

@@ -4,7 +4,7 @@ description: Configuration Architecture: System architecture overview with compo
 
 # Configuration Architecture
 
-This document explains the configuration schema separation in the Empathy Framework.
+This document explains the configuration schema separation in the Attune AI.
 
 ## Overview
 
@@ -17,7 +17,7 @@ The framework uses **two distinct configuration classes** for different concerns
 
 ## EmpathyConfig
 
-Handles core empathy framework settings that control the five-level empathy system.
+Handles core Attune AI settings that control the five-level empathy system.
 
 ### Fields
 

@@ -449,7 +449,7 @@ with open(log_file) as f:
 
 ## Related Documentation
 
-- [Advanced Optimization Plan](../.claude/rules/empathy/advanced-optimization-plan.md) - Full optimization roadmap
+- [Advanced Optimization Plan](../.claude/rules/attune/advanced-optimization-plan.md) - Full optimization roadmap
 - [PROFILING_RESULTS.md](./PROFILING_RESULTS.md) - Performance profiling findings
 - [REDIS_OPTIMIZATION_SUMMARY.md](./REDIS_OPTIMIZATION_SUMMARY.md) - Redis caching optimization
 - [Python Performance Tips](https://wiki.python.org/moin/PythonSpeed/PerformanceTips)

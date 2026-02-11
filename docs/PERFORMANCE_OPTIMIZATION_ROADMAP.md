@@ -1,8 +1,8 @@
 ---
-description: Performance Optimization Roadmap - Empathy Framework: **Status:** In Progress **Last Updated:** January 10, 2026 **Owner:** Engineering Team --- ## 🎯 Vision Tra
+description: Performance Optimization Roadmap - Attune AI: **Status:** In Progress **Last Updated:** January 10, 2026 **Owner:** Engineering Team --- ## 🎯 Vision Tra
 ---
 
-# Performance Optimization Roadmap - Empathy Framework
+# Performance Optimization Roadmap - Attune AI
 
 **Status:** In Progress
 **Last Updated:** January 10, 2026
@@ -12,7 +12,7 @@ description: Performance Optimization Roadmap - Empathy Framework: **Status:** I
 
 ## 🎯 Vision
 
-Transform Empathy Framework into a high-performance, memory-efficient AI development platform through systematic, data-driven optimization.
+Transform Attune AI into a high-performance, memory-efficient AI development platform through systematic, data-driven optimization.
 
 ---
 
@@ -44,14 +44,14 @@ Transform Empathy Framework into a high-performance, memory-efficient AI develop
 - Mathematical formulas instead of `list(range())` antipattern
 
 **Documentation Created:**
-- `.claude/rules/empathy/list-copy-guidelines.md` - Comprehensive review guidelines
+- `.claude/rules/attune/list-copy-guidelines.md` - Comprehensive review guidelines
 - Decision matrices, benchmarks, anti-patterns catalog
 
 ---
 
 ### Phase 2: Advanced Optimizations 🔄 PLANNING (Starting Jan 13, 2026)
 
-**Planning Document:** `.claude/rules/empathy/advanced-optimization-plan.md`
+**Planning Document:** `.claude/rules/attune/advanced-optimization-plan.md`
 
 **Four Optimization Tracks:**
 
@@ -137,13 +137,13 @@ Transform Empathy Framework into a high-performance, memory-efficient AI develop
 ## 📚 Documentation Index
 
 ### Phase 1 (Completed)
-- [List Copy Guidelines](./../.claude/rules/empathy/list-copy-guidelines.md)
+- [List Copy Guidelines](./../.claude/rules/attune/list-copy-guidelines.md)
   - Pattern detection, decision matrices, benchmarks
   - Code review checklist, anti-patterns catalog
   - Training examples and best practices
 
 ### Phase 2 (In Planning)
-- [Advanced Optimization Plan](./../.claude/rules/empathy/advanced-optimization-plan.md)
+- [Advanced Optimization Plan](./../.claude/rules/attune/advanced-optimization-plan.md)
   - Detailed track-by-track implementation guide
   - Profiling infrastructure setup
   - Caching strategies and monitoring
@@ -212,7 +212,7 @@ pip install memory_profiler line_profiler py-spy snakeviz pytest-benchmark
 
 **Questions about optimizations?**
 - Open GitHub issue: [Performance] tag
-- Engineering Team: See `.claude/rules/empathy/advanced-optimization-plan.md`
+- Engineering Team: See `.claude/rules/attune/advanced-optimization-plan.md`
 
 **Contributing:**
 - Follow optimization guidelines
@@ -225,8 +225,8 @@ pip install memory_profiler line_profiler py-spy snakeviz pytest-benchmark
 ## 🔗 Quick Links
 
 - [Phase 1 Commit (f928d9aa)](https://github.com/Smart-AI-Memory/attune-ai/commit/f928d9aa)
-- [List Copy Guidelines](./../.claude/rules/empathy/list-copy-guidelines.md)
-- [Advanced Optimization Plan](./../.claude/rules/empathy/advanced-optimization-plan.md)
+- [List Copy Guidelines](./../.claude/rules/attune/list-copy-guidelines.md)
+- [Advanced Optimization Plan](./../.claude/rules/attune/advanced-optimization-plan.md)
 - [GitHub Issues - Performance Tag](https://github.com/Smart-AI-Memory/attune-ai/labels/performance)
 
 ---

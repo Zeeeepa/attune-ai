@@ -190,7 +190,7 @@ Use this checklist to verify the fix:
 ### Troubleshooting Steps:
 
 1. **Check Extension is Running:**
-   - Look for "Empathy Framework" in Extensions panel
+   - Look for "Attune AI" in Extensions panel
    - Ensure it's enabled (not disabled)
 
 2. **Check Console for Errors:**

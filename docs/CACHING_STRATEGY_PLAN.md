@@ -1,8 +1,8 @@
 ---
-description: Caching Strategy Plan - Empathy Framework: **Version:** 1.0 **Created:** January 10, 2026 **Status:** Phase 2 Planning (Quick Wins Implemented) **Owner:** Engin
+description: Caching Strategy Plan - Attune AI: **Version:** 1.0 **Created:** January 10, 2026 **Status:** Phase 2 Planning (Quick Wins Implemented) **Owner:** Engin
 ---
 
-# Caching Strategy Plan - Empathy Framework
+# Caching Strategy Plan - Attune AI
 
 **Version:** 1.0
 **Created:** January 10, 2026
@@ -13,7 +13,7 @@ description: Caching Strategy Plan - Empathy Framework: **Version:** 1.0 **Creat
 
 ## Executive Summary
 
-This document provides a comprehensive caching strategy for the Empathy Framework v3.9.2+. It ranks caching opportunities by value, specifies invalidation strategies, configures memory bounds and TTLs, and establishes monitoring and risk mitigation approaches.
+This document provides a comprehensive caching strategy for the Attune AI v3.9.2+. It ranks caching opportunities by value, specifies invalidation strategies, configures memory bounds and TTLs, and establishes monitoring and risk mitigation approaches.
 
 **Quick Wins Completed:**
 - ✅ AST cache monitoring infrastructure

@@ -676,8 +676,8 @@ In [Part 4: Advanced Grammar](/blog/advanced-grammar), we explore the newest pat
 
 ---
 
-*Composition pattern code is available in [Empathy Framework v4.4.0](https://github.com/Smart-AI-Memory/empathy).*
+*Composition pattern code is available in [Attune AI v4.4.0](https://github.com/Smart-AI-Memory/empathy).*
 
-*Patrick Roebuck is the creator of the Empathy Framework. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
+*Patrick Roebuck is the creator of the Attune AI. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
 
 **Tags:** multi-agent-systems, composition-patterns, orchestration, ai-agents, llm

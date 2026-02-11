@@ -1,6 +1,6 @@
 # Third-Party Software Notices and Information
 
-This project incorporates components from the projects listed below. The original copyright notices and the licenses under which Deep Study AI, LLC received such components are set forth below.
+This project incorporates components from the projects listed below. The original copyright notices and the licenses under which Smart AI Memory received such components are set forth below.
 
 ---
 

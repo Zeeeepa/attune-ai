@@ -7,7 +7,7 @@ description: Redis Short-Term Memory Security Guide: **Version:** 4.4.0 **Last U
 **Version:** 4.4.0
 **Last Updated:** January 2026
 
-This document covers security considerations, best practices, and configuration options for the Redis short-term memory system in the Empathy Framework.
+This document covers security considerations, best practices, and configuration options for the Redis short-term memory system in the Attune AI.
 
 ---
 

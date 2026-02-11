@@ -16,7 +16,7 @@ This is **staleness** - code that changed without corresponding test changes. It
 
 ## Enter the Project Index
 
-The Empathy Framework's **Project Index** is a codebase intelligence layer that tracks every file in your project and answers questions like:
+The Attune AI's **Project Index** is a codebase intelligence layer that tracks every file in your project and answers questions like:
 
 - Which files changed recently but their tests didn't?
 - What's the actual test coverage, file by file?
@@ -74,7 +74,7 @@ For a 500-file project, initial scan takes ~2 seconds. Subsequent scans with cac
 
 ### Real-World Integration
 
-The Project Index integrates with other Empathy Framework features:
+The Project Index integrates with other Attune AI features:
 
 **Test Coverage Workflow:**
 ```bash
@@ -111,7 +111,7 @@ Every `FileRecord` captures 30+ attributes:
 ## Getting Started
 
 ```bash
-# Install Empathy Framework
+# Install Attune AI
 pip install attune-ai
 
 # Initialize in your project
@@ -136,4 +136,4 @@ Stop hoping your tests catch everything. Start *knowing* what needs attention.
 
 ---
 
-*This post was generated using the Empathy Framework's `/feature-overview` skill.*
+*This post was generated using the Attune AI's `/feature-overview` skill.*

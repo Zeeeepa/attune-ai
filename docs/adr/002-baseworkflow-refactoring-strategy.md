@@ -897,7 +897,7 @@ This ADR will be reviewed after Track 1 and Track 2 implementation.
 
 ---
 
-**Author:** Claude Sonnet 4.5 (Empathy Framework Redesign)
+**Author:** Claude Sonnet 4.5 (Attune AI Redesign)
 **Created:** January 26, 2026
 **Status:** Proposed (awaiting implementation)
 **Next Review:** After Phase 1 completion

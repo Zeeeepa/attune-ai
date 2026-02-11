@@ -1,5 +1,5 @@
 ---
-description: Anthropic Patterns - Complete Integration Summary integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Anthropic Patterns - Complete Integration Summary integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Anthropic Patterns - Complete Integration Summary
@@ -12,7 +12,7 @@ description: Anthropic Patterns - Complete Integration Summary integration guide
 
 ## Overview
 
-The three new Anthropic-inspired composition patterns are now **fully integrated** into the Empathy Framework's agent creation and orchestration systems.
+The three new Anthropic-inspired composition patterns are now **fully integrated** into the Attune AI's agent creation and orchestration systems.
 
 ## What Was Integrated
 
@@ -258,7 +258,7 @@ The meta-orchestrator uses this logic to select patterns:
 
 1. **anthropic-agent-patterns.md** (NEW, 400+ lines)
    - Complete guide to Anthropic's patterns
-   - Empathy Framework implementations
+   - Attune AI implementations
    - Migration guide
 
 2. **extending-composition-patterns.md** (NEW, 600+ lines)
@@ -602,12 +602,12 @@ Consider these future improvements:
 ✅ **Agent Hub:** Updated with new patterns
 ✅ **Package:** Proper exports and accessibility
 
-**The Empathy Framework now has 10 composition patterns with full Anthropic best practices integration!**
+**The Attune AI now has 10 composition patterns with full Anthropic best practices integration!**
 
 ---
 
 ## Credits
 
 - **Anthropic Guidelines:** [Building effective agents](https://www.anthropic.com/research/building-effective-agents)
-- **Implementation:** Empathy Framework v5.1.4
+- **Implementation:** Attune AI v5.1.4
 - **Integration Date:** January 29, 2026

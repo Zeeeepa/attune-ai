@@ -12,7 +12,7 @@ description: Security Scanner API Reference API reference: **Version:** 1.0 **Mo
 
 ## Overview
 
-This document provides comprehensive API documentation for the Empathy Framework Security Scanner. It covers all public classes, functions, and usage patterns for running security audits and extending the scanner.
+This document provides comprehensive API documentation for the Attune AI Security Scanner. It covers all public classes, functions, and usage patterns for running security audits and extending the scanner.
 
 ---
 

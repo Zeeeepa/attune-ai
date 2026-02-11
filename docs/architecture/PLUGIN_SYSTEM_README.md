@@ -1,14 +1,14 @@
 ---
-description: Empathy Framework - Plugin System: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+description: Attune AI - Plugin System: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
 ---
 
-# Empathy Framework - Plugin System
+# Attune AI - Plugin System
 
 ## Overview
 
-The Empathy Framework is now **modular**, with a public core and domain-specific plugins. This enables:
+The Attune AI is now **modular**, with a public core and domain-specific plugins. This enables:
 
-- **Public Core**: Universal empathy framework (Apache 2.0)
+- **Public Core**: Universal Attune AI (Apache 2.0)
 - **Domain Plugins**: Specialized wizards for software, healthcare, finance, etc.
 - **Cross-Domain Learning**: Patterns shared across all domains (Level 5 Systems Empathy)
 
@@ -255,7 +255,7 @@ python -c "from attune.plugins import get_global_registry; \
 
 > "I had a theory: what if AI collaboration could progress through empathy levels? I built the framework and applied it to real projects. When it worked, the impact was more profound than I'd anticipated.
 >
-> In our experience developing the Empathy Framework across software and healthcare domains, we found ourselves building higher quality code many times faster—not because the AI wrote more code, but because it anticipated structural issues before they became costly to fix."
+> In our experience developing the Attune AI across software and healthcare domains, we found ourselves building higher quality code many times faster—not because the AI wrote more code, but because it anticipated structural issues before they became costly to fix."
 
 ### Key Principles
 

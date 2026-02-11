@@ -12,7 +12,7 @@ description: Authentication Strategy Guide: Step-by-step tutorial with examples,
 
 ## Overview
 
-The Empathy Framework now supports intelligent routing between **Claude.ai/Code subscriptions** and the **Anthropic API** based on:
+The Attune AI now supports intelligent routing between **Claude.ai/Code subscriptions** and the **Anthropic API** based on:
 
 - Your subscription tier (Pro, Max, Enterprise)
 - Module size (small, medium, large)

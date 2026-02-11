@@ -1,8 +1,8 @@
 ---
-description: Development guidelines for Empathy Framework contributors. Level 3 anticipatory design principles, error handling patterns, and maintainability best practices.
+description: Development guidelines for Attune AI contributors. Level 3 anticipatory design principles, error handling patterns, and maintainability best practices.
 ---
 
-# Empathy Framework Development Guidelines
+# Attune AI Development Guidelines
 **Purpose**: Guide contributors to maintain empathy principles in code
 **Audience**: Contributors, maintainers, technical decision-makers
 **Status**: Living document - update as patterns emerge
@@ -11,13 +11,13 @@ description: Development guidelines for Empathy Framework contributors. Level 3 
 
 ## Overview
 
-The Empathy Framework is not just user-friendly - it operates at **Level 3 (Anticipatory)**, proactively handling production concerns so developers can focus on features. This document guides contributors to maintain these empathy principles.
+The Attune AI is not just user-friendly - it operates at **Level 3 (Anticipatory)**, proactively handling production concerns so developers can focus on features. This document guides contributors to maintain these empathy principles.
 
 ---
 
 ## The Empathy Levels Framework
 
-Every feature, API, and interaction in the Empathy Framework should be designed with empathy levels in mind:
+Every feature, API, and interaction in the Attune AI should be designed with empathy levels in mind:
 
 ### Level 1: Transactional
 - Direct query → direct response
@@ -774,7 +774,7 @@ Map out:
 
 ## Questions?
 
-**Empathy Framework Philosophy**:
+**Attune AI Philosophy**:
 > "Build for the developer you wish you had as a teammate - anticipate their needs, prepare resources proactively, communicate clearly, fail gracefully, and make complexity transparent."
 
 When in doubt:

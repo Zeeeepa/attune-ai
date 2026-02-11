@@ -1,5 +1,5 @@
 ---
-description: Enterprise Privacy Integration Plan integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Enterprise Privacy Integration Plan integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Enterprise Privacy Integration Plan
@@ -13,7 +13,7 @@ description: Enterprise Privacy Integration Plan integration guide. Connect exte
 
 ## Executive Summary
 
-This document outlines the integration of Claude's memory features with the Empathy Framework's MemDocs system, designed specifically for enterprise software developers who require strict privacy controls.
+This document outlines the integration of Claude's memory features with the Attune AI's MemDocs system, designed specifically for enterprise software developers who require strict privacy controls.
 
 **Key Principles:**
 1. **Privacy by Default**: Most restrictive settings out of the box
@@ -619,4 +619,4 @@ A: Yes, same privacy system applies to all IDE integrations.
 **Document Status**: Draft for Review
 **Last Updated**: 2025-11-22
 **Next Review**: After implementation of Phase 1
-**Owner**: Empathy Framework Team
+**Owner**: Attune AI Team

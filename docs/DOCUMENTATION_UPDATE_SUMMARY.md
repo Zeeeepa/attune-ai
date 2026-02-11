@@ -330,9 +330,9 @@ from attune_llm.wizards import HealthcareWizard
 ```
 
 **Blog Post Topics:**
-- "Empathy Framework v4.0: Meta-Orchestration Era"
+- "Attune AI v4.0: Meta-Orchestration Era"
 - "How We Built Self-Composing Agent Teams"
-- "Developer Guide: Contributing to Empathy Framework"
+- "Developer Guide: Contributing to Attune AI"
 
 ---
 

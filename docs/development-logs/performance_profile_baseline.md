@@ -454,7 +454,7 @@ Based on comprehensive profiling, here are the top 10 optimization opportunities
 
 ### Performance Summary
 
-The Empathy Framework security pipeline demonstrates **exceptional performance** across all components:
+The Attune AI security pipeline demonstrates **exceptional performance** across all components:
 
 - **PII Scrubber:** 7-10x better than target
 - **Secrets Detector:** 26-40x better than target

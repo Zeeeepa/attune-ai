@@ -1,10 +1,10 @@
 ---
-description: Development guidelines for Contributing Tests to Empathy Framework. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+description: Development guidelines for Contributing Tests to Attune AI. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
 ---
 
-# Contributing Tests to Empathy Framework
+# Contributing Tests to Attune AI
 
-This guide will help you write high-quality tests for the Empathy Framework. Whether you're adding a new feature or fixing a bug, tests are essential to ensure code quality and prevent regressions.
+This guide will help you write high-quality tests for the Attune AI. Whether you're adding a new feature or fixing a bug, tests are essential to ensure code quality and prevent regressions.
 
 ## Quick Start
 

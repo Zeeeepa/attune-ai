@@ -8,7 +8,7 @@ Domain-specific AI assistants with built-in security, compliance, and industry b
 
 ## Overview
 
-**Empathy Framework includes industry-specific wizards** that provide:
+**Attune AI includes industry-specific wizards** that provide:
 
 - :material-shield-check: **Built-in Security** - PII scrubbing, secrets detection, audit logging
 - :material-file-document: **Domain Knowledge** - Industry-specific prompts and workflows

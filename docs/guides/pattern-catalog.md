@@ -4,7 +4,7 @@ description: Pattern Catalog Guide: Step-by-step tutorial with examples, best pr
 
 # Pattern Catalog Guide
 
-The Pattern Catalog is a collection of reusable software patterns extracted from the Empathy Framework, organized for cross-domain transfer and Level 5 (Systems Thinking) capability development.
+The Pattern Catalog is a collection of reusable software patterns extracted from the Attune AI, organized for cross-domain transfer and Level 5 (Systems Thinking) capability development.
 
 ## What is the Pattern Catalog?
 
@@ -219,7 +219,7 @@ The catalog is a tool for developing Level 5 (Systems Thinking) capability:
 
 - [Trust Circuit Breaker Guide](./trust-circuit-breaker.md) - Detailed guide on the implemented transfer
 - [Pattern Catalog README](../../patterns/README.md) - Catalog index and quick reference
-- [Empathy Framework Architecture](../architecture.md) - Overall system design
+- [Attune AI Architecture](../architecture.md) - Overall system design
 
 ---
 

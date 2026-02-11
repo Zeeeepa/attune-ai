@@ -496,6 +496,6 @@ In **Part 3: Building Agent Teams**, we'll see how multiple spawned agents combi
 
 ---
 
-*The Agent Factory code is available in [Empathy Framework v4.4.0](https://github.com/Smart-AI-Memory/empathy).*
+*The Agent Factory code is available in [Attune AI v4.4.0](https://github.com/Smart-AI-Memory/empathy).*
 
-*Patrick Roebuck is the creator of the Empathy Framework. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
+*Patrick Roebuck is the creator of the Attune AI. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*

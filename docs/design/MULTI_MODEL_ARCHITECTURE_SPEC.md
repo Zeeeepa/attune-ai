@@ -12,7 +12,7 @@ description: Multi-Model Architecture Design Specification: System architecture 
 
 ## Executive Summary
 
-This specification defines the architecture for multi-model support in the Empathy Framework. It consolidates the unified model registry, task-type routing, LLM execution, workflow orchestration, resilience patterns, and telemetry into a cohesive design.
+This specification defines the architecture for multi-model support in the Attune AI. It consolidates the unified model registry, task-type routing, LLM execution, workflow orchestration, resilience patterns, and telemetry into a cohesive design.
 
 ---
 

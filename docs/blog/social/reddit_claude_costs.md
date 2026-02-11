@@ -565,7 +565,7 @@ PRs welcome! Things I'd love help with:
 
 ## License
 
-Fair Source License 0.9 (free for up to 3 users, paid beyond that)
+Apache License 2.0 0.9 (free for up to 3 users, paid beyond that)
 
 ---
 

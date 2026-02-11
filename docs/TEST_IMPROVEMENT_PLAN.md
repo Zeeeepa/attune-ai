@@ -552,7 +552,7 @@ jq '.files."src/attune/cost_tracker.py".summary' coverage.json
 - [CODING_STANDARDS.md](./CODING_STANDARDS.md) - Testing requirements
 - [PHASE2_IMPLEMENTATION_SUMMARY.md](./PHASE2_IMPLEMENTATION_SUMMARY.md) - Performance optimizations
 - [PERFORMANCE_OPTIMIZATION_COMPLETE.md](./PERFORMANCE_OPTIMIZATION_COMPLETE.md) - Complete optimization history
-- [.claude/rules/empathy/coding-standards-index.md](../.claude/rules/empathy/coding-standards-index.md) - Quick reference
+- [.claude/rules/attune/coding-standards-index.md](../.claude/rules/attune/coding-standards-index.md) - Quick reference
 
 ---
 

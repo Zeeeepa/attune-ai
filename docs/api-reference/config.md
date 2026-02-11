@@ -1,14 +1,14 @@
 ---
-description: Configure Empathy Framework with Python, YAML, JSON, or environment variables. Flexible configuration with validation and defaults.
+description: Configure Attune AI with Python, YAML, JSON, or environment variables. Flexible configuration with validation and defaults.
 ---
 
 # Configuration
 
-Configuration management for the Empathy Framework. Configure via direct instantiation, YAML/JSON files, or environment variables.
+Configuration management for the Attune AI. Configure via direct instantiation, YAML/JSON files, or environment variables.
 
 ## Overview
 
-The configuration system provides flexible options for customizing Empathy Framework behavior:
+The configuration system provides flexible options for customizing Attune AI behavior:
 
 - **Direct instantiation**: Pass parameters to `EmpathyConfig()` or `EmpathyOS()`
 - **YAML/JSON files**: Load from `empathy.config.yml` or `empathy.config.json`

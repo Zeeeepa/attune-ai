@@ -47,7 +47,7 @@ pip install websockets
 The dashboard also requires:
 - Redis 5.0+ (for data storage - patterns gracefully degrade without it)
 - Python 3.10+
-- Empathy Framework with telemetry modules
+- Attune AI with telemetry modules
 
 ### Quick Start
 

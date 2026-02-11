@@ -12,7 +12,7 @@ description: UX Implementation Plan - Comprehensive Review: **Date:** 2026-01-01
 
 ## Executive Summary
 
-The UX Implementation Plan outlines a solid 3-sprint strategy to transform Empathy Framework from a CLI-first tool into an interactive IDE experience. However, **significant portions overlap with work we've already completed**, and the plan lacks critical technical details about backend integration.
+The UX Implementation Plan outlines a solid 3-sprint strategy to transform Attune AI from a CLI-first tool into an interactive IDE experience. However, **significant portions overlap with work we've already completed**, and the plan lacks critical technical details about backend integration.
 
 ### Current State Assessment
 
@@ -349,7 +349,7 @@ workflow_chains:
 
 **1. Target Audience Reality**
 
-Empathy Framework users are:
+Attune AI users are:
 
 - Python/TypeScript developers (comfortable with YAML/JSON)
 - DevOps engineers (prefer text configs for version control)

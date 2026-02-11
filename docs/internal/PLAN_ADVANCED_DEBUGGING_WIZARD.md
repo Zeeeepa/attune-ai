@@ -305,7 +305,7 @@ performance_wizard.analyze(profiler_output)
 
 ### Demo Quality:
 
-- Run on Empathy Framework codebase itself
+- Run on Attune AI codebase itself
 - Show before/after linter output
 - Demonstrate systematic fixing
 - Show bug risk predictions

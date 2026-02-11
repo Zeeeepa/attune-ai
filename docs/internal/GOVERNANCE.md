@@ -1,10 +1,10 @@
 ---
-description: Empathy Framework - Project Governance: This document describes the governance structure and decision-making processes for the Empathy Framework.
+description: Attune AI - Project Governance: This document describes the governance structure and decision-making processes for the Attune AI.
 ---
 
-# Empathy Framework - Project Governance
+# Attune AI - Project Governance
 
-This document describes the governance structure and decision-making processes for the Empathy Framework.
+This document describes the governance structure and decision-making processes for the Attune AI.
 
 ## Project Status
 
@@ -14,7 +14,7 @@ This document describes the governance structure and decision-making processes f
 
 ## Governance Model
 
-The Empathy Framework follows a **Benevolent Dictator** governance model during the Beta phase, with a planned transition to **Meritocratic Contribution** model as the community grows.
+The Attune AI follows a **Benevolent Dictator** governance model during the Beta phase, with a planned transition to **Meritocratic Contribution** model as the community grows.
 
 ### Core Team
 
@@ -154,7 +154,7 @@ The Empathy Framework follows a **Benevolent Dictator** governance model during 
 ## License and Commercial Model
 
 **Dual Licensing**:
-- Fair Source 0.9 (LICENSE): Free for ≤5 employees, students, educators
+- Apache License 2.0 (LICENSE): Free for ≤5 employees, students, educators
 - Commercial License (LICENSE-COMMERCIAL.md): contact us for pricing for 6+ employees
 
 **Commercial Decision Authority**: Smart AI Memory, LLC
@@ -182,7 +182,7 @@ This governance document can be amended by:
 
 **Questions about governance?**
 - Email: patrick.roebuck@smartaimemory.com
-- GitHub Discussions: https://github.com/Deep-Study-AI/Empathy/discussions
+- GitHub Discussions: https://github.com/Smart-AI-Memory/attune-ai/discussions
 
 **Want to contribute?**
 - See CONTRIBUTING.md for technical guidelines

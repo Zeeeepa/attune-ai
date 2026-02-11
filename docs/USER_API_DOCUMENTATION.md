@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework - User API Documentation API reference: **Version:** 5.1.0 **Last Updated:** January 27, 2026 **Status:** Anthropic-Native (Claude-only) ---
+description: Attune AI - User API Documentation API reference: **Version:** 5.1.0 **Last Updated:** January 27, 2026 **Status:** Anthropic-Native (Claude-only) ---
 ---
 
-# Empathy Framework - User API Documentation
+# Attune AI - User API Documentation
 
 **Version:** 5.1.0
 **Last Updated:** January 27, 2026
@@ -889,4 +889,4 @@ For complete API reference, see:
 
 **Last Updated:** January 27, 2026
 **Framework Version:** 5.1.0
-**License:** Fair Source License 0.9
+**License:** Apache License 2.0 0.9

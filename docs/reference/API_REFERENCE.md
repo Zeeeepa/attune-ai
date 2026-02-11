@@ -1,11 +1,11 @@
 ---
-description: Empathy Framework API Reference API reference: **Version:** 3.1.0 **License:** Fair Source 0.9 **Copyright:** 2025 Smart AI Memory, LLC --- ## Tabl
+description: Attune AI API Reference API reference: **Version:** 3.1.0 **License:** Apache License 2.0 **Copyright:** 2025 Smart AI Memory, LLC --- ## Tabl
 ---
 
-# Empathy Framework API Reference
+# Attune AI API Reference
 
 **Version:** 3.1.0
-**License:** Fair Source 0.9
+**License:** Apache License 2.0
 **Copyright:** 2025 Smart AI Memory, LLC
 
 ---
@@ -50,7 +50,7 @@ description: Empathy Framework API Reference API reference: **Version:** 3.1.0 *
 
 ## Overview
 
-The Empathy Framework provides a comprehensive API for building AI systems that progress from reactive (Level 1) to anticipatory (Level 4) and systems-level (Level 5) collaboration. This reference documents all public APIs, classes, methods, and their usage.
+The Attune AI provides a comprehensive API for building AI systems that progress from reactive (Level 1) to anticipatory (Level 4) and systems-level (Level 5) collaboration. This reference documents all public APIs, classes, methods, and their usage.
 
 ### Core Concepts
 
@@ -66,7 +66,7 @@ The Empathy Framework provides a comprehensive API for building AI systems that 
 
 ### EmpathyLLM
 
-Main class that wraps any LLM provider with Empathy Framework levels.
+Main class that wraps any LLM provider with Attune AI levels.
 
 #### Constructor
 
@@ -1580,9 +1580,9 @@ except Exception as e:
 
 ## Support & Resources
 
-- **Documentation:** https://github.com/Deep-Study-AI/Empathy/tree/main/docs
-- **Issues:** https://github.com/Deep-Study-AI/Empathy/issues
-- **Discussions:** https://github.com/Deep-Study-AI/Empathy/discussions
+- **Documentation:** https://github.com/Smart-AI-Memory/attune-ai/tree/main/docs
+- **Issues:** https://github.com/Smart-AI-Memory/attune-ai/issues
+- **Discussions:** https://github.com/Smart-AI-Memory/attune-ai/discussions
 - **Email:** patrick.roebuck@smartaimemory.com
 
 **Commercial Support:**
@@ -1591,9 +1591,9 @@ except Exception as e:
 - Guaranteed response times
 - Security advisories
 
-Learn more: https://github.com/Deep-Study-AI/Empathy/blob/main/SPONSORSHIP.md
+Learn more: https://github.com/Smart-AI-Memory/attune-ai/blob/main/SPONSORSHIP.md
 
 ---
 
 **Copyright 2025 Smart AI Memory, LLC**
-**Licensed under Fair Source 0.9**
+**Licensed under the Apache License, Version 2.0**

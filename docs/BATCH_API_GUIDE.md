@@ -633,4 +633,4 @@ A: Yes, each request can specify its own model. However, grouping similar models
 
 **Last Updated:** January 27, 2026
 **Version:** 5.0.2
-**Maintainer:** Empathy Framework Team
+**Maintainer:** Attune AI Team

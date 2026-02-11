@@ -1,10 +1,10 @@
 ---
-description: Choose your learning path for Empathy Framework. Quick Start, Tutorial, or Deep Dive approaches based on your experience level.
+description: Choose your learning path for Attune AI. Quick Start, Tutorial, or Deep Dive approaches based on your experience level.
 ---
 
 # Getting Started
 
-Welcome to Empathy Framework! This guide will take you from zero to running your first AI workflow in about 10 minutes.
+Welcome to Attune AI! This guide will take you from zero to running your first AI workflow in about 10 minutes.
 
 ---
 
@@ -41,9 +41,9 @@ Then come back here to understand what you just did!
 
 ---
 
-## What is Empathy Framework?
+## What is Attune AI?
 
-Empathy Framework is a production-ready toolkit for building AI systems that:
+Attune AI is a production-ready toolkit for building AI systems that:
 
 - **Automate software tasks** - Security audits, code review, test generation
 - **Coordinate multiple AI agents** - Teams of specialized agents working together

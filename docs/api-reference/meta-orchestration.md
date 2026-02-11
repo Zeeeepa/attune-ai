@@ -814,4 +814,4 @@ Questions or issues with the Meta-Orchestration API?
 
 **Last Updated:** January 16, 2026
 **Maintained By:** Documentation Team
-**License:** Fair Source 0.9
+**License:** Apache License 2.0

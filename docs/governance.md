@@ -1,16 +1,16 @@
 ---
-description: Governance: This document outlines the governance structure for the Empathy Framework project.
+description: Governance: This document outlines the governance structure for the Attune AI project.
 ---
 
 # Governance
 
-This document outlines the governance structure for the Empathy Framework project.
+This document outlines the governance structure for the Attune AI project.
 
 ## Project Overview
 
-The **Empathy Framework** is an open-source project providing a five-level maturity model for AI-human collaboration, progressing from reactive responses to anticipatory problem prevention.
+The **Attune AI** is an open-source project providing a five-level maturity model for AI-human collaboration, progressing from reactive responses to anticipatory problem prevention.
 
-- **License**: Fair Source 0.9 (dual licensing: free for individuals/education/small teams, commercial for larger organizations)
+- **License**: Apache License 2.0 (dual licensing: free for individuals/education/small teams, commercial for larger organizations)
 - **Organization**: Smart AI Memory, LLC
 - **Repository**: https://github.com/Smart-AI-Memory/empathy
 - **Documentation**: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
@@ -19,7 +19,7 @@ The **Empathy Framework** is an open-source project providing a five-level matur
 
 ### Single Maintainer Model
 
-The Empathy Framework currently operates under a **single maintainer model** for rapid development and clear decision-making authority:
+The Attune AI currently operates under a **single maintainer model** for rapid development and clear decision-making authority:
 
 - **Maintainer**: Patrick Roebuck (Smart AI Memory, LLC)
   - Email: patrick.roebuck@smartaimemory.com
@@ -69,7 +69,7 @@ As the project grows and attracts more contributors, the governance model may ev
 ### Users
 
 **Users** can:
-- Use the framework under Fair Source 0.9 license terms
+- Use the framework under Apache License 2.0 license terms
 - Report issues and bugs
 - Request features
 - Participate in community discussions
@@ -146,7 +146,7 @@ The project follows **Semantic Versioning** (SemVer):
 
 ### Principles
 
-The Empathy Framework community values:
+The Attune AI community values:
 - **Respectful communication**
 - **Constructive feedback**
 - **Inclusive participation**
@@ -209,7 +209,7 @@ As the community grows, we may add:
 
 ### Code License
 
-All contributions to the Empathy Framework are licensed under **Fair Source 0.9**:
+All contributions to the Attune AI are licensed under **Apache License 2.0**:
 - **Free**: For individuals, students, educators, and organizations with ≤5 employees
 - **Commercial**: $99/developer/year for organizations with 6+ employees
 
@@ -220,7 +220,7 @@ Documentation is licensed under **Creative Commons Attribution 4.0 International
 ### Contributor License Agreement
 
 By contributing to this project, you agree that:
-1. Your contributions will be licensed under Fair Source 0.9
+1. Your contributions will be licensed under Apache License 2.0
 2. You have the right to contribute the code/documentation
 3. Smart AI Memory, LLC may relicense the project if needed for sustainability
 
@@ -263,7 +263,7 @@ This governance document may be updated by the maintainer with:
 ## Quick Reference
 
 - **Maintainer**: Patrick Roebuck (patrick.roebuck@smartaimemory.com)
-- **License**: Fair Source 0.9
+- **License**: Apache License 2.0
 - **Code of Conduct**: Respectful, professional, inclusive
 - **Security**: Report privately to patrick.roebuck@smartaimemory.com
 - **Contributions**: Welcome via pull requests

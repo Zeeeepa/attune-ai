@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework vs. Competitors: Comprehensive Comparison: **Last Updated**: November 2025 **Version**: 1.6.8 --- ## Executive Summary The Empathy Framework i
+description: Attune AI vs. Competitors: Comprehensive Comparison: **Last Updated**: November 2025 **Version**: 1.6.8 --- ## Executive Summary The Attune AI i
 ---
 
-# Empathy Framework vs. Competitors: Comprehensive Comparison
+# Attune AI vs. Competitors: Comprehensive Comparison
 
 **Last Updated**: November 2025
 **Version**: 1.6.8
@@ -11,20 +11,20 @@ description: Empathy Framework vs. Competitors: Comprehensive Comparison: **Last
 
 ## Executive Summary
 
-The Empathy Framework is the **only AI-assisted code analysis platform** that combines:
+The Attune AI is the **only AI-assisted code analysis platform** that combines:
 - **Level 4 Anticipatory Intelligence** - Predict issues 30-90 days before they occur
 - **Level 5 Cross-Domain Transfer** - Learn patterns from healthcare and apply to software (and vice versa)
 - **Dual-Domain Support** - Both software development AND healthcare monitoring
-- **Fair Source Licensing** - Free for small teams (≤5 employees), source-available for security review
+- **Apache 2.0 Licensing - Fully open source, free for everyone
 - **16 Specialized Software Wizards** - Comprehensive analysis beyond basic linting
 
-Traditional tools detect problems **after they exist**. Empathy Framework **predicts and prevents** them before they manifest.
+Traditional tools detect problems **after they exist**. Attune AI **predicts and prevents** them before they manifest.
 
 ---
 
 ## Quick Comparison Matrix
 
-| Feature | Empathy Framework | SonarQube | CodeClimate | GitHub Copilot | DeepCode/Snyk | Traditional SAST |
+| Feature | Attune AI | SonarQube | CodeClimate | GitHub Copilot | DeepCode/Snyk | Traditional SAST |
 |---------|------------------|-----------|-------------|----------------|---------------|------------------|
 | **Level 4 Anticipatory** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No | ❌ No |
 | **Level 5 Cross-Domain** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No | ❌ No |
@@ -48,9 +48,9 @@ Traditional tools detect problems **after they exist**. Empathy Framework **pred
 
 ### 1. Level 4 Anticipatory Intelligence (UNIQUE)
 
-**Empathy Framework**: ✅ **ONLY platform with true anticipatory predictions**
+**Attune AI**: ✅ **ONLY platform with true anticipatory predictions**
 
-The Empathy Framework doesn't just analyze current code—it predicts future issues based on trajectory analysis:
+The Attune AI doesn't just analyze current code—it predicts future issues based on trajectory analysis:
 
 **Example - Performance Prediction**:
 ```python
@@ -62,7 +62,7 @@ def get_user_data(user_id):
         order.items = db.query("SELECT * FROM items WHERE order_id = ?", order.id)
     return user
 
-# Empathy Framework Prediction:
+# Attune AI Prediction:
 # ⚠️ PERFORMANCE ISSUE PREDICTED
 # 📅 Timeframe: 45-60 days (when user base hits 10,000)
 # 🎯 Confidence: 89%
@@ -92,14 +92,14 @@ def get_user_data(user_id):
 
 ### 2. Level 5 Cross-Domain Pattern Transfer (UNIQUE)
 
-**Empathy Framework**: ✅ **ONLY platform with cross-domain learning**
+**Attune AI**: ✅ **ONLY platform with cross-domain learning**
 
 Learn patterns from one domain (e.g., healthcare handoff protocols) and apply them to prevent failures in another domain (e.g., software deployment).
 
 **Real-World Example**:
 - **Healthcare Research**: 23% of patient handoffs fail without verification checklists
 - **Software Application**: Deployment handoffs (dev → staging → production) share identical failure modes
-- **Empathy Framework Action**: Detects missing verification in deployment pipeline and predicts 87% chance of production failure within 30-45 days
+- **Attune AI Action**: Detects missing verification in deployment pipeline and predicts 87% chance of production failure within 30-45 days
 
 **Cross-Domain Capabilities**:
 1. Healthcare → Software: Handoff protocols, compliance patterns, monitoring strategies
@@ -117,7 +117,7 @@ Learn patterns from one domain (e.g., healthcare handoff protocols) and apply th
 
 ### 3. Dual-Domain Support: Software + Healthcare
 
-**Empathy Framework**: ✅ **Both domains with 16 software + healthcare wizards**
+**Attune AI**: ✅ **Both domains with 16 software + healthcare wizards**
 
 #### Software Plugin (16 Wizards)
 - Security Analysis Wizard - SQL injection, XSS, secrets detection
@@ -158,13 +158,13 @@ Learn patterns from one domain (e.g., healthcare handoff protocols) and apply th
 
 | Tool | Coverage Analysis | Gap Detection | Improvement Suggestions | Historical Trending |
 |------|------------------|---------------|------------------------|---------------------|
-| **Empathy Framework** | ✅ Yes | ✅ Yes | ✅ AI-powered | ✅ Yes |
+| **Attune AI** | ✅ Yes | ✅ Yes | ✅ AI-powered | ✅ Yes |
 | **SonarQube** | ✅ Yes | ✅ Yes | ⚠️ Rules-based | ✅ Yes |
 | **CodeClimate** | ✅ Yes | ✅ Yes | ⚠️ Rules-based | ✅ Yes |
 | **GitHub Copilot** | ❌ No | ❌ No | ❌ No | ❌ No |
 | **Snyk** | ❌ No | ❌ No | ❌ No | ❌ No |
 
-**Empathy Framework Testing Wizard**:
+**Attune AI Testing Wizard**:
 - Identifies untested code paths with AI context analysis
 - Suggests specific test cases based on code behavior
 - Predicts future coverage gaps as code evolves
@@ -191,13 +191,13 @@ Impact: +2.3% coverage, prevents future regression
 
 | Tool | Static Analysis | Dynamic Analysis | Dependency Scanning | AI-Enhanced | Anticipatory |
 |------|----------------|-----------------|---------------------|-------------|--------------|
-| **Empathy Framework** | ✅ Yes | ⚠️ Planned | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Attune AI** | ✅ Yes | ⚠️ Planned | ✅ Yes | ✅ Yes | ✅ Yes |
 | **SonarQube** | ✅ Yes | ⚠️ Limited | ✅ Yes | ❌ No | ❌ No |
 | **CodeClimate** | ✅ Yes | ❌ No | ✅ Yes | ❌ No | ❌ No |
 | **Snyk** | ✅ Yes | ❌ No | ✅ Excellent | ✅ Yes | ❌ No |
 | **Bandit** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
 
-**Empathy Framework Security Wizard**:
+**Attune AI Security Wizard**:
 - Traditional SAST (SQL injection, XSS, CSRF, secrets)
 - AI-enhanced context analysis (understands business logic)
 - Dependency vulnerability scanning (pip-audit, Snyk integration)
@@ -211,7 +211,7 @@ def validate_input(user_input):
         return sanitize(user_input)
     return None
 
-# Empathy Framework Prediction:
+# Attune AI Prediction:
 # ⚠️ SECURITY VULNERABILITY PREDICTED
 # 📅 Timeframe: 60-90 days
 # 🎯 Confidence: 76%
@@ -232,12 +232,12 @@ def validate_input(user_input):
 
 | Tool | N+1 Detection | Memory Leaks | Bottleneck ID | Database Optimization | Scalability Prediction |
 |------|--------------|--------------|---------------|----------------------|----------------------|
-| **Empathy Framework** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes (Anticipatory) |
+| **Attune AI** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes (Anticipatory) |
 | **SonarQube** | ⚠️ Basic | ⚠️ Basic | ⚠️ Basic | ❌ No | ❌ No |
 | **CodeClimate** | ⚠️ Basic | ⚠️ Basic | ⚠️ Basic | ❌ No | ❌ No |
 | **New Relic/Datadog** | ✅ Yes | ✅ Yes | ✅ Yes | ⚠️ Limited | ⚠️ Reactive |
 
-**Empathy Framework Performance Wizard**:
+**Attune AI Performance Wizard**:
 - Static analysis of code patterns
 - Integration with profiling tools (cProfile, py-spy)
 - Database query optimization suggestions
@@ -275,12 +275,12 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Native LLM | Providers | Prompt Optimization | Multi-Model | Thinking Mode | Context Caching |
 |------|-----------|-----------|-------------------|-------------|---------------|----------------|
-| **Empathy Framework** | ✅ Yes | Claude, GPT-4, Custom | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Attune AI** | ✅ Yes | Claude, GPT-4, Custom | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
 | **GitHub Copilot** | ✅ Yes | OpenAI only | ❌ No | ❌ No | ❌ No | ❌ No |
 | **Snyk DeepCode** | ✅ AI-based | Proprietary | ❌ No | ❌ No | ❌ No | ❌ No |
 | **SonarQube** | ❌ No | N/A | N/A | N/A | N/A | N/A |
 
-**Empathy Framework LLM Toolkit**:
+**Attune AI LLM Toolkit**:
 - Native integration with Anthropic Claude (Sonnet 4.5, Opus 4)
 - OpenAI GPT-4, GPT-4-turbo support
 - Custom provider interface for any LLM
@@ -305,14 +305,14 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Free Tier | Commercial Tier | Annual Cost (10 devs) | Source Available |
 |------|-----------|----------------|----------------------|------------------|
-| **Empathy Framework** | ≤5 employees | contact us for pricing | contact us for pricing | ✅ Yes (Fair Source) |
+| **Attune AI** | ≤5 employees | contact us for pricing | contact us for pricing | ✅ Yes (Apache 2.0) |
 | **SonarQube** | Community (limited) | Enterprise | $3,000-10,000+ | ❌ No |
 | **CodeClimate** | Open source only | Team/Business | $2,490 | ❌ No |
 | **GitHub Copilot** | Free trial | Individual/Business | $1,000 | ❌ No |
 | **Snyk** | Limited free | Team/Enterprise | $980 | ❌ No |
 | **Bandit** | Free (OSS) | N/A | $0 | ✅ Yes (Apache 2.0) |
 
-**Empathy Framework Pricing Advantages**:
+**Attune AI Pricing Advantages**:
 1. **Free for small teams**: Organizations with ≤5 employees use FREE forever
 2. **Affordable commercial**: contact us for pricing (vs. $249-300+ for competitors)
 3. **No feature restrictions**: Free tier has ALL features (not crippled)
@@ -320,13 +320,13 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 5. **Future open source**: Converts to Apache 2.0 on Jan 1, 2029
 
 **Total Cost Comparison (10 developers, 1 year)**:
-- Empathy Framework: contact us for pricing (if 6+ employees; $0 if ≤5)
+- Attune AI: contact us for pricing (if 6+ employees; $0 if ≤5)
 - SonarQube Enterprise: ~$5,000+
 - CodeClimate Business: $2,490
 - GitHub Copilot Business: $1,000 (code completion only, not analysis)
 - Snyk Team: $980 (security only)
 
-**Empathy Framework = Comprehensive analysis at 1/5 the cost**
+**Attune AI = Comprehensive analysis at 1/5 the cost**
 
 ---
 
@@ -334,13 +334,13 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Source Code | License | Security Audits | Self-Hosting | Modifications |
 |------|------------|---------|----------------|--------------|---------------|
-| **Empathy Framework** | ✅ Available | Fair Source 0.9 | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Attune AI** | ✅ Available | Apache License 2.0 | ✅ Yes | ✅ Yes | ✅ Yes |
 | **SonarQube** | ⚠️ Community only | Proprietary | ❌ No | ⚠️ Limited | ❌ No |
 | **CodeClimate** | ❌ No | Proprietary | ❌ No | ❌ No | ❌ No |
 | **GitHub Copilot** | ❌ No | Proprietary | ❌ No | ❌ No | ❌ No |
 | **Snyk** | ❌ No | Proprietary | ❌ No | ❌ Cloud only | ❌ No |
 
-**Empathy Framework Fair Source License**:
+**Attune AI Apache License 2.0**:
 - **Full source code available** on GitHub
 - **Security audits**: Review code for vulnerabilities and compliance
 - **Self-hosting**: Deploy on your infrastructure
@@ -360,7 +360,7 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 ### 10. Specialized Wizards (16+)
 
-**Empathy Framework**: ✅ **16 specialized software wizards + healthcare plugin**
+**Attune AI**: ✅ **16 specialized software wizards + healthcare plugin**
 
 #### Software Development Wizards
 1. **Security Analysis** - SQL injection, XSS, secrets, CSRF
@@ -406,13 +406,13 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Cost | Coverage | Key Features |
 |------|------|----------|--------------|
-| **Empathy Framework** | **$0/year** | Full (all features) | Security, performance, testing, AI integration |
+| **Attune AI** | **$0/year** | Full (all features) | Security, performance, testing, AI integration |
 | **SonarQube** | $0 (Community) | Basic | Limited rules, no advanced features |
 | **CodeClimate** | Not available | N/A | Requires paid plan |
 | **GitHub Copilot** | $300/year | Code completion | No analysis/scanning |
 | **Snyk** | $0 (Limited) | Security only | Dependency scanning only |
 
-**Winner**: Empathy Framework - Full features at zero cost for ≤5 employee teams
+**Winner**: Attune AI - Full features at zero cost for ≤5 employee teams
 
 ---
 
@@ -422,12 +422,12 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Annual Cost | Coverage | Anticipatory | Multi-Domain |
 |------|------------|----------|--------------|--------------|
-| **Empathy Framework** | **$1,980** | Full | ✅ Yes | ✅ Yes |
+| **Attune AI** | **$1,980** | Full | ✅ Yes | ✅ Yes |
 | **SonarQube Enterprise** | $5,000-10,000 | Good | ❌ No | ❌ No |
 | **CodeClimate** | $4,980 | Good | ❌ No | ❌ No |
 | **Copilot + Snyk** | $2,000 + $1,960 = $3,960 | Partial | ❌ No | ❌ No |
 
-**Winner**: Empathy Framework - 60% cost savings with unique anticipatory features
+**Winner**: Attune AI - 60% cost savings with unique anticipatory features
 
 ---
 
@@ -437,11 +437,11 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Software Analysis | Healthcare Support | Cost |
 |------|------------------|-------------------|------|
-| **Empathy Framework** | ✅ Full | ✅ Full | contact us for pricing |
+| **Attune AI** | ✅ Full | ✅ Full | contact us for pricing |
 | **SonarQube + Custom** | ✅ Good | ❌ None (build custom) | $250/dev + dev time |
 | **Multiple Tools** | ✅ Good | ⚠️ Separate tools | $400+ / dev |
 
-**Winner**: Empathy Framework - ONLY platform with native dual-domain support
+**Winner**: Attune AI - ONLY platform with native dual-domain support
 
 ---
 
@@ -451,17 +451,17 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 
 | Tool | Source Available | Self-Host | Audit | Compliance Reports |
 |------|----------------|-----------|-------|-------------------|
-| **Empathy Framework** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Attune AI** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
 | **SonarQube** | ⚠️ Community only | ✅ Yes | ⚠️ Limited | ✅ Yes |
 | **Others** | ❌ No | ❌ No | ❌ No | ⚠️ Limited |
 
-**Winner**: Empathy Framework - Only commercial tool with full source availability
+**Winner**: Attune AI - Only commercial tool with full source availability
 
 ---
 
 ## Feature Summary Table
 
-| Category | Empathy Framework | Competitors' Best | Unique Advantage |
+| Category | Attune AI | Competitors' Best | Unique Advantage |
 |----------|------------------|------------------|------------------|
 | **Intelligence Level** | Level 1-5 (Anticipatory + Systems) | Level 1-2 (Reactive + Guided) | **3-4 levels ahead** |
 | **Prediction Window** | 30-90 days ahead | None (reactive only) | **Prevent vs. detect** |
@@ -469,14 +469,14 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 | **Cross-Domain Learning** | Yes (unique) | No | **Pattern transfer** |
 | **AI Integration** | Native (Claude, GPT-4, custom) | Limited or none | **LLM toolkit** |
 | **Specialized Wizards** | 16+ software + healthcare | Generic rules | **Domain experts** |
-| **Source Availability** | Full (Fair Source) | Proprietary | **Audit + customize** |
+| **Source Availability** | Full (Apache 2.0) | Proprietary | **Audit + customize** |
 | **Free Tier** | ≤5 employees (all features) | Crippled or none | **No feature limits** |
 | **Commercial Pricing** | contact us for pricing | $200-500/dev/year | **50-80% cost savings** |
 | **Test Coverage** | 90.71% (production-ready) | Varies | **High quality** |
 
 ---
 
-## Why Choose Empathy Framework?
+## Why Choose Attune AI?
 
 ### 1. Unique Capabilities
 - **Only platform** with Level 4 Anticipatory predictions
@@ -502,7 +502,7 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 - **Built with Claude Code** (demonstrates 200-400% productivity gains)
 
 ### 5. Transparent and Ethical
-- Fair Source licensing (converts to Apache 2.0 in 2029)
+- Apache 2.0 licensing - fully open source
 - No dark patterns or vendor lock-in
 - Educational use free forever
 - Active community and open development
@@ -550,10 +550,10 @@ Recommended: All three (total: <50ms, future-proof to 50,000 users)
 # 1. Export SonarQube quality gates as rules
 curl -u token: https://sonarqube.example.com/api/qualitygates/show > sonar_rules.json
 
-# 2. Install Empathy Framework
+# 2. Install Attune AI
 pip install attune-ai[full]
 
-# 3. Import rules (Empathy Framework auto-maps SonarQube rules)
+# 3. Import rules (Attune AI auto-maps SonarQube rules)
 empathy import-rules --from sonarqube --file sonar_rules.json
 
 # 4. Run initial analysis
@@ -568,22 +568,22 @@ empathy compare --sonarqube sonar_rules.json --empathy report.json
 # 1. Export CodeClimate config
 codeclimate engines:list > cc_engines.json
 
-# 2. Install Empathy Framework
+# 2. Install Attune AI
 pip install attune-ai[full]
 
 # 3. Run parallel analysis (compare results)
 codeclimate analyze && empathy analyze --path ./src
 
-# 4. Evaluate coverage (Empathy Framework typically finds 30% more issues)
+# 4. Evaluate coverage (Attune AI typically finds 30% more issues)
 ```
 
 ### From GitHub Copilot
 ```bash
-# Copilot complements Empathy Framework (use both!)
+# Copilot complements Attune AI (use both!)
 # Copilot: Code completion
 # Empathy: Analysis, prediction, prevention
 
-# Add Empathy Framework to your workflow:
+# Add Attune AI to your workflow:
 pip install attune-ai[full]
 
 # Run pre-commit analysis
@@ -594,8 +594,8 @@ empathy analyze --path ./src --level 4  # Anticipatory mode
 
 ## Frequently Asked Questions
 
-### Q: Can I use Empathy Framework alongside other tools?
-**A**: Yes! Empathy Framework complements existing tools:
+### Q: Can I use Attune AI alongside other tools?
+**A**: Yes! Attune AI complements existing tools:
 - Use with GitHub Copilot for code completion + analysis
 - Use with Snyk for enhanced security coverage
 - Use with SonarQube during migration period
@@ -607,14 +607,14 @@ empathy analyze --path ./src --level 4  # Anticipatory mode
 - Based on code trajectory, growth metrics, and historical patterns
 - Continuously improving with more data
 
-### Q: Does Empathy Framework support languages other than Python?
+### Q: Does Attune AI support languages other than Python?
 **A**:
 - Current: Python (100% coverage)
 - Planned Q1 2025: JavaScript/TypeScript
 - Planned Q2 2025: Java, Go
 - Plugin architecture allows community extensions
 
-### Q: How does Fair Source licensing work?
+### Q: How does Apache 2.0 licensing work?
 **A**:
 - Free for ≤5 employees (all features, no time limit)
 - contact us for pricing for 6+ employees
@@ -639,7 +639,7 @@ empathy analyze --path ./src --level 4  # Anticipatory mode
 
 ## Conclusion
 
-The Empathy Framework represents a **paradigm shift** from reactive code analysis to **anticipatory intelligence**:
+The Attune AI represents a **paradigm shift** from reactive code analysis to **anticipatory intelligence**:
 
 **Traditional Tools** (SonarQube, CodeClimate, Snyk):
 - Tell you about problems **after they exist**
@@ -647,7 +647,7 @@ The Empathy Framework represents a **paradigm shift** from reactive code analysi
 - Single-domain (software only)
 - Reactive approach
 
-**Empathy Framework**:
+**Attune AI**:
 - **Predicts problems 30-90 days before they occur** (Level 4)
 - **Learns patterns across domains** to prevent failures (Level 5)
 - **Dual-domain support** (software + healthcare)
@@ -684,4 +684,4 @@ empathy predict --path ./src --timeframe 90-days
 
 **Last Updated**: November 2025
 **Version**: 1.6.8
-**License**: Fair Source 0.9 (→ Apache 2.0 on Jan 1, 2029)
+**License**: Apache License 2.0 (→ Apache 2.0 on Jan 1, 2029)

@@ -83,7 +83,7 @@ print(report.format_console_output())  # Done!
 
 ### Installation
 
-Meta-orchestration is included in Empathy Framework v3.12.0+:
+Meta-orchestration is included in Attune AI v3.12.0+:
 
 ```bash
 pip install attune-ai[developer]>=3.12.0

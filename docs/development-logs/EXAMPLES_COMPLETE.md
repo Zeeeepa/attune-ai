@@ -11,7 +11,7 @@ description: Development guidelines for Comprehensive Examples - Complete! 🎉.
 
 ## What Was Created
 
-We now have **comprehensive, production-ready examples** for ALL major features of the Empathy Framework v1.8.0:
+We now have **comprehensive, production-ready examples** for ALL major features of the Attune AI v1.8.0:
 
 ### ✅ Core Examples (5 Complete Guides)
 

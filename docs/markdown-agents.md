@@ -8,7 +8,7 @@ Define agents using simple markdown files with YAML frontmatter.
 
 ## Overview
 
-The Empathy Framework supports defining agents as markdown files, making them:
+The Attune AI supports defining agents as markdown files, making them:
 
 - **Human-readable**: Easy to understand and review
 - **Portable**: Share agents as simple text files

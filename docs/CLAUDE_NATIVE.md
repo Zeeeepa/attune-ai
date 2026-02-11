@@ -12,7 +12,7 @@ description: Claude-Native Architecture Migration Guide: **Version:** v5.0.0 **S
 
 ## Overview
 
-Empathy Framework is transitioning to a **Claude-native architecture** to fully leverage Anthropic's advanced features and provide the best possible development experience for AI-powered workflows.
+Attune AI is transitioning to a **Claude-native architecture** to fully leverage Anthropic's advanced features and provide the best possible development experience for AI-powered workflows.
 
 **Strategic Direction:**
 Rather than maintaining compatibility with multiple LLM providers (OpenAI, Google Gemini, Ollama), we're focusing exclusively on Claude to unlock features that are impossible to achieve with multi-provider abstraction.
@@ -440,7 +440,7 @@ After migrating to Claude:
 - [Claude Models Overview](https://docs.anthropic.com/claude/docs/models-overview)
 - [Prompt Caching Guide](https://docs.anthropic.com/claude/docs/prompt-caching)
 - [Extended Thinking Documentation](https://docs.anthropic.com/claude/docs/thinking)
-- [Empathy Framework Changelog](../CHANGELOG.md)
+- [Attune AI Changelog](../CHANGELOG.md)
 
 ---
 

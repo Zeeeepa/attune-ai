@@ -1,6 +1,6 @@
 # Contributors
 
-Thank you to everyone who has contributed to the Empathy Framework!
+Thank you to everyone who has contributed to the Attune AI!
 
 ---
 
@@ -100,7 +100,7 @@ Welcome to first-time contributors! Your first PR is always special:
 
 ## Corporate Sponsors
 
-Organizations that support the Empathy Framework:
+Organizations that support the Attune AI:
 
 <!-- Add corporate sponsors here -->
 

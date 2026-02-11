@@ -1,10 +1,10 @@
 ---
-description: Empathy Framework CLI Cheatsheet API reference: Quick reference for Empathy Framework commands. Full docs at [smartaimemory.com/framework-docs](http
+description: Attune AI CLI Cheatsheet API reference: Quick reference for Attune AI commands. Full docs at [smartaimemory.com/framework-docs](http
 ---
 
-# Empathy Framework CLI Cheatsheet
+# Attune AI CLI Cheatsheet
 
-Quick reference for Empathy Framework commands. Full docs at [smartaimemory.com/framework-docs](https://www.smartaimemory.com/framework-docs/).
+Quick reference for Attune AI commands. Full docs at [smartaimemory.com/framework-docs](https://www.smartaimemory.com/framework-docs/).
 
 ---
 
@@ -198,4 +198,4 @@ empathy cheatsheet             # Quick reference
 
 ---
 
-*Empathy Framework v4.6.6 | [GitHub](https://github.com/Smart-AI-Memory/attune-ai) | [Docs](https://www.smartaimemory.com/framework-docs/)*
+*Attune AI v4.6.6 | [GitHub](https://github.com/Smart-AI-Memory/attune-ai) | [Docs](https://www.smartaimemory.com/framework-docs/)*

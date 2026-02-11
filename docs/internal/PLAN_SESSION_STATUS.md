@@ -17,7 +17,7 @@ A proactive briefing system that greets developers when they return to an Empath
 - **Time-based**: First interaction after ≥60 minutes of inactivity (configurable)
 - **Day-based**: First interaction of a new calendar day
 - **Manual**: `empathy status` command
-- **Scope**: Only projects with Empathy Framework patterns directory
+- **Scope**: Only projects with Attune AI patterns directory
 
 ## Priority System (Weighted)
 

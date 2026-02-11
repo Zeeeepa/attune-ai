@@ -16,7 +16,7 @@ description: Example: SBAR Clinical Handoff Report (Healthcare): **Difficulty**:
 
 ## Overview
 
-This example demonstrates how the Empathy Framework can anticipate when nurses need to create SBAR (Situation, Background, Assessment, Recommendation) handoff reports and proactively generate them.
+This example demonstrates how the Attune AI can anticipate when nurses need to create SBAR (Situation, Background, Assessment, Recommendation) handoff reports and proactively generate them.
 
 **SBAR** is a standardized communication format used in healthcare for patient handoffs:
 - **S**ituation: Current patient status
@@ -580,12 +580,12 @@ response = empathy.interact(
 
 ## Performance Impact
 
-**Before Empathy Framework**:
+**Before Attune AI**:
 - Manual SBAR creation: 12 minutes per patient
 - 4 patients per shift: 48 minutes total
 - Prone to omissions and inconsistencies
 
-**After Empathy Framework (Level 4)**:
+**After Attune AI (Level 4)**:
 - Automated SBAR generation: 3 minutes per patient
 - 4 patients per shift: 12 minutes total
 - Comprehensive, consistent format

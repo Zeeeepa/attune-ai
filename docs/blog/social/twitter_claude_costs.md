@@ -78,7 +78,7 @@ executor = ResilientExecutor(
 Full guide with code examples:
 [link to blog post]
 
-All code is open source in Empathy Framework:
+All code is open source in Attune AI:
 [link to GitHub]
 
 Try it yourself. Your API bill will thank you.

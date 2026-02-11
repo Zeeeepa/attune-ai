@@ -169,7 +169,7 @@ description: Coverage Analysis & Production Readiness Assessment: **Date**: Janu
 ### Known Issue
 
 **1 Failing Test**: `test_cli.py::TestCLIVersion::test_version_output`
-- **Issue**: Assertion expects "Empathy Framework v1.0.0", actual is "Empathy v1.6.1"
+- **Issue**: Assertion expects "Attune AI v1.0.0", actual is "Empathy v1.6.1"
 - **Impact**: Low (version string cosmetic mismatch)
 - **Fix**: Update assertion to match current branding
 - **Estimated**: 5 minutes

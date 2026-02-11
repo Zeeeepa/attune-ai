@@ -4,13 +4,13 @@ description: The Five Levels of Empathy: From Reactive to Transformative: Step-b
 
 # The Five Levels of Empathy: From Reactive to Transformative
 
-**Real examples from the Empathy Framework showing each level in practice**
+**Real examples from the Attune AI showing each level in practice**
 
 ---
 
 ## Introduction
 
-The Empathy Framework defines five levels of AI-human collaboration, progressing from basic response to transformative prevention. Each level builds on the previous, adding sophistication and impact.
+The Attune AI defines five levels of AI-human collaboration, progressing from basic response to transformative prevention. Each level builds on the previous, adding sophistication and impact.
 
 **The Five Levels:**
 
@@ -24,7 +24,7 @@ The Empathy Framework defines five levels of AI-human collaboration, progressing
 
 **Key insight:** Higher levels aren't always better. Level 1 is perfect for simple queries. Level 4 requires earned trust. Level 5 changes how work gets done.
 
-This guide shows **real examples** from building the Empathy Framework itself.
+This guide shows **real examples** from building the Attune AI itself.
 
 ---
 
@@ -55,7 +55,7 @@ This guide shows **real examples** from building the Empathy Framework itself.
 - "Fix this typo in README.md"
 - "Show me the last commit message"
 
-### Real Example from Empathy Framework
+### Real Example from Attune AI
 
 **User request:** "Read the config file"
 
@@ -136,7 +136,7 @@ def calculate_total(prices):
 - "Improve performance" → "Which operation is slow? Where should I focus?"
 - "Fix the bug" → "Which bug? Can you share the error message?"
 
-### Real Example from Empathy Framework
+### Real Example from Attune AI
 
 **User request:** "Add file export feature"
 
@@ -219,7 +219,7 @@ def calculate_total(prices):
 - Adding feature → "Want me to add tests too?"
 - Writing code → "This function could benefit from caching"
 
-### Real Example from Empathy Framework
+### Real Example from Attune AI
 
 **User request:** "Fix the bare except: in config.py"
 
@@ -337,7 +337,7 @@ def process_data(data: dict) -> dict:
 - ↑ 45% reduction in similar bugs
 - ↑ 35% better codebase consistency
 
-**Real data from Empathy Framework:**
+**Real data from Attune AI:**
 - Identified 45 similar patterns across 32 files
 - Suggested standardization saved 12 hours of refactoring
 - Pre-commit hook prevented 23 future violations (measured over 30 days)
@@ -373,7 +373,7 @@ def process_data(data: dict) -> dict:
 - "Refactor authentication" → "Will conflict with PR #118 in staging"
 - "Add this dependency" → "Incompatible with Python 3.8 (used by 40% of users)"
 
-### Real Example from Empathy Framework
+### Real Example from Attune AI
 
 **User request:** "Deploy v3.9.0 to PyPI"
 
@@ -505,7 +505,7 @@ def process_data(data: dict) -> dict:
 - ↑ $50K saved in incident response costs
 - ↑ 99.97% uptime (up from 99.2%)
 
-**Real data from Empathy Framework:**
+**Real data from Attune AI:**
 - Predicted 12 deployment issues before they occurred
 - Prevented 3 breaking changes that would have affected 40K+ users
 - Saved estimated 80 hours of incident response time
@@ -556,7 +556,7 @@ def process_data(data: dict) -> dict:
 
 #### Implementation
 
-**Created:** `.claude/rules/empathy/coding-standards-index.md` (1,170 lines)
+**Created:** `.claude/rules/attune/coding-standards-index.md` (1,170 lines)
 
 ```markdown
 # Coding Standards Quick Reference
@@ -787,7 +787,7 @@ Accurate predictions build more confidence
 Level 5: Transformation trust (AI reshapes workflows)
 ```
 
-**Empathy Framework tracks trust:**
+**Attune AI tracks trust:**
 ```python
 trust_score = (successful_predictions / total_predictions) * confidence_threshold
 

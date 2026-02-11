@@ -458,7 +458,7 @@ empathy workflow run orchestrated-release-prep
 - Anything not thoroughly tested
 
 **Message:**
-- "Empathy Framework v3.10: Production Hardening"
+- "Attune AI v3.10: Production Hardening"
 - Focus on stability and quality
 - Set expectations for v4.0 later
 

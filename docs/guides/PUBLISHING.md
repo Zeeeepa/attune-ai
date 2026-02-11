@@ -205,7 +205,7 @@ empathy/
 ├── setup.py               # Legacy support (optional)
 ├── MANIFEST.in            # Include/exclude files
 ├── README.md              # PyPI project description
-├── LICENSE                # Fair Source 0.9
+├── LICENSE                # Apache License 2.0
 ├── src/
 │   └── attune/        # Main package
 ├── attune_llm/   # LLM integrations
@@ -254,7 +254,7 @@ Follow [Semantic Versioning](https://semver.org/):
 
 ## License
 
-When publishing, ensure the Fair Source License 0.9 is properly included in the distribution package. The license automatically converts to Apache 2.0 on January 1, 2029.
+When publishing, ensure the Apache License 2.0 0.9 is properly included in the distribution package. The license automatically converts to Apache 2.0 on January 1, 2029.
 
 ---
 

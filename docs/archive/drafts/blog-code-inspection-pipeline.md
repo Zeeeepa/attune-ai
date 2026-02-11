@@ -227,7 +227,7 @@ This release lays the foundation for:
 
 ---
 
-The code inspection pipeline is available now in Empathy Framework v2.2.9. Install it, run it, and let us know what you think.
+The code inspection pipeline is available now in Attune AI v2.2.9. Install it, run it, and let us know what you think.
 
 ```bash
 pip install --upgrade attune-ai
@@ -238,6 +238,6 @@ Your code quality stack is about to get a lot smarter.
 
 ---
 
-*Patrick Roebuck is the creator of the Empathy Framework. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
+*Patrick Roebuck is the creator of the Attune AI. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
 
 **Tags:** code-quality, static-analysis, github-actions, developer-tools, python

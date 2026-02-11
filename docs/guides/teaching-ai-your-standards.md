@@ -51,9 +51,9 @@ your-project/
 
 ---
 
-## Real Example: Empathy Framework
+## Real Example: Attune AI
 
-We implemented this for the Empathy Framework itself. Here's what we did:
+We implemented this for the Attune AI itself. Here's what we did:
 
 ### Step 1: Created Project Memory Structure
 
@@ -76,12 +76,12 @@ We implemented this for the Empathy Framework itself. Here's what we did:
 # Project Memory
 
 ## Framework
-This is the Empathy Framework v3.9.1
+This is the Attune AI v3.9.1
 
 @./python-standards.md
 
 ## Coding Standards
-@./rules/empathy/coding-standards-index.md
+@./rules/attune/coding-standards-index.md
 
 Critical rules enforced across all code:
 
@@ -101,7 +101,7 @@ Critical rules enforced across all code:
 
 ### Step 3: Created Comprehensive Standards Reference
 
-**File:** `.claude/rules/empathy/coding-standards-index.md` (excerpt)
+**File:** `.claude/rules/attune/coding-standards-index.md` (excerpt)
 
 ````markdown
 # Coding Standards Quick Reference
@@ -701,10 +701,10 @@ This is empathy in software engineering: understanding the needs of future devel
 
 ### Example Standards Files
 
-Complete examples from Empathy Framework:
-- [coding-standards-index.md](../../.claude/rules/empathy/coding-standards-index.md) - 1,170 lines with real patterns
-- [scanner-patterns.md](../../.claude/rules/empathy/scanner-patterns.md) - Bug prediction patterns
-- [debugging.md](../../.claude/rules/empathy/debugging.md) - Historical fixes
+Complete examples from Attune AI:
+- [coding-standards-index.md](../../.claude/rules/attune/coding-standards-index.md) - 1,170 lines with real patterns
+- [scanner-patterns.md](../../.claude/rules/attune/scanner-patterns.md) - Bug prediction patterns
+- [debugging.md](../../.claude/rules/attune/debugging.md) - Historical fixes
 
 ### Templates
 

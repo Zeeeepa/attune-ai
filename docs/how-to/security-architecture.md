@@ -10,7 +10,7 @@ Comprehensive security implementation for enterprise AI applications with PII pr
 
 ## Overview
 
-The Empathy Framework implements a **defense-in-depth security model** with multiple layers of protection:
+The Attune AI implements a **defense-in-depth security model** with multiple layers of protection:
 
 1. **Input Sanitization** - PII scrubbing before LLM processing
 2. **Secrets Detection** - Automatic detection of API keys, passwords, tokens

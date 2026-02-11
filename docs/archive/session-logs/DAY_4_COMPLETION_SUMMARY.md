@@ -438,7 +438,7 @@ DEMO 1: Hybrid Storage - File + Memory
 
 ## Integration Points
 
-### 1. With Empathy Framework Memory
+### 1. With Attune AI Memory
 ```python
 from attune.memory.unified import UnifiedMemory
 from attune.meta_workflows import PatternLearner

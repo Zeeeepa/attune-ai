@@ -13,7 +13,7 @@ description: Example: Adaptive Learning System: **Difficulty**: Advanced **Time*
 
 ## Overview
 
-This example shows how the Empathy Framework adapts and learns over time:
+This example shows how the Attune AI adapts and learns over time:
 - **Dynamic confidence thresholds** that adjust based on user feedback
 - **Pattern decay** for stale patterns that haven't been used
 - **Transfer learning** to adapt patterns from one domain to another

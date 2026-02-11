@@ -1,8 +1,8 @@
 ---
-description: Why I Made Empathy Framework Claude-First (And How It Cuts Your Costs): **January 2026** --- ## TL;DR I rebuilt Empathy Framework v4.6.3 around Claude Code with
+description: Why I Made Attune AI Claude-First (And How It Cuts Your Costs): **January 2026** --- ## TL;DR I rebuilt Attune AI v4.6.3 around Claude Code with
 ---
 
-# Why I Made Empathy Framework Claude-First (And How It Cuts Your Costs)
+# Why I Made Attune AI Claude-First (And How It Cuts Your Costs)
 
 **January 2026**
 
@@ -10,13 +10,13 @@ description: Why I Made Empathy Framework Claude-First (And How It Cuts Your Cos
 
 ## TL;DR
 
-I rebuilt Empathy Framework v4.6.3 around Claude Code with 10+ slash commands, automatic pattern learning, and true async I/O. The result? Better workflows AND lower API costs. OpenAI, Gemini, and local models still work perfectly.
+I rebuilt Attune AI v4.6.3 around Claude Code with 10+ slash commands, automatic pattern learning, and true async I/O. The result? Better workflows AND lower API costs. OpenAI, Gemini, and local models still work perfectly.
 
 ---
 
 ## The Realization
 
-When I started building Empathy Framework, I wanted it to work with any LLM. And it still does. But as I used it day after day, I noticed something: I was getting dramatically better results with Claude Code.
+When I started building Attune AI, I wanted it to work with any LLM. And it still does. But as I used it day after day, I noticed something: I was getting dramatically better results with Claude Code.
 
 The conversation persistence, tool use, and extended context windows are a perfect match for the kind of work Empathy does: multi-step workflows, codebase analysis, and pattern learning across sessions.
 
@@ -103,7 +103,7 @@ This goes into `patterns/debugging.json` and `patterns/refactoring_memory.json`.
 
 ## Other LLMs Still Work
 
-I didn't break anything. Empathy Framework supports:
+I didn't break anything. Attune AI supports:
 
 | Provider | Status |
 |----------|--------|
@@ -155,7 +155,7 @@ Or click any button in the VSCode dashboard - it'll route to the right skill.
 
 ---
 
-The goal was simple: make Empathy Framework work better where I use it most (Claude Code) while keeping everything else working. The bonus: it costs less to run.
+The goal was simple: make Attune AI work better where I use it most (Claude Code) while keeping everything else working. The bonus: it costs less to run.
 
 **Try it:** `pip install attune-ai --upgrade`
 

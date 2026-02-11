@@ -1,12 +1,12 @@
 ---
-description: Powered by Claude - Tier Structure: **Multi-LLM Support with Claude-First Approach** The Empathy Framework supports multiple LLM providers while showcasing Clau
+description: Powered by Claude - Tier Structure: **Multi-LLM Support with Claude-First Approach** The Attune AI supports multiple LLM providers while showcasing Clau
 ---
 
 # Powered by Claude - Tier Structure
 
 **Multi-LLM Support with Claude-First Approach**
 
-The Empathy Framework supports multiple LLM providers while showcasing Claude's unique advantages for anticipatory AI.
+The Attune AI supports multiple LLM providers while showcasing Claude's unique advantages for anticipatory AI.
 
 ---
 
@@ -31,7 +31,7 @@ The Empathy Framework supports multiple LLM providers while showcasing Claude's 
 **LLM Choice:** User brings their own API key for any provider
 
 **Features:**
-- Complete Empathy Framework (Fair Source 0.9)
+- Complete Attune AI (Apache License 2.0)
 - All 46 wizards
 - Multi-LLM support (Claude, GPT-4, Gemini, local)
 - One-click deployment tools
@@ -56,7 +56,7 @@ The Empathy Framework supports multiple LLM providers while showcasing Claude's 
 - Level 4 Anticipatory predictions (requires Claude's extended context)
 - Prompt caching enabled (90% cost savings on repeated queries)
 - Thinking mode for complex analysis
-- Book: "Empathy Framework: The Five Levels" (PDF, ePub, Mobi)
+- Book: "Attune AI: The Five Levels" (PDF, ePub, Mobi)
 - Priority community support
 
 **Claude-Specific Advantages:**
@@ -131,7 +131,7 @@ result = await claude.analyze_large_codebase(
 
 **Unique to Claude:** 200K context window
 - **Competitor limits:** GPT-4 (128K), Gemini (32K)
-- **Empathy Framework use case:** Whole-repo analysis without chunking
+- **Attune AI use case:** Whole-repo analysis without chunking
 
 ### 2. Prompt Caching (90% Cost Reduction)
 **Available in:** Pro, Business (Claude-specific feature)
@@ -177,7 +177,7 @@ result = await claude.generate(
 ### 4. Multi-Turn Wizard Conversations
 **Available in:** All tiers (works better with Claude)
 
-**Empathy Framework pattern:**
+**Attune AI pattern:**
 - Wizard asks clarifying questions
 - User refines requirements
 - Multiple analysis passes
@@ -197,10 +197,10 @@ result = await claude.generate(
 > "Claude's 200K context means your entire codebase fits in one analysis. No chunking, no missed connections, no context loss. Just upload your project and get comprehensive security, performance, and prediction analysis in seconds."
 
 **For teams (Business tier):**
-> "Claude + Empathy Framework gives your team Level 4 Anticipatory AI: predict bugs 30 days before they ship, optimize performance before you hit scale limits, and prevent security issues before deployment. All with transparent reasoning and 90% cost savings through prompt caching."
+> "Claude + Attune AI gives your team Level 4 Anticipatory AI: predict bugs 30 days before they ship, optimize performance before you hit scale limits, and prevent security issues before deployment. All with transparent reasoning and 90% cost savings through prompt caching."
 
 **For enterprises (Custom):**
-> "Choose Claude for best-in-class anticipatory analysis, or bring your own LLM provider. Empathy Framework's multi-provider architecture means you're never locked in, but Claude's extended context and reasoning capabilities make it the optimal choice for production use."
+> "Choose Claude for best-in-class anticipatory analysis, or bring your own LLM provider. Attune AI's multi-provider architecture means you're never locked in, but Claude's extended context and reasoning capabilities make it the optimal choice for production use."
 
 ---
 
@@ -216,10 +216,10 @@ result = await claude.generate(
 | **Cost (1M tokens)** | $3-15 | $10-30 | $1-7 | $0 |
 | **Speed** | Fast | Fast | Very Fast | Variable |
 | **Privacy** | Cloud | Cloud | Cloud | Local ✅ |
-| **Empathy Framework optimization** | Excellent ✅ | Good | Good | Basic |
+| **Attune AI optimization** | Excellent ✅ | Good | Good | Basic |
 
 **Recommendation in docs:**
-> "For the best Empathy Framework experience, we recommend Claude 3.5 Sonnet. It's optimized for our Level 4 Anticipatory features and offers the best balance of performance, cost (with prompt caching), and reasoning quality."
+> "For the best Attune AI experience, we recommend Claude 3.5 Sonnet. It's optimized for our Level 4 Anticipatory features and offers the best balance of performance, cost (with prompt caching), and reasoning quality."
 
 ---
 

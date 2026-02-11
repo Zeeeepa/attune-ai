@@ -12,7 +12,7 @@ description: Performance Optimization - Final Report: **Date:** January 10, 2026
 
 ## 🎉 Executive Summary
 
-The Empathy Framework performance optimization initiative has **exceeded all targets** with dramatic improvements across multiple components:
+The Attune AI performance optimization initiative has **exceeded all targets** with dramatic improvements across multiple components:
 
 | Phase | Focus Area | Before | After | Improvement | Status |
 |-------|-----------|--------|-------|-------------|--------|
@@ -61,7 +61,7 @@ The Empathy Framework performance optimization initiative has **exceeded all tar
 - Mathematical formulas instead of `list(range())` where applicable
 
 **Documentation:**
-- [`.claude/rules/empathy/list-copy-guidelines.md`](./.claude/rules/empathy/list-copy-guidelines.md)
+- [`.claude/rules/attune/list-copy-guidelines.md`](./.claude/rules/attune/list-copy-guidelines.md)
 
 ---
 
@@ -331,8 +331,8 @@ matches = (pattern for pattern in patterns if self._is_relevant(pattern, context
 
 | File | Lines | Purpose |
 |------|-------|---------|
-| `.claude/rules/empathy/list-copy-guidelines.md` | 912 | Code review guidelines |
-| `.claude/rules/empathy/advanced-optimization-plan.md` | 912 | Phase 2-3 plan |
+| `.claude/rules/attune/list-copy-guidelines.md` | 912 | Code review guidelines |
+| `.claude/rules/attune/advanced-optimization-plan.md` | 912 | Phase 2-3 plan |
 | `docs/PERFORMANCE_OPTIMIZATION_ROADMAP.md` | 232 | High-level roadmap |
 | **Total** | **2,056 lines** | **Standards & Plans** |
 
@@ -480,8 +480,8 @@ matches = (pattern for pattern in patterns if self._is_relevant(pattern, context
 ## 📚 Related Documentation
 
 ### Standards & Guidelines
-- [List Copy Guidelines](../.claude/rules/empathy/list-copy-guidelines.md) - Code review checklist
-- [Advanced Optimization Plan](../.claude/rules/empathy/advanced-optimization-plan.md) - Phase 2-3 roadmap
+- [List Copy Guidelines](../.claude/rules/attune/list-copy-guidelines.md) - Code review checklist
+- [Advanced Optimization Plan](../.claude/rules/attune/advanced-optimization-plan.md) - Phase 2-3 roadmap
 - [Coding Standards](./CODING_STANDARDS.md) - General standards
 
 ### Implementation Details
@@ -567,7 +567,7 @@ matches = (pattern for pattern in patterns if self._is_relevant(pattern, context
 
 ## 🏁 Conclusion
 
-The Empathy Framework performance optimization initiative has been a **resounding success**, exceeding all targets:
+The Attune AI performance optimization initiative has been a **resounding success**, exceeding all targets:
 
 ✅ **1,300x faster** cost tracking (vs 60x target)
 ✅ **1.54x faster** scanner caching (35% improvement)

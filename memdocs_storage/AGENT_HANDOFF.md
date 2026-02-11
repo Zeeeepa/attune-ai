@@ -110,7 +110,7 @@ This is Claude reflecting on what makes this framework different - AI agents tha
 
 ## Context for Other Agents
 
-The Empathy Framework book is being prepared for publishing. This session focused on **user-friendliness improvements**:
+The Attune AI book is being prepared for publishing. This session focused on **user-friendliness improvements**:
 
 - Readers now have clear entry points based on their goals
 - Prerequisites are explicit and verifiable (including Redis setup options)

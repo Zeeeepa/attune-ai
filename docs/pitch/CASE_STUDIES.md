@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework — Case Studies & ROI Scenarios: **For:** Business development, enterprise sales, partnership discussions --- ## Case Study 1: Enterprise Engin
+description: Attune AI — Case Studies & ROI Scenarios: **For:** Business development, enterprise sales, partnership discussions --- ## Case Study 1: Enterprise Engin
 ---
 
-# Empathy Framework — Case Studies & ROI Scenarios
+# Attune AI — Case Studies & ROI Scenarios
 
 **For:** Business development, enterprise sales, partnership discussions
 
@@ -18,7 +18,7 @@ A 50-developer engineering team at a mid-size SaaS company spends significant ti
 - Documentation maintenance
 
 ### Implementation
-Deployed Empathy Framework with:
+Deployed Attune AI with:
 - SecurityWizard for continuous scanning
 - CodeReviewWizard for automated first-pass reviews
 - BugPredictWizard for proactive issue detection
@@ -56,7 +56,7 @@ A 12-person healthtech startup building HIPAA-compliant patient management softw
 - Cost-effective AI assistance
 
 ### Implementation
-Deployed Empathy Framework with:
+Deployed Attune AI with:
 - HIPAA-ready configuration (PII scrubbing enabled)
 - Audit logging for compliance documentation
 - SecurityWizard with healthcare-specific rules
@@ -89,7 +89,7 @@ A freelance developer handling multiple client projects needs:
 - Minimal AI costs on tight budgets
 
 ### Implementation
-Deployed Empathy Framework (Free tier) with:
+Deployed Attune AI (Free tier) with:
 - Smart model routing (Haiku for simple tasks)
 - SecurityWizard for pre-delivery scans
 - DocGenWizard for README and API docs
@@ -121,7 +121,7 @@ Maintainer of a popular open source library (500+ contributors) needs:
 - Contributor documentation
 
 ### Implementation
-Deployed Empathy Framework with:
+Deployed Attune AI with:
 - CodeReviewWizard for PR triage
 - BugPredictWizard for regression risk assessment
 - TestGenWizard for coverage suggestions

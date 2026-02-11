@@ -1,10 +1,10 @@
 ---
-description: Monitoring System - Sprint Plan & Task Tracker: **Project:** Empathy Framework Monitoring System (v3.8.0) **Timeline:** 3 sprints (2-3 weeks) **Status:** 🟡 Plan
+description: Monitoring System - Sprint Plan & Task Tracker: **Project:** Attune AI Monitoring System (v3.8.0) **Timeline:** 3 sprints (2-3 weeks) **Status:** 🟡 Plan
 ---
 
 # Monitoring System - Sprint Plan & Task Tracker
 
-**Project:** Empathy Framework Monitoring System (v3.8.0)
+**Project:** Attune AI Monitoring System (v3.8.0)
 **Timeline:** 3 sprints (2-3 weeks)
 **Status:** 🟡 Planning Complete - Ready to Start
 
@@ -534,7 +534,7 @@ Blockers: None
 
 - [ ] **T3.11** Create SigNoz dashboard template
   - Export dashboard JSON from SigNoz
-  - Create pre-built dashboard for Empathy Framework
+  - Create pre-built dashboard for Attune AI
   - Include: cost chart, latency chart, error rate
   - Save to `docs/examples/signoz_dashboard.json`
   - **Estimate:** 2 hours

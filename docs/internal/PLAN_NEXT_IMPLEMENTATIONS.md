@@ -169,7 +169,7 @@ Recommended Fixes  → Recommended Interventions
 - Mistral AI
 - Local models (llama.cpp, Ollama)
 
-**Why**: Make empathy framework work with ANY LLM
+**Why**: Make Attune AI work with ANY LLM
 
 ---
 

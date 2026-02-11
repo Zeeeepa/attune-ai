@@ -4,7 +4,7 @@ description: Quick Start: Step-by-step tutorial with examples, best practices, a
 
 # Quick Start
 
-Get up and running with Empathy Framework in 5 minutes - with something genuinely useful.
+Get up and running with Attune AI in 5 minutes - with something genuinely useful.
 
 ## What You'll Build
 
@@ -195,4 +195,4 @@ This isn't "hello world" - it's a demonstration of what multi-agent coordination
 2. **Shared memory** they use to coordinate
 3. **Synthesis** that's better than any single agent
 
-The Empathy Framework provides the infrastructure. You define the agents and their expertise.
+The Attune AI provides the infrastructure. You define the agents and their expertise.

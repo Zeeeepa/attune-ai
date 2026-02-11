@@ -1,8 +1,8 @@
 ---
-description: Implementation Plan: Empathy Framework UX Enhancements (Refined): This plan delivers interactive workflow experiences through three focused initiatives.
+description: Implementation Plan: Attune AI UX Enhancements (Refined): This plan delivers interactive workflow experiences through three focused initiatives.
 ---
 
-# Implementation Plan: Empathy Framework UX Enhancements (Refined)
+# Implementation Plan: Attune AI UX Enhancements (Refined)
 
 This plan delivers interactive workflow experiences through three focused initiatives. Each builds on existing infrastructure (webview panels, XML prompts, Socratic refinement) to maximize velocity and minimize risk.
 
@@ -374,7 +374,7 @@ Instead of building a custom UI, add schema validation:
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Empathy Framework Configuration",
+  "title": "Attune AI Configuration",
   "type": "object",
   "properties": {
     "model_tier_defaults": {
@@ -431,7 +431,7 @@ Use VSCode's native Settings Contribution instead of custom webview:
 ```json
 "contributes": {
     "configuration": {
-        "title": "Empathy Framework",
+        "title": "Attune AI",
         "properties": {
             "empathy.defaultModelTier": {
                 "type": "string",

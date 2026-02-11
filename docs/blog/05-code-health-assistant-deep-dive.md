@@ -216,7 +216,7 @@ These are your high-leverage targets. Fix the hotspots, improve the trend.
 
 ## Real-World Example
 
-We ran `empathy health --deep` on the Empathy Framework itself:
+We ran `empathy health --deep` on the Attune AI itself:
 
 ```
 📊 Code Health: Good (89/100)

@@ -345,7 +345,7 @@ When reviewing CLAUDE.md changes:
 
 **Patterns not being applied:**
 - Run `empathy sync-claude` after learning
-- Check `.claude/rules/empathy/` directory exists
+- Check `.claude/rules/attune/` directory exists
 - Verify patterns are in correct format
 
 **Memory seems stale:**
@@ -363,7 +363,7 @@ cat .claude/CLAUDE.md
 ls -la patterns/
 
 # Check synced rules
-ls -la .claude/rules/empathy/
+ls -la .claude/rules/attune/
 
 # Test pattern learning
 empathy learn --analyze 5 --verbose
@@ -388,7 +388,7 @@ empathy learn --analyze 5 --verbose
 | File | Purpose |
 |------|---------|
 | `.claude/CLAUDE.md` | Project context for Claude |
-| `.claude/rules/empathy/*.md` | Generated Claude rules |
+| `.claude/rules/attune/*.md` | Generated Claude rules |
 | `patterns/*.json` | Learned pattern storage |
 | `~/.claude/CLAUDE.md` | User preferences |
 
@@ -421,4 +421,4 @@ Effective Claude memory management follows these principles:
 ---
 
 *Last updated: 2025-12-20*
-*Empathy Framework v2.5.0*
+*Attune AI v2.5.0*

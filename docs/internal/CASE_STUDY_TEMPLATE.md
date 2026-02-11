@@ -1,18 +1,18 @@
 ---
-description: Customer Case Study Template: **Template Version**: 1.0 **Last Updated**: November 2025 **Purpose**: Document customer success stories with Empathy Framework --
+description: Customer Case Study Template: **Template Version**: 1.0 **Last Updated**: November 2025 **Purpose**: Document customer success stories with Attune AI --
 ---
 
 # Customer Case Study Template
 
 **Template Version**: 1.0
 **Last Updated**: November 2025
-**Purpose**: Document customer success stories with Empathy Framework
+**Purpose**: Document customer success stories with Attune AI
 
 ---
 
 ## Instructions for Use
 
-This template helps you create compelling case studies that demonstrate the Empathy Framework's value. Follow these guidelines:
+This template helps you create compelling case studies that demonstrate the Attune AI's value. Follow these guidelines:
 
 1. **Complete all sections** - Even if some data is limited, provide estimates or qualitative descriptions
 2. **Use real metrics** - Quantify results whenever possible (%, time saved, bugs prevented, etc.)
@@ -21,7 +21,7 @@ This template helps you create compelling case studies that demonstrate the Empa
 5. **Focus on outcomes** - Not just features used, but business impact achieved
 
 **Target Length**: 1,500-2,500 words
-**Audience**: Prospective customers evaluating Empathy Framework
+**Audience**: Prospective customers evaluating Attune AI
 **Distribution**: Website, GitHub, sales materials, blog posts
 
 ---
@@ -31,9 +31,9 @@ This template helps you create compelling case studies that demonstrate the Empa
 **Title**: [Compelling outcome-focused headline]
 
 *Examples:*
-- "How [Company] Increased Test Coverage 3x in 8 Weeks with Empathy Framework"
+- "How [Company] Increased Test Coverage 3x in 8 Weeks with Attune AI"
 - "[Company] Prevents 87% of Production Bugs Using Level 4 Anticipatory Intelligence"
-- "Healthcare Startup Achieves HIPAA Compliance 60% Faster with Empathy Framework"
+- "Healthcare Startup Achieves HIPAA Compliance 60% Faster with Attune AI"
 
 **Subtitle**: [One-sentence value proposition]
 
@@ -49,7 +49,7 @@ This template helps you create compelling case studies that demonstrate the Empa
 
 [Company Name] is a [company size] [industry] company building [product description]. They faced [primary challenge] which was costing them [quantified impact - time, money, customers, etc.].
 
-After implementing the Empathy Framework in [month/year], they achieved [primary result] in just [timeframe]. Key outcomes include [2-3 bullet points of top metrics].
+After implementing the Attune AI in [month/year], they achieved [primary result] in just [timeframe]. Key outcomes include [2-3 bullet points of top metrics].
 
 "[Compelling quote from customer about transformation]" - [Name, Title]
 
@@ -57,9 +57,9 @@ After implementing the Empathy Framework in [month/year], they achieved [primary
 
 HealthConnect is a 12-person healthcare technology startup building an EHR integration platform. They faced mounting technical debt and security vulnerabilities that were blocking their SOC 2 certification, costing them 3 major enterprise deals worth $450K in annual revenue.
 
-After implementing the Empathy Framework in March 2025, they achieved SOC 2 compliance in just 6 weeks (vs. estimated 4 months). Key outcomes include 95% test coverage (up from 28%), zero critical security vulnerabilities (down from 14), and 40 hours/week saved on manual code review.
+After implementing the Attune AI in March 2025, they achieved SOC 2 compliance in just 6 weeks (vs. estimated 4 months). Key outcomes include 95% test coverage (up from 28%), zero critical security vulnerabilities (down from 14), and 40 hours/week saved on manual code review.
 
-"Empathy Framework's Level 4 predictions caught vulnerabilities we didn't even know existed. It's like having a senior security engineer working 24/7." - Sarah Chen, CTO
+"Attune AI's Level 4 predictions caught vulnerabilities we didn't even know existed. It's like having a senior security engineer working 24/7." - Sarah Chen, CTO
 
 ---
 
@@ -83,7 +83,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 - **Infrastructure**: AWS, Docker, Kubernetes, [others]
 - **Team Structure**: [e.g., 3 backend devs, 2 frontend, 1 DevOps]
 
-**Development Practices** (before Empathy Framework):
+**Development Practices** (before Attune AI):
 - Version control: [Git, GitHub/GitLab]
 - Testing: [pytest, Jest, coverage tools]
 - CI/CD: [GitHub Actions, Jenkins, etc.]
@@ -96,7 +96,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 - **[Name], [Title]** - [Role in decision, primary pain point]
 - **[Name], [Title]** - [Role in decision, primary pain point]
 
-**End Users** (developers using Empathy Framework):
+**End Users** (developers using Attune AI):
 - **[Name], [Title]** - [Specialty, how they use the tool]
 - **[Name], [Title]** - [Specialty, how they use the tool]
 
@@ -106,7 +106,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 
 ### Primary Problems
 
-*[Describe 2-4 major challenges the company faced before Empathy Framework]*
+*[Describe 2-4 major challenges the company faced before Attune AI]*
 
 **1. [Challenge Name]**
 
@@ -169,13 +169,13 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 
 **Trigger Event**: [Specific incident or deadline]
 
-**Decision**: [What made them choose Empathy Framework over alternatives?]
+**Decision**: [What made them choose Attune AI over alternatives?]
 
 **Example**:
 
 **Trigger Event**: Lost a $200K/year enterprise deal because security audit took 6 weeks and found 8 critical vulnerabilities the day before contract signing. Customer went with a competitor.
 
-**Decision**: CTO Sarah Chen discovered Empathy Framework through a Hacker News post about Level 4 Anticipatory predictions. "We needed something that could prevent problems, not just find them after the fact. The free tier for ≤5 employees was perfect for our security team to pilot it."
+**Decision**: CTO Sarah Chen discovered Attune AI through a Hacker News post about Level 4 Anticipatory predictions. "We needed something that could prevent problems, not just find them after the fact. The free tier for ≤5 employees was perfect for our security team to pilot it."
 
 ---
 
@@ -198,7 +198,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 - [Factor 3: e.g., "Source-available for security audit"]
 
 **Example**:
-- Ran Empathy Framework on 3 recent releases (2 weeks of code)
+- Ran Attune AI on 3 recent releases (2 weeks of code)
 - Security team (2 people) evaluated predictions vs. actual production issues
 - Found 92% accuracy in predicting issues that surfaced 30-60 days later
 - CTO approved full implementation based on ROI projection
@@ -234,7 +234,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 - [Tools it replaced or complemented]
 - [Automation added]
 
-### How They Use Empathy Framework
+### How They Use Attune AI
 
 **Daily Workflow**:
 
@@ -360,7 +360,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 ### ROI Calculation
 
 **Investment**:
-- **Empathy Framework License**: [$ per year]
+- **Attune AI License**: [$ per year]
 - **Implementation Time**: [Hours × hourly rate]
 - **Training**: [Hours × hourly rate]
 - **LLM API Costs**: [$ per month × 12]
@@ -379,7 +379,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 **Example**:
 
 **Investment**:
-- Empathy Framework: contact us for pricing (10 devs - contact us for pricing)
+- Attune AI: contact us for pricing (10 devs - contact us for pricing)
 - Implementation: 40 hours × $100/hr = $4,000
 - Training: 20 hours × $100/hr = $2,000
 - LLM API: $45/month × 12 = $540
@@ -409,7 +409,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 
 **Example**:
 
-> "Empathy Framework was the catalyst that unlocked our enterprise market. We went from losing deals due to security concerns to closing our three largest contracts in company history. The ROI is absurd—we made back our investment in 9 days."
+> "Attune AI was the catalyst that unlocked our enterprise market. We went from losing deals due to security concerns to closing our three largest contracts in company history. The ROI is absurd—we made back our investment in 9 days."
 >
 > "What impressed me most was how it transformed our culture from reactive firefighting to proactive problem prevention. Our developers are happier, our customers are happier, and our investors are thrilled."
 >
@@ -451,7 +451,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 
 ### Developer Workflow Transformation
 
-**Before Empathy Framework**:
+**Before Attune AI**:
 
 1. **Write Code** (no anticipatory guidance)
    - Hope for the best
@@ -474,7 +474,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
    - 2am emergencies
    - Customer complaints
 
-**After Empathy Framework**:
+**After Attune AI**:
 
 1. **Write Code** (anticipatory guidance during development)
    - Real-time predictions prevent issues
@@ -534,7 +534,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 
 **1. Started with Free Tier Pilot**
 
-**What they did**: Used Empathy Framework's free tier (≤5 employees) to pilot with 2-person security team before full rollout.
+**What they did**: Used Attune AI's free tier (≤5 employees) to pilot with 2-person security team before full rollout.
 
 **Why it worked**: Low-risk evaluation proved ROI before budget approval. Security team became internal champions who trained other developers.
 
@@ -565,7 +565,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 **What happened**: 3 senior developers were skeptical of "yet another tool" and worried about AI false positives overwhelming them (PTSD from Bandit's 200+ warnings).
 
 **How they solved it**:
-- Ran side-by-side comparison: Bandit vs. Empathy Framework on same codebase
+- Ran side-by-side comparison: Bandit vs. Attune AI on same codebase
 - Empathy found 14 real issues with 2 false positives (vs. Bandit's 8 real + 200 false)
 - Demonstrated Level 4 predictions with specific examples from production history
 
@@ -614,7 +614,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 
 ## Future Plans
 
-### Next Steps with Empathy Framework
+### Next Steps with Attune AI
 
 **Q1 2025**:
 - [Plan 1: e.g., "Expand to frontend team (JavaScript/TypeScript support)"]
@@ -626,22 +626,22 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 - [Plan 2]
 
 **Long-term**:
-- [Vision for how they'll use Empathy Framework as they scale]
+- [Vision for how they'll use Attune AI as they scale]
 
 **Example**:
 
 **Q1 2025**:
 - Expand to frontend team (React/TypeScript) when JavaScript support launches
-- Train 3 additional developers to become internal Empathy Framework experts
+- Train 3 additional developers to become internal Attune AI experts
 - Build custom "HIPAA Compliance Wizard" for healthcare-specific regulations
 
 **Q2 2025**:
-- Integrate Empathy Framework into customer onboarding (white-label for enterprise clients)
+- Integrate Attune AI into customer onboarding (white-label for enterprise clients)
 - Contribute custom wizards back to open source community
-- Sponsor Empathy Framework development (partnership discussions)
+- Sponsor Attune AI development (partnership discussions)
 
 **Long-term**:
-- Make Empathy Framework a competitive differentiator ("our code quality is AI-verified")
+- Make Attune AI a competitive differentiator ("our code quality is AI-verified")
 - Scale to 50 developers with same quality standards
 - Industry thought leadership: "How we achieved zero-defect releases with AI"
 
@@ -655,7 +655,7 @@ After implementing the Empathy Framework in March 2025, they achieved SOC 2 comp
 
 **Template**:
 
-[Company] transformed from [before state] to [after state] in just [timeframe] by implementing the Empathy Framework. The combination of [key feature 1] and [key feature 2] enabled them to [primary achievement].
+[Company] transformed from [before state] to [after state] in just [timeframe] by implementing the Attune AI. The combination of [key feature 1] and [key feature 2] enabled them to [primary achievement].
 
 The business impact was significant: [revenue metric], [cost savings metric], and [quality metric]. More importantly, the cultural shift from reactive firefighting to proactive problem prevention has positioned them for sustainable long-term growth.
 
@@ -663,13 +663,13 @@ The business impact was significant: [revenue metric], [cost savings metric], an
 
 **Example**:
 
-HealthConnect transformed from a struggling startup blocked by security issues to an enterprise-ready platform in just 8 weeks by implementing the Empathy Framework. The combination of Level 4 Anticipatory predictions and comprehensive security scanning enabled them to achieve SOC 2 compliance 60% faster than estimated.
+HealthConnect transformed from a struggling startup blocked by security issues to an enterprise-ready platform in just 8 weeks by implementing the Attune AI. The combination of Level 4 Anticipatory predictions and comprehensive security scanning enabled them to achieve SOC 2 compliance 60% faster than estimated.
 
 The business impact was transformative: $450K in new annual revenue, $96K in cost savings, and 83% reduction in production incidents. More importantly, the cultural shift from reactive firefighting to proactive problem prevention has positioned them to scale confidently from 12 to 50 employees in 2025.
 
-"Empathy Framework didn't just improve our code—it changed how we think about software development. We're not just building faster; we're building smarter." - Sarah Chen, CTO
+"Attune AI didn't just improve our code—it changed how we think about software development. We're not just building faster; we're building smarter." - Sarah Chen, CTO
 
-### Why [Company] Recommends Empathy Framework
+### Why [Company] Recommends Attune AI
 
 **Top 3 Reasons**:
 
@@ -687,7 +687,7 @@ The business impact was transformative: $450K in new annual revenue, $96K in cos
 
 ### Best Fit For
 
-Companies that will benefit most from Empathy Framework:
+Companies that will benefit most from Attune AI:
 
 - **[Company Profile 1]** - [Why it's a good fit]
 - **[Company Profile 2]** - [Why it's a good fit]
@@ -697,7 +697,7 @@ Companies that will benefit most from Empathy Framework:
 
 - **Startups pre-Series A** - Free tier perfect for small teams. Build quality from day one, avoid technical debt that costs 10x to fix later.
 
-- **B2B SaaS companies** - Enterprise customers demand security and reliability. Empathy Framework gets you compliant faster and keeps you there.
+- **B2B SaaS companies** - Enterprise customers demand security and reliability. Attune AI gets you compliant faster and keeps you there.
 
 - **Healthcare tech** - Dual-domain support (software + healthcare) is unique. HIPAA compliance built-in, not bolted-on.
 
@@ -725,7 +725,7 @@ Companies that will benefit most from Empathy Framework:
 - **Product Demo**: [URL]
 - **Case Study PDF**: [URL to downloadable PDF]
 
-### About Empathy Framework
+### About Attune AI
 
 **Website**: https://github.com/Smart-AI-Memory/empathy
 **Documentation**: https://github.com/Smart-AI-Memory/empathy/tree/main/docs
@@ -770,7 +770,7 @@ Companies that will benefit most from Empathy Framework:
 ### Screenshots/Visuals
 
 [Include screenshots of]:
-- Empathy Framework dashboard showing predictions
+- Attune AI dashboard showing predictions
 - Before/after code quality metrics
 - CI/CD pipeline with Empathy integration
 - Developer workflow (pre-commit hook output)

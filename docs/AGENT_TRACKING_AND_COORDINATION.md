@@ -12,7 +12,7 @@ description: Agent Tracking & Coordination: **Date:** January 27, 2026 **Pattern
 
 ## Overview
 
-The Empathy Framework now includes two powerful patterns for agent coordination using TTL (Time-To-Live) based ephemeral messaging:
+The Attune AI now includes two powerful patterns for agent coordination using TTL (Time-To-Live) based ephemeral messaging:
 
 ### Pattern 1: Agent Heartbeat Tracking
 Monitor agent liveness and execution status through periodic heartbeat updates stored in Redis with TTL. When an agent crashes or hangs, its heartbeat expires automatically.

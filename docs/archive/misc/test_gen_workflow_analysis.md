@@ -50,4 +50,4 @@ I will perform the following steps to refactor the workflow:
 
 ## 4. Expected Outcome
 
-Upon completion, the `test-gen` workflow will be a robust, maintainable, and functional tool. It will correctly generate a test gap analysis, providing valuable insights for improving test coverage and adhering to the high-quality standards of the Empathy Framework.
+Upon completion, the `test-gen` workflow will be a robust, maintainable, and functional tool. It will correctly generate a test gap analysis, providing valuable insights for improving test coverage and adhering to the high-quality standards of the Attune AI.

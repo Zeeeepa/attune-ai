@@ -1,16 +1,16 @@
 ---
-description: Empathy Framework - Quick Start Guide: **Get up and running in 5 minutes** --- ## What is Empathy Framework? Empathy Framework is a five-level maturity model fo
+description: Attune AI - Quick Start Guide: **Get up and running in 5 minutes** --- ## What is Attune AI? Attune AI is a five-level maturity model fo
 ---
 
-# Empathy Framework - Quick Start Guide
+# Attune AI - Quick Start Guide
 
 **Get up and running in 5 minutes**
 
 ---
 
-## What is Empathy Framework?
+## What is Attune AI?
 
-Empathy Framework is a five-level maturity model for AI-human collaboration:
+Attune AI is a five-level maturity model for AI-human collaboration:
 - **Level 1: Reactive** - Respond when asked
 - **Level 2: Guided** - Collaborate with clarifying questions
 - **Level 3: Proactive** - Act before being asked
@@ -30,7 +30,7 @@ Empathy Framework is a five-level maturity model for AI-human collaboration:
 
 ```bash
 # Clone the repository (or download your licensed copy)
-git clone https://github.com/Deep-Study-AI/empathy.git
+git clone https://github.com/Smart-AI-Memory/empathy.git
 cd empathy
 
 # Install with pip
@@ -43,7 +43,7 @@ pip install -e ".[dev,examples]"
 ### Verify Installation
 
 ```bash
-python -c "from attune import EmpathyOS; print('✓ Empathy Framework installed')"
+python -c "from attune import EmpathyOS; print('✓ Attune AI installed')"
 ```
 
 ---
@@ -52,7 +52,7 @@ python -c "from attune import EmpathyOS; print('✓ Empathy Framework installed'
 
 ### Example 1: Simplest Usage (No Custom Code)
 
-The easiest way to use Empathy Framework - just interact with it!
+The easiest way to use Attune AI - just interact with it!
 
 ```python
 import asyncio
@@ -441,7 +441,7 @@ python examples/performance_demo.py
 
 ### 4. Join the Community
 
-- **GitHub**: https://github.com/Deep-Study-AI/empathy
+- **GitHub**: https://github.com/Smart-AI-Memory/empathy
 - **Issues**: Report bugs or request features
 - **Discussions**: Ask questions and share patterns
 
@@ -514,4 +514,4 @@ export ANTHROPIC_API_KEY="your-key"
 python examples/simple_usage.py
 ```
 
-**Questions?** Check the [full documentation](docs/) or [file an issue](https://github.com/Deep-Study-AI/empathy/issues).
+**Questions?** Check the [full documentation](docs/) or [file an issue](https://github.com/Smart-AI-Memory/empathy/issues).

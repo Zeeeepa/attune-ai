@@ -12,7 +12,7 @@ description: Meta-Workflow System: Security Review: **Date**: 2026-01-17 **Revie
 
 ## Executive Summary
 
-The meta-workflow system has been reviewed against the Empathy Framework security standards. All critical security requirements are met:
+The meta-workflow system has been reviewed against the Attune AI security standards. All critical security requirements are met:
 
 - ✅ No eval() or exec() usage
 - ✅ All file paths validated with _validate_file_path()
@@ -323,7 +323,7 @@ json.dumps(config_data, indent=2)
 ### Dependency Security
 
 **Python Version**: 3.10+
-**Dependencies**: Standard library + Empathy Framework
+**Dependencies**: Standard library + Attune AI
 **Known Vulnerabilities**: None (as of 2026-01-17)
 
 **Key Dependencies**:
@@ -436,7 +436,7 @@ For security issues in the meta-workflow system:
 - All critical security requirements met
 - No high-severity vulnerabilities found
 - Comprehensive test coverage
-- Follows Empathy Framework security standards
+- Follows Attune AI security standards
 - Ready for production use (with mock execution)
 - Ready for real LLM integration (Days 6-7)
 

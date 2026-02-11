@@ -74,7 +74,7 @@ At 100x volume: $24,372/year saved
 The more you scale AI usage, the more these optimizations matter.
 
 TECHNICAL IMPLEMENTATION:
-We built this into our Empathy Framework and open-sourced it. The core is surprisingly simple - a resilient executor with fallback policies.
+We built this into our Attune AI and open-sourced it. The core is surprisingly simple - a resilient executor with fallback policies.
 
 Full technical breakdown: [link to blog post]
 Code on GitHub: [link to repo]

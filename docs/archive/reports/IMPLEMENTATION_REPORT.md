@@ -10,7 +10,7 @@ description: Telemetry System Implementation Report: **Version**: 3.9.0 **Date**
 
 ## Overview
 
-Successfully implemented a privacy-first, local-only usage tracking system for the Empathy Framework. This system enables users to measure their actual cost savings from tier routing compared to an all-PREMIUM baseline.
+Successfully implemented a privacy-first, local-only usage tracking system for the Attune AI. This system enables users to measure their actual cost savings from tier routing compared to an all-PREMIUM baseline.
 
 ## What Was Implemented
 

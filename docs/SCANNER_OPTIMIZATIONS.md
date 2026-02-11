@@ -1,5 +1,5 @@
 ---
-description: Scanner Optimizations Guide: **Version:** 1.0 **Date:** 2026-01-26 **Status:** Production Ready --- ## Overview The Empathy Framework project scanner has been o
+description: Scanner Optimizations Guide: **Version:** 1.0 **Date:** 2026-01-26 **Status:** Production Ready --- ## Overview The Attune AI project scanner has been o
 ---
 
 # Scanner Optimizations Guide
@@ -12,7 +12,7 @@ description: Scanner Optimizations Guide: **Version:** 1.0 **Date:** 2026-01-26 
 
 ## Overview
 
-The Empathy Framework project scanner has been optimized for **3.65x faster** performance through:
+The Attune AI project scanner has been optimized for **3.65x faster** performance through:
 
 1. **Parallel Processing** - Multi-core file analysis
 2. **Incremental Scanning** - Git diff-based updates (80%+ faster for small changes)

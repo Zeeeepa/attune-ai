@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework: ## AI That Anticipates Problems Before They Happen --- ### The Problem **AI coding assistants are reactive, not proactive.** - Developers spe
+description: Attune AI: ## AI That Anticipates Problems Before They Happen --- ### The Problem **AI coding assistants are reactive, not proactive.** - Developers spe
 ---
 
-# Empathy Framework
+# Attune AI
 ## AI That Anticipates Problems Before They Happen
 
 ---
@@ -20,7 +20,7 @@ description: Empathy Framework: ## AI That Anticipates Problems Before They Happ
 
 ### The Solution
 
-**Empathy Framework: Production-ready anticipatory intelligence for software development**
+**Attune AI: Production-ready anticipatory intelligence for software development**
 
 A 5-level maturity model that progresses AI from reactive responses to predicting problems before they happen—with persistent memory that learns your codebase over time.
 
@@ -86,7 +86,7 @@ A 5-level maturity model that progresses AI from reactive responses to predictin
 | **Commercial** | Contact us | Teams 6+ employees |
 | **Enterprise** | Custom | Volume licensing, SLA, on-prem |
 
-**Fair Source License 0.9:** Sustainable model balancing adoption with revenue.
+**Apache License 2.0 0.9:** Sustainable model balancing adoption with revenue.
 
 ---
 

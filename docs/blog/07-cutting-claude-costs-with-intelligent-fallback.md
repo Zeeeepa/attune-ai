@@ -602,7 +602,7 @@ By implementing intelligent Sonnet → Opus fallback, I achieved:
 
 **The key insight:** Most coding tasks don't need your most powerful model. With intelligent routing, you can have both quality and cost efficiency.
 
-**Want to try it?** All code is open source in the [Empathy Framework](https://github.com/Smart-AI-Memory/attune-ai).
+**Want to try it?** All code is open source in the [Attune AI](https://github.com/Smart-AI-Memory/attune-ai).
 
 ---
 
@@ -612,7 +612,7 @@ By implementing intelligent Sonnet → Opus fallback, I achieved:
 - **Complete Documentation:** [SONNET_OPUS_FALLBACK_GUIDE.md](../SONNET_OPUS_FALLBACK_GUIDE.md)
 - **Code Examples:** [examples/sonnet_opus_fallback_example.py](../../examples/sonnet_opus_fallback_example.py)
 - **Test Suite:** [tests/test_fallback_suite.py](../../tests/test_fallback_suite.py)
-- **GitHub Repo:** [Empathy Framework](https://github.com/Smart-AI-Memory/attune-ai)
+- **GitHub Repo:** [Attune AI](https://github.com/Smart-AI-Memory/attune-ai)
 
 ---
 
@@ -628,7 +628,7 @@ I'd love to hear how this strategy works for you!
 
 **About the Author**
 
-Patrick Roebuck is the creator of Empathy Framework, an AI-powered development toolkit. This tutorial is based on real production usage and actual cost savings data.
+Patrick Roebuck is the creator of Attune AI, an AI-powered development toolkit. This tutorial is based on real production usage and actual cost savings data.
 
 **Framework Version:** 3.9.2+
 **Published:** January 9, 2026

@@ -367,7 +367,7 @@ async def _execute_agent(self, agent: AgentTemplate, context: dict[str, Any]) ->
 
 **Message to Users:**
 ```
-Empathy Framework v3.10.0: Production Hardening
+Attune AI v3.10.0: Production Hardening
 
 This release focuses on stability, quality, and developer experience:
 - 505 comprehensive tests (94.7% pass rate)

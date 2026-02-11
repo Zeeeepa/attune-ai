@@ -711,6 +711,6 @@ This is no longer a workflow engine. It's a **language for AI collaboration**.
 
 ---
 
-*The advanced grammar patterns are available in [Empathy Framework v4.4.0](https://github.com/Smart-AI-Memory/empathy).*
+*The advanced grammar patterns are available in [Attune AI v4.4.0](https://github.com/Smart-AI-Memory/empathy).*
 
-*Patrick Roebuck is the creator of the Empathy Framework. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*
+*Patrick Roebuck is the creator of the Attune AI. Follow [@DeepStudyAI](https://twitter.com/DeepStudyAI) for updates.*

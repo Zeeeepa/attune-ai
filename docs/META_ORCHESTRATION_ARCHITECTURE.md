@@ -13,7 +13,7 @@ description: Meta-Orchestration Architecture: System architecture overview with 
 
 ## 🎯 Vision
 
-Transform Empathy Framework from **static workflows** to **dynamic, composable agent orchestration** - a system that intelligently spawns and customizes agent teams based on task requirements, learns from outcomes, and improves over time.
+Transform Attune AI from **static workflows** to **dynamic, composable agent orchestration** - a system that intelligently spawns and customizes agent teams based on task requirements, learns from outcomes, and improves over time.
 
 **Metaphor**: We've built the "words" (primitives), now we're building the "grammar" (composition rules) and "language understanding" (meta-orchestrator) to form unlimited "sentences" (solutions).
 

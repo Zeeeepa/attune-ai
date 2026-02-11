@@ -25,7 +25,7 @@ By the end of this tutorial, you'll understand:
 >
 > This tutorial uses **software development agents** as examples (security auditing, test coverage, code quality), since the framework is primarily used by developers. However, **meta-orchestration is domain-agnostic** and works with any type of agent.
 >
-> The Empathy Framework also includes:
+> The Attune AI also includes:
 >
 > - **Healthcare-specific agents**: HIPAA compliance, patient data validation, clinical workflows
 > - **Code analysis tools**: Static analysis, SARIF reports, architectural insights
@@ -884,7 +884,7 @@ You've learned:
 
 ### Domain-Specific Extensions
 
-While this tutorial focused on software development workflows, the Empathy Framework includes additional domain-specific capabilities:
+While this tutorial focused on software development workflows, the Attune AI includes additional domain-specific capabilities:
 
 **Healthcare & Compliance:**
 

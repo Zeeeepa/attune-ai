@@ -515,7 +515,7 @@ class BookProductionLearner:
 
 ## Integration with Existing Systems
 
-### Empathy Framework Integration
+### Attune AI Integration
 
 ```python
 from attune import EmpathyOS
@@ -569,7 +569,7 @@ Reuse patterns from healthcare wizards:
 - **BookChapterWizard:** `empathy_software_plugin/wizards/book_chapter_wizard.py`
 - **Tests:** `tests/test_book_chapter_wizard.py`
 - **AI-Nurse-Florence Patterns:** `10_9_2025_ai_nurse_florence/`
-- **Empathy Framework:** `attune/`
+- **Attune AI:** `attune/`
 - **Long-Term Memory:** [github.com/Smart-AI-Memory/pattern-storage](https://github.com/Smart-AI-Memory/pattern-storage)
 
 ---

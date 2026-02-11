@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework v3.6.0: Error Messages That Actually Help You: **Published:** January 5, 2026 **Author:** [Your Name] **Reading Time:** 8 minutes --- ## The P
+description: Attune AI v3.6.0: Error Messages That Actually Help You: **Published:** January 5, 2026 **Author:** [Your Name] **Reading Time:** 8 minutes --- ## The P
 ---
 
-# Empathy Framework v3.6.0: Error Messages That Actually Help You
+# Attune AI v3.6.0: Error Messages That Actually Help You
 
 **Published:** January 5, 2026
 **Author:** [Your Name]
@@ -35,7 +35,7 @@ Sound familiar?
 
 ## The Solution: Error Messages That Show You Exactly What to Do
 
-In Empathy Framework v3.6.0, we completely rewrote error messages across 5 base classes to give you everything you need in the error itself.
+In Attune AI v3.6.0, we completely rewrote error messages across 5 base classes to give you everything you need in the error itself.
 
 ### Before (Frustrating 😤)
 
@@ -97,11 +97,11 @@ Everything they need is right there in the error message.
 
 ---
 
-## What is Empathy Framework?
+## What is Attune AI?
 
 Before we dive deeper into v3.6.0, let's take a step back.
 
-Empathy Framework is an AI collaboration framework for Python developers. Think of it as **LangChain + persistent memory + cost optimization + production security**.
+Attune AI is an AI collaboration framework for Python developers. Think of it as **LangChain + persistent memory + cost optimization + production security**.
 
 ### Key Features
 
@@ -114,7 +114,7 @@ Empathy Framework is an AI collaboration framework for Python developers. Think 
 
 **2. Smart Tier Routing (80-96% Cost Savings)**
 
-Instead of using GPT-4 for everything, Empathy Framework automatically routes tasks to the right model:
+Instead of using GPT-4 for everything, Attune AI automatically routes tasks to the right model:
 
 | Tier | Model | Use Case | Cost |
 |------|-------|----------|------|
@@ -483,7 +483,7 @@ for model, response in results.items():
 
 ## Community
 
-We're building Empathy Framework in the open with a focus on community:
+We're building Attune AI in the open with a focus on community:
 
 **Contribute:**
 - 🐛 [Report bugs](https://github.com/Smart-AI-Memory/attune-ai/issues)
@@ -508,7 +508,7 @@ pip install attune-ai[developer]
 - ⭐ [GitHub](https://github.com/Smart-AI-Memory/attune-ai)
 - 📖 [Documentation](https://docs.smartaimemory.com)
 
-**License:** Fair Source 0.9 (free for teams ≤5 employees)
+**License:** Apache License 2.0 (free for teams ≤5 employees)
 
 ---
 

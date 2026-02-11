@@ -242,7 +242,7 @@ empathy workflow run code-review
 # Output:
 ⚡ Smart Caching Available
 
-  Empathy Framework can reduce your API costs by 70% with hybrid caching.
+  Attune AI can reduce your API costs by 70% with hybrid caching.
   This requires installing sentence-transformers (~150MB).
 
   Would you like to enable smart caching now? [Y/n]: y

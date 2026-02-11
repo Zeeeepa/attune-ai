@@ -5,11 +5,11 @@ description: Sonnet 4.5 → Opus 4.5 Intelligent Fallback Guide: Step-by-step tu
 # Sonnet 4.5 → Opus 4.5 Intelligent Fallback Guide
 
 **Updated:** January 9, 2026
-**Empathy Framework v3.9.2+**
+**Attune AI v3.9.2+**
 
 ## Overview
 
-The Empathy Framework now uses **Claude Sonnet 4.5** as the default CAPABLE tier model, with intelligent fallback to **Claude Opus 4.5** when tasks require additional reasoning capability.
+The Attune AI now uses **Claude Sonnet 4.5** as the default CAPABLE tier model, with intelligent fallback to **Claude Opus 4.5** when tasks require additional reasoning capability.
 
 This strategy provides:
 - **80% cost savings** when Sonnet succeeds (vs. always using Opus)
@@ -387,7 +387,7 @@ print(f"Found {len(calls)} calls")
 
 - [Claude Sonnet 4.5 Announcement](https://www.anthropic.com/news/claude-sonnet-4-5)
 - [Anthropic API Pricing](https://platform.claude.com/docs/en/about-claude/pricing)
-- [Empathy Framework Telemetry Guide](./TELEMETRY_GUIDE.md)
+- [Attune AI Telemetry Guide](./TELEMETRY_GUIDE.md)
 - [Fallback Policy Reference](./FALLBACK_POLICIES.md)
 
 ---
@@ -408,6 +408,6 @@ print(f"Found {len(calls)} calls")
 
 ## Questions?
 
-- **GitHub Discussions:** [Empathy Framework Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
+- **GitHub Discussions:** [Attune AI Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)
 - **Issues:** [Report a Bug](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - **Documentation:** [Full Docs](https://empathyframework.com/docs)

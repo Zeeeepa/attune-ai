@@ -13,7 +13,7 @@ description: Data Structure Optimization Plan - Phase 2: **Version:** 1.0 **Crea
 
 ## Executive Summary
 
-This document outlines the data structure optimization work for Phase 2 of the Empathy Framework optimization initiative. The goal is to eliminate O(n) lookup operations by replacing lists with appropriate data structures (sets/dicts) for O(1) operations.
+This document outlines the data structure optimization work for Phase 2 of the Attune AI optimization initiative. The goal is to eliminate O(n) lookup operations by replacing lists with appropriate data structures (sets/dicts) for O(1) operations.
 
 **Phase 2 Complete (Immediate Release):**
 - ✅ 5 quick-win optimizations implemented
@@ -521,8 +521,8 @@ return index_map.get(search_value, -1)
 
 - [Python Performance Tips](https://wiki.python.org/moin/PythonSpeed/PerformanceTips)
 - [Sets vs Lists vs Dicts](https://wiki.python.org/moin/PythonSpeed/PerformanceTips#Dictionaries_and_sets)
-- [Empathy Framework Coding Standards](./CODING_STANDARDS.md)
-- [List Copy Guidelines](../.claude/rules/empathy/list-copy-guidelines.md)
+- [Attune AI Coding Standards](./CODING_STANDARDS.md)
+- [List Copy Guidelines](../.claude/rules/attune/list-copy-guidelines.md)
 
 ---
 

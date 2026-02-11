@@ -1,13 +1,13 @@
 ---
-description: Testing Guide - Empathy Framework: **Version**: 3.11.0 **Last Updated**: January 10, 2026 This guide covers the testing infrastructure, optimization strategies,
+description: Testing Guide - Attune AI: **Version**: 3.11.0 **Last Updated**: January 10, 2026 This guide covers the testing infrastructure, optimization strategies,
 ---
 
-# Testing Guide - Empathy Framework
+# Testing Guide - Attune AI
 
 **Version**: 3.11.0
 **Last Updated**: January 10, 2026
 
-This guide covers the testing infrastructure, optimization strategies, and best practices for the Empathy Framework test suite.
+This guide covers the testing infrastructure, optimization strategies, and best practices for the Attune AI test suite.
 
 ---
 

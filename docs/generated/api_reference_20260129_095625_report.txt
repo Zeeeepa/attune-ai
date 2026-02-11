@@ -8,7 +8,7 @@ Target Audience: Developers
 ------------------------------------------------------------
 DOCUMENT OUTLINE
 ------------------------------------------------------------
-# Empathy Framework - Cross-Platform Utilities API Reference
+# Attune AI - Cross-Platform Utilities API Reference
 
 ## Documentation Outline
 
@@ -24,7 +24,7 @@ DOCUMENT OUTLINE
 GENERATED DOCUMENTATION
 ------------------------------------------------------------
 
-# Empathy Framework - Cross-Platform Utilities API Reference
+# Attune AI - Cross-Platform Utilities API Reference
 
 **Version:** 1.0.0
 **License:** Fair Source License 0.9
@@ -48,7 +48,7 @@ GENERATED DOCUMENTATION
 
 ### 1.1 Purpose
 
-The `empathy_os.platform_utils` module provides cross-platform utilities for the Empathy Framework, abstracting platform-specific differences to ensure consistent behavior across Windows, macOS, and Linux systems.
+The `empathy_os.platform_utils` module provides cross-platform utilities for the Attune AI, abstracting platform-specific differences to ensure consistent behavior across Windows, macOS, and Linux systems.
 
 **Core Capabilities:**
 - **Platform Detection**: Identify the operating system at runtime
@@ -62,7 +62,7 @@ The `empathy_os.platform_utils` module provides cross-platform utilities for the
 - **Maintainability**: Centralized platform logic reduces code duplication
 - **User Experience**: Files stored in expected locations improve usability
 
-**Key Use Cases in the Empathy Framework:**
+**Key Use Cases in the Attune AI:**
 - Setting up logging directories that respect OS conventions
 - Storing user data in platform-appropriate locations
 - Handling asyncio event loops correctly on Windows

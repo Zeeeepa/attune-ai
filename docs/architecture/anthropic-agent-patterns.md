@@ -1,14 +1,14 @@
 ---
-description: Anthropic Agent Patterns in Empathy Framework: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+description: Anthropic Agent Patterns in Attune AI: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
 ---
 
-# Anthropic Agent Patterns in Empathy Framework
+# Anthropic Agent Patterns in Attune AI
 
 **Version:** 1.0
 **Created:** 2026-01-29
-**Source:** Anthropic's official agent guidelines + Empathy Framework architecture
+**Source:** Anthropic's official agent guidelines + Attune AI architecture
 
-This guide shows how to implement Anthropic's recommended agent patterns within the Empathy Framework.
+This guide shows how to implement Anthropic's recommended agent patterns within the Attune AI.
 
 ---
 
@@ -20,7 +20,7 @@ Anthropic recommends three core agent patterns:
 2. **Orchestrator** - Dynamic routing to specialists
 3. **Evaluator** - Agent loops with self-correction
 
-The Empathy Framework implements all three, with additional optimizations for cost and performance.
+The Attune AI implements all three, with additional optimizations for cost and performance.
 
 ---
 
@@ -37,7 +37,7 @@ def code_review_workflow(code: str):
     return combine_results(security_result, quality_result)
 ```
 
-### Empathy Framework Implementation
+### Attune AI Implementation
 
 **File:** `src/attune/workflows/base.py`
 
@@ -119,7 +119,7 @@ def orchestrator_agent(task: str):
         return general_agent.handle(task)
 ```
 
-### Empathy Framework Implementation
+### Attune AI Implementation
 
 **File:** `src/attune/orchestrator.py`
 
@@ -243,7 +243,7 @@ def agent_with_evaluator(task: str):
     return result
 ```
 
-### Empathy Framework Implementation
+### Attune AI Implementation
 
 **File:** `src/attune/workflows/test_gen.py`
 
@@ -354,7 +354,7 @@ Return JSON: {{"score": <number>, "feedback": "<string>"}}"""
 
 ---
 
-## Empathy Framework Enhancements
+## Attune AI Enhancements
 
 The framework adds these optimizations while maintaining Anthropic's patterns:
 
@@ -437,7 +437,7 @@ def analyze_code(code: str) -> dict:
     return {"result": response.content[0].text}
 ```
 
-**After (Empathy Framework):**
+**After (Attune AI):**
 
 ```python
 from attune.workflows import WorkflowBase
@@ -546,7 +546,7 @@ print(f"Cache hit rate: {stats['cache_hit_rate']:.1%}")
 
 ```python
 """
-Demonstrates Anthropic's agent patterns in Empathy Framework
+Demonstrates Anthropic's agent patterns in Attune AI
 """
 import asyncio
 from attune.workflows import WorkflowBase
@@ -664,7 +664,7 @@ if __name__ == "__main__":
 - [Agentic Patterns](https://docs.anthropic.com/claude/docs/agentic-patterns)
 - [Tool Use Guide](https://docs.anthropic.com/claude/docs/tool-use)
 
-**Empathy Framework:**
+**Attune AI:**
 - [Workflows Guide](../how-to/run-workflows.md)
 - [Orchestration Patterns](./orchestration-patterns.md)
 - [Performance Optimization](./performance-optimization.md)
@@ -679,4 +679,4 @@ if __name__ == "__main__":
 | **Orchestrator** | Keyword routing | + Semantic routing + Registry |
 | **Evaluator** | Self-correction loops | + Quality metrics + Auto-retry |
 
-**Key Takeaway:** Empathy Framework implements all Anthropic patterns while adding cost optimization, caching, and parallel execution.
+**Key Takeaway:** Attune AI implements all Anthropic patterns while adding cost optimization, caching, and parallel execution.

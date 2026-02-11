@@ -4,7 +4,7 @@ description: OpenSSF Best Practices Badge - Application Guide: Step-by-step tuto
 
 # OpenSSF Best Practices Badge - Application Guide
 
-This guide provides step-by-step instructions for submitting the Empathy Framework's OpenSSF Best Practices Badge application.
+This guide provides step-by-step instructions for submitting the Attune AI's OpenSSF Best Practices Badge application.
 
 ## Application URL
 
@@ -40,9 +40,9 @@ This guide provides step-by-step instructions for submitting the Empathy Framewo
 2. Enter project information:
 
 **Basic Information**:
-- **Project Name**: `Empathy Framework`
-- **Project Homepage URL**: `https://github.com/Deep-Study-AI/Empathy`
-- **Repository URL**: `https://github.com/Deep-Study-AI/Empathy`
+- **Project Name**: `Attune AI`
+- **Project Homepage URL**: `https://github.com/Smart-AI-Memory/attune-ai`
+- **Repository URL**: `https://github.com/Smart-AI-Memory/attune-ai`
 - **Description**:
   ```
   Open-source AI framework for empathy-driven software development and
@@ -60,17 +60,17 @@ This guide provides step-by-step instructions for submitting the Empathy Framewo
 
 **Q: What is the human-readable name of the project?**
 ```
-Empathy Framework
+Attune AI
 ```
 
 **Q: What is the URL for the project?**
 ```
-https://github.com/Deep-Study-AI/Empathy
+https://github.com/Smart-AI-Memory/attune-ai
 ```
 
 **Q: What is the URL for the project repository (the place where contributions are accepted)?**
 ```
-https://github.com/Deep-Study-AI/Empathy
+https://github.com/Smart-AI-Memory/attune-ai
 ```
 
 **Q: How do users/developers get the version they want?**
@@ -81,7 +81,7 @@ Current version: 1.7.0
 
 **Q: Is version control publicly available?**
 ```
-Met: Yes, public Git repository on GitHub: https://github.com/Deep-Study-AI/Empathy
+Met: Yes, public Git repository on GitHub: https://github.com/Smart-AI-Memory/attune-ai
 ```
 
 ---
@@ -95,7 +95,7 @@ Met: Yes, Git with GitHub hosting. All code changes tracked with full history.
 
 **Q: Do you have a documented process for users to submit bug reports?**
 ```
-Met: Yes, via GitHub Issues: https://github.com/Deep-Study-AI/Empathy/issues
+Met: Yes, via GitHub Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
 ```
 
 **Q: Do contributors use unique IDs?**
@@ -188,7 +188,7 @@ Met: Yes. SECURITY.md documents:
 - Coordinated disclosure process
 - Security patch release procedures
 
-URL: https://github.com/Deep-Study-AI/Empathy/blob/main/SECURITY.md
+URL: https://github.com/Smart-AI-Memory/attune-ai/blob/main/SECURITY.md
 ```
 
 **Q: Do you have a documented process for responding to vulnerability reports?**
@@ -254,7 +254,7 @@ Met: Yes. Comprehensive documentation:
 - examples/: Working code examples for healthcare and software domains
 - API documentation: Inline docstrings for all public interfaces
 
-Repository: https://github.com/Deep-Study-AI/Empathy
+Repository: https://github.com/Smart-AI-Memory/attune-ai
 ```
 
 **Q: Is there documentation on how to contribute?**
@@ -265,9 +265,9 @@ Met: Yes. CONTRIBUTING.md provides:
 - Code style requirements (Black, Ruff)
 - Pull request process
 - Commit message conventions
-- Licensing information (Fair Source 0.9 / Commercial)
+- Licensing information (Apache License 2.0 / Commercial)
 
-URL: https://github.com/Deep-Study-AI/Empathy/blob/main/CONTRIBUTING.md
+URL: https://github.com/Smart-AI-Memory/attune-ai/blob/main/CONTRIBUTING.md
 ```
 
 **Q: Are there build/installation instructions?**
@@ -298,12 +298,12 @@ Met: Yes. Multiple sources:
 **Q: What is your license?**
 ```
 Met: Dual licensing model:
-1. Fair Source License 0.9 (LICENSE): Free for ≤5 employees, students, educators
+1. Apache License 2.0 0.9 (LICENSE): Free for ≤5 employees, students, educators
 2. Commercial License (LICENSE-COMMERCIAL.md): contact us for pricing for 6+ employees
 
 Both licenses are clearly documented in repository root.
 
-Note: Fair Source 0.9 is not OSI-approved (source-available, not fully open source),
+Note: Apache License 2.0 is not OSI-approved (source-available, not fully open source),
 but is a recognized ethical license for sustainable commercial open source.
 Project prioritizes ethical business model over pure OSS classification.
 ```
@@ -329,7 +329,7 @@ Met: Yes. CODE_OF_CONDUCT.md based on Contributor Covenant:
 - Enforcement procedures
 - Scope and attribution
 
-URL: https://github.com/Deep-Study-AI/Empathy/blob/main/CODE_OF_CONDUCT.md
+URL: https://github.com/Smart-AI-Memory/attune-ai/blob/main/CODE_OF_CONDUCT.md
 ```
 
 **Q: Is the project governance documented?**
@@ -342,7 +342,7 @@ Met: Yes. GOVERNANCE.md documents:
 - Conflict resolution procedures
 - Amendment process
 
-URL: https://github.com/Deep-Study-AI/Empathy/blob/main/docs/GOVERNANCE.md
+URL: https://github.com/Smart-AI-Memory/attune-ai/blob/main/docs/GOVERNANCE.md
 ```
 
 **Q: Do you have a documented supported versions policy?**
@@ -454,7 +454,7 @@ See docs/COVERAGE_ANALYSIS.md for detailed plan.
 ### If Questions Are Unclear
 - Check OpenSSF documentation: https://github.com/coreinfrastructure/best-practices-badge/blob/main/doc/criteria.md
 - Reference other projects: Search "OpenSSF Best Practices Badge Python" for examples
-- Ask in GitHub Discussions: https://github.com/Deep-Study-AI/Empathy/discussions
+- Ask in GitHub Discussions: https://github.com/Smart-AI-Memory/attune-ai/discussions
 
 ### If Score Is Lower Than Expected
 - Don't worry! 50-60% is excellent for initial application
@@ -474,7 +474,7 @@ See docs/COVERAGE_ANALYSIS.md for detailed plan.
 - **Primary Maintainer**: Patrick Roebuck
 - **Email**: patrick.roebuck@smartaimemory.com
 - **Organization**: Smart AI Memory, LLC
-- **Repository**: https://github.com/Deep-Study-AI/Empathy
+- **Repository**: https://github.com/Smart-AI-Memory/attune-ai
 
 ---
 

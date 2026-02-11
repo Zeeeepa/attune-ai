@@ -1,12 +1,12 @@
 ---
-description: MemDocs Merger into Empathy Framework: ## Executive Summary This document outlines the plan to merge MemDocs functionality directly into the Empathy Framework.
+description: MemDocs Merger into Attune AI: ## Executive Summary This document outlines the plan to merge MemDocs functionality directly into the Attune AI.
 ---
 
-# MemDocs Merger into Empathy Framework
+# MemDocs Merger into Attune AI
 
 ## Executive Summary
 
-This document outlines the plan to merge MemDocs functionality directly into the Empathy Framework. Memory management is fundamental to the framework's value proposition, and consolidating these capabilities simplifies the user experience while preserving all existing work.
+This document outlines the plan to merge MemDocs functionality directly into the Attune AI. Memory management is fundamental to the framework's value proposition, and consolidating these capabilities simplifies the user experience while preserving all existing work.
 
 **Key Principle: Nothing will be deleted without explicit approval.**
 
@@ -53,7 +53,7 @@ The MemDocs + Empathy integration has already demonstrated **200-400% productivi
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    Empathy Framework Memory                          │
+│                    Attune AI Memory                          │
 ├─────────────────────────────────┬───────────────────────────────────┤
 │     SHORT-TERM (Redis)          │      LONG-TERM (MemDocs)          │
 │     attune/redis_memory.py  │  attune_llm/security/    │

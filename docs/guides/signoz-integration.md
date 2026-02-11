@@ -1,14 +1,14 @@
 ---
-description: SigNoz Integration Guide integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: SigNoz Integration Guide integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # SigNoz Integration Guide
 
-This guide explains how to export Empathy Framework LLM telemetry to SigNoz for enterprise-grade observability.
+This guide explains how to export Attune AI LLM telemetry to SigNoz for enterprise-grade observability.
 
 ## Overview
 
-The Empathy Framework monitoring system has a **two-tier architecture**:
+The Attune AI monitoring system has a **two-tier architecture**:
 
 - **Tier 1 (Default - Zero Config)**: JSONL telemetry logged to `.empathy/`, viewable in VSCode dashboard and CLI
 - **Tier 2 (Enterprise - Opt-in)**: OpenTelemetry export to collectors like SigNoz, Datadog, or New Relic
@@ -19,7 +19,7 @@ This guide focuses on **Tier 2** - setting up OpenTelemetry export to SigNoz.
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  Empathy Framework Application                  │
+│  Attune AI Application                  │
 │                                                  │
 │  ┌──────────────┐        ┌──────────────┐      │
 │  │ LLM Call     │───────▶│ Multi-Backend│      │
@@ -53,11 +53,11 @@ This guide focuses on **Tier 2** - setting up OpenTelemetry export to SigNoz.
 
 - Python 3.10+
 - Docker and Docker Compose (for running SigNoz)
-- Empathy Framework v3.8.0-alpha or later
+- Attune AI v3.8.0-alpha or later
 
 ## Step 1: Install OpenTelemetry Dependencies
 
-Install Empathy Framework with OTEL support:
+Install Attune AI with OTEL support:
 
 ```bash
 pip install attune-ai[otel]
@@ -107,7 +107,7 @@ open http://localhost:3301
 2. Get your OTEL collector endpoint (e.g., `ingest.signoz.io:443`)
 3. Get your ingestion key from the SigNoz dashboard
 
-## Step 3: Configure Empathy Framework
+## Step 3: Configure Attune AI
 
 ### Option A: Environment Variable (Recommended)
 
@@ -255,7 +255,7 @@ LIMIT 10;
 
 ## Semantic Conventions
 
-The Empathy Framework uses custom semantic conventions for LLM telemetry:
+The Attune AI uses custom semantic conventions for LLM telemetry:
 
 ### LLM Call Attributes
 
@@ -465,12 +465,12 @@ ORDER BY date;
 
 - [SigNoz Documentation](https://signoz.io/docs/)
 - [OpenTelemetry Specification](https://opentelemetry.io/docs/specs/otel/)
-- [Empathy Framework Monitoring Architecture](../architecture/monitoring.md)
+- [Attune AI Monitoring Architecture](../architecture/monitoring.md)
 - [Alert CLI Guide](../how-to/setup-alerts.md)
 
 ## Support
 
 For issues with:
-- **Empathy Framework**: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
+- **Attune AI**: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - **SigNoz**: [SigNoz Slack](https://signoz.io/slack) or [GitHub](https://github.com/SigNoz/signoz/issues)
 - **OpenTelemetry**: [CNCF Slack #opentelemetry](https://slack.cncf.io/)

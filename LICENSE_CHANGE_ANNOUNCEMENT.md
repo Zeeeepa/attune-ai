@@ -1,8 +1,8 @@
-# Empathy Framework is Now Fully Open Source (Apache 2.0)
+# Attune AI is Now Fully Open Source (Apache 2.0)
 
 **Date:** January 28, 2026
 
-We're excited to announce that **Empathy Framework is now fully open source** under the Apache License 2.0!
+We're excited to announce that **Attune AI is now fully open source** under the Apache License 2.0!
 
 ## What Changed?
 
@@ -11,7 +11,7 @@ We're excited to announce that **Empathy Framework is now fully open source** un
 
 ## Why Apache 2.0?
 
-Empathy Framework helps developers save 70-85% on LLM costs through:
+Attune AI helps developers save 70-85% on LLM costs through:
 - Progressive tier escalation (cheap models for simple tasks)
 - Intelligent caching (85% hit rates)
 - Batch processing (50% cost reduction)
@@ -50,7 +50,7 @@ We were trying to skip to step 4. That doesn't work.
 
 ## Our Commitment Going Forward
 
-We're doubling down on making Empathy Framework the best AI orchestration tool:
+We're doubling down on making Attune AI the best AI orchestration tool:
 
 1. **Claude-native focus** - Leveraging prompt caching, 200K context, extended thinking
 2. **Performance** - 18x faster than v4.8 (already shipped in v4.9)
@@ -90,7 +90,7 @@ Join the community: https://github.com/Smart-AI-Memory/attune-ai/discussions
 
 ## Thank You
 
-To everyone who believed in Empathy Framework under Fair Source - thank you. This change makes the project accessible to everyone, not just a select few.
+To everyone who believed in Attune AI under Fair Source - thank you. This change makes the project accessible to everyone, not just a select few.
 
 Let's build the future of AI orchestration together.
 
@@ -98,4 +98,4 @@ Let's build the future of AI orchestration together.
 
 **Questions?** Open an issue or discussion on GitHub.
 
-**Built by [Deep Study AI, LLC](https://smartaimemory.com)** · Licensed under [Apache 2.0](LICENSE)
+**Built by [Smart AI Memory](https://smartaimemory.com)** · Licensed under [Apache 2.0](LICENSE)

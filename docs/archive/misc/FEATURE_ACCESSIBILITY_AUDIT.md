@@ -1,11 +1,11 @@
 ---
-description: Feature Accessibility Audit: **Date:** 2026-01-01 **Purpose:** Ensure all Empathy Framework features have BOTH UI and CLI entry points --- ## Executive Summary
+description: Feature Accessibility Audit: **Date:** 2026-01-01 **Purpose:** Ensure all Attune AI features have BOTH UI and CLI entry points --- ## Executive Summary
 ---
 
 # Feature Accessibility Audit
 
 **Date:** 2026-01-01
-**Purpose:** Ensure all Empathy Framework features have BOTH UI and CLI entry points
+**Purpose:** Ensure all Attune AI features have BOTH UI and CLI entry points
 
 ---
 
@@ -374,7 +374,7 @@ After implementing fixes, verify:
 
 ## Conclusion
 
-The Empathy Framework has **strong dual entry point coverage** for most features (78% complete), but is missing a critical UI button for the **code-review workflow**. This is a high-priority gap because:
+The Attune AI has **strong dual entry point coverage** for most features (78% complete), but is missing a critical UI button for the **code-review workflow**. This is a high-priority gap because:
 
 1. ✅ Backend fully implemented
 2. ✅ Interactive panel exists (CodeReviewPanelProvider)

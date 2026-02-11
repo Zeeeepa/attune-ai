@@ -1,8 +1,8 @@
 ---
-description: Documentation Patterns for Empathy Framework v1.8.0: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
+description: Documentation Patterns for Attune AI v1.8.0: System architecture overview with components, data flow, and design decisions. Understand the framework internals.
 ---
 
-# Documentation Patterns for Empathy Framework v1.8.0
+# Documentation Patterns for Attune AI v1.8.0
 
 **Purpose**: Define consistent patterns for creating high-quality, user-focused documentation
 **Audience**: Documentation contributors (primarily Patrick)
@@ -44,7 +44,7 @@ Knowledge        │  Understanding-oriented     │  Information-oriented
 ```markdown
 # Quick Start
 
-Get up and running with Empathy Framework in 5 minutes!
+Get up and running with Attune AI in 5 minutes!
 
 ## Step 1: Install
 
@@ -252,7 +252,7 @@ backend = EmpathyOS(
 ### Implementation: Homepage Sections
 
 ```markdown
-# Empathy Framework
+# Attune AI
 
 ## Get Started in 5 Minutes
 → For developers who want to try it immediately
@@ -293,7 +293,7 @@ backend = EmpathyOS(
 ### Example: Healthcare Guide Opening
 
 ```markdown
-# Healthcare Applications with Empathy Framework
+# Healthcare Applications with Attune AI
 
 ## Impact Summary
 
@@ -312,7 +312,7 @@ Traditional EHR systems are reactive (Level 1):
 - System stores data
 - No proactive alerts or predictions
 
-Empathy Framework adds Level 4 Anticipatory Intelligence:
+Attune AI adds Level 4 Anticipatory Intelligence:
 - ✅ Predicts incomplete SBAR reports before submission
 - ✅ Flags critical information missing from handoff
 - ✅ Suggests relevant patient history automatically
@@ -669,13 +669,13 @@ print(response.predictions)   # ["Risk: ...", "Suggestion: ..."]
 ### Explanation Template
 
 ```markdown
-# Understanding Trust Building in Empathy Framework
+# Understanding Trust Building in Attune AI
 
 ## The Core Insight
 
 **Traditional AI systems treat every interaction the same.**
 
-Empathy Framework recognizes that **trust must be earned**:
+Attune AI recognizes that **trust must be earned**:
 - New users get conservative responses (Level 1-2)
 - As trust builds through successful interactions, more advanced features unlock
 - If trust erodes (failures), system falls back to safer levels
@@ -805,7 +805,7 @@ You can't skip floors. You earn your way up.
 ### Implementation: Tabbed Content
 
 ```markdown
-## Installing Empathy Framework
+## Installing Attune AI
 
 === "Beginner"
 

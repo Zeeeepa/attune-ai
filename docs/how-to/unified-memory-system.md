@@ -1,5 +1,5 @@
 ---
-description: Unified Memory System: *A single API for short-term (Redis) and long-term (persistent) memory* --- ## Overview The Empathy Framework provides a **two-tier memor
+description: Unified Memory System: *A single API for short-term (Redis) and long-term (persistent) memory* --- ## Overview The Attune AI provides a **two-tier memor
 ---
 
 # Unified Memory System
@@ -10,7 +10,7 @@ description: Unified Memory System: *A single API for short-term (Redis) and lon
 
 ## Overview
 
-The Empathy Framework provides a **two-tier memory architecture** that mirrors how humans think:
+The Attune AI provides a **two-tier memory architecture** that mirrors how humans think:
 
 | Memory Tier | Purpose | Backend | Lifetime |
 |-------------|---------|---------|----------|

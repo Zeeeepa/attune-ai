@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework v3.6.0 Release Notes: ## 🔐 Security & Compliance Infrastructure Release **Release Date**: January 4, 2026 **Release Type**: Minor (New Feature
+description: Attune AI v3.6.0 Release Notes: ## 🔐 Security & Compliance Infrastructure Release **Release Date**: January 4, 2026 **Release Type**: Minor (New Feature
 ---
 
-# Empathy Framework v3.6.0 Release Notes
+# Attune AI v3.6.0 Release Notes
 
 ## 🔐 Security & Compliance Infrastructure Release
 
@@ -13,7 +13,7 @@ description: Empathy Framework v3.6.0 Release Notes: ## 🔐 Security & Complian
 
 ## 🎯 What's New
 
-This release transforms Empathy Framework into a **production-ready platform** for healthcare and enterprise applications with comprehensive security and compliance features.
+This release transforms Attune AI into a **production-ready platform** for healthcare and enterprise applications with comprehensive security and compliance features.
 
 ### 🔐 Backend Authentication System
 
@@ -188,7 +188,7 @@ Better developer experience:
 
 ## 🙏 Thank You
 
-This release represents a major step toward making Empathy Framework production-ready for healthcare and enterprise applications. Special thanks to all contributors and users who provided feedback.
+This release represents a major step toward making Attune AI production-ready for healthcare and enterprise applications. Special thanks to all contributors and users who provided feedback.
 
 **What's Next?** We're working on:
 - VSCode extension integration for compliance monitoring

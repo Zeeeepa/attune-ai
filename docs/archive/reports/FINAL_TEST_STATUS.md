@@ -117,7 +117,7 @@ Complete test specifications available in:
 ## Quality Assurance
 
 All created test files follow:
-- ✅ Project coding standards (`.claude/rules/empathy/coding-standards-index.md`)
+- ✅ Project coding standards (`.claude/rules/attune/coding-standards-index.md`)
 - ✅ Existing test patterns from codebase
 - ✅ Type hints and comprehensive docstrings
 - ✅ Proper mocking (no external dependencies)

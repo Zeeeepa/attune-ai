@@ -1,8 +1,8 @@
 ---
-description: Release Notes - Empathy Framework v4.0.3: **Release Date**: January 16, 2026 **Type**: Bug Fix Release **PyPI**: https://pypi.org/project/attune-ai/4.0.
+description: Release Notes - Attune AI v4.0.3: **Release Date**: January 16, 2026 **Type**: Bug Fix Release **PyPI**: https://pypi.org/project/attune-ai/4.0.
 ---
 
-# Release Notes - Empathy Framework v4.0.3
+# Release Notes - Attune AI v4.0.3
 
 **Release Date**: January 16, 2026
 **Type**: Bug Fix Release
@@ -217,5 +217,5 @@ Same as v4.0.2:
 
 ---
 
-*Generated with ❤️ by the Empathy Framework team*
+*Generated with ❤️ by the Attune AI team*
 *Copyright © 2026 Smart-AI-Memory*

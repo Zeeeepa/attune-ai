@@ -1,6 +1,6 @@
 # Acknowledgements
 
-The Empathy Framework stands on the shoulders of giants. This project would not be possible without the incredible work of the open source community. We are deeply grateful to all the developers, maintainers, and contributors of the projects listed below.
+The Attune AI stands on the shoulders of giants. This project would not be possible without the incredible work of the open source community. We are deeply grateful to all the developers, maintainers, and contributors of the projects listed below.
 
 ---
 
@@ -192,7 +192,7 @@ pip-licenses --from=mixed --format=markdown > licenses.md
 
 ## License Compatibility
 
-All dependencies listed here are compatible with the Apache License 2.0 under which Empathy Framework is distributed. Common compatible licenses include:
+All dependencies listed here are compatible with the Apache License 2.0 under which Attune AI is distributed. Common compatible licenses include:
 
 - MIT License
 - Apache License 2.0

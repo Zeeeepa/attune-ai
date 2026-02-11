@@ -240,7 +240,7 @@ These files have `broad_exception` patterns but are properly documented:
 
 ### Phase 3: Documentation (Day 2)
 
-1. Update `.claude/rules/empathy/scanner-patterns.md` with new exclusion for test data strings
+1. Update `.claude/rules/attune/scanner-patterns.md` with new exclusion for test data strings
 2. Add this fix plan to docs for future reference
 
 ---
@@ -283,7 +283,7 @@ Reduces bug prediction risk score from 78% to ~55%."
 
 ### Why Some Broad Exceptions Are OK
 
-Per `.claude/rules/empathy/coding-standards-index.md`, broad exceptions are acceptable when:
+Per `.claude/rules/attune/coding-standards-index.md`, broad exceptions are acceptable when:
 
 1. **Version/feature detection** - Need graceful fallback
 2. **Optional feature loading** - App should start even if optional fails

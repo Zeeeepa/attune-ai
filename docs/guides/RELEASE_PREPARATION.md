@@ -1,8 +1,8 @@
 ---
-description: Release Preparation Guide - Empathy Framework v3.7.0: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+description: Release Preparation Guide - Attune AI v3.7.0: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
 ---
 
-# Release Preparation Guide - Empathy Framework v3.7.0
+# Release Preparation Guide - Attune AI v3.7.0
 
 **Date**: 2026-01-05
 **Target Release**: v3.7.0 (XML-Enhanced Prompts)
@@ -12,7 +12,7 @@ description: Release Preparation Guide - Empathy Framework v3.7.0: Step-by-step 
 
 ## Executive Summary
 
-This guide identifies beta/experimental content to exclude or hide before releasing Empathy Framework v3.7.0, ensuring a clean, production-ready package.
+This guide identifies beta/experimental content to exclude or hide before releasing Attune AI v3.7.0, ensuring a clean, production-ready package.
 
 ---
 
@@ -297,7 +297,7 @@ docs/
 Create `src/attune/_beta.py`:
 
 ```python
-"""Beta feature marking for Empathy Framework."""
+"""Beta feature marking for Attune AI."""
 
 import warnings
 from functools import wraps

@@ -1,5 +1,5 @@
 ---
-description: Example: Webhook & Event Integration integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Example: Webhook & Event Integration integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Example: Webhook & Event Integration
@@ -13,7 +13,7 @@ description: Example: Webhook & Event Integration integration guide. Connect ext
 
 ## Overview
 
-This example shows how to integrate the Empathy Framework with external systems using:
+This example shows how to integrate the Attune AI with external systems using:
 - **Event bus**: Internal pub/sub system for framework events
 - **Webhooks**: HTTP callbacks to external services
 - **Bidirectional integration**: Trigger empathy from external events (GitHub PRs, Slack messages)
@@ -307,7 +307,7 @@ async def create_github_issue(event: Event):
 {event.data.get('recommendation', 'Review and address this prediction')}
 
 ---
-*This issue was automatically created by Empathy Framework*
+*This issue was automatically created by Attune AI*
             """,
             labels=["empathy-prediction", "needs-review"],
             assignees=["tech-lead"]
@@ -577,7 +577,7 @@ h2. Empathy Level 4 Prediction
 {event.data.get('recommendation', 'Review and address this prediction')}
 
 ---
-_This ticket was automatically created by Empathy Framework_
+_This ticket was automatically created by Attune AI_
             """,
             priority="High" if event.data['confidence'] > 0.90 else "Medium",
             labels=["empathy-prediction", "ai-generated"],
@@ -604,7 +604,7 @@ app = Flask(__name__)
 @app.route("/webhooks/empathy", methods=["POST"])
 def handle_empathy_webhook():
     """
-    Receive webhooks from Empathy Framework
+    Receive webhooks from Attune AI
     """
 
     # Parse webhook payload
@@ -669,7 +669,7 @@ if __name__ == "__main__":
 ### All Available Events
 
 ```python
-# Complete list of Empathy Framework events
+# Complete list of Attune AI events
 
 EVENT_TYPES = {
     # Core interaction events

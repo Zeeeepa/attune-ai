@@ -1,8 +1,8 @@
 ---
-description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** January 5, 2026 (Tomorrow) **Prepared:** January 4, 2026 --- ## Pre-Launch (Do Tonight or Early Mo
+description: Launch Checklist - Attune AI v3.6.0: **Launch Date:** January 5, 2026 (Tomorrow) **Prepared:** January 4, 2026 --- ## Pre-Launch (Do Tonight or Early Mo
 ---
 
-# Launch Checklist - Empathy Framework v3.6.0
+# Launch Checklist - Attune AI v3.6.0
 
 **Launch Date:** January 5, 2026 (Tomorrow)
 **Prepared:** January 4, 2026
@@ -66,7 +66,7 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 
 **Action:**
 - [ ] Go to https://news.ycombinator.com/submit
-- [ ] Title: "Show HN: Empathy Framework v3.6.0 – Error messages that show you exactly what to implement"
+- [ ] Title: "Show HN: Attune AI v3.6.0 – Error messages that show you exactly what to implement"
 - [ ] URL: https://github.com/Smart-AI-Memory/attune-ai
 - [ ] OR use text post with description from SOCIAL_MEDIA_POSTS.md
 
@@ -188,7 +188,7 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 - [ ] Go to https://reddit.com/r/opensource
 - [ ] Create new post
 - [ ] Customize content to emphasize open source aspects
-- [ ] Mention Fair Source 0.9 license
+- [ ] Mention Apache License 2.0 license
 - [ ] Post
 
 ---
@@ -236,7 +236,7 @@ description: Launch Checklist - Empathy Framework v3.6.0: **Launch Date:** Janua
 
 **Example:**
 ```
-Day 1 of Empathy Framework v3.6.0 launch! 🎉
+Day 1 of Attune AI v3.6.0 launch! 🎉
 
 📊 By the numbers:
 • 500+ PyPI downloads

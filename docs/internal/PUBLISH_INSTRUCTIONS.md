@@ -17,9 +17,9 @@ git init
 git add .
 
 # Create initial commit
-git commit -m "Initial release: Empathy Framework preview chapter
+git commit -m "Initial release: Attune AI preview chapter
 
-- Complete Chapter: The Empathy Framework for AI-Human Collaboration
+- Complete Chapter: The Attune AI for AI-Human Collaboration
 - 3,000 lines covering 5-level maturity model
 - Real production results from AI Nurse Florence
 - Full book coming Q1 2026"
@@ -32,7 +32,7 @@ gh repo create deepstudy-ai/attune-ai-book-preview --public --source=. --remote=
 ## Option B: Manual (via web interface)
 # 1. Go to https://github.com/new
 # 2. Repository name: attune-ai-book-preview
-# 3. Description: Preview chapter from "The Empathy Framework" book (Full release Q1 2026)
+# 3. Description: Preview chapter from "The Attune AI" book (Full release Q1 2026)
 # 4. Public
 # 5. DO NOT initialize with README (we already have one)
 # 6. Create repository
@@ -71,9 +71,9 @@ git push -u origin main
 3. Add this introduction at the top:
 
 ```markdown
-# The Empathy Framework for AI-Human Collaboration
+# The Attune AI for AI-Human Collaboration
 
-*This is a preview chapter from my upcoming book "The Empathy Framework" (full release Q1 2026). Read more and follow along on [GitHub](https://github.com/deepstudy-ai/attune-ai-book-preview).*
+*This is a preview chapter from my upcoming book "The Attune AI" (full release Q1 2026). Read more and follow along on [GitHub](https://github.com/deepstudy-ai/attune-ai-book-preview).*
 
 ---
 ```
@@ -85,7 +85,7 @@ git push -u origin main
 
 ## Read More
 
-This is a preview chapter from **"The Empathy Framework"** book.
+This is a preview chapter from **"The Attune AI"** book.
 
 **Full book releasing Q1 2026** covering:
 - Implementation guides
@@ -103,7 +103,7 @@ This is a preview chapter from **"The Empathy Framework"** book.
 
 ### C. Optimize for Medium
 
-**Title**: "The Empathy Framework: From Reactive AI to Anticipatory Partners"
+**Title**: "The Attune AI: From Reactive AI to Anticipatory Partners"
 
 **Subtitle**: "How to build AI systems that achieve 200-400% productivity gains through Level 4 Anticipatory Empathy"
 
@@ -116,7 +116,7 @@ This is a preview chapter from **"The Empathy Framework"** book.
 
 **Featured Image**: Create a simple banner (use Canva, 1200x630px):
 ```
-Text: "The Empathy Framework"
+Text: "The Attune AI"
 Subtitle: "Level 4 Anticipatory AI"
 Background: Clean, professional
 ```
@@ -153,7 +153,7 @@ Background: Clean, professional
 **Front Matter** (add at very top):
 ```yaml
 ---
-title: The Empathy Framework for AI-Human Collaboration
+title: The Attune AI for AI-Human Collaboration
 published: true
 description: How to build AI systems that achieve 200-400% productivity gains through Level 4 Anticipatory Empathy (Preview chapter from upcoming book)
 tags: ai, productivity, machinelearning, programming
@@ -182,7 +182,7 @@ canonical_url: https://github.com/deepstudy-ai/attune-ai-book-preview
 
 **Tweet 1** (Pin this):
 ```
-📚 Announcing: "The Empathy Framework" book preview
+📚 Announcing: "The Attune AI" book preview
 
 Learn how to build AI systems that achieve 200-400% productivity gains (not 20-30%)
 
@@ -281,7 +281,7 @@ Questions/feedback welcome! 💬
 ### LinkedIn Post
 
 ```
-📚 Announcing: "The Empathy Framework" Book Preview
+📚 Announcing: "The Attune AI" Book Preview
 
 I'm excited to share a preview chapter from my upcoming book on AI-human collaboration.
 
@@ -319,7 +319,7 @@ Full book releasing Q1 2026.
 
 **r/MachineLearning**:
 ```markdown
-Title: [R] The Empathy Framework: A 5-Level Maturity Model for AI-Human Collaboration (Book Preview)
+Title: [R] The Attune AI: A 5-Level Maturity Model for AI-Human Collaboration (Book Preview)
 
 I've been working on formalizing "Level 4 Anticipatory Empathy" in AI systems—where AI predicts future bottlenecks and prevents problems before they occur.
 
@@ -357,7 +357,7 @@ Includes full implementation guide + code examples.
 
 **Best Time**: Tuesday or Wednesday, 9am-11am EST
 
-**Title**: "The Empathy Framework: From Reactive AI to Anticipatory Partners [book preview]"
+**Title**: "The Attune AI: From Reactive AI to Anticipatory Partners [book preview]"
 
 **URL**: `https://github.com/deepstudy-ai/attune-ai-book-preview`
 
@@ -381,7 +381,7 @@ Hi [Name],
 
 I wanted to share something I've been working on.
 
-I'm writing a book called "The Empathy Framework" about AI-human collaboration patterns. The preview chapter is now available (full book Q1 2026).
+I'm writing a book called "The Attune AI" about AI-human collaboration patterns. The preview chapter is now available (full book Q1 2026).
 
 The core idea: Most AI tools are reactive (you ask, they respond). I'm formalizing "Level 4 Anticipatory AI"—where AI predicts bottlenecks and prevents problems before they occur.
 

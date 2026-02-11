@@ -567,4 +567,4 @@ python scripts/populate_redis_direct.py
 **Version:** 1.0.0
 **Date:** January 27, 2026
 **Status:** Production Ready ✅
-**Maintained By:** Empathy Framework Team
+**Maintained By:** Attune AI Team

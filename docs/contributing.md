@@ -1,10 +1,10 @@
 ---
-description: Development guidelines for Contributing to Empathy Framework. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
+description: Development guidelines for Contributing to Attune AI. Level 3 anticipatory design principles, coding standards, and best practices for contributors.
 ---
 
-# Contributing to Empathy Framework
+# Contributing to Attune AI
 
-Thank you for your interest in contributing to the Empathy Framework!
+Thank you for your interest in contributing to the Attune AI!
 
 ## Getting Started
 

@@ -58,7 +58,7 @@ if "eval(" in content or "exec(" in content:
    - Exclude test files (tests/, benchmarks/, **/test_*.py)
    - Exclude comments and docstrings
    - Exclude example/demo code
-   - Use same exclusions as bug-predict scanner (see .claude/rules/empathy/scanner-patterns.md)
+   - Use same exclusions as bug-predict scanner (see .claude/rules/attune/scanner-patterns.md)
 
 2. **Improve detection patterns**:
    - Check for eval() with non-literal arguments (actual risk)

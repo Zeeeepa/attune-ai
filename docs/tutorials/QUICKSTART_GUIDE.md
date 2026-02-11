@@ -1,12 +1,12 @@
 ---
-description: Empathy Framework Quick Start Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+description: Attune AI Quick Start Guide: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
 ---
 
-# Empathy Framework Quick Start Guide
+# Attune AI Quick Start Guide
 
 **Get from zero to production in 5 minutes**
 
-Welcome to the Empathy Framework! This guide will get you up and running with Level 4 Anticipatory AI collaboration in minutes.
+Welcome to the Attune AI! This guide will get you up and running with Level 4 Anticipatory AI collaboration in minutes.
 
 ---
 
@@ -14,7 +14,7 @@ Welcome to the Empathy Framework! This guide will get you up and running with Le
 
 By the end of this 5-minute guide, you'll have:
 
-1. A working Empathy Framework installation
+1. A working Attune AI installation
 2. Your first AI interaction using Level 4 Anticipatory Empathy
 3. A security wizard analyzing your code
 4. Understanding of how to progress through empathy levels
@@ -35,7 +35,7 @@ pip install attune-ai anthropic
 ### Option B: Install from source
 
 ```bash
-git clone https://github.com/Deep-Study-AI/Empathy.git
+git clone https://github.com/Smart-AI-Memory/attune-ai.git
 cd Empathy
 pip install -r requirements.txt
 ```
@@ -274,7 +274,7 @@ Create a configuration file for persistent settings:
 ```bash
 # Generate default config
 cat > empathy.config.yml << EOF
-# Empathy Framework Configuration
+# Attune AI Configuration
 user_id: "your_name"
 target_level: 4
 confidence_threshold: 0.75
@@ -605,7 +605,7 @@ result = await provider.analyze_large_codebase(
 
 ## Next Steps
 
-Congratulations! You now have a working Empathy Framework installation. Here's what to explore next:
+Congratulations! You now have a working Attune AI installation. Here's what to explore next:
 
 ### 1. Read the User Guide
 
@@ -680,9 +680,9 @@ class MyWizard(BaseCoachWizard):
 
 ### 5. Join the Community
 
-- **GitHub:** https://github.com/Deep-Study-AI/Empathy
-- **Discussions:** https://github.com/Deep-Study-AI/Empathy/discussions
-- **Issues:** https://github.com/Deep-Study-AI/Empathy/issues
+- **GitHub:** https://github.com/Smart-AI-Memory/attune-ai
+- **Discussions:** https://github.com/Smart-AI-Memory/attune-ai/discussions
+- **Issues:** https://github.com/Smart-AI-Memory/attune-ai/issues
 - **Email:** patrick.roebuck@smartaimemory.com
 
 ### 6. Consider Commercial Support
@@ -749,7 +749,7 @@ llm.update_trust(user_id, outcome="success")
 
 You've completed the Quick Start Guide! You now have:
 
-- A working Empathy Framework installation
+- A working Attune AI installation
 - Your first AI interactions at multiple levels
 - Code analysis with Level 4 Anticipatory predictions
 - Understanding of configuration and patterns
@@ -762,4 +762,4 @@ Welcome to Level 4 Anticipatory AI collaboration!
 ---
 
 **Copyright 2025 Smart AI Memory, LLC**
-**Licensed under Fair Source 0.9**
+**Licensed under the Apache License, Version 2.0**

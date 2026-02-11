@@ -1,16 +1,16 @@
 ---
-description: Webhook Integration integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Webhook Integration integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Webhook Integration
 
-Connect Empathy Framework to external services via webhooks for real-time notifications and automated workflows.
+Connect Attune AI to external services via webhooks for real-time notifications and automated workflows.
 
 ---
 
 ## Overview
 
-**Webhooks** enable Empathy Framework to:
+**Webhooks** enable Attune AI to:
 
 - 🔔 Send notifications to Slack, Teams, Discord
 - 🐛 Create JIRA tickets for issues
@@ -185,7 +185,7 @@ bug_report = await empathy.interact(
         {
           "type": "paragraph",
           "content": [
-            {"type": "text", "text": "Empathy Framework detected a potential SQL injection vulnerability:\n\n"},
+            {"type": "text", "text": "Attune AI detected a potential SQL injection vulnerability:\n\n"},
             {"type": "text", "text": "File: ", "marks": [{"type": "strong"}]},
             {"type": "text", "text": "auth.py:45\n"},
             {"type": "text", "text": "Issue: ", "marks": [{"type": "strong"}]},

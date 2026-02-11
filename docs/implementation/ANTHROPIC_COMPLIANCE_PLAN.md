@@ -4,7 +4,7 @@
 **Created:** 2026-02-07
 **Branch:** feature/healthcare-cds-agents (also applies to main)
 **Status:** Ready for Implementation
-**Format:** XML-Enhanced Prompts (per `.claude/rules/empathy/xml-enhanced-prompts.md`)
+**Format:** XML-Enhanced Prompts (per `.claude/rules/attune/xml-enhanced-prompts.md`)
 
 ---
 
@@ -808,13 +808,13 @@ Task 14 (Coverage target) ── standalone
 <task id="H5" name="remove-duplicate-rules">
   <objective>
     Remove the duplicate .claude/rules/attune/ directory which is an exact
-    copy of .claude/rules/empathy/. Feature branch only (main doesn't have it).
+    copy of .claude/rules/attune/. Feature branch only (main doesn't have it).
   </objective>
 
   <context>
     <note>
       The feature branch has two identical rule directories:
-      - .claude/rules/empathy/ (original, 15 files)
+      - .claude/rules/attune/ (original, 15 files)
       - .claude/rules/attune/ (copy, 15 identical files)
       Both are loaded by Claude Code, doubling the context window usage.
       Main branch only has empathy/ — the attune/ copy was introduced
@@ -830,8 +830,8 @@ Task 14 (Coverage target) ── standalone
 
   <validation>
     <check>test ! -d .claude/rules/attune (directory removed)</check>
-    <check>test -d .claude/rules/empathy (original still exists)</check>
-    <check>ls .claude/rules/empathy/*.md | wc -l returns 15+ (all rules intact)</check>
+    <check>test -d .claude/rules/attune (original still exists)</check>
+    <check>ls .claude/rules/attune/*.md | wc -l returns 15+ (all rules intact)</check>
   </validation>
 
   <risks>
@@ -975,7 +975,7 @@ Task 14 (Coverage target) ── standalone
       keeping CLAUDE.md concise — it's loaded into every conversation's
       context window. Detailed standards already exist in .claude/rules/.
       The @./python-standards.md include is good (short file).
-      The @./rules/empathy/coding-standards-index.md include pulls in
+      The @./rules/attune/coding-standards-index.md include pulls in
       850+ lines of coding standards on every conversation — too much.
     </note>
   </context>
@@ -987,7 +987,7 @@ Task 14 (Coverage target) ── standalone
         1. Keep: Quick Start section (shortened)
         2. Keep: Command Hubs table
         3. Keep: @./python-standards.md include
-        4. REMOVE: @./rules/empathy/coding-standards-index.md include
+        4. REMOVE: @./rules/attune/coding-standards-index.md include
            (rules/ files are auto-loaded by Claude Code)
         5. Keep: Critical rules summary (5 lines max)
         6. Keep: Project Structure (shortened)
@@ -1000,7 +1000,7 @@ Task 14 (Coverage target) ── standalone
 
   <validation>
     <check>wc -l .claude/CLAUDE.md shows ~60-80 lines (down from ~150)</check>
-    <check>grep "@./rules/empathy/coding-standards-index.md" .claude/CLAUDE.md returns NO matches</check>
+    <check>grep "@./rules/attune/coding-standards-index.md" .claude/CLAUDE.md returns NO matches</check>
     <check>grep "@./python-standards.md" .claude/CLAUDE.md returns match (kept)</check>
   </validation>
 

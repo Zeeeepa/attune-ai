@@ -249,7 +249,7 @@ empathy provider set anthropic
 |----------|----------|---------|-------------|
 | `name` | Yes | `anthropic` | Provider to use |
 
-> **Note:** As of v5.0.0, Empathy Framework is Anthropic-only. Multi-provider support may return in future versions.
+> **Note:** As of v5.0.0, Attune AI is Anthropic-only. Multi-provider support may return in future versions.
 
 ---
 

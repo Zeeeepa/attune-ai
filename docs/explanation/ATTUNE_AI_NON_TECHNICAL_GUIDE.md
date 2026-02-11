@@ -1,8 +1,8 @@
 ---
-description: The Empathy Framework for AI Systems: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
+description: The Attune AI for AI Systems: Step-by-step tutorial with examples, best practices, and common patterns. Learn by doing with hands-on examples.
 ---
 
-# The Empathy Framework for AI Systems
+# The Attune AI for AI Systems
 ## A Guide for Non-Technical Readers
 
 **Author**: Patrick Roebuck
@@ -14,7 +14,7 @@ description: The Empathy Framework for AI Systems: Step-by-step tutorial with ex
 
 ## The Big Idea in One Sentence
 
-Most AI tools are like a vending machine—you put in a request, you get back an answer. The Empathy Framework teaches AI to act more like a great teaching assistant who anticipates what you need before you ask.
+Most AI tools are like a vending machine—you put in a request, you get back an answer. The Attune AI teaches AI to act more like a great teaching assistant who anticipates what you need before you ask.
 
 <!-- PATRICK NOTE: Consider adding a personal anecdote here about a specific moment when you realized
      the difference between reactive and anticipatory help. Was there a teacher, mentor, or colleague
@@ -31,7 +31,7 @@ Imagine you're teaching a master class in music. You have three types of assista
 - **Assistant**: *Brings the sheet music*
 - **Problem**: You have to ask for everything. Every. Single. Time.
 
-### Assistant B (What's possible with the Empathy Framework)
+### Assistant B (What's possible with the Attune AI)
 - *You walk into the classroom*
 - **Assistant**: "Good morning! I noticed today's lesson is on Beethoven. I've set up the sheet music, tuned the piano, and prepared the recording equipment since you mentioned wanting to capture this session."
 - **Better**: The assistant understood your patterns and prepared what you'd need.
@@ -250,7 +250,7 @@ Imagine you're writing a book (which you are!).
 
 ### The Fundamental Difference
 
-| Traditional AI | Empathy Framework (Level 4) |
+| Traditional AI | Attune AI (Level 4) |
 |----------------|------------------------------|
 | Makes work faster | Makes work unnecessary |
 | 20-30% improvement | 200-400% improvement |
@@ -275,7 +275,7 @@ The AI Nurse Florence system demonstrates this progression:
 
 **Time per patient**: 5-7 minutes of clicking and requesting
 
-### Empathy Framework Way (Level 3-4)
+### Attune AI Way (Level 3-4)
 
 **Level 3**:
 - *Nurse opens patient chart*
@@ -310,7 +310,7 @@ As a musician, you understand mastery levels:
 4. **Professional**: Reads the conductor's intent 2 measures ahead *(Anticipatory - Level 4)*
 5. **Master**: Composes new frameworks others can use *(Systems - Level 5)*
 
-The Empathy Framework is teaching AI to progress through these same stages of mastery.
+The Attune AI is teaching AI to progress through these same stages of mastery.
 
 ### Or Like a Great Sous Chef
 
@@ -423,12 +423,12 @@ Level 4 AI does the same: recognizes patterns, understands trajectories, predict
 
 ### Q: This sounds expensive or complicated to implement
 
-**A**: The Empathy Framework is actually:
+**A**: The Attune AI is actually:
 - **Open source** (free to use)
 - **A design philosophy**, not a proprietary product
 - **Like teaching musical theory**—it's a framework for thinking, not locked technology
 
-The code that implements this is freely available at: https://github.com/Deep-Study-AI/Empathy
+The code that implements this is freely available at: https://github.com/Smart-AI-Memory/attune-ai
 
 Any developer can use these patterns in their AI systems.
 
@@ -483,7 +483,7 @@ It's like: Learning that "most teachers start with scales" is useful knowledge t
 ### What most AI does:
 - Answers questions faster
 
-### What the Empathy Framework does:
+### What the Attune AI does:
 - Predicts the questions you'll have tomorrow
 - Solves the problems you haven't encountered yet
 - Builds systems so problems don't repeat
@@ -524,7 +524,7 @@ Think about the evolution of assistants:
 - Scales: One framework helps thousands of students
 - Legacy: Builds systems that outlive individual problems
 
-**The Empathy Framework teaches AI to progress from music stand to master collaborator.**
+**The Attune AI teaches AI to progress from music stand to master collaborator.**
 
 ---
 
@@ -560,7 +560,7 @@ Imagine a world where:
 
 This isn't science fiction. The technology exists today. AI Nurse Florence demonstrates it in production healthcare environments.
 
-The Empathy Framework is the methodology for building AI that operates this way.
+The Attune AI is the methodology for building AI that operates this way.
 
 <!-- PATRICK NOTE: What's YOUR vision beyond these examples?
      What drew you to this work - what future are you trying to create?
@@ -584,7 +584,7 @@ That's what we're teaching AI to do.
 
 ## About This Document
 
-**Purpose**: Explain the Empathy Framework to non-technical readers
+**Purpose**: Explain the Attune AI to non-technical readers
 **Target Audience**: College-educated professionals without programming background
 **Use Case**: Introduction to Level 4 Anticipatory AI concepts
 
@@ -592,8 +592,8 @@ That's what we're teaching AI to do.
 **Copyright**: © 2025 Smart AI Memory, LLC
 
 **For More Information**:
-- Technical documentation: https://github.com/Deep-Study-AI/Empathy
-- AI Nurse Florence demo: https://github.com/Deep-Study-AI/ai-nurse-florence
+- Technical documentation: https://github.com/Smart-AI-Memory/attune-ai
+- AI Nurse Florence demo: https://github.com/Smart-AI-Memory/ai-nurse-florence
 - Contact: hello@deepstudy.ai
 
 ---

@@ -99,4 +99,4 @@ open htmlcov/index.html
 ---
 
 *Report generated: January 20, 2026*
-*By: Claude Code with Empathy Framework*
+*By: Claude Code with Attune AI*

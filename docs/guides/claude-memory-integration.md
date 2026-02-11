@@ -1,5 +1,5 @@
 ---
-description: Claude Memory Integration Guide integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Claude Memory Integration Guide integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Claude Memory Integration Guide
@@ -147,7 +147,7 @@ In `.claude/CLAUDE.md`:
 # Project Memory
 
 ## Framework
-This is the Empathy Framework v1.8.0-alpha
+This is the Attune AI v1.8.0-alpha
 
 @./python-standards.md
 

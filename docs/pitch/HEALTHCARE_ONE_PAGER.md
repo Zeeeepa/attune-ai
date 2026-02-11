@@ -1,8 +1,8 @@
 ---
-description: Empathy Framework for Healthcare: ## HIPAA-Ready AI Development Tools --- ## The Opportunity **Claude for Healthcare launched January 2026** — Anthropic is inve
+description: Attune AI for Healthcare: ## HIPAA-Ready AI Development Tools --- ## The Opportunity **Claude for Healthcare launched January 2026** — Anthropic is inve
 ---
 
-# Empathy Framework for Healthcare
+# Attune AI for Healthcare
 ## HIPAA-Ready AI Development Tools
 
 ---
@@ -11,7 +11,7 @@ description: Empathy Framework for Healthcare: ## HIPAA-Ready AI Development Too
 
 **Claude for Healthcare launched January 2026** — Anthropic is investing heavily in compliant AI for healthcare and life sciences.
 
-**Empathy Framework is already HIPAA-ready**, providing the development infrastructure healthcare organizations need to build secure, compliant AI applications.
+**Attune AI is already HIPAA-ready**, providing the development infrastructure healthcare organizations need to build secure, compliant AI applications.
 
 ---
 
@@ -107,9 +107,9 @@ empathy workflow run doc-gen --template=hipaa-controls
 
 ## Integration with Claude for Healthcare
 
-Empathy Framework complements Claude for Healthcare by providing:
+Attune AI complements Claude for Healthcare by providing:
 
-| Claude for Healthcare | Empathy Framework |
+| Claude for Healthcare | Attune AI |
 |-----------------------|-------------------|
 | Clinical AI models | Development infrastructure |
 | PubMed/CMS integration | Code security & compliance |

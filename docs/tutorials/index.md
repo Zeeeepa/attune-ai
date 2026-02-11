@@ -4,9 +4,9 @@ description: Tutorials: Step-by-step tutorial with examples, best practices, and
 
 # Tutorials
 
-Learning-oriented guides to help you get started with Empathy Framework.
+Learning-oriented guides to help you get started with Attune AI.
 
-These tutorials take you step-by-step through building with Empathy Framework.
+These tutorials take you step-by-step through building with Attune AI.
 By the end, you'll understand the core concepts and be able to build your own
 AI collaboration systems.
 
@@ -16,7 +16,7 @@ AI collaboration systems.
 
 - :material-download: **[Installation](installation.md)**
 
-    Get Empathy Framework installed on your system
+    Get Attune AI installed on your system
 
 - :material-rocket-launch: **[Quick Start](quickstart.md)**
 

@@ -51,7 +51,7 @@ https://pypi.org/project/memdocs/2.0.17/
 
 ---
 
-### What You Need to Do in Empathy Framework Project
+### What You Need to Do in Attune AI Project
 
 #### Step 5: Re-authenticate (token may have expired)
 ```bash

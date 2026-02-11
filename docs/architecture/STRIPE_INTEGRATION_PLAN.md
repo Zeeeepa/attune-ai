@@ -1,8 +1,8 @@
 ---
-description: Stripe Integration Plan for Empathy Framework integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Stripe Integration Plan for Attune AI integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
-# Stripe Integration Plan for Empathy Framework
+# Stripe Integration Plan for Attune AI
 
 **Prepared:** December 7, 2025
 **Status:** Ready for implementation
@@ -37,9 +37,9 @@ This plan covers setting up Stripe for three revenue streams:
 
 **In Dashboard: Products → Create product**
 
-#### Product 1: The Empathy Framework Book
+#### Product 1: The Attune AI Book
 ```
-Name: The Empathy Framework Book
+Name: The Attune AI Book
 Description: Complete guide to building Level 4 Anticipatory AI systems. Includes digital book (PDF, ePub, Mobi), first-year developer license ($49.99 value), and permanent access to all editions.
 
 Price: $49.00 USD (one-time)
@@ -48,7 +48,7 @@ Tax behavior: Inclusive or Exclusive (configure based on your preference)
 
 #### Product 2: Commercial Developer License
 ```
-Name: Empathy Framework Commercial License
+Name: Attune AI Commercial License
 Description: Annual developer license for organizations with 6+ employees. Covers all environments (workstation, staging, production, CI/CD).
 
 Price: contact us for pricing (recurring)
@@ -59,7 +59,7 @@ Tax behavior: Exclusive (tax added at checkout)
 #### Product 3: Contribution/Sponsorship
 ```
 Name: Support Empathy Development
-Description: Support ongoing development of the Empathy Framework.
+Description: Support ongoing development of the Attune AI.
 
 Prices (create multiple):
 - $5/month (Coffee Supporter)
@@ -80,7 +80,7 @@ Enable:
 - [x] View billing history
 
 Branding:
-- Logo: Upload Empathy Framework logo
+- Logo: Upload Attune AI logo
 - Accent color: Match your brand (#6366f1 or similar)
 - Return URL: https://smartaimemory.com/account
 

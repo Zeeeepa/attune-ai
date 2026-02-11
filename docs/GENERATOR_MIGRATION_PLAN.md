@@ -1,9 +1,9 @@
 ---
-description: Generator Expression Migration Plan: ## Phase 2: Track 2 Optimization - Empathy Framework **Version:** 1.0 **Created:** January 10, 2026 **Owner:** Engineering
+description: Generator Expression Migration Plan: ## Phase 2: Track 2 Optimization - Attune AI **Version:** 1.0 **Created:** January 10, 2026 **Owner:** Engineering
 ---
 
 # Generator Expression Migration Plan
-## Phase 2: Track 2 Optimization - Empathy Framework
+## Phase 2: Track 2 Optimization - Attune AI
 
 **Version:** 1.0
 **Created:** January 10, 2026
@@ -14,7 +14,7 @@ description: Generator Expression Migration Plan: ## Phase 2: Track 2 Optimizati
 
 ## Executive Summary
 
-This document provides a comprehensive strategy for migrating list comprehensions to generator expressions across the Empathy Framework codebase. The goal is to reduce memory usage for large datasets while maintaining code clarity and performance.
+This document provides a comprehensive strategy for migrating list comprehensions to generator expressions across the Attune AI codebase. The goal is to reduce memory usage for large datasets while maintaining code clarity and performance.
 
 **Quick Wins Implemented (Phase 2.1):**
 - ✅ Scanner._build_summary() - Optimized 8 list comprehensions
@@ -404,7 +404,7 @@ filtered_data["models"] = [ModelConfig(**m) for m in filtered_data["models"]]
 
 ### Scanner Performance
 
-**Test Case:** Scan Empathy Framework codebase (2,112 files)
+**Test Case:** Scan Attune AI codebase (2,112 files)
 
 **Baseline (Before):**
 ```
@@ -630,8 +630,8 @@ Add to `/docs/CODING_STANDARDS.md`:
 
 ### Internal References
 - [Coding Standards - Generator Expressions](../docs/CODING_STANDARDS.md)
-- [List Copy Optimization Guidelines](./rules/empathy/list-copy-guidelines.md)
-- [Advanced Optimization Plan](./rules/empathy/advanced-optimization-plan.md)
+- [List Copy Optimization Guidelines](./rules/attune/list-copy-guidelines.md)
+- [Advanced Optimization Plan](./rules/attune/advanced-optimization-plan.md)
 
 ### Related Issues
 - Performance: Project scanner memory usage

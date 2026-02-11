@@ -1,19 +1,19 @@
 ---
-description: HIPAA Compliance Guide: Complete guide to achieving HIPAA compliance when using Empathy Framework for healthcare applications.
+description: HIPAA Compliance Guide: Complete guide to achieving HIPAA compliance when using Attune AI for healthcare applications.
 ---
 
 # HIPAA Compliance Guide
 
-Complete guide to achieving HIPAA compliance when using Empathy Framework for healthcare applications.
+Complete guide to achieving HIPAA compliance when using Attune AI for healthcare applications.
 
 ---
 
 ## Overview
 
-The **Health Insurance Portability and Accountability Act (HIPAA)** requires specific protections for Protected Health Information (PHI). This guide covers how to configure Empathy Framework for HIPAA compliance.
+The **Health Insurance Portability and Accountability Act (HIPAA)** requires specific protections for Protected Health Information (PHI). This guide covers how to configure Attune AI for HIPAA compliance.
 
 !!! warning "Legal Disclaimer"
-    This guide provides technical implementation guidance. Consult with legal counsel and HIPAA compliance experts for your specific use case. Empathy Framework provides tools to help achieve compliance but does not guarantee compliance on its own.
+    This guide provides technical implementation guidance. Consult with legal counsel and HIPAA compliance experts for your specific use case. Attune AI provides tools to help achieve compliance but does not guarantee compliance on its own.
 
 ---
 
@@ -153,7 +153,7 @@ You **must** sign a Business Associate Agreement with your LLM provider:
 
 ### BAA Checklist
 
-Before using Empathy Framework in production:
+Before using Attune AI in production:
 
 - [ ] Sign BAA with LLM provider
 - [ ] Enable PHI scrubbing (`enable_security=True`)
@@ -456,7 +456,7 @@ For a **100-bed hospital**:
 | Cost Item | Annual Cost |
 |-----------|-------------|
 | HIPAA violation (average) | -$2.5M |
-| Empathy Framework (compliance) | $10K |
+| Attune AI (compliance) | $10K |
 | **Net Savings** | **$2.49M** |
 
 **Additional benefits**:

@@ -1,14 +1,14 @@
 ---
-description: API Reference API reference: Complete API documentation for the Empathy Framework. ## Overview The Empathy Framework provides a c
+description: API Reference API reference: Complete API documentation for the Attune AI. ## Overview The Attune AI provides a c
 ---
 
 # API Reference
 
-Complete API documentation for the Empathy Framework.
+Complete API documentation for the Attune AI.
 
 ## Overview
 
-The Empathy Framework provides a comprehensive Python API for building AI systems with five levels of empathy:
+The Attune AI provides a comprehensive Python API for building AI systems with five levels of empathy:
 
 - **Level 1**: Reactive (basic Q&A)
 - **Level 2**: Guided (clarifying questions)
@@ -129,4 +129,4 @@ print(f"Predictions: {response.predictions}")
 
 ## License
 
-Fair Source License 0.9 - Free for teams up to 5, commercial license required for 6+ employees.
+Apache License 2.0 0.9 - Free for teams up to 5, commercial license required for 6+ employees.

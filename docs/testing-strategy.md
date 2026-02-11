@@ -1,12 +1,12 @@
 ---
-description: Empathy Framework Testing Strategy: ## Executive Summary This document outlines a phased approach to transform the Empathy Framework's testing infrastructure fr
+description: Attune AI Testing Strategy: ## Executive Summary This document outlines a phased approach to transform the Attune AI's testing infrastructure fr
 ---
 
-# Empathy Framework Testing Strategy
+# Attune AI Testing Strategy
 
 ## Executive Summary
 
-This document outlines a phased approach to transform the Empathy Framework's testing infrastructure from its current state (5.7/10) to a comprehensive, efficient, and maintainable test suite (target: 8.5/10).
+This document outlines a phased approach to transform the Attune AI's testing infrastructure from its current state (5.7/10) to a comprehensive, efficient, and maintainable test suite (target: 8.5/10).
 
 **Current Issues:**
 - Test generation produces 80% placeholder code (non-functional)

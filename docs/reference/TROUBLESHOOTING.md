@@ -1,13 +1,13 @@
 ---
-description: Empathy Framework - Troubleshooting Guide API reference: **Last Updated:** November 2025 **Version:** 1.0.0 This guide covers common issues, error messages,
+description: Attune AI - Troubleshooting Guide API reference: **Last Updated:** November 2025 **Version:** 1.0.0 This guide covers common issues, error messages,
 ---
 
-# Empathy Framework - Troubleshooting Guide
+# Attune AI - Troubleshooting Guide
 
 **Last Updated:** November 2025
 **Version:** 1.0.0
 
-This guide covers common issues, error messages, and solutions for the Empathy Framework.
+This guide covers common issues, error messages, and solutions for the Attune AI.
 
 ---
 
@@ -59,7 +59,7 @@ pip install --upgrade pip setuptools wheel
 
 **3. Install from source (if package not yet published):**
 ```bash
-git clone https://github.com/Deep-Study-AI/Empathy.git
+git clone https://github.com/Smart-AI-Memory/attune-ai.git
 cd Empathy
 pip install -r requirements.txt
 pip install -e .
@@ -1124,11 +1124,11 @@ python -c "from coach_wizards import SecurityWizard; print('Wizards: OK')"
 
 ### Report Bugs
 
-**GitHub Issues:** https://github.com/Deep-Study-AI/Empathy/issues
+**GitHub Issues:** https://github.com/Smart-AI-Memory/attune-ai/issues
 
 **Include:**
 1. Full error message and traceback
-2. Empathy Framework version
+2. Attune AI version
 3. Python version
 4. Operating system
 5. Minimal code to reproduce
@@ -1150,4 +1150,4 @@ For priority support with guaranteed response times:
 ---
 
 **Copyright 2025 Smart AI Memory, LLC**
-**Licensed under Fair Source 0.9**
+**Licensed under the Apache License, Version 2.0**

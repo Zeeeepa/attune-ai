@@ -612,7 +612,7 @@ When user first runs documentation generation:
 ⚠️  First-time authentication setup required
 
 ============================================================
-Empathy Framework - Authentication Setup
+Attune AI - Authentication Setup
 ============================================================
 
 This framework can use your Claude subscription OR the Anthropic API.

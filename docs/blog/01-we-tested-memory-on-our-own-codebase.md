@@ -12,7 +12,7 @@ description: We Tested Our Memory System on Our Own Codebase. Here's What Happen
 
 ## TL;DR
 
-We ran three memory-enhanced wizards against the actual Empathy Framework repository—343 tech debt items, 108 security findings, real bugs. The results validated what we've been building:
+We ran three memory-enhanced wizards against the actual Attune AI repository—343 tech debt items, 108 security findings, real bugs. The results validated what we've been building:
 
 - **Bug Correlation:** 4 historical matches found, proven fixes recommended
 - **Tech Debt:** Trajectory analysis showed +14.3% growth, predicted 472 items in 90 days
@@ -28,7 +28,7 @@ We've been building memory-enhanced development tools for months. But there's a 
 
 So we decided to test our own medicine.
 
-We pointed three memory-enhanced wizards at the Empathy Framework repository itself:
+We pointed three memory-enhanced wizards at the Attune AI repository itself:
 
 1. **MemoryEnhancedDebuggingWizard** - Bug pattern correlation
 2. **TechDebtWizard** - Technical debt trajectory tracking
@@ -113,7 +113,7 @@ We seeded 3 historical snapshots simulating debt accumulation over 90 days:
 
 ### The Test
 
-We scanned the actual Empathy Framework codebase for TODO, FIXME, HACK, and TEMPORARY markers.
+We scanned the actual Attune AI codebase for TODO, FIXME, HACK, and TEMPORARY markers.
 
 ### The Results
 

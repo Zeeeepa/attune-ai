@@ -12,7 +12,7 @@ description: Workflow Templates Reference: **Version:** 4.2.0 **Last Updated:** 
 
 ## Overview
 
-Empathy Framework v4.2.0 includes 5 comprehensive, production-ready workflow templates designed for enterprise-level software development tasks. Each template creates a specialized agent team through interactive forms and progressive tier escalation.
+Attune AI v4.2.0 includes 5 comprehensive, production-ready workflow templates designed for enterprise-level software development tasks. Each template creates a specialized agent team through interactive forms and progressive tier escalation.
 
 ---
 
@@ -500,4 +500,4 @@ A: Each agent has a tier strategy (cheap_only, progressive, capable_first) that 
 
 **Version:** 4.2.0
 **Last Updated:** 2026-01-17
-**Maintained By:** Empathy Framework Team
+**Maintained By:** Attune AI Team

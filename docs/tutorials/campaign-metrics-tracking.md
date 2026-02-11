@@ -29,7 +29,7 @@ Marketing campaigns need measurable outcomes. This tutorial shows you how to:
 ✅ Automate tracking with GitHub Actions (run daily)
 ✅ Adapt for any open-source project
 
-**Real example:** We use this for Empathy Framework's v3.9.1 campaign. [See live metrics](../marketing/CAMPAIGN_METRICS_LIVE.md)
+**Real example:** We use this for Attune AI's v3.9.1 campaign. [See live metrics](../marketing/CAMPAIGN_METRICS_LIVE.md)
 
 ---
 
@@ -96,7 +96,7 @@ We've created a production-ready script you can use.
 # Install dependencies
 pip install requests
 
-# Run for Empathy Framework (example)
+# Run for Attune AI (example)
 python scripts/track_campaign_metrics.py
 
 # Run for YOUR project
@@ -400,7 +400,7 @@ print(f"  ROI: {roi['roi_percentage']:.1f}%")
 
 ---
 
-## Real Example: Empathy Framework v3.9.1 Campaign
+## Real Example: Attune AI v3.9.1 Campaign
 
 ### Campaign Setup
 
@@ -497,7 +497,7 @@ print(f"Released: {data['releases'][version][0]['upload_time']}")
 ## Related Resources
 
 - [Campaign Metrics Template](../marketing/METRICS_TRACKING.md) - Manual tracking template
-- [Live Metrics Example](../marketing/CAMPAIGN_METRICS_LIVE.md) - Real Empathy Framework data
+- [Live Metrics Example](../marketing/CAMPAIGN_METRICS_LIVE.md) - Real Attune AI data
 - [v3.9.1 Campaign Plan](../marketing/V3_9_1_CAMPAIGN.md) - Full campaign strategy
 
 ---

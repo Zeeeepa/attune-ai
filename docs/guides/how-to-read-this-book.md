@@ -4,7 +4,7 @@ description: How to Read This Book: Step-by-step tutorial with examples, best pr
 
 # How to Read This Book
 
-*A guide to getting the most from the Empathy Framework*
+*A guide to getting the most from the Attune AI*
 
 ---
 
@@ -21,7 +21,7 @@ This book serves multiple audiences. Choose the path that matches your goals:
 **Start here**:
 1. [Preface](./preface.md) - Why the framework exists (5 min)
 2. [Foreword by Claude](./foreword.md) - A unique AI perspective (5 min)
-3. [Multi-Agent Philosophy](./multi-agent-philosophy.md) - The six foundational principles (20 min)
+3. [Multi-Agent Philosophy](../explanation/multi-agent-philosophy.md) - The six foundational principles (20 min)
 
 **Then explore**: The examples and case studies to see principles in action.
 
@@ -32,9 +32,9 @@ This book serves multiple audiences. Choose the path that matches your goals:
 **You want to**: Start implementing immediately
 
 **Start here**:
-1. [Prerequisites](./prerequisites.md) - What you need before starting (5 min)
-2. [Unified Memory System](./unified-memory-system.md) - Single API for all memory operations (15 min)
-3. [Practical Patterns](./practical-patterns.md) - Copy-paste production patterns (20 min)
+1. [Prerequisites](../how-to/prerequisites.md) - What you need before starting (5 min)
+2. [Unified Memory System](../how-to/unified-memory-system.md) - Single API for all memory operations (15 min)
+3. [Practical Patterns](../how-to/practical-patterns.md) - Copy-paste production patterns (20 min)
 4. [Teaching AI Your Standards](./teaching-ai-your-standards.md) - Level 5 empathy in practice (20 min)
 
 **Then explore**: The API reference for complete documentation.
@@ -46,9 +46,9 @@ This book serves multiple audiences. Choose the path that matches your goals:
 **You want to**: Decide if this framework fits your needs
 
 **Start here**:
-1. [Multi-Agent Philosophy](./multi-agent-philosophy.md) - Understand the design principles (20 min)
-2. [Results](../RESULTS.md) - Measured outcomes and benchmarks (10 min)
-3. [Comparison](../COMPARISON.md) - How it compares to alternatives (10 min)
+1. [Multi-Agent Philosophy](../explanation/multi-agent-philosophy.md) - Understand the design principles (20 min)
+2. Results - Measured outcomes and benchmarks (10 min)
+3. [Comparison](../explanation/COMPARISON.md) - How it compares to alternatives (10 min)
 
 **Then explore**: The practical patterns to assess implementation complexity.
 
@@ -59,9 +59,9 @@ This book serves multiple audiences. Choose the path that matches your goals:
 **You want to**: Build HIPAA-compliant or enterprise-grade systems
 
 **Start here**:
-1. [Security Architecture](./security-architecture.md) - Enterprise security controls (15 min)
-2. [HIPAA Compliance](./hipaa-compliance.md) - Healthcare-specific guidance (15 min)
-3. [Healthcare Wizards](./healthcare-wizards.md) - Clinical workflow patterns (20 min)
+1. [Security Architecture](../how-to/security-architecture.md) - Enterprise security controls (15 min)
+2. [HIPAA Compliance](../how-to/hipaa-compliance.md) - Healthcare-specific guidance (15 min)
+3. Healthcare Wizards - Clinical workflow patterns (20 min)
 
 **Then explore**: The audit logging and PII scrubbing documentation.
 
@@ -103,14 +103,14 @@ The book is organized into three parts:
 
 ### For the Philosophy Chapter
 
-The [Multi-Agent Philosophy](./multi-agent-philosophy.md) chapter is dense. Consider:
+The [Multi-Agent Philosophy](../explanation/multi-agent-philosophy.md) chapter is dense. Consider:
 - First read: Skim the six principle headings to get the overview
 - Second read: Deep dive into principles relevant to your use case
 - Reference: Return when you encounter design decisions you don't understand
 
 ### For the Code Examples
 
-Every code example in [Practical Patterns](./practical-patterns.md) is designed to be:
+Every code example in [Practical Patterns](../how-to/practical-patterns.md) is designed to be:
 - **Complete**: Copy-paste ready
 - **Runnable**: With the prerequisites installed
 - **Measured**: Includes the benefit gained
@@ -119,7 +119,7 @@ Start with Pattern 1 (Review Pipeline) - it demonstrates the core concepts.
 
 ### For the Memory System
 
-The [Unified Memory System](./unified-memory-system.md) consolidates what were previously separate APIs. If you're new:
+The [Unified Memory System](../how-to/unified-memory-system.md) consolidates what were previously separate APIs. If you're new:
 - Focus on `stash()` and `retrieve()` for short-term
 - Focus on `persist_pattern()` and `recall_pattern()` for long-term
 - Ignore the migration section unless upgrading from an older version
@@ -138,14 +138,14 @@ Claude's [Foreword](./foreword.md) offers a perspective you won't find in other 
 
 | I want to... | Go to |
 |--------------|-------|
-| Understand the philosophy | [Multi-Agent Philosophy](./multi-agent-philosophy.md) |
-| Start coding immediately | [Unified Memory System](./unified-memory-system.md) |
-| See production patterns | [Practical Patterns](./practical-patterns.md) |
+| Understand the philosophy | [Multi-Agent Philosophy](../explanation/multi-agent-philosophy.md) |
+| Start coding immediately | [Unified Memory System](../how-to/unified-memory-system.md) |
+| See production patterns | [Practical Patterns](../how-to/practical-patterns.md) |
 | See Level 5 empathy in practice | [Teaching AI Your Standards](./teaching-ai-your-standards.md) |
-| Build healthcare systems | [Healthcare Wizards](./healthcare-wizards.md) |
-| Understand security controls | [Security Architecture](./security-architecture.md) |
-| Look up a term | [Glossary](./glossary.md) |
-| Check prerequisites | [Prerequisites](./prerequisites.md) |
+| Build healthcare systems | Healthcare Wizards |
+| Understand security controls | [Security Architecture](../how-to/security-architecture.md) |
+| Look up a term | [Glossary](../reference/glossary.md) |
+| Check prerequisites | [Prerequisites](../how-to/prerequisites.md) |
 
 ---
 

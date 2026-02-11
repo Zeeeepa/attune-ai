@@ -6,7 +6,7 @@ description: Caching Configuration Guide: Step-by-step tutorial with examples, b
 
 ## Overview
 
-Empathy Framework v3.8.0+ includes intelligent response caching to reduce API costs and improve performance. This guide helps you choose the right caching configuration for your needs.
+Attune AI v3.8.0+ includes intelligent response caching to reduce API costs and improve performance. This guide helps you choose the right caching configuration for your needs.
 
 ## Quick Decision Tree
 

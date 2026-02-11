@@ -4,7 +4,7 @@ description: Workflow Patterns Guide: Step-by-step tutorial with examples, best 
 
 # Workflow Patterns Guide
 
-This guide helps you choose the right workflow pattern for your use case. The Empathy Framework supports three patterns, each optimized for different scenarios.
+This guide helps you choose the right workflow pattern for your use case. The Attune AI supports three patterns, each optimized for different scenarios.
 
 ## Quick Decision
 
@@ -216,7 +216,7 @@ When your composed workflows should be a single optimized pipeline:
 
 ---
 
-## Examples from Empathy Framework
+## Examples from Attune AI
 
 | Workflow | Pattern | Why |
 |----------|---------|-----|

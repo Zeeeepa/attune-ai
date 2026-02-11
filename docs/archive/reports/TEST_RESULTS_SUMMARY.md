@@ -73,7 +73,7 @@ All templates now conform to required JSON structure:
   "name": "...",
   "description": "...",
   "version": "1.0.0",
-  "author": "Empathy Framework Team",
+  "author": "Attune AI Team",
   "created_at": "2026-01-17T09:00:00Z",
   "estimated_cost_range": [min, max],
   "form_schema": {

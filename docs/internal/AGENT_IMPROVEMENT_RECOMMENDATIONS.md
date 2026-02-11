@@ -10,7 +10,7 @@ A comprehensive evaluation of existing software development agents with recommen
 
 ## Executive Summary
 
-The Empathy Framework contains **35+ agent/wizard implementations** across several categories. This document evaluates each major agent type and provides actionable recommendations for leveraging the new Agent Factory, ModelRouter, and workflow capabilities.
+The Attune AI contains **35+ agent/wizard implementations** across several categories. This document evaluates each major agent type and provides actionable recommendations for leveraging the new Agent Factory, ModelRouter, and workflow capabilities.
 
 **Priority Legend:**
 - 🔴 **Critical** - High impact, immediate value
@@ -846,4 +846,4 @@ class WizardToAgentBridge(BaseAgent):
 ---
 
 *Document generated: December 2025*
-*Empathy Framework v2.3.0*
+*Attune AI v2.3.0*

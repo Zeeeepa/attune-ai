@@ -1,5 +1,5 @@
 ---
-description: Adaptive Routing Integration Guide integration guide. Connect external tools and services with Empathy Framework for enhanced AI capabilities.
+description: Adaptive Routing Integration Guide integration guide. Connect external tools and services with Attune AI for enhanced AI capabilities.
 ---
 
 # Adaptive Routing Integration Guide

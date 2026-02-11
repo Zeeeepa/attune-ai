@@ -396,7 +396,7 @@ Perform thorough security analysis focusing on:
 
 ## Project Security Rules
 
-!cat .claude/rules/empathy/coding-standards-index.md
+!cat .claude/rules/attune/coding-standards-index.md
 ```
 
 **Hub skills reference subagents via Task tool:** The `/dev review` command would include instructions like "Use the Task tool to spawn a security-reviewer subagent for security-focused analysis."

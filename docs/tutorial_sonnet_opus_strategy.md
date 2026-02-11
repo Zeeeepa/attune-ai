@@ -632,20 +632,20 @@ I'd love to hear how this strategy works for you! Share your results:
 
 ## Appendix: Complete Code
 
-All code from this tutorial is available in the Empathy Framework:
+All code from this tutorial is available in the Attune AI:
 
 - [Model Registry](https://github.com/Smart-AI-Memory/attune-ai/blob/main/src/attune/models/registry.py)
 - [Fallback Policy](https://github.com/Smart-AI-Memory/attune-ai/blob/main/src/attune/models/fallback.py)
 - [Telemetry Analytics](https://github.com/Smart-AI-Memory/attune-ai/blob/main/src/attune/models/telemetry.py)
 - [Test Suite](https://github.com/Smart-AI-Memory/attune-ai/blob/main/tests/test_fallback_suite.py)
 
-**License:** Fair Source License 0.9
+**License:** Apache License 2.0 0.9
 
 ---
 
 **About the Author**
 
-This tutorial is based on real-world implementation in the Empathy Framework, an AI-powered development toolkit. The cost savings and metrics shown are actual results from production usage.
+This tutorial is based on real-world implementation in the Attune AI, an AI-powered development toolkit. The cost savings and metrics shown are actual results from production usage.
 
 **Updated:** January 9, 2026
 **Framework Version:** 3.9.2+
