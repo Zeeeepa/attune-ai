@@ -460,3 +460,99 @@ class TestPluginRegistryEdgeCases:
         result = registry.get_workflow_info("nonexistent", "wizard")
 
         assert result is None
+
+    def test_list_all_workflows_triggers_auto_discover(self, _mock_ep):
+        """Test that list_all_workflows triggers auto-discovery"""
+        registry = PluginRegistry()
+        assert registry._auto_discovered is False
+
+        registry.list_all_workflows()
+
+        assert registry._auto_discovered is True
+
+    def test_find_workflows_by_domain_triggers_auto_discover(self, _mock_ep):
+        """Test that find_workflows_by_domain triggers auto-discovery"""
+        registry = PluginRegistry()
+        assert registry._auto_discovered is False
+
+        registry.find_workflows_by_domain("software")
+
+        assert registry._auto_discovered is True
+
+    def test_get_statistics_triggers_auto_discover(self, _mock_ep):
+        """Test that get_statistics triggers auto-discovery"""
+        registry = PluginRegistry()
+        assert registry._auto_discovered is False
+
+        registry.get_statistics()
+
+        assert registry._auto_discovered is True
+
+    def test_get_plugin_skips_auto_discover_when_already_discovered(self, _mock_ep):
+        """Test get_plugin skips auto-discover when already run."""
+        registry = PluginRegistry()
+        plugin = MockPlugin(name="test", domain="software")
+        registry.register_plugin("test", plugin)
+        registry.auto_discover()
+
+        # Call get_plugin after auto_discover already ran
+        retrieved = registry.get_plugin("test")
+        assert retrieved == plugin
+
+    def test_list_plugins_skips_auto_discover_when_already_discovered(self, _mock_ep):
+        """Test list_plugins skips auto-discover when already run."""
+        registry = PluginRegistry()
+        plugin = MockPlugin(name="test", domain="software")
+        registry.register_plugin("test", plugin)
+        registry.auto_discover()
+
+        plugins = registry.list_plugins()
+        assert "test" in plugins
+
+    def test_list_all_workflows_skips_auto_discover_when_already_discovered(self, _mock_ep):
+        """Test list_all_workflows skips auto-discover when already run."""
+        registry = PluginRegistry()
+        plugin = MockPlugin(name="test", domain="software")
+        plugin.add_workflow("w1", MockWorkflow("w1"))
+        registry.register_plugin("test", plugin)
+        registry.auto_discover()
+
+        all_wf = registry.list_all_workflows()
+        assert "test" in all_wf
+        assert "w1" in all_wf["test"]
+
+    def test_find_workflows_by_domain_skips_auto_discover_when_already_discovered(self, _mock_ep):
+        """Test find_workflows_by_domain skips auto-discover when already run."""
+        registry = PluginRegistry()
+        plugin = MockPlugin(name="test", domain="software")
+        plugin.add_workflow("w1", MockWorkflow("w1"))
+        registry.register_plugin("test", plugin)
+        registry.auto_discover()
+
+        results = registry.find_workflows_by_domain("software")
+        assert len(results) == 1
+
+    def test_get_statistics_skips_auto_discover_when_already_discovered(self, _mock_ep):
+        """Test get_statistics skips auto-discover when already run."""
+        registry = PluginRegistry()
+        plugin = MockPlugin(name="test", domain="software")
+        plugin.add_workflow("w1", MockWorkflow("w1"))
+        registry.register_plugin("test", plugin)
+        registry.auto_discover()
+
+        stats = registry.get_statistics()
+        assert stats["total_plugins"] == 1
+        assert stats["total_workflows"] == 1
+
+    def test_find_workflows_by_domain_with_none_info(self, _mock_ep):
+        """Test find_workflows_by_domain when get_workflow_info returns None."""
+        registry = PluginRegistry()
+
+        plugin = MockPlugin(name="test", domain="software")
+        plugin.add_workflow("invalid", MockWorkflow("invalid"))
+        plugin.get_workflow_info = Mock(return_value=None)
+
+        registry.register_plugin("test", plugin)
+
+        results = registry.find_workflows_by_domain("software")
+        assert results == []

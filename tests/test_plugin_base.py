@@ -452,6 +452,90 @@ class TestBasePlugin:
 
         assert info is None
 
+    def test_get_workflow_skips_init_when_already_initialized(self):
+        """Test get_workflow skips initialize when plugin is already initialized."""
+
+        class TestWizard(BaseWorkflow):
+            def __init__(self):
+                super().__init__(name="Test", domain="test", empathy_level=1)
+
+            async def analyze(self, context):
+                return {}
+
+            def get_required_context(self):
+                return []
+
+        class ConcretePlugin(BasePlugin):
+            def __init__(self):
+                super().__init__()
+                self.init_count = 0
+
+            def get_metadata(self):
+                return PluginMetadata(
+                    name="Test",
+                    version="1.0.0",
+                    domain="test",
+                    description="Test",
+                    author="Test",
+                    license="MIT",
+                    requires_core_version="1.0.0",
+                )
+
+            def register_workflows(self):
+                self.init_count += 1
+                return {"test": TestWizard}
+
+        plugin = ConcretePlugin()
+        plugin.initialize()
+        assert plugin.init_count == 1
+
+        # Call get_workflow on already-initialized plugin
+        result = plugin.get_workflow("test")
+        assert result == TestWizard
+        assert plugin.init_count == 1  # initialize not called again
+
+    def test_list_workflows_skips_init_when_already_initialized(self):
+        """Test list_workflows skips initialize when plugin is already initialized."""
+
+        class TestWizard(BaseWorkflow):
+            def __init__(self):
+                super().__init__(name="Test", domain="test", empathy_level=1)
+
+            async def analyze(self, context):
+                return {}
+
+            def get_required_context(self):
+                return []
+
+        class ConcretePlugin(BasePlugin):
+            def __init__(self):
+                super().__init__()
+                self.init_count = 0
+
+            def get_metadata(self):
+                return PluginMetadata(
+                    name="Test",
+                    version="1.0.0",
+                    domain="test",
+                    description="Test",
+                    author="Test",
+                    license="MIT",
+                    requires_core_version="1.0.0",
+                )
+
+            def register_workflows(self):
+                self.init_count += 1
+                return {"w1": TestWizard, "w2": TestWizard}
+
+        plugin = ConcretePlugin()
+        plugin.initialize()
+        assert plugin.init_count == 1
+
+        # Call list_workflows on already-initialized plugin
+        workflows = plugin.list_workflows()
+        assert len(workflows) == 2
+        assert plugin.init_count == 1  # initialize not called again
+
     def test_plugin_register_patterns_default(self):
         """Test default register_patterns implementation"""
 

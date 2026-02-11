@@ -339,11 +339,13 @@ class TestWorkflowExecution:
     @pytest.mark.asyncio
     async def test_execute_with_validation_error(self, workflow):
         """Test execution with invalid input."""
-        # No diff or target provided
-        result = await workflow.execute(files_changed=[])
+        # No diff or target provided - mock _call_llm to avoid real API calls
+        with patch.object(workflow, "_call_llm", new_callable=AsyncMock) as mock_llm:
+            mock_llm.return_value = ("No issues found.", 100, 50)
+            result = await workflow.execute(files_changed=[])
 
-        # Should handle gracefully - returns WorkflowResult
-        assert result is not None
+            # Should handle gracefully - returns WorkflowResult
+            assert result is not None
 
 
 # ============================================================================

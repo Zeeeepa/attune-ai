@@ -61,7 +61,7 @@ Clean, maintainable codebase built for extensibility:
 
 - **Small, Focused Files** - No file exceeds 1,000 lines; logic extracted into mixins and utilities
 - **Cross-Platform CI** - Tested on Ubuntu, macOS, and Windows with Python 3.10-3.13
-- **7,400+ Unit Tests** - Security, unit, integration, and behavioral test coverage at 80%+ coverage
+- **8,800+ Unit Tests** - Security, unit, integration, and behavioral test coverage at 82% coverage
 
 ### Intelligent Cost Optimization
 
