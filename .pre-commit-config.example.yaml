@@ -1,4 +1,4 @@
-# Empathy Framework Pre-commit Hooks
+# Attune AI Pre-commit Hooks
 # Copy this to .pre-commit-config.yaml in your project root
 # Install: pip install pre-commit && pre-commit install
 

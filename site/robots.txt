@@ -1,4 +1,4 @@
-# Empathy Framework - robots.txt
+# Attune AI - robots.txt
 # https://smartaimemory.com
 
 User-agent: *

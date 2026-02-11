@@ -1,12 +1,12 @@
 # SmartAI Memory - JetBrains PyCharm Plugin
 
-Production-ready JetBrains plugin for integrating the SmartAI Memory Platform (Empathy Framework + MemDocs) directly into PyCharm.
+Production-ready JetBrains plugin for integrating the SmartAI Memory Platform (Attune AI + MemDocs) directly into PyCharm.
 
 ## Features
 
 - ✅ **Tool Window** - Displays analysis results with 3 tabs (Issues, Predictions, Code Structure)
 - ✅ **MemDocs Integration** - Reads `.memdocs/` analysis results from disk
-- ✅ **Context Menu Action** - "Analyze with Empathy Framework" on right-click
+- ✅ **Context Menu Action** - "Analyze with Attune AI" on right-click
 - ✅ **Settings Panel** - Configure API endpoint and preferences
 - ✅ **Color-coded UI** - Issues and predictions color-coded by severity/confidence
 - 🚧 **Gutter Icons** - Line markers for issues (coming in Week 2)
@@ -99,7 +99,7 @@ python -m memdocs.workflows.empathy_sync --file src/example.py
 ### 3. Analyze a File
 
 - Right-click any Python file
-- Select **"Analyze with Empathy Framework"**
+- Select **"Analyze with Attune AI"**
 - View results in the SmartAI Memory tool window
 
 ### 4. Configure Settings
@@ -120,7 +120,7 @@ To test the plugin with this data:
 
 1. Copy `testdata/.memdocs/` to your test project root
 2. Open the test project in the sandbox IDE
-3. Right-click any file and select "Analyze with Empathy Framework"
+3. Right-click any file and select "Analyze with Attune AI"
 
 ## Development
 
@@ -167,7 +167,7 @@ To test the plugin with this data:
 
 1. **MemDocsService** - Reads `.memdocs/` directory and parses JSON analysis files
 2. **AnalysisResultsToolWindow** - Main UI with 3 tabs (Issues, Predictions, Symbols)
-3. **EmpathyApiService** - Communicates with Empathy Framework API (for live analysis)
+3. **EmpathyApiService** - Communicates with Attune AI API (for live analysis)
 4. **SmartAIMemorySettings** - Persistent plugin settings
 
 ## Roadmap

@@ -995,7 +995,7 @@ class ProgressiveTestGenWorkflow(ProgressiveWorkflow):
 - [ ] ProgressiveTestGenWorkflow working
 - [ ] Test execution integration
 - [ ] Coverage calculation
-- [ ] End-to-end tests on Empathy Framework codebase
+- [ ] End-to-end tests on Attune AI codebase
 - [ ] Performance benchmarks
 
 ---
@@ -1544,7 +1544,7 @@ def benchmark_cheap_tier_throughput(benchmark):
 ### Phase 1: Internal Testing (Week 7)
 
 - Deploy to development environment
-- Test on Empathy Framework test suite
+- Test on Attune AI test suite
 - Gather telemetry on escalation rates
 - Iterate based on findings
 

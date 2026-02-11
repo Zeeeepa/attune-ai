@@ -1,4 +1,4 @@
-# Attune AI - Workflow Chain Configuration
+# Empathy Framework - Workflow Chain Configuration
 # Enables automatic workflow chaining based on results
 #
 # Usage:
@@ -7,7 +7,7 @@
 #   3. User confirms (or auto-approves if configured)
 #
 # Copyright 2025 Smart-AI-Memory
-# Licensed under the Apache License, Version 2.0
+# Licensed under Fair Source License 0.9
 
 # Global Settings
 global:

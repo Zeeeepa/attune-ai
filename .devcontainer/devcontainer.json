@@ -1,5 +1,5 @@
 {
-  "name": "Empathy Framework Dev",
+  "name": "Attune AI Dev",
   "dockerComposeFile": "docker-compose.yml",
   "service": "empathy-dev",
   "workspaceFolder": "/workspace",

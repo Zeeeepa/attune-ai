@@ -253,7 +253,7 @@ These should be reviewed but won't block the PR:
 
 **Scanner Accuracy:** ~82% (Industry-leading!)
 
-<sub>Powered by Empathy Framework Security Scanner | [Documentation](./docs/SECURITY_COMPLETE_SUMMARY.md)</sub>
+<sub>Powered by Attune AI Security Scanner | [Documentation](./docs/SECURITY_COMPLETE_SUMMARY.md)</sub>
 """
 
     return comment

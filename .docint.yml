@@ -1,11 +1,11 @@
-# MemDocs (docint) Configuration for Empathy Framework
+# MemDocs (docint) Configuration for Attune AI
 # AI-powered memory and documentation intelligence
 
 project:
-  name: "Empathy Framework"
+  name: "Attune AI"
   version: "1.5.0"
   description: "Five-level maturity model for AI-human collaboration with anticipatory empathy"
-  repository: "https://github.com/Deep-Study-AI/Empathy"
+  repository: "https://github.com/Smart-AI-Memory/attune-ai"
 
 # Documentation paths
 docs:
