@@ -12,7 +12,7 @@
         "repo": "Smart-AI-Memory/attune-ai",
         "path": "plugin/"
       },
-      "version": "2.6.0",
+      "version": "2.6.1",
       "license": "Apache-2.0",
       "category": "developer-tools",
       "description": "AI-powered memory, empathy, and agent orchestration framework for developers",
