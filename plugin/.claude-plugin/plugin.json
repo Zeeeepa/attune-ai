@@ -1,0 +1,13 @@
+{
+  "name": "attune-ai",
+  "version": "5.3.0",
+  "description": "AI-powered memory, empathy, and agent orchestration framework for developers",
+  "author": {
+    "name": "Smart AI Memory",
+    "email": "patrick.roebuck@smartaimemory.com"
+  },
+  "homepage": "https://smartaimemory.com",
+  "repository": "https://github.com/Smart-AI-Memory/attune-ai",
+  "license": "Apache-2.0",
+  "keywords": ["memory", "empathy", "agents", "orchestration", "tier-routing", "anthropic"]
+}

@@ -1,0 +1,333 @@
+"""Unit tests for MCP memory, empathy, and context tools.
+
+Tests the 8 new MCP tools added to EmpathyMCPServer:
+- memory_store, memory_retrieve, memory_search, memory_forget
+- empathy_get_level, empathy_set_level
+- context_get, context_set
+
+Copyright 2025 Smart AI Memory, LLC
+Licensed under Apache 2.0
+"""
+
+import asyncio
+from unittest.mock import MagicMock, patch
+
+import pytest
+
+from attune.mcp.server import EmpathyMCPServer
+
+
+@pytest.fixture
+def server():
+    """Create an EmpathyMCPServer instance for testing."""
+    with patch("attune.mcp.version_check.check_for_updates", return_value=None):
+        return EmpathyMCPServer()
+
+
+class TestToolRegistration:
+    """Verify all 18 tools are registered."""
+
+    def test_tools_list_returns_18(self, server: EmpathyMCPServer):
+        """Test that tools/list returns all 18 tools."""
+        tools = server.get_tool_list()
+        assert len(tools) == 18
+
+    def test_memory_tools_registered(self, server: EmpathyMCPServer):
+        """Test that all memory tools are in the tool list."""
+        tool_names = {t["name"] for t in server.get_tool_list()}
+        expected_memory_tools = {
+            "memory_store",
+            "memory_retrieve",
+            "memory_search",
+            "memory_forget",
+        }
+        assert expected_memory_tools.issubset(tool_names)
+
+    def test_empathy_tools_registered(self, server: EmpathyMCPServer):
+        """Test that empathy tools are in the tool list."""
+        tool_names = {t["name"] for t in server.get_tool_list()}
+        assert "empathy_get_level" in tool_names
+        assert "empathy_set_level" in tool_names
+
+    def test_context_tools_registered(self, server: EmpathyMCPServer):
+        """Test that context tools are in the tool list."""
+        tool_names = {t["name"] for t in server.get_tool_list()}
+        assert "context_get" in tool_names
+        assert "context_set" in tool_names
+
+    def test_memory_store_schema(self, server: EmpathyMCPServer):
+        """Test that memory_store has correct input schema."""
+        tool = server.tools["memory_store"]
+        schema = tool["input_schema"]
+        assert "key" in schema["properties"]
+        assert "value" in schema["properties"]
+        assert "classification" in schema["properties"]
+        assert schema["properties"]["classification"]["enum"] == ["PUBLIC", "INTERNAL", "SENSITIVE"]
+        assert schema["required"] == ["key", "value"]
+
+    def test_empathy_set_level_schema(self, server: EmpathyMCPServer):
+        """Test that empathy_set_level has correct input schema."""
+        tool = server.tools["empathy_set_level"]
+        schema = tool["input_schema"]
+        assert schema["properties"]["level"]["minimum"] == 1
+        assert schema["properties"]["level"]["maximum"] == 5
+        assert schema["required"] == ["level"]
+
+
+class TestEmpathyTools:
+    """Test empathy level get/set operations."""
+
+    def test_empathy_get_level_default(self, server: EmpathyMCPServer):
+        """Test that default empathy level is 3 (Proactive)."""
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("empathy_get_level", {})
+        )
+        assert result["success"] is True
+        assert result["level"] == 3
+        assert result["name"] == "Proactive"
+
+    def test_empathy_set_level_valid(self, server: EmpathyMCPServer):
+        """Test setting empathy level to valid values 1-5."""
+        for level in range(1, 6):
+            result = asyncio.get_event_loop().run_until_complete(
+                server.call_tool("empathy_set_level", {"level": level})
+            )
+            assert result["success"] is True
+            assert result["current_level"] == level
+
+    def test_empathy_set_level_invalid_high(self, server: EmpathyMCPServer):
+        """Test that empathy_set_level rejects level > 5."""
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("empathy_set_level", {"level": 10})
+        )
+        assert result["success"] is False
+        assert "1 and 5" in result["error"]
+
+    def test_empathy_set_level_invalid_low(self, server: EmpathyMCPServer):
+        """Test that empathy_set_level rejects level < 1."""
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("empathy_set_level", {"level": 0})
+        )
+        assert result["success"] is False
+
+    def test_empathy_set_level_invalid_string(self, server: EmpathyMCPServer):
+        """Test that empathy_set_level rejects non-integer input."""
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("empathy_set_level", {"level": "high"})
+        )
+        assert result["success"] is False
+
+    def test_empathy_set_returns_previous_level(self, server: EmpathyMCPServer):
+        """Test that empathy_set_level returns the previous level."""
+        # Default is 3
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("empathy_set_level", {"level": 5})
+        )
+        assert result["previous_level"] == 3
+        assert result["current_level"] == 5
+
+    def test_empathy_level_names(self, server: EmpathyMCPServer):
+        """Test that all empathy levels have correct names."""
+        expected_names = {
+            1: "Reactive",
+            2: "Guided",
+            3: "Proactive",
+            4: "Anticipatory",
+            5: "Systems",
+        }
+        for level, name in expected_names.items():
+            asyncio.get_event_loop().run_until_complete(
+                server.call_tool("empathy_set_level", {"level": level})
+            )
+            result = asyncio.get_event_loop().run_until_complete(
+                server.call_tool("empathy_get_level", {})
+            )
+            assert result["name"] == name
+
+
+class TestContextTools:
+    """Test context get/set operations."""
+
+    def test_context_get_set_roundtrip(self, server: EmpathyMCPServer):
+        """Test that context_set and context_get round-trip values."""
+        asyncio.get_event_loop().run_until_complete(
+            server.call_tool("context_set", {"key": "project", "value": "attune-ai"})
+        )
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("context_get", {"key": "project"})
+        )
+        assert result["success"] is True
+        assert result["value"] == "attune-ai"
+        assert result["found"] is True
+
+    def test_context_get_missing_key(self, server: EmpathyMCPServer):
+        """Test that context_get returns found=False for missing keys."""
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("context_get", {"key": "nonexistent"})
+        )
+        assert result["success"] is True
+        assert result["value"] is None
+        assert result["found"] is False
+
+    def test_context_set_overwrites(self, server: EmpathyMCPServer):
+        """Test that context_set overwrites existing values."""
+        asyncio.get_event_loop().run_until_complete(
+            server.call_tool("context_set", {"key": "mode", "value": "development"})
+        )
+        asyncio.get_event_loop().run_until_complete(
+            server.call_tool("context_set", {"key": "mode", "value": "production"})
+        )
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("context_get", {"key": "mode"})
+        )
+        assert result["value"] == "production"
+
+    def test_context_multiple_keys(self, server: EmpathyMCPServer):
+        """Test storing and retrieving multiple context keys."""
+        keys = {"a": "1", "b": "2", "c": "3"}
+        for key, value in keys.items():
+            asyncio.get_event_loop().run_until_complete(
+                server.call_tool("context_set", {"key": key, "value": value})
+            )
+        for key, expected in keys.items():
+            result = asyncio.get_event_loop().run_until_complete(
+                server.call_tool("context_get", {"key": key})
+            )
+            assert result["value"] == expected
+
+
+class TestMemoryToolsWithMock:
+    """Test memory tools with mocked UnifiedMemory."""
+
+    def test_memory_store_basic(self, server: EmpathyMCPServer):
+        """Test basic memory_store operation."""
+        mock_memory = MagicMock()
+        mock_memory.persist_pattern.return_value = {"pattern_id": "test-123"}
+        server._memory = mock_memory
+
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("memory_store", {
+                "key": "test-key",
+                "value": "test-value",
+            })
+        )
+        assert result["success"] is True
+        assert result["key"] == "test-key"
+        assert result["classification"] == "PUBLIC"
+        mock_memory.stash.assert_called_once()
+
+    def test_memory_store_with_classification(self, server: EmpathyMCPServer):
+        """Test memory_store with SENSITIVE classification."""
+        mock_memory = MagicMock()
+        mock_memory.persist_pattern.return_value = {"pattern_id": "sensitive-123"}
+        server._memory = mock_memory
+
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("memory_store", {
+                "key": "secret-key",
+                "value": "sensitive-data",
+                "classification": "SENSITIVE",
+                "pattern_type": "credential",
+            })
+        )
+        assert result["success"] is True
+        assert result["classification"] == "SENSITIVE"
+        assert "pattern_id" in result
+
+    def test_memory_retrieve_found(self, server: EmpathyMCPServer):
+        """Test memory_retrieve when key exists in short-term."""
+        mock_memory = MagicMock()
+        mock_memory.retrieve.return_value = {"value": "found-data", "classification": "PUBLIC"}
+        server._memory = mock_memory
+
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("memory_retrieve", {"key": "existing-key"})
+        )
+        assert result["success"] is True
+        assert result["data"] is not None
+        assert result["source"] == "short_term"
+
+    def test_memory_retrieve_missing_key(self, server: EmpathyMCPServer):
+        """Test memory_retrieve when key does not exist."""
+        mock_memory = MagicMock()
+        mock_memory.retrieve.return_value = None
+        mock_memory.recall_pattern.return_value = None
+        server._memory = mock_memory
+
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("memory_retrieve", {"key": "missing-key"})
+        )
+        assert result["success"] is True
+        assert result["data"] is None
+        assert "not found" in result.get("message", "").lower()
+
+    def test_memory_search_matches(self, server: EmpathyMCPServer):
+        """Test memory_search returns matching patterns."""
+        mock_memory = MagicMock()
+        mock_memory.search_patterns = MagicMock(return_value=[
+            {"key": "pattern-1", "value": "test match"},
+            {"key": "pattern-2", "value": "another match"},
+        ])
+        server._memory = mock_memory
+
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("memory_search", {"query": "match"})
+        )
+        assert result["success"] is True
+        assert result["count"] == 2
+
+    def test_memory_forget_removes(self, server: EmpathyMCPServer):
+        """Test memory_forget removes data."""
+        mock_memory = MagicMock()
+        mock_memory.delete_pattern = MagicMock()
+        server._memory = mock_memory
+
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("memory_forget", {"key": "old-key"})
+        )
+        assert result["success"] is True
+        assert "old-key" == result["key"]
+
+    def test_memory_store_import_error(self, server: EmpathyMCPServer):
+        """Test memory_store handles ImportError gracefully."""
+        server._memory = None  # Force lazy init
+
+        with patch.object(server, "_get_memory", side_effect=ImportError("No memory module")):
+            result = asyncio.get_event_loop().run_until_complete(
+                server.call_tool("memory_store", {"key": "k", "value": "v"})
+            )
+        assert result["success"] is False
+        assert "error" in result
+
+
+class TestUnknownTool:
+    """Test handling of unknown tool names."""
+
+    def test_unknown_tool_returns_error(self, server: EmpathyMCPServer):
+        """Test that calling an unknown tool returns an error."""
+        result = asyncio.get_event_loop().run_until_complete(
+            server.call_tool("nonexistent_tool", {})
+        )
+        assert result["success"] is False
+        assert "Unknown tool" in result["error"]
+
+
+class TestVersionCheck:
+    """Test version check module."""
+
+    def test_version_check_import(self):
+        """Test that version_check module can be imported."""
+        from attune.mcp.version_check import check_for_updates, get_update_status
+
+        assert callable(check_for_updates)
+        assert callable(get_update_status)
+
+    def test_compare_versions(self):
+        """Test version comparison logic."""
+        from attune.mcp.version_check import _compare_versions
+
+        assert _compare_versions("1.0.0", "2.0.0") is True
+        assert _compare_versions("2.0.0", "1.0.0") is False
+        assert _compare_versions("1.0.0", "1.0.0") is False
+        assert _compare_versions("1.0.0", "1.0.1") is True
+        assert _compare_versions("1.9.0", "1.10.0") is True

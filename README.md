@@ -79,6 +79,14 @@ Workflows guide you through discovery instead of requiring upfront configuration
 
 ---
 
+## Claude Code Plugin
+
+Install the attune-ai plugin in Claude Code for integrated workflow, memory, and orchestration access. The plugin provides the `/attune` command, 18 MCP tools, and 3 skills (memory-and-context, workflow-orchestration, refactor-plan). See the `plugin/` directory.
+
+For healthcare developers, the healthcare-cds plugin adds 9 clinical MCP tools and the `/care` command. See `attune-healthcare-fork/attune-healthcare-plugin/`.
+
+---
+
 ## Quick Start
 
 ### 1. Install

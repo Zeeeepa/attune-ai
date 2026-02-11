@@ -218,8 +218,8 @@ benchmarks/profiles/*.dat
 /aliases.sh
 /KEYBOARD_SHORTCUTS.md
 
-# Local plugin configuration
-/plugin/
+# Local plugin configuration (un-ignored for Claude Code plugin distribution)
+# /plugin/
 
 # Duplicate rules (use .claude/rules/empathy/)
 .claude/rules/attune/

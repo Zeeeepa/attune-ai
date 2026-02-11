@@ -25,6 +25,17 @@ class EmpathyMCPServer:
         self.tools = self._register_tools()
         self.resources = self._register_resources()
         self.prompts = self._register_prompts()
+        self._memory = None
+        self._empathy_level = 3  # Default: Level3Proactive
+        self._context: dict[str, str] = {}
+
+        # Check for updates (non-blocking, cached per session)
+        try:
+            from .version_check import check_for_updates
+
+            check_for_updates()
+        except Exception:  # noqa: BLE001
+            pass  # INTENTIONAL: Version check is best-effort
 
     def _register_tools(self) -> dict[str, dict[str, Any]]:
         """Register available MCP tools.
@@ -153,6 +164,121 @@ class EmpathyMCPServer:
                 "name": "dashboard_status",
                 "description": "Get agent coordination dashboard status. Shows active agents, pending approvals, recent signals.",
                 "input_schema": {"type": "object", "properties": {}},
+            },
+            "memory_store": {
+                "name": "memory_store",
+                "description": (
+                    "Store data in attune-ai memory. Use for structured knowledge, patterns, "
+                    "and cross-agent coordination. For simple preferences, recommend CLAUDE.md instead."
+                ),
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "key": {"type": "string", "description": "Unique identifier for the stored data"},
+                        "value": {"type": "string", "description": "Content to store"},
+                        "classification": {
+                            "type": "string",
+                            "enum": ["PUBLIC", "INTERNAL", "SENSITIVE"],
+                            "description": "Security classification (default: PUBLIC)",
+                            "default": "PUBLIC",
+                        },
+                        "pattern_type": {
+                            "type": "string",
+                            "description": "Category for pattern matching (optional)",
+                        },
+                    },
+                    "required": ["key", "value"],
+                },
+            },
+            "memory_retrieve": {
+                "name": "memory_retrieve",
+                "description": "Retrieve data from attune-ai memory by key or pattern ID.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "key": {"type": "string", "description": "Key or pattern_id to retrieve"},
+                    },
+                    "required": ["key"],
+                },
+            },
+            "memory_search": {
+                "name": "memory_search",
+                "description": "Search attune-ai memory for patterns matching a query.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "Search string"},
+                        "pattern_type": {
+                            "type": "string",
+                            "description": "Filter by pattern type (optional)",
+                        },
+                    },
+                    "required": ["query"],
+                },
+            },
+            "memory_forget": {
+                "name": "memory_forget",
+                "description": "Remove data from attune-ai memory.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "key": {"type": "string", "description": "Key or pattern_id to remove"},
+                        "scope": {
+                            "type": "string",
+                            "enum": ["session", "persistent", "all"],
+                            "description": "Scope of removal (default: all)",
+                            "default": "all",
+                        },
+                    },
+                    "required": ["key"],
+                },
+            },
+            "empathy_get_level": {
+                "name": "empathy_get_level",
+                "description": (
+                    "Get current empathy level (1-5). "
+                    "Level 1=Reactive, 2=Guided, 3=Proactive, 4=Anticipatory, 5=Systems."
+                ),
+                "input_schema": {"type": "object", "properties": {}},
+            },
+            "empathy_set_level": {
+                "name": "empathy_set_level",
+                "description": "Set empathy level (1-5) for this session.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "level": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 5,
+                            "description": "Empathy level (1-5)",
+                        },
+                    },
+                    "required": ["level"],
+                },
+            },
+            "context_get": {
+                "name": "context_get",
+                "description": "Get session context value.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "key": {"type": "string", "description": "Context key to retrieve"},
+                    },
+                    "required": ["key"],
+                },
+            },
+            "context_set": {
+                "name": "context_set",
+                "description": "Set session context value.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "key": {"type": "string", "description": "Context key"},
+                        "value": {"type": "string", "description": "Context value"},
+                    },
+                    "required": ["key", "value"],
+                },
             },
         }
 
@@ -359,6 +485,22 @@ class EmpathyMCPServer:
                 return await self._get_telemetry_stats(arguments)
             elif tool_name == "dashboard_status":
                 return await self._get_dashboard_status()
+            elif tool_name == "memory_store":
+                return await self._handle_memory_store(arguments)
+            elif tool_name == "memory_retrieve":
+                return await self._handle_memory_retrieve(arguments)
+            elif tool_name == "memory_search":
+                return await self._handle_memory_search(arguments)
+            elif tool_name == "memory_forget":
+                return await self._handle_memory_forget(arguments)
+            elif tool_name == "empathy_get_level":
+                return await self._handle_empathy_get_level()
+            elif tool_name == "empathy_set_level":
+                return await self._handle_empathy_set_level(arguments)
+            elif tool_name == "context_get":
+                return await self._handle_context_get(arguments)
+            elif tool_name == "context_set":
+                return await self._handle_context_set(arguments)
             else:
                 return {"success": False, "error": f"Unknown tool: {tool_name}"}
         except Exception as e:
@@ -503,6 +645,253 @@ class EmpathyMCPServer:
         """Get dashboard status."""
         # Placeholder - would integrate with actual dashboard
         return {"success": True, "active_agents": 0, "pending_approvals": 0, "recent_signals": 0}
+
+    def _get_memory(self) -> Any:
+        """Lazily initialize and return UnifiedMemory instance.
+
+        Returns:
+            UnifiedMemory instance
+
+        Raises:
+            ImportError: If attune memory module is not available
+        """
+        if self._memory is None:
+            from attune.memory import UnifiedMemory
+
+            self._memory = UnifiedMemory(
+                user_id="mcp-session",
+                environment="development",
+            )
+        return self._memory
+
+    async def _handle_memory_store(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Store data in attune-ai memory.
+
+        Args:
+            args: Must contain key and value; optional classification and pattern_type
+        """
+        try:
+            memory = self._get_memory()
+            key = args["key"]
+            value = args["value"]
+            classification = args.get("classification", "PUBLIC")
+            pattern_type = args.get("pattern_type")
+
+            # Use short-term stash for simple key-value storage
+            memory.stash(key, {
+                "value": value,
+                "classification": classification,
+                "pattern_type": pattern_type,
+            })
+
+            # If pattern_type is specified, also persist as a long-term pattern
+            result: dict[str, Any] = {"success": True, "key": key, "classification": classification}
+            if pattern_type:
+                try:
+                    persist_result = memory.persist_pattern(
+                        content=value,
+                        pattern_type=pattern_type,
+                    )
+                    result["pattern_id"] = persist_result.get("pattern_id")
+                except Exception as e:  # noqa: BLE001
+                    # INTENTIONAL: Pattern persistence is best-effort
+                    logger.warning(f"Pattern persistence failed: {e}")
+
+            return result
+
+        except ImportError as e:
+            logger.error(f"Memory module not available: {e}")
+            return {"success": False, "error": "attune-ai memory module not installed. Run: pip install attune-ai"}
+        except Exception as e:
+            logger.exception("memory_store failed")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_memory_retrieve(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Retrieve data from attune-ai memory.
+
+        Args:
+            args: Must contain key (key or pattern_id)
+        """
+        try:
+            memory = self._get_memory()
+            key = args["key"]
+
+            # Try short-term first
+            data = memory.retrieve(key)
+            if data is not None:
+                return {"success": True, "key": key, "data": data, "source": "short_term"}
+
+            # Try long-term pattern recall
+            try:
+                pattern = memory.recall_pattern(key)
+                if pattern:
+                    return {"success": True, "key": key, "data": pattern, "source": "long_term"}
+            except Exception:  # noqa: BLE001
+                # INTENTIONAL: Pattern recall may fail for non-pattern keys
+                pass
+
+            return {"success": True, "key": key, "data": None, "message": "Key not found"}
+
+        except ImportError as e:
+            logger.error(f"Memory module not available: {e}")
+            return {"success": False, "error": "attune-ai memory module not installed. Run: pip install attune-ai"}
+        except Exception as e:
+            logger.exception("memory_retrieve failed")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_memory_search(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Search attune-ai memory for patterns.
+
+        Args:
+            args: Must contain query; optional pattern_type filter
+        """
+        try:
+            memory = self._get_memory()
+            query = args["query"]
+            pattern_type = args.get("pattern_type")
+
+            # Search through available patterns
+            results = []
+            if hasattr(memory, "search_patterns"):
+                results = memory.search_patterns(query, pattern_type=pattern_type)
+            elif hasattr(memory, "list_patterns"):
+                all_patterns = memory.list_patterns()
+                results = [
+                    p for p in all_patterns
+                    if query.lower() in str(p).lower()
+                    and (pattern_type is None or p.get("pattern_type") == pattern_type)
+                ]
+
+            return {"success": True, "query": query, "results": results, "count": len(results)}
+
+        except ImportError as e:
+            logger.error(f"Memory module not available: {e}")
+            return {"success": False, "error": "attune-ai memory module not installed. Run: pip install attune-ai"}
+        except Exception as e:
+            logger.exception("memory_search failed")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_memory_forget(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Remove data from attune-ai memory.
+
+        Args:
+            args: Must contain key; optional scope (session/persistent/all)
+        """
+        try:
+            memory = self._get_memory()
+            key = args["key"]
+            scope = args.get("scope", "all")
+
+            removed_from = []
+
+            if scope in ("session", "all"):
+                try:
+                    memory.stash(key, None)  # Clear short-term
+                    removed_from.append("session")
+                except Exception as e:  # noqa: BLE001
+                    # INTENTIONAL: Short-term removal is best-effort
+                    logger.debug(f"Short-term removal failed for {key}: {e}")
+
+            if scope in ("persistent", "all"):
+                try:
+                    if hasattr(memory, "delete_pattern"):
+                        memory.delete_pattern(key)
+                        removed_from.append("persistent")
+                except Exception as e:  # noqa: BLE001
+                    # INTENTIONAL: Long-term removal is best-effort
+                    logger.debug(f"Long-term removal failed for {key}: {e}")
+
+            return {"success": True, "key": key, "removed_from": removed_from}
+
+        except ImportError as e:
+            logger.error(f"Memory module not available: {e}")
+            return {"success": False, "error": "attune-ai memory module not installed. Run: pip install attune-ai"}
+        except Exception as e:
+            logger.exception("memory_forget failed")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_empathy_get_level(self) -> dict[str, Any]:
+        """Get current empathy level."""
+        level_names = {
+            1: "Reactive",
+            2: "Guided",
+            3: "Proactive",
+            4: "Anticipatory",
+            5: "Systems",
+        }
+        return {
+            "success": True,
+            "level": self._empathy_level,
+            "name": level_names.get(self._empathy_level, "Unknown"),
+            "description": {
+                1: "Respond when asked. Minimal proactive guidance.",
+                2: "Collaborative exploration with clarifying questions.",
+                3: "Act before being asked. Suggest improvements.",
+                4: "Predict future needs. Prepare for likely next steps.",
+                5: "Build structures that help at scale.",
+            }.get(self._empathy_level, ""),
+        }
+
+    async def _handle_empathy_set_level(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Set empathy level for this session.
+
+        Args:
+            args: Must contain level (integer 1-5)
+        """
+        level = args.get("level")
+        if not isinstance(level, int) or level < 1 or level > 5:
+            return {
+                "success": False,
+                "error": "Level must be an integer between 1 and 5",
+            }
+
+        previous = self._empathy_level
+        self._empathy_level = level
+
+        level_names = {
+            1: "Reactive",
+            2: "Guided",
+            3: "Proactive",
+            4: "Anticipatory",
+            5: "Systems",
+        }
+
+        return {
+            "success": True,
+            "previous_level": previous,
+            "current_level": level,
+            "name": level_names[level],
+        }
+
+    async def _handle_context_get(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Get session context value.
+
+        Args:
+            args: Must contain key
+        """
+        key = args["key"]
+        value = self._context.get(key)
+        return {
+            "success": True,
+            "key": key,
+            "value": value,
+            "found": value is not None,
+        }
+
+    async def _handle_context_set(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Set session context value.
+
+        Args:
+            args: Must contain key and value
+        """
+        key = args["key"]
+        value = args["value"]
+        self._context[key] = value
+        return {
+            "success": True,
+            "key": key,
+            "value": value,
+        }
 
     def get_tool_list(self) -> list[dict[str, Any]]:
         """Get list of available tools.

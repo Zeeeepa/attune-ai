@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-02-10
+
+### Added
+
+- **Claude Code plugin** (`plugin/`): `/attune` command with Socratic discovery, 3 skills (memory-and-context, workflow-orchestration, refactor-plan), setup-guide agent, PyPI version check module, and plugin.json manifest
+- **8 new MCP tools**: `memory_store`, `memory_retrieve`, `memory_search`, `memory_forget`, `empathy_get_level`, `empathy_set_level`, `context_get`, `context_set` (18 total tools in base server)
+- **Healthcare CDS plugin** (`attune-healthcare-fork/attune-healthcare-plugin/`): `/care` command, clinical-decision-support skill, protocol-monitor agent, healthcare setup-guide agent, 9 healthcare MCP tools (27 total with inheritance), DISCLAIMER.md
+- **HealthcareMCPServer** (`src/attune/mcp/healthcare.py`): Extends EmpathyMCPServer with clinical tools, Redis enforcement, and HIPAA audit logging
+- **Version check module** (`src/attune/mcp/version_check.py`): Non-blocking PyPI version check with 2s timeout and session caching
+- **Plugin marketplace structure** (`marketplace/`): Distribution catalog for attune-ai and healthcare-cds plugins
+
 ## [2.5.1] - 2026-02-10
 
 ### Added
