@@ -20,13 +20,13 @@ pip install attune-ai[developer]
 
 ---
 
-## What's New in v2.6.1
+## What's New in v2.6.3
 
-- **Claude Code Plugin System** - `/attune` command with Socratic discovery, 3 skills (memory-and-context, workflow-orchestration, refactor-plan), and plugin.json manifest
-- **18 MCP Tools** - 8 new tools including `memory_store`, `memory_retrieve`, `memory_search`, `memory_forget`, `empathy_get_level`, `empathy_set_level`, `context_get`, `context_set`
-- **Healthcare CDS Plugin** - `/care` command, clinical-decision-support skill, 9 healthcare MCP tools, HIPAA audit logging
-- **Version Check Module** - Non-blocking PyPI version check with 2s timeout and session caching
-- **8,800+ Unit Tests** - 82% test coverage across the codebase
+- **MkDocs Strict Build** - Fixed 79 broken documentation links, builds with zero warnings
+- **Attune Rebrand** - Full empathy-to-attune rename across source, tests, docs, and configs
+- **4,839 Tests Passing** - 85% coverage, all quality gates green
+- **Tier Savings Monitoring** - CI alerts when cost savings drop below 80% threshold
+- **Production Smoke Tests** - Resilient to client-side rendering in Next.js
 
 ---
 

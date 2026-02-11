@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.3] - 2026-02-11
+
+### Fixed
+
+- Fixed 79 broken documentation links for MkDocs strict build compliance
+- Production smoke test now resilient to Next.js client-side rendering
+- Replaced stale dynamic test badge with static passing badge
+
+### Changed
+
+- Full empathy-to-attune rebrand across Python source, tests, docs, and configs
+- MkDocs validation config added for link and anchor checking
+- Tier pattern savings alert threshold lowered to 80%
+- Updated mkdocstrings to read from source tree instead of installed package
+
+## [2.6.2] - 2026-02-11
+
+### Fixed
+
+- README and performance fixes
+
 ## [2.6.1] - 2026-02-11
 
 ### Fixed
