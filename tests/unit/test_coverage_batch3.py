@@ -7,7 +7,7 @@ Comprehensive tests targeting maximum statement coverage for:
 All external dependencies (LLM calls, Redis, subprocess, imports) are mocked.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

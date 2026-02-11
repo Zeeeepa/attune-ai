@@ -1,4 +1,4 @@
-"""Security Validation Tests for Empathy Framework.
+"""Security Validation Tests for Attune AI.
 
 Tests security features including:
 - Path traversal prevention
@@ -11,7 +11,7 @@ These tests address critical security gaps identified in TEST_IMPROVEMENT_PLAN.m
 Phase 1: Security Validation Tests (CRITICAL severity).
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import importlib.util

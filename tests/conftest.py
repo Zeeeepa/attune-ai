@@ -1,4 +1,4 @@
-"""Pytest configuration for Empathy Framework tests."""
+"""Pytest configuration for Attune AI tests."""
 
 import json
 import os

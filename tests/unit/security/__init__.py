@@ -1,1 +1,1 @@
-"""Security tests for Empathy Framework."""
+"""Security tests for Attune AI."""

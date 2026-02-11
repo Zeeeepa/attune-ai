@@ -6,7 +6,7 @@ Targets coverage for:
 - src/attune/workflows/code_review_adapters.py (~84 stmts, 0% -> high coverage)
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio

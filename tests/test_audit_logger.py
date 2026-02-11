@@ -3,7 +3,7 @@
 Tests compliance requirements for SOC2, HIPAA, and GDPR.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

@@ -4,7 +4,7 @@ Tests the 2-agent refactoring crew that performs interactive code
 refactoring with session memory, rollback, and user preference learning.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import tempfile

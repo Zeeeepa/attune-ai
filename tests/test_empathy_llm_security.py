@@ -4,7 +4,7 @@ Tests the integration of Phase 2 security controls (PII scrubbing, secrets detec
 audit logging) into the core EmpathyLLM.interact() method.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import tempfile

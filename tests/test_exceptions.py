@@ -1,9 +1,9 @@
 """Tests for Custom Exceptions
 
-Tests all custom exception classes in the Empathy Framework.
+Tests all custom exception classes in the Attune AI.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import pytest

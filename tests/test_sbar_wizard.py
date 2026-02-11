@@ -4,7 +4,7 @@ Tests the SBAR Wizard step configuration.
 Note: Full integration tests require FastAPI dependencies.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import pytest

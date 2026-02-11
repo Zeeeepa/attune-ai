@@ -4,7 +4,7 @@ Tests CLI commands for model management, cost estimation, and telemetry using
 real data instead of mocks to achieve 70%+ coverage.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

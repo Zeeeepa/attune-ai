@@ -4,7 +4,7 @@ This test suite provides comprehensive coverage for the built-in prompt template
 registry, ensuring all templates are properly configured and accessible.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import pytest

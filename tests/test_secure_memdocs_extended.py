@@ -9,7 +9,7 @@ Coverage boost tests targeting untested code paths:
 - Error handling paths
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import base64

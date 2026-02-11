@@ -7,7 +7,7 @@ Tests cover:
 - Feedback Loop
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from agents.book_production.learning import (

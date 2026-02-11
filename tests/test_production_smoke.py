@@ -38,7 +38,7 @@ class TestProductionPages:
         """Homepage returns 200 and contains expected content."""
         response = client.get(f"{PRODUCTION_URL}/")
         assert response.status_code == 200
-        assert "Empathy Framework" in response.text
+        assert "Attune AI" in response.text
 
     def test_debug_wizard_page_loads(self, client):
         """Debug wizard page returns 200 and contains expected content."""

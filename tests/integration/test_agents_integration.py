@@ -79,7 +79,7 @@ class TestMarkdownAgentParserIntegration:
         config = parser.parse_file(agent_file)
 
         assert config.name == "simple-agent"
-        assert config.empathy_level == 4  # default is 4 in empathy framework
+        assert config.empathy_level == 4  # default is 4 in Attune AI
         assert config.tools == []  # default
         assert config.system_prompt == "Just do the task."
 

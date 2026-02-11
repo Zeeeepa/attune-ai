@@ -9,7 +9,7 @@ This test suite addresses HIGH priority reliability gaps in the Redis memory sub
 Focus: Ensuring failures don't crash the application and data isn't corrupted.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # ruff: noqa: E402

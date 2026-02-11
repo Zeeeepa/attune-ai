@@ -4,7 +4,7 @@ This test suite provides comprehensive coverage for parsing structured XML
 responses from LLMs, including graceful fallback for malformed content.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import pytest

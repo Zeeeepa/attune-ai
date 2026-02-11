@@ -9,7 +9,7 @@ Targets six modules with low or no test coverage:
 - src/attune/workflows/tier_routing_mixin.py (~32 statements, 40% covered)
 
 Copyright 2026 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

@@ -882,7 +882,7 @@ class TestEmpathyLevel:
             prompt = EmpathyLevel.get_system_prompt(level)
             assert isinstance(prompt, str)
             assert len(prompt) > 0
-            assert "Empathy Framework" in prompt
+            assert "Attune AI" in prompt
 
         # Level 1 prompt
         prompt1 = EmpathyLevel.get_system_prompt(1)

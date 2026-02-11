@@ -9,7 +9,7 @@ Tests the generate_xml_enhancement_spec.py script including:
 - Error handling
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from unittest.mock import Mock, mock_open, patch

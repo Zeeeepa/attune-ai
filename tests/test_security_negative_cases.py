@@ -1,4 +1,4 @@
-"""Security negative test cases for Empathy Framework.
+"""Security negative test cases for Attune AI.
 
 Tests cover:
 - SQL injection attack prevention

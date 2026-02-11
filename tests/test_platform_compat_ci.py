@@ -4,7 +4,7 @@ Runs the platform compatibility checker as part of pytest to catch
 cross-platform issues during regular test runs.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import subprocess

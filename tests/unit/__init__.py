@@ -1,1 +1,1 @@
-"""Unit tests for Empathy Framework."""
+"""Unit tests for Attune AI."""

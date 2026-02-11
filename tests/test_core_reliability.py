@@ -1,4 +1,4 @@
-"""Reliable Core Tests for Empathy Framework
+"""Reliable Core Tests for Attune AI
 
 These tests focus on core functionality with high reliability:
 - No external API calls

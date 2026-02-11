@@ -4,7 +4,7 @@ This test suite verifies the compliance database exception handling
 and audit trail logging implemented in Sprint 1 of the bug remediation plan.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging

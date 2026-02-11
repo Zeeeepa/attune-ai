@@ -1,4 +1,4 @@
-"""API integration tests for Empathy Framework wizard factory CLI.
+"""API integration tests for Attune AI wizard factory CLI.
 
 Tests comprehensive API functionality including:
 - Wizard CLI commands (15 tests)

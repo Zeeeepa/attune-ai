@@ -500,7 +500,7 @@ class TestMarkdownDocGenerator:
         assert "Ship" in content
 
     def test_generate_includes_empathy_attribution(self, tmp_path, sample_generated_shortcuts):
-        """Test that Empathy Framework attribution is included."""
+        """Test that Attune AI attribution is included."""
         generator = MarkdownDocGenerator()
         output_file = tmp_path / "SHORTCUTS.md"
 
@@ -508,7 +508,7 @@ class TestMarkdownDocGenerator:
 
         content = output_file.read_text(encoding="utf-8")
 
-        assert "Empathy Framework" in content
+        assert "Attune AI" in content
 
     def test_generate_handles_no_shortcuts(self, tmp_path, sample_manifest):
         """Test handling when no shortcuts are generated."""

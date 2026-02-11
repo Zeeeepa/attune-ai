@@ -555,13 +555,13 @@ class TestCreateDefaultProjectMemory:
         assert memory_file.exists()
 
     def test_empathy_framework_content(self, tmp_path):
-        """Test empathy framework default content."""
+        """Test Attune AI default content."""
         create_default_project_memory(str(tmp_path), framework="empathy")
 
         memory_file = tmp_path / ".claude" / "CLAUDE.md"
         content = memory_file.read_text()
 
-        assert "Empathy Framework" in content
+        assert "Attune AI" in content
         assert "PEP 8" in content
         assert "type hints" in content
         assert "90%+ test coverage" in content

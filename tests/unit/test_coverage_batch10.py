@@ -8,7 +8,7 @@ Targets five modules with low test coverage:
 - src/attune/workflows/dependency_check_parsers.py (~98 uncovered statements)
 
 Copyright 2026 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

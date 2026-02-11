@@ -1,1 +1,1 @@
-"""Integration tests for Empathy Framework."""
+"""Integration tests for Attune AI."""

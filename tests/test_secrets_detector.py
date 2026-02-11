@@ -7,7 +7,7 @@ Tests comprehensive secrets detection functionality including:
 - Proper redaction of secret values
 - Performance with large files
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 1.8.0-beta
 """
 

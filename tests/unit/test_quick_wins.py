@@ -1,4 +1,4 @@
-"""Quick Win Tests for Empathy Framework.
+"""Quick Win Tests for Attune AI.
 
 High-impact, low-effort tests covering edge cases in:
 - Zero vector handling in cosine_similarity
@@ -8,7 +8,7 @@ High-impact, low-effort tests covering edge cases in:
 These tests address gaps identified in TEST_IMPROVEMENT_PLAN.md Phase 2: Quick Wins.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from unittest.mock import Mock, patch

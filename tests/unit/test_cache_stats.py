@@ -7,7 +7,7 @@ Tests comprehensive cache analysis functionality including:
 - Various cache health scenarios
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from unittest.mock import MagicMock, patch

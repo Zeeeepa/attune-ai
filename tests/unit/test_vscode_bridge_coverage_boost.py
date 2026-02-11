@@ -4,7 +4,7 @@ Tests ReviewFinding, CodeReviewResult dataclasses, and bridge functions
 that enable Claude Code CLI output to appear in VS Code webview panels.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

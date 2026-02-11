@@ -1,6 +1,6 @@
 # Test Suite Documentation
 
-**Empathy Framework Test Suite**
+**Attune AI Test Suite**
 **Last Updated:** January 30, 2026
 **Test Count:** 1,382+ tests
 **Coverage:** ~82%

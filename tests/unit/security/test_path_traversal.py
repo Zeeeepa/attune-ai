@@ -7,7 +7,7 @@ Verifies that _validate_file_path() properly blocks:
 - Symlink attacks
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from pathlib import Path

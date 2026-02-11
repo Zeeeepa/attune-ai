@@ -3,7 +3,7 @@
 Covers CLI core utilities, app structure, and command registration.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from unittest.mock import patch
@@ -144,7 +144,7 @@ class TestCLICommands:
         result = runner.invoke(app, ["--version"])
 
         # Should show version and exit
-        assert "Empathy Framework" in result.stdout or result.exit_code == 0
+        assert "Attune AI" in result.stdout or result.exit_code == 0
 
     @pytest.mark.skip(reason="CLI restructured to use argparse instead of Typer")
     def test_help_available(self):

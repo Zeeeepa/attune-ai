@@ -3,7 +3,7 @@
 Tests EmpathyLevel enum and class methods to achieve 95%+ coverage.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune_llm.levels import EmpathyLevel
@@ -51,7 +51,7 @@ class TestEmpathyLevelSystemPrompts:
         """Test system prompt for Level 1"""
         prompt = EmpathyLevel.get_system_prompt(1)
         assert "LEVEL 1 (REACTIVE)" in prompt
-        assert "Empathy Framework" in prompt
+        assert "Attune AI" in prompt
 
     def test_get_system_prompt_level_2(self):
         """Test system prompt for Level 2"""
@@ -80,7 +80,7 @@ class TestEmpathyLevelSystemPrompts:
     def test_get_system_prompt_unknown_level(self):
         """Test system prompt for unknown level returns base prompt only"""
         prompt = EmpathyLevel.get_system_prompt(99)
-        assert "Empathy Framework" in prompt
+        assert "Attune AI" in prompt
         # Should not include level-specific content
         assert "LEVEL" not in prompt
 

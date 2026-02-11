@@ -3,7 +3,7 @@
 Tests the ClaudeMemoryLoader and integration with EmpathyLLM.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import tempfile
@@ -248,7 +248,7 @@ def test_create_default_project_memory(temp_project_dir):
     assert memory_file.exists()
 
     content = memory_file.read_text()
-    assert "Empathy Framework" in content
+    assert "Attune AI" in content
     assert "Code Style Preferences" in content
 
 

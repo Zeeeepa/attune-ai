@@ -4,7 +4,7 @@ Tests the FileTestRecord dataclass, TelemetryStore methods,
 and test_runner integration for per-file test tracking.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import tempfile

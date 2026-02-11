@@ -5,11 +5,11 @@ This test suite focuses on improving coverage from 72% to 95% by testing:
 2. User memory loading
 3. Error handling (IOError, UnicodeDecodeError, validation)
 4. Import processing edge cases
-5. Non-empathy framework support
+5. Non-Attune AI support
 6. Edge cases and error paths
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import os
@@ -549,7 +549,7 @@ class TestDefaultProjectMemoryCreation:
     """Test create_default_project_memory function"""
 
     def test_create_default_empathy_framework(self, temp_project_dir):
-        """Test creating default memory for empathy framework"""
+        """Test creating default memory for Attune AI"""
         create_default_project_memory(temp_project_dir, framework="empathy")
 
         memory_file = Path(temp_project_dir) / ".claude" / "CLAUDE.md"
@@ -557,14 +557,14 @@ class TestDefaultProjectMemoryCreation:
         assert memory_file.exists()
 
         content = memory_file.read_text()
-        assert "Empathy Framework" in content
+        assert "Attune AI" in content
         assert "Code Style Preferences" in content
         assert "Architecture Patterns" in content
         assert "Level 4 Anticipatory predictions" in content
         assert "MemDocs" in content
 
     def test_create_default_non_empathy_framework(self, temp_project_dir):
-        """Test creating default memory for non-empathy framework"""
+        """Test creating default memory for non-Attune AI"""
         create_default_project_memory(temp_project_dir, framework="langchain")
 
         memory_file = Path(temp_project_dir) / ".claude" / "CLAUDE.md"
@@ -576,7 +576,7 @@ class TestDefaultProjectMemoryCreation:
         assert "Code Preferences" in content
         assert "@imports" in content
         # Should NOT contain empathy-specific content
-        assert "Empathy Framework" not in content
+        assert "Attune AI" not in content
         assert "MemDocs" not in content
 
     def test_create_default_generic_framework(self, temp_project_dir):

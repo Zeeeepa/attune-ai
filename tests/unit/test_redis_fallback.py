@@ -10,7 +10,7 @@ These tests address the critical gap identified in TEST_IMPROVEMENT_PLAN.md
 Phase 1: Redis Failure & Recovery Tests (CRITICAL severity).
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from unittest.mock import Mock, patch
