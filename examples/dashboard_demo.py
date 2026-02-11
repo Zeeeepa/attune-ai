@@ -7,6 +7,7 @@ Copyright 2025 Smart-AI-Memory
 Licensed under Fair Source License 0.9
 """
 
+import itertools
 import random
 import threading
 import time
@@ -192,34 +193,25 @@ def generate_test_data():
     stages = ["analysis", "generation", "validation"]
     tiers = [ModelTier.CHEAP, ModelTier.CAPABLE, ModelTier.PREMIUM]
 
-    for workflow in workflows:
-        for stage in stages:
-            for tier in tiers:
-                # Generate 10-15 samples per combination
-                num_samples = random.randint(10, 15)
+    tier_quality = {ModelTier.CHEAP: 0.65, ModelTier.CAPABLE: 0.80, ModelTier.PREMIUM: 0.90}
 
-                for i in range(num_samples):
-                    # Vary quality by tier
-                    if tier == ModelTier.CHEAP:
-                        base_quality = 0.65
-                    elif tier == ModelTier.CAPABLE:
-                        base_quality = 0.80
-                    else:  # PREMIUM
-                        base_quality = 0.90
+    for workflow, stage, tier in itertools.product(workflows, stages, tiers):
+        num_samples = random.randint(10, 15)
+        base_quality = tier_quality[tier]
 
-                    # Add some randomness
-                    quality = base_quality + (random.random() * 0.15 - 0.075)
-                    quality = max(0.0, min(1.0, quality))  # Clamp to 0-1
+        for i in range(num_samples):
+            quality = base_quality + (random.random() * 0.15 - 0.075)
+            quality = max(0.0, min(1.0, quality))  # Clamp to 0-1
 
-                    feedback.record_feedback(
-                        workflow_name=workflow,
-                        stage_name=stage,
-                        tier=tier,
-                        quality_score=quality,
-                        metadata={"demo": True, "tokens": random.randint(50, 300)},
-                    )
+            feedback.record_feedback(
+                workflow_name=workflow,
+                stage_name=stage,
+                tier=tier,
+                quality_score=quality,
+                metadata={"demo": True, "tokens": random.randint(50, 300)},
+            )
 
-                print(f"  ✓ {workflow}/{stage}/{tier.value}: {num_samples} samples")
+        print(f"  ✓ {workflow}/{stage}/{tier.value}: {num_samples} samples")
 
     print()
     print("=" * 70)

@@ -20,14 +20,13 @@ pip install attune-ai[developer]
 
 ---
 
-## What's New in v2.5.0
+## What's New in v2.6.1
 
-- **Agent State Persistence** - `AgentStateStore` records agent lifecycle events and saves checkpoints for recovery. Integrated into all workflows via `state_store=` parameter
-- **Anthropic Agent SDK Integration** - `SDKAgent` wraps `claude_agent_sdk.query()` with progressive tier escalation (CHEAP -> CAPABLE -> PREMIUM), Redis heartbeats, and cost tracking. Graceful fallback when SDK is unavailable
-- **Dynamic Team Composition** - `DynamicTeamBuilder` creates agent teams from specs, plans, or saved configs. `DynamicTeam` supports parallel, sequential, two-phase, and delegation strategies with quality gates
-- **Workflow Composition** - `WorkflowComposer` wraps any `BaseWorkflow` as a `DynamicTeam` participant via `WorkflowAgentAdapter`, enabling orchestrated execution of entire workflows in parallel or sequence
-- **Multi-Agent Workflow Stages** - Any workflow stage can now delegate to a `DynamicTeam` via `_run_multi_agent_stage()`, configurable per-stage with `multi_agent_configs=`
-- **13 Agent Templates** - Pre-built templates for security auditor, code reviewer, test coverage analyzer, performance profiler, documentation writer, and more
+- **Claude Code Plugin System** - `/attune` command with Socratic discovery, 3 skills (memory-and-context, workflow-orchestration, refactor-plan), and plugin.json manifest
+- **18 MCP Tools** - 8 new tools including `memory_store`, `memory_retrieve`, `memory_search`, `memory_forget`, `empathy_get_level`, `empathy_set_level`, `context_get`, `context_set`
+- **Healthcare CDS Plugin** - `/care` command, clinical-decision-support skill, 9 healthcare MCP tools, HIPAA audit logging
+- **Version Check Module** - Non-blocking PyPI version check with 2s timeout and session caching
+- **8,800+ Unit Tests** - 82% test coverage across the codebase
 
 ---
 

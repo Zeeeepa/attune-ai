@@ -5,6 +5,7 @@ This script bypasses the telemetry API and writes directly to Redis,
 useful for testing the dashboard without initializing the full framework.
 """
 
+import itertools
 import json
 import os
 import secrets
@@ -165,44 +166,38 @@ def generate_test_data():
     stages = ["analysis", "generation", "validation"]
     tiers = ["cheap", "capable", "premium"]
 
+    tier_quality = {"cheap": 0.65, "capable": 0.80, "premium": 0.90}
     feedback_count = 0
-    for workflow in workflows:
-        for stage in stages:
-            for tier in tiers:
-                # Generate 10-15 samples per combination
-                num_samples = secrets.randbelow(6) + 10
+    pipe = r.pipeline()
 
-                for j in range(num_samples):
-                    # Vary quality by tier
-                    if tier == "cheap":
-                        base_quality = 0.65
-                    elif tier == "capable":
-                        base_quality = 0.80
-                    else:  # premium
-                        base_quality = 0.90
+    for workflow, stage, tier in itertools.product(workflows, stages, tiers):
+        num_samples = secrets.randbelow(6) + 10
+        base_quality = tier_quality[tier]
 
-                    # Add some randomness
-                    quality = base_quality + (
-                        int.from_bytes(os.urandom(4), "big") / (2**32) * 0.15 - 0.075
-                    )
-                    quality = max(0.0, min(1.0, quality))  # Clamp to 0-1
+        for j in range(num_samples):
+            quality = base_quality + (
+                int.from_bytes(os.urandom(4), "big") / (2**32) * 0.15 - 0.075
+            )
+            quality = max(0.0, min(1.0, quality))  # Clamp to 0-1
 
-                    feedback_id = f"fb-{int(time.time() * 1000)}-{feedback_count}"
-                    feedback_data = {
-                        "workflow_name": workflow,
-                        "stage_name": stage,
-                        "tier": tier,
-                        "quality_score": quality,
-                        "timestamp": datetime.utcnow().isoformat(),
-                        "metadata": {"demo": True, "tokens": secrets.randbelow(251) + 50},
-                    }
+            feedback_id = f"fb-{int(time.time() * 1000)}-{feedback_count}"
+            feedback_data = {
+                "workflow_name": workflow,
+                "stage_name": stage,
+                "tier": tier,
+                "quality_score": quality,
+                "timestamp": datetime.utcnow().isoformat(),
+                "metadata": {"demo": True, "tokens": secrets.randbelow(251) + 50},
+            }
 
-                    key = f"feedback:{workflow}:{stage}:{tier}:{feedback_id}".encode()
-                    value = json.dumps(feedback_data).encode()
-                    r.setex(key, 604800, value)  # 7 day TTL
-                    feedback_count += 1
+            key = f"feedback:{workflow}:{stage}:{tier}:{feedback_id}".encode()
+            value = json.dumps(feedback_data).encode()
+            pipe.setex(key, 604800, value)  # 7 day TTL
+            feedback_count += 1
 
-                print(f"  ✓ {workflow}/{stage}/{tier}: {num_samples} samples")
+        print(f"  ✓ {workflow}/{stage}/{tier}: {num_samples} samples")
+
+    pipe.execute()  # Single round-trip to Redis
 
     print()
     print("=" * 60)
