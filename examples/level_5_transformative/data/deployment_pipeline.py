@@ -5,8 +5,8 @@ with SIMILAR GAPS to healthcare handoffs.
 
 Level 5 Empathy will detect the pattern match!
 
-Copyright 2025 Deep Study AI, LLC
-Licensed under Fair Source 0.9 (converts to Apache 2.0 on January 1, 2029)
+Copyright 2025 Smart AI Memory
+Licensed under the Apache License, Version 2.0 (converts to Apache 2.0 on January 1, 2029)
 """
 
 

@@ -1,7 +1,7 @@
 # Project Scanner Performance Profile
 
 **Generated:** 2026-01-26
-**Codebase:** Empathy Framework
+**Codebase:** Attune AI
 **Profiling Target:** Project Scanner on this codebase (3,469 files)
 
 ---

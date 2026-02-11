@@ -4,7 +4,7 @@ Default LLMExecutor implementation that wraps EmpathyLLM for use
 in workflows with automatic model routing and cost tracking.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging

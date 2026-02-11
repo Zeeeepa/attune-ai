@@ -4,7 +4,7 @@ Wraps attune_llm.code_health.HealthCheckRunner and converts
 its output to the unified ToolResult format.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import time

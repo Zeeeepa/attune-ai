@@ -1,7 +1,7 @@
 """Provider configuration commands.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from pathlib import Path
@@ -73,7 +73,7 @@ def cmd_provider_set(args):
     # Validate provider is Anthropic
     if provider.lower() != "anthropic":
         print(f"❌ Error: Provider '{provider}' is not supported.")
-        print("   Empathy Framework is now Claude-native (v5.0.0).")
+        print("   Attune AI is now Claude-native (v5.0.0).")
         print("   Only 'anthropic' provider is available.")
         print("   See docs/CLAUDE_NATIVE.md for migration guide.")
         sys.exit(1)

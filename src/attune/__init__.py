@@ -1,4 +1,4 @@
-"""Empathy Framework - AI-Human Collaboration Library
+"""Attune AI - AI-Human Collaboration Library
 
 A five-level maturity model for building AI systems that progress from
 reactive responses to anticipatory problem prevention.
@@ -52,7 +52,7 @@ KEY EXPORTS:
     - Level1-5 classes: Empathy level implementations
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 __version__ = "5.3.0"

@@ -6,7 +6,7 @@ Structural patterns define the overall flow and organization of a wizard:
 - Session-Based: State management with session storage
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from typing import Literal

@@ -4,7 +4,7 @@ Comprehensive PII detection and scrubbing based on GDPR, HIPAA, and SOC2 require
 Supports custom patterns and provides detailed audit information.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import re

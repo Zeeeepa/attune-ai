@@ -1,4 +1,4 @@
-"""Shared Task-Type Schema for Empathy Framework
+"""Shared Task-Type Schema for Attune AI
 
 Provides a unified vocabulary for task types across:
 - attune_llm.routing.ModelRouter
@@ -10,7 +10,7 @@ This module defines:
 - Task normalization and lookup functions
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass

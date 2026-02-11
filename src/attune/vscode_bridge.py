@@ -4,7 +4,7 @@ Provides functions to write data that the VS Code extension can pick up.
 Enables Claude Code CLI output to appear in VS Code webview panels.
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

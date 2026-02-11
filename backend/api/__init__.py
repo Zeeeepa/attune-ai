@@ -1,4 +1,4 @@
-"""API package for the Empathy Framework backend."""
+"""API package for the Attune AI backend."""
 
 from . import analysis, auth, subscriptions, users, wizards
 

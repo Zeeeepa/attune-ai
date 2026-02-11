@@ -1,13 +1,13 @@
-"""Empathy Framework - Quickstart Example
+"""Attune AI - Quickstart Example
 
-A simple demonstration of the Empathy Framework showing:
+A simple demonstration of the Attune AI showing:
 - Initializing EmpathyOS
 - Progressing through empathy levels 1-5
 - Using systems thinking components
 - Pattern detection and sharing
 
-Copyright 2025 Deep Study AI, LLC
-Licensed under Fair Source 0.9
+Copyright 2025 Smart AI Memory
+Licensed under the Apache License, Version 2.0
 """
 
 from attune import (
@@ -29,7 +29,7 @@ def main():
     """Run quickstart demonstration"""
     try:
         print("=" * 60)
-        print("Empathy Framework - Quickstart Example")
+        print("Attune AI - Quickstart Example")
         print("=" * 60)
 
         # ========================================
@@ -217,7 +217,7 @@ def main():
         print("  - Build custom agents using the framework")
         print("  - Integrate with your AI applications")
         print("  - Contribute patterns to the library")
-        print("\nDocumentation: https://github.com/Deep-Study-AI/Empathy")
+        print("\nDocumentation: https://github.com/Smart-AI-Memory/attune-ai")
         print("=" * 60)
 
     except ValidationError as e:
@@ -225,7 +225,7 @@ def main():
         print("Please check your input parameters and try again.")
         return 1
     except EmpathyFrameworkError as e:
-        print(f"\n❌ Empathy Framework Error: {type(e).__name__}: {e}")
+        print(f"\n❌ Attune AI Error: {type(e).__name__}: {e}")
         print("Check the error message above for details.")
         return 1
     except KeyError as e:

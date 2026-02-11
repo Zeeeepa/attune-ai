@@ -6,7 +6,7 @@ Intelligent routing between Claude.ai/Code subscriptions and Anthropic API based
 - User preferences (first-time setup with pros/cons)
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations
@@ -301,7 +301,7 @@ def configure_auth_interactive(module_lines: int = 1000) -> AuthStrategy:
         Configured AuthStrategy
     """
     print("\n" + "=" * 60)
-    print("Empathy Framework - Authentication Setup")
+    print("Attune AI - Authentication Setup")
     print("=" * 60)
 
     print("\nThis framework can use your Claude subscription OR the Anthropic API.")

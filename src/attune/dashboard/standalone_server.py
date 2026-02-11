@@ -6,7 +6,7 @@ Works with data populated by scripts/populate_redis_direct.py.
 Zero external dependencies (uses Python stdlib only).
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

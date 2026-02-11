@@ -1,4 +1,4 @@
-"""Unified Model Registry for Empathy Framework
+"""Unified Model Registry for Attune AI
 
 Single source of truth for model configurations across:
 - attune_llm.routing.ModelRouter
@@ -6,7 +6,7 @@ Single source of truth for model configurations across:
 - src/attune.cost_tracker
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .adaptive_routing import AdaptiveModelRouter, ModelPerformance

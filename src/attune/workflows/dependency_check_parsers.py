@@ -11,7 +11,7 @@ Supports:
 - package-lock.json (pinned Node.js versions, v6 + v7 formats)
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

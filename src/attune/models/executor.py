@@ -1,4 +1,4 @@
-"""LLM Executor Protocol for Empathy Framework
+"""LLM Executor Protocol for Attune AI
 
 Provides a unified interface for LLM execution that can be used by:
 - src/attune/workflows.BaseWorkflow
@@ -11,7 +11,7 @@ This protocol enables:
 - Easy swapping of LLM implementations
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass, field

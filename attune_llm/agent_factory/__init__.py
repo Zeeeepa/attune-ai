@@ -1,4 +1,4 @@
-"""Empathy Framework - Universal Agent Factory
+"""Attune AI - Universal Agent Factory
 
 Create agents using your preferred framework while retaining Empathy's
 cost optimization, pattern learning, and memory features.
@@ -27,7 +27,7 @@ Usage:
     debug_wizard = factory.create_wizard("debugging")
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune_llm.agent_factory.base import (

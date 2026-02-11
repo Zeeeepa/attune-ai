@@ -4,7 +4,7 @@ Central registry of available workflows with their descriptions,
 capabilities, and auto-chain rules.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from collections.abc import Callable

@@ -1,10 +1,10 @@
 """First-Time Initialization Hook
 
-Checks if Empathy Framework is initialized in the current project.
+Checks if Attune AI is initialized in the current project.
 If not, prompts user with initialization dialog.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json
@@ -16,7 +16,7 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 # Default configuration template
-DEFAULT_CONFIG = """# Empathy Framework Configuration
+DEFAULT_CONFIG = """# Attune AI Configuration
 # Generated: {timestamp}
 
 agent:
@@ -67,7 +67,7 @@ def get_project_root(**context: Any) -> Path:
 
 
 def is_initialized(project_root: Path) -> bool:
-    """Check if Empathy Framework is initialized in the project.
+    """Check if Attune AI is initialized in the project.
 
     Args:
         project_root: Project root directory
@@ -98,7 +98,7 @@ def mark_never_ask(project_root: Path) -> None:
 
 
 def initialize_project(project_root: Path) -> dict[str, Any]:
-    """Initialize Empathy Framework in the project.
+    """Initialize Attune AI in the project.
 
     Args:
         project_root: Project root directory
@@ -195,7 +195,7 @@ def check_init(**context: Any) -> dict[str, Any]:
     result["prompt_user"] = True
     result["prompt"] = {
         "header": "Setup",
-        "question": "Welcome! Set up Empathy Framework for this project?",
+        "question": "Welcome! Set up Attune AI for this project?",
         "options": [
             {
                 "label": "Yes, initialize now",
@@ -234,7 +234,7 @@ def handle_init_response(action: str, **context: Any) -> dict[str, Any]:
     if action == "init":
         result = initialize_project(project_root)
         if result["success"]:
-            result["message"] = "Empathy Framework initialized successfully!"
+            result["message"] = "Attune AI initialized successfully!"
         else:
             result["message"] = "Initialization completed with errors."
         return result

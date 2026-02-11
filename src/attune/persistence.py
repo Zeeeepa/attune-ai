@@ -1,4 +1,4 @@
-"""Persistence Layer for Empathy Framework
+"""Persistence Layer for Attune AI
 
 Provides:
 - Pattern library save/load (JSON, SQLite)
@@ -6,7 +6,7 @@ Provides:
 - Metrics and telemetry tracking
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json
@@ -385,7 +385,7 @@ class StateManager:
 
 
 class MetricsCollector:
-    """Collect and persist empathy framework metrics
+    """Collect and persist Attune AI metrics
 
     Tracks:
     - Empathy level usage

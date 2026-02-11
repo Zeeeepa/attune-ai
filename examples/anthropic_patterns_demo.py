@@ -2,7 +2,7 @@
 Anthropic Agent Patterns - Practical Examples
 
 Demonstrates how to implement Anthropic's three core agent patterns
-in the Empathy Framework:
+in the Attune AI:
 1. Workflows (Sequential)
 2. Orchestrator (Dynamic Routing)
 3. Evaluator (Self-Correction)
@@ -447,7 +447,7 @@ async def demo_pattern_3():
 async def main():
     """Run all pattern demonstrations."""
     print("\n🚀 ANTHROPIC AGENT PATTERNS DEMO")
-    print("Demonstrating the three core patterns in Empathy Framework\n")
+    print("Demonstrating the three core patterns in Attune AI\n")
 
     try:
         # Pattern 1: Sequential Workflow

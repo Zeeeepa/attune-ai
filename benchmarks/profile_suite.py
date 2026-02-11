@@ -1,4 +1,4 @@
-"""Profiling test suite for identifying bottlenecks in Empathy Framework.
+"""Profiling test suite for identifying bottlenecks in Attune AI.
 
 Runs performance profiling on key operations to identify optimization opportunities.
 
@@ -6,7 +6,7 @@ Usage:
     python benchmarks/profile_suite.py
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import sys
@@ -358,7 +358,7 @@ if __name__ == "__main__":
     os.makedirs("benchmarks/profiles", exist_ok=True)
 
     print("\n" + "=" * 60)
-    print("PROFILING SUITE - Empathy Framework")
+    print("PROFILING SUITE - Attune AI")
     print("Phase 2 Performance Optimization")
     print("=" * 60)
 

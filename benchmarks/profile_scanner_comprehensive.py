@@ -1,6 +1,6 @@
 """Comprehensive profiling of ProjectScanner - CPU and Memory analysis.
 
-This script profiles the project scanner running on the Empathy Framework codebase,
+This script profiles the project scanner running on the Attune AI codebase,
 measuring both execution time and memory usage to identify optimization opportunities.
 
 Usage:
@@ -10,7 +10,7 @@ Requirements:
     pip install memory_profiler
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import sys
@@ -277,7 +277,7 @@ def main():
     """Run comprehensive profiling suite."""
     print("\n" + "=" * 70)
     print("COMPREHENSIVE SCANNER PROFILING")
-    print("Empathy Framework - Project Scanner Performance Analysis")
+    print("Attune AI - Project Scanner Performance Analysis")
     print("=" * 70)
 
     try:

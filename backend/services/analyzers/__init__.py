@@ -1,4 +1,4 @@
-"""Analyzers package for the Empathy Framework."""
+"""Analyzers package for the Attune AI."""
 
 from .base_analyzer import BaseAnalyzer, Issue, IssueSeverity
 

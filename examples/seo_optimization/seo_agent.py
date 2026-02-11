@@ -2,7 +2,7 @@
 
 A multi-agent system that audits, suggests, and implements SEO improvements for MkDocs sites.
 
-This is a reference example showing how to use the Empathy Framework to build
+This is a reference example showing how to use the Attune AI to build
 a production-ready agent team with interactive approval workflows.
 
 Usage:

@@ -7,7 +7,7 @@ This is the "memory" component of the meta-orchestration system - it learns whic
 agent teams work best for specific task types and progressively improves.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

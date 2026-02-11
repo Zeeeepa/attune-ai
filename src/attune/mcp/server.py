@@ -1,4 +1,4 @@
-"""Empathy Framework MCP Server Implementation.
+"""Attune AI MCP Server Implementation.
 
 Exposes Empathy workflows as MCP tools for Claude Code integration.
 """
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class EmpathyMCPServer:
-    """MCP server for Empathy Framework workflows.
+    """MCP server for Attune AI workflows.
 
     Exposes workflows, agent dashboard, and telemetry as MCP tools
     that can be invoked from Claude Code.

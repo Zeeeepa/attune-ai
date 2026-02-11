@@ -244,7 +244,7 @@ async def demo_registry_and_factory():
 async def main():
     """Run all pattern demonstrations."""
     print("\n🚀 ANTHROPIC AGENT PATTERNS - SIMPLE DEMO")
-    print("Demonstrating 3 new patterns in Empathy Framework v5.1.4+\n")
+    print("Demonstrating 3 new patterns in Attune AI v5.1.4+\n")
 
     try:
         # Pattern 8: Tool-Enhanced

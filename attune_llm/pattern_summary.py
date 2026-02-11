@@ -13,9 +13,9 @@ Usage:
 CLI:
     python -m attune_llm.pattern_summary --patterns-dir ./patterns --output patterns.md
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 2.1.2
-License: Fair Source 0.9
+License: Apache License 2.0
 """
 
 import json

@@ -1,4 +1,4 @@
-# Empathy Framework Wizard Dashboard - Wireframes & Design
+# Attune AI Wizard Dashboard - Wireframes & Design
 
 **Interactive wizard discovery and filtering system**
 
@@ -672,5 +672,5 @@ KEY METRICS:
 ---
 
 **Last Updated:** 2025-11-25
-**Designed By:** Empathy Framework Team
+**Designed By:** Attune AI Team
 **Status:** Ready for Development

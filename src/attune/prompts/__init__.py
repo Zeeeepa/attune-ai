@@ -1,4 +1,4 @@
-"""XML-Enhanced Prompt System for Empathy Framework
+"""XML-Enhanced Prompt System for Attune AI
 
 Provides structured XML-based prompts for consistent LLM interactions
 and response parsing across workflows.
@@ -31,7 +31,7 @@ Usage:
             print(f"{finding.severity}: {finding.title}")
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .config import XmlPromptConfig

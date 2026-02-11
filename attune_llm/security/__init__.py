@@ -1,4 +1,4 @@
-"""Security Module for Empathy Framework
+"""Security Module for Attune AI
 
 DEPRECATED: This module re-exports from attune.memory.security
 Use `from attune.memory.security import ...` instead.
@@ -9,9 +9,9 @@ Provides enterprise-grade security controls including:
 - Audit logging (tamper-evident, SOC2/HIPAA compliant)
 - Secure MemDocs integration with encryption
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 2.0.0 (consolidated into attune.memory)
-License: Fair Source 0.9
+License: Apache License 2.0
 """
 
 # Re-export from consolidated memory module for backwards compatibility

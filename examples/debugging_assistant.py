@@ -1,6 +1,6 @@
 """Debugging Assistant - Level 3 Proactive Empathy Example
 
-Demonstrates how to use the Empathy Framework to build an AI debugging
+Demonstrates how to use the Attune AI to build an AI debugging
 assistant that proactively helps developers debug code.
 
 **Empathy Level**: Level 3 (Proactive)
@@ -9,8 +9,8 @@ assistant that proactively helps developers debug code.
 - Suggests fixes based on error patterns
 - Reduces debugging frustration
 
-Copyright 2025 Deep Study AI, LLC
-Licensed under Fair Source 0.9
+Copyright 2025 Smart AI Memory
+Licensed under the Apache License, Version 2.0
 """
 
 from typing import Any

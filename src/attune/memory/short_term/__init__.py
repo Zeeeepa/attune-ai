@@ -27,7 +27,7 @@ Backward Compatibility:
     >>> from attune.memory.short_term import RedisConfig, StagedPattern
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Phase 8 Complete: Import from facade module

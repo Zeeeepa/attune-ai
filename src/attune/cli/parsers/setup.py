@@ -1,7 +1,7 @@
 """Parser definitions for setup commands.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from ..commands import setup
@@ -16,7 +16,7 @@ def register_parsers(subparsers):
     # Init command
     parser_init = subparsers.add_parser(
         "init",
-        help="Initialize a new Empathy Framework project",
+        help="Initialize a new Attune AI project",
     )
     parser_init.add_argument(
         "--format",

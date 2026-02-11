@@ -3,7 +3,7 @@
 Provides resource cleanup and context manager protocol.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from typing import TYPE_CHECKING

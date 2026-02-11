@@ -1,4 +1,4 @@
-"""Empathy Framework Model Routing
+"""Attune AI Model Routing
 
 Smart routing of tasks to appropriate model tiers for cost optimization:
 - CHEAP tier: Triage, summarization, classification (Haiku/GPT-4o-mini)
@@ -19,7 +19,7 @@ Example:
     >>> print(f"Estimated cost: ${cost:.4f}")
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 
 """
 

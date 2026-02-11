@@ -1,11 +1,11 @@
-"""Configuration management for Empathy Framework.
+"""Configuration management for Attune AI.
 
 This package provides:
 1. Original EmpathyConfig (backward compatible)
 2. XML enhancement configurations (new)
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Import original config from parent module's config.py for backward compatibility

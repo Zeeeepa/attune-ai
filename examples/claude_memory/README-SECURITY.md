@@ -1,5 +1,5 @@
 # Secure Memory + MemDocs Integration Guide
-**Empathy Framework v1.8.0-alpha**
+**Attune AI v1.8.0-alpha**
 
 Enterprise-ready integration of Claude Memory (CLAUDE.md) and MemDocs with comprehensive security controls.
 
@@ -8,7 +8,7 @@ Enterprise-ready integration of Claude Memory (CLAUDE.md) and MemDocs with compr
 ### 1. Install with Security Features
 
 ```bash
-# Install Empathy Framework
+# Install Attune AI
 pip install -e ".[full]"
 
 # Or minimal with LLM support
@@ -258,7 +258,7 @@ response = await llm.interact(
 ```python
 # Enterprise policy: PII scrubbing + secrets detection
 # User policy: Prefers Python 3.10+, concise responses
-# Project policy: Empathy Framework conventions
+# Project policy: Attune AI conventions
 
 config = ClaudeMemoryConfig(
     enabled=True,
@@ -643,8 +643,8 @@ class SecureEmpathyFramework:
 
 ## 📝 License
 
-Fair Source 0.9
-Copyright 2025 Deep Study AI, LLC
+Apache License 2.0
+Copyright 2025 Smart AI Memory
 
 ---
 

@@ -1,4 +1,4 @@
-"""Smart Model Router for Empathy Framework
+"""Smart Model Router for Attune AI
 
 Routes tasks to appropriate model tiers for optimal cost/quality tradeoff:
 
@@ -20,7 +20,7 @@ Cost Savings Example:
     SAVINGS: 80% reduction, ~$9,660/month at 100 tasks/day
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass

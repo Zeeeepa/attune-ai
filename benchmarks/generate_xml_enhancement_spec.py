@@ -142,7 +142,7 @@ Option 6: Multi-Language XML Templates
 - manage_documentation.py: Already migrated to XML-enhanced prompting (Phase 1)
 - Other workflows: Use various prompting approaches (ad-hoc, CrewAI native, etc.)
 - Testing: pytest with 5,941 passing tests, coverage target 64%
-- Empathy Framework v3.6.0 - production ready
+- Attune AI v3.6.0 - production ready
         """,
         "architecture_constraints": """
 - Must maintain backward compatibility

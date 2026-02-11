@@ -4,7 +4,7 @@ Provides explicit opt-in utilities for tracking test executions and coverage met
 Use these functions when you want to track test/coverage data for Tier 1 monitoring.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging

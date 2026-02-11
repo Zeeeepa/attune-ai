@@ -9,7 +9,7 @@ This module provides a CrewAI-based workflow that uses 3 specialized agents
 to analyze coverage gaps, generate tests, and validate improvements.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio

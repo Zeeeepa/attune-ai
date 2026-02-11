@@ -32,5 +32,5 @@ This file contains your personal preferences that apply across all projects.
 - Link to official documentation when available
 
 ---
-Generated as example for Empathy Framework v1.8.0
+Generated as example for Attune AI v1.8.0
 Place this file at: ~/.claude/CLAUDE.md

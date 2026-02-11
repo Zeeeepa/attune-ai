@@ -1,4 +1,4 @@
-"""Empathy Framework MCP Server.
+"""Attune AI MCP Server.
 
 Model Context Protocol integration for Claude Code.
 Exposes Empathy workflows, agents, and telemetry as MCP tools.

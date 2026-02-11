@@ -1,7 +1,7 @@
 """Sync commands for pattern synchronization.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json as json_mod
@@ -95,7 +95,7 @@ def _generate_claude_rule(category: str, patterns: list) -> str:
     lines = [
         f"# {category.replace('_', ' ').title()} Patterns",
         "",
-        "Auto-generated from Empathy Framework learned patterns.",
+        "Auto-generated from Attune AI learned patterns.",
         f"Total patterns: {len(patterns)}",
         "",
         "---",

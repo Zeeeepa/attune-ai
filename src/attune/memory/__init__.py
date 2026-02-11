@@ -1,4 +1,4 @@
-"""Empathy Framework Memory Module
+"""Attune AI Memory Module
 
 Unified two-tier memory system for AI agent collaboration:
 
@@ -54,7 +54,7 @@ ADVANCED USAGE (Direct Access):
     )
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Short-term memory (Redis)

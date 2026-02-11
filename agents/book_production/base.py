@@ -10,7 +10,7 @@ Design Philosophy:
 - Model selection optimizes quality vs. cost (Opus for creative, Sonnet for structured)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

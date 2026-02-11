@@ -13,7 +13,7 @@ This script shows what's possible with persistent memory:
 Run: python examples/test_debugging_wizard.py
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio

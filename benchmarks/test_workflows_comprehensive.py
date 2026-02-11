@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Comprehensive Workflow Testing for Empathy Framework v3.7.0."""
+"""Comprehensive Workflow Testing for Attune AI v3.7.0."""
 
 import importlib
 import subprocess
@@ -290,7 +290,7 @@ def test_xml_enhanced_workflows():
 def main():
     """Run all workflow tests."""
     print("\n" + "=" * 70)
-    print("COMPREHENSIVE WORKFLOW TESTING - Empathy Framework v3.7.0")
+    print("COMPREHENSIVE WORKFLOW TESTING - Attune AI v3.7.0")
     print("=" * 70)
 
     tests = [

@@ -1,4 +1,4 @@
-"""One-Command Workflows for Empathy Framework
+"""One-Command Workflows for Attune AI
 
 Power-user commands that automate common developer workflows:
 - morning: Start-of-day briefing with patterns, debt, and focus areas
@@ -7,7 +7,7 @@ Power-user commands that automate common developer workflows:
 - learn: Watch for bug fixes and extract patterns
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

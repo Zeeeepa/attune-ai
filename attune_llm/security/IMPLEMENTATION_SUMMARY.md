@@ -409,5 +409,5 @@ The implementation provides:
 
 **Implementation Date**: 2025-11-24
 **Version**: 1.0.0
-**Author**: Empathy Framework Team
-**License**: Fair Source 0.9
+**Author**: Attune AI Team
+**License**: Apache License 2.0

@@ -1,4 +1,4 @@
-"""Context Manager for Empathy Framework
+"""Context Manager for Attune AI
 
 Orchestrates context compaction, state preservation, and restoration.
 Integrates with the hook system to handle compaction events automatically.
@@ -8,7 +8,7 @@ See: https://github.com/affaan-m/everything-claude-code (MIT License)
 See: ACKNOWLEDGMENTS.md for full attribution.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContextManager:
-    """Manages context compaction and restoration for the Empathy Framework.
+    """Manages context compaction and restoration for the Attune AI.
 
     This class coordinates:
     - Converting CollaborationState to CompactState for preservation

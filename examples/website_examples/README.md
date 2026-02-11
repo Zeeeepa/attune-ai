@@ -159,4 +159,4 @@ pip install attune-ai
 
 ---
 
-*Copyright 2025 Smart AI Memory, LLC — Fair Source 0.9*
+*Copyright 2025 Smart AI Memory, LLC — Apache License 2.0*

@@ -4,8 +4,8 @@
 
 Production-ready analysis tools for software development.
 
-**Copyright 2025-2026 Smart AI Memory, LLC**
-**Licensed under Fair Source 0.9**
+**Copyright 2025-2026 Smart AI Memory**
+**Licensed under the Apache License, Version 2.0**
 
 ## Overview
 
@@ -15,13 +15,13 @@ The Software Development Plugin provides analysis capabilities through CLI workf
 
 ```bash
 # Security analysis
-empathy workflow run security-audit --path ./src
+attune workflow run security-audit --path ./src
 
 # Bug prediction
-empathy workflow run bug-predict --path ./src
+attune workflow run bug-predict --path ./src
 
 # Test coverage analysis
-empathy workflow run test-coverage --path ./src
+attune workflow run test-coverage --path ./src
 ```
 
 Or use the Python workflow API:
@@ -37,9 +37,9 @@ result = await workflow.execute(target_path="./src")
 
 | Old Wizard | New Approach |
 |------------|--------------|
-| `EnhancedTestingWizard` | `empathy workflow run test-coverage` |
-| `PerformanceProfilingWizard` | `empathy workflow run profile` |
-| `SecurityAnalysisWizard` | `empathy workflow run security-audit` |
+| `EnhancedTestingWizard` | `attune workflow run test-coverage` |
+| `PerformanceProfilingWizard` | `attune workflow run profile` |
+| `SecurityAnalysisWizard` | `attune workflow run security-audit` |
 
 ## Installation
 
@@ -50,8 +50,8 @@ pip install attune-ai
 ## Support
 
 - **Documentation:** [docs/](../docs/)
-- **Issues:** [GitHub Issues](https://github.com/deepstudyai/empathy/issues)
+- **Issues:** [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 
 ## License
 
-Copyright 2025-2026 Smart AI Memory, LLC - Licensed under Fair Source 0.9
+Copyright 2025-2026 Smart AI Memory - Licensed under the Apache License, Version 2.0

@@ -9,7 +9,7 @@ Pricing is stored in per-million tokens (industry standard) with computed
 properties for per-1k compatibility with legacy code.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass
@@ -245,7 +245,7 @@ class ModelRegistry:
         if provider.lower() != "anthropic":
             raise ValueError(
                 f"Provider '{provider}' is not supported. "
-                f"Empathy Framework is now Claude-native (v5.0.0). "
+                f"Attune AI is now Claude-native (v5.0.0). "
                 f"Only 'anthropic' provider is available. "
                 f"See docs/CLAUDE_NATIVE.md for migration guide."
             )

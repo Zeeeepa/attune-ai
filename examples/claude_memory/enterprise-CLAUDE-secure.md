@@ -231,7 +231,7 @@ llm = EmpathyLLM(
 
 **ACKNOWLEDGMENT REQUIRED**
 
-By using Empathy Framework, you acknowledge:
+By using Attune AI, you acknowledge:
 1. You have read and understood these security policies
 2. You will comply with all requirements
 3. You understand violations may result in disciplinary action

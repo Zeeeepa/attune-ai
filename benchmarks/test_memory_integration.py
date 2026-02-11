@@ -15,7 +15,7 @@ Requirements:
     - Write access to .claude/ directory for test files
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import os
@@ -70,7 +70,7 @@ def test_import_directive() -> None:
             """# Project Memory
 
 ## Framework
-This is the Empathy Framework v1.8.0-alpha
+This is the Attune AI v1.8.0-alpha
 
 @./python-standards.md
 
@@ -118,7 +118,7 @@ def test_empathy_llm_integration() -> None:
 
     print("✓ EmpathyLLM initialized with memory")
     print(f"✓ Cached memory size: {len(llm._cached_memory)} chars")
-    print(f"✓ Memory contains project info: {'Empathy Framework' in llm._cached_memory}")
+    print(f"✓ Memory contains project info: {'Attune AI' in llm._cached_memory}")
 
     # Test system prompt building (Level 2 - Guided)
     system_prompt = llm._build_system_prompt(2)
@@ -212,7 +212,7 @@ def test_hierarchical_loading() -> None:
         print(f"✓ Contains USER level: {'USER Level' in memory}")
         print(f"✓ Contains PROJECT level: {'PROJECT Level' in memory}")
         print(f"✓ User preferences present: {'My Settings' in memory}")
-        print(f"✓ Project info present: {'Empathy Framework' in memory}")
+        print(f"✓ Project info present: {'Attune AI' in memory}")
 
         # Check loading order (User should come before Project)
         user_pos = memory.index("USER Level")
@@ -262,7 +262,7 @@ def main() -> None:
     """Run all memory integration tests."""
     print("\n" + "=" * 60)
     print("Claude Memory Integration Test Suite")
-    print("Empathy Framework")
+    print("Attune AI")
     print("=" * 60)
 
     try:

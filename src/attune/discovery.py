@@ -1,10 +1,10 @@
-"""Progressive Feature Discovery for Empathy Framework
+"""Progressive Feature Discovery for Attune AI
 
 Surface tips and suggestions at the right time based on usage patterns.
 Helps users discover power-user features without overwhelming them upfront.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

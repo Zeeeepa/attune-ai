@@ -11,7 +11,7 @@ The pipeline is only as good as its weakest agent.
 But with good agents, orchestration is straightforward.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio

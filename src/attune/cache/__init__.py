@@ -1,4 +1,4 @@
-"""Response caching for Empathy Framework workflows.
+"""Response caching for Attune AI workflows.
 
 Provides hybrid hash + semantic similarity caching to reduce API costs by 70%.
 
@@ -15,7 +15,7 @@ Usage:
     cache = HybridCache()    # Requires sentence-transformers
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging

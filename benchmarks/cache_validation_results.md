@@ -20,7 +20,7 @@ The profiling document incorrectly stated that `_parse_python_cached()` has "NO 
 ## Validation Results
 
 ### Test Setup
-- Project: Empathy Framework (3,375 files, 582 Python files)
+- Project: Attune AI (3,375 files, 582 Python files)
 - Method: Run scanner twice (cold cache → warm cache)
 - Tool: `benchmarks/measure_scanner_cache_effectiveness.py`
 

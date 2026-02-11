@@ -162,7 +162,7 @@ That's Level 5 Systems Empathy.
 
 ## The Technology
 
-Built with the **Empathy Framework**—an open-source AI framework with 5 levels of code understanding:
+Built with the **Attune AI**—an open-source AI framework with 5 levels of code understanding:
 
 1. **Level 1 Syntactic** - Parses code structure
 2. **Level 2 Semantic** - Understands what code does
@@ -178,7 +178,7 @@ Powered by:
 ## Try It Yourself
 
 ```bash
-# Install the Empathy Framework
+# Install the Attune AI
 pip install attune-ai[full]
 
 # Run the Level 5 demo
@@ -231,7 +231,7 @@ Every industry has spent decades learning hard lessons about safety, quality, an
 
 ## What's Next?
 
-The Empathy Framework is open source and available now. The Level 5 cross-domain capabilities are in active development, with examples like this one showing what's possible.
+The Attune AI is open source and available now. The Level 5 cross-domain capabilities are in active development, with examples like this one showing what's possible.
 
 We're exploring partnerships with:
 - **Healthcare systems** - Bring compliance insights to software
@@ -261,12 +261,12 @@ And it's only possible with Level 5 Systems Empathy.
 
 ---
 
-**About the Empathy Framework**
+**About the Attune AI**
 
-Open-source AI framework for understanding code through 5 levels of empathy, from syntax to cross-domain pattern transfer. Built by Deep Study AI, LLC.
+Open-source AI framework for understanding code through 5 levels of empathy, from syntax to cross-domain pattern transfer. Built by Smart AI Memory.
 
 Licensed under Apache 2.0 (free tier) with commercial licenses available for businesses.
 
 ---
 
-*This blog post demonstrates the Level 5 Transformative example from the Empathy Framework v1.6.8. The healthcare and deployment code shown are simplified for demonstration purposes. Real-world implementations would use actual codebases and integrate with production MemDocs storage.*
+*This blog post demonstrates the Level 5 Transformative example from the Attune AI v1.6.8. The healthcare and deployment code shown are simplified for demonstration purposes. Real-world implementations would use actual codebases and integrate with production MemDocs storage.*

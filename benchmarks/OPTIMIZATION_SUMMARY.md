@@ -1,7 +1,7 @@
 # Scanner Optimization Summary
 
 **Date:** 2026-01-26
-**Codebase:** Empathy Framework (3,472 files)
+**Codebase:** Attune AI (3,472 files)
 **Machine:** 12-core CPU
 
 ---

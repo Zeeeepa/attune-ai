@@ -1,4 +1,4 @@
-"""File-Based Session Memory for Empathy Framework.
+"""File-Based Session Memory for Attune AI.
 
 Provides persistent session storage without requiring Redis.
 Uses JSON files with atomic writes for data safety.
@@ -25,7 +25,7 @@ Architecture:
     └── config.json            <- User preferences
 
 Copyright 2025-2026 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

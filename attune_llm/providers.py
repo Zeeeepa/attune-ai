@@ -3,7 +3,7 @@
 Unified interface for different LLM providers (OpenAI, Anthropic, local models).
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio
@@ -294,7 +294,7 @@ class AnthropicProvider(BaseLLMProvider):
         system_parts = [
             {
                 "type": "text",
-                "text": "You are a code analysis expert using the Empathy Framework.",
+                "text": "You are a code analysis expert using the Attune AI.",
             },
             {
                 "type": "text",

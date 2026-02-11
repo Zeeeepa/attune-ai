@@ -1,4 +1,4 @@
-"""Base analyzer module for the Empathy Framework.
+"""Base analyzer module for the Attune AI.
 Provides foundational classes for issue detection and analysis.
 """
 

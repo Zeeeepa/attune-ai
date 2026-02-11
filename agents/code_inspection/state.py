@@ -8,7 +8,7 @@ Key Insight: Agent state should answer questions clearly.
 "What are we inspecting?" "What did static analysis find?" "How do findings relate?"
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import operator

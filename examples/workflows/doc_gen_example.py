@@ -12,7 +12,7 @@ Run:
     python examples/workflows/doc_gen_example.py
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio
@@ -33,7 +33,7 @@ async def generate_api_docs():
 
     source_code = '''
 class EmpathyOS:
-    """Main entry point for the Empathy Framework."""
+    """Main entry point for the Attune AI."""
 
     def __init__(self, user_id: str, target_level: int = 4):
         """Initialize the Empathy OS.
@@ -80,7 +80,7 @@ async def generate_tutorial():
     workflow = DocumentGenerationWorkflow(max_sections=7)
 
     source_code = """
-# Getting started with Empathy Framework
+# Getting started with Attune AI
 
 from attune import EmpathyOS
 

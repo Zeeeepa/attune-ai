@@ -1,6 +1,6 @@
 """Complete Workflow Example
 
-Demonstrates the full Empathy Framework 4.7.0 workflow:
+Demonstrates the full Attune AI 4.7.0 workflow:
 - SessionStart → Hooks fire, context restored
 - Commands → Execute with full context
 - Learning → Extract patterns from interactions
@@ -10,7 +10,7 @@ Architectural patterns inspired by everything-claude-code by Affaan Mustafa.
 https://github.com/affaan-m/everything-claude-code (MIT License)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio
@@ -34,7 +34,7 @@ from attune_llm.learning import (
 
 
 class EmpathyWorkflow:
-    """Orchestrates the complete Empathy Framework workflow."""
+    """Orchestrates the complete Attune AI workflow."""
 
     def __init__(self, user_id: str, storage_dir: Path):
         self.user_id = user_id

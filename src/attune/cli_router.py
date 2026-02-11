@@ -6,7 +6,7 @@ Routes keywords and natural language to Claude Code skill invocations:
 - Natural language: "commit my changes" (SmartRouter classification)
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass

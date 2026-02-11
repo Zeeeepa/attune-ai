@@ -3,7 +3,7 @@
 Entry point for the attune command-line interface.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import argparse
@@ -44,7 +44,7 @@ def main() -> int:
 
     # Create main parser
     parser = argparse.ArgumentParser(
-        prog="empathy", description="Empathy Framework - Context-aware development automation"
+        prog="empathy", description="Attune AI - Context-aware development automation"
     )
 
     # Add global flags

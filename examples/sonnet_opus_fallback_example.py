@@ -6,7 +6,7 @@ tries Sonnet 4.5 first and upgrades to Opus 4.5 when needed.
 This can save up to 80% on API costs while maintaining high quality.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Load .env file first

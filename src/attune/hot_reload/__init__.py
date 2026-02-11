@@ -30,7 +30,7 @@ Environment Variables:
     HOT_RELOAD_DELAY: Reload delay in seconds (default: 0.5)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .config import HotReloadConfig, get_hot_reload_config

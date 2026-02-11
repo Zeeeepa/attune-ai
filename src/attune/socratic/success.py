@@ -9,7 +9,7 @@ Success criteria allow users to:
 4. Iterate and improve workflows
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

@@ -97,14 +97,14 @@ options:
 **Option A (SEO Optimized):**
 ```markdown
 # Getting Started with Multi-Agent AI Framework
-## How to Install Empathy Framework
+## How to Install Attune AI
 ## Configure AI Agent Settings
 ```
 
 **Option B (Preserved Organization):**
 ```markdown
 # Getting Started
-## Install the Package (Empathy Framework)
+## Install the Package (Attune AI)
 ## Configure Settings
 ```
 
@@ -148,9 +148,9 @@ Here's what I generated for the first 3 pages:
 
 | Page | Generated Meta Description | Length | Keywords |
 |------|---------------------------|--------|----------|
-| [installation.md](docs/installation.md) | "Learn how to install Empathy Framework with pip, configure Redis, and verify your setup in under 5 minutes." | 128 chars ✓ | framework, install, setup |
-| [quickstart.md](docs/quickstart.md) | "Get started with multi-agent AI systems in 10 minutes. Build your first intelligent agent with Empathy Framework." | 125 chars ✓ | AI, agent, framework |
-| [authentication.md](docs/auth.md) | "Configure authentication for Empathy Framework. Choose between Claude subscription and Anthropic API based on your needs." | 131 chars ✓ | authentication, API |
+| [installation.md](docs/installation.md) | "Learn how to install Attune AI with pip, configure Redis, and verify your setup in under 5 minutes." | 128 chars ✓ | framework, install, setup |
+| [quickstart.md](docs/quickstart.md) | "Get started with multi-agent AI systems in 10 minutes. Build your first intelligent agent with Attune AI." | 125 chars ✓ | AI, agent, framework |
+| [authentication.md](docs/auth.md) | "Configure authentication for Attune AI. Choose between Claude subscription and Anthropic API based on your needs." | 131 chars ✓ | authentication, API |
 
 **These look good! Should I apply these and continue with the remaining 9 pages? [Yes / Adjust approach / Stop]**
 

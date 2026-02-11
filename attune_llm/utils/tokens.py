@@ -4,7 +4,7 @@ Provides accurate token counting for billing-accurate cost tracking.
 Replaces rough estimates (4 chars per token) with Anthropic's official counter.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import functools

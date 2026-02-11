@@ -200,7 +200,7 @@ async def demonstrate_socratic_flow():
     print()
     print("   AFTER:")
     print("   ---")
-    print("   description: Learn how to install Empathy Framework with pip,")
+    print("   description: Learn how to install Attune AI with pip,")
     print("                configure Redis, and verify your setup in under 5 minutes.")
     print("   ---")
     print("   # Installation")
@@ -272,7 +272,7 @@ async def main():
     # Part 1: Run SEO Audit and Show Detailed Results
     print_section("PART 1: SEO AUDIT WITH DETAILED RESULTS", "=")
 
-    print("Running SEO audit on Empathy Framework documentation...\n")
+    print("Running SEO audit on Attune AI documentation...\n")
 
     workflow = SEOOptimizationWorkflow()
     result = await workflow.execute(

@@ -1,4 +1,4 @@
-"""Main entry point for the Empathy Framework Backend API.
+"""Main entry point for the Attune AI Backend API.
 FastAPI application with all routes and middleware configured.
 """
 
@@ -11,8 +11,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Create FastAPI application
 app = FastAPI(
-    title="Empathy Framework API",
-    description="Backend API for the Empathy Framework - Level 4 Anticipatory AI",
+    title="Attune AI API",
+    description="Backend API for Attune AI - Intelligent Developer Workflows",
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
@@ -52,7 +52,7 @@ app.include_router(analysis.router)
 async def root():
     """Root endpoint."""
     return {
-        "name": "Empathy Framework API",
+        "name": "Attune AI API",
         "version": "1.0.0",
         "status": "operational",
         "docs": "/api/docs",
@@ -73,8 +73,8 @@ async def health_check():
 async def api_info():
     """API information endpoint."""
     return {
-        "name": "Smart AI Memory - Empathy Framework",
-        "description": "Level 4 Anticipatory AI for Software Development",
+        "name": "Smart AI Memory - Attune AI",
+        "description": "AI-Powered Developer Workflows",
         "version": "1.0.0",
         "plugins": {
             "software": {
@@ -86,8 +86,8 @@ async def api_info():
                 "wizards": ["Patient Trajectory", "Treatment Optimization", "Risk Assessment"],
             },
         },
-        "documentation": "https://docs.empathyframework.ai",
-        "github": "https://github.com/deepstudyai/empathy-framework",
+        "documentation": "https://smartaimemory.com",
+        "github": "https://github.com/Smart-AI-Memory/attune-ai",
     }
 
 

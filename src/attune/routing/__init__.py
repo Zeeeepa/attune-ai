@@ -1,4 +1,4 @@
-"""Empathy Framework Routing Module
+"""Attune AI Routing Module
 
 Intelligent request routing to workflows using LLM classification.
 
@@ -14,7 +14,7 @@ Usage:
     decision = await quick_route("Optimize database queries")
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .chain_executor import ChainConfig, ChainExecution, ChainExecutor, ChainStep, ChainTrigger

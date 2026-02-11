@@ -3,7 +3,7 @@
 Provides system health monitoring and status reporting.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio
@@ -227,7 +227,7 @@ def get_health_check() -> HealthCheck:
 
 
 def register_default_checks(health: HealthCheck) -> None:
-    """Register default health checks for Empathy Framework."""
+    """Register default health checks for Attune AI."""
 
     @health.register("workflow_registry")
     async def check_workflow_registry() -> dict[str, Any]:

@@ -1,10 +1,10 @@
 """Cache Performance Monitoring
 
 Tracks cache hit rates, memory usage, and performance metrics for all caches
-in the Empathy Framework.
+in the Attune AI.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass, field

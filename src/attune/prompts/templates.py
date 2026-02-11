@@ -4,7 +4,7 @@ Provides protocol and implementations for prompt templates,
 including XML-structured prompts.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

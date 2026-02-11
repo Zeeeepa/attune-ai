@@ -2,7 +2,7 @@
 
 **Source Pattern:** [Health Monitoring](../observability/health-monitoring.md)
 **Source Domain:** Observability/SRE
-**Target Domain:** Empathy Framework Levels
+**Target Domain:** Attune AI Levels
 **Transfer Type:** Mechanism Mapping
 
 ## The Transfer Insight

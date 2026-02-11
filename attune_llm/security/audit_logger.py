@@ -1,4 +1,4 @@
-"""Audit Logging Framework for Empathy Framework
+"""Audit Logging Framework for Attune AI
 
 Comprehensive audit logging for SOC2, HIPAA, and GDPR compliance.
 Implements tamper-evident, append-only logging with structured JSON format.
@@ -18,7 +18,7 @@ Reference:
 - GDPR Article 30: Records of Processing
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json
@@ -84,7 +84,7 @@ class SecurityViolation:
 
 
 class AuditLogger:
-    """Comprehensive audit logging for Empathy Framework.
+    """Comprehensive audit logging for Attune AI.
 
     Implements SOC2, HIPAA, and GDPR compliant audit trails with:
     - Tamper-evident append-only logging

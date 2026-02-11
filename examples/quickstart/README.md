@@ -1,12 +1,12 @@
 # Quickstart Guide
 
-Get started with the Empathy Framework in 5 minutes.
+Get started with the Attune AI in 5 minutes.
 
 ## Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/Deep-Study-AI/Empathy.git
+git clone https://github.com/Smart-AI-Memory/attune-ai.git
 cd Empathy
 
 # Install dependencies
@@ -259,15 +259,15 @@ report = sbar.generate_report(
 
 - **Documentation**: [docs/](../../docs/)
 - **Full Examples**: [examples/coach/](../coach/)
-- **Issues**: https://github.com/Deep-Study-AI/Empathy/issues
-- **Discussions**: https://github.com/Deep-Study-AI/Empathy/discussions
+- **Issues**: https://github.com/Smart-AI-Memory/attune-ai/issues
+- **Discussions**: https://github.com/Smart-AI-Memory/attune-ai/discussions
 - **Email**: patrick.roebuck@smartaimemory.com
 
 ## What Makes This Different?
 
 Traditional code analysis tools tell you about problems **now**.
 
-Empathy Framework's Level 4 Anticipatory approach predicts problems **30-90 days ahead** based on:
+Attune AI's Level 4 Anticipatory approach predicts problems **30-90 days ahead** based on:
 - Code trajectory analysis
 - Team velocity patterns
 - Dependency evolution trends

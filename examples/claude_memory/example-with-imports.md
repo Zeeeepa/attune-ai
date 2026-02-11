@@ -61,4 +61,4 @@ Example file structure:
 ```
 
 Place this file at: ./.claude/CLAUDE.md
-Generated for Empathy Framework v1.8.0
+Generated for Attune AI v1.8.0

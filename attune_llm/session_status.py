@@ -19,9 +19,9 @@ CLI:
     python -m attune_llm.session_status
     empathy status [--full] [--json]
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 2.1.5
-License: Fair Source 0.9
+License: Apache License 2.0
 """
 
 import json
@@ -638,7 +638,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Session status assistant for Empathy Framework",
+        description="Session status assistant for Attune AI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

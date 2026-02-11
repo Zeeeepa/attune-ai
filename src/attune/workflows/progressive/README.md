@@ -440,7 +440,7 @@ See `ProgressiveTestGenWorkflow` for a complete implementation example.
 
 ## License
 
-Fair Source License 0.9
+Apache License 2.0 0.9
 
 ## Version History
 
@@ -449,6 +449,6 @@ Fair Source License 0.9
 
 ## Support
 
-- **Documentation**: [Empathy Framework Docs](https://attune-ai.readthedocs.io)
+- **Documentation**: [Attune AI Docs](https://attune-ai.readthedocs.io)
 - **Issues**: [GitHub Issues](https://github.com/Smart-AI-Memory/attune-ai/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/Smart-AI-Memory/attune-ai/discussions)

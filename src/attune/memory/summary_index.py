@@ -1,4 +1,4 @@
-"""Conversation Summary Index for Empathy Framework
+"""Conversation Summary Index for Attune AI
 
 Redis-backed conversation summary with topic indexing for:
 - Efficient agent context handoff (80% token savings)
@@ -12,7 +12,7 @@ Architecture:
 - SADD for topic index (find sessions by topic)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

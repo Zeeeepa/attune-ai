@@ -8,7 +8,7 @@ Contains:
 - SyncAdapter: Base adapter for real-time infrastructure (WebSocket, SSE, etc.)
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

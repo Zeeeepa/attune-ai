@@ -878,7 +878,7 @@ def generate_report(
     # Get Python version
     python_version = sys.version.split()[0]
 
-    report = f"""# Empathy Framework v3.8.0 - Caching Benchmark Report
+    report = f"""# Attune AI v3.8.0 - Caching Benchmark Report
 
 **Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 **Cache Type:** Hash-only (exact matching)

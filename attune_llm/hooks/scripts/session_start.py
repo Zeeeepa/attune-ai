@@ -4,7 +4,7 @@ Loads previous context and patterns on new session start.
 Ported from everything-claude-code/scripts/hooks/session-start.js
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

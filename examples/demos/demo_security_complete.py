@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Comprehensive End-to-End Security Demo
-Empathy Framework v1.8.0-beta
+Attune AI v1.8.0-beta
 
 Demonstrates all Phase 2 security features with real-world scenarios:
 - Healthcare (HIPAA compliance)
@@ -679,7 +679,7 @@ def main():
 {Colors.BOLD}{Colors.HEADER}
 ╔══════════════════════════════════════════════════════════════════════╗
 ║                                                                      ║
-║     Empathy Framework v1.8.0-beta                                    ║
+║     Attune AI v1.8.0-beta                                    ║
 ║     Comprehensive Security Demo                                      ║
 ║                                                                      ║
 ║     Phase 2: Enterprise Security Controls                            ║

@@ -11,7 +11,7 @@ Each level represents increasing sophistication in understanding and
 responding to human needs.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from abc import ABC, abstractmethod

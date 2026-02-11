@@ -11,7 +11,7 @@ determines which pattern should take precedence based on:
 4. Recency (newer patterns may reflect updated practices)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass, field

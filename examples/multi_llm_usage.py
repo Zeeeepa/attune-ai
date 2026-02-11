@@ -1,4 +1,4 @@
-"""Example: Using Empathy Framework with Different LLMs
+"""Example: Using Attune AI with Different LLMs
 
 This shows how to use the EmpathyLLM wrapper with multiple providers
 without needing to create custom wizards.
@@ -17,7 +17,7 @@ from attune_llm.core import EmpathyLLM
 
 
 async def example_claude_usage():
-    """Example: Using Claude with Empathy Framework"""
+    """Example: Using Claude with Attune AI"""
     print("=" * 60)
     print("EXAMPLE 1: Claude (Anthropic) - Level 4 Anticipatory")
     print("=" * 60)
@@ -56,7 +56,7 @@ async def example_claude_usage():
 
 
 async def example_openai_usage():
-    """Example: Using OpenAI GPT-4 with Empathy Framework"""
+    """Example: Using OpenAI GPT-4 with Attune AI"""
     print("\n" + "=" * 60)
     print("EXAMPLE 2: OpenAI GPT-4 - Level 3 Proactive")
     print("=" * 60)
@@ -79,7 +79,7 @@ async def example_openai_usage():
 
 
 async def example_local_model_usage():
-    """Example: Using local Ollama model with Empathy Framework"""
+    """Example: Using local Ollama model with Attune AI"""
     print("\n" + "=" * 60)
     print("EXAMPLE 3: Local Model (Ollama) - Level 2 Guided")
     print("=" * 60)
@@ -185,7 +185,7 @@ async def main():
     """Run all examples"""
     print("\n")
     print("╔" + "=" * 58 + "╗")
-    print("║  Empathy Framework - Multi-LLM Usage Examples           ║")
+    print("║  Attune AI - Multi-LLM Usage Examples           ║")
     print("╚" + "=" * 58 + "╝")
 
     # Note: These examples require API keys to actually run

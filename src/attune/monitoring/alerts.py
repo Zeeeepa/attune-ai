@@ -16,7 +16,7 @@ Provides threshold-based alerting for LLM usage metrics.
 - token_usage: Total tokens used in the last 24 hours
 
 Copyright 2025-2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations
@@ -819,7 +819,7 @@ class AlertEngine:
         msg["Subject"] = f"[{event.severity.value.upper()}] {event.alert_name}"
 
         body = f"""
-Empathy Framework Alert
+Attune AI Alert
 
 Alert: {event.alert_name}
 Metric: {event.metric.value}
@@ -829,7 +829,7 @@ Severity: {event.severity.value}
 Triggered: {event.triggered_at.isoformat()}
 
 --
-Empathy Framework Monitoring
+Attune AI Monitoring
 """
         msg.attach(MIMEText(body, "plain"))
 

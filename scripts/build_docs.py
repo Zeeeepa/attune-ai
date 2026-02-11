@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Empathy Framework Documentation Builder
+"""Attune AI Documentation Builder
 
 Builds documentation for multiple output targets:
 1. PyPI/GitHub - Minimal docs for package distribution
@@ -217,7 +217,7 @@ def build_all() -> bool:
 def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="Build Empathy Framework documentation",
+        description="Build Attune AI documentation",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
@@ -233,7 +233,7 @@ def main() -> int:
     args = parser.parse_args()
 
     print()
-    print(f"{Colors.BOLD}Empathy Framework Documentation Builder{Colors.ENDC}")
+    print(f"{Colors.BOLD}Attune AI Documentation Builder{Colors.ENDC}")
     print("=" * 40)
     print()
 

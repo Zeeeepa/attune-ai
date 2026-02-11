@@ -7,7 +7,7 @@ For new code, import from the package directly:
     from attune.workflows.test_gen import TestGenerationWorkflow
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Re-export all public APIs from the package for backward compatibility

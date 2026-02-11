@@ -11,8 +11,8 @@ BEFORE they occur, based on code trajectories and anti-patterns.
 
 **Inspired by**: AI Nurse Florence's compliance prediction (30 days ahead)
 
-Copyright 2025 Deep Study AI, LLC
-Licensed under Fair Source 0.9
+Copyright 2025 Smart AI Memory
+Licensed under the Apache License, Version 2.0
 """
 
 from typing import Any

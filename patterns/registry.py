@@ -5,7 +5,7 @@ recommending wizard patterns. It loads all extracted patterns and provides
 intelligent pattern matching for new wizard creation.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging

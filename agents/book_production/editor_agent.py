@@ -14,7 +14,7 @@ Good editing is systematic, not subjective. We can encode
 the rules that make chapters consistent and apply them automatically.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import re

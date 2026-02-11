@@ -1,10 +1,10 @@
 # Project-Level Claude Memory
 # Location: ./.claude/CLAUDE.md (in project root)
 
-This file contains project-specific instructions for the Empathy Framework.
+This file contains project-specific instructions for the Attune AI.
 
 ## Project Context
-This is the Empathy Framework - a five-level AI collaboration system with anticipatory empathy.
+This is the Attune AI - a five-level AI collaboration system with anticipatory empathy.
 
 **Core Concepts:**
 - Level 1: Reactive (basic Q&A)
@@ -65,5 +65,5 @@ tests/                  # Comprehensive test suite
 - Audit logging framework
 
 ---
-Generated for Empathy Framework v1.8.0
+Generated for Attune AI v1.8.0
 Place this file at: ./.claude/CLAUDE.md in your project

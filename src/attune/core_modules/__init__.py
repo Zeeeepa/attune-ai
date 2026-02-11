@@ -6,7 +6,7 @@ Re-exports EmpathyOS and CollaborationState for backward compatibility.
 Uses lazy imports to avoid circular dependency with core.py.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 

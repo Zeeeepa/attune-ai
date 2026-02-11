@@ -22,7 +22,7 @@ Or import and use programmatically:
 import re
 from dataclasses import dataclass
 
-# Import Empathy Framework
+# Import Attune AI
 from attune import AccessTier, EmpathyOS, TeamSession, get_redis_memory
 
 

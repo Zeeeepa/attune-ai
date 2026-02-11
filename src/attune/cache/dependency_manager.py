@@ -3,7 +3,7 @@
 Handles auto-detection, user prompts, and installation of sentence-transformers.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging
@@ -126,7 +126,7 @@ class DependencyManager:
         print("⚡ Smart Caching Available")
         print("=" * 60)
         print()
-        print("  Empathy Framework can reduce your API costs by 70% with hybrid caching.")
+        print("  Attune AI can reduce your API costs by 70% with hybrid caching.")
         print("  This requires installing sentence-transformers (~150MB).")
         print()
 

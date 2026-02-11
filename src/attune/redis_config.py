@@ -1,4 +1,4 @@
-"""Redis Configuration for Empathy Framework
+"""Redis Configuration for Attune AI
 
 Handles connection to Redis from environment variables.
 Supports Redis Cloud, Railway, local Docker, managed Redis, or mock mode.
@@ -53,7 +53,7 @@ Usage:
     memory = get_redis_memory(config=config)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging

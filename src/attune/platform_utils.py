@@ -1,4 +1,4 @@
-"""Cross-Platform Utilities for Empathy Framework
+"""Cross-Platform Utilities for Attune AI
 
 Provides platform-independent utilities for:
 - File paths and directories
@@ -7,7 +7,7 @@ Provides platform-independent utilities for:
 - Environment detection
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio

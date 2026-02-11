@@ -1,7 +1,7 @@
 """Setup commands for initialization and validation.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import sys
@@ -13,7 +13,7 @@ logger = get_logger(__name__)
 
 
 def cmd_init(args):
-    """Initialize a new Empathy Framework project.
+    """Initialize a new Attune AI project.
 
     Creates a configuration file with sensible defaults.
 
@@ -34,7 +34,7 @@ def cmd_init(args):
     # Validate output path to prevent path traversal attacks
     validated_path = _validate_file_path(output_path)
 
-    logger.info(f"Initializing new Empathy Framework project with format: {config_format}")
+    logger.info(f"Initializing new Attune AI project with format: {config_format}")
 
     # Create default config
     config = EmpathyConfig()

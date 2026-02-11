@@ -1,4 +1,4 @@
-"""Memory Control Panel for Empathy Framework
+"""Memory Control Panel for Attune AI
 
 Enterprise-grade control panel for managing AI memory systems.
 Provides both programmatic API and CLI interface.
@@ -28,7 +28,7 @@ IMPORTANT: This module re-exports all public symbols from submodules for
 backward compatibility. All symbols remain importable from attune.memory.control_panel.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

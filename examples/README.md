@@ -1,6 +1,6 @@
-# Empathy Framework - Examples
+# Attune AI - Examples
 
-This directory contains examples demonstrating how to use the Empathy Framework.
+This directory contains examples demonstrating how to use the Attune AI.
 
 ## Available Examples
 
@@ -138,11 +138,11 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
 
 ## Need Help?
 
-- Documentation: https://github.com/Deep-Study-AI/Empathy
-- Issues: https://github.com/Deep-Study-AI/Empathy/issues
-- Discussions: https://github.com/Deep-Study-AI/Empathy/discussions
+- Documentation: https://github.com/Smart-AI-Memory/attune-ai
+- Issues: https://github.com/Smart-AI-Memory/attune-ai/issues
+- Discussions: https://github.com/Smart-AI-Memory/attune-ai/discussions
 
 ## License
 
-Copyright 2025 Deep Study AI, LLC
-Licensed under Fair Source 0.9
+Copyright 2025 Smart AI Memory
+Licensed under the Apache License, Version 2.0

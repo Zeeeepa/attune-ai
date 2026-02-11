@@ -9,7 +9,7 @@ Usage:
     python examples/hybrid_cli_demo.py
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import asyncio
@@ -208,7 +208,7 @@ async def main():
     """Run all demos."""
     print("=" * 70)
     print("HYBRID CLI DEMO")
-    print("Empathy Framework - Skills + Keywords + Natural Language")
+    print("Attune AI - Skills + Keywords + Natural Language")
     print("=" * 70)
 
     try:

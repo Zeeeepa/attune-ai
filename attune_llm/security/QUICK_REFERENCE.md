@@ -313,4 +313,4 @@ cat logs/audit.jsonl | jq '.'
 ---
 
 **Version**: 1.0.0
-**License**: Fair Source 0.9
+**License**: Apache License 2.0

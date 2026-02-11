@@ -4,7 +4,7 @@ Provides pluggable routing algorithms to determine which model tier
 should handle each workflow stage.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

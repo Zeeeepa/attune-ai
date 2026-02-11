@@ -1,4 +1,4 @@
-"""Redis Bootstrap for Empathy Framework
+"""Redis Bootstrap for Attune AI
 
 Automatically starts Redis if not running, with graceful fallback.
 Supports:
@@ -14,7 +14,7 @@ Usage:
     redis_available = ensure_redis()
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import os

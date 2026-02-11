@@ -3,7 +3,7 @@
 Extracted from cli.py for better modularity and testability.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .dashboard_commands import cmd_file_test_dashboard, cmd_telemetry_dashboard

@@ -1,10 +1,10 @@
 """Prompt performance metrics tracking and analysis.
 
 This module provides tools for tracking, analyzing, and optimizing
-prompt performance across the Empathy Framework.
+prompt performance across the Attune AI.
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune.metrics.prompt_metrics import MetricsTracker, PromptMetrics

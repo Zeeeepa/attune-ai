@@ -1,7 +1,7 @@
 """Wizard Factory Pattern Library.
 
 This package provides a comprehensive pattern library for creating wizards
-in the Empathy Framework. Patterns are extracted from 78 existing wizards
+in the Attune AI. Patterns are extracted from 78 existing wizards
 and encoded as Pydantic models for type safety and code generation.
 
 **Pattern Categories:**
@@ -27,7 +27,7 @@ and encoded as Pydantic models for type safety and code generation.
     code = pattern.generate_code()
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .behavior import (

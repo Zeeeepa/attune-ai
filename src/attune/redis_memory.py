@@ -1,4 +1,4 @@
-"""Redis Short-Term Memory for Empathy Framework
+"""Redis Short-Term Memory for Attune AI
 
 Per EMPATHY_PHILOSOPHY.md v1.1.0:
 - Implements fast, TTL-based working memory for agent coordination
@@ -7,7 +7,7 @@ Per EMPATHY_PHILOSOPHY.md v1.1.0:
 - Principled negotiation support
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

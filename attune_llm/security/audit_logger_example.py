@@ -3,7 +3,7 @@
 Demonstrates how to use the audit logging framework for compliance tracking.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from audit_logger import AuditLogger
@@ -21,7 +21,7 @@ def main():
     )
 
     print("=" * 60)
-    print("Empathy Framework Audit Logger - Example")
+    print("Attune AI Audit Logger - Example")
     print("=" * 60)
     print()
 

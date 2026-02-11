@@ -7,7 +7,7 @@ Demonstrates Phase 2 enterprise privacy integration with:
 - Encryption for SENSITIVE patterns
 - Audit logging
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 1.8.0-beta
 """
 

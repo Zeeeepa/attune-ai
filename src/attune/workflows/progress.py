@@ -4,7 +4,7 @@ Real-time progress tracking for workflow execution with WebSocket support.
 Enables live UI updates during workflow runs.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

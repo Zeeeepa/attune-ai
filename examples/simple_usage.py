@@ -1,6 +1,6 @@
-"""Simple Example: Using Empathy Framework without Writing Wizards
+"""Simple Example: Using Attune AI without Writing Wizards
 
-This is the easiest way to use the Empathy Framework.
+This is the easiest way to use the Attune AI.
 No need to create custom wizards - just interact with the LLM
 and the framework automatically handles empathy levels.
 """

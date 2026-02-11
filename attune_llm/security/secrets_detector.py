@@ -7,9 +7,9 @@ connection strings, and other sensitive credentials.
 CRITICAL: This module NEVER logs or returns actual secret values. It only
 returns metadata about detections (type, location, severity).
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 1.8.0-beta
-License: Fair Source 0.9
+License: Apache License 2.0
 """
 
 import math

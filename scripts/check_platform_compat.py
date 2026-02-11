@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cross-Platform Compatibility Checker for Empathy Framework
+"""Cross-Platform Compatibility Checker for Attune AI
 
 Scans the codebase for common cross-platform issues:
 - Hardcoded Unix paths (/var/log, /tmp, etc.)
@@ -21,7 +21,7 @@ Can be integrated into CI:
     - Run as part of pytest
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import argparse

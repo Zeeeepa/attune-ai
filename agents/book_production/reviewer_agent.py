@@ -14,7 +14,7 @@ Quality assessment requires judgment, not just rule-checking.
 Opus 4.5's nuanced reasoning makes it ideal for this role.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import re

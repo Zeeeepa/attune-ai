@@ -4,7 +4,7 @@ Stages:
 1. process - Process
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import heapq
@@ -85,7 +85,7 @@ You create clear, comprehensive documentation for Python frameworks and librarie
 DO NOT ask questions or request clarification - use the information provided to create
 complete, professional documentation immediately."""
 
-        user_prompt = f"""Create comprehensive API documentation for the Empathy Framework based on this codebase analysis.
+        user_prompt = f"""Create comprehensive API documentation for the Attune AI based on this codebase analysis.
 
 **Project Path:** {target_path}
 
@@ -94,7 +94,7 @@ complete, professional documentation immediately."""
 
 **Generate the following documentation sections:**
 
-# Empathy Framework API Documentation
+# Attune AI API Documentation
 
 ## Overview
 [Analyze the project structure and write a clear overview of what the framework does]

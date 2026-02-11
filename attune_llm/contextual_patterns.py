@@ -16,9 +16,9 @@ Usage:
         max_patterns=5
     )
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 2.1.3
-License: Fair Source 0.9
+License: Apache License 2.0
 """
 
 import json

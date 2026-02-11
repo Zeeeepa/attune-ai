@@ -7,7 +7,7 @@ For new code, import from the package directly:
     from attune.meta_workflows.cli_commands import meta_workflow_app
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Re-export all commands and the Typer app from the package

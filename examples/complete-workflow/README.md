@@ -1,6 +1,6 @@
 # Complete Workflow Example
 
-Demonstrates the full Empathy Framework 4.7.0 workflow.
+Demonstrates the full Attune AI 4.7.0 workflow.
 
 > **Attribution**: Architectural patterns inspired by [everything-claude-code](https://github.com/affaan-m/everything-claude-code) by Affaan Mustafa (MIT License).
 

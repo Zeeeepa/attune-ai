@@ -1,6 +1,6 @@
-# Empathy Framework Pattern Catalog
+# Attune AI Pattern Catalog
 
-A catalog of reusable patterns extracted from the Empathy Framework codebase, organized for cross-domain transfer and Level 5 (Systems Thinking) capability development.
+A catalog of reusable patterns extracted from the Attune AI codebase, organized for cross-domain transfer and Level 5 (Systems Thinking) capability development.
 
 ## Purpose
 

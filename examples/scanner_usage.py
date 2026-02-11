@@ -7,7 +7,7 @@ Demonstrates:
 4. Worker count configuration
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune.project_index import ParallelProjectScanner, ProjectIndex, ProjectScanner
@@ -246,7 +246,7 @@ def main():
     """Run all examples."""
     print("=" * 70)
     print("PROJECT SCANNER USAGE EXAMPLES")
-    print("Empathy Framework - Optimized Scanner Demonstrations")
+    print("Attune AI - Optimized Scanner Demonstrations")
     print("=" * 70)
 
     try:

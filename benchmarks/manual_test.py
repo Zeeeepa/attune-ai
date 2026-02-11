@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Manual Test Script for Empathy Framework
+"""Manual Test Script for Attune AI
 
 Interactive test runner for CLI features, provider config, telemetry, and workflows.
 
@@ -14,7 +14,7 @@ Usage:
     python manual_test.py --unit          # Run unit tests only
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import argparse
@@ -107,7 +107,7 @@ def test_cli_basics():
     print_test("CLI version")
     success, output = run_command(
         [sys.executable, "-m", "attune.cli_unified", "--version"],
-        check_output="Empathy Framework",
+        check_output="Attune AI",
     )
     if success:
         print_success("CLI version works")
@@ -117,7 +117,7 @@ def test_cli_basics():
 
     # Test help
     print_test("CLI help")
-    success, output = run_command(["empathy", "--help"], check_output="Empathy Framework")
+    success, output = run_command(["empathy", "--help"], check_output="Attune AI")
     if success:
         print_success("CLI help works")
     else:
@@ -391,7 +391,7 @@ def print_summary():
 
 def interactive_mode():
     """Run tests in interactive mode."""
-    print(f"{Color.BOLD}Empathy Framework - Interactive Test Suite{Color.NC}\n")
+    print(f"{Color.BOLD}Attune AI - Interactive Test Suite{Color.NC}\n")
 
     test_suites = {
         "1": ("CLI Basics", test_cli_basics),
@@ -433,7 +433,7 @@ def interactive_mode():
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description="Manual test runner for Empathy Framework")
+    parser = argparse.ArgumentParser(description="Manual test runner for Attune AI")
     parser.add_argument("--all", action="store_true", help="Run all tests")
     parser.add_argument("--cli", action="store_true", help="Test CLI commands")
     parser.add_argument("--memory", action="store_true", help="Test memory commands")

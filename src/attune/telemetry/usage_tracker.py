@@ -1,10 +1,10 @@
-"""Usage Tracker for Empathy Framework Telemetry.
+"""Usage Tracker for Attune AI Telemetry.
 
 Privacy-first, local-only tracking of LLM calls to measure actual cost savings.
 All data stored locally in ~/.attune/telemetry/ as JSON Lines format.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import hashlib

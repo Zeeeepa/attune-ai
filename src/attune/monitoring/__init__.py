@@ -15,7 +15,7 @@ This package provides the backend components for the monitoring system.
 The frontend VSCode extension is in `website/components/telemetry/`.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Import agent monitoring classes from sibling module (backwards compatibility)

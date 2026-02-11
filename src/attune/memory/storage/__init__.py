@@ -1,4 +1,4 @@
-"""Storage Backends for Empathy Framework Memory
+"""Storage Backends for Attune AI Memory
 
 Provides pluggable storage backends for pattern persistence:
 - File-based (default): Simple JSON file storage
@@ -6,7 +6,7 @@ Provides pluggable storage backends for pattern persistence:
 - S3/Cloud (planned): Distributed storage for teams
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Storage backends will be added here as they're implemented

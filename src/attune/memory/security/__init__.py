@@ -1,4 +1,4 @@
-"""Security Module for Empathy Framework Memory
+"""Security Module for Attune AI Memory
 
 Provides enterprise-grade security controls including:
 - PII scrubbing (GDPR, HIPAA, SOC2 compliant)
@@ -6,7 +6,7 @@ Provides enterprise-grade security controls including:
 - Audit logging (tamper-evident, SOC2/HIPAA compliant)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .audit_logger import AuditEvent, AuditLogger, SecurityViolation

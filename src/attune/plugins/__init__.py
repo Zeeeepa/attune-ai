@@ -1,9 +1,9 @@
-"""Empathy Framework - Plugin System
+"""Attune AI - Plugin System
 
-Enables modular extension of the Empathy Framework with domain-specific plugins.
+Enables modular extension of the Attune AI with domain-specific plugins.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .base import (

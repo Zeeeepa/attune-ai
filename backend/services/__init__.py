@@ -1,4 +1,4 @@
-"""Services package for the Empathy Framework backend."""
+"""Services package for the Attune AI backend."""
 
 from .empathy_service import EmpathyService
 

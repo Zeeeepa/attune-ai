@@ -4,7 +4,7 @@ Pre-flight token estimation for cost prediction using tiktoken.
 Provides accurate token counts before workflow execution.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

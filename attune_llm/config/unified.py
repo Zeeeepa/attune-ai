@@ -8,7 +8,7 @@ This resolves the AgentConfig duplication between:
 - agents/book_production/base.py
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from enum import Enum
@@ -83,7 +83,7 @@ class UnifiedAgentConfig(BaseModel):
     )
     provider: Provider = Field(default=Provider.ANTHROPIC, description="LLM provider")
 
-    # Empathy Framework features
+    # Attune AI features
     empathy_level: int = Field(
         default=4,
         ge=1,

@@ -4,7 +4,7 @@ HTTP API handler and server for the Memory Control Panel REST API.
 Provides endpoints for status, statistics, patterns, and Redis management.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

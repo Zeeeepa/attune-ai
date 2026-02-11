@@ -1,14 +1,14 @@
-"""Custom exceptions for the Empathy Framework
+"""Custom exceptions for the Attune AI
 
 Provides domain-specific exceptions for better error handling and debugging.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 
 class EmpathyFrameworkError(Exception):
-    """Base exception for all Empathy Framework errors
+    """Base exception for all Attune AI errors
 
     All custom exceptions in the framework inherit from this class,
     making it easy to catch any framework-specific error.

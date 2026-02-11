@@ -1,4 +1,4 @@
-"""Telemetry tracking for Empathy Framework.
+"""Telemetry tracking for Attune AI.
 
 Privacy-first, local-only usage tracking to measure actual cost savings.
 
@@ -11,7 +11,7 @@ Includes:
 - FeedbackLoop: Agent-to-LLM quality feedback for adaptive routing
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .agent_coordination import CoordinationSignal, CoordinationSignals

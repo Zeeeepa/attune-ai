@@ -1,6 +1,6 @@
 # Empathy LLM Toolkit
 
-**Wrap any LLM with the Empathy Framework's 5 levels of AI-human collaboration.**
+**Wrap any LLM with the Attune AI's 5 levels of AI-human collaboration.**
 
 Transform your LLM from reactive Q&A (Level 1) to anticipatory partner (Level 4) automatically.
 
@@ -538,7 +538,7 @@ print(f"Interactions: {len(state.interactions)}")
 
 ## Related Resources
 
-- **[Empathy Framework Documentation](../docs/CHAPTER_EMPATHY_FRAMEWORK.md)**
+- **[Attune AI Documentation](../docs/CHAPTER_EMPATHY_FRAMEWORK.md)**
 - **[Using Empathy with LLMs Guide](../docs/USING_EMPATHY_WITH_LLMS.md)**
 - **[AI Development Wizards](../docs/AI_DEVELOPMENT_WIZARDS.md)**
 

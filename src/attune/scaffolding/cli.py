@@ -6,7 +6,7 @@ Usage:
     python -m scaffolding create my_workflow --interactive
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import argparse
@@ -162,7 +162,7 @@ def cmd_list_patterns(args):
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Workflow Scaffolding for Empathy Framework",
+        description="Workflow Scaffolding for Attune AI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

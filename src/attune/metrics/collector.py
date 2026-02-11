@@ -4,7 +4,7 @@ This module is a placeholder for legacy code compatibility.
 The functionality has been moved to other modules.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 

@@ -30,7 +30,7 @@ async def main():
     # Initialize workflow with coordination enabled
     workflow = SEOOptimizationWorkflow()
 
-    print("\n🚀 Running SEO audit on Empathy Framework documentation...")
+    print("\n🚀 Running SEO audit on Attune AI documentation...")
     print("   Watch the dashboard to see:")
     print("   - Agent heartbeat updates")
     print("   - Stage progression (scan → analyze)")

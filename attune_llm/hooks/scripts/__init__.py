@@ -1,13 +1,13 @@
 """Hook Scripts
 
-Pre-built hook scripts for common Empathy Framework events.
+Pre-built hook scripts for common Attune AI events.
 
 Architectural patterns inspired by everything-claude-code by Affaan Mustafa.
 See: https://github.com/affaan-m/everything-claude-code (MIT License)
 See: ACKNOWLEDGMENTS.md for full attribution.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune_llm.hooks.scripts.evaluate_session import (

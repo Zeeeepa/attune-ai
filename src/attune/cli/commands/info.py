@@ -1,7 +1,7 @@
 """Framework information commands.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune import load_config
@@ -32,7 +32,7 @@ def cmd_info(args):
         logger.debug("Loading default configuration")
         config = load_config()
 
-    logger.info("=== Empathy Framework Info ===\n")
+    logger.info("=== Attune AI Info ===\n")
     logger.info("Configuration:")
     logger.info(f"  User ID: {config.user_id}")
     logger.info(f"  Target Level: {config.target_level}")
@@ -133,7 +133,7 @@ def cmd_frameworks(args):
             print()
 
         print("-" * 60)
-        print("  Use: empathy frameworks --recommend <use_case>")
+        print("  Use: Attune AIs --recommend <use_case>")
         print("  Use cases: general, rag, multi_agent, code_analysis")
         print("=" * 60 + "\n")
 

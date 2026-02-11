@@ -1,10 +1,10 @@
 """EmpathyOS - Core Implementation
 
-The main entry point for the Empathy Framework, providing access to all
+The main entry point for the Attune AI, providing access to all
 5 empathy levels and system thinking integrations.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

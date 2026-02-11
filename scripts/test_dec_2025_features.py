@@ -387,7 +387,7 @@ def main():
     print(
         f"""
 {BOLD}{"=" * 60}{RESET}
-{BOLD}Empathy Framework - December 2025 Features Test{RESET}
+{BOLD}Attune AI - December 2025 Features Test{RESET}
 {BOLD}{"=" * 60}{RESET}
 
 Testing features from recent implementation sessions:

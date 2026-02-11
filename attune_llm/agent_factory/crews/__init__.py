@@ -1,11 +1,11 @@
-"""Empathy Framework - Pre-built Crews
+"""Attune AI - Pre-built Crews
 
 Ready-to-use multi-agent crews for common tasks.
 Each crew leverages CrewAI's hierarchical collaboration patterns
 with XML-enhanced prompts for structured output.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune_llm.agent_factory.crews.code_review import (

@@ -6,7 +6,7 @@ Empathy patterns ensure wizards provide excellent user experience:
 - User Guidance: Help text, examples, and prompts
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from typing import Literal
@@ -20,7 +20,7 @@ class EmpathyLevelPattern(BasePattern, CodeGeneratorMixin):
     """Empathy level configuration pattern.
 
     **Description:**
-    The Empathy Framework supports 5 levels of empathy (0-4), determining
+    The Attune AI supports 5 levels of empathy (0-4), determining
     how proactive and anticipatory a wizard is.
 
     **Usage:** 16 wizards (all domain wizards)

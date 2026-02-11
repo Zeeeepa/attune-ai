@@ -3,7 +3,7 @@
 Data classes for tracking LLM calls, workflows, tests, and agent assignments.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import asdict, dataclass, field

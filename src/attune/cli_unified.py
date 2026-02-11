@@ -1,4 +1,4 @@
-"""Unified CLI for Empathy Framework
+"""Unified CLI for Attune AI
 
 DEPRECATED: This module is deprecated as of v5.0.0.
 Use the minimal CLI instead: `empathy` (attune.cli_minimal)
@@ -27,7 +27,7 @@ Usage:
     empathy ship                        # Pre-commit check
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # ruff: noqa: E402
@@ -152,7 +152,7 @@ def _run_workflow(name: str, path: Path, json_output: bool = False):
 
 app = typer.Typer(
     name="empathy",
-    help="Empathy Framework - Intelligent AI-Developer Collaboration",
+    help="Attune AI - Intelligent AI-Developer Collaboration",
     no_args_is_help=True,
     rich_markup_mode="rich",
 )
@@ -171,7 +171,7 @@ def get_empathy_version() -> str:
 def version_callback(value: bool):
     """Show version and exit."""
     if value:
-        console.print(f"[bold blue]Empathy Framework[/bold blue] v{get_empathy_version()}")
+        console.print(f"[bold blue]Attune AI[/bold blue] v{get_empathy_version()}")
         raise typer.Exit()
 
 
@@ -186,7 +186,7 @@ def callback(
         help="Show version and exit",
     ),
 ):
-    """Empathy Framework - Intelligent AI-Developer Collaboration
+    """Attune AI - Intelligent AI-Developer Collaboration
 
     [bold]Quick Start:[/bold]
         empathy do "review the code"    Ask AI to do something
@@ -533,7 +533,7 @@ def utilities_cheatsheet():
     console.print(
         Panel.fit(
             CHEATSHEET_CONTENT,
-            title="[bold blue]Empathy Framework Cheatsheet[/bold blue]",
+            title="[bold blue]Attune AI Cheatsheet[/bold blue]",
         ),
     )
 
@@ -598,7 +598,7 @@ def cheatsheet():
     console.print(
         Panel.fit(
             CHEATSHEET_CONTENT,
-            title="[bold blue]Empathy Framework Cheatsheet[/bold blue]",
+            title="[bold blue]Attune AI Cheatsheet[/bold blue]",
         ),
     )
 

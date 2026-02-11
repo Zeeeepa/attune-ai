@@ -75,7 +75,7 @@ def main():
 
     print("=" * 80)
     print("PERFORMANCE BOTTLENECK ANALYSIS")
-    print("Empathy Framework - Phase 2 Optimization")
+    print("Attune AI - Phase 2 Optimization")
     print("=" * 80)
 
     all_hotspots = []

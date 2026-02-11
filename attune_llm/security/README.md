@@ -1,6 +1,6 @@
 # Security Module
 
-Enterprise-grade security controls for the Empathy Framework, including secrets detection, PII scrubbing, audit logging, and data classification.
+Enterprise-grade security controls for the Attune AI, including secrets detection, PII scrubbing, audit logging, and data classification.
 
 ## Phase 2: Secrets Detection (v1.8.0-beta) ✅
 
@@ -252,11 +252,11 @@ Planned for Phase 3 (v1.8.0):
 
 For questions or issues:
 - File an issue on GitHub
-- Contact the Empathy Framework team
+- Contact the Attune AI team
 - See main documentation at `attune_llm/README.md`
 
 ---
 
-**Author**: Empathy Framework Team
+**Author**: Attune AI Team
 **Version**: 1.8.0-beta
-**License**: Fair Source 0.9
+**License**: Apache License 2.0

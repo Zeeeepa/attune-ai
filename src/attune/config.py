@@ -1,4 +1,4 @@
-"""Configuration Management for Empathy Framework
+"""Configuration Management for Attune AI
 
 Supports:
 - YAML configuration files
@@ -7,7 +7,7 @@ Supports:
 - Default configuration
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

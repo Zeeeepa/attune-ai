@@ -13,7 +13,7 @@ Good research makes writing faster. Spending time on thorough
 extraction pays dividends in the writing phase.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import re

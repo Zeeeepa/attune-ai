@@ -1,6 +1,6 @@
 
 ============================================================
-PROFILING SUITE - Empathy Framework
+PROFILING SUITE - Attune AI
 Phase 2 Performance Optimization
 ============================================================
 

@@ -1,7 +1,7 @@
 """Inspect commands for patterns, metrics, and interactive REPL.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import heapq
@@ -36,7 +36,7 @@ def cmd_run(args):
     user_id = args.user_id or "cli_user"
     level = args.level
 
-    print("🧠 Empathy Framework - Interactive Mode")
+    print("🧠 Attune AI - Interactive Mode")
     print("=" * 50)
 
     # Load configuration

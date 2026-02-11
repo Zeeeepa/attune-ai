@@ -1,4 +1,4 @@
-"""Multi-Model Workflow Templates for Empathy Framework
+"""Multi-Model Workflow Templates for Attune AI
 
 Cost-optimized workflow patterns that leverage 3-tier model routing:
 - Haiku (cheap): Summarization, classification, triage
@@ -26,7 +26,7 @@ Workflow Discovery:
     Then call discover_workflows() to load all registered workflows.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import importlib.metadata
@@ -300,7 +300,7 @@ def discover_workflows(
 
     This function loads workflows registered as entry points under the
     'empathy.workflows' group. This allows third-party packages to register
-    custom workflows that integrate with the Empathy Framework.
+    custom workflows that integrate with the Attune AI.
 
     Note: Workflows are loaded lazily - classes are only imported when
     the workflow is actually used, reducing initial import time.

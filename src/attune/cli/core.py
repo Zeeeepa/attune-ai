@@ -4,7 +4,7 @@ Shared utilities, console configuration, and helper functions used across
 all CLI command modules.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from importlib.metadata import version as get_version
@@ -28,5 +28,5 @@ def get_empathy_version() -> str:
 def version_callback(value: bool) -> None:
     """Show version and exit."""
     if value:
-        console.print(f"[bold blue]Empathy Framework[/bold blue] v{get_empathy_version()}")
+        console.print(f"[bold blue]Attune AI[/bold blue] v{get_empathy_version()}")
         raise typer.Exit()

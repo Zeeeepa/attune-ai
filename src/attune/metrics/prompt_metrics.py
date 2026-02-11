@@ -4,7 +4,7 @@ Tracks token usage, latency, success rates, and other metrics for
 XML-enhanced prompts to enable optimization and A/B testing.
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json

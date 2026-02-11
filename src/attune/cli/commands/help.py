@@ -1,7 +1,7 @@
 """Help and information commands for the CLI.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from importlib.metadata import version as get_version
@@ -15,7 +15,7 @@ logger = get_logger(__name__)
 
 
 def cmd_version(args):
-    """Display version information for Empathy Framework.
+    """Display version information for Attune AI.
 
     Args:
         args: Namespace object from argparse (no additional attributes used).
@@ -32,7 +32,7 @@ def cmd_version(args):
         version = "unknown"
     logger.info(f"Empathy v{version}")
     logger.info("Copyright 2025 Smart-AI-Memory")
-    logger.info("Licensed under Fair Source License 0.9")
+    logger.info("Licensed under the Apache License, Version 2.0")
     logger.info("\n✨ Built with Claude Code + MemDocs + VS Code transformative stack")
 
 
@@ -120,9 +120,9 @@ def cmd_onboard(args):
     # Define onboarding steps
     steps = [
         {
-            "title": "Welcome to Empathy Framework",
+            "title": "Welcome to Attune AI",
             "content": """
-Welcome! Empathy Framework helps you build AI systems with 5 levels
+Welcome! Attune AI helps you build AI systems with 5 levels
 of sophistication, from reactive responses to anticipatory assistance.
 
 This tutorial will walk you through the key features.

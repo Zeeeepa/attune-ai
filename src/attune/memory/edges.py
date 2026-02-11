@@ -4,7 +4,7 @@ Defines edge types for connecting nodes in the knowledge graph.
 Edges represent relationships between entities discovered by workflows.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass, field

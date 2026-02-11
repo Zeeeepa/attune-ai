@@ -10,7 +10,7 @@ Supports multiple embedding backends:
 4. Sentence Transformers: Local neural embeddings (requires torch)
 
 Copyright 2026 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

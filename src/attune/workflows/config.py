@@ -16,7 +16,7 @@ Model configurations are sourced from the unified registry at
 attune.models.MODEL_REGISTRY.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import json
@@ -545,7 +545,7 @@ def get_model(provider: str, tier: str, config: WorkflowConfig | None = None) ->
 
 def create_example_config() -> str:
     """Generate an example configuration file content."""
-    return """# Empathy Framework - Workflow Configuration
+    return """# Attune AI - Workflow Configuration
 # Place this file at: .attune/workflows.yaml
 
 # =============================================================================

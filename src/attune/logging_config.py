@@ -1,4 +1,4 @@
-"""Centralized Logging Configuration for Empathy Framework
+"""Centralized Logging Configuration for Attune AI
 
 Provides professional logging setup with:
 - Console and file logging
@@ -7,7 +7,7 @@ Provides professional logging setup with:
 - Configurable log levels
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import logging

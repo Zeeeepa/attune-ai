@@ -3,7 +3,7 @@
 Demonstrates practical usage of the SecretsDetector module for
 enterprise privacy integration.
 
-Author: Empathy Framework Team
+Author: Attune AI Team
 Version: 1.8.0-beta
 """
 

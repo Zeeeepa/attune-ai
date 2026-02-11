@@ -7,7 +7,7 @@ This module contains the core data structures used across all execution strategi
 Extracted from execution_strategies.py for improved maintainability.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

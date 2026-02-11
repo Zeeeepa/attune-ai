@@ -9,7 +9,7 @@ Web dashboard for monitoring all 6 Agent Coordination patterns:
 6. Agent-to-LLM Feedback Loop
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

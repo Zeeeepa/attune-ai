@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Integration test for Empathy Framework v3.7.0 release."""
+"""Integration test for Attune AI v3.7.0 release."""
 
 import sys
 

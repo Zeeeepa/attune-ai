@@ -9,7 +9,7 @@ Usage:
     python benchmarks/benchmark_scanner_optimizations.py
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import sys
@@ -337,7 +337,7 @@ def main():
     """Run comprehensive benchmark suite."""
     print("=" * 70)
     print("SCANNER OPTIMIZATION BENCHMARK SUITE")
-    print("Empathy Framework - Project Scanner Performance Analysis")
+    print("Attune AI - Project Scanner Performance Analysis")
     print("=" * 70)
 
     import multiprocessing as mp

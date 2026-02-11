@@ -5,7 +5,7 @@ These abstractions allow seamless switching between LangChain, LangGraph,
 AutoGen, Haystack, and native Empathy agents.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from abc import ABC, abstractmethod

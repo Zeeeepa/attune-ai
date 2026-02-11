@@ -1,12 +1,12 @@
 """Empathy LLM Toolkit
 
-Wraps LLM providers (OpenAI, Anthropic, local models) with Empathy Framework levels.
+Wraps LLM providers (OpenAI, Anthropic, local models) with Attune AI levels.
 
 Enables progression from Level 1 (reactive) to Level 4 (anticipatory) AI collaboration
 with any LLM backend.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from .core import EmpathyLLM

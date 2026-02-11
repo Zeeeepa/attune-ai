@@ -6,7 +6,7 @@ Validation patterns ensure wizard data is correct and authorized:
 - User Approval: Require explicit user consent before finalization
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from typing import Literal

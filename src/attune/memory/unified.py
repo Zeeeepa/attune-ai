@@ -1,4 +1,4 @@
-"""Unified Memory Interface for Empathy Framework
+"""Unified Memory Interface for Attune AI
 
 Provides a single API for both short-term (Redis) and long-term (persistent) memory,
 with automatic pattern promotion and environment-aware storage backend selection.
@@ -23,7 +23,7 @@ Usage:
     memory.promote_pattern(staged_pattern_id)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import os

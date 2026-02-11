@@ -4,7 +4,7 @@ Security validation functions for pattern IDs, agent IDs, classifications,
 and file paths. Used by both the MemoryControlPanel class and the API handler.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from __future__ import annotations

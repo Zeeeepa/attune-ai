@@ -1,4 +1,4 @@
-"""Empathy Service - Main service layer for the Empathy Framework backend.
+"""Empathy Service - Main service layer for the Attune AI backend.
 Coordinates analysis requests and manages wizard interactions.
 """
 
@@ -8,7 +8,7 @@ from .analyzers.multi_layer_analyzer import MultiLayerAnalyzer
 
 
 class EmpathyService:
-    """Main service for coordinating Empathy Framework operations.
+    """Main service for coordinating Attune AI operations.
     Handles analysis requests, wizard management, and result aggregation.
     """
 

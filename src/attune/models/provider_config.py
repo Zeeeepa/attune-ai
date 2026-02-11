@@ -181,7 +181,7 @@ def configure_provider_interactive() -> ProviderConfig:
         ProviderConfig configured for Anthropic
     """
     print("\n" + "=" * 60)
-    print("Empathy Framework - Provider Configuration (Claude-Native v5.0.0)")
+    print("Attune AI - Provider Configuration (Claude-Native v5.0.0)")
     print("=" * 60)
 
     # Check for Anthropic API key
@@ -244,7 +244,7 @@ def configure_provider_cli(
     if provider and provider.lower() != "anthropic":
         raise ValueError(
             f"Provider '{provider}' is not supported. "
-            f"Empathy Framework is now Claude-native (v5.0.0). "
+            f"Attune AI is now Claude-native (v5.0.0). "
             f"Only 'anthropic' provider is available. "
             f"See docs/CLAUDE_NATIVE.md for migration guide."
         )

@@ -3,7 +3,7 @@
 Modular telemetry system for tracking LLM calls, workflows, tests, and agent performance.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 # Data models

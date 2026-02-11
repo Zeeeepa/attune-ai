@@ -3,7 +3,7 @@
 Defines behavior for each of the 5 empathy levels.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from enum import IntEnum
@@ -36,7 +36,7 @@ class EmpathyLevel(IntEnum):
     @classmethod
     def get_system_prompt(cls, level: int) -> str:
         """Get system prompt for operating at specific level"""
-        base = """You are an AI assistant using the Empathy Framework for collaboration.
+        base = """You are an AI assistant using the Attune AI for collaboration.
 
 Your responses should be:
 - Honest about experience (not predictive claims)

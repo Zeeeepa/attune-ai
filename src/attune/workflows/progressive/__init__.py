@@ -33,7 +33,7 @@ Usage:
     print(result.generate_report())
 
 Version: 4.1.0
-Author: Empathy Framework Team
+Author: Attune AI Team
 """
 
 from attune.workflows.progressive.core import (

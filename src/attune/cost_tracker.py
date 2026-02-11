@@ -1,4 +1,4 @@
-"""Cost Tracking for Empathy Framework
+"""Cost Tracking for Attune AI
 
 Tracks API costs across model tiers and calculates savings from
 smart model routing (Haiku/Sonnet/Opus selection).
@@ -13,7 +13,7 @@ Features:
 Model pricing is sourced from attune.models.MODEL_REGISTRY.
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import atexit

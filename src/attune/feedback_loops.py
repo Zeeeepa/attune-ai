@@ -7,7 +7,7 @@ Feedback loops are circular causal relationships that either amplify
 (reinforcing) or stabilize (balancing) system behaviors.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from dataclasses import dataclass, field

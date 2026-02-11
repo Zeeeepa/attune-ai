@@ -1,4 +1,4 @@
-"""CLAUDE.md Auto-Sync Command for Empathy Framework
+"""CLAUDE.md Auto-Sync Command for Attune AI
 
 Syncs learned patterns from Empathy's pattern storage to Claude Code's
 .claude/rules/empathy/ directory for native integration.
@@ -16,7 +16,7 @@ Output structure:
     └── coding-patterns.md       # General patterns
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import argparse

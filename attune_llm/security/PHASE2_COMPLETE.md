@@ -378,7 +378,7 @@ cat logs/audit.jsonl | jq '.'
 
 ---
 
-**Implemented by**: Empathy Framework Team
+**Implemented by**: Attune AI Team
 **Implementation Date**: 2025-11-24
 **Version**: 1.0.0
-**License**: Fair Source 0.9
+**License**: Apache License 2.0

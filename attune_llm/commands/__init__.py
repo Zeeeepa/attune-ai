@@ -1,4 +1,4 @@
-"""Commands Module for Empathy Framework
+"""Commands Module for Attune AI
 
 Provides command loading, parsing, and execution with integration
 to hooks, context management, and learning modules.
@@ -8,7 +8,7 @@ See: https://github.com/affaan-m/everything-claude-code (MIT License)
 See: ACKNOWLEDGMENTS.md for full attribution.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from attune_llm.commands.context import (

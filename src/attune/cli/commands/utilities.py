@@ -3,7 +3,7 @@
 General-purpose utility commands (sync, cheatsheet, dashboard, etc.).
 
 Copyright 2025 Smart-AI-Memory
-Licensed under Fair Source License 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import subprocess
@@ -85,7 +85,7 @@ def cheatsheet() -> None:
   empathy telemetry show    View recent LLM calls & costs
   empathy telemetry savings Calculate cost savings (tier routing)
   empathy telemetry export  Export usage data (JSON/CSV)""",
-            title="[bold blue]Empathy Framework Cheatsheet[/bold blue]",
+            title="[bold blue]Attune AI Cheatsheet[/bold blue]",
         )
     )
 

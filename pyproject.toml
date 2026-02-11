@@ -17,26 +17,33 @@ maintainers = [
 ]
 keywords = [
     "ai",
-    "collaboration",
-    "empathy",
-    "anticipatory-ai",
-    "systems-thinking",
-    "llm",
     "claude",
-    "memdocs",
-    "level-5-ai",
-    "code-inspection",
+    "anthropic",
+    "llm",
+    "ai-agent",
+    "multi-agent",
+    "developer-tools",
+    "code-review",
+    "security-audit",
+    "test-generation",
+    "workflow-automation",
+    "cost-optimization",
+    "claude-code",
+    "mcp",
+    "model-context-protocol",
     "static-analysis",
     "code-quality",
-    "sarif",
-    "github-actions",
-    "developer-tools"
+    "devops",
+    "ci-cd",
+    "cli"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -44,6 +51,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Typing :: Typed",
 ]
 
 # Core dependencies - minimal required for framework to function
@@ -309,12 +318,8 @@ all = [
 # Primary minimal CLI (v4.7.1+) - streamlined for automation/CI
 attune = "attune.cli_minimal:main"
 
-# Legacy entry points (for backwards compatibility)
-empathy-legacy = "attune.cli:main"
-empathy-unified = "attune.cli_unified:main"  # Previous unified CLI
-empathy-memory = "attune.memory.control_panel:main"
-empathy-inspect = "attune_software.cli.inspect:main"
-empathy-sync-claude = "attune_llm.cli.sync_claude:main"
+# Legacy entry points removed in v2.6.2 (was empathy-*)
+# Use 'attune' CLI instead
 
 [project.urls]
 Homepage = "https://www.smartaimemory.com"

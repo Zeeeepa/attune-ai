@@ -13,7 +13,7 @@ Hospital handoff procedures (shift changes, patient transfers) and software depl
 - **Assumptions about what the receiving party knows**
 - **Time pressure leading to shortcuts**
 
-By analyzing healthcare protocols with the Empathy Framework, we discover patterns that **predict and prevent deployment failures**.
+By analyzing healthcare protocols with the Attune AI, we discover patterns that **predict and prevent deployment failures**.
 
 ## What Makes This "Transformative"?
 
@@ -30,7 +30,7 @@ By analyzing healthcare protocols with the Empathy Framework, we discover patter
 ### Prerequisites
 
 ```bash
-# Install Empathy Framework with MemDocs integration
+# Install Attune AI with MemDocs integration
 pip install attune-ai[full]
 ```
 
@@ -193,12 +193,12 @@ pattern = memory.retrieve_cross_domain(
 
 ## License
 
-Copyright 2025 Deep Study AI, LLC
-Licensed under Fair Source 0.9
+Copyright 2025 Smart AI Memory
+Licensed under the Apache License, Version 2.0
 
 ---
 
 **This is Level 5 Transformative Empathy powered by:**
-- **Empathy Framework** - Cross-domain pattern matching
+- **Attune AI** - Cross-domain pattern matching
 - **MemDocs** - Long-term memory for pattern storage
 - **Coach Wizards** - Level 4 Anticipatory predictions

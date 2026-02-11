@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Redis Short-Term Memory Exploration Script
 
-Interactive demo of all Redis memory features for the Empathy Framework.
+Interactive demo of all Redis memory features for the Attune AI.
 Run this to explore and gain confidence in the Redis implementation.
 
 Usage:
@@ -18,7 +18,7 @@ Environment Variables:
     REDIS_PASSWORD Redis password (optional)
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 import argparse

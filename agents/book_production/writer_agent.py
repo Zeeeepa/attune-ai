@@ -13,7 +13,7 @@ The magic happens when technical accuracy meets engaging narrative.
 Good chapters teach and entertain simultaneously.
 
 Copyright 2025 Smart AI Memory, LLC
-Licensed under Fair Source 0.9
+Licensed under the Apache License, Version 2.0
 """
 
 from datetime import datetime
@@ -73,7 +73,7 @@ class WriterAgent(OpusAgent):
     def get_system_prompt(self) -> str:
         """System prompt for chapter writing"""
         return """You are an expert technical writer creating book chapters for
-"Persistent Memory for AI" - a book about MemDocs and the Empathy Framework.
+"Persistent Memory for AI" - a book about MemDocs and the Attune AI.
 
 ## Your Writing Voice
 
