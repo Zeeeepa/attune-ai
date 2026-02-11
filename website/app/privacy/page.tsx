@@ -34,7 +34,7 @@ export default function PrivacyPage() {
             <div className="max-w-4xl mx-auto prose prose-lg">
               <h2>1. Introduction</h2>
               <p>
-                Deep Study AI, LLC (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates smartaimemory.com and the Empathy Framework.
+                Smart AI Memory (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates smartaimemory.com and the Empathy Framework.
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when
                 you visit our website or use our products.
               </p>
@@ -167,7 +167,7 @@ export default function PrivacyPage() {
               <ul>
                 <li><strong>Email:</strong> patrick.roebuck@pm.me</li>
                 <li><strong>Website:</strong> smartaimemory.com/contact</li>
-                <li><strong>Company:</strong> Deep Study AI, LLC</li>
+                <li><strong>Company:</strong> Smart AI Memory</li>
               </ul>
             </div>
           </div>

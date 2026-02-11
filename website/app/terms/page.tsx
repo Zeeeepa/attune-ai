@@ -89,7 +89,7 @@ export default function TermsPage() {
               <h3>5.1 Our Intellectual Property</h3>
               <p>
                 The Empathy Framework, documentation, and website content are owned by
-                Deep Study AI, LLC and protected by copyright, trademark, and other intellectual property laws.
+                Smart AI Memory and protected by copyright, trademark, and other intellectual property laws.
               </p>
 
               <h3>5.2 Your Content</h3>
@@ -140,7 +140,7 @@ export default function TermsPage() {
 
               <h3>7.3 Limitation of Liability</h3>
               <p>
-                To the maximum extent permitted by law, Deep Study AI, LLC shall not be liable for:
+                To the maximum extent permitted by law, Smart AI Memory shall not be liable for:
               </p>
               <ul>
                 <li>Indirect, incidental, special, or consequential damages</li>
@@ -150,7 +150,7 @@ export default function TermsPage() {
 
               <h2>8. Indemnification</h2>
               <p>
-                You agree to indemnify and hold harmless Deep Study AI, LLC from any claims, damages,
+                You agree to indemnify and hold harmless Smart AI Memory from any claims, damages,
                 or expenses arising from:
               </p>
               <ul>
@@ -217,7 +217,7 @@ export default function TermsPage() {
               <ul>
                 <li><strong>Email:</strong> patrick.roebuck@pm.me</li>
                 <li><strong>Website:</strong> smartaimemory.com/contact</li>
-                <li><strong>Company:</strong> Deep Study AI, LLC</li>
+                <li><strong>Company:</strong> Smart AI Memory</li>
               </ul>
 
               <hr />

@@ -184,7 +184,7 @@ All pages now have proper Open Graph tags including:
 - Contact information
 
 #### Terms of Service Covers:
-- Fair Source License explanation
+- Apache License 2.0 explanation
 - Free vs. Commercial tiers
 - Acceptable use policy
 - User accounts and responsibilities

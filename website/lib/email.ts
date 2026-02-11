@@ -98,7 +98,7 @@ export async function sendLicenseEmail(data: {
       <p>If you have any questions, reply to this email or contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>
     </div>
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Deep Study AI, LLC. All rights reserved.</p>
+      <p>&copy; ${new Date().getFullYear()} Smart AI Memory. All rights reserved.</p>
       <p><a href="https://smartaimemory.com">smartaimemory.com</a></p>
     </div>
   </div>
@@ -186,7 +186,7 @@ export async function sendBookEmail(data: {
       <p>If you have any questions, contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>
     </div>
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Deep Study AI, LLC. All rights reserved.</p>
+      <p>&copy; ${new Date().getFullYear()} Smart AI Memory. All rights reserved.</p>
       <p><a href="https://smartaimemory.com">smartaimemory.com</a></p>
     </div>
   </div>
@@ -261,7 +261,7 @@ export async function sendContributionEmail(data: {
       <p>Questions? Contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>
     </div>
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Deep Study AI, LLC. All rights reserved.</p>
+      <p>&copy; ${new Date().getFullYear()} Smart AI Memory. All rights reserved.</p>
       <p><a href="https://smartaimemory.com">smartaimemory.com</a></p>
     </div>
   </div>

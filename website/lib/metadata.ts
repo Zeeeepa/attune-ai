@@ -53,11 +53,11 @@ export function generateMetadata(config?: SEOConfig): Metadata {
     description,
     keywords,
     authors: [
-      { name: 'Deep Study AI, LLC' },
+      { name: 'Smart AI Memory' },
       ...(config?.author ? [{ name: config.author }] : []),
     ],
-    creator: 'Deep Study AI, LLC',
-    publisher: 'Deep Study AI, LLC',
+    creator: 'Smart AI Memory',
+    publisher: 'Smart AI Memory',
     formatDetection: {
       email: false,
       address: false,
@@ -149,7 +149,7 @@ export function generateStructuredData(type: 'organization' | 'product' | 'artic
       return {
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: 'Deep Study AI, LLC',
+        name: 'Smart AI Memory',
         alternateName: 'Smart AI Memory',
         url: defaultMetadata.url,
         logo: `${defaultMetadata.url}/logo.png`,
@@ -177,7 +177,7 @@ export function generateStructuredData(type: 'organization' | 'product' | 'artic
         url: productData?.url || `${defaultMetadata.url}/framework`,
         author: {
           '@type': 'Organization',
-          name: 'Deep Study AI, LLC',
+          name: 'Smart AI Memory',
         },
         offers: {
           '@type': 'Offer',
@@ -203,11 +203,11 @@ export function generateStructuredData(type: 'organization' | 'product' | 'artic
         image: articleData?.image || defaultMetadata.image,
         author: {
           '@type': 'Organization',
-          name: articleData?.author || 'Deep Study AI, LLC',
+          name: articleData?.author || 'Smart AI Memory',
         },
         publisher: {
           '@type': 'Organization',
-          name: 'Deep Study AI, LLC',
+          name: 'Smart AI Memory',
           logo: {
             '@type': 'ImageObject',
             url: `${defaultMetadata.url}/logo.png`,
