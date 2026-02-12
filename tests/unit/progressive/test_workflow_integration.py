@@ -344,3 +344,122 @@ class TestProgressiveWorkflowModelSelection:
         assert cheap in ["gpt-4o-mini", "claude-3-haiku"]
         assert capable in ["claude-3-5-sonnet", "gpt-4o"]
         assert premium in ["claude-opus-4", "o1"]
+
+
+class TestEscalationEdgeCases:
+    """Test edge cases in the escalation loop."""
+
+    def test_get_next_tier_at_highest_tier(self):
+        """Test _get_next_tier returns None when at highest tier."""
+        config = EscalationConfig(tiers=[Tier.CHEAP, Tier.CAPABLE, Tier.PREMIUM])
+        workflow = MockProgressiveWorkflow(config=config)
+
+        # At highest tier, next_tier should be None
+        next_tier = workflow._get_next_tier(Tier.PREMIUM)
+
+        assert next_tier is None  # Can't escalate from PREMIUM
+
+    def test_escalation_user_declines_approval(self, monkeypatch):
+        """Test escalation stopped when user declines approval."""
+        # Enable interactive mode
+        monkeypatch.delenv("CI", raising=False)
+        monkeypatch.delenv("ATTUNE_NON_INTERACTIVE", raising=False)
+
+        config = EscalationConfig(enabled=True, auto_approve_under=None)
+
+        # Mock workflow that triggers escalation
+        class FailingWorkflow(MockProgressiveWorkflow):
+            def _execute_tier_impl(self, tier, items, context, **kwargs):
+                # Generate failing items to trigger escalation
+                return [
+                    {
+                        "item": item,
+                        "quality_score": 60,
+                        "passed": False,
+                        "syntax_errors": [],
+                        "coverage": 55.0,
+                        "assertions": 2.0,
+                        "confidence": 0.60,
+                    }
+                    for item in items
+                ]
+
+        workflow = FailingWorkflow(config=config)
+
+        # Mock: approve initial request, but decline escalation
+        with patch("builtins.input", side_effect=["y", "n"]):  # y for initial, n for escalation
+            with patch("sys.stdin.isatty", return_value=True):
+                items = ["item1", "item2"]
+                result = workflow.execute(items)
+
+        # Should stop at cheap tier (user declined escalation)
+        assert len(result.tier_results) == 1
+        assert result.tier_results[0].tier == Tier.CHEAP
+        assert result.success is False
+
+    def test_escalation_without_telemetry(self, monkeypatch):
+        """Test escalation when telemetry is disabled (telemetry=None)."""
+        monkeypatch.setenv("ATTUNE_NON_INTERACTIVE", "1")
+
+        config = EscalationConfig(
+            enabled=True, auto_approve_under=10.00, cheap_min_attempts=1  # Allow escalation after 1 attempt
+        )
+
+        # Mock workflow that triggers escalation
+        class EscalatingWorkflow(MockProgressiveWorkflow):
+            execution_count = 0
+
+            def _execute_tier_impl(self, tier, items, context, **kwargs):
+                self.execution_count += 1
+
+                if tier == Tier.CHEAP:
+                    # First execution: low quality to trigger escalation
+                    return [
+                        {
+                            "item": item,
+                            "quality_score": 60,
+                            "passed": False,
+                            "syntax_errors": [],
+                            "coverage": 55.0,
+                            "assertions": 2.5,
+                            "confidence": 0.60,
+                        }
+                        for item in items
+                    ]
+                else:
+                    # Second execution: high quality
+                    return [
+                        {
+                            "item": item,
+                            "quality_score": 90,
+                            "passed": True,
+                            "syntax_errors": [],
+                            "coverage": 90.0,
+                            "assertions": 6.0,
+                            "confidence": 0.90,
+                        }
+                        for item in items
+                    ]
+
+        workflow = EscalatingWorkflow(config=config)
+        # Manually disable telemetry
+        workflow.telemetry = None
+
+        items = ["item1", "item2"]
+        result = workflow.execute(items)
+
+        # Should escalate from cheap to capable
+        assert len(result.tier_results) >= 2
+        # Verify telemetry branch was hit (no error when telemetry is None)
+        assert result.success is True
+
+    def test_get_next_tier_invalid_tier(self):
+        """Test _get_next_tier with tier not in config list."""
+        config = EscalationConfig(tiers=[Tier.CHEAP, Tier.PREMIUM])
+        workflow = MockProgressiveWorkflow(config=config)
+
+        # CAPABLE is not in the tier list
+        next_tier = workflow._get_next_tier(Tier.CAPABLE)
+
+        # Should return None (tier not found in list)
+        assert next_tier is None

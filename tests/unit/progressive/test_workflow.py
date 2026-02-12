@@ -477,3 +477,73 @@ class TestProgressiveWorkflowEdgeCases:
         total_cost = workflow._estimate_total_cost(0)
 
         assert total_cost == 0.0
+
+
+class TestInteractiveApprovalPaths:
+    """Test interactive approval prompt code paths."""
+
+    def test_request_approval_interactive_exceeds_threshold(self, monkeypatch):
+        """Test interactive prompt when cost exceeds threshold."""
+        # Enable interactive mode
+        monkeypatch.delenv("CI", raising=False)
+        monkeypatch.delenv("ATTUNE_NON_INTERACTIVE", raising=False)
+        monkeypatch.setenv("ATTUNE_AUTO_APPROVE_MAX", "1.00")
+
+        workflow = ProgressiveWorkflow()
+
+        # Mock input to return 'y' for approval
+        with patch("builtins.input", return_value="y"):
+            with patch("sys.stdin.isatty", return_value=True):
+                approved = workflow._request_approval("Test task", 5.00)
+
+        # Should prompt and approve
+        assert approved is True
+
+    def test_request_approval_interactive_user_declines(self, monkeypatch):
+        """Test interactive prompt when user declines."""
+        monkeypatch.delenv("CI", raising=False)
+        monkeypatch.delenv("ATTUNE_NON_INTERACTIVE", raising=False)
+        monkeypatch.setenv("ATTUNE_AUTO_APPROVE_MAX", "1.00")
+
+        workflow = ProgressiveWorkflow()
+
+        # Mock input to return 'n' for decline
+        with patch("builtins.input", return_value="n"):
+            with patch("sys.stdin.isatty", return_value=True):
+                approved = workflow._request_approval("Test task", 5.00)
+
+        assert approved is False
+
+    def test_request_escalation_approval_interactive_approve(self, monkeypatch):
+        """Test escalation approval in interactive mode with user approving."""
+        monkeypatch.delenv("CI", raising=False)
+        monkeypatch.delenv("ATTUNE_NON_INTERACTIVE", raising=False)
+
+        config = EscalationConfig(auto_approve_under=None)
+        workflow = ProgressiveWorkflow(config=config)
+
+        # Mock input to return 'y'
+        with patch("builtins.input", return_value="y"):
+            with patch("sys.stdin.isatty", return_value=True):
+                approved = workflow._request_escalation_approval(
+                    Tier.CHEAP, Tier.CAPABLE, 10, 2.50
+                )
+
+        assert approved is True
+
+    def test_request_escalation_approval_interactive_decline(self, monkeypatch):
+        """Test escalation approval in interactive mode with user declining."""
+        monkeypatch.delenv("CI", raising=False)
+        monkeypatch.delenv("ATTUNE_NON_INTERACTIVE", raising=False)
+
+        config = EscalationConfig(auto_approve_under=None)
+        workflow = ProgressiveWorkflow(config=config)
+
+        # Mock input to return 'n'
+        with patch("builtins.input", return_value="n"):
+            with patch("sys.stdin.isatty", return_value=True):
+                approved = workflow._request_escalation_approval(
+                    Tier.CHEAP, Tier.CAPABLE, 10, 2.50
+                )
+
+        assert approved is False
