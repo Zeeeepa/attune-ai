@@ -1,30 +1,15 @@
-"""Continuous Learning Module for Attune AI
+"""attune_llm.learning - DEPRECATED. Use attune.learning instead.
 
-Automatic pattern extraction from sessions to enable learning and improvement.
-Identifies valuable patterns from user interactions for future application.
-
-Architectural patterns inspired by everything-claude-code by Affaan Mustafa.
-See: https://github.com/affaan-m/everything-claude-code (MIT License)
-See: ACKNOWLEDGMENTS.md for full attribution.
-
-Copyright 2025 Smart AI Memory, LLC
-Licensed under the Apache License, Version 2.0
+This module re-exports from attune.learning for backward compatibility.
+Will be removed in attune-ai v3.0.0.
 """
+import warnings
 
-from attune_llm.learning.evaluator import SessionEvaluator, SessionQuality
-from attune_llm.learning.extractor import (
-    ExtractedPattern,
-    PatternCategory,
-    PatternExtractor,
+warnings.warn(
+    "attune_llm.learning is deprecated. Use attune.learning instead. "
+    "This module will be removed in attune-ai v3.0.0.",
+    DeprecationWarning,
+    stacklevel=2,
 )
-from attune_llm.learning.storage import LearnedSkill, LearnedSkillsStorage
-
-__all__ = [
-    "ExtractedPattern",
-    "LearnedSkill",
-    "LearnedSkillsStorage",
-    "PatternCategory",
-    "PatternExtractor",
-    "SessionEvaluator",
-    "SessionQuality",
-]
+from attune.learning import *  # noqa: F401,F403
+from attune.learning import __all__  # noqa: F811

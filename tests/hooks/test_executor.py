@@ -4,8 +4,8 @@ import asyncio
 
 import pytest
 
-from attune_llm.hooks.config import HookDefinition, HookType
-from attune_llm.hooks.executor import HookExecutor, HookExecutorSync
+from attune.hooks.config import HookDefinition, HookType
+from attune.hooks.executor import HookExecutor, HookExecutorSync
 
 
 class TestHookExecutor:

@@ -18,7 +18,7 @@ def test_track_4_token_counting():
     print("=" * 60)
 
     try:
-        from attune_llm.utils.tokens import (
+        from attune.utils.tokens import (
             calculate_cost_with_cache,
             count_message_tokens,
             count_tokens,

@@ -1,20 +1,65 @@
-"""Attune slash commands for Claude Code.
+"""Attune slash commands and command subsystem.
 
-This package contains the markdown command files that define
-slash commands for use in Claude Code (VSCode, Claude Desktop).
+This package contains:
+1. Markdown command files for Claude Code slash commands
+2. Python command parsing, loading, and registry subsystem
 
-To install these commands, run:
-    attune setup
+Architectural patterns inspired by everything-claude-code by Affaan Mustafa.
+See: https://github.com/affaan-m/everything-claude-code (MIT License)
+See: ACKNOWLEDGMENTS.md for full attribution.
 
-This will copy the command files to ~/.claude/commands/
+Copyright 2025 Smart AI Memory, LLC
+Licensed under the Apache License, Version 2.0
 """
 
 from pathlib import Path
 
-# Path to the commands directory
+from attune.commands.context import (
+    CommandContext,
+    CommandExecutor,
+    create_command_context,
+)
+from attune.commands.loader import (
+    CommandLoader,
+    get_default_commands_directory,
+    load_commands_from_paths,
+)
+from attune.commands.models import (
+    CommandCategory,
+    CommandConfig,
+    CommandMetadata,
+    CommandResult,
+)
+from attune.commands.parser import CommandParser
+from attune.commands.registry import CommandRegistry
+
+# Path to the commands directory (markdown files)
 COMMANDS_DIR = Path(__file__).parent
 
 
 def get_command_files() -> list[Path]:
     """Get all command markdown files."""
     return list(COMMANDS_DIR.glob("*.md"))
+
+
+__all__ = [
+    "COMMANDS_DIR",
+    "get_command_files",
+    # Models
+    "CommandCategory",
+    "CommandConfig",
+    "CommandContext",
+    "CommandMetadata",
+    "CommandResult",
+    # Parser
+    "CommandParser",
+    # Loader
+    "CommandLoader",
+    "get_default_commands_directory",
+    "load_commands_from_paths",
+    # Registry
+    "CommandRegistry",
+    # Context & Executor
+    "CommandExecutor",
+    "create_command_context",
+]

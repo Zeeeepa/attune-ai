@@ -1,39 +1,15 @@
-"""Hook Scripts
+"""attune_llm.hooks.scripts - DEPRECATED. Use attune.hooks.scripts instead.
 
-Pre-built hook scripts for common Attune AI events.
-
-Architectural patterns inspired by everything-claude-code by Affaan Mustafa.
-See: https://github.com/affaan-m/everything-claude-code (MIT License)
-See: ACKNOWLEDGMENTS.md for full attribution.
-
-Copyright 2025 Smart-AI-Memory
-Licensed under the Apache License, Version 2.0
+This module re-exports from attune.hooks.scripts for backward compatibility.
+Will be removed in attune-ai v3.0.0.
 """
+import warnings
 
-from attune_llm.hooks.scripts.evaluate_session import (
-    apply_learned_patterns,
-    get_learning_summary,
-    run_evaluate_session,
+warnings.warn(
+    "attune_llm.hooks.scripts is deprecated. Use attune.hooks.scripts instead. "
+    "This module will be removed in attune-ai v3.0.0.",
+    DeprecationWarning,
+    stacklevel=2,
 )
-from attune_llm.hooks.scripts.first_time_init import (
-    check_init,
-    handle_init_response,
-    initialize_project,
-)
-from attune_llm.hooks.scripts.pre_compact import run_pre_compact
-from attune_llm.hooks.scripts.session_end import main as session_end
-from attune_llm.hooks.scripts.session_start import main as session_start
-from attune_llm.hooks.scripts.suggest_compact import main as suggest_compact
-
-__all__ = [
-    "session_start",
-    "session_end",
-    "suggest_compact",
-    "run_pre_compact",
-    "run_evaluate_session",
-    "get_learning_summary",
-    "apply_learned_patterns",
-    "check_init",
-    "handle_init_response",
-    "initialize_project",
-]
+from attune.hooks.scripts import *  # noqa: F401,F403
+from attune.hooks.scripts import __all__  # noqa: F811

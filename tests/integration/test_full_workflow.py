@@ -8,17 +8,17 @@ from pathlib import Path
 
 import pytest
 
-from attune_llm.commands import CommandContext, CommandExecutor, CommandRegistry
-from attune_llm.context.compaction import CompactState
-from attune_llm.context.manager import ContextManager
-from attune_llm.hooks.config import HookEvent
-from attune_llm.hooks.registry import HookRegistry
-from attune_llm.learning.evaluator import SessionEvaluator, SessionQuality
-from attune_llm.learning.extractor import (
+from attune.commands import CommandContext, CommandExecutor, CommandRegistry
+from attune.context.compaction import CompactState
+from attune.context.manager import ContextManager
+from attune.hooks.config import HookEvent
+from attune.hooks.registry import HookRegistry
+from attune.learning.evaluator import SessionEvaluator, SessionQuality
+from attune.learning.extractor import (
     ExtractedPattern,
     PatternCategory,
 )
-from attune_llm.learning.storage import LearnedSkillsStorage
+from attune.learning.storage import LearnedSkillsStorage
 
 
 class TestFullSessionWorkflow:
@@ -340,8 +340,8 @@ class TestModuleIntegration:
 
     def test_agents_and_commands_coexistence(self):
         """Test that agents and commands modules coexist."""
-        from attune_llm.agents_md import AgentRegistry as AgentReg
-        from attune_llm.commands import CommandRegistry as CmdReg
+        from attune.agents_md import AgentRegistry as AgentReg
+        from attune.commands import CommandRegistry as CmdReg
 
         # Both registries should work independently
         AgentReg.reset_instance()
@@ -395,7 +395,7 @@ class TestErrorHandling:
 
     def test_invalid_command_file_skipped(self, tmp_path):
         """Test that command files with content load correctly."""
-        from attune_llm.commands import CommandLoader
+        from attune.commands import CommandLoader
 
         # Create valid and minimal files
         (tmp_path / "valid.md").write_text("Valid - Description\n\nBody content.")

@@ -1,4 +1,4 @@
-"""Tests for attune_llm.utils.tokens module.
+"""Tests for attune.utils.tokens module.
 
 Tests accurate token counting using Anthropic API and tiktoken fallback.
 
@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from attune_llm.utils.tokens import (
+from attune.utils.tokens import (
     TokenCount,
     calculate_cost_with_cache,
     count_message_tokens,
@@ -58,7 +58,7 @@ class TestCountTokens:
         assert isinstance(result, int)
         assert 10 <= result <= 20
 
-    @patch("attune_llm.utils.tokens._get_client")
+    @patch("attune.utils.tokens._get_client")
     def test_api_counting_success(self, mock_get_client):
         """Test API token counting when successful."""
         # Mock the Anthropic client
@@ -74,7 +74,7 @@ class TestCountTokens:
         assert result == 10
         mock_client.messages.count_tokens.assert_called_once()
 
-    @patch("attune_llm.utils.tokens._get_client")
+    @patch("attune.utils.tokens._get_client")
     def test_api_counting_fallback_on_error(self, mock_get_client):
         """Test fallback to tiktoken when API fails."""
         # Mock API failure
@@ -145,7 +145,7 @@ class TestCountMessageTokens:
         assert result["messages"] > 0
         assert result["total"] == result["system"] + result["messages"]
 
-    @patch("attune_llm.utils.tokens._get_client")
+    @patch("attune.utils.tokens._get_client")
     def test_api_message_counting(self, mock_get_client):
         """Test API message counting."""
         # Mock client

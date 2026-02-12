@@ -24,9 +24,9 @@ from pathlib import Path
 from typing import Any
 
 # Import unified configuration (preferred)
-from attune_llm.config.unified import MemDocsConfig as UnifiedMemDocsConfig
-from attune_llm.config.unified import RedisConfig as UnifiedRedisConfig
-from attune_llm.config.unified import UnifiedAgentConfig
+from attune.config.agent_config import MemDocsConfig as UnifiedMemDocsConfig
+from attune.config.agent_config import RedisConfig as UnifiedRedisConfig
+from attune.config.agent_config import UnifiedAgentConfig
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,7 @@ class AgentConfig:
         config = AgentConfig(model="claude-opus-4-20250514")
 
         # New way
-        from attune_llm.config import UnifiedAgentConfig, ModelTier
+        from attune.config.agent_config import UnifiedAgentConfig, ModelTier
         config = UnifiedAgentConfig(
             name="writer",
             model_tier=ModelTier.PREMIUM
@@ -64,7 +64,7 @@ class AgentConfig:
 
     def __post_init__(self):
         warnings.warn(
-            "AgentConfig is deprecated. Use UnifiedAgentConfig from " "attune_llm.config instead.",
+            "AgentConfig is deprecated. Use UnifiedAgentConfig from " "attune.config.agent_config instead.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -95,7 +95,7 @@ class AgentConfig:
 class MemDocsConfig:
     """Legacy MemDocs configuration.
 
-    DEPRECATED: Use attune_llm.config.MemDocsConfig instead.
+    DEPRECATED: Use attune.config.agent_config.MemDocsConfig instead.
     """
 
     enabled: bool = True
@@ -122,7 +122,7 @@ class MemDocsConfig:
 class RedisConfig:
     """Legacy Redis configuration.
 
-    DEPRECATED: Use attune_llm.config.RedisConfig instead.
+    DEPRECATED: Use attune.config.agent_config.RedisConfig instead.
     """
 
     enabled: bool = True

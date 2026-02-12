@@ -119,14 +119,14 @@ class TestLLMToolkit:
 
     def test_hooks_import(self):
         """Test hooks module."""
-        from attune_llm.hooks import HookRegistry
+        from attune.hooks import HookRegistry
 
         registry = HookRegistry()
         assert registry is not None
 
     def test_commands_import(self):
         """Test commands module."""
-        from attune_llm.commands import CommandRegistry
+        from attune.commands import CommandRegistry
 
         CommandRegistry.reset_instance()
         registry = CommandRegistry.get_instance()
@@ -135,14 +135,14 @@ class TestLLMToolkit:
 
     def test_learning_import(self):
         """Test learning module."""
-        from attune_llm.learning import PatternExtractor
+        from attune.learning import PatternExtractor
 
         extractor = PatternExtractor()
         assert extractor is not None
 
     def test_context_import(self):
         """Test context module."""
-        from attune_llm.context import ContextManager
+        from attune.context import ContextManager
 
         # Should be able to import without error
         assert ContextManager is not None

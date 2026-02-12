@@ -4,8 +4,8 @@ import tempfile
 
 import pytest
 
-from attune_llm.agents_md.parser import MarkdownAgentParser
-from attune_llm.config.unified import ModelTier, Provider
+from attune.agents_md.parser import MarkdownAgentParser
+from attune.config.agent_config import ModelTier, Provider
 
 
 class TestMarkdownAgentParser:

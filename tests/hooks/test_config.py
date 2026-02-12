@@ -1,6 +1,6 @@
 """Tests for hook configuration models."""
 
-from attune_llm.hooks.config import (
+from attune.hooks.config import (
     HookConfig,
     HookDefinition,
     HookEvent,

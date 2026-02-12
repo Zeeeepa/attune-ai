@@ -1,22 +1,15 @@
-"""Markdown Agent System
+"""attune_llm.agents_md - DEPRECATED. Use attune.agents_md instead.
 
-Define agents in Markdown files with YAML frontmatter for portability.
-Integrates with Attune AI's UnifiedAgentConfig and model tier system.
-
-Markdown agent format inspired by everything-claude-code by Affaan Mustafa.
-See: https://github.com/affaan-m/everything-claude-code (MIT License)
-See: ACKNOWLEDGMENTS.md for full attribution.
-
-Copyright 2025 Smart-AI-Memory
-Licensed under the Apache License, Version 2.0
+This module re-exports from attune.agents_md for backward compatibility.
+Will be removed in attune-ai v3.0.0.
 """
+import warnings
 
-from attune_llm.agents_md.loader import AgentLoader
-from attune_llm.agents_md.parser import MarkdownAgentParser
-from attune_llm.agents_md.registry import AgentRegistry
-
-__all__ = [
-    "MarkdownAgentParser",
-    "AgentLoader",
-    "AgentRegistry",
-]
+warnings.warn(
+    "attune_llm.agents_md is deprecated. Use attune.agents_md instead. "
+    "This module will be removed in attune-ai v3.0.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+from attune.agents_md import *  # noqa: F401,F403
+from attune.agents_md import __all__  # noqa: F811

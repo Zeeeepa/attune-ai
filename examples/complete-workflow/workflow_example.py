@@ -18,12 +18,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from attune_llm.agents_md import AgentRegistry
-from attune_llm.context import CompactState, ContextManager, SBARHandoff
-from attune_llm.context.compaction import PatternSummary
-from attune_llm.hooks.config import HookEvent
-from attune_llm.hooks.registry import HookRegistry
-from attune_llm.learning import (
+from attune.agents_md import AgentRegistry
+from attune.context import CompactState, ContextManager, SBARHandoff
+from attune.context.compaction import PatternSummary
+from attune.hooks.config import HookEvent
+from attune.hooks.registry import HookRegistry
+from attune.learning import (
     ExtractedPattern,
     LearnedSkillsStorage,
     PatternCategory,

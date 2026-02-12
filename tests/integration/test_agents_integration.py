@@ -8,8 +8,8 @@ from textwrap import dedent
 
 import pytest
 
-from attune_llm.agents_md import AgentLoader, AgentRegistry, MarkdownAgentParser
-from attune_llm.config.unified import UnifiedAgentConfig
+from attune.agents_md import AgentLoader, AgentRegistry, MarkdownAgentParser
+from attune.config.agent_config import UnifiedAgentConfig
 
 
 class TestMarkdownAgentParserIntegration:
@@ -375,8 +375,8 @@ class TestAgentRegistryWithHooks:
 
     def test_hook_on_agent_loaded(self):
         """Test that agents can be loaded with hook notification."""
-        from attune_llm.hooks.config import HookEvent
-        from attune_llm.hooks.registry import HookRegistry
+        from attune.hooks.config import HookEvent
+        from attune.hooks.registry import HookRegistry
 
         hook_registry = HookRegistry()
         loaded_agents = []

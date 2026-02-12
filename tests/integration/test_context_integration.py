@@ -6,13 +6,13 @@ with integration to hooks and other framework components.
 
 import pytest
 
-from attune_llm.context import (
+from attune.context import (
     CompactionStateManager,
     CompactState,
     ContextManager,
     SBARHandoff,
 )
-from attune_llm.context.compaction import PatternSummary
+from attune.context.compaction import PatternSummary
 
 
 class TestCompactStateIntegration:
@@ -362,8 +362,8 @@ class TestContextWithHooksIntegration:
 
     def test_pre_compact_hook_saves_state(self, tmp_path):
         """Test that pre-compact hook triggers state save."""
-        from attune_llm.hooks.config import HookEvent
-        from attune_llm.hooks.registry import HookRegistry
+        from attune.hooks.config import HookEvent
+        from attune.hooks.registry import HookRegistry
 
         context_manager = ContextManager(storage_dir=tmp_path / "states")
         hook_registry = HookRegistry()
@@ -404,8 +404,8 @@ class TestContextWithHooksIntegration:
 
     def test_session_end_triggers_evaluation(self, tmp_path):
         """Test that session end can trigger learning evaluation."""
-        from attune_llm.hooks.config import HookEvent
-        from attune_llm.hooks.registry import HookRegistry
+        from attune.hooks.config import HookEvent
+        from attune.hooks.registry import HookRegistry
 
         hook_registry = HookRegistry()
         evaluation_results = []

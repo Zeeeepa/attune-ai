@@ -5,7 +5,7 @@ Tests for CommandConfig, CommandMetadata, and CommandResult.
 
 from pathlib import Path
 
-from attune_llm.commands.models import (
+from attune.commands.models import (
     CommandCategory,
     CommandConfig,
     CommandMetadata,

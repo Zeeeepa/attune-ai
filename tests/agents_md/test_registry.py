@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from attune_llm.agents_md.registry import AgentRegistry
-from attune_llm.config.unified import ModelTier, UnifiedAgentConfig
+from attune.agents_md.registry import AgentRegistry
+from attune.config.agent_config import ModelTier, UnifiedAgentConfig
 
 
 class TestAgentRegistry:

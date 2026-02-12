@@ -209,7 +209,7 @@ WorkflowConfig(
 **Recommendation:** When importing, use explicit module paths:
 ```python
 from attune.workflows.config import WorkflowConfig as ModelRoutingConfig
-from attune_llm.config.unified import WorkflowConfig as AgentWorkflowConfig
+from attune.config.agent_config import WorkflowConfig as AgentWorkflowConfig
 ```
 
 ## Related Files

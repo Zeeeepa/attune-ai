@@ -37,6 +37,20 @@ else:
     _validate_file_path = None
 
 # Import XML enhancement configs
+# Import agent configuration models
+from attune.config.agent_config import (  # noqa: E402
+    AgentOperationError,
+    BookProductionConfig,
+    MemDocsConfig,
+    ModelTier,
+    Provider,
+    RedisConfig,
+    UnifiedAgentConfig,
+    WorkflowMode,
+)
+from attune.config.agent_config import (
+    WorkflowConfig as AgentWorkflowConfig,
+)
 from attune.config.xml_config import (  # noqa: E402
     AdaptiveConfig,
     EmpathyXMLConfig,
@@ -63,4 +77,14 @@ __all__ = [
     "EmpathyXMLConfig",
     "get_config",
     "set_config",
+    # Agent configuration models
+    "AgentOperationError",
+    "BookProductionConfig",
+    "MemDocsConfig",
+    "ModelTier",
+    "Provider",
+    "RedisConfig",
+    "UnifiedAgentConfig",
+    "AgentWorkflowConfig",
+    "WorkflowMode",
 ]

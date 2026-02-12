@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from attune_llm.commands.models import CommandCategory
-from attune_llm.commands.parser import CommandParser
+from attune.commands.models import CommandCategory
+from attune.commands.parser import CommandParser
 
 
 class TestCommandParser:

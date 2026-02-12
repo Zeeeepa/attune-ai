@@ -165,7 +165,7 @@ config = registry.load_from_file("agents/custom-agent.md")
 ### Programmatic Registration
 
 ```python
-from attune_llm.config.unified import UnifiedAgentConfig
+from attune.config.agent_config import UnifiedAgentConfig
 
 config = UnifiedAgentConfig(
     name="my-agent",
@@ -233,7 +233,7 @@ Socratic patterns:
 ### With Commands
 
 ```python
-from attune_llm.commands import CommandContext
+from attune.commands import CommandContext
 
 ctx = CommandContext(
     user_id="user123",

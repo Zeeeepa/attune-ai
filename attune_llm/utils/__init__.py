@@ -1,5 +1,17 @@
-"""Utility modules for attune_llm."""
+"""attune_llm.utils - DEPRECATED. Use attune.utils instead.
 
-from .tokens import count_message_tokens, count_tokens, estimate_cost
+This module re-exports from attune.utils for backward compatibility.
+Will be removed in attune-ai v3.0.0.
+"""
 
-__all__ = ["count_tokens", "count_message_tokens", "estimate_cost"]
+import warnings
+
+warnings.warn(
+    "attune_llm.utils is deprecated. Use attune.utils instead. "
+    "This module will be removed in attune-ai v3.0.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+from attune.utils import *  # noqa: F401,F403
+from attune.utils import __all__  # noqa: F811

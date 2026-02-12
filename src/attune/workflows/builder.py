@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from attune.models import LLMExecutor, TelemetryBackend, UnifiedModelProvider
     from attune.workflows.base import BaseWorkflow
     from attune.workflows.config import WorkflowConfig
+    from attune.workflows.context import WorkflowContext
     from attune.workflows.progress import ProgressCallback
     from attune.workflows.routing import TierRoutingStrategy
     from attune.workflows.tier_tracking import WorkflowTierTracker
@@ -55,6 +56,7 @@ class WorkflowBuilder(Generic[T]):
         - with_progress_callback() - Set progress callback
         - with_tier_tracker() - Set tier tracker
         - with_routing() - Set routing strategy
+        - with_context() - Set WorkflowContext for composition
         - build() - Construct the workflow
     """
 
@@ -77,6 +79,7 @@ class WorkflowBuilder(Generic[T]):
         self._progress_callback: ProgressCallback | None = None
         self._tier_tracker: WorkflowTierTracker | None = None
         self._routing_strategy: TierRoutingStrategy | None = None
+        self._ctx: WorkflowContext | None = None
 
     def with_config(self, config: WorkflowConfig) -> WorkflowBuilder[T]:
         """Set workflow configuration.
@@ -204,6 +207,36 @@ class WorkflowBuilder(Generic[T]):
         self._routing_strategy = strategy
         return self
 
+    def with_context(self, ctx: WorkflowContext) -> WorkflowBuilder[T]:
+        """Set a WorkflowContext for composition-based capabilities.
+
+        When a context is provided, the workflow delegates to its services
+        instead of using mixin implementations. This enables selective
+        capability composition without changing the mixin inheritance chain.
+
+        Args:
+            ctx: WorkflowContext with desired services configured
+
+        Returns:
+            Self for method chaining
+
+        Example:
+            >>> from attune.workflows.context import WorkflowContext
+            >>> from attune.workflows.services import CacheService, CostService
+            >>>
+            >>> ctx = WorkflowContext(
+            ...     cache=CacheService("my-workflow"),
+            ...     cost=CostService(),
+            ... )
+            >>> workflow = (
+            ...     WorkflowBuilder(MyWorkflow)
+            ...     .with_context(ctx)
+            ...     .build()
+            ... )
+        """
+        self._ctx = ctx
+        return self
+
     def build(self) -> T:
         """Build the configured workflow.
 
@@ -243,6 +276,9 @@ class WorkflowBuilder(Generic[T]):
 
         if self._routing_strategy is not None:
             kwargs["routing_strategy"] = self._routing_strategy
+
+        if self._ctx is not None:
+            kwargs["ctx"] = self._ctx
 
         # Construct workflow
         return self.workflow_class(**kwargs)

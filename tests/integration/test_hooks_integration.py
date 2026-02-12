@@ -5,14 +5,14 @@ Tests hook system integration with other framework components.
 
 import pytest
 
-from attune_llm.hooks.config import (
+from attune.hooks.config import (
     HookConfig,
     HookDefinition,
     HookEvent,
     HookMatcher,
     HookType,
 )
-from attune_llm.hooks.registry import HookRegistry
+from attune.hooks.registry import HookRegistry
 
 
 class TestHookRegistryIntegration:

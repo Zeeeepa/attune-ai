@@ -3,7 +3,7 @@
 import tempfile
 from pathlib import Path
 
-from attune_llm.context.compaction import (
+from attune.context.compaction import (
     CompactionStateManager,
     CompactState,
     PatternSummary,

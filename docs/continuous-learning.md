@@ -216,7 +216,7 @@ Do: Prefer code examples over prose
 ### With Command Context
 
 ```python
-from attune_llm.commands import CommandContext
+from attune.commands import CommandContext
 
 ctx = CommandContext(
     user_id="user123",

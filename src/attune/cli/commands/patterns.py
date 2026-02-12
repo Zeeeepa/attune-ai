@@ -153,7 +153,7 @@ def cmd_patterns_resolve(args):
     Returns:
         None: Updates pattern and prints result. Exits with code 1 on failure.
     """
-    from attune_llm.pattern_resolver import PatternResolver
+    from attune.patterns.resolver import PatternResolver
 
     resolver = PatternResolver(args.patterns_dir)
 

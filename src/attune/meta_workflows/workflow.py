@@ -54,8 +54,8 @@ from attune.meta_workflows.models import (
 )
 from attune.meta_workflows.template_registry import TemplateRegistry
 from attune.orchestration.agent_templates import get_template
+from attune.routing.model_router import ModelRouter, ModelTier
 from attune.telemetry.usage_tracker import UsageTracker
-from attune_llm.routing.model_router import ModelRouter, ModelTier
 
 if TYPE_CHECKING:
     from attune.meta_workflows.pattern_learner import PatternLearner

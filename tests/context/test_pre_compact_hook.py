@@ -4,8 +4,8 @@ import tempfile
 from datetime import datetime
 from unittest.mock import patch
 
-from attune_llm.context.manager import ContextManager
-from attune_llm.hooks.scripts.pre_compact import (
+from attune.context.manager import ContextManager
+from attune.hooks.scripts.pre_compact import (
     generate_compaction_summary,
     run_pre_compact,
 )
@@ -139,7 +139,7 @@ class TestRunPreCompact:
 
             # Patch the default storage dir
             with patch(
-                "attune_llm.context.manager.ContextManager.__init__",
+                "attune.context.manager.ContextManager.__init__",
                 return_value=None,
             ) as mock_init:
                 mock_init.return_value = None

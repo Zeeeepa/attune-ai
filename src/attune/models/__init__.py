@@ -1,7 +1,7 @@
 """Unified Model Registry for Attune AI
 
 Single source of truth for model configurations across:
-- attune_llm.routing.ModelRouter
+- attune.routing.ModelRouter
 - src/attune/workflows.WorkflowConfig
 - src/attune.cost_tracker
 

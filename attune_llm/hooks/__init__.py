@@ -1,24 +1,15 @@
-"""Hook System for Attune AI
+"""attune_llm.hooks - DEPRECATED. Use attune.hooks instead.
 
-Event-driven automation system for Attune AI.
-Supports PreToolUse, PostToolUse, SessionStart, SessionEnd, PreCompact, and Stop events.
-
-Architectural patterns inspired by everything-claude-code by Affaan Mustafa.
-See: https://github.com/affaan-m/everything-claude-code (MIT License)
-See: ACKNOWLEDGMENTS.md for full attribution.
-
-Copyright 2025 Smart-AI-Memory
-Licensed under the Apache License, Version 2.0
+This module re-exports from attune.hooks for backward compatibility.
+Will be removed in attune-ai v3.0.0.
 """
+import warnings
 
-from attune_llm.hooks.config import HookConfig, HookDefinition, HookEvent
-from attune_llm.hooks.executor import HookExecutor
-from attune_llm.hooks.registry import HookRegistry
-
-__all__ = [
-    "HookConfig",
-    "HookDefinition",
-    "HookEvent",
-    "HookExecutor",
-    "HookRegistry",
-]
+warnings.warn(
+    "attune_llm.hooks is deprecated. Use attune.hooks instead. "
+    "This module will be removed in attune-ai v3.0.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+from attune.hooks import *  # noqa: F401,F403
+from attune.hooks import __all__  # noqa: F811

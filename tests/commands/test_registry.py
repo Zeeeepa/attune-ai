@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from attune_llm.commands.models import CommandCategory, CommandConfig, CommandMetadata
-from attune_llm.commands.registry import CommandRegistry
+from attune.commands.models import CommandCategory, CommandConfig, CommandMetadata
+from attune.commands.registry import CommandRegistry
 
 
 class TestCommandRegistry:

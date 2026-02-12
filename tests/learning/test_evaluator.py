@@ -2,7 +2,7 @@
 
 import pytest
 
-from attune_llm.learning.evaluator import (
+from attune.learning.evaluator import (
     EvaluationResult,
     SessionEvaluator,
     SessionMetrics,

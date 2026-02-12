@@ -1,51 +1,17 @@
-"""Commands Module for Attune AI
+"""attune_llm.commands - DEPRECATED. Use attune.commands instead.
 
-Provides command loading, parsing, and execution with integration
-to hooks, context management, and learning modules.
-
-Architectural patterns inspired by everything-claude-code by Affaan Mustafa.
-See: https://github.com/affaan-m/everything-claude-code (MIT License)
-See: ACKNOWLEDGMENTS.md for full attribution.
-
-Copyright 2025 Smart AI Memory, LLC
-Licensed under the Apache License, Version 2.0
+This module re-exports from attune.commands for backward compatibility.
+Will be removed in attune-ai v3.0.0.
 """
 
-from attune_llm.commands.context import (
-    CommandContext,
-    CommandExecutor,
-    create_command_context,
-)
-from attune_llm.commands.loader import (
-    CommandLoader,
-    get_default_commands_directory,
-    load_commands_from_paths,
-)
-from attune_llm.commands.models import (
-    CommandCategory,
-    CommandConfig,
-    CommandMetadata,
-    CommandResult,
-)
-from attune_llm.commands.parser import CommandParser
-from attune_llm.commands.registry import CommandRegistry
+import warnings
 
-__all__ = [
-    # Models
-    "CommandCategory",
-    "CommandConfig",
-    "CommandContext",
-    "CommandMetadata",
-    "CommandResult",
-    # Parser
-    "CommandParser",
-    # Loader
-    "CommandLoader",
-    "get_default_commands_directory",
-    "load_commands_from_paths",
-    # Registry
-    "CommandRegistry",
-    # Context & Executor
-    "CommandExecutor",
-    "create_command_context",
-]
+warnings.warn(
+    "attune_llm.commands is deprecated. Use attune.commands instead. "
+    "This module will be removed in attune-ai v3.0.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+from attune.commands import *  # noqa: F401,F403
+from attune.commands import __all__  # noqa: F811

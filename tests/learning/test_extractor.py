@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from attune_llm.learning.extractor import (
+from attune.learning.extractor import (
     ExtractedPattern,
     PatternCategory,
     PatternExtractor,

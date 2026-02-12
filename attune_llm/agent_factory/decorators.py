@@ -14,7 +14,7 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any, TypeVar
 
-from attune_llm.config.unified import AgentOperationError
+from attune.config.agent_config import AgentOperationError
 
 logger = logging.getLogger(__name__)
 

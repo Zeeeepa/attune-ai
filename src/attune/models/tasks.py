@@ -1,7 +1,7 @@
 """Shared Task-Type Schema for Attune AI
 
 Provides a unified vocabulary for task types across:
-- attune_llm.routing.ModelRouter
+- attune.routing.ModelRouter
 - src/attune/workflows.WorkflowBase
 
 This module defines:

@@ -220,7 +220,7 @@ def session_start_handler(context):
 The `/compact` command uses context management:
 
 ```python
-from attune_llm.commands import CommandContext
+from attune.commands import CommandContext
 
 ctx = CommandContext(
     user_id="user123",

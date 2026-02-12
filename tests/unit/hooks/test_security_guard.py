@@ -15,7 +15,7 @@ from unittest.mock import patch
 
 import pytest
 
-from attune_llm.hooks.scripts.security_guard import (
+from attune.hooks.scripts.security_guard import (
     DANGEROUS_BASH_PATTERNS,
     SYSTEM_DIRECTORIES,
     _is_search_command,

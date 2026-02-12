@@ -278,7 +278,7 @@ class BaseAdapter(ABC):
         Uses Empathy's ModelRouter if available, otherwise defaults.
         """
         try:
-            from attune_llm.routing import ModelRouter
+            from attune.routing import ModelRouter
 
             router = ModelRouter()
             # Map tier to a task type

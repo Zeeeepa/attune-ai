@@ -1,7 +1,7 @@
 """Unified Model Registry - Single Source of Truth
 
 This module provides a centralized model configuration that is consumed by:
-- attune_llm.routing.ModelRouter (via compatibility properties)
+- attune.routing.ModelRouter (via compatibility properties)
 - src/attune/workflows.config.WorkflowConfig
 - src/attune.cost_tracker
 

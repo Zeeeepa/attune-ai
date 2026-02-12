@@ -1,4 +1,4 @@
-"""Attune AI Model Routing
+"""attune_llm.routing - DEPRECATED. Use attune.routing instead.
 
 Smart routing of tasks to appropriate model tiers for cost optimization:
 - CHEAP tier: Triage, summarization, classification (Haiku/GPT-4o-mini)
@@ -6,26 +6,33 @@ Smart routing of tasks to appropriate model tiers for cost optimization:
 - PREMIUM tier: Coordination, synthesis, critical decisions (Opus/o1)
 
 Example:
-    >>> from attune_llm.routing import ModelRouter
+    >>> from attune.routing import ModelRouter
     >>>
     >>> router = ModelRouter()
     >>> model = router.route("summarize", provider="anthropic")
     >>> print(model)  # claude-haiku-4-5-20251001
-    >>>
-    >>> model = router.route("coordinate", provider="anthropic")
-    >>> print(model)  # claude-opus-4-20250514
-    >>>
-    >>> cost = router.estimate_cost("fix_bug", input_tokens=5000, output_tokens=1000)
-    >>> print(f"Estimated cost: ${cost:.4f}")
+
+This module re-exports from attune.routing.model_router for backward compatibility.
+Will be removed in attune-ai v3.0.0.
 
 Copyright 2025 Smart AI Memory, LLC
 Licensed under the Apache License, Version 2.0
 
 """
 
-from .model_router import ModelRouter, ModelTier, TaskRouting
+import warnings
+
+warnings.warn(
+    "attune_llm.routing is deprecated. Use attune.routing instead. "
+    "This module will be removed in attune-ai v3.0.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+from attune.routing.model_router import ModelConfig, ModelRouter, ModelTier, TaskRouting
 
 __all__ = [
+    "ModelConfig",
     "ModelRouter",
     "ModelTier",
     "TaskRouting",

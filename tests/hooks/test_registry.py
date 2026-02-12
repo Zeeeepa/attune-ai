@@ -2,8 +2,8 @@
 
 import pytest
 
-from attune_llm.hooks.config import HookConfig, HookDefinition, HookEvent, HookMatcher
-from attune_llm.hooks.registry import HookRegistry
+from attune.hooks.config import HookConfig, HookDefinition, HookEvent, HookMatcher
+from attune.hooks.registry import HookRegistry
 
 
 class TestHookRegistry:

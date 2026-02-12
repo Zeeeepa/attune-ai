@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from attune_llm.commands import (
+from attune.commands import (
     CommandCategory,
     CommandConfig,
     CommandContext,
@@ -189,8 +189,8 @@ class TestCommandExecutorIntegration:
 
     def test_execute_with_hooks_configured(self):
         """Test execution with hook configuration."""
-        from attune_llm.hooks.config import HookEvent
-        from attune_llm.hooks.registry import HookRegistry
+        from attune.hooks.config import HookEvent
+        from attune.hooks.registry import HookRegistry
 
         hook_registry = HookRegistry()
         hooks_fired = []

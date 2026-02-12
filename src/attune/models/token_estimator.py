@@ -67,9 +67,9 @@ def estimate_tokens(text: str, model_id: str = "claude-sonnet-4-5-20250514") -> 
     if not text:
         return 0
 
-    # Use new accurate token counting from attune_llm
+    # Use accurate token counting from attune.utils
     try:
-        from attune_llm.utils.tokens import count_tokens
+        from attune.utils.tokens import count_tokens
 
         return count_tokens(text, model=model_id, use_api=False)
     except ImportError:

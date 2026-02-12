@@ -5,8 +5,8 @@ from datetime import datetime
 
 import pytest
 
-from attune_llm.learning.extractor import ExtractedPattern, PatternCategory
-from attune_llm.learning.storage import LearnedSkill, LearnedSkillsStorage
+from attune.learning.extractor import ExtractedPattern, PatternCategory
+from attune.learning.storage import LearnedSkill, LearnedSkillsStorage
 
 
 class TestLearnedSkill:

@@ -6,7 +6,7 @@ with integration to other framework components.
 
 import pytest
 
-from attune_llm.learning import (
+from attune.learning import (
     ExtractedPattern,
     LearnedSkill,
     LearnedSkillsStorage,
@@ -332,8 +332,8 @@ class TestLearningWithHooksIntegration:
 
     def test_session_end_triggers_pattern_save(self, tmp_path):
         """Test that session end hook can save patterns to storage."""
-        from attune_llm.hooks.config import HookEvent
-        from attune_llm.hooks.registry import HookRegistry
+        from attune.hooks.config import HookEvent
+        from attune.hooks.registry import HookRegistry
 
         storage = LearnedSkillsStorage(storage_dir=tmp_path / "skills")
         hook_registry = HookRegistry()
@@ -385,8 +385,8 @@ class TestLearningWithContextIntegration:
 
     def test_patterns_survive_compaction(self, tmp_path):
         """Test that learned patterns survive context compaction."""
-        from attune_llm.context import CompactState
-        from attune_llm.context.compaction import PatternSummary
+        from attune.context import CompactState
+        from attune.context.compaction import PatternSummary
 
         storage = LearnedSkillsStorage(storage_dir=tmp_path / "skills")
         user_id = "compaction_user"
