@@ -3,6 +3,9 @@
 
 FROM mcr.microsoft.com/devcontainers/python:1-3.11-bullseye
 
+# Remove stale Yarn repo (expired GPG key in base image)
+RUN rm -f /etc/apt/sources.list.d/yarn.list
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \

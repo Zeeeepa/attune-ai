@@ -509,6 +509,12 @@ class BaseWorkflow(
 
     # --- Prompt proxies (PromptMixin -> PromptService) ---
 
+    def _is_xml_enabled(self) -> bool:
+        """Check if XML prompts are enabled -- delegates to PromptService when ctx is provided."""
+        if self._ctx and self._ctx.prompt:
+            return self._ctx.prompt.xml_enabled
+        return super()._is_xml_enabled()
+
     def _build_cached_system_prompt(
         self,
         role: str,

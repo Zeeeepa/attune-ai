@@ -9,7 +9,7 @@
 | **--** | Testing | Reorganize 131 test files into 14 domain subdirectories | **COMPLETE** | 1 |
 | **--** | Testing | Remove 70 auto-generated behavioral test files (dead weight) | **COMPLETE** | 2 |
 | **2A** | Workflows | Extract 7 services from mixins into services/ | **COMPLETE** | 2 |
-| **3A** | Plugins | Plugin system improvements | Pending | |
+| **3A** | Plugins | Plugin system improvements | **COMPLETE** | 3 |
 | **3B** | Extraction | Dashboard + Socratic as optional extras | **COMPLETE** | 3 |
 | **3C** | Extraction | Lazy loading improvements | **COMPLETE** | 3 |
 | **2B-2C** | Workflows | WorkflowContext + BaseWorkflow update | **COMPLETE** | 3 |

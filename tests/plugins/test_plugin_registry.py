@@ -14,7 +14,6 @@ import pytest
 
 from attune.plugins.base import BasePlugin, BaseWorkflow, PluginValidationError
 from attune.plugins.registry import PluginRegistry, get_global_registry
-import attune.plugins.registry as _registry_mod
 
 
 @dataclass

@@ -8,7 +8,6 @@ Licensed under the Apache License, Version 2.0
 
 import logging
 from importlib.metadata import entry_points
-from typing import Any
 
 from .base import BasePlugin, BaseWorkflow, PluginValidationError
 

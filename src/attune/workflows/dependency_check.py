@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from .base import BaseWorkflow, ModelTier
+from .context import WorkflowContext
 from .dependency_check_audit import (  # noqa: F401
     CACHE_DIR,
     _get_cache_path,
@@ -30,6 +31,7 @@ from .dependency_check_report import (  # noqa: F401
     format_dependency_check_report,
     main,
 )
+from .services import ParsingService, PromptService
 from .step_config import WorkflowStepConfig
 
 logger = logging.getLogger(__name__)
@@ -51,6 +53,9 @@ class DependencyCheckWorkflow(DependencyParserMixin, BaseWorkflow):
 
     Scans dependency files to identify vulnerable, outdated,
     or potentially problematic packages.
+
+    Supports composition via ``WorkflowContext`` -- use ``default_context()``
+    to get a pre-configured context with prompt and parsing services.
     """
 
     name = "dependency-check"
@@ -70,6 +75,21 @@ class DependencyCheckWorkflow(DependencyParserMixin, BaseWorkflow):
 
         """
         super().__init__(**kwargs)
+
+    @classmethod
+    def default_context(cls, xml_config: dict | None = None) -> WorkflowContext:
+        """Create a WorkflowContext pre-configured for dependency checking.
+
+        Args:
+            xml_config: Optional XML prompt configuration dict.
+
+        Returns:
+            WorkflowContext with prompt and parsing services.
+        """
+        return WorkflowContext(
+            prompt=PromptService("dependency-check", xml_config=xml_config),
+            parsing=ParsingService(xml_config=xml_config),
+        )
 
     async def run_stage(
         self,

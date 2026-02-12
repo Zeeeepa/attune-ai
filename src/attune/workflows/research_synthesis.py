@@ -18,6 +18,8 @@ Licensed under the Apache License, Version 2.0
 from typing import Any
 
 from .base import BaseWorkflow, ModelTier
+from .context import WorkflowContext
+from .services import ParsingService, PromptService
 from .step_config import WorkflowStepConfig
 
 # Step configurations for executor-based execution
@@ -110,6 +112,21 @@ class ResearchSynthesisWorkflow(BaseWorkflow):
         super().__init__(**kwargs)
         self.complexity_threshold = complexity_threshold
         self._detected_complexity: float = 0.0
+
+    @classmethod
+    def default_context(cls, xml_config: dict | None = None) -> WorkflowContext:
+        """Create a WorkflowContext pre-configured for research synthesis.
+
+        Args:
+            xml_config: Optional XML prompt configuration dict.
+
+        Returns:
+            WorkflowContext with prompt and parsing services.
+        """
+        return WorkflowContext(
+            prompt=PromptService("research", xml_config=xml_config),
+            parsing=ParsingService(xml_config=xml_config),
+        )
 
     async def _call_with_step(
         self,

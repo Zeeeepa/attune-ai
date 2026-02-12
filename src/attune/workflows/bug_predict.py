@@ -34,6 +34,8 @@ from .bug_predict_report import (  # noqa: F401
     format_bug_predict_report,
     main,
 )
+from .context import WorkflowContext
+from .services import ParsingService, PromptService
 from .step_config import WorkflowStepConfig
 
 logger = logging.getLogger(__name__)
@@ -56,6 +58,9 @@ class BugPredictionWorkflow(BaseWorkflow):
 
     Uses pattern library integration to identify code that matches
     historical bug patterns and generates preventive recommendations.
+
+    Supports composition via ``WorkflowContext`` -- use ``default_context()``
+    to get a pre-configured context with prompt and parsing services.
     """
 
     name = "bug-predict"
@@ -111,6 +116,21 @@ class BugPredictionWorkflow(BaseWorkflow):
         self._bug_patterns: list[dict] = []
         self._auth_mode_used: str | None = None  # Track which auth was recommended
         self._load_patterns()
+
+    @classmethod
+    def default_context(cls, xml_config: dict | None = None) -> WorkflowContext:
+        """Create a WorkflowContext pre-configured for bug prediction.
+
+        Args:
+            xml_config: Optional XML prompt configuration dict.
+
+        Returns:
+            WorkflowContext with prompt and parsing services.
+        """
+        return WorkflowContext(
+            prompt=PromptService("bug-predict", xml_config=xml_config),
+            parsing=ParsingService(xml_config=xml_config),
+        )
 
     def _load_patterns(self) -> None:
         """Load bug patterns from the pattern library."""
