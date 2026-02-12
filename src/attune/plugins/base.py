@@ -293,6 +293,32 @@ class BasePlugin(ABC):
 
         self._initialized = True
 
+    def on_activate(self) -> None:
+        """Called after the plugin is fully registered in the registry.
+
+        Override to perform post-registration setup such as:
+        - Connecting to external services
+        - Registering event listeners
+        - Starting background tasks
+
+        This is called once, after initialize() and register_plugin() succeed.
+        """
+
+    def get_cli_commands(self) -> list[dict[str, str]]:
+        """Return CLI commands contributed by this plugin.
+
+        Override to expose plugin-specific CLI subcommands that will be
+        registered under ``attune <plugin-domain> <command>``.
+
+        Returns:
+            List of command descriptors, each a dict with:
+            - 'name': Command name (e.g., 'scan')
+            - 'description': One-line help text
+            - 'module': Dotted import path to the command handler module
+
+        """
+        return []
+
     def get_workflow(self, workflow_id: str) -> type[BaseWorkflow] | None:
         """Get a workflow by ID.
 

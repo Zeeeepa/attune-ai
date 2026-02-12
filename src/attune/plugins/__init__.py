@@ -14,7 +14,7 @@ from .base import (
     PluginMetadata,
     PluginValidationError,
 )
-from .registry import PluginRegistry, get_global_registry
+from .registry import PluginRegistry, clear_discovery_cache, get_global_registry
 
 __all__ = [
     "BasePlugin",
@@ -24,5 +24,6 @@ __all__ = [
     "PluginMetadata",
     "PluginRegistry",
     "PluginValidationError",
+    "clear_discovery_cache",
     "get_global_registry",
 ]

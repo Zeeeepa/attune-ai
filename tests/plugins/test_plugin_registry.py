@@ -14,6 +14,7 @@ import pytest
 
 from attune.plugins.base import BasePlugin, BaseWorkflow, PluginValidationError
 from attune.plugins.registry import PluginRegistry, get_global_registry
+import attune.plugins.registry as _registry_mod
 
 
 @dataclass
@@ -217,15 +218,19 @@ class TestPluginRegistryAutoDiscovery:
 
     @patch("attune.plugins.registry.entry_points")
     def test_auto_discover_only_runs_once(self, mock_entry_points):
-        """Test auto-discovery only runs once"""
+        """Test auto-discovery only runs once on the same registry"""
         mock_entry_points.return_value = []
 
         registry = PluginRegistry()
         registry.auto_discover()
         registry.auto_discover()  # Call again
 
-        # entry_points should only be called once
-        assert mock_entry_points.call_count == 1
+        # entry_points is called during cache build (2 groups), but not on second auto_discover
+        assert registry._auto_discovered is True
+        # Second call should be a no-op (no additional entry_points calls)
+        initial_count = mock_entry_points.call_count
+        registry.auto_discover()
+        assert mock_entry_points.call_count == initial_count
 
 
 @patch("attune.plugins.registry.entry_points", return_value=[])

@@ -343,6 +343,10 @@ Discussions = "https://github.com/Smart-AI-Memory/attune-ai/discussions"
 Changelog = "https://github.com/Smart-AI-Memory/attune-ai/blob/main/CHANGELOG.md"
 
 # Plugin entry points for auto-discovery
+[project.entry-points."attune.plugins"]
+software = "attune_software.plugin:SoftwarePlugin"
+
+# Backward-compat alias (removed in v3.0.0)
 [project.entry-points."empathy_framework.plugins"]
 software = "attune_software.plugin:SoftwarePlugin"
 

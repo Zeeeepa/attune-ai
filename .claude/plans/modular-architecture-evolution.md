@@ -12,7 +12,7 @@
 | **3A** | Plugins | Plugin system improvements | Pending | |
 | **3B** | Extraction | Dashboard + Socratic as optional extras | **COMPLETE** | 3 |
 | **3C** | Extraction | Lazy loading improvements | **COMPLETE** | 3 |
-| **2B-2C** | Workflows | WorkflowContext + BaseWorkflow update | Pending | |
+| **2B-2C** | Workflows | WorkflowContext + BaseWorkflow update | **COMPLETE** | 3 |
 | **1C** | Consolidation | Move LLM core + agent_factory (highest risk) | Pending | |
 | **2D** | Workflows | Migrate concrete workflows | Pending | |
 | **1D** | Consolidation | Cleanup shims and config | Pending | |

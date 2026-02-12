@@ -8,10 +8,22 @@ Licensed under the Apache License, Version 2.0
 
 import logging
 from importlib.metadata import entry_points
+from typing import Any
 
 from .base import BasePlugin, BaseWorkflow, PluginValidationError
 
 logger = logging.getLogger(__name__)
+
+# Primary entry point group (v2.7+)
+_ENTRY_POINT_GROUP = "attune.plugins"
+
+# Legacy entry point group for backward compatibility (removed in v3.0.0)
+_LEGACY_ENTRY_POINT_GROUP = "empathy_framework.plugins"
+
+# Module-level discovery cache: avoids repeated importlib.metadata scans.
+# Maps entry-point name -> loaded plugin class.  Populated on first
+# auto_discover() and reused by subsequent PluginRegistry instances.
+_discovery_cache: dict[str, type] | None = None
 
 
 class PluginRegistry:
@@ -22,40 +34,67 @@ class PluginRegistry:
     - Manual registration
     - Lazy initialization
     - Graceful degradation (missing plugins don't crash)
+    - Discovery caching (avoids repeated entry_points scans)
     """
 
     def __init__(self):
         self._plugins: dict[str, BasePlugin] = {}
         self._auto_discovered = False
-        self.logger = logging.getLogger("empathy.plugins.registry")
+        self.logger = logging.getLogger("attune.plugins.registry")
 
     def auto_discover(self) -> None:
         """Automatically discover plugins via entry points.
 
-        Plugins register themselves in setup.py/pyproject.toml:
+        Plugins register themselves in pyproject.toml:
 
-        [project.entry-points."empathy_framework.plugins"]
-        software = "empathy_software.plugin:SoftwarePlugin"
-        healthcare = "empathy_healthcare.plugin:HealthcarePlugin"
+        [project.entry-points."attune.plugins"]
+        software = "attune_software.plugin:SoftwarePlugin"
+        healthcare = "attune_healthcare.plugin:HealthcarePlugin"
+
+        Also checks the legacy "empathy_framework.plugins" group for
+        backward compatibility (will be removed in v3.0.0).
+
+        Discovery results are cached at module level so that repeated
+        PluginRegistry instances (e.g. after global reset) skip the
+        importlib.metadata scan.
         """
+        global _discovery_cache
+
         if self._auto_discovered:
             return
 
         self.logger.info("Auto-discovering plugins...")
 
-        # Python 3.10+ has modern entry_points API with group parameter
-        discovered = entry_points(group="empathy_framework.plugins")
+        # Build or reuse the discovery cache
+        if _discovery_cache is None:
+            _discovery_cache = {}
+            for group in (_ENTRY_POINT_GROUP, _LEGACY_ENTRY_POINT_GROUP):
+                discovered = entry_points(group=group)
+                for ep in discovered:
+                    if ep.name not in _discovery_cache:
+                        try:
+                            _discovery_cache[ep.name] = ep.load()
+                        except Exception as e:  # noqa: BLE001
+                            # INTENTIONAL: entry point load is best-effort
+                            self.logger.warning(
+                                f"Failed to load plugin '{ep.name}': {e}",
+                                exc_info=True,
+                            )
 
-        for ep in discovered:
+        # Instantiate and register from cache
+        for name, plugin_class in _discovery_cache.items():
+            if name in self._plugins:
+                continue
             try:
-                self.logger.info(f"Loading plugin '{ep.name}' from entry point")
-                plugin_class = ep.load()
                 plugin_instance = plugin_class()
-                self.register_plugin(ep.name, plugin_instance)
-                self.logger.info(f"Successfully loaded plugin: {ep.name}")
-            except Exception as e:
-                # Graceful degradation: log but don't crash
-                self.logger.warning(f"Failed to load plugin '{ep.name}': {e}", exc_info=True)
+                self.register_plugin(name, plugin_instance)
+                plugin_instance.on_activate()
+                self.logger.info(f"Successfully loaded plugin: {name}")
+            except Exception as e:  # noqa: BLE001
+                # INTENTIONAL: graceful degradation, log but don't crash
+                self.logger.warning(
+                    f"Failed to init plugin '{name}': {e}", exc_info=True
+                )
 
         self._auto_discovered = True
         self.logger.info(f"Auto-discovery complete. {len(self._plugins)} plugins loaded.")
@@ -266,3 +305,14 @@ def get_global_registry() -> PluginRegistry:
         _global_registry = PluginRegistry()
         _global_registry.auto_discover()
     return _global_registry
+
+
+def clear_discovery_cache() -> None:
+    """Clear the module-level discovery cache.
+
+    Useful in tests or when entry points have changed at runtime
+    (e.g. after installing a new plugin package).
+    """
+    global _discovery_cache, _global_registry
+    _discovery_cache = None
+    _global_registry = None
