@@ -41,3 +41,57 @@ bug_predict:
     - config               # Config loading with defaults
     - cleanup              # Teardown/cleanup code
     - optional             # Optional feature detection
+
+# Progressive escalation settings
+progressive_escalation:
+  # Enable/disable progressive escalation (opt-in by default)
+  default_enabled: false
+
+  # Retry configuration
+  retries:
+    cheap_min_attempts: 2
+    cheap_max_attempts: 3
+    capable_min_attempts: 2
+    capable_max_attempts: 6
+    premium_max_attempts: 1
+
+  # Quality thresholds for escalation
+  thresholds:
+    cheap_to_capable:
+      failure_rate: 0.30       # Escalate if >30% failed
+      min_quality_score: 70    # Escalate if CQS <70
+      max_syntax_errors: 3     # Escalate if >3 syntax errors
+
+    capable_to_premium:
+      failure_rate: 0.20       # Escalate if >20% failed
+      min_quality_score: 80    # Escalate if CQS <80
+      max_syntax_errors: 1     # Escalate if >1 syntax error
+
+    stagnation:
+      improvement_threshold: 5.0   # Require 5% CQS improvement
+      consecutive_runs: 2          # Escalate after 2 stagnant runs
+
+  # Cost management
+  cost:
+    default_max: 5.00              # Default budget cap ($5)
+    auto_approve_under: null       # Null = always prompt
+    warn_on_exceeded: true         # Warn if budget exceeded
+    abort_on_exceeded: false       # Don't abort, just warn
+
+  # Storage settings
+  storage:
+    save_tier_results: true        # Save detailed results
+    path: ".attune/progressive_runs"
+    retention_days: 30             # Auto-delete after 30 days
+
+  # Model tier mapping (can be overridden by env vars)
+  tiers:
+    cheap:
+      models: ["gpt-4o-mini", "claude-3-haiku"]
+      default: "gpt-4o-mini"
+    capable:
+      models: ["claude-3-5-sonnet", "gpt-4o"]
+      default: "claude-3-5-sonnet"
+    premium:
+      models: ["claude-opus-4", "o1"]
+      default: "claude-opus-4"
