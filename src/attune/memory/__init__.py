@@ -5,7 +5,7 @@ Unified two-tier memory system for AI agent collaboration:
 SHORT-TERM MEMORY (Redis):
     - Agent coordination and working memory
     - TTL-based automatic expiration (5 min - 7 days)
-    - Role-based access control (Observer → Steward)
+    - Role-based access control (Observer -> Steward)
     - Pattern staging before validation
 
 LONG-TERM MEMORY (Persistent):
@@ -32,7 +32,7 @@ RECOMMENDED USAGE (Unified API):
     )
     pattern = memory.recall_pattern(result["pattern_id"])
 
-    # Pattern promotion (short-term → long-term)
+    # Pattern promotion (short-term -> long-term)
     staged_id = memory.stage_pattern({"content": "..."})
     memory.promote_pattern(staged_id)
 
@@ -57,93 +57,205 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under the Apache License, Version 2.0
 """
 
-# Short-term memory (Redis)
-# Claude Memory integration
-from .claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
+import importlib
+from typing import TYPE_CHECKING
 
-# Memory configuration
-from .config import check_redis_connection, get_railway_redis, get_redis_config, get_redis_memory
+if TYPE_CHECKING:
+    from .claude_memory import ClaudeMemoryConfig, ClaudeMemoryLoader
+    from .config import (
+        check_redis_connection,
+        get_railway_redis,
+        get_redis_config,
+        get_redis_memory,
+    )
+    from .control_panel import ControlPanelConfig, MemoryControlPanel, MemoryStats
+    from .cross_session import (
+        BackgroundService,
+        ConflictResult,
+        ConflictStrategy,
+        CrossSessionCoordinator,
+        SessionInfo,
+        SessionType,
+        check_redis_cross_session_support,
+        generate_agent_id,
+    )
+    from .edges import REVERSE_EDGE_TYPES, WORKFLOW_EDGE_PATTERNS, Edge, EdgeType
+    from .file_session import FileSessionConfig, FileSessionMemory, get_file_session_memory
+    from .graph import MemoryGraph
+    from .long_term import (
+        Classification,
+        ClassificationRules,
+        EncryptionManager,
+        MemDocsStorage,
+        PatternMetadata,
+        SecureMemDocsIntegration,
+        SecurePattern,
+        SecurityError,
+    )
+    from .nodes import BugNode, Node, NodeType, PatternNode, PerformanceNode, VulnerabilityNode
+    from .redis_bootstrap import (
+        RedisStartMethod,
+        RedisStatus,
+        ensure_redis,
+        get_redis_or_mock,
+        stop_redis,
+    )
+    from .security import (
+        AuditEvent,
+        AuditLogger,
+        PIIDetection,
+        PIIPattern,
+        PIIScrubber,
+        SecretDetection,
+        SecretsDetector,
+        SecretType,
+        SecurityViolation,
+        Severity,
+        detect_secrets,
+    )
+    from .short_term import RedisShortTermMemory
+    from .summary_index import AgentContext, ConversationSummaryIndex
+    from .types import (
+        AccessTier,
+        AgentCredentials,
+        ConflictContext,
+        PaginatedResult,
+        RedisConfig,
+        RedisMetrics,
+        StagedPattern,
+        TimeWindowQuery,
+        TTLStrategy,
+    )
+    from .unified import Environment, MemoryConfig, UnifiedMemory
 
-# Control Panel
-from .control_panel import ControlPanelConfig, MemoryControlPanel, MemoryStats
+# Mapping of attribute names to (module_path, attribute_name)
+_LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    # claude_memory
+    "ClaudeMemoryConfig": (".claude_memory", "ClaudeMemoryConfig"),
+    "ClaudeMemoryLoader": (".claude_memory", "ClaudeMemoryLoader"),
+    # config
+    "check_redis_connection": (".config", "check_redis_connection"),
+    "get_railway_redis": (".config", "get_railway_redis"),
+    "get_redis_config": (".config", "get_redis_config"),
+    "get_redis_memory": (".config", "get_redis_memory"),
+    # control_panel
+    "ControlPanelConfig": (".control_panel", "ControlPanelConfig"),
+    "MemoryControlPanel": (".control_panel", "MemoryControlPanel"),
+    "MemoryStats": (".control_panel", "MemoryStats"),
+    # cross_session
+    "BackgroundService": (".cross_session", "BackgroundService"),
+    "ConflictResult": (".cross_session", "ConflictResult"),
+    "ConflictStrategy": (".cross_session", "ConflictStrategy"),
+    "CrossSessionCoordinator": (".cross_session", "CrossSessionCoordinator"),
+    "SessionInfo": (".cross_session", "SessionInfo"),
+    "SessionType": (".cross_session", "SessionType"),
+    "check_redis_cross_session_support": (
+        ".cross_session",
+        "check_redis_cross_session_support",
+    ),
+    "generate_agent_id": (".cross_session", "generate_agent_id"),
+    # edges
+    "REVERSE_EDGE_TYPES": (".edges", "REVERSE_EDGE_TYPES"),
+    "WORKFLOW_EDGE_PATTERNS": (".edges", "WORKFLOW_EDGE_PATTERNS"),
+    "Edge": (".edges", "Edge"),
+    "EdgeType": (".edges", "EdgeType"),
+    # file_session
+    "FileSessionConfig": (".file_session", "FileSessionConfig"),
+    "FileSessionMemory": (".file_session", "FileSessionMemory"),
+    "get_file_session_memory": (".file_session", "get_file_session_memory"),
+    # graph
+    "MemoryGraph": (".graph", "MemoryGraph"),
+    # long_term
+    "Classification": (".long_term", "Classification"),
+    "ClassificationRules": (".long_term", "ClassificationRules"),
+    "EncryptionManager": (".long_term", "EncryptionManager"),
+    "MemDocsStorage": (".long_term", "MemDocsStorage"),
+    "PatternMetadata": (".long_term", "PatternMetadata"),
+    "SecureMemDocsIntegration": (".long_term", "SecureMemDocsIntegration"),
+    "SecurePattern": (".long_term", "SecurePattern"),
+    "SecurityError": (".long_term", "SecurityError"),
+    "MemoryPermissionError": (".long_term", "PermissionError"),
+    # nodes
+    "BugNode": (".nodes", "BugNode"),
+    "Node": (".nodes", "Node"),
+    "NodeType": (".nodes", "NodeType"),
+    "PatternNode": (".nodes", "PatternNode"),
+    "PerformanceNode": (".nodes", "PerformanceNode"),
+    "VulnerabilityNode": (".nodes", "VulnerabilityNode"),
+    # redis_bootstrap
+    "RedisStartMethod": (".redis_bootstrap", "RedisStartMethod"),
+    "RedisStatus": (".redis_bootstrap", "RedisStatus"),
+    "ensure_redis": (".redis_bootstrap", "ensure_redis"),
+    "get_redis_or_mock": (".redis_bootstrap", "get_redis_or_mock"),
+    "stop_redis": (".redis_bootstrap", "stop_redis"),
+    # security
+    "AuditEvent": (".security", "AuditEvent"),
+    "AuditLogger": (".security", "AuditLogger"),
+    "PIIDetection": (".security", "PIIDetection"),
+    "PIIPattern": (".security", "PIIPattern"),
+    "PIIScrubber": (".security", "PIIScrubber"),
+    "SecretDetection": (".security", "SecretDetection"),
+    "SecretsDetector": (".security", "SecretsDetector"),
+    "SecretType": (".security", "SecretType"),
+    "SecurityViolation": (".security", "SecurityViolation"),
+    "Severity": (".security", "Severity"),
+    "detect_secrets": (".security", "detect_secrets"),
+    # short_term
+    "RedisShortTermMemory": (".short_term", "RedisShortTermMemory"),
+    # summary_index
+    "AgentContext": (".summary_index", "AgentContext"),
+    "ConversationSummaryIndex": (".summary_index", "ConversationSummaryIndex"),
+    # types
+    "AccessTier": (".types", "AccessTier"),
+    "AgentCredentials": (".types", "AgentCredentials"),
+    "ConflictContext": (".types", "ConflictContext"),
+    "PaginatedResult": (".types", "PaginatedResult"),
+    "RedisConfig": (".types", "RedisConfig"),
+    "RedisMetrics": (".types", "RedisMetrics"),
+    "StagedPattern": (".types", "StagedPattern"),
+    "TimeWindowQuery": (".types", "TimeWindowQuery"),
+    "TTLStrategy": (".types", "TTLStrategy"),
+    "ShortTermSecurityError": (".types", "SecurityError"),
+    # unified
+    "Environment": (".unified", "Environment"),
+    "MemoryConfig": (".unified", "MemoryConfig"),
+    "UnifiedMemory": (".unified", "UnifiedMemory"),
+}
 
-# Cross-session communication
-from .cross_session import (
-    BackgroundService,
-    ConflictResult,
-    ConflictStrategy,
-    CrossSessionCoordinator,
-    SessionInfo,
-    SessionType,
-    check_redis_cross_session_support,
-    generate_agent_id,
-)
+# Cache for loaded attributes
+_loaded_attrs: dict[str, object] = {}
 
-# Memory Graph (Cross-Workflow Intelligence)
-from .edges import REVERSE_EDGE_TYPES, WORKFLOW_EDGE_PATTERNS, Edge, EdgeType
 
-# File-based session memory (always available, no Redis required)
-from .file_session import FileSessionConfig, FileSessionMemory, get_file_session_memory
-from .graph import MemoryGraph
+def __getattr__(name: str) -> object:
+    """Lazy import handler - loads memory submodules only when accessed."""
+    if name in _LAZY_IMPORTS:
+        module_path, attr_name = _LAZY_IMPORTS[name]
 
-# Long-term memory (Persistent patterns)
-from .long_term import (
-    Classification,
-    ClassificationRules,
-    EncryptionManager,
-    MemDocsStorage,
-    PatternMetadata,
-    SecureMemDocsIntegration,
-    SecurePattern,
-    SecurityError,
-)
-from .long_term import PermissionError as MemoryPermissionError
-from .nodes import BugNode, Node, NodeType, PatternNode, PerformanceNode, VulnerabilityNode
+        cache_key = f"{module_path}.{attr_name}"
+        if cache_key in _loaded_attrs:
+            return _loaded_attrs[cache_key]
 
-# Redis Bootstrap
-from .redis_bootstrap import (
-    RedisStartMethod,
-    RedisStatus,
-    ensure_redis,
-    get_redis_or_mock,
-    stop_redis,
-)
+        module = importlib.import_module(module_path, package="attune.memory")
+        attr = getattr(module, attr_name)
 
-# Security components
-from .security import (  # Audit Logging; PII Scrubbing; Secrets Detection
-    AuditEvent,
-    AuditLogger,
-    PIIDetection,
-    PIIPattern,
-    PIIScrubber,
-    SecretDetection,
-    SecretsDetector,
-    SecretType,
-    SecurityViolation,
-    Severity,
-    detect_secrets,
-)
-from .short_term import RedisShortTermMemory
+        _loaded_attrs[cache_key] = attr
+        return attr
 
-# Conversation Summary Index
-from .summary_index import AgentContext, ConversationSummaryIndex
+    raise AttributeError(f"module 'attune.memory' has no attribute '{name}'")
 
-# Types (extracted to types.py for cleaner separation)
-from .types import (
-    AccessTier,
-    AgentCredentials,
-    ConflictContext,
-    PaginatedResult,
-    RedisConfig,
-    RedisMetrics,
-    StagedPattern,
-    TimeWindowQuery,
-    TTLStrategy,
-)
-from .types import SecurityError as ShortTermSecurityError
 
-# Unified memory interface
-from .unified import Environment, MemoryConfig, UnifiedMemory
+def is_redis_available() -> bool:
+    """Check if Redis subsystem is available without importing it.
+
+    Returns:
+        True if the redis package is importable, False otherwise.
+    """
+    try:
+        importlib.import_module("redis")
+        return True
+    except ImportError:
+        return False
+
 
 __all__ = [
     "REVERSE_EDGE_TYPES",
@@ -152,62 +264,48 @@ __all__ = [
     "AgentContext",
     "AgentCredentials",
     "AuditEvent",
-    # Security - Audit
     "AuditLogger",
-    # Cross-session communication
     "BackgroundService",
     "BugNode",
     "Classification",
     "ClassificationRules",
-    # Claude Memory
     "ClaudeMemoryConfig",
     "ClaudeMemoryLoader",
-    # File Session Memory (always available)
-    "FileSessionConfig",
-    "FileSessionMemory",
-    "get_file_session_memory",
     "ConflictContext",
     "ConflictResult",
     "ConflictStrategy",
     "ControlPanelConfig",
-    # Conversation Summary Index
     "ConversationSummaryIndex",
     "CrossSessionCoordinator",
     "Edge",
     "EdgeType",
     "EncryptionManager",
     "Environment",
+    "FileSessionConfig",
+    "FileSessionMemory",
     "MemDocsStorage",
     "MemoryConfig",
-    # Control Panel
     "MemoryControlPanel",
-    # Memory Graph (Cross-Workflow Intelligence)
     "MemoryGraph",
     "MemoryPermissionError",
     "MemoryStats",
     "Node",
     "NodeType",
-    # Pagination and Query Types
     "PaginatedResult",
     "PIIDetection",
     "PIIPattern",
-    # Security - PII
     "PIIScrubber",
     "PatternMetadata",
     "PatternNode",
     "PerformanceNode",
-    # Redis Configuration and Metrics
     "RedisConfig",
     "RedisMetrics",
-    # Short-term Memory
     "RedisShortTermMemory",
     "RedisStartMethod",
     "RedisStatus",
     "SecretDetection",
     "SecretType",
-    # Security - Secrets
     "SecretsDetector",
-    # Long-term Memory
     "SecureMemDocsIntegration",
     "SecurePattern",
     "SecurityError",
@@ -219,19 +317,18 @@ __all__ = [
     "StagedPattern",
     "TTLStrategy",
     "TimeWindowQuery",
-    # Unified Memory Interface (recommended)
     "UnifiedMemory",
     "VulnerabilityNode",
     "check_redis_connection",
     "check_redis_cross_session_support",
     "detect_secrets",
-    # Redis Bootstrap
     "ensure_redis",
     "generate_agent_id",
+    "get_file_session_memory",
     "get_railway_redis",
     "get_redis_config",
-    # Configuration
     "get_redis_memory",
     "get_redis_or_mock",
+    "is_redis_available",
     "stop_redis",
 ]
